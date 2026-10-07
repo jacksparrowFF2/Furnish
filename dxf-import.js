@@ -26,16 +26,17 @@
       const e=entities[i],layer=value(e,8,'0');let points=[],closed=false,issue='';
       if(e.type==='LINE'){
         points=[[number(value(e,10,'NaN')),number(value(e,20,'NaN'))],[number(value(e,11,'NaN')),number(value(e,21,'NaN'))]];
-        if(number(value(e,30,0))!==number(value(e,31,0)))issue='3D lines are unsupported';
+        if(number(value(e,30,0))!==0||number(value(e,31,0))!==0)issue='3D lines are unsupported';
       }else if(e.type==='LWPOLYLINE'){
         closed=(number(value(e,70,0))&1)!==0;
         if(e.fields.some(([c,v])=>c===42&&number(v)!==0))issue='Curved polyline segments are unsupported';
         if(number(value(e,210,0))!==0||number(value(e,220,0))!==0||number(value(e,230,1))!==1)issue='Non-planar polylines are unsupported';
+        if(number(value(e,38,0))!==0)issue='Non-planar polylines are unsupported';
         for(const [c,v] of e.fields){if(c===10)points.push([number(v),NaN]);else if(c===20&&points.length)points.at(-1)[1]=number(v);}
         if(points.some(p=>!p.every(Number.isFinite)))error('Incomplete polyline vertex');
       }else if(e.type==='POLYLINE'){
         const flags=number(value(e,70,0));closed=(flags&1)!==0;if(flags&(8|16|64))issue='3D polylines and meshes are unsupported';if(flags&(2|4))issue='Curve-fit and spline-fit polylines are unsupported';
-        while(entities[i+1]?.type==='VERTEX'){const v=entities[++i];points.push([number(value(v,10,'NaN')),number(value(v,20,'NaN'))]);if(number(value(v,42,0))!==0)issue='Curved polyline segments are unsupported';}
+        while(entities[i+1]?.type==='VERTEX'){const v=entities[++i];points.push([number(value(v,10,'NaN')),number(value(v,20,'NaN'))]);if(number(value(v,30,0))!==0)issue='3D polylines and meshes are unsupported';if(number(value(v,42,0))!==0)issue='Curved polyline segments are unsupported';}
         if(entities[i+1]?.type==='SEQEND')i++;
       }else {ignored[e.type]=(ignored[e.type]||0)+1;continue;}
       if(points.length<2)issue='Polyline has fewer than two vertices';

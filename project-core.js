@@ -14,6 +14,12 @@
   return a;
  }
  function assertStructure(before,after){const mapped=d=>({...d,walls:d.walls.map(w=>({...w,kind:w.kind==='e'?'b':w.kind}))});core().assertBearingUnchanged(mapped(before),mapped(after));}
+ function protectOriginal(current,next){
+  if(current?.phase!=='design')return next;
+  if(!next||next.draft.id!==current.draft.id)fail('不能用此方案覆盖已确认的原始结构，请复制为新户型重新核对');
+  assertStructure(current.baseline,next.draft);
+  return architecture({...next,phase:'design',baseline:clone(current.baseline)});
+ }
  function changes(base,next){
   const signature=(w,d)=>JSON.stringify([w.a.map(v=>v*d.scale),w.b.map(v=>v*d.scale),w.thickness,w.kind]);
   const old=new Map(base.walls.map(w=>[w.id,w])),now=new Map(next.walls.map(w=>[w.id,w]));
@@ -50,7 +56,7 @@
   const ignored=new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
   const bodies=furniture.filter(f=>!ignored.has(f.type)).map(f=>({f,p:polygon(f)})),walls=plan.walls.map(rect),issues=[];
   const swings=[];
-  (plan.doors||[]).forEach((d,index)=>{const points=[d.h];for(let i=0;i<=20;i++){const t=i/20*Math.PI/2;points.push([d.h[0]+d.len*(d.c[0]*Math.cos(t)+d.o[0]*Math.sin(t)),d.h[1]+d.len*(d.c[1]*Math.cos(t)+d.o[1]*Math.sin(t))]);}swings.push(points);for(const {f,p} of bodies)if(intersects(points,p))issues.push({kind:'door',id:f.id,name:f.name,message:'开门范围与家具冲突'});if(walls.some(w=>intersects(points,w)))issues.push({kind:'swingwall',doorIndex:index,name:d.name||'门 '+(index+1),message:'开门范围与墙体冲突'});});
+  (plan.doors||[]).forEach((d,index)=>{const points=[d.h];for(let i=0;i<=20;i++){const t=i/20*Math.PI/2;points.push([d.h[0]+d.len*(d.c[0]*Math.cos(t)+d.o[0]*Math.sin(t)),d.h[1]+d.len*(d.c[1]*Math.cos(t)+d.o[1]*Math.sin(t))]);}swings.push(points);for(const {f,p} of bodies)if(intersects(points,p))issues.push({kind:'door',doorIndex:index,id:f.id,name:f.name,message:'开门范围与家具冲突'});if(walls.some(w=>intersects(points,w)))issues.push({kind:'swingwall',doorIndex:index,name:d.name||'门 '+(index+1),message:'开门范围与墙体冲突'});});
   for(let i=0;i<swings.length;i++)for(let j=i+1;j<swings.length;j++)if(intersects(swings[i],swings[j]))issues.push({kind:'swings',doorIndex:i,name:(plan.doors[i].name||'门 '+(i+1))+' / '+(plan.doors[j].name||'门 '+(j+1)),message:'两扇门的开启范围重叠，请核对同时开门情况'});
   for(const {f,p} of bodies){
    if(walls.some(w=>intersects(p,w)))issues.push({kind:'wall',id:f.id,name:f.name,message:'家具占用墙体空间'});
@@ -75,6 +81,8 @@
   if(!work||!Array.isArray(work.furniture)||work.furniture.length>2000)fail('家具数据无效');const w=clone(work),ids=new Set();
   for(const f of w.furniture){if(!f||typeof f.id!=='string'||ids.has(f.id)||![f.cx,f.cy,f.w,f.d,f.rot].every(num)||f.w<=0||f.d<=0||f.w>20000||f.d>20000)fail('家具尺寸或编号无效');ids.add(f.id);if(f.price!==undefined&&(!num(f.price)||f.price<0||f.price>1e7)||f.h!==undefined&&(!num(f.h)||f.h<=0||f.h>20000))fail('家具价格或高度无效');if(f.frontClearance!==undefined&&(!num(f.frontClearance)||f.frontClearance<0||f.frontClearance>3000))fail('家具使用空间无效');if(f.obj){if(!Array.isArray(f.obj.positions)||!f.obj.positions.length||f.obj.positions.length>180000||f.obj.positions.length%9||f.obj.positions.some(v=>!num(v)||Math.abs(v)>1e9))fail('模型数据无效');for(let axis=0;axis<3;axis++){const values=f.obj.positions.filter((v,i)=>i%3===axis);if(Math.max(...values)-Math.min(...values)<1e-9)fail('模型必须具有三维尺寸');}}}
   if(w.architecture)w.architecture=architecture(w.architecture);if(w.renovation)extraCosts(w.renovation,{net:0,paint:0,removed:0,added:0});
+  if(w.designNote!==undefined&&(typeof w.designNote!=='string'||w.designNote.length>500))fail('方案备注无效');
+  if(w.spaceIgnored!==undefined&&(!Array.isArray(w.spaceIgnored)||w.spaceIgnored.length>100||w.spaceIgnored.some(v=>typeof v!=='string'||v.length>1000000)))fail('忽略提示数据无效');
   if(w.assets!==undefined&&(!Array.isArray(w.assets)||w.assets.length>5||w.assets.some(a=>!a||typeof a.name!=='string'||a.name.length>150||typeof a.data!=='string'||a.data.length>2700000||!(/^[A-Za-z0-9+/]*={0,2}$/.test(a.data)))))fail('项目附件无效');
   return w;
  }
@@ -83,6 +91,6 @@
   if(!data||typeof data.planId!=='string'||!Array.isArray(data.designs)||data.designs.length>100||!Array.isArray(data.catalog)||data.catalog.length>500)fail('项目结构无效');data.current=validateWork(data.current);data.designs=data.designs.map(d=>{if(typeof d.name!=='string'||d.name.length>80)fail('方案名称无效');return {...d,work:validateWork(d.work)};});if(data.current.architecture){const id=data.current.architecture.draft.id;if(id!==data.planId||data.designs.some(d=>d.work.architecture?.draft.id!==id))fail('方案户型不一致');}
   for(const c of data.catalog){if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');if(c.obj)validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={architecture,assertStructure,changes,quantities,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,area,polygon,intersects};
+ root.FurnishProject={architecture,assertStructure,protectOriginal,changes,quantities,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,area,polygon,intersects};
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

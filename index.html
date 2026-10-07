@@ -224,7 +224,7 @@ body.m3d .only2d,body:not(.m3d) .only3d{display:none!important}
 #plan.tool-measure,#plan.tool-marquee{cursor:crosshair}
 #plan.space,#plan.space *{cursor:grab!important}
 #plan .furn.locked{cursor:default}
-#plan .wall{pointer-events:none}
+#plan .wall{pointer-events:all;cursor:pointer}
 #plan.tool-demolish .wall{pointer-events:all;cursor:pointer}
 #plan.tool-demolish .wall:hover{fill:#ff8a4c}
 #plan.tool-select .room:hover{opacity:.84}
@@ -850,6 +850,7 @@ footer kbd{background:var(--card);border-color:var(--line);color:var(--muted);fo
   <div class="dlg-actions" id="dlgActions"></div>
 </div></div>
 
+<script src="dxf-templates.js"></script>
 <script src="dxf-import.js"></script>
 <script src="dxf-repair.js"></script>
 <script src="floorplan-core.js"></script>
@@ -2151,7 +2152,7 @@ let view = {x0:0, y0:0, s:.06};
 const undoStack = [], redoStack = [];
 
 // 自动保存：存储空间不足时先清掉历史快照再试；仍失败则明确提示（以前静默失败，刷新后布置会「消失」）
-let saveErr = false, savedAt = 0;
+let saveErr = false, savedAt = store.updatedAt||0;
 function save(){
   store.updatedAt=Math.max(Date.now(),(store.updatedAt||0)+1);
   store.work[PLAN.id] = state;
@@ -2166,6 +2167,7 @@ function save(){
 }
 function syncSaved(){
   const el = $('#saved'); if (!el || !savedAt) return;
+  el.title=state.architecture?.phase==='survey'?tr('已保存录入数据，原始结构尚未确认锁定。','Survey saved; original structure is not confirmed.'):tr('已保存当前方案；原始基线由结构确认单独保护。','Design saved; original baseline is separately protected.');
   el.classList.toggle('err', saveErr);
   el.innerHTML = saveErr ? ico('warn') + tr('未保存', 'Not saved')
     : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
@@ -2441,9 +2443,9 @@ function renderWalls(){
   $('#gWalls').innerHTML = WALLS.map((w,i) => {
     const [x0,y0,x1,y1,k] = w, id = 'w'+i, dem = state.demolished.includes(id);
     let fill = k==='b' ? (ui.layers.bearing ? '#c8553c' : PAL.wallB) : k==='low' ? PAL.wallLow : k==='e' ? PAL.wallE : PAL.wallN;
-    let ex = k==='low' ? `stroke="${PAL.wallLowLine}" stroke-width="1" vector-effect="non-scaling-stroke"` : '';
+    let ex = k==='low' ? `stroke="${PAL.wallLowLine}" stroke-width="1" vector-effect="non-scaling-stroke"` : ['b','e'].includes(k)?`stroke="${PAL.paper}" stroke-width="1.2" stroke-dasharray="${k==='b'?'3 2':'12 3'}" vector-effect="non-scaling-stroke"`:'';
     if (dem){ fill = PAL.demFill; ex = 'stroke="#c65b3a" stroke-width="1.2" stroke-dasharray="5 3" vector-effect="non-scaling-stroke"'; }
-    return `<rect class="wall" data-wall="${id}" x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="${fill}" ${ex}/>`;
+    return `<rect class="wall" data-wall="${id}" x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="${fill}" ${ex}><title>${k==='b'?tr('承重墙 · 点线','Bearing · dotted'):k==='e'?tr('外墙 · 长虚线','Exterior · dashed'):tr('非承重墙 · 实线','Partition · solid')} · ${tr('点击查看属性','Click for properties')}</title></rect>`;
   }).join('');
 }
 
@@ -2568,6 +2570,10 @@ function renderSel(){
   } else if (ui.sel?.kind === 'note' && noteBox[ui.sel.id]){
     const [x0,y0,x1,y1] = noteBox[ui.sel.id], p = 6*k;
     s += `<rect x="${x0-p}" y="${y0-p}" width="${x1-x0+2*p}" height="${y1-y0+2*p}" rx="${(y1-y0)/2+p}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`;
+  } else if (['door','slide','win'].includes(ui.sel?.kind)){
+    const o=(ui.sel.kind==='door'?DOORS:ui.sel.kind==='slide'?SLIDES:WINS)[ui.sel.id];if(o){const [x0,y0,x1,y1]=o.rect;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;}
+  } else if (ui.sel?.kind === 'wall'){
+    const w=WALLS[Number(ui.sel.id.slice(1))];if(w)s+=`<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;
   } else if (ui.sel?.kind === 'room'){
     const r = ROOMS.find(r => r.id === ui.sel.id);
     s += `<polygon points="${r.poly.map(p=>p.join(',')).join(' ')}" fill="rgba(239,90,36,.08)" stroke="${ACC}" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
@@ -2637,7 +2643,8 @@ function updateHeader(){
   const tot = ROOMS.filter(r => r.counted !== false).reduce((a,r) => a + area(r.poly), 0);
   $('#subtitle').textContent = tr(`套内使用面积约 ${fmt(tot)} m² · 尺寸单位 mm${PLAN.note ? ' · ' + PLAN.note : ''}`,
     `Net floor area ≈ ${fmt(tot)} m² · Units: mm${PLAN.noteEn ? ' · ' + PLAN.noteEn : ''}`);
-  const brand = document.querySelector('.brand b'), bz = `${nm(PLAN.name)} · 装修设计`, be = `${PLAN.en} · Interior Design`;
+  const stage=state.architecture?.phase==='survey'?'原始结构录入 · 未锁定':state.architecture?'装修设计 · 结构已锁定':'示例布局';
+  const brand = document.querySelector('.brand b'), bz = `${nm(PLAN.name)} · ${stage}`, be = `${PLAN.en||PLAN.name} · ${state.architecture?.phase==='survey'?'Survey (unlocked)':'Design'}`;
   brand.dataset.zh = bz; brand.dataset.en = be; brand.textContent = brand.title = tr(bz, be);
   $('#undo').disabled = !undoStack.length; $('#redo').disabled = !redoStack.length;
   const n = selIds().length;
@@ -2652,6 +2659,7 @@ function renderPanel(){
   const p = $('#panel'), ids = selIds();
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); return; }
   if (ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ p.innerHTML = furnPanel(f); bindFurnPanel(f); return; } }
+  if (ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); return; }
   if (ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
   if (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide'){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); return; }
   if (ui.sel?.kind === 'win'){ p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id); return; }
@@ -3504,6 +3512,8 @@ svg.addEventListener('pointerdown', e => {
     const de = t.closest('[data-door]'), se = t.closest('[data-slide]'), we = t.closest('[data-win]');
     select(de ? {kind:'door', id:+de.dataset.door} : se ? {kind:'slide', id:+se.dataset.slide} : {kind:'win', id:+we.dataset.win});
     drag = {kind:'pan', ...base, x0:view.x0, y0:view.y0, keep:true};   // 选中后仍可直接拖动画布
+  } else if (ui.tool === 'select' && t.closest('[data-wall]')){
+    select({kind:'wall',id:t.closest('[data-wall]').dataset.wall}); return;
   } else if (ui.tool === 'marquee' || (ui.tool === 'select' && e.shiftKey && e.pointerType === 'mouse')){
     drag = {kind:'marq', ...base, a:p, add:e.shiftKey, base:selIds()};
   } else {
@@ -3944,7 +3954,7 @@ function planThumb(p){
   const rooms = p.rooms.filter(r => r.counted !== false)
     .map(r => `<polygon points="${r.poly.map(q => q.join(',')).join(' ')}" fill="#cbbFa8" opacity=".5"/>`).join('');
   const walls = p.walls.map(w =>
-    `<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="${w[4]==='b' ? '#2b2824' : w[4]==='e' ? '#57514a' : '#9b9285'}"/>`).join('');
+    `<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="${w[4]==='b' ? '#2b2824' : w[4]==='e' ? '#57514a' : '#9b9285'}" stroke="#eee" stroke-width="15" stroke-dasharray="${w[4]==='b'?'30 20':w[4]==='e'?'100 30':''}"/>`).join('');
   return `<svg viewBox="${x0-pad} ${y0-pad} ${x1-x0+2*pad} ${y1-y0+2*pad}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${rooms}${walls}</svg>`;
 }
 function buildPlanList(){
@@ -4001,7 +4011,8 @@ function renderDesigns(){
     : `<div class="muted empty">${tr('暂无已保存方案', 'No saved designs yet')}</div>`;
   box.querySelectorAll('[data-dload]').forEach(b => b.onclick = () => {
     const d = store.designs.find(x => x.id === b.dataset.dload); if (!d) return;
-    const before = snap(); state = fixWork(JSON.parse(JSON.stringify(d.work)), PLAN); ui.sel = null;
+    let next;try{next=fixWork(JSON.parse(JSON.stringify(d.work)),PLAN);if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);}catch(error){return toast(error.message);}
+    const before = snap(); state = next; ui.sel = null;
     commit(before); renderAll(); $('#fileMenu').open = false;
     toast(tr(`已载入「${d.name}」`, `Loaded "${d.name}"`));
   });
@@ -4039,7 +4050,8 @@ function renderHist(){
     : `<div class="muted empty">${tr('暂无历史快照', 'No snapshots yet')}</div>`;
   box.querySelectorAll('[data-hload]').forEach(b => b.onclick = () => {
     const h = hist.find(x => x.ts === +b.dataset.hload); if (!h) return;
-    const before = snap(); state = fixWork(JSON.parse(JSON.stringify(h.data)), PLAN); ui.sel = null;
+    let next;try{next=fixWork(JSON.parse(JSON.stringify(h.data)),PLAN);if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);}catch(error){return toast(error.message);}
+    const before = snap(); state = next; ui.sel = null;
     commit(before); renderAll(); $('#fileMenu').open = false;
     toast(tr('已恢复历史快照', 'Snapshot restored'));
   });
@@ -4083,6 +4095,7 @@ const loadFromHash = async () => {   // 从分享链接载入（新标签打开�
   lastHash = m[0];
   try {
     const work = JSON.parse(await decompressJSON(m[2]));
+    const lockedOriginal=store.work[m[1]]?.architecture;if(lockedOriginal?.phase==='design')work.architecture=FurnishProject.protectOriginal(lockedOriginal,work.architecture);
     registerCustomWork(work);
     const plan = PLANS.find(p => p.id === m[1]);
     if (!plan || !Array.isArray(work.furniture)) throw 0;
@@ -4242,6 +4255,7 @@ $('#fileIn').onchange = e => {
     try {
       if (file.size > 30e6) throw 'size';
       const s = JSON.parse(txt);
+      const lockedOriginal=store.work[s.plan||s.architecture?.draft?.id]?.architecture;if(lockedOriginal?.phase==='design')s.architecture=FurnishProject.protectOriginal(lockedOriginal,s.architecture);
       if (!Array.isArray(s.furniture) || s.furniture.length > 2000) throw 0;
       const meshItems=s.furniture.filter(f=>f?.obj);if(meshItems.length)FurnishProject.validateWork({furniture:meshItems.map(f=>({...f,id:f.id||uid(),rot:typeof f.rot==='number'?f.rot:0}))});
       registerCustomWork(s);
@@ -4289,7 +4303,7 @@ setTheme((() => { try { return localStorage.getItem(THEME_KEY); } catch(e) { ret
 applyPlanData(); state.furniture = sanitizeFurn(state.furniture, PLAN);
 syncLayerBtns(); buildCats(); buildLib(); buildPlanList(); renderOpenings(); renderDims();
 $('#tip').textContent = TIPS()['2d'];
-fitView(); renderAll(); renderDesigns();
+fitView(); renderAll(); renderDesigns(); syncSaved();
 if (rescued){ save(); toast(tr(`已把 ${rescued} 件位置异常的家具移回户型内`, `Moved ${rescued} misplaced item(s) back into the plan`)); rescued = 0; }
 </script>
 <script src="floorplan-editor.js"></script>

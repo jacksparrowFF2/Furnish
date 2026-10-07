@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const DXF=require('./dxf-import.js'),repair=require('./dxf-repair.js'),core=require('./floorplan-core.js'),project=require('./project-core.js');
+const raw=fs.readFileSync('furnish-template-example.dxf','utf8'),parsed=DXF.parse(raw);
+assert.ok(DXF.parse(raw.replace('30\n0\n11','30\n100\n11')).records[0].issue.includes('3D'));
+const layerKinds={FURNISH_BEARING:'b',FURNISH_PARTITION:'n',FURNISH_EXTERIOR:'e'};
+const options={id:'custom_template',name:'规范示例',layers:Object.keys(layerKinds),layerKinds,mmPerUnit:1,thickness:200};
+const draft=DXF.draft(parsed,options),plan=core.build(draft);
+assert.equal(parsed.unitCode,4);assert.equal(parsed.ignored.TEXT,1);
+assert.deepEqual(draft.walls.reduce((counts,w)=>(counts[w.kind]++,counts),{b:0,n:0,e:0}),{b:1,n:1,e:3});
+assert.equal(plan.rooms.length,2);
+for(const room of plan.rooms){const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]);assert.ok(Math.abs(Math.max(...xs)-Math.min(...xs)-2800)<1e-6);assert.ok(Math.abs(Math.max(...ys)-Math.min(...ys)-3800)<1e-6);assert.ok(Math.abs(project.area(room.poly)-10.64)<1e-8);}
+const repaired=repair.repair(parsed,options),round=DXF.parse(repair.exportDXF(repaired));
+assert.equal(repaired.stats.maxShift,0);assert.ok(Math.abs(core.build(DXF.draft(round,options)).rooms.reduce((n,r)=>n+project.area(r.poly),0)-21.28)<1e-8);
+const context={window:{}};vm.runInNewContext(fs.readFileSync('dxf-templates.js','utf8'),context);
+assert.equal(context.window.FurnishTemplates.example,raw);
+assert.equal(context.window.FurnishTemplates.blank,fs.readFileSync('furnish-template-blank.dxf','utf8'));
+const empty=DXF.parse(context.window.FurnishTemplates.blank);assert.equal(empty.unitCode,4);assert.equal(empty.records.length,0);assert.throws(()=>DXF.draft(empty,options),/4–100/);
+const original=project.architecture({draft,phase:'design'}),survey={draft,phase:'survey'};
+const protectedSurvey=project.protectOriginal(original,survey);assert.equal(protectedSurvey.phase,'design');assert.deepEqual(protectedSurvey.baseline,original.baseline);
+const changed=JSON.parse(JSON.stringify(survey));changed.draft.walls[0].thickness=220;assert.throws(()=>project.protectOriginal(original,changed),/locked/);
+assert.throws(()=>project.protectOriginal(original,null),/原始结构/);
+const packed=project.unpack(project.pack({planId:draft.id,current:{furniture:[],architecture:original,designNote:'保留原始结构',spaceIgnored:['test']},designs:[],catalog:[]}));assert.equal(packed.current.designNote,'保留原始结构');assert.deepEqual(packed.current.spaceIgnored,['test']);
+assert.throws(()=>project.validateWork({furniture:[],designNote:'x'.repeat(501)}),/备注/);
+console.log('PASS Template units/classifications/annotations, 2 rooms 2800 × 3800 mm, 21.28 m², unchanged repair, offline downloads, blank rejection, locked baseline protection and notes/ignore backup');
