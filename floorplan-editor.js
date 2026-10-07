@@ -173,21 +173,53 @@
         const parsed=FurnishDXF.parse(raw);if(!overlay.isConnected)return;
         if(!parsed.layers.length)throw new Error(text('未找到直线或多段线；请在 CAD 中将墙体中心线导出为 LINE / POLYLINE。','No lines or polylines found; export wall centerlines as LINE / POLYLINE.'));
         const options=[[1,'mm'],[10,'cm'],[1000,'m'],[25.4,'inch'],[304.8,'ft']];
-        openDialog({title:text('DXF 单位与墙体图层','DXF units & wall layers'),wide:true,
-          body:`<p>${text('请选择墙体中心线图层。双线墙轮廓会被当成两堵墙；请先在 CAD 中准备中心线。块 INSERT、弧线、标注和填充不会自动转为墙体。','Select wall CENTERLINE layers. Double-line outlines become two walls; prepare centerlines in CAD first. Blocks, arcs, dimensions and hatches are not converted to walls.')}</p>
-          <label>${text('图纸单位（请核对）','Drawing units (verify)')} <select id="dxf-unit">${options.map(([v,label])=>`<option value="${v}" ${parsed.mmPerUnit===v?'selected':''}>${label}</option>`).join('')}</select></label>
-          <p>${parsed.mmPerUnit?text(`检测到 INSUNITS=${parsed.unitCode}。`,`Detected INSUNITS=${parsed.unitCode}.`):text('未检测到支持的单位，请手动指定；不能默认假定为 mm。','No supported units found. Specify manually; do not assume mm.')}</p>
-          <div class="opts">${parsed.layers.map((l,i)=>`<label class="opt"><input type="checkbox" data-dxf-layer="${i}" ${parsed.layers.length===1&&!l.issues.length?'checked':''}><span><b>${esc(l.name)}</b><small>${l.count} ${text('段','segments')}${l.issues.length?' · '+esc(l.issues[0]):''}</small></span></label>`).join('')}</div>
-          <p>${text('忽略的其他实体','Other ignored entities')}: ${esc(Object.entries(parsed.ignored).map(([k,v])=>`${k} × ${v}`).join(', ')||'0')}</p><div class="trace-error" id="dxf-error" role="alert"></div>`,
-          actions:[{label:text('取消','Cancel')},{label:text('导入所选墙线','Import selected walls'),cls:'primary',fn:()=>{
-            try{
-              const layers=[...document.querySelectorAll('[data-dxf-layer]:checked')].map(el=>parsed.layers[Number(el.dataset.dxfLayer)].name);
-              const next=FurnishDXF.draft(parsed,{layers,mmPerUnit:Number($('#dxf-unit').value),name:q('#trace-name').value.trim()||file.name.replace(/\.dxf$/i,''),id:draft.id,thickness:Number(q('#trace-thickness').value),kind:q('#trace-kind').value});
-              // Validate enclosed rooms before replacing the current draft.
-              FurnishDraft.build(next);checkpoint();draft=next;box=[0,0,draft.width,draft.height];setMode('door');return true;
-            }catch(error){$('#dxf-error').textContent=text('导入失败：','Import failed: ')+error.message;return false;}
-          }}]});$('#dlg').style.zIndex='90';
-        if(!parsed.mmPerUnit){const option=document.createElement('option');option.value='';option.textContent=text('请选择单位','Choose units');option.selected=true;$('#dxf-unit').prepend(option);}
+        let candidate=null,repaired=null;
+        const friendly=error=>{
+          const message=error.message;
+          if(message.includes('No enclosed room'))return text('仍未找到闭合房间。请检查选中的图层；较大的门窗断口需手工补齐中心线。','No closed room found. Check layers; large door/window gaps need manual centerlines.');
+          if(message.includes('diagonal')||message.includes('Diagonal'))return text('存在明显斜墙，超过轻微倾斜修复范围。请调整图层或手工修改。','Diagonal walls exceed the repair tolerance. Adjust layers or edit manually.');
+          if(message.includes('Cannot safely repair'))return text('所选图层包含弧段或三维实体，当前不能可靠转换。','Selected layers contain curved or 3D entities that cannot be safely converted.')+' '+message;
+          if(message.includes('Select wall layers'))return text('请选择墙体图层。','Select wall layers.');
+          if(message.includes('drawing units')||message.includes('Drawing units')||message.includes('DXF drawing units'))return text('请先确认图纸单位。','Choose drawing units first.');
+          return message;
+        };
+        function previewRepair(){
+          candidate=null;repaired=null;$('#dxf-error').textContent='';$('#dxf-report').textContent='';$('#dxf-preview').innerHTML='';
+          const downloadButton=$('#dlgActions [data-i="1"]'),importButton=$('#dlgActions [data-i="2"]');downloadButton.disabled=importButton.disabled=true;
+          try{
+            const layers=[...document.querySelectorAll('[data-dxf-layer]:checked')].map(el=>parsed.layers[Number(el.dataset.dxfLayer)].name),mmPerUnit=Number($('#dxf-unit').value);
+            const enabled=$('#dxf-auto-repair').checked;
+            $('#dxf-gap').disabled=$('#dxf-angle').disabled=$('#dxf-double').disabled=!enabled;
+            let source=parsed,selected=layers;
+            if(enabled){repaired=FurnishDXFRepair.repair(parsed,{layers,mmPerUnit,thickness:Number(q('#trace-thickness').value),gapTolerance:Number($('#dxf-gap').value),angleTolerance:Number($('#dxf-angle').value),doubleLines:$('#dxf-double').checked});source=repaired.parsed;selected=['FURNISH_WALL_CENTER'];}
+            const next=FurnishDXF.draft(source,{layers:selected,mmPerUnit:enabled?1:mmPerUnit,name:q('#trace-name').value.trim()||file.name.replace(/\.dxf$/i,''),id:draft.id,thickness:Number(q('#trace-thickness').value),kind:q('#trace-kind').value});
+            if(repaired){
+              const s=repaired.stats;
+              $('#dxf-report').textContent=text(`墙线 ${s.input} → ${s.output} 段；合并重复/共线 ${s.merged} 次，扶正 ${s.axisAligned} 段，吸附 ${s.snapped} 个坐标；双线配对 ${s.pairs} 组，移除封口 ${s.caps} 段。小接缝最大坐标调整 ${s.maxShift.toFixed(2)} mm（双线转换另计）。`,`Wall lines ${s.input} → ${s.output}; ${s.merged} merges, ${s.axisAligned} aligned, ${s.snapped} coordinates snapped; ${s.pairs} wall pairs, ${s.caps} caps removed. Maximum cleanup coordinate shift ${s.maxShift.toFixed(2)} mm (centerline conversion separate).`);
+              const all=repaired.original.concat(repaired.lines),xs=all.flatMap(s=>[s.a[0],s.b[0]]),ys=all.flatMap(s=>[s.a[1],s.b[1]]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),pad=Math.max(x1-x0,y1-y0)*.04+1;
+              const paths=(lines,color)=>lines.map(s=>`<line x1="${s.a[0]}" y1="${-s.a[1]}" x2="${s.b[0]}" y2="${-s.b[1]}" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/>`).join('');
+              $('#dxf-preview').innerHTML=`<svg role="img" aria-label="${text('DXF 修复前后对照','DXF repair comparison')}" viewBox="${x0-pad} ${-y1-pad} ${x1-x0+pad*2} ${y1-y0+pad*2}" style="width:100%;height:220px;background:#f4f0e8;border-radius:10px">${paths(repaired.original,'#aaa')}${paths(repaired.lines,'#e45e2b')}</svg><small>${text('灰色：原线 · 橙色：修复后的墙中心线。请核对户型结构和尺寸。','Grey: original; orange: repaired centerlines. Verify layout and dimensions.')}</small>`;
+              if(repaired.warnings.some(w=>w.code==='ambiguous-pairs'))throw new Error(text('双线配对存在歧义，已停止导入。请缩小图层范围，或关闭双线转换并手工处理。','Ambiguous double-line pairing blocks import. Narrow the layers or edit manually.'));
+              if(repaired.warnings.some(w=>w.code==='no-pairs'))$('#dxf-report').textContent+=' '+text('未找到可确定的双线配对，墙线保持原样。','No unambiguous wall pairs found; lines retained.');
+            }
+            const plan=FurnishDraft.build(next);candidate=next;
+            $('#dxf-report').textContent+=' '+text(`校验通过：${plan.rooms.length} 个闭合房间。`,`Validated: ${plan.rooms.length} closed rooms.`);
+            downloadButton.disabled=!repaired;importButton.disabled=false;
+          }catch(error){candidate=null;$('#dxf-error').textContent=text('尚不能导入：','Cannot import yet: ')+friendly(error);}
+        }
+        openDialog({title:text('DXF 检查与自动修复','DXF check & automatic repair'),wide:true,
+          body:`<p>${text('请选择墙体图层。自动处理重复/共线碎段、小接缝和轻微倾斜；双线墙可按指定墙厚转换中心线。输出是所选墙线的兼容 DXF，不改写原文件。','Choose wall layers. Clean duplicates, fragments, small gaps and slight skew. Optionally convert double lines using wall thickness. Output is a compatible wall-only DXF; the original stays intact.')}</p>
+          <label>${text('图纸单位（请核对）','Drawing units (verify)')} <select id="dxf-unit">${!parsed.mmPerUnit?`<option value="">${text('请选择单位','Choose units')}</option>`:''}${options.map(([v,label])=>`<option value="${v}" ${parsed.mmPerUnit===v?'selected':''}>${label}</option>`).join('')}</select></label>
+          <p>${parsed.mmPerUnit?text(`检测到 INSUNITS=${parsed.unitCode}。`,`Detected INSUNITS=${parsed.unitCode}.`):text('未检测到支持的单位，请手动指定。','No supported units found. Specify manually.')}</p>
+          <div class="opts">${parsed.layers.map((l,i)=>`<label class="opt"><input type="checkbox" data-dxf-layer="${i}" ${parsed.layers.length===1?'checked':''}><span><b>${esc(l.name)}</b><small>${l.count} ${text('段','segments')}${l.issues.length?' · '+esc(l.issues[0]):''}</small></span></label>`).join('')}</div>
+          <label class="opt" style="margin-top:12px"><input id="dxf-auto-repair" type="checkbox" checked><span><b>${text('自动修复兼容性','Automatically repair compatibility')}</b><small>${text('统一为 mm，清除重复、合并碎段、修复小接缝和轻微倾斜。','Normalize to mm, deduplicate, merge, close small gaps and align minor skew.')}</small></span></label>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0"><label>${text('接缝容差','Gap tolerance')} <input id="dxf-gap" type="number" min="0" max="100" value="30" style="width:70px"> mm</label><label>${text('扶正角度','Alignment angle')} <input id="dxf-angle" type="number" min="0" max="2" step=".1" value="0.5" style="width:70px"> °</label></div>
+          <label class="opt"><input id="dxf-double" type="checkbox"><span><b>${text('双线墙转中心线（可选）','Convert double-line walls (optional)')}</b><small>${text(`按墙厚 ${q('#trace-thickness').value} mm 配对，仅处理能确定的平行墙线；转换会改变轮廓表示，请核对预览。`,`Pair at ${q('#trace-thickness').value} mm wall thickness. Only unambiguous pairs; verify the preview.`)}</small></span></label>
+          <p>${text('未转换的其他实体','Other entities not converted')}: ${esc(Object.entries(parsed.ignored).map(([k,v])=>`${k} × ${v}`).join(', ')||'0')}</p>
+          <p>${text('块 INSERT、弧墙、三维墙和大断口当前需手工处理。墙体图层不要混入标注、家具或门窗符号。','Blocks, curved/3D walls and large gaps need manual editing. Exclude dimensions, furniture and opening symbols from wall layers.')}</p>
+          <p id="dxf-report" role="status" aria-live="polite"></p><div id="dxf-preview"></div><div class="trace-error" id="dxf-error" role="alert"></div>`,
+          onOpen:()=>{document.querySelectorAll('#dlgBody input,#dlgBody select').forEach(el=>el.addEventListener('change',previewRepair));previewRepair();},
+          actions:[{label:text('取消','Cancel')},{label:text('下载修复后 DXF','Download repaired DXF'),fn:()=>{if(candidate&&repaired)download(file.name.replace(/\.dxf$/i,'')+'-furnish-fixed.dxf',new Blob([FurnishDXFRepair.exportDXF(repaired)],{type:'application/dxf'}));return false;}},{label:text('导入校验后的户型','Import validated plan'),cls:'primary',fn:()=>{if(!candidate)return false;checkpoint();draft=candidate;box=[0,0,draft.width,draft.height];setMode('door');return true;}}]});$('#dlg').style.zIndex='90';
       }catch(error){report(text('DXF 读取失败：','DXF could not be read: ')+error.message,true);}finally{loading=false;q('#trace-finish').disabled=false;}
     };
     q('#trace-finish').onclick=()=>{

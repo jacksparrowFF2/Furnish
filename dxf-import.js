@@ -43,7 +43,7 @@
       for(let j=0;j<points.length-1+(closed?1:0);j++){
         const a=points[j],b=points[(j+1)%points.length],dx=Math.abs(a[0]-b[0]),dy=Math.abs(a[1]-b[1]);
         if(dx<1e-8&&dy<1e-8)continue;
-        if(dx>1e-6&&dy>1e-6)issue='Diagonal walls are unsupported';
+        if(dx>1e-6&&dy>1e-6&&!issue)issue='Diagonal walls are unsupported';
         segments.push({a:[...a],b:[...b]});
       }
       if(!segments.length&&!issue)issue='Empty entity';
