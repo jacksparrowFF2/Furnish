@@ -15,6 +15,7 @@
     for (const w of d.walls) {
       if (!w || typeof w.id !== 'string' || ids.has(w.id) || !point(w.a) || !point(w.b) || !['n','e','b'].includes(w.kind) || !finite(w.thickness) || w.thickness < 60 || w.thickness > 600) fail('Invalid wall');
       ids.add(w.id);
+      if([w.a,w.b].some(p=>p[0]>d.width||p[1]>d.height))fail('Wall extends outside the reference canvas');
       if (w.a[0] !== w.b[0] && w.a[1] !== w.b[1]) fail('Only horizontal and vertical walls are supported');
       if (Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*d.scale < 100) fail('Wall too short');
     }
@@ -75,7 +76,7 @@
   function build(input) {
     const d=validate(clone(input)), rects=d.walls.map(w=>wallRect(w,d.scale));
     const rooms=roomsFromWalls(rects); if(!rooms.length) fail('No enclosed room found. Close the wall outline first.');
-    const walls=[],wins=[],doors=[];
+    const walls=[],wins=[],doors=[],wallRefs=[],doorRefs=[],winRefs=[];
     d.walls.forEach((w,i)=>{
       const r=rects[i], horizontal=w.a[1]===w.b[1], axis=horizontal?0:1, lo=r[axis], hi=r[axis+2];
       const centerA=w.a[axis]*d.scale, centerB=w.b[axis]*d.scale;
@@ -85,9 +86,9 @@
         const a=o.center-o.length/2,b=o.center+o.length/2;
         if(a<Math.min(centerA,centerB)+w.thickness/2 || b>Math.max(centerA,centerB)-w.thickness/2 || a<pos) fail('An opening overlaps another opening or a wall corner');
         if(rects.some((q,j)=>j!==i && (horizontal ? Math.min(b,q[2])-Math.max(a,q[0])>0 && Math.min(r[3],q[3])-Math.max(r[1],q[1])>0 : Math.min(r[2],q[2])-Math.max(r[0],q[0])>0 && Math.min(b,q[3])-Math.max(a,q[1])>0))) fail('An opening overlaps a wall junction');
-        if(a>pos){const segment=[...r];segment[axis]=pos;segment[axis+2]=a;walls.push(segment);}
+        if(a>pos){const segment=[...r];segment[axis]=pos;segment[axis+2]=a;walls.push(segment);wallRefs.push(w.id);}
         const opening=r.slice(0,4);opening[axis]=a;opening[axis+2]=b;
-        if(o.kind==='window') wins.push({rect:opening,sill:0.9,head:2.4});
+        if(o.kind==='window'){wins.push({rect:opening,sill:0.9,head:2.4});winRefs.push(o.id);}
         else {
           let side=o.side;
           if(o.entry){
@@ -97,14 +98,14 @@
             if(plus===minus) fail('The entry door must connect an enclosed room to the outside');
             side=plus?1:-1;
           }
-          doors.push({name:o.entry?'入户门':'房门',rect:opening,h:horizontal?[a,side===1?r[3]:r[1]]:[side===1?r[2]:r[0],a],c:horizontal?[1,0]:[0,1],o:horizontal?[0,side]:[side,0],len:o.length,entry:o.entry});
+          doors.push({name:o.entry?'入户门':'房门',rect:opening,h:horizontal?[a,side===1?r[3]:r[1]]:[side===1?r[2]:r[0],a],c:horizontal?[1,0]:[0,1],o:horizontal?[0,side]:[side,0],len:o.length,entry:o.entry});doorRefs.push(o.id);
         }
         pos=b;
       }
-      if(pos<hi){const segment=[...r];segment[axis]=pos;walls.push(segment);}
+      if(pos<hi){const segment=[...r];segment[axis]=pos;walls.push(segment);wallRefs.push(w.id);}
     });
     const x0=Math.min(...rects.map(r=>r[0])),y0=Math.min(...rects.map(r=>r[1])),x1=Math.max(...rects.map(r=>r[2])),y1=Math.max(...rects.map(r=>r[3]));
-    return {id:d.id,name:d.name.trim(),en:d.name.trim(),note:d.source==='dxf'?'自定义户型 · DXF 导入':'自定义户型 · 手工描图',noteEn:d.source==='dxf'?'Custom plan · DXF import':'Custom plan · manually traced',walls,wins,doors,slides:[],rooms,dims:[{h:1,at:y0-700,start:x0,segs:[x1-x0]},{h:0,at:x0-700,start:y0,segs:[y1-y0]}],bounds:{x:x0-1600,y:y0-1600,w:x1-x0+3200,h:y1-y0+3200},defaults:[],customDraft:d};
+    return {id:d.id,name:d.name.trim(),en:d.name.trim(),note:d.source==='dxf'?'自定义户型 · DXF 导入':'自定义户型 · 手工描图',noteEn:d.source==='dxf'?'Custom plan · DXF import':'Custom plan · manually traced',walls,wallRefs,doorRefs,winRefs,wins,doors,slides:[],rooms,dims:[{h:1,at:y0-700,start:x0,segs:[x1-x0]},{h:0,at:x0-700,start:y0,segs:[y1-y0]}],bounds:{x:x0-1600,y:y0-1600,w:x1-x0+3200,h:y1-y0+3200},defaults:[],customDraft:d};
   }
   function assertWallEditable(w){if(w?.kind==='b')fail('Bearing wall is locked');}
   function assertBearingUnchanged(before,after){

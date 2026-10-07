@@ -30,18 +30,20 @@
   document.head.append(style);
   function openEditor(forceNew=false) {
     if(document.querySelector('.trace-overlay')) return;
-    const original=!forceNew && state.architecture?.draft;
+    const originalArch=!forceNew&&state.architecture?FurnishProject.architecture(state.architecture):null;
+    const original=originalArch?.draft;
+    let phase=originalArch?.phase||'survey',baseline=originalArch?.baseline?copy(originalArch.baseline):null;
     let draft=original?copy(original):{version:1,id:'custom_'+Date.now().toString(36),name:text('我的户型','My floor plan'),width:1000,height:700,image:'',scale:0,walls:[],openings:[]};
     let mode=original?'wall':'calibrate',anchor=null,cursor=null,box=[0,0,draft.width,draft.height],pan=null,loading=false,dirty=false;
-    let past=[],future=[];
+    let past=[],future=[],liveKey='',liveValue='';
     const overlay=document.createElement('div');overlay.className='trace-overlay';overlay.innerHTML=`
     <section class="trace-box" role="dialog" aria-modal="true" aria-labelledby="trace-title">
       <div class="trace-top"><h2 id="trace-title">${text('绘制我的户型','Trace my floor plan')}</h2><input id="trace-name" aria-label="${text('户型名称','Plan name')}" maxlength="80" value="${esc(draft.name)}"><button class="btn" id="trace-new">${text('新建','New')}</button><button class="btn" id="trace-close">${text('取消','Cancel')}</button></div>
       <div class="trace-toolbar">
         <button class="btn primary" id="trace-dxf">${text('导入 DXF（推荐）','Import DXF (recommended)')}</button><input type="file" id="trace-dxf-file" accept=".dxf" hidden>
-        <button class="btn" id="trace-upload">${text('辅助：导入图片','Image reference')}</button><input type="file" id="trace-file" accept="image/png,image/jpeg,image/webp" hidden>
+        <button class="btn" id="trace-upload">${text('辅助：导入图片 / PDF','Image / PDF reference')}</button><input type="file" id="trace-file" accept="image/png,image/jpeg,image/webp,application/pdf,.pdf" hidden>
         <button class="btn" data-trace-mode="calibrate">${text('② 校准比例','② Calibrate')}</button><button class="btn" data-trace-mode="wall">${text('③ 描墙','③ Walls')}</button>
-        <button class="btn" data-trace-mode="door">${text('门','Door')}</button><button class="btn" data-trace-mode="window">${text('窗','Window')}</button><button class="btn" data-trace-mode="erase">${text('删除','Erase')}</button>
+        <button class="btn" data-trace-mode="door">${text('门','Door')}</button><button class="btn" data-trace-mode="window">${text('窗','Window')}</button><button class="btn" data-trace-mode="properties">${text('墙属性','Wall properties')}</button><button class="btn" id="trace-confirm">${text('确认原始结构并锁定','Confirm original structure')}</button><button class="btn" data-trace-mode="erase">${text('删除','Erase')}</button>
         <button class="btn" id="trace-undo">${text('撤销','Undo')}</button><button class="btn" id="trace-redo">${text('重做','Redo')}</button><button class="btn" id="trace-fit">${text('适应','Fit')}</button>
       </div>
       <div class="trace-toolbar">
@@ -59,18 +61,20 @@
     document.body.append(overlay);
     const q=s=>overlay.querySelector(s),canvas=q('#trace-canvas');
     const report=(message,error=false)=>{q('#trace-status').textContent=message;q('#trace-status').classList.toggle('trace-error',error);};
-    const hasBearing=()=>draft.walls.some(w=>w.kind==='b');
+    const hasBearing=()=>phase==='design'&&draft.walls.some(w=>w.kind==='b'||w.kind==='e');
     const locked=()=>report(text('承重墙已锁定：不能删除、改型或新开／删除门窗。请新建户型以重新录入原始结构。','Bearing walls are locked: no deletion, reclassification or opening changes. Create a new plan to re-enter the original structure.'),true);
     const checkpoint=()=>{past.push(copy(draft));if(past.length>60)past.shift();future=[];dirty=true;};
     const setMode=m=>{mode=m;anchor=null;cursor=null;render();};
     function render(){
+      q('#trace-confirm').hidden=phase==='design';
+      q('#trace-finish').textContent=phase==='survey'?text('保存原始结构（未锁定）','Save original structure (unlocked)'):text('保存装修方案，开始布置','Save design & furnish');
       canvas.setAttribute('viewBox',box.join(' '));
       q('#trace-empty').hidden=!!draft.image||draft.source==='dxf';
       q('#trace-empty').style.display=draft.image||draft.source==='dxf'?'none':'grid';
       q('#trace-undo').disabled=!past.length;q('#trace-redo').disabled=!future.length;
       overlay.querySelectorAll('[data-trace-mode]').forEach(b=>b.classList.toggle('on',b.dataset.traceMode===mode));
-      const hints={calibrate:text('在底图上点击一条已知长度的两端，再输入实际长度（mm）。','Click both ends of a known length, then enter its actual length in mm.'),wall:text('沿墙中心线连续点击描墙；自动锁定水平/垂直并吸附端点。Esc 结束一段。闭合外轮廓后加隔墙。','Click along wall centerlines; horizontal/vertical locking and endpoint snapping. Esc ends a chain. Close the outline, then add partitions.'),door:text('点击已有墙段放门。入户门最多一扇；开启侧可在生成后通过属性调整。','Click a wall to place a door. One entry door maximum; adjust its swing later.'),window:text('点击已有墙段放窗；门窗会自动切开墙体洞口。','Click a wall to place a window. Openings cut through the wall.'),erase:text('点击门窗或墙体删除；删除墙体也会移除其门窗。','Click an opening or wall to delete it. Deleting a wall removes its openings.')};
-      q('#trace-hint').textContent=hints[mode]+' '+text('黑色承重墙已锁定，不能删除或新开门窗。','Black bearing walls are locked against deletion and opening changes.')+' '+text('滚轮缩放 · 中键或 Alt+拖动平移。第一版支持正交户型，不支持斜墙、庭院或独立柱岛。','Scroll to zoom; middle button or Alt+drag to pan. Orthogonal plans only; no diagonal walls, courtyards or column islands.');
+      const hints={properties:text('点击墙体查看和修改类型、墙厚、位置与长度。确认原始结构后，承重墙和外墙仅可查看。','Click a wall to edit its type, thickness, position and length. Bearing/exterior walls become read-only after confirmation.'),calibrate:text('在底图上点击一条已知长度的两端，再输入实际长度（mm）。','Click both ends of a known length, then enter its actual length in mm.'),wall:text('沿墙中心线连续点击描墙；自动锁定水平/垂直并吸附端点。Esc 结束一段。闭合外轮廓后加隔墙。','Click along wall centerlines; horizontal/vertical locking and endpoint snapping. Esc ends a chain. Close the outline, then add partitions.'),door:text('点击已有墙段放门。入户门最多一扇；开启侧可在生成后通过属性调整。','Click a wall to place a door. One entry door maximum; adjust its swing later.'),window:text('点击已有墙段放窗；门窗会自动切开墙体洞口。','Click a wall to place a window. Openings cut through the wall.'),erase:text('点击门窗或墙体删除；删除墙体也会移除其门窗。','Click an opening or wall to delete it. Deleting a wall removes its openings.')};
+      q('#trace-hint').textContent=hints[mode]+' '+(phase==='design'?text('装修阶段：承重墙／外墙锁定；棕色非承重墙可修改。','Design: bearing/exterior walls locked, partitions editable.'):text('原始结构录入：可补录已有门窗和逐墙分类，确认后锁定。','Original survey: record existing openings and wall types, then confirm to lock.'))+' '+text('滚轮缩放 · 中键或 Alt+拖动平移。当前支持正交户型，不支持斜墙、庭院或独立柱岛。','Scroll to zoom; middle button or Alt+drag to pan. Orthogonal plans only; no diagonal walls, courtyards or column islands.');
       const s=draft.scale||10, stroke=box[2]/900;
       let html=draft.image?`<image href="${draft.image}" x="0" y="0" width="${draft.width}" height="${draft.height}" opacity="${q('#trace-opacity').value}"/>`:'';
       html+=draft.walls.map(w=>`<line data-w="${esc(w.id)}" x1="${w.a[0]}" y1="${w.a[1]}" x2="${w.b[0]}" y2="${w.b[1]}" stroke="${w.kind==='b'?'#322e29':w.kind==='e'?'#736859':'#a17b54'}" stroke-width="${w.thickness/s}" stroke-linecap="square" opacity=".85"/>`).join('');
@@ -80,7 +84,8 @@
       }
       if(anchor){html+=`<circle cx="${anchor[0]}" cy="${anchor[1]}" r="${stroke*5}" fill="#ef5a24"/>`;if(cursor)html+=`<line x1="${anchor[0]}" y1="${anchor[1]}" x2="${cursor[0]}" y2="${cursor[1]}" stroke="#ef5a24" stroke-width="${stroke*2}" stroke-dasharray="${stroke*6} ${stroke*4}"/>`;}
       canvas.innerHTML=html;
-      report(draft.scale?text(`比例 ${draft.scale.toFixed(3)} mm/像素 · ${draft.walls.length} 段墙 · ${draft.openings.length} 处门窗`,`Scale ${draft.scale.toFixed(3)} mm/pixel · ${draft.walls.length} walls · ${draft.openings.length} openings`):text('未校准：导入后请先标定一段已知尺寸。','Not calibrated: mark a known dimension after importing.'));
+      let live=liveValue;const nextKey=JSON.stringify([draft.walls,draft.openings,draft.scale]);if(nextKey!==liveKey){try{const plan=FurnishDraft.build(draft);live=text(' · '+plan.rooms.length+' 个房间 · '+plan.rooms.reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)+' m²',' · '+plan.rooms.length+' rooms');}catch(e){live=text(' · 墙线尚未闭合或门窗冲突',' · Incomplete walls or conflicting openings');}liveKey=nextKey;liveValue=live;}
+      report(draft.scale?text(`比例 ${draft.scale.toFixed(3)} mm/像素 · ${draft.walls.length} 段墙 · ${draft.openings.length} 处门窗${live}`,`Scale ${draft.scale.toFixed(3)} mm/pixel · ${draft.walls.length} walls · ${draft.openings.length} openings`):text('未校准：导入后请先标定一段已知尺寸。','Not calibrated: mark a known dimension after importing.'));
     }
     function position(e){const p=canvas.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const m=canvas.getScreenCTM();if(!m)return [0,0];const v=p.matrixTransform(m.inverse());return [v.x,v.y];}
     function snapped(p){
@@ -116,10 +121,12 @@
         const length=Math.hypot(v[0]-anchor[0],v[1]-anchor[1])*draft.scale,thickness=Number(q('#trace-thickness').value);
         if(length<100)return report(text('墙段至少 100 mm。','Walls must be at least 100 mm.'),true);
         if(!Number.isFinite(thickness)||thickness<60||thickness>600||draft.walls.length>=100)return report(text('墙厚须为 60–600 mm，最多 100 段墙。','Thickness: 60–600 mm; maximum 100 walls.'),true);
+        if(phase==='design'&&q('#trace-kind').value!=='n')return report(text('装修阶段只允许新建非承重墙。','Only new partitions are allowed during design.'),true);
         checkpoint();draft.walls.push({id:'w_'+uid(),a:[...anchor],b:v,thickness,kind:q('#trace-kind').value});anchor=v;cursor=v;render();return;
       }
       const hit=nearest(p);if(!hit||hit.d>Math.max(box[2]/60,hit.w.thickness/draft.scale))return report(text('请点击靠近墙中心的位置。','Click near a wall centerline.'),true);
-      if(hit.w.kind==='b')return locked();
+      if(mode==='properties')return wallProperties(hit.w);
+      if(phase==='design'&&['b','e'].includes(hit.w.kind))return locked();
       if(mode==='erase'){
         const o=draft.openings.find(o=>o.wall===hit.w.id&&Math.abs(o.t-hit.t)*Math.hypot(hit.w.b[0]-hit.w.a[0],hit.w.b[1]-hit.w.a[1])*draft.scale<=o.length/2);
         checkpoint();if(o)draft.openings=draft.openings.filter(v=>v.id!==o.id);else{draft.walls=draft.walls.filter(w=>w.id!==hit.w.id);draft.openings=draft.openings.filter(o=>o.wall!==hit.w.id);}render();return;
@@ -145,6 +152,11 @@
       if(e.key==='Tab'){const controls=[...overlay.querySelectorAll('button,input,select,[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);const first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
       if(e.key==='Escape'){e.preventDefault();anchor=null;cursor=null;render();}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!e.target.matches('input,select')){e.preventDefault();e.shiftKey?redoDraft():undoDraft();}}
     document.addEventListener('keydown',key,true);
+    function wallProperties(w){
+      const readOnly=phase==='design'&&['b','e'].includes(w.kind),h=w.a[1]===w.b[1],length=Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*draft.scale;
+      openDialog({title:text('墙体属性','Wall properties'),body:`<p>${readOnly?text('结构已锁定，只能查看。','Structure locked; read-only.'):text('坐标相对于描图画布，单位 mm。正交墙保持原方向；移动后请检查墙线闭合。','Coordinates are relative to the tracing canvas, in mm. Check junctions after moving.')} · ID ${esc(w.id)}</p><label>${text('墙类型','Wall type')} <select id="wp-kind" ${readOnly?'disabled':''}>${[['n',text('非承重','Partition')],['b',text('承重','Bearing')],['e',text('外墙','Exterior')]].map(([v,n])=>`<option value="${v}" ${v===w.kind?'selected':''}>${n}</option>`).join('')}</select></label><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">${[['x',text('起点 X','Start X'),w.a[0]*draft.scale],['y',text('起点 Y','Start Y'),w.a[1]*draft.scale],['length',text('长度','Length'),length],['thickness',text('墙厚','Thickness'),w.thickness]].map(([id,n,v])=>`<label>${n} (mm) <input id="wp-${id}" type="number" value="${v.toFixed(2)}" ${readOnly?'disabled':''}></label>`).join('')}</div><p id="wp-error" role="alert" class="trace-error"></p>`,actions:[{label:text('关闭','Close')},...(!readOnly?[{label:text('应用墙属性','Apply wall properties'),cls:'primary',fn:()=>{try{const x=Number($('#wp-x').value)/draft.scale,y=Number($('#wp-y').value)/draft.scale,len=Number($('#wp-length').value)/draft.scale,thickness=Number($('#wp-thickness').value),kind=$('#wp-kind').value;if(phase==='design'&&kind!=='n')throw Error(text('装修阶段只能新增／调整非承重墙。','Only partitions can be changed in design mode.'));if(!Number.isFinite(len)||len*draft.scale<100)throw Error(text('墙长至少 100 mm。','Wall length must be at least 100 mm.'));const sign=h?Math.sign(w.b[0]-w.a[0]):Math.sign(w.b[1]-w.a[1]),next=copy(draft),wall=next.walls.find(v=>v.id===w.id);Object.assign(wall,{a:[x,y],b:h?[x+len*sign,y]:[x,y+len*sign],thickness,kind});FurnishDraft.validate(next);checkpoint();draft=next;render();return true;}catch(e){$('#wp-error').textContent=e.message;return false;}}}]:[])]});$('#dlg').style.zIndex='90';
+    }
+    q('#trace-confirm').onclick=()=>{try{FurnishDraft.build(draft);baseline=copy(draft);phase='design';past=[];future=[];dirty=true;render();report(text('原始结构已确认。承重墙、外墙和其已有门窗已锁定。保存后即可进行装修设计。','Original structure confirmed. Bearing/exterior walls and existing openings are locked. Save to start designing.'));}catch(e){report(text('无法确认：','Cannot confirm: ')+e.message,true);}};
     function close(){document.removeEventListener('keydown',key,true);overlay.remove();button.focus();}
     function cancel(){if(dirty && !confirm(text('放弃本次尚未生成的描图修改？','Discard unbuilt tracing changes?')))return;close();}
     q('#trace-close').onclick=cancel;
@@ -153,11 +165,21 @@
     q('#trace-upload').onclick=()=>q('#trace-file').click();
     q('#trace-file').onchange=async e=>{
       const file=e.target.files[0];e.target.value='';if(!file)return;
-      if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>20e6)return report(text('支持 PNG/JPG/WebP，原图最大 20MB。','PNG/JPG/WebP only; maximum source size 20 MB.'),true);
+      if(!['image/png','image/jpeg','image/webp','application/pdf'].includes(file.type)&&!file.name.toLowerCase().endsWith('.pdf')||file.size>20e6)return report(text('支持 PNG/JPG/WebP/PDF，原图最大 20MB。','PNG/JPG/WebP only; maximum source size 20 MB.'),true);
       if(hasBearing())return locked();
       if(draft.walls.length&&!confirm(text('更换底图会清除本次校准、墙体与门窗。继续？','Replacing the image clears calibration, walls and openings. Continue?')))return;
       loading=true;q('#trace-finish').disabled=true;report(text('正在读取图片…','Loading image…'));
-      const url=URL.createObjectURL(file);
+      let pdfDocument=null,pdfTask=null,source=file;
+      if(file.type==='application/pdf'||file.name.toLowerCase().endsWith('.pdf')){
+        try{
+          if(location.protocol==='file:')throw Error(text('PDF 导入请通过本地服务打开页面（如当前 127.0.0.1）；图片和 DXF 可直接离线打开。','Open via a local server for PDF imports; images and DXF also work from local files.'));
+          const pdfjs=await import('./vendor/pdfjs/pdf.js');pdfjs.GlobalWorkerOptions.workerSrc='./vendor/pdfjs/pdf.worker.js';
+          pdfTask=pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer()),isEvalSupported:false,useSystemFonts:true,cMapUrl:new URL('./vendor/pdfjs/cmaps/',location.href).href,cMapPacked:true,standardFontDataUrl:new URL('./vendor/pdfjs/standard_fonts/',location.href).href,wasmUrl:new URL('./vendor/pdfjs/wasm/',location.href).href});pdfDocument=await pdfTask.promise;
+          let pageNumber=1;if(pdfDocument.numPages>1){const answer=prompt(text('PDF 共 '+pdfDocument.numPages+' 页，请选择户型页码：','PDF has '+pdfDocument.numPages+' pages. Select page:'),'1');if(answer===null){await pdfTask.destroy();loading=false;q('#trace-finish').disabled=false;return;}pageNumber=Number(answer);if(!Number.isInteger(pageNumber)||pageNumber<1||pageNumber>pdfDocument.numPages)throw Error('PDF 页码无效');}
+          const page=await pdfDocument.getPage(pageNumber),initial=page.getViewport({scale:1}),viewport=page.getViewport({scale:Math.min(2,1600/Math.max(initial.width,initial.height))}),cv=document.createElement('canvas');cv.width=Math.ceil(viewport.width);cv.height=Math.ceil(viewport.height);await page.render({canvasContext:cv.getContext('2d'),viewport,background:'rgb(255,255,255)'}).promise;source=await new Promise(resolve=>cv.toBlob(resolve,'image/png'));if(!source)throw Error('PDF 页面渲染失败');await pdfTask.destroy();pdfDocument=null;
+        }catch(error){await pdfTask?.destroy();loading=false;q('#trace-finish').disabled=false;return report(text('PDF 读取失败：','PDF import failed: ')+error.message,true);}
+      }
+      const url=URL.createObjectURL(source);
       try{
         const image=new Image();image.src=url;await image.decode();if(!overlay.isConnected)return;
         if(image.naturalWidth*image.naturalHeight>80000000)throw new Error('Image too large');
@@ -220,7 +242,7 @@
           body:`<p>${text('请选择墙体图层。自动处理重复/共线碎段、小接缝和轻微倾斜；双线墙可按指定墙厚转换中心线。输出是所选墙线的兼容 DXF，不改写原文件。','Choose wall layers. Clean duplicates, fragments, small gaps and slight skew. Optionally convert double lines using wall thickness. Output is a compatible wall-only DXF; the original stays intact.')}</p>
           <label>${text('图纸单位（请核对）','Drawing units (verify)')} <select id="dxf-unit">${!parsed.mmPerUnit?`<option value="">${text('请选择单位','Choose units')}</option>`:''}${options.map(([v,label])=>`<option value="${v}" ${parsed.mmPerUnit===v?'selected':''}>${label}</option>`).join('')}</select></label>
           <p>${parsed.mmPerUnit?text(`检测到 INSUNITS=${parsed.unitCode}。`,`Detected INSUNITS=${parsed.unitCode}.`):text('未检测到支持的单位，请手动指定。','No supported units found. Specify manually.')}</p>
-          <div class="opts">${parsed.layers.map((l,i)=>{const known={FURNISH_BEARING:'b',FURNISH_EXTERIOR:'e',FURNISH_PARTITION:'n'}[l.name]||'';return `<div style="display:flex;gap:10px;align-items:center"><label class="opt" style="flex:1"><input type="checkbox" data-dxf-layer="${i}" ${parsed.layers.length===1||known?'checked':''}><span><b>${esc(l.name)}</b><small>${l.count} ${text('段','segments')}${l.issues.length?' · '+esc(l.issues[0]):''}</small></span></label><select data-dxf-kind="${i}" aria-label="${esc(l.name)} ${text('墙类型','wall type')}">${[['',text('请选择类型','Choose type')],['b',text('承重（锁定）','Bearing (locked)')],['n',text('非承重（可修改）','Partition (editable)')],['e',text('外墙','Exterior')]].map(([v,label])=>`<option value="${v}" ${known===v?'selected':''}>${label}</option>`).join('')}</select></div>`;}).join('')}</div><p>${text('请按结构图逐层指定，不能仅凭墙厚判断承重。承重墙导入后锁定；黑色为承重，棕色为非承重。','Assign types using structural drawings. Thickness does not establish bearing status. Bearing walls lock on import; black = bearing, brown = partition.')}</p>
+          <div class="opts">${parsed.layers.map((l,i)=>{const known={FURNISH_BEARING:'b',FURNISH_EXTERIOR:'e',FURNISH_PARTITION:'n'}[l.name]||'';return `<div style="display:flex;gap:10px;align-items:center"><label class="opt" style="flex:1"><input type="checkbox" data-dxf-layer="${i}" ${parsed.layers.length===1||known?'checked':''}><span><b>${esc(l.name)}</b><small>${l.count} ${text('段','segments')}${l.issues.length?' · '+esc(l.issues[0]):''}</small></span></label><select data-dxf-kind="${i}" aria-label="${esc(l.name)} ${text('墙类型','wall type')}">${[['',text('请选择类型','Choose type')],['b',text('承重（锁定）','Bearing (locked)')],['n',text('非承重（可修改）','Partition (editable)')],['e',text('外墙','Exterior')]].map(([v,label])=>`<option value="${v}" ${known===v?'selected':''}>${label}</option>`).join('')}</select></div>`;}).join('')}</div><p>${text('请按结构图逐层指定，不能仅凭墙厚判断承重。确认原始结构后锁定承重墙；黑色为承重，棕色为非承重。','Assign types using structural drawings. Thickness does not establish bearing status. Confirm the original structure to lock bearing walls; black = bearing, brown = partition.')}</p>
           <label class="opt" style="margin-top:12px"><input id="dxf-auto-repair" type="checkbox" checked><span><b>${text('自动修复兼容性','Automatically repair compatibility')}</b><small>${text('统一为 mm，清除重复、合并碎段、修复小接缝和轻微倾斜。','Normalize to mm, deduplicate, merge, close small gaps and align minor skew.')}</small></span></label>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0"><label>${text('接缝容差','Gap tolerance')} <input id="dxf-gap" type="number" min="0" max="100" value="30" style="width:70px"> mm</label><label>${text('扶正角度','Alignment angle')} <input id="dxf-angle" type="number" min="0" max="2" step=".1" value="0.5" style="width:70px"> °</label></div>
           <label class="opt"><input id="dxf-double" type="checkbox"><span><b>${text('双线墙转中心线（可选）','Convert double-line walls (optional)')}</b><small>${text(`按墙厚 ${q('#trace-thickness').value} mm 配对，仅处理能确定的平行墙线；转换会改变轮廓表示，请核对预览。`,`Pair at ${q('#trace-thickness').value} mm wall thickness. Only unambiguous pairs; verify the preview.`)}</small></span></label>
@@ -228,17 +250,17 @@
           <p>${text('块 INSERT、弧墙、三维墙和大断口当前需手工处理。墙体图层不要混入标注、家具或门窗符号。','Blocks, curved/3D walls and large gaps need manual editing. Exclude dimensions, furniture and opening symbols from wall layers.')}</p>
           <p id="dxf-report" role="status" aria-live="polite"></p><div id="dxf-preview"></div><div class="trace-error" id="dxf-error" role="alert"></div>`,
           onOpen:()=>{document.querySelectorAll('#dlgBody input,#dlgBody select').forEach(el=>el.addEventListener('change',previewRepair));previewRepair();},
-          actions:[{label:text('取消','Cancel')},{label:text('下载修复后 DXF','Download repaired DXF'),fn:()=>{if(candidate&&repaired)download(file.name.replace(/\.dxf$/i,'')+'-furnish-fixed.dxf',new Blob([FurnishDXFRepair.exportDXF(repaired)],{type:'application/dxf'}));return false;}},{label:text('导入校验后的户型','Import validated plan'),cls:'primary',fn:()=>{if(!candidate)return false;checkpoint();draft=candidate;box=[0,0,draft.width,draft.height];setMode('door');return true;}}]});$('#dlg').style.zIndex='90';
+          actions:[{label:text('取消','Cancel')},{label:text('下载修复后 DXF','Download repaired DXF'),fn:()=>{if(candidate&&repaired)download(file.name.replace(/\.dxf$/i,'')+'-furnish-fixed.dxf',new Blob([FurnishDXFRepair.exportDXF(repaired)],{type:'application/dxf'}));return false;}},{label:text('导入校验后的户型','Import validated plan'),cls:'primary',fn:()=>{if(!candidate)return false;checkpoint();draft=candidate;phase='survey';baseline=null;box=[0,0,draft.width,draft.height];setMode('door');return true;}}]});$('#dlg').style.zIndex='90';
       }catch(error){report(text('DXF 读取失败：','DXF could not be read: ')+error.message,true);}finally{loading=false;q('#trace-finish').disabled=false;}
     };
     q('#trace-finish').onclick=()=>{
       draft.name=q('#trace-name').value.trim();
       let plan;
-      try{if(original)FurnishDraft.assertBearingUnchanged(original,draft);plan=FurnishDraft.build(draft);}catch(error){report(text('无法生成：请检查校准、闭合墙线及门窗位置。详情：','Cannot build: check calibration, closed walls and opening positions. Details: ')+error.message,true);return;}
-      const architecture={draft:copy(draft)};
+      try{if(phase==='design'&&baseline)FurnishProject.assertStructure(baseline,draft);plan=FurnishDraft.build(draft);}catch(error){report(text('无法生成：请检查校准、闭合墙线及门窗位置。详情：','Cannot build: check calibration, closed walls and opening positions. Details: ')+error.message,true);return;}
+      const architecture={draft:copy(draft),phase,...(baseline?{baseline:copy(baseline)}:{})};
       if(original){
-        const before=snap();state.architecture=architecture;state.demolished=[];state.open={};
-        state.rooms=Object.fromEntries(plan.rooms.map(r=>[r.id,state.rooms[r.id]||{name:r.name,mat:r.mat}]));
+        const before=snap();state.open=FurnishProject.remapOpenings(PLAN,plan,state.open);state.architecture=architecture;state.demolished=[];
+        state.rooms=FurnishProject.remapRooms(ROOMS,plan.rooms,state.rooms);
         commit(before);renderAll();fitView();
       }else{
         store.customPlans=store.customPlans||[];store.customPlans.push(copy(draft));PLANS.push(plan);
