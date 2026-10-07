@@ -106,6 +106,16 @@
     const x0=Math.min(...rects.map(r=>r[0])),y0=Math.min(...rects.map(r=>r[1])),x1=Math.max(...rects.map(r=>r[2])),y1=Math.max(...rects.map(r=>r[3]));
     return {id:d.id,name:d.name.trim(),en:d.name.trim(),note:d.source==='dxf'?'自定义户型 · DXF 导入':'自定义户型 · 手工描图',noteEn:d.source==='dxf'?'Custom plan · DXF import':'Custom plan · manually traced',walls,wins,doors,slides:[],rooms,dims:[{h:1,at:y0-700,start:x0,segs:[x1-x0]},{h:0,at:x0-700,start:y0,segs:[y1-y0]}],bounds:{x:x0-1600,y:y0-1600,w:x1-x0+3200,h:y1-y0+3200},defaults:[],customDraft:d};
   }
-  root.FurnishDraft={build,validate,roomsFromWalls,wallRect};
+  function assertWallEditable(w){if(w?.kind==='b')fail('Bearing wall is locked');}
+  function assertBearingUnchanged(before,after){
+    for(const w of before.walls.filter(w=>w.kind==='b')){
+      const next=after.walls.find(v=>v.id===w.id);
+      const physical=(v,d)=>[...v.a.map(x=>x*d.scale),...v.b.map(x=>x*d.scale),v.thickness];
+      if(!next||next.kind!=='b'||physical(w,before).some((v,i)=>Math.abs(v-physical(next,after)[i])>1e-6))fail('Bearing wall is locked');
+      const openings=d=>JSON.stringify(d.openings.filter(o=>o.wall===w.id).sort((a,b)=>a.id.localeCompare(b.id)));
+      if(openings(before)!==openings(after))fail('Bearing wall openings are locked');
+    }
+  }
+  root.FurnishDraft={build,validate,roomsFromWalls,wallRect,assertWallEditable,assertBearingUnchanged};
   if(typeof module!=='undefined') module.exports=root.FurnishDraft;
 })(typeof window==='undefined'?globalThis:window);

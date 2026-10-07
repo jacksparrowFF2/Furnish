@@ -52,17 +52,19 @@
     const layers=[...new Set(records.map(r=>r.layer))].map(name=>({name,count:records.filter(r=>r.layer===name).reduce((n,r)=>n+r.segments.length,0),issues:records.filter(r=>r.layer===name&&r.issue).map(r=>r.issue)}));
     return {unitCode,mmPerUnit:units[unitCode]||null,records,layers,ignored};
   }
-  function draft(parsed,{layers,mmPerUnit,name,id,thickness=200,kind='n'}){
+  function draft(parsed,{layers,mmPerUnit,name,id,thickness=200,kind='n',layerKinds}){
     if(!Array.isArray(layers)||!layers.length)error('Select at least one wall centerline layer');
     if(!Number.isFinite(mmPerUnit)||mmPerUnit<=0)error('Choose the DXF drawing units');
     if(!Number.isFinite(thickness)||thickness<60||thickness>600)error('Wall thickness must be 60–600 mm');
     const records=parsed.records.filter(r=>layers.includes(r.layer));
+    if(layerKinds && records.some(r=>!r.kind && !['n','e','b'].includes(layerKinds[r.layer])))error('Assign a wall type to each selected layer');
     if(records.some(r=>r.issue))error(records.find(r=>r.issue).issue);
-    const seen=new Set(),segments=[];
-    for(const s of records.flatMap(r=>r.segments)){
+    const seen=new Map(),segments=[];
+    for(const s of records.flatMap(r=>r.segments.map(s=>({...s,kind:r.kind??layerKinds?.[r.layer]??kind})))){
+      if(!['n','b','e'].includes(s.kind))error('Assign a wall type to each selected layer');
       const a=s.a.map(v=>v*mmPerUnit),b=s.b.map(v=>v*mmPerUnit);
       if(Math.abs(a[0]-b[0])<1e-6)b[0]=a[0];if(Math.abs(a[1]-b[1])<1e-6)b[1]=a[1];
-      const key=[a.join(','),b.join(',')].sort().join('|');if(seen.has(key))continue;seen.add(key);segments.push({a,b});
+      const key=[a.join(','),b.join(',')].sort().join('|');if(seen.has(key)){if(seen.get(key)!==s.kind)error('Conflicting wall types on duplicate geometry');continue;}seen.set(key,s.kind);segments.push({a,b,kind:s.kind});
     }
     if(segments.length<4||segments.length>100)error('Select 4–100 wall centerline segments');
     const xs=segments.flatMap(s=>[s.a[0],s.b[0]]),ys=segments.flatMap(s=>[s.a[1],s.b[1]]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),extent=Math.max(x1-x0,y1-y0);
@@ -70,7 +72,7 @@
     const scale=(extent+thickness*2)/1600,pad=thickness;
     // CAD Y points up; SVG Y points down. Keep precision until rendering.
     const convert=p=>[(p[0]-x0+pad)/scale,(y1-p[1]+pad)/scale];
-    return {version:1,id,name,source:'dxf',sourceUnits:mmPerUnit,sourceLayers:[...layers],width:(x1-x0+pad*2)/scale,height:(y1-y0+pad*2)/scale,image:'',scale,walls:segments.map((s,i)=>({id:'dxf_'+i,a:convert(s.a),b:convert(s.b),thickness,kind})),openings:[]};
+    return {version:1,id,name,source:'dxf',sourceUnits:mmPerUnit,sourceLayers:[...layers],width:(x1-x0+pad*2)/scale,height:(y1-y0+pad*2)/scale,image:'',scale,walls:segments.map((s,i)=>({id:'dxf_'+i,a:convert(s.a),b:convert(s.b),thickness,kind:s.kind})),openings:[],...(layerKinds?{layerKinds:{...layerKinds}}:{})};
   }
   root.FurnishDXF={parse,draft};if(typeof module!=='undefined')module.exports=root.FurnishDXF;
 })(typeof window==='undefined'?globalThis:window);
