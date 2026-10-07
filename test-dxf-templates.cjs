@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const DXF=require('./dxf-import.js'),repair=require('./dxf-repair.js'),core=require('./floorplan-core.js'),project=require('./project-core.js');
-const raw=fs.readFileSync('furnish-template-example.dxf','utf8'),parsed=DXF.parse(raw);
+const raw=fs.readFileSync('furnish-template-example.dxf','utf8').replace(/\r\n/g,'\n'),parsed=DXF.parse(raw);
 assert.ok(DXF.parse(raw.replace('30\n0\n11','30\n100\n11')).records[0].issue.includes('3D'));
 const layerKinds={FURNISH_BEARING:'b',FURNISH_PARTITION:'n',FURNISH_EXTERIOR:'e'};
 const options={id:'custom_template',name:'规范示例',layers:Object.keys(layerKinds),layerKinds,mmPerUnit:1,thickness:200};
@@ -13,7 +13,7 @@ const repaired=repair.repair(parsed,options),round=DXF.parse(repair.exportDXF(re
 assert.equal(repaired.stats.maxShift,0);assert.ok(Math.abs(core.build(DXF.draft(round,options)).rooms.reduce((n,r)=>n+project.area(r.poly),0)-21.28)<1e-8);
 const context={window:{}};vm.runInNewContext(fs.readFileSync('dxf-templates.js','utf8'),context);
 assert.equal(context.window.FurnishTemplates.example,raw);
-assert.equal(context.window.FurnishTemplates.blank,fs.readFileSync('furnish-template-blank.dxf','utf8'));
+assert.equal(context.window.FurnishTemplates.blank,fs.readFileSync('furnish-template-blank.dxf','utf8').replace(/\r\n/g,'\n'));
 const empty=DXF.parse(context.window.FurnishTemplates.blank);assert.equal(empty.unitCode,4);assert.equal(empty.records.length,0);assert.throws(()=>DXF.draft(empty,options),/4–100/);
 const original=project.architecture({draft,phase:'design'}),survey={draft,phase:'survey'};
 const protectedSurvey=project.protectOriginal(original,survey);assert.equal(protectedSurvey.phase,'design');assert.deepEqual(protectedSurvey.baseline,original.baseline);
