@@ -5,3 +5,7 @@
 .vscode/
 .idea/
 *.swp
+
+# Local browser verification artifacts
+.playwright-cli/
+output/playwright/
