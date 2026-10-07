@@ -3722,8 +3722,8 @@ function openDialog({title, body, actions = [], wide = false, onOpen}){
   $('#dlgTitle').textContent = title; $('#dlgBody').innerHTML = body;
   $('#dlg .dlg-box').classList.toggle('wide', wide);
   const A = $('#dlgActions');
-  A.innerHTML = actions.map((a, i) => `<button class="btn ${a.cls || ''}" data-i="${i}">${a.label}</button>`).join(''); A.hidden = !actions.length;
-  A.onclick = e => { const b = e.target.closest('[data-i]'); if (!b) return; const a = actions[+b.dataset.i]; if (a.fn?.() !== false) closeDialog(); };
+  A.innerHTML = actions.map((a, i) => a.href ? `<a class="btn ${a.cls || ''}" data-i="${i}" href="${esc(a.href)}" download="${esc(a.download||'')}">${a.label}</a>` : `<button class="btn ${a.cls || ''}" data-i="${i}">${a.label}</button>`).join(''); A.hidden = !actions.length;
+  A.onclick = e => { const b = e.target.closest('[data-i]'); if (!b) return; const a = actions[+b.dataset.i]; if(a.href)return; if (a.fn?.() !== false) closeDialog(); };
   $('#dlg').hidden = false; closeCtx();
   onOpen?.();
   ($('#dlgBody input:not([type=checkbox])') || A.querySelector('.primary') || $('#dlgClose')).focus();
