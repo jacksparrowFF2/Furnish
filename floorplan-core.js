@@ -15,6 +15,7 @@
     for (const w of d.walls) {
       if (!w || typeof w.id !== 'string' || ids.has(w.id) || !point(w.a) || !point(w.b) || !['n','e','b'].includes(w.kind) || !finite(w.thickness) || w.thickness < 60 || w.thickness > 600) fail('Invalid wall');
       ids.add(w.id);
+      if(w.group!==undefined&&(typeof w.group!=='string'||!w.group||w.group.length>100))fail('Invalid wall group');
       if([w.a,w.b].some(p=>p[0]>d.width||p[1]>d.height))fail('Wall extends outside the reference canvas');
       if (w.a[0] !== w.b[0] && w.a[1] !== w.b[1]) fail('Only horizontal and vertical walls are supported');
       if (Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*d.scale < 100) fail('Wall too short');
@@ -27,9 +28,20 @@
     if (d.openings.filter(o => o.kind === 'door' && o.entry).length > 1) fail('Only one entry door is supported');
     return d;
   }
-  function wallRect(w, scale) {
-    const a=w.a.map(v=>v*scale), b=w.b.map(v=>v*scale), h=w.thickness/2;
-    return [Math.min(a[0],b[0])-h,Math.min(a[1],b[1])-h,Math.max(a[0],b[0])+h,Math.max(a[1],b[1])+h,w.kind];
+  function wallRect(w, scale, walls) {
+    const a=w.a.map(v=>v*scale), b=w.b.map(v=>v*scale), h=w.thickness/2,axis=w.a[1]===w.b[1]?0:1;
+    const cap=p=>{if(!walls)return h;const other=1-axis,neighbors=walls.filter(v=>v.id!==w.id&&(w.kind==='n'||v.kind!=='n')),junctions=neighbors.filter(v=>v.a[axis]===v.b[axis]&&Math.abs(v.a[axis]-p[axis])<1e-6&&p[other]>=Math.min(v.a[other],v.b[other])-1e-6&&p[other]<=Math.max(v.a[other],v.b[other])+1e-6);if(junctions.length)return Math.max(...junctions.map(v=>v.thickness/2));const collinear=neighbors.some(v=>v.a[other]===v.b[other]&&Math.abs(v.a[other]-p[other])<1e-6&&(v.a[axis]===p[axis]||v.b[axis]===p[axis]));return collinear?0:h;};
+    const r=[Math.min(a[0],b[0])-h,Math.min(a[1],b[1])-h,Math.max(a[0],b[0])+h,Math.max(a[1],b[1])+h,w.kind],low=w.a[axis]<=w.b[axis]?w.a:w.b,high=low===w.a?w.b:w.a;r[axis]=low[axis]*scale-cap(low);r[axis+2]=high[axis]*scale+cap(high);return r;
+  }
+  function batchWalls(input,ids,values){
+    if(!Array.isArray(ids)||!ids.length||ids.some(id=>!input.walls.some(w=>w.id===id)))fail('请选择有效墙段');
+    const d=clone(input);
+    for(const w of d.walls.filter(w=>ids.includes(w.id))){
+      if(values.thickness!==undefined)w.thickness=values.thickness;
+      if(values.kind!==undefined)w.kind=values.kind;
+      if(values.group!==undefined){if(values.group)w.group=values.group;else delete w.group;}
+    }
+    build(d);return d;
   }
   // Coordinate decomposition gives exact wall-inner-face areas without a raster resolution error.
   function roomsFromWalls(rects) {
@@ -74,7 +86,7 @@
     return result;
   }
   function build(input) {
-    const d=validate(clone(input)), rects=d.walls.map(w=>wallRect(w,d.scale));
+    const d=validate(clone(input)), rects=d.walls.map(w=>wallRect(w,d.scale,d.walls));
     const rooms=roomsFromWalls(rects); if(!rooms.length) fail('No enclosed room found. Close the wall outline first.');
     const walls=[],wins=[],doors=[],wallRefs=[],doorRefs=[],winRefs=[];
     d.walls.forEach((w,i)=>{
@@ -117,6 +129,6 @@
       if(openings(before)!==openings(after))fail('Bearing wall openings are locked');
     }
   }
-  root.FurnishDraft={build,validate,roomsFromWalls,wallRect,assertWallEditable,assertBearingUnchanged};
+  root.FurnishDraft={build,validate,roomsFromWalls,wallRect,batchWalls,assertWallEditable,assertBearingUnchanged};
   if(typeof module!=='undefined') module.exports=root.FurnishDraft;
 })(typeof window==='undefined'?globalThis:window);

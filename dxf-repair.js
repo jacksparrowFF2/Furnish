@@ -8,7 +8,7 @@
   function ordered(s){const axis=horizontal(s)?0:1;return s.a[axis]<=s.b[axis]?s:{...s,a:[...s.b],b:[...s.a]};}
   function merge(lines,stats){
     const groups=new Map();
-    for(const raw of lines){const s=ordered(raw),h=horizontal(s),lane=s.a[h?1:0],key=(s.kind||'')+(h?'h':'v')+lane.toFixed(6);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(s);}
+    for(const raw of lines){const s=ordered(raw),h=horizontal(s),lane=s.a[h?1:0],key=JSON.stringify([s.kind||'',s.thickness||'',s.group||'',h,lane.toFixed(6)]);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(s);}
     const out=[];
     for(const group of groups.values()){
       const axis=horizontal(group[0])?0:1;group.sort((a,b)=>a.a[axis]-b.a[axis]);let current=copy(group[0]);
@@ -69,7 +69,7 @@
     }
     return output;
   }
-  function repair(parsed,{layers,mmPerUnit,thickness=200,gapTolerance=30,angleTolerance=.5,doubleLines=false,layerKinds}={}){
+  function repair(parsed,{layers,mmPerUnit,thickness=200,gapTolerance=30,angleTolerance=.5,doubleLines=false,layerKinds,layerThicknesses}={}){
     if(!parsed||!Array.isArray(parsed.records)||!Array.isArray(layers)||!layers.length)fail('Select wall layers first');
     if(!Number.isFinite(mmPerUnit)||mmPerUnit<=0)fail('Choose the drawing units');
     if(!Number.isFinite(gapTolerance)||gapTolerance<0||gapTolerance>100)fail('Gap tolerance must be 0–100 mm');
@@ -79,7 +79,9 @@
     const unsupported=records.filter(r=>r.issue && r.issue!=='Diagonal walls are unsupported');
     if(unsupported.length)fail('Cannot safely repair selected entities: '+unsupported[0].issue);
     if(layerKinds&&layers.some(l=>!['n','e','b'].includes(layerKinds[l])))fail('Assign a wall type to each selected layer');
-    const original=records.flatMap(r=>r.segments.map(s=>({a:s.a.map(v=>v*mmPerUnit),b:s.b.map(v=>v*mmPerUnit),...(layerKinds?{kind:layerKinds[r.layer]}:{})})));
+    if(layerThicknesses&&layers.some(l=>!Number.isFinite(layerThicknesses[l])||layerThicknesses[l]<60||layerThicknesses[l]>600))fail('Layer wall thickness must be 60–600 mm');
+    if(doubleLines&&layerThicknesses&&new Set(layers.map(l=>layerThicknesses[l])).size>1)fail('Mixed thickness double-line conversion is unsupported; use centerlines');
+    const original=records.flatMap(r=>r.segments.map(s=>({a:s.a.map(v=>v*mmPerUnit),b:s.b.map(v=>v*mmPerUnit),...(layerKinds?{kind:layerKinds[r.layer]}:{}),...(r.thickness!==undefined||layerThicknesses?{thickness:r.thickness??layerThicknesses[r.layer]}:{}),...(r.group?{group:r.group}:['LWPOLYLINE','POLYLINE'].includes(r.type)?{group:'dxf_entity_'+r.id}:{})})));
     if(original.length>10000)fail('Too many wall segments (maximum 10000 before cleanup)');
     if(original.some(s=>[...s.a,...s.b].some(v=>!Number.isFinite(v))))fail('Invalid coordinates');
     const stats={input:original.length,output:0,axisAligned:0,merged:0,snapped:0,maxShift:0,removed:0,pairs:0,caps:0,centerJoins:0},warnings=[];
@@ -91,18 +93,19 @@
       const center=(s.a[minor]+s.b[minor])/2;stats.maxShift=Math.max(stats.maxShift,drift/2);s.a[minor]=s.b[minor]=center;stats.axisAligned++;
     }
     lines=merge(lines,stats);
-    if(doubleLines)lines=centerlines(lines,thickness,stats,warnings);
+    if(doubleLines){const measured=layerThicknesses?layerThicknesses[layers[0]]:thickness;lines=centerlines(lines,measured,stats,warnings);if(layerThicknesses)lines.forEach(s=>s.thickness=measured);}
     lines=snapCoordinates(lines,gapTolerance,stats);
     lines=lines.filter(s=>{if(length(s)<EPS){stats.removed++;return false;}return true;});lines=merge(lines,stats);stats.output=lines.length;
     const layerFor=s=>s.kind?({b:'FURNISH_BEARING',e:'FURNISH_EXTERIOR',n:'FURNISH_PARTITION'}[s.kind]):'FURNISH_WALL_CENTER';
-    const clean={unitCode:4,mmPerUnit:1,ignored:{},layers:[...new Set(lines.map(layerFor))].map(name=>({name,count:lines.filter(s=>layerFor(s)===name).length,issues:[]})),records:lines.map((s,i)=>({id:i,layer:layerFor(s),type:'LINE',segments:[s],issue:'',...(s.kind?{kind:s.kind}:{})}))};
+    const clean={unitCode:4,mmPerUnit:1,ignored:{},layers:[...new Set(lines.map(layerFor))].map(name=>({name,count:lines.filter(s=>layerFor(s)===name).length,issues:[]})),records:lines.map((s,i)=>({id:i,layer:layerFor(s),type:'LINE',segments:[s],issue:'',...(s.kind?{kind:s.kind}:{}),...(s.thickness!==undefined?{thickness:s.thickness}:{}),...(s.group?{group:s.group}:{})}))};
     return {parsed:clean,original,lines,stats,warnings,doubleLines,gapTolerance,angleTolerance};
   }
   function exportDXF(result){
     if(!result||!Array.isArray(result.lines))fail('No repaired DXF to export');
     const round=v=>Number(v.toFixed(6));
     const header=['0','SECTION','2','HEADER','9','$ACADVER','1','AC1015','9','$INSUNITS','70','4','0','ENDSEC','0','SECTION','2','ENTITIES'];
-    for(const s of result.lines)header.push('0','LINE','8',({b:'FURNISH_BEARING',e:'FURNISH_EXTERIOR',n:'FURNISH_PARTITION'}[s.kind]||'FURNISH_WALL_CENTER'),'10',String(round(s.a[0])),'20',String(round(s.a[1])),'30','0','11',String(round(s.b[0])),'21',String(round(s.b[1])),'31','0');
+    if(result.lines.some(s=>s.group))header.splice(header.length-4,0,'0','SECTION','2','TABLES','0','TABLE','2','APPID','70','1','0','APPID','2','FURNISH','70','0','0','ENDTAB','0','ENDSEC');
+    for(const s of result.lines){header.push('0','LINE','8',({b:'FURNISH_BEARING',e:'FURNISH_EXTERIOR',n:'FURNISH_PARTITION'}[s.kind]||'FURNISH_WALL_CENTER')+(s.thickness!==undefined?'_'+s.thickness:''),'10',String(round(s.a[0])),'20',String(round(s.a[1])),'30','0','11',String(round(s.b[0])),'21',String(round(s.b[1])),'31','0');if(s.group&&/^[A-Za-z0-9_-]{1,80}$/.test(s.group))header.push('1001','FURNISH','1000','WALL_GROUP:'+s.group);}
     header.push('0','ENDSEC','0','EOF');return header.join('\r\n')+'\r\n';
   }
   root.FurnishDXFRepair={repair,exportDXF};if(typeof module!=='undefined')module.exports=root.FurnishDXFRepair;

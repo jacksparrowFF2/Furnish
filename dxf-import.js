@@ -48,32 +48,36 @@
         segments.push({a:[...a],b:[...b]});
       }
       if(!segments.length&&!issue)issue='Empty entity';
-      records.push({id:serial++,layer,type:e.type,segments,issue});
+      let group;const app=e.fields.findIndex(([c,v])=>c===1001&&v==='FURNISH');if(app>=0){for(const [c,v] of e.fields.slice(app+1)){if(c===1001)break;if(c===1000&&/^WALL_GROUP:[A-Za-z0-9_-]{1,80}$/.test(v))group=v.slice(11);}}
+      records.push({id:serial++,layer,type:e.type,segments,issue,...(group?{group}:{})});
     }
     const layers=[...new Set(records.map(r=>r.layer))].map(name=>({name,count:records.filter(r=>r.layer===name).reduce((n,r)=>n+r.segments.length,0),issues:records.filter(r=>r.layer===name&&r.issue).map(r=>r.issue)}));
     return {unitCode,mmPerUnit:units[unitCode]||null,records,layers,ignored};
   }
-  function draft(parsed,{layers,mmPerUnit,name,id,thickness=200,kind='n',layerKinds}){
+  function layerDefaults(name){const match=/^FURNISH_(BEARING|EXTERIOR|PARTITION)(?:_(\d+(?:\.\d+)?))?$/i.exec(name);return match?{kind:{BEARING:'b',EXTERIOR:'e',PARTITION:'n'}[match[1].toUpperCase()],thickness:match[2]?Number(match[2]):null}:{kind:'',thickness:null};}
+  function draft(parsed,{layers,mmPerUnit,name,id,thickness=200,kind='n',layerKinds,layerThicknesses}){
     if(!Array.isArray(layers)||!layers.length)error('Select at least one wall centerline layer');
     if(!Number.isFinite(mmPerUnit)||mmPerUnit<=0)error('Choose the DXF drawing units');
     if(!Number.isFinite(thickness)||thickness<60||thickness>600)error('Wall thickness must be 60–600 mm');
     const records=parsed.records.filter(r=>layers.includes(r.layer));
+    if(layerThicknesses&&layers.some(l=>!Number.isFinite(layerThicknesses[l])||layerThicknesses[l]<60||layerThicknesses[l]>600))error('Layer wall thickness must be 60–600 mm');
     if(layerKinds && records.some(r=>!r.kind && !['n','e','b'].includes(layerKinds[r.layer])))error('Assign a wall type to each selected layer');
     if(records.some(r=>r.issue))error(records.find(r=>r.issue).issue);
     const seen=new Map(),segments=[];
-    for(const s of records.flatMap(r=>r.segments.map(s=>({...s,kind:r.kind??layerKinds?.[r.layer]??kind})))){
+    for(const s of records.flatMap(r=>r.segments.map(s=>({...s,kind:r.kind??layerKinds?.[r.layer]??kind,thickness:r.thickness??layerThicknesses?.[r.layer]??thickness,group:r.group??(['LWPOLYLINE','POLYLINE'].includes(r.type)?'dxf_entity_'+r.id:undefined)})))){
       if(!['n','b','e'].includes(s.kind))error('Assign a wall type to each selected layer');
       const a=s.a.map(v=>v*mmPerUnit),b=s.b.map(v=>v*mmPerUnit);
       if(Math.abs(a[0]-b[0])<1e-6)b[0]=a[0];if(Math.abs(a[1]-b[1])<1e-6)b[1]=a[1];
-      const key=[a.join(','),b.join(',')].sort().join('|');if(seen.has(key)){if(seen.get(key)!==s.kind)error('Conflicting wall types on duplicate geometry');continue;}seen.set(key,s.kind);segments.push({a,b,kind:s.kind});
+      if(!Number.isFinite(s.thickness)||s.thickness<60||s.thickness>600)error('Layer wall thickness must be 60–600 mm');
+      const key=[a.join(','),b.join(',')].sort().join('|');if(seen.has(key)){if(seen.get(key).kind!==s.kind)error('Conflicting wall types on duplicate geometry');if(seen.get(key).thickness!==s.thickness)error('Conflicting wall thicknesses on duplicate geometry');continue;}seen.set(key,s);segments.push({...s,a,b});
     }
     if(segments.length<4||segments.length>100)error('Select 4–100 wall centerline segments');
     const xs=segments.flatMap(s=>[s.a[0],s.b[0]]),ys=segments.flatMap(s=>[s.a[1],s.b[1]]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),extent=Math.max(x1-x0,y1-y0);
     if(extent<=0||extent>95000||x1===x0||y1===y0)error('Invalid extent; maximum plan size is 95 m');
-    const scale=(extent+thickness*2)/1600,pad=thickness;
+    const pad=Math.max(...segments.map(s=>s.thickness)),scale=(extent+pad*2)/1600;
     // CAD Y points up; SVG Y points down. Keep precision until rendering.
     const convert=p=>[(p[0]-x0+pad)/scale,(y1-p[1]+pad)/scale];
-    return {version:1,id,name,source:'dxf',sourceUnits:mmPerUnit,sourceLayers:[...layers],width:(x1-x0+pad*2)/scale,height:(y1-y0+pad*2)/scale,image:'',scale,walls:segments.map((s,i)=>({id:'dxf_'+i,a:convert(s.a),b:convert(s.b),thickness,kind:s.kind})),openings:[],...(layerKinds?{layerKinds:{...layerKinds}}:{})};
+    return {version:1,id,name,source:'dxf',sourceUnits:mmPerUnit,sourceLayers:[...layers],width:(x1-x0+pad*2)/scale,height:(y1-y0+pad*2)/scale,image:'',scale,walls:segments.map((s,i)=>({id:'dxf_'+i,a:convert(s.a),b:convert(s.b),thickness:s.thickness,kind:s.kind,...(s.group?{group:s.group}:{})})),openings:[],...(layerKinds?{layerKinds:{...layerKinds}}:{}),...(layerThicknesses?{layerThicknesses:{...layerThicknesses}}:{})};
   }
-  root.FurnishDXF={parse,draft};if(typeof module!=='undefined')module.exports=root.FurnishDXF;
+  root.FurnishDXF={parse,draft,layerDefaults};if(typeof module!=='undefined')module.exports=root.FurnishDXF;
 })(typeof window==='undefined'?globalThis:window);

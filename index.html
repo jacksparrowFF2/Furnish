@@ -2573,7 +2573,7 @@ function renderSel(){
   } else if (['door','slide','win'].includes(ui.sel?.kind)){
     const o=(ui.sel.kind==='door'?DOORS:ui.sel.kind==='slide'?SLIDES:WINS)[ui.sel.id];if(o){const [x0,y0,x1,y1]=o.rect;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;}
   } else if (ui.sel?.kind === 'wall'){
-    const w=WALLS[Number(ui.sel.id.slice(1))];if(w)s+=`<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;
+    const selected=ui.sel.wallIds?.length?WALLS.filter((_,i)=>ui.sel.wallIds.includes(PLAN.wallRefs?.[i])):[WALLS[Number(ui.sel.id.slice(1))]];for(const w of selected.filter(Boolean))s+=`<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;
   } else if (ui.sel?.kind === 'room'){
     const r = ROOMS.find(r => r.id === ui.sel.id);
     s += `<polygon points="${r.poly.map(p=>p.join(',')).join(' ')}" fill="rgba(239,90,36,.08)" stroke="${ACC}" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
@@ -3513,7 +3513,7 @@ svg.addEventListener('pointerdown', e => {
     select(de ? {kind:'door', id:+de.dataset.door} : se ? {kind:'slide', id:+se.dataset.slide} : {kind:'win', id:+we.dataset.win});
     drag = {kind:'pan', ...base, x0:view.x0, y0:view.y0, keep:true};   // 选中后仍可直接拖动画布
   } else if (ui.tool === 'select' && t.closest('[data-wall]')){
-    select({kind:'wall',id:t.closest('[data-wall]').dataset.wall}); return;
+    const id=t.closest('[data-wall]').dataset.wall,ref=PLAN.wallRefs?.[Number(id.slice(1))];const wallIds=ref?(e.shiftKey&&ui.sel?.kind==='wall'?[...new Set([...(ui.sel.wallIds||[]),ref])]:[ref]):[];select({kind:'wall',id,wallIds}); return;
   } else if (ui.tool === 'marquee' || (ui.tool === 'select' && e.shiftKey && e.pointerType === 'mouse')){
     drag = {kind:'marq', ...base, a:p, add:e.shiftKey, base:selIds()};
   } else {
