@@ -35,6 +35,23 @@
   if(arch?.baseline){const c=changes(arch.baseline,arch.draft);const len=(w,d)=>Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*d.scale/1000;removed=c.removed.reduce((n,w)=>n+len(w,arch.baseline),0);added=c.added.reduce((n,w)=>n+len(w,arch.draft),0);}
   return {net,wall,paint:Math.max(0,wall-holes),removed,added,rooms:rooms.length};
  }
+ // One set of rates feeds the current budget, comparisons and exports.
+ function pricing(input={}){
+  if(!input||typeof input!=='object'||Array.isArray(input))fail('预算参数格式无效');
+  const result={floorWaste:input.floorWaste??5,paintWaste:input.paintWaste??10,paintPrice:input.paintPrice??28,materials:{...input.materials}};
+  if(!num(result.floorWaste)||result.floorWaste<0||result.floorWaste>100||!num(result.paintWaste)||result.paintWaste<0||result.paintWaste>100)fail('损耗率须为 0–100%');
+  if(!num(result.paintPrice)||result.paintPrice<0||result.paintPrice>1e7)fail('乳胶漆单价无效');
+  if(input.materials!==undefined&&(!input.materials||typeof input.materials!=='object'||Array.isArray(input.materials)))fail('材料单价格式无效');
+  if(Object.keys(result.materials).length>100||Object.entries(result.materials).some(([id,v])=>!id||id.length>80||!num(v)||v<0||v>1e7))fail('地面材料单价无效');
+  return result;
+ }
+ function estimate(plan,work,materials,priceOf=f=>f.price??f.referencePrice??0){
+  const settings=pricing(work.pricing),q=quantities(plan,work.architecture),counted=plan.rooms.filter(r=>r.counted!==false),byMat=new Map();
+  for(const r of plan.rooms){const m=work.rooms?.[r.id]?.mat||r.mat;if(!materials[m])fail('地面材料不存在：'+m);byMat.set(m,(byMat.get(m)||0)+area(r.poly));}
+  const mats=[...byMat].map(([m,a])=>{const price=settings.materials[m]??materials[m].price,quantity=a*(1+settings.floorWaste/100);return {m,a,price,quantity,c:quantity*price};});
+  const floor=mats.reduce((n,r)=>n+r.c,0),paintQuantity=q.paint*(1+settings.paintWaste/100),paintCost=paintQuantity*settings.paintPrice,furniture=work.furniture.reduce((n,f)=>n+priceOf(f),0),extra=extraCosts(work.renovation||[],q);
+  return {...q,settings,counted,tot:q.net,mats,floor,wallArea:q.wall,paintArea:q.paint,paintQuantity,paint:paintCost,paintCost,furniture,furn:furniture,extra:extra.items,renovation:extra.total,total:floor+paintCost+furniture+extra.total};
+ }
  // Read a version without inheriting the currently rendered opening overrides.
  function effectivePlan(base,work){
   const plan=work.architecture?core().build(work.architecture.draft):clone(base);
@@ -155,6 +172,7 @@
   if(w.furniture.some(f=>f.resizeAnchor!==undefined&&!Object.hasOwn(design().resizeAnchors,f.resizeAnchor)))fail('家具尺寸调整基准无效');
   for(const f of w.furniture){if(f.purchaseStatus!==undefined&&!Object.hasOwn(purchaseStates,f.purchaseStatus))fail('采购状态无效');if(f.purchaseNote!==undefined&&(typeof f.purchaseNote!=='string'||f.purchaseNote.length>500))fail('采购备注最多 500 字');for(const key of ['brand','model','sourceUrl'])if(f[key]!==undefined&&(typeof f[key]!=='string'||f[key].length>500))fail('家具品牌、型号或来源无效');if(f.sourceUrl&&!/^https?:\/\//i.test(f.sourceUrl))fail('家具来源须为 http(s) 链接');if(f.priceDate&&(typeof f.priceDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(f.priceDate)||!Number.isFinite(Date.parse(f.priceDate))||new Date(f.priceDate).toISOString().slice(0,10)!==f.priceDate))fail('价格日期无效');}
   for(const v of Object.values(w.open?.w||{})){if(typeof v==='number'){if(!num(v)||v<0||v>2.4)fail('窗台高无效');}else if(!v||!num(v.sill)||!num(v.head)||v.sill<0||v.head<=v.sill||v.head>2.8)fail('窗高度无效');}
+  if(w.pricing!==undefined)pricing(w.pricing);
   if(w.designNote!==undefined&&(typeof w.designNote!=='string'||w.designNote.length>500))fail('方案备注无效');
   if(w.scene3d!==undefined){const s=w.scene3d;if(!s||typeof s!=='object'||Array.isArray(s)||!num(s.hour)||s.hour<7||s.hour>18||![1.2,2.8].includes(s.cut)||['furn','labels','night'].some(k=>typeof s[k]!=='boolean'))fail('三维展示设置无效');}
   if(w.spaceThreshold!==undefined&&(!num(w.spaceThreshold)||w.spaceThreshold<300||w.spaceThreshold>2000))fail('通道阈值须为 300–2000 mm');
@@ -190,6 +208,6 @@
   for(const [label,work] of [['当前方案',data.current],...data.designs.map(d=>['命名方案「'+d.name+'」',d.work])])if(work.plan!==undefined&&work.plan!==data.planId)fail(label+'：方案户型编号与项目不一致');
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
+ root.FurnishProject={pricing,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

@@ -2682,17 +2682,7 @@ function renderPanel(){
 }
 
 // 全屋预算：地面（含 5% 损耗）+ 墙面乳胶漆（周长×层高，扣门窗洞口，含 10% 损耗，28 元/m²）+ 家具家电参考价
-function budget(){
-  const counted = ROOMS.filter(r => r.counted !== false), tot = counted.reduce((a,r) => a + area(r.poly), 0);
-  const byMat = {}; ROOMS.forEach(r => { const m = state.rooms[r.id].mat; byMat[m] = (byMat[m]||0) + area(r.poly); });
-  let floor = 0; const mats = Object.entries(byMat).map(([m,a]) => { const c = a*MATS[m].price*1.05; floor += c; return {m, a, c}; });
-  const wallArea = counted.reduce((a,r) => a + perim(r.poly)*2.8, 0);
-  const quantities = FurnishProject.quantities(FurnishProject.effectivePlan(PLAN,state),state.architecture);
-  const paintArea = quantities.paint, paint = paintArea*1.1*28;
-  const extra = FurnishProject.extraCosts(state.renovation||[],quantities);
-  const furn = state.furniture.reduce((a,f) => a + priceOf(f), 0);
-  return {counted, tot, mats, floor, wallArea, paintArea, paint, furn, extra:extra.items, renovation:extra.total, total:floor + paint + furn + extra.total};
-}
+function budget(){ return FurnishProject.estimate(FurnishProject.effectivePlan(PLAN,state),state,MATS,priceOf); }
 const yen = v => '¥' + Math.round(v).toLocaleString();
 
 function alertsHTML(){
@@ -2719,8 +2709,8 @@ function overviewPanel(){
   return `${alertsHTML() ? `<section>${alertsHTML()}</section>` : ''}
   <section class="hero"><h3>${tr('全屋预算粗估','Whole-home Budget')} <small>${tr('参考价，仅供估算','reference prices')}</small></h3>
     <table>
-      <tr><td>${tr('地面材料（含 5% 损耗）','Flooring (incl. 5% waste)')}</td><td class="r">${fmt(B.counted.reduce((a,r) => a + area(r.poly), 0),1)} m²</td><td class="r">${yen(B.floor)}</td></tr>
-      <tr><td>${tr('墙面乳胶漆（含 10% 损耗）','Wall paint (incl. 10% waste)')}</td><td class="r">${fmt(B.paintArea*1.1,1)} m²</td><td class="r">${yen(B.paint)}</td></tr>
+      <tr><td>${tr(`地面材料（含 ${B.settings.floorWaste}% 损耗）`,`Flooring (incl. ${B.settings.floorWaste}% waste)`)}</td><td class="r">${fmt(B.counted.reduce((a,r) => a + area(r.poly), 0),1)} m²</td><td class="r">${yen(B.floor)}</td></tr>
+      <tr><td>${tr(`墙面乳胶漆（含 ${B.settings.paintWaste}% 损耗）`,`Wall paint (incl. ${B.settings.paintWaste}% waste)`)}</td><td class="r">${fmt(B.paintQuantity,1)} m²</td><td class="r">${yen(B.paint)}</td></tr>
       <tr><td>${tr('家具家电','Furniture & appliances')}</td><td class="r">${state.furniture.length} ${tr('件','pcs')}</td><td class="r">${yen(B.furn)}</td></tr>
       <tr><td>${tr('装修工程','Renovation')}</td><td class="r">${B.extra.length} ${tr('项','items')}</td><td class="r">${yen(B.renovation)}</td></tr>
     </table>
@@ -2779,8 +2769,8 @@ function listPanel(){
 function quoteRows(){
   const B = budget(), purchases=FurnishProject.procurement(FurnishProject.effectivePlan(PLAN,state),state,priceOf);
   const rows = purchases.items.sort((a,b)=>b.total-a.total).map(f=>[tr('家具家电','Furniture'),nm(f.name)+([f.brand,f.model].filter(Boolean).length?' · '+[f.brand,f.model].filter(Boolean).join(' '):''),`${f.w}×${f.d}${f.h?'×'+f.h:''} · ${FurnishProject.purchaseStates[f.status]}`,f.quantity,tr('件','pcs'),f.price,f.total]);
-  B.mats.forEach(({m, a, c}) => rows.push([tr('地面', 'Flooring'), nm(MATS[m].name), tr('含 5% 损耗', 'incl. 5% waste'), +(a*1.05).toFixed(2), 'm²', MATS[m].price, c]));
-  rows.push([tr('墙面', 'Walls'), tr('乳胶漆', 'Latex paint'), tr('含 10% 损耗', 'incl. 10% waste'), +(B.paintArea*1.1).toFixed(2), 'm²', 28, B.paint]);
+  B.mats.forEach(({m, quantity, price, c}) => rows.push([tr('地面', 'Flooring'), nm(MATS[m].name), `${B.settings.floorWaste}%`, +quantity.toFixed(2), 'm²', price, c]));
+  rows.push([tr('墙面', 'Walls'), tr('乳胶漆', 'Latex paint'), `${B.settings.paintWaste}%`, +B.paintQuantity.toFixed(2), 'm²', B.settings.paintPrice, B.paint]);
   B.extra.forEach(r=>rows.push([tr('装修工程','Renovation'),r.name,r.source==='manual'?tr('手填工程量','Manual quantity'):tr('随户型自动计算','Auto quantity'),+r.quantity.toFixed(2),r.unit,r.price,r.total]));
   return {rows, B};
 }
@@ -2866,7 +2856,7 @@ function roomPanel(r){
       <div><small>${tr('进深','Depth')}</small><span class="big">${y1-y0}</span> mm</div></div>
     <div class="muted">${tr(`墙面面积（层高 2.8m，未扣门窗）约 ${fmt(perim(r.poly)*2.8,1)} m²`, `Wall area (2.8m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*2.8,1)} m²`)}</div></section>
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
-    <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*MATS[st.mat].price*1.05)}</b></div></section>
+    <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
   <section><h3>${tr('房间内家具','Furniture in room')} <small>${tr(`${inside.length} 件 · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`, `${inside.length} items · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`)}</small></h3>
     ${inside.map(f => `<div class="irow ${clashIds.has(f.id) ? 'clash' : ''}" data-focus="${f.id}"><span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${esc(nm(f.name))}</span><small>${f.w}×${f.d}</small></div>`).join('') || `<div class="muted">${tr('暂无','None')}</div>`}
     <div class="actions">${inside.length ? `<button class="btn" data-act="roomFurn">${tr('全部选中','Select all')}</button>` : ''}
