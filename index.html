@@ -2177,8 +2177,8 @@ function syncSaved(){
 const snap = () => JSON.stringify(state);
 function commit(before){ undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,JSON.parse(before),'编辑前'); }
 function mutate(fn){ const b = snap(); fn(); commit(b); renderAll(); }
-function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); validateSel(); save(); renderAll(); }
-function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); validateSel(); save(); renderAll(); }
+function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
+function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function validateSel(){ if (ui.sel?.kind==='furn' && !getF(ui.sel.id)) ui.sel = null; }
 const getF = id => state.furniture.find(f => f.id === id);
 
@@ -3237,22 +3237,26 @@ function matchSizeSel(){
 }
 // 剪贴板：复制时记录相对整组中心的位置，粘贴到指针处（或在原位置偏移）
 let clip = null;
+function syncCutClipboard(){if(clip?.cut&&clip.movePlan===PLAN.id)clip.cutMoved=clip.items.some(f=>getF(f.id));}
 function copySel(cut, quiet){
   const selected=selItems(),items=cut?selected.filter(f=>!f.locked):selected;if(!items.length){if(cut)movable(selected);return;}
   const [x0,y0,x1,y1] = groupBox(items);
-  clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items))};
+  clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut};
   if (cut) deleteSel(); else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
 }
 function paste(at){
   if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
   const step=(clip.pastes||0)+1,p=at||{x:clip.cx+300*step,y:clip.cy+300*step};
-  let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length);}catch(e){return toast(e.message);}
+  let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length,state.furniture.map(f=>f.id));}catch(e){return toast(e.message);}
   const news=result.items;
   mutate(() => state.furniture.push(...news));
+  if(clip.cut)clip.cutMoved=true;if(result.moved)clip.movePlan=PLAN.id;
   if(!at)clip.pastes=step;
   selectIds(news.map(f => f.id));
-  if(result.oversized)toast(tr('整组尺寸超出户型范围，已保留相对位置；请缩小尺寸或拆分布置。','The group exceeds plan bounds; its layout was preserved. Resize or split the group.'));
-  else if(result.adjusted)toast(tr('已将整组移入户型范围，保留相对位置；请核对墙体和房间边界。','Group moved within plan bounds without changing its layout; check walls and room boundaries.'));
+  const pasted=result.moved?tr('已移动家具，保留原编号和采购进度。','Furniture moved; identity and purchase progress retained.'):tr('已添加家具副本，采购状态为待选型。','Copies added with planned purchase status.');
+  if(result.oversized)toast(pasted+' '+tr('整组尺寸超出户型范围，已保留相对位置；请缩小尺寸或拆分布置。','The group exceeds plan bounds; its layout was preserved. Resize or split the group.'));
+  else if(result.adjusted)toast(pasted+' '+tr('已将整组移入户型范围，保留相对位置；请核对墙体和房间边界。','Group moved within plan bounds without changing its layout; check walls and room boundaries.'));
+  else toast(pasted);
 }
 function duplicateSel(){ if (!selIds().length) return; const keep = clip; copySel(false, true); paste(); clip = keep; }
 function zoomToBox([x0,y0,x1,y1], pad = 700){
