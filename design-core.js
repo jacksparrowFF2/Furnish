@@ -44,6 +44,9 @@
   const exact=candidates.filter(c=>c.w===f.w&&c.d===f.d&&(f.h===undefined||c.h===f.h)&&(!f.brand||c.brand===f.brand)&&(!f.model||c.model===f.model));
   return exact.length===1?exact[0]:null;
  }
+ function restoreNotes(list,makeId){
+  const ids=new Set(),reserved=new Set(list.map(n=>n.id));return list.map(n=>{const note={...n,x:Number(n.x),y:Number(n.y),color:['accent','teal','ink','paper'].includes(n.color)?n.color:'accent',size:[.8,1,1.4].includes(n.size)?n.size:1};if(typeof note.id!=='string'||!note.id||ids.has(note.id)){do{note.id=makeId();}while(ids.has(note.id)||reserved.has(note.id));}ids.add(note.id);return note;});
+ }
  function restoreFurniture(list,{makeId,colorFor}){
   const valid=(Array.isArray(list)?list:[]).filter(f=>f&&typeof f==='object'&&[f.cx,f.cy].every(Number.isFinite)&&Number.isFinite(Number(f.w))&&Number.isFinite(Number(f.d))&&Number(f.w)>0&&Number(f.d)>0),ids=new Set(),reserved=new Set(valid.map(f=>f.id));return valid.map(item=>{
    const f={...item,w:Number(item.w),d:Number(item.d)};if(typeof f.id!=='string'||!f.id||ids.has(f.id)){do{f.id=makeId();}while(ids.has(f.id)||reserved.has(f.id));}ids.add(f.id);
@@ -103,6 +106,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

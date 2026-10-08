@@ -2060,8 +2060,7 @@ function fixWork(s, p){
   s.rooms = Object.assign(d.rooms, s.rooms || {});
   p.rooms.forEach(r=>{const v=s.rooms[r.id];s.rooms[r.id]={name:typeof v?.name==='string'?v.name.slice(0,80):r.name,mat:MATS[v?.mat]?v.mat:r.mat,use:FurnishDesign.inferUse(r,v)};});
   s.demolished = s.demolished || []; s.measures = s.measures || []; s.open = s.open || {};
-  s.notes = (Array.isArray(s.notes) ? s.notes : []).filter(n => n && typeof n.text === 'string' && isFinite(n.x) && isFinite(n.y))
-    .map(n => ({id:typeof n.id === 'string' ? n.id : uid(), x:+n.x, y:+n.y, text:n.text.slice(0, 120), color:NOTE_COLORS[n.color] ? n.color : 'accent', size:[0.8, 1, 1.4].includes(n.size) ? n.size : 1}));
+  s.notes = FurnishDesign.restoreNotes((Array.isArray(s.notes)?s.notes:[]).filter(n=>n&&typeof n.text==='string'&&n.text.trim()&&[n.x,n.y].every(v=>typeof v==='number'&&Number.isFinite(v)||typeof v==='string'&&v.trim()&&Number.isFinite(Number(v)))).slice(0,2000).map(n=>({...n,text:n.text.slice(0,120)})),uid);
   s.furniture = sanitizeFurn(s.furniture, p);
   s.scene3d = FurnishDesign.sceneSettings(s.scene3d);
   return s;
@@ -3072,7 +3071,7 @@ function openNoteEditor(note, at){
         const text = $('#nT').value.trim(); if (!text){ toast(tr('请输入标注文字', 'Enter some text')); return false; }
         const color = $('#nC .on')?.dataset.c || 'accent', size = +($('#nS .on')?.dataset.s || 1);
         if (note) mutate(() => Object.assign(getNote(note.id), {text, color, size}));
-        else { const n = {id:uid(), x:Math.round(at.x), y:Math.round(at.y), text, color, size}; mutate(() => (state.notes ||= []).push(n)); select({kind:'note', id:n.id}); }
+        else { if((state.notes||[]).length>=2000){toast(tr('每个方案最多 2000 条文字标注。','Up to 2000 text notes per design.'));return false;}const n = {id:uid(), x:Math.round(at.x), y:Math.round(at.y), text, color, size}; mutate(() => (state.notes ||= []).push(n)); select({kind:'note', id:n.id}); }
       }}]});
 }
 function deleteNote(id){ ui.sel = null; mutate(() => state.notes = state.notes.filter(n => n.id !== id)); toast(tr('已删除标注', 'Note deleted'), {label:tr('撤销', 'Undo'), fn:undo}); }
@@ -4288,21 +4287,21 @@ $('#fileIn').onchange = e => {
     try {
       if (file.size > 30e6) throw 'size';
       const s = JSON.parse(txt);
-      const lockedOriginal=store.work[s.plan||s.architecture?.draft?.id]?.architecture;if(lockedOriginal?.phase==='design')s.architecture=FurnishProject.protectOriginal(lockedOriginal,s.architecture);
+      if(s.architecture&&s.plan&&s.plan!==s.architecture.draft?.id)throw Error('方案户型编号与原始结构不一致');
+      const lockedOriginal=store.work[s.architecture?.draft?.id||s.plan]?.architecture;if(lockedOriginal?.phase==='design')s.architecture=FurnishProject.protectOriginal(lockedOriginal,s.architecture);
       if (!Array.isArray(s.furniture) || s.furniture.length > 2000) throw 0;
       const meshItems=s.furniture.filter(f=>f?.obj);if(meshItems.length)FurnishProject.validateWork({furniture:meshItems.map(f=>({...f,id:f.id||uid(),rot:typeof f.rot==='number'?f.rot:0}))});
-      registerCustomWork(s);
-      if (s.plan && s.plan !== PLAN.id && PLANS.some(p => p.id === s.plan)) setPlan(s.plan);   // 方案属于其他户型时先切换
-      // 旧文件逐条校验：跳过无效条目，保留有效家具位置。
-      const total = s.furniture.length;
-      const b = snap(); state = fixWork(s, PLAN);
-      if (total && !state.furniture.length){ state = JSON.parse(b); throw 0; }
-      ui.sel = null; commit(b); renderAll();
+      FurnishProject.validateWork({...s,furniture:[]});
+      const target=s.architecture?FurnishDraft.build(s.architecture.draft):s.plan?PLANS.find(p=>p.id===s.plan):PLAN;if(!target)throw Error('文件引用了不存在的户型');
+      const total=s.furniture.length,prepared=fixWork(s,target);if(total&&!prepared.furniture.length)throw Error('文件没有可加载的有效家具');
+      const checked=FurnishProject.validateWork(prepared);FurnishProject.validatePlanWork(target,checked);
+      snapshot(true,state,'加载旧方案前');registerCustomWork(checked);if(target.id!==PLAN.id)setPlan(target.id);
+      const b=snap();state=checked;ui.sel=null;commit(b);renderAll();
       const skipped = total - state.furniture.length;
       toast(tr(`方案已导入：${state.furniture.length} 件家具`, `Imported ${state.furniture.length} items`)
         + (skipped ? tr(`，跳过 ${skipped} 条无效数据`, `, skipped ${skipped} invalid`) : ''), {label:tr('撤销', 'Undo'), fn:undo});
     }
-    catch(err){ toast(err === 'size' ? tr('文件过大（上限 30MB）', 'File too large (max 30MB)') : tr('文件格式不正确', 'Invalid file format')); }
+    catch(err){ toast(err === 'size' ? tr('文件过大（上限 30MB）', 'File too large (max 30MB)') : tr('无法加载：', 'Cannot load: ')+(err?.message||tr('文件格式不正确','Invalid file format'))); }
   });
   e.target.value = '';
 };

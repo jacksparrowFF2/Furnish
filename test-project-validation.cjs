@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict'),P=require('./project-core.js'),D=require('./design-core.js');
+const plan={id:'p',bounds:{x:0,y:0,w:3000,h:3000},rooms:[],walls:[[0,0,100,3000,'b']],doors:[{rect:[0,500,100,1400],h:[50,500],c:[0,1],o:[1,0],len:900}],wins:[{rect:[0,2000,100,2900],sill:.9,head:2.4}]};
+const work={furniture:[],notes:[{id:'note',text:'标注',x:50,y:500,color:'paper',size:1}],demolished:[],open:{d:{0:{h:[50,500],c:[0,1],o:[1,0]}},w:{0:{sill:.45,head:2.2}}}};
+const payload={planId:'p',current:work,designs:[{name:'方案 A',work}],catalog:[]},clone=v=>JSON.parse(JSON.stringify(v));
+assert.deepEqual(P.unpack(P.pack(payload)),payload);assert.equal(P.previewPlan(payload,[plan]).wins[0].sill,.45);
+for(const bad of ['w-1','w1.5',1,'w01'])assert.throws(()=>P.validateWork({...work,demolished:[bad]}),/拆墙/);
+assert.throws(()=>P.previewPlan({...payload,current:{...work,demolished:['w9']}},[plan]),/当前方案.*w9/);
+assert.throws(()=>P.previewPlan({...payload,designs:[{name:'坏方案',work:{...work,demolished:['w9']}}]},[plan]),/坏方案.*w9/);
+assert.throws(()=>P.previewPlan({...payload,current:{...work,open:{w:{9:.9}}}},[plan]),/窗编号 9/);
+for(const open of [[],{d:[]},{w:{'-1':.9}},{d:{0:{h:[0],c:[1,0],o:[0,1]}}},{d:{0:{h:[0,0],c:[2,0],o:[0,1]}}},{d:{0:{h:[0,0],c:[1,0],o:[1,0]}}},{d:{0:{...work.open.d[0],rect:[0,0,1,1]}}}])assert.throws(()=>P.validateWork({...work,open}),/门窗|开启/);
+assert.throws(()=>P.previewPlan({...payload,current:{...work,open:{d:{0:{...work.open.d[0],h:[1000,1000]}}}}},[plan]),/铰链/);
+assert.throws(()=>P.validatePlanWork(plan,{...work,open:{d:{0:{...work.open.d[0],h:[50,800]}}}}),/不匹配/);
+assert.throws(()=>P.validatePlanWork(plan,{...work,open:{d:{0:{...work.open.d[0],c:[1,0],o:[0,1]}}}}),/不匹配/);
+for(const notes of [42,[{text:'a',x:null,y:0}],[{text:'a',x:'',y:0}],[{text:'a',x:'bad',y:0}],[{text:' ',x:0,y:0}],[{text:'x'.repeat(121),x:0,y:0}]])assert.throws(()=>P.validateWork({...work,notes}),/标注/);
+assert.throws(()=>P.validateWork({...work,notes:Array.from({length:2001},(_,i)=>({id:'n'+i,text:'标注',x:i,y:0}))}),/2000/);
+const legacy=[{text:'旧标注',x:'100',y:'-50'},{id:'same',text:'甲',x:0,y:0},{id:'same',text:'乙',x:1,y:1}],before=JSON.stringify(legacy),normalized=P.validateWork({...work,notes:legacy}).notes;
+assert.equal(normalized[0].x,100);assert.equal(normalized[0].size,1);assert.equal(normalized[0].color,'accent');assert.equal(new Set(normalized.map(n=>n.id)).size,3);assert.equal(JSON.stringify(legacy),before);
+assert.throws(()=>P.unpack(P.pack({...payload,designs:[{name:'标注损坏',work:{...work,notes:42}}]})),/标注损坏.*标注/);
+assert.throws(()=>P.unpack(P.pack({...payload,current:{...work,plan:'other'}})),/当前方案.*编号/);
+assert.throws(()=>P.unpack(P.pack({...payload,designs:[{name:'错户型',work:{...work,plan:'other'}}]})),/错户型.*编号/);
+const duplicates=D.restoreNotes([{id:'n1',x:0,y:0,text:'a'},{id:'n1',x:1,y:1,text:'b'},{id:'n2',x:2,y:2,text:'c'}],(()=>{let i=0;return()=> 'n'+ ++i;})());assert.deepEqual(duplicates.map(n=>n.id),['n1','n3','n2']);
+assert.equal(JSON.stringify(payload),JSON.stringify({planId:'p',current:work,designs:[{name:'方案 A',work}],catalog:[]}));
+const html=require('node:fs').readFileSync(__dirname+'/index.html','utf8'),plans=new Function(html.slice(html.indexOf('const R = (x0,y0,x1,y1)'),html.indexOf('let WALLS, WINS, DOORS, SLIDES, ROOMS, BOUNDS, PLAN;'))+';return PLANS;')();
+for(const plan of plans)for(const [i,d] of plan.doors.entries()){const axis=d.rect[2]-d.rect[0]>=d.rect[3]-d.rect[1]?0:1,h=[...d.h];h[axis]=Math.abs(h[axis]-d.rect[axis])<.01?d.rect[axis+2]:d.rect[axis];for(const v of [{h:d.h,c:d.c,o:d.o},{h:d.h,c:d.c,o:d.o.map(x=>-x)},{h,c:d.c.map(x=>-x),o:d.o}])P.validatePlanWork(plan,P.validateWork({furniture:[],open:{d:{[i]:v}}}));}
