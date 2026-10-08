@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict'),D=require('./design-core.js'),P=require('./project-core.js');
+const work={furniture:[],rooms:{},scene3d:D.sceneSettings({hour:16,night:true})};
+let designs=D.manageDesign([],'p1','create',{name:'A',work,now:1});
+work.scene3d.hour=12;assert.equal(designs[0].work.scene3d.hour,16);
+const original=JSON.stringify(designs);
+assert.throws(()=>D.manageDesign(designs,'p1','create',{name:' A ',work}),/同名/);assert.equal(JSON.stringify(designs),original);
+designs=D.manageDesign(designs,'p1','duplicate',{id:designs[0].id,name:'B',now:1});assert.notEqual(designs[0].id,designs[1].id);
+designs[1].work.scene3d.hour=8;assert.equal(designs[0].work.scene3d.hour,16);
+designs=D.manageDesign(designs,'p1','rename',{id:designs[0].id,name:'方案 A',note:'采光优先'});assert.equal(designs[0].work.designNote,'采光优先');
+designs=D.manageDesign(designs,'p1','update',{id:designs[0].id,work});assert.equal(designs[0].work.scene3d.hour,12);
+assert.throws(()=>D.manageDesign(designs,'p2','delete',{id:designs[0].id}),/不存在/);
+assert.throws(()=>D.manageDesign(designs,'p1','rename',{id:designs[0].id,name:'B'}),/同名/);
+assert.throws(()=>D.manageDesign(designs,'p1','create',{name:'broken',work:{furniture:[{}]}}),/家具/);
+const payload=P.unpack(P.pack({planId:'p1',current:work,designs,catalog:[]}));assert.deepEqual(payload.current.scene3d,work.scene3d);
+assert.throws(()=>P.validateWork({...work,scene3d:{...work.scene3d,hour:100}}),/三维/);
+assert.deepEqual(D.sceneSettings({hour:100,night:'yes'}),D.sceneSettings());
+designs=D.manageDesign(designs,'p1','delete',{id:designs[0].id});assert.equal(designs.length,1);assert.equal(designs[0].name,'B');
+// A distance edit cannot move furniture to another room through a solid divider.
+const plan={walls:[[-100,0,0,3000],[1900,0,2100,3000],[4000,0,4100,3000]],rooms:[{poly:[[0,0],[1900,0],[1900,3000],[0,3000]]},{poly:[[2100,0],[4000,0],[4000,3000],[2100,3000]]}],wins:[]};
+const item={id:'f',cx:1000,cy:1000,w:400,d:400,rot:30};
+assert.throws(()=>D.placeAtGap(plan,item,'left',2700),/路径被墙体阻挡/);
+console.log('Design management, scene persistence and swept placement checks passed');
