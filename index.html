@@ -2037,7 +2037,7 @@ const TYPE_PRICE = {};
 LIB.forEach(c => c.items.forEach(i => TYPE_PRICE[i[0]] ??= i[5]));
 const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} for (const c of libAll()) for (const i of c.items) if (i[0] === f.type && i[1] === f.name) return i; return null; };
 // 单价：家具上手动填写的优先，其次是同名库存条目，最后按类型估算
-const priceOf = f => f.price ?? libItem(f)?.[5] ?? TYPE_PRICE[f.type] ?? 0;
+const priceOf = f => f.price ?? f.referencePrice ?? libItem(f)?.[5] ?? TYPE_PRICE[f.type] ?? 0;
 
 let _n = 1;
 const uid = () => 'f' + Date.now().toString(36) + (_n++);
@@ -2912,7 +2912,7 @@ function furnPanel(f){
     </div>
     <div class="actions">
       <button class="btn" data-act="dup">${ico('copy')}${tr('复制','Duplicate')}</button>
-      <button class="btn" data-act="resetItem">${ico('reset')}${tr('恢复默认','Reset item')}</button>
+      <button class="btn" id="full-product-details">完整家具资料</button><button class="btn" data-act="resetItem">${ico('reset')}${tr('恢复默认','Reset item')}</button>
       <button class="btn" data-act="zoom">${ico('target')}${tr('定位','Zoom to')}</button>
       <button class="btn danger" data-act="del">${ico('trash')}${tr('删除','Delete')}</button>
       <button class="btn" data-act="home">${tr('← 返回','← Back')}</button>
@@ -2920,7 +2920,7 @@ function furnPanel(f){
   <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右下角方块改尺寸；Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps to other items with guides); drag the top dot to rotate, the corner square to resize; Shift+click to multi-select, right-click for more.')}</section>`;
 }
 function bindFurnPanel(f){
-  window.FurnishDesignUI?.bindPlacement(f);
+  window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
   const num = (id, fn) => { const el = $(id); if (el) el.onchange = e => {const v=Number(e.target.value);try{if(!e.target.value.trim()||!Number.isFinite(v))throw Error('请输入有效数字');if(['#fW','#fD','#fH','#fX','#fY','#fR'].includes(id)&&getF(f.id).locked)throw Error('家具已锁定，请先解锁');upd(g=>fn(g,v));}catch(error){toast(error.message);renderPanel();}}; };
   $('#fName').onchange = e => upd(g => g.name = e.target.value.trim() || g.name);
