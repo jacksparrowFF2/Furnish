@@ -45,6 +45,7 @@
   (plan.wins||[]).forEach(w=>{if(w.bayGroup){const r=plan.rooms.find(r=>r.id===w.bayGroup);if(r)r.height=w.sill;}});
   return plan;
  }
+ function previewPlan(payload,plans){const base=payload.current.architecture?core().build(payload.current.architecture.draft):plans.find(p=>p.id===payload.planId);if(!base)fail('文件引用了不存在的户型');return effectivePlan(base,payload.current);}
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify([issue,passage,plan.rooms.map(r=>[r.id,r.poly]),plan.walls,plan.doors,furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance])]);}
  function review(plan,work){const passage=work.spaceThreshold||800,issues=spaceCheck(plan,work.furniture,{passage}),ignored=new Set(work.spaceIgnored||[]);return issues.map(v=>({...v,ignored:ignored.has(checkFingerprint(v,plan,work.furniture,passage))}));}
  function openingSchedule(plan,work){
@@ -126,6 +127,7 @@
  function validateWork(work){
   if(!work||!Array.isArray(work.furniture)||work.furniture.length>2000)fail('家具数据无效');const w=clone(work),ids=new Set();
   for(const f of w.furniture){if(!f||typeof f.id!=='string'||ids.has(f.id)||![f.cx,f.cy,f.w,f.d,f.rot].every(num)||f.w<=0||f.d<=0||f.w>20000||f.d>20000)fail('家具尺寸或编号无效');ids.add(f.id);if(f.price!==undefined&&(!num(f.price)||f.price<0||f.price>1e7)||f.h!==undefined&&(!num(f.h)||f.h<=0||f.h>20000))fail('家具价格或高度无效');if(f.frontClearance!==undefined&&(!num(f.frontClearance)||f.frontClearance<0||f.frontClearance>3000))fail('家具使用空间无效');if(f.obj){if(!Array.isArray(f.obj.positions)||!f.obj.positions.length||f.obj.positions.length>180000||f.obj.positions.length%9||f.obj.positions.some(v=>!num(v)||Math.abs(v)>1e9))fail('模型数据无效');for(let axis=0;axis<3;axis++){const values=f.obj.positions.filter((v,i)=>i%3===axis);if(Math.max(...values)-Math.min(...values)<1e-9)fail('模型必须具有三维尺寸');}}}
+  for(const f of w.furniture){if(f.catalogId!==undefined&&(typeof f.catalogId!=='string'||!f.catalogId||f.catalogId.length>200))fail('家具来源编号无效');if(f.catalogDetached!==undefined&&typeof f.catalogDetached!=='boolean')fail('家具来源状态无效');if(f.catalogSnapshot){const c=f.catalogSnapshot;if(typeof c.name!=='string'||!c.name||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0||c.price>1e7||!['rect','round'].includes(c.shape)||typeof c.color!=='string'||!/^#[0-9a-f]{3,8}$/i.test(c.color)||['brand','model'].some(k=>typeof c[k]!=='string'||c[k].length>500))fail('家具原始规格无效');}}
   if(w.measures!==undefined&&(!Array.isArray(w.measures)||w.measures.length>2000||w.measures.some(m=>!m||[m.a,m.b].some(p=>!p||![p.x,p.y].every(num)))))fail('测量线数据无效');
   if(w.architecture)w.architecture=architecture(w.architecture);if(w.renovation)extraCosts(w.renovation,{net:0,paint:0,removed:0,added:0});
   if(w.rooms){if(typeof w.rooms!=='object'||Array.isArray(w.rooms))fail('房间设置无效');for(const r of Object.values(w.rooms)){if(!r||r.use!==undefined&&!Object.hasOwn(design().uses,r.use))fail('房间用途无效');}}
@@ -139,6 +141,21 @@
   if(w.assets!==undefined&&(!Array.isArray(w.assets)||w.assets.length>5||w.assets.some(a=>!a||typeof a.name!=='string'||a.name.length>150||typeof a.data!=='string'||a.data.length>2700000||!(/^[A-Za-z0-9+/]*={0,2}$/.test(a.data)))))fail('项目附件无效');
   return w;
  }
+ function mergeCatalog(existing,input,makeId){
+  const catalog=clone(existing),payload=clone(input),mapping=new Map(),reserved=new Set(catalog.map(c=>c.id));
+  const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>[k,canonical(v[k])])):v;
+  const key=c=>JSON.stringify(canonical({...c,id:undefined}));
+  const byContent=new Map();for(const c of catalog)if(!byContent.has(key(c)))byContent.set(key(c),c);
+  for(const c of payload.catalog){if(c.id&&mapping.has(c.id))fail('家具库编号重复');const signature=key(c);let local=byContent.get(signature);if(!local){let id;do{id=makeId();}while(reserved.has(id));reserved.add(id);local={...c,id};catalog.push(local);byContent.set(signature,local);}if(c.id)mapping.set(c.id,local);}
+  if(catalog.length>500)fail('合并家具库超过 500 条，请精简当前家具库或使用空浏览器导入');
+  for(const work of [payload.current,...payload.designs.map(d=>d.work)])for(const f of work.furniture){
+   if(!['custom','customround'].includes(f.type))continue;
+   const source=design().catalogSource(f,payload.catalog),local=source&&(mapping.get(source.id)||byContent.get(key(source)));
+   if(local){f.catalogId=local.id;f.catalogSnapshot=design().catalogSnapshot(local);delete f.catalogDetached;}
+   else {delete f.catalogId;if(!f.catalogSnapshot)f.catalogDetached=true;}
+  }
+  return {catalog,payload};
+ }
  function pack(payload){return {format:'furnish-project',version:1,createdAt:new Date().toISOString(),checksum:checksum(payload),payload:clone(payload)};}
  function historyEntries(entries){const counts=new Map(),result=[];for(const entry of [...entries].sort((a,b)=>(b?.ts||0)-(a?.ts||0))){if(!entry||typeof entry.planId!=='string'||!num(entry.ts)||!entry.data||result.some(v=>v.ts===entry.ts&&v.planId===entry.planId))continue;const count=counts.get(entry.planId)||0;if(count>=8)continue;counts.set(entry.planId,count+1);result.push(entry);if(result.length===64)break;}return result;}
  function recoveryEntry(entries,planId,work,reason,now=Date.now()){
@@ -149,8 +166,8 @@
  function copyProject(input,id){const p=clone(input);if(!/^custom_[a-z0-9_]+$/.test(id)||!p.current.architecture)fail('只能复制自定义户型');p.planId=id;for(const w of [p.current,...p.designs.map(d=>d.work)]){w.plan=id;const a=w.architecture;if(!a)fail('方案缺少自定义户型');a.draft.id=id;if(a.baseline)a.baseline.id=id;for(const d of a.originalRevisions||[])d.id=id;}for(const d of p.designs)d.planId=id;return p;}
  function unpack(input){let data=clone(input);if(data.format==='furnish-project'){if(data.version!==1)fail('不支持的项目版本');if(checksum(data.payload)!==data.checksum)fail('项目完整性校验失败，文件可能被修改或损坏');data=data.payload;}else if(Array.isArray(data.furniture)){data={planId:data.plan,current:data,designs:[],catalog:[]};}else fail('不是 Furnish 项目文件');
   if(!data||typeof data.planId!=='string'||!Array.isArray(data.designs)||data.designs.length>100||!Array.isArray(data.catalog)||data.catalog.length>500)fail('项目结构无效');data.current=validateWork(data.current);data.designs=data.designs.map(d=>{if(typeof d.name!=='string'||d.name.length>80)fail('方案名称无效');return {...d,work:validateWork(d.work)};});if(data.current.architecture){const id=data.current.architecture.draft.id;if(id!==data.planId||data.designs.some(d=>d.work.architecture?.draft.id!==id))fail('方案户型不一致');}
-  for(const c of data.catalog){if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
+  const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,csv,historyEntries,recoveryEntry,mergeDesigns,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
+ root.FurnishProject={architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

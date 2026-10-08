@@ -34,6 +34,22 @@
   const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{f.id=makeId();f.cx+=delta[0];f.cy+=delta[1];delete f.locked;});
   return {items,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
+ function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}
+ function catalogSource(f,catalog){
+  if(f.catalogId)return catalog.find(c=>c.id===f.catalogId)||f.catalogSnapshot||null;
+  if(f.catalogSnapshot)return f.catalogSnapshot;
+  if(f.catalogDetached)return null;
+  const candidates=catalog.filter(c=>c.name===f.name&&(c.shape==='round'?'customround':'custom')===f.type);
+  if(candidates.length===1)return candidates[0];
+  const exact=candidates.filter(c=>c.w===f.w&&c.d===f.d&&(f.h===undefined||c.h===f.h)&&(!f.brand||c.brand===f.brand)&&(!f.model||c.model===f.model));
+  return exact.length===1?exact[0]:null;
+ }
+ function restoreFurniture(list,{makeId,colorFor}){
+  const valid=(Array.isArray(list)?list:[]).filter(f=>f&&typeof f==='object'&&[f.cx,f.cy].every(Number.isFinite)&&Number.isFinite(Number(f.w))&&Number.isFinite(Number(f.d))&&Number(f.w)>0&&Number(f.d)>0),ids=new Set(),reserved=new Set(valid.map(f=>f.id));return valid.map(item=>{
+   const f={...item,w:Number(item.w),d:Number(item.d)};if(typeof f.id!=='string'||!f.id||ids.has(f.id)){do{f.id=makeId();}while(ids.has(f.id)||reserved.has(f.id));}ids.add(f.id);
+   f.type=typeof f.type==='string'?f.type:'custom';f.name=typeof f.name==='string'?f.name:'家具';f.rot=Number.isFinite(f.rot)?f.rot:0;f.color=typeof f.color==='string'&&/^#[0-9a-f]{3,8}$/i.test(f.color)?f.color:colorFor(f.type);return f;
+  });
+ }
  function deliveryBounds(base,boxes,padding=250){
   const valid=boxes.filter(b=>b.length===4&&b.every(Number.isFinite)&&b[2]>=b[0]&&b[3]>=b[1]);
   const x=Math.min(base.x,...valid.map(b=>b[0]-padding)),y=Math.min(base.y,...valid.map(b=>b[1]-padding)),right=Math.max(base.x+base.w,...valid.map(b=>b[2]+padding)),bottom=Math.max(base.y+base.h,...valid.map(b=>b[3]+padding));return {x,y,w:right-x,h:bottom-y};
@@ -87,6 +103,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,pasteFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

@@ -2035,7 +2035,7 @@ const libAll = () => store.custom?.length
 const typeColor = t => { for (const c of LIB) for (const i of c.items) if (i[0]===t) return i[4]; return '#d9d2c5'; };
 const TYPE_PRICE = {};
 LIB.forEach(c => c.items.forEach(i => TYPE_PRICE[i[0]] ??= i[5]));
-const libItem = f => { for (const c of libAll()) for (const i of c.items) if (i[0] === f.type && i[1] === f.name) return i; return null; };
+const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} for (const c of libAll()) for (const i of c.items) if (i[0] === f.type && i[1] === f.name) return i; return null; };
 // 单价：家具上手动填写的优先，其次是同名库存条目，最后按类型估算
 const priceOf = f => f.price ?? libItem(f)?.[5] ?? TYPE_PRICE[f.type] ?? 0;
 
@@ -2066,22 +2066,9 @@ function fixWork(s, p){
   s.scene3d = FurnishDesign.sceneSettings(s.scene3d);
   return s;
 }
-// 修复存档 / 导入数据：丢弃缺字段的条目；坐标异常或落在画布范围外的家具移回最大房间中央
-// （旧版本拖出墙外、推离墙体时可能把家具推到看不见的地方，表现为「家具消失」）
-let rescued = 0;
+// 修复缺字段的旧数据，但保留有效坐标；范围外家具由用户主动移回。
 function sanitizeFurn(list, p){
-  const b = p.bounds, num = v => typeof v === 'number' && isFinite(v);
-  const home = p.rooms.filter(r => r.counted !== false).map(r => {
-    const xs = r.poly.map(q => q[0]), ys = r.poly.map(q => q[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
-    return {x:(x0+x1)/2, y:(y0+y1)/2, a:(x1-x0)*(y1-y0)};
-  }).sort((a, c) => c.a - a.a)[0];
-  return (Array.isArray(list) ? list : []).filter(f => f && typeof f === 'object' && num(f.cx) && num(f.cy) && f.w > 0 && f.d > 0).map(f => {
-    f.id = typeof f.id === 'string' && f.id ? f.id : uid();
-    f.type = typeof f.type === 'string' ? f.type : 'custom'; f.name = typeof f.name === 'string' ? f.name : '家具';
-    f.rot = num(f.rot) ? f.rot : 0; f.color = typeof f.color === 'string' && /^#[0-9a-f]{3,8}$/i.test(f.color) ? f.color : typeColor(f.type);
-    if (home && (f.cx < b.x || f.cx > b.x + b.w || f.cy < b.y || f.cy > b.y + b.h)){ f.cx = Math.round(home.x); f.cy = Math.round(home.y); rescued++; }
-    return f;
-  });
+  return FurnishDesign.restoreFurniture(list,{makeId:uid,colorFor:typeColor});
 }
 const STORE = 'huxing-design-v2';
 function loadStore(){
@@ -3218,10 +3205,11 @@ function orderSel(top){
 }
 // 恢复库中默认尺寸与颜色（自定义家具按「我的家具」中的定义）
 function resetItemSel(){
-  const items = movable(selItems()); if (!items.length) return;
-  let values;try{values=items.map(f=>{const it=libItem(f);return it?{...FurnishDesign.resizeFurniture(f,{w:it[2],d:it[3]}),color:it[4]}:{...f};});}catch(e){return toast(e.message);}
-  mutate(() => items.forEach((f,i) => { Object.assign(f,values[i]); delete f.flip; delete f.price; }));
-  toast(tr('已恢复默认尺寸与颜色', 'Default size and color restored'));
+  const items=movable(selItems());if(!items.length)return;
+  let values;try{values=items.map(f=>{const it=libItem(f);return it?{f,value:{...FurnishDesign.resizeFurniture(f,{w:it[2],d:it[3],...(it[6]!==undefined?{h:it[6]}:{})}),color:it[4]}}:null;}).filter(Boolean);}catch(e){return toast(e.message);}
+  if(!values.length)return toast(tr('找不到明确的原始规格，请在家具资料中手动编辑。','Original specifications unavailable; edit the product manually.'));
+  mutate(()=>values.forEach(({f,value})=>{Object.assign(f,value);delete f.flip;delete f.price;}));
+  toast(tr('已恢复默认尺寸、颜色与参考价格'+(values.length<items.length?'；来源不明确的家具已跳过。':''),'Default specifications restored; unresolved sources skipped.'));
 }
 // 对齐 / 分布 / 等尺寸（多选）：以外包盒为准，锁定的家具作为参照不动
 function alignSel(mode){
@@ -3322,7 +3310,7 @@ function addItem(it, x, y){
   if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
   if (type === 'custom' || type === 'customround'){ f.price = price; f.h = h; }   // 自定义家具删除定义后仍保留单价与高度
-  if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
+  if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
   pushOut(f);
   mutate(() => state.furniture.push(f));
   selectIds([f.id]);
@@ -3824,7 +3812,7 @@ function openCustom(){
     </div>`,
     actions:[{label:tr('取消', 'Cancel')}, {label:tr('保存并添加', 'Save & add'), cls:'primary', fn:() => {
       const v = id => $('#' + id).value, n = id => Math.round(+v(id));
-      const c = {id:'c' + Date.now().toString(36), name:v('cN').trim().slice(0,80) || tr('自定义家具', 'Custom item'), w:n('cW'), d:n('cD'), h:n('cH'), shape:v('cS'), color:v('cC'), price:Math.max(0, n('cP') || 0)};
+      const c = {id:'c' + uid(), name:v('cN').trim().slice(0,80) || tr('自定义家具', 'Custom item'), w:n('cW'), d:n('cD'), h:n('cH'), shape:v('cS'), color:v('cC'), price:Math.max(0, n('cP') || 0)};
       if (!(c.w >= 50 && c.d >= 50 && c.w <= 20000 && c.d <= 20000 && c.h > 0 && c.h <= 20000 && c.price <= 1e7)){ toast(tr('尺寸需在 50–20000 mm 之间', 'Size must be 50–20000 mm')); return false; }
       if((store.custom||[]).length>=500)return toast(tr('家具库最多 500 个自定义条目。','Up to 500 custom catalog entries.'));
       (store.custom ||= []).push(c); save();
@@ -3837,10 +3825,10 @@ function openCustom(){
 }
 
 /* ======================= 家具库 ======================= */
-const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Math.max(w,d)*.08;
+const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Math.max(w,d)*.08, source=cid?store.custom.find(c=>c.id===cid):null;
   return `<div class="item ${cid ? 'custom' : ''}" data-key="${ci}:${ii}" title="${tr('点击添加，或拖到平面图中的指定位置', 'Click to add, or drag onto the plan')}${price ? ` · ¥${price}` : ''}">
-    ${cid ? `<button class="del" data-cdel="${cid}" title="${tr('从「我的家具」删除', 'Remove from My Items')}">${ico('x')}</button>` : ''}
-    <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col)}</svg><b>${esc(nm(n))}</b><small>${w}×${d}</small></div>`; };
+    ${cid ? `<button class="del" style="z-index:1" data-cdel="${cid}" title="${tr('从「我的家具」删除', 'Remove from My Items')}">${ico('x')}</button>` : ''}
+    <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col)}</svg><b>${esc(nm(n))}</b><small>${w}×${d}${source?`×${source.h}`:''}</small>${source&&(source.brand||source.model)?`<small>${esc([source.brand,source.model].filter(Boolean).join(' · '))}</small>`:''}</div>`; };
 function buildLib(){
   const q = libUI.q.trim().toLowerCase();
   let html = (libUI.cat === 'all' && !q) ? recentsHTML() : '';
@@ -3862,10 +3850,11 @@ function buildLib(){
   }));
   document.querySelectorAll('#lib [data-cdel]').forEach(b => b.onclick = e => {
     e.stopPropagation();
-    if (!confirm(tr('从「我的家具」中删除该定义？已摆放的家具不受影响。', 'Remove this item from My Items? Placed copies are kept.'))) return;
-    store.custom = store.custom.filter(c => c.id !== b.dataset.cdel); save();
-    if (!store.custom.length && libUI.cat === CUSTOM_CAT) libUI.cat = 'all';
-    buildCats(); buildLib();
+    openDialog({title:tr('删除家具库条目','Delete catalog item'),body:'<p>'+tr('已摆放家具会保留。可识别来源的家具也会保留原始规格与参考价格。','Placed furniture and identified original specifications are retained.')+'</p>',actions:[{label:tr('取消','Cancel')},{label:tr('删除库条目','Delete catalog item'),cls:'danger',fn:()=>{
+      const c=store.custom.find(c=>c.id===b.dataset.cdel);
+      const retain=work=>{for(const f of work?.furniture||[])if(FurnishDesign.catalogSource(f,store.custom)===c){f.catalogId=c.id;f.catalogSnapshot=FurnishDesign.catalogSnapshot(c);}};
+      if(c){[state,...Object.values(store.work||{}),...(store.designs||[]).map(d=>d.work),...hist.map(h=>h.data)].forEach(retain);for(const stack of [undoStack,redoStack])for(let i=0;i<stack.length;i++){const work=JSON.parse(stack[i]);retain(work);stack[i]=JSON.stringify(work);}persistHistory();}store.custom=store.custom.filter(c=>c.id!==b.dataset.cdel);save();if(!store.custom.length&&libUI.cat===CUSTOM_CAT)libUI.cat='all';buildCats();buildLib();return true;
+    }}]});
   });
 }
 const itemOf = el => { const [ci, ii] = el.dataset.key.split(':').map(Number); return libAll()[ci].items[ii]; };
@@ -4177,19 +4166,18 @@ $('#printPlan').onclick = () => window.print();
 /* ======================= 家具库：搜索 / 分类 / 最近使用 ======================= */
 const libUI = {q:'', cat:'all'};
 const RECENT_KEY = 'huxing-recent';
-let recents = (() => { try { const r = JSON.parse(localStorage.getItem(RECENT_KEY));
-  return Array.isArray(r) ? r.filter(n => libAll().some(c => c.items.some(i => i[1] === n))) : []; } catch(e) { return []; } })();
-const findItem = n => { const L = libAll(); for (let ci = 0; ci < L.length; ci++){ const ii = L[ci].items.findIndex(i => i[1] === n); if (ii >= 0) return [ci, ii]; } return null; };
+const recentKey = n => typeof n==='string'?'legacy:'+n:n.catalogId?'catalog:'+n.catalogId:n.type+':'+n.name;
+const findItem = n => { const matches=[];libAll().forEach((c,ci)=>c.items.forEach((it,ii)=>{if(typeof n==='string'?it[1]===n:n.catalogId?it[7]===n.catalogId:it[0]===n.type&&it[1]===n.name)matches.push([ci,ii]);}));return matches.length===1?matches[0]:null; };
+let recents = (() => { try { const r=JSON.parse(localStorage.getItem(RECENT_KEY));return Array.isArray(r)?r.filter(n=>n&&(typeof n==='string'||typeof n==='object')&&findItem(n)).slice(0,8):[]; }catch(e){return [];} })();
 function recentsHTML(){
-  const cards = recents.map(findItem).filter(Boolean).map(([ci,ii]) => itemCard(LIB[ci].items[ii], ci, ii)).join('');
-  return cards ? `<div id="recentSec"><h4>${tr('最近使用', 'Recent')}</h4><div class="lib-grid">${cards}</div></div>` : '';
+  const L=libAll(),cards=recents.map(findItem).filter(Boolean).map(([ci,ii])=>itemCard(L[ci].items[ii],ci,ii)).join('');
+  return cards?'<div id="recentSec"><h4>'+tr('最近使用','Recent')+'</h4><div class="lib-grid">'+cards+'</div></div>':'';
 }
 function pushRecent(it){
-  recents = [it[1], ...recents.filter(n => n !== it[1])].slice(0, 8);
-  try { localStorage.setItem(RECENT_KEY, JSON.stringify(recents)); } catch(e) {}
-  const sec = $('#recentSec');
-  if (sec) sec.outerHTML = recentsHTML();
-  else if (libUI.cat === 'all' && !libUI.q.trim()) buildLib();
+  const entry={type:it[0],name:it[1],...(it[7]?{catalogId:it[7]}:{})};
+  recents=[entry,...recents.filter(n=>recentKey(n)!==recentKey(entry))].slice(0,8);
+  try{localStorage.setItem(RECENT_KEY,JSON.stringify(recents));}catch(e){}
+  const sec=$('#recentSec');if(sec)sec.outerHTML=recentsHTML();else if(libUI.cat==='all'&&!libUI.q.trim())buildLib();
 }
 function buildCats(){
   const cats = ['all', ...libAll().map(c => c.cat)];
@@ -4305,16 +4293,14 @@ $('#fileIn').onchange = e => {
       const meshItems=s.furniture.filter(f=>f?.obj);if(meshItems.length)FurnishProject.validateWork({furniture:meshItems.map(f=>({...f,id:f.id||uid(),rot:typeof f.rot==='number'?f.rot:0}))});
       registerCustomWork(s);
       if (s.plan && s.plan !== PLAN.id && PLANS.some(p => p.id === s.plan)) setPlan(s.plan);   // 方案属于其他户型时先切换
-      // 逐条校验：跳过无效条目、把位置异常的家具移回户型内，而不是整份拒收
-      const total = s.furniture.length; rescued = 0;
+      // 旧文件逐条校验：跳过无效条目，保留有效家具位置。
+      const total = s.furniture.length;
       const b = snap(); state = fixWork(s, PLAN);
       if (total && !state.furniture.length){ state = JSON.parse(b); throw 0; }
       ui.sel = null; commit(b); renderAll();
       const skipped = total - state.furniture.length;
       toast(tr(`方案已导入：${state.furniture.length} 件家具`, `Imported ${state.furniture.length} items`)
-        + (skipped ? tr(`，跳过 ${skipped} 条无效数据`, `, skipped ${skipped} invalid`) : '')
-        + (rescued ? tr(`，${rescued} 件移回户型内`, `, ${rescued} moved back inside`) : ''), {label:tr('撤销', 'Undo'), fn:undo});
-      rescued = 0;
+        + (skipped ? tr(`，跳过 ${skipped} 条无效数据`, `, skipped ${skipped} invalid`) : ''), {label:tr('撤销', 'Undo'), fn:undo});
     }
     catch(err){ toast(err === 'size' ? tr('文件过大（上限 30MB）', 'File too large (max 30MB)') : tr('文件格式不正确', 'Invalid file format')); }
   });
@@ -4349,7 +4335,6 @@ applyPlanData(); state.furniture = sanitizeFurn(state.furniture, PLAN);
 syncLayerBtns(); buildCats(); buildLib(); buildPlanList(); renderOpenings(); renderDims();
 $('#tip').textContent = TIPS()['2d'];
 fitView(); renderAll(); renderDesigns(); syncSaved();
-if (rescued){ save(); toast(tr(`已把 ${rescued} 件位置异常的家具移回户型内`, `Moved ${rescued} misplaced item(s) back into the plan`)); rescued = 0; }
 </script>
 <script src="floorplan-editor.js"></script>
 <script src="project-ui.js"></script>
