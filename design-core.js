@@ -35,6 +35,12 @@
   const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{if(!moved){let id;do{id=makeId();}while(used.has(id)||reserved.has(id));f.id=id;f.purchaseStatus='planned';delete f.locked;}used.add(f.id);f.cx+=delta[0];f.cy+=delta[1];});
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
+ function replaceFurniture(f,c){
+  const next=resizeFurniture(f,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
+  Object.assign(next,{type:c.type,name:c.name,color:c.color,brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',referencePrice:c.price,frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:''});
+  delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;if(c.h===undefined)delete next.h;
+  if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
+ }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}
  function catalogSource(f,catalog){
   if(f.catalogId)return catalog.find(c=>c.id===f.catalogId)||f.catalogSnapshot||null;
@@ -107,6 +113,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);
