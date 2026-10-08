@@ -91,29 +91,31 @@
  }
  const rect=r=>[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];
  function intersects(A,B){for(const P of [A,B])for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length],nx=b[1]-a[1],ny=a[0]-b[0],l=Math.hypot(nx,ny);if(!l)continue;const pa=A.map(p=>(p[0]*nx+p[1]*ny)/l),pb=B.map(p=>(p[0]*nx+p[1]*ny)/l);if(Math.max(...pa)<=Math.min(...pb)+5||Math.max(...pb)<=Math.min(...pa)+5)return false;}return true;}
- function spaceCheck(plan,furniture,{passage=800,focusId=null,scanPassages=true}={}){
+ function spaceCheck(plan,furniture,{passage=800,focusId=null,focusIds=null,scanPassages=true,maxIssues=Infinity}={}){
   if(!num(passage)||passage<300||passage>2000)fail('通道阈值须为 300–2000 mm');
+  const targets=focusIds?new Set(focusIds):focusId?new Set([focusId]):null;
   const ignored=new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
-  const bodies=furniture.filter(f=>!ignored.has(f.type)).map(f=>({f,p:polygon(f)})),walls=plan.walls.map(rect),issues=[];
+  const bodies=furniture.filter(f=>!ignored.has(f.type)).map(f=>{const p=polygon(f);return {f,p,box:[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))]};}),walls=plan.walls.map(rect),issues=[];
   const swings=[];
   (plan.doors||[]).forEach((d,index)=>{const points=[d.h];for(let i=0;i<=20;i++){const t=i/20*Math.PI/2;points.push([d.h[0]+d.len*(d.c[0]*Math.cos(t)+d.o[0]*Math.sin(t)),d.h[1]+d.len*(d.c[1]*Math.cos(t)+d.o[1]*Math.sin(t))]);}swings.push(points);for(const {f,p} of bodies)if(intersects(points,p))issues.push({kind:'door',doorIndex:index,id:f.id,name:f.name,message:'开门范围与家具冲突'});if(walls.some(w=>intersects(points,w)))issues.push({kind:'swingwall',doorIndex:index,name:d.name||'门 '+(index+1),message:'开门范围与墙体冲突'});});
   for(let i=0;i<swings.length;i++)for(let j=i+1;j<swings.length;j++)if(intersects(swings[i],swings[j]))issues.push({kind:'swings',doorIndex:i,name:(plan.doors[i].name||'门 '+(i+1))+' / '+(plan.doors[j].name||'门 '+(j+1)),message:'两扇门的开启范围重叠，请核对同时开门情况'});
   for(const {f,p} of bodies){
-   if(focusId&&f.id!==focusId)continue;
+   if(targets&&!targets.has(f.id))continue;
+   if(targets&&issues.filter(v=>targets.has(v.id)||targets.has(v.otherId)).length>=maxIssues)break;
    if(walls.some(w=>intersects(p,w)))issues.push({kind:'wall',id:f.id,name:f.name,message:'家具占用墙体空间'});
    if(plan.rooms.length&&!fitsInRooms(plan.rooms,p))issues.push({kind:'outside',id:f.id,name:f.name,message:'家具占地超出房间范围（含折角／凹口）'});
    const clearance=f.frontClearance??(/wardrobe|cabinet|dresser|custom/.test(f.type)?600:0);if(!clearance)continue;
    const a=f.rot*Math.PI/180,front={...f,cx:f.cx-Math.sin(a)*(f.d/2+clearance/2),cy:f.cy+Math.cos(a)*(f.d/2+clearance/2),d:clearance};const zone=polygon(front);
    if(walls.some(w=>intersects(zone,w))||bodies.some(b=>b.f.id!==f.id&&intersects(zone,b.p)))issues.push({kind:'front',id:f.id,name:f.name,message:`正面 ${clearance} mm 使用空间不足（柜门／抽屉）`});
   }
-  const pair=(a,b)=>{if(intersects(a.p,b.p))issues.push({kind:'overlap',id:a.f.id,otherId:b.f.id,name:a.f.name+' / '+b.f.name,message:'家具占地范围重叠，请核对实际摆放'});};
-  if(focusId){const selected=bodies.find(b=>b.f.id===focusId);if(selected)for(const b of bodies)if(b!==selected)pair(selected,b);}else for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++)pair(bodies[i],bodies[j]);
+  const pair=(a,b)=>{if(a.box[2]<=b.box[0]||b.box[2]<=a.box[0]||a.box[3]<=b.box[1]||b.box[3]<=a.box[1])return;if(intersects(a.p,b.p))issues.push({kind:'overlap',id:a.f.id,otherId:b.f.id,name:a.f.name+' / '+b.f.name,message:'家具占地范围重叠，请核对实际摆放'});};
+  if(targets){const selectedIssues=issues.filter(v=>targets.has(v.id)||targets.has(v.otherId));if(selectedIssues.length>=maxIssues)return selectedIssues.slice(0,maxIssues);groupPairs:for(let i=0;i<bodies.length;i++)if(targets.has(bodies[i].f.id))for(let j=0;j<bodies.length;j++)if(i!==j&&(!targets.has(bodies[j].f.id)||i<j)){const count=issues.length;pair(bodies[i],bodies[j]);if(issues.length>count)selectedIssues.push(issues[issues.length-1]);if(selectedIssues.length>=maxIssues)break groupPairs;}}else for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++)pair(bodies[i],bodies[j]);
   // Scan actual horizontal/vertical free intervals in rooms; these are candidate bottlenecks, not a pathfinding guarantee.
   for(const room of scanPassages?plan.rooms:[]){const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let narrow=null;
    for(const axis of [0,1]){const low=axis?x0:y0,high=axis?x1:y1;for(let fixed=low+200;fixed<high;fixed+=200){const cuts=[...(axis?ys:xs)];for(const {p} of bodies)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],other=1-axis;if((a[other]<=fixed&&b[other]>=fixed)||(b[other]<=fixed&&a[other]>=fixed)){if(a[other]!==b[other])cuts.push(a[axis]+(b[axis]-a[axis])*(fixed-a[other])/(b[other]-a[other]));}}const sorted=[...new Set(cuts)].sort((a,b)=>a-b);let run=0,start=0;for(let i=0;i<sorted.length-1;i++){const point=axis?[fixed,(sorted[i]+sorted[i+1])/2]:[(sorted[i]+sorted[i+1])/2,fixed];const free=inside(point,room.poly)&&!bodies.some(b=>inside(point,b.p));if(free){if(!run)start=sorted[i];run+=sorted[i+1]-sorted[i];}if((!free||i===sorted.length-2)&&run){if(run>=100&&run<passage&&(!narrow||run<narrow.width))narrow={width:run,at:axis?[fixed,start+run/2]:[start+run/2,fixed]};run=0;}}}}
    if(narrow)issues.push({kind:'passage',id:room.id,name:room.name,message:`候选狭窄间隙约 ${Math.round(narrow.width)} mm，低于自设 ${passage} mm 阈值`,at:narrow.at});
   }
-  return focusId?issues.filter(v=>v.id===focusId||v.otherId===focusId):issues;
+  return targets?issues.filter(v=>targets.has(v.id)||targets.has(v.otherId)):issues;
  }
  function parseOBJ(text){
   if(typeof text!=='string'||text.length>2e6)fail('OBJ 上限 2 MB');const vertices=[],positions=[];
@@ -124,6 +126,7 @@
  function validateWork(work){
   if(!work||!Array.isArray(work.furniture)||work.furniture.length>2000)fail('家具数据无效');const w=clone(work),ids=new Set();
   for(const f of w.furniture){if(!f||typeof f.id!=='string'||ids.has(f.id)||![f.cx,f.cy,f.w,f.d,f.rot].every(num)||f.w<=0||f.d<=0||f.w>20000||f.d>20000)fail('家具尺寸或编号无效');ids.add(f.id);if(f.price!==undefined&&(!num(f.price)||f.price<0||f.price>1e7)||f.h!==undefined&&(!num(f.h)||f.h<=0||f.h>20000))fail('家具价格或高度无效');if(f.frontClearance!==undefined&&(!num(f.frontClearance)||f.frontClearance<0||f.frontClearance>3000))fail('家具使用空间无效');if(f.obj){if(!Array.isArray(f.obj.positions)||!f.obj.positions.length||f.obj.positions.length>180000||f.obj.positions.length%9||f.obj.positions.some(v=>!num(v)||Math.abs(v)>1e9))fail('模型数据无效');for(let axis=0;axis<3;axis++){const values=f.obj.positions.filter((v,i)=>i%3===axis);if(Math.max(...values)-Math.min(...values)<1e-9)fail('模型必须具有三维尺寸');}}}
+  if(w.measures!==undefined&&(!Array.isArray(w.measures)||w.measures.length>2000||w.measures.some(m=>!m||[m.a,m.b].some(p=>!p||![p.x,p.y].every(num)))))fail('测量线数据无效');
   if(w.architecture)w.architecture=architecture(w.architecture);if(w.renovation)extraCosts(w.renovation,{net:0,paint:0,removed:0,added:0});
   if(w.rooms){if(typeof w.rooms!=='object'||Array.isArray(w.rooms))fail('房间设置无效');for(const r of Object.values(w.rooms)){if(!r||r.use!==undefined&&!Object.hasOwn(design().uses,r.use))fail('房间用途无效');}}
   if(w.furniture.some(f=>f.resizeAnchor!==undefined&&!Object.hasOwn(design().resizeAnchors,f.resizeAnchor)))fail('家具尺寸调整基准无效');

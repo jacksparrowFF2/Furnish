@@ -23,6 +23,26 @@
   const next={...f};for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
   const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return next;
  }
+ function pasteFurniture(clipboard,target,planBounds,makeId,available=2000){
+  if(!clipboard?.items?.length)throw Error('剪贴板没有家具');
+  if(clipboard.items.length>available)throw Error('每个方案最多 2000 件家具，请减少粘贴数量');
+  if(![clipboard.cx,clipboard.cy,target?.x,target?.y,planBounds?.x,planBounds?.y,planBounds?.w,planBounds?.h].every(Number.isFinite)||planBounds.w<=0||planBounds.h<=0)throw Error('粘贴位置或户型范围无效');
+  const boxes=clipboard.items.map(bounds),box=[Math.min(...boxes.map(b=>b[0])),Math.min(...boxes.map(b=>b[1])),Math.max(...boxes.map(b=>b[2])),Math.max(...boxes.map(b=>b[3]))];
+  // Clamp one common translation, never individual items, to preserve the layout.
+  const shift=(want,min,max,low,size)=>{const a=low-min,b=low+size-max;return a<=b?Math.max(a,Math.min(b,want)):low+size/2-(min+max)/2;};
+  const wanted=[target.x-clipboard.cx,target.y-clipboard.cy],delta=[shift(wanted[0],box[0],box[2],planBounds.x,planBounds.w),shift(wanted[1],box[1],box[3],planBounds.y,planBounds.h)];
+  const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{f.id=makeId();f.cx+=delta[0];f.cy+=delta[1];delete f.locked;});
+  return {items,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
+ }
+ function deliveryBounds(base,boxes,padding=250){
+  const valid=boxes.filter(b=>b.length===4&&b.every(Number.isFinite)&&b[2]>=b[0]&&b[3]>=b[1]);
+  const x=Math.min(base.x,...valid.map(b=>b[0]-padding)),y=Math.min(base.y,...valid.map(b=>b[1]-padding)),right=Math.max(base.x+base.w,...valid.map(b=>b[2]+padding)),bottom=Math.max(base.y+base.h,...valid.map(b=>b[3]+padding));return {x,y,w:right-x,h:bottom-y};
+ }
+ function measurementGeometry(m,textSize=180){
+  const {a,b}=m,length=Math.hypot(b.x-a.x,b.y-a.y);if(length<1)return null;
+  let angle=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;if(angle>90)angle-=180;else if(angle<-90)angle+=180;
+  return {length,angle,mx:(a.x+b.x)/2,my:(a.y+b.y)/2,nx:-(b.y-a.y)/length*textSize*.4,ny:(b.x-a.x)/length*textSize*.4,textSize};
+ }
  const dirs={left:[0,1],right:[0,-1],top:[1,1],bottom:[1,-1]};
  function wallGaps(plan,f){
   const box=bounds(f),out={};
@@ -67,6 +87,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,wallGaps,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,pasteFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

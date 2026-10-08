@@ -2434,9 +2434,9 @@ function renderFurn(){
       ? `<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>` : '';
     const body = furnSVG(f.type,f.w,f.d,f.color), flip = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
     const clash = ui.layers.collide && clashIds.has(f.id)
-      ? `<rect x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="url(#clash)" stroke="#d64532" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"/>` : '';
+      ? `<rect data-edit-overlay="clash" x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="url(#clash)" stroke="#d64532" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"/>` : '';
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
-    const lock = f.locked ? `<g transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    const lock = f.locked ? `<g data-edit-overlay="lock" transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
       <rect x="-45" y="-12" width="90" height="62" rx="12" fill="${PAL.ink}"/><path d="M-28 -12v-18a28 28 0 0 1 56 0v18" fill="none" stroke="${PAL.ink}" stroke-width="16"/></g>` : '';
     return `<g class="furn${f.locked ? ' locked' : ''}" data-fid="${f.id}" transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}>${flip}${clash}${label}${lock}</g>`;
   }).join('');
@@ -2952,6 +2952,7 @@ function multiPanel(items){
   return `<section><h3>${tr(`已选 ${items.length} 件家具`, `${items.length} items selected`)}</h3>
     <div class="stats"><div><small>${tr('整体尺寸','Group size')}</small><span class="big mid">${Math.round(x1-x0)} × ${Math.round(y1-y0)}</span></div>
       <div><small>${tr('参考价合计','Reference total')}</small><span class="big mid">${yen(cost)}</span></div></div>
+    ${window.FurnishDesignUI?.groupPlacementPanel(items)||''}
     <div class="lbl">${tr('对齐','Align')}</div>
     <div class="iconrow">${btn('al','al',tr('左对齐','Align left'))}${btn('ac','ac',tr('水平居中','Align centers horizontally'))}${btn('ar','ar',tr('右对齐','Align right'))}${btn('at','at',tr('顶对齐','Align top'))}${btn('am','am',tr('垂直居中','Align middles'))}${btn('ab','ab',tr('底对齐','Align bottom'))}</div>
     <div class="lbl">${tr('分布 · 尺寸 · 变换','Distribute · size · transform')}</div>
@@ -3102,6 +3103,7 @@ const ACT = {
   rotR:() => rotateSel(90), rotL:() => rotateSel(-90), flip:flipSel, lock:lockSel, dup:duplicateSel, del:deleteSel,
   copy:() => copySel(false), cut:() => copySel(true), paste:() => paste(ui.ctxAt), front:() => orderSel(true), toBack:() => orderSel(false),
   resetItem:resetItemSel, zoom:zoomSel, match:matchSizeSel, selAll:selectAll,
+  spaceCheck:()=>{FurnishWorkspace.open('space');$('#space-run').click();},
   al:() => alignSel('l'), ac:() => alignSel('c'), ar:() => alignSel('r'), at:() => alignSel('t'), am:() => alignSel('m'), ab:() => alignSel('b'),
   dh:() => distributeSel('h'), dv:() => distributeSel('v'),
   home:() => select(null), done:() => { select(null); closeDrawers(); }, prop:() => drawer('panel', true),
@@ -3217,7 +3219,8 @@ function orderSel(top){
 // 恢复库中默认尺寸与颜色（自定义家具按「我的家具」中的定义）
 function resetItemSel(){
   const items = movable(selItems()); if (!items.length) return;
-  mutate(() => items.forEach(f => { const it = libItem(f); if (it){ f.w = it[2]; f.d = it[3]; f.color = it[4]; } delete f.flip; delete f.price; }));
+  let values;try{values=items.map(f=>{const it=libItem(f);return it?{...FurnishDesign.resizeFurniture(f,{w:it[2],d:it[3]}),color:it[4]}:{...f};});}catch(e){return toast(e.message);}
+  mutate(() => items.forEach((f,i) => { Object.assign(f,values[i]); delete f.flip; delete f.price; }));
   toast(tr('已恢复默认尺寸与颜色', 'Default size and color restored'));
 }
 // 对齐 / 分布 / 等尺寸（多选）：以外包盒为准，锁定的家具作为参照不动
@@ -3241,25 +3244,28 @@ function distributeSel(axis){
 function matchSizeSel(){
   const main = getF(ui.sel?.id), items = movable(selItems()).filter(f => f !== main);
   if (!main || !items.length) return;
-  mutate(() => items.forEach(f => { f.w = main.w; f.d = main.d; }));
+  let values;try{values=items.map(f=>FurnishDesign.resizeFurniture(f,{w:main.w,d:main.d}));}catch(e){return toast(e.message);}
+  mutate(() => items.forEach((f,i) => Object.assign(f,values[i])));
   toast(tr(`已统一为 ${main.w} × ${main.d}`, `Matched to ${main.w} × ${main.d}`));
 }
 // 剪贴板：复制时记录相对整组中心的位置，粘贴到指针处（或在原位置偏移）
 let clip = null;
 function copySel(cut, quiet){
-  const items = selItems(); if (!items.length) return;
+  const selected=selItems(),items=cut?selected.filter(f=>!f.locked):selected;if(!items.length){if(cut)movable(selected);return;}
   const [x0,y0,x1,y1] = groupBox(items);
   clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items))};
   if (cut) deleteSel(); else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
 }
 function paste(at){
   if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
-  const p = at || {x:clip.cx + 300, y:clip.cy + 300};
-  if (!at){ clip.cx += 300; clip.cy += 300; }                 // 连续粘贴逐次错开
-  const b = BOUNDS, news = clip.items.map(f => { const n = {...f, id:uid(), cx:Math.round(f.cx - clip.cx + p.x), cy:Math.round(f.cy - clip.cy + p.y)};
-    delete n.locked; n.cx = Math.max(b.x, Math.min(b.x + b.w, n.cx)); n.cy = Math.max(b.y, Math.min(b.y + b.h, n.cy)); return n; });
+  const step=(clip.pastes||0)+1,p=at||{x:clip.cx+300*step,y:clip.cy+300*step};
+  let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length);}catch(e){return toast(e.message);}
+  const news=result.items;
   mutate(() => state.furniture.push(...news));
+  if(!at)clip.pastes=step;
   selectIds(news.map(f => f.id));
+  if(result.oversized)toast(tr('整组尺寸超出户型范围，已保留相对位置；请缩小尺寸或拆分布置。','The group exceeds plan bounds; its layout was preserved. Resize or split the group.'));
+  else if(result.adjusted)toast(tr('已将整组移入户型范围，保留相对位置；请核对墙体和房间边界。','Group moved within plan bounds without changing its layout; check walls and room boundaries.'));
 }
 function duplicateSel(){ if (!selIds().length) return; const keep = clip; copySel(false, true); paste(); clip = keep; }
 function zoomToBox([x0,y0,x1,y1], pad = 700){
