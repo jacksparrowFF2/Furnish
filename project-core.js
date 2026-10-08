@@ -74,6 +74,19 @@
  function previewPlan(payload,plans){const base=plans.find(p=>p.id===payload.planId);for(const [label,work] of [['当前方案',payload.current],...payload.designs.map(d=>['命名方案「'+d.name+'」',d.work])]){try{validatePlanWork(base,work);}catch(e){fail(label+'：'+e.message);}}return effectivePlan(base,payload.current);}
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify([issue,passage,plan.rooms.map(r=>[r.id,r.poly]),plan.walls,plan.doors,furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance])]);}
  function review(plan,work){const passage=work.spaceThreshold||800,issues=spaceCheck(plan,work.furniture,{passage}),ignored=new Set(work.spaceIgnored||[]);return issues.map(v=>({...v,ignored:ignored.has(checkFingerprint(v,plan,work.furniture,passage))}));}
+ function readiness(plan,work){
+  const items=[];
+  if(work.architecture?.phase==='survey')items.push({kind:'structure',name:'原始结构',message:'尚未确认原始墙体与门窗',action:'structure'});
+  for(const r of plan.rooms)if(r.counted!==false&&design().inferUse(r,work.rooms?.[r.id])==='unassigned')items.push({kind:'room',id:r.id,name:work.rooms?.[r.id]?.name||r.name,message:'房间用途未分类',action:'room'});
+  for(const f of work.furniture){
+   const missing=[];if(f.h===undefined)missing.push('高度');if(!f.brand?.trim())missing.push('品牌');if(!f.model?.trim())missing.push('型号');
+   if(missing.length)items.push({kind:'spec',id:f.id,name:f.name,message:'待补充：'+missing.join('、'),action:'product'});
+   if(f.price===undefined)items.push({kind:'price',id:f.id,name:f.name,message:'使用参考价格，尚未录入确认单价',action:'product'});
+  }
+  for(const issue of review(plan,work))items.push({...issue,kind:'space',issue,action:'space'});
+  const pending=items.filter(v=>!v.ignored),counts=Object.fromEntries(['structure','room','spec','price','space'].map(k=>[k,pending.filter(v=>v.kind===k).length]));
+  return {items,counts,pending:pending.length,reviewed:items.length-pending.length,ready:pending.length===0};
+ }
  function openingSchedule(plan,work){
   const width=o=>Math.round(Math.max(o.rect[2]-o.rect[0],o.rect[3]-o.rect[1])),rows=[],seen=new Set();
   (plan.doors||[]).forEach((d,i)=>rows.push({name:d.name||'门 '+(i+1),type:'平开门',width:width(d),height:2100,sill:0,depth:null,parts:1}));
@@ -146,7 +159,7 @@
   const pair=(a,b)=>{if(a.box[2]<=b.box[0]||b.box[2]<=a.box[0]||a.box[3]<=b.box[1]||b.box[3]<=a.box[1])return;if(intersects(a.p,b.p))issues.push({kind:'overlap',id:a.f.id,otherId:b.f.id,name:a.f.name+' / '+b.f.name,message:'家具占地范围重叠，请核对实际摆放'});};
   if(targets){const selectedIssues=issues.filter(v=>targets.has(v.id)||targets.has(v.otherId));if(selectedIssues.length>=maxIssues)return selectedIssues.slice(0,maxIssues);groupPairs:for(let i=0;i<bodies.length;i++)if(targets.has(bodies[i].f.id))for(let j=0;j<bodies.length;j++)if(i!==j&&(!targets.has(bodies[j].f.id)||i<j)){const count=issues.length;pair(bodies[i],bodies[j]);if(issues.length>count)selectedIssues.push(issues[issues.length-1]);if(selectedIssues.length>=maxIssues)break groupPairs;}}else for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++)pair(bodies[i],bodies[j]);
   // Scan actual horizontal/vertical free intervals in rooms; these are candidate bottlenecks, not a pathfinding guarantee.
-  for(const room of scanPassages?plan.rooms:[]){const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let narrow=null;
+  for(const room of scanPassages?plan.rooms.filter(r=>r.counted!==false):[]){const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let narrow=null;
    for(const axis of [0,1]){const low=axis?x0:y0,high=axis?x1:y1;for(let fixed=low+200;fixed<high;fixed+=200){const cuts=[...(axis?ys:xs)];for(const {p} of bodies)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],other=1-axis;if((a[other]<=fixed&&b[other]>=fixed)||(b[other]<=fixed&&a[other]>=fixed)){if(a[other]!==b[other])cuts.push(a[axis]+(b[axis]-a[axis])*(fixed-a[other])/(b[other]-a[other]));}}const sorted=[...new Set(cuts)].sort((a,b)=>a-b);let run=0,start=0;for(let i=0;i<sorted.length-1;i++){const point=axis?[fixed,(sorted[i]+sorted[i+1])/2]:[(sorted[i]+sorted[i+1])/2,fixed];const free=inside(point,room.poly)&&!bodies.some(b=>inside(point,b.p));if(free){if(!run)start=sorted[i];run+=sorted[i+1]-sorted[i];}if((!free||i===sorted.length-2)&&run){if(run>=100&&run<passage&&(!narrow||run<narrow.width))narrow={width:run,at:axis?[fixed,start+run/2]:[start+run/2,fixed]};run=0;}}}}
    if(narrow)issues.push({kind:'passage',id:room.id,name:room.name,message:`候选狭窄间隙约 ${Math.round(narrow.width)} mm，低于自设 ${passage} mm 阈值`,at:narrow.at});
   }
@@ -208,6 +221,6 @@
   for(const [label,work] of [['当前方案',data.current],...data.designs.map(d=>['命名方案「'+d.name+'」',d.work])])if(work.plan!==undefined&&work.plan!==data.planId)fail(label+'：方案户型编号与项目不一致');
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={pricing,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
+ root.FurnishProject={readiness,pricing,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);
