@@ -2716,7 +2716,7 @@ function overviewPanel(){
     </table>
     <div class="total"><span>${tr('粗估合计','Estimated total')}</span><b>${yen(B.total)}</b></div>
     <div class="comp" title="${tr('预算构成','Budget breakdown')}"><i class="c1" style="flex:${B.floor}"></i><i class="c2" style="flex:${B.paint}"></i><i class="c3" style="flex:${B.furn || .0001}"></i><i style="background:#8b78b5;flex:${B.renovation || .0001}"></i></div>
-    <div class="comp-l"><span><i class="c1"></i>${tr('地面','Floors')} ${Math.round(B.floor/B.total*100)}%</span><span><i class="c2"></i>${tr('墙面','Walls')} ${Math.round(B.paint/B.total*100)}%</span><span><i class="c3"></i>${tr('家具','Furniture')} ${Math.round(B.furn/B.total*100)}%</span><span><i style="background:#8b78b5"></i>${tr('工程','Renovation')} ${Math.round(B.renovation/B.total*100)}%</span></div>
+    <div class="comp-l"><span><i class="c1"></i>${tr('地面','Floors')} ${Math.round(B.total?B.floor/B.total*100:0)}%</span><span><i class="c2"></i>${tr('墙面','Walls')} ${Math.round(B.total?B.paint/B.total*100:0)}%</span><span><i class="c3"></i>${tr('家具','Furniture')} ${Math.round(B.total?B.furn/B.total*100:0)}%</span><span><i style="background:#8b78b5"></i>${tr('工程','Renovation')} ${Math.round(B.total?B.renovation/B.total*100:0)}%</span></div>
     <div class="actions"><button class="btn" data-tab="quote">${ico('coin')}${tr('报价明细','Quote details')}</button><button class="btn" data-act="csv">${ico('download')}${tr('导出 CSV','Export CSV')}</button></div></section>
   <section><h3>${tr('风格方案','Style Presets')} <small>${tr('一键统一家具配色与地面','recolor furniture & floors in one click')}</small></h3>${stylesHTML()}</section>
   <section><h3>${tr('房间面积','Room Areas')} <small>${tr('点击查看 / 更换地面','Click to view / change flooring')}</small></h3>
@@ -3719,7 +3719,9 @@ document.addEventListener('pointerdown', e => { if (!e.target.closest?.('#ctx'))
 addEventListener('resize', closeCtx);
 
 /* ======================= 对话框 ======================= */
+let dialogReturnFocus=null;
 function openDialog({title, body, actions = [], wide = false, onOpen}){
+  if($('#dlg').hidden)dialogReturnFocus=document.activeElement;
   $('#dlgTitle').textContent = title; $('#dlgBody').innerHTML = body;
   $('#dlg .dlg-box').classList.toggle('wide', wide);
   const A = $('#dlgActions');
@@ -3729,8 +3731,9 @@ function openDialog({title, body, actions = [], wide = false, onOpen}){
   onOpen?.();
   ($('#dlgBody input:not([type=checkbox])') || A.querySelector('.primary') || $('#dlgClose')).focus();
 }
-function closeDialog(){ $('#dlg').hidden = true; $('#dlgBody').innerHTML = ''; }
+function closeDialog(){ $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true}); }
 $('#dlgClose').onclick = closeDialog;
+$('#dlg').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeDialog();return;}if(e.key!=='Tab')return;const nodes=[...$('#dlg').querySelectorAll('button,a[href],input,select,textarea,[tabindex]')].filter(el=>!el.disabled&&el.tabIndex>=0&&el.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}e.stopPropagation();});
 $('#dlg').addEventListener('pointerdown', e => { if (e.target.id === 'dlg') closeDialog(); });
 $('#dlgBody').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('input')){ e.preventDefault(); $('#dlgActions .primary')?.click(); } });
 
@@ -5661,7 +5664,7 @@ function loop(){
 }
 
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
-function image(){if(!inited||anim)return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
+function image(){if(!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
 
 function relang(){ syncWalkTexts(); if (inited) buildLabels(); }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建

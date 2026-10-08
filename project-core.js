@@ -73,7 +73,12 @@
  }
  function previewPlan(payload,plans){const base=plans.find(p=>p.id===payload.planId);for(const [label,work] of [['当前方案',payload.current],...payload.designs.map(d=>['命名方案「'+d.name+'」',d.work])]){try{validatePlanWork(base,work);}catch(e){fail(label+'：'+e.message);}}return effectivePlan(base,payload.current);}
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify([issue,passage,plan.rooms.map(r=>[r.id,r.poly]),plan.walls,plan.doors,furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance])]);}
- function review(plan,work){const passage=work.spaceThreshold||800,issues=spaceCheck(plan,work.furniture,{passage}),ignored=new Set(work.spaceIgnored||[]);return issues.map(v=>({...v,ignored:ignored.has(checkFingerprint(v,plan,work.furniture,passage))}));}
+ function review(plan,work){
+  const passage=work.spaceThreshold||800,issues=spaceCheck(plan,work.furniture,{passage}),accepted=new Set();
+  // Compare shared geometry once per saved confirmation, not once per finding.
+  if(work.spaceIgnored?.length){const context=JSON.stringify([passage,plan.rooms.map(r=>[r.id,r.poly]),plan.walls,plan.doors,work.furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance])]);for(const key of work.spaceIgnored){try{const saved=JSON.parse(key);if(Array.isArray(saved)&&saved.length===6&&JSON.stringify(saved.slice(1))===context)accepted.add(JSON.stringify(saved[0]));}catch{ /* Legacy malformed confirmation is simply inactive. */ }}}
+  return issues.map(v=>({...v,ignored:accepted.has(JSON.stringify(v))}));
+ }
  function readiness(plan,work){
   const items=[];
   if(work.architecture?.phase==='survey')items.push({kind:'structure',name:'原始结构',message:'尚未确认原始墙体与门窗',action:'structure'});
