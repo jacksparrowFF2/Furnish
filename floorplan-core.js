@@ -24,6 +24,8 @@
     for (const o of d.openings) {
       if (!o || typeof o.id !== 'string' || openingIds.has(o.id) || !ids.has(o.wall) || !['door','window'].includes(o.kind) || !finite(o.t) || o.t < 0 || o.t > 1 || !finite(o.length) || o.length < 300 || o.length > 6000 || ![-1,1].includes(o.side) || typeof o.entry !== 'boolean') fail('Invalid opening');
       openingIds.add(o.id);
+      if(o.sill!==undefined&&(!finite(o.sill)||o.sill<0||o.sill>2400)||o.head!==undefined&&(!finite(o.head)||o.head<=0||o.head>2800)||(o.kind==='window'&&!o.bay&&(o.head??2400)<=(o.sill??900)))fail('窗台高须为0–2400 mm，窗顶高于窗台且不超过2800 mm');
+      if(o.bay!==undefined&&(!o.bay||o.kind!=='window'||!finite(o.bay.depth)||o.bay.depth<200||o.bay.depth>2000||!finite(o.bay.height)||o.bay.height<100||o.bay.height>1800||!finite(o.bay.head)||o.bay.head<=o.bay.height||o.bay.head>2800))fail('飘窗进深须为200–2000 mm，台高100–1800 mm，窗顶高于窗台且不超过2800 mm');
     }
     if (d.openings.filter(o => o.kind === 'door' && o.entry).length > 1) fail('Only one entry door is supported');
     return d;
@@ -100,7 +102,26 @@
         if(rects.some((q,j)=>j!==i && (horizontal ? Math.min(b,q[2])-Math.max(a,q[0])>0 && Math.min(r[3],q[3])-Math.max(r[1],q[1])>0 : Math.min(r[2],q[2])-Math.max(r[0],q[0])>0 && Math.min(b,q[3])-Math.max(a,q[1])>0))) fail('An opening overlaps a wall junction');
         if(a>pos){const segment=[...r];segment[axis]=pos;segment[axis+2]=a;walls.push(segment);wallRefs.push(w.id);}
         const opening=r.slice(0,4);opening[axis]=a;opening[axis+2]=b;
-        if(o.kind==='window'){wins.push({rect:opening,sill:0.9,head:2.4});winRefs.push(o.id);}
+        if(o.kind==='window'&&o.bay){
+          const normal=1-axis,c=[(opening[0]+opening[2])/2,(opening[1]+opening[3])/2];
+          const probe=side=>{const p=[...c];p[normal]+=side*(w.thickness/2+50);return rooms.filter(room=>room.counted!==false).some(room=>inside(p,room.poly));};
+          const plus=probe(1),minus=probe(-1);if(plus===minus)fail('飘窗必须放在房间与室外之间的外围墙上');
+          const side=plus?-1:1,frame=60,base=c[normal]+side*w.thickness/2,outer=base+side*o.bay.depth,front=outer-side*frame/2,inner=c[normal]-side*w.thickness/2;
+          const at=(along,out)=>{const p=[0,0];p[axis]=along;p[normal]=out;return p;};
+          const box=opening.slice();box[axis]=a-frame;box[axis+2]=b+frame;box[normal]=Math.min(inner,outer);box[normal+2]=Math.max(inner,outer);
+          const overlaps=(A,B)=>Math.min(A[2],B[2])-Math.max(A[0],B[0])>1e-6&&Math.min(A[3],B[3])-Math.max(A[1],B[1])>1e-6;
+          const outerBox=box.slice();outerBox[normal]=Math.min(base,outer);outerBox[normal+2]=Math.max(base,outer);
+          if(rects.some((q,j)=>j!==i&&(overlaps(opening,q)||overlaps(outerBox,q)))||rooms.filter(v=>v.counted===false).some(v=>overlaps(box,v.bayRect)))fail('飘窗与其他墙体或飘窗重叠');
+          if(rooms.filter(v=>v.counted!==false).some(v=>inside([(outerBox[0]+outerBox[2])/2,(outerBox[1]+outerBox[3])/2],v.poly)))fail('飘窗外凸区域不能进入其他房间');
+          rooms.push({id:'bay_'+o.id,name:'飘窗台',poly:[at(a,inner),at(b,inner),at(b,base),at(b+frame,base),at(b+frame,outer),at(a-frame,outer),at(a-frame,base),at(a,base)],mat:'marble',counted:false,bayRect:box,bayId:o.id,height:o.bay.height/1000});
+          const frontRect=opening.slice();frontRect[axis]=a-frame;frontRect[axis+2]=b+frame;frontRect[normal]=front-frame/2;frontRect[normal+2]=front+frame/2;
+          // The clear opening aligns with the side frames' inner edges;
+          // each frame attaches to the exterior face of the adjoining wall end.
+          const left=opening.slice(),right=opening.slice();for(const q of [left,right]){q[normal]=Math.min(base,outer);q[normal+2]=Math.max(base,outer);}
+          left[axis]=a-frame;left[axis+2]=a;right[axis]=b;right[axis+2]=b+frame;
+          for(const [part,q,line] of [['front',frontRect,[at(a-frame/2,front),at(b+frame/2,front)]],['left',left,[at(a-frame/2,base),at(a-frame/2,front)]],['right',right,[at(b+frame/2,base),at(b+frame/2,front)]]]){wins.push({rect:q,frameLine:line,sill:o.bay.height/1000,head:o.bay.head/1000,bayId:o.id,bayPart:part,paintRect:part==='front'?opening:null});winRefs.push(o.id+':'+part);}
+        }
+        else if(o.kind==='window'){wins.push({rect:opening,sill:(o.sill??900)/1000,head:(o.head??2400)/1000});winRefs.push(o.id);}
         else {
           let side=o.side;
           if(o.entry){
@@ -116,7 +137,8 @@
       }
       if(pos<hi){const segment=[...r];segment[axis]=pos;walls.push(segment);wallRefs.push(w.id);}
     });
-    const x0=Math.min(...rects.map(r=>r[0])),y0=Math.min(...rects.map(r=>r[1])),x1=Math.max(...rects.map(r=>r[2])),y1=Math.max(...rects.map(r=>r[3]));
+    const extents=rects.concat(wins.map(w=>w.rect));
+    const x0=Math.min(...extents.map(r=>r[0])),y0=Math.min(...extents.map(r=>r[1])),x1=Math.max(...extents.map(r=>r[2])),y1=Math.max(...extents.map(r=>r[3]));
     return {id:d.id,name:d.name.trim(),en:d.name.trim(),note:d.source==='dxf'?'自定义户型 · DXF 导入':'自定义户型 · 手工描图',noteEn:d.source==='dxf'?'Custom plan · DXF import':'Custom plan · manually traced',walls,wallRefs,doorRefs,winRefs,wins,doors,slides:[],rooms,dims:[{h:1,at:y0-700,start:x0,segs:[x1-x0]},{h:0,at:x0-700,start:y0,segs:[y1-y0]}],bounds:{x:x0-1600,y:y0-1600,w:x1-x0+3200,h:y1-y0+3200},defaults:[],customDraft:d};
   }
   function assertWallEditable(w){if(w?.kind==='b')fail('Bearing wall is locked');}

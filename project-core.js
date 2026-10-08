@@ -29,7 +29,7 @@
   const rooms=plan.rooms.filter(r=>r.counted!==false),net=rooms.reduce((n,r)=>n+area(r.poly),0),wall=rooms.reduce((n,r)=>n+perimeter(r.poly)*2.8,0);
   // Opening widths multiplied by their actual assumed vertical height, not plan-view wall depth.
   const deduction=(o,height)=>{const r=o.rect,width=r[2]-r[0],depth=r[3]-r[1],horizontal=width>=depth,center=[(r[0]+r[2])/2,(r[1]+r[3])/2],normal=horizontal?1:0,offset=Math.min(width,depth)/2+5;let faces=0;for(const side of [-1,1]){const p=[...center];p[normal]+=side*offset;if(rooms.some(room=>inside(p,room.poly)))faces++;}return Math.max(width,depth)/1000*height*Math.max(1,faces);};
-  const holes=(plan.doors||[]).reduce((n,o)=>n+deduction(o,2.1),0)+(plan.wins||[]).reduce((n,o)=>n+deduction(o,o.head-o.sill),0)+(plan.slides||[]).reduce((n,o)=>n+deduction(o,2.1),0);
+  const holes=(plan.doors||[]).reduce((n,o)=>n+deduction(o,2.1),0)+(plan.wins||[]).reduce((n,o)=>n+(o.bayId?(o.paintRect?deduction({...o,rect:o.paintRect},o.head-o.sill):0):deduction(o,o.head-o.sill)),0)+(plan.slides||[]).reduce((n,o)=>n+deduction(o,2.1),0);
   let removed=0,added=0;
   if(arch?.baseline){const c=changes(arch.baseline,arch.draft);const len=(w,d)=>Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*d.scale/1000;removed=c.removed.reduce((n,w)=>n+len(w,arch.baseline),0);added=c.added.reduce((n,w)=>n+len(w,arch.draft),0);}
   return {net,wall,paint:Math.max(0,wall-holes),removed,added,rooms:rooms.length};
@@ -81,16 +81,18 @@
   if(!work||!Array.isArray(work.furniture)||work.furniture.length>2000)fail('家具数据无效');const w=clone(work),ids=new Set();
   for(const f of w.furniture){if(!f||typeof f.id!=='string'||ids.has(f.id)||![f.cx,f.cy,f.w,f.d,f.rot].every(num)||f.w<=0||f.d<=0||f.w>20000||f.d>20000)fail('家具尺寸或编号无效');ids.add(f.id);if(f.price!==undefined&&(!num(f.price)||f.price<0||f.price>1e7)||f.h!==undefined&&(!num(f.h)||f.h<=0||f.h>20000))fail('家具价格或高度无效');if(f.frontClearance!==undefined&&(!num(f.frontClearance)||f.frontClearance<0||f.frontClearance>3000))fail('家具使用空间无效');if(f.obj){if(!Array.isArray(f.obj.positions)||!f.obj.positions.length||f.obj.positions.length>180000||f.obj.positions.length%9||f.obj.positions.some(v=>!num(v)||Math.abs(v)>1e9))fail('模型数据无效');for(let axis=0;axis<3;axis++){const values=f.obj.positions.filter((v,i)=>i%3===axis);if(Math.max(...values)-Math.min(...values)<1e-9)fail('模型必须具有三维尺寸');}}}
   if(w.architecture)w.architecture=architecture(w.architecture);if(w.renovation)extraCosts(w.renovation,{net:0,paint:0,removed:0,added:0});
+  for(const v of Object.values(w.open?.w||{})){if(typeof v==='number'){if(!num(v)||v<0||v>2.4)fail('窗台高无效');}else if(!v||!num(v.sill)||!num(v.head)||v.sill<0||v.head<=v.sill||v.head>2.8)fail('窗高度无效');}
   if(w.designNote!==undefined&&(typeof w.designNote!=='string'||w.designNote.length>500))fail('方案备注无效');
   if(w.spaceIgnored!==undefined&&(!Array.isArray(w.spaceIgnored)||w.spaceIgnored.length>100||w.spaceIgnored.some(v=>typeof v!=='string'||v.length>1000000)))fail('忽略提示数据无效');
   if(w.assets!==undefined&&(!Array.isArray(w.assets)||w.assets.length>5||w.assets.some(a=>!a||typeof a.name!=='string'||a.name.length>150||typeof a.data!=='string'||a.data.length>2700000||!(/^[A-Za-z0-9+/]*={0,2}$/.test(a.data)))))fail('项目附件无效');
   return w;
  }
  function pack(payload){return {format:'furnish-project',version:1,createdAt:new Date().toISOString(),checksum:checksum(payload),payload:clone(payload)};}
+ function copyProject(input,id){const p=clone(input);if(!/^custom_[a-z0-9_]+$/.test(id)||!p.current.architecture)fail('只能复制自定义户型');p.planId=id;for(const w of [p.current,...p.designs.map(d=>d.work)]){w.plan=id;const a=w.architecture;if(!a)fail('方案缺少自定义户型');a.draft.id=id;if(a.baseline)a.baseline.id=id;for(const d of a.originalRevisions||[])d.id=id;}for(const d of p.designs)d.planId=id;return p;}
  function unpack(input){let data=clone(input);if(data.format==='furnish-project'){if(data.version!==1)fail('不支持的项目版本');if(checksum(data.payload)!==data.checksum)fail('项目完整性校验失败，文件可能被修改或损坏');data=data.payload;}else if(Array.isArray(data.furniture)){data={planId:data.plan,current:data,designs:[],catalog:[]};}else fail('不是 Furnish 项目文件');
   if(!data||typeof data.planId!=='string'||!Array.isArray(data.designs)||data.designs.length>100||!Array.isArray(data.catalog)||data.catalog.length>500)fail('项目结构无效');data.current=validateWork(data.current);data.designs=data.designs.map(d=>{if(typeof d.name!=='string'||d.name.length>80)fail('方案名称无效');return {...d,work:validateWork(d.work)};});if(data.current.architecture){const id=data.current.architecture.draft.id;if(id!==data.planId||data.designs.some(d=>d.work.architecture?.draft.id!==id))fail('方案户型不一致');}
   for(const c of data.catalog){if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');if(c.obj)validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={architecture,assertStructure,protectOriginal,changes,quantities,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,area,polygon,intersects};
+ root.FurnishProject={architecture,assertStructure,protectOriginal,changes,quantities,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,intersects};
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

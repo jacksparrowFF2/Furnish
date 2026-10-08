@@ -327,6 +327,12 @@ tr.click{cursor:pointer}
 .form input[type=range]{height:auto;padding:0;border:0;background:none;accent-color:var(--accent);box-shadow:none}
 .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .actions .btn{padding:6px 11px;border-radius:var(--r-md);font-weight:600}
+.actions .btn.primary{background:var(--accent);color:var(--on-accent)}
+.gentry{min-width:0;display:flex;flex-direction:column;align-self:start}.gentry .gcard{width:100%}.gentry .actions{margin:4px 0 0}.gentry .actions .btn{flex:1}
+.gallery-delete-confirm{margin-top:8px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--soft);font-size:12px;line-height:1.6}
+.gallery-delete-confirm h4{margin:0 0 6px;font-size:13px;overflow-wrap:anywhere}.gallery-delete-confirm p{margin:0 0 10px;color:var(--muted)}
+.gallery-delete-confirm .actions{gap:5px}.gallery-delete-confirm .btn{font-size:11px;padding:7px 8px;white-space:normal}.gallery-delete-confirm .btn.danger{background:var(--danger);border-color:var(--danger);color:var(--card)}
+.gentry:has(.gallery-delete-confirm) .gcard:disabled{opacity:1;background:var(--card)}
 @media (hover:hover){.actions .btn:hover{border-color:var(--ink)}}
 .mats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .mat{display:flex;align-items:center;gap:9px;border:1px solid transparent;border-radius:12px;padding:7px;background:var(--soft);cursor:pointer;text-align:left;transition:border-color .15s,background-color .15s}
@@ -601,6 +607,8 @@ footer kbd{background:var(--card);border-color:var(--line);color:var(--muted);fo
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
+
+#panel .stats>div{min-width:0;overflow-wrap:anywhere}#panel input,#panel select{min-width:0;max-width:100%;box-sizing:border-box}#panel .project-grid{grid-template-columns:minmax(0,1fr)}#panel section{min-width:0}#panel .actions{flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -1952,21 +1960,23 @@ const P12 = {
 };
 
 const PLANS = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12];
+P1.wins.forEach((w,i)=>{if(i>=6&&i<=11)w.bayGroup=i<=8?'bay1':'bay2';});
 let WALLS, WINS, DOORS, SLIDES, ROOMS, BOUNDS, PLAN;
 function applyPlanData(){
   ({walls:WALLS, wins:WINS, doors:DOORS, slides:SLIDES, rooms:ROOMS, bounds:BOUNDS} = PLAN);
   DOORS.forEach(d => d._base = {h:[...d.h], c:[...d.c], o:[...d.o]});   // 原始铰链/方向，供「重置」恢复
-  WINS.forEach(w => w._sill0 = w.sill);
+  WINS.forEach(w => { w._sill0 ??= w.sill; w._head0 ??= w.head??2.4; });ROOMS.filter(r=>r.counted===false).forEach(r=>r._height0??=r.height??.45);
 }
 // 门窗调整存于 state.open（可撤销/随方案保存），套用到 PLAN 数据的运行时副本上
 function applyOpeningOverrides(){
   if (!state) return;                                                  // renderAll 前必然已初始化
   DOORS.forEach(d => { if (d._base) Object.assign(d, {h:[...d._base.h], c:[...d._base.c], o:[...d._base.o]}); });
-  WINS.forEach(w => { if (w._sill0 !== undefined) w.sill = w._sill0; });
+  WINS.forEach(w => { if (w._sill0 !== undefined) {w.sill = w._sill0;w.head=w._head0;} });
+  ROOMS.filter(r=>r.counted===false&&r._height0!==undefined).forEach(r=>r.height=r._height0);
   const o = state.open;
   if (!o) return;
   Object.entries(o.d || {}).forEach(([i, v]) => { const d = DOORS[+i]; if (d) Object.assign(d, JSON.parse(JSON.stringify(v))); });
-  Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) w.sill = v; });
+  Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) {if(typeof v==='number')w.sill=v;else if(v&&Number.isFinite(v.sill)&&Number.isFinite(v.head)){w.sill=v.sill;w.head=v.head;}if(w.bayGroup){const room=ROOMS.find(r=>r.id===w.bayGroup);if(room)room.height=w.sill;}} });
 }
 const MATS = {
   wood:    {name:'橡木地板', price:320, sw:'#d8b88a'},
@@ -2449,10 +2459,17 @@ function renderWalls(){
   }).join('');
 }
 
+function offsetBayPath(points,d){
+ const normals=points.slice(1).map((p,i)=>{const a=points[i],len=Math.hypot(p[0]-a[0],p[1]-a[1]);return [-(p[1]-a[1])/len,(p[0]-a[0])/len];});
+ return points.map((p,i)=>{const a=normals[Math.max(0,i-1)],b=normals[Math.min(i,normals.length-1)],n=i===0||i===points.length-1?b:[a[0]+b[0],a[1]+b[1]];return [p[0]+n[0]*d,p[1]+n[1]*d];});
+}
+function bayAssembly(win){const group=WINS.filter(w=>win.bayId?w.bayId===win.bayId:win.bayGroup?w.bayGroup===win.bayGroup:w===win),left=group.find(w=>w.bayPart==='left'),right=group.find(w=>w.bayPart==='right');if(left?.frameLine&&right?.frameLine){const line=[left.frameLine[0],left.frameLine[1],right.frameLine[1],right.frameLine[0]];return {group,line,outline:offsetBayPath(line,30).concat(offsetBayPath(line,-30).reverse())};}return {group};}
 function renderOpenings(){
   const WS = `stroke="${PAL.winLine}" stroke-width="1" vector-effect="non-scaling-stroke"`;
   let s = '';
-  WINS.forEach(({rect:[x0,y0,x1,y1]}, wi) => {
+  const drawnBays=new Set();
+  WINS.forEach((win, wi) => {const [x0,y0,x1,y1]=win.rect;
+    if(win.bayId&&win.frameLine){s+=`<rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="transparent" class="pick" data-win="${wi}"/>`;if(!drawnBays.has(win.bayId)){drawnBays.add(win.bayId);const assembly=bayAssembly(win);s+=`<polygon points="${assembly.outline.map(p=>p.join(',')).join(' ')}" fill="${PAL.winFill}" ${WS} pointer-events="none"/>`;for(const offset of [-10,10])s+=`<polyline points="${offsetBayPath(assembly.line,offset).map(p=>p.join(',')).join(' ')}" fill="none" ${WS} stroke-linejoin="miter" pointer-events="none"/>`;}return;}
     const w = x1-x0, h = y1-y0;
     s += `<rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="${PAL.winFill}" class="pick" data-win="${wi}" ${WS}/>`;
     if (w >= h) [1/3,2/3].forEach(t => s += `<line x1="${x0}" y1="${y0+h*t}" x2="${x1}" y2="${y0+h*t}" ${WS}/>`);
@@ -2571,7 +2588,7 @@ function renderSel(){
     const [x0,y0,x1,y1] = noteBox[ui.sel.id], p = 6*k;
     s += `<rect x="${x0-p}" y="${y0-p}" width="${x1-x0+2*p}" height="${y1-y0+2*p}" rx="${(y1-y0)/2+p}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`;
   } else if (['door','slide','win'].includes(ui.sel?.kind)){
-    const o=(ui.sel.kind==='door'?DOORS:ui.sel.kind==='slide'?SLIDES:WINS)[ui.sel.id];if(o){const [x0,y0,x1,y1]=o.rect;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;}
+    const o=(ui.sel.kind==='door'?DOORS:ui.sel.kind==='slide'?SLIDES:WINS)[ui.sel.id];if(o){if(ui.sel.kind==='win'&&(o.bayId||o.bayGroup)){const assembly=bayAssembly(o),r=assembly.group.map(w=>w.rect),x0=Math.min(...r.map(q=>q[0])),y0=Math.min(...r.map(q=>q[1])),x1=Math.max(...r.map(q=>q[2])),y1=Math.max(...r.map(q=>q[3]));if(assembly.outline)s+=`<polygon data-bay-selection="whole" points="${assembly.outline.map(p=>p.join(',')).join(' ')}" fill="rgba(239,90,36,.1)" ${A} stroke-width="2" pointer-events="none"/>`;else for(const q of r)s+=`<rect data-bay-selection="whole" x="${q[0]}" y="${q[1]}" width="${q[2]-q[0]}" height="${q[3]-q[1]}" fill="none" ${A} stroke-width="2" pointer-events="none"/>`;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="1" stroke-dasharray="5 4" pointer-events="none"/><text x="${(x0+x1)/2}" y="${y1+60+16*k}" text-anchor="middle" fill="${ACC}" font-size="${12*k}" ${halo(3)} pointer-events="none">整组飘窗 · 三面窗同步编辑</text>`;}else{const [x0,y0,x1,y1]=o.rect;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;}}
   } else if (ui.sel?.kind === 'wall'){
     const selected=ui.sel.wallIds?.length?WALLS.filter((_,i)=>ui.sel.wallIds.includes(PLAN.wallRefs?.[i])):[WALLS[Number(ui.sel.id.slice(1))]];for(const w of selected.filter(Boolean))s+=`<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;
   } else if (ui.sel?.kind === 'room'){
@@ -2662,7 +2679,7 @@ function renderPanel(){
   if (ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); return; }
   if (ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
   if (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide'){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); return; }
-  if (ui.sel?.kind === 'win'){ p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id); return; }
+  if (ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p)||window.FurnishWorkspace?.windowPanel(ui.sel.id,p))return; p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id); return; }
   if (ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
   const lost = state.furniture.filter(isOutside).length, clashN = collisions().length;
   const tab = (k, icon, zh, en, n, warn) => `<button class="tab ${ui.tab === k ? 'on' : ''}" data-tab="${k}">${ico(icon)}${tr(zh, en)}${n != null ? `<span class="n ${warn ? 'warn' : ''}">${n}</span>` : ''}</button>`;
@@ -2957,6 +2974,13 @@ const SOFT_T = new Set(['sofa','cornersofa','beanbag','bed','baycushion','bench'
 const WOOD_T = new Set(['wardrobe','cabinet','shoecab','dresser','desk','bookshelf','nightstand','coffeetable','tvstand','table','roundtable','sidetable','chest','crib']);
 const BED_ROOMS = /master|child|kid|elder|bedroom|study|closet|bed/;
 const LIVE_ROOMS = /living|dining|hall|studio/;
+function styleFloorFor(room,settings,style){
+  const name=`${room.id} ${settings?.name||room.name||''}`.toLowerCase();
+  if(room.counted===false||/bath|toilet|kitchen|balcony|卫生|浴|厨|阳台|陽台/.test(name))return null;
+  if(BED_ROOMS.test(name)||/卧|臥|寝|書房|书房|衣帽/.test(name))return style.floor[1];
+  if(LIVE_ROOMS.test(name)||/客厅|客廳|餐厅|餐廳|起居|玄关|玄關/.test(name)||PLAN.customDraft)return style.floor[0];
+  return null;
+}
 function applyStyle(id){
   const st = STYLES.find(s => s.id === id); if (!st) return;
   mutate(() => {
@@ -2966,8 +2990,7 @@ function applyStyle(id){
       else if (WOOD_T.has(f.type)) f.color = st.wood;
       else if (f.type === 'rug' || f.type === 'curtain') f.color = st.textile;
     });
-    ROOMS.forEach(r => { if (r.counted === false) return;
-      if (BED_ROOMS.test(r.id)) state.rooms[r.id].mat = st.floor[1]; else if (LIVE_ROOMS.test(r.id)) state.rooms[r.id].mat = st.floor[0]; });
+    ROOMS.forEach(r => {const material=styleFloorFor(r,state.rooms[r.id],st);if(material)state.rooms[r.id].mat=material;});
     state.style = id;
   });
   toast(tr(`已应用「${st.zh}」风格：家具配色与客厅 / 卧室地面已更新`, `Applied "${st.en}": furniture colors and living / bedroom floors updated`), {label:tr('撤销', 'Undo'), fn:undo});
@@ -3133,23 +3156,12 @@ function bindOpeningPanel(sel){
   $('#oback').onclick = () => select(null);
 }
 function winPanel(i){
-  const w = WINS[i], [x0,y0,x1,y1] = w.rect;
-  const wide = Math.max(x1-x0, y1-y0), tall = Math.min(x1-x0, y1-y0);
-  return `<section><h3>${tr('窗','Window')}</h3>
-    <div class="stats">
-      <div><small>${tr('宽 × 高','W × H')}</small><span class="big">${wide}</span> × ${tall} mm</div>
-      <div><small>${tr('窗台高','Sill height')}</small><span class="big">${Math.round(w.sill*100)}</span> cm</div></div>
-    <div class="form mt">
-      <label class="full">${tr('窗台高（同步 3D）','Sill height (syncs to 3D)')}
-        <input type="range" id="wSill" min="0.3" max="1.8" step="0.05" value="${w.sill}"></label></div>
-    <div class="actions">
-      <button class="btn" id="wReset">${tr('重置','Reset')}</button>
-      <button class="btn" id="wback">${tr('← 返回总览','← Back')}</button></div></section>`;
+ const w=WINS[i],width=Math.round(Math.max(w.rect[2]-w.rect[0],w.rect[3]-w.rect[1])),height=Math.round(((w.head??2.4)-w.sill)*1000);
+ return `<section><h3>窗尺寸</h3><p>窗宽 ${width} mm · 窗高 ${height} mm</p><div class="form"><label class="full">窗台高 mm<input type="number" id="wSill" min="0" max="2400" step="1" value="${Math.round(w.sill*1000)}"></label><label class="full">窗高 mm<input type="number" id="wHeight" min="100" max="2800" step="1" value="${height}"></label></div><p>${w.bayGroup?'同一飘窗的三面窗与窗台高度同步调整。':''}内置布局窗宽按预设图纸定义；导入自定义户型可编辑窗宽。</p><p id="wError" role="alert"></p><div class="actions"><button class="btn primary" id="wApply">应用尺寸</button><button class="btn" id="wReset">重置</button><button class="btn" id="wback">返回总览</button></div></section>`;
 }
 function bindWinPanel(i){
-  $('#wSill').oninput = e => mutate(() => { state.open.w = state.open.w || {}; state.open.w[i] = +e.target.value; });
-  $('#wReset').onclick = () => mutate(() => { state.open.w = state.open.w || {}; delete state.open.w[i]; });
-  $('#wback').onclick = () => select(null);
+ $('#wApply').onclick=()=>{const sill=Number($('#wSill').value)/1000,height=Number($('#wHeight').value)/1000;if(!Number.isFinite(sill)||!Number.isFinite(height)||sill<0||sill>2.4||height<.1||sill+height>2.8){$('#wError').textContent='窗高至少100 mm，窗顶不得超过2800 mm';return;}mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)state.open.w[j]={sill,head:sill+height};});});};
+ $('#wReset').onclick=()=>mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)delete state.open.w[j];});});$('#wback').onclick=()=>select(null);
 }
 
 /* ======================= 选择（支持多选） ======================= */
@@ -3967,7 +3979,7 @@ const bedsOf = p => /开间/.test(p.name) ? 0 : CN_NUM[(p.name.match(/([一两�
 const bathsOf = p => CN_NUM[(p.name.match(/([一两二三])卫/) || [])[1]] ?? 1;
 const netOf = p => p.rooms.filter(r => r.counted !== false).reduce((a, r) => a + area(r.poly), 0);
 let galleryF = 'all';
-function openPlans(){ openDialog({title:tr('户型库', 'Floor Plans'), wide:true, body:'<div id="gallery"></div>', onOpen:renderGallery}); }
+function openPlans(){ openDialog({title:tr('户型库', 'Floor Plans'), wide:true, body:'<div class="actions" style="margin:0 0 14px"><button class="btn primary" id="gallery-new">导入 DXF／图片 · 新建户型</button><button class="btn" id="gallery-import">加载户型／项目文件</button></div><p>导出文件可发送给其他用户；在此加载后继续编辑。自定义户型可删除，内置示例保留。</p><div id="gallery"></div>', onOpen:()=>{renderGallery();$('#gallery-new').onclick=()=>{closeDialog();window.FurnishEditor.open(true);};$('#gallery-import').onclick=()=>window.FurnishWorkspace.importProject();}}); }
 function renderGallery(){
   const el = $('#gallery'); if (!el) return;
   const F = [['all', '全部', 'All'], ['1', '开间 · 一居', 'Studio · 1BR'], ['2', '两居', '2BR'], ['3', '三居', '3BR'], ['4', '四居及以上', '4BR+']];
@@ -3975,13 +3987,31 @@ function renderGallery(){
   const list = PLANS.filter(ok).sort((a, b) => netOf(a) - netOf(b));
   el.innerHTML = `<div class="chiprow gfil">${F.map(([k, zh, en]) => `<button class="btn chip ${galleryF === k ? 'on' : ''}" data-gf="${k}">${tr(zh, en)} <small>${PLANS.filter(p => k === 'all' || (k === '1' ? bedsOf(p) <= 1 : k === '4' ? bedsOf(p) >= 4 : bedsOf(p) === +k)).length}</small></button>`).join('')}</div>
     <div class="ggrid">${list.map(p => { const n = store.work[p.id]?.furniture?.length, on = p.id === PLAN.id;
-      return `<button class="gcard ${on ? 'on' : ''}" data-plan="${p.id}">
+      return `<article class="gentry"><button class="gcard ${on ? 'on' : ''}" data-plan="${p.id}">
         <div class="gthumb">${planThumb(p)}${on ? `<i class="gcur">${tr('当前', 'Current')}</i>` : ''}</div>
         <b>${esc(nm(p.name))}</b>
         <div class="gtags"><span>${bedsOf(p) ? tr(`${bedsOf(p)} 室`, `${bedsOf(p)} BR`) : tr('开间', 'Studio')}</span><span>${tr(`${bathsOf(p)} 卫`, `${bathsOf(p)} BA`)}</span><span>${netOf(p).toFixed(1)} m²</span></div>
-        <small>${n != null ? tr(`已布置 ${n} 件 · 自动保存`, `${n} items · autosaved`) : tr('默认布置', 'Default layout')}</small></button>`; }).join('')}</div>`;
+        <small>${n != null ? tr(`已布置 ${n} 件 · 自动保存`, `${n} items · autosaved`) : tr('默认布置', 'Default layout')}</small></button><div class="actions"><button class="btn" data-plan-export="${p.id}">导出</button>${p.id.startsWith('custom_')?`<button class="btn" data-plan-delete="${p.id}">删除</button>`:''}</div></article>`; }).join('')}</div>`;
   el.querySelectorAll('[data-gf]').forEach(b => b.onclick = () => { galleryF = b.dataset.gf; renderGallery(); });
+  el.querySelectorAll('[data-plan-export]').forEach(b=>b.onclick=()=>window.FurnishWorkspace.exportPlan(b.dataset.planExport));
+  el.querySelectorAll('[data-plan-delete]').forEach(b=>b.onclick=()=>confirmLibraryDelete(b.dataset.planDelete,b));
   el.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { closeDialog(); setPlan(b.dataset.plan); });
+}
+function confirmLibraryDelete(id,button){
+ const p=PLANS.find(p=>p.id===id);if(!p||!id.startsWith('custom_'))return;
+ document.querySelectorAll('.gallery-delete-confirm').forEach(el=>{const actions=el.parentElement.querySelector('.actions');actions.hidden=false;actions.style.display='';el.parentElement.querySelector('.gcard').disabled=false;el.remove();});
+ const card=button.closest('.gentry'),actions=button.parentElement,open=card.querySelector('.gcard');actions.hidden=true;actions.style.display='none';open.disabled=true;
+ const panel=document.createElement('div');panel.className='gallery-delete-confirm';panel.setAttribute('role','group');panel.setAttribute('aria-label','确认删除户型');
+ const designs=store.designs.filter(d=>d.planId===id).length;
+ panel.innerHTML=`<h4>删除「${esc(p.name)}」？</h4><p>将移除此户型及其布置${designs?`、${designs} 份命名方案`:''}和历史快照。其他户型不受影响。导出文件可用于重新加载。</p><div class="actions"><button class="btn" data-delete-cancel>取消</button><button class="btn" data-delete-backup>导出备份</button><button class="btn danger" data-delete-confirm>确认删除</button></div>`;card.append(panel);
+ const cancel=()=>{panel.remove();actions.hidden=false;actions.style.display='';open.disabled=false;button.focus({preventScroll:true});};
+ panel.querySelector('[data-delete-cancel]').onclick=cancel;panel.querySelector('[data-delete-backup]').onclick=()=>window.FurnishWorkspace.exportPlan(id);panel.querySelector('[data-delete-confirm]').onclick=()=>deleteLibraryPlan(id);
+ panel.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();cancel();}});panel.querySelector('[data-delete-cancel]').focus({preventScroll:true});panel.scrollIntoView({block:'nearest'});
+}
+function deleteLibraryPlan(id){
+ const p=PLANS.find(p=>p.id===id);if(!p||!id.startsWith('custom_'))return;
+ if(PLAN.id===id)setPlan(PLANS.find(p=>p.id!==id).id);
+ PLANS.splice(PLANS.findIndex(p=>p.id===id),1);store.customPlans=store.customPlans.filter(p=>p.id!==id);delete store.work[id];store.designs=store.designs.filter(d=>d.planId!==id);hist=hist.filter(h=>h.planId!==id);try{localStorage.setItem(HIST_KEY,JSON.stringify(hist));}catch(e){}save();buildPlanList();renderDesigns();renderHist();
 }
 $('#planBtn').onclick = () => openPlans();
 
@@ -5210,7 +5240,7 @@ function buildArch(){
   const top = opt.cut;
   ROOMS.forEach(r => {
     const m = floorMat(state.rooms[r.id].mat), bay = r.counted === false;
-    const geo = bay ? new THREE.ExtrudeGeometry(shapeOf(r.poly), {depth:.45, bevelEnabled:false}) : new THREE.ShapeGeometry(shapeOf(r.poly));
+    const geo = bay ? new THREE.ExtrudeGeometry(shapeOf(r.poly), {depth:r.height??.45, bevelEnabled:false}) : new THREE.ShapeGeometry(shapeOf(r.poly));
     geo.rotateX(-Math.PI/2);
     const fl = new THREE.Mesh(geo, bay ? [m, mat('#e9e4da')] : m);
     fl.receiveShadow = true; fl.userData.room = r.id;
@@ -5233,14 +5263,16 @@ function buildArch(){
   // 门洞、窗洞上方过梁（门窗矩形即洞口，head 默认 2.4m）
   [...DOORS.map(d => [d.rect, 2.1]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
     .forEach(([r, h]) => { if (top > h) wallBox(r, h, top); });
-  WINS.forEach(({rect, sill, head = 2.4}) => {
+  const bayPosts=new Set();
+  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, paintRect}) => {
+    if(bayId&&paintRect){wallBox(paintRect,0,Math.min(sill,top));if(top>head)wallBox(paintRect,head,top);}
     wallBox(rect, 0, Math.min(sill, top)); if (top > head) wallBox(rect, head, top);
     colliders.push([wx(rect[0]), wz(rect[1]), wx(rect[2]), wz(rect[3])]);
     const gTop = Math.min(head, top); if (gTop <= sill) return;
-    const [x0, y0, x1, y1] = rect, hz = (x1-x0) >= (y1-y0), L = M(hz ? x1-x0 : y1-y0), gh = gTop - sill, cx = wx((x0+x1)/2), cz = wz((y0+y1)/2);
+    const [x0, y0, x1, y1] = frameLine?[Math.min(frameLine[0][0],frameLine[1][0]),Math.min(frameLine[0][1],frameLine[1][1]),Math.max(frameLine[0][0],frameLine[1][0]),Math.max(frameLine[0][1],frameLine[1][1])]:rect, hz = (x1-x0) >= (y1-y0), L = M(hz ? x1-x0 : y1-y0), gh = gTop - sill, cx = wx((x0+x1)/2), cz = wz((y0+y1)/2);
     const pane = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .01, gh, hz ? .01 : L), glassMat); pane.position.set(cx, sill + gh/2, cz); archUp.add(pane);
     const n = Math.max(1, Math.round(L/.9));
-    for (let k = 0; k <= n; k++){ const t = -L/2 + k*L/n, mu = new THREE.Mesh(new THREE.BoxGeometry(hz ? .04 : .06, gh, hz ? .06 : .04), frameMat);
+    for (let k = 0; k <= n; k++){ const t = -L/2 + k*L/n,px=cx+(hz?t:0),pz=cz+(hz?0:t),key=[bayId,px.toFixed(6),pz.toFixed(6),sill,gTop].join(':');if(bayId&&(k===0||k===n)){if(bayPosts.has(key))continue;bayPosts.add(key);}const mu = new THREE.Mesh(new THREE.BoxGeometry(bayId ? .06 : hz ? .04 : .06, gh, bayId ? .06 : hz ? .06 : .04), frameMat);
       mu.position.set(cx + (hz ? t : 0), sill + gh/2, cz + (hz ? 0 : t)); mu.castShadow = true; archUp.add(mu); }
     [sill + .02, gTop - .02].forEach(y => { const tr = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .06, .04, hz ? .06 : L), frameMat); tr.position.set(cx, y, cz); archUp.add(tr); });
   });
@@ -5426,6 +5458,9 @@ function pick(e){
   const hits = ray.intersectObjects([...(opt.furn ? [furnG] : []), archUp, archFloor], true);
   for (const h of hits){
     let o = h.object;
+    // Raycaster also returns hidden ceilings and helper lines; only visible meshes may block a click.
+    if(!o.isMesh)continue;
+    let shown=true;for(let parent=o;parent;parent=parent.parent){if(!parent.visible){shown=false;break;}}if(!shown)continue;
     if (o.material === glassMat) continue;
     if (o.userData.door) return {door:o.userData.door, dist:h.distance};
     if (o.userData.room) return {room:o.userData.room};

@@ -4,7 +4,7 @@
   const copy=v=>JSON.parse(JSON.stringify(v));
   const text=(zh,en)=>tr(zh,en);
   const button=document.createElement('button');
-  button.id='tracePlan'; button.className='btn outline'; button.dataset.en='Import DXF / Trace plan'; button.textContent='导入 DXF / 描图';
+  button.id='tracePlan'; button.className='btn outline'; button.dataset.en='Edit floor plan'; button.textContent='编辑户型';
   $('#planBtn').after(button);
   button.onclick=()=>openEditor();
   const menuButton=document.createElement('button');
@@ -25,15 +25,17 @@
   .trace-bottom{border-bottom:0;border-top:1px solid var(--line)}.trace-status{flex:1;font-size:12px;min-width:180px}
   .trace-error{color:var(--danger);white-space:pre-wrap}.trace-input{width:100px!important}
   #trace-properties{max-height:230px;overflow:auto;flex-shrink:0}#trace-properties[hidden]{display:none}
+  [data-window-field][hidden],[data-bay-field][hidden],#trace-unlock[hidden]{display:none!important}
   @media(max-width:700px){.trace-overlay{padding:0}.trace-box{height:100dvh;border-radius:0;overflow-y:auto}.trace-top,.trace-toolbar{padding:8px;flex-shrink:0}.trace-top input{max-width:150px}.trace-toolbar .btn{padding:6px 9px}.trace-hint{padding:7px 10px;flex-shrink:0}.trace-work{flex:none;height:300px;min-height:250px}.trace-bottom{padding:8px;position:sticky;bottom:0;background:var(--panel);flex-shrink:0}}
   @media print{.trace-overlay{display:none}}
   `;
   document.head.append(style);
+  window.FurnishEditor={open:forceNew=>openEditor(!!forceNew)};
   function openEditor(forceNew=false) {
     if(document.querySelector('.trace-overlay')) return;
     const originalArch=!forceNew&&state.architecture?FurnishProject.architecture(state.architecture):null;
     const original=originalArch?.draft;
-    let phase=originalArch?.phase||'survey',baseline=originalArch?.baseline?copy(originalArch.baseline):null;
+    let revisingOriginal=false;let phase=originalArch?.phase||'survey',baseline=originalArch?.baseline?copy(originalArch.baseline):null;
     let draft=original?copy(original):{version:1,id:'custom_'+Date.now().toString(36),name:text('我的户型','My floor plan'),width:1000,height:700,image:'',scale:0,walls:[],openings:[]};
     let mode=original?'wall':'calibrate',anchor=null,cursor=null,box=[0,0,draft.width,draft.height],pan=null,loading=false,dirty=false;
     let past=[],future=[],liveKey='',liveValue='',selectedWall=null,selectedWalls=[],chainGroup='',wallDrag=null;
@@ -44,13 +46,14 @@
         <button class="btn primary" id="trace-dxf">${text('导入 DXF（推荐）','Import DXF (recommended)')}</button><input type="file" id="trace-dxf-file" accept=".dxf" hidden>
         <button class="btn" id="trace-templates">${text('DXF 模板与规范','DXF templates & guide')}</button><button class="btn" id="trace-upload">${text('辅助：导入图片 / PDF','Image / PDF reference')}</button><input type="file" id="trace-file" accept="image/png,image/jpeg,image/webp,application/pdf,.pdf" hidden>
         <button class="btn" data-trace-mode="calibrate">${text('② 校准比例','② Calibrate')}</button><button class="btn" data-trace-mode="wall">${text('③ 描墙','③ Walls')}</button>
-        <button class="btn" data-trace-mode="door">${text('门','Door')}</button><button class="btn" data-trace-mode="window">${text('窗','Window')}</button><button class="btn" data-trace-mode="properties">${text('墙属性','Wall properties')}</button><button class="btn" id="trace-confirm">${text('确认原始结构并锁定','Confirm original structure')}</button><button class="btn" data-trace-mode="erase">${text('删除','Erase')}</button>
+        <button class="btn" data-trace-mode="door">${text('门','Door')}</button><button class="btn" data-trace-mode="window">${text('窗','Window')}</button><button class="btn" data-trace-mode="bay">${text('飘窗','Bay window')}</button><button class="btn" data-trace-mode="properties">${text('墙属性','Wall properties')}</button><button class="btn" id="trace-confirm">${text('确认原始结构并锁定','Confirm original structure')}</button><button class="btn" id="trace-unlock">${text('解锁并重新核对原始结构','Unlock original for correction')}</button><button class="btn" data-trace-mode="erase">${text('删除','Erase')}</button>
         <button class="btn" id="trace-undo">${text('撤销','Undo')}</button><button class="btn" id="trace-redo">${text('重做','Redo')}</button><button class="btn" id="trace-fit">${text('适应','Fit')}</button>
       </div>
       <div class="trace-toolbar">
         <label>${text('新墙／导入默认墙厚','New wall / import default thickness')} <input id="trace-thickness" type="number" min="60" max="600" step="10" value="200"> mm</label>
         <label>${text('墙类型','Wall type')} <select id="trace-kind"><option value="n">${text('非承重','Partition')}</option><option value="e">${text('外墙','Exterior')}</option><option value="b">${text('承重','Bearing')}</option></select></label>
         <label>${text('门窗宽','Opening width')} <input id="trace-length" type="number" min="300" max="6000" step="50" value="900"> mm</label>
+        <label data-window-field>窗台高 <input id="trace-window-sill" type="number" min="0" max="2400" value="900"> mm</label><label data-window-field>窗高 <input id="trace-window-height" type="number" min="100" max="2800" value="1500"> mm</label><label data-bay-field>飘窗进深 <input id="trace-bay-depth" type="number" min="200" max="2000" value="600"> mm</label><label data-bay-field>飘窗台高 <input id="trace-bay-height" type="number" min="100" max="1800" value="450"> mm</label><label data-bay-field>飘窗窗顶 <input id="trace-bay-head" type="number" max="2800" value="2400"> mm</label>
         <label><input id="trace-entry" type="checkbox">${text('入户门','Entry door')}</label>
         <label>${text('开启侧','Swing side')} <select id="trace-side"><option value="1">${text('下 / 右','Down / Right')}</option><option value="-1">${text('上 / 左','Up / Left')}</option></select></label>
         <label>${text('底图','Image')} <input id="trace-opacity" type="range" min="0" max="1" step=".1" value=".65"></label>
@@ -63,11 +66,11 @@
     const q=s=>overlay.querySelector(s),canvas=q('#trace-canvas');
     const report=(message,error=false)=>{q('#trace-status').textContent=message;q('#trace-status').classList.toggle('trace-error',error);};
     const hasBearing=()=>phase==='design'&&draft.walls.some(w=>w.kind==='b'||w.kind==='e');
-    const locked=()=>report(text('承重墙已锁定：不能删除、改型或新开／删除门窗。请新建户型以重新录入原始结构。','Bearing walls are locked: no deletion, reclassification or opening changes. Create a new plan to re-enter the original structure.'),true);
+    const locked=()=>report(text('承重墙已锁定：不能删除、改型或新开／删除门窗。请点击“解锁并重新核对原始结构”，修改后重新确认。','Bearing walls are locked: no deletion, reclassification or opening changes. Create a new plan to re-enter the original structure.'),true);
     const checkpoint=()=>{past.push(copy(draft));if(past.length>60)past.shift();future=[];dirty=true;};
     const setMode=m=>{mode=m;anchor=null;cursor=null;if(m!=='properties'){selectedWall=null;selectedWalls=[];}render();};
     function render(){
-      q('#trace-confirm').hidden=phase==='design';
+      q('#trace-confirm').hidden=phase==='design';q('#trace-unlock').hidden=phase!=='design';overlay.querySelectorAll('[data-window-field]').forEach(el=>el.hidden=mode!=='window');q('#trace-confirm').style.display=phase==='design'?'none':'';overlay.querySelectorAll('[data-bay-field]').forEach(el=>el.hidden=mode!=='bay');
       q('#trace-stage').textContent=(phase==='design'?text('阶段 5：装修设计 · 原始结构已锁定','Stage 5: design · original locked'):draft.scale?text('阶段 4：核对尺寸、分类与已有门窗 → 保存或确认原始结构','Stage 4: verify dimensions, types and openings → save or confirm'):text('阶段 1：选择模板或上传文件 → 单位 → 图层 → 修复预览 → 核对结构','Stage 1: template/file → units → layers → repair preview → verify'))+' · '+(dirty?text('本次编辑未保存','Unsaved edits'):text('无未保存修改','No unsaved edits'));
       q('#trace-properties').hidden=!selectedWall;
       q('#trace-finish').textContent=phase==='survey'?text('保存原始结构（未锁定）','Save original structure (unlocked)'):text('保存装修方案，开始布置','Save design & furnish');
@@ -76,21 +79,22 @@
       q('#trace-empty').style.display=draft.image||draft.source==='dxf'?'none':'grid';
       q('#trace-undo').disabled=!past.length;q('#trace-redo').disabled=!future.length;
       overlay.querySelectorAll('[data-trace-mode]').forEach(b=>b.classList.toggle('on',b.dataset.traceMode===mode));
-      const hints={properties:text('点击墙体查看和修改类型、墙厚、位置与长度。确认原始结构后，承重墙和外墙仅可查看。','Click a wall to edit its type, thickness, position and length. Bearing/exterior walls become read-only after confirmation.'),calibrate:text('在底图上点击一条已知长度的两端，再输入实际长度（mm）。','Click both ends of a known length, then enter its actual length in mm.'),wall:text('沿墙中心线连续点击描墙；自动锁定水平/垂直并吸附端点。Esc 结束一段。闭合外轮廓后加隔墙。','Click along wall centerlines; horizontal/vertical locking and endpoint snapping. Esc ends a chain. Close the outline, then add partitions.'),door:text('点击已有墙段放门。入户门最多一扇；开启侧可在生成后通过属性调整。','Click a wall to place a door. One entry door maximum; adjust its swing later.'),window:text('点击已有墙段放窗；门窗会自动切开墙体洞口。','Click a wall to place a window. Openings cut through the wall.'),erase:text('点击门窗或墙体删除；删除墙体也会移除其门窗。','Click an opening or wall to delete it. Deleting a wall removes its openings.')};
+      const hints={bay:text('设洞口宽、进深、台高和窗顶，再点击外围墙；外凸方向自动识别。飘窗台不计使用面积，保存后点击任一面窗可编辑尺寸。','Set width, depth and heights, then click a perimeter wall. Bay platforms are excluded from floor area.'),properties:text('点击墙体查看和修改类型、墙厚、位置与长度。确认原始结构后，承重墙和外墙仅可查看。','Click a wall to edit its type, thickness, position and length. Bearing/exterior walls become read-only after confirmation.'),calibrate:text('在底图上点击一条已知长度的两端，再输入实际长度（mm）。','Click both ends of a known length, then enter its actual length in mm.'),wall:text('沿墙中心线连续点击描墙；自动锁定水平/垂直并吸附端点。Esc 结束一段。闭合外轮廓后加隔墙。','Click along wall centerlines; horizontal/vertical locking and endpoint snapping. Esc ends a chain. Close the outline, then add partitions.'),door:text('点击已有墙段放门。入户门最多一扇；开启侧可在生成后通过属性调整。','Click a wall to place a door. One entry door maximum; adjust its swing later.'),window:text('点击已有墙段放窗；门窗会自动切开墙体洞口。','Click a wall to place a window. Openings cut through the wall.'),erase:text('点击门窗或墙体删除；删除墙体也会移除其门窗。','Click an opening or wall to delete it. Deleting a wall removes its openings.')};
       q('#trace-hint').textContent=hints[mode]+' '+(phase==='design'?text('装修阶段：承重墙／外墙锁定；棕色非承重墙可修改。','Design: bearing/exterior walls locked, partitions editable.'):text('原始结构录入：可补录已有门窗和逐墙分类，确认后锁定。','Original survey: record existing openings and wall types, then confirm to lock.'))+' '+text('滚轮缩放 · 中键或 Alt+拖动平移。当前支持正交户型，不支持斜墙、庭院或独立柱岛。','Scroll to zoom; middle button or Alt+drag to pan. Orthogonal plans only; no diagonal walls, courtyards or column islands.');
       const s=draft.scale||10, stroke=box[2]/900;
       let html=draft.image?`<image href="${draft.image}" x="0" y="0" width="${draft.width}" height="${draft.height}" opacity="${q('#trace-opacity').value}"/>`:'';
       html+=draft.walls.map(w=>{const r=FurnishDraft.wallRect(w,s,draft.walls).slice(0,4).map(v=>v/s),color=w.kind==='b'?'#322e29':w.kind==='e'?'#736859':'#a17b54';return `<rect data-w="${esc(w.id)}" x="${r[0]}" y="${r[1]}" width="${r[2]-r[0]}" height="${r[3]-r[1]}" fill="${color}" opacity=".65" stroke="${selectedWalls.includes(w.id)||selectedWall===w.id?'#ef5a24':color}" stroke-width="${stroke*2}"><title>${esc(w.id)} · ${w.kind==='b'?'承重':w.kind==='e'?'外墙':'非承重'} · ${w.thickness} mm</title></rect><line x1="${w.a[0]}" y1="${w.a[1]}" x2="${w.b[0]}" y2="${w.b[1]}" stroke="${color}" stroke-width="${stroke}" stroke-dasharray="${stroke*5} ${stroke*3}" pointer-events="none"/>`;}).join('');
+      try{const preview=FurnishDraft.build(draft);for(const r of preview.rooms.filter(v=>v.bayId))html+=`<polygon data-bay="${esc(r.bayId)}" points="${r.poly.map(p=>p.map(v=>v/s).join(',')).join(' ')}" fill="#e2dacb" stroke="#267bba" stroke-width="${stroke*2}" pointer-events="none"/>`;for(const w of preview.wins.filter(v=>v.bayId))html+=`<rect x="${w.rect[0]/s}" y="${w.rect[1]/s}" width="${(w.rect[2]-w.rect[0])/s}" height="${(w.rect[3]-w.rect[1])/s}" fill="#267bba" pointer-events="none"/>`;}catch(e){}
       for(const o of draft.openings){const w=draft.walls.find(w=>w.id===o.wall);if(!w)continue;const h=w.a[1]===w.b[1],c=w.a.map((v,i)=>v+(w.b[i]-v)*o.t),l=o.length/s/2;
         html+=`<line data-o="${esc(o.id)}" x1="${c[0]-(h?l:0)}" y1="${c[1]-(h?0:l)}" x2="${c[0]+(h?l:0)}" y2="${c[1]+(h?0:l)}" stroke="${o.kind==='window'?'#267bba':o.entry?'#e75d28':'#139687'}" stroke-width="${w.thickness/s+stroke*2}"/>`;
-        html+=`<text x="${c[0]}" y="${c[1]-stroke*8}" text-anchor="middle" font-size="${stroke*12}" fill="#343029">${o.kind==='window'?text('窗','Window'):o.entry?text('入户','Entry'):text('门','Door')} ${o.length}</text>`;
+        html+=`<text x="${c[0]}" y="${c[1]-stroke*8}" text-anchor="middle" font-size="${stroke*12}" fill="#343029">${o.bay?text('飘窗','Bay window'):o.kind==='window'?text('窗','Window'):o.entry?text('入户','Entry'):text('门','Door')} ${o.length}</text>`;
       }
       if(anchor&&cursor&&mode==='wall')html+=`<text x="${(anchor[0]+cursor[0])/2}" y="${(anchor[1]+cursor[1])/2-stroke*8}" font-size="${stroke*12}" fill="#a33">${Math.round(Math.hypot(cursor[0]-anchor[0],cursor[1]-anchor[1])*s)} mm</text>`;
       if(anchor){html+=`<circle cx="${anchor[0]}" cy="${anchor[1]}" r="${stroke*5}" fill="#ef5a24"/>`;if(cursor)html+=`<line x1="${anchor[0]}" y1="${anchor[1]}" x2="${cursor[0]}" y2="${cursor[1]}" stroke="#ef5a24" stroke-width="${stroke*2}" stroke-dasharray="${stroke*6} ${stroke*4}"/>`;}
       const active=draft.walls.find(w=>w.id===selectedWall);
       if(active&&!(phase==='design'&&['b','e'].includes(active.kind)))html+=['a','b'].map(end=>`<circle data-end="${end}" cx="${active[end][0]}" cy="${active[end][1]}" r="${stroke*6}" fill="#ef5a24" stroke="white" stroke-width="${stroke*2}"><title>拖动端点：保持正交并吸附</title></circle>`).join('');
       canvas.innerHTML=html;
-      let live=liveValue;const nextKey=JSON.stringify([draft.walls,draft.openings,draft.scale]);if(nextKey!==liveKey){try{const plan=FurnishDraft.build(draft);live=text(' · '+plan.rooms.length+' 个房间 · '+plan.rooms.reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)+' m²',' · '+plan.rooms.length+' rooms');}catch(e){live=text(' · 墙线尚未闭合或门窗冲突',' · Incomplete walls or conflicting openings');}liveKey=nextKey;liveValue=live;}
+      let live=liveValue;const nextKey=JSON.stringify([draft.walls,draft.openings,draft.scale]);if(nextKey!==liveKey){try{const plan=FurnishDraft.build(draft);live=text(' · '+plan.rooms.filter(r=>r.counted!==false).length+' 个房间 · '+plan.rooms.filter(r=>r.counted!==false).reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)+' m²',' · '+plan.rooms.filter(r=>r.counted!==false).length+' rooms');}catch(e){live=text(' · 墙线尚未闭合或门窗冲突',' · Incomplete walls or conflicting openings');}liveKey=nextKey;liveValue=live;}
       report(draft.scale?text(`比例 ${draft.scale.toFixed(3)} mm/像素 · ${draft.walls.length} 段墙 · ${draft.openings.length} 处门窗${live}`,`Scale ${draft.scale.toFixed(3)} mm/pixel · ${draft.walls.length} walls · ${draft.openings.length} openings`):text('未校准：导入后请先标定一段已知尺寸。','Not calibrated: mark a known dimension after importing.'));
     }
     function position(e){const p=canvas.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const m=canvas.getScreenCTM();if(!m)return [0,0];const v=p.matrixTransform(m.inverse());return [v.x,v.y];}
@@ -145,7 +149,7 @@
       const center=(hit.w.a[axis]+(hit.w.b[axis]-hit.w.a[axis])*hit.t)*draft.scale,rect=r.slice(0,4);rect[axis]=center-half;rect[axis+2]=center+half;
       if(draft.walls.some(w=>{if(w.id===hit.w.id)return false;const b=FurnishDraft.wallRect(w,draft.scale,draft.walls);return Math.min(b[2],rect[2])-Math.max(b[0],rect[0])>0&&Math.min(b[3],rect[3])-Math.max(b[1],rect[1])>0;}))return report(text('门窗不能跨越隔墙交接处，请换一个位置。','Openings cannot cross a wall junction. Choose another position.'),true);
       const entry=mode==='door'&&q('#trace-entry').checked;if(entry&&draft.openings.some(o=>o.entry))return report(text('已有入户门，请先删除或取消勾选。','An entry door already exists.'),true);
-      checkpoint();draft.openings.push({id:'o_'+uid(),wall:hit.w.id,t:hit.t,length,kind:mode,side:Number(q('#trace-side').value),entry});render();
+      const opening={id:'o_'+uid(),wall:hit.w.id,t:hit.t,length,kind:mode==='bay'?'window':mode,side:Number(q('#trace-side').value),entry};if(mode==='window'){opening.sill=Number(q('#trace-window-sill').value);const height=Number(q('#trace-window-height').value);opening.head=opening.sill+height;if(!Number.isFinite(height)||height<100||opening.sill<0||opening.head>2800)return report('窗台高须非负，窗高至少100 mm，窗顶不得超过2800 mm',true);}if(mode==='bay'){opening.bay={depth:Number(q('#trace-bay-depth').value),height:Number(q('#trace-bay-height').value),head:Number(q('#trace-bay-head').value)};try{const test=copy(draft);test.openings.push(opening);FurnishDraft.build(test);}catch(e){return report(e.message,true);}}checkpoint();draft.openings.push(opening);render();
     });
     canvas.addEventListener('pointermove',e=>{if(wallDrag){
       const next=copy(wallDrag.before),w=next.walls.find(w=>w.id===wallDrag.id),old=w[wallDrag.end],other=w[wallDrag.end==='a'?'b':'a'],p=snapped(position(e)),h=w.a[1]===w.b[1];p[h?1:0]=other[h?1:0];
@@ -158,7 +162,7 @@
     const undoDraft=()=>{if(!past.length)return;future.push(copy(draft));draft=past.pop();anchor=null;selectedWall=null;selectedWalls=[];dirty=true;render();};
     const redoDraft=()=>{if(!future.length)return;past.push(copy(draft));draft=future.pop();anchor=null;selectedWall=null;dirty=true;render();};
     q('#trace-undo').onclick=undoDraft;q('#trace-redo').onclick=redoDraft;
-    q('#trace-fit').onclick=()=>{box=[0,0,draft.width,draft.height];render();};q('#trace-opacity').oninput=render;
+    q('#trace-fit').onclick=()=>{box=[0,0,draft.width,draft.height];try{const plan=FurnishDraft.build(draft),points=plan.rooms.filter(r=>r.bayId).flatMap(r=>r.poly.map(p=>p.map(v=>v/draft.scale)));if(points.length){const x=Math.min(0,...points.map(p=>p[0]))-30,y=Math.min(0,...points.map(p=>p[1]))-30;box=[x,y,Math.max(draft.width,...points.map(p=>p[0]))-x+30,Math.max(draft.height,...points.map(p=>p[1]))-y+30];}}catch(e){}render();};q('#trace-opacity').oninput=render;
     function key(e){if(!$('#dlg').hidden)return;e.stopImmediatePropagation();
       if(e.key==='Tab'){const controls=[...overlay.querySelectorAll('button,input,select,[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);const first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
       if(e.key==='Escape'){e.preventDefault();anchor=null;cursor=null;render();}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!e.target.matches('input,select')){e.preventDefault();e.shiftKey?redoDraft():undoDraft();}}
@@ -179,7 +183,8 @@
       const apply=values=>{try{const next=FurnishDraft.batchWalls(draft,selectedWalls,values);if(phase==='design')FurnishProject.assertStructure(baseline,next);checkpoint();draft=next;wallProperties(draft.walls.find(v=>v.id===w.id));}catch(e){q('#wp-error').textContent=e.message;}};
       q('#wp-group-create').onclick=()=>apply({group:'wall_group_'+uid()});q('#wp-group-clear').onclick=()=>apply({group:''});q('#wp-batch-apply').onclick=()=>apply({thickness:Number(q('#wp-batch-thickness').value)});
     }
-    q('#trace-confirm').onclick=()=>{try{const checked=FurnishDraft.build(draft);if(!confirm(text(`确认原始结构：${checked.rooms.length} 个房间，净面积 ${checked.rooms.reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)} m²，${draft.walls.length} 段墙，${draft.openings.length} 处门窗。已核对尺寸、逐墙分类及已有门窗？确认后承重／外墙锁定；保存与确认是两个步骤。`, 'Verify dimensions, wall types and existing openings. Confirmation locks bearing/exterior walls; saving is a separate step.')))return;baseline=copy(draft);phase='design';past=[];future=[];dirty=true;render();report(text('原始结构已确认。承重墙、外墙和其已有门窗已锁定。保存后即可进行装修设计。','Original structure confirmed. Bearing/exterior walls and existing openings are locked. Save to start designing.'));}catch(e){report(text('无法确认：','Cannot confirm: ')+e.message,true);}};
+    q('#trace-unlock').onclick=()=>{if(!confirm(text('解锁用于修正原始结构资料，会重新建立结构基线。保留当前墙体、门窗和家具，无需重新导入；保存后旧撤销历史清空。确认修改后请重新锁定。继续？','Unlock to correct the original structure and rebuild its baseline?')))return;phase='survey';baseline=null;revisingOriginal=true;past=[];future=[];dirty=true;setMode('properties');report('原始结构已解锁，可修改墙体与门窗。修改后重新确认并保存。');};
+    q('#trace-confirm').onclick=()=>{try{const checked=FurnishDraft.build(draft);if(!confirm(text(`确认原始结构：${checked.rooms.filter(r=>r.counted!==false).length} 个房间，净面积 ${checked.rooms.filter(r=>r.counted!==false).reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)} m²，${draft.walls.length} 段墙，${draft.openings.length} 处门窗。已核对尺寸、逐墙分类及已有门窗？确认后承重／外墙锁定；保存与确认是两个步骤。`, 'Verify dimensions, wall types and existing openings. Confirmation locks bearing/exterior walls; saving is a separate step.')))return;baseline=copy(draft);phase='design';past=[];future=[];dirty=true;render();report(text('原始结构已确认。承重墙、外墙和其已有门窗已锁定。保存后即可进行装修设计。','Original structure confirmed. Bearing/exterior walls and existing openings are locked. Save to start designing.'));}catch(e){report(text('无法确认：','Cannot confirm: ')+e.message,true);}};
     function close(){document.removeEventListener('keydown',key,true);overlay.remove();button.focus();}
     function cancel(){if(dirty && !confirm(text('放弃本次尚未生成的描图修改？','Discard unbuilt tracing changes?')))return;close();}
     q('#trace-close').onclick=cancel;
@@ -215,7 +220,7 @@
     q('#trace-dxf').onclick=()=>q('#trace-dxf-file').click();
     q('#trace-dxf-file').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(file)await importDXF(file);};
     q('#trace-templates').onclick=()=>{
-      openDialog({title:text('DXF 模板与绘图规范','DXF templates & drawing guide'),wide:true,body:`<p>示例：墙中心线外框 <b>6000 × 4000 mm</b>，中间隔墙位于 X=3000，统一墙厚 200 mm；两间净尺寸各 2800 × 3800 mm，净面积各 10.64 m²，合计 <b>21.28 m²</b>。分类仅为演示，请按自己的结构资料确认。</p><ol><li>导出 ASCII DXF；单位毫米（INSUNITS=4），二维正交中心线。支持 LINE、无弧段的 LWPOLYLINE／POLYLINE，每条墙长至少 100 mm，4–100 段。</li><li>外轮廓闭合，隔墙接到墙中心线；不要重复线，不为门窗留大断口。弧墙、块 INSERT、斜墙、三维实体不能直接作为墙导入。</li><li>FURNISH_BEARING 承重、FURNISH_PARTITION 非承重、FURNISH_EXTERIOR 外墙；导入界面需核对分类，不能根据外观或墙厚推断承重。</li><li>FURNISH_ANNOTATION 仅放文字／尺寸；标注不作为墙。辅助 LINE 仍须取消勾选图层。门窗 CAD 符号不识别，导入后在完整墙线上录入已有门窗。</li><li>新墙默认墙厚及各图层墙厚范围均为 60–600 mm；可按图层指定不同墙厚，例如 FURNISH_PARTITION_100／120；导入时会预填类型与厚度，必须核对。墙属性可逐段或批量修改。灰色原线／橙色修复线必须核对，大缺口须自行根据图纸补齐。</li></ol><p>空白模板只含单位和图层，需先在 CAD 中绘墙再上传，不能直接生成房间。加载示例同样经过单位、图层和修复检查。</p><h4>多墙厚与连续折墙</h4><p>混合示例含 100／120 mm 非承重墙、200 mm 承重墙和 240 mm 外墙，识别 3 个房间。LWPOLYLINE／POLYLINE 的各段保留编组；选择整组或 Shift+点击多选，再批量改厚，单段坐标／长度仍独立编辑。</p><a class="btn" href="furnish-template-mixed.dxf" download="furnish-template-mixed.dxf">下载多墙厚／折墙示例</a><button class="btn" id="template-mixed-load">加载多墙厚／折墙示例</button><h4>普通窗与飘窗怎样表达</h4><p>普通窗：保持墙中心线连续，导入后点“窗”，输入洞口宽度，再点击墙定位。窗台高度在主画布窗属性中调整；窗顶当前默认 2400 mm。示例普通窗为 1200 mm，位于 CAD 顶墙 X=1000–2200。</p><p>抬高飘窗：辅助图层标出窗洞和外凸窗台，不能作为墙层导入；当前自定义户型没有独立的飘窗台体与面积排除功能。只补录基墙窗洞，1600 mm 飘窗洞位于 X=3600–5200，外凸 600 mm 仅作参考。落地且可使用的外凸空间可按实际外墙中心线绘制折形轮廓，它会计入净面积；确认属于哪一种后再录入。</p><a class="btn" href="furnish-template-windows.dxf" download="furnish-template-windows.dxf">下载窗／飘窗辅助示例</a><button class="btn" id="template-windows-load">加载窗／飘窗辅助示例</button><p>蓝色 FURNISH_WINDOW_GUIDE、青色 FURNISH_BAY_GUIDE 和文字为 CAD 辅助参考，导入时不选；不会自动生成窗户、窗台或推断承重。导入预览只显示选中的墙线。</p><a class="btn" href="sample-centerlines.dxf" download>旧版中心线示例</a> <a class="btn" href="sample-layer-walls.dxf" download>旧版分类示例（手工指定类型）</a>`,onOpen:()=>{for(const key of ['mixed','windows'])$('#template-'+key+'-load').onclick=()=>{closeDialog();setTimeout(()=>importDXF(new File([FurnishTemplates[key]],'furnish-template-'+key+'.dxf')),0);};},actions:[{label:text('关闭','Close')},{label:text('下载规范示例','Download example'),href:'furnish-template-example.dxf',download:'furnish-template-example.dxf'},{label:text('下载空白模板','Download blank'),href:'furnish-template-blank.dxf',download:'furnish-template-blank.dxf'},{label:text('直接加载示例并检查','Load example & check'),cls:'primary',fn:()=>{setTimeout(()=>importDXF(new File([FurnishTemplates.example],'furnish-template-example.dxf')),0);}}]});$('#dlg').style.zIndex='90';
+      openDialog({title:text('DXF 模板与绘图规范','DXF templates & drawing guide'),wide:true,body:`<p>综合示例合并了多墙厚、连续折墙、普通窗和飘窗参考线，单位为毫米。导入墙层后应识别 <b>12 段墙、3 个房间，净面积 21.5912 m²</b>。承重分类仅为演示，需按自己的结构资料核对。</p><ol><li>使用二维正交中心线；支持 LINE、无弧段的 LWPOLYLINE／POLYLINE。外轮廓闭合，隔墙接到中心线，不为门窗断开墙线。弧墙、斜墙、三维实体及块 INSERT 不能直接作为墙导入。</li><li>图层后缀预填墙厚：承重 200、外墙 240、非承重 100／120 mm。可按图层调整，墙属性可逐段或批量修改，允许 60–600 mm。</li><li>中间 100 mm 折墙是一条包含 3 段的多段线；导入后选任一段，再点“选择整组折墙”。各段保留独立坐标、长度和墙厚；拐角按实际墙面连接，120 mm 支墙与它形成 T 形交接。</li><li>下侧外墙包含宽 1200、进深 600 mm 的落地外凸折形，属于真实外轮廓，计入净面积；整条外墙多段线保留编组。请勿把这种外凸轮廓当作抬高飘窗。</li><li>普通窗参考宽 1200 mm，位于 CAD 顶墙 X=1000–2200。导入后点“窗”、设宽 1200，再在顶墙 X=1600 处定位。窗台高度可在主画布窗属性调整，窗顶默认 2400 mm。</li><li>抬高飘窗参考洞宽 1600、外凸 600 mm，位于顶墙 X=3600–5200。只在完整基墙上补录 1600 mm 窗洞；外凸辅助线不自动生成实体；导入后可选“飘窗”，设洞宽1600、进深600、台高450毫米，在顶墙X=4400处录入独立窗台和三面窗，窗台不计使用面积。</li><li>蓝色 FURNISH_WINDOW_GUIDE、青色 FURNISH_BAY_GUIDE 和 FURNISH_ANNOTATION 为辅助图层，导入时不选。CAD 中可查看这些线和说明；导入预览只显示选中的墙线，不会自动生成门窗。</li></ol><p>下载和直接加载使用同一份标准 ASCII DXF。加载后仍需核对单位、图层、修复预览及房间结果。空白模板需先在 CAD 中绘墙，不能直接生成房间。</p>`,actions:[{label:text('关闭','Close')},{label:text('下载综合示例','Download complete example'),href:'furnish-template-complete.dxf',download:'furnish-template-complete.dxf'},{label:text('下载空白模板','Download blank'),href:'furnish-template-blank.dxf',download:'furnish-template-blank.dxf'},{label:text('直接加载综合示例并检查','Load complete example & check'),cls:'primary',fn:()=>{setTimeout(()=>importDXF(new File([FurnishTemplates.complete],'furnish-template-complete.dxf')),0);}}]});$('#dlg').style.zIndex='90';
     };
     async function importDXF(file){
       if(file.size>20e6)return report(text('DXF 文件上限 20MB。','DXF size limit: 20 MB.'),true);
@@ -263,7 +268,7 @@
               if(repaired.warnings.some(w=>w.code==='no-pairs'))$('#dxf-report').textContent+=' '+text('未找到可确定的双线配对，墙线保持原样。','No unambiguous wall pairs found; lines retained.');
             }
             const plan=FurnishDraft.build(next);candidate=next;
-            $('#dxf-report').textContent+=' '+text(`校验通过：${plan.rooms.length} 个闭合房间，净面积 ${plan.rooms.reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)} m²。下一步：导入后补录门窗并核对结构。`,`Validated: ${plan.rooms.length} closed rooms.`);
+            $('#dxf-report').textContent+=' '+text(`校验通过：${plan.rooms.filter(r=>r.counted!==false).length} 个闭合房间，净面积 ${plan.rooms.filter(r=>r.counted!==false).reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)} m²。下一步：导入后补录门窗并核对结构。`,`Validated: ${plan.rooms.filter(r=>r.counted!==false).length} closed rooms.`);
             downloadButton.disabled=!repaired;importButton.disabled=false;
           }catch(error){candidate=null;$('#dxf-error').textContent=text('尚不能导入：','Cannot import yet: ')+friendly(error);}
         }
@@ -286,11 +291,11 @@
       draft.name=q('#trace-name').value.trim();
       let plan;
       try{if(phase==='design'&&baseline)FurnishProject.assertStructure(baseline,draft);plan=FurnishDraft.build(draft);}catch(error){report(text('无法生成：请检查校准、闭合墙线及门窗位置。详情：','Cannot build: check calibration, closed walls and opening positions. Details: ')+error.message,true);return;}
-      const architecture={draft:copy(draft),phase,...(baseline?{baseline:copy(baseline)}:{})};
+      const architecture={draft:copy(draft),phase,...(baseline?{baseline:copy(baseline)}:{}),...(revisingOriginal?{originalRevisions:[...(originalArch?.originalRevisions||[]),copy(originalArch.baseline||originalArch.draft)].slice(-10)}:originalArch?.originalRevisions?{originalRevisions:copy(originalArch.originalRevisions)}:{})};
       if(original){
         const before=snap();state.open=FurnishProject.remapOpenings(PLAN,plan,state.open);state.architecture=architecture;state.demolished=[];
         state.rooms=FurnishProject.remapRooms(ROOMS,plan.rooms,state.rooms);
-        if(originalArch.phase==='survey'&&phase==='design'){
+        if(revisingOriginal||originalArch.phase==='survey'&&phase==='design'){
           // Confirmation is a history boundary: undo must never unlock the baseline.
           undoStack.length=redoStack.length=0;save();snapshot();
         }else commit(before);
@@ -299,7 +304,7 @@
         store.customPlans=store.customPlans||[];store.customPlans.push(copy(draft));PLANS.push(plan);
         store.work[plan.id]=freshWork(plan);store.work[plan.id].architecture=architecture;setPlan(plan.id);
       }
-      buildPlanList();close();toast(text(`已生成 ${plan.rooms.length} 个房间，可以开始摆家具。`,`Built ${plan.rooms.length} rooms. Ready to furnish.`));
+      buildPlanList();close();toast(text(`已生成 ${plan.rooms.filter(r=>r.counted!==false).length} 个房间，可以开始摆家具。`,`Built ${plan.rooms.filter(r=>r.counted!==false).length} rooms. Ready to furnish.`));
     };
     render();q('#trace-dxf').focus();
   }
