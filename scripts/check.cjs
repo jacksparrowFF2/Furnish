@@ -21,16 +21,28 @@ function filesIn(dir) {
   });
 }
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const classicSources = [];
 for (const match of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
   const attrs = match[1];
-  if (/src=|importmap/.test(attrs)) continue;
+  if (/importmap/.test(attrs)) continue;
+  const source = attrs.match(/\bsrc="([^"]+)"/);
+  if (source) {
+    if (!/type="module"/.test(attrs) && !/^(?:https?:|data:)/.test(source[1])) classicSources.push(fs.readFileSync(path.join(root,source[1]),'utf8'));
+    continue;
+  }
   if (/type="module"/.test(attrs)) {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'furnish-check-'));
     const file = path.join(dir, 'view3d.mjs');
     try { fs.writeFileSync(file, match[2]); run(['--check', file]); }
     finally { fs.unlinkSync(file); fs.rmdirSync(dir); }
-  } else new vm.Script(match[2]);
+  } else {
+    new vm.Script(match[2]);
+    classicSources.push(match[2]);
+  }
 }
+// Ordinary scripts share a global lexical scope in the browser. Check the
+// combined declarations as well as each file to catch duplicate const/let names.
+new vm.Script(classicSources.join('\n;\n'), {filename:'furnish-classic-scripts.js'});
 // Fail early on broken local script, stylesheet and icon references.
 for (const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+)"/g)) {
   if (/^(?:https?:|data:)/.test(match[1])) continue;
@@ -42,4 +54,4 @@ for (const file of filesIn(path.join(root,'tests')).filter(f => /^test-.*\.cjs$/
   run([file]); console.log('PASS ' + path.relative(root,file));
 }
 run([path.join(__dirname,'validate-plans.mjs')]);
-console.log('PASS 12 built-in plans, local assets and all production syntax checks');
+console.log('PASS 12 built-in plans, local assets, shared declarations and all production syntax checks');

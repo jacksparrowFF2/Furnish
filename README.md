@@ -343,10 +343,11 @@ Furnish/
 ├── start-furnish.cmd        # Windows 本地服务启动入口
 ├── manifest.webmanifest    # PWA 清单
 ├── src/
-│   ├── app.js              # 应用状态、2D 渲染、指针事件与初始化
+│   ├── app.js              # 应用状态、属性面板、指针事件与初始化
 │   ├── core/               # 户型几何、项目与设计规则
 │   ├── io/                 # DXF 导入／修复、浏览器存储
 │   ├── ui/                 # 编辑器、项目、设计、采购与核对界面
+│   ├── render/             # 家具 SVG 图例与 2D 画布图层
 │   └── data/               # 户型、家具、材料、语言、风格与 DXF 模板
 ├── styles/                 # 主界面、户型编辑器与项目工作台样式
 ├── assets/icons/           # 应用图标
@@ -360,7 +361,7 @@ Furnish/
 └── README.md
 ```
 
-项目仍使用浏览器原生脚本，无需 npm 安装或构建。`index.html` 按依赖顺序加载数据、规则、浏览器适配、主应用与 UI 扩展。风格规则可直接测试，预算面板、家具编辑操作与图片导出已分离；主应用继续管理当前状态、渲染和指针事件。Three.js 的 data-URL import map 与三维模块暂时保留在入口中，保证直接打开文件时的模块加载方式不变。详见 [模块与加载约定](docs/ARCHITECTURE.md)。
+项目仍使用浏览器原生脚本，无需 npm 安装或构建。`index.html` 按依赖顺序加载数据、规则、浏览器适配、渲染、主应用与 UI 扩展。风格、布局几何和家具图例可直接测试，预算面板、家具编辑操作、图片导出与 2D 画布图层已分离；主应用继续管理当前状态、属性面板和指针事件。Three.js 的 data-URL import map 与三维模块暂时保留在入口中，保证直接打开文件时的模块加载方式不变。详见 [模块与加载约定](docs/ARCHITECTURE.md)。
 
 开发验证运行 `node scripts/check.cjs`，包含递归脚本语法检查、入口资源路径检查、全部回归与内置户型校验。单个测试可运行 `node tests/test-project.cjs`；脚本与测试根据自身位置解析项目路径，不依赖调用时的工作目录。本地服务运行 `node scripts/serve.cjs` 或双击 `start-furnish.cmd`。示例从 `examples/` 选择，模板原文件在 `templates/`。
 
@@ -412,7 +413,7 @@ const P13 = {
 
 - 方案数据另有 `notes`（文字标注 `{id,x,y,text,color,size}`）与 `style`（最近套用的风格 id）。
 - 家具数据字段：`{id,type,name,cx,cy,w,d,rot,color}`，可选 `flip`（镜像）、`locked`（锁定）、`price`（手填单价，优先于家具库参考价）、`h`（自定义家具高度 mm）。家具库条目为 `[类型, 名称, 宽, 深, 颜色, 参考单价]`。
-- 碰撞检查规则见 `NOCOLLIDE`（地毯、壁挂、台面设备、绿植不参与）与 `SEATS` / `TABLES`（椅子推进桌下不算重叠）；内置 12 套户型的默认布置均无重叠（由 `validate-plans.mjs` 与运行时检查双重保证）。
+- 碰撞检查规则在 `src/core/layout-geometry.js`：`NOCOLLIDE` 排除地毯、壁挂、台面设备和绿植；`SEATS` / `TABLES` 允许椅子推进桌下。内置户型校验与运行时检查共同辅助核对布置。
 
 **多语言**
 
