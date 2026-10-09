@@ -11,6 +11,7 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 - `src/core/style-core.js`：应用家具配色与房间材料，复用 `design-core.js` 的房间用途规则。调用者负责撤销、保存、渲染和提示。
 - `src/core/layout-geometry.js`：面积、周长、旋转外包框、点在多边形内判断、分离轴碰撞与整组范围。`collisions(furniture)` 显式接收家具数组；保留 5 mm 容差和椅子／桌子等例外。
 - `src/core/work-state.js`：`create({makeId, colorFor, materials})` 提供工作方案的 `fresh(plan)`、`restore(work, plan)` 和 `restoreFurniture(list)`。复用设计与结构规则，保留有效位置和项目附加字段；恢复按原行为更新传入的工作对象，自定义结构先重建并核对户型编号。
+- `src/core/snapping.js`：移动吸附与测量点吸附显式接收网格、缩放、墙窗范围、家具及排除集合，返回坐标和参考线，不修改 UI。复用旋转外包框，保留像素容差、最近候选和并列候选的先后规则。
 - `src/render/furniture-svg.js`：`render(type, width, depth, color, palette)` 生成单件家具图例，`shade(color, factor)` 处理颜色。图例使用调用时的调色板，不读取当前主题。
 
 这些模块不读取 DOM 或当前应用状态。浏览器通过 `FurnishPlans`、`FurnishCatalogData`、`FurnishI18n`、`FurnishStylePresets`、`FurnishStyles` 获取数据与接口；Node 通过 `require()` 直接读取同一份实现。`FurnishCatalog` 保留给现有家具库 UI 接口，避免与静态数据混用。风格和户型测试无需按源码文本位置截取代码。
@@ -19,12 +20,13 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 
 - `src/ui/budget-panel.js`：概览、家具清单、报价面板与 CSV 导出；计算仍交给 `project-core.js`。
 - `src/ui/property-panel.js`：属性面板分派、浮动工具条、房间／单件／多选家具／内置门窗属性及标注编辑。调用时读取当前状态，继续通过 `mutate()` 进入统一撤销与自动保存；墙体、自定义窗和飘窗仍交给项目 UI 的扩展接口。
+- `src/ui/canvas-interactions.js`：视图变换、吸附适配、鼠标／触屏指针、滚轮及画布菜单。文件加载只声明函数和操作状态；主应用在状态及 DOM 就绪后调用一次 `initializeCanvasInteractions()` 绑定事件。拖动取消恢复拖动前状态及工作槽，不写保存或撤销记录。
 - `src/ui/furniture-actions.js`：选择、剪贴板、旋转、对齐、尺寸恢复及定位操作；复用现有规则、历史与渲染。
 - `src/io/image-export.js`：浏览器下载与 PNG 导出。
 - `src/io/workspace-cache.js`：`load({read, firstPlan, restore, key})` 读取 v2 缓存，缺失／不可读时尝试把 v1 工作迁移至第一套户型；异常时返回空工作区。存储访问由调用者注入，模块本身不读取浏览器 API。
 - `src/io/autosave.js`：自动保存协调器，注入缓存写入、历史缓存清理、项目写入及状态通知。缓存失败清理历史并重试，再由 IndexedDB 兜底；两处均失败才提示备份。每次保存的序号及工作对象／版本检查阻止旧回调覆盖新提示，`invalidate()` 取消清空操作前的回调。
 - `src/render/plan-renderer.js`：材质图案、房间、家具、墙体、门窗、尺寸、测量、标注、选择框及整幅画布刷新。图层继续使用实时状态与原有排序、缓存和 UI 扩展钩子。
-- `src/app.js`：当前户型、状态、历史、操作表与事件委托、指针事件和应用初始化。
+- `src/app.js`：当前户型、状态、历史、操作表与事件委托、键盘及应用初始化。
 
 浏览器适配与画布图层文件是普通脚本，与 `app.js` 共用全局词法作用域。其顶层只声明函数、常量或局部操作状态，不读取尚未初始化的 `state`、`ui`、`PLAN` 或 DOM；调用时读取最新状态，避免撤销、切换户型或载入项目后继续引用旧对象。
 
@@ -46,9 +48,8 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 
 ## 后续整理范围
 
-属性面板拆分后，预计还有两轮主要整理，按实际收益调整范围：
+画布交互拆分后，预计还有一轮主要整理，按实际收益调整范围：
 
-1. 指针交互与吸附：让视图／拖动适配与可单独验证的吸附计算分离；验收拖动、旋转、缩放、多选及取消，保留触屏行为。
-2. 历史与分享协调：明确恢复点持久化、方案载入和链接编码的边界；验收导入前恢复点、撤销重做和跨户型分享。
+1. 历史与分享协调：明确恢复点持久化、方案载入和链接编码的边界；验收导入前恢复点、撤销重做和跨户型分享。
 
 当主入口以状态初始化和事件装配为主、规则可直接测试且功能验收通过时，这一轮目录整理即可收尾。三维代码拆分另行评估，先补齐真实离线文件打开验收；不以入口体积或文件数量作为继续拆分的唯一理由。
