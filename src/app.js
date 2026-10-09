@@ -51,40 +51,11 @@ const NOTE_COLORS = {accent:['#ef5a24','#fff'], teal:['#0e8f83','#fff'], ink:['#
 const F = (type,name,cx,cy,w,d,rot=0,color) => ({id:uid(),type,name,cx,cy,w,d,rot,color:color||typeColor(type)});
 
 /* ======================= 存储 v2：每个户型独立工作槽 + 多命名方案 ======================= */
-function freshWork(p){
-  const rooms = {}; p.rooms.forEach(r => rooms[r.id] = {name:r.name, mat:r.mat,use:FurnishDesign.inferUse(r)});
-  return {furniture:p.defaults.map(f => F(f.t, f.n, f.x, f.y, f.w, f.d, f.r || 0, f.c)), rooms, demolished:[], measures:[], notes:[], open:{}, ...(p.customDraft ? {architecture:{draft:p.customDraft,phase:'survey'}} : {})};
-}
-function fixWork(s, p){
-  if (s.architecture) {
-    const plan = FurnishDraft.build(s.architecture.draft);
-    if (plan.id !== p.id) throw new Error('Custom plan identity mismatch');
-    s.architecture = FurnishProject.architecture({...s.architecture,draft:plan.customDraft}); p = plan;
-  }
-  const d = freshWork(p);
-  s.rooms = Object.assign(d.rooms, s.rooms || {});
-  p.rooms.forEach(r=>{const v=s.rooms[r.id];s.rooms[r.id]={name:typeof v?.name==='string'?v.name.slice(0,80):r.name,mat:MATS[v?.mat]?v.mat:r.mat,use:FurnishDesign.inferUse(r,v)};});
-  s.demolished = s.demolished || []; s.measures = s.measures || []; s.open = s.open || {};
-  s.notes = FurnishDesign.restoreNotes((Array.isArray(s.notes)?s.notes:[]).filter(n=>n&&typeof n.text==='string'&&n.text.trim()&&[n.x,n.y].every(v=>typeof v==='number'&&Number.isFinite(v)||typeof v==='string'&&v.trim()&&Number.isFinite(Number(v)))).slice(0,2000).map(n=>({...n,text:n.text.slice(0,120)})),uid);
-  s.furniture = sanitizeFurn(s.furniture, p);
-  s.scene3d = FurnishDesign.sceneSettings(s.scene3d);
-  return s;
-}
-// 修复缺字段的旧数据，但保留有效坐标；范围外家具由用户主动移回。
-function sanitizeFurn(list, p){
-  return FurnishDesign.restoreFurniture(list,{makeId:uid,colorFor:typeColor});
-}
+const {fresh:freshWork, restore:fixWork, restoreFurniture:sanitizeFurn} = FurnishWork.create({
+  makeId:uid, colorFor:typeColor, materials:MATS,
+});
 const STORE = 'huxing-design-v2';
-function loadStore(){
-  try { const s = JSON.parse(localStorage.getItem(STORE)); if (s && s.v === 2) return s; } catch(e) {}
-  const st = {v:2, planId:PLANS[0].id, work:{}, designs:[]};
-  try {   // 迁移旧版（v1）数据到第一套户型
-    const old = JSON.parse(localStorage.getItem('huxing-design-v1'));
-    if (old && Array.isArray(old.furniture)) st.work[PLANS[0].id] = fixWork(old, PLANS[0]);
-  } catch(e) {}
-  return st;
-}
-let store = loadStore();
+let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Validate and rebuild user plans; never trust serialized rendering geometry.
 store.customPlans = (Array.isArray(store.customPlans) ? store.customPlans : []).filter(d => {
   try { const draft = store.work[d.id]?.architecture?.draft || d; const p = FurnishDraft.build(draft); if (p.id !== d.id || PLANS.some(q => q.id === p.id)) return false; PLANS.push(p); return true; }
