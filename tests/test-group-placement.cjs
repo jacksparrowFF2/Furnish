@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js');
+const a={id:'a',name:'A',type:'desk',cx:1000.25,cy:1000.5,w:600,d:400,rot:30,resizeAnchor:'left',locked:true,obj:{positions:[1,2,3]},purchaseNote:'保持资料'};
+const b={...a,id:'b',cx:2000.25,cy:1600.5,w:400,d:600,rot:90};
+const bounds={x:0,y:0,w:5000,h:4000},clip={cx:1500.25,cy:1300.5,items:[a,b]};let id=0;
+const first=D.pasteFurniture(clip,{x:clip.cx+300,y:clip.cy+300},bounds,()=>`copy${++id}`);
+const second=D.pasteFurniture(clip,{x:clip.cx+600,y:clip.cy+600},bounds,()=>`copy${++id}`);
+assert.equal(first.items[0].cx,a.cx+300);assert.equal(second.items[0].cy,a.cy+600);assert.equal(clip.cx,1500.25);
+assert.notEqual(first.items[0].id,second.items[0].id);assert.equal(first.items[0].locked,undefined);assert.equal(first.items[0].purchaseNote,a.purchaseNote);
+first.items[0].obj.positions[0]=99;assert.equal(a.obj.positions[0],1);assert.equal(second.items[0].obj.positions[0],1);
+const edge=D.pasteFurniture(clip,{x:8000,y:9000},bounds,()=>`copy${++id}`);assert.equal(edge.adjusted,true);
+assert.equal(edge.items[1].cx-edge.items[0].cx,b.cx-a.cx);assert.equal(edge.items[1].cy-edge.items[0].cy,b.cy-a.cy);
+for(const f of edge.items){const box=D.bounds(f);assert.ok(box[0]>=-1e-8&&box[1]>=-1e-8&&box[2]<=5000+1e-8&&box[3]<=4000+1e-8);}
+const tiny=D.pasteFurniture(clip,{x:0,y:0},{x:0,y:0,w:100,h:100},()=>`copy${++id}`);assert.equal(tiny.oversized,true);assert.equal(tiny.items[1].cx-tiny.items[0].cx,b.cx-a.cx);
+const before=id;assert.throws(()=>D.pasteFurniture(clip,{x:2000,y:2000},bounds,()=>`copy${++id}`,1),/2000/);assert.equal(id,before);
+assert.throws(()=>D.pasteFurniture(clip,{x:NaN,y:1},bounds,()=>''),/位置/);
+const plan={rooms:[{id:'r',name:'房间',poly:[[0,0],[5000,0],[5000,4000],[0,4000]]}],walls:[],doors:[]};
+const f={...a,locked:false,rot:0},overlap={...f,id:'c'},other={...f,id:'other',cx:9000};
+const result=P.spaceCheck(plan,[f,overlap,other],{focusIds:['a','c'],scanPassages:false});assert.equal(result.length,1);assert.equal(result[0].kind,'overlap');
+assert.equal(P.spaceCheck(plan,[f,overlap,other],{focusIds:[],scanPassages:false}).length,0);
+assert.ok(P.spaceCheck(plan,[f,overlap,other],{scanPassages:false}).some(v=>v.id==='other'&&v.kind==='outside'));
+const dense=Array.from({length:40},(_,i)=>({...f,id:'dense_'+i}));
+assert.equal(P.spaceCheck(plan,dense,{focusIds:dense.map(f=>f.id),scanPassages:false,maxIssues:7}).length,7);
+assert.equal(P.spaceCheck(plan,dense,{scanPassages:false}).filter(v=>v.kind==='overlap').length,780);
+console.log('PASS repeated/group paste offsets, edge translation, oversized layouts, nested metadata independence, limits and deduplicated selection checks');

@@ -2,7 +2,7 @@
 
 在浏览器里打开 `index.html` 就能用的户型装修设计工具：左边拖家具、中间改平面、右边看预算，一键切 3D 看效果。**无需安装开发环境、离线可用**——双击即开，不用装环境、不用联网、不用登录，所有数据只存在你自己的浏览器里。
 
-![2D 平面布置与预算面板](screenshot/01-2d-plan.png)
+![2D 平面布置与预算面板](docs/screenshots/01-2d-plan.png)
 
 ## 本 fork 的升级：DXF 优先，图片描图辅助
 
@@ -52,7 +52,7 @@
 
 第十八轮：完成实际 DXF 导入、飘窗、家具资料与替换、预算、版本比较、核对、三维成果、CSV／项目下载、重新加载、撤销恢复与刷新验收。弹窗支持 Tab 焦点循环、Esc 关闭及返回触发按钮；320 px 屏幕预算／资料／比较／备份／检查与成果无横向溢出。零预算占比显示 0%，三维切换动画结束前不提供成果截图，空间核对避免重复序列化相同几何。
 
-开发验证统一运行 `node check.cjs`，检查生产脚本语法、全部几何／项目回归和 12 套内置户型。见 [改进与验收记录](IMPROVEMENTS.md)。
+开发验证统一运行 `node scripts/check.cjs`，检查生产脚本语法、全部几何／项目回归和 12 套内置户型。见 [改进与验收记录](docs/IMPROVEMENTS.md)。
 
 顶部 **「导入 DXF / 描图」** 打开自己的户型工作区，**「项目工作台」** 管理拆改对比、方案比较、完整备份、空间检查、工程预算和品牌家具。原有 12 套户型与家具布置保持兼容。
 
@@ -100,7 +100,7 @@
 
 滚轮缩放，中键或 Alt+拖动平移；工作区有独立撤销/重做。取消不会修改已有方案。文件解析和图片处理均在本机完成。
 
-PDF 使用随项目打包的 [PDF.js 6.4.299](https://github.com/mozilla/pdf.js)，含字符映射、标准字体与解码资源。通过本地 HTTP 服务导入，运行 `node serve.cjs` 后打开 `http://127.0.0.1:8765/`；无需 npm 安装。多页可选择页码，仍需校准与描墙。
+PDF 使用随项目打包的 [PDF.js 6.4.299](https://github.com/mozilla/pdf.js)，含字符映射、标准字体与解码资源。通过本地 HTTP 服务导入，运行 `node scripts/serve.cjs` 后打开 `http://127.0.0.1:8765/`；无需 npm 安装。多页可选择页码，仍需校准与描墙。
 
 ### 项目工作台
 
@@ -111,7 +111,7 @@ PDF 使用随项目打包的 [PDF.js 6.4.299](https://github.com/mozilla/pdf.js)
 - 品牌家具：品牌、型号、尺寸、价格日期、来源链接；本地静态 OBJ 网格按宽高深缩放显示（Y 轴向上，暂不包含贴图／MTL）。
 - 自动保存：增加 IndexedDB 原子化大容量镜像和较新项目自动恢复，缓解浏览器旧存储容量不足；仍建议定期导出项目文件。
 
-[实机测试清单](TESTING.md) 提供每阶段步骤、示例和预期数值。
+[实机测试清单](docs/TESTING.md) 提供每阶段步骤、示例和预期数值。
 
 ### 保存与迁移
 
@@ -128,7 +128,7 @@ PDF 使用随项目打包的 [PDF.js 6.4.299](https://github.com/mozilla/pdf.js)
 
 ### 验证
 
-`node test-project.cjs` 检查结构阶段、真实拆改、房间匹配、工程量、项目备份、空间冲突与 OBJ；`node test-wall-locks.cjs` 检查分图层类型、修复往返、冲突及承重锁定；`node test-dxf-repair.cjs` 检查修复容差、双线转换、歧义、单位和修复后 DXF 往返；`node validate-plans.mjs` 检查原有户型；`node test-custom-plans.cjs` 检查 DXF 单位/实体、闭合房间、净面积、门窗切洞、冲突和数据往返。
+`node tests/test-project.cjs` 检查结构阶段、真实拆改、房间匹配、工程量、项目备份、空间冲突与 OBJ；`node tests/test-wall-locks.cjs` 检查分图层类型、修复往返、冲突及承重锁定；`node tests/test-dxf-repair.cjs` 检查修复容差、双线转换、歧义、单位和修复后 DXF 往返；`node scripts/validate-plans.mjs` 检查原有户型；`node tests/test-custom-plans.cjs` 检查 DXF 单位/实体、闭合房间、净面积、门窗切洞、冲突和数据往返。
 
 新增文件：dxf-import.js（DXF 解析）、dxf-repair.js（自动修复与兼容 DXF 导出）、floorplan-core.js（墙体/房间几何）、floorplan-editor.js（导入与描图界面）。新增 project-core.js（项目与检查计算）、project-storage.js（大容量保存）、project-ui.js（项目工作台）。PDF.js 以固定版本随 vendor 目录本地分发，保留许可证；其他功能不依赖在线服务。
 
@@ -172,19 +172,19 @@ PDF 使用随项目打包的 [PDF.js 6.4.299](https://github.com/mozilla/pdf.js)
 
 | 三维场景 | 户型库 |
 | --- | --- |
-| ![3D 场景](screenshot/02-3d-scene.png) | ![户型库](screenshot/03-plan-gallery.png) |
+| ![3D 场景](docs/screenshots/02-3d-scene.png) | ![户型库](docs/screenshots/03-plan-gallery.png) |
 
 | 报价明细 | 家具属性编辑 |
 | --- | --- |
-| ![报价明细](screenshot/04-quote-panel.png) | ![家具属性](screenshot/06-item-editing.png) |
+| ![报价明细](docs/screenshots/04-quote-panel.png) | ![家具属性](docs/screenshots/06-item-editing.png) |
 
 | 亮色主题 | 命令面板 |
 | --- | --- |
-| ![亮色主题](screenshot/05-light-theme.png) | ![命令面板](screenshot/07-command-palette.png) |
+| ![亮色主题](docs/screenshots/05-light-theme.png) | ![命令面板](docs/screenshots/07-command-palette.png) |
 
 手机 / 平板（触屏适配，浮动工具条 + 底部操作栏）：
 
-<img src="screenshot/08-mobile.png" width="300" alt="手机端布局">
+<img src="docs/screenshots/08-mobile.png" width="300" alt="手机端布局">
 
 ---
 
@@ -338,20 +338,35 @@ PDF 使用随项目打包的 [PDF.js 6.4.299](https://github.com/mozilla/pdf.js)
 ## 项目结构
 
 ```
-装修/
-├── index.html              # 全部内容：样式 + 户型数据 + 2D 引擎 + 3D 场景（~1.3 MB）
-├── validate-plans.mjs      # 户型数据自检脚本（node validate-plans.mjs）
-├── manifest.webmanifest    # PWA 清单（可安装到桌面 / 主屏）
-├── icon-192.png / icon-512.png
-├── screenshot/             # README 用的界面截图
+Furnish/
+├── index.html              # 页面入口、内嵌 Three.js 与三维模块
+├── start-furnish.cmd        # Windows 本地服务启动入口
+├── manifest.webmanifest    # PWA 清单
+├── src/
+│   ├── app.js              # 2D 应用、交互、家具库、初始化
+│   ├── core/               # 户型几何、项目与设计规则
+│   ├── io/                 # DXF 导入／修复、浏览器存储
+│   ├── ui/                 # 编辑器、项目、设计、采购与核对界面
+│   └── data/               # 内置户型与可离线下载的 DXF 模板
+├── styles/app.css          # 主界面样式
+├── assets/icons/           # 应用图标
+├── examples/               # DXF、PDF、OBJ 导入示例
+├── templates/              # DXF 模板原文件与历史回归夹具
+├── vendor/pdfjs/           # PDF.js 及其离线资源
+├── tests/                  # 回归脚本，helpers/ 提供统一路径入口
+├── scripts/                # check.cjs、serve.cjs、validate-plans.mjs
+├── docs/                   # 测试说明、改进记录、screenshots/
+├── output/                 # 本地验收结果
 └── README.md
 ```
 
-`index.html` 内部大致分四段：样式（CSS 变量分「表面」与「外壳」两层）、户型数据与家具库、2D 平面引擎（原生 SVG + 指针事件）、3D 场景（three.js，写在 `create3D()` 工厂里）。
+项目仍使用浏览器原生脚本，无需 npm 安装或构建。`index.html` 按依赖顺序加载 core、io、户型数据、主应用和 UI。主样式在 `styles/app.css`，内置户型在 `src/data/plans.js`，2D 引擎与应用交互在 `src/app.js`。Three.js 的 data-URL import map 与三维模块暂时保留在入口中，保证直接打开文件时的模块加载方式不变。
+
+开发验证运行 `node scripts/check.cjs`，包含递归脚本语法检查、入口资源路径检查、全部回归与内置户型校验。单个测试可运行 `node tests/test-project.cjs`；脚本与测试根据自身位置解析项目路径，不依赖调用时的工作目录。本地服务运行 `node scripts/serve.cjs` 或双击 `start-furnish.cmd`。示例从 `examples/` 选择，模板原文件在 `templates/`。
 
 ## 如何新增一套户型
 
-打开 `index.html`，在最后一个户型对象（当前为 `const P12 = {...}`）之后照格式增加一个对象并加入 `const PLANS = [...]`，再在 `NAMES_EN` 中补上英文名。改完运行 `node validate-plans.mjs` 自检；户型库按名称中的「X室 / X卫 / 开间」自动识别居室数：
+打开 `src/data/plans.js`，在最后一个户型对象（当前为 `const P12 = {...}`）之后照格式增加一个对象并加入 `const PLANS = [...]`，再在 `src/app.js` 的 `NAMES_EN` 中补上英文名。改完运行 `node scripts/validate-plans.mjs` 自检；户型库按名称中的「X室 / X卫 / 开间」自动识别居室数：
 
 ```js
 const P13 = {
@@ -372,7 +387,7 @@ const P13 = {
 
 坐标约定：mm，原点 = 左侧外墙内皮与顶部外墙内皮。**入户箭头、3D 漫游出生点、窗台高、3D 场景中心全部自动推导**，无需另行配置。
 
-`validate-plans.mjs` 会检查：字段合法性与坐标递增、门窗洞口不与墙段实体重叠、尺寸标注链每段为正且总长与墙长一致、房间多边形面积为正且在画布内、默认家具都在室内、门的方向向量 / 铰点 / 入户门唯一性。退出码 0 表示全部通过。由于校验脚本是从 HTML 里提取数据段执行的，户型数据结构改动时只需同步它开头那两个定位字符串。
+`scripts/validate-plans.mjs` 直接读取 `src/data/plans.js`，检查字段合法性与坐标递增、门窗洞口不与墙段实体重叠、尺寸标注链每段为正且总长与墙长一致、房间多边形面积为正且在画布内、默认家具都在室内、门的方向向量 / 铰点 / 入户门唯一性。退出码 0 表示全部通过；修改 HTML 排版不影响数据校验。
 
 ## 实现与维护说明
 

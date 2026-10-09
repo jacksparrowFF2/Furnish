@@ -11,5 +11,5 @@ if errorlevel 1 (
 echo Keep this window open while using Furnish.
 echo Close this window or press Ctrl+C to stop and release the port.
 echo.
-node serve.cjs --open
+node scripts/serve.cjs --open
 if errorlevel 1 pause

@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),P=require('../src/core/project-core.js');
+const plan={rooms:[{id:'living',name:'客厅',poly:[[0,0],[3000,0],[3000,3000],[0,3000]]}]};
+const a={id:'a',type:'chair',name:'餐椅',cx:1000,cy:1000,w:450,d:500,h:800,rot:30,price:399.5,brand:'甲',model:'A',priceDate:'2026-10-08',purchaseStatus:'ordered',purchaseNote:'米白色',resizeAnchor:'left'},b={...a,id:'b',locked:true,cx:2000,rot:90},c={...a,id:'c',model:'B'},work={furniture:[a,b,c],notes:[]},original=JSON.stringify(work),ids=P.procurement(plan,work).items[0].ids;
+const updated=P.updatePurchaseGroup(work,ids,{brand:'乙',model:'新型号',sourceUrl:'https://example.com/chair',priceDate:'2026-10-09'});
+assert.equal(JSON.stringify(work),original);for(const f of updated.furniture.slice(0,2)){assert.equal(f.brand,'乙');assert.equal(f.model,'新型号');assert.equal(f.price,399.5);assert.equal(f.purchaseStatus,'ordered');assert.equal(f.purchaseNote,'米白色');}assert.deepEqual(updated.furniture[2],c);assert.equal(updated.furniture[1].locked,true);assert.equal(updated.furniture[1].cx,2000);assert.equal(updated.furniture[1].rot,90);assert.equal(updated.furniture[0].resizeAnchor,'left');
+const priced=P.updatePurchaseGroup(work,ids,{price:499});assert.equal(P.procurement(plan,priced).items[0].total,998);
+const estimated=P.updatePurchaseGroup(work,ids,{price:null});assert(!Object.hasOwn(estimated.furniture[0],'price'));assert(!Object.hasOwn(estimated.furniture[1],'price'));assert.equal(P.procurement(plan,estimated, f=>f.price??200).estimated,2);
+for(const values of [{price:-1},{price:1e8},{price:'400'},{price:undefined},{priceDate:'2026-02-30'},{sourceUrl:'javascript:bad'},{model:'x'.repeat(501)},{cx:0},{locked:false},{name:'改名'},{purchaseStatus:'bad'}])assert.throws(()=>P.updatePurchaseGroup(work,ids,values));
+assert.throws(()=>P.updatePurchaseGroup(work,['a','missing'],{brand:'丙'}),/已变更/);assert.throws(()=>P.updatePurchaseGroup(work,['a','a'],{brand:'丙'}),/无效/);assert.equal(JSON.stringify(work),original);
+assert.deepEqual(P.unpack(P.pack({planId:'p',current:updated,designs:[{name:'采购资料',work:updated}],catalog:[]})).current,updated);

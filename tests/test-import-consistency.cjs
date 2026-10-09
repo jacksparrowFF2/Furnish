@@ -1,0 +1,16 @@
+const {rootPath}=require('./helpers/paths.cjs');
+const assert=require('node:assert/strict'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),DXF=require('../src/io/dxf-import.js'),fs=require('node:fs');
+let id=0;const options={makeId:()=>`new${++id}`,colorFor:()=> '#cccccc'};
+const outside={id:'outside',name:'暂放家具',type:'desk',cx:-2500.125,cy:12000.5,w:600,d:400,rot:30,color:'#aabbcc',locked:true,h:800,resizeAnchor:'left',price:399.5,purchaseStatus:'ordered',purchaseNote:'现场核对',obj:{positions:[0,0,0,1,0,0,0,1,1]}};
+const before=structuredClone(outside),restored=D.restoreFurniture([outside],options);assert.deepEqual(restored,[outside]);assert.deepEqual(outside,before);assert.notEqual(restored[0],outside);
+const old=D.restoreFurniture([{...outside,id:'dup'},{...outside,id:'dup'},{...outside,id:'new1'},null,{cx:NaN,cy:1,w:2,d:2},{cx:0,cy:1,w:Infinity,d:2},{cx:0,cy:0,w:'130',d:'400'}],options);
+assert.equal(old.length,4);assert.equal(new Set(old.map(f=>f.id)).size,4);assert.equal(old[2].id,'new1');assert.equal(old[3].w,130);assert.equal(old[3].type,'custom');
+const source={id:'source',name:'来源户型',bounds:{x:0,y:0,w:4000,h:3000},rooms:[{id:'r',name:'房间',poly:[[0,0],[4000,0],[4000,3000],[0,3000]]}],walls:[[0,0,4000,100,'b'],[0,2900,4000,3000,'e']],doors:[],slides:[],wins:[{rect:[1000,0,2000,100],sill:.9,head:2.4,room:'r'}]},current={...source,id:'current',rooms:[{...source.rooms[0],poly:[[0,0],[8000,0],[8000,6000],[0,6000]]}]};
+const payload={planId:'source',current:{furniture:[outside],rooms:{r:{name:'来源书房',use:'study'}},demolished:['w1'],open:{w:{0:{sill:.45,head:2.2}}}},designs:[],catalog:[]};
+const preview=P.previewPlan(payload,[current,source]);assert.equal(preview.id,'source');assert.equal(P.quantities(preview).net,12);assert.equal(preview.rooms[0].name,'来源书房');assert.equal(preview.walls.length,1);assert.equal(preview.wins[0].sill,.45);assert.equal(preview.wins[0].head,2.2);assert.equal(source.wins[0].sill,.9);assert.equal(source.walls.length,2);
+assert.throws(()=>P.previewPlan({...payload,planId:'missing'},[current]),/不存在/);
+const parsed=DXF.parse(fs.readFileSync(rootPath('templates/furnish-template-example.dxf'),'utf8')),draft=DXF.draft(parsed,{id:'custom_import',name:'自定义来源',mmPerUnit:1,layers:parsed.layers.map(l=>l.name),thickness:200});
+const custom={...payload,planId:draft.id,current:{...payload.current,demolished:[],open:{},architecture:P.architecture({draft,phase:'design'})}};
+assert.equal(P.previewPlan(custom,[current]).id,draft.id);assert.equal(P.previewPlan(P.copyProject(custom,'custom_import_copy'),[current]).id,'custom_import_copy');
+const packed=P.pack({...payload,current:{...payload.current,furniture:restored}});assert.deepEqual(P.unpack(packed).current.furniture,[outside]);
+console.log('PASS unchanged outside/locked geometry, metadata, legacy ID repair, source-plan area/window/demolition preview, custom identities and project roundtrip');
