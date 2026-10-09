@@ -157,19 +157,19 @@ const undoStack = [], redoStack = [];
 
 // 自动保存：存储空间不足时先清掉历史快照再试；仍失败则明确提示（以前静默失败，刷新后布置会「消失」）
 let saveErr = false, savedAt = store.updatedAt||0, storageWiping = false, savePending=false;
+const autosave = FurnishAutosave.create({
+  writeCache: json => localStorage.setItem(STORE, json),
+  dropHistoryCache: () => localStorage.removeItem('huxing-history'),
+  writeStore: value => window.FurnishStorage.write(value),
+  isCurrent: (value, version) => !storageWiping && store === value && store.updatedAt === version,
+  onChange: status => { saveErr=status.error; savePending=status.pending; savedAt=status.savedAt; syncSaved(); },
+  onFailure: () => toast(tr('自动保存失败，请立即导出项目文件备份。','Autosave failed; export a project file now.')),
+});
 function save(){
   if(storageWiping)return;
   store.updatedAt=Math.max(Date.now(),(store.updatedAt||0)+1);
   store.work[PLAN.id] = state;
-  const json = JSON.stringify(store);
-  try { localStorage.setItem(STORE, json); saveErr = false; }
-  catch(e){
-    try { localStorage.removeItem('huxing-history'); localStorage.setItem(STORE, json); saveErr = false; }
-    catch(e2){ saveErr = true; }
-  }
-  const version=store.updatedAt,cached=!saveErr;savePending=!cached;
-  window.FurnishStorage.write(store).then(()=>{if(store.updatedAt===version){saveErr=false;savePending=false;syncSaved();}}).catch(()=>{if(store.updatedAt===version){saveErr=!cached;savePending=false;syncSaved();if(saveErr)toast(tr('自动保存失败，请立即导出项目文件备份。','Autosave failed; export a project file now.'));}});
-  savedAt = Date.now(); syncSaved();
+  autosave.save(store);
 }
 function syncSaved(){
   const el = $('#saved'); if (!el || !savedAt) return;
@@ -1000,7 +1000,7 @@ function openReset(){
     ]});
 }
 function wipeAll(){
-  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
+  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;autosave.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 
 function openHelp(){
