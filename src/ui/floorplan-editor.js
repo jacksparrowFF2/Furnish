@@ -10,26 +10,7 @@
   const menuButton=document.createElement('button');
   menuButton.id='editTracedPlan';menuButton.className='btn';menuButton.dataset.en='Edit traced plan / New plan';menuButton.textContent='编辑自定义户型 / 新建';
   $('#importJson').after(menuButton);menuButton.onclick=()=>{ $('#fileMenu').open=false;openEditor(); };
-  const style=document.createElement('style');
-  style.textContent=`
-  .trace-overlay{position:fixed;inset:0;z-index:80;padding:18px;background:rgba(10,8,6,.7);display:flex;align-items:center;justify-content:center}
-  .trace-box{width:min(1250px,100%);height:min(850px,96vh);display:flex;flex-direction:column;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg)}
-  .trace-top,.trace-toolbar,.trace-bottom{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line)}
-  .trace-top h2{font-size:18px;margin:0 auto 0 0}.trace-top input{max-width:240px}
-  .trace-toolbar label{display:flex;align-items:center;gap:5px;font-size:12px}.trace-toolbar input[type=number]{width:78px}
-  .trace-box input,.trace-box select{padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
-  .trace-box .btn{border:1px solid var(--line);background:var(--card)}.trace-box .btn.on,.trace-box .primary{background:var(--accent);color:white;border-color:var(--accent)}
-  .trace-hint{margin:0;padding:9px 16px;font-size:12px;background:var(--soft);line-height:1.6}
-  .trace-work{position:relative;flex:1;min-height:180px;background:#eee9df;overflow:hidden}.trace-canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
-  .trace-empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:20px;pointer-events:none;color:#564e44}
-  .trace-bottom{border-bottom:0;border-top:1px solid var(--line)}.trace-status{flex:1;font-size:12px;min-width:180px}
-  .trace-error{color:var(--danger);white-space:pre-wrap}.trace-input{width:100px!important}
-  #trace-properties{max-height:230px;overflow:auto;flex-shrink:0}#trace-properties[hidden]{display:none}
-  [data-window-field][hidden],[data-bay-field][hidden],#trace-unlock[hidden]{display:none!important}
-  @media(max-width:700px){.trace-overlay{padding:0}.trace-box{height:100dvh;border-radius:0;overflow-y:auto}.trace-top,.trace-toolbar{padding:8px;flex-shrink:0}.trace-top input{max-width:150px}.trace-toolbar .btn{padding:6px 9px}.trace-hint{padding:7px 10px;flex-shrink:0}.trace-work{flex:none;height:300px;min-height:250px}.trace-bottom{padding:8px;position:sticky;bottom:0;background:var(--panel);flex-shrink:0}}
-  @media print{.trace-overlay{display:none}}
-  `;
-  document.head.append(style);
+
   window.FurnishEditor={open:forceNew=>openEditor(!!forceNew)};
   function openEditor(forceNew=false) {
     if(document.querySelector('.trace-overlay')) return;

@@ -1,0 +1,11 @@
+const assert = require('node:assert/strict');
+const i18n = require('../src/data/i18n.js');
+assert.equal(i18n.translate('zh','布置家具','Arrange furniture'),'布置家具');
+assert.equal(i18n.translate('en','布置家具','Arrange furniture'),'Arrange furniture');
+assert.equal(i18n.translate('zht','布置家具','Arrange furniture'),'佈置家具');
+assert.equal(i18n.name('en','客厅'),'Living Room');
+assert.equal(i18n.name('zh','客厅'),'客厅');
+assert.equal(i18n.name('zht','客厅'),'客廳');
+assert.equal(i18n.name('en','Alice 的阅读角'),'Alice 的阅读角');
+assert.equal(i18n.toTraditional('复制布局与台面'),'複製佈局與檯面');
+console.log('PASS independent language switching, traditional phrases and custom names');

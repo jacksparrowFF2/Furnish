@@ -2,43 +2,9 @@
 const LANG_KEY = 'huxing-lang';
 const LANGS = ['zh', 'zht', 'en'];             // 简体 / 繁體（台湾用字）/ English
 let LANG = (() => { try { const l = localStorage.getItem(LANG_KEY); return LANGS.includes(l) ? l : 'zh'; } catch(e) { return 'zh'; } })();
-// 简 → 繁：先按词替换一字多义的字，再逐字查表（表由 OpenCC s2tw 按本页用到的字生成）
-const S2T_PHRASES = [['布置','佈置'],['布局','佈局'],['台面','檯面'],['复制','複製']];
-const S2T = new Map(('与與两兩个個为為书書于於仅僅从從价價会會传傳体體余餘侧側倾傾储儲儿兒关關内內写寫净淨准準击擊则則刚剛删刪制製办辦动動势勢区區单單占佔卧臥卫衛厅廳历歷压壓厨廚双雙发發变變叶葉后後吗嗎听聽启啟哑啞围圍图圖圆圓场場坐座块塊垫墊墙牆处處备備复復头頭妆妝婴嬰实實宽寬对對导導层層屉屜属屬岛島带帶干乾并並库庫应應开開当當径徑态態总總悬懸懒懶户戶护護拟擬择擇挂掛挡擋挤擠损損换換据據摆擺摇搖撑撐数數无無时時显顯暂暫机機杂雜杆桿条條来來松鬆构構柜櫃标標栈棧栏欄样樣梁樑棱稜椭橢横橫橱櫥气氣没沒注註浅淺测測浏瀏游遊滚滾满滿灯燈灵靈点點热熱状狀独獨环環现現电電画畫监監盖蓋盘盤砖磚确確离離积積称稱竖豎筑築签籤类類约約级級线線结結绕繞绘繪给給统統继繼绿綠缀綴编編缝縫缩縮网網联聯脚腳获獲虚虛装裝见見视視览覽触觸计計认認让讓议議记記设設识識译譯该該语語请請读讀调調负負败敗质質贴貼赶趕转轉轮輪软軟轴軸轻輕载載较較辅輔辑輯边邊过過这這进進远遠适適选選邻鄰里裡针針钢鋼钮鈕铰鉸铺鋪销銷锁鎖键鍵镜鏡长長门門闭閉闲閒间間阅閱阳陽阴陰阶階随隨隐隱静靜页頁顶頂项項顺順颜顏飘飄飞飛马馬鸟鳥齐齊龙龍东東义義优優伪偽册冊减減凑湊创創别別参參叠疊响響壳殼宁寧将將尽盡帘簾帧幀异異弃棄弹彈强強归歸录錄报報断斷旧舊档檔检檢湾灣码碼础礎笔筆简簡紧緊红紅纵縱组組细細绑綁续續缓緩缘緣艺藝节節范範补補观觀规規词詞试試话話误誤说說贯貫资資迁遷运運还還连連链鏈错錯队隊预預题題饰飾皱皺胶膠执執欧歐纸紙荐薦觉覺证證风風验驗筛篩阵陣肤膚兰蘭号號').match(/../gu).map(p => [...p]));
-const s2t = s => S2T_PHRASES.reduce((a, [f, t]) => a.replaceAll(f, t), s).replace(/[\u3400-\u9fff]/g, c => S2T.get(c) || c);
-const tr = (zh, en) => LANG === 'en' ? en : LANG === 'zht' ? s2t(zh) : zh;
-// 内置的房间 / 材料 / 家具名称存的是中文；英文界面下显示译名，用户自己改过的名称原样显示
-const NAMES_EN = {
-  '三室两厅两卫':'3BR · 2LR · 2BA', '两室两厅一卫 · 96㎡':'2BR · 2LR · 1BA · 96m²', '一室一厅 · 54㎡':'1BR · 1LR · 54m²',
-  '横厅三居两卫 · 128㎡':'Wide-living 3BR · 2BA · 128m²', '两室一厅 · 59㎡':'2BR · 1LR · 59m²',
-  '三室两厅一卫 · 95㎡':'3BR · 2LR · 1BA · 95m²', '四室两厅两卫 · 129㎡':'4BR · 2LR · 2BA · 129m²', '开间一居 · 42㎡':'Studio · 42m²',
-  '次卧二':'Second Bedroom Ⅱ', '客卧一体':'Studio Living', '生活阳台':'Utility Balcony',
-  '灯饰 · 布艺':'Lighting & Textile', '吊灯':'Pendant Lamp', '餐厅吊灯':'Dining Pendant', '窗帘 2.4m':'Curtains 2.4m', '窗帘 3m':'Curtains 3m',
-  '装饰画 横':'Wall Art', '装饰画 小':'Small Wall Art', '穿衣镜':'Mirror', '换鞋凳':'Bench', '晾衣架':'Drying Rack', '六斗柜':'Chest of Drawers',
-  '主卧室':'Master Bedroom', '次卧室':'Second Bedroom', '次卧':'Second Bedroom', '主卫浴':'Master Bath', '小孩房':"Kids' Room", '客卫浴':'Guest Bath', '洗衣阳台':'Laundry Balcony',
-  '衣帽间':'Walk-in Closet', '书房':'Study',
-  '子女房':"Children's Room", '厨房':'Kitchen', '餐厅':'Dining', '过道':'Hallway', '客厅':'Living Room', '休闲阳台':'Leisure Balcony',
-  '主卧飘窗':'Master Bay Window', '子女房飘窗':"Children's Bay Window",
-  '橡木地板':'Oak Flooring', '胡桃木地板':'Walnut Flooring', '800 地砖':'800 Tile', '600 地砖':'600 Tile', '大理石':'Marble',
-  '300 防滑砖':'300 Anti-slip Tile', '水磨石':'Terrazzo', '满铺地毯':'Wall-to-wall Carpet',
-  '卧室':'Bedroom', '餐厨':'Dining & Kitchen', '卫浴':'Bathroom', '家电':'Appliances', '书房 · 休闲':'Study & Leisure',
-  '双人床 1.8m':'Double Bed 1.8m', '双人床 1.5m':'Double Bed 1.5m', '双人床':'Double Bed', '单人床':'Single Bed', '婴儿床':'Crib',
-  '床头柜':'Nightstand', '衣柜':'Wardrobe', '小衣柜':'Small Wardrobe', '梳妆台':'Dresser', '书桌':'Desk', '椅子':'Chair',
-  '书架':'Bookshelf', '飘窗垫':'Bay Cushion', '三人沙发':'3-Seat Sofa', '双人沙发':'Loveseat', '转角沙发':'Corner Sofa',
-  '单人沙发':'Armchair', '懒人沙发':'Beanbag', '茶几':'Coffee Table', '边几':'Side Table', '电视柜':'TV Stand', '地毯':'Rug',
-  '鞋柜':'Shoe Cabinet', '玄关柜':'Entry Cabinet', '落地灯':'Floor Lamp', '绿植':'Plant', '大绿植':'Large Plant',
-  '餐桌':'Dining Table', '六人餐桌':'6-Seat Dining Table', '圆桌':'Round Table', '餐椅':'Dining Chair', '岛台':'Kitchen Island',
-  '吧椅':'Bar Stool', '橱柜台面':'Kitchen Counter', '燃气灶':'Gas Stove', '水槽':'Sink', '冰箱':'Fridge', '餐边柜':'Sideboard',
-  '马桶':'Toilet', '浴室柜':'Vanity', '双盆浴室柜':'Double Vanity', '淋浴房':'Shower', '淋浴区':'Shower Area', '浴缸':'Bathtub',
-  '洗衣机':'Washer', '洗衣池':'Laundry Sink', '电热水器':'Water Heater', '储物柜':'Storage Cabinet', '65 寸电视':'65" TV',
-  '55 寸电视':'55" TV', '对开门冰箱':'French-door Fridge', '柜机空调':'Floor AC', '挂机空调':'Wall AC', '洗碗机':'Dishwasher',
-  '蒸烤箱高柜':'Oven Tower', '烘干机':'Dryer', '空气净化器':'Air Purifier', '长书桌':'Long Desk', '办公椅':'Office Chair',
-  '大书架':'Large Bookshelf', '双人床 2.0m':'Double Bed 2.0m', '衣柜 2.4m':'Wardrobe 2.4m', '圆茶几':'Round Coffee Table', '大岛台':'Large Island',
-  '我的家具':'My Items', '客餐厅':'Living & Dining', '老人房':'Senior Room', '次卫':'Second Bath', '起居室':'Living Space',
-  '两室两厅两卫 · 91㎡':'2BR · 2LR · 2BA · 91m²', '三室一厅一卫 · 80㎡':'3BR · 1LR · 1BA · 80m²', '四室两厅三卫 · 141㎡':'4BR · 2LR · 3BA · 141m²', '小开间 · 35㎡':'Micro Studio · 35m²',
-  '小孩房门':"Kids' Room Door", '老人房门':'Senior Room Door', '次卫门':'Second Bath Door', '卫浴门':'Bathroom Door', '家具':'Item', '书房门':'Study Door', '衣帽间门':'Closet Door', '立式钢琴':'Upright Piano', '跑步机':'Treadmill', '阅读椅':'Reading Chair', '茶桌':'Tea Table', '休闲椅':'Lounge Chair',
-};
-const nm = s => LANG === 'en' ? (NAMES_EN[s] ?? s) : LANG === 'zht' ? s2t(s) : s;
+const NAMES_EN = FurnishI18n.namesEn;
+const tr = (zh,en) => FurnishI18n.translate(LANG,zh,en);
+const nm = text => FurnishI18n.name(LANG,text);
 // 静态文案：元素上写 data-en / data-en-title，中文原文首次切换时存进 dataset
 function applyStaticLang(){
   document.documentElement.lang = {zh:'zh-CN', zht:'zh-TW', en:'en'}[LANG];
@@ -67,61 +33,13 @@ function applyOpeningOverrides(){
   Object.entries(o.d || {}).forEach(([i, v]) => { const d = DOORS[+i]; if (d) Object.assign(d, JSON.parse(JSON.stringify(v))); });
   Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) {if(typeof v==='number')w.sill=v;else if(v&&Number.isFinite(v.sill)&&Number.isFinite(v.head)){w.sill=v.sill;w.head=v.head;}if(w.bayGroup){const room=ROOMS.find(r=>r.id===w.bayGroup);if(room)room.height=w.sill;}} });
 }
-const MATS = {
-  wood:    {name:'橡木地板', price:320, sw:'#d8b88a'},
-  walnut:  {name:'胡桃木地板', price:380, sw:'#9b7250'},
-  tile800: {name:'800 地砖', price:220, sw:'#ebe6dc'},
-  tile600: {name:'600 地砖', price:160, sw:'#dfe3e1'},
-  marble:  {name:'大理石', price:650, sw:'#f1eee8'},
-  antislip:{name:'300 防滑砖', price:140, sw:'#d3d8d4'},
-  terrazzo:{name:'水磨石', price:280, sw:'#e6dfd3'},
-  carpet:  {name:'满铺地毯', price:200, sw:'#c9c3d3'},
-};
-// 家具库：[类型, 名称, 宽, 深, 颜色, 参考单价 ¥]
-const LIB = [
-  {cat:'卧室', items:[
-    ['bed','双人床 2.0m',2000,2200,'#c9d6df',4600],['bed','双人床 1.8m',1800,2000,'#c9d6df',3800],['bed','双人床 1.5m',1500,2000,'#d8c7dc',3000],
-    ['bed','单人床',1200,2000,'#e8d5b5',1800],['crib','婴儿床',1250,700,'#efe3d0',1200],['nightstand','床头柜',450,400,'#e8dccb',600],
-    ['wardrobe','衣柜',2000,600,'#efe6d8',4500],['wardrobe','衣柜 2.4m',2400,600,'#efe6d8',5400],['wardrobe','小衣柜',1200,550,'#efe6d8',2200],
-    ['dresser','梳妆台',1000,450,'#efe6d8',1500],['desk','书桌',1200,600,'#e2cfb4',1200],['chest','六斗柜',1200,500,'#e8dccb',1800],
-    ['chair','椅子',450,480,'#cfc6b8',400],['bookshelf','书架',800,300,'#e2cfb4',900],['baycushion','飘窗垫',520,1800,'#e7dccd',600]]},
-  {cat:'客厅', items:[
-    ['sofa','三人沙发',2400,900,'#b7c4b0',5200],['sofa','双人沙发',1700,880,'#c3cbd6',3600],['cornersofa','转角沙发',2800,1700,'#b7c4b0',7800],
-    ['armchair','单人沙发',850,850,'#d6b99a',1800],['beanbag','懒人沙发',800,800,'#e0b98f',600],['coffeetable','茶几',1300,650,'#e8dccb',1500],
-    ['roundtable','圆茶几',800,800,'#e2cfb4',1200],['sidetable','边几',500,500,'#d9c3a3',500],['tvstand','电视柜',2400,400,'#e2cfb4',2200],
-    ['rug','地毯',2400,1700,'#d9cbb8',900],['shoecab','鞋柜',1000,350,'#efe6d8',1600],['shoecab','玄关柜',1400,380,'#e6dccc',2600],
-    ['floorlamp','落地灯',450,450,'#3d3a34',600],['plant','绿植',500,500,'#a9c39b',200],['plant','大绿植',700,700,'#9dbb8c',450],
-    ['dryingrack','晾衣架',1400,550,'#cfd6d9',500]]},
-  {cat:'餐厨', items:[
-    ['table','餐桌',1400,800,'#e2cfb4',2400],['table','六人餐桌',1800,900,'#d8c2a2',3600],['roundtable','圆桌',1000,1000,'#e2cfb4',2200],
-    ['chair','餐椅',450,480,'#cfc6b8',450],['island','岛台',1800,900,'#e9e5de',6800],['island','大岛台',2400,1000,'#e9e5de',9800],
-    ['barstool','吧椅',420,420,'#6b5d4c',500],['counter','橱柜台面',1600,600,'#e9e5de',6400],['stove','燃气灶',750,450,'#dcdcdc',2500],
-    ['ksink','水槽',800,450,'#e1e6ea',1500],['fridge','冰箱',700,700,'#dfe4e8',4000],['cabinet','餐边柜',1600,400,'#efe6d8',3200]]},
-  {cat:'卫浴', items:[
-    ['toilet','马桶',400,700,'#ffffff',2200],['vanity','浴室柜',800,500,'#eef1f3',2400],['vanity','双盆浴室柜',1200,500,'#eef1f3',4200],
-    ['shower','淋浴房',900,900,'#e4edf2',3500],['bathtub','浴缸',1600,750,'#eef3f6',4800],['washer','洗衣机',600,600,'#e6ebee',2800],
-    ['waterheater','电热水器',800,450,'#f4f4f2',1800],['cabinet','储物柜',1000,400,'#efe6d8',1500]]},
-  {cat:'家电', items:[
-    ['tv','65 寸电视',1450,80,'#1d1d1f',4500],['tv','55 寸电视',1230,80,'#1d1d1f',3000],['fridge','对开门冰箱',910,700,'#c9ced3',7000],
-    ['aircon','柜机空调',500,380,'#f6f7f8',6500],['acwall','挂机空调',900,250,'#f6f7f8',3200],['dishwasher','洗碗机',600,600,'#c9ced3',4500],
-    ['ovencol','蒸烤箱高柜',600,600,'#efe6d8',9000],['dryer','烘干机',600,600,'#e6ebee',3800],['purifier','空气净化器',400,300,'#f4f4f2',2000]]},
-  {cat:'书房 · 休闲', items:[
-    ['desk','长书桌',1600,700,'#d8c2a2',2200],['officechair','办公椅',620,620,'#4a4f55',1500],['bookshelf','大书架',1600,350,'#e2cfb4',2400],
-    ['piano','立式钢琴',1500,600,'#1f1d1b',18000],['treadmill','跑步机',800,1800,'#3a3a3c',3500],['armchair','阅读椅',750,800,'#c9a98a',1600]]},
-  {cat:'灯饰 · 布艺', items:[
-    ['pendant','吊灯',700,700,'#e8dfc8',900],['pendant','餐厅吊灯',900,900,'#d9cdb2',1200],
-    ['curtain','窗帘 2.4m',2400,180,'#c9d3da',1500],['curtain','窗帘 3m',3000,180,'#b9c4cc',1900],
-    ['wallart','装饰画 横',1500,60,'#8a7a5e',800],['wallart','装饰画 小',900,60,'#a08a66',400],
-    ['mirror','穿衣镜',500,60,'#dfe6ea',500],['bench','换鞋凳',800,350,'#d9c9a8',600]]},
-];
+const {materials:MATS,library:LIB,typePrices:TYPE_PRICE} = FurnishCatalogData;
 // 自定义家具保存在本机（store.custom），在家具库中显示为「我的家具」分类；条目多带 [6]=高度 mm、[7]=自定义 id
 const CUSTOM_CAT = '我的家具';
 const libAll = () => store.custom?.length
   ? [...LIB, {cat:CUSTOM_CAT, items:store.custom.map(c => [c.shape === 'round' ? 'customround' : 'custom', c.name, c.w, c.d, c.color, c.price, c.h, c.id])}]
   : LIB;
 const typeColor = t => { for (const c of LIB) for (const i of c.items) if (i[0]===t) return i[4]; return '#d9d2c5'; };
-const TYPE_PRICE = {};
-LIB.forEach(c => c.items.forEach(i => TYPE_PRICE[i[0]] ??= i[5]));
 const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} for (const c of libAll()) for (const i of c.items) if (i[0] === f.type && i[1] === f.name) return i; return null; };
 // 单价：家具上手动填写的优先，其次是同名库存条目，最后按类型估算
 const priceOf = f => f.price ?? f.referencePrice ?? libItem(f)?.[5] ?? TYPE_PRICE[f.type] ?? 0;
@@ -382,7 +300,7 @@ function furnSVG(t,w,d,c){
       s += rc(x+b,y+b,cw,k-b-30,c,'rx="40"') + rc(x+b+cw,y+b,cw,k-b-30,c,'rx="40"') + rc(x+b,y+k,k-b-30,d-k-200,c,'rx="40"');
       return s + rc(x,y,w,b,dk,'rx="50"') + rc(x,y,b,d,dk,'rx="50"') + rc(x+w-200,y,200,k,dk,'rx="50"') + rc(x,y+d-200,k,200,dk,'rx="50"');
     }
-    case 'nightstand': return rc(x,y,w,d,c,'rx="30"') + `<circle r="${m*.24}" fill="#fff6dd" ${ST}/>` + `<circle r="${m*.08}" fill="${shade(c,.8)}" ${ST}/>`;
+    case 'nightstand': return rc(x,y,w,d,c,'rx="30"') + `<circle r="${m*.24}" fill="#fff6dd" ${ST()}/>` + `<circle r="${m*.08}" fill="${shade(c,.8)}" ${ST()}/>`;
     case 'wardrobe': {
       let s = rc(x,y,w,d,c) + ln(x+50,0,x+w-50,0);
       for (let hx = x+160; hx < x+w-100; hx += 180) s += ln(hx-45,-d*.28,hx+45,d*.28,'opacity=".6"');
@@ -398,9 +316,9 @@ function furnSVG(t,w,d,c){
     case 'tvstand': return rc(x,y,w,d,c) + rc(x+w*.15,y+30,w*.7,55,'#3a3a3a');
     case 'rug': return rc(x,y,w,d,c,'rx="40" fill-opacity=".6"') + rc(x+90,y+90,w-180,d-180,'none','rx="30" stroke-dasharray="3 3" opacity=".6"');
     case 'plant': {
-      let s = `<circle r="${m/2}" fill="${c}" fill-opacity=".85" ${ST}/>`;
-      for (let k=0;k<8;k++) s += `<ellipse cx="0" cy="${-m*.27}" rx="${m*.1}" ry="${m*.21}" transform="rotate(${k*45})" fill="${shade(c,.8)}" ${ST}/>`;
-      return s + `<circle r="${m*.1}" fill="#8a6a4a" ${ST}/>`;
+      let s = `<circle r="${m/2}" fill="${c}" fill-opacity=".85" ${ST()}/>`;
+      for (let k=0;k<8;k++) s += `<ellipse cx="0" cy="${-m*.27}" rx="${m*.1}" ry="${m*.21}" transform="rotate(${k*45})" fill="${shade(c,.8)}" ${ST()}/>`;
+      return s + `<circle r="${m*.1}" fill="#8a6a4a" ${ST()}/>`;
     }
     case 'table': return rc(x,y,w,d,c,'rx="30"') + rc(x+50,y+50,w-100,d-100,'none','rx="20" opacity=".4"');
     case 'roundtable': return ec(0,0,w/2,d/2,c) + ec(0,0,w/2-50,d/2-50,'none','opacity=".4"');
@@ -415,9 +333,9 @@ function furnSVG(t,w,d,c){
     case 'fridge': return rc(x,y,w,d,c,'rx="30"') + ln(x,y+d*.14,x+w,y+d*.14) + ln(0,y+d*.14,0,y+d) + rc(-70,y+d*.5,40,d*.25,'#aab') + rc(30,y+d*.5,40,d*.25,'#aab');
     case 'toilet': return rc(x+w*.04,y,w*.92,d*.27,c,'rx="30"') + ec(0,y+d*.27+d*.36,w*.47,d*.36,c) + ec(0,y+d*.27+d*.4,w*.3,d*.24,'#eef4f7');
     case 'vanity': return rc(x,y,w,d,c,'rx="20"') + ec(0,y+d*.57,Math.min(w*.32,260),d*.28,'#fff') + `<circle cx="0" cy="${y+d*.17}" r="26" fill="#999"/>`;
-    case 'shower': return rc(x,y,w,d,c) + ln(x,y,x+w,y+d,DASH) + ln(x+w,y,x,y+d,DASH) + `<circle r="45" fill="#fff" ${ST}/>`;
-    case 'bathtub': return rc(x,y,w,d,c,'rx="40"') + rc(x+80,y+80,w-160,d-160,'#fff',`rx="${m*.33}"`) + `<circle cx="${x+w-260}" cy="0" r="35" fill="#ccc" ${ST}/>`;
-    case 'washer': case 'dryer': return rc(x,y,w,d,c,'rx="30"') + rc(x,y,w,d*.14,shade(c,.9)) + `<circle cy="${d*.06}" r="${m*.34}" fill="#fff" ${ST}/><circle cy="${d*.06}" r="${m*.24}" fill="${t==='dryer'?'#e9dccb':'#cfdde4'}" ${ST}/>`;
+    case 'shower': return rc(x,y,w,d,c) + ln(x,y,x+w,y+d,DASH) + ln(x+w,y,x,y+d,DASH) + `<circle r="45" fill="#fff" ${ST()}/>`;
+    case 'bathtub': return rc(x,y,w,d,c,'rx="40"') + rc(x+80,y+80,w-160,d-160,'#fff',`rx="${m*.33}"`) + `<circle cx="${x+w-260}" cy="0" r="35" fill="#ccc" ${ST()}/>`;
+    case 'washer': case 'dryer': return rc(x,y,w,d,c,'rx="30"') + rc(x,y,w,d*.14,shade(c,.9)) + `<circle cy="${d*.06}" r="${m*.34}" fill="#fff" ${ST()}/><circle cy="${d*.06}" r="${m*.24}" fill="${t==='dryer'?'#e9dccb':'#cfdde4'}" ${ST()}/>`;
     case 'crib': {
       let s = rc(x,y,w,d,c,'rx="20"') + rc(x+45,y+45,w-90,d-90,'#fff','rx="20"');
       for (let sx = x+90; sx < x+w-60; sx += 90) s += ln(sx,y,sx,y+45,'opacity=".5"') + ln(sx,y+d-45,sx,y+d,'opacity=".5"');
@@ -425,9 +343,9 @@ function furnSVG(t,w,d,c){
     }
     case 'beanbag': return ec(0,0,w/2,d/2,c) + ec(-w*.04,-d*.06,w*.3,d*.28,shade(c,1.12),'opacity=".9"');
     case 'sidetable': return ec(0,0,w/2,d/2,c) + ec(0,0,w*.12,d*.12,'none','opacity=".5"');
-    case 'floorlamp': return `<circle r="${m*.5}" fill="#fff6dd" fill-opacity=".85" ${ST}/>` + `<circle r="${m*.32}" fill="none" ${ST} ${DASH}/>` + `<circle r="${m*.07}" fill="${c}" ${ST}/>`;
+    case 'floorlamp': return `<circle r="${m*.5}" fill="#fff6dd" fill-opacity=".85" ${ST()}/>` + `<circle r="${m*.32}" fill="none" ${ST()} ${DASH}/>` + `<circle r="${m*.07}" fill="${c}" ${ST()}/>`;
     case 'island': return rc(x,y,w,d,c) + ln(x,y+d-250,x+w,y+d-250,DASH);
-    case 'barstool': return `<circle r="${m/2}" fill="${c}" ${ST}/><circle r="${m*.3}" fill="${shade(c,1.15)}" ${ST}/>`;
+    case 'barstool': return `<circle r="${m/2}" fill="${c}" ${ST()}/><circle r="${m*.3}" fill="${shade(c,1.15)}" ${ST()}/>`;
     case 'waterheater': return rc(x,y,w,d,c,`rx="${d/2}" ${DASH}`) + ln(x+w*.2,0,x+w*.8,0,DASH);
     case 'tv': return rc(x,y,w,d,c,'rx="10"') + rc(x+w*.3,y+d,w*.4,Math.min(40,d),'#666');
     case 'aircon': return rc(x,y,w,d,c,'rx="30"') + ln(x+40,y+d*.72,x+w-40,y+d*.72) + ln(x+40,y+d*.86,x+w-40,y+d*.86);
@@ -768,119 +686,6 @@ function renderPanel(){
   if (ui.tab === 'overview') bindOverview();
 }
 
-// 全屋预算：地面（含 5% 损耗）+ 墙面乳胶漆（周长×层高，扣门窗洞口，含 10% 损耗，28 元/m²）+ 家具家电参考价
-function budget(){ return FurnishProject.estimate(FurnishProject.effectivePlan(PLAN,state),state,MATS,priceOf); }
-const yen = v => '¥' + Math.round(v).toLocaleString();
-
-function alertsHTML(){
-  const lost = state.furniture.filter(isOutside).length, clashN = collisions().length;
-  let s = '';
-  if (saveErr) s += `<div class="alert">${ico('warn')}<span>${tr('自动保存失败（浏览器存储空间不足）。请导出方案 JSON 备份。', 'Autosave failed (storage full). Export the plan JSON as a backup.')}</span></div>`;
-  if (lost) s += `<div class="alert">${ico('warn')}<span>${tr(`${lost} 件家具在户型外，画面上可能看不到`, `${lost} item(s) are outside the plan and may be off-screen`)}</span><button class="btn" data-act="rescue">${tr('移回', 'Bring back')}</button></div>`;
-  if (clashN) s += `<div class="alert">${ico('warn')}<span>${tr(`${clashN} 处家具互相重叠`, `${clashN} furniture overlap(s)`)}</span><button class="btn" data-act="clash">${tr('选中', 'Select')}</button></div>`;
-  return s;
-}
-
-function overviewPanel(){
-  const B = budget();
-  const rows = ROOMS.map(r => {
-    const st = state.rooms[r.id];
-    return `<tr class="click" data-room="${r.id}"><td><span class="sw" style="background:${MATS[st.mat].sw}"></span>${esc(nm(st.name))}${r.counted===false?' <span class="muted">*</span>':''}</td>
-      <td class="r">${fmt(area(r.poly))} m²</td></tr>`;
-  }).join('');
-  const maxMat = Math.max(...B.mats.map(m => m.a));
-  const matRows = B.mats.map(({m,a,c}) => `<tr><td><span class="sw" style="background:${MATS[m].sw}"></span>${nm(MATS[m].name)}</td><td class="r">${fmt(a,1)} m²</td><td class="r">${yen(c)}</td></tr>
-      <tr class="barrow"><td colspan="3"><div class="cbar"><i style="width:${Math.max(4, a/maxMat*100).toFixed(1)}%;background:${MATS[m].sw}"></i></div></td></tr>`).join('');
-  const demLen = state.architecture?FurnishProject.quantities(PLAN,state.architecture).removed:state.demolished.map(id => WALLS[+id.slice(1)]).reduce((a,w) => a + Math.max(w[2]-w[0], w[3]-w[1]), 0) / 1000;
-  const locked = state.furniture.filter(f => f.locked).length;
-  return `${alertsHTML() ? `<section>${alertsHTML()}</section>` : ''}
-  <section class="hero"><h3>${tr('全屋预算粗估','Whole-home Budget')} <small>${tr('参考价，仅供估算','reference prices')}</small></h3>
-    <table>
-      <tr><td>${tr(`地面材料（含 ${B.settings.floorWaste}% 损耗）`,`Flooring (incl. ${B.settings.floorWaste}% waste)`)}</td><td class="r">${fmt(B.counted.reduce((a,r) => a + area(r.poly), 0),1)} m²</td><td class="r">${yen(B.floor)}</td></tr>
-      <tr><td>${tr(`墙面乳胶漆（含 ${B.settings.paintWaste}% 损耗）`,`Wall paint (incl. ${B.settings.paintWaste}% waste)`)}</td><td class="r">${fmt(B.paintQuantity,1)} m²</td><td class="r">${yen(B.paint)}</td></tr>
-      <tr><td>${tr('家具家电','Furniture & appliances')}</td><td class="r">${state.furniture.length} ${tr('件','pcs')}</td><td class="r">${yen(B.furn)}</td></tr>
-      <tr><td>${tr('装修工程','Renovation')}</td><td class="r">${B.extra.length} ${tr('项','items')}</td><td class="r">${yen(B.renovation)}</td></tr>
-    </table>
-    <div class="total"><span>${tr('粗估合计','Estimated total')}</span><b>${yen(B.total)}</b></div>
-    <div class="comp" title="${tr('预算构成','Budget breakdown')}"><i class="c1" style="flex:${B.floor}"></i><i class="c2" style="flex:${B.paint}"></i><i class="c3" style="flex:${B.furn || .0001}"></i><i style="background:#8b78b5;flex:${B.renovation || .0001}"></i></div>
-    <div class="comp-l"><span><i class="c1"></i>${tr('地面','Floors')} ${Math.round(B.total?B.floor/B.total*100:0)}%</span><span><i class="c2"></i>${tr('墙面','Walls')} ${Math.round(B.total?B.paint/B.total*100:0)}%</span><span><i class="c3"></i>${tr('家具','Furniture')} ${Math.round(B.total?B.furn/B.total*100:0)}%</span><span><i style="background:#8b78b5"></i>${tr('工程','Renovation')} ${Math.round(B.total?B.renovation/B.total*100:0)}%</span></div>
-    <div class="actions"><button class="btn" data-tab="quote">${ico('coin')}${tr('报价明细','Quote details')}</button><button class="btn" data-act="csv">${ico('download')}${tr('导出 CSV','Export CSV')}</button></div></section>
-  <section><h3>${tr('风格方案','Style Presets')} <small>${tr('一键统一家具配色与地面','recolor furniture & floors in one click')}</small></h3>${stylesHTML()}</section>
-  <section><h3>${tr('房间面积','Room Areas')} <small>${tr('点击查看 / 更换地面','Click to view / change flooring')}</small></h3>
-    <table>${rows}</table>
-    <div class="total"><span>${tr('套内使用面积','Net floor area')}</span><b>${fmt(B.tot)} m²</b></div>
-    <div class="muted note">${tr('* 飘窗不计入使用面积；面积按墙体内净尺寸计算','* Bay windows are excluded; areas use net inner wall dimensions')}</div></section>
-  <section><h3>${tr('地面材料估算','Flooring Estimate')} <small>${tr('含 5% 损耗','incl. 5% waste')}</small></h3>
-    <table>${matRows}</table>
-    <div class="total"><span>${tr('地面材料合计','Flooring total')}</span><b>${yen(B.floor)}</b></div>
-    <div class="muted note">${tr(`墙面面积 ${fmt(B.wallArea,1)} m²（周长×2.8m）已扣门窗洞口；乳胶漆按 28 元/m² 估算`, `Wall ${fmt(B.wallArea,1)} m² (perimeter×2.8m) minus openings; paint at ¥28/m²`)}</div></section>
-  <section><h3>${tr('方案统计','Plan Stats')}</h3>
-    <div class="stats"><div><small>${tr('家具数量','Furniture')}</small><span class="big">${state.furniture.length}</span>${locked ? ` <small>${tr(`其中 ${locked} 件锁定`, `${locked} locked`)}</small>` : ''}</div>
-      <div><small>${tr('拆除墙体','Walls removed')}</small><span class="big">${fmt(demLen,1)}</span> m</div></div>
-    <div class="actions"><button class="btn" id="clearMeasure">${tr('清除测量','Clear measures')} (${state.measures.length})</button>
-      <button class="btn" data-act="reset">${ico('reset')}${tr('重置…','Reset…')}</button>
-      <button class="btn danger" data-act="clearFurn">${tr('清空布置','Clear layout')}</button></div></section>
-  <section><h3>${tr('常用操作','Quick Tips')}</h3><div class="kbd">
-    ${COARSE ? tr(`<kbd>点 / 拖家具库</kbd><span>添加家具</span><kbd>长按家具</kbd><span>弹出操作菜单（复制 / 镜像 / 锁定…）</span><kbd>框选工具</kbd><span>拖出矩形一次选中多件</span><kbd>双指</kbd><span>缩放、平移画面</span>`,
-      `<kbd>Tap / drag library</kbd><span>Add furniture</span><kbd>Long-press item</kbd><span>Action menu (copy / mirror / lock…)</span><kbd>Box tool</kbd><span>Drag to select several</span><kbd>2 fingers</kbd><span>Zoom and pan</span>`)
-    : tr(`<kbd>右键</kbd><span>家具 / 画布操作菜单</span><kbd>Shift+点击</kbd><span>多选，或 Shift+拖动框选</span><kbd>Ctrl C / V</kbd><span>复制 / 粘贴到指针处</span><kbd>空格+拖动</kbd><span>平移画面</span><kbd>R · H · L</kbd><span>旋转 · 镜像 · 锁定</span>`,
-      `<kbd>Right-click</kbd><span>Item / canvas menu</span><kbd>Shift+click</kbd><span>Multi-select, or Shift+drag to box</span><kbd>Ctrl C / V</kbd><span>Copy / paste at pointer</span><kbd>Space+drag</kbd><span>Pan</span><kbd>R · H · L</kbd><span>Rotate · mirror · lock</span>`)}
-  </div><div class="actions"><button class="btn" data-act="help">${ico('kbd')}${tr('全部快捷键','All shortcuts')}</button></div></section>`;
-}
-function bindOverview(){
-  document.querySelectorAll('#panel tr[data-room]').forEach(tr => tr.onclick = () => { select({kind:'room', id:tr.dataset.room}); if (is3D()) window.View3D.flyToRoom(tr.dataset.room); });
-  $('#clearMeasure').onclick = () => state.measures.length && mutate(() => state.measures = []);
-}
-
-// 清单：按所在房间分组；户型外 / 不在任何房间内的家具单独列出
-function listPanel(){
-  const groups = new Map(ROOMS.map(r => [r.id, []])); groups.set('__none', []); groups.set('__out', []);
-  state.furniture.forEach(f => { const r = isOutside(f) ? null : roomAt(f.cx, f.cy); groups.get(isOutside(f) ? '__out' : r ? r.id : '__none').push(f); });
-  const ids = new Set(selIds());
-  const row = f => `<div class="irow ${ids.has(f.id) ? 'on' : ''} ${clashIds.has(f.id) ? 'clash' : ''}" data-focus="${f.id}" title="${tr('点击定位', 'Click to locate')}">
-      <span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${clashIds.has(f.id) ? '⚠ ' : ''}${esc(nm(f.name))}</span><small>${f.w}×${f.d}</small>
-      <button class="ib ${f.locked ? 'on' : ''}" data-lockid="${f.id}" title="${f.locked ? tr('解锁', 'Unlock') : tr('锁定', 'Lock')}">${ico(f.locked ? 'lock' : 'unlock')}</button></div>`;
-  let s = '';
-  groups.forEach((list, k) => {
-    if (!list.length) return;
-    const title = k === '__out' ? `<span style="color:var(--danger)">${tr('户型外（画面上可能看不到）', 'Outside the plan (may be off-screen)')}</span>`
-      : k === '__none' ? tr('墙上 / 门口等（不在房间内）', 'On walls / in doorways') : esc(nm(state.rooms[k].name));
-    s += `<div class="ghd"><span>${title} · ${list.length}</span>${k === '__out' ? `<button class="ib" data-act="rescue" title="${tr('全部移回', 'Bring all back')}">${ico('target')}</button>` : ''}</div>${list.map(row).join('')}`;
-  });
-  return `<section>${alertsHTML()}
-    <div class="actions" style="margin:0 0 8px"><button class="btn" data-act="selAll">${tr('全选','Select all')} (Ctrl+A)</button><button class="btn" data-act="custom">${ico('plus')}${tr('自定义家具','Custom item')}</button></div>
-    ${s || `<div class="muted">${tr('还没有家具：从左侧家具库点击或拖入。', 'No furniture yet — click or drag from the library.')}</div>`}</section>`;
-}
-
-// 报价和采购清单按真实规格、品牌型号及状态区分。
-function quoteRows(){
-  const B = budget(), purchases=FurnishProject.procurement(FurnishProject.effectivePlan(PLAN,state),state,priceOf);
-  const rows = purchases.items.sort((a,b)=>b.total-a.total).map(f=>[tr('家具家电','Furniture'),nm(f.name)+([f.brand,f.model].filter(Boolean).length?' · '+[f.brand,f.model].filter(Boolean).join(' '):''),`${f.w}×${f.d}${f.h?'×'+f.h:''} · ${FurnishProject.purchaseStates[f.status]}`,f.quantity,tr('件','pcs'),f.price,f.total]);
-  B.mats.forEach(({m, quantity, price, c}) => rows.push([tr('地面', 'Flooring'), nm(MATS[m].name), `${B.settings.floorWaste}%`, +quantity.toFixed(2), 'm²', price, c]));
-  rows.push([tr('墙面', 'Walls'), tr('乳胶漆', 'Latex paint'), `${B.settings.paintWaste}%`, +B.paintQuantity.toFixed(2), 'm²', B.settings.paintPrice, B.paint]);
-  B.extra.forEach(r=>rows.push([tr('装修工程','Renovation'),r.name,r.source==='manual'?tr('手填工程量','Manual quantity'):tr('随户型自动计算','Auto quantity'),+r.quantity.toFixed(2),r.unit,r.price,r.total]));
-  return {rows, B};
-}
-function quotePanel(){
-  const {rows, B} = quoteRows();
-  let cat = '', s = '';
-  rows.forEach(r => { if (r[0] !== cat){ cat = r[0]; s += `<tr class="sub"><td colspan="3">${esc(cat)}</td></tr>`; }
-    s += `<tr><td>${esc(r[1])}<br><small class="muted">${esc(r[2])}</small></td><td class="num">${r[3]} ${r[4]}<br><small class="muted">@ ${yen(r[5])}</small></td><td class="num">${yen(r[6])}</td></tr>`; });
-  return `<section><h3>${tr('报价明细','Quote')} <small>${tr('参考价，可在家具属性中改单价','reference prices — edit unit price in item properties')}</small></h3>
-    <table class="qt">${s}</table>
-    <div class="total"><span>${tr('家具家电','Furniture')}</span><b>${yen(B.furn)}</b></div>
-    <div class="total"><span>${tr('地面 + 墙面','Floors + walls')}</span><b>${yen(B.floor + B.paint)}</b></div>
-    <div class="total"><span>${tr('装修工程','Renovation')}</span><b>${yen(B.renovation)}</b></div>
-    <div class="total" style="font-size:16px"><span>${tr('合计','Total')}</span><b>${yen(B.total)}</b></div>
-    <div class="actions"><button class="btn" data-act="csv">${ico('download')}${tr('导出 CSV（Excel 可打开）','Export CSV (opens in Excel)')}</button></div></section>`;
-}
-function exportCSV(){
-  const {rows, B} = quoteRows();
-  const head = [tr('类别','Category'), tr('名称','Item'), tr('规格','Spec'), tr('数量','Qty'), tr('单位','Unit'), tr('单价','Unit price'), tr('小计','Subtotal')];
-  const lines = [head, ...rows.map(r => [...r.slice(0, 5), Math.round(r[5]), Math.round(r[6])]), [], ['', tr('合计','Total'), '', '', '', '', Math.round(B.total)]];
-  download(`${tr('报价清单','quote')}-${nm(PLAN.name)}.csv`, new Blob([FurnishProject.csv(lines)], {type:'text/csv;charset=utf-8'}));
-}
-
 // 底部浮动工具条：触屏没有键盘，常用操作都放在这里
 function renderFab(){
   const fab = $('#fab'), ids = selIds(), f = ids.length === 1 && getF(ids[0]), r = ui.sel?.kind === 'room' && ROOMS.find(r => r.id === ui.sel.id);
@@ -1032,34 +837,11 @@ function multiPanel(items){
 }
 
 /* ======================= 风格方案：一键统一家具配色与地面 ======================= */
-const STYLES = [
-  {id:'natural', zh:'原木', en:'Natural Oak', soft:'#cdbfa8', wood:'#d9bf98', textile:'#e7dccd', pop:'#9db08a', floor:['wood', 'wood']},
-  {id:'cream', zh:'奶油', en:'Cream', soft:'#efe3cf', wood:'#e8dcc6', textile:'#f5ecdc', pop:'#d9b99a', floor:['tile800', 'wood']},
-  {id:'nordic', zh:'北欧', en:'Nordic', soft:'#c9d3da', wood:'#e2d3bc', textile:'#dfe6ea', pop:'#8fa8ba', floor:['wood', 'wood']},
-  {id:'industrial', zh:'工业', en:'Industrial', soft:'#6b6b6e', wood:'#8a6f5a', textile:'#7b7f84', pop:'#c0623a', floor:['terrazzo', 'walnut']},
-  {id:'chinese', zh:'新中式', en:'New Chinese', soft:'#c2ae93', wood:'#6b4f3a', textile:'#e8dfc8', pop:'#8a3b2e', floor:['marble', 'walnut']},
-  {id:'morandi', zh:'莫兰迪', en:'Morandi', soft:'#a3b1a8', wood:'#cbbfb2', textile:'#c4b8c9', pop:'#b8a0a0', floor:['tile800', 'carpet']},
-];
-const SOFT_T = new Set(['sofa','cornersofa','beanbag','bed','baycushion','bench','chair','barstool','officechair']);
-const WOOD_T = new Set(['wardrobe','cabinet','shoecab','dresser','desk','bookshelf','nightstand','coffeetable','tvstand','table','roundtable','sidetable','chest','crib']);
-const BED_ROOMS = /master|child|kid|elder|bedroom|study|closet|bed/;
-const LIVE_ROOMS = /living|dining|hall|studio/;
-function styleFloorFor(room,settings,style){
-  return FurnishDesign.styleFloor(room,settings,style,!!PLAN.customDraft);
-}
+const STYLES = FurnishStylePresets;
 function applyStyle(id){
-  const st = STYLES.find(s => s.id === id); if (!st) return;
-  mutate(() => {
-    state.furniture.forEach(f => {
-      if (f.type === 'armchair') f.color = st.pop;
-      else if (SOFT_T.has(f.type)) f.color = st.soft;
-      else if (WOOD_T.has(f.type)) f.color = st.wood;
-      else if (f.type === 'rug' || f.type === 'curtain') f.color = st.textile;
-    });
-    ROOMS.forEach(r => {const material=styleFloorFor(r,state.rooms[r.id],st);if(material)state.rooms[r.id].mat=material;});
-    state.style = id;
-  });
-  toast(tr(`已应用「${st.zh}」风格：家具配色与客厅 / 卧室地面已更新`, `Applied "${st.en}": furniture colors and living / bedroom floors updated`), {label:tr('撤销', 'Undo'), fn:undo});
+  const style=FurnishStyles.find(id);if(!style)return;
+  mutate(()=>FurnishStyles.apply(state,ROOMS,id,!!PLAN.customDraft));
+  toast(tr(`已应用「${style.zh}」风格：家具配色与客厅 / 卧室地面已更新`,`Applied "${style.en}": furniture colors and living / bedroom floors updated`),{label:tr('撤销','Undo'),fn:undo});
 }
 const stylesHTML = () => `<div class="styles">${STYLES.map(s => `<button class="stcard ${state.style === s.id ? 'on' : ''}" data-style="${s.id}" title="${tr('应用风格', 'Apply style')}">
   <span class="stsw">${[s.soft, s.wood, s.textile, s.pop, MATS[s.floor[0]].sw].map(c => `<i style="background:${c}"></i>`).join('')}</span><b>${tr(s.zh, s.en)}</b></button>`).join('')}</div>`;
@@ -1229,200 +1011,6 @@ function winPanel(i){
 function bindWinPanel(i){
  $('#wApply').onclick=()=>{const sill=Number($('#wSill').value)/1000,height=Number($('#wHeight').value)/1000;if(!Number.isFinite(sill)||!Number.isFinite(height)||sill<0||sill>2.4||height<.1||sill+height>2.8){$('#wError').textContent='窗高至少100 mm，窗顶不得超过2800 mm';return;}mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)state.open.w[j]={sill,head:sill+height};});});};
  $('#wReset').onclick=()=>mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)delete state.open.w[j];});});$('#wback').onclick=()=>select(null);
-}
-
-/* ======================= 选择（支持多选） ======================= */
-// ui.sel = {kind:'furn', id:主选中, ids:[全部选中]}；单选时 ids 可省略
-const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
-const selItems = () => selIds().map(getF).filter(Boolean);
-function select(sel){ ui.sel = sel; closeCtx(); renderSel(); renderPanel(); updateHeader(); }
-function selectIds(ids, primary){
-  ids = [...new Set(ids)].filter(id => getF(id));
-  select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);
-}
-function toggleSel(id){ const ids = selIds(); selectIds(ids.includes(id) ? ids.filter(x => x !== id) : [...ids, id]); }
-function selectAll(){ selectIds(state.furniture.map(f => f.id)); }
-// 锁定的家具不参与移动 / 旋转 / 删除等操作
-function movable(items){
-  const n = items.filter(f => f.locked).length;
-  if (n) toast(tr(`${n} 件家具已锁定，未作修改（L 解锁）`, `${n} locked item(s) left unchanged (L to unlock)`));
-  return items.filter(f => !f.locked);
-}
-
-/* ======================= 编辑操作 ======================= */
-function rotateSel(d){
-  const items = movable(selItems()); if (!items.length) return;
-  mutate(() => {
-    if (items.length === 1){ items[0].rot = norm(items[0].rot + d); return; }
-    // 多选：整组绕外包盒中心旋转
-    const [x0,y0,x1,y1] = groupBox(items), cx = (x0+x1)/2, cy = (y0+y1)/2, a = d*Math.PI/180, c = Math.cos(a), s = Math.sin(a);
-    items.forEach(f => { const dx = f.cx-cx, dy = f.cy-cy; f.cx = Math.round(cx + dx*c - dy*s); f.cy = Math.round(cy + dx*s + dy*c); f.rot = norm(f.rot + d); });
-  });
-}
-function deleteSel(){
-  if (ui.sel?.kind === 'note') return deleteNote(ui.sel.id);
-  const all = selItems(); if (!all.length) return;
-  const items = movable(all); if (!items.length) return;
-  const ids = new Set(items.map(f => f.id));
-  ui.sel = null; mutate(() => state.furniture = state.furniture.filter(f => !ids.has(f.id)));
-  toast(items.length === 1 ? tr(`已删除「${nm(items[0].name)}」`, `Deleted "${nm(items[0].name)}"`) : tr(`已删除 ${items.length} 件家具`, `Deleted ${items.length} items`),
-    {label:tr('撤销', 'Undo'), fn:undo});
-}
-function flipSel(){ const items = movable(selItems()); if (items.length) mutate(() => items.forEach(f => { if (f.flip) delete f.flip; else f.flip = true; })); }
-function lockSel(){
-  const items = selItems(); if (!items.length) return;
-  const lock = !items.every(f => f.locked);
-  mutate(() => items.forEach(f => { if (lock) f.locked = true; else delete f.locked; }));
-  toast(lock ? tr('已锁定：不会被误拖动或删除', 'Locked: protected from moves and deletes') : tr('已解锁', 'Unlocked'));
-}
-function orderSel(top){
-  const ids = new Set(selIds()); if (!ids.size) return;
-  mutate(() => { const a = state.furniture.filter(f => ids.has(f.id)), b = state.furniture.filter(f => !ids.has(f.id)); state.furniture = top ? [...b, ...a] : [...a, ...b]; });
-}
-// 恢复库中默认尺寸与颜色（自定义家具按「我的家具」中的定义）
-function resetItemSel(){
-  const items=movable(selItems());if(!items.length)return;
-  let values;try{values=items.map(f=>{const it=libItem(f);return it?{f,value:{...FurnishDesign.resizeFurniture(f,{w:it[2],d:it[3],...(it[6]!==undefined?{h:it[6]}:{})}),color:it[4]}}:null;}).filter(Boolean);}catch(e){return toast(e.message);}
-  if(!values.length)return toast(tr('找不到明确的原始规格，请在家具资料中手动编辑。','Original specifications unavailable; edit the product manually.'));
-  mutate(()=>values.forEach(({f,value})=>{Object.assign(f,value);delete f.flip;delete f.price;}));
-  toast(tr('已恢复默认尺寸、颜色与参考价格'+(values.length<items.length?'；来源不明确的家具已跳过。':''),'Default specifications restored; unresolved sources skipped.'));
-}
-// 对齐 / 分布 / 等尺寸（多选）：以外包盒为准，锁定的家具作为参照不动
-function alignSel(mode){
-  const all = selItems(); if (all.length < 2) return toast(tr('请先选择至少 2 件家具', 'Select at least 2 items first'));
-  const items = movable(all), [x0,y0,x1,y1] = groupBox(all);
-  mutate(() => items.forEach(f => { const {hw, hh} = aabb(f);
-    if (mode === 'l') f.cx = x0 + hw; if (mode === 'r') f.cx = x1 - hw; if (mode === 'c') f.cx = (x0+x1)/2;
-    if (mode === 't') f.cy = y0 + hh; if (mode === 'b') f.cy = y1 - hh; if (mode === 'm') f.cy = (y0+y1)/2;
-    f.cx = Math.round(f.cx); f.cy = Math.round(f.cy); }));
-}
-function distributeSel(axis){
-  const all = selItems(); if (all.length < 3) return toast(tr('等距分布需要至少 3 件家具', 'Distribute needs at least 3 items'));
-  const h = axis === 'h', key = f => h ? f.cx - aabb(f).hw : f.cy - aabb(f).hh, size = f => h ? 2*aabb(f).hw : 2*aabb(f).hh;
-  const items = [...all].sort((a, b) => key(a) - key(b)), first = items[0], last = items[items.length-1];
-  const gap = (key(last) + size(last) - key(first) - items.reduce((a, f) => a + size(f), 0)) / (items.length - 1);
-  if (items.some(f => f.locked)) return toast(tr('含锁定家具，无法分布', 'Cannot distribute locked items'));
-  mutate(() => { let p = key(first);
-    items.forEach(f => { const s = size(f); if (h) f.cx = Math.round(p + s/2); else f.cy = Math.round(p + s/2); p += s + gap; }); });
-}
-function matchSizeSel(){
-  const main = getF(ui.sel?.id), items = movable(selItems()).filter(f => f !== main);
-  if (!main || !items.length) return;
-  let values;try{values=items.map(f=>FurnishDesign.resizeFurniture(f,{w:main.w,d:main.d}));}catch(e){return toast(e.message);}
-  mutate(() => items.forEach((f,i) => Object.assign(f,values[i])));
-  toast(tr(`已统一为 ${main.w} × ${main.d}`, `Matched to ${main.w} × ${main.d}`));
-}
-// 剪贴板：复制时记录相对整组中心的位置，粘贴到指针处（或在原位置偏移）
-let clip = null;
-function syncCutClipboard(){if(clip?.cut&&clip.movePlan===PLAN.id)clip.cutMoved=clip.items.some(f=>getF(f.id));}
-function copySel(cut, quiet){
-  const selected=selItems(),items=cut?selected.filter(f=>!f.locked):selected;if(!items.length){if(cut)movable(selected);return;}
-  const [x0,y0,x1,y1] = groupBox(items);
-  clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut};
-  if (cut) deleteSel(); else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
-}
-function paste(at){
-  if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
-  const step=(clip.pastes||0)+1,p=at||{x:clip.cx+300*step,y:clip.cy+300*step};
-  let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length,state.furniture.map(f=>f.id));}catch(e){return toast(e.message);}
-  const news=result.items;
-  mutate(() => state.furniture.push(...news));
-  if(clip.cut)clip.cutMoved=true;if(result.moved)clip.movePlan=PLAN.id;
-  if(!at)clip.pastes=step;
-  selectIds(news.map(f => f.id));
-  const pasted=result.moved?tr('已移动家具，保留原编号和采购进度。','Furniture moved; identity and purchase progress retained.'):tr('已添加家具副本，采购状态为待选型。','Copies added with planned purchase status.');
-  if(result.oversized)toast(pasted+' '+tr('整组尺寸超出户型范围，已保留相对位置；请缩小尺寸或拆分布置。','The group exceeds plan bounds; its layout was preserved. Resize or split the group.'));
-  else if(result.adjusted)toast(pasted+' '+tr('已将整组移入户型范围，保留相对位置；请核对墙体和房间边界。','Group moved within plan bounds without changing its layout; check walls and room boundaries.'));
-  else toast(pasted);
-}
-function duplicateSel(){ if (!selIds().length) return; const keep = clip; copySel(false, true); paste(); clip = keep; }
-function zoomToBox([x0,y0,x1,y1], pad = 700){
-  if (is3D()) return;
-  const W = svg.clientWidth, H = svg.clientHeight, w = x1-x0+2*pad, h = y1-y0+2*pad;
-  view.s = Math.max(.012, Math.min(.4, Math.min(W/w, H/h)));
-  view.x0 = (x0+x1)/2 - W/2/view.s; view.y0 = (y0+y1)/2 - H/2/view.s; applyView();
-}
-function zoomSel(){
-  const items = selItems();
-  if (items.length) return zoomToBox(groupBox(items));
-  if (ui.sel?.kind === 'room') return zoomToBox(bbox(ROOMS.find(r => r.id === ui.sel.id).poly), 400);
-  fitView();
-}
-function focusItem(id){
-  const f = getF(id); if (!f) return;
-  selectIds([id]);
-  if (is3D()){ const r = roomAt(f.cx, f.cy); if (r) window.View3D.flyToRoom(r.id); }
-  else zoomToBox(groupBox([f]), 1800);
-}
-// 把在户型外的家具移回：放到最大房间中央再推离墙体
-function rescueOutside(ids){
-  const lost = state.furniture.filter(f => (ids ? ids.includes(f.id) : true) && isOutside(f));
-  if (!lost.length) return toast(tr('没有在户型外的家具', 'No furniture outside the plan'));
-  const home = ROOMS.filter(r => r.counted !== false).sort((a, b) => area(b.poly) - area(a.poly))[0], [x0,y0,x1,y1] = bbox(home.poly);
-  mutate(() => lost.forEach((f, i) => { f.cx = Math.round((x0+x1)/2 + (i % 4)*150); f.cy = Math.round((y0+y1)/2 + Math.floor(i/4)*150); pushOut(f); }));
-  selectIds(lost.map(f => f.id));
-  toast(tr(`已将 ${lost.length} 件家具移回「${nm(state.rooms[home.id].name)}」`, `Moved ${lost.length} item(s) back into "${nm(state.rooms[home.id].name)}"`));
-}
-
-// 放下 / 拖完的家具若压在墙 / 窗上，沿位移最小的方向推出，刚好贴墙。
-// 只在家具中心原本所在的房间内推移，推不开（如家具比房间还大）就保持原位——宁可压墙，也不能被推到墙外「消失」
-function pushOut(f){
-  const ox = f.cx, oy = f.cy, home = roomAt(ox, oy);
-  const okAt = (x, y) => home ? inPoly(x, y, home.poly) : !!roomAt(x, y);
-  for (let n = 0; n < 6; n++){
-    const {hw, hh} = aabb(f);
-    let worst = null, wa = 1;
-    for (const r of snapRects()){
-      const ix = Math.min(f.cx+hw, r[2]) - Math.max(f.cx-hw, r[0]), iy = Math.min(f.cy+hh, r[3]) - Math.max(f.cy-hh, r[1]);
-      if (ix > 1 && iy > 1 && ix*iy > wa){ wa = ix*iy; worst = r; }
-    }
-    if (!worst) return true;
-    const r = worst, best = [[r[0]-hw, f.cy], [r[2]+hw, f.cy], [f.cx, r[1]-hh], [f.cx, r[3]+hh]]
-      .filter(([x, y]) => okAt(x, y))
-      .sort((p, q) => Math.hypot(p[0]-f.cx, p[1]-f.cy) - Math.hypot(q[0]-f.cx, q[1]-f.cy))[0];
-    if (!best) break;
-    f.cx = Math.round(best[0]); f.cy = Math.round(best[1]);
-  }
-  if (Math.hypot(f.cx-ox, f.cy-oy) > Math.max(f.w, f.d)){ f.cx = ox; f.cy = oy; }   // 推得太远 = 不合理，撤回
-  return false;
-}
-function addItem(it, x, y){
-  if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
-  const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
-  if (type === 'custom' || type === 'customround'){ f.price = price; f.h = h; }   // 自定义家具删除定义后仍保留单价与高度
-  if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
-  pushOut(f);
-  mutate(() => state.furniture.push(f));
-  selectIds([f.id]);
-  pushRecent(it);
-  toast(tr(`已添加「${name}」${w}×${d}`, `Added "${nm(name)}" ${w}×${d}`), {label:tr('撤销', 'Undo'), fn:undo});
-}
-function toggleWall(id){
-  if(state.architecture)return window.FurnishWorkspace.demolish(id);
-  const w = WALLS[+id.slice(1)];
-  if (w[4]==='b') return toast(tr('承重墙（黑色）不可拆除', 'Load-bearing walls (black) cannot be removed'));
-  if (w[4]==='e') return toast(tr('外墙属于建筑外围护结构，不建议拆除', 'Exterior walls are part of the building envelope and should not be removed'));
-  const on = state.demolished.includes(id);
-  mutate(() => state.demolished = on ? state.demolished.filter(x => x!==id) : [...state.demolished, id]);
-  toast(on ? tr('已恢复墙体', 'Wall restored') : tr(`已标记拆除 ${Math.max(w[2]-w[0], w[3]-w[1])} mm 墙体`, `Marked ${Math.max(w[2]-w[0], w[3]-w[1])} mm of wall for removal`));
-}
-
-function setTool(t){
-  ui.tool = t; ui.mA = null; ui.mCur = null;
-  svg.setAttribute('class', 'tool-' + t);
-  document.querySelectorAll('#tools .btn').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
-  syncModeHint();
-  renderMeasure();
-}
-function syncModeHint(){
-  const hints = {select:'',
-    marquee:COARSE ? tr('拖出矩形框选多件家具 · 点家具可直接拖动 · 点「选择」退出', 'Drag a box to select several items · drag an item to move it · tap "Select" to exit')
-      : tr('拖出矩形框选家具 · Shift 追加 · 拖动已选家具可整组移动 · Esc 退出', 'Drag a box to select · Shift adds · drag a selected item to move the group · Esc exits'),
-    measure:COARSE ? tr('按住拖出测量线，或依次点两点 · 靠近墙面自动吸附 · 点「选择」退出', 'Hold and drag a line, or tap two points · snaps to walls · tap "Select" to exit')
-      : tr('点击两点（或按住拖动）测量距离 · 靠近墙面自动吸附 · Shift 锁定水平/垂直 · Esc 取消', 'Click two points (or drag) to measure · snaps to walls · Shift locks horizontal/vertical · Esc cancels'),
-    note:tr('点击平面图任意位置添加文字标注 · 点已有标注可编辑 · 选择工具下可拖动', 'Click anywhere on the plan to add a note · click a note to edit it · drag notes with the Select tool'),
-    demolish:tr('点击灰色非承重墙标记拆除，再次点击恢复 · 黑色承重墙不可拆', 'Click a grey non-bearing wall to remove it, click again to restore · black bearing walls cannot be removed')};
-  const h = $('#modehint'); h.textContent = hints[ui.tool]; h.classList.toggle('show', !!hints[ui.tool]);
 }
 
 /* ======================= 视图 ======================= */
@@ -1991,27 +1579,6 @@ function endLibDrag(e, ok){
 }
 addEventListener('pointerup', e => endLibDrag(e, true));
 addEventListener('pointercancel', e => endLibDrag(e, false));
-
-/* ======================= 导入导出 ======================= */
-function download(name, blob){ const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
-function exportPNG(){
-  if (is3D()) return window.View3D.shot();
-  const clone = svg.cloneNode(true), W = 3200, H = Math.round(W*BOUNDS.h/BOUNDS.w);
-  clone.setAttribute('viewBox', `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
-  clone.setAttribute('width', W); clone.setAttribute('height', H);
-  clone.querySelector('#gSel').innerHTML = '';
-  clone.querySelector('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid?'url(#grid)':PAL.paper}"/>`;
-  const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
-  Object.entries({x:-20000,y:-20000,width:55000,height:55000,fill:PAL.paper}).forEach(([k,v]) => bg.setAttribute(k,v));
-  clone.insertBefore(bg, clone.querySelector('#gGrid'));
-  const img = new Image();
-  img.onload = () => {
-    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-    cv.getContext('2d').drawImage(img, 0, 0, W, H);
-    cv.toBlob(b => download(tr('户型装修方案', 'floor-plan-design') + '.png', b));
-  };
-  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(clone));
-}
 
 /* ======================= 杂项 ======================= */
 // 提示条；act = {label, fn} 时带一个操作按钮（如「撤销」），显示更久

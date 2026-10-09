@@ -343,12 +343,12 @@ Furnish/
 ├── start-furnish.cmd        # Windows 本地服务启动入口
 ├── manifest.webmanifest    # PWA 清单
 ├── src/
-│   ├── app.js              # 2D 应用、交互、家具库、初始化
+│   ├── app.js              # 应用状态、2D 渲染、指针事件与初始化
 │   ├── core/               # 户型几何、项目与设计规则
 │   ├── io/                 # DXF 导入／修复、浏览器存储
 │   ├── ui/                 # 编辑器、项目、设计、采购与核对界面
-│   └── data/               # 内置户型与可离线下载的 DXF 模板
-├── styles/app.css          # 主界面样式
+│   └── data/               # 户型、家具、材料、语言、风格与 DXF 模板
+├── styles/                 # 主界面、户型编辑器与项目工作台样式
 ├── assets/icons/           # 应用图标
 ├── examples/               # DXF、PDF、OBJ 导入示例
 ├── templates/              # DXF 模板原文件与历史回归夹具
@@ -360,13 +360,13 @@ Furnish/
 └── README.md
 ```
 
-项目仍使用浏览器原生脚本，无需 npm 安装或构建。`index.html` 按依赖顺序加载 core、io、户型数据、主应用和 UI。主样式在 `styles/app.css`，内置户型在 `src/data/plans.js`，2D 引擎与应用交互在 `src/app.js`。Three.js 的 data-URL import map 与三维模块暂时保留在入口中，保证直接打开文件时的模块加载方式不变。
+项目仍使用浏览器原生脚本，无需 npm 安装或构建。`index.html` 按依赖顺序加载数据、规则、浏览器适配、主应用与 UI 扩展。风格规则可直接测试，预算面板、家具编辑操作与图片导出已分离；主应用继续管理当前状态、渲染和指针事件。Three.js 的 data-URL import map 与三维模块暂时保留在入口中，保证直接打开文件时的模块加载方式不变。详见 [模块与加载约定](docs/ARCHITECTURE.md)。
 
 开发验证运行 `node scripts/check.cjs`，包含递归脚本语法检查、入口资源路径检查、全部回归与内置户型校验。单个测试可运行 `node tests/test-project.cjs`；脚本与测试根据自身位置解析项目路径，不依赖调用时的工作目录。本地服务运行 `node scripts/serve.cjs` 或双击 `start-furnish.cmd`。示例从 `examples/` 选择，模板原文件在 `templates/`。
 
 ## 如何新增一套户型
 
-打开 `src/data/plans.js`，在最后一个户型对象（当前为 `const P12 = {...}`）之后照格式增加一个对象并加入 `const PLANS = [...]`，再在 `src/app.js` 的 `NAMES_EN` 中补上英文名。改完运行 `node scripts/validate-plans.mjs` 自检；户型库按名称中的「X室 / X卫 / 开间」自动识别居室数：
+打开 `src/data/plans.js`，在最后一个户型对象（当前为 `const P12 = {...}`）之后照格式增加一个对象并加入 `const PLANS = [...]`，再在 `src/data/i18n.js` 的 `NAMES_EN` 中补上英文名。改完运行 `node scripts/validate-plans.mjs` 自检；户型库按名称中的「X室 / X卫 / 开间」自动识别居室数：
 
 ```js
 const P13 = {
