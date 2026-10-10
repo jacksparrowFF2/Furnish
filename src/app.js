@@ -51,9 +51,10 @@ const NOTE_COLORS = {accent:['#ef5a24','#fff'], teal:['#0e8f83','#fff'], ink:['#
 const F = (type,name,cx,cy,w,d,rot=0,color) => ({id:uid(),type,name,cx,cy,w,d,rot,color:color||typeColor(type)});
 
 /* ======================= 存储 v2：每个户型独立工作槽 + 多命名方案 ======================= */
-const {fresh:freshWork, restore:fixWork, restoreFurniture:sanitizeFurn} = FurnishWork.create({
+const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
+const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
 const STORE = 'huxing-design-v2';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Validate and rebuild user plans; never trust serialized rendering geometry.
@@ -487,7 +488,7 @@ function openReset(){
     ]});
 }
 function wipeAll(){
-  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;autosave.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
+  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 
 function openHelp(){
@@ -713,127 +714,7 @@ function setTheme(t){
 }
 $('#themeBtn').onclick = $('#themeQuick').onclick = () => setTheme(curTheme() === 'dark' ? 'light' : 'dark');
 
-/* ======================= 多命名方案 ======================= */
-function renderDesigns(){
-  const box = $('#designList'); if (!box) return;
-  const list = store.designs.filter(d => d.planId === PLAN.id);
-  box.innerHTML = list.length ? list.map(d =>
-    `<div class="dsn"><button class="btn" data-dload="${d.id}" title="${tr('载入此方案', 'Load this design')}">${esc(d.name)}</button>
-     <button class="btn danger" data-ddel="${d.id}" title="${tr('删除方案', 'Delete design')}" aria-label="${tr('删除方案', 'Delete design')}">×</button></div>`).join('')
-    : `<div class="muted empty">${tr('暂无已保存方案', 'No saved designs yet')}</div>`;
-  box.querySelectorAll('[data-dload]').forEach(b => b.onclick = () => {
-    const d = store.designs.find(x => x.id === b.dataset.dload); if (!d) return;
-    let next;try{next=fixWork(JSON.parse(JSON.stringify(d.work)),PLAN);if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);}catch(error){return toast(error.message);}
-    snapshot(true,state,'载入命名方案前');const before = snap(); state = next; ui.sel = null;
-    commit(before); renderAll(); $('#fileMenu').open = false;
-    toast(tr(`已载入「${d.name}」`, `Loaded "${d.name}"`));
-  });
-  box.querySelectorAll('[data-ddel]').forEach(b => b.onclick = () => {
-    window.FurnishDesignUI?.editDesign('delete',b.dataset.ddel);
-  });
-  box.insertAdjacentHTML('beforeend',`<button class="btn" id="manageDesigns">${tr('管理命名方案','Manage saved designs')}</button>`);
-  $('#manageDesigns').onclick=()=>{window.FurnishDesignUI?.designs();$('#fileMenu').open=false;};
-}
-$('#saveDesign').onclick = () => {
-  const def = tr('方案 ', 'Design ') + new Date().toLocaleDateString();
-  const name = prompt(tr('方案名称：', 'Design name:'), def); if (!name) return;
-  if(name.length>80||store.designs.filter(d=>d.planId===PLAN.id).length>=100)return toast(tr('方案名称最多 80 字，每个户型最多 100 份命名方案。','Names up to 80 characters; up to 100 designs per plan.'));
-  store.designs.push({id:'d'+Date.now().toString(36), name, planId:PLAN.id, ts:Date.now(), work:JSON.parse(JSON.stringify(state))});
-  save(); renderDesigns(); toast(tr('已保存当前布置', 'Design saved'));
-};
-
-/* ======================= 历史快照（防误操作，跨会话） ======================= */
-const HIST_KEY = 'huxing-history';
-let hist = (() => { try { const h = JSON.parse(localStorage.getItem(HIST_KEY)); return FurnishProject.historyEntries(Array.isArray(h) ? h : []); } catch(e) { return []; } })();
-let lastSnap = 0;
-let historySaveErr = false;
-function persistHistory(){
-  const version=hist;
-  let cached=true;try{localStorage.setItem(HIST_KEY,JSON.stringify(hist));}catch(e){cached=false;}
-  historySaveErr=!cached;
-  window.FurnishStorage?.writeHistory(hist).then(()=>{if(hist===version)historySaveErr=false;}).catch(()=>{if(hist===version)historySaveErr=!cached;});
-}
-window.FurnishStorage?.historyReady.then(saved=>{
-  if(!Array.isArray(saved)||storageWiping)return;
-  const valid=saved.filter(h=>{try{FurnishProject.validateWork(h.data);return true;}catch(e){return false;}});
-  hist=FurnishProject.historyEntries([...hist,...valid]);renderHist();
-}).catch(()=>{});
-function snapshot(force,data=state,reason='自动快照',planId=PLAN.id){
-  if(storageWiping)return;
-  const now = Date.now();
-  if (!force && now - lastSnap < 30000) return;     // 节流：30 秒内只存一次（force 用于导入/重置等大动作）
-  lastSnap = now;
-  hist=FurnishProject.recoveryEntry(hist,planId,data,reason,now);persistHistory();
-  renderHist();
-}
-function renderHist(){
-  const box = $('#histList'); if (!box) return;
-  const list = hist.filter(h => h.planId === PLAN.id);
-  box.innerHTML = list.length ? list.map(h =>
-    `<div class="dsn"><button class="btn" data-hload="${h.ts}" title="${tr('恢复此快照', 'Restore this snapshot')}">${new Date(h.ts).toLocaleString()} · ${h.n}${tr(' 件', ' items')}</button></div>`).join('')
-    : `<div class="muted empty">${tr('暂无历史快照', 'No snapshots yet')}</div>`;
-  box.querySelectorAll('[data-hload]').forEach(b => b.onclick = () => {
-    const h = hist.find(x => x.ts === +b.dataset.hload); if (!h) return;
-    window.FurnishDesignUI?.previewRecovery(h.ts);$('#fileMenu').open=false;
-  });
-}
-
-/* ======================= 分享链接（方案编码进 URL，客户打开即还原） ======================= */
-const b64url = {
-  enc: bytes => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
-  dec: str => { const s = str.replace(/-/g, '+').replace(/_/g, '/'); const bin = atob(s + '='.repeat((4 - s.length % 4) % 4));
-    return Uint8Array.from(bin, c => c.charCodeAt(0)); },
-};
-async function compressJSON(json){
-  const src = new TextEncoder().encode(json);
-  if ('CompressionStream' in window){
-    const out = await new Response(new Blob([src]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer();
-    return 'z' + b64url.enc(new Uint8Array(out));
-  }
-  return 'r' + b64url.enc(src);
-}
-async function decompressJSON(str){
-  const raw = b64url.dec(str.slice(1));
-  const out = str[0] === 'z'
-    ? await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer()
-    : raw.buffer;
-  return new TextDecoder().decode(out);
-}
-$('#shareLink').onclick = async () => {
-  if (state.architecture) return toast(tr('自定义户型请导出方案 JSON 分享（含图纸与墙体）', 'Export custom plans as JSON to share the drawing and walls'));
-  const v = await compressJSON(JSON.stringify(state));
-  const url = location.href.split('#')[0] + '#p=' + PLAN.id + '&v=' + v;
-  try { await navigator.clipboard.writeText(url); toast(tr('分享链接已复制，发给客户打开即可还原', 'Share link copied')); }
-  catch(e){ prompt(tr('复制分享链接：', 'Copy share link:'), url); }
-  $('#fileMenu').open = false;
-  snapshot(true);
-};
-let lastHash = '';
-const loadFromHash = async () => {   // 从分享链接载入（新标签打开或同页粘贴均可）
-  const m = location.hash.match(/^#p=(\w+)&v=(.+)$/);
-  if (!m || m[0] === lastHash) return;
-  lastHash = m[0];
-  try {
-    const work = JSON.parse(await decompressJSON(m[2]));
-    const lockedOriginal=store.work[m[1]]?.architecture;if(lockedOriginal?.phase==='design')work.architecture=FurnishProject.protectOriginal(lockedOriginal,work.architecture);
-    registerCustomWork(work);
-    const plan = PLANS.find(p => p.id === m[1]);
-    if (!plan || !Array.isArray(work.furniture)) throw 0;
-    const before = PLAN.id === plan.id && state && Array.isArray(state.furniture) ? snap() : null;
-    snapshot(true,state,'加载分享前');
-    PLAN = plan; applyPlanData(); store.planId = plan.id;
-    state = fixWork(work, plan); store.work[plan.id] = state; save();
-    if (before){ commit(before); } else { undoStack.length = 0; redoStack.length = 0; }
-    ui.sel = null;
-    buildDefs(); buildLib(); renderOpenings(); renderDims(); fitView(); renderAll(); buildPlanList(); renderDesigns();
-    window.View3D?.replan();
-    history.replaceState(null, '', location.pathname + location.search);   // 载入后清掉 hash，之后的编辑走自动保存
-    toast(tr('已载入分享的方案', 'Shared design loaded'));
-  } catch(e) { toast(tr('分享链接无效', 'Invalid share link')); }
-};
-addEventListener('hashchange', loadFromHash);
-loadFromHash();
+initializeHistorySharing();
 
 /* ======================= 打印 ======================= */
 let printTheme = null;

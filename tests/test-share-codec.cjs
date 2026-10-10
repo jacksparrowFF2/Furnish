@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict'),S=require('../src/io/share-codec.js');
+const {deflateRawSync}=require('node:zlib');
+(async()=>{
+ const text=JSON.stringify({name:'中文 / 🪑',furniture:[],notes:'x'.repeat(100000)});
+ const raw=S.create({CompressionStream:null});const encoded=await raw.encode(text);
+ assert.equal(encoded[0],'r');assert.equal(await raw.decode(encoded),text);
+ const normal=S.create();assert.equal(await normal.decode(await normal.encode(text)),text);
+ assert.equal(await normal.decode('z'+deflateRawSync(text).toString('base64url')),text);
+ const fallback=S.create({CompressionStream:class{constructor(){throw Error('unsupported');}}});assert.equal((await fallback.encode(text))[0],'r');
+ for(const invalid of ['','xYWJj','r$','rA','zAAAA'])await assert.rejects(()=>normal.decode(invalid));
+ await assert.rejects(()=>S.create({DecompressionStream:null}).decode('zYWJj'));
+ const tasks=[],applied=[],errors=[];
+ const loader=S.createLoader({decode:()=>new Promise((resolve,reject)=>tasks.push({resolve,reject})),prepare:(work,id)=>{if(work.bad)throw Error('invalid');return {work,id};},apply:value=>applied.push(value),onError:e=>errors.push(e)});
+ const a=loader.load('#p=a&v=r1'),b=loader.load('#p=b&v=r2');
+ tasks[1].resolve('{"value":2}');await b;tasks[0].resolve('{"value":1}');await a;
+ assert.deepEqual(applied,[{work:{value:2},id:'b'}]);
+ const stale=loader.load('#p=a&v=r1');await loader.load('');tasks[2].reject(Error('obsolete'));await stale;assert.equal(errors.length,0);
+ const invalid=loader.load('#p=a&v=r1');tasks[3].resolve('{"bad":true}');await invalid;assert.equal(errors.length,1);assert.equal(applied.length,1);
+ const repeat=loader.load('#p=b&v=r2');tasks[4].resolve('{"value":3}');await repeat;assert.equal(applied.length,2);
+ console.log('PASS raw/compressed legacy shares, fallback, corruption and obsolete loads');
+})().catch(e=>{console.error(e);process.exitCode=1;});

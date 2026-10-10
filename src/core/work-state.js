@@ -49,7 +49,14 @@
       work.scene3d = design.sceneSettings(work.scene3d);
       return work;
     }
-    return {fresh, restore, restoreFurniture};
+    function prepareShared(work,plan,lockedOriginal){
+      // Complete normalization and validation before application state changes.
+      const next=restore(project.validateWork(work),plan);
+      if(lockedOriginal?.phase==='design')next.architecture=project.protectOriginal(lockedOriginal,next.architecture);
+      project.validatePlanWork(plan,next);
+      return next;
+    }
+    return {fresh, restore, restoreFurniture, prepareShared};
   }
   const api = {create};
   if(inNode) module.exports = api;

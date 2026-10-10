@@ -1,5 +1,9 @@
 # Furnish 实机测试清单
 
+## 历史与分享协调
+
+运行 `node tests/test-recovery-storage.cjs`、`node tests/test-share-codec.cjs` 和 `node tests/test-work-state.cjs` 验证持久化回调、旧格式、压缩回退、异步竞争和载入前准备。浏览器验收命名保存、跨户型分享、重复载入同一链接及撤销重做；损坏门窗或不匹配编号的分享应保持户型、方案、恢复点和撤销记录不变。预览恢复点后恢复并撤销／重做，删除测试历史缓存后刷新应从 IndexedDB 找回。最后检查真实 PNG／方案 JSON 下载与校验、全部户型、三维返回及窄屏恢复窗口。
+
 ## 画布交互与吸附
 
 运行 `node tests/test-snapping.cjs` 验证网格、旋转范围、像素容差、邻近参考线、组内排除及测量约束；`node tests/test-canvas-cancel.cjs` 检查移动／旋转／尺寸／标注取消恢复，且不提交撤销记录。浏览器验证拖动与撤销、锁定、多选队形、旋转手柄、尺寸手柄、滚轮、Shift 测量和框选。系统 `pointercancel` 后状态和工作槽应恢复。模拟双指缩放后剩余指针不得继续编辑；真实 iPad Safari 手势及离线文件打开需另做实机验收。
