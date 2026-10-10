@@ -1,0 +1,25 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const C=require('../src/core/floorplan-core.js'),P=require('../src/core/project-core.js'),presets=require('../src/data/plans.js');
+const original=presets.find(p=>p.id==='p10'),initial=JSON.stringify(original),nodes=new Map();
+const element=()=>({style:{},dataset:{},after(){},remove(){},addEventListener(){},innerHTML:'',insertAdjacentHTML(_,s){this.innerHTML+=s;}}),$=s=>{if(!nodes.has(s))nodes.set(s,element());return nodes.get(s);};
+const work={plan:'p10',furniture:[{id:'bed',type:'bed',name:'床',cx:1000,cy:1300,w:1500,d:2000,rot:0}],rooms:{child:{name:'我的卧室',mat:'wood'}},notes:[{x:100,y:200,text:'test'}],measures:[{a:{x:10,y:20},b:{x:30,y:40}}],demolished:[],open:{w:{0:{sill:800/1000,head:2200/1000}},d:{}}};
+const before=JSON.stringify(work),messages=[];
+const ctx=vm.createContext({FurnishDraft:C,FurnishProject:P,window:{},PLAN:original,PLANS:[...presets],state:work,store:{work:{p10:work},customPlans:[]},ui:{},svg:element(),document:{createElement:element,body:{append(){}}},$,tr:s=>s,uid:()=> 'copy',toast:s=>messages.push(s),setTimeout:()=>0,clearTimeout(){}});
+vm.runInContext('function setPlan(id){PLAN=PLANS.find(p=>p.id===id);state=store.work[id];}function select(v){ui.sel=v;}',ctx);
+vm.runInContext(fs.readFileSync(require.resolve('../src/ui/project-ui.js'),'utf8'),ctx);
+assert.equal(ctx.window.FurnishWorkspace.copyBuiltin({kind:'win',id:0}),true);
+assert.equal(ctx.PLAN.id,'custom_copy');assert.equal(ctx.state.plan,ctx.PLAN.id);assert.equal(ctx.state.architecture.phase,'survey');assert.equal(ctx.state.furniture[0].cx,2000);assert.equal(ctx.state.notes[0].x,1100);assert.equal(ctx.state.measures[0].b.y,1040);assert.equal(ctx.state.rooms.child.name,'我的卧室');assert.equal(ctx.PLAN.wins[ctx.ui.sel.id].sill,.8);assert.equal(ctx.PLAN.wins[ctx.ui.sel.id].head,2.2);
+assert.equal(JSON.stringify(work),before);assert.equal(JSON.stringify(original),initial);assert.equal(ctx.store.customPlans.length,1);assert.equal(ctx.window.FurnishWorkspace.copyBuiltin(),false);assert.equal(ctx.store.customPlans.length,1);
+// The main canvas window panel updates position and all dimensions in one action.
+const panel=element();panel.querySelectorAll=()=>[];
+ctx.cloneState=()=>JSON.parse(JSON.stringify(ctx.state));ctx.snap=()=>'';ctx.mutate=fn=>fn();ctx.ROOMS=ctx.PLAN.rooms;
+ctx.esc=s=>s;
+assert.equal(ctx.window.FurnishWorkspace.windowPanel(ctx.ui.sel.id,panel),true);assert.match(panel.innerHTML,/window-position/);
+const o=ctx.state.architecture.draft.openings.find(v=>v.id==='preset_window0'),wall=ctx.state.architecture.draft.walls.find(v=>v.id===o.wall),length=Math.hypot(wall.b[0]-wall.a[0],wall.b[1]-wall.a[1])*10;
+const ref=C.openingReferences(ctx.state.architecture.draft,o.id)[0];$('#window-reference').value=ref.id;$('#window-position').value=String(ref.distance+100);$('#window-width').value='1500';$('#window-height').value='1200';$('#window-sill').value='900';
+let previewPlan,updates=0;ctx.renderArchitecturePreview=plan=>previewPlan=plan;for(const name of ['renderWalls','renderRooms','renderOpenings','renderSel','renderPanel'])ctx[name]=()=>{};ctx.mutate=fn=>{updates++;fn();};
+const saved=JSON.stringify(ctx.state);$('#window-width').oninput();assert.ok(previewPlan);assert.equal(JSON.stringify(ctx.state),saved);assert.equal(updates,0);assert.equal(ctx.window.FurnishWorkspace.openingPreviewPlan(),previewPlan);
+$('#window-cancel').onclick();assert.equal(ctx.window.FurnishWorkspace.openingPreviewPlan(),null);assert.equal(JSON.stringify(ctx.state),saved);
+$('#window-width').value='';$('#window-width').oninput();assert.match($('#window-error').textContent,/完整/);assert.equal(updates,0);$('#window-width').value='1500';$('#window-width').oninput();$('#window-apply').onclick();assert.equal(updates,1);
+const changed=ctx.state.architecture.draft.openings.find(v=>v.id===o.id);assert.equal(changed.length,1500);assert.ok(Math.abs(changed.t*length-o.t*length)<1e-6);assert.equal(changed.head,2100);assert.equal(JSON.stringify(work),before);
+console.log('PASS UI creates one independent preset copy, transfers furniture/annotations/opening overrides, preserves original work, selects the corresponding opening and applies canvas position/dimensions');

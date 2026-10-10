@@ -180,6 +180,10 @@ function renderMeasure(){
 
 const ACC = '#ef5a24', TEAL = '#0e8f83';
 function renderSel(){
+  const preview=window.FurnishWorkspace?.openingPreviewPlan?.();if(!preview)return renderSelectedGeometry();
+  const actual=[WALLS,WINS,DOORS,SLIDES,ROOMS];try{({walls:WALLS,wins:WINS,doors:DOORS,slides:SLIDES,rooms:ROOMS}=preview);renderSelectedGeometry();}finally{[WALLS,WINS,DOORS,SLIDES,ROOMS]=actual;}
+}
+function renderSelectedGeometry(){
   const k = 1/view.s, ids = selIds(); let s = '';
   const A = `stroke="${ACC}" vector-effect="non-scaling-stroke"`;
   const halo = w => `stroke="${PAL.halo}" stroke-width="${w*k}" paint-order="stroke"`;
@@ -272,10 +276,21 @@ function renderNotes(){
       <text x="${n.x + fs*.45}" y="${n.y}" font-size="${fs}" font-weight="700" dominant-baseline="central" fill="${fg}">${esc(n.text)}</text></g>`;
   }).join('');
 }
+function openingDimensionSVG(dimension,scale=1,font=160){
+  if(!dimension)return '';
+  const {a,b,wall,distance}=dimension,p=a.map(v=>v/scale),q=b.map(v=>v/scale),h=a[1]===b[1],tick=font*.35,color='#17806c';
+  return `<g pointer-events="none" fill="none" stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke">${wall?`<rect x="${wall[0]/scale}" y="${wall[1]/scale}" width="${(wall[2]-wall[0])/scale}" height="${(wall[3]-wall[1])/scale}" fill="rgba(23,128,108,.12)"/>`:''}<path d="M${p[0]} ${p[1]}L${q[0]} ${q[1]}M${p[0]-(h?0:tick)} ${p[1]-(h?tick:0)}L${p[0]+(h?0:tick)} ${p[1]+(h?tick:0)}M${q[0]-(h?0:tick)} ${q[1]-(h?tick:0)}L${q[0]+(h?0:tick)} ${q[1]+(h?tick:0)}"/><text x="${(p[0]+q[0])/2}" y="${(p[1]+q[1])/2-font*.6}" text-anchor="middle" fill="${color}" stroke="none" font-size="${font}">${Math.round(distance)} mm</text></g>`;
+}
+function renderArchitecturePreview(plan,dimension){
+  const actual=[WALLS,WINS,DOORS,SLIDES,ROOMS];
+  try{({walls:WALLS,wins:WINS,doors:DOORS,slides:SLIDES,rooms:ROOMS}=plan);renderWalls();renderRooms();renderOpenings();renderSel();$('#gOpen').insertAdjacentHTML('beforeend',openingDimensionSVG(dimension));}
+  finally{[WALLS,WINS,DOORS,SLIDES,ROOMS]=actual;}
+}
 function renderAll(){
+  window.FurnishWorkspace?.clearOpeningPreview(false);
   window.FurnishDesignUI?.clearPlacementGuide();
   syncCustomArchitecture();
-  applyOpeningOverrides(); ui.guides = null;
+  applyOpeningOverrides(); renderOpenings(); ui.guides = null;
   renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderMeasure(); renderNotes(); renderSel(); renderPanel(); updateHeader();
   window.View3D?.sync();
   window.FurnishWorkspace?.afterRender();
