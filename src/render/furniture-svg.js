@@ -111,6 +111,12 @@ const DASH = 'stroke-dasharray="4 3"';
     }
     case 'treadmill': return rc(x,y,w,d,c,'rx="50"') + rc(x+90,y+320,w-180,d-400,'#1c1c1e','rx="25"') + rc(x,y,w,230,shade(c,1.4),'rx="40"');
     case 'pendant': return `<circle r="${m*.44}" fill="none" ${ST()} stroke-dasharray="5 4"/>` + ec(0,0,m*.3,m*.3,c) + ec(0,0,m*.17,m*.17,shade(c,1.15));
+    case 'slidingdoor': case 'tripleslidingdoor': {
+      const n=t==='tripleslidingdoor'?3:2;
+      let s=rc(x,y,w,d,c);
+      for(let i=0;i<n;i++)s+=rc(x+i*w/n,y+d*(i+.15)/n,w/n,d*.65/n,'#dce8ec')+ln(x+i*w/n+w/n*.85,y+d*(i+.15)/n,x+i*w/n+w/n*.85,y+d*(i+.8)/n);
+      return s;
+    }
     case 'curtain': {
       const folds = Math.max(4, Math.round(w/300));
       let s = `<line x1="${x}" y1="${y}" x2="${x+w}" y2="${y}" stroke="#6b5d4c" stroke-width="7" vector-effect="non-scaling-stroke"/>` + rc(x,y,w,d,c,'rx="8"');

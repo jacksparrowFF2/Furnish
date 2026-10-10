@@ -21,6 +21,7 @@ function applyPlanData(){
   ({walls:WALLS, wins:WINS, doors:DOORS, slides:SLIDES, rooms:ROOMS, bounds:BOUNDS} = PLAN);
   DOORS.forEach(d => d._base ??= {h:[...d.h], c:[...d.c], o:[...d.o]});   // 切换户型时保留原始方向，不能把当前覆盖值当成原值
   DOORS.filter(d => d.entry).forEach(d => d.entryDirection ??= [...d._base.o]);
+  SLIDES.forEach(s => s._panels0 ??= s.panels===3?3:2);
   WINS.forEach(w => { w._sill0 ??= w.sill; w._head0 ??= w.head??2.4; });ROOMS.filter(r=>r.counted===false).forEach(r=>r._height0??=r.height??.45);
 }
 // 门窗调整存于 state.open（可撤销/随方案保存），套用到 PLAN 数据的运行时副本上
@@ -29,6 +30,7 @@ function applyOpeningOverrides(){
   DOORS.forEach(d => { if (d._base) Object.assign(d, {h:[...d._base.h], c:[...d._base.c], o:[...d._base.o]}); });
   WINS.forEach(w => { if (w._sill0 !== undefined) {w.sill = w._sill0;w.head=w._head0;} });
   ROOMS.filter(r=>r.counted===false&&r._height0!==undefined).forEach(r=>r.height=r._height0);
+  SLIDES.forEach(s=>s.panels=s._panels0||2);
   const o = state.open;
   if (!o) return;
   Object.entries(o.d || {}).forEach(([i, v]) => {
@@ -42,6 +44,7 @@ function applyOpeningOverrides(){
       d.h[normal] = flipped ? d.rect[normal]+d.rect[normal+2]-d._base.h[normal] : d._base.h[normal];
     }
   });
+  Object.entries(o.s || {}).forEach(([i,v])=>{if(SLIDES[+i])SLIDES[+i].panels=v.panels;});
   Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) {if(typeof v==='number')w.sill=v;else if(v&&Number.isFinite(v.sill)&&Number.isFinite(v.head)){w.sill=v.sill;w.head=v.head;}if(w.bayGroup){const room=ROOMS.find(r=>r.id===w.bayGroup);if(room)room.height=w.sill;}} });
 }
 const {materials:MATS,library:LIB,typePrices:TYPE_PRICE} = FurnishCatalogData;
@@ -80,7 +83,9 @@ function syncCustomArchitecture(){
   const p = FurnishDraft.build(state.architecture.draft);
   if (p.id !== PLAN.id) throw new Error('Custom plan identity mismatch');
   Object.assign(PLAN, p); applyPlanData();
-  state.rooms = Object.fromEntries(p.rooms.map(r => [r.id, state.rooms[r.id] || {name:r.name, mat:r.mat}]));
+  if(ui.sel?.kind==='room'&&!ROOMS.some(r=>r.id===ui.sel.id))ui.sel=null;
+  const hiddenParents=(state.architecture.draft.zones||[]).map(z=>z.parent).filter(id=>!p.rooms.some(r=>r.id===id)&&state.rooms[id]);
+  state.rooms = Object.fromEntries([...hiddenParents.map(id=>[id,state.rooms[id]]),...p.rooms.map(r => [r.id, state.rooms[r.id] || {name:r.name, mat:r.mat}])]);
   customArchDraft = state.architecture.draft; customArchPlanId = PLAN.id;
   renderOpenings(); renderDims(); window.View3D?.replan();
 }
@@ -465,7 +470,7 @@ $('#dlgBody').addEventListener('keydown', e => { if (e.key === 'Enter' && e.targ
 // 重置中心：按需恢复家具 / 房间 / 墙体 / 门窗 / 测量 / 视图，一步撤销
 function openReset(){
   const o = (k, zh, en, szh, sen, on) => `<label class="opt"><input type="checkbox" data-r="${k}" ${on ? 'checked' : ''}><span><b>${tr(zh, en)}</b><small>${tr(szh, sen)}</small></span></label>`;
-  const nDem = state.demolished.length, nOpen = Object.keys(state.open.d || {}).length + Object.keys(state.open.w || {}).length;
+  const nDem = state.demolished.length, nOpen = Object.keys(state.open.d || {}).length + Object.keys(state.open.w || {}).length + Object.keys(state.open.s || {}).length;
   const nRoom = ROOMS.filter(r => state.rooms[r.id].name !== r.name || state.rooms[r.id].mat !== r.mat).length;
   openDialog({title:tr('重置', 'Reset'), body:`<p>${tr(`户型「${nm(PLAN.name)}」：勾选要恢复的内容。操作可用「撤销」找回。`, `Plan "${nm(PLAN.name)}": choose what to restore. You can Undo afterwards.`)}</p><div class="opts">
       ${o('furn', '家具布置', 'Furniture layout', `恢复为该户型的默认布置（当前 ${state.furniture.length} 件）`, `Restore the default layout (currently ${state.furniture.length} items)`, true)}

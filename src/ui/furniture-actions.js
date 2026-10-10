@@ -51,7 +51,7 @@ function orderSel(top){
 // 恢复库中默认尺寸与颜色（自定义家具按「我的家具」中的定义）
 function resetItemSel(){
   const items=movable(selItems());if(!items.length)return;
-  let values;try{values=items.map(f=>{const it=libItem(f);return it?{f,value:{...FurnishDesign.resizeFurniture(f,{w:it[2],d:it[3],...(it[6]!==undefined?{h:it[6]}:{})}),color:it[4]}}:null;}).filter(Boolean);}catch(e){return toast(e.message);}
+  let values;try{values=items.map(f=>{const it=libItem(f);return it?{f,value:{...FurnishDesign.resizeFurniture(f,{w:it[2],d:it[3],...(it[6]!==undefined?{h:it[6]}:{})}),color:it[4],...(f.type==='curtain'?{curtainStyle:it[8]||'double'}:{})}}:null;}).filter(Boolean);}catch(e){return toast(e.message);}
   if(!values.length)return toast(tr('找不到明确的原始规格，请在家具资料中手动编辑。','Original specifications unavailable; edit the product manually.'));
   mutate(()=>values.forEach(({f,value})=>{Object.assign(f,value);delete f.flip;delete f.price;}));
   toast(tr('已恢复默认尺寸、颜色与参考价格'+(values.length<items.length?'；来源不明确的家具已跳过。':''),'Default specifications restored; unresolved sources skipped.'));
@@ -158,6 +158,8 @@ function pushOut(f){
 function addItem(it, x, y){
   if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
+  if(h!==undefined)f.h=h;
+  if(type==='curtain')f.curtainStyle=it[8]||'double';
   if (type === 'custom' || type === 'customround'){ f.price = price; f.h = h; }   // 自定义家具删除定义后仍保留单价与高度
   if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
   pushOut(f);

@@ -27,7 +27,7 @@
   return {removed:base.walls.filter(w=>!now.has(w.id)||signature(w,base)!==signature(now.get(w.id),next)),added:next.walls.filter(w=>!old.has(w.id)||signature(w,next)!==signature(old.get(w.id),base))};
  }
  function quantities(plan,arch){
-  const rooms=plan.rooms.filter(r=>r.counted!==false),net=rooms.reduce((n,r)=>n+area(r.poly),0),wall=rooms.reduce((n,r)=>n+perimeter(r.poly)*2.8,0);
+  const rooms=plan.rooms.filter(r=>r.counted!==false),net=rooms.reduce((n,r)=>n+area(r.poly),0),wall=(plan.physicalRooms||rooms).filter(r=>r.counted!==false).reduce((n,r)=>n+perimeter(r.poly)*2.8,0);
   // Opening widths multiplied by their actual assumed vertical height, not plan-view wall depth.
   const deduction=(o,height)=>{const r=o.rect,width=r[2]-r[0],depth=r[3]-r[1],horizontal=width>=depth,center=[(r[0]+r[2])/2,(r[1]+r[3])/2],normal=horizontal?1:0,offset=Math.min(width,depth)/2+5;let faces=0;for(const side of [-1,1]){const p=[...center];p[normal]+=side*offset;if(rooms.some(room=>inside(p,room.poly)))faces++;}return Math.max(width,depth)/1000*height*Math.max(1,faces);};
   const holes=(plan.doors||[]).reduce((n,o)=>n+deduction(o,2.1),0)+(plan.wins||[]).reduce((n,o)=>n+(o.bayId?(o.paintRect?deduction({...o,rect:o.paintRect},o.head-o.sill):0):deduction(o,o.head-o.sill)),0)+(plan.slides||[]).reduce((n,o)=>n+deduction(o,o.v?2.4:2.1),0);
@@ -57,6 +57,7 @@
   const plan=work.architecture?core().build(work.architecture.draft):clone(base);
   plan.walls=plan.walls.filter((w,i)=>!(work.demolished||[]).includes('w'+i));
   (plan.doors||[]).forEach((d,i)=>{if(d._base)Object.assign(d,clone(d._base));if(work.open?.d?.[i])Object.assign(d,clone(work.open.d[i]));});
+  (plan.slides||[]).forEach((s,i)=>s.panels=work.open?.s?.[i]?.panels??s._panels0??s.panels??2);
   (plan.wins||[]).forEach((w,i)=>{w.sill=w._sill0??w.sill;w.head=w._head0??w.head??2.4;const v=work.open?.w?.[i];if(typeof v==='number')w.sill=v;else if(v)Object.assign(w,{sill:v.sill,head:v.head});});
   plan.rooms=plan.rooms.map(r=>({...r,name:work.rooms?.[r.id]?.name||r.name}));
   (plan.wins||[]).forEach(w=>{if(w.bayGroup){const r=plan.rooms.find(r=>r.id===w.bayGroup);if(r)r.height=w.sill;}});
@@ -65,8 +66,8 @@
  function validatePlanWork(base,work){
   const plan=work.architecture?core().build(work.architecture.draft):base;if(!plan)fail('文件引用了不存在的户型');
   for(const id of work.demolished||[])if(Number(id.slice(1))>=plan.walls.length)fail('拆墙编号 '+id+' 不存在于此方案');
-  for(const [kind,list] of [['d',plan.doors||[]],['w',plan.wins||[]]])for(const [index,value] of Object.entries(work.open?.[kind]||{})){
-   if(Number(index)>=list.length)fail((kind==='d'?'门':'窗')+'编号 '+index+' 不存在于此方案');
+  for(const [kind,list] of [['d',plan.doors||[]],['w',plan.wins||[]],['s',plan.slides||[]]])for(const [index,value] of Object.entries(work.open?.[kind]||{})){
+   if(Number(index)>=list.length)fail((kind==='d'?'门':kind==='s'?'推拉门':'窗')+'编号 '+index+' 不存在于此方案');
    if(kind==='d'){const r=list[index].rect,h=value.h,axis=r[2]-r[0]>=r[3]-r[1]?0:1;if(h[0]<r[0]-.01||h[0]>r[2]+.01||h[1]<r[1]-.01||h[1]>r[3]+.01)fail('门 '+index+' 的铰链位置超出洞口');const start=Math.abs(h[axis]-r[axis])<=.01,end=Math.abs(h[axis]-r[axis+2])<=.01;if(!start&&!end||value.c[1-axis]!==0||value.c[axis]!== (start?1:-1))fail('门 '+index+' 的铰链与关闭方向不匹配洞口');}
   }
   return work;
@@ -82,6 +83,8 @@
  function readiness(plan,work){
   const items=[];
   if(work.architecture?.phase==='survey')items.push({kind:'structure',name:'原始结构',message:'尚未确认原始墙体与门窗',action:'structure'});
+  for(const b of work.architecture?.draft.beams||[])items.push({kind:'structure',id:b.id,name:'DXF 房梁',message:'已保留房梁投影，不参与房间分割；梁底／梁顶高度待录入，目前仅显示二维参考',action:'structure'});
+  for(const o of work.architecture?.draft.openings||[])if(o.review)items.push({kind:'structure',id:o.id,name:o.kind==='window'?'DXF 窗洞':'DXF 门洞',message:o.review==='window-height'?'二维图纸未提供高度，请核对窗台高与窗顶高并确认修改':'门洞由轮廓断口推导，请核对位置、宽度及开启方向并确认修改',action:'structure'});
   for(const r of plan.rooms)if(r.counted!==false&&design().inferUse(r,work.rooms?.[r.id])==='unassigned')items.push({kind:'room',id:r.id,name:work.rooms?.[r.id]?.name||r.name,message:'房间用途未分类',action:'room'});
   for(const f of work.furniture){
    const missing=[];if(f.h===undefined)missing.push('高度');if(!f.brand?.trim())missing.push('品牌');if(!f.model?.trim())missing.push('型号');
@@ -95,7 +98,7 @@
  function openingSchedule(plan,work){
   const width=o=>Math.round(Math.max(o.rect[2]-o.rect[0],o.rect[3]-o.rect[1])),rows=[],seen=new Set();
   (plan.doors||[]).forEach((d,i)=>rows.push({name:d.name||'门 '+(i+1),type:'平开门',width:width(d),height:2100,sill:0,depth:null,parts:1}));
-  (plan.slides||[]).forEach((d,i)=>rows.push({name:d.name||'推拉门 '+(i+1),type:'推拉门',width:width(d),height:d.v?2400:2100,sill:0,depth:null,parts:1}));
+  (plan.slides||[]).forEach((d,i)=>rows.push({name:d.name||'推拉门 '+(i+1),type:d.panels===3?'三联动推拉门':'双扇推拉门',width:width(d),height:d.v?2400:2100,sill:0,depth:null,parts:d.panels===3?3:2}));
   (plan.wins||[]).forEach((w,i)=>{const group=w.bayId||w.bayGroup;if(group&&seen.has(group))return;if(group)seen.add(group);const opening=work.architecture?.draft.openings.find(o=>o.id===group),parts=group?plan.wins.filter(v=>(v.bayId||v.bayGroup)===group):[w];rows.push({name:group?'飘窗 '+seen.size:'窗 '+(i+1),type:group?'三面飘窗':'普通窗',width:opening?.length??(group?parts.map(width).join(' / '):width(w)),height:Math.round((w.head-w.sill)*1000),sill:Math.round(w.sill*1000),depth:opening?.bay?.depth??null,parts:parts.length});});
   return rows;
  }
@@ -127,14 +130,19 @@
  }
  function remapRooms(oldRooms,newRooms,settings){
   const overlap=(A,B)=>{const xs=[...new Set(A.concat(B).map(p=>p[0]))].sort((a,b)=>a-b),ys=[...new Set(A.concat(B).map(p=>p[1]))].sort((a,b)=>a-b);let value=0;for(let x=0;x<xs.length-1;x++)for(let y=0;y<ys.length-1;y++){const p=[(xs[x]+xs[x+1])/2,(ys[y]+ys[y+1])/2];if(inside(p,A)&&inside(p,B))value+=(xs[x+1]-xs[x])*(ys[y+1]-ys[y]);}return value;};
-  const used=new Map();return Object.fromEntries(newRooms.map(r=>{const candidates=oldRooms.map(o=>({o,a:overlap(o.poly,r.poly)})).sort((a,b)=>b.a-a.a),match=candidates[0];if(!match||match.a<=0)return [r.id,{name:r.name,mat:r.mat,use:design().inferUse(r)}];const old=match.o,setting=clone(settings[old.id]||{name:old.name,mat:old.mat});setting.use=design().inferUse(r,setting);const count=used.get(old.id)||0;used.set(old.id,count+1);if(count)setting.name+=' · 分区 '+(count+1);return [r.id,setting];}));
+  const used=new Map();const mapped=Object.fromEntries(newRooms.map(r=>{if(settings[r.id]&&oldRooms.some(o=>o.parentArea===r.id))return [r.id,clone(settings[r.id])];if(r.zone){const existing=oldRooms.find(o=>o.id===r.id);if(existing&&settings[r.id])return [r.id,clone(settings[r.id])];const source=oldRooms.map(o=>({o,a:overlap(o.poly,r.poly)})).sort((a,b)=>b.a-a.a)[0];return [r.id,{name:r.name,use:r.use,mat:settings[r.parentRoom]?.mat||(source?.a>0?settings[source.o.id]?.mat:null)||r.mat}];}const candidates=oldRooms.map(o=>({o,a:overlap(o.poly,r.poly)})).sort((a,b)=>b.a-a.a),match=candidates[0];if(!match||match.a<=0)return [r.id,{name:r.name,mat:r.mat,use:design().inferUse(r)}];const old=match.o,setting=clone(settings[old.id]||{name:old.name,mat:old.mat});setting.use=design().inferUse(r,setting);const count=used.get(old.id)||0;used.set(old.id,count+1);if(count)setting.name+=' · 分区 '+(count+1);return [r.id,setting];}));for(const r of newRooms)if(r.parentArea&&settings[r.parentArea]&&!mapped[r.parentArea])mapped[r.parentArea]=clone(settings[r.parentArea]);return mapped;
  }
- function remapOpenings(before,after,settings){const out={d:{},w:{}};
+ function remapOpenings(before,after,settings){const out={d:{},w:{},s:{}};
   (after.doorRefs||[]).forEach((id,index)=>{const previous=(before.doorRefs||[]).indexOf(id),value=settings.d?.[previous];if(previous<0||!value)return;const old=before.doors[previous].rect,next=after.doors[index].rect,h=value.h.map((v,axis)=>Math.abs(v-old[axis])<=Math.abs(v-old[axis+2])?next[axis]:next[axis+2]);out.d[index]={...clone(value),h};});
+  (after.slideRefs||[]).forEach((id,index)=>{const previous=(before.slideRefs||[]).indexOf(id);if(previous>=0&&settings.s?.[previous])out.s[index]=clone(settings.s[previous]);});
   (after.winRefs||[]).forEach((id,index)=>{const previous=(before.winRefs||[]).indexOf(id);if(previous>=0&&settings.w?.[previous]!==undefined)out.w[index]=settings.w[previous];});return out;
  }
  function polygon(f){const a=f.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]].map(([x,y])=>[f.cx+x*c-y*s,f.cy+x*s+y*c]);}
  function fitsInRooms(rooms,footprint){
+  if(rooms.some(r=>r.polys)){
+   const G=root.FurnishZoneGeometry||require('./zone-geometry.js'),polys=rooms.flatMap(r=>r.polys||[r.poly]);
+   return G.area(G.decompose([footprint,...polys],p=>G.inside(p,footprint)&&!polys.some(poly=>G.inside(p,poly))))<=1;
+  }
   // Room boundaries are orthogonal. Every grid cell has a uniform room membership;
   // clipping the rotated footprint to those cells also catches concave notches.
   const xs=footprint.map(p=>p[0]),ys=footprint.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
@@ -164,7 +172,7 @@
   const pair=(a,b)=>{if(a.box[2]<=b.box[0]||b.box[2]<=a.box[0]||a.box[3]<=b.box[1]||b.box[3]<=a.box[1])return;if(intersects(a.p,b.p))issues.push({kind:'overlap',id:a.f.id,otherId:b.f.id,name:a.f.name+' / '+b.f.name,message:'家具占地范围重叠，请核对实际摆放'});};
   if(targets){const selectedIssues=issues.filter(v=>targets.has(v.id)||targets.has(v.otherId));if(selectedIssues.length>=maxIssues)return selectedIssues.slice(0,maxIssues);groupPairs:for(let i=0;i<bodies.length;i++)if(targets.has(bodies[i].f.id))for(let j=0;j<bodies.length;j++)if(i!==j&&(!targets.has(bodies[j].f.id)||i<j)){const count=issues.length;pair(bodies[i],bodies[j]);if(issues.length>count)selectedIssues.push(issues[issues.length-1]);if(selectedIssues.length>=maxIssues)break groupPairs;}}else for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++)pair(bodies[i],bodies[j]);
   // Scan actual horizontal/vertical free intervals in rooms; these are candidate bottlenecks, not a pathfinding guarantee.
-  for(const room of scanPassages?plan.rooms.filter(r=>r.counted!==false):[]){const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let narrow=null;
+  for(const room of scanPassages?(plan.physicalRooms||plan.rooms).filter(r=>r.counted!==false):[]){const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let narrow=null;
    for(const axis of [0,1]){const low=axis?x0:y0,high=axis?x1:y1;for(let fixed=low+200;fixed<high;fixed+=200){const cuts=[...(axis?ys:xs)];for(const {p} of bodies)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],other=1-axis;if((a[other]<=fixed&&b[other]>=fixed)||(b[other]<=fixed&&a[other]>=fixed)){if(a[other]!==b[other])cuts.push(a[axis]+(b[axis]-a[axis])*(fixed-a[other])/(b[other]-a[other]));}}const sorted=[...new Set(cuts)].sort((a,b)=>a-b);let run=0,start=0;for(let i=0;i<sorted.length-1;i++){const point=axis?[fixed,(sorted[i]+sorted[i+1])/2]:[(sorted[i]+sorted[i+1])/2,fixed];const free=inside(point,room.poly)&&!bodies.some(b=>inside(point,b.p));if(free){if(!run)start=sorted[i];run+=sorted[i+1]-sorted[i];}if((!free||i===sorted.length-2)&&run){if(run>=100&&run<passage&&(!narrow||run<narrow.width))narrow={width:run,at:axis?[fixed,start+run/2]:[start+run/2,fixed]};run=0;}}}}
    if(narrow)issues.push({kind:'passage',id:room.id,name:room.name,message:`候选狭窄间隙约 ${Math.round(narrow.width)} mm，低于自设 ${passage} mm 阈值`,at:narrow.at});
   }
@@ -184,9 +192,10 @@
   if(w.measures!==undefined&&(!Array.isArray(w.measures)||w.measures.length>2000||w.measures.some(m=>!m||[m.a,m.b].some(p=>!p||![p.x,p.y].every(num)))))fail('测量线数据无效');
   if(w.notes!==undefined){if(!Array.isArray(w.notes)||w.notes.length>2000||w.notes.some(n=>!n||typeof n.text!=='string'||!n.text.trim()||n.text.length>120||[n.x,n.y].some(v=>!(num(v)||typeof v==='string'&&v.trim()&&Number.isFinite(Number(v))))))fail('文字标注须有有效位置与 1–120 字文字，最多 2000 条');let noteId=0;w.notes=design().restoreNotes(w.notes,()=> 'note_'+ ++noteId);}
   if(w.demolished!==undefined&&(!Array.isArray(w.demolished)||w.demolished.length>10000||w.demolished.some(id=>typeof id!=='string'||!/^w(0|[1-9]\d*)$/.test(id))))fail('拆墙编号须为 w 加非负整数');
-  if(w.open!==undefined){const object=v=>v&&typeof v==='object'&&!Array.isArray(v);if(!object(w.open)||Object.keys(w.open).some(k=>!['d','w'].includes(k)))fail('门窗设置格式无效');for(const [kind,values] of Object.entries(w.open)){if(!object(values)||Object.keys(values).length>10000||Object.keys(values).some(k=>!/^(0|[1-9]\d*)$/.test(k)))fail('门窗编号格式无效');if(kind==='d')for(const [id,v] of Object.entries(values)){const pair=a=>Array.isArray(a)&&a.length===2&&a.every(num),axis=a=>pair(a)&&((Math.abs(a[0])===1&&a[1]===0)||(a[0]===0&&Math.abs(a[1])===1));if(!object(v)||Object.keys(v).some(k=>!['h','c','o'].includes(k))||!pair(v.h)||!axis(v.c)||!axis(v.o)||v.c[0]*v.o[0]+v.c[1]*v.o[1]!==0)fail('门 '+id+' 的铰链或开启方向无效');}}}
+  if(w.open!==undefined){const object=v=>v&&typeof v==='object'&&!Array.isArray(v);if(!object(w.open)||Object.keys(w.open).some(k=>!['d','w','s'].includes(k)))fail('门窗设置格式无效');for(const [kind,values] of Object.entries(w.open)){if(!object(values)||Object.keys(values).length>10000||Object.keys(values).some(k=>!/^(0|[1-9]\d*)$/.test(k)))fail('门窗编号格式无效');if(kind==='s')for(const v of Object.values(values)){if(!object(v)||Object.keys(v).some(k=>k!=='panels')||![2,3].includes(v.panels))fail('推拉门扇数须为 2 或 3');}if(kind==='d')for(const [id,v] of Object.entries(values)){const pair=a=>Array.isArray(a)&&a.length===2&&a.every(num),axis=a=>pair(a)&&((Math.abs(a[0])===1&&a[1]===0)||(a[0]===0&&Math.abs(a[1])===1));if(!object(v)||Object.keys(v).some(k=>!['h','c','o'].includes(k))||!pair(v.h)||!axis(v.c)||!axis(v.o)||v.c[0]*v.o[0]+v.c[1]*v.o[1]!==0)fail('门 '+id+' 的铰链或开启方向无效');}}}
   if(w.architecture)w.architecture=architecture(w.architecture);if(w.renovation)extraCosts(w.renovation,{net:0,paint:0,removed:0,added:0});
   if(w.rooms){if(typeof w.rooms!=='object'||Array.isArray(w.rooms))fail('房间设置无效');for(const r of Object.values(w.rooms)){if(!r||r.use!==undefined&&!Object.hasOwn(design().uses,r.use))fail('房间用途无效');}}
+  if(w.furniture.some(f=>f.curtainStyle!==undefined&&(f.type!=='curtain'||!['single','double'].includes(f.curtainStyle))))fail('窗帘样式须为单开或双开');
   if(w.furniture.some(f=>f.resizeAnchor!==undefined&&!Object.hasOwn(design().resizeAnchors,f.resizeAnchor)))fail('家具尺寸调整基准无效');
   for(const f of w.furniture){if(f.purchaseStatus!==undefined&&!Object.hasOwn(purchaseStates,f.purchaseStatus))fail('采购状态无效');if(f.purchaseNote!==undefined&&(typeof f.purchaseNote!=='string'||f.purchaseNote.length>500))fail('采购备注最多 500 字');for(const key of ['brand','model','sourceUrl'])if(f[key]!==undefined&&(typeof f[key]!=='string'||f[key].length>500))fail('家具品牌、型号或来源无效');if(f.sourceUrl&&!/^https?:\/\//i.test(f.sourceUrl))fail('家具来源须为 http(s) 链接');if(f.priceDate&&(typeof f.priceDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(f.priceDate)||!Number.isFinite(Date.parse(f.priceDate))||new Date(f.priceDate).toISOString().slice(0,10)!==f.priceDate))fail('价格日期无效');}
   for(const v of Object.values(w.open?.w||{})){if(typeof v==='number'){if(!num(v)||v<0||v>2.4)fail('窗台高无效');}else if(!v||!num(v.sill)||!num(v.head)||v.sill<0||v.head<=v.sill||v.head>2.8)fail('窗高度无效');}

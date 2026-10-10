@@ -138,7 +138,8 @@ svg.addEventListener('pointerdown', e => {
   const h = t.closest('[data-handle]'), fEl = ui.layers.furn && t.closest('[data-fid]'), picking = ui.tool === 'select' || ui.tool === 'marquee';
   const nEl = ui.layers.notes && t.closest('[data-note]');
   if (h && selIds().length === 1){
-    drag = {kind:h.dataset.handle, id:selIds()[0], ...base, before:snap()};
+    const f=getF(selIds()[0]);
+    drag = {kind:f.locked?'locked':h.dataset.handle, id:f.id, original:{...f}, ...base, before:snap()};
   } else if (ui.tool === 'demolish' && t.closest('[data-wall]')){
     toggleWall(t.closest('[data-wall]').dataset.wall); return;
   } else if (picking && nEl){
@@ -230,12 +231,8 @@ svg.addEventListener('pointermove', e => {
     let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;
     f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
   } else if (drag.kind === 'size'){
-    const a = f.rot*Math.PI/180, c = Math.cos(a), s = Math.sin(a);
-    const dx = p.x-f.cx, dy = p.y-f.cy, lx = dx*c + dy*s, ly = -dx*s + dy*c;
-    const ax = -f.w/2, ay = -f.d/2;
-    const nw = Math.max(100, Math.round((lx-ax)/10)*10), nd = Math.max(100, Math.round((ly-ay)/10)*10);
-    const mx = ax + nw/2, my = ay + nd/2;
-    f.cx += mx*c - my*s; f.cy += mx*s + my*c; f.w = nw; f.d = nd;
+    const result=FurnishSnapping.resize(drag.original,p,{scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
+    Object.assign(f,result.furniture);ui.guides=result.guides;
     renderFurn();                              // 尺寸变了，图例需要重画
   }
   document.querySelector(`#gFurn [data-fid="${f.id}"]`)?.setAttribute('transform', furnT(f));

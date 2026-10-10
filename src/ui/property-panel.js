@@ -36,15 +36,15 @@ function renderFab(){
 function roomPanel(r){
   const st = state.rooms[r.id], a = area(r.poly), [x0,y0,x1,y1] = bbox(r.poly), inside = state.furniture.filter(f => inPoly(f.cx, f.cy, r.poly));
   const mats = Object.entries(MATS).map(([k,m]) => `<button class="mat ${k===st.mat?'on':''}" data-mat="${k}"><i style="background:${m.sw}"></i><span>${nm(m.name)}<small>¥${m.price}/m²</small></span></button>`).join('');
-  return `<section><h3>${tr('房间','Room')}</h3>
+  return `<section><h3>${r.zone?tr('功能区','Functional area'):tr('房间','Room')}</h3>
     <div class="form"><label class="full">${tr('名称','Name')}<input id="rName" maxlength="80" value="${esc(nm(st.name))}"></label><label class="full">${tr('房间用途','Room use')}<select id="rUse" ${r.counted===false?'disabled':''}>${Object.entries(FurnishDesign.uses).filter(([id])=>r.counted===false?id==='bay':id!=='bay').map(([id,n])=>`<option value="${id}" ${FurnishDesign.inferUse(r,st)===id?'selected':''}>${tr(...n)}</option>`).join('')}</select></label></div>
-    <p class="muted">${tr('风格方案按用途匹配地面，修改名称不会改变已设置的用途。','Styles use room purpose; renaming preserves the selected purpose.')}</p>
+    ${r.counted!==false?'<button class="btn" id="room-zones">划分功能区（不加墙）</button>':''}<p class="muted">${tr('风格方案按用途匹配地面，修改名称不会改变已设置的用途。','Styles use room purpose; renaming preserves the selected purpose.')}</p>
     <div class="stats mt">
       <div><small>${tr('使用面积','Floor area')}</small><span class="big">${fmt(a)}</span> m²</div>
-      <div><small>${tr('周长','Perimeter')}</small><span class="big">${fmt(perim(r.poly),1)}</span> m</div>
+      <div><small>${tr('周长','Perimeter')}</small><span class="big">${fmt((r.rings||[r.poly]).reduce((n,p)=>n+perim(p),0),1)}</span> m</div>
       <div><small>${tr('开间','Width')}</small><span class="big">${x1-x0}</span> mm</div>
       <div><small>${tr('进深','Depth')}</small><span class="big">${y1-y0}</span> mm</div></div>
-    <div class="muted">${tr(`墙面面积（层高 2.8m，未扣门窗）约 ${fmt(perim(r.poly)*2.8,1)} m²`, `Wall area (2.8m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*2.8,1)} m²`)}</div></section>
+    <div class="muted">${r.zone?tr('功能区分界不产生实际墙体；墙面工程量按原空间轮廓计算。','Functional boundaries do not create walls; wall quantities use the physical space.'):tr(`墙面面积（层高 2.8m，未扣门窗）约 ${fmt(perim(r.poly)*2.8,1)} m²`, `Wall area (2.8m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*2.8,1)} m²`)}</div></section>
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
     <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
   <section><h3>${tr('房间内家具','Furniture in room')} <small>${tr(`${inside.length} 件 · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`, `${inside.length} items · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`)}</small></h3>
@@ -55,6 +55,7 @@ function roomPanel(r){
 }
 function bindRoomPanel(){
   const id = ui.sel.id;
+  const zones=$('#room-zones');if(zones)zones.onclick=()=>{FurnishEditor.open();document.querySelector('[data-trace-mode="zone"]')?.click();};
   $('#rName').onchange = e => mutate(() => state.rooms[id].name = e.target.value.trim() || state.rooms[id].name);
   $('#rUse').onchange = e => mutate(() => state.rooms[id].use = e.target.value);
   document.querySelectorAll('#panel [data-mat]').forEach(b => b.onclick = () => mutate(() => state.rooms[id].mat = b.dataset.mat));
@@ -69,6 +70,8 @@ function furnPanel(f){
   return `<section><div class="fhead"><div class="fthumb"><svg viewBox="${-f.w/2-pad} ${-f.d/2-pad} ${f.w+2*pad} ${f.d+2*pad}">${f.flip ? `<g transform="scale(-1 1)">${furnSVG(f.type,f.w,f.d,f.color)}</g>` : furnSVG(f.type,f.w,f.d,f.color)}</svg></div>
       <div><b>${esc(nm(f.name))}</b><small>${f.w} × ${f.d} mm · ${yen(priceOf(f))}</small>${f.locked ? `<span class="tag">${ico('lock')}${tr('已锁定','Locked')}</span>` : ''}</div></div>
     <h3>${tr('家具属性','Furniture')}</h3>
+    ${f.type==='curtain'?`<div class="form"><label class="full">${tr('窗帘样式','Curtain style')}<select id="curtainStyle" ${lk}><option value="single" ${f.curtainStyle==='single'?'selected':''}>${tr('单开 · 向一侧收拢','Single · stack to one side')}</option><option value="double" ${f.curtainStyle!=='single'?'selected':''}>${tr('双开 · 向两侧收拢','Double · stack to both sides')}</option></select></label></div><p class="muted">${tr('3D 点击布幔开启／关闭；单开窗帘可用镜像改变收拢侧。','Click cloth in 3D to open or close; mirror a single curtain to switch sides.')}</p>`:''}
+    ${['slidingdoor','tripleslidingdoor'].includes(f.type)?`<p class="muted">${tr('进入 3D 点击门扇开关；镜像可改变叠合侧。作为独立隔断摆放，墙体洞口请在「编辑户型」中添加推拉门。','Click panels in 3D to open or close; mirror to change the stacking side. Place as a partition, or add a wall opening with the floor-plan editor.')}</p>`:''}
     ${isOutside(f) ? `<div class="alert">${ico('warn')}<span>${tr('这件家具在户型外','This item is outside the plan')}</span><button class="btn" data-act="rescueOne">${tr('移回','Bring back')}</button></div>` : ''}
     ${clashWith.length ? `<div class="alert">${ico('warn')}<span>${tr('与以下家具重叠：','Overlaps: ')}${clashWith.map(g => esc(nm(g.name))).join('、')}</span></div>` : ''}
     <div class="form">
@@ -79,7 +82,7 @@ function furnPanel(f){
       <label>${tr('中心','Center')} Y (mm)<input type="number" id="fY" value="${Math.round(f.cy)}" step="10" ${lk}></label>
       <label>${tr('旋转','Rotation')} (°)<input type="number" id="fR" value="${f.rot}" step="15" ${lk}></label>
       <label>${tr('单价','Unit price')} (¥)<input type="number" id="fP" value="${Math.round(priceOf(f))}" min="0" step="50"></label>
-      ${custom ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || 800}" min="10" step="10"></label>` : ''}
+      ${custom || ['curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="10" ${lk}></label>` : ''}
       <label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>
     </div>
     <div class="swatches">${SWATCHES.map(c => `<button data-sw="${c}" class="${c === f.color ? 'on' : ''}" style="background:${c}" title="${c}"></button>`).join('')}</div>
@@ -102,6 +105,7 @@ function furnPanel(f){
 function bindFurnPanel(f){
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
+  if(f.type==='curtain')$('#curtainStyle').onchange=e=>{if(getF(f.id).locked)return;upd(g=>g.curtainStyle=e.target.value);};
   const num = (id, fn) => { const el = $(id); if (el) el.onchange = e => {const v=Number(e.target.value);try{if(!e.target.value.trim()||!Number.isFinite(v))throw Error('请输入有效数字');if(['#fW','#fD','#fH','#fX','#fY','#fR'].includes(id)&&getF(f.id).locked)throw Error('家具已锁定，请先解锁');upd(g=>fn(g,v));}catch(error){toast(error.message);renderPanel();}}; };
   $('#fName').onchange = e => upd(g => g.name = e.target.value.trim() || g.name);
   num('#fW', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{w:Math.round(v)})));
@@ -177,10 +181,12 @@ function openingPanel(sel){
       <button class="btn" id="oHinge">${tr('换铰链侧','Swap hinge')}</button>
       <button class="btn" id="oReset">${tr('重置','Reset')}</button></div>
     <div class="muted desc">${tr('调整会同步到 3D 场景与漫游碰撞，随方案自动保存，可撤销。','Changes sync to 3D and walk collision; autosaved and undoable.')}</div>` : ''}
+    ${!isDoor ? `<div class="form"><label class="full">${tr('门扇形式','Door panels')}<select id="slidePanels"><option value="2" ${d.panels!==3?'selected':''}>${tr('双扇推拉门','Two-panel sliding door')}</option><option value="3" ${d.panels===3?'selected':''}>${tr('三联动推拉门','Three-panel telescopic door')}</option></select></label></div><p class="muted">${tr('进入 3D，点击门扇开关；三联动门向同一侧依次叠合。','Click the door in 3D to open or close; telescopic panels stack to one side.')}</p>` : ''}
     <div class="actions"><button class="btn" id="oback">${tr('← 返回总览','← Back')}</button></div></section>`;
 }
 function bindOpeningPanel(sel){
   const upd = fn => mutate(() => { state.open.d = state.open.d || {}; fn(state.open.d); });
+  if(sel.kind==='slide')$('#slidePanels').onchange=e=>mutate(()=>{(state.open.s ||= {})[sel.id]={panels:Number(e.target.value)};});
   if (sel.kind === 'door'){
     $('#oFlip').onclick = () => upd(o => { const d = DOORS[sel.id];
       const [x0,y0,x1,y1] = d.rect, h = [...d.h];

@@ -1,0 +1,35 @@
+'use strict';
+const assert=require('node:assert/strict'),Core=require('../src/core/floorplan-core.js'),P=require('../src/core/project-core.js'),Design=require('../src/core/design-core.js');
+const base={version:1,id:'custom_zone_test',name:'开放空间',source:'dxf',image:'',width:2000,height:1500,scale:2,walls:[{id:'top',a:[0,50],b:[2000,50]},{id:'bottom',a:[0,1450],b:[2000,1450]},{id:'left',a:[50,100],b:[50,1400]},{id:'right',a:[1950,100],b:[1950,1400]}].map(w=>({...w,thickness:200,kind:'b',caps:[0,0]})),openings:[]};
+const definition={id:'zone_first',parent:'room1',axis:0,at:1000,parts:[{name:'客厅',use:'living'},{name:'餐厅',use:'dining'}]};
+const before=structuredClone(base),original=Core.build(base),d=Core.splitZone(base,definition),plan=Core.build(d);
+assert.deepEqual(base,before);assert.equal(original.rooms.length,1);assert.equal(plan.rooms.length,2);
+assert.equal(plan.rooms[0].id,'zone_first_0');assert.equal(Design.inferUse(plan.rooms[0]),'living');assert.equal(Design.inferUse(plan.rooms[1]),'dining');
+assert.equal(P.area(plan.rooms[0].poly),4.68);assert.equal(P.area(plan.rooms[1].poly),4.68);
+assert.deepEqual(plan.physicalRooms,original.rooms);assert.deepEqual(plan.walls,original.walls);assert.deepEqual(plan.doors,original.doors);assert.deepEqual(plan.wins,original.wins);
+assert.deepEqual(P.quantities(plan),{...P.quantities(original),rooms:2});
+const mats={wood:{price:100},tile:{price:200}},rooms=Object.fromEntries(plan.rooms.map(r=>[r.id,{name:r.name,use:r.use,mat:r.mat}]));
+const work={furniture:[],rooms,architecture:{draft:d,phase:'design',baseline:base},demolished:[],open:{},measures:[],notes:[]};
+assert.doesNotThrow(()=>P.architecture(work.architecture));assert.equal(P.estimate(plan,work,mats).floor,P.estimate(original,{furniture:[]},mats).floor);
+work.rooms.zone_first_1.mat='tile';assert.ok(Math.abs(P.estimate(plan,work,mats).floor-(4.68*100+4.68*200)*1.05)<1e-8);
+const furniture={id:'cross',name:'跨区桌',type:'table',cx:2000,cy:1500,w:1200,d:800,rot:0,frontClearance:0};
+assert.equal(P.fitsInRooms(plan.rooms,P.polygon(furniture)),true);assert.deepEqual(P.spaceCheck(plan,[furniture]),P.spaceCheck(original,[furniture]));
+work.rooms.zone_first_0.name='家庭起居区';const packed=P.pack({planId:d.id,current:work,designs:[{id:'named',name:'功能分区方案',work:structuredClone(work)}],catalog:[]}),restored=P.unpack(packed);
+assert.deepEqual(restored.current.architecture.draft.zoneSplits,d.zoneSplits);assert.deepEqual(restored.current.rooms,work.rooms);assert.deepEqual(Core.build(restored.current.architecture.draft).rooms,plan.rooms);
+const mapped=P.remapRooms(original.rooms,plan.rooms,{room1:{name:'开放空间',use:'other',mat:'tile'}});assert.deepEqual(mapped.zone_first_0,{name:'客厅',use:'living',mat:'tile'});
+assert.deepEqual(P.remapRooms(plan.rooms,plan.rooms,work.rooms),work.rooms);
+const nested={id:'zone_nested',parent:'zone_first_0',axis:1,at:750,parts:[{name:'阅读区',use:'study'},{name:'起居区',use:'living'}]};
+const n=Core.splitZone(d,nested);assert.equal(Core.build(n).rooms.length,3);assert.equal(P.quantities(Core.build(n)).net,9.36);
+assert.deepEqual(Core.removeZoneSplit(n,'zone_first').zoneSplits,[]);assert.deepEqual(Core.build(Core.removeZoneSplit(n,'zone_first')).rooms,original.rooms);
+assert.deepEqual(Core.build(Core.removeZoneSplit(n,'zone_nested')).rooms,plan.rooms);
+for(const values of [{parent:'missing'},{at:0},{at:100},{at:Infinity},{parts:[{name:'',use:'living'},{name:'a',use:'dining'}]},{parts:[{name:'a',use:'wrong'},{name:'b',use:'dining'}]}])assert.throws(()=>Core.splitZone(base,{...definition,...values}));
+assert.throws(()=>Core.splitZone(d,definition));
+// Concave spaces retain exact regions; a line yielding disconnected pieces is rejected.
+const concave=[{id:'l',name:'L',mat:'wood',poly:[[0,0],[6000,0],[6000,2000],[2000,2000],[2000,6000],[0,6000]],at:[1000,1000]}];
+const l=Core.applyZoneSplits(concave,[{...definition,parent:'l',at:1000}],1);assert.equal(l.reduce((n,r)=>n+P.area(r.poly),0),20);
+const u=[{...concave[0],poly:[[0,0],[6000,0],[6000,6000],[4000,6000],[4000,2000],[2000,2000],[2000,6000],[0,6000]]}];
+assert.throws(()=>Core.applyZoneSplits(u,[{...definition,parent:'l',axis:1,at:4000}],1),/连续区域/);
+console.log('PASS functional partitions: exact area, no added walls/budget/collision effects, per-area semantics/materials, nested removal, locked structures and portable projects');
+
+const nestedMaterials=P.remapRooms(plan.rooms,Core.build(n).rooms,{...work.rooms,zone_first_0:{name:'客厅',use:'living',mat:'tile'}});assert.equal(nestedMaterials.zone_nested_0.mat,'tile');assert.equal(nestedMaterials.zone_nested_1.mat,'tile');
+assert.throws(()=>Core.removeZoneSplit(d,'missing'),/不存在/);

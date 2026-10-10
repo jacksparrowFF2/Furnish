@@ -5,6 +5,7 @@
  function inferUse(room,setting){
   if(room.counted===false)return 'bay';
   if(Object.hasOwn(uses,setting?.use)&&setting.use!=='bay')return setting.use;
+  if(Object.hasOwn(uses,room.use)&&room.use!=='bay')return room.use;
   const text=`${room.id} ${setting?.name||room.name||''}`.toLowerCase();
   for(const [use,re] of [['bathroom',/bath|toilet|卫生|衛生|浴/],['kitchen',/kitchen|厨|廚/],['balcony',/balcony|阳台|陽台/],['storage',/closet|storage|衣帽|储物|儲物/],['study',/study|书房|書房/],['bedroom',/master|child|kid|elder|bedroom|bed|卧|臥|寝/],['dining',/dining|餐厅|餐廳/],['living',/living|studio|客厅|客廳|起居/],['hall',/hall|玄关|玄關|走廊/]])if(re.test(text))return use;
   return 'unassigned';
@@ -38,7 +39,8 @@
  function replaceFurniture(f,c){
   const next=resizeFurniture(f,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
   Object.assign(next,{type:c.type,name:c.name,color:c.color,brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',referencePrice:c.price,frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:''});
-  delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;if(c.h===undefined)delete next.h;
+  delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;delete next.curtainStyle;if(c.h===undefined)delete next.h;
+  if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}

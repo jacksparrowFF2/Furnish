@@ -266,6 +266,8 @@
 <script src="src/data/dxf-templates.js"></script>
 <script src="src/io/dxf-import.js"></script>
 <script src="src/io/dxf-repair.js"></script>
+<script src="src/io/dxf-outline.js"></script>
+<script src="src/core/zone-geometry.js"></script>
 <script src="src/core/floorplan-core.js"></script>
 <script src="src/core/project-core.js"></script>
 <script src="src/core/design-core.js"></script>
@@ -352,7 +354,7 @@ let capturedImage=null,capturedState='';
 let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, glassMat, wallMat, capMat, frameMat;
 let archFloor, archUp, furnG, labelG, lampG, colliders = [], selKey = null, selHelper = null;
 let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
-const doors = [], keys = {};
+const doors = [], slidingDoors = [], keys = {};
 const SWING_DOOR_HEIGHT = 2.1; // Shared by the door leaf and its opening lintel (metres).
 // 按需渲染：只有镜头 / 场景 / 动画有变化时才渲染一帧，静止时不占用 GPU（笔记本、平板省电不发热）
 let dirty = true;
@@ -448,12 +450,12 @@ function init(){
     const tap = downAt && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= TAP;
     if (look?.id === e.pointerId){
       look = null;
-      if (tap){ const h = pick(e); if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; }   // 漫游时点门开关
+      if (tap){ const h = pick(e); if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
       return;
     }
     if (anim || opt.mode !== 'orbit' || !tap) return;
     const h = pick(e);
-    if (h?.door) h.door.open = !h.door.open;
+    if (h?.door){ h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
     else if (h?.fid) e.shiftKey ? window.toggleSel(h.fid) : window.selectIds([h.fid]);
     else if (h?.room) window.select({kind:'room', id:h.room});
     else window.select(null);
@@ -630,6 +632,35 @@ function tableLamp(g, x, y, z, s = 1){
 const plate = (g, r, x, y, z) => g.add(lathe([[0, 0], [r*.6, 0], [r*.72, .008], [r, .02]], ceramic({side:THREE.DoubleSide}), x, y, z, 32));
 
 /* ======================= 家具模型（局部坐标：背面朝 -z） ======================= */
+// Local X runs along the opening; each leaf has its own depth track.
+function buildSlidingDoor(w,d,h,count,color='#41474b'){
+  const group=new THREE.Group(),frame=mat(color,{metalness:.65,roughness:.35});
+  const glass=mat('#c4dce5',{transparent:true,opacity:.32,roughness:.12,side:THREE.DoubleSide});
+  const edge=Math.min(.035,w/20,h/20),step=(w-2*edge)/count,overlap=Math.min(.025,step*.08),pw=step+overlap;
+  const leafDepth=Math.min(.025,d/(count+1)*.7),track=(d-leafDepth)/count;
+  const door={kind:'slide',group,leaves:[],open:false,cur:0};
+  [-1,1].forEach(s=>group.add(box(edge,h,d,frame,s*(w-edge)/2,0,0)));
+  [0,h-edge].forEach(y=>group.add(box(w,edge,d,frame,0,y,0)));
+  for(let i=0;i<count;i++){
+    const leaf=new THREE.Group(),closed=-w/2+edge+step*(i+.5),opened=-w/2+edge+step*.5;
+    leaf.position.set(closed,0,(i-(count-1)/2)*track);
+    leaf.add(box(pw-2*edge,h-4*edge,Math.min(.008,leafDepth/2),glass,0,2*edge,0));
+    [-1,1].forEach(s=>leaf.add(box(edge,h-2*edge,leafDepth,frame,s*(pw-edge)/2,edge,0)));
+    [edge,h-2*edge].forEach(y=>leaf.add(box(pw,edge,leafDepth,frame,0,y,0)));
+    pull(leaf,Math.min(.22,h*.15),true,pw/2-edge*1.5,h*.48,.014);
+    group.add(leaf);door.leaves.push({node:leaf,closed,opened,width:pw});
+  }
+  group.traverse(o=>{o.userData.door=door;});group.userData.slidingDoor=door;
+  return group;
+}
+function animateCurtains(dt){
+  for(const curtain of furnG.children.map(g=>g.userData.curtain).filter(Boolean)){
+    const target=curtain.open?1:0;if(curtain.cur===target)continue;
+    curtain.cur=Math.abs(target-curtain.cur)<1e-3?target:curtain.cur+(target-curtain.cur)*Math.min(1,dt*6);
+    for(const panel of curtain.panels){panel.node.position.x=panel.closed+(panel.opened-panel.closed)*curtain.cur;panel.node.scale.x=1+(panel.packScale-1)*curtain.cur;}
+    dirty=true;
+  }
+}
 function buildFurniture(f){
   if(f.obj?.positions?.length){
     const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(f.obj.positions,3));geo.computeVertexNormals();geo.computeBoundingBox();const b=geo.boundingBox,size=new THREE.Vector3();b.getSize(size);geo.translate(-(b.min.x+b.max.x)/2,-b.min.y,-(b.min.z+b.max.z)/2);const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:f.color||'#d9d2c5',roughness:.75,side:THREE.DoubleSide}));mesh.scale.set(f.w/1000/size.x,(f.h||800)/1000/size.y,f.d/1000/size.z);mesh.castShadow=true;mesh.receiveShadow=true;const g=new THREE.Group();g.add(mesh);g.userData.fid=f.id;g.position.set(wx(f.cx),0,wz(f.cy));g.rotation.y=-f.rot*Math.PI/180;return g;
@@ -1119,14 +1150,28 @@ function buildFurniture(f){
       g.add(blob(r*.42, r*.16, r*.42, glowMat('#fff6dd', '#ffdca0', .9), 0, 2.12, 0, 20));
       break;
     }
-    case 'curtain': {   // 窗帘：顶部帘杆 + 波浪褶皱布幔
-      const folds = Math.max(4, Math.round(w/.3)), fw = w/folds, rodM = woodM('#6b543f');
-      const rod2 = cyl(w/2 + .04, w/2 + .04, .028, rodM, 0, 2.4, bz + d/2, 20); rod2.rotation.z = Math.PI/2; g.add(rod2);
-      [-w/2 - .02, w/2 + .02].forEach(px => g.add(blob(.025, .025, .025, rodM, px, 2.4, bz + d/2, 12)));
-      for (let i = 0; i < folds; i++){
-        const fx = -w/2 + fw*(i + .5), sw = fw*(i % 2 ? .62 : .42);
-        g.add(rbox(sw, 2.34, d*.75, fabric(c), fx, .02, bz + d/2, .018));
+    case 'slidingdoor': case 'tripleslidingdoor': {
+      const model=buildSlidingDoor(w,d,M(f.h||(f.type==='tripleslidingdoor'?2400:2100)),f.type==='tripleslidingdoor'?3:2,c);
+      g.add(model);g.userData.slidingDoor=model.userData.slidingDoor;
+      break;
+    }
+    case 'curtain': {
+      const height=M(f.h||2400),rodM=woodM('#6b543f'),radius=Math.min(.014,d*.08);
+      g.add(rod([-w/2,height,0],[w/2,height,0],radius,rodM));
+      [-1,1].forEach(s=>g.add(blob(radius*1.5,radius*1.5,radius*1.5,rodM,s*(w/2-radius*1.5),height,0,12)));
+      const count=f.curtainStyle==='single'?1:2,curtain={kind:'curtain',open:false,cur:0,panels:[]};
+      for(let panel=0;panel<count;panel++){
+        const width=w/count-(count===2?.006:0),folds=Math.max(4,Math.round(width/.12)),cols=folds*12,rows=12,positions=[],indices=[],amplitude=Math.min(d*.4,.065);
+        for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){
+          const t=i/cols,v=j/rows;
+          positions.push(-width/2+width*t,.02+(height-.06)*v,Math.cos(t*folds*Math.PI*2)*amplitude*(.85+.15*(1-v)));
+        }
+        for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=j*(cols+1)+i,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);}
+        const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();
+        const cloth=mesh(geo,mat(c,{roughness:1,side:THREE.DoubleSide})),closed=-w/2+w/count*(panel+.5),packScale=.16,opened=(panel===0?-1:1)*(w/2-width*packScale/2);
+        cloth.position.x=closed;cloth.userData.door=curtain;g.add(cloth);curtain.panels.push({node:cloth,closed,opened,packScale});
       }
+      g.userData.curtain=curtain;
       break;
     }
     case 'wallart': {   // 装饰画：挂墙（背侧）
@@ -1198,17 +1243,17 @@ const edgeMat = new THREE.LineBasicMaterial({color:0x6f675b}), skirtMat = new TH
 function shapeOf(poly, flip){ const s = new THREE.Shape(); poly.forEach(([x, y], i) => s[i ? 'lineTo' : 'moveTo'](wx(x), flip ? wz(y) : -wz(y))); return s; }
 
 function buildArch(){
-  clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; colliders = [];
+  clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
   const top = opt.cut;
   ROOMS.forEach(r => {
     const m = floorMat(state.rooms[r.id].mat), bay = r.counted === false;
-    const geo = bay ? new THREE.ExtrudeGeometry(shapeOf(r.poly), {depth:r.height??.45, bevelEnabled:false}) : new THREE.ShapeGeometry(shapeOf(r.poly));
+    const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)));
     geo.rotateX(-Math.PI/2);
     const fl = new THREE.Mesh(geo, bay ? [m, mat('#e9e4da')] : m);
     fl.receiveShadow = true; fl.userData.room = r.id;
     if (bay){ fl.castShadow = true; archUp.add(fl); } else archFloor.add(fl);
     // 天花：法线朝下，只在室内仰视时可见
-    const cg = new THREE.ShapeGeometry(shapeOf(r.poly, true)); cg.rotateX(Math.PI/2);
+    const cg = new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p,true))); cg.rotateX(Math.PI/2);
     const ceil = new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1})); ceil.position.y = H; ceil.visible = top >= H; archUp.add(ceil);
     if (r.at){
       const lamp = new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, .02, 32), new THREE.MeshStandardMaterial({color:'#fff', emissive:'#fff2d6', emissiveIntensity:.3}));
@@ -1250,14 +1295,10 @@ function buildArch(){
     door.cur = door.a1; pivot.rotation.y = door.cur; leaf.userData.door = knob.userData.door = door;
     doors.push(door); archUp.add(pivot);
   });
-  SLIDES.forEach(({rect:[x0, y0, x1, y1], v}) => {
-    const L = M(v ? y1-y0 : x1-x0), ph = Math.min(v ? 2.4 : 2.1, top), pl = L*.55;
-    [[-1, -.02], [1, .02]].forEach(([s, off]) => {
-      const c = s < 0 ? -L/2 + pl/2 : L/2 - pl/2, x = v ? wx((x0+x1)/2) + off : wx(x0) + L/2 + c, z = v ? wz(y0) + L/2 + c : wz((y0+y1)/2) + off;
-      const p = new THREE.Mesh(new THREE.BoxGeometry(v ? .02 : pl, ph, v ? pl : .02), glassMat); p.position.set(x, ph/2, z); archUp.add(p);
-      [ph - .03, .03].forEach(y => { const fr = new THREE.Mesh(new THREE.BoxGeometry(v ? .04 : pl, .05, v ? pl : .04), frameMat); fr.position.set(x, y, z); archUp.add(fr); });
-      [-1, 1].forEach(e => { const fr = new THREE.Mesh(new THREE.BoxGeometry(.04, ph, .04), frameMat); fr.position.set(v ? x : x + e*pl/2, ph/2, v ? z + e*pl/2 : z); archUp.add(fr); });
-    });
+  SLIDES.forEach(({rect:[x0,y0,x1,y1],v,panels})=>{
+    const model=buildSlidingDoor(M(v?y1-y0:x1-x0),M(v?x1-x0:y1-y0),Math.min(v?2.4:2.1,top),panels===3?3:2);
+    model.position.set(wx((x0+x1)/2),0,wz((y0+y1)/2));model.rotation.y=v?-Math.PI/2:0;
+    archUp.add(model);slidingDoors.push(model.userData.slidingDoor);
   });
   applyLight(); applyGrow();
 }
@@ -1267,7 +1308,7 @@ function buildFurn(){
   const byId = new Map(furnG.children.map(o => [o.userData.fid, o])), keep = new Set();
   for (const f of state.furniture){
     keep.add(f.id);
-    const sig = JSON.stringify([f.type, f.w, f.d, f.color, f.h, f.obj?.positions]);
+    const sig = JSON.stringify([f.type, f.w, f.d, f.color, f.h, f.curtainStyle, f.obj?.positions]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       o.position.set(wx(f.cx), 0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;
@@ -1440,7 +1481,7 @@ function pick(e){
     if(!o.isMesh)continue;
     let shown=true;for(let parent=o;parent;parent=parent.parent){if(!parent.visible){shown=false;break;}}if(!shown)continue;
     if (o.material === glassMat) continue;
-    if (o.userData.door) return {door:o.userData.door, dist:h.distance};
+    if (o.userData.door) { const door=o.userData.door;let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {door,dist:h.distance,fid:owner?.userData.fid}; }
     if (o.userData.room) return {room:o.userData.room};
     while (o && !o.userData.fid && o !== scene) o = o.parent;
     if (o?.userData.fid) return {fid:o.userData.fid};
@@ -1476,9 +1517,9 @@ function updateSel(){
 
 /* ======================= 漫游 ======================= */
 // 触屏漫游：左下虚拟摇杆移动，在画面上拖动转向（iPad 不支持鼠标指针锁定）
-const HINT_ORBIT = () => COARSE ? tr('单指旋转 · 双指缩放 / 平移 · 点选家具后可拖动摆放 · 点门开关', '1 finger orbits · 2 fingers zoom / pan · select furniture to drag it · tap doors to open')
-  : tr('左键旋转 · 右键平移 · 滚轮缩放 · 选中家具后拖动可摆放 · 点击门开关', 'Left-drag orbits · right-drag pans · scroll zooms · select furniture to drag it · click doors to open');
-const HINT_TOUCHWALK = () => tr('左下摇杆移动 · 拖动画面转向 · 点门开关', 'Joystick moves · drag to look · tap doors to open');
+const HINT_ORBIT = () => COARSE ? tr('单指旋转 · 双指缩放 / 平移 · 点选家具后可拖动摆放 · 点门／窗帘开关', '1 finger orbits · 2 fingers zoom / pan · select furniture to drag it · tap doors / curtains to open')
+  : tr('左键旋转 · 右键平移 · 滚轮缩放 · 选中家具后拖动可摆放 · 点击门／窗帘开关', 'Left-drag orbits · right-drag pans · scroll zooms · select furniture to drag it · click doors / curtains to open');
+const HINT_TOUCHWALK = () => tr('左下摇杆移动 · 拖动画面转向 · 点门／窗帘开关', 'Joystick moves · drag to look · tap doors / curtains to open');
 const HINT_WALK = () => tr('WASD 移动 · 鼠标转向 · Shift 快走 · E 开关门 · Esc 暂停', 'WASD moves · mouse looks · Shift runs · E opens doors · Esc pauses');
 function syncHint3d(){ $('#hint3d').textContent = opt.mode === 'orbit' ? HINT_ORBIT() : touchWalk ? HINT_TOUCHWALK() : HINT_WALK(); }
 let touchWalk = false;
@@ -1536,6 +1577,13 @@ function setMode(m){
 }
 function blocked(x, z, r = .22){
   for (const [x0, z0, x1, z1] of colliders) if (x > x0 - r && x < x1 + r && z > z0 - r && z < z1 + r) return true;
+  for(const d of [...slidingDoors,...(furnG.visible?furnG.children.map(g=>g.userData.slidingDoor).filter(Boolean):[])]){
+    d.group.updateWorldMatrix(true,true);
+    for(const leaf of d.leaves){const a=leaf.node.localToWorld(new THREE.Vector3(-leaf.width/2,0,0)),b=leaf.node.localToWorld(new THREE.Vector3(leaf.width/2,0,0)),len=(b.x-a.x)**2+(b.z-a.z)**2;
+      const t=clamp01(((x-a.x)*(b.x-a.x)+(z-a.z)*(b.z-a.z))/len);
+      if(Math.hypot(x-a.x-t*(b.x-a.x),z-a.z-t*(b.z-a.z))<r*.8)return true;
+    }
+  }
   for (const d of doors){
     const a = d.pivot.rotation.y, px = d.pivot.position.x, pz = d.pivot.position.z, ex = px + Math.cos(a)*.9, ez = pz - Math.sin(a)*.9;
     const t = clamp01(((x-px)*(ex-px) + (z-pz)*(ez-pz)) / ((ex-px)**2 + (ez-pz)**2));
@@ -1571,7 +1619,7 @@ function syncCutBtns(){ document.querySelectorAll('[data-cut]').forEach(b => b.c
 function syncWalkTexts(){
   const t = COARSE
     ? [tr('点击开始，从入户门进入', 'Tap to start at the front door'), tr('左下摇杆移动 · 在画面上拖动转向', 'Joystick moves · drag on screen to look'),
-       tr('点门开关 · 点「退出漫游」回到鸟瞰', 'Tap doors to open · "Exit walk" returns to orbit')]
+       tr('点门／窗帘开关 · 点「退出漫游」回到鸟瞰', 'Tap doors to open · "Exit walk" returns to orbit')]
     : [tr('点击开始，从入户门进入', 'Click to start at the front door'),
        tr('<kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> 移动 · 鼠标转向 · <kbd>Shift</kbd> 快走', '<kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> move · mouse looks · <kbd>Shift</kbd> runs'),
        tr('<kbd>E</kbd> 开关正前方的门 · <kbd>Esc</kbd> 暂停', '<kbd>E</kbd> opens the door ahead · <kbd>Esc</kbd> pauses')];
@@ -1616,6 +1664,13 @@ function loop(){
     d.cur = Math.abs(tg - d.cur) < 1e-3 ? tg : d.cur + (tg - d.cur) * Math.min(1, dt*6);
     d.pivot.rotation.y = d.cur; dirty = true;
   });
+  for(const d of [...slidingDoors,...furnG.children.map(g=>g.userData.slidingDoor).filter(Boolean)]){
+    const target=d.open?1:0;if(d.cur===target)continue;
+    d.cur=Math.abs(target-d.cur)<1e-3?target:d.cur+(target-d.cur)*Math.min(1,dt*6);
+    for(const leaf of d.leaves)leaf.node.position.x=leaf.closed+(leaf.opened-leaf.closed)*d.cur;
+    dirty=true;
+  }
+  animateCurtains(dt);
   updateSel();
   if (!dirty) return;
   dirty = false;

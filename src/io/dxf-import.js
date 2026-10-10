@@ -21,9 +21,13 @@
     }
     if(!found)error('No ENTITIES section found');
     const value=(e,k,fallback)=>e.fields.find(p=>p[0]===k)?.[1]??fallback;
-    const records=[],ignored={};let serial=0;
+    const records=[],ignored={},inventory=new Map(),references=[];let serial=0;
     for(let i=0;i<entities.length;i++){
       const e=entities[i],layer=value(e,8,'0');let points=[],closed=false,issue='';
+      if(['VERTEX','SEQEND'].includes(e.type))continue;
+      if(!inventory.has(layer))inventory.set(layer,{name:layer,entities:0,types:{},unsupportedGeometry:0});
+      const info=inventory.get(layer);info.entities++;info.types[e.type]=(info.types[e.type]||0)+1;
+      if(['INSERT','ARC','CIRCLE','ELLIPSE','SPLINE','HATCH','SOLID','TRACE','3DFACE','REGION','BODY','3DSOLID','MESH'].includes(e.type))info.unsupportedGeometry++;
       if(e.type==='LINE'){
         points=[[number(value(e,10,'NaN')),number(value(e,20,'NaN'))],[number(value(e,11,'NaN')),number(value(e,21,'NaN'))]];
         if(number(value(e,30,0))!==0||number(value(e,31,0))!==0)issue='3D lines are unsupported';
@@ -38,7 +42,10 @@
         const flags=number(value(e,70,0));closed=(flags&1)!==0;if(flags&(8|16|64))issue='3D polylines and meshes are unsupported';if(flags&(2|4))issue='Curve-fit and spline-fit polylines are unsupported';
         while(entities[i+1]?.type==='VERTEX'){const v=entities[++i];points.push([number(value(v,10,'NaN')),number(value(v,20,'NaN'))]);if(number(value(v,30,0))!==0)issue='3D polylines and meshes are unsupported';if(number(value(v,42,0))!==0)issue='Curved polyline segments are unsupported';}
         if(entities[i+1]?.type==='SEQEND')i++;
-      }else {ignored[e.type]=(ignored[e.type]||0)+1;continue;}
+      }else {
+        if(e.type==='CIRCLE')references.push({id:'cad_'+(value(e,5,'circle_'+references.length)),layer,type:e.type,at:[number(value(e,10,'NaN')),number(value(e,20,'NaN'))],radius:number(value(e,40,'NaN')),z:number(value(e,30,0))});
+        ignored[e.type]=(ignored[e.type]||0)+1;continue;
+      }
       if(points.length<2)issue='Polyline has fewer than two vertices';
       const segments=[];
       for(let j=0;j<points.length-1+(closed?1:0);j++){
@@ -49,10 +56,80 @@
       }
       if(!segments.length&&!issue)issue='Empty entity';
       let group;const app=e.fields.findIndex(([c,v])=>c===1001&&v==='FURNISH');if(app>=0){for(const [c,v] of e.fields.slice(app+1)){if(c===1001)break;if(c===1000&&/^WALL_GROUP:[A-Za-z0-9_-]{1,80}$/.test(v))group=v.slice(11);}}
-      records.push({id:serial++,layer,type:e.type,segments,issue,...(group?{group}:{})});
+      records.push({id:serial++,handle:value(e,5,''),layer,type:e.type,segments,issue,closed,...(group?{group}:{})});
     }
     const layers=[...new Set(records.map(r=>r.layer))].map(name=>({name,count:records.filter(r=>r.layer===name).reduce((n,r)=>n+r.segments.length,0),issues:records.filter(r=>r.layer===name&&r.issue).map(r=>r.issue)}));
-    return {unitCode,mmPerUnit:units[unitCode]||null,records,layers,ignored};
+    return {unitCode,mmPerUnit:units[unitCode]||null,records,layers,ignored,references,inventory:[...inventory.values()]};
+  }
+  // Layer names suggest intent, never establish structural safety or wall thickness.
+  function layerRole(name){
+    const defaults=layerDefaults(name),s=name.toLowerCase();
+    if(/房梁|横梁|顶梁|梁|beam/.test(s))return {role:'beam',kind:'beam'};
+    if(/下水|排水|drain/.test(s))return {role:'drain',kind:''};
+    if(/燃气|gas/.test(s))return {role:'gas',kind:''};
+    if(/飘窗|bay/.test(s))return {role:'bay',kind:''};
+    if(/窗|window|(?:^|[_ -])win(?:$|[_ -])/.test(s))return {role:'window',kind:''};
+    if(/门|door/.test(s))return {role:'door',kind:''};
+    if(/标注|尺寸|文字|家具|annotation|dimension|text|furniture/.test(s))return {role:'reference',kind:''};
+    if(defaults.kind)return {role:'wall',kind:defaults.kind};
+    if(/非承重|隔墙|partition/.test(s))return {role:'wall',kind:'n'};
+    if(/承重|bearing/.test(s))return {role:'wall',kind:'b'};
+    if(/外墙|exterior/.test(s))return {role:'wall',kind:'e'};
+    if(/墙|wall|房屋/.test(s))return {role:'wall',kind:''};
+    return {role:'unknown',kind:''};
+  }
+  function inspect(parsed,{mmPerUnit=parsed.mmPerUnit,layers=[]}={}){
+    const factor=Number.isFinite(mmPerUnit)&&mmPerUnit>0?mmPerUnit:null;
+    const inventory=parsed.inventory||parsed.layers.map(l=>({name:l.name,entities:0,types:{},unsupportedGeometry:0}));
+    const summaries=inventory.map(l=>{
+      const records=parsed.records.filter(r=>r.layer===l.name),role=layerRole(l.name);let profiles=0;const rectangles=[];
+      for(const r of records){
+        if(!r.segments.length||r.issue&&r.issue!=='Diagonal walls are unsupported')continue;
+        const first=r.segments[0].a,last=r.segments.at(-1).b;
+        if(!r.closed&&Math.hypot(first[0]-last[0],first[1]-last[1])>1e-6)continue;
+        const points=r.segments.map(s=>s.a),xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);
+        const width=Math.max(...xs)-Math.min(...xs),height=Math.max(...ys)-Math.min(...ys);
+        const perimeter=r.segments.reduce((n,s)=>n+Math.hypot(s.a[0]-s.b[0],s.a[1]-s.b[1]),0);
+        const area=Math.abs(r.segments.reduce((n,s)=>n+s.a[0]*s.b[1]-s.b[0]*s.a[1],0))/2;
+        const band=perimeter?2*area/perimeter:0;
+        if(factor&&band*factor>=30&&band*factor<=600&&Math.max(width,height)>band*3)profiles++;
+        if(r.segments.length===4&&r.segments.every(s=>Math.min(Math.abs(s.a[0]-s.b[0]),Math.abs(s.a[1]-s.b[1]))<1e-6)&&Math.abs(area-width*height)<Math.max(1e-6,area*1e-8)){
+          rectangles.push({id:r.id,width:factor?width*factor:null,height:factor?height*factor:null});
+        }
+      }
+      return {...l,...role,count:records.reduce((n,r)=>n+r.segments.length,0),profiles,rectangles};
+    });
+    const selected=summaries.filter(l=>layers.includes(l.name));
+    const warnings=[];
+    for(const l of selected){
+      if(['window','bay','door','reference'].includes(l.role))warnings.push({code:'reference-as-wall',layer:l.name});
+      if(l.profiles&&!['window','bay','door','reference'].includes(l.role))warnings.push({code:'wall-profiles',layer:l.name,count:l.profiles});
+      if(l.unsupportedGeometry)warnings.push({code:'unsupported-geometry',layer:l.name,count:l.unsupportedGeometry});
+    }
+    // Find shared boundary edges across layers, including partially overlapping edges.
+    // Bound the work for large drawings; this is advisory, not a deduplication rule.
+    if(factor){
+      const lanes=new Map(),overlaps=new Map();let comparisons=0;
+      for(const r of parsed.records.filter(r=>layers.includes(r.layer)))for(const s of r.segments){
+        const a=s.a.map(v=>v*factor),b=s.b.map(v=>v*factor),dx=Math.abs(a[0]-b[0]),dy=Math.abs(a[1]-b[1]);
+        if(Math.min(dx,dy)>.01||Math.max(dx,dy)<=.01)continue;
+        const axis=dx>dy?0:1,key=axis+':'+Math.round((a[1-axis]+b[1-axis])/2/.01),lo=Math.min(a[axis],b[axis]),hi=Math.max(a[axis],b[axis]);
+        if(!lanes.has(key))lanes.set(key,[]);
+        const lane=lanes.get(key);
+        for(const prior of lane){
+          if(++comparisons>100000)break;
+          if(prior.layer!==r.layer&&Math.min(prior.hi,hi)-Math.max(prior.lo,lo)>.01){
+            const names=[prior.layer,r.layer].sort(),pair=JSON.stringify(names);
+            if(!overlaps.has(pair))overlaps.set(pair,{code:'overlapping-layers',layers:names,count:0});
+            overlaps.get(pair).count++;
+          }
+        }
+        if(comparisons<=100000)lane.push({layer:r.layer,lo,hi});
+      }
+      warnings.push(...overlaps.values());
+      if(comparisons>100000)warnings.push({code:'overlap-limit'});
+    }
+    return {layers:summaries,warnings,mmPerUnit:factor};
   }
   function layerDefaults(name){const match=/^FURNISH_(BEARING|EXTERIOR|PARTITION)(?:_(\d+(?:\.\d+)?))?$/i.exec(name);return match?{kind:{BEARING:'b',EXTERIOR:'e',PARTITION:'n'}[match[1].toUpperCase()],thickness:match[2]?Number(match[2]):null}:{kind:'',thickness:null};}
   function draft(parsed,{layers,mmPerUnit,name,id,thickness=200,kind='n',layerKinds,layerThicknesses}){
@@ -79,5 +156,5 @@
     const convert=p=>[(p[0]-x0+pad)/scale,(y1-p[1]+pad)/scale];
     return {version:1,id,name,source:'dxf',sourceUnits:mmPerUnit,sourceLayers:[...layers],width:(x1-x0+pad*2)/scale,height:(y1-y0+pad*2)/scale,image:'',scale,walls:segments.map((s,i)=>({id:'dxf_'+i,a:convert(s.a),b:convert(s.b),thickness:s.thickness,kind:s.kind,...(s.group?{group:s.group}:{})})),openings:[],...(layerKinds?{layerKinds:{...layerKinds}}:{}),...(layerThicknesses?{layerThicknesses:{...layerThicknesses}}:{})};
   }
-  root.FurnishDXF={parse,draft,layerDefaults};if(typeof module!=='undefined')module.exports=root.FurnishDXF;
+  root.FurnishDXF={parse,draft,layerDefaults,layerRole,inspect};if(typeof module!=='undefined')module.exports=root.FurnishDXF;
 })(typeof window==='undefined'?globalThis:window);
