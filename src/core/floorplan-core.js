@@ -138,7 +138,7 @@
             side=plus?1:-1;
           }
           const hinge=o.hingeEnd?b:a,sign=o.hingeEnd?-1:1,hingeSide=o.hingeSide??side;
-          doors.push({name:o.name||(o.entry?'入户门':'房门'),rect:opening,h:horizontal?[hinge,hingeSide===1?r[3]:r[1]]:[hingeSide===1?r[2]:r[0],hinge],c:horizontal?[sign,0]:[0,sign],o:horizontal?[0,side]:[side,0],len:o.length,entry:o.entry});doorRefs.push(o.id);
+          doors.push({name:o.name||(o.entry?'入户门':'房门'),rect:opening,h:horizontal?[hinge,hingeSide===1?r[3]:r[1]]:[hingeSide===1?r[2]:r[0],hinge],c:horizontal?[sign,0]:[0,sign],o:horizontal?[0,side]:[side,0],len:o.length,entry:o.entry,...(o.entry?{entryDirection:horizontal?[0,side]:[side,0]}:{})});doorRefs.push(o.id);
         }
         pos=b;
       }

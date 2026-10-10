@@ -183,7 +183,11 @@ function bindOpeningPanel(sel){
   const upd = fn => mutate(() => { state.open.d = state.open.d || {}; fn(state.open.d); });
   if (sel.kind === 'door'){
     $('#oFlip').onclick = () => upd(o => { const d = DOORS[sel.id];
-      o[sel.id] = {h:[...d.h], c:[...d.c], o:[-d.o[0], -d.o[1]]}; });
+      const [x0,y0,x1,y1] = d.rect, h = [...d.h];
+      // Switching inward/outward also moves the hinge to the opposite wall face.
+      const normal = Math.abs(d.c[0]) > .5 ? 1 : 0;
+      h[normal] = normal === 1 ? y0+y1-h[1] : x0+x1-h[0];
+      o[sel.id] = {h, c:[...d.c], o:[-d.o[0], -d.o[1]]}; });
     $('#oHinge').onclick = () => upd(o => { const d = DOORS[sel.id], [x0,y0,x1,y1] = d.rect;
       const long = (x1-x0) >= (y1-y0);
       const nh = long ? [d.h[0] === x0 ? x1 : x0, d.h[1]] : [d.h[0], d.h[1] === y0 ? y1 : y0];

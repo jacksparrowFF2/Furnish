@@ -353,6 +353,7 @@ let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, g
 let archFloor, archUp, furnG, labelG, lampG, colliders = [], selKey = null, selHelper = null;
 let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
 const doors = [], keys = {};
+const SWING_DOOR_HEIGHT = 2.1; // Shared by the door leaf and its opening lintel (metres).
 // 按需渲染：只有镜头 / 场景 / 动画有变化时才渲染一帧，静止时不占用 GPU（笔记本、平板省电不发热）
 let dirty = true;
 const invalidate = () => { dirty = true; };
@@ -1222,7 +1223,7 @@ function buildArch(){
     colliders.push([wx(w[0]), wz(w[1]), wx(w[2]), wz(w[3])]);
   });
   // 门洞、窗洞上方过梁（门窗矩形即洞口，head 默认 2.4m）
-  [...DOORS.map(d => [d.rect, 2.1]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
+  [...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
     .forEach(([r, h]) => { if (top > h) wallBox(r, h, top); });
   const bayPosts=new Set();
   WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, paintRect}) => {
@@ -1238,10 +1239,11 @@ function buildArch(){
     [sill + .02, gTop - .02].forEach(y => { const tr = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .06, .04, hz ? .06 : L), frameMat); tr.position.set(cx, y, cz); archUp.add(tr); });
   });
   DOORS.forEach(d => {
-    const pivot = new THREE.Group(), L = M(d.len), dh = Math.min(2.05, top);
+    const pivot = new THREE.Group(), L = M(d.len), dh = Math.min(SWING_DOOR_HEIGHT, top);
     pivot.position.set(wx(d.h[0]), 0, wz(d.h[1]));
-    const leaf = box(L, dh, .04, mat(d.entry ? '#6b4f3a' : '#efe6d8', {roughness:.5}), L/2);
-    const knob = new THREE.Mesh(new THREE.SphereGeometry(.03, 12, 8), metal()); knob.position.set(L - .07, Math.min(1, dh - .05), 0); knob.scale.z = 2.2;
+    const leafOffset = M(FurnishGeometry.doorLeafOffset(d));
+    const leaf = box(L, dh, .04, mat(d.entry ? '#6b4f3a' : '#efe6d8', {roughness:.5}), L/2, 0, leafOffset);
+    const knob = new THREE.Mesh(new THREE.SphereGeometry(.03, 12, 8), metal()); knob.position.set(L - .07, Math.min(1, dh - .05), leafOffset); knob.scale.z = 2.2;
     pivot.add(leaf, knob);
     const ang = v => Math.atan2(-v[1], v[0]), door = {pivot, a0:ang(d.c), a1:ang(d.o), open:true};
     if (door.a1 - door.a0 > Math.PI) door.a1 -= Math.PI*2; if (door.a0 - door.a1 > Math.PI) door.a1 += Math.PI*2;
@@ -1515,9 +1517,9 @@ function setMode(m){
     window.select(null);
     if (opt.cut < H){ opt.cut = H; syncCutBtns(); sync(); }
     orbit.enabled = false; fly = null;
-    // 从入户门外出生：位置 = 门中心 - o*500，视线朝门内（o 指向室内）
+    // Spawn outside and look inward independently of the door's current swing.
     const ed = DOORS.find(d => d.entry), [rx0, ry0, rx1, ry1] = ed.rect;
-    const cx = (rx0 + rx1)/2, cy = (ry0 + ry1)/2, [ox, oy] = ed.o;
+    const cx = (rx0 + rx1)/2, cy = (ry0 + ry1)/2, [ox, oy] = ed.entryDirection || ed._base?.o || ed.o;
     camera.position.set(wx(cx - ox*500), 1.6, wz(cy - oy*500));
     camera.lookAt(wx(cx + ox*2300), 1.5, wz(cy + oy*2300));
     $('#walkOverlay').style.display = 'flex';

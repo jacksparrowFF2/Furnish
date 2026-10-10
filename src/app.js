@@ -20,6 +20,7 @@ let WALLS, WINS, DOORS, SLIDES, ROOMS, BOUNDS, PLAN;
 function applyPlanData(){
   ({walls:WALLS, wins:WINS, doors:DOORS, slides:SLIDES, rooms:ROOMS, bounds:BOUNDS} = PLAN);
   DOORS.forEach(d => d._base ??= {h:[...d.h], c:[...d.c], o:[...d.o]});   // 切换户型时保留原始方向，不能把当前覆盖值当成原值
+  DOORS.filter(d => d.entry).forEach(d => d.entryDirection ??= [...d._base.o]);
   WINS.forEach(w => { w._sill0 ??= w.sill; w._head0 ??= w.head??2.4; });ROOMS.filter(r=>r.counted===false).forEach(r=>r._height0??=r.height??.45);
 }
 // 门窗调整存于 state.open（可撤销/随方案保存），套用到 PLAN 数据的运行时副本上
@@ -30,7 +31,17 @@ function applyOpeningOverrides(){
   ROOMS.filter(r=>r.counted===false&&r._height0!==undefined).forEach(r=>r.height=r._height0);
   const o = state.open;
   if (!o) return;
-  Object.entries(o.d || {}).forEach(([i, v]) => { const d = DOORS[+i]; if (d) Object.assign(d, JSON.parse(JSON.stringify(v))); });
+  Object.entries(o.d || {}).forEach(([i, v]) => {
+    const d = DOORS[+i]; if (!d) return;
+    Object.assign(d, JSON.parse(JSON.stringify(v)));
+    // Older saved swing overrides changed o without moving h to the other face.
+    // Derive the normal coordinate from the base face; retain the selected jamb.
+    if (d._base){
+      const normal = Math.abs(d.c[0]) > .5 ? 1 : 0;
+      const flipped = d.o[0]*d._base.o[0]+d.o[1]*d._base.o[1] < 0;
+      d.h[normal] = flipped ? d.rect[normal]+d.rect[normal+2]-d._base.h[normal] : d._base.h[normal];
+    }
+  });
   Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) {if(typeof v==='number')w.sill=v;else if(v&&Number.isFinite(v.sill)&&Number.isFinite(v.head)){w.sill=v.sill;w.head=v.head;}if(w.bayGroup){const room=ROOMS.find(r=>r.id===w.bayGroup);if(room)room.height=w.sill;}} });
 }
 const {materials:MATS,library:LIB,typePrices:TYPE_PRICE} = FurnishCatalogData;

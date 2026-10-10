@@ -105,17 +105,19 @@ function renderOpenings(){
     const ox = hx + d.o[0]*L, oy = hy + d.o[1]*L, cx = hx + d.c[0]*L, cy = hy + d.c[1]*L;
     const sweep = d.o[0]*d.c[1] - d.o[1]*d.c[0] > 0 ? 1 : 0;
     const col = d.entry ? '#ef5a24' : PAL.ink;
-    s += `<polygon points="${hx},${hy} ${ox},${oy} ${ox+d.c[0]*T},${oy+d.c[1]*T} ${hx+d.c[0]*T},${hy+d.c[1]*T}" fill="${PAL.leaf}" stroke="${col}" stroke-width="${d.entry?1.8:1}" vector-effect="non-scaling-stroke"/>`;
+    const offset = FurnishGeometry.doorLeafOffset(d,T), normal = [-d.o[1],d.o[0]];
+    const leaf = [[hx,hy,offset-T/2],[ox,oy,offset-T/2],[ox,oy,offset+T/2],[hx,hy,offset+T/2]].map(([x,y,z])=>[x+normal[0]*z,y+normal[1]*z]);
+    s += `<polygon points="${leaf.map(p=>p.join(',')).join(' ')}" fill="${PAL.leaf}" stroke="${col}" stroke-width="${d.entry?1.8:1}" vector-effect="non-scaling-stroke"/>`;
     s += `<path d="M${ox} ${oy}A${L} ${L} 0 0 ${sweep} ${cx} ${cy}" fill="none" ${DS} stroke-dasharray="5 3" opacity=".7"/>`;
   });
   SLIDES.forEach(({rect:[x0,y0,x1,y1],v}) => {
     if (v){ const L = y1-y0, m = (x0+x1)/2; s += `<rect x="${m-45}" y="${y0}" width="40" height="${L*.55}" fill="${PAL.leaf}" ${DS}/><rect x="${m+5}" y="${y1-L*.55}" width="40" height="${L*.55}" fill="${PAL.leaf}" ${DS}/>`; }
     else { const L = x1-x0, m = (y0+y1)/2; s += `<rect x="${x0}" y="${m-45}" width="${L*.55}" height="40" fill="${PAL.leaf}" ${DS}/><rect x="${x1-L*.55}" y="${m+5}" width="${L*.55}" height="40" fill="${PAL.leaf}" ${DS}/>`; }
   });
-  // 入户标识：箭头由 entry 门自动推导（o 指向室内，箭头在门外一侧）
+  // Entry travel direction is independent of the door leaf's swing direction.
   const ed = DOORS.find(d => d.entry);
   if (ed){
-    const [rx0,ry0,rx1,ry1] = ed.rect, cx = (rx0+rx1)/2, cy = (ry0+ry1)/2, [ox,oy] = ed.o;
+    const [rx0,ry0,rx1,ry1] = ed.rect, cx = (rx0+rx1)/2, cy = (ry0+ry1)/2, [ox,oy] = ed.entryDirection || ed._base?.o || ed.o;
     const tip = [cx - ox*350, cy - oy*350], tail = [tip[0] - ox*1000, tip[1] - oy*1000];
     const px = oy, py = -ox;                                   // 垂直于行进方向
     const a1 = [tip[0] - ox*200 + px*155, tip[1] - oy*200 + py*155];

@@ -43,7 +43,14 @@ const groupBox = items => { let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1
   return [x0, y0, x1, y1]; };
 
 
-const api={area,perim,bbox,aabb,inPoly,corners,obbOverlap,groupBox,collisions};
+// Local Z offset puts the closed leaf inside the wall, flush with the hinge face.
+// THREE's local Z at the closed angle maps to [-c.y, c.x] in plan coordinates.
+function doorLeafOffset(d, thickness=40){
+  const normal=[-d.c[1],d.c[0]],center=[(d.rect[0]+d.rect[2])/2,(d.rect[1]+d.rect[3])/2];
+  const inward=(center[0]-d.h[0])*normal[0]+(center[1]-d.h[1])*normal[1];
+  return Math.sign(inward)*thickness/2;
+}
+const api={area,perim,bbox,aabb,inPoly,corners,obbOverlap,groupBox,collisions,doorLeafOffset};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishGeometry=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
