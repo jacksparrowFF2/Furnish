@@ -64,3 +64,15 @@
 #merge-preview{border-radius:8px}
 
 .trace-vertex-menu{position:fixed;z-index:100;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-lg)}
+
+.trace-region-card{width:100%;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.trace-region-picker{display:grid;gap:8px;font-size:13px;color:var(--muted)}
+.trace-region-picker select{width:100%;min-width:0;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text)}
+.trace-region-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:16px 0 6px;font-size:17px}
+.trace-region-summary strong{white-space:nowrap;color:#138579}.trace-region-summary small{font-size:12px;font-weight:400}
+.trace-region-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}.trace-region-actions .btn{padding:10px 8px;white-space:normal}
+.trace-region-more,.trace-region-areas{width:100%;padding-top:12px;border-top:1px solid var(--line)}
+.trace-region-more summary,.trace-region-areas summary{cursor:pointer;color:var(--muted);font-size:14px}.trace-region-more p{font-size:13px;line-height:1.6}
+.trace-region-areas [data-live-area]{display:flex;justify-content:space-between;gap:12px;padding:7px 0}
+#area-path-status{padding:12px;background:var(--hover);border-radius:10px;line-height:1.7}#area-path-complete,#area-path-cancel{width:100%}
+#area-vertex-hint{display:block;padding:12px;line-height:1.8;background:var(--hover);border-radius:10px}

@@ -7,6 +7,9 @@ const S2T = new Map(('与與两兩个個为為书書于於仅僅从從价價会�
 const s2t = s => S2T_PHRASES.reduce((a, [f, t]) => a.replaceAll(f, t), s).replace(/[\u3400-\u9fff]/g, c => S2T.get(c) || c);
 // 内置的房间 / 材料 / 家具名称存的是中文；英文界面下显示译名，用户自己改过的名称原样显示
 const NAMES_EN = {
+  '电器':'Appliances', '柜体':'Cabinets', '床':'Beds', '沙发':'Sofas', '桌 · 台':'Tables & Desks',
+  '椅 · 凳':'Chairs & Stools', '卫浴 · 水槽':'Sanitary Fixtures & Sinks', '灯具':'Lighting',
+  '布艺':'Textiles', '装饰':'Decor', '运动 · 乐器':'Fitness & Instruments', '生活用品':'Household Items',
   '三室两厅两卫':'3BR · 2LR · 2BA', '两室两厅一卫 · 96㎡':'2BR · 2LR · 1BA · 96m²', '一室一厅 · 54㎡':'1BR · 1LR · 54m²',
   '横厅三居两卫 · 128㎡':'Wide-living 3BR · 2BA · 128m²', '两室一厅 · 59㎡':'2BR · 1LR · 59m²',
   '三室两厅一卫 · 95㎡':'3BR · 2LR · 1BA · 95m²', '四室两厅两卫 · 129㎡':'4BR · 2LR · 2BA · 129m²', '开间一居 · 42㎡':'Studio · 42m²',
@@ -29,7 +32,7 @@ const NAMES_EN = {
   '餐桌':'Dining Table', '六人餐桌':'6-Seat Dining Table', '圆桌':'Round Table', '餐椅':'Dining Chair', '岛台':'Kitchen Island',
   '吧椅':'Bar Stool', '橱柜台面':'Kitchen Counter', '燃气灶':'Gas Stove', '水槽':'Sink', '冰箱':'Fridge', '餐边柜':'Sideboard',
   '马桶':'Toilet', '浴室柜':'Vanity', '双盆浴室柜':'Double Vanity', '淋浴房':'Shower', '淋浴区':'Shower Area', '浴缸':'Bathtub',
-  '洗衣机':'Washer', '洗衣池':'Laundry Sink', '电热水器':'Water Heater', '储物柜':'Storage Cabinet', '65 寸电视':'65" TV',
+  '洗衣机':'Washer', '洗衣池':'Laundry Sink', '电热水器':'Water Heater', '扁桶电热水器 60L':'Flat Water Heater 60L', '储物柜':'Storage Cabinet', '65 寸电视':'65" TV',
   '75 寸电视':'75 inch TV', '85 寸电视':'85 inch TV', '100 寸电视':'100 inch TV', '单开窗帘 2.4m':'Single Curtain 2.4m', '双开窗帘 2.4m':'Double Curtains 2.4m',
   '55 寸电视':'55" TV', '对开门冰箱':'French-door Fridge', '柜机空调':'Floor AC', '挂机空调':'Wall AC', '洗碗机':'Dishwasher',
   '蒸烤箱高柜':'Oven Tower', '烘干机':'Dryer', '空气净化器':'Air Purifier', '长书桌':'Long Desk', '办公椅':'Office Chair',

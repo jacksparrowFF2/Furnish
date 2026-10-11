@@ -187,7 +187,13 @@
     const old=z.poly,eps=1e-6,near=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1])<eps;
     const fraction=(p,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy);return t>=-eps&&t<=1+eps&&Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)<eps?t:null;};
     const moved=old.map((a,i)=>({a,b:old[(i+1)%old.length],c:poly[i],e:poly[(i+1)%old.length]})).filter(v=>!near(v.a,v.c)||!near(v.b,v.e));
-    const map=p=>{for(const v of moved){const t=fraction(p,v.a,v.b);if(t!==null)return v.c.map((n,k)=>Math.round((n+t*(v.e[k]-n))*d.scale*1e6)/1e6/d.scale);}return [...p];};
+    const map=p=>{for(const v of moved){const t=fraction(p,v.a,v.b);if(t!==null){
+      // Sliding an endpoint along a straight shared edge must not rescale
+      // stationary neighbor nodes in its interior (including T junctions).
+      const dx=v.b[0]-v.a[0],dy=v.b[1]-v.a[1],len=Math.hypot(dx,dy),tangent=q=>Math.abs((q[0]-v.a[0])*dy-(q[1]-v.a[1])*dx)<=eps*len;
+      if(t>eps&&t<1-eps&&tangent(v.c)&&tangent(v.e))return [...p];
+      return v.c.map((n,k)=>Math.round((n+t*(v.e[k]-n))*d.scale*1e6)/1e6/d.scale);
+    }}return [...p];};
     const group=[z],previous=[G.ringPath(z.rings||[old])];let shared=false;
     for(const other of d.zones.filter(o=>o.id!==id&&o.parent===z.parent)){
       const original=G.ringPath(other.rings||[other.poly]),newRings=[];let changed=false,edgeShared=false;
@@ -196,9 +202,9 @@
         const a=ring[i],b=ring[(i+1)%ring.length],cuts=[{p:a,t:0}];
         for(const p of old){const t=fraction(p,a,b);if(t!==null&&t>eps&&t<1-eps)cuts.push({p,t});}
         cuts.sort((a,b)=>a.t-b.t);
-        const sharedSegment=(p,q)=>moved.some(v=>fraction(p.map((n,j)=>(n+q[j])/2),v.a,v.b)!==null);
+        const sharedSegment=(p,q)=>!near(p,q)&&moved.some(v=>fraction(p,v.a,v.b)!==null&&fraction(q,v.a,v.b)!==null);
         const push=p=>{if(!points.length||!near(points.at(-1),p))points.push([...p]);};
-        for(let k=0;k<cuts.length;k++){const p=cuts[k].p,q=k+1<cuts.length?cuts[k+1].p:b,nextShared=sharedSegment(p,q),prevShared=k?sharedSegment(cuts[k-1].p,p):false;if(nextShared)edgeShared=true;const next=map(p);changed ||= !near(p,next);
+        for(let k=0;k<cuts.length;k++){const p=cuts[k].p,q=k+1<cuts.length?cuts[k+1].p:b,nextShared=sharedSegment(p,q),prevShared=k?sharedSegment(cuts[k-1].p,p):sharedSegment(ring[(i+ring.length-1)%ring.length],p);if(nextShared)edgeShared=true;const next=nextShared||prevShared?map(p):[...p];changed ||= !near(p,next);
           // Retain a transition corner only for movement across the neighbor edge.
           // Along-edge movement makes the old corner redundant; retaining it can
           // create a reverse overlap when the shared endpoint reaches a corner.
@@ -209,17 +215,17 @@
       newRings.push(points);}
       if(changed){group.push(other);previous.push(original);other.poly=newRings[0];if(other.rings)other.rings=newRings;shared ||= edgeShared;}
     }
-    z.poly=clone(poly);if(z.rings)z.rings[0]=clone(poly);build(d);
+    z.poly=clone(poly);if(z.rings)z.rings[0]=clone(poly);if(!options.preview)build(d);
     let commonEdge=shared;
     if(Number.isInteger(options.edge)){
       const a=old[options.edge],b=old[(options.edge+1)%old.length],dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy),project=p=>((p[0]-a[0])*dx+(p[1]-a[1])*dy)/length;
       commonEdge=previous.slice(1).some(ps=>ps.some((p,i)=>{const q=ps[(i+1)%ps.length],collinear=v=>Math.abs((v[0]-a[0])*dy-(v[1]-a[1])*dx)/length<eps;return collinear(p)&&collinear(q)&&Math.min(length,Math.max(project(p),project(q)))-Math.max(0,Math.min(project(p),project(q)))>eps;}));
     }
-    if(commonEdge){const next=group.map(o=>G.ringPath(o.rings||[o.poly])),all=[...previous,...next],occupied=(p,ps)=>ps.some(poly=>G.inside(p,poly)),difference=G.area(G.decompose(all,p=>occupied(p,previous)!==occupied(p,next)))*d.scale*d.scale;if(difference>.1)fail('共用边界调整不能改变相邻区域的覆盖范围或产生缝隙；请沿原边界调整');}
+    if(commonEdge&&!options.preview){const next=group.map(o=>G.ringPath(o.rings||[o.poly])),all=[...previous,...next],occupied=(p,ps)=>ps.some(poly=>G.inside(p,poly)),difference=G.area(G.decompose(all,p=>occupied(p,previous)!==occupied(p,next)))*d.scale*d.scale;if(difference>.1)fail('共用边界调整不能改变相邻区域的覆盖范围或产生缝隙；请沿原边界调整');}
     return d;
   }
   function removeZone(input,id){const d=clone(input);if(!d.zones?.some(z=>z.id===id))fail('功能区不存在');d.zones=d.zones.filter(z=>z.id!==id);build(d);return d;}
-  function insertZoneVertex(input,id,edge,t=.5){
+  function insertZoneVertex(input,id,edge,t=.5,options={}){
     const d=clone(input),z=d.zones?.find(z=>z.id===id);if(!z)fail('功能区不存在');
     if(!Number.isInteger(edge)||edge<0||edge>=z.poly.length||!finite(t)||t<=1e-6||t>=1-1e-6)fail('请在边的内部增加顶点');
     const a=z.poly[edge],b=z.poly[(edge+1)%z.poly.length],p=a.map((v,i)=>v+t*(b[i]-v)),eps=1e-6/d.scale;
@@ -231,15 +237,32 @@
       }}
       if(other.rings)other.poly=clone(other.rings[0]);
     }
-    build(d);return d;
+    if(!options.preview)build(d);return d;
   }
-  function deleteZoneVertex(input,id,index){
+  function deleteZoneVertex(input,id,index,options={}){
     const z=input.zones?.find(z=>z.id===id);if(!z)fail('功能区不存在');
     if(!Number.isInteger(index)||index<0||index>=z.poly.length)fail('顶点不存在');
     if(z.poly.length<=3)fail('多边形至少保留三个顶点');
     const poly=clone(z.poly),old=poly[index],a=poly[(index+poly.length-1)%poly.length],b=poly[(index+1)%poly.length],l1=Math.hypot(old[0]-a[0],old[1]-a[1]),l2=Math.hypot(old[0]-b[0],old[1]-b[1]),t=l1/(l1+l2),p=a.map((v,i)=>v+t*(b[i]-v));poly[index]=p;
+    // Simplify straight boundary nodes without first dragging a
+    // junction: the neighbor may need that node as a corner of its own.
+    const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy),projection=((old[0]-a[0])*dx+(old[1]-a[1])*dy)/(length*length);
+    const deviation=Math.abs((old[0]-a[0])*dy-(old[1]-a[1])*dx)/length*input.scale;
+    if(projection>0&&projection<1&&deviation<=1e-6){
+      const simplified=clone(input),selected=simplified.zones.find(o=>o.id===id);
+      selected.poly.splice(index,1);if(selected.rings)selected.rings[0]=clone(selected.poly);
+      // Keep genuine T-junction corners on neighbors; only erase a redundant
+      // collinear node there. Validation still rejects crossing walls/overlaps.
+      for(const other of simplified.zones.filter(o=>o.id!==id&&o.parent===z.parent)){
+        for(const ring of other.rings||[other.poly]){const i=ring.findIndex(q=>Math.hypot(q[0]-old[0],q[1]-old[1])*input.scale<=1e-6);if(i<0||ring.length<=3)continue;
+          const c=ring[(i+ring.length-1)%ring.length],e=ring[(i+1)%ring.length],q=ring[i],len=Math.hypot(e[0]-c[0],e[1]-c[1]);
+          if(len&&Math.abs((q[0]-c[0])*(e[1]-c[1])-(q[1]-c[1])*(e[0]-c[0]))/len*input.scale<=1e-6)ring.splice(i,1);
+        }if(other.rings)other.poly=clone(other.rings[0]);
+      }
+      if(!options.preview)build(simplified);return simplified;
+    }
     // First straighten both sides atomically, then remove redundant shared nodes.
-    const d=editZoneBoundary(input,id,poly),eps=1e-6/d.scale;
+    const d=editZoneBoundary(input,id,poly,options),eps=1e-6/d.scale;
     const selected=d.zones.find(o=>o.id===id);selected.poly.splice(index,1);if(selected.rings)selected.rings[0]=clone(selected.poly);
     for(const other of d.zones.filter(o=>o.id!==id&&o.parent===z.parent)){
       const original=input.zones.find(o=>o.id===other.id);if(!(original.rings||[original.poly]).flat().some(q=>Math.hypot(q[0]-old[0],q[1]-old[1])<=eps))continue;
@@ -248,7 +271,7 @@
       if(Math.abs((q[0]-c[0])*(e[1]-c[1])-(q[1]-c[1])*(e[0]-c[0]))/Math.hypot(e[0]-c[0],e[1]-c[1])<=eps)ring.splice(i,1);}
       if(other.rings)other.poly=clone(other.rings[0]);
     }
-    build(d);return d;
+    if(!options.preview)build(d);return d;
   }
   function regionDefinition(geometry,scale,values){
     const G=zoneGeometry(),rings=geometry.rings.map(r=>r.map(p=>p.map(v=>v/scale))),outer=rings.findIndex(r=>G.signed(r)>0);if(outer<0)fail('功能区轮廓为空');if(outer)rings.unshift(rings.splice(outer,1)[0]);

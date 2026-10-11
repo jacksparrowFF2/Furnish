@@ -86,6 +86,10 @@ const DASH = 'stroke-dasharray="4 3"';
     case 'island': return rc(x,y,w,d,c) + ln(x,y+d-250,x+w,y+d-250,DASH);
     case 'barstool': return `<circle r="${m/2}" fill="${c}" ${ST()}/><circle r="${m*.3}" fill="${shade(c,1.15)}" ${ST()}/>`;
     case 'waterheater': return rc(x,y,w,d,c,`rx="${d/2}" ${DASH}`) + ln(x+w*.2,0,x+w*.8,0,DASH);
+    case 'waterheater_flat': return rc(x,y,w,d,c,`rx="${d*.3}" ${DASH}`)
+      + rc(x+w*.02,y+d*.12,w*.025,d*.76,'#aeb0b2',`rx="${d*.06}"`)
+      + rc(x+w*.955,y+d*.12,w*.025,d*.76,'#aeb0b2',`rx="${d*.06}"`)
+      + rc(-w*.42,y+d*.84,w*.84,d*.1,'#17191c',`rx="${d*.04}"`);
     case 'tv': return rc(x,y,w,d,c,'rx="10"') + rc(x+w*.3,y+d,w*.4,Math.min(40,d),'#666');
     case 'aircon': return rc(x,y,w,d,c,'rx="30"') + ln(x+40,y+d*.72,x+w-40,y+d*.72) + ln(x+40,y+d*.86,x+w-40,y+d*.86);
     case 'acwall': {

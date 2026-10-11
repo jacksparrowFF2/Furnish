@@ -77,3 +77,22 @@ const finalWork={...work,architecture:{draft:bent,phase:'survey'}},roundtrip=P.u
 console.log('PASS shared vertex insertion, bending/deletion, minimum vertex count, partial adjacency and saved metadata');
 const hundred=Core.addZone(d,zone('hundred',Array.from({length:100},(_,i)=>[600+200*Math.cos(i*Math.PI/50),600+200*Math.sin(i*Math.PI/50)])));assert.throws(()=>Core.insertZoneVertex(hundred,'area_hundred',0,.5),/100/);assert.equal(hundred.zones[0].poly.length,100);
 
+
+// A point contact is not a shared edge: shrinking one corner must not bend its neighbor.
+const touching=Core.addZone(Core.addZone(d,zone('toucha',[[200,200],[800,200],[800,600],[200,600]])),zone('touchb',[[800,600],[1400,600],[1400,1000],[800,1000]]));
+const touchMoved=Core.editZoneBoundary(touching,'area_toucha',[[200,200],[800,200],[700,500],[200,600]]);
+assert.deepEqual(touchMoved.zones[1],touching.zones[1]);
+
+// Shortening the long vertical edge must leave the partially shared neighbor's
+// intermediate corner fixed; interpolation would turn its rectangle diagonal.
+const longSide=zone('living',[[200,200],[800,200],[800,1000],[200,1000]]);
+const shortSide=zone('dining',[[800,200],[1400,200],[1400,600],[800,600]]);
+const sliding=Core.addZone(Core.addZone(d,longSide),shortSide);
+const shortened=Core.editZoneBoundary(sliding,'area_living',[[200,200],[800,200],[800,800],[200,800]],{edge:2});
+assert.deepEqual(shortened.zones[1].poly,shortSide.poly);
+
+// A redundant selected boundary node may be a necessary neighbor corner.
+const junction=Core.addZone(Core.addZone(d,zone('living',[[200,200],[800,200],[800,400],[800,600],[800,1000],[200,1000]])),zone('dining',[[800,400],[1400,400],[1400,600],[800,600]]));
+const junctionSimple=Core.deleteZoneVertex(Core.deleteZoneVertex(junction,'area_living',2),'area_living',2);
+assert.equal(junctionSimple.zones[0].poly.length,4);assert.deepEqual(junctionSimple.zones[1],junction.zones[1]);
+assert.equal(union(junctionSimple.zones.map(z=>z.poly)),union(junction.zones.map(z=>z.poly)));
