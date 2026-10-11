@@ -4,7 +4,7 @@
 const inNode = typeof module === 'object' && module.exports;
 const presets = inNode ? require('../data/style-presets.js') : root.FurnishStylePresets;
 const design = inNode ? require('./design-core.js') : root.FurnishDesign;
-const SOFT_T = new Set(['sofa','cornersofa','beanbag','bed','baycushion','bench','chair','barstool','officechair']);
+const SOFT_T = new Set(['sofa','sofa_yeswood_cherry','cornersofa','beanbag','bed','baycushion','bench','chair','barstool','officechair']);
 const WOOD_T = new Set(['wardrobe','cabinet','shoecab','dresser','desk','bookshelf','nightstand','coffeetable','tvstand','table','roundtable','sidetable','chest','crib']);
 
 function find(id) { return presets.find(style => style.id === id); }

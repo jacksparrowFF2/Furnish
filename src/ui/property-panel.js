@@ -95,7 +95,8 @@ function furnPanel(f){
       <label>${tr('旋转','Rotation')} (°)<input type="number" id="fR" value="${f.rot}" step="15" ${lk}></label>
       <label>${tr('单价','Unit price')} (¥)<input type="number" id="fP" value="${Math.round(priceOf(f))}" min="0" step="50"></label>
       ${f.type==='waterheater_flat'?`<label class="full">${tr('底部离地高度','Bottom height above floor')} (mm)<input type="number" id="fMountHeight" value="${f.mountHeight??1650}" min="0" max="20000" step="10" ${lk}></label><p class="muted" style="grid-column:1/-1;margin:0">${tr('从地面到热水器最底部的距离，调整后同步到 3D 并随项目保存。','Distance from the floor to the lowest part of the heater; updates 3D and is saved with the project.')}</p>`:''}
-      ${custom || robotSpec || FurnishCabinet.supported(f) || ['curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (robotSpec?robotSpec[2]:FurnishCabinet.supported(f)?FurnishCabinet.height(f):f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="${robotSpec?'0.1':'10'}" ${lk}></label>` : ''}
+      ${custom || robotSpec || FurnishCabinet.supported(f) || ['sofa_yeswood_cherry','curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (f.type==='sofa_yeswood_cherry'?895:robotSpec?robotSpec[2]:FurnishCabinet.supported(f)?FurnishCabinet.height(f):f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="${robotSpec?'0.1':'10'}" ${lk}></label>` : ''}
+      ${f.type==='sofa_yeswood_cherry'?`<p class="muted" style="grid-column:1/-1;margin:0">${tr('原规格 2160 × 892 × 895 mm，坐深 580 mm；尺寸修改仅作布局缩放。木框与软包为外观近似，价格待填写。','Nominal size 2160 × 892 × 895 mm, seat depth 580 mm; resizing is for layout only. Frame and upholstery are approximate; price needs entry.')}</p>`:''}
       ${robotSpec?`<p class="muted" style="grid-column:1/-1;margin:0">${tr('原规格','Nominal size')} ${robotSpec.join(' × ')} mm${tr('；尺寸修改仅作布局缩放，安装预留待核对，价格待填写。','; resizing is for layout only. Installation clearances and price need confirmation.')}</p>`:''}
       <label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>
     </div>
@@ -115,7 +116,7 @@ function furnPanel(f){
       <button class="btn danger" data-act="del">${ico('trash')}${tr('删除','Delete')}</button>
       <button class="btn" data-act="home">${tr('← 返回','← Back')}</button>
     </div></section>
-  <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右下角方块改尺寸；Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps to other items with guides); drag the top dot to rotate, the corner square to resize; Shift+click to multi-select, right-click for more.')}</section>`;
+  <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右侧白色手柄只改宽、下方白色手柄只改深，角落橙色方块同时改宽深；调整尺寸固定对侧边。Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps with guides); drag the top dot to rotate, the right white handle for width, the bottom white handle for depth, or the orange corner for both. Resizing fixes the opposite edge. Shift+click to multi-select; right-click for more.')}</section>`;
 }
 function bindFurnPanel(f){
   if(f.type==='waterheater_flat')$('#heater-ceiling-settings').onclick=()=>{const room=FurnishProject.ceilingAt(FurnishProject.effectivePlan(PLAN,state),f.cx,f.cy).room;if(room){ui.sel={kind:'room',id:room.id};renderPanel();}else FurnishWorkspace.open('settings');};

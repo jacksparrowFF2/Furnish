@@ -35,7 +35,7 @@ const LIB = [
     ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
-    ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],'#efe6d8',Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
+    ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],t[0]==='tv-floor'?'#cbb08b':t[0]==='entry-pegboard'?'#d5c4bb':'#efe6d8',['tv-floor','entry-pegboard'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
     ["nightstand","床头柜",450,400,"#e8dccb",600],
     ["wardrobe","衣柜",2000,600,"#efe6d8",4500],
     ["wardrobe","衣柜 2.4m",2400,600,"#efe6d8",5400],
@@ -60,6 +60,7 @@ const LIB = [
     ["crib","婴儿床",1250,700,"#efe3d0",1200]
   ]},
   {cat:'沙发', items:[
+    ["sofa_yeswood_cherry","源氏木语 樱桃木三人沙发 2.16m（梨白）",2160,892,"#eee9df",0,895],
     ["sofa","三人沙发",2400,900,"#b7c4b0",5200],
     ["sofa","双人沙发",1700,880,"#c3cbd6",3600],
     ["cornersofa","转角沙发",2800,1700,"#b7c4b0",7800],

@@ -274,6 +274,7 @@
 <script src="src/core/cabinet-core.js"></script>
 <script src="src/render/cabinet-model.js"></script>
 <script src="src/render/robot-vacuum-model.js"></script>
+<script src="src/render/yeswood-sofa-model.js"></script>
 <script src="src/render/waterheater-clearance-model.js"></script>
 <script src="src/render/cabinet-preview.js"></script>
 <script src="src/core/design-core.js"></script>
@@ -683,6 +684,10 @@ function buildFurniture(f){
   }
   if(FurnishCabinet.supported(f)){
     const model=FurnishCabinetModel.build(THREE,f,box);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
+  }
+  if(f.type==='sofa_yeswood_cherry'){
+    const model=FurnishYeswoodSofaModel.build(THREE,f,RoundedBoxGeometry,{wood:woodM,fabric});
+    model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   switch (f.type){
     case 'bed': {

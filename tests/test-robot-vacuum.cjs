@@ -23,5 +23,20 @@ const model=require('../src/render/robot-vacuum-model.js'),catalog=require('../s
   vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];
   vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(before).getSize(new THREE.Vector3()).x,f.w*1.2/1000);
  }
+ // Real rays verify that the rebuilt dock has an open entrance and solid hood.
+ const tank=model.build(THREE,{type:'robot_p20max_tank',w:450,d:450,h:450},RoundedBoxGeometry);
+ tank.traverse(o=>{if(o.userData.part==='tank-parked-robot')o.visible=false;});tank.updateMatrixWorld(true);
+ const visible=[];tank.traverseVisible(o=>{if(o.isMesh)visible.push(o);});
+ const firstHit=(x,y)=>new THREE.Raycaster(new THREE.Vector3(x,y,.6),new THREE.Vector3(0,0,-1)).intersectObjects(visible,false)[0];
+ assert.ok(firstHit(0,.1).point.z<0,'entrance opens through to the rear service wall');
+ assert.ok(firstHit(0,.14).point.z>.15,'grey entrance arch has a solid upper rim');
+ assert.ok(firstHit(0,.27).point.z>.19,'white front hood is solid and bulges forward');
+ assert.ok(firstHit(.20,.27).point.z<firstHit(0,.27).point.z-.015,'front wraps continuously around the sides');
+ // Scan both sides of the material boundary: no inset or overlapping shells.
+ for(const x of [0,.10,.18]){
+  const below=firstHit(x,.1529),above=firstHit(x,.1531);
+  assert.ok(Math.abs(above.point.z-below.point.z)<.0001,'base and hood share their contour');
+  assert.ok(above.face.normal.dot(below.face.normal)>.995,'join tangents remain smooth');
+ }
  console.log('PASS P20 Max catalog, project round trip, production dimensions, rotation/mirror/resize, cached scale and finite geometry');
 })().catch(e=>{console.error(e);process.exitCode=1;});

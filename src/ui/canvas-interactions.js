@@ -139,7 +139,7 @@ svg.addEventListener('pointerdown', e => {
   const nEl = ui.layers.notes && t.closest('[data-note]');
   if (h && selIds().length === 1){
     const f=getF(selIds()[0]);
-    drag = {kind:f.locked?'locked':h.dataset.handle, id:f.id, original:{...f}, ...base, before:snap()};
+    drag = {kind:f.locked?'locked':h.dataset.handle, axis:h.dataset.axis||'both', startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
   } else if (ui.tool === 'demolish' && t.closest('[data-wall]')){
     toggleWall(t.closest('[data-wall]').dataset.wall); return;
   } else if (picking && nEl){
@@ -225,17 +225,24 @@ svg.addEventListener('pointermove', e => {
     drag.ids.forEach(id => { const g = getF(id); if (!g) return;
       g.cx = drag.start[id][0] + dx; g.cy = drag.start[id][1] + dy;
       document.querySelector(`#gFurn [data-fid="${id}"]`)?.setAttribute('transform', furnT(g)); });
+    syncFurnOrder();
     renderSel(); return;
   }
   if (drag.kind === 'rot'){
     let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;
     f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
   } else if (drag.kind === 'size'){
-    const result=FurnishSnapping.resize(drag.original,p,{scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
+    // Use pointer travel from the grab position, excluding the handle's padding.
+    const o=drag.original,a=o.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
+    const dx=p.x-drag.startPoint.x,dy=p.y-drag.startPoint.y;
+    const dw=drag.axis==='d'?0:dx*c+dy*s,dd=drag.axis==='w'?0:-dx*s+dy*c;
+    const corner={x:o.cx+o.w/2*c-o.d/2*s+dw*c-dd*s,y:o.cy+o.w/2*s+o.d/2*c+dw*s+dd*c};
+    const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
     try{const next=FurnishCabinet.supported(f)&&f.cabinet?FurnishCabinet.resize(drag.original,result.furniture):result.furniture;Object.assign(f,next);ui.guides=result.guides;}catch{return;}
     renderFurn();                              // 尺寸变了，图例需要重画
   }
   document.querySelector(`#gFurn [data-fid="${f.id}"]`)?.setAttribute('transform', furnT(f));
+  syncFurnOrder();
   renderSel();
 });
 

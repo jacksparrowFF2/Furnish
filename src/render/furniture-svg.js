@@ -4,7 +4,7 @@
 function hex2rgb(h){ h = h.replace('#',''); if (h.length===3) h = h.split('').map(c=>c+c).join(''); const n = parseInt(h,16); return [(n>>16)&255,(n>>8)&255,n&255]; }
 function shade(h,k){ const f = v => Math.max(0,Math.min(255,Math.round(k>1 ? v+(255-v)*(k-1)*2 : v*k))); return '#'+hex2rgb(h).map(v=>f(v).toString(16).padStart(2,'0')).join(''); }
 
-function render(t,w,d,c,PAL){
+function render(t,w,d,c,PAL,f){
   // Bind helpers to this call's palette so switching themes cannot retain ink.
   const ST = () => `stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"`;
 const rc = (x,y,w,h,f,ex='') => `<rect x="${x}" y="${y}" width="${Math.max(0,w)}" height="${Math.max(0,h)}" fill="${f}" ${ST()} ${ex}/>`;
@@ -15,10 +15,23 @@ const DASH = 'stroke-dasharray="4 3"';
 
 
   const x = -w/2, y = -d/2, m = Math.min(w,d);
+  if(f?.cabinet?.columns.some(col=>col.top==='drawer')){
+    const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,bays=C.layout(f);
+    let s=rc(x,y,w,d,c);
+    f.cabinet.columns.forEach((col,i)=>{const bay=bays[i];if(i)s+=ln(bay.left-f.cabinet.thickness/2,y,bay.left-f.cabinet.thickness/2,y+d);if(col.top==='drawer'&&col.cableGap){s+=rc(bay.left,y,bay.width,col.cableGap,shade(c,.55));const cut=Math.min(15,d*.05),n=Math.min(120,bay.width*.35);s+=pa(`M${bay.center-n/2-15} ${y+col.cableGap}L${bay.center-n/2} ${y+col.cableGap+cut}H${bay.center+n/2}L${bay.center+n/2+15} ${y+col.cableGap}Z`,shade(c,.55));}});
+    return s;
+  }
   switch (t){
     case 'robot_p20max': return ec(0,0,w/2,d/2,c)+ec(0,-d*.115,w*.07,d*.068,shade(c,.8))+rc(-w*.09,d*.455,w*.18,d*.035,'#20272b','rx="4"');
-    case 'robot_p20max_tank': case 'robot_p20max_plumbed': {
-      const tank=t==='robot_p20max_tank',rx=w*(tank?.16:.04);
+    case 'robot_p20max_tank': {
+      let s=rc(x,y,w,d,'#9ca7ad',`rx="${w*.24}"`)+rc(x+w*.035,y+d*.015,w*.93,d*.91,c,`rx="${w*.26}"`)
+        +rc(x+w*.095,y+d*.06,w*.81,d*.79,shade(c,1.04),`rx="${w*.24}"`)
+        +rc(-w*.075,d*.332,w*.15,d*.008,'#b4d8e8','rx="2"');
+      for(const k of [-1,1]){const tx=k*w*.293;s+=rc(tx-w*.047,d*.34,w*.094,d*.12,'#69757d','rx="3"');for(let i=0;i<8;i++)s+=ln(tx-w*.04,d*(.345+i*.015),tx+w*.04,d*(.345+i*.015),'opacity=".55"');}
+      return s;
+    }
+    case 'robot_p20max_plumbed': {
+      const tank=false,rx=w*.04;
       return rc(x,y,w,d,c,`rx="${rx}"`)+rc(x+w*.06,y+d*.035,w*.88,d*.62,shade(c,1.04),`rx="${rx*.8}"`)
         +ln(x+w*.12,y+d*.18,x+w*.88,y+d*.18)
         +ec(0,d*.13,w*(tank?.389:.459),d*(tank?.391:.371),shade(c,.91),DASH)
@@ -33,6 +46,12 @@ const DASH = 'stroke-dasharray="4 3"';
       s += rc(x+15,by,w-30,bh,c,'rx="40"') + pa(`M${x+15} ${by+300}H${x+w-15}`,'none',DASH);
       s += pa(`M${x+w-15-Math.min(420,w*.3)} ${by}L${x+w-15} ${by}L${x+w-15} ${by+Math.min(420,w*.3)}Z`, shade(c,1.12));
       return s;
+    }
+    case 'sofa_yeswood_cherry': {
+      const a=w*.085,b=d*.245,wood='#b77749',cw=(w-2*a)/2;
+      let s=rc(x,y,w,d,wood,'rx="16"');
+      for(let i=0;i<2;i++)s+=rc(x+a+i*cw+5,y+b,cw-10,d-b-16,c,'rx="40"')+rc(x+a+i*cw+5,y+12,cw-10,b-20,c,'rx="35"');
+      return s+rc(x+w*.016,y+25,a-w*.024,d-50,c,'rx="35"')+rc(x+w-a+w*.008,y+25,a-w*.024,d-50,c,'rx="35"');
     }
     case 'sofa': case 'armchair': {
       const b = d*.24, a = Math.min(200,w*.13), n = t==='armchair' ? 1 : (w>2200 ? 3 : 2), cw = (w-2*a)/n, dk = shade(c,.85);

@@ -191,7 +191,7 @@ function collisions(){return FurnishGeometry.collisions(state.furniture);}
 /* ======================= 颜色 / 材质图案 ======================= */
 const shade = FurnishFurnitureSVG.shade;
 
-function furnSVG(type,w,d,color){return FurnishFurnitureSVG.render(type,w,d,color,PAL);}
+function furnSVG(type,w,d,color,f){return FurnishFurnitureSVG.render(type,w,d,color,PAL,f);}
 
 function updateHeader(){
   const tot = ROOMS.filter(r => r.counted !== false).reduce((a,r) => a + area(r.poly), 0);
@@ -518,7 +518,7 @@ function openHelp(){
       [tr('方向键','Arrows'),'微调 10mm（Shift 100mm）','Nudge 10mm (Shift 100mm)']])}
     ${g(tr('鼠标 / 触屏', 'Mouse / touch'), [[tr('Shift+点击','Shift+click'),'加入 / 移出选择','Add / remove from selection'],[tr('Shift+拖动','Shift+drag'),'在空白处框选','Box select on empty space'],
       [tr('右键 / 长按','Right-click / long-press'),'操作菜单','Action menu'],[tr('双击家具','Double-click'),'旋转 90°','Rotate 90°'],[tr('拖顶部圆点','Top dot'),'旋转（Shift 任意角度）','Rotate (Shift = free)'],
-      [tr('拖右下方块','Corner square'),'调整宽深','Resize'],[tr('双指','2 fingers'),'缩放 / 平移','Zoom / pan']])}
+      [tr('拖右侧／下方白色手柄','Right / bottom white handle'),'单独调整宽／深','Resize width / depth'],[tr('拖角落橙色方块','Orange corner square'),'同时调整宽深','Resize both'],[tr('双指','2 fingers'),'缩放 / 平移','Zoom / pan']])}
     ${g(tr('3D 漫游', '3D walk'), [['W A S D','移动','Move'],['Shift','快走','Run'],['E','开关正前方的门','Toggle door ahead'],['Esc','暂停','Pause']])}
   </div>`});
 }

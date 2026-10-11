@@ -1,0 +1,21 @@
+/* Inspect the same cabinet geometry used by the editor and room scene. */
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..'),dir=path.join(root,'output/tv-floor');fs.mkdirSync(dir,{recursive:true});
+const map=fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
+fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>落地电视柜 · 上盖抽屉藏线</title>
+<style>body{margin:0;background:#f4efe7;color:#4b3d30;font:16px system-ui}header,footer{padding:24px 32px}h1{margin:0 0 10px;font-size:26px}p{margin:0;line-height:1.8}main{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 24px}article{background:#fcfaf6;border-radius:12px;overflow:hidden}h2{font-size:17px;margin:18px 24px}canvas{display:block;width:100%;height:430px}button{padding:8px 18px}@media(max-width:800px){main{grid-template-columns:1fr}}</style>
+<header><h1>落地电视柜 · 上盖抽屉藏线</h1><p>可调起始尺寸 3000 × 400 × 240 mm · 贴地、五分区、无把手<br>中央后侧留缝 30 mm，带取盖缺口；尺寸除留缝外均为草模假设。</p></header>
+<main><article><h2>关闭 · 分段顶板</h2><canvas></canvas></article><article><h2>中央拉出 · 后侧敞开藏线</h2><canvas></canvas></article></main><footer><button id="toggle">开合中央上盖抽屉</button> <button id="sides">开合两侧普通抽屉</button><p>两侧四格为普通抽屉，上方台面保持固定。拖动旋转、滚轮缩放。抽拉行程为柜深的 70%，未指定实际滑轨；墙上插座由房间单独配置。使用生产模型。</p></footer>
+<script src="../../src/core/cabinet-core.js"></script><script src="../../src/render/cabinet-model.js"></script>${map}<script type="module">
+import * as THREE from 'three';import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const views=[];const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color,roughness:.65}));m.position.set(x,y+h/2,z);m.castShadow=true;m.receiveShadow=true;return m;};
+for(const [i,canvas] of [...document.querySelectorAll('canvas')].entries()){
+ const f={type:'tvstand',color:'#cbb08b',...FurnishCabinet.preset('tv-floor')};f.cabinet.columns[2].topOpen=!!i;
+ const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(devicePixelRatio);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+ const scene=new THREE.Scene();scene.background=new THREE.Color('#fcfaf6');const camera=new THREE.PerspectiveCamera(35,1,.01,30);camera.position.set(2.2,2.5,3.9);
+ const controls=new OrbitControls(camera,canvas);controls.target.set(0,.17,0);camera.position.sub(controls.target).multiplyScalar(Math.max(1,1.2/(canvas.clientWidth/canvas.clientHeight))).add(controls.target);controls.update();scene.add(new THREE.HemisphereLight(0xffffff,0x766755,2.3));
+ const light=new THREE.DirectionalLight(0xfff2dc,3);light.position.set(-2,4,3);light.castShadow=true;light.shadow.mapSize.set(2048,2048);light.shadow.camera.left=-3;light.shadow.camera.right=3;light.shadow.camera.top=3;light.shadow.camera.bottom=-3;scene.add(light);
+ let model=FurnishCabinetModel.build(THREE,f,box);scene.add(model);
+ const floor=new THREE.Mesh(new THREE.PlaneGeometry(10,10),new THREE.ShadowMaterial({opacity:.14}));floor.rotation.x=-Math.PI/2;floor.position.y=-.001;floor.receiveShadow=true;scene.add(floor);
+ function render(){renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();renderer.render(scene,camera);}controls.addEventListener('change',render);window.addEventListener('resize',render);render();views.push({f,render,rebuild(){scene.remove(model);model.traverse(o=>{o.geometry?.dispose();if(o.material)o.material.dispose();});model=FurnishCabinetModel.build(THREE,f,box);scene.add(model);render();}});
+}document.querySelector('#toggle').onclick=()=>views.forEach(v=>{v.f.cabinet.columns[2].topOpen=!v.f.cabinet.columns[2].topOpen;v.rebuild();});document.querySelector('#sides').onclick=()=>views.forEach(v=>{for(const i of [0,1,3,4])v.f.cabinet.columns[i].drawers[0].open=!v.f.cabinet.columns[i].drawers[0].open;v.rebuild();});window.previewReady=true;
+</script></html>`);console.log(path.join(dir,'preview.html'));

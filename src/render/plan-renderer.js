@@ -37,9 +37,14 @@ function renderRooms(){
   $('#gRooms').innerHTML = s;
 }
 
-// 绘制顺序与数组顺序无关的层级：地毯永远在最下，吊灯在最上（半透明）——避免复制出的地毯盖住其他家具
-const ZCLS = t => t === 'rug' ? 0 : t === 'pendant' ? 2 : 1;
-const drawOrder = () => state.furniture.map((f, i) => [f, i]).sort((a, b) => ZCLS(a[0].type) - ZCLS(b[0].type) || a[1] - b[1]).map(p => p[0]);
+// Floor rugs and translucent pendants retain their layers; separated height
+// ranges are drawn bottom to top wherever their plan footprints overlap.
+const drawOrder = () => FurnishDesign.planFurnitureOrder(state.furniture);
+function syncFurnOrder(){
+ const g=$('#gFurn'),nodes=[...g.children],byId=new Map(nodes.map(node=>[node.dataset.fid,node])),order=drawOrder();
+ if(order.every((f,i)=>nodes[i]?.dataset.fid===f.id))return;
+ for(const f of order){const node=byId.get(f.id);if(node)g.appendChild(node);}
+}
 const furnT = f => `translate(${f.cx} ${f.cy}) rotate(${f.rot})`;
 let clashIds = new Set();
 function renderFurn(){
@@ -50,7 +55,7 @@ function renderFurn(){
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
     const label = Math.min(f.w,f.d) >= 380 && !NOLABEL.includes(f.type)
       ? `<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>` : '';
-    const body = furnSVG(f.type,f.w,f.d,f.color), flip = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
+    const body = furnSVG(f.type,f.w,f.d,f.color,f), flip = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
     const clash = ui.layers.collide && clashIds.has(f.id)
       ? `<rect data-edit-overlay="clash" x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="url(#clash)" stroke="#d64532" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"/>` : '';
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
@@ -219,17 +224,21 @@ function renderSelectedGeometry(){
       // 触屏上手柄更大、离家具更远，并各带一圈透明的大热区；锁定的家具不显示手柄
       const p = 5*k, hs = COARSE ? 1.7 : 1, ro = (COARSE ? 40 : 26)*k, hit = (COARSE ? 24 : 11)*k;
       const sx = f.w/2+p, sy = f.d/2+p;
+      const resizeCursor=angle=>['ew-resize','nwse-resize','ns-resize','nesw-resize'][((Math.round(angle/45)%4)+4)%4];
+      const edgeHandle=(axis,x,y,angle,label)=>`<g data-handle="size" data-axis="${axis}" style="cursor:${resizeCursor(angle)}"><title>${label}</title><circle cx="${x}" cy="${y}" r="${hit}" fill="transparent"/><rect x="${x-5*hs*k}" y="${y-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A} stroke-width="1.5"/></g>`;
       s += `<g transform="${furnT(f)}">
         <rect x="${-f.w/2-p}" y="${-f.d/2-p}" width="${f.w+2*p}" height="${f.d+2*p}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`;
       if (!f.locked) s += `
         <line x1="0" y1="${-f.d/2-p}" x2="0" y2="${-f.d/2-ro}" ${A} stroke-width="1" pointer-events="none"/>
         <circle data-handle="rot" cx="0" cy="${-f.d/2-ro}" r="${hit}" fill="transparent"/>
         <circle data-handle="rot" cx="0" cy="${-f.d/2-ro}" r="${6*hs*k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动旋转（Shift 自由角度）','Drag to rotate (Shift for free angle)')}</title></circle>
-        <circle data-handle="size" cx="${sx}" cy="${sy}" r="${hit}" fill="transparent"/>
-        <rect data-handle="size" x="${sx-5*hs*k}" y="${sy-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" fill="${ACC}"><title>${tr('拖动调整尺寸','Drag to resize')}</title></rect>`;
+        ${edgeHandle('w',sx,0,f.rot,tr('只调整宽度（固定对侧边）','Resize width only (opposite edge stays fixed)'))}
+        ${edgeHandle('d',0,sy,f.rot+90,tr('只调整深度（固定对侧边）','Resize depth only (opposite edge stays fixed)'))}
+        <g data-handle="size" style="cursor:${resizeCursor(f.rot+45)}"><title>${tr('同时调整宽度和深度','Resize width and depth together')}</title><circle cx="${sx}" cy="${sy}" r="${hit}" fill="transparent"/>
+        <rect x="${sx-5*hs*k}" y="${sy-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" fill="${ACC}"/></g>`;
       s += `</g>`;
       const {hh} = aabb(f);
-      s += `<text x="${f.cx}" y="${f.cy+hh+24*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${f.locked ? tr('已锁定 · ', 'Locked · ') : ''}${f.w} × ${f.d}</text>`;
+      s += `<text x="${f.cx}" y="${f.cy+hh+24*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${f.locked ? tr('已锁定 · ', 'Locked · ') : ''}${Math.round(f.w*10)/10} × ${Math.round(f.d*10)/10}</text>`;
       if (ui.layers.clear && (!drag || drag.kind === 'move')) s += clearanceSVG(f, k);
     }
   } else if (ui.sel?.kind === 'note' && noteBox[ui.sel.id]){

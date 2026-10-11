@@ -24,23 +24,23 @@
     return {position:[Math.round(nx),Math.round(ny)],guides:lines};
   }
   // Resize from the original opposite corner, so snapping never moves that anchor.
-  function resize(f,p,{scale,wallSnap,rects}){
+  function resize(f,p,{scale,wallSnap,rects,axis='both'}){
     const a=f.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
     const anchor={x:f.cx-f.w/2*c+f.d/2*s,y:f.cy-f.w/2*s-f.d/2*c};
-    const dimensions=q=>({w:Math.max(100,Math.round(((q.x-anchor.x)*c+(q.y-anchor.y)*s)/10)*10),d:Math.max(100,Math.round((-(q.x-anchor.x)*s+(q.y-anchor.y)*c)/10)*10)});
+    const dimensions=q=>({w:axis==='d'?f.w:Math.max(100,Math.round(((q.x-anchor.x)*c+(q.y-anchor.y)*s)/10)*10),d:axis==='w'?f.d:Math.max(100,Math.round((-(q.x-anchor.x)*s+(q.y-anchor.y)*c)/10)*10)});
     const build=({w,d})=>({...f,w,d,cx:anchor.x+w/2*c-d/2*s,cy:anchor.y+w/2*s+d/2*c});
     let next=build(dimensions(p));const guides=[];
     if(wallSnap&&Math.abs(Math.sin(2*a))<1e-6){
       const tol=tolerance(f,scale),B=geometry.aabb(next),corner={x:next.cx+next.w/2*c-next.d/2*s,y:next.cy+next.w/2*s+next.d/2*c};
       let bx=tol,by=tol,gx=null,gy=null;
       for(const r of rects){
-        if(r[3]>=next.cy-B.hh-tol&&r[1]<=next.cy+B.hh+tol)for(const x of [r[0],r[2]])if(Math.abs(x-p.x)<bx){bx=Math.abs(x-p.x);gx=x;}
-        if(r[2]>=next.cx-B.hw-tol&&r[0]<=next.cx+B.hw+tol)for(const y of [r[1],r[3]])if(Math.abs(y-p.y)<by){by=Math.abs(y-p.y);gy=y;}
+        if((axis==='both'||(axis==='w'?Math.abs(c):Math.abs(s))>.5)&&r[3]>=next.cy-B.hh-tol&&r[1]<=next.cy+B.hh+tol)for(const x of [r[0],r[2]])if(Math.abs(x-p.x)<bx){bx=Math.abs(x-p.x);gx=x;}
+        if((axis==='both'||(axis==='w'?Math.abs(s):Math.abs(c))>.5)&&r[2]>=next.cx-B.hw-tol&&r[0]<=next.cx+B.hw+tol)for(const y of [r[1],r[3]])if(Math.abs(y-p.y)<by){by=Math.abs(y-p.y);gy=y;}
       }
       // Keep exact wall coordinates rather than rounding a snapped dimension to grid.
       if(gx!==null)corner.x=gx;if(gy!==null)corner.y=gy;
       const w=(corner.x-anchor.x)*c+(corner.y-anchor.y)*s,d=-(corner.x-anchor.x)*s+(corner.y-anchor.y)*c;
-      next=build({w:Math.max(100,w),d:Math.max(100,d)});
+      next=build({w:axis==='d'?f.w:Math.max(100,Math.round(w*1e6)/1e6),d:axis==='w'?f.d:Math.max(100,Math.round(d*1e6)/1e6)});
       const N=geometry.aabb(next),end={x:next.cx+next.w/2*c-next.d/2*s,y:next.cy+next.w/2*s+next.d/2*c};
       if(gx!==null&&Math.abs(end.x-gx)<.01)guides.push({v:true,x:gx,a:next.cy-N.hh-150,b:next.cy+N.hh+150});
       if(gy!==null&&Math.abs(end.y-gy)<.01)guides.push({v:false,y:gy,a:next.cx-N.hw-150,b:next.cx+N.hw+150});
