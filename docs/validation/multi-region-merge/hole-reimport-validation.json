@@ -1,0 +1,39 @@
+{
+  "file": "D:/1601装修/图纸/设计方案/Furnish导入验证/current-hole-export.furnish.json",
+  "boundaryIdentical": true,
+  "areaStatisticsIdentical": true,
+  "regions": [
+    {
+      "id": "area_study",
+      "rings": 1,
+      "area": 6.23251125
+    },
+    {
+      "id": "area_hole_4",
+      "rings": 1,
+      "area": 1.694444446355557
+    },
+    {
+      "id": "area_fmv2m2tks1",
+      "rings": 2,
+      "area": 13.555555553644442
+    },
+    {
+      "id": "room1",
+      "rings": 2,
+      "area": 36.30522975
+    },
+    {
+      "id": "room2",
+      "rings": 1,
+      "area": 8.638624
+    },
+    {
+      "id": "room3",
+      "rings": 1,
+      "area": 3.825658
+    }
+  ],
+  "net": 70.25202300000001,
+  "method": "Actual UI export download and file upload in a new tab; import added an independent custom project"
+}

@@ -45,7 +45,7 @@
     }
     if(d.zones!==undefined){
       if(!Array.isArray(d.zones)||d.zones.length>50)fail('指定功能区最多 50 个');
-      const ids=new Set();for(const z of d.zones){if(!z||typeof z.id!=='string'||!/^area_[a-z0-9_]+$/.test(z.id)||z.id.length>80||ids.has(z.id)||typeof z.parent!=='string'||typeof z.name!=='string'||!z.name.trim()||z.name.length>80||!['unassigned','living','dining','bedroom','study','kitchen','bathroom','balcony','hall','storage','other'].includes(z.use)||!Array.isArray(z.poly)||z.poly.some(p=>!point(p)||p[0]>d.width||p[1]>d.height))fail('指定功能区属性无效');zoneGeometry().validatePolygon(z.poly);ids.add(z.id);}
+      const ids=new Set();for(const z of d.zones){if(!z||typeof z.id!=='string'||!/^area_[a-z0-9_]+$/.test(z.id)||z.id.length>80||ids.has(z.id)||typeof z.parent!=='string'||typeof z.name!=='string'||!z.name.trim()||z.name.length>80||!['unassigned','living','dining','bedroom','study','kitchen','bathroom','balcony','hall','storage','other'].includes(z.use)||!Array.isArray(z.poly)||z.poly.some(p=>!point(p)||p[0]>d.width||p[1]>d.height))fail('指定功能区属性无效');if(z.materialExplicit!==undefined&&(z.materialExplicit!==true||typeof z.mat!=='string'||!z.mat||z.mat.length>80))fail('明确地面材料属性无效');zoneGeometry().validatePolygon(z.poly);ids.add(z.id);}
       for(const z of d.zones)if(z.rings!==undefined){if(!Array.isArray(z.rings)||!z.rings.length||z.rings.length>20||z.rings.reduce((n,r)=>n+(Array.isArray(r)?r.length:101),0)>100||JSON.stringify(z.poly)!==JSON.stringify(z.rings[0]))fail('功能区多轮廓无效或超过 100 个顶点');for(const ring of z.rings){if(ring.some(p=>!point(p)||p[0]>d.width||p[1]>d.height))fail('功能区轮廓坐标无效');zoneGeometry().validatePolygon(ring);}}
     }
     if(d.beams!==undefined){
@@ -166,7 +166,7 @@
       if(G.area(G.decompose(polys,p=>polys.filter(poly=>G.inside(p,poly)).length>1))>.01)fail('功能区不能重叠，请调整边界');
       let total=0;
       defs.forEach((z,i)=>{const pieces=G.decompose([polys[i]],p=>G.inside(p,polys[i])),geometry=G.outline(pieces),area=G.area(pieces);if(area<10000)fail('功能区面积至少为 0.01 m²');total+=area;
-        result.push({...room,...geometry,id:z.id,name:z.name,use:z.use,zone:true,areaId:z.id,parentArea:room.id,parentRoom:room.parentRoom||room.id});});
+        result.push({...room,...geometry,id:z.id,name:z.name,use:z.use,...(z.settingSource?{settingSource:z.settingSource}:{}),...(z.materialExplicit?{mat:z.mat,materialExplicit:true}: {}),zone:true,areaId:z.id,parentArea:room.id,parentRoom:room.parentRoom||room.id});});
       const pieces=G.decompose(all,p=>G.inside(p,room.poly)&&!polys.some(poly=>G.inside(p,poly))),remaining=G.area(pieces);total+=remaining;
       if(remaining>.01)result.push({...room,...G.outline(pieces),zone:true,remainder:true,parentArea:room.id,parentRoom:room.parentRoom||room.id});
       if(Math.abs(total-Math.abs(G.signed(room.poly)))>Math.max(.1,total*1e-8))fail('功能区面积校验失败，未应用修改');
@@ -254,17 +254,25 @@
     const d=clone(input),plan=build(d),room=plan.rooms.find(r=>r.id===id&&r.counted!==false);if(!room)fail('要拆分的区域不存在');
     if(!definition||!Array.isArray(definition.ids)||definition.ids.length!==2||new Set(definition.ids).size!==2||definition.ids.some(id=>plan.rooms.some(r=>r.id===id))||!Array.isArray(definition.parts)||definition.parts.length!==2)fail('请为拆分后的两个区域指定独立编号、名称和用途');
     const G=zoneGeometry(),parts=G.splitRegion(room.rings||[room.poly],definition.line?.map(p=>p.map(v=>v*d.scale))),existing=d.zones?.find(z=>z.id===id),parent=existing?.parent||room.parentArea||room.id;
-    d.zones=(d.zones||[]).filter(z=>z.id!==id);for(let i=0;i<2;i++)d.zones.push(regionDefinition(parts[i],d.scale,{id:definition.ids[i],parent,...definition.parts[i]}));
+    d.zones=(d.zones||[]).filter(z=>z.id!==id);for(let i=0;i<2;i++)d.zones.push(regionDefinition(parts[i],d.scale,{id:definition.ids[i],parent,...(room.materialExplicit?{mat:room.mat,materialExplicit:true}:{}),...definition.parts[i]}));
     const next=build(d);assertRegionCoverage([room.poly],definition.ids.map(id=>next.rooms.find(r=>r.id===id).poly));return d;
   }
   function mergeRegions(input,ids,definition){
-    let d=clone(input);const plan=build(d),G=zoneGeometry();if(!Array.isArray(ids)||ids.length!==2||new Set(ids).size!==2)fail('请选择两个不同的相邻区域');
+    let d=clone(input);const plan=build(d),G=zoneGeometry();if(!Array.isArray(ids)||ids.length<2||new Set(ids).size!==ids.length)fail('请选择至少两个不同的相邻区域');
     const rooms=ids.map(id=>plan.rooms.find(r=>r.id===id&&r.counted!==false));if(rooms.some(r=>!r))fail('要合并的区域不存在');
-    if((rooms[0].parentRoom||rooms[0].id)!==(rooms[1].parentRoom||rooms[1].id)||!G.adjacent(rooms[0].rings||[rooms[0].poly],rooms[1].rings||[rooms[1].poly]))fail('只能合并同一物理空间内具有共用边的相邻区域');
+    const physical=rooms[0].parentRoom||rooms[0].id;
+    if(rooms.some(r=>(r.parentRoom||r.id)!==physical))fail('只能合并同一物理空间内具有共用边的相邻区域');
+    const reached=new Set([0]),queue=[0];while(queue.length){const i=queue.shift();rooms.forEach((r,j)=>{if(!reached.has(j)&&G.adjacent(rooms[i].rings||[rooms[i].poly],r.rings||[r.poly])){reached.add(j);queue.push(j);}});}
+    if(reached.size!==rooms.length)fail('所选区域须通过共用边形成连通图，不能仅顶点接触或分离');
     if(!definition||plan.rooms.some(r=>r.id===definition.id))fail('合并后须使用新的功能区编号');
     const parents=rooms.map(r=>d.zones?.find(z=>z.id===r.id)?.parent||r.parentArea||r.id);let parent=parents[0];
-    if(parents[0]!==parents[1]){const split=d.zoneSplits?.find(z=>parents.includes(z.id+'_0')&&parents.includes(z.id+'_1'));if(!split||d.zoneSplits.some(z=>z.parent===split.id+'_0'||z.parent===split.id+'_1'))fail('请先合并同一级相邻区域，不能跨越已有的后续分界');d=removeZoneSplit(d,split.id);parent=split.parent;}
-    const all=rooms.map(r=>r.poly),geometry=G.outline(G.decompose(all,p=>all.some(poly=>G.inside(p,poly))));d.zones=(d.zones||[]).filter(z=>!ids.includes(z.id));d.zones.push(regionDefinition(geometry,d.scale,{id:definition.id,parent,name:definition.name,use:definition.use}));
+    if(parents.some(p=>p!==parent)){
+      const affected=plan.rooms.filter(r=>(r.parentRoom||r.id)===physical&&r.counted!==false);
+      for(const z of (d.zoneSplits||[]).filter(z=>z.parent===physical))d=removeZoneSplit(d,z.id);
+      d.zones=(d.zones||[]).filter(z=>!affected.some(r=>r.id===z.id));parent=physical;
+      for(const r of affected.filter(r=>!ids.includes(r.id)))d.zones.push(regionDefinition({rings:r.rings||[r.poly]},d.scale,{id:r.id.startsWith('area_')?r.id:'area_legacy_'+r.id,parent,name:r.name,use:r.use||'other',settingSource:r.id,...(r.materialExplicit?{mat:r.mat,materialExplicit:true}:{})}));
+    }
+    const all=rooms.map(r=>r.poly),geometry=G.outline(G.decompose(all,p=>all.some(poly=>G.inside(p,poly))));d.zones=(d.zones||[]).filter(z=>!ids.includes(z.id));d.zones.push(regionDefinition(geometry,d.scale,{id:definition.id,parent,name:definition.name,use:definition.use,...(definition.mat!==undefined?{mat:definition.mat,materialExplicit:true}: {})}));
     const next=build(d);assertRegionCoverage(all,[next.rooms.find(r=>r.id===definition.id).poly]);return d;
   }
   function adjacentRegions(input,id){const plan=build(input),room=plan.rooms.find(r=>r.id===id&&r.counted!==false),G=zoneGeometry();return room?plan.rooms.filter(r=>r.id!==id&&r.counted!==false&&(room.parentRoom||room.id)===(r.parentRoom||r.id)&&G.adjacent(room.rings||[room.poly],r.rings||[r.poly])):[];}

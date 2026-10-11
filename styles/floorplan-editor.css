@@ -56,3 +56,9 @@
 }
 @media print{.trace-overlay{display:none}
 }
+
+/* Multiple region merge: keep field sources readable and hole preview visible. */
+#dlg:has(#merge-preview) label{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap}
+#dlg:has(#merge-preview) select,#dlg:has(#merge-preview) input:not([type=checkbox]){flex:1;min-width:120px;padding:6px}
+#merge-regions{max-height:145px;overflow:auto}
+#merge-preview{border-radius:8px}
