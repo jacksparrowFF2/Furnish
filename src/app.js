@@ -298,7 +298,7 @@ function openCmd(){
 function closeCmd(){ $('#cmd').hidden = true; }
 function renderCmd(){
   const q = $('#cmdIn').value.trim().toLowerCase(), words = q.split(/\s+/).filter(Boolean);
-  const hay = it => (it.zh + ' ' + it.en + ' ' + s2t(it.zh)).toLowerCase();
+  const hay = it => (it.zh + ' ' + it.en + ' ' + FurnishI18n.toTraditional(it.zh)).toLowerCase();
   let list = cmdItems.map((it, i) => ({it, i, h:hay(it)})).filter(o => words.every(w => o.h.includes(w)));
   if (!q) list = list.filter(o => o.it.g === tr('命令', 'Actions') || o.it.g === tr('风格', 'Styles'));
   // 名称开头命中的排前面（如输入「沙发」时「添加：三人沙发」在「定位：…」之前不重要，开头匹配优先）
@@ -461,7 +461,7 @@ function openDialog({title, body, actions = [], wide = false, onOpen}){
   onOpen?.();
   ($('#dlgBody input:not([type=checkbox])') || A.querySelector('.primary') || $('#dlgClose')).focus();
 }
-function closeDialog(){ $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true}); }
+function closeDialog(){ window.FurnishCabinetEditor?.dispose(); $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true}); }
 $('#dlgClose').onclick = closeDialog;
 $('#dlg').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeDialog();return;}if(e.key!=='Tab')return;const nodes=[...$('#dlg').querySelectorAll('button,a[href],input,select,textarea,[tabindex]')].filter(el=>!el.disabled&&el.tabIndex>=0&&el.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}e.stopPropagation();});
 $('#dlg').addEventListener('pointerdown', e => { if (e.target.id === 'dlg') closeDialog(); });

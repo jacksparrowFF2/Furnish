@@ -4,6 +4,21 @@ const d={version:1,id:'custom_boundary_test',name:'联动区域',source:'dxf',im
 const zone=(id,poly)=>({id:'area_'+id,parent:'room1',name:id,use:id==='living'?'living':'dining',poly});
 const living=zone('living',[[200,200],[800,200],[800,1000],[200,1000]]),dining=zone('dining',[[800,200],[1400,200],[1400,1000],[800,1000]]);
 const both=Core.addZone(Core.addZone(d,living),dining),before=structuredClone(both);
+// Drain/gas circles may sit on, cross, or be enclosed by a functional boundary.
+// Neither point centers nor their radii change region geometry or usable area.
+const serviceDraft={...d,markers:[
+ {id:'drain',kind:'drain',name:'下水',at:[800,400],radius:150},
+ {id:'gas',kind:'gas',name:'燃气',at:[800,800],radius:200}
+]};
+const serviceZones=Core.addZone(Core.addZone(serviceDraft,living),dining);
+assert.deepEqual(Core.build(serviceZones).rooms,Core.build(both).rooms);
+for(const x of [700,800,900,1100]){
+ const poly=[[200,200],[x,200],[x,1000],[200,1000]];
+ const next=Core.editZoneBoundary(serviceZones,living.id,poly);
+ assert.deepEqual(Core.build(next).rooms,Core.build(Core.editZoneBoundary(both,living.id,poly)).rooms);
+ assert.deepEqual(next.markers,serviceDraft.markers);
+ assert.equal(P.quantities(Core.build(next)).net,P.quantities(Core.build(d)).net);
+}
 const union=ps=>G.area(G.decompose(ps,p=>ps.some(poly=>G.inside(p,poly))));
 for(const x of [600,900,1200]){
  const next=Core.editZoneBoundary(both,living.id,[[200,200],[x,200],[x,1000],[200,1000]]);
@@ -24,6 +39,17 @@ assert.ok(moved.zones.slice(1).every(z=>z.poly.filter(p=>p[0]===950).length===2)
 const partial=Core.addZone(Core.addZone(d,zone('living',[[200,400],[800,400],[800,800],[200,800]])),dining);
 const partialMoved=Core.editZoneBoundary(partial,'area_living',[[200,400],[900,400],[900,800],[200,800]]);
 assert.equal(partialMoved.zones[1].poly.length,8);assert.equal(union(partialMoved.zones.map(z=>z.poly)),union(partial.zones.map(z=>z.poly)));
+// Slide a partially shared endpoint along the neighbor's edge to its corner.
+// The old connection point must not leave a reverse/self-touching segment.
+const side=zone('side',[[800,220],[1100,220],[1100,800],[800,800]]);
+const connected=Core.addZone(Core.addZone(d,living),side);
+for(const y of [210,200,300]){
+ const poly=[[800,y],[1100,y],[1100,800],[800,800]];
+ const aligned=Core.editZoneBoundary(connected,side.id,poly,{edge:0});
+ assert.equal(G.area(G.decompose([aligned.zones[0].poly,living.poly],p=>G.inside(p,aligned.zones[0].poly)!==G.inside(p,living.poly))),0);
+ assert.deepEqual(aligned.zones[1].poly,poly);
+ assert.equal(P.quantities(Core.build(aligned)).net,P.quantities(Core.build(d)).net);
+}
 // Oblique shared edge, reversed neighbor winding, and exact project roundtrip.
 const angled=Core.addZone(Core.addZone(d,zone('living',[[200,200],[800,200],[900,1000],[200,1000]])),zone('dining',[[800,200],[900,1000],[1400,1000],[1400,200]]));
 const angleMoved=Core.editZoneBoundary(angled,'area_living',[[200,200],[850,200],[950,1000],[200,1000]]);

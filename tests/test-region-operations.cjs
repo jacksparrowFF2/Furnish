@@ -1,6 +1,19 @@
 'use strict';
 const assert=require('node:assert/strict'),G=require('../src/core/zone-geometry.js'),C=require('../src/core/floorplan-core.js'),P=require('../src/core/project-core.js');
 const d={version:1,id:'custom_regions',name:'折线拆分与合并',source:'dxf',image:'',width:2000,height:1500,scale:2,walls:[{id:'top',a:[0,50],b:[2000,50]},{id:'bottom',a:[0,1450],b:[2000,1450]},{id:'left',a:[50,100],b:[50,1400]},{id:'right',a:[1950,100],b:[1950,1400]}].map(w=>({...w,thickness:200,kind:'b',caps:[0,0]})),openings:[]};
+// Auto-detected rooms support naming, editable boundaries and removing designation.
+const named=C.setRegionSetting(d,'room1',{name:'客餐厅',use:'living'});
+assert.equal(C.build(named).rooms[0].name,'客餐厅');assert.equal(C.build(d).rooms[0].name,'房间 1');
+const editable=C.editableRegion(named,'room1','area_editable');
+assert.equal(editable.id,'area_editable');assert.equal(C.build(editable.draft).rooms[0].name,'客餐厅');
+const editableOutline=structuredClone(editable.draft.zones[0].poly);editableOutline.forEach(p=>{if(p[0]===1900)p[0]=1800;});
+const resized=C.editZoneBoundary(editable.draft,editable.id,editableOutline);
+assert.equal(C.build(resized).rooms.find(r=>r.remainder).name,'未划分空间');
+assert.equal(P.quantities(C.build(resized)).net,P.quantities(C.build(d)).net);
+const removed=C.removeRegion(resized,editable.id);assert.equal(removed.zones.length,0);assert.equal(C.build(removed).rooms[0].name,'未划分空间');assert.deepEqual(removed.walls,d.walls);
+assert.equal(C.build(C.removeRegion(named,'room1')).rooms[0].use,'unassigned');
+assert.throws(()=>C.setRegionSetting(d,'room1',{name:'',use:'living'}));
+const savedRegion=P.unpack(P.pack({planId:d.id,current:{furniture:[],rooms:{},architecture:{draft:removed,phase:'survey'},open:{},demolished:[],notes:[],measures:[]},designs:[],catalog:[]}));assert.deepEqual(savedRegion.current.architecture.draft.regionSettings,removed.regionSettings);
 const z={id:'area_original',parent:'room1',name:'开放空间',use:'living',poly:[[200,200],[800,200],[800,800],[200,800]]},base=C.addZone(d,z),definition={ids:['area_living','area_dining'],parts:[{name:'客厅',use:'living'},{name:'餐厅',use:'dining'}],line:[[200,500],[350,450],[550,550],[800,500]]};
 const original=structuredClone(base),split=C.splitRegion(base,z.id,definition),plan=C.build(split);
 assert.deepEqual(base,original);assert.equal(split.zones.length,2);assert.equal(P.quantities(plan).net,P.quantities(C.build(base)).net);assert.deepEqual(plan.walls,C.build(base).walls);

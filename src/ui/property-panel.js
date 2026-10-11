@@ -70,6 +70,7 @@ function furnPanel(f){
   return `<section><div class="fhead"><div class="fthumb"><svg viewBox="${-f.w/2-pad} ${-f.d/2-pad} ${f.w+2*pad} ${f.d+2*pad}">${f.flip ? `<g transform="scale(-1 1)">${furnSVG(f.type,f.w,f.d,f.color)}</g>` : furnSVG(f.type,f.w,f.d,f.color)}</svg></div>
       <div><b>${esc(nm(f.name))}</b><small>${f.w} × ${f.d} mm · ${yen(priceOf(f))}</small>${f.locked ? `<span class="tag">${ico('lock')}${tr('已锁定','Locked')}</span>` : ''}</div></div>
     <h3>${tr('家具属性','Furniture')}</h3>
+    ${FurnishCabinet.supported(f)?`<button class="btn primary" id="cabinet-edit" ${lk}>${tr('柜体详细设计','Design cabinet')}</button><p class="muted">${tr('设计尺寸、分区、层板、抽屉和柜门；3D 中双击柜体也可进入。','Edit dimensions, bays, shelves, drawers and doors; double-click the cabinet in 3D to open.')}</p>`:''}
     ${f.type==='curtain'?`<div class="form"><label class="full">${tr('窗帘样式','Curtain style')}<select id="curtainStyle" ${lk}><option value="single" ${f.curtainStyle==='single'?'selected':''}>${tr('单开 · 向一侧收拢','Single · stack to one side')}</option><option value="double" ${f.curtainStyle!=='single'?'selected':''}>${tr('双开 · 向两侧收拢','Double · stack to both sides')}</option></select></label></div><p class="muted">${tr('3D 点击布幔开启／关闭；单开窗帘可用镜像改变收拢侧。','Click cloth in 3D to open or close; mirror a single curtain to switch sides.')}</p>`:''}
     ${['slidingdoor','tripleslidingdoor'].includes(f.type)?`<p class="muted">${tr('进入 3D 点击门扇开关；镜像可改变叠合侧。作为独立隔断摆放，墙体洞口请在「编辑户型」中添加推拉门。','Click panels in 3D to open or close; mirror to change the stacking side. Place as a partition, or add a wall opening with the floor-plan editor.')}</p>`:''}
     ${isOutside(f) ? `<div class="alert">${ico('warn')}<span>${tr('这件家具在户型外','This item is outside the plan')}</span><button class="btn" data-act="rescueOne">${tr('移回','Bring back')}</button></div>` : ''}
@@ -82,7 +83,7 @@ function furnPanel(f){
       <label>${tr('中心','Center')} Y (mm)<input type="number" id="fY" value="${Math.round(f.cy)}" step="10" ${lk}></label>
       <label>${tr('旋转','Rotation')} (°)<input type="number" id="fR" value="${f.rot}" step="15" ${lk}></label>
       <label>${tr('单价','Unit price')} (¥)<input type="number" id="fP" value="${Math.round(priceOf(f))}" min="0" step="50"></label>
-      ${custom || ['curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="10" ${lk}></label>` : ''}
+      ${custom || FurnishCabinet.supported(f) || ['curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (FurnishCabinet.supported(f)?FurnishCabinet.height(f):f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="10" ${lk}></label>` : ''}
       <label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>
     </div>
     <div class="swatches">${SWATCHES.map(c => `<button data-sw="${c}" class="${c === f.color ? 'on' : ''}" style="background:${c}" title="${c}"></button>`).join('')}</div>
@@ -103,6 +104,7 @@ function furnPanel(f){
   <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右下角方块改尺寸；Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps to other items with guides); drag the top dot to rotate, the corner square to resize; Shift+click to multi-select, right-click for more.')}</section>`;
 }
 function bindFurnPanel(f){
+  if(FurnishCabinet.supported(f))$('#cabinet-edit').onclick=()=>FurnishCabinetEditor.open(f.id);
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
   if(f.type==='curtain')$('#curtainStyle').onchange=e=>{if(getF(f.id).locked)return;upd(g=>g.curtainStyle=e.target.value);};

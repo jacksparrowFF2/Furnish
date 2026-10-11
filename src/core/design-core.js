@@ -1,6 +1,7 @@
 /* Room semantics and precise placement shared by built-in and imported plans. */
 (function(root){
  'use strict';
+ const cabinet=()=>root.FurnishCabinet||require('./cabinet-core.js');
  const uses={unassigned:['未分类','Unassigned'],living:['客厅','Living room'],dining:['餐厅','Dining room'],bedroom:['卧室','Bedroom'],study:['书房','Study'],kitchen:['厨房','Kitchen'],bathroom:['卫生间','Bathroom'],balcony:['阳台','Balcony'],hall:['玄关／走廊','Hall'],storage:['储物／衣帽间','Storage'],other:['其他','Other'],bay:['飘窗台','Bay platform']};
  function inferUse(room,setting){
   if(room.counted===false)return 'bay';
@@ -22,7 +23,7 @@
  function resizeFurniture(f,values,anchor=f.resizeAnchor||'center'){
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
   const next={...f};for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
-  const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return next;
+  const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return cabinet().resize(f,next);
  }
  function pasteFurniture(clipboard,target,planBounds,makeId,available=2000,existingIds=[]){
   if(!clipboard?.items?.length)throw Error('剪贴板没有家具');
@@ -37,9 +38,10 @@
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
  function replaceFurniture(f,c){
-  const next=resizeFurniture(f,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
+  const base={...f};delete base.cabinet;const next=resizeFurniture(base,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
   Object.assign(next,{type:c.type,name:c.name,color:c.color,brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',referencePrice:c.price,frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:''});
   delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;delete next.curtainStyle;if(c.h===undefined)delete next.h;
+  if(c.cabinet&&cabinet().supported(next))next.cabinet=JSON.parse(JSON.stringify(c.cabinet));
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }

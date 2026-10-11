@@ -13,6 +13,7 @@ const MATS = {
 };
 // 家具库：[类型, 名称, 宽, 深, 颜色, 参考单价 ¥]
 const LIB = [
+  {cat:'柜体设计',items:(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],'#efe6d8',Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]])},
   {cat:'卧室', items:[
     ['bed','双人床 2.0m',2000,2200,'#c9d6df',4600],['bed','双人床 1.8m',1800,2000,'#c9d6df',3800],['bed','双人床 1.5m',1500,2000,'#d8c7dc',3000],
     ['bed','单人床',1200,2000,'#e8d5b5',1800],['crib','婴儿床',1250,700,'#efe3d0',1200],['nightstand','床头柜',450,400,'#e8dccb',600],

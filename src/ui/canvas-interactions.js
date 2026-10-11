@@ -232,7 +232,7 @@ svg.addEventListener('pointermove', e => {
     f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
   } else if (drag.kind === 'size'){
     const result=FurnishSnapping.resize(drag.original,p,{scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
-    Object.assign(f,result.furniture);ui.guides=result.guides;
+    try{const next=FurnishCabinet.supported(f)&&f.cabinet?FurnishCabinet.resize(drag.original,result.furniture):result.furniture;Object.assign(f,next);ui.guides=result.guides;}catch{return;}
     renderFurn();                              // 尺寸变了，图例需要重画
   }
   document.querySelector(`#gFurn [data-fid="${f.id}"]`)?.setAttribute('transform', furnT(f));

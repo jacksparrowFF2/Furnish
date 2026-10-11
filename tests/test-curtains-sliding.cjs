@@ -48,7 +48,7 @@ for(const value of [null,{}, {panels:4},{panels:'3'},{panels:3,extra:true}])asse
  // Exercise the production builders against the exact bundled Three.js version.
  const imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
  const THREE=await import(imports.three);
- const ctx=vm.createContext({THREE,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,options)=>new THREE.MeshStandardMaterial({color,...options}),slidingDoors:[],furnG:new THREE.Group(),dirty:false,doors:[],colliders:[],clamp01:v=>Math.max(0,Math.min(1,v))});
+ const ctx=vm.createContext({THREE,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,options)=>new THREE.MeshStandardMaterial({color,...options}),slidingDoors:[],furnG:new THREE.Group(),dirty:false,doors:[],colliders:[],clamp01:v=>Math.max(0,Math.min(1,v))});
  vm.runInContext(html.slice(html.indexOf('const asMat ='),html.indexOf('/* ======================= 建筑')),ctx);
  const loop=html.slice(html.indexOf('  for(const d of [...slidingDoors,...furnG.children'),html.indexOf('  updateSel();\n  if (!dirty)'));
  vm.runInContext(`function tick(dt){${loop}}`,ctx);

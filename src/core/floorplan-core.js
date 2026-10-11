@@ -48,6 +48,10 @@
       const ids=new Set();for(const z of d.zones){if(!z||typeof z.id!=='string'||!/^area_[a-z0-9_]+$/.test(z.id)||z.id.length>80||ids.has(z.id)||typeof z.parent!=='string'||typeof z.name!=='string'||!z.name.trim()||z.name.length>80||!['unassigned','living','dining','bedroom','study','kitchen','bathroom','balcony','hall','storage','other'].includes(z.use)||!Array.isArray(z.poly)||z.poly.some(p=>!point(p)||p[0]>d.width||p[1]>d.height))fail('指定功能区属性无效');if(z.materialExplicit!==undefined&&(z.materialExplicit!==true||typeof z.mat!=='string'||!z.mat||z.mat.length>80))fail('明确地面材料属性无效');zoneGeometry().validatePolygon(z.poly);ids.add(z.id);}
       for(const z of d.zones)if(z.rings!==undefined){if(!Array.isArray(z.rings)||!z.rings.length||z.rings.length>20||z.rings.reduce((n,r)=>n+(Array.isArray(r)?r.length:101),0)>100||JSON.stringify(z.poly)!==JSON.stringify(z.rings[0]))fail('功能区多轮廓无效或超过 100 个顶点');for(const ring of z.rings){if(ring.some(p=>!point(p)||p[0]>d.width||p[1]>d.height))fail('功能区轮廓坐标无效');zoneGeometry().validatePolygon(ring);}}
     }
+    if(d.regionSettings!==undefined){
+      if(!Array.isArray(d.regionSettings)||d.regionSettings.length>200)fail('区域属性数量无效');
+      const ids=new Set();for(const r of d.regionSettings){if(!r||typeof r.id!=='string'||!r.id||ids.has(r.id)||typeof r.name!=='string'||!r.name.trim()||r.name.length>80||!['unassigned','living','dining','bedroom','study','kitchen','bathroom','balcony','hall','storage','other'].includes(r.use))fail('区域名称或用途无效');ids.add(r.id);}
+    }
     if(d.beams!==undefined){
       if(!Array.isArray(d.beams)||d.beams.length>100)fail('Invalid beam count');
       const beamIds=new Set();for(const b of d.beams){if(!b||typeof b.id!=='string'||!b.id||beamIds.has(b.id)||typeof b.name!=='string'||b.name.length>80||!Array.isArray(b.poly)||b.poly.length<4||b.poly.length>200||b.poly.some(p=>!point(p)||p[0]>d.width||p[1]>d.height)||b.review!=='beam-height')fail('Invalid overhead beam');beamIds.add(b.id);}
@@ -195,7 +199,11 @@
         const sharedSegment=(p,q)=>moved.some(v=>fraction(p.map((n,j)=>(n+q[j])/2),v.a,v.b)!==null);
         const push=p=>{if(!points.length||!near(points.at(-1),p))points.push([...p]);};
         for(let k=0;k<cuts.length;k++){const p=cuts[k].p,q=k+1<cuts.length?cuts[k+1].p:b,nextShared=sharedSegment(p,q),prevShared=k?sharedSegment(cuts[k-1].p,p):false;if(nextShared)edgeShared=true;const next=map(p);changed ||= !near(p,next);
-          if(k&&!prevShared&&nextShared)push(p);push(next);if(k&&prevShared&&!nextShared)push(p);
+          // Retain a transition corner only for movement across the neighbor edge.
+          // Along-edge movement makes the old corner redundant; retaining it can
+          // create a reverse overlap when the shared endpoint reaches a corner.
+          const transverse=Math.abs((next[0]-p[0])*(b[1]-a[1])-(next[1]-p[1])*(b[0]-a[0]))>eps*Math.hypot(b[0]-a[0],b[1]-a[1]);
+          if(k&&transverse&&!prevShared&&nextShared)push(p);push(next);if(k&&transverse&&prevShared&&!nextShared)push(p);
         }
       }
       newRings.push(points);}
@@ -245,6 +253,26 @@
   function regionDefinition(geometry,scale,values){
     const G=zoneGeometry(),rings=geometry.rings.map(r=>r.map(p=>p.map(v=>v/scale))),outer=rings.findIndex(r=>G.signed(r)>0);if(outer<0)fail('功能区轮廓为空');if(outer)rings.unshift(rings.splice(outer,1)[0]);
     return {...values,poly:clone(rings[0]),...(rings.length>1?{rings}: {})};
+  }
+  function setRegionSetting(input,id,values){
+    const d=clone(input);if(!build(d).rooms.some(r=>r.id===id&&r.counted!==false))fail('区域不存在');
+    d.regionSettings=(d.regionSettings||[]).filter(r=>r.id!==id);d.regionSettings.push({id,name:values.name,use:values.use});
+    const z=d.zones?.find(z=>z.id===id);if(z){z.name=values.name;z.use=values.use;}build(d);return d;
+  }
+  function editableRegion(input,id,newId,values){
+    const d=clone(input),r=build(d).rooms.find(r=>r.id===id&&r.counted!==false);if(!r)fail('区域不存在');
+    if(d.zones?.some(z=>z.id===id))return {draft:d,id};
+    const z=regionDefinition({rings:r.rings||[r.poly]},d.scale,{id:newId,parent:r.parentArea||r.id,name:values?.name||r.name,use:values?.use||r.use||'unassigned',settingSource:r.id});
+    // The converted designation keeps its name; uncovered space is unassigned.
+    d.regionSettings=(d.regionSettings||[]).filter(s=>s.id!==id);
+    d.regionSettings.push({id,name:'未划分空间',use:'unassigned'});
+    return {draft:addZone(d,z),id:newId};
+  }
+  function removeRegion(input,id){
+    const d=clone(input),r=build(d).rooms.find(r=>r.id===id&&r.counted!==false);if(!r)fail('区域不存在');
+    const z=d.zones?.find(z=>z.id===id);if(z){d.zones=d.zones.filter(z=>z.id!==id);d.regionSettings=(d.regionSettings||[]).filter(s=>s.id!==id);}
+    const parent=z?.parent||id;
+    return setRegionSetting(d,parent,{name:'未划分空间',use:'unassigned'});
   }
   function assertRegionCoverage(before,after){
     const G=zoneGeometry(),all=[...before,...after],old=p=>before.some(poly=>G.inside(p,poly)),next=p=>after.some(poly=>G.inside(p,poly));
@@ -342,6 +370,7 @@
     const physicalRooms=clone(rooms);
     rooms=applyZoneSplits(rooms,d.zoneSplits||[],d.scale);
     rooms=applyZones(rooms,d.zones||[],d.scale);
+    rooms=rooms.map(r=>{const setting=d.regionSettings?.find(s=>s.id===r.id);return setting?{...r,name:setting.name,use:setting.use}:r;});
     const markers=(d.markers||[]).map(m=>({...clone(m),at:m.at.map(v=>v*d.scale)}));
     return {id:d.id,name:d.name.trim(),en:d.name.trim(),note:d.source==='dxf'?'自定义户型 · DXF 导入':'自定义户型 · 手工描图',noteEn:d.source==='dxf'?'Custom plan · DXF import':'Custom plan · manually traced',walls,wallRefs,doorRefs,winRefs,slideRefs,wins,doors,slides,rooms,physicalRooms,markers,beams:(d.beams||[]).map(b=>({...clone(b),poly:b.poly.map(p=>p.map(v=>v*d.scale))})),dims:[{h:1,at:y0-700,start:x0,segs:[x1-x0]},{h:0,at:x0-700,start:y0,segs:[y1-y0]}],bounds:{x:x0-1600,y:y0-1600,w:x1-x0+3200,h:y1-y0+3200},defaults:[],customDraft:d};
   }
@@ -398,6 +427,6 @@
       if(openings(before)!==openings(after))fail('Bearing wall openings are locked');
     }
   }
-  root.FurnishDraft={build,validate,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
+  root.FurnishDraft={build,validate,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
   if(typeof module!=='undefined') module.exports=root.FurnishDraft;
 })(typeof window==='undefined'?globalThis:window);
