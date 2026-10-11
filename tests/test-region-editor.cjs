@@ -10,7 +10,7 @@ class Element{
  querySelector(s){const attr=s.match(/^\[data-([\w-]+)="([^"]+)"\]$/);if(attr){const key=attr[1].replace(/-([a-z])/g,(_,c)=>c.toUpperCase());return this.children.find(n=>n.dataset[key]===attr[2]);}return $(s);}
  querySelectorAll(s){const attr=s.match(/^\[data-([\w-]+)\]$/);if(!attr)return [];const key=attr[1].replace(/-([a-z])/g,(_,c)=>c.toUpperCase());return this.children.filter(n=>key in n.dataset);}
  addEventListener(k,fn){(this.events[k]??=[]).push(fn);}
- setAttribute(){} after(el){if(overlay&&el)overlay.children.push(el);} before(){} focus(){} remove(){overlay=null;} setPointerCapture(){}
+ setAttribute(){} after(el){if(overlay&&el)overlay.children.push(el);} before(){} focus(){} remove(){if(this===overlay)overlay=null;} setPointerCapture(){}
  getScreenCTM(){return {a:1,b:0,inverse(){return {};}};}
  createSVGPoint(){return {x:0,y:0,matrixTransform(){return {x:this.x,y:this.y};}};}
 }
@@ -30,7 +30,7 @@ assert.equal($('#trace-properties').querySelectorAll('[data-region-split]').leng
 assert.equal(typeof $('#region-picker').onchange,'function');
 control('region-split','room1').onclick();assert.match($('#area-path-complete').innerHTML||$('#trace-properties').innerHTML,/等待边界起点/);
 point(100,500);assert.equal($('#area-path-complete').disabled,true);
-point(700,600);assert.equal($('#area-path-complete').disabled,true);
+point(700,600);assert.equal($('#area-path-complete').disabled,true);point(703,900);assert.match($('#trace-canvas').innerHTML,/<polyline points="100,500 700,600 700,900"/);
 point(1900,500);assert.equal($('#area-path-complete').disabled,false);assert.equal(dialog,null);
 const readyLine=$('#trace-canvas').innerHTML.match(/<polyline points="([^"]+)"/)[1];
 $('#trace-canvas').events.pointermove.forEach(fn=>fn({clientX:1100,clientY:900,target:{dataset:{}}}));
@@ -85,6 +85,14 @@ doubleClick({areaVertex:'0'});assert.equal(countVertices(),initialCount-1);
 const previewMid=canvas.innerHTML.match(/data-area-edge="0" cx="([^"]+)" cy="([^"]+)"/);
 canvas.events.dblclick.forEach(fn=>fn({clientX:Number(previewMid[1]),clientY:Number(previewMid[2]),target:{dataset:{areaEdge:'0'}},preventDefault(){}}));assert.equal(countVertices(),initialCount);
 $('#area-boundary-cancel').onclick();assert.match(canvas.innerHTML,/data-area-vertex="0" cx="100" cy="100"/);
+// Align a dragged point to distant vertices on the same X/Y axis.
+const moveVertex=(x,y,shiftKey=false)=>{canvas.events.pointerdown.forEach(fn=>fn(vertexEvent));canvas.events.pointermove.forEach(fn=>fn({...vertexEvent,clientX:x,clientY:y,shiftKey}));canvas.events.pointerup.forEach(fn=>fn({...vertexEvent,type:'pointerup'}));};
+moveVertex(103,500);assert.match(canvas.innerHTML,/data-area-vertex="0" cx="100" cy="500"/);$('#area-boundary-cancel').onclick();
+moveVertex(400,106);assert.match(canvas.innerHTML,/data-area-vertex="0" cx="400" cy="100"/);$('#area-boundary-cancel').onclick();
+moveVertex(103,500,true);assert.match(canvas.innerHTML,/data-area-vertex="0" cx="103" cy="500"/);
+$('#trace-close').onclick();assert.ok(overlay);assert.equal(typeof $('#trace-exit-continue').onclick,'function');assert.equal(typeof $('#trace-exit-discard').onclick,'function');
+$('#trace-exit-continue').onclick();assert.ok(overlay);assert.match(canvas.innerHTML,/data-area-vertex="0" cx="103" cy="500"/);$('#area-boundary-cancel').onclick();
+console.log('PASS horizontal/vertical vertex alignment, Shift bypass and inline exit preserves preview');
 // Coalesce a burst into one frame, flush the final move before pointerup,
 // and keep canceled/undone operations from running in a later frame.
 let frameId=0;const frames=new Map();

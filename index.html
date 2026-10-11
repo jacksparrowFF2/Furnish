@@ -1055,8 +1055,8 @@ function buildFurniture(f){
     }
     case 'waterheater_flat': {
       // Reference envelope includes the lower cover and short water outlets.
-      // Installation height is provisional; no external plumbing is assumed.
-      const h=M(f.h||565), base=1.65, bottom=h*.062, bodyH=h-bottom;
+      // Legacy items without mountHeight keep their original 1650 mm placement.
+      const h=M(f.h||565), base=M(f.mountHeight??1650), bottom=h*.062, bodyH=h-bottom;
       const capW=w*.012, white=mat(c,{roughness:.28}), gray=mat('#aeb0b2',{roughness:.42});
       const profile=(width,height)=>{
         const s=new THREE.Shape(),r=Math.min(width/2,height/2),lo=r,hi=height-r;
@@ -1358,7 +1358,7 @@ function buildFurn(){
   const byId = new Map(furnG.children.map(o => [o.userData.fid, o])), keep = new Set();
   for (const f of state.furniture){
     keep.add(f.id);
-    const sig = JSON.stringify([f.type, f.w, f.d, f.color, f.h, f.curtainStyle, f.cabinet, f.obj?.positions]);
+    const sig = JSON.stringify([f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.curtainStyle, f.cabinet, f.obj?.positions]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       o.position.set(wx(f.cx), 0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;

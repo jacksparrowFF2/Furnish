@@ -10,6 +10,25 @@ const f={id:'flat',type:entry[0],name:entry[1],cx:0,cy:0,w:entry[2],d:entry[3],c
 assert.deepEqual(P.unpack(P.pack({planId:'p1',current:{furniture:[f]},designs:[],catalog:[]})).current.furniture[0],f);
 assert.match(svg.render(f.type,f.w,f.d,f.color,{ink:'#333'}),/#17191c/);
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-5,`${a} != ${b}`);
+const design=require('../src/core/design-core.js');
+const installed={...f,mountHeight:1850};
+const backup=P.unpack(P.pack({planId:'p1',current:{furniture:[installed]},designs:[{name:'安装方案',work:{furniture:[{...installed,mountHeight:1900}]}}],catalog:[]}));
+assert.equal(backup.current.furniture[0].mountHeight,1850);assert.equal(backup.designs[0].work.furniture[0].mountHeight,1900);
+for(const value of [-1,20001,NaN,Infinity,'1800',null])assert.throws(()=>P.validateWork({furniture:[{...f,mountHeight:value}]}),/离地高度/);
+for(const value of [0,1650,20000])P.validateWork({furniture:[{...f,mountHeight:value}]});
+assert.equal(design.replaceFurniture(installed,{...f,type:'waterheater'}).mountHeight,undefined);
+assert.equal(design.replaceFurniture(installed,f).mountHeight,1850);
+assert.equal(design.resizeFurniture(installed,{w:800}).mountHeight,1850);
+// Exercise the actual panel change handler, including rejection and lock rules.
+const elements=Object.fromEntries(['#full-product-details','#fName','#fMountHeight','#fC'].map(id=>[id,{}]));
+let current={...f},errors=[],history=[];
+const panelCtx=vm.createContext({window:{},FurnishCabinet:{supported:()=>false},FurnishDesign:design,$:id=>elements[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{const before=JSON.stringify(current);fn();history.push(before);},toast:e=>errors.push(e),renderPanel:()=>{}});
+vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),panelCtx);panelCtx.renderPanel=()=>{};panelCtx.f=current;vm.runInContext('bindFurnPanel(f)',panelCtx);
+const change=value=>elements['#fMountHeight'].onchange({target:{value}});
+change('1850');assert.equal(current.mountHeight,1850);current=JSON.parse(history.pop());assert.equal(current.mountHeight,undefined);
+change('0');assert.equal(current.mountHeight,0);
+for(const value of ['','-1','20001','bad']){change(value);assert.equal(current.mountHeight,0);}
+current.locked=true;change('1800');assert.equal(current.mountHeight,0);assert.match(errors.at(-1),/锁定/);
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
  const imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
@@ -18,6 +37,16 @@ const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-5,`${a} != ${b}`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(roundedSource).toString('base64'));
  const ctx=vm.createContext({THREE,RoundedBoxGeometry,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})});
  vm.runInContext(html.slice(html.indexOf('const asMat ='),html.indexOf('/* ======================= 建筑')),ctx);
+ for(const mountHeight of [undefined,0,1850,20000]){
+  ctx.f={...f,...(mountHeight===undefined?{}:{mountHeight})};const model=vm.runInContext('buildFurniture(f)',ctx),bounds=new THREE.Box3().setFromObject(model);
+  near(bounds.min.y,(mountHeight??1650)/1000);near(bounds.max.y,(mountHeight??1650)/1000+.565);
+ }
+ // A changed installation height must invalidate the cached 3D mesh.
+ ctx.state={furniture:[f]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};
+ vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildLabels(')),ctx);
+ vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];
+ ctx.state.furniture=[{...f,mountHeight:1900}];vm.runInContext('buildFurn()',ctx);
+ assert.notEqual(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).min.y,1.9);
  for(const dims of [[700,320,565],[890,350,600],[500,260,450]])for(const rot of [0,90,180])for(const flip of [false,true]){
   ctx.f={...f,w:dims[0],d:dims[1],h:dims[2],rot,flip};
   const model=vm.runInContext('buildFurniture(f)',ctx),size=new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());

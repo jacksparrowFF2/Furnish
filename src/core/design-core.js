@@ -43,6 +43,7 @@
   delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;delete next.curtainStyle;if(c.h===undefined)delete next.h;
   if(c.cabinet&&cabinet().supported(next))next.cabinet=JSON.parse(JSON.stringify(c.cabinet));
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
+  if(c.type!=='waterheater_flat')delete next.mountHeight;
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}

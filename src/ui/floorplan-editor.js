@@ -119,6 +119,7 @@
       if(mode==='zone-edit'){const z=draft.zones?.find(z=>z.id===selectedArea);if(z)for(const [i,a]of z.poly.entries()){const b=z.poly[(i+1)%z.poly.length],length=Math.hypot(b[0]-a[0],b[1]-a[1]);html+=`<text data-area-length="${i}" x="${(a[0]+b[0])/2}" y="${(a[1]+b[1])/2-stroke*10}" font-size="${stroke*15}" text-anchor="middle" fill="#b84714" stroke="white" stroke-width="${stroke*2}" paint-order="stroke" pointer-events="none">${(length*s).toFixed(1)} mm</text>`;}}
       canvas.innerHTML=html;
       if(areaSnap)canvas.insertAdjacentHTML('beforeend',`<circle cx="${areaSnap.point[0]}" cy="${areaSnap.point[1]}" r="${stroke*7}" fill="none" stroke="#1688cc" stroke-width="${stroke*2}" pointer-events="none"><title>${areaSnap.label}</title></circle>`);
+      if(areaSnap?.guides)for(const guide of areaSnap.guides){const a=[...guide.from],b=[...areaSnap.point];a[guide.axis]=b[guide.axis];canvas.insertAdjacentHTML('beforeend',`<line data-alignment-guide="${guide.axis}" x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#1688cc" stroke-width="${stroke}" stroke-dasharray="${stroke*5} ${stroke*3}" pointer-events="none"/>`);}
       let live=liveValue;const stable=boundaryBase||draft,nextKey=JSON.stringify([stable.walls,stable.openings,stable.scale,stable.zoneSplits,stable.zones,stable.regionSettings]);if(nextKey!==liveKey){try{const plan=cachedBuild(boundaryBase||draft);livePlan=plan;live=text(' · '+plan.rooms.filter(r=>r.counted!==false).length+' 个房间 · '+plan.rooms.filter(r=>r.counted!==false).reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)+' m²',' · '+plan.rooms.filter(r=>r.counted!==false).length+' rooms');}catch(e){livePlan=null;live=text(' · 墙线尚未闭合或门窗冲突',' · Incomplete walls or conflicting openings');}liveKey=nextKey;liveValue=live;}
       if(zoneModes.includes(mode)){
         q('#trace-properties').hidden=false;q('#trace-selection-empty').hidden=true;
@@ -176,7 +177,17 @@
       const add=(point,label)=>{const distance=Math.hypot(point[0]-target[0],point[1]-target[1]);if(distance<=radius)candidates.push({point,label,distance});};
       for(const p of vertices){if(drag.type==='vertex')add(p,'顶点吸附');else{const t=(p[0]-target[0])*n[0]+(p[1]-target[1])*n[1];add(target.map((v,k)=>v+t*n[k]),'顶点对齐');}}
       for(const poly of walls)for(let k=0;k<poly.length;k++){const p=poly[k],q=poly[(k+1)%poly.length],dx=q[0]-p[0],dy=q[1]-p[1],l2=dx*dx+dy*dy;if(drag.type==='edge'&&Math.abs(dx*n[0]+dy*n[1])>1e-5)continue;const t=Math.max(0,Math.min(1,((target[0]-p[0])*dx+(target[1]-p[1])*dy)/l2));add([p[0]+t*dx,p[1]+t*dy],'墙面吸附');}
-      candidates.sort((a,b)=>(drag.type==='vertex'?Number(b.label==='顶点吸附')-Number(a.label==='顶点吸附'):0)||a.distance-b.distance);areaSnap=candidates[0]||null;return areaSnap?areaSnap.point:target;
+      candidates.sort((a,b)=>(drag.type==='vertex'?Number(b.label==='顶点吸附')-Number(a.label==='顶点吸附'):0)||a.distance-b.distance);areaSnap=candidates[0]||null;
+      if(drag.type==='vertex'&&areaSnap?.label!=='顶点吸附'){
+        const aligned=alignPoint(areaSnap?.point||target,vertices.filter(p=>!onMoving(p)),radius);
+        if(aligned.guides.length)areaSnap=aligned;
+      }
+      return areaSnap?areaSnap.point:target;
+    }
+    function alignPoint(target,vertices,radius){
+      const point=[...target],guides=[];
+      for(const axis of [0,1]){const near=vertices.map(p=>({p,d:Math.abs(p[axis]-target[axis])})).filter(v=>v.d<=radius).sort((a,b)=>a.d-b.d)[0];if(near){point[axis]=near.p[axis];guides.push({axis,from:near.p});}}
+      return {point,guides,label:guides.length===2?'水平／垂直对齐':guides[0]?.axis===0?'垂直对齐':'水平对齐'};
     }
     function areaPrecision(){
       const base=copy(draft),z=base.zones.find(z=>z.id===selectedArea);if(!z)return;
@@ -222,8 +233,8 @@
       const edge=points.map((a,i)=>{const b=points[(i+1)%points.length],dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy))),point=[a[0]+dx*t,a[1]+dy*t];return {point,d:Math.hypot(point[0]-p[0],point[1]-p[1])};}).sort((a,b)=>a.d-b.d)[0];
       return {...edge,label:'已吸附边界',boundary:edge.d<=radius};
     }
-    function splitPathSnap(p){
-      if(!splitOrthogonal||!areaPoints.length)return splitBoundarySnap(p);
+    function splitPathSnap(p,e={}){
+      if(!splitOrthogonal||!areaPoints.length){const hit=splitBoundarySnap(p);if(!hit||hit.boundary||e.shiftKey)return hit;const vertices=[...(draft.zones||[]).flatMap(z=>z.poly),...areaPoints],aligned=alignPoint(p,vertices,8/Math.hypot(canvas.getScreenCTM().a,canvas.getScreenCTM().b));return aligned.guides.length?{...aligned,boundary:false}:hit;}
       const last=areaPoints.at(-1),axis=Math.abs(p[0]-last[0])>=Math.abs(p[1]-last[1])?0:1,point=[...p];point[1-axis]=last[1-axis];
       const r=cachedBuild(draft).rooms.find(r=>r.id===splitTarget),z=draft.zones?.find(z=>z.id===splitTarget),outer=(r.rings||[r.poly]).find(poly=>FurnishZoneGeometry.signed(poly)>0),points=z?.poly||outer.map(p=>p.map(v=>v/draft.scale)),fixed=1-axis,candidates=[];
       for(let i=0;i<points.length;i++){const a=points[i],b=points[(i+1)%points.length],delta=b[fixed]-a[fixed];if(Math.abs(delta)<1e-9){if(Math.abs(a[fixed]-point[fixed])<1e-6){const q=[...point];q[axis]=Math.max(Math.min(a[axis],b[axis]),Math.min(Math.max(a[axis],b[axis]),point[axis]));candidates.push(q);}continue;}const t=(point[fixed]-a[fixed])/delta;if(t>=0&&t<=1){const q=[...point];q[axis]=a[axis]+t*(b[axis]-a[axis]);candidates.push(q);}}
@@ -268,8 +279,8 @@
       if(mode==='zone-split-path'){
         if(e.target.dataset.pathPoint!==undefined){pathDrag={index:Number(e.target.dataset.pathPoint),before:copy(areaPoints),ended:pathEndOnBoundary};canvas.setPointerCapture(e.pointerId);return;}
         try{const plan=cachedBuild(draft);if(!splitTarget){const r=plan.rooms.find(r=>r.counted!==false&&inPoly(p[0]*draft.scale,p[1]*draft.scale,r.poly));if(!r)throw Error('请先选择要拆分的区域');splitTarget=r.id;render();return;}
-          const hit=splitPathSnap(p),boundary=hit.boundary;areaSnap=boundary?hit:null;
-          if(!areaPoints.length&&!boundary)throw Error('请在蓝色外边界点击折线起点');if(pathEndOnBoundary)return report('起点和终点已选定，请点击“完成折线拆分”。');if(areaPoints.length>=100)throw Error('折线最多 100 个点');const point=hit.point&&(boundary||splitOrthogonal)?hit.point:p;if(areaPoints.some(q=>Math.hypot(q[0]-point[0],q[1]-point[1])*draft.scale<.01))throw Error('请选另一个点，不能重复使用同一控制点');areaPoints.push([...point]);pathEndOnBoundary=boundary&&areaPoints.length>1;cursor=null;render();
+          const hit=splitPathSnap(p,e),boundary=hit.boundary;areaSnap=boundary||hit.guides?.length?hit:null;
+          if(!areaPoints.length&&!boundary)throw Error('请在蓝色外边界点击折线起点');if(pathEndOnBoundary)return report('起点和终点已选定，请点击“完成折线拆分”。');if(areaPoints.length>=100)throw Error('折线最多 100 个点');const point=hit.point&&(boundary||splitOrthogonal||hit.guides?.length)?hit.point:p;if(areaPoints.some(q=>Math.hypot(q[0]-point[0],q[1]-point[1])*draft.scale<.01))throw Error('请选另一个点，不能重复使用同一控制点');areaPoints.push([...point]);pathEndOnBoundary=boundary&&areaPoints.length>1;cursor=null;render();
         }catch(err){report('未应用：'+err.message,true);}return;
       }
       if(mode==='zone-rect'){
@@ -327,7 +338,7 @@
     function movePointer(e){
       if(pathDrag){const i=pathDrag.index,p=position(e),hit=splitBoundarySnap(p),endpoint=i===0||pathDrag.ended&&i===areaPoints.length-1;if(endpoint&&!hit.boundary)return;const next=hit.boundary?hit.point:p;if(areaPoints.some((q,k)=>k!==i&&Math.hypot(q[0]-next[0],q[1]-next[1])*draft.scale<.01))return;if(splitOrthogonal){const points=orthogonalDrag(i,next);if(!points)return;areaPoints=points;}else areaPoints[i]=[...next];areaSnap=hit.boundary?hit:null;cursor=null;render();return;}
       if(mode==='zone-split-path'&&pathEndOnBoundary){if(cursor){cursor=null;render();}return;}
-      if(mode==='zone-split-path'&&splitTarget&&!pathEndOnBoundary){const p=position(e),hit=splitPathSnap(p);areaSnap=hit.boundary?hit:null;cursor=areaPoints.length?(splitOrthogonal||hit.boundary?hit.point:p):null;render();return;}
+      if(mode==='zone-split-path'&&splitTarget&&!pathEndOnBoundary){const p=position(e),hit=splitPathSnap(p,e);areaSnap=hit.boundary||hit.guides?.length?hit:null;cursor=areaPoints.length?(splitOrthogonal||hit.boundary||hit.guides?.length?hit.point:p):null;render();return;}
 
       if(areaDrag){areaDrag.shift=e.shiftKey;const before=areaDrag.before,p=position(e),delta=p.map((v,i)=>v-areaDrag.start[i]);if(!areaDrag.moved&&Math.hypot(...delta)*Math.hypot(canvas.getScreenCTM().a,canvas.getScreenCTM().b)<3)return;areaDrag.moved=true;if(areaDrag.type!=='split')boundaryBase ||=copy(before);try{
         if(areaDrag.type==='split'){const z=before.zoneSplits.find(z=>z.id===areaDrag.id);let at=z.at+delta[z.axis];if(!e.shiftKey){const radius=8/Math.hypot(canvas.getScreenCTM().a,canvas.getScreenCTM().b),points=(cachedBuild(before).physicalRooms||[]).flatMap(r=>r.poly.map(p=>p[z.axis]/before.scale)).concat((before.zones||[]).flatMap(o=>o.poly.map(p=>p[z.axis]))),near=points.filter(v=>Math.abs(v-at)<radius&&Math.abs(v-z.at)>1e-6).sort((a,b)=>Math.abs(a-at)-Math.abs(b-at))[0];if(near!==undefined)at=near;}draft=FurnishDraft.editZoneSplit(before,z.id,at);}
@@ -429,9 +440,17 @@
     q('#trace-unlock').onclick=()=>{if(!confirm(text('解锁用于修正原始结构资料，会重新建立结构基线。保留当前墙体、门窗和家具，无需重新导入；保存后旧撤销历史清空。确认修改后请重新锁定。继续？','Unlock to correct the original structure and rebuild its baseline?')))return;phase='survey';baseline=null;revisingOriginal=true;past=[];future=[];dirty=true;setMode('properties');report('原始结构已解锁，可修改墙体与门窗。修改后重新确认并保存。');};
     q('#trace-confirm').onclick=()=>{if(boundaryBase)return report('请先应用或取消边界预览。',true);if(pendingOpening)return report('请先确认或取消门窗预览。',true);try{const checked=cachedBuild(draft);if(!confirm(text(`确认原始结构：${checked.rooms.filter(r=>r.counted!==false).length} 个房间，净面积 ${checked.rooms.filter(r=>r.counted!==false).reduce((n,r)=>n+FurnishProject.area(r.poly),0).toFixed(2)} m²，${draft.walls.length} 段墙，${draft.openings.length} 处门窗。已核对尺寸、逐墙分类及已有门窗？确认后承重／外墙锁定；保存与确认是两个步骤。`, 'Verify dimensions, wall types and existing openings. Confirmation locks bearing/exterior walls; saving is a separate step.')))return;baseline=copy(draft);phase='design';past=[];future=[];dirty=true;render();report(text('原始结构已确认。承重墙、外墙和其已有门窗已锁定。保存后即可进行装修设计。','Original structure confirmed. Bearing/exterior walls and existing openings are locked. Save to start designing.'));}catch(e){report(text('无法确认：','Cannot confirm: ')+e.message,true);}};
     function close(){cancelMove();planCache.clear();document.removeEventListener('keydown',key,true);overlay.remove();button.focus();}
-    function cancel(){if((dirty||boundaryBase) && !confirm(text('放弃本次尚未生成的描图修改？','Discard unbuilt tracing changes?')))return;close();}
+    let exitPrompt=null;
+    function requestExit(next){
+      cancelMove();if(!dirty&&!boundaryBase&&!pendingOpening&&!areaPoints.length){next();return;}
+      if(exitPrompt)return;
+      const prompt=exitPrompt=document.createElement('section');prompt.id='trace-exit-prompt';prompt.className='trace-exit-prompt';prompt.setAttribute('role','region');prompt.setAttribute('aria-label','退出编辑');
+      prompt.innerHTML='<div><b>还有未保存的修改</b><p>继续编辑可保留当前修改；放弃后返回上次保存的布局。</p></div><button class="btn primary" id="trace-exit-continue">继续编辑</button><button class="btn danger" id="trace-exit-discard">放弃修改并退出</button>';
+      q('.trace-bottom').before(prompt);q('#trace-exit-continue').onclick=()=>{prompt.remove();exitPrompt=null;canvas.focus();};q('#trace-exit-discard').onclick=next;q('#trace-exit-continue').focus();
+    }
+    function cancel(){requestExit(close);}
     q('#trace-close').onclick=cancel;
-    q('#trace-new').onclick=()=>{if(dirty&&!confirm(text('放弃本次描图并新建？','Discard this draft and start a new plan?')))return;close();openEditor(true);};
+    q('#trace-new').onclick=()=>requestExit(()=>{close();openEditor(true);});
     q('#trace-name').oninput=()=>{dirty=true;render();};
     q('#trace-upload').onclick=()=>q('#trace-file').click();
     q('#trace-file').onchange=async e=>{

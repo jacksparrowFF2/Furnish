@@ -83,6 +83,7 @@ function furnPanel(f){
       <label>${tr('中心','Center')} Y (mm)<input type="number" id="fY" value="${Math.round(f.cy)}" step="10" ${lk}></label>
       <label>${tr('旋转','Rotation')} (°)<input type="number" id="fR" value="${f.rot}" step="15" ${lk}></label>
       <label>${tr('单价','Unit price')} (¥)<input type="number" id="fP" value="${Math.round(priceOf(f))}" min="0" step="50"></label>
+      ${f.type==='waterheater_flat'?`<label class="full">${tr('底部离地高度','Bottom height above floor')} (mm)<input type="number" id="fMountHeight" value="${f.mountHeight??1650}" min="0" max="20000" step="10" ${lk}></label><p class="muted" style="grid-column:1/-1;margin:0">${tr('从地面到热水器最底部的距离，调整后同步到 3D 并随项目保存。','Distance from the floor to the lowest part of the heater; updates 3D and is saved with the project.')}</p>`:''}
       ${custom || FurnishCabinet.supported(f) || ['curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (FurnishCabinet.supported(f)?FurnishCabinet.height(f):f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="10" ${lk}></label>` : ''}
       <label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>
     </div>
@@ -108,13 +109,14 @@ function bindFurnPanel(f){
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
   if(f.type==='curtain')$('#curtainStyle').onchange=e=>{if(getF(f.id).locked)return;upd(g=>g.curtainStyle=e.target.value);};
-  const num = (id, fn) => { const el = $(id); if (el) el.onchange = e => {const v=Number(e.target.value);try{if(!e.target.value.trim()||!Number.isFinite(v))throw Error('请输入有效数字');if(['#fW','#fD','#fH','#fX','#fY','#fR'].includes(id)&&getF(f.id).locked)throw Error('家具已锁定，请先解锁');upd(g=>fn(g,v));}catch(error){toast(error.message);renderPanel();}}; };
+  const num = (id, fn) => { const el = $(id); if (el) el.onchange = e => {const v=Number(e.target.value);try{if(!e.target.value.trim()||!Number.isFinite(v))throw Error('请输入有效数字');if(['#fW','#fD','#fH','#fX','#fY','#fR','#fMountHeight'].includes(id)&&getF(f.id).locked)throw Error('家具已锁定，请先解锁');upd(g=>fn(g,v));}catch(error){toast(error.message);renderPanel();}}; };
   $('#fName').onchange = e => upd(g => g.name = e.target.value.trim() || g.name);
   num('#fW', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{w:Math.round(v)})));
   num('#fD', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{d:Math.round(v)})));
   num('#fX', (g,v) => g.cx = v); num('#fY', (g,v) => g.cy = v); num('#fR', (g,v) => g.rot = norm(v));
   num('#fP', (g,v) => g.price = Math.max(0, Math.round(v)));
   num('#fH', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{h:Math.round(v)})));
+  num('#fMountHeight', (g,v) => {if(v<0||v>20000)throw Error('底部离地高度须为 0–20000 mm');g.mountHeight=Math.round(v);});
   $('#fC').onchange = e => upd(g => g.color = e.target.value);
   document.querySelectorAll('#panel [data-sw]').forEach(b => b.onclick = () => upd(g => g.color = b.dataset.sw));
 }
