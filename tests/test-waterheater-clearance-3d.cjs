@@ -1,0 +1,35 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),P=require('../src/core/project-core.js'),D=require('../src/core/design-core.js'),model=require('../src/render/waterheater-clearance-model.js');
+(async()=>{
+ const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
+ const heater={id:'heater',type:'waterheater_flat',cx:2000,cy:1500,w:700,d:320,h:565,mountHeight:1650,rot:0},cabinet={id:'cabinet',type:'cabinet',name:'高柜',cx:2650,cy:1500,w:400,d:600,h:1800,rot:0};
+ const plan={rooms:[],walls:[[4000,0,4200,4000]],wins:[],doors:[]};
+ const work={furniture:[heater,cabinet],rooms:{},demolished:[],open:{},ceilingHeight:2800};
+ class CSS2DObject extends THREE.Object3D{constructor(element){super();this.isCSS2DObject=true;this.element=element;this.center=new THREE.Vector2(.5,.5);}}
+ const document={createElement:()=>({style:{},children:[],appendChild(child){this.children.push(child);},remove(){this.removed=true;}})};
+ const ctx=vm.createContext({THREE,CSS2DObject,document,tr:(zh,en)=>zh,FurnishProject:P,FurnishDesign:D,FurnishHeaterClearanceModel:model,PLAN:plan,state:structuredClone(work),opt:{furn:true},furnGrow:1,clearanceG:new THREE.Group(),wx:x=>(x-1000)/1000,wz:y=>(y-1000)/1000});
+ vm.runInContext(html.slice(html.indexOf('function clearGroup(g){'),html.indexOf('\n',html.indexOf('function clearGroup(g){'))),ctx);
+ vm.runInContext(html.slice(html.indexOf('function buildHeaterClearances(){'),html.indexOf('function buildLabels(){')),ctx);
+ const build=()=>vm.runInContext('buildHeaterClearances()',ctx),meshes=()=>ctx.clearanceG.children[0].children.filter(o=>o.isMesh),near=(a,b)=>assert.ok(Math.abs(a-b)<1e-6,`${a} != ${b}`);
+ build();let [top,right]=meshes();near(top.geometry.parameters.height,.04);near(top.position.y,2.235);near(right.geometry.parameters.width,.3);near(right.geometry.parameters.height,.565);near(right.position.x,.5);near(right.position.y,1.9325);
+ assert.equal(right.material.color.getHex(),0xd64532);assert.equal(top.material.color.getHex(),0x139687);assert.equal(right.material.opacity,.16);assert.equal(right.material.depthWrite,false);
+ const labels=()=>ctx.clearanceG.children[0].children.filter(o=>o.isCSS2DObject),lines=o=>o.element.children.map(el=>el.textContent);
+ let [topLabel,rightLabel]=labels();assert.deepEqual(lines(topLabel),['顶部 40 mm','实际净距 585 mm']);assert.deepEqual(lines(rightLabel),['右侧 300 mm','实际净距 100 mm','不足 200 mm']);assert.equal(rightLabel.element.style.color,'#b62b20');assert.equal(rightLabel.element.style.pointerEvents,'none');near(topLabel.position.y,2.375);near(rightLabel.position.x,.73);
+ near(ctx.clearanceG.children[0].position.x,1);near(ctx.clearanceG.children[0].position.z,.5);
+ const ray=new THREE.Raycaster(new THREE.Vector3(1,3,.5),new THREE.Vector3(0,-1,0));ctx.clearanceG.updateMatrixWorld(true);assert.equal(ray.intersectObject(ctx.clearanceG,true).length,0);
+ ctx.state.furniture[0].mountHeight=1800;build();assert.equal(topLabel.element.removed,true);assert.equal(rightLabel.element.removed,true);[top,right]=meshes();assert.equal(right.material.color.getHex(),0x139687);near(right.position.y,2.0825);assert.deepEqual(lines(labels()[1]),['右侧 300 mm','实际净距 1650 mm']);
+ ctx.state.furniture[0].mountHeight=2300;build();assert.equal(meshes()[0].material.color.getHex(),0xd64532);assert.deepEqual(lines(labels()[0]),['顶部 40 mm','实际净距 -65 mm','不足 105 mm']);
+ ctx.state.furniture[0].mountHeight=1650;ctx.state.furniture[1].cx=2850;build();assert.equal(meshes()[1].material.color.getHex(),0x139687);
+ ctx.state.furniture[1].cx=2849;build();assert.equal(meshes()[1].material.color.getHex(),0xd64532);
+ ctx.state.furniture[0].cx=1000;build();near(ctx.clearanceG.children[0].position.x,0);assert.equal(meshes()[1].material.color.getHex(),0x139687);
+ ctx.state.furniture[0].flip=true;ctx.state.furniture[0].rot=90;build();near(meshes()[1].position.x,-.5);near(ctx.clearanceG.children[0].rotation.y,-Math.PI/2);
+ near(labels()[1].position.x,-.73);
+ ctx.opt.furn=false;build();assert.equal(ctx.clearanceG.visible,false);ctx.opt.furn=true;ctx.furnGrow=.5;build();near(ctx.clearanceG.scale.y,.5);
+ ctx.state=P.unpack(P.pack({planId:'test',current:work,designs:[],catalog:[]})).current;ctx.furnGrow=1;build();assert.equal(meshes()[1].material.color.getHex(),0xd64532);
+ ctx.state.furniture=[];build();assert.equal(ctx.clearanceG.children.length,0);
+ assert.match(html,/buildHeaterClearances\(\);renderPanel\(\);selKey = null/,'live 3D drag updates checks');
+ assert.match(html,/clearanceG\.traverse\(o=>\{if\(o.isCSS2DObject\)o.visible=opt.furn&&!anim;\}\)/,'CSS labels follow furniture visibility independently of room labels');
+ assert.deepEqual(model.annotation('right',{required:300,gap:null,ok:null}),{title:'右侧 300 mm',distance:'实际净距待核对',status:'待核对',color:'#946008'});
+ assert.equal(model.annotation('right',{required:300,gap:300,ok:true}).status,'');assert.equal(model.annotation('right',{required:300,gap:299.96,ok:false}).status,'不足 0.1 mm');
+ assert.equal(model.annotation('top',{required:40,gap:10,ok:false},(zh,en)=>en).status,'Short by 30 mm');
+ console.log('PASS production 3D clearance boxes: precise dimensions/world placement, pass/fail materials, non-picking volumes, height/move/other furniture updates, thresholds, mirror/rotation, hidden furniture, growth, saved reload and deletion');
+})().catch(e=>{console.error(e);process.exitCode=1;});

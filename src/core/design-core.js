@@ -75,6 +75,55 @@
   return {length,angle,mx:(a.x+b.x)/2,my:(a.y+b.y)/2,nx:-(b.y-a.y)/length*textSize*.4,ny:(b.x-a.x)/length*textSize*.4,textSize};
  }
  const dirs={left:[0,1],right:[0,-1],top:[1,1],bottom:[1,-1]};
+ // Recorded dimensions take priority. Legacy items use the existing model's
+ // nominal envelope; unfamiliar items without a height remain unverified.
+ function furnitureVerticalBounds(f){
+  if(cabinet().supported(f))return {bottom:0,top:cabinet().height(f),source:f.h===undefined?'model':'recorded'};
+  if(f.type==='waterheater_flat'){const bottom=f.mountHeight??1650;return {bottom,top:bottom+(f.h??565),source:f.h===undefined?'model':'recorded'};}
+  const mounted={acwall:[2170,2510],waterheater:[1300,1950+Math.min(f.d/2,230)],tv:[1200-f.w*.5625/2,1200+f.w*.5625/2],wallart:[1280,1280+Math.min(950,Math.max(500,f.w*.45))],mirror:[50,1700],pendant:[2100,2627],baycushion:[450,900],stove:[862,2330],ksink:[850,1182],vanity:[330,1960]}[f.type];
+  if(mounted){const bottom=mounted[0];return {bottom,top:f.h===undefined?mounted[1]:bottom+f.h,source:f.h===undefined?'model':'recorded'};}
+  if(Number.isFinite(f.h)&&f.h>0)return {bottom:0,top:f.h,source:'recorded'};
+  if(f.obj)return {bottom:0,top:800,source:'model'};
+  const height={fridge:1800,aircon:1800,dishwasher:840,washer:850,dryer:850,curtain:2400,slidingdoor:2100,tripleslidingdoor:2400,rug:16,bench:440,beanbag:720,barstool:775,custom:800,customround:800}[f.type];
+  return height===undefined?null:{bottom:0,top:height,source:'model'};
+ }
+ function waterheaterClearances(plan,f,options={}){
+  if(f.type!=='waterheater_flat')return null;
+  const P=root.FurnishProject||require('./project-core.js'),location=P.ceilingAt(plan,f.cx,f.cy),ceilingHeight=options.ceilingHeight??location.height,wallHeight=plan.ceilingHeight??2800;
+  const bottom=f.mountHeight??1650,height=f.h??565,angle=(f.rot||0)*Math.PI/180,sign=f.flip?-1:1;
+  const right=[Math.cos(angle)*sign,Math.sin(angle)*sign],depth=[-Math.sin(angle),Math.cos(angle)],edge=f.w/2;
+  const local=([x,y])=>[(x-f.cx)*right[0]+(y-f.cy)*right[1],(x-f.cx)*depth[0]+(y-f.cy)*depth[1]];
+  // Clip walls to the strip beyond the physical right side; the full side
+  // catches oblique walls, while a touching back wall has zero clipped area.
+  const clip=(poly,axis,bound,above)=>{
+   const out=[];for(let i=0;i<poly.length;i++){
+    const a=poly[i],b=poly[(i+1)%poly.length],inside=p=>above?p[axis]>=bound:p[axis]<=bound,ia=inside(a),ib=inside(b);
+    if(ia)out.push(a);if(ia!==ib){const t=(bound-a[axis])/(b[axis]-a[axis]);out.push([a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])]);}
+   }return out;
+  };
+  let gap=Infinity,blocker=null;const unknown=[];
+  const distance=points=>{
+   let poly=points.map(local);poly=clip(clip(clip(poly,1,-f.d/2,true),1,f.d/2,false),0,edge,true);
+   const area=Math.abs(poly.reduce((sum,a,i)=>{const b=poly[(i+1)%poly.length];return sum+a[0]*b[1]-a[1]*b[0];},0))/2;
+   return area>1e-6?Math.max(0,Math.min(...poly.map(p=>p[0]))-edge):null;
+  };
+  const consider=(value,item)=>{if(value!==null&&value<gap){gap=value;blocker=item;}};
+  for(const wall of [...(plan.walls||[]),...(plan.wins||[]).map(w=>w.rect)]){
+   if(bottom>=(wall[4]==='low'?1000:wallHeight))continue;
+   consider(distance([[wall[0],wall[1]],[wall[2],wall[1]],[wall[2],wall[3]],[wall[0],wall[3]]]),{kind:'wall'});
+  }
+  for(const item of options.furniture||plan.furniture||[]){
+   if(item===f||item.id!==undefined&&item.id===f.id)continue;
+   const vertical=furnitureVerticalBounds(item);
+   if(vertical&&Math.min(bottom+height,vertical.top)-Math.max(bottom,vertical.bottom)<=1e-6)continue;
+   const value=distance(P.polygon({...item,rot:item.rot||0}));if(value===null)continue;
+   if(!vertical){if(value<300-1e-6)unknown.push({id:item.id,name:item.name,gap:value});continue;}
+   consider(value,{kind:'furniture',id:item.id,name:item.name,...vertical});
+  }
+  const check=(gap,required)=>({gap,required,ok:gap===null?null:gap>=required-1e-6});
+  const rightCheck=check(Number.isFinite(gap)?gap:null,300);if(unknown.length&&rightCheck.ok!==false)rightCheck.ok=null;
+  return {ceilingHeight,room:location.room,top:check(ceilingHeight===null?null:ceilingHeight-bottom-height,40),right:{...rightCheck,blocker,unknown}};
+ }
  function wallGaps(plan,f){
   const box=bounds(f),out={};
   for(const [dir,[axis,sign]] of Object.entries(dirs)){
@@ -118,6 +167,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

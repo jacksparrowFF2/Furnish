@@ -189,6 +189,20 @@ function renderSel(){
   const preview=window.FurnishWorkspace?.openingPreviewPlan?.();if(!preview)return renderSelectedGeometry();
   const actual=[WALLS,WINS,DOORS,SLIDES,ROOMS];try{({walls:WALLS,wins:WINS,doors:DOORS,slides:SLIDES,rooms:ROOMS}=preview);renderSelectedGeometry();}finally{[WALLS,WINS,DOORS,SLIDES,ROOMS]=actual;}
 }
+// Installation checks are advisory overlays: they never participate in picking,
+// snapping, placement validation or persisted project data.
+function waterheaterClearanceSVG(){
+  if(!ui.layers.furn)return '';
+  const heaters=state.furniture.filter(f=>f.type==='waterheater_flat');if(!heaters.length)return '';
+  const plan=FurnishProject.effectivePlan(PLAN,state),k=1/view.s;
+  return heaters.map(f=>{
+    const c=FurnishDesign.waterheaterClearances(plan,f,{furniture:state.furniture}),sign=f.flip?-1:1;
+    const frame=(kind,x,w,label)=>`<g data-edit-overlay="heater-clearance" data-heater-id="${esc(f.id)}" data-clearance-kind="${kind}" pointer-events="none" transform="${furnT(f)}"><rect x="${x}" y="${-f.d/2}" width="${w}" height="${f.d}" fill="rgba(214,69,50,.12)" stroke="#d64532" stroke-width="2" stroke-dasharray="6 3" vector-effect="non-scaling-stroke"/><text x="${x+w/2}" y="${-f.d/2-(kind==='top'?24:8)*k}" font-size="${11*k}" text-anchor="middle" fill="#d64532" stroke="${PAL.halo}" stroke-width="${3*k}" paint-order="stroke">${esc(label)}</text></g>`;
+    let s='';if(c.top.ok===false)s+=frame('top',-f.w/2,f.w,tr('顶部预留不足','Top clearance insufficient'));
+    if(c.right.ok===false)s+=frame('right',sign===1?f.w/2:-f.w/2-c.right.required,c.right.required,tr('右侧预留不足','Right clearance insufficient'));
+    return s;
+  }).join('');
+}
 function renderSelectedGeometry(){
   const k = 1/view.s, ids = selIds(); let s = '';
   const A = `stroke="${ACC}" vector-effect="non-scaling-stroke"`;
@@ -222,7 +236,7 @@ function renderSelectedGeometry(){
     const [x0,y0,x1,y1] = noteBox[ui.sel.id], p = 6*k;
     s += `<rect x="${x0-p}" y="${y0-p}" width="${x1-x0+2*p}" height="${y1-y0+2*p}" rx="${(y1-y0)/2+p}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`;
   } else if (['door','slide','win'].includes(ui.sel?.kind)){
-    const o=(ui.sel.kind==='door'?DOORS:ui.sel.kind==='slide'?SLIDES:WINS)[ui.sel.id];if(o){if(ui.sel.kind==='win'&&(o.bayId||o.bayGroup)){const assembly=bayAssembly(o),r=assembly.group.map(w=>w.rect),x0=Math.min(...r.map(q=>q[0])),y0=Math.min(...r.map(q=>q[1])),x1=Math.max(...r.map(q=>q[2])),y1=Math.max(...r.map(q=>q[3]));if(assembly.outline)s+=`<polygon data-bay-selection="whole" points="${assembly.outline.map(p=>p.join(',')).join(' ')}" fill="rgba(239,90,36,.1)" ${A} stroke-width="2" pointer-events="none"/>`;else for(const q of r)s+=`<rect data-bay-selection="whole" x="${q[0]}" y="${q[1]}" width="${q[2]-q[0]}" height="${q[3]-q[1]}" fill="none" ${A} stroke-width="2" pointer-events="none"/>`;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="1" stroke-dasharray="5 4" pointer-events="none"/><text x="${(x0+x1)/2}" y="${y1+60+16*k}" text-anchor="middle" fill="${ACC}" font-size="${12*k}" ${halo(3)} pointer-events="none">整组飘窗 · 三面窗同步编辑</text>`;}else{const [x0,y0,x1,y1]=o.rect;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;}}
+    const o=(ui.sel.kind==='door'?DOORS:ui.sel.kind==='slide'?SLIDES:WINS)[ui.sel.id];if(o){if(ui.sel.kind==='win'&&(o.bayId||o.bayGroup)){const assembly=bayAssembly(o),r=assembly.group.map(w=>w.rect),x0=Math.min(...r.map(q=>q[0])),y0=Math.min(...r.map(q=>q[1])),x1=Math.max(...r.map(q=>q[2])),y1=Math.max(...r.map(q=>q[3]));if(assembly.outline)s+=`<polygon data-bay-selection="whole" points="${assembly.outline.map(p=>p.join(',')).join(' ')}" fill="rgba(239,90,36,.1)" ${A} stroke-width="2" pointer-events="none"/>`;else for(const q of r)s+=`<rect data-bay-selection="whole" x="${q[0]}" y="${q[1]}" width="${q[2]-q[0]}" height="${q[3]-q[1]}" fill="none" ${A} stroke-width="2" pointer-events="none"/>`;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="1" stroke-dasharray="5 4" pointer-events="none"/><text x="${(x0+x1)/2}" y="${y1+60+16*k}" text-anchor="middle" fill="${ACC}" font-size="${12*k}" ${halo(3)} pointer-events="none">${o.bayType==='recessed'?'飘窗台 · 正面窗／两侧实墙':'整组飘窗 · 三面窗同步编辑'}</text>`;}else{const [x0,y0,x1,y1]=o.rect;s+=`<rect x="${x0-60}" y="${y0-60}" width="${x1-x0+120}" height="${y1-y0+120}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;}}
   } else if (ui.sel?.kind === 'wall'){
     const selected=ui.sel.wallIds?.length?WALLS.filter((_,i)=>ui.sel.wallIds.includes(PLAN.wallRefs?.[i])):[WALLS[Number(ui.sel.id.slice(1))]];for(const w of selected.filter(Boolean))s+=`<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;
   } else if (ui.sel?.kind === 'room'){
@@ -237,7 +251,7 @@ function renderSelectedGeometry(){
     const [a, b] = ui.marq;
     s += `<rect x="${Math.min(a.x,b.x)}" y="${Math.min(a.y,b.y)}" width="${Math.abs(b.x-a.x)}" height="${Math.abs(b.y-a.y)}" fill="rgba(47,93,98,.08)" stroke="${TEAL}" stroke-width="1" stroke-dasharray="5 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
   }
-  $('#gSel').innerHTML = s;
+  $('#gSel').innerHTML = waterheaterClearanceSVG()+s;
 }
 // 选中家具到四周墙面（含窗）的净距：沿 ±X / ±Y 找最近的、与家具投影有重叠的墙段
 function clearanceSVG(f, k){

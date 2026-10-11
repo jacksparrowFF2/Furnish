@@ -45,7 +45,7 @@ function overviewPanel(){
   <section><h3>${tr('地面材料估算','Flooring Estimate')} <small>${tr('含 5% 损耗','incl. 5% waste')}</small></h3>
     <table>${matRows}</table>
     <div class="total"><span>${tr('地面材料合计','Flooring total')}</span><b>${yen(B.floor)}</b></div>
-    <div class="muted note">${tr(`墙面面积 ${fmt(B.wallArea,1)} m²（周长×2.8m）已扣门窗洞口；乳胶漆按 28 元/m² 估算`, `Wall ${fmt(B.wallArea,1)} m² (perimeter×2.8m) minus openings; paint at ¥28/m²`)}</div></section>
+    <div class="muted note">${tr(`墙面面积 ${fmt(B.wallArea,1)} m²（周长×${FurnishProject.ceilingHeight(state)/1000}m）已扣门窗洞口；乳胶漆按 28 元/m² 估算`, `Wall ${fmt(B.wallArea,1)} m² (perimeter×${FurnishProject.ceilingHeight(state)/1000}m) minus openings; paint at ¥28/m²`)}</div></section>
   <section><h3>${tr('方案统计','Plan Stats')}</h3>
     <div class="stats"><div><small>${tr('家具数量','Furniture')}</small><span class="big">${state.furniture.length}</span>${locked ? ` <small>${tr(`其中 ${locked} 件锁定`, `${locked} locked`)}</small>` : ''}</div>
       <div><small>${tr('拆除墙体','Walls removed')}</small><span class="big">${fmt(demLen,1)}</span> m</div></div>

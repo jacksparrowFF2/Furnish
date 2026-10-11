@@ -20,7 +20,7 @@ assert.equal(design.replaceFurniture(installed,{...f,type:'waterheater'}).mountH
 assert.equal(design.replaceFurniture(installed,f).mountHeight,1850);
 assert.equal(design.resizeFurniture(installed,{w:800}).mountHeight,1850);
 // Exercise the actual panel change handler, including rejection and lock rules.
-const elements=Object.fromEntries(['#full-product-details','#fName','#fMountHeight','#fC'].map(id=>[id,{}]));
+const elements=Object.fromEntries(['#heater-ceiling-settings','#full-product-details','#fName','#fMountHeight','#fC'].map(id=>[id,{}]));
 let current={...f},errors=[],history=[];
 const panelCtx=vm.createContext({window:{},FurnishCabinet:{supported:()=>false},FurnishDesign:design,$:id=>elements[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{const before=JSON.stringify(current);fn();history.push(before);},toast:e=>errors.push(e),renderPanel:()=>{}});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),panelCtx);panelCtx.renderPanel=()=>{};panelCtx.f=current;vm.runInContext('bindFurnPanel(f)',panelCtx);

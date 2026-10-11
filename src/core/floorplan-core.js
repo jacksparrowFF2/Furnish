@@ -32,6 +32,7 @@
       if(o.panels!==undefined&&(o.kind!=='slide'||![2,3].includes(o.panels)))fail('Invalid sliding door panels');
       if(o.hingeEnd!==undefined&&typeof o.hingeEnd!=='boolean'||o.hingeSide!==undefined&&![-1,1].includes(o.hingeSide)||o.name!==undefined&&(typeof o.name!=='string'||o.name.length>80)||o.bayGroup!==undefined&&typeof o.bayGroup!=='string')fail('Invalid opening attributes');
       if(o.sill!==undefined&&(!finite(o.sill)||o.sill<0||o.sill>2400)||o.head!==undefined&&(!finite(o.head)||o.head<=0||o.head>2800)||(o.kind==='window'&&!o.bay&&(o.head??2400)<=(o.sill??900)))fail('窗台高须为0–2400 mm，窗顶高于窗台且不超过2800 mm');
+      if(o.bay?.type!==undefined&&!['three-sided','recessed'].includes(o.bay.type))fail('飘窗类型无效');
       if(o.bay!==undefined&&(!o.bay||o.kind!=='window'||!finite(o.bay.depth)||o.bay.depth<200||o.bay.depth>2000||!finite(o.bay.height)||o.bay.height<100||o.bay.height>1800||!finite(o.bay.head)||o.bay.head<=o.bay.height||o.bay.head>2800))fail('飘窗进深须为200–2000 mm，台高100–1800 mm，窗顶高于窗台且不超过2800 mm');
     }
     if (d.openings.filter(o => o.kind === 'door' && o.entry).length > 1) fail('Only one entry door is supported');
@@ -339,7 +340,7 @@
     // Normalize below a micrometre before grid decomposition to avoid false cracks.
     const d=validate(clone(input)), rects=d.walls.map(w=>wallRect(w,d.scale,d.walls).map((v,i)=>i<4?Math.round(v*1e6)/1e6:v));
     let rooms=d.roomLayout?.walls===layoutKey(d.walls)&&d.roomLayout.scale===d.scale?clone(d.roomLayout.rooms):roomsFromWalls(rects); if(!rooms.length) fail('No enclosed room found. Close the wall outline first.');
-    const walls=[],wins=[],doors=[],slides=[],wallRefs=[],doorRefs=[],winRefs=[],slideRefs=[];
+    const walls=[],wins=[],doors=[],slides=[],wallRefs=[],doorRefs=[],winRefs=[],slideRefs=[],recessedBays=[];
     d.walls.forEach((w,i)=>{
       const r=rects[i], horizontal=w.a[1]===w.b[1], axis=horizontal?0:1, lo=r[axis], hi=r[axis+2];
       const centerA=w.a[axis]*d.scale, centerB=w.b[axis]*d.scale;
@@ -351,7 +352,22 @@
         if(rects.some((q,j)=>j!==i && (horizontal ? Math.min(b,q[2])-Math.max(a,q[0])>1e-6 && Math.min(r[3],q[3])-Math.max(r[1],q[1])>1e-6 : Math.min(r[2],q[2])-Math.max(r[0],q[0])>1e-6 && Math.min(b,q[3])-Math.max(a,q[1])>1e-6))) fail('An opening overlaps a wall junction');
         if(a>pos){const segment=[...r];segment[axis]=pos;segment[axis+2]=a;walls.push(segment);wallRefs.push(w.id);}
         const opening=r.slice(0,4);opening[axis]=a;opening[axis+2]=b;
-        if(o.kind==='window'&&o.bay){
+        if(o.kind==='window'&&o.bay?.type==='recessed'){
+          // Use the existing facade and solid returns. Never extrude another bay outside it.
+          const G=zoneGeometry(),normal=1-axis,c=[(opening[0]+opening[2])/2,(opening[1]+opening[3])/2];
+          const probe=side=>{const p=[...c];p[normal]+=side*(w.thickness/2+5);return rooms.find(room=>room.counted!==false&&inside(p,room.poly));};
+          const plus=probe(1),minus=probe(-1);if(!!plus===!!minus)fail('飘窗必须放在房间与室外之间的外围墙上');
+          const room=plus||minus,side=plus?1:-1,base=c[normal]+side*w.thickness/2,end=base+side*o.bay.depth;
+          const box=[...r];box[normal]=Math.min(base,end);box[normal+2]=Math.max(base,end);
+          const strip=[[box[0],box[1]],[box[2],box[1]],[box[2],box[3]],[box[0],box[3]]];
+          const pieces=G.decompose([room.poly,strip],p=>G.inside(p,room.poly)&&G.inside(p,strip)),geometry=G.outline(pieces);
+          if(G.area(pieces)<10000)fail('飘窗台有效面积至少为 0.01 m²');
+          if(geometry.rings.length!==1)fail('飘窗台须为连续区域，请调整进深');
+          if(recessedBays.some(v=>G.area(G.decompose([v.poly,geometry.poly],p=>G.inside(p,v.poly)&&G.inside(p,geometry.poly)))>.01))fail('飘窗台不能重叠');
+          recessedBays.push({...geometry,id:'bay_'+o.id,name:'飘窗台',mat:'marble',counted:false,bayRect:box,bayId:o.id,bayType:'recessed',height:o.bay.height/1000});
+          wins.push({rect:opening,sill:o.bay.height/1000,head:o.bay.head/1000,bayId:o.id,bayPart:'front',bayType:'recessed',paintRect:opening});winRefs.push(o.id+':front');
+        }
+        else if(o.kind==='window'&&o.bay){
           const normal=1-axis,c=[(opening[0]+opening[2])/2,(opening[1]+opening[3])/2];
           const probe=side=>{const p=[...c];p[normal]+=side*(w.thickness/2+50);return rooms.filter(room=>room.counted!==false).some(room=>inside(p,room.poly));};
           const plus=probe(1),minus=probe(-1);if(plus===minus)fail('飘窗必须放在房间与室外之间的外围墙上');
@@ -393,6 +409,17 @@
     const physicalRooms=clone(rooms);
     rooms=applyZoneSplits(rooms,d.zoneSplits||[],d.scale);
     rooms=applyZones(rooms,d.zones||[],d.scale);
+    if(recessedBays.length){
+      const G=zoneGeometry();
+      rooms=rooms.flatMap(room=>{
+        if(room.counted===false)return [room];
+        const relevant=recessedBays.filter(b=>G.area(G.decompose([room.poly,b.poly],p=>G.inside(p,room.poly)&&G.inside(p,b.poly)))>.01);
+        if(!relevant.length)return [room];
+        const polys=relevant.map(b=>b.poly),pieces=G.decompose([room.poly,...polys],p=>G.inside(p,room.poly)&&!polys.some(poly=>G.inside(p,poly)));
+        return G.area(pieces)>.01?[{...room,...G.outline(pieces)}]:[];
+      });
+      rooms.push(...recessedBays);
+    }
     rooms=rooms.map(r=>{const setting=d.regionSettings?.find(s=>s.id===r.id);return setting?{...r,name:setting.name,use:setting.use}:r;});
     const markers=(d.markers||[]).map(m=>({...clone(m),at:m.at.map(v=>v*d.scale)}));
     return {id:d.id,name:d.name.trim(),en:d.name.trim(),note:d.source==='dxf'?'自定义户型 · DXF 导入':'自定义户型 · 手工描图',noteEn:d.source==='dxf'?'Custom plan · DXF import':'Custom plan · manually traced',walls,wallRefs,doorRefs,winRefs,slideRefs,wins,doors,slides,rooms,physicalRooms,markers,beams:(d.beams||[]).map(b=>({...clone(b),poly:b.poly.map(p=>p.map(v=>v*d.scale))})),dims:[{h:1,at:y0-700,start:x0,segs:[x1-x0]},{h:0,at:x0-700,start:y0,segs:[y1-y0]}],bounds:{x:x0-1600,y:y0-1600,w:x1-x0+3200,h:y1-y0+3200},defaults:[],customDraft:d};

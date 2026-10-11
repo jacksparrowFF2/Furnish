@@ -29,7 +29,10 @@ const LIB = [
     ["acwall","挂机空调",900,250,"#f6f7f8",3200],
     ["dishwasher","洗碗机",600,600,"#c9ced3",4500],
     ["dryer","烘干机",600,600,"#e6ebee",3800],
-    ["purifier","空气净化器",400,300,"#f4f4f2",2000]
+    ["purifier","空气净化器",400,300,"#f4f4f2",2000],
+    ["robot_p20max_tank","石头 P20 Max 水箱版套装",450,450,"#f5f6f5",0,450],
+    ["robot_p20max_plumbed","石头 P20 Max 上下水版套装",381,475,"#f5f6f5",0,300],
+    ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
     ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],'#efe6d8',Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),

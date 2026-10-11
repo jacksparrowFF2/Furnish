@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),P=require('../src/core/project-core.js'),D=require('../src/core/design-core.js');
+const plan={rooms:[],walls:[[4000,0,4200,4000]],wins:[],doors:[]},heater={id:'heater',type:'waterheater_flat',cx:2000,cy:1500,w:700,d:320,h:565,mountHeight:1650,rot:0},cabinet={id:'cabinet',type:'cabinet',name:'高柜',cx:2650,cy:1500,w:400,d:600,h:2200,rot:0};
+const node={},ctx=vm.createContext({FurnishProject:P,FurnishDesign:D,PLAN:plan,state:{furniture:[heater,cabinet]},ui:{layers:{furn:true},sel:null},view:{s:.1},PAL:{halo:'#fff'},tr:zh=>zh,esc:v=>String(v),selIds:()=>[],$:()=>node,ACC:'#ff0'});
+vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),ctx);
+const draw=()=>vm.runInContext('waterheaterClearanceSVG()',ctx);let s=draw();
+assert.match(s,/data-clearance-kind="right"/);assert.match(s,/x="350".*width="300"/);assert.match(s,/pointer-events="none"/);assert.match(s,/stroke="#d64532"/);assert.doesNotMatch(s,/data-clearance-kind="top"/);
+const before=JSON.stringify(ctx.state);vm.runInContext('renderSelectedGeometry()',ctx);assert.equal(node.innerHTML,s);assert.equal(JSON.stringify(ctx.state),before,'rendering never rejects or modifies placement');
+ctx.state={furniture:[{...heater,mountHeight:1800},{...cabinet,h:1800}]};assert.equal(draw(),'','no warning for non-overlapping furniture');
+ctx.state={furniture:[heater,{...cabinet,cx:2850}]};assert.equal(draw(),'','300 mm boundary passes');
+ctx.state={furniture:[{...heater,mountHeight:2300}]};assert.match(draw(),/data-clearance-kind="top"/);
+ctx.state={furniture:[{...heater,flip:true},{...cabinet,cx:1350}]};assert.match(draw(),/x="-650".*width="300"/);
+ctx.state={furniture:[{...heater,rot:90},{...cabinet,cx:2000,cy:2150,rot:90}]};assert.match(draw(),/translate\(2000 1500\) rotate\(90\)/);
+ctx.state={furniture:[heater,{...cabinet,type:'unmodeled',h:undefined}]};assert.equal(draw(),'','unknown height is not a definite failure');
+ctx.ui.layers.furn=false;assert.equal(draw(),'');
+console.log('PASS advisory red heater clearance overlays, exact threshold, no height overlap, top warning, move/rotation/mirror, unknown height, hidden layer, live selection render and unchanged project state');

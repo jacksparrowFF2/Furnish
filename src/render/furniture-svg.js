@@ -16,6 +16,14 @@ const DASH = 'stroke-dasharray="4 3"';
 
   const x = -w/2, y = -d/2, m = Math.min(w,d);
   switch (t){
+    case 'robot_p20max': return ec(0,0,w/2,d/2,c)+ec(0,-d*.115,w*.07,d*.068,shade(c,.8))+rc(-w*.09,d*.455,w*.18,d*.035,'#20272b','rx="4"');
+    case 'robot_p20max_tank': case 'robot_p20max_plumbed': {
+      const tank=t==='robot_p20max_tank',rx=w*(tank?.16:.04);
+      return rc(x,y,w,d,c,`rx="${rx}"`)+rc(x+w*.06,y+d*.035,w*.88,d*.62,shade(c,1.04),`rx="${rx*.8}"`)
+        +ln(x+w*.12,y+d*.18,x+w*.88,y+d*.18)
+        +ec(0,d*.13,w*(tank?.389:.459),d*(tank?.391:.371),shade(c,.91),DASH)
+        +rc(-w*.07,d*.475,w*.14,d*.018,'#20272b','rx="3"');
+    }
     case 'bed': {
       let s = rc(x,y,w,d,'#fbf8f2','rx="30"') + rc(x,y,w,Math.min(90,d*.05),shade(c,.62),'rx="20"');
       const ph = Math.min(360,d*.18), py = y+150;

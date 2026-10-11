@@ -38,13 +38,13 @@ function roomPanel(r){
   const mats = Object.entries(MATS).map(([k,m]) => `<button class="mat ${k===st.mat?'on':''}" data-mat="${k}"><i style="background:${m.sw}"></i><span>${nm(m.name)}<small>¥${m.price}/m²</small></span></button>`).join('');
   return `<section><h3>${r.zone?tr('功能区','Functional area'):tr('房间','Room')}</h3>
     <div class="form"><label class="full">${tr('名称','Name')}<input id="rName" maxlength="80" value="${esc(nm(st.name))}"></label><label class="full">${tr('房间用途','Room use')}<select id="rUse" ${r.counted===false?'disabled':''}>${Object.entries(FurnishDesign.uses).filter(([id])=>r.counted===false?id==='bay':id!=='bay').map(([id,n])=>`<option value="${id}" ${FurnishDesign.inferUse(r,st)===id?'selected':''}>${tr(...n)}</option>`).join('')}</select></label></div>
-    ${r.counted!==false?'<button class="btn" id="room-zones">划分功能区（不加墙）</button>':''}<p class="muted">${tr('风格方案按用途匹配地面，修改名称不会改变已设置的用途。','Styles use room purpose; renaming preserves the selected purpose.')}</p>
+    ${r.counted!==false?`<div class="form"><label class="full">${tr('房间净高 / 吊顶完成面 mm','Room clear height / finished ceiling mm')}<input id="rCeilingHeight" type="number" min="1000" max="10000" step="10" value="${st.ceilingHeight??''}" placeholder="${FurnishProject.ceilingHeight(state)}"></label></div><p class="muted">${tr(`当前有效净高 ${FurnishProject.roomCeilingHeight(state,r)} mm；留空沿用项目层高。用于本房间天花板和热水器顶部预留，随项目保存。`,`Effective clear height ${FurnishProject.roomCeilingHeight(state,r)} mm; leave empty to inherit project height. Used for this room's ceiling and heater top clearance; saved with the project.`)}</p><button class="btn" id="room-zones">划分功能区（不加墙）</button>`:''}<p class="muted">${tr('风格方案按用途匹配地面，修改名称不会改变已设置的用途。','Styles use room purpose; renaming preserves the selected purpose.')}</p>
     <div class="stats mt">
       <div><small>${tr('使用面积','Floor area')}</small><span class="big">${fmt(a)}</span> m²</div>
       <div><small>${tr('周长','Perimeter')}</small><span class="big">${fmt((r.rings||[r.poly]).reduce((n,p)=>n+perim(p),0),1)}</span> m</div>
       <div><small>${tr('开间','Width')}</small><span class="big">${x1-x0}</span> mm</div>
       <div><small>${tr('进深','Depth')}</small><span class="big">${y1-y0}</span> mm</div></div>
-    <div class="muted">${r.zone?tr('功能区分界不产生实际墙体；墙面工程量按原空间轮廓计算。','Functional boundaries do not create walls; wall quantities use the physical space.'):tr(`墙面面积（层高 2.8m，未扣门窗）约 ${fmt(perim(r.poly)*2.8,1)} m²`, `Wall area (2.8m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*2.8,1)} m²`)}</div></section>
+    <div class="muted">${r.zone?tr('功能区分界不产生实际墙体；墙面工程量按原空间轮廓计算。','Functional boundaries do not create walls; wall quantities use the physical space.'):tr(`墙面面积（层高 ${FurnishProject.ceilingHeight(state)/1000}m，未扣门窗）约 ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`, `Wall area (${FurnishProject.ceilingHeight(state)/1000}m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`)}</div></section>
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
     <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
   <section><h3>${tr('房间内家具','Furniture in room')} <small>${tr(`${inside.length} 件 · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`, `${inside.length} items · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`)}</small></h3>
@@ -58,11 +58,22 @@ function bindRoomPanel(){
   const zones=$('#room-zones');if(zones)zones.onclick=()=>{FurnishEditor.open();document.querySelector('[data-trace-mode="zone"]')?.click();};
   $('#rName').onchange = e => mutate(() => state.rooms[id].name = e.target.value.trim() || state.rooms[id].name);
   $('#rUse').onchange = e => mutate(() => state.rooms[id].use = e.target.value);
+  const ceiling=$('#rCeilingHeight');if(ceiling)ceiling.onchange=e=>{try{const value=e.target.value.trim(),height=value===''?undefined:FurnishProject.ceilingHeight({ceilingHeight:Number(value)});mutate(()=>{if(height===undefined)delete state.rooms[id].ceilingHeight;else state.rooms[id].ceilingHeight=Math.round(height);});}catch(err){toast(err.message);renderPanel();}};
   document.querySelectorAll('#panel [data-mat]').forEach(b => b.onclick = () => mutate(() => state.rooms[id].mat = b.dataset.mat));
 }
 
 const SWATCHES = ['#ffffff','#efe6d8','#e2cfb4','#d6b99a','#a57c56','#c9d6df','#c3cbd6','#d8c7dc','#b7c4b0','#9dbb8c','#cfc6b8','#8a7a5e','#4a4f55','#1f1d1b'];
+function waterheaterInstallationPanel(f){
+  if(f.type!=='waterheater_flat')return '';
+  const checks=FurnishDesign.waterheaterClearances(FurnishProject.effectivePlan(PLAN,state),f,{furniture:state.furniture||[]}),mm=v=>String(Math.floor((v+1e-6)*10)/10),shortfall=v=>String(Math.ceil((v-1e-6)*10)/10);
+  const row=(label,check,top=false)=>check.gap===null
+    ? `<p class="muted">${label}：${tr(top?'未找到所在房间，请调整位置并核对至少':'未找到该方向墙体或已知高度家具，请核对至少',top?'No room found; adjust position and verify at least':'No wall or furniture with known height found in this direction; verify at least')} ${check.required} mm ${tr('预留空间','clearance')}。</p>`
+    : `<p class="${check.ok===false?'project-error':'muted'}">${label}：${mm(check.gap)} mm · ${tr('要求至少','Requires at least')} ${check.required} mm${check.ok===null?' · '+tr('待核对家具高度','Verify furniture height'):check.ok?' · '+tr('满足','Met'):' · '+tr('不足','Short by')+' '+shortfall(check.required-check.gap)+' mm'}</p>`;
+  const blocker=checks.right.blocker,blocking=blocker?.kind==='furniture'?`<p class="muted">${tr('最近遮挡物','Nearest obstruction')}：${esc(nm(blocker.name||blocker.id))} · ${tr('离地范围','Height above floor')} ${mm(blocker.bottom)}–${mm(blocker.top)} mm${blocker.source==='model'?' · '+tr('采用模型默认高度，请核对实物','Model default height; verify the actual item'):''}</p>`:'',unknown=(checks.right.unknown||[]).map(item=>`<p class="muted">${esc(nm(item.name||item.id))}：${tr('高度未知，右侧预留区内待核对','Height unknown; verify within the right clearance area')}（${mm(item.gap)} mm）</p>`).join('');
+  return `<h3>${tr('热水器安装预留','Heater installation clearance')}</h3><div id="waterheater-clearance" role="status" aria-live="polite">${row(tr('顶部净距','Top clearance'),checks.top,true)}${row(tr('机身右侧净距','Clearance on heater right'),checks.right)}${blocking}${unknown}</div><p class="muted small">${tr(`顶部按${checks.room?esc(nm(checks.room.name))+'的房间净高':'项目层高'} ${checks.ceilingHeight??'未知'} mm 核对（按机身平面中心定位房间）；右侧指面对机身的右侧，随旋转和镜像变化。右侧检查墙体、窗位及与机身高度重叠的柜体／家具，采用旋转后的外包占地；不含门扇开启范围、局部梁或跌级吊顶。`,`Top checked against ${checks.room?esc(nm(checks.room.name))+' room clear height':'project ceiling height'} of ${checks.ceilingHeight??'unknown'} mm (room located by heater centre); right is viewed from the front and follows rotation and mirroring. Side checks walls, windows and furniture overlapping the heater height, using rotated footprint envelopes; excludes door swings, local beams and stepped ceilings.`)}</p><button class="btn" id="heater-ceiling-settings">${checks.room?tr('修改房间净高','Change room clear height'):tr('修改层高','Change ceiling height')}</button>`;
+}
 function furnPanel(f){
+  const robotSpec=typeof FurnishRobotVacuumModel!=='undefined'?FurnishRobotVacuumModel.specs[f.type]:null;
   const r = isOutside(f) ? null : roomAt(f.cx, f.cy), custom = f.type === 'custom' || f.type === 'customround', lk = f.locked ? 'disabled' : '';
   const clashWith = collisions().filter(p => p.includes(f.id)).map(p => getF(p[0] === f.id ? p[1] : p[0])).filter(Boolean);
   const btn = (act, icon, label, on) => `<button class="btn ${on ? 'on' : ''}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
@@ -84,11 +95,13 @@ function furnPanel(f){
       <label>${tr('旋转','Rotation')} (°)<input type="number" id="fR" value="${f.rot}" step="15" ${lk}></label>
       <label>${tr('单价','Unit price')} (¥)<input type="number" id="fP" value="${Math.round(priceOf(f))}" min="0" step="50"></label>
       ${f.type==='waterheater_flat'?`<label class="full">${tr('底部离地高度','Bottom height above floor')} (mm)<input type="number" id="fMountHeight" value="${f.mountHeight??1650}" min="0" max="20000" step="10" ${lk}></label><p class="muted" style="grid-column:1/-1;margin:0">${tr('从地面到热水器最底部的距离，调整后同步到 3D 并随项目保存。','Distance from the floor to the lowest part of the heater; updates 3D and is saved with the project.')}</p>`:''}
-      ${custom || FurnishCabinet.supported(f) || ['curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (FurnishCabinet.supported(f)?FurnishCabinet.height(f):f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="10" ${lk}></label>` : ''}
+      ${custom || robotSpec || FurnishCabinet.supported(f) || ['curtain','slidingdoor','tripleslidingdoor'].includes(f.type) ? `<label>${tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h || (robotSpec?robotSpec[2]:FurnishCabinet.supported(f)?FurnishCabinet.height(f):f.type==='slidingdoor'?2100:custom?800:2400)}" min="50" step="${robotSpec?'0.1':'10'}" ${lk}></label>` : ''}
+      ${robotSpec?`<p class="muted" style="grid-column:1/-1;margin:0">${tr('原规格','Nominal size')} ${robotSpec.join(' × ')} mm${tr('；尺寸修改仅作布局缩放，安装预留待核对，价格待填写。','; resizing is for layout only. Installation clearances and price need confirmation.')}</p>`:''}
       <label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>
     </div>
     <div class="swatches">${SWATCHES.map(c => `<button data-sw="${c}" class="${c === f.color ? 'on' : ''}" style="background:${c}" title="${c}"></button>`).join('')}</div>
     <div class="muted desc">${tr('占地','Footprint')} ${fmt(f.w*f.d/1e6)} m² · ${tr('位于','In')} ${r ? esc(nm(state.rooms[r.id].name)) : isOutside(f) ? tr('户型外','outside') : tr('墙边 / 门口','wall / doorway')}</div>
+    ${waterheaterInstallationPanel(f)}
     ${window.FurnishDesignUI?.placementPanel(f)||''}
     <div class="iconrow">
       ${btn('rotL', 'rotL', tr('逆时针 90°（Shift+R）','Rotate left (Shift+R)'))}${btn('rotR', 'rotR', tr('顺时针 90°（R）','Rotate right (R)'))}
@@ -105,6 +118,7 @@ function furnPanel(f){
   <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右下角方块改尺寸；Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps to other items with guides); drag the top dot to rotate, the corner square to resize; Shift+click to multi-select, right-click for more.')}</section>`;
 }
 function bindFurnPanel(f){
+  if(f.type==='waterheater_flat')$('#heater-ceiling-settings').onclick=()=>{const room=FurnishProject.ceilingAt(FurnishProject.effectivePlan(PLAN,state),f.cx,f.cy).room;if(room){ui.sel={kind:'room',id:room.id};renderPanel();}else FurnishWorkspace.open('settings');};
   if(FurnishCabinet.supported(f))$('#cabinet-edit').onclick=()=>FurnishCabinetEditor.open(f.id);
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
@@ -115,7 +129,7 @@ function bindFurnPanel(f){
   num('#fD', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{d:Math.round(v)})));
   num('#fX', (g,v) => g.cx = v); num('#fY', (g,v) => g.cy = v); num('#fR', (g,v) => g.rot = norm(v));
   num('#fP', (g,v) => g.price = Math.max(0, Math.round(v)));
-  num('#fH', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{h:Math.round(v)})));
+  num('#fH', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{h:g.type.startsWith('robot_p20max')?Math.round(v*10)/10:Math.round(v)})));
   num('#fMountHeight', (g,v) => {if(v<0||v>20000)throw Error('底部离地高度须为 0–20000 mm');g.mountHeight=Math.round(v);});
   $('#fC').onchange = e => upd(g => g.color = e.target.value);
   document.querySelectorAll('#panel [data-sw]').forEach(b => b.onclick = () => upd(g => g.color = b.dataset.sw));
@@ -208,9 +222,18 @@ function bindOpeningPanel(sel){
 }
 function winPanel(i){
  const w=WINS[i],width=Math.round(Math.max(w.rect[2]-w.rect[0],w.rect[3]-w.rect[1])),height=Math.round(((w.head??2.4)-w.sill)*1000);
- return `<section><h3>窗尺寸</h3><p>窗宽 ${width} mm · 窗高 ${height} mm</p><div class="form"><label class="full">窗台高 mm<input type="number" id="wSill" min="0" max="2400" step="1" value="${Math.round(w.sill*1000)}"></label><label class="full">窗高 mm<input type="number" id="wHeight" min="100" max="2800" step="1" value="${height}"></label></div><p>${w.bayGroup?'同一飘窗的三面窗与窗台高度同步调整。':''}内置布局窗宽按预设图纸定义；导入自定义户型可编辑窗宽。</p><p id="wError" role="alert"></p><div class="actions"><button class="btn primary" id="wApply">应用尺寸</button><button class="btn" id="wReset">重置</button><button class="btn" id="wback">返回总览</button></div></section>`;
+ return `<section><h3>窗尺寸</h3><p>窗宽 ${width} mm · 窗高 ${height} mm</p><div class="form"><label class="full">窗台高 mm<input type="number" id="wSill" min="0" max="2400" step="1" value="${Math.round(w.sill*1000)}"></label><label class="full">窗户高度 mm<input type="number" id="wHeight" min="100" max="2800" step="1" value="${height}"></label><label class="full">窗顶高（距地面）mm<input type="number" id="wHead" max="2800" step="1" value="${Math.round((w.head??2.4)*1000)}"></label></div><p>窗户高度 = 窗顶高 − 窗台高，两项自动联动；修改窗台高时保持窗户高度。</p><p>${w.bayGroup?'同一飘窗的三面窗与窗台高度同步调整。':''}内置布局窗宽按预设图纸定义；导入自定义户型可编辑窗宽。</p><p id="wError" role="alert"></p><div class="actions"><button class="btn primary" id="wApply">应用尺寸</button><button class="btn" id="wReset">重置</button><button class="btn" id="wback">返回总览</button></div></section>`;
 }
 function bindWinPanel(i){
- $('#wApply').onclick=()=>{const sill=Number($('#wSill').value)/1000,height=Number($('#wHeight').value)/1000;if(!Number.isFinite(sill)||!Number.isFinite(height)||sill<0||sill>2.4||height<.1||sill+height>2.8){$('#wError').textContent='窗高至少100 mm，窗顶不得超过2800 mm';return;}mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)state.open.w[j]={sill,head:sill+height};});});};
+  function linkHeightInputs(sill,height,head){
+    const number=input=>input.value.trim()!==''&&Number.isFinite(Number(input.value))?Number(input.value):null;
+    for(const input of [sill,height,head]){const previous=input.oninput;input.oninput=()=>{
+      const a=number(sill),b=number(input===head?head:height),target=input===head?height:head;
+      target.value=a===null||b===null?'':String(Math.round((input===head?b-a:a+b)*1000)/1000);
+      previous?.();
+    };}
+  }
+  linkHeightInputs($('#wSill'),$('#wHeight'),$('#wHead'));
+ $('#wApply').onclick=()=>{const sill=Number($('#wSill').value)/1000,height=Number($('#wHeight').value)/1000;if(['wSill','wHeight','wHead'].some(id=>!$('#'+id).value.trim())||!Number.isFinite(sill)||!Number.isFinite(height)||sill<0||sill>2.4||height<.1||sill+height>2.8){$('#wError').textContent='窗高至少100 mm，窗顶不得超过2800 mm';return;}mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)state.open.w[j]={sill,head:sill+height};});});};
  $('#wReset').onclick=()=>mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)delete state.open.w[j];});});$('#wback').onclick=()=>select(null);
 }

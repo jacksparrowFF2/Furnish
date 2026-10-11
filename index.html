@@ -273,6 +273,8 @@
 <script src="src/core/project-core.js"></script>
 <script src="src/core/cabinet-core.js"></script>
 <script src="src/render/cabinet-model.js"></script>
+<script src="src/render/robot-vacuum-model.js"></script>
+<script src="src/render/waterheater-clearance-model.js"></script>
 <script src="src/render/cabinet-preview.js"></script>
 <script src="src/core/design-core.js"></script>
 <script src="src/core/work-state.js"></script>
@@ -358,7 +360,7 @@ const opt = {cut:2.8, furn:true, labels:true, night:false, hour:10, mode:'orbit'
 let inited = false, active = false, raf = 0, anim = null, fly = null;
 let capturedImage=null,capturedState='';
 let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, glassMat, wallMat, capMat, frameMat;
-let archFloor, archUp, furnG, labelG, lampG, colliders = [], selKey = null, selHelper = null;
+let archFloor, archUp, furnG, clearanceG, labelG, lampG, colliders = [], selKey = null, selHelper = null;
 let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
 const doors = [], slidingDoors = [], keys = {};
 const SWING_DOOR_HEIGHT = 2.1; // Shared by the door leaf and its opening lintel (metres).
@@ -404,7 +406,8 @@ function init(){
   themeMats();
 
   archFloor = new THREE.Group(); archUp = new THREE.Group(); furnG = new THREE.Group(); labelG = new THREE.Group(); lampG = new THREE.Group();
-  scene.add(archFloor, archUp, furnG, labelG, lampG);
+  clearanceG = new THREE.Group();
+  scene.add(archFloor, archUp, furnG, clearanceG, labelG, lampG);
 
   const cv = renderer.domElement; let downAt = null, look = null, cabinetTap = null;
   cv.addEventListener('pointerdown', e => {
@@ -440,7 +443,7 @@ function init(){
     fdrag.ids.forEach(id => { const x = getF(id); if (!x) return;            // 拖动中只挪模型，松手再整体同步
       x.cx = fdrag.start[id][0] + dx; x.cy = fdrag.start[id][1] + dy;
       furnG.children.find(o => o.userData.fid === id)?.position.set(wx(x.cx), 0, wz(x.cy)); });
-    selKey = null; invalidate();
+    buildHeaterClearances();renderPanel();selKey = null; invalidate();
   });
   const endF = e => {
     if (!fdrag || e.pointerId !== fdrag.pid) return;
@@ -674,6 +677,10 @@ function buildFurniture(f){
     const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(f.obj.positions,3));geo.computeVertexNormals();geo.computeBoundingBox();const b=geo.boundingBox,size=new THREE.Vector3();b.getSize(size);geo.translate(-(b.min.x+b.max.x)/2,-b.min.y,-(b.min.z+b.max.z)/2);const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:f.color||'#d9d2c5',roughness:.75,side:THREE.DoubleSide}));mesh.scale.set(f.w/1000/size.x,(f.h||800)/1000/size.y,f.d/1000/size.z);mesh.castShadow=true;mesh.receiveShadow=true;const g=new THREE.Group();g.add(mesh);g.userData.fid=f.id;g.position.set(wx(f.cx),0,wz(f.cy));g.rotation.y=-f.rot*Math.PI/180;return g;
   }
   const g = new THREE.Group(), w = M(f.w), d = M(f.d), c = f.color || '#ddd', bz = -d/2, R = rng(Math.round(f.w*7 + f.d*13 + f.cx + f.cy));
+  if(typeof FurnishRobotVacuumModel!=='undefined'&&FurnishRobotVacuumModel.specs[f.type]){
+    const model=FurnishRobotVacuumModel.build(THREE,f,RoundedBoxGeometry);
+    model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
+  }
   if(FurnishCabinet.supported(f)){
     const model=FurnishCabinetModel.build(THREE,f,box);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
@@ -1277,7 +1284,7 @@ function buildFurniture(f){
 }
 
 /* ======================= 建筑 ======================= */
-function clearGroup(g){ g.traverse(o => { if (o.geometry) o.geometry.dispose(); if(o.userData.cabinetOwnMaterial)o.material.dispose(); }); g.clear(); }
+function clearGroup(g){ g.traverse(o => { if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.cabinetOwnMaterial)o.material.dispose(); }); g.clear(); }
 function wallBox([x0, y0, x1, y1], yb, yt, m){
   if (yt - yb <= .001) return;
   const o = new THREE.Mesh(new THREE.BoxGeometry(M(x1-x0), yt-yb, M(y1-y0)), m || [wallMat, wallMat, capMat, wallMat, wallMat, wallMat]);
@@ -1294,9 +1301,9 @@ function shapeOf(poly, flip){ const s = new THREE.Shape(); poly.forEach(([x, y],
 
 function buildArch(){
   clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
-  const top = opt.cut;
+  const top = opt.cut===2.8?H:Math.min(opt.cut,H);
   ROOMS.forEach(r => {
-    const m = floorMat(state.rooms[r.id].mat), bay = r.counted === false;
+    const m = floorMat(state.rooms[r.id].mat), bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
     const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)));
     geo.rotateX(-Math.PI/2);
     const fl = new THREE.Mesh(geo, bay ? [m, mat('#e9e4da')] : m);
@@ -1304,11 +1311,11 @@ function buildArch(){
     if (bay){ fl.castShadow = true; archUp.add(fl); } else archFloor.add(fl);
     // 天花：法线朝下，只在室内仰视时可见
     const cg = new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p,true))); cg.rotateX(Math.PI/2);
-    const ceil = new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1})); ceil.position.y = H; ceil.visible = top >= H; archUp.add(ceil);
+    const ceil = new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1})); ceil.position.y = roomH; ceil.visible = opt.cut===2.8 || top >= roomH; archUp.add(ceil);
     if (r.at){
       const lamp = new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, .02, 32), new THREE.MeshStandardMaterial({color:'#fff', emissive:'#fff2d6', emissiveIntensity:.3}));
-      lamp.position.set(wx(r.at[0]), H - .012, wz(r.at[1])); lamp.visible = top >= H; lampG.add(lamp);
-      const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), H - .25, wz(r.at[1])); lampG.add(pl);
+      lamp.position.set(wx(r.at[0]), roomH - .012, wz(r.at[1])); lamp.visible = opt.cut===2.8 || top >= roomH; lampG.add(lamp);
+      const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), roomH - .25, wz(r.at[1])); lampG.add(pl);
     }
   });
   [...DOORS, ...SLIDES].forEach(d => { const [x0, y0, x1, y1] = d.rect; const s = box(M(x1-x0), .012, M(y1-y0), mat('#d8d0c0', {roughness:.3}), wx((x0+x1)/2), 0, wz((y0+y1)/2)); s.castShadow = false; archFloor.add(s); });
@@ -1321,8 +1328,8 @@ function buildArch(){
   [...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
     .forEach(([r, h]) => { if (top > h) wallBox(r, h, top); });
   const bayPosts=new Set();
-  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, paintRect}) => {
-    if(bayId&&paintRect){wallBox(paintRect,0,Math.min(sill,top));if(top>head)wallBox(paintRect,head,top);}
+  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, bayType, paintRect}) => {
+    if(bayId&&paintRect&&bayType!=='recessed'){wallBox(paintRect,0,Math.min(sill,top));if(top>head)wallBox(paintRect,head,top);}
     wallBox(rect, 0, Math.min(sill, top)); if (top > head) wallBox(rect, head, top);
     colliders.push([wx(rect[0]), wz(rect[1]), wx(rect[2]), wz(rect[3])]);
     const gTop = Math.min(head, top); if (gTop <= sill) return;
@@ -1371,6 +1378,15 @@ function buildFurn(){
   furnG.visible = opt.furn; selKey = null; applyGrow();
 }
 
+function buildHeaterClearances(){
+  clearGroup(clearanceG);
+  const heaters=state.furniture.filter(f=>f.type==='waterheater_flat');
+  if(heaters.length){const plan=FurnishProject.effectivePlan(PLAN,state);for(const f of heaters){
+    const checks=FurnishDesign.waterheaterClearances(plan,f,{furniture:state.furniture}),group=FurnishHeaterClearanceModel.build(THREE,f,checks,{CSS2DObject,document,tr});
+    group.position.set(wx(f.cx),0,wz(f.cy));clearanceG.add(group);
+  }}
+  clearanceG.visible=opt.furn;clearanceG.scale.y=Math.max(furnGrow,.001);
+}
 function buildLabels(){
   invalidate();
   labelG.children.slice().forEach(o => { o.element.remove(); labelG.remove(o); });
@@ -1392,10 +1408,12 @@ function buildLabels(){
 // 只重建变化的部分
 function sync(force){
   if (!inited || (!active && !force)) return;
+  H=FurnishProject.ceilingHeight(state)/1000;
   const settings=FurnishDesign.sceneSettings(state.scene3d),changed=Object.keys(settings).some(k=>opt[k]!==settings[k]);
   Object.assign(opt,settings);
   if(changed||force){syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn;showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
-  const a = JSON.stringify([state.rooms, state.demolished, state.open, opt.cut]), f = JSON.stringify(state.furniture), l = JSON.stringify([state.rooms, opt.cut]);
+  const a = JSON.stringify([state.rooms, state.demolished, state.open, opt.cut,H]), f = JSON.stringify(state.furniture), l = JSON.stringify([state.rooms, opt.cut,H]);
+  if(force||a!==sigArch||f!==sigFurn)buildHeaterClearances();
   if (force || a !== sigArch){ sigArch = a; buildArch(); }
   if (force || f !== sigFurn){ sigFurn = f; buildFurn(); }
   if (force || l !== sigLabels){ sigLabels = l; buildLabels(); }
@@ -1408,6 +1426,7 @@ function applyGrow(){
   if (!inited) return;
   archUp.scale.y = Math.max(grow, .001);
   furnG.scale.y = Math.max(furnGrow, .001);
+  clearanceG.scale.y = Math.max(furnGrow, .001);
   lampG.visible = grow > .99;
   invalidate();
 }
@@ -1692,7 +1711,7 @@ function bindUI(){
   document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => {
     const k = b.dataset.t; opt[k] = !opt[k]; b.classList.toggle('on', opt[k]);
     remember();
-    if (k === 'furn'){ furnG.visible = opt.furn; invalidate(); if (!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
+    if (k === 'furn'){ furnG.visible = clearanceG.visible = opt.furn; invalidate(); if (!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
     if (k === 'labels') showLabels(opt.labels && opt.mode === 'orbit' && !anim);
     if (k === 'night') applyLight();
   });
@@ -1727,13 +1746,14 @@ function loop(){
   dirty = false;
   selHelper?.children.forEach(h => h.update());
   renderer.render(scene, camera);
+  clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=opt.furn&&!anim;});
   labelRenderer.render(scene, camera);
 }
 
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
 function image(){if(!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
 
-function relang(){ syncWalkTexts(); if (inited) buildLabels(); }
+function relang(){ syncWalkTexts(); if (inited){buildLabels();buildHeaterClearances();} }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建
 function replan(){
   capturedImage=null;capturedState='';
