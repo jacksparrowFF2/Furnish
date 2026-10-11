@@ -21,12 +21,12 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   update(){this.cam.lookAt(this.target);this.cam.updateMatrixWorld(true);} dispose(){}
  }
  const host=new Element();host.clientWidth=500;host.clientHeight=440;
- const context=vm.createContext({FurnishCabinet:C,document:{createElement:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:()=>1,cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){disconnected=true;}}});
+ let tick;const context=vm.createContext({FurnishCabinet:C,document:{createElement:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){disconnected=true;}}});
  for(const file of ['cabinet-model','cabinet-preview'])vm.runInContext(fs.readFileSync(require.resolve(`../src/render/${file}.js`),'utf8'),context);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new three.Mesh(new three.BoxGeometry(w,h,d),new three.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  let draft=C.setColumnWidth({type:'cabinet',color:'#efe6d8',...C.preset('sideboard-open')},0,350),picked=null,toggles=0;
  const preview=context.FurnishCabinetPreview.create({THREE:{...three,WebGLRenderer:Renderer},OrbitControls:Controls,box,host,f:draft,background:'#eeeae3',actions:{
-  select:part=>{picked=part;return true;},move:(part,value)=>(draft=C.moveShelf(draft,part.column,part.shelf,value)),toggle:()=>toggles++,
+  select:part=>{picked=part;return true;},move:(part,value)=>(draft=C.moveShelf(draft,part.column,part.shelf,value)),divider:(i,width)=>(draft=C.moveDivider(draft,i,width-C.widths(draft)[i])),toggle:()=>toggles++,
  }});
  const height=()=>draft.cabinet.columns[0].shelves[0];
  function atShelf(){scene.updateMatrixWorld(true);let mesh;scene.traverse(o=>{if(o.isMesh&&o.userData.cabinetShelf?.column===0&&o.userData.cabinetShelf.shelf===0)mesh=o;});const point=mesh.getWorldPosition(new three.Vector3());point.z+=mesh.geometry.parameters.depth/2;point.project(camera);return {clientX:(point.x+1)*250,clientY:(1-point.y)*220};}
@@ -40,7 +40,12 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  const escapeStart=atShelf();canvas.fire('pointerdown',escapeStart);canvas.fire('pointermove',{...escapeStart,clientY:escapeStart.clientY-15});canvas.fire('keydown',{key:'Escape'});assert.equal(height(),beforeCancel);assert.equal(controls.enabled,true);
  canvas.fire('keydown',{key:'Escape'});assert.equal(picked,null);const unselectedHeight=height();canvas.fire('keydown',{key:'ArrowUp'});assert.equal(height(),unselectedHeight);
  canvas.fire('pointerdown',{clientX:10,clientY:10});assert.equal(orbitPresses,1,'empty-space presses remain available for orbit controls');canvas.fire('pointerup',{clientX:10,clientY:10});
+ preview.setView({front:true,doors:'hidden'});tick();assert(camera.isOrthographicCamera);assert.equal(controls.enableRotate,false);
+ let dividerMesh;scene.traverse(o=>{if(o.isMesh&&o.userData.cabinetDivider?.divider===0)dividerMesh=o;});const point=dividerMesh.getWorldPosition(new three.Vector3());point.z+=dividerMesh.geometry.parameters.depth/2;point.project(camera);const dividerStart={clientX:(point.x+1)*250,clientY:(1-point.y)*220},oldWidths=C.widths(draft),total=draft.w;
+ canvas.fire('pointerdown',dividerStart);assert.equal(picked.divider,0);canvas.fire('pointermove',{...dividerStart,clientX:dividerStart.clientX+25});assert(C.widths(draft)[0]>oldWidths[0]);assert(C.widths(draft)[1]<oldWidths[1]);assert.equal(draft.w,total);canvas.fire('keydown',{key:'Escape'});assert.deepEqual(C.widths(draft),oldWidths);
+ canvas.fire('keydown',{key:'ArrowRight',shiftKey:true});assert.equal(C.widths(draft)[0],oldWidths[0]+1);assert.equal(draft.w,total);
+ preview.setView({front:false,doors:'ghost',dimensions:false});tick();assert(camera.isPerspectiveCamera);assert.equal(controls.enableRotate,true);
  preview.dispose();assert(disconnected);assert.equal(canvas.isConnected,false);
- console.log('PASS shelf ray picking, constrained dragging, camera isolation, keyboard nudges, cancellation and preview cleanup');
+ console.log('PASS shelf/divider picking, constrained dragging, fixed total width, keyboard edits, cancellation, front view and preview cleanup');
 })().catch(e=>{console.error(e);process.exit(1);});
 

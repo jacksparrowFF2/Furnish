@@ -165,7 +165,14 @@
    if(targets&&issues.filter(v=>targets.has(v.id)||targets.has(v.otherId)).length>=maxIssues)break;
    if(walls.some(w=>intersects(p,w)))issues.push({kind:'wall',id:f.id,name:f.name,message:'家具占用墙体空间'});
    if(plan.rooms.length&&!fitsInRooms(plan.rooms,p))issues.push({kind:'outside',id:f.id,name:f.name,message:'家具占地超出房间范围（含折角／凹口）'});
-   const clearance=f.frontClearance??(/wardrobe|cabinet|dresser|custom/.test(f.type)?600:0);if(!clearance)continue;
+   const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
+   if(C?.supported(f)){
+    for(const opening of C.openingZones(f,{passage})){
+     const wallHit=walls.some(w=>intersects(opening.poly,w)),blocked=bodies.filter(b=>b.f.id!==f.id&&intersects(opening.poly,b.p));
+     if(wallHit||blocked.length)issues.push({kind:opening.kind,id:f.id,name:f.name,column:opening.column,at:opening.poly[0],message:`分区 ${opening.column+1} ${opening.kind==='cabinetdoor'?'柜门开启范围':opening.kind==='cabinetdrawer'?'抽屉完全拉出范围':`抽屉拉出后前方 ${passage} mm 操作空间`}${wallHit?'与墙体冲突':''}${wallHit&&blocked.length?'；':''}${blocked.length?'被 '+blocked.map(b=>b.f.name||b.f.id).join('、')+' 占用':''}`});
+    }
+   }
+   const clearance=f.frontClearance??(C?.supported(f)?0:/wardrobe|cabinet|dresser|custom/.test(f.type)?600:0);if(!clearance)continue;
    const a=f.rot*Math.PI/180,front={...f,cx:f.cx-Math.sin(a)*(f.d/2+clearance/2),cy:f.cy+Math.cos(a)*(f.d/2+clearance/2),d:clearance};const zone=polygon(front);
    if(walls.some(w=>intersects(zone,w))||bodies.some(b=>b.f.id!==f.id&&intersects(zone,b.p)))issues.push({kind:'front',id:f.id,name:f.name,message:`正面 ${clearance} mm 使用空间不足（柜门／抽屉）`});
   }

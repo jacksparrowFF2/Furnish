@@ -13,5 +13,10 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  const unequal=C.setColumnWidth(f,0,350),model=build(unequal),layout=C.layout(unequal);let shelfMesh;model.traverse(o=>{if(o.userData.cabinetShelf?.column===0)shelfMesh=o;});
  assert(Math.abs(shelfMesh.geometry.parameters.width-.35)<1e-8);assert(Math.abs(shelfMesh.position.x-layout[0].center/1000)<1e-8);
  const raised=build(C.moveShelf(unequal,0,0,600));let raisedMesh;raised.traverse(o=>{if(o.userData.cabinetShelf?.column===0)raisedMesh=o;});assert(Math.abs(raisedMesh.position.y-shelfMesh.position.y-(600-f.cabinet.columns[0].shelves[0])/1000)<1e-8);
+ const styled=structuredClone(f);Object.assign(styled.cabinet.columns[0],{doorOpen:true,doorAngle:45,finish:'glass',handle:'none'});styled.cabinet.columns[0].drawers[0].extension=.5;styled.cabinet.columns[0].drawers[0].open=true;
+ const glass=build(styled),glassDoor=part(glass,undefined);assert(Math.abs(Math.abs(glassDoor.parent.rotation.y)-Math.PI/4)<1e-8);assert.equal(glassDoor.material.transparent,true);assert.equal(glassDoor.material.opacity,.32);assert.equal(glassDoor.userData.cabinetOwnMaterial,true);
+ assert(Math.abs(pos(part(glass,0)).z-pos(part(closed,0)).z-f.d/1000*.35)<1e-8);
+ const hidden=context.FurnishCabinetModel.build(THREE,styled,box,{doors:'hidden'});assert.equal(part(hidden,undefined),undefined);
+ const ghost=context.FurnishCabinetModel.build(THREE,styled,box,{doors:'ghost'});assert.equal(part(ghost,undefined).userData.cabinetIgnorePick,true);
  console.log('PASS all cabinet meshes have finite dimensions, correct heights, hinge rotations and drawer travel');
 })().catch(e=>{console.error(e);process.exit(1)});

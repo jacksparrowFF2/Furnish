@@ -58,19 +58,71 @@
   if(!Number.isFinite(value))throw Error('层板高度无效');const limits=shelfLimits(f,column,shelf),c=config(f);
   c.columns[column].shelves[shelf]=Math.max(limits.min,Math.min(limits.max,Math.round(value)));return validate({...f,cabinet:c});
  }
+ function moveDivider(f,index,delta){
+  const c=config(f),values=widths(f);if(!Number.isInteger(index)||index<0||index>=values.length-1||!Number.isFinite(delta))throw Error('分隔板无效');
+  delta=Math.max(100-values[index],Math.min(values[index+1]-100,Math.round(delta)));
+  values[index]+=delta;values[index+1]-=delta;c.columns.forEach((col,i)=>col.width=values[i]);return validate({...f,cabinet:c});
+ }
+ function spaces(f,column){
+  const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
+  let bottom=col.drawers.reduce((n,d)=>n+d.height,0);const result=[];
+  for(const top of [...col.shelves,height(f)-c.plinth-2*c.thickness]){result.push({bottom,top,height:top-bottom});bottom=top+c.thickness;}return result;
+ }
+ function snapShelf(f,column,shelf,value){
+  const c=config(f),limits=shelfLimits(f,column,shelf),col=c.columns[column],bottom=shelf?col.shelves[shelf-1]+c.thickness:col.drawers.reduce((n,d)=>n+d.height,0);
+  const candidates=[...c.columns.filter((_,i)=>i!==column).flatMap(col=>col.shelves),...[200,250,300,350,400,450,500,600].map(gap=>bottom+gap)];
+  const close=candidates.filter(v=>v>=limits.min&&v<=limits.max&&Math.abs(v-value)<=8).sort((a,b)=>Math.abs(a-value)-Math.abs(b-value));
+  return Math.max(limits.min,Math.min(limits.max,close[0]??Math.round(value/10)*10));
+ }
+ function editStructure(f,column,operation,index,target){
+  const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
+  if(operation==='addShelf'||operation==='copyShelf'){
+   if(col.shelves.length>=20)throw Error('每个分区最多 20 块层板');
+   let gaps=spaces(f,column).filter(g=>g.height>=80+c.thickness);
+   if(operation==='copyShelf'){if(!Number.isInteger(index)||!col.shelves[index])throw Error('层板不存在');const level=col.shelves[index];gaps.sort((a,b)=>Math.abs(a.bottom-level)-Math.abs(b.bottom-level));}else gaps.sort((a,b)=>b.height-a.height);
+   if(!gaps.length)throw Error('没有足够空间添加层板');const gap=gaps[0];col.shelves.push(Math.round((gap.bottom+gap.top-c.thickness)/2));col.shelves.sort((a,b)=>a-b);
+  }else if(operation==='deleteShelf'){if(!Number.isInteger(index)||index<0||index>=col.shelves.length)throw Error('层板不存在');col.shelves.splice(index,1);
+  }else if(operation==='equalShelves'){
+   const bottom=col.drawers.reduce((n,d)=>n+d.height,0),n=col.shelves.length,space=(height(f)-c.plinth-2*c.thickness-bottom-n*c.thickness)/(n+1);
+   if(space<40)throw Error('净空间不足，无法均分');col.shelves=Array.from({length:n},(_,i)=>Math.round(bottom+space*(i+1)+c.thickness*i));
+  }else if(operation==='addDrawer'){
+   if(col.drawers.length>=10)throw Error('每个分区最多 10 个抽屉');const bottom=col.drawers.reduce((n,d)=>n+d.height,0),max=(col.shelves[0]??height(f)-c.plinth-2*c.thickness-20)-40-bottom;
+   if(max<60)throw Error('底部空间不足，请先抬高或移除层板');col.drawers.push({height:Math.min(160,Math.floor(max)),open:false});
+  }else if(operation==='deleteDrawer'){if(!col.drawers[index])throw Error('抽屉不存在');col.drawers.splice(index,1);
+  }else if(operation==='copyDrawers'){if(!Number.isInteger(target)||target===column||!c.columns[target])throw Error('请选择另一个目标分区');c.columns[target].drawers=JSON.parse(JSON.stringify(col.drawers));
+  }else throw Error('柜体操作无效');return validate({...f,cabinet:c});
+ }
+ // Local plan coordinates: front is +Y, and mirroring reverses the hinge side.
+ function openingZones(f,{passage=800}={}){
+  const c=config(f),bays=layout(f),zones=[],transform=points=>{const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a);return points.map(([x,y])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*co-y*si,(f.cy||0)+x*si+y*co];});};
+  c.columns.forEach((col,i)=>{
+   const bay=bays[i],front=f.d/2;
+   if(col.door!=='none'){
+    const n=col.door==='double'?2:1,leaf=bay.width/n,angle=Math.max(99,col.doorAngle??99)*Math.PI/180;
+    for(let j=0;j<n;j++){const right=col.door==='right'||col.door==='double'&&j===1,hinge=bay.left+leaf*(j+(right?1:0)),sign=right?-1:1,points=[[hinge,front]];
+     for(let k=0;k<=24;k++){const t=angle*k/24;points.push([hinge+sign*leaf*Math.cos(t),front+leaf*Math.sin(t)]);}zones.push({column:i,kind:'cabinetdoor',poly:transform(points)});
+    }
+   }
+   if(col.drawers.length){const travel=f.d*.7;zones.push({column:i,kind:'cabinetdrawer',poly:transform([[bay.left,front],[bay.left+bay.width,front],[bay.left+bay.width,front+travel],[bay.left,front+travel]])});
+    if(passage>0)zones.push({column:i,kind:'cabinetpassage',poly:transform([[bay.left,front+travel],[bay.left+bay.width,front+travel],[bay.left+bay.width,front+travel+passage],[bay.left,front+travel+passage]])});
+   }
+  });return zones;
+ }
  function validate(f){
   if(!supported(f))throw Error('此家具不支持柜体设计');
   const c=f.cabinet,h=height(f),finite=v=>typeof v==='number'&&Number.isFinite(v);
   if(![f.w,f.d,h].every(finite)||f.w<150||f.w>6000||f.d<150||f.d>1200||h<200||h>3200)throw Error('柜宽 150–6000、深 150–1200、高 200–3200 mm');
   if(!c||c.version!==1||!finite(c.thickness)||c.thickness<12||c.thickness>30||!finite(c.plinth)||c.plinth<0||c.plinth>250||!Array.isArray(c.columns)||c.columns.length<1||c.columns.length>12)throw Error('柜板厚 12–30 mm，底座高 0–250 mm，分区 1–12 个');
   const inner=h-c.plinth-2*c.thickness,explicit=c.columns.filter(col=>col?.width!==undefined).length;
+  if(c.columns.some(col=>!col||typeof col!=='object'))throw Error('柜体分区无效');
   if(explicit&&explicit!==c.columns.length)throw Error('须为所有分区指定净宽');
   const values=widths(f);
   if(inner<100||values.some(v=>!finite(v)||v<100)||f.d<4*c.thickness)throw Error('内部净高、分区净宽须至少 100 mm，柜深须容纳板件');
   if(Math.abs(values.reduce((a,b)=>a+b,0)+(c.columns.length+1)*c.thickness-f.w)>.01)throw Error('分区净宽加板厚须等于柜体总宽');
   for(const col of c.columns){
    if(!['none','left','right','double'].includes(col.door)||typeof col.doorOpen!=='boolean'||!Array.isArray(col.drawers)||col.drawers.length>10||!Array.isArray(col.shelves)||col.shelves.length>20)throw Error('柜门、层板或抽屉配置无效');
-   let bottom=0;for(const drawer of col.drawers){if(!drawer||!finite(drawer.height)||drawer.height<60||typeof drawer.open!=='boolean')throw Error('抽屉高度至少 60 mm');bottom+=drawer.height;}
+   if(col.doorAngle!==undefined&&(!finite(col.doorAngle)||col.doorAngle<0||col.doorAngle>110)||col.finish!==undefined&&!['solid','wood','glass'].includes(col.finish)||col.handle!==undefined&&!['bar','knob','none'].includes(col.handle)||col.doorColor!==undefined&&!/^#[0-9a-f]{6}$/i.test(col.doorColor))throw Error('门板材质、颜色、把手或开启角度无效');
+   let bottom=0;for(const drawer of col.drawers){if(!drawer||!finite(drawer.height)||drawer.height<60||typeof drawer.open!=='boolean'||drawer.extension!==undefined&&(!finite(drawer.extension)||drawer.extension<0||drawer.extension>1))throw Error('抽屉高度至少 60 mm，拉出程度须为 0–100%');bottom+=drawer.height;}
    if(bottom>inner-60)throw Error('抽屉总高度超出柜内净高（须留 60 mm）');
    let last=bottom;for(const shelf of col.shelves){if(!finite(shelf)||shelf-last<40||shelf>inner-c.thickness-40)throw Error('层板从柜内底部计高，须递增且与抽屉、顶板及相邻层板留出至少 40 mm');last=shelf+c.thickness;}
   }
@@ -84,10 +136,10 @@
  }
  function toggle(f,column,drawer){
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
-  if(drawer===undefined)col.doorOpen=!col.doorOpen;else{if(!col.drawers[drawer])throw Error('抽屉不存在');col.drawers[drawer].open=!col.drawers[drawer].open;}
+  if(drawer===undefined){col.doorOpen=!col.doorOpen;if(col.doorOpen&&col.doorAngle===0)col.doorAngle=99;}else{if(!col.drawers[drawer])throw Error('抽屉不存在');col.drawers[drawer].open=!col.drawers[drawer].open;if(col.drawers[drawer].open&&col.drawers[drawer].extension===0)col.drawers[drawer].extension=1;}
   return validate({...f,h:height(f),cabinet:c});
  }
- function specification(f){const c=config(f);return {...c,columns:c.columns.map(col=>({...col,doorOpen:false,drawers:col.drawers.map(d=>({...d,open:false}))}))};}
- const api={types,templates,supported,defaultId,preset,config,height,widths,layout,scaleWidths,setColumnWidth,shelfLimits,moveShelf,validate,resize,toggle,specification};
+ function specification(f){const c=config(f);return {...c,columns:c.columns.map(col=>{const {doorAngle,...rest}=col;return {...rest,doorOpen:false,drawers:col.drawers.map(d=>{const {extension,...rest}=d;return {...rest,open:false};})};})};}
+ const api={types,templates,supported,defaultId,preset,config,height,widths,layout,scaleWidths,setColumnWidth,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,validate,resize,toggle,specification};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
