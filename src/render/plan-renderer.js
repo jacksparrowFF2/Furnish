@@ -204,7 +204,7 @@ function waterheaterClearanceSVG(){
     const c=FurnishDesign.waterheaterClearances(plan,f,{furniture:state.furniture}),sign=f.flip?-1:1;
     const frame=(kind,x,w,label)=>`<g data-edit-overlay="heater-clearance" data-heater-id="${esc(f.id)}" data-clearance-kind="${kind}" pointer-events="none" transform="${furnT(f)}"><rect x="${x}" y="${-f.d/2}" width="${w}" height="${f.d}" fill="rgba(214,69,50,.12)" stroke="#d64532" stroke-width="2" stroke-dasharray="6 3" vector-effect="non-scaling-stroke"/><text x="${x+w/2}" y="${-f.d/2-(kind==='top'?24:8)*k}" font-size="${11*k}" text-anchor="middle" fill="#d64532" stroke="${PAL.halo}" stroke-width="${3*k}" paint-order="stroke">${esc(label)}</text></g>`;
     let s='';if(c.top.ok===false)s+=frame('top',-f.w/2,f.w,tr('顶部预留不足','Top clearance insufficient'));
-    if(c.right.ok===false)s+=frame('right',sign===1?f.w/2:-f.w/2-c.right.required,c.right.required,tr('右侧预留不足','Right clearance insufficient'));
+    if(c.socket.ok===false){const a=c.socket.nearest,b=c.socket.point;s+=`<g data-edit-overlay="heater-clearance" data-heater-id="${esc(f.id)}" data-clearance-kind="socket" pointer-events="none"><line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#d64532" stroke-width="2" vector-effect="non-scaling-stroke"/><rect x="${b.x-30}" y="${b.y-30}" width="60" height="60" fill="rgba(214,69,50,.12)" stroke="#d64532" vector-effect="non-scaling-stroke"/><text x="${b.x}" y="${b.y-40*k}" font-size="${11*k}" fill="#d64532">${tr('插座净距不足','Socket clearance insufficient')}</text></g>`;}
     return s;
   }).join('');
 }

@@ -39,8 +39,7 @@ assert.deepEqual(check(saved.current.furniture.slice(1),saved.current.furniture[
 const context=vm.createContext({FurnishDesign:D,FurnishProject:P,PLAN:plan,state:work,tr:zh=>zh,nm:v=>v,esc:v=>String(v).replaceAll('<','&lt;').replaceAll('>','&gt;')});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),context);context.f=heater;
 const render=()=>vm.runInContext('waterheaterInstallationPanel(f)',context);
-assert.match(render(),/机身右侧净距：100 mm.*不足 200 mm/);assert.match(render(),/右侧高柜.*离地范围.*0–2200 mm/);
-context.f={...heater,mountHeight:2200};assert.match(render(),/机身右侧净距：1650 mm.*满足/);
-context.f=heater;context.state={furniture:[heater,{...tall,h:900}]};assert.match(render(),/机身右侧净距：1650 mm.*满足/);
-context.state={furniture:[heater,{...unknown,name:'<未知家具>'}]};assert.match(render(),/待核对家具高度/);assert.match(render(),/&lt;未知家具&gt;/);assert.doesNotMatch(render(),/机身右侧净距：.*满足/);
+assert.match(render(),/插座位置未设置，待核对/);assert.doesNotMatch(render(),/机身右侧净距/);
+context.f={...heater,heaterSocket:{x:2450,y:1500,z:1900}};assert.match(render(),/机身到插座净距：100 mm.*不足 200 mm/);
+context.state={furniture:[heater,{...tall,h:900}]};assert.match(render(),/机身到插座净距：100 mm.*不足 200 mm/,'furniture height is not socket distance');
 console.log('PASS height-aware furniture side clearances: cabinet/custom/default/mounted heights, touching/no overlap, movement, mounting height, thresholds, rotation/mirror, oblique/back contacts, unknown heights, persistence and live property panel');

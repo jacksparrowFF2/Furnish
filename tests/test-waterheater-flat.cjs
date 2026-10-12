@@ -20,7 +20,7 @@ assert.equal(design.replaceFurniture(installed,{...f,type:'waterheater'}).mountH
 assert.equal(design.replaceFurniture(installed,f).mountHeight,1850);
 assert.equal(design.resizeFurniture(installed,{w:800}).mountHeight,1850);
 // Exercise the actual panel change handler, including rejection and lock rules.
-const elements=Object.fromEntries(['#heater-ceiling-settings','#full-product-details','#fName','#fMountHeight','#fC'].map(id=>[id,{}]));
+const elements=Object.fromEntries(['#heater-ceiling-settings','#full-product-details','#fName','#fMountHeight','#fH','#fC','#heaterSocketMode','#heaterSocketX','#heaterSocketY','#heaterSocketZ'].map(id=>[id,{}]));
 let current={...f},errors=[],history=[];
 const panelCtx=vm.createContext({window:{},FurnishCabinet:{supported:()=>false},FurnishDesign:design,$:id=>elements[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{const before=JSON.stringify(current);fn();history.push(before);},toast:e=>errors.push(e),renderPanel:()=>{}});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),panelCtx);panelCtx.renderPanel=()=>{};panelCtx.f=current;vm.runInContext('bindFurnPanel(f)',panelCtx);
@@ -29,6 +29,9 @@ change('1850');assert.equal(current.mountHeight,1850);current=JSON.parse(history
 change('0');assert.equal(current.mountHeight,0);
 for(const value of ['','-1','20001','bad']){change(value);assert.equal(current.mountHeight,0);}
 current.locked=true;change('1800');assert.equal(current.mountHeight,0);assert.match(errors.at(-1),/锁定/);
+current.locked=false;elements['#fH'].onchange({target:{value:'700'}});assert.equal(current.h,700);
+elements['#heaterSocketMode'].onchange({target:{value:'set'}});elements['#heaterSocketX'].onchange({target:{value:'900'}});elements['#heaterSocketZ'].onchange({target:{value:'1800'}});assert.equal(current.heaterSocket.x,900);assert.equal(current.heaterSocket.z,1800);
+const previous=JSON.stringify(current);elements['#heaterSocketZ'].onchange({target:{value:'-1'}});assert.equal(JSON.stringify(current),previous);current.locked=true;elements['#heaterSocketX'].onchange({target:{value:'800'}});assert.equal(current.heaterSocket.x,900);current.locked=false;elements['#heaterSocketMode'].onchange({target:{value:'unset'}});assert.equal(current.heaterSocket,undefined);
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
  const imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;

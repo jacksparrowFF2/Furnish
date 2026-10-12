@@ -45,6 +45,7 @@
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
   const laundry=t=>['washer','dryer'].includes(t);
   if(c.type==='waterheater_flat'?f.type!=='waterheater_flat':!(laundry(c.type)&&laundry(f.type)))delete next.mountHeight;
+  if(c.type!=='waterheater_flat')delete next.heaterSocket;
   if(c.type==='tripleslidingwindow')next.mountHeight=f.type==='tripleslidingwindow'?(f.mountHeight??900):900;
   if(!(['slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(c.type)&&['slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)))delete next.floorTrack;
   if(!(laundry(c.type)&&laundry(f.type)))delete next.stackHeight;
@@ -169,7 +170,16 @@
   }
   const check=(gap,required)=>({gap,required,ok:gap===null?null:gap>=required-1e-6});
   const rightCheck=check(Number.isFinite(gap)?gap:null,300);if(unknown.length&&rightCheck.ok!==false)rightCheck.ok=null;
-  return {ceilingHeight,room:location.room,top:check(ceilingHeight===null?null:ceilingHeight-bottom-height,40),right:{...rightCheck,blocker,unknown}};
+  // Socket is a fixed project position, independent of the heater's physical right.
+  let socket={...check(null,300),point:null,nearest:null,local:null};
+  const s=f.heaterSocket;
+  if(s&&[s.x,s.y,s.z].every(Number.isFinite)){
+   const a=(s.x-f.cx)*Math.cos(angle)+(s.y-f.cy)*Math.sin(angle),b=-(s.x-f.cx)*Math.sin(angle)+(s.y-f.cy)*Math.cos(angle);
+   const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v)),x=clamp(a,-f.w/2,f.w/2),y=clamp(b,-f.d/2,f.d/2),z=clamp(s.z,bottom,bottom+height);
+   socket={...check(Math.hypot(a-x,b-y,s.z-z),300),point:{...s},nearest:{x:f.cx+x*Math.cos(angle)-y*Math.sin(angle),y:f.cy+x*Math.sin(angle)+y*Math.cos(angle),z},local:{point:[a,s.z,b],nearest:[x,z,y]}};
+  }
+  // `right` remains geometric diagnostics for older callers, not a socket verdict.
+  return {ceilingHeight,room:location.room,top:check(ceilingHeight===null?null:ceilingHeight-bottom-height,40),socket,right:{...rightCheck,blocker,unknown}};
  }
  function wallGaps(plan,f){
   const box=bounds(f),out={};

@@ -34,8 +34,8 @@ const source=fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf
 const ctx=vm.createContext({FurnishDesign:D,FurnishProject:{effectivePlan:()=>plan},PLAN:plan,state:{},tr:zh=>zh});
 vm.runInContext(source,ctx);
 const render=item=>{ctx.f=item;return vm.runInContext('waterheaterInstallationPanel(f)',ctx);};
-assert.match(render(f),/顶部净距：40 mm.*满足/);assert.match(render(f),/机身右侧净距：300 mm.*满足/);
-const failed=render({...f,cx:3351,mountHeight:2196});assert.match(failed,/project-error.*顶部净距：39 mm.*不足 1 mm/);assert.match(failed,/project-error.*机身右侧净距：299 mm.*不足 1 mm/);
+assert.match(render(f),/顶部净距：40 mm.*满足/);assert.match(render(f),/插座位置未设置，待核对/);assert.doesNotMatch(render(f),/机身右侧净距/);
+const failed=render({...f,cx:3351,mountHeight:2196});assert.match(failed,/project-error.*顶部净距：39 mm.*不足 1 mm/);assert.match(failed,/插座位置未设置/);
 assert.equal(render({...f,type:'waterheater'}),'');
 assert.ok(source.indexOf('${waterheaterInstallationPanel(f)}')>0,'the check is included in the live property panel');
 console.log('PASS heater top/right clearance thresholds, moves, height changes, rotation/mirroring, oblique/back/low walls, windows, unknown clearance, project round trip and live panel messages');
