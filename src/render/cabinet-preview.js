@@ -1,6 +1,6 @@
 /* Shared-model preview: structure picking, constrained drags and dimension overlays. */
 (function(root){
- function create({THREE,OrbitControls,box,host,f,actions,background}){
+ function create({THREE,OrbitControls,box,host,f,actions,background,furniture=[]}){
   const C=root.FurnishCabinet,r=new THREE.WebGLRenderer({antialias:true}),sc=new THREE.Scene();let cam=new THREE.PerspectiveCamera(38,1,.01,100);
   r.setPixelRatio(Math.min(devicePixelRatio,2));r.toneMapping=THREE.ACESFilmicToneMapping;host.replaceChildren(r.domElement);
   sc.background=new THREE.Color(background);sc.add(new THREE.HemisphereLight(0xffffff,0x8f8170,1.5));
@@ -30,6 +30,7 @@
   function dimensions(){
    labelLayer.replaceChildren();labels=[];if(!settings.dimensions)return;
    const c=C.config(current),base=c.plinth+c.thickness;
+
    const add=(text,x,y,z)=>{const el=document.createElement('span');el.className='cab-dimension';el.textContent=text;labelLayer.appendChild(el);labels.push({el,point:new THREE.Vector3(x/1000,y/1000,z/1000)});};
    C.layout(current).forEach((bay,i)=>{
     add(`宽 ${Math.round(bay.width)}`,bay.center,c.plinth-20,current.d/2+30);
@@ -38,7 +39,7 @@
    });
   }
   function projectLabels(){const rect=cv.getBoundingClientRect();for(const {el,point} of labels){const p=point.clone().project(cam);el.hidden=p.z< -1||p.z>1||Math.abs(p.x)>1||Math.abs(p.y)>1;el.style.left=`${(p.x+1)*rect.width/2}px`;el.style.top=`${(1-p.y)*rect.height/2}px`;}}
-  function update(value){current=value;clearModel();model=root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true});sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();}
+  function update(value){current=value;clearModel();model=root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture});sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();}
   function fit(){
    const h=C.height(current)/1000,w=current.w/1000,size=Math.max(w,h,current.d/1000);controls.target.set(0,h/2,0);
    if(settings.front){viewHeight=Math.max(h,w/(host.clientWidth/host.clientHeight||1))*1.35;cam.position.set(0,h/2,Math.max(4,size*3));cam.zoom=1;resize();}

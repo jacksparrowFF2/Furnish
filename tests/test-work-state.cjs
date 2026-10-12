@@ -13,7 +13,7 @@ for(const plan of plans){
   assert.equal(Object.keys(first.rooms).length,plan.rooms.length);
   assert.equal(new Set([...first.furniture,...second.furniture].map(f=>f.id)).size,2*plan.defaults.length);
   assert.notEqual(first.rooms,second.rooms);assert.notEqual(first.notes,second.notes);
-  assert.deepEqual(work.restore(structuredClone(first),plan),{...first,scene3d:{cut:2.8,furn:true,labels:true,night:false,hour:10}});
+  assert.deepEqual(work.restore(structuredClone(first),plan),{...first,scene3d:{cut:2.8,furn:true,labels:true,lamps:true,night:false,hour:10}});
 }
 assert.deepEqual(plans,before);
 
@@ -23,7 +23,7 @@ const legacy={furniture:[outside,{...outside,id:'outside',w:'900'},null,{cx:0,cy
   rooms:{[room.id]:{name:'名'.repeat(100),mat:'missing',use:'study'},oldRoom:{name:'extra'}},
   notes:[{id:'n',text:'有效',x:'12',y:'-3',color:'wrong',size:9},{id:'n',text:'字'.repeat(150),x:0,y:1},null,{text:' ',x:0,y:0},{text:'bad',x:'',y:0},{text:'bad',x:Infinity,y:0}],
   open:{w:{0:{sill:500,head:2200}}},measures:[{a:{x:0,y:0},b:{x:200,y:0}}],demolished:['wall'],
-  budget:{paintPrice:0},attachments:[{name:'test'}],scene3d:{cut:1.2,furn:false,labels:false,night:true,hour:18}};
+  budget:{paintPrice:0},attachments:[{name:'test'}],scene3d:{cut:1.2,furn:false,labels:false,lamps:false,night:true,hour:18}};
 const geometry=structuredClone(legacy.furniture),saved=structuredClone(legacy);
 assert.equal(work.restore(legacy,plan),legacy);
 assert.deepEqual(legacy.furniture[0],outside);

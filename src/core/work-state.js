@@ -45,7 +45,7 @@
       work.notes = design.restoreNotes((Array.isArray(work.notes) ? work.notes : [])
         .filter(note => note && typeof note.text === 'string' && note.text.trim() && [note.x,note.y].every(coordinate))
         .slice(0,2000).map(note => ({...note, text:note.text.slice(0,120)})), makeId);
-      work.furniture = restoreFurniture(work.furniture);
+      work.furniture = design.normalizeLaundryStacks(restoreFurniture(work.furniture));
       work.scene3d = design.sceneSettings(work.scene3d);
       return work;
     }

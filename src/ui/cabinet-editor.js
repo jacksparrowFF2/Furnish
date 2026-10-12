@@ -13,20 +13,21 @@
    const c=draft.cabinet,values=FurnishCabinet.widths(draft);
    $('#cab-form').innerHTML=`<label>${tr('常用模板（替换当前结构）','Template (replace structure)')}<select id="cab-template"><option value="">${tr('自定义当前柜体','Current cabinet')}</option>${FurnishCabinet.templates.map(t=>`<option value="${t[0]}">${esc(t[1])} · ${t[2]}×${t[3]}×${t[4]}</option>`).join('')}</select></label>
     <div class="form">${number('w',tr('宽 mm','Width mm'),draft.w,150,6000)}${number('d',tr('深 mm','Depth mm'),draft.d,150,1200)}${number('h',tr('高 mm','Height mm'),draft.h,200,3200)}${number('thickness',tr('板厚 mm','Panel mm'),c.thickness,12,30)}${number('plinth',tr('底座高 mm','Base mm'),c.plinth,0,250)}${number('columns',tr('分区数','Bay count'),c.columns.length,1,12)}</div>
-    <label>${tr('柜体颜色','Color')}<input type="color" id="cab-color" value="${draft.color}"></label>
+    <label>${tr('门板基础色','Front base color')}<input type="color" id="cab-color" value="${draft.color}"></label>
+    ${c.entry?`${[['shoeHeight','底部鞋位总高 mm','Shoe area height mm'],['lowerHeight','下柜总高 mm','Lower cabinet height mm'],['nicheHeight','置物区净高 mm','Niche clear height mm']].map(([key,zh,en])=>`<label>${tr(zh,en)}<input data-entry-number="${key}" type="number" value="${c.entry[key]}" min="100"></label>`).join('')}<label>${tr('置物区侧面镂空','Niche side opening')}<select id="cab-entry-side">${[['none','两侧封闭','Closed'],['left','左侧镂空','Left'],['right','右侧镂空','Right'],['both','两侧镂空','Both']].map(([v,zh,en])=>`<option value="${v}" ${c.entry.openSide===v?'selected':''}>${tr(zh,en)}</option>`).join('')}</select></label><label><input type="checkbox" id="cab-auto-columns" ${c.entry.autoColumns!==false?'checked':''}>${tr('改宽时自动调整分区数（约 400 mm 一列）','Automatically adjust bay count on width changes (about 400 mm per bay)')}</label><p class="muted">${tr('层板从柜内底板上表面计高，须位于上下储物柜内；抽屉排列在下柜顶部。手动改分区数或净宽会关闭自动分列。上下门按列联动；置物台分层结构使用固定顶板。','Shelves are measured from the inside bottom and stay inside upper/lower storage. Drawers stack at the top of lower storage. Editing bay count or width disables auto bays. Doors open together by bay; the layered console requires a fixed top.')}</p>`:''}
     <p class="muted">${tr('层板位置从柜内底板上表面计高；抽屉从下向上排列。尺寸均为 mm。修改高度会按比例调整内部结构。','Shelves are measured from the inside bottom. Drawers stack bottom to top. All dimensions are mm; changing height scales the interior.')}</p>
     <p class="muted">${tr('修改某个分区净宽会更新柜体总宽；修改总宽会按比例调整分区。改变分区数后重新均分。','Changing a bay width updates total width. Changing total width scales bays proportionally. Changing bay count redistributes widths equally.')}</p>
     ${c.columns.map((col,i)=>`<fieldset data-cab-column="${i}"><legend>${tr('分区','Bay')} ${i+1} · ${Number(values[i].toFixed(2))} mm ${tr('净宽','clear width')}</legend>
      <label>${tr('分区净宽 mm','Bay clear width mm')}<input data-bay-width type="number" min="100" max="6000" step="1" value="${Number(values[i].toFixed(2))}"></label>
-     <label>${tr('顶板结构','Top panel')}<select data-top><option value="fixed" ${col.top!=='drawer'?'selected':''}>${tr('固定顶板','Fixed top')}</option><option value="drawer" ${col.top==='drawer'?'selected':''}>${tr('上盖抽屉（顶板与前板一起拉出）','Top drawer (top and front pull out together)')}</option></select></label>
+     <label>${tr('顶板结构','Top panel')}<select data-top><option value="fixed" ${col.top!=='drawer'?'selected':''}>${tr('固定顶板','Fixed top')}</option><option value="drawer" ${col.top==='drawer'?'selected':''} ${c.entry?'disabled':''}>${tr('上盖抽屉（顶板与前板一起拉出）','Top drawer (top and front pull out together)')}</option></select></label>
      ${col.top==='drawer'?`<label>${tr('后侧走线留缝 mm（0 为无缺口）','Rear cable gap mm (0 disables notch)')}<input data-cable-gap type="number" min="0" max="100" value="${col.cableGap??0}"></label><button type="button" class="btn" data-toggle-column="${i}" data-toggle-lid="1">${col.topOpen?tr('收回上盖抽屉','Close top drawer'):tr('拉出上盖抽屉','Pull out top drawer')}</button>`:''}
      <label>${tr('柜门','Doors')}<select data-door>${[['none','开放格','Open'],['left','左铰链单门','Left hinge'],['right','右铰链单门','Right hinge'],['double','双门','Double doors']].map(([v,zh,en])=>`<option value="${v}" ${col.door===v?'selected':''}>${tr(zh,en)}</option>`).join('')}</select></label>
      <div class="actions"><button type="button" class="btn" data-select-column="${i}">${tr('选中分区','Select bay')} ${i+1}</button>${i<c.columns.length-1?`<button type="button" class="btn" data-select-divider="${i}">${tr('选中右侧分隔板','Select right divider')}</button>`:''}</div>
      <div class="form"><label>${tr('门板材质','Door material')}<select data-finish>${[['solid','素色板','Solid'],['wood','木色板','Wood'],['glass','玻璃','Glass']].map(([v,zh,en])=>`<option value="${v}" ${(col.finish||'solid')===v?'selected':''}>${tr(zh,en)}</option>`).join('')}</select></label><label>${tr('把手','Handle')}<select data-handle>${[['bar','长条','Bar'],['knob','圆钮','Knob'],['none','无把手','None']].map(([v,zh,en])=>`<option value="${v}" ${(col.handle||'bar')===v?'selected':''}>${tr(zh,en)}</option>`).join('')}</select></label></div>
-     <label>${tr('门板颜色','Door color')}<input type="color" data-door-color value="${col.doorColor||(col.finish==='wood'?'#b9946d':draft.color)}"></label>
+     <label>${tr('门板颜色','Door color')}<input type="color" data-door-color value="${col.doorColor||(col.finish==='wood'?FurnishCabinet.palette.body:draft.color)}"></label>
      ${col.door!=='none'?`<label>${tr('柜门开启角度 °','Door opening angle °')}<input data-door-angle type="range" min="0" max="110" step="1" value="${col.doorOpen?(col.doorAngle??99):0}"><output>${col.doorOpen?(col.doorAngle??99):0}°</output></label>`:''}
      <label>${tr('层板位置（逗号分隔，清空即移除）','Shelf elevations (comma separated; empty removes)')}<input data-shelves value="${col.shelves.join(', ')}" placeholder="300, 650, 1000"></label>
-     ${col.doorBottom!==undefined?`<label>${tr('上柜门底部高度 mm（从柜内底板计）','Upper door bottom mm (from inside bottom)')}<input data-door-bottom type="number" min="0" value="${col.doorBottom}"></label><p class="muted">${tr('上柜门底部随分界层板移动。洞洞板开放区位于抽屉与分界层板之间。','The upper door follows its divider shelf. The pegboard niche lies between drawers and that shelf.')}</p>`:''}
+     ${col.doorBottom!==undefined?`<label>${tr('上柜分界层板上表面 mm（从柜内底板计）','Upper divider top mm (from inside bottom)')}<input data-door-bottom type="number" min="0" value="${col.doorBottom}"></label><p class="muted">${tr('全盖上柜门随分界层板移动，并遮住层板前沿。洞洞板开放区位于抽屉与分界层板之间。','The upper door follows its divider shelf. The pegboard niche lies between drawers and that shelf.')}</p>`:''}
      ${col.doorBottom!==undefined?`<label><input data-pegboard type="checkbox" ${col.pegboard?'checked':''}>${tr('洞洞板开放区','Pegboard niche')}</label>`:''}
      <div class="cab-shelf-buttons">${col.shelves.map((v,j)=>`<button type="button" class="btn ${selected?.column===i&&selected?.shelf===j?'on':''}" data-select-column="${i}" data-select-shelf="${j}">${tr('层板','Shelf')} ${j+1} · ${v} mm</button>`).join('')}</div>
      <label>${tr('抽屉高度（逗号分隔，清空即移除）','Drawer heights (comma separated; empty removes)')}<input data-drawers value="${col.drawers.map(v=>v.height).join(', ')}" placeholder="150, 180"></label>
@@ -38,6 +39,7 @@
    document.querySelectorAll('[data-cab-number]').forEach(el=>{if(!el.value.trim())throw Error(tr('请填写尺寸','Enter dimensions'));const k=el.dataset.cabNumber,v=Number(el.value);if(k!=='columns'){if(['w','d','h'].includes(k))next[k]=v;else c[k]=v;}});
    // Scale heights before applying explicitly edited interior values below.
    if(next.h!==draft.h){const ratio=(next.h-c.plinth-2*c.thickness)/(draft.h-draft.cabinet.plinth-2*draft.cabinet.thickness);c.columns.forEach(col=>{col.shelves=col.shelves.map(v=>Math.round(v*ratio));col.drawers=col.drawers.map(v=>({...v,height:Math.round(v.height*ratio)}));});}
+   if(c.entry){if(next.h!==draft.h){const ratio=(next.h-c.plinth)/(draft.h-draft.cabinet.plinth);for(const key of ['shoeHeight','lowerHeight','nicheHeight'])c.entry[key]=Math.round(c.entry[key]*ratio);}document.querySelectorAll('[data-entry-number]').forEach(el=>{if(!el.value.trim())throw Error('请填写分层尺寸');const key=el.dataset.entryNumber,value=Number(el.value);if(value!==draft.cabinet.entry[key])c.entry[key]=value;});c.entry.openSide=$('#cab-entry-side').value;c.entry.autoColumns=$('#cab-auto-columns').checked;}
    const list=el=>el.value.trim()?el.value.split(/[,，]/).map(v=>{if(!v.trim())throw Error('请输入逗号分隔的有效数字');return Number(v.trim());}):[];
    document.querySelectorAll('[data-cab-column]').forEach(el=>{const index=+el.dataset.cabColumn,col=c.columns[index],old=draft.cabinet.columns[index];col.door=el.querySelector('[data-door]').value;
     const width=el.querySelector('[data-bay-width]');if(!width.value.trim()||!Number.isFinite(Number(width.value)))throw Error('请输入有效的分区净宽');editedWidths[index]=Number(width.value);
@@ -51,18 +53,19 @@
      el.querySelectorAll('[data-drawer-extension]').forEach(input=>{const j=+input.dataset.drawerExtension,v=Number(input.value)/100,previous=old.drawers[j];if(v!==(previous.open?(previous.extension??1):0)){col.drawers[j].open=v>0;if(v>0)col.drawers[j].extension=v;}else if(previous.extension!==undefined)col.drawers[j].extension=previous.extension;});
     }
     for(const [key,selector,defaultValue] of [['finish','[data-finish]','solid'],['handle','[data-handle]','bar']]){const value=el.querySelector(selector).value;if(value!==(old[key]||defaultValue))col[key]=value;}
-    const faceColor=el.querySelector('[data-door-color]').value;if(faceColor!==(old.doorColor||(old.finish==='wood'?'#b9946d':draft.color)))col.doorColor=faceColor;
+    const faceColor=el.querySelector('[data-door-color]').value;if(faceColor!==(old.doorColor||(old.finish==='wood'?FurnishCabinet.palette.body:draft.color)))col.doorColor=faceColor;
     const angle=el.querySelector('[data-door-angle]');if(angle){const v=Number(angle.value);if(v!==(old.doorOpen?(old.doorAngle??99):0)){col.doorOpen=v>0;if(v>0)col.doorAngle=v;}}
     const top=el.querySelector('[data-top]').value;if(top!==(old.top||'fixed')){col.top=top;col.topOpen=false;if(top==='drawer'){col.door='none';col.doorOpen=false;col.drawers=[];col.shelves=[];}}
     const gap=el.querySelector('[data-cable-gap]');if(gap){if(!gap.value.trim())throw Error('请填写后侧留缝');col.cableGap=Number(gap.value);}
    });
    const count=Number($('[data-cab-number="columns"]').value);if(!Number.isInteger(count)||count<1||count>12)throw Error('分区数须为 1–12 的整数');
-   c.columns=Array.from({length:count},(_,i)=>c.columns[i]||{door:'left',doorOpen:false,shelves:[],drawers:[]});next.color=$('#cab-color').value;
+   c.columns=Array.from({length:count},(_,i)=>c.columns[i]||(c.entry?{...JSON.parse(JSON.stringify(c.columns.at(-1))),doorOpen:false,drawers:c.columns.at(-1).drawers.map(v=>({...v,open:false,extension:0}))}:{door:'left',doorOpen:false,shelves:[],drawers:[]}));next.color=$('#cab-color').value;
    if(count!==draft.cabinet.columns.length)c.columns.forEach(col=>delete col.width);
    else if(editedWidths.some((v,i)=>Math.abs(v-oldWidths[i])>.01)){
     c.columns.forEach((col,i)=>col.width=Math.abs(editedWidths[i]-oldWidths[i])>.01?editedWidths[i]:oldWidths[i]);
     next.w=c.columns.reduce((n,col)=>n+col.width,0)+(count+1)*c.thickness;
    }else FurnishCabinet.scaleWidths(draft,next);
+   if(c.entry){const manual=count!==draft.cabinet.columns.length||editedWidths.some((v,i)=>Math.abs(v-oldWidths[i])>.01);if(manual)c.entry.autoColumns=false;else if(next.w!==draft.w&&c.entry.autoColumns!==false)return FurnishCabinet.resize({...next,w:draft.w},next);}
    return FurnishCabinet.validate(next);
   }
   function selectionStatus(){
@@ -78,6 +81,7 @@
   function moveShelf(part,value){try{
    draft=FurnishCabinet.moveShelf(draft,part.column,part.shelf,value);selected=part;
    const field=$(`[data-cab-column="${part.column}"] [data-shelves]`);if(field)field.value=draft.cabinet.columns[part.column].shelves.join(', ');
+   const doorBottom=$(`[data-cab-column="${part.column}"] [data-door-bottom]`);if(doorBottom)doorBottom.value=draft.cabinet.columns[part.column].doorBottom;
    const b=$(`[data-select-column="${part.column}"][data-select-shelf="${part.shelf}"]`);if(b)b.textContent=tr(`层板 ${part.shelf+1} · ${draft.cabinet.columns[part.column].shelves[part.shelf]} mm`,`Shelf ${part.shelf+1} · ${draft.cabinet.columns[part.column].shelves[part.shelf]} mm`);
    selectionStatus();error('');return draft;
   }catch(e){error(e.message);return null;}}

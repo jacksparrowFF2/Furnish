@@ -2,7 +2,7 @@
 (function(root){
   'use strict';
   const geometry = typeof module === 'object' && module.exports ? require('./layout-geometry.js') : root.FurnishGeometry;
-  const tolerance=(f,scale)=>['curtain','slidingdoor','tripleslidingdoor'].includes(f.type)?Math.min(250,32/scale):10/scale;
+  const tolerance=(f,scale)=>['curtain','slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)?Math.min(250,32/scale):10/scale;
   function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip}){
     let nx=Math.round(cx/grid)*grid,ny=Math.round(cy/grid)*grid;
     // Long, thin curtains need a wider visible capture area at overview zoom.

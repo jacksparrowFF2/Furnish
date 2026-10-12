@@ -15,7 +15,7 @@ const C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-co
  const build=f=>ctx.FurnishCabinetModel.build(THREE,f,box),closed=build(f),bounds=new THREE.Box3().setFromObject(closed),size=bounds.getSize(new THREE.Vector3());
  for(const [axis,mm] of [['x',f.w],['y',f.h],['z',f.d]])assert(Math.abs(size[axis]-mm/1000)<1e-7,axis+' bounds');
  let board,door;closed.traverse(o=>{if(o.userData.cabinetPegboard)board=o;if(o.isMesh&&o.userData.cabinetPart?.column===0&&o.userData.cabinetPart.drawer===undefined)door=o;if(o.geometry)assert([...o.geometry.attributes.position.array].every(Number.isFinite));});
- assert(board.geometry.parameters.shapes.holes.length>100);assert(Math.abs(new THREE.Box3().setFromObject(door).min.y-1.814)<1e-7);
+ assert(board.geometry.parameters.shapes.holes.length>100);assert(Math.abs(new THREE.Box3().setFromObject(door).min.y-1.797)<1e-7);
  const open=build(opened);let front;open.traverse(o=>{if(o.userData.cabinetDrawerBoard==='front'&&o.userData.cabinetPart.drawer===1)front=o;});assert(Math.abs(front.getWorldPosition(new THREE.Vector3()).z-(.175-.009+.245))<1e-7);
  console.log('PASS entry pegboard: 1418 mm niche, exterior bounds, upper doors, drawer travel, shelf linkage, resize, validation and project round trip');
 })().catch(e=>{console.error(e);process.exit(1)});

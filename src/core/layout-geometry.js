@@ -34,6 +34,10 @@ function collisions(furniture){
     const a = L[i], b = L[j];
     if (Math.abs(a.cx-b.cx) >= box[i].hw+box[j].hw || Math.abs(a.cy-b.cy) >= box[i].hh+box[j].hh) continue;   // 外包盒快速排除
     if ((SEATS.has(a.type) && TABLES.has(b.type)) || (SEATS.has(b.type) && TABLES.has(a.type))) continue;
+    if(['washer','dryer'].includes(a.type)||['washer','dryer'].includes(b.type)){
+      const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),A=D?.furnitureVerticalBounds(a),B=D?.furnitureVerticalBounds(b);
+      if(A&&B&&Math.min(A.top,B.top)-Math.max(A.bottom,B.bottom)<=1e-6)continue;
+    }
     if (obbOverlap(a, b)) out.push([a.id, b.id]);
   }
   return out;

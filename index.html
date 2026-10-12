@@ -144,6 +144,7 @@
             <button class="btn chip" data-cut="1.2" data-en="Cut walls">剖切墙</button>
             <button class="btn chip on" data-t="furn" data-en="Furniture">家具</button>
             <button class="btn chip on" data-t="labels" data-en="Labels">房间名</button>
+            <button class="btn chip on" data-t="lamps" title="显示或隐藏自动顶灯，保留夜景照明" data-en-title="Show or hide automatic ceiling lamps while keeping night lighting" data-en="Ceiling lamps">顶灯</button>
             <button class="btn chip" data-t="night" data-en="Night">夜景</button>
           </div>
           <label class="range"><span data-en="Sun">日照</span> <input type="range" id="sun" min="7" max="18" step=".25" value="10"><span id="sunT">10:00</span></label>
@@ -356,7 +357,7 @@ computeCenter();
 const FOV = 45;
 const wx = x => (x - OX) / 1000, wz = y => (y - OY) / 1000, M = v => v / 1000;
 const SW = () => stage.clientWidth, SH = () => stage.clientHeight;
-const opt = {cut:2.8, furn:true, labels:true, night:false, hour:10, mode:'orbit'};
+const opt = {cut:2.8, furn:true, labels:true, lamps:true, night:false, hour:10, mode:'orbit'};
 
 let inited = false, active = false, raf = 0, anim = null, fly = null;
 let capturedImage=null,capturedState='';
@@ -645,23 +646,32 @@ const plate = (g, r, x, y, z) => g.add(lathe([[0, 0], [r*.6, 0], [r*.72, .008], 
 
 /* ======================= 家具模型（局部坐标：背面朝 -z） ======================= */
 // Local X runs along the opening; each leaf has its own depth track.
-function buildSlidingDoor(w,d,h,count,color='#41474b'){
+function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
   const group=new THREE.Group(),frame=mat(color,{metalness:.65,roughness:.35});
-  const glass=mat('#c4dce5',{transparent:true,opacity:.32,roughness:.12,side:THREE.DoubleSide});
-  const edge=Math.min(.035,w/20,h/20),step=(w-2*edge)/count,overlap=Math.min(.025,step*.08),pw=step+overlap;
-  const leafDepth=Math.min(.025,d/(count+1)*.7),track=(d-leafDepth)/count;
+  const glass=mat('#d8e5e8',{transparent:true,opacity:.18,depthWrite:false,roughness:.12,side:THREE.DoubleSide});
+  const slim=count===3,edge=Math.min(slim?.016:.028,w/20,h/12),jamb=slim?.009:edge;
+  const rail=Math.min(slim?.024:edge,h/10),bottom=options.floorTrack??!slim;
+  const overlap=edge,clear=w-2*jamb,pw=(clear+(count-1)*overlap)/count,step=pw-overlap;
+  const leafDepth=Math.min(slim?.018:.025,d/(count+1)*.7),track=(d-leafDepth)/count;
+  const low=bottom?Math.min(.008,h/20):.004,high=h-rail,leafH=high-low;
   const door={kind:'slide',group,leaves:[],open:false,cur:0};
-  [-1,1].forEach(s=>group.add(box(edge,h,d,frame,s*(w-edge)/2,0,0)));
-  [0,h-edge].forEach(y=>group.add(box(w,edge,d,frame,0,y,0)));
+  [-1,1].forEach(side=>group.add(box(jamb,h,d,frame,side*(w-jamb)/2,0,0)));
+  group.add(box(w,rail,d,frame,0,h-rail,0));
+  if(bottom){const railGroup=new THREE.Group();railGroup.name='floor-track';
+    for(let i=0;i<count;i++)railGroup.add(box(w,low,.004,frame,0,0,(i-(count-1)/2)*track));
+    group.add(railGroup);
+  }
   for(let i=0;i<count;i++){
-    const leaf=new THREE.Group(),closed=-w/2+edge+step*(i+.5),opened=-w/2+edge+step*.5;
-    leaf.position.set(closed,0,(i-(count-1)/2)*track);
-    leaf.add(box(pw-2*edge,h-4*edge,Math.min(.008,leafDepth/2),glass,0,2*edge,0));
-    [-1,1].forEach(s=>leaf.add(box(edge,h-2*edge,leafDepth,frame,s*(pw-edge)/2,edge,0)));
-    [edge,h-2*edge].forEach(y=>leaf.add(box(pw,edge,leafDepth,frame,0,y,0)));
-    pull(leaf,Math.min(.22,h*.15),true,pw/2-edge*1.5,h*.48,.014);
+    const leaf=new THREE.Group(),closed=-w/2+jamb+pw/2+step*i,opened=-w/2+jamb+pw/2;
+    leaf.position.set(closed,low,(i-(count-1)/2)*track);
+    leaf.add(box(pw-2*edge,leafH-2*edge,Math.min(.006,leafDepth/2),glass,0,edge,0));
+    [-1,1].forEach(side=>leaf.add(box(edge,leafH,leafDepth,frame,side*(pw-edge)/2,0,0)));
+    [0,leafH-edge].forEach(y=>leaf.add(box(pw-2*edge,edge,leafDepth,frame,0,y,0)));
+    // Recessed slim grip on the leading leaf; no repeated projecting handles.
+    if(i===count-1)leaf.add(box(Math.min(.006,edge*.4),Math.min(.18,leafH*.2),.004,frame,pw/2-edge*.5,leafH*.45,leafDepth/2));
     group.add(leaf);door.leaves.push({node:leaf,closed,opened,width:pw});
   }
+  if(options.stackSide==='right')group.scale.x=-1;
   group.traverse(o=>{o.userData.door=door;});group.userData.slidingDoor=door;
   return group;
 }
@@ -674,6 +684,7 @@ function animateCurtains(dt){
   }
 }
 function buildFurniture(f){
+  const furniture=typeof state!=='undefined'?state.furniture:[];
   if(f.obj?.positions?.length){
     const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(f.obj.positions,3));geo.computeVertexNormals();geo.computeBoundingBox();const b=geo.boundingBox,size=new THREE.Vector3();b.getSize(size);geo.translate(-(b.min.x+b.max.x)/2,-b.min.y,-(b.min.z+b.max.z)/2);const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:f.color||'#d9d2c5',roughness:.75,side:THREE.DoubleSide}));mesh.scale.set(f.w/1000/size.x,(f.h||800)/1000/size.y,f.d/1000/size.z);mesh.castShadow=true;mesh.receiveShadow=true;const g=new THREE.Group();g.add(mesh);g.userData.fid=f.id;g.position.set(wx(f.cx),0,wz(f.cy));g.rotation.y=-f.rot*Math.PI/180;return g;
   }
@@ -683,7 +694,7 @@ function buildFurniture(f){
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   if(FurnishCabinet.supported(f)){
-    const model=FurnishCabinetModel.build(THREE,f,box);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
+    const model=FurnishCabinetModel.build(THREE,f,box,{furniture:state.furniture});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   if(f.type==='sofa_yeswood_cherry'){
     const model=FurnishYeswoodSofaModel.build(THREE,f,RoundedBoxGeometry,{wood:woodM,fabric});
@@ -940,6 +951,7 @@ function buildFurniture(f){
       break;
     }
     case 'fridge': {
+      const w = f.w > 850 ? .91 : .7, d = .7;
       const fm = mat(c, {metalness:.45, roughness:.28}), h = 1.8, fz = d/2 - .05;
       g.add(box(w - .02, .06, d - .06, '#2a2c2e', 0, 0, -.03), rbox(w, h - .06, d - .05, fm, 0, .06, -.025, .02), box(w - .01, h - .07, .003, '#2a2c2e', 0, .065, fz + .0015));
       if (w > .85){
@@ -950,6 +962,24 @@ function buildFurniture(f){
         pull(g, .5, true, -w/2 + .06, 1.05, fz + .043); pull(g, w*.5, false, 0, .64, fz + .043);
         g.add(box(.08, .1, .003, screenMat('#2a6f8f'), w*.22, 1.4, fz + .044));
       }
+      break;
+    }
+    case 'fridge_french_drawer': {
+      // Reference envelope 833 × 595 × 1910 mm; front is +Z.
+      const w=.833,d=.595,h=1.91,fz=d/2,white=mat(c,{metalness:.12,roughness:.4}),dark=mat('#303234',{roughness:.55});
+      g.add(box(w,h-.024,d-.036,white,0,.024,-.018));
+      [-1,1].forEach(s=>[-1,1].forEach(t=>g.add(cyl(.012,.014,.024,dark,s*(w/2-.04),0,t*(d/2-.04),16))));
+      // Recessed dark backing remains visible in the seams and handle channels.
+      g.add(box(w-.006,h-.033,.012,dark,0,.025,fz-.03));
+      const panel=(pw,ph,x,y)=>g.add(rbox(pw,ph,.032,white,x,y,fz-.016,.002));
+      panel(w-.008,.400,0,.025);
+      panel(w-.008,.306,0,.460);
+      [-1,1].forEach(s=>panel(w/2-.006,1.102,s*w/4,.800));
+      // Two horizontal recessed grips, no handles beyond the flush front.
+      [.426,.767].forEach(y=>g.add(box(w-.012,.025,.010,dark,0,y,fz-.015),box(w-.012,.004,.013,metal(),0,y+.025,fz-.013)));
+      g.add(box(.048,.208,.002,screenMat('#292e30'),.080,1.425,fz-.0005));
+      [.034,.076,.118].forEach((offset,i)=>g.add(box(.018,.006,.001,glowMat(i===1?'#e8a55d':'#c2d4d4'),.080,1.44+offset,fz+.001)));
+      g.add(box(.029,.003,.001,metal(),w*.39,1.846,fz+.001));
       break;
     }
     case 'toilet': {
@@ -1010,6 +1040,7 @@ function buildFurniture(f){
       const Rs = R0*1.42, cap = new THREE.Mesh(new THREE.SphereGeometry(Rs, 32, 12, 0, Math.PI*2, 0, .78), mat(f.type === 'dryer' ? '#4a4038' : '#26343d', {roughness:.04, metalness:.2, transparent:true, opacity:.8}));
       cap.rotation.x = Math.PI/2; cap.position.set(0, .4, fz + .012 - Rs*Math.cos(.78)); g.add(cap);
       g.add(box(w - .06, .004, .003, '#b9c3ca', 0, .08, fz + .002));
+      g.scale.y = M(f.h??850)/.85;
       break;
     }
     case 'crib': {
@@ -1212,9 +1243,9 @@ function buildFurniture(f){
       g.add(blob(r*.42, r*.16, r*.42, glowMat('#fff6dd', '#ffdca0', .9), 0, 2.12, 0, 20));
       break;
     }
-    case 'slidingdoor': case 'tripleslidingdoor': {
-      const model=buildSlidingDoor(w,d,M(f.h||(f.type==='tripleslidingdoor'?2400:2100)),f.type==='tripleslidingdoor'?3:2,c);
-      g.add(model);g.userData.slidingDoor=model.userData.slidingDoor;
+    case 'slidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
+      const model=buildSlidingDoor(w,d,M(f.h??(f.type==='tripleslidingwindow'?1500:f.type==='tripleslidingdoor'?2400:2100)),f.type==='slidingdoor'?2:3,c,{floorTrack:f.floorTrack??f.type!=='tripleslidingdoor'});
+      if(f.type==='tripleslidingwindow')model.position.y=M(f.mountHeight??900);g.add(model);g.userData.slidingDoor=model.userData.slidingDoor;
       break;
     }
     case 'curtain': {
@@ -1281,7 +1312,19 @@ function buildFurniture(f){
     case 'customround': { const o = cyl(.5, .5, M(f.h || 800), c); o.scale.set(w, 1, d); g.add(o); break; }
     default: g.add(box(w, .8, d, c));
   }
-  g.position.set(wx(f.cx), 0, wz(f.cy));
+  const stack=typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,furniture):null;
+  if(stack&&stack.height>0&&Math.abs((f.mountHeight??0)-stack.bottom-stack.height)<1e-6){
+    const connector=box(M(stack.w),M(stack.height)/g.scale.y,M(stack.d),'#aeb5bb',0,-M(stack.height)/g.scale.y,0);
+    connector.userData.laundryConnector=true;g.add(connector);
+  }
+  if(['fridge','fridge_french_drawer'].includes(f.type)){
+    // Scale the complete envelope (including existing handles), keeping the floor datum.
+    const model=new THREE.Group();model.add(...g.children.slice());g.add(model);
+    const bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());
+    model.scale.set(w/size.x,M(f.h??(f.type==='fridge'?1800:1910))/size.y,d/size.z);
+    model.position.set(-(bounds.min.x+bounds.max.x)/2*model.scale.x,-bounds.min.y*model.scale.y,-(bounds.min.z+bounds.max.z)/2*model.scale.z);
+  }
+  g.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):0, wz(f.cy));
   g.rotation.y = -f.rot * Math.PI/180;       // 平面顺时针旋转 → 绕 Y 轴负向
   g.scale.x = f.flip ? -1 : 1;               // 镜像：沿家具自身宽度方向翻转（three 会自动处理负缩放的正反面）
   g.userData.fid = f.id;
@@ -1319,7 +1362,7 @@ function buildArch(){
     const ceil = new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1})); ceil.position.y = roomH; ceil.visible = opt.cut===2.8 || top >= roomH; archUp.add(ceil);
     if (r.at){
       const lamp = new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, .02, 32), new THREE.MeshStandardMaterial({color:'#fff', emissive:'#fff2d6', emissiveIntensity:.3}));
-      lamp.position.set(wx(r.at[0]), roomH - .012, wz(r.at[1])); lamp.visible = opt.cut===2.8 || top >= roomH; lampG.add(lamp);
+      lamp.position.set(wx(r.at[0]), roomH - .012, wz(r.at[1])); lamp.userData.cutVisible = opt.cut===2.8 || top >= roomH; lamp.visible = opt.lamps && lamp.userData.cutVisible; lampG.add(lamp);
       const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), roomH - .25, wz(r.at[1])); lampG.add(pl);
     }
   });
@@ -1333,12 +1376,17 @@ function buildArch(){
   [...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
     .forEach(([r, h]) => { if (top > h) wallBox(r, h, top); });
   const bayPosts=new Set();
-  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, bayType, paintRect}) => {
+  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, bayType, paintRect,panels,stackSide}) => {
     if(bayId&&paintRect&&bayType!=='recessed'){wallBox(paintRect,0,Math.min(sill,top));if(top>head)wallBox(paintRect,head,top);}
     wallBox(rect, 0, Math.min(sill, top)); if (top > head) wallBox(rect, head, top);
     colliders.push([wx(rect[0]), wz(rect[1]), wx(rect[2]), wz(rect[3])]);
     const gTop = Math.min(head, top); if (gTop <= sill) return;
     const [x0, y0, x1, y1] = frameLine?[Math.min(frameLine[0][0],frameLine[1][0]),Math.min(frameLine[0][1],frameLine[1][1]),Math.max(frameLine[0][0],frameLine[1][0]),Math.max(frameLine[0][1],frameLine[1][1])]:rect, hz = (x1-x0) >= (y1-y0), L = M(hz ? x1-x0 : y1-y0), gh = gTop - sill, cx = wx((x0+x1)/2), cz = wz((y0+y1)/2);
+    if(panels===3){
+      const model=buildSlidingDoor(L,.09,gh,3,'#41474b',{floorTrack:true,stackSide});
+      model.position.set(cx,sill,cz);model.rotation.y=hz?0:-Math.PI/2;
+      archUp.add(model);slidingDoors.push(model.userData.slidingDoor);return;
+    }
     const pane = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .01, gh, hz ? .01 : L), glassMat); pane.position.set(cx, sill + gh/2, cz); archUp.add(pane);
     const n = Math.max(1, Math.round(L/.9));
     for (let k = 0; k <= n; k++){ const t = -L/2 + k*L/n,px=cx+(hz?t:0),pz=cz+(hz?0:t),key=[bayId,px.toFixed(6),pz.toFixed(6),sill,gTop].join(':');if(bayId&&(k===0||k===n)){if(bayPosts.has(key))continue;bayPosts.add(key);}const mu = new THREE.Mesh(new THREE.BoxGeometry(bayId ? .06 : hz ? .04 : .06, gh, bayId ? .06 : hz ? .06 : .04), frameMat);
@@ -1357,8 +1405,8 @@ function buildArch(){
     door.cur = door.a1; pivot.rotation.y = door.cur; leaf.userData.door = knob.userData.door = door;
     doors.push(door); archUp.add(pivot);
   });
-  SLIDES.forEach(({rect:[x0,y0,x1,y1],v,panels})=>{
-    const model=buildSlidingDoor(M(v?y1-y0:x1-x0),M(v?x1-x0:y1-y0),Math.min(v?2.4:2.1,top),panels===3?3:2);
+  SLIDES.forEach(({rect:[x0,y0,x1,y1],v,panels,floorTrack,stackSide})=>{
+    const model=buildSlidingDoor(M(v?y1-y0:x1-x0),M(v?x1-x0:y1-y0),Math.min(v?2.4:2.1,top),panels===3?3:2,'#41474b',{floorTrack,stackSide});
     model.position.set(wx((x0+x1)/2),0,wz((y0+y1)/2));model.rotation.y=v?-Math.PI/2:0;
     archUp.add(model);slidingDoors.push(model.userData.slidingDoor);
   });
@@ -1370,10 +1418,10 @@ function buildFurn(){
   const byId = new Map(furnG.children.map(o => [o.userData.fid, o])), keep = new Set();
   for (const f of state.furniture){
     keep.add(f.id);
-    const sig = JSON.stringify([f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.curtainStyle, f.cabinet, f.obj?.positions]);
+    const sig = JSON.stringify([f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,state.furniture):null,FurnishCabinet.sideOpenings(f,state.furniture),FurnishCabinet.joinedSideFinishes(f,state.furniture),FurnishCabinet.sharedSides(f,state.furniture)]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
-      o.position.set(wx(f.cx), 0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;
+      o.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;
       continue;
     }
     if (o){ clearGroup(o); furnG.remove(o); }
@@ -1438,6 +1486,7 @@ function applyGrow(){
 
 /* ======================= 日照 / 夜景 ======================= */
 function applyLight(){
+  lampG.children.forEach(o => { if (o.isMesh) o.visible = opt.lamps && o.userData.cutVisible; });
   const t = (opt.hour - 6) / 12, az = Math.PI * (.15 + t*.7), el = Math.sin(Math.PI*t) * 1.05 + .15, warm = 1 - Math.sin(Math.PI*t);
   sun.position.set(Math.cos(az)*18, Math.sin(el)*20 + 3, -Math.sin(az)*10 + 8); sun.target.position.set(0, 0, 0);
   sun.color.setHSL(.09, .5 + warm*.4, .92 - warm*.12);
@@ -1654,6 +1703,7 @@ function blocked(x, z, r = .22){
   for (const [x0, z0, x1, z1] of colliders) if (x > x0 - r && x < x1 + r && z > z0 - r && z < z1 + r) return true;
   for(const d of [...slidingDoors,...(furnG.visible?furnG.children.map(g=>g.userData.slidingDoor).filter(Boolean):[])]){
     d.group.updateWorldMatrix(true,true);
+    if(d.group.getWorldPosition(new THREE.Vector3()).y>.5)continue;
     for(const leaf of d.leaves){const a=leaf.node.localToWorld(new THREE.Vector3(-leaf.width/2,0,0)),b=leaf.node.localToWorld(new THREE.Vector3(leaf.width/2,0,0)),len=(b.x-a.x)**2+(b.z-a.z)**2;
       const t=clamp01(((x-a.x)*(b.x-a.x)+(z-a.z)*(b.z-a.z))/len);
       if(Math.hypot(x-a.x-t*(b.x-a.x),z-a.z-t*(b.z-a.z))<r*.8)return true;
@@ -1718,7 +1768,7 @@ function bindUI(){
     remember();
     if (k === 'furn'){ furnG.visible = clearanceG.visible = opt.furn; invalidate(); if (!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
     if (k === 'labels') showLabels(opt.labels && opt.mode === 'orbit' && !anim);
-    if (k === 'night') applyLight();
+    if (k === 'night' || k === 'lamps') applyLight();
   });
   $('#sun').oninput = e => { opt.hour = +e.target.value;applyLight(); };
   $('#sun').onchange = () => remember();
@@ -1775,7 +1825,7 @@ function retheme(){
 
 // Independent editor camera and scene; geometry uses exactly the room builder.
 function cabinetPreview(host,f,actions){
- return FurnishCabinetPreview.create({THREE,OrbitControls,box,host,f,actions,background:DK()?'#252a30':'#eeeae3'});
+ return FurnishCabinetPreview.create({THREE,OrbitControls,box,host,f,actions,furniture:state.furniture,background:DK()?'#252a30':'#eeeae3'});
 }
 
 return {cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};

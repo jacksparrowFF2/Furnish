@@ -29,7 +29,8 @@
       openingIds.add(o.id);
       if(o.reference!==undefined&&(typeof o.reference!=='string'||o.reference.length>200))fail('Invalid opening reference');
       if(o.review!==undefined&&!['door-gap','window-height'].includes(o.review))fail('Invalid opening review state');
-      if(o.panels!==undefined&&(o.kind!=='slide'||![2,3].includes(o.panels)))fail('Invalid sliding door panels');
+      if(o.panels!==undefined&&(!['slide','window'].includes(o.kind)||!(o.kind==='window'?[0,3]:[2,3]).includes(o.panels)))fail('Invalid sliding door panels');
+      if(o.floorTrack!==undefined&&(o.kind!=='slide'||typeof o.floorTrack!=='boolean')||o.stackSide!==undefined&&(!['slide','window'].includes(o.kind)||!['left','right'].includes(o.stackSide)))fail('Invalid sliding frame options');
       if(o.hingeEnd!==undefined&&typeof o.hingeEnd!=='boolean'||o.hingeSide!==undefined&&![-1,1].includes(o.hingeSide)||o.name!==undefined&&(typeof o.name!=='string'||o.name.length>80)||o.bayGroup!==undefined&&typeof o.bayGroup!=='string')fail('Invalid opening attributes');
       if(o.sill!==undefined&&(!finite(o.sill)||o.sill<0||o.sill>2400)||o.head!==undefined&&(!finite(o.head)||o.head<=0||o.head>2800)||(o.kind==='window'&&!o.bay&&(o.head??2400)<=(o.sill??900)))fail('窗台高须为0–2400 mm，窗顶高于窗台且不超过2800 mm');
       if(o.bay?.type!==undefined&&!['three-sided','recessed'].includes(o.bay.type))fail('飘窗类型无效');
@@ -386,8 +387,8 @@
           left[axis]=a-frame;left[axis+2]=a;right[axis]=b;right[axis+2]=b+frame;
           for(const [part,q,line] of [['front',frontRect,[at(a-frame/2,front),at(b+frame/2,front)]],['left',left,[at(a-frame/2,base),at(a-frame/2,front)]],['right',right,[at(b+frame/2,base),at(b+frame/2,front)]]]){wins.push({rect:q,frameLine:line,sill:o.bay.height/1000,head:o.bay.head/1000,bayId:o.id,bayPart:part,paintRect:part==='front'?opening:null});winRefs.push(o.id+':'+part);}
         }
-        else if(o.kind==='window'){wins.push({rect:opening,sill:(o.sill??900)/1000,head:(o.head??2400)/1000,...(o.bayGroup?{bayGroup:o.bayGroup}:{})});winRefs.push(o.id);}
-        else if(o.kind==='slide'){slides.push({rect:opening,v:!horizontal,panels:o.panels||2});slideRefs.push(o.id);}
+        else if(o.kind==='window'){wins.push({rect:opening,sill:(o.sill??900)/1000,head:(o.head??2400)/1000,...(o.panels!==undefined?{panels:o.panels}:{}),...(o.stackSide?{stackSide:o.stackSide}:{}),...(o.bayGroup?{bayGroup:o.bayGroup}:{})});winRefs.push(o.id);}
+        else if(o.kind==='slide'){slides.push({rect:opening,v:!horizontal,panels:o.panels||2,...(o.floorTrack!==undefined?{floorTrack:o.floorTrack}:{}),...(o.stackSide?{stackSide:o.stackSide}:{})});slideRefs.push(o.id);}
         else {
           let side=o.side;
           if(o.entry){
@@ -439,7 +440,7 @@
       for(const part of sorted){const last=runs.at(-1);if(last&&part.kind===last.parts[0].kind&&part.lo<=last.hi+1e-6){last.hi=Math.max(last.hi,part.hi);last.parts.push(part);}else runs.push({lo:part.lo,hi:part.hi,parts:[part]});}
       for(const run of runs){const {axis,normal}=group,center=(group.lo+group.hi)/2,a=[0,0],b=[0,0];a[axis]=(run.lo+shift)/scale;b[axis]=(run.hi+shift)/scale;a[normal]=b[normal]=(center+shift)/scale;
         const kind=run.parts[0].kind,wall={id:'preset_w'+d.walls.length,a,b,kind,thickness:group.hi-group.lo,caps:[0,0]};d.walls.push(wall);
-        for(const p of run.parts.filter(p=>p.opening)){const {kind,index,value:v}=p.opening,o={id:'preset_'+kind+index,wall:wall.id,kind,t:((p.lo+p.hi)/2-run.lo)/(run.hi-run.lo),length:p.hi-p.lo,side:kind==='door'?(v.o[normal]<0?-1:1):1,entry:!!v.entry};if(kind==='door'){o.name=v.name||'房门';o.hingeEnd=v.c[axis]<0;o.hingeSide=Math.abs(v.h[normal]-group.hi)<Math.abs(v.h[normal]-group.lo)?1:-1;}if(kind==='slide')o.panels=v.panels===3?3:2;if(kind==='window'){o.sill=v.sill*1000;o.head=(v.head??2.4)*1000;if(v.bayGroup)o.bayGroup=v.bayGroup;}d.openings.push(o);}
+        for(const p of run.parts.filter(p=>p.opening)){const {kind,index,value:v}=p.opening,o={id:'preset_'+kind+index,wall:wall.id,kind,t:((p.lo+p.hi)/2-run.lo)/(run.hi-run.lo),length:p.hi-p.lo,side:kind==='door'?(v.o[normal]<0?-1:1):1,entry:!!v.entry};if(kind==='door'){o.name=v.name||'房门';o.hingeEnd=v.c[axis]<0;o.hingeSide=Math.abs(v.h[normal]-group.hi)<Math.abs(v.h[normal]-group.lo)?1:-1;}if(kind==='slide'){o.panels=v.panels===3?3:2;if(v.floorTrack!==undefined)o.floorTrack=v.floorTrack;if(v.stackSide)o.stackSide=v.stackSide;}if(kind==='window'){if(v.panels!==undefined)o.panels=v.panels;if(v.stackSide)o.stackSide=v.stackSide;o.sill=v.sill*1000;o.head=(v.head??2.4)*1000;if(v.bayGroup)o.bayGroup=v.bayGroup;}d.openings.push(o);}
       }
     }
     d.width=Math.max(...d.walls.flatMap(w=>[w.a[0],w.b[0]]))+100;d.height=Math.max(...d.walls.flatMap(w=>[w.a[1],w.b[1]]))+100;

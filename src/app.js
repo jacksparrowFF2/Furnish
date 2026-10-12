@@ -21,16 +21,16 @@ function applyPlanData(){
   ({walls:WALLS, wins:WINS, doors:DOORS, slides:SLIDES, rooms:ROOMS, bounds:BOUNDS} = PLAN);
   DOORS.forEach(d => d._base ??= {h:[...d.h], c:[...d.c], o:[...d.o]});   // 切换户型时保留原始方向，不能把当前覆盖值当成原值
   DOORS.filter(d => d.entry).forEach(d => d.entryDirection ??= [...d._base.o]);
-  SLIDES.forEach(s => s._panels0 ??= s.panels===3?3:2);
-  WINS.forEach(w => { w._sill0 ??= w.sill; w._head0 ??= w.head??2.4; });ROOMS.filter(r=>r.counted===false).forEach(r=>r._height0??=r.height??.45);
+  SLIDES.forEach(s => {s._panels0 ??= s.panels===3?3:2;s._floorTrack0 ??= s.floorTrack??s.panels!==3;s._stackSide0 ??= s.stackSide||'left';});
+  WINS.forEach(w => { w._panels0 ??= w.panels??0;w._stackSide0 ??= w.stackSide||'left';w._sill0 ??= w.sill; w._head0 ??= w.head??2.4; });ROOMS.filter(r=>r.counted===false).forEach(r=>r._height0??=r.height??.45);
 }
 // 门窗调整存于 state.open（可撤销/随方案保存），套用到 PLAN 数据的运行时副本上
 function applyOpeningOverrides(){
   if (!state) return;                                                  // renderAll 前必然已初始化
   DOORS.forEach(d => { if (d._base) Object.assign(d, {h:[...d._base.h], c:[...d._base.c], o:[...d._base.o]}); });
-  WINS.forEach(w => { if (w._sill0 !== undefined) {w.sill = w._sill0;w.head=w._head0;} });
+  WINS.forEach(w => { if (w._sill0 !== undefined) {w.sill = w._sill0;w.head=w._head0;w.panels=w._panels0;w.stackSide=w._stackSide0;} });
   ROOMS.filter(r=>r.counted===false&&r._height0!==undefined).forEach(r=>r.height=r._height0);
-  SLIDES.forEach(s=>s.panels=s._panels0||2);
+  SLIDES.forEach(s=>{s.panels=s._panels0||2;s.floorTrack=s._floorTrack0;s.stackSide=s._stackSide0;});
   const o = state.open;
   if (!o) return;
   Object.entries(o.d || {}).forEach(([i, v]) => {
@@ -44,8 +44,8 @@ function applyOpeningOverrides(){
       d.h[normal] = flipped ? d.rect[normal]+d.rect[normal+2]-d._base.h[normal] : d._base.h[normal];
     }
   });
-  Object.entries(o.s || {}).forEach(([i,v])=>{if(SLIDES[+i])SLIDES[+i].panels=v.panels;});
-  Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) {if(typeof v==='number')w.sill=v;else if(v&&Number.isFinite(v.sill)&&Number.isFinite(v.head)){w.sill=v.sill;w.head=v.head;}if(w.bayGroup){const room=ROOMS.find(r=>r.id===w.bayGroup);if(room)room.height=w.sill;}} });
+  Object.entries(o.s || {}).forEach(([i,v])=>{if(SLIDES[+i])Object.assign(SLIDES[+i],v);});
+  Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) {if(typeof v==='number')w.sill=v;else if(v&&Number.isFinite(v.sill)&&Number.isFinite(v.head)){w.sill=v.sill;w.head=v.head;w.panels=v.panels??w.panels;w.stackSide=v.stackSide??w.stackSide;}if(w.bayGroup){const room=ROOMS.find(r=>r.id===w.bayGroup);if(room)room.height=w.sill;}} });
 }
 const {materials:MATS,library:LIB,typePrices:TYPE_PRICE} = FurnishCatalogData;
 // 自定义家具保存在本机（store.custom），在家具库中显示为「我的家具」分类；条目多带 [6]=高度 mm、[7]=自定义 id
@@ -168,7 +168,7 @@ function syncSaved(){
     : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 const snap = () => JSON.stringify(state);
-function commit(before){ undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,JSON.parse(before),'编辑前'); }
+function commit(before){ FurnishDesign.normalizeLaundryStacks(state.furniture,JSON.parse(before).furniture); undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,JSON.parse(before),'编辑前'); }
 function mutate(fn){ const b = snap(); fn(); commit(b); renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }

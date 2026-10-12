@@ -43,7 +43,11 @@
   delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;delete next.curtainStyle;if(c.h===undefined)delete next.h;
   if(c.cabinet&&cabinet().supported(next))next.cabinet=JSON.parse(JSON.stringify(c.cabinet));
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
-  if(c.type!=='waterheater_flat')delete next.mountHeight;
+  const laundry=t=>['washer','dryer'].includes(t);
+  if(c.type==='waterheater_flat'?f.type!=='waterheater_flat':!(laundry(c.type)&&laundry(f.type)))delete next.mountHeight;
+  if(c.type==='tripleslidingwindow')next.mountHeight=f.type==='tripleslidingwindow'?(f.mountHeight??900):900;
+  if(!(['slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(c.type)&&['slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)))delete next.floorTrack;
+  if(!(laundry(c.type)&&laundry(f.type)))delete next.stackHeight;
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}
@@ -76,8 +80,34 @@
  }
  const dirs={left:[0,1],right:[0,-1],top:[1,1],bottom:[1,-1]};
  // Recorded dimensions take priority. Legacy items use the existing model's
+ function laundryStack(f,furniture){
+  if(!['washer','dryer'].includes(f.type))return null;
+  const bottom=f.mountHeight??0,height=f.stackHeight??20;
+  const lower=(furniture||[]).find(item=>item.id!==f.id&&['washer','dryer'].includes(item.type)&&item.type!==f.type
+   &&Math.abs(item.cx-f.cx)<=5&&Math.abs(item.cy-f.cy)<=5
+   &&Math.abs(Math.sin(((item.rot||0)-(f.rot||0))*Math.PI/180))<1e-6
+   &&bottom-(item.mountHeight??0)-(item.h??850)>=-1e-6
+   &&bottom-(item.mountHeight??0)-(item.h??850)<=height+1e-6);
+  return lower?{lowerId:lower.id,bottom:(lower.mountHeight??0)+(lower.h??850),height,w:Math.min(f.w,lower.w),d:Math.min(f.d,lower.d)}:null;
+ }
+ function normalizeLaundryStacks(furniture,before=[]){
+  for(const f of furniture||[]){
+   if(f.locked||!['washer','dryer'].includes(f.type))continue;
+   const old=before.find(item=>item.id===f.id),previous=old&&laundryStack(old,before),lower=previous&&furniture.find(item=>item.id===previous.lowerId);
+   // Keep an existing stack attached when its lower body height changes.
+   if(lower&&(f.mountHeight??0)===(old.mountHeight??0)&&Math.abs(lower.cx-f.cx)<=5&&Math.abs(lower.cy-f.cy)<=5
+    &&lower.type!==f.type&&['washer','dryer'].includes(lower.type)&&Math.abs(Math.sin(((lower.rot||0)-(f.rot||0))*Math.PI/180))<1e-6){
+    const next=(lower.mountHeight??0)+(lower.h??850)+(f.stackHeight??20);if(next<=20000)f.mountHeight=next;
+   }
+   const stack=laundryStack(f,furniture);if(stack&&stack.bottom+stack.height<=20000)f.mountHeight=stack.bottom+stack.height;
+  }
+  return furniture;
+ }
+ // Recorded dimensions take priority. Legacy items use the existing model's
  // nominal envelope; unfamiliar items without a height remain unverified.
  function furnitureVerticalBounds(f){
+  if(f.type==='tripleslidingwindow'){const bottom=f.mountHeight??900;return {bottom,top:bottom+(f.h??1500),source:'model'};}
+  if(['washer','dryer'].includes(f.type)){const bottom=f.mountHeight??0;return {bottom,top:bottom+(f.h??850),source:f.h===undefined?'model':'recorded'};}
   if(f.type==='sofa_yeswood_cherry')return {bottom:0,top:f.h??895,source:f.h===undefined?'model':'recorded'};
   if(cabinet().supported(f))return {bottom:0,top:cabinet().height(f),source:f.h===undefined?'model':'recorded'};
   if(f.type==='waterheater_flat'){const bottom=f.mountHeight??1650;return {bottom,top:bottom+(f.h??565),source:f.h===undefined?'model':'recorded'};}
@@ -85,7 +115,7 @@
   if(mounted){const bottom=mounted[0];return {bottom,top:f.h===undefined?mounted[1]:bottom+f.h,source:f.h===undefined?'model':'recorded'};}
   if(Number.isFinite(f.h)&&f.h>0)return {bottom:0,top:f.h,source:'recorded'};
   if(f.obj)return {bottom:0,top:800,source:'model'};
-  const height={fridge:1800,aircon:1800,dishwasher:840,washer:850,dryer:850,curtain:2400,slidingdoor:2100,tripleslidingdoor:2400,rug:16,bench:440,beanbag:720,barstool:775,custom:800,customround:800}[f.type];
+  const height={fridge:1800,fridge_french_drawer:1910,aircon:1800,dishwasher:840,washer:850,dryer:850,curtain:2400,slidingdoor:2100,tripleslidingdoor:2400,tripleslidingwindow:1500,rug:16,bench:440,beanbag:720,barstool:775,custom:800,customround:800}[f.type];
   return height===undefined?null:{bottom:0,top:height,source:'model'};
  }
  // Stable topological order: only separated height ranges with overlapping
@@ -168,7 +198,7 @@
   if(plan.walls.some(w=>{const poly=[[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]];return !P.intersects(P.polygon(f),poly)&&P.intersects(swept,poly);}))throw Error('移动路径被墙体阻挡，请在当前房间内调整');
   return next;
  }
- function sceneSettings(value){const v=value||{};return {cut:[1.2,2.8].includes(v.cut)?v.cut:2.8,furn:typeof v.furn==='boolean'?v.furn:true,labels:typeof v.labels==='boolean'?v.labels:true,night:typeof v.night==='boolean'?v.night:false,hour:Number.isFinite(v.hour)&&v.hour>=7&&v.hour<=18?v.hour:10};}
+ function sceneSettings(value){const v=value||{};return {cut:[1.2,2.8].includes(v.cut)?v.cut:2.8,furn:typeof v.furn==='boolean'?v.furn:true,labels:typeof v.labels==='boolean'?v.labels:true,lamps:typeof v.lamps==='boolean'?v.lamps:true,night:typeof v.night==='boolean'?v.night:false,hour:Number.isFinite(v.hour)&&v.hour>=7&&v.hour<=18?v.hour:10};}
  function manageDesign(list,planId,action,{id,name,work,note,now=Date.now()}={}){
   const copy=JSON.parse(JSON.stringify(list)),current=copy.find(d=>d.id===id&&d.planId===planId),local=copy.filter(d=>d.planId===planId);
   if(!['create','rename','update','duplicate','delete'].includes(action))throw Error('未知方案操作');
@@ -184,6 +214,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

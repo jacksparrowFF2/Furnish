@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const S=require('../src/core/snapping.js'),P=require('../src/core/project-core.js'),D=require('../src/core/floorplan-core.js'),plans=require('../src/data/plans.js');
-const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
+const html=fs.readFileSync(require.resolve('../index.html'),'utf8').replace(/\r\n/g,'\n');
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-5,`${a} != ${b}`);
 const design=require('../src/core/design-core.js');
 const anchor=f=>{const a=f.rot*Math.PI/180;return {x:f.cx-f.w/2*Math.cos(a)+f.d/2*Math.sin(a),y:f.cy-f.w/2*Math.sin(a)-f.d/2*Math.cos(a)};};
@@ -44,6 +44,17 @@ assert.equal(copied.slides[copied.slideRefs.indexOf('preset_slide0')].panels,3);
 assert.equal(P.remapOpenings({slideRefs:['a','b']},{slideRefs:['b','a']},{s:{0:{panels:3}}}).s[1].panels,3);
 assert.throws(()=>P.validatePlanWork(base,{furniture:[],open:{s:{999:{panels:3}}}}));
 for(const value of [null,{}, {panels:4},{panels:'3'},{panels:3,extra:true}])assert.throws(()=>P.validateWork({furniture:[],open:{s:{0:value}}}));
+const telescopic={id:'window',type:'tripleslidingwindow',name:'三联动推拉窗',cx:1000,cy:1000,w:1800,d:90,h:1500,mountHeight:900,rot:0,color:'#41474b',floorTrack:true};
+const settings={furniture:[telescopic],open:{s:{0:{panels:3,floorTrack:false,stackSide:'right'}},w:{0:{sill:.9,head:2.4,panels:3,stackSide:'right'}}}};
+P.validateWork(settings);assert.deepEqual(P.unpack(P.pack({...payload,current:settings})).current,settings);
+const configured=P.effectivePlan(base,settings);assert.equal(configured.slides[0].floorTrack,false);assert.equal(configured.wins[0].panels,3);
+const converted=D.build(D.fromPlan(configured,'custom_sliding_options_copy').draft);
+assert.equal(converted.slides[0].floorTrack,false);assert.equal(converted.wins[0].panels,3);assert.equal(converted.wins[0].stackSide,'right');
+assert.equal(design.replaceFurniture(telescopic,{...telescopic,type:'tv'}).floorTrack,undefined);
+assert.equal(design.replaceFurniture(telescopic,{...telescopic,type:'tv'}).mountHeight,undefined);
+assert.equal(design.replaceFurniture(telescopic,{...telescopic}).mountHeight,900);
+assert.throws(()=>P.validateWork({...settings,furniture:[{...telescopic,floorTrack:'false'}]}));
+assert.throws(()=>P.validateWork({...settings,open:{w:{0:{sill:.9,head:2.4,panels:2}}}}));
 (async()=>{
  // Exercise the production builders against the exact bundled Three.js version.
  const imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
@@ -70,6 +81,20 @@ for(const value of [null,{}, {panels:4},{panels:'3'},{panels:3,extra:true}])asse
   door.open=false;for(let i=0;i<150;i++)ctx.tick(1/60);
   door.leaves.forEach(l=>near(l.node.position.x,l.closed));
  }
+ for(const floorTrack of [false,true])for(const stackSide of ['left','right']){
+  const model=ctx.buildSlidingDoor(2.4,.09,2.4,3,'#41474b',{floorTrack,stackSide}),door=model.userData.slidingDoor;
+  const bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());near(size.x,2.4);near(size.y,2.4);near(size.z,.09);
+  assert.equal(!!model.getObjectByName('floor-track'),floorTrack);
+  ctx.furnG.clear();ctx.furnG.add(model);door.open=true;ctx.tick(.05);
+  const distances=door.leaves.map(l=>l.closed-l.node.position.x);near(distances[0],0);near(distances[2],distances[1]*2);
+  assert.ok(door.leaves[0].node.position.z!==door.leaves[1].node.position.z);
+ }
+ ctx.f=telescopic;
+ const windowModel=vm.runInContext('buildFurniture(f)',ctx),windowBounds=new THREE.Box3().setFromObject(windowModel);
+ near(windowBounds.min.y,.9);near(windowBounds.max.y,2.4);
+ ctx.furnG.clear();ctx.furnG.add(windowModel);assert.equal(ctx.blocked(1,1,.1),false,'raised window is not a floor obstacle');
+ windowModel.userData.slidingDoor.open=true;for(let i=0;i<150;i++)ctx.tick(1/60);
+ windowModel.userData.slidingDoor.leaves.forEach(l=>near(l.node.position.x,l.opened));
  for(const rot of [0,90])for(const curtainStyle of ['single','double'])for(const flip of [false,true]){
   ctx.f={id:'curtain',type:'curtain',cx:0,cy:0,w:3620,d:440,h:2600,rot,color:'#c9d3da',curtainStyle,flip};
   const model=vm.runInContext('buildFurniture(f)',ctx),bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());

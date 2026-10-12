@@ -16,26 +16,27 @@ const LIB = [
   {cat:'电器', items:[
     ["stove","燃气灶",750,450,"#dcdcdc",2500],
     ["fridge","冰箱",700,700,"#dfe4e8",4000],
-    ["washer","洗衣机",600,600,"#e6ebee",2800],
+    ["washer","洗衣机",600,600,"#e6ebee",2800,850],
     ["waterheater","电热水器",800,450,"#f4f4f2",1800],
     ["waterheater_flat","扁桶电热水器 60L",700,320,"#fafafa",0,565],
     ["tv","65 寸电视",1450,80,"#1d1d1f",4500],
     ["tv","55 寸电视",1230,80,"#1d1d1f",3000],
     ["fridge","对开门冰箱",910,700,"#c9ced3",7000],
+    ["fridge_french_drawer","纯平四门冰箱（双抽屉）",833,595,"#f1f0ed",0,1910],
     ["tv","75 寸电视",1660,80,"#1d1d1f",6000,935],
     ["tv","85 寸电视",1880,90,"#1d1d1f",8500,1060],
     ["tv","100 寸电视",2210,100,"#1d1d1f",15000,1245],
     ["aircon","柜机空调",500,380,"#f6f7f8",6500],
     ["acwall","挂机空调",900,250,"#f6f7f8",3200],
     ["dishwasher","洗碗机",600,600,"#c9ced3",4500],
-    ["dryer","烘干机",600,600,"#e6ebee",3800],
+    ["dryer","烘干机",600,600,"#e6ebee",3800,850],
     ["purifier","空气净化器",400,300,"#f4f4f2",2000],
     ["robot_p20max_tank","石头 P20 Max 水箱版套装",450,450,"#f5f6f5",0,450],
     ["robot_p20max_plumbed","石头 P20 Max 上下水版套装",381,475,"#f5f6f5",0,300],
     ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
-    ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],t[0]==='tv-floor'?'#cbb08b':t[0]==='entry-pegboard'?'#d5c4bb':'#efe6d8',['tv-floor','entry-pegboard'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
+    ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],'#f3f1ec',['tv-floor','entry-pegboard','entry-console'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
     ["nightstand","床头柜",450,400,"#e8dccb",600],
     ["wardrobe","衣柜",2000,600,"#efe6d8",4500],
     ["wardrobe","衣柜 2.4m",2400,600,"#efe6d8",5400],
@@ -121,7 +122,8 @@ const LIB = [
   ]},
   {cat:'门 · 隔断', items:[
     ["slidingdoor","双扇推拉门",1800,120,"#41474b",2800,2100],
-    ["tripleslidingdoor","三联动推拉门",2400,180,"#41474b",4800,2400]
+    ["tripleslidingdoor","三联动推拉门",2400,90,"#41474b",4800,2400],
+    ["tripleslidingwindow","三联动推拉窗",1800,90,"#41474b",0,1500]
   ]},
   {cat:'生活用品', items:[
     ["dryingrack","晾衣架",1400,550,"#cfd6d9",500]

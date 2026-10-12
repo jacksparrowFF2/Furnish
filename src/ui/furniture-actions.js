@@ -160,6 +160,8 @@ function addItem(it, x, y){
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
   if(h!==undefined)f.h=h;
   if(type==='waterheater_flat')f.mountHeight=1650;
+  if(type==='tripleslidingwindow')f.mountHeight=900;
+  if(['washer','dryer'].includes(type))f.mountHeight=0;
   if(FurnishCabinet.supported(f)&&it[9])Object.assign(f,FurnishCabinet.preset(it[9]));
   if(type==='curtain')f.curtainStyle=it[8]||'double';
   if (type === 'custom' || type === 'customround'){ f.price = price; f.h = h; }   // 自定义家具删除定义后仍保留单价与高度

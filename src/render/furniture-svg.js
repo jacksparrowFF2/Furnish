@@ -96,6 +96,7 @@ const DASH = 'stroke-dasharray="4 3"';
       return s;
     }
     case 'ksink': return rc(x,y,w,d,c,'rx="20"') + rc(x+w*.06,y+d*.18,w*.42,d*.66,'#fff','rx="50"') + rc(x+w*.52,y+d*.18,w*.42,d*.66,'#fff','rx="50"') + `<circle cx="0" cy="${y+d*.09}" r="22" fill="#999"/>`;
+    case 'fridge_french_drawer': return rc(x,y,w,d,c) + rc(x,y+d*.92,w,d*.08,shade(c,.9)) + ln(0,y+d*.92,0,y+d);
     case 'fridge': return rc(x,y,w,d,c,'rx="30"') + ln(x,y+d*.14,x+w,y+d*.14) + ln(0,y+d*.14,0,y+d) + rc(-70,y+d*.5,40,d*.25,'#aab') + rc(30,y+d*.5,40,d*.25,'#aab');
     case 'toilet': return rc(x+w*.04,y,w*.92,d*.27,c,'rx="30"') + ec(0,y+d*.27+d*.36,w*.47,d*.36,c) + ec(0,y+d*.27+d*.4,w*.3,d*.24,'#eef4f7');
     case 'vanity': return rc(x,y,w,d,c,'rx="20"') + ec(0,y+d*.57,Math.min(w*.32,260),d*.28,'#fff') + `<circle cx="0" cy="${y+d*.17}" r="26" fill="#999"/>`;
@@ -142,8 +143,8 @@ const DASH = 'stroke-dasharray="4 3"';
     }
     case 'treadmill': return rc(x,y,w,d,c,'rx="50"') + rc(x+90,y+320,w-180,d-400,'#1c1c1e','rx="25"') + rc(x,y,w,230,shade(c,1.4),'rx="40"');
     case 'pendant': return `<circle r="${m*.44}" fill="none" ${ST()} stroke-dasharray="5 4"/>` + ec(0,0,m*.3,m*.3,c) + ec(0,0,m*.17,m*.17,shade(c,1.15));
-    case 'slidingdoor': case 'tripleslidingdoor': {
-      const n=t==='tripleslidingdoor'?3:2;
+    case 'slidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
+      const n=t==='slidingdoor'?2:3;
       let s=rc(x,y,w,d,c);
       for(let i=0;i<n;i++)s+=rc(x+i*w/n,y+d*(i+.15)/n,w/n,d*.65/n,'#dce8ec')+ln(x+i*w/n+w/n*.85,y+d*(i+.15)/n,x+i*w/n+w/n*.85,y+d*(i+.8)/n);
       return s;
