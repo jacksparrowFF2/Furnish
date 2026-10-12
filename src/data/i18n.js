@@ -36,7 +36,7 @@ const NAMES_EN = {
   '餐桌':'Dining Table', '六人餐桌':'6-Seat Dining Table', '圆桌':'Round Table', '餐椅':'Dining Chair', '岛台':'Kitchen Island',
   '吧椅':'Bar Stool', '橱柜台面':'Kitchen Counter', '燃气灶':'Gas Stove', '水槽':'Sink', '冰箱':'Fridge', '纯平四门冰箱（双抽屉）':'Flush four-door fridge (two drawers)', '餐边柜':'Sideboard',
   '马桶':'Toilet', '浴室柜':'Vanity', '双盆浴室柜':'Double Vanity', '淋浴房':'Shower', '淋浴区':'Shower Area', '浴缸':'Bathtub',
-  '洗衣机':'Washer', '洗衣池':'Laundry Sink', '电热水器':'Water Heater', '扁桶电热水器 60L':'Flat Water Heater 60L', '储物柜':'Storage Cabinet', '65 寸电视':'65" TV',
+  '洗衣机':'Washer', '洗衣池':'Laundry Sink', '箭牌 奶油白壁挂花洒 AE34129ZMKW-P2':'ARROW Cream Wall Shower AE34129ZMKW-P2', '电热水器':'Water Heater', '扁桶电热水器 60L':'Flat Water Heater 60L', '储物柜':'Storage Cabinet', '65 寸电视':'65" TV',
   '75 寸电视':'75 inch TV', '85 寸电视':'85 inch TV', '100 寸电视':'100 inch TV', '单开窗帘 2.4m':'Single Curtain 2.4m', '双开窗帘 2.4m':'Double Curtains 2.4m',
   '55 寸电视':'55" TV', '对开门冰箱':'French-door Fridge', '柜机空调':'Floor AC', '挂机空调':'Wall AC', '洗碗机':'Dishwasher',
   '蒸烤箱高柜':'Oven Tower', '烘干机':'Dryer', '空气净化器':'Air Purifier', '长书桌':'Long Desk', '办公椅':'Office Chair',

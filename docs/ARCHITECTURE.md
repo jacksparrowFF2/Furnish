@@ -4,6 +4,8 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 
 ## 数据与规则
 
+- `src/core/product-rules.js`：产品默认高度、安装基准、持久字段能力/校验、旧数据迁移及替换清理。浏览器 `FurnishProducts` / Node `require()` 共用，无 DOM、网络和 Three.js；目录、设计、项目、属性、新建及相关 3D 使用同一接口。加载在柜体核心后、花洒模型与设计核心前，保持普通脚本及离线兼容。详见 [产品规则与兼容验收](PRODUCT-RULES.md)。
+
 - `src/data/plans.js`：内置户型。
 - `src/data/catalog.js`：材料、家具分类与按类型估算的参考价格。自定义家具仍来自浏览器存储。
 - `src/data/i18n.js`：英文名称、简繁转换与按语言选择文案。当前语言及 DOM 更新由主应用管理。
@@ -48,6 +50,14 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 
 ## 验证
 
+### 空间规则与确认契约（2026-10-12）
+
+画布与全案实体重叠共用 `FurnishGeometry.verticalOverlap(a,b)`。已知垂直范围不相交（含面接触）免除，未知高度保守保留。画布预先计算高度范围，避免逐对重复计算。柜门/抽屉开启区域现携带实际高度区间，上翻门另有竖向扫掠截面；共用 `FurnishCabinet.openingIntersects()`。详见 [三维开启检查](CABINET-OPENING-3D.md)。
+
+`checkFingerprint()` 现生成 `{version:3, issue, context}`。上下文包括平面、垂直、镜像、柜体配置、房间计数状态、实际物理房间边界、项目/房间净高及完整梁数组（含已录入梁底／梁顶）；`review()` 每次只序列化一次共享上下文。旧六项数组和 v2 缺少本轮语义，保留但要求重新核对。采购/价格/颜色不进入上下文。新增检查输入或改变检查语义时同步维护契约及回归。
+
+扩展经验见 [DEVELOPMENT-GUIDE.md](DEVELOPMENT-GUIDE.md)。
+
 运行 `node scripts/check.cjs` 检查源码语法、普通脚本的共享作用域声明、入口资源路径、全部回归与内置户型。浏览器验收应覆盖主题与全部户型画布、应用风格及撤销、语言切换、家具复制及尺寸编辑、预算 CSV、PNG、编辑器与项目工作台、3D。拆分三维加载方式前还需补齐真实 `file://` 验收。
 
 ## 本次整理收尾与后续边界
@@ -63,3 +73,7 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 合并对话框勾选多个区域，独立选择名称、用途和材料来源，也可直接编辑输出字段。每次变化在草稿副本上调用同一合并计算；SVG 使用 `fill-rule="evenodd"` 显示孔洞。确认后只记录一次编辑器 checkpoint，取消不写入应用状态。
 
 明确选择的材料存为区域定义的 `mat` + `materialExplicit: true`，build 将标记传播到区域模型。`remapRooms` 对仍存在的区域首先保留当前设置（包括后续属性面板修改）；对新区域采用明确材料，其次精确重叠来源，最后物理父房间材料。拆分明确材料区域也继承该标记。draft 和 rooms 均使用现有项目序列化，兼容不带标记的旧文件。
+
+房梁高度使用户型核心 `beamVertical()` / `editBeam()`，单位、校验与旧数据兼容契约见 [BEAM-HEIGHTS.md](BEAM-HEIGHTS.md)。界面确认仍经 `mutate()`；3D 缓存包含梁数组。
+
+2026-10-13：梁实体碰撞由 `spaceCheck()` 产生独立 `beam` 结果（家具 `id` + `beamId`）。与开启障碍共用刚性家具预计算包络与梁高度，已知范围使用 `verticalOverlap()`；未知高度为 pending。属性、柜体草稿、全案共享检查，全案定位同时标出梁与家具。详见 [梁实体检查](BEAM-HEIGHTS.md)。

@@ -7,6 +7,72 @@
   const nominalBays=C.layout(f),faceSpan=i=>({left:i===0?-w/2:(nominalBays[i].left-c.thickness/2)/1000,right:i===nominalBays.length-1?w/2:(nominalBays[i].left+nominalBays[i].width+c.thickness/2)/1000});
   const cuts=options.sideCuts||C.sideOpenings(f,options.furniture||[]);
   const finishes=C.joinedSideFinishes(f,options.furniture||[]);
+  if(c.sideboard){
+   const s=c.sideboard,bays=C.layout(f),base=s.baseHeight/1000,ct=s.counterThickness/1000,niche=base+ct,display=niche+s.nicheHeight/1000,upper=display+s.displayHeight/1000,ld=s.lowerDepth/1000,ud=s.upperDepth/1000,back=-d/2;
+   const storage=bays.filter((_,i)=>!c.columns[i].fridgeBay),left=storage[0].left/1000-t,right=(storage.at(-1).left+storage.at(-1).width)/1000+t,W=right-left,X=(left+right)/2;
+   // Continuous counter and open working space: no vertical partitions in the niche.
+   for(const [y,H,D,section] of [[p,t,ld,'bottom'],[base-t,t,ld,'baseTop'],[base,ct,ld,'counter'],[display,t,ud,'displayBottom'],[upper,t,ud,'displayTop'],[h-t,t,ud,'top']])add(g,W,H,D,X,y,back+D/2).userData.cabinetSection=section;
+   if(p)add(g,W,p,ld-.025,X,0,back+(ld-.025)/2);
+   const backLeft=left+(c.columns[0].fridgeBay?t:0),backRight=right-(c.columns.at(-1).fridgeBay?t:0);
+   add(g,backRight-backLeft,s.nicheHeight/1000,t,(backLeft+backRight)/2,niche,back+t/2).userData.cabinetSection='operationBack';
+   for(const [y,D] of [[display,ud],[upper,ud]]){
+    const led=add(g,W-2*t,.004,.012,X,y+.008,back+D-t-.014,'#ffe4ab');led.material=led.material.clone();led.material.emissive=new THREE.Color('#ffe4ab');led.material.emissiveIntensity=.7;led.userData.cabinetOwnMaterial=true;led.userData.cabinetSection='led';
+   }
+   const door=(col,i,bottom,top,D,section,glass=false,span)=>{
+    if(col.door==='none'||options.doors==='hidden')return;
+    const bay=span||bays[i],count=glass?1:col.door==='double'?2:1,cw=bay.width/1000,leaf=cw/count;
+    for(let j=0;j<count;j++){
+     const rightHinge=col.door==='right'||col.door==='double'&&j===1,pivot=new THREE.Group(),center=bay.left/1000+leaf*(j+.5),local=glass?0:(rightHinge?-1:1)*leaf/2;
+     pivot.position.set(glass?center:center+(rightHinge?1:-1)*leaf/2,glass?top-.001:bottom+.001,back+D-t/2);if(glass)pivot.rotation.x=col.displayOpen?-Math.min(col.displayAngle??C.maxDoorAngle(c),C.maxDoorAngle(c))*Math.PI/180:0;else pivot.rotation.y=col.doorOpen?(rightHinge?1:-1)*C.doorAngle(c,col)*Math.PI/180:0;
+     const face=add(pivot,leaf-.002,top-bottom-.002,t,local,glass?-(top-bottom-.002):0,0,glass?'#b3c5c8':col.doorColor||(col.finish==='wood'?wood:color));face.userData.cabinetSection=section;
+     if(glass||col.finish==='glass'||options.doors==='ghost'){face.material=face.material.clone();face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.28;face.material.depthWrite=false;face.material.roughness=.12;face.userData.cabinetOwnMaterial=true;}
+     if(glass){for(const y of [-(top-bottom-.002),-.018])add(pivot,leaf-.002,.018,t+.002,local,y,0,'#333738');for(const sign of [-1,1])add(pivot,.018,top-bottom-.002,t+.002,local+sign*(leaf/2-.01),-(top-bottom-.002),0,'#333738');}
+     else if(col.handle&&col.handle!=='none')add(pivot,.012,.12,.018,local+(rightHinge?-1:1)*(leaf/2-.04),(top-bottom)/2,.012,'#71685d');
+     pivot.traverse(o=>{o.userData.cabinetPart={column:i,section};if(options.doors==='ghost')o.userData.cabinetIgnorePick=true;});g.add(pivot);
+    }
+   };
+   bays.forEach((bay,i)=>{
+    const col=c.columns[i],cw=bay.width/1000,x=bay.center/1000,drawerY=base-col.drawers.reduce((n,d)=>n+d.height,0)/1000;
+    if(col.fridgeBay){
+     const fh=s.fridgeHeight/1000,fd=(s.fridgeDepth??f.d)/1000,fz=back+fd/2;
+     // Floor and rear remain clear for a separately placed refrigerator.
+     for(const sign of [-1,1])add(g,t,h,fd,x+sign*(cw/2+t/2),0,fz);
+     add(g,cw,t,fd,x,fh,fz).userData.cabinetSection='fridgeCeiling';add(g,cw,t,fd,x,h-t,fz);
+     add(g,cw,h-fh-2*t,t,x,fh+t,back+t/2).userData.cabinetBay={column:i};door(col,i,fh+t,h,fd,'fridgeUpper');
+    }else{
+     for(const [bottom,top,D] of [[p+t,base-t,ld],[display+t,upper,ud],[upper+t,h-t,ud]]){
+      if(bottom!==display+t)add(g,cw,top-bottom,t,x,bottom,back+t/2).userData.cabinetBay={column:i};
+      for(const sign of [-1,1]){
+       const neighbor=i+(sign<0?-1:1);if(sign>0&&neighbor<bays.length&&!c.columns[neighbor].fridgeBay)continue;
+       if(neighbor>=0&&neighbor<bays.length&&c.columns[neighbor].fridgeBay)continue;
+       if(bottom===display+t&&neighbor>=0&&neighbor<bays.length&&C.sideboardDisplayGroups(f).some(group=>group.columns.includes(i)&&group.columns.includes(neighbor)))continue;
+       const mesh=add(g,t,top-bottom,D-t,x+sign*(cw/2+t/2),bottom,back+(D-t)/2);if(neighbor>=0&&neighbor<bays.length)mesh.userData.cabinetDivider={divider:i-1,column:i-1};
+      }
+     }
+     if(col.drawers.length){
+      add(g,cw,t,ld-2*t,x,drawerY-t,back+ld/2).userData.cabinetSection='drawerSeparator';
+      add(g,cw,.012,.008,x,drawerY-.012,back+ld-t+.004,'#71685d').userData.cabinetSection='drawerGrip';
+      const dh=col.drawers[0].height/1000,lanes=C.drawerCount(col),span=faceSpan(i);
+      for(let lane=1;lane<lanes;lane++)add(g,t,dh-t,ld-2*t,x+(lane-lanes/2)*(cw+t)/lanes,drawerY,back+ld/2).userData.cabinetDrawerDivider=true;
+      for(let lane=0;lane<lanes;lane++){
+       const laneW=(cw-(lanes-1)*t)/lanes,laneX=x+(lane-(lanes-1)/2)*(laneW+t),faceW=(span.right-span.left)/lanes,faceX=span.left+faceW*(lane+.5),state=C.drawerState(col.drawers[0],lane),node=new THREE.Group(),faceColor=col.doorColor||(col.finish==='wood'?wood:color),bodyH=dh-t;
+       node.position.z=state.open?ld*.7*(state.extension??1):0;
+       add(node,faceW-.002,bodyH-.002,t,faceX,drawerY+.001,back+ld-t/2,faceColor).userData.cabinetDrawerBoard='front';
+       add(node,laneW-2*t,.012,ld-3*t,laneX,drawerY+.012,back+ld/2+t/2).userData.cabinetDrawerBoard='bottom';
+       for(const sign of [-1,1])add(node,t,bodyH-.03,ld-3*t,laneX+sign*(laneW/2-t),drawerY+.024,back+ld/2+t/2).userData.cabinetDrawerBoard='side';
+       add(node,laneW-2*t,bodyH-.03,t,laneX,drawerY+.024,back+1.5*t).userData.cabinetDrawerBoard='back';
+       if(col.handle&&col.handle!=='none')add(node,Math.min(.14,faceW*.4),.012,.018,faceX,drawerY+bodyH*.7,back+ld-.009,'#71685d');
+       node.traverse(o=>o.userData.cabinetPart={column:i,drawer:0,lane});g.add(node);
+      }
+     }
+     door(col,i,p,drawerY-(col.drawers.length?.012:0),ld,'lower');door(col,i,upper,h,ud,'upper');
+    }
+    col.shelves.forEach((y,j)=>{const level=p+t+y/1000,D=col.fridgeBay?(s.fridgeDepth??f.d)/1000:level<base?ld:ud;add(g,cw,t,D-2*t,x,level,back+D/2).userData.cabinetShelf={column:i,shelf:j};});
+   });
+   for(const group of C.sideboardDisplayGroups(f)){add(g,group.width/1000,upper-display-t,t,(group.left+group.width/2)/1000,display+t,back+t/2).userData.cabinetBay={column:group.column};door(c.columns[group.column],group.column,display,upper,ud,'display',true,group);}
+   if(options.outlines)g.traverse(o=>{if(o.isMesh){const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x82776b,transparent:true,opacity:.4}));edge.userData.cabinetOwnMaterial=true;o.add(edge);}});
+   return g;
+  }
   // Split only the affected rectangle, retaining boards around a partial-depth hole.
   const sideBoard=(side,W,H,D,x,y,z,shade=bodyColor)=>{
    const joint=shared.find(v=>v.side===side);if(joint&&!joint.owner)return [];
@@ -35,14 +101,14 @@
     for(const [bottom,top] of [[shoe,lower-t],[upper+t,h-t]])add(g,cw,top-bottom,t,x,bottom,-d/2+t/2).userData.cabinetBay={column:i};
     if(i)for(const [bottom,top] of [[shoe,lower-t],[upper+t,h-t]])add(g,t,top-bottom,d-2*t,bay.left/1000-t/2,bottom,-t/2).userData.cabinetDivider={divider:i-1,column:i-1};
     col.shelves.forEach((y,j)=>add(g,cw,t,d-2*t,x,p+t+y/1000,-t/2).userData.cabinetShelf={column:i,shelf:j});
-    let y=drawerY;col.drawers.forEach((drawer,j)=>{const dh=drawer.height/1000,bodyH=dh-(j===col.drawers.length-1?t:0),node=new THREE.Group();node.position.z=drawer.open?d*.7*(drawer.extension??1):0;
+    let y=drawerY;const lanes=C.drawerCount(col);for(let lane=1;lane<lanes;lane++)if(col.drawers.length)add(g,t,lower-drawerY-t,d-2*t,x+(lane-lanes/2)*(cw+t)/lanes,drawerY,-t/2).userData.cabinetDrawerDivider=true;col.drawers.forEach((drawer,j)=>{const dh=drawer.height/1000;for(let lane=0;lane<lanes;lane++){const cw=(bay.width/1000-(lanes-1)*t)/lanes,x=bay.center/1000+(lane-(lanes-1)/2)*(cw+t),faceW=(span.right-span.left)/lanes,faceX=span.left+faceW*(lane+.5),state=C.drawerState(drawer,lane),bodyH=dh-(j===col.drawers.length-1?t:0),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;
      add(node,faceW-.002,bodyH-.002,t,faceX,y+.001,d/2-t/2,faceColor).userData.cabinetDrawerBoard='front';
      add(node,cw-2*t,.012,d-3*t,x,y+.012,t/2);for(const sign of [-1,1])add(node,t,bodyH-.03,d-3*t,x+sign*(cw/2-t),y+.024,t/2);add(node,cw-2*t,bodyH-.03,t,x,y+.024,-d/2+1.5*t);
-     handle(node,faceX,y+bodyH*.7,d/2+.012);node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j});g.add(node);y+=dh;});
+     handle(node,faceX,y+bodyH*.7,d/2+.012);node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j,lane});g.add(node);}y+=dh;});
     if(col.door==='none'||options.doors==='hidden')return;
     for(const [bottom,top,section] of [[shoe-t,col.drawers.length?drawerY:lower-t,'lower'],[upper,h,'upper']]){
      const count=col.door==='double'?2:1,leaf=faceW/count;
-     for(let j=0;j<count;j++){const right=col.door==='right'||col.door==='double'&&j===1,pivot=new THREE.Group(),center=span.left+leaf*(j+.5);pivot.position.set(center+(right?1:-1)*leaf/2,bottom+.001,d/2-t/2);pivot.rotation.y=col.doorOpen?(right?1:-1)*(col.doorAngle??99)*Math.PI/180:0;
+     for(let j=0;j<count;j++){const right=col.door==='right'||col.door==='double'&&j===1,pivot=new THREE.Group(),center=span.left+leaf*(j+.5);pivot.position.set(center+(right?1:-1)*leaf/2,bottom+.001,d/2-t/2);pivot.rotation.y=col.doorOpen?(right?1:-1)*C.doorAngle(c,col)*Math.PI/180:0;
       const face=add(pivot,leaf-.002,top-bottom-.002,t,(right?-1:1)*leaf/2,0,0,faceColor);face.userData.cabinetSection=section;
       if(options.doors==='ghost'||col.finish==='glass'){face.material=face.material.clone();face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.32;face.material.depthWrite=false;face.userData.cabinetOwnMaterial=true;}
       const local=(right?-1:1)*leaf/2;handle(pivot,local+(right?-1:1)*(leaf/2-.04),(top-bottom)*.5,.025,true);
@@ -102,24 +168,24 @@
    }
    const handleMesh=(parent,X,Y,Z,vertical=false)=>{if(handle==='none')return;const mesh=add(parent,handle==='knob'?.025:vertical?.012:Math.min(.14,cw*.4),handle==='knob'?.025:vertical?.15:.012,.025,X,Y,Z,'#71685d');if(handle==='knob'){mesh.geometry.dispose();mesh.geometry=new THREE.SphereGeometry(.0125,12,8);}};
    col.shelves.forEach((y,j)=>{add(g,cw,t,d-2*t,x,base+y/1000,-t/2).userData.cabinetShelf={column:i,shelf:j};});
-   let y=base;
+   let y=base;const lanes=C.drawerCount(col),drawerHeight=col.drawers.reduce((sum,v)=>sum+v.height,0)/1000;for(let lane=1;lane<lanes;lane++)if(drawerHeight)add(g,t,drawerHeight,d-2*t,x+(lane-lanes/2)*(cw+t)/lanes,base,-t/2).userData.cabinetDrawerDivider=true;
    col.drawers.forEach((drawer,j)=>{
-    const dh=drawer.height/1000,node=new THREE.Group();node.position.z=drawer.open?d*.7*(drawer.extension??1):0;
-    const span=faceSpan(i),frontBottom=entryStyle&&j===0?p:y,bodyDh=dh-(entryStyle&&j===col.drawers.length-1?t:0);
+    const dh=drawer.height/1000;for(let lane=0;lane<lanes;lane++){const cw=(bays[i].width/1000-(lanes-1)*t)/lanes,x=bays[i].center/1000+(lane-(lanes-1)/2)*(cw+t),state=C.drawerState(drawer,lane),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;
+    const fullSpan=faceSpan(i),span={left:fullSpan.left+(fullSpan.right-fullSpan.left)*lane/lanes,right:fullSpan.left+(fullSpan.right-fullSpan.left)*(lane+1)/lanes},frontBottom=entryStyle&&j===0?p:y,bodyDh=dh-(entryStyle&&j===col.drawers.length-1?t:0);
     add(node,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?y+bodyDh-frontBottom-.002:dh-.004,t,entryStyle?(span.left+span.right)/2:x,entryStyle?frontBottom+.001:y,d/2-t/2,entryStyle?faceColor:color).userData.cabinetDrawerBoard='front';
     // Body spans from the rear panel's inner face to the front panel's inner face.
     add(node,cw-.02,.012,d-3*t,x,y+.012,t/2).userData.cabinetDrawerBoard='bottom';
     for(const side of [-1,1])add(node,t,bodyDh-.03,d-3*t,x+side*(cw/2-t),y+.024,t/2).userData.cabinetDrawerBoard='side';
     add(node,cw-.02,bodyDh-.03,t,x,y+.024,-d/2+1.5*t).userData.cabinetDrawerBoard='back';
     handleMesh(node,x,y+dh*.7,d/2+.012);
-    node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j});g.add(node);y+=dh;
+    node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j,lane});g.add(node);}y+=dh;
    });
    if(col.doorBottom!==undefined)y=base+col.doorBottom/1000;
    if(col.door==='none'||options.doors==='hidden')return;
    const span=faceSpan(i),doorBottom=entryStyle?y-t:y,doorTop=entryStyle?h:base+inner,count=col.door==='double'?2:1,leafW=(entryStyle?span.right-span.left:cw)/count,dh=doorTop-doorBottom;
    for(let j=0;j<count;j++){
     const right=col.door==='right'||col.door==='double'&&j===1,center=(entryStyle?span.left:x-cw/2)+leafW*(j+.5),pivot=new THREE.Group();
-    pivot.position.set(center+(right?1:-1)*leafW/2,doorBottom+(entryStyle?.001:0),d/2-(col.doorBottom!==undefined?t/2:0));pivot.rotation.y=col.doorOpen?(right?1:-1)*(col.doorAngle??99)*Math.PI/180:0;
+    pivot.position.set(center+(right?1:-1)*leafW/2,doorBottom+(entryStyle?.001:0),d/2-(col.doorBottom!==undefined?t/2:0));pivot.rotation.y=col.doorOpen?(right?1:-1)*C.doorAngle(c,col)*Math.PI/180:0;
     const local=(right?-1:1)*leafW/2;
     const face=add(pivot,leafW-(entryStyle?.002:.004),dh-(entryStyle?.002:.004),t,local,0,0,faceColor);
     if(col.finish==='glass'||options.doors==='ghost'){face.material=face.material.clone();face.userData.cabinetOwnMaterial=true;face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.32;face.material.depthWrite=false;face.material.roughness=.15;}

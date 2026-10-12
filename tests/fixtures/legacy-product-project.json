@@ -1,0 +1,145 @@
+{
+  "format": "furnish-project",
+  "version": 1,
+  "createdAt": "2026-10-11T00:00:00.000Z",
+  "checksum": "0f08eef3",
+  "payload": {
+    "planId": "p1",
+    "name": "旧产品字段兼容夹具",
+    "current": {
+      "furniture": [
+        {
+          "id": "legacy-wash",
+          "type": "washer",
+          "name": "旧设备 washer",
+          "cx": 2900,
+          "cy": 3500,
+          "w": 600,
+          "d": 600,
+          "rot": 0,
+          "color": "#eee"
+        },
+        {
+          "id": "legacy-dry",
+          "type": "dryer",
+          "name": "旧设备 dryer",
+          "cx": 2900,
+          "cy": 3500,
+          "w": 600,
+          "d": 600,
+          "rot": 0,
+          "color": "#eee",
+          "mountHeight": 850,
+          "stackHeight": 0
+        },
+        {
+          "id": "legacy-flat",
+          "type": "waterheater_flat",
+          "name": "旧设备 waterheater_flat",
+          "cx": 6000,
+          "cy": 5000,
+          "w": 700,
+          "d": 320,
+          "rot": 0,
+          "color": "#eee"
+        },
+        {
+          "id": "legacy-shower",
+          "type": "shower_arrow_cream",
+          "name": "旧设备 shower_arrow_cream",
+          "cx": 10000,
+          "cy": 6000,
+          "w": 420,
+          "d": 515,
+          "rot": 0,
+          "color": "#eee",
+          "h": 1749,
+          "mountHeight": 350,
+          "showerRise": 400
+        },
+        {
+          "id": "legacy-fridge",
+          "type": "fridge_french_drawer",
+          "name": "旧设备 fridge_french_drawer",
+          "cx": 8500,
+          "cy": 5500,
+          "w": 833,
+          "d": 595,
+          "rot": 0,
+          "color": "#eee"
+        }
+      ]
+    },
+    "designs": [
+      {
+        "id": "legacy-design",
+        "name": "旧命名方案",
+        "work": {
+          "furniture": [
+            {
+              "id": "legacy-wash",
+              "type": "washer",
+              "name": "旧设备 washer",
+              "cx": 2900,
+              "cy": 3500,
+              "w": 600,
+              "d": 600,
+              "rot": 0,
+              "color": "#eee"
+            },
+            {
+              "id": "legacy-dry",
+              "type": "dryer",
+              "name": "旧设备 dryer",
+              "cx": 2900,
+              "cy": 3500,
+              "w": 600,
+              "d": 600,
+              "rot": 0,
+              "color": "#eee",
+              "mountHeight": 850,
+              "stackHeight": 0
+            },
+            {
+              "id": "legacy-flat",
+              "type": "waterheater_flat",
+              "name": "旧设备 waterheater_flat",
+              "cx": 6000,
+              "cy": 5000,
+              "w": 700,
+              "d": 320,
+              "rot": 0,
+              "color": "#eee"
+            },
+            {
+              "id": "legacy-shower",
+              "type": "shower_arrow_cream",
+              "name": "旧设备 shower_arrow_cream",
+              "cx": 10000,
+              "cy": 6000,
+              "w": 420,
+              "d": 515,
+              "rot": 0,
+              "color": "#eee",
+              "h": 1749,
+              "mountHeight": 350,
+              "showerRise": 400
+            },
+            {
+              "id": "legacy-fridge",
+              "type": "fridge_french_drawer",
+              "name": "旧设备 fridge_french_drawer",
+              "cx": 8500,
+              "cy": 5500,
+              "w": 833,
+              "d": 595,
+              "rot": 0,
+              "color": "#eee"
+            }
+          ]
+        }
+      }
+    ],
+    "catalog": []
+  }
+}

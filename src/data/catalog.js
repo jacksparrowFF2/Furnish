@@ -1,6 +1,7 @@
 /* Shared browser / Node module; no DOM or application state dependencies. */
 (function(root){
 'use strict';
+const products=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
 const MATS = {
   wood:    {name:'橡木地板', price:320, sw:'#d8b88a'},
   walnut:  {name:'胡桃木地板', price:380, sw:'#9b7250'},
@@ -16,27 +17,27 @@ const LIB = [
   {cat:'电器', items:[
     ["stove","燃气灶",750,450,"#dcdcdc",2500],
     ["fridge","冰箱",700,700,"#dfe4e8",4000],
-    ["washer","洗衣机",600,600,"#e6ebee",2800,850],
+    ["washer","洗衣机",600,600,"#e6ebee",2800,products.height({type:"washer"})],
     ["waterheater","电热水器",800,450,"#f4f4f2",1800],
-    ["waterheater_flat","扁桶电热水器 60L",700,320,"#fafafa",0,565],
+    ["waterheater_flat","扁桶电热水器 60L",700,320,"#fafafa",0,products.height({type:"waterheater_flat"})],
     ["tv","65 寸电视",1450,80,"#1d1d1f",4500],
     ["tv","55 寸电视",1230,80,"#1d1d1f",3000],
     ["fridge","对开门冰箱",910,700,"#c9ced3",7000],
-    ["fridge_french_drawer","纯平四门冰箱（双抽屉）",833,595,"#f1f0ed",0,1910],
+    ["fridge_french_drawer","纯平四门冰箱（双抽屉）",833,595,"#f1f0ed",0,products.height({type:"fridge_french_drawer"})],
     ["tv","75 寸电视",1660,80,"#1d1d1f",6000,935],
     ["tv","85 寸电视",1880,90,"#1d1d1f",8500,1060],
     ["tv","100 寸电视",2210,100,"#1d1d1f",15000,1245],
     ["aircon","柜机空调",500,380,"#f6f7f8",6500],
     ["acwall","挂机空调",900,250,"#f6f7f8",3200],
     ["dishwasher","洗碗机",600,600,"#c9ced3",4500],
-    ["dryer","烘干机",600,600,"#e6ebee",3800,850],
+    ["dryer","烘干机",600,600,"#e6ebee",3800,products.height({type:"dryer"})],
     ["purifier","空气净化器",400,300,"#f4f4f2",2000],
     ["robot_p20max_tank","石头 P20 Max 水箱版套装",450,450,"#f5f6f5",0,450],
     ["robot_p20max_plumbed","石头 P20 Max 上下水版套装",381,475,"#f5f6f5",0,300],
     ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
-    ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],'#f3f1ec',['tv-floor','entry-pegboard','entry-console'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
+    ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],'#f3f1ec',['tv-floor','entry-pegboard','entry-console','sideboard-wall','sideboard-fridge'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
     ["nightstand","床头柜",450,400,"#e8dccb",600],
     ["wardrobe","衣柜",2000,600,"#efe6d8",4500],
     ["wardrobe","衣柜 2.4m",2400,600,"#efe6d8",5400],
@@ -61,7 +62,7 @@ const LIB = [
     ["crib","婴儿床",1250,700,"#efe3d0",1200]
   ]},
   {cat:'沙发', items:[
-    ["sofa_yeswood_cherry","源氏木语 樱桃木三人沙发 2.16m（梨白）",2160,892,"#eee9df",0,895],
+    ["sofa_yeswood_cherry","源氏木语 樱桃木三人沙发 2.16m（梨白）",2160,892,"#eee9df",0,products.height({type:"sofa_yeswood_cherry"})],
     ["sofa","三人沙发",2400,900,"#b7c4b0",5200],
     ["sofa","双人沙发",1700,880,"#c3cbd6",3600],
     ["cornersofa","转角沙发",2800,1700,"#b7c4b0",7800],
@@ -94,6 +95,7 @@ const LIB = [
     ["ksink","水槽",800,450,"#e1e6ea",1500],
     ["toilet","马桶",400,700,"#ffffff",2200],
     ["shower","淋浴房",900,900,"#e4edf2",3500],
+    ["shower_arrow_cream","箭牌 奶油白壁挂花洒 AE34129ZMKW-P2",420,515,"#eee7d8",0,products.height({type:"shower_arrow_cream"})],
     ["bathtub","浴缸",1600,750,"#eef3f6",4800]
   ]},
   {cat:'灯具', items:[
@@ -114,7 +116,7 @@ const LIB = [
     ["plant","大绿植",700,700,"#9dbb8c",450],
     ["wallart","装饰画 横",1500,60,"#8a7a5e",800],
     ["wallart","装饰画 小",900,60,"#a08a66",400],
-    ["mirror","穿衣镜",500,60,"#dfe6ea",500]
+    ["mirror","穿衣镜",500,60,"#dfe6ea",500,1650]
   ]},
   {cat:'运动 · 乐器', items:[
     ["piano","立式钢琴",1500,600,"#1f1d1b",18000],

@@ -1,0 +1,601 @@
+{
+  "format": "furnish-project",
+  "version": 1,
+  "createdAt": "2026-10-12T16:21:03.217Z",
+  "checksum": "1f621736",
+  "payload": {
+    "planId": "custom_cabinet_opening_3d",
+    "name": "柜体三维开启验收",
+    "current": {
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_cabinet_opening_3d",
+          "name": "柜体三维开启验收",
+          "source": "dxf",
+          "width": 1000,
+          "height": 1000,
+          "image": "",
+          "scale": 10,
+          "walls": [
+            {
+              "id": "wall0",
+              "a": [
+                100,
+                100
+              ],
+              "b": [
+                900,
+                100
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall1",
+              "a": [
+                900,
+                100
+              ],
+              "b": [
+                900,
+                900
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall2",
+              "a": [
+                900,
+                900
+              ],
+              "b": [
+                100,
+                900
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall3",
+              "a": [
+                100,
+                900
+              ],
+              "b": [
+                100,
+                100
+              ],
+              "thickness": 200,
+              "kind": "e"
+            }
+          ],
+          "openings": []
+        },
+        "phase": "survey"
+      },
+      "ceilingHeight": 4000,
+      "rooms": {
+        "room1": {
+          "name": "验收房间",
+          "use": "living",
+          "mat": "wood"
+        }
+      },
+      "furniture": [
+        {
+          "id": "peg",
+          "type": "cabinet",
+          "cx": 2500,
+          "cy": 2500,
+          "rot": 0,
+          "name": "玄关柜 · 洞洞板换鞋区",
+          "w": 674,
+          "d": 350,
+          "h": 2400,
+          "color": "#f3f1ec",
+          "cabinet": {
+            "version": 1,
+            "template": "entry-pegboard",
+            "thickness": 18,
+            "plinth": 0,
+            "columns": [
+              {
+                "door": "double",
+                "doorOpen": false,
+                "doorBottom": 1796,
+                "pegboard": true,
+                "handle": "none",
+                "shelves": [
+                  1778
+                ],
+                "drawers": [
+                  {
+                    "height": 180,
+                    "open": false,
+                    "extension": 1
+                  },
+                  {
+                    "height": 180,
+                    "open": false,
+                    "extension": 1
+                  }
+                ],
+                "width": 638,
+                "drawerColumns": 1
+              }
+            ],
+            "autoDoors": true
+          }
+        },
+        {
+          "id": "side",
+          "type": "cabinet",
+          "cx": 6500,
+          "cy": 2500,
+          "rot": 0,
+          "name": "餐边柜 · 操作台与玻璃展示柜",
+          "w": 1980,
+          "d": 450,
+          "h": 2430,
+          "color": "#f3f1ec",
+          "cabinet": {
+            "version": 1,
+            "template": "sideboard-wall",
+            "thickness": 18,
+            "plinth": 60,
+            "autoDoors": true,
+            "columns": [
+              {
+                "door": "double",
+                "doorOpen": false,
+                "handle": "none",
+                "shelves": [],
+                "drawers": [
+                  {
+                    "height": 140,
+                    "open": false,
+                    "extension": 1
+                  }
+                ],
+                "width": 963,
+                "drawerColumns": 2
+              },
+              {
+                "door": "double",
+                "doorOpen": false,
+                "handle": "none",
+                "shelves": [],
+                "drawers": [
+                  {
+                    "height": 140,
+                    "open": false,
+                    "extension": 1
+                  }
+                ],
+                "width": 963,
+                "drawerColumns": 2
+              }
+            ],
+            "sideboard": {
+              "baseHeight": 600,
+              "counterThickness": 20,
+              "nicheHeight": 300,
+              "displayHeight": 1300,
+              "lowerDepth": 450,
+              "upperDepth": 350,
+              "fridgeHeight": 1830
+            }
+          }
+        },
+        {
+          "id": "drawer",
+          "type": "cabinet",
+          "cx": 2500,
+          "cy": 5500,
+          "rot": 0,
+          "name": "餐边柜 · 冰箱位与玻璃展示柜",
+          "w": 2156,
+          "d": 600,
+          "h": 2400,
+          "color": "#f3f1ec",
+          "cabinet": {
+            "version": 1,
+            "template": "sideboard-fridge",
+            "thickness": 18,
+            "plinth": 60,
+            "autoDoors": true,
+            "columns": [
+              {
+                "door": "double",
+                "doorOpen": false,
+                "handle": "none",
+                "shelves": [],
+                "drawers": [],
+                "width": 800,
+                "fridgeBay": true
+              },
+              {
+                "door": "left",
+                "doorOpen": false,
+                "handle": "none",
+                "shelves": [],
+                "drawers": [
+                  {
+                    "height": 140,
+                    "open": false,
+                    "extension": 1
+                  }
+                ],
+                "width": 419,
+                "drawerColumns": 1
+              },
+              {
+                "door": "double",
+                "doorOpen": false,
+                "handle": "none",
+                "shelves": [],
+                "drawers": [
+                  {
+                    "height": 140,
+                    "open": false,
+                    "extension": 1
+                  }
+                ],
+                "width": 865,
+                "drawerColumns": 2
+              }
+            ],
+            "sideboard": {
+              "baseHeight": 810,
+              "counterThickness": 20,
+              "nicheHeight": 510,
+              "displayHeight": 300,
+              "lowerDepth": 410,
+              "upperDepth": 350,
+              "fridgeHeight": 1915,
+              "fridgeDepth": 600
+            }
+          }
+        },
+        {
+          "id": "peg-blocker",
+          "name": "门前设备",
+          "type": "washer",
+          "cx": 2340,
+          "cy": 2855,
+          "w": 100,
+          "d": 100,
+          "h": 850,
+          "mountHeight": 0,
+          "rot": 0,
+          "color": "#e6ebee"
+        },
+        {
+          "id": "drawer-blocker",
+          "name": "抽屉前设备",
+          "type": "washer",
+          "cx": 2467.5,
+          "cy": 5740,
+          "w": 100,
+          "d": 100,
+          "h": 100,
+          "mountHeight": 1100,
+          "rot": 0,
+          "color": "#e6ebee"
+        },
+        {
+          "id": "legacy-basic",
+          "type": "wardrobe",
+          "name": "旧无配置衣柜",
+          "cx": 6500,
+          "cy": 6500,
+          "w": 2000,
+          "d": 600,
+          "rot": 0,
+          "color": "#efe6d8"
+        }
+      ]
+    },
+    "designs": [
+      {
+        "id": "legacy",
+        "name": "旧柜体方案",
+        "work": {
+          "architecture": {
+            "draft": {
+              "version": 1,
+              "id": "custom_cabinet_opening_3d",
+              "name": "柜体三维开启验收",
+              "source": "dxf",
+              "width": 1000,
+              "height": 1000,
+              "image": "",
+              "scale": 10,
+              "walls": [
+                {
+                  "id": "wall0",
+                  "a": [
+                    100,
+                    100
+                  ],
+                  "b": [
+                    900,
+                    100
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall1",
+                  "a": [
+                    900,
+                    100
+                  ],
+                  "b": [
+                    900,
+                    900
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall2",
+                  "a": [
+                    900,
+                    900
+                  ],
+                  "b": [
+                    100,
+                    900
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall3",
+                  "a": [
+                    100,
+                    900
+                  ],
+                  "b": [
+                    100,
+                    100
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                }
+              ],
+              "openings": []
+            },
+            "phase": "survey"
+          },
+          "ceilingHeight": 4000,
+          "rooms": {
+            "room1": {
+              "name": "验收房间",
+              "use": "living",
+              "mat": "wood"
+            }
+          },
+          "furniture": [
+            {
+              "id": "peg",
+              "type": "cabinet",
+              "cx": 2500,
+              "cy": 2500,
+              "rot": 0,
+              "name": "玄关柜 · 洞洞板换鞋区",
+              "w": 674,
+              "d": 350,
+              "h": 2400,
+              "color": "#f3f1ec",
+              "cabinet": {
+                "version": 1,
+                "template": "entry-pegboard",
+                "thickness": 18,
+                "plinth": 0,
+                "columns": [
+                  {
+                    "door": "double",
+                    "doorOpen": false,
+                    "doorBottom": 1796,
+                    "pegboard": true,
+                    "handle": "none",
+                    "shelves": [
+                      1778
+                    ],
+                    "drawers": [
+                      {
+                        "height": 180,
+                        "open": false,
+                        "extension": 1
+                      },
+                      {
+                        "height": 180,
+                        "open": false,
+                        "extension": 1
+                      }
+                    ],
+                    "width": 638,
+                    "drawerColumns": 1
+                  }
+                ],
+                "autoDoors": true
+              }
+            },
+            {
+              "id": "side",
+              "type": "cabinet",
+              "cx": 6500,
+              "cy": 2500,
+              "rot": 0,
+              "name": "餐边柜 · 操作台与玻璃展示柜",
+              "w": 1980,
+              "d": 450,
+              "h": 2430,
+              "color": "#f3f1ec",
+              "cabinet": {
+                "version": 1,
+                "template": "sideboard-wall",
+                "thickness": 18,
+                "plinth": 60,
+                "autoDoors": true,
+                "columns": [
+                  {
+                    "door": "double",
+                    "doorOpen": false,
+                    "handle": "none",
+                    "shelves": [],
+                    "drawers": [
+                      {
+                        "height": 140,
+                        "open": false,
+                        "extension": 1
+                      }
+                    ],
+                    "width": 963,
+                    "drawerColumns": 2
+                  },
+                  {
+                    "door": "double",
+                    "doorOpen": false,
+                    "handle": "none",
+                    "shelves": [],
+                    "drawers": [
+                      {
+                        "height": 140,
+                        "open": false,
+                        "extension": 1
+                      }
+                    ],
+                    "width": 963,
+                    "drawerColumns": 2
+                  }
+                ],
+                "sideboard": {
+                  "baseHeight": 600,
+                  "counterThickness": 20,
+                  "nicheHeight": 300,
+                  "displayHeight": 1300,
+                  "lowerDepth": 450,
+                  "upperDepth": 350,
+                  "fridgeHeight": 1830
+                }
+              }
+            },
+            {
+              "id": "drawer",
+              "type": "cabinet",
+              "cx": 2500,
+              "cy": 5500,
+              "rot": 0,
+              "name": "餐边柜 · 冰箱位与玻璃展示柜",
+              "w": 2156,
+              "d": 600,
+              "h": 2400,
+              "color": "#f3f1ec",
+              "cabinet": {
+                "version": 1,
+                "template": "sideboard-fridge",
+                "thickness": 18,
+                "plinth": 60,
+                "autoDoors": true,
+                "columns": [
+                  {
+                    "door": "double",
+                    "doorOpen": false,
+                    "handle": "none",
+                    "shelves": [],
+                    "drawers": [],
+                    "width": 800,
+                    "fridgeBay": true
+                  },
+                  {
+                    "door": "left",
+                    "doorOpen": false,
+                    "handle": "none",
+                    "shelves": [],
+                    "drawers": [
+                      {
+                        "height": 140,
+                        "open": false,
+                        "extension": 1
+                      }
+                    ],
+                    "width": 419,
+                    "drawerColumns": 1
+                  },
+                  {
+                    "door": "double",
+                    "doorOpen": false,
+                    "handle": "none",
+                    "shelves": [],
+                    "drawers": [
+                      {
+                        "height": 140,
+                        "open": false,
+                        "extension": 1
+                      }
+                    ],
+                    "width": 865,
+                    "drawerColumns": 2
+                  }
+                ],
+                "sideboard": {
+                  "baseHeight": 810,
+                  "counterThickness": 20,
+                  "nicheHeight": 510,
+                  "displayHeight": 300,
+                  "lowerDepth": 410,
+                  "upperDepth": 350,
+                  "fridgeHeight": 1915,
+                  "fridgeDepth": 600
+                }
+              }
+            },
+            {
+              "id": "peg-blocker",
+              "name": "门前设备",
+              "type": "washer",
+              "cx": 2340,
+              "cy": 2855,
+              "w": 100,
+              "d": 100,
+              "h": 850,
+              "mountHeight": 0,
+              "rot": 0,
+              "color": "#e6ebee"
+            },
+            {
+              "id": "drawer-blocker",
+              "name": "抽屉前设备",
+              "type": "washer",
+              "cx": 2467.5,
+              "cy": 5740,
+              "w": 100,
+              "d": 100,
+              "h": 100,
+              "mountHeight": 1100,
+              "rot": 0,
+              "color": "#e6ebee"
+            },
+            {
+              "id": "legacy-basic",
+              "type": "wardrobe",
+              "name": "旧无配置衣柜",
+              "cx": 6500,
+              "cy": 6500,
+              "w": 2000,
+              "d": 600,
+              "rot": 0,
+              "color": "#efe6d8"
+            }
+          ]
+        }
+      }
+    ],
+    "catalog": []
+  }
+}

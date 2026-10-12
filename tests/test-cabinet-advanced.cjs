@@ -13,7 +13,7 @@ assert.equal(C.snapShelf(f,0,0,479),475);assert.equal(C.snapShelf(f,0,0,461),460
 const styled=structuredClone(drawer);Object.assign(styled.cabinet.columns[0],{finish:'glass',handle:'knob',door:'double',doorColor:'#abc123',doorAngle:65,doorOpen:true});Object.assign(styled.cabinet.columns[0].drawers[0],{open:true,extension:.4});C.validate(styled);
 const progress=structuredClone(styled);progress.cabinet.columns[0].doorAngle=110;progress.cabinet.columns[0].drawers[0].extension=.9;assert.deepEqual(C.specification(progress),C.specification(styled));
 assert.deepEqual(P.unpack(P.pack({planId:'p',current:{furniture:[styled]},designs:[],catalog:[]})).current.furniture[0],styled);
-for(const [key,value] of [['doorAngle',111],['finish','bad'],['handle','bad'],['doorColor','red']]){const bad=structuredClone(styled);bad.cabinet.columns[0][key]=value;assert.throws(()=>P.validateWork({furniture:[bad]}),/材质/);}
+for(const [key,value] of [['doorAngle',181],['finish','bad'],['handle','bad'],['doorColor','red']]){const bad=structuredClone(styled);bad.cabinet.columns[0][key]=value;assert.throws(()=>P.validateWork({furniture:[bad]}),/材质/);}
 const bad=structuredClone(styled);bad.cabinet.columns[0].drawers[0].extension=1.1;assert.throws(()=>C.validate(bad),/拉出/);
 const room={id:'room',poly:[[0,0],[4000,0],[4000,4000],[0,4000]]},plan={rooms:[room],walls:[],doors:[]};
 const door={...f,...C.preset('pantry500')},closed=structuredClone(door);assert.equal(closed.cabinet.columns[0].doorOpen,false);

@@ -35,6 +35,7 @@
           name:typeof value?.name === 'string' ? value.name.slice(0,80) : room.name,
           mat:materials[value?.mat] ? value.mat : room.mat,
           use:design.inferUse(room,value),
+          ...(value?.ceilingHeight!==undefined?{ceilingHeight:project.ceilingHeight({ceilingHeight:value.ceilingHeight})}:{}),
         };
       });
       work.demolished = work.demolished || [];

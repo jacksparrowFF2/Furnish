@@ -1,0 +1,60 @@
+async (page) => {
+ const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
+ for(const [mode,url,offline] of [['offline-file','file:///'+root+'index.html',true],['http','http://127.0.0.1:8765/index.html',false]]){
+  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline}),p=await context.newPage(),errors=[],external=[];
+  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:8765'))external.push(r.url());});
+  const check=(ok,message)=>{if(!ok)throw Error(mode+': '+message);};
+  const select=async id=>p.evaluate(id=>selectIds([id]),id);
+  const issues=async(id,kind)=>p.evaluate(({id,kind})=>FurnishProject.spaceCheck(FurnishProject.effectivePlan(PLAN,state),state.furniture,{focusId:id,scanPassages:false}).filter(v=>v.kind===kind),{id,kind});
+  const backup=async()=>{await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();};
+  await p.goto(url);await p.locator('#lib').waitFor();await backup();await p.locator('#pr-file').setInputFiles(root+'tests/fixtures/cabinet-opening-3d-project.json');await p.locator('#pr-restore-confirm').click();
+  check(await p.evaluate(()=>getF('legacy-basic').cabinet===undefined&&store.designs.some(v=>v.name==='旧柜体方案')),'legacy cabinet and named version preserved');
+  await select('peg');check((await issues('peg','cabinetdoor')).length===0,'low equipment beneath upper doors');
+  check(!(await p.locator('#fit-feedback').innerText()).includes('柜门三维开启'),'property feedback no false upper door conflict');
+  await select('peg-blocker');await p.locator('#fMountHeight').fill('1850');await p.locator('#fMountHeight').press('Tab');
+  await select('peg');check((await issues('peg','cabinetdoor')).some(v=>!v.pending),'raised appliance blocks door');
+  check((await p.locator('#fit-feedback').innerText()).includes('柜门三维开启'),'property feedback shows 3D conflict');
+  await p.getByRole('button',{name:'撤销',exact:true}).first().click();check((await issues('peg','cabinetdoor')).length===0,'undo height removes conflict');
+  await p.getByRole('button',{name:'重做',exact:true}).first().click();check((await issues('peg','cabinetdoor')).length>0,'redo height restores conflict');
+  await select('drawer');check((await issues('drawer','cabinetdrawer')).length===0,'high equipment clears low drawer');
+  await select('drawer-blocker');await p.locator('#fMountHeight').fill('700');await p.locator('#fMountHeight').press('Tab');
+  await select('drawer');check((await issues('drawer','cabinetdrawer')).some(v=>!v.pending),'lowered equipment blocks drawer');
+  await select('side');await p.locator('#cabinet-edit').click();await p.locator('#cab-preview canvas').waitFor();
+  const max=p.locator('[data-cab-number="doorMaxAngle"]');await max.fill('180');await max.press('Tab');
+  check(await p.evaluate(()=>getF('side').cabinet.doorMaxAngle===undefined),'draft preview does not apply early');
+  await p.getByRole('button',{name:'保存柜体设计',exact:true}).click();
+  check(await p.evaluate(()=>getF('side').cabinet.doorMaxAngle===180),'cabinet maximum persisted');
+  // Room ceiling is an existing persisted input, edited through its real panel.
+  await p.evaluate(()=>select({kind:'room',id:PLAN.rooms[0].id}));await p.locator('#rCeilingHeight').fill('2800');await p.locator('#rCeilingHeight').press('Tab');
+  await select('side');check((await issues('side','cabinetdoor')).some(v=>v.section==='display'&&/天花板/.test(v.message)),'lift-up sweep reaches lowered ceiling');
+  check((await p.locator('#fit-feedback').innerText()).includes('上翻门三维扫掠'),'ceiling conflict in property feedback');
+  await p.locator('#fit-feedback').screenshot({path:root+'output/playwright/cabinet-opening-3d/'+mode+'-ceiling-warning.png'});
+  await p.locator('#cabinet-edit').click();await p.locator('#cab-preview canvas').waitFor();
+  check((await p.locator('#cab-space').innerText()).includes('天花板'),'editor uses same ceiling check');
+  check(await p.locator('#cab-space .project-error').first().evaluate(el=>getComputedStyle(el).color!==getComputedStyle(el.parentElement).color),'definite conflict retains warning color in editor');
+  await p.locator('[data-cab-number="doorMaxAngle"]').fill('90');await p.locator('[data-cab-number="doorMaxAngle"]').press('Tab');
+  check(!(await p.locator('#cab-space').innerText()).includes('天花板'),'draft 90° clears ceiling');
+  await p.getByRole('button',{name:'取消',exact:true}).click();check(await p.evaluate(()=>getF('side').cabinet.doorMaxAngle===180),'cancel keeps persisted maximum');
+  await p.locator('#fit-check').click();await p.locator('#space-run').click();
+  check((await p.locator('#space-results').innerText()).includes('上翻门三维扫掠范围与天花板'),'full check matches panel');
+  await p.locator('#dlgClose').click();
+  await select('side');await p.locator('#cabinet-edit').click();await p.locator('#cab-preview canvas').waitFor();await p.locator('#cab-open-all').click();
+  await p.locator('#cab-preview canvas').hover();for(let i=0;i<8;i++)await p.mouse.wheel(0,400);await p.waitForTimeout(250);
+  await p.locator('#cab-space').scrollIntoViewIfNeeded();
+  await p.screenshot({path:root+'output/playwright/cabinet-opening-3d/'+mode+'-editor.png'});
+  await p.getByRole('button',{name:'保存柜体设计',exact:true}).click();
+  await p.locator('[data-view="3d"]').click();await p.waitForFunction(()=>document.querySelector('#stage').classList.contains('is3d')&&!document.querySelector('#stage').classList.contains('animating'));
+  await p.screenshot({path:root+'output/playwright/cabinet-opening-3d/'+mode+'-3d.png'});
+  await p.locator('[data-view="2d"]').click();await p.waitForFunction(()=>!document.querySelector('#stage').classList.contains('is3d')&&!document.querySelector('#stage').classList.contains('animating'));
+  await backup();const downloadPromise=p.waitForEvent('download');await p.locator('#pr-export').click();const download=await downloadPromise,path=root+'output/playwright/cabinet-opening-3d/'+mode+'.furnish.json';await download.saveAs(path);
+  await p.locator('#pr-file').setInputFiles(path);await p.locator('#pr-restore-confirm').click();
+  check((await issues('side','cabinetdoor')).some(v=>v.section==='display'&&/天花板/.test(v.message)),'real download/reimport keeps check');
+  await p.waitForTimeout(800);await p.reload();check(await p.evaluate(()=>getF('side').cabinet.doorMaxAngle===180&&getF('peg-blocker').mountHeight===1850&&getF('drawer-blocker').mountHeight===700),'refresh values');
+  check((await issues('side','cabinetdoor')).some(v=>v.section==='display'&&/天花板/.test(v.message)),'refresh ceiling conflict');
+  await p.setViewportSize({width:390,height:844});await p.waitForTimeout(400);await select('side');await p.locator('#tgPanel').click();await p.waitForTimeout(400);
+  await p.screenshot({path:root+'output/playwright/cabinet-opening-3d/'+mode+'-mobile.png'});
+  check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'mobile overflow');check(errors.length===0,errors.join('\n'));check(external.length===0,'external request');
+  results.push({mode,passed:true,pageErrors:errors,externalRequests:external.length});await context.close();
+ }
+ return {passed:true,results,checks:['legacy import','height separation','raised/lowered obstacle UI','undo/redo','maximum angle save/cancel','room ceiling UI','panel/editor/full check consistency','3D','real download/reimport','refresh','390px','offline file']};
+}

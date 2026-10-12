@@ -1,5 +1,17 @@
 # Furnish 实机测试清单
 
+## 三维开启范围（2026-10-13）
+
+`test-cabinet-opening-3d.cjs` 验证高低错层、抽屉接触/穿入、上翻空角与铰轴上方、矮墙/壁挂对象/吊顶、跨房间净高、未知高度、操作空间、旋转镜像、旧数据及确认失效。`test-cabinet-opening-volume-model.cjs` 对照实际生产 Three.js 板件顶点与高度范围；`test-room-ceiling-height.cjs` 覆盖完整工作恢复链路，防止只通过 pack/unpack 而实际加载丢失净高。
+
+浏览器执行 `run-code --filename scripts/verify-cabinet-opening-3d.browser.js`，分别验证 HTTP 与断网 file，使用合成旧项目和独立存储。实际操作障碍离地高、柜门最大角度、房间净高，检查面板/编辑器/全案、草稿取消、撤销重做、真实下载再导入、3D、刷新和 390 px。方法和证据路径见 [CABINET-OPENING-3D.md](CABINET-OPENING-3D.md)。
+
+## 产品规则与离线兼容（2026-10-13）
+
+运行 `node scripts/check.cjs`，包含 `test-product-rules.cjs`、历史格式夹具、全部专项回归及生成预览的内联脚本/依赖检查。生产构造器的孤立 VM 测试须提供真实产品规则依赖，不能用第二套默认值代替。
+
+通过 Playwright CLI 的 `run-code --filename scripts/verify-product-rules.browser.js` 在独立存储 context 中复验：新建默认值、旧项目/命名版本导入、花洒安装迁移、缺失高度、叠放、合法 0/非法输入、撤销重做、界面替换清理、项目真实下载再上传、3D 动画完成后截图、刷新、390 px 属性抽屉及无外部请求。脚本同时检查四种独立生产预览。分别运行 HTTP 与设置 context 离线的 file 模式；步骤、CLI 配置及证据位置见 [PRODUCT-RULES.md](PRODUCT-RULES.md)。
+
 ## 历史与分享协调
 
 运行 `node tests/test-recovery-storage.cjs`、`node tests/test-share-codec.cjs` 和 `node tests/test-work-state.cjs` 验证持久化回调、旧格式、压缩回退、异步竞争和载入前准备。浏览器验收命名保存、跨户型分享、重复载入同一链接及撤销重做；损坏门窗或不匹配编号的分享应保持户型、方案、恢复点和撤销记录不变。预览恢复点后恢复并撤销／重做，删除测试历史缓存后刷新应从 IndexedDB 找回。最后检查真实 PNG／方案 JSON 下载与校验、全部户型、三维返回及窄屏恢复窗口。
@@ -268,3 +280,17 @@ PDF 必须通过本地 HTTP 页面打开；当前 127.0.0.1 页面可直接测�
 - 现有 `output/playwright/region-operations-check.cjs` 已适配新对话框，折线拆分及两区域合并的真实 UI 回归通过。
 
 验证项目及报告见 `D:/1601装修/图纸/设计方案/Furnish导入验证/multi-region-merge-validation.md`。浏览器脚本依赖当前机器缓存 Playwright 和 Chrome 路径；孔洞案例为真实图纸上的测试功能划分，不代表原始图纸中的实际岛台。浏览器测试使用无头 Chrome，未覆盖触屏设备。
+
+## 2026-10-13 房梁高度与开启障碍
+
+补齐梁底／梁顶离地 mm 录入和共享校验；已知梁参与柜门、抽屉、上翻门与操作空间检查，并按真实高度显示三维实体。旧梁继续待核对，项目版本保持 1。回归、离线／HTTP 浏览器验收和维护契约见 [BEAM-HEIGHTS.md](BEAM-HEIGHTS.md)。
+
+本轮完整检查通过 87 个回归套件、12 套内置户型和 11 页预览；追加的旋转／镜像顶部梁与扫掠外包框空角用例也通过。
+
+## 2026-10-13 梁与家具实体三维碰撞
+
+新增独立梁实体检查，复用家具／梁垂直范围；柜顶贴梁底不报错，1mm 穿入报告，纯投影重叠且高低分离不误报。未知高度保留待核对，旧柜体／旧梁、项目版本与离线资源机制保持兼容。属性、柜体草稿与全案共用结果，定位同时高亮两侧。
+
+回归覆盖旋转／镜像、壁挂物、平面和高度接触、未知两侧、确认失效、旧方案与实际恢复链路。HTTP 和完全断网 file 浏览器验收通过：边界与尺寸编辑、撤销重做、草稿保存／取消、核对与定位、下载再上传、刷新、旧基线／命名方案、3D、390px；页面异常／外部请求为零。维护契约、边界与复验见 [BEAM-HEIGHTS.md](BEAM-HEIGHTS.md)。
+
+本轮完整检查通过 88 个回归套件、12 套内置户型、11 页预览及全部生产语法／本地资源检查；浏览器专项验收通过，`git diff --check` 无空白错误。

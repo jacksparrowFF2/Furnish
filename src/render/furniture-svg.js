@@ -15,6 +15,10 @@ const DASH = 'stroke-dasharray="4 3"';
 
 
   const x = -w/2, y = -d/2, m = Math.min(w,d);
+  if(f?.cabinet?.sideboard){
+    const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,s=f.cabinet.sideboard,bays=C.layout(f),t=f.cabinet.thickness;
+    return bays.map((bay,i)=>{const left=bay.left-t,right=bay.left+bay.width+t,col=f.cabinet.columns[i];return col.fridgeBay?rc(left,y,right-left,s.fridgeDepth??d,'none',DASH)+ln(left,y+(s.fridgeDepth??d),right,y+(s.fridgeDepth??d),DASH):rc(left,y,right-left,s.lowerDepth,c)+rc(left,y,right-left,s.upperDepth,shade(c,.85))+ln(left,y+s.lowerDepth,right,y+s.lowerDepth);}).join('');
+  }
   if(f?.cabinet?.columns.some(col=>col.top==='drawer')){
     const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,bays=C.layout(f);
     let s=rc(x,y,w,d,c);
@@ -100,6 +104,7 @@ const DASH = 'stroke-dasharray="4 3"';
     case 'fridge': return rc(x,y,w,d,c,'rx="30"') + ln(x,y+d*.14,x+w,y+d*.14) + ln(0,y+d*.14,0,y+d) + rc(-70,y+d*.5,40,d*.25,'#aab') + rc(30,y+d*.5,40,d*.25,'#aab');
     case 'toilet': return rc(x+w*.04,y,w*.92,d*.27,c,'rx="30"') + ec(0,y+d*.27+d*.36,w*.47,d*.36,c) + ec(0,y+d*.27+d*.4,w*.3,d*.24,'#eef4f7');
     case 'vanity': return rc(x,y,w,d,c,'rx="20"') + ec(0,y+d*.57,Math.min(w*.32,260),d*.28,'#fff') + `<circle cx="0" cy="${y+d*.17}" r="26" fill="#999"/>`;
+    case 'shower_arrow_cream': return rc(-w*.476,y,w*.952,d*.25,c,'rx="12"') + rc(-w*.381,y+d*.553,w*.762,d*.447,c,`rx="18" ${DASH}`) + rc(-w*.03,y+d*.12,w*.06,d*.657,c,'rx="5"') + ln(-w*.17,y,-w*.17,y+d*.045) + ln(w*.17,y,w*.17,y+d*.045);
     case 'shower': return rc(x,y,w,d,c) + ln(x,y,x+w,y+d,DASH) + ln(x+w,y,x,y+d,DASH) + `<circle r="45" fill="#fff" ${ST()}/>`;
     case 'bathtub': return rc(x,y,w,d,c,'rx="40"') + rc(x+80,y+80,w-160,d-160,'#fff',`rx="${m*.33}"`) + `<circle cx="${x+w-260}" cy="0" r="35" fill="#ccc" ${ST()}/>`;
     case 'washer': case 'dryer': return rc(x,y,w,d,c,'rx="30"') + rc(x,y,w,d*.14,shade(c,.9)) + `<circle cy="${d*.06}" r="${m*.34}" fill="#fff" ${ST()}/><circle cy="${d*.06}" r="${m*.24}" fill="${t==='dryer'?'#e9dccb':'#cfdde4'}" ${ST()}/>`;

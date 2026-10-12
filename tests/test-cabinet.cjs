@@ -6,7 +6,7 @@ const f=make('sideboard-drawers'),original=JSON.stringify(f);
 const open=C.toggle(f,0);assert.equal(open.cabinet.columns[0].doorOpen,true);assert.equal(JSON.stringify(f),original);
 const drawer=C.toggle(open,0,1);assert.equal(drawer.cabinet.columns[0].drawers[1].open,true);assert.equal(C.toggle(drawer,0,1).cabinet.columns[0].drawers[1].open,false);
 const taller=D.resizeFurniture(f,{h:1200});assert.equal(taller.h,1200);assert(taller.cabinet.columns[0].shelves[0]>f.cabinet.columns[0].shelves[0]);C.validate(taller);
-assert.throws(()=>D.resizeFurniture(f,{w:150}),/净宽/);
+C.validate(D.resizeFurniture(f,{w:150}));
 assert.throws(()=>D.resizeFurniture({...f,locked:true},{h:1300}),/锁定/);
 const invalid=JSON.parse(original);invalid.cabinet.columns[0].shelves=[100,90];assert.throws(()=>C.validate(invalid),/层板/);assert.throws(()=>P.validateWork({furniture:[invalid]}),/层板/);
 invalid.cabinet.columns[0].shelves=[];invalid.cabinet.columns[0].drawers=[{height:900,open:false}];assert.throws(()=>C.validate(invalid),/总高度/);
@@ -20,11 +20,35 @@ const plan={rooms:[]},rows=P.procurement(plan,{furniture:[f,open]},()=>100);asse
 const unequal=C.setColumnWidth(f,0,350);C.validate(unequal);assert.equal(C.widths(unequal)[0],350);assert.equal(C.widths(unequal)[1],C.widths(f)[1]);assert.equal(f.w,1600);
 const widths=C.widths(unequal),layout=C.layout(unequal);assert(Math.abs(layout[1].left-(layout[0].left+350+18))<1e-8);
 const wider=D.resizeFurniture(unequal,{w:2000});assert(Math.abs(C.widths(wider)[0]/C.widths(wider)[1]-widths[0]/widths[1])<1e-8);C.validate(wider);
-const thick=structuredClone(unequal);thick.cabinet.thickness=24;C.scaleWidths(unequal,thick);C.validate(thick);assert(Math.abs(C.widths(thick).reduce((a,b)=>a+b,0)+96-thick.w)<1e-8);
+const thick=structuredClone(unequal);thick.cabinet.thickness=24;C.scaleWidths(unequal,thick);C.validate(thick);assert(Math.abs(C.widths(thick).reduce((a,b)=>a+b,0)+(thick.cabinet.columns.length+1)*24-thick.w)<1e-8);
 assert.throws(()=>C.setColumnWidth(f,0,99),/净宽/);
-const partial=structuredClone(f);partial.cabinet.columns[0].width=300;assert.throws(()=>C.validate(partial),/所有分区/);
+const partial=structuredClone(f);partial.cabinet.columns[0].width=300;delete partial.cabinet.columns[1].width;assert.throws(()=>C.validate(partial),/所有分区/);
 const mismatch=structuredClone(unequal);mismatch.w+=10;assert.throws(()=>P.validateWork({furniture:[mismatch]}),/总宽/);
 const shelf=C.moveShelf(unequal,0,0,99999),bounds=C.shelfLimits(unequal,0,0);assert.equal(shelf.cabinet.columns[0].shelves[0],bounds.max);assert.equal(C.moveShelf(unequal,0,0,-999).cabinet.columns[0].shelves[0],bounds.min);
 assert.equal(JSON.stringify(f),original);assert.throws(()=>C.moveShelf(f,0,9,500),/不存在/);
 assert.deepEqual(P.unpack(P.pack({...payload,current:{furniture:[C.moveShelf(unequal,0,0,600)]}})).current.furniture[0].cabinet,C.moveShelf(unequal,0,0,600).cabinet);
 console.log('Cabinet templates, geometry constraints, resize, persistence and immutable opening passed');
+// Nominal 450 mm leaves: one single bay and one continuous paired bay.
+for(const id of ['storage','pantry800','pantry500','sideboard','sideboard-drawers','wardrobe','shoe','base','wall','entry-pegboard','entry-console']){
+ const base=make(id),paired=C.resize(base,{...base,w:1350});C.validate(paired);
+ assert.deepEqual(paired.cabinet.columns.map(c=>c.door),['left','double'],id);
+ const bays=C.layout(paired),t=paired.cabinet.thickness;
+ assert(Math.abs(bays[0].width+1.5*t-450)<1e-8);
+ assert(Math.abs(bays[1].width+1.5*t-900)<1e-8);
+ assert.equal(C.openingZones(paired).filter(z=>z.kind==='cabinetdoor').length,3);
+ assert.deepEqual(P.unpack(P.pack({planId:'demo',current:{furniture:[paired]},designs:[],catalog:[]})).current.furniture[0].cabinet,paired.cabinet);
+ const manual=C.moveDivider(paired,0,20),resized=C.resize(manual,{...manual,w:1800});assert.equal(resized.cabinet.autoDoors,false);assert.equal(resized.cabinet.columns.length,2);
+ assert.deepEqual(C.specification(paired),C.specification({...paired,cabinet:{...paired.cabinet,autoDoors:false,...(paired.cabinet.entry?{entry:{...paired.cabinet.entry,autoColumns:false}}:{})}}));
+}
+const singles=make('sideboard');singles.cabinet.autoDoors=false;singles.cabinet.columns.forEach((col,i)=>{col.door=i?'right':'left';});
+const merged=C.mergeDoors(singles,0);assert.equal(merged.w,singles.w);assert.equal(merged.cabinet.columns.length,1);assert.equal(merged.cabinet.columns[0].door,'double');assert.equal(C.widths(merged)[0],singles.w-36);assert.equal(singles.cabinet.columns.length,2);
+const different=structuredClone(singles);different.cabinet.columns[1].shelves=[];assert.throws(()=>C.mergeDoors(different,0),/一致/);
+const openSingles=C.toggle(singles,1);assert.equal(C.mergeDoors(openSingles,0).cabinet.columns[0].doorOpen,true);
+const badAuto=structuredClone(singles);badAuto.cabinet.autoDoors='yes';assert.throws(()=>P.validateWork({furniture:[badAuto]}),/自动配门/);
+console.log('PASS automatic paired-door bays, manual overrides, shared widths, immutable merge and import compatibility');
+const withDrawers=make('entry-console'),independent=C.toggle(withDrawers,1,0,false,1);
+assert.equal(C.drawerCount(withDrawers.cabinet.columns[1]),2);assert.equal(C.drawerState(independent.cabinet.columns[1].drawers[0],0).open,false);assert.equal(C.drawerState(independent.cabinet.columns[1].drawers[0],1).open,true);
+assert.deepEqual(C.specification(independent),C.specification(withDrawers));assert.deepEqual(P.unpack(P.pack({planId:'demo',current:{furniture:[independent]},designs:[],catalog:[]})).current.furniture[0].cabinet,independent.cabinet);
+for(const max of [60,90,120,180]){const f=make('wall');f.cabinet.doorMaxAngle=max;const opened=C.toggle(f,0);assert.equal(C.doorAngle(opened.cabinet,opened.cabinet.columns[0]),max);const partial=structuredClone(opened);partial.cabinet.columns[0].doorAngle=30;assert.deepEqual(C.openingZones(partial),C.openingZones(opened),'clearance checks use configured maximum');}
+for(const value of [0,181,'90',NaN]){const bad=make('wall');bad.cabinet.doorMaxAngle=value;assert.throws(()=>C.validate(bad),/最大开启角度/);}
+const legacyAngle=make('wall');legacyAngle.cabinet.columns[0].doorOpen=true;legacyAngle.cabinet.columns[0].doorAngle=99;assert.equal(C.doorAngle(legacyAngle.cabinet,legacyAngle.cabinet.columns[0]),90);

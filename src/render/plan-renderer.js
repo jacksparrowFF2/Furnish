@@ -135,7 +135,7 @@ function renderOpenings(){
         <text x="${tail[0] + px*160}" y="${tail[1] + py*160}" font-size="200" text-anchor="${anchor}" fill="#ef5a24">${tr('入户','Entry')}</text>`;
   }
   for(const m of typeof PLAN==='undefined'?[]:PLAN.markers||[]){const [x,y]=m.at,color=m.kind==='gas'?'#c35b20':'#087c9c',radius=Math.max(m.radius,55);s+=`<g data-service="${esc(m.id)}" pointer-events="none"><title>${esc(m.name)} · ${esc(m.sourceLayer||'DXF')} · ${tr('图纸点位参考','CAD reference point')}</title><circle cx="${x}" cy="${y}" r="${radius}" fill="${PAL.paper}" stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><path d="M${x-radius*.7} ${y}H${x+radius*.7}M${x} ${y-radius*.7}V${y+radius*.7}" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"/><text x="${x+radius+45}" y="${y}" font-size="130" dominant-baseline="central" fill="${color}">${esc(m.name)}</text></g>`;}
-  for(const b of typeof PLAN==='undefined'?[]:PLAN.beams||[])s+=`<polygon data-beam="${esc(b.id)}" points="${b.poly.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#9467bd" stroke-dasharray="100 70" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"><title>${esc(b.name)} · 顶部房梁，不分割房间；高度待录入</title></polygon>`;
+  for(const b of typeof PLAN==='undefined'?[]:PLAN.beams||[])s+=`<polygon data-beam="${esc(b.id)}" points="${b.poly.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#9467bd" stroke-dasharray="100 70" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"><title>${esc(b.name)} · 顶部房梁，不分割房间；${FurnishDraft.beamVertical(b)?`梁底 ${b.bottomHeight} / 梁顶 ${b.topHeight} mm`:'高度待录入'}</title></polygon>`;
   $('#gOpen').innerHTML = s;
 }
 

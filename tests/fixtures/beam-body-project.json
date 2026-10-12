@@ -1,0 +1,434 @@
+{
+  "format": "furnish-project",
+  "version": 1,
+  "createdAt": "2026-10-12T23:41:31.040Z",
+  "checksum": "75b85f8c",
+  "payload": {
+    "planId": "custom_beam_body",
+    "name": "柜体三维开启验收",
+    "current": {
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_beam_body",
+          "name": "梁与家具实体验收",
+          "source": "dxf",
+          "width": 1000,
+          "height": 1000,
+          "image": "",
+          "scale": 10,
+          "walls": [
+            {
+              "id": "wall0",
+              "a": [
+                100,
+                100
+              ],
+              "b": [
+                900,
+                100
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall1",
+              "a": [
+                900,
+                100
+              ],
+              "b": [
+                900,
+                900
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall2",
+              "a": [
+                900,
+                900
+              ],
+              "b": [
+                100,
+                900
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall3",
+              "a": [
+                100,
+                900
+              ],
+              "b": [
+                100,
+                100
+              ],
+              "thickness": 200,
+              "kind": "e"
+            }
+          ],
+          "openings": [],
+          "beams": [
+            {
+              "id": "body-beam",
+              "name": "实体顶梁",
+              "poly": [
+                [
+                  610,
+                  640
+                ],
+                [
+                  690,
+                  640
+                ],
+                [
+                  690,
+                  660
+                ],
+                [
+                  610,
+                  660
+                ]
+              ],
+              "review": "beam-height"
+            }
+          ]
+        },
+        "baseline": {
+          "version": 1,
+          "id": "custom_beam_body",
+          "name": "梁与家具实体验收",
+          "source": "dxf",
+          "width": 1000,
+          "height": 1000,
+          "image": "",
+          "scale": 10,
+          "walls": [
+            {
+              "id": "wall0",
+              "a": [
+                100,
+                100
+              ],
+              "b": [
+                900,
+                100
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall1",
+              "a": [
+                900,
+                100
+              ],
+              "b": [
+                900,
+                900
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall2",
+              "a": [
+                900,
+                900
+              ],
+              "b": [
+                100,
+                900
+              ],
+              "thickness": 200,
+              "kind": "e"
+            },
+            {
+              "id": "wall3",
+              "a": [
+                100,
+                900
+              ],
+              "b": [
+                100,
+                100
+              ],
+              "thickness": 200,
+              "kind": "e"
+            }
+          ],
+          "openings": [],
+          "beams": [
+            {
+              "id": "body-beam",
+              "name": "实体顶梁",
+              "poly": [
+                [
+                  610,
+                  640
+                ],
+                [
+                  690,
+                  640
+                ],
+                [
+                  690,
+                  660
+                ],
+                [
+                  610,
+                  660
+                ]
+              ],
+              "review": "beam-height"
+            }
+          ]
+        },
+        "phase": "design"
+      },
+      "ceilingHeight": 4000,
+      "rooms": {
+        "room1": {
+          "name": "验收房间",
+          "use": "living",
+          "mat": "wood"
+        }
+      },
+      "furniture": [
+        {
+          "id": "body-cabinet",
+          "name": "顶梁验收柜",
+          "type": "wardrobe",
+          "cx": 6500,
+          "cy": 6500,
+          "w": 2000,
+          "d": 600,
+          "h": 2400,
+          "rot": 0,
+          "color": "#e3d6c4"
+        }
+      ],
+      "plan": "custom_beam_body"
+    },
+    "designs": [
+      {
+        "id": "legacy-beam-body",
+        "planId": "custom_beam_body",
+        "name": "旧柜实体方案",
+        "work": {
+          "architecture": {
+            "draft": {
+              "version": 1,
+              "id": "custom_beam_body",
+              "name": "梁与家具实体验收",
+              "source": "dxf",
+              "width": 1000,
+              "height": 1000,
+              "image": "",
+              "scale": 10,
+              "walls": [
+                {
+                  "id": "wall0",
+                  "a": [
+                    100,
+                    100
+                  ],
+                  "b": [
+                    900,
+                    100
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall1",
+                  "a": [
+                    900,
+                    100
+                  ],
+                  "b": [
+                    900,
+                    900
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall2",
+                  "a": [
+                    900,
+                    900
+                  ],
+                  "b": [
+                    100,
+                    900
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall3",
+                  "a": [
+                    100,
+                    900
+                  ],
+                  "b": [
+                    100,
+                    100
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                }
+              ],
+              "openings": [],
+              "beams": [
+                {
+                  "id": "body-beam",
+                  "name": "实体顶梁",
+                  "poly": [
+                    [
+                      610,
+                      640
+                    ],
+                    [
+                      690,
+                      640
+                    ],
+                    [
+                      690,
+                      660
+                    ],
+                    [
+                      610,
+                      660
+                    ]
+                  ],
+                  "review": "beam-height"
+                }
+              ]
+            },
+            "baseline": {
+              "version": 1,
+              "id": "custom_beam_body",
+              "name": "梁与家具实体验收",
+              "source": "dxf",
+              "width": 1000,
+              "height": 1000,
+              "image": "",
+              "scale": 10,
+              "walls": [
+                {
+                  "id": "wall0",
+                  "a": [
+                    100,
+                    100
+                  ],
+                  "b": [
+                    900,
+                    100
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall1",
+                  "a": [
+                    900,
+                    100
+                  ],
+                  "b": [
+                    900,
+                    900
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall2",
+                  "a": [
+                    900,
+                    900
+                  ],
+                  "b": [
+                    100,
+                    900
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                },
+                {
+                  "id": "wall3",
+                  "a": [
+                    100,
+                    900
+                  ],
+                  "b": [
+                    100,
+                    100
+                  ],
+                  "thickness": 200,
+                  "kind": "e"
+                }
+              ],
+              "openings": [],
+              "beams": [
+                {
+                  "id": "body-beam",
+                  "name": "实体顶梁",
+                  "poly": [
+                    [
+                      610,
+                      640
+                    ],
+                    [
+                      690,
+                      640
+                    ],
+                    [
+                      690,
+                      660
+                    ],
+                    [
+                      610,
+                      660
+                    ]
+                  ],
+                  "review": "beam-height"
+                }
+              ]
+            },
+            "phase": "design"
+          },
+          "ceilingHeight": 4000,
+          "rooms": {
+            "room1": {
+              "name": "验收房间",
+              "use": "living",
+              "mat": "wood"
+            }
+          },
+          "furniture": [
+            {
+              "id": "body-cabinet",
+              "name": "顶梁验收柜",
+              "type": "wardrobe",
+              "cx": 6500,
+              "cy": 6500,
+              "w": 2000,
+              "d": 600,
+              "h": 2400,
+              "rot": 0,
+              "color": "#e3d6c4"
+            }
+          ],
+          "plan": "custom_beam_body"
+        }
+      }
+    ],
+    "catalog": []
+  }
+}

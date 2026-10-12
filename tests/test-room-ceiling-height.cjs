@@ -17,6 +17,14 @@ for(const height of [null,'2500',0,999,10001,NaN,Infinity])assert.throws(()=>P.v
 const saved=P.unpack(P.pack({planId:plan.id,current:work,designs:[{name:'吊顶方案',work}],catalog:[]}));
 assert.equal(saved.current.rooms.bath.ceilingHeight,2500);assert.equal(saved.designs[0].work.rooms.kitchen.ceilingHeight,2400);
 assert.equal(D.waterheaterClearances(P.effectivePlan(plan,saved.current),f).top.gap,40);
+// Pack/unpack alone did not exercise the work restoration used on load/refresh.
+const W=require('../src/core/work-state.js').create({makeId:()=> 'generated',colorFor:()=> '#eee',materials:{tile:{}}}),restorePlan={...plan,defaults:[]};
+const restored=W.restore(structuredClone(saved.current),restorePlan);
+assert.equal(restored.rooms.bath.ceilingHeight,2500);assert.equal(restored.rooms.kitchen.ceilingHeight,2400);
+assert.equal(D.waterheaterClearances(P.effectivePlan(restorePlan,restored),f).top.gap,40);
+assert.deepEqual(W.restore(structuredClone(restored),restorePlan),restored,'repeat refresh preserves room heights');
+const shared=W.prepareShared(saved.current,restorePlan);assert.equal(shared.rooms.bath.ceilingHeight,2500);
+const inherited=W.restore({furniture:[],rooms:{bath:{name:'旧房间',mat:'tile'}}},restorePlan);assert.equal(inherited.rooms.bath.ceilingHeight,undefined);
 const elements=Object.fromEntries(['#room-zones','#rName','#rUse','#rCeilingHeight'].map(k=>[k,{}]));let mutations=0;
 const ctx=vm.createContext({FurnishProject:P,state:structuredClone(work),ui:{sel:{id:'bath'}},$:id=>elements[id],document:{querySelectorAll:()=>[]},mutate:fn=>{fn();mutations++;},renderPanel:()=>{},toast:()=>{}});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ctx);ctx.renderPanel=()=>{};vm.runInContext('bindRoomPanel()',ctx);

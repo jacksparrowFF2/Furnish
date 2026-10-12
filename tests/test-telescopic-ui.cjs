@@ -1,0 +1,18 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const nodes=new Map(),$=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:''});return nodes.get(id);};
+const ctx=vm.createContext({$,window:{},state:{furniture:[],open:{}},SLIDES:[{panels:3,floorTrack:false,stackSide:'left'}],WINS:[{rect:[0,0,1800,90],sill:.9,head:2.4,panels:0}],undoStack:[],redoStack:[],FurnishDesign:require('../src/core/design-core.js'),save(){},snapshot(){},renderAll(){},syncCutClipboard(){},validateSel(){},toast(){},tr:s=>s,select(){}});
+const app=fs.readFileSync(require.resolve('../src/app.js'),'utf8');
+vm.runInContext(app.slice(app.indexOf('const snap ='),app.indexOf('function validateSel')),ctx);
+vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ctx);
+ctx.bindOpeningPanel({kind:'slide',id:0});
+$('#slideFloorTrack').onchange({target:{value:'true'}});assert.equal(ctx.state.open.s[0].floorTrack,true);
+ctx.undo();assert.equal(ctx.state.open.s,undefined);ctx.redo();assert.equal(ctx.state.open.s[0].floorTrack,true);
+$('#slideStackSide').onchange({target:{value:'right'}});assert.equal(ctx.state.open.s[0].stackSide,'right');assert.equal(ctx.state.open.s[0].floorTrack,true);
+$('#slidePanels').onchange({target:{value:'2'}});assert.equal(ctx.state.open.s[0].panels,2);assert.equal(ctx.state.open.s[0].stackSide,'right');
+for(const [id,value] of [['wSill','900'],['wHeight','1500'],['wHead','2400'],['wPanels','3'],['wStackSide','right']])$('#'+id).value=value;
+ctx.bindWinPanel(0);$('#wApply').onclick();assert.equal(ctx.state.open.w[0].panels,3);assert.equal(ctx.state.open.w[0].stackSide,'right');
+ctx.undo();assert.equal(ctx.state.open.w,undefined);ctx.redo();assert.equal(ctx.state.open.w[0].panels,3);
+$('#wSill').value='1000';$('#wSill').oninput();assert.equal($('#wHead').value,'2500');
+$('#wApply').onclick();assert.equal(ctx.state.open.w[0].sill,1);assert.equal(ctx.state.open.w[0].head,2.5);assert.equal(ctx.state.open.w[0].panels,3);
+$('#wReset').onclick();assert.equal(ctx.state.open.w[0],undefined);ctx.undo();assert.equal(ctx.state.open.w[0].panels,3);
+console.log('PASS real door/window property handlers preserve track/style/side settings through dimensions, reset, undo and redo');

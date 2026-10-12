@@ -49,9 +49,28 @@ for (const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+)"
   if (!fs.existsSync(path.join(root, match[1]))) throw Error('Missing asset: ' + match[1]);
 }
 const sources = filesIn(path.join(root, 'src'));
+// Generated production previews have their own module scope. A generator's
+// syntax can be valid while the inserted model duplicates a declaration.
+const previews=fs.existsSync(path.join(root,'output'))?filesIn(path.join(root,'output')).filter(f=>path.basename(f)==='preview.html'):[];
+for(const preview of previews){
+  const classic=[];
+  for(const match of fs.readFileSync(preview,'utf8').matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){
+    if(/importmap/.test(match[1]))continue;
+    const src=match[1].match(/\bsrc="([^"]+)"/);
+    if(src){if(!/^(?:https?:|data:)/.test(src[1])){const asset=path.resolve(path.dirname(preview),src[1]);if(!fs.existsSync(asset))throw Error('Missing preview asset: '+asset);if(!/type="module"/.test(match[1]))classic.push(fs.readFileSync(asset,'utf8'));}continue;}
+    if(/type="module"/.test(match[1])){
+      const dir=fs.mkdtempSync(path.join(os.tmpdir(),'furnish-preview-check-')),file=path.join(dir,'preview.mjs');
+      try{fs.writeFileSync(file,match[2]);run(['--check',file]);}finally{fs.unlinkSync(file);fs.rmdirSync(dir);}
+    }else classic.push(match[2]);
+  }
+  new vm.Script(classic.join('\n;\n'),{filename:preview});
+}
 for (const file of [...sources, ...filesIn(__dirname), ...filesIn(path.join(root,'tests'))].filter(f => /\.(?:js|cjs|mjs)$/.test(f))) run(['--check',file]);
-for (const file of filesIn(path.join(root,'tests')).filter(f => /^test-.*\.cjs$/.test(path.basename(f))).sort()) {
+const tests=filesIn(path.join(root,'tests')).filter(f => /^test-.*\.cjs$/.test(path.basename(f))).sort();
+if(!tests.length) throw Error('No regression tests found');
+for (const file of tests) {
   run([file]); console.log('PASS ' + path.relative(root,file));
 }
 run([path.join(__dirname,'validate-plans.mjs')]);
-console.log('PASS 12 built-in plans, local assets, shared declarations and all production syntax checks');
+const plans=require('../src/data/plans.js');
+console.log(`PASS ${tests.length} regression suites, ${plans.length} built-in plans, ${previews.length} preview pages, local assets, shared declarations and all production syntax checks`);

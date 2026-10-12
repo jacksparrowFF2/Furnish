@@ -5,11 +5,11 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const near=(a,b,message)=>assert(Math.abs(a-b)<1e-7,message);
  for(const template of ['tv-floor','sideboard-drawers'])for(const thickness of [12,18,30])for(const extension of [0,.5,1]){
-  const f={type:'cabinet',color:'#cbb08b',...C.preset(template)};f.cabinet.thickness=thickness;
+  const f={type:'cabinet',color:'#cbb08b',...C.preset(template)};const before=structuredClone(f);f.cabinet.thickness=thickness;C.scaleWidths(before,f);
   if(template==='tv-floor')for(const col of f.cabinet.columns)for(const drawer of col.drawers)drawer.height=f.h-2*thickness;
   for(const col of f.cabinet.columns){col.topOpen=extension>0;for(const drawer of col.drawers){drawer.open=extension>0;drawer.extension=extension;}}
   C.validate(f);const model=ctx.FurnishCabinetModel.build(THREE,f,box),groups=new Set();model.traverse(o=>{if(o.userData.cabinetDrawerBoard==='front')groups.add(o.parent);});
-  assert.equal(groups.size,template==='tv-floor'?5:6);
+  assert.equal(groups.size,template==='tv-floor'?5:8);
   for(const group of groups){
    const parts=group.children.filter(o=>o.userData.cabinetDrawerBoard),bounds=role=>parts.filter(o=>o.userData.cabinetDrawerBoard===role).map(o=>new THREE.Box3().setFromObject(o));
    const [front]=bounds('front'),[bottom]=bounds('bottom'),sides=bounds('side'),[back]=bounds('back');

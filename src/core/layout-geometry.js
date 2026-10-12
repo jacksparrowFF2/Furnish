@@ -25,19 +25,26 @@ function obbOverlap(a, b){
   return true;
 }
 // 不参与碰撞检查：地毯、墙挂 / 吊装、台面上的设备、绿植（枝叶可伸到家具上方）；椅子推进桌下也属正常
-const NOCOLLIDE = new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','dishwasher','plant']);
+const NOCOLLIDE = new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
 const SEATS = new Set(['chair','barstool','officechair','armchair']), TABLES = new Set(['table','roundtable','desk','island']);
+// Unknown heights stay conservative. Both the canvas and project review use
+// this rule so stacked appliances do not produce contradictory findings.
+function verticalOverlap(a,b,ranges){
+  const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null);
+  const [A,B]=ranges||[D?.furnitureVerticalBounds(a),D?.furnitureVerticalBounds(b)];
+  return !(A&&B&&Math.min(A.top,B.top)-Math.max(A.bottom,B.bottom)<=1e-6);
+}
 function collisions(furniture){
   const L = furniture.filter(f => !NOCOLLIDE.has(f.type)), out = [];
   const box = L.map(aabb);
+  const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),vertical=L.map(f=>D?.furnitureVerticalBounds(f));
   for (let i = 0; i < L.length; i++) for (let j = i+1; j < L.length; j++){
     const a = L[i], b = L[j];
     if (Math.abs(a.cx-b.cx) >= box[i].hw+box[j].hw || Math.abs(a.cy-b.cy) >= box[i].hh+box[j].hh) continue;   // 外包盒快速排除
     if ((SEATS.has(a.type) && TABLES.has(b.type)) || (SEATS.has(b.type) && TABLES.has(a.type))) continue;
-    if(['washer','dryer'].includes(a.type)||['washer','dryer'].includes(b.type)){
-      const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),A=D?.furnitureVerticalBounds(a),B=D?.furnitureVerticalBounds(b);
-      if(A&&B&&Math.min(A.top,B.top)-Math.max(A.bottom,B.bottom)<=1e-6)continue;
-    }
+    if(!verticalOverlap(a,b,[vertical[i],vertical[j]]))continue;
+    const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
+    if(C&&(C.fridgeFitsBay(a,b)||C.fridgeFitsBay(b,a)))continue;
     if (obbOverlap(a, b)) out.push([a.id, b.id]);
   }
   return out;
@@ -54,7 +61,7 @@ function doorLeafOffset(d, thickness=40){
   const inward=(center[0]-d.h[0])*normal[0]+(center[1]-d.h[1])*normal[1];
   return Math.sign(inward)*thickness/2;
 }
-const api={area,perim,bbox,aabb,inPoly,corners,obbOverlap,groupBox,collisions,doorLeafOffset};
+const api={area,perim,bbox,aabb,inPoly,corners,obbOverlap,groupBox,collisions,verticalOverlap,doorLeafOffset};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishGeometry=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

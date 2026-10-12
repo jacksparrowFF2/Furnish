@@ -2,6 +2,7 @@
 (function(root){
  'use strict';
  const cabinet=()=>root.FurnishCabinet||require('./cabinet-core.js');
+ const products=()=>root.FurnishProducts||require('./product-rules.js');
  const uses={unassigned:['未分类','Unassigned'],living:['客厅','Living room'],dining:['餐厅','Dining room'],bedroom:['卧室','Bedroom'],study:['书房','Study'],kitchen:['厨房','Kitchen'],bathroom:['卫生间','Bathroom'],balcony:['阳台','Balcony'],hall:['玄关／走廊','Hall'],storage:['储物／衣帽间','Storage'],other:['其他','Other'],bay:['飘窗台','Bay platform']};
  function inferUse(room,setting){
   if(room.counted===false)return 'bay';
@@ -19,10 +20,12 @@
   return null;
  }
  function bounds(f){const a=f.rot*Math.PI/180,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a)),hw=f.w/2*c+f.d/2*s,hh=f.w/2*s+f.d/2*c;return [f.cx-hw,f.cy-hh,f.cx+hw,f.cy+hh];}
+ // Calibrated nominal mixer offset; geometry tests guard it against drift.
+ function showerInstallation(f){return products().showerInstallation(f);}
  const resizeAnchors={center:['中心','Center'],left:['左边','Left edge'],right:['右边','Right edge'],top:['上边','Top edge'],bottom:['下边','Bottom edge']};
  function resizeFurniture(f,values,anchor=f.resizeAnchor||'center'){
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
-  const next={...f};for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
+  const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
   const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return cabinet().resize(f,next);
  }
  function pasteFurniture(clipboard,target,planBounds,makeId,available=2000,existingIds=[]){
@@ -43,12 +46,7 @@
   delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;delete next.curtainStyle;if(c.h===undefined)delete next.h;
   if(c.cabinet&&cabinet().supported(next))next.cabinet=JSON.parse(JSON.stringify(c.cabinet));
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
-  const laundry=t=>['washer','dryer'].includes(t);
-  if(c.type==='waterheater_flat'?f.type!=='waterheater_flat':!(laundry(c.type)&&laundry(f.type)))delete next.mountHeight;
-  if(c.type!=='waterheater_flat')delete next.heaterSocket;
-  if(c.type==='tripleslidingwindow')next.mountHeight=f.type==='tripleslidingwindow'?(f.mountHeight??900):900;
-  if(!(['slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(c.type)&&['slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)))delete next.floorTrack;
-  if(!(laundry(c.type)&&laundry(f.type)))delete next.stackHeight;
+  products().replacement(f,next,c);
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}
@@ -67,7 +65,7 @@
  function restoreFurniture(list,{makeId,colorFor}){
   const valid=(Array.isArray(list)?list:[]).filter(f=>f&&typeof f==='object'&&[f.cx,f.cy].every(Number.isFinite)&&Number.isFinite(Number(f.w))&&Number.isFinite(Number(f.d))&&Number(f.w)>0&&Number(f.d)>0),ids=new Set(),reserved=new Set(valid.map(f=>f.id));return valid.map(item=>{
    const f={...item,w:Number(item.w),d:Number(item.d)};if(typeof f.id!=='string'||!f.id||ids.has(f.id)){do{f.id=makeId();}while(ids.has(f.id)||reserved.has(f.id));}ids.add(f.id);
-   f.type=typeof f.type==='string'?f.type:'custom';f.name=typeof f.name==='string'?f.name:'家具';f.rot=Number.isFinite(f.rot)?f.rot:0;f.color=typeof f.color==='string'&&/^#[0-9a-f]{3,8}$/i.test(f.color)?f.color:colorFor(f.type);return f;
+   f.type=typeof f.type==='string'?f.type:'custom';f.name=typeof f.name==='string'?f.name:'家具';f.rot=Number.isFinite(f.rot)?f.rot:0;f.color=typeof f.color==='string'&&/^#[0-9a-f]{3,8}$/i.test(f.color)?f.color:colorFor(f.type);return products().migrate(f);
   });
  }
  function deliveryBounds(base,boxes,padding=250){
@@ -82,23 +80,23 @@
  const dirs={left:[0,1],right:[0,-1],top:[1,1],bottom:[1,-1]};
  // Recorded dimensions take priority. Legacy items use the existing model's
  function laundryStack(f,furniture){
-  if(!['washer','dryer'].includes(f.type))return null;
-  const bottom=f.mountHeight??0,height=f.stackHeight??20;
-  const lower=(furniture||[]).find(item=>item.id!==f.id&&['washer','dryer'].includes(item.type)&&item.type!==f.type
+  if(!products().family(f,'laundry'))return null;
+  const bottom=products().value(f,'mountHeight'),height=products().value(f,'stackHeight');
+  const lower=(furniture||[]).find(item=>item.id!==f.id&&products().family(item,'laundry')&&item.type!==f.type
    &&Math.abs(item.cx-f.cx)<=5&&Math.abs(item.cy-f.cy)<=5
    &&Math.abs(Math.sin(((item.rot||0)-(f.rot||0))*Math.PI/180))<1e-6
-   &&bottom-(item.mountHeight??0)-(item.h??850)>=-1e-6
-   &&bottom-(item.mountHeight??0)-(item.h??850)<=height+1e-6);
-  return lower?{lowerId:lower.id,bottom:(lower.mountHeight??0)+(lower.h??850),height,w:Math.min(f.w,lower.w),d:Math.min(f.d,lower.d)}:null;
+   &&bottom-(products().value(item,'mountHeight'))-(products().height(item))>=-1e-6
+   &&bottom-(products().value(item,'mountHeight'))-(products().height(item))<=height+1e-6);
+  return lower?{lowerId:lower.id,bottom:(products().value(lower,'mountHeight'))+(products().height(lower)),height,w:Math.min(f.w,lower.w),d:Math.min(f.d,lower.d)}:null;
  }
  function normalizeLaundryStacks(furniture,before=[]){
   for(const f of furniture||[]){
-   if(f.locked||!['washer','dryer'].includes(f.type))continue;
+   if(f.locked||!products().family(f,'laundry'))continue;
    const old=before.find(item=>item.id===f.id),previous=old&&laundryStack(old,before),lower=previous&&furniture.find(item=>item.id===previous.lowerId);
    // Keep an existing stack attached when its lower body height changes.
-   if(lower&&(f.mountHeight??0)===(old.mountHeight??0)&&Math.abs(lower.cx-f.cx)<=5&&Math.abs(lower.cy-f.cy)<=5
-    &&lower.type!==f.type&&['washer','dryer'].includes(lower.type)&&Math.abs(Math.sin(((lower.rot||0)-(f.rot||0))*Math.PI/180))<1e-6){
-    const next=(lower.mountHeight??0)+(lower.h??850)+(f.stackHeight??20);if(next<=20000)f.mountHeight=next;
+   if(lower&&(products().value(f,'mountHeight'))===(products().value(old,'mountHeight'))&&Math.abs(lower.cx-f.cx)<=5&&Math.abs(lower.cy-f.cy)<=5
+    &&lower.type!==f.type&&products().family(lower,'laundry')&&Math.abs(Math.sin(((lower.rot||0)-(f.rot||0))*Math.PI/180))<1e-6){
+    const next=(products().value(lower,'mountHeight'))+(products().height(lower))+(products().value(f,'stackHeight'));if(next<=20000)f.mountHeight=next;
    }
    const stack=laundryStack(f,furniture);if(stack&&stack.bottom+stack.height<=20000)f.mountHeight=stack.bottom+stack.height;
   }
@@ -107,16 +105,13 @@
  // Recorded dimensions take priority. Legacy items use the existing model's
  // nominal envelope; unfamiliar items without a height remain unverified.
  function furnitureVerticalBounds(f){
-  if(f.type==='tripleslidingwindow'){const bottom=f.mountHeight??900;return {bottom,top:bottom+(f.h??1500),source:'model'};}
-  if(['washer','dryer'].includes(f.type)){const bottom=f.mountHeight??0;return {bottom,top:bottom+(f.h??850),source:f.h===undefined?'model':'recorded'};}
-  if(f.type==='sofa_yeswood_cherry')return {bottom:0,top:f.h??895,source:f.h===undefined?'model':'recorded'};
+  const vertical=products().vertical(f);if(vertical)return vertical;
+  if(f.type==='sofa_yeswood_cherry')return {bottom:0,top:products().height(f),source:f.h===undefined?'model':'recorded'};
   if(cabinet().supported(f))return {bottom:0,top:cabinet().height(f),source:f.h===undefined?'model':'recorded'};
-  if(f.type==='waterheater_flat'){const bottom=f.mountHeight??1650;return {bottom,top:bottom+(f.h??565),source:f.h===undefined?'model':'recorded'};}
-  const mounted={acwall:[2170,2510],waterheater:[1300,1950+Math.min(f.d/2,230)],tv:[1200-f.w*.5625/2,1200+f.w*.5625/2],wallart:[1280,1280+Math.min(950,Math.max(500,f.w*.45))],mirror:[50,1700],pendant:[2100,2627],baycushion:[450,900],stove:[862,2330],ksink:[850,1182],vanity:[330,1960]}[f.type];
-  if(mounted){const bottom=mounted[0];return {bottom,top:f.h===undefined?mounted[1]:bottom+f.h,source:f.h===undefined?'model':'recorded'};}
   if(Number.isFinite(f.h)&&f.h>0)return {bottom:0,top:f.h,source:'recorded'};
+  if(f.type==='toilet')return {bottom:0,top:products().height(f),source:'model'};
   if(f.obj)return {bottom:0,top:800,source:'model'};
-  const height={fridge:1800,fridge_french_drawer:1910,aircon:1800,dishwasher:840,washer:850,dryer:850,curtain:2400,slidingdoor:2100,tripleslidingdoor:2400,tripleslidingwindow:1500,rug:16,bench:440,beanbag:720,barstool:775,custom:800,customround:800}[f.type];
+  const height=products().height(f);
   return height===undefined?null:{bottom:0,top:height,source:'model'};
  }
  // Stable topological order: only separated height ranges with overlapping
@@ -138,7 +133,7 @@
  function waterheaterClearances(plan,f,options={}){
   if(f.type!=='waterheater_flat')return null;
   const P=root.FurnishProject||require('./project-core.js'),location=P.ceilingAt(plan,f.cx,f.cy),ceilingHeight=options.ceilingHeight??location.height,wallHeight=plan.ceilingHeight??2800;
-  const bottom=f.mountHeight??1650,height=f.h??565,angle=(f.rot||0)*Math.PI/180,sign=f.flip?-1:1;
+  const bottom=products().value(f,'mountHeight'),height=products().height(f),angle=(f.rot||0)*Math.PI/180,sign=f.flip?-1:1;
   const right=[Math.cos(angle)*sign,Math.sin(angle)*sign],depth=[-Math.sin(angle),Math.cos(angle)],edge=f.w/2;
   const local=([x,y])=>[(x-f.cx)*right[0]+(y-f.cy)*right[1],(x-f.cx)*depth[0]+(y-f.cy)*depth[1]];
   // Clip walls to the strip beyond the physical right side; the full side
@@ -224,6 +219,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

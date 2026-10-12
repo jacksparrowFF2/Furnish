@@ -5,6 +5,14 @@
   const finite = v => typeof v === 'number' && Number.isFinite(v);
   const point = p => Array.isArray(p) && p.length === 2 && p.every(v => finite(v) && v >= 0 && v <= 4096);
   const clone = v => JSON.parse(JSON.stringify(v));
+  // Absolute millimetres above the finished floor; independent of XY calibration.
+  function beamVertical(b){return finite(b?.bottomHeight)&&finite(b?.topHeight)&&b.bottomHeight>=0&&b.topHeight>b.bottomHeight&&b.topHeight<=20000?{bottom:b.bottomHeight,top:b.topHeight}:null;}
+  function editBeam(d,id,bottomHeight,topHeight){
+    const next=clone(d),b=next.beams?.find(v=>v.id===id);if(!b)fail('房梁不存在');
+    if(bottomHeight===undefined&&topHeight===undefined){delete b.bottomHeight;delete b.topHeight;}
+    else {b.bottomHeight=bottomHeight;b.topHeight=topHeight;}
+    validate(next);return next;
+  }
   const zoneGeometry=()=>root.FurnishZoneGeometry||(typeof require==='function'?require('./zone-geometry.js'):null);
   const layoutKey=walls=>JSON.stringify(walls.map(w=>[w.id,w.a,w.b,w.thickness,w.caps]));
   const inside=(p,poly)=>{let yes=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])yes=!yes;}return yes;};
@@ -56,7 +64,7 @@
     }
     if(d.beams!==undefined){
       if(!Array.isArray(d.beams)||d.beams.length>100)fail('Invalid beam count');
-      const beamIds=new Set();for(const b of d.beams){if(!b||typeof b.id!=='string'||!b.id||beamIds.has(b.id)||typeof b.name!=='string'||b.name.length>80||!Array.isArray(b.poly)||b.poly.length<4||b.poly.length>200||b.poly.some(p=>!point(p)||p[0]>d.width||p[1]>d.height)||b.review!=='beam-height')fail('Invalid overhead beam');beamIds.add(b.id);}
+      const beamIds=new Set();for(const b of d.beams){if(!b||typeof b.id!=='string'||!b.id||beamIds.has(b.id)||typeof b.name!=='string'||b.name.length>80||!Array.isArray(b.poly)||b.poly.length<4||b.poly.length>200||b.poly.some(p=>!point(p)||p[0]>d.width||p[1]>d.height)||b.review!=='beam-height')fail('Invalid overhead beam');if((b.bottomHeight!==undefined||b.topHeight!==undefined)&&!beamVertical(b))fail('梁底／梁顶须同时录入：0 ≤ 梁底 < 梁顶 ≤ 20000 mm');beamIds.add(b.id);}
     }
     if(d.roomLayout){const r=d.roomLayout;if(typeof r.walls!=='string'||!finite(r.scale)||!Array.isArray(r.rooms)||r.rooms.length>100||r.rooms.some(v=>!v||typeof v.id!=='string'||typeof v.name!=='string'||!Array.isArray(v.poly)||v.poly.length<4||v.poly.length>200||v.poly.some(p=>!Array.isArray(p)||p.length!==2||!p.every(finite))||!Array.isArray(v.at)||v.at.length!==2||!v.at.every(finite)))fail('Invalid original room layout');}
     return d;
@@ -478,6 +486,6 @@
       if(openings(before)!==openings(after))fail('Bearing wall openings are locked');
     }
   }
-  root.FurnishDraft={build,validate,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
+  root.FurnishDraft={build,validate,beamVertical,editBeam,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
   if(typeof module!=='undefined') module.exports=root.FurnishDraft;
 })(typeof window==='undefined'?globalThis:window);

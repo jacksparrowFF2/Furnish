@@ -69,7 +69,7 @@
   cv.addEventListener('pointerup',e=>{
    if(drag?.id===e.pointerId){e.stopImmediatePropagation();e.preventDefault();endDrag(false);down=null;return;}
    if(!down||down.id!==e.pointerId||Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)return;down=null;
-   const hit=hitAt(rayAt(e)),part=hit?.object.userData.cabinetPart,bay=hit?.object.userData.cabinetBay;if(part)actions.toggle(part.column,part.drawer,part.lid);else if(bay&&actions.select({...bay})!==false){selected={...bay};highlight();cv.focus({preventScroll:true});}
+   const hit=hitAt(rayAt(e)),part=hit?.object.userData.cabinetPart,bay=hit?.object.userData.cabinetBay;if(part)actions.toggle(part.column,part.drawer,part.lid,part.lane,part.section);else if(bay&&actions.select({...bay})!==false){selected={...bay};highlight();cv.focus({preventScroll:true});}
   },true);
   cv.addEventListener('pointercancel',e=>{if(drag?.id===e.pointerId){e.stopImmediatePropagation();endDrag(true);}down=null;},true);
   cv.addEventListener('lostpointercapture',e=>{if(drag?.id===e.pointerId)endDrag(true);},true);
