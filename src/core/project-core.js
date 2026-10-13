@@ -97,7 +97,7 @@
  function checkContext(plan,furniture,passage){
   return [passage,plan.rooms.map(r=>[r.id,r.poly,r.counted,r.ceilingHeight,r.polys]),plan.walls,plan.doors,
    furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance,f.h,f.flip,f.mountHeight,f.stackHeight,f.showerMixerHeight,f.showerRise,f.showerHandAngle,!!f.obj,f.cabinet,f.kitchen,f.counterLink,f.counterElevation,f.hoodPanelOpen]),
-   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','hood-bay-v2'];
+   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v2','hood-bay-v2'];
  }
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify({version:3,issue,context:checkContext(plan,furniture,passage)});}
  function review(plan,work){
@@ -132,7 +132,7 @@
  const purchaseMoney=value=>'¥'+Math.round(Number(value)).toLocaleString('zh-CN');
  function procurement(plan,work,priceOf=f=>f.price??0){
   const groups=new Map(),totals=Object.fromEntries(Object.keys(purchaseStates).map(k=>[k,0]));
-  for(const f of work.furniture){const price=priceOf(f),status=Object.hasOwn(purchaseStates,f.purchaseStatus)?f.purchaseStatus:'planned',note=f.purchaseNote||'',key=JSON.stringify([f.type,f.name,f.brand||'',f.model||'',f.w,f.d,f.h??null,price,f.price===undefined,f.priceDate||'',f.sourceUrl||'',status,note,f.kitchen||f.cabinet?(f.kitchen|| (design().products().modelError(f)?f.cabinet:(root.FurnishCabinet||require('./cabinet-core.js')).specification(f))):null]);
+  for(const f of work.furniture){const price=priceOf(f),status=Object.hasOwn(purchaseStates,f.purchaseStatus)?f.purchaseStatus:'planned',note=f.purchaseNote||'',key=JSON.stringify([f.type,f.name,f.brand||'',f.model||'',f.w,f.d,f.h??null,price,f.price===undefined,f.priceDate||'',f.sourceUrl||'',status,note,f.kitchen||f.cabinet?(f.kitchen?(root.FurnishKitchen||require('./kitchen-core.js')).specification(f):(design().products().modelError(f)?f.cabinet:(root.FurnishCabinet||require('./cabinet-core.js')).specification(f))):null]);
    const item=groups.get(key)||{name:f.name,brand:f.brand||'',model:f.model||'',w:f.w,d:f.d,h:f.h??null,price,estimated:f.price===undefined,priceDate:f.priceDate||'',sourceUrl:f.sourceUrl||'',status,note,ids:[],rooms:[]};item.ids.push(f.id);
    const room=plan.rooms.find(r=>inside([f.cx,f.cy],r.poly)),name=room?.name||'未分配房间';if(!item.rooms.includes(name))item.rooms.push(name);groups.set(key,item);totals[status]+=price;
   }

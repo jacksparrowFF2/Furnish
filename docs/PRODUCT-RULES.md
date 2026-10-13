@@ -1,5 +1,7 @@
 # 产品能力规则与兼容验收
 
+厨房嵌套结构追加可选 `counterDepth`、`edgeStyle`、`dropHeight` 及模块开合状态。能力范围、缺失读取和几何派生集中在厨房核心，产品规则仍委托嵌套校验；没有新家具顶层字段或替换清理白名单。原深度、板厚与设备高度契约保持，新增尺寸进入现有缓存与空间确认。详见 [厨房台面设计](KITCHEN-DESIGN.md)。
+
 柜体嵌套参数新增可选 `cabinet.doorOverlay`，校验及模板默认由柜体核心提供；厨房的 `kitchen.doorOverlay` 由厨房核心校验。值为 `full/half/inset`，不用新增家具顶层字段或重复字段清理名单。已保存的值优先，缺失字段按对应模板／类型默认读取，不补写旧结构。全盖默认扩展至收纳柜、储物柜和衣柜，依据用户明确要求；兼容与实际几何见 [柜体设计](CABINET-DESIGN.md)。
 
 厨房能力新增 `counter.kitchen`、水槽／灶具 `counterLink/counterElevation` 和独立 `kitchenwall.mountHeight`。新建显式采用模块厨房；旧 counter 缺字段仍是旧组合，不由 migrate 补新默认值。厨房嵌套结构和关联检查委托 `kitchen-core.js`，各层通过统一接口使用。兼容与参数语义见 [厨房设计](KITCHEN-DESIGN.md)。

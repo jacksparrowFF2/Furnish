@@ -30,6 +30,23 @@
  const doorAngle=(c,col)=>col.doorOpen?Math.min(col.doorAngle??maxDoorAngle(c),maxDoorAngle(c)):0;
  const drawerCount=col=>col.drawerColumns??(col.door==='double'&&!col.pegboard?2:1);
  const drawerState=(drawer,lane)=>drawer.lanes?.[lane]??drawer;
+ function withDrawerColumns(col,count){
+  if(!Number.isInteger(count)||count<1||count>12)throw Error('抽屉分列须为 1–12 列的整数');
+  const next=JSON.parse(JSON.stringify(col));
+  if(count===drawerCount(col))return next;
+  next.drawerColumns=count;
+  next.drawers.forEach((drawer,j)=>{
+   const source=col.drawers[j];
+   if(count===1){
+    // A merged drawer has one motion state. Preserve the furthest open lane.
+    const states=Array.from({length:drawerCount(col)},(_,lane)=>drawerState(source,lane));
+    drawer.open=states.some(v=>v.open);
+    drawer.extension=drawer.open?Math.max(...states.map(v=>v.open?(v.extension??1):0)):(source.extension??1);
+    delete drawer.lanes;
+   }else drawer.lanes=Array.from({length:count},(_,lane)=>{const state=drawerState(source,lane);return {open:state.open,extension:state.extension??1};});
+  });
+  return next;
+ }
  // Door leaves share a bay in pairs. Widths include half of each divider,
  // so a 1350 mm front has one nominal 450 mm leaf and a 900 mm pair.
  function autoDoors(f){
@@ -82,6 +99,7 @@
   return p.cabinet.autoDoors?autoDoors({...f,cabinet:p.cabinet}).cabinet:p.cabinet;
  }
  function height(f){return f.h||({nightstand:500,chest:850,shoecab:1000,tvstand:450,bookshelf:1800,kitchenwall:700}[f.type])||preset(defaultId(f)).h;}
+ function frontHeight(f,c=config(f)){return c.template==='kitchen-base'&&Number.isFinite(c.frontTop)?c.frontTop:height(f);}
  // Kitchen module configs are derived, never written into the saved kitchen.
  function kitchenOverlay(f,c=config(f)){return f.type==='kitchenwall'||c.template==='kitchen-base'||c.template==='base';}
  function doorOverlay(f,c=config(f)){return c.doorOverlay??(kitchenOverlay(f,c)||!!c.entry||c.template==='entry-pegboard'||f.type==='wardrobe'||['storage','wardrobe'].includes(c.template)?'full':'inset');}
@@ -231,7 +249,7 @@
    const upper=c.sideboard?c.sideboard.baseHeight+c.sideboard.counterThickness+c.sideboard.nicheHeight+c.sideboard.displayHeight:0;
    const bands=c.sideboard?(col.fridgeBay?[[c.sideboard.fridgeHeight+t+1,h-1]]:[[p+1,c.sideboard.baseHeight-total-(col.drawers.length?12:0)-1],[upper+1,h-1]])
     :c.entry?[[p+c.entry.shoeHeight-t+1,col.drawers.length?p+c.entry.shoeHeight+c.entry.lowerHeight-total-1:p+c.entry.shoeHeight+c.entry.lowerHeight-t-1],[p+c.entry.shoeHeight+c.entry.lowerHeight+c.entry.nicheHeight+1,h-1]]
-    :[[col.doorBottom!==undefined?base+col.doorBottom-t+inset+1:base+total-t+inset+1,h-inset-1]];
+    :[[col.doorBottom!==undefined?base+col.doorBottom-t+inset+1:base+total-t+inset+1,frontHeight(f,c)-inset-1]];
    if(c.entry||c.sideboard&&c.doorOverlay!==undefined)for(const band of bands){band[0]+=inset;band[1]-=inset;}
    const door=frontDoor(f,i,c);
    if(door!=='none'){
@@ -243,7 +261,7 @@
    }
    if(col.drawers.length||col.top==='drawer'){const travel=(c.sideboard?c.sideboard.lowerDepth:f.d)*.7;
     const bottom=c.sideboard?c.sideboard.baseHeight-total:c.entry?p+c.entry.shoeHeight+c.entry.lowerHeight-total:overlay?p:base;
-    const top=col.top==='drawer'?h:c.sideboard?c.sideboard.baseHeight-t:c.entry?p+c.entry.shoeHeight+c.entry.lowerHeight-t:kitchenOverlay(f,c)?col.door==='none'?h-inset-1:base+total-t-1:base+total-(overlay?t:0);
+    const top=col.top==='drawer'?h:c.sideboard?c.sideboard.baseHeight-t:c.entry?p+c.entry.shoeHeight+c.entry.lowerHeight-t:kitchenOverlay(f,c)?col.door==='none'?frontHeight(f,c)-inset-1:base+total-t-1:base+total-(overlay?t:0);
     zones.push({column:i,kind:'cabinetdrawer',poly:transform([[left,front],[right,front],[right,front+travel],[left,front+travel]]),ranges:[[bottom,top]]});
     if(passage>0)zones.push({column:i,kind:'cabinetpassage',poly:transform([[left,front+travel],[right,front+travel],[right,front+travel+passage],[left,front+travel+passage]]),ranges:[[0,2000]]});
    }
@@ -283,6 +301,7 @@
   if(c?.autoDoors!==undefined&&typeof c.autoDoors!=='boolean')throw Error('自动配门设置无效');
   if(c?.doorOverlay!==undefined&&!['full','half','inset'].includes(c.doorOverlay))throw Error('柜门盖板方式须为全盖、半盖或无盖');
   if(c?.doorMaxAngle!==undefined&&(!finite(c.doorMaxAngle)||c.doorMaxAngle<1||c.doorMaxAngle>180))throw Error('柜门最大开启角度须为 1–180°');
+  if(c?.frontTop!==undefined&&(c.template!=='kitchen-base'||!finite(c.frontTop)||c.frontTop<c.plinth+200||c.frontTop>h))throw Error('厨房派生门板顶高无效');
   if(![f.w,f.d,h].every(finite)||f.w<150||f.w>6000||f.d<150||f.d>1200||h<200||h>3200)throw Error('柜宽 150–6000、深 150–1200、高 200–3200 mm');
   if(!c||c.version!==1||!finite(c.thickness)||c.thickness<12||c.thickness>30||!finite(c.plinth)||c.plinth<0||c.plinth>250||!Array.isArray(c.columns)||c.columns.length<1||c.columns.length>12)throw Error('柜板厚 12–30 mm，底座高 0–250 mm，分区 1–12 个');
   if(c.hoodBayHeight!==undefined&&(f.type!=='kitchenwall'||c.entry||c.sideboard||c.plinth!==0||c.autoDoors||c.columns.length!==3||!finite(c.hoodBayHeight)||c.hoodBayHeight<80||c.hoodBayHeight>h-2*c.thickness-100||Math.abs(widths(f)[0]-widths(f)[2])>.01||c.columns.some(col=>col.drawers.length)||c.columns.some(col=>col.top==='drawer'||col.pegboard||col.doorBottom!==undefined)||c.columns[1].shelves.some(y=>y<c.hoodBayHeight)))throw Error('烟机嵌合区须为居中的三分区吊柜，净高至少 80 mm，上方保留 100 mm；中部不能设置底部抽屉');
@@ -371,6 +390,6 @@
    const side=dx*(f.flip?-1:1)>0?'right':'left';if(!result.some(v=>v.side===side))result.push({side,owner:!entry});
   }return result;
  }
- const api={palette,types,templates,supported,defaultId,preset,config,height,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,frontDoor,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,drawerCount,drawerState,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides};
+ const api={palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,frontDoor,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
