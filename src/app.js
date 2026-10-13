@@ -186,12 +186,22 @@ const roomAt = (x, y) => ROOMS.find(r => inPoly(x, y, r.poly)) || null;
 const wallBox = () => { const xs = WALLS.flatMap(w => [w[0], w[2]]), ys = WALLS.flatMap(w => [w[1], w[3]]); return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]; };
 // 家具中心落在外墙外包盒之外 = 在户型外（通常看不到，清单里标出并可一键移回）
 const isOutside = f => { const [x0,y0,x1,y1] = wallBox(); return f.cx < x0 || f.cx > x1 || f.cy < y0 || f.cy > y1; };
-function collisions(){return FurnishGeometry.collisions(state.furniture);}
+const furnitureRenderErrors = new Map();
+function furnitureError(f){return FurnishProducts.modelError(f)||furnitureRenderErrors.get(f.id)||null;}
+function renderableFurniture(){return state.furniture.filter(f=>{
+  if(furnitureError(f))return false;
+  try{FurnishGeometry.bodyParts(f);return true;}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));return false;}
+});}
+function collisions(){return FurnishGeometry.collisions(renderableFurniture());}
 
 /* ======================= 颜色 / 材质图案 ======================= */
 const shade = FurnishFurnitureSVG.shade;
 
-function furnSVG(type,w,d,color,f){return FurnishFurnitureSVG.render(type,w,d,color,PAL,f);}
+function furnitureFallbackSVG(f,message){return `<rect x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="${PAL.paper}" stroke="#c65b3a" stroke-width="2" stroke-dasharray="6 4" vector-effect="non-scaling-stroke"/><path d="M${-f.w/2} ${-f.d/2}L${f.w/2} ${f.d/2}M${f.w/2} ${-f.d/2}L${-f.w/2} ${f.d/2}" stroke="#c65b3a" stroke-width="1" vector-effect="non-scaling-stroke"/><title>${esc(tr('模型异常，原数据已保留：','Model error; original data retained: ')+message)}</title>`;}
+function furnSVG(type,w,d,color,f){
+  const error=f&&furnitureError(f);if(error)return furnitureFallbackSVG(f,error);
+  try{return FurnishFurnitureSVG.render(type,w,d,color,PAL,f);}catch(e){if(!f)throw e;const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return furnitureFallbackSVG(f,message);}
+}
 
 function updateHeader(){
   const tot = ROOMS.filter(r => r.counted !== false).reduce((a,r) => a + area(r.poly), 0);

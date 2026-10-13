@@ -29,6 +29,7 @@ const local=S.local({...f,rot:90,flip:true},{at:[3100,3200]});assert(Math.abs(lo
  const away=build(f,{...plan,markers:[{...plan.markers[0],at:[9000,9000]}]});assert.equal(cutCount(away),0,'moving pipe away restores original boards');
  const edge=build(f,{...plan,markers:[{...plan.markers[0],at:[f.cx+f.w/2,f.cy]}]});assert.equal(ray(edge,f.w/2000-.01,0).length,0,'edge notch clears sides');
  const scene=vm.createContext({state:{furniture:[f],rooms:{}},PLAN:plan,FurnishProducts:require('../src/core/product-rules.js'),FurnishServices:S,FurnishProject:P,FurnishCabinet:C,FurnishDesign:{laundryStack:()=>null},furnG:new THREE.Group(),opt:{furn:true},selKey:null,applyGrow:()=>{},wx:v=>v/1000,wz:v=>v/1000,clearGroup:g=>g.clear(),buildFurniture:obj=>{const g=build(obj,scene.PLAN);g.userData.fid=obj.id;return g;}});
+ scene.furnitureError=require('../src/core/product-rules.js').modelError;scene.furnitureRenderErrors=new Map();scene.syncModelErrors=()=>{};
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),scene);vm.runInContext('buildFurn()',scene);const first=scene.furnG.children[0];
  scene.PLAN={...plan,markers:[{...plan.markers[0],pipeDiameter:180}]};vm.runInContext('buildFurn()',scene);assert.notEqual(scene.furnG.children[0],first,'diameter changes invalidate actual cabinet cache');
  const second=scene.furnG.children[0];scene.state.furniture=[{...f,cx:f.cx+2500}];vm.runInContext('buildFurn()',scene);assert.notEqual(scene.furnG.children[0],second,'cabinet movement invalidates derived cuts');

@@ -30,7 +30,7 @@ function readKitchenFields(root,f,prefix='kitchen'){
 function hoodBayControls(f){
  const C=FurnishCabinet,disabled=f.locked?'disabled':'',bay=C.hoodBay(f);
  if(f.type==='kitchenwall')return bay?`<section><h3>抽油烟机嵌合区</h3><div class="form"><label>中部净宽 mm<input id="hood-bay-width" type="number" min="100" value="${bay.width}" ${disabled}></label><label>嵌合净高 mm<input id="hood-bay-height" type="number" min="80" value="${bay.height}" ${disabled}></label></div><p class="muted">左右储物区对称，中部底部／背部让空，上方保留储物。净深 ${bay.depth} mm；整组左右对开门覆盖内部三个区域；详细设计可调整层板和门板。</p><button class="btn" id="hood-bay-remove" ${disabled}>移除嵌合区（恢复底板与背板）</button></section>`:`<button class="btn" id="hood-bay-enable" ${disabled}>增加中部烟机嵌合区（重设为对开门烟机柜）</button><p class="muted">初始净宽 500、净高 175 mm，左右储物均分、外部一组对开门；会重设内部结构，可撤销。尺寸为现有烟机草模初值，需按实物调整。</p>`;
- const hosts=state.furniture.filter(g=>C.hoodBay(g));if(!hosts.length)return '';
+ const hosts=state.furniture.filter(g=>!FurnishProducts.modelError(g)&&C.hoodBay(g));if(!hosts.length)return '';
  return `<section><h3>吊柜嵌合定位</h3><div class="form"><label class="full">目标厨房吊柜<select id="hood-bay-target" ${disabled}>${hosts.map(g=>`<option value="${esc(g.id)}">${esc(g.name)} · ${C.hoodBay(g).width} mm 中部净宽</option>`).join('')}</select></label></div><button class="btn" id="hood-center-bay" ${disabled}>在嵌合区左右居中</button><button class="btn" id="hood-flush-bay" ${disabled}>居中并与吊柜底部齐平安装</button><p class="muted">左右居中仅沿柜宽移动；齐平安装同时对齐背部、朝向及主机上沿高度。移动或调整吊柜后可再次定位。嵌合按装饰罩草模检查，不代表厂家安装预留。</p></section>`;
 }
 function kitchenPanel(f){
@@ -39,7 +39,7 @@ function kitchenPanel(f){
  if(f.type==='rangehood_fotile_jcd10ta')return hoodBayControls(f)+ `<div class="form"><label>烟机底部离地 mm<input id="kitchen-mount" type="number" min="0" max="20000" value="${FurnishProducts.value(f,'mountHeight')}" ${disabled}></label><label>面板状态<select id="hood-panel" ${disabled}><option value="closed" ${!FurnishProducts.value(f,'hoodPanelOpen')?'selected':''}>闭合（默认）</option><option value="open" ${FurnishProducts.value(f,'hoodPanelOpen')?'selected':''}>开启</option></select></label></div><p class="muted">上沿转轴翻出；开启角度按图片近似，用于外观展示。800±50 mm 是面板顶部至灶台的资料标注，实际安装需复核。</p>`;
  if(f.type==='kitchenwall')return hoodBayControls(f)+ `<div class="form"><label>设备底部离地 mm<input id="kitchen-mount" type="number" min="0" max="20000" value="${FurnishProducts.value(f,'mountHeight')}" ${disabled}></label></div>`;
  if(K.isDevice(f)){
-  const targets=[];for(const host of state.furniture.filter(h=>h.kitchen))for(const m of K.layout(host))if(m.role===(f.type==='ksink'?'sink':'hob'))targets.push({host,m});
+  const targets=[];for(const host of state.furniture.filter(h=>h.kitchen&&!FurnishProducts.modelError(h)))for(const m of K.layout(host))if(m.role===(f.type==='ksink'?'sink':'hob'))targets.push({host,m});
   return `${f.type==='stove_fotile_th36b'?`<div class="form"><label>灶具面板基准离地 mm<input id="hob-elevation" type="number" min="0" max="2000" value="${FurnishProducts.value(f,'counterElevation')}" ${disabled} ${f.counterLink?'disabled':''}></label></div>`:''}<div class="form"><label class="full">关联台面模块<select id="kitchen-link" ${disabled}><option value="">独立放置</option>${targets.map(({host,m})=>`<option value="${esc(host.id)}:${m.index}" ${f.counterLink?.hostId===host.id&&f.counterLink.module===m.index?'selected':''}>${esc(host.name)} · 模块 ${m.index+1}（${m.width} mm）</option>`).join('')}</select></label></div><p class="muted">关联后居中并随厨房移动、旋转、镜像及台面高度变化。直接移动设备会解除关联；TH36B-T 默认开孔 660×350 mm（资料允许 630–680×330–370）；其他设备为外包减 30 mm 草模。调整尺寸仅用于布局，需按实物复核。</p>`;
  }
  return '';

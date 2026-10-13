@@ -17,6 +17,13 @@ function validate(f){
 }
 function configure(f,k){if(f.locked)throw Error('家具已锁定，请先解锁');const next={...f,kitchen:clone(k)};const sum=run=>k.modules.filter(m=>m.run===run).reduce((n,m)=>n+m.width,0);next.w=sum(0)+(k.shape==='L'?k.depth:0);next.d=k.shape==='L'?k.depth+sum(1):k.depth;delete next.h;delete next.cabinet;return validate(next);}
 function resize(f,next){const k=clone(f.kitchen);if(k.shape==='straight')k.depth=next.d;for(const run of [0,1]){if(run===1&&k.shape==='straight')continue;const old=k.modules.filter(m=>m.run===run).reduce((n,m)=>n+m.width,0),length=(run===0?next.w:next.d)-(k.shape==='L'?k.depth:0);for(const m of k.modules.filter(m=>m.run===run))m.width*=length/old;}return configure(next,k);}
+// Explicit, undoable repair. First validate the recorded module structure;
+// only reconcile its derived envelope, never invent missing configuration.
+function repairDimensions(f,keepEnvelope=true){
+ const canonical=configure(f,f.kitchen);
+ const repaired=keepEnvelope?resize(canonical,{...canonical,w:f.w,d:f.d}):canonical;
+ return {...f,w:repaired.w,d:repaired.d,kitchen:repaired.kitchen};
+}
 function layout(f){validate(f);const k=f.kitchen,right=cornerSide(f)==='right',offset=[k.shape==='L'&&!right?k.depth:0,k.depth];return k.modules.map((m,index)=>{const start=offset[m.run];offset[m.run]+=m.width;return {...m,index,x:m.run===0?-f.w/2+start+m.width/2:(right?1:-1)*(f.w-k.depth)/2,y:m.run===0?-f.d/2+k.depth/2:-f.d/2+start+m.width/2,w:m.run===0?m.width:k.depth,d:m.run===0?k.depth:m.width,rot:m.run===0?0:right?90:270};});}
 function cornerBlock(f){const k=f.kitchen;return {x:(cornerSide(f)==='right'?1:-1)*(f.w-k.depth)/2,y:-f.d/2+k.depth/2,w:k.depth,d:k.depth};}
 function slabs(f){const k=f.kitchen;return [{x:0,y:-f.d/2+k.depth/2,w:f.w,d:k.depth},...(k.shape==='L'?[{x:cornerBlock(f).x,y:k.depth/2,w:k.depth,d:f.d-k.depth}]:[])];}
@@ -33,6 +40,8 @@ function fit(f,host,index){const m=layout(host)[index],role=f.type==='ksink'?'si
 function attach(f,host,index){if(f.locked||host.locked)throw Error('请先解锁设备与厨房');fit(f,host,index);return {...f,counterLink:{hostId:host.id,module:index}};}
 function normalize(list,before=[]){
  for(const f of list){if(!f.counterLink)continue;const host=list.find(h=>h.id===f.counterLink.hostId&&h.type==='counter'&&h.kitchen&&!h.obj);if(!host){delete f.counterLink;continue;}
+  // A broken host needs explicit repair; keep its appliances and links intact.
+  try{validate(host);}catch{continue;}
   const old=before.find(o=>o.id===f.id),oldHost=old&&before.find(h=>h.id===old.counterLink?.hostId);
   // Editing an attached appliance's position explicitly detaches it.
   if(old?.counterLink&&oldHost&&host.cx===oldHost.cx&&host.cy===oldHost.cy&&host.rot===oldHost.rot&&!!host.flip===!!oldHost.flip&&(f.cx!==old.cx||f.cy!==old.cy||f.rot!==old.rot||!!f.flip!==!!old.flip)){delete f.counterLink;continue;}
@@ -45,6 +54,6 @@ function validateList(list){for(const f of list){validate(f);validateLink(f);if(
 function moduleFurniture(f,m){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null),spec=C.preset('base'),c=spec.cabinet;kitchenModuleConfig(c,m,f.kitchen.baseHeight);if(f.kitchen.doorOverlay!==undefined)c.doorOverlay=f.kitchen.doorOverlay;const [cx,cy]=world(f,m.x,m.y);return {...f,kitchen:undefined,type:'cabinet',w:m.width,d:f.kitchen.depth,h:f.kitchen.baseHeight,cabinet:c,cx,cy,rot:((f.rot||0)+(f.flip?-m.rot:m.rot)+360)%360};}
 function kitchenModuleConfig(c,m,h){c.template='kitchen-base';c.plinth=100;c.autoDoors=false;const drawer=Math.max(60,(h-150)/3);c.columns=[{door:m.role==='drawer'?'none':m.width>650?'double':'left',doorOpen:false,shelves:m.role==='door'?[Math.round((h-140)/2)]:[],drawers:m.role==='drawer'?[{height:drawer,open:false},{height:drawer,open:false},{height:drawer,open:false}]:[]}];return c;}
 function openingZones(f,options){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return layout(f).filter(m=>m.role!=='empty').flatMap(m=>C.openingZones(moduleFurniture(f,m),options).map(z=>({...z,column:m.index})));}
-const api={isDevice,cutout,roles,defaults,cornerSide,cornerBlock,validate,configure,resize,layout,slabs,area,world,local,footprints,bodyParts,validateLink,fit,attach,normalize,validateList,moduleFurniture,kitchenModuleConfig,openingZones};
+const api={isDevice,cutout,roles,defaults,cornerSide,cornerBlock,validate,configure,resize,repairDimensions,layout,slabs,area,world,local,footprints,bodyParts,validateLink,fit,attach,normalize,validateList,moduleFurniture,kitchenModuleConfig,openingZones};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishKitchen=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

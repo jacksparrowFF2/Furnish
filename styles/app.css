@@ -387,6 +387,9 @@ button.flink .i{width:14px;height:14px}
   cursor:pointer;box-shadow:var(--glow),var(--shadow-md);animation:pop .25s var(--ease-out)}
 .badge[hidden]{display:none}
 main.is3d .badge{display:none}
+main.is3d #modelErrors{display:inline-flex}
+#modelErrors{top:64px;max-width:90%;white-space:normal;text-align:center;background:var(--panel);color:var(--danger);border:1px solid currentColor;box-shadow:var(--shadow-sm)}
+#modelErrors[hidden],main.is3d #modelErrors[hidden]{display:none}
 
 /* ======================= 属性面板：分页 / 清单 / 报价 / 批量操作 ======================= */
 .tabs{position:sticky;top:0;z-index:2;display:flex;gap:4px;padding:12px 12px 10px;background:var(--panel);box-shadow:var(--shadow-sm)}

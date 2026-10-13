@@ -53,6 +53,8 @@ function validateField(f,key,v){
  if(!valid)throw Error(rule.message);return v;
 }
 function validate(f){for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);return f;}
+// Report broken model records without migrating, deleting or rewriting them.
+function modelError(f){try{validate(f);if(f.cabinet)(root.FurnishCabinet||require('./cabinet-core.js')).validate(f);return null;}catch(e){return e.message||String(e);}}
 function initial(f){const result={};for(const key of definition(f)?.create||[])result[key]=key==='kitchen'?kitchen().defaults(f):value(f,key);return {...result,...definition(f)?.identity};}
 // Legacy bottom datum is read, never filled into saved records implicitly.
 function showerInstallation(f){const nominal=types.shower_arrow_cream.height,offset=646.889539615265*(f.h??nominal)/nominal,mixer=f.showerMixerHeight??(f.mountHeight!==undefined?f.mountHeight+offset:types.shower_arrow_cream.defaults.showerMixerHeight),bottom=mixer-offset;return {mixer,bottom,top:bottom+(f.h??nominal)*(1+(value(f,'showerRise')-types.shower_arrow_cream.defaults.showerRise)/nominal)};}
@@ -82,6 +84,6 @@ function replacement(previous,next,candidate){
 }
 // Derived geometry capability; no field is added to saved furniture instances.
 function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return !f.obj&&(C.supported(f)||['counter','vanity'].includes(f.type));}
-const api={types,fields,definition,supports,family,value,height,validateField,validate,initial,migrate,showerInstallation,hoodInstallation,vertical,replacement,serviceCut};
+const api={types,fields,definition,supports,family,value,height,validateField,validate,modelError,initial,migrate,showerInstallation,hoodInstallation,vertical,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

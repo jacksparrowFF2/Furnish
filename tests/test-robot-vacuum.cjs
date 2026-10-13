@@ -19,7 +19,7 @@ const model=require('../src/render/robot-vacuum-model.js'),catalog=require('../s
    near(size.x,(rot===90?f.d:f.w)*scale/1000);near(size.z,(rot===90?f.w:f.d)*scale/1000);near(size.y,f.h*scale/1000);near(bounds.min.y,0);
    object.traverse(o=>{if(o.isMesh)for(const key of ['position','normal'])assert.ok(o.geometry.attributes[key].array.every(Number.isFinite));});
   }
-  ctx.state={furniture:[{...f,w:f.w*1.2}]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};
+  ctx.state={furniture:[{...f,w:f.w*1.2}]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=require('../src/core/product-rules.js').modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
   vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];
   vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(before).getSize(new THREE.Vector3()).x,f.w*1.2/1000);
  }

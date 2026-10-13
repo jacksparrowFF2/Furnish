@@ -70,7 +70,7 @@ elements['#fStackHeight'].onchange({target:{value:'0'}});assert.equal(current.st
   near(bounds.min.y,(mountHeight??0)/1000);near(bounds.max.y,((mountHeight??0)+(h??850))/1000);
   model.traverse(o=>{if(o.isMesh)assert.ok(o.geometry.attributes.position.array.every(Number.isFinite));});
  }
- modelCtx.state={furniture:[dryer]};modelCtx.furnG=new THREE.Group();modelCtx.clearGroup=g=>g.clear();modelCtx.opt={furn:true};modelCtx.applyGrow=()=>{};
+ modelCtx.state={furniture:[dryer]};modelCtx.furnG=new THREE.Group();modelCtx.clearGroup=g=>g.clear();modelCtx.opt={furn:true};modelCtx.applyGrow=()=>{};modelCtx.furnitureError=require('../src/core/product-rules.js').modelError;modelCtx.furnitureRenderErrors=new Map();modelCtx.syncModelErrors=()=>{};
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildLabels(')),modelCtx);
  vm.runInContext('buildFurn()',modelCtx);const before=modelCtx.furnG.children[0];
  modelCtx.state.furniture=[{...dryer,cx:500}];vm.runInContext('buildFurn()',modelCtx);assert.equal(modelCtx.furnG.children[0],before);near(before.position.y,.85);

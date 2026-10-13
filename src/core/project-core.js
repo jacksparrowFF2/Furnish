@@ -132,7 +132,7 @@
  const purchaseMoney=value=>'¥'+Math.round(Number(value)).toLocaleString('zh-CN');
  function procurement(plan,work,priceOf=f=>f.price??0){
   const groups=new Map(),totals=Object.fromEntries(Object.keys(purchaseStates).map(k=>[k,0]));
-  for(const f of work.furniture){const price=priceOf(f),status=Object.hasOwn(purchaseStates,f.purchaseStatus)?f.purchaseStatus:'planned',note=f.purchaseNote||'',key=JSON.stringify([f.type,f.name,f.brand||'',f.model||'',f.w,f.d,f.h??null,price,f.price===undefined,f.priceDate||'',f.sourceUrl||'',status,note,f.kitchen||f.cabinet?(f.kitchen|| (root.FurnishCabinet||require('./cabinet-core.js')).specification(f)):null]);
+  for(const f of work.furniture){const price=priceOf(f),status=Object.hasOwn(purchaseStates,f.purchaseStatus)?f.purchaseStatus:'planned',note=f.purchaseNote||'',key=JSON.stringify([f.type,f.name,f.brand||'',f.model||'',f.w,f.d,f.h??null,price,f.price===undefined,f.priceDate||'',f.sourceUrl||'',status,note,f.kitchen||f.cabinet?(f.kitchen|| (design().products().modelError(f)?f.cabinet:(root.FurnishCabinet||require('./cabinet-core.js')).specification(f))):null]);
    const item=groups.get(key)||{name:f.name,brand:f.brand||'',model:f.model||'',w:f.w,d:f.d,h:f.h??null,price,estimated:f.price===undefined,priceDate:f.priceDate||'',sourceUrl:f.sourceUrl||'',status,note,ids:[],rooms:[]};item.ids.push(f.id);
    const room=plan.rooms.find(r=>inside([f.cx,f.cy],r.poly)),name=room?.name||'未分配房间';if(!item.rooms.includes(name))item.rooms.push(name);groups.set(key,item);totals[status]+=price;
   }
@@ -181,8 +181,10 @@
  function spaceCheck(plan,furniture,{passage=800,focusId=null,focusIds=null,scanPassages=true,maxIssues=Infinity}={}){
   if(!num(passage)||passage<300||passage>2000)fail('通道阈值须为 300–2000 mm');
   const targets=focusIds?new Set(focusIds):focusId?new Set([focusId]):null;
+  const broken=[],products=design().products();
+  furniture=furniture.filter(f=>{const message=products.modelError(f);if(!message)return true;if(!targets||targets.has(f.id))broken.push({kind:'model',id:f.id,name:f.name,pending:true,message:'家具模型异常，空间核对待修复：'+message});return false;});
   const ignored=new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
-  const bodies=furniture.filter(f=>!ignored.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded).map(f=>{const shapes=(root.FurnishGeometry||require('./layout-geometry.js')).footprints(f);return shapes.map(p=>({f,p,box:[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))]}));}).flat(),walls=plan.walls.map(rect),issues=[];
+  const bodies=furniture.filter(f=>!ignored.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded).map(f=>{const shapes=(root.FurnishGeometry||require('./layout-geometry.js')).footprints(f);return shapes.map(p=>({f,p,box:[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))]}));}).flat(),walls=plan.walls.map(rect),issues=broken;
   // Beam bodies and opening obstacles share the same rigid-object height envelopes.
   // Wall-mounted objects are exempt from floor-footprint checks, not overhead collisions.
   const rigidBodies=furniture.filter(f=>!['rug','plant','curtain'].includes(f.type)).flatMap(f=>(root.FurnishGeometry||require('./layout-geometry.js')).bodyParts(f).map(part=>({f,...part})));

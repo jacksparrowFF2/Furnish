@@ -238,7 +238,7 @@ svg.addEventListener('pointermove', e => {
     const dw=drag.axis==='d'?0:dx*c+dy*s,dd=drag.axis==='w'?0:-dx*s+dy*c;
     const corner={x:o.cx+o.w/2*c-o.d/2*s+dw*c-dd*s,y:o.cy+o.w/2*s+o.d/2*c+dw*s+dd*c};
     const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
-    try{const next=FurnishCabinet.supported(f)&&f.cabinet?FurnishCabinet.resize(drag.original,result.furniture):result.furniture;Object.assign(f,next);ui.guides=result.guides;}catch{return;}
+    try{const next=FurnishDesign.resizeFurniture(drag.original,{w:result.furniture.w,d:result.furniture.d},'center');Object.assign(f,next,{cx:result.furniture.cx,cy:result.furniture.cy});ui.guides=result.guides;}catch{return;}
     renderFurn();                              // 尺寸变了，图例需要重画
   }
   document.querySelector(`#gFurn [data-fid="${f.id}"]`)?.setAttribute('transform', furnT(f));

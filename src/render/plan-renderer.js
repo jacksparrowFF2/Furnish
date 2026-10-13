@@ -39,7 +39,7 @@ function renderRooms(){
 
 // Floor rugs and translucent pendants retain their layers; separated height
 // ranges are drawn bottom to top wherever their plan footprints overlap.
-const drawOrder = () => FurnishDesign.planFurnitureOrder(state.furniture);
+const drawOrder = () => {const valid=renderableFurniture(),ids=new Set(valid.map(f=>f.id));return [...FurnishDesign.planFurnitureOrder(valid),...state.furniture.filter(f=>!ids.has(f.id))];};
 function syncFurnOrder(){
  const g=$('#gFurn'),nodes=[...g.children],byId=new Map(nodes.map(node=>[node.dataset.fid,node])),order=drawOrder();
  if(order.every((f,i)=>nodes[i]?.dataset.fid===f.id))return;
@@ -48,16 +48,18 @@ function syncFurnOrder(){
 const furnT = f => `translate(${f.cx} ${f.cy}) rotate(${f.rot})`;
 let clashIds = new Set();
 function renderFurn(){
+  furnitureRenderErrors.clear();
   const g = $('#gFurn');
   g.setAttribute('display', ui.layers.furn ? 'inline' : 'none');
   clashIds = new Set(collisions().flat());
   const servicePipes=typeof FurnishServices!=='undefined'?FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state)):[];
   g.innerHTML = drawOrder().map(f => {
+    try{
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
     const label = Math.min(f.w,f.d) >= 380 && !NOLABEL.includes(f.type)
       ? `<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>` : '';
     const body = furnSVG(f.type,f.w,f.d,f.color,f), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
-    const pipes=servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
+    const pipes=!furnitureError(f)&&servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
     const maskId='pipe-cut-'+f.id,mask=pipes.length?`<defs><mask id="${esc(maskId)}" maskUnits="userSpaceOnUse" x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}"><rect x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}" fill="white"/>${pipes.map(p=>{const local=FurnishServices.local({...f,flip:false},p);return `<circle cx="${local.at[0]}" cy="${local.at[1]}" r="${p.radius}" fill="black"/>`;}).join('')}</mask></defs>`:'';
     const flip=pipes.length?`${mask}<g mask="url(#${esc(maskId)})">${mirrored}</g>`:mirrored;
     const clash = ui.layers.collide && clashIds.has(f.id)
@@ -65,9 +67,15 @@ function renderFurn(){
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
     const lock = f.locked ? `<g data-edit-overlay="lock" transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
       <rect x="-45" y="-12" width="90" height="62" rx="12" fill="${PAL.ink}"/><path d="M-28 -12v-18a28 28 0 0 1 56 0v18" fill="none" stroke="${PAL.ink}" stroke-width="16"/></g>` : '';
-    return `<g class="furn${f.locked ? ' locked' : ''}" data-fid="${f.id}" transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}>${flip}${clash}${label}${lock}</g>`;
+    return `<g class="furn${f.locked ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}>${flip}${clash}${label}${lock}</g>`;
+    }catch(e){const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return `<g class="furn" data-fid="${esc(f.id)}" data-model-error="true" transform="${furnT(f)}">${furnitureFallbackSVG(f,message)}</g>`;}
   }).join('');
-  syncFurnBadge(); syncEmpty();
+  syncFurnBadge(); syncEmpty(); syncModelErrors();
+}
+function syncModelErrors(){
+ const errors=state.furniture.filter(f=>furnitureError(f)),badge=$('#modelErrors');if(!badge)return;
+ badge.hidden=!errors.length;badge.textContent=tr(`${errors.length} 件家具模型异常 · 原数据已保留 · 点击定位修复`,`${errors.length} model error(s) · data retained · click to repair`);
+ badge.onclick=()=>focusItem(errors[0].id);
 }
 // 一件家具都没有时，画布中央给出下一步建议
 function syncEmpty(){

@@ -20,7 +20,7 @@ const model=require('../src/render/shower-arrow-model.js'),catalog=require('../s
   near(size.x,(rot===90?dims[1]:dims[0])/1000);near(size.z,(rot===90?dims[0]:dims[1])/1000);near(size.y,dims[2]/1000);near(bounds.min.y,.350);
   object.traverse(o=>{if(o.isMesh)for(const key of ['position','normal'])assert.ok(o.geometry.attributes[key].array.every(Number.isFinite));});
  }
- ctx.state={furniture:[f]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};
+ ctx.state={furniture:[f]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=require('../src/core/product-rules.js').modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
  vm.runInContext('buildFurn()',ctx);const first=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],first);
  ctx.state.furniture[0]={...f,h:1000};vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],first);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).getSize(new THREE.Vector3()).y,1);
  for(const mountHeight of [0,900]){const obj=model.build(THREE,{...f,mountHeight},RoundedBoxGeometry);near(new THREE.Box3().setFromObject(obj).min.y,mountHeight/1000);}

@@ -7,6 +7,8 @@ const yen = v => '¥' + Math.round(v).toLocaleString();
 function alertsHTML(){
   const lost = state.furniture.filter(isOutside).length, clashN = collisions().length;
   let s = '';
+  const broken=state.furniture.filter(f=>furnitureError(f));
+  if(broken.length)s+=`<div class="alert"><span>${tr(`${broken.length} 件家具模型异常，原数据保留，空间核对待修复。`,`${broken.length} model error(s); data retained, spatial checks require repair.`)}</span></div>`;
   if (saveErr) s += `<div class="alert">${ico('warn')}<span>${tr('自动保存失败（浏览器存储空间不足）。请导出方案 JSON 备份。', 'Autosave failed (storage full). Export the plan JSON as a backup.')}</span></div>`;
   if (lost) s += `<div class="alert">${ico('warn')}<span>${tr(`${lost} 件家具在户型外，画面上可能看不到`, `${lost} item(s) are outside the plan and may be off-screen`)}</span><button class="btn" data-act="rescue">${tr('移回', 'Bring back')}</button></div>`;
   if (clashN) s += `<div class="alert">${ico('warn')}<span>${tr(`${clashN} 处家具互相重叠`, `${clashN} furniture overlap(s)`)}</span><button class="btn" data-act="clash">${tr('选中', 'Select')}</button></div>`;

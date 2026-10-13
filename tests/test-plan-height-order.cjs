@@ -13,7 +13,7 @@ assert.deepEqual(ids([{...tv,rot:90,flip:true},{...cab,rot:90,flip:true}]),['cab
 const rug=f('rug','rug'),lamp=f('lamp','pendant');assert.deepEqual(ids([lamp,tv,cab,rug]),['rug','cab','tv','lamp']);
 const original=[tv,cab],before=JSON.stringify(original);ids(original);assert.equal(JSON.stringify(original),before,'display sorting must not mutate project order');
 const children=[{dataset:{fid:'tv'}},{dataset:{fid:'cab'}}],g={children,innerHTML:'',setAttribute(){},appendChild(node){children.splice(children.indexOf(node),1);children.push(node);}},nodes={'#gFurn':g,'#emptyHint':{hidden:true},'#furnHidden':{hidden:true}};
-const ctx=vm.createContext({FurnishDesign:D,state:{furniture:original},ui:{layers:{furn:true,collide:false}},$:s=>nodes[s],PAL:{text:'#111'},collisions:()=>[],furnSVG:()=>'<rect/>',esc:s=>s,nm:s=>s});
+const ctx=vm.createContext({FurnishDesign:D,state:{furniture:original},furnitureRenderErrors:new Map(),furnitureError:D.products().modelError,renderableFurniture:()=>original.filter(f=>!D.products().modelError(f)),ui:{layers:{furn:true,collide:false}},$:s=>nodes[s],PAL:{text:'#111'},collisions:()=>[],furnSVG:()=>'<rect/>',esc:s=>s,nm:s=>s});
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),ctx);
 ctx.renderFurn();assert(g.innerHTML.indexOf('data-fid="cab"')<g.innerHTML.indexOf('data-fid="tv"'),'real SVG adapter emits lower first');
 ctx.syncFurnOrder();assert.deepEqual(children.map(n=>n.dataset.fid),['cab','tv']);

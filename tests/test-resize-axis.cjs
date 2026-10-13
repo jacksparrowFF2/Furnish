@@ -36,7 +36,7 @@ for(const axis of ['w','d','both']){
   const context=vm.createContext({svg,$:key=>nodes[key]||= {},document:{querySelectorAll:()=>[],querySelector:()=>null,addEventListener(){}},
     closeCtx(){},closeDrawers(){},ui:{tool:'select',layers:{furn:true,wallSnap:false}},view:{s:.2},TAP:3,
     state:{furniture:[f]},getF:()=>f,selIds:()=>['f'],snap:()=>JSON.stringify({furniture:[f]}),
-    FurnishSnapping:S,FurnishCabinet:{supported:()=>false},clearTimeout(){},renderFurn(){},syncFurnOrder(){},renderSel(){},furnT:()=>''});
+    FurnishSnapping:S,FurnishDesign:require('../src/core/design-core.js'),FurnishCabinet:{supported:()=>false},clearTimeout(){},renderFurn(){},syncFurnOrder(){},renderSel(){},furnT:()=>''});
   vm.runInContext(fs.readFileSync(require.resolve('../src/ui/canvas-interactions.js'),'utf8'),context);
   context.initializeCanvasInteractions();
   const handle={dataset:{handle:'size',axis}},target={closest:selector=>selector==='[data-handle]'?handle:null};
