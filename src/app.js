@@ -168,7 +168,7 @@ function syncSaved(){
     : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 const snap = () => JSON.stringify(state);
-function commit(before){ FurnishDesign.normalizeLaundryStacks(state.furniture,JSON.parse(before).furniture); undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,JSON.parse(before),'编辑前'); }
+function commit(before){ FurnishKitchen.normalize(state.furniture,JSON.parse(before).furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,JSON.parse(before).furniture); undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,JSON.parse(before),'编辑前'); }
 function mutate(fn){ const b = snap(); fn(); commit(b); renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }

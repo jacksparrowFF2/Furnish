@@ -15,6 +15,8 @@ const MATS = {
 // 家具库：[类型, 名称, 宽, 深, 颜色, 参考单价 ¥]
 const LIB = [
   {cat:'电器', items:[
+    ["stove_fotile_th36b","方太燃气灶 TH36B-T",750,440,"#111214",0,products.height({type:"stove_fotile_th36b"})],
+    ["rangehood_fotile_jcd10ta","方太抽油烟机 JCD10TA",900,350,"#111214",0,products.height({type:"rangehood_fotile_jcd10ta"})],
     ["stove","燃气灶",750,450,"#dcdcdc",2500],
     ["fridge","冰箱",700,700,"#dfe4e8",4000],
     ["washer","洗衣机",600,600,"#e6ebee",2800,products.height({type:"washer"})],
@@ -82,6 +84,7 @@ const LIB = [
     ["island","岛台",1800,900,"#e9e5de",6800],
     ["island","大岛台",2400,1000,"#e9e5de",9800],
     ["counter","橱柜台面",1600,600,"#e9e5de",6400],
+    ["kitchenwall","厨房吊柜",800,350,"#e9e5de",undefined,700],
     ["desk","长书桌",1600,700,"#d8c2a2",2200]
   ]},
   {cat:'椅 · 凳', items:[

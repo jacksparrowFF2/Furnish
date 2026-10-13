@@ -41,6 +41,6 @@ console.log('PASS beam heights: absolute units, atomic validation, clearing, leg
  const mesh=context.archUp.children[0],bounds=new THREE.Box3().setFromObject(mesh);assert(Math.abs(bounds.min.y-1.85)<1e-6);assert(Math.abs(bounds.max.y-2.2)<1e-6);
  assert(Math.abs(bounds.min.x-(Math.min(...known.beams[0].poly.map(p=>p[0]))*d.scale/1000-5))<1e-6);assert(Math.abs(bounds.min.z-(Math.min(...known.beams[0].poly.map(p=>p[1]))*d.scale/1000-5))<1e-6);
  context.archUp.clear();context.opt.cut=1.2;context.top=1.2;vm.runInContext(source,context);assert.equal(context.archUp.children[0].visible,false);
- assert(html.includes('state.open, PLAN.beams, opt.cut,H]'),'beam edits invalidate architecture geometry');
+ assert(html.includes('state.open, PLAN.beams, opt.cut,H, PLAN.markers]'),'beam edits invalidate architecture geometry');
  console.log('PASS production Three.js beam extrusion, true XYZ placement, unknown omission, cut visibility and cache dependency');
 })().catch(e=>{console.error(e);process.exitCode=1;});

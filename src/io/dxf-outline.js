@@ -143,5 +143,48 @@
   }
   return {draft,rectangles,stats};
  }
- root.FurnishDXFOutline={convert,bands};if(typeof module!=='undefined')module.exports=root.FurnishDXFOutline;
+ function append(draft,parsed,{beamLayers=[],serviceLayers=[],mmPerUnit=draft.sourceUnits}={}){
+  const next=JSON.parse(JSON.stringify(draft)),t=draft.sourceTransform;
+  if(!t||![t.x0,t.y1,t.pad,t.scale,mmPerUnit].every(Number.isFinite)||t.scale<=0||mmPerUnit<=0)fail('此旧户型缺少原 DXF 坐标基准，不能安全补导入');
+  if(mmPerUnit!==draft.sourceUnits)fail('补导入单位必须与原图一致');
+  if(!draft.sourceGeometry?.length)fail('缺少源墙轮廓，无法核对补导入图纸');
+  const stats={aligned:0,maxShift:0};
+  for(const old of draft.sourceGeometry){
+   const match=parsed.records.filter(r=>r.layer===old.layer).some(r=>{try{return cycles(path(r,mmPerUnit,stats)).polys.some(p=>JSON.stringify(p)===JSON.stringify(old.poly));}catch(e){return false;}});
+   if(!match)fail('图纸墙轮廓与首次导入不一致，请选择原 DXF 文件');
+  }
+  const point=p=>[(p[0]-t.x0+t.pad)/t.scale,(t.y1-p[1]+t.pad)/t.scale],selected=[...beamLayers,...serviceLayers];
+  if(new Set(selected).size!==selected.length)fail('图层用途重复');
+  for(const layer of selected)if(!parsed.inventory.some(l=>l.name===layer))fail('图层不存在');
+  if(parsed.inventory.some(l=>beamLayers.includes(l.name)&&l.unsupportedGeometry))fail('梁图层含不支持的几何');
+  next.beams=next.beams||[];next.markers=next.markers||[];
+  const add=(list,value)=>{
+   const old=list.find(v=>v.sourceLayer===value.sourceLayer&&v.sourceEntity===value.sourceEntity);
+   if(old){if(JSON.stringify(old.poly||old.at)!==JSON.stringify(value.poly||value.at)||old.radius!==value.radius)fail('已导入实体有变化，不能重复追加');return;}
+   while(list.some(v=>v.id===value.id))value.id+='x';list.push(value);
+  };
+  for(const r of parsed.records.filter(r=>beamLayers.includes(r.layer))){
+   const found=cycles(path(r,mmPerUnit,stats));if(!found.polys.length||found.leftover.length>1)fail('梁必须为闭合轮廓');
+   found.polys.forEach((poly,i)=>{
+    const projected=poly.map(point);
+    const legacy=next.beams.find(b=>b.sourceLayer===r.layer&&b.sourceEntity===(r.handle||String(r.id)));
+    if(legacy&&found.polys.length===1&&JSON.stringify(legacy.poly)!==JSON.stringify(projected))fail('已导入梁轮廓有变化，不能重复追加');
+    if(next.beams.some(b=>b.sourceLayer===r.layer&&JSON.stringify(b.poly)===JSON.stringify(projected)))return;
+    add(next.beams,{id:'cad_beam_append_'+r.id+'_'+i,name:r.layer,poly:projected,sourceLayer:r.layer,sourceEntity:(r.handle||String(r.id))+':'+i,review:'beam-height'});
+   });
+  }
+  for(const r of (parsed.references||[]).filter(r=>serviceLayers.includes(r.layer))){
+   const kind=root.FurnishDXF.layerRole(r.layer).role;
+   if(!['drain','gas'].includes(kind)||r.z!==0||r.radius<=0)fail('水气点位须为平面圆');
+   const at=point(r.at.map(v=>v*mmPerUnit));
+   const legacy=next.markers.find(m=>m.sourceLayer===r.layer&&m.id===r.id);
+   if(legacy&&JSON.stringify(legacy.sourceAt||legacy.at)!==JSON.stringify(at))fail('已导入水气点位有变化，不能重复追加');
+   if(next.markers.some(m=>m.sourceLayer===r.layer&&JSON.stringify(m.sourceAt||m.at)===JSON.stringify(at)))continue;
+   add(next.markers,{id:'cad_service_append_'+r.id,kind,name:r.layer,at,radius:r.radius*mmPerUnit,sourceLayer:r.layer,sourceEntity:r.handle||String(r.id)});
+  }
+  next.sourceLayers=[...new Set([...(next.sourceLayers||[]),...selected])];
+  const Core=root.FurnishDraft||(typeof require==='function'?require('../core/floorplan-core.js'):null);Core.validate(next);
+  return next;
+ }
+ root.FurnishDXFOutline={convert,bands,append};if(typeof module!=='undefined')module.exports=root.FurnishDXFOutline;
 })(typeof window==='undefined'?globalThis:window);

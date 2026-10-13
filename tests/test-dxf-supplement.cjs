@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm');
+const DXF=require('../src/io/dxf-import.js'),O=require('../src/io/dxf-outline.js'),F=require('../src/core/floorplan-core.js'),P=require('../src/core/project-core.js');
+const rect=(layer,x,y,w,h)=>`0\nLWPOLYLINE\n8\n${layer}\n70\n1\n${[[x,y],[x+w,y],[x+w,y+h],[x,y+h]].map(p=>`10\n${p[0]}\n20\n${p[1]}\n`).join('')}`;
+const raw=`0\nSECTION\n2\nENTITIES\n${rect('墙',0,0,200,4000)+rect('墙',3800,0,200,4000)+rect('墙',200,0,3600,200)+rect('墙',200,3800,3600,200)+rect('梁',300,1800,3400,300)}0\nCIRCLE\n5\nAA\n8\n下水\n10\n700\n20\n800\n40\n75\n0\nENDSEC\n0\nEOF\n`;
+const parsed=DXF.parse(raw),draft=O.convert(parsed,{layers:['墙'],layerKinds:{墙:'n'},beamLayers:[],serviceLayers:[],mmPerUnit:1,name:'补导入',id:'custom_append_test'}).draft;
+draft.sourceDXF=raw;const before=JSON.stringify(draft),next=O.append(draft,parsed,{beamLayers:['梁'],serviceLayers:['下水']});
+assert.equal(JSON.stringify(draft),before);for(const key of ['walls','openings','scale','width','height','sourceTransform'])assert.deepEqual(next[key],draft[key]);
+assert.equal(next.beams.length,1);assert.equal(next.markers.length,1);assert.deepEqual(O.append(next,parsed,{beamLayers:['梁'],serviceLayers:['下水']}),next);
+const t=draft.sourceTransform,m=next.markers[0];assert.deepEqual([m.at[0]*t.scale+t.x0-t.pad,t.y1+t.pad-m.at[1]*t.scale],[700,800]);
+const edited=F.editService(next,m.id,m.at[0]*draft.scale+120,m.at[1]*draft.scale,160);assert.equal(F.serviceDiameter(edited.markers[0]),160);assert.equal(F.serviceDiameter(m),100);
+assert.deepEqual(O.append(edited,parsed,{serviceLayers:['下水']}).markers,edited.markers);
+for(const values of [[-1,100,100],[100,100,0],[100,100,NaN],[100,100,2001]])assert.throws(()=>F.editService(next,m.id,...values));
+assert.throws(()=>O.append({...draft,sourceTransform:undefined},parsed,{beamLayers:['梁']}));assert.throws(()=>O.append(draft,DXF.parse(raw.replace('10\n3800','10\n3799')),{beamLayers:['梁']}),/不一致/);
+const furniture=[{id:'chair',name:'椅子',type:'chair',cx:1300,cy:1500,w:400,d:400,rot:37}];
+const work={furniture,architecture:{draft:edited,baseline:draft,phase:'design'}};
+const round=P.unpack(P.pack({planId:draft.id,current:work,designs:[{id:'saved',name:'测试',planId:draft.id,work}],catalog:[]}));
+assert.deepEqual(round.current.furniture,furniture);assert.deepEqual(round.current.architecture.draft.markers,edited.markers);assert.deepEqual(round.current.architecture.draft.sourceDXF,raw);
+(async()=>{
+ const html=fs.readFileSync('index.html','utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
+ const block=html.slice(html.indexOf('  // Schematic risers:'),html.indexOf('  for(const beam of PLAN.beams||[]){'));
+ const context=vm.createContext({THREE,FurnishDraft:F,FurnishProject:P,PLAN:F.build(edited),state:{ceilingHeight:3100,rooms:{}},M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,opt:{cut:2.8},top:3.1,mat:()=>new THREE.MeshStandardMaterial(),archUp:new THREE.Group()});
+ vm.runInContext(block,context);const box=new THREE.Box3().setFromObject(context.archUp.children[0]),size=box.getSize(new THREE.Vector3());assert(Math.abs(size.x-.16)<1e-6);assert(Math.abs(size.y-3.1)<1e-6);assert(Math.abs(box.min.y)<1e-6);
+ console.log('PASS DXF supplement: fixed frame, atomic failure, duplicates, edited service persistence, named project roundtrip, actual pipe geometry');
+})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,5 +1,9 @@
 # 产品能力规则与兼容验收
 
+柜体嵌套参数新增可选 `cabinet.doorOverlay`，校验及模板默认由柜体核心提供；厨房的 `kitchen.doorOverlay` 由厨房核心校验。值为 `full/half/inset`，不用新增家具顶层字段或重复字段清理名单。已保存的值优先，缺失字段按对应模板／类型默认读取，不补写旧结构。全盖默认扩展至收纳柜、储物柜和衣柜，依据用户明确要求；兼容与实际几何见 [柜体设计](CABINET-DESIGN.md)。
+
+厨房能力新增 `counter.kitchen`、水槽／灶具 `counterLink/counterElevation` 和独立 `kitchenwall.mountHeight`。新建显式采用模块厨房；旧 counter 缺字段仍是旧组合，不由 migrate 补新默认值。厨房嵌套结构和关联检查委托 `kitchen-core.js`，各层通过统一接口使用。兼容与参数语义见 [厨房设计](KITCHEN-DESIGN.md)。
+
 本轮工作开始于 2026-10-12，收尾于 2026-10-13（Asia/Shanghai）。目标是收敛分散的产品规则，并保持旧项目与离线运行。
 
 ## 单一规则入口
@@ -82,3 +86,5 @@ npx.cmd --package @playwright/cli playwright-cli -s=furnish-rules run-code --fil
 截图与下载留在 `output/playwright/product-rules/`（本地验收产物，按现有规则忽略）：`file-offline-3d.png`、`file-offline-mobile.png`、对应 HTTP 截图及两份 `.furnish.json`。实际生产几何的旋转/镜像、外包尺寸和参数变更继续由各模型回归覆盖。
 
 小屏验证使用桌面 Chrome 的视口模拟；未进行真实手机触屏验收。柜门开启区域现已补充 [三维障碍检查](CABINET-OPENING-3D.md)，含上翻门顶部检查与房间净高恢复。全局 UI 状态耦合、内联场景拆分及更细的板件/多门同时运动模拟仍是后续任务。
+
+自动管道避让能力统一由 serviceCut(f) 提供：参数化柜体及 counter/vanity，导入 OBJ 不自动切割。无新增家具字段，切孔由点位、管径和净高派生，规则与生产几何验收见 [管道避让](PIPE-CUTS.md)。

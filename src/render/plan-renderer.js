@@ -51,11 +51,15 @@ function renderFurn(){
   const g = $('#gFurn');
   g.setAttribute('display', ui.layers.furn ? 'inline' : 'none');
   clashIds = new Set(collisions().flat());
+  const servicePipes=typeof FurnishServices!=='undefined'?FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state)):[];
   g.innerHTML = drawOrder().map(f => {
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
     const label = Math.min(f.w,f.d) >= 380 && !NOLABEL.includes(f.type)
       ? `<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>` : '';
-    const body = furnSVG(f.type,f.w,f.d,f.color,f), flip = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
+    const body = furnSVG(f.type,f.w,f.d,f.color,f), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
+    const pipes=servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
+    const maskId='pipe-cut-'+f.id,mask=pipes.length?`<defs><mask id="${esc(maskId)}" maskUnits="userSpaceOnUse" x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}"><rect x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}" fill="white"/>${pipes.map(p=>{const local=FurnishServices.local({...f,flip:false},p);return `<circle cx="${local.at[0]}" cy="${local.at[1]}" r="${p.radius}" fill="black"/>`;}).join('')}</mask></defs>`:'';
+    const flip=pipes.length?`${mask}<g mask="url(#${esc(maskId)})">${mirrored}</g>`:mirrored;
     const clash = ui.layers.collide && clashIds.has(f.id)
       ? `<rect data-edit-overlay="clash" x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="url(#clash)" stroke="#d64532" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"/>` : '';
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
@@ -134,8 +138,8 @@ function renderOpenings(){
     s += `<path d="M${tail[0]} ${tail[1]}L${tip[0]} ${tip[1]}M${a1[0]} ${a1[1]}L${ap[0]} ${ap[1]}L${a2[0]} ${a2[1]}" fill="none" stroke="#ef5a24" stroke-width="2" vector-effect="non-scaling-stroke"/>
         <text x="${tail[0] + px*160}" y="${tail[1] + py*160}" font-size="200" text-anchor="${anchor}" fill="#ef5a24">${tr('入户','Entry')}</text>`;
   }
-  for(const m of typeof PLAN==='undefined'?[]:PLAN.markers||[]){const [x,y]=m.at,color=m.kind==='gas'?'#c35b20':'#087c9c',radius=Math.max(m.radius,55);s+=`<g data-service="${esc(m.id)}" pointer-events="none"><title>${esc(m.name)} · ${esc(m.sourceLayer||'DXF')} · ${tr('图纸点位参考','CAD reference point')}</title><circle cx="${x}" cy="${y}" r="${radius}" fill="${PAL.paper}" stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><path d="M${x-radius*.7} ${y}H${x+radius*.7}M${x} ${y-radius*.7}V${y+radius*.7}" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"/><text x="${x+radius+45}" y="${y}" font-size="130" dominant-baseline="central" fill="${color}">${esc(m.name)}</text></g>`;}
-  for(const b of typeof PLAN==='undefined'?[]:PLAN.beams||[])s+=`<polygon data-beam="${esc(b.id)}" points="${b.poly.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#9467bd" stroke-dasharray="100 70" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"><title>${esc(b.name)} · 顶部房梁，不分割房间；${FurnishDraft.beamVertical(b)?`梁底 ${b.bottomHeight} / 梁顶 ${b.topHeight} mm`:'高度待录入'}</title></polygon>`;
+  for(const m of typeof PLAN==='undefined'?[]:PLAN.markers||[]){const [x,y]=m.at,color=m.kind==='gas'?'#c35b20':'#087c9c',radius=FurnishDraft.serviceDiameter(m)/2;s+=`<g data-service="${esc(m.id)}" pointer-events="none"><title>${esc(m.name)} · ${esc(m.sourceLayer||'DXF')} · ${tr('图纸点位参考','CAD reference point')}</title><circle cx="${x}" cy="${y}" r="${radius}" fill="${PAL.paper}" stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><path d="M${x-radius*.7} ${y}H${x+radius*.7}M${x} ${y-radius*.7}V${y+radius*.7}" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"/><text x="${x+radius+45}" y="${y}" font-size="130" dominant-baseline="central" fill="${color}">${esc(m.name)}</text></g>`;}
+  for(const b of typeof PLAN==='undefined'?[]:PLAN.beams||[])s+=`<polygon data-beam="${esc(b.id)}" points="${b.poly.map(p=>p.join(',')).join(' ')}" fill="#9467bd" fill-opacity="0.22" stroke="none" pointer-events="none"><title>${esc(b.name)} · 顶部房梁，不分割房间；${(()=>{const v=FurnishDraft.beamVertical(b,FurnishProject.ceilingHeight(state));return v?`梁底离地 ${v.bottom} / 梁厚 ${v.top-v.bottom} mm${v.assumed?' · 默认示意待核对':''}`:'高度待核对';})()}</title></polygon>`;
   $('#gOpen').innerHTML = s;
 }
 

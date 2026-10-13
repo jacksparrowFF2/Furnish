@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm'),F=require('../src/core/floorplan-core.js'),P=require('../src/core/project-core.js');
+const data=P.unpack(JSON.parse(fs.readFileSync('tests/fixtures/beam-heights-project.json','utf8'))),d=data.current.architecture.draft,b=d.beams[0],original=JSON.stringify(d);
+assert.equal(F.beamVertical(b),null);assert.deepEqual(F.beamVertical(b,3200),{bottom:2900,top:3200,assumed:true});assert.equal(JSON.stringify(d),original);
+const next=F.editCeilingBeam(d,b.id,350,3200),attached=next.beams[0];assert.equal(attached.ceilingThickness,350);assert.equal(attached.topHeight,undefined);assert.equal(attached.bottomHeight,undefined);
+assert.deepEqual(F.beamVertical(attached,3200),{bottom:2850,top:3200});assert.deepEqual(F.beamVertical(attached,4000),{bottom:3650,top:4000});
+const calibrated={...next,scale:next.scale*1.2};assert.equal(F.build(calibrated).beams[0].ceilingThickness,350);assert.deepEqual(F.beamVertical(F.build(calibrated).beams[0],3200),{bottom:2850,top:3200});
+for(const t of [0,-1,3201,NaN,Infinity,'350',null])assert.throws(()=>F.editCeilingBeam(d,b.id,t,3200));
+assert.throws(()=>F.validate({...next,beams:[{...attached,topHeight:3200,bottomHeight:2850}]}));assert.throws(()=>F.validate({...next,beams:[{...attached,ceilingThickness:null}]}));
+const fixed=F.editBeam(next,b.id,2200,2600);assert.equal(fixed.beams[0].ceilingThickness,undefined);assert.deepEqual(F.beamVertical(fixed.beams[0],4000),{bottom:2200,top:2600});assert.equal(F.editBeam(next,b.id).beams[0].ceilingThickness,undefined);
+data.current.ceilingHeight=3200;data.current.architecture={draft:next,baseline:d,phase:'design'};data.designs=[{id:'named',name:'房顶梁',planId:d.id,work:structuredClone(data.current)}];
+const restored=P.unpack(P.pack(data));assert.deepEqual(restored.current.architecture.draft.beams,next.beams);assert.deepEqual(restored.current.architecture.baseline.beams,d.beams);assert.deepEqual(restored.designs[0].work.architecture.draft.beams,next.beams);
+assert.throws(()=>P.validateBeamCeiling({...data.current,architecture:{draft:F.editCeilingBeam(d,b.id,2000,3200)}},1000));
+const plan=F.build(next);plan.ceilingHeight=3200;const xs=plan.beams[0].poly.map(p=>p[0]),ys=plan.beams[0].poly.map(p=>p[1]),f={id:'test',name:'边界柜',type:'custom',cx:(Math.min(...xs)+Math.max(...xs))/2,cy:(Math.min(...ys)+Math.max(...ys))/2,w:50,d:50,rot:0,h:2850};
+assert(!P.spaceCheck(plan,[f],{scanPassages:false}).some(v=>v.kind==='beam'&&v.beamId===b.id));assert(P.spaceCheck(plan,[{...f,h:2851}],{scanPassages:false}).some(v=>v.kind==='beam'&&v.beamId===b.id&&!v.pending));
+const unknownPlan={...plan,beams:F.build(d).beams};assert(P.spaceCheck(unknownPlan,[f],{scanPassages:false}).some(v=>v.kind==='beam'&&v.beamId===b.id&&v.pending),'default sketch is not silently treated as measured');
+(async()=>{
+ const html=fs.readFileSync('index.html','utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
+ const source=html.slice(html.indexOf('  for(const beam of PLAN.beams||[]){'),html.indexOf('  WALLS.forEach((w, i) => {',html.indexOf('function buildArch(){'))),shape=html.match(/function shapeOf\(poly, flip\).*$/m)[0];
+ const context=vm.createContext({THREE,FurnishDraft:F,FurnishProject:P,state:{ceilingHeight:3200},PLAN:F.build(next),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,mat:()=>new THREE.MeshStandardMaterial(),opt:{cut:2.8,labels:false},top:3.2,archUp:new THREE.Group()});
+ vm.runInContext(shape+'\n'+source,context);const mesh=context.archUp.children.find(o=>o.userData.beam===b.id),bounds=new THREE.Box3().setFromObject(mesh);assert(Math.abs(bounds.min.y-2.85)<1e-6);assert(Math.abs(bounds.max.y-3.2)<1e-6);assert(mesh.visible);assert.equal(context.archUp.children.filter(o=>o.userData.beam).length,d.beams.length,'legacy unknown beams now have default 3D sketches');
+ console.log('PASS ceiling beams: unknown sketch, linked thickness, absolute compatibility, no XY scaling, project/named/baseline roundtrip, validation, collision contact and real 3D roof/bottom');
+})().catch(e=>{console.error(e);process.exitCode=1;});

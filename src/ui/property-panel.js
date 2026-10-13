@@ -80,13 +80,13 @@ function furnPanel(f){
   const robotSpec=typeof FurnishRobotVacuumModel!=='undefined'?FurnishRobotVacuumModel.specs[f.type]:null;
   const r = isOutside(f) ? null : roomAt(f.cx, f.cy), custom = f.type === 'custom' || f.type === 'customround', lk = f.locked ? 'disabled' : '';
   const clashWith = collisions().filter(p => p.includes(f.id)).map(p => getF(p[0] === f.id ? p[1] : p[0])).filter(Boolean);
-  const fridgeConflictDetails=clashWith.flatMap(g=>{const fit=FurnishCabinet.fridgeBayFit(f,g)||FurnishCabinet.fridgeBayFit(g,f);return fit&&!fit.fits?fit.reasons:[];});
+  const fridgeConflictDetails=clashWith.flatMap(g=>{const fit=FurnishCabinet.fridgeBayFit(f,g)||FurnishCabinet.fridgeBayFit(g,f)||FurnishCabinet.hoodBayFit(f,g)||FurnishCabinet.hoodBayFit(g,f);return fit&&!fit.fits?fit.reasons:[];});
   const btn = (act, icon, label, on) => `<button class="btn ${on ? 'on' : ''}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   const pad = Math.max(f.w, f.d)*.1;
-  return `<section><div class="fhead"><div class="fthumb"><svg viewBox="${-f.w/2-pad} ${-f.d/2-pad} ${f.w+2*pad} ${f.d+2*pad}">${f.flip ? `<g transform="scale(-1 1)">${furnSVG(f.type,f.w,f.d,f.color)}</g>` : furnSVG(f.type,f.w,f.d,f.color)}</svg></div>
+  return `<section><div class="fhead"><div class="fthumb"><svg viewBox="${-f.w/2-pad} ${-f.d/2-pad} ${f.w+2*pad} ${f.d+2*pad}">${f.flip ? `<g transform="scale(-1 1)">${furnSVG(f.type,f.w,f.d,f.color,f)}</g>` : furnSVG(f.type,f.w,f.d,f.color,f)}</svg></div>
       <div><b>${esc(nm(f.name))}</b><small>${f.w} × ${f.d} mm · ${yen(priceOf(f))}</small>${f.locked ? `<span class="tag">${ico('lock')}${tr('已锁定','Locked')}</span>` : ''}</div></div>
     <h3>${tr('家具属性','Furniture')}</h3>
-    ${FurnishCabinet.supported(f)?`<button class="btn primary" id="cabinet-edit" ${lk}>${tr('柜体详细设计','Design cabinet')}</button><p class="muted">${tr('设计尺寸、分区、层板、抽屉和柜门；3D 中双击柜体也可进入。','Edit dimensions, bays, shelves, drawers and doors; double-click the cabinet in 3D to open.')}</p>`:''}
+    ${FurnishCabinet.supported(f)||f.kitchen?`<button class="btn primary" id="cabinet-edit" ${lk}>${tr('柜体详细设计','Design cabinet')}</button><p class="muted">${f.kitchen?tr('设计厨房形状、左右转角、模块与台面尺寸；三维预览，保存后应用，取消保留原方案。','Edit kitchen corners, modules and countertop with a 3D draft preview.'):tr('设计尺寸、分区、层板、抽屉和柜门；3D 中双击柜体也可进入。','Edit dimensions, bays, shelves, drawers and doors; double-click the cabinet in 3D to open.')}</p>`:''}
     ${fridge&&fridgeCabinets.length?`<div class="form"><label class="full">${tr('目标餐边柜','Target sideboard')}<select id="fridge-bay-target" ${lk}>${fridgeCabinets.map(g=>`<option value="${esc(g.id)}">${esc(nm(g.name))} · ${g.w}×${g.d} mm</option>`).join('')}</select></label></div><button class="btn" id="fridge-center-bay" ${lk}>${tr('在冰箱位左右居中','Center within fridge bay')}</button><p class="muted">${tr('只沿柜体宽度方向移动冰箱，前后位置及朝向保持不变。调整柜体后可再次点击对齐。','Moves only across the cabinet width; front/back position and orientation stay unchanged. Click again after moving or resizing the cabinet.')}</p>`:''}
     ${f.type==='curtain'?`<div class="form"><label class="full">${tr('窗帘样式','Curtain style')}<select id="curtainStyle" ${lk}><option value="single" ${f.curtainStyle==='single'?'selected':''}>${tr('单开 · 向一侧收拢','Single · stack to one side')}</option><option value="double" ${f.curtainStyle!=='single'?'selected':''}>${tr('双开 · 向两侧收拢','Double · stack to both sides')}</option></select></label></div><p class="muted">${tr('3D 点击布幔开启／关闭；单开窗帘可用镜像改变收拢侧。','Click cloth in 3D to open or close; mirror a single curtain to switch sides.')}</p>`:''}
     ${FurnishDesign.products().supports(f,'floorTrack')?`<div class="form"><label class="full">${tr('下轨道','Bottom track')}<select id="fFloorTrack" ${lk}><option value="false" ${(FurnishDesign.products().value(f,'floorTrack'))===false?'selected':''}>${tr('无地轨 · 吊轨','No floor track')}</option><option value="true" ${(FurnishDesign.products().value(f,'floorTrack'))===true?'selected':''}>${tr('有下轨道','With bottom track')}</option></select></label></div><p class="muted">${tr('进入 3D 点击门窗扇开关；镜像可改变叠合侧。独立门窗按家具摆放；墙体洞口请在「编辑户型」中添加门窗，再选中洞口设置扇型。','Click panels in 3D to open or close; mirror to change the stacking side. For a wall opening, add a door or window in the floor-plan editor and then select its panel style.')}</p>`:''}
@@ -113,7 +113,8 @@ function furnPanel(f){
       <label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>
     </div>
     <div class="swatches">${SWATCHES.map(c => `<button data-sw="${c}" class="${c === f.color ? 'on' : ''}" style="background:${c}" title="${c}"></button>`).join('')}</div>
-    <div class="muted desc">${tr('占地','Footprint')} ${fmt(f.w*f.d/1e6)} m² · ${tr('位于','In')} ${r ? esc(nm(state.rooms[r.id].name)) : isOutside(f) ? tr('户型外','outside') : tr('墙边 / 门口','wall / doorway')}</div>
+    <div class="muted desc">${tr('占地','Footprint')} ${fmt(f.kitchen?FurnishKitchen.area(f):f.w*f.d/1e6)} m² · ${tr('位于','In')} ${r ? esc(nm(state.rooms[r.id].name)) : isOutside(f) ? tr('户型外','outside') : tr('墙边 / 门口','wall / doorway')}</div>
+    ${kitchenPanel(f)}
     ${waterheaterInstallationPanel(f)}
     ${window.FurnishDesignUI?.placementPanel(f)||''}
     <div class="iconrow">
@@ -131,8 +132,9 @@ function furnPanel(f){
   <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右侧白色手柄只改宽、下方白色手柄只改深，角落橙色方块同时改宽深；调整尺寸固定对侧边。Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps with guides); drag the top dot to rotate, the right white handle for width, the bottom white handle for depth, or the orange corner for both. Resizing fixes the opposite edge. Shift+click to multi-select; right-click for more.')}</section>`;
 }
 function bindFurnPanel(f){
+  if(typeof bindKitchenPanel==='function')bindKitchenPanel(f);
   if(f.type==='waterheater_flat')$('#heater-ceiling-settings').onclick=()=>{const room=FurnishProject.ceilingAt(FurnishProject.effectivePlan(PLAN,state),f.cx,f.cy).room;if(room){ui.sel={kind:'room',id:room.id};renderPanel();}else FurnishWorkspace.open('settings');};
-  if(FurnishCabinet.supported(f))$('#cabinet-edit').onclick=()=>FurnishCabinetEditor.open(f.id);
+  if(FurnishCabinet.supported(f)||f.kitchen)$('#cabinet-edit').onclick=()=>FurnishCabinetEditor.open(f.id);
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
   const socketMode=$('#heaterSocketMode');if(f.type==='waterheater_flat'&&socketMode){socketMode.onchange=e=>{if(getF(f.id).locked)return;upd(g=>{if(e.target.value==='set')g.heaterSocket={x:g.cx,y:g.cy,z:FurnishDesign.products().value(g,'mountHeight')};else delete g.heaterSocket;});};for(const key of ['x','y','z']){const el=$('#heaterSocket'+key.toUpperCase());if(el)el.onchange=e=>{try{if(getF(f.id).locked)throw Error('家具已锁定，请先解锁');const v=Number(e.target.value);if(!e.target.value.trim()||!Number.isFinite(v)||Math.abs(v)>1000000||key==='z'&&(v<0||v>20000))throw Error('请输入有效插座坐标；离地高度须为 0–20000 mm');upd(g=>g.heaterSocket={...g.heaterSocket,[key]:Math.round(v)});}catch(error){toast(error.message);renderPanel();}};}}

@@ -15,6 +15,8 @@ const DASH = 'stroke-dasharray="4 3"';
 
 
   const x = -w/2, y = -d/2, m = Math.min(w,d);
+  if(f?.type==='kitchenwall'&&f.cabinet?.hoodBayHeight!==undefined){const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,bay=C.hoodBay(f);return rc(x,y,w,d,c)+rc(bay.left,y,bay.width,bay.depth,'none',DASH)+`<text x="${bay.center}" y="0" text-anchor="middle" dominant-baseline="central" font-size="60" fill="${PAL.ink}">烟机嵌合区</text>`;}
+  if(f?.kitchen){const K=typeof module==='object'&&module.exports?require('../core/kitchen-core.js'):root.FurnishKitchen;return K.slabs(f).map(s=>rc(s.x-s.w/2,s.y-s.d/2,s.w,s.d,c)).join('')+K.layout(f).map(m=>rc(m.x-m.w/2+2,m.y-m.d/2+2,m.w-4,m.d-4,'none',m.role==='empty'?DASH:'')+`<text x="${m.x}" y="${m.y}" text-anchor="middle" dominant-baseline="central" font-size="70" fill="${PAL.ink}">${K.roles[m.role]}</text>`).join('');}
   if(f?.cabinet?.sideboard){
     const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,s=f.cabinet.sideboard,bays=C.layout(f),t=f.cabinet.thickness;
     return bays.map((bay,i)=>{const left=bay.left-t,right=bay.left+bay.width+t,col=f.cabinet.columns[i];return col.fridgeBay?rc(left,y,right-left,s.fridgeDepth??d,'none',DASH)+ln(left,y+(s.fridgeDepth??d),right,y+(s.fridgeDepth??d),DASH):rc(left,y,right-left,s.lowerDepth,c)+rc(left,y,right-left,s.upperDepth,shade(c,.85))+ln(left,y+s.lowerDepth,right,y+s.lowerDepth);}).join('');
@@ -93,6 +95,12 @@ const DASH = 'stroke-dasharray="4 3"';
     case 'table': return rc(x,y,w,d,c,'rx="30"') + rc(x+50,y+50,w-100,d-100,'none','rx="20" opacity=".4"');
     case 'roundtable': return ec(0,0,w/2,d/2,c) + ec(0,0,w/2-50,d/2-50,'none','opacity=".4"');
     case 'counter': return rc(x,y,w,d,c) + ln(x,y+d-40,x+w,y+d-40,DASH);
+    case 'rangehood_fotile_jcd10ta': return rc(x,y,w,d,'#202225') + rc(-w*.265,y,w*.53,d*.45,'#45474a') + ln(x,y+d*.9,x+w,y+d*.9) + rc(-w*.12,y+d*.7,w*.24,d*.05,'#a87c38');
+    case 'stove_fotile_th36b': {
+      let s=rc(x,y,w,d,'#111214','rx="8"');
+      for(const px of [-w*.265,w*.265])s+=rc(px-w*.145,-d*.36,w*.29,d*.58,'#252629','rx="6"')+ec(px,-d*.07,d*.145,d*.145,'#55575a')+ec(px,-d*.07,d*.08,d*.08,'#131416')+ln(px-w*.145,-d*.07,px+w*.145,-d*.07)+ln(px,-d*.36,px,d*.22);
+      return s+ec(-w*.062,d*.31,d*.036,d*.036,'#bfc0c1')+ec(w*.062,d*.31,d*.036,d*.036,'#bfc0c1');
+    }
     case 'stove': {
       let s = rc(x,y,w,d,'#2f2f2f','rx="20"'); const r = m*.26;
       const pts = w/d > 1.4 ? [[-w/4,0],[w/4,0]] : [[-w/4,-d/4],[w/4,-d/4],[-w/4,d/4],[w/4,d/4]];

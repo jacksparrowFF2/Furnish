@@ -12,7 +12,7 @@
       plan.rooms.forEach(room => rooms[room.id] = {name:room.name, mat:room.mat, use:design.inferUse(room)});
       return {
         furniture:plan.defaults.map(f => ({id:makeId(), type:f.t, name:f.n,
-          cx:f.x, cy:f.y, w:f.w, d:f.d, rot:f.r || 0, color:f.c || colorFor(f.t)})),
+          cx:f.x, cy:f.y, w:f.w, d:f.d, rot:f.r || 0, color:f.c || colorFor(f.t),...(f.t==='counter'?design.products().initial({type:'counter',w:f.w,d:f.d}):{})})),
         rooms, demolished:[], measures:[], notes:[], open:{},
         ...(plan.customDraft ? {architecture:{draft:plan.customDraft, phase:'survey'}} : {}),
       };

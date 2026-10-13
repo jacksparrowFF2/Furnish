@@ -1,8 +1,12 @@
 PASS tests\test-autosave.cjs
 PASS tests\test-bay-windows.cjs
+PASS tests\test-beam-body-collisions.cjs
+PASS tests\test-beam-heights.cjs
 PASS tests\test-cabinet-advanced.cjs
 PASS tests\test-cabinet-drawer-joints.cjs
 PASS tests\test-cabinet-model.cjs
+PASS tests\test-cabinet-opening-3d.cjs
+PASS tests\test-cabinet-opening-volume-model.cjs
 PASS tests\test-cabinet-palette.cjs
 PASS tests\test-cabinet-preview.cjs
 PASS tests\test-cabinet.cjs
@@ -23,6 +27,7 @@ PASS tests\test-door-geometry.cjs
 PASS tests\test-dxf-inspection.cjs
 PASS tests\test-dxf-outlines.cjs
 PASS tests\test-dxf-repair.cjs
+PASS tests\test-dxf-supplement.cjs
 PASS tests\test-dxf-templates.cjs
 PASS tests\test-editable-presets.cjs
 PASS tests\test-entry-console.cjs
@@ -44,11 +49,13 @@ PASS tests\test-mirror.cjs
 PASS tests\test-multi-region-merge.cjs
 PASS tests\test-opening-editor.cjs
 PASS tests\test-opening-references.cjs
+PASS tests\test-pipe-collisions.cjs
 PASS tests\test-plan-height-order.cjs
 PASS tests\test-plan-sharing.cjs
 PASS tests\test-preset-copy-ui.cjs
 PASS tests\test-pricing.cjs
 PASS tests\test-procurement.cjs
+PASS tests\test-product-rules.cjs
 PASS tests\test-project-recovery.cjs
 PASS tests\test-project-validation.cjs
 PASS tests\test-project.cjs
@@ -65,6 +72,7 @@ PASS tests\test-robot-vacuum.cjs
 PASS tests\test-room-ceiling-height.cjs
 PASS tests\test-share-codec.cjs
 PASS tests\test-shower-arrow.cjs
+PASS tests\test-sideboard-board-edges.cjs
 PASS tests\test-snapping.cjs
 PASS tests\test-style-presets.cjs
 PASS tests\test-telescopic-ui.cjs
@@ -81,4 +89,4 @@ PASS tests\test-work-state.cjs
 PASS tests\test-workspace-cache.cjs
 PASS tests\test-yeswood-sofa.cjs
 PASS tests\test-zone-boundaries.cjs
-PASS 12 built-in plans, local assets, shared declarations and all production syntax checks
+PASS 91 regression suites, 12 built-in plans, 11 preview pages, local assets, shared declarations and all production syntax checks

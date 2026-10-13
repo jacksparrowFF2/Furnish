@@ -1,7 +1,7 @@
-.cab-editor {display:grid;grid-template-columns:minmax(280px,1fr) minmax(260px,1fr);gap:24px;align-items:start}
+.cab-editor {display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(320px,1fr);gap:24px;align-items:start;height:min(680px,calc(100dvh - 190px));min-height:360px}
 .dlg-box.wide:has(.cab-editor) {width:min(1100px,calc(100vw - 32px));max-width:calc(100vw - 32px)}
-.cab-visual {position:sticky;top:0;min-width:0}
-#cab-preview {height:360px;overflow:hidden;border-radius:12px;background:#eeeae3;display:grid;place-items:center;position:relative}
+.cab-visual {position:sticky;top:0;min-width:0;align-self:start}
+#cab-preview {height:clamp(320px,48dvh,500px);overflow:hidden;border-radius:12px;background:#eeeae3;display:grid;place-items:center;position:relative}
 #cab-preview canvas:focus-visible {outline:3px solid #168de2;outline-offset:-3px}
 .cab-drag-readout {position:absolute;top:12px;left:12px;max-width:calc(100% - 24px);padding:7px 10px;border-radius:8px;background:#116da8;color:white;font-size:13px;pointer-events:none}
 .cab-drag-readout[hidden] {display:none}
@@ -12,7 +12,31 @@
 .cab-dimensions {position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .cab-dimension {position:absolute;transform:translate(-50%,-50%);white-space:nowrap;background:#fffdf4df;color:#285168;border-radius:4px;padding:2px 4px;font-size:11px;font-variant-numeric:tabular-nums}
 .cab-dimension[hidden] {display:none}
-.cab-fields {min-width:0}
+.cab-fields {min-width:0;height:100%;overflow:auto;padding-right:8px;overscroll-behavior:contain}
+.cab-tabs {display:grid;grid-template-columns:repeat(4,1fr);gap:4px;position:sticky;top:0;z-index:2;background:var(--panel,#fffdf9);padding:4px 0 14px;margin-bottom:12px;border-bottom:1px solid var(--line,#ddd)}
+.cab-tabs button {font:inherit;font-size:12px;cursor:pointer;padding:10px 4px;border:0;border-radius:8px;background:var(--soft,#f3f0e9);color:var(--ink,#302c25)}
+.cab-tabs button.on {background:var(--accent,#de742f);color:#fff}
+.cab-tabs button:focus-visible {outline:2px solid #168de2;outline-offset:2px}
+.cab-editor [hidden] {display:none!important}
+#cab-bay-picker {padding:12px;margin-bottom:14px;background:var(--soft,#f3f0e9);border-radius:10px}
+#cab-bay-picker label {display:flex;align-items:center;gap:12px;font-size:13px}
+#cab-bay-picker select {flex:1;min-width:0}
+#cab-kitchen-picker {padding:12px;margin-bottom:14px;background:var(--soft,#f3f0e9);border-radius:10px}
+#cab-kitchen-picker label {display:flex;align-items:center;gap:12px;font-size:13px}
+#cab-kitchen-picker select {flex:1;min-width:0}
+#cab-kitchen-fields label {display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.cab-hint,.cab-help {font-size:12px;line-height:1.6;color:var(--muted,#746f65)}
+.cab-help {border-top:1px solid var(--line,#ddd);padding:12px 0;margin-top:12px}
+.cab-help summary {cursor:pointer}
+.cab-fields h3 {font-size:16px;margin:0 0 16px}
+.cab-part-section + .cab-part-section {border-top:1px solid var(--line,#ddd);margin-top:16px;padding-top:16px}
+.cab-part-section h4 {font-size:13px;margin:0 0 12px}
+.cab-fields input:not([type=checkbox]):not([type=range]):not([type=color]),.cab-fields select {width:100%;min-width:0;padding:9px 10px;font:inherit;font-size:13px;border:1px solid var(--line,#ddd);border-radius:8px;background:var(--panel,#fffdf9);color:inherit}
+.cab-fields input[type=color] {width:48px;height:32px;border:0;padding:0}
+.cab-fields .actions {display:flex;flex-wrap:wrap;gap:6px}
+.cab-fields .btn {font-size:12px}
+.cab-fields label {font-size:13px}
+.cab-fields label:has(>input[type=checkbox]) {flex-direction:row!important;align-items:flex-start;gap:8px!important;line-height:1.5}
 #cab-tools {padding:12px;background:var(--soft,#8881);border-radius:10px;margin-bottom:16px}
 #cab-tools label {display:flex;gap:8px;align-items:center;margin:8px 0;font-size:13px}
 .cab-drawer-row {padding:10px;background:var(--soft,#8881);border-radius:8px;margin:8px 0}
@@ -24,4 +48,4 @@
 #cab-form fieldset {border:1px solid var(--line,#8885);border-radius:10px;padding:12px;margin:16px 0}
 #cab-form legend {padding:0 6px}
 #cab-error {min-height:24px}
-@media(max-width:700px){.cab-editor{grid-template-columns:1fr}.cab-visual{position:static}#cab-preview{height:300px}}
+@media(max-width:700px){.cab-editor{grid-template-columns:1fr;height:auto;min-height:0;gap:16px}.cab-visual{position:static}.cab-fields{height:auto;overflow:visible;padding:0}#cab-preview{height:240px}.cab-tabs{position:static}.cab-selection{min-height:0}.cab-view-controls{font-size:11px}.cab-tabs button{font-size:11px}}

@@ -37,7 +37,7 @@ for(const thickness of [0,1,35,1000]){
 for(const value of [-1,1001,NaN,Infinity,'35',null])assert.throws(()=>P.validateWork({furniture:[{...dryer,stackHeight:value}]}),/连接层高度/);
 assert.throws(()=>P.validateWork({furniture:[{...washer,type:'fridge',stackHeight:20}]}),/连接层高度/);
 const app=fs.readFileSync(require.resolve('../src/app.js'),'utf8');
-const transaction=vm.createContext({FurnishDesign:D,state:{furniture:[{...washer},{...dryer,mountHeight:0}]},undoStack:[],redoStack:[],save(){this.saved=JSON.stringify(this.state);},snapshot(){}});
+const transaction=vm.createContext({FurnishKitchen:require('../src/core/kitchen-core.js'),FurnishDesign:D,state:{furniture:[{...washer},{...dryer,mountHeight:0}]},undoStack:[],redoStack:[],save(){this.saved=JSON.stringify(this.state);},snapshot(){}});
 // Exercise the actual commit hook used by property changes and planar dragging.
 transaction.save=()=>{transaction.saved=JSON.stringify(transaction.state);};
 vm.runInContext(app.match(/function commit\(before\)\{[^\n]+/)[0],transaction);

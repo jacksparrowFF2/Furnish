@@ -1,11 +1,11 @@
 /* Shared-model preview: structure picking, constrained drags and dimension overlays. */
 (function(root){
- function create({THREE,OrbitControls,box,host,f,actions,background,furniture=[]}){
+ function create({THREE,OrbitControls,box,host,f,actions,background,furniture=[],plan=null}){
   const C=root.FurnishCabinet,r=new THREE.WebGLRenderer({antialias:true}),sc=new THREE.Scene();let cam=new THREE.PerspectiveCamera(38,1,.01,100);
   r.setPixelRatio(Math.min(devicePixelRatio,2));r.toneMapping=THREE.ACESFilmicToneMapping;host.replaceChildren(r.domElement);
   sc.background=new THREE.Color(background);sc.add(new THREE.HemisphereLight(0xffffff,0x8f8170,1.5));
   const light=new THREE.DirectionalLight(0xffffff,1.8);light.position.set(3,5,4);sc.add(light);
-  const cv=r.domElement;cv.tabIndex=0;cv.setAttribute('aria-label','柜体三维预览：拖动层板或分隔板；方向键微调');
+  const cv=r.domElement;cv.tabIndex=0;cv.setAttribute('aria-label',f.kitchen?'厨房三维预览：拖动旋转，滚轮缩放':'柜体三维预览：拖动层板或分隔板；方向键微调');
   const readout=document.createElement('div');readout.className='cab-drag-readout';readout.hidden=true;host.appendChild(readout);
   const labelLayer=document.createElement('div');labelLayer.className='cab-dimensions';host.appendChild(labelLayer);
   let controls=new OrbitControls(cam,cv),model=null,frame=0,disposed=false,current=f,down=null,selected=null,helper=null,guide=null,drag=null,labels=[];
@@ -29,21 +29,25 @@
   }
   function dimensions(){
    labelLayer.replaceChildren();labels=[];if(!settings.dimensions)return;
+   const add=(text,x,y,z)=>{const el=document.createElement('span');el.className='cab-dimension';el.textContent=text;labelLayer.appendChild(el);labels.push({el,point:new THREE.Vector3(x*(current.kitchen&&current.flip?-1:1)/1000,y/1000,z/1000)});};
+   if(current.kitchen){const K=root.FurnishKitchen;for(const m of K.layout(current))add(`${K.roles[m.role]} ${Math.round(m.width)} mm`,m.x,50,m.y);add(`台面高 ${current.kitchen.baseHeight+current.kitchen.thickness} mm`,0,current.kitchen.baseHeight+current.kitchen.thickness+80,-current.d/2);return;}
    const c=C.config(current),base=c.plinth+c.thickness;
-
-   const add=(text,x,y,z)=>{const el=document.createElement('span');el.className='cab-dimension';el.textContent=text;labelLayer.appendChild(el);labels.push({el,point:new THREE.Vector3(x/1000,y/1000,z/1000)});};
    C.layout(current).forEach((bay,i)=>{
     add(`宽 ${Math.round(bay.width)}`,bay.center,c.plinth-20,current.d/2+30);
-    if(settings.doors==='normal'&&c.columns[i].door!=='none'&&!c.columns[i].doorOpen)return;
+    if(settings.doors==='normal'&&(c.hoodBayHeight!==undefined?!c.columns[0].doorOpen&&!c.columns[2].doorOpen:c.columns[i].door!=='none'&&!c.columns[i].doorOpen))return;
     C.spaces(current,i).forEach(gap=>add(`净高 ${Math.round(gap.height)}`,bay.center,base+(gap.top+gap.bottom)/2,current.d/2+25));
    });
   }
   function projectLabels(){const rect=cv.getBoundingClientRect();for(const {el,point} of labels){const p=point.clone().project(cam);el.hidden=p.z< -1||p.z>1||Math.abs(p.x)>1||Math.abs(p.y)>1;el.style.left=`${(p.x+1)*rect.width/2}px`;el.style.top=`${(1-p.y)*rect.height/2}px`;}}
-  function update(value){current=value;clearModel();model=root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture});sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();}
+  function update(value){current=value;clearModel();model=value.kitchen?root.FurnishKitchenModel.build(THREE,value,box,{furniture,plan}):root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture,plan});if(value.kitchen)model.scale.x=value.flip?-1:1;
+   if(C.hoodBay(value)&&root.FurnishFotileModel)for(const hood of furniture.filter(f=>C.hoodBayFit(value,f)?.fits)){
+    const node=root.FurnishFotileModel.build(THREE,hood),a=(value.rot||0)*Math.PI/180,dx=hood.cx-value.cx,dy=hood.cy-value.cy;node.position.set((dx*Math.cos(a)+dy*Math.sin(a))*(value.flip?-1:1)/1000,-root.FurnishProducts.value(value,'mountHeight')/1000,(-dx*Math.sin(a)+dy*Math.cos(a))/1000);node.traverse(o=>o.userData.cabinetIgnorePick=true);model.add(node);
+   }
+   sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();}
   function fit(){
-   const h=C.height(current)/1000,w=current.w/1000,size=Math.max(w,h,current.d/1000);controls.target.set(0,h/2,0);
-   if(settings.front){viewHeight=Math.max(h,w/(host.clientWidth/host.clientHeight||1))*1.35;cam.position.set(0,h/2,Math.max(4,size*3));cam.zoom=1;resize();}
-   else cam.position.set(size*1.1,h/2+size*.5,size*2.1);controls.update();
+   const h=(current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current))/1000,w=current.w/1000,bottom=C.hoodBay(current)?Math.min(0,new THREE.Box3().setFromObject(model).min.y):0,size=Math.max(w,h-bottom,current.d/1000),center=(h+bottom)/2;controls.target.set(0,center,0);
+   if(settings.front){viewHeight=Math.max(h-bottom,w/(host.clientWidth/host.clientHeight||1))*1.35;cam.position.set(0,center,Math.max(4,size*3));cam.zoom=1;resize();}
+   else if(current.kitchen){const side=(root.FurnishKitchen.cornerSide(current)==='right'?-1:1)*(current.flip?-1:1);cam.position.set(side*size*.85,h/2+size*.6,size*1.7);}else cam.position.set(size*1.1,h/2+size*.5,size*2.1);controls.update();
   }
   function resize(){const width=host.clientWidth||500,height=host.clientHeight||440,aspect=width/height;r.setSize(width,height);if(cam.isOrthographicCamera){cam.left=-viewHeight*aspect/2;cam.right=-cam.left;cam.top=viewHeight/2;cam.bottom=-cam.top;}else cam.aspect=aspect;cam.updateProjectionMatrix();}
   function rayAt(e){const rect=cv.getBoundingClientRect(),ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),cam);return ray;}
@@ -81,7 +85,7 @@
   const observer=new ResizeObserver(resize);observer.observe(host);update(f);fit();resize();
   function render(){if(disposed)return;if(!drag)controls.update();r.render(sc,cam);projectLabels();frame=requestAnimationFrame(render);}render();
   return {
-   update:value=>{const changed=JSON.stringify([value.w,value.d,value.h])!==JSON.stringify([current.w,current.d,current.h]);update(value);if(changed)fit();},
+   update:value=>{const dims=v=>[v.w,v.d,v.kitchen?v.kitchen.baseHeight+v.kitchen.thickness:v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
    selectShelf:part=>{selected=part;highlight();},focus:()=>cv.focus({preventScroll:true}),
    setView:options=>{endDrag(true);const change=options.front!==undefined&&options.front!==settings.front;settings={...settings,...options};if(change){controls.dispose();cam=settings.front?new THREE.OrthographicCamera(-1,1,1,-1,.01,100):new THREE.PerspectiveCamera(38,1,.01,100);controls=new OrbitControls(cam,cv);setupControls();fit();resize();}update(current);},
    dispose:()=>{disposed=true;drag=null;cancelAnimationFrame(frame);observer.disconnect();controls.dispose();clearHighlight();clearModel();r.dispose();r.forceContextLoss();cv.remove();readout.remove();labelLayer.remove();},

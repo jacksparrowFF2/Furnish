@@ -3,6 +3,7 @@
  'use strict';
  const cabinet=()=>root.FurnishCabinet||require('./cabinet-core.js');
  const products=()=>root.FurnishProducts||require('./product-rules.js');
+ const kitchen=()=>root.FurnishKitchen||require('./kitchen-core.js');
  const uses={unassigned:['未分类','Unassigned'],living:['客厅','Living room'],dining:['餐厅','Dining room'],bedroom:['卧室','Bedroom'],study:['书房','Study'],kitchen:['厨房','Kitchen'],bathroom:['卫生间','Bathroom'],balcony:['阳台','Balcony'],hall:['玄关／走廊','Hall'],storage:['储物／衣帽间','Storage'],other:['其他','Other'],bay:['飘窗台','Bay platform']};
  function inferUse(room,setting){
   if(room.counted===false)return 'bay';
@@ -26,7 +27,7 @@
  function resizeFurniture(f,values,anchor=f.resizeAnchor||'center'){
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
-  const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return cabinet().resize(f,next);
+  const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return f.kitchen?kitchen().resize(f,next):cabinet().resize(f,next);
  }
  function pasteFurniture(clipboard,target,planBounds,makeId,available=2000,existingIds=[]){
   if(!clipboard?.items?.length)throw Error('剪贴板没有家具');
@@ -38,15 +39,17 @@
   const wanted=[target.x-clipboard.cx,target.y-clipboard.cy],delta=[shift(wanted[0],box[0],box[2],planBounds.x,planBounds.w),shift(wanted[1],box[1],box[3],planBounds.y,planBounds.h)];
   const used=new Set(existingIds),sourceIds=clipboard.items.map(f=>f.id),reserved=new Set(sourceIds),moved=clipboard.cut===true&&!clipboard.cutMoved&&!clipboard.items.some(f=>f.locked)&&sourceIds.every(id=>typeof id==='string'&&id&&!used.has(id))&&reserved.size===sourceIds.length;
   const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{if(!moved){let id;do{id=makeId();}while(used.has(id)||reserved.has(id));f.id=id;f.purchaseStatus='planned';delete f.locked;}used.add(f.id);f.cx+=delta[0];f.cy+=delta[1];});
+  const mapping=new Map(sourceIds.map((id,i)=>[id,items[i].id]));for(const f of items)if(f.counterLink){if(mapping.has(f.counterLink.hostId))f.counterLink.hostId=mapping.get(f.counterLink.hostId);else delete f.counterLink;}kitchen().normalize(items);
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
  function replaceFurniture(f,c){
-  const base={...f};delete base.cabinet;const next=resizeFurniture(base,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
+  const base={...f};delete base.cabinet;delete base.kitchen;const next=resizeFurniture(base,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
   Object.assign(next,{type:c.type,name:c.name,color:c.color,brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',referencePrice:c.price,frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:''});
   delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;delete next.curtainStyle;if(c.h===undefined)delete next.h;
   if(c.cabinet&&cabinet().supported(next))next.cabinet=JSON.parse(JSON.stringify(c.cabinet));
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
   products().replacement(f,next,c);
+  if(next.type==='counter'&&!c.obj)next.kitchen=c.kitchen?JSON.parse(JSON.stringify(c.kitchen)):kitchen().defaults(next);
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}
@@ -63,10 +66,10 @@
   const ids=new Set(),reserved=new Set(list.map(n=>n.id));return list.map(n=>{const note={...n,x:Number(n.x),y:Number(n.y),color:['accent','teal','ink','paper'].includes(n.color)?n.color:'accent',size:[.8,1,1.4].includes(n.size)?n.size:1};if(typeof note.id!=='string'||!note.id||ids.has(note.id)){do{note.id=makeId();}while(ids.has(note.id)||reserved.has(note.id));}ids.add(note.id);return note;});
  }
  function restoreFurniture(list,{makeId,colorFor}){
-  const valid=(Array.isArray(list)?list:[]).filter(f=>f&&typeof f==='object'&&[f.cx,f.cy].every(Number.isFinite)&&Number.isFinite(Number(f.w))&&Number.isFinite(Number(f.d))&&Number(f.w)>0&&Number(f.d)>0),ids=new Set(),reserved=new Set(valid.map(f=>f.id));return valid.map(item=>{
+  const valid=(Array.isArray(list)?list:[]).filter(f=>f&&typeof f==='object'&&[f.cx,f.cy].every(Number.isFinite)&&Number.isFinite(Number(f.w))&&Number.isFinite(Number(f.d))&&Number(f.w)>0&&Number(f.d)>0),ids=new Set(),reserved=new Set(valid.map(f=>f.id));return kitchen().normalize(valid.map(item=>{
    const f={...item,w:Number(item.w),d:Number(item.d)};if(typeof f.id!=='string'||!f.id||ids.has(f.id)){do{f.id=makeId();}while(ids.has(f.id)||reserved.has(f.id));}ids.add(f.id);
    f.type=typeof f.type==='string'?f.type:'custom';f.name=typeof f.name==='string'?f.name:'家具';f.rot=Number.isFinite(f.rot)?f.rot:0;f.color=typeof f.color==='string'&&/^#[0-9a-f]{3,8}$/i.test(f.color)?f.color:colorFor(f.type);return products().migrate(f);
-  });
+  }));
  }
  function deliveryBounds(base,boxes,padding=250){
   const valid=boxes.filter(b=>b.length===4&&b.every(Number.isFinite)&&b[2]>=b[0]&&b[3]>=b[1]);
