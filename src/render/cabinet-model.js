@@ -195,9 +195,9 @@
    });
    if(col.doorBottom!==undefined)y=base+col.doorBottom/1000;
    const door=C.frontDoor(f,i,c);if(door==='none'||options.doors==='hidden')return;
-   const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.frontHeight(f,c)/1000-faceInset,count=door==='double'?2:1,leafW=(span.right-span.left)/count,dh=doorTop-doorBottom;
+   const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.frontHeight(f,c)/1000-faceInset,count=C.frontLeafCount(f,i,c),leafW=(span.right-span.left)/count,dh=doorTop-doorBottom;
    for(let j=0;j<count;j++){
-    const right=door==='right'||door==='double'&&j===1,center=span.left+leafW*(j+.5),pivot=new THREE.Group();
+    const right=C.rightDoorHinge(door,j,count),center=span.left+leafW*(j+.5),pivot=new THREE.Group();
     pivot.position.set(center+(right?1:-1)*leafW/2,doorBottom+.001,d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0));pivot.rotation.y=col.doorOpen?(right?1:-1)*C.doorAngle(c,col)*Math.PI/180:0;
     pivot.userData.motion={kind:'cabinetdoor',column:i,section:'storage',leaf:j,axis:'y',angle:(right?1:-1)*C.maxDoorAngle(c)*Math.PI/180};
     const local=(right?-1:1)*leafW/2;

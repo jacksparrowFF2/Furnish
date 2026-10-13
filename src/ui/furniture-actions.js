@@ -4,18 +4,26 @@
 // ui.sel = {kind:'furn', id:主选中, ids:[全部选中]}；单选时 ids 可省略
 const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
 const selItems = () => selIds().map(getF).filter(Boolean);
-function select(sel){ ui.sel = sel; closeCtx(); renderSel(); renderPanel(); updateHeader(); }
+function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.sel = sel; closeCtx(); renderSel(); renderPanel(); updateHeader(); }
 function selectIds(ids, primary){
   ids = [...new Set(ids)].filter(id => getF(id));
   select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);
 }
-function toggleSel(id){ const ids = selIds(); selectIds(ids.includes(id) ? ids.filter(x => x !== id) : [...ids, id]); }
+function toggleSel(id){ const ids = selIds(),members=new Set(FurnishDesign.expandGroups(state.furniture,[id])); selectIds(ids.includes(id) ? ids.filter(x => !members.has(x)) : [...ids, ...members]); }
+function groupSel(){
+ const ids=selIds();if(ids.length<2)return toast(tr('请先选择至少 2 件家具','Select at least 2 items first'));
+ let groupId;do{groupId=uid();}while(state.furniture.some(f=>f.groupId===groupId));
+ mutate(()=>state.furniture=FurnishDesign.groupFurniture(state.furniture,ids,groupId));selectIds(ids,ui.sel?.id);
+ toast(tr('已打组：点击任一成员可移动整组','Grouped: select any member to move the group'));
+}
+function ungroupSel(){const ids=selIds();if(!selItems().some(f=>f.groupId))return;mutate(()=>state.furniture=FurnishDesign.ungroupFurniture(state.furniture,ids));selectIds(ids,ui.sel?.id);toast(tr('已解组','Ungrouped'));}
 function selectAll(){ selectIds(state.furniture.map(f => f.id)); }
 // 锁定的家具不参与移动 / 旋转 / 删除等操作
 function movable(items){
-  const n = items.filter(f => f.locked).length;
+  const blocked=new Set(items.filter(f=>f.locked&&f.groupId).map(f=>f.groupId));
+  const n = items.filter(f => f.locked||blocked.has(f.groupId)).length;
   if (n) toast(tr(`${n} 件家具已锁定，未作修改（L 解锁）`, `${n} locked item(s) left unchanged (L to unlock)`));
-  return items.filter(f => !f.locked);
+  return items.filter(f => !f.locked&&!blocked.has(f.groupId));
 }
 
 /* ======================= 编辑操作 ======================= */
@@ -58,6 +66,7 @@ function resetItemSel(){
 }
 // 对齐 / 分布 / 等尺寸（多选）：以外包盒为准，锁定的家具作为参照不动
 function alignSel(mode){
+  if(selItems().some(f=>f.groupId))return toast(tr('请先解组再对齐，避免改变组内相对位置','Ungroup before aligning members'));
   const all = selItems(); if (all.length < 2) return toast(tr('请先选择至少 2 件家具', 'Select at least 2 items first'));
   const items = movable(all), [x0,y0,x1,y1] = groupBox(all);
   mutate(() => items.forEach(f => { const {hw, hh} = aabb(f);
@@ -66,6 +75,7 @@ function alignSel(mode){
     f.cx = Math.round(f.cx); f.cy = Math.round(f.cy); }));
 }
 function distributeSel(axis){
+  if(selItems().some(f=>f.groupId))return toast(tr('请先解组再分布，避免改变组内相对位置','Ungroup before distributing members'));
   const all = selItems(); if (all.length < 3) return toast(tr('等距分布需要至少 3 件家具', 'Distribute needs at least 3 items'));
   const h = axis === 'h', key = f => h ? f.cx - aabb(f).hw : f.cy - aabb(f).hh, size = f => h ? 2*aabb(f).hw : 2*aabb(f).hh;
   const items = [...all].sort((a, b) => key(a) - key(b)), first = items[0], last = items[items.length-1];
@@ -85,7 +95,7 @@ function matchSizeSel(){
 let clip = null;
 function syncCutClipboard(){if(clip?.cut&&clip.movePlan===PLAN.id)clip.cutMoved=clip.items.some(f=>getF(f.id));}
 function copySel(cut, quiet){
-  const selected=selItems(),items=cut?selected.filter(f=>!f.locked):selected;if(!items.length){if(cut)movable(selected);return;}
+  const selected=selItems(),items=cut?movable(selected):selected;if(!items.length)return;
   const [x0,y0,x1,y1] = groupBox(items);
   clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut};
   if (cut) deleteSel(); else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
@@ -93,7 +103,7 @@ function copySel(cut, quiet){
 function paste(at){
   if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
   const step=(clip.pastes||0)+1,p=at||{x:clip.cx+300*step,y:clip.cy+300*step};
-  let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length,state.furniture.map(f=>f.id));}catch(e){return toast(e.message);}
+  let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length,state.furniture.map(f=>f.id),state.furniture.map(f=>f.groupId).filter(Boolean));}catch(e){return toast(e.message);}
   const news=result.items;
   mutate(() => state.furniture.push(...news));
   if(clip.cut)clip.cutMoved=true;if(result.moved)clip.movePlan=PLAN.id;
@@ -126,6 +136,7 @@ function focusItem(id){
 // 把在户型外的家具移回：放到最大房间中央再推离墙体
 function rescueOutside(ids){
   const lost = state.furniture.filter(f => (ids ? ids.includes(f.id) : true) && isOutside(f));
+  if(lost.some(f=>f.groupId))return toast(tr('请选中整组拖回户型内；解组后可逐件移回','Drag the group back into the plan, or ungroup to rescue individual items'));
   if (!lost.length) return toast(tr('没有在户型外的家具', 'No furniture outside the plan'));
   const home = ROOMS.filter(r => r.counted !== false).sort((a, b) => area(b.poly) - area(a.poly))[0], [x0,y0,x1,y1] = bbox(home.poly);
   mutate(() => lost.forEach((f, i) => { f.cx = Math.round((x0+x1)/2 + (i % 4)*150); f.cy = Math.round((y0+y1)/2 + Math.floor(i/4)*150); pushOut(f); }));

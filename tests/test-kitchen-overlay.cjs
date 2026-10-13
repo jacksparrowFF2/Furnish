@@ -20,6 +20,18 @@ const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-co
    const hit=new THREE.Raycaster(new THREE.Vector3(x,y,1),new THREE.Vector3(0,0,-1)).intersectObject(model,true)[0];assert(hit);assert.equal(hit.object.material.color.getHexString(),'f3f1ec');assert(Math.abs(hit.point.z-.3)<1e-6);
   }
  }
+
+ // Automatic fronts share the ordinary cabinet rule without subdividing device cavities.
+ for(const width of [482,500,501,650,800,1000,1001,1164,1350,3000])for(const role of ['door','sink','hob']){
+  const wide=K.configure(base,{...host.kitchen,modules:[{run:0,width,role}]}),saved=JSON.stringify(wide),f=K.moduleFurniture(wide,K.layout(wide)[0]);
+  const count=C.autoDoorCount(width),model=ctx.FurnishCabinetModel.build(THREE,f,box),pivots=[];model.traverse(o=>{if(o.userData.motion?.kind==='cabinetdoor')pivots.push(o);});
+  assert.equal(pivots.length,count);assert.equal(C.openingZones(f).length,count);assert.equal(f.cabinet.columns.length,1,'functional cavity remains undivided');
+  assert.equal(JSON.stringify(wide),saved);assert.equal(JSON.stringify(K.configure(wide,JSON.parse(saved).kitchen)),saved,'repeated restore has no drift');
+  const ordinary=C.autoDoors({...C.preset('storage'),type:'cabinet',w:width});assert.equal(ordinary.cabinet.columns.reduce((n,col)=>n+(col.door==='double'?2:1),0),count);
+  for(const flip of [false,true]){const turned={...wide,flip,rot:90},zones=K.openingZones(turned),boards=Motion.boards(K.moduleFurniture(turned,K.layout(turned)[0]));assert.equal(zones.length,count);assert.deepEqual([...new Set(boards.filter(b=>b.motion.kind==='cabinetdoor').map(b=>b.motion.leaf))],[...Array(count).keys()]);}
+  const opened=K.toggle(wide,0);const openModel=ctx.FurnishCabinetModel.build(THREE,K.moduleFurniture(opened,K.layout(opened)[0]),box),angles=[];openModel.traverse(o=>{if(o.userData.motion?.kind==='cabinetdoor')angles.push(o.rotation.y);});assert(angles.every(a=>Math.abs(a)>1));
+ }
+ const manual={...C.preset('base'),w:1164,type:'cabinet'};manual.cabinet.autoDoors=false;manual.cabinet.columns=[{door:'double',shelves:[],drawers:[]}];assert.equal(C.frontLeafCount(manual,0),2,'manual doors are preserved');
  assert.equal(JSON.stringify(host),before,'derived overlay never rewrites saved kitchen configuration');
  const wall={...C.preset('wall'),type:'kitchenwall',mountHeight:1480};assert(C.fullOverlay(wall));assert(C.openingZones(wall).every(z=>z.ranges.every(([lo,hi])=>lo>=1480&&hi<=2180)));
  const mixed=structuredClone(wall);mixed.cabinet.columns[0].drawers=[{height:150,open:false}];mixed.cabinet.columns[0].shelves=[];

@@ -1,0 +1,31 @@
+const assert=require('node:assert/strict'),D=require('../src/core/design-core.js'),G=require('../src/core/layout-geometry.js'),P=require('../src/core/project-core.js'),W=require('../src/core/work-state.js'),vm=require('node:vm'),fs=require('node:fs');
+const plan={id:'test',rooms:[{id:'r',name:'房间',mat:'tile',poly:[[0,0],[8000,0],[8000,8000],[0,8000]]}],walls:[],doors:[],defaults:[]};
+const table={id:'t',type:'table',name:'餐桌',cx:4000,cy:4000,w:700,d:1200,rot:0},chair={id:'c',type:'chair',name:'餐椅',cx:3650,cy:3750,w:450,d:480,rot:270};
+for(const rot of [0,90,37])for(const flip of [false,true]){
+ const a=rot*Math.PI/180,dx=chair.cx-table.cx,dy=chair.cy-table.cy,items=[{...table,rot,flip},{...chair,cx:4000+dx*Math.cos(a)-dy*Math.sin(a),cy:4000+dx*Math.sin(a)+dy*Math.cos(a),rot:rot+270,flip}];
+ assert(G.obbOverlap(...items));assert.deepEqual(G.collisions(items),[]);
+ assert(!P.spaceCheck(plan,items,{scanPassages:false}).some(v=>v.kind==='overlap'));
+ assert(!P.spaceCheck(plan,items,{focusIds:['t'],scanPassages:false}).some(v=>v.kind==='overlap'));
+}
+assert(P.spaceCheck(plan,[table,{...table,id:'other'}],{scanPassages:false}).some(v=>v.kind==='overlap'));
+assert(P.spaceCheck(plan,[chair,{...chair,id:'other'}],{scanPassages:false}).some(v=>v.kind==='overlap'));
+let items=D.groupFurniture([table,chair],['t','c'],'g');assert(!table.groupId);assert.deepEqual(D.expandGroups(items,['c']),['t','c']);
+const extra={...chair,id:'extra',cx:5000,groupId:'other'};items=D.groupFurniture([...items,extra],['c','extra'],'merged');assert(items.every(f=>f.groupId==='merged'));
+assert(D.ungroupFurniture(items,['t']).every(f=>!f.groupId));assert.throws(()=>D.groupFurniture(items,['t'],''),/组编号/);
+let seq=0;const makeId=()=>`new${++seq}`,clip={cx:4000,cy:4000,items},bounds={x:0,y:0,w:8000,h:8000};
+const copy=D.pasteFurniture(clip,{x:4500,y:4500},bounds,makeId,2000,items.map(f=>f.id),['merged']);
+assert(copy.items.every(f=>f.groupId===copy.items[0].groupId));assert.notEqual(copy.items[0].groupId,'merged');assert.equal(copy.items[1].cx-copy.items[0].cx,chair.cx-table.cx);
+const copy2=D.pasteFurniture(clip,{x:4500,y:4500},bounds,makeId);assert.notEqual(copy2.items[0].groupId,copy.items[0].groupId);
+const cut=D.pasteFurniture({...clip,cut:true},{x:4500,y:4500},bounds,makeId);assert.equal(cut.items[0].groupId,'merged');assert.equal(cut.items[0].id,'t');
+const work={furniture:items},restorer=W.create({makeId,colorFor:()=> '#888888',materials:{tile:{}}});
+const checked=P.validateWork(work),restored=restorer.restore(checked,plan);assert(restored.furniture.every(f=>f.groupId==='merged'));
+assert.deepEqual(restorer.restore(JSON.parse(JSON.stringify(restored)),plan),restored);
+for(const groupId of ['',42,' '.repeat(4),'a'.repeat(201)])assert.throws(()=>P.validateWork({furniture:[{...table,groupId}]}),/组编号/);
+const replacement=D.replaceFurniture(items[0],{type:'chair',name:'替换',w:450,d:480,color:'#ffffff'});assert.equal(replacement.groupId,'merged');
+assert(P.spaceCheck(plan,D.groupFurniture([table,{...table,id:'other'}],['t','other'],'clash'),{scanPassages:false}).some(v=>v.kind==='overlap'),'group membership does not suppress real overlaps');
+const issue={kind:'outside',id:'t'};assert.equal(P.checkFingerprint(issue,plan,[table],800),P.checkFingerprint(issue,plan,[{...table,groupId:'g'}],800),'group membership is not spatial geometry');
+const ctx={state:{furniture:items},ui:{},FurnishDesign:D,closeCtx(){},renderSel(){},renderPanel(){},updateHeader(){},toast(){},tr:a=>a};ctx.getF=id=>ctx.state.furniture.find(f=>f.id===id);vm.createContext(ctx);vm.runInContext(fs.readFileSync('src/ui/furniture-actions.js','utf8'),ctx);
+vm.runInContext("selectIds(['c']);toggleSel('c');",ctx);assert.equal(ctx.ui.sel,null);
+vm.runInContext("selectIds(['t']);",ctx);assert.equal(ctx.ui.sel.ids.length,3);
+ctx.state.furniture[1]={...ctx.state.furniture[1],locked:true};assert.equal(vm.runInContext('movable(selItems()).length',ctx),0);
+console.log('PASS tucked chair parity, grouping expansion, merging/ungrouping, locked groups, independent copies/cut, replacement, repeated restore, validation and spatial confirmation');

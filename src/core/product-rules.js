@@ -4,6 +4,7 @@
 const numeric=(min,max,message)=>({min,max,message});
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
  hoodPanelOpen:{boolean:true,message:'烟机面板开合设置无效'},
  kitchen:{custom:true,message:'厨房配置无效'},
  counterLink:{custom:true,message:'台面关联无效'},
@@ -40,7 +41,7 @@ for(const [type,envelope] of Object.entries(envelopes))types[type]={...types[typ
 function freeze(v){if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;}
 freeze(fields);freeze(types);
 const definition=f=>Object.hasOwn(types,typeof f==='string'?f:f?.type)?types[typeof f==='string'?f:f.type]:null;
-const supports=(f,key)=>definition(f)?.fields?.includes(key)||false;
+const supports=(f,key)=>key==='groupId'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 const value=(f,key)=>f[key]??definition(f)?.defaults?.[key];
 const height=f=>f.h??definition(f)?.height;
@@ -49,7 +50,7 @@ function validateField(f,key,v){
  if(key==='kitchen'){kitchen().validate({...f,kitchen:v});return v;}if(key==='counterLink'){kitchen().validateLink({...f,counterLink:v});return v;}
  const finite=n=>typeof n==='number'&&Number.isFinite(n);
  const valid=rule.point?v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).every(k=>['x','y','z'].includes(k))&&[v.x,v.y,v.z].every(finite)&&Math.abs(v.x)<=1e6&&Math.abs(v.y)<=1e6&&v.z>=0&&v.z<=20000
-  :rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
+  :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(!valid)throw Error(rule.message);return v;
 }
 function validate(f){for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);return f;}
@@ -71,6 +72,7 @@ function vertical(f){
 }
 function replacement(previous,next,candidate){
  for(const key of Object.keys(fields)){
+  if(key==='groupId')continue; // Layout membership survives product replacement.
   // Family permits washer↔dryer and track styles; installation belongs to the
   // specific product except for the laundry family. Socket is a world point.
   const retain=supports(next,key)&&supports(previous,key)&&(key==='floorTrack'||previous.type===next.type||family(previous,'laundry')&&family(next,'laundry'));

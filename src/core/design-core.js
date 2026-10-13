@@ -29,7 +29,20 @@
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
   const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return f.kitchen?kitchen().resize(f,next):cabinet().resize(f,next);
  }
- function pasteFurniture(clipboard,target,planBounds,makeId,available=2000,existingIds=[]){
+ function expandGroups(furniture,ids){
+  const chosen=new Set(ids),groups=new Set(furniture.filter(f=>chosen.has(f.id)&&f.groupId).map(f=>f.groupId));
+  return furniture.filter(f=>chosen.has(f.id)||f.groupId&&groups.has(f.groupId)).map(f=>f.id);
+ }
+ function groupFurniture(furniture,ids,groupId){
+  products().validateField({},'groupId',groupId);
+  const chosen=new Set(expandGroups(furniture,ids));if(chosen.size<2)throw Error('请先选择至少 2 件家具');
+  if(furniture.some(f=>f.groupId===groupId&&!chosen.has(f.id)))throw Error('家具组编号已存在');
+  return furniture.map(f=>chosen.has(f.id)?{...f,groupId}:f);
+ }
+ function ungroupFurniture(furniture,ids){
+  const chosen=new Set(expandGroups(furniture,ids));return furniture.map(f=>{if(!chosen.has(f.id)||!f.groupId)return f;const next={...f};delete next.groupId;return next;});
+ }
+ function pasteFurniture(clipboard,target,planBounds,makeId,available=2000,existingIds=[],existingGroupIds=[]){
   if(!clipboard?.items?.length)throw Error('剪贴板没有家具');
   if(clipboard.items.length>available)throw Error('每个方案最多 2000 件家具，请减少粘贴数量');
   if(![clipboard.cx,clipboard.cy,target?.x,target?.y,planBounds?.x,planBounds?.y,planBounds?.w,planBounds?.h].every(Number.isFinite)||planBounds.w<=0||planBounds.h<=0)throw Error('粘贴位置或户型范围无效');
@@ -39,6 +52,8 @@
   const wanted=[target.x-clipboard.cx,target.y-clipboard.cy],delta=[shift(wanted[0],box[0],box[2],planBounds.x,planBounds.w),shift(wanted[1],box[1],box[3],planBounds.y,planBounds.h)];
   const used=new Set(existingIds),sourceIds=clipboard.items.map(f=>f.id),reserved=new Set(sourceIds),moved=clipboard.cut===true&&!clipboard.cutMoved&&!clipboard.items.some(f=>f.locked)&&sourceIds.every(id=>typeof id==='string'&&id&&!used.has(id))&&reserved.size===sourceIds.length;
   const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{if(!moved){let id;do{id=makeId();}while(used.has(id)||reserved.has(id));f.id=id;f.purchaseStatus='planned';delete f.locked;}used.add(f.id);f.cx+=delta[0];f.cy+=delta[1];});
+  const groups=new Map(),usedGroups=new Set([...existingGroupIds,...items.map(f=>f.groupId).filter(Boolean)]);
+  for(const f of items)if(f.groupId){if(!groups.has(f.groupId)){let id=f.groupId;if(!moved||existingGroupIds.includes(id)){do{id=makeId();}while(usedGroups.has(id));}usedGroups.add(id);groups.set(f.groupId,id);}f.groupId=groups.get(f.groupId);}
   const mapping=new Map(sourceIds.map((id,i)=>[id,items[i].id]));for(const f of items)if(f.counterLink){if(mapping.has(f.counterLink.hostId))f.counterLink.hostId=mapping.get(f.counterLink.hostId);else delete f.counterLink;}kitchen().normalize(items);
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
@@ -222,6 +237,6 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

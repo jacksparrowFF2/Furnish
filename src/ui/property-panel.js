@@ -31,6 +31,7 @@ function renderFab(){
   fab.innerHTML = ids.length
     ? `<span class="name">${f ? esc(nm(f.name)) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
       + b('rotL', 'rotL', tr('逆时针 90°', 'Rotate left')) + b('rotR', 'rotR', tr('顺时针 90°', 'Rotate right')) + b('flip', 'flip', tr('镜像', 'Mirror'))
+      + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
       + b('lock', selItems().every(x => x.locked) ? 'lock' : 'unlock', tr('锁定 / 解锁', 'Lock / unlock')) + b('dup', 'copy', tr('复制一份', 'Duplicate')) + b('del', 'trash', tr('删除', 'Delete'), 'danger')
       + `<span class="sep"></span><button class="btn narrow-only" data-act="prop">${tr('属性','Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`
     : `<span class="name">${esc(nm(state.rooms[r.id].name))}</span><button class="btn" data-act="roomFurn">${tr('选中房间内家具','Select its furniture')}</button><button class="btn narrow-only" data-act="prop">${tr('地面 / 属性','Floor / Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;
@@ -128,6 +129,7 @@ function furnPanel(f){
       ${btn('front', 'front', tr('置于顶层','Bring to front'))}${btn('toBack', 'back', tr('置于底层','Send to back'))}
     </div>
     <div class="actions">
+      ${f.groupId?`<button class="btn" data-act="ungroup">${tr('解组','Ungroup')}</button>`:''}
       <button class="btn" data-act="dup">${ico('copy')}${tr('复制','Duplicate')}</button>
       <button class="btn" id="full-product-details">完整家具资料</button><button class="btn" id="replace-furniture">查找并替换</button><button class="btn" data-act="resetItem">${ico('reset')}${tr('恢复默认','Reset item')}</button>
       <button class="btn" data-act="zoom">${ico('target')}${tr('定位','Zoom to')}</button>
@@ -167,6 +169,7 @@ function multiPanel(items){
   return `<section><h3>${tr(`已选 ${items.length} 件家具`, `${items.length} items selected`)}</h3>
     <div class="stats"><div><small>${tr('整体尺寸','Group size')}</small><span class="big mid">${Math.round(x1-x0)} × ${Math.round(y1-y0)}</span></div>
       <div><small>${tr('参考价合计','Reference total')}</small><span class="big mid">${yen(cost)}</span></div></div>
+    <div class="actions"><button class="btn" data-act="group">${tr('打组','Group')}</button>${items.some(f=>f.groupId)?`<button class="btn" data-act="ungroup">${tr('解组','Ungroup')}</button>`:''}</div><p class="muted">${tr(items.some(f=>f.groupId)?'点击组内任一家具会选中整组；解组后可单独调整。':'打组后可共同移动，保持相对位置。','Group members move together; ungroup to adjust individual items.')}</p>
     ${window.FurnishDesignUI?.groupPlacementPanel(items)||''}
     <div class="lbl">${tr('对齐','Align')}</div>
     <div class="iconrow">${btn('al','al',tr('左对齐','Align left'))}${btn('ac','ac',tr('水平居中','Align centers horizontally'))}${btn('ar','ar',tr('右对齐','Align right'))}${btn('at','at',tr('顶对齐','Align top'))}${btn('am','am',tr('垂直居中','Align middles'))}${btn('ab','ab',tr('底对齐','Align bottom'))}</div>

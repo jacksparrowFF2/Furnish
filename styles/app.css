@@ -242,6 +242,8 @@ main.is3d .scalebar{opacity:0}
 main.drawer-panel #fab{opacity:0;visibility:hidden}
 #fab .name{padding:0 10px 0 8px;font-weight:700;max-width:9em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #fab .btn{border:1px solid transparent;border-radius:10px}
+#fab{overflow-x:auto}
+#fab > *{flex-shrink:0}
 #fab .sep{width:1px;align-self:stretch;margin:5px 3px;background:var(--line)}
 
 /* ======================= 画布：3D 场景 ======================= */

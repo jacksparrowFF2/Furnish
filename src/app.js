@@ -335,7 +335,7 @@ $('#cmdBtn').onclick = () => openCmd();
 
 // 面板 / 浮动工具条 / 右键菜单共用的操作表
 const ACT = {
-  rotR:() => rotateSel(90), rotL:() => rotateSel(-90), flip:flipSel, lock:lockSel, dup:duplicateSel, del:deleteSel,
+  group:groupSel, ungroup:ungroupSel, rotR:() => rotateSel(90), rotL:() => rotateSel(-90), flip:flipSel, lock:lockSel, dup:duplicateSel, del:deleteSel,
   copy:() => copySel(false), cut:() => copySel(true), paste:() => paste(ui.ctxAt), front:() => orderSel(true), toBack:() => orderSel(false),
   resetItem:resetItemSel, zoom:zoomSel, match:matchSizeSel, selAll:selectAll,
   spaceCheck:()=>{FurnishWorkspace.open('space');$('#space-run').click();},
@@ -378,6 +378,7 @@ document.addEventListener('keydown', e => {
   const mod = e.metaKey || e.ctrlKey, k = e.key.toLowerCase();
   if (mod && k === 'z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
   if (mod && k === 'y'){ e.preventDefault(); redo(); return; }
+  if (mod && k === 'g'){ e.preventDefault(); e.shiftKey ? ungroupSel() : groupSel(); return; }
   if (mod && k === 'd'){ e.preventDefault(); duplicateSel(); return; }
   if (mod && k === 'a'){ e.preventDefault(); selectAll(); return; }
   if (mod && (k === 'c' || k === 'x')){ if (selIds().length){ e.preventDefault(); copySel(k === 'x'); } return; }
@@ -431,6 +432,7 @@ function openCtx(x, y, target){
   if (n){
     h = `<div class="cap">${n > 1 ? tr(`已选 ${n} 件`, `${n} selected`) : esc(nm(items[0].name))}</div>`
       + it('copy', 'copy', '复制', 'Copy', 'Ctrl+C') + it('cut', 'cut', '剪切', 'Cut', 'Ctrl+X') + it('dup', 'copy', '创建副本', 'Duplicate', 'Ctrl+D') + sep
+      + (n>1?it('group','box','打组','Group','Ctrl+G'):'') + (items.some(f=>f.groupId)?it('ungroup','box','解组','Ungroup','Ctrl+Shift+G'):'') + sep
       + it('rotR', 'rotR', '顺时针旋转 90°', 'Rotate right 90°', 'R') + it('rotL', 'rotL', '逆时针旋转 90°', 'Rotate left 90°', '⇧R')
       + it('flip', 'flip', '左右镜像', 'Mirror', 'H') + it('lock', locked ? 'unlock' : 'lock', locked ? '解锁' : '锁定', locked ? 'Unlock' : 'Lock', 'L') + sep
       + (n > 1 ? it('al', 'al', '左对齐', 'Align left') + it('at', 'at', '顶对齐', 'Align top') + it('dh', 'dh', '水平等距分布', 'Distribute horizontally') + it('match', 'size', '统一尺寸', 'Match size') + sep : '')
@@ -523,7 +525,7 @@ function openHelp(){
     ${g(tr('工具与视图', 'Tools & view'), [['V','选择 / 移动','Select / move'],['B','框选','Box select'],['M','测量（Shift 水平/垂直）','Measure (Shift = straight)'],['X','拆改非承重墙','Demolish walls'],['N','文字标注','Text note'],['Ctrl+K','命令面板：搜索一切','Command palette'],
       ['T','切换 2D / 3D','Toggle 2D / 3D'],['F','适应窗口','Fit to window'],['Z','缩放到所选','Zoom to selection'],['+ / −','放大 / 缩小','Zoom in / out'],
       [tr('空格+拖动','Space+drag'),'平移画面（也可用中键）','Pan (or middle mouse)'],['[ / ]','收起 / 展开左右面板','Toggle side panels'],['Shift+F','全屏','Fullscreen'],['Esc','取消选择 / 退出工具','Deselect / exit tool']])}
-    ${g(tr('编辑', 'Editing'), [['Ctrl+Z','撤销','Undo'],['Ctrl+Shift+Z','重做','Redo'],['Ctrl+C / X / V','复制 / 剪切 / 粘贴到指针处','Copy / cut / paste at pointer'],['Ctrl+D','创建副本','Duplicate'],
+    ${g(tr('编辑', 'Editing'), [['Ctrl+Z','撤销','Undo'],['Ctrl+Shift+Z','重做','Redo'],['Ctrl+C / X / V','复制 / 剪切 / 粘贴到指针处','Copy / cut / paste at pointer'],['Ctrl+D','创建副本','Duplicate'],['Ctrl+G / Ctrl+Shift+G','打组 / 解组','Group / ungroup'],
       ['Ctrl+A','全选家具','Select all'],['Delete','删除','Delete'],['R / Shift+R','旋转 90°','Rotate 90°'],['H','左右镜像','Mirror'],['L','锁定 / 解锁','Lock / unlock'],
       [tr('方向键','Arrows'),'微调 10mm（Shift 100mm）','Nudge 10mm (Shift 100mm)']])}
     ${g(tr('鼠标 / 触屏', 'Mouse / touch'), [[tr('Shift+点击','Shift+click'),'加入 / 移出选择','Add / remove from selection'],[tr('Shift+拖动','Shift+drag'),'在空白处框选','Box select on empty space'],
