@@ -87,3 +87,4 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-13：梁实体碰撞由 `spaceCheck()` 产生独立 `beam` 结果（家具 `id` + `beamId`）。与开启障碍共用刚性家具预计算包络与梁高度，已知范围使用 `verticalOverlap()`；未知高度为 pending。属性、柜体草稿、全案共享检查，全案定位同时标出梁与家具。详见 [梁实体检查](BEAM-HEIGHTS.md)。
 2026-10-14：`drawing-core.js` 的 `netSpans()` 按点到首个实际房间多边形边界求截面，支持 rings 孔洞与斜边，拒绝边界点。`src/ui/room-measure.js` 只存临时选点与 SVG 预览，保存时经 `mutate()` 添加两条现有测量线，无新增持久字段。功能区按所在 physicalRooms 测量；测量文字的可读角度与屏幕旋转共用 `textAngle()`。
 2026-10-14：`src/core/purchasing-core.js` 提供本地订单校验、商品／材料快照、到货和实付汇总；`src/ui/purchasing-tools.js` 通过 `mutate()` 编辑可选 `work.purchaseOrders`。项目导入和工作恢复共用校验，采购不参与空间确认或三维缓存。字段、分金额规则及历史关联边界见 [材料采购](MATERIAL-PURCHASING.md)。
+2026-10-14：`src/io/image-export.js` 的 `preparePlanSVG()` 是 PNG、成果 SVG 和打印共用的清理／定字号／内容范围路径。PNG 使用当前可见图层，成果使用浅色完整图层；去除所有 `[data-edit-overlay]` 及临时定位图层。`drawing-core.rasterSize()` 限制栅格单边和总像素，不限制矢量 SVG。

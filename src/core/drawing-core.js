@@ -29,6 +29,11 @@ function dimensions(plan,input={}){
 }
 function drawingBounds(plan,input={}){const all=(plan.walls||[]).flatMap(w=>[[w[0],w[1]],[w[2],w[3]]]);for(const d of dimensionLayout(dimensions(plan,input),{rotation:settings(input).rotation})){all.push(d.a,d.b,...d.refs);if(d.label)all.push([d.label.box[0],d.label.box[1]],[d.label.box[2],d.label.box[3]]);}const b=plan.bounds||{x:0,y:0,w:1000,h:1000};if(!all.length)return b;const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]),pad=350,x=Math.min(b.x,Math.min(...xs)-pad),y=Math.min(b.y,Math.min(...ys)-pad);return {x,y,w:Math.max(b.x+b.w,Math.max(...xs)+pad)-x,h:Math.max(b.y+b.h,Math.max(...ys)+pad)-y};}
 function sun(horizontal,input={}){return rotate(horizontal,settings(input).northAngle??0);}
+function rasterSize(box){
+ if(!box||!finite(box.w)||!finite(box.h)||box.w<=0||box.h<=0)throw Error('导出范围无效');
+ const width=3200,height=width*box.h/box.w,scale=Math.min(1,8192/width,8192/height,Math.sqrt(16e6/(width*height)));
+ return {width:Math.max(1,Math.floor(width*scale)),height:Math.max(1,Math.floor(height*scale))};
+}
 const boxHit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
 function textAngle(angle,rotation=0){let screen=((angle+rotation+180)%360+360)%360-180;if(screen>90)screen-=180;if(screen<-90)screen+=180;return screen-rotation;}
 function dimensionLayout(lines,{scale=0,rotation=0}={}){
@@ -61,5 +66,5 @@ function netSpans(room,point){
  const span=axis=>{const cross=1-axis,values=[];for(const ring of rings)for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length],delta=b[cross]-a[cross];if(Math.abs(delta)<eps){if(Math.abs(point[cross]-a[cross])<eps)values.push(a[axis],b[axis]);continue;}const t=(point[cross]-a[cross])/delta;if(t>=-eps&&t<=1+eps)values.push(a[axis]+t*(b[axis]-a[axis]));}const left=values.filter(v=>v<point[axis]-eps),right=values.filter(v=>v>point[axis]+eps);if(!left.length||!right.length)return null;const a=[...point],b=[...point];a[axis]=Math.max(...left);b[axis]=Math.min(...right);return {a,b,value:b[axis]-a[axis],h:axis===0};};
  const horizontal=span(0),vertical=span(1);return horizontal&&vertical?{at:[...point],horizontal,vertical}:null;
 }
-const api={settings,rotate,bounds,dimensions,drawingBounds,sun,dimensionLayout,roomLabels,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
+const api={settings,rotate,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
