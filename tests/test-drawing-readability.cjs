@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),D=require('../src/core/drawing-core.js');
 const hit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
 const plan={walls:[[0,0,8000,200],[0,0,200,6000],[7800,0,8000,6000],[0,5800,8000,6000],[2000,0,2200,6000],[2300,0,2500,6000],[2550,0,2750,6000]],bounds:{x:0,y:0,w:8000,h:6000}};
-const raw=D.dimensions(plan),original=JSON.stringify(raw);
+const raw=D.dimensions(plan,{dimensions:'full'}),original=JSON.stringify(raw);
 for(const rotation of [0,90,180,270])for(const scale of [0,.025,.12]){
  const layout=D.dimensionLayout(raw,{rotation,scale}),boxes=layout.flatMap(d=>d.label?[d.label.box]:[]);
  for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++)assert(!hit(boxes[i],boxes[j]),'dimension text collision');

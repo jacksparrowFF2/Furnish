@@ -5,11 +5,17 @@ const finite=v=>typeof v==='number'&&Number.isFinite(v);
 function settings(input={}){
  if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['rotation','northAngle','dimensions','openings'].includes(k)))throw Error('图纸设置格式无效');
  const rotation=input.rotation??0,northAngle=input.northAngle??null,dimensions=input.dimensions??'auto',openings=input.openings??false;
- if(![0,90,180,270].includes(rotation)||northAngle!==null&&(!finite(northAngle)||northAngle<0||northAngle>=360)||!['auto','overall','original'].includes(dimensions)||typeof openings!=='boolean')throw Error('图纸旋转须为 90° 的倍数，北向须为 0–359.99°');
+ if(![0,90,180,270].includes(rotation)||northAngle!==null&&(!finite(northAngle)||northAngle<0||northAngle>=360)||!['auto','full','overall','original'].includes(dimensions)||typeof openings!=='boolean')throw Error('图纸旋转须为 90° 的倍数，北向须为 0–359.99°');
  return {rotation,northAngle,dimensions,openings};
 }
 function rotate(p,angle){const a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [p[0]*c-p[1]*s,p[0]*s+p[1]*c];}
 function bounds(box,angle=0){const corners=[[box.x,box.y],[box.x+box.w,box.y],[box.x+box.w,box.y+box.h],[box.x,box.y+box.h]].map(p=>rotate(p,angle)),xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]);return {x:Math.min(...xs),y:Math.min(...ys),w:Math.max(...xs)-Math.min(...xs),h:Math.max(...ys)-Math.min(...ys)};}
+function outlineCuts(rects,h,unique){
+ if(!rects.length)return [];
+ const axis=h?0:1,cross=1-axis,cuts=unique(rects.flatMap(r=>[r[axis],r[axis+2]])),result=[cuts[0]];let previous=null;
+ for(let i=1;i<cuts.length;i++){const mid=(cuts[i-1]+cuts[i])/2,active=rects.filter(r=>r[axis]<mid&&r[axis+2]>mid),profile=active.length?[Math.min(...active.map(r=>r[cross])),Math.max(...active.map(r=>r[cross+2]))]:[Infinity,-Infinity];if(previous&&(profile[0]!==previous[0]||profile[1]!==previous[1]))result.push(cuts[i-1]);previous=profile;}
+ result.push(cuts.at(-1));return unique(result);
+}
 function dimensions(plan,input={}){
  const config=settings(input),walls=plan.walls||[],out=[],unique=values=>[...new Set(values.map(v=>Number(v.toFixed(4))))].sort((a,b)=>a-b);
  if(!walls.length)return out;
@@ -17,12 +23,18 @@ function dimensions(plan,input={}){
  const add=(h,at,points,anchor,kind)=>{for(let i=1;i<points.length;i++){const lo=points[i-1],hi=points[i];if(hi-lo<.01)continue;out.push({a:h?[lo,at]:[at,lo],b:h?[hi,at]:[at,hi],refs:h?[[lo,anchor],[hi,anchor]]:[[anchor,lo],[anchor,hi]],value:hi-lo,h,kind});}};
  if(config.dimensions==='original')for(const d of plan.dims||[]){const points=[d.start];for(const v of d.segs)points.push(points.at(-1)+v);add(d.h,d.at,points,d.at,'original');}
  else{
-  if(config.dimensions==='auto'){
-   // These are projected structural-face chains, not bounding-box room net sizes.
-   const xs=unique([x0,x1,...walls.filter(w=>w[2]-w[0]<=w[3]-w[1]).flatMap(w=>[w[0],w[2]])]),ys=unique([y0,y1,...walls.filter(w=>w[3]-w[1]<=w[2]-w[0]).flatMap(w=>[w[1],w[3]])]);
-   add(true,y0-550,xs,y0,'chain');add(true,y1+550,xs,y1,'chain');add(false,x0-550,ys,x0,'chain');add(false,x1+550,ys,x1,'chain');
+  const full=config.dimensions==='full',top=[0,270].includes(config.rotation),left=[0,90].includes(config.rotation);let xs=[],ys=[];
+  if(full){
+   xs=unique([x0,x1,...walls.filter(w=>w[2]-w[0]<=w[3]-w[1]).flatMap(w=>[w[0],w[2]])]);ys=unique([y0,y1,...walls.filter(w=>w[3]-w[1]<=w[2]-w[0]).flatMap(w=>[w[1],w[3]])]);
+  }else if(config.dimensions==='auto'){
+   // Fill wall openings when tracing the outer envelope; an opening is not an outline notch.
+   const rects=[...walls,...plan.doors||[],...plan.wins||[],...plan.slides||[]].map(r=>r.rect||r).map(r=>[Math.max(x0,r[0]),Math.max(y0,r[1]),Math.min(x1,r[2]),Math.min(y1,r[3])]).filter(r=>r[2]>r[0]&&r[3]>r[1]);
+   xs=outlineCuts(rects,true,unique);ys=outlineCuts(rects,false,unique);
   }
-  const gap=config.dimensions==='auto'?1050:550;add(true,y0-gap,[x0,x1],y0,'overall');add(true,y1+gap,[x0,x1],y1,'overall');add(false,x0-gap,[y0,y1],x0,'overall');add(false,x1+gap,[y0,y1],x1,'overall');
+  if(xs.length>2){if(full||top)add(true,y0-550,xs,y0,'chain');if(full||!top)add(true,y1+550,xs,y1,'chain');}
+  if(ys.length>2){if(full||left)add(false,x0-550,ys,x0,'chain');if(full||!left)add(false,x1+550,ys,x1,'chain');}
+  const hGap=xs.length>2?1050:550,vGap=ys.length>2?1050:550;
+  if(full||top)add(true,y0-hGap,[x0,x1],y0,'overall');if(full||!top)add(true,y1+hGap,[x0,x1],y1,'overall');if(full||left)add(false,x0-vGap,[y0,y1],x0,'overall');if(full||!left)add(false,x1+vGap,[y0,y1],x1,'overall');
  }
  if(config.openings)for(const o of [...plan.doors||[],...plan.wins||[],...plan.slides||[]]){const [x,y,X,Y]=o.rect,h=X-x>=Y-y;if(h)add(true,y-250,[x,X],y,'opening');else add(false,x-250,[y,Y],x,'opening');}
  return out;
