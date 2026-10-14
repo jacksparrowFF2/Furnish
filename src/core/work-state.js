@@ -22,6 +22,7 @@
     }
     // Preserve the caller's work object and extra project fields, as before.
     function restore(work, plan){
+      if(work.purchaseOrders!==undefined)(root.FurnishPurchasing||require('./purchasing-core.js')).validate(work.purchaseOrders);
       if(work.drawing!==undefined)(root.FurnishDrawing||require('./drawing-core.js')).settings(work.drawing);
       if(work.architecture){
         const rebuilt = draft.build(work.architecture.draft);

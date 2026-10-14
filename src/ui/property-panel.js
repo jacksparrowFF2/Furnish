@@ -1,6 +1,7 @@
 /* Property panels and note editing. Classic script declarations only;
  * read the current application state when called, including after undo/load. */
 function renderPanel(){
+  globalThis.FurnishRoomMeasure?.afterRender();
   if(ui.sel?.kind!=='wall')window.FurnishWorkflowTools?.clearDistances();
   window.FurnishWorkspace?.clearOpeningPreview();
   renderFab();

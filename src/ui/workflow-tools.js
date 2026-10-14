@@ -6,7 +6,7 @@ let stylePreview=null,checkTimer=0,checkKey='',issues=[],checking=false,proposal
 const effective=()=>P.effectivePlan(PLAN,state),kindName={confirmed:['已确认价','Confirmed'],reference:['参考价','Reference'],missing:['未填写','Missing']};
 function basisHTML(){
  const basis=P.priceBasis(effective(),state,MATS,priceOf);
- return `<div class="price-summary"><b>${t('价格依据','Price basis')}</b><div class="price-counts">${Object.entries(basis.totals).map(([k,v])=>`<span>${t(...kindName[k])} ${v.count} ${t('项','items')} · ${yen(v.amount)}</span>`).join('')}</div><p class="muted">${t('粗估总价包含参考价；已确认金额只汇总已录入单价的项目，0 元可为明确单价。','Estimates include reference prices. Confirmed totals include explicitly entered prices; zero is a valid price.')}</p><div class="actions"><button class="btn" data-price-details>${t('按价格依据查看','View price basis')}</button><button class="btn" data-material-specs>${t('材料采购规格','Material purchasing')}</button></div></div>`;
+ return `<div class="price-summary"><b>${t('价格依据','Price basis')}</b><div class="price-counts">${Object.entries(basis.totals).map(([k,v])=>`<span>${t(...kindName[k])} ${v.count} ${t('项','items')} · ${yen(v.amount)}</span>`).join('')}</div><p class="muted">${t('粗估总价包含参考价；已确认金额只汇总已录入单价的项目，0 元可为明确单价。','Estimates include reference prices. Confirmed totals include explicitly entered prices; zero is a valid price.')}</p><div class="actions"><button class="btn" data-price-details>${t('按价格依据查看','View price basis')}</button><button class="btn" data-purchase-ledger>${t('采购订单与到货','Orders and receipts')}</button><button class="btn" data-material-specs>${t('材料采购规格','Material purchasing')}</button></div></div>`;
 }
 function priceDetails(){
  const basis=P.priceBasis(effective(),state,MATS,priceOf);

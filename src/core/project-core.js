@@ -291,6 +291,7 @@
  }
  const checksum=value=>{let hash=2166136261;for(const c of JSON.stringify(value)){hash^=c.charCodeAt(0);hash=Math.imul(hash,16777619);}return (hash>>>0).toString(16).padStart(8,'0');};
  function validateWork(work){
+  if(work?.purchaseOrders!==undefined)(root.FurnishPurchasing||require('./purchasing-core.js')).validate(work.purchaseOrders);
   ceilingHeight(work);
   if(work?.drawing!==undefined)(root.FurnishDrawing||require('./drawing-core.js')).settings(work.drawing);
   if(!work||!Array.isArray(work.furniture)||work.furniture.length>2000)fail('家具数据无效');const w=clone(work),ids=new Set();
