@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-14：`src/core/drawing-core.js` 共用可选图纸设置校验、显示坐标变换、投影尺寸与方向；`src/ui/drawing-tools.js` 通过现有 mutate 和导出适配器装配朝向、指北针及尺寸设置。详见 [图纸朝向](DRAWING-ORIENTATION.md)。`project-core.js` 的空间检查采用保守包围框提前排除和扫描线候选筛选，review 只缓存最后一份完整规则输入／名称／异常和接受记录，返回独立副本；价格、采购和图纸显示不清除空间确认。3D 家具签名排除未用于生产几何的价格与采购字段，真北单独更新示意光照。
+
 2026-10-14：`src/ui/workflow-tools.js` 在现有 UI 扩展后装配画布旁工具、保存入口、价格依据／材料规格、空间侧栏、临时风格预览和净距对话框；共用现有 `ui`、`mutate()`、项目规则与属性面板，没有新工作状态或保存通道。`src/core/wall-distance-core.js` 提供毫米净距与原子联动，`src/core/placement-suggestions.js` 只返回通过占地／开启及全案间隙检查的候选，不移动锁定、编组、厨房或关联设备。`src/io/dxf-export.js` 生成布局交接 DXF。材料规格及价格依据仍属于 `project-core.js`；详见 [材料采购](MATERIAL-PURCHASING.md)、[墙间净距](WALL-DISTANCE.md)、[DXF 导出](DXF-EXPORT.md)。
 
 临时风格预览仅向生产 3D 家具构造器提供配色副本，源工作方案、2D 和预算保持原值；应用家具配色或完整风格分别经 `mutate()`。方案内容改变时预览失效，预览期间不提供交付截图，防止临时外观混入真实成果。新增脚本保持原有普通脚本加载，无 async 或网络依赖。

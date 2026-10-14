@@ -77,6 +77,9 @@
   const pieceArea=spec.length*spec.width/1e6,pieces=Math.ceil(required/pieceArea-1e-9),packs=spec.pack?Math.ceil(pieces/spec.pack):null,purchased=(packs===null?pieces:packs*spec.pack)*pieceArea,unit=spec.unit||'m2';
   return {quantity:unit==='piece'?(packs===null?pieces:packs*spec.pack):unit==='pack'?packs:purchased,required,waste,pieces,packs,purchased,pieceArea,unit,spec};
  }
+ function materialBreakdown(plan,work,materials,priceOf){
+  return estimate(plan,work,materials,priceOf).mats.map(m=>({...m,surplusArea:m.procurement.purchased-m.procurement.required,surplusPieces:m.procurement.packs===null||m.procurement.packs===undefined?0:m.procurement.packs*m.procurement.spec.pack-m.procurement.pieces,rooms:plan.rooms.filter(r=>(work.rooms?.[r.id]?.mat||r.mat)===m.m).map(r=>{const a=area(r.poly),required=a*(1+m.procurement.waste/100);return {id:r.id,name:work.rooms?.[r.id]?.name||r.name,area:a,required,...(m.procurement.pieceArea?{pieces:Math.ceil(required/m.procurement.pieceArea-1e-9)}:{})};})}));
+ }
  const furniturePriceBasis=(f,value)=>f.price!==undefined?'confirmed':f.referencePrice!==undefined||value>0?'reference':'missing';
  function priceBasis(plan,work,materials,priceOf=f=>f.price??f.referencePrice??0){
   const stats=estimate(plan,work,materials,priceOf),items=[];
@@ -124,11 +127,18 @@
    (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v3','hood-bay-v2','tucked-seat-v1'];
  }
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify({version:3,issue,context:checkContext(plan,furniture,passage)});}
+ let lastReview=null;
  function review(plan,work){
-  const passage=work.spaceThreshold||800,issues=spaceCheck(plan,work.furniture,{passage}),accepted=new Set();
+  const passage=work.spaceThreshold||800,context=JSON.stringify(checkContext(plan,work.furniture,passage)),key=context+JSON.stringify([work.spaceIgnored||[],work.furniture.map(f=>[f.name,design().products().modelError(f)]),plan.rooms.map(r=>r.name),(plan.doors||[]).map(d=>d.name)]);
+  if(lastReview?.key===key)return clone(lastReview.issues);
+  const issues=spaceCheck(plan,work.furniture,{passage}),accepted=new Set();
   // Compare shared geometry once per saved confirmation, not once per finding.
-  if(work.spaceIgnored?.length){const context=JSON.stringify(checkContext(plan,work.furniture,passage));for(const key of work.spaceIgnored){try{const saved=JSON.parse(key);if(saved?.version===3&&JSON.stringify(saved.context)===context)accepted.add(JSON.stringify(saved.issue));}catch{ /* Legacy malformed confirmation is simply inactive. */ }}}
-  return issues.map(v=>({...v,ignored:accepted.has(JSON.stringify(v))}));
+  if(work.spaceIgnored?.length){for(const key of work.spaceIgnored){try{const saved=JSON.parse(key);if(saved?.version===3&&JSON.stringify(saved.context)===context)accepted.add(JSON.stringify(saved.issue));}catch{ /* Legacy malformed confirmation is simply inactive. */ }}}
+  const result=issues.map(v=>({...v,ignored:accepted.has(JSON.stringify(v))}));lastReview={key,issues:clone(result)};return result;
+ }
+ function explainIssue(issue){
+  const groups={model:['模型待修复','先修复模型数据，再核对实体与开启范围。'],outside:['房间边界','定位后核对折角与凹口，调整占地或家具尺寸。'],wall:['墙体占用','核对墙面净距；移动或缩小家具，不能移动锁定结构。'],overlap:['实体重叠','结合实际高度、嵌合位和安装方式核对；必要时调整位置或尺寸。'],door:['开门范围','核对门扇方向及完整开启范围，调整家具或合法的门扇设置。'],swingwall:['开门范围','核对门铰位置、开启方向和墙体；不要以删除结构消除提示。'],swings:['开门范围','核对两扇门同时打开的情况。'],beam:['竖向实体','核对家具底顶和梁底顶；未知高度需补录后复验。'],pipe:['管道实体','核对管径、板件切孔和实际安装；切孔不代表运动范围已通过。'],passage:['候选间隙','该结果是水平／竖向扫描的局部间隙，不是连续通行路径；结合实际动线核对。'],front:['操作预留','核对正面朝向、打开或操作所需空间。'],cabinetdoor:['柜门开启','核对生产门板扫掠与实际安装高度。'],cabinetdrawer:['抽屉开启','核对生产抽屉完全拉出范围。'],drawerfront:['操作预留','核对抽屉拉出后的地面操作空间。']};
+  const [category,action]=groups[issue.kind]||['空间核对','结合实际安装与使用方式核对。'];return {category,action,status:issue.pending?'信息不足，待确认':issue.ignored?'已核对':'待处理'};
  }
  function readiness(plan,work){
   const items=[];
@@ -201,7 +211,7 @@
   let outside=0;for(let i=0;i<xx.length-1;i++)for(let j=0;j<yy.length-1;j++){if(rooms.some(r=>inside([(xx[i]+xx[i+1])/2,(yy[j]+yy[j+1])/2],r.poly)))continue;let piece=footprint;for(const [axis,edge,sign] of [[0,xx[i],1],[0,xx[i+1],-1],[1,yy[j],1],[1,yy[j+1],-1]])piece=clip(piece,axis,edge,sign);if(piece.length>2)outside+=area(piece)*1e6;if(outside>1)return false;}return true;
  }
  const rect=r=>[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];
- function intersects(A,B){for(const P of [A,B])for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length],nx=b[1]-a[1],ny=a[0]-b[0],l=Math.hypot(nx,ny);if(!l)continue;const pa=A.map(p=>(p[0]*nx+p[1]*ny)/l),pb=B.map(p=>(p[0]*nx+p[1]*ny)/l);if(Math.max(...pa)<=Math.min(...pb)+5||Math.max(...pb)<=Math.min(...pa)+5)return false;}return true;}
+ function intersects(A,B){for(const axis of [0,1])if(Math.max(...A.map(p=>p[axis]))<=Math.min(...B.map(p=>p[axis]))||Math.max(...B.map(p=>p[axis]))<=Math.min(...A.map(p=>p[axis])))return false;for(const P of [A,B])for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length],nx=b[1]-a[1],ny=a[0]-b[0],l=Math.hypot(nx,ny);if(!l)continue;const pa=A.map(p=>(p[0]*nx+p[1]*ny)/l),pb=B.map(p=>(p[0]*nx+p[1]*ny)/l);if(Math.max(...pa)<=Math.min(...pb)+5||Math.max(...pb)<=Math.min(...pa)+5)return false;}return true;}
  function spaceCheck(plan,furniture,{passage=800,focusId=null,focusIds=null,scanPassages=true,maxIssues=Infinity}={}){
   if(!num(passage)||passage<300||passage>2000)fail('通道阈值须为 300–2000 mm');
   const targets=focusIds?new Set(focusIds):focusId?new Set([focusId]):null;
@@ -269,7 +279,7 @@
   const raised=plan.rooms.filter(r=>r.counted===false);
   // Scan actual horizontal/vertical free intervals in rooms; these are candidate bottlenecks, not a pathfinding guarantee.
   for(const room of scanPassages?(plan.physicalRooms||plan.rooms).filter(r=>r.counted!==false):[]){const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let narrow=null;
-   for(const axis of [0,1]){const low=axis?x0:y0,high=axis?x1:y1;for(let fixed=low+200;fixed<high;fixed+=200){const cuts=[...(axis?ys:xs),...raised.flatMap(r=>r.poly.map(p=>p[axis]))];for(const {p} of bodies)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],other=1-axis;if((a[other]<=fixed&&b[other]>=fixed)||(b[other]<=fixed&&a[other]>=fixed)){if(a[other]!==b[other])cuts.push(a[axis]+(b[axis]-a[axis])*(fixed-a[other])/(b[other]-a[other]));}}const sorted=[...new Set(cuts)].sort((a,b)=>a-b);let run=0,start=0;for(let i=0;i<sorted.length-1;i++){const point=axis?[fixed,(sorted[i]+sorted[i+1])/2]:[(sorted[i]+sorted[i+1])/2,fixed];const free=inside(point,room.poly)&&!raised.some(r=>inside(point,r.poly))&&!bodies.some(b=>inside(point,b.p));if(free){if(!run)start=sorted[i];run+=sorted[i+1]-sorted[i];}if((!free||i===sorted.length-2)&&run){if(run>=100&&run<passage&&(!narrow||run<narrow.width))narrow={width:run,at:axis?[fixed,start+run/2]:[start+run/2,fixed]};run=0;}}}}
+   for(const axis of [0,1]){const low=axis?x0:y0,high=axis?x1:y1;for(let fixed=low+200;fixed<high;fixed+=200){const other=1-axis,active=bodies.filter(b=>b.box[other]<=fixed&&b.box[other+2]>=fixed),cuts=[...(axis?ys:xs),...raised.flatMap(r=>r.poly.map(p=>p[axis]))];for(const {p} of active)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];if((a[other]<=fixed&&b[other]>=fixed)||(b[other]<=fixed&&a[other]>=fixed)){if(a[other]!==b[other])cuts.push(a[axis]+(b[axis]-a[axis])*(fixed-a[other])/(b[other]-a[other]));}}const sorted=[...new Set(cuts)].sort((a,b)=>a-b);let run=0,start=0;for(let i=0;i<sorted.length-1;i++){const point=axis?[fixed,(sorted[i]+sorted[i+1])/2]:[(sorted[i]+sorted[i+1])/2,fixed];const free=inside(point,room.poly)&&!raised.some(r=>inside(point,r.poly))&&!active.some(b=>inside(point,b.p));if(free){if(!run)start=sorted[i];run+=sorted[i+1]-sorted[i];}if((!free||i===sorted.length-2)&&run){if(run>=100&&run<passage&&(!narrow||run<narrow.width))narrow={width:run,at:axis?[fixed,start+run/2]:[start+run/2,fixed]};run=0;}}}}
    if(narrow)issues.push({kind:'passage',id:room.id,name:room.name,message:`候选狭窄间隙约 ${Math.round(narrow.width)} mm，低于自设 ${passage} mm 阈值`,at:narrow.at});
   }
   const unique=[...new Map(issues.map(v=>[JSON.stringify([v.kind,v.id,v.otherId,v.beamId,v.markerId,v.column,v.section,v.message]),v])).values()];return targets?unique.filter(v=>targets.has(v.id)||targets.has(v.otherId)):unique;
@@ -282,6 +292,7 @@
  const checksum=value=>{let hash=2166136261;for(const c of JSON.stringify(value)){hash^=c.charCodeAt(0);hash=Math.imul(hash,16777619);}return (hash>>>0).toString(16).padStart(8,'0');};
  function validateWork(work){
   ceilingHeight(work);
+  if(work?.drawing!==undefined)(root.FurnishDrawing||require('./drawing-core.js')).settings(work.drawing);
   if(!work||!Array.isArray(work.furniture)||work.furniture.length>2000)fail('家具数据无效');const w=clone(work),ids=new Set();
   for(const f of w.furniture){if(!f||typeof f.id!=='string'||ids.has(f.id)||![f.cx,f.cy,f.w,f.d,f.rot].every(num)||f.w<=0||f.d<=0||f.w>20000||f.d>20000)fail('家具尺寸或编号无效');ids.add(f.id);if(f.price!==undefined&&(!num(f.price)||f.price<0||f.price>1e7)||f.h!==undefined&&(!num(f.h)||f.h<=0||f.h>20000))fail('家具价格或高度无效');if(f.frontClearance!==undefined&&(!num(f.frontClearance)||f.frontClearance<0||f.frontClearance>3000))fail('家具使用空间无效');if(f.obj){if(!Array.isArray(f.obj.positions)||!f.obj.positions.length||f.obj.positions.length>180000||f.obj.positions.length%9||f.obj.positions.some(v=>!num(v)||Math.abs(v)>1e9))fail('模型数据无效');for(let axis=0;axis<3;axis++){const values=f.obj.positions.filter((v,i)=>i%3===axis);if(Math.max(...values)-Math.min(...values)<1e-9)fail('模型必须具有三维尺寸');}}}
   for(const f of w.furniture)if(f.cabinet)(root.FurnishCabinet||require('./cabinet-core.js')).validate(f);
@@ -335,5 +346,6 @@
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
  root.FurnishProject={roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,materialQuantity,priceBasis,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
+ Object.assign(root.FurnishProject,{materialBreakdown,explainIssue});
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

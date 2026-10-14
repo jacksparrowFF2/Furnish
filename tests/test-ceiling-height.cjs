@@ -15,11 +15,13 @@ const restored=P.unpack(P.pack({planId:plan.id,current:work,designs:[{name:'é«˜å
 assert.equal(restored.current.ceilingHeight,3000);assert.equal(restored.designs[0].work.ceilingHeight,3400);
 const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
 let rebuilds=0;
-const ctx=vm.createContext({PLAN:plan,inited:true,active:true,H:2.8,FurnishProject:P,FurnishDesign:D,state:{...work,rooms:{},demolished:[],open:{}},opt:D.sceneSettings(),sigArch:'',sigFurn:'',sigLabels:'',buildArch:()=>rebuilds++,buildFurn:()=>{},buildLabels:()=>{},buildHeaterClearances:()=>{},invalidate:()=>{}});
+const ctx=vm.createContext({PLAN:plan,inited:true,active:true,H:2.8,FurnishProject:P,FurnishDesign:D,state:{...work,rooms:{},demolished:[],open:{}},opt:D.sceneSettings(),sigArch:'',sigFurn:'',sigLabels:'',sigNorth:'null',buildArch:()=>rebuilds++,buildFurn:()=>{},buildLabels:()=>{},buildHeaterClearances:()=>{},invalidate:()=>{}});
 vm.runInContext(html.slice(html.indexOf('function sync(force){'),html.indexOf('// CSS2DRenderer')),ctx);
 vm.runInContext('sync(false)',ctx);assert.equal(ctx.H,3);assert.equal(rebuilds,1);
 ctx.state={...ctx.state,ceilingHeight:3400};vm.runInContext('sync(false)',ctx);assert.equal(ctx.H,3.4);assert.equal(rebuilds,2);
 ctx.PLAN={...plan,beams:[{id:'beam',bottomHeight:2500,topHeight:2800}]};vm.runInContext('sync(false)',ctx);assert.equal(rebuilds,3);ctx.PLAN.beams[0].bottomHeight=2400;vm.runInContext('sync(false)',ctx);assert.equal(rebuilds,4);
+let furnitureBuilds=0,lightUpdates=0;ctx.buildFurn=()=>furnitureBuilds++;ctx.state.furniture[0].price=200;ctx.state.furniture[0].purchaseStatus='ordered';vm.runInContext('sync(false)',ctx);assert.equal(furnitureBuilds,0,'procurement metadata does not rebuild production meshes');
+Object.assign(ctx,{document:{querySelectorAll:()=>[]},syncCutBtns:()=>{},$:()=>({}),furnG:{},showLabels:()=>{},anim:null,applyLight:()=>lightUpdates++});ctx.state.drawing={northAngle:90,rotation:0};vm.runInContext('sync(false)',ctx);assert.equal(lightUpdates,1);assert.equal(furnitureBuilds,0);assert.equal(rebuilds,4,'north updates light without changing geometry');
 const topLine=html.match(/const top = opt.cut===2.8\?H:Math.min\(opt.cut,H\);/)[0];
 assert.equal(vm.runInContext(topLine+'top;',vm.createContext({H:3.4,opt:{cut:2.8}})),3.4);
 assert.equal(vm.runInContext(topLine+'top;',vm.createContext({H:3.4,opt:{cut:1.2}})),1.2);

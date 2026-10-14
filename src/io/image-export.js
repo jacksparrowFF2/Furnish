@@ -4,8 +4,8 @@
 function download(name, blob){ const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
 function exportPNG(){
   if (is3D()) return window.View3D.shot();
-  const clone = svg.cloneNode(true), W = 3200, H = Math.round(W*BOUNDS.h/BOUNDS.w);
-  clone.setAttribute('viewBox', `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
+  const clone = svg.cloneNode(true),b=globalThis.FurnishDrawing?displayBounds():BOUNDS, W = 3200, H = Math.round(W*b.h/b.w);
+  clone.setAttribute('viewBox', `${b.x} ${b.y} ${b.w} ${b.h}`);
   clone.setAttribute('width', W); clone.setAttribute('height', H);
   clone.querySelector('#gSel').innerHTML = '';
   clone.querySelectorAll('#gWallNet,#gProposal').forEach(g=>g.remove());
@@ -13,6 +13,7 @@ function exportPNG(){
   const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
   Object.entries({x:-20000,y:-20000,width:55000,height:55000,fill:PAL.paper}).forEach(([k,v]) => bg.setAttribute(k,v));
   clone.insertBefore(bg, clone.querySelector('#gGrid'));
+  window.FurnishDrawingUI?.prepareExport(clone,b);
   const img = new Image();
   img.onload = () => {
     const cv = document.createElement('canvas'); cv.width = W; cv.height = H;

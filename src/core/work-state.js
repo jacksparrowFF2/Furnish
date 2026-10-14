@@ -22,6 +22,7 @@
     }
     // Preserve the caller's work object and extra project fields, as before.
     function restore(work, plan){
+      if(work.drawing!==undefined)(root.FurnishDrawing||require('./drawing-core.js')).settings(work.drawing);
       if(work.architecture){
         const rebuilt = draft.build(work.architecture.draft);
         if(rebuilt.id !== plan.id) throw new Error('Custom plan identity mismatch');

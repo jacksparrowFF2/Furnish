@@ -57,7 +57,7 @@ function renderFurn(){
     try{
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
     const label = Math.min(f.w,f.d) >= 380 && !NOLABEL.includes(f.type)
-      ? `<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>` : '';
+      ? `<text transform="rotate(${-f.rot-(globalThis.FurnishDrawing?drawingRotation():0)})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>` : '';
     const body = furnSVG(f.type,f.w,f.d,f.color,f), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
     const pipes=!furnitureError(f)&&servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
     const maskId='pipe-cut-'+f.id,mask=pipes.length?`<defs><mask id="${esc(maskId)}" maskUnits="userSpaceOnUse" x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}"><rect x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}" fill="white"/>${pipes.map(p=>{const local=FurnishServices.local({...f,flip:false},p);return `<circle cx="${local.at[0]}" cy="${local.at[1]}" r="${p.radius}" fill="black"/>`;}).join('')}</mask></defs>`:'';
@@ -93,10 +93,10 @@ function syncFurnBadge(){ const b = $('#furnHidden'); if (b) b.hidden = ui.layer
 function renderWalls(){
   $('#gWalls').innerHTML = WALLS.map((w,i) => {
     const [x0,y0,x1,y1,k] = w, id = 'w'+i, dem = state.demolished.includes(id);
-    let fill = k==='b' ? (ui.layers.bearing ? '#c8553c' : PAL.wallB) : k==='low' ? PAL.wallLow : k==='e' ? PAL.wallE : PAL.wallN;
-    let ex = k==='low' ? `stroke="${PAL.wallLowLine}" stroke-width="1" vector-effect="non-scaling-stroke"` : ['b','e'].includes(k)?`stroke="${PAL.paper}" stroke-width="1.2" stroke-dasharray="${k==='b'?'3 2':'12 3'}" vector-effect="non-scaling-stroke"`:'';
+    let fill = k==='low' ? PAL.wallLow : ui.layers.bearing&&k==='b' ? '#c8553c' : ui.layers.bearing&&k==='e' ? PAL.wallE : PAL.wallN;
+    let ex = k==='low' ? `stroke="${PAL.wallLowLine}" stroke-width="1" vector-effect="non-scaling-stroke"` : ui.layers.bearing&&['b','e'].includes(k)?`stroke="${PAL.paper}" stroke-width="1.2" stroke-dasharray="${k==='b'?'3 2':'12 3'}" vector-effect="non-scaling-stroke"`:'';
     if (dem){ fill = PAL.demFill; ex = 'stroke="#c65b3a" stroke-width="1.2" stroke-dasharray="5 3" vector-effect="non-scaling-stroke"'; }
-    return `<rect class="wall" data-wall="${id}" x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="${fill}" ${ex}><title>${k==='b'?tr('承重墙 · 点线','Bearing · dotted'):k==='e'?tr('外墙 · 长虚线','Exterior · dashed'):tr('非承重墙 · 实线','Partition · solid')} · ${tr('点击查看属性','Click for properties')}</title></rect>`;
+    return `<rect class="wall" data-wall="${id}" x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="${fill}" ${ex}><title>${k==='b'?tr('承重墙','Bearing wall'):k==='e'?tr('外墙','Exterior wall'):tr('非承重墙','Partition')} · ${tr('点击查看属性','Click for properties')}</title></rect>`;
   }).join('');
 }
 
@@ -156,8 +156,8 @@ function renderLabels(){
   g.setAttribute('display', ui.layers.labels ? 'inline' : 'none');
   g.innerHTML = ROOMS.filter(r => r.at).map(r => {
     const [x,y] = r.at, halo = `stroke="${PAL.halo}" stroke-width="45" paint-order="stroke" stroke-linejoin="round"`;
-    return `<text x="${x}" y="${y}" font-size="250" font-weight="600" text-anchor="middle" fill="${PAL.label}" ${halo}>${esc(nm(state.rooms[r.id].name))}</text>
-      <text x="${x}" y="${y+260}" font-size="175" text-anchor="middle" fill="${PAL.labelSub}" ${halo}>${fmt(area(r.poly))} m²</text>`;
+    return `<g transform="rotate(${globalThis.FurnishDrawing?-drawingRotation():0} ${x} ${y})"><text x="${x}" y="${y}" font-size="250" font-weight="600" text-anchor="middle" fill="${PAL.label}" ${halo}>${esc(nm(state.rooms[r.id].name))}</text>
+      <text x="${x}" y="${y+260}" font-size="175" text-anchor="middle" fill="${PAL.labelSub}" ${halo}>${fmt(area(r.poly))} m²</text></g>`;
   }).join('');
 }
 
@@ -174,8 +174,13 @@ function renderDims(){
     return s;
   };
   const g = $('#gDims');
-  g.innerHTML = PLAN.dims.map(d => chain(d.h, d.at, d.start, d.segs)).join('');
+  g.innerHTML = globalThis.FurnishDrawing?drawingDimensionsSVG(FurnishDrawing.dimensions(FurnishProject.effectivePlan(PLAN,state),state.drawing),PAL.dim,drawingRotation(),view.s):PLAN.dims.map(d => chain(d.h, d.at, d.start, d.segs)).join('');
   g.setAttribute('display', ui.layers.dims ? 'inline' : 'none');
+}
+function drawingDimensionsSVG(lines,color=PAL.dim,rotation=globalThis.FurnishDrawing?FurnishDrawing.settings(state.drawing).rotation:0,scale=0){
+ return lines.map(d=>{const [x,y]=d.a,[X,Y]=d.b,mx=(x+X)/2,my=(y+Y)/2,font=Math.max(d.value<400?125:170,scale?10/scale:0),tick=65;let angle=(d.h?0:-90)+rotation;if(angle>90)angle-=180;if(angle<=-180)angle+=360;angle-=rotation;
+ const at=d.h?[mx,my-65]:[mx-65,my];return `<g data-auto-dimension="${d.kind}" data-dimension-value="${d.value}" fill="none" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"><path d="M${x} ${y}L${X} ${Y}${[d.a,d.b].map(([a,b])=>`M${a-tick} ${b+tick}L${a+tick} ${b-tick}`).join('')}${d.refs.map((p,i)=>`M${p[0]} ${p[1]}L${[d.a,d.b][i].join(' ')}`).join('')}"/><text x="${at[0]}" y="${at[1]}" font-size="${font}" text-anchor="middle" fill="${color}" stroke="none" transform="rotate(${angle} ${at.join(' ')})">${d.value>=80&&(!scale||d.value*scale>=28)?Math.round(d.value):''}</text><title>${d.kind==='opening'?tr('门窗洞口宽度','Opening width'):tr('自动投影尺寸 · mm','Automatic projected dimension · mm')} ${Math.round(d.value)}</title></g>`;
+ }).join('');
 }
 
 function renderGrid(){
@@ -332,8 +337,9 @@ function renderAll(){
   window.FurnishDesignUI?.clearPlacementGuide();
   syncCustomArchitecture();
   applyOpeningOverrides(); renderOpenings(); ui.guides = null;
-  renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderMeasure(); renderNotes(); renderSel(); renderPanel(); updateHeader();
+  renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderDims(); renderMeasure(); renderNotes(); renderSel(); renderPanel(); updateHeader();
   window.View3D?.sync();
   window.FurnishWorkspace?.afterRender();
   window.FurnishWorkflowTools?.afterRender();
+  window.FurnishDrawingUI?.afterRender();
 }

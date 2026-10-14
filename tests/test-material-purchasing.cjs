@@ -6,6 +6,8 @@ const pricing={floorWaste:10,materials:{tile:400},materialSpecs:{tile:{length:60
 const before=JSON.stringify(next),b=P.estimate(plan,next,mats,price),q=b.mats[0].procurement;
 assert.equal(q.pieces,62);assert.equal(q.packs,16);assert.equal(q.quantity,16);assert.equal(q.purchased,23.04);assert.equal(b.floor,6400);assert.equal(JSON.stringify(next),before);
 for(const [unit,quantity] of [['piece',64],['m2',23.04]])assert.equal(P.materialQuantity(20,P.pricing({...pricing,materialSpecs:{tile:{...pricing.materialSpecs.tile,unit}}}),'tile').quantity,quantity);
+const splitPlan={...plan,rooms:[{...plan.rooms[0],id:'a',poly:[[0,0],[2500,0],[2500,4000],[0,4000]]},{...plan.rooms[0],id:'b',poly:[[2500,0],[5000,0],[5000,4000],[2500,4000]]}]},breakdown=P.materialBreakdown(splitPlan,next,mats,price)[0];
+assert.equal(breakdown.rooms.length,2);assert.equal(breakdown.rooms.reduce((n,r)=>n+r.required,0),22);assert.equal(breakdown.procurement.packs,16);assert.equal(breakdown.surplusPieces,2);assert(Math.abs(breakdown.surplusArea-1.04)<1e-9);
 assert.equal(P.materialQuantity(1,P.pricing({materialSpecs:{tile:{length:1000,width:1000,waste:0}}}),'tile').pieces,1);
 assert.equal(P.materialQuantity(1.000001,P.pricing({materialSpecs:{tile:{length:1000,width:1000,waste:0}}}),'tile').pieces,2);
 for(const spec of [{length:0,width:600},{length:600,width:600,pack:1.5},{length:600,width:600,waste:101},{length:600,width:600,unit:'pack'},{length:600,width:600,unit:'other'}])assert.throws(()=>P.pricing({materialSpecs:{tile:spec}}));

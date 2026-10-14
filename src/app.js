@@ -299,7 +299,7 @@ function cmdSource(){
   libAll().forEach(c => c.items.forEach(it => items.push({g:tr('添加家具', 'Add furniture'), icon:'plus', zh:`添加：${it[1]}`, en:`Add: ${EN(it[1])}`, run:() => {
     const p = ui.sel?.kind === 'room' ? (b => ({x:(b[0]+b[2])/2, y:(b[1]+b[3])/2}))(bbox(ROOMS.find(r => r.id === ui.sel.id).poly))
       : is3D() ? (r => window.View3D.groundAt(r.left + r.width/2, r.top + r.height/2))($('#stage').getBoundingClientRect()) : null;
-    addItem(it, p?.x ?? view.x0 + svg.clientWidth/2/view.s, p?.y ?? view.y0 + svg.clientHeight/2/view.s); }, key:`${it[2]}×${it[3]}`})));
+    const center=drawingCenter();addItem(it, p?.x ?? center.x, p?.y ?? center.y); }, key:`${it[2]}×${it[3]}`})));
   state.furniture.forEach(f => items.push({g:tr('已摆放', 'Placed'), icon:'target', zh:`定位：${f.name}`, en:`Locate: ${EN(f.name)}`, run:() => focusItem(f.id), key:`${f.w}×${f.d}`}));
   return items;
 }
@@ -561,7 +561,7 @@ function openCustom(){
       libUI.cat = CUSTOM_CAT; libUI.q = ''; $('#libSearch').value = ''; buildCats(); buildLib();
       const it = libAll().at(-1).items.at(-1);
       const p = ui.sel?.kind === 'room' ? (b => ({x:(b[0]+b[2])/2, y:(b[1]+b[3])/2}))(bbox(ROOMS.find(r => r.id === ui.sel.id).poly))
-        : {x:view.x0 + svg.clientWidth/2/view.s, y:view.y0 + svg.clientHeight/2/view.s};
+        : drawingCenter();
       addItem(it, p.x, p.y);
     }}]});
 }
@@ -645,7 +645,7 @@ function endLibDrag(e, ok){
   let p = null;
   if (ui.sel?.kind === 'room'){ const b = bbox(ROOMS.find(r => r.id===ui.sel.id).poly); p = {x:(b[0]+b[2])/2, y:(b[1]+b[3])/2}; }
   else if (is3D()){ const r = $('#stage').getBoundingClientRect(); p = window.View3D.groundAt(r.left + r.width/2, r.top + r.height/2); }
-  if (!p) p = {x:view.x0 + svg.clientWidth/2/view.s, y:view.y0 + svg.clientHeight/2/view.s};
+  if (!p) p = drawingCenter();
   addItem(d.it, p.x, p.y);
   closeDrawers();
 }

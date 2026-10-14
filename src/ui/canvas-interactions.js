@@ -3,11 +3,17 @@
 // 滚轮 / 平移 / 双指缩放每帧可能触发多次事件，合并到下一帧只刷新一次
 let viewRaf = 0;
 let stageEl;
+const drawingRotation=()=>globalThis.FurnishDrawing?FurnishDrawing.settings(state.drawing).rotation:0;
+function drawingPoint(p,inverse=false){return globalThis.FurnishDrawing?FurnishDrawing.rotate(p,(inverse?-1:1)*drawingRotation()):p;}
+function drawingCenter(){const p=drawingPoint([view.x0+svg.clientWidth/2/view.s,view.y0+svg.clientHeight/2/view.s],true);return {x:p[0],y:p[1]};}
+function displayBounds(){return globalThis.FurnishDrawing?FurnishDrawing.bounds(FurnishDrawing.drawingBounds(FurnishProject.effectivePlan(PLAN,state),state.drawing),drawingRotation()):BOUNDS;}
+function syncDrawingTransform(){const rotation=drawingRotation();for(const g of svg.children)if(g.tagName.toLowerCase()==='g'&&g.id!=='gCompass')g.setAttribute('transform',`rotate(${rotation})`);window.FurnishDrawingUI?.syncCompass();}
 function queueView(){ if (!viewRaf) viewRaf = requestAnimationFrame(() => { viewRaf = 0; applyView(); }); }
 function applyView(){
   if (viewRaf){ cancelAnimationFrame(viewRaf); viewRaf = 0; }
   const W = svg.clientWidth, H = svg.clientHeight;
   svg.setAttribute('viewBox', `${view.x0} ${view.y0} ${W/view.s} ${H/view.s}`);
+  syncDrawingTransform();
   const ratio = 1/(view.s*PX_MM);
   $('#ratio').textContent = $('#hudRatio').textContent = '1:' + Math.round(ratio);
   const nice = [100,200,500,1000,2000,5000].find(v => v*view.s >= 60) || 5000;
@@ -18,13 +24,14 @@ function applyView(){
   const off = v => (((-v*view.s) % gs) + gs) % gs + 'px';
   stageEl.style.setProperty('--gs', gs + 'px'); stageEl.style.setProperty('--gx', off(view.x0)); stageEl.style.setProperty('--gy', off(view.y0));
   renderSel(); renderMeasure();
+  if(globalThis.FurnishDrawing)renderDims();
   if(ui.sel?.kind==='wall')window.FurnishWorkflowTools?.redrawDistances();
 }
 function fitView(){
   const inset=globalThis.FurnishWorkflowTools?80:0;
-  const W = Math.max(100,svg.clientWidth-inset), H = svg.clientHeight;
-  view.s = Math.min(W/BOUNDS.w, H/BOUNDS.h);
-  view.x0 = BOUNDS.x - (W/view.s - BOUNDS.w)/2-inset/view.s; view.y0 = BOUNDS.y - (H/view.s - BOUNDS.h)/2;
+  const W = Math.max(100,svg.clientWidth-inset), H = svg.clientHeight,b=displayBounds();
+  view.s = Math.min(W/b.w, H/b.h);
+  view.x0 = b.x - (W/view.s - b.w)/2-inset/view.s; view.y0 = b.y - (H/view.s - b.h)/2;
   applyView();
 }
 function zoomAt(ns, mx, my){
@@ -37,7 +44,7 @@ const setRatio = r => zoomAt(1/(r*PX_MM), svg.clientWidth/2, svg.clientHeight/2)
 
 function toMM(e){
   const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
-  return pt.matrixTransform(svg.getScreenCTM().inverse());
+  const point=pt.matrixTransform(svg.getScreenCTM().inverse()),p=drawingPoint([point.x,point.y],true);point.x=p[0];point.y=p[1];return point;
 }
 
 /* ======================= 吸附适配 ======================= */
