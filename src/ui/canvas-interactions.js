@@ -26,6 +26,7 @@ function applyView(){
   renderSel(); renderMeasure();
   window.FurnishRoomMeasure?.afterRender();
   if(globalThis.FurnishDrawing)renderDims();
+  if(globalThis.FurnishDrawing)refreshFurnitureLabels();
   if(ui.sel?.kind==='wall')window.FurnishWorkflowTools?.redrawDistances();
 }
 function fitView(){

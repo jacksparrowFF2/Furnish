@@ -36,6 +36,29 @@ function rasterSize(box){
 }
 const boxHit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
 function textAngle(angle,rotation=0){let screen=((angle+rotation+180)%360+360)%360-180;if(screen>90)screen-=180;if(screen<-90)screen+=180;return screen-rotation;}
+const textWidth=(text,font)=>[...text].reduce((n,c)=>n+(/[\x00-\x7f]/.test(c)?.62:1),0)*font;
+function furnitureLabels(items,{rotation=0,scale=0,selected=[]}={}){
+ const used=[],chosen=new Set(selected),result=new Map(items.map(f=>[f.id,{id:f.id,lines:[],box:null}]));
+ const hit=(a,b)=>boxHit(a,b),ordered=[...items].sort((a,b)=>Number(chosen.has(b.id))-Number(chosen.has(a.id))||b.w*b.d-a.w*a.d);
+ const wrap=(text,width,font)=>{const chars=[...text],lines=[];let line='';for(const c of chars){if(textWidth(line+c,font)>width&&line){lines.push(line.trim());line=c.trimStart();}else line+=c;}if(line)lines.push(line.trim());const truncated=lines.length>2;if(truncated){lines.length=2;while(lines[1]&&textWidth(lines[1]+'…',font)>width)lines[1]=[...lines[1]].slice(0,-1).join('');lines[1]+='…';}return {lines,truncated};};
+ for(const f of ordered){
+  if(Math.min(f.w,f.d)<380)continue;const text=String(f.name||'').trim().replace(/\s+/g,' ');if(!text)continue;
+  const angle=((f.rot||0)+rotation)*Math.PI/180,c=Math.abs(Math.cos(angle)),s=Math.abs(Math.sin(angle)),center=rotate([f.cx,f.cy],rotation),initial=Math.max(80,Math.min(170,Math.min(f.w,f.d)*.2));let fallback=null,full=[];
+  for(const font of [...new Set([initial,Math.max(80,initial*.85),Math.max(80,initial*.7)])]){
+   if(scale&&font*scale<8)continue;const height=font*2.5,margin=40,width=Math.min(c>1e-6?(f.w-2*margin-s*height)/c:Infinity,s>1e-6?(f.d-2*margin-c*height)/s:Infinity)-font*.3;
+   if(width<font*2.5)continue;const v=wrap(text,width,font),w=Math.max(...v.lines.map(line=>textWidth(line,font)))+font*.3,h=v.lines.length*font*1.2;
+   const candidate={id:f.id,...v,font,width:w,height:h};if(v.truncated){if(!fallback||font<fallback.font)fallback=candidate;}else full.push(candidate);
+  }
+  const candidates=[...full,...(fallback?[fallback]:[])];let best=null;
+  for(const v of candidates){for(const at of [[0,0],[0,-v.height],[0,v.height]]){
+    const a=Math.cos(angle)*at[0]+Math.sin(angle)*at[1],b=-Math.sin(angle)*at[0]+Math.cos(angle)*at[1];
+    if(Math.abs(a)+(c*v.width+s*v.height)/2>f.w/2-25||Math.abs(b)+(s*v.width+c*v.height)/2>f.d/2-25)continue;
+    const box=[center[0]+at[0]-v.width/2,center[1]+at[1]-v.height/2,center[0]+at[0]+v.width/2,center[1]+at[1]+v.height/2];if(used.some(other=>hit(box,other)))continue;best={...v,at,box};break;
+   }if(best)break;}
+  if(best){used.push(best.box);result.set(f.id,best);}
+ }
+ return [...result.values()];
+}
 function dimensionLayout(lines,{scale=0,rotation=0}={}){
  const placed=[],result=lines.map(d=>({...d,label:null,simple:scale>0&&d.kind==='chain'&&d.value*scale<6}));
  const indices=result.map((_,i)=>i).sort((a,b)=>(result[a].kind==='overall'?-1:0)-(result[b].kind==='overall'?-1:0)||result[b].value-result[a].value||a-b);
@@ -66,5 +89,5 @@ function netSpans(room,point){
  const span=axis=>{const cross=1-axis,values=[];for(const ring of rings)for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length],delta=b[cross]-a[cross];if(Math.abs(delta)<eps){if(Math.abs(point[cross]-a[cross])<eps)values.push(a[axis],b[axis]);continue;}const t=(point[cross]-a[cross])/delta;if(t>=-eps&&t<=1+eps)values.push(a[axis]+t*(b[axis]-a[axis]));}const left=values.filter(v=>v<point[axis]-eps),right=values.filter(v=>v>point[axis]+eps);if(!left.length||!right.length)return null;const a=[...point],b=[...point];a[axis]=Math.max(...left);b[axis]=Math.min(...right);return {a,b,value:b[axis]-a[axis],h:axis===0};};
  const horizontal=span(0),vertical=span(1);return horizontal&&vertical?{at:[...point],horizontal,vertical}:null;
 }
-const api={settings,rotate,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
+const api={settings,rotate,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,furnitureLabels,textWidth,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

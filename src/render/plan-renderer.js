@@ -28,6 +28,16 @@ function buildDefs(){
 
 /* ======================= 渲染 ======================= */
 const NOLABEL = ['plant','floorlamp','sidetable','barstool','beanbag'];
+let furnitureLabelCache=null;
+const appliedFurnitureLabels=new WeakMap();
+function furnitureLabelLayout(scale=view.s,selected=selIds()){
+ const items=renderableFurniture().filter(f=>!NOLABEL.includes(f.type)).map(f=>({id:f.id,name:nm(f.name),w:f.w,d:f.d,cx:f.cx,cy:f.cy,rot:f.rot})),rotation=drawingRotation(),key=JSON.stringify([items,rotation,scale,selected]);
+ if(furnitureLabelCache?.key!==key)furnitureLabelCache={key,labels:new Map(FurnishDrawing.furnitureLabels(items,{rotation,scale,selected}).map(v=>[v.id,v]))};return furnitureLabelCache.labels;
+}
+function furnitureLabelSVG(f,v,palette=PAL){if(!v?.lines.length)return '';const angle=-f.rot-drawingRotation();return `<g data-furniture-label transform="rotate(${angle}) translate(${v.at[0]} ${v.at[1]})" pointer-events="none"><text font-size="${v.font}" text-anchor="middle" dominant-baseline="central" fill="${palette.text}" opacity=".85">${v.lines.map((line,i)=>`<tspan x="0" y="${(i-(v.lines.length-1)/2)*v.font*1.2}">${esc(line)}</tspan>`).join('')}</text></g>`;}
+function refreshFurnitureLabels(root=svg,{scale=view.s,selected=selIds(),palette=PAL}={}){
+ if(!globalThis.FurnishDrawing)return;const labels=furnitureLabelLayout(scale,selected),previous=appliedFurnitureLabels.get(root);if(previous?.labels===labels&&previous.color===palette.text)return;for(const g of root.querySelectorAll('#gFurn [data-fid]')){g.querySelector('[data-furniture-label]')?.remove();const f=getF(g.getAttribute('data-fid'));if(f&&!furnitureError(f))g.insertAdjacentHTML('beforeend',furnitureLabelSVG(f,labels.get(f.id),palette));}appliedFurnitureLabels.set(root,{labels,color:palette.text});
+}
 function renderRooms(){
   let s = '';
   ROOMS.forEach(r => s += `<path class="room" data-room="${r.id}" d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="url(#m-${state.rooms[r.id].mat})" ${r.zone?'stroke="#139687" stroke-width="1" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"':''}/>`);
@@ -53,11 +63,11 @@ function renderFurn(){
   g.setAttribute('display', ui.layers.furn ? 'inline' : 'none');
   clashIds = new Set(collisions().flat());
   const servicePipes=typeof FurnishServices!=='undefined'?FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state)):[];
+  const labels=globalThis.FurnishDrawing?furnitureLabelLayout():null;
   g.innerHTML = drawOrder().map(f => {
     try{
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
-    const label = Math.min(f.w,f.d) >= 380 && !NOLABEL.includes(f.type)
-      ? `<text transform="rotate(${-f.rot-(globalThis.FurnishDrawing?drawingRotation():0)})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>` : '';
+    const label = labels?furnitureLabelSVG(f,labels.get(f.id)):(Math.min(f.w,f.d)>=380&&!NOLABEL.includes(f.type)?`<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>`:'');
     const body = furnSVG(f.type,f.w,f.d,f.color,f), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
     const pipes=!furnitureError(f)&&servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
     const maskId='pipe-cut-'+f.id,mask=pipes.length?`<defs><mask id="${esc(maskId)}" maskUnits="userSpaceOnUse" x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}"><rect x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}" fill="white"/>${pipes.map(p=>{const local=FurnishServices.local({...f,flip:false},p);return `<circle cx="${local.at[0]}" cy="${local.at[1]}" r="${p.radius}" fill="black"/>`;}).join('')}</mask></defs>`:'';
@@ -67,7 +77,7 @@ function renderFurn(){
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
     const lock = f.locked ? `<g data-edit-overlay="lock" transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
       <rect x="-45" y="-12" width="90" height="62" rx="12" fill="${PAL.ink}"/><path d="M-28 -12v-18a28 28 0 0 1 56 0v18" fill="none" stroke="${PAL.ink}" stroke-width="16"/></g>` : '';
-    return `<g class="furn${f.locked ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}>${flip}${clash}${label}${lock}</g>`;
+    return `<g class="furn${f.locked ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}><title>${esc(nm(f.name))} · ${f.w} × ${f.d} mm</title>${flip}${clash}${label}${lock}</g>`;
     }catch(e){const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return `<g class="furn" data-fid="${esc(f.id)}" data-model-error="true" transform="${furnT(f)}">${furnitureFallbackSVG(f,message)}</g>`;}
   }).join('');
   syncFurnBadge(); syncEmpty(); syncModelErrors();
