@@ -1,17 +1,18 @@
 /* Production kitchen geometry; all input lengths are mm. */
 (function(root){
 'use strict';
-function build(THREE,f,box,{furniture=[],plan}={}){
+function build(THREE,f,box,{furniture=[],plan,previewBlind=null,previewMirror=false}={}){
  const K=root.FurnishKitchen,C=root.FurnishCabinet,k=f.kitchen,g=new THREE.Group(),stone=new THREE.MeshStandardMaterial({color:'#dcd7cf',roughness:.25});stone.userData.kitchen=true;
  for(const m of K.layout(f)){
   if(m.role==='empty')continue;
-  const spec=C.preset('base'),c=K.kitchenModuleConfig(spec.cabinet,m,k.baseHeight,K.dropHeight(f));
+  const spec=C.preset('base'),c=K.kitchenModuleConfig(spec.cabinet,m,k.baseHeight,K.dropHeight(f),k);
   if(k.doorOverlay!==undefined)c.doorOverlay=k.doorOverlay;
   const part={...f,type:'cabinet',w:m.width,d:k.depth,h:k.baseHeight,cabinet:c,kitchen:undefined,cx:0,cy:0,rot:0,flip:false};
-  const model=root.FurnishCabinetModel.build(THREE,part,box,{furniture:[]});model.traverse(o=>{if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,column:m.index};for(const key of ['cabinetShelf','cabinetDivider','cabinetBay'])delete o.userData[key];});model.position.set(m.x/1000,0,m.y/1000);model.rotation.y=-m.rot*Math.PI/180;g.add(model);
+  const model=root.FurnishCabinetModel.build(THREE,part,box,{furniture:[]});model.traverse(o=>{if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,column:m.index};for(const key of ['cabinetShelf','cabinetDivider','cabinetBay'])delete o.userData[key];});model.position.set(m.x/1000,0,m.y/1000);model.rotation.y=-m.rot*Math.PI/180;if(previewMirror)model.scale.x=-1;g.add(model);
  }
  // The corner is a reserved blind volume, not an overlapping second cabinet.
  if(k.shape==='L'){const b=K.cornerBlock(f);g.add(box(b.w/1000,k.baseHeight/1000,b.d/1000,f.color,b.x/1000,0,b.y/1000));}
+ if(previewBlind){const mesh=box(previewBlind.width/1000,k.baseHeight/1000,k.depth/1000,f.color,previewBlind.x/1000,0,previewBlind.y/1000);mesh.userData.kitchenPreviewBlind=true;g.add(mesh);}
  {
   const shape=new THREE.Shape(),outline=K.outline(f);outline.forEach(([x,y],i)=>i?shape.lineTo(x/1000,y/1000):shape.moveTo(x/1000,y/1000));shape.closePath();
   for(const device of furniture.filter(v=>v.counterLink?.hostId===f.id)){

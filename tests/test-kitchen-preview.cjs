@@ -6,7 +6,7 @@ const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-co
  let scene,camera,canvas,tick,disposed=0,orbit=0;
  class Renderer{constructor(){canvas=this.domElement=new Element();}setPixelRatio(){}setSize(){}render(s,c){scene=s;camera=c;s.updateMatrixWorld(true);c.updateMatrixWorld(true);}dispose(){disposed++;}forceContextLoss(){}}
  class Controls{constructor(c,cv){this.camera=c;this.target=new T.Vector3();this.enabled=true;cv.addEventListener('pointerdown',()=>orbit++);}update(){this.camera.lookAt(this.target);}dispose(){}}
- const context=vm.createContext({FurnishKitchen:K,FurnishCabinet:C,document:{createElement:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}});
+ const context=vm.createContext({FurnishKitchen:K,FurnishCabinet:C,document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}});
  for(const file of ['cabinet-model','kitchen-model','cabinet-preview'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),context);
  const box=(w,h,d,color,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  let f=K.configure({id:'k',type:'counter',cx:0,cy:0,w:2400,d:1800,rot:0,color:'#eee'},{version:1,shape:'L',corner:'right',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:900,role:'door'},{run:0,width:900,role:'drawer'},{run:1,width:1200,role:'door'}]});

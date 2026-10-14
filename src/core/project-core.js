@@ -124,7 +124,7 @@
  function checkContext(plan,furniture,passage){
   return [passage,plan.rooms.map(r=>[r.id,r.poly,r.counted,r.ceilingHeight,r.polys]),plan.walls,plan.doors,
    furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance,f.h,f.flip,f.mountHeight,f.stackHeight,f.showerMixerHeight,f.showerRise,f.showerHandAngle,!!f.obj,f.cabinet,f.kitchen,f.counterLink,f.counterElevation,f.hoodPanelOpen]),
-   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v3','hood-bay-v2','tucked-seat-v1'];
+   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v3','hood-bay-v2','cabinet-door-directions-v1','tucked-seat-v1'];
  }
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify({version:3,issue,context:checkContext(plan,furniture,passage)});}
  let lastReview=null;
@@ -265,7 +265,7 @@
      for(const {beam,vertical} of beams){if(vertical){if(hit(beam.poly,vertical))blocked.push((beam.name||beam.id)+'（房梁）');}else if(physical&&hit(beam.poly,null))unknown.push((beam.name||beam.id)+'（梁高未录入）');}
      for(const pipe of pipes){const result=S.openingResult(movingFurniture,partOpening,pipe,intersects,parts);if(result.hit){blocked.push(pipe.name+'（竖管，切孔后板件运动相交）');pipeIds.push(pipe.id);}else if(result.pending){motionUnknown.push(pipe.name+(result.reason==='geometry-unavailable'?'（未取得完整可计算板件几何）':'（上翻板件间隙接近计算精度）'));pipeIds.push(pipe.id);}}
      if(wallHit||ceilingHit||blocked.length||unknown.length||motionUnknown.length){const reasons=[wallHit?'与墙体冲突':'',ceilingHit?'与天花板／吊顶完成面冲突':'',blocked.length?'被 '+blocked.join('、')+' 占用':'',unknown.length?'待核对：'+unknown.join('、')+' 高度未知':'',motionUnknown.length?'待核对：'+motionUnknown.join('、'):''].filter(Boolean);
-      issues.push({kind:opening.kind,id:f.id,markerId:pipeIds[0],markerIds:pipeIds,name:f.name,column:opening.column,section:opening.section||'storage',pending:!wallHit&&!ceilingHit&&!blocked.length,at:opening.poly[0],message:`分区 ${opening.column+1} ${opening.section==='display'?'上翻门三维扫掠范围':opening.kind==='cabinetdoor'?'柜门三维开启范围':opening.kind==='cabinetdrawer'?'抽屉完全拉出范围':`抽屉拉出后前方 ${passage} mm 地面操作空间`}${reasons.join('；')}`});
+      issues.push({kind:opening.kind,id:f.id,markerId:pipeIds[0],markerIds:pipeIds,name:f.name,column:opening.column,section:opening.section||'storage',pending:!wallHit&&!ceilingHit&&!blocked.length,at:opening.poly[0],message:`分区 ${opening.column+1} ${opening.section==='display'?'展示柜门三维扫掠范围':opening.kind==='cabinetdoor'?'柜门三维开启范围':opening.kind==='cabinetdrawer'?'抽屉完全拉出范围':`抽屉拉出后前方 ${passage} mm 地面操作空间`}${reasons.join('；')}`});
      }
     }
    }

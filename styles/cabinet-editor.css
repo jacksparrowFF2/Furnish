@@ -12,6 +12,20 @@
 .cab-dimensions {position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .cab-dimension {position:absolute;transform:translate(-50%,-50%);white-space:nowrap;background:#fffdf4df;color:#285168;border-radius:4px;padding:2px 4px;font-size:11px;font-variant-numeric:tabular-nums}
 .cab-dimension[hidden] {display:none}
+.cab-dimension-lines {position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.cab-dimension-lines path {fill:none;stroke:#285168;stroke-width:1;vector-effect:non-scaling-stroke;opacity:.7}
+.cab-size-summary {position:absolute;top:8px;left:8px;max-width:calc(100% - 16px);padding:4px 7px;border-radius:5px;background:#fffdf4ef;color:#285168;font-size:11px;font-variant-numeric:tabular-nums;line-height:1.5}
+.cab-module-number {position:absolute;transform:translate(-50%,-50%);min-width:26px;height:26px;padding:0 5px;border:1px solid #fff;border-radius:50%;background:#285168;color:#fff;font:600 12px/24px system-ui;font-variant-numeric:tabular-nums;box-shadow:0 1px 4px #0003;pointer-events:auto;cursor:pointer}
+.cab-module-number[aria-pressed=true] {background:#b84c12;outline:2px solid #fff}
+.cab-module-number:focus-visible {outline:3px solid #168de2;outline-offset:2px}
+.cab-blind-label {position:absolute;transform:translate(-50%,-50%);padding:3px 6px;border:1px dashed #746f65;border-radius:4px;color:#5b5145;background:#fffdf4e8;font-size:11px;white-space:nowrap}
+.cab-unfolded {position:absolute;inset:0;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:12px;background:#eeeae3;overscroll-behavior:contain}
+.cab-elevation {min-width:0;flex:none;border:1px solid #d4cec5;border-radius:8px;overflow:hidden}
+.cab-elevation h4 {margin:0;padding:7px 10px;font-size:12px;font-weight:600;color:#285168;background:#fffdf4}
+.cab-elevation-scroll {overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain}
+.cab-elevation-preview {height:230px;min-width:100%;position:relative;display:grid;place-items:center;background:#eeeae3}
+.cab-elevation-preview canvas {max-width:none!important}
+#cab-preview[data-unfolded=true] {height:570px}
 .cab-fields {min-width:0;height:100%;overflow:auto;padding-right:8px;overscroll-behavior:contain}
 .cab-tabs {display:grid;grid-template-columns:repeat(4,1fr);gap:4px;position:sticky;top:0;z-index:2;background:var(--panel,#fffdf9);padding:4px 0 14px;margin-bottom:12px;border-bottom:1px solid var(--line,#ddd)}
 .cab-tabs button {font:inherit;font-size:12px;cursor:pointer;padding:10px 4px;border:0;border-radius:8px;background:var(--soft,#f3f0e9);color:var(--ink,#302c25)}
@@ -34,6 +48,7 @@
 .cab-fields input:not([type=checkbox]):not([type=range]):not([type=color]),.cab-fields select {width:100%;min-width:0;padding:9px 10px;font:inherit;font-size:13px;border:1px solid var(--line,#ddd);border-radius:8px;background:var(--panel,#fffdf9);color:inherit}
 .cab-fields .form select,.cab-fields select {height:auto;min-height:42px;line-height:1.5;padding:8px 10px}
 .cab-fields .form input[type=number],.cab-fields .form input:not([type]) {height:auto;min-height:42px;line-height:1.5}
+.cab-fields input[type=range] {width:100%;min-width:0;margin:0}
 .cab-kitchen-opening {display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 .cab-fields input[type=color] {width:48px;height:32px;border:0;padding:0}
 .cab-fields .actions {display:flex;flex-wrap:wrap;gap:6px}

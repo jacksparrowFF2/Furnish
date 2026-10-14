@@ -5,6 +5,7 @@
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
   const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=box(W,H,D,shade,x,y,z);parent.add(mesh);return mesh;};
   const nominalBays=C.layout(f),faceSpan=i=>{const span=C.frontSpan(f,i,c);return {left:span.left/1000,right:span.right/1000};};
+  const rotation=(pose,angle)=>angle?pose.sign*angle*Math.PI/180:0;
   const cuts=options.sideCuts||C.sideOpenings(f,options.furniture||[]);
   const finishes=C.joinedSideFinishes(f,options.furniture||[]);
   if(c.sideboard){
@@ -24,17 +25,17 @@
     const led=add(g,W-2*t,.004,.012,X,y+.008,back+D-t-.014,'#ffe4ab');led.material=led.material.clone();led.material.emissive=new THREE.Color('#ffe4ab');led.material.emissiveIntensity=.7;led.userData.cabinetOwnMaterial=true;led.userData.cabinetSection='led';
    }
    const door=(col,i,bottom,top,D,section,glass=false,span)=>{
-    if(col.door==='none'||options.doors==='hidden')return;
-    const nominal=span||bays[i],adjusted=!glass&&c.doorOverlay!==undefined?C.frontSpan(f,i,c):null,bay=adjusted?{left:adjusted.left,width:adjusted.right-adjusted.left}:nominal,count=glass?1:col.door==='double'?2:1,cw=bay.width/1000,leaf=cw/count;
+    const kind=glass?C.displayDoor(col):col.door;if(kind==='none'||options.doors==='hidden')return;
+    const nominal=span||bays[i],adjusted=!glass&&c.doorOverlay!==undefined?C.frontSpan(f,i,c):null,bay=adjusted?{left:adjusted.left,width:adjusted.right-adjusted.left}:nominal,count=kind==='double'?2:1,cw=bay.width/1000,leaf=cw/count;
     if(!glass&&c.doorOverlay!==undefined){bottom+=faceInset;top-=faceInset;}
     for(let j=0;j<count;j++){
-     const rightHinge=col.door==='right'||col.door==='double'&&j===1,pivot=new THREE.Group(),center=bay.left/1000+leaf*(j+.5),local=glass?0:(rightHinge?-1:1)*leaf/2;
-     pivot.position.set(glass?center:center+(rightHinge?1:-1)*leaf/2,glass?top-.001:bottom+.001,back+D-t/2);if(glass)pivot.rotation.x=col.displayOpen?-Math.min(col.displayAngle??C.maxDoorAngle(c),C.maxDoorAngle(c))*Math.PI/180:0;else pivot.rotation.y=col.doorOpen?(rightHinge?1:-1)*C.doorAngle(c,col)*Math.PI/180:0;
-     pivot.userData.motion={kind:'cabinetdoor',column:i,section,leaf:j,axis:glass?'x':'y',angle:(glass?-1:rightHinge?1:-1)*C.maxDoorAngle(c)*Math.PI/180};
-     const face=add(pivot,leaf-.002,top-bottom-.002,t,local,glass?-(top-bottom-.002):0,0,glass?'#b3c5c8':col.doorColor||(col.finish==='wood'?wood:color));face.userData.cabinetSection=section;
+     const pose=C.doorPose(kind,bay.left,bay.left+bay.width,bottom*1000,top*1000,(back+D-t/2)*1000,j,count),pivot=new THREE.Group(),local=pose.localX/1000,localBottom=pose.localBottom/1000;
+     pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,glass?C.displayAngle(c,col):C.doorAngle(c,col));
+     pivot.userData.motion={kind:'cabinetdoor',column:i,section,leaf:j,axis:pose.axis,angle:pose.sign*C.maxDoorAngle(c,col,glass?'display':undefined)*Math.PI/180};
+     const face=add(pivot,pose.width/1000,pose.height/1000,t,local,localBottom,0,glass?'#b3c5c8':col.doorColor||(col.finish==='wood'?wood:color));face.userData.cabinetSection=section;
      if(glass||col.finish==='glass'||options.doors==='ghost'){face.material=face.material.clone();face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.28;face.material.depthWrite=false;face.material.roughness=.12;face.userData.cabinetOwnMaterial=true;}
-     if(glass){for(const y of [-(top-bottom-.002),-.018])add(pivot,leaf-.002,.018,t+.002,local,y,0,'#333738');for(const sign of [-1,1])add(pivot,.018,top-bottom-.002,t+.002,local+sign*(leaf/2-.01),-(top-bottom-.002),0,'#333738');}
-     else if(col.handle&&col.handle!=='none')add(pivot,.012,.12,.018,local+(rightHinge?-1:1)*(leaf/2-.04),(top-bottom)/2,.012,'#71685d');
+     if(glass){for(const y of [localBottom,localBottom+pose.height/1000-.018])add(pivot,leaf-.002,.018,t+.002,local,y,0,'#333738');for(const sign of [-1,1])add(pivot,.018,pose.height/1000,t+.002,local+sign*(leaf/2-.01),localBottom,0,'#333738');}
+     else if(col.handle&&col.handle!=='none'){const vertical=!C.verticalDoor(kind);add(pivot,vertical?.012:.12,vertical?.12:.012,.018,vertical?local+(pose.right?-1:1)*(leaf/2-.04):local,localBottom+(vertical?(top-bottom)/2:kind==='up'?.04:pose.height/1000-.04),.012,'#71685d');}
      pivot.traverse(o=>{o.userData.cabinetPart={column:i,section};if(options.doors==='ghost')o.userData.cabinetIgnorePick=true;});g.add(pivot);
     }
    };
@@ -116,12 +117,12 @@
     if(col.door==='none'||options.doors==='hidden')return;
     for(const [bottom,top,section] of [[shoe-t+faceInset,(col.drawers.length?drawerY:lower-t)-faceInset,'lower'],[upper+faceInset,h-faceInset,'upper']]){
      const count=col.door==='double'?2:1,leaf=faceW/count;
-     for(let j=0;j<count;j++){const right=col.door==='right'||col.door==='double'&&j===1,pivot=new THREE.Group(),center=span.left+leaf*(j+.5);pivot.position.set(center+(right?1:-1)*leaf/2,bottom+.001,d/2-t/2);pivot.rotation.y=col.doorOpen?(right?1:-1)*C.doorAngle(c,col)*Math.PI/180:0;
-      const face=add(pivot,leaf-.002,top-bottom-.002,t,(right?-1:1)*leaf/2,0,0,faceColor);face.userData.cabinetSection=section;
+     for(let j=0;j<count;j++){const pose=C.doorPose(col.door,span.left*1000,span.right*1000,bottom*1000,top*1000,(d/2-t/2)*1000,j,count),pivot=new THREE.Group();pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorAngle(c,col));
+      const face=add(pivot,pose.width/1000,pose.height/1000,t,pose.localX/1000,pose.localBottom/1000,0,faceColor);face.userData.cabinetSection=section;
       if(options.doors==='ghost'||col.finish==='glass'){face.material=face.material.clone();face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.32;face.material.depthWrite=false;face.userData.cabinetOwnMaterial=true;}
-      const local=(right?-1:1)*leaf/2;handle(pivot,local+(right?-1:1)*(leaf/2-.04),(top-bottom)*.5,.025,true);
+      const local=pose.localX/1000,vertical=!C.verticalDoor(col.door);handle(pivot,vertical?local+(pose.right?-1:1)*(leaf/2-.04):local,pose.localBottom/1000+(vertical?(top-bottom)*.5:col.door==='up'?.04:pose.height/1000-.04),.025,vertical);
       pivot.traverse(o=>{o.userData.cabinetPart={column:i};if(options.doors==='ghost')o.userData.cabinetIgnorePick=true;});g.add(pivot);
-      pivot.userData.motion={kind:'cabinetdoor',column:i,section:'storage',leaf:j,axis:'y',angle:(right?1:-1)*C.maxDoorAngle(c)*Math.PI/180};
+      pivot.userData.motion={kind:'cabinetdoor',column:i,section:'storage',leaf:j,axis:pose.axis,angle:pose.sign*C.maxDoorAngle(c,col)*Math.PI/180};
      }
     }
    });
@@ -197,13 +198,13 @@
    const door=C.frontDoor(f,i,c);if(door==='none'||options.doors==='hidden')return;
    const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.frontHeight(f,c)/1000-faceInset,count=C.frontLeafCount(f,i,c),leafW=(span.right-span.left)/count,dh=doorTop-doorBottom;
    for(let j=0;j<count;j++){
-    const right=C.rightDoorHinge(door,j,count),center=span.left+leafW*(j+.5),pivot=new THREE.Group();
-    pivot.position.set(center+(right?1:-1)*leafW/2,doorBottom+.001,d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0));pivot.rotation.y=col.doorOpen?(right?1:-1)*C.doorAngle(c,col)*Math.PI/180:0;
-    pivot.userData.motion={kind:'cabinetdoor',column:i,section:'storage',leaf:j,axis:'y',angle:(right?1:-1)*C.maxDoorAngle(c)*Math.PI/180};
-    const local=(right?-1:1)*leafW/2;
-    const face=add(pivot,leafW-.002,dh-.002,t,local,0,0,faceColor);
+    const front=d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0),pose=C.doorPose(door,span.left*1000,span.right*1000,doorBottom*1000,doorTop*1000,front*1000,j,count),pivot=new THREE.Group();
+    pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorAngle(c,col));
+    pivot.userData.motion={kind:'cabinetdoor',column:i,section:'storage',leaf:j,axis:pose.axis,angle:pose.sign*C.maxDoorAngle(c,col)*Math.PI/180};
+    const local=pose.localX/1000,vertical=!C.verticalDoor(door);
+    const face=add(pivot,pose.width/1000,pose.height/1000,t,local,pose.localBottom/1000,0,faceColor);
     if(col.finish==='glass'||options.doors==='ghost'){face.material=face.material.clone();face.userData.cabinetOwnMaterial=true;face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.32;face.material.depthWrite=false;face.material.roughness=.15;}
-    handleMesh(pivot,local+(right?-1:1)*(leafW/2-.04),dh*.5,.025,true);
+    handleMesh(pivot,vertical?local+(pose.right?-1:1)*(leafW/2-.04):local,pose.localBottom/1000+(vertical?dh*.5:door==='up'?.04:pose.height/1000-.04),.025,vertical);
     if(options.doors==='ghost')pivot.traverse(o=>o.userData.cabinetIgnorePick=true);
     pivot.traverse(o=>o.userData.cabinetPart={column:i});g.add(pivot);
    }
@@ -212,7 +213,7 @@
   return g;
  }
  function build(THREE,f,box,options={}){
-  return cutServices(THREE,buildRaw(THREE,f,box,options),f,options);
+  return cutServices(THREE,buildRaw(THREE,f,box,options),f,{...options,cabinetOnly:f.type==='vanity'});
  }
  function cutServices(THREE,g,f,options={}){
   const services=root.FurnishServices;
@@ -223,7 +224,7 @@
   g.traverse(o=>{if(o.isGroup&&o.userData.cabinetPart){transforms.push([o,o.position.clone(),o.rotation.clone()]);o.rotation.set(0,0,0);if(o.userData.cabinetPart.lid)o.position.z=f.d/2000;else if(o.userData.cabinetPart.drawer!==undefined)o.position.z=0;}});
   g.updateMatrixWorld(true);
   for(const pipe of pipes){
-   const local=services.local(f,pipe),height=(local.vertical.top-local.vertical.bottom)/1000;
+   const local=services.local(f,pipe,{cabinetOnly:!!options.cabinetOnly}),height=(local.vertical.top-local.vertical.bottom)/1000;
    const cutter=new THREE.CylinderGeometry(pipe.radius/1000/Math.cos(Math.PI/64),pipe.radius/1000/Math.cos(Math.PI/64),height,64);cutter.translate(local.at[0]/1000,local.vertical.bottom/1000+height/2,local.at[1]/1000);
    const cutterBox=new THREE.Box3().setFromBufferAttribute(cutter.attributes.position);
    g.traverse(o=>{if(!o.isMesh)return;const bounds=new THREE.Box3().setFromBufferAttribute(o.geometry.attributes.position).applyMatrix4(o.matrixWorld);if(!bounds.intersectsBox(cutterBox))return;

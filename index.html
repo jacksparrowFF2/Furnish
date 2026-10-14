@@ -716,7 +716,7 @@ function buildFurniture(f){
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   if(typeof FurnishFotileModel!=='undefined'&&FurnishFotileModel.supported(f)){const model=FurnishFotileModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
-  if(FurnishCabinet.supported(f)){
+  if(FurnishCabinet.supported(f)&&f.type!=='vanity'){
     const model=FurnishCabinetModel.build(THREE,f,box,{furniture,plan:FurnishProject.effectivePlan(PLAN,state)});model.position.set(wx(f.cx),f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   if(f.type==='counter'&&f.kitchen){const model=FurnishKitchenModel.build(THREE,f,box,{furniture,plan:FurnishProject.effectivePlan(PLAN,state)});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
@@ -1021,18 +1021,19 @@ function buildFurniture(f){
     }
     case 'vanity': {
       const vm = mat(c, {roughness:.5}), stone = mat('#fafafa', {roughness:.18}), nb = w >= 1.1 ? 2 : 1, cd = d - .04, cm = chrome();
-      g.add(rbox(w, .45, cd, vm, 0, .33, bz + cd/2, .008));
-      fronts(g, -w/2 + .005, .335, w - .01, .44, d/2 - .04, nb, 2, vm, 'edge');
-      g.add(rbox(w, .03, d, stone, 0, .78, 0, .006));
+      if(f.cabinet){const body=FurnishCabinetModel.build(THREE,f,box,{furniture});body.position.y=M(FurnishProducts.cabinetBase(f));g.add(body);}
+      else {g.add(rbox(w, .45, cd, vm, 0, .33, bz + cd/2, .008));fronts(g, -w/2 + .005, .335, w - .01, .44, d/2 - .04, nb, 2, vm, 'edge');}
+      const decor=new THREE.Group();decor.position.y=f.cabinet?M(FurnishCabinet.height(f)-FurnishProducts.cabinetSpec(f).bodyHeight):0;g.add(decor);
+      decor.add(rbox(w, .03, d, stone, 0, .78, 0, .006));
       const rb = Math.min(.19, w/nb*.36);
       for (let i = 0; i < nb; i++){
         const x = nb === 1 ? 0 : (i ? w/4 : -w/4);
-        g.add(lathe([[0, 0], [rb*.55, 0], [rb*.85, .03], [rb, .1], [rb*.97, .12]], ceramic({side:THREE.DoubleSide}), x, .81, .03, 40), cyl(.018, .018, .003, cm, x, .812, .03, 16));
-        g.add(cyl(.02, .022, .02, cm, x, .81, bz + .06, 16), tube([[x, .83, bz + .06], [x, 1.03, bz + .06], [x, 1.07, bz + .11], [x, 1.03, bz + .15]], .01, cm), rot(box(.01, .01, .06, cm, x, 1.05, bz + .04), .4));
+        decor.add(lathe([[0, 0], [rb*.55, 0], [rb*.85, .03], [rb, .1], [rb*.97, .12]], ceramic({side:THREE.DoubleSide}), x, .81, .03, 40), cyl(.018, .018, .003, cm, x, .812, .03, 16));
+        decor.add(cyl(.02, .022, .02, cm, x, .81, bz + .06, 16), tube([[x, .83, bz + .06], [x, 1.03, bz + .06], [x, 1.07, bz + .11], [x, 1.03, bz + .15]], .01, cm), rot(box(.01, .01, .06, cm, x, 1.05, bz + .04), .4));
       }
       const mw = Math.min(w*.9, nb*.7);
-      g.add(rbox(mw + .02, .82, .02, glowMat('#fff7e6', '#ffe9c4', .9), 0, 1.14, bz + .01, .01), box(mw, .8, .01, mirror(), 0, 1.15, bz + .025));
-      g.add(cyl(.028, .028, .12, mat('#c8b8a6', {roughness:.3}), w/2 - .08, .81, bz + .1, 16), rbox(.18, .03, .12, fabric('#e9e2d6'), -w/2 + .12, .81, .05, .012));
+      decor.add(rbox(mw + .02, .82, .02, glowMat('#fff7e6', '#ffe9c4', .9), 0, 1.14, bz + .01, .01), box(mw, .8, .01, mirror(), 0, 1.15, bz + .025));
+      decor.add(cyl(.028, .028, .12, mat('#c8b8a6', {roughness:.3}), w/2 - .08, .81, bz + .1, 16), rbox(.18, .03, .12, fabric('#e9e2d6'), -w/2 + .12, .81, .05, .012));
       break;
     }
     case 'shower': {
