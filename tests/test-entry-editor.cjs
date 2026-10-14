@@ -1,4 +1,4 @@
-const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-core.js');
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-core.js'),D=require('../src/core/design-core.js');
 (async()=>{
  let f={id:'entry',type:'cabinet',cx:0,cy:0,rot:0,...C.preset('entry-console')};
  const edited=C.editStructure(f,0,'addDrawer');assert.equal(edited.cabinet.columns[0].drawers.length,2);C.validate(edited);
@@ -23,6 +23,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  Object.defineProperty(nodes['#cab-form'],'innerHTML',{get(){return this.html;},set(value){this.html=value;this.children=[];parse(value);}});
  const $=s=>nodes[s]||inputs.find(el=>matching(el,s));
  const ctx=vm.createContext({window:{},document:{createElement:container,querySelectorAll:s=>s==='[data-cab-column]'?fieldsets:inputs.filter(el=>matching(el,s))},$,getF:()=>f,tr:zh=>zh,esc:String,toast(){},PLAN:{id:'demo'},state:{furniture:[f]},FurnishCabinet:C,FurnishProject:{effectivePlan:()=>({}),spaceCheck:()=>[]},mutate:fn=>{history.push(structuredClone(f));fn();},openDialog:value=>{dialog=value;value.onOpen();},View3D:{cabinetPreview:async(host,draft,a)=>{actions=a;return {update:value=>last=structuredClone(value),setView(){},selectShelf(){},dispose(){},focus(){}};}}});
+ ctx.FurnishDesign=D;ctx.FurnishProducts=D.products();
  vm.runInContext(fs.readFileSync(require.resolve('../src/ui/cabinet-editor.js'),'utf8'),ctx);ctx.window.FurnishCabinetEditor.open(f.id);await Promise.resolve();await Promise.resolve();
  assert($('#cab-template'));assert($('[data-cab-number="thickness"]'));assert($('[data-cab-number="plinth"]'));assert(fieldsets[0].querySelector('[data-finish]'));assert(fieldsets[0].querySelector('[data-handle]'));assert(nodes['#cab-tools'].innerHTML.includes('addShelf'));
  const change=target=>nodes['#cab-form'].onchange({target});

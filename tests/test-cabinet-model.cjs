@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  const context=vm.createContext({FurnishCabinet:C});vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),context);
  const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const build=f=>context.FurnishCabinetModel.build(THREE,f,box);
- for(const t of C.templates){const f={type:'cabinet',color:'#efe6d8',...C.preset(t[0])},model=build(f),bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());assert(Math.abs(size.y-f.h/1000)<1e-6);model.traverse(o=>{if(o.geometry)assert([...o.geometry.attributes.position.array].every(Number.isFinite));});}
+ for(const t of C.templates)for(const type of new Set(['cabinet',C.templateType(t[0])])){const f={type,color:'#efe6d8',...C.preset(t[0])},model=build(f),bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());assert(Math.abs(size.y-f.h/1000)<1e-6);model.traverse(o=>{if(o.geometry)assert([...o.geometry.attributes.position.array].every(Number.isFinite));});}
  let f={type:'cabinet',color:'#efe6d8',...C.preset('sideboard-drawers')},closed=build(f);f=C.toggle(f,0,0);const opened=build(f);
  const part=(model,drawer)=>{let found;model.traverse(o=>{if(o.isMesh&&o.userData.cabinetPart?.column===0&&o.userData.cabinetPart.drawer===drawer&&!found)found=o;});return found;};
  const pos=o=>o.getWorldPosition(new THREE.Vector3());assert(Math.abs(pos(part(opened,0)).z-pos(part(closed,0)).z-f.d/1000*.7)<1e-6);

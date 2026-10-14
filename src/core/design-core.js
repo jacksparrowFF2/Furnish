@@ -68,6 +68,13 @@
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}
+ function applyCabinetTemplate(f,id){
+  if(f.locked)throw Error('柜体已锁定，请先解锁');
+  if(!cabinet().supported(f))throw Error('当前家具不支持柜体模板');
+  const next={...JSON.parse(JSON.stringify(f)),...cabinet().preset(id),type:cabinet().templateType(id)};
+  products().replacement(f,next,next);
+  products().validate(next);return cabinet().validate(next);
+ }
  function catalogSource(f,catalog){
   if(f.catalogId)return catalog.find(c=>c.id===f.catalogId)||f.catalogSnapshot||null;
   if(f.catalogSnapshot)return f.catalogSnapshot;
@@ -238,5 +245,6 @@
   return copy;
  }
  root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign.applyCabinetTemplate=applyCabinetTemplate;
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

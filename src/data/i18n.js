@@ -10,7 +10,7 @@ const NAMES_EN = {
   '石头 P20 Max 水箱版套装':'Roborock P20 Max with Tank Dock',
   '石头 P20 Max 上下水版套装':'Roborock P20 Max with Plumbed Dock',
   '石头 P20 Max 扫拖机器人':'Roborock P20 Max Robot Vacuum',
-  '电器':'Appliances', '柜体':'Cabinets', '床':'Beds', '沙发':'Sofas', '桌 · 台':'Tables & Desks',
+  '电器':'Appliances', '柜体':'Cabinets', '厨房':'Kitchen', '床':'Beds', '沙发':'Sofas', '桌 · 台':'Tables & Desks',
   '椅 · 凳':'Chairs & Stools', '卫浴 · 水槽':'Sanitary Fixtures & Sinks', '灯具':'Lighting',
   '布艺':'Textiles', '装饰':'Decor', '运动 · 乐器':'Fitness & Instruments', '生活用品':'Household Items',
   '三室两厅两卫':'3BR · 2LR · 2BA', '两室两厅一卫 · 96㎡':'2BR · 2LR · 1BA · 96m²', '一室一厅 · 54㎡':'1BR · 1LR · 54m²',

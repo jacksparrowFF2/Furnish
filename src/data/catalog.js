@@ -39,22 +39,14 @@ const LIB = [
     ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
-    ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.map(t=>['cabinet',t[1],t[2],t[3],'#f3f1ec',['tv-floor','entry-pegboard','entry-console','sideboard-wall','sideboard-fridge'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
+    ["cabinet","收纳柜",1000,450,"#f3f1ec",1800,1800,null,null,"storage"],
     ["nightstand","床头柜",450,400,"#e8dccb",600],
     ["wardrobe","衣柜",2000,600,"#efe6d8",4500],
-    ["wardrobe","衣柜 2.4m",2400,600,"#efe6d8",5400],
-    ["wardrobe","小衣柜",1200,550,"#efe6d8",2200],
     ["chest","六斗柜",1200,500,"#e8dccb",1800],
     ["bookshelf","书架",800,300,"#e2cfb4",900],
     ["tvstand","电视柜",2400,400,"#e2cfb4",2200],
     ["shoecab","鞋柜",1000,350,"#efe6d8",1600],
-    ["shoecab","玄关柜",1400,380,"#e6dccc",2600],
     ["cabinet","餐边柜",1600,400,"#efe6d8",3200],
-    ["vanity","浴室柜",800,500,"#eef1f3",2400],
-    ["vanity","双盆浴室柜",1200,500,"#eef1f3",4200],
-    ["cabinet","储物柜",1000,400,"#efe6d8",1500],
-    ["ovencol","蒸烤箱高柜",600,600,"#efe6d8",9000],
-    ["bookshelf","大书架",1600,350,"#e2cfb4",2400]
   ]},
   {cat:'床', items:[
     ["bed","双人床 2.0m",2000,2200,"#c9d6df",4600],
@@ -83,9 +75,12 @@ const LIB = [
     ["roundtable","圆桌",1000,1000,"#e2cfb4",2200],
     ["island","岛台",1800,900,"#e9e5de",6800],
     ["island","大岛台",2400,1000,"#e9e5de",9800],
+    ["desk","长书桌",1600,700,"#d8c2a2",2200]
+  ]},
+  {cat:'厨房', items:[
     ["counter","橱柜台面",1600,600,"#e9e5de",6400],
     ["kitchenwall","厨房吊柜",800,350,"#e9e5de",undefined,700],
-    ["desk","长书桌",1600,700,"#d8c2a2",2200]
+    ["ovencol","蒸烤箱高柜",600,600,"#efe6d8",9000]
   ]},
   {cat:'椅 · 凳', items:[
     ["chair","椅子",450,480,"#cfc6b8",400],
@@ -95,6 +90,8 @@ const LIB = [
     ["bench","换鞋凳",800,350,"#d9c9a8",600]
   ]},
   {cat:'卫浴 · 水槽', items:[
+    ["vanity","浴室柜",800,500,"#eef1f3",2400],
+    ["vanity","双盆浴室柜",1200,500,"#eef1f3",4200],
     ["ksink","水槽",800,450,"#e1e6ea",1500],
     ["toilet","马桶",400,700,"#ffffff",2200],
     ["shower","淋浴房",900,900,"#e4edf2",3500],
@@ -138,7 +135,17 @@ const LIB = [
 const TYPE_PRICE = {};
 LIB.forEach(c=>c.items.forEach(i=>TYPE_PRICE[i[0]]??=i[5]));
 
-const api={materials:MATS,library:LIB,typePrices:TYPE_PRICE};
+// Hidden historical specifications still serve placed items' price and size reset.
+const retiredItems=[
+ ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.filter(t=>t[0]!=='storage').map(t=>['cabinet',t[1],t[2],t[3],'#f3f1ec',['tv-floor','entry-pegboard','entry-console','sideboard-wall','sideboard-fridge'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
+ ['wardrobe','衣柜 2.4m',2400,600,'#efe6d8',5400],
+ ['wardrobe','小衣柜',1200,550,'#efe6d8',2200],
+ ['shoecab','玄关柜',1400,380,'#e6dccc',2600],
+ ['cabinet','储物柜',1000,400,'#efe6d8',1500],
+ ['bookshelf','大书架',1600,350,'#e2cfb4',2400]
+];
+const findItem=(type,name)=>LIB.flatMap(c=>c.items).find(i=>i[0]===type&&i[1]===name)||retiredItems.find(i=>i[0]===type&&i[1]===name)||null;
+const api={materials:MATS,library:LIB,typePrices:TYPE_PRICE,findItem};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishCatalogData=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

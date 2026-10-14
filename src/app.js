@@ -54,7 +54,7 @@ const libAll = () => store.custom?.length
   ? [...LIB, {cat:CUSTOM_CAT, items:store.custom.map(c => [c.shape === 'round' ? 'customround' : 'custom', c.name, c.w, c.d, c.color, c.price, c.h, c.id])}]
   : LIB;
 const typeColor = t => { for (const c of LIB) for (const i of c.items) if (i[0]===t) return i[4]; return '#d9d2c5'; };
-const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} for (const c of libAll()) for (const i of c.items) if (i[0] === f.type && i[1] === f.name) return i; return null; };
+const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} return FurnishCatalogData.findItem(f.type,f.name); };
 // 单价：家具上手动填写的优先，其次是同名库存条目，最后按类型估算
 const priceOf = f => f.price ?? f.referencePrice ?? libItem(f)?.[5] ?? TYPE_PRICE[f.type] ?? 0;
 
@@ -577,6 +577,7 @@ function buildLib(){
       .map(({it, ii}) => itemCard(it, ci, ii)).join('');
     if (!cards) return;
     html += `<h4>${nm(c.cat)}</h4><div class="lib-grid">${cards}</div>`;
+    if(c.cat==='柜体')html+=`<p class="hint">${tr('更多柜体款式：添加常用柜体后，打开「柜体详细设计」选择模板；宽深高也可自由调整。','More cabinet styles: add a cabinet, then choose a template in Cabinet designer. Width, depth and height are adjustable.')}</p>`;
   });
   $('#lib').innerHTML = (html || `<div class="hint">${tr('没有匹配的家具', 'No matching furniture')}</div>`) +
     `<div class="hint">${tr(

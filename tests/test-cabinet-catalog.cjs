@@ -1,0 +1,38 @@
+const assert=require('node:assert/strict');
+const C=require('../src/core/cabinet-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),catalog=require('../src/data/catalog.js');
+const rows=catalog.library.find(c=>c.cat==='柜体').items;
+assert.equal(rows.length,8);
+assert.equal(new Set(rows.map(it=>it[1])).size,8);
+assert(catalog.library.find(c=>c.cat==='厨房').items.some(it=>it[0]==='kitchenwall'));
+assert(catalog.library.find(c=>c.cat==='卫浴 · 水槽').items.some(it=>it[0]==='vanity'));
+assert.deepEqual(C.templateGroups.flatMap(g=>g.ids).sort(),C.templates.map(t=>t[0]).sort());
+assert.equal(catalog.findItem('wardrobe','衣柜 2.4m')[5],5400);
+assert.equal(catalog.findItem('cabinet','储物柜')[5],1500);
+assert.equal(catalog.findItem('bookshelf','大书架')[2],1600);
+for(const t of C.templates)assert.equal(catalog.findItem('cabinet',t[1])[9],t[0]);
+const original={id:'legacy',type:'wardrobe',name:'小衣柜',w:1200,d:550,cx:1500,cy:2000,rot:90,flip:true,color:'#abcabc',price:4321,referencePrice:2200,purchaseStatus:'ordered',groupId:'g'};
+const before=JSON.stringify(original);
+for(const t of C.templates){
+ const f=D.applyCabinetTemplate(original,t[0]);
+ assert.equal(f.cabinet.template,t[0]);assert.equal(f.type,C.templateType(t[0]));
+ for(const key of ['id','cx','cy','rot','flip','price','referencePrice','purchaseStatus','groupId'])assert.equal(f[key],original[key]);
+ assert.deepEqual(P.validateWork({furniture:[f]}).furniture[0],f);
+ const payload={planId:'demo',current:{furniture:[f]},designs:[{id:'named',name:'柜体方案',planId:'demo',work:{furniture:[f]}}],catalog:[]};
+ const roundtrip=P.unpack(P.pack(payload));
+ assert.deepEqual(roundtrip.current.furniture[0],f);assert.deepEqual(roundtrip.designs[0].work.furniture[0],f);
+ const restore=list=>D.restoreFurniture(list,{makeId:()=> 'new',colorFor:()=> '#efe6d8'});
+ assert.deepEqual(restore(restore([f]))[0],f);
+}
+assert.equal(JSON.stringify(original),before);
+const wall=D.applyCabinetTemplate(original,'wall');
+assert.equal(wall.mountHeight,1480);
+assert.equal(D.furnitureVerticalBounds(wall).bottom,1480);
+assert.equal(D.furnitureVerticalBounds(wall).top,2180);
+assert.equal(D.applyCabinetTemplate({...wall,mountHeight:1700},'wall').mountHeight,1700);
+const floor=D.applyCabinetTemplate({...wall,mountHeight:1700},'storage');
+assert(!Object.hasOwn(floor,'mountHeight'));
+assert.equal(D.furnitureVerticalBounds(floor).bottom,0);
+assert.throws(()=>D.applyCabinetTemplate({...original,locked:true},'wall'),/锁定/);
+assert.throws(()=>D.applyCabinetTemplate(original,'invalid'),/模板无效/);
+assert.deepEqual(P.validateWork({furniture:[original]}).furniture[0],original);
+console.log('PASS compact cabinet catalog, hidden legacy specs, grouped templates, installation and repeated recovery');

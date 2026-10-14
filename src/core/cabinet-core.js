@@ -24,6 +24,18 @@
   ['entry-pegboard','玄关柜 · 洞洞板换鞋区',674,350,2400,1,'double',0,2],
   ['entry-console','玄关柜二 · 置物台与鞋柜',1200,350,2400,3,'left',0,1],
  ];
+ const templateGroups=[
+  {name:'收纳与衣柜',en:'Storage and wardrobes',ids:['storage','wardrobe','pantry800','pantry500']},
+  {name:'餐边柜',en:'Sideboards',ids:['sideboard','sideboard-drawers','sideboard-open','sideboard-mixed','sideboard-wall','sideboard-fridge']},
+  {name:'玄关与鞋柜',en:'Entry and shoe cabinets',ids:['shoe','entry-pegboard','entry-console']},
+  {name:'书柜与斗柜',en:'Bookcases and drawer chests',ids:['book','chest']},
+  {name:'电视柜',en:'TV cabinets',ids:['tv','tv-floor']},
+  {name:'厨房与壁柜',en:'Kitchen and wall cabinets',ids:['base','wall']}
+ ];
+ function templateType(id){
+  if(!templates.some(t=>t[0]===id))throw Error('柜体模板无效');
+  return {wardrobe:'wardrobe',shoe:'shoecab',book:'bookshelf',chest:'chest',tv:'tvstand','tv-floor':'tvstand',wall:'kitchenwall'}[id]||'cabinet';
+ }
  const supported=f=>!!f&&types.includes(f.type)&&!f.obj;
  const defaultId=f=>({wardrobe:'wardrobe',shoecab:'shoe',bookshelf:'book',chest:'chest',tvstand:'tv',nightstand:'chest',ovencol:'pantry500',kitchenwall:'wall'}[f.type]||(/储物|收纳/.test(f.name||'')?'storage':'sideboard'));
  const maxDoorAngle=c=>c.doorMaxAngle??90;
@@ -396,5 +408,6 @@
   }return result;
  }
  const api={palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides};
+ Object.assign(api,{templateGroups,templateType});
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
