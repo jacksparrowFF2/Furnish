@@ -199,6 +199,7 @@ function renderMeasure(){
   const one = (a,b,tmp) => {
     const L = Math.hypot(b.x-a.x, b.y-a.y); if (L < 1) return '';
     let ang = Math.atan2(b.y-a.y, b.x-a.x)*180/Math.PI; if (ang > 90 || ang < -90) ang += 180;
+    if(globalThis.FurnishDrawing)ang=FurnishDrawing.textAngle(ang,drawingRotation());
     const mx = (a.x+b.x)/2, my = (a.y+b.y)/2, nx = -(b.y-a.y)/L*5*k, ny = (b.x-a.x)/L*5*k;
     const col = tmp ? '#0e8f83' : '#ef5a24', S = `stroke="${col}" stroke-width="1.5" vector-effect="non-scaling-stroke"`;
     return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" ${S}/>
@@ -348,4 +349,5 @@ function renderAll(){
   window.FurnishWorkspace?.afterRender();
   window.FurnishWorkflowTools?.afterRender();
   window.FurnishDrawingUI?.afterRender();
+  window.FurnishRoomMeasure?.afterRender();
 }

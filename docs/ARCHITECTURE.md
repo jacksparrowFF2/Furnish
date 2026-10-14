@@ -85,3 +85,4 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 房梁高度使用户型核心 `beamVertical()` / `editBeam()`，单位、校验与旧数据兼容契约见 [BEAM-HEIGHTS.md](BEAM-HEIGHTS.md)。界面确认仍经 `mutate()`；3D 缓存包含梁数组。
 
 2026-10-13：梁实体碰撞由 `spaceCheck()` 产生独立 `beam` 结果（家具 `id` + `beamId`）。与开启障碍共用刚性家具预计算包络与梁高度，已知范围使用 `verticalOverlap()`；未知高度为 pending。属性、柜体草稿、全案共享检查，全案定位同时标出梁与家具。详见 [梁实体检查](BEAM-HEIGHTS.md)。
+2026-10-14：`drawing-core.js` 的 `netSpans()` 按点到首个实际房间多边形边界求截面，支持 rings 孔洞与斜边，拒绝边界点。`src/ui/room-measure.js` 只存临时选点与 SVG 预览，保存时经 `mutate()` 添加两条现有测量线，无新增持久字段。功能区按所在 physicalRooms 测量；测量文字的可读角度与屏幕旋转共用 `textAngle()`。

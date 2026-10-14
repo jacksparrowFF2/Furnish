@@ -30,11 +30,12 @@ function dimensions(plan,input={}){
 function drawingBounds(plan,input={}){const all=(plan.walls||[]).flatMap(w=>[[w[0],w[1]],[w[2],w[3]]]);for(const d of dimensionLayout(dimensions(plan,input),{rotation:settings(input).rotation})){all.push(d.a,d.b,...d.refs);if(d.label)all.push([d.label.box[0],d.label.box[1]],[d.label.box[2],d.label.box[3]]);}const b=plan.bounds||{x:0,y:0,w:1000,h:1000};if(!all.length)return b;const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]),pad=350,x=Math.min(b.x,Math.min(...xs)-pad),y=Math.min(b.y,Math.min(...ys)-pad);return {x,y,w:Math.max(b.x+b.w,Math.max(...xs)+pad)-x,h:Math.max(b.y+b.h,Math.max(...ys)+pad)-y};}
 function sun(horizontal,input={}){return rotate(horizontal,settings(input).northAngle??0);}
 const boxHit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
+function textAngle(angle,rotation=0){let screen=((angle+rotation+180)%360+360)%360-180;if(screen>90)screen-=180;if(screen<-90)screen+=180;return screen-rotation;}
 function dimensionLayout(lines,{scale=0,rotation=0}={}){
  const placed=[],result=lines.map(d=>({...d,label:null,simple:scale>0&&d.kind==='chain'&&d.value*scale<6}));
  const indices=result.map((_,i)=>i).sort((a,b)=>(result[a].kind==='overall'?-1:0)-(result[b].kind==='overall'?-1:0)||result[b].value-result[a].value||a-b);
  for(const index of indices){const d=result[index];if(d.value<80||scale&&d.kind!=='overall'&&d.value*scale<12)continue;const font=Math.max(d.value<400?140:180,scale?10/scale:0),text=String(Math.round(d.value)),width=text.length*font*.62+font*.3,height=font*1.25,axis=d.h?1:0,mid=d.a.map((v,i)=>(v+d.b[i])/2),anchor=d.refs.reduce((n,p)=>n+p[axis]/d.refs.length,0),sign=Math.sign(mid[axis]-anchor)||-1;
-  let angle=(d.h?0:-90)+rotation;if(angle>90)angle-=180;if(angle<=-180)angle+=360;angle-=rotation;
+  const angle=textAngle(d.h?0:-90,rotation);
   for(let lane=0;lane<4;lane++){const at=[...mid];at[axis]+=sign*(font*.8+35+lane*(font*1.5));const w=d.h?width:height,h=d.h?height:width,box=[at[0]-w/2,at[1]-h/2,at[0]+w/2,at[1]+h/2];if(placed.some(b=>boxHit(box,b)))continue;d.label={at,font,angle,text,box,lane};placed.push(box);break;}
  }
  return result;
@@ -52,5 +53,13 @@ function roomLabels(rooms,obstacles=[],{rotation=0}={}){
   best=best||{id:r.id,at:[...r.at],size:.65,box:null,hits:null};if(best.box)used.push(best.box);return best;
  });
 }
-const api={settings,rotate,bounds,dimensions,drawingBounds,sun,dimensionLayout,roomLabels};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
+function netSpans(room,point){
+ if(!room||!Array.isArray(point)||point.length!==2||!point.every(finite)||!inRoom(point,room))return null;
+ const rings=room.rings||room.polys||[room.poly],eps=1e-6;
+ // A boundary anchor has no unambiguous interior section.
+ for(const ring of rings)for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length],dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);if(length&&Math.abs(dx*(point[1]-a[1])-dy*(point[0]-a[0]))/length<eps&&point[0]>=Math.min(a[0],b[0])-eps&&point[0]<=Math.max(a[0],b[0])+eps&&point[1]>=Math.min(a[1],b[1])-eps&&point[1]<=Math.max(a[1],b[1])+eps)return null;}
+ const span=axis=>{const cross=1-axis,values=[];for(const ring of rings)for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length],delta=b[cross]-a[cross];if(Math.abs(delta)<eps){if(Math.abs(point[cross]-a[cross])<eps)values.push(a[axis],b[axis]);continue;}const t=(point[cross]-a[cross])/delta;if(t>=-eps&&t<=1+eps)values.push(a[axis]+t*(b[axis]-a[axis]));}const left=values.filter(v=>v<point[axis]-eps),right=values.filter(v=>v>point[axis]+eps);if(!left.length||!right.length)return null;const a=[...point],b=[...point];a[axis]=Math.max(...left);b[axis]=Math.min(...right);return {a,b,value:b[axis]-a[axis],h:axis===0};};
+ const horizontal=span(0),vertical=span(1);return horizontal&&vertical?{at:[...point],horizontal,vertical}:null;
+}
+const api={settings,rotate,bounds,dimensions,drawingBounds,sun,dimensionLayout,roomLabels,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

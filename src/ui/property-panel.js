@@ -51,9 +51,9 @@ function roomPanel(r){
     <div class="stats mt">
       <div><small>${tr('使用面积','Floor area')}</small><span class="big">${fmt(a)}</span> m²</div>
       <div><small>${tr('周长','Perimeter')}</small><span class="big">${fmt((r.rings||[r.poly]).reduce((n,p)=>n+perim(p),0),1)}</span> m</div>
-      <div><small>${tr('开间','Width')}</small><span class="big">${x1-x0}</span> mm</div>
-      <div><small>${tr('进深','Depth')}</small><span class="big">${y1-y0}</span> mm</div></div>
+      </div>
     <div class="muted">${r.zone?tr('功能区分界不产生实际墙体；墙面工程量按原空间轮廓计算。','Functional boundaries do not create walls; wall quantities use the physical space.'):tr(`墙面面积（层高 ${FurnishProject.ceilingHeight(state)/1000}m，未扣门窗）约 ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`, `Wall area (${FurnishProject.ceilingHeight(state)/1000}m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`)}</div></section>
+  ${window.FurnishRoomMeasure?.panel(r)||''}
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
     <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
   <section><h3>${tr('房间内家具','Furniture in room')} <small>${tr(`${inside.length} 件 · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`, `${inside.length} items · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`)}</small></h3>
@@ -63,6 +63,7 @@ function roomPanel(r){
       <button class="btn" data-act="home">${tr('← 返回总览','← Back to overview')}</button></div></section>`;
 }
 function bindRoomPanel(){
+  globalThis.FurnishRoomMeasure?.bind();
   const id = ui.sel.id;
   const zones=$('#room-zones');if(zones)zones.onclick=()=>{FurnishEditor.open();document.querySelector('[data-trace-mode="zone"]')?.click();};
   $('#rName').onchange = e => mutate(() => state.rooms[id].name = e.target.value.trim() || state.rooms[id].name);
