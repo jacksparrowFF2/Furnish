@@ -8,6 +8,10 @@ const SOFT_T = new Set(['sofa','sofa_yeswood_cherry','cornersofa','beanbag','bed
 const WOOD_T = new Set(['wardrobe','cabinet','shoecab','dresser','desk','bookshelf','nightstand','coffeetable','tvstand','table','roundtable','sidetable','chest','crib']);
 
 function find(id) { return presets.find(style => style.id === id); }
+function color(f,id){
+  const style=find(id);if(!style)return f.color;
+  return f.type==='armchair'?style.pop:SOFT_T.has(f.type)?style.soft:WOOD_T.has(f.type)?style.wood:['rug','curtain'].includes(f.type)?style.textile:f.color;
+}
 // The caller owns history and rendering. This function edits only style fields.
 function apply(work, rooms, id, custom = false) {
   const style = find(id);
@@ -25,7 +29,7 @@ function apply(work, rooms, id, custom = false) {
   work.style = id;
   return style;
 }
-const api = {find, apply};
+const api = {find, apply, color};
 if (inNode) module.exports = api;
 else root.FurnishStyles = api;
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -18,11 +18,13 @@ function applyView(){
   const off = v => (((-v*view.s) % gs) + gs) % gs + 'px';
   stageEl.style.setProperty('--gs', gs + 'px'); stageEl.style.setProperty('--gx', off(view.x0)); stageEl.style.setProperty('--gy', off(view.y0));
   renderSel(); renderMeasure();
+  if(ui.sel?.kind==='wall')window.FurnishWorkflowTools?.redrawDistances();
 }
 function fitView(){
-  const W = svg.clientWidth, H = svg.clientHeight;
+  const inset=globalThis.FurnishWorkflowTools?80:0;
+  const W = Math.max(100,svg.clientWidth-inset), H = svg.clientHeight;
   view.s = Math.min(W/BOUNDS.w, H/BOUNDS.h);
-  view.x0 = BOUNDS.x - (W/view.s - BOUNDS.w)/2; view.y0 = BOUNDS.y - (H/view.s - BOUNDS.h)/2;
+  view.x0 = BOUNDS.x - (W/view.s - BOUNDS.w)/2-inset/view.s; view.y0 = BOUNDS.y - (H/view.s - BOUNDS.h)/2;
   applyView();
 }
 function zoomAt(ns, mx, my){

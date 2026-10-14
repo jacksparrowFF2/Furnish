@@ -160,7 +160,9 @@ function save(){
   autosave.save(store);
 }
 function syncSaved(){
-  const el = $('#saved'); if (!el || !savedAt) return;
+  const el = $('#saved'); if (!el) return;
+  const status=$('#file-save-status');if(status)status.textContent=savePending?tr('正在保存到本机…','Saving locally…'):saveErr?tr('本机保存失败，请备份项目文件','Local save failed; back up the project'):savedAt?tr('本机已自动保存；项目备份可在其他浏览器继续编辑','Saved locally; a project backup can be edited in another browser'):tr('本机自动保存已启用','Local autosave enabled');
+  if(!savedAt&&!savePending&&!saveErr)return;
   el.title=state.architecture?.phase==='survey'?tr('已保存录入数据，原始结构尚未确认锁定。','Survey saved; original structure is not confirmed.'):tr('已保存当前方案；原始基线由结构确认单独保护。','Design saved; original baseline is separately protected.');
   if(savePending)el.title=tr('正在写入本地项目存储。','Writing the local project save.');else if(saveErr)el.title=tr('自动保存未完成，请导出项目文件备份。','Autosave failed; export a project backup.');
   el.classList.toggle('err', saveErr&&!savePending);
@@ -256,11 +258,12 @@ function closeDrawers(){ if (narrow()) drawer(null); }
 /* ======================= 风格方案：一键统一家具配色与地面 ======================= */
 const STYLES = FurnishStylePresets;
 function applyStyle(id){
+  if(window.FurnishWorkflowTools)return FurnishWorkflowTools.previewStyle(id);
   const style=FurnishStyles.find(id);if(!style)return;
   mutate(()=>FurnishStyles.apply(state,ROOMS,id,!!PLAN.customDraft));
   toast(tr(`已应用「${style.zh}」风格：家具配色与客厅 / 卧室地面已更新`,`Applied "${style.en}": furniture colors and living / bedroom floors updated`),{label:tr('撤销','Undo'),fn:undo});
 }
-const stylesHTML = () => `<div class="styles">${STYLES.map(s => `<button class="stcard ${state.style === s.id ? 'on' : ''}" data-style="${s.id}" title="${tr('应用风格', 'Apply style')}">
+const stylesHTML = () => `<div class="styles">${STYLES.map(s => `<button class="stcard ${state.style === s.id ? 'on' : ''}" data-style="${s.id}" title="${tr('预览风格', 'Preview style')}">
   <span class="stsw">${[s.soft, s.wood, s.textile, s.pop, MATS[s.floor[0]].sw].map(c => `<i style="background:${c}"></i>`).join('')}</span><b>${tr(s.zh, s.en)}</b></button>`).join('')}</div>`;
 
 /* ======================= 命令面板（Ctrl+K） ======================= */
@@ -289,7 +292,7 @@ function cmdSource(){
     A('copy', '复制分享链接', 'Copy share link', () => $('#shareLink').click()), A('full', '全屏', 'Fullscreen', toggleFullscreen, 'Shift F'),
     A('trash', '清空布置', 'Clear layout', clearLayout),
   ];
-  STYLES.forEach(s => items.push({g:tr('风格', 'Styles'), icon:'palette', zh:`应用风格：${s.zh}`, en:`Apply style: ${s.en}`, run:() => applyStyle(s.id)}));
+  STYLES.forEach(s => items.push({g:tr('风格', 'Styles'), icon:'palette', zh:`预览风格：${s.zh}`, en:`Preview style: ${s.en}`, run:() => applyStyle(s.id)}));
   PLANS.forEach(p => items.push({g:tr('户型', 'Plans'), icon:'home', zh:`切换户型：${p.name}`, en:`Switch plan: ${p.en}`, run:() => setPlan(p.id), key:p.id === PLAN.id ? tr('当前', 'current') : ''}));
   ROOMS.forEach(r => items.push({g:tr('房间', 'Rooms'), icon:'target', zh:`定位房间：${state.rooms[r.id].name}`, en:`Go to room: ${EN(state.rooms[r.id].name)}`,
     run:() => { select({kind:'room', id:r.id}); if (is3D()) window.View3D.flyToRoom(r.id); else zoomToBox(bbox(r.poly), 400); }, key:`${fmt(area(r.poly), 1)} m²`}));
@@ -463,6 +466,7 @@ addEventListener('resize', closeCtx);
 /* ======================= 对话框 ======================= */
 let dialogReturnFocus=null;
 function openDialog({title, body, actions = [], wide = false, onOpen}){
+  window.FurnishWorkflowTools?.disposeDialog();
   if($('#dlg').hidden)dialogReturnFocus=document.activeElement;
   $('#dlgTitle').textContent = title; $('#dlgBody').innerHTML = body;
   $('#dlg .dlg-box').classList.toggle('wide', wide);
@@ -473,7 +477,7 @@ function openDialog({title, body, actions = [], wide = false, onOpen}){
   onOpen?.();
   ($('#dlgBody input:not([type=checkbox])') || A.querySelector('.primary') || $('#dlgClose')).focus();
 }
-function closeDialog(){ window.FurnishCabinetEditor?.dispose(); $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true}); }
+function closeDialog(){ window.FurnishWorkflowTools?.disposeDialog(); window.FurnishCabinetEditor?.dispose(); $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true}); }
 $('#dlgClose').onclick = closeDialog;
 $('#dlg').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeDialog();return;}if(e.key!=='Tab')return;const nodes=[...$('#dlg').querySelectorAll('button,a[href],input,select,textarea,[tabindex]')].filter(el=>!el.disabled&&el.tabIndex>=0&&el.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}e.stopPropagation();});
 $('#dlg').addEventListener('pointerdown', e => { if (e.target.id === 'dlg') closeDialog(); });

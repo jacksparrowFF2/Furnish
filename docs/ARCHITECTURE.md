@@ -1,5 +1,9 @@
 # 模块与加载约定
 
+2026-10-14：`src/ui/workflow-tools.js` 在现有 UI 扩展后装配画布旁工具、保存入口、价格依据／材料规格、空间侧栏、临时风格预览和净距对话框；共用现有 `ui`、`mutate()`、项目规则与属性面板，没有新工作状态或保存通道。`src/core/wall-distance-core.js` 提供毫米净距与原子联动，`src/core/placement-suggestions.js` 只返回通过占地／开启及全案间隙检查的候选，不移动锁定、编组、厨房或关联设备。`src/io/dxf-export.js` 生成布局交接 DXF。材料规格及价格依据仍属于 `project-core.js`；详见 [材料采购](MATERIAL-PURCHASING.md)、[墙间净距](WALL-DISTANCE.md)、[DXF 导出](DXF-EXPORT.md)。
+
+临时风格预览仅向生产 3D 家具构造器提供配色副本，源工作方案、2D 和预算保持原值；应用家具配色或完整风格分别经 `mutate()`。方案内容改变时预览失效，预览期间不提供交付截图，防止临时外观混入真实成果。新增脚本保持原有普通脚本加载，无 async 或网络依赖。
+
 厨房模块规则在 `src/core/kitchen-core.js`，生产构造器在 `src/render/kitchen-model.js`，属性表单在 `src/ui/kitchen-editor.js`。产品能力由 `product-rules.js` 管理；厨房核心加载在产品规则之前，构造器只在调用时读取柜体生产模型。旧组合、新厨房、设备关联及独立吊柜的契约见 [厨房设计](KITCHEN-DESIGN.md)。
 
 Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` 的兼容性是拆分代码时的约束；三维模块与 Three.js 的 data-URL import map 继续保留在入口中。

@@ -1,0 +1,32 @@
+/* The existing studio palette, with tools beside the drawing and explicit status. */
+.canvas-rail,.scene-light,.space-status,.preview-banner{--ink:var(--s-ink);--muted:var(--s-muted);--line:var(--s-line);--card:var(--s-card);--panel:var(--s-panel);--hover:var(--s-hover);--accent-soft:var(--s-accent-soft);--accent-ink:var(--s-accent-ink);--soft:var(--s-soft);color:var(--ink)}
+.canvas-rail{position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:6px;padding:7px;background:var(--s-overlay);border:1px solid var(--s-line);border-radius:15px;box-shadow:var(--shadow-md)}
+.canvas-rail .grp{display:flex;flex-direction:column;gap:4px}
+.canvas-rail .btn{display:flex;flex-direction:column;gap:3px;min-width:48px;min-height:44px;padding:6px;font-size:11px}
+.canvas-rail #tools .t{display:inline}
+.canvas-rail .rail-more{border-top:1px solid var(--line);padding-top:5px}
+.canvas-rail .btn.on{background:var(--accent-soft);color:var(--accent-ink)}
+.space-status{position:absolute;left:12px;bottom:14px;z-index:5;max-width:48%;background:var(--panel);box-shadow:var(--shadow-sm);border:1px solid var(--line)}
+#stage .scalebar{bottom:60px}
+#stage #hint3d{top:58px;max-width:calc(100% - 110px);white-space:normal;text-align:center}
+body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
+.scene-light{position:absolute;right:12px;top:12px;z-index:4;background:var(--s-overlay);border:1px solid var(--line);border-radius:12px;padding:7px 10px;display:flex;align-items:center;gap:8px}
+.scene-light input{width:100px}.scene-light .range{display:flex;align-items:center;gap:6px;margin:0}.scene-light .btn{font-size:12px;padding:5px}
+.workspace-preferences{position:relative}.workspace-preferences>.menu-pop{right:0;left:auto;width:240px}.workspace-preferences #langSel{display:flex;flex-wrap:wrap}.workspace-preferences .btn{margin:2px}
+.price-summary{padding:12px;border:1px solid var(--line);border-radius:12px;margin:12px 0;background:var(--soft)}
+.price-summary p{margin:5px 0}.price-counts{display:flex;flex-wrap:wrap;gap:8px}.price-counts span{padding:5px 8px;border-radius:8px;background:var(--card);font-size:12px}
+.space-cards{display:grid;gap:10px}.space-card{border:1px solid var(--line);border-left:3px solid var(--danger);border-radius:10px;padding:12px;overflow-wrap:anywhere}.space-card.pending{border-left-color:var(--muted)}.space-card.accepted{border-left-color:var(--ok)}.space-card p{margin:5px 0;font-size:12px}.space-card .actions{gap:5px}.space-card .btn{font-size:12px}
+.space-filters{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}.space-filters .btn{font-size:12px}
+.planning-preview{background:var(--paper);width:100%;height:240px;border:1px solid var(--line);border-radius:10px}
+.preview-banner{position:absolute;top:60px;left:80px;z-index:5;border:1px solid var(--accent);border-radius:10px;background:var(--panel);padding:9px;max-width:calc(100% - 110px);font-size:12px}
+.material-estimate{overflow-wrap:anywhere}.material-estimate table{width:100%;font-size:12px}.material-estimate td{padding:6px}
+#material-select{display:block;width:100%;min-height:40px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--card);color:var(--ink);margin:6px 0 12px;font:inherit}
+.sidebar-heading{position:sticky;top:0;z-index:9;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);font-size:12px}
+.sidebar-heading .btn{min-width:36px;min-height:32px;padding:5px}.save-short{display:none}
+.right .tabs{top:44px}
+.space-status:focus-visible,[data-wall-net]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+[data-wall-net] text{fill:var(--s-ink)}
+@media(max-width:1100px){.brand{display:none}header{gap:5px;padding:5px 0}.canvas-rail{top:12px;transform:none;max-height:calc(100% - 115px);overflow:auto}.canvas-rail .btn{min-width:42px}.space-status{bottom:72px;max-width:calc(100% - 24px)}.scene-light{max-width:calc(100% - 80px);right:8px;flex-wrap:wrap}.scene-light input{width:75px}main.drawer-panel .canvas-rail,main.drawer-panel .space-status{visibility:hidden}.preview-banner{top:auto;bottom:125px;left:70px}.workspace-preferences>.menu-pop{position:fixed;right:10px;top:70px;max-height:65vh;overflow:auto}.hud{bottom:14px}}
+@media(max-width:600px){header .btn,header summary.btn{padding:6px 8px;font-size:12px}#paneBtns span{display:none}#paneBtns .btn{padding:7px;min-width:36px}#viewSeg{--seg-w:76px}#showMenu summary span{display:none}.save-wide{display:none}.save-short{display:inline}#stage .scalebar{bottom:112px}.sidebar-heading .btn{min-width:44px;min-height:36px}}
+@media(max-width:600px){header .spacer{display:none}#viewSeg,.workspace-preferences,#fileMenu{order:1}}
+@media print{.canvas-rail,.space-status,.scene-light,.preview-banner,#gWallNet,#gProposal{display:none!important}}

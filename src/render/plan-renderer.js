@@ -335,4 +335,5 @@ function renderAll(){
   renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderMeasure(); renderNotes(); renderSel(); renderPanel(); updateHeader();
   window.View3D?.sync();
   window.FurnishWorkspace?.afterRender();
+  window.FurnishWorkflowTools?.afterRender();
 }

@@ -8,6 +8,7 @@ function exportPNG(){
   clone.setAttribute('viewBox', `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
   clone.setAttribute('width', W); clone.setAttribute('height', H);
   clone.querySelector('#gSel').innerHTML = '';
+  clone.querySelectorAll('#gWallNet,#gProposal').forEach(g=>g.remove());
   clone.querySelector('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid?'url(#grid)':PAL.paper}"/>`;
   const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
   Object.entries({x:-20000,y:-20000,width:55000,height:55000,fill:PAL.paper}).forEach(([k,v]) => bg.setAttribute(k,v));

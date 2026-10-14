@@ -1,21 +1,24 @@
 /* Property panels and note editing. Classic script declarations only;
  * read the current application state when called, including after undo/load. */
 function renderPanel(){
+  if(ui.sel?.kind!=='wall')window.FurnishWorkflowTools?.clearDistances();
   window.FurnishWorkspace?.clearOpeningPreview();
   renderFab();
   const p = $('#panel'), ids = selIds();
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); return; }
   if (ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f); bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
-  if (ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); return; }
+  if (ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
   if (ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
   if (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide'){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
   if (ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p))return; if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
   if (ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
+  if(window.FurnishWorkflowTools&&['space','style'].includes(ui.tab)){p.innerHTML=ui.tab==='space'?FurnishWorkflowTools.spacePanel():FurnishWorkflowTools.stylePanel();return;}
   const lost = state.furniture.filter(isOutside).length, clashN = collisions().length;
   const tab = (k, icon, zh, en, n, warn) => `<button class="tab ${ui.tab === k ? 'on' : ''}" data-tab="${k}">${ico(icon)}${tr(zh, en)}${n != null ? `<span class="n ${warn ? 'warn' : ''}">${n}</span>` : ''}</button>`;
   p.innerHTML = `<div class="tabs" role="tablist">${tab('overview', 'chart', '概览', 'Overview')}${tab('list', 'list', '清单', 'Items', state.furniture.length, lost || clashN)}${tab('quote', 'coin', '报价', 'Quote')}</div>`
     + (ui.tab === 'list' ? listPanel() : ui.tab === 'quote' ? quotePanel() : overviewPanel());
   if (ui.tab === 'overview') bindOverview();
+  window.FurnishWorkflowTools?.afterPanel();
 }
 function renderBrokenFurniturePanel(f,p){
  p.innerHTML=`<section><h3>${esc(nm(f.name))}</h3><p class="project-error" role="alert">${esc(furnitureError(f))}</p><p>${tr('原方案记录已保留。画布虚线框仅表示保存的外包尺寸，空间核对待修复。','Original record retained. The dashed box shows the saved envelope; spatial checks require repair.')}</p><p>${f.w} × ${f.d} mm</p>${f.kitchen?`<p>${tr('按现有宽深修复会按每边原比例调整模块；按模块修复会重新计算总宽深。位置、旋转、镜像和其他资料保留，可撤销。','Keep envelope to scale modules proportionally, or keep modules to recalculate the envelope. Position and other details are retained; repairs can be undone.')}</p><div class="actions"><button class="btn primary" id="repair-kitchen-envelope" ${f.locked?'disabled':''}>${tr('按现有宽深修复模块','Keep envelope; repair modules')}</button><button class="btn" id="repair-kitchen-modules" ${f.locked?'disabled':''}>${tr('按模块修复总宽深','Keep modules; repair envelope')}</button></div>`:''}${f.locked?`<button class="btn" data-act="lock">${tr('解锁','Unlock')}</button>`:''}<button class="btn" id="broken-furniture-backup">${tr('备份当前原始方案 JSON','Back up raw plan JSON')}</button><p id="model-repair-error" role="alert"></p></section>`;

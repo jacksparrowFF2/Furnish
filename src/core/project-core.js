@@ -61,12 +61,36 @@
   if(!num(result.paintPrice)||result.paintPrice<0||result.paintPrice>1e7)fail('乳胶漆单价无效');
   if(input.materials!==undefined&&(!input.materials||typeof input.materials!=='object'||Array.isArray(input.materials)))fail('材料单价格式无效');
   if(Object.keys(result.materials).length>100||Object.entries(result.materials).some(([id,v])=>!id||id.length>80||!num(v)||v<0||v>1e7))fail('地面材料单价无效');
+  if(input.materialSpecs!==undefined){
+   if(!input.materialSpecs||typeof input.materialSpecs!=='object'||Array.isArray(input.materialSpecs)||Object.keys(input.materialSpecs).length>100)fail('材料采购规格无效');
+   result.materialSpecs=Object.fromEntries(Object.entries(input.materialSpecs).map(([id,s])=>{
+    if(!id||id.length>80||!s||typeof s!=='object'||Array.isArray(s)||Object.keys(s).some(k=>!['length','width','pack','waste','unit'].includes(k))||![s.length,s.width].every(v=>num(v)&&v>=10&&v<=20000)||s.pack!==undefined&&(!Number.isInteger(s.pack)||s.pack<1||s.pack>10000)||s.waste!==undefined&&(!num(s.waste)||s.waste<0||s.waste>100)||s.unit!==undefined&&!['m2','piece','pack'].includes(s.unit)||s.unit==='pack'&&s.pack===undefined)fail('材料长宽须为 10–20000 mm，每箱片数须为整数，按箱计价需填写每箱片数');
+    if(s.unit&&s.unit!=='m2'&&!Object.hasOwn(result.materials,id))fail('按片／箱计价须录入对应单价');
+    return [id,{...s}];
+   }));
+  }
   return result;
+ }
+ function materialQuantity(area,settings,id){
+  const spec=settings.materialSpecs?.[id],waste=spec?.waste??settings.floorWaste,required=area*(1+waste/100);
+  if(!spec)return {quantity:required,required,waste,unit:'m2',purchased:required};
+  const pieceArea=spec.length*spec.width/1e6,pieces=Math.ceil(required/pieceArea-1e-9),packs=spec.pack?Math.ceil(pieces/spec.pack):null,purchased=(packs===null?pieces:packs*spec.pack)*pieceArea,unit=spec.unit||'m2';
+  return {quantity:unit==='piece'?(packs===null?pieces:packs*spec.pack):unit==='pack'?packs:purchased,required,waste,pieces,packs,purchased,pieceArea,unit,spec};
+ }
+ const furniturePriceBasis=(f,value)=>f.price!==undefined?'confirmed':f.referencePrice!==undefined||value>0?'reference':'missing';
+ function priceBasis(plan,work,materials,priceOf=f=>f.price??f.referencePrice??0){
+  const stats=estimate(plan,work,materials,priceOf),items=[];
+  for(const f of work.furniture){const value=priceOf(f),status=furniturePriceBasis(f,value);items.push({kind:'furniture',id:f.id,name:f.name,status,amount:value});}
+  for(const r of stats.mats)items.push({kind:'material',id:r.m,name:materials[r.m].name,status:Object.hasOwn(stats.settings.materials,r.m)?'confirmed':'reference',amount:r.c});
+  items.push({kind:'paint',id:'paint',name:'乳胶漆',status:work.pricing?.paintPrice!==undefined?'confirmed':'reference',amount:stats.paintCost});
+  stats.extra.forEach((r,i)=>items.push({kind:'renovation',id:String(i),name:r.name,status:'confirmed',amount:r.total}));
+  const totals=Object.fromEntries(['confirmed','reference','missing'].map(k=>[k,{count:items.filter(v=>v.status===k).length,amount:items.filter(v=>v.status===k).reduce((n,v)=>n+v.amount,0)}]));
+  return {items,totals,complete:totals.reference.count===0&&totals.missing.count===0,total:stats.total};
  }
  function estimate(plan,work,materials,priceOf=f=>f.price??f.referencePrice??0){
   const settings=pricing(work.pricing),q=quantities({...plan,ceilingHeight:ceilingHeight(work)},work.architecture),counted=plan.rooms.filter(r=>r.counted!==false),byMat=new Map();
   for(const r of plan.rooms){const m=work.rooms?.[r.id]?.mat||r.mat;if(!materials[m])fail('地面材料不存在：'+m);byMat.set(m,(byMat.get(m)||0)+area(r.poly));}
-  const mats=[...byMat].map(([m,a])=>{const price=settings.materials[m]??materials[m].price,quantity=a*(1+settings.floorWaste/100);return {m,a,price,quantity,c:quantity*price};});
+  const mats=[...byMat].map(([m,a])=>{const procurement=materialQuantity(a,settings,m),price=settings.materials[m]??materials[m].price;if(procurement.unit!=='m2'&&!Object.hasOwn(settings.materials,m))fail('按片／箱计价须录入对应单价');return {m,a,price,quantity:procurement.quantity,c:procurement.quantity*price,procurement};});
   const floor=mats.reduce((n,r)=>n+r.c,0),paintQuantity=q.paint*(1+settings.paintWaste/100),paintCost=paintQuantity*settings.paintPrice,furniture=work.furniture.reduce((n,f)=>n+priceOf(f),0),extra=extraCosts(work.renovation||[],q);
   return {...q,settings,counted,tot:q.net,mats,floor,wallArea:q.wall,paintArea:q.paint,paintQuantity,paint:paintCost,paintCost,furniture,furn:furniture,extra:extra.items,renovation:extra.total,total:floor+paintCost+furniture+extra.total};
  }
@@ -132,8 +156,8 @@
  const purchaseMoney=value=>'¥'+Math.round(Number(value)).toLocaleString('zh-CN');
  function procurement(plan,work,priceOf=f=>f.price??0){
   const groups=new Map(),totals=Object.fromEntries(Object.keys(purchaseStates).map(k=>[k,0]));
-  for(const f of work.furniture){const price=priceOf(f),status=Object.hasOwn(purchaseStates,f.purchaseStatus)?f.purchaseStatus:'planned',note=f.purchaseNote||'',key=JSON.stringify([f.type,f.name,f.brand||'',f.model||'',f.w,f.d,f.h??null,price,f.price===undefined,f.priceDate||'',f.sourceUrl||'',status,note,f.kitchen||f.cabinet?(f.kitchen?(root.FurnishKitchen||require('./kitchen-core.js')).specification(f):(design().products().modelError(f)?f.cabinet:(root.FurnishCabinet||require('./cabinet-core.js')).specification(f))):null]);
-   const item=groups.get(key)||{name:f.name,brand:f.brand||'',model:f.model||'',w:f.w,d:f.d,h:f.h??null,price,estimated:f.price===undefined,priceDate:f.priceDate||'',sourceUrl:f.sourceUrl||'',status,note,ids:[],rooms:[]};item.ids.push(f.id);
+  for(const f of work.furniture){const price=priceOf(f),basis=furniturePriceBasis(f,price),status=Object.hasOwn(purchaseStates,f.purchaseStatus)?f.purchaseStatus:'planned',note=f.purchaseNote||'',key=JSON.stringify([f.type,f.name,f.brand||'',f.model||'',f.w,f.d,f.h??null,price,basis,f.priceDate||'',f.sourceUrl||'',status,note,f.kitchen||f.cabinet?(f.kitchen?(root.FurnishKitchen||require('./kitchen-core.js')).specification(f):(design().products().modelError(f)?f.cabinet:(root.FurnishCabinet||require('./cabinet-core.js')).specification(f))):null]);
+   const item=groups.get(key)||{name:f.name,brand:f.brand||'',model:f.model||'',w:f.w,d:f.d,h:f.h??null,price,basis,estimated:f.price===undefined,priceDate:f.priceDate||'',sourceUrl:f.sourceUrl||'',status,note,ids:[],rooms:[]};item.ids.push(f.id);
    const room=plan.rooms.find(r=>inside([f.cx,f.cy],r.poly)),name=room?.name||'未分配房间';if(!item.rooms.includes(name))item.rooms.push(name);groups.set(key,item);totals[status]+=price;
   }
   const items=[...groups.values()].map(v=>({...v,quantity:v.ids.length,total:v.price*v.ids.length}));
@@ -310,6 +334,6 @@
   for(const [label,work] of [['当前方案',data.current],...data.designs.map(d=>['命名方案「'+d.name+'」',d.work])])if(work.plan!==undefined&&work.plan!==data.planId)fail(label+'：方案户型编号与项目不一致');
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
+ root.FurnishProject={roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,materialQuantity,priceBasis,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);
