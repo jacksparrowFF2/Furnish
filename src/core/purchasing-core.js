@@ -20,6 +20,11 @@ function validate(input){
  return clone(input);
 }
 function signature(value){const stable=v=>Array.isArray(v)?v.map(stable):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,stable(v[k])])):v;return 'v1:'+JSON.stringify(stable(value));}
+function relink(line,target){
+ const next=target?{kind:target.kind,target:target.target,name:target.name,signature:target.signature,unit:target.unit}:{kind:'other',target:'',name:line.name,signature:'',unit:'lot'};
+ if(next.unit!==line.unit)fail('关联单位不同，请保留历史行并新增订单行，按实际订单填写新单位数量和单价');
+ return {...clone(line),...next};
+}
 function demand(plan,work,materials,priceOf=f=>f.price??f.referencePrice??0){
  const P=root.FurnishProject||require('./project-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js'),C=root.FurnishCabinet||require('./cabinet-core.js'),D=root.FurnishDesign||require('./design-core.js'),items=work.furniture.map(f=>({kind:'furniture',target:f.id,name:f.name,unit:'item',quantity:1,price:priceOf(f),signature:signature({type:f.type,brand:f.brand||'',model:f.model||'',w:f.w,d:f.d,h:f.h??null,cabinet:f.cabinet?(D.products().modelError(f)?f.cabinet:C.specification(f)):null,kitchen:f.kitchen?(D.products().modelError(f)?f.kitchen:K.specification(f)):null})}));
  for(const m of P.materialBreakdown(plan,work,materials,priceOf))items.push({kind:'material',target:m.m,name:materials[m.m].name,unit:m.procurement.unit,quantity:m.procurement.quantity,price:m.price,signature:signature({unit:m.procurement.unit,length:m.procurement.spec?.length??null,width:m.procurement.spec?.width??null,pack:m.procurement.spec?.pack??null})});
@@ -27,10 +32,10 @@ function demand(plan,work,materials,priceOf=f=>f.price??f.referencePrice??0){
 }
 function summary(plan,work,materials,priceOf){
  const orders=validate(work.purchaseOrders||[]),items=demand(plan,work,materials,priceOf).map(d=>({...d,ordered:0,received:0})),map=new Map(items.map(d=>[d.kind+':'+d.target,d])),warnings=[];let orderedAmount=0,paid=0;
- for(const o of orders){orderedAmount+=orderTotal(o);paid+=o.paid;for(const l of o.lines){if(l.kind==='other')continue;const d=map.get(l.kind+':'+l.target);if(!d||d.unit!==l.unit||d.signature!==l.signature){warnings.push({orderId:o.id,name:l.name,reason:!d?'missing':d.unit!==l.unit?'unit':'changed'});continue;}d.ordered+=l.quantity;d.received+=l.received;}}
+ for(const o of orders){orderedAmount+=orderTotal(o);paid+=o.paid;for(const [lineIndex,l] of o.lines.entries()){if(l.kind==='other')continue;const d=map.get(l.kind+':'+l.target);if(!d||d.unit!==l.unit||d.signature!==l.signature){warnings.push({orderId:o.id,lineIndex,name:l.name,reason:!d?'missing':d.unit!==l.unit?'unit':'changed'});continue;}d.ordered+=l.quantity;d.received+=l.received;}}
  for(const d of items){d.remaining=Math.max(0,d.quantity-d.ordered);d.awaiting=Math.max(0,d.ordered-d.received);d.excess=Math.max(0,d.ordered-d.quantity);}
  const P=root.FurnishProject||require('./project-core.js'),budget=P.estimate(plan,work,materials,priceOf).total;
  return {orders,items,warnings,orderedAmount,paid,outstanding:Math.max(0,orderedAmount-paid),budget,balance:budget-paid,remainingEstimate:items.reduce((n,d)=>n+d.remaining*d.price,0)};
 }
-const api={units,lineTotal,orderTotal,validate,signature,demand,summary};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishPurchasing=api;
+const api={units,lineTotal,orderTotal,validate,signature,relink,demand,summary};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishPurchasing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

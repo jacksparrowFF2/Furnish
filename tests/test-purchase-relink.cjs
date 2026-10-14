@@ -1,0 +1,8 @@
+const assert=require('node:assert/strict'),C=require('../src/core/purchasing-core.js'),P=require('../src/core/project-core.js');
+const line={kind:'furniture',target:'old',name:'同名椅',signature:'legacy',unit:'item',quantity:3,received:2,unitPrice:123.45},before=JSON.stringify(line),target={kind:'furniture',target:'new',name:'新椅',signature:'new-signature',unit:'item',quantity:1,price:999},next=C.relink(line,target);
+assert.deepEqual([next.quantity,next.received,next.unitPrice],[3,2,123.45]);assert.equal(next.target,'new');assert.equal(next.signature,'new-signature');assert.equal(JSON.stringify(line),before);assert.throws(()=>C.relink(line,{...target,unit:'pack'}),/单位不同/);assert.throws(()=>C.relink(line,null),/单位不同/);
+const order={id:'order',number:'单',date:'',vendor:'',note:'',shipping:0,discount:0,paid:100,lines:[next]},relocated={...order,lines:[line]};assert.equal(C.orderTotal(order),C.orderTotal(relocated));C.validate([order]);
+const f={id:'new',type:'custom',name:'同名椅',cx:1000,cy:1000,w:500,d:500,h:800,rot:0,price:500},plan={id:'p',rooms:[],walls:[],doors:[]},work={furniture:[f]},d=C.demand(plan,work,{},f=>f.price)[0],valid=C.relink(line,d),s=C.summary(plan,{...work,purchaseOrders:[{...order,lines:[valid,line]}]}, {},f=>f.price);
+assert.equal(s.warnings.length,1);assert.equal(s.warnings[0].lineIndex,1);assert.equal(s.items[0].received,2);assert.equal(s.items[0].excess,2);
+const payload={planId:'p',current:{...work,purchaseOrders:[order]},designs:[],catalog:[]};assert.deepEqual(P.unpack(P.pack(payload)),payload);
+console.log('PASS explicit same-unit reassociation preserves quantities/receipts/prices, cross-unit rejection, immutable input, equal order totals, duplicate-name warning identity and project roundtrip');
