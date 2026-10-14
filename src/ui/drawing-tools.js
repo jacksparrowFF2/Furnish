@@ -14,5 +14,14 @@ function prepareExport(s,bounds,color=PAL.dim){const dims=s.querySelector('#gDim
 const menu=document.querySelector('#showMenu .menu-pop'),button=document.createElement('button');button.id='drawing-settings';button.className='btn';button.dataset.zh='图纸朝向与自动尺寸';button.dataset.en='Drawing orientation / dimensions';button.textContent=t(button.dataset.zh,button.dataset.en);button.onclick=()=>{$('#showMenu').open=false;open();};menu.append(button);
 const compass=document.createElement('button');compass.id='drawing-compass';compass.className='drawing-compass only2d';compass.setAttribute('aria-label',t('图纸朝向与方向设置','Drawing orientation and north'));compass.onclick=open;$('#stage').append(compass);
 const rotate=document.createElement('div');rotate.className='drawing-rotate only2d';rotate.innerHTML=`<button class="btn" id="drawing-left" aria-label="${t('图纸逆时针旋转90度','Rotate drawing left 90 degrees')}">${ico('rotL')}</button><button class="btn" id="drawing-right" aria-label="${t('图纸顺时针旋转90度','Rotate drawing right 90 degrees')}">${ico('rotR')}</button>`;$('#zoomHud').before(rotate);$('#drawing-left').onclick=()=>rotateView(-90);$('#drawing-right').onclick=()=>rotateView(90);
-window.FurnishDrawingUI={afterRender,syncCompass,prepareExport,open};afterRender();fitView();
+function clearPrint(){document.querySelector('#drawing-print-sheet')?.remove();document.querySelector('#drawing-print-style')?.remove();}
+function preparePrint(){
+ clearPrint();const sheet=document.createElement('div');sheet.id='drawing-print-sheet';const source=FurnishDesignUI.floorplanSVG(),s=D.settings(state.drawing);
+ sheet.innerHTML=`<h1>${esc(PLAN.name)}</h1><p>${t('平面布置 · 尺寸单位 mm','Floor plan · dimensions in mm')} · ${s.northAngle===null?t('北向未设置','North unknown'):t('真北角度','True north')+' '+s.northAngle+'°'}</p>${source}`;
+ const box=sheet.querySelector('svg').getAttribute('viewBox').split(/\s+/).map(Number),landscape=box[2]>box[3],style=document.createElement('style');style.id='drawing-print-style';
+ style.textContent=`@media print{@page{size:A4 ${landscape?'landscape':'portrait'};margin:10mm}body> :not(#drawing-print-sheet){display:none!important}#drawing-print-sheet{display:block!important;color:#302923;background:white;width:100%;break-inside:avoid}#drawing-print-sheet h1{font:600 18px system-ui;margin:0 0 6px}#drawing-print-sheet p{font:12px system-ui;margin:0 0 10px}#drawing-print-sheet svg{display:block;width:100%;height:${landscape?165:250}mm;max-width:100%;background:white}}`;
+ document.head.append(style);document.body.append(sheet);
+}
+window.addEventListener('beforeprint',preparePrint);window.addEventListener('afterprint',clearPrint);
+window.FurnishDrawingUI={afterRender,syncCompass,prepareExport,open,preparePrint,clearPrint};afterRender();fitView();
 })();

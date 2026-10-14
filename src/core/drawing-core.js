@@ -27,7 +27,30 @@ function dimensions(plan,input={}){
  if(config.openings)for(const o of [...plan.doors||[],...plan.wins||[],...plan.slides||[]]){const [x,y,X,Y]=o.rect,h=X-x>=Y-y;if(h)add(true,y-250,[x,X],y,'opening');else add(false,x-250,[y,Y],x,'opening');}
  return out;
 }
-function drawingBounds(plan,input={}){const all=(plan.walls||[]).flatMap(w=>[[w[0],w[1]],[w[2],w[3]]]);for(const d of dimensions(plan,input))all.push(d.a,d.b,...d.refs);const b=plan.bounds||{x:0,y:0,w:1000,h:1000};if(!all.length)return b;const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]),pad=350,x=Math.min(b.x,Math.min(...xs)-pad),y=Math.min(b.y,Math.min(...ys)-pad);return {x,y,w:Math.max(b.x+b.w,Math.max(...xs)+pad)-x,h:Math.max(b.y+b.h,Math.max(...ys)+pad)-y};}
+function drawingBounds(plan,input={}){const all=(plan.walls||[]).flatMap(w=>[[w[0],w[1]],[w[2],w[3]]]);for(const d of dimensionLayout(dimensions(plan,input),{rotation:settings(input).rotation})){all.push(d.a,d.b,...d.refs);if(d.label)all.push([d.label.box[0],d.label.box[1]],[d.label.box[2],d.label.box[3]]);}const b=plan.bounds||{x:0,y:0,w:1000,h:1000};if(!all.length)return b;const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]),pad=350,x=Math.min(b.x,Math.min(...xs)-pad),y=Math.min(b.y,Math.min(...ys)-pad);return {x,y,w:Math.max(b.x+b.w,Math.max(...xs)+pad)-x,h:Math.max(b.y+b.h,Math.max(...ys)+pad)-y};}
 function sun(horizontal,input={}){return rotate(horizontal,settings(input).northAngle??0);}
-const api={settings,rotate,bounds,dimensions,drawingBounds,sun};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
+const boxHit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
+function dimensionLayout(lines,{scale=0,rotation=0}={}){
+ const placed=[],result=lines.map(d=>({...d,label:null,simple:scale>0&&d.kind==='chain'&&d.value*scale<6}));
+ const indices=result.map((_,i)=>i).sort((a,b)=>(result[a].kind==='overall'?-1:0)-(result[b].kind==='overall'?-1:0)||result[b].value-result[a].value||a-b);
+ for(const index of indices){const d=result[index];if(d.value<80||scale&&d.kind!=='overall'&&d.value*scale<12)continue;const font=Math.max(d.value<400?140:180,scale?10/scale:0),text=String(Math.round(d.value)),width=text.length*font*.62+font*.3,height=font*1.25,axis=d.h?1:0,mid=d.a.map((v,i)=>(v+d.b[i])/2),anchor=d.refs.reduce((n,p)=>n+p[axis]/d.refs.length,0),sign=Math.sign(mid[axis]-anchor)||-1;
+  let angle=(d.h?0:-90)+rotation;if(angle>90)angle-=180;if(angle<=-180)angle+=360;angle-=rotation;
+  for(let lane=0;lane<4;lane++){const at=[...mid];at[axis]+=sign*(font*.8+35+lane*(font*1.5));const w=d.h?width:height,h=d.h?height:width,box=[at[0]-w/2,at[1]-h/2,at[0]+w/2,at[1]+h/2];if(placed.some(b=>boxHit(box,b)))continue;d.label={at,font,angle,text,box,lane};placed.push(box);break;}
+ }
+ return result;
+}
+function inRoom(p,room){let found=false;for(const ring of room.rings||room.polys||[room.poly]){let inside=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const a=ring[i],b=ring[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])inside=!inside;}if(inside)found=!found;}return found;}
+function labelFits(box,room){if(![[box[0],box[1]],[box[2],box[1]],[box[2],box[3]],[box[0],box[3]]].every(p=>inRoom(p,room)))return false;for(const ring of room.rings||room.polys||[room.poly])for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length];if(a[0]===b[0]&&a[0]>box[0]&&a[0]<box[2]&&Math.max(a[1],b[1])>box[1]&&Math.min(a[1],b[1])<box[3]||a[1]===b[1]&&a[1]>box[1]&&a[1]<box[3]&&Math.max(a[0],b[0])>box[0]&&Math.min(a[0],b[0])<box[2])return false;}return true;}
+function roomLabels(rooms,obstacles=[],{rotation=0}={}){
+ const used=[],boxes=obstacles.map(poly=>[Math.min(...poly.map(p=>p[0])),Math.min(...poly.map(p=>p[1])),Math.max(...poly.map(p=>p[0])),Math.max(...poly.map(p=>p[1]))]);
+ return rooms.filter(r=>r.at).map(r=>{const xs=r.poly.map(p=>p[0]),ys=r.poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),near=boxes.filter(b=>boxHit(b,[x0,y0,x1,y1])),candidates=[r.at,...[.15,.3,.5,.7,.85].flatMap(x=>[.15,.3,.5,.7,.85].map(y=>[x0+(x1-x0)*x,y0+(y1-y0)*y]))].sort((a,b)=>Math.hypot(a[0]-r.at[0],a[1]-r.at[1])-Math.hypot(b[0]-r.at[0],b[1]-r.at[1]));
+  const chars=[...String(r.name)].reduce((n,c)=>n+(/[\x00-\x7f]/.test(c)?.58:1),0);let best=null;
+  for(const size of [1,.8,.65]){const width=Math.max(chars*250,1000)*size+90,height=530*size+90,w=[90,270].includes(rotation)?height:width,h=[90,270].includes(rotation)?width:height;
+   for(const at of candidates){const box=[at[0]-w/2,at[1]-h/2,at[0]+w/2,at[1]+h/2];if(!labelFits(box,r))continue;const hits=near.filter(b=>boxHit(box,b)).length+used.filter(b=>boxHit(box,b)).length;if(!best||hits<best.hits)best={id:r.id,at:[...at],size,box,hits};if(!hits)break;}
+   if(best?.hits===0)break;
+  }
+  best=best||{id:r.id,at:[...r.at],size:.65,box:null,hits:null};if(best.box)used.push(best.box);return best;
+ });
+}
+const api={settings,rotate,bounds,dimensions,drawingBounds,sun,dimensionLayout,roomLabels};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

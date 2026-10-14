@@ -151,13 +151,19 @@ function renderOpenings(){
   $('#gOpen').innerHTML = s;
 }
 
+let roomLabelLayoutCache=null;
+function roomLabelLayout(){
+ const rooms=ROOMS.map(r=>({...r,name:nm(state.rooms[r.id].name)})),obstacles=ui.layers.furn?renderableFurniture().filter(f=>!['rug','pendant','curtain','wallart'].includes(f.type)).flatMap(f=>FurnishGeometry.footprints(f)):[],rotation=drawingRotation(),key=JSON.stringify([rooms.map(r=>[r.id,r.at,r.name,r.poly,r.rings,r.polys]),obstacles,rotation]);
+ if(roomLabelLayoutCache?.key!==key)roomLabelLayoutCache={key,positions:new Map(FurnishDrawing.roomLabels(rooms,obstacles,{rotation}).map(v=>[v.id,v]))};return roomLabelLayoutCache.positions;
+}
 function renderLabels(){
   const g = $('#gLabels');
   g.setAttribute('display', ui.layers.labels ? 'inline' : 'none');
+  const positions=globalThis.FurnishDrawing?roomLabelLayout():null;
   g.innerHTML = ROOMS.filter(r => r.at).map(r => {
-    const [x,y] = r.at, halo = `stroke="${PAL.halo}" stroke-width="45" paint-order="stroke" stroke-linejoin="round"`;
-    return `<g transform="rotate(${globalThis.FurnishDrawing?-drawingRotation():0} ${x} ${y})"><text x="${x}" y="${y}" font-size="250" font-weight="600" text-anchor="middle" fill="${PAL.label}" ${halo}>${esc(nm(state.rooms[r.id].name))}</text>
-      <text x="${x}" y="${y+260}" font-size="175" text-anchor="middle" fill="${PAL.labelSub}" ${halo}>${fmt(area(r.poly))} m²</text></g>`;
+    const chosen=positions?.get(r.id),[x,y]=chosen?.at||r.at,size=chosen?.size||1,halo = `stroke="${PAL.halo}" stroke-width="45" paint-order="stroke" stroke-linejoin="round"`;
+    return `<g data-room-label="${r.id}" data-label-at="${x},${y}" transform="rotate(${globalThis.FurnishDrawing?-drawingRotation():0} ${x} ${y})"><text x="${x}" y="${y-100*size}" dominant-baseline="central" font-size="${250*size}" font-weight="600" text-anchor="middle" fill="${PAL.label}" ${halo}>${esc(nm(state.rooms[r.id].name))}</text>
+      <text x="${x}" y="${y+160*size}" dominant-baseline="central" font-size="${175*size}" text-anchor="middle" fill="${PAL.labelSub}" ${halo}>${fmt(area(r.poly))} m²</text></g>`;
   }).join('');
 }
 
@@ -178,8 +184,8 @@ function renderDims(){
   g.setAttribute('display', ui.layers.dims ? 'inline' : 'none');
 }
 function drawingDimensionsSVG(lines,color=PAL.dim,rotation=globalThis.FurnishDrawing?FurnishDrawing.settings(state.drawing).rotation:0,scale=0){
- return lines.map(d=>{const [x,y]=d.a,[X,Y]=d.b,mx=(x+X)/2,my=(y+Y)/2,font=Math.max(d.value<400?125:170,scale?10/scale:0),tick=65;let angle=(d.h?0:-90)+rotation;if(angle>90)angle-=180;if(angle<=-180)angle+=360;angle-=rotation;
- const at=d.h?[mx,my-65]:[mx-65,my];return `<g data-auto-dimension="${d.kind}" data-dimension-value="${d.value}" fill="none" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"><path d="M${x} ${y}L${X} ${Y}${[d.a,d.b].map(([a,b])=>`M${a-tick} ${b+tick}L${a+tick} ${b-tick}`).join('')}${d.refs.map((p,i)=>`M${p[0]} ${p[1]}L${[d.a,d.b][i].join(' ')}`).join('')}"/><text x="${at[0]}" y="${at[1]}" font-size="${font}" text-anchor="middle" fill="${color}" stroke="none" transform="rotate(${angle} ${at.join(' ')})">${d.value>=80&&(!scale||d.value*scale>=28)?Math.round(d.value):''}</text><title>${d.kind==='opening'?tr('门窗洞口宽度','Opening width'):tr('自动投影尺寸 · mm','Automatic projected dimension · mm')} ${Math.round(d.value)}</title></g>`;
+ return FurnishDrawing.dimensionLayout(lines,{scale,rotation}).map(d=>{const [x,y]=d.a,[X,Y]=d.b,tick=65,label=d.label;
+ return `<g data-auto-dimension="${d.kind}" data-dimension-value="${d.value}" fill="none" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"><path d="M${x} ${y}L${X} ${Y}${d.simple?'':[d.a,d.b].map(([a,b])=>`M${a-tick} ${b+tick}L${a+tick} ${b-tick}`).join('')}${d.simple?'':d.refs.map((p,i)=>`M${p[0]} ${p[1]}L${[d.a,d.b][i].join(' ')}`).join('')}"/>${label?`<text x="${label.at[0]}" y="${label.at[1]}" dominant-baseline="central" font-size="${label.font}" text-anchor="middle" fill="${color}" stroke="none" transform="rotate(${label.angle} ${label.at.join(' ')})">${label.text}</text>`:''}<title>${d.kind==='opening'?tr('门窗洞口宽度','Opening width'):tr('自动投影尺寸 · mm','Automatic projected dimension · mm')} ${Math.round(d.value)}</title></g>`;
  }).join('');
 }
 
