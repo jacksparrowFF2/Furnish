@@ -39,19 +39,20 @@
    const h=current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current),w=current.w,d=current.d;
    const isL=current.kitchen?.shape==='L',runName=elevation?.run===1?'转角边':'主边';
    summary=null;if(settings.dimensions){summary=document.createElement('div');summary.className='cab-size-summary';summary.textContent=isL?`主边总长 ${fmt(w)} · 转角边总长 ${fmt(d)} · 柜深 ${fmt(current.kitchen.depth)} · 台面高 ${fmt(h)} mm`:elevation?`${runName}总长 ${fmt(w)} · 柜深 ${fmt(current.kitchen.depth)} · 台面高 ${fmt(h)} mm`:`整体 宽 ${fmt(w)} × 深 ${fmt(d)} × 高 ${fmt(h)} mm`;labelLayer.appendChild(summary);}
-   if(current.kitchen){const K=root.FurnishKitchen;for(const m of K.layout(current)){
-    const normal=m.run===0?[0,1]:[K.cornerSide(current)==='right'?-1:1,0],x=m.x+normal[0]*current.kitchen.depth/2,z=m.y+normal[1]*current.kitchen.depth/2;
-    const index=elevation?elevation.indices[m.index]:m.index;
-    if(index===null){const el=add('盲角',point(x,h*.55,z));el.className='cab-blind-label';}
+   if(current.kitchen){const K=root.FurnishKitchen;for(const m of K.cabinetLayout(current)){
+    const normal=m.run===0?[0,1]:[K.cornerSide(current)==='right'?-1:1,0],x=m.x+normal[0]*(m.depth??current.kitchen.depth)/2,z=m.y+normal[1]*(m.depth??current.kitchen.depth)/2;
+    const end=m.index>=current.kitchen.modules.length,index=elevation?(end?elevation.endIndex:elevation.indices[m.index]):m.index;
+    if(end||index===null){const el=add(end?'薄柜':'盲角',point(x,h*.55,z));el.className='cab-blind-label';}
     else add(String(index+1),point(x,h*.55,z),{column:index,title:`模块 ${index+1} · ${K.roles[m.role]} · 宽 ${fmt(m.width)} mm`});
-    measure(`${index===null?'盲角':'宽'} ${fmt(m.width)}`,point(x-(m.run===0?m.width/2:0),0,z-(m.run===1?m.width/2:0)),point(x+(m.run===0?m.width/2:0),0,z+(m.run===1?m.width/2:0)));
+    if(current.kitchen.obstacleFit?.depths.some(row=>row.index===m.index))add(`柜深 ${fmt(m.depth)}`,point(x,h*.3,z));
+    measure(`${end?'薄柜宽':index===null?'盲角':'宽'} ${fmt(m.width)}`,point(x-(m.run===0?m.width/2:0),0,z-(m.run===1?m.width/2:0)),point(x+(m.run===0?m.width/2:0),0,z+(m.run===1?m.width/2:0)));
    }}else{
    const c=C.config(current),base=c.plinth+c.thickness;
    C.layout(current).forEach((bay,i)=>{
     add(String(i+1),point(bay.center,h*.65,d/2+25),{column:i,title:`分区 ${i+1} · 净宽 ${fmt(bay.width)} mm`});
     measure(`净宽 ${fmt(bay.width)}`,point(bay.left,0,d/2),point(bay.left+bay.width,0,d/2));
     if(!settings.dimensions)return;
-    if(settings.doors==='normal'&&(c.hoodBayHeight!==undefined?!c.columns[0].doorOpen&&!c.columns[2].doorOpen:c.columns[i].door!=='none'&&!c.columns[i].doorOpen))return;
+    if(settings.doors==='normal'&&(c.hoodBayHeight!==undefined?!c.columns[0].doorOpen&&!c.columns[2].doorOpen:c.columns[i].door!=='none'&&!c.columns[i].doorOpen&&!(c.columns[i].doorSections&&Object.values(c.columns[i].doorSections).some(s=>s.open))))return;
     C.spaces(current,i).forEach(gap=>measure(`净高 ${fmt(gap.height)}`,point(bay.center,base+gap.bottom,d/2+25),point(bay.center,base+gap.top,d/2+25),12));
    });
    }
@@ -75,7 +76,7 @@
     // Keep every module wide enough to label; narrow screens scroll each run separately.
     const min=Math.min(...row.furniture.kitchen.modules.map(m=>m.width));panel.surface.style.width=`${Math.max(280,Math.ceil(row.furniture.w/min*66+100))}px`;
     panel.devices.splice(0,panel.devices.length,...furniture.filter(v=>v.counterLink?.hostId===current.id).flatMap(v=>{const index=row.indices.indexOf(v.counterLink.module);return index<0?[]:[{...v,counterLink:{...v.counterLink,module:index}}];}));
-    if(!panel.preview)panel.preview=create({THREE,OrbitControls,box,host:panel.surface,f:row.furniture,elevation:panel.meta,furniture:panel.devices,background,actions:{select:part=>actions.select?.(part),toggle:(index,...args)=>{const original=panel.meta.indices[index];if(original!==null)actions.toggle(original,...args);}}});
+    if(!panel.preview)panel.preview=create({THREE,OrbitControls,box,host:panel.surface,f:row.furniture,elevation:panel.meta,furniture:panel.devices,background,actions:{select:part=>actions.select?.(part),toggle:(index,...args)=>{const original=index>=panel.meta.indices.length?panel.meta.endIndex:panel.meta.indices[index];if(original!==null)actions.toggle(original,...args);}}});
     else panel.preview.update(row.furniture);
     panel.preview.setView({front:true,dimensions:settings.dimensions});panel.preview.selectShelf(activeColumn===null?null:{column:activeColumn});
    });
@@ -138,7 +139,7 @@
   cv.addEventListener('pointerup',e=>{
    if(drag?.id===e.pointerId){e.stopImmediatePropagation();e.preventDefault();endDrag(false);down=null;return;}
    if(!down||down.id!==e.pointerId||Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)return;down=null;
-   const hit=hitAt(rayAt(e)),part=hit?.object.userData.cabinetPart,bay=hit?.object.userData.cabinetBay;if(part)actions.toggle(part.column,part.drawer,part.lid,part.lane,part.section);else if(bay&&actions.select({...bay})!==false){selected={...bay};highlight();cv.focus({preventScroll:true});}
+   const hit=hitAt(rayAt(e)),part=hit?.object.userData.cabinetPart,bay=hit?.object.userData.cabinetBay;if(part)actions.toggle(part.column,part.drawer,part.lid,part.lane,part.section,part.leaf);else if(bay&&actions.select({...bay})!==false){selected={...bay};highlight();cv.focus({preventScroll:true});}
   },true);
   cv.addEventListener('pointercancel',e=>{if(drag?.id===e.pointerId){e.stopImmediatePropagation();endDrag(true);}down=null;},true);
   cv.addEventListener('lostpointercapture',e=>{if(drag?.id===e.pointerId)endDrag(true);},true);

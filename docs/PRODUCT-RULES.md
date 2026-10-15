@@ -94,3 +94,13 @@ npx.cmd --package @playwright/cli playwright-cli -s=furnish-rules run-code --fil
 小屏验证使用桌面 Chrome 的视口模拟；未进行真实手机触屏验收。柜门开启区域现已补充 [三维障碍检查](CABINET-OPENING-3D.md)，含上翻门顶部检查与房间净高恢复。全局 UI 状态耦合、内联场景拆分及更细的板件/多门同时运动模拟仍是后续任务。
 
 自动管道避让能力统一由 serviceCut(f) 提供：参数化柜体及 counter/vanity，导入 OBJ 不自动切割。无新增家具字段，切孔由点位、管径和净高派生，规则与生产几何验收见 [管道避让](PIPE-CUTS.md)。
+
+柜体嵌套开合参数：产品层继续以既有 cabinet 能力整体保存／复制／替换配置，新增 columns[].doorSections 并非产品顶层字段，由 cabinet-core.js 统一校验（仅分层上下门，open 布尔，angle 0–180°）。缺省继承历史分区状态，不强制迁移；各 UI 与生产构造器调用共用 doorState／doorAngle 接口。
+
+
+2026-10-14：厨房可选 `endExtensions[]` 由原 `counter.kitchen` 产品能力委托厨房核心校验，缺失不延伸；末端薄柜缺失背板读 false，旧普通柜体缺失运行时 `cabinet.backPanel` 仍有背板。范围来自现有柜体能力，未增加家具顶层字段或重复替换清单；新的盲角板件规则与末端开启输入更新确认标记，完整 kitchen 继续进入 3D 缓存及项目恢复。详见 [末端薄柜](KITCHEN-DESIGN.md)。
+
+
+2026-10-14：`types.counter.avoidance={enabled:false,minDepth:150}` 定义厨房自动避让的旧／新缺失读取与最小柜深能力；厨房核心消费它并校验可选 `autoAvoid` 和派生 `obstacleFit`，复制替换仍走整个 kitchen 能力。已锁定厨房不自动重算。空间确认／3D 缓存覆盖实际派生深度和局部缺口，实际工作恢复按有效方案重算；前沿及名义尺寸、设备关联不漂移。详见 [厨房自动避让](KITCHEN-DESIGN.md)。
+
+2026-10-15：厨房模块／末端薄柜可选 `doorLeaves[]` 仍由既有 `counter.kitchen` 能力保存，柜体核心校验门扇状态，厨房核心校验实际门数；旧缺失值继承模块开合，不强制写入默认数组。复制与完整 kitchen 恢复保留状态，替换仍清理整个厨房；采购忽略姿态，缓存包含完整配置。转角底座新增实际低位实体，空间确认规则标记升至 `kitchen-worktop-v6-corner-leaves`。复验见 [转角底座与逐扇门](KITCHEN-DESIGN.md)。

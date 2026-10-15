@@ -3,18 +3,24 @@
 'use strict';
 function build(THREE,f,box,{furniture=[],plan,previewBlind=null,previewMirror=false}={}){
  const K=root.FurnishKitchen,C=root.FurnishCabinet,k=f.kitchen,g=new THREE.Group(),stone=new THREE.MeshStandardMaterial({color:'#dcd7cf',roughness:.25});stone.userData.kitchen=true;
- for(const m of K.layout(f)){
+ for(const m of K.cabinetLayout(f)){
   if(m.role==='empty')continue;
   const spec=C.preset('base'),c=K.kitchenModuleConfig(spec.cabinet,m,k.baseHeight,K.dropHeight(f),k);
   if(k.doorOverlay!==undefined)c.doorOverlay=k.doorOverlay;
-  const part={...f,type:'cabinet',w:m.width,d:k.depth,h:k.baseHeight,cabinet:c,kitchen:undefined,cx:0,cy:0,rot:0,flip:false};
-  const model=root.FurnishCabinetModel.build(THREE,part,box,{furniture:[]});model.traverse(o=>{if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,column:m.index};for(const key of ['cabinetShelf','cabinetDivider','cabinetBay'])delete o.userData[key];});model.position.set(m.x/1000,0,m.y/1000);model.rotation.y=-m.rot*Math.PI/180;if(previewMirror)model.scale.x=-1;g.add(model);
+  const part={...f,type:'cabinet',w:m.width,d:m.depth??k.depth,h:k.baseHeight,cabinet:c,kitchen:undefined,cx:0,cy:0,rot:0,flip:false};
+  const run=K.layout(f).filter(v=>v.run===m.run),right=K.cornerSide(f)==='right',previewAdjacent=previewBlind&&m.index<k.modules.length&&Math.abs(Math.abs(m.x-previewBlind.x)-(m.width+previewBlind.width)/2)<.01,adjacent=m.role!=='drawer'&&(previewAdjacent||k.shape==='L'&&m.index===(m.run===0&&right?run.at(-1):run[0])?.index),side=previewAdjacent?(m.x>previewBlind.x?'left':'right'):m.run===0?(right?'right':'left'):(right?'left':'right');
+  // sideBoard offsets cut.back by the board thickness. Keep that rear strip
+  // to close the inset back board's edge, while opening the storage cavity.
+  const sideCuts=adjacent?[{side,bottom:118,top:k.baseHeight-18,back:-part.d/2,front:part.d/2}]:[];
+  const model=root.FurnishCabinetModel.build(THREE,part,box,{furniture:[],sideCuts});model.traverse(o=>{if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,column:m.index};for(const key of ['cabinetShelf','cabinetDivider','cabinetBay'])delete o.userData[key];});model.position.set(m.x/1000,0,m.y/1000);model.userData.kitchenModule=m.index;model.rotation.y=-m.rot*Math.PI/180;if(previewMirror)model.scale.x=-1;g.add(model);
  }
- // The corner is a reserved blind volume, not an overlapping second cabinet.
- if(k.shape==='L'){const b=K.cornerBlock(f);g.add(box(b.w/1000,k.baseHeight/1000,b.d/1000,f.color,b.x/1000,0,b.y/1000));}
- if(previewBlind){const mesh=box(previewBlind.width/1000,k.baseHeight/1000,k.depth/1000,f.color,previewBlind.x/1000,0,previewBlind.y/1000);mesh.userData.kitchenPreviewBlind=true;g.add(mesh);}
+ // Production blind corner is made of boards, with an empty interior.
+ const blind=k.shape==='L'?K.cornerBoards(f):previewBlind?K.cornerBoards({...f,w:previewBlind.width,d:k.depth,kitchen:{...k,shape:'L',endExtensions:undefined,corner:previewBlind.x>0?'right':'left'}}).map(b=>({...b,x:b.x+previewBlind.x,y:b.y+previewBlind.y})):[];
+ if(k.shape==='L')for(const b of K.cornerPlinth(f)){const mesh=box(b.w/1000,(b.top-b.bottom)/1000,b.d/1000,C.palette.body,b.x/1000,b.bottom/1000,b.y/1000);mesh.userData.kitchenCornerPlinth=true;g.add(mesh);}
+ if(blind.length){const group=new THREE.Group();if(previewBlind){group.userData.kitchenPreviewBlind=true;group.position.set(0,0,previewBlind.y/1000);}const previewPlinth=previewBlind?K.cornerPlinth({...f,w:previewBlind.width,d:k.depth,kitchen:{...k,shape:'L',endExtensions:undefined,corner:previewBlind.x>0?'right':'left'}}).map(b=>({...b,x:b.x+previewBlind.x,y:b.y+previewBlind.y})):[];for(const b of [...blind,...previewPlinth]){const mesh=box(b.w/1000,(b.top-b.bottom)/1000,b.d/1000,C.palette.body,b.x/1000,b.bottom/1000,(b.y-(previewBlind?previewBlind.y:0))/1000);if(previewPlinth.includes(b))mesh.userData.kitchenCornerPlinth=true;else mesh.userData.kitchenCornerBoard=true;group.add(mesh);}g.add(group);}
  {
-  const shape=new THREE.Shape(),outline=K.outline(f);outline.forEach(([x,y],i)=>i?shape.lineTo(x/1000,y/1000):shape.moveTo(x/1000,y/1000));shape.closePath();
+  const shape=new THREE.Shape(),surface=K.topGeometry(f),outline=surface.rings[0];outline.forEach(([x,y],i)=>i?shape.lineTo(x/1000,y/1000):shape.moveTo(x/1000,y/1000));shape.closePath();
+  for(const ring of surface.rings.slice(1)){const hole=new THREE.Path();ring.forEach(([x,y],i)=>i?hole.lineTo(x/1000,y/1000):hole.moveTo(x/1000,y/1000));hole.closePath();shape.holes.push(hole);}
   for(const device of furniture.filter(v=>v.counterLink?.hostId===f.id)){
    const m=K.layout(f)[device.counterLink.module];if(!m)continue;
    const opening=K.cutout(device),hw=(m.run===0?opening.w:opening.d)/2000,hd=(m.run===0?opening.d:opening.w)/2000,cx=m.x/1000,cy=m.y/1000;

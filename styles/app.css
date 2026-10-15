@@ -600,3 +600,13 @@ footer kbd{background:var(--card);border-color:var(--line);color:var(--muted);fo
 }
 
 #panel .stats>div{min-width:0;overflow-wrap:anywhere}#panel input,#panel select{min-width:0;max-width:100%;box-sizing:border-box}#panel .project-grid{grid-template-columns:minmax(0,1fr)}#panel section{min-width:0}#panel .actions{flex-wrap:wrap}
+
+/* Kitchen end cabinets keep each run together and use a compact back switch. */
+.kitchen-end{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+.kitchen-end h4,.kitchen-end>.btn{grid-column:1/-1;margin:0}
+.form label.kitchen-end-back{flex-direction:row;align-items:center;gap:8px}
+.form .kitchen-end-back input[type=checkbox]{width:18px;height:18px;padding:0;flex:none;accent-color:var(--accent)}
+
+.kitchen-auto-avoid{margin-top:12px}
+.kitchen-auto-avoid label{display:flex;align-items:center;gap:8px}
+.kitchen-auto-avoid input[type=checkbox]{width:18px;height:18px;flex:none;accent-color:var(--accent)}

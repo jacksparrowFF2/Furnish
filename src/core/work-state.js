@@ -49,6 +49,7 @@
         .filter(note => note && typeof note.text === 'string' && note.text.trim() && [note.x,note.y].every(coordinate))
         .slice(0,2000).map(note => ({...note, text:note.text.slice(0,120)})), makeId);
       work.furniture = design.normalizeLaundryStacks(restoreFurniture(work.furniture));
+      if(work.furniture.some(f=>f.kitchen?.autoAvoid))(root.FurnishKitchen||(inNode?require('./kitchen-core.js'):null)).normalizeObstacles(work.furniture,project.effectivePlan(plan,work));
       work.scene3d = design.sceneSettings(work.scene3d);
       return work;
     }

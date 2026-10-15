@@ -1,0 +1,33 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),G=require('../src/core/layout-geometry.js');
+const base={id:'k',name:'厨房',type:'counter',cx:3000,cy:3000,rot:0,color:'#eee'},config={version:1,shape:'L',depth:600,counterDepth:630,baseHeight:820,thickness:20,modules:[{run:0,width:900,role:'sink'},{run:0,width:600,role:'door'},{run:1,width:900,role:'door'}]};
+const near=(a,b)=>a.forEach((v,i)=>assert(Math.abs(v-b[i])<1e-6));
+for(const shape of ['straight','L'])for(const corner of ['left','right'])for(const rot of [0,37,90,270])for(const flip of [false,true]){
+ const old=K.configure({...base,rot,flip},{...config,shape,corner,modules:config.modules.filter(m=>shape==='L'||m.run===0)}),positions=K.layout(old).map(m=>K.world(old,m.x,m.y)),f=K.configure(old,{...old.kitchen,endExtensions:[{run:0,length:500,depth:250,cabinetDepth:220,backPanel:false},...(shape==='L'?[{run:1,length:300,depth:200,cabinetDepth:180,backPanel:true}]:[])]});
+ K.layout(f).forEach((m,i)=>near(K.world(f,m.x,m.y),positions[i]));assert.equal(f.w,old.w+500);assert.equal(f.d,old.d+(shape==='L'?300:0));near([K.area(f)],[K.area(old)+.125+(shape==='L'?.06:0)]);
+ const sink=K.attach({id:'sink',name:'水槽',color:'#ddd',type:'ksink',cx:0,cy:0,w:760,d:450,rot:0},f,0),list=[f,sink];K.normalize(list);near([sink.cx,sink.cy],positions[0]);
+ const saved=P.unpack(P.pack({planId:'p',current:{furniture:list},designs:[{name:'薄柜',work:{furniture:list}}],catalog:[]}));assert.deepEqual(saved.current.furniture,list);assert.deepEqual(saved.designs[0].work.furniture,list);
+ let restored=list;for(let i=0;i<3;i++)restored=D.restoreFurniture(restored,{makeId:()=> 'x',colorFor:()=> '#fff'});assert.deepEqual(restored,list);
+ const ends=K.endLayout(f);ends.forEach(m=>C.validate(K.moduleFurniture(f,m)));assert.equal(K.moduleFurniture(f,ends[0]).cabinet.backPanel,false);
+ const plan={rooms:[{id:'r',name:'厨房',poly:[[-10000,-10000],[10000,-10000],[10000,10000],[-10000,10000]]}],walls:[],doors:[],windows:[],beams:[]};assert.doesNotThrow(()=>P.spaceCheck(plan,list,{scanPassages:false}),'full opening pipeline resolves thin cabinet indices');
+ const opened=K.toggle(f,ends[0].index);assert.equal(opened.kitchen.endExtensions[0].doorOpen,true);assert.deepEqual(K.specification(opened),K.specification(f));assert(K.openingZones(f).some(z=>z.column===ends[0].index));
+ const resized=D.resizeFurniture(f,{w:f.w+300,d:f.d+100});assert.equal(resized.kitchen.endExtensions[0].length,500);assert.equal(resized.kitchen.endExtensions[0].cabinetDepth,220);K.validate(resized);
+ const point=K.slabs(f)[shape==='L'?2:1],[x,y]=K.world(f,point.x,point.y+200),flue={id:'flue',type:'cabinet',cx:x,cy:y,w:100,d:100,h:2800,rot};assert(!G.volumeOverlap(f,flue),'narrowed notch remains free for flue');
+ if(shape==='L'){const b=K.cornerBlock(f),[cx,cy]=K.world(f,b.x,b.y);const parts=K.bodyParts(f);assert(parts.filter(p=>p.vertical.bottom<=400&&p.vertical.top>=400).every(p=>!G.inPoly(cx,cy,p.p)),'corner mid-height is vacant');for(const row of K.elevationRuns(f)){K.validate(row.furniture);assert.equal(row.furniture.w,row.run===0?f.w:f.d);assert.equal(row.endIndex,f.kitchen.modules.length+row.run);}}
+ const without=K.configure(f,{...f.kitchen,endExtensions:[]});K.layout(without).forEach((m,i)=>near(K.world(without,m.x,m.y),positions[i]));assert.equal(D.replaceFurniture(f,{type:'chair',w:500,d:500,name:'椅',price:0,color:'#eee'}).kitchen,undefined);
+}
+const old=K.configure(base,config);assert.equal(old.kitchen.endExtensions,undefined);const make=e=>K.configure(old,{...config,endExtensions:[{run:0,length:500,depth:250,...e}]});
+for(const e of [{length:149},{length:-1},{length:3001},{depth:149},{depth:631},{cabinetDepth:251},{backPanel:'no'},{doorOpen:1},{doorAngle:181}])assert.throws(()=>make(e));make({length:150,depth:150,cabinetDepth:150});make({length:3000,depth:630});assert.throws(()=>K.configure(old,{...config,endExtensions:[{run:0,length:500,depth:250},{run:0,length:500,depth:250}]}));
+(async()=>{
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});for(const file of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
+ const box=(w,h,d,color,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
+ for(const corner of ['left','right'])for(const style of Object.keys(K.edgeStyles))for(const backPanel of [false,true]){
+  const f=K.configure(base,{...config,corner,edgeStyle:style,endExtensions:[{run:0,length:500,depth:250,cabinetDepth:220,backPanel},{run:1,length:300,depth:200,cabinetDepth:180,backPanel}]}),g=ctx.FurnishKitchenModel.build(T,f,box);g.updateMatrixWorld(true);
+  const b=K.cornerBlock(f);for(const direction of [new T.Vector3(0,0,1),new T.Vector3(corner==='right'?-1:1,0,0)]){const ray=new T.Raycaster(new T.Vector3(b.x/1000,.4,b.y/1000),direction);assert(!ray.intersectObject(g,true).some(hit=>hit.distance<.35),'blind corner opens into adjoining door cabinet');}assert.equal(g.children.flatMap(o=>o.children).filter(o=>o.userData.kitchenCornerBoard).length,4);
+  const end=K.endLayout(f)[0],model=g.children.find(o=>o.userData.kitchenModule===end.index);assert(model);const bounds=new T.Box3().setFromObject(model);const bodyMeshes=model.children.filter(o=>o.isMesh),bodyBox=new T.Box3();bodyMeshes.forEach(o=>bodyBox.union(new T.Box3().setFromObject(o)));assert(Math.abs(bodyBox.getSize(new T.Vector3()).z-.202)<1e-6,'body depth excludes 18 mm face and handle');
+  const rearRay=new T.Raycaster(new T.Vector3(end.x/1000,.4,(end.y-end.depth/2-100)/1000),new T.Vector3(0,0,1)),hits=rearRay.intersectObject(model,true);assert.equal(hits.some(hit=>hit.point.z<(end.y-end.depth/2+30)/1000),backPanel,'production rear panel switch');
+  const topRay=new T.Raycaster(new T.Vector3(end.x/1000,2,(end.y+end.depth/2+10)/1000),new T.Vector3(0,-1,0));assert(topRay.intersectObject(g,true).some(hit=>hit.object.userData.kitchenSlab));
+  g.traverse(o=>{if(o.geometry)assert([...o.geometry.attributes.position.array].every(Number.isFinite));});
+ }
+ console.log('PASS hollow corner boards, thin end bodies and optional production back, narrowed continuous stone, transforms, devices, opening, resize, validation and project restoration');
+})().catch(e=>{console.error(e);process.exitCode=1;});

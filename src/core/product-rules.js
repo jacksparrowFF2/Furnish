@@ -20,7 +20,7 @@ const fields={
 };
 const laundry={family:'laundry',height:850,anchor:'bottom',defaults:{mountHeight:0,stackHeight:20},fields:['mountHeight','stackHeight'],create:['mountHeight']};
 const types={
- counter:{family:'kitchen',fields:['kitchen'],create:['kitchen']},
+ counter:{family:'kitchen',avoidance:{enabled:false,minDepth:150},fields:['kitchen'],create:['kitchen']},
  kitchenwall:{height:700,anchor:'bottom',defaults:{mountHeight:1480},fields:['mountHeight'],create:['mountHeight']},
  stove_fotile_th36b:{embedded:true,height:138,defaults:{counterElevation:860},fields:['counterLink','counterElevation'],create:['counterElevation'],identity:{brand:'方太/FOTILE',model:'TH36B-T'}},
  rangehood_fotile_jcd10ta:{height:520,anchor:'bottom',defaults:{mountHeight:1315,hoodPanelOpen:false},fields:['mountHeight','hoodPanelOpen'],create:['mountHeight','hoodPanelOpen'],identity:{brand:'方太/FOTILE',model:'JCD10TA'}},

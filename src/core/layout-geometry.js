@@ -41,8 +41,9 @@ function verticalOverlap(a,b,ranges){
   const [A,B]=ranges||[D?.furnitureVerticalBounds(a),D?.furnitureVerticalBounds(b)];
   return !(A&&B&&Math.min(A.top,B.top)-Math.max(A.bottom,B.bottom)<=1e-6);
 }
+const solidForCollision=f=>!NOCOLLIDE.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded;
 function collisions(furniture){
-  const L = furniture.filter(f => !NOCOLLIDE.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded), out = [];
+  const L = furniture.filter(solidForCollision), out = [];
   const box = L.map(aabb);
   const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),vertical=L.map(f=>D?.furnitureVerticalBounds(f));
   for (let i = 0; i < L.length; i++) for (let j = i+1; j < L.length; j++){
@@ -68,7 +69,7 @@ function doorLeafOffset(d, thickness=40){
   const inward=(center[0]-d.h[0])*normal[0]+(center[1]-d.h[1])*normal[1];
   return Math.sign(inward)*thickness/2;
 }
-const api={area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatPair,doorLeafOffset};
+const api={solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatPair,doorLeafOffset};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishGeometry=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
