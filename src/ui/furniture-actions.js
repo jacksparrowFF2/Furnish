@@ -4,7 +4,7 @@
 // ui.sel = {kind:'furn', id:主选中, ids:[全部选中]}；单选时 ids 可省略
 const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
 const selItems = () => selIds().map(getF).filter(Boolean);
-function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.sel = sel; closeCtx(); renderSel(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); updateHeader(); }
+function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); updateHeader(); }
 function selectIds(ids, primary){
   ids = [...new Set(ids)].filter(id => getF(id));
   select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);
@@ -37,6 +37,10 @@ function rotateSel(d){
   });
 }
 function deleteSel(){
+  if(ui.sel?.kind==='measure'){
+    const index=ui.sel.id;if(!state.measures[index])return;ui.sel=null;mutate(()=>state.measures.splice(index,1));
+    toast(tr('已删除测量线','Measurement deleted'),{label:tr('撤销','Undo'),fn:undo});return;
+  }
   if (ui.sel?.kind === 'note') return deleteNote(ui.sel.id);
   const all = selItems(); if (!all.length) return;
   const items = movable(all); if (!items.length) return;
@@ -176,7 +180,7 @@ function addItem(it, x, y){
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
   if(h!==undefined)f.h=h;
   Object.assign(f,FurnishDesign.products().initial(f));
-  if(FurnishCabinet.supported(f)&&it[9])Object.assign(f,FurnishCabinet.preset(it[9]));
+  if(FurnishCabinet.supported(f)&&!f.kitchen&&it[9])Object.assign(f,FurnishCabinet.preset(it[9]));
   if(type==='curtain')f.curtainStyle=it[8]||'double';
   if (type === 'custom' || type === 'customround'){ f.price = price; f.h = h; }   // 自定义家具删除定义后仍保留单价与高度
   if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
@@ -197,18 +201,19 @@ function toggleWall(id){
 }
 
 function setTool(t){
-  ui.tool = t; ui.mA = null; ui.mCur = null;
+  ui.tool = t; ui.mA = null; ui.mCur = null; ui.mSnap=null;
   svg.setAttribute('class', 'tool-' + t);
   document.querySelectorAll('#tools .btn').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
   syncModeHint();
   renderMeasure();
+  renderSel();
 }
 function syncModeHint(){
   const hints = {select:'',
     marquee:COARSE ? tr('拖出矩形框选多件家具 · 点家具可直接拖动 · 点「选择」退出', 'Drag a box to select several items · drag an item to move it · tap "Select" to exit')
       : tr('拖出矩形框选家具 · Shift 追加 · 拖动已选家具可整组移动 · Esc 退出', 'Drag a box to select · Shift adds · drag a selected item to move the group · Esc exits'),
-    measure:COARSE ? tr('按住拖出测量线，或依次点两点 · 靠近墙面自动吸附 · 点「选择」退出', 'Hold and drag a line, or tap two points · snaps to walls · tap "Select" to exit')
-      : tr('点击两点（或按住拖动）测量距离 · 靠近墙面自动吸附 · Shift 锁定水平/垂直 · Esc 取消', 'Click two points (or drag) to measure · snaps to walls · Shift locks horizontal/vertical · Esc cancels'),
+    measure:COARSE ? tr('拖动或点两点 · 自动吸附墙面／家具边界 · 切回选择，点测量线可删除', 'Drag or tap two points · snaps to walls and furniture · switch to Select and tap a measurement to delete')
+      : tr('点两点或拖动 · 自动吸附墙面／家具边界 · Shift 水平/垂直 · V 选择测量线后 Delete 删除', 'Click twice or drag · snaps to walls and furniture · Shift locks axes · V then select a measurement and Delete'),
     note:tr('点击平面图任意位置添加文字标注 · 点已有标注可编辑 · 选择工具下可拖动', 'Click anywhere on the plan to add a note · click a note to edit it · drag notes with the Select tool'),
     demolish:tr('点击灰色非承重墙标记拆除，再次点击恢复 · 黑色承重墙不可拆', 'Click a grey non-bearing wall to remove it, click again to restore · black bearing walls cannot be removed')};
   const h = $('#modehint'); h.textContent = hints[ui.tool]; h.classList.toggle('show', !!hints[ui.tool]);

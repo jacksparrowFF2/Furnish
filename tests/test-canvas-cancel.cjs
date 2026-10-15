@@ -7,7 +7,7 @@ for(const kind of ['move','rot','size','note']){
   const original={furniture:[{id:'f',cx:100,cy:200,w:400,d:500,rot:0}],notes:[{id:'n',x:10,y:20,text:'note'}]};
   const changed=structuredClone(original);changed.furniture[0].cx=999;changed.notes[0].x=999;
   const context=vm.createContext({state:changed,store:{work:{test:changed}},PLAN:{id:'test'},ui:{guides:[{x:1}]},
-    svg:{classList:{remove(){}}},clearTimeout(){},renderAll(){renders++;},commit(){commits++;}});
+    svg:{classList:{remove(){}}},syncTuckedSeatPreview(){assert.equal(vm.runInContext('drag',context),null,'preview clears after the drag ends');},clearTimeout(){},renderAll(){renders++;},commit(){commits++;}});
   vm.runInContext(source,context); // Declarations must load without DOM initialization.
   context.before=JSON.stringify(original);context.kind=kind;
   vm.runInContext("drag={kind,id:'f',ids:['f'],moved:true,before};endDrag(true);",context);

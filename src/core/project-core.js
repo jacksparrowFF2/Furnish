@@ -123,8 +123,8 @@
  // that heights, cavity geometry or physical-room passage scans were checked.
  function checkContext(plan,furniture,passage){
   return [passage,plan.rooms.map(r=>[r.id,r.poly,r.counted,r.ceilingHeight,r.polys]),plan.walls,plan.doors,
-   furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance,f.h,f.flip,f.mountHeight,f.stackHeight,f.showerMixerHeight,f.showerRise,f.showerHandAngle,!!f.obj,f.cabinet,f.kitchen,f.counterLink,f.counterElevation,f.hoodPanelOpen]),
-   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v6-corner-leaves','hood-bay-v2','cabinet-door-directions-v1','tucked-seat-v1'];
+   furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance,f.h,f.flip,f.mountHeight,f.stackHeight,f.showerMixerHeight,f.showerRise,f.showerHandAngle,!!f.obj,f.cabinet,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.hoodPanelOpen]),
+   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v13-wall-assembly','hood-bay-v2','cabinet-door-directions-v1','tucked-seat-v1'];
  }
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify({version:3,issue,context:checkContext(plan,furniture,passage)});}
  let lastReview=null;
@@ -255,7 +255,7 @@
    if(C?.supported(f)||f.kitchen){
     const movingParts=pipes.length&&!f.kitchen?S.prepareOpening(f,pipes):[];
     for(const opening of (f.kitchen?(root.FurnishKitchen||require('./kitchen-core.js')).openingZones(f,{passage}):C.openingZones(f,{passage}))){
-     const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),movingFurniture=f.kitchen?K.moduleFurniture(f,K.cabinetLayout(f).find(m=>m.index===opening.column)):f,partOpening=f.kitchen?{...opening,column:0}:opening,parts=f.kitchen&&pipes.length?S.prepareOpening(movingFurniture,pipes):movingParts;
+     const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),movingFurniture=f.kitchen?K.moduleFurniture(f,K.cabinetLayout(f).find(m=>m.index===opening.column)):f,partOpening=f.kitchen?{...opening,column:opening.bay??0}:opening,parts=f.kitchen&&pipes.length?S.prepareOpening(movingFurniture,pipes):movingParts;
      const hit=(poly,vertical)=>C.openingIntersects(opening,poly,vertical,intersects),physical=opening.kind!=='cabinetpassage';
      const wallHit=plan.walls.some((w,i)=>hit(walls[i],{bottom:0,top:w[4]==='low'?Math.min(1000,ceilingHeight(plan)):ceilingHeight(plan)}));
      const obstacles=rigidBodies,blocked=[],unknown=[],pipeIds=[],motionUnknown=[];

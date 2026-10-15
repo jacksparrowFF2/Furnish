@@ -15,6 +15,7 @@ const MATS = {
 // 家具库：[类型, 名称, 宽, 深, 颜色, 参考单价 ¥]
 const LIB = [
   {cat:'电器', items:[
+    ["aquarium_mijia_2pro","米家智能鱼缸 2 Pro",505,292,"#191c20",0,products.height({type:"aquarium_mijia_2pro"})],
     ["stove_fotile_th36b","方太燃气灶 TH36B-T",750,440,"#111214",0,products.height({type:"stove_fotile_th36b"})],
     ["rangehood_fotile_jcd10ta","方太抽油烟机 JCD10TA",900,350,"#111214",0,products.height({type:"rangehood_fotile_jcd10ta"})],
     ["stove","燃气灶",750,450,"#dcdcdc",2500],
@@ -93,6 +94,8 @@ const LIB = [
     ["vanity","浴室柜",800,500,"#eef1f3",2400],
     ["vanity","双盆浴室柜",1200,500,"#eef1f3",4200],
     ["ksink","水槽",800,450,"#e1e6ea",1500],
+    ["sink_arrow_680","箭牌日式集渣水槽 · 680",680,450,"#85898a",0,products.height({type:'sink_arrow_680'})],
+    ["sink_arrow_750","箭牌日式集渣水槽 · 750",750,450,"#85898a",0,products.height({type:'sink_arrow_750'})],
     ["toilet","马桶",400,700,"#ffffff",2200],
     ["shower","淋浴房",900,900,"#e4edf2",3500],
     ["shower_arrow_cream","箭牌 奶油白壁挂花洒 AE34129ZMKW-P2",420,515,"#eee7d8",0,products.height({type:"shower_arrow_cream"})],

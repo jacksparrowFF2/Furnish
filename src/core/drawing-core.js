@@ -55,6 +55,7 @@ function furnitureLabels(items,{rotation=0,scale=0,selected=[]}={}){
  const wrap=(text,width,font)=>{const chars=[...text],lines=[];let line='';for(const c of chars){if(textWidth(line+c,font)>width&&line){lines.push(line.trim());line=c.trimStart();}else line+=c;}if(line)lines.push(line.trim());const truncated=lines.length>2;if(truncated){lines.length=2;while(lines[1]&&textWidth(lines[1]+'…',font)>width)lines[1]=[...lines[1]].slice(0,-1).join('');lines[1]+='…';}return {lines,truncated};};
  for(const f of ordered){
   if(Math.min(f.w,f.d)<380)continue;const text=String(f.name||'').trim().replace(/\s+/g,' ');if(!text)continue;
+  const G=root.FurnishGeometry||(typeof require==='function'?require('./layout-geometry.js'):null),occluders=G?items.filter(other=>G.tuckedSeatUnder(f,other)).flatMap(other=>G.footprints(other).map(poly=>poly.map(p=>rotate(p,rotation)))):[];
   const angle=((f.rot||0)+rotation)*Math.PI/180,c=Math.abs(Math.cos(angle)),s=Math.abs(Math.sin(angle)),center=rotate([f.cx,f.cy],rotation),initial=Math.max(80,Math.min(170,Math.min(f.w,f.d)*.2));let fallback=null,full=[];
   for(const font of [...new Set([initial,Math.max(80,initial*.85),Math.max(80,initial*.7)])]){
    if(scale&&font*scale<8)continue;const height=font*2.5,margin=40,width=Math.min(c>1e-6?(f.w-2*margin-s*height)/c:Infinity,s>1e-6?(f.d-2*margin-c*height)/s:Infinity)-font*.3;
@@ -65,7 +66,7 @@ function furnitureLabels(items,{rotation=0,scale=0,selected=[]}={}){
   for(const v of candidates){for(const at of [[0,0],[0,-v.height],[0,v.height]]){
     const a=Math.cos(angle)*at[0]+Math.sin(angle)*at[1],b=-Math.sin(angle)*at[0]+Math.cos(angle)*at[1];
     if(Math.abs(a)+(c*v.width+s*v.height)/2>f.w/2-25||Math.abs(b)+(s*v.width+c*v.height)/2>f.d/2-25)continue;
-    const box=[center[0]+at[0]-v.width/2,center[1]+at[1]-v.height/2,center[0]+at[0]+v.width/2,center[1]+at[1]+v.height/2];if(used.some(other=>hit(box,other)))continue;best={...v,at,box};break;
+    const box=[center[0]+at[0]-v.width/2,center[1]+at[1]-v.height/2,center[0]+at[0]+v.width/2,center[1]+at[1]+v.height/2],poly=[[box[0],box[1]],[box[2],box[1]],[box[2],box[3]],[box[0],box[3]]];if(used.some(other=>hit(box,other))||occluders.some(other=>G.polygonOverlap(poly,other,0)))continue;best={...v,at,box};break;
    }if(best)break;}
   if(best){used.push(best.box);result.set(f.id,best);}
  }

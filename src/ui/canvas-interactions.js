@@ -57,7 +57,48 @@ function snapMove(f,cx,cy,skip){
   ui.guides=result.guides;return result.position;
 }
 function snapPoint(p,shift){
-  return FurnishSnapping.point(p,{scale:view.s,rects:snapRects(),anchor:shift?ui.mA:null});
+  const result=FurnishSnapping.measurePoint(p,{scale:view.s,...measurementScene(),anchor:shift?ui.mA:null});
+  ui.mSnap=result.edge?{point:result.point,edge:result.edge}:null;return result.point;
+}
+function measurementScene(){return {rects:snapRects(),furniture:ui.layers.furn?state.furniture:[]};}
+function directionalMeasurements(f=selItems()){return FurnishSnapping.directional(f,{...measurementScene(),rotation:drawingRotation()});}
+function editKitchenDivider(key,side='left'){
+ const items=selItems();if(items.length!==1)return;const f=items[0],K=FurnishKitchen;if(f.locked||!f.kitchen)return;
+ const h=K.dividerHandles(f).find(h=>h.key===key);if(!h)return;
+ const before=snap(),planId=PLAN.id,hostId=f.id,total=h.leftWidth+h.rightWidth,modules=K.cabinetLayout(f),sides=side==='right'?['right','left']:['left','right'];let active=sides[0];
+ const label=side=>{const m=modules.find(m=>m.index===h[side]);return m.index<f.kitchen.modules.length?tr(`模块 ${m.index+1} · ${K.moduleRoles(f)[m.role]}`,`Module ${m.index+1} · ${m.role}`):tr(`${K.runName(f,m.run)}末端薄柜`,'Thin end cabinet');};
+ const proposal=()=>{const input=$('#kitchen-divider-'+active);if(!input.value.trim())throw Error(tr('请输入柜宽','Enter a cabinet width'));const width=Number(input.value);if(!Number.isFinite(width))throw Error(tr('柜宽须为有效数值','Enter a valid cabinet width'));return K.resizeDivider(f,key,(width-h[active+'Width'])*(active==='left'?1:-1),{furniture:state.furniture});};
+ const apply=()=>{try{if(PLAN.id!==planId||snap()!==before)throw Error(tr('方案已变化，请重新打开柜宽输入','The design changed; reopen the width editor'));const next=proposal();if(JSON.stringify(next)!==JSON.stringify(getF(hostId)))mutate(()=>Object.assign(getF(hostId),next));return true;}catch(e){$('#kitchen-divider-error').textContent=e.message;return false;}};
+ openDialog({title:tr('调整相邻柜宽','Adjust adjacent cabinet widths'),body:`<p><b>${esc(K.runName(f,h.run))}</b> · ${tr('两柜总宽','Combined width')} ${Math.round(total*1e6)/1e6} mm</p><div class="form">${sides.map(side=>`<label class="full">${esc(label(side))} · mm<input id="kitchen-divider-${side}" type="number" step="any" value="${h[side+'Width']}" inputmode="decimal" aria-describedby="kitchen-divider-help kitchen-divider-error"></label>`).join('')}</div><p id="kitchen-divider-help" class="muted">${tr('修改任意一柜，另一柜自动补差。整排总长、柜深及其他柜体尺寸和位置保持不变。','Edit either width; the other adjusts automatically. Run length, depths and all other cabinets stay fixed.')}</p><p id="kitchen-divider-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('应用柜宽','Apply widths'),cls:'primary',fn:apply}],onOpen:()=>{for(const side of sides){const input=$('#kitchen-divider-'+side);input.oninput=()=>{active=side;const other=$('#kitchen-divider-'+(side==='left'?'right':'left'));other.value=input.value.trim()?String(Math.round((total-Number(input.value))*1e6)/1e6):'';try{proposal();$('#kitchen-divider-error').textContent='';}catch(e){$('#kitchen-divider-error').textContent=e.message;}};input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(apply())closeDialog();}};}$('#kitchen-divider-'+sides[0]).select();}});
+}
+function editKitchenGap(key){
+ const items=selItems();if(items.length!==1)return;const f=items[0];if(f.locked)return;
+ const row=FurnishSnapping.kitchenGaps(f,{furniture:state.furniture,scale:view.s}).find(r=>r.key===key);if(!row)return;
+ const before=snap(),planId=PLAN.id,scale=view.s,hostId=f.id,K=FurnishKitchen,target=row.kind==='run'?'末端常规柜宽':K.outerEdge(f,f.flip?(key.endsWith('left')?'right':key.endsWith('right')?'left':key.split(':')[1]):key.split(':')[1]).kind==='depth'?'这一排柜深':'末端常规柜宽';
+ const apply=()=>{try{if(PLAN.id!==planId||snap()!==before)throw Error('方案已变化，请重新打开间距输入');const input=$('#kitchen-gap-input');if(!input.value.trim())throw Error('请输入预留间距');const next=FurnishSnapping.setKitchenGap(getF(hostId),key,row.reference.id,Number(input.value),{furniture:state.furniture,scale});if(JSON.stringify(next)!==JSON.stringify(getF(hostId)))mutate(()=>Object.assign(getF(hostId),next));return true;}catch(e){$('#kitchen-gap-error').textContent=e.message;return false;}};
+ openDialog({title:'厨房边界预留间距',body:`<p><b>${esc(K.runName(f,row.run))}${row.kind==='outer'?'外边':'末端边'}</b> → ${esc(row.reference.name||'参考家具')}</p><label>预留间距 mm<input id="kitchen-gap-input" type="number" min="0" max="20000" step="any" value="${Math.max(0,row.gap)}"></label><p class="muted">只调整${target}，固定对侧和内侧；中间模块宽度、其他排柜深和薄柜尺寸保持，参考家具固定。输入 0 可贴边。</p><p id="kitchen-gap-error" class="project-error" role="alert"></p>`,actions:[{label:'取消'},{label:'应用间距',cls:'primary',fn:apply}],onOpen:()=>{const input=$('#kitchen-gap-input');input.select();input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(apply())closeDialog();}};}});
+}
+function editDirectionalDistance(direction){
+  const items=selItems(),ids=items.map(f=>f.id),current=items.length&&directionalMeasurements(items)[direction];if(!current)return;
+  const plan=FurnishProject.effectivePlan(PLAN,state),options={rotation:drawingRotation(),visibleFurniture:ui.layers.furn};
+  try{FurnishDesign.placeSelectionAtDirectionalGap(plan,state,ids,direction,current.distance,options);}catch(e){toast(e.message);return;}
+  const before=snap(),planId=PLAN.id,labels={l:tr('左侧','Left'),r:tr('右侧','Right'),t:tr('上方','Up'),b:tr('下方','Down')},target=current.entity.kind==='wall'?tr('墙面／窗边','Wall / window'):nm(current.entity.name);
+  const apply=()=>{try{
+    if(PLAN.id!==planId||snap()!==before||drawingRotation()!==options.rotation||ui.layers.furn!==options.visibleFurniture)throw Error(tr('方案已变化，请关闭后重新选择距离','The design changed; close and select the distance again'));
+    const input=$('#directional-gap-input');if(!input.value.trim())throw Error(tr('请输入目标净距','Enter a target clearance'));
+    const moved=FurnishDesign.placeSelectionAtDirectionalGap(plan,state,ids,direction,Number(input.value),options);
+    if(moved.some(next=>Math.hypot(next.cx-getF(next.id).cx,next.cy-getF(next.id).cy)>1e-7))mutate(()=>moved.forEach(next=>Object.assign(getF(next.id),{cx:next.cx,cy:next.cy})));
+    return true;
+  }catch(e){$('#directional-gap-error').textContent=e.message;return false;}};
+  const name=items.length===1?nm(items[0].name):tr(`整组 ${items.length} 件`,`${items.length} selected items`);
+  openDialog({title:tr('编辑四向净距','Edit directional clearance'),body:`<p><b>${esc(name)}</b> · ${labels[direction]} → ${esc(target)}</p><label>${tr('目标净距 (mm)','Target clearance (mm)')}<input id="directional-gap-input" type="number" min="0" max="20000" step="any" value="${Math.round(current.distance*1000)/1000}"></label><p class="muted">${tr('固定参考实体，所有选中成员沿此方向移动相同距离，保持相对位置。输入 0 可贴边；保存的测量线保持原位置。','Keeps the reference fixed and translates all selected items equally, preserving relative positions. Use 0 for contact. Saved measurements stay fixed.')}</p><p id="directional-gap-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('应用距离','Apply distance'),cls:'primary',fn:apply}],onOpen:()=>{const input=$('#directional-gap-input');input.select();input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(apply())closeDialog();}};}});
+}
+function saveDirectionalMeasurements(direction){
+  const items=selItems();if(!items.length)return;
+  const distances=directionalMeasurements(items),rows=(direction?[distances[direction]]:Object.values(distances)).filter(m=>m&&m.distance>=1).map(m=>({a:{...m.a},b:{...m.b}}));if(!rows.length)return;
+  if(state.measures.length+rows.length>2000)return toast(tr('测量线最多 2000 条','Maximum 2000 measurements'));
+  mutate(()=>state.measures.push(...rows));
+  toast(tr('已保存固定端点测量线，移动物体后请重新测量','Fixed endpoints saved; remeasure after moving objects'));
 }
 
 /* ======================= 指针交互 ======================= */
@@ -76,6 +117,7 @@ let lpT = 0, spaceDown = false;
 function endDrag(cancel){
   clearTimeout(lpT);
   const d = drag; drag = null; svg.classList.remove('panning');
+  syncTuckedSeatPreview();
   if (!d) return;
   if (d.kind === 'measure'){
     if (cancel){ ui.mA = ui.mCur = null; renderMeasure(); return; }
@@ -99,12 +141,15 @@ function endDrag(cancel){
   if (d.kind === 'locked') return;
   if (cancel && d.before){ state=JSON.parse(d.before); store.work[PLAN.id]=state; ui.guides=null; renderAll(); return; }
   if (d.kind === 'note'){ if (d.moved){ commit(d.before); renderAll(); } return; }
+  if(d.kind==='kitchen-divider'&&!d.moved){ui.guides=null;editKitchenDivider(d.divider);return;}
+  if((['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)||d.kind==='size'&&(d.edge||d.resizeError))&&snap()===d.before){ui.guides=null;renderAll();if(d.resizeError)toast(d.resizeError);return;}
   if (d.moved){
-    if (d.kind !== 'move' || d.ids.length === 1){   // 单件拖完自动推离墙体（与新增家具同一规则）；整组移动保持队形
+    if (!['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&!d.edge&&(d.kind !== 'move' || d.ids.length === 1)){   // 独立厨房边保留锚点；普通单件拖完继续推离墙体
       const f = getF(d.id);
       if (f){ const ox = f.cx, oy = f.cy; pushOut(f); if (Math.hypot(f.cx-ox, f.cy-oy) > 60) toast(tr('已自动避开墙体', 'Moved off the wall automatically')); }
     }
     commit(d.before); renderAll();
+    if(['size','kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&d.resizeError)toast(d.resizeError);
   }
 }
 // 触屏长按：弹出与右键相同的操作菜单
@@ -116,6 +161,7 @@ function startLongPress(e){
 
 function initializeCanvasInteractions(){
   stageEl=$('#stage');cxEl=$('#cx');cyEl=$('#cy');hoverEl=$('#hover');
+svg.addEventListener('keydown',e=>{const target=e.target.closest('[data-kitchen-gap],[data-distance-edit],[data-kitchen-divider],[data-kitchen-divider-width]');if(ui.tool==='select'&&target&&['Enter',' '].includes(e.key)){e.preventDefault();e.stopPropagation();if(target.dataset.kitchenDividerWidth)editKitchenDivider(target.dataset.kitchenDividerKey,target.dataset.kitchenDividerWidth);else if(target.dataset.kitchenDivider)editKitchenDivider(target.dataset.kitchenDivider);else if(target.dataset.kitchenGap)editKitchenGap(target.dataset.kitchenGap);else editDirectionalDistance(target.dataset.distanceEdit);}});
 svg.addEventListener('pointerdown', e => {
   if (e.button === 2) return;
   closeCtx(); closeDrawers(); document.querySelectorAll('details.menu').forEach(m => m.open = false);
@@ -124,7 +170,7 @@ svg.addEventListener('pointerdown', e => {
     svg.setPointerCapture(e.pointerId);
     if (touches.size >= 2){                    // 第二根手指落下：取消单指操作，进入双指缩放 / 平移
       clearTimeout(lpT);
-      endDrag(drag?.kind === 'measure' || drag?.kind === 'pan' || drag?.kind === 'marq');
+      endDrag(drag?.kind === 'measure' || drag?.kind === 'pan' || drag?.kind === 'marq' || drag?.kind==='kitchen-divider'&&!drag.moved);
       const {d, c} = pinchInfo();
       pinch = {d, c, s:view.s, px:view.x0 + c[0]/view.s, py:view.y0 + c[1]/view.s};
       return;
@@ -134,6 +180,10 @@ svg.addEventListener('pointerdown', e => {
   const p = toMM(e), t = e.target, base = {sx:e.clientX, sy:e.clientY, moved:false};
   // 中键或按住空格：任何工具下都直接平移画面
   if (e.button === 1 || spaceDown){ e.preventDefault(); drag = {kind:'pan', ...base, x0:view.x0, y0:view.y0, quiet:true}; svg.setPointerCapture(e.pointerId); return; }
+  const dividerWidth=t.closest('[data-kitchen-divider-width]');if(dividerWidth&&ui.tool==='select'&&e.button===0){e.preventDefault();editKitchenDivider(dividerWidth.dataset.kitchenDividerKey,dividerWidth.dataset.kitchenDividerWidth);return;}
+  const kitchenGap=t.closest('[data-kitchen-gap]');if(kitchenGap&&ui.tool==='select'&&e.button===0){e.preventDefault();editKitchenGap(kitchenGap.dataset.kitchenGap);return;}
+  const distanceEdit=t.closest('[data-distance-edit]');
+  if(distanceEdit&&ui.tool==='select'&&e.button===0){e.preventDefault();editDirectionalDistance(distanceEdit.dataset.distanceEdit);return;}
   if (ui.tool === 'measure'){
     const q = snapPoint(p, e.shiftKey);
     if (!ui.mA){ ui.mA = q; ui.mCur = q; drag = {kind:'measure', ...base}; svg.setPointerCapture(e.pointerId); }
@@ -147,10 +197,11 @@ svg.addEventListener('pointerdown', e => {
     return;
   }
   const h = t.closest('[data-handle]'), fEl = ui.layers.furn && t.closest('[data-fid]'), picking = ui.tool === 'select' || ui.tool === 'marquee';
-  const nEl = ui.layers.notes && t.closest('[data-note]');
+  const nEl = ui.layers.notes && t.closest('[data-note]'),mEl=t.closest('[data-measure]');
+  if (picking && mEl){select({kind:'measure',id:Number(mEl.dataset.measure)});return;}
   if (h && selIds().length === 1){
     const f=getF(selIds()[0]);
-    drag = {kind:f.locked?'locked':h.dataset.handle, axis:h.dataset.axis||'both', startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
+    drag = {kind:f.locked?'locked':h.dataset.handle, axis:h.dataset.axis||'both', edge:h.dataset.kitchenEdge, run:Number(h.dataset.kitchenRun), field:h.dataset.kitchenExtension, divider:h.dataset.kitchenDivider, startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
   } else if (ui.tool === 'demolish' && t.closest('[data-wall]')){
     toggleWall(t.closest('[data-wall]').dataset.wall); return;
   } else if (picking && nEl){
@@ -197,7 +248,7 @@ svg.addEventListener('pointermove', e => {
       hoverRoom = room;
       hoverEl.innerHTML = room ? `<b>${esc(nm(state.rooms[room].name))}</b> ${fmt(area(ROOMS.find(r => r.id === room).poly))} m²` : '';
     }
-    if (ui.tool === 'measure' && ui.mA){ ui.mCur = snapPoint(p, e.shiftKey); renderMeasure(); }
+    if (ui.tool === 'measure'){ const q=snapPoint(p,e.shiftKey);if(ui.mA)ui.mCur=q;renderMeasure(); }
     return;
   }
   const far = Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) >= TAP;
@@ -242,14 +293,30 @@ svg.addEventListener('pointermove', e => {
   if (drag.kind === 'rot'){
     let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;
     f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
+  } else if(drag.kind==='kitchen-divider'){
+    try{const result=FurnishSnapping.resizeKitchenDivider(drag.original,drag.divider,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+    renderFurn();
+  } else if(drag.kind==='kitchen-extension'){
+    try{const result=FurnishSnapping.resizeKitchenExtension(drag.original,drag.run,drag.field,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+    renderFurn();
+  } else if(drag.kind==='kitchen-run'){
+    try{
+      const result=FurnishSnapping.resizeKitchenRun(drag.original,drag.run,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});
+      Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;
+    }catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+    renderFurn();
   } else if (drag.kind === 'size'){
+    if(drag.edge){
+      try{const result=FurnishSnapping.resizeKitchenOuter(drag.original,drag.edge,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+      renderFurn();syncFurnOrder();renderSel();return;
+    }
     // Use pointer travel from the grab position, excluding the handle's padding.
     const o=drag.original,a=o.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
     const dx=p.x-drag.startPoint.x,dy=p.y-drag.startPoint.y;
     const dw=drag.axis==='d'?0:dx*c+dy*s,dd=drag.axis==='w'?0:-dx*s+dy*c;
     const corner={x:o.cx+o.w/2*c-o.d/2*s+dw*c-dd*s,y:o.cy+o.w/2*s+o.d/2*c+dw*s+dd*c};
     const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
-    try{const next=FurnishDesign.resizeFurniture(drag.original,{w:result.furniture.w,d:result.furniture.d},'center');Object.assign(f,next,{cx:result.furniture.cx,cy:result.furniture.cy});ui.guides=result.guides;}catch{return;}
+    try{const next=FurnishDesign.resizeFurniture(drag.original,{w:result.furniture.w,d:result.furniture.d},'center');Object.assign(f,next,{cx:result.furniture.cx,cy:result.furniture.cy});ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
     renderFurn();                              // 尺寸变了，图例需要重画
   }
   document.querySelector(`#gFurn [data-fid="${f.id}"]`)?.setAttribute('transform', furnT(f));

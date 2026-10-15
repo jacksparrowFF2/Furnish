@@ -282,6 +282,8 @@
 <script src="src/render/kitchen-model.js"></script>
 <script src="src/render/fotile-model.js"></script>
 <script src="src/core/product-rules.js"></script>
+<script src="src/render/aquarium-model.js"></script>
+<script src="src/render/sink-model.js"></script>
 <script src="src/core/wall-distance-core.js"></script>
 <script src="src/core/placement-suggestions.js"></script>
 <script src="src/io/dxf-export.js"></script>
@@ -716,10 +718,12 @@ function buildFurniture(f){
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   if(typeof FurnishFotileModel!=='undefined'&&FurnishFotileModel.supported(f)){const model=FurnishFotileModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
-  if(FurnishCabinet.supported(f)&&f.type!=='vanity'){
+  if(typeof FurnishAquariumModel!=='undefined'&&FurnishAquariumModel.supported(f)){const model=FurnishAquariumModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)){const model=FurnishSinkModel.build(THREE,f);model.position.x=wx(f.cx);model.position.z=wz(f.cy);model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(FurnishCabinet.supported(f)&&!f.kitchen&&f.type!=='vanity'){
     const model=FurnishCabinetModel.build(THREE,f,box,{furniture,plan:FurnishProject.effectivePlan(PLAN,state)});model.position.set(wx(f.cx),f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
-  if(f.type==='counter'&&f.kitchen){const model=FurnishKitchenModel.build(THREE,f,box,{furniture,plan:FurnishProject.effectivePlan(PLAN,state)});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(f.kitchen){const model=FurnishKitchenModel.build(THREE,f,box,{furniture,plan:FurnishProject.effectivePlan(PLAN,state)});model.position.set(wx(f.cx),M(FurnishKitchen.baseElevation(f)),wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(f.type==='shower_arrow_cream'){
     const model=FurnishArrowShowerModel.build(THREE,f,RoundedBoxGeometry);
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
@@ -944,17 +948,18 @@ function buildFurniture(f){
     }
     case 'counter': {
       const cm = mat(c, {roughness:.45}), stone = mat('#dcd7cf', {roughness:.22}), n = Math.max(1, Math.round(w/.6)), fz = d/2 - .04;
-      g.add(box(w - .01, .1, d - .1, '#4a4641', 0, 0, -.05), box(w, .72, d - .04, cm, 0, .1, -.02));
+      g.add(box(w - .01, .1, d - .1, '#4a4641', 0, 0, -.05));const body=box(w, .72, d - .04, cm, 0, .1, -.02);body.userData.legacyCounterBody=true;g.add(body);
       fronts(g, -w/2, .64, w, .18, fz, n, 1, cm, 'bar'); fronts(g, -w/2, .1, w, .54, fz, n, 1, cm, 'bar', .56);
-      g.add(rbox(w + .01, .04, d, stone, 0, .82, 0, .004), box(w, .62, .01, mat('#efece6', {roughness:.3}), 0, .86, bz + .005));
+      g.add(FurnishKitchenModel.countertop(THREE,f,stone,furniture), box(w, .62, .01, mat('#efece6', {roughness:.3}), 0, .86, bz + .005));
       g.add(box(w, .7, .33, cm, 0, 1.48, bz + .165)); fronts(g, -w/2, 1.48, w, .7, bz + .33, n, 1, cm, 'bar', 1.56);
       g.add(box(w - .04, .01, .02, glowMat('#fff7e6', '#ffe9c4', .8), 0, 1.47, bz + .29));
-      if (w >= .8){
+      if (w >= .8&&!FurnishKitchen.deviceOpenings(f,furniture).length){
         g.add(rbox(.36, .018, .25, woodM('#c9a27a'), -w/2 + .3, .86, .0, .005));
         [.07, .06, .05].forEach((r, i) => g.add(cyl(r, r, .16 - i*.03, mat(['#e9e2d6', '#d6cfc3', '#bfb6a8'][i], {roughness:.4}), w/2 - .15 - i*.15, .86, bz + .1, 24)));
         g.add(cyl(.05, .045, .14, ceramic({roughness:.3}), w/2 - .6, .86, bz + .1, 20));
         for (let k = 0; k < 4; k++) g.add(rod([w/2 - .6, .9, bz + .1], [w/2 - .6 + (k - 1.5)*.018, 1.1, bz + .1 + (k % 2 - .5)*.02], .005, woodM('#8d7258'), .006, 6));
       }
+      FurnishKitchenModel.cutSinkBodies(THREE,g,f,furniture);
       break;
     }
     case 'stove': {
@@ -1354,7 +1359,7 @@ function buildFurniture(f){
     model.position.set(-(bounds.min.x+bounds.max.x)/2*model.scale.x,-bounds.min.y*model.scale.y,-(bounds.min.z+bounds.max.z)/2*model.scale.z);
   }
   if(typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f))FurnishCabinetModel.cutServices(THREE,g,f,{plan:FurnishProject.effectivePlan(PLAN,state)});
-  g.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'?M(f.counterElevation)-.862:0, wz(f.cy));
+  g.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));
   g.rotation.y = -f.rot * Math.PI/180;       // 平面顺时针旋转 → 绕 Y 轴负向
   g.scale.x = f.flip ? -1 : 1;               // 镜像：沿家具自身宽度方向翻转（three 会自动处理负缩放的正反面）
   g.userData.fid = f.id;
@@ -1470,10 +1475,10 @@ function buildFurn(){
     keep.add(f.id);
     try{
     const error=furnitureError(f);if(error)throw Error(error);
-    const sig = JSON.stringify([f.kitchen,f.counterLink,f.counterElevation,f.kitchen?validFurniture.filter(v=>v.counterLink?.hostId===f.id).map(v=>[v.id,v.w,v.d,v.counterLink]):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.hoodPanelOpen, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.hoodPanelOpen, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
-      o.position.set(wx(f.cx),f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'?M(f.counterElevation)-.862:0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;
+      o.position.set(wx(f.cx),f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;
       continue;
     }
     if (o){ clearGroup(o); furnG.remove(o); }

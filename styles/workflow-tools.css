@@ -1,10 +1,12 @@
-/* The existing studio palette, with tools beside the drawing and explicit status. */
+/* The existing studio palette, with tools below the drawing and explicit status. */
 .canvas-rail,.scene-light,.space-status,.preview-banner{--ink:var(--s-ink);--muted:var(--s-muted);--line:var(--s-line);--card:var(--s-card);--panel:var(--s-panel);--hover:var(--s-hover);--accent-soft:var(--s-accent-soft);--accent-ink:var(--s-accent-ink);--soft:var(--s-soft);color:var(--ink)}
-.canvas-rail{position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:6px;padding:7px;background:var(--s-overlay);border:1px solid var(--s-line);border-radius:15px;box-shadow:var(--shadow-md)}
-.canvas-rail .grp{display:flex;flex-direction:column;gap:4px}
-.canvas-rail .btn{display:flex;flex-direction:column;gap:3px;min-width:48px;min-height:44px;padding:6px;font-size:11px}
+#stage{container-type:inline-size}
+.canvas-rail{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:5;display:flex;align-items:stretch;gap:6px;max-width:calc(100% - 24px);overflow-x:auto;padding:7px;background:var(--s-overlay);border:1px solid var(--s-line);border-radius:15px;box-shadow:var(--shadow-md)}
+.canvas-rail .grp{display:flex;flex:none;gap:4px}
+.canvas-rail .btn{display:flex;flex:none;flex-direction:column;justify-content:center;gap:3px;min-width:48px;min-height:44px;padding:6px;font-size:11px;white-space:nowrap}
 .canvas-rail #tools .t{display:inline}
-.canvas-rail .rail-more{border-top:1px solid var(--line);padding-top:5px}
+.canvas-rail .rail-more{border-left:1px solid var(--line);padding-left:5px}
+#stage #fab{bottom:94px}
 .canvas-rail .btn.on{background:var(--accent-soft);color:var(--accent-ink)}
 .space-status{position:absolute;left:12px;bottom:14px;z-index:5;max-width:48%;background:var(--panel);box-shadow:var(--shadow-sm);border:1px solid var(--line)}
 #stage .scalebar{bottom:60px}
@@ -26,13 +28,23 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
 .right .tabs{top:44px}
 .space-status:focus-visible,[data-wall-net]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 [data-wall-net] text{fill:var(--s-ink)}
-@media(max-width:1100px){.brand{display:none}header{gap:5px;padding:5px 0}.canvas-rail{top:12px;transform:none;max-height:calc(100% - 115px);overflow:auto}.canvas-rail .btn{min-width:42px}.space-status{bottom:72px;max-width:calc(100% - 24px)}.scene-light{max-width:calc(100% - 80px);right:8px;flex-wrap:wrap}.scene-light input{width:75px}main.drawer-panel .canvas-rail,main.drawer-panel .space-status{visibility:hidden}.preview-banner{top:auto;bottom:125px;left:70px}.workspace-preferences>.menu-pop{position:fixed;right:10px;top:70px;max-height:65vh;overflow:auto}.hud{bottom:14px}}
-@media(max-width:600px){header .btn,header summary.btn{padding:6px 8px;font-size:12px}#paneBtns span{display:none}#paneBtns .btn{padding:7px;min-width:36px}#viewSeg{--seg-w:76px}#showMenu summary span{display:none}.save-wide{display:none}.save-short{display:inline}#stage .scalebar{bottom:112px}.sidebar-heading .btn{min-width:44px;min-height:36px}}
+@media(max-width:1100px){.brand{display:none}header{gap:5px;padding:5px 0}.canvas-rail .btn{min-width:42px}.scene-light{max-width:calc(100% - 80px);right:8px;flex-wrap:wrap}.scene-light input{width:75px}main.drawer-panel .canvas-rail,main.drawer-panel .space-status{visibility:hidden}.preview-banner{top:auto;bottom:240px;left:12px}.workspace-preferences>.menu-pop{position:fixed;right:10px;top:70px;max-height:65vh;overflow:auto}.hud{bottom:14px}}
+@media(max-width:600px){header .btn,header summary.btn{padding:6px 8px;font-size:12px}#paneBtns span{display:none}#paneBtns .btn{padding:7px;min-width:36px}#viewSeg{--seg-w:76px}#showMenu summary span{display:none}.save-wide{display:none}.save-short{display:inline}.sidebar-heading .btn{min-width:44px;min-height:36px}}
 @media(max-width:600px){header .spacer{display:none}#viewSeg,.workspace-preferences,#fileMenu{order:1}}
 @media print{.canvas-rail,.space-status,.scene-light,.preview-banner,#gWallNet,#gProposal{display:none!important}}
 .drawing-compass{position:absolute;right:12px;top:12px;width:76px;height:76px;border:0;background:transparent;cursor:pointer;z-index:4;padding:0;filter:drop-shadow(0 4px 10px #0002)}
 .drawing-compass svg{width:100%;height:100%}.drawing-rotate{position:absolute;bottom:12px;right:205px;display:flex;gap:4px;z-index:4}.drawing-check{display:flex;align-items:center;gap:8px}.drawing-check input{width:auto!important}
 @media(max-width:600px){.drawing-compass{width:58px;height:58px}.drawing-rotate{right:12px;bottom:58px}}
+@media(max-width:600px){.canvas-rail{padding:5px;gap:4px}.canvas-rail .grp{gap:2px;padding:2px}.canvas-rail .btn{min-width:40px;padding:6px 4px}.canvas-rail .rail-more{padding-left:3px}}
+/* Sidebars can leave a narrow canvas even on a desktop-sized window. */
+@container(max-width:1100px){
+ .space-status{bottom:142px;max-width:calc(100% - 120px);display:block;white-space:normal;text-align:left;line-height:1.4}
+ #stage .hud{bottom:94px}
+ #stage .scalebar{bottom:94px}
+ .drawing-rotate{right:14px;bottom:142px}
+ #stage #fab{bottom:206px}
+}
+@container(max-width:360px){#stage .scalebar{top:12px;bottom:auto}}
 .material-room-table{width:100%;font-size:12px;border-collapse:collapse}.material-room-table td,.material-room-table th{padding:5px;text-align:right;border-bottom:1px solid var(--s-line)}.material-room-table td:first-child,.material-room-table th:first-child{text-align:left;max-width:130px;overflow-wrap:anywhere}.issue-kind{display:block;margin:6px 0;color:var(--s-dim)}.space-card details{margin:6px 0}.space-card summary{cursor:pointer;font-size:12px}
 .purchase-totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:12px 0}.purchase-totals>div{padding:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;min-width:0}.purchase-totals small,.purchase-totals strong{display:block;overflow-wrap:anywhere}.purchase-totals strong{font-size:18px;margin-top:5px}.purchase-scroll{overflow:auto;max-height:360px}.purchase-scroll table{min-width:600px}.purchase-scroll td small{display:block;color:var(--muted)}.purchase-order,.purchase-line{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;overflow-wrap:anywhere}.purchase-order>span{display:block;margin:6px 0}.purchase-line input,.purchase-line select{max-width:100%;min-width:0}.purchase-line>label{display:block}.purchase-line>button{margin-top:8px}
 /* Hidden drawers must not create a focus-scrollable page on narrow screens. */

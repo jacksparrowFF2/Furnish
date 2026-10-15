@@ -131,7 +131,7 @@
   if(p)add(g,w,p,d-.04,0,0,-.02,wood);
   const movable=col=>col.top==='drawer';
   if(c.hoodBayHeight!==undefined){const bays=C.layout(f);for(const i of [0,2]){const bay=bays[i],left=i===0?-w/2:bay.left/1000,right=i===2?w/2:(bay.left+bay.width)/1000;add(g,right-left,t,bodyDepth,(left+right)/2,p,bodyZ);}const bay=bays[1];add(g,bay.width/1000,t,bodyDepth,bay.center/1000,c.hoodBayHeight/1000,bodyZ).userData.cabinetSection='hoodCeiling';}
-  else add(g,w,t,bodyDepth,0,p,bodyZ);if(!c.columns.some(movable))add(g,w,t,bodyDepth,0,h-t,bodyZ);
+  else add(g,w,t,bodyDepth,0,p,bodyZ);if(!c.columns.some(movable))add(g,w,t,bodyDepth,0,h-t,bodyZ).userData.cabinetTop=true;
   const bays=C.layout(f),inner=h-p-2*t;
   bays.forEach((bay,i)=>{
    if(!movable(c.columns[i])){

@@ -215,6 +215,7 @@ body.m3d .only2d,body:not(.m3d) .only3d{display:none!important}
 #plan.tool-demolish .wall:hover{fill:#ff8a4c}
 #plan.tool-select .room:hover{opacity:.84}
 #plan .furn{cursor:move}
+#plan .furn[data-seat-preview]{opacity:.25}
 #plan .pick{cursor:pointer}
 @media (hover:hover){
   #plan .pick:hover{filter:brightness(1.06)}

@@ -1,5 +1,29 @@
 # 产品能力规则与兼容验收
 
+2026-10-15：`kitchenwall` 声明 kitchen、模块分界、形状及抽屉能力；安装默认仍为柜底 1480 mm，自身高默认 700 mm。新建有宽深的吊柜创建无台面模块，旧数据不迁移。吊柜抽屉底座为 0，沿用 96 mm 下限、1–10 层和 8 px 吸附；可选模块 shelves 与 structure 由厨房／柜体核心共同校验。规则、复制替换与验收见 [吊柜调节](KITCHEN-WALL-ADJUST.md)。
+
+2026-10-15：`counter.drawerTiers.snapPixels:8` 定义相邻抽屉层间拖动的屏幕吸附范围；核心派生同排紧邻且已收回的可行目标，预览按相机投影选取、显示临时辅助线，不保存对齐关系。原 96 mm 最小层高及各柜总高约束不变。详见 [相邻抽屉吸附](KITCHEN-DESIGN.md#相邻抽屉层间吸附2026-10-15)。
+
+2026-10-15：`counter.drawerTiers.boundaryResize:true` 启用厨房抽屉层间横线拖动；相邻两层等量补差，沿用现有高度范围和 `drawerHeights` 字段，无新增持久数据。共用预览提供数字输入和实时高度，引线及控件只在编辑器显示。见 [抽屉层间编辑](KITCHEN-DESIGN.md#抽屉层间拖动与高度数字入口2026-10-15)。
+
+2026-10-15：`counter.drawerTiers` 集中定义厨房抽屉的 defaultCount 3、层数 1–10、名义层高至少 96 mm，以及历史 100 mm 底座／18 mm 结构板／三层派生参数。可选 `kitchen.modules[].drawerHeights` 保存自下而上的名义层高，数量由长度派生，总和须填满扣底座及下挂后的可分配高度。缺失维持旧三层精确几何，不补写；显式数量／高度编辑才写数组，非抽屉功能清除。`drawerOpen` 按实际数量恢复／截断／补关闭状态。复制、命名方案、项目、撤销和自动保存沿用 kitchen；采购保留层高而忽略开合，缓存和空间核对读取完整配置，核对标记为 `kitchen-worktop-v12-drawer-tiers`。尺寸依据、阈值与验证见 [厨房抽屉分层](KITCHEN-DESIGN.md#厨房抽屉层数与逐层高度2026-10-15)。
+
+2026-10-15：两种燃气灶的派生能力 `measureSurfaceBoundary:true` 允许四向距离量到完整承托台面的实体外沿，完整承托与实际轮廓复用厨房核心；无新增实例字段、默认值迁移或持久清理清单，原空间核对及模型几何不变。显示与恢复边界见 [燃气灶实体边距](MEASUREMENTS.md#燃气灶到台面实体边界2026-10-15)。
+
+2026-10-15：`counter.moduleDividers:true` 启用同排相邻柜体的分界拖动与单击柜宽输入，一字／L／U 共用。相邻模块的 `width` 或薄柜 `length` 等量增减，外包尺寸、中心、柜深、台面深及其他模块保持不变；范围及关联设备适配沿用厨房核心。只改已有宽度，无新持久字段、默认迁移或保存通道，缓存／核对沿用完整 kitchen；转角盲区不作为普通模块调整。实际验证见 [柜间分界线](KITCHEN-DESIGN.md#柜间分界线直接调整相邻宽度2026-10-15)。
+
+2026-10-15：用户要求手动厨房柜深可降至 5 cm。`counter.kitchenDepth` 集中定义 min 50、max 1200、drawerMin 72（18 mm 既有抽屉板件）及 emptyMinWidth 50（设备空位和展开盲角）；U `runDepth` 同步 50–1200。`counter.endResize` 定义 thin-end 的 length／cabinetDepth 交互及 150–3000／50–1200 mm 范围，仍只改原 endExtensions。厨房无抽屉派生 `kitchen-base` 实际验证支持 50 mm，普通独立柜体保留原 150 mm 下限；旧保存值不自动缩小，原自动避让 minDepth 150 不变。新边界操作不新增持久字段或保存通道。见 [薄柜独立边界](KITCHEN-DESIGN.md#薄柜独立边界与-50-mm-柜深2026-10-15)。
+
+2026-10-15：`sink_arrow_680/750` 共用 `arrow-sink` 能力，默认槽体高 240、安装 top、独立上沿基准 860 mm；`sinkInstall:top/flush/under` 为可选枚举，新建显式写入，缺失读取台上不迁移旧通用水槽。`sinkInstallation()` 统一槽口上沿、台上盆沿厚度与台面底／顶的关系，并派生龙头垂直包络；沿用 counterElevation 表示本型号上沿离地。类型替换清理专用字段，复制／项目／命名方案／撤销和自动保存走原链路。embedded 能力消费既有平面碰撞豁免，安装参数进入空间确认，宿主孔洞缓存覆盖真实相对位置。资料与验收见 [箭牌水槽](SINK-ARROW.md)。
+
+2026-10-15：`types.counter.cornerPartitions` 定义模块转角竖向隔板的 left/right 能力和历史默认值（抽屉柜保留，其他柜不保留）；可选嵌套 `kitchen.modules[].cornerPartitions` 仅保存用户选择的布尔值。新建与旧数据缺失不补写，显式 false 与 true 在功能／尺寸变更后保留；校验由厨房核心消费同一能力，复制／命名方案／项目和撤销自动保存沿用完整 kitchen，替换依原 kitchen 字段清理。真实板件、展开镜像和签名读取该选择，确认标记为 `kitchen-worktop-v11-corner-partitions`。水槽柜自身无层板、转角层板独立保留，不新增层板持久字段。见 [转角层板与独立隔板](KITCHEN-DESIGN.md#转角层板与独立竖向隔板2026-10-15)。
+
+2026-10-15：可选派生 `kitchen.obstacleFit.corners:[{index,width,depth}]` 与 depths/cuts 一同由厨房核心计算及校验，仅 autoAvoid 支持。索引须对应现存转角且唯一，实际宽深在原 minDepth（150 mm）和各名义转角宽深之间。缺失不补默认，恢复／预览／提交依原 normalizeObstacles 计算，移走障碍恢复名义值。新模板无派生字段；复制、项目／命名方案及缓存沿用完整 kitchen，替换仍清理原厨房字段，无新顶层白名单。预留输入只改现有尺寸，不存新约束。见 [预留与转角](KITCHEN-DESIGN.md#边界预留输入与转角减浅齐平2026-10-15)。
+
+2026-10-15：新增 `aquarium_mijia_2pro` 底部安装基准，默认 `height:334`、`mountHeight:0`，只复用现有离地高度能力和范围；新建写入产品身份 / 来源，旧缺失值运行时读取而不补写。同型号替换保留离地高度，跨类型恢复本型号初值并清理外来专用字段。缓存与空间确认已覆盖 h / mountHeight，不新增持久字段或安装净距假设。几何、恢复、项目往返及双模式浏览器验收见 [米家鱼缸](AQUARIUM-MIJIA-2PRO.md)。
+
+2026-10-15：`counter.kitchenShapes.U.outerResize` 定义四边外框编辑，`U.runDepth={min:300,max:1200}` 定义独立柜深能力。可选 `kitchen.runDepths:[D0,D1,D2]` 只允许 U 形、三个有限毫米值，厨房核心统一校验；新建和旧记录缺失时按历史 `kitchen.depth` 读取，不补写数组。显式外边柜深编辑或实际改变输入时才保存，转成其他形状清除；复制／项目／命名方案／自动保存／撤销及完整 kitchen 缓存沿用原链路。台面挑出仍存 `counterDepth-depth`，新字段不新增顶层清理清单。细则、原规则边界及兼容验收见 [U 形四边与柜深](KITCHEN-DESIGN.md#u-形外框四边与独立柜深2026-10-15)。
+
 2026-10-14：浴室柜箱体能力定义为 `types.vanity.cabinet={bodyHeight:450,bottom:330,aboveBody:1180,min:200,max:3200}`，数值取历史生产组件。`cabinetSpec()` 与 `cabinetBase()` 给箱体编辑、附属组件、开启空间和管道局部坐标提供统一接口；独立吊柜底部仍读取原 `mountHeight`。浴室柜可选 `cabinet.bodyHeight` 不覆盖历史顶层 `h`；未配置的旧实例仍读原整体包络 330–1960 mm，不迁移、不补写。配置后整体顶高为底部＋箱体高＋附属组件上部包络，调整箱体时附属组件整体平移。替换浴室柜时清理其箱体结构，显式新模板配置优先。新增门型／最大角度留在柜体与厨房核心嵌套校验；项目格式不升版。生产板件、实际恢复、真实浏览器下载上传与重复恢复验收见 [改进记录](IMPROVEMENTS.md)。
 
 厨房嵌套结构追加可选 `counterDepth`、`edgeStyle`、`dropHeight` 及模块开合状态。能力范围、缺失读取和几何派生集中在厨房核心，产品规则仍委托嵌套校验；没有新家具顶层字段或替换清理白名单。原深度、板厚与设备高度契约保持，新增尺寸进入现有缓存与空间确认。详见 [厨房台面设计](KITCHEN-DESIGN.md)。
@@ -13,6 +37,8 @@
 ## 单一规则入口
 
 2026-10-14：可选 `groupId` 是所有家具（含自定义类型）通用的布局关系，校验为 1–200 字非空字符串，新建及旧数据缺失时不填默认组，跨产品替换保留。组编号仅在当前工作方案内表示成员关系，不作为空间几何输入，也不影响 2D/3D 几何缓存和空间确认。复制为每个来源组重建编号；剪切首次移动保留编号，目标已有该组编号时重建，避免跨方案粘贴误合组。
+
+2026-10-15：四向净距定位复用 `expandGroups()` 将完整组作为刚性平移集合；不增加组包围框或偏移等持久字段，成员关系继续只存 `groupId`。一次 mutate 仅修改各成员坐标，保持相对位置、尺寸、旋转、镜像及产品配置；任一锁定成员拒绝整次移动，内部依赖须全部选中。旧记录无需迁移，项目／命名方案往返、重复恢复与刷新保持组内关系，见 [2D 测量与整组定位](MEASUREMENTS.md)。
 
 `src/core/product-rules.js` 是普通浏览器脚本和 Node 共用模块，浏览器导出 `FurnishProducts`，Node 使用 `require()`。没有 DOM、存储、网络、构建或 Three.js 依赖。
 
@@ -104,3 +130,9 @@ npx.cmd --package @playwright/cli playwright-cli -s=furnish-rules run-code --fil
 2026-10-14：`types.counter.avoidance={enabled:false,minDepth:150}` 定义厨房自动避让的旧／新缺失读取与最小柜深能力；厨房核心消费它并校验可选 `autoAvoid` 和派生 `obstacleFit`，复制替换仍走整个 kitchen 能力。已锁定厨房不自动重算。空间确认／3D 缓存覆盖实际派生深度和局部缺口，实际工作恢复按有效方案重算；前沿及名义尺寸、设备关联不漂移。详见 [厨房自动避让](KITCHEN-DESIGN.md)。
 
 2026-10-15：厨房模块／末端薄柜可选 `doorLeaves[]` 仍由既有 `counter.kitchen` 能力保存，柜体核心校验门扇状态，厨房核心校验实际门数；旧缺失值继承模块开合，不强制写入默认数组。复制与完整 kitchen 恢复保留状态，替换仍清理整个厨房；采购忽略姿态，缓存包含完整配置。转角底座新增实际低位实体，空间确认规则标记升至 `kitchen-worktop-v6-corner-leaves`。复验见 [转角底座与逐扇门](KITCHEN-DESIGN.md)。
+
+
+2026-10-15：`types.counter.kitchenShapes` 集中定义一字形／L／U 的模块边及末端边；U 的模块边为 0/1/2，末端边为 0/2，名义高度与其他尺寸范围不变。复用已有 kitchen 嵌套持久字段，无新增顶层字段或替换清理清单，新建仍为一字形，旧实例不自动转换。显式转换保留原模块和关联索引、迁移末端所属边，同侧 L/U 保留原转角世界基准。完整 kitchen 缓存／空间输入包含三边及两端，确认规则标记为 `kitchen-worktop-v7-u-runs`；采购、配色、价格不失效。校验、项目往返和实际恢复验收见 [U 形厨房](KITCHEN-DESIGN.md#u-形三边连续台面2026-10-15)。
+
+
+2026-10-15：`counter.kitchenShapes.U.independentResize:true` 启用三边独立手柄，一字形／L 缺失读为不支持。此字段是程序能力，不写入 kitchen 项目数据；旧 U 形配置无需迁移。编辑继续只改原模块 width，150–3000 mm、台面空区、设备适配等校验共用厨房核心，缓存与确认已覆盖这些实际输入。见 [三边独立手柄](KITCHEN-DESIGN.md#u-形三边独立拉伸手柄2026-10-15)。

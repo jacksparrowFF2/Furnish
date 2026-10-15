@@ -66,4 +66,25 @@
 #cab-form fieldset {border:1px solid var(--line,#8885);border-radius:10px;padding:12px;margin:16px 0}
 #cab-form legend {padding:0 6px}
 #cab-error {min-height:24px}
+.kitchen-partitions {grid-column:1/-1;display:grid;gap:8px;padding:12px 0}
+.kitchen-partitions label {display:flex;align-items:center;gap:8px}
+.kitchen-partitions input[type=checkbox] {width:18px;height:18px;flex:none;accent-color:var(--accent)}
 @media(max-width:700px){.cab-editor{grid-template-columns:1fr;height:auto;min-height:0;gap:16px}.cab-visual{position:static}.cab-fields{height:auto;overflow:visible;padding:0}#cab-preview{height:240px}.cab-tabs{position:static}.cab-selection{min-height:0}.cab-view-controls{font-size:11px}.cab-tabs button{font-size:11px}}
+.kitchen-drawer-tiers{grid-column:1/-1;min-width:0;margin:4px 0;padding:12px;border:1px solid var(--line);border-radius:var(--r-md)}
+.kitchen-drawer-tiers legend{padding:0 6px;font-weight:700}
+.kitchen-drawer-tiers .form .btn{align-self:end}
+.kitchen-drawer-tiers p{margin:10px 0 0}
+.cab-drawer-edit{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cab-drawer-edit[hidden]{display:none}
+.cab-drawer-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.cab-drawer-boundary-hit{fill:none;stroke:transparent;stroke-width:14;pointer-events:stroke;cursor:ns-resize;touch-action:none}
+.cab-drawer-boundary-line{fill:none;stroke:#ef5a24;stroke-width:2;pointer-events:none}
+.cab-drawer-lines g:focus-visible .cab-drawer-boundary-line{stroke:#168de2;stroke-width:4}
+.cab-drawer-height,.cab-drawer-height-input{position:absolute;transform:translate(-50%,-50%);height:24px;min-width:64px;max-width:100px;padding:2px 5px;border:1px solid #ef5a24;border-radius:4px;background:#fffdf4f5;color:#b84c12;font:11px/18px system-ui;font-variant-numeric:tabular-nums;pointer-events:auto}
+.cab-drawer-height{cursor:pointer;white-space:nowrap}
+.cab-drawer-height[hidden]{display:none}
+.cab-drawer-height-input{width:88px;color:var(--ink);background:var(--card);outline:2px solid #168de2}
+.cab-drawer-height-input[aria-invalid=true]{outline-color:#d64532}
+.cab-drawer-leaders{fill:none;stroke:#f65b28;stroke-width:1;pointer-events:none}
+.cab-drawer-snap-guide{fill:none;stroke:#008fa5;stroke-width:3;stroke-dasharray:7 4;pointer-events:none}
+@media(pointer:coarse){.cab-drawer-boundary-hit{stroke-width:24}.cab-drawer-height,.cab-drawer-height-input{min-height:28px}}

@@ -26,14 +26,15 @@ function obbOverlap(a, b){
   return true;
 }
 function footprints(f){const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);return f.kitchen?K.footprints(f):[corners(f)];}
-function polygonOverlap(A,B){for(const P of [A,B])for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length],nx=q[1]-P[i][1],ny=P[i][0]-q[0],L=Math.hypot(nx,ny)||1,pa=A.map(p=>(p[0]*nx+p[1]*ny)/L),pb=B.map(p=>(p[0]*nx+p[1]*ny)/L);if(Math.max(...pa)<=Math.min(...pb)+5||Math.max(...pb)<=Math.min(...pa)+5)return false;}return true;}
+function polygonOverlap(A,B,tolerance=5){for(const P of [A,B])for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length],nx=q[1]-P[i][1],ny=P[i][0]-q[0],L=Math.hypot(nx,ny)||1,pa=A.map(p=>(p[0]*nx+p[1]*ny)/L),pb=B.map(p=>(p[0]*nx+p[1]*ny)/L);if(Math.max(...pa)<=Math.min(...pb)+tolerance||Math.max(...pb)<=Math.min(...pa)+tolerance)return false;}return true;}
 function bodyParts(f){const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);return f.kitchen?K.bodyParts(f):[{p:corners(f),vertical:D?.furnitureVerticalBounds(f)}];}
 function volumeOverlap(a,b){return bodyParts(a).some(A=>bodyParts(b).some(B=>verticalOverlap(a,b,[A.vertical,B.vertical])&&polygonOverlap(A.p,B.p)));}
 // 不参与碰撞检查：地毯、墙挂 / 吊装、台面上的设备、绿植（枝叶可伸到家具上方）；椅子推进桌下也属正常
 const NOCOLLIDE = new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
 const SEATS = new Set(['chair','barstool','officechair','armchair']), TABLES = new Set(['table','roundtable','desk','island']);
 // Shared with project review: seats may be tucked under a tabletop.
-const tuckedSeatPair = (a,b) => SEATS.has(a.type)&&TABLES.has(b.type)||SEATS.has(b.type)&&TABLES.has(a.type);
+  const tuckedSeatUnder = (a,b) => SEATS.has(a.type)&&TABLES.has(b.type);
+  const tuckedSeatPair = (a,b) => tuckedSeatUnder(a,b)||tuckedSeatUnder(b,a);
 // Unknown heights stay conservative. Both the canvas and project review use
 // this rule so stacked appliances do not produce contradictory findings.
 function verticalOverlap(a,b,ranges){
@@ -69,7 +70,7 @@ function doorLeafOffset(d, thickness=40){
   const inward=(center[0]-d.h[0])*normal[0]+(center[1]-d.h[1])*normal[1];
   return Math.sign(inward)*thickness/2;
 }
-const api={solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatPair,doorLeafOffset};
+  const api={solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,polygonOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatUnder,tuckedSeatPair,doorLeafOffset};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishGeometry=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

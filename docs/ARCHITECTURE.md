@@ -1,5 +1,21 @@
 # 模块与加载约定
 
+2026-10-15：四向净距在 `snapping.directional()` 中按参考家具逐成员调用共享 `layout-geometry.verticalOverlap()`；高度明确分离或仅竖向接触的成员不参与该参考的轮廓扫描，高度未知保守保留，墙窗仍按平面计算。画布、属性与精确定位共用结果；没有新增持久字段、缓存或加载资源。见 [吊柜与四向净距](MEASUREMENTS.md#吊柜与四向净距2026-10-15)。
+
+2026-10-15：`kitchenwall` 可选 kitchen 复用分排及边界编辑，吊柜使用零台面／零新踢脚及独立安装高度。`fromWall()` 仅在草稿中保存旧模块尺寸基准和原结构；内部编辑返回外层草稿，最终一次 mutate。`openDialog` 的可选关闭回调用于返回草稿，不新增保存或历史通道；实体、管线、开启、房间模型与展开读取实际模块和离地。详见 [吊柜调节](KITCHEN-WALL-ADJUST.md)。
+
+2026-10-15：`kitchen-core.drawerBoundaryTargets()` 提供同排相邻抽屉的可行分界高度，预览按 `counter.drawerTiers.snapPixels` 投影吸附并画临时辅助线；仍由原相邻层编辑和编辑器草稿／mutate 保存，无新持久字段。见 [相邻抽屉吸附](KITCHEN-DESIGN.md#相邻抽屉层间吸附2026-10-15)。
+
+2026-10-15：厨房抽屉层间拖动通过 `kitchen-core.resizeDrawerBoundary()` 只补差相邻两层；共享预览投影真实面板并映射展开行的原模块索引，临时拖动快照与数字草稿由厨房编辑器管理，最终沿用原 mutate 保存，无新增字段。详见 [抽屉层间编辑](KITCHEN-DESIGN.md#抽屉层间拖动与高度数字入口2026-10-15)。
+
+2026-10-15：燃气灶的 `measureSurfaceBoundary` 派生能力由产品规则提供；`snapping.directional()` 复用厨房 `onSurface()` 完整承托判定，在包含灶具的台面实体区间量到出口边。画布和属性共用结果，保存仍只写原测量端点，无新字段或加载资源。详见 [灶具四向实体边距](MEASUREMENTS.md#燃气灶到台面实体边界2026-10-15)。
+
+2026-10-15：箭牌水槽由 `src/render/sink-model.js` 生产构造，安装能力在产品规则，实际孔型／完整台面承托判定在厨房核心。`deviceOpenings()`／`slabGeometry()` 为模块及旧组合台面提供同一毫米孔洞几何，合并重叠开孔后再三角化；`deviceSignature()` 覆盖宿主相对关系，`normalizeSinks()` 沿用 commit／restore 派生安装高度。普通脚本新增本地构造器，独立预览复用生产模型和原离线 import map，HTTP／断网 file:// 已验证。详见 [水槽](SINK-ARROW.md)。
+
+2026-10-15：`snapping.js` 提供有限占地边界测量吸附和按当前图纸视角计算的四向最近净距；普通家具按旋转矩形，厨房读取生产台面轮廓。四向共用分段扫描，画布不再叠加原仅墙面的辅助线；可选择单条测量删除，四向预览支持单方向／一次保存全部有效方向，均经原 `mutate()` 保存现有固定端点，无新增持久字段或加载资源。详见 [2D 测量](MEASUREMENTS.md)。
+
+四向数字可点击输入目标净距；`design-core.placeSelectionAtDirectionalGap()` 共用 `expandGroups()`，固定外部参考，按显示轴让全部成员平移相同位移，验证整组精确净距、各成员生产部件扫掠、房间和外部墙窗／家具，并预演原生产联动链路。`snapping.directional()` 接受单件或数组，计算成员实际外侧轮廓并排除组内参考；组内空隙不当实体。UI 在一次 `mutate()` 内更新所有成员 `cx/cy`，保存线保持固定端点；单件兼容接口仍委托同一核心，共享 SAT 原碰撞默认容差不变。任一锁定成员禁用整个定位，关联方须全部选中；复杂配置联动限制见 [精确定位](MEASUREMENTS.md#点击数字精确定位)。
+
 2026-10-14：`src/core/drawing-core.js` 共用可选图纸设置校验、显示坐标变换、投影尺寸与方向；`src/ui/drawing-tools.js` 通过现有 mutate 和导出适配器装配朝向、指北针及尺寸设置。详见 [图纸朝向](DRAWING-ORIENTATION.md)。`project-core.js` 的空间检查采用保守包围框提前排除和扫描线候选筛选，review 只缓存最后一份完整规则输入／名称／异常和接受记录，返回独立副本；价格、采购和图纸显示不清除空间确认。3D 家具签名排除未用于生产几何的价格与采购字段，真北单独更新示意光照。
 
 2026-10-14：`src/ui/workflow-tools.js` 在现有 UI 扩展后装配画布旁工具、保存入口、价格依据／材料规格、空间侧栏、临时风格预览和净距对话框；共用现有 `ui`、`mutate()`、项目规则与属性面板，没有新工作状态或保存通道。`src/core/wall-distance-core.js` 提供毫米净距与原子联动，`src/core/placement-suggestions.js` 只返回通过占地／开启及全案间隙检查的候选，不移动锁定、编组、厨房或关联设备。`src/io/dxf-export.js` 生成布局交接 DXF。材料规格及价格依据仍属于 `project-core.js`；详见 [材料采购](MATERIAL-PURCHASING.md)、[墙间净距](WALL-DISTANCE.md)、[DXF 导出](DXF-EXPORT.md)。
@@ -7,6 +23,15 @@
 临时风格预览仅向生产 3D 家具构造器提供配色副本，源工作方案、2D 和预算保持原值；应用家具配色或完整风格分别经 `mutate()`。方案内容改变时预览失效，预览期间不提供交付截图，防止临时外观混入真实成果。新增脚本保持原有普通脚本加载，无 async 或网络依赖。
 
 厨房模块规则在 `src/core/kitchen-core.js`，生产构造器在 `src/render/kitchen-model.js`，属性表单在 `src/ui/kitchen-editor.js`。产品能力由 `product-rules.js` 管理；厨房核心加载在产品规则之前，构造器只在调用时读取柜体生产模型。旧组合、新厨房、设备关联及独立吊柜的契约见 [厨房设计](KITCHEN-DESIGN.md)。
+
+边界预留由 `snapping.kitchenGaps()`／`setKitchenGap()` 提供临时参考与精确尺寸提案，UI 经原 mutate 应用，不走整体位移。避让同时派生 `obstacleFit.corners`，名义 `cornerBlocks()` 与生产 `cornerLayout()` 分离；板件、底座、空腔及展开共用实际转角，`adjacentOpenings()` 只切真实相邻重叠范围。见 [预留与转角](KITCHEN-DESIGN.md#边界预留输入与转角减浅齐平2026-10-15)。
+
+厨房的外框和独立边长拉伸共用 `snapping.js` 内部 `kitchenEdgeSnap()`：整条活动边段与有限墙窗／家具边界对齐，支持端点附近接触，排除自身及关联设备，分别服从贴墙与对齐开关。吸附候选须通过原尺寸／设备约束，旋转参考线采用临时两点线段；不新增持久字段。范围及验收见 [厨房吸附](KITCHEN-DESIGN.md#外框与独立边长的家具吸附2026-10-15)。
+
+2026-10-15：模块厨房增加 U 形三边及两个空腔转角，产品规则 `counter.kitchenShapes` 定义模块／末端边，厨房核心共用派生轮廓、设备、开启与避让；2D 与生产模型消费同一几何。三边展开沿用生产预览及原索引，不保存临时行；L/U 显式转换保留同侧转角与原模块世界基准。数据和边界见 [U 形厨房](KITCHEN-DESIGN.md#u-形三边连续台面2026-10-15)。
+
+U 形画布增加三边独立手柄，并保留原外包宽／深／角点手柄：`kitchen-core.runHandles()` 提供生产局部坐标，`resizeRun()` 只改目标末端模块，`snapping.resizeKitchenRun()` 做旋转／镜像投影、相对网格及有限墙面吸附。独立边 UI 沿用原指针快照／commit，固定首转角，不做整组推离；连接边变化仅平移回折边。独立边长能力为 `counter.kitchenShapes.U.independentResize`。U 形四条外框边共用 `outerEdge()`／`resizeOuter()` 与 `snapping.resizeKitchenOuter()`，整边抓取，固定对侧和内侧；背边只改对应一排柜深，开口边只改长边末端柜宽。可选 `kitchen.runDepths` 缺失时沿用原 depth，生产模型、矩形盲角展开、设备及空间检查共用每排深度，详见 [四边与柜深](KITCHEN-DESIGN.md#u-形外框四边与独立柜深2026-10-15)。旧 `resize()` 仍供整体尺寸兼容调用。见 [三边手柄](KITCHEN-DESIGN.md#u-形三边独立拉伸手柄2026-10-15)。
+
 
 Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` 的兼容性是拆分代码时的约束；三维模块与 Three.js 的 data-URL import map 继续保留在入口中。
 
@@ -24,6 +49,10 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 - 同一工作规则实例的 `prepareShared(work, plan, lockedOriginal)` 先复制校验、恢复字段、保护已确认结构，再核对目标户型；准备失败不改应用状态。
 - `src/core/snapping.js`：移动吸附与测量点吸附显式接收网格、缩放、墙窗范围、家具及排除集合，返回坐标和参考线，不修改 UI。复用旋转外包框，保留像素容差、最近候选和并列候选的先后规则。
 - `src/render/furniture-svg.js`：`render(type, width, depth, color, palette)` 生成单件家具图例，`shade(color, factor)` 处理颜色。图例使用调用时的调色板，不读取当前主题。
+
+2D 家具由 `design-core.planFurnitureOrder()` 派生稳定层叠顺序，分离高度按底到顶绘制；桌椅整体高度交叠或未知时共用 `layout-geometry.tuckedSeatUnder()` 将椅面置于桌面下。`drawing-core.furnitureLabels()` 避让桌面覆盖区，`syncFurnOrder()` 同步拖动中的 DOM 与标签；不改变保存的家具顺序。整件层叠及圆桌标签保守避让的边界见 [改进记录](IMPROVEMENTS.md#2026-10-15餐椅推进餐桌下的平面遮挡)。
+
+拖椅时 `syncTuckedSeatPreview()` 根据当前指针操作给交叠的静止桌面添加临时属性，CSS 设 25% 不透明度；`endDrag()` 在结束／取消时清除，重新绘制按实时操作派生。圆桌／书桌共用桌椅类型接口；不写项目字段，成果导出移除属性。见 [透视预览与边界](IMPROVEMENTS.md#2026-10-15圆桌书桌遮挡与拖椅透视预览)。
 
 这些模块不读取 DOM 或当前应用状态。浏览器通过 `FurnishPlans`、`FurnishCatalogData`、`FurnishI18n`、`FurnishStylePresets`、`FurnishStyles` 获取数据与接口；Node 通过 `require()` 直接读取同一份实现。`FurnishCatalog` 保留给现有家具库 UI 接口，避免与静态数据混用。风格和户型测试无需按源码文本位置截取代码。
 

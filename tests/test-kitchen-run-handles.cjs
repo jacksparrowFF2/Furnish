@@ -1,0 +1,46 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const K=require('../src/core/kitchen-core.js'),S=require('../src/core/snapping.js'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-core.js'),W=require('../src/core/work-state.js');
+const base={id:'k',name:'厨房',type:'counter',cx:7000,cy:7000,rot:0,color:'#eee'};
+const config={version:1,shape:'U',depth:600,counterDepth:630,baseHeight:820,thickness:20,modules:[{run:0,width:500,role:'door'},{run:1,width:700,role:'door'},{run:2,width:450,role:'door'},{run:0,width:600,role:'door'},{run:1,width:800,role:'door'},{run:2,width:650,role:'door'}],endExtensions:[{run:0,length:550,depth:250,cabinetDepth:220},{run:2,length:200,depth:200,cabinetDepth:180}]};
+const near=(a,b)=>assert(Math.abs(a-b)<1e-5,`${a} != ${b}`),pointNear=(a,b)=>a.forEach((v,i)=>near(v,b[i]));
+function checkChange(f,next,run,delta){
+ const h=K.runHandles(f).find(h=>h.run===run);K.validate(next);
+ f.kitchen.modules.forEach((m,i)=>{if(i!==h.index)assert.deepEqual(next.kitchen.modules[i],m,'all other modules retain exact saved configuration');else near(next.kitchen.modules[i].width,m.width+delta);});
+ assert.deepEqual(next.kitchen.endExtensions,f.kitchen.endExtensions);assert.equal(next.kitchen.depth,f.kitchen.depth);assert.equal(next.kitchen.counterDepth,f.kitchen.counterDepth);
+ const a=K.cornerBlock(f),b=K.cornerBlock(next);pointNear(K.world(f,a.x,a.y),K.world(next,b.x,b.y));
+ const fresh=K.runHandles(next).find(h=>h.run===run),p=K.world(f,h.x,h.y),q=K.world(f,h.x+h.dx,h.y+h.dy);pointNear(K.world(next,fresh.x,fresh.y),p.map((v,i)=>v+(q[i]-v)*delta));
+ const before=K.layout(f),after=K.layout(next);for(const m of before)if(m.index!==h.index){const old=K.world(f,m.x,m.y),now=K.world(next,after[m.index].x,after[m.index].y);if(run===1&&m.run===2){const shift=K.world(f,0,delta),origin=K.world(f,0,0);pointNear(now,old.map((v,i)=>v+shift[i]-origin[i]));}else pointNear(now,old);}
+}
+for(const corner of ['left','right'])for(const rot of [0,37,90,180,270])for(const flip of [false,true])for(const run of [0,1,2]){
+ const f=K.configure({...base,rot,flip},{...config,corner}),before=JSON.stringify(f),h=K.runHandles(f).find(h=>h.run===run),next=K.resizeRun(f,run,h.length+200);checkChange(f,next,run,200);
+ if(run===2)assert.equal(next.w,f.w,'short return can grow while envelope stays unchanged');
+ for(const limit of [150,3000]){const delta=limit-f.kitchen.modules[h.index].width,result=K.resizeRun(f,run,h.length+delta);near(result.kitchen.modules[h.index].width,limit);}
+ for(const width of [149.99,3000.01])assert.throws(()=>K.resizeRun(f,run,h.length+width-f.kitchen.modules[h.index].width));assert.equal(JSON.stringify(f),before);
+ const a=K.world(f,h.x,h.y),b=K.world(f,h.x+h.dx,h.y+h.dy),u=b.map((v,i)=>v-a[i]),start={x:123,y:456},p={x:start.x+u[0]*123-u[1]*80,y:start.y+u[1]*123+u[0]*80};
+ const snapped=S.resizeKitchenRun(f,run,p,{start,grid:10,scale:.2});checkChange(f,snapped.furniture,run,120);assert.deepEqual(S.resizeKitchenRun(f,run,start,{start,grid:10}).furniture,f,'returning to grab point restores exact fractional dimensions');
+ const axis=Math.abs(u[0])>.5?0:1,pos=a.map((v,i)=>v+u[i]*150),rect=axis===0?[pos[0],pos[1]-20,pos[0],pos[1]+20]:[pos[0]-20,pos[1],pos[0]+20,pos[1]];
+ const wall=S.resizeKitchenRun(f,run,p,{start,grid:10,scale:.1,wallSnap:true,rects:[rect]});checkChange(f,wall.furniture,run,150);assert.equal(wall.guides.length,1);
+ const far=rect.map((v,i)=>v+(axis===0&&i%2===1||axis===1&&i%2===0?500:0));assert.equal(S.resizeKitchenRun(f,run,p,{start,grid:10,scale:.1,wallSnap:true,rects:[far]}).guides.length,0,'finite wall spans do not snap to remote extensions');
+ const packed=P.unpack(P.pack({planId:'p',current:{furniture:[next]},designs:[{name:'独立边',work:{furniture:[next]}}],catalog:[]}));assert.deepEqual(packed.current.furniture,[next]);assert.deepEqual(packed.designs[0].work.furniture,[next]);
+ const plan={id:'p',name:'测试',rooms:[{id:'r',name:'厨房',mat:'tile',poly:[[0,0],[20000,0],[20000,20000],[0,20000]]}],walls:[],wins:[],doors:[],slides:[],beams:[],defaults:[]},rules=W.create({makeId:()=> 'x',colorFor:()=> '#fff',materials:{tile:{}}}),work={furniture:[next]};rules.restore(work,plan);const stable=JSON.stringify(work);rules.restore(work,plan);assert.equal(JSON.stringify(work),stable);
+}
+const f=K.configure(base,config);checkChange(f,K.resizeRun(f,2,K.runHandles(f)[2].length+600),2,600);checkChange(f,K.resizeRun(f,0,K.runHandles(f)[0].length-400),0,-400);assert.throws(()=>K.resizeRun({...f,locked:true},2,1000));for(const run of [-1,3,'2'])assert.throws(()=>K.resizeRun(f,run,1000));for(const length of [NaN,Infinity,-1])assert.throws(()=>K.resizeRun(f,2,length));
+const straight=K.changeShape(f,'straight').furniture;assert.deepEqual(K.runHandles(straight),[]);assert.throws(()=>K.resizeRun(straight,0,1000));
+const tight=K.configure(base,{...config,counterDepth:675,endExtensions:[],modules:[{run:0,width:600,role:'door'},{run:1,width:200,role:'door'},{run:2,width:600,role:'door'}]});assert.throws(()=>K.resizeRun(tight,1,1350),/相交|封闭/);assert.doesNotThrow(()=>K.resizeRun(tight,1,1350.01));
+// Protect a linked appliance when the specific end module is shortened.
+const deviceHost=K.configure(f,{...config,modules:config.modules.map((m,i)=>({...m,role:i===5?'sink':m.role}))}),sink=K.attach({id:'s',type:'ksink',w:600,d:450,cx:0,cy:0,rot:0},deviceHost,5),end=K.runHandles(deviceHost)[2];assert.throws(()=>K.resizeRun(deviceHost,2,end.length-11,{furniture:[sink]}),/设备尺寸/);assert.doesNotThrow(()=>K.resizeRun(deviceHost,2,end.length-10,{furniture:[sink]}));
+// Independent run grips coexist with the original width/depth/corner box grips.
+const out={},ctx=vm.createContext({window:{},FurnishKitchen:K,ui:{layers:{furn:false},guides:null},view:{s:.2},COARSE:false,ACC:'#f60',PAL:{halo:'#fff'},selIds:()=>['k'],getF:()=>f,tr:zh=>zh,esc:v=>String(v),furnT:()=>'',aabb:()=>({hh:f.d/2}),$:()=>out});
+vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),ctx);ctx.renderSelectedGeometry();assert.equal((out.innerHTML.match(/data-handle="kitchen-run"/g)||[]).length,3);assert.equal((out.innerHTML.match(/data-handle="size"/g)||[]).length,5);for(const edge of ['left','right','top','bottom'])assert(out.innerHTML.includes(`data-kitchen-edge="${edge}"`));assert(out.innerHTML.includes('回折边'));f.locked=true;ctx.renderSelectedGeometry();assert(!out.innerHTML.includes('data-handle='));delete f.locked;
+// Replay the production pointer branch, including rotation/mirror and off-axis travel.
+for(const corner of ['left','right'])for(const rot of [0,37,180,270])for(const flip of [false,true])for(const run of [0,1,2]){
+ const original=K.configure({...base,rot,flip},{...config,corner}),f=structuredClone(original),events={},el={addEventListener(){}},h=K.runHandles(f)[run],a=K.world(f,h.x,h.y),b=K.world(f,h.x+h.dx,h.y+h.dy),u=b.map((v,i)=>v-a[i]);
+ const ctx=vm.createContext({TAP:4,state:{furniture:[f]},ui:{grid:1,layers:{wallSnap:false}},view:{s:1},FurnishSnapping:S,document:{addEventListener(){},querySelector:()=>null},svg:{addEventListener:(name,fn)=>events[name]=fn},$:()=>el,getF:()=>f,clearTimeout(){},renderFurn(){},renderSel(){},syncFurnOrder(){},furnT:()=>''});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/canvas-interactions.js'),'utf8'),ctx);ctx.toMM=e=>({x:e.clientX,y:e.clientY});ctx.initializeCanvasInteractions();ctx.original=original;ctx.run=run;vm.runInContext("drag={kind:'kitchen-run',id:'k',run,original,startPoint:{x:0,y:0},sx:0,sy:0}",ctx);
+ events.pointermove({pointerId:1,clientX:u[0]*200-u[1]*70,clientY:u[1]*200+u[0]*70,target:{closest:()=>null}});checkChange(original,f,run,200);
+ events.pointermove({pointerId:1,clientX:0,clientY:0,target:{closest:()=>null}});assert.deepEqual(f,original);
+}
+(async()=>{
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});for(const file of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);const box=(w,h,d,color,x,y,z)=>{const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
+ for(const run of [0,1,2]){const h=K.runHandles(f)[run],next=K.resizeRun(f,run,h.length+200),models=[f,next].map(value=>ctx.FurnishKitchenModel.build(T,value,box));for(const m of K.cabinetLayout(f)){const geometries=models.map(g=>{const o=g.children.find(o=>o.userData.kitchenModule===m.index);return new T.Box3().setFromObject(o).getSize(new T.Vector3());});if(m.index===h.index)near(geometries[1][m.run===1?'z':'x']-geometries[0][m.run===1?'z':'x'],.2);else pointNear(geometries[0].toArray(),geometries[1].toArray());}}
+ console.log('PASS three independent U grips, exact fixed other modules, corner anchoring, short/long crossing, limits and linked appliance protection, rotated/mirrored projection, finite wall snapping, real pointer/selection/production geometry and project restoration');
+})().catch(e=>{console.error(e);process.exitCode=1;});

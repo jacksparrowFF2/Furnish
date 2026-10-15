@@ -64,7 +64,7 @@
   if(c.cabinet&&cabinet().supported(next))next.cabinet=JSON.parse(JSON.stringify(c.cabinet));
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
   products().replacement(f,next,c);
-  if(next.type==='counter'&&!c.obj)next.kitchen=c.kitchen?JSON.parse(JSON.stringify(c.kitchen)):kitchen().defaults(next);
+  if(next.type==='counter'&&!c.obj||next.type==='kitchenwall'&&!c.obj&&(c.kitchen||!c.cabinet)){next.kitchen=c.kitchen?JSON.parse(JSON.stringify(c.kitchen)):kitchen().defaults(next);delete next.cabinet;}
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}
@@ -139,15 +139,17 @@
   const height=products().height(f);
   return height===undefined?null:{bottom:0,top:height,source:'model'};
  }
- // Stable topological order: only separated height ranges with overlapping
- // footprints constrain one another. A pairwise sort comparator is not transitive.
+ // Stable topological order for overlapping footprints: separated height ranges
+ // and tucked seats below tabletops. Whole-seat height includes the backrest,
+ // so it cannot determine which surface covers the seat in a plan view.
  function planFurnitureOrder(furniture){
   const G=root.FurnishGeometry||require('./layout-geometry.js'),layer=f=>f.type==='rug'?0:f.type==='pendant'?2:1;
   const items=furniture.map((f,index)=>({f,index,layer:layer(f),vertical:furnitureVerticalBounds(f),box:G.aabb({...f,rot:f.rot||0}),after:[],incoming:0}));
   for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
    const a=items[i],b=items[j],A=a.vertical,B=b.vertical;
-   if(a.layer!==b.layer||!A||!B||![A.bottom,A.top,B.bottom,B.top].every(Number.isFinite))continue;
-   const low=A.top<=B.bottom?a:B.top<=A.bottom?b:null;if(!low)continue;
+   if(a.layer!==b.layer)continue;
+   const heights=A&&B&&[A.bottom,A.top,B.bottom,B.top].every(Number.isFinite);
+   const low=heights&&A.top<=B.bottom?a:heights&&B.top<=A.bottom?b:G.tuckedSeatUnder(a.f,b.f)?a:G.tuckedSeatUnder(b.f,a.f)?b:null;if(!low)continue;
    if(Math.abs(a.f.cx-b.f.cx)>=a.box.hw+b.box.hw||Math.abs(a.f.cy-b.f.cy)>=a.box.hh+b.box.hh||!G.obbOverlap({...a.f,rot:a.f.rot||0},{...b.f,rot:b.f.rot||0}))continue;
    const high=low===a?b:a;low.after.push(high);high.incoming++;
   }
@@ -214,6 +216,10 @@
   }
   return out;
  }
+ function translationHull(poly,dx,dy){
+  const points=[...poly,...poly.map(p=>[p[0]+dx,p[1]+dy])].sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+  const half=points=>{const h=[];for(const p of points){while(h.length>1&&cross(h[h.length-2],h[h.length-1],p)<=0)h.pop();h.push(p);}return h.slice(0,-1);};return [...half(points),...half([...points].reverse())];
+ }
  function placeAtGap(plan,f,dir,gap){
   if(f.locked)throw Error('家具已锁定，请先解锁');
   if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('距墙尺寸须为 0–20000 mm');
@@ -222,11 +228,52 @@
   const P=root.FurnishProject||require('./project-core.js');
   if(plan.walls.some(w=>P.intersects(P.polygon(next),[[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]])))throw Error('调整后家具会穿过墙体，请检查方向和尺寸');
   // The convex hull is the swept footprint for a translation without rotation.
-  const points=[...P.polygon(f),...P.polygon(next)].sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
-  const half=points=>{const h=[];for(const p of points){while(h.length>1&&cross(h[h.length-2],h[h.length-1],p)<=0)h.pop();h.push(p);}return h.slice(0,-1);},swept=[...half(points),...half([...points].reverse())];
+  const swept=translationHull(P.polygon(f),next.cx-f.cx,next.cy-f.cy);
   if(!P.fitsInRooms(plan.rooms,P.polygon(next)))throw Error('调整后家具超出房间，请减小距墙尺寸');
   if(plan.walls.some(w=>{const poly=[[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]];return !P.intersects(P.polygon(f),poly)&&P.intersects(swept,poly);}))throw Error('移动路径被墙体阻挡，请在当前房间内调整');
   return next;
+ }
+ // Keep the measured reference fixed; no snapping or push-out after solving.
+ function placeAtDirectionalGap(plan,work,id,dir,gap,{rotation=0,visibleFurniture=true}={}){
+  if(work.furniture.find(v=>v.id===id)?.groupId)throw Error('编组物体请使用整组净距定位入口，无需解组');
+  return placeSelectionAtDirectionalGap(plan,work,[id],dir,gap,{rotation,visibleFurniture})[0];
+ }
+ function placeSelectionAtDirectionalGap(plan,work,selection,dir,gap,{rotation=0,visibleFurniture=true}={}){
+  const S=root.FurnishSnapping||require('./snapping.js'),G=root.FurnishGeometry||require('./layout-geometry.js'),P=root.FurnishProject||require('./project-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js');
+  if(!Array.isArray(selection)||!selection.length||selection.some(id=>!work.furniture.some(f=>f.id===id)))throw Error('物体已不存在，请重新选择');
+  const ids=new Set(expandGroups(work.furniture,selection)),members=work.furniture.filter(f=>ids.has(f.id));
+  if(members.some(f=>f.locked))throw Error('选中物体或组内成员已锁定，请先解锁整组');
+  if(!['l','r','t','b'].includes(dir))throw Error('请选择有效方向');
+  if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('目标净距须为 0–20000 mm');
+  for(const f of members){const stack=laundryStack(f,work.furniture);if(f.counterLink&&!ids.has(f.counterLink.hostId)||stack&&!ids.has(stack.lowerId)||work.furniture.some(v=>!ids.has(v.id)&&(v.counterLink?.hostId===f.id||laundryStack(v,work.furniture)?.lowerId===f.id)))throw Error('请将关联厨房设备或叠放设备全部选中后整体定位');}
+  const rects=(plan.walls||[]).map(w=>w.slice(0,4)).concat((plan.wins||[]).map(w=>w.rect)),options={rotation,rects,furniture:visibleFurniture?work.furniture:[]},current=S.directional(members,options)[dir];
+  if(!current)throw Error('该方向没有可用的参考实体');
+  const sign=dir==='r'||dir==='b'?1:-1,a=rotation*Math.PI/180,delta=sign*(current.distance-gap),dx=(dir==='l'||dir==='r'?Math.cos(a):Math.sin(a))*delta,dy=(dir==='l'||dir==='r'?-Math.sin(a):Math.cos(a))*delta;
+  const moved=members.map(f=>({...f,cx:f.cx+dx,cy:f.cy+dy}));
+  if(Math.abs(dx)+Math.abs(dy)<1e-7)return moved;
+  const proposed=JSON.parse(JSON.stringify(work.furniture));for(const f of proposed)if(ids.has(f.id)){f.cx+=dx;f.cy+=dy;}const expected=JSON.parse(JSON.stringify(proposed));
+  if(proposed.some(v=>v.kitchen?.autoAvoid))K.normalizeObstacles(proposed,plan);
+  K.normalize(proposed,work.furniture);normalizeLaundryStacks(proposed,work.furniture);
+  if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||JSON.stringify({...v,cx:expected[i].cx,cy:expected[i].cy})!==JSON.stringify(expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
+  const after=S.directional(moved,{...options,furniture:visibleFurniture?proposed:[]})[dir];
+  if(!after||Math.abs(after.distance-gap)>.01)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
+  const reference=S.directional(moved,{rotation,rects:current.entity.kind==='wall'?[rects[current.entity.id]]:[],furniture:current.entity.kind==='furniture'?[work.furniture.find(v=>v.id===current.entity.id)]:[]})[dir];
+  if(!reference||Math.abs(reference.distance-gap)>.01)throw Error('无法相对原参考实体达到目标净距，请重新选择');
+  const parts=members.flatMap(f=>G.bodyParts(f).map(part=>({...part,owner:f,end:part.p.map(p=>[p[0]+dx,p[1]+dy]),swept:translationHull(part.p,dx,dy)}))),overlap=(a,b)=>G.polygonOverlap(a,b,1e-6),rooms=plan.physicalRooms||plan.rooms;
+  for(const part of parts){
+   if(!P.fitsInRooms(rooms,part.end)||P.fitsInRooms(rooms,part.p)&&!P.fitsInRooms(rooms,part.swept))throw Error('移动后物体超出房间，或路径穿过房间边界');
+   for(const r of rects){const poly=[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];if(overlap(part.end,poly))throw Error('调整后物体会与墙体或窗边重叠');if(!overlap(part.p,poly)&&overlap(part.swept,poly))throw Error('移动路径被墙体或窗边阻挡');}
+  }
+  for(const other of work.furniture){
+   if(ids.has(other.id)||!G.solidForCollision(other))continue;
+   for(const part of parts)for(const obstacle of G.bodyParts(other)){
+    const f=part.owner;if(!G.solidForCollision(f)||G.tuckedSeatPair(f,other))continue;
+    if(!G.verticalOverlap(f,other,[part.vertical,obstacle.vertical]))continue;
+    if(overlap(part.end,obstacle.p))throw Error('调整后物体会与其他家具或柜体重叠');
+    if(!overlap(part.p,obstacle.p)&&overlap(part.swept,obstacle.p))throw Error('移动路径被其他家具或柜体阻挡');
+   }
+  }
+  return moved;
  }
  function sceneSettings(value){const v=value||{};return {cut:[1.2,2.8].includes(v.cut)?v.cut:2.8,furn:typeof v.furn==='boolean'?v.furn:true,labels:typeof v.labels==='boolean'?v.labels:true,lamps:typeof v.lamps==='boolean'?v.lamps:true,night:typeof v.night==='boolean'?v.night:false,hour:Number.isFinite(v.hour)&&v.hour>=7&&v.hour<=18?v.hour:10};}
  function manageDesign(list,planId,action,{id,name,work,note,now=Date.now()}={}){
@@ -244,7 +291,7 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,sceneSettings,manageDesign};
+ root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign};
  root.FurnishDesign.applyCabinetTemplate=applyCabinetTemplate;
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

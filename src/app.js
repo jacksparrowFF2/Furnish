@@ -174,7 +174,7 @@ function commit(before){ if(state.furniture.some(f=>f.kitchen?.autoAvoid))Furnis
 function mutate(fn){ const b = snap(); fn(); commit(b); renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
-function validateSel(){ if (ui.sel?.kind==='furn' && !getF(ui.sel.id)) ui.sel = null; }
+function validateSel(){ if (ui.sel?.kind==='furn' && !getF(ui.sel.id)||ui.sel?.kind==='measure'&&!state.measures[ui.sel.id]) ui.sel = null; }
 const getF = id => state.furniture.find(f => f.id === id);
 
 /* ======================= 几何工具 ======================= */
@@ -464,9 +464,9 @@ document.addEventListener('pointerdown', e => { if (!e.target.closest?.('#ctx'))
 addEventListener('resize', closeCtx);
 
 /* ======================= 对话框 ======================= */
-let dialogReturnFocus=null;
-function openDialog({title, body, actions = [], wide = false, onOpen}){
-  window.FurnishWorkflowTools?.disposeDialog();
+let dialogReturnFocus=null,dialogAfterClose=null;
+function openDialog({title, body, actions = [], wide = false, onOpen, onClose}){
+  window.FurnishWorkflowTools?.disposeDialog();dialogAfterClose=onClose??null;
   if($('#dlg').hidden)dialogReturnFocus=document.activeElement;
   $('#dlgTitle').textContent = title; $('#dlgBody').innerHTML = body;
   $('#dlg .dlg-box').classList.toggle('wide', wide);
@@ -477,7 +477,7 @@ function openDialog({title, body, actions = [], wide = false, onOpen}){
   onOpen?.();
   ($('#dlgBody input:not([type=checkbox])') || A.querySelector('.primary') || $('#dlgClose')).focus();
 }
-function closeDialog(){ window.FurnishWorkflowTools?.disposeDialog(); window.FurnishCabinetEditor?.dispose(); $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true}); }
+function closeDialog(){ const after=dialogAfterClose;dialogAfterClose=null;window.FurnishWorkflowTools?.disposeDialog(); window.FurnishCabinetEditor?.dispose(); $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true});if(after)setTimeout(after,0); }
 $('#dlgClose').onclick = closeDialog;
 $('#dlg').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeDialog();return;}if(e.key!=='Tab')return;const nodes=[...$('#dlg').querySelectorAll('button,a[href],input,select,textarea,[tabindex]')].filter(el=>!el.disabled&&el.tabIndex>=0&&el.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}e.stopPropagation();});
 $('#dlg').addEventListener('pointerdown', e => { if (e.target.id === 'dlg') closeDialog(); });

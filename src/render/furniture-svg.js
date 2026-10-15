@@ -16,7 +16,7 @@ const DASH = 'stroke-dasharray="4 3"';
 
   const x = -w/2, y = -d/2, m = Math.min(w,d);
   if(f?.type==='kitchenwall'&&f.cabinet?.hoodBayHeight!==undefined){const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,bay=C.hoodBay(f);return rc(x,y,w,d,c)+rc(bay.left,y,bay.width,bay.depth,'none',DASH)+`<text x="${bay.center}" y="0" text-anchor="middle" dominant-baseline="central" font-size="60" fill="${PAL.ink}">烟机嵌合区</text>`;}
-  if(f?.kitchen){const K=typeof module==='object'&&module.exports?require('../core/kitchen-core.js'):root.FurnishKitchen;const b=f.kitchen.shape==='L'?K.cornerBlock(f):null;const stone=f.kitchen.obstacleFit?.cuts.length?`<path d="${K.topGeometry(f).rings.map(r=>'M'+r.map(p=>p.join(',')).join('L')+'Z').join('')}" fill="${c}" fill-rule="evenodd" ${ST()}/>`:K.slabs(f).map(s=>rc(s.x-s.w/2,s.y-s.d/2,s.w,s.d,c)).join('');return stone+(b?rc(b.x-b.w/2+18,b.y-b.d/2+18,b.w-36,b.d-36,'none',DASH)+`<text x="${b.x}" y="${b.y}" text-anchor="middle" dominant-baseline="central" font-size="60" fill="${PAL.ink}">转角空腔</text>`:'')+K.cabinetLayout(f).map(m=>rc(m.x-m.w/2+2,m.y-m.d/2+2,m.w-4,m.d-4,'none',m.role==='empty'?DASH:'')+`<text x="${m.x}" y="${m.y}" text-anchor="middle" dominant-baseline="central" font-size="70" fill="${PAL.ink}">${m.index>=f.kitchen.modules.length?'薄柜':K.roles[m.role]}</text>`).join('');}
+  if(f?.kitchen){const K=typeof module==='object'&&module.exports?require('../core/kitchen-core.js'):root.FurnishKitchen;const blinds=K.cornerLayout(f);const stone=K.isWall(f)?[...K.cabinetLayout(f).filter(m=>m.role!=='empty'),...blinds].map(m=>rc(m.x-m.w/2,m.y-m.d/2,m.w,m.d,c)).join(''):f.kitchen.shape==='U'||f.kitchen.obstacleFit?.cuts.length?`<path d="${K.topGeometry(f).rings.map(r=>'M'+r.map(p=>p.join(',')).join('L')+'Z').join('')}" fill="${c}" fill-rule="evenodd" ${ST()}/>`:K.slabs(f).map(s=>rc(s.x-s.w/2,s.y-s.d/2,s.w,s.d,c)).join('');return stone+blinds.map(b=>rc(b.x-b.w/2+18,b.y-b.d/2+18,b.w-36,b.d-36,'none',DASH)+`<text x="${b.x}" y="${b.y}" text-anchor="middle" dominant-baseline="central" font-size="60" fill="${PAL.ink}">转角空腔</text>`).join('')+K.cabinetLayout(f).map(m=>rc(m.x-m.w/2+2,m.y-m.d/2+2,m.w-4,m.d-4,'none',m.role==='empty'?DASH:'')+`<text x="${m.x}" y="${m.y}" text-anchor="middle" dominant-baseline="central" font-size="70" fill="${PAL.ink}">${m.index>=f.kitchen.modules.length?'薄柜':K.moduleRoles(f)[m.role]}</text>`).join('');}
   if(f?.cabinet?.sideboard){
     const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,s=f.cabinet.sideboard,bays=C.layout(f),t=f.cabinet.thickness;
     return bays.map((bay,i)=>{const left=bay.left-t,right=bay.left+bay.width+t,col=f.cabinet.columns[i];return col.fridgeBay?rc(left,y,right-left,s.fridgeDepth??d,'none',DASH)+ln(left,y+(s.fridgeDepth??d),right,y+(s.fridgeDepth??d),DASH):rc(left,y,right-left,s.lowerDepth,c)+rc(left,y,right-left,s.upperDepth,shade(c,.85))+ln(left,y+s.lowerDepth,right,y+s.lowerDepth);}).join('');
@@ -28,6 +28,13 @@ const DASH = 'stroke-dasharray="4 3"';
     return s;
   }
   switch (t){
+    case 'aquarium_mijia_2pro': return rc(x,y,w,d,'#b8d8dc')
+      +rc(x+w*.018,y+d*.02,w*.964,d*.96,'#b9d9d4')
+      +rc(x,y,w,d*.27,c)+rc(x+w*.02,y+d*.27,w*.96,d*.035,'#6d9cbd')
+      +rc(x+w*.20,y+d*.065,w*.13,d*.055,'#080b0e')
+      +ec(w*.17,d*.09,w*.13,d*.12,'#668e53')
+      +pa(`M${-w*.29} ${d*.31}Q${-w*.05} ${-d*.04} ${w*.26} ${d*.08}`,'none','stroke-width="6"')
+      +ln(x,y+d,w/2,y+d,'stroke-width="3"');
     case 'robot_p20max': return ec(0,0,w/2,d/2,c)+ec(0,-d*.115,w*.07,d*.068,shade(c,.8))+rc(-w*.09,d*.455,w*.18,d*.035,'#20272b','rx="4"');
     case 'robot_p20max_tank': {
       let s=rc(x,y,w,d,'#9ca7ad',`rx="${w*.24}"`)+rc(x+w*.035,y+d*.015,w*.93,d*.91,c,`rx="${w*.26}"`)
@@ -107,6 +114,7 @@ const DASH = 'stroke-dasharray="4 3"';
       pts.forEach(([px,py]) => s += `<circle cx="${px}" cy="${py}" r="${r}" fill="none" stroke="#bbb" stroke-width="1" vector-effect="non-scaling-stroke"/><circle cx="${px}" cy="${py}" r="${r*.45}" fill="#666"/>`);
       return s;
     }
+    case 'sink_arrow_680': case 'sink_arrow_750': return rc(x,y,w,d,c,'rx="12"')+rc(x+20,y+20,w-40,d-39,'#454d50','rx="20"')+rc(w*.17,y+20,w*.3,d*.22,c,'rx="12"')+rc(x+w*.12,y+d*.42,w*.28,d*.30,'#a3a8a9','rx="12"')+`<circle cx="${w*.32}" cy="${y+d*.10}" r="15" fill="#aeb4b6"/>`+ln(w*.32,y+d*.10,w*.32,y+d*.48);
     case 'ksink': return rc(x,y,w,d,c,'rx="20"') + rc(x+w*.06,y+d*.18,w*.42,d*.66,'#fff','rx="50"') + rc(x+w*.52,y+d*.18,w*.42,d*.66,'#fff','rx="50"') + `<circle cx="0" cy="${y+d*.09}" r="22" fill="#999"/>`;
     case 'fridge_french_drawer': return rc(x,y,w,d,c) + rc(x,y+d*.92,w,d*.08,shade(c,.9)) + ln(0,y+d*.92,0,y+d);
     case 'fridge': return rc(x,y,w,d,c,'rx="30"') + ln(x,y+d*.14,x+w,y+d*.14) + ln(0,y+d*.14,0,y+d) + rc(-70,y+d*.5,40,d*.25,'#aab') + rc(30,y+d*.5,40,d*.25,'#aab');

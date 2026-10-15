@@ -131,7 +131,7 @@
   for(const c of p.cabinet.columns){c.shelves=c.shelves.map(v=>Math.round(v*inside/old));c.drawers=c.drawers.map(v=>({...v,height:Math.max(60,Math.round(v.height*inside/old))}));}
   return p.cabinet.autoDoors?autoDoors({...f,cabinet:p.cabinet}).cabinet:p.cabinet;
  }
- function height(f){if(f.type==='vanity')return f.cabinet?.bodyHeight??products().cabinetSpec(f).bodyHeight;return f.h||({nightstand:500,chest:850,shoecab:1000,tvstand:450,bookshelf:1800,kitchenwall:700}[f.type])||preset(defaultId(f)).h;}
+ function height(f){if(f.kitchen)return f.kitchen.baseHeight;if(f.type==='vanity')return f.cabinet?.bodyHeight??products().cabinetSpec(f).bodyHeight;return f.h||({nightstand:500,chest:850,shoecab:1000,tvstand:450,bookshelf:1800,kitchenwall:700}[f.type])||preset(defaultId(f)).h;}
  function frontHeight(f,c=config(f)){return c.template==='kitchen-base'&&Number.isFinite(c.frontTop)?c.frontTop:height(f);}
  // Kitchen module configs are derived, never written into the saved kitchen.
  function kitchenOverlay(f,c=config(f)){return f.type==='kitchenwall'||c.template==='kitchen-base'||c.template==='base';}
@@ -172,8 +172,9 @@
   c.columns=[0,1,2].map(i=>old?{...old[i],width:i===1?width:side}:{width:i===1?width:side,door:i===1?'none':i===0?'left':'right',doorOpen:false,handle:'none',shelves:i===1?[]:[Math.round((height(f)-2*c.thickness)/2)],drawers:[]});
   return validate({...f,cabinet:c});
  }
- function hoodBay(f){if(f.type!=='kitchenwall'||f.obj||f.cabinet?.hoodBayHeight===undefined)return null;const c=config(f),bay=layout(f)[1];return {...bay,height:c.hoodBayHeight,depth:f.d-c.thickness};}
+ function hoodBay(f){if(f.kitchen){const part=(root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null)).hoodHosts(f)[0];return part?hoodBay(part):null;}if(f.type!=='kitchenwall'||f.obj||f.cabinet?.hoodBayHeight===undefined)return null;const c=config(f),bay=layout(f)[1];return {...bay,height:c.hoodBayHeight,depth:f.d-c.thickness};}
  function hoodBayFit(host,hood){
+  if(host.kitchen){const parts=(root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null)).hoodHosts(host),results=parts.map(part=>hoodBayFit(part,hood));return results.find(v=>v?.fits)||results[0]||null;}
   const bay=hoodBay(host),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),part=P.hoodInstallation(hood);if(!bay||!part)return null;
   const a=(host.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a),b=(hood.rot||0)*Math.PI/180,fc=Math.cos(b),fs=Math.sin(b),sign=host.flip?-1:1;
   const local=(x,y)=>{const dx=x-host.cx,dy=y-host.cy;return [sign*(dx*co+dy*si),-dx*si+dy*co];};
@@ -189,7 +190,7 @@
   return {fits:!reasons.length,reasons,width:bay.width,height:bay.height,depth:bay.depth};
  }
  function centerHoodInBay(host,hood,flush=false){
-  const bay=hoodBay(host),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),part=P.hoodInstallation(hood);if(!bay||!part)throw Error('请选择带嵌合区的厨房吊柜和烟机');if(hood.locked)throw Error('烟机已锁定，请先解锁');
+  if(host.kitchen){const targets=(root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null)).hoodHosts(host),target=targets.find(v=>hoodBayFit(v,hood)?.fits)||targets[0];if(!target)throw Error('吊柜没有烟机嵌合区');return centerHoodInBay(target,hood,flush);}const bay=hoodBay(host),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),part=P.hoodInstallation(hood);if(!bay||!part)throw Error('请选择带嵌合区的厨房吊柜和烟机');if(hood.locked)throw Error('烟机已锁定，请先解锁');
   const a=(host.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a),x=bay.center*(host.flip?-1:1),current=(hood.cx-host.cx)*co+(hood.cy-host.cy)*si,delta=x-current;
   const next={...hood,cx:hood.cx+delta*co,cy:hood.cy+delta*si};
   if(flush){const y=-host.d/2+hood.d/2;next.cx=host.cx+x*co-y*si;next.cy=host.cy+x*si+y*co;next.rot=host.rot||0;next.flip=!!host.flip;next.mountHeight=P.value(host,'mountHeight')-part.bodyHeight;if(next.mountHeight<0)throw Error('吊柜高度不足，烟机底部将低于地面');const fit=hoodBayFit(host,next);if(!fit.fits)throw Error(fit.reasons.join('；'));}
@@ -346,7 +347,8 @@
   if(c?.doorOverlay!==undefined&&!['full','half','inset'].includes(c.doorOverlay))throw Error('柜门盖板方式须为全盖、半盖或无盖');
   if(c?.doorMaxAngle!==undefined&&(!finite(c.doorMaxAngle)||c.doorMaxAngle<1||c.doorMaxAngle>180))throw Error('柜门最大开启角度须为 1–180°');
   if(c?.frontTop!==undefined&&(c.template!=='kitchen-base'||!finite(c.frontTop)||c.frontTop<c.plinth+200||c.frontTop>h))throw Error('厨房派生门板顶高无效');
-  if(![f.w,f.d,h].every(finite)||f.w<150||f.w>6000||f.d<150||f.d>1200||h<200||h>3200)throw Error('柜宽 150–6000、深 150–1200、高 200–3200 mm');
+  const minDepth=c?.template==='kitchen-base'||f.type==='kitchenwall'?products().definition('counter').kitchenDepth.min:150;
+  if(![f.w,f.d,h].every(finite)||f.w<150||f.w>6000||f.d<minDepth||f.d>1200||h<200||h>3200)throw Error(`柜宽 150–6000、深 ${minDepth}–1200、高 200–3200 mm`);
   if(!c||c.version!==1||!finite(c.thickness)||c.thickness<12||c.thickness>30||!finite(c.plinth)||c.plinth<0||c.plinth>250||!Array.isArray(c.columns)||c.columns.length<1||c.columns.length>12)throw Error('柜板厚 12–30 mm，底座高 0–250 mm，分区 1–12 个');
   if(c.bodyHeight!==undefined&&(f.type!=='vanity'||!finite(c.bodyHeight)||c.bodyHeight<products().cabinetSpec(f).min||c.bodyHeight>products().cabinetSpec(f).max))throw Error('浴室柜箱体高度须为 200–3200 mm，仅适用于浴室柜');
   if(c.hoodBayHeight!==undefined&&(f.type!=='kitchenwall'||c.entry||c.sideboard||c.plinth!==0||c.autoDoors||c.columns.length!==3||!finite(c.hoodBayHeight)||c.hoodBayHeight<80||c.hoodBayHeight>h-2*c.thickness-100||Math.abs(widths(f)[0]-widths(f)[2])>.01||c.columns.some(col=>col.drawers.length)||c.columns.some(col=>col.top==='drawer'||col.pegboard||col.doorBottom!==undefined)||c.columns[1].shelves.some(y=>y<c.hoodBayHeight)))throw Error('烟机嵌合区须为居中的三分区吊柜，净高至少 80 mm，上方保留 100 mm；中部不能设置底部抽屉');
@@ -362,7 +364,8 @@
   if(c.columns.some(col=>!col||typeof col!=='object'))throw Error('柜体分区无效');
   if(explicit&&explicit!==c.columns.length)throw Error('须为所有分区指定净宽');
   const values=widths(f);
-  if(inner<100||values.some(v=>!finite(v)||v<100)||f.d<4*c.thickness)throw Error('内部净高、分区净宽须至少 100 mm，柜深须容纳板件');
+  const minBoardDepth=(c.template==='kitchen-base'||f.type==='kitchenwall')&&!c.columns.some(col=>col.drawers?.length)?2*c.thickness+1:4*c.thickness;
+  if(inner<100||values.some(v=>!finite(v)||v<100)||f.d<minBoardDepth)throw Error('内部净高、分区净宽须至少 100 mm，柜深须容纳板件');
   if(Math.abs(values.reduce((a,b)=>a+b,0)+(c.columns.length+1)*c.thickness-f.w)>.01)throw Error('分区净宽加板厚须等于柜体总宽');
   for(const col of c.columns){
    if(!c.sideboard&&['displayDoor','displayMaxAngle'].some(key=>col[key]!==undefined))throw Error('展示门设置仅适用于分层餐边柜');

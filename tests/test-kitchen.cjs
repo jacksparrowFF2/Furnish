@@ -18,7 +18,7 @@ for(const rot of [0,90,37,270])for(const flip of [false,true]){
  const plan={rooms:[{id:'r',name:'房间',poly:[[-5000,-5000],[10000,-5000],[10000,10000],[-5000,10000]]}],walls:[],doors:[],windows:[],beams:[]};assert(!P.spaceCheck(plan,[list[0],chair],{scanPassages:false}).some(v=>v.kind==='overlap'));
  assert.equal(K.openingZones(list[0],{passage:0}).filter(z=>z.column===1&&z.kind==='cabinetdrawer').length,1);
 }
-assert.throws(()=>K.configure(host,{...host.kitchen,depth:299}));assert.throws(()=>K.attach({...sink,w:861},host,0));assert.doesNotThrow(()=>K.attach({...sink,w:860},host,0));
+assert.throws(()=>K.configure(host,{...host.kitchen,depth:49.99}));assert.throws(()=>K.attach({...sink,w:861},host,0));assert.doesNotThrow(()=>K.attach({...sink,w:860},host,0));
 assert.throws(()=>P.validateWork({furniture:[host,{...sink,counterLink:{hostId:'missing',module:0}}]}));
 assert.throws(()=>P.validateWork({furniture:[host,items[1],{...items[1],id:'second'}]}));
 const resized=D.resizeFurniture(host,{w:3000,d:2400});assert.deepEqual([resized.w,resized.d],[3000,2400]);K.validate(resized);

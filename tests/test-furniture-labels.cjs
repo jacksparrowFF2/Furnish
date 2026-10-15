@@ -5,4 +5,10 @@ for(const rotation of [0,90,180,270])for(const rot of [0,30,45,90,135]){const f=
 const long=D.furnitureLabels([{...item,w:700,d:500}])[0];assert(long.truncated);assert(long.lines.join('').endsWith('…'));assert(D.furnitureLabels([item],{scale:.015})[0].lines.length===0);assert(D.furnitureLabels([item],{scale:.1})[0].lines.length>0);
 const overlap=[item,{...item,id:'other'}],chosen=D.furnitureLabels(overlap,{selected:['other']});assert(chosen.find(v=>v.id==='other').lines.length>0);const boxes=chosen.filter(v=>v.box).map(v=>v.box);for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++)assert(!hit(boxes[i],boxes[j]));
 const ascii=D.furnitureLabels([{...item,name:'Sofa A 2.16m (Snow white)'}])[0];assert(ascii.lines.length>0);assert.equal(JSON.stringify(item),before);
-console.log('PASS furniture label wrapping/truncation, projected footprint containment, angled/mirrored-compatible rectangles, four views, low-zoom density, selected priority and unchanged saved names');
+const G=require('../src/core/layout-geometry.js'),table={id:'table',type:'table',name:'餐桌',cx:0,cy:0,w:900,d:1400,rot:0},seat={id:'seat',type:'chair',name:'餐椅',cx:-500,cy:-310,w:450,d:550,rot:-90};
+for(const rotation of [0,90,180,270])for(const selected of [[],['seat']]){
+ const label=D.furnitureLabels([table,seat],{rotation,selected}).find(v=>v.id==='seat');
+ if(label.box){const b=label.box,poly=[[b[0],b[1]],[b[2],b[1]],[b[2],b[3]],[b[0],b[3]]].map(p=>D.rotate(p,-rotation));assert(!G.polygonOverlap(poly,G.corners(table),0),'a seat label cannot be partly hidden by the table');}
+ assert(D.furnitureLabels([table,{...seat,cx:-1500}],{rotation,selected}).find(v=>v.id==='seat').lines.length>0,'pulling the chair out restores its full name');
+}
+console.log('PASS furniture label wrapping/truncation, projected footprint containment, four views, seat/table occlusion, low-zoom density, selected priority and unchanged saved names');

@@ -21,8 +21,8 @@ assert.deepEqual(S.move(f,194,500,{...options,guides:false}).guides,[]);
 assert.deepEqual(S.move(f,194,500,{...options,furniture:[{...other,cy:7000}]}).guides,[]);
 // A closer wall beats an alignment candidate; ties preserve wall precedence.
 assert.deepEqual(S.move(f,46,500,{...base,furniture:[{...other,cx:103}]}).guides.filter(g=>g.v),[]);
-assert.deepEqual(S.point({x:8,y:27},{scale:1,rects:[[0,20,50,30]]}),{x:10,y:30});
-assert.deepEqual(S.point({x:7,y:27},{scale:1,rects:[[0,20,50,30]]}),{x:0,y:30});
+assert.deepEqual(S.point({x:8,y:27},{scale:1,rects:[[0,20,50,30]]}),{x:8,y:30});
+assert.deepEqual(S.point({x:7,y:27},{scale:1,rects:[[0,20,50,30]]}),{x:7,y:30}); // Closest finite edge, no unrelated X alignment.
 assert.deepEqual(S.point({x:42,y:19},{scale:1,rects:[],anchor:{x:0,y:0}}),{x:40,y:0});
 assert.deepEqual(S.point({x:19,y:42},{scale:1,rects:[],anchor:{x:0,y:0}}),{x:0,y:40});
 assert.deepEqual(S.point({x:20,y:20},{scale:1,rects:[],anchor:{x:0,y:0}}),{x:0,y:20});

@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict'),K=require('../src/core/kitchen-core.js'),P=require('../src/core/project-core.js');
+const cfg={version:1,shape:'U',corner:'left',depth:600,counterDepth:630,baseHeight:830,thickness:20,modules:[{run:0,width:550,role:'drawer',drawerHeights:[150,200,180,200]},{run:1,width:700,role:'drawer'},{run:0,width:800,role:'drawer',drawerHeights:[120,150,182.5,277.5]},{run:0,width:600,role:'drawer',drawerHeights:[230,100,200,200]},{run:2,width:600,role:'drawer'}]},base={id:'k',type:'counter',cx:4000,cy:4000,rot:0,color:'#eeeeee'};
+for(const corner of ['left','right'])for(const flip of [false,true])for(const rot of [0,37,180]){
+ const f=K.configure({...base,rot,flip},{...cfg,corner}),before=structuredClone(f),targets=K.drawerBoundaryTargets(f,2,1);
+ assert.deepEqual(targets.map(t=>[t.column,t.boundary,t.height,t.delta]),[[0,1,450,80],[3,0,330,-40],[3,1,430,60]]);
+ for(const target of targets){const v=K.resizeDrawerBoundary(f,2,1,target.delta),heights=v.kitchen.modules[2].drawerHeights;assert.equal(100+heights[0]+heights[1],target.height);assert.equal(heights.reduce((a,b)=>a+b),730);const fixed=structuredClone(v);fixed.kitchen.modules[2].drawerHeights=f.kitchen.modules[2].drawerHeights;assert.deepEqual(fixed,f,'neighbor and all cabinet dimensions remain exact');assert.deepEqual(P.unpack(P.pack({planId:'p',current:{furniture:[v]},designs:[],catalog:[]})).current.furniture[0],v);}
+ const row=K.elevationRuns(f)[0],local=row.indices.indexOf(2),mapped=K.drawerBoundaryTargets(row.furniture,local,1).map(t=>({...t,column:row.indices[t.column]}));assert.deepEqual(mapped.map(t=>[t.column,t.height]).sort(),targets.map(t=>[t.column,t.height]).sort());assert.deepEqual(f,before);
+}
+let f=K.configure(base,cfg),k=structuredClone(f.kitchen);k.modules[0].role='door';delete k.modules[0].drawerHeights;f=K.configure(f,k);assert(K.drawerBoundaryTargets(f,2,1).every(t=>t.column===3),'do not skip intervening non-drawer cabinets');
+k=structuredClone(f.kitchen);k.modules[3].drawerOpen=[false,true,false,false];f=K.configure(f,k);assert.deepEqual(K.drawerBoundaryTargets(f,2,1),[],'open reference drawers do not supply a closed-plane guide');
+assert.deepEqual(K.drawerBoundaryTargets({...f,locked:true},2,1),[]);for(const boundary of [-1,3,NaN,1.5])assert.deepEqual(K.drawerBoundaryTargets(f,2,boundary),[]);
+// A target exactly at the editable lower limit is valid; one hundredth below is excluded.
+k=structuredClone(cfg);k.modules[0].drawerHeights=[216,200,114,200];f=K.configure(base,k);assert(K.drawerBoundaryTargets(f,2,1).some(t=>t.column===0&&t.height===316));k.modules[0].drawerHeights=[215.99,200.01,114,200];f=K.configure(base,k);assert(!K.drawerBoundaryTargets(f,2,1).some(t=>t.column===0&&t.boundary===0));
+(async()=>{
+ const fs=require('node:fs'),vm=require('node:vm'),C=require('../src/core/cabinet-core.js'),map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(map.three),context=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});for(const name of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),context);
+ const box=(w,h,d,color,x,y,z)=>{const o=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));o.position.set(x,y+h/2,z);return o;};
+ const v=K.resizeDrawerBoundary(K.configure(base,cfg),2,1,80),model=context.FurnishKitchenModel.build(T,v,box);model.updateMatrixWorld(true);
+ for(const column of [0,2]){const fronts=[];model.children.find(o=>o.userData.kitchenModule===column).traverse(o=>{if(o.userData.cabinetDrawerBoard==='front')fronts[o.userData.cabinetPart.drawer]=new T.Box3().setFromObject(o);});const seam=(fronts[1].max.y+fronts[2].min.y)*500;assert(Math.abs(seam-450)<.0001,'production front gap centers align at 450 mm');}
+ console.log('PASS adjacent drawer alignment targets, minimum boundary, independent totals, exclusion, transforms/elevations, production front seams and project restoration');
+})().catch(e=>{console.error(e);process.exitCode=1;});
