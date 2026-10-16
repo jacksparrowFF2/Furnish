@@ -6,7 +6,7 @@ function renderPanel(){
   const p=$('#panel'),f=selIds().length===1&&getF(ui.sel?.id),name=panelSelectionName();
   p.insertAdjacentHTML('afterbegin',`<nav class="property-nav" aria-label="${tr('属性与方案范围','Properties scope')}"><div><button class="btn ${object?'on':''}" data-panel-scope="object" aria-pressed="${object}" ${ui.sel?'':'disabled'}>${tr('当前对象','Current object')}</button><button class="btn ${object?'':'on'}" data-panel-scope="design" aria-pressed="${!object}">${tr('整案','Whole design')}</button></div><small>${object?esc(name):esc(nm(PLAN.name))}${!object&&ui.sel?` · ${tr('保留选中','Selection retained')} ${esc(name)}`:''}</small></nav>`);
   let peek=$('#property-peek');if(!peek){peek=document.createElement('div');peek.id='property-peek';$('#stage').append(peek);peek.onclick=e=>{const b=e.target.closest('[data-peek-scope]');if(!b)return;ui.panelScope=b.dataset.peekScope;renderPanel();drawer('panel',true);};}
-  peek.hidden=!ui.sel;
+  peek.hidden=!ui.sel;peek.dataset.kind=ui.sel?.kind||'';
   peek.innerHTML=`<div><b>${esc(name)}</b>${f?furnitureDimensionSummary(f):''}</div><button class="btn" data-peek-scope="object" aria-expanded="${$('aside.right').classList.contains('open')}" aria-controls="panel">${tr('展开属性','Expand properties')}</button>`;
 }
 function panelSelectionName(){
@@ -51,17 +51,168 @@ function renderBrokenFurniturePanel(f,p){
 // 底部浮动工具条：触屏没有键盘，常用操作都放在这里
 function renderFab(){
   const fab = $('#fab'), ids = selIds(), f = ids.length === 1 && getF(ids[0]), r = ui.sel?.kind === 'room' && ROOMS.find(r => r.id === ui.sel.id);
+  closeFabEditor(false);
+  if(!ids.length)clearFabDock();
+  fab.removeAttribute('style');
+  fab.setAttribute('role','toolbar');fab.setAttribute('aria-label',tr('选中对象快捷调整','Selection quick adjustments'));
   if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){fab.innerHTML=`<span class="name">${tr('测量线','Measurement')}</span><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');return;}
   if (!ids.length && !r){ fab.classList.remove('show'); return; }
-  const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}">${ico(icon)}</button>`;
+  const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   fab.innerHTML = ids.length
-    ? `<span class="name">${f ? esc(nm(f.name)) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
+    ? `<div class="fab-primary"><span class="name">${f ? esc(nm(f.name)) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
+      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${f.locked||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(f.w.toFixed(2))} × ${Number(f.d.toFixed(2))}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
+      + `<button class="btn" data-fab-edit="distance" aria-haspopup="dialog" aria-expanded="false" ${selItems().some(v=>furnitureError(v))?'disabled':''}>${tr('四向净距','Clearances')}</button></div><div class="fab-actions">`
       + b('rotL', 'rotL', tr('逆时针 90°', 'Rotate left')) + b('rotR', 'rotR', tr('顺时针 90°', 'Rotate right')) + b('flip', 'flip', tr('镜像', 'Mirror'))
       + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
       + b('lock', selItems().every(x => x.locked) ? 'lock' : 'unlock', tr('锁定 / 解锁', 'Lock / unlock')) + b('dup', 'copy', tr('复制一份', 'Duplicate')) + b('del', 'trash', tr('删除', 'Delete'), 'danger')
-      + `<span class="sep"></span><button class="btn narrow-only" data-act="prop">${tr('属性','Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`
+      + `<span class="sep"></span><button class="btn" data-act="prop">${tr('属性','Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button></div>`
     : `<span class="name">${esc(nm(state.rooms[r.id].name))}</span><button class="btn" data-act="roomFurn">${tr('选中房间内家具','Select its furniture')}</button><button class="btn narrow-only" data-act="prop">${tr('地面 / 属性','Floor / Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;
   fab.classList.add('show');
+  fab.querySelectorAll('[data-fab-edit]').forEach(b=>b.onclick=()=>openFabEditor(b.dataset.fabEdit));
+  queueFabPosition();
+}
+
+function furnitureUsesDetailedDesign(f){return FurnishCabinet.supported(f)||!!f.kitchen;}
+let fabEditor=null,fabPositionFrame=0,fabDockKey='',fabRevealFrame=0,fabRevealPending=false;
+function closeFabEditor(focus=true){
+  if(!fabEditor)return;
+  const {kind,dispose}=fabEditor;fabEditor=null;dispose();$('#fab-editor')?.remove();
+  $('#stage').classList.remove('fab-editing');
+  const button=$(`#fab [data-fab-edit="${kind}"]`);button?.setAttribute('aria-expanded','false');
+  if(focus)button?.focus({preventScroll:true});
+  queueFabPosition();
+}
+function openFabEditor(kind){
+  if(fabEditor?.kind===kind){closeFabEditor();return;}
+  closeFabEditor(false);
+  const items=selItems(),f=items.length===1&&items[0];if(!items.length)return;
+  if(kind==='size'){
+    if(!f||f.locked||furnitureError(f))return;
+    if(furnitureUsesDetailedDesign(f)){FurnishCabinetEditor.open(f.id);return;}
+    if(FurnishDesign.products().hoodInstallation(f)){ACT.prop();return;}
+  }
+  const before=snap(),planId=PLAN.id,ids=selIds().join('\n'),panel=document.createElement('div');
+  panel.id='fab-editor';panel.setAttribute('role','dialog');panel.setAttribute('aria-labelledby','fab-editor-title');
+  const title=kind==='size'?tr('调整占地尺寸','Edit footprint size'):tr('四向净距定位','Position by clearance');
+  panel.innerHTML=`<div class="fab-editor-head"><b id="fab-editor-title">${title}</b><button class="btn" data-fab-close aria-label="${tr('关闭快捷调整','Close quick adjustments')}">${ico('x')}</button></div>`
+    +(kind==='size'?`<form id="fab-size-form"><div class="form"><label>${tr('宽','Width')} (mm)<input id="fab-width" type="number" min="50" max="20000" step="any" value="${f.w}" required></label><label>${tr('深','Depth')} (mm)<input id="fab-depth" type="number" min="50" max="20000" step="any" value="${f.d}" required></label></div><p class="muted small">${tr('占地宽 × 深；尺寸修改用于布局缩放。','Footprint width × depth; resizing is for layout.')} ${tr('固定基准','Fixed anchor')}：${tr(...FurnishDesign.resizeAnchors[f.resizeAnchor||'center'])}</p><p id="fab-size-error" class="project-error" role="alert"></p><div class="actions"><button class="btn" type="button" data-fab-close>${tr('取消','Cancel')}</button><button class="btn primary" type="submit">${tr('应用尺寸','Apply size')}</button></div></form>`
+    :directionalMeasurementPanel(items,'fab-distance-save',true));
+  ($('#fab-dock')||$('#stage')).append(panel);$('#stage').classList.add('fab-editing');
+  const outside=e=>{if(!e.target.closest('#fab,#fab-editor'))closeFabEditor(false);};
+  document.addEventListener('pointerdown',outside,true);
+  const keydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeFabEditor();}};
+  document.addEventListener('keydown',keydown,true);
+  fabEditor={kind,dispose:()=>{document.removeEventListener('pointerdown',outside,true);document.removeEventListener('keydown',keydown,true);}};
+  panel.querySelectorAll('[data-fab-close]').forEach(b=>b.onclick=()=>closeFabEditor());
+  // Keep the app's canvas shortcuts from firing while using this small editor.
+  panel.addEventListener('keydown',e=>e.stopPropagation());
+  if(kind==='size')panel.querySelector('form').onsubmit=e=>{
+    e.preventDefault();try{
+      if(PLAN.id!==planId||snap()!==before||selIds().join('\n')!==ids)throw Error(tr('方案已变化，请重新打开尺寸调整','Design changed; reopen size adjustment'));
+      const w=panel.querySelector('#fab-width'),d=panel.querySelector('#fab-depth');
+      if(!w.value.trim()||!d.value.trim())throw Error(tr('请输入有效宽度和深度','Enter a valid width and depth'));
+      const next=FurnishDesign.resizeFurniture(getF(f.id),{w:Number(w.value),d:Number(d.value)});
+      closeFabEditor(false);if(next.w!==f.w||next.d!==f.d)mutate(()=>Object.assign(getF(f.id),next));
+      $('#fab [data-fab-edit="size"]')?.focus({preventScroll:true});
+    }catch(error){panel.querySelector('#fab-size-error').textContent=error.message;}
+  };
+  else{
+    panel.querySelectorAll('[data-distance-edit]').forEach(b=>b.onclick=()=>{const dir=b.dataset.distanceEdit;closeFabEditor();editDirectionalDistance(dir);});
+  }
+  $(`#fab [data-fab-edit="${kind}"]`)?.setAttribute('aria-expanded','true');
+  queueFabPosition();
+  const first=panel.querySelector(kind==='size'?'input':'[data-distance-edit]:not(:disabled)')||panel.querySelector('button');first.focus({preventScroll:true});if(kind==='size')first.select();
+}
+
+// Score real screen rectangles after the SVG has rendered. No layout state is saved.
+function queueFabPosition(){
+  if(fabPositionFrame)return;
+  fabPositionFrame=requestAnimationFrame(()=>{fabPositionFrame=0;positionFab();});
+}
+function clearFabDock(){
+  const stage=$('#stage'),dock=$('#fab-dock');if(!dock)return;
+  for(const child of [...dock.children])stage.append(child);dock.remove();fabDockKey='';
+  stage.classList.remove('fab-docked-top','fab-docked-right');
+  for(const key of ['height','width','limit','bar-height'])stage.style.removeProperty('--fab-dock-'+key);
+}
+function dockFab(mode,key){
+  const stage=$('#stage'),fab=$('#fab'),editor=$('#fab-editor');let dock=$('#fab-dock');
+  const before=[fabDockKey,stage.style.getPropertyValue('--fab-dock-height'),stage.style.getPropertyValue('--fab-dock-width')].join(';');
+  if(!dock){dock=document.createElement('div');dock.id='fab-dock';stage.append(dock);}
+  stage.classList.toggle('fab-docked-top',mode==='top');stage.classList.toggle('fab-docked-right',mode==='right');
+  stage.style.setProperty('--fab-dock-width',mode==='right'?Math.min(360,stage.clientWidth*.44)+'px':'0px');
+  stage.style.setProperty('--fab-dock-limit',(mode==='top'?Math.min(360,stage.clientHeight*.5):stage.clientHeight)+'px');
+  dock.append(fab);if(editor)dock.append(editor);
+  stage.style.setProperty('--fab-dock-bar-height',fab.offsetHeight+'px');
+  stage.style.setProperty('--fab-dock-height',mode==='top'?Math.ceil(dock.getBoundingClientRect().height)+'px':'0px');
+  fabDockKey=key;
+  const after=[key,stage.style.getPropertyValue('--fab-dock-height'),stage.style.getPropertyValue('--fab-dock-width')].join(';');
+  if(before!==after||fabRevealPending){
+    fabRevealPending=false;
+    if(fabRevealFrame)cancelAnimationFrame(fabRevealFrame);
+    fabRevealFrame=requestAnimationFrame(()=>{fabRevealFrame=requestAnimationFrame(()=>{fabRevealFrame=0;if(fabDockKey===key)revealFabSelection();});});
+  }
+}
+function revealFabSelection(){
+  if(typeof drag!=='undefined'&&drag){fabRevealPending=true;return;}
+  if(is3D()||!selIds().length)return;
+  const points=selItems().flatMap(f=>FurnishGeometry.corners(f).map(p=>drawingPoint(p))),xs=points.map(p=>(p[0]-view.x0)*view.s),ys=points.map(p=>(p[1]-view.y0)*view.s);
+  const shift=(values,size)=>{const a=Math.min(...values),b=Math.max(...values);return b-a>size-32?(a+b-size)/2:a<16?a-16:b>size-16?b-size+16:0;};
+  const dx=shift(xs,svg.clientWidth),dy=shift(ys,svg.clientHeight);
+  if(Math.abs(dx)>.5||Math.abs(dy)>.5){view.x0+=dx/view.s;view.y0+=dy/view.s;applyView();}
+}
+function positionFab(){
+  const fab=$('#fab'),stage=$('#stage');if(!fab?.classList.contains('show')||!selIds().length)return;
+  // A new selection may be the start of a drag. Keep its pointer mapping stable.
+  if(typeof drag!=='undefined'&&drag)return;
+  const bounds=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight;
+  const key=[...selIds(),W,H].join('|');
+  if(is3D())clearFabDock();
+  else if(W<=720||fabDockKey===key){dockFab(W>=600&&H<450||W>720?'right':'top',key);return;}
+  else if(fabDockKey)clearFabDock();
+  const local=r=>({x:r.left-bounds.left,y:r.top-bounds.top,w:r.width,h:r.height});
+  const visible=r=>r.w>0&&r.h>0&&r.x<W&&r.y<H&&r.x+r.w>0&&r.y+r.h>0;
+  const obstacles=[];
+  if(!is3D()){
+    const selectedIds=new Set(selIds());
+    for(const f of state.furniture){
+      if(!ui.layers.furn)break;
+      const p=FurnishGeometry.corners(f).map(p=>drawingPoint(p));
+      const canvas=svg.getBoundingClientRect(),xs=p.map(p=>canvas.left-bounds.left+(p[0]-view.x0)*view.s),ys=p.map(p=>canvas.top-bounds.top+(p[1]-view.y0)*view.s);
+      const r={x:Math.min(...xs)-12,y:Math.min(...ys)-22,w:Math.max(...xs)-Math.min(...xs)+24,h:Math.max(...ys)-Math.min(...ys)+44,weight:selectedIds.has(f.id)?10:5};
+      if(visible(r))obstacles.push(r);
+    }
+    for(const el of stage.querySelectorAll('#gSel text,#gMeasure text,[data-hob-gap] text,#gDims text')){
+      const r=local(el.getBoundingClientRect());if(visible(r))obstacles.push({...r,weight:35});
+    }
+  }
+  for(const el of stage.querySelectorAll('.canvas-rail,.space-status,.hud,.scalebar,.drawing-rotate,.drawing-compass,#property-peek,.scene-light')){
+    if(getComputedStyle(el).visibility==='hidden'||getComputedStyle(el).display==='none')continue;
+    const r=local(el.getBoundingClientRect());if(visible(r))obstacles.push({...r,weight:25});
+  }
+  const selected=obstacles.filter(r=>r.weight===10&&visible(r));
+  const focus=selected.length?{x:Math.min(...selected.map(r=>r.x)),y:Math.min(...selected.map(r=>r.y)),right:Math.max(...selected.map(r=>r.x+r.w)),bottom:Math.max(...selected.map(r=>r.y+r.h))}:null;
+  const overlap=(a,b)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w+6)-Math.max(a.x,b.x-6))*Math.max(0,Math.min(a.y+a.h,b.y+b.h+6)-Math.max(a.y,b.y-6));
+  const editor=$('#fab-editor');
+  const choices=el=>{
+    const w=el.offsetWidth,h=el.offsetHeight,clamp=(n,max)=>Math.max(10,Math.min(n,Math.max(10,max))),candidates=[];
+    const add=(x,y)=>candidates.push({x:clamp(x,W-w-10),y:clamp(y,H-h-10),w,h});
+    if(focus){const cx=(focus.x+focus.right-w)/2;add(cx,focus.bottom+12);add(cx,focus.y-h-12);add(focus.right+12,focus.y);add(focus.x-w-12,focus.y);}
+    add((W-w)/2,H-h-100);add((W-w)/2,12);add(12,12);add(W-w-12,12);add(12,H-h-12);add(W-w-12,H-h-12);
+    // More edge slots help when a measurement occupies a default corner.
+    for(let y=12;y<H-h-10;y+=Math.max(44,h/2)){add(12,y);add(W-w-12,y);}
+    for(const o of obstacles.filter(o=>o.weight!==5).slice(0,80)){add(12,o.y-h-12);add(W-w-12,o.y+o.h+12);}
+    for(const other of [fab,editor].filter(v=>v&&v!==el)){add(12,24+other.offsetHeight);add(W-w-12,H-h-other.offsetHeight-24);}
+    const score=r=>obstacles.reduce((sum,o)=>{const area=overlap(r,o);return sum+(area?(o.weight===10?1e11:o.weight===35?1e10:o.weight===25?1e9:0)+area*o.weight:0);},0)+(focus?Math.hypot(r.x+w/2-(focus.x+focus.right)/2,r.y+h/2-(focus.y+focus.bottom)/2):H-r.y)*.02;
+    return candidates.map(r=>({...r,score:score(r)}));
+  };
+  const bars=choices(fab);let chosen=bars.reduce((a,b)=>a.score<=b.score?a:b),chosenEditor=null;
+  if(editor){
+    const panels=choices(editor);let score=Infinity;
+    for(const bar of bars)for(const panel of panels){const area=overlap(bar,panel),value=bar.score+panel.score+(area?1e12+area*50:0);if(value<score){score=value;chosen=bar;chosenEditor=panel;}}
+  }
+  if(!is3D()&&[chosen,chosenEditor].filter(Boolean).some(r=>obstacles.some(o=>o.weight>=10&&overlap(r,o)>0))){dockFab(W>720?'right':'top',key);return;}
+  for(const [el,r] of [[fab,chosen],[editor,chosenEditor]])if(el&&r){el.style.left=r.x+'px';el.style.top=r.y+'px';el.style.bottom='auto';el.style.transform='none';}
 }
 
 
@@ -122,7 +273,7 @@ function dishwasherInstallationPanel(f,result){
  return `<h3>${tr('洗碗机安装与开启核对','Dishwasher installation and opening checks')}</h3><div id="dishwasher-checks" role="status" aria-live="polite"><p class="check-counts">${tr('需处理','Action needed')} ${result.checks.filter(v=>v.ok===false).length} · ${tr('待核对','Pending')} ${result.checks.filter(v=>v.ok===null).length}</p>${result.checks.filter(v=>v.ok!==true).map(row).join('')}${passed.length?`<details><summary>${tr('已建模范围未发现问题','No issues within modelled scope')} · ${passed.length}</summary>${passed.map(row).join('')}</details>`:''}</div><details class="muted small"><summary>${tr('核对范围与依据','Scope and assumptions')}</summary><p>${tr('结果与全案空间核对共用规则。开启包络是保守预留，不代表真实连杆逐板碰撞；未知高度和台面信息保留待核对。侧面／上方安装距离不随模型缩放。水电、软管、承重及现场未建模障碍另行核对。','Uses the same rules as project space checks. The opening envelope is conservative rather than a linkage simulation. Unknown heights or worktops need review. Installation distances do not scale with the model. Connections, hoses, loads and unmodelled site obstacles need separate checks.')}</p></details>`;
 }
 function furnPanel(f){
-  const cabinetDesign=FurnishCabinet.supported(f)||!!f.kitchen;
+  const cabinetDesign=furnitureUsesDetailedDesign(f);
   const installation=FurnishProject.dishwasherChecks(FurnishProject.effectivePlan(PLAN,state),f,{furniture:state.furniture});
   const fridge=['fridge','fridge_french_drawer'].includes(f.type);
   const fridgeCabinets=fridge?state.furniture.filter(g=>!furnitureError(g)&&FurnishCabinet.supported(g)&&g.cabinet?.sideboard&&g.cabinet.columns.some(col=>col.fridgeBay)).sort((a,b)=>Math.hypot(a.cx-f.cx,a.cy-f.cy)-Math.hypot(b.cx-f.cx,b.cy-f.cy)):[];
@@ -187,13 +338,14 @@ function furnPanel(f){
     </div></section>
   <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右侧白色手柄只改宽、下方白色手柄只改深，角落橙色方块同时改宽深；调整尺寸固定对侧边。Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps with guides); drag the top dot to rotate, the right white handle for width, the bottom white handle for depth, or the orange corner for both. Resizing fixes the opposite edge. Shift+click to multi-select; right-click for more.')}</section>`;
 }
-function directionalMeasurementPanel(f){
+function directionalMeasurementPanel(f,saveAllId='directional-measure-save',compact=false){
  const members=Array.isArray(f)?f:[f],locked=members.some(v=>v.locked),distances=directionalMeasurements(f),labels={t:tr('上方','Up'),b:tr('下方','Down'),l:tr('左侧','Left'),r:tr('右侧','Right')};
  const surfaceBoundary=Object.values(distances).some(m=>m?.surfaceBoundary||m?.wallPriority);
+ if(compact)return `<div class="fab-distance-grid">${Object.entries(labels).map(([dir,label])=>{const m=distances[dir],name=measurementReferenceName(m);return `<button class="btn fab-gap-choice" data-distance-row="${dir}" data-distance-edit="${dir}" ${!m||locked?'disabled':''} aria-label="${esc(`${label} ${m?Math.round(m.distance)+' mm':''} · ${name}`)}"><span>${label}<b>${m?Math.round(m.distance)+' mm':'—'}</b></span><small>${esc(name)}</small></button>`;}).join('')}</div><p class="muted small">${locked?tr('选中项含锁定家具，请先解锁。','Selection contains locked furniture; unlock first.'):tr('按图纸上下左右，外沿 → 最近参照；点击数值定位，0 可贴边。','Drawing directions, footprint edge → nearest reference. Click to position; 0 means contact.')}</p>`;
  return `<div class="mt directional-measurements"><h4>${members.length>1?tr('整组四向净距（2D）','Group clearance in four directions (2D)'):surfaceBoundary?tr('四向实体边界距离（2D）','Distance to entity boundaries (2D)'):tr('四向最近净距（2D）','Nearest clearance in four directions (2D)')}</h4>
  <p class="measurement-basis">${tr('占地外沿 → 最近参照 · 按图纸上下左右','Footprint edge → nearest reference · drawing up/down/left/right')}</p>
  ${Object.entries(labels).map(([dir,label])=>{const m=distances[dir],name=measurementReferenceName(m),action=m?`${label} ${Math.round(m.distance)} mm · ${tr('外沿到','Edge to')} ${name}`:'';return `<div class="irow" data-distance-row="${dir}"><span class="nm"><b>${label}</b><br><small>${m?esc(tr('外沿 → ','Edge → ')+name):name}</small></span>${m?`<button class="btn" data-distance-edit="${dir}" aria-label="${esc(action)}" title="${tr('输入目标净距并移动物体','Set target clearance and move item')}" ${locked?'disabled':''}>${Math.round(m.distance)} mm</button>`:'<b>—</b>'}<button class="btn" data-distance-save="${dir}" title="${tr('固定当前测量端点，不随家具移动','Keep fixed endpoints; does not follow furniture')}" ${!m||m.distance<1?'disabled':''}>${tr('留图','Keep')}</button></div>`;}).join('')}
- <button class="btn mt" id="directional-measure-save" ${Object.values(distances).some(m=>m&&m.distance>=1)?'':'disabled'}>${tr('全部留在图纸','Keep all on drawing')}</button><p class="muted small">${tr('留图后端点固定，不随家具移动。点击距离数字可移动选中项；0 表示接触或投影重叠。','Kept endpoints stay fixed when furniture moves. Click a value to move the selection; 0 means contact or projected overlap.')}</p>
+ <button class="btn mt" id="${saveAllId}" ${Object.values(distances).some(m=>m&&m.distance>=1)?'':'disabled'}>${tr('全部留在图纸','Keep all on drawing')}</button><p class="muted small">${tr('留图后端点固定，不随家具移动。点击距离数字可移动选中项；0 表示接触或投影重叠。','Kept endpoints stay fixed when furniture moves. Click a value to move the selection; 0 means contact or projected overlap.')}</p>
  ${surfaceBoundary?`<p class="measurement-basis">${tr('橙色「孔边」从开孔边量起，方向按产品左／右／前／后。','Orange cutout distances start at the opening edge, using product left/right/front/rear.')}</p>`:''}
  <details class="muted small"><summary>${tr('测量参照与规则','Measurement references and rules')}</summary><p>${tr('按当前图纸方向量到投影相交的最近家具、柜体或墙窗。高度明确分离的家具不参与；高度未知保守参与，普通圆形按矩形，厨房按台面轮廓。多选按整组外侧轮廓测量。数字定位保持点击时的参照，0 为贴边。','Measures along drawing axes to the nearest projected furniture, cabinet, wall or window. Known separated heights are excluded; unknown heights remain included. Curves use rectangles, kitchens use worktop outlines, and groups use their outer contours. Numeric placement fixes the selected reference; 0 means contact.')}${surfaceBoundary?tr(' 完整承托的水槽／灶具优先量到紧邻实体墙；开放方向量到所在模块边界，旧组合量到台面边界。',' Fully supported sinks/hobs use adjoining solid walls first, otherwise their module edge; legacy assemblies use worktop edges.'):''}</p></details></div>`;
 }

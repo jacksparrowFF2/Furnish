@@ -627,8 +627,9 @@ let libDrag = null;
 function dropPoint(x, y){
   const r = $('#stage').getBoundingClientRect();
   if (x < r.left || x > r.right || y < r.top || y > r.bottom) return null;
-  if (document.elementFromPoint(x, y)?.closest('aside.open,#fab,#walkOverlay,#joy,#walkExit')) return null;
+  if (document.elementFromPoint(x, y)?.closest('aside.open,#fab,#fab-editor,#fab-dock,#walkOverlay,#joy,#walkExit')) return null;
   if (is3D()) return window.View3D?.groundAt(x, y) || null;
+  const canvas=svg.getBoundingClientRect();if(x<canvas.left||x>canvas.right||y<canvas.top||y>canvas.bottom)return null;
   const p = toMM({clientX:x, clientY:y}); return {x:p.x, y:p.y, s:view.s};
 }
 addEventListener('pointermove', e => {
@@ -817,6 +818,7 @@ const TIPS = () => COARSE
      '3d':tr('3D 场景与平面方案实时同步 · 右侧面板修改会立即生效 · T 返回 2D', '3D stays in sync with the plan · panel edits apply instantly · T for 2D')};
 async function setView(m){
   if (m === viewMode || switching) return;
+  closeFabEditor(false);
   if (!window.View3D) return toast(tr('当前浏览器不支持 3D 场景', '3D is not supported in this browser'));
   switching = true; document.body.classList.add('busy');
   try {
@@ -832,7 +834,7 @@ async function setView(m){
     console.error(e);
     viewMode = '2d'; document.body.classList.remove('m3d');
     toast(tr('3D 引擎加载失败', 'Failed to load the 3D engine'));
-  } finally { switching = false; document.body.classList.remove('busy'); }
+  } finally { switching = false; document.body.classList.remove('busy');queueFabPosition(); }
 }
 document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => b.closest('details').open = false));
 document.querySelectorAll('#viewSeg .btn').forEach(b => b.onclick = () => setView(b.dataset.view));

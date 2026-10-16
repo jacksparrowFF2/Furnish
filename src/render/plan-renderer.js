@@ -417,6 +417,7 @@ function renderSelectedGeometry(){
     s += `<rect x="${Math.min(a.x,b.x)}" y="${Math.min(a.y,b.y)}" width="${Math.abs(b.x-a.x)}" height="${Math.abs(b.y-a.y)}" fill="rgba(47,93,98,.08)" stroke="${TEAL}" stroke-width="1" stroke-dasharray="5 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
   }
   $('#gSel').innerHTML = waterheaterClearanceSVG()+dishwasherClearanceSVG()+s;
+  if(typeof queueFabPosition==='function')queueFabPosition();
 }
 // Four independent clearances along the current drawing's screen axes.
 function clearanceSVG(f, k){

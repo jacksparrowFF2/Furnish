@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-16",
+  "change": "Selection toolbar: footprint size editor, directional clearance entry and screen placement",
+  "checks": {
+    "command": "node scripts/check.cjs",
+    "status": "PASS",
+    "regressionSuites": 174,
+    "builtInPlans": 12,
+    "syntaxAssetsAndSharedDeclarations": "PASS"
+  },
+  "browser": {
+    "command": "node scripts/verify-browser.cjs floating-toolbar directional-placement portable-smoke",
+    "status": "PASS",
+    "localResults": "output/playwright/verification-1sFVQj/results.json",
+    "additionalBuiltinVisualRun": "output/playwright/verification-kPKm7p/results.json",
+    "modes": ["http", "offline file://"],
+    "coverage": [
+      "Size cancel, invalid value, one history entry, undo and redo",
+      "Fractional millimetres retained; unchanged size does not create history",
+      "Directional placement retains the reference and fixed measurement endpoints",
+      "Group rigid translation, locked selection, original cabinet designer",
+      "Rotated and mirrored scene; 390px screen rectangle checks",
+      "Cache refresh, 2D/3D switching, builtin desktop and narrow-screen visual inspection"
+    ],
+    "pageErrors": 0
+  },
+  "isolation": "Fresh browser contexts and static verification workspace; no real design file or daily browser session used",
+  "limits": [
+    "Full browser suite was not rerun",
+    "No real phone touchscreen verification",
+    "Dense or very small screens may still have overlap; candidate placement minimizes it",
+    "2D screen avoidance uses conservative furniture rectangles; 3D mesh projection avoidance is not implemented"
+  ]
+}

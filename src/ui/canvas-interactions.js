@@ -83,7 +83,7 @@ function editDirectionalDistance(direction){
   const items=selItems(),ids=items.map(f=>f.id),current=items.length&&directionalMeasurements(items)[direction];if(!current)return;
   const plan=FurnishProject.effectivePlan(PLAN,state),options={rotation:drawingRotation(),visibleFurniture:ui.layers.furn};
   try{FurnishDesign.placeSelectionAtDirectionalGap(plan,state,ids,direction,current.distance,options);}catch(e){toast(e.message);return;}
-  const before=snap(),planId=PLAN.id,labels={l:tr('左侧','Left'),r:tr('右侧','Right'),t:tr('上方','Up'),b:tr('下方','Down')},target=current.entity.kind==='wall'?tr('墙面／窗边','Wall / window'):nm(current.entity.name);
+  const before=snap(),planId=PLAN.id,labels={l:tr('左侧','Left'),r:tr('右侧','Right'),t:tr('上方','Up'),b:tr('下方','Down')},target=measurementReferenceName(current);
   const apply=()=>{try{
     if(PLAN.id!==planId||snap()!==before||drawingRotation()!==options.rotation||ui.layers.furn!==options.visibleFurniture)throw Error(tr('方案已变化，请关闭后重新选择距离','The design changed; close and select the distance again'));
     const input=$('#directional-gap-input');if(!input.value.trim())throw Error(tr('请输入目标净距','Enter a target clearance'));
@@ -118,6 +118,7 @@ let lpT = 0, spaceDown = false;
 function endDrag(cancel){
   clearTimeout(lpT);
   const d = drag; drag = null; svg.classList.remove('panning');
+  if(typeof queueFabPosition==='function')queueFabPosition();
   syncTuckedSeatPreview();
   if (!d) return;
   if (d.kind === 'measure'){

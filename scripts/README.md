@@ -12,6 +12,8 @@
 | `generate-previews.cjs`、`preview-*.cjs` | 预览生成入口和生成器，独立于浏览器验收用例 |
 | `inspect-*`、`validate-*`、`make-*` 等 | 图纸检查、固定合成输入及维护工具 |
 
+`node scripts/inspect-toolbar-workspace.cjs projects/workspace.furnish.json` 显式读取指定工作区的当前实际户型，在独立源码副本与浏览器缓存中检查浮条、尺寸及四向面板。服务只读且屏蔽外部网络，不连接日常浏览器；检查图纸内容与源文件哈希前后一致，结果和截图写到 `output/playwright/real-toolbar-*`。涵盖五种桌面／窄屏／横屏视口，出现遮挡或越界返回非零。不会隐式读取当前设计，也不列入 `--all`，避免通用回归依赖个人方案。
+
 稳定命令：
 
 ```sh

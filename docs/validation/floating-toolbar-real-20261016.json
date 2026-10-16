@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-16",
+  "plan": {"name": "1601", "id": "custom_mv37igji", "furniture": 47},
+  "source": {
+    "path": "projects/workspace.furnish.json",
+    "sha256Before": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "sha256After": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "browserDesignUnchanged": true,
+    "isolation": "Read-only workspace snapshot, fresh browser, static server without repository API; original file never copied into a writable repository endpoint"
+  },
+  "actualWorkspaceInspection": {
+    "command": "node scripts/inspect-toolbar-workspace.cjs projects/workspace.furnish.json",
+    "result": "PASS",
+    "localResults": "output/playwright/real-toolbar-x6In9l/results.json",
+    "viewports": [[1500,1000],[1024,768],[390,844],[320,740],[844,390]],
+    "states": 670,
+    "scope": "Every furniture selection at full-plan view; dense furniture and appliances at detail scale; toolbar, four-direction panel and available size editors",
+    "toolbarOrPanelOverlapsSelectedVisibleFootprint": 0,
+    "toolbarOrPanelOverlapsVisibleMeasurementText": 0,
+    "toolbarOrPanelOverlapsCanvasControls": 0,
+    "selectedItemsInvisible": 0,
+    "outsideStage": 0,
+    "toolbarPanelOverlap": 0,
+    "pageErrors": 0,
+    "geometryMeasurement": "Actual SVG viewport and clip boundaries; includes saved measurements and kitchen cutout labels"
+  },
+  "regressions": {
+    "node": "PASS 174 suites, 12 built-in plans, syntax/assets/shared declarations",
+    "browser": "PASS floating-toolbar, directional-placement, portable-smoke",
+    "modes": ["http", "offline file://"],
+    "localResults": "output/playwright/verification-tdFjoV/results.json",
+    "firstPointerDrag": "PASS viewport remains stable while held, drag displacement matches original scale, pointer cancellation restores furniture",
+    "dropExclusion": "PASS adjustment region and areas outside the actual SVG viewport reject catalog drops",
+    "additionalToolbarResults": "output/playwright/verification-3CSiI4/results.json"
+  },
+  "limits": [
+    "No real touchscreen hardware testing or complete browser-suite rerun",
+    "This verifies toolbar/editor occlusion, not mutual overlap of all measurement labels or pre-existing drawing controls",
+    "Reserved adjustment space reduces the drawing viewport; scale is preserved and temporary view panning keeps selection visible",
+    "3D mesh projection avoidance is unchanged"
+  ]
+}

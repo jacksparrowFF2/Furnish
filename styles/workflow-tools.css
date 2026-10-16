@@ -68,3 +68,56 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
  .right .furniture-dimensions{padding:10px}.right .furniture-dimensions>b{font-size:17px}
 }
 @media print{#property-peek{display:none!important}}
+
+/* Quick adjustments reuse the selection toolbar and the existing studio palette. */
+main:not(.is3d) #property-peek[data-kind="furn"]{display:none}
+#stage #fab:has(.fab-primary){display:flex;flex-wrap:wrap;width:max-content;max-width:calc(100% - 24px);overflow:visible;gap:4px;transition:opacity .15s}
+#fab .fab-primary,#fab .fab-actions{display:flex;align-items:center;gap:3px;min-width:0;max-width:100%}
+#fab .fab-primary{flex:1 1 auto}
+#fab .fab-primary .name{flex:1 1 auto;min-width:0;max-width:10em}
+#fab .fab-primary>.btn{flex:none;min-height:42px;white-space:nowrap}
+#fab .fab-size{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:5px 10px;line-height:1.3}
+#fab .fab-size b{font-size:12px}#fab .fab-size small{font-size:10px;color:var(--muted)}
+#fab .fab-actions{overflow-x:auto;flex:0 1 auto}#fab .fab-actions>*{flex:none}
+#fab-editor{position:absolute;z-index:6;width:340px;max-width:calc(100% - 24px);max-height:calc(100% - 24px);overflow:auto;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);box-shadow:var(--shadow-lg);font-size:13px}
+.fab-editor-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.fab-editor-head .btn{min-height:36px;min-width:36px;padding:6px}
+#fab-editor .form{margin-top:0}#fab-editor .directional-measurements{margin-top:0}
+#fab-editor .directional-measurements h4{display:none}#fab-editor .btn{min-height:36px}
+#fab-editor .measurement-basis{margin-top:0}#fab-editor p{line-height:1.6}
+#fab-editor>.muted{margin:8px 0 0;font-size:11px}
+.fab-distance-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#fab-editor .fab-gap-choice{display:block;min-width:0;padding:10px;text-align:left;border:1px solid var(--line);background:var(--card);white-space:normal}
+.fab-gap-choice>span{display:flex;justify-content:space-between;gap:8px}.fab-gap-choice b{color:var(--accent-ink)}
+.fab-gap-choice small{display:block;font-size:10px;color:var(--muted);overflow-wrap:anywhere;margin-top:4px;line-height:1.5}
+main.drawer-panel #fab-editor{visibility:hidden}
+@container(max-width:720px){
+ #stage #fab:has(.fab-primary){width:370px}
+ #fab .fab-primary{flex-basis:100%}#fab .fab-actions{flex-basis:100%;justify-content:flex-start}
+ #fab .fab-primary .name{padding-left:5px;font-size:12px}
+ #fab .fab-actions .btn{min-width:40px;min-height:40px;padding:7px 10px}
+}
+@media(pointer:coarse){#fab .fab-primary>.btn,#fab-editor .btn{min-height:44px}}
+@media print{#fab-editor{display:none!important}}
+
+/* When the drawing is crowded, reserve layout space instead of covering it. */
+#fab-dock{position:absolute;z-index:6;display:flex;flex-direction:column;gap:8px;padding:10px;background:var(--panel);overflow:hidden}
+.fab-docked-top #fab-dock{left:0;right:0;top:0;max-height:var(--fab-dock-limit);border-bottom:1px solid var(--line)}
+.fab-docked-right #fab-dock{right:0;top:0;bottom:0;width:var(--fab-dock-width);border-left:1px solid var(--line)}
+#stage #fab-dock #fab,#stage #fab-dock #fab-editor{position:relative;left:auto!important;top:auto!important;bottom:auto!important;transform:none!important;width:100%;max-width:100%;flex:none;box-shadow:var(--shadow-sm)}
+#stage #fab-dock #fab-editor{flex:0 1 auto;min-height:76px;max-height:calc(var(--fab-dock-limit) - var(--fab-dock-bar-height) - 28px)}
+#fab-dock .fab-editor-head{position:sticky;top:-14px;padding-top:4px;background:var(--panel);z-index:1}
+#fab-dock .fab-primary,#fab-dock .fab-actions{flex-basis:100%}
+#fab-dock .fab-primary .name{font-size:12px;padding-left:4px}
+#fab-dock .fab-primary .fab-size{min-width:0;max-width:55%;overflow:hidden}
+#fab-dock .fab-size b{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.fab-editing #fab-dock .fab-actions{display:none}
+.fab-docked-top #plan{height:calc(100% - var(--fab-dock-height));margin-top:var(--fab-dock-height)}
+.fab-docked-right #plan{width:calc(100% - var(--fab-dock-width))}
+.fab-docked-top .drawing-compass{top:calc(12px + var(--fab-dock-height))}
+@container(max-width:360px){#stage.fab-docked-top .scalebar{top:calc(12px + var(--fab-dock-height));bottom:auto}}
+.fab-docked-right .drawing-compass,.fab-docked-right .hud,.fab-docked-right .drawing-rotate{right:calc(12px + var(--fab-dock-width))}
+.fab-docked-right .canvas-rail{left:calc((100% - var(--fab-dock-width))/2);max-width:calc(100% - var(--fab-dock-width) - 24px)}
+.fab-docked-right .space-status{max-width:calc(100% - var(--fab-dock-width) - 24px)}
+main.drawer-panel #fab-dock{visibility:hidden}
+@media print{#fab-dock{display:none!important}.fab-docked-top #plan,.fab-docked-right #plan{width:100%!important;height:100%!important;margin-top:0!important}}
