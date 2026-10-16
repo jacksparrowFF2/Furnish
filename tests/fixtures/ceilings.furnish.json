@@ -1,0 +1,105 @@
+{
+  "format": "furnish-project",
+  "version": 1,
+  "createdAt": "2026-10-16T15:06:03.755Z",
+  "checksum": "a1e1ba55",
+  "payload": {
+    "planId": "custom_finish",
+    "current": {
+      "furniture": [],
+      "rooms": {
+        "room1": {
+          "name": "卫生间",
+          "mat": "wood",
+          "use": "bathroom"
+        }
+      },
+      "demolished": [],
+      "measures": [
+        {
+          "a": {
+            "x": 200,
+            "y": 400
+          },
+          "b": {
+            "x": 4000,
+            "y": 400
+          }
+        }
+      ],
+      "notes": [],
+      "open": {},
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_finish",
+          "name": "完成面验收",
+          "source": "dxf",
+          "image": "",
+          "width": 450,
+          "height": 350,
+          "scale": 10,
+          "walls": [
+            {
+              "id": "north",
+              "a": [
+                10,
+                10
+              ],
+              "b": [
+                410,
+                10
+              ],
+              "kind": "b",
+              "thickness": 200
+            },
+            {
+              "id": "east",
+              "a": [
+                410,
+                10
+              ],
+              "b": [
+                410,
+                310
+              ],
+              "kind": "e",
+              "thickness": 200
+            },
+            {
+              "id": "south",
+              "a": [
+                410,
+                310
+              ],
+              "b": [
+                10,
+                310
+              ],
+              "kind": "n",
+              "thickness": 200
+            },
+            {
+              "id": "west",
+              "a": [
+                10,
+                310
+              ],
+              "b": [
+                10,
+                10
+              ],
+              "kind": "e",
+              "thickness": 200
+            }
+          ],
+          "openings": []
+        },
+        "phase": "survey"
+      },
+      "ceilingHeight": 2800
+    },
+    "designs": [],
+    "catalog": []
+  }
+}

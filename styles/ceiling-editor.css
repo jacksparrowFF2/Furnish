@@ -1,0 +1,19 @@
+.dlg-box:has(.ceiling-editor){width:min(1200px,96vw);max-width:1200px}
+.ceiling-workspace{display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);gap:20px}
+.ceiling-controls{display:flex;flex-direction:column;gap:16px;min-width:0}
+.ceiling-canvases{display:block;min-width:0;background:none;position:static;overflow:visible;padding:0}
+.ceiling-editor details{padding:10px;border:1px solid var(--line);border-radius:9px}
+.ceiling-editor summary{cursor:pointer;font-weight:600;margin-bottom:8px}
+.ceiling-editor input:not([type=checkbox]),.ceiling-editor select{width:100%;min-width:0}
+.ceiling-editor .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ceiling-editor label{font-size:12px;display:block}.ceiling-editor .full{grid-column:1/-1}
+.ceiling-editor .actions{display:flex;flex-wrap:wrap;gap:7px}
+.ceiling-editor .ceiling-tools{margin-bottom:8px}.ceiling-editor .ceiling-tools .on{background:#087f6d;color:white}
+.ceiling-section{display:block;width:100%;height:430px;background:#faf9f4;border:1px solid #d9d8ce;border-radius:10px;touch-action:none;color-scheme:light}
+.ceiling-section [data-section-node]{cursor:grab}.ceiling-section [data-section-edge]{cursor:pointer}
+.ceiling-plan{width:100%;height:220px;display:block}.ceiling-editor [data-ceiling-3d]{height:280px;width:100%;margin-top:10px;border-radius:8px;overflow:hidden}
+.ceiling-editor [data-ceiling-3d] canvas{display:block;width:100%;height:100%;touch-action:none}
+.ceiling-bottom{position:sticky;bottom:-20px;background:var(--bg,#fff);padding:12px 0;border-top:1px solid var(--line);margin-top:12px}
+.ceiling-editor [data-ceiling-pending]:not(:empty){padding:10px;border-radius:8px;background:#fff1d6;color:#795119;overflow-wrap:anywhere}
+.ceiling-editor [data-ceiling-error]{overflow-wrap:anywhere}.ceiling-editor small{display:block;font-size:11px;line-height:1.6;opacity:.8}
+@media(max-width:700px){.ceiling-workspace{grid-template-columns:1fr}.ceiling-controls{order:2}.ceiling-canvases{order:1}.ceiling-section{height:340px}.ceiling-editor .ceiling-tools .btn{font-size:11px}.ceiling-bottom{bottom:-20px}.ceiling-editor .form{gap:8px}}

@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 1,
+  "version": 3,
   "workspace": {
     "customPlans": [
       {
@@ -4889,7 +4889,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 2,
+    "v": 3,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -7040,6 +7040,141 @@
           "northAngle": 180,
           "openings": false,
           "rotation": 0
+        },
+        "floorFinishes": {
+          "areas": {
+            "area_fmv3oztg03": {
+              "drop": 5,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3p1fkz7": {
+              "drop": 5,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3p1yse11": {
+              "drop": 5,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3p2ig914": {
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3qajd93": {
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3qb1oi4": {
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3qb1oi5": {
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3qcck717": {
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 800,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "layers",
+              "rawZ": 0
+            },
+            "area_fmv3qdfiz23": {
+              "drop": 5,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 400,
+                "origin": [
+                  839.5,
+                  2337
+                ],
+                "width": 800
+              },
+              "mode": "reference",
+              "rawZ": 0
+            }
+          },
+          "version": 1
         },
         "furniture": [
           {

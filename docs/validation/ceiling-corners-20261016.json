@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-16",
+  "feature": "两面相邻墙的L形低灯槽、分段灯带和双边固定平顶",
+  "scope": "两段内侧凸90°直墙，共用一个自由折线截面；连续实体拼角、灯带分段齐切；无连续圆弧灯带",
+  "tests": [
+    {
+      "command": "node tests/test-ceiling-corners.cjs",
+      "status": "passed",
+      "coverage": [
+        "8种墙角方向及37°旋转平移、正反轮廓共32组生产几何",
+        "网格每边双面封闭及有向边抵消，无内部转角端盖",
+        "截面面积／一阶矩解析体积比对Float32生产网格，绝对误差限2e-6 m3",
+        "槽腔上下射线、前挡板顶射线、两段家具实体碰撞",
+        "灯带实体分别位于拼角两侧、不互穿",
+        "双边吸附、源高度／凸出更新及反复恢复无漂移",
+        "拓扑和稳定路径参照失效保留有效平顶",
+        "大截面／大退让自动延长样段",
+        "v6当前／命名方案、复制、移动和项目工作区恢复"
+      ]
+    },
+    {
+      "command": "node tests/test-ceiling-storage.cjs",
+      "status": "passed",
+      "coverage": [
+        "v5与v6真实隔离仓库读写",
+        "恢复副本",
+        "客户端缓存迁移",
+        "命名方案"
+      ]
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceiling-corners ceilings",
+      "status": "passed",
+      "results": "output/playwright/verification-eCd9Dq/results.json",
+      "coverage": [
+        "HTTP和断网file://",
+        "相邻墙候选和L形选择",
+        "灯带额外退让及无效长度提示",
+        "双边平顶固定及依赖更新",
+        "大截面和大退让生产样段像素",
+        "未采用输入保持及最后有效预览",
+        "恢复输入及取消整个会话",
+        "拓扑改变保持原平顶及提示",
+        "撤销重做、刷新、实际导入导出",
+        "主场景与生产样段共享构造器",
+        "390px无横向溢出",
+        "页面无脚本错误"
+      ]
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceiling-corners portable-smoke",
+      "status": "passed",
+      "results": "output/playwright/verification-duf2t5/results.json",
+      "note": "样段延长修正前的内侧视角和启动兼容检查；最终L形及直边流程另经上项复验"
+    },
+    {
+      "command": "node scripts/check.cjs",
+      "status": "passed",
+      "log": "output/ceiling-corners-check-20261016.log",
+      "regressionSuites": 183,
+      "builtInPlans": 12,
+      "previewPages": 1761,
+      "note": "首轮完整检查通过；随后增加样段延长修正及专项覆盖，最终完整检查见下项。"
+    },
+    {
+      "command": "node scripts/check.cjs",
+      "status": "passed",
+      "log": "output/ceiling-corners-check-final-20261016.log",
+      "regressionSuites": 183,
+      "builtInPlans": 12,
+      "previewPages": 1777
+    }
+  ],
+  "visualReview": {
+    "status": "passed-with-fixes",
+    "reviewed": [
+      "L形内侧生产样段",
+      "固定平顶组合",
+      "桌面编辑器",
+      "390px控件"
+    ],
+    "fixes": [
+      "从外侧观察改为内侧角平分方向取景，便于检查槽口",
+      "正反轮廓的端面绕序与侧面保持一致",
+      "样段自动延长，避免人为裁短有效截面／灯带"
+    ],
+    "images": [
+      "docs/validation/ceiling-corners-preview-20261016.png",
+      "docs/validation/ceiling-corners-assembly-20261016.png",
+      "docs/validation/ceiling-corners-editor-20261016.png",
+      "docs/validation/ceiling-corners-mobile-20261016.png"
+    ]
+  },
+  "readOnlyWorkspace": {
+    "source": "projects/workspace.furnish.json",
+    "workSlots": 9,
+    "bathroomRegions": 13,
+    "candidateCorners": 54,
+    "validCorners": 53,
+    "flatAttachments": 48,
+    "documentedConcaveLimits": 5,
+    "documentedShortArmLimit": 1,
+    "noFileWrites": true
+  },
+  "example": "tests/fixtures/ceiling-corners.furnish.json",
+  "dataSafety": "浏览器及仓库写入均在隔离副本，真实工作区仅只读检查，未写入验证对象。保留原有未提交修改。",
+  "notRun": [
+    "全量浏览器验收",
+    "真实触屏硬件",
+    "用户在实际复杂户型中的人工设计验收"
+  ],
+  "limitations": [
+    "内侧凸90°与两条直边，凹角／斜角／三段以上路径未开放",
+    "灯带为分段实体与虚线衔接示意，连接件、连续绕角和照度未建模",
+    "平顶固定限无孔凸区域",
+    "没有未应用草稿刷新恢复、空间锁定、额外端板或高级过渡"
+  ],
+  "completed": true
+}

@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-16",
+  "feature": "低灯槽独立2D截面编辑、沿边生成与平顶固定吸附",
+  "scope": "首版直线单轮廓与单条边界，生产模型共享；不包含完整既往高级规则",
+  "tests": [
+    {
+      "command": "node tests/test-ceilings.cjs",
+      "status": "passed",
+      "coverage": [
+        "轮廓与槽腔",
+        "全板厚与其他实体穿插",
+        "连接稳定参照",
+        "数值下限",
+        "四方向生产几何体积、射线与法线",
+        "项目及工作区重复恢复",
+        "实体空间核对"
+      ]
+    },
+    {
+      "command": "node tests/test-ceiling-storage.cjs",
+      "status": "passed",
+      "coverage": [
+        "真实v5仓库读写",
+        "命名方案",
+        "恢复副本",
+        "客户端缓存迁移"
+      ]
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceilings",
+      "status": "passed",
+      "results": "output/playwright/verification-18Lg2F/results.json",
+      "coverage": [
+        "HTTP",
+        "断网file://",
+        "真实绘图与尺寸输入",
+        "无效输入保留",
+        "节点拖动与小数",
+        "灯带点选",
+        "平顶吸附",
+        "预览模型像素",
+        "撤销重做",
+        "局部取消",
+        "实际项目下载上传",
+        "刷新",
+        "390px"
+      ]
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceilings portable-smoke wall-tiling --keep-going",
+      "status": "passed",
+      "results": "output/playwright/verification-Id0x1a/results.json"
+    },
+    {
+      "command": "node scripts/check.cjs",
+      "status": "passed",
+      "log": "output/ceilings-check-20261016.log",
+      "regressionSuites": 182,
+      "builtInPlans": 12,
+      "previewPages": 1649
+    }
+  ],
+  "visualReview": {
+    "status": "passed-with-fixes",
+    "reviewed": [
+      "桌面编辑器",
+      "390px编辑器",
+      "主场景",
+      "生产样段预览"
+    ],
+    "fixes": [
+      "灯带边界重合漏报",
+      "模板字段恢复",
+      "固定连接其他实体穿插",
+      "预览相机目标",
+      "窄屏main布局污染",
+      "弹窗动画期间坐标换算",
+      "样段相机取景与滚动可见性",
+      "真实区域标准边界环与重复闭合点处理",
+      "新建默认示例切换到已有造型",
+      "未闭合绘图禁止误应用旧轮廓"
+    ],
+    "images": [
+      "docs/validation/ceilings-editor-20261016.png",
+      "docs/validation/ceilings-preview-20261016.png",
+      "docs/validation/ceilings-mobile-20261016.png"
+    ]
+  },
+  "notRun": [
+    "全量浏览器",
+    "真实触屏硬件",
+    "用户实际复杂户型"
+  ],
+  "limitations": [
+    "曲线孔洞多实体、连续转角及端板未实现",
+    "首版仅低灯槽模板及自由直线截面",
+    "平顶固定吸附限无孔凸区域及单一实际竖向立面",
+    "未应用草稿关闭刷新恢复未实现",
+    "空间锁定及高级收口确认未实现",
+    "灯带为示意；不代表安装和照度核对"
+  ],
+  "dataSafety": "浏览器与仓库存储测试均在隔离副本／目录执行，不写实际projects/workspace.furnish.json",
+  "followUp": {
+    "reason": "完整回归之后补充实际区域标准边界环处理，避免重复闭合点被当成回折边；未改变其它模块",
+    "coreUnit": "passed",
+    "storageUnit": "passed",
+    "browser": "passed",
+    "coverage": [
+      "标准边界环",
+      "未闭合绘图保护",
+      "直接选择已有造型",
+      "真实节点拖动",
+      "临界小数",
+      "平顶输入恢复",
+      "生产预览像素",
+      "HTTP与断网file://及390px"
+    ]
+  },
+  "readOnlyWorkspace": {
+    "status": "passed",
+    "workSlots": 9,
+    "bathroomRegions": 8,
+    "boundaryProfiles": 36,
+    "flatAttachments": 28,
+    "documentedConcaveLimits": 8,
+    "noFileWrites": true
+  },
+  "completed": true
+}

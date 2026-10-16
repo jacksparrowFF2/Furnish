@@ -1,0 +1,278 @@
+{
+  "format": "furnish-project",
+  "version": 6,
+  "createdAt": "2026-10-16T15:49:09.269Z",
+  "checksum": "226d90a4",
+  "payload": {
+    "planId": "custom_finish",
+    "name": "完成面验收",
+    "current": {
+      "furniture": [],
+      "rooms": {
+        "room1": {
+          "name": "卫生间",
+          "mat": "wood",
+          "use": "bathroom"
+        }
+      },
+      "demolished": [],
+      "measures": [
+        {
+          "a": {
+            "x": 200,
+            "y": 400
+          },
+          "b": {
+            "x": 4000,
+            "y": 400
+          }
+        }
+      ],
+      "notes": [],
+      "open": {},
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_finish",
+          "name": "完成面验收",
+          "source": "dxf",
+          "image": "",
+          "width": 450,
+          "height": 350,
+          "scale": 10,
+          "walls": [
+            {
+              "id": "north",
+              "a": [
+                10,
+                10
+              ],
+              "b": [
+                410,
+                10
+              ],
+              "kind": "b",
+              "thickness": 200
+            },
+            {
+              "id": "east",
+              "a": [
+                410,
+                10
+              ],
+              "b": [
+                410,
+                310
+              ],
+              "kind": "e",
+              "thickness": 200
+            },
+            {
+              "id": "south",
+              "a": [
+                410,
+                310
+              ],
+              "b": [
+                10,
+                310
+              ],
+              "kind": "n",
+              "thickness": 200
+            },
+            {
+              "id": "west",
+              "a": [
+                10,
+                310
+              ],
+              "b": [
+                10,
+                10
+              ],
+              "kind": "e",
+              "thickness": 200
+            }
+          ],
+          "openings": []
+        },
+        "phase": "survey"
+      },
+      "ceilingHeight": 2800,
+      "plan": "custom_finish",
+      "scene3d": {
+        "cut": 2.8,
+        "furn": true,
+        "labels": true,
+        "lamps": true,
+        "night": false,
+        "hour": 10
+      },
+      "ceilings": {
+        "version": 1,
+        "items": [
+          {
+            "id": "ceiling_fmvb57n9247",
+            "kind": "profile",
+            "roomId": "room1",
+            "name": "低灯槽",
+            "height": 2800,
+            "path": {
+              "segments": [
+                {
+                  "a": [
+                    200,
+                    200
+                  ],
+                  "b": [
+                    4000,
+                    200
+                  ],
+                  "normal": [
+                    0,
+                    1
+                  ],
+                  "id": "leg0"
+                },
+                {
+                  "a": [
+                    4000,
+                    200
+                  ],
+                  "b": [
+                    4000,
+                    3000
+                  ],
+                  "normal": [
+                    -1,
+                    0
+                  ],
+                  "id": "leg1"
+                }
+              ],
+              "join": "miter"
+            },
+            "section": {
+              "vertices": [
+                {
+                  "id": "v0",
+                  "u": 0,
+                  "d": 0
+                },
+                {
+                  "id": "v1",
+                  "u": 20,
+                  "d": 0
+                },
+                {
+                  "id": "v2",
+                  "u": 20,
+                  "d": 290
+                },
+                {
+                  "id": "v3",
+                  "u": 60,
+                  "d": 290
+                },
+                {
+                  "id": "v4",
+                  "u": 60,
+                  "d": 270
+                },
+                {
+                  "id": "v5",
+                  "u": 70,
+                  "d": 270
+                },
+                {
+                  "id": "v6",
+                  "u": 70,
+                  "d": 300
+                },
+                {
+                  "id": "v7",
+                  "u": 0,
+                  "d": 300
+                }
+              ],
+              "light": {
+                "u": 40,
+                "d": 290,
+                "angle": -90,
+                "width": 10,
+                "thickness": 2,
+                "cornerSetback": 10
+              },
+              "template": {
+                "kind": "lowCove",
+                "values": {
+                  "drop": 300,
+                  "projection": 70,
+                  "back": 20,
+                  "bottom": 10,
+                  "front": 10,
+                  "lip": 30
+                }
+              }
+            }
+          },
+          {
+            "id": "ceiling_fmvb57nni48",
+            "kind": "flat",
+            "roomId": "room1",
+            "name": "卫生间平顶",
+            "polygon": [
+              [
+                3930,
+                3000
+              ],
+              [
+                200,
+                3000
+              ],
+              [
+                200,
+                270
+              ],
+              [
+                3930,
+                270
+              ]
+            ],
+            "height": 2500,
+            "thickness": 12,
+            "basePolygon": [
+              [
+                200,
+                200
+              ],
+              [
+                4000,
+                200
+              ],
+              [
+                4000,
+                3000
+              ],
+              [
+                200,
+                3000
+              ]
+            ],
+            "attachment": {
+              "profileId": "ceiling_fmvb57n9247",
+              "startId": "v5",
+              "endId": "v6",
+              "legs": [
+                "leg0",
+                "leg1"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "designs": [],
+    "catalog": []
+  }
+}

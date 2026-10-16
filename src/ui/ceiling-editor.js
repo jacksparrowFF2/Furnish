@@ -1,0 +1,133 @@
+/* A separate section workspace; room changes enter the existing mutate history. */
+(function(){
+'use strict';
+const C=FurnishCeiling,copy=v=>JSON.parse(JSON.stringify(v)),NS='http://www.w3.org/2000/svg';
+const fmt=v=>String(Number(Number(v).toFixed(7))),effective=()=>FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state));
+let session=null;
+function open(id){
+ closeFabEditor(false);const plan=effective(),rooms=plan.rooms.filter(r=>r.counted!==false&&r.poly?.length>=3);
+ if(!rooms.length)return toast('请先建立可用区域');
+ const items=copy(state.ceilings?.items||[]),saved=items.find(c=>c.id===id&&c.kind==='profile'),room=rooms.find(r=>r.id===(saved?.roomId||ui.sel?.id))||rooms[0];
+ let profile=saved||{id:'ceiling_'+uid(),kind:'profile',roomId:room.id,name:'低灯槽',height:room.ceilingHeight??2800,path:C.boundaryPaths(room)[0],section:C.lowCove()};
+ const s={plan,rooms,items,profile:copy(profile),entry:JSON.stringify(state.ceilings||null),planId:PLAN.id,dirty:new Set(),mode:'select',draw:[],node:profile.section.vertices[0].id,preview:null,previewRequest:0,flatId:items.find(c=>c.kind==='flat'&&c.attachment?.profileId===profile.id)?.id||null,edge:null};
+ if(!saved)s.items.push(s.profile);else s.items[s.items.findIndex(c=>c.id===id)]=s.profile;s.draftEntry=JSON.stringify(s.items);
+ openDialog({title:'吊顶 · 独立2D截面编辑器',wide:true,body:`<div id="ceiling-editor" class="ceiling-editor"><p class="muted">画截面 → 定尺寸与发光位置 → 选边界生成 → 吸附平顶。当前编辑均为草稿，应用后可撤销。</p><div class="ceiling-workspace"><div class="ceiling-controls"><div class="form">
+ <label class="full">已有造型<select data-ceiling="existing"><option value="">新建沿边造型</option>${items.filter(c=>c.kind==='profile'&&c.id!==profile.id).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('')}${saved?`<option value="${esc(saved.id)}" selected>${esc(saved.name)}</option>`:''}</select></label>
+ <label class="full">所属区域<select data-ceiling="room">${rooms.map(r=>`<option value="${esc(r.id)}" ${r.id===profile.roomId?'selected':''}>${esc(r.name)}</option>`).join('')}</select></label>
+ <label class="full">名称<input data-ceiling="name" maxlength="80" value="${esc(profile.name)}"></label><label class="full">截面基准离地 mm<input type="number" step="1" data-ceiling="height" value="${profile.height}"></label><label class="full">路径形状<select data-ceiling="shape"><option value="straight">一面墙 · 直线</option><option value="corner">两面相邻墙 · L形连续拼角</option></select></label><label class="full">第一面墙<select data-ceiling="wall"></select></label><label class="full" data-ceiling-second hidden>第二面相邻墙<select data-ceiling="wall2"></select></label><small class="full" data-ceiling-corner-note></small></div>
+ <details ${saved?'':'open'}><summary>低灯槽尺寸 · 更新时重建轮廓</summary><div class="form">${Object.entries({drop:'下吊',projection:'凸出',back:'背板厚',bottom:'底板厚',front:'前挡板厚',lip:'挡边总高'}).map(([k,label])=>`<label>${label} mm<input type="number" step="1" data-cove="${k}" value="${C.rules().lowCove[k]}"></label>`).join('')}</div><small>以上为新建示例值。修改后会重建轮廓；自绘轮廓使用节点尺寸编辑。</small></details>
+ <div class="ceiling-node-fields"><b data-ceiling-node-title>节点尺寸</b><div class="form"><label>距墙 u mm<input type="number" step="1" data-ceiling="node-u"></label><label>向下 d mm<input type="number" step="1" data-ceiling="node-d"></label></div><button class="btn" data-ceiling-action="delete-node">删除此节点</button></div>
+ <details open><summary>发光位置与朝向</summary><label><input type="checkbox" data-ceiling="light-enabled"> 设置灯带示意</label><div class="form">${[['light-u','距墙 u mm'],['light-d','向下 d mm'],['light-angle','朝向 °'],['light-width','灯带宽 mm'],['light-thickness','灯带厚 mm'],['light-cornerSetback','转角额外退让 mm']].map(([k,label])=>`<label>${label}<input type="number" step="1" data-ceiling="${k}"></label>`).join('')}</div><small>0°朝室内，−90°向上。L形灯带默认两段齐切，按灯带实体宽度退让；额外退让分别作用于转角两侧。连接线只作示意，未生成连接件。宽厚为设计示意。</small></details>
+ <div class="actions"><button class="btn primary" data-ceiling-action="update">更新预览</button><button class="btn" data-ceiling-action="restore-input">恢复未采用输入</button></div></div>
+ <div class="ceiling-canvases"><div class="actions ceiling-tools"><button class="btn on" data-ceiling-mode="select">选择／拖动节点</button><button class="btn" data-ceiling-mode="draw">绘制新轮廓</button><button class="btn" data-ceiling-action="close-contour">闭合轮廓</button><button class="btn" data-ceiling-action="cancel-draw">取消绘制</button><button class="btn" data-ceiling-mode="light">点选发光位置</button></div><div class="ceiling-section-host" data-ceiling-section></div><p class="muted" data-ceiling-dimensions></p><p class="muted">u向室内、d向下；点选节点可输入精确坐标。绘制时吸附水平／垂直及1 mm网格，点起点闭合。滚轮缩放截面。</p>
+ <details open><summary>沿边生成与平顶吸附预览</summary><div data-ceiling-plan></div><div class="form"><label>平顶<select data-ceiling="flat"><option value="">新建本区域平顶</option></select></label><label>吸附到截面立面<select data-ceiling="face"></select></label><label>平顶底离地 mm<input type="number" step="1" data-ceiling="flat-height" value="2500"></label><label>平顶板厚 mm<input type="number" step="1" data-ceiling="flat-thickness" value="12"></label></div><div class="actions"><button class="btn" data-ceiling-action="add-flat">预览独立平顶</button><button class="btn" data-ceiling-action="attach">吸附并固定平顶</button><button class="btn" data-ceiling-action="detach">解除固定</button><button class="btn" data-ceiling-action="preview-3d">查看三维预览</button><label>三维范围<select data-ceiling="preview-scope"><option value="sample">当前截面 · 600 mm样段／转角</option><option value="room">本区域完整组合</option></select></label><small>截面较宽或灯带退让较大时，样段自动延长以保留有效转角。</small></div><p data-ceiling-connection class="muted"></p><div data-ceiling-3d hidden></div></details>
+ </div></div><p data-ceiling-error class="project-error" role="alert"></p><div data-ceiling-pending role="status"></div><p data-ceiling-status role="status"></p><div class="actions ceiling-bottom"><button class="btn danger" data-ceiling-action="remove">删除此造型</button><button class="btn" data-ceiling-action="cancel">取消本次编辑</button><button class="btn primary" data-ceiling-action="apply">应用到房间</button></div></div>`,onClose:()=>{dispose(s);if(session===s)session=null;}});
+ session=s;s.host=document.querySelector('#ceiling-editor');const get=k=>s.host.querySelector(`[data-ceiling="${k}"]`),error=m=>s.host.querySelector('[data-ceiling-error]').textContent=m;
+ s.get=get;s.error=error;
+ const roomPaths=()=>C.boundaryPaths(rooms.find(r=>r.id===get('room').value));
+ const fillSecond=preferred=>{const paths=roomPaths(),first=paths[Number(get('wall').value)],options=[];paths.forEach((p,i)=>{try{if(i!==Number(get('wall').value)){C.joinedPath(first,p);options.push(i);}}catch{/* Only adjacent convex corners are offered. */}});get('wall2').innerHTML=options.map(i=>`<option value="${i}">边界 ${i+1}</option>`).join('');if(options.includes(preferred))get('wall2').value=String(preferred);s.host.querySelector('[data-ceiling-second]').hidden=get('shape').value!=='corner';get('light-cornerSetback').disabled=get('shape').value!=='corner';s.host.querySelector('[data-ceiling-corner-note]').textContent=get('shape').value==='corner'?'两面墙共用截面与高度；实体连续拼角，槽腔贯通，灯带分段。'+(!options.length?'当前墙没有可用的内侧90°相邻墙。':''):'';};
+ const fillWalls=()=>{const paths=roomPaths(),legs=C.route(s.profile);get('wall').innerHTML=paths.map((p,i)=>`<option value="${i}">边界 ${i+1} · ${fmt(Math.hypot(p.b[0]-p.a[0],p.b[1]-p.a[1]))} mm</option>`).join('');const i=paths.findIndex(p=>C.samePath(p,legs[0]));get('wall').value=String(Math.max(0,i));get('shape').value=legs.length===2?'corner':'straight';fillSecond(legs.length===2?paths.findIndex(p=>C.samePath(p,legs[1])):undefined);};fillWalls();
+ const mark=group=>{s.dirty.add(group);s.host.querySelector('[data-ceiling-status]').textContent='有未采用输入，当前图形仍为上次有效预览。';s.host.querySelector('[data-ceiling-action="apply"]').textContent='先更新预览';};
+ for(const k of ['name','height'])get(k).oninput=()=>mark('profile');get('room').onchange=()=>{fillWalls();mark('path');};get('wall').onchange=()=>{fillSecond();mark('path');};get('shape').onchange=()=>{fillSecond(Number(get('wall2').value));mark('path');};get('wall2').onchange=()=>mark('path');
+ s.host.querySelectorAll('[data-cove]').forEach(el=>el.oninput=()=>mark('template'));
+ for(const k of ['node-u','node-d'])get(k).oninput=()=>mark('node');
+ for(const k of ['light-enabled','light-u','light-d','light-angle','light-width','light-thickness','light-cornerSetback'])get(k).oninput=()=>mark('light');
+ for(const k of ['flat-height','flat-thickness'])get(k).oninput=()=>mark('flat');
+ get('existing').onchange=()=>{if(s.dirty.size){get('existing').value=saved?.id||'';return error('请先更新预览或恢复未采用输入，再切换造型。');}if(JSON.stringify(s.items)!==s.draftEntry){get('existing').value=saved?.id||'';return error('请先应用或取消本次编辑，再切换造型。');}dispose(s);open(get('existing').value||undefined);};
+ get('flat').onchange=()=>{if(s.dirty.size){get('flat').value=s.flatId||'';return error('请先处理未采用输入，再切换平顶。');}s.flatId=get('flat').value||null;fillFlat(s);};
+ get('face').onchange=()=>{s.edge=get('face').value;renderSection(s);};get('preview-scope').onchange=()=>{if(!s.host.querySelector('[data-ceiling-3d]').hidden)show3D(s);};
+ s.host.querySelectorAll('[data-ceiling-mode]').forEach(b=>b.onclick=()=>{if(s.mode==='draw'&&s.draw.length)return error('请先闭合轮廓或取消绘制，再切换工具。');if(s.dirty.size)return error('请先更新预览或恢复输入，再切换绘制工具。');s.mode=b.dataset.ceilingMode;if(s.mode==='draw')s.draw=[];s.host.querySelectorAll('[data-ceiling-mode]').forEach(x=>x.classList.toggle('on',x===b));error('');renderSection(s);});
+ s.host.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input')){e.preventDefault();update(s);}});
+ s.host.querySelectorAll('[data-ceiling-action]').forEach(b=>b.onclick=()=>{try{const action=b.dataset.ceilingAction;
+  if(action==='update')return update(s);
+  if(action==='restore-input'){s.dirty.clear();get('room').value=s.profile.roomId;fillWalls();fillFields(s);fillFlat(s);render(s);return;}
+  if(action==='cancel'){closeDialog();return;}
+  if(action==='apply'){
+   if(s.mode==='draw'||s.draw.length)return error('绘制轮廓尚未闭合，请先闭合或取消绘制。');
+   if(s.dirty.size){update(s);return;}
+   if(PLAN.id!==s.planId||JSON.stringify(state.ceilings||null)!==s.entry)return error('正式吊顶已变化，请取消并重新打开，避免覆盖其他编辑。');
+   const next={version:1,items:C.resolve({version:1,items:s.items}).items};C.validate(next);const changed=JSON.stringify(next)!==JSON.stringify(state.ceilings);
+   if(changed)mutate(()=>{if(next.items.length)state.ceilings=next;else delete state.ceilings;});closeDialog();toast('吊顶已应用，可撤销；待核对项仍保留');return;
+  }
+  if(s.dirty.size&&!(s.dirty.size===1&&s.dirty.has('flat')&&['add-flat','attach'].includes(action)))return error('请先更新预览或恢复输入，再执行此操作。');
+  if(action==='close-contour')return closeContour(s);
+  if(action==='cancel-draw'){s.mode='select';s.draw=[];s.host.querySelectorAll('[data-ceiling-mode]').forEach(b=>b.classList.toggle('on',b.dataset.ceilingMode==='select'));renderSection(s);return;}
+  if(action==='delete-node'){const next=copy(s.profile);next.section.vertices=next.section.vertices.filter(v=>v.id!==s.node);delete next.section.template;C.section(next.section);s.profile=next;put(s);s.node=next.section.vertices[0].id;fillFields(s);render(s);return;}
+  if(action==='remove'){const next=C.remove({ceilings:{version:1,items:s.items}},s.profile.id);s.items=next.ceilings?.items||[];s.removed=true;s.host.querySelector('[data-ceiling-status]').textContent='造型已从草稿移除，应用后保存；关联平顶保持位置并解除固定。';renderPlan(s);return;}
+  if(action==='preview-3d')return show3D(s);
+  if(action==='add-flat'||action==='attach'){
+   const r=s.rooms.find(r=>r.id===s.profile.roomId),boundary=C.regionBoundary(r);
+   let f=s.items.find(c=>c.id===s.flatId)||{id:'ceiling_'+uid(),kind:'flat',roomId:r.id,name:r.name+'平顶',polygon:boundary,height:read(s,'flat-height'),thickness:read(s,'flat-thickness')};
+   f={...copy(f),height:read(s,'flat-height'),thickness:read(s,'flat-thickness')};
+   if(action==='attach'){const face=C.faces(s.profile).find(f=>faceKey(f)===s.edge);if(!face)throw Error('请选择可吸附的竖向立面');f=C.attach(f,s.profile,face);}else{delete f.attachment;delete f.basePolygon;}
+   const candidate=C.edit({ceilings:{version:1,items:s.items}},f);s.items=candidate.ceilings.items;s.flatId=f.id;s.dirty.clear();fillFlatOptions(s);fillFlat(s);render(s);return;
+  }
+  if(action==='detach'){const f=C.resolve({version:1,items:s.items}).items.find(c=>c.id===s.flatId);if(!f)throw Error('请先选择平顶');delete f.attachment;delete f.basePolygon;s.items=s.items.map(c=>c.id===f.id?f:c);fillFlat(s);render(s);return;}
+ }catch(e){error(e.message);}});
+ fillFields(s);fillFlatOptions(s);fillFlat(s);render(s);
+}
+function read(s,k){const v=s.get(k).value;if(!v.trim())throw Error('请输入完整尺寸');const n=Number(v);if(!Number.isFinite(n))throw Error('尺寸须为有限数值');return n;}
+ function put(s){s.items=s.items.map(c=>c.id===s.profile.id?s.profile:c);}
+function faceKey(f){return f.startId+':'+f.endId;}
+function fillFields(s){
+ const p=s.profile,g=s.get;for(const el of s.host.querySelectorAll('[data-cove]'))el.value=String((p.section.template?.values||C.rules().lowCove)[el.dataset.cove]);g('name').value=p.name;g('height').value=p.height;const n=p.section.vertices.find(v=>v.id===s.node)||p.section.vertices[0];s.node=n.id;g('node-u').value=String(n.u);g('node-d').value=String(n.d);s.host.querySelector('[data-ceiling-node-title]').textContent='节点 '+(p.section.vertices.indexOf(n)+1)+' · 精确坐标';
+ const l=p.section.light||C.rules().light;g('light-enabled').checked=!!p.section.light;for(const k of ['u','d','angle','width','thickness'])g('light-'+k).value=String(l[k]);g('light-cornerSetback').value=String(l.cornerSetback??C.rules().corner.lightSetback);
+ const faces=C.faces(p);g('face').innerHTML=faces.map(f=>`<option value="${faceKey(f)}">距墙${fmt(f.u)} · 离地${fmt(f.bottom)}～${fmt(f.top)} mm</option>`).join('');if(!faces.some(f=>faceKey(f)===s.edge)){const outer=faces.slice().sort((a,b)=>b.u-a.u)[0];s.edge=outer&&faceKey(outer);}g('face').value=s.edge||'';
+}
+function fillFlatOptions(s){s.get('flat').innerHTML='<option value="">新建本区域平顶</option>'+s.items.filter(c=>c.kind==='flat'&&c.roomId===s.profile.roomId).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');s.get('flat').value=s.flatId||'';}
+function fillFlat(s){const f=C.resolve({version:1,items:s.items}).items.find(c=>c.id===s.flatId);s.get('flat-height').value=f?.height??s.profile.height-Math.max(...s.profile.section.vertices.map(v=>v.d));s.get('flat-thickness').value=f?.thickness??C.rules().flatThickness;s.get('flat-height').disabled=!!f?.attachment;s.host.querySelector('[data-ceiling-connection]').textContent=f?.attachment?`已固定：${f.attachment.legs?'两条内侧边和共用转角':'平顶边界'}、底标高跟随所选立面。解除固定可保持当前位置。`:'平顶独立；吸附时预览裁切边界和底标高，并检查全板厚覆盖。';}
+function update(s){
+ try{
+  if(s.removed)throw Error('造型已移除，请应用删除或取消本次编辑');
+  if(s.dirty.has('template')&&s.dirty.has('node'))throw Error('模板尺寸和节点同时有输入，请先恢复输入，再选择一种方式修改。');
+  const next=copy(s.profile);next.name=s.get('name').value.trim();next.height=read(s,'height');next.roomId=s.get('room').value;
+  if(s.dirty.has('path')){const r=s.rooms.find(r=>r.id===next.roomId),paths=C.boundaryPaths(r),first=paths[Number(s.get('wall').value)];if(s.get('shape').value==='corner'){const second=paths[Number(s.get('wall2').value)];if(!second)throw Error('请选择可用的第二面相邻墙');next.path=C.joinedPath(first,second);}else next.path=first;}
+  if(s.dirty.has('template')){const q=Object.fromEntries([...s.host.querySelectorAll('[data-cove]')].map(el=>[el.dataset.cove,el.value.trim()?Number(el.value):NaN]));const shape=C.lowCove(q);shape.light=copy(next.section.light||C.rules().light);if(!next.section.light)delete shape.light;next.section=shape;}
+  if(s.dirty.has('node')){const n=next.section.vertices.find(v=>v.id===s.node);n.u=read(s,'node-u');n.d=read(s,'node-d');delete next.section.template;}
+  if(s.get('light-enabled').checked)next.section.light={u:read(s,'light-u'),d:read(s,'light-d'),angle:read(s,'light-angle'),width:read(s,'light-width'),thickness:read(s,'light-thickness')};else delete next.section.light;
+  if(next.section.light&&next.path.segments)next.section.light.cornerSetback=read(s,'light-cornerSetback');
+  let candidate=C.edit({ceilings:{version:1,items:s.items}},next).ceilings;
+  if(s.dirty.has('flat')){const f=candidate.items.find(c=>c.id===s.flatId);if(!f)throw Error('请先预览独立平顶或吸附平顶，再修改其尺寸');f.thickness=read(s,'flat-thickness');if(!f.attachment)f.height=read(s,'flat-height');C.validate(candidate);}
+  s.profile=next;s.items=candidate.items;s.dirty.clear();fillFields(s);fillFlatOptions(s);fillFlat(s);render(s);s.host.querySelector('[data-ceiling-status]').textContent='预览已更新，尚未保存到房间。';return true;
+ }catch(e){s.error(e.message+'；输入未采用，保留上次有效预览。');return false;}
+}
+function render(s){
+ s.error('');disposePreview(s);renderSection(s);renderPlan(s);const data=C.derive(s.plan,{ceilings:{version:1,items:s.items}}).ceilings;
+ s.host.querySelector('[data-ceiling-pending]').textContent=data.pending.map(v=>`${s.items.find(c=>c.id===v.id)?.name||'吊顶'}：${v.message}`).join('；');
+ s.host.querySelector('[data-ceiling-action="apply"]').textContent=data.pending.length?`应用，保留${data.pending.length}项待核对`:'应用到房间';
+ s.host.querySelector('[data-ceiling-status]').textContent='有效预览，应用后保存。';
+}
+function renderSection(s){
+ const p=s.profile.section,vertices=p.vertices,u=vertices.map(v=>v.u),d=vertices.map(v=>v.d),width=Math.max(...u),height=Math.max(...d),margin=Math.max(20,height*.08),box=s.zoom||[-margin,-margin,Math.max(width+2*margin,height*.9),height+2*margin],stroke=1.5;
+ const polygon=vertices.map(v=>`${v.u},${v.d}`).join(' '),light=p.light,lp=light?C.lightPolygon(light):[],angle=(light?.angle||0)*Math.PI/180;
+ s.host.querySelector('[data-ceiling-section]').innerHTML=`<svg class="ceiling-section" role="img" aria-label="吊顶二维截面" viewBox="${box.join(' ')}"><defs><pattern id="ceiling-section-grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="#dddcd6" stroke-width=".35"/></pattern></defs><rect x="${box[0]}" y="${box[1]}" width="${box[2]}" height="${box[3]}" fill="url(#ceiling-section-grid)"/><path d="M0 ${box[1]}V${box[1]+box[3]}M${box[0]} 0H${box[0]+box[2]}" stroke="#888" stroke-width="1" vector-effect="non-scaling-stroke"/><polygon points="${polygon}" fill="#ddd7c9" stroke="#726b5d" stroke-width="${stroke}" vector-effect="non-scaling-stroke"/>${vertices.map((v,i)=>{const b=vertices[(i+1)%vertices.length],selected=s.edge===v.id+':'+b.id;return `<line data-section-edge="${v.id}:${b.id}" x1="${v.u}" y1="${v.d}" x2="${b.u}" y2="${b.d}" stroke="${selected?'#168c77':'transparent'}" stroke-width="${selected?4:9}" vector-effect="non-scaling-stroke"><title>边长 ${fmt(Math.hypot(b.u-v.u,b.d-v.d))} mm</title></line>`;}).join('')}${light?`<polygon points="${lp.map(p=>p.join(',')).join(' ')}" fill="#ffbd52"/><path d="M${light.u} ${light.d}l${Math.cos(angle)*22} ${Math.sin(angle)*22}" stroke="#d48313" stroke-width="2" vector-effect="non-scaling-stroke"/><circle cx="${light.u+Math.cos(angle)*22}" cy="${light.d+Math.sin(angle)*22}" r="2" fill="#d48313"/>`:''}${vertices.map((v,i)=>`<circle data-section-node="${v.id}" cx="${v.u}" cy="${v.d}" r="${s.node===v.id?3.4:2.3}" fill="${s.node===v.id?'#087f6d':'white'}" stroke="#087f6d" stroke-width="1" vector-effect="non-scaling-stroke"><title>节点${i+1}：${fmt(v.u)}, ${fmt(v.d)} mm</title></circle>`).join('')}${s.draw.length?`<polyline points="${s.draw.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#df7728" stroke-width="2" vector-effect="non-scaling-stroke"/>${s.draw.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.5" fill="#df7728"/>`).join('')}`:''}</svg>`;
+ s.host.querySelector('[data-ceiling-dimensions]').textContent=`当前轮廓：凸出${fmt(width)} mm，下吊${fmt(height)} mm，${vertices.length}个节点${light?`；发光位置 u=${fmt(light.u)}、d=${fmt(light.d)} mm，${fmt(light.angle)}°`:''}`;
+ const svg=s.host.querySelector('.ceiling-section'),coord=e=>{const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM().inverse());return [p.x,p.y];};
+ svg.onwheel=e=>{e.preventDefault();const q=coord(e),factor=e.deltaY>0?1.15:1/1.15,w=box[2]*factor;if(w<10||w>40000)return;s.zoom=[q[0]+(box[0]-q[0])*factor,q[1]+(box[1]-q[1])*factor,w,box[3]*factor];renderSection(s);};
+ svg.onpointerdown=e=>{
+  if(e.button!==0)return;e.preventDefault();if(s.dirty.size)return s.error('请先更新预览或恢复输入，再操作截面。');const q=coord(e),matrix=svg.getScreenCTM(),pixels=Math.hypot(matrix.a,matrix.b),snap=C.rules().snapPixels/pixels;
+  if(s.mode==='draw'){if(s.draw.length>=3&&Math.hypot(q[0]-s.draw[0][0],q[1]-s.draw[0][1])<=snap)return closeContour(s);let at=q.map(v=>Math.max(0,Math.round(v)));const prev=s.draw.at(-1);if(prev){if(Math.abs(q[0]-prev[0])<snap)at[0]=prev[0];if(Math.abs(q[1]-prev[1])<snap)at[1]=prev[1];}s.draw.push(at);renderSection(s);return;}
+  if(s.mode==='light'){
+   let at=q.slice(),best=snap;for(let i=0;i<vertices.length;i++){const a=vertices[i],b=vertices[(i+1)%vertices.length],dx=b.u-a.u,dy=b.d-a.d,L=dx*dx+dy*dy,t=Math.max(0,Math.min(1,((q[0]-a.u)*dx+(q[1]-a.d)*dy)/L)),p=[a.u+dx*t,a.d+dy*t],dist=Math.hypot(p[0]-q[0],p[1]-q[1]);if(dist<best){best=dist;at=p;}}
+   s.get('light-enabled').checked=true;s.get('light-u').value=fmt(at[0]);s.get('light-d').value=fmt(at[1]);s.dirty.add('light');update(s);return;
+  }
+  const node=e.target.closest('[data-section-node]');if(node){s.node=node.dataset.sectionNode;fillFields(s);renderSection(s);const start={x:e.clientX,y:e.clientY},dragInverse=matrix.inverse(),move=ev=>{if(Math.hypot(ev.clientX-start.x,ev.clientY-start.y)<3)return;const point=new DOMPoint(ev.clientX,ev.clientY).matrixTransform(dragInverse),q=[point.x,point.y];s.get('node-u').value=Math.max(0,Math.round(q[0]));s.get('node-d').value=Math.max(0,Math.round(q[1]));s.dirty.add('node');},up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);s.dragCleanup=null;if(s.dirty.has('node'))update(s);};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);s.dragCleanup=up;return;}
+  const edge=e.target.closest('[data-section-edge]');if(edge&&C.faces(s.profile).some(f=>faceKey(f)===edge.dataset.sectionEdge)){s.edge=edge.dataset.sectionEdge;s.get('face').value=s.edge;renderSection(s);}
+ };
+}
+function closeContour(s){try{if(s.mode!=='draw')throw Error('请先选择绘制新轮廓');const section={vertices:s.draw.map(([u,d])=>({id:'v_'+uid(),u,d})),...(s.profile.section.light?{light:copy(s.profile.section.light)}:{})};C.section(section);s.profile.section=section;put(s);s.mode='select';s.draw=[];s.node=section.vertices[0].id;s.host.querySelectorAll('[data-ceiling-mode]').forEach(b=>b.classList.toggle('on',b.dataset.ceilingMode==='select'));fillFields(s);render(s);}catch(e){s.error(e.message+'；绘制点保留，上次有效轮廓保持。');}}
+function renderPlan(s){
+ const room=s.rooms.find(r=>r.id===s.profile.roomId),p=room.poly,x=p.map(v=>v[0]),y=p.map(v=>v[1]),pad=150,box=[Math.min(...x)-pad,Math.min(...y)-pad,Math.max(...x)-Math.min(...x)+pad*2,Math.max(...y)-Math.min(...y)+pad*2],data=C.resolve({version:1,items:s.items});
+ s.host.querySelector('[data-ceiling-plan]').innerHTML=`<svg class="ceiling-plan" role="img" aria-label="沿墙吊顶和平顶预览" viewBox="${box.join(' ')}"><polygon points="${p.map(p=>p.join(',')).join(' ')}" fill="#fffdf7" stroke="#888" stroke-width="2" vector-effect="non-scaling-stroke"/>${data.items.filter(c=>c.roomId===room.id).sort((a,b)=>(a.kind==='flat'?-1:1)-(b.kind==='flat'?-1:1)).map(c=>`<polygon data-ceiling-plan-id="${c.id}" points="${(c.kind==='profile'?C.footprint(c):c.polygon).map(p=>p.join(',')).join(' ')}" fill="${c.kind==='flat'?'#d9e8ed':'#e3c79a'}" stroke="${c.kind==='flat'?'#57848b':'#9d6a2b'}" stroke-width="2" vector-effect="non-scaling-stroke"><title>${esc(c.name)} · ${fmt(c.height)} mm</title></polygon>`).join('')}${data.items.filter(c=>c.kind==='profile'&&c.roomId===room.id&&c.section.light).map(c=>{const layout=C.lightLayout(c),us=C.lightPolygon(c.section.light).map(v=>v[0]);return layout.pieces.map(piece=>`<polygon data-ceiling-light-leg="${piece.legId}" points="${C.footprint({...c,path:piece.path},us).map(p=>p.join(',')).join(' ')}" fill="#ffb635" stroke="#c58c1d" stroke-width="2" vector-effect="non-scaling-stroke"/>`).join('')+(layout.join?`<polyline data-ceiling-light-join points="${layout.join.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#c58c1d" stroke-dasharray="4 3" stroke-width="2" vector-effect="non-scaling-stroke"><title>灯带分段，连接线仅作示意</title></polyline>`:'');}).join('')}</svg>`;
+}
+function disposePreview(s){s.previewRequest++;s.preview?.dispose();s.preview=null;if(s.host){const h=s.host.querySelector('[data-ceiling-3d]');h.replaceChildren();h.hidden=true;}}
+async function show3D(s){disposePreview(s);const h=s.host.querySelector('[data-ceiling-3d]');h.hidden=false;h.textContent='正在生成三维预览…';const request=s.previewRequest;try{let items=s.items.filter(c=>c.roomId===s.profile.roomId);if(s.get('preview-scope').value==='sample'){const sample=C.sample(s.profile);items=[sample];}const data=C.resolve({version:1,items});h.replaceChildren();const preview=await View3D.ceilingPreview(h,data);if(request!==s.previewRequest||!h.isConnected){preview.dispose();return;}s.preview=preview;h.scrollIntoView({block:'center'});}catch(e){if(request===s.previewRequest)s.error('三维预览未能加载：'+e.message);}}
+function dispose(s){s.dragCleanup?.();disposePreview(s);}
+function afterRender(){
+ let g=document.querySelector('#gCeilings');if(!g){g=document.createElementNS(NS,'g');g.id='gCeilings';document.querySelector('#gRooms')?.after(g);}g.setAttribute('transform',`rotate(${drawingRotation()})`);
+ const data=FurnishProject.effectivePlan(PLAN,state).ceilings;g.innerHTML=(data?.items||[]).map(c=>`<polygon data-ceiling-id="${esc(c.id)}" points="${(c.kind==='profile'?C.footprint(c):c.polygon).map(p=>p.join(',')).join(' ')}" fill="${c.kind==='profile'?'#d7b580':'#a9d5dd'}" fill-opacity=".22" stroke="${c.kind==='profile'?'#b88037':'#588d98'}" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="stroke"><title>${esc(c.name)} · 吊顶</title></polygon>`).join('');
+ g.onpointerdown=e=>{if(e.target.closest('[data-ceiling-id]'))e.stopPropagation();};g.onclick=e=>{const c=data?.items.find(c=>c.id===e.target.closest('[data-ceiling-id]')?.dataset.ceilingId);if(c){e.stopPropagation();open(c.kind==='profile'?c.id:c.attachment?.profileId);}};
+}
+window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='ceiling-open';b.textContent='吊顶';b.onclick=()=>open();rail.append(b);});
+window.FurnishCeilingUI={open,afterRender};
+})();
