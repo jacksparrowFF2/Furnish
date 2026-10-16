@@ -1,3 +1,12 @@
+function measurementReferenceName(m){
+ if(!m)return tr('该方向无实体','No entity in this direction');
+ const name=m.entity.kind==='wall'?(m.wallPriority?tr('紧邻实体墙','Adjoining solid wall'):tr('墙面／窗边','Wall / window')):m.entity.kind==='window'?tr('窗边','Window edge'):(typeof nm==='function'?nm(m.entity.name):m.entity.name);
+ return name+(m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
+}
+function measurementDirectionLabel(dir,m){
+ const labels={l:tr('左','Left'),r:tr('右','Right'),t:tr('上','Up'),b:tr('下','Down')};
+ return m?`${labels[dir]} ${Math.round(m.distance)} mm · ${measurementReferenceName(m)}`:'';
+}
 /* Classic script: SVG layer adapters read live application state on each call.
  * Declarations only; load before app.js. Selection, history and persistence
  * remain owned by the application. */
@@ -49,13 +58,13 @@ function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims}={})
   if(dimensions){
    const sizeText=`${fmt(size.w)} × ${fmt(size.d)} mm`;
    marks=scale>0&&size.w*scale<170?text([f.cx,f.cy],tr('开孔','Cutout'),0,-font*.65)+text([f.cx,f.cy],sizeText,0,font*.65):text([f.cx,f.cy],tr(`开孔 ${sizeText}`,`Cutout ${sizeText}`));
-   const names={l:tr('左','Left'),r:tr('右','Right'),t:tr('后','Rear'),b:tr('前','Front')};
+   const names={l:tr('孔左','Cutout left'),r:tr('孔右','Cutout right'),t:tr('孔后','Cutout rear'),b:tr('孔前','Cutout front')};
    for(const [dir,m] of Object.entries(gaps)){
     if(!m)continue;const {a,b}=m,L=Math.hypot(b.x-a.x,b.y-a.y),nx=L>1e-7?-(b.y-a.y)/L*font*.2:font*.2,ny=L>1e-7?(b.x-a.x)/L*font*.2:0;
     // Keep orange hole margins apart from the green footprint clearances.
     // Offsets are in drawing display axes, so they remain readable after rotation.
     const rad=drawingRotation()*Math.PI/180,horizontal=Math.abs((b.x-a.x)*Math.cos(rad)-(b.y-a.y)*Math.sin(rad))>=Math.abs((b.x-a.x)*Math.sin(rad)+(b.y-a.y)*Math.cos(rad)),dx=horizontal?0:font*4.6,dy=horizontal?font*1.1:0;
-    marks+=`<g data-hob-gap="${dir}"><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" ${stroke}/>${text([(a.x+b.x)/2,(a.y+b.y)/2],`${names[dir]} ${fmt(m.distance)} mm`,dx,dy)}</g>`;
+    marks+=`<g data-hob-gap="${dir}"><title>${esc(tr('产品方向 · 孔边 → ','Product axes · cutout edge → ')+measurementReferenceName(m))}</title><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" ${stroke}/>${text([(a.x+b.x)/2,(a.y+b.y)/2],`${names[dir]} ${fmt(m.distance)} mm`,dx,dy)}</g>`;
    }
   }
   return `<g data-hob-opening="${esc(f.id)}" data-surface-opening="${esc(f.id)}" pointer-events="none"><title>${esc(tr('台面开孔示意；优先量到紧邻实体墙，无墙则量到所在柜体模块边界，不是安装要求','Nominal cutout; adjoining solid wall first, otherwise the cabinet module edge; not installation requirements'))}</title><path data-hob-cutout d="M${ring.map(p=>p.join(' ')).join('L')}Z" fill="${color}" fill-opacity=".04" ${stroke} stroke-dasharray="6 4"/>${marks}</g>`;
@@ -243,7 +252,7 @@ function renderGrid(){
   $('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid ? 'url(#grid)' : 'transparent'}" data-bg="1"/>`;
 }
 
-function directionalEditAttributes(dir,f){return dir&&ui.tool==='select'&&!(Array.isArray(f)?f:[f]).some(v=>v?.locked)?`data-distance-edit="${dir}" role="button" tabindex="0" pointer-events="all" style="cursor:pointer;text-decoration:underline" aria-label="${tr('编辑目标净距','Edit target clearance')}"`:'';}
+function directionalEditAttributes(dir,f,label){return dir&&ui.tool==='select'&&!(Array.isArray(f)?f:[f]).some(v=>v?.locked)?`data-distance-edit="${dir}" role="button" tabindex="0" pointer-events="all" style="cursor:pointer;text-decoration:underline" aria-label="${esc(label||tr('编辑目标净距','Edit target clearance'))}"`:'';}
 function sameMeasurement(a,b,m){const same=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y)<.01;return same(a,m.a)&&same(b,m.b)||same(a,m.b)&&same(b,m.a);}
 function renderMeasure(){
   const k = 1/view.s, fs = 12*k;
@@ -256,7 +265,7 @@ function renderMeasure(){
     const col = tmp ? '#0e8f83' : '#ef5a24', S = `stroke="${col}" stroke-width="1.5" vector-effect="non-scaling-stroke"`;
     return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" ${S}/>
       <line x1="${a.x-nx}" y1="${a.y-ny}" x2="${a.x+nx}" y2="${a.y+ny}" ${S}/><line x1="${b.x-nx}" y1="${b.y-ny}" x2="${b.x+nx}" y2="${b.y+ny}" ${S}/>
-      <text ${directionalEditAttributes(dir,f)} x="${mx}" y="${my-5*k}" font-size="${fs}" text-anchor="middle" fill="${col}" font-weight="600" transform="rotate(${ang} ${mx} ${my})"
+      <text ${directionalEditAttributes(dir,f,measurementDirectionLabel(dir,directions[dir]))} x="${mx}" y="${my-5*k}" font-size="${fs}" text-anchor="middle" fill="${col}" font-weight="600" transform="rotate(${ang} ${mx} ${my})"
         stroke="${PAL.halo}" stroke-width="${3.5*k}" paint-order="stroke">${Math.round(L)} mm</text>`;
   };
   let s = state.measures.map((m,i) => {
@@ -308,20 +317,23 @@ function kitchenDividerHandleSVG(f,k,hs,A,resizeCursor){
  if(!f.kitchen||!globalThis.FurnishKitchen?.dividerHandles)return '';
  let handles;try{handles=FurnishKitchen.dividerHandles(f);}catch{return '';}
  const drawing=typeof drawingRotation==='function'?drawingRotation():0,flip=f.flip?-1:1;
- const grips=handles.map(h=>{const x=h.x*flip,y=h.y,tx=-h.dy*flip*h.span/2,ty=h.dx*h.span/2,angle=f.rot+drawing+Math.atan2(h.dy,h.dx*flip)*180/Math.PI;
-  return `<g data-edit-overlay="kitchen-divider" data-handle="kitchen-divider" data-kitchen-divider="${h.key}" data-kitchen-run="${h.run}" role="button" tabindex="0" aria-label="${tr('编辑相邻柜宽','Edit adjacent cabinet widths')}" style="cursor:${resizeCursor(angle)}"><title>${tr('点击输入柜宽，或拖动柜间分界线；相邻两柜一增一减，整排总长、柜深及其他模块不变','Click to enter widths or drag the divider; redistribute the adjacent widths and keep the run length fixed')}</title><path d="M${x-tx} ${y-ty}L${x+tx} ${y+ty}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/><path d="M${x-tx} ${y-ty}L${x+tx} ${y+ty}" fill="none" ${A} stroke-width="2" pointer-events="none"/><rect x="${x-5*hs*k}" y="${y-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A}/></g>`;
- }).join('');
- const angle=(f.rot+drawing)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),placed=[];
+ const grips=new Map(handles.map(h=>{const x=h.x*flip,y=h.y,tx=-h.dy*flip*h.span/2,ty=h.dx*h.span/2,angle=f.rot+drawing+Math.atan2(h.dy,h.dx*flip)*180/Math.PI;
+  return [h.key,`<g data-edit-overlay="kitchen-divider" data-handle="kitchen-divider" data-kitchen-divider="${h.key}" data-kitchen-run="${h.run}" role="button" tabindex="0" aria-label="${esc(tr(`编辑相邻柜宽 ${Math.round(h.leftWidth)} / ${Math.round(h.rightWidth)} mm`,`Edit adjacent widths ${Math.round(h.leftWidth)} / ${Math.round(h.rightWidth)} mm`))}" style="cursor:${resizeCursor(angle)}"><title>${tr('点击输入柜宽，或拖动柜间分界线；相邻两柜一增一减，整排总长、柜深及其他模块不变','Click to enter widths or drag the divider; redistribute the adjacent widths and keep the run length fixed')}</title><path d="M${x-tx} ${y-ty}L${x+tx} ${y+ty}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/><path d="M${x-tx} ${y-ty}L${x+tx} ${y+ty}" fill="none" ${A} stroke-width="2" pointer-events="none"/><rect x="${x-5*hs*k}" y="${y-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A}/></g>`];
+ }));
+ const angle=(f.rot+drawing)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),reserved=[];
  // Keep the numeric buttons clear of the floating selection toolbar.
- if(typeof document!=='undefined'&&typeof svg!=='undefined'){const fab=document.getElementById?.('fab'),matrix=svg.getScreenCTM?.();if(fab?.classList.contains('show')&&matrix){const r=fab.getBoundingClientRect(),a=drawing*Math.PI/180,x=f.cx*Math.cos(a)-f.cy*Math.sin(a),y=f.cx*Math.sin(a)+f.cy*Math.cos(a),ox=matrix.a*x+matrix.c*y+matrix.e,oy=matrix.b*x+matrix.d*y+matrix.f;placed.push({x:r.left-ox-4,y:r.top-oy-4,w:r.width+8,h:r.height+8});}}
- for(const h of FurnishKitchen.extensionHandles(f)){const x=h.x*flip,y=h.y,text=`${h.name} ${Math.round(h.value*10)/10} mm`,w=Array.from(text).reduce((sum,ch)=>sum+(/[\u2e80-\uffff]/.test(ch)?10:6),8);placed.push({x:(x*c-y*s)/k-w/2,y:(x*s+y*c)/k-24,w,h:16});}
- const labels=handles.flatMap(h=>['left','right'].map(side=>{
+ if(typeof document!=='undefined'&&typeof svg!=='undefined'){const fab=document.getElementById?.('fab'),matrix=svg.getScreenCTM?.();if(fab?.classList.contains('show')&&matrix){const r=fab.getBoundingClientRect(),a=drawing*Math.PI/180,x=f.cx*Math.cos(a)-f.cy*Math.sin(a),y=f.cx*Math.sin(a)+f.cy*Math.cos(a),ox=matrix.a*x+matrix.c*y+matrix.e,oy=matrix.b*x+matrix.d*y+matrix.f;reserved.push({x:r.left-ox-4,y:r.top-oy-4,w:r.width+8,h:r.height+8});}}
+ for(const h of FurnishKitchen.extensionHandles(f)){const x=h.x*flip,y=h.y,text=`${h.name} ${Math.round(h.value*10)/10} mm`,w=Array.from(text).reduce((sum,ch)=>sum+(/[\u2e80-\uffff]/.test(ch)?10:6),8);reserved.push({x:(x*c-y*s)/k-w/2,y:(x*s+y*c)/k-24,w,h:16});}
+ const controls=handles.map(h=>{const placed=reserved.slice(),labels=['left','right'].map(side=>{
   const sign=side==='left'?-1:1,value=Math.round(h[side+'Width']*100)/100,text=`${value} mm`,w=Math.max(58,text.length*6.5+18),height=COARSE?28:24,ux=h.dx*flip,uy=h.dy,nx=-h.dy*flip,ny=h.dx,projected=Math.abs(ux*c-uy*s)*w/2+Math.abs(ux*s+uy*c)*height/2,offset=(projected+12)*k;
   let x,y,box;for(let row=0;row<12;row++){const shift=sign*(16+(row%2?-1:1)*Math.ceil(row/2)*(height+5))*k;x=h.x*flip+sign*ux*offset+nx*shift;y=h.y+sign*uy*offset+ny*shift;const px=(x*c-y*s)/k,py=(x*s+y*c)/k;box={x:px-w/2,y:py-height/2,w,h:height};if(!placed.some(b=>box.x<b.x+b.w+4&&box.x+box.w+4>b.x&&box.y<b.y+b.h+4&&box.y+box.h+4>b.y))break;}placed.push(box);
   const name=h[side]<f.kitchen.modules.length?tr(`模块 ${h[side]+1}` ,`Module ${h[side]+1}`):tr('末端薄柜','Thin end cabinet'),title=tr(`点击修改${name}柜宽 ${value} mm，另一柜自动补差`,`Edit ${name} width ${value} mm; the adjacent cabinet compensates`);
   return `<path data-edit-overlay="kitchen-divider-width" d="M${h.x*flip+sign*ux*7*k} ${h.y+sign*uy*7*k}L${x} ${y}" fill="none" ${A} stroke-width="1" pointer-events="none"/><g data-edit-overlay="kitchen-divider-width" data-kitchen-divider-key="${h.key}" data-kitchen-divider-width="${side}" data-kitchen-module="${h[side]}" role="button" tabindex="0" aria-label="${esc(title)}" transform="translate(${x} ${y}) rotate(${-f.rot-drawing})" style="cursor:pointer"><title>${esc(title)}</title><rect x="${-w*k/2}" y="${-height*k/2}" width="${w*k}" height="${height*k}" rx="${4*k}" fill="${PAL.halo}" fill-opacity=".96" ${A} stroke-width=".7"/><text x="0" y="${4*k}" font-size="${11*k}" text-anchor="middle" fill="${ACC}" pointer-events="none">${text}</text></g>`;
- })).join('');
- return grips+labels;
+ }).join('');
+ const active=typeof drag!=='undefined'&&drag?.kind==='kitchen-divider'&&drag.id===f.id&&drag.divider===h.key;
+ return `<g class="kitchen-divider-control" data-divider-control="${h.key}" ${active?'data-active="true"':''}>${grips.get(h.key)}<g class="kitchen-divider-labels">${labels}</g></g>`;
+ }).join('');
+ return controls;
 }
 function kitchenExtensionHandleSVG(f,k,hs,A,resizeCursor){
  if(!f.kitchen||!globalThis.FurnishKitchen?.extensionHandles)return '';
@@ -411,7 +423,7 @@ function clearanceSVG(f, k){
   const labels={l:tr('左','Left'),r:tr('右','Right'),t:tr('上','Up'),b:tr('下','Down')};
   return Object.entries(directionalMeasurements(f)).filter(([,m])=>m&&!state.measures.some(saved=>sameMeasurement(saved.a,saved.b,m))).map(([dir,m])=>{
     const {a,b}=m,mx=(a.x+b.x)/2,my=(a.y+b.y)/2,angle=FurnishDrawing.textAngle(Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI,drawingRotation()),v=Math.max(m.distance,1),nx=-(b.y-a.y)/v*4*k,ny=(b.x-a.x)/v*4*k;
-    return `<g data-edit-overlay="directional-distance" data-distance-dir="${dir}" pointer-events="none"><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" stroke="${TEAL}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><text ${directionalEditAttributes(dir,f)} x="${mx}" y="${my-8*k}" text-anchor="middle" font-size="${12*k}" fill="${TEAL}" transform="rotate(${angle} ${mx} ${my})" stroke="${PAL.halo}" stroke-width="${3*k}" paint-order="stroke"><title>${tr('点击输入目标净距并移动物体','Click to enter target clearance and move this item')}</title>${labels[dir]} ${Math.round(m.distance)} mm</text></g>`;
+    return `<g data-edit-overlay="directional-distance" data-distance-dir="${dir}" pointer-events="none"><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" stroke="${TEAL}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><text ${directionalEditAttributes(dir,f,measurementDirectionLabel(dir,m))} x="${mx}" y="${my-8*k}" text-anchor="middle" font-size="${12*k}" fill="${TEAL}" transform="rotate(${angle} ${mx} ${my})" stroke="${PAL.halo}" stroke-width="${3*k}" paint-order="stroke"><title>${tr('点击输入目标净距并移动物体','Click to enter target clearance and move this item')}</title>${labels[dir]} ${Math.round(m.distance)} mm</text></g>`;
   }).join('');
 }
 

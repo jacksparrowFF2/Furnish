@@ -1,0 +1,34 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),W=require('../src/core/work-state.js');
+const near=(a,b)=>assert(Math.abs(a-b)<1e-4,`${a} != ${b}`),base={id:'basket',type:'counter',name:'碗碟篮',cx:4000,cy:4000,rot:0,color:'#f3f1ec'},cfg={version:1,shape:'straight',depth:600,baseHeight:830,thickness:20,modules:[{run:0,width:800,role:'drawer'}]},old=K.configure(base,cfg),before=JSON.stringify(old),f=K.setDrawerStyle(old,0,'dish-basket'),tiers=g=>K.drawerHeights(g,g.kitchen.modules[0]);
+assert.deepEqual(tiers(f),[410,220,100]);assert.equal(JSON.stringify(old),before);assert.equal(K.configure(old,old.kitchen).kitchen.modules[0].drawerStyle,undefined);
+const standard=K.setDrawerStyle(f,0,'standard');assert.equal(standard.kitchen.modules[0].drawerStyle,undefined);assert.deepEqual(tiers(standard),tiers(f));
+const min=K.configure(f,{...f.kitchen,baseHeight:720,modules:[{...f.kitchen.modules[0],drawerHeights:[300,220,100]}]});K.validate(min);C.validate(K.moduleFurniture(min,K.cabinetLayout(min)[0]));
+for(let i=0;i<3;i++){const invalid=structuredClone(min);invalid.kitchen.modules[0].drawerHeights[i]-=.001;invalid.kitchen.modules[0].drawerHeights[(i+1)%3]+=.001;assert.throws(()=>K.validate(invalid),/至少/);}
+assert.throws(()=>K.setDrawerStyle(K.configure(base,{...cfg,baseHeight:719.99}),0,'dish-basket'),/620/);assert.throws(()=>K.setDrawerCount(f,0,2),/固定三层/);assert.throws(()=>K.setDrawerHeight(f,0,2,99.99));assert.throws(()=>K.setDrawerStyle({...f,locked:true},0,'standard'));
+assert.deepEqual(tiers(K.setDrawerHeight(f,0,2,120)),[390,220,120]);assert.deepEqual(tiers(K.resizeDrawerBoundary(f,0,0,-100)),[310,320,100]);assert.throws(()=>K.resizeDrawerBoundary(min,0,0,-.001));
+assert.deepEqual(tiers(K.configure(f,{...f.kitchen,baseHeight:820})),[400,220,100]);assert.deepEqual(tiers(K.configure(min,{...min.kitchen,baseHeight:830})),[410,220,100]);assert.throws(()=>K.configure(min,{...min.kitchen,baseHeight:719.99}),/至少/);
+let opened=K.toggle(f,0,2,true);assert.deepEqual(opened.kitchen.modules[0].drawerOpen,[false,true,true]);opened=K.toggle(opened,0,1,false);assert.deepEqual(opened.kitchen.modules[0].drawerOpen,[false,false,false]);
+const retained=K.setDrawerStyle(K.configure(base,{...cfg,modules:[{...cfg.modules[0],drawerHeights:[400,230,100]}]}),0,'dish-basket');assert.deepEqual(tiers(retained),[400,230,100]);
+const role=K.configure(f,{...f.kitchen,modules:[{...f.kitchen.modules[0],role:'door'}]});for(const key of ['drawerStyle','drawerHeights','drawerOpen'])assert.equal(role.kitchen.modules[0][key],undefined);
+const missing=K.configure(base,{...cfg,modules:[{...cfg.modules[0],drawerStyle:'dish-basket'}]});assert.deepEqual(tiers(missing),tiers(f));C.validate(K.moduleFurniture(missing,K.cabinetLayout(missing)[0]));
+for(const style of ['bad',null,4])assert.throws(()=>K.validate({...f,kitchen:{...f.kitchen,modules:[{...f.kitchen.modules[0],drawerStyle:style}]}}));
+assert.throws(()=>K.configure({id:'wall',type:'kitchenwall',cx:0,cy:0}, {...cfg,thickness:0,modules:[{...cfg.modules[0],drawerStyle:'dish-basket'}]}),/样式/);
+const plan={id:'p',name:'厨房',rooms:[{id:'r',name:'厨房',mat:'tile',poly:[[0,0],[10000,0],[10000,10000],[0,10000]]}],walls:[],wins:[],doors:[],slides:[],beams:[],defaults:[],ceilingHeight:2800};
+const payload={planId:'p',current:{furniture:[opened]},designs:[{name:'碗碟篮',work:{furniture:[f]}}],catalog:[]},out=P.unpack(P.pack(payload));assert.deepEqual(out,payload);
+const work=out.current,rules=W.create({makeId:()=> 'new',colorFor:()=> '#fff',materials:{tile:{}}});for(let i=0;i<4;i++)rules.restore(work,plan);assert.deepEqual(work.furniture,[opened]);
+assert.equal(D.pasteFurniture({items:[f],cx:4000,cy:4000},{x:5000,y:5000},{x:0,y:0,w:10000,h:10000},()=> 'copy').items[0].kitchen.modules[0].drawerStyle,'dish-basket');assert.equal(D.replaceFurniture(f,{type:'chair',w:500,d:500,name:'椅',color:'#eee',price:0}).kitchen,undefined);
+assert.equal(K.specification(opened).modules[0].drawerStyle,'dish-basket');assert.equal(K.specification(opened).modules[0].drawerOpen,undefined);
+const fingerprint=P.checkFingerprint({kind:'cabinetdrawer',id:f.id},plan,[f],800);assert.notEqual(fingerprint,P.checkFingerprint({kind:'cabinetdrawer',id:f.id},plan,[K.setDrawerStyle(f,0,'standard')],800));assert.equal(fingerprint,P.checkFingerprint({kind:'cabinetdrawer',id:f.id},plan,[{...f,color:'#123456',price:100,purchaseStatus:'ordered'}],800));
+(async()=>{
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),context=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});for(const name of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),context);
+ const box=(w,h,d,color,x,y,z)=>{assert(w>0&&h>0&&d>0);const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
+ for(const source of [f,min,missing])for(const rot of [0,37,90,180])for(const flip of [false,true]){
+  const v={...source,rot,flip},build=s=>context.FurnishKitchenModel.build(T,s,box),closed=build(v),fronts=[],drawers=[],parts=[];closed.traverse(o=>{if(o.userData.cabinetDrawerBoard==='front')fronts.push(o);if(o.isGroup&&o.userData.motion?.kind==='cabinetdrawer')drawers.push(o);if(o.userData.cabinetBasketPart)parts.push(o);if(o.isMesh)for(const a of [o.geometry.attributes.position,o.geometry.attributes.normal])assert(Array.from(a.array).every(Number.isFinite));});
+  assert.equal(fronts.length,2);assert.equal(drawers.length,3);assert(parts.some(o=>o.userData.cabinetBasketPart==='cutlery-divider'));assert(!fronts.some(o=>o.userData.cabinetPart.drawer===2));
+  const bounds=fronts.map(o=>new T.Box3().setFromObject(o)).sort((a,b)=>a.min.y-b.min.y);near(bounds[0].min.y*1000,101);near(bounds[0].max.y*1000,100+tiers(v)[0]-1);near(bounds[1].min.y*1000,100+tiers(v)[0]+1);near(bounds[1].max.y*1000,v.kitchen.baseHeight-1);
+  const opened=build(K.toggle(v,0,2,true)),motion=[];opened.traverse(o=>{if(o.isGroup&&o.userData.motion?.kind==='cabinetdrawer')motion.push(o);});near(motion[0].position.z,0);near(motion[1].position.z,.42);near(motion[2].position.z,.42);
+  for(const row of K.elevationRuns(v))build(row.furniture);const zone=K.openingZones(v,{passage:0}).find(z=>z.kind==='cabinetdrawer');assert(zone);assert(zone.ranges[0][0]<=101&&zone.ranges[0][1]>=v.kitchen.baseHeight-1);
+ }
+ console.log('PASS two-front three-tier dish basket: minima, independent hidden tray, production fronts and racks, transforms/elevations, persistence/restoration, copy/replacement, and spatial confirmation');
+})().catch(e=>{console.error(e);process.exitCode=1;});

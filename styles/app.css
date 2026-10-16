@@ -305,6 +305,25 @@ tr.click{cursor:pointer}
 .hero .total b{font-size:26px;color:#fff;text-shadow:0 0 24px rgba(255,106,53,.55)}
 .hero .actions .btn{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:var(--ink)}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.furniture-dimensions{margin:10px 0 16px;padding:12px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--soft);overflow-wrap:anywhere}
+.furniture-dimensions>b{display:block;font-family:var(--mono);font-size:13px;line-height:1.6}
+.furniture-dimensions>small{display:block;color:var(--muted);font-size:11px;line-height:1.6}
+.furniture-dimensions dl{margin:8px 0;display:grid;gap:4px;font-size:12px}
+.furniture-dimensions dl>div{display:flex;justify-content:space-between;gap:8px}
+.furniture-dimensions dd{margin:0;font-family:var(--mono);text-align:right}
+.furniture-dimensions dt{color:var(--muted)}
+.measurement-basis{font-size:11.5px;line-height:1.7;padding:8px;border-radius:var(--r-md);background:var(--soft);overflow-wrap:anywhere}
+.directional-measurements .irow{gap:6px;align-items:center}
+.directional-measurements .irow>.nm{min-width:0;overflow-wrap:anywhere;white-space:normal;overflow:visible;text-overflow:clip}
+.directional-measurements .irow>.btn{flex:none;font-size:11px;padding:6px}
+.directional-measurements details,.wall-distance-panel{margin:12px 0}
+.directional-measurements summary,.wall-distance-panel summary,#dishwasher-checks summary{cursor:pointer;font-size:12px;font-weight:600;line-height:1.7}
+.check-counts{font-weight:600}
+.kitchen-divider-control .kitchen-divider-labels{visibility:hidden;pointer-events:none}
+.kitchen-divider-control:focus-within .kitchen-divider-labels,.kitchen-divider-control[data-active] .kitchen-divider-labels{visibility:visible;pointer-events:auto}
+.kitchen-divider-control [data-kitchen-divider]:focus{outline:none}
+.kitchen-divider-control [data-kitchen-divider]:focus>rect{stroke-width:3}
+@media (hover:hover){.kitchen-divider-control:hover .kitchen-divider-labels{visibility:visible;pointer-events:auto}}
 .form label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;font-weight:600;color:var(--muted)}
 .form label.full{grid-column:1/-1}
 .form input,.form select{height:34px;border:1px solid transparent;border-radius:var(--r-md);padding:5px 10px;background:var(--soft);color:var(--ink);width:100%;

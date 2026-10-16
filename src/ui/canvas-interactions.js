@@ -201,6 +201,7 @@ svg.addEventListener('pointerdown', e => {
   const nEl = ui.layers.notes && t.closest('[data-note]'),mEl=t.closest('[data-measure]');
   if (picking && mEl){select({kind:'measure',id:Number(mEl.dataset.measure)});return;}
   if (h && selIds().length === 1){
+    if(h.dataset.handle==='kitchen-divider')h.focus?.({preventScroll:true});
     const f=getF(selIds()[0]);
     drag = {kind:f.locked?'locked':h.dataset.handle, axis:h.dataset.axis||'both', edge:h.dataset.kitchenEdge, run:Number(h.dataset.kitchenRun), field:h.dataset.kitchenExtension, divider:h.dataset.kitchenDivider, startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
   } else if (ui.tool === 'demolish' && t.closest('[data-wall]')){

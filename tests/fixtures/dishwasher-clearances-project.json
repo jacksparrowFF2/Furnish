@@ -1,0 +1,360 @@
+{
+  "format": "furnish-project",
+  "version": 1,
+  "createdAt": "2026-10-15T17:34:11.269Z",
+  "checksum": "23dd65ca",
+  "payload": {
+    "planId": "custom_dishwasher_check",
+    "current": {
+      "furniture": [
+        {
+          "id": "dish",
+          "type": "dishwasher_mijia_countertop",
+          "name": "米家台面洗碗机 · 5套",
+          "cx": 3000,
+          "cy": 3000,
+          "w": 550,
+          "d": 350,
+          "h": 598,
+          "rot": 0,
+          "color": "#f4f3ef",
+          "mountHeight": 860,
+          "dishwasherDoorOpen": false,
+          "frontClearance": 0
+        },
+        {
+          "id": "side",
+          "name": "出气侧高柜",
+          "type": "cabinet",
+          "cx": 2426,
+          "cy": 3000,
+          "w": 200,
+          "d": 200,
+          "h": 2200,
+          "rot": 0,
+          "color": "#c1b39b"
+        },
+        {
+          "id": "upper",
+          "type": "kitchenwall",
+          "name": "上方吊柜",
+          "cx": 3000,
+          "cy": 2935,
+          "w": 800,
+          "d": 320,
+          "h": 700,
+          "mountHeight": 1507,
+          "rot": 0,
+          "color": "#cfc0aa"
+        },
+        {
+          "id": "obstacle",
+          "name": "门前障碍",
+          "type": "custom",
+          "cx": 3000,
+          "cy": 3449,
+          "w": 50,
+          "d": 50,
+          "h": 1000,
+          "rot": 0,
+          "color": "#777777"
+        },
+        {
+          "id": "top",
+          "name": "承托台面",
+          "type": "counter",
+          "cx": 3000,
+          "cy": 3125,
+          "w": 1200,
+          "d": 600,
+          "h": 860,
+          "rot": 0,
+          "kitchen": {
+            "version": 1,
+            "shape": "straight",
+            "depth": 600,
+            "baseHeight": 820,
+            "thickness": 40,
+            "modules": [
+              {
+                "run": 0,
+                "width": 600,
+                "role": "door"
+              },
+              {
+                "run": 0,
+                "width": 600,
+                "role": "door"
+              }
+            ]
+          },
+          "color": "#d9cdb5"
+        }
+      ],
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_dishwasher_check",
+          "name": "洗碗机安装核对",
+          "source": "dxf",
+          "image": "",
+          "width": 3000,
+          "height": 3000,
+          "scale": 2,
+          "walls": [
+            {
+              "id": "top",
+              "a": [
+                50,
+                50
+              ],
+              "b": [
+                2950,
+                50
+              ],
+              "thickness": 200,
+              "kind": "b",
+              "caps": [
+                0,
+                0
+              ]
+            },
+            {
+              "id": "bottom",
+              "a": [
+                50,
+                2950
+              ],
+              "b": [
+                2950,
+                2950
+              ],
+              "thickness": 200,
+              "kind": "b",
+              "caps": [
+                0,
+                0
+              ]
+            },
+            {
+              "id": "left",
+              "a": [
+                50,
+                50
+              ],
+              "b": [
+                50,
+                2950
+              ],
+              "thickness": 200,
+              "kind": "b",
+              "caps": [
+                0,
+                0
+              ]
+            },
+            {
+              "id": "right",
+              "a": [
+                2950,
+                50
+              ],
+              "b": [
+                2950,
+                2950
+              ],
+              "thickness": 200,
+              "kind": "b",
+              "caps": [
+                0,
+                0
+              ]
+            }
+          ],
+          "openings": []
+        },
+        "phase": "survey"
+      },
+      "rooms": {}
+    },
+    "designs": [
+      {
+        "id": "named",
+        "name": "原始安装核对",
+        "work": {
+          "furniture": [
+            {
+              "id": "dish",
+              "type": "dishwasher_mijia_countertop",
+              "name": "米家台面洗碗机 · 5套",
+              "cx": 3000,
+              "cy": 3000,
+              "w": 550,
+              "d": 350,
+              "h": 598,
+              "rot": 0,
+              "color": "#f4f3ef",
+              "mountHeight": 860,
+              "dishwasherDoorOpen": false,
+              "frontClearance": 0
+            },
+            {
+              "id": "side",
+              "name": "出气侧高柜",
+              "type": "cabinet",
+              "cx": 2426,
+              "cy": 3000,
+              "w": 200,
+              "d": 200,
+              "h": 2200,
+              "rot": 0,
+              "color": "#c1b39b"
+            },
+            {
+              "id": "upper",
+              "type": "kitchenwall",
+              "name": "上方吊柜",
+              "cx": 3000,
+              "cy": 2935,
+              "w": 800,
+              "d": 320,
+              "h": 700,
+              "mountHeight": 1507,
+              "rot": 0,
+              "color": "#cfc0aa"
+            },
+            {
+              "id": "obstacle",
+              "name": "门前障碍",
+              "type": "custom",
+              "cx": 3000,
+              "cy": 3449,
+              "w": 50,
+              "d": 50,
+              "h": 1000,
+              "rot": 0,
+              "color": "#777777"
+            },
+            {
+              "id": "top",
+              "name": "承托台面",
+              "type": "counter",
+              "cx": 3000,
+              "cy": 3125,
+              "w": 1200,
+              "d": 600,
+              "h": 860,
+              "rot": 0,
+              "kitchen": {
+                "version": 1,
+                "shape": "straight",
+                "depth": 600,
+                "baseHeight": 820,
+                "thickness": 40,
+                "modules": [
+                  {
+                    "run": 0,
+                    "width": 600,
+                    "role": "door"
+                  },
+                  {
+                    "run": 0,
+                    "width": 600,
+                    "role": "door"
+                  }
+                ]
+              },
+              "color": "#d9cdb5"
+            }
+          ],
+          "architecture": {
+            "draft": {
+              "version": 1,
+              "id": "custom_dishwasher_check",
+              "name": "洗碗机安装核对",
+              "source": "dxf",
+              "image": "",
+              "width": 3000,
+              "height": 3000,
+              "scale": 2,
+              "walls": [
+                {
+                  "id": "top",
+                  "a": [
+                    50,
+                    50
+                  ],
+                  "b": [
+                    2950,
+                    50
+                  ],
+                  "thickness": 200,
+                  "kind": "b",
+                  "caps": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "id": "bottom",
+                  "a": [
+                    50,
+                    2950
+                  ],
+                  "b": [
+                    2950,
+                    2950
+                  ],
+                  "thickness": 200,
+                  "kind": "b",
+                  "caps": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "id": "left",
+                  "a": [
+                    50,
+                    50
+                  ],
+                  "b": [
+                    50,
+                    2950
+                  ],
+                  "thickness": 200,
+                  "kind": "b",
+                  "caps": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "id": "right",
+                  "a": [
+                    2950,
+                    50
+                  ],
+                  "b": [
+                    2950,
+                    2950
+                  ],
+                  "thickness": 200,
+                  "kind": "b",
+                  "caps": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "openings": []
+            },
+            "phase": "survey"
+          },
+          "rooms": {}
+        }
+      }
+    ],
+    "catalog": []
+  }
+}

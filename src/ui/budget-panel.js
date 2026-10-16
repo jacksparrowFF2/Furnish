@@ -99,7 +99,7 @@ function quotePanel(){
   const {rows, B} = quoteRows();
   let cat = '', s = '';
   rows.forEach(r => { if (r[0] !== cat){ cat = r[0]; s += `<tr class="sub"><td colspan="3">${esc(cat)}</td></tr>`; }
-    s += `<tr><td>${esc(r[1])}<br><small class="muted">${esc(r[2])} · ${r[7]==='confirmed'?tr('已确认价','Confirmed'):r[7]==='missing'?tr('未填写','Missing'):tr('参考价','Reference')}</small></td><td class="num">${r[3]} ${r[4]}<br><small class="muted">@ ${yen(r[5])}</small></td><td class="num">${yen(r[6])}</td></tr>`; });
+    s += `<tr><td>${esc(r[1])}<br><small class="muted">${esc(r[2])} · ${r[7]==='confirmed'?tr('已确认价','Confirmed'):r[7]==='missing'?tr('未填写','Missing'):tr('参考价','Reference')}</small></td><td class="num">${r[3]} ${r[4]}<br><small class="muted">@ ${r[7]==='missing'?tr('待填写','Not entered'):yen(r[5])}</small></td><td class="num">${r[7]==='missing'?'—':yen(r[6])}</td></tr>`; });
   return `<section><h3>${tr('报价明细','Quote')} <small>${tr('参考价，可在家具属性中改单价','reference prices — edit unit price in item properties')}</small></h3>
     <table class="qt">${s}</table>
     <div class="total"><span>${tr('家具家电','Furniture')}</span><b>${yen(B.furn)}</b></div>
