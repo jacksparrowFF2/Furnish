@@ -9,3 +9,8 @@
 # Local browser verification artifacts
 .playwright-cli/
 output/playwright/
+
+# Machine-local recovery copies and interrupted atomic writes; projects stay tracked.
+/.local/
+/projects/.workspace-*.tmp
+/projects/.workspace.lock

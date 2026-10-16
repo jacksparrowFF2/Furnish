@@ -91,6 +91,6 @@ $('#saveDesign').onclick = () => {
     catch(e){prompt(tr('复制分享链接：','Copy share link:'),url);}
     $('#fileMenu').open=false;snapshot(true,JSON.parse(json),'分享方案',id);
   };
-  addEventListener('hashchange',()=>shareLoader.load(location.hash));
-  shareLoader.load(location.hash);
+  addEventListener('hashchange',()=>repositoryReady.then(()=>shareLoader.load(location.hash)));
+  repositoryReady.then(()=>shareLoader.load(location.hash));
 }

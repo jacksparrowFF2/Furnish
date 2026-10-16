@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-16：`repository-core.js` 共用工作区校验与稳定序列化，`repository-storage.js` 协调缓存基准和延迟文件写入，`repository-workspace.js` 统一接管启动恢复。原 `save()` 和 mutate／撤销链路追加文件保存；本地服务提供固定路径、同源、版本比较和临时文件替换接口。`projects/workspace.furnish.json` 保存全部工作槽与共享库，`.local/furnish-recovery` 保存不入 Git 的迁移／冲突副本；文件优先于无基准旧缓存，IndexedDB 不再按时间异步覆盖文件。直接打开文件沿用缓存，无 Git 自动操作。见 [仓库保存](REPOSITORY-SAVES.md)。
+
 2026-10-16：折叠餐桌三规格共用产品能力 `folding-table` 与可选枚举 `foldingTablePose`，产品核心派生板形、当前占地及固定桌架的形态编辑。`folding-table-model.js` 提供主场景／预览共用生产构造器，普通脚本保持离线加载；尺寸缩放在子组内，兼容根组缓存位姿更新。形态进入3D签名与空间确认，UI沿mutate与原保存历史。资料推算、兼容和边界见 [折叠餐桌](TABLE-FOLDING-YESWOOD.md)。
 
 2026-10-16：水槽／燃气灶的测量区域由 `kitchen-core.measurementSurface()` 派生为本模块与真实台面的交集；`snapping.directional()` 和 `surfaceOpening()` 共用紧邻实体墙优先、开放方向模块边界规则。产品规则集中定义 5 mm 几何贴邻容差，UI 显式提供墙窗分界及未拆除墙；数字定位固定模块参照。无新持久字段或加载资源，见 [测量规则](MEASUREMENTS.md#水槽燃气灶的模块边界与紧邻墙优先2026-10-16)。

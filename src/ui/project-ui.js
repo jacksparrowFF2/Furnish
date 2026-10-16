@@ -172,15 +172,5 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
  }
  function locateIssue(item){closeDialog();if(item.doorIndex!==undefined){select({kind:'door',id:item.doorIndex});zoomToBox(DOORS[item.doorIndex].rect,500);}else if(item.kind==='passage'){select({kind:'room',id:item.id});zoomToBox(bbox(ROOMS.find(r=>r.id===item.id).poly),300);}else focusItem(item.id);highlightIssue(item);if($('#stage').classList.contains('is3d')){View3D.focusSelection();closeDrawers();}toast(item.message);}
  window.FurnishWorkspace={applyDraft,openingPreviewPlan:()=>openingPreview?.planId===PLAN.id?openingPreview.plan:null,clearOpeningPreview,copyBuiltin,openingGeometry,locateIssue,open,demolish,afterRender,summary,restore,wallPanel,bayPanel,windowPanel,exportPlan,importProject};afterRender();
- const loading=document.createElement('div');loading.style.cssText='position:fixed;inset:0;z-index:110;display:grid;place-items:center;background:rgba(250,248,242,.85);color:#343029';loading.textContent=t('正在读取本地项目…','Loading local projects…');document.body.append(loading);
- let timeout=setTimeout(()=>loading.remove(),4000);
- window.FurnishStorage?.ready.then(saved=>{
-   if(storageWiping)return;
-   if(!saved||saved.v!==2||!(saved.updatedAt>(store.updatedAt||0)))return;
-   const drafts=(saved.customPlans||[]).map(d=>FurnishDraft.build(saved.work[d.id]?.architecture?.draft||d));
-   const validated=Object.fromEntries(Object.entries(saved.work||{}).map(([id,w])=>[id,P.validateWork(w)]));
-   for(const plan of drafts){const existing=PLANS.find(p=>p.id===plan.id);if(existing)Object.assign(existing,plan);else PLANS.push(plan);}
-   const target=PLANS.find(p=>p.id===saved.planId);if(!target)throw Error('Saved project references an unknown plan');
-   store=saved;store.work=validated;PLAN=target;state=fixWork(store.work[PLAN.id]||freshWork(PLAN),PLAN);customArchDraft=null;customArchPlanId='';ui.sel=null;undoStack.length=redoStack.length=0;applyPlanData();buildDefs();buildCats();buildLib();renderOpenings();renderDims();renderAll();fitView();renderDesigns();buildPlanList();window.View3D?.replan();savedAt=store.updatedAt;saveErr=false;syncSaved();
- }).catch(e=>{toast(t('较大项目本地备份未能恢复，请检查项目文件备份：','Could not recover the larger local save; check your project file backup: ')+e.message);}).finally(()=>{clearTimeout(timeout);loading.remove();});
+ // repository-workspace.js arbitrates both caches and the file before restoring.
 })();

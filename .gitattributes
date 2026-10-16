@@ -1,1 +1,4 @@
 *.pdf binary
+
+# Keep textual diffs, but require a whole-workspace choice on divergent Git merges.
+/projects/workspace.furnish.json -merge
