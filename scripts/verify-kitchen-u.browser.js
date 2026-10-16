@@ -1,8 +1,8 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1040}}),p=await context.newPage(),errors=[];
  p.setDefaultTimeout(12000);p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(message);};
  try{
-  await p.goto('http://127.0.0.1:8877');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(()=>{
    const f=FurnishKitchen.configure({id:'u-browser',name:'U 形厨房验收',type:'counter',cx:3000,cy:3000,rot:0,color:'#f3f1ec'},{version:1,shape:'L',depth:600,counterDepth:630,baseHeight:820,thickness:20,modules:[{run:0,width:900,role:'hob'},{run:0,width:600,role:'door'},{run:1,width:900,role:'sink'},{run:1,width:300,role:'door'}],endExtensions:[{run:0,length:500,depth:250,cabinetDepth:220,backPanel:false}]}),sink=FurnishKitchen.attach({id:'sink-u',type:'ksink',name:'水槽',cx:0,cy:0,w:760,d:450,rot:0,color:'#ddd'},f,2);
    mutate(()=>{state.furniture=[f,sink];});FurnishCabinetEditor.open(f.id);

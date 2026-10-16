@@ -104,17 +104,17 @@
 
 最终通过 **84 个回归套件、12 套内置户型、11 个本地预览页的脚本/依赖校验**，以及生产语法、共享声明与资源检查。`git diff --check` 通过。
 
-浏览器脚本：`scripts/verify-product-rules.browser.js`，用 Playwright CLI 的 `run-code --filename` 执行，独立 context 不修改用户浏览器数据。脚本顶部根路径和本地端口可按检出位置调整。先通过 `node scripts/serve.cjs` 启动服务（已有服务时复用）。
+浏览器脚本：`scripts/verify-product-rules.browser.js`，由统一入口执行，独立 context 不修改用户浏览器数据。项目路径、服务和依赖统一准备，见 [浏览器验收](BROWSER-VERIFICATION.md)。
 
-PowerShell 示例（已经缓存/安装 CLI 时可直接调用其入口）：
+PowerShell 示例：
 
 ```powershell
-$env:PLAYWRIGHT_MCP_ALLOW_UNRESTRICTED_FILE_ACCESS='true'
-npx.cmd --package @playwright/cli playwright-cli -s=furnish-rules open about:blank --headed
-npx.cmd --package @playwright/cli playwright-cli -s=furnish-rules run-code --filename scripts/verify-product-rules.browser.js
+npm.cmd ci
+npx.cmd playwright install chromium
+node scripts/verify-browser.cjs product-rules
 ```
 
-上述 file 访问设置只用于允许测试会话导航工作区的 file URL；应用本身不需要它。受限沙箱中的 Chrome 启动失败时，需要在允许启动浏览器的执行环境运行。
+统一入口同时提供 HTTP 和离线 file 模式。受限沙箱中的浏览器启动或回环访问失败时，需要在允许启动浏览器及本机服务的执行环境运行。
 
 实际通过的验收：
 

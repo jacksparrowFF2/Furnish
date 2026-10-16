@@ -1,19 +1,20 @@
+if(!process.env.FURNISH_VERIFY_ROOT){require('./verify-browser.cjs').main(['dining-plan-order']).catch(e=>{console.error(e);process.exitCode=1;});}else{
 // Isolated browser profile; never changes the user's current project or browser.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const {chromium}=require(process.env.FURNISH_PLAYWRIGHT||'C:/Users/SPH/AppData/Local/npm-cache/_npx/31e32ef8478fbf80/node_modules/playwright');
+const verification=require('./lib/browser-verification.cjs').configuration();
 const W=require('../src/core/work-state.js'),catalog=require('../src/data/catalog.js'),plans=require('../src/data/plans.js');
 (async()=>{
- const root=path.resolve(__dirname,'..'),out=path.join(root,'output/playwright/dining-plan-order');fs.mkdirSync(out,{recursive:true});
+ const root=verification.root,out=path.join(root,'output/playwright/dining-plan-order');fs.mkdirSync(out,{recursive:true});
  const plan=plans[0],work=W.create({makeId:()=> 'unused',colorFor:()=> '#ddd',materials:catalog.materials}).fresh(plan);
  const table={id:'dining',type:'table',name:'餐桌',cx:30000,cy:30000,w:900,d:1400,rot:0,color:'#dfc9a4'};
  const chairs=[-1,1].flatMap(side=>[-1,1].map(row=>({id:`chair${side}${row}`,type:'chair',name:'餐椅',cx:30000+side*500,cy:30000+row*310,w:450,d:550,rot:side*90,flip:side===1,color:'#b8b1a2'})));
  work.furniture=[table,...chairs];const seed={v:2,planId:plan.id,work:{[plan.id]:work},designs:[],custom:[],customPlans:[]};
- const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+ const browser=await require('./lib/browser-verification.cjs').launch();
  try{
   const context=await browser.newContext({viewport:{width:1500,height:1000},offline:true}),page=await context.newPage(),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   await context.addInitScript(seed=>{if(!localStorage.getItem('huxing-design-v2'))localStorage.setItem('huxing-design-v2',JSON.stringify(seed));},seed);
-  await page.goto('file:///'+root.replaceAll('\\','/')+'/index.html');await page.locator('#gFurn [data-fid="dining"]').waitFor();
+  await page.goto((verification.fileBase+'index.html'));await page.locator('#gFurn [data-fid="dining"]').waitFor();
   // Keep fixtures away from walls, while allowing the real drag clamp to run.
   const center=async()=>page.evaluate(()=>{BOUNDS={x:20000,y:20000,w:20000,h:20000};view.s=Math.min(.25,(svg.clientWidth-30)/2500);view.x0=30000-svg.clientWidth/(2*view.s);view.y0=30000-svg.clientHeight/(2*view.s);applyView();});
   const ids=()=>page.locator('#gFurn > [data-fid]').evaluateAll(nodes=>nodes.map(n=>n.dataset.fid));
@@ -71,3 +72,5 @@ const W=require('../src/core/work-state.js'),catalog=require('../src/data/catalo
   await context.close();
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
+
+}

@@ -1,9 +1,9 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/measure-boundaries/';
  p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);},close=(a,b)=>check(Math.abs(a-b)<1e-6,`${a} != ${b}`),value=()=>p.locator('#directional-gap-input');
  const members=()=>p.evaluate(()=>state.furniture.filter(f=>f.id.startsWith('group-')).map(f=>structuredClone(f))),snapshot=()=>p.evaluate(()=>JSON.stringify(state)),open=async d=>{await p.locator('#plan [data-distance-edit="'+d+'"]').first().click();await value().waitFor();};
  try{
-  await p.goto('http://127.0.0.1:8765/');await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{const rooms=structuredClone(state.rooms);PLAN={...PLAN,walls:[[0,0,200,5000],[0,0,5200,200],[5000,0,5200,5000],[0,4400,5200,4600]],wins:[],doors:[],slides:[],rooms:[{id:'group-room',name:'整组净距定位',mat:'tile800',at:[2500,2500],poly:[[200,200],[5000,200],[5000,4400],[200,4400]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...rooms,...state.rooms};state.furniture=[F('counter','组内台面',2400,2300,600,550,0,'#dfcbb1'),F('cabinet','组内旋转柜',3000,3000,500,400,30,'#c5d7b5'),F('counter','外部参考柜',4000,3000,600,600,0,'#bdd5dc')];state.furniture.forEach((f,i)=>f.id=i===2?'reference':'group-'+i);state.furniture[1].flip=true;ui.layers.clear=true;renderAll();zoomToBox([1600,1500,4700,4200],200);});
   await p.locator('#gFurn [data-fid="group-0"]').click();await p.locator('#gFurn [data-fid="group-1"]').click({modifiers:['Shift']});await p.locator('#panel [data-act="group"]').click();
   const original=await members(),reference=await p.evaluate(()=>JSON.stringify(getF('reference')));check(original[0].groupId&&original[0].groupId===original[1].groupId,'real grouping succeeded');

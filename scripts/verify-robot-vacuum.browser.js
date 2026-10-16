@@ -1,7 +1,7 @@
-async (page) => {
+async (page,verification)=>{
  // Fresh ephemeral storage; preserve all furniture, including example layouts.
  const context=await page.context().browser().newContext({viewport:{width:1500,height:900}});
- page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:8765/index.html');
+ page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto((verification.baseURL+'index.html'));
  const check=await page.evaluate(()=>{
   const entries=FurnishCatalogData.library.flatMap(c=>c.items).filter(i=>i[0].startsWith('robot_p20max'));
   const count=state.furniture.length;for(const [i,it] of entries.entries())addItem(it,3000+i*650,3500);

@@ -1,4 +1,4 @@
-async (page) => {
+async (page,verification)=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.reload();await page.waitForFunction(()=>window.previewReady===true);
  await page.screenshot({path:'output/robot-p20max/angled.png'});
  await page.locator('article').first().screenshot({path:'output/robot-p20max/tank-improved-angled.png'});

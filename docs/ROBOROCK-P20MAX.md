@@ -24,7 +24,7 @@
 - 目录/语言/平面：`src/data/catalog.js`、`src/data/i18n.js`、`src/render/furniture-svg.js`。
 - 属性：`src/ui/property-panel.js`，尺寸编辑走现有撤销和自动保存流程。
 - 交互预览：`output/robot-p20max/preview.html`；重新生成：`node scripts/preview-robot-vacuum.cjs`。预览引用仓库内生产模块，需保留相对目录；通过现有本地服务访问 `http://127.0.0.1:8765/output/robot-p20max/preview.html`。
-- 参考图存档：`output/robot-p20max/reference-dimensions.png`、`reference-products.png`。
+- 参考图存档：`docs/references/robot-p20max/reference-dimensions.png`、`reference-products.png`。
 - 截图：同目录 `front.png`、`angled.png`、`app-2d.png`、`app-3d.png`。
 
 ## 验收
@@ -38,7 +38,7 @@
 - 未执行：真实 `file://` 浏览器验收，CLI 导航不支持该协议。本次沿用原有普通脚本与内嵌 Three.js 加载机制，没有新增联网资源。
 - 不适用：动态开合、安装空间算法、孔距检查；资料未提供且本任务为静态产品建模。
 
-浏览器交互验收脚本为 `scripts/verify-robot-vacuum.browser.js`，交给现有 Playwright CLI `run-code --filename` 执行。它创建独立临时 context，测试后关闭，不覆盖用户浏览器存储。
+浏览器交互验收脚本为 `scripts/verify-robot-vacuum.browser.js`，运行 `node scripts/verify-browser.cjs robot-vacuum` 执行。它创建独立临时 context，测试后关闭，不覆盖用户浏览器存储。
 
 ## 水箱版实拍改进（2026-10-11）
 
@@ -52,7 +52,7 @@
 
 ## 侧面过渡修正（2026-10-11）
 
-依据补充侧面实拍 `output/robot-p20max/reference-tank-side.png`，消除白色外壳与灰色底座交界的内凹和台阶。两段改用同一条连续截面曲线，在 153 mm 色彩分界处共享半径、切线和外表面法线；该分界高度为外观估算。保留灰色底座、真实进站口和 450 × 450 × 450 mm 外包尺寸。
+依据补充侧面实拍 `docs/references/robot-p20max/reference-tank-side.png`，消除白色外壳与灰色底座交界的内凹和台阶。两段改用同一条连续截面曲线，在 153 mm 色彩分界处共享半径、切线和外表面法线；该分界高度为外观估算。保留灰色底座、真实进站口和 450 × 450 × 450 mm 外包尺寸。
 
 交界上下的多位置射线检查通过，确认轮廓没有错位且切线连续；全部回归通过。正面、斜视、俯视、空站和新增侧面按钮的浏览器验收通过。侧面截图：`output/robot-p20max/tank-smooth-side.png`，其余新版截图同步更新。
 

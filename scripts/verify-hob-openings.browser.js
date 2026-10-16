@@ -1,8 +1,8 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/hob-openings/';
  const check=(ok,message)=>{if(!ok)throw Error(message);};p.on('pageerror',e=>errors.push(e.message));
  try{
-  await p.goto('http://127.0.0.1:18081/');await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
    Object.assign(PLAN,{walls:[],wins:[],doors:[],slides:[]});applyPlanData();
    state=freshWork(PLAN);state.furniture=[F('counter','台面',3000,3000,1800,600,0,'#d5c9b6'),F('stove_fotile_th36b','方太燃气灶 TH36B-T',3100,3010,750,440,0,'#111214')];

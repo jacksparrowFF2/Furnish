@@ -1,8 +1,8 @@
-async (page) => {
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(message);};
  try{
-  await p.goto('http://127.0.0.1:8765');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(()=>{
    const f={id:'drawer-acceptance',type:'wardrobe',cx:2000,cy:2000,rot:0,...FurnishCabinet.preset('wardrobe')};
    f.cabinet.columns[0].drawers[0].lanes=[{open:false,extension:1},{open:true,extension:.4}];

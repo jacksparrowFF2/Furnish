@@ -1,4 +1,4 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1040}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
  const check=(ok,message)=>{if(!ok)throw Error(message);},read=()=>p.evaluate(()=>structuredClone(getF('outer-kitchen')));
  async function dragEdge(edge,delta,{cancel=false,returnToStart=false}={}){
@@ -21,7 +21,7 @@ async page=>{
   },{before,after,frameEdge,delta});check(!result,result);
  }
  try{
-  await p.goto('http://127.0.0.1:8877/');await p.locator('#lib').waitFor();await p.evaluate(()=>{
+  await p.goto(verification.baseURL);await p.locator('#lib').waitFor();await p.evaluate(()=>{
    const center=ROOMS.find(r=>r.name==='客厅').at,f=FurnishKitchen.configure({id:'outer-kitchen',type:'counter',name:'厨房台面',cx:center[0],cy:center[1],rot:180,color:'#eee'},{version:1,shape:'U',corner:'right',depth:600,counterDepth:630,baseHeight:820,thickness:20,autoAvoid:true,modules:[{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:1,width:200,role:'door'},{run:1,width:220,role:'door'},{run:2,width:400,role:'door'},{run:2,width:341,role:'door'}],endExtensions:[{run:0,length:550,depth:250,cabinetDepth:220}]});mutate(()=>state.furniture=[f]);ui.grid=1;ui.layers.wallSnap=false;ui.layers.guides=false;ui.layers.clear=false;selectIds([f.id]);zoomSel();
   });
   const original=await read();check(original.w===2596&&original.d===1620,'latest screenshot dimensions');check(await p.locator('[data-handle="kitchen-run"]').count()===3,'three run grips retained');check(await p.locator('[data-edit-overlay="kitchen-outer-edge"] path').count()===4,'four complete draggable exterior borders');await p.screenshot({path:'output/playwright/kitchen-outer-handles/before.png',animations:'disabled'});

@@ -1,10 +1,10 @@
-async (page) => {
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
+async (page,verification)=>{
+ const root=verification.root,results=[];
  // Deliberately isolated storage: acceptance must not edit the user's workspace.
- for(const [mode,url,offline] of [['file-offline','file:///'+root+'index.html',true],['http','http://127.0.0.1:8765/index.html',false]]){
+ for(const [mode,url,offline] of [['file-offline',verification.fileBase+'index.html',true],['http',(verification.baseURL+'index.html'),false]]){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:950},offline});
   const p=await context.newPage(),errors=[],external=[];
-  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:8765'))external.push(r.url());});
+  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith(verification.baseURL.slice(0,-1)))external.push(r.url());});
   const check=(ok,message)=>{if(!ok)throw Error(mode+': '+message);};
   await p.goto(url);await p.locator('#lib').waitFor();
   await p.locator('#lib').getByText('洗衣机',{exact:true}).click();
@@ -62,7 +62,7 @@ async (page) => {
  const previews=[],previewContext=await page.context().browser().newContext({offline:true,viewport:{width:1200,height:900}});
  for(const name of ['fridges','laundry-stack','telescopic','shower-arrow']){
   const p=await previewContext.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
-  await p.goto('file:///'+root+'output/'+name+'/preview.html');
+  await p.goto(verification.fileBase+'output/'+name+'/preview.html');
   await p.waitForFunction(()=>[...document.querySelectorAll('canvas')].some(c=>c.width>300&&c.height>150));
   if(name==='fridges')await p.locator('#front').click();
   if(name==='telescopic'){await p.locator('#door').click();await p.locator('#track').selectOption('true');}

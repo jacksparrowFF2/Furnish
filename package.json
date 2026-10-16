@@ -1,0 +1,11 @@
+{
+  "name": "furnish-local",
+  "private": true,
+  "scripts": {
+    "check": "node scripts/check.cjs",
+    "verify:browser": "node scripts/verify-browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}

@@ -1,5 +1,9 @@
 # 模块与加载约定
 
+2026-10-16：浏览器验收通过 `scripts/verify-browser.cjs` 统一调度，`scripts/lib/browser-verification.cjs` 提供可迁移路径、文件 URL、服务地址及 Playwright 启动配置。验收在含特殊字符的独立副本生成预览，使用随机端口的只读静态服务与临时浏览器存储；固定图纸和合成输入维护在 tests/fixtures/browser，工作流前置显式排序。应用加载和真实设计文件不变，详见 [浏览器验收](BROWSER-VERIFICATION.md)。
+
+2026-10-16：`output/` 统一作为不入 Git 的本地生成目录；参考图、技能及精选证据分别维护在 `docs/references`、`skills/furnish-modeling`、`docs/validation`。`generate-previews.cjs` 从源码重建预览；缺失生成器的旧餐边柜／热水器视图由 `templates/previews` 与当前入口离线引擎装配，热水器复用当前家具生产代码。独立临时副本回归确保生成器不依赖本机已有 output，维护资料链接单独校验。应用加载与设计保存格式保持。见 [资料与生成物](OUTPUT-ARTIFACTS.md)。
+
 2026-10-16：`repository-core.js` 共用工作区校验与稳定序列化，`repository-storage.js` 协调缓存基准和延迟文件写入，`repository-workspace.js` 统一接管启动恢复。原 `save()` 和 mutate／撤销链路追加文件保存；本地服务提供固定路径、同源、版本比较和临时文件替换接口。`projects/workspace.furnish.json` 保存全部工作槽与共享库，`.local/furnish-recovery` 保存不入 Git 的迁移／冲突副本；文件优先于无基准旧缓存，IndexedDB 不再按时间异步覆盖文件。直接打开文件沿用缓存，无 Git 自动操作。见 [仓库保存](REPOSITORY-SAVES.md)。
 
 2026-10-16：折叠餐桌三规格共用产品能力 `folding-table` 与可选枚举 `foldingTablePose`，产品核心派生板形、当前占地及固定桌架的形态编辑。`folding-table-model.js` 提供主场景／预览共用生产构造器，普通脚本保持离线加载；尺寸缩放在子组内，兼容根组缓存位姿更新。形态进入3D签名与空间确认，UI沿mutate与原保存历史。资料推算、兼容和边界见 [折叠餐桌](TABLE-FOLDING-YESWOOD.md)。

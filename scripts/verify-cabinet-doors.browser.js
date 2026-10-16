@@ -1,4 +1,4 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(message);};
  const open=async id=>{await p.evaluate(id=>FurnishCabinetEditor.open(id),id);await p.locator('#cab-preview canvas').waitFor();await p.getByRole('tab',{name:'门板与铰链',exact:true}).click();};
@@ -7,7 +7,7 @@ async page=>{
  const range=async (locator,value)=>{await locator.fill(String(value));await locator.dispatchEvent('input');await locator.dispatchEvent('change');};
  const state=()=>p.evaluate(()=>JSON.stringify(state.furniture));
  try{
-  await p.goto('http://127.0.0.1:8765');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(()=>{
    const fixtures=[{id:'door-common',type:'wardrobe',cx:3000,cy:3000,rot:0,...FurnishCabinet.preset('wardrobe')},{id:'door-display',type:'cabinet',cx:3000,cy:3000,rot:0,...FurnishCabinet.preset('sideboard-wall')},FurnishCabinet.configureHoodBay({id:'door-hood',type:'kitchenwall',cx:3000,cy:3000,rot:0,...FurnishCabinet.preset('wall'),w:1600,mountHeight:1660}),{id:'door-vanity',type:'vanity',name:'浴室柜',cx:3000,cy:3000,w:1200,d:500,rot:0,color:'#f3f1ec'}];
    const kitchen=FurnishKitchen.configure({id:'door-kitchen',name:'厨房',type:'counter',cx:3000,cy:3000,rot:0,color:'#f3f1ec'},{version:1,shape:'L',corner:'right',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:450,role:'door'},{run:0,width:600,role:'sink'},{run:1,width:600,role:'hob'}]});fixtures.push(kitchen);mutate(()=>state.furniture.push(...fixtures));

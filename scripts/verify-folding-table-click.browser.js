@@ -1,8 +1,8 @@
-async page=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[],check=(v,msg)=>{if(!v)throw Error(msg);};
+async (page,verification)=>{
+ const root=verification.root,results=[],check=(v,msg)=>{if(!v)throw Error(msg);};
  for(const mode of ['file','http']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
-  const base=mode==='file'?'file:///'+root:'http://127.0.0.1:9387/';
+  const base=mode==='file'?verification.fileBase:verification.baseURL;
   try{
    await p.goto(base+'output/folding-table/preview.html');await p.waitForFunction(()=>window.previewReady);
    const point=()=>p.evaluate(()=>{const v=foldingTablePreview,c=v.camera.position.clone().set(0,.76,0).project(v.camera),r=v.renderer.domElement.getBoundingClientRect();return {x:r.left+(c.x+1)*r.width/2,y:r.top+(1-c.y)*r.height/2};});

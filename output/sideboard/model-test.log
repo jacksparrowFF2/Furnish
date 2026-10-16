@@ -1,5 +1,0 @@
-PASS all cabinet meshes have finite dimensions, correct heights, hinge rotations and drawer travel
-Expected values to be strictly equal:
-
-2 !== 4
-

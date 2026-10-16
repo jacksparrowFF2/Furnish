@@ -1,6 +1,7 @@
-async(page,origin='http://127.0.0.1:8765')=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
- for(const [mode,url,offline] of [['http',origin+'/index.html',false],['file','file:///'+root+'index.html',true]]){
+async (page,verification)=>{
+ const origin=verification.baseURL.slice(0,-1);
+ const root=verification.root,results=[];
+ for(const [mode,url,offline] of [['http',origin+'/index.html',false],['file',verification.fileBase+'index.html',true]]){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1020},offline}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(20000);
   const check=(ok,label)=>{if(!ok)throw Error(mode+': '+label);},row=()=>p.locator('[data-kitchen-row="0"]'),read=()=>p.evaluate(()=>structuredClone(getF('basket-test'))),eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
   async function open(){await p.evaluate(()=>FurnishCabinetEditor.open('basket-test'));await p.locator('#cab-preview canvas').waitFor();await p.locator('[data-k-tab="modules"]').click();}

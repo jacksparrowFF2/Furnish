@@ -85,4 +85,4 @@
 - `scripts/verify-sink.browser.js`：隔离 Chrome 的 HTTP 和断网 `file://` 均通过三种安装方式、宽深高编辑、非法高度、锁定、复制、撤销重做、刷新、真实项目下载再导入、命名方案、3D 及 390 px 属性抽屉；页面异常和外部网络请求均 0。未进行实体手机触屏检查。
 - 目视检查生产预览的斜视、俯视和正面，以及应用场景。截图在 `output/sink/` 和 `output/playwright/sink/`。
 
-运行 `node scripts/preview-sink.cjs` 可从生产构造器重建 [独立预览](../output/sink/preview.html)，支持安装方式、两款规格、宽深高及观察角度。普通脚本和内置离线 Three.js import map 不变。
+运行 [生成脚本](../scripts/preview-sink.cjs)（`node scripts/preview-sink.cjs`）可从生产构造器重建 `output/sink/preview.html`，支持安装方式、两款规格、宽深高及观察角度。普通脚本和内置离线 Three.js import map 不变。

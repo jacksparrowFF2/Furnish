@@ -1,6 +1,6 @@
-async (page) => {
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',out=root+'output/playwright/kitchen/',results=[];
- for(const [mode,url,offline] of [['file','file:///'+root+'index.html',true],['http','http://127.0.0.1:8765/index.html',false]]){
+async (page,verification)=>{
+ const root=verification.root,out=root+'output/playwright/kitchen/',results=[];
+ for(const [mode,url,offline] of [['file',verification.fileBase+'index.html',true],['http',(verification.baseURL+'index.html'),false]]){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));const check=(ok,label)=>{if(!ok)throw Error(mode+': '+label);};
   await p.goto(url);await p.locator('#lib').waitFor();

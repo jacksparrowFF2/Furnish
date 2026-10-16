@@ -1,8 +1,8 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/measure-boundaries/';
  p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  try{
-  await p.goto('http://127.0.0.1:8765/');await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
    const rooms=structuredClone(state.rooms);PLAN={...PLAN,walls:[[0,0,200,5000],[0,0,5000,200],[4800,0,5000,5000],[0,4200,5000,4400]],wins:[],doors:[],slides:[],rooms:[{id:'direction-room',name:'四向净距',mat:'tile800',at:[2500,2500],poly:[[200,200],[4800,200],[4800,4200],[200,4200]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...rooms,...state.rooms};
    state.furniture=[F('counter','中间台面',2500,2500,600,550,0,'#e0ccb0'),F('counter','右侧柜体',3600,2500,600,550,0,'#bcd7d7'),F('fridge','左下冰箱',1500,2900,600,400,0,'#cbd8e7'),F('cabinet','上方柜体',2500,1500,600,500,0,'#d0d9b9')];state.furniture.forEach((f,i)=>f.id='direction-'+i);ui.layers.clear=true;renderAll();selectIds(['direction-0']);zoomToBox([500,700,4500,4400],200);

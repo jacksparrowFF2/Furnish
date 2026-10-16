@@ -1,10 +1,10 @@
-async page=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
+async (page,verification)=>{
+ const root=verification.root,results=[];
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1050},offline:mode==='file'}),p=await context.newPage(),errors=[];
   const check=(ok,msg)=>{if(!ok)throw Error(mode+': '+msg);};p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?'file:///'+root:'http://127.0.0.1:8765/')+'index.html');await p.locator('#drawing-compass').waitFor();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#drawing-compass').waitFor();
    await p.evaluate(()=>{
     Object.assign(PLAN,{walls:[[2480,2400,2597,5600,'n'],[2480,5503,5520,5623,'n']],wins:[],doors:[],slides:[]});applyPlanData();state=freshWork(PLAN);
     const K=FurnishKitchen,host=K.configure({...F('counter','模块厨房',4000,4000,2800,3000,180,'#d5c9b6'),id:'top',flip:true},{version:1,shape:'U',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:600,role:'door'},{run:0,width:1000,role:'hob'},{run:0,width:600,role:'door'},{run:1,width:400,role:'door'},{run:1,width:1000,role:'sink'},{run:1,width:400,role:'door'},{run:2,width:1000,role:'door'}]});

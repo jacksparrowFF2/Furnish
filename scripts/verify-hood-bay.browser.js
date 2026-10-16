@@ -1,7 +1,7 @@
-async (page) => {
- const out='C:/Users/SPH/Documents/GitHub/Furnish/output/playwright/hood-bay/',context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];
+async (page,verification)=>{
+ const out=(verification.root+'output/playwright/hood-bay/'),context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(ok,label)=>{if(!ok)throw Error(label);};
- await p.goto('http://127.0.0.1:8765/index.html');await p.locator('#lib').waitFor();
+ await p.goto((verification.baseURL+'index.html'));await p.locator('#lib').waitFor();
  await p.evaluate(()=>{mutate(()=>{state.furniture=[{...FurnishCabinet.preset('wall'),id:'hood-wall',type:'kitchenwall',name:'嵌合吊柜',w:1600,cx:3000,cy:3000,rot:0,mountHeight:1660},{id:'hood-test',type:'rangehood_fotile_jcd10ta',name:'方太烟机',w:900,d:350,cx:2800,cy:3000,rot:0,mountHeight:1315,color:'#111'}];});selectIds(['hood-wall']);});
  await p.locator('#hood-bay-enable').click();check(await p.evaluate(()=>FurnishCabinet.hoodBay(getF('hood-wall')).width===500),'enable');
  await p.evaluate(()=>undo());check(await p.locator('#hood-bay-enable').count()===1,'undo cavity');await p.evaluate(()=>redo());

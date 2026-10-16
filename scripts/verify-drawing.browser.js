@@ -1,6 +1,6 @@
 /* Playwright CLI run-code --filename; synthetic data, isolated contexts. */
-async page=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',dir=root+'output/playwright/workflow-tools/',url='http://127.0.0.1:28419/index.html',check=(v,m)=>{if(!v)throw Error(m);};
+async (page,verification)=>{
+ const root=verification.root,dir=root+'output/playwright/workflow-tools/',url=(verification.baseURL+'index.html'),check=(v,m)=>{if(!v)throw Error(m);};
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
  const saved=()=>p.evaluate(()=>({drawing:state.drawing,furniture:state.furniture,architecture:state.architecture,rooms:state.rooms,pricing:state.pricing}));
  async function importUI(tab,file){await tab.getByRole('button',{name:'工作台',exact:true}).click();await tab.getByRole('button',{name:'备份／加载项目',exact:true}).click();await tab.locator('#pr-file').setInputFiles(file);await tab.locator('#pr-restore-confirm').waitFor();await tab.locator('#pr-restore-confirm').click();await tab.locator('#dlg').waitFor({state:'hidden'});}
@@ -17,7 +17,7 @@ async page=>{
   const fbox=await p.locator('[data-fid="outside_chair"]').boundingBox(),old=await p.evaluate(()=>({...getF('outside_chair'),scale:view.s}));check(fbox,'rotated furniture visible');
   await p.mouse.move(fbox.x+fbox.width/2,fbox.y+fbox.height/2);await p.mouse.down();await p.mouse.move(fbox.x+fbox.width/2+40,fbox.y+fbox.height/2,{steps:6});await p.mouse.up();
   const moved=await p.evaluate(()=>getF('outside_chair'));check(Math.abs(moved.cx-old.cx)<20&&Math.abs(moved.cy-old.cy+40/old.scale)<25,'screen drag inversely transforms into real mm coordinates');await p.locator('#undo').click();
-  await p.waitForFunction(()=>document.querySelector('#saved').textContent.includes('已自动保存'));await p.reload();await p.locator('#drawing-compass').waitFor();await p.waitForFunction(()=>document.getAnimations().every(a=>a.playState!=='running'));check((await saved()).drawing.rotation===90,'refresh drawing preferences');
+  await verification.waitForCache(p);await p.reload();await p.locator('#drawing-compass').waitFor();await p.waitForFunction(()=>document.getAnimations().every(a=>a.playState!=='running'));check((await saved()).drawing.rotation===90,'refresh drawing preferences');
   await p.screenshot({animations:'disabled',path:dir+'drawing-rotated.png'});
   const restoredBox=await p.locator('[data-fid="outside_chair"]').boundingBox();check(restoredBox,'furniture remains visible after refresh');await p.screenshot({animations:'disabled',path:dir+'drawing-furniture-detail.png',clip:{x:Math.max(0,restoredBox.x-25),y:Math.max(0,restoredBox.y-25),width:restoredBox.width+50,height:restoredBox.height+50}});
   await p.locator('#showMenu summary').click();await p.locator('[data-layer="labels"]').click();await p.screenshot({animations:'disabled',path:dir+'drawing-furniture-detail.png',clip:{x:Math.max(0,restoredBox.x-25),y:Math.max(0,restoredBox.y-25),width:restoredBox.width+50,height:restoredBox.height+50}});await p.locator('#showMenu summary').click();await p.locator('[data-layer="labels"]').click();

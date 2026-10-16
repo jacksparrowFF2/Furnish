@@ -1,15 +1,16 @@
+if(!process.env.FURNISH_VERIFY_ROOT){require('./verify-browser.cjs').main(['dxf-supplement']).catch(e=>{console.error(e);process.exitCode=1;});}else{
 // Isolated browser validation; never connects to the user's running browser storage.
 const fs=require('fs'),path=require('path'),assert=require('assert/strict');
-const {chromium}=require(process.env.FURNISH_PLAYWRIGHT||'playwright');
+const verification=require('./lib/browser-verification.cjs').configuration();
 const P=require('../src/core/project-core.js');
 (async()=>{
- const browser=await chromium.launch({headless:true,channel:'msedge'}),root=path.resolve(__dirname,'..'),out=path.join(root,'output/playwright/dxf-supplement');fs.mkdirSync(out,{recursive:true});
- const sourcePath='D:/1601装修/图纸/设计方案/(202610XX)铭福苑8-2-1601.dxf';
- const data=P.unpack(JSON.parse(fs.readFileSync('D:/1601装修/图纸/设计方案/Furnish导入验证/zone-vertices-verified.furnish.json','utf8')));
+ const browser=await require('./lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'output/playwright/dxf-supplement');fs.mkdirSync(out,{recursive:true});
+ const sourcePath=verification.fixture('1601-source.dxf');
+ const data=P.unpack(JSON.parse(fs.readFileSync(verification.fixture('zone-vertices-verified.furnish.json'),'utf8')));
  // Deliberately reproduce a missed beam layer using a copy of the saved 1601.
  data.current.furniture=[{id:'validation-bed',name:'验收床',type:'bed',cx:3000,cy:2800,w:1800,d:2000,rot:0},{id:'validation-cabinet',name:'验收衣柜',type:'wardrobe',cx:7500,cy:5000,w:1600,d:600,rot:90}];data.current.architecture.draft.beams=[];delete data.current.architecture.draft.sourceDXF;
  const fixture=path.join(out,'1601-before.json');fs.writeFileSync(fixture,JSON.stringify(P.pack(data)));
- for(const [mode,url]of [['http','http://127.0.0.1:8765/index.html'],['file','file:///'+root.replaceAll('\\','/')+'/index.html']]){
+ for(const [mode,url]of [['http',(verification.baseURL+'index.html')],['file',(verification.fileBase+'index.html')]]){
   const context=await browser.newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);await page.locator('#lib').waitFor();
   await page.locator('#projectWorkspace').click();await page.getByRole('button',{name:'备份／加载项目',exact:true}).click();await page.locator('#pr-file').setInputFiles(fixture);await page.locator('#pr-restore-confirm').click();
@@ -30,3 +31,5 @@ const P=require('../src/core/project-core.js');
  }
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});
+
+}

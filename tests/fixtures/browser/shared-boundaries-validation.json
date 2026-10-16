@@ -1,0 +1,56 @@
+{
+  "source": "D:/1601装修/图纸/设计方案/(202610XX)铭福苑8-2-1601.dxf",
+  "sha256": "34641bffa1c645a76acc2997098313b48bb65920d8114c9c53565dedf3e7267b",
+  "sharedGroupArea": 15.25,
+  "net": 70.25202300000001,
+  "regions": [
+    {
+      "id": "area_living",
+      "name": "家庭客厅",
+      "use": "study",
+      "area": 6.558499715
+    },
+    {
+      "id": "area_dining",
+      "name": "餐厅",
+      "use": "dining",
+      "area": 8.691500285
+    },
+    {
+      "id": "area_study",
+      "name": "书房",
+      "use": "study",
+      "area": 6.23251125
+    },
+    {
+      "id": "room1",
+      "name": "房间 1",
+      "use": "other",
+      "area": 36.30522975
+    },
+    {
+      "id": "room2",
+      "name": "房间 2",
+      "use": "other",
+      "area": 8.638624
+    },
+    {
+      "id": "room3",
+      "name": "房间 3",
+      "use": "other",
+      "area": 3.825658
+    }
+  ],
+  "checks": [
+    "shared edge drag",
+    "123.4 mm precise linked offset",
+    "atomic undo/redo",
+    "invalid dimensions rejected",
+    "wall face snap",
+    "vertex snap",
+    "unchanged walls, beams, drain and gas",
+    "refresh",
+    "export and fresh import"
+  ],
+  "errors": []
+}

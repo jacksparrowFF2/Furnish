@@ -1,4 +1,8 @@
 *.pdf binary
 
+# Text fixtures are edited by exact DXF token pairs in regression tests.
+/examples/*.dxf text eol=lf
+
 # Keep textual diffs, but require a whole-workspace choice on divergent Git merges.
 /projects/workspace.furnish.json -merge
+/tests/fixtures/browser/1601-source.dxf binary

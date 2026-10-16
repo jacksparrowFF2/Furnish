@@ -36,7 +36,7 @@
 
 依据同一商品图和用户修正，将沉木从浅棕色调为深褐色，保留略亮的磨蚀脊线。树皮网格增加局部纵裂、短横裂、结疤凹窝和细小不规则位移，裂缝具有实际下凹和较暗内壁；不是只有颜色条纹。更细的木纤维由程序生成的 512 × 256 内存凹凸纹理表现，纹理按 Three.js 实例共享，无文件、Canvas 或外网读取。粗糙度为 1；这里的色值、裂纹深度和凹凸强度均是外观参数，不是厂家材质实测。
 
-沉木使用独立固定随机种子，因此此次调整不会重新随机排列水草、鱼群或底砂。外包尺寸、安装高度和持久字段未改变。HTTP 与断网 file 正面、斜视、[木纹近景](../output/aquarium/file-bark-close.png) 已目视核对，页面 / 着色器错误 0；生产几何与整套回归继续通过（138 套、12 户型、13 预览页）。本轮没有重新执行全部属性界面操作或实机触屏。
+沉木使用独立固定随机种子，因此此次调整不会重新随机排列水草、鱼群或底砂。外包尺寸、安装高度和持久字段未改变。HTTP 与断网 file 正面、斜视、[木纹近景](validation/models/aquarium/file-bark-close.png) 已目视核对，页面 / 着色器错误 0；生产几何与整套回归继续通过（138 套、12 户型、13 预览页）。本轮没有重新执行全部属性界面操作或实机触屏。
 
 ### 2026-10-15 不规则灰色岩石
 
@@ -44,7 +44,7 @@
 
 灰色材质使用斑驳顶点色、高粗糙度，以及独立共享的 256 × 256 程序凹凸纹理模拟矿物颗粒和细小蚀孔。无外部图像、Canvas 或网络依赖。造型与材质均为外观近似；不推定石种或厂家材料参数。该变更没有修改鱼缸外包、离地高度、持久结构或沉木 / 水草 / 鱼群的配置。
 
-HTTP 与断网 file 正面、斜视、[岩石近景](../output/aquarium/file-rock-close.png) 渲染及目视检查通过，页面 / 着色器错误 0；生产几何回归及整套检查通过（138 套、12 户型、13 预览页），`git diff --check` 通过。本轮未重复全部属性界面操作或实机触屏。
+HTTP 与断网 file 正面、斜视、[岩石近景](validation/models/aquarium/file-rock-close.png) 渲染及目视检查通过，页面 / 着色器错误 0；生产几何回归及整套检查通过（138 套、12 户型、13 预览页），`git diff --check` 通过。本轮未重复全部属性界面操作或实机触屏。
 
 ## 数据与规则
 
@@ -55,8 +55,8 @@ HTTP 与断网 file 正面、斜视、[岩石近景](../output/aquarium/file-roc
 ## 查看与验证
 
 - 生产构造器：`src/render/aquarium-model.js`；浏览器 / Node 共用。
-- 运行 `node scripts/preview-aquarium.cjs` 生成 [独立预览](../output/aquarium/preview.html)，直接调用生产构造器与现有本地 Three.js import map。正面、斜视、背面、俯视与空缸视图可切换。
-- [水景斜视](../output/aquarium/file-angle.png)、[正面](../output/aquarium/file-front.png)、[空缸](../output/aquarium/file-empty.png) 已目视检查；应用 3D 和窄屏截图在 `output/playwright/aquarium/`。
+- 运行 [生成脚本](../scripts/preview-aquarium.cjs)（`node scripts/preview-aquarium.cjs`）重建 `output/aquarium/preview.html`，直接调用生产构造器与现有本地 Three.js import map。正面、斜视、背面、俯视与空缸视图可切换。
+- [水景斜视](validation/models/aquarium/file-angle.png)、[正面](validation/models/aquarium/file-front.png)、[空缸](validation/models/aquarium/file-empty.png) 已目视检查；应用 3D 和窄屏截图在 `output/playwright/aquarium/`。
 - `tests/test-aquarium.cjs`：目录规格、合法 / 非法 / 0 离地值、实际生产几何、非等比缩放、37° / 90° / 180° 旋转与镜像、有限顶点法线、3D 缓存更新、承托面接触与穿入、复制替换、旧缺省记录、重复恢复、当前及命名方案往返均通过。几何比较容差 0.002 mm 仅用于浮点比较，不是厂家公差。
 - `scripts/verify-aquarium.browser.js`：隔离 Chrome 在 HTTP 和断网 `file://` 下验证预览、空缸切换、库中新建、尺寸 / 离地编辑、0 值、非法输入、锁定、复制、撤销重做、刷新、真实项目下载再上传、命名方案、生产 3D 启动和 390 px 属性抽屉；两种模式页面异常与外部网络请求均为 0。未修改用户实际工作区。
 - `node scripts/check.cjs`：通过 136 套回归、12 套内置户型、13 个预览页及生产语法、共享声明和资源检查。`git diff --check` 通过。

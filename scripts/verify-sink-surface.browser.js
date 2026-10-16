@@ -1,10 +1,10 @@
-async page=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
+async (page,verification)=>{
+ const root=verification.root,results=[];
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],check=(ok,msg)=>{if(!ok)throw Error(mode+': '+msg);},dir=root+'output/playwright/sink-surface/';
   p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?'file:///'+root:'http://127.0.0.1:8765/')+'index.html');await p.locator('#drawing-compass').waitFor();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#drawing-compass').waitFor();
    await p.evaluate(()=>{Object.assign(PLAN,{walls:[],wins:[],doors:[],slides:[]});applyPlanData();state=freshWork(PLAN);state.furniture=[F('counter','承托台面',3000,3000,1800,600,0,'#d5c9b6'),F('sink_arrow_750','箭牌日式集渣水槽 · 750',3100,3010,750,450,0,'#85898a')];delete state.furniture[0].kitchen;state.furniture[0].id='top';state.furniture[1].id='sink';FurnishKitchen.normalize(state.furniture);ui.layers.clear=true;ui.layers.dims=true;ui.layers.grid=false;ui.layers.collide=false;ui.grid=10;ui.layers.wallSnap=false;ui.layers.guides=false;renderAll();selectIds(['sink']);zoomToBox([1950,2450,4050,3550],75);});
    const margins=()=>p.evaluate(()=>Object.fromEntries(Object.entries(FurnishSnapping.surfaceOpening(getF('sink'),{furniture:state.furniture}).gaps).map(([k,v])=>[k,v.distance]))),panel=()=>p.evaluate(()=>Object.fromEntries(Object.entries(directionalMeasurements()).map(([k,v])=>[k,v?.distance])));
    check(JSON.stringify(await panel())===JSON.stringify({l:625,r:425,t:85,b:65}),'outer-edge clearances replace four zeros');check(JSON.stringify(await margins())===JSON.stringify({l:635,r:435,t:95,b:75}),'top-mount opening margins');

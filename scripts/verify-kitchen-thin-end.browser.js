@@ -1,8 +1,8 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],out='output/playwright/kitchen-thin-end/';
  p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  try{
-  await p.goto('http://127.0.0.1:8765');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(()=>{const f=FurnishKitchen.configure({id:'thin-test',name:'厨房示例',type:'counter',cx:3000,cy:3000,rot:0,color:'#f3f1ec'},{version:1,shape:'L',depth:600,counterDepth:630,baseHeight:820,thickness:20,modules:[{run:0,width:900,role:'door'},{run:0,width:600,role:'door'},{run:1,width:900,role:'door'}]});mutate(()=>state.furniture=[f]);FurnishCabinetEditor.open(f.id);});
   await p.locator('#cab-preview canvas').waitFor();
   const positions=await p.evaluate(()=>{const f=getF('thin-test');return FurnishKitchen.layout(f).map(m=>FurnishKitchen.world(f,m.x,m.y));});

@@ -1,7 +1,8 @@
 /* Verify files actually downloaded from the synthetic UI acceptance project. */
-const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const P=require('../src/core/project-core.js'),DXF=require('../src/io/dxf-import.js'),Plans=require('../src/data/plans.js');
-const dir=process.argv[2]||path.join(os.homedir(),'Downloads'),read=name=>fs.readFileSync(path.join(dir,name),'utf8');
+const dir=process.argv[2];if(!dir)throw Error('Usage: node scripts/verify-workflow-downloads.cjs <verification-download-directory>');
+const read=name=>fs.readFileSync(path.join(dir,name),'utf8');
 const payload=P.unpack(JSON.parse(read('custom_workflow_acceptance.furnish.json'))),work=payload.current;
 assert.equal(work.pricing.materialSpecs.wood.unit,'pack');assert.equal(work.pricing.materialSpecs.wood.pack,4);assert.equal(work.pricing.materials.wood,500);assert.equal(work.pricing.paintPrice,undefined);
 assert.equal(work.architecture.draft.walls.find(w=>w.id==='partition').a[0],450);assert.equal(work.architecture.baseline.walls.find(w=>w.id==='partition').a[0],500);P.assertStructure(work.architecture.baseline,work.architecture.draft);

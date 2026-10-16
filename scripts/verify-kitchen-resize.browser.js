@@ -1,4 +1,4 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
  const check=(value,message)=>{if(!value)throw Error(message);},read=()=>p.evaluate(()=>structuredClone(getF('resize-kitchen')));
  async function dragAxis(axis,delta){
@@ -7,7 +7,7 @@ async page=>{
   await p.mouse.move(b.x+b.width/2,b.y+b.height/2);await p.mouse.down();await p.mouse.move(b.x+b.width/2+vector.x,b.y+b.height/2+vector.y);await p.mouse.up();
  }
  try{
-  await p.goto('http://127.0.0.1:8877/');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL);await p.locator('#lib').waitFor();
   await p.evaluate(()=>{
    const center=(ROOMS.find(r=>r.name==='客厅')||ROOMS.find(r=>/厨/.test(r.name)))?.at||[7000,7000];
    const f=FurnishKitchen.configure({id:'resize-kitchen',name:'厨房台面',type:'counter',cx:center[0],cy:center[1],rot:180,color:'#eee'},{version:1,shape:'U',corner:'right',depth:600,counterDepth:630,baseHeight:820,thickness:20,autoAvoid:true,modules:[{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:1,width:450,role:'door'},{run:2,width:600,role:'door'}],endExtensions:[{run:0,length:550,depth:250,cabinetDepth:220}]});mutate(()=>state.furniture=[f]);ui.layers.wallSnap=false;ui.layers.guides=false;selectIds([f.id]);zoomSel();

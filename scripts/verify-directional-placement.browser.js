@@ -1,10 +1,10 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/measure-boundaries/';
  p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  const position=()=>p.evaluate(()=>({x:getF('move-a').cx,y:getF('move-a').cy})),snapshot=()=>p.evaluate(()=>JSON.stringify(state)),value=()=>p.locator('#directional-gap-input');
  const open=async direction=>{await p.locator('#plan [data-distance-edit="'+direction+'"]').first().click();await value().waitFor();};
  try{
-  await p.goto('http://127.0.0.1:8765/');await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
    const rooms=structuredClone(state.rooms);PLAN={...PLAN,walls:[[0,0,200,5000],[0,0,5000,200],[4800,0,5000,5000],[0,4200,5000,4400]],wins:[],doors:[],slides:[],rooms:[{id:'move-room',name:'点击净距定位',mat:'tile800',at:[2500,2500],poly:[[200,200],[4800,200],[4800,4200],[200,4200]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...rooms,...state.rooms};
    state.furniture=[F('counter','移动台面',2500,2500,600,550,0,'#dfcbb1'),F('counter','右侧参考柜',3600,2500,600,550,0,'#bed6d9'),F('fridge','左侧参考冰箱',1500,2900,600,400,0,'#cad7e5'),F('cabinet','上方参考柜',2500,1500,600,500,0,'#d0d9b9')];state.furniture.forEach((f,i)=>f.id=i?'reference-'+i:'move-a');ui.layers.clear=true;renderAll();selectIds(['move-a']);zoomToBox([500,700,4500,4400],200);

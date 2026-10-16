@@ -1,8 +1,8 @@
-async(page)=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
- for(const [mode,url,offline]of [['file','file:///'+root+'index.html',true],['http','http://127.0.0.1:8765/index.html',false]]){
+async (page,verification)=>{
+ const root=verification.root,results=[];
+ for(const [mode,url,offline]of [['file',verification.fileBase+'index.html',true],['http',(verification.baseURL+'index.html'),false]]){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline}),p=await context.newPage(),errors=[],external=[];
-  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:8765'))external.push(r.url());});
+  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith(verification.baseURL.slice(0,-1)))external.push(r.url());});
   const check=(v,m)=>{if(!v)throw Error(mode+': '+m);};
   const backup=async()=>{await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();};
   const structure=async()=>{await backup();await p.locator('[data-project-tab="structure"]').click();};

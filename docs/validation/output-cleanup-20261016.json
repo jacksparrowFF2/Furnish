@@ -1,0 +1,441 @@
+{
+  "date": "2026-10-16",
+  "sourceCommit": "db5701a15f292f8ff0ee06a20caf17f63a890b5d",
+  "originalTrackedFiles": 225,
+  "originalTrackedBytes": 50310335,
+  "localOriginalsRetained": true,
+  "preserved": [
+    {
+      "source": "output/aquarium/file-angle.png",
+      "retained": "docs/validation/models/aquarium/file-angle.png",
+      "sourceSha256": "9324bd3b0eea07cb79050a2051ffc5861ce8b44a9e2e5a11a980dec68940ddf0",
+      "retainedSha256": "9324bd3b0eea07cb79050a2051ffc5861ce8b44a9e2e5a11a980dec68940ddf0"
+    },
+    {
+      "source": "output/aquarium/file-bark-close.png",
+      "retained": "docs/validation/models/aquarium/file-bark-close.png",
+      "sourceSha256": "95a73ddebf75c2fad56759dac7d691bdd70c73ff182d8e6c12c12f3a2c9e87a4",
+      "retainedSha256": "95a73ddebf75c2fad56759dac7d691bdd70c73ff182d8e6c12c12f3a2c9e87a4"
+    },
+    {
+      "source": "output/aquarium/file-empty.png",
+      "retained": "docs/validation/models/aquarium/file-empty.png",
+      "sourceSha256": "d1210f87d3c92dc214586502e1f1d0e2dfb8e05f60c3d33dc76cfb47afc56215",
+      "retainedSha256": "d1210f87d3c92dc214586502e1f1d0e2dfb8e05f60c3d33dc76cfb47afc56215"
+    },
+    {
+      "source": "output/aquarium/file-front.png",
+      "retained": "docs/validation/models/aquarium/file-front.png",
+      "sourceSha256": "e9096059406d216b2dd333156045a96aa99df85cd43e62fb1313188a0e646178",
+      "retainedSha256": "e9096059406d216b2dd333156045a96aa99df85cd43e62fb1313188a0e646178"
+    },
+    {
+      "source": "output/aquarium/file-rock-close.png",
+      "retained": "docs/validation/models/aquarium/file-rock-close.png",
+      "sourceSha256": "86b0bab90299c9d73ca504948c47292cde403ddb41b389f3d7b07cc9fd7be1d8",
+      "retainedSha256": "86b0bab90299c9d73ca504948c47292cde403ddb41b389f3d7b07cc9fd7be1d8"
+    },
+    {
+      "source": "output/dishwasher/file-closed-angle.png",
+      "retained": "docs/validation/models/dishwasher/file-closed-angle.png",
+      "sourceSha256": "66c73460283cb0778a9d9a6e5ecb5fba81a952d2cd6228d15b10a4211a662933",
+      "retainedSha256": "66c73460283cb0778a9d9a6e5ecb5fba81a952d2cd6228d15b10a4211a662933"
+    },
+    {
+      "source": "output/dishwasher/file-open-angle.png",
+      "retained": "docs/validation/models/dishwasher/file-open-angle.png",
+      "sourceSha256": "c278ddb62c91c78b8e64f61f966b7fcf42a78841f97a04a208ece6ec4a65d421",
+      "retainedSha256": "c278ddb62c91c78b8e64f61f966b7fcf42a78841f97a04a208ece6ec4a65d421"
+    },
+    {
+      "source": "output/dishwasher/file-open-side.png",
+      "retained": "docs/validation/models/dishwasher/file-open-side.png",
+      "sourceSha256": "df231eea011e6afe142e568f3a4c512af2d3bb9761ace617e4b41290eacf23a1",
+      "retainedSha256": "df231eea011e6afe142e568f3a4c512af2d3bb9761ace617e4b41290eacf23a1"
+    },
+    {
+      "source": "output/entry-console/reference.png",
+      "retained": "docs/references/entry-console/reference.png",
+      "sourceSha256": "964a140b30647579a82d5d90e7e6f59882b848ae38e6092f901c2c869457673b",
+      "retainedSha256": "964a140b30647579a82d5d90e7e6f59882b848ae38e6092f901c2c869457673b"
+    },
+    {
+      "source": "output/entry-pegboard/reference.png",
+      "retained": "docs/references/entry-pegboard/reference.png",
+      "sourceSha256": "795e4148716fe2f564ba34908fc40f4371b8f9a53796950c44d644c23a82042b",
+      "retainedSha256": "795e4148716fe2f564ba34908fc40f4371b8f9a53796950c44d644c23a82042b"
+    },
+    {
+      "source": "output/folding-table/file-1100-capsule.png",
+      "retained": "docs/validation/models/folding-table/file-1100-capsule.png",
+      "sourceSha256": "97214ab6bd03d76bf9297e7c7e883e987ad716c024a4b386e7e16b2970802b04",
+      "retainedSha256": "97214ab6bd03d76bf9297e7c7e883e987ad716c024a4b386e7e16b2970802b04"
+    },
+    {
+      "source": "output/folding-table/file-1100-round.png",
+      "retained": "docs/validation/models/folding-table/file-1100-round.png",
+      "sourceSha256": "0e9bf44997838dc88659b1fb507541866685efabbe5b8232b8f0299909a5b9f2",
+      "retainedSha256": "0e9bf44997838dc88659b1fb507541866685efabbe5b8232b8f0299909a5b9f2"
+    },
+    {
+      "source": "output/folding-table/file-1100-single.png",
+      "retained": "docs/validation/models/folding-table/file-1100-single.png",
+      "sourceSha256": "cfb45217ddb440a89f7f3a5bf315f6a2d163ed3622ae62a91337b50ba80d36f8",
+      "retainedSha256": "cfb45217ddb440a89f7f3a5bf315f6a2d163ed3622ae62a91337b50ba80d36f8"
+    },
+    {
+      "source": "output/furnish-modeling/SKILL.md",
+      "retained": "skills/furnish-modeling/SKILL.md",
+      "sourceSha256": "2150c8ae994bb67a5ca98a449b6a40fb016d16ed1ad7d04d7eaf6dce70f0e24d",
+      "retainedSha256": "2150c8ae994bb67a5ca98a449b6a40fb016d16ed1ad7d04d7eaf6dce70f0e24d"
+    },
+    {
+      "source": "output/furnish-modeling/agents/openai.yaml",
+      "retained": "skills/furnish-modeling/agents/openai.yaml",
+      "sourceSha256": "c3ea35599441c6c09d6c5dea9b2e02f0c7228df8cc518010ad820493d9467aa0",
+      "retainedSha256": "c3ea35599441c6c09d6c5dea9b2e02f0c7228df8cc518010ad820493d9467aa0"
+    },
+    {
+      "source": "output/furnish-modeling/references/acceptance.md",
+      "retained": "skills/furnish-modeling/references/acceptance.md",
+      "sourceSha256": "155ac52afd1b19740b8f521e314bf434db69444c108ae2acb3e3d8689570802b",
+      "retainedSha256": "155ac52afd1b19740b8f521e314bf434db69444c108ae2acb3e3d8689570802b"
+    },
+    {
+      "source": "output/furnish-modeling/references/input-template.md",
+      "retained": "skills/furnish-modeling/references/input-template.md",
+      "sourceSha256": "2298ea9fa9ef8b8117bdac77efe5551c4e49ec78a188b9657d70c3064f463c64",
+      "retainedSha256": "2298ea9fa9ef8b8117bdac77efe5551c4e49ec78a188b9657d70c3064f463c64"
+    },
+    {
+      "source": "output/furnish-modeling/references/modeling-rules.md",
+      "retained": "skills/furnish-modeling/references/modeling-rules.md",
+      "sourceSha256": "49f302246b0934f00bc204cf40f680dd5880980a99d4502262839bc1717ed12e",
+      "retainedSha256": "49f302246b0934f00bc204cf40f680dd5880980a99d4502262839bc1717ed12e"
+    },
+    {
+      "source": "output/furnish-modeling/references/waterheater-flat.md",
+      "retained": "skills/furnish-modeling/references/waterheater-flat.md",
+      "sourceSha256": "49bc0f9f60097160a9586df99caadb5de7fd53d92c5b35d100536d943521cd86",
+      "retainedSha256": "87508206095b6fbb2e203e1d1e6d2d1f8779e37a5dbbee5e4685e420996897ba"
+    },
+    {
+      "source": "output/plan-height-order/comparison.png",
+      "retained": "docs/validation/models/plan-height-order/comparison.png",
+      "sourceSha256": "6d544421baeb96352820b44f72b0a164eeeccb4cdfbe1d6c86d5d0c1475eb527",
+      "retainedSha256": "6d544421baeb96352820b44f72b0a164eeeccb4cdfbe1d6c86d5d0c1475eb527"
+    },
+    {
+      "source": "output/playwright/repository-save-1601.png",
+      "retained": "docs/validation/repository-saves/1601-saved.png",
+      "sourceSha256": "041e997c5c50245e92ee1729753c008fdb3aa2da4d997438df6060a55f5d0280",
+      "retainedSha256": "041e997c5c50245e92ee1729753c008fdb3aa2da4d997438df6060a55f5d0280"
+    },
+    {
+      "source": "output/robot-p20max/front.png",
+      "retained": "docs/validation/models/robot-p20max/front.png",
+      "sourceSha256": "80dfce0cf08e9f68782243e11477e7ffcd50c6d03a3a1241299ece2bd553d451",
+      "retainedSha256": "80dfce0cf08e9f68782243e11477e7ffcd50c6d03a3a1241299ece2bd553d451"
+    },
+    {
+      "source": "output/robot-p20max/reference-dimensions.png",
+      "retained": "docs/references/robot-p20max/reference-dimensions.png",
+      "sourceSha256": "b6d8396eaae0b32f865e6c15dac165af5887a0350705a3a6d2bf86feee7d9a61",
+      "retainedSha256": "b6d8396eaae0b32f865e6c15dac165af5887a0350705a3a6d2bf86feee7d9a61"
+    },
+    {
+      "source": "output/robot-p20max/reference-dock-shell.png",
+      "retained": "docs/references/robot-p20max/reference-dock-shell.png",
+      "sourceSha256": "cbbf517a26e8f760f11f8b40b74fafe2ec1ca29707f97a57120f847de4971d1a",
+      "retainedSha256": "cbbf517a26e8f760f11f8b40b74fafe2ec1ca29707f97a57120f847de4971d1a"
+    },
+    {
+      "source": "output/robot-p20max/reference-products.png",
+      "retained": "docs/references/robot-p20max/reference-products.png",
+      "sourceSha256": "29fb100b1a66819d5d3a5da1c8695fc9084fa6fa561b74b44b5e3d732a88bf00",
+      "retainedSha256": "29fb100b1a66819d5d3a5da1c8695fc9084fa6fa561b74b44b5e3d732a88bf00"
+    },
+    {
+      "source": "output/robot-p20max/reference-tank-empty.png",
+      "retained": "docs/references/robot-p20max/reference-tank-empty.png",
+      "sourceSha256": "8017e803f5deefdd3ff92fe7d50db550cb9344c3a5b8b219f43ace7886741b8d",
+      "retainedSha256": "8017e803f5deefdd3ff92fe7d50db550cb9344c3a5b8b219f43ace7886741b8d"
+    },
+    {
+      "source": "output/robot-p20max/reference-tank-side.png",
+      "retained": "docs/references/robot-p20max/reference-tank-side.png",
+      "sourceSha256": "8493a041726b5016cdf74af4eadd3b0cfccef9d2e900b4cae60d6fddbbb1459c",
+      "retainedSha256": "8493a041726b5016cdf74af4eadd3b0cfccef9d2e900b4cae60d6fddbbb1459c"
+    },
+    {
+      "source": "output/robot-p20max/reference-tank-top.png",
+      "retained": "docs/references/robot-p20max/reference-tank-top.png",
+      "sourceSha256": "169b360e4378bdb15128cabe9bc15075387546f7c6950c2f2218b1634facd3de",
+      "retainedSha256": "169b360e4378bdb15128cabe9bc15075387546f7c6950c2f2218b1634facd3de"
+    },
+    {
+      "source": "output/robot-p20max/tank-improved-top.png",
+      "retained": "docs/validation/models/robot-p20max/tank-improved-top.png",
+      "sourceSha256": "62e3a7979bf39038afb2a1770c99a49526387ddf549f3b1101b2ce65cd84b451",
+      "retainedSha256": "62e3a7979bf39038afb2a1770c99a49526387ddf549f3b1101b2ce65cd84b451"
+    },
+    {
+      "source": "output/shower-arrow/adjustment.png",
+      "retained": "docs/validation/models/shower-arrow/adjustment.png",
+      "sourceSha256": "ec303ef5f3a34f30266dce1c8e74a938f8306d3825978fb61583fda56891a811",
+      "retainedSha256": "ec303ef5f3a34f30266dce1c8e74a938f8306d3825978fb61583fda56891a811"
+    },
+    {
+      "source": "output/shower-arrow/mixer-height.png",
+      "retained": "docs/validation/models/shower-arrow/mixer-height.png",
+      "sourceSha256": "dba5e2b1a96ad981cdfb31ab15dea23987be7dd3b95bfb62ec1ea318154a1fc6",
+      "retainedSha256": "dba5e2b1a96ad981cdfb31ab15dea23987be7dd3b95bfb62ec1ea318154a1fc6"
+    },
+    {
+      "source": "output/shower-arrow/reference-adjustment.png",
+      "retained": "docs/references/shower-arrow/reference-adjustment.png",
+      "sourceSha256": "f02756bb0b2a494d3c2ba93eedb1a053b8c4b1c4acc5b3187b6691d39f7aebba",
+      "retainedSha256": "f02756bb0b2a494d3c2ba93eedb1a053b8c4b1c4acc5b3187b6691d39f7aebba"
+    },
+    {
+      "source": "output/shower-arrow/reference-dimensions.png",
+      "retained": "docs/references/shower-arrow/reference-dimensions.png",
+      "sourceSha256": "3739511c39817597b84bdb7e0e26684ced3f1da6d015346560dd393eb97b8402",
+      "retainedSha256": "3739511c39817597b84bdb7e0e26684ced3f1da6d015346560dd393eb97b8402"
+    },
+    {
+      "source": "output/shower-arrow/reference-height.png",
+      "retained": "docs/references/shower-arrow/reference-height.png",
+      "sourceSha256": "a0562918ad08669acbf700467914159282ed0e3e0c6571603ec1e5cda9c07cef",
+      "retainedSha256": "a0562918ad08669acbf700467914159282ed0e3e0c6571603ec1e5cda9c07cef"
+    },
+    {
+      "source": "output/shower-arrow/reference-product.png",
+      "retained": "docs/references/shower-arrow/reference-product.png",
+      "sourceSha256": "40d3744f11b2b42c04618f30e05ea7febf061ce4ceceeaf30aef02e5011c4c07",
+      "retainedSha256": "40d3744f11b2b42c04618f30e05ea7febf061ce4ceceeaf30aef02e5011c4c07"
+    },
+    {
+      "source": "output/sideboard/angled.png",
+      "retained": "docs/validation/models/sideboard/angled.png",
+      "sourceSha256": "fb7bb0aee90b449e8ec0713349208f006f77e01f83619d3205b6ab280196fa44",
+      "retainedSha256": "fb7bb0aee90b449e8ec0713349208f006f77e01f83619d3205b6ab280196fa44"
+    },
+    {
+      "source": "output/sideboard/drawers-open.png",
+      "retained": "docs/validation/models/sideboard/drawers-open.png",
+      "sourceSha256": "11b06a70f3eebf6490593b755c5c9f8a89330e1db357afe044cfdf897a32af9f",
+      "retainedSha256": "11b06a70f3eebf6490593b755c5c9f8a89330e1db357afe044cfdf897a32af9f"
+    },
+    {
+      "source": "output/sideboard/front.png",
+      "retained": "docs/validation/models/sideboard/front.png",
+      "sourceSha256": "9d6ff3484dac58509e04328c7d8930e09c228ac10ab72e381b7f9b0d254e6925",
+      "retainedSha256": "9d6ff3484dac58509e04328c7d8930e09c228ac10ab72e381b7f9b0d254e6925"
+    },
+    {
+      "source": "output/sideboard/paired-doors-open.png",
+      "retained": "docs/validation/models/sideboard/paired-doors-open.png",
+      "sourceSha256": "83fb82a421ae04b27a9c5deef9f61851a2614457e1d9e89afed3f5c65c2ffe85",
+      "retainedSha256": "83fb82a421ae04b27a9c5deef9f61851a2614457e1d9e89afed3f5c65c2ffe85"
+    },
+    {
+      "source": "output/sideboard/side-edges-fixed.png",
+      "retained": "docs/validation/models/sideboard/side-edges-fixed.png",
+      "sourceSha256": "cdf09c262d7da6810f9565967af23451045662875f0a51015a346d2e92047cd2",
+      "retainedSha256": "cdf09c262d7da6810f9565967af23451045662875f0a51015a346d2e92047cd2"
+    },
+    {
+      "source": "output/sideboard/side-edges-open.png",
+      "retained": "docs/validation/models/sideboard/side-edges-open.png",
+      "sourceSha256": "b7c8492a8a083fa546edc86b4f5984f12653c8ad3841050578c0d6a136934ddf",
+      "retainedSha256": "b7c8492a8a083fa546edc86b4f5984f12653c8ad3841050578c0d6a136934ddf"
+    },
+    {
+      "source": "output/sideboard/upper-only-open.png",
+      "retained": "docs/validation/models/sideboard/upper-only-open.png",
+      "sourceSha256": "8816d167f7b48134d558c50b54255447fbbcec568a8326a14d796d1efd6e0905",
+      "retainedSha256": "8816d167f7b48134d558c50b54255447fbbcec568a8326a14d796d1efd6e0905"
+    },
+    {
+      "source": "output/sink/file-faucet-detail.png",
+      "retained": "docs/validation/models/sink/file-faucet-detail.png",
+      "sourceSha256": "bb444cb5dc29d7c9c2db244575c32ca5ec9f00727d47bae6f27e9157388068da",
+      "retainedSha256": "bb444cb5dc29d7c9c2db244575c32ca5ec9f00727d47bae6f27e9157388068da"
+    },
+    {
+      "source": "output/sink/file-front.png",
+      "retained": "docs/validation/models/sink/file-front.png",
+      "sourceSha256": "a86588aa7f2d8b186d94f29afdbf99dcb3ed1df6c928cb9d1d108102bb2b446c",
+      "retainedSha256": "a86588aa7f2d8b186d94f29afdbf99dcb3ed1df6c928cb9d1d108102bb2b446c"
+    },
+    {
+      "source": "output/sink/file-overhead.png",
+      "retained": "docs/validation/models/sink/file-overhead.png",
+      "sourceSha256": "57b58901f9125d125c9f440cbf80f03d187e89bf64319c53a92d54efc534a721",
+      "retainedSha256": "57b58901f9125d125c9f440cbf80f03d187e89bf64319c53a92d54efc534a721"
+    },
+    {
+      "source": "output/tv-floor/drawer-joints-detail.png",
+      "retained": "docs/validation/models/tv-floor/drawer-joints-detail.png",
+      "sourceSha256": "a05506a314050a9631d10cd87703e4c6d791bc1b239a9632cb9e8d0dc8206c8c",
+      "retainedSha256": "a05506a314050a9631d10cd87703e4c6d791bc1b239a9632cb9e8d0dc8206c8c"
+    },
+    {
+      "source": "output/ui-audit-20261016/01-overview.png",
+      "retained": "docs/validation/ui-audit-20261016/01-overview.png",
+      "sourceSha256": "81809e361b44e39601ef4f1ed23154179ac11d1fd0df44c107b3a97d8b6399c1",
+      "retainedSha256": "81809e361b44e39601ef4f1ed23154179ac11d1fd0df44c107b3a97d8b6399c1"
+    },
+    {
+      "source": "output/ui-audit-20261016/02-desktop-overview.png",
+      "retained": "docs/validation/ui-audit-20261016/02-desktop-overview.png",
+      "sourceSha256": "036d480352035cb4549158c3578fa71875dffbd4146220b79db1240d6db89b04",
+      "retainedSha256": "036d480352035cb4549158c3578fa71875dffbd4146220b79db1240d6db89b04"
+    },
+    {
+      "source": "output/ui-audit-20261016/03-cabinet-properties.png",
+      "retained": "docs/validation/ui-audit-20261016/03-cabinet-properties.png",
+      "sourceSha256": "f4fff547d7b0eaafec61dc9b19733a7237a86e63f9b4da2b9f2be1e8cda75e19",
+      "retainedSha256": "f4fff547d7b0eaafec61dc9b19733a7237a86e63f9b4da2b9f2be1e8cda75e19"
+    },
+    {
+      "source": "output/ui-audit-20261016/04-cabinet-designer.png",
+      "retained": "docs/validation/ui-audit-20261016/04-cabinet-designer.png",
+      "sourceSha256": "b0350e202b4a3eefaa9ac7891e48a8e7528cb7d21d6a938bdeb9cd83afa0d3a8",
+      "retainedSha256": "b0350e202b4a3eefaa9ac7891e48a8e7528cb7d21d6a938bdeb9cd83afa0d3a8"
+    },
+    {
+      "source": "output/ui-audit-20261016/05-cabinet-doors.png",
+      "retained": "docs/validation/ui-audit-20261016/05-cabinet-doors.png",
+      "sourceSha256": "69401e03a06b2ce895d8af90ff9984f203f5fdb0fb4c51724b47a81f311b246a",
+      "retainedSha256": "69401e03a06b2ce895d8af90ff9984f203f5fdb0fb4c51724b47a81f311b246a"
+    },
+    {
+      "source": "output/ui-audit-20261016/06-hob-measurements.png",
+      "retained": "docs/validation/ui-audit-20261016/06-hob-measurements.png",
+      "sourceSha256": "85375ae6f7ff886ab4d9ac6c46e99ba382bf0321a11fe1462ea30865d4116057",
+      "retainedSha256": "85375ae6f7ff886ab4d9ac6c46e99ba382bf0321a11fe1462ea30865d4116057"
+    },
+    {
+      "source": "output/ui-audit-20261016/07-3d-selected.png",
+      "retained": "docs/validation/ui-audit-20261016/07-3d-selected.png",
+      "sourceSha256": "a99596233062281cc66a5f7e5844c8e855e39d6b1d42839dc762ace28451003d",
+      "retainedSha256": "a99596233062281cc66a5f7e5844c8e855e39d6b1d42839dc762ace28451003d"
+    },
+    {
+      "source": "output/ui-audit-20261016/08-dishwasher-properties.png",
+      "retained": "docs/validation/ui-audit-20261016/08-dishwasher-properties.png",
+      "sourceSha256": "f59e494faee9e0db3b6cc7568f1447c9b5c15da9145af1e63abea87e3beba2bf",
+      "retainedSha256": "f59e494faee9e0db3b6cc7568f1447c9b5c15da9145af1e63abea87e3beba2bf"
+    },
+    {
+      "source": "output/ui-audit-20261016/09-dishwasher-checks.png",
+      "retained": "docs/validation/ui-audit-20261016/09-dishwasher-checks.png",
+      "sourceSha256": "79e636424b34fabb5e8bfdcde1f0c7aebad978a1a83548e6a520bb35d106c269",
+      "retainedSha256": "79e636424b34fabb5e8bfdcde1f0c7aebad978a1a83548e6a520bb35d106c269"
+    },
+    {
+      "source": "output/ui-audit-20261016/10-3d-2d-distances.png",
+      "retained": "docs/validation/ui-audit-20261016/10-3d-2d-distances.png",
+      "sourceSha256": "7616adcf53de4feb79c23ff5c164fcdcfd57472b8e2bcd5fba07aeb6ccee3b70",
+      "retainedSha256": "7616adcf53de4feb79c23ff5c164fcdcfd57472b8e2bcd5fba07aeb6ccee3b70"
+    },
+    {
+      "source": "output/ui-audit-20261016/11-3d-installation-checks.png",
+      "retained": "docs/validation/ui-audit-20261016/11-3d-installation-checks.png",
+      "sourceSha256": "6a6026d715e318d3bfba05455f04cf8d00347c9d9965acdb041ae2c32142b426",
+      "retainedSha256": "6a6026d715e318d3bfba05455f04cf8d00347c9d9965acdb041ae2c32142b426"
+    },
+    {
+      "source": "output/ui-audit-20261016/12-kitchen-handles.png",
+      "retained": "docs/validation/ui-audit-20261016/12-kitchen-handles.png",
+      "sourceSha256": "9849b9c176ac3d8f2a139afa846719dcb3dab7c7f45ec6ddc50c2c1e9ad2587e",
+      "retainedSha256": "9849b9c176ac3d8f2a139afa846719dcb3dab7c7f45ec6ddc50c2c1e9ad2587e"
+    },
+    {
+      "source": "output/ui-audit-20261016/13-kitchen-designer.png",
+      "retained": "docs/validation/ui-audit-20261016/13-kitchen-designer.png",
+      "sourceSha256": "615d1c17bd07c75fd8e2664db2452933a38affdce455507a9704cb52b2b4040c",
+      "retainedSha256": "615d1c17bd07c75fd8e2664db2452933a38affdce455507a9704cb52b2b4040c"
+    },
+    {
+      "source": "output/ui-audit-20261016/14-narrow-kitchen-designer.png",
+      "retained": "docs/validation/ui-audit-20261016/14-narrow-kitchen-designer.png",
+      "sourceSha256": "c306eb940fcca6ec332c9b5de344a77dae84efcccc50f7a26a7146808dcfbd33",
+      "retainedSha256": "c306eb940fcca6ec332c9b5de344a77dae84efcccc50f7a26a7146808dcfbd33"
+    },
+    {
+      "source": "output/ui-audit-20261016/15-narrow-properties.png",
+      "retained": "docs/validation/ui-audit-20261016/15-narrow-properties.png",
+      "sourceSha256": "9c8228d4213589cb02dc148da3e672c922eb94c8f2eb331b21333b2d256d3821",
+      "retainedSha256": "9c8228d4213589cb02dc148da3e672c922eb94c8f2eb331b21333b2d256d3821"
+    },
+    {
+      "source": "output/ui-audit-20261016/report.html",
+      "retained": "docs/validation/ui-audit-20261016/report.html",
+      "sourceSha256": "1d1b173bef640090c56f984f964185a001609f0c89df87a7ec84c4900485249d",
+      "retainedSha256": "1d1b173bef640090c56f984f964185a001609f0c89df87a7ec84c4900485249d"
+    },
+    {
+      "source": "output/waterheater-clearance-warning.png",
+      "retained": "docs/validation/models/waterheater-clearance-warning.png",
+      "sourceSha256": "9682450ed65081af304823bd6fac1ee051aa994f8d24a3a7f54b768927b27b31",
+      "retainedSha256": "9682450ed65081af304823bd6fac1ee051aa994f8d24a3a7f54b768927b27b31"
+    },
+    {
+      "source": "output/waterheater-flat-preview.png",
+      "retained": "docs/validation/models/waterheater-flat-preview.png",
+      "sourceSha256": "f067b8611a8e1539bcb9f1018dfdb55d1665257f648a239672c3504f6416ed37",
+      "retainedSha256": "f067b8611a8e1539bcb9f1018dfdb55d1665257f648a239672c3504f6416ed37"
+    },
+    {
+      "source": "output/waterheater-installation-height.png",
+      "retained": "docs/validation/models/waterheater-installation-height.png",
+      "sourceSha256": "0810611fdf72714b46654e7ff468dbb00efc443d58b67c2a31eb2425a9329fd2",
+      "retainedSha256": "0810611fdf72714b46654e7ff468dbb00efc443d58b67c2a31eb2425a9329fd2"
+    },
+    {
+      "source": "output/yeswood-sofa/preview.jpg",
+      "retained": "docs/validation/models/yeswood-sofa/preview.jpg",
+      "sourceSha256": "c6d2b23368af20898e91f452fafcc9d7cbff4bd4a1766d9cbb2e173c0c3aeadf",
+      "retainedSha256": "c6d2b23368af20898e91f452fafcc9d7cbff4bd4a1766d9cbb2e173c0c3aeadf"
+    },
+    {
+      "source": "output/yeswood-sofa/reference-dimensions.png",
+      "retained": "docs/references/yeswood-sofa/reference-dimensions.png",
+      "sourceSha256": "c6c93a6111d41e99f0e163608995b899031f9845d00cca70e1a157a587f57018",
+      "retainedSha256": "c6c93a6111d41e99f0e163608995b899031f9845d00cca70e1a157a587f57018"
+    },
+    {
+      "source": "output/yeswood-sofa/reference-fabric.png",
+      "retained": "docs/references/yeswood-sofa/reference-fabric.png",
+      "sourceSha256": "cb2855d2130db2ad2b958eeb2062792e3ef6bb4a7eff66fd6c7a9414b405aa28",
+      "retainedSha256": "cb2855d2130db2ad2b958eeb2062792e3ef6bb4a7eff66fd6c7a9414b405aa28"
+    },
+    {
+      "source": "output/yeswood-sofa/reference-seat-depth.png",
+      "retained": "docs/references/yeswood-sofa/reference-seat-depth.png",
+      "sourceSha256": "b06b303adbbe4856cacc5e26f67f923be72738028ba17c14cc0172d9f29c1856",
+      "retainedSha256": "b06b303adbbe4856cacc5e26f67f923be72738028ba17c14cc0172d9f29c1856"
+    },
+    {
+      "source": "output/yeswood-sofa/reference-side.png",
+      "retained": "docs/references/yeswood-sofa/reference-side.png",
+      "sourceSha256": "af2a955b6df659f79cf9f090043ba9ee97c692ef0adb4f05709360e9f5830522",
+      "retainedSha256": "af2a955b6df659f79cf9f090043ba9ee97c692ef0adb4f05709360e9f5830522"
+    }
+  ],
+  "previewTemplates": [
+    {
+      "source": "output/sideboard/preview.html",
+      "retained": "templates/previews/sideboard.html",
+      "generator": "scripts/preview-sideboard.cjs"
+    },
+    {
+      "source": "output/waterheater-flat-preview.html",
+      "retained": "templates/previews/waterheater-flat.html",
+      "generator": "scripts/preview-waterheater-flat.cjs"
+    }
+  ]
+}

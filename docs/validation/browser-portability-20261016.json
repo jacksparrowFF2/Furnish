@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-16",
+  "platform": "Windows",
+  "node": "v24.18.0",
+  "playwright": "1.64.1",
+  "regressionSuites": 173,
+  "builtInPlans": 12,
+  "registeredBrowserCases": 78,
+  "passedBrowserCases": [
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 10.6
+    },
+    {
+      "name": "dining-plan-order",
+      "status": "PASS",
+      "seconds": 4.9
+    },
+    {
+      "name": "kitchen-dish-basket",
+      "status": "PASS",
+      "seconds": 13.5
+    },
+    {
+      "name": "workflow-reimport",
+      "status": "PASS",
+      "seconds": 13.9
+    },
+    {
+      "name": "room-net",
+      "status": "PASS",
+      "seconds": 3.5
+    },
+    {
+      "name": "purchase-orders",
+      "status": "PASS",
+      "seconds": 8.9
+    },
+    {
+      "name": "beam-roof",
+      "status": "PASS",
+      "seconds": 22.2
+    },
+    {
+      "name": "aquarium",
+      "status": "PASS",
+      "seconds": 25.4
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 17.6
+    },
+    {
+      "name": "multi-region-merge",
+      "status": "PASS",
+      "seconds": 9
+    },
+    {
+      "name": "product-rules",
+      "status": "PASS",
+      "seconds": 21.9
+    }
+  ],
+  "allBrowserCasesExecuted": false,
+  "coverage": [
+    "HTTP and offline file:// cold start, cache reload, undo/redo and production 3D",
+    "Unicode, space and # in isolated root",
+    "automatic loopback port and explicit port 19080",
+    "standalone Node compatibility entry",
+    "fixed real DXF and synthetic workflow fixtures",
+    "workflow prerequisite regeneration"
+  ],
+  "productionWorkspaceUnchanged": true,
+  "originalOutputFilesPreserved": 225,
+  "limits": [
+    "Other browsers and operating systems not exercised",
+    "Static verification service deliberately has no repository write API; backend persistence is covered separately by regression tests"
+  ]
+}

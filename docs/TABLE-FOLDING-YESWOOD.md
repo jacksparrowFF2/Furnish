@@ -36,7 +36,7 @@
 
 ## 预览与验证
 
-运行 `node scripts/preview-folding-table.cjs` 可重建 [生产预览](../output/folding-table/preview.html)，嵌入入口既有离线import map，支持三规格、三形态及斜视／正面／俯视。
+运行 [生成脚本](../scripts/preview-folding-table.cjs)（`node scripts/preview-folding-table.cjs`）可重建 `output/folding-table/preview.html`，嵌入入口既有离线import map，支持三规格、三形态及斜视／正面／俯视。
 
 - `tests/test-folding-table.cjs`：三规格默认、尺寸／形态、旋转镜像下固定桌架、非法输入与锁定、复制／同型及跨型替换、重复恢复、当前／命名方案项目往返、椅子例外、核对上下文、生产网格外包／法线、实际主场景构造与缓存复用。
 - `scripts/verify-folding-table.browser.js`：Playwright真实浏览器，离线file://和本机HTTP分别检查九种外观、库中新建、2D形态、撤销重做、锁定、尺寸编辑、复制、刷新、备份下载并重新导入、命名方案、主场景3D、390px窄屏及外部请求。截图在 `output/folding-table/` 与 `output/playwright/folding-table/`。

@@ -1,4 +1,4 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1040}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
  const check=(v,m)=>{if(!v)throw Error(m);},near=(a,b,m)=>check(Math.abs(a-b)<1e-5,m+': '+a+' != '+b),read=()=>p.evaluate(()=>structuredClone(getF('snap-kitchen')));
  async function setup({rot=180,flip=false,rotation=0}={}){
@@ -18,7 +18,7 @@ async page=>{
   const info=await p.evaluate(()=>({guides:structuredClone(ui.guides),f:structuredClone(getF('snap-kitchen'))}));if(screenshot)await p.screenshot({path:'output/playwright/kitchen-edge-snapping/'+screenshot,animations:'disabled'});if(returnToStart)await p.mouse.move(grab.x,grab.y);if(cancel)await p.evaluate(()=>svg.dispatchEvent(new PointerEvent('pointercancel',{pointerId:1,bubbles:true})));await p.mouse.up();return info;
  }
  try{
-  await p.goto('http://127.0.0.1:8877/');await p.locator('#lib').waitFor();await setup();const original=await read(),fridge=await p.evaluate(()=>JSON.stringify(getF('snap-fridge')));check(original.w===2596&&original.d===1760,'screenshot geometry');await p.screenshot({path:'output/playwright/kitchen-edge-snapping/before.png',animations:'disabled'});
+  await p.goto(verification.baseURL);await p.locator('#lib').waitFor();await setup();const original=await read(),fridge=await p.evaluate(()=>JSON.stringify(getF('snap-fridge')));check(original.w===2596&&original.d===1760,'screenshot geometry');await p.screenshot({path:'output/playwright/kitchen-edge-snapping/before.png',animations:'disabled'});
   const top=await drag('outer',55,{screenshot:'top-magnet.png'});near(top.f.kitchen.runDepths[2],673.25,'outer top captures fridge bottom exactly off-grid');check(top.guides.length===1,'top has visible magnet guide');check(JSON.stringify(top.f.kitchen.modules)===JSON.stringify(original.kitchen.modules),'outer magnet keeps internal module widths');check(JSON.stringify(top.f.kitchen.endExtensions)===JSON.stringify(original.kitchen.endExtensions),'thin end retained');
   const topSaved=await read();const run=await drag('run',100,{screenshot:'short-run-magnet.png'});near(run.f.kitchen.modules[4].width,871.75,'short return captures fridge side at shared endpoint');check(run.guides.length===1,'short return has visible magnet guide');near(run.f.w,top.f.w,'short return leaves outer width');check(JSON.stringify(run.f.kitchen.runDepths)===JSON.stringify(top.f.kitchen.runDepths),'length magnet preserves all row depths');check(await p.evaluate(()=>JSON.stringify(getF('snap-fridge')))===fridge,'reference fridge is fixed');
   const settled=JSON.stringify(await read());await drag('run',20,{returnToStart:true});check(JSON.stringify(await read())===settled,'return to original grab clears snap without drift');await drag('run',20,{cancel:true});check(JSON.stringify(await read())===settled,'cancel restores saved snapshot');

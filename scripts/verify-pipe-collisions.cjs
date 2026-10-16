@@ -1,9 +1,10 @@
+if(!process.env.FURNISH_VERIFY_ROOT){require('./verify-browser.cjs').main(['pipe-collisions']).catch(e=>{console.error(e);process.exitCode=1;});}else{
 // Isolated 1601 fixture: no writes to the user's browser profile or original files.
 const fs=require('fs'),path=require('path'),assert=require('assert/strict'),P=require('../src/core/project-core.js'),C=require('../src/core/cabinet-core.js');
-const {chromium}=require(process.env.FURNISH_PLAYWRIGHT||'playwright');
+const verification=require('./lib/browser-verification.cjs').configuration();
 (async()=>{
- const browser=await chromium.launch({headless:true,channel:'msedge'}),root=path.resolve(__dirname,'..'),out=path.join(root,'output/playwright/pipe-collisions');fs.mkdirSync(out,{recursive:true});
- const data=P.unpack(JSON.parse(fs.readFileSync('D:/1601装修/图纸/设计方案/Furnish导入验证/imported.furnish.json','utf8'))),draft=data.current.architecture.draft;
+ const browser=await require('./lib/browser-verification.cjs').launch(),root=verification.root,out=path.join(root,'output/playwright/pipe-collisions');fs.mkdirSync(out,{recursive:true});
+ const data=P.unpack(JSON.parse(fs.readFileSync(verification.fixture('imported.furnish.json'),'utf8'))),draft=data.current.architecture.draft;
  const marker=draft.markers[0],center=marker.at.map(v=>v*draft.scale);marker.pipeDiameter=200;
  const cabinet={id:'test-cab',name:'管道避让柜',type:'cabinet',...C.preset('sideboard-drawers'),cx:center[0],cy:center[1],rot:0};
  const drawer=C.openingZones(cabinet).find(z=>z.kind==='cabinetdrawer'),at=drawer.poly.reduce((a,p)=>[a[0]+p[0]/drawer.poly.length,a[1]+p[1]/drawer.poly.length],[0,0]);
@@ -11,7 +12,7 @@ const {chromium}=require(process.env.FURNISH_PLAYWRIGHT||'playwright');
  const counterAt=draft.markers[1].at.map(v=>v*draft.scale);
  data.current.furniture=[{id:'test-counter',name:'橱柜台面避让',type:'counter',cx:counterAt[0],cy:counterAt[1],w:1600,d:600,rot:90},cabinet,{id:'test-chair',name:'管道相交椅子',type:'chair',cx:center[0],cy:center[1],w:400,d:400,rot:0}];
  const fixture=path.join(out,'fixture.json');fs.writeFileSync(fixture,JSON.stringify(P.pack(data)));
- for(const [mode,url]of [['http','http://127.0.0.1:8765/index.html'],['file','file:///'+root.replaceAll('\\','/')+'/index.html']]){
+ for(const [mode,url]of [['http',(verification.baseURL+'index.html')],['file',(verification.fileBase+'index.html')]]){
   const context=await browser.newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);await page.locator('#lib').waitFor();await page.locator('#projectWorkspace').click();await page.getByRole('button',{name:'备份／加载项目',exact:true}).click();await page.locator('#pr-file').setInputFiles(fixture);await page.locator('#pr-restore-confirm').click();
   const issues=()=>page.evaluate(()=>FurnishProject.spaceCheck(FurnishProject.effectivePlan(PLAN,state),state.furniture,{scanPassages:false}));
@@ -26,3 +27,5 @@ const {chromium}=require(process.env.FURNISH_PLAYWRIGHT||'playwright');
  }
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});
+
+}

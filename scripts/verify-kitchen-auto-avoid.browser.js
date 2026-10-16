@@ -1,7 +1,7 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],out='output/playwright/kitchen-auto-avoid/';p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  try{
-  await p.goto('http://127.0.0.1:8765');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(()=>{const f=FurnishKitchen.configure({id:'auto-test',name:'厨房自动避让示例',type:'counter',cx:3000,cy:3000,rot:0,color:'#f3f1ec'},{version:1,shape:'straight',depth:600,counterDepth:630,baseHeight:820,thickness:20,modules:[{run:0,width:600,role:'door'},{run:0,width:600,role:'door'}]}),m=FurnishKitchen.layout(f)[0],[cx,cy]=FurnishKitchen.world(f,m.x,m.y-125),block={id:'flue',name:'烟道占位',type:'custom',catalogDetached:true,cx,cy,w:300,d:350,h:2800,rot:0,color:'#999'};mutate(()=>state.furniture=[f,block]);FurnishCabinetEditor.open(f.id);});
   await p.locator('#cab-preview canvas').waitFor();await p.locator('#cab-kitchen-auto-avoid').check();
   check(await p.locator('.cab-dimension').filter({hasText:'柜深 250'}).count()===1,'preview displays reduced depth');

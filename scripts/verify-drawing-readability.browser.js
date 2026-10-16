@@ -1,8 +1,8 @@
 /* CLI run-code; separate storage context and synthetic project. */
-async page=>{
- const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[],dir='C:/Users/SPH/Documents/GitHub/Furnish/output/playwright/workflow-tools/',check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
+async (page,verification)=>{
+ const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[],dir=(verification.root+'output/playwright/workflow-tools/'),check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
  try{
-  await p.goto('http://127.0.0.1:28420/index.html');await p.locator('#drawing-compass').waitFor();
+  await p.goto((verification.baseURL+'index.html'));await p.locator('#drawing-compass').waitFor();
   await p.screenshot({animations:'disabled',path:dir+'readability-default.png'});
   await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();await p.locator('#pr-file').setInputFiles(dir+'reimport-downloaded.furnish.json');await p.locator('#pr-restore-confirm').click();await p.locator('#dlg').waitFor({state:'hidden'});
   check(await p.evaluate(()=>{const f=getF('outside_chair'),r=ROOMS.find(r=>FurnishGeometry.inPoly(f.cx,f.cy,r.poly)),label=roomLabelLayout().get(r.id);return label?.hits===0&&Math.hypot(label.at[0]-f.cx,label.at[1]-f.cy)>500;}),'room label avoids centre chair');

@@ -1,4 +1,4 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1040}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
  const check=(ok,message)=>{if(!ok)throw Error(message);},read=()=>p.evaluate(()=>structuredClone(getF('run-kitchen'))),widths=f=>f.kitchen.modules.map(m=>m.width);
  async function dragRun(run,delta,{boundary=false,cancel=false}={}){
@@ -8,7 +8,7 @@ async page=>{
  }
  function changed(before,after,index,delta){before.kitchen.modules.forEach((m,i)=>check(JSON.stringify(after.kitchen.modules[i])===JSON.stringify(i===index?{...m,width:m.width+delta}:m),'only target terminal changes: '+i));check(JSON.stringify(after.kitchen.endExtensions)===JSON.stringify(before.kitchen.endExtensions),'thin end retained');}
  try{
-  await p.goto('http://127.0.0.1:8877/');await p.locator('#lib').waitFor();await p.evaluate(()=>{
+  await p.goto(verification.baseURL);await p.locator('#lib').waitFor();await p.evaluate(()=>{
    const center=ROOMS.find(r=>r.name==='客厅').at,f=FurnishKitchen.configure({id:'run-kitchen',type:'counter',name:'U 形厨房',cx:center[0],cy:center[1],rot:180,color:'#eee'},{version:1,shape:'U',corner:'right',depth:600,counterDepth:630,baseHeight:820,thickness:20,modules:[{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:1,width:300,role:'door'},{run:1,width:450,role:'door'},{run:2,width:400,role:'door'},{run:2,width:600,role:'door'}],endExtensions:[{run:0,length:550,depth:250,cabinetDepth:220}]});mutate(()=>state.furniture=[f]);ui.grid=1;ui.layers.wallSnap=false;ui.layers.guides=false;selectIds([f.id]);zoomSel();
   });
   check(await p.locator('[data-handle="kitchen-run"]').count()===3,'three independent grips');check(await p.locator('[data-handle="size"]').count()===5,'four full outer edges and corner remain available');const original=await read();

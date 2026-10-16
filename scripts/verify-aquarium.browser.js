@@ -1,9 +1,9 @@
-async(page)=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
+async (page,verification)=>{
+ const root=verification.root,results=[];
  for(const mode of ['file','http']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],external=[];
-  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:8765'))external.push(r.url());});
-  const base=mode==='file'?'file:///'+root:'http://127.0.0.1:8765/',check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
+  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith(verification.baseURL.slice(0,-1)))external.push(r.url());});
+  const base=mode==='file'?verification.fileBase:verification.baseURL,check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
   await p.goto(base+'output/aquarium/preview.html');await p.waitForFunction(()=>window.previewReady);
   for(const label of ['正面','斜视']){await p.getByRole('button',{name:label,exact:true}).click();await p.screenshot({path:root+'output/aquarium/'+mode+'-'+(label==='正面'?'front':'angle')+'.png'});}
   await p.getByRole('button',{name:'查看空缸',exact:true}).click();check(await p.evaluate(()=>{let hidden=0;window.aquariumPreview.model.traverse(o=>{if(['aquascape','water'].includes(o.userData.aquariumPart)&&!o.visible)hidden++;});return hidden===2;}),'empty view');

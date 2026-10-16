@@ -1,8 +1,8 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/directional-heights/';
  const check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.stack));
  try{
-  await p.goto('http://127.0.0.1:18081/');await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
    const rooms=structuredClone(state.rooms);
    PLAN={...PLAN,walls:[[0,0,100,6000],[0,0,6000,100],[5900,0,6000,6000],[0,5900,6000,6000]],wins:[],doors:[],slides:[],rooms:[{id:'height-room',name:'燃气灶与吊柜',mat:'tile800',at:[3000,3000],poly:[[100,100],[5900,100],[5900,5900],[100,5900]]}]};applyPlanData();

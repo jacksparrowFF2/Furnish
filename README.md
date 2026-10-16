@@ -30,6 +30,8 @@
 
 双击 `start-furnish.cmd` 启动本地服务并打开浏览器（需要已安装 Node.js）；关闭服务窗口自动释放端口。
 
+开发验收额外运行 `npm ci`、`npx playwright install chromium`，再执行 `node scripts/verify-browser.cjs`。统一入口会准备独立副本、预览和临时服务；换电脑不需要修改脚本中的路径或端口。详细用例与配置见 [浏览器验收](docs/BROWSER-VERIFICATION.md)。
+
 通过启动脚本使用时，设计自动保存到 `projects/workspace.furnish.json`，首次启动会迁移已有浏览器缓存。自行 Git 提交／推送此文件，另一台电脑克隆／拉取后启动即可继续编辑。旧缓存与文件不一致时保留本机恢复副本，优先加载仓库设计；规则与冲突处理见 [仓库保存与跨电脑使用](docs/REPOSITORY-SAVES.md)。直接双击 `index.html` 仍使用浏览器缓存及手动导入导出。
 
 1. 在 **户型库** 导入 DXF／图片或加载 `.furnish.json` 项目，核对墙体、门窗和飘窗。
@@ -392,18 +394,21 @@ Furnish/
 ├── styles/                 # 主界面、户型编辑器与项目工作台样式
 ├── assets/icons/           # 应用图标
 ├── examples/               # DXF、PDF、OBJ 导入示例
-├── templates/              # DXF 模板原文件与历史回归夹具
+├── templates/              # DXF 模板、历史夹具及独立预览源模板
 ├── vendor/pdfjs/           # PDF.js 及其离线资源
 ├── tests/                  # 回归脚本，helpers/ 提供统一路径入口
 ├── scripts/                # check.cjs、serve.cjs、validate-plans.mjs
-├── docs/                   # 测试说明、改进记录、screenshots/
-├── output/                 # 本地验收结果
+├── docs/                   # 测试说明、改进记录、参考图与精选验收证据
+├── skills/furnish-modeling/ # 可复用建模技能源文件
+├── output/                 # 本地生成物和完整验收结果，不入 Git
 └── README.md
 ```
 
 项目仍使用浏览器原生脚本，无需 npm 安装或构建。`index.html` 按依赖顺序加载数据、规则、浏览器适配、渲染、主应用与 UI 扩展。风格、布局几何和家具图例可直接测试，预算面板、家具编辑操作、图片导出与 2D 画布图层已分离；主应用继续管理当前状态、属性面板和指针事件。Three.js 的 data-URL import map 与三维模块暂时保留在入口中，保证直接打开文件时的模块加载方式不变。详见 [模块与加载约定](docs/ARCHITECTURE.md)。
 
 开发验证运行 `node scripts/check.cjs`，包含递归脚本语法检查、入口资源路径检查、全部回归与内置户型校验。单个测试可运行 `node tests/test-project.cjs`；脚本与测试根据自身位置解析项目路径，不依赖调用时的工作目录。本地服务运行 `node scripts/serve.cjs` 或双击 `start-furnish.cmd`。示例从 `examples/` 选择，模板原文件在 `templates/`。
+
+全新克隆后运行 `node scripts/generate-previews.cjs` 重建独立模型预览。`output/` 不提交；产品资料、技能文件及长期验收证据见 [生成物与资料约定](docs/OUTPUT-ARTIFACTS.md)。
 
 ## 如何新增一套户型
 

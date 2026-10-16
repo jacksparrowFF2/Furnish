@@ -1,8 +1,8 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/hob-openings/';p.on('pageerror',e=>errors.push(e.message));
  const check=(ok,msg)=>{if(!ok)throw Error(msg);},edit=async(id,n)=>{await p.locator(id).fill(String(n));await p.locator(id).press('Tab');};
  try{
-  await p.goto('http://127.0.0.1:18081/');await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
    state=freshWork(PLAN);state.furniture=[F('counter','台面',3000,3000,1800,600,0,'#d5c9b6'),F('stove_fotile_th36b','方太燃气灶 TH36B-T',3100,3010,750,440,0,'#111214')];delete state.furniture[0].kitchen;state.furniture[0].id='top';state.furniture[1].id='hob';ui.layers.clear=false;ui.layers.collide=false;ui.layers.dims=true;renderAll();selectIds(['hob']);zoomToBox([1950,2450,4050,3550],60);
   });

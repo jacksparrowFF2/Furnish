@@ -1,9 +1,9 @@
-async page=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
+async (page,verification)=>{
+ const root=verification.root,results=[];
  for(const mode of ['file','http']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],external=[];
-  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:8765'))external.push(r.url());});
-  const base=mode==='file'?'file:///'+root:'http://127.0.0.1:8765/',check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
+  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith(verification.baseURL.slice(0,-1)))external.push(r.url());});
+  const base=mode==='file'?verification.fileBase:verification.baseURL,check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
   try{
    await p.goto(base+'output/dishwasher/preview.html');await p.waitForFunction(()=>window.previewReady);
    for(const pose of ['closed','open']){

@@ -8,7 +8,8 @@
 
 # Local browser verification artifacts
 .playwright-cli/
-output/playwright/
+/output/
+/node_modules/
 
 # Machine-local recovery copies and interrupted atomic writes; projects stay tracked.
 /.local/

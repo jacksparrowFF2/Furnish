@@ -1,16 +1,20 @@
 # 直接打开、离线与完整项目恢复验收
 
+## 2026-10-16 补充
+
+固定版本 Playwright 配套 Chromium 已通过统一入口的 `portable-smoke`：生产入口在临时副本的 HTTP 与完全断网 file:// 下冷启动，实际编辑、撤销重做、刷新缓存恢复和首次三维显示均通过，无页面异常或外部请求。目录包含中文、空格和 #。这是桌面 Chromium 自动验收；下列 2026-10-14 的工具限制保留为历史记录，手动触屏等范围仍需另验。配置及结果见 [浏览器验收](BROWSER-VERIFICATION.md)。
+
 ## 2026-10-14 已执行结果
 
 隔离 Chrome 使用生产 `index.html` 经回环服务启动。从第一条请求起阻断所有外部 HTTP(S)，实际外部请求为 0；首屏 2D 家具、房间和新工作台正常。页面加载后将浏览器测试上下文设为 offline，再首次进入 3D（Three.js 尚未加载），生产墙体、门窗、家具和日照控制正常，无未捕获页面异常。
 
 通过正常文件输入导入合成项目，在断网上下文实际下载完整项目文件，然后在另一全新浏览器上下文重新导入。逐字段核对当前工作、房间和有效墙／门／窗、预算、两份命名方案、材料单片尺寸／箱数／箱价、原始墙基线与净距修改、家具旋转／镜像／零单价／采购状态、自定义家具库、附件原文、标注与测量线。导入撤销／重做、刷新恢复、重复导入均通过。刷新时恢复回环网络以重新获取 HTTP 入口，所有外部请求仍阻断；刷新后再次断网进行导入和 3D 验收。自定义家具库的本机编号按既有合并契约重新分配，内容保持。
 
-脚本：`scripts/make-reimport-fixture.cjs`、`scripts/verify-workflow-reimport.browser.js`。前者只接受 `custom_workflow_acceptance` 合成项目，默认读取前一轮实际下载文件，可显式传入其路径；后者通过 Playwright CLI `run-code --filename` 运行，使用端口 28418 的生产页面和独立上下文，不读取用户现用浏览器数据。输出位于 `output/playwright/workflow-tools/`：`reimport-downloaded.furnish.json`、`reimport-offline-2d.png`、`reimport-offline-3d.png`。
+脚本：`scripts/make-reimport-fixture.cjs`、`scripts/verify-workflow-reimport.browser.js`。前者只接受 `custom_workflow_acceptance` 合成项目，可显式传入来源文件；后者现由 `node scripts/verify-browser.cjs workflow-reimport` 运行，使用随仓库维护的固定输入、临时端口和独立上下文，不读取用户现用浏览器数据。输出位于本次验收副本的 `output/playwright/workflow-tools/`。安装与结果路径见 [浏览器验收](BROWSER-VERIFICATION.md)。
 
 本轮完整检查通过 110 套回归、12 个内置户型、12 页预览。没有发现需要修改生产代码的加载或项目恢复缺陷。
 
-## 尚待手动完成：真实 file:// 冷启动
+## 2026-10-14 当时待验：真实 file:// 冷启动
 
 自动化浏览器对真实生产文件地址返回 `Access to "file:" protocol is blocked`；这是工具访问限制，未到达应用，不能算作应用失败，也不能用 HTTP 结果代替通过。未更改浏览器或扩展安全权限。上面的断网检查证明已加载页面的操作和按需 3D 无外网依赖，不能证明断网时直接从文件冷启动或刷新。
 

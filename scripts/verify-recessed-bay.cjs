@@ -1,8 +1,9 @@
+if(!process.env.FURNISH_VERIFY_ROOT){require('./verify-browser.cjs').main(['recessed-bay']).catch(e=>{console.error(e);process.exitCode=1;});}else{
 'use strict';
 // Optional real-browser acceptance check; uses the same local Playwright runtime as other verification scripts.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/SPH/AppData/Local/npm-cache/_npx/31e32ef8478fbf80/node_modules/playwright');
-const P=require('../src/core/project-core.js'),root=path.resolve(__dirname,'..'),output=path.join(root,'output/playwright');
+const verification=require('./lib/browser-verification.cjs').configuration();
+const P=require('../src/core/project-core.js'),root=verification.root,output=path.join(root,'output/playwright');
 fs.mkdirSync(output,{recursive:true});
 const points=[[100,100],[200,100],[200,40],[400,40],[400,100],[500,100],[500,500],[100,500]];
 const draft={version:1,id:'custom_recess_browser',name:'凹口飘窗验证',source:'dxf',image:'',scale:10,width:600,height:600,
@@ -10,11 +11,11 @@ const draft={version:1,id:'custom_recess_browser',name:'凹口飘窗验证',sour
  openings:[{id:'win',wall:'w2',t:.5,length:1200,kind:'window',side:1,entry:false,sill:450,head:2400}]};
 const fixture=path.join(output,'recessed-bay-fixture.furnish.json');
 fs.writeFileSync(fixture,JSON.stringify(P.pack({planId:draft.id,current:{furniture:[],architecture:{draft,phase:'survey'}},designs:[],catalog:[]})));
-(async()=>{const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'C:/Program Files/Google/Chrome/Application/chrome.exe'}),errors=[];
+(async()=>{const browser=await require('./lib/browser-verification.cjs').launch(),errors=[];
  try{
   const context=await browser.newContext({viewport:{width:1400,height:1000}}),page=await context.newPage();
   page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
-  await page.goto('file:///'+path.join(root,'index.html').replaceAll('\\','/'));
+  await page.goto((verification.fileBase+'index.html'));
   await page.locator('#planBtn').click();const chooser=page.waitForEvent('filechooser');await page.locator('#gallery-import').click();await(await chooser).setFiles(fixture);await page.getByRole('button',{name:'加载并编辑',exact:true}).click();
   const snapshot=()=>page.evaluate(()=>({draft:state.architecture.draft,rooms:PLAN.rooms,settings:state.rooms,walls:PLAN.walls,wins:PLAN.wins,net:FurnishProject.quantities(PLAN).net}));
   const before=await snapshot();await page.evaluate(()=>select({kind:'win',id:0}));
@@ -42,10 +43,12 @@ fs.writeFileSync(fixture,JSON.stringify(P.pack({planId:draft.id,current:{furnitu
   await page.reload();await page.waitForFunction(()=>state.architecture?.draft.id==='custom_recess_browser');assert.deepEqual(await snapshot(),saved);
   await page.locator('[data-view="3d"]').click();await page.waitForFunction(()=>document.body.classList.contains('m3d'));await page.waitForFunction(()=>!!View3D.image());
   await page.screenshot({path:path.join(output,'recessed-bay-3d.png'),fullPage:true});
-  const builtin=await(await browser.newContext()).newPage();builtin.on('pageerror',e=>errors.push(e.message));await builtin.goto('file:///'+path.join(root,'index.html').replaceAll('\\','/'));await builtin.evaluate(()=>select({kind:'win',id:0}));
+  const builtin=await(await browser.newContext()).newPage();builtin.on('pageerror',e=>errors.push(e.message));await builtin.goto((verification.fileBase+'index.html'));await builtin.evaluate(()=>select({kind:'win',id:0}));
   await builtin.locator('#wSill').fill('647');await builtin.locator('#wHeight').fill('1753');assert.equal(await builtin.locator('#wHead').inputValue(),'2400');
   await builtin.locator('#wHead').fill('2500');assert.equal(await builtin.locator('#wHeight').inputValue(),'1853');await builtin.locator('#wApply').click();
   assert.equal(await builtin.evaluate(()=>WINS[0].head),2.5);
   assert.deepEqual(errors,[]);console.log('PASS browser bidirectional window heights, sill changes, empty input, conversion, cancel/apply, undo, restore, editor, save/reload and 3D without page errors');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1);});
+
+}

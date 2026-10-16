@@ -4,7 +4,7 @@
 
 ## 资料与尺寸
 
-依据用户提供照片红框左侧，不包含右侧 1200 mm 鞋柜。原图保存为 `output/entry-pegboard/reference.png`。
+依据用户提供照片红框左侧，不包含右侧 1200 mm 鞋柜。原图保存为 `docs/references/entry-pegboard/reference.png`。
 
 | 参数 | 数值 | 依据 |
 |---|---:|---|

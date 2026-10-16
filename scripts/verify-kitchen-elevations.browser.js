@@ -1,8 +1,8 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(v,message)=>{if(!v)throw Error(message);};
  try{
-  await p.goto('http://127.0.0.1:8765');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(()=>{const f=FurnishKitchen.configure({id:'elevation-test',type:'counter',cx:3000,cy:3000,rot:90,color:'#f3f1ec'},{version:1,shape:'L',corner:'right',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:800,role:'door'},{run:1,width:800,role:'drawer'},{run:0,width:450,role:'sink'},{run:1,width:300,role:'empty'}]});mutate(()=>state.furniture.push(f));FurnishCabinetEditor.open(f.id);});
   await p.locator('#cab-preview canvas').waitFor();
   check((await p.locator('.cab-size-summary').textContent()).includes('转角边总长 1700'),'L second extent is length, not depth');

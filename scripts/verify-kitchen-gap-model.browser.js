@@ -1,9 +1,9 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1040}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
  const check=(v,m)=>{if(!v)throw Error(m);},near=(a,b,m)=>check(Math.abs(a-b)<1e-5,m+': '+a+' != '+b),read=()=>p.evaluate(()=>structuredClone(getF('gap-kitchen')));
  async function inputGap(key,value,{cancel=false}={}){await p.locator(`[data-kitchen-gap="${key}"] text`).click();await p.locator('#kitchen-gap-input').fill(String(value));await p.getByRole('button',{name:cancel?'取消':'应用间距',exact:true}).click();}
  try{
-  await p.goto('http://127.0.0.1:8877/');await p.locator('#lib').waitFor();await p.evaluate(()=>{
+  await p.goto(verification.baseURL);await p.locator('#lib').waitFor();await p.evaluate(()=>{
    const K=FurnishKitchen,center=ROOMS.find(r=>r.name==='客厅').at,f=K.configure({id:'gap-kitchen',type:'counter',name:'厨房台面',cx:center[0],cy:center[1]+900,rot:180,color:'#eee'},{version:1,shape:'U',corner:'right',depth:600,counterDepth:630,baseHeight:820,thickness:20,autoAvoid:true,modules:[{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:1,width:560,role:'door'},{run:2,width:748,role:'door'}],endExtensions:[{run:0,length:550,depth:250,cabinetDepth:220}]}),h=K.runHandles(f)[2],[cx,cy]=K.world(f,h.x-100+300,f.d/2+75+300),ref={id:'gap-fridge',type:'fridge',name:'冰箱',cx,cy,w:600,d:600,rot:f.rot,color:'#eee'};mutate(()=>state.furniture=[f,ref]);ui.layers.clear=false;selectIds([f.id,ref.id]);zoomSel();selectIds([f.id]);
   });
   const original=await read(),fridge=await p.evaluate(()=>JSON.stringify(getF('gap-fridge')));check(await p.locator('[data-kitchen-gap="outer:bottom"]').count()===1,'outer edge clearance entry');check(await p.locator('[data-kitchen-gap="run:2"]').count()===1,'short end clearance entry');await p.screenshot({path:'output/playwright/kitchen-gap-model/gap-entries.png',animations:'disabled'});

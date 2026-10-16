@@ -32,13 +32,13 @@
 
 `node tests/test-beam-heights.cjs` 覆盖单位、原子校验、清空、旧梁、门／屉／上翻冲突、高梁豁免、接触边界、旋转／镜像与铰轴上方／扫掠空角、锁定基线及命名方案往返；直接执行生产 Three.js 挤出，核对真实 XYZ、未知梁遗漏和剖切可见性。`tests/test-ceiling-height.cjs` 核对高度更新触发三维缓存重建。
 
-浏览器执行 `run-code --filename scripts/verify-beam-heights.browser.js`，使用 `tests/fixtures/beam-heights-project.json` 与隔离存储。HTTP 和完全断网 `file://` 均已通过：不完整输入拒绝、三种开启冲突、属性／柜体编辑器一致、高梁清除、撤销重做、取消输入、清空再录入、3D、实际下载再上传、刷新及 390px 无溢出；两种模式页面错误与外部请求均为 0。截图和下载证据在 `output/playwright/beam-heights/`（本地验收产物，不纳入版本库）。已目视检查离线 3D 和窄屏录入截图。
+浏览器执行 `node scripts/verify-browser.cjs beam-heights`，使用 `tests/fixtures/beam-heights-project.json` 与隔离存储。HTTP 和完全断网 `file://` 均已通过：不完整输入拒绝、三种开启冲突、属性／柜体编辑器一致、高梁清除、撤销重做、取消输入、清空再录入、3D、实际下载再上传、刷新及 390px 无溢出；两种模式页面错误与外部请求均为 0。截图和下载证据在 `output/playwright/beam-heights/`（本地验收产物，不纳入版本库）。已目视检查离线 3D 和窄屏录入截图。
 
 后续复用：新增结构障碍先规定未知值与垂直基准，再接共享高度／开启接口，最后核对持久化、缓存和确认上下文；不要在界面或渲染中各自推定高度。
 
 实体专项回归：`node tests/test-beam-body-collisions.cjs`，覆盖柜顶接触／1mm 穿入、低柜、高低错层、旧柜默认、壁挂物、未知两侧高度、旋转／镜像、平面容差、焦点／多选上限、确认失效／保持、同名梁身份、完整项目和实际恢复／分享／重复恢复。
 
-实体浏览器复验：`run-code --filename scripts/verify-beam-body.browser.js`，使用 `tests/fixtures/beam-body-project.json` 及隔离存储。HTTP 和完全断网 file 均通过柜顶边界、梁高撤销重做、家具高度／位置编辑、草稿取消与保存、属性／编辑器／全案一致、确认与失效、双对象定位、清空梁高恢复待核对、实际下载再导入、刷新、旧命名方案／原始基线保留、3D 和 390px；页面异常与外部请求均为 0。目视检查离线 3D 和窄屏截图，证据位于 `output/playwright/beam-body/`。
+实体浏览器复验：`node scripts/verify-browser.cjs beam-body`，使用 `tests/fixtures/beam-body-project.json` 及隔离存储。HTTP 和完全断网 file 均通过柜顶边界、梁高撤销重做、家具高度／位置编辑、草稿取消与保存、属性／编辑器／全案一致、确认与失效、双对象定位、清空梁高恢复待核对、实际下载再导入、刷新、旧命名方案／原始基线保留、3D 和 390px；页面异常与外部请求均为 0。目视检查离线 3D 和窄屏截图，证据位于 `output/playwright/beam-body/`。
 
 本轮完整检查通过 88 个回归套件、12 套内置户型、11 页预览及全部生产语法／本地资源检查；浏览器专项验收通过，`git diff --check` 无空白错误。
 

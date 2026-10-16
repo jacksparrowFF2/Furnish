@@ -1,7 +1,7 @@
-async page=>{
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],out='output/playwright/kitchen-corner-leaves/';p.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(m);};
  let stage='load';try{
-  await p.goto('http://127.0.0.1:8765');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(async()=>{const T=await import('three');T.Scene.prototype.onBeforeRender=function(renderer,scene,camera){window.__doorRender={scene,camera};};const f=FurnishKitchen.configure({id:'leaves-test',name:'厨房',type:'counter',cx:3000,cy:3000,rot:0,color:'#f3f1ec'},{version:1,shape:'L',corner:'right',depth:600,counterDepth:630,baseHeight:830,thickness:20,modules:[{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:0,width:482,role:'door'},{run:1,width:1149,role:'door'}],endExtensions:[{run:0,length:550,depth:630,cabinetDepth:206,backPanel:false}]});mutate(()=>state.furniture=[f]);FurnishCabinetEditor.open(f.id);});
   stage='renderer';await p.locator('#cab-preview canvas').waitFor();await p.waitForFunction(()=>window.__doorRender?.scene);
   const angles=()=>p.evaluate(()=>{const result=[];window.__doorRender.scene.traverse(o=>{if(o.userData.motion?.kind==='cabinetdoor'&&o.userData.cabinetPart?.column===3)result[o.userData.cabinetPart.leaf]=Math.abs(o.rotation.y)>.1;});return result;});

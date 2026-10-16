@@ -1,9 +1,10 @@
+if(!process.env.FURNISH_VERIFY_ROOT){require('./verify-browser.cjs').main(['furniture-recovery']).catch(e=>{console.error(e);process.exitCode=1;});}else{
 // Isolated browser profiles only; never modifies the user's browser or project files.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const {chromium}=require(process.env.FURNISH_PLAYWRIGHT||'C:/Users/SPH/AppData/Local/npm-cache/_npx/31e32ef8478fbf80/node_modules/playwright');
+const verification=require('./lib/browser-verification.cjs').configuration();
 const K=require('../src/core/kitchen-core.js'),W=require('../src/core/work-state.js'),catalog=require('../src/data/catalog.js'),plans=require('../src/data/plans.js');
 (async()=>{
- const root=path.resolve(__dirname,'..'),out=path.join(root,'output/playwright/furniture-recovery');fs.mkdirSync(out,{recursive:true});
+ const root=verification.root,out=path.join(root,'output/playwright/furniture-recovery');fs.mkdirSync(out,{recursive:true});
  const plan=plans[0],work=W.create({makeId:()=> 'unused',colorFor:()=> '#ddd',materials:catalog.materials}).fresh(plan);
  const kitchen={id:'broken-kitchen',type:'counter',name:'异常厨房',cx:6000,cy:6500,w:2200,d:650,rot:37,flip:true,color:'#ddd',price:321,brand:'保留品牌',purchaseStatus:'ordered',kitchen:K.defaults({w:1800,d:600})};kitchen.kitchen.modules[0].role='sink';
  const device={id:'linked-sink',type:'ksink',name:'关联水槽',cx:5300,cy:6200,w:500,d:400,rot:37,flip:true,color:'#ddd',counterLink:{hostId:kitchen.id,module:0},counterElevation:860};
@@ -12,8 +13,8 @@ const K=require('../src/core/kitchen-core.js'),W=require('../src/core/work-state
  work.furniture=[kitchen,device,cabinet,bed];const initial=structuredClone(work.furniture);
  const seed={v:2,planId:plan.id,work:{[plan.id]:work},designs:[{id:'named',planId:plan.id,name:'原始命名方案',work:structuredClone(work)}],custom:[],customPlans:[]};
  fs.writeFileSync(path.join(out,'original-work.json'),JSON.stringify(seed,null,2));
- const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||'C:/Program Files/Google/Chrome/Application/chrome.exe'});
- try{for(const [mode,url]of [['http','http://127.0.0.1:8765/index.html'],['file','file:///'+root.replaceAll('\\','/')+'/index.html']]){
+ const browser=await require('./lib/browser-verification.cjs').launch();
+ try{for(const [mode,url]of [['http',(verification.baseURL+'index.html')],['file',(verification.fileBase+'index.html')]]){
   const context=await browser.newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   await context.addInitScript(seed=>{if(!localStorage.getItem('huxing-design-v2'))localStorage.setItem('huxing-design-v2',JSON.stringify(seed));localStorage.setItem('huxing-panes','{"lib":true,"panel":true}');},seed);
   await p.emulateMedia({reducedMotion:'reduce'});await p.goto(url);await p.locator('#lib .item').first().waitFor();
@@ -40,3 +41,5 @@ const K=require('../src/core/kitchen-core.js'),W=require('../src/core/work-state
   assert.deepEqual(errors,[],mode+' no uncaught page errors');await context.close();console.log('PASS '+mode+' startup, raw backup, repair, undo/redo, reload, named data, 3D, injected model failure, narrow screen');
  }}finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
+
+}

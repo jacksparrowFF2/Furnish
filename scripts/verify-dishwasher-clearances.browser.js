@@ -1,14 +1,14 @@
-async page=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
+async (page,verification)=>{
+ const root=verification.root,results=[];
  for(const mode of ['file','http']){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],external=[];
-  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:8765'))external.push(r.url());});
+  p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith(verification.baseURL.slice(0,-1)))external.push(r.url());});
   const check=(ok,msg)=>{if(!ok)throw Error(mode+': '+msg);},select=id=>p.evaluate(id=>selectIds([id]),id),edit=async(selector,value)=>{await p.locator(selector).fill(String(value));await p.locator(selector).press('Tab');};
   const states=kind=>p.locator('#dishwasher-checks [data-dishwasher-check="dishwasher-'+kind+'"]').evaluateAll(els=>els.map(el=>el.dataset.checkOk));
   const backup=async()=>{await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();};
   const upperHeight=async value=>{await select('upper');await p.locator('#cabinet-edit').click();await p.locator('#cab-kitchen-mount-height').waitFor();await edit('#cab-kitchen-mount-height',value);await p.locator('[data-k-tab="space"]').click();return p.locator('#cab-kitchen-space').innerText();};
   try{
-   await p.goto((mode==='file'?'file:///'+root:'http://127.0.0.1:8765/')+'index.html');await p.locator('#lib').waitFor();await backup();await p.locator('#pr-file').setInputFiles(root+'tests/fixtures/dishwasher-clearances-project.json');await p.locator('#pr-restore-confirm').click();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib').waitFor();await backup();await p.locator('#pr-file').setInputFiles(root+'tests/fixtures/dishwasher-clearances-project.json');await p.locator('#pr-restore-confirm').click();
    await select('dish');await p.evaluate(()=>zoomToBox([2000,2300,4000,3900],60));
    for(const kind of ['side','overhead','opening'])check((await states(kind)).includes('false'),kind+' initial conflict');check((await states('support')).every(v=>v==='true'),'support 600');
    check((await p.locator('#fit-feedback').innerText()).includes('等于 80 mm 不满足'),'shared property feedback');check(await p.locator('[data-edit-overlay="dishwasher-clearance"]').count()===2,'closed pose has both reservations');check(await p.evaluate(()=>!preparePlanSVG().svg.querySelector('[data-edit-overlay="dishwasher-clearance"]')),'export removes edit reservations');

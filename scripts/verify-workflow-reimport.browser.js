@@ -1,8 +1,8 @@
 /* Playwright CLI run-code --filename. Isolated contexts; synthetic project only.
  * This checks HTTP startup without external network, then offline editing and import.
  * It deliberately does not claim file:// startup verification. */
-async (page) => {
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',url='http://127.0.0.1:28418/index.html',dir=root+'output/playwright/workflow-tools/',results=[];
+async (page,verification)=>{
+ const root=verification.root,url=(verification.baseURL+'index.html'),dir=root+'output/playwright/workflow-tools/',results=[];
  const check=(value,label)=>{if(!value)throw Error(label);};
  const stable=v=>JSON.stringify(v,(_,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.fromEntries(Object.entries(x).sort(([a],[b])=>a.localeCompare(b))):x);
  const diff=(a,b,path='')=>{if(stable(a)===stable(b))return [];if(a&&b&&typeof a==='object'&&typeof b==='object')return [...new Set([...Object.keys(a),...Object.keys(b)])].flatMap(k=>diff(a[k],b[k],path+'.'+k));return [{path,before:a,after:b}];};
@@ -50,7 +50,7 @@ async (page) => {
    check((await snapshot(target.p)).current.furniture.length!==initial.current.furniture.length,'import undo');
    await target.p.getByRole('button',{name:'重做',exact:true}).first().click();
    check(stable(await snapshot(target.p))===stable(restored),'import redo');
-   await target.p.waitForFunction(()=>document.querySelector('#saved')?.textContent.includes('已自动保存'));
+   await verification.waitForCache(target.p);
    await target.context.setOffline(false);await target.p.reload();await target.p.locator('#lib .item').first().waitFor();await target.context.setOffline(true);
    check(stable(await snapshot(target.p))===stable(restored),'reload restores complete imported project');
    await importUI(target.p,dir+'reimport-downloaded.furnish.json');

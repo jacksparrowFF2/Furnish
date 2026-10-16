@@ -1,16 +1,25 @@
 # Furnish 实机测试清单
 
+## 浏览器验收统一入口
+
+克隆后运行 `npm ci`、`npx playwright install chromium`，再运行 `node scripts/verify-browser.cjs`。用 `--list` 查看用例，指定名称执行专项，用 `--all` 执行全部登记用例。入口自动生成独立副本、预览与临时服务，固定测试输入随仓库同步，不需要原电脑的 output、浏览器或图纸目录。安装、隔离与结果说明见 [浏览器验收](BROWSER-VERIFICATION.md)。
+
+## 本地生成物准备
+
+`output/` 不随 Git 同步。统一浏览器验收入口自动在本次副本生成预览；若需单独查看模型，可运行 `node scripts/generate-previews.cjs`，当前 19 个页面可从没有 output 的克隆生成。产品资料和精选历史证据已迁入 docs，见 [生成物与资料约定](OUTPUT-ARTIFACTS.md)。完整回归会在独立临时副本中验证生成器，不覆盖本机旧预览。
+
+
 ## 三维开启范围（2026-10-13）
 
 `test-cabinet-opening-3d.cjs` 验证高低错层、抽屉接触/穿入、上翻空角与铰轴上方、矮墙/壁挂对象/吊顶、跨房间净高、未知高度、操作空间、旋转镜像、旧数据及确认失效。`test-cabinet-opening-volume-model.cjs` 对照实际生产 Three.js 板件顶点与高度范围；`test-room-ceiling-height.cjs` 覆盖完整工作恢复链路，防止只通过 pack/unpack 而实际加载丢失净高。
 
-浏览器执行 `run-code --filename scripts/verify-cabinet-opening-3d.browser.js`，分别验证 HTTP 与断网 file，使用合成旧项目和独立存储。实际操作障碍离地高、柜门最大角度、房间净高，检查面板/编辑器/全案、草稿取消、撤销重做、真实下载再导入、3D、刷新和 390 px。方法和证据路径见 [CABINET-OPENING-3D.md](CABINET-OPENING-3D.md)。
+浏览器执行 `node scripts/verify-browser.cjs cabinet-opening-3d`，分别验证 HTTP 与断网 file，使用合成旧项目和独立存储。实际操作障碍离地高、柜门最大角度、房间净高，检查面板/编辑器/全案、草稿取消、撤销重做、真实下载再导入、3D、刷新和 390 px。方法和证据路径见 [CABINET-OPENING-3D.md](CABINET-OPENING-3D.md)。
 
 ## 产品规则与离线兼容（2026-10-13）
 
 运行 `node scripts/check.cjs`，包含 `test-product-rules.cjs`、历史格式夹具、全部专项回归及生成预览的内联脚本/依赖检查。生产构造器的孤立 VM 测试须提供真实产品规则依赖，不能用第二套默认值代替。
 
-通过 Playwright CLI 的 `run-code --filename scripts/verify-product-rules.browser.js` 在独立存储 context 中复验：新建默认值、旧项目/命名版本导入、花洒安装迁移、缺失高度、叠放、合法 0/非法输入、撤销重做、界面替换清理、项目真实下载再上传、3D 动画完成后截图、刷新、390 px 属性抽屉及无外部请求。脚本同时检查四种独立生产预览。分别运行 HTTP 与设置 context 离线的 file 模式；步骤、CLI 配置及证据位置见 [PRODUCT-RULES.md](PRODUCT-RULES.md)。
+通过 `node scripts/verify-browser.cjs product-rules` 在独立存储 context 中复验：新建默认值、旧项目/命名版本导入、花洒安装迁移、缺失高度、叠放、合法 0/非法输入、撤销重做、界面替换清理、项目真实下载再上传、3D 动画完成后截图、刷新、390 px 属性抽屉及无外部请求。脚本同时检查四种独立生产预览。分别运行 HTTP 与设置 context 离线的 file 模式；步骤、CLI 配置及证据位置见 [PRODUCT-RULES.md](PRODUCT-RULES.md)。
 
 ## 历史与分享协调
 

@@ -68,8 +68,8 @@
 
 ## 查看与复验
 
-- 运行 `node scripts/preview-dishwasher.cjs` 生成 [生产模型预览](../output/dishwasher/preview.html)，使用既有离线 Three.js import map，无新运行依赖。
-- [闭合斜视](../output/dishwasher/file-closed-angle.png)、[展开斜视](../output/dishwasher/file-open-angle.png)、[展开侧视](../output/dishwasher/file-open-side.png)；应用与窄屏截图位于 `output/playwright/dishwasher/`。
+- 运行 [生成脚本](../scripts/preview-dishwasher.cjs)（`node scripts/preview-dishwasher.cjs`）重建 `output/dishwasher/preview.html`，使用既有离线 Three.js import map，无新运行依赖。
+- [闭合斜视](validation/models/dishwasher/file-closed-angle.png)、[展开斜视](validation/models/dishwasher/file-open-angle.png)、[展开侧视](validation/models/dishwasher/file-open-side.png)；应用与窄屏截图位于 `output/playwright/dishwasher/`。
 - `tests/test-dishwasher.cjs`：目录身份、默认值、0 / 上下限 / 非法值、旧缺省、重复恢复、复制替换、当前及命名项目往返、承托面接触 / 穿入、真实生产顶点与法线、闭合 / 展开尺寸、旋转镜像、缩放、正面显示区可见性及生产缓存更新。
 - `scripts/verify-dishwasher.browser.js`：隔离浏览器中实际操作 HTTP / 断网 file:// 预览、目录新增、尺寸和离地编辑、开合及 2D 同步、非法输入回退、锁定、复制、撤销重做、刷新、真实项目下载再上传及命名方案、应用 3D、390 px 面板；两种模式页面异常和外部请求均为 0。
 - 首次模型接入时 `node scripts/check.cjs`：162 套回归、12 户型、15 预览页面、语法 / 共享声明 / 本地资源检查通过；`git diff --check` 通过。

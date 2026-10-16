@@ -1,8 +1,8 @@
-async (page) => {
+async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(message);};
  try{
-  await p.goto('http://127.0.0.1:8765');await p.locator('#lib').waitFor();
+  await p.goto(verification.baseURL.slice(0,-1));await p.locator('#lib').waitFor();
   await p.evaluate(()=>{
    const regular={id:'dimension-cab',type:'wardrobe',cx:2000,cy:2000,rot:0,...FurnishCabinet.preset('wardrobe')};
    const kitchen=FurnishKitchen.configure({id:'dimension-kitchen',type:'counter',cx:3000,cy:3000,rot:0,color:'#f3f1ec'},{version:1,shape:'L',corner:'right',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:800,role:'door'},{run:1,width:600,role:'drawer'},{run:0,width:450,role:'sink'},{run:1,width:300,role:'empty'}]});

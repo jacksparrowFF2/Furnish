@@ -4,7 +4,7 @@
 
 ## 资料与尺寸
 
-主要依据为用户于 2026-10-11 提供的四张商品截图，留存在 `output/yeswood-sofa/reference-*.png`。商品链接：https://item.jd.com/10096040538224.html 。本次未成功读取原京东详情页或用户 Chrome 标签页，因此不声称已核验该 SKU 的完整参数。
+主要依据为用户于 2026-10-11 提供的四张商品截图，留存在 `docs/references/yeswood-sofa/reference-*.png`。商品链接：https://item.jd.com/10096040538224.html 。本次未成功读取原京东详情页或用户 Chrome 标签页，因此不声称已核验该 SKU 的完整参数。
 
 | 参数 | 值 | 依据 |
 |---|---|---|

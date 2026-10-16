@@ -1,0 +1,960 @@
+{
+  "format": "furnish-project",
+  "version": 1,
+  "createdAt": "2026-10-14T08:38:19.264Z",
+  "checksum": "dfd681ed",
+  "payload": {
+    "planId": "custom_workflow_acceptance",
+    "name": "工具与净距验收",
+    "current": {
+      "furniture": [
+        {
+          "id": "outside_chair",
+          "name": "验收椅",
+          "type": "chair",
+          "cx": 7150,
+          "cy": 2600,
+          "w": 400,
+          "d": 500,
+          "h": 800,
+          "rot": 45,
+          "flip": true,
+          "color": "#d9bf98",
+          "price": 0,
+          "purchaseStatus": "ordered"
+        }
+      ],
+      "rooms": {
+        "room1": {
+          "name": "房间 1",
+          "mat": "wood",
+          "use": "unassigned"
+        },
+        "room2": {
+          "name": "房间 2",
+          "mat": "wood",
+          "use": "unassigned"
+        },
+        "room3": {
+          "name": "房间 3",
+          "mat": "wood",
+          "use": "unassigned"
+        }
+      },
+      "demolished": [],
+      "measures": [
+        {
+          "a": {
+            "x": 2500,
+            "y": 1500
+          },
+          "b": {
+            "x": 3500,
+            "y": 1500
+          }
+        }
+      ],
+      "notes": [
+        {
+          "id": "acceptance_note",
+          "x": 2500,
+          "y": 1800,
+          "text": "完整项目恢复验收",
+          "color": "paper",
+          "size": 1
+        }
+      ],
+      "open": {
+        "d": {},
+        "w": {},
+        "s": {}
+      },
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_workflow_acceptance",
+          "name": "工具与净距验收",
+          "source": "dxf",
+          "image": "",
+          "width": 1000,
+          "height": 1000,
+          "scale": 10,
+          "walls": [
+            {
+              "id": "top",
+              "a": [
+                20,
+                20
+              ],
+              "b": [
+                980,
+                20
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "right",
+              "a": [
+                980,
+                20
+              ],
+              "b": [
+                980,
+                980
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "bottom",
+              "a": [
+                980,
+                980
+              ],
+              "b": [
+                20,
+                980
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "left",
+              "a": [
+                20,
+                980
+              ],
+              "b": [
+                20,
+                20
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "partition",
+              "a": [
+                450,
+                20
+              ],
+              "b": [
+                450,
+                980
+              ],
+              "kind": "n",
+              "thickness": 100
+            },
+            {
+              "id": "tee",
+              "a": [
+                450,
+                500
+              ],
+              "b": [
+                980,
+                500
+              ],
+              "kind": "n",
+              "thickness": 100
+            }
+          ],
+          "openings": [
+            {
+              "id": "door",
+              "wall": "partition",
+              "kind": "door",
+              "length": 800,
+              "t": 0.3,
+              "side": 1,
+              "entry": false
+            },
+            {
+              "id": "window",
+              "wall": "tee",
+              "kind": "window",
+              "length": 600,
+              "t": 0.5471698113207547,
+              "side": 1,
+              "entry": false
+            }
+          ]
+        },
+        "phase": "design",
+        "baseline": {
+          "version": 1,
+          "id": "custom_workflow_acceptance",
+          "name": "工具与净距验收",
+          "source": "dxf",
+          "image": "",
+          "width": 1000,
+          "height": 1000,
+          "scale": 10,
+          "walls": [
+            {
+              "id": "top",
+              "a": [
+                20,
+                20
+              ],
+              "b": [
+                980,
+                20
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "right",
+              "a": [
+                980,
+                20
+              ],
+              "b": [
+                980,
+                980
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "bottom",
+              "a": [
+                980,
+                980
+              ],
+              "b": [
+                20,
+                980
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "left",
+              "a": [
+                20,
+                980
+              ],
+              "b": [
+                20,
+                20
+              ],
+              "kind": "e",
+              "thickness": 100
+            },
+            {
+              "id": "partition",
+              "a": [
+                500,
+                20
+              ],
+              "b": [
+                500,
+                980
+              ],
+              "kind": "n",
+              "thickness": 100
+            },
+            {
+              "id": "tee",
+              "a": [
+                500,
+                500
+              ],
+              "b": [
+                980,
+                500
+              ],
+              "kind": "n",
+              "thickness": 100
+            }
+          ],
+          "openings": [
+            {
+              "id": "door",
+              "wall": "partition",
+              "kind": "door",
+              "length": 800,
+              "t": 0.3,
+              "side": 1,
+              "entry": false
+            },
+            {
+              "id": "window",
+              "wall": "tee",
+              "kind": "window",
+              "length": 600,
+              "t": 0.5,
+              "side": 1,
+              "entry": false
+            }
+          ]
+        }
+      },
+      "plan": "custom_workflow_acceptance",
+      "pricing": {
+        "floorWaste": 5,
+        "paintWaste": 10,
+        "materials": {
+          "wood": 500
+        },
+        "materialSpecs": {
+          "wood": {
+            "length": 1000,
+            "width": 1000,
+            "unit": "pack",
+            "pack": 4,
+            "waste": 10
+          }
+        }
+      },
+      "assets": [
+        {
+          "name": "验收说明.txt",
+          "data": "5ZCI5oiQ6ZmE5Lu277ya6aG555uu5b6A6L+U6aqM5pS2"
+        }
+      ]
+    },
+    "designs": [
+      {
+        "name": "材料采购版",
+        "work": {
+          "furniture": [
+            {
+              "id": "outside_chair",
+              "name": "验收椅",
+              "type": "chair",
+              "cx": 7150,
+              "cy": 2600,
+              "w": 400,
+              "d": 500,
+              "h": 800,
+              "rot": 45,
+              "flip": true,
+              "color": "#d9bf98",
+              "price": 0,
+              "purchaseStatus": "ordered"
+            }
+          ],
+          "rooms": {
+            "room1": {
+              "name": "房间 1",
+              "mat": "wood",
+              "use": "unassigned"
+            },
+            "room2": {
+              "name": "房间 2",
+              "mat": "wood",
+              "use": "unassigned"
+            },
+            "room3": {
+              "name": "房间 3",
+              "mat": "wood",
+              "use": "unassigned"
+            }
+          },
+          "demolished": [],
+          "measures": [
+            {
+              "a": {
+                "x": 2500,
+                "y": 1500
+              },
+              "b": {
+                "x": 3500,
+                "y": 1500
+              }
+            }
+          ],
+          "notes": [
+            {
+              "id": "acceptance_note",
+              "x": 2500,
+              "y": 1800,
+              "text": "完整项目恢复验收",
+              "color": "paper",
+              "size": 1
+            }
+          ],
+          "open": {
+            "d": {},
+            "w": {},
+            "s": {}
+          },
+          "architecture": {
+            "draft": {
+              "version": 1,
+              "id": "custom_workflow_acceptance",
+              "name": "工具与净距验收",
+              "source": "dxf",
+              "image": "",
+              "width": 1000,
+              "height": 1000,
+              "scale": 10,
+              "walls": [
+                {
+                  "id": "top",
+                  "a": [
+                    20,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "right",
+                  "a": [
+                    980,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "bottom",
+                  "a": [
+                    980,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "left",
+                  "a": [
+                    20,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "partition",
+                  "a": [
+                    450,
+                    20
+                  ],
+                  "b": [
+                    450,
+                    980
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                },
+                {
+                  "id": "tee",
+                  "a": [
+                    450,
+                    500
+                  ],
+                  "b": [
+                    980,
+                    500
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                }
+              ],
+              "openings": [
+                {
+                  "id": "door",
+                  "wall": "partition",
+                  "kind": "door",
+                  "length": 800,
+                  "t": 0.3,
+                  "side": 1,
+                  "entry": false
+                },
+                {
+                  "id": "window",
+                  "wall": "tee",
+                  "kind": "window",
+                  "length": 600,
+                  "t": 0.5471698113207547,
+                  "side": 1,
+                  "entry": false
+                }
+              ]
+            },
+            "phase": "design",
+            "baseline": {
+              "version": 1,
+              "id": "custom_workflow_acceptance",
+              "name": "工具与净距验收",
+              "source": "dxf",
+              "image": "",
+              "width": 1000,
+              "height": 1000,
+              "scale": 10,
+              "walls": [
+                {
+                  "id": "top",
+                  "a": [
+                    20,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "right",
+                  "a": [
+                    980,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "bottom",
+                  "a": [
+                    980,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "left",
+                  "a": [
+                    20,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "partition",
+                  "a": [
+                    500,
+                    20
+                  ],
+                  "b": [
+                    500,
+                    980
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                },
+                {
+                  "id": "tee",
+                  "a": [
+                    500,
+                    500
+                  ],
+                  "b": [
+                    980,
+                    500
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                }
+              ],
+              "openings": [
+                {
+                  "id": "door",
+                  "wall": "partition",
+                  "kind": "door",
+                  "length": 800,
+                  "t": 0.3,
+                  "side": 1,
+                  "entry": false
+                },
+                {
+                  "id": "window",
+                  "wall": "tee",
+                  "kind": "window",
+                  "length": 600,
+                  "t": 0.5,
+                  "side": 1,
+                  "entry": false
+                }
+              ]
+            }
+          },
+          "plan": "custom_workflow_acceptance",
+          "pricing": {
+            "floorWaste": 5,
+            "paintWaste": 10,
+            "materials": {
+              "wood": 500
+            },
+            "materialSpecs": {
+              "wood": {
+                "length": 1000,
+                "width": 1000,
+                "unit": "pack",
+                "pack": 4,
+                "waste": 10
+              }
+            }
+          },
+          "assets": [
+            {
+              "name": "验收说明.txt",
+              "data": "5ZCI5oiQ6ZmE5Lu277ya6aG555uu5b6A6L+U6aqM5pS2"
+            }
+          ]
+        }
+      },
+      {
+        "name": "对比配色版",
+        "work": {
+          "furniture": [
+            {
+              "id": "outside_chair",
+              "name": "验收椅",
+              "type": "chair",
+              "cx": 7150,
+              "cy": 2600,
+              "w": 400,
+              "d": 500,
+              "h": 800,
+              "rot": 45,
+              "flip": true,
+              "color": "#789090",
+              "price": 0,
+              "purchaseStatus": "ordered"
+            }
+          ],
+          "rooms": {
+            "room1": {
+              "name": "房间 1",
+              "mat": "wood",
+              "use": "unassigned"
+            },
+            "room2": {
+              "name": "房间 2",
+              "mat": "wood",
+              "use": "unassigned"
+            },
+            "room3": {
+              "name": "房间 3",
+              "mat": "wood",
+              "use": "unassigned"
+            }
+          },
+          "demolished": [],
+          "measures": [
+            {
+              "a": {
+                "x": 2500,
+                "y": 1500
+              },
+              "b": {
+                "x": 3500,
+                "y": 1500
+              }
+            }
+          ],
+          "notes": [
+            {
+              "id": "acceptance_note",
+              "x": 2500,
+              "y": 1800,
+              "text": "完整项目恢复验收",
+              "color": "paper",
+              "size": 1
+            }
+          ],
+          "open": {
+            "d": {},
+            "w": {},
+            "s": {}
+          },
+          "architecture": {
+            "draft": {
+              "version": 1,
+              "id": "custom_workflow_acceptance",
+              "name": "工具与净距验收",
+              "source": "dxf",
+              "image": "",
+              "width": 1000,
+              "height": 1000,
+              "scale": 10,
+              "walls": [
+                {
+                  "id": "top",
+                  "a": [
+                    20,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "right",
+                  "a": [
+                    980,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "bottom",
+                  "a": [
+                    980,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "left",
+                  "a": [
+                    20,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "partition",
+                  "a": [
+                    450,
+                    20
+                  ],
+                  "b": [
+                    450,
+                    980
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                },
+                {
+                  "id": "tee",
+                  "a": [
+                    450,
+                    500
+                  ],
+                  "b": [
+                    980,
+                    500
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                }
+              ],
+              "openings": [
+                {
+                  "id": "door",
+                  "wall": "partition",
+                  "kind": "door",
+                  "length": 800,
+                  "t": 0.3,
+                  "side": 1,
+                  "entry": false
+                },
+                {
+                  "id": "window",
+                  "wall": "tee",
+                  "kind": "window",
+                  "length": 600,
+                  "t": 0.5471698113207547,
+                  "side": 1,
+                  "entry": false
+                }
+              ]
+            },
+            "phase": "design",
+            "baseline": {
+              "version": 1,
+              "id": "custom_workflow_acceptance",
+              "name": "工具与净距验收",
+              "source": "dxf",
+              "image": "",
+              "width": 1000,
+              "height": 1000,
+              "scale": 10,
+              "walls": [
+                {
+                  "id": "top",
+                  "a": [
+                    20,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "right",
+                  "a": [
+                    980,
+                    20
+                  ],
+                  "b": [
+                    980,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "bottom",
+                  "a": [
+                    980,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    980
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "left",
+                  "a": [
+                    20,
+                    980
+                  ],
+                  "b": [
+                    20,
+                    20
+                  ],
+                  "kind": "e",
+                  "thickness": 100
+                },
+                {
+                  "id": "partition",
+                  "a": [
+                    500,
+                    20
+                  ],
+                  "b": [
+                    500,
+                    980
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                },
+                {
+                  "id": "tee",
+                  "a": [
+                    500,
+                    500
+                  ],
+                  "b": [
+                    980,
+                    500
+                  ],
+                  "kind": "n",
+                  "thickness": 100
+                }
+              ],
+              "openings": [
+                {
+                  "id": "door",
+                  "wall": "partition",
+                  "kind": "door",
+                  "length": 800,
+                  "t": 0.3,
+                  "side": 1,
+                  "entry": false
+                },
+                {
+                  "id": "window",
+                  "wall": "tee",
+                  "kind": "window",
+                  "length": 600,
+                  "t": 0.5,
+                  "side": 1,
+                  "entry": false
+                }
+              ]
+            }
+          },
+          "plan": "custom_workflow_acceptance",
+          "pricing": {
+            "floorWaste": 5,
+            "paintWaste": 10,
+            "materials": {
+              "wood": 500
+            },
+            "materialSpecs": {
+              "wood": {
+                "length": 1000,
+                "width": 1000,
+                "unit": "pack",
+                "pack": 4,
+                "waste": 10
+              }
+            }
+          },
+          "assets": [
+            {
+              "name": "验收说明.txt",
+              "data": "5ZCI5oiQ6ZmE5Lu277ya6aG555uu5b6A6L+U6aqM5pS2"
+            }
+          ]
+        }
+      }
+    ],
+    "catalog": [
+      {
+        "id": "c_acceptance",
+        "name": "合成自定义柜",
+        "type": "custom",
+        "w": 800,
+        "d": 500,
+        "h": 900,
+        "color": "#d9bf98",
+        "price": 1800
+      }
+    ]
+  }
+}

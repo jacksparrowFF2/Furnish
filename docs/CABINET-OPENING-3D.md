@@ -69,7 +69,7 @@
 5. 实际下载完整项目、再上传及刷新后，吊顶和开启参数、冲突结果保持一致。
 6. 390 px 属性抽屉无横向溢出；两种模式页面异常和外部网络请求均为 0。
 
-测试夹具 `tests/fixtures/cabinet-opening-3d-project.json` 是合成的版本 1 项目，不是用户实际施工方案。复验方式沿用 [产品规则说明](PRODUCT-RULES.md) 的 Playwright CLI 设置，替换 `run-code --filename` 的脚本路径即可。脚本顶部路径/端口可按检出环境调整。
+测试夹具 `tests/fixtures/cabinet-opening-3d-project.json` 是合成的版本 1 项目，不是用户实际施工方案。运行 `node scripts/verify-browser.cjs cabinet-opening-3d`，统一准备路径、依赖及服务，见 [浏览器验收](BROWSER-VERIFICATION.md)。
 
 截图和实际下载文件位于 `output/playwright/cabinet-opening-3d/`，按项目约定作为本地验收产物忽略：`offline-file-ceiling-warning.png`、`offline-file-editor.png`、`offline-file-3d.png`、`offline-file-mobile.png`，以及对应 HTTP 文件和两份 `.furnish.json`。
 

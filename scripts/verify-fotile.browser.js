@@ -1,6 +1,6 @@
-async(page)=>{
- const root='C:/Users/SPH/Documents/GitHub/Furnish/',results=[];
- for(const [mode,url,offline] of [['file','file:///'+root+'index.html',true],['http','http://127.0.0.1:8765/index.html',false]]){
+async (page,verification)=>{
+ const root=verification.root,results=[];
+ for(const [mode,url,offline] of [['file',verification.fileBase+'index.html',true],['http',(verification.baseURL+'index.html'),false]]){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   const check=(ok,label)=>{if(!ok)throw Error(mode+': '+label);};await p.goto(url);await p.locator('#lib').waitFor();
   await p.locator('#lib').getByText('方太燃气灶 TH36B-T',{exact:true}).first().click();
@@ -16,7 +16,7 @@ async(page)=>{
   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);await p.setViewportSize({width:390,height:844});await p.evaluate(id=>{selectIds([id]);drawer('panel',true);},hoodId);check(await p.locator('#kitchen-mount').isVisible(),'narrow mount field');await p.screenshot({path:root+'output/fotile/'+mode+'-mobile.png'});check(errors.length===0,'page errors '+errors.join(';'));results.push({mode,status:'PASS',errors});await context.close();
  }
  for(const kind of ['hob','hood']){
-  const context=await page.context().browser().newContext({viewport:{width:1400,height:1000},offline:true}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('file:///'+root+'output/fotile/'+kind+'.html');await p.waitForFunction(()=>window.previewReady);
+  const context=await page.context().browser().newContext({viewport:{width:1400,height:1000},offline:true}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(verification.fileBase+'output/fotile/'+kind+'.html');await p.waitForFunction(()=>window.previewReady);
   if(!await p.evaluate(kind=>{const v=window.fotilePreview;return v.scene.children.filter(o=>o.userData.fotile).length===1&&v.f.type===(kind==='hob'?'stove_fotile_th36b':'rangehood_fotile_jcd10ta');},kind))throw Error('Preview must contain exactly one independent appliance: '+kind);
   for(const [label,file] of [['正面',kind+'-front'],['斜视',kind+'-angle']]){await p.getByRole('button',{name:label,exact:true}).click();await p.waitForTimeout(250);await p.screenshot({path:root+'output/fotile/'+file+'.png'});}
   if(kind==='hood'){await p.getByRole('button',{name:'打开面板',exact:true}).click();if(!await p.evaluate(()=>window.fotilePreview.f.hoodPanelOpen))throw Error('Hood opening failed');await p.waitForTimeout(250);await p.screenshot({path:root+'output/fotile/hood-open.png'});}if(errors.length)throw Error(errors.join(';'));await context.close();results.push({preview:kind,status:'PASS',appliances:1});
