@@ -3,7 +3,7 @@
 'use strict';
 const supported=f=>['stove_fotile_th36b','rangehood_fotile_jcd10ta'].includes(f.type);
 function build(THREE,f){
- const P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),g=new THREE.Group();
+ const P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),g=new THREE.Group();let cover;
  const material=(color,metalness=0,roughness=.45)=>new THREE.MeshStandardMaterial({color,metalness,roughness});
  const glass=material('#101214',.28,.13),iron=material('#252729',.5,.55),steel=material('#aeb2b5',.8,.27),black=material('#17191b',.25,.4),gold=material('#ba8839',.55,.35);
  function add(geometry,mat,x,y,z,part){const o=new THREE.Mesh(geometry,mat);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;o.userData.fotilePart=part;g.add(o);return o;}
@@ -55,17 +55,18 @@ function build(THREE,f){
   onPanel(box(.884,panelLength,.006,glass,0,0,0,'sloped-glass'),0,-panelLength/2-.008,.003);
   for(let i=0;i<9;i++){const rib=box(.790,.003,.006,black,0,0,0,'filter-slat'),y=.092+i*.024;rib.position.set(0,y,.270*y/.345-.110);rib.rotation.x=angle;}
   box(.900,.024,.100,iron,0,0,-.125,'oil-trough');
-  box(.480,.175,.310,steel,0,.345,-.020,'chimney-cover');
+  const spec=P.hoodInstallation(f);
+  cover=box(spec.coverWidth/1000,spec.coverHeight/1000,spec.coverDepth/1000,steel,0,(P.value(f,'mountHeight')+spec.bodyHeight)/1000,spec.coverOffset/1000,'chimney-cover');g.remove(cover);
   // Filter intake and diagonal seams stay within the exterior envelope.
   box(.800,.006,.020,iron,0,.026,-.078,'intake-slot');
   for(const x of [-.401,.401])box(.055,.003,.018,material('#f1e9d7',.1,.2),x,.040,-.061,'lamp');
   onPanel(add(new THREE.TorusGeometry(.010,.001,8,40),gold,0,0,0,'control-ring'),0,-.200,.007);
   for(const x of [-.064,-.040,.040,.064])onPanel(box(.004,.006,.001,gold,0,0,0,'control-mark'),x,-.200,.007);
   onPanel(box(.035,.006,.001,gold,0,0,0,'brand-mark'),-.385,-.058,.007);
-  g.scale.set(f.w/900,P.height(f)/520,f.d/350);g.position.y=P.value(f,'mountHeight')/1000;
+  g.scale.set(f.w/900,spec.bodyHeight/345,f.d/350);g.position.y=P.value(f,'mountHeight')/1000;
  }else throw Error('Unsupported FOTILE model');
  // Installation translation lives on a wrapper so app transforms can set X/Z safely.
- const result=new THREE.Group();result.add(g);result.userData.fotile=true;return result;
+ const result=new THREE.Group();result.add(g);if(cover)result.add(cover);result.userData.fotile=true;return result;
 }
 const api={supported,build};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFotileModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

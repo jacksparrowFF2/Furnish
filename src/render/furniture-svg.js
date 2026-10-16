@@ -99,10 +99,14 @@ const DASH = 'stroke-dasharray="4 3"';
       for (let k=0;k<8;k++) s += `<ellipse cx="0" cy="${-m*.27}" rx="${m*.1}" ry="${m*.21}" transform="rotate(${k*45})" fill="${shade(c,.8)}" ${ST()}/>`;
       return s + `<circle r="${m*.1}" fill="#8a6a4a" ${ST()}/>`;
     }
+    case 'table_folding_1100': case 'table_folding_1200': case 'table_folding_1300': {
+      const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts,item={...f,type:t,w,d},s=P.foldingTableGeometry(item),outline=P.foldingTableOutline(item),chord=z=>w*Math.sqrt(Math.max(0,1-(2*z/s.fullDepth)**2))/2;
+      return `<g data-folding-table="${s.pose}">${pa('M'+outline.map(p=>p.join(',')).join('L')+'Z','#f4f3ee')}${(s.pose==='round'?[-s.backCut,s.cut]:s.pose==='single'?[-s.backCut]:[]).map(z=>ln(-chord(z),z+s.offset,chord(z),z+s.offset,'opacity=".5"')).join('')}</g>`;
+    }
     case 'table': return rc(x,y,w,d,c,'rx="30"') + rc(x+50,y+50,w-100,d-100,'none','rx="20" opacity=".4"');
     case 'roundtable': return ec(0,0,w/2,d/2,c) + ec(0,0,w/2-50,d/2-50,'none','opacity=".4"');
     case 'counter': return rc(x,y,w,d,c) + ln(x,y+d-40,x+w,y+d-40,DASH);
-    case 'rangehood_fotile_jcd10ta': return rc(x,y,w,d,'#202225') + rc(-w*.265,y,w*.53,d*.45,'#45474a') + ln(x,y+d*.9,x+w,y+d*.9) + rc(-w*.12,y+d*.7,w*.24,d*.05,'#a87c38');
+    case 'rangehood_fotile_jcd10ta': {const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts,s=P.hoodInstallation(f||{type:t,w,d});return rc(x,y,w,d,'#202225') + rc(-s.coverWidth/2,s.coverOffset-s.coverDepth/2,s.coverWidth,s.coverDepth,'#45474a') + ln(x,y+d*.9,x+w,y+d*.9) + rc(-w*.12,y+d*.7,w*.24,d*.05,'#a87c38');}
     case 'stove_fotile_th36b': {
       let s=rc(x,y,w,d,'#111214','rx="8"');
       for(const px of [-w*.265,w*.265])s+=rc(px-w*.145,-d*.36,w*.29,d*.58,'#252629','rx="6"')+ec(px,-d*.07,d*.145,d*.145,'#55575a')+ec(px,-d*.07,d*.08,d*.08,'#131416')+ln(px-w*.145,-d*.07,px+w*.145,-d*.07)+ln(px,-d*.36,px,d*.22);
@@ -145,6 +149,10 @@ const DASH = 'stroke-dasharray="4 3"';
       let s = rc(x,y,w,d,c,`rx="30" ${DASH}`);
       [.25,.5,.75].forEach(k => s += ln(x+w*k,y+d,x+w*k,y+d+200,`${DASH} opacity=".6"`));
       return s;
+    }
+    case 'dishwasher_mijia_countertop': {
+      const spec=(typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts).definition(t).foldDoor,open=f?.dishwasherDoorOpen,reach=d*(spec.openDepth-spec.nominalDepth)/spec.nominalDepth;
+      return rc(x,y,w,d,c,'rx="10"')+ln(x+w*.04,y+d*.94,x+w*.96,y+d*.94)+rc(-w*.035,y+d*.91,w*.07,d*.03,shade(c,.8))+(open?`<g data-dishwasher-fold="open">${rc(x+w*.025,y+d,w*.95,reach,shade(c,.94),'rx="6"')}${ln(x+w*.04,y+d+reach*.93,x+w*.96,y+d+reach*.93)}${ec(0,y+d+reach*.56,w*.042,w*.042,'#303436')}</g>`:'');
     }
     case 'dishwasher': return rc(x,y,w,d,c,'rx="15"') + ln(x,y+d-70,x+w,y+d-70) + rc(x+w*.3,y+d-45,w*.4,25,'#888');
     case 'ovencol': return rc(x,y,w,d,c) + ln(x,y,x+w,y+d) + ln(x+w,y,x,y+d);

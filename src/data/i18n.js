@@ -7,6 +7,10 @@ const S2T = new Map(('与與两兩个個为為书書于於仅僅从從价價会�
 const s2t = s => S2T_PHRASES.reduce((a, [f, t]) => a.replaceAll(f, t), s).replace(/[\u3400-\u9fff]/g, c => S2T.get(c) || c);
 // 内置的房间 / 材料 / 家具名称存的是中文；英文界面下显示译名，用户自己改过的名称原样显示
 const NAMES_EN = {
+  '源氏木语折叠餐桌 · 1100款':'YESWOOD Folding Dining Table · 1100',
+  '源氏木语折叠餐桌 · 1200款':'YESWOOD Folding Dining Table · 1200',
+  '源氏木语折叠餐桌 · 1300款':'YESWOOD Folding Dining Table · 1300',
+  '米家台面洗碗机 · 5套':'Mijia Countertop Dishwasher · 5 Place Settings',
   '米家智能鱼缸 2 Pro':'Mijia Smart Aquarium 2 Pro',
   '石头 P20 Max 水箱版套装':'Roborock P20 Max with Tank Dock',
   '石头 P20 Max 上下水版套装':'Roborock P20 Max with Plumbed Dock',

@@ -89,6 +89,7 @@
  function highlightIssue(item){
   $('#gSpaceFocus')?.remove();const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='gSpaceFocus';g.setAttribute('pointer-events','none');
   const polygons=[],f=getF(item.id);if(f){polygons.push(P.polygon(f));if(item.kind==='front'){const c=f.frontClearance??600,a=f.rot*Math.PI/180;polygons.push(P.polygon({...f,cx:f.cx-Math.sin(a)*(f.d/2+c/2),cy:f.cy+Math.cos(a)*(f.d/2+c/2),d:c}));}}
+  if(f&&['dishwasher-opening','dishwasher-side'].includes(item.kind)){const result=P.dishwasherChecks(planFor(state),f,{furniture:state.furniture});if(result)polygons.push(result.zones[item.kind==='dishwasher-side'?'vent':'opening']);}
   if(item.otherId){const other=getF(item.otherId);if(other)polygons.push(P.polygon(other));}
   if(item.beamId){const beam=planFor(state).beams?.find(b=>b.id===item.beamId);if(beam)polygons.push(beam.poly);}
   for(const id of item.markerIds||[item.markerId]){const pipe=FurnishServices.pipes(planFor(state)).find(p=>p.id===id);if(pipe)polygons.push(pipe.poly);}

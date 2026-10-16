@@ -27,6 +27,8 @@
  function resizeFurniture(f,values,anchor=f.resizeAnchor||'center'){
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
+  products().resizeHoodGeometry(f,next);
+  if(next.hobCutout!==undefined)products().validateField(next,'hobCutout',next.hobCutout);
   const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return f.kitchen?kitchen().resize(f,next):cabinet().resize(f,next);
  }
  function expandGroups(furniture,ids){
@@ -58,7 +60,7 @@
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
  function replaceFurniture(f,c){
-  const base={...f};delete base.cabinet;delete base.kitchen;const next=resizeFurniture(base,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
+  const base=products().replacementResizeSource(f,c);delete base.cabinet;delete base.kitchen;const next=resizeFurniture(base,{w:c.w,d:c.d,...(c.h!==undefined?{h:c.h}:{})});
   Object.assign(next,{type:c.type,name:c.name,color:c.color,brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',referencePrice:c.price,frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:''});
   delete next.price;delete next.obj;delete next.catalogId;delete next.catalogSnapshot;delete next.catalogDetached;delete next.curtainStyle;if(c.h===undefined)delete next.h;
   if(c.cabinet&&cabinet().supported(next))next.cabinet=JSON.parse(JSON.stringify(c.cabinet));
@@ -246,7 +248,7 @@
   if(!['l','r','t','b'].includes(dir))throw Error('请选择有效方向');
   if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('目标净距须为 0–20000 mm');
   for(const f of members){const stack=laundryStack(f,work.furniture);if(f.counterLink&&!ids.has(f.counterLink.hostId)||stack&&!ids.has(stack.lowerId)||work.furniture.some(v=>!ids.has(v.id)&&(v.counterLink?.hostId===f.id||laundryStack(v,work.furniture)?.lowerId===f.id)))throw Error('请将关联厨房设备或叠放设备全部选中后整体定位');}
-  const rects=(plan.walls||[]).map(w=>w.slice(0,4)).concat((plan.wins||[]).map(w=>w.rect)),options={rotation,rects,furniture:visibleFurniture?work.furniture:[]},current=S.directional(members,options)[dir];
+  const rects=(plan.walls||[]).map(w=>w.slice(0,4)).concat((plan.wins||[]).map(w=>w.rect)),options={rotation,rects,solidWallCount:(plan.walls||[]).length,furniture:visibleFurniture?work.furniture:[]},current=S.directional(members,options)[dir];
   if(!current)throw Error('该方向没有可用的参考实体');
   const sign=dir==='r'||dir==='b'?1:-1,a=rotation*Math.PI/180,delta=sign*(current.distance-gap),dx=(dir==='l'||dir==='r'?Math.cos(a):Math.sin(a))*delta,dy=(dir==='l'||dir==='r'?-Math.sin(a):Math.cos(a))*delta;
   const moved=members.map(f=>({...f,cx:f.cx+dx,cy:f.cy+dy}));
@@ -256,7 +258,7 @@
   K.normalize(proposed,work.furniture);normalizeLaundryStacks(proposed,work.furniture);
   if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||JSON.stringify({...v,cx:expected[i].cx,cy:expected[i].cy})!==JSON.stringify(expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
   const after=S.directional(moved,{...options,furniture:visibleFurniture?proposed:[]})[dir];
-  if(!after||Math.abs(after.distance-gap)>.01)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
+  if(!after||Math.abs(after.distance-gap)>.01||current.moduleBoundary&&after.entity.moduleKey!==current.entity.moduleKey)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
   const reference=S.directional(moved,{rotation,rects:current.entity.kind==='wall'?[rects[current.entity.id]]:[],furniture:current.entity.kind==='furniture'?[work.furniture.find(v=>v.id===current.entity.id)]:[]})[dir];
   if(!reference||Math.abs(reference.distance-gap)>.01)throw Error('无法相对原参考实体达到目标净距，请重新选择');
   const parts=members.flatMap(f=>G.bodyParts(f).map(part=>({...part,owner:f,end:part.p.map(p=>[p[0]+dx,p[1]+dy]),swept:translationHull(part.p,dx,dy)}))),overlap=(a,b)=>G.polygonOverlap(a,b,1e-6),rooms=plan.physicalRooms||plan.rooms;

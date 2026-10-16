@@ -21,7 +21,7 @@ async page=>{
   await p.locator('#drawing-right').click();check(JSON.stringify(await read())===JSON.stringify({l:70,r:90,t:625,b:425}),'drawing rotation remaps all four labels');
   await p.screenshot({path:dir+'rotated.png'});
   await p.evaluate(()=>{state.measures=[];state.drawing={...state.drawing,rotation:0};const host=getF('boundary-host');Object.assign(host,FurnishKitchen.configure(host,{version:1,shape:'L',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1200,role:'hob'},{run:1,width:1000,role:'door'}]}));Object.assign(getF('boundary-stove'),FurnishKitchen.attach(getF('boundary-stove'),host,0));FurnishKitchen.normalize(state.furniture);renderAll();selectIds(['boundary-stove']);zoomToBox([2600,1000,5000,3300],160);});
-  check(JSON.stringify(await read())===JSON.stringify({l:825,r:225,t:80,b:80}),'linked L kitchen measures outer perimeter instead of cabinet seams/cutout');
+  check(JSON.stringify(await read())===JSON.stringify({l:225,r:225,t:80,b:80}),'linked L kitchen measures outer perimeter instead of cabinet seams/cutout');
   await p.screenshot({path:dir+'linked-l.png'});
   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{closeDrawers();zoomToBox([2600,1000,5000,3300],80);});
   await p.screenshot({path:dir+'mobile-canvas.png'});await p.locator('#tgPanel').click();await p.locator('#directional-measure-save').scrollIntoViewIfNeeded();

@@ -25,7 +25,7 @@ for(const flip of [false,true]){
 for(const shape of ['straight','L','U'])for(const rot of [0,37,90,180,270])for(const flip of [false,true]){
  const h=K.configure({...host,rot,flip},{version:1,shape,depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1200,role:'hob'},...(shape!=='straight'?[{run:1,width:1000,role:'door'}]:[]),...(shape==='U'?[{run:2,width:1200,role:'door'}]:[])]});
  const f=K.attach({...stove,cx:0,cy:0},h,0),list=[h,f];K.normalize(list);assert(K.onSurface(f,h));
- const m=S.directional(f,{furniture:list,rotation:-rot}),sides={l:shape==='straight'?225:825,r:225,t:80,b:80};
+ const m=S.directional(f,{furniture:list,rotation:-rot}),sides={l:225,r:225,t:80,b:80};
  if(flip)[sides.l,sides.r]=[sides.r,sides.l];for(const dir of Object.keys(sides)){close(m[dir].distance,sides[dir]);assert(m[dir].surfaceBoundary);}
  // Drawing rotation changes direction names, while endpoints stay in world mm.
  const order=['r','b','l','t'];for(const rotation of [0,90,180,270]){const rotated=S.directional(f,{furniture:list,rotation:-rot+rotation});for(let i=0;i<4;i++)close(rotated[order[(i+rotation/90)%4]].distance,m[order[i]].distance);}

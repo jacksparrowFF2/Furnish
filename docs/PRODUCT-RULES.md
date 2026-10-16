@@ -1,5 +1,21 @@
 # 产品能力规则与兼容验收
 
+2026-10-16：`table_folding_1100/1200/1300` 共用 `folding-table` 能力，默认高760 mm；`foldingTablePose:round/single/capsule` 新建round，缺失只读取round，不补写迁移。`foldingTableGeometry/Outline/editFoldingTablePose` 统一当前外包与折叠时固定桌架，形态校验、替换清理和默认值均在产品核心；同型替换保留形态并换算目标尺寸，跨型按新目标round。当前／命名方案、复制、撤销与自动保存沿原链路；形态进入3D缓存和核对上下文。1300按图实标1305，1200收折尺寸为插值草模；规则及复验见 [折叠餐桌](TABLE-FOLDING-YESWOOD.md)。
+
+2026-10-16：箭牌水槽、通用灶具和方太灶具共用派生能力 `surfaceMeasurement.wallContactTolerance=5` mm，定义实体墙与模块边的几何贴邻容差，不是厂家安装净距，不写入家具或项目。当前测量为紧邻实体墙优先，否则本模块边界；旧无模块台面保留原边界。原尺寸、安装高度及替换清理契约不变，无新恢复字段或缓存输入，详见 [测量规则](MEASUREMENTS.md#水槽燃气灶的模块边界与紧邻墙优先2026-10-16)。
+
+2026-10-16：`dishwasher_mijia_countertop` 定义默认机身高 598 mm、底部离地初值 860 mm、可选布尔 `dishwasherDoorOpen`（新建 false，缺失仅运行时读取 false）及标称机身深 350／展开总深 600 mm。离地复用原 mountHeight 范围和底部语义；新建写入身份与安装／开合初值，同型号替换保留，跨类型清理，原通用 dishwasher 不变。开合进入生产缓存和核对上下文，保存与恢复沿原链路；同日后续已将图片安装条件接入自动核对：产品能力 `installation` 定义出气侧、200／650／50／80 mm；`dishwasherInstallation()` 派生独立于展示开合的全开包络，几何缩放与绝对安装距离分开。来源临界区、高度或台面未知时保留 pending，不作施工认证。详见 [台面洗碗机](DISHWASHER-MIJIA-COUNTERTOP.md)。
+
+2026-10-16：`arrow-sink` 共用能力新增 `measureSurfaceBoundary:true`，仅改变箭牌水槽的派生台面量距／孔洞标注，旧通用 ksink 不受影响。新建、旧记录及复制替换均由当前类型能力读取，不补项目字段；三种安装孔型、自动开孔及高度规则保留。绿色外沿净距和橙色孔边距使用共用表面测量入口，不新增保存、撤销或核对缓存输入。见 [水槽交互](SINK-ARROW.md#与台面交互对齐燃气灶2026-10-16)。
+
+2026-10-16：两种燃气灶可选 `hobCutout:{w?,d?}`，宽／深为绝对 mm；只接受这两个有限数值键，建模范围 1–20000 mm，派生孔宽／深不能超过面板对应尺寸（允许相等，不代表安装可行）。能力、历史默认公式、范围与编辑接口统一在 `product-rules.js`：`hobCutout()` 读取手动值或默认，`editHobCutout()` 校验并返回副本。方太缺失键仍按 w×660/750、d×350/440，通用灶仍按外包减 30；新建和旧数据均不补写。手动字段不随外形缩放，外形缩小到不能容纳手动孔时拒绝；恢复默认删除整个字段。仅支持生产灶具，不支持 OBJ。
+
+复制、当前／命名方案、撤销、自动保存与项目往返沿用原家具结构；同类型替换保留，跨类型（含两种灶具互换）清除。`replacementResizeSource()` 与最终 `replacement()` 共用保留判定，先移除不兼容产品字段再验证目标尺寸，防止旧孔尺寸阻止换成较小椅子等产品。宿主 `deviceSignature()` 已覆盖派生孔轮廓，手动尺寸使实际台面缓存重建；`checkContext()` 增加完整 `hobCutout`，孔参数变化要求重新核对，价格／采购／颜色仍不失效。详见 [手动开孔](FOTILE-APPLIANCES.md#手动开孔尺寸2026-10-16)。
+
+2026-10-15：烟机新增可选 `hoodGeometry`，只保存用户修改的 `bodyHeight/coverWidth/coverDepth` 绝对 mm，范围／组合校验与缩放由产品核心定义。新建和旧记录缺失不补写，历史比例保持；同类型替换保留，跨类型清理。`hoodInstallation()` 为生产几何、2D、柜体嵌合及分段碰撞提供统一尺寸，3D 缓存和核对上下文覆盖完整配置。总高复用 h，不与底部离地混用。详见 [可编辑烟机几何](FOTILE-APPLIANCES.md#可编辑烟机几何2026-10-15)。
+
+2026-10-15：`kitchenwall.hoodBay={ceilingDefault:true,minSideGap:0}` 定义烟机空腔横板的历史缺省和每侧间隙输入下限。可选 `cabinet.hoodBayCeiling` 为布尔值，只用于已有 `hoodBayHeight` 的烟机柜；缺失保留横板，不迁移旧实例。保留模块仍将它嵌在 `structure.cabinet` 中，复制／项目／命名方案／撤销与缓存消费完整结构；更换模板或产品沿用原完整 cabinet 清理，移除嵌合区同时清除横板字段。每侧间隙不持久化，通过罩体实际宽度改原 `columns[].width`，仍受原两侧分区最小宽约束。详见 [空腔细节](KITCHEN-WALL-ADJUST.md#烟机空腔横板缺角与两侧间隙2026-10-15)。
+
 2026-10-15：`kitchenwall` 声明 kitchen、模块分界、形状及抽屉能力；安装默认仍为柜底 1480 mm，自身高默认 700 mm。新建有宽深的吊柜创建无台面模块，旧数据不迁移。吊柜抽屉底座为 0，沿用 96 mm 下限、1–10 层和 8 px 吸附；可选模块 shelves 与 structure 由厨房／柜体核心共同校验。规则、复制替换与验收见 [吊柜调节](KITCHEN-WALL-ADJUST.md)。
 
 2026-10-15：`counter.drawerTiers.snapPixels:8` 定义相邻抽屉层间拖动的屏幕吸附范围；核心派生同排紧邻且已收回的可行目标，预览按相机投影选取、显示临时辅助线，不保存对齐关系。原 96 mm 最小层高及各柜总高约束不变。详见 [相邻抽屉吸附](KITCHEN-DESIGN.md#相邻抽屉层间吸附2026-10-15)。
@@ -136,3 +152,16 @@ npx.cmd --package @playwright/cli playwright-cli -s=furnish-rules run-code --fil
 
 
 2026-10-15：`counter.kitchenShapes.U.independentResize:true` 启用三边独立手柄，一字形／L 缺失读为不支持。此字段是程序能力，不写入 kitchen 项目数据；旧 U 形配置无需迁移。编辑继续只改原模块 width，150–3000 mm、台面空区、设备适配等校验共用厨房核心，缓存与确认已覆盖这些实际输入。见 [三边独立手柄](KITCHEN-DESIGN.md#u-形三边独立拉伸手柄2026-10-15)。
+
+
+### 地柜碗碟篮样式（2026-10-15）
+
+`counter.drawerTiers.styles` 提供普通抽屉与 `dish-basket` 两种能力，后者固定三层，参考图下限自下而上 300／220／100 mm，内抽索引 2、遮挡它的外抽索引 1。可选 `kitchen.modules[].drawerStyle` 缺失按普通读取，不给新建或旧实例自动补字段；仅地柜抽屉模块可选。层高／开合复用现有字段，角色替换由厨房 configure 一并清除。完整 kitchen 已覆盖复制、恢复、项目／命名方案、撤销、保存、缓存及核对上下文，无新顶层白名单。详见 [碗碟篮](KITCHEN-DESIGN.md#碗碟篮两块外面板与三层内部抽篮2026-10-15)。
+
+## 自动门板配对顺序（2026-10-15）
+
+2026-10-16 自定义扩展：`doorPairing.layout={values:['left','right','pair','paired'],maxLeaves:24}` 定义逐扇布局能力；可选模块／内部列 `doorLayout` 缺失仍读旧配对，不写默认数组。配对严格相邻且不可重叠，实际门数一致性由柜体／厨房核心校验。尺寸变化通过原编辑路径截补，功能替换由核心清理，导入非法数组直接拒绝；复制、项目／命名方案及恢复均保留有效数组，采购保留布局但忽略开合。替换仍清理原 cabinet/kitchen 能力，没有新增顶层字段。详见 [自定义配对与尺寸](CABINET-DESIGN.md#自定义门板配对与逐扇尺寸2026-10-16)。
+
+2026-10-16：`doorPairing.singleHinge={values:['left','right'],default:'left'}` 定义奇数自动门的独立门方向能力；新增可选模块／内部列 `doorSingleHinge`。缺失读取历史方向，不迁移旧数据，原 `door:right` 仍为右铰链；只有独立门索引消费此值。枚举、派生及新建／旧数据读取由共用柜体核心提供，模块功能替换沿用厨房清理，内部列结构保留。完整配置仍覆盖项目／命名方案、复制、采购、撤销、自动保存、几何和运动缓存及核对输入，无新增顶层字段或保存通道。详见 [独立门方向](KITCHEN-DESIGN.md#自动配门的配对顺序2026-10-15)。
+
+`counter` 与 `kitchenwall` 共享 `doorPairing={values:['end','start'],default:'end'}` 能力；可选模块 `doorPairing` 和内部结构列 `doorPairing` 由柜体核心校验。缺失不补写，旧奇数门首扇独立；start 使末扇独立。新模板仍沿用缺失默认。模块改为指定门型／无门功能／保留结构时清除模块设置，内部结构独立保留列设置；复制、替换、恢复、缓存及采购语义见 [自动门板配对](KITCHEN-DESIGN.md#自动配门的配对顺序2026-10-15)。没有新增顶层持久字段或 UI 清理名单。

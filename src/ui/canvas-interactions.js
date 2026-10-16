@@ -27,6 +27,7 @@ function applyView(){
   window.FurnishRoomMeasure?.afterRender();
   if(globalThis.FurnishDrawing)renderDims();
   if(globalThis.FurnishDrawing)refreshFurnitureLabels();
+  refreshHobOpenings();
   if(ui.sel?.kind==='wall')window.FurnishWorkflowTools?.redrawDistances();
 }
 function fitView(){
@@ -60,7 +61,7 @@ function snapPoint(p,shift){
   const result=FurnishSnapping.measurePoint(p,{scale:view.s,...measurementScene(),anchor:shift?ui.mA:null});
   ui.mSnap=result.edge?{point:result.point,edge:result.edge}:null;return result.point;
 }
-function measurementScene(){return {rects:snapRects(),furniture:ui.layers.furn?state.furniture:[]};}
+function measurementScene(){const rects=snapRects();return {rects,solidWallCount:rects.length-WINS.length,furniture:ui.layers.furn?state.furniture:[]};}
 function directionalMeasurements(f=selItems()){return FurnishSnapping.directional(f,{...measurementScene(),rotation:drawingRotation()});}
 function editKitchenDivider(key,side='left'){
  const items=selItems();if(items.length!==1)return;const f=items[0],K=FurnishKitchen;if(f.locked||!f.kitchen)return;

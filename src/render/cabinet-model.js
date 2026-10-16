@@ -29,10 +29,10 @@
     const nominal=span||bays[i],adjusted=!glass&&c.doorOverlay!==undefined?C.frontSpan(f,i,c):null,bay=adjusted?{left:adjusted.left,width:adjusted.right-adjusted.left}:nominal,count=kind==='double'?2:1,cw=bay.width/1000,leaf=cw/count;
     if(!glass&&c.doorOverlay!==undefined){bottom+=faceInset;top-=faceInset;}
     for(let j=0;j<count;j++){
-     const pose=C.doorPose(kind,bay.left,bay.left+bay.width,bottom*1000,top*1000,(back+D-t/2)*1000,j,count),pivot=new THREE.Group(),local=pose.localX/1000,localBottom=pose.localBottom/1000;
+     const pose=C.doorPose(kind,bay.left,bay.left+bay.width,bottom*1000,top*1000,(back+D-t/2)*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,kind),glass?undefined:col.doorLayout),pivot=new THREE.Group(),local=pose.localX/1000,localBottom=pose.localBottom/1000;
      pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,glass?C.displayAngle(c,col):C.doorAngle(c,col,section));
      pivot.userData.motion={kind:'cabinetdoor',column:i,section,leaf:j,axis:pose.axis,angle:pose.sign*C.maxDoorAngle(c,col,glass?'display':undefined)*Math.PI/180};
-     const face=add(pivot,pose.width/1000,pose.height/1000,t,local,localBottom,0,glass?'#b3c5c8':col.doorColor||(col.finish==='wood'?wood:color));face.userData.cabinetSection=section;
+     const face=add(pivot,pose.width/1000,pose.height/1000,t,local,localBottom,0,glass?'#b3c5c8':col.doorColor||(col.finish==='wood'?wood:color));face.userData.cabinetSection=section;face.userData.cabinetDoorSize={width:pose.width,height:pose.height,leaf:j,section};
      if(glass||col.finish==='glass'||options.doors==='ghost'){face.material=face.material.clone();face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.28;face.material.depthWrite=false;face.material.roughness=.12;face.userData.cabinetOwnMaterial=true;}
      if(glass){for(const y of [localBottom,localBottom+pose.height/1000-.018])add(pivot,leaf-.002,.018,t+.002,local,y,0,'#333738');for(const sign of [-1,1])add(pivot,.018,pose.height/1000,t+.002,local+sign*(leaf/2-.01),localBottom,0,'#333738');}
      else if(col.handle&&col.handle!=='none'){const vertical=!C.verticalDoor(kind);add(pivot,vertical?.012:.12,vertical?.12:.012,.018,vertical?local+(pose.right?-1:1)*(leaf/2-.04):local,localBottom+(vertical?(top-bottom)/2:kind==='up'?.04:pose.height/1000-.04),.012,'#71685d');}
@@ -117,8 +117,8 @@
     if(col.door==='none'||options.doors==='hidden')return;
     for(const [bottom,top,section] of [[shoe-t+faceInset,(col.drawers.length?drawerY:lower-t)-faceInset,'lower'],[upper+faceInset,h-faceInset,'upper']]){
      const count=col.door==='double'?2:1,leaf=faceW/count;
-     for(let j=0;j<count;j++){const pose=C.doorPose(col.door,span.left*1000,span.right*1000,bottom*1000,top*1000,(d/2-t/2)*1000,j,count),pivot=new THREE.Group();pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorAngle(c,col,section));
-      const face=add(pivot,pose.width/1000,pose.height/1000,t,pose.localX/1000,pose.localBottom/1000,0,faceColor);face.userData.cabinetSection=section;
+     for(let j=0;j<count;j++){const pose=C.doorPose(col.door,span.left*1000,span.right*1000,bottom*1000,top*1000,(d/2-t/2)*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,col.door),col.doorLayout),pivot=new THREE.Group();pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorAngle(c,col,section));
+      const face=add(pivot,pose.width/1000,pose.height/1000,t,pose.localX/1000,pose.localBottom/1000,0,faceColor);face.userData.cabinetSection=section;face.userData.cabinetDoorSize={width:pose.width,height:pose.height,leaf:j,section};
       if(options.doors==='ghost'||col.finish==='glass'){face.material=face.material.clone();face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.32;face.material.depthWrite=false;face.userData.cabinetOwnMaterial=true;}
       const local=pose.localX/1000,vertical=!C.verticalDoor(col.door);handle(pivot,vertical?local+(pose.right?-1:1)*(leaf/2-.04):local,pose.localBottom/1000+(vertical?(top-bottom)*.5:col.door==='up'?.04:pose.height/1000-.04),.025,vertical);
       pivot.traverse(o=>{o.userData.cabinetPart={column:i,section};if(options.doors==='ghost')o.userData.cabinetIgnorePick=true;});g.add(pivot);
@@ -130,7 +130,7 @@
   }
   if(p)add(g,w,p,d-.04,0,0,-.02,wood);
   const movable=col=>col.top==='drawer';
-  if(c.hoodBayHeight!==undefined){const bays=C.layout(f);for(const i of [0,2]){const bay=bays[i],left=i===0?-w/2:bay.left/1000,right=i===2?w/2:(bay.left+bay.width)/1000;add(g,right-left,t,bodyDepth,(left+right)/2,p,bodyZ);}const bay=bays[1];add(g,bay.width/1000,t,bodyDepth,bay.center/1000,c.hoodBayHeight/1000,bodyZ).userData.cabinetSection='hoodCeiling';}
+  if(c.hoodBayHeight!==undefined){const bays=C.layout(f),bay=bays[1];for(const i of [0,2]){const left=i===0?-w/2:(bay.left+bay.width)/1000,right=i===2?w/2:bay.left/1000;add(g,right-left,t,bodyDepth,(left+right)/2,p,bodyZ).userData.cabinetSection='hoodSideBottom';}if(C.hoodBayCeiling(f,c))add(g,bay.width/1000,t,bodyDepth,bay.center/1000,c.hoodBayHeight/1000,bodyZ).userData.cabinetSection='hoodCeiling';}
   else add(g,w,t,bodyDepth,0,p,bodyZ);if(!c.columns.some(movable))add(g,w,t,bodyDepth,0,h-t,bodyZ).userData.cabinetTop=true;
   const bays=C.layout(f),inner=h-p-2*t;
   bays.forEach((bay,i)=>{
@@ -185,6 +185,19 @@
     const dh=drawer.height/1000;for(let lane=0;lane<lanes;lane++){const cw=(bays[i].width/1000-(lanes-1)*t)/lanes,x=bays[i].center/1000+(lane-(lanes-1)/2)*(cw+t),state=C.drawerState(drawer,lane),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;
     node.userData.motion={kind:'cabinetdrawer',column:i,section:'storage',axis:'z',travel:d*.7,closedZ:0};
     const fullSpan=faceSpan(i),span={left:fullSpan.left+(fullSpan.right-fullSpan.left)*lane/lanes,right:fullSpan.left+(fullSpan.right-fullSpan.left)*(lane+1)/lanes},frontBottom=entryStyle&&j===0?p:y,bodyDh=dh-(entryStyle&&j===col.drawers.length-1?t:0);
+    if(col.drawerStyle==='dish-basket'){
+     // Two exterior fronts; the third runner carries a recessed cutlery tray.
+     const hidden=j===2,top=j===1?C.frontHeight(f,c)/1000-faceInset:y+dh;
+     if(!hidden){add(node,span.right-span.left-.002,top-frontBottom-.002,t,(span.left+span.right)/2,frontBottom+.001,d/2-t/2,faceColor).userData.cabinetDrawerBoard='front';handleMesh(node,x,frontBottom+(top-frontBottom)*.7,d/2+.012);}
+     const width=cw-.024,inset=Math.min(.016,(d-3*t)*.3),depth=d-3*t-inset,center=t/2-inset/2,rear=center-depth/2,front=center+depth/2,railH=Math.min(dh-.03,hidden?.055:.15),metal='#b8bdc1';
+     const bar=(W,H,D,X,Y,Z,part)=>{const mesh=add(node,W,H,D,X,Y,Z,metal);mesh.userData.cabinetBasketPart=part;mesh.material=mesh.material.clone();mesh.material.metalness=.65;mesh.material.roughness=.28;mesh.userData.cabinetOwnMaterial=true;return mesh;};
+     bar(width,.005,depth,x,y+.012,center,'tray');
+     for(const side of [-1,1]){bar(.006,railH,depth,x+side*width/2,y+.017,center,'side');bar(.009,.012,depth,x+side*(width/2+.004),y+.023,center,'runner');}
+     for(const Z of [rear,front])bar(width,.008,.005,x,y+.017+railH-.008,Z,'rim');
+     if(hidden){for(let divider=1;divider<4;divider++)bar(.004,railH*.65,depth,x-width/2+width*divider/4,y+.017,center,'cutlery-divider');bar(width,railH*.65,.005,x,y+.017,front,'inner-front');}
+     else {const count=Math.min(20,Math.max(4,Math.round(width/.055)));for(let rack=1;rack<count;rack++){const X=x-width/2+width*rack/count;bar(.004,.004,depth,X,y+.018,center,'rack');if(j===0)bar(.004,railH*.65,.004,X,y+.019,rear+.012,'plate-divider');}}
+     node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j,lane});g.add(node);continue;
+    }
     const frontTop=C.kitchenOverlay(f,c)&&col.door==='none'&&j===col.drawers.length-1?C.frontHeight(f,c)/1000-faceInset:y+bodyDh;
     add(node,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?frontTop-frontBottom-.002:dh-.004,t,entryStyle?(span.left+span.right)/2:x,entryStyle?frontBottom+.001:y,d/2-t/2,entryStyle?faceColor:color).userData.cabinetDrawerBoard='front';
     // Body spans from the rear panel's inner face to the front panel's inner face.
@@ -198,11 +211,12 @@
    const door=C.frontDoor(f,i,c);if(door==='none'||options.doors==='hidden')return;
    const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.frontHeight(f,c)/1000-faceInset,count=C.frontLeafCount(f,i,c),leafW=(span.right-span.left)/count,dh=doorTop-doorBottom;
    for(let j=0;j<count;j++){
-    const front=d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0),pose=C.doorPose(door,span.left*1000,span.right*1000,doorBottom*1000,doorTop*1000,front*1000,j,count),pivot=new THREE.Group();
+    const front=d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0),pose=C.doorPose(door,span.left*1000,span.right*1000,doorBottom*1000,doorTop*1000,front*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,door),col.doorLayout),pivot=new THREE.Group();
     pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorLeafAngle(c,col,j));
     pivot.userData.motion={kind:'cabinetdoor',column:i,section:'storage',leaf:j,axis:pose.axis,angle:pose.sign*C.maxDoorAngle(c,col)*Math.PI/180};
     const local=pose.localX/1000,vertical=!C.verticalDoor(door);
     const face=add(pivot,pose.width/1000,pose.height/1000,t,local,pose.localBottom/1000,0,faceColor);
+    face.userData.cabinetDoorSize={width:pose.width,height:pose.height,leaf:j,section:'storage'};
     if(col.finish==='glass'||options.doors==='ghost'){face.material=face.material.clone();face.userData.cabinetOwnMaterial=true;face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.32;face.material.depthWrite=false;face.material.roughness=.15;}
     handleMesh(pivot,vertical?local+(pose.right?-1:1)*(leafW/2-.04):local,pose.localBottom/1000+(vertical?dh*.5:door==='up'?.04:pose.height/1000-.04),.025,vertical);
     if(options.doors==='ghost')pivot.traverse(o=>o.userData.cabinetIgnorePick=true);

@@ -186,6 +186,16 @@
     return t>=0&&t<=1&&u>=0&&u<=1?{x:e.a.x+t*dx,y:e.a.y+t*dy}:null;
   }
   function contains(entity,p){return entity.rings.reduce((inside,ring)=>inside!==geometry.inPoly(p.x,p.y,ring),false);}
+  // Only a finite wall face alongside the measuring cell can outrank its edge.
+  // A wall elsewhere across the room, or touching only a corner, cannot.
+  function adjoiningWall(wall,cell,tolerance){
+    for(const a of cell.edges){const dx=a.b.x-a.a.x,dy=a.b.y-a.a.y,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+      for(const b of wall.edges){const ex=b.b.x-b.a.x,ey=b.b.y-b.a.y,B=Math.hypot(ex,ey);if(Math.abs(dx*ey-dy*ex)>L*B*1e-7)continue;
+        const offset=p=>({along:(p.x-a.a.x)*ux+(p.y-a.a.y)*uy,normal:-(p.x-a.a.x)*uy+(p.y-a.a.y)*ux}),p=offset(b.a),q=offset(b.b);
+        if(Math.abs(p.normal)<=tolerance+1e-7&&Math.min(L,Math.max(p.along,q.along))-Math.max(0,Math.min(p.along,q.along))>1e-6)return true;
+      }
+    }return false;
+  }
   function nearest(f,options){
     const source=entities({furniture:[f]})[0];if(!source)return null;
     let best=null;
@@ -205,29 +215,34 @@
   // Sweep the actual silhouette in drawing coordinates. Within each slab the
   // boundary coordinates and directional gaps are affine, so endpoints suffice.
   function directional(f,{rotation=0,...options}){
-    const out={l:null,r:null,t:null,b:null},angle=rotation*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
+    const out={l:null,r:null,t:null,b:null},preferredWalls={l:null,r:null,t:null,b:null},angle=rotation*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
     const rotate=p=>({x:p.x*c-p.y*s,y:p.x*s+p.y*c}),unrotate=p=>({x:p.x*c+p.y*s,y:-p.x*s+p.y*c});
     const transform=e=>({...e,edges:e.edges.map(g=>({a:rotate(g.a),b:rotate(g.b)}))});
     const members=Array.isArray(f)?f:[f],sources=entities({furniture:members});if(!sources.length||sources.length!==members.length)return out;
     const ids=new Set(members.map(v=>v.id)),transformedSources=sources.map(transform);
     const products=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),surfaceSource=members.length===1&&products?.definition(members[0])?.measureSurfaceBoundary&&!members[0].obj?members[0]:null;
-    const K=surfaceSource&&(root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null)),furnitureById=new Map((options.furniture||[]).map(v=>[v.id,v]));
+    const cabinets=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
+    const fitsHoodBay=(a,b)=>products.hoodInstallation(b)&&cabinets.hoodBayFit(a,b)?.fits||products.hoodInstallation(a)&&cabinets.hoodBayFit(b,a)?.fits;
+    const K=surfaceSource&&(root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null)),furnitureById=new Map((options.furniture||[]).map(v=>[v.id,v])),host=K&&K.support(surfaceSource,options.furniture||[]),region=host&&K.measurementSurface(surfaceSource,host),cell=region&&{rings:region.rings.map(r=>r.map(p=>K.world(host,...p)))};
+    if(cell)cell.edges=edges(cell.rings);
     const at=(edge,key,cross,value)=>edge.a[key]+(value-edge.a[cross])*(edge.b[key]-edge.a[key])/(edge.b[cross]-edge.a[cross]);
     const section=(entity,key,cross,value)=>entity.edges.filter(e=>value>Math.min(e.a[cross],e.b[cross])&&value<Math.max(e.a[cross],e.b[cross])).sort((a,b)=>at(a,key,cross,value)-at(b,key,cross,value));
-    for(const originalTarget of entities(options)){
+    for(const entity of entities(options)){
+      if(host&&entity.kind==='wall'&&entity.id>=(options.solidWallCount??(options.rects||[]).length))continue;
+      const moduleTarget=host&&entity.kind==='furniture'&&entity.id===host.id,originalTarget=moduleTarget?{...entity,...cell,name:region.moduleKey?host.name+' · '+region.moduleName:host.name}:entity;
       if(originalTarget.kind==='furniture'&&ids.has(originalTarget.id))continue;
       // Only members sharing the target's height can define its measuring edge.
       // Unknown heights stay conservative; walls still use every member.
       const targetFurniture=originalTarget.kind==='furniture'?furnitureById.get(originalTarget.id):null;
-      const eligible=transformedSources.filter((_,i)=>!targetFurniture||geometry.verticalOverlap(members[i],targetFurniture));
+      const eligible=transformedSources.filter((_,i)=>!targetFurniture||(moduleTarget||geometry.verticalOverlap(members[i],targetFurniture))&&!fitsHoodBay(members[i],targetFurniture));
       if(!eligible.length)continue;
       const source={edges:eligible.flatMap(e=>e.edges)},sourceHits=[];
       // Overlapping rotated members may exchange the outermost edge between vertices.
       if(eligible.length>1)for(let i=0;i<source.edges.length;i++)for(let j=i+1;j<source.edges.length;j++){const p=intersection(source.edges[i],source.edges[j]);if(p)sourceHits.push(p);}
-      // A supported hob sits inside the worktop: measure to the exit edge of
+      // A supported appliance sits inside the worktop: measure to the exit edge of
       // that surface, rather than treating the worktop beneath it as a collision.
       // Reuse full production-surface containment (concavities/cuts included).
-      const surfaceBoundary=!!(surfaceSource&&originalTarget.kind==='furniture'&&K.onSurface(surfaceSource,furnitureById.get(originalTarget.id)));
+      const surfaceBoundary=!!moduleTarget,wallPriority=!!(cell&&originalTarget.kind==='wall'&&adjoiningWall(originalTarget,cell,products.definition(surfaceSource).surfaceMeasurement.wallContactTolerance));
       const target=transform(originalTarget),hits=[...sourceHits];
       for(const a of source.edges)for(const b of target.edges){const p=intersection(a,b);if(p)hits.push(p);}
       for(const [key,cross,negative,positive] of [['x','y','l','r'],['y','x','t','b']]){
@@ -242,16 +257,30 @@
             if(sign*(at(far,key,cross,mid)-at(edge,key,cross,mid))<-1e-7)continue; // Entirely behind the outward silhouette.
             for(const value of [mid,low,high]){
               const start=at(edge,key,cross,value),end=at(near,key,cross,value),gap=Math.max(0,sign*(end-start));
-              if(out[dir]&&gap>=out[dir].distance-1e-7)continue;
-              out[dir]={a:unrotate({[key]:start,[cross]:value}),b:unrotate({[key]:start+sign*gap,[cross]:value}),distance:gap,entity:{kind:target.kind,id:target.id,name:target.name},...(surfaceBoundary?{surfaceBoundary:true}:{})};
+              const result={a:unrotate({[key]:start,[cross]:value}),b:unrotate({[key]:start+sign*gap,[cross]:value}),distance:gap,entity:{kind:target.kind,id:target.id,name:target.name,...(surfaceBoundary&&region.moduleKey?{moduleKey:region.moduleKey,moduleIndex:region.moduleIndex}:{})},...(surfaceBoundary?{surfaceBoundary:true,...(region.moduleKey?{moduleBoundary:true}:{})}:{}),...(wallPriority?{wallPriority:true}:{})};
+              if(!out[dir]||gap<out[dir].distance-1e-7)out[dir]=result;
+              if(wallPriority&&(!preferredWalls[dir]||gap<preferredWalls[dir].distance-1e-7))preferredWalls[dir]=result;
             }
           }
         }
       }
     }
-    return out;
+    for(const dir of Object.keys(out))if(preferredWalls[dir])out[dir]=preferredWalls[dir];return out;
   }
-  const api={kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
+  // Opening measurements use the production cutout, rather than the product's
+  // outer rim. Use the local supporting module and its adjoining solid walls;
+  // neighboring appliances are not references for countertop opening margins.
+  function surfaceOpening(f,{furniture=[],rects=[],solidWallCount=rects.length}={}){
+    const P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
+    if(f.obj||!P.definition(f)?.measureSurfaceBoundary)return null;
+    const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),host=K.support(f,furniture);
+    if(!host)return null;
+    const size=K.cutout(f);if(!(size.w>0&&size.d>0))return null;
+    const proxy={...f,w:size.w,d:size.d},gaps=directional(proxy,{rotation:-(f.rot||0),furniture:[host],rects,solidWallCount});
+    if(f.flip)[gaps.l,gaps.r]=[gaps.r,gaps.l];
+    return {hostId:host.id,size,ring:K.openingRing(f).map(p=>K.world(f,...p)),gaps};
+  }
+  const api={surfaceOpening,hobOpening:surfaceOpening,kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
   if(typeof module === 'object' && module.exports)module.exports=api;
   else root.FurnishSnapping=api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

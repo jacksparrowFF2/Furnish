@@ -1,3 +1,4 @@
+PASS tests\test-appliance-module-boundaries.cjs
 PASS tests\test-aquarium.cjs
 PASS tests\test-autosave.cjs
 PASS tests\test-bay-windows.cjs
@@ -6,6 +7,7 @@ PASS tests\test-beam-heights.cjs
 PASS tests\test-beam-roof.cjs
 PASS tests\test-cabinet-advanced.cjs
 PASS tests\test-cabinet-catalog.cjs
+PASS tests\test-cabinet-custom-fronts.cjs
 PASS tests\test-cabinet-dimensions.cjs
 PASS tests\test-cabinet-door-settings.cjs
 PASS tests\test-cabinet-drawer-joints.cjs
@@ -32,7 +34,10 @@ PASS tests\test-design-consistency.cjs
 PASS tests\test-design-management.cjs
 PASS tests\test-design-workflow.cjs
 PASS tests\test-dimension-density.cjs
+PASS tests\test-directional-heights.cjs
 PASS tests\test-directional-placement.cjs
+PASS tests\test-dishwasher-clearances.cjs
+PASS tests\test-dishwasher.cjs
 PASS tests\test-door-2d-refresh.cjs
 PASS tests\test-door-geometry.cjs
 PASS tests\test-drawing-export.cjs
@@ -61,14 +66,28 @@ PASS tests\test-furniture-recovery.cjs
 PASS tests\test-furniture-svg.cjs
 PASS tests\test-group-directional-placement.cjs
 PASS tests\test-group-placement.cjs
+PASS tests\test-hob-cutout.cjs
+PASS tests\test-hob-openings.cjs
+PASS tests\test-hood-bay-modules.cjs
 PASS tests\test-hood-bay.cjs
+PASS tests\test-hood-cavity-clearance.cjs
+PASS tests\test-hood-cavity-details.cjs
+PASS tests\test-hood-geometry.cjs
 PASS tests\test-i18n.cjs
 PASS tests\test-import-consistency.cjs
 PASS tests\test-kitchen-auto-avoid.cjs
 PASS tests\test-kitchen-corner-fit.cjs
 PASS tests\test-kitchen-corner-leaves.cjs
+PASS tests\test-kitchen-dish-basket.cjs
+PASS tests\test-kitchen-divider-input.cjs
+PASS tests\test-kitchen-dividers.cjs
+PASS tests\test-kitchen-door-pairing.cjs
+PASS tests\test-kitchen-drawer-boundaries.cjs
+PASS tests\test-kitchen-drawer-snapping.cjs
+PASS tests\test-kitchen-drawer-tiers.cjs
 PASS tests\test-kitchen-edge-snapping.cjs
 PASS tests\test-kitchen-elevations.cjs
+PASS tests\test-kitchen-extension-resize.cjs
 PASS tests\test-kitchen-form.cjs
 PASS tests\test-kitchen-gap-input.cjs
 PASS tests\test-kitchen-outer-edges.cjs
@@ -79,8 +98,10 @@ PASS tests\test-kitchen-resize.cjs
 PASS tests\test-kitchen-right.cjs
 PASS tests\test-kitchen-run-handles.cjs
 PASS tests\test-kitchen-shelves.cjs
+PASS tests\test-kitchen-single-hinge.cjs
 PASS tests\test-kitchen-thin-end.cjs
 PASS tests\test-kitchen-u.cjs
+PASS tests\test-kitchen-wall-adjust.cjs
 PASS tests\test-kitchen-worktop.cjs
 PASS tests\test-kitchen.cjs
 PASS tests\test-laundry-stack.cjs
@@ -120,9 +141,11 @@ PASS tests\test-room-net.cjs
 PASS tests\test-share-codec.cjs
 PASS tests\test-shower-arrow.cjs
 PASS tests\test-sideboard-board-edges.cjs
+PASS tests\test-sink-surface.cjs
 PASS tests\test-sink.cjs
 PASS tests\test-snapping.cjs
 PASS tests\test-spatial-review-cache.cjs
+PASS tests\test-stove-boundaries.cjs
 PASS tests\test-style-presets.cjs
 PASS tests\test-telescopic-ui.cjs
 PASS tests\test-tv-floor.cjs
@@ -139,4 +162,4 @@ PASS tests\test-work-state.cjs
 PASS tests\test-workspace-cache.cjs
 PASS tests\test-yeswood-sofa.cjs
 PASS tests\test-zone-boundaries.cjs
-PASS 141 regression suites, 12 built-in plans, 14 preview pages, local assets, shared declarations and all production syntax checks
+PASS 164 regression suites, 12 built-in plans, 15 preview pages, local assets, shared declarations and all production syntax checks

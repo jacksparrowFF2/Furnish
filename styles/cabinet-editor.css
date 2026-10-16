@@ -55,6 +55,8 @@
 .cab-fields .btn {font-size:12px}
 .cab-fields label {font-size:13px}
 .cab-fields label:has(>input[type=checkbox]) {flex-direction:row!important;align-items:flex-start;gap:8px!important;line-height:1.5}
+.hood-bay-check {grid-column:1/-1}
+.hood-bay-check input[type=checkbox] {width:18px;height:18px;min-width:18px;flex:none;accent-color:var(--accent)}
 #cab-tools {padding:12px;background:var(--soft,#8881);border-radius:10px;margin-bottom:16px}
 #cab-tools label {display:flex;gap:8px;align-items:center;margin:8px 0;font-size:13px}
 .cab-drawer-row {padding:10px;background:var(--soft,#8881);border-radius:8px;margin:8px 0}
@@ -88,3 +90,7 @@
 .cab-drawer-leaders{fill:none;stroke:#f65b28;stroke-width:1;pointer-events:none}
 .cab-drawer-snap-guide{fill:none;stroke:#008fa5;stroke-width:3;stroke-dasharray:7 4;pointer-events:none}
 @media(pointer:coarse){.cab-drawer-boundary-hit{stroke-width:24}.cab-drawer-height,.cab-drawer-height-input{min-height:28px}}
+
+.cab-door-dimension{font-size:11px;background:#fffdf4ed;color:#24556b}
+.cab-door-sizes{position:absolute;left:8px;right:8px;bottom:8px;z-index:5;max-height:35%;overflow:auto;border:1px solid #d7d1c6;border-radius:6px;background:#fffdf5f2;color:#24556b;font:11px/1.6 system-ui;padding:3px 7px;pointer-events:auto}
+.cab-door-sizes[hidden]{display:none}.cab-door-sizes summary{cursor:pointer;font-weight:600}.cab-door-sizes div{padding:2px 0;border-top:1px solid #eee5d9}

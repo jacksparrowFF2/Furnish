@@ -38,6 +38,35 @@ function furnitureLabelSVG(f,v,palette=PAL){if(!v?.lines.length)return '';const 
 function refreshFurnitureLabels(root=svg,{scale=view.s,selected=selIds(),palette=PAL}={}){
  if(!globalThis.FurnishDrawing)return;const labels=furnitureLabelLayout(scale,selected),previous=appliedFurnitureLabels.get(root);if(previous?.labels===labels&&previous.color===palette.text)return;for(const g of root.querySelectorAll('#gFurn [data-fid]')){g.querySelector('[data-furniture-label]')?.remove();const f=getF(g.getAttribute('data-fid'));if(f&&!furnitureError(f))g.insertAdjacentHTML('beforeend',furnitureLabelSVG(f,labels.get(f.id),palette));}appliedFurnitureLabels.set(root,{labels,color:palette.text});
 }
+function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims}={}){
+ const K=globalThis.FurnishKitchen,S=globalThis.FurnishSnapping;if(!K||!S?.surfaceOpening)return '';
+ const furniture=renderableFurniture(),color='#e99028',stroke=`stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"`,fmt=v=>String(Number(v.toFixed(1)));
+ return furniture.map(f=>{
+  const opening=S.surfaceOpening(f,{...(typeof measurementScene==='function'?measurementScene():{}),furniture});if(!opening)return '';
+  const {size,ring,gaps}=opening,font=scale>0?Math.min(12/scale,size.w/10,size.d/4):Math.min(36,size.w/20,size.d/10),angle=-drawingRotation();
+  const text=(at,value,dx=0,dy=0)=>`<text transform="translate(${at[0]} ${at[1]}) rotate(${angle})" x="${dx}" y="${dy}" text-anchor="middle" dominant-baseline="central" font-size="${font}" font-weight="600" fill="${color}" stroke="${palette.halo}" stroke-width="${font*.22}" paint-order="stroke">${esc(value)}</text>`;
+  let marks='';
+  if(dimensions){
+   const sizeText=`${fmt(size.w)} × ${fmt(size.d)} mm`;
+   marks=scale>0&&size.w*scale<170?text([f.cx,f.cy],tr('开孔','Cutout'),0,-font*.65)+text([f.cx,f.cy],sizeText,0,font*.65):text([f.cx,f.cy],tr(`开孔 ${sizeText}`,`Cutout ${sizeText}`));
+   const names={l:tr('左','Left'),r:tr('右','Right'),t:tr('后','Rear'),b:tr('前','Front')};
+   for(const [dir,m] of Object.entries(gaps)){
+    if(!m)continue;const {a,b}=m,L=Math.hypot(b.x-a.x,b.y-a.y),nx=L>1e-7?-(b.y-a.y)/L*font*.2:font*.2,ny=L>1e-7?(b.x-a.x)/L*font*.2:0;
+    // Keep orange hole margins apart from the green footprint clearances.
+    // Offsets are in drawing display axes, so they remain readable after rotation.
+    const rad=drawingRotation()*Math.PI/180,horizontal=Math.abs((b.x-a.x)*Math.cos(rad)-(b.y-a.y)*Math.sin(rad))>=Math.abs((b.x-a.x)*Math.sin(rad)+(b.y-a.y)*Math.cos(rad)),dx=horizontal?0:font*4.6,dy=horizontal?font*1.1:0;
+    marks+=`<g data-hob-gap="${dir}"><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" ${stroke}/>${text([(a.x+b.x)/2,(a.y+b.y)/2],`${names[dir]} ${fmt(m.distance)} mm`,dx,dy)}</g>`;
+   }
+  }
+  return `<g data-hob-opening="${esc(f.id)}" data-surface-opening="${esc(f.id)}" pointer-events="none"><title>${esc(tr('台面开孔示意；优先量到紧邻实体墙，无墙则量到所在柜体模块边界，不是安装要求','Nominal cutout; adjoining solid wall first, otherwise the cabinet module edge; not installation requirements'))}</title><path data-hob-cutout d="M${ring.map(p=>p.join(' ')).join('L')}Z" fill="${color}" fill-opacity=".04" ${stroke} stroke-dasharray="6 4"/>${marks}</g>`;
+ }).join('');
+}
+function refreshHobOpenings(root=svg,options={}){
+ const layer=root.querySelector('#gFurn');if(!layer)return;layer.querySelector('[data-hob-openings]')?.remove();
+ layer.insertAdjacentHTML('beforeend',`<g data-hob-openings pointer-events="none">${hobOpeningsSVG(options)}</g>`);
+ const marked=new Set([...layer.querySelectorAll('[data-hob-opening]')].map(g=>g.getAttribute('data-hob-opening')));
+ for(const g of layer.querySelectorAll('[data-fid]'))g.querySelector('[data-furniture-label]')?.setAttribute('display',(options.dimensions??ui.layers.dims)&&marked.has(g.getAttribute('data-fid'))?'none':'inline');
+}
 function renderRooms(){
   let s = '';
   ROOMS.forEach(r => s += `<path class="room" data-room="${r.id}" d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="url(#m-${state.rooms[r.id].mat})" ${r.zone?'stroke="#139687" stroke-width="1" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"':''}/>`);
@@ -61,6 +90,7 @@ function syncFurnOrder(){
  if(!order.every((f,i)=>nodes[i]?.dataset.fid===f.id))for(const f of order){const node=byId.get(f.id);if(node)g.appendChild(node);}
  if(globalThis.FurnishDrawing)refreshFurnitureLabels();
  syncTuckedSeatPreview();
+ refreshHobOpenings();
 }
 const furnT = f => `translate(${f.cx} ${f.cy}) rotate(${f.rot})`;
 let clashIds = new Set();
@@ -88,6 +118,7 @@ function renderFurn(){
     }catch(e){const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return `<g class="furn" data-fid="${esc(f.id)}" data-model-error="true" transform="${furnT(f)}">${furnitureFallbackSVG(f,message)}</g>`;}
   }).join('');
   syncTuckedSeatPreview();
+  refreshHobOpenings();
   syncFurnBadge(); syncEmpty(); syncModelErrors();
 }
 function syncModelErrors(){
@@ -259,6 +290,11 @@ function waterheaterClearanceSVG(){
     return s;
   }).join('');
 }
+function dishwasherClearanceSVG(){
+ if(!ui.layers.furn)return '';const selected=new Set(selIds()),items=state.furniture.filter(f=>selected.has(f.id)&&!furnitureError(f)&&FurnishProducts.dishwasherInstallation(f));if(!items.length)return '';
+ const plan=FurnishProject.effectivePlan(PLAN,state);
+ return items.map(f=>{const result=FurnishProject.dishwasherChecks(plan,f,{furniture:state.furniture});return Object.entries(result.zones).map(([key,poly])=>{const checks=result.checks.filter(v=>v.kind==='dishwasher-'+(key==='vent'?'side':'opening')),color=checks.some(v=>v.ok===false)?'#d64532':checks.some(v=>v.ok===null)?'#b7791f':'#258072';return `<g data-edit-overlay="dishwasher-clearance" data-dishwasher-id="${esc(f.id)}" data-reservation="${key}" pointer-events="none"><title>${esc(key==='vent'?`出气侧 ${result.spec.sideClearance} mm`:`完全开门前伸 ${Math.round(result.spec.extension)} mm（保守包络）`)}</title><polygon points="${poly.map(p=>p.join(',')).join(' ')}" fill="${color}" fill-opacity=".09" stroke="${color}" stroke-width="2" stroke-dasharray="6 4" vector-effect="non-scaling-stroke"/></g>`;}).join('');}).join('');
+}
 function kitchenRunHandleSVG(f,k,hit,hs,A,resizeCursor){
  if(!f.kitchen||!globalThis.FurnishKitchen?.shapeRules(f)?.independentResize)return null;
  let handles;try{handles=FurnishKitchen.runHandles(f);}catch{return null;}
@@ -368,7 +404,7 @@ function renderSelectedGeometry(){
     const [a, b] = ui.marq;
     s += `<rect x="${Math.min(a.x,b.x)}" y="${Math.min(a.y,b.y)}" width="${Math.abs(b.x-a.x)}" height="${Math.abs(b.y-a.y)}" fill="rgba(47,93,98,.08)" stroke="${TEAL}" stroke-width="1" stroke-dasharray="5 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
   }
-  $('#gSel').innerHTML = waterheaterClearanceSVG()+s;
+  $('#gSel').innerHTML = waterheaterClearanceSVG()+dishwasherClearanceSVG()+s;
 }
 // Four independent clearances along the current drawing's screen axes.
 function clearanceSVG(f, k){

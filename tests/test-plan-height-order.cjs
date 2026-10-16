@@ -29,6 +29,7 @@ const children=[{dataset:{fid:'tv'}},{dataset:{fid:'cab'}}],g={children,innerHTM
 const nodeFor=id=>({dataset:{fid:id},toggleAttribute(name,on){this[name]=on;}});children.splice(0,children.length,...children.map(v=>nodeFor(v.dataset.fid)));
 const ctx=vm.createContext({FurnishDesign:D,state:{furniture:original},furnitureRenderErrors:new Map(),furnitureError:D.products().modelError,renderableFurniture:()=>original.filter(f=>!D.products().modelError(f)),ui:{layers:{furn:true,collide:false}},$:s=>nodes[s],PAL:{text:'#111'},collisions:()=>[],furnSVG:()=>'<rect/>',esc:s=>s,nm:s=>s});
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),ctx);
+ctx.refreshHobOpenings=()=>{}; // This DOM fixture exercises furniture ordering only.
 ctx.renderFurn();assert(g.innerHTML.indexOf('data-fid="cab"')<g.innerHTML.indexOf('data-fid="tv"'),'real SVG adapter emits lower first');
 ctx.syncFurnOrder();assert.deepEqual(children.map(n=>n.dataset.fid),['cab','tv']);
 cab.cx=5000;ctx.syncFurnOrder();assert.deepEqual(children.map(n=>n.dataset.fid),['tv','cab'],'moving away restores unrelated manual order');cab.cx=0;

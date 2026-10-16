@@ -8,11 +8,12 @@
   const cv=r.domElement;cv.tabIndex=0;cv.setAttribute('aria-label',f.kitchen?'厨房三维预览：拖动旋转，滚轮缩放':'柜体三维预览：拖动层板或分隔板；方向键微调');
   const readout=document.createElement('div');readout.className='cab-drag-readout';readout.hidden=true;host.appendChild(readout);
   const labelLayer=document.createElement('div');labelLayer.className='cab-dimensions';host.appendChild(labelLayer);
+  const doorSizes=document.createElement('details');doorSizes.className='cab-door-sizes';host.appendChild(doorSizes);
   const drawerLayer=document.createElement('div');drawerLayer.className='cab-drawer-edit';host.appendChild(drawerLayer);
   const rulers=document.createElementNS('http://www.w3.org/2000/svg','svg'),rulerPath=document.createElementNS('http://www.w3.org/2000/svg','path');rulers.setAttribute('class','cab-dimension-lines');rulers.setAttribute('aria-hidden','true');rulers.appendChild(rulerPath);labelLayer.appendChild(rulers);
   let controls=new OrbitControls(cam,cv),model=null,frame=0,disposed=false,current=f,down=null,selected=null,helper=null,guide=null,drag=null,labels=[];
   let settings={front:false,unfolded:false,doors:'normal',dimensions:true,snap:true},viewHeight=3,activeColumn=null,summary=null,splitRoot=null,splitPanels=[];
-  let drawerEdges=[],drawerLabels=[],drawerDrag=null,drawerEditing=null;
+  let drawerEdges=[],drawerLabels=[],drawerDrag=null,drawerEditing=null,doorSizeCount=0;
   function setupControls(){controls.enableDamping=true;controls.minDistance=.3;controls.maxDistance=20;controls.enableRotate=!settings.front;}
   setupControls();
   function clearModel(){if(!model)return;model.traverse(o=>{o.geometry?.dispose();if(o.userData.cabinetOwnMaterial)o.material.dispose();});sc.remove(model);}
@@ -34,6 +35,7 @@
   }
   function dimensions(){
    labelLayer.replaceChildren(rulers);labels=[];readout.style.top=settings.dimensions?'42px':'12px';
+   doorSizes.replaceChildren();doorSizes.hidden=true;doorSizeCount=0;
    const point=(x,y,z)=>new THREE.Vector3(x*(current.kitchen&&current.flip?-1:1)/1000,y/1000,z/1000),fmt=v=>String(Number(v.toFixed(2)));
    const add=(text,p,options={})=>{const el=document.createElement(options.column===undefined?'span':'button');el.className=options.column===undefined?'cab-dimension':'cab-module-number';el.textContent=text;
     if(options.column!==undefined){el.type='button';el.setAttribute('aria-label',options.title);el.title=options.title;el.onclick=()=>{if(actions.select?.({column:options.column})!==false){activeColumn=options.column;markActive();}};}
@@ -64,14 +66,20 @@
    measure(`${current.kitchen?(root.FurnishKitchen.isWall(current)?'柜高':'台面高'):'总高'} ${fmt(h)}`,point(-w/2,0,-d/2),point(-w/2,h,-d/2),36);
    measure(`${isL?'转角边总长':'总深'} ${fmt(d)}`,point(w/2,h,-d/2),point(w/2,h,d/2),26);
    if(isL)measure(`柜深 ${fmt(current.kitchen.depth)}`,point(-w/2,h,-d/2),point(-w/2,h,-d/2+current.kitchen.depth),26);
+   if(settings.dimensions){
+    const rows=[];model?.traverse(o=>{const size=o.userData.cabinetDoorSize;if(!size)return;const part=o.userData.cabinetPart||{},index=part.column??0,column=elevation?(elevation.indices[index]??elevation.endIndex):index,section={upper:'上柜',lower:'下柜',display:'展示柜',fridgeUpper:'冰箱上柜',storage:''}[size.section]??size.section,caption=`${current.kitchen?'模块':'分区'} ${column===null?'盲角':column+1} ${section} · 门 ${size.leaf+1}`,text=`宽 ${fmt(size.width)} × 高 ${fmt(size.height)} mm`,pos=o.getWorldPosition(new THREE.Vector3());
+     const label=add(`${fmt(size.width)}×${fmt(size.height)}`,pos,{doorSize:true});label.className='cab-dimension cab-door-dimension';label.title=`${caption}：${text}`;label.setAttribute('data-door-width',String(size.width));label.setAttribute('data-door-height',String(size.height));rows.push(`${caption}：${text}`);
+    });
+    doorSizeCount=rows.length;if(rows.length){doorSizes.hidden=false;const heading=document.createElement('summary');heading.textContent=`柜门尺寸 · 宽 × 高（mm） · ${rows.length} 扇`;doorSizes.appendChild(heading);for(const text of rows){const row=document.createElement('div');row.textContent=text;doorSizes.appendChild(row);}}
+   }
    markActive();
   }
   function markActive(){for(const {el,column} of labels)if(column!==undefined)el.setAttribute('aria-pressed',String(column===activeColumn));drawerDimensions();for(const panel of splitPanels)panel.preview.selectShelf(activeColumn===null?null:{column:activeColumn});}
-  function clearSplit(){for(const panel of splitPanels)panel.preview.dispose();splitPanels=[];splitRoot?.remove();splitRoot=null;host.setAttribute('data-unfolded','false');cv.hidden=false;labelLayer.hidden=false;drawerLayer.hidden=false;}
+  function clearSplit(){for(const panel of splitPanels)panel.preview.dispose();splitPanels=[];splitRoot?.remove();splitRoot=null;host.setAttribute('data-unfolded','false');cv.hidden=false;labelLayer.hidden=false;drawerLayer.hidden=false;doorSizes.hidden=!settings.dimensions||!doorSizeCount;}
   function syncSplit(){
    if(!settings.unfolded||!settings.front||!['L','U'].includes(current.kitchen?.shape)){if(splitRoot)clearSplit();return;}
    if(!splitRoot){splitRoot=document.createElement('div');splitRoot.className='cab-unfolded';host.appendChild(splitRoot);}
-   host.setAttribute('data-unfolded','true');cv.hidden=true;labelLayer.hidden=true;drawerLayer.hidden=true;labelLayer.replaceChildren(rulers);labels=[];summary=null;readout.hidden=true;
+   host.setAttribute('data-unfolded','true');cv.hidden=true;labelLayer.hidden=true;drawerLayer.hidden=true;doorSizes.hidden=true;labelLayer.replaceChildren(rulers);labels=[];summary=null;readout.hidden=true;
    const rows=root.FurnishKitchen.elevationRuns(current);
    while(splitPanels.length>rows.length){const panel=splitPanels.pop();panel.preview.dispose();panel.section.remove();}
    rows.forEach((row,i)=>{
@@ -93,7 +101,7 @@
    const center=project(new THREE.Vector3(0,(current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current))/2000,0));
    const line=(a,b)=>`M${a.x.toFixed(1)},${a.y.toFixed(1)}L${b.x.toFixed(1)},${b.y.toFixed(1)}`;
    // Numbers take priority. Move crowded labels with leaders; omit unreadable dimensions.
-   const priority=item=>item.column!==undefined?0:item.offset>=26?1:2;
+   const priority=item=>item.column!==undefined?0:item.offset>=26?1:item.doorSize?2:3;
    for(const item of [...labels].sort((a,b)=>priority(a)-priority(b))){const {el,point,a,b,offset}=item,p=project(point);let x=p.x,y=p.y,draw='',anchor={x,y};el.hidden=!p.visible;if(el.hidden)continue;
     if(a){const start=project(a),end=project(b),dx=end.x-start.x,dy=end.y-start.y,length=Math.hypot(dx,dy);if(!start.visible||!end.visible||length<14){el.hidden=true;continue;}
      let nx=-dy/length,ny=dx/length;if(nx*(p.x-center.x)+ny*(p.y-center.y)<0){nx=-nx;ny=-ny;}
@@ -129,9 +137,9 @@
     const values=K.drawerHeights(current,m),a=m.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a),flip=current.flip?-1:1,depth=m.depth??current.kitchen.depth;
     const point=(x,y)=>new THREE.Vector3((m.x+x*c-depth/2*s)*flip/1000,y/1000,(m.y+x*s+depth/2*c)/1000),normal=new THREE.Vector3(-s*flip,0,c),closed=!m.drawerOpen?.some(Boolean);let y=K.drawerRules(current).plinth;
     for(let tier=0;tier<values.length;tier++){
-     const value=values[tier],button=document.createElement('button'),item={column,tier,button,point:point(m.width/2,y+value/2),otherPoint:point(-m.width/2,y+value/2),normal};button.type='button';button.className='cab-drawer-height';button.dataset.drawerHeight=String(tier);button.dataset.drawerColumn=String(column);button.textContent=`${Number(value.toFixed(2))} mm`;button.title=`第 ${tier+1} 层，点击输入高度`;button.setAttribute('aria-label',`模块 ${column+1} 第 ${tier+1} 层高度 ${value} mm，点击输入`);drawerLayer.appendChild(button);drawerLabels.push(item);
-     button.onclick=()=>{if(!finishDrawerInput())return;const input=document.createElement('input');input.className='cab-drawer-height-input';input.type='number';input.step='any';input.min=K.drawerRules(current).minHeight;input.value=String(value);input.setAttribute('aria-label',`第 ${tier+1} 层高度 mm`);button.hidden=true;drawerLayer.appendChild(input);drawerEditing={column,tier,input,button};controls.enabled=false;input.style.left=button.style.left;input.style.top=button.style.top;input.focus({preventScroll:true});input.select();input.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();finishDrawerInput();}else if(e.key==='Escape'){e.preventDefault();finishDrawerInput(false);}};input.onblur=()=>finishDrawerInput();};
-     y+=value;if(tier===values.length-1||!closed)continue;
+     const value=values[tier],button=document.createElement('button'),item={column,tier,button,point:point(m.width/2,y+value/2),otherPoint:point(-m.width/2,y+value/2),normal};button.type='button';button.className='cab-drawer-height';button.dataset.drawerHeight=String(tier);button.dataset.drawerColumn=String(column);button.textContent=`${Number(value.toFixed(2))} mm`;button.title=`${K.drawerLabel(m,tier)}，点击输入高度`;button.setAttribute('aria-label',`模块 ${column+1} 第 ${tier+1} 层高度 ${value} mm，点击输入`);drawerLayer.appendChild(button);drawerLabels.push(item);
+     button.onclick=()=>{if(!finishDrawerInput())return;const input=document.createElement('input');input.className='cab-drawer-height-input';input.type='number';input.step='any';input.min=K.drawerMinimum(current,m,tier);input.value=String(value);input.setAttribute('aria-label',`第 ${tier+1} 层高度 mm`);button.hidden=true;drawerLayer.appendChild(input);drawerEditing={column,tier,input,button};controls.enabled=false;input.style.left=button.style.left;input.style.top=button.style.top;input.focus({preventScroll:true});input.select();input.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();finishDrawerInput();}else if(e.key==='Escape'){e.preventDefault();finishDrawerInput(false);}};input.onblur=()=>finishDrawerInput();};
+     y+=value;if(tier===values.length-1||!closed||K.drawerStyle(m)==='dish-basket'&&tier===1)continue;
      const part={column,boundary:tier},g=document.createElementNS('http://www.w3.org/2000/svg','g'),hit=document.createElementNS(g.namespaceURI,'path'),line=document.createElementNS(g.namespaceURI,'path');g.dataset.drawerBoundary=String(tier);g.dataset.drawerColumn=String(column);g.setAttribute('tabindex','0');g.setAttribute('role','slider');g.setAttribute('aria-label',`模块 ${column+1} 抽屉 ${tier+1} 与 ${tier+2} 层分界线，上下拖动调整高度`);g.setAttribute('aria-valuenow',String(value));hit.setAttribute('class','cab-drawer-boundary-hit');line.setAttribute('class','cab-drawer-boundary-line');g.append(hit,line);svg.appendChild(g);
      const itemEdge={part,g,hit,line,left:point(-m.width/2,y),right:point(m.width/2,y),normal};drawerEdges.push(itemEdge);
      g.onpointerdown=e=>{if(e.button!==0||drawerDrag||!finishDrawerInput())return;e.preventDefault();e.stopPropagation();const next=actions.drawerBoundary(part,0,'start');if(!next)return;const plane=new THREE.Plane().setFromNormalAndCoplanarPoint(normal,itemEdge.left),start=rayAt(e).ray.intersectPlane(plane,new THREE.Vector3());if(!start){actions.drawerBoundary(part,0,'cancel');return;}drawerDrag={id:e.pointerId,part,index:m.index,before:next,targets:K.drawerBoundaryTargets(next,m.index,tier),plane,start,x:e.clientX,y:e.clientY};cv.focus({preventScroll:true});controls.enabled=false;cv.setPointerCapture(e.pointerId);cv.style.cursor='ns-resize';};
@@ -170,13 +178,10 @@
    let line=svg.querySelector('.cab-drawer-snap-guide');if(!line){line=document.createElementNS(svg.namespaceURI,'path');line.setAttribute('class','cab-drawer-snap-guide');line.setAttribute('aria-label','相邻抽屉层间已对齐');svg.appendChild(line);}line.dataset.targetColumn=String(elevation?elevation.indices[target.column]:target.column);line.dataset.height=String(target.height);line.setAttribute('d',`M${ends[0].x},${ends[0].y}L${ends[1].x},${ends[1].y}`);
   }
   function update(value){current=value;clearModel();model=value.kitchen?root.FurnishKitchenModel.build(THREE,value,box,{furniture,plan,previewBlind:elevation?.blind,previewMirror:elevation?.mirror}):root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture,plan});if(value.kitchen)model.scale.x=value.flip?-1:1;
-   if(C.hoodBay(value)&&root.FurnishFotileModel)for(const hood of furniture.filter(f=>C.hoodBayFit(value,f)?.fits)){
-    const node=root.FurnishFotileModel.build(THREE,hood),a=(value.rot||0)*Math.PI/180,dx=hood.cx-value.cx,dy=hood.cy-value.cy;node.position.set((dx*Math.cos(a)+dy*Math.sin(a))*(value.flip?-1:1)/1000,-root.FurnishProducts.value(value,'mountHeight')/1000,(-dx*Math.sin(a)+dy*Math.cos(a))/1000);node.traverse(o=>o.userData.cabinetIgnorePick=true);model.add(node);
-   }
    sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();syncSplit();}
   function fit(){
-   const h=(current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current))/1000,w=current.w/1000,bottom=C.hoodBay(current)?Math.min(0,new THREE.Box3().setFromObject(model).min.y):0,size=Math.max(w,h-bottom,current.d/1000),center=(h+bottom)/2;controls.target.set(0,center,0);
-   if(settings.front){viewHeight=Math.max(h-bottom+(elevation ? .35 : 0),w/(host.clientWidth/host.clientHeight||1))*(elevation?1.15:1.6);cam.position.set(0,center,Math.max(4,size*3));cam.zoom=1;resize();}
+   const h=(current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current))/1000,w=current.w/1000,size=Math.max(w,h,current.d/1000),center=h/2;controls.target.set(0,center,0);
+   if(settings.front){viewHeight=Math.max(h+(elevation ? .35 : 0),w/(host.clientWidth/host.clientHeight||1))*(elevation?1.15:1.6);cam.position.set(0,center,Math.max(4,size*3));cam.zoom=1;resize();}
    else if(current.kitchen){const side=(root.FurnishKitchen.cornerSide(current)==='right'?-1:1)*(current.flip?-1:1);if(current.kitchen.shape==='U')cam.position.set(side*size*2,h/2+size*.9,size*.8);else cam.position.set(side*size,h/2+size*.7,size*2);}else cam.position.set(size*1.2,h/2+size*.6,size*2.4);controls.update();
   }
   function resize(){const width=host.clientWidth||500,height=host.clientHeight||440,aspect=width/height;r.setSize(width,height);if(cam.isOrthographicCamera){if(elevation)viewHeight=Math.max((current.kitchen.baseHeight+current.kitchen.thickness)/1000+.35,current.w/1000/aspect)*1.15;cam.left=-viewHeight*aspect/2;cam.right=-cam.left;cam.top=viewHeight/2;cam.bottom=-cam.top;}else cam.aspect=aspect;cam.updateProjectionMatrix();if(splitRoot)syncSplit();}
@@ -222,7 +227,7 @@
    selectShelf:part=>{selected=part;activeColumn=part?.column??null;highlight();markActive();},focus:()=>cv.focus({preventScroll:true}),
    finishDrawerInput:()=>finishDrawerInput()&&splitPanels.every(panel=>panel.preview.finishDrawerInput()),
    setView:options=>{endDrawerDrag(true);endDrag(true);const change=options.front!==undefined&&options.front!==settings.front;settings={...settings,...options};if(change){controls.dispose();cam=settings.front?new THREE.OrthographicCamera(-1,1,1,-1,.01,100):new THREE.PerspectiveCamera(38,1,.01,100);controls=new OrbitControls(cam,cv);setupControls();fit();resize();}update(current);},
-   dispose:()=>{disposed=true;drag=null;drawerDrag=null;drawerEditing=null;cancelAnimationFrame(frame);clearSplit();observer.disconnect();controls.dispose();clearHighlight();clearModel();r.dispose();r.forceContextLoss();cv.remove();readout.remove();labelLayer.remove();drawerLayer.remove();},
+   dispose:()=>{disposed=true;drag=null;drawerDrag=null;drawerEditing=null;cancelAnimationFrame(frame);clearSplit();observer.disconnect();controls.dispose();clearHighlight();clearModel();r.dispose();r.forceContextLoss();cv.remove();readout.remove();labelLayer.remove();doorSizes.remove();drawerLayer.remove();},
   };
  }
  root.FurnishCabinetPreview={create};

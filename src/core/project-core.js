@@ -123,8 +123,8 @@
  // that heights, cavity geometry or physical-room passage scans were checked.
  function checkContext(plan,furniture,passage){
   return [passage,plan.rooms.map(r=>[r.id,r.poly,r.counted,r.ceilingHeight,r.polys]),plan.walls,plan.doors,
-   furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance,f.h,f.flip,f.mountHeight,f.stackHeight,f.showerMixerHeight,f.showerRise,f.showerHandAngle,!!f.obj,f.cabinet,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.hoodPanelOpen]),
-   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m)]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v13-wall-assembly','hood-bay-v2','cabinet-door-directions-v1','tucked-seat-v1'];
+   furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance,f.h,f.flip,f.mountHeight,f.stackHeight,f.showerMixerHeight,f.showerRise,f.showerHandAngle,!!f.obj,f.cabinet,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.hoodPanelOpen,f.dishwasherDoorOpen,f.hoodGeometry,f.hobCutout,f.foldingTablePose]),
+   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m),m.name]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v13-wall-assembly','hood-bay-v5-actual-ceiling','cabinet-door-directions-v4-custom-layout','tucked-seat-v1','dishwasher-installation-v1',plan.wins||[]];
  }
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify({version:3,issue,context:checkContext(plan,furniture,passage)});}
  let lastReview=null;
@@ -137,7 +137,7 @@
   const result=issues.map(v=>({...v,ignored:accepted.has(JSON.stringify(v))}));lastReview={key,issues:clone(result)};return result;
  }
  function explainIssue(issue){
-  const groups={model:['模型待修复','先修复模型数据，再核对实体与开启范围。'],outside:['房间边界','定位后核对折角与凹口，调整占地或家具尺寸。'],wall:['墙体占用','核对墙面净距；移动或缩小家具，不能移动锁定结构。'],overlap:['实体重叠','结合实际高度、嵌合位和安装方式核对；必要时调整位置或尺寸。'],door:['开门范围','核对门扇方向及完整开启范围，调整家具或合法的门扇设置。'],swingwall:['开门范围','核对门铰位置、开启方向和墙体；不要以删除结构消除提示。'],swings:['开门范围','核对两扇门同时打开的情况。'],beam:['竖向实体','核对家具底顶和梁底顶；未知高度需补录后复验。'],pipe:['管道实体','核对管径、板件切孔和实际安装；切孔不代表运动范围已通过。'],passage:['候选间隙','该结果是水平／竖向扫描的局部间隙，不是连续通行路径；结合实际动线核对。'],front:['操作预留','核对正面朝向、打开或操作所需空间。'],cabinetdoor:['柜门开启','核对生产门板扫掠与实际安装高度。'],cabinetdrawer:['抽屉开启','核对生产抽屉完全拉出范围。'],drawerfront:['操作预留','核对抽屉拉出后的地面操作空间。']};
+  const groups={'dishwasher-opening':['洗碗机开启包络','核对完全开启所需的前伸空间和高度；当前开合状态不缩小保守包络，真实折叠连杆轨迹需人工复核。'],'dishwasher-side':['洗碗机出气预留','出气口侧面距墙／柜至少 200 mm；整侧机身保守检查，旋转镜像后随产品变化。'],'dishwasher-overhead':['洗碗机上方安装','核对台面至吊柜底 650 mm；机顶空间不足 50 mm 时，机门须比吊柜前沿向外错开大于 80 mm。'],'dishwasher-support':['台面承托与凸出','核对实际同高台面、孔洞及缺口；闭合机身需有承托，开门可能凸出台面。'],'dishwasher-spec':['洗碗机规格待核对','尺寸已缩放，原图安装标注不随模型缩放；按真实产品规格复核。'],model:['模型待修复','先修复模型数据，再核对实体与开启范围。'],outside:['房间边界','定位后核对折角与凹口，调整占地或家具尺寸。'],wall:['墙体占用','核对墙面净距；移动或缩小家具，不能移动锁定结构。'],overlap:['实体重叠','结合实际高度、嵌合位和安装方式核对；必要时调整位置或尺寸。'],door:['开门范围','核对门扇方向及完整开启范围，调整家具或合法的门扇设置。'],swingwall:['开门范围','核对门铰位置、开启方向和墙体；不要以删除结构消除提示。'],swings:['开门范围','核对两扇门同时打开的情况。'],beam:['竖向实体','核对家具底顶和梁底顶；未知高度需补录后复验。'],pipe:['管道实体','核对管径、板件切孔和实际安装；切孔不代表运动范围已通过。'],passage:['候选间隙','该结果是水平／竖向扫描的局部间隙，不是连续通行路径；结合实际动线核对。'],front:['操作预留','核对正面朝向、打开或操作所需空间。'],cabinetdoor:['柜门开启','核对生产门板扫掠与实际安装高度。'],cabinetdrawer:['抽屉开启','核对生产抽屉完全拉出范围。'],drawerfront:['操作预留','核对抽屉拉出后的地面操作空间。']};
   const [category,action]=groups[issue.kind]||['空间核对','结合实际安装与使用方式核对。'];return {category,action,status:issue.pending?'信息不足，待确认':issue.ignored?'已核对':'待处理'};
  }
  function readiness(plan,work){
@@ -212,6 +212,83 @@
  }
  const rect=r=>[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];
  function intersects(A,B){for(const axis of [0,1])if(Math.max(...A.map(p=>p[axis]))<=Math.min(...B.map(p=>p[axis]))||Math.max(...B.map(p=>p[axis]))<=Math.min(...A.map(p=>p[axis])))return false;for(const P of [A,B])for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length],nx=b[1]-a[1],ny=a[0]-b[0],l=Math.hypot(nx,ny);if(!l)continue;const pa=A.map(p=>(p[0]*nx+p[1]*ny)/l),pb=B.map(p=>(p[0]*nx+p[1]*ny)/l);if(Math.max(...pa)<=Math.min(...pb)+5||Math.max(...pb)<=Math.min(...pa)+5)return false;}return true;}
+ // Source-backed installation reservations, separate from body collision and
+ // independent of the door's current display pose. No state is mutated here.
+ function dishwasherChecks(plan,f,{furniture=plan.furniture||[],rigidBodies}={}){
+  const products=design().products(),spec=products.dishwasherInstallation(f);if(!spec)return null;
+  const G=root.FurnishGeometry||require('./layout-geometry.js'),K=root.FurnishKitchen||require('./kitchen-core.js'),Z=root.FurnishZoneGeometry||require('./zone-geometry.js'),S=root.FurnishServices||require('./service-core.js');
+  const a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a),sign=f.flip?-1:1,EPS=1e-6;
+  const local=([x,y])=>[(x-f.cx)*c*sign+(y-f.cy)*s*sign,-(x-f.cx)*s+(y-f.cy)*c],world=([x,y])=>[f.cx+x*sign*c-y*s,f.cy+x*sign*s+y*c];
+  const clip=(poly,axis,edge,direction)=>{const out=[];for(let i=0;i<poly.length;i++){const p=poly[i],q=poly[(i+1)%poly.length],ip=direction*(p[axis]-edge)>=0,iq=direction*(q[axis]-edge)>=0;if(ip)out.push(p);if(ip!==iq){const t=(edge-p[axis])/(q[axis]-p[axis]);out.push(p.map((v,j)=>v+t*(q[j]-v)));}}return out;};
+  const box=(x0,y0,x1,y1)=>[[x0,y0],[x1,y0],[x1,y1],[x0,y1]],cut=(poly,x0,y0,x1,y1)=>{for(const [axis,edge,direction] of [[0,x0,1],[0,x1,-1],[1,y0,1],[1,y1,-1]])poly=clip(poly,axis,edge,direction);return poly;},positive=poly=>poly.length>2&&Math.abs(Z.signed(poly))>EPS;
+  const x=f.w/2,front=f.d/2,back=-front,opening=box(-x,front,x,front+spec.extension),vent=box(-x-spec.sideClearance,back,-x,front),whole=box(-x,back,x,front+spec.extension);
+  const checks=[],add=(kind,ok,message,extra={})=>checks.push({kind,id:f.id,name:f.name,ok,pending:ok===null,message,...extra}),label=o=>o.name||o.id||'未命名障碍',mm=n=>String(Math.round(n*100)/100);
+  const items=furniture.filter(o=>o.id!==f.id&&!products.modelError(o));
+  const parts=rigidBodies??items.filter(o=>!['rug','plant','curtain'].includes(o.type)).flatMap(o=>G.bodyParts(o).map(p=>({f:o,...p})));
+  const obstacles=parts.filter(o=>o.f.id!==f.id).map(o=>({p:o.p.map(local),vertical:o.vertical,kind:'furniture',id:o.f.id,name:o.f.name}));
+  (plan.walls||[]).forEach((w,i)=>obstacles.push({p:rect(w).map(local),vertical:{bottom:0,top:w[4]==='low'?Math.min(1000,ceilingHeight(plan)):ceilingHeight(plan)},kind:'wall',id:'w'+i,name:'墙体 '+(i+1)}));
+  (plan.wins||[]).forEach((w,i)=>obstacles.push({p:rect(w.rect).map(local),vertical:Number.isFinite(w.sill)&&Number.isFinite(w.head)?{bottom:w.sill*1000,top:w.head*1000}:null,kind:'window',id:'w'+i,name:'窗 '+(i+1)}));
+  (plan.beams||[]).forEach(b=>{const v=core().beamVertical(b,ceilingHeight(plan));obstacles.push({p:b.poly.map(local),vertical:v&&!v.assumed?v:null,kind:'beam',id:b.id,name:(b.name||b.id)+'（房梁）'});});
+  S.pipes(plan).forEach(p=>obstacles.push({p:p.poly.map(local),vertical:p.vertical,kind:'pipe',id:p.id,name:p.name||'竖管'}));
+  const refs=o=>o.kind==='furniture'?{otherId:o.id}:o.kind==='beam'?{beamId:o.id}:o.kind==='pipe'?{markerId:o.id}:{},overlap=(v,bottom,top)=>!v||Math.min(v.top,top)-Math.max(v.bottom,bottom)>EPS;
+  // Vent location/height is not dimensioned. Reserve the whole outlet-side face
+  // conservatively, excluding obstacles with explicitly separate heights.
+  let nearest=Infinity,sideFindings=0;
+  for(const o of obstacles){
+   if(!overlap(o.vertical,spec.bottom,spec.top))continue;
+   let p=cut(o.p,-1e9,back,-x,front);if(!positive(p))continue;const gap=Math.max(0,-x-Math.max(...p.map(v=>v[0])));nearest=Math.min(nearest,gap);
+   if(gap>=spec.sideClearance-EPS)continue;sideFindings++;
+   add('dishwasher-side',o.vertical?false:null,`洗碗机出气口侧面净距 ${mm(gap)} mm，要求 ≥${spec.sideClearance} mm；${label(o)}${o.vertical?'占用出气侧预留':'高度未知，待核对'}（按整侧机身高度保守检查，随旋转／镜像）`,refs(o));
+  }
+  if(!sideFindings)add('dishwasher-side',true,`洗碗机出气侧 ≥${spec.sideClearance} mm：${Number.isFinite(nearest)?'最近已建模障碍 '+mm(nearest)+' mm':'已建模范围未发现阻挡'}（整侧保守预留）`);
+  // All positive planar/vertical overlap counts; the global 5 mm footprint
+  // tolerance must not silently waive a 1 mm installation-space shortfall.
+  let openingFindings=0;
+  for(const o of obstacles){
+   if(!overlap(o.vertical,spec.openingBottom,spec.openingTop)||!positive(cut(o.p,-x,front,x,front+spec.extension)))continue;openingFindings++;
+   add('dishwasher-opening',o.vertical?false:null,`洗碗机完全开门保守包络（总深 ${mm(spec.openDepth)} mm、前伸 ${mm(spec.extension)} mm）${o.vertical?'被 '+label(o)+' 占用':'与 '+label(o)+' 投影重叠，高度未知，待核对'}；未模拟折叠连杆轨迹`,refs(o));
+  }
+  const openingWorld=opening.map(world),rooms=(plan.rooms||[]).filter(r=>r.counted!==false);
+  if(rooms.length&&!fitsInRooms(rooms,openingWorld)){openingFindings++;add('dishwasher-opening',false,'洗碗机完全开门保守包络超出已建模房间边界',{section:'boundary'});}
+  const ceilings=rooms.length?rooms.filter(r=>(r.polys||[r.poly]).some(p=>positive(cut(p.map(local),-x,front,x,front+spec.extension)))).map(r=>({name:r.name,height:r.ceilingHeight??ceilingHeight(plan)})):[{name:'项目天花板',height:ceilingHeight(plan)}];
+  for(const room of ceilings)if(room.height<spec.openingTop-EPS){openingFindings++;add('dishwasher-opening',false,`洗碗机完全开门保守包络超过${room.name||'房间'}净高 ${mm(room.height)} mm`,{section:'ceiling'});}
+  if(!openingFindings)add('dishwasher-opening',true,`完全开门保守包络总深 ${mm(spec.openDepth)} mm、前伸 ${mm(spec.extension)} mm：已建模范围未发现阻挡；当前开合状态不缩小核对范围`);
+  // Use every actual module/part above the device, including rotated corners;
+  // clipping to the device width yields the least favourable front-edge offset.
+  let overhead=0;
+  for(const o of obstacles.filter(o=>o.kind==='furniture')){
+   if(o.vertical&&o.vertical.top<=spec.bottom+EPS)continue;
+   const footprint=cut(o.p,-x,back,x,front);if(!positive(footprint))continue;overhead++;
+   if(!o.vertical){add('dishwasher-overhead',null,`洗碗机上方／重叠范围内的 ${label(o)} 高度未知，无法核对台面至吊柜底 ≥${spec.worktopToCabinet} mm、顶部 ${spec.topAccess} mm 和前沿错开 >${spec.frontOffset} mm`,refs(o));continue;}
+   const tableGap=o.vertical.bottom-spec.bottom,topGap=o.vertical.bottom-spec.top,p=clip(clip(clip(o.p,0,-x,1),0,x,-1),1,back,1),offset=front-Math.max(...p.map(v=>v[1]));
+   let ok,reason;
+   if(topGap<-EPS){ok=false;reason='障碍底部低于机顶，不能用前沿错开豁免机身穿入';}
+   else if(tableGap>=spec.worktopToCabinet-EPS&&topGap>=spec.topAccess-EPS){ok=true;reason='满足图示常规上方条件';}
+   else if(topGap<spec.topAccess-EPS){ok=offset>spec.frontOffset+EPS;reason=ok?'顶部不足 50 mm，但前沿向外错开 >80 mm，满足图示按键操作替代条件':'顶部不足 50 mm，机门须比吊柜前沿向外错开 >80 mm（等于 80 mm 不满足）';}
+   else{ok=null;reason='顶部达到 50 mm，但台面至柜底未达到图示 650 mm；两项标注的临界区需人工复核';}
+   add('dishwasher-overhead',ok,`洗碗机上方 ${label(o)}：台面至柜底 ${mm(tableGap)} mm；机顶净距 ${mm(topGap)} mm；门前沿向外错开 ${mm(offset)} mm。${reason}`,{...refs(o),tableGap,topGap,frontOffset:offset});
+  }
+  if(!overhead)add('dishwasher-overhead',true,'已建模范围未发现覆盖机身的上方柜体／家具；按 650 mm／50 mm／>80 mm 条件核对，有新增吊柜时重新计算');
+  // Coplanar supporting surfaces can span several modules. Use their union,
+  // actual slab holes and L/U cuts, rather than a host bounding rectangle.
+  const surfaces=[],hosts=[];
+  for(const item of items){
+   const v=design().furnitureVerticalBounds(item);if(!v||Math.abs(v.top-spec.bottom)>EPS)continue;
+   let polys;
+   if(item.type==='counter'&&!item.obj)polys=K.slabGeometry(item,furniture).polys.map(p=>p.map(v=>K.world(item,...v)));
+   else if(['table','desk','island','custom'].includes(item.type)&&!item.obj)polys=G.footprints(item);
+   else continue;
+   for(const p of polys){const q=cut(p.map(local),-x,back,x,front+spec.extension);if(positive(q)){surfaces.push(q);hosts.push(item.id);}}
+  }
+  if(!surfaces.length)add('dishwasher-support',null,'未找到与洗碗机底部同高的已建模台面，无法核对机身承托和开门凸出台面风险；请按实际台面顶高设置底部离地');
+  else{
+   const missing=poly=>Z.area(Z.decompose([poly,...surfaces],p=>Z.inside(p,poly)&&!surfaces.some(q=>Z.inside(p,q))));
+   const bodyMissing=missing(box(-x,back,x,front)),openMissing=missing(whole),ok=openMissing<=EPS;
+   add('dishwasher-support',ok,bodyMissing>EPS?'洗碗机闭合机身未被同高台面完整承托（已扣除台面孔洞／缺口），请核对位置与台面高度':ok?`已建模同高台面覆盖闭合机身及开门总深 ${mm(spec.openDepth)} mm，未发现开门凸出风险`:`洗碗机开门总深 ${mm(spec.openDepth)} mm 超出台面有效范围，存在门体凸出风险；不代表机身碰撞`,{otherId:hosts[0]});
+  }
+  if(!spec.nominal)add('dishwasher-spec',null,'洗碗机尺寸已偏离图示 550 × 350 × 598 mm；开启包络随布局尺寸缩放，200／650／50／80 mm 安装条件不缩放，真实产品要求待复核');
+  return {checks,zones:{opening:openingWorld,vent:vent.map(world)},spec};
+ }
  function spaceCheck(plan,furniture,{passage=800,focusId=null,focusIds=null,scanPassages=true,maxIssues=Infinity}={}){
   if(!num(passage)||passage<300||passage>2000)fail('通道阈值须为 300–2000 mm');
   const targets=focusIds?new Set(focusIds):focusId?new Set([focusId]):null;
@@ -225,6 +302,7 @@
   const beams=(plan.beams||[]).map(beam=>{const vertical=core().beamVertical(beam,ceilingHeight(plan));return {beam,vertical:vertical?.assumed?null:vertical};});
   const S=root.FurnishServices||(typeof require==='function'?require('./service-core.js'):null),pipes=S.pipes(plan);
   const G=root.FurnishGeometry||(typeof require==='function'?require('./layout-geometry.js'):null);
+  for(const f of furniture){const result=dishwasherChecks(plan,f,{furniture,rigidBodies});if(result)for(const {ok,...issue} of result.checks)if(ok!==true)issues.push(issue);}
   for(const {f,p,vertical} of rigidBodies){
    if(targets&&!targets.has(f.id))continue;
    if(targets&&issues.filter(v=>targets.has(v.id)||targets.has(v.otherId)).length>=maxIssues)break;
@@ -271,7 +349,11 @@
    }
    const clearance=f.frontClearance??(C?.supported(f)?0:/wardrobe|cabinet|dresser|custom/.test(f.type)?600:0);if(!clearance)continue;
    const a=f.rot*Math.PI/180,front={...f,cx:f.cx-Math.sin(a)*(f.d/2+clearance/2),cy:f.cy+Math.cos(a)*(f.d/2+clearance/2),d:clearance};const zone=polygon(front);
-   if(walls.some(w=>intersects(zone,w))||bodies.some(b=>b.f.id!==f.id&&intersects(zone,b.p)))issues.push({kind:'front',id:f.id,name:f.name,message:`正面 ${clearance} mm 使用空间不足（柜门／抽屉）`});
+   const dishwasher=products.dishwasherInstallation(f),height=design().furnitureVerticalBounds(f);
+   const wallBlocked=dishwasher?plan.walls.some((w,i)=>intersects(zone,walls[i])&&G.verticalOverlap(f,null,[height,{bottom:0,top:w[4]==='low'?Math.min(1000,ceilingHeight(plan)):ceilingHeight(plan)}])):walls.some(w=>intersects(zone,w));
+   const itemBlocked=dishwasher?rigidBodies.some(b=>b.f.id!==f.id&&b.vertical&&intersects(zone,b.p)&&G.verticalOverlap(f,b.f,[height,b.vertical])):bodies.some(b=>b.f.id!==f.id&&intersects(zone,b.p));
+   const itemUnknown=dishwasher&&rigidBodies.some(b=>b.f.id!==f.id&&!b.vertical&&intersects(zone,b.p));
+   if(wallBlocked||itemBlocked||itemUnknown)issues.push({kind:'front',id:f.id,name:f.name,...(dishwasher?{pending:!wallBlocked&&!itemBlocked}:{}),message:dishwasher?`用户设置的正面 ${clearance} mm 额外使用空间${wallBlocked||itemBlocked?'不足':'内家具高度未知，待核对'}（独立于洗碗机开门／厂家安装预留）`:`正面 ${clearance} mm 使用空间不足（柜门／抽屉）`});
   }
   const pair=(a,b)=>{if(a.f.id===b.f.id)return;if(a.box[2]<=b.box[0]||b.box[2]<=a.box[0]||a.box[3]<=b.box[1]||b.box[3]<=a.box[1])return;const G=root.FurnishGeometry||(typeof require==='function'?require('./layout-geometry.js'):null);if(G&&(G.tuckedSeatPair(a.f,b.f)||!G.verticalOverlap(a.f,b.f)||(a.f.kitchen||b.f.kitchen)&&!G.volumeOverlap(a.f,b.f)))return;const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);const fit=C&&(C.fridgeBayFit(a.f,b.f)||C.fridgeBayFit(b.f,a.f)||C.hoodBayFit(a.f,b.f)||C.hoodBayFit(b.f,a.f));if(fit?.fits)return;if(intersects(a.p,b.p))issues.push({kind:'overlap',id:a.f.id,otherId:b.f.id,name:a.f.name+' / '+b.f.name,message:fit?.reasons.length?'设备嵌合位：'+fit.reasons.join('；'):'家具占地范围重叠，请核对实际摆放'});};
   if(targets){const selectedIssues=issues.filter(v=>targets.has(v.id)||targets.has(v.otherId));if(selectedIssues.length>=maxIssues)return selectedIssues.slice(0,maxIssues);groupPairs:for(let i=0;i<bodies.length;i++)if(targets.has(bodies[i].f.id))for(let j=0;j<bodies.length;j++)if(i!==j&&(!targets.has(bodies[j].f.id)||i<j)){const count=issues.length;pair(bodies[i],bodies[j]);if(issues.length>count)selectedIssues.push(issues[issues.length-1]);if(selectedIssues.length>=maxIssues)break groupPairs;}}else for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++)pair(bodies[i],bodies[j]);
@@ -346,7 +428,7 @@
   for(const [label,work] of [['当前方案',data.current],...data.designs.map(d=>['命名方案「'+d.name+'」',d.work])])if(work.plan!==undefined&&work.plan!==data.planId)fail(label+'：方案户型编号与项目不一致');
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;
  }
- root.FurnishProject={roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,materialQuantity,priceBasis,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
+ root.FurnishProject={dishwasherChecks,roomCeilingHeight,ceilingAt,ceilingHeight,validateBeamCeiling,readiness,pricing,materialQuantity,priceBasis,estimate,architecture,assertStructure,protectOriginal,changes,quantities,effectivePlan,validatePlanWork,previewPlan,checkFingerprint,review,openingSchedule,purchaseStates,purchaseMoney,procurement,updatePurchaseGroup,csv,historyEntries,recoveryEntry,mergeDesigns,mergeCatalog,extraCosts,remapRooms,remapOpenings,spaceCheck,parseOBJ,pack,unpack,validateWork,copyProject,area,polygon,fitsInRooms,intersects};
  Object.assign(root.FurnishProject,{materialBreakdown,explainIssue});
  if(typeof module!=='undefined')module.exports=root.FurnishProject;
 })(typeof window==='undefined'?globalThis:window);

@@ -1,5 +1,23 @@
 # 模块与加载约定
 
+2026-10-16：折叠餐桌三规格共用产品能力 `folding-table` 与可选枚举 `foldingTablePose`，产品核心派生板形、当前占地及固定桌架的形态编辑。`folding-table-model.js` 提供主场景／预览共用生产构造器，普通脚本保持离线加载；尺寸缩放在子组内，兼容根组缓存位姿更新。形态进入3D签名与空间确认，UI沿mutate与原保存历史。资料推算、兼容和边界见 [折叠餐桌](TABLE-FOLDING-YESWOOD.md)。
+
+2026-10-16：水槽／燃气灶的测量区域由 `kitchen-core.measurementSurface()` 派生为本模块与真实台面的交集；`snapping.directional()` 和 `surfaceOpening()` 共用紧邻实体墙优先、开放方向模块边界规则。产品规则集中定义 5 mm 几何贴邻容差，UI 显式提供墙窗分界及未拆除墙；数字定位固定模块参照。无新持久字段或加载资源，见 [测量规则](MEASUREMENTS.md#水槽燃气灶的模块边界与紧邻墙优先2026-10-16)。
+
+2026-10-16：`dishwasher-model.js` 提供米家台面洗碗机生产构造器，主场景和独立预览共用；普通脚本加载及现有离线 import map 保持原方式。产品规则集中定义底部离地／机身高度／折叠状态与展开深度，UI 经 mutate 编辑；2D 显示展开门板，生产缓存和核对上下文包含 `dishwasherDoorOpen`；实体仍取闭合机身，`project-core.dishwasherChecks()` 独立派生完全开门保守包络及图片安装预留，属性／吊柜草稿／全案共用，空间标记为 `dishwasher-installation-v1`，上下文新增窗的投影和标高。兼容、资料及验收见 [台面洗碗机](DISHWASHER-MIJIA-COUNTERTOP.md)。
+
+2026-10-16：箭牌水槽启用已有 `measureSurfaceBoundary` 能力，与燃气灶共用 `snapping.directional()` 的台面出口边量距和 `surfaceOpening()` 的生产孔型／孔边距；原 hobOpening 保留兼容别名。画布、属性、数字定位和导出继续消费原链路，橙色孔边距标签在显示轴下与绿色外沿净距错开。没有新持久字段或加载资源，已确认生产模型保持。见 [水槽台面交互](SINK-ARROW.md#与台面交互对齐燃气灶2026-10-16)。
+
+2026-10-16：燃气灶可选 `hobCutout.w/d` 由产品能力定义历史默认公式、绝对 mm 范围和替换清理，厨房 `cutout()` 统一消费；二维虚线／孔边距与关联台面三维孔洞同步，宿主签名已有派生孔环，核对上下文新增完整参数。UI 经原 mutate 编辑和恢复默认，无新保存通道或加载资源。替换前尺寸校验与最终替换共用产品字段保留判定。见 [手动开孔](FOTILE-APPLIANCES.md#手动开孔尺寸2026-10-16)。
+
+2026-10-16：`cabinet-core` 统一处理可选 `doorLayout` 逐扇相邻配对，厨房模块派生为同名生产列设置；导入校验和尺寸截补共用规则，预览／运动板件／开启区消费同一方向，不新增保存通道。生产门板附带非持久 `cabinetDoorSize` 元数据，预览投影标签及完整清单读取实际宽高，L／U 子预览共用。详见 [自定义配对与尺寸](CABINET-DESIGN.md#自定义门板配对与逐扇尺寸2026-10-16)。
+
+2026-10-16：`cabinet-core.hoodBayFit()` 按实际横板开关、顶板、中部层板和罩体深度与背板的相交计算高度限制，主机齐平提示附带毫米高差；不改用户设备位置或尺寸。核对标记为 `hood-bay-v5-actual-ceiling`，完整结构继续进入原上下文。见 [嵌合高度](KITCHEN-WALL-ADJUST.md#嵌合高度与真实板件2026-10-16)。
+
+2026-10-15：烟机嵌合柜可选 `cabinet.hoodBayCeiling:false` 取消中部横板，缺失按产品能力 `kitchenwall.hoodBay.ceilingDefault:true` 保留旧板件。生产底板覆盖内隔板下沿，修复两侧板厚范围的缺角。每侧间隙由 `setHoodSideGap()` 读取实际装饰罩宽并转换成原中部净宽，UI 草稿共用 `readHoodBayFields()`，不新增间隙持久字段；完整 cabinet/structure 已进入缓存与恢复，核对标记为 `hood-bay-v4-cavity-details`。见 [空腔细节](KITCHEN-WALL-ADJUST.md#烟机空腔横板缺角与两侧间隙2026-10-15)。
+
+2026-10-15：保留结构烟机柜的 `frontLeafCount()` 不再按旧 `autoFrontWidth` 重分门扇，生产门板与开启区共用两侧原门型。`layout-geometry.bodyParts()` 从产品 `hoodInstallation()` 分别派生低位主机和高位装饰罩；四向量距对通过 `hoodBayFit()` 的烟机／宿主不互作阻挡，失配仍参与。空间核对标记为 `hood-bay-v3-module-fronts`。见 [模块烟机柜修复](KITCHEN-WALL-ADJUST.md#模块烟机柜门板与安装修复2026-10-15)。
+
 2026-10-15：四向净距在 `snapping.directional()` 中按参考家具逐成员调用共享 `layout-geometry.verticalOverlap()`；高度明确分离或仅竖向接触的成员不参与该参考的轮廓扫描，高度未知保守保留，墙窗仍按平面计算。画布、属性与精确定位共用结果；没有新增持久字段、缓存或加载资源。见 [吊柜与四向净距](MEASUREMENTS.md#吊柜与四向净距2026-10-15)。
 
 2026-10-15：`kitchenwall` 可选 kitchen 复用分排及边界编辑，吊柜使用零台面／零新踢脚及独立安装高度。`fromWall()` 仅在草稿中保存旧模块尺寸基准和原结构；内部编辑返回外层草稿，最终一次 mutate。`openDialog` 的可选关闭回调用于返回草稿，不新增保存或历史通道；实体、管线、开启、房间模型与展开读取实际模块和离地。详见 [吊柜调节](KITCHEN-WALL-ADJUST.md)。
@@ -118,3 +136,6 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-14：`src/core/purchasing-core.js` 提供本地订单校验、商品／材料快照、到货和实付汇总；`src/ui/purchasing-tools.js` 通过 `mutate()` 编辑可选 `work.purchaseOrders`。项目导入和工作恢复共用校验，采购不参与空间确认或三维缓存。字段、分金额规则及历史关联边界见 [材料采购](MATERIAL-PURCHASING.md)。
 2026-10-14：`src/io/image-export.js` 的 `preparePlanSVG()` 是 PNG、成果 SVG 和打印共用的清理／定字号／内容范围路径。PNG 使用当前可见图层，成果使用浅色完整图层；去除所有 `[data-edit-overlay]` 及临时定位图层。`drawing-core.rasterSize()` 限制栅格单边和总像素，不限制矢量 SVG。
 2026-10-14：`drawing-core.furnitureLabels()` 在显示坐标下计算最多两行家具名称、字号、冲突筛选及内部位置；毫米模型坐标不变。`plan-renderer` 缓存派生结果，`refreshFurnitureLabels()` 只更新文字并在相同排版下跳过 DOM 更新，选择／缩放和 `preparePlanSVG()` 共用接口。完整名称留在根 title、属性和成果表格。
+
+
+2026-10-15：模块地柜抽屉可选 `drawerStyle: dish-basket`。产品能力定义三层下限，厨房核心共用样式、层高及内外抽开合联动，生产柜体列派生两块外面板与三层篮架；外部分界和相邻吸附排除隐藏内抽分界。保存仍走编辑器草稿／mutate，完整 kitchen 进入原缓存与核对签名。见 [碗碟篮](KITCHEN-DESIGN.md#碗碟篮两块外面板与三层内部抽篮2026-10-15)。

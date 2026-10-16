@@ -283,6 +283,8 @@
 <script src="src/render/fotile-model.js"></script>
 <script src="src/core/product-rules.js"></script>
 <script src="src/render/aquarium-model.js"></script>
+<script src="src/render/dishwasher-model.js"></script>
+<script src="src/render/folding-table-model.js"></script>
 <script src="src/render/sink-model.js"></script>
 <script src="src/core/wall-distance-core.js"></script>
 <script src="src/core/placement-suggestions.js"></script>
@@ -435,16 +437,17 @@ function init(){
   clearanceG = new THREE.Group();
   scene.add(archFloor, archUp, furnG, clearanceG, labelG, lampG);
 
-  const cv = renderer.domElement; let downAt = null, look = null, cabinetTap = null;
+  const cv = renderer.domElement; let downAt = null, tapMoved = false, look = null, cabinetTap = null;
   cv.addEventListener('pointerdown', e => {
-    downAt = [e.clientX, e.clientY]; window.closeDrawers();
+    downAt = e.isPrimary===false?null:[e.clientX,e.clientY,e.pointerId,e.button];tapMoved=false; window.closeDrawers();
     if (touchWalk && !look){ look = {id:e.pointerId, x:e.clientX, y:e.clientY}; cv.setPointerCapture(e.pointerId); }
   });
   cv.addEventListener('pointermove', e => {
+    if(downAt&&e.pointerId===downAt[2]&&Math.hypot(e.clientX-downAt[0],e.clientY-downAt[1])>TAP)tapMoved=true;
     if (!look || e.pointerId !== look.id) return;
     lookBy(e.clientX - look.x, e.clientY - look.y); look.x = e.clientX; look.y = e.clientY;
   });
-  cv.addEventListener('pointercancel', e => { if (look?.id === e.pointerId) look = null; });
+  cv.addEventListener('pointercancel', e => { downAt=null;if (look?.id === e.pointerId) look = null; });
 
   // 按住已选中的家具拖动：沿地面摆放（与 2D 共用网格和贴墙吸附）。
   // 在父元素上用捕获阶段监听，赶在 OrbitControls 之前关掉它，避免同时旋转镜头
@@ -482,14 +485,15 @@ function init(){
   cv.addEventListener('pointerup', endF); cv.addEventListener('pointercancel', endF);
 
   cv.addEventListener('pointerup', e => {
-    const tap = downAt && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= TAP;
+    const tap = downAt && e.pointerId===downAt[2] && downAt[3]===0 && !tapMoved && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= TAP;downAt=null;
     if (look?.id === e.pointerId){
       look = null;
-      if (tap){ const h = pick(e); if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
+      if (tap){ const h = pick(e); if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
       return;
     }
     if (anim || opt.mode !== 'orbit' || !tap) return;
     const h = pick(e);
+    if(h?.fid&&!e.shiftKey&&cycleFoldingTable(h.fid))return;
     if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
     else if (h?.door){ h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
     else if (h?.fid) e.shiftKey ? window.toggleSel(h.fid) : window.selectIds([h.fid]);
@@ -717,6 +721,8 @@ function buildFurniture(f){
     const model=FurnishRobotVacuumModel.build(THREE,f,RoundedBoxGeometry);
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
+  if(typeof FurnishFoldingTableModel!=='undefined'&&FurnishFoldingTableModel.supported(f)){const model=FurnishFoldingTableModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishDishwasherModel!=='undefined'&&FurnishDishwasherModel.supported(f)){const model=FurnishDishwasherModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishFotileModel!=='undefined'&&FurnishFotileModel.supported(f)){const model=FurnishFotileModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishAquariumModel!=='undefined'&&FurnishAquariumModel.supported(f)){const model=FurnishAquariumModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)){const model=FurnishSinkModel.build(THREE,f);model.position.x=wx(f.cx);model.position.z=wz(f.cy);model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
@@ -1475,7 +1481,7 @@ function buildFurn(){
     keep.add(f.id);
     try{
     const error=furnitureError(f);if(error)throw Error(error);
-    const sig = JSON.stringify([f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.hoodPanelOpen, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.hoodPanelOpen,f.dishwasherDoorOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       o.position.set(wx(f.cx),f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;
@@ -1663,6 +1669,11 @@ async function exit(){
 }
 
 /* ======================= 选择 / 拾取 ======================= */
+function cycleFoldingTable(id){
+  const f=getF(id);if(!f||f.obj||!FurnishProducts.family(f,'folding-table'))return false;
+  if(!f.locked){try{const next=FurnishProducts.editFoldingTablePose(f);mutate(()=>Object.assign(f,next));}catch(error){toast(error.message);}}
+  window.selectIds([id]);return true;
+}
 const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
 function pick(e){
   if (!e) ptr.set(0, 0);
@@ -1713,7 +1724,7 @@ function updateSel(){
 /* ======================= 漫游 ======================= */
 // 触屏漫游：左下虚拟摇杆移动，在画面上拖动转向（iPad 不支持鼠标指针锁定）
 const HINT_ORBIT = () => COARSE ? tr('单指旋转 · 双指缩放 / 平移 · 点选家具后可拖动摆放 · 点门／窗帘开关', '1 finger orbits · 2 fingers zoom / pan · select furniture to drag it · tap doors / curtains to open')
-  : tr('左键旋转 · 右键平移 · 滚轮缩放 · 选中家具后拖动可摆放 · 点击门／窗帘开关', 'Left-drag orbits · right-drag pans · scroll zooms · select furniture to drag it · click doors / curtains to open');
+  : tr('左键旋转 · 右键平移 · 滚轮缩放 · 选中家具后拖动可摆放 · 点击折叠桌切换形态 · 点击门／窗帘开关', 'Left-drag orbits · right-drag pans · scroll zooms · select furniture to drag it · click folding tables to change shape · click doors / curtains to open');
 const HINT_TOUCHWALK = () => tr('左下摇杆移动 · 拖动画面转向 · 点门／窗帘开关', 'Joystick moves · drag to look · tap doors / curtains to open');
 const HINT_WALK = () => tr('WASD 移动 · 鼠标转向 · Shift 快走 · E 开关门 · Esc 暂停', 'WASD moves · mouse looks · Shift runs · E opens doors · Esc pauses');
 function syncHint3d(){ $('#hint3d').textContent = opt.mode === 'orbit' ? HINT_ORBIT() : touchWalk ? HINT_TOUCHWALK() : HINT_WALK(); }

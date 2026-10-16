@@ -6,6 +6,10 @@ const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./k
 const fields={
  groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
  hoodPanelOpen:{boolean:true,message:'烟机面板开合设置无效'},
+ dishwasherDoorOpen:{boolean:true,message:'洗碗机折叠门开合设置无效'},
+ foldingTablePose:{values:['round','single','capsule'],message:'折叠桌形态须为圆桌、单边收起或胶囊桌'},
+ hoodGeometry:{custom:true,message:'烟机几何尺寸无效'},
+ hobCutout:{custom:true,message:'灶具开孔尺寸无效'},
  kitchen:{custom:true,message:'厨房配置无效'},
  counterLink:{custom:true,message:'台面关联无效'},
  counterElevation:numeric(0,2000,'台面离地高度须为 0–2000 mm'),
@@ -20,16 +24,24 @@ const fields={
  heaterSocket:{point:true,message:'热水器插座须有有效 X、Y 和 0–20000 mm 离地高度'}
 };
 const laundry={family:'laundry',height:850,anchor:'bottom',defaults:{mountHeight:0,stackHeight:20},fields:['mountHeight','stackHeight'],create:['mountHeight']};
-const arrowSink={embedded:true,family:'arrow-sink',height:240,sink:{rimThickness:.8,nominalDepth:450,faucetRise:360,nominalInnerWidth:640},defaults:{counterElevation:860,sinkInstall:'top'},fields:['counterLink','counterElevation','sinkInstall'],create:['counterElevation','sinkInstall']};
+const surfaceMeasurement={wallContactTolerance:5};
+const arrowSink={embedded:true,measureSurfaceBoundary:true,surfaceMeasurement,family:'arrow-sink',height:240,sink:{rimThickness:.8,nominalDepth:450,faucetRise:360,nominalInnerWidth:640},defaults:{counterElevation:860,sinkInstall:'top'},fields:['counterLink','counterElevation','sinkInstall'],create:['counterElevation','sinkInstall']};
+const doorPairing={values:['end','start'],default:'end',singleHinge:{values:['left','right'],default:'left'},layout:{values:['left','right','pair','paired'],maxLeaves:24}};
+const hobCutoutLimits={min:1,max:20000};
+const foldingTable={family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const types={
+ table_folding_1100:{...foldingTable,folding:{diameter:1100,closedDepth:740,singleDepth:920,top:32,leg:75,apron:120}},
+ table_folding_1200:{...foldingTable,folding:{diameter:1200,closedDepth:793,singleDepth:996.5,top:32,leg:75,apron:120}},
+ table_folding_1300:{...foldingTable,folding:{diameter:1305,closedDepth:848,singleDepth:1075,top:32,leg:75,apron:120}},
  sink_arrow_680:{...arrowSink,identity:{brand:'ARROW/箭牌',model:'AE5568459G23-YNC',sourceUrl:'https://item.jd.com/100199201484.html'}},
  sink_arrow_750:{...arrowSink,identity:{brand:'ARROW/箭牌',model:'AE5575459G23-YNC',sourceUrl:'https://item.jd.com/100199201484.html'}},
- counter:{family:'kitchen',moduleDividers:true,drawerTiers:{boundaryResize:true,snapPixels:8,defaultCount:3,minCount:1,maxCount:10,minHeight:96,plinth:100,board:18,legacyOffset:150,legacyMin:60},kitchenDepth:{min:50,max:1200,drawerMin:72,emptyMinWidth:50},kitchenShapes:{straight:{runs:[0],ends:[0]},L:{runs:[0,1],ends:[0,1]},U:{runs:[0,1,2],ends:[0,2],independentResize:true,outerResize:true,runDepth:{min:50,max:1200}}},endResize:{fields:['length','cabinetDepth'],minLength:150,maxLength:3000,minDepth:50,maxDepth:1200},cornerPartitions:{sides:['left','right'],retained:false,roleDefaults:{drawer:true}},avoidance:{enabled:false,minDepth:150},fields:['kitchen'],create:['kitchen']},
- kitchenwall:{height:700,anchor:'bottom',defaults:{mountHeight:1480},moduleDividers:true,moduleMaxWidth:6000,drawerTiers:{boundaryResize:true,snapPixels:8,defaultCount:3,minCount:1,maxCount:10,minHeight:96,plinth:0,board:18,legacyOffset:50,legacyMin:60},kitchenShapes:{straight:{runs:[0],ends:[0]},L:{runs:[0,1],ends:[0,1]},U:{runs:[0,1,2],ends:[0,2],independentResize:true,outerResize:true,runDepth:{min:50,max:1200}}},fields:['mountHeight','kitchen'],create:['mountHeight','kitchen']},
- stove_fotile_th36b:{embedded:true,measureSurfaceBoundary:true,height:138,defaults:{counterElevation:860},fields:['counterLink','counterElevation'],create:['counterElevation'],identity:{brand:'方太/FOTILE',model:'TH36B-T'}},
- rangehood_fotile_jcd10ta:{height:520,anchor:'bottom',defaults:{mountHeight:1315,hoodPanelOpen:false},fields:['mountHeight','hoodPanelOpen'],create:['mountHeight','hoodPanelOpen'],identity:{brand:'方太/FOTILE',model:'JCD10TA'}},
- stove:{measureSurfaceBoundary:true,fields:['counterLink','counterElevation']},ksink:{fields:['counterLink','counterElevation']},
+ counter:{family:'kitchen',moduleDividers:true,drawerTiers:{boundaryResize:true,snapPixels:8,defaultCount:3,minCount:1,maxCount:10,minHeight:96,plinth:100,board:18,legacyOffset:150,legacyMin:60,styles:{standard:{label:'普通抽屉'},'dish-basket':{label:'碗碟篮（两外抽、三层）',minHeights:[300,220,100],hiddenTier:2,outerTier:1}}},kitchenDepth:{min:50,max:1200,drawerMin:72,emptyMinWidth:50},kitchenShapes:{straight:{runs:[0],ends:[0]},L:{runs:[0,1],ends:[0,1]},U:{runs:[0,1,2],ends:[0,2],independentResize:true,outerResize:true,runDepth:{min:50,max:1200}}},endResize:{fields:['length','cabinetDepth'],minLength:150,maxLength:3000,minDepth:50,maxDepth:1200},cornerPartitions:{sides:['left','right'],retained:false,roleDefaults:{drawer:true}},avoidance:{enabled:false,minDepth:150},fields:['kitchen'],create:['kitchen']},
+ kitchenwall:{height:700,anchor:'bottom',defaults:{mountHeight:1480},hoodBay:{ceilingDefault:true,minSideGap:0},moduleDividers:true,moduleMaxWidth:6000,drawerTiers:{boundaryResize:true,snapPixels:8,defaultCount:3,minCount:1,maxCount:10,minHeight:96,plinth:0,board:18,legacyOffset:50,legacyMin:60},kitchenShapes:{straight:{runs:[0],ends:[0]},L:{runs:[0,1],ends:[0,1]},U:{runs:[0,1,2],ends:[0,2],independentResize:true,outerResize:true,runDepth:{min:50,max:1200}}},fields:['mountHeight','kitchen'],create:['mountHeight','kitchen']},
+ stove_fotile_th36b:{embedded:true,measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,widthRatio:660/750,depthRatio:350/440},height:138,defaults:{counterElevation:860},fields:['counterLink','counterElevation','hobCutout'],create:['counterElevation'],identity:{brand:'方太/FOTILE',model:'TH36B-T'}},
+ rangehood_fotile_jcd10ta:{height:520,anchor:'bottom',hoodGeometry:{min:10,max:20000},defaults:{mountHeight:1315,hoodPanelOpen:false},fields:['mountHeight','hoodPanelOpen','hoodGeometry'],create:['mountHeight','hoodPanelOpen'],identity:{brand:'方太/FOTILE',model:'JCD10TA'}},
+ stove:{measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,inset:30},fields:['counterLink','counterElevation','hobCutout']},ksink:{fields:['counterLink','counterElevation']},
  washer:laundry,dryer:laundry,
+ dishwasher_mijia_countertop:{family:'countertop-dishwasher',height:598,anchor:'bottom',defaults:{mountHeight:860,dishwasherDoorOpen:false},fields:['mountHeight','dishwasherDoorOpen'],create:['mountHeight','dishwasherDoorOpen'],identity:{brand:'米家/Mijia',model:'智能洗碗机 台式 5套'},foldDoor:{nominalWidth:550,nominalHeight:598,nominalDepth:350,openDepth:600,openingBottom:52,openingTop:584},installation:{ventSide:'left',sideClearance:200,worktopToCabinet:650,topAccess:50,frontOffset:80}},
  aquarium_mijia_2pro:{family:'aquarium',height:334,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'智能鱼缸 2 Pro',sourceUrl:'https://item.jd.com/100317574693.html'}},
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
  shower_arrow_cream:{family:'arrow-shower',height:1749,anchor:'mixer',defaults:{showerMixerHeight:1000,showerRise:400,showerHandAngle:180*.20/Math.PI},fields:['mountHeight','showerMixerHeight','showerRise','showerHandAngle'],create:['showerMixerHeight'],identity:{brand:'ARROW/箭牌',model:'AE34129ZMKW-P2'}},
@@ -40,6 +52,8 @@ const types={
  fridge:{height:1800},fridge_french_drawer:{height:1910},sofa_yeswood_cherry:{height:895},mirror:{height:1650},
  aircon:{height:1800},dishwasher:{height:840},rug:{height:16},bench:{height:440},beanbag:{height:720},barstool:{height:775},custom:{height:800},customround:{height:800},toilet:{height:796}
 };
+// Optional kitchen door pairing keeps the historical leading single leaf by default.
+types.counter.doorPairing=doorPairing;types.kitchenwall.doorPairing=doorPairing;
 // Preserve historical model envelopes, including dimension-derived bounds.
 const envelopes={acwall:()=>[2170,2510],waterheater:f=>[1300,1950+Math.min(f.d/2,230)],tv:f=>[1200-f.w*.5625/2,1200+f.w*.5625/2],wallart:f=>[1280,1280+Math.min(950,Math.max(500,f.w*.45))],mirror:()=>[50,1700],pendant:()=>[2100,2627],baycushion:()=>[450,900],stove:()=>[862,2330],ksink:()=>[850,1182],vanity:()=>[330,1960]};
 for(const [type,envelope] of Object.entries(envelopes))types[type]={...types[type],envelope};
@@ -56,6 +70,18 @@ const cabinetSpec=f=>definition(f)?.cabinet;
 const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f)?.bottom??0;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
+ if(key==='hobCutout'){
+  const limits=definition(f).hobCutout;
+  if(f.obj)throw Error('自定义模型不支持灶具开孔参数');
+  if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!['w','d'].includes(k))||Object.values(v).some(n=>typeof n!=='number'||!Number.isFinite(n)||n<limits.min||n>limits.max))throw Error(`开孔宽／深须为 ${limits.min}–${limits.max} mm`);
+  const size=hobCutout({...f,hobCutout:v});if(size.w>f.w||size.d>f.d)throw Error('开孔宽／深不能超过灶具面板宽／深');return v;
+ }
+ if(key==='hoodGeometry'){
+  const limits=definition(f).hoodGeometry,keys=['bodyHeight','coverWidth','coverDepth'];
+  if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!keys.includes(k))||Object.values(v).some(n=>typeof n!=='number'||!Number.isFinite(n)||n<limits.min||n>limits.max))throw Error('烟机分段尺寸须为 10–20000 mm');
+  const spec=hoodInstallation({...f,hoodGeometry:v});
+  if(spec.bodyHeight>=height(f)||spec.coverWidth>f.w||spec.coverDepth>f.d)throw Error('主机高度须小于总高，装饰罩宽／深不能超过整机宽／深');return v;
+ }
  if(key==='kitchen'){kitchen().validate({...f,kitchen:v});return v;}if(key==='counterLink'){kitchen().validateLink({...f,counterLink:v});return v;}
  const finite=n=>typeof n==='number'&&Number.isFinite(n);
  const valid=rule.point?v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).every(k=>['x','y','z'].includes(k))&&[v.x,v.y,v.z].every(finite)&&Math.abs(v.x)<=1e6&&Math.abs(v.y)<=1e6&&v.z>=0&&v.z<=20000
@@ -66,10 +92,56 @@ function validate(f){for(const key of Object.keys(fields))if(f[key]!==undefined)
 // Report broken model records without migrating, deleting or rewriting them.
 function modelError(f){try{validate(f);if(f.cabinet)(root.FurnishCabinet||require('./cabinet-core.js')).validate(f);return null;}catch(e){return e.message||String(e);}}
 function initial(f){const result={};for(const key of definition(f)?.create||[]){if(key==='kitchen'&&f.type==='kitchenwall'&&(!Number.isFinite(f.w)||!Number.isFinite(f.d)))continue;result[key]=key==='kitchen'?kitchen().defaults(f):value(f,key);}return {...result,...definition(f)?.identity};}
+// Missing overrides retain the historical opening; explicit values are absolute mm.
+function hobCutout(f){const spec=definition(f)?.hobCutout;if(!spec||f.obj)return null;return {w:f.hobCutout?.w??(spec.widthRatio===undefined?f.w-spec.inset:f.w*spec.widthRatio),d:f.hobCutout?.d??(spec.depthRatio===undefined?f.d-spec.inset:f.d*spec.depthRatio)};}
+function editHobCutout(f,key,n){if(f.locked)throw Error('家具已锁定，请先解锁');const next={...f,hobCutout:{...f.hobCutout,[key]:n}};validateField(next,'hobCutout',next.hobCutout);return next;}
+// w/d describe the current horizontal bounding box. Missing pose reads round,
+// without migrating old instances. Keep the physical frame fixed when folding.
+function foldingTableGeometry(f){
+ const spec=definition(f)?.folding;if(!spec||f.obj)return null;
+ const pose=value(f,'foldingTablePose'),ratio=pose==='capsule'?spec.closedDepth/spec.diameter:pose==='single'?spec.singleDepth/spec.diameter:1;
+ const fullDepth=f.d/ratio,cut=fullDepth*(spec.singleDepth/spec.diameter-.5),backCut=fullDepth*(spec.closedDepth/spec.diameter)-cut;
+ const offset=pose==='single'?(fullDepth-f.d)/2:pose==='capsule'?(backCut-cut)/2:0;
+ return {...spec,pose,fullDepth,cut,backCut,offset,ratio};
+}
+function editFoldingTablePose(f,pose){
+ if(pose===undefined){const poses=fields.foldingTablePose.values;pose=poses[(poses.indexOf(value(f,'foldingTablePose'))+1)%poses.length];}
+ if(f.locked)throw Error('家具已锁定，请先解锁');validateField(f,'foldingTablePose',pose);
+ const old=foldingTableGeometry(f);if(!old)throw Error('当前模型不支持折叠桌形态');
+ const spec=definition(f).folding,ratio=pose==='capsule'?spec.closedDepth/spec.diameter:pose==='single'?spec.singleDepth/spec.diameter:1;
+ const depth=old.fullDepth*ratio,next={...f,foldingTablePose:pose,d:Math.abs(depth-Math.round(depth*1e6)/1e6)<1e-8?Math.round(depth*1e6)/1e6:depth},geom=foldingTableGeometry(next),delta=old.offset-geom.offset,a=(f.rot||0)*Math.PI/180;
+ if(next.d<50||next.d>20000)throw Error('切换后的深度须为 50–20000 mm');
+ next.cx=f.cx-Math.sin(a)*delta;next.cy=f.cy+Math.cos(a)*delta;return next;
+}
+// Shared sampled circle segments for the production slabs and SVG outline.
+function foldingTableOutline(f,region='visible'){
+ const s=foldingTableGeometry(f);if(!s)return null;
+ const low=region==='front'?s.cut:region==='back'?-s.fullDepth/2:region==='center'||s.pose==='capsule'?-s.backCut:-s.fullDepth/2;
+ const high=region==='back'?-s.backCut:region==='front'?s.fullDepth/2:region==='center'||s.pose!=='round'?s.cut:s.fullDepth/2;
+ const angle=v=>Math.asin(Math.max(-1,Math.min(1,2*v/s.fullDepth))),a=angle(low),b=angle(high),points=[];
+ const n=Math.max(8,Math.ceil((b-a)*48/Math.PI));
+ const angles=Array.from({length:n+1},(_,i)=>a+(b-a)*i/n);if(a<0&&b>0)angles.push(0);angles.sort((x,y)=>x-y);
+ for(const t of angles)points.push([f.w/2*Math.cos(t),s.fullDepth/2*Math.sin(t)+s.offset]);
+ for(const t of [...angles].reverse())points.push([-f.w/2*Math.cos(t),s.fullDepth/2*Math.sin(t)+s.offset]);return points;
+}
+// Full opening reservation is independent of the current display pose. Only the
+// layout envelope scales; the reference installation distances remain absolute mm.
+function dishwasherInstallation(f){
+ const def=definition(f);if(!def?.foldDoor||f.obj)return null;const spec=def.foldDoor,bottom=value(f,'mountHeight'),h=height(f),extension=f.d*(spec.openDepth-spec.nominalDepth)/spec.nominalDepth;
+ return {...def.installation,bottom,top:bottom+h,extension,openDepth:f.d+extension,openingBottom:bottom+h*spec.openingBottom/spec.nominalHeight,openingTop:bottom+h*spec.openingTop/spec.nominalHeight,nominal:Math.abs(f.w-spec.nominalWidth)<1e-6&&Math.abs(f.d-spec.nominalDepth)<1e-6&&Math.abs(h-spec.nominalHeight)<1e-6};
+}
 // Legacy bottom datum is read, never filled into saved records implicitly.
 function showerInstallation(f){const nominal=types.shower_arrow_cream.height,offset=646.889539615265*(f.h??nominal)/nominal,mixer=f.showerMixerHeight??(f.mountHeight!==undefined?f.mountHeight+offset:types.shower_arrow_cream.defaults.showerMixerHeight),bottom=mixer-offset;return {mixer,bottom,top:bottom+(f.h??nominal)*(1+(value(f,'showerRise')-types.shower_arrow_cream.defaults.showerRise)/nominal)};}
 // Matches the production JCD10TA chimney; these are model dimensions, not installation clearances.
-function hoodInstallation(f){if(f.type!=='rangehood_fotile_jcd10ta'||f.obj)return null;const h=height(f);return {bodyHeight:h*345/520,coverHeight:h*175/520,coverWidth:f.w*480/900,coverDepth:f.d*310/350,coverOffset:-f.d*20/350};}
+function hoodInstallation(f){if(f.type!=='rangehood_fotile_jcd10ta'||f.obj)return null;const h=height(f),bodyHeight=f.hoodGeometry?.bodyHeight??h*345/520,coverDepth=f.hoodGeometry?.coverDepth??f.d*310/350;return {bodyHeight,coverHeight:h-bodyHeight,coverWidth:f.hoodGeometry?.coverWidth??f.w*480/900,coverDepth,coverOffset:(coverDepth-f.d)/2};}
+function editHoodGeometry(f,key,n){
+ if(f.locked)throw Error('家具已锁定，请先解锁');
+ const next={...f,hoodGeometry:{...f.hoodGeometry,[key]:n}};validateField(next,'hoodGeometry',next.hoodGeometry);return next;
+}
+// Outer resizing retains each section's proportion; individual section edits use absolute mm.
+function resizeHoodGeometry(f,next){
+ if(f.hoodGeometry){next.hoodGeometry={...f.hoodGeometry};for(const [key,axis] of [['bodyHeight','h'],['coverWidth','w'],['coverDepth','d']])if(f.hoodGeometry[key]!==undefined)next.hoodGeometry[key]*=(axis==='h'?height(next)/height(f):next[axis]/f[axis]);validateField(next,'hoodGeometry',next.hoodGeometry);}return next;
+}
 function migrate(f){const next={...f};if(family(f,'arrow-shower')){next.showerMixerHeight=showerInstallation(f).mixer;delete next.mountHeight;}return next;}
 function sinkInstallation(f,host){const spec=definition(f).sink,thickness=host?.kitchen?.thickness??40,surface=host?.kitchen?host.kitchen.baseHeight+thickness:860,upper=host?surface+(value(f,'sinkInstall')==='under'?-thickness:value(f,'sinkInstall')==='top'?spec.rimThickness:0):value(f,'counterElevation');return {upper,bottom:upper-height(f),top:upper+spec.faucetRise*Math.min(f.d/spec.nominalDepth,Math.max(0,f.w-40)/spec.nominalInnerWidth)};}
 function vertical(f){
@@ -82,16 +154,20 @@ function vertical(f){
  if(!def?.anchor)return null;if(def.anchor==='mixer'){const {bottom,top}=showerInstallation(f);return {bottom,top,source:'model'};}
  const bottom=value(f,'mountHeight');return {bottom,top:bottom+height(f),source:f.h===undefined||f.type==='tripleslidingwindow'?'model':'recorded'};
 }
+function retainReplacementField(previous,next,key){return key==='groupId'||supports(next,key)&&supports(previous,key)&&(key==='floorTrack'||previous.type===next.type||family(previous,'laundry')&&family(next,'laundry'));}
+// Remove incompatible parameters before checking the replacement's outer size.
+function replacementResizeSource(previous,candidate){const next={...previous};for(const key of Object.keys(fields))if(!retainReplacementField(previous,candidate,key))delete next[key];return next;}
 function replacement(previous,next,candidate){
  if(previous.type==='vanity'){if(!candidate.cabinet)delete next.cabinet;if(candidate.h!==undefined)next.h=candidate.h;}
  for(const key of Object.keys(fields)){
   if(key==='groupId')continue; // Layout membership survives product replacement.
   // Family permits washer↔dryer and track styles; installation belongs to the
   // specific product except for the laundry family. Socket is a world point.
-  const retain=supports(next,key)&&supports(previous,key)&&(key==='floorTrack'||previous.type===next.type||family(previous,'laundry')&&family(next,'laundry'));
+  const retain=retainReplacementField(previous,next,key);
   if(!retain)delete next[key];
  }
- if(family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
+ if(family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
+ if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
  if(family(next,'arrow-shower')){delete next.mountHeight;next.showerMixerHeight=previous.type===next.type?showerInstallation(previous).mixer:value({type:next.type},'showerMixerHeight');for(const [key,v] of Object.entries(definition(next).identity))next[key]=candidate[key]||v;}
  if(next.type==='tripleslidingwindow')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
@@ -100,6 +176,6 @@ function replacement(previous,next,candidate){
 }
 // Derived geometry capability; no field is added to saved furniture instances.
 function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return !f.obj&&(C.supported(f)||['counter','vanity'].includes(f.type));}
-const api={types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,sinkInstallation,showerInstallation,hoodInstallation,vertical,replacement,serviceCut};
+const api={types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
