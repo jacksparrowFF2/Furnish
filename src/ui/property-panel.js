@@ -139,18 +139,24 @@ function queueFabPosition(){
 }
 function clearFabDock(){
   const stage=$('#stage'),dock=$('#fab-dock');if(!dock)return;
+  const focused=document.activeElement;
   for(const child of [...dock.children])stage.append(child);dock.remove();fabDockKey='';
+  if(focused?.isConnected&&stage.contains(focused)&&document.activeElement!==focused)focused.focus({preventScroll:true});
   stage.classList.remove('fab-docked-top','fab-docked-right');
   for(const key of ['height','width','limit','bar-height'])stage.style.removeProperty('--fab-dock-'+key);
 }
 function dockFab(mode,key){
   const stage=$('#stage'),fab=$('#fab'),editor=$('#fab-editor');let dock=$('#fab-dock');
+  const focused=document.activeElement;
   const before=[fabDockKey,stage.style.getPropertyValue('--fab-dock-height'),stage.style.getPropertyValue('--fab-dock-width')].join(';');
   if(!dock){dock=document.createElement('div');dock.id='fab-dock';stage.append(dock);}
   stage.classList.toggle('fab-docked-top',mode==='top');stage.classList.toggle('fab-docked-right',mode==='right');
   stage.style.setProperty('--fab-dock-width',mode==='right'?Math.min(360,stage.clientWidth*.44)+'px':'0px');
   stage.style.setProperty('--fab-dock-limit',(mode==='top'?(fabEditor?.kind==='floor'?Math.min(480,stage.clientHeight*.65):Math.min(360,stage.clientHeight*.5)):stage.clientHeight)+'px');
-  dock.append(fab);if(editor)dock.append(editor);
+  // Live previews may resize the editor on each input. Do not reparent an
+  // already docked form: moving it again can interrupt typing and lose focus.
+  if(fab.parentNode!==dock)dock.append(fab);if(editor&&editor.parentNode!==dock)dock.append(editor);
+  if(editor?.contains(focused)&&document.activeElement!==focused)focused.focus({preventScroll:true});
   stage.style.setProperty('--fab-dock-bar-height',fab.offsetHeight+'px');
   stage.style.setProperty('--fab-dock-height',mode==='top'?Math.ceil(dock.getBoundingClientRect().height)+'px':'0px');
   fabDockKey=key;
@@ -177,7 +183,7 @@ function positionFab(){
   const bounds=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight;
   const key=[...selIds(),ui.sel?.kind==='room'?ui.sel.id:'',W,H].join('|');
   if(is3D())clearFabDock();
-  else if(W<=720||fabDockKey===key){dockFab(W>=600&&H<450||W>720?'right':'top',key);return;}
+  else if(W<=720||fabDockKey===key||fabDockKey&&document.activeElement?.closest('#fab-editor')){dockFab(W>=600&&H<450||W>720?'right':'top',key);return;}
   else if(fabDockKey)clearFabDock();
   const local=r=>({x:r.left-bounds.left,y:r.top-bounds.top,w:r.width,h:r.height});
   const visible=r=>r.w>0&&r.h>0&&r.x<W&&r.y<H&&r.x+r.w>0&&r.y+r.h>0;

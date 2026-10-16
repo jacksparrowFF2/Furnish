@@ -84,7 +84,7 @@ $('#saveDesign').onclick = () => {
 
 
   $('#shareLink').onclick=async()=>{
-    if(state.architecture||FurnishWallFinish.has(state)||FurnishFloorFinish.has(state))return toast(tr('自定义户型或含墙面饰面的方案请导出项目 JSON 分享','Export a project JSON to share custom plans or wall finishes'));
+    if(state.architecture||FurnishWallFinish.has(state)||FurnishFloorFinish.has(state)||FurnishWallTiling.has(state))return toast(tr('自定义户型或含墙面饰面的方案请导出项目 JSON 分享','Export a project JSON to share custom plans or wall finishes'));
     const id=PLAN.id,json=JSON.stringify(state);
     const v=await shareCodec.encode(json),url=location.href.split('#')[0]+'#p='+id+'&v='+v;
     try{await navigator.clipboard.writeText(url);toast(tr('分享链接已复制，发给客户打开即可还原','Share link copied'));}

@@ -69,10 +69,10 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v3';
+let STORE = 'huxing-design-v4';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
-STORE=store.v===3?'huxing-design-v3':'huxing-design-v2';
+STORE='huxing-design-v'+(store.v>=3?store.v:2);
 const repositoryInitialCache=JSON.parse(JSON.stringify(store));
 let repositoryClient=null,repositoryBooting=true,repositoryResume;
 const repositoryReady=new Promise(resolve=>repositoryResume=resolve);
@@ -163,7 +163,8 @@ function save(){
   if(repositoryBooting)return;
   store.updatedAt=Math.max(Date.now(),(store.updatedAt||0)+1);
   store.work[PLAN.id] = state;
-  if(Object.values(store.work).some(w=>w.floorFinishes)||store.designs.some(d=>d.work?.floorFinishes)){store.v=3;STORE='huxing-design-v3';}
+  if(Object.values(store.work).some(w=>w.wallTiling)||store.designs.some(d=>d.work?.wallTiling)){store.v=4;STORE='huxing-design-v4';}
+  else if(store.v<4&&(Object.values(store.work).some(w=>w.floorFinishes)||store.designs.some(d=>d.work?.floorFinishes))){store.v=3;STORE='huxing-design-v3';}
   autosave.save(store);
   repositoryClient?.schedule(store);
 }
@@ -179,7 +180,7 @@ function syncSaved(){
     : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 const snap = () => JSON.stringify(state);
-function commit(before){ const previous=JSON.parse(before);if(!(((previous.wallFinishes||state.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,state))||((previous.floorFinishes||state.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,state)))){if(state.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(state.furniture,FurnishProject.effectivePlan(PLAN,state)); FurnishKitchen.normalize(state.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,previous.furniture);} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
+function commit(before){ const previous=JSON.parse(before);if(!(((previous.wallFinishes||state.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,state))||((previous.floorFinishes||state.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,state))||((previous.wallTiling||state.wallTiling)&&FurnishWallTiling.onlyChange(previous,state)))){if(state.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(state.furniture,FurnishProject.effectivePlan(PLAN,state)); FurnishKitchen.normalize(state.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,previous.furniture);} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
 function mutate(fn){ const b = snap(); fn(); commit(b); renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
@@ -540,7 +541,7 @@ function openReset(){
 function wipeAll(){
   // Erasing browser caches never deletes the Git-managed design file.
   const wipeNotice=repositoryClient?'仓库中的设计文件和本机恢复副本会保留，刷新后将重新加载仓库设计。':'';
-  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
+  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 
 function openHelp(){

@@ -69,6 +69,17 @@ function edit(work,face,values){
  validate(next.wallFinishes);return next;
 }
 function vertical(w,plan){return w[5]?.vertical||{bottom:0,top:w[4]==='low'?Math.min(1000,plan.ceilingHeight??2800):plan.ceilingHeight??2800};}
+// Both thickness solids and tile elevations use these same opening heights.
+function faceSections(plan,f,height=plan.rooms.find(r=>r.id===f.roomId)?.ceilingHeight??plan.ceilingHeight??2800){
+ const out=[],r=f.source.rect,add=(segment,bottom,top)=>{if(top>bottom)out.push({segment,bottom,top});};
+ for(const i of f.source.indices){const w=plan.walls[i];if(w)add(w,0,w[4]==='low'?Math.min(1000,height):height);}
+ for(const [kind,list] of [['door',plan.doors||[]],['slide',plan.slides||[]],['window',plan.wins||[]]])for(const o of list){
+  const q=o.rect;if(Math.abs(q[f.normal]-r[f.normal])>EPS||Math.abs(q[f.normal+2]-r[f.normal+2])>EPS)continue;
+  if(kind==='window')add(q,0,Math.min(height,(o.sill??.9)*1000));
+  const head=kind==='door'?2100:kind==='slide'?(o.v?2400:2100):(o.head??2.4)*1000;add(q,Math.min(height,head),height);
+ }
+ return out;
+}
 function derive(plan,work){
  validate(work.wallFinishes);
  if(!has(work))return plan;
@@ -92,12 +103,7 @@ function derive(plan,work){
     const rect=[...band];rect[f.axis]=a;rect[f.axis+2]=b;
     solids.push({rect,bottom,top,wallId:s.wallId,side:s.side,normal:f.normal,index,tileThickness:s.tileThickness,bondThickness:s.bondThickness});
    };
-   for(const i of f.source.indices){const w=plan.walls[i];if(w)add(w,0,w[4]==='low'?Math.min(1000,height):height);}
-   for(const [kind,list] of [['door',plan.doors||[]],['slide',plan.slides||[]],['window',plan.wins||[]]])for(const o of list){
-    const q=o.rect;if(Math.abs(q[f.normal]-r[f.normal])>EPS||Math.abs(q[f.normal+2]-r[f.normal+2])>EPS)continue;
-    if(kind==='window')add(q,0,Math.min(height,(o.sill??.9)*1000));
-    const head=kind==='door'?2100:kind==='slide'?(o.v?2400:2100):(o.head??2.4)*1000;add(q,Math.min(height,head),height);
-   }
+   for(const s of faceSections(plan,f,height))add(s.segment,s.bottom,s.top);
   }
  }
  const clip=rooms=>(rooms||[]).map(room=>{
@@ -134,6 +140,6 @@ function remapBuiltin(work,before,after,shift){
  }
  work.wallFinishes={version:1,surfaces:mapped};validate(work.wallFinishes);
 }
-const api={rules,validate,sources,faces,same,edit,derive,spatial,vertical,onlyFinishChange,has,remapBuiltin};
+const api={rules,validate,sources,faces,same,edit,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishWallFinish=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

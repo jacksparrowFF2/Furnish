@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-16",
+  "status": "PASS",
+  "scope": "厨房、卫生间与阳台整面墙砖排版，独立于已有厚度设置",
+  "node": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "isolated": {
+      "regressionSuites": 180,
+      "builtInPlans": 12,
+      "previewPages": 16,
+      "log": "output/wall-tiling-isolated-check-final.log"
+    },
+    "sharedWorktree": {
+      "result": "PASS 182 regression suites, 12 built-in plans, 1633 preview pages, local assets, shared declarations and all production syntax checks",
+      "log": "output/wall-tiling-shared-final-check.log",
+      "includesConcurrentCeilingChanges": true,
+      "note": "梁缓存验收改为执行真实生产缓存表达式，验证梁高变化导致失效，不依赖相邻字段的固定字符串格式。"
+    }
+  },
+  "browser": {
+    "passed": true,
+    "distinctCases": 86,
+    "fullRun": {
+      "path": "output/wall-tiling-validation/output/playwright/verification-QrPSGI",
+      "passed": 85,
+      "failed": [
+        "floor-origin"
+      ],
+      "notRun": 0
+    },
+    "finalRetest": {
+      "path": "output/wall-tiling-validation/output/playwright/verification-MiaDVS",
+      "cases": [
+        "wall-tiling",
+        "floor-origin",
+        "floating-toolbar"
+      ],
+      "passed": true
+    },
+    "currentWorktreeIntegration": {
+      "path": "output/playwright/verification-47xfOr",
+      "cases": [
+        "wall-tiling",
+        "floor-origin",
+        "floating-toolbar",
+        "floor-unified"
+      ],
+      "passed": true
+    },
+    "snapshotNotes": [
+      "全量隔离快照运行后补充表面 polygonOffset 与材质／贴图一次释放；最终生产几何回归及墙砖专项复验通过。",
+      "全量中的 floor-origin 窄屏失败为侧栏收起后视口尚未稳定，补充真实视口等待再 fitView；最终同一生产代码 HTTP／file:// 复验通过。",
+      "保留原全量结果，不将单次全量记录改写为全部通过。"
+    ],
+    "coverage": [
+      "HTTP 与断网 file://",
+      "区域／逐墙开关、草稿与连续输入焦点",
+      "立面洞口、角点吸附、SVG 导出与临时平面定位线排除",
+      "统一绝对／相对起铺高度、卫生间 5 mm 高差",
+      "撤销重做、刷新、旧缓存保留、命名方案和真实文件下载再导入",
+      "生产三维、390 px 窄屏"
+    ],
+    "finalSurfaceRetest": {
+      "path": "output/playwright/verification-SeqBfl",
+      "passed": true,
+      "note": "最终材质仅在有可见墙面时创建；完全裁切不分配孤立材质，生产几何测试与 HTTP／file:// 专项复验通过。"
+    }
+  },
+  "demo": {
+    "passed": true,
+    "path": "output/demos/1601-floor-finishes/wall-app",
+    "eligibleRegions": 3,
+    "wallFaces": 32,
+    "furniture": 47,
+    "floorAssumptionsOnlyInCopy": {
+      "otherFinishedZ": 50,
+      "bathFinishedZ": 45
+    },
+    "thicknessCopiedWithoutDefaults": true,
+    "originalSourceUnchanged": true,
+    "existingUncommittedTestUnchanged": true,
+    "verified": [
+      "分区批量开关及参数保留",
+      "统一高度再单步撤销",
+      "刷新",
+      "生产三维",
+      "桌面和窄屏目视",
+      "导出立面"
+    ]
+  },
+  "compatibility": {
+    "optionalWallTiling": true,
+    "legacyAbsencePreserved": true,
+    "unknownThicknessPreserved": true,
+    "version4AndIndependentCache": true,
+    "noFurnitureOrCabinetMovement": true,
+    "repeatedProjectRestoreNoDrift": true
+  },
+  "boundaries": [
+    "水平／竖直真实墙面，不包含虚拟分界",
+    "洞口正面留空，不含侧壁包砖与局部墙裙",
+    "混合／未知厚度不生成三维图案",
+    "统一起铺基准不保证不同砖高／砖缝后的横缝对齐",
+    "未生成施工下料单或切砖优化",
+    "未执行真实触屏硬件或现场施工核验"
+  ]
+}

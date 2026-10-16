@@ -8,7 +8,7 @@
   finally{clearTimeout(timer);}
  }
  async function fingerprint(value){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(C.text(value)));return Array.from(new Uint8Array(bytes),v=>v.toString(16).padStart(2,'0')).join('');}
- function cache(value){if(value.v===3)STORE='huxing-design-v3';try{localStorage.setItem(STORE,JSON.stringify(value));}catch{/* IndexedDB remains available. */}return window.FurnishStorage.write(value).catch(()=>{});}
+ function cache(value){if(value.v>=3)STORE='huxing-design-v'+value.v;try{localStorage.setItem(STORE,JSON.stringify(value));}catch{/* IndexedDB remains available. */}return window.FurnishStorage.write(value).catch(()=>{});}
  function applyWorkspace(input){
   const next=C.validate(input),drafts=(next.customPlans||[]).map(d=>FurnishDraft.build(next.work[d.id].architecture.draft));
   // Drop custom plans registered from a stale cache before applying the file list.
@@ -31,7 +31,7 @@
   try{
    try{saved=await window.FurnishStorage.ready;}catch{/* Use localStorage if IndexedDB is unavailable. */}
    if(location.protocol==='file:'){
-    if([2,3].includes(saved?.v)&&(saved.updatedAt||0)>(store.updatedAt||0))applyWorkspace(saved);
+    if([2,3,4].includes(saved?.v)&&(saved.updatedAt||0)>(store.updatedAt||0))applyWorkspace(saved);
     return;
    }
    repositoryClient=FurnishRepositoryStorage.create({request,fingerprint,onChange:()=>syncSaved(),onAcknowledge:({revision})=>{if(storageWiping)return;store._repository={revision,clean:revision};cache(store);}});
@@ -41,7 +41,7 @@
    window.FurnishRepository={flush:()=>repositoryClient.flush(),openRecoveries};
   }catch(e){
    // Do not mark a disconnected file store as saved, or overwrite any cache.
-   if([2,3].includes(saved?.v)&&(saved.updatedAt||0)>(store.updatedAt||0))try{applyWorkspace(saved);}catch{/* Leave invalid data untouched for manual recovery. */}
+   if([2,3,4].includes(saved?.v)&&(saved.updatedAt||0)>(store.updatedAt||0))try{applyWorkspace(saved);}catch{/* Leave invalid data untouched for manual recovery. */}
    const message='仓库设计未能加载，已暂停文件保存。请重启 start-furnish.cmd 后刷新：'+e.message;
    repositoryClient={status:{mode:'error',message},schedule(){},get pending(){return false;},stop(){}};toast(message);
   }finally{if(location.protocol!=='file:'){const button=document.createElement('button');button.className='btn';button.id='repository-recovery';button.textContent='本机恢复副本';button.onclick=openRecoveries;$('#file-save-status').after(button);}repositoryBooting=false;repositoryResume();loading.remove();syncSaved();}

@@ -26,6 +26,7 @@ function applyView(){
   renderSel(); renderMeasure();
   window.FurnishRoomMeasure?.afterRender();
   window.FurnishFloorFinishUI?.afterView();
+  window.FurnishWallTilingUI?.afterView();
   if(globalThis.FurnishDrawing)renderDims();
   if(globalThis.FurnishDrawing)refreshFurnitureLabels();
   refreshHobOpenings();
