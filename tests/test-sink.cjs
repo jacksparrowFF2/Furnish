@@ -50,7 +50,8 @@ const plan={rooms:[],walls:[],doors:[],beams:[]},issue={kind:'test'};assert.notE
  const legacyHost={...host,kitchen:undefined};const slab=ctx.FurnishKitchenModel.countertop(T,legacyHost,new T.MeshStandardMaterial(),[legacyHost,sink]);assert.equal(ray(slab,0,0).length,0);
  // Exercise the actual scene cache as well as its input signature.
  Object.assign(ctx,{mat:(color,options={})=>new T.MeshStandardMaterial({color,...options}),THREE:T,FurnishSinkModel:S,FurnishDesign:D,FurnishProject:{effectivePlan:()=>({})},PLAN:{},M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5});
- vm.runInContext(html.slice(html.indexOf('const asMat ='),html.indexOf('/* ======================= 建筑')),ctx);
+ Object.assign(ctx,{RoundedBoxGeometry:ctx.RoundedBoxGeometry,mat:ctx.mat,FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
+ vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  Object.assign(ctx,{state:{furniture:K.normalize([structuredClone(host),structuredClone(sink)])},furnG:new T.Group(),clearGroup:g=>g.clear(),opt:{furn:true},applyGrow:()=>{},furnitureError:R.modelError,furnitureRenderErrors:new Map(),syncModelErrors:()=>{}});
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
  const refresh=()=>vm.runInContext('buildFurn()',ctx),mesh=id=>ctx.furnG.children.find(o=>o.userData.fid===id);

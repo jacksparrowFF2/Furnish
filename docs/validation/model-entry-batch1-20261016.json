@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-16",
+  "stage": "Shared model entry, batch 1",
+  "scope": [
+    "Shared model-primitives factory",
+    "fridge, fridge_french_drawer, waterheater_flat production factory",
+    "Fridge and flat-heater previews load production modules without index furniture extraction"
+  ],
+  "remaining": [
+    "Laundry and telescopic previews still extract the remaining legacy entry code",
+    "Remaining generic furniture dispatch stays in index.html"
+  ],
+  "checks": {
+    "regressions": 174,
+    "builtInPlans": 12,
+    "cleanCheckoutPreviews": 19,
+    "generatedPreviewSourceCheck": 353,
+    "geometryComparison": {
+      "passed": true,
+      "cases": 204,
+      "types": [
+        "fridge",
+        "fridge_french_drawer",
+        "waterheater_flat",
+        "bed",
+        "sofa",
+        "chair",
+        "table",
+        "desk",
+        "toilet",
+        "washer",
+        "dryer",
+        "waterheater",
+        "tv",
+        "aircon",
+        "custom",
+        "customround",
+        "mirror"
+      ],
+      "compared": [
+        "mesh attributes (position, normal, uv)",
+        "indices",
+        "world transforms",
+        "material values",
+        "shadows",
+        "part metadata"
+      ],
+      "tolerance": "exact serialized equality"
+    },
+    "browser": [
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "seconds": 11.2,
+        "log": "portable-smoke.log"
+      },
+      {
+        "name": "product-rules",
+        "status": "PASS",
+        "seconds": 22,
+        "log": "product-rules.log"
+      },
+      {
+        "name": "workflow-reimport",
+        "status": "PASS",
+        "seconds": 13.9,
+        "log": "workflow-reimport.log"
+      },
+      {
+        "name": "model-entry",
+        "status": "PASS",
+        "seconds": 20.6,
+        "log": "model-entry.log"
+      }
+    ],
+    "browserDetails": [
+      {
+        "mode": "http",
+        "passed": true,
+        "productionPreviews": 2,
+        "main3D": true,
+        "zeroMount": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": [],
+        "external": []
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "productionPreviews": 2,
+        "main3D": true,
+        "zeroMount": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": [],
+        "external": []
+      }
+    ],
+    "productionService": {
+      "passed": true,
+      "server": "scripts/serve.cjs (copied unmodified)",
+      "plan": "1601",
+      "id": "custom_mv37igji",
+      "furniture": 47,
+      "comparison": "saved dimensions, positions, rotation, mirroring and mount height",
+      "inputSha256": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+      "main3D": true,
+      "errors": [],
+      "blockedWrites": [],
+      "isolatedWorkspaceUnchanged": true,
+      "realWorkspaceNeverServed": true
+    },
+    "visualReview": [
+      "HTTP fridge front and angle",
+      "Offline flat heater",
+      "Main application 3D",
+      "Narrow property panel"
+    ]
+  },
+  "initialVerificationIssues": [
+    "New model-entry case initially used nonexistent #fabProp; corrected to existing floating property button, rerun passed",
+    "Initial restricted regression run could not connect to its temporary loopback server; rerun with loopback permission passed",
+    "Narrow-screen assertion now waits for media-query handling and verifies that the actual property panel lies inside the viewport"
+  ],
+  "dataProtection": {
+    "initialWorkspaceSha256": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "finalWorkspaceSha256": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "unchangedDuringTask": true,
+    "excludedFromCodeCommit": true,
+    "localOriginalsPreserved": 225,
+    "localOriginalsCheck": "all sha256 equal to output-cleanup-before.json",
+    "backups": ".local/model-entry-batch1-20261016"
+  },
+  "notExecuted": [
+    "Full browser suite (79 registered cases after this batch)",
+    "Physical touch device",
+    "Other browser engines"
+  ],
+  "notes": [
+    "No persisted schema, product dimensions, installation rules or save channels changed",
+    "Browser acceptance uses isolated copies; production service run loaded a copy of the current 1601 snapshot with write API requests blocked"
+  ]
+}

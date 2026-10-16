@@ -1,9 +1,9 @@
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const imports=source.match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
-const model=source.slice(source.indexOf('const asMat ='),source.indexOf('/* ======================= 建筑'));
+const model=source.slice(source.indexOf('const primitives ='),source.indexOf('/* ======================= 建筑'));
 const dir=path.join(root,'output','laundry-stack');fs.mkdirSync(dir,{recursive:true});
-fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh"><meta charset="utf-8"><title>洗烘叠放预览</title><style>body{margin:0;background:#f5f2ed;font:16px sans-serif}header{padding:20px}canvas{width:100%;height:80vh}</style><header>洗衣机：机身 850 mm，Z=0；烘干机：机身 900 mm，Z=870 mm，中间自动连接层 20 mm（布局模型）</header><canvas></canvas>${imports}<script src="../../src/core/cabinet-core.js"></script><script src="../../src/core/product-rules.js"></script><script src="../../src/core/design-core.js"></script><script type="module">
+fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh"><meta charset="utf-8"><title>洗烘叠放预览</title><style>body{margin:0;background:#f5f2ed;font:16px sans-serif}header{padding:20px}canvas{width:100%;height:80vh}</style><header>洗衣机：机身 850 mm，Z=0；烘干机：机身 900 mm，Z=870 mm，中间自动连接层 20 mm（布局模型）</header><canvas></canvas>${imports}<script src="../../src/core/cabinet-core.js"></script><script src="../../src/core/product-rules.js"></script><script src="../../src/core/design-core.js"></script><script src="../../src/render/model-primitives.js"></script><script src="../../src/render/appliance-model.js"></script><script type="module">
 import * as THREE from 'three';import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 const M=v=>v/1000,wx=M,wz=M,rng=()=>()=>.5,mat=(color,o={})=>new THREE.MeshStandardMaterial({color,...o});
 ${model}

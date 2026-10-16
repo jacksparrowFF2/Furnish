@@ -282,6 +282,8 @@
 <script src="src/render/kitchen-model.js"></script>
 <script src="src/render/fotile-model.js"></script>
 <script src="src/core/product-rules.js"></script>
+<script src="src/render/model-primitives.js"></script>
+<script src="src/render/appliance-model.js"></script>
 <script src="src/render/aquarium-model.js"></script>
 <script src="src/render/dishwasher-model.js"></script>
 <script src="src/render/folding-table-model.js"></script>
@@ -582,101 +584,9 @@ function floorMat(kind){
 }
 
 /* ======================= 几何小工具（y = 底面高度） ======================= */
-const asMat = m => typeof m === 'string' ? mat(m) : m;
-const sh = o => { o.castShadow = o.receiveShadow = true; return o; };
-const mesh = (geo, m) => sh(new THREE.Mesh(geo, asMat(m)));
-const rot = (o, x = 0, y = 0, z = 0) => { o.rotation.set(x, y, z); return o; };
-function box(w, h, d, m, x = 0, y = 0, z = 0){
-  const o = mesh(new THREE.BoxGeometry(w, h, d), m); o.position.set(x, y + h/2, z); return o;
-}
-function rbox(w, h, d, m, x = 0, y = 0, z = 0, r = .04){
-  const o = mesh(new RoundedBoxGeometry(w, h, d, 3, Math.min(r, w/2-.001, h/2-.001, d/2-.001)), m); o.position.set(x, y + h/2, z); return o;
-}
-function cyl(rt, rb, h, m, x = 0, y = 0, z = 0, seg = 28){
-  const o = mesh(new THREE.CylinderGeometry(rt, rb, h, seg), m); o.position.set(x, y + h/2, z); return o;
-}
-// 旋转体：pts = [[半径, 高度], …] 自下而上，y = 底面
-function lathe(pts, m, x = 0, y = 0, z = 0, seg = 40){
-  const o = mesh(new THREE.LatheGeometry(pts.map(([r, h]) => new THREE.Vector2(Math.max(r, 1e-4), h)), seg), m); o.position.set(x, y, z); return o;
-}
-// 两点之间的圆杆，r0 在 a 端、r1 在 b 端（收分椅腿、斜撑）
-function rod(a, b, r0, m, r1 = r0, seg = 12){
-  const A = new THREE.Vector3(...a), B = new THREE.Vector3(...b), o = mesh(new THREE.CylinderGeometry(r1, r0, A.distanceTo(B), seg), m);
-  o.position.copy(A).add(B).multiplyScalar(.5); o.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), B.sub(A).normalize()); return o;
-}
-// 沿曲线的圆管（水龙头、扶手、灯臂）
-const tube = (pts, r, m, seg = 40) => mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p)), false, 'centripetal'), seg, r, 10), m);
-// 椭球（靠垫、叶片、豆袋），y = 中心
-function blob(rx, ry, rz, m, x = 0, y = 0, z = 0, seg = 24){
-  const o = mesh(new THREE.SphereGeometry(1, seg, Math.round(seg*.7)), m); o.scale.set(rx, ry, rz); o.position.set(x, y, z); return o;
-}
-// 水平圆环，y = 中心
-function ring(R, r, m, x = 0, y = 0, z = 0){ const o = mesh(new THREE.TorusGeometry(R, r, 10, 48), m); o.rotation.x = Math.PI/2; o.position.set(x, y, z); return o; }
-function rrect(w, d, r){
-  const s = new THREE.Shape(), x = -w/2, y = -d/2; r = Math.min(r, w/2 - .001, d/2 - .001);
-  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + d - r); s.quadraticCurveTo(x + w, y + d, x + w - r, y + d);
-  s.lineTo(x + r, y + d); s.quadraticCurveTo(x, y + d, x, y + d - r); s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s;
-}
-// 中空圆角框（浴缸、水槽沿、椅背框）：外 w×d、壁厚 t、高 h
-function shell(w, d, h, t, r, m, x = 0, y = 0, z = 0){
-  const s = rrect(w, d, r); s.holes.push(rrect(w - 2*t, d - 2*t, Math.max(.004, r - t)));
-  const geo = new THREE.ExtrudeGeometry(s, {depth:h, bevelEnabled:false, curveSegments:10}); geo.rotateX(-Math.PI/2);
-  const o = mesh(geo, m); o.position.set(x, y, z); return o;
-}
-const darker = (hex, k = .8) => '#' + new THREE.Color(hex).multiplyScalar(k).getHexString();
-const lighter = (hex, k = .2) => '#' + new THREE.Color(hex).lerp(new THREE.Color('#ffffff'), k).getHexString();
-// 四条收分腿：inset 为距边距离，r 为腿底半径（顶部略粗）
-const legs = (g, w, d, h, m, inset = .05, r = .02) => [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a, b]) => g.add(rod([a*(w/2-inset), 0, b*(d/2-inset)], [a*(w/2-inset), h, b*(d/2-inset)], r*.7, m, r)));
-const metal = () => mat('#cfd2d4', {metalness:.9, roughness:.25});
-const chrome = () => mat('#eef0f2', {metalness:1, roughness:.08});
-const hwMat = () => mat('#b9b3a8', {metalness:.85, roughness:.3});
-const blackMetal = () => mat('#2b2b2d', {metalness:.6, roughness:.4});
-const mirror = () => mat('#dfeaee', {metalness:.55, roughness:.06});
-const ceramic = (o = {}) => mat('#fbfbf9', {roughness:.12, ...o});
-const fabric = c => mat(c, {roughness:.96});
-const woodM = c => mat(c, {roughness:.55});
-const screenMat = (glow = '#1a2636') => mat('#0b0e13', {roughness:.1, metalness:.3, emissive:glow, emissiveIntensity:.35});
-const glowMat = (c = '#fff4dc', e = '#ffdca0', k = .5) => mat(c, {emissive:e, emissiveIntensity:k, roughness:.9, side:THREE.DoubleSide});
-
-// 拉手：y 为拉手中心，z 为门板正面
-function pull(g, len, vert, x, y, z){
-  const m = hwMat(), o = new THREE.Group();
-  o.add(vert ? box(.01, len, .01, m, 0, -len/2, .028) : box(len, .01, .01, m, 0, -.005, .028));
-  [-1, 1].forEach(s => o.add(vert ? box(.008, .008, .028, m, 0, s*(len/2 - .015) - .004, .014) : box(.008, .008, .028, m, s*(len/2 - .015), -.004, .014)));
-  o.position.set(x, y, z); g.add(o);
-}
-function knob(g, x, y, z){ const k = cyl(.011, .014, .02, hwMat(), x, y - .01, z + .01, 16); k.rotation.x = Math.PI/2; g.add(k, blob(.014, .014, .008, hwMat(), x, y, z + .022, 12)); }
-// 柜门 / 抽屉面板：x0..x0+w、y0..y0+h 区域内 nx 列 × ny 行，正面朝 +z（z = 柜体正面）
-// hd：'bar' 金属拉手 | 'knob' 圆钮 | 'edge' 顶部隐形拉槽 | 'none'；hy：门拉手中心高度（null = 面板中部）
-function fronts(g, x0, y0, w, h, z, nx, ny, m, hd = 'bar', hy = null){
-  const gap = .005, pw = w/nx, ph = h/ny, fz = z + .018;
-  g.add(box(w, h, .002, '#2a2724', x0 + w/2, y0, z + .001));                     // 缝隙里透出的暗色
-  for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++){
-    const cx = x0 + pw*(i + .5), yb = y0 + ph*j, drawer = ph < .4 && pw >= ph;
-    g.add(rbox(pw - gap, ph - gap, .018, m, cx, yb + gap/2, z + .009, .003));
-    if (hd === 'none') continue;
-    if (hd === 'edge'){ g.add(box(pw - .05, .01, .006, '#3c3a37', cx, yb + ph - gap - .018, fz)); continue; }
-    if (drawer){ hd === 'knob' ? knob(g, cx, yb + ph/2, fz) : pull(g, Math.min(.3, pw*.45), false, cx, yb + ph/2, fz); continue; }
-    const len = Math.min(.45, ph*.35), hx = nx === 1 ? cx + pw/2 - .045 : (i % 2 ? cx - pw/2 + .04 : cx + pw/2 - .04);
-    const y = Math.min(yb + ph - .05 - len/2, Math.max(yb + .05 + len/2, hy ?? yb + ph/2));
-    hd === 'knob' ? knob(g, hx, y, fz) : pull(g, len, true, hx, y, fz);
-  }
-}
-const vasePts = (r, h) => [[0, 0], [r*.65, 0], [r, h*.32], [r*.92, h*.62], [r*.42, h*.86], [r*.5, h]];
-function vase(g, x, y, z, r, h, c, R, flowers = true){
-  g.add(lathe(vasePts(r, h), mat(c, {roughness:.35, side:THREE.DoubleSide}), x, y, z, 32));
-  if (!flowers) return;
-  const cols = ['#f3e6d8', '#e8b4a0', '#f6d27a', '#ffffff'];
-  for (let k = 0; k < 5; k++){
-    const a = k*1.26 + R()*.4, s = .03 + R()*.05, top = [x + Math.cos(a)*s, y + h + .12 + R()*.14, z + Math.sin(a)*s];
-    g.add(rod([x, y + h*.6, z], top, .003, '#6f8f4a', .003, 6), blob(.022, .018, .022, cols[k % 4], ...top, 12));
-  }
-}
-function tableLamp(g, x, y, z, s = 1){
-  g.add(lathe([[0, 0], [.06*s, 0], [.075*s, .05*s], [.08*s, .12*s], [.055*s, .2*s], [.018*s, .25*s], [.012*s, .3*s]], ceramic({roughness:.3}), x, y, z, 32));
-  g.add(lathe([[.13*s, 0], [.1*s, .18*s]], glowMat('#f6ecd9', '#ffdca0', .35), x, y + .26*s, z, 40), blob(.03*s, .03*s, .03*s, glowMat('#fff', '#ffe2b0', 1), x, y + .31*s, z, 12));
-}
-const plate = (g, r, x, y, z) => g.add(lathe([[0, 0], [r*.6, 0], [r*.72, .008], [r, .02]], ceramic({side:THREE.DoubleSide}), x, y, z, 32));
+const primitives = FurnishModelPrimitives.create(THREE,RoundedBoxGeometry,mat);
+const {asMat,sh,mesh,rot,box,rbox,cyl,lathe,rod,tube,blob,ring,rrect,shell,darker,lighter,legs,metal,chrome,hwMat,blackMetal,mirror,ceramic,fabric,woodM,screenMat,glowMat,pull,knob,fronts,vasePts,vase,tableLamp,plate} = primitives;
+const applianceModels = FurnishApplianceModel.create(THREE,RoundedBoxGeometry,{primitives});
 
 /* ======================= 家具模型（局部坐标：背面朝 -z） ======================= */
 // Local X runs along the opening; each leaf has its own depth track.
@@ -995,37 +905,8 @@ function buildFurniture(f){
       g.add(rot(box(.012, .012, .09, cm, fx + .035, .98, bz + .09), -.3));
       break;
     }
-    case 'fridge': {
-      const w = f.w > 850 ? .91 : .7, d = .7;
-      const fm = mat(c, {metalness:.45, roughness:.28}), h = 1.8, fz = d/2 - .05;
-      g.add(box(w - .02, .06, d - .06, '#2a2c2e', 0, 0, -.03), rbox(w, h - .06, d - .05, fm, 0, .06, -.025, .02), box(w - .01, h - .07, .003, '#2a2c2e', 0, .065, fz + .0015));
-      if (w > .85){
-        [-1, 1].forEach(s => { g.add(rbox(w/2 - .004, h - .08, .04, fm, s*w/4, .07, fz + .023, .012)); pull(g, .8, true, s*.035, 1.05, fz + .043); });
-        g.add(box(.1, .14, .003, screenMat('#2a6f8f'), -w/4, 1.25, fz + .044));
-      } else {
-        g.add(rbox(w - .006, 1.06, .04, fm, 0, .72, fz + .023, .012), rbox(w - .006, .64, .04, fm, 0, .07, fz + .023, .012));
-        pull(g, .5, true, -w/2 + .06, 1.05, fz + .043); pull(g, w*.5, false, 0, .64, fz + .043);
-        g.add(box(.08, .1, .003, screenMat('#2a6f8f'), w*.22, 1.4, fz + .044));
-      }
-      break;
-    }
-    case 'fridge_french_drawer': {
-      // Reference envelope 833 × 595 × 1910 mm; front is +Z.
-      const w=.833,d=.595,h=1.91,fz=d/2,white=mat(c,{metalness:.12,roughness:.4}),dark=mat('#303234',{roughness:.55});
-      g.add(box(w,h-.024,d-.036,white,0,.024,-.018));
-      [-1,1].forEach(s=>[-1,1].forEach(t=>g.add(cyl(.012,.014,.024,dark,s*(w/2-.04),0,t*(d/2-.04),16))));
-      // Recessed dark backing remains visible in the seams and handle channels.
-      g.add(box(w-.006,h-.033,.012,dark,0,.025,fz-.03));
-      const panel=(pw,ph,x,y)=>g.add(rbox(pw,ph,.032,white,x,y,fz-.016,.002));
-      panel(w-.008,.400,0,.025);
-      panel(w-.008,.306,0,.460);
-      [-1,1].forEach(s=>panel(w/2-.006,1.102,s*w/4,.800));
-      // Two horizontal recessed grips, no handles beyond the flush front.
-      [.426,.767].forEach(y=>g.add(box(w-.012,.025,.010,dark,0,y,fz-.015),box(w-.012,.004,.013,metal(),0,y+.025,fz-.013)));
-      g.add(box(.048,.208,.002,screenMat('#292e30'),.080,1.425,fz-.0005));
-      [.034,.076,.118].forEach((offset,i)=>g.add(box(.018,.006,.001,glowMat(i===1?'#e8a55d':'#c2d4d4'),.080,1.44+offset,fz+.001)));
-      g.add(box(.029,.003,.001,metal(),w*.39,1.846,fz+.001));
-      break;
+    case 'fridge': case 'fridge_french_drawer': case 'waterheater_flat': {
+      const model=applianceModels.build(f);g.add(...model.children.slice());break;
     }
     case 'toilet': {
       const cer = ceramic(), Rb = w*.45, zc = bz + d*.62, kz = (d*.37)/Rb, cm = chrome();
@@ -1140,45 +1021,6 @@ function buildFurniture(f){
       [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a, b]) => g.add(rod([a*r*.72, 0, b*r*.72], [a*r*.4, sy, b*r*.4], .011, bm)));
       g.add(ring(Math.SQRT2*r*(.72 - .32*.4), .008, bm, 0, .28, 0), cyl(r*.55, r*.55, .02, bm, 0, sy - .01, 0, 32));
       g.add(lathe([[0, 0], [r*.85, 0], [r*.95, .02], [r*.97, .045], [r*.9, .07], [0, .075]], mat(c, {roughness:.6}), 0, sy, 0, 40));
-      break;
-    }
-    case 'waterheater_flat': {
-      // Reference envelope includes the lower cover and short water outlets.
-      // Legacy items without mountHeight keep their original 1650 mm placement.
-      const h=M(FurnishDesign.products().height(f)), base=M(FurnishDesign.products().value(f,'mountHeight')), bottom=h*.062, bodyH=h-bottom;
-      const capW=w*.012, white=mat(c,{roughness:.28}), gray=mat('#aeb0b2',{roughness:.42});
-      const profile=(width,height)=>{
-        const s=new THREE.Shape(),r=Math.min(width/2,height/2),lo=r,hi=height-r;
-        s.moveTo(-width/2,lo);s.lineTo(-width/2,hi);
-        s.absellipse(0,hi,width/2,r,Math.PI,0,true);s.lineTo(width/2,lo);
-        s.absellipse(0,lo,width/2,r,0,-Math.PI,true);s.closePath();return s;
-      };
-      const section=(width,height,length,x,y,m)=>{
-        const geo=new THREE.ExtrudeGeometry(profile(width,height),{depth:length,bevelEnabled:false,curveSegments:32});
-        geo.rotateY(Math.PI/2);const o=mesh(geo,m);o.position.set(x,y,0);return o;
-      };
-      g.add(section(d,bodyH,w-2*capW,-w/2+capW,base+bottom,white));
-      [-1,1].forEach(s=>{
-        g.add(section(d,bodyH,capW*.76,s<0?-w/2+capW*.24:w/2-capW,base+bottom,white));
-        g.add(section(d*.955,bodyH-h*.02,capW*.24,s<0?-w/2:w/2-capW*.24,base+bottom+h*.01,gray));
-      });
-      g.add(rbox(w*.33,h*.048,d*.38,gray,0,base+h*.018,0,h*.012));
-      // 100 mm between water outlets; hot left / cold right facing the front.
-      [[-.05,'#c0463a'],[.05,'#3b7bbf']].forEach(([x,cc])=>{
-        const port=cyl(.01,.01,h*.024,mat(cc,{metalness:.35,roughness:.4}),x*w/.7,base,0,16);
-        port.userData.waterOutlet=cc==='#c0463a'?'hot':'cold';g.add(port);
-      });
-      const panelZ=d*.35,panelY=base+h*.075;
-      g.add(rbox(w*.86,h*.115,d*.11,mat('#17191c',{roughness:.18}),0,panelY,panelZ,h*.018));
-      const faceZ=panelZ+d*.055+.0004;
-      // Small geometric display stays crisp offline without an image texture.
-      [-.23,-.15,-.07].forEach((x,i)=>g.add(box(w*.052,h*.035,.0006,glowMat(['#60b9df','#82b85c','#5cb4d2'][i],'#62b7b6',.4),w*x,panelY+h*.04,faceZ)));
-      const segments=[[0,1,1,0],[0,0,1,0],[0,-1,1,0],[-1,.5,0,1],[-1,-.5,0,1],[1,.5,0,1],[1,-.5,0,1]];
-      [[w*.12,[0,1,2,3,4,6]],[w*.17,[0,2,3,4,5,6]]].forEach(([x,on])=>on.forEach(k=>{
-        const [sx,sy,horizontal]=segments[k],unit=h*.022;
-        g.add(box(horizontal?unit*.8:unit*.14,horizontal?unit*.14:unit*.72,.0007,glowMat('#d5e7ee','#d5e7ee',.35),x+sx*unit*.45,panelY+h*.058+sy*unit,faceZ));
-      }));
-      [.27,.33].forEach(x=>g.add(box(w*.008,h*.01,.0006,'#969ca1',w*x,panelY+h*.05,faceZ)));
       break;
     }
     case 'waterheater': {
@@ -1362,13 +1204,6 @@ function buildFurniture(f){
   if(stack&&stack.height>0&&Math.abs((f.mountHeight??0)-stack.bottom-stack.height)<1e-6){
     const connector=box(M(stack.w),M(stack.height)/g.scale.y,M(stack.d),'#aeb5bb',0,-M(stack.height)/g.scale.y,0);
     connector.userData.laundryConnector=true;g.add(connector);
-  }
-  if(['fridge','fridge_french_drawer'].includes(f.type)){
-    // Scale the complete envelope (including existing handles), keeping the floor datum.
-    const model=new THREE.Group();model.add(...g.children.slice());g.add(model);
-    const bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());
-    model.scale.set(w/size.x,M(FurnishDesign.products().height(f))/size.y,d/size.z);
-    model.position.set(-(bounds.min.x+bounds.max.x)/2*model.scale.x,-bounds.min.y*model.scale.y,-(bounds.min.z+bounds.max.z)/2*model.scale.z);
   }
   if(typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f))FurnishCabinetModel.cutServices(THREE,g,f,{plan:FurnishProject.effectivePlan(PLAN,state)});
   g.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));

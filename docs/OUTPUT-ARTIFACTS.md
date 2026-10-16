@@ -8,7 +8,7 @@
 | 关键模型截图、UI 审视报告、迁移验收 | [验收证据](validation/README.md) | 精选历史证据，后续验收先写 output，再按需归档 |
 | 可复用建模技能 | [Furnish 建模技能](../skills/furnish-modeling/SKILL.md) | 版本化源文件；安装到个人 Codex 时再按需要复制 |
 | 单独预览生成器 | `scripts/preview-*.cjs` | 跟踪源码，生成 HTML 留在 output |
-| 两份原先缺少生成器的预览页面 | `templates/previews/` | 保留页面模板，生成时注入当前离线引擎；热水器使用当前生产家具构造器 |
+| 两份原先缺少生成器的预览页面 | `templates/previews/` | 保留页面模板，生成时注入当前离线引擎；热水器直接加载共用生产模型 |
 | 自动截图、运行日志、往返快照 | `output/` | 本机保留，不提交 |
 
 ## 全新克隆后的预览

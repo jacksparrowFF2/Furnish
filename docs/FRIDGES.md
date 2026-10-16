@@ -23,3 +23,7 @@
 - 实际生产 `buildFurniture` 生成的正面及斜视预览已检查，无明显穿插；截图见 `output/fridges/front.png`、`output/fridges/angle.png`。
 - `node scripts/preview-fridges.cjs` 生成 `output/fridges/preview.html`，可切换正面/斜视。
 - 本次未变更加载方式或远程资源；未单独进行 `file://` 浏览器验收。
+
+## 共用生产入口（2026-10-16）
+
+两种冰箱的实体、外包缩放和材质构造迁入 `src/render/appliance-model.js`，主页面与独立预览调用同一 `create(...).build(f)`。世界位置、旋转、镜像及缓存仍由主页面原流程应用；预览在局部原点展示。生成器只读取入口的离线引擎映射，不再复制整个 `buildFurniture`。本批不改变尺寸、默认高度、把手包络或持久字段；测试及 HTTP／断网文件验收见 [模型入口首批记录](validation/model-entry-batch1-20261016.json)。

@@ -22,6 +22,7 @@ Windows PowerShell 如果阻止运行 npm 的 ps1 启动脚本，可使用 `npm.
 ```sh
 node scripts/verify-browser.cjs --list
 node scripts/verify-browser.cjs cabinet-custom-fronts
+node scripts/verify-browser.cjs model-entry
 node scripts/verify-browser.cjs kitchen-dish-basket dining-plan-order
 node scripts/verify-browser.cjs purchase-relink
 node scripts/verify-browser.cjs --all
