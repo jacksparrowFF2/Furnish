@@ -284,6 +284,7 @@
 <script src="src/core/product-rules.js"></script>
 <script src="src/render/model-primitives.js"></script>
 <script src="src/render/appliance-model.js"></script>
+<script src="src/render/sliding-opening-model.js"></script>
 <script src="src/render/aquarium-model.js"></script>
 <script src="src/render/dishwasher-model.js"></script>
 <script src="src/render/folding-table-model.js"></script>
@@ -590,35 +591,9 @@ const applianceModels = FurnishApplianceModel.create(THREE,RoundedBoxGeometry,{p
 
 /* ======================= 家具模型（局部坐标：背面朝 -z） ======================= */
 // Local X runs along the opening; each leaf has its own depth track.
-function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
-  const group=new THREE.Group(),frame=mat(color,{metalness:.65,roughness:.35});
-  const glass=mat('#d8e5e8',{transparent:true,opacity:.18,depthWrite:false,roughness:.12,side:THREE.DoubleSide});
-  const slim=count===3,edge=Math.min(slim?.016:.028,w/20,h/12),jamb=slim?.009:edge;
-  const rail=Math.min(slim?.024:edge,h/10),bottom=options.floorTrack??!slim;
-  const overlap=edge,clear=w-2*jamb,pw=(clear+(count-1)*overlap)/count,step=pw-overlap;
-  const leafDepth=Math.min(slim?.018:.025,d/(count+1)*.7),track=(d-leafDepth)/count;
-  const low=bottom?Math.min(.008,h/20):.004,high=h-rail,leafH=high-low;
-  const door={kind:'slide',group,leaves:[],open:false,cur:0};
-  [-1,1].forEach(side=>group.add(box(jamb,h,d,frame,side*(w-jamb)/2,0,0)));
-  group.add(box(w,rail,d,frame,0,h-rail,0));
-  if(bottom){const railGroup=new THREE.Group();railGroup.name='floor-track';
-    for(let i=0;i<count;i++)railGroup.add(box(w,low,.004,frame,0,0,(i-(count-1)/2)*track));
-    group.add(railGroup);
-  }
-  for(let i=0;i<count;i++){
-    const leaf=new THREE.Group(),closed=-w/2+jamb+pw/2+step*i,opened=-w/2+jamb+pw/2;
-    leaf.position.set(closed,low,(i-(count-1)/2)*track);
-    leaf.add(box(pw-2*edge,leafH-2*edge,Math.min(.006,leafDepth/2),glass,0,edge,0));
-    [-1,1].forEach(side=>leaf.add(box(edge,leafH,leafDepth,frame,side*(pw-edge)/2,0,0)));
-    [0,leafH-edge].forEach(y=>leaf.add(box(pw-2*edge,edge,leafDepth,frame,0,y,0)));
-    // Recessed slim grip on the leading leaf; no repeated projecting handles.
-    if(i===count-1)leaf.add(box(Math.min(.006,edge*.4),Math.min(.18,leafH*.2),.004,frame,pw/2-edge*.5,leafH*.45,leafDepth/2));
-    group.add(leaf);door.leaves.push({node:leaf,closed,opened,width:pw});
-  }
-  if(options.stackSide==='right')group.scale.x=-1;
-  group.traverse(o=>{o.userData.door=door;});group.userData.slidingDoor=door;
-  return group;
-}
+const slidingModels = FurnishSlidingOpeningModel.create(THREE,{primitives});
+// Architectural openings retain their existing metre-based call signature.
+function buildSlidingDoor(...args){return slidingModels.buildOpening(...args);}
 function animateCurtains(dt){
   for(const curtain of furnG.children.map(g=>g.userData.curtain).filter(Boolean)){
     const target=curtain.open?1:0;if(curtain.cur===target)continue;
@@ -905,8 +880,8 @@ function buildFurniture(f){
       g.add(rot(box(.012, .012, .09, cm, fx + .035, .98, bz + .09), -.3));
       break;
     }
-    case 'fridge': case 'fridge_french_drawer': case 'waterheater_flat': {
-      const model=applianceModels.build(f);g.add(...model.children.slice());break;
+    case 'fridge': case 'fridge_french_drawer': case 'waterheater_flat': case 'washer': case 'dryer': {
+      const model=applianceModels.build(f,{furniture});g.add(...model.children.slice());g.scale.copy(model.scale);break;
     }
     case 'toilet': {
       const cer = ceramic(), Rb = w*.45, zc = bz + d*.62, kz = (d*.37)/Rb, cm = chrome();
@@ -954,20 +929,6 @@ function buildFurniture(f){
       g.add(tube([[fx, h - .02, 0], [fx, h + .1, 0], [fx - .06, h + .13, 0], [fx - .13, h + .09, 0]], .014, cm));
       [-1, 1].forEach(s => g.add(cyl(.02, .02, .04, cm, fx, h, s*.1, 16)));
       g.add(rot(rbox(.08, .16, .3, cer, -w/2 + t + .06, h - .12, 0, .04), 0, 0, -.5), rbox(.22, .05, .16, fabric('#e9e2d6'), fx - .05, h, d/2 - .1, .02));
-      break;
-    }
-    case 'washer': case 'dryer': {
-      const bm = mat(c, {roughness:.35}), R0 = Math.min(w, d)*.25, fz = d/2 - .02;
-      g.add(box(w - .02, .04, d - .04, '#8f969b', 0, 0, -.02), rbox(w, .81, d - .02, bm, 0, .04, -.01, .025));
-      g.add(box(w - .04, .1, .006, lighter(c, .3), 0, .72, fz + .003), rbox(.18, .07, .01, bm, -w/2 + .12, .735, fz + .006, .004));
-      g.add(box(.12, .035, .003, screenMat('#1f6f6a'), w*.14, .745, fz + .007));
-      const kn = cyl(.03, .03, .02, chrome(), -w*.02, .75, fz + .016, 28); kn.rotation.x = Math.PI/2; g.add(kn);
-      const dr = new THREE.Mesh(new THREE.CircleGeometry(R0, 40), mat('#1b1f22', {roughness:.6})); dr.position.set(0, .4, fz + .004); g.add(dr);
-      const rg = new THREE.Mesh(new THREE.TorusGeometry(R0 + .02, .022, 14, 48), mat('#c7cfd5', {metalness:.7, roughness:.25})); rg.position.set(0, .4, fz + .016); sh(rg); g.add(rg);
-      const Rs = R0*1.42, cap = new THREE.Mesh(new THREE.SphereGeometry(Rs, 32, 12, 0, Math.PI*2, 0, .78), mat(f.type === 'dryer' ? '#4a4038' : '#26343d', {roughness:.04, metalness:.2, transparent:true, opacity:.8}));
-      cap.rotation.x = Math.PI/2; cap.position.set(0, .4, fz + .012 - Rs*Math.cos(.78)); g.add(cap);
-      g.add(box(w - .06, .004, .003, '#b9c3ca', 0, .08, fz + .002));
-      g.scale.y = M(FurnishDesign.products().height(f))/.85;
       break;
     }
     case 'crib': {
@@ -1132,9 +1093,7 @@ function buildFurniture(f){
       break;
     }
     case 'slidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
-      const model=buildSlidingDoor(w,d,M(FurnishDesign.products().height(f)),f.type==='slidingdoor'?2:3,c,{floorTrack:FurnishDesign.products().value(f,'floorTrack')});
-      if(f.type==='tripleslidingwindow')model.position.y=M(FurnishDesign.products().value(f,'mountHeight'));g.add(model);g.userData.slidingDoor=model.userData.slidingDoor;
-      break;
+      const model=slidingModels.build(f);g.add(...model.children.slice());g.userData.slidingDoor=model.userData.slidingDoor;break;
     }
     case 'curtain': {
       const height=M(f.h||2400),rodM=woodM('#6b543f'),radius=Math.min(.014,d*.08);
@@ -1199,11 +1158,6 @@ function buildFurniture(f){
     case 'custom': g.add(rbox(w, M(f.h || 800), d, c, 0, 0, 0, .012)); break;
     case 'customround': { const o = cyl(.5, .5, M(f.h || 800), c); o.scale.set(w, 1, d); g.add(o); break; }
     default: g.add(box(w, .8, d, c));
-  }
-  const stack=typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,furniture):null;
-  if(stack&&stack.height>0&&Math.abs((f.mountHeight??0)-stack.bottom-stack.height)<1e-6){
-    const connector=box(M(stack.w),M(stack.height)/g.scale.y,M(stack.d),'#aeb5bb',0,-M(stack.height)/g.scale.y,0);
-    connector.userData.laundryConnector=true;g.add(connector);
   }
   if(typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f))FurnishCabinetModel.cutServices(THREE,g,f,{plan:FurnishProject.effectivePlan(PLAN,state)});
   g.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));

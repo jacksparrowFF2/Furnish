@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-16",
+  "stage": "Shared model entry, batch 2",
+  "precedingCommit": "bb1f657",
+  "scope": [
+    "Washer/dryer body and derived connector in shared appliance builder",
+    "Sliding furniture and architectural openings in shared sliding-opening builder",
+    "All 19 preview generators succeed with only the index offline import map and no index furniture source"
+  ],
+  "remaining": [
+    "Generic furniture dispatcher, scene state, animation loops and world placement intentionally remain in index.html",
+    "The offline engine import map is still read from index.html"
+  ],
+  "checks": {
+    "regressions": 174,
+    "builtInPlans": 12,
+    "cleanCheckoutPreviews": 19,
+    "generatedPreviewSourceCheck": 401,
+    "geometryComparison": {
+      "passed": true,
+      "cases": 338,
+      "types": [
+        "fridge",
+        "fridge_french_drawer",
+        "waterheater_flat",
+        "bed",
+        "sofa",
+        "chair",
+        "table",
+        "desk",
+        "toilet",
+        "washer",
+        "dryer",
+        "waterheater",
+        "tv",
+        "aircon",
+        "custom",
+        "customround",
+        "mirror",
+        "slidingdoor",
+        "tripleslidingdoor",
+        "tripleslidingwindow"
+      ],
+      "comparison": "Against original pre-batch-1 index: exact mesh attribute hashes, indices, world transforms, material values, shadows, outlet/connector tags and sliding leaf ownership",
+      "laundry": "0/1/20/35/1000 mm connectors, rotations, mirroring",
+      "rawOpening": "2/3 leaves, missing/false/true track, missing/left/right stack side"
+    },
+    "browser": [
+      {
+        "name": "model-entry",
+        "status": "PASS",
+        "seconds": 18.9,
+        "log": "model-entry.log"
+      },
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "seconds": 10.6,
+        "log": "portable-smoke.log"
+      },
+      {
+        "name": "product-rules",
+        "status": "PASS",
+        "seconds": 22.1,
+        "log": "product-rules.log"
+      },
+      {
+        "name": "workflow-reimport",
+        "status": "PASS",
+        "seconds": 17.3,
+        "log": "workflow-reimport.log"
+      }
+    ],
+    "browserDetails": [
+      {
+        "mode": "http",
+        "passed": true,
+        "productionPreviews": 4,
+        "main3D": true,
+        "laundryAndSliding": true,
+        "zeroMount": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": [],
+        "external": []
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "productionPreviews": 4,
+        "main3D": true,
+        "laundryAndSliding": true,
+        "zeroMount": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": [],
+        "external": []
+      }
+    ],
+    "productionService": {
+      "passed": true,
+      "server": "scripts/serve.cjs (copied unmodified)",
+      "plan": "1601",
+      "id": "custom_mv37igji",
+      "furniture": 47,
+      "comparison": "saved dimensions, positions, rotation, mirroring and mount height",
+      "inputSha256": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+      "main3D": true,
+      "modelConstructionErrors": 0,
+      "errors": [],
+      "blockedWrites": [],
+      "isolatedWorkspaceUnchanged": true,
+      "realWorkspaceNeverServed": true
+    },
+    "visualReview": [
+      "Fridge front/angle",
+      "Flat heater",
+      "Laundry stack/connector",
+      "Telescopic tracks and stacking-side controls",
+      "390px property drawer",
+      "Current 1601 main application 3D"
+    ],
+    "browserRun": "output/playwright/verification-GTuABJ",
+    "regressionLog": ".local/model-entry-batch2-20261016/check.log"
+  },
+  "initialVerificationIssues": [
+    "Added synthetic washer/dryer/window fixtures omitted catalog colors; normal restore correctly filled them, causing strict JSON equality to fail. Added actual default colors to fixtures; exact refresh assertion retained and final run passed."
+  ],
+  "dataProtection": {
+    "initialWorkspaceSha256": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "finalWorkspaceSha256": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "unchangedDuringBatch": true,
+    "excludedFromCodeCommit": true,
+    "localOriginalsPreserved": 225,
+    "localOriginalsCheck": "all original sha256 equal to output-cleanup-before.json",
+    "backups": ".local/model-entry-batch2-20261016"
+  },
+  "notExecuted": [
+    "Full browser suite (79 registered cases)",
+    "Physical touch device",
+    "Other browser engines"
+  ],
+  "notes": [
+    "Production input, dimensions, root height scales, mount semantics, material cache and opening metadata retained",
+    "No design format or save channel changes",
+    "All service tests use isolated copies, fresh browser storage and no writes to actual workspace"
+  ]
+}

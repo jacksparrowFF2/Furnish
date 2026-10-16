@@ -15,3 +15,5 @@
 验证：`node tests/test-laundry-stack.cjs` 覆盖自动抬高、重复执行不累加、下层高度联动、错位/旋转/穿插/间隙/锁定边界、保存及撤销提交、0/1/35/1000 mm 自定义厚度、非法参数和锁定、连接层实际世界高度和移除后的缓存失效。
 
 生产构造函数预览：`node scripts/preview-laundry-stack.cjs` 生成 `output/laundry-stack/preview.html`。预览中控制屏使用纯色材质，其他机身几何沿用生产代码。浏览器禁止打开本地 file URL，尚未完成视觉验收。
+
+2026-10-16 第二批补记：机身及连接层统一由 `src/render/appliance-model.js` 构造，主页面与预览显式传入家具列表，调用同一设计核心派生叠放关系。机身高度缩放、连接层补偿及外层离地基准保持，预览不再截取入口代码。当前 HTTP 与断网 `file://` 已实际验证，更新范围见 [模型入口第二批](validation/model-entry-batch2-20261016.json)；上文未验收说明为历史记录。

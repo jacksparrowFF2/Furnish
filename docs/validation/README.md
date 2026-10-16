@@ -6,6 +6,7 @@
 - [78 项浏览器全量验收](browser-full-20261016.json)：初始失败名单、修复后逐项通过结果与数据保护范围；[水槽标注前后](../MEASUREMENTS.md#开孔与外沿标签分离2026-10-16-全量浏览器复验)保留实际显示问题证据。
 - [验收脚本归类](script-layout-20261016.json)：源内容一致性、目录变化、兼容入口及迁移后的专项复验。
 - [模型入口第一批](model-entry-batch1-20261016.json)：冰箱／热水器生产模型复用、几何一致性、HTTP／断网文件模式及设计保护范围。
+- [模型入口第二批](model-entry-batch2-20261016.json)：洗烘／三联动复用，全部预览取消模型源码截取，保留机身缩放、连接层和移动门扇链路。
 - [1601 仓库保存验收](repository-saves/1601-saved.png)：设计文件保存提示及当前布置；判定与实机边界见 [仓库保存](../REPOSITORY-SAVES.md)。
 - [区域合并记录](multi-region-merge/merge-validation.json)、[带孔往返记录](multi-region-merge/hole-reimport-validation.json)、[恢复截图](multi-region-merge/hole-reimported.png)：保留原有区域合并证据。
 - 模型截图位于 `models/`，由相应模型文档和 [迁移清单](output-cleanup-20261016.json) 定位。包括鱼缸、水槽、洗碗机、餐边柜、折叠餐桌、扫拖机器人、花洒、沙发、电视柜、热水器和二维遮挡对照。

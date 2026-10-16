@@ -1,16 +1,32 @@
-/* First shared model batch: fridges and flat heater. Input mm; production local geometry in m. */
+/* Shared fridges, flat heater and laundry models. Input mm; local geometry in m. */
 (function(root){
 'use strict';
-const supported=f=>['fridge','fridge_french_drawer','waterheater_flat'].includes(f?.type);
+const supported=f=>['fridge','fridge_french_drawer','waterheater_flat','washer','dryer'].includes(f?.type);
 function create(THREE,RoundedBoxGeometry,options={}){
  const products=options.products||root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
+ const design=options.design||root.FurnishDesign||(typeof require==='function'?require('../core/design-core.js'):null);
  const primitives=options.primitives||(root.FurnishModelPrimitives||(typeof require==='function'?require('./model-primitives.js'):null)).create(THREE,RoundedBoxGeometry);
- const {mesh,box,rbox,cyl,metal,screenMat,glowMat,pull}=primitives;
+ const {mesh,sh,box,rbox,cyl,lighter,chrome,metal,screenMat,glowMat,pull}=primitives;
  const M=v=>v/1000,mat=primitives.mat;
- function build(f){
+ function build(f,context={}){
   if(!supported(f))throw Error('Unsupported appliance model: '+f?.type);
   const g=new THREE.Group(),w=M(f.w),d=M(f.d),c=f.color||'#ddd';
   switch(f.type){
+    case 'washer': case 'dryer': {
+      const bm = mat(c, {roughness:.35}), R0 = Math.min(w, d)*.25, fz = d/2 - .02;
+      g.add(box(w - .02, .04, d - .04, '#8f969b', 0, 0, -.02), rbox(w, .81, d - .02, bm, 0, .04, -.01, .025));
+      g.add(box(w - .04, .1, .006, lighter(c, .3), 0, .72, fz + .003), rbox(.18, .07, .01, bm, -w/2 + .12, .735, fz + .006, .004));
+      g.add(box(.12, .035, .003, screenMat('#1f6f6a'), w*.14, .745, fz + .007));
+      const kn = cyl(.03, .03, .02, chrome(), -w*.02, .75, fz + .016, 28); kn.rotation.x = Math.PI/2; g.add(kn);
+      const dr = new THREE.Mesh(new THREE.CircleGeometry(R0, 40), mat('#1b1f22', {roughness:.6})); dr.position.set(0, .4, fz + .004); g.add(dr);
+      const rg = new THREE.Mesh(new THREE.TorusGeometry(R0 + .02, .022, 14, 48), mat('#c7cfd5', {metalness:.7, roughness:.25})); rg.position.set(0, .4, fz + .016); sh(rg); g.add(rg);
+      const Rs = R0*1.42, cap = new THREE.Mesh(new THREE.SphereGeometry(Rs, 32, 12, 0, Math.PI*2, 0, .78), mat(f.type === 'dryer' ? '#4a4038' : '#26343d', {roughness:.04, metalness:.2, transparent:true, opacity:.8}));
+      cap.rotation.x = Math.PI/2; cap.position.set(0, .4, fz + .012 - Rs*Math.cos(.78)); g.add(cap);
+      g.add(box(w - .06, .004, .003, '#b9c3ca', 0, .08, fz + .002));
+      g.scale.y = M(products.height(f))/.85;
+      break;
+    }
+
     case 'fridge': {
       const w = f.w > 850 ? .91 : .7, d = .7;
       const fm = mat(c, {metalness:.45, roughness:.28}), h = 1.8, fz = d/2 - .05;
@@ -82,6 +98,11 @@ function create(THREE,RoundedBoxGeometry,options={}){
       [.27,.33].forEach(x=>g.add(box(w*.008,h*.01,.0006,'#969ca1',w*x,panelY+h*.05,faceZ)));
       break;
     }
+  }
+  const stack=['washer','dryer'].includes(f.type)?design.laundryStack(f,context.furniture||[]):null;
+  if(stack&&stack.height>0&&Math.abs((f.mountHeight??0)-stack.bottom-stack.height)<1e-6){
+    const connector=box(M(stack.w),M(stack.height)/g.scale.y,M(stack.d),'#aeb5bb',0,-M(stack.height)/g.scale.y,0);
+    connector.userData.laundryConnector=true;g.add(connector);
   }
   if(['fridge','fridge_french_drawer'].includes(f.type)){
     // Scale the complete envelope (including existing handles), keeping the floor datum.

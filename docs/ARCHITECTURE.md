@@ -61,13 +61,15 @@ U 形画布增加三边独立手柄，并保留原外包宽／深／角点手柄
 
 Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` 的兼容性是拆分代码时的约束；三维场景协调与 Three.js 的 data-URL import map 继续保留在入口中。
 
-## 生产模型与预览入口（第一批，2026-10-16）
+## 生产模型与预览入口（分两批，2026-10-16）
 
 `src/render/model-primitives.js` 以普通脚本／Node 共用的 `FurnishModelPrimitives.create(THREE, RoundedBoxGeometry, mat)` 提供原有几何与装饰工具，输入输出仍为 m，底面基准保持。主页面注入原有带缓存和环境反射的材质函数，不另建材质缓存。
 
-`src/render/appliance-model.js` 的 `FurnishApplianceModel.create(THREE, RoundedBoxGeometry, {primitives, products})` 返回 `supported(f)` 和 `build(f)`。第一批支持原冰箱、纯平四门冰箱及扁桶热水器；输入家具仍为 mm。构造器只生成产品局部几何：冰箱在地面，热水器按原规则在内部几何中计入底部离地；不应用 `cx/cy`、旋转、镜像或写入家具。主页面 `buildFurniture()` 继续负责 OBJ 优先、世界放置、镜像、fid、后处理和缓存；不能再给热水器额外叠加一次 mountHeight。
+`src/render/appliance-model.js` 的 `FurnishApplianceModel.create(THREE, RoundedBoxGeometry, {primitives, products, design})` 返回 `supported(f)` 和 `build(f, {furniture})`。支持原冰箱、纯平四门冰箱、扁桶热水器及洗烘设备，输入家具仍为 mm。构造器只生成产品局部几何，不应用 `cx/cy`、旋转、镜像或写入家具。冰箱在地面；热水器按原规则在内部几何中计入底部离地，不能再叠加一次 mountHeight。洗烘机身保留原根组高度缩放，通过显式传入的家具列表共用设计核心派生连接层，连接层高度补偿同一缩放；外层离地仍由主页面或预览放置。主页面 `buildFurniture()` 继续负责 OBJ 优先、世界放置、镜像、fid、后处理和缓存。
 
-冰箱和扁桶热水器独立预览直接加载以上生产模块。生成器仅从入口读取离线 import map，不再按家具源码标记截取模型。洗烘和三联动预览暂沿用剩余入口代码截取，并显式加载抽出的模块，留待后续批次迁移；其余已有专用模型维持原接口。原导入映射、普通脚本加载顺序和 `file://` 离线策略保持，无构建步骤。验收记录见 [模型入口首批](validation/model-entry-batch1-20261016.json)。
+`src/render/sliding-opening-model.js` 的 `FurnishSlidingOpeningModel.create(THREE, {primitives, products})` 返回家具 `build(f)` 与建筑洞口 `buildOpening(w,d,h,count,color,options)`。家具输入 mm，原建筑接口仍用 m；返回原移动门扇／轨道和共享动画元数据。家具窗台仍在内部子组计入，整体姿态由调用者应用。主页面保留 `buildSlidingDoor()` 薄适配函数，原开合、拾取和漫游阻挡继续使用相同对象。
+
+冰箱、热水器、洗烘和三联动四类预览直接加载生产模块；现有全部 19 个预览生成时只从入口读取离线 import map，不再按家具源码标记截取模型。其他已有专用模型维持原接口，剩余通用家具分派仍在入口中。原导入映射、普通脚本加载顺序和 `file://` 离线策略保持，无构建步骤。验收记录见 [首批](validation/model-entry-batch1-20261016.json)与[第二批](validation/model-entry-batch2-20261016.json)。
 
 ## 数据与规则
 

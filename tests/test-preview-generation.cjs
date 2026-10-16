@@ -26,17 +26,17 @@ try{
   new vm.Script(classic.join('\n;\n'),{filename:name});
   for(const [,link] of html.matchAll(/\bhref="([^"]+)"/g)){if(/^(?:https?:|data:|#)/.test(link))continue;assert.ok(fs.existsSync(path.resolve(path.dirname(file),link)),name+' has a broken local link: '+link);}
  }
- // Migrated viewers must also generate when index contains only the engine map.
+ // Every viewer must also generate when index contains only the engine map.
  // Deliberately remove every furniture source marker and constructor.
  const engine=fs.readFileSync(path.join(temporary,'index.html'),'utf8').match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
  fs.writeFileSync(path.join(temporary,'index.html'),'<!doctype html>'+engine);
- run('preview-fridges.cjs');run('preview-waterheater-flat.cjs');
- for(const name of ['fridges/preview.html','waterheater-flat-preview.html']){
+ run('generate-previews.cjs');
+ for(const [name,module] of [['fridges/preview.html','appliance-model.js'],['waterheater-flat-preview.html','appliance-model.js'],['laundry-stack/preview.html','appliance-model.js'],['telescopic/preview.html','sliding-opening-model.js']]){
   const source=fs.readFileSync(path.join(temporary,'output',name),'utf8');
-  assert.ok(source.includes('appliance-model.js'),name+' missing production module');
-  assert.ok(!source.includes('function buildFurniture(')&&!source.includes('FURNISH_MODEL'),name+' still contains copied application code');
+  assert.ok(source.includes(module),name+' missing production module');
+  assert.ok(!source.includes('switch (f.type)')&&!source.includes('FURNISH_MODEL'),name+' still contains copied application code');
  }
- console.log('PASS clean-checkout generation of 19 previews, independent appliance viewers without index model code, standalone dependency recovery, offline engines, script syntax and local links');
+ console.log('PASS clean-checkout generation of 19 previews without index model code, standalone dependency recovery, offline engines, script syntax and local links');
 }finally{
  // Only delete the unique test checkout under the resolved system temp directory.
  assert.ok(path.resolve(temporary).startsWith(temporaryParent+path.sep));
