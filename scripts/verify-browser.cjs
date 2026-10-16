@@ -14,10 +14,13 @@ async function worker(name){
  const config=V.configuration(),file=cases().get(name);if(!file)throw Error('Unknown browser case '+name);
  if(file.endsWith('.cjs')){require(path.join(__dirname,file));return;}
  const browser=await V.launch();try{
-  const page=await browser.newPage();if(name==='tank-preview')await page.goto(config.baseURL+'output/robot-p20max/preview.html');
+  const page=await browser.newPage();if(name==='tank-preview')await page.goto(config.baseURL+'output/robot-p20max/preview.html');else if(name==='cabinet-panel')await page.goto(config.baseURL+'index.html');
   const source=fs.readFileSync(path.join(__dirname,file),'utf8');
   const verify=new Function('return ('+source+'\n);')();
   const result=await verify(page,config);if(failed(result))throw Error(JSON.stringify(result));console.log(JSON.stringify({case:name,status:'PASS',result}));
+ }catch(error){
+  let i=0;for(const context of browser.contexts())for(const p of context.pages())if(p.url()!=='about:blank'&&!p.isClosed())try{const target=config.output('playwright/failures/'+name+'-'+(++i));await p.screenshot({path:target+'.png'});fs.writeFileSync(target+'.json',JSON.stringify(await p.evaluate(()=>({url:location.href,text:document.body.innerText,selection:typeof selIds==='function'?selIds():[],furniture:typeof state!=='undefined'?state.furniture:[]})),null,2));}catch{/* Preserve the original error. */}
+  throw error;
  }finally{await browser.close();}
 }
 function child(args,options={}){
@@ -29,7 +32,8 @@ async function main(args=process.argv.slice(2)){
  const registry=cases();if(args[0]==='--worker'){await worker(args[1]);return;}
  if(args.includes('--list')){for(const name of registry.keys())console.log(name);return;}
  if(args.includes('--help')){console.log('node scripts/verify-browser.cjs [case ... | --all | --list]\nDefault: portable-smoke (HTTP and offline file://). Optional environment: FURNISH_VERIFY_URL (bind a dedicated loopback origin), FURNISH_BROWSER_CHANNEL, FURNISH_BROWSER_PATH, FURNISH_VERIFY_HEADED=1, FURNISH_VERIFY_TIMEOUT (ms).');return;}
- const selected=plan(args.includes('--all')?[...registry.keys()]:args.length?args:['portable-smoke']);
+ const keepGoing=args.includes('--keep-going'),names=args.filter(arg=>arg!=='--keep-going');
+ const selected=plan(names.includes('--all')?[...registry.keys()]:names.length?names:['portable-smoke']);
  // Validate dependency installation and URL before copying or starting work.
  V.loadPlaywright();V.configuration();
  const output=path.join(V.projectRoot,'output/playwright');fs.mkdirSync(output,{recursive:true});
@@ -44,7 +48,7 @@ async function main(args=process.argv.slice(2)){
  const prepared=await child([path.join(root,'scripts/generate-previews.cjs')]);fs.writeFileSync(path.join(run,'previews.log'),prepared.output);if(prepared.code!==0)throw Error('Preview preparation failed: '+prepared.output);
  const server=await V.staticServer(root,process.env.FURNISH_VERIFY_URL),env={...process.env,FURNISH_VERIFY_ROOT:root,FURNISH_VERIFY_URL:server.baseURL},results=[];
  console.log('Isolated browser verification: '+run+'\nStatic service: '+server.baseURL);
- try{for(const name of selected){console.log('RUN '+name);const started=Date.now(),result=await child([__filename,'--worker',name],{env});fs.writeFileSync(path.join(run,name+'.log'),result.output);results.push({name,status:result.code===0?'PASS':'FAIL',seconds:Math.round((Date.now()-started)/100)/10,log:name+'.log'});console.log(results.at(-1).status+' '+name);if(result.code!==0){console.error(result.output.slice(-6000));break;}}}
+ try{for(const name of selected){console.log('RUN '+name);const started=Date.now(),result=await child([__filename,'--worker',name],{env});fs.writeFileSync(path.join(run,name+'.log'),result.output);results.push({name,status:result.code===0?'PASS':'FAIL',seconds:Math.round((Date.now()-started)/100)/10,log:name+'.log'});fs.writeFileSync(path.join(run,'results.json'),JSON.stringify({selected,results,notRun:selected.slice(results.length)},null,2));console.log(results.at(-1).status+' '+name);if(result.code!==0){console.error(result.output.slice(-6000));if(!keepGoing)break;}}}
  finally{await server.close();fs.writeFileSync(path.join(run,'results.json'),JSON.stringify({selected,results,notRun:selected.slice(results.length)},null,2));console.log('Results: '+path.join(run,'results.json'));}
  if(results.some(r=>r.status==='FAIL'))throw Error('Browser verification failed; inspect the case log.');
 }

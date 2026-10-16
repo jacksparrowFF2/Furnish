@@ -19,7 +19,7 @@ async (page,verification)=>{
   check(JSON.stringify(await read())===baseline,'modular wall cabinet preserves distances');
   check(await p.locator('[data-edit-overlay="directional-distance"]').count()===4,'four canvas labels');
   check((await p.locator('[data-distance-row="b"]').innerText()).includes('70 mm'),'property panel uses corrected bottom distance');
-  check((await p.locator('#panel').innerText()).includes('排除高度明确分离'),'panel documents height filter');
+  await p.getByText('测量参照与规则',{exact:true}).click();check((await p.locator('#panel').innerText()).includes('高度明确分离的家具不参与'),'panel documents height filter');
   await p.screenshot({animations:'disabled',path:dir+'desktop.png'});
   await p.locator('#directional-measure-save').click();check(await p.evaluate(()=>state.measures.length===4),'save four fixed measurements');
   const saved=await p.evaluate(()=>JSON.stringify(state.measures));await p.keyboard.press('Control+z');check(await p.evaluate(()=>state.measures.length===0),'undo saved measurements');await p.keyboard.press('Control+y');check(await p.evaluate(()=>JSON.stringify(state.measures))===saved,'redo saved measurements');

@@ -19,7 +19,7 @@ async (page,verification)=>{
   await structure();await heights(0,3900,4000);await p.locator('#dlgClose').click();check(!(await issues()).some(v=>v.id==='peg'),'high beam clear');
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();check((await issues()).some(v=>v.id==='peg'&&!v.pending),'undo beam');await p.getByRole('button',{name:'重做',exact:true}).first().click();check(!(await issues()).some(v=>v.id==='peg'),'redo beam');
   await structure();await p.locator('#beam-bottom-0').fill('500');await p.locator('[data-beam-cancel="0"]').click();check(await p.locator('#beam-bottom-0').inputValue()==='3900','cancel input');
-  await heights(0,'','');check((await p.locator('[data-beam-form="beam-door"] [data-beam-status]').innerText()).includes('待录入'),'clear unknown');await heights(0,1850,2200);
+  await heights(0,'','');check(await p.evaluate(()=>state.architecture.draft.beams[0].bottomHeight===undefined&&state.architecture.draft.beams[0].topHeight===undefined),'clear removes both heights');check((await p.locator('[data-beam-form="beam-door"] [data-beam-status]').innerText()).includes('待核对'),'clear unknown');await heights(0,1850,2200);
   await p.screenshot({path:root+'output/playwright/beam-heights/'+mode+'-heights.png'});await p.locator('#dlgClose').click();
   await p.locator('[data-view="3d"]').click();await p.waitForFunction(()=>document.querySelector('#stage').classList.contains('is3d')&&!document.querySelector('#stage').classList.contains('animating'));
   check(await p.locator('#view3d canvas').count()>0,'3D canvas');

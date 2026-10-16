@@ -23,11 +23,11 @@ async (page,verification)=>{
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();
   check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'undo original');
   await p.getByRole('button',{name:'重做',exact:true}).first().click();
-  await p.locator('#cabinet-edit').click();await p.locator('#cab-template').selectOption('entry-pegboard');
+  const wallSaved=await p.evaluate(id=>JSON.stringify(getF(id)),id);await p.locator('#cabinet-edit').click();await p.locator('#cab-kitchen-fields').waitFor();await p.getByRole('button',{name:'取消',exact:true}).click();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===wallSaved,'wall draft routing and cancel preserve legacy structure');await p.getByRole('button',{name:'撤销',exact:true}).first().click();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'return to generic template');check(await p.evaluate(f=>{const changed=FurnishDesign.applyCabinetTemplate(JSON.parse(f),'entry-pegboard');return changed.type==='cabinet'&&!Object.hasOwn(changed,'mountHeight');},wallSaved),'shared template replacement clears wall installation');await p.evaluate(id=>selectIds([id]),id);await p.locator('#cabinet-edit').click();await p.locator('#cab-template').selectOption('entry-pegboard');
   await p.getByRole('button',{name:'保存柜体设计',exact:true}).click();
   check(await p.evaluate(id=>{const f=getF(id);return f.type==='cabinet'&&!Object.hasOwn(f,'mountHeight')&&f.cabinet.template==='entry-pegboard';},id),'floor template clears installation');
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();
-  check(await p.evaluate(id=>getF(id).mountHeight===1480,id),'undo restores installation');
+  check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'undo restores valid generic cabinet');
   await p.getByRole('button',{name:'重做',exact:true}).first().click();
   await p.waitForTimeout(800);await p.reload();
   check(await p.evaluate(id=>getF(id)?.cabinet?.template==='entry-pegboard'&&!Object.hasOwn(getF(id),'mountHeight'),id),'refresh persistence');

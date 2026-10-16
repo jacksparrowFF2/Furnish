@@ -63,7 +63,7 @@ function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims}={})
     if(!m)continue;const {a,b}=m,L=Math.hypot(b.x-a.x,b.y-a.y),nx=L>1e-7?-(b.y-a.y)/L*font*.2:font*.2,ny=L>1e-7?(b.x-a.x)/L*font*.2:0;
     // Keep orange hole margins apart from the green footprint clearances.
     // Offsets are in drawing display axes, so they remain readable after rotation.
-    const rad=drawingRotation()*Math.PI/180,horizontal=Math.abs((b.x-a.x)*Math.cos(rad)-(b.y-a.y)*Math.sin(rad))>=Math.abs((b.x-a.x)*Math.sin(rad)+(b.y-a.y)*Math.cos(rad)),dx=horizontal?0:font*4.6,dy=horizontal?font*1.1:0;
+    const rad=drawingRotation()*Math.PI/180,horizontal=Math.abs((b.x-a.x)*Math.cos(rad)-(b.y-a.y)*Math.sin(rad))>=Math.abs((b.x-a.x)*Math.sin(rad)+(b.y-a.y)*Math.cos(rad)),dx=horizontal?0:font*7.2,dy=horizontal?font*1.1:0;
     marks+=`<g data-hob-gap="${dir}"><title>${esc(tr('产品方向 · 孔边 → ','Product axes · cutout edge → ')+measurementReferenceName(m))}</title><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" ${stroke}/>${text([(a.x+b.x)/2,(a.y+b.y)/2],`${names[dir]} ${fmt(m.distance)} mm`,dx,dy)}</g>`;
    }
   }
