@@ -8,7 +8,8 @@ function validate(data){
  if(data===undefined)return;
  if(!data||data.version!==1||Object.keys(data).some(k=>!['version','areas'].includes(k))||!data.areas||Array.isArray(data.areas)||typeof data.areas!=='object'||Object.keys(data.areas).length>500)throw Error('地面完成面数据无效');
  for(const [id,s] of Object.entries(data.areas)){
-  if(!id||id.length>200||['__proto__','prototype','constructor'].includes(id)||!s||typeof s!=='object'||Array.isArray(s)||Object.keys(s).some(k=>!['rawZ','tileThickness','baseThickness','mode','targetZ','reference','drop','layout'].includes(k)))throw Error('地面区域设置无效');
+  if(!id||id.length>200||['__proto__','prototype','constructor'].includes(id)||!s||typeof s!=='object'||Array.isArray(s)||Object.keys(s).some(k=>!['enabled','rawZ','tileThickness','baseThickness','mode','targetZ','reference','drop','layout'].includes(k)))throw Error('地面区域设置无效');
+  if(s.enabled!==undefined&&typeof s.enabled!=='boolean')throw Error('地面启用状态须为布尔值');
   for(const k of ['rawZ','targetZ'])if(s[k]!==undefined&&(!finite(s[k])||Math.abs(s[k])>20000))throw Error('毛坯／目标标高须为 −20000–20000 mm');
   for(const k of ['tileThickness','baseThickness','drop'])if(s[k]!==undefined&&(!finite(s[k])||s[k]<0||s[k]>1000))throw Error('地面厚度／降低量须为 0–1000 mm；未知请留空');
   if(!['layers','level','reference'].includes(s.mode))throw Error('地面标高模式无效');
@@ -23,9 +24,30 @@ function defaults(room,setting={}){
  const mat=setting.mat||room.mat,size=mat==='tile600'?600:mat==='antislip'?300:800;
  return {rawZ:0,mode:setting.use==='bathroom'?'reference':'layers',...(setting.use==='bathroom'?{drop:5}:{}),...(tiled(mat)?{layout:{width:size,height:size,gap:2,angle:0,origin:[...(room.at||room.poly[0])]}}:{})};
 }
+function setEnabled(work,plan,ids,enabled){
+ if(typeof enabled!=='boolean'||!Array.isArray(ids))throw Error('地面启用操作无效');
+ const next=clone(work),areas=next.floorFinishes?.areas||{};
+ for(const id of new Set(ids)){
+  const room=plan.rooms.find(r=>r.id===id&&r.counted!==false);if(!room)throw Error('地面区域已变化，请重新打开列表');
+  if(enabled){areas[id]=areas[id]||defaults(room,work.rooms?.[id]);delete areas[id].enabled;}
+  else if(areas[id])areas[id].enabled=false;
+ }
+ if(Object.keys(areas).length)next.floorFinishes={version:1,areas};validate(next.floorFinishes);return next;
+}
+function setLayoutBasis(work,plan,ids,basis){
+ if(!Array.isArray(ids)||!ids.length||!basis||Object.keys(basis).some(k=>!['origin','angle'].includes(k))||!Array.isArray(basis.origin)||basis.origin.length!==2||!basis.origin.every(n=>finite(n)&&Math.abs(n)<=1e6)||basis.angle!==undefined&&(!finite(basis.angle)||Math.abs(basis.angle)>360))throw Error('统一起铺点须为有效原图坐标，方向须为 −360–360°');
+ const next=clone(work),areas=next.floorFinishes?.areas||{};
+ for(const id of new Set(ids)){
+  const room=plan.rooms.find(r=>r.id===id&&r.counted!==false);
+  if(!room||!tiled(work.rooms?.[id]?.mat||room.mat))throw Error('瓷砖区域已变化，请重新打开统一起铺点');
+  const initial=defaults(room,work.rooms?.[id]),s=areas[id]||(areas[id]={...initial,enabled:false});
+  s.layout={...(s.layout||initial.layout),origin:basis.origin.slice(),...(basis.angle!==undefined?{angle:basis.angle}:{})};
+ }
+ next.floorFinishes={version:1,areas};validate(next.floorFinishes);return next;
+}
 function derive(plan,work){
  validate(work.floorFinishes);if(!work.floorFinishes)return plan;
- const areas=Object.create(null),pending=[],records=work.floorFinishes.areas,rooms=(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan).rooms.filter(r=>r.counted!==false);
+ const areas=Object.create(null),pending=[],records=Object.fromEntries(Object.entries(work.floorFinishes.areas).filter(([,s])=>s.enabled!==false)),rooms=(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan).rooms.filter(r=>r.counted!==false);
  function resolve(id,trail=[]){
   if(areas[id])return areas[id];const s=records[id],room=rooms.find(r=>r.id===id);
   if(!s||!room)return null;
@@ -74,6 +96,15 @@ function cells(room,layout,limit=20000){
   if(pieces.length)result.push({x,y,polys:pieces});
  }return result;
 }
+// Compare every candidate with the original pointer: nearby vertices must not chain.
+function snapOrigin(point,rooms,tolerance){
+ let distance=tolerance,result={point:point.slice(),snapped:false};
+ for(const room of rooms)for(const ring of room.rings||[room.poly])for(const corner of ring){
+  const d=Math.hypot(corner[0]-point[0],corner[1]-point[1]);
+  if(d<=distance&&(!result.snapped||d<distance)){distance=d;result={point:corner.slice(),snapped:true,roomId:room.id};}
+ }
+ return result;
+}
 function onlyChange(a,b){const strip=v=>{const c=clone(v);delete c.floorFinishes;return JSON.stringify(c);};return strip(a)===strip(b);}
 function overlaps(a,b){
  const box=p=>[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))],x=box(a),y=box(b);
@@ -98,6 +129,6 @@ function checks(plan,furniture){
  }
  return issues;
 }
-const api={validate,defaults,derive,at,transform,cells,checks,onlyChange,tiled,has:w=>!!w?.floorFinishes};
+const api={validate,defaults,setEnabled,setLayoutBasis,derive,at,transform,cells,snapOrigin,checks,onlyChange,tiled,has:w=>!!w?.floorFinishes};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFloorFinish=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

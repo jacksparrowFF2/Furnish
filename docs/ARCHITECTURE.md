@@ -163,3 +163,9 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-15：模块地柜抽屉可选 `drawerStyle: dish-basket`。产品能力定义三层下限，厨房核心共用样式、层高及内外抽开合联动，生产柜体列派生两块外面板与三层篮架；外部分界和相邻吸附排除隐藏内抽分界。保存仍走编辑器草稿／mutate，完整 kitchen 进入原缓存与核对签名。见 [碗碟篮](KITCHEN-DESIGN.md#碗碟篮两块外面板与三层内部抽篮2026-10-15)。
 
 2026-10-16：`floor-finish-core.js` 统一功能区地面层厚、目标／参考标高及原图直铺网格；`effectivePlan()` 在墙面完成面后派生地面，`floor-finish-model.js` 提供生产层厚实体与同基准 UV。属性通过原 mutate 编辑，空间核对只读取标高与区域几何，纯排版不清确认。新文件外层版本 3，含地面设置后使用独立 v3 缓存，旧项目无设置时保持。见 [地面数据契约](FLOOR-FINISHES.md)。
+
+2026-10-16：区域地砖编辑复用 property-panel 的 mountFabEditor 与浮条停靠布局；floor-finishes 在属性栏／浮动栏使用同一表单及原 mutate，区域列表直接调用 floor-finish-core.setEnabled。可选 enabled:false 关闭但保留参数，派生时排除关闭区域及失效参考；无新保存通道。见 [浮动地面编辑](FLOOR-FINISHES.md#浮动编辑与区域列表2026-10-16)。
+
+2026-10-16：起铺点通过 floor-finish-core.snapOrigin 比较区域完成面角点，UI 用真实屏幕矩阵换算 12 px 阈值。临时 gFloorOrigin 标记带 data-edit-overlay，随 applyView 重绘、取消或关闭清理，不进入状态或成果导出；点击仅改表单，应用仍走 mutate。
+
+2026-10-16：区域列表可打开全屋统一起铺点浮动表单，与单区域共用 bindOriginPicker。floor-finish-core.setLayoutBasis 只批量写现有 layout.origin／可选 angle，保持其它设置及开关；旧区域预设以 enabled:false 保存，不建立全局字段或隐式关联。一次 mutate 完成批量应用，仍可逐区独立修改。见 [统一起铺点](FLOOR-FINISHES.md#全区域统一起铺点)。

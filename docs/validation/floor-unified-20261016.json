@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "scope": "全瓷砖区域统一起铺点及可选同步方向",
+  "node": {"command": "node scripts/check.cjs", "passed": true, "suites": 178, "builtInPlans": 12, "previewPages": 1345, "log": "output/floor-unified-check.log"},
+  "browser": {
+    "passed": true,
+    "run": "output/playwright/verification-HWqT0Z",
+    "cases": ["floor-unified", "floor-origin", "floor-controls", "floor-finishes", "floating-toolbar"],
+    "coverage": ["HTTP 与离线 file://", "旧区域只保存关闭预设且层厚未知", "统一坐标与可选方向同步", "批量操作单步撤销重做", "刷新保留", "图上角点吸附与草稿不落盘", "标高／尺寸／砖缝／开关保留", "重新启用后卫生间低 5 mm", "后续逐区独立修改", "无效输入原子拒绝", "取消及 390 px 窄屏"],
+    "pageErrors": 0,
+    "visualReviewed": true
+  },
+  "demo": {"independentCopy": true, "regions": 9, "originOnlyPreservesOtherFields": true, "optionalDirection": true, "singleBatchUndo": true, "furnitureAndStructureUnchanged": true, "originalProjectUnchanged": true, "existingUncommittedTestUnchanged": true, "desktopAnd390px": true, "evidence": "output/demos/1601-floor-finishes/unified-verification.json"},
+  "compatibility": {"newPersistentFields": false, "legacyInactivePreserved": true, "unknownThicknessPreserved": true, "regionalSettingsPreserved": true, "batchSingleMutation": true, "independentEditsAfterBatch": true},
+  "notRun": ["全量浏览器用例", "真实触屏硬件"],
+  "boundaries": ["仅当前瓷砖且计入面积的区域", "共用起点不保证不同尺寸／缝／方向的网格全部对齐", "一次批量写入已有字段，不建立持续关联"]
+}

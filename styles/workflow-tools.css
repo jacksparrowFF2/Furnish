@@ -121,3 +121,28 @@ main.drawer-panel #fab-editor{visibility:hidden}
 .fab-docked-right .space-status{max-width:calc(100% - var(--fab-dock-width) - 24px)}
 main.drawer-panel #fab-dock{visibility:hidden}
 @media print{#fab-dock{display:none!important}.fab-docked-top #plan,.fab-docked-right #plan{width:100%!important;height:100%!important;margin-top:0!important}}
+
+/* The same floor form works in Properties and the selected-room floating editor. */
+:is([data-floor-room],[data-floor-unified]) [hidden]{display:none!important}
+.floor-editor-tabs{display:flex;gap:8px;margin:12px 0}
+#fab-editor :is([data-floor-room],[data-floor-unified])>h3{display:none}
+#fab-editor :is([data-floor-room],[data-floor-unified]) .form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+#fab-editor :is([data-floor-room],[data-floor-unified]) input,#fab-editor :is([data-floor-room],[data-floor-unified]) select{min-width:0;width:100%}
+#fab-editor :is([data-floor-room],[data-floor-unified]) input[type=checkbox]{width:auto}
+#fab-editor :is([data-floor-room],[data-floor-unified]) label{min-width:0;display:block}
+#fab-editor :is([data-floor-room],[data-floor-unified]) p{font-size:12px}
+#fab-editor :is([data-floor-room],[data-floor-unified]) .form label{font-size:12px}
+#fab-editor :is([data-floor-room],[data-floor-unified]) .form input,#fab-editor :is([data-floor-room],[data-floor-unified]) .form select{min-height:36px;padding:7px 9px}
+#fab-editor [data-floor-section]>p.muted{display:none}
+#fab-editor :is([data-floor-room],[data-floor-unified]) h4{margin:8px 0}
+#fab-editor .floor-editor-actions{position:sticky;bottom:-14px;padding:10px 0;background:var(--panel)}
+.floor-region-row{display:grid;grid-template-columns:minmax(110px,1fr) minmax(0,2fr) auto;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.floor-region-row label{display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0}
+.floor-region-row input{width:20px;height:20px;flex:none;accent-color:var(--accent-ink)}
+.floor-region-row p{margin:4px 0;font-size:12px;overflow-wrap:anywhere}
+.floor-region-row small{color:var(--muted)}
+@media(max-width:600px){.floor-region-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.floor-region-row>div{grid-column:1;grid-row:2}.floor-region-row>button{grid-column:2;grid-row:1 / 3}}
+/* Floor origin picking is transient and never changes the project until Apply. */
+#plan.floor-origin-picking,#plan.floor-origin-picking *{cursor:crosshair!important}
+.floor-pick-status{font-size:12px;line-height:1.5;color:#087f5b;margin:8px 0}
+.btn.floor-pick-active{background:#087f5b;color:white;border-color:#087f5b}

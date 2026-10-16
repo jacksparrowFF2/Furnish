@@ -52,7 +52,7 @@ function renderBrokenFurniturePanel(f,p){
 function renderFab(){
   const fab = $('#fab'), ids = selIds(), f = ids.length === 1 && getF(ids[0]), r = ui.sel?.kind === 'room' && ROOMS.find(r => r.id === ui.sel.id);
   closeFabEditor(false);
-  if(!ids.length)clearFabDock();
+  if(!ids.length&&!r)clearFabDock();
   fab.removeAttribute('style');
   fab.setAttribute('role','toolbar');fab.setAttribute('aria-label',tr('选中对象快捷调整','Selection quick adjustments'));
   if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){fab.innerHTML=`<span class="name">${tr('测量线','Measurement')}</span><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');return;}
@@ -66,7 +66,7 @@ function renderFab(){
       + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
       + b('lock', selItems().every(x => x.locked) ? 'lock' : 'unlock', tr('锁定 / 解锁', 'Lock / unlock')) + b('dup', 'copy', tr('复制一份', 'Duplicate')) + b('del', 'trash', tr('删除', 'Delete'), 'danger')
       + `<span class="sep"></span><button class="btn" data-act="prop">${tr('属性','Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button></div>`
-    : `<span class="name">${esc(nm(state.rooms[r.id].name))}</span><button class="btn" data-act="roomFurn">${tr('选中房间内家具','Select its furniture')}</button><button class="btn narrow-only" data-act="prop">${tr('地面 / 属性','Floor / Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;
+    : `<div class="fab-primary"><span class="name">${esc(nm(state.rooms[r.id].name))}</span>${r.counted!==false?'<button class="btn" data-fab-edit="floor" aria-haspopup="dialog" aria-expanded="false">地砖铺贴</button>':''}<button class="btn" data-floor-list>区域列表</button></div><div class="fab-actions"><button class="btn" data-act="roomFurn">${tr('选中房间内家具','Select its furniture')}</button><button class="btn narrow-only" data-act="prop">${tr('地面 / 属性','Floor / Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button></div>`;
   fab.classList.add('show');
   fab.querySelectorAll('[data-fab-edit]').forEach(b=>b.onclick=()=>openFabEditor(b.dataset.fabEdit));
   queueFabPosition();
@@ -82,7 +82,23 @@ function closeFabEditor(focus=true){
   if(focus)button?.focus({preventScroll:true});
   queueFabPosition();
 }
+function mountFabEditor(kind,title,content,{allowCanvas,dispose}={}){
+  const panel=document.createElement('div');
+  panel.id='fab-editor';panel.setAttribute('role','dialog');panel.setAttribute('aria-labelledby','fab-editor-title');
+  panel.innerHTML=`<div class="fab-editor-head"><b id="fab-editor-title">${esc(title)}</b><button class="btn" data-fab-close aria-label="${tr('关闭快捷调整','Close quick adjustments')}">${ico('x')}</button></div>`+content;
+  ($('#fab-dock')||$('#stage')).append(panel);$('#stage').classList.add('fab-editing');
+  const outside=e=>{if(allowCanvas?.()&&e.target.closest('#plan'))return;if(!e.target.closest('#fab,#fab-editor'))closeFabEditor(false);};
+  document.addEventListener('pointerdown',outside,true);
+  const keydown=e=>{if(e.key==='Escape'&&!allowCanvas?.()){e.preventDefault();e.stopPropagation();closeFabEditor();}};
+  document.addEventListener('keydown',keydown,true);
+  fabEditor={kind,dispose:()=>{dispose?.();document.removeEventListener('pointerdown',outside,true);document.removeEventListener('keydown',keydown,true);}};
+  panel.querySelectorAll('[data-fab-close]').forEach(b=>b.onclick=()=>closeFabEditor());
+  panel.addEventListener('keydown',e=>e.stopPropagation());
+  $(`#fab [data-fab-edit="${kind}"]`)?.setAttribute('aria-expanded','true');
+  queueFabPosition();return panel;
+}
 function openFabEditor(kind){
+  if(kind==='floor'){if(fabEditor?.kind===kind)closeFabEditor();else window.FurnishFloorFinishUI?.openFloating();return;}
   if(fabEditor?.kind===kind){closeFabEditor();return;}
   closeFabEditor(false);
   const items=selItems(),f=items.length===1&&items[0];if(!items.length)return;
@@ -91,18 +107,10 @@ function openFabEditor(kind){
     if(furnitureUsesDetailedDesign(f)){FurnishCabinetEditor.open(f.id);return;}
     if(FurnishDesign.products().hoodInstallation(f)){ACT.prop();return;}
   }
-  const before=snap(),planId=PLAN.id,ids=selIds().join('\n'),panel=document.createElement('div');
-  panel.id='fab-editor';panel.setAttribute('role','dialog');panel.setAttribute('aria-labelledby','fab-editor-title');
+  const before=snap(),planId=PLAN.id,ids=selIds().join('\n');
   const title=kind==='size'?tr('调整占地尺寸','Edit footprint size'):tr('四向净距定位','Position by clearance');
-  panel.innerHTML=`<div class="fab-editor-head"><b id="fab-editor-title">${title}</b><button class="btn" data-fab-close aria-label="${tr('关闭快捷调整','Close quick adjustments')}">${ico('x')}</button></div>`
-    +(kind==='size'?`<form id="fab-size-form"><div class="form"><label>${tr('宽','Width')} (mm)<input id="fab-width" type="number" min="50" max="20000" step="any" value="${f.w}" required></label><label>${tr('深','Depth')} (mm)<input id="fab-depth" type="number" min="50" max="20000" step="any" value="${f.d}" required></label></div><p class="muted small">${tr('占地宽 × 深；尺寸修改用于布局缩放。','Footprint width × depth; resizing is for layout.')} ${tr('固定基准','Fixed anchor')}：${tr(...FurnishDesign.resizeAnchors[f.resizeAnchor||'center'])}</p><p id="fab-size-error" class="project-error" role="alert"></p><div class="actions"><button class="btn" type="button" data-fab-close>${tr('取消','Cancel')}</button><button class="btn primary" type="submit">${tr('应用尺寸','Apply size')}</button></div></form>`
-    :directionalMeasurementPanel(items,'fab-distance-save',true));
-  ($('#fab-dock')||$('#stage')).append(panel);$('#stage').classList.add('fab-editing');
-  const outside=e=>{if(!e.target.closest('#fab,#fab-editor'))closeFabEditor(false);};
-  document.addEventListener('pointerdown',outside,true);
-  const keydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeFabEditor();}};
-  document.addEventListener('keydown',keydown,true);
-  fabEditor={kind,dispose:()=>{document.removeEventListener('pointerdown',outside,true);document.removeEventListener('keydown',keydown,true);}};
+  const panel=mountFabEditor(kind,title,(kind==='size'?`<form id="fab-size-form"><div class="form"><label>${tr('宽','Width')} (mm)<input id="fab-width" type="number" min="50" max="20000" step="any" value="${f.w}" required></label><label>${tr('深','Depth')} (mm)<input id="fab-depth" type="number" min="50" max="20000" step="any" value="${f.d}" required></label></div><p class="muted small">${tr('占地宽 × 深；尺寸修改用于布局缩放。','Footprint width × depth; resizing is for layout.')} ${tr('固定基准','Fixed anchor')}：${tr(...FurnishDesign.resizeAnchors[f.resizeAnchor||'center'])}</p><p id="fab-size-error" class="project-error" role="alert"></p><div class="actions"><button class="btn" type="button" data-fab-close>${tr('取消','Cancel')}</button><button class="btn primary" type="submit">${tr('应用尺寸','Apply size')}</button></div></form>`
+    :directionalMeasurementPanel(items,'fab-distance-save',true)));
   panel.querySelectorAll('[data-fab-close]').forEach(b=>b.onclick=()=>closeFabEditor());
   // Keep the app's canvas shortcuts from firing while using this small editor.
   panel.addEventListener('keydown',e=>e.stopPropagation());
@@ -141,7 +149,7 @@ function dockFab(mode,key){
   if(!dock){dock=document.createElement('div');dock.id='fab-dock';stage.append(dock);}
   stage.classList.toggle('fab-docked-top',mode==='top');stage.classList.toggle('fab-docked-right',mode==='right');
   stage.style.setProperty('--fab-dock-width',mode==='right'?Math.min(360,stage.clientWidth*.44)+'px':'0px');
-  stage.style.setProperty('--fab-dock-limit',(mode==='top'?Math.min(360,stage.clientHeight*.5):stage.clientHeight)+'px');
+  stage.style.setProperty('--fab-dock-limit',(mode==='top'?(fabEditor?.kind==='floor'?Math.min(480,stage.clientHeight*.65):Math.min(360,stage.clientHeight*.5)):stage.clientHeight)+'px');
   dock.append(fab);if(editor)dock.append(editor);
   stage.style.setProperty('--fab-dock-bar-height',fab.offsetHeight+'px');
   stage.style.setProperty('--fab-dock-height',mode==='top'?Math.ceil(dock.getBoundingClientRect().height)+'px':'0px');
@@ -155,18 +163,19 @@ function dockFab(mode,key){
 }
 function revealFabSelection(){
   if(typeof drag!=='undefined'&&drag){fabRevealPending=true;return;}
-  if(is3D()||!selIds().length)return;
-  const points=selItems().flatMap(f=>FurnishGeometry.corners(f).map(p=>drawingPoint(p))),xs=points.map(p=>(p[0]-view.x0)*view.s),ys=points.map(p=>(p[1]-view.y0)*view.s);
+  if(is3D()||(!selIds().length&&ui.sel?.kind!=='room'))return;
+  const room=ui.sel?.kind==='room'&&ROOMS.find(r=>r.id===ui.sel.id);
+  const points=room?[drawingPoint(room.at||room.poly[0])]:selItems().flatMap(f=>FurnishGeometry.corners(f).map(p=>drawingPoint(p))),xs=points.map(p=>(p[0]-view.x0)*view.s),ys=points.map(p=>(p[1]-view.y0)*view.s);
   const shift=(values,size)=>{const a=Math.min(...values),b=Math.max(...values);return b-a>size-32?(a+b-size)/2:a<16?a-16:b>size-16?b-size+16:0;};
   const dx=shift(xs,svg.clientWidth),dy=shift(ys,svg.clientHeight);
   if(Math.abs(dx)>.5||Math.abs(dy)>.5){view.x0+=dx/view.s;view.y0+=dy/view.s;applyView();}
 }
 function positionFab(){
-  const fab=$('#fab'),stage=$('#stage');if(!fab?.classList.contains('show')||!selIds().length)return;
+  const fab=$('#fab'),stage=$('#stage');if(!fab?.classList.contains('show')||(!selIds().length&&ui.sel?.kind!=='room'))return;
   // A new selection may be the start of a drag. Keep its pointer mapping stable.
   if(typeof drag!=='undefined'&&drag)return;
   const bounds=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight;
-  const key=[...selIds(),W,H].join('|');
+  const key=[...selIds(),ui.sel?.kind==='room'?ui.sel.id:'',W,H].join('|');
   if(is3D())clearFabDock();
   else if(W<=720||fabDockKey===key){dockFab(W>=600&&H<450||W>720?'right':'top',key);return;}
   else if(fabDockKey)clearFabDock();

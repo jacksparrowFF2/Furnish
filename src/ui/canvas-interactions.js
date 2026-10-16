@@ -25,6 +25,7 @@ function applyView(){
   stageEl.style.setProperty('--gs', gs + 'px'); stageEl.style.setProperty('--gx', off(view.x0)); stageEl.style.setProperty('--gy', off(view.y0));
   renderSel(); renderMeasure();
   window.FurnishRoomMeasure?.afterRender();
+  window.FurnishFloorFinishUI?.afterView();
   if(globalThis.FurnishDrawing)renderDims();
   if(globalThis.FurnishDrawing)refreshFurnitureLabels();
   refreshHobOpenings();

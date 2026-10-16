@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "scope": "地砖起铺点实时吸附、草稿反馈与完成面坐标",
+  "node": {"command": "node scripts/check.cjs", "passed": true, "suites": 177, "builtInPlans": 12, "previewPages": 1329, "log": "output/floor-origin-check-final.log", "note": "本地回环测试须在允许本地服务的权限下运行"},
+  "browser": {
+    "passed": true,
+    "runs": [
+      {"run": "output/playwright/verification-yHMWCs", "cases": ["floor-origin", "floor-controls", "floor-finishes", "floating-toolbar"], "status": "PASS"},
+      {"run": "output/playwright/verification-JYWo52", "cases": ["floor-origin"], "status": "PASS", "note": "最终提示文字摆位调整后的专项复验；生产脚本另通过 node --check"}
+    ],
+    "coverage": ["HTTP 与离线 file://", "12 px 内实时绿色角点吸附及自由点预览", "使用增厚 25 mm 后的区域完成面角点", "旋转视图与缩放后保留原图坐标", "移动和点击仅更新草稿", "点击后保留待应用标记", "Esc 取消及关闭清理", "应用、撤销重做和刷新", "390 px 实际画布取点", "临时标记从成果导出排除", "家具和毛坯结构保持"],
+    "pageErrors": 0,
+    "visualReviewed": true
+  },
+  "demo": {"independentCopy": true, "originalProjectUnchanged": true, "existingUncommittedTestUnchanged": true, "bedroomCornerPreviewVerified": true, "draftOnly": true, "evidence": "output/demos/1601-floor-finishes/origin-verification.json"},
+  "notRun": ["本轮全部浏览器用例", "真实触屏硬件"],
+  "boundaries": ["仅吸附区域完成面边界角点，含功能区分界及孔洞", "不吸附墙边任意点或其它区域砖缝", "未知墙面厚度仍遵循原完成面待核对语义"]
+}

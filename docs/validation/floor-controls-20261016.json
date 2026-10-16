@@ -1,0 +1,115 @@
+{
+  "status": "PASS",
+  "createdAt": "2026-10-16T12:34:24.806617+00:00",
+  "scope": "区域地砖浮动编辑、集中列表及保留参数的批量开关",
+  "node": {
+    "command": "node scripts/check.cjs",
+    "suites": 176,
+    "builtInPlans": 12,
+    "passed": true,
+    "log": "output/floor-controls-check.log"
+  },
+  "browser": {
+    "runs": [
+      {
+        "run": "output/playwright/verification-CXXJ1D",
+        "cases": [
+          {
+            "name": "floor-controls",
+            "status": "PASS",
+            "seconds": 12.8,
+            "log": "floor-controls.log"
+          },
+          {
+            "name": "floor-finishes",
+            "status": "PASS",
+            "seconds": 14.2,
+            "log": "floor-finishes.log"
+          },
+          {
+            "name": "floating-toolbar",
+            "status": "PASS",
+            "seconds": 21.2,
+            "log": "floating-toolbar.log"
+          },
+          {
+            "name": "workflow-reimport",
+            "status": "PASS",
+            "seconds": 13.5,
+            "log": "workflow-reimport.log"
+          },
+          {
+            "name": "room-net",
+            "status": "PASS",
+            "seconds": 3.5,
+            "log": "room-net.log"
+          },
+          {
+            "name": "portable-smoke",
+            "status": "PASS",
+            "seconds": 10.5,
+            "log": "portable-smoke.log"
+          }
+        ],
+        "notRun": []
+      },
+      {
+        "run": "output/playwright/verification-U4OxrH",
+        "cases": [
+          {
+            "name": "floor-controls",
+            "status": "PASS",
+            "seconds": 13,
+            "log": "floor-controls.log"
+          },
+          {
+            "name": "floating-toolbar",
+            "status": "PASS",
+            "seconds": 21.2,
+            "log": "floating-toolbar.log"
+          }
+        ],
+        "notRun": []
+      },
+      {
+        "run": "output/playwright/verification-Ac6nv7",
+        "cases": [
+          {
+            "name": "floor-controls",
+            "status": "PASS",
+            "seconds": 13,
+            "log": "floor-controls.log"
+          }
+        ],
+        "notRun": []
+      }
+    ],
+    "distinctCases": 6,
+    "newControlsHTTPAndOfflineFile": true,
+    "finalSourceMatchesLastSnapshot": true,
+    "fullBrowserSuiteRun": false
+  },
+  "demo": {
+    "passed": true,
+    "regions": 9,
+    "furnitureUnchanged": true,
+    "architectureUnchanged": true,
+    "allToggleRetainsParameters": true,
+    "sourceUnchanged": true,
+    "mobile390": true,
+    "desktop": true,
+    "errors": []
+  },
+  "preserved": {
+    "workspaceUnchanged": true,
+    "preexistingLaundryTestUnchanged": true,
+    "localEvidence": "output/demos/1601-floor-finishes/controls-verification.json"
+  },
+  "compatibility": [
+    "enabled 缺失或 true 表示启用，false 保留参数且排除空间计算",
+    "旧项目未主动启用时不生成设置，未知厚度不填演示值",
+    "关闭参考区域使依赖标高待核对，重新开启恢复关联计算",
+    "批量操作走一次 mutate，保存撤销重做和刷新沿用原链路",
+    "飘窗台不进入列表，非瓷砖材质只启用标高，不替换材料"
+  ]
+}

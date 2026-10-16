@@ -482,4 +482,5 @@ function renderAll(){
   window.FurnishWorkflowTools?.afterRender();
   window.FurnishDrawingUI?.afterRender();
   window.FurnishRoomMeasure?.afterRender();
+  window.FurnishFloorFinishUI?.afterRender();
 }
