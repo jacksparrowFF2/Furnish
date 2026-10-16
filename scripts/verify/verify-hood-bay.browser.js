@@ -21,7 +21,13 @@ async (page,verification)=>{
  await p.reload();await p.locator('#lib').waitFor();check(await p.evaluate(()=>FurnishKitchen.hoodHosts(getF('hood-wall'))[0].cabinet.columns[0].doorOpen&&FurnishKitchen.hoodHosts(getF('hood-wall'))[0].cabinet.columns[2].doorOpen),'refresh open doors');await interior();await p.locator('#cab-preview canvas').waitFor();await p.locator('#cab-front').click();
  await p.locator('#cab-door-view').selectOption('hidden');await p.waitForTimeout(350);await p.screenshot({path:out+'interior-front.png'});
  await p.locator('#cab-front').click();await p.waitForTimeout(350);await p.screenshot({path:out+'interior-angle.png'});
- await p.getByRole('button',{name:'取消',exact:true}).click();await p.locator('#cab-kitchen-fields').waitFor();await p.getByRole('button',{name:'取消',exact:true}).click();await p.evaluate(()=>selectIds(['hood-wall']));await p.setViewportSize({width:390,height:844});await p.evaluate(()=>drawer('panel',true));await interior();await p.locator('#hood-bay-width').scrollIntoViewIfNeeded();await p.screenshot({path:out+'mobile.png'});check(await p.locator('#hood-bay-width').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;}),'narrow panel');
+ await p.getByRole('button',{name:'取消',exact:true}).click();await p.locator('#cab-kitchen-fields').waitFor();await p.getByRole('button',{name:'取消',exact:true}).click();await p.evaluate(()=>selectIds(['hood-wall']));await p.setViewportSize({width:390,height:844});
+ // Let the responsive media-query handler close the old pane before opening it
+ // through the actual mobile control; a direct drawer() call can race the resize.
+ await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ await p.locator('#fab [data-act="prop"]').click();
+ await p.waitForFunction(()=>{const el=document.querySelector('aside.right'),r=el.getBoundingClientRect();return el.classList.contains('open')&&r.left>=0&&r.right<=innerWidth;});
+ await interior();await p.locator('#hood-bay-width').scrollIntoViewIfNeeded();await p.screenshot({path:out+'mobile.png'});check(await p.locator('#hood-bay-width').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;}),'narrow panel');
  await p.locator('#hood-bay-remove').click();await saveBoth();check(await p.evaluate(()=>!FurnishCabinet.hoodBay(getF('hood-wall'))),'remove cavity');await p.evaluate(()=>undo());check(await p.evaluate(()=>!!FurnishCabinet.hoodBay(getF('hood-wall'))),'undo removal');
  check(errors.length===0,'page errors '+errors.join('; '));await context.close();return {status:'PASS',errors};
 }
