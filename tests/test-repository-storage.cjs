@@ -9,7 +9,7 @@ const fingerprint=async w=>S.digest(C.text(w));
  const tempRoot=path.resolve(__dirname,'../output/playwright');fs.mkdirSync(tempRoot,{recursive:true});const dir=fs.mkdtempSync(path.join(tempRoot,'repository-')),api=S.create(dir);
  const a=fixture();C.validate(a);assert.equal(C.text(a),C.text({...a,updatedAt:200,_repository:{revision:'ignored'}}));
  const originalDesign={id:'named',name:'原方案',planId:plan.id,work:a.work[plan.id]},reorderedDesign={...originalDesign,work:C.portable(a).work[plan.id]};assert.equal(require('../src/core/project-core.js').mergeDesigns([originalDesign],[reorderedDesign],plan.id).length,1);
- assert.throws(()=>C.parse({format:'furnish-workspace',version:2,workspace:a}));
+ assert.throws(()=>C.parse({format:'furnish-workspace',version:999,workspace:a}));
  assert.throws(()=>C.validate({...a,planId:'missing'}));
  const bad=clone(a);bad.work[plan.id].furniture[0].w=-1;assert.throws(()=>C.validate(bad));
  const first=api.write(a,null),read=api.read();assert.equal(first.revision,read.revision);assert.deepEqual(read.workspace,C.portable(a));

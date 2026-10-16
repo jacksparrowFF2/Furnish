@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-16",
+  "feature": "1601-wall-finish-demo",
+  "status": "passed",
+  "source": {
+    "file": "projects/workspace.furnish.json",
+    "planId": "custom_mv37igji",
+    "sha256BeforeAndAfter": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "unchanged": true
+  },
+  "copy": {
+    "planId": "custom_1601_tile_demo_20261016",
+    "directory": "output/demos/1601-wall-finishes",
+    "scope": ["厨房实际室内墙侧", "卫生间实际室内墙侧"],
+    "assumptionMm": {"tile": 10, "bond": 15, "totalPerSide": 25},
+    "furnitureUnchanged": 47,
+    "architectureUnchanged": true,
+    "otherFunctionalAreasUnchanged": true,
+    "unresolvedFinishBindings": 0,
+    "repeatRestoreWithoutDrift": 3,
+    "kitchenBackRunClearWidthMm": [2046, 1996],
+    "bathroomMainClearWidthMm": [2554, 2504],
+    "bathroomVanitySectionDepthMm": [1559, 1509],
+    "originalFlushFurnitureInterferenceMm": 25,
+    "storageIsolation": "Copied application, fresh loopback origin, browser cache only; no repository file adapter. Offline report disables interactive embedding."
+  },
+  "production": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 175,
+    "builtInPlans": 12,
+    "log": "output/1601-finish-demo-check.log"
+  },
+  "browser": {
+    "command": "node scripts/verify-browser.cjs wall-finishes",
+    "httpAndOfflineFile": true,
+    "result": "output/playwright/verification-WOMLGj/results.json",
+    "copiedReal1601": "output/demos/1601-wall-finishes/browser-validation.json",
+    "interactiveReport": "output/demos/1601-wall-finishes/report-validation.json",
+    "realEndFaceFormAndUndo": true,
+    "noRepositoryApiRequests": true,
+    "desktopAnd390px": true,
+    "screenshotsVisuallyInspected": ["demo-kitchen.png", "demo-bathroom.png", "demo-full.png", "demo-mobile.png"]
+  },
+  "productionSourceSha256": {
+    "src/core/wall-finish-core.js": "8805f52c98f174810ad0a5b64b4f6fe65560db6488d07bdd1d0086a2fdfac254",
+    "src/ui/wall-finishes.js": "336c1db50aa75df8c0c177f97e2d62bfe0b89be08a1acfde565f0b10bf0521c8",
+    "tests/test-wall-finishes.cjs": "e653721b9d4610b5a4f13c306cb7af749742d0986d9b876b5eba5554cdea640b"
+  },
+  "limits": ["演示厚度未作为实际施工做法确认", "墙间净空间不等于柜内净空或安装下料尺寸", "洞口侧面包砖与局部贴砖未建模", "保留原空间算法和高度未知时的保守判定", "本次未重复运行全部 81 个浏览器用例，已运行完整 Node 回归与相关浏览器专项", "未进行实机触屏验收"]
+}

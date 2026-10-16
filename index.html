@@ -273,6 +273,8 @@
 <script src="src/io/dxf-outline.js"></script>
 <script src="src/core/zone-geometry.js"></script>
 <script src="src/core/floorplan-core.js"></script>
+<script src="src/core/wall-finish-core.js"></script>
+<script src="src/render/wall-finish-model.js"></script>
 <script src="src/core/drawing-core.js"></script>
 <script src="src/core/purchasing-core.js"></script>
 <script src="src/core/service-core.js"></script>
@@ -328,6 +330,7 @@
 <script src="src/app.js"></script>
 <script src="src/ui/floorplan-editor.js"></script>
 <script src="src/ui/project-ui.js"></script>
+<script src="src/ui/wall-finishes.js"></script>
 <script src="src/ui/design-ui.js"></script>
 <script src="src/ui/procurement-ui.js"></script>
 <script src="src/ui/catalog-ui.js"></script>
@@ -1186,7 +1189,8 @@ function shapeOf(poly, flip){ const s = new THREE.Shape(); poly.forEach(([x, y],
 function buildArch(){
   clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
   const top = opt.cut===2.8?H:Math.min(opt.cut,H);
-  ROOMS.forEach(r => {
+  const finishPlan=FurnishProject.effectivePlan(PLAN,state);
+  FurnishWallFinish.spatial(finishPlan).rooms.filter(r=>r.poly.length).forEach(r => {
     const m = floorMat(state.rooms[r.id].mat), bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
     const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)));
     geo.rotateX(-Math.PI/2);
@@ -1226,6 +1230,8 @@ function buildArch(){
     wallBox(w, 0, w[4] === 'low' ? Math.min(1, top) : top);
     colliders.push([wx(w[0]), wz(w[1]), wx(w[2]), wz(w[3])]);
   });
+  archUp.add(FurnishWallFinishModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
+  for(const s of finishPlan.wallFinish?.solids||[])if(s.bottom===0)colliders.push([wx(s.rect[0]),wz(s.rect[1]),wx(s.rect[2]),wz(s.rect[3])]);
   // 门洞、窗洞上方过梁（门窗矩形即洞口，head 默认 2.4m）
   [...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
     .forEach(([r, h]) => { if (top > h) wallBox(r, h, top); });
@@ -1309,16 +1315,17 @@ function buildHeaterClearances(){
 function buildLabels(){
   invalidate();
   labelG.children.slice().forEach(o => { o.element.remove(); labelG.remove(o); });
-  ROOMS.filter(r => r.at).forEach(r => {
+  const finishPlan=FurnishProject.effectivePlan(PLAN,state),finishedRooms=FurnishWallFinish.spatial(finishPlan).rooms,finishPrefix=finishPlan.wallFinish?.pending.length?tr('参考净 ','Provisional '):state.wallFinishes?tr('净 ','Clear '):'';
+  finishedRooms.filter(r => r.at).forEach(r => {
     const el = document.createElement('div'); el.className = 'rlabel';
-    el.innerHTML = `${esc(nm(state.rooms[r.id].name))}<small>${area(r.poly).toFixed(1)}m²</small>`;
+    el.innerHTML = `${esc(nm(state.rooms[r.id].name))}<small>${finishPrefix}${area(r.poly).toFixed(1)}m²</small>`;
     const o = new CSS2DObject(el); o.position.set(wx(r.at[0]), opt.cut + .15, wz(r.at[1])); o.visible = labelG.visible; labelG.add(o);
   });
   for(const beam of PLAN.beams||[]){const v=FurnishDraft.beamVertical(beam,FurnishProject.ceilingHeight(state));if(!v)continue;const x=(Math.min(...beam.poly.map(p=>p[0]))+Math.max(...beam.poly.map(p=>p[0])))/2,z=(Math.min(...beam.poly.map(p=>p[1]))+Math.max(...beam.poly.map(p=>p[1])))/2;
     const el=document.createElement('div');el.className='rlabel beam-label';el.dataset.beamLabel=beam.id;el.innerHTML=`${tr('梁底离地','Beam underside')} ${Math.round(v.bottom)} mm<small>${tr('梁厚','Thickness')} ${Math.round(v.top-v.bottom)} mm${v.assumed?' · '+tr('默认示意，待核对','Default sketch, verify'):''}</small>`;
     const o=new CSS2DObject(el);o.position.set(wx(x),M(v.bottom)-.05,wz(z));o.userData.cutVisible=opt.cut===2.8||M(v.bottom)<Math.min(opt.cut,H);o.visible=labelG.visible&&o.userData.cutVisible;labelG.add(o);
   }
-  const counted = ROOMS.filter(r => r.counted !== false);
+  const counted = finishedRooms.filter(r => r.counted !== false);
   $('#roomList').innerHTML = counted.map(r => `<button data-room="${r.id}"><span>${esc(nm(state.rooms[r.id].name))}</span><small>${area(r.poly).toFixed(2)} m²</small></button>`).join('')
     + `<button data-room="__all"><span>${tr('全屋', 'Whole home')}</span><small>${counted.reduce((a, r) => a + area(r.poly), 0).toFixed(2)} m²</small></button>`;
   document.querySelectorAll('#roomList button').forEach(b => b.onclick = () => {
@@ -1336,7 +1343,7 @@ function sync(force){
   Object.assign(opt,settings);
   const north=JSON.stringify(state.drawing?.northAngle??null);
   if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn;showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
-  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,H, PLAN.markers]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId()]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams]);
+  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,H, PLAN.markers,state.wallFinishes]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes]);
   if(force||a!==sigArch||f!==sigFurn){buildHeaterClearances();clearSceneIssue();selKey=null;}
   if (force || a !== sigArch){ sigArch = a; buildArch(); }
   if (force || f !== sigFurn){ sigFurn = f; buildFurn(); }

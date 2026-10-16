@@ -38,6 +38,7 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
   if(state.architecture)return false;
   try{const source=P.effectivePlan(PLAN,state),{draft,shift}=FurnishDraft.fromPlan(source,'custom_'+uid()),plan=FurnishDraft.build(draft),work=clone(state);
    work.plan=plan.id;work.architecture={draft,phase:'survey'};work.demolished=[];work.open={d:{},w:{}};work.spaceIgnored=[];
+   if(work.wallFinishes)FurnishWallFinish.remapBuiltin(work,source,plan,shift);
    work.furniture.forEach(f=>{f.cx+=shift;f.cy+=shift;});(work.notes||[]).forEach(n=>{n.x+=shift;n.y+=shift;});(work.measures||[]).forEach(m=>{for(const p of [m.a,m.b]){p.x+=shift;p.y+=shift;}});
    store.customPlans=store.customPlans||[];store.customPlans.push(draft);PLANS.push(plan);store.work[plan.id]=work;setPlan(plan.id);
    if(selection){const kind=selection.kind==='win'?'window':selection.kind,refs=selection.kind==='win'?plan.winRefs:selection.kind==='slide'?plan.slideRefs:plan.doorRefs,index=refs.indexOf('preset_'+kind+selection.id);if(index>=0)select({...selection,id:index});}
@@ -136,6 +137,7 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
     $('#wall-group-select').onclick=()=>select({...ui.sel,wallIds:a.draft.walls.filter(v=>v.group===w.group).map(v=>v.id)});
     const apply=values=>{try{applyDraft(FurnishDraft.batchWalls(a.draft,ids,values));}catch(e){$('#wall-error').textContent=e.message;}};$('#wall-group-create').onclick=()=>apply({group:'wall_group_'+uid()});$('#wall-group-clear').onclick=()=>apply({group:''});$('#wall-batch-apply').onclick=()=>apply({thickness:Number($('#wall-batch-thickness').value)});
   }
+  window.FurnishWallFinishUI?.panel(id,panel);
  }
   function linkHeightInputs(sill,height,head){
     const number=input=>input.value.trim()!==''&&Number.isFinite(Number(input.value))?Number(input.value):null;

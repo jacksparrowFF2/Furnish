@@ -2,6 +2,7 @@
 (function(root){
 'use strict';
 function suggest(plan,work,id){
+ plan=(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan);
  const P=root.FurnishProject||require('./project-core.js'),D=root.FurnishDesign||require('./design-core.js'),f=work.furniture.find(v=>v.id===id);
  if(!f||f.locked||f.groupId||f.kitchen||f.counterLink||work.furniture.some(v=>v.counterLink?.hostId===id)||D.laundryStack(f,work.furniture)||work.furniture.some(v=>D.laundryStack(v,work.furniture)?.lowerId===id)) return null;
  const poly=P.polygon(f),dx=Math.max(...poly.map(p=>Math.abs(p[0]-f.cx))),dy=Math.max(...poly.map(p=>Math.abs(p[1]-f.cy))),candidates=[];

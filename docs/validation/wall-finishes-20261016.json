@@ -1,0 +1,574 @@
+{
+  "date": "2026-10-16",
+  "feature": "wall-finishes",
+  "status": "passed",
+  "production": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 175,
+    "builtInPlans": 12,
+    "syntaxSharedDeclarationsAndLocalAssets": true,
+    "log": "output/wall-finish-final-check.log"
+  },
+  "browserFull": {
+    "command": "node scripts/verify-browser.cjs --all --keep-going",
+    "passed": 81,
+    "failed": 0,
+    "notRun": 0,
+    "results": "output/playwright/verification-QiucHi/results.json",
+    "cases": [
+      {
+        "name": "appliance-module-boundaries",
+        "status": "PASS",
+        "seconds": 1.9,
+        "log": "appliance-module-boundaries.log"
+      },
+      {
+        "name": "aquarium",
+        "status": "PASS",
+        "seconds": 26.4,
+        "log": "aquarium.log"
+      },
+      {
+        "name": "beam-body",
+        "status": "PASS",
+        "seconds": 31.9,
+        "log": "beam-body.log"
+      },
+      {
+        "name": "beam-heights",
+        "status": "PASS",
+        "seconds": 23,
+        "log": "beam-heights.log"
+      },
+      {
+        "name": "cabinet-catalog",
+        "status": "PASS",
+        "seconds": 10.4,
+        "log": "cabinet-catalog.log"
+      },
+      {
+        "name": "cabinet-custom-fronts",
+        "status": "PASS",
+        "seconds": 17.7,
+        "log": "cabinet-custom-fronts.log"
+      },
+      {
+        "name": "cabinet-dimensions",
+        "status": "PASS",
+        "seconds": 5.2,
+        "log": "cabinet-dimensions.log"
+      },
+      {
+        "name": "cabinet-doors",
+        "status": "PASS",
+        "seconds": 15.4,
+        "log": "cabinet-doors.log"
+      },
+      {
+        "name": "cabinet-opening-3d",
+        "status": "PASS",
+        "seconds": 25.8,
+        "log": "cabinet-opening-3d.log"
+      },
+      {
+        "name": "cabinet-panel",
+        "status": "PASS",
+        "seconds": 7.1,
+        "log": "cabinet-panel.log"
+      },
+      {
+        "name": "dimension-density",
+        "status": "PASS",
+        "seconds": 6.3,
+        "log": "dimension-density.log"
+      },
+      {
+        "name": "directional-distances",
+        "status": "PASS",
+        "seconds": 2.3,
+        "log": "directional-distances.log"
+      },
+      {
+        "name": "directional-heights",
+        "status": "PASS",
+        "seconds": 1.9,
+        "log": "directional-heights.log"
+      },
+      {
+        "name": "directional-placement",
+        "status": "PASS",
+        "seconds": 2.5,
+        "log": "directional-placement.log"
+      },
+      {
+        "name": "dishwasher-clearances",
+        "status": "PASS",
+        "seconds": 9.2,
+        "log": "dishwasher-clearances.log"
+      },
+      {
+        "name": "dishwasher",
+        "status": "PASS",
+        "seconds": 20.7,
+        "log": "dishwasher.log"
+      },
+      {
+        "name": "drawing-export",
+        "status": "PASS",
+        "seconds": 1.4,
+        "log": "drawing-export.log"
+      },
+      {
+        "name": "workflow-reimport",
+        "status": "PASS",
+        "seconds": 13.7,
+        "log": "workflow-reimport.log"
+      },
+      {
+        "name": "drawing-readability",
+        "status": "PASS",
+        "seconds": 2.8,
+        "log": "drawing-readability.log"
+      },
+      {
+        "name": "drawing",
+        "status": "PASS",
+        "seconds": 12.2,
+        "log": "drawing.log"
+      },
+      {
+        "name": "floating-toolbar",
+        "status": "PASS",
+        "seconds": 21.2,
+        "log": "floating-toolbar.log"
+      },
+      {
+        "name": "folding-table-click",
+        "status": "PASS",
+        "seconds": 22.1,
+        "log": "folding-table-click.log"
+      },
+      {
+        "name": "folding-table",
+        "status": "PASS",
+        "seconds": 23,
+        "log": "folding-table.log"
+      },
+      {
+        "name": "fotile-previews",
+        "status": "PASS",
+        "seconds": 5,
+        "log": "fotile-previews.log"
+      },
+      {
+        "name": "fotile",
+        "status": "PASS",
+        "seconds": 17.5,
+        "log": "fotile.log"
+      },
+      {
+        "name": "full-width-drawers",
+        "status": "PASS",
+        "seconds": 2.6,
+        "log": "full-width-drawers.log"
+      },
+      {
+        "name": "furniture-groups",
+        "status": "PASS",
+        "seconds": 2.9,
+        "log": "furniture-groups.log"
+      },
+      {
+        "name": "room-net",
+        "status": "PASS",
+        "seconds": 4,
+        "log": "room-net.log"
+      },
+      {
+        "name": "purchase-orders",
+        "status": "PASS",
+        "seconds": 8.6,
+        "log": "purchase-orders.log"
+      },
+      {
+        "name": "furniture-labels",
+        "status": "PASS",
+        "seconds": 4,
+        "log": "furniture-labels.log"
+      },
+      {
+        "name": "group-directional-placement",
+        "status": "PASS",
+        "seconds": 2.3,
+        "log": "group-directional-placement.log"
+      },
+      {
+        "name": "hob-cutout",
+        "status": "PASS",
+        "seconds": 7.4,
+        "log": "hob-cutout.log"
+      },
+      {
+        "name": "hob-openings",
+        "status": "PASS",
+        "seconds": 1.9,
+        "log": "hob-openings.log"
+      },
+      {
+        "name": "hood-bay",
+        "status": "PASS",
+        "seconds": 8.9,
+        "log": "hood-bay.log"
+      },
+      {
+        "name": "hood-geometry",
+        "status": "PASS",
+        "seconds": 21.3,
+        "log": "hood-geometry.log"
+      },
+      {
+        "name": "kitchen-auto-avoid",
+        "status": "PASS",
+        "seconds": 4.6,
+        "log": "kitchen-auto-avoid.log"
+      },
+      {
+        "name": "kitchen-corner-leaves",
+        "status": "PASS",
+        "seconds": 4.8,
+        "log": "kitchen-corner-leaves.log"
+      },
+      {
+        "name": "kitchen-dish-basket",
+        "status": "PASS",
+        "seconds": 13.5,
+        "log": "kitchen-dish-basket.log"
+      },
+      {
+        "name": "kitchen-divider-input",
+        "status": "PASS",
+        "seconds": 6.2,
+        "log": "kitchen-divider-input.log"
+      },
+      {
+        "name": "kitchen-divider-labels",
+        "status": "PASS",
+        "seconds": 6.6,
+        "log": "kitchen-divider-labels.log"
+      },
+      {
+        "name": "kitchen-dividers",
+        "status": "PASS",
+        "seconds": 5.1,
+        "log": "kitchen-dividers.log"
+      },
+      {
+        "name": "kitchen-door-pairing",
+        "status": "PASS",
+        "seconds": 8.5,
+        "log": "kitchen-door-pairing.log"
+      },
+      {
+        "name": "kitchen-drawer-boundaries",
+        "status": "PASS",
+        "seconds": 17.4,
+        "log": "kitchen-drawer-boundaries.log"
+      },
+      {
+        "name": "kitchen-drawer-snapping",
+        "status": "PASS",
+        "seconds": 6.3,
+        "log": "kitchen-drawer-snapping.log"
+      },
+      {
+        "name": "kitchen-drawer-tiers",
+        "status": "PASS",
+        "seconds": 7.2,
+        "log": "kitchen-drawer-tiers.log"
+      },
+      {
+        "name": "kitchen-edge-snapping",
+        "status": "PASS",
+        "seconds": 3.5,
+        "log": "kitchen-edge-snapping.log"
+      },
+      {
+        "name": "kitchen-elevations",
+        "status": "PASS",
+        "seconds": 5.8,
+        "log": "kitchen-elevations.log"
+      },
+      {
+        "name": "kitchen-gap-model",
+        "status": "PASS",
+        "seconds": 6.7,
+        "log": "kitchen-gap-model.log"
+      },
+      {
+        "name": "kitchen-outer-handles",
+        "status": "PASS",
+        "seconds": 4.3,
+        "log": "kitchen-outer-handles.log"
+      },
+      {
+        "name": "kitchen-resize",
+        "status": "PASS",
+        "seconds": 2.9,
+        "log": "kitchen-resize.log"
+      },
+      {
+        "name": "kitchen-run-handles",
+        "status": "PASS",
+        "seconds": 4.1,
+        "log": "kitchen-run-handles.log"
+      },
+      {
+        "name": "kitchen-shelves",
+        "status": "PASS",
+        "seconds": 6.9,
+        "log": "kitchen-shelves.log"
+      },
+      {
+        "name": "kitchen-single-hinge",
+        "status": "PASS",
+        "seconds": 6.8,
+        "log": "kitchen-single-hinge.log"
+      },
+      {
+        "name": "kitchen-thin-end",
+        "status": "PASS",
+        "seconds": 3.9,
+        "log": "kitchen-thin-end.log"
+      },
+      {
+        "name": "kitchen-thin-resize",
+        "status": "PASS",
+        "seconds": 5.7,
+        "log": "kitchen-thin-resize.log"
+      },
+      {
+        "name": "kitchen-u",
+        "status": "PASS",
+        "seconds": 14.6,
+        "log": "kitchen-u.log"
+      },
+      {
+        "name": "kitchen-wall-adjust",
+        "status": "PASS",
+        "seconds": 10.3,
+        "log": "kitchen-wall-adjust.log"
+      },
+      {
+        "name": "kitchen-wall-anchor",
+        "status": "PASS",
+        "seconds": 1.7,
+        "log": "kitchen-wall-anchor.log"
+      },
+      {
+        "name": "kitchen-wall-canvas",
+        "status": "PASS",
+        "seconds": 14.9,
+        "log": "kitchen-wall-canvas.log"
+      },
+      {
+        "name": "kitchen-wall-drawers",
+        "status": "PASS",
+        "seconds": 8.2,
+        "log": "kitchen-wall-drawers.log"
+      },
+      {
+        "name": "kitchen-wall-shelves",
+        "status": "PASS",
+        "seconds": 2.3,
+        "log": "kitchen-wall-shelves.log"
+      },
+      {
+        "name": "kitchen",
+        "status": "PASS",
+        "seconds": 21.2,
+        "log": "kitchen.log"
+      },
+      {
+        "name": "measure-boundaries",
+        "status": "PASS",
+        "seconds": 1.8,
+        "log": "measure-boundaries.log"
+      },
+      {
+        "name": "model-entry",
+        "status": "PASS",
+        "seconds": 18.1,
+        "log": "model-entry.log"
+      },
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "seconds": 10.4,
+        "log": "portable-smoke.log"
+      },
+      {
+        "name": "product-rules",
+        "status": "PASS",
+        "seconds": 22.7,
+        "log": "product-rules.log"
+      },
+      {
+        "name": "purchase-relink",
+        "status": "PASS",
+        "seconds": 4.1,
+        "log": "purchase-relink.log"
+      },
+      {
+        "name": "robot-vacuum",
+        "status": "PASS",
+        "seconds": 9.4,
+        "log": "robot-vacuum.log"
+      },
+      {
+        "name": "sink-surface",
+        "status": "PASS",
+        "seconds": 4.1,
+        "log": "sink-surface.log"
+      },
+      {
+        "name": "sink",
+        "status": "PASS",
+        "seconds": 20.7,
+        "log": "sink.log"
+      },
+      {
+        "name": "stove-boundaries",
+        "status": "PASS",
+        "seconds": 2.1,
+        "log": "stove-boundaries.log"
+      },
+      {
+        "name": "tank-preview",
+        "status": "PASS",
+        "seconds": 3.5,
+        "log": "tank-preview.log"
+      },
+      {
+        "name": "wall-finishes",
+        "status": "PASS",
+        "seconds": 17.7,
+        "log": "wall-finishes.log"
+      },
+      {
+        "name": "beam-roof",
+        "status": "PASS",
+        "seconds": 22.8,
+        "log": "beam-roof.log"
+      },
+      {
+        "name": "cut-board-motion",
+        "status": "PASS",
+        "seconds": 13.3,
+        "log": "cut-board-motion.log"
+      },
+      {
+        "name": "dining-plan-order",
+        "status": "PASS",
+        "seconds": 4.1,
+        "log": "dining-plan-order.log"
+      },
+      {
+        "name": "dxf-supplement",
+        "status": "PASS",
+        "seconds": 13.6,
+        "log": "dxf-supplement.log"
+      },
+      {
+        "name": "furniture-recovery",
+        "status": "PASS",
+        "seconds": 14.3,
+        "log": "furniture-recovery.log"
+      },
+      {
+        "name": "multi-region-merge",
+        "status": "PASS",
+        "seconds": 9.5,
+        "log": "multi-region-merge.log"
+      },
+      {
+        "name": "pipe-collisions",
+        "status": "PASS",
+        "seconds": 15.6,
+        "log": "pipe-collisions.log"
+      },
+      {
+        "name": "recessed-bay",
+        "status": "PASS",
+        "seconds": 5.3,
+        "log": "recessed-bay.log"
+      }
+    ],
+    "note": "全量浏览器使用执行时的隔离源码快照；最终饰面文案、锁定结构及 SVG 导出另以最新源码专项复验。"
+  },
+  "latestFeatureBrowser": {
+    "command": "node scripts/verify-browser.cjs wall-finishes",
+    "passed": true,
+    "results": "output/playwright/verification-wjHOky/results.json",
+    "coverage": [
+      "HTTP",
+      "offline file://",
+      "locked bearing structure with editable finish",
+      "unknown thickness labels",
+      "invalid input atomicity",
+      "unchanged survey and furniture/cabinets",
+      "undo/redo",
+      "finished measurements and numeric placement",
+      "refresh",
+      "real JSON download and reimport",
+      "named designs",
+      "SVG export",
+      "production 3D",
+      "390 px viewport"
+    ]
+  },
+  "visualInspection": {
+    "checked": true,
+    "views": [
+      "desktop 2D finish form",
+      "mobile 390 px finish form",
+      "3D wall and door opening"
+    ],
+    "directory": "output/playwright/verification-wjHOky/workspace 迁移 #/output/playwright/wall-finishes"
+  },
+  "dataProtection": {
+    "project": "projects/workspace.furnish.json",
+    "sha256Before": "0EC7AE3A9C89D2A74B3E4ECD018B5853A201B4E63200A6271C032B312F6034A9",
+    "sha256After": "0EC7AE3A9C89D2A74B3E4ECD018B5853A201B4E63200A6271C032B312F6034A9",
+    "mutatedByTask": false,
+    "existingUncommittedProjectPreserved": true,
+    "browserStorage": "isolated",
+    "browserServer": "static read-only, no repository write API",
+    "realWorkspace": "read-only in-memory derivation across existing work slots"
+  },
+  "sourceSha256": {
+    "index.html": "16501ca7ddd1b38c30475b3239c1d530b87434a32f2d38c7b2f8abf17c745789",
+    "src/core/wall-finish-core.js": "95b605b99121d9f6b49e37ad67d5dac68208beb7fde045ebe3fbab74a163102c",
+    "src/render/wall-finish-model.js": "20c60fbc4fe0ecf152e11c2025e633b11566831039eec0df873626e68f4bd2f7",
+    "src/ui/wall-finishes.js": "ef8c5c188c5992f25b45041ac58038f2b53de35c41412064d3c9b72ea168a61d",
+    "src/core/project-core.js": "2045a93c22934ba0b177a10c992a162571fabbee1403b9c4cfdc7e9a7d4809f6",
+    "src/core/design-core.js": "b79276bc0fb56addb62a991547a27c530a5956a663a9378027d325592db1efe2",
+    "src/app.js": "468754a076f503c42ad1c1a1d02199f8b8bfa860bff662e3db08e52ad8b3e2a5",
+    "src/render/plan-renderer.js": "e2cba0b74fe9a525a71898fd10e364bf7a54468bcf1ff2977846ffa0dc4736e8",
+    "tests/test-wall-finishes.cjs": "6bb9c0e02bd7c7b3243e20d39b4a80c71d31fd90f241e66b0f1b46a5cec69157",
+    "scripts/verify/verify-wall-finishes.browser.js": "40779c30a25ca3a7c7de121037f5d59b02fb2ea6c45d9eb0ae87b54afbb5f297"
+  },
+  "knownLimits": [
+    "orthogonal structural walls",
+    "whole wall faces only",
+    "no jamb wraps or local wall heights",
+    "no levelling or waterproof layers",
+    "no individual wall-tile layout",
+    "legacy planar wall/window snapping and path conservatism",
+    "existing 5 mm spatial wall collision tolerance"
+  ],
+  "notPerformed": [
+    "physical touch device",
+    "construction certification"
+  ]
+}

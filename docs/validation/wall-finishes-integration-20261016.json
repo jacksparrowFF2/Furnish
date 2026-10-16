@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-16",
+  "feature": "wall-finish-production-integration",
+  "status": "passed-after-focused-recheck",
+  "scope": {
+    "finishedDisplaySnappingClearancesAndSpaceChecks": true,
+    "surveyGeometryPreserved": true,
+    "noAutomaticFurnitureMovementOrCabinetResize": true,
+    "independentTileAndBondThickness": true,
+    "unknownValuesRemainUnknown": true,
+    "noGlobal25mmDefault": true,
+    "legacyProjectVersions": [
+      1,
+      2
+    ],
+    "openingOnlyHostsAndExposedWallEnds": true,
+    "openingPropertyEditors": true
+  },
+  "production": {
+    "command": "node scripts/check.cjs",
+    "regressionSuites": 175,
+    "builtInPlans": 12,
+    "log": "output/wall-finish-integration-final-check.log"
+  },
+  "browser": {
+    "full": {
+      "command": "node scripts/verify-browser.cjs --all --keep-going",
+      "initialPassed": 80,
+      "initialFailed": [
+        {
+          "name": "wall-finishes",
+          "status": "FAIL",
+          "seconds": 10.4,
+          "log": "wall-finishes.log"
+        }
+      ],
+      "notRun": 0,
+      "results": "output/playwright/verification-OfVIcH/results.json"
+    },
+    "finalCoverage": {
+      "uniqueCasesPassed": 81,
+      "remainingFailures": 0,
+      "basis": "80 full-run cases plus final successful wall-finishes rerun; not a second clean full-suite run"
+    },
+    "finalWallFinishes": {
+      "command": "node scripts/verify-browser.cjs wall-finishes",
+      "results": "output/playwright/verification-62iMHd/results.json",
+      "httpAndOfflineFile": true,
+      "width390": true,
+      "openingHostEditsUndoRedoRefresh": true,
+      "finishedStripSelectsCorrectHost": true
+    },
+    "fullSnapshotDelta": {
+      "productionFiles": [
+        "src/render/plan-renderer.js"
+      ],
+      "change": "The full run used the earlier render snapshot while its wall-finishes worker read the updated picking assertion. It exposed w-1 targets on opening-only finish strips. Final production handling selects the actual window or door and passed a fresh isolated wall-finishes rerun. Other production sources are byte-identical to the full-run snapshot."
+    },
+    "real1601": {
+      "results": "output/demos/1601-wall-finishes/report-validation.json",
+      "kitchenWindowBondEditAndUndo": true,
+      "furnitureAndCabinetsUnchanged": 47,
+      "originalRepositoryApiRequests": 0,
+      "windowHostVisual": "output/demos/1601-wall-finishes/production-window-panel-390.png"
+    },
+    "visualReview": [
+      "desktop finish properties and production 3D from the feature acceptance",
+      "390 px wall and independent opening host finish forms",
+      "1601 kitchen, bathroom and full-plan before / after report"
+    ]
+  },
+  "sourceData": {
+    "path": "projects/workspace.furnish.json",
+    "sha256BeforeAndAfter": "0ec7ae3a9c89d2a74b3e4ecd018b5853a201b4e63200a6271c032b312f6034a9",
+    "unchanged": true,
+    "excludedFromFeatureCommit": true
+  },
+  "productionSourceSha256": {
+    "index.html": "16501ca7ddd1b38c30475b3239c1d530b87434a32f2d38c7b2f8abf17c745789",
+    "src/app.js": "468754a076f503c42ad1c1a1d02199f8b8bfa860bff662e3db08e52ad8b3e2a5",
+    "src/core/design-core.js": "b79276bc0fb56addb62a991547a27c530a5956a663a9378027d325592db1efe2",
+    "src/core/placement-suggestions.js": "513ac0416cb8a448e08eaf7717f2a8fede60f65fbec36222ddc54e486b773c4c",
+    "src/core/project-core.js": "2045a93c22934ba0b177a10c992a162571fabbee1403b9c4cfdc7e9a7d4809f6",
+    "src/core/repository-core.js": "864da9e7d482ef6801fb1ab19aab1b5cf198342761cef8086f3b0afa17d9843e",
+    "src/core/work-state.js": "71d578ee5a0e8564048f4af73a9f79be858dde88908b52cb215ee0a429ca4fde",
+    "src/io/dxf-export.js": "2ef2d53ca4776b1756e18efafba5a5534c445eb4d43a1e88b26a9c3fdce91993",
+    "src/render/plan-renderer.js": "2de6f396df16b53bad2815de3bb9a990e73e02947e0e1d28ff785467cca1d586",
+    "src/ui/history-sharing.js": "9cfd1c1aac4189d8b4e89f6b8f6c1634ff80f3b4d83015468faae395c7865a18",
+    "src/ui/project-ui.js": "af52a6dcf26c21af5292037276e1349ce3118cbcce06daf513977ffe524f62eb",
+    "src/ui/property-panel.js": "89ff3ab0af3850ab2a04200ad529afb3a8cb7aed7ee1b52668a9a31ba5ca5e66",
+    "src/ui/repository-workspace.js": "6bda9fca3348f86122f05d803bfd8a9391a02bc73fe6d05335ac3f8fbbc66025",
+    "src/ui/room-measure.js": "c002ec3524a6bf25db56786025fdf1f9a07ac6a577337277bc56de51c9254488",
+    "src/ui/workflow-tools.js": "f574e0a2c4f95d7b743ee4a68c1f3667a341a50ef6ef7c0972905e523e793585",
+    "src/core/wall-finish-core.js": "8805f52c98f174810ad0a5b64b4f6fe65560db6488d07bdd1d0086a2fdfac254",
+    "src/render/wall-finish-model.js": "20c60fbc4fe0ecf152e11c2025e633b11566831039eec0df873626e68f4bd2f7",
+    "src/ui/wall-finishes.js": "19ad11b7f7371662d40a742e6b72f4571274da927b4fa30b21b2fedc2aabc4f1"
+  },
+  "limits": [
+    "Whole wall faces only; no partial-height finishes or jamb wraps",
+    "Axis-aligned structural walls and existing conservative window / path rules remain",
+    "Wall-to-wall dimensions do not include cabinet installation or closure allowances",
+    "No physical touchscreen or construction-grade certification"
+  ]
+}

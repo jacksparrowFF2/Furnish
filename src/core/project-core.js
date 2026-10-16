@@ -5,6 +5,7 @@
  const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>[k,canonical(v[k])])):v;
  const core=()=>root.FurnishDraft || require('./floorplan-core.js');
  const design=()=>root.FurnishDesign || require('./design-core.js');
+ const finishes=()=>root.FurnishWallFinish || require('./wall-finish-core.js');
  const inside=(p,poly)=>{let result=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])result=!result;}return result;};
  const area=p=>Math.abs(p.reduce((n,a,i)=>{const b=p[(i+1)%p.length];return n+a[0]*b[1]-a[1]*b[0];},0))/2/1e6;
  const perimeter=p=>p.reduce((n,a,i)=>n+Math.hypot(a[0]-p[(i+1)%p.length][0],a[1]-p[(i+1)%p.length][1]),0)/1000;
@@ -102,13 +103,16 @@
  function effectivePlan(base,work){
   const plan=work.architecture?core().build(work.architecture.draft):clone(base);
   plan.ceilingHeight=ceilingHeight(work);
-  plan.walls=plan.walls.filter((w,i)=>!(work.demolished||[]).includes('w'+i));
+  const kept=plan.walls.map((_,i)=>i).filter(i=>!(work.demolished||[]).includes('w'+i));
+  plan.finishWallIds=kept.map(i=>'builtin_'+i);
+  if(plan.wallRefs)plan.wallRefs=kept.map(i=>plan.wallRefs[i]);
+  plan.walls=kept.map(i=>plan.walls[i]);
   (plan.doors||[]).forEach((d,i)=>{if(d._base)Object.assign(d,clone(d._base));if(work.open?.d?.[i])Object.assign(d,clone(work.open.d[i]));});
   (plan.slides||[]).forEach((s,i)=>Object.assign(s,{panels:s._panels0??s.panels??2,floorTrack:s._floorTrack0??s.floorTrack,stackSide:s._stackSide0??s.stackSide},work.open?.s?.[i]||{}));
   (plan.wins||[]).forEach((w,i)=>{w.sill=w._sill0??w.sill;w.head=w._head0??w.head??2.4;w.panels=w._panels0??w.panels??0;w.stackSide=w._stackSide0??w.stackSide??'left';const v=work.open?.w?.[i];if(typeof v==='number')w.sill=v;else if(v)Object.assign(w,v);});
   plan.rooms=plan.rooms.map(r=>({...r,name:work.rooms?.[r.id]?.name||r.name,ceilingHeight:roomCeilingHeight(work,r)}));
   (plan.wins||[]).forEach(w=>{if(w.bayGroup){const r=plan.rooms.find(r=>r.id===w.bayGroup);if(r)r.height=w.sill;}});
-  return plan;
+  return finishes().derive(plan,work);
  }
  function validatePlanWork(base,work){
   const plan=work.architecture?core().build(work.architecture.draft):base;if(!plan)fail('文件引用了不存在的户型');
@@ -125,7 +129,7 @@
  function checkContext(plan,furniture,passage){
   return [passage,plan.rooms.map(r=>[r.id,r.poly,r.counted,r.ceilingHeight,r.polys]),plan.walls,plan.doors,
    furniture.map(f=>[f.id,f.type,f.cx,f.cy,f.w,f.d,f.rot,f.frontClearance,f.h,f.flip,f.mountHeight,f.stackHeight,f.showerMixerHeight,f.showerRise,f.showerHandAngle,!!f.obj,f.cabinet,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.hoodPanelOpen,f.dishwasherDoorOpen,f.hoodGeometry,f.hobCutout,f.foldingTablePose]),
-   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m),m.name]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v13-wall-assembly','hood-bay-v5-actual-ceiling','cabinet-door-directions-v4-custom-layout','tucked-seat-v1','dishwasher-installation-v1',plan.wins||[]];
+   (plan.physicalRooms||plan.rooms).map(r=>[r.id,r.poly,r.counted]),ceilingHeight(plan),plan.beams||[],(plan.markers||[]).map(m=>[m.id,m.kind,m.at,core().serviceDiameter(m),m.name]),'cut-board-motion-v1','cabinet-overlay-v2','kitchen-worktop-v13-wall-assembly','hood-bay-v5-actual-ceiling','cabinet-door-directions-v4-custom-layout','tucked-seat-v1','dishwasher-installation-v1',plan.wins||[],...(plan.wallFinish?['wall-finish-v1',plan.wallFinish.signature,plan.wallFinish.solids,plan.wallFinish.pending]:[])];
  }
  function checkFingerprint(issue,plan,furniture,passage){return JSON.stringify({version:3,issue,context:checkContext(plan,furniture,passage)});}
  let lastReview=null;
@@ -216,6 +220,7 @@
  // Source-backed installation reservations, separate from body collision and
  // independent of the door's current display pose. No state is mutated here.
  function dishwasherChecks(plan,f,{furniture=plan.furniture||[],rigidBodies}={}){
+  plan=finishes().spatial(plan);
   const products=design().products(),spec=products.dishwasherInstallation(f);if(!spec)return null;
   const G=root.FurnishGeometry||require('./layout-geometry.js'),K=root.FurnishKitchen||require('./kitchen-core.js'),Z=root.FurnishZoneGeometry||require('./zone-geometry.js'),S=root.FurnishServices||require('./service-core.js');
   const a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a),sign=f.flip?-1:1,EPS=1e-6;
@@ -227,7 +232,7 @@
   const items=furniture.filter(o=>o.id!==f.id&&!products.modelError(o));
   const parts=rigidBodies??items.filter(o=>!['rug','plant','curtain'].includes(o.type)).flatMap(o=>G.bodyParts(o).map(p=>({f:o,...p})));
   const obstacles=parts.filter(o=>o.f.id!==f.id).map(o=>({p:o.p.map(local),vertical:o.vertical,kind:'furniture',id:o.f.id,name:o.f.name}));
-  (plan.walls||[]).forEach((w,i)=>obstacles.push({p:rect(w).map(local),vertical:{bottom:0,top:w[4]==='low'?Math.min(1000,ceilingHeight(plan)):ceilingHeight(plan)},kind:'wall',id:'w'+i,name:'墙体 '+(i+1)}));
+  (plan.walls||[]).forEach((w,i)=>obstacles.push({p:rect(w).map(local),vertical:finishes().vertical(w,plan),kind:'wall',id:'w'+i,name:'墙体 '+(i+1)}));
   (plan.wins||[]).forEach((w,i)=>obstacles.push({p:rect(w.rect).map(local),vertical:Number.isFinite(w.sill)&&Number.isFinite(w.head)?{bottom:w.sill*1000,top:w.head*1000}:null,kind:'window',id:'w'+i,name:'窗 '+(i+1)}));
   (plan.beams||[]).forEach(b=>{const v=core().beamVertical(b,ceilingHeight(plan));obstacles.push({p:b.poly.map(local),vertical:v&&!v.assumed?v:null,kind:'beam',id:b.id,name:(b.name||b.id)+'（房梁）'});});
   S.pipes(plan).forEach(p=>obstacles.push({p:p.poly.map(local),vertical:p.vertical,kind:'pipe',id:p.id,name:p.name||'竖管'}));
@@ -291,9 +296,11 @@
   return {checks,zones:{opening:openingWorld,vent:vent.map(world)},spec};
  }
  function spaceCheck(plan,furniture,{passage=800,focusId=null,focusIds=null,scanPassages=true,maxIssues=Infinity}={}){
+  plan=finishes().spatial(plan);
   if(!num(passage)||passage<300||passage>2000)fail('通道阈值须为 300–2000 mm');
   const targets=focusIds?new Set(focusIds):focusId?new Set([focusId]):null;
   const broken=[],products=design().products();
+  for(const pending of plan.wallFinish?.pending||[]){const ids=targets?[...targets]:['wall-finish-'+pending.index];for(const id of ids)broken.push({kind:'wallfinish',id,wallId:pending.wallId,pending:true,name:'墙面饰面',message:pending.message});}
   furniture=furniture.filter(f=>{const message=products.modelError(f);if(!message)return true;if(!targets||targets.has(f.id))broken.push({kind:'model',id:f.id,name:f.name,pending:true,message:'家具模型异常，空间核对待修复：'+message});return false;});
   const ignored=new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
   const bodies=furniture.filter(f=>!ignored.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded).map(f=>{const shapes=(root.FurnishGeometry||require('./layout-geometry.js')).footprints(f);return shapes.map(p=>({f,p,box:[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))]}));}).flat(),walls=plan.walls.map(rect),issues=broken;
@@ -323,12 +330,12 @@
     issues.push({kind:'pipe',id:f.id,markerId:pipe.id,name:f.name,pending:!vertical,cut:cabinet,at:pipe.at,message:cabinet?`柜体与 ${pipe.name} 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查`:`${vertical?'家具实体与竖管相交':'家具与管道投影重叠，家具高度待核对'}：${pipe.name}（管径 ${pipe.radius*2} mm）`});
    }
   }
-  (plan.doors||[]).forEach((d,index)=>{const points=[d.h];for(let i=0;i<=20;i++){const t=i/20*Math.PI/2;points.push([d.h[0]+d.len*(d.c[0]*Math.cos(t)+d.o[0]*Math.sin(t)),d.h[1]+d.len*(d.c[1]*Math.cos(t)+d.o[1]*Math.sin(t))]);}swings.push(points);for(const {f,p} of bodies)if(intersects(points,p))issues.push({kind:'door',doorIndex:index,id:f.id,name:f.name,message:'开门范围与家具冲突'});if(walls.some(w=>intersects(points,w)))issues.push({kind:'swingwall',doorIndex:index,name:d.name||'门 '+(index+1),message:'开门范围与墙体冲突'});});
+  (plan.doors||[]).forEach((d,index)=>{const points=[d.h];for(let i=0;i<=20;i++){const t=i/20*Math.PI/2;points.push([d.h[0]+d.len*(d.c[0]*Math.cos(t)+d.o[0]*Math.sin(t)),d.h[1]+d.len*(d.c[1]*Math.cos(t)+d.o[1]*Math.sin(t))]);}swings.push(points);for(const {f,p} of bodies)if(intersects(points,p))issues.push({kind:'door',doorIndex:index,id:f.id,name:f.name,message:'开门范围与家具冲突'});if(walls.some((w,i)=>intersects(points,w)&&(!plan.walls[i][5]||finishes().vertical(plan.walls[i],plan).bottom<2100)))issues.push({kind:'swingwall',doorIndex:index,name:d.name||'门 '+(index+1),message:'开门范围与墙体冲突'});});
   for(let i=0;i<swings.length;i++)for(let j=i+1;j<swings.length;j++)if(intersects(swings[i],swings[j]))issues.push({kind:'swings',doorIndex:i,name:(plan.doors[i].name||'门 '+(i+1))+' / '+(plan.doors[j].name||'门 '+(j+1)),message:'两扇门的开启范围重叠，请核对同时开门情况'});
   for(const {f,p} of bodies){
    if(targets&&!targets.has(f.id))continue;
    if(targets&&issues.filter(v=>targets.has(v.id)||targets.has(v.otherId)).length>=maxIssues)break;
-   if(walls.some(w=>intersects(p,w)))issues.push({kind:'wall',id:f.id,name:f.name,message:'家具占用墙体空间'});
+   if(walls.some((w,i)=>intersects(p,w)&&(!plan.walls[i][5]||G.verticalOverlap(f,null,[design().furnitureVerticalBounds(f),finishes().vertical(plan.walls[i],plan)]))))issues.push({kind:'wall',id:f.id,name:f.name,message:'家具占用墙体空间'});
    if(plan.rooms.length&&!fitsInRooms(plan.rooms,p))issues.push({kind:'outside',id:f.id,name:f.name,message:'家具占地超出房间范围（含折角／凹口）'});
    const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
    if(C?.supported(f)||f.kitchen){
@@ -336,7 +343,7 @@
     for(const opening of (f.kitchen?(root.FurnishKitchen||require('./kitchen-core.js')).openingZones(f,{passage}):C.openingZones(f,{passage}))){
      const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),movingFurniture=f.kitchen?K.moduleFurniture(f,K.cabinetLayout(f).find(m=>m.index===opening.column)):f,partOpening=f.kitchen?{...opening,column:opening.bay??0}:opening,parts=f.kitchen&&pipes.length?S.prepareOpening(movingFurniture,pipes):movingParts;
      const hit=(poly,vertical)=>C.openingIntersects(opening,poly,vertical,intersects),physical=opening.kind!=='cabinetpassage';
-     const wallHit=plan.walls.some((w,i)=>hit(walls[i],{bottom:0,top:w[4]==='low'?Math.min(1000,ceilingHeight(plan)):ceilingHeight(plan)}));
+     const wallHit=plan.walls.some((w,i)=>hit(walls[i],finishes().vertical(w,plan)));
      const obstacles=rigidBodies,blocked=[],unknown=[],pipeIds=[],motionUnknown=[];
      for(const b of obstacles){if(b.f.id===f.id)continue;const vertical=b.vertical??design().furnitureVerticalBounds(b.f);if(!hit(b.p,vertical))continue;(!vertical?unknown:blocked).push(b.f.name||b.f.id);}
      const ceilingRooms=physical?(plan.rooms||[]).filter(r=>r.counted!==false&&(r.polys||[r.poly]).some(poly=>hit(poly,{bottom:r.ceilingHeight??ceilingHeight(plan),top:Infinity}))):[];
@@ -351,7 +358,7 @@
    const clearance=f.frontClearance??(C?.supported(f)?0:/wardrobe|cabinet|dresser|custom/.test(f.type)?600:0);if(!clearance)continue;
    const a=f.rot*Math.PI/180,front={...f,cx:f.cx-Math.sin(a)*(f.d/2+clearance/2),cy:f.cy+Math.cos(a)*(f.d/2+clearance/2),d:clearance};const zone=polygon(front);
    const dishwasher=products.dishwasherInstallation(f),height=design().furnitureVerticalBounds(f);
-   const wallBlocked=dishwasher?plan.walls.some((w,i)=>intersects(zone,walls[i])&&G.verticalOverlap(f,null,[height,{bottom:0,top:w[4]==='low'?Math.min(1000,ceilingHeight(plan)):ceilingHeight(plan)}])):walls.some(w=>intersects(zone,w));
+   const wallBlocked=dishwasher?plan.walls.some((w,i)=>intersects(zone,walls[i])&&G.verticalOverlap(f,null,[height,finishes().vertical(w,plan)])):walls.some((w,i)=>intersects(zone,w)&&(!plan.walls[i][5]||G.verticalOverlap(f,null,[height,finishes().vertical(plan.walls[i],plan)])));
    const itemBlocked=dishwasher?rigidBodies.some(b=>b.f.id!==f.id&&b.vertical&&intersects(zone,b.p)&&G.verticalOverlap(f,b.f,[height,b.vertical])):bodies.some(b=>b.f.id!==f.id&&intersects(zone,b.p));
    const itemUnknown=dishwasher&&rigidBodies.some(b=>b.f.id!==f.id&&!b.vertical&&intersects(zone,b.p));
    if(wallBlocked||itemBlocked||itemUnknown)issues.push({kind:'front',id:f.id,name:f.name,...(dishwasher?{pending:!wallBlocked&&!itemBlocked}:{}),message:dishwasher?`用户设置的正面 ${clearance} mm 额外使用空间${wallBlocked||itemBlocked?'不足':'内家具高度未知，待核对'}（独立于洗碗机开门／厂家安装预留）`:`正面 ${clearance} mm 使用空间不足（柜门／抽屉）`});
@@ -374,6 +381,7 @@
  }
  const checksum=value=>{let hash=2166136261;for(const c of JSON.stringify(value)){hash^=c.charCodeAt(0);hash=Math.imul(hash,16777619);}return (hash>>>0).toString(16).padStart(8,'0');};
  function validateWork(work){
+  finishes().validate(work?.wallFinishes);
   if(work?.purchaseOrders!==undefined)(root.FurnishPurchasing||require('./purchasing-core.js')).validate(work.purchaseOrders);
   ceilingHeight(work);
   if(work?.drawing!==undefined)(root.FurnishDrawing||require('./drawing-core.js')).settings(work.drawing);
@@ -415,7 +423,7 @@
   }
   return {catalog,payload};
  }
- function pack(payload){return {format:'furnish-project',version:1,createdAt:new Date().toISOString(),checksum:checksum(payload),payload:clone(payload)};}
+ function pack(payload){return {format:'furnish-project',version:[payload.current,...(payload.designs||[]).map(d=>d.work)].some(w=>finishes().has(w))?2:1,createdAt:new Date().toISOString(),checksum:checksum(payload),payload:clone(payload)};}
  function historyEntries(entries){const counts=new Map(),result=[];for(const entry of [...entries].sort((a,b)=>(b?.ts||0)-(a?.ts||0))){if(!entry||typeof entry.planId!=='string'||!num(entry.ts)||!entry.data||result.some(v=>v.ts===entry.ts&&v.planId===entry.planId))continue;const count=counts.get(entry.planId)||0;if(count>=8)continue;counts.set(entry.planId,count+1);result.push(entry);if(result.length===64)break;}return result;}
  function recoveryEntry(entries,planId,work,reason,now=Date.now()){
   entries=historyEntries(entries);const data=clone(work),ts=Math.max(now,...entries.map(v=>v.ts+1)),entry={ts,planId,n:data.furniture.length,reason:String(reason).slice(0,80),data};
@@ -423,7 +431,7 @@
  }
  function mergeDesigns(existing,incoming,planId){const result=clone(existing);for(const entry of incoming){const key=JSON.stringify(canonical(entry.work));if(result.some(d=>d.planId===planId&&(d.name===entry.name||d.name.startsWith(entry.name.slice(0,65)+' · 导入 '))&&JSON.stringify(canonical(d.work))===key))continue;let name=entry.name,n=1;while(result.some(d=>d.planId===planId&&d.name===name))name=entry.name.slice(0,65)+' · 导入 '+n++;if(result.filter(d=>d.planId===planId).length>=100)fail('合并后命名方案超过 100 份，请先精简已有方案');result.push({...clone(entry),name,planId});}return result;}
  function copyProject(input,id){const p=clone(input);if(!/^custom_[a-z0-9_]+$/.test(id)||!p.current.architecture)fail('只能复制自定义户型');p.planId=id;for(const w of [p.current,...p.designs.map(d=>d.work)]){w.plan=id;const a=w.architecture;if(!a)fail('方案缺少自定义户型');a.draft.id=id;if(a.baseline)a.baseline.id=id;for(const d of a.originalRevisions||[])d.id=id;}for(const d of p.designs)d.planId=id;return p;}
- function unpack(input){let data=clone(input);if(data.format==='furnish-project'){if(data.version!==1)fail('不支持的项目版本');if(checksum(data.payload)!==data.checksum)fail('项目完整性校验失败，文件可能被修改或损坏');data=data.payload;}else if(Array.isArray(data.furniture)){data={planId:data.plan,current:data,designs:[],catalog:[]};}else fail('不是 Furnish 项目文件');
+ function unpack(input){let data=clone(input);if(data.format==='furnish-project'){if(![1,2].includes(data.version))fail('不支持的项目版本');if(checksum(data.payload)!==data.checksum)fail('项目完整性校验失败，文件可能被修改或损坏');data=data.payload;}else if(Array.isArray(data.furniture)){data={planId:data.plan,current:data,designs:[],catalog:[]};}else fail('不是 Furnish 项目文件');
   if(!data||typeof data.planId!=='string'||!Array.isArray(data.designs)||data.designs.length>100||!Array.isArray(data.catalog)||data.catalog.length>500)fail('项目结构无效');const checked=(label,work)=>{try{return validateWork(work);}catch(e){fail(label+'：'+e.message);}};data.current=checked('当前方案',data.current);data.designs=data.designs.map(d=>{if(typeof d.name!=='string'||d.name.length>80)fail('方案名称无效');return {...d,work:checked('命名方案「'+d.name+'」',d.work)};});if(data.current.architecture){const id=data.current.architecture.draft.id;if(id!==data.planId||data.designs.some(d=>d.work.architecture?.draft.id!==id))fail('方案户型不一致');}
   for(const [label,work] of [['当前方案',data.current],...data.designs.map(d=>['命名方案「'+d.name+'」',d.work])])if(work.plan!==undefined&&work.plan!==data.planId)fail(label+'：方案户型编号与项目不一致');
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;

@@ -177,7 +177,7 @@ function syncSaved(){
     : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 const snap = () => JSON.stringify(state);
-function commit(before){ if(state.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(state.furniture,FurnishProject.effectivePlan(PLAN,state)); FurnishKitchen.normalize(state.furniture,JSON.parse(before).furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,JSON.parse(before).furniture); undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,JSON.parse(before),'编辑前'); }
+function commit(before){ const previous=JSON.parse(before);if(!((previous.wallFinishes||state.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,state))){if(state.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(state.furniture,FurnishProject.effectivePlan(PLAN,state)); FurnishKitchen.normalize(state.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,previous.furniture);} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
 function mutate(fn){ const b = snap(); fn(); commit(b); renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
@@ -188,7 +188,7 @@ const getF = id => state.furniture.find(f => f.id === id);
 const {area,perim,bbox,aabb,inPoly,corners,obbOverlap,groupBox} = FurnishGeometry;
 const fmt = (n, d=2) => n.toFixed(d);
 const norm = a => ((Math.round(a) % 360) + 360) % 360;
-const snapRects = () => WALLS.filter((w,i) => !state.demolished.includes('w'+i)).map(w => w.slice(0,4)).concat(WINS.map(w => w.rect));
+const snapRects = () => {if(!state.wallFinishes)return WALLS.filter((w,i)=>!state.demolished.includes('w'+i)).map(w=>w.slice(0,4)).concat(WINS.map(w=>w.rect));const p=FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state));return p.walls.map(w=>w.slice(0,4)).concat(p.wins.map(w=>w.rect));};
 
 /* ======================= 家具几何：房间归属 / 旋转矩形碰撞 ======================= */
 const roomAt = (x, y) => ROOMS.find(r => inPoly(x, y, r.poly)) || null;
@@ -702,7 +702,8 @@ function planThumb(p){
     .map(r => `<polygon points="${r.poly.map(q => q.join(',')).join(' ')}" fill="#cbbFa8" opacity=".5"/>`).join('');
   const walls = p.walls.map(w =>
     `<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="${w[4]==='b' ? '#2b2824' : w[4]==='e' ? '#57514a' : '#9b9285'}" stroke="#eee" stroke-width="15" stroke-dasharray="${w[4]==='b'?'30 20':w[4]==='e'?'100 30':''}"/>`).join('');
-  return `<svg viewBox="${x0-pad} ${y0-pad} ${x1-x0+2*pad} ${y1-y0+2*pad}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${rooms}${walls}</svg>`;
+  const finishes=(p.wallFinish?.solids||[]).filter(s=>s.bottom===0).map(({rect:r})=>`<rect x="${r[0]}" y="${r[1]}" width="${r[2]-r[0]}" height="${r[3]-r[1]}" fill="#d5c2a2"/>`).join('');
+  return `<svg viewBox="${x0-pad} ${y0-pad} ${x1-x0+2*pad} ${y1-y0+2*pad}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${rooms}${walls}${finishes}</svg>`;
 }
 function buildPlanList(){
   const c = $('#planCnt'); if (c) c.textContent = PLANS.length;

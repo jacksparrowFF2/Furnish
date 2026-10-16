@@ -1,7 +1,8 @@
 function measurementReferenceName(m){
  if(!m)return tr('该方向无实体','No entity in this direction');
  const name=m.entity.kind==='wall'?(m.wallPriority?tr('紧邻实体墙','Adjoining solid wall'):tr('墙面／窗边','Wall / window')):m.entity.kind==='window'?tr('窗边','Window edge'):(typeof nm==='function'?nm(m.entity.name):m.entity.name);
- return name+(m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
+ const pendingThickness=state.wallFinishes?.surfaces.some(s=>s.tileThickness===undefined||s.bondThickness===undefined);
+ return name+(state.wallFinishes&&m.entity.kind==='wall'?(pendingThickness?tr(' · 完成面厚度待定',' · Finish thickness pending'):tr(' · 完成面',' · Finished face')):'')+(m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
 }
 function measurementDirectionLabel(dir,m){
  const labels={l:tr('左','Left'),r:tr('右','Right'),t:tr('上','Up'),b:tr('下','Down')};
@@ -78,7 +79,8 @@ function refreshHobOpenings(root=svg,options={}){
 }
 function renderRooms(){
   let s = '';
-  ROOMS.forEach(r => s += `<path class="room" data-room="${r.id}" d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="url(#m-${state.rooms[r.id].mat})" ${r.zone?'stroke="#139687" stroke-width="1" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"':''}/>`);
+  const rooms=state.wallFinishes?FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state)).rooms:ROOMS;
+  rooms.forEach(r => s += `<path class="room" data-room="${r.id}" d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="url(#m-${state.rooms[r.id].mat})" ${r.zone?'stroke="#139687" stroke-width="1" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"':''}/>`);
   const sill = ([a,b,c,d], extra='') => `<rect x="${a}" y="${b}" width="${c-a}" height="${d-b}" fill="${PAL.sill}" stroke="${PAL.sillLine}" stroke-width="1" vector-effect="non-scaling-stroke" ${extra}/>`;
   DOORS.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-door="${i}"`));
   SLIDES.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-slide="${i}"`));
@@ -156,6 +158,13 @@ function renderWalls(){
     if (dem){ fill = PAL.demFill; ex = 'stroke="#c65b3a" stroke-width="1.2" stroke-dasharray="5 3" vector-effect="non-scaling-stroke"'; }
     return `<rect class="wall" data-wall="${id}" x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="${fill}" ${ex}><title>${k==='b'?tr('承重墙','Bearing wall'):k==='e'?tr('外墙','Exterior wall'):tr('非承重墙','Partition')} · ${tr('点击查看属性','Click for properties')}</title></rect>`;
   }).join('');
+  if(!state.wallFinishes)return;
+  const data=FurnishProject.effectivePlan(PLAN,state).wallFinish;
+  if(data)$('#gWalls').insertAdjacentHTML('beforeend',`<g data-wall-finishes>${data.solids.filter(s=>s.bottom===0).map(s=>{
+    const [x,y,X,Y]=s.rect,index=PLAN.wallRefs?PLAN.wallRefs.indexOf(s.wallId):Number(s.wallId.slice(8));let target=index>=0?`data-wall="w${index}"`:'';
+    if(index<0){const o=PLAN.customDraft?.openings.find(o=>o.wall===s.wallId);if(o){const kind=o.kind==='window'?'win':o.kind,refs=kind==='win'?PLAN.winRefs:kind==='door'?PLAN.doorRefs:PLAN.slideRefs,i=kind==='win'&&o.bay?PLAN.wins.findIndex(w=>w.bayId===o.id):refs?.indexOf(o.id);if(i>=0)target=`data-${kind}="${i}"`;}}
+    return `<rect class="wall" ${target} data-wall-finish="${s.index}" x="${x}" y="${y}" width="${X-x}" height="${Y-y}" fill="#d5c2a2"><title>${tr('墙面完成面','Finished wall face')} · ${s.tileThickness+s.bondThickness} mm</title></rect>`;
+  }).join('')}</g>`);
 }
 
 function offsetBayPath(points,d){
@@ -211,17 +220,19 @@ function renderOpenings(){
 
 let roomLabelLayoutCache=null;
 function roomLabelLayout(){
- const rooms=ROOMS.map(r=>({...r,name:nm(state.rooms[r.id].name)})),obstacles=ui.layers.furn?renderableFurniture().filter(f=>!['rug','pendant','curtain','wallart'].includes(f.type)).flatMap(f=>FurnishGeometry.footprints(f)):[],rotation=drawingRotation(),key=JSON.stringify([rooms.map(r=>[r.id,r.at,r.name,r.poly,r.rings,r.polys]),obstacles,rotation]);
+ const rooms=(state.wallFinishes?FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state)).rooms:ROOMS).filter(r=>r.poly.length).map(r=>({...r,name:nm(state.rooms[r.id].name)})),obstacles=ui.layers.furn?renderableFurniture().filter(f=>!['rug','pendant','curtain','wallart'].includes(f.type)).flatMap(f=>FurnishGeometry.footprints(f)):[],rotation=drawingRotation(),key=JSON.stringify([rooms.map(r=>[r.id,r.at,r.name,r.poly,r.rings,r.polys]),obstacles,rotation]);
  if(roomLabelLayoutCache?.key!==key)roomLabelLayoutCache={key,positions:new Map(FurnishDrawing.roomLabels(rooms,obstacles,{rotation}).map(v=>[v.id,v]))};return roomLabelLayoutCache.positions;
 }
 function renderLabels(){
   const g = $('#gLabels');
   g.setAttribute('display', ui.layers.labels ? 'inline' : 'none');
   const positions=globalThis.FurnishDrawing?roomLabelLayout():null;
-  g.innerHTML = ROOMS.filter(r => r.at).map(r => {
+  const finishPlan=state.wallFinishes?FurnishProject.effectivePlan(PLAN,state):null;
+  const rooms=finishPlan?FurnishWallFinish.spatial(finishPlan).rooms:ROOMS,finishPrefix=finishPlan?.wallFinish?.pending.length?tr('参考净 ','Provisional '):state.wallFinishes?tr('净 ','Clear '):'';
+  g.innerHTML = rooms.filter(r => r.at).map(r => {
     const chosen=positions?.get(r.id),[x,y]=chosen?.at||r.at,size=chosen?.size||1,halo = `stroke="${PAL.halo}" stroke-width="45" paint-order="stroke" stroke-linejoin="round"`;
     return `<g data-room-label="${r.id}" data-label-at="${x},${y}" transform="rotate(${globalThis.FurnishDrawing?-drawingRotation():0} ${x} ${y})"><text x="${x}" y="${y-100*size}" dominant-baseline="central" font-size="${250*size}" font-weight="600" text-anchor="middle" fill="${PAL.label}" ${halo}>${esc(nm(state.rooms[r.id].name))}</text>
-      <text x="${x}" y="${y+160*size}" dominant-baseline="central" font-size="${175*size}" text-anchor="middle" fill="${PAL.labelSub}" ${halo}>${fmt(area(r.poly))} m²</text></g>`;
+      <text x="${x}" y="${y+160*size}" dominant-baseline="central" font-size="${175*size}" text-anchor="middle" fill="${PAL.labelSub}" ${halo}>${finishPrefix}${fmt(area(r.poly))} m²</text></g>`;
   }).join('');
 }
 

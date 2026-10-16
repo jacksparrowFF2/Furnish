@@ -4,6 +4,7 @@
  const cabinet=()=>root.FurnishCabinet||require('./cabinet-core.js');
  const products=()=>root.FurnishProducts||require('./product-rules.js');
  const kitchen=()=>root.FurnishKitchen||require('./kitchen-core.js');
+ const finished=plan=>(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan);
  const uses={unassigned:['未分类','Unassigned'],living:['客厅','Living room'],dining:['餐厅','Dining room'],bedroom:['卧室','Bedroom'],study:['书房','Study'],kitchen:['厨房','Kitchen'],bathroom:['卫生间','Bathroom'],balcony:['阳台','Balcony'],hall:['玄关／走廊','Hall'],storage:['储物／衣帽间','Storage'],other:['其他','Other'],bay:['飘窗台','Bay platform']};
  function inferUse(room,setting){
   if(room.counted===false)return 'bay';
@@ -161,6 +162,7 @@
  }
  function waterheaterClearances(plan,f,options={}){
   if(f.type!=='waterheater_flat')return null;
+  plan=finished(plan);
   const P=root.FurnishProject||require('./project-core.js'),location=P.ceilingAt(plan,f.cx,f.cy),ceilingHeight=options.ceilingHeight??location.height,wallHeight=plan.ceilingHeight??2800;
   const bottom=products().value(f,'mountHeight'),height=products().height(f),angle=(f.rot||0)*Math.PI/180,sign=f.flip?-1:1;
   const right=[Math.cos(angle)*sign,Math.sin(angle)*sign],depth=[-Math.sin(angle),Math.cos(angle)],edge=f.w/2;
@@ -206,6 +208,7 @@
   return {ceilingHeight,room:location.room,top:check(ceilingHeight===null?null:ceilingHeight-bottom-height,40),socket,right:{...rightCheck,blocker,unknown}};
  }
  function wallGaps(plan,f){
+  plan=finished(plan);
   const box=bounds(f),out={};
   for(const [dir,[axis,sign]] of Object.entries(dirs)){
    const other=1-axis,center=axis?f.cy:f.cx;
@@ -223,6 +226,7 @@
   const half=points=>{const h=[];for(const p of points){while(h.length>1&&cross(h[h.length-2],h[h.length-1],p)<=0)h.pop();h.push(p);}return h.slice(0,-1);};return [...half(points),...half([...points].reverse())];
  }
  function placeAtGap(plan,f,dir,gap){
+  plan=finished(plan);
   if(f.locked)throw Error('家具已锁定，请先解锁');
   if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('距墙尺寸须为 0–20000 mm');
   const target=wallGaps(plan,f)[dir];if(!target)throw Error('该方向未找到与家具边缘对应的墙面');
@@ -241,6 +245,7 @@
   return placeSelectionAtDirectionalGap(plan,work,[id],dir,gap,{rotation,visibleFurniture})[0];
  }
  function placeSelectionAtDirectionalGap(plan,work,selection,dir,gap,{rotation=0,visibleFurniture=true}={}){
+  const surveyPlan=plan;plan=finished(plan);
   const S=root.FurnishSnapping||require('./snapping.js'),G=root.FurnishGeometry||require('./layout-geometry.js'),P=root.FurnishProject||require('./project-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js');
   if(!Array.isArray(selection)||!selection.length||selection.some(id=>!work.furniture.some(f=>f.id===id)))throw Error('物体已不存在，请重新选择');
   const ids=new Set(expandGroups(work.furniture,selection)),members=work.furniture.filter(f=>ids.has(f.id));
@@ -254,7 +259,7 @@
   const moved=members.map(f=>({...f,cx:f.cx+dx,cy:f.cy+dy}));
   if(Math.abs(dx)+Math.abs(dy)<1e-7)return moved;
   const proposed=JSON.parse(JSON.stringify(work.furniture));for(const f of proposed)if(ids.has(f.id)){f.cx+=dx;f.cy+=dy;}const expected=JSON.parse(JSON.stringify(proposed));
-  if(proposed.some(v=>v.kitchen?.autoAvoid))K.normalizeObstacles(proposed,plan);
+  if(proposed.some(v=>v.kitchen?.autoAvoid))K.normalizeObstacles(proposed,surveyPlan);
   K.normalize(proposed,work.furniture);normalizeLaundryStacks(proposed,work.furniture);
   if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||JSON.stringify({...v,cx:expected[i].cx,cy:expected[i].cy})!==JSON.stringify(expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
   const after=S.directional(moved,{...options,furniture:visibleFurniture?proposed:[]})[dir];

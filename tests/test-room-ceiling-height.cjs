@@ -36,10 +36,10 @@ assert.equal(plan.rooms[0].ceilingHeight,undefined);
 console.log('PASS per-room clear height, threshold and boundary checks, move/height updates, unknown room, inherited/cleared values, invalid import, current/named project round trip and production room input handler');
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
- const source=html.slice(html.indexOf('  ROOMS.forEach(r => {',html.indexOf('function buildArch(){')),html.indexOf('  [...DOORS, ...SLIDES].forEach'));
- const context=vm.createContext({THREE,FurnishProject:P,ROOMS:effective.rooms,state:work,top:2.8,opt:{cut:2.8},DK:()=>false,floorMat:()=>new THREE.MeshStandardMaterial(),mat:()=>new THREE.MeshStandardMaterial(),wx:v=>v/1000,wz:v=>v/1000,shapeOf:poly=>{const s=new THREE.Shape();poly.forEach(([x,y],i)=>i?s.lineTo(x/1000,y/1000):s.moveTo(x/1000,y/1000));s.closePath();return s;},archFloor:new THREE.Group(),archUp:new THREE.Group(),lampG:new THREE.Group()});
- vm.runInContext(source,context);assert.deepEqual(context.archUp.children.map(c=>c.position.y),[2.5,2.4,2.8]);assert.ok(context.archUp.children.every(c=>c.visible));
- context.state={...work,rooms:{...work.rooms,bath:{...work.rooms.bath,ceilingHeight:3000}}};context.archUp.clear();vm.runInContext(source,context);assert.equal(context.archUp.children[0].position.y,3);assert.equal(context.archUp.children[0].visible,true);
- context.opt.cut=1.2;context.top=1.2;context.archUp.clear();vm.runInContext(source,context);assert.ok(context.archUp.children.every(c=>!c.visible));
+ const source=html.slice(html.indexOf('  const finishPlan=FurnishProject.effectivePlan(PLAN,state);',html.indexOf('function buildArch(){')),html.indexOf('  [...DOORS, ...SLIDES].forEach'));
+ const context=vm.createContext({THREE,FurnishProject:P,FurnishWallFinish:require('../src/core/wall-finish-core.js'),PLAN:plan,ROOMS:effective.rooms,state:work,top:2.8,opt:{cut:2.8},DK:()=>false,floorMat:()=>new THREE.MeshStandardMaterial(),mat:()=>new THREE.MeshStandardMaterial(),wx:v=>v/1000,wz:v=>v/1000,shapeOf:poly=>{const s=new THREE.Shape();poly.forEach(([x,y],i)=>i?s.lineTo(x/1000,y/1000):s.moveTo(x/1000,y/1000));s.closePath();return s;},archFloor:new THREE.Group(),archUp:new THREE.Group(),lampG:new THREE.Group()});
+ vm.runInContext('{'+source+'}',context);assert.deepEqual(context.archUp.children.map(c=>c.position.y),[2.5,2.4,2.8]);assert.ok(context.archUp.children.every(c=>c.visible));
+ context.state={...work,rooms:{...work.rooms,bath:{...work.rooms.bath,ceilingHeight:3000}}};context.archUp.clear();vm.runInContext('{'+source+'}',context);assert.equal(context.archUp.children[0].position.y,3);assert.equal(context.archUp.children[0].visible,true);
+ context.opt.cut=1.2;context.top=1.2;context.archUp.clear();vm.runInContext('{'+source+'}',context);assert.ok(context.archUp.children.every(c=>!c.visible));
  console.log('PASS actual production Three.js room ceiling positions, updates and full/cut view visibility');
 })().catch(e=>{console.error(e);process.exitCode=1;});

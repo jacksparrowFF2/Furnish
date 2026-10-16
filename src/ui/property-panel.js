@@ -28,8 +28,8 @@ function renderPanelContent(object=true){
   if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f);const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
   if (object && ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
   if (object && ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
-  if (object && (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide')){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
-  if (object && ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p))return; if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
+  if (object && (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide')){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
+  if (object && ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p)){window.FurnishWallFinishUI?.opening(ui.sel,p);return;} if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
   if (object && ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
   if(object && ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){
     const m=state.measures[ui.sel.id];p.innerHTML=`<section><h3>${tr('测量线','Measurement')}</h3><p class="big">${Math.round(Math.hypot(m.b.x-m.a.x,m.b.y-m.a.y))} mm</p><p class="muted">${tr('固定端点；家具或墙体改变后请重新测量。','Fixed endpoints; remeasure after moving furniture or walls.')}</p><div class="actions"><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="home">${tr('返回','Back')}</button></div><p class="muted">${tr('也可按 Delete / Backspace 删除，Ctrl+Z 撤销。','Delete / Backspace removes it; Ctrl+Z undoes.')}</p></section>`;return;
@@ -227,6 +227,7 @@ function roomPanel(r){
       <div><small>${tr('周长','Perimeter')}</small><span class="big">${fmt((r.rings||[r.poly]).reduce((n,p)=>n+perim(p),0),1)}</span> m</div>
       </div>
     <div class="muted">${r.zone?tr('功能区分界不产生实际墙体；墙面工程量按原空间轮廓计算。','Functional boundaries do not create walls; wall quantities use the physical space.'):tr(`墙面面积（层高 ${FurnishProject.ceilingHeight(state)/1000}m，未扣门窗）约 ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`, `Wall area (${FurnishProject.ceilingHeight(state)/1000}m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`)}</div></section>
+  ${window.FurnishWallFinishUI?.roomPanel(r)||''}
   ${window.FurnishRoomMeasure?.panel(r)||''}
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
     <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
@@ -237,6 +238,7 @@ function roomPanel(r){
       <button class="btn" data-act="home">${tr('← 返回总览','← Back to overview')}</button></div></section>`;
 }
 function bindRoomPanel(){
+  globalThis.FurnishWallFinishUI?.bind();
   globalThis.FurnishRoomMeasure?.bind();
   const id = ui.sel.id;
   const zones=$('#room-zones');if(zones)zones.onclick=()=>{FurnishEditor.open();document.querySelector('[data-trace-mode="zone"]')?.click();};
