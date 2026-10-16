@@ -25,7 +25,7 @@ function renderPanelContent(object=true){
   renderFab();
   const p = $('#panel'), ids = object?selIds():[];
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); return; }
-  if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f);const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
+  if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f)+(window.FurnishFloorFinishUI?.furniturePanel(f)||'');const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
   if (object && ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
   if (object && ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
   if (object && (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide')){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
@@ -221,13 +221,14 @@ function roomPanel(r){
   const mats = Object.entries(MATS).map(([k,m]) => `<button class="mat ${k===st.mat?'on':''}" data-mat="${k}"><i style="background:${m.sw}"></i><span>${nm(m.name)}<small>¥${m.price}/m²</small></span></button>`).join('');
   return `<section><h3>${r.zone?tr('功能区','Functional area'):tr('房间','Room')}</h3>
     <div class="form"><label class="full">${tr('名称','Name')}<input id="rName" maxlength="80" value="${esc(nm(st.name))}"></label><label class="full">${tr('房间用途','Room use')}<select id="rUse" ${r.counted===false?'disabled':''}>${Object.entries(FurnishDesign.uses).filter(([id])=>r.counted===false?id==='bay':id!=='bay').map(([id,n])=>`<option value="${id}" ${FurnishDesign.inferUse(r,st)===id?'selected':''}>${tr(...n)}</option>`).join('')}</select></label></div>
-    ${r.counted!==false?`<div class="form"><label class="full">${tr('房间净高 / 吊顶完成面 mm','Room clear height / finished ceiling mm')}<input id="rCeilingHeight" type="number" min="1000" max="10000" step="10" value="${st.ceilingHeight??''}" placeholder="${FurnishProject.ceilingHeight(state)}"></label></div><p class="muted">${tr(`当前有效净高 ${FurnishProject.roomCeilingHeight(state,r)} mm；留空沿用项目层高。用于本房间天花板、热水器顶部预留与柜门上翻检查，随项目保存。`,`Effective clear height ${FurnishProject.roomCeilingHeight(state,r)} mm; leave empty to inherit project height. Used for this room's ceiling, heater clearance and cabinet opening checks; saved with the project.`)}</p><button class="btn" id="room-zones">划分功能区（不加墙）</button>`:''}<p class="muted">${tr('风格方案按用途匹配地面，修改名称不会改变已设置的用途。','Styles use room purpose; renaming preserves the selected purpose.')}</p>
+    ${r.counted!==false?`<div class="form"><label class="full">${state.floorFinishes?tr('天花／吊顶标高 mm（毛坯基准）','Ceiling elevation mm (survey datum)'):tr('房间净高 / 吊顶完成面 mm','Room clear height / finished ceiling mm')}<input id="rCeilingHeight" type="number" min="1000" max="10000" step="10" value="${st.ceilingHeight??''}" placeholder="${FurnishProject.ceilingHeight(state)}"></label></div><p class="muted">${tr(`${state.floorFinishes?'当前天花绝对标高':'当前有效净高'} ${FurnishProject.roomCeilingHeight(state,r)} mm；留空沿用项目层高。用于本房间天花板、热水器顶部预留与柜门上翻检查，随项目保存。`,`${state.floorFinishes?'Ceiling elevation':'Effective clear height'} ${FurnishProject.roomCeilingHeight(state,r)} mm; leave empty to inherit project height. Used for this room's ceiling, heater clearance and cabinet opening checks; saved with the project.`)}</p><button class="btn" id="room-zones">划分功能区（不加墙）</button>`:''}<p class="muted">${tr('风格方案按用途匹配地面，修改名称不会改变已设置的用途。','Styles use room purpose; renaming preserves the selected purpose.')}</p>
     <div class="stats mt">
       <div><small>${tr('使用面积','Floor area')}</small><span class="big">${fmt(a)}</span> m²</div>
       <div><small>${tr('周长','Perimeter')}</small><span class="big">${fmt((r.rings||[r.poly]).reduce((n,p)=>n+perim(p),0),1)}</span> m</div>
       </div>
     <div class="muted">${r.zone?tr('功能区分界不产生实际墙体；墙面工程量按原空间轮廓计算。','Functional boundaries do not create walls; wall quantities use the physical space.'):tr(`墙面面积（层高 ${FurnishProject.ceilingHeight(state)/1000}m，未扣门窗）约 ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`, `Wall area (${FurnishProject.ceilingHeight(state)/1000}m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`)}</div></section>
   ${window.FurnishWallFinishUI?.roomPanel(r)||''}
+  ${window.FurnishFloorFinishUI?.panel(r)||''}
   ${window.FurnishRoomMeasure?.panel(r)||''}
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
     <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
@@ -239,6 +240,7 @@ function roomPanel(r){
 }
 function bindRoomPanel(){
   globalThis.FurnishWallFinishUI?.bind();
+  globalThis.FurnishFloorFinishUI?.bind();
   globalThis.FurnishRoomMeasure?.bind();
   const id = ui.sel.id;
   const zones=$('#room-zones');if(zones)zones.onclick=()=>{FurnishEditor.open();document.querySelector('[data-trace-mode="zone"]')?.click();};

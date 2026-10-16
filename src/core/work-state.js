@@ -23,6 +23,7 @@
     // Preserve the caller's work object and extra project fields, as before.
     function restore(work, plan){
       (root.FurnishWallFinish||require('./wall-finish-core.js')).validate(work.wallFinishes);
+      (root.FurnishFloorFinish||require('./floor-finish-core.js')).validate(work.floorFinishes);
       if(work.purchaseOrders!==undefined)(root.FurnishPurchasing||require('./purchasing-core.js')).validate(work.purchaseOrders);
       if(work.drawing!==undefined)(root.FurnishDrawing||require('./drawing-core.js')).settings(work.drawing);
       if(work.architecture){
@@ -50,7 +51,7 @@
         .filter(note => note && typeof note.text === 'string' && note.text.trim() && [note.x,note.y].every(coordinate))
         .slice(0,2000).map(note => ({...note, text:note.text.slice(0,120)})), makeId);
       work.furniture = design.normalizeLaundryStacks(restoreFurniture(work.furniture));
-      if(!work.wallFinishes&&work.furniture.some(f=>f.kitchen?.autoAvoid))(root.FurnishKitchen||(inNode?require('./kitchen-core.js'):null)).normalizeObstacles(work.furniture,project.effectivePlan(plan,work));
+      if(!work.wallFinishes&&!work.floorFinishes&&work.furniture.some(f=>f.kitchen?.autoAvoid))(root.FurnishKitchen||(inNode?require('./kitchen-core.js'):null)).normalizeObstacles(work.furniture,project.effectivePlan(plan,work));
       work.scene3d = design.sceneSettings(work.scene3d);
       return work;
     }

@@ -274,6 +274,8 @@
 <script src="src/core/zone-geometry.js"></script>
 <script src="src/core/floorplan-core.js"></script>
 <script src="src/core/wall-finish-core.js"></script>
+<script src="src/core/floor-finish-core.js"></script>
+<script src="src/render/floor-finish-model.js"></script>
 <script src="src/render/wall-finish-model.js"></script>
 <script src="src/core/drawing-core.js"></script>
 <script src="src/core/purchasing-core.js"></script>
@@ -331,6 +333,7 @@
 <script src="src/ui/floorplan-editor.js"></script>
 <script src="src/ui/project-ui.js"></script>
 <script src="src/ui/wall-finishes.js"></script>
+<script src="src/ui/floor-finishes.js"></script>
 <script src="src/ui/design-ui.js"></script>
 <script src="src/ui/procurement-ui.js"></script>
 <script src="src/ui/catalog-ui.js"></script>
@@ -1186,16 +1189,21 @@ function wallBox([x0, y0, x1, y1], yb, yt, m){
 const edgeMat = new THREE.LineBasicMaterial({color:0x6f675b}), skirtMat = new THREE.MeshStandardMaterial({color:'#8b7f6e', roughness:.6});
 function shapeOf(poly, flip){ const s = new THREE.Shape(); poly.forEach(([x, y], i) => s[i ? 'lineTo' : 'moveTo'](wx(x), flip ? wz(y) : -wz(y))); return s; }
 
+let floorScenePlan=null;
 function buildArch(){
   clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
   const top = opt.cut===2.8?H:Math.min(opt.cut,H);
-  const finishPlan=FurnishProject.effectivePlan(PLAN,state);
+  const finishPlan=FurnishProject.effectivePlan(PLAN,state);floorScenePlan=finishPlan;
+  ground.position.y=Math.min(-.015,...Object.values(finishPlan.floorFinish?.areas||{}).flatMap(a=>[a.rawZ,a.finishedZ].filter(Number.isFinite).map(v=>v/1000-.015)));
   FurnishWallFinish.spatial(finishPlan).rooms.filter(r=>r.poly.length).forEach(r => {
-    const m = floorMat(state.rooms[r.id].mat), bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
+    const floor=finishPlan.floorFinish?.areas[r.id];
+    const m = floor?.layout?FurnishFloorFinishModel.material(THREE,floor.layout,{wx,wz,color:MATS[state.rooms[r.id].mat]?.sw}):floorMat(state.rooms[r.id].mat), bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
     const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)));
     geo.rotateX(-Math.PI/2);
+    if(!bay&&floor?.layout)FurnishFloorFinishModel.uv(THREE,geo,floor.layout,{wx,wz});
     const fl = new THREE.Mesh(geo, bay ? [m, mat('#e9e4da')] : m);
     fl.receiveShadow = true; fl.userData.room = r.id;
+    if(!bay){fl.position.y=(floor?.finishedZ??floor?.rawZ??0)/1000;fl.userData.floor=true;const layers=floor?FurnishFloorFinishModel.layers(THREE,r,floor,{wx,wz}):null;if(layers)archFloor.add(layers);}
     if (bay){ fl.castShadow = true; archUp.add(fl); } else archFloor.add(fl);
     // 天花：法线朝下，只在室内仰视时可见
     const cg = new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p,true))); cg.rotateX(Math.PI/2);
@@ -1343,7 +1351,7 @@ function sync(force){
   Object.assign(opt,settings);
   const north=JSON.stringify(state.drawing?.northAngle??null);
   if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn;showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
-  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,H, PLAN.markers,state.wallFinishes]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes]);
+  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,H, PLAN.markers,state.wallFinishes,state.floorFinishes]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes,state.floorFinishes]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes,state.floorFinishes]);
   if(force||a!==sigArch||f!==sigFurn){buildHeaterClearances();clearSceneIssue();selKey=null;}
   if (force || a !== sigArch){ sigArch = a; buildArch(); }
   if (force || f !== sigFurn){ sigFurn = f; buildFurn(); }
@@ -1508,10 +1516,12 @@ function groundAt(x, y){
   // 视线先碰到墙体（或飘窗台）时，落点取碰到的位置，而不是穿过墙落到看不见的墙后
   const wall = ray.intersectObjects([archUp, archFloor], true).find(h => h.object.material !== glassMat && h.object.visible);
   if (wall && wall.distance < hit.distanceTo(camera.position) - .01) hit.set(wall.point.x, 0, wall.point.z);
+  const floorHit=ray.intersectObjects(archFloor.children,true).find(h=>h.object.userData.floor&&h.object.visible);
+  if(floorHit&&(!wall||floorHit.distance<=wall.distance+.02))hit.copy(floorHit.point);
   const px = v => new THREE.Vector2(v.x*r.width/2, v.y*r.height/2), a = px(hit.clone().project(camera));
   const s = Math.max(a.distanceTo(px(hit.clone().add(new THREE.Vector3(1, 0, 0)).project(camera))),
                      a.distanceTo(px(hit.clone().add(new THREE.Vector3(0, 0, 1)).project(camera)))) / 1000;
-  return {x:hit.x*1000 + OX, y:hit.z*1000 + OY, s};
+  return {x:hit.x*1000 + OX, y:hit.z*1000 + OY, z:hit.y*1000, s};
 }
 function updateSel(){
   const ids = selIds(), key = JSON.stringify(ui.sel);
@@ -1539,7 +1549,9 @@ function buildSelectionElevation(ids){
  if(!v){annotationLabel(elevationG,tr('高度未知 · 标高待核对','Unknown height · verify elevations'),x,.25,z,'scene-elevation');return;}
  const bottom=M(v.bottom),top=M(v.top),V=(xx,y)=>new THREE.Vector3(xx,y,z);
  annotationLine(elevationG,[V(x,0),V(x,top),V(x-.07,0),V(x+.07,0),V(x-.07,bottom),V(x+.07,bottom),V(x-.07,top),V(x+.07,top)],0x167b9b);
- annotationLabel(elevationG,tr(`底部 ${mm(v.bottom)} · 顶部 ${mm(v.top)} mm（离地）`,`Bottom ${mm(v.bottom)} · Top ${mm(v.top)} mm above floor`),x,(bottom+top)/2,z,'scene-elevation');
+ const floor=typeof state!=='undefined'&&state.floorFinishes?FurnishFloorFinish.at(FurnishProject.effectivePlan(PLAN,state),[f.cx,f.cy]).find(a=>!a.legacy):null;
+ if(floor)annotationLabel(elevationG,Number.isFinite(floor.finishedZ)?`距完成地面：底部 ${mm(v.bottom-floor.finishedZ)} · 顶部 ${mm(v.top-floor.finishedZ)} mm`:'完成地面标高待核对',x,Math.max(.12,bottom-.12),z,'scene-floor-elevation');
+ annotationLabel(elevationG,tr(`${floor?'毛坯基准：':''}底部 ${mm(v.bottom)} · 顶部 ${mm(v.top)} mm（离地）`,`Bottom ${mm(v.bottom)} · Top ${mm(v.top)} mm above floor`),x,(bottom+top)/2,z,'scene-elevation');
 }
 function clearSceneIssue(){clearTimeout(issueTimer);sceneIssue=null;clearAnnotations(issueG);invalidate();}
 function highlightIssue(item,volumes){
@@ -1596,7 +1608,7 @@ function setMode(m){
     // Spawn outside and look inward independently of the door's current swing.
     const ed = DOORS.find(d => d.entry), [rx0, ry0, rx1, ry1] = ed.rect;
     const cx = (rx0 + rx1)/2, cy = (ry0 + ry1)/2, [ox, oy] = ed.entryDirection || ed._base?.o || ed.o;
-    camera.position.set(wx(cx - ox*500), 1.6, wz(cy - oy*500));
+    camera.position.set(wx(cx - ox*500), 1.6+floorEye(wx(cx-ox*500),wz(cy-oy*500)), wz(cy - oy*500));
     camera.lookAt(wx(cx + ox*2300), 1.5, wz(cy + oy*2300));
     $('#walkOverlay').style.display = 'flex';
     syncHint3d();
@@ -1627,8 +1639,10 @@ function blocked(x, z, r = .22){
   }
   return false;
 }
+function floorEye(x,z){const values=FurnishFloorFinish.at(floorScenePlan||FurnishProject.effectivePlan(PLAN,state),[x*1000+OX,z*1000+OY]).map(a=>a.finishedZ).filter(Number.isFinite);return values.length?Math.max(...values)/1000:0;}
 function stepWalk(dt){
   if (!walkCtl.isLocked && !touchWalk) return;
+  camera.position.y=1.6+floorEye(camera.position.x,camera.position.z);
   const sp = (keys.ShiftLeft || keys.ShiftRight ? 2.6 : 1.4) * dt, fwd = new THREE.Vector3();
   camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize();
   const right = new THREE.Vector3(-fwd.z, 0, fwd.x), mv = new THREE.Vector3();

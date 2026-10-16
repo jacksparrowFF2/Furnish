@@ -39,6 +39,7 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
   try{const source=P.effectivePlan(PLAN,state),{draft,shift}=FurnishDraft.fromPlan(source,'custom_'+uid()),plan=FurnishDraft.build(draft),work=clone(state);
    work.plan=plan.id;work.architecture={draft,phase:'survey'};work.demolished=[];work.open={d:{},w:{}};work.spaceIgnored=[];
    if(work.wallFinishes)FurnishWallFinish.remapBuiltin(work,source,plan,shift);
+   if(work.floorFinishes)for(const s of Object.values(work.floorFinishes.areas))if(s.layout)s.layout.origin=s.layout.origin.map((v,i)=>v+shift);
    work.furniture.forEach(f=>{f.cx+=shift;f.cy+=shift;});(work.notes||[]).forEach(n=>{n.x+=shift;n.y+=shift;});(work.measures||[]).forEach(m=>{for(const p of [m.a,m.b]){p.x+=shift;p.y+=shift;}});
    store.customPlans=store.customPlans||[];store.customPlans.push(draft);PLANS.push(plan);store.work[plan.id]=work;setPlan(plan.id);
    if(selection){const kind=selection.kind==='win'?'window':selection.kind,refs=selection.kind==='win'?plan.winRefs:selection.kind==='slide'?plan.slideRefs:plan.doorRefs,index=refs.indexOf('preset_'+kind+selection.id);if(index>=0)select({...selection,id:index});}

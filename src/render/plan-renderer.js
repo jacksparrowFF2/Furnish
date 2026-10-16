@@ -80,10 +80,17 @@ function refreshHobOpenings(root=svg,options={}){
 function renderRooms(){
   let s = '';
   const rooms=state.wallFinishes?FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state)).rooms:ROOMS;
-  rooms.forEach(r => s += `<path class="room" data-room="${r.id}" d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="url(#m-${state.rooms[r.id].mat})" ${r.zone?'stroke="#139687" stroke-width="1" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"':''}/>`);
+  document.querySelectorAll('#defs [data-floor-pattern]').forEach(p=>p.remove());
+  const floorPlan=state.floorFinishes?FurnishProject.effectivePlan(PLAN,state):null;
+  for(const [i,r] of rooms.entries()){
+    const l=floorPlan?.floorFinish?.areas[r.id]?.layout;if(!l)continue;
+    $('#defs').insertAdjacentHTML('beforeend',`<pattern data-floor-pattern id="floor-grid-${i}" patternUnits="userSpaceOnUse" width="${l.width+l.gap}" height="${l.height+l.gap}" patternTransform="translate(${l.origin.join(' ')}) rotate(${l.angle})"><rect width="${l.width+l.gap}" height="${l.height+l.gap}" fill="#b8b2a8"/><rect width="${l.width}" height="${l.height}" fill="${MATS[state.rooms[r.id].mat]?.sw||'#e8e2d8'}"/></pattern>`);
+  }
+  rooms.forEach((r,i) => s += `<path class="room" data-room="${r.id}" d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="url(#${floorPlan?.floorFinish?.areas[r.id]?.layout?'floor-grid-'+i:'m-'+state.rooms[r.id].mat})" ${r.zone?'stroke="#139687" stroke-width="1" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"':''}/>`);
   const sill = ([a,b,c,d], extra='') => `<rect x="${a}" y="${b}" width="${c-a}" height="${d-b}" fill="${PAL.sill}" stroke="${PAL.sillLine}" stroke-width="1" vector-effect="non-scaling-stroke" ${extra}/>`;
   DOORS.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-door="${i}"`));
   SLIDES.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-slide="${i}"`));
+  if(floorPlan)for(const r of rooms){const a=floorPlan.floorFinish?.areas[r.id];if(a&&r.at)s+=`<text data-floor-level x="${r.at[0]}" y="${r.at[1]+300}" font-size="105" text-anchor="middle" fill="#8b5725" pointer-events="none">${a.finishedZ===undefined?'标高待核对':`完成 ${a.finishedZ} mm`}</text>`;}
   $('#gRooms').innerHTML = s;
 }
 
