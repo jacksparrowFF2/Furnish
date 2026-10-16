@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-16",
+  "phase": "Acceptance implementation grouping",
+  "fullAcceptanceReference": "4792bf4",
+  "registeredCases": 78,
+  "sourceComparison": {
+    "reference": "isolated copy from the successful full 78-case run",
+    "unchangedBrowserFunctions": 70,
+    "nodeImplementationsWithOnlyRelativeRequireChanges": 8
+  },
+  "scriptRootFiles": {
+    "before": 109,
+    "after": 40
+  },
+  "compatibility": {
+    "unifiedEntryPreserved": true,
+    "legacyStandaloneCommandsPreserved": 8,
+    "diningPlanOrderCommandActuallyPassed": true
+  },
+  "postMoveValidation": {
+    "regressionSuites": 173,
+    "builtInPlans": 12,
+    "browserCases": [
+      "portable-smoke",
+      "tank-preview",
+      "workflow-reimport",
+      "dining-plan-order"
+    ],
+    "allPassed": true,
+    "full78RepeatedAfterMove": false
+  },
+  "productionCodeUnchangedInThisPhase": true,
+  "liveWorkspaceChangeExcludedFromCommit": true
+}

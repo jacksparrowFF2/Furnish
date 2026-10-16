@@ -60,7 +60,7 @@
 
 新增 `test-cabinet-opening-volume-model.cjs` 使用生产 Three.js 构造器，交叉检查 **1680 个玻璃/框体顶点**（含非整数 65.5° 姿态），并核对玄关、餐边柜、电视柜的实际门板和抽屉高度。上翻曲线离散化的交叉检验容差为 0.5 mm，只是模型计算容差，不是厂家安装容差。
 
-浏览器脚本 `scripts/verify-cabinet-opening-3d.browser.js` 使用隔离存储，在 HTTP 与断网 file 模式实际操作：
+浏览器脚本 `scripts/verify/verify-cabinet-opening-3d.browser.js` 使用隔离存储，在 HTTP 与断网 file 模式实际操作：
 
 1. 导入历史格式柜体及旧命名方案；低设备位于上柜门下方不误报。
 2. 在属性里抬高门前设备／降低抽屉前设备，产生对应冲突；撤销、重做正确。

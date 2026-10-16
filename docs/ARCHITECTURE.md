@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-16：验收实现集中至 `scripts/verify/`，70 个浏览器函数内容保持，8 个 Node 实现仅修正相对导入路径。根目录保留统一入口和原独立 Node 命令的委托入口；维护分工见 [脚本入口](../scripts/README.md)。规则回归同时解析全部独立验收实现的本地 require，避免目录迁移留下失效依赖。预览生成器暂保留原位置，应用加载与设计格式不变。
+
 2026-10-16：浏览器验收通过 `scripts/verify-browser.cjs` 统一调度，`scripts/lib/browser-verification.cjs` 提供可迁移路径、文件 URL、服务地址及 Playwright 启动配置。验收在含特殊字符的独立副本生成预览，使用随机端口的只读静态服务与临时浏览器存储；固定图纸和合成输入维护在 tests/fixtures/browser，工作流前置显式排序。应用加载和真实设计文件不变，详见 [浏览器验收](BROWSER-VERIFICATION.md)。
 
 2026-10-16：`output/` 统一作为不入 Git 的本地生成目录；参考图、技能及精选证据分别维护在 `docs/references`、`skills/furnish-modeling`、`docs/validation`。`generate-previews.cjs` 从源码重建预览；缺失生成器的旧餐边柜／热水器视图由 `templates/previews` 与当前入口离线引擎装配，热水器复用当前家具生产代码。独立临时副本回归确保生成器不依赖本机已有 output，维护资料链接单独校验。应用加载与设计保存格式保持。见 [资料与生成物](OUTPUT-ARTIFACTS.md)。

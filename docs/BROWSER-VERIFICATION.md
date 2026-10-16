@@ -28,7 +28,7 @@ node scripts/verify-browser.cjs --all
 node scripts/verify-browser.cjs --all --keep-going
 ```
 
-`--all` 顺序执行全部已登记用例，遇到失败停止并记录未执行项；追加 `--keep-going` 会继续执行后续用例，以便完整收集失败，最终仍返回非零退出码。进度在每个用例结束时更新到结果文件。用例名称来自 `verify-*.browser.js` 及登记的独立 Node 脚本。旧 `.cjs` 入口保留并转交统一入口；旧 `playwright-cli run-code --filename` 命令不再直接运行这些文件，需要统一入口传入第二个参数 `verification`。
+`--all` 顺序执行全部已登记用例，遇到失败停止并记录未执行项；追加 `--keep-going` 会继续执行后续用例，以便完整收集失败，最终仍返回非零退出码。进度在每个用例结束时更新到结果文件。用例实现集中在 `scripts/verify/`，名称来自该目录的 `verify-*.browser.js` 及登记的独立 Node 脚本；统一入口路径保持。旧根目录 `.cjs` 命令保留并转交统一入口；旧 `playwright-cli run-code --filename` 命令不再直接运行这些文件，需要统一入口传入第二个参数 `verification`。目录分工见 [维护脚本入口](../scripts/README.md)。
 
 工作流依赖由入口显式排序并去重：`workflow-reimport` 生成下载项目，供 `drawing`、`room-net` 使用；采购用例依赖房间用例，重新关联和家具标签用例依赖采购用例。历史用例如因产品行为变化失败，日志保留原断言，不自动跳过或降低标准。
 

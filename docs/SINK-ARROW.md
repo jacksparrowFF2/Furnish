@@ -10,7 +10,7 @@
 
 `FurnishSnapping.surfaceOpening()` 为水槽／灶具共用入口，保留原 `hobOpening()` 别名。尺寸图层控制橙色文字；关闭尺寸仍显示孔轮廓并恢复家具名称。SVG／PNG／打印保留孔洞示意，绿色临时选中辅助不进入导出。没有新持久字段、项目迁移、手动关联或保存通道；旧通用 ksink 保持原行为。
 
-`tests/test-sink-surface.cjs` 覆盖三种安装的两套距离、等于／低于 1 mm 边界、完整承托阈值、旋转／镜像／图纸朝向、真实一字／L／U 和生产孔环、缺口、外部障碍、未知高度、数字定位、当前／命名方案往返及三次恢复。`scripts/verify-sink-surface.browser.js` 在 HTTP／断网 file:// 均通过画布及属性、实际拖动、数字定位、安装切换、保存测量／撤销重做、旋转镜像关联 L、导出图层、刷新及 390 px 检查，页面异常 0；目视截图在 `output/playwright/sink-surface/`，同时验证两类数值文本不相交。实机触屏未执行。
+`tests/test-sink-surface.cjs` 覆盖三种安装的两套距离、等于／低于 1 mm 边界、完整承托阈值、旋转／镜像／图纸朝向、真实一字／L／U 和生产孔环、缺口、外部障碍、未知高度、数字定位、当前／命名方案往返及三次恢复。`scripts/verify/verify-sink-surface.browser.js` 在 HTTP／断网 file:// 均通过画布及属性、实际拖动、数字定位、安装切换、保存测量／撤销重做、旋转镜像关联 L、导出图层、刷新及 390 px 检查，页面异常 0；目视截图在 `output/playwright/sink-surface/`，同时验证两类数值文本不相交。实机触屏未执行。
 
 家具库「卫浴 · 水槽」新增两个独立入口，保留原通用 `ksink`：
 
@@ -82,7 +82,7 @@
 
 - `node tests/test-sink.cjs`：产品身份／能力、孔型、安装高度、等于／超出边界、旋转／镜像、障碍缺口、旧记录、复制替换、当前／命名方案往返与重复恢复无漂移；真实 Three.js 盆底、上沿、圆角孔、沉槽、柜体顶板、旧台面孔、移走恢复、极端尺寸和实际场景缓存。斜切台面覆盖 20／20.5／21／40 mm 板厚。
 - `node scripts/check.cjs`：完整回归、普通脚本作用域／语法及本地资源。最终数量见 `output/sink/check.log`。
-- `scripts/verify-sink.browser.js`：隔离 Chrome 的 HTTP 和断网 `file://` 均通过三种安装方式、宽深高编辑、非法高度、锁定、复制、撤销重做、刷新、真实项目下载再导入、命名方案、3D 及 390 px 属性抽屉；页面异常和外部网络请求均 0。未进行实体手机触屏检查。
+- `scripts/verify/verify-sink.browser.js`：隔离 Chrome 的 HTTP 和断网 `file://` 均通过三种安装方式、宽深高编辑、非法高度、锁定、复制、撤销重做、刷新、真实项目下载再导入、命名方案、3D 及 390 px 属性抽屉；页面异常和外部网络请求均 0。未进行实体手机触屏检查。
 - 目视检查生产预览的斜视、俯视和正面，以及应用场景。截图在 `output/sink/` 和 `output/playwright/sink/`。
 
 运行 [生成脚本](../scripts/preview-sink.cjs)（`node scripts/preview-sink.cjs`）可从生产构造器重建 `output/sink/preview.html`，支持安装方式、两款规格、宽深高及观察角度。普通脚本和内置离线 Three.js import map 不变。

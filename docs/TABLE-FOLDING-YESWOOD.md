@@ -39,7 +39,7 @@
 运行 [生成脚本](../scripts/preview-folding-table.cjs)（`node scripts/preview-folding-table.cjs`）可重建 `output/folding-table/preview.html`，嵌入入口既有离线import map，支持三规格、三形态及斜视／正面／俯视。
 
 - `tests/test-folding-table.cjs`：三规格默认、尺寸／形态、旋转镜像下固定桌架、非法输入与锁定、复制／同型及跨型替换、重复恢复、当前／命名方案项目往返、椅子例外、核对上下文、生产网格外包／法线、实际主场景构造与缓存复用。
-- `scripts/verify-folding-table.browser.js`：Playwright真实浏览器，离线file://和本机HTTP分别检查九种外观、库中新建、2D形态、撤销重做、锁定、尺寸编辑、复制、刷新、备份下载并重新导入、命名方案、主场景3D、390px窄屏及外部请求。截图在 `output/folding-table/` 与 `output/playwright/folding-table/`。
+- `scripts/verify/verify-folding-table.browser.js`：Playwright真实浏览器，离线file://和本机HTTP分别检查九种外观、库中新建、2D形态、撤销重做、锁定、尺寸编辑、复制、刷新、备份下载并重新导入、命名方案、主场景3D、390px窄屏及外部请求。截图在 `output/folding-table/` 与 `output/playwright/folding-table/`。
 - 最终模型修正后 `node scripts/check.cjs`：165套回归、12套内置户型、16页预览、入口资源、普通脚本共享声明及生产语法通过。生产测试还验证收纳翼板与真实围板无竖向穿插、旋转镜像后实际腿组中心保持。
 - 浏览器file://（上下文离线）和HTTP均通过完整脚本，页面异常及外部请求均0。九种形态均已截图，已目视抽查三形态及正面／俯视、主场景和窄屏；实机触屏未执行。静态终态及保守外包检查不构成动态五金／承重验证。
 
@@ -51,4 +51,4 @@
 
 主应用复用实际射线拾取和mutate；锁定只选中、Shift只改选择，点击切换可撤销／重做并自动保存。超过原TAP移动距离后即使回到起点也不折叠，取消手势、右键及多指手势不触发；触屏漫游沿原3.5m交互距离。独立预览对生产网格射线拾取，拖动阈值5px，保留原按钮及规格选择；预览补用形态编辑返回的位置，保持桌架原位。
 
-`scripts/verify-folding-table-click.browser.js` 用真实鼠标检查三规格模型上的完整循环、拖动回起点、取消、空白／右键、主应用拾取、锁定／Shift选择、保存刷新和撤销重做。file://离线及本机HTTP均通过；模型仍为静态终态切换，没有连续折叠动画。未执行实机触屏验收。
+`scripts/verify/verify-folding-table-click.browser.js` 用真实鼠标检查三规格模型上的完整循环、拖动回起点、取消、空白／右键、主应用拾取、锁定／Shift选择、保存刷新和撤销重做。file://离线及本机HTTP均通过；模型仍为静态终态切换，没有连续折叠动画。未执行实机触屏验收。

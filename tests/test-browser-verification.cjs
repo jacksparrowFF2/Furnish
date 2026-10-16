@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),vm=require('node:vm'),crypto=require('node:crypto');
-const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts/verify-browser.cjs');
+const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts/verify-browser.cjs'),{createRequire}=require('node:module');
 (async()=>{
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'furnish-browser-config-'));
  try{
@@ -12,8 +12,10 @@ const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts
   assert.deepEqual(R.plan(['purchase-relink','drawing']),['workflow-reimport','room-net','purchase-orders','purchase-relink','drawing']);assert.throws(()=>R.plan(['does-not-exist']));assert(R.failed([{status:'FAIL'}]));assert(!R.failed([{status:'PASS'}]));
   await assert.rejects(R.main(['--worker','portable-smoke']),/isolated copy/);
   for(const file of R.cases().values()){
+   assert(file.startsWith('verify/'),'Acceptance implementation belongs in scripts/verify: '+file);
    const source=fs.readFileSync(path.join(V.projectRoot,'scripts',file),'utf8');assert(!/[CD]:[\\/]|http:\/\/(?:127\.0\.0\.1|localhost):\d+|npm-cache|Program Files/.test(source),file+' contains machine-specific configuration');
    if(file.endsWith('.browser.js')){const run=new vm.Script('('+source+'\n)').runInNewContext();assert.equal(typeof run,'function');assert.equal(run.length,2,file+' must accept page and verification');}
+   else{const resolve=createRequire(path.join(V.projectRoot,'scripts',file));for(const [,target]of source.matchAll(/require\('([^']+)'\)/g))assert.doesNotThrow(()=>resolve.resolve(target),file+' cannot resolve '+target);}
   }
   const fixtures=path.join(V.projectRoot,'tests/fixtures/browser');assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(fixtures,'1601-source.dxf'))).digest('hex'),JSON.parse(fs.readFileSync(path.join(fixtures,'shared-boundaries-validation.json'))).sha256);
   const P=require('../src/core/project-core.js');for(const name of fs.readdirSync(fixtures).filter(n=>n.endsWith('.furnish.json')))P.unpack(JSON.parse(fs.readFileSync(path.join(fixtures,name))));

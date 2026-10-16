@@ -104,7 +104,7 @@
 
 最终通过 **84 个回归套件、12 套内置户型、11 个本地预览页的脚本/依赖校验**，以及生产语法、共享声明与资源检查。`git diff --check` 通过。
 
-浏览器脚本：`scripts/verify-product-rules.browser.js`，由统一入口执行，独立 context 不修改用户浏览器数据。项目路径、服务和依赖统一准备，见 [浏览器验收](BROWSER-VERIFICATION.md)。
+浏览器脚本：`scripts/verify/verify-product-rules.browser.js`，由统一入口执行，独立 context 不修改用户浏览器数据。项目路径、服务和依赖统一准备，见 [浏览器验收](BROWSER-VERIFICATION.md)。
 
 PowerShell 示例：
 

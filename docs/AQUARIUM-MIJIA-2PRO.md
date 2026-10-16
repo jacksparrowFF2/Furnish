@@ -58,6 +58,6 @@ HTTP 与断网 file 正面、斜视、[岩石近景](validation/models/aquarium/
 - 运行 [生成脚本](../scripts/preview-aquarium.cjs)（`node scripts/preview-aquarium.cjs`）重建 `output/aquarium/preview.html`，直接调用生产构造器与现有本地 Three.js import map。正面、斜视、背面、俯视与空缸视图可切换。
 - [水景斜视](validation/models/aquarium/file-angle.png)、[正面](validation/models/aquarium/file-front.png)、[空缸](validation/models/aquarium/file-empty.png) 已目视检查；应用 3D 和窄屏截图在 `output/playwright/aquarium/`。
 - `tests/test-aquarium.cjs`：目录规格、合法 / 非法 / 0 离地值、实际生产几何、非等比缩放、37° / 90° / 180° 旋转与镜像、有限顶点法线、3D 缓存更新、承托面接触与穿入、复制替换、旧缺省记录、重复恢复、当前及命名方案往返均通过。几何比较容差 0.002 mm 仅用于浮点比较，不是厂家公差。
-- `scripts/verify-aquarium.browser.js`：隔离 Chrome 在 HTTP 和断网 `file://` 下验证预览、空缸切换、库中新建、尺寸 / 离地编辑、0 值、非法输入、锁定、复制、撤销重做、刷新、真实项目下载再上传、命名方案、生产 3D 启动和 390 px 属性抽屉；两种模式页面异常与外部网络请求均为 0。未修改用户实际工作区。
+- `scripts/verify/verify-aquarium.browser.js`：隔离 Chrome 在 HTTP 和断网 `file://` 下验证预览、空缸切换、库中新建、尺寸 / 离地编辑、0 值、非法输入、锁定、复制、撤销重做、刷新、真实项目下载再上传、命名方案、生产 3D 启动和 390 px 属性抽屉；两种模式页面异常与外部网络请求均为 0。未修改用户实际工作区。
 - `node scripts/check.cjs`：通过 136 套回归、12 套内置户型、13 个预览页及生产语法、共享声明和资源检查。`git diff --check` 通过。
 - 未执行：真实手机触屏、制造商安装资料复核、荷载验算及精确内部结构复刻。

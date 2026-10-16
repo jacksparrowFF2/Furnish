@@ -38,7 +38,7 @@
 - 未执行：真实 `file://` 浏览器验收，CLI 导航不支持该协议。本次沿用原有普通脚本与内嵌 Three.js 加载机制，没有新增联网资源。
 - 不适用：动态开合、安装空间算法、孔距检查；资料未提供且本任务为静态产品建模。
 
-浏览器交互验收脚本为 `scripts/verify-robot-vacuum.browser.js`，运行 `node scripts/verify-browser.cjs robot-vacuum` 执行。它创建独立临时 context，测试后关闭，不覆盖用户浏览器存储。
+浏览器交互验收脚本为 `scripts/verify/verify-robot-vacuum.browser.js`，运行 `node scripts/verify-browser.cjs robot-vacuum` 执行。它创建独立临时 context，测试后关闭，不覆盖用户浏览器存储。
 
 ## 水箱版实拍改进（2026-10-11）
 

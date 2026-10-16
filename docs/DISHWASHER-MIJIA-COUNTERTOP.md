@@ -58,7 +58,7 @@
 
 新增 `tests/test-dishwasher-clearances.cjs` 覆盖等于／低于阈值、严格 >80、50／650 临界区、0 离地、未知高度、背面接触、低墙、窗标高、任意角旋转／镜像、梁和管道、真实空模块／台面孔洞、同高面并集、规格缩放、柜体聚焦、确认／非空间编辑及真实 work.restore 重复恢复。生产网格检查确认两个尺寸下全部前伸顶点处于预留包络。
 
-`scripts/verify-dishwasher-clearances.browser.js` 使用合成项目 `tests/fixtures/dishwasher-clearances-project.json`（不是用户施工数据），实际通过 HTTP／断网 file:// 导入、200 mm 编辑、吊柜草稿 650 mm／49 mm 与 80→81 mm、1 mm 开门占用和台面凸出、未知高度、开合不缩小检查、忽略记录、撤销重做、真实项目下载上传／命名方案、刷新和 390 px；页面异常与外部请求均为 0。正面布局、告警／修正和窄屏截图已目视检查，位于 `output/playwright/dishwasher-clearances/`。统一检查通过 165 套回归、12 户型、16 预览页；仍未执行实机触屏或真实连杆验证。
+`scripts/verify/verify-dishwasher-clearances.browser.js` 使用合成项目 `tests/fixtures/dishwasher-clearances-project.json`（不是用户施工数据），实际通过 HTTP／断网 file:// 导入、200 mm 编辑、吊柜草稿 650 mm／49 mm 与 80→81 mm、1 mm 开门占用和台面凸出、未知高度、开合不缩小检查、忽略记录、撤销重做、真实项目下载上传／命名方案、刷新和 390 px；页面异常与外部请求均为 0。正面布局、告警／修正和窄屏截图已目视检查，位于 `output/playwright/dishwasher-clearances/`。统一检查通过 165 套回归、12 户型、16 预览页；仍未执行实机触屏或真实连杆验证。
 
 新增可选 `dishwasherDoorOpen:boolean`，仅本类型支持；新建默认显式 false，旧实例缺失时运行时读 false，不补写或迁移。复用 `h` 与 `mountHeight`，缺失分别读取 598 / 860 mm。默认值、底部基准、字段范围和标称开门深度集中在 `product-rules.js`，2D / 3D 读取同一能力。
 
@@ -71,7 +71,7 @@
 - 运行 [生成脚本](../scripts/preview-dishwasher.cjs)（`node scripts/preview-dishwasher.cjs`）重建 `output/dishwasher/preview.html`，使用既有离线 Three.js import map，无新运行依赖。
 - [闭合斜视](validation/models/dishwasher/file-closed-angle.png)、[展开斜视](validation/models/dishwasher/file-open-angle.png)、[展开侧视](validation/models/dishwasher/file-open-side.png)；应用与窄屏截图位于 `output/playwright/dishwasher/`。
 - `tests/test-dishwasher.cjs`：目录身份、默认值、0 / 上下限 / 非法值、旧缺省、重复恢复、复制替换、当前及命名项目往返、承托面接触 / 穿入、真实生产顶点与法线、闭合 / 展开尺寸、旋转镜像、缩放、正面显示区可见性及生产缓存更新。
-- `scripts/verify-dishwasher.browser.js`：隔离浏览器中实际操作 HTTP / 断网 file:// 预览、目录新增、尺寸和离地编辑、开合及 2D 同步、非法输入回退、锁定、复制、撤销重做、刷新、真实项目下载再上传及命名方案、应用 3D、390 px 面板；两种模式页面异常和外部请求均为 0。
+- `scripts/verify/verify-dishwasher.browser.js`：隔离浏览器中实际操作 HTTP / 断网 file:// 预览、目录新增、尺寸和离地编辑、开合及 2D 同步、非法输入回退、锁定、复制、撤销重做、刷新、真实项目下载再上传及命名方案、应用 3D、390 px 面板；两种模式页面异常和外部请求均为 0。
 - 首次模型接入时 `node scripts/check.cjs`：162 套回归、12 户型、15 预览页面、语法 / 共享声明 / 本地资源检查通过；`git diff --check` 通过。
 
 未执行实机触屏与厂家结构验证；自动核对限于已建模空间和图片给出的安装条件，没有施工、荷载、水电或真实折叠运动合格结论。几何比较容差 0.002 mm 仅用于浮点测试，不是产品公差。

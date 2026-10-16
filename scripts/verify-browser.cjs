@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:chil
 const V=require('./lib/browser-verification.cjs');
 const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay'];
 const dependencies={'drawing':['workflow-reimport'],'drawing-readability':['workflow-reimport'],'room-net':['workflow-reimport'],'purchase-orders':['room-net'],'purchase-relink':['purchase-orders'],'furniture-labels':['purchase-orders']};
-function cases(){const entries=fs.readdirSync(__dirname).filter(n=>/^verify-.*\.browser\.js$/.test(n)).map(file=>[file.slice(7,-11),file]);return new Map([...entries,...standalone.map(n=>[n,'verify-'+n+'.cjs'])]);}
+function cases(){const entries=fs.readdirSync(path.join(__dirname,'verify')).filter(n=>/^verify-.*\.browser\.js$/.test(n)).map(file=>[file.slice(7,-11),'verify/'+file]);return new Map([...entries,...standalone.map(n=>[n,'verify/verify-'+n+'.cjs'])]);}
 function plan(names,registry=cases()){
  const result=[],seen=new Set(),visiting=new Set();function add(name){if(!registry.has(name))throw Error('Unknown browser case: '+name+' (use --list)');if(visiting.has(name))throw Error('Cyclic browser dependency: '+name);if(seen.has(name))return;visiting.add(name);for(const dep of dependencies[name]||[])add(dep);visiting.delete(name);seen.add(name);result.push(name);}for(const name of names)add(name);return result;
 }
@@ -31,7 +31,7 @@ function child(args,options={}){
 async function main(args=process.argv.slice(2)){
  const registry=cases();if(args[0]==='--worker'){await worker(args[1]);return;}
  if(args.includes('--list')){for(const name of registry.keys())console.log(name);return;}
- if(args.includes('--help')){console.log('node scripts/verify-browser.cjs [case ... | --all | --list]\nDefault: portable-smoke (HTTP and offline file://). Optional environment: FURNISH_VERIFY_URL (bind a dedicated loopback origin), FURNISH_BROWSER_CHANNEL, FURNISH_BROWSER_PATH, FURNISH_VERIFY_HEADED=1, FURNISH_VERIFY_TIMEOUT (ms).');return;}
+ if(args.includes('--help')){console.log('node scripts/verify-browser.cjs [case ... | --all | --list] [--keep-going]\nDefault: portable-smoke (HTTP and offline file://). --keep-going collects all failures and still exits nonzero. Optional environment: FURNISH_VERIFY_URL (bind a dedicated loopback origin), FURNISH_BROWSER_CHANNEL, FURNISH_BROWSER_PATH, FURNISH_VERIFY_HEADED=1, FURNISH_VERIFY_TIMEOUT (ms).');return;}
  const keepGoing=args.includes('--keep-going'),names=args.filter(arg=>arg!=='--keep-going');
  const selected=plan(names.includes('--all')?[...registry.keys()]:names.length?names:['portable-smoke']);
  // Validate dependency installation and URL before copying or starting work.

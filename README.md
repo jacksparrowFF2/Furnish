@@ -30,7 +30,7 @@
 
 双击 `start-furnish.cmd` 启动本地服务并打开浏览器（需要已安装 Node.js）；关闭服务窗口自动释放端口。
 
-开发验收额外运行 `npm ci`、`npx playwright install chromium`，再执行 `node scripts/verify-browser.cjs`。统一入口会准备独立副本、预览和临时服务；换电脑不需要修改脚本中的路径或端口。详细用例与配置见 [浏览器验收](docs/BROWSER-VERIFICATION.md)。
+开发验收额外运行 `npm ci`、`npx playwright install chromium`，再执行 `node scripts/verify-browser.cjs`。统一入口会准备独立副本、预览和临时服务；换电脑不需要修改脚本中的路径或端口。详细用例与配置见 [浏览器验收](docs/BROWSER-VERIFICATION.md)，脚本分工见 [维护脚本入口](scripts/README.md)。
 
 通过启动脚本使用时，设计自动保存到 `projects/workspace.furnish.json`，首次启动会迁移已有浏览器缓存。自行 Git 提交／推送此文件，另一台电脑克隆／拉取后启动即可继续编辑。旧缓存与文件不一致时保留本机恢复副本，优先加载仓库设计；规则与冲突处理见 [仓库保存与跨电脑使用](docs/REPOSITORY-SAVES.md)。直接双击 `index.html` 仍使用浏览器缓存及手动导入导出。
 
