@@ -1,20 +1,37 @@
 /* Property panels and note editing. Classic script declarations only;
  * read the current application state when called, including after undo/load. */
 function renderPanel(){
+  const object=!!ui.sel&&ui.panelScope!=='design';
+  renderPanelContent(object);
+  const p=$('#panel'),f=selIds().length===1&&getF(ui.sel?.id),name=panelSelectionName();
+  p.insertAdjacentHTML('afterbegin',`<nav class="property-nav" aria-label="${tr('属性与方案范围','Properties scope')}"><div><button class="btn ${object?'on':''}" data-panel-scope="object" aria-pressed="${object}" ${ui.sel?'':'disabled'}>${tr('当前对象','Current object')}</button><button class="btn ${object?'':'on'}" data-panel-scope="design" aria-pressed="${!object}">${tr('整案','Whole design')}</button></div><small>${object?esc(name):esc(nm(PLAN.name))}${!object&&ui.sel?` · ${tr('保留选中','Selection retained')} ${esc(name)}`:''}</small></nav>`);
+  let peek=$('#property-peek');if(!peek){peek=document.createElement('div');peek.id='property-peek';$('#stage').append(peek);peek.onclick=e=>{const b=e.target.closest('[data-peek-scope]');if(!b)return;ui.panelScope=b.dataset.peekScope;renderPanel();drawer('panel',true);};}
+  peek.hidden=!ui.sel;
+  peek.innerHTML=`<div><b>${esc(name)}</b>${f?furnitureDimensionSummary(f):''}</div><button class="btn" data-peek-scope="object" aria-expanded="${$('aside.right').classList.contains('open')}" aria-controls="panel">${tr('展开属性','Expand properties')}</button>`;
+}
+function panelSelectionName(){
+ const sel=ui.sel;if(!sel)return tr('未选择对象','No selection');
+ if(sel.kind==='furn')return selIds().length>1?tr(`已选 ${selIds().length} 件`,`${selIds().length} selected`):nm(getF(sel.id)?.name||tr('家具','Furniture'));
+ if(sel.kind==='room')return nm(state.rooms[sel.id]?.name||ROOMS.find(r=>r.id===sel.id)?.name||tr('房间','Room'));
+ if(sel.kind==='note')return getNote(sel.id)?.text||tr('文字标注','Note');
+ const names={wall:['墙体','Wall'],door:['房门','Door'],slide:['推拉门','Sliding door'],win:['窗户','Window'],measure:['测量线','Measurement']};
+ return tr(...(names[sel.kind]||['已选对象','Selected object']));
+}
+function renderPanelContent(object=true){
   const wallDistanceOpen=$('#panel .wall-distance-panel[open]')?.dataset.wallDistanceOwner;
   globalThis.FurnishRoomMeasure?.afterRender();
   if(ui.sel?.kind!=='wall')window.FurnishWorkflowTools?.clearDistances();
   window.FurnishWorkspace?.clearOpeningPreview();
   renderFab();
-  const p = $('#panel'), ids = selIds();
+  const p = $('#panel'), ids = object?selIds():[];
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); return; }
-  if (ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f);const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
-  if (ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
-  if (ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
-  if (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide'){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
-  if (ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p))return; if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
-  if (ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
-  if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){
+  if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f);const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
+  if (object && ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
+  if (object && ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
+  if (object && (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide')){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
+  if (object && ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p))return; if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); return; }
+  if (object && ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
+  if(object && ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){
     const m=state.measures[ui.sel.id];p.innerHTML=`<section><h3>${tr('测量线','Measurement')}</h3><p class="big">${Math.round(Math.hypot(m.b.x-m.a.x,m.b.y-m.a.y))} mm</p><p class="muted">${tr('固定端点；家具或墙体改变后请重新测量。','Fixed endpoints; remeasure after moving furniture or walls.')}</p><div class="actions"><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="home">${tr('返回','Back')}</button></div><p class="muted">${tr('也可按 Delete / Backspace 删除，Ctrl+Z 撤销。','Delete / Backspace removes it; Ctrl+Z undoes.')}</p></section>`;return;
   }
   if(window.FurnishWorkflowTools&&['space','style'].includes(ui.tab)){p.innerHTML=ui.tab==='space'?FurnishWorkflowTools.spacePanel():FurnishWorkflowTools.stylePanel();return;}

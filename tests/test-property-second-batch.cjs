@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const P=require('../src/core/project-core.js'),D=require('../src/core/design-core.js'),C=require('../src/core/cabinet-core.js'),K=require('../src/core/kitchen-core.js'),G=require('../src/core/layout-geometry.js'),Draft=require('../src/core/floorplan-core.js'),S=require('../src/core/service-core.js');
+const source=fs.readFileSync(require.resolve('../src/ui/project-ui.js'),'utf8');
+const ctx=vm.createContext({FurnishProject:P,FurnishDesign:D,FurnishCabinet:C,FurnishKitchen:K,FurnishGeometry:G,FurnishDraft:Draft,FurnishServices:S});
+vm.runInContext(source.slice(0,source.indexOf('(function(){')),ctx);
+const plan={id:'test',rooms:[],walls:[],doors:[],wins:[],beams:[{id:'unknown',poly:[[0,0],[300,0],[300,500],[0,500]]},{id:'known',poly:[[0,0],[300,0],[300,500],[0,500]],bottom:2000,top:2400}]};
+const f={id:'cab',name:'柜',...C.preset('wardrobe'),cx:1000,cy:1200,rot:90,flip:true},unknown={id:'old',name:'旧家具',type:'unknown-type',w:300,d:200,cx:0,cy:0,rot:0};
+const before=JSON.stringify([f,unknown]);
+const item={id:f.id,kind:'cabinetdoor',column:0,section:'storage'},rows=ctx.spaceIssueVolumes(plan,[f,unknown],item),zone=C.openingZones(f).find(v=>v.kind===item.kind&&v.column===0);
+assert(rows.some(row=>JSON.stringify(row.poly)===JSON.stringify(zone.poly)&&JSON.stringify(row.ranges)===JSON.stringify(zone.ranges)),'highlight uses the actual rotated and mirrored opening sweep and heights');
+assert(ctx.spaceIssueVolumes(plan,[unknown],{id:'old',kind:'wall'}).every(row=>row.ranges.length===0),'unknown body remains a footprint');
+const beam=ctx.spaceIssueVolumes(plan,[f],{id:f.id,kind:'beam',beamId:'unknown'}).at(-1);assert.equal(beam.ranges.length,0,'missing beam heights must not become a known solid');
+assert.equal(JSON.stringify([f,unknown]),before,'annotation generation never migrates legacy records');
+const geometry=ctx.spaceIssueVolumes(plan,[f],{id:f.id,kind:'cabinetpassage',column:0},900);assert(Array.isArray(geometry));
+// Exercise the real renderer boundary with a retained selection and both scopes.
+const property=vm.createContext({ui:{sel:{kind:'furn',id:'cab'},tab:'list'},window:{},globalThis:{},selIds:()=>['cab'],getF:()=>f,$:()=>({innerHTML:'',classList:{contains:()=>false}}),renderFab(){},furnitureError:()=>null,furnPanel:()=>'<p>OBJECT</p>',bindFurnPanel(){},collisions:()=>[],isOutside:()=>false,state:{furniture:[f]},ico:()=>'',tr:a=>a,listPanel:()=>'<p>DESIGN</p>',quotePanel:()=>'',overviewPanel:()=>'',bindOverview(){},nm:a=>a});
+vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),property);
+const panel={innerHTML:'',querySelector:()=>null};property.$=selector=>selector==='#panel'?panel:null;property.renderFab=()=>{};property.furnPanel=()=>'<p>OBJECT</p>';property.bindFurnPanel=()=>{};
+property.renderPanelContent(false);assert(panel.innerHTML.includes('DESIGN'));assert.equal(property.ui.sel.id,'cab');
+property.renderPanelContent(true);assert.equal(panel.innerHTML,'<p>OBJECT</p>');assert.equal(property.ui.sel.id,'cab');
+console.log('PASS retained object navigation, legacy unknown elevation, rotated/mirrored production opening annotations and read-only compatibility');

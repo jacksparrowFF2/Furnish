@@ -4,7 +4,7 @@
 // ui.sel = {kind:'furn', id:主选中, ids:[全部选中]}；单选时 ids 可省略
 const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
 const selItems = () => selIds().map(getF).filter(Boolean);
-function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); updateHeader(); }
+function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); updateHeader(); }
 function selectIds(ids, primary){
   ids = [...new Set(ids)].filter(id => getF(id));
   select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);

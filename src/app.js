@@ -232,6 +232,7 @@ const PANES = 'huxing-panes';
 const panes = (() => { try { return JSON.parse(localStorage.getItem(PANES)) || {}; } catch(e) { return {}; } })();
 function drawer(which, open){
   const app = $('.app'), els = {lib:$('aside.lib'), panel:$('aside.right')}, n = narrow();
+  const panelWasOpen=els.panel.classList.contains('open');
   if (n){
     Object.entries(els).forEach(([k, el]) => el.classList.toggle('open', k === which && (open ?? !el.classList.contains('open'))));
   } else {
@@ -244,6 +245,10 @@ function drawer(which, open){
   }
   app.classList.toggle('hide-lib', !!panes.hideLib); app.classList.toggle('hide-panel', !!panes.hidePanel);
   syncPaneBtns();
+  if(n&&panelWasOpen!==els.panel.classList.contains('open')){
+    const target=els.panel.classList.contains('open')?$('#panel [data-panel-scope][aria-pressed="true"]'):$('#property-peek:not([hidden]) [data-peek-scope]')||$('#tgPanel');
+    target?.focus({preventScroll:true});
+  }
 }
 function syncPaneBtns(){
   const els = {lib:$('aside.lib'), panel:$('aside.right')}, n = narrow();
@@ -252,6 +257,7 @@ function syncPaneBtns(){
   $('#tgLib').title = vis('lib') ? tr('收起家具库 ( [ )', 'Hide library ( [ )') : tr('展开家具库 ( [ )', 'Show library ( [ )');
   $('#tgPanel').title = vis('panel') ? tr('收起属性面板 ( ] )', 'Hide properties ( ] )') : tr('展开属性面板 ( ] )', 'Show properties ( ] )');
   $('#stage').classList.toggle('drawer-panel', n && vis('panel'));   // 属性抽屉盖住画面时让出底部工具条
+  const expand=$('#property-peek [aria-expanded]');if(expand)expand.setAttribute('aria-expanded',String(vis('panel')));
 }
 function closeDrawers(){ if (narrow()) drawer(null); }
 
@@ -344,7 +350,7 @@ const ACT = {
   spaceCheck:()=>{FurnishWorkspace.open('space');$('#space-run').click();},
   al:() => alignSel('l'), ac:() => alignSel('c'), ar:() => alignSel('r'), at:() => alignSel('t'), am:() => alignSel('m'), ab:() => alignSel('b'),
   dh:() => distributeSel('h'), dv:() => distributeSel('v'),
-  home:() => select(null), done:() => { select(null); closeDrawers(); }, prop:() => drawer('panel', true),
+  home:() => {ui.panelScope='design';renderPanel();}, done:() => { select(null); closeDrawers(); }, prop:() => {ui.panelScope='object';renderPanel();drawer('panel', true);},
   rescue:() => rescueOutside(), rescueOne:() => rescueOutside(selIds()), clash:() => { const ids = [...new Set(collisions().flat())]; selectIds(ids); if (ids.length) zoomSel(); },
   clearFurn:clearLayout, reset:() => openReset(), help:() => openHelp(), csv:exportCSV, custom:() => openCustom(), fit:() => fitView(),
   roomFurn:() => { const r = ROOMS.find(r => r.id === (ui.sel?.kind === 'room' ? ui.sel.id : ui.ctxRoom)); if (r) selectIds(state.furniture.filter(f => inPoly(f.cx, f.cy, r.poly)).map(f => f.id)); },
@@ -359,7 +365,8 @@ function runAct(el){ const a = el.dataset.act; if (ACT[a]){ ACT[a](el); return t
 // 事件委托：面板内容每次重绘，不必逐个绑定
 $('#panel').addEventListener('click', e => {
   const t = e.target;
-  const tab = t.closest('[data-tab]'); if (tab){ ui.tab = tab.dataset.tab; saveUI(); if (ui.sel) select(null); else renderPanel(); $('#panel').scrollTop = 0; return; }
+  const scope=t.closest('[data-panel-scope]');if(scope){ui.panelScope=scope.dataset.panelScope;renderPanel();$('aside.right').scrollTop=0;$('#panel [data-panel-scope][aria-pressed="true"]')?.focus({preventScroll:true});return;}
+  const tab = t.closest('[data-tab]'); if (tab){ ui.tab = tab.dataset.tab;ui.panelScope='design';saveUI();renderPanel();$('aside.right').scrollTop=0;return; }
   const lk = t.closest('[data-lockid]'); if (lk){ e.stopPropagation(); const f = getF(lk.dataset.lockid); if (f) mutate(() => { if (f.locked) delete f.locked; else f.locked = true; }); return; }
   const act = t.closest('[data-act]'); if (act){ runAct(act); return; }
   const st = t.closest('[data-style]'); if (st){ applyStyle(st.dataset.style); return; }
@@ -475,7 +482,9 @@ function openDialog({title, body, actions = [], wide = false, onOpen, onClose}){
   A.onclick = e => { const b = e.target.closest('[data-i]'); if (!b) return; const a = actions[+b.dataset.i]; if(a.href)return; if (a.fn?.() !== false) closeDialog(); };
   $('#dlg').hidden = false; closeCtx();
   onOpen?.();
-  ($('#dlgBody input:not([type=checkbox])') || A.querySelector('.primary') || $('#dlgClose')).focus();
+  const step=$('#dlgBody .cab-tabs [aria-selected="true"]');
+  if(step){step.focus({preventScroll:true});$('#dlgBody').scrollTop=0;}
+  else ($('#dlgBody input:not([type=checkbox])') || A.querySelector('.primary') || $('#dlgClose')).focus();
 }
 function closeDialog(){ const after=dialogAfterClose;dialogAfterClose=null;window.FurnishWorkflowTools?.disposeDialog(); window.FurnishCabinetEditor?.dispose(); $('#dlg').hidden = true; $('#dlgBody').innerHTML = '';const target=dialogReturnFocus?.isConnected&&dialogReturnFocus.getClientRects().length?dialogReturnFocus:$('#projectWorkspace');dialogReturnFocus=null;target?.focus({preventScroll:true});if(after)setTimeout(after,0); }
 $('#dlgClose').onclick = closeDialog;

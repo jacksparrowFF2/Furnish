@@ -3,8 +3,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,three=await import(imports.three);
  class Element {
-  constructor(){this.style={};this.handlers={};this.capture=null;this.isConnected=true;}
-  setAttribute(){} appendChild(){} replaceChildren(){} focus(){} remove(){this.isConnected=false;}
+  constructor(){this.style={};this.handlers={};this.capture=null;this.isConnected=true;this.children=[];this.attributes={};}
+  setAttribute(k,v){this.attributes[k]=v;} appendChild(el){this.children.push(el);} replaceChildren(...children){this.children=children;} focus(){} remove(){this.isConnected=false;}
   getBoundingClientRect(){return {left:0,top:0,width:500,height:440};}
   addEventListener(type,fn,capture=false){(this.handlers[type]??=[]).push({fn,capture});}
   setPointerCapture(id){this.capture=id;} hasPointerCapture(id){return this.capture===id;} releasePointerCapture(){this.capture=null;}
@@ -45,6 +45,13 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  canvas.fire('pointerdown',dividerStart);assert.equal(picked.divider,0);canvas.fire('pointermove',{...dividerStart,clientX:dividerStart.clientX+25});assert(C.widths(draft)[0]>oldWidths[0]);assert(C.widths(draft)[1]<oldWidths[1]);assert.equal(draft.w,total);canvas.fire('keydown',{key:'Escape'});assert.deepEqual(C.widths(draft),oldWidths);
  canvas.fire('keydown',{key:'ArrowRight',shiftKey:true});assert.equal(C.widths(draft)[0],oldWidths[0]+1);assert.equal(draft.w,total);
  preview.setView({front:false,doors:'ghost',dimensions:false});tick();assert(camera.isPerspectiveCamera);assert.equal(controls.enableRotate,true);
+ const annotations=host.children.find(el=>el.className==='cab-dimensions'),texts=()=>annotations.children.map(el=>el.textContent||'');
+ draft={...draft,...C.preset('wardrobe')};preview.update(draft);const saved=JSON.stringify(draft);
+ preview.setView({dimensionScope:'size',dimensions:true});tick();assert(texts().some(s=>s.startsWith('总宽')));assert(!texts().some(s=>s.startsWith('净宽')));assert(!texts().some(s=>/^\d+×\d+/.test(s)));
+ preview.selectShelf({column:1});preview.setView({dimensionScope:'bays'});tick();assert.equal(texts().filter(s=>s.startsWith('净宽')).length,1);assert(texts().includes('净宽 '+Number(C.widths(draft)[1].toFixed(2))));assert(!texts().some(s=>s.startsWith('总宽')));
+ preview.selectShelf({column:0});tick();assert(texts().includes('净宽 '+Number(C.widths(draft)[0].toFixed(2))));
+ preview.setView({dimensionScope:'front'});tick();assert(!texts().some(s=>s.startsWith('净宽')));assert(texts().some(s=>/^\d+×\d+/.test(s)));
+ preview.setView({dimensionScope:'space'});tick();assert(texts().some(s=>s.startsWith('总高')));assert(!texts().some(s=>/^\d+×\d+/.test(s)));assert.equal(JSON.stringify(draft),saved,'step navigation must not change the saved cabinet');
  preview.dispose();assert(disconnected);assert.equal(canvas.isConnected,false);
  console.log('PASS shelf/divider picking, constrained dragging, fixed total width, keyboard edits, cancellation, front view and preview cleanup');
 })().catch(e=>{console.error(e);process.exit(1);});

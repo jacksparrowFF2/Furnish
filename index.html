@@ -363,6 +363,7 @@ window.View3D = {
   sync:() => impl?.sync(), relang:() => impl?.relang(), replan:() => impl?.replan(), retheme:() => impl?.retheme(),
   shot:() => impl?.shot(), groundAt:(x, y) => impl?.groundAt(x, y) ?? null, flyToRoom:id => impl?.flyToRoom(id),
   image:() => globalThis.FurnishWorkflowTools?.styleId()?null:impl?.image()||null, focusSelection:() => impl?.focusSelection(),
+  highlightIssue:(item,volumes) => impl?.highlightIssue(item,volumes),
   cabinetPreview:(host,f,onToggle) => load().then(() => impl.cabinetPreview(host,f,onToggle)),
   walking:() => !!impl?.walking(),
 };
@@ -388,6 +389,7 @@ let inited = false, active = false, raf = 0, anim = null, fly = null;
 let capturedImage=null,capturedState='';
 let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, glassMat, wallMat, capMat, frameMat;
 let archFloor, archUp, furnG, clearanceG, labelG, lampG, colliders = [], selKey = null, selHelper = null;
+let elevationG,issueG,sceneIssue=null,issueTimer=0;
 let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
 let sigNorth='';
 const doors = [], slidingDoors = [], keys = {};
@@ -436,6 +438,7 @@ function init(){
   archFloor = new THREE.Group(); archUp = new THREE.Group(); furnG = new THREE.Group(); labelG = new THREE.Group(); lampG = new THREE.Group();
   clearanceG = new THREE.Group();
   scene.add(archFloor, archUp, furnG, clearanceG, labelG, lampG);
+  elevationG=new THREE.Group();issueG=new THREE.Group();scene.add(elevationG,issueG);
 
   const cv = renderer.domElement; let downAt = null, tapMoved = false, look = null, cabinetTap = null;
   cv.addEventListener('pointerdown', e => {
@@ -1542,7 +1545,7 @@ function sync(force){
   const north=JSON.stringify(state.drawing?.northAngle??null);
   if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn;showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
   const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,H, PLAN.markers]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId()]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams]);
-  if(force||a!==sigArch||f!==sigFurn)buildHeaterClearances();
+  if(force||a!==sigArch||f!==sigFurn){buildHeaterClearances();clearSceneIssue();selKey=null;}
   if (force || a !== sigArch){ sigArch = a; buildArch(); }
   if (force || f !== sigFurn){ sigFurn = f; buildFurn(); }
   if (force || l !== sigLabels){ sigLabels = l; buildLabels(); }
@@ -1616,7 +1619,7 @@ function flyToBox(box){
   const t = new THREE.Vector3(wx((Math.min(...xs)+Math.max(...xs))/2), .6, wz((Math.min(...ys)+Math.max(...ys))/2));
   const size = M(Math.max(Math.max(...xs)-Math.min(...xs), Math.max(...ys)-Math.min(...ys)));
   const dir = camera.position.clone().sub(orbit.target).setY(0); if (dir.lengthSq() < .01) dir.set(.6, 0, .8); dir.normalize();
-  const dist = size*1.3 + 2.2;
+  const dist = (size*1.3 + 2.2)/Math.min(1,camera.aspect);
   flyTo(pose(t, new THREE.Vector3(t.x + dir.x*dist*.7, dist*1.05, t.z + dir.z*dist*.7)));
 }
 function focusSelection(){
@@ -1712,13 +1715,40 @@ function groundAt(x, y){
   return {x:hit.x*1000 + OX, y:hit.z*1000 + OY, s};
 }
 function updateSel(){
-  const ids = selIds(), key = ids.join();
+  const ids = selIds(), key = JSON.stringify(ui.sel);
   if (key === selKey) return;
   selKey = key;
-  if (selHelper){ selHelper.children.forEach(h => h.geometry.dispose()); scene.remove(selHelper); selHelper = null; }
+  if(sceneIssue&&sceneIssue.selection!==key)clearSceneIssue();
+  buildSelectionElevation(ids);
+  if (selHelper){ selHelper.children.forEach(h => {h.geometry.dispose();h.material.dispose();}); scene.remove(selHelper); selHelper = null; }
   const gs = ids.map(id => furnG.children.find(g => g.userData.fid === id)).filter(Boolean);
   if (gs.length){ selHelper = new THREE.Group(); gs.forEach(g => selHelper.add(new THREE.BoxHelper(g, 0xef5a24))); scene.add(selHelper); }
   invalidate();
+}
+
+function clearAnnotations(group){if(!group)return;group.traverse(o=>{if(o.isCSS2DObject)o.element.remove();o.geometry?.dispose();o.material?.dispose();});group.clear();}
+function annotationLabel(group,text,x,y,z,cls){const el=document.createElement('div');el.className=cls;el.textContent=text;const label=new CSS2DObject(el);label.position.set(x,y,z);group.add(label);return label;}
+function annotationLine(group,points,color){const line=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color,depthTest:false,transparent:true,opacity:.85}));line.renderOrder=30;group.add(line);}
+function fitSceneAnnotationLabels(){
+ const bounds=stage.getBoundingClientRect(),occupied=[];for(const group of [elevationG,issueG])group.traverse(o=>{if(!o.isCSS2DObject||!o.visible)return;const el=o.element;el.style.marginLeft=el.style.marginTop='0px';const rect=el.getBoundingClientRect(),shift=Math.max(bounds.left+8-rect.left,Math.min(0,bounds.right-8-rect.right));let dy=0;
+  for(const offset of [0,34,-34,68,-68]){const box={left:rect.left+shift,right:rect.right+shift,top:rect.top+offset,bottom:rect.bottom+offset};if(box.top<bounds.top+8||box.bottom>bounds.bottom-8||occupied.some(b=>box.left<b.right+5&&box.right>b.left-5&&box.top<b.bottom+5&&box.bottom>b.top-5))continue;dy=offset;occupied.push(box);break;}
+  el.style.marginLeft=shift+'px';el.style.marginTop=dy+'px';});
+}
+function buildSelectionElevation(ids){
+ clearAnnotations(elevationG);if(ids.length!==1)return;const f=getF(ids[0]);if(!f)return;
+ let v;try{v=FurnishDesign.furnitureVerticalBounds(f);}catch{v=null;}const x=wx(f.cx),z=wz(f.cy),mm=n=>Number(n.toFixed(2));
+ if(!v){annotationLabel(elevationG,tr('高度未知 · 标高待核对','Unknown height · verify elevations'),x,.25,z,'scene-elevation');return;}
+ const bottom=M(v.bottom),top=M(v.top),V=(xx,y)=>new THREE.Vector3(xx,y,z);
+ annotationLine(elevationG,[V(x,0),V(x,top),V(x-.07,0),V(x+.07,0),V(x-.07,bottom),V(x+.07,bottom),V(x-.07,top),V(x+.07,top)],0x167b9b);
+ annotationLabel(elevationG,tr(`底部 ${mm(v.bottom)} · 顶部 ${mm(v.top)} mm（离地）`,`Bottom ${mm(v.bottom)} · Top ${mm(v.top)} mm above floor`),x,(bottom+top)/2,z,'scene-elevation');
+}
+function clearSceneIssue(){clearTimeout(issueTimer);sceneIssue=null;clearAnnotations(issueG);invalidate();}
+function highlightIssue(item,volumes){
+ if(!active)return;clearSceneIssue();sceneIssue={selection:JSON.stringify(ui.sel)};const color=item.pending?0xb38118:0xe45e2b;
+ const points=[];for(const row of volumes){const ranges=row.ranges?.length?row.ranges:[[18,18]];for(const [bottom,top] of ranges){for(let i=0;i<row.poly.length;i++){const a=row.poly[i],b=row.poly[(i+1)%row.poly.length],V=(p,h)=>new THREE.Vector3(wx(p[0]),M(h),wz(p[1]));points.push(V(a,bottom),V(b,bottom));if(top!==bottom){points.push(V(a,top),V(b,top));if(i%Math.ceil(row.poly.length/6)===0)points.push(V(a,bottom),V(a,top));}}}}
+ annotationLine(issueG,points,color);const f=getF(item.id),at=item.at||(f?[f.cx,f.cy]:volumes[0]?.poly[0]);
+ if(at)annotationLabel(issueG,tr(item.pending?'待确认 · 高亮范围示意':'空间问题 · 高亮范围示意',item.pending?'Needs review · highlighted area':'Spatial issue · highlighted area'),wx(at[0]),.12,wz(at[1]),'scene-issue-label'+(item.pending?' pending':''));
+ issueTimer=setTimeout(clearSceneIssue,8000);invalidate();
 }
 
 /* ======================= 漫游 ======================= */
@@ -1884,7 +1914,9 @@ function loop(){
   selHelper?.children.forEach(h => h.update());
   renderer.render(scene, camera);
   clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=opt.furn&&!anim;});
+  for(const group of [elevationG,issueG]){const visible=opt.furn&&opt.mode==='orbit'&&!anim;group.visible=visible;group.traverse(o=>{if(o.isCSS2DObject)o.visible=visible;});}
   labelRenderer.render(scene, camera);
+  fitSceneAnnotationLabels();
 }
 
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
@@ -1893,6 +1925,7 @@ function image(){if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||s
 function relang(){ syncWalkTexts(); if (inited){buildLabels();buildHeaterClearances();} }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建
 function replan(){
+  clearSceneIssue();clearAnnotations(elevationG);selKey=null;
   capturedImage=null;capturedState='';
   computeCenter();
   sigArch = sigFurn = sigLabels = ''; fly = null;
@@ -1910,7 +1943,7 @@ function cabinetPreview(host,f,actions){
  return FurnishCabinetPreview.create({THREE,OrbitControls,box,host,f,actions,furniture:actions.furniture||state.furniture,plan:FurnishProject.effectivePlan(PLAN,state),background:DK()?'#252a30':'#eeeae3'});
 }
 
-return {cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
+return {cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
 }
 </script>
 </body>

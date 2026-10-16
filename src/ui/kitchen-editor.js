@@ -142,7 +142,7 @@ function bindKitchenPanel(f){
   const error=message=>{const el=$('#cab-kitchen-error');if(el)el.textContent=message;};
   let page=options.page??'size',active=options.active??0,front=options.front??false,drawerBefore=null;
   function readDraft(){const next=readKitchenFields($('#cab-kitchen-fields'),draft,'cab-kitchen');return K.configure(next,next.kitchen);}
-  function viewOptions(){return {front,unfolded:front&&draft.kitchen.shape!=='straight',dimensions:$('#cab-kitchen-dimensions').checked};}
+  function viewOptions(){return {dimensionScope:page,front,unfolded:front&&draft.kitchen.shape!=='straight',dimensions:$('#cab-kitchen-dimensions').checked};}
   function viewButton(){const b=$('#cab-kitchen-front');if(b){b.textContent=front?'透视预览':draft.kitchen.shape==='U'?'三边正视展开':draft.kitchen.shape==='L'?'两边正视展开':'正视预览';b.setAttribute('aria-pressed',String(front));}}
   function selectModule(part){try{draft=readDraft();active=part.column;if(page!=='front')page='modules';refresh();error('');return true;}catch(e){error(e.message);return false;}}
   function toggle(index,drawer,lid,lane,section,leaf,bay){try{draft=K.toggle(readDraft(),index,drawer,undefined,leaf,bay,lid,lane,section);active=index;if(page!=='front')page='modules';refresh();error('');}catch(e){error(e.message);}}

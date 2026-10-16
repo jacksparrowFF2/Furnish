@@ -72,6 +72,7 @@
 .kitchen-partitions label {display:flex;align-items:center;gap:8px}
 .kitchen-partitions input[type=checkbox] {width:18px;height:18px;flex:none;accent-color:var(--accent)}
 @media(max-width:700px){.cab-editor{grid-template-columns:1fr;height:auto;min-height:0;gap:16px}.cab-visual{position:static}.cab-fields{height:auto;overflow:visible;padding:0}#cab-preview{height:240px}.cab-tabs{position:static}.cab-selection{min-height:0}.cab-view-controls{font-size:11px}.cab-tabs button{font-size:11px}}
+@media(max-width:700px){.cab-editor{display:flex;flex-direction:column;gap:12px}.cab-editor>.cab-fields{display:contents}.cab-editor .cab-tabs{order:-1;position:sticky;top:-1px;width:100%;padding:6px 0;margin:0;z-index:8}.cab-editor .cab-tabs button{min-height:44px}.cab-editor>.cab-visual{width:100%}.cab-editor #cab-form,.cab-editor #cab-kitchen-fields,.cab-editor #cab-bay-picker,.cab-editor #cab-kitchen-picker{width:100%;box-sizing:border-box}}
 .kitchen-drawer-tiers{grid-column:1/-1;min-width:0;margin:4px 0;padding:12px;border:1px solid var(--line);border-radius:var(--r-md)}
 .kitchen-drawer-tiers legend{padding:0 6px;font-weight:700}
 .kitchen-drawer-tiers .form .btn{align-self:end}
