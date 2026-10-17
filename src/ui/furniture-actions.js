@@ -4,7 +4,7 @@
 // ui.sel = {kind:'furn', id:主选中, ids:[全部选中]}；单选时 ids 可省略
 const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
 const selItems = () => selIds().map(getF).filter(Boolean);
-function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); updateHeader(); }
+function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); refreshHobOpenings(); updateHeader(); }
 function selectIds(ids, primary){
   ids = [...new Set(ids)].filter(id => getF(id));
   select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);
@@ -151,7 +151,7 @@ function rescueOutside(ids){
 
 // 放下 / 拖完的家具若压在墙 / 窗上，沿位移最小的方向推出，刚好贴墙。
 // 只在家具中心原本所在的房间内推移，推不开（如家具比房间还大）就保持原位——宁可压墙，也不能被推到墙外「消失」
-function pushOut(f){
+function pushOut(f,axis){
   // Kitchen auto-avoid keeps the chosen position and fits individual bodies
   // and stone in commit(). Its L envelope includes the courtyard and flue
   // notch, so the rectangular push-out must not move the whole assembly.
@@ -167,10 +167,10 @@ function pushOut(f){
     }
     if (!worst) return true;
     const r = worst, best = [[r[0]-hw, f.cy], [r[2]+hw, f.cy], [f.cx, r[1]-hh], [f.cx, r[3]+hh]]
-      .filter(([x, y]) => okAt(x, y))
+      .filter(([x, y]) => (axis!=='x'||y===oy)&&(axis!=='y'||x===ox)&&okAt(x, y))
       .sort((p, q) => Math.hypot(p[0]-f.cx, p[1]-f.cy) - Math.hypot(q[0]-f.cx, q[1]-f.cy))[0];
     if (!best) break;
-    f.cx = Math.round(best[0]); f.cy = Math.round(best[1]);
+    f.cx = axis==='y'?ox:Math.round(best[0]); f.cy = axis==='x'?oy:Math.round(best[1]);
   }
   if (Math.hypot(f.cx-ox, f.cy-oy) > Math.max(f.w, f.d)){ f.cx = ox; f.cy = oy; }   // 推得太远 = 不合理，撤回
   return false;

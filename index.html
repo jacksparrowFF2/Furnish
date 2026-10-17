@@ -291,6 +291,7 @@
 <script src="src/render/fotile-model.js"></script>
 <script src="src/core/product-rules.js"></script>
 <script src="src/core/ceiling-core.js"></script>
+<script src="src/core/navigation-input.js"></script>
 <script src="src/render/ceiling-model.js"></script>
 <script src="src/render/model-primitives.js"></script>
 <script src="src/render/appliance-model.js"></script>
@@ -437,6 +438,7 @@ function init(){
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(FOV, SW()/SH(), .05, 300);
   orbit = new OrbitControls(camera, renderer.domElement);
+  FurnishNavigation.bindOrbit(renderer.domElement,()=>orbit);
   orbit.enableDamping = true; orbit.maxPolarAngle = Math.PI*.495; orbit.minDistance = 1.5; orbit.maxDistance = 45;
   orbit.addEventListener('change', invalidate);
   walkCtl = new PointerLockControls(camera, document.body);
@@ -462,7 +464,9 @@ function init(){
   scene.add(archFloor, archUp, furnG, clearanceG, labelG, lampG);
   elevationG=new THREE.Group();issueG=new THREE.Group();scene.add(elevationG,issueG);
 
-  const cv = renderer.domElement; let downAt = null, tapMoved = false, look = null, cabinetTap = null;
+  const cv = renderer.domElement;
+  cv.addEventListener('pointerdown',()=>{orbit.mouseButtons.LEFT=spaceDown?THREE.MOUSE.PAN:THREE.MOUSE.ROTATE;},true);
+  let downAt = null, tapMoved = false, look = null, cabinetTap = null;
   cv.addEventListener('pointerdown', e => {
     downAt = e.isPrimary===false?null:[e.clientX,e.clientY,e.pointerId,e.button];tapMoved=false; window.closeDrawers();
     if (touchWalk && !look){ look = {id:e.pointerId, x:e.clientX, y:e.clientY}; cv.setPointerCapture(e.pointerId); }
@@ -479,7 +483,7 @@ function init(){
   let fdrag = null;
   // 多选时按住其中任一件可整组移动；锁定的家具不能拖
   host.addEventListener('pointerdown', e => {
-    if (e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || e.shiftKey) return;
+    if (e.target !== cv || !e.isPrimary || anim || opt.mode !== 'orbit' || e.shiftKey || spaceDown || e.button!==0) return;
     const ids = selIds(), h = pick(e), f = h?.fid && ids.includes(h.fid) && getF(h.fid), g = f && groundAt(e.clientX, e.clientY);
     if (!g) return;
     const items = selItems();
@@ -516,7 +520,7 @@ function init(){
       if (tap){ const h = pick(e); if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
       return;
     }
-    if (anim || opt.mode !== 'orbit' || !tap) return;
+    if (anim || opt.mode !== 'orbit' || spaceDown || !tap) return;
     const h = pick(e);
     if(h?.fid&&!e.shiftKey&&cycleFoldingTable(h.fid))return;
     if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
@@ -1578,7 +1582,7 @@ function highlightIssue(item,volumes){
 /* ======================= 漫游 ======================= */
 // 触屏漫游：左下虚拟摇杆移动，在画面上拖动转向（iPad 不支持鼠标指针锁定）
 const HINT_ORBIT = () => COARSE ? tr('单指旋转 · 双指缩放 / 平移 · 点选家具后可拖动摆放 · 点门／窗帘开关', '1 finger orbits · 2 fingers zoom / pan · select furniture to drag it · tap doors / curtains to open')
-  : tr('左键旋转 · 右键平移 · 滚轮缩放 · 选中家具后拖动可摆放 · 点击折叠桌切换形态 · 点击门／窗帘开关', 'Left-drag orbits · right-drag pans · scroll zooms · select furniture to drag it · click folding tables to change shape · click doors / curtains to open');
+  : tr('拖动空白处旋转 · 空格拖动平移 · 触摸板双指滑动平移／捏合缩放 · 鼠标滚轮缩放 · 选中家具后拖动可摆放 · 点击折叠桌切换形态 · 点击门／窗帘开关', 'Drag empty space to orbit · Space-drag pans · touchpad scroll pans / pinch zooms · mouse wheel zooms · select furniture to drag it · click folding tables to change shape · click doors / curtains to open');
 const HINT_TOUCHWALK = () => tr('左下摇杆移动 · 拖动画面转向 · 点门／窗帘开关', 'Joystick moves · drag to look · tap doors / curtains to open');
 const HINT_WALK = () => tr('WASD 移动 · 鼠标转向 · Shift 快走 · E 开关门 · Esc 暂停', 'WASD moves · mouse looks · Shift runs · E opens doors · Esc pauses');
 function syncHint3d(){ $('#hint3d').textContent = opt.mode === 'orbit' ? HINT_ORBIT() : touchWalk ? HINT_TOUCHWALK() : HINT_WALK(); }
