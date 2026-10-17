@@ -419,7 +419,9 @@ const doors = [], slidingDoors = [], keys = {};
 const SWING_DOOR_HEIGHT = 2.1; // Shared by the door leaf and its opening lintel (metres).
 // 按需渲染：只有镜头 / 场景 / 动画有变化时才渲染一帧，静止时不占用 GPU（笔记本、平板省电不发热）
 let dirty = true;
-const invalidate = () => { dirty = true; };
+// Camera and annotation changes reuse the light-space depth map. Geometry,
+// visibility and sunlight edits explicitly request a fresh shadow pass.
+const invalidate = (shadows=false) => { dirty = true; if(shadows===true&&renderer)renderer.shadowMap.needsUpdate=true; };
 
 /* ======================= 初始化 ======================= */
 function init(){
@@ -428,6 +430,7 @@ function init(){
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(SW(), SH());
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
   host.prepend(renderer.domElement);
   labelRenderer = new CSS2DRenderer();
@@ -501,7 +504,7 @@ function init(){
     fdrag.ids.forEach(id => { const x = getF(id); if (!x) return;            // 拖动中只挪模型，松手再整体同步
       x.cx = fdrag.start[id][0] + dx; x.cy = fdrag.start[id][1] + dy;
       furnG.children.find(o => o.userData.fid === id)?.position.set(wx(x.cx), 0, wz(x.cy)); });
-    buildHeaterClearances();renderPanel();selKey = null; invalidate();
+    buildHeaterClearances();renderPanel();selKey = null; invalidate(true);
   });
   const endF = e => {
     if (!fdrag || e.pointerId !== fdrag.pid) return;
@@ -619,7 +622,7 @@ function animateCurtains(dt){
     const target=curtain.open?1:0;if(curtain.cur===target)continue;
     curtain.cur=Math.abs(target-curtain.cur)<1e-3?target:curtain.cur+(target-curtain.cur)*Math.min(1,dt*6);
     for(const panel of curtain.panels){panel.node.position.x=panel.closed+(panel.opened-panel.closed)*curtain.cur;panel.node.scale.x=1+(panel.packScale-1)*curtain.cur;}
-    dirty=true;
+    invalidate(true);
   }
 }
 function buildFurniture(f){
@@ -1370,8 +1373,8 @@ function sync(force){
   if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn;showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
   const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes,state.floorFinishes]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes,state.floorFinishes]);
   if(force||a!==sigArch||f!==sigFurn){buildHeaterClearances();clearSceneIssue();selKey=null;}
-  if (force || a !== sigArch){ sigArch = a; buildArch(); }
-  if (force || f !== sigFurn){ sigFurn = f; buildFurn(); }
+  if (force || a !== sigArch){ sigArch = a; buildArch(); invalidate(true); }
+  if (force || f !== sigFurn){ sigFurn = f; buildFurn(); invalidate(true); }
   if (force || l !== sigLabels){ sigLabels = l; buildLabels(); }
   invalidate();
 }
@@ -1384,7 +1387,7 @@ function applyGrow(){
   furnG.scale.y = Math.max(furnGrow, .001);
   clearanceG.scale.y = Math.max(furnGrow, .001);
   lampG.visible = grow > .99;
-  invalidate();
+  invalidate(true);
 }
 
 /* ======================= 日照 / 夜景 ======================= */
@@ -1403,7 +1406,7 @@ function applyLight(){
   envK = opt.night ? .15 : 1; matCache.forEach(m => { if (m.envMap) m.envMapIntensity = m.userData.env*envK; });
   const h = Math.floor(opt.hour), m = Math.round((opt.hour - h)*60);
   $('#sunT').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-  invalidate();
+  invalidate(true);
 }
 
 /* ======================= 相机位姿 / 动画 ======================= */
@@ -1637,7 +1640,7 @@ function setMode(m){
   }
   showLabels(opt.labels && m === 'orbit');
   archUp.traverse(o => { if (o.userData.walkOnly) o.visible = m === 'walk'; });
-  invalidate();
+  invalidate(true);
 }
 function blocked(x, z, r = .22){
   for (const [x0, z0, x1, z1] of colliders) if (x > x0 - r && x < x1 + r && z > z0 - r && z < z1 + r) return true;
@@ -1708,7 +1711,7 @@ function bindUI(){
   document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => {
     const k = b.dataset.t; opt[k] = !opt[k]; b.classList.toggle('on', opt[k]);
     remember();
-    if (k === 'furn'){ furnG.visible = clearanceG.visible = opt.furn; invalidate(); if (!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
+    if (k === 'furn'){ furnG.visible = clearanceG.visible = opt.furn; invalidate(true); if (!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
     if (k === 'labels') showLabels(opt.labels && opt.mode === 'orbit' && !anim);
     if (k === 'night' || k === 'lamps') applyLight();
   });
@@ -1729,13 +1732,13 @@ function loop(){
   doors.forEach(d => {
     const tg = d.open ? d.a1 : d.a0; if (d.cur === tg) return;
     d.cur = Math.abs(tg - d.cur) < 1e-3 ? tg : d.cur + (tg - d.cur) * Math.min(1, dt*6);
-    d.pivot.rotation.y = d.cur; dirty = true;
+    d.pivot.rotation.y = d.cur; invalidate(true);
   });
   for(const d of [...slidingDoors,...furnG.children.map(g=>g.userData.slidingDoor).filter(Boolean)]){
     const target=d.open?1:0;if(d.cur===target)continue;
     d.cur=Math.abs(target-d.cur)<1e-3?target:d.cur+(target-d.cur)*Math.min(1,dt*6);
     for(const leaf of d.leaves)leaf.node.position.x=leaf.closed+(leaf.opened-leaf.closed)*d.cur;
-    dirty=true;
+    invalidate(true);
   }
   animateCurtains(dt);
   updateSel();
