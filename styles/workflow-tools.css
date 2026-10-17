@@ -162,3 +162,15 @@ main.drawer-panel #fab-dock{visibility:hidden}
 .wall-tile-row{padding-left:16px}.wall-tile-row span{font-size:12px;color:var(--muted)}
 .wall-tile-region label{min-width:0;display:flex;align-items:center;gap:6px}
 @media(max-width:600px){.wall-tile-row{flex-wrap:wrap;padding-left:0}.wall-tile-row span{flex:1}.wall-tile-region-head{flex-wrap:wrap}.wall-tile-actions .btn{flex:1 1 auto}}
+
+/* The setup guide reuses the ordinary editors and owns no project state. */
+.finish-guide-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+.finish-guide-steps .btn{white-space:normal;text-align:left;line-height:1.5;min-width:0}
+.finish-guide-steps .on{background:var(--accent-soft);border-color:var(--accent-ink);color:var(--accent-ink)}
+.finish-guide-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.finish-guide-row>div{min-width:0;overflow-wrap:anywhere}.finish-guide-row p{margin:5px 0}.finish-guide-row .btn{flex:none}
+.finish-guide-bottom{margin-top:20px;justify-content:space-between}
+.finish-guide-editor{font-size:12px;line-height:1.5;padding:10px;margin:8px 0 14px;background:var(--accent-soft);border:1px solid var(--line);border-radius:10px}
+.finish-guide-editor p{margin:6px 0}.finish-guide-editor .actions{flex-wrap:wrap}.finish-guide-editor [hidden]{display:none!important}
+.finish-guide-table{overflow-x:auto}.finish-guide-table table{width:100%;border-collapse:collapse;font-size:12px}.finish-guide-table th,.finish-guide-table td{padding:10px 6px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+@media(max-width:600px){.finish-guide-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.finish-guide-row{align-items:flex-start;gap:8px}.finish-guide-row .btn{max-width:45%;white-space:normal}.finish-guide-table th,.finish-guide-table td{padding:8px 3px}.finish-guide-editor .actions .btn{flex:1}}

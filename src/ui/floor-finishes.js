@@ -72,7 +72,7 @@ function openFloating(tab='layout'){
  closeFabEditor(false);const room=ROOMS.find(r=>r.id===ui.sel?.id&&ui.sel.kind==='room'&&r.counted!==false);if(!room)return;
  drawer('panel',false);
  const host=mountFabEditor('floor',`${state.rooms[room.id].name} · 地砖铺贴`,panel(room,'fab-floor'),{allowCanvas:()=>!!cancelPick,dispose:()=>{cancelPick?.();clearPreview();}});
- bind(host.querySelector('[data-floor-room]'),{prefix:'fab-floor',onApplied:()=>{if(ui.sel?.kind==='room'&&ui.sel.id===room.id)openFloating(host.querySelector('[data-floor-show].on')?.dataset.floorShow||'layout');}});host.querySelector(`[data-floor-show="${tab}"]`)?.click();queueFabPosition();
+ bind(host.querySelector('[data-floor-room]'),{prefix:'fab-floor',onApplied:()=>{if(ui.sel?.kind==='room'&&ui.sel.id===room.id)openFloating(host.querySelector('[data-floor-show].on')?.dataset.floorShow||'layout');}});host.querySelector(`[data-floor-show="${tab}"]`)?.click();window.FurnishFinishGuideUI?.attachEditor(host,'floor',room.id);queueFabPosition();
 }
 function applyEnabled(ids,enabled){
  const next=F.setEnabled(state,FurnishProject.effectivePlan(PLAN,state),ids,enabled);
@@ -97,7 +97,9 @@ function openList(){
  closeFabEditor(false);
  openDialog({title:'区域地砖铺贴',wide:true,body:'<p>勾选立即启用，取消勾选保留参数。未知厚度保持待核对；不会移动家具或修改柜体。非瓷砖材质仅启用地面标高。</p><div class="actions"><button class="btn" data-floor-bulk="on">全部启用</button><button class="btn" data-floor-bulk="off">全部关闭</button><button class="btn" data-floor-unify>统一起铺点</button></div><p data-floor-count role="status"></p><div id="floor-region-list"></div>',actions:[{label:'关闭'}]});
  document.querySelector('[data-floor-unify]').onclick=openUnified;
+ const guide=document.createElement('button');guide.className='btn';guide.dataset.finishGuideOpen='';guide.textContent='分步设定引导';document.querySelector('[data-floor-unify]').after(guide);
  refreshList();
+ window.FurnishFinishGuideUI?.attachList('floor');
 }
 function refreshList(){
  const host=document.querySelector('#floor-region-list');if(!host||document.querySelector('#dlg').hidden)return;

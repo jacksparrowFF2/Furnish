@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict'),G=require('../src/core/finish-guide-core.js'),P=require('../src/core/project-core.js'),T=require('../src/core/wall-tiling-core.js'),C=require('../src/core/floorplan-core.js'),{fixture}=require('./helpers/wall-finish-fixture.cjs');
+const base=fixture({partition:true}),plan=C.build(base.draft),work=base.work,[k,b]=plan.rooms.map(r=>r.id),copy=v=>JSON.parse(JSON.stringify(v));
+work.rooms[k].use='kitchen';work.rooms[b].use='bathroom';const inspect=w=>G.inspect(P.effectivePlan(plan,w),w);
+assert.deepEqual(inspect(work).ready,[false,false,false]);assert.equal(inspect(work).firstPending,0);
+const next=copy(work);next.floorFinishes={version:1,areas:{[k]:{rawZ:0,tileThickness:10,baseThickness:40,mode:'layers'},[b]:{rawZ:0,tileThickness:10,reference:k,drop:5,mode:'reference'}}};
+let v=inspect(next);assert.deepEqual(v.ready,[true,true,false]);assert.equal(v.rows.find(r=>r.id===b).finishedZ,45);assert.equal(v.firstPending,2);
+let tiled=T.setEnabled(next,P.effectivePlan(plan,next),[k,b],true);tiled=T.setHeights(tiled,P.effectivePlan(plan,tiled),[k,b],{reference:'survey',startHeight:50});
+const original=copy(tiled);v=inspect(tiled);assert.deepEqual(v.ready,[true,true,true]);assert.equal(v.commonWallZ,50);assert.equal(v.firstPending,3);assert(v.patternsMatch);assert.deepEqual(tiled,original,'reading progress never writes defaults or confirmations');
+const restored=P.unpack(P.pack({planId:plan.id,current:tiled,designs:[],catalog:[]})).current;assert.deepEqual(inspect(restored),v,'progress derives from project values after restore');
+const pending=copy(tiled);pending.floorFinishes.areas[k].enabled=false;v=inspect(pending);assert.equal(v.ready[0],false);assert.equal(v.ready[1],false);assert.equal(v.rows.find(r=>r.id===b).finishedZ,null,'unknown reference is not treated as zero');
+const zero=copy(tiled);zero.floorFinishes.areas[k].baseThickness=0;zero.floorFinishes.areas[k].tileThickness=0;zero.floorFinishes.areas[b].tileThickness=0;zero.floorFinishes.areas[b].drop=0;assert.equal(inspect(zero).rows[0].finishedZ,0);assert(inspect(zero).ready[0]);assert(inspect(zero).ready[1]);
+const relative=copy(tiled);relative.wallTiling.surfaces.forEach(s=>{s.layout.reference='floor';s.layout.startHeight=0;});assert.equal(inspect(relative).uniform,false,'relative zeros on 50/45 floors cannot count as one absolute line');
+const mismatch=copy(tiled);mismatch.wallTiling.surfaces[0].layout.height=400;assert.equal(inspect(mismatch).uniform,true);assert.equal(inspect(mismatch).patternsMatch,false,'common origin does not assert later joints align');
+const off=copy(tiled);off.wallTiling.surfaces[0].enabled=false;assert(inspect(off).uniform,'intentionally disabled walls do not need enabling');off.wallTiling.surfaces.forEach(s=>s.enabled=false);assert(!inspect(off).uniform);
+const noReference=copy(tiled);noReference.floorFinishes.areas[b]={rawZ:0,tileThickness:10,baseThickness:35,mode:'layers'};assert.equal(inspect(noReference).rows.find(r=>r.id===b).finishedZ,45);assert.equal(inspect(noReference).ready[1],false,'a known absolute height is not a saved reference relation');
+const balcony=copy(tiled);balcony.rooms[k].use='balcony';assert.equal(inspect(balcony).ordinary[0].use,'balcony');balcony.rooms[k].use='bedroom';assert.equal(inspect(balcony).rows.length,1);
+console.log('PASS read-only setup progress, legacy/unknown/zero heights, bathroom references, absolute tile alignment, disabled walls, different joint pitches and project restoration');

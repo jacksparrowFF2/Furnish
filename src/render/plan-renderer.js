@@ -484,5 +484,6 @@ function renderAll(){
   window.FurnishRoomMeasure?.afterRender();
   window.FurnishFloorFinishUI?.afterRender();
   window.FurnishWallTilingUI?.afterRender();
+  window.FurnishFinishGuideUI?.afterRender();
   window.FurnishCeilingUI?.afterRender();
 }

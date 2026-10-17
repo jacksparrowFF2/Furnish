@@ -35,17 +35,18 @@ function openFace(face){
  };
  host.querySelector('[data-wall-apply]').onclick=()=>{try{const next=T.edit(state,effective(),current,{enabled:host.querySelector('[data-wall-layout-enabled]').checked,layout:read()});apply(next);openFace(current);toast('墙砖排版已应用；厚度和家具柜体保持');}catch(e){host.querySelector('[data-wall-error]').textContent=e.message;}};
  host.querySelector('[data-wall-height]').onclick=()=>openHeights(face.roomId);
- host.querySelector('[data-wall-svg]').onclick=()=>{if(!elevation)return;download(name(face.roomId)+'-墙砖立面.svg',new Blob([svgOf(elevation)],{type:'image/svg+xml;charset=utf-8'}));};preview();
+ host.querySelector('[data-wall-svg]').onclick=()=>{if(!elevation)return;download(name(face.roomId)+'-墙砖立面.svg',new Blob([svgOf(elevation)],{type:'image/svg+xml;charset=utf-8'}));};preview();window.FurnishFinishGuideUI?.attachEditor(host,'wall-face',face.roomId);
 }
 function openHeights(roomId){
  const targets=rooms().filter(r=>!roomId||r.id===roomId);if(!targets.length)return toast('当前没有厨房、卫生间或阳台区域');
  closeDialog();closeFabEditor(false);select({kind:'room',id:targets[0].id});drawer('panel',false);
  const p=effective(),z=p.floorFinish?.areas[targets[0].id]?.finishedZ??0;
  const host=mountFabEditor('wall-height','墙砖 · 统一起铺高度',`<section data-wall-tiling><p>应用到 ${targets.map(r=>esc(name(r.id))).join('、')} 的全部可识别墙面。保留每面墙的横向起点、砖尺寸、砖缝及开关。</p><div class="form"><label class="full">高度基准<select id="wall-height-reference"><option value="survey">毛坯绝对标高（所有墙同一水平线）</option><option value="floor">各区域完成地面以上（随地面高差变化）</option></select></label><label class="full">统一起铺高度 mm<input type="number" step="any" id="wall-height-value" value="${z}"></label></div><p class="muted">卫生间地面较低时，选绝对标高可保持跨区域同一水平线；选完成地面则分别加上该区域地面标高。关闭项只保存参数，不自动启用；之后仍可单独修改。</p><p class="project-error" data-wall-error role="alert"></p><button class="btn primary" id="wall-height-apply">应用统一高度</button></section>`);
- host.querySelector('#wall-height-apply').onclick=()=>{try{const value=host.querySelector('#wall-height-value'),next=T.setHeights(state,effective(),targets.map(r=>r.id),{reference:host.querySelector('#wall-height-reference').value,startHeight:value.value.trim()===''?NaN:Number(value.value)});apply(next);closeFabEditor(false);toast('墙砖起铺高度已统一，可一次撤销');}catch(e){host.querySelector('[data-wall-error]').textContent=e.message;}};
+ host.querySelector('#wall-height-apply').onclick=()=>{try{const value=host.querySelector('#wall-height-value'),next=T.setHeights(state,effective(),targets.map(r=>r.id),{reference:host.querySelector('#wall-height-reference').value,startHeight:value.value.trim()===''?NaN:Number(value.value)});apply(next);closeFabEditor(false);toast('墙砖起铺高度已统一，可一次撤销');window.FurnishFinishGuideUI?.afterWallHeightApplied();}catch(e){host.querySelector('[data-wall-error]').textContent=e.message;}};
+ window.FurnishFinishGuideUI?.attachEditor(host,'wall-height');
 }
 function openList(){
- closeFabEditor(false);openDialog({title:'墙面铺贴 · 厨房／卫生间／阳台',wide:true,body:'<p>按区域或墙面开关排版，关闭保留参数。已有墙面厚度与毛坯基准保持；不自动移动家具或修改柜体。</p><div class="actions"><button class="btn" data-wall-bulk="on">全部启用排版</button><button class="btn" data-wall-bulk="off">全部关闭排版</button><button class="btn" data-wall-unify>统一起铺高度</button></div><div id="wall-tile-list"></div>',actions:[{label:'关闭'}]});refreshList();
+ closeFabEditor(false);openDialog({title:'墙面铺贴 · 厨房／卫生间／阳台',wide:true,body:'<p>按区域或墙面开关排版，关闭保留参数。已有墙面厚度与毛坯基准保持；不自动移动家具或修改柜体。</p><div class="actions"><button class="btn" data-wall-bulk="on">全部启用排版</button><button class="btn" data-wall-bulk="off">全部关闭排版</button><button class="btn" data-wall-unify>统一起铺高度</button><button class="btn" data-finish-guide-open>分步设定引导</button></div><div id="wall-tile-list"></div>',actions:[{label:'关闭'}]});refreshList();window.FurnishFinishGuideUI?.attachList('wall');
 }
 function refreshList(){
  const host=document.querySelector('#wall-tile-list');if(!host||document.querySelector('#dlg').hidden)return;

@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-17",
+  "status": "PASS",
+  "scope": "厨房／卫生间／阳台地面与墙砖分步设定引导",
+  "projectFieldsAdded": false,
+  "automaticParameterWrites": false,
+  "dataSafety": "实际1601仅展示引导；浏览器编辑验证使用合成项目与隔离缓存",
+  "checks": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 186,
+    "builtInPlans": 12,
+    "previewSyntaxPages": 1873,
+    "scope": "当前完整共享目录，包含原有未提交吊顶修改；最终引导UI另行专项复验",
+    "log": "output/finish-guide-20261017/check.log"
+  },
+  "browser": {
+    "passed": true,
+    "relatedCases": ["finish-guide", "floor-controls", "wall-tiling", "floating-toolbar"],
+    "relatedRun": "output/playwright/verification-cQErPD",
+    "finalGuideRun": "output/playwright/verification-27KTkE",
+    "coverage": ["HTTP与断网file://", "旧项目不写默认数据", "四步导航及实际原编辑器应用", "参考厨房高差及绝对起铺线", "草稿继续编辑／明确放弃", "撤销重做与刷新重算", "退出后普通编辑不带引导", "逐墙立面与空间核对入口", "390px及实际1601视觉检查"]
+  },
+  "real1601": {
+    "projectUnchangedDuringGuideWork": true,
+    "sha256": "11e2b2933b7ee83936a2ede4cc833de45eeae7093a144c3681d4d391f70ef2e1",
+    "floorLevels": {"厨房": 50, "阳台": 50, "卫生间": 45},
+    "absoluteWallOrigin": 50,
+    "furniture": 47,
+    "note": "前一请求已明确授权并应用这些数值；本次引导实现及展示没有再修改原项目"
+  },
+  "notRun": ["全量浏览器验收", "真实触屏硬件", "现场施工核对"],
+  "boundaries": ["本阶段范围为厨房、卫生间与阳台", "引导内导航保护草稿，原编辑器其它关闭行为不变", "可跳步；完成标志仅表示参数关系，不等于空间或施工验收通过"]
+}
