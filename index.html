@@ -385,7 +385,7 @@ window.View3D = {
   shot:() => impl?.shot(), groundAt:(x, y) => impl?.groundAt(x, y) ?? null, flyToRoom:id => impl?.flyToRoom(id),
   image:() => globalThis.FurnishWorkflowTools?.styleId()?null:impl?.image()||null, focusSelection:() => impl?.focusSelection(),
   highlightIssue:(item,volumes) => impl?.highlightIssue(item,volumes),
-  ceilingPreview:(host,data) => load().then(() => impl.ceilingPreview(host,data)),
+  ceilingPreview:(host,data,options) => load().then(() => impl.ceilingPreview(host,data,options)),
   cabinetPreview:(host,f,onToggle) => load().then(() => impl.cabinetPreview(host,f,onToggle)),
   walking:() => !!impl?.walking(),
 };
@@ -1768,7 +1768,7 @@ function cabinetPreview(host,f,actions){
  return FurnishCabinetPreview.create({THREE,OrbitControls,box,host,f,actions,furniture:actions.furniture||state.furniture,plan:FurnishProject.effectivePlan(PLAN,state),background:DK()?'#252a30':'#eeeae3'});
 }
 
-function ceilingPreview(host,data){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data});}
+function ceilingPreview(host,data,options){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data,...options});}
 return {ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
 }
 </script>

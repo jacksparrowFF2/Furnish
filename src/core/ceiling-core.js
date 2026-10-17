@@ -43,6 +43,7 @@ function section(s){
  if(s.template){if(s.template.kind!=='lowCove'||!s.template.values)fail('截面模板无效');const expected=lowCove(s.template.values).vertices;if(expected.length!==s.vertices.length||expected.some((v,i)=>['id','u','d'].some(k=>v[k]!==s.vertices[i][k])))fail('截面模板尺寸与轮廓不一致');}
  if(s.light!==undefined){const l=s.light;if(!l||![l.u,l.d,l.angle].every(finite)||Math.abs(l.u)>rules().max||Math.abs(l.d)>rules().max||Math.abs(l.angle)>360||!solid(l.width)||!solid(l.thickness))fail('发光位置须在±20000 mm内，朝向在±360°内，灯带宽厚须为0.1～20000 mm');}
  if(s.light?.cornerSetback!==undefined&&(!finite(s.light.cornerSetback)||s.light.cornerSetback<0||s.light.cornerSetback>rules().max))fail('转角额外退让须为0～20000 mm');
+ if(s.light?.corner!==undefined){const c=s.light.corner;if(!c||Object.keys(c).some(k=>!['mode','radius'].includes(k))||!['segmented','arc'].includes(c.mode)||!solid(c.radius))fail('灯带转角模式无效，中心线半径须为0.1～20000 mm');}
  return s;
 }
 function lightPolygon(l){const r=l.angle*Math.PI/180,n=[Math.cos(r),Math.sin(r)],t=[-n[1],n[0]];return [[-1,0],[1,0],[1,1],[-1,1]].map(([w,h])=>[l.u+t[0]*w*l.width/2+n[0]*h*l.thickness,l.d+t[1]*w*l.width/2+n[1]*h*l.thickness]);}
@@ -71,10 +72,57 @@ function offsetStations(c,u){
  out.push(last.b.map((v,i)=>v+last.normal[i]*u));return out;
 }
 function legFootprint(c,index,us){const lo=offsetStations(c,Math.min(...us)),hi=offsetStations(c,Math.max(...us));return [lo[index],lo[index+1],hi[index+1],hi[index]];}
+function hull(points){const p=points.map(v=>v.slice()).sort((a,b)=>a[0]-b[0]||a[1]-b[1]),half=a=>{const out=[];for(const p of a){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}return out;};return [...half(p).slice(0,-1),...half(p.reverse()).slice(0,-1)];}
+function compactLightRadius(light){const R=Math.max(rules().corner.lightRadius,Math.max(...lightPolygon(light).map(p=>p[0]-light.u))+rules().corner.compactInnerRadius);if(!solid(R))fail('当前灯带宽厚不能采用小圆角，请先减小宽厚');return R;}
+function endOpening(c){
+ const v=c.section.vertices,body=v.map(p=>[p.u,p.d]),candidates=[];
+ for(let i=0;i<v.length;i++){
+  const a=v[i],b=v[(i+1)%v.length],before=v[(i+v.length-1)%v.length],after=v[(i+2)%v.length];if(Math.abs(a.d-b.d)>eps()||!solid(Math.abs(a.u-b.u),Math.max(a.u,b.u)))continue;
+  const mid=(a.u+b.u)/2;if(inside([mid,a.d-.0001],body,false)||!inside([mid,a.d+.0001],body,false))continue;
+  if(Math.abs(before.u-a.u)>eps()||Math.abs(after.u-b.u)>eps()||!solid(a.d-before.d,Math.max(a.d,before.d))||!solid(b.d-after.d,Math.max(b.d,after.d)))continue;
+  const u0=Math.min(a.u,b.u),u1=Math.max(a.u,b.u),top=Math.max(before.d,after.d),bottom=a.d;if(!solid(bottom-top,Math.max(bottom,top)))continue;
+  candidates.push([[u0,top],[u1,top],[u1,bottom],[u0,bottom]]);
+ }
+ return candidates.length===1?candidates[0]:null;
+}
+function endCaps(c){
+ const active=['start','end'].filter(end=>c.ends?.[end]?.enabled).map(end=>[end,c.ends[end]]),pending=[],plates=[];if(!active.length)return {plates,pending};const section=endOpening(c),legs=route(c);
+ if(!section)return {plates,pending:['端板槽口无法唯一识别，请保留水平槽底及两侧竖向挡边，再更新收口']};
+ if(legs.length===1&&active.length===2&&!solid(distance(legs[0].a,legs[0].b)-active.reduce((s,[,v])=>s+v.thickness,0),distance(legs[0].a,legs[0].b)))return {plates,pending:['两端端板占满直线路径，请减小板厚']};
+ for(const [end,config] of active){
+  const leg=end==='start'?legs[0]:legs.at(-1),L=distance(leg.a,leg.b),t=tangent(leg),reserve=legs.length===2?Math.max(...section.map(p=>p[0])):0;
+  if(!solid(L-reserve-config.thickness,L)){pending.push(`${end==='start'?'起端':'末端'}端板侵入转角或占满路径，请减小板厚`);continue;}
+  const a=end==='start'?clone(leg.a):leg.b.map((v,i)=>v-t[i]*config.thickness),b=end==='start'?leg.a.map((v,i)=>v+t[i]*config.thickness):clone(leg.b),path={a,b,normal:clone(leg.normal)},footprint=[a.map((v,i)=>v+leg.normal[i]*section[0][0]),b.map((v,i)=>v+leg.normal[i]*section[0][0]),b.map((v,i)=>v+leg.normal[i]*section[1][0]),a.map((v,i)=>v+leg.normal[i]*section[1][0])];
+  plates.push({end,section:clone(section),path,footprint,thickness:config.thickness,lightGap:config.lightGap,innerPoint:clone(end==='start'?b:a)});
+ }
+ return {plates,pending};
+}
+function endRetreats(c){const caps=endCaps(c),offsets={start:0,end:0};for(const p of caps.plates)offsets[p.end]=p.thickness+p.lightGap;return {offsets,pending:caps.pending};}
+function continuousLight(c){
+ const l=c.section.light,p=lightPolygon(l),legs=route(c),R=l.corner.radius,H=l.u+R,pending=[],none=()=>({pieces:[],pending,continuous:null}),ends=endRetreats(c);
+ if(ends.pending.length){pending.push('端板收口尚未生成，灯带内侧退让待核对');return none();}
+ if(legs.length!==2){pending.push('连续绕角需要两段L形路径');return none();}
+ const minRadius=R-Math.max(...p.map(v=>v[0]-l.u));if(!solid(minRadius,Math.max(R,...p.map(v=>Math.abs(v[0])),Math.abs(l.u)))){pending.push('连续灯带内缘半径不足0.1 mm，请增大绕角半径或减小灯带宽厚');return none();}
+ const lengths=legs.map(p=>distance(p.a,p.b));if(H<0||lengths.some((L,i)=>!solid(L-H-ends.offsets[i===0?'start':'end'],L))){pending.push('连续绕角或端板退让占满路径，转角两侧须各保留至少0.1 mm直段');return none();}
+ const t=tangent(legs[0]),n=legs[0].normal,J=legs[0].b,O=J.map((v,i)=>v+(n[i]-t[i])*H),outer=Math.max(...p.map(v=>H-v[0])),angle=Math.min(rules().corner.arcMaxAngle*Math.PI/180,2*Math.acos(Math.max(-1,1-rules().corner.arcChordError/outer))),steps=Math.min(rules().corner.arcMaxSegments,Math.max(8,2*Math.ceil(Math.PI/2/angle/2)));
+ const at=(q,theta)=>O.map((v,i)=>v+(t[i]*Math.sin(theta)-n[i]*Math.cos(theta))*(H-q));
+ const rings=[p.map(([q])=>legs[0].a.map((v,i)=>v+n[i]*q+t[i]*ends.offsets.start))],centerline=[pointAt(c,l.u,ends.offsets.start)];
+ for(let k=0;k<=steps;k++){const theta=k*Math.PI/2/steps;rings.push(p.map(([q])=>at(q,theta)));centerline.push(at(l.u,theta));}
+ const lastT=tangent(legs[1]);rings.push(p.map(([q])=>legs[1].b.map((v,i)=>v+legs[1].normal[i]*q-lastT[i]*ends.offsets.end)));centerline.push(legs[1].b.map((v,i)=>v+legs[1].normal[i]*l.u-lastT[i]*ends.offsets.end));
+ const minIndex=p.reduce((best,v,i)=>v[0]<p[best][0]?i:best,0),maxIndex=p.reduce((best,v,i)=>v[0]>p[best][0]?i:best,0),footprints=rings.slice(1).map((ring,i)=>[rings[i][minIndex],ring[minIndex],ring[maxIndex],rings[i][maxIndex]]);
+ // On either half of a convex 90-degree miter the nearest wall coordinate is
+ // H-(H-q)*cos(theta), theta in [0,pi/4]. Its swept (q,d) projection is exactly
+ // the convex hull of the initial and midpoint light sections, not a center ray.
+ const mid=p.map(([q,d])=>[H-(H-q)*Math.SQRT1_2,d]),envelope=hull([...p,...mid]),body=c.section.vertices.map(v=>[v.u,v.d]),overlap=intersection(body,envelope);
+ if(overlap.length>=3&&Math.abs(area(overlap))>eps()**2)pending.push('连续转角灯带实体与槽腔边界相交，请调整半径、发光位置或截面');
+ else if(!lightIssues(c.section).length){const support=[p[0],p[1],mid[0],mid[1]];if(!body.some((a,i)=>support.every(v=>onSegment(v,a,body[(i+1)%body.length]))))pending.push('连续转角灯带承托不完整，请核对槽底或调整发光位置');}
+ return {pieces:[],pending,continuous:{rings,footprints,centerline,radius:R,steps,innerRadius:minRadius}};
+}
 function lightLayout(c){
- if(!c.section.light)return {pieces:[],pending:[]};const legs=route(c),pending=[],pieces=[],p=lightPolygon(c.section.light),maxU=Math.max(...p.map(v=>v[0])),extra=c.section.light.cornerSetback??rules().corner.lightSetback;
+ if(!c.section.light)return {pieces:[],pending:[]};if(c.section.light.corner?.mode==='arc')return continuousLight(c);const legs=route(c),pending=[],pieces=[],p=lightPolygon(c.section.light),maxU=Math.max(...p.map(v=>v[0])),extra=c.section.light.cornerSetback??rules().corner.lightSetback,ends=endRetreats(c);
+ if(ends.pending.length)return {pieces,pending:['端板收口尚未生成，灯带内侧退让待核对']};
  for(let i=0;i<legs.length;i++){
-  const leg=legs[i],L=distance(leg.a,leg.b),start=legs.length===2&&i===1?maxU+extra:0,end=legs.length===2&&i===0?L-maxU-extra:L;
+  const leg=legs[i],L=distance(leg.a,leg.b),start=legs.length===2&&i===1?maxU+extra:ends.offsets.start,end=legs.length===2&&i===0?L-maxU-extra:L-ends.offsets.end;
   if(!solid(end-start,L)){pending.push(`第${i+1}段灯带转角退让后长度不足，暂不生成此段灯带`);continue;}
   const t=tangent(leg);pieces.push({legId:leg.id,path:{a:leg.a.map((v,k)=>v+t[k]*start),b:leg.a.map((v,k)=>v+t[k]*end),normal:clone(leg.normal)}});
  }
@@ -82,17 +130,19 @@ function lightLayout(c){
  return {pieces,pending,join};
 }
 function sample(c){
- const out=clone(c),legs=route(out);if(legs.length===1){const L=Math.min(600,distance(out.path.a,out.path.b));out.path.b=pointAt(out,0,L);return out;}
+ const out=clone(c),legs=route(out),offset=end=>out.ends?.[end]?.enabled?out.ends[end].thickness+out.ends[end].lightGap:0,drop=end=>{if(out.ends){delete out.ends[end];if(!Object.keys(out.ends).length)delete out.ends;}};if(legs.length===1){const original=distance(out.path.a,out.path.b),L=Math.min(Math.max(600,offset('start')+100),original);if(L<original-eps()&&offset('end')>=original-L-eps())return out;out.path.b=pointAt(out,0,L);if(L<original-eps())drop('end');return out;}
  // A wide section or large light setback needs a longer sample to represent
  // the valid source; trimming every route to 600 would invent a short-arm error.
- const light=out.section.light,need=Math.max(600,Math.max(...out.section.vertices.map(v=>v.u))+100,light?Math.max(...lightPolygon(light).map(p=>p[0]))+(light.cornerSetback??0)+100:0);
- const t0=tangent(legs[0]),t1=tangent(legs[1]),L0=Math.min(need,distance(legs[0].a,legs[0].b)),L1=Math.min(need,distance(legs[1].a,legs[1].b));legs[0].a=legs[0].b.map((v,i)=>v-t0[i]*L0);legs[1].b=legs[1].a.map((v,i)=>v+t1[i]*L1);return out;
+ const light=out.section.light,need=Math.max(600,Math.max(...out.section.vertices.map(v=>v.u))+100,light?(light.corner?.mode==='arc'?light.u+light.corner.radius:Math.max(...lightPolygon(light).map(p=>p[0]))+(light.cornerSetback??0))+100:0);
+ const t0=tangent(legs[0]),t1=tangent(legs[1]),original0=distance(legs[0].a,legs[0].b),original1=distance(legs[1].a,legs[1].b),L0=Math.min(need,original0),L1=Math.min(need,original1);if(L0<original0-eps()&&offset('start')>=original0-L0-eps()||L1<original1-eps()&&offset('end')>=original1-L1-eps())return out;legs[0].a=legs[0].b.map((v,i)=>v-t0[i]*L0);legs[1].b=legs[1].a.map((v,i)=>v+t1[i]*L1);if(L0<original0-eps())drop('start');if(L1<original1-eps())drop('end');return out;
 }
 function validate(data){
  if(data===undefined)return;if(!data||data.version!==1||!Array.isArray(data.items)||data.items.length>rules().maxItems)fail('吊顶数据版本或数量无效');const ids=new Set();
  for(const c of data.items){
   if(!c||!key(c.id)||ids.has(c.id)||!key(c.roomId)||typeof c.name!=='string'||!c.name.trim()||c.name.length>80||!finite(c.height)||c.height<0||c.height>rules().max)fail('吊顶编号、区域、名称或标高无效');ids.add(c.id);
+  if(c.ends!==undefined&&c.kind!=='profile')fail('端板收口仅支持沿边截面造型');
   if(c.kind==='profile'){
+   if(c.ends!==undefined){if(!c.ends||typeof c.ends!=='object'||Array.isArray(c.ends)||Object.keys(c.ends).some(k=>!['start','end'].includes(k)))fail('端板收口只支持起端和末端');for(const e of Object.values(c.ends))if(!e||Object.keys(e).some(k=>!['enabled','thickness','lightGap'].includes(k))||typeof e.enabled!=='boolean'||!solid(e.thickness)||!finite(e.lightGap)||e.lightGap<0||e.lightGap>rules().max)fail('端板厚度须为0.1～20000 mm，灯带内侧退让须为0～20000 mm');}
    section(c.section);if(!c.path||c.path.segments!==undefined&&(!Array.isArray(c.path.segments)||c.path.segments.length!==rules().corner.maxLegs||c.path.a!==undefined||c.path.b!==undefined||c.path.join!=='miter'))fail('L形路径需要两条相邻直边和连续拼角');
    const legs=route(c),legIds=new Set();for(const p of legs){if(!p||!point(p.a)||!point(p.b)||!point(p.normal)||!solid(distance(p.a,p.b))||Math.abs(Math.hypot(...p.normal)-1)>eps())fail('吊顶路径和朝向无效');const t=tangent(p);if(Math.abs(t[0]*p.normal[0]+t[1]*p.normal[1])>eps())fail('路径朝向必须垂直于路径');if(!key(p.id)||legIds.has(p.id))fail('路径分段编号无效或重复');legIds.add(p.id);}
    if(legs.length===2){if(distance(legs[0].b,legs[1].a)>eps())fail('L形路径必须首尾相接');joinedPath(legs[0],legs[1]);const maxU=Math.max(...c.section.vertices.map(v=>v.u));if(legs.some(p=>!solid(distance(p.a,p.b)-maxU,distance(p.a,p.b))))fail('截面凸出占满短边，转角后须保留至少0.1 mm有效长度');}
@@ -144,7 +194,7 @@ function attach(flat,profile,edge){
 function resolve(data){
  validate(data);const items=clone(data?.items||[]),pending=[];
  for(let i=0;i<items.length;i++){
-  const c=items[i];if(c.kind==='profile')for(const message of [...lightIssues(c.section),...lightLayout(c).pending])pending.push({id:c.id,message});
+  const c=items[i];if(c.kind==='profile')for(const message of [...endCaps(c).pending,...lightIssues(c.section),...lightLayout(c).pending])pending.push({id:c.id,message});
   if(c.kind==='flat'&&c.attachment){const source=items.find(v=>v.id===c.attachment.profileId&&v.kind==='profile');try{if(!source)fail('固定连接的吊顶已不存在，请重新吸附或解除固定');const legs=route(source);if(JSON.stringify(c.attachment.legs||[])!==JSON.stringify(legs.length===2?legs.map(p=>p.id):[]))fail('固定边数量或参照已变化，请重新吸附平顶');items[i]=attach(c,source,c.attachment);}catch(e){pending.push({id:c.id,message:e.message});}}
  }
  return {items,pending};
@@ -154,7 +204,7 @@ function remove(work,id){const next=clone(work);if(next.ceilings){const current=
 function derive(plan,work){if(!work.ceilings)return plan;const data=resolve(work.ceilings);for(const c of data.items){const r=plan.rooms.find(r=>r.id===c.roomId);if(!r)data.pending.push({id:c.id,message:'原区域已变化，请重新关联吊顶'});else{
   const poly=c.kind==='profile'?footprint(c):c.polygon;if(poly.some(p=>!inside(p,r.poly)))data.pending.push({id:c.id,message:'吊顶超出当前区域，请核对边界'});
   const light=c.kind==='profile'&&c.section.light?lightPolygon(c.section.light):[],top=c.kind==='profile'?c.height-Math.min(...c.section.vertices.map(v=>v.d),...light.map(p=>p[1])):c.height+c.thickness;
-  if(light.length&&lightLayout(c).pieces.some(piece=>footprint({...c,path:piece.path},light.map(p=>p[0])).some(p=>!inside(p,r.poly))))data.pending.push({id:c.id,message:'灯带超出当前区域，请核对发光位置'});
+  if(light.length){const layout=lightLayout(c),polys=layout.continuous?.footprints||layout.pieces.map(piece=>footprint({...c,path:piece.path},light.map(p=>p[0])));if(polys.some(poly=>poly.some(p=>!inside(p,r.poly))))data.pending.push({id:c.id,message:'灯带超出当前区域，请核对发光位置'});}
   if(light.some(p=>c.height-p[1]< -eps()))data.pending.push({id:c.id,message:'灯带低于测量基准地面，请核对发光位置'});
   if(!finite(r.ceilingHeight))data.pending.push({id:c.id,message:'原顶高度待核对'});else if(top>r.ceilingHeight+eps())data.pending.push({id:c.id,message:'吊顶或灯带超过当前原顶高度'});
  }}return {...plan,ceilings:data};}
@@ -173,6 +223,7 @@ function checks(plan,bodies){
     const us=poly.map(v=>(v[0]-leg.a[0])*leg.normal[0]+(v[1]-leg.a[1])*leg.normal[1]),u0=Math.min(...us),u1=Math.max(...us),d0=vertical?c.height-vertical.top:-rules().max,d1=vertical?c.height-vertical.bottom:rules().max;
     const overlap=intersection(outline,[[u0,d0],[u1,d0],[u1,d1],[u0,d1]]);if(overlap.length>=3&&Math.abs(area(overlap))>eps()**2){hit=true;break;}
    }
+   if(!hit)for(const plate of endCaps(c).plates){const poly=intersection(p,plate.footprint);if(poly.length<3||Math.abs(area(poly))<=eps()**2)continue;const bottom=c.height-Math.max(...plate.section.map(p=>p[1])),top=c.height-Math.min(...plate.section.map(p=>p[1]));if(!vertical||Math.min(vertical.top,top)-Math.max(vertical.bottom,bottom)>eps()){hit=true;break;}}
   }
   if(hit)out.push({kind:'ceiling',id:f.id,ceilingId:c.id,name:f.name,pending:!vertical,at:[f.cx,f.cy],message:`${f.name}与${c.name}${vertical?'实体相交':'投影重叠，家具高度未知，待核对'}`});
  }
@@ -181,6 +232,8 @@ function checks(plan,bodies){
 function signature(data){return data?data.items.map(({name,...geometry})=>{const g=clone(geometry);if(g.section)delete g.section.template;return g;}):null;}
 function shift(work,offset){if(!work.ceilings)return;for(const c of work.ceilings.items){if(c.kind==='profile'){for(const p of route(c))for(const k of ['a','b'])p[k]=p[k].map(v=>v+offset);if(!c.path.segments){c.path.a=c.path.a.map(v=>v+offset);c.path.b=c.path.b.map(v=>v+offset);}}else for(const k of ['polygon','basePolygon'])if(c[k])c[k]=c[k].map(p=>p.map(v=>v+offset));}}
 function requiresV6(work){return !!work?.ceilings?.items.some(c=>c.kind==='profile'&&(c.path?.segments||c.section?.light?.cornerSetback!==undefined)||c.attachment?.legs);}
-const api={rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6};
+function requiresV7(work){return !!work?.ceilings?.items.some(c=>c.section?.light?.corner!==undefined);}
+function requiresV8(work){return !!work?.ceilings?.items.some(c=>c.ends!==undefined);}
+const api={rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

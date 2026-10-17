@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-17",
+  "feature": "低灯槽开放端板、灯带内侧退让及收小转角",
+  "status": "passed",
+  "tests": [
+    {
+      "command": "node tests/test-ceiling-end-caps.cjs",
+      "status": "passed",
+      "coverage": [
+        "真实槽口识别、上口保持开放",
+        "板宽高随槽宽、槽底、挡边和高度更新",
+        "起末端板厚与退让独立、0退让允许接触",
+        "关闭保留尺寸、旧记录保持开放",
+        "无效数值和短边／缺失槽口的待核对",
+        "转角样段虚拟截断点不造假端板，大退让进入样段时保留真实路径",
+        "实体核对读取端板，未知家具高度待核对",
+        "32组生产几何：8种墙角、37度旋转平移、正反轮廓",
+        "端板正体积、标高与射线，灯带不穿端板",
+        "R8与宽厚自适应收小半径，不强制改旧值",
+        "v8当前／命名方案、复制、移动及重复恢复"
+      ]
+    },
+    {
+      "command": "node tests/test-ceiling-storage.cjs",
+      "status": "passed",
+      "coverage": [
+        "v5/v6/v7/v8实际隔离仓库读写",
+        "恢复副本",
+        "客户端迁移"
+      ]
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceiling-end-caps ceiling-continuous-light ceiling-corners ceilings portable-smoke",
+      "status": "passed",
+      "results": "output/playwright/verification-7xO7Pt/results.json"
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceiling-end-caps",
+      "status": "passed",
+      "results": "output/playwright/verification-5mnKni/results.json",
+      "note": "大退让进入样段时保持真实路径及严格端板字段校验后的最终复验",
+      "coverage": [
+        "HTTP和断网file://",
+        "已有R80不自动覆盖，按钮明确采用R8",
+        "两端独立开启、修改、关闭保留、重新启用",
+        "灯带距内侧与距路径端合计一致",
+        "带未确认无效输入时切收口保持勾选及原值",
+        "修改截面、标高及灯带自由位置，平顶固定关系保留",
+        "板件过厚与退让占满路径时的有效部分和提示",
+        "生产起端／末端及转角近景像素",
+        "一次保存／撤销／重做及取消",
+        "v8独立缓存与旧v7缓存字节保留",
+        "刷新、实际下载再导入、主场景及390px无横向溢出",
+        "页面无脚本错误"
+      ]
+    },
+    {
+      "command": "node scripts/check.cjs",
+      "status": "passed",
+      "log": "output/ceiling-end-caps-check-20261017.log",
+      "regressionSuites": 185,
+      "builtInPlans": 12,
+      "previewPages": 1857
+    }
+  ],
+  "visualReview": {
+    "status": "passed-with-fixes",
+    "reviewed": [
+      "R8与旧R80转角对比",
+      "起端内侧与灯带间隙",
+      "末端内侧与灯带间隙",
+      "修改截面后的板件与灯带",
+      "桌面与390px控件"
+    ],
+    "fixes": [
+      "缩小新圆弧初值并提供已有转角收小按钮",
+      "端板近景观察真实端点，样段不增添假端板",
+      "大退让进入转角样段时保留完整路径，防止预览误造灯带起点"
+    ],
+    "images": [
+      "docs/validation/ceiling-compact-corner-20261017.png",
+      "docs/validation/ceiling-end-start-20261017.png",
+      "docs/validation/ceiling-end-finish-20261017.png",
+      "docs/validation/ceiling-end-editor-20261017.png",
+      "docs/validation/ceiling-end-mobile-20261017.png"
+    ]
+  },
+  "example": "tests/fixtures/ceiling-end-caps.furnish.json",
+  "dataSafety": "测试写入全部在隔离副本／临时目录执行，没有向真实工作区写入端板或验证对象；保留既有未提交修改。",
+  "notRun": [
+    "全量浏览器用例",
+    "真实触屏硬件",
+    "用户实际复杂户型人工设计验收",
+    "真实材料、灯带弯曲能力与施工验收"
+  ],
+  "limitations": [
+    "端板只支持可唯一识别的水平槽底与竖向两侧挡边，多槽口／斜槽底不猜测生成",
+    "实体由相接板件组成，未做通用布尔合并",
+    "圆弧仍限内侧90度，两段共用截面",
+    "自由灯带位置不自动贴合新槽底；坐标保留并重新核对",
+    "未应用草稿关闭／刷新恢复仍未实现"
+  ],
+  "completed": true,
+  "readOnlyWorkspace": {
+    "workSlots": 9,
+    "bathroomRegions": 13,
+    "candidateCorners": 54,
+    "validProfiles": 53,
+    "pairedCaps": 53,
+    "generatedCompactLights": 53,
+    "guardedProfiles": 1,
+    "pendingCaps": 0,
+    "errors": [],
+    "noFileWrites": true,
+    "sourceStableDuringRead": true,
+    "scope": "只读批量验证默认低灯槽、两端板与R8灯带几何；不替代真实户型人工设计与施工验收"
+  }
+}

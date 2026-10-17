@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-17",
+  "feature": "L形灯带连续绕角、槽腔相交与恢复",
+  "status": "passed",
+  "tests": [
+    {
+      "command": "node tests/test-ceiling-continuous-light.cjs",
+      "status": "passed",
+      "coverage": [
+        "旧分段缺省及显式模式",
+        "圆弧真实宽厚包络与接触／穿入边界",
+        "截面修改坐标与半径保留",
+        "槽底变化碰撞及独立承托提示",
+        "0.1 mm内缘半径边界、无效数值及路径长度",
+        "64组生产模型：8种角、37°旋转平移及4种截面朝向",
+        "单一闭合实体、法线绕序、无内部端盖",
+        "解析离散体积、0.05 mm弦高误差、真实挡板与灯带射线",
+        "高度联动、冲突材质及低墙裁切",
+        "v7当前／命名方案、复制、重复恢复及核对指纹"
+      ]
+    },
+    {
+      "command": "node tests/test-ceiling-storage.cjs",
+      "status": "passed",
+      "coverage": [
+        "v5/v6/v7隔离真实仓库读写",
+        "恢复副本",
+        "缓存迁移"
+      ]
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceiling-continuous-light ceiling-corners ceilings portable-smoke",
+      "status": "passed",
+      "results": "output/playwright/verification-kxg9Y6/results.json"
+    },
+    {
+      "command": "node scripts/verify-browser.cjs ceiling-continuous-light",
+      "status": "passed",
+      "results": "output/playwright/verification-cwUniB/results.json",
+      "note": "冲突材质、邻近提示及控件样式修正后的最终源码复验",
+      "coverage": [
+        "HTTP及断网file://",
+        "旧分段切连续",
+        "单一连续平面轨迹与生产模型近景像素",
+        "模式切换时保留无效手输",
+        "半径、内缘和直段长度边界",
+        "仅弧段碰挡板及加宽后清除",
+        "槽底／高度修改、平顶两边联动",
+        "橙红标记和邻近提示同步",
+        "保存／重新打开待核对后撤销",
+        "一次撤销重做整个会话及反复切换模式恢复",
+        "取消／刷新／真实项目下载再导入",
+        "独立v7缓存及原v6缓存字节保持",
+        "主场景、390px无横向溢出、页面无脚本错误"
+      ]
+    },
+    {
+      "command": "node scripts/check.cjs",
+      "status": "passed",
+      "log": "output/ceiling-continuous-light-check-20261017.log",
+      "regressionSuites": 184,
+      "builtInPlans": 12,
+      "previewPages": 1809
+    }
+  ],
+  "visualReview": {
+    "status": "passed-with-fixes",
+    "reviewed": [
+      "R20转角近景",
+      "R80碰挡板时的遮挡",
+      "加宽后完整圆弧",
+      "桌面编辑器",
+      "390px模式与数值字段"
+    ],
+    "fixes": [
+      "加入实际生产模型的转角近景",
+      "相交灯带用派生橙红色标记并在预览旁解释",
+      "模式字段进入标准表单，匹配桌面及窄屏输入高度"
+    ],
+    "images": [
+      "docs/validation/ceiling-light-default-20261017.png",
+      "docs/validation/ceiling-light-conflict-20261017.png",
+      "docs/validation/ceiling-light-continuous-20261017.png",
+      "docs/validation/ceiling-light-editor-20261017.png",
+      "docs/validation/ceiling-light-mobile-20261017.png"
+    ]
+  },
+  "example": "tests/fixtures/ceiling-continuous-light.furnish.json",
+  "dataSafety": "所有界面写入及存储测试在隔离副本执行，真实projects/workspace.furnish.json未写入验证数据。",
+  "notRun": [
+    "全量浏览器用例",
+    "真实触屏硬件",
+    "用户实际复杂户型的人工设计验收",
+    "真实灯带弯曲能力及施工验收"
+  ],
+  "limitations": [
+    "共用截面的两条内侧90°直墙；未实现斜角、凹角和三段以上路径",
+    "灯带位置使用自由截面坐标，修改截面不自动挪动或绑定承托面",
+    "圆弧半径20为设计初值，不是厂家最小弯曲半径",
+    "承托核对要求基准面被同一截面直边完整覆盖，自绘多段共线边可能保留待核对",
+    "不包含额外端板、连接器、驱动电源或照度计算",
+    "未应用草稿关闭／刷新恢复仍未实现"
+  ],
+  "completed": true,
+  "readOnlyWorkspace": {
+    "workSlots": 9,
+    "bathroomRegions": 13,
+    "eligibleCorners": 54,
+    "validBodies": 53,
+    "arcGenerated": 53,
+    "arcPending": 0,
+    "shortArmGuards": 1,
+    "otherErrors": [],
+    "noFileWrites": true,
+    "scope": "仅批量检验默认截面与R20连续灯带几何，未执行真实户型人工设计验收"
+  }
+}

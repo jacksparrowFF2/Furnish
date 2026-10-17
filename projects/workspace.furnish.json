@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 3,
+  "version": 4,
   "workspace": {
     "customPlans": [
       {
@@ -4889,7 +4889,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 3,
+    "v": 4,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -7089,6 +7089,8 @@
               "rawZ": 0
             },
             "area_fmv3p2ig914": {
+              "baseThickness": 40,
+              "drop": 5,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7100,7 +7102,8 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qajd93": {
               "layout": {
@@ -7145,6 +7148,8 @@
               "rawZ": 0
             },
             "area_fmv3qcck717": {
+              "baseThickness": 40,
+              "drop": 5,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7156,7 +7161,8 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qdfiz23": {
               "drop": 5,
@@ -7171,7 +7177,9 @@
                 "width": 800
               },
               "mode": "reference",
-              "rawZ": 0
+              "rawZ": 0,
+              "reference": "area_fmv3qcck717",
+              "tileThickness": 10
             }
           },
           "version": 1
@@ -8587,7 +8595,626 @@
           "lamps": false,
           "night": false
         },
-        "spaceThreshold": 800
+        "spaceThreshold": 800,
+        "wallTiling": {
+          "surfaces": [
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.1384083044982699,
+                0.8673587081891581
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_25"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.7611630321910696
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_26"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.3821656050955414,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_27"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.48344370860927155,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_28"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.43795620437956206,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_31"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.028454810495626797
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_32"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.6712328767123288
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_33"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_40"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_43"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.639511201629328,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_8"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.3485967503692771,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_9"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.9833333333333333,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_10"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.0846262341325811,
+                0.806064880112835
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_11"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.6136363636363636
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_12"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_12"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.7017543859649122
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_13"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_37"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_7"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.880346232179226
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_8"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_9"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_10"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.19110854503464203
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_18"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.3749082905355833,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_20"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.5777777777777777,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_21"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.43223443223443225,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_22"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.3933463796477495,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_22"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.4772727272727273,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_23"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.6716417910447762,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_23"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0.07969303423848882,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_35"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                0.17543859649122806
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_36"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_38"
+            },
+            {
+              "enabled": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 0,
+                "reference": "survey",
+                "startHeight": 50,
+                "width": 600
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_46"
+            }
+          ],
+          "version": 1
+        }
       },
       "p1": {
         "demolished": [],
