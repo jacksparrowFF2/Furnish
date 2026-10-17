@@ -7218,15 +7218,9 @@
                 {
                   "door": "left",
                   "doorAngle": 90,
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "drawerColumns": 1,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7239,13 +7233,7 @@
                   "doorAngle": 90,
                   "doorOpen": false,
                   "drawerColumns": 2,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7256,15 +7244,9 @@
                 {
                   "door": "double",
                   "doorAngle": 90,
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "drawerColumns": 2,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7275,15 +7257,9 @@
                 {
                   "door": "double",
                   "doorAngle": 90,
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "drawerColumns": 2,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7298,13 +7274,13 @@
               "version": 1
             },
             "color": "#efe6d8",
-            "cx": 3388,
+            "cx": 1155,
             "cy": 8034,
             "d": 630,
             "h": 2450,
             "id": "fmv3w4m2a4",
             "name": "衣柜 2.4m",
-            "rot": 90,
+            "rot": 270,
             "type": "wardrobe",
             "w": 3094
           },
@@ -7344,8 +7320,8 @@
           },
           {
             "color": "#f5f6f5",
-            "cx": 6955,
-            "cy": 2581,
+            "cx": 7876,
+            "cy": 2512,
             "d": 450,
             "h": 450,
             "id": "fmv3wd35z9",
@@ -7653,30 +7629,6 @@
             "w": 500
           },
           {
-            "color": "#e6ebee",
-            "cx": 7030,
-            "cy": 1804,
-            "d": 600,
-            "id": "fmv58wvpj1",
-            "name": "洗衣机",
-            "rot": 270,
-            "type": "washer",
-            "w": 600
-          },
-          {
-            "color": "#e6ebee",
-            "cx": 7030,
-            "cy": 1804,
-            "d": 600,
-            "id": "fmv58xaut2",
-            "mountHeight": 869,
-            "name": "烘干机",
-            "rot": 270,
-            "stackHeight": 19,
-            "type": "dryer",
-            "w": 600
-          },
-          {
             "color": "#f1f0ed",
             "cx": 7054,
             "cy": 7980,
@@ -7889,13 +7841,14 @@
           },
           {
             "color": "#e2cfb4",
-            "cx": 1140,
-            "cy": 8269,
+            "cx": 3403,
+            "cy": 8187,
             "d": 600,
             "flip": true,
+            "groupId": "fmvc885px1",
             "id": "fmv5c10yi4",
             "name": "书桌",
-            "rot": 270,
+            "rot": 90,
             "type": "desk",
             "w": 1400
           },
@@ -7917,13 +7870,14 @@
           },
           {
             "color": "#4a4f55",
-            "cx": 1750,
-            "cy": 8208,
+            "cx": 2793,
+            "cy": 8248,
             "d": 620,
             "flip": true,
+            "groupId": "fmvc885px1",
             "id": "fmv5dvzo81",
             "name": "办公椅",
-            "rot": 90,
+            "rot": 270,
             "type": "officechair",
             "w": 620
           },
@@ -8455,6 +8409,174 @@
             "rot": 0,
             "type": "dishwasher_mijia_countertop",
             "w": 550
+          },
+          {
+            "color": "#f3f1ec",
+            "cx": 7045,
+            "cy": 1472,
+            "d": 630,
+            "flip": true,
+            "groupId": "fmvcerwa548",
+            "id": "fmvcerwa547",
+            "kitchen": {
+              "baseHeight": 900,
+              "depth": 630,
+              "laundry": {
+                "countertop": true,
+                "notch": {
+                  "depth": 100,
+                  "side": "left",
+                  "width": 100
+                }
+              },
+              "modules": [
+                {
+                  "role": "sink",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "role": "empty",
+                  "run": 0,
+                  "width": 640
+                }
+              ],
+              "shape": "straight",
+              "thickness": 20,
+              "version": 1
+            },
+            "name": "洗衣机柜 · 水槽与设备空位",
+            "rot": 270,
+            "type": "counter",
+            "w": 1240
+          },
+          {
+            "color": "#e6ebee",
+            "cx": 7060,
+            "cy": 1772,
+            "d": 600,
+            "flip": true,
+            "groupId": "fmvcerwa548",
+            "id": "fmv58wvpj1",
+            "name": "洗衣机",
+            "rot": 270,
+            "type": "washer",
+            "w": 600
+          },
+          {
+            "color": "#ebe9e3",
+            "counterElevation": 920,
+            "counterLink": {
+              "hostId": "fmvcerwa547",
+              "module": 0
+            },
+            "cx": 7045,
+            "cy": 1152,
+            "d": 500,
+            "flip": true,
+            "groupId": "fmvcerwa548",
+            "id": "fmvcerwa750",
+            "name": "阳台定制水槽（可设异形缺角）",
+            "rot": 270,
+            "sinkNotch": {
+              "depth": 100,
+              "side": "left",
+              "width": 100
+            },
+            "type": "ksink",
+            "w": 560
+          },
+          {
+            "cabinet": {
+              "autoDoors": false,
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "handle": "none",
+                  "shelves": []
+                },
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "handle": "none",
+                  "shelves": []
+                },
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "handle": "none",
+                  "shelves": []
+                },
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "handle": "none",
+                  "shelves": []
+                }
+              ],
+              "doorOverlay": "full",
+              "plinth": 0,
+              "template": "wall",
+              "thickness": 18,
+              "version": 1
+            },
+            "color": "#f3f1ec",
+            "cx": 7005,
+            "cy": 1472,
+            "d": 350,
+            "flip": true,
+            "groupId": "fmvcerwa548",
+            "h": 600,
+            "id": "fmvcerwa751",
+            "mountHeight": 1800,
+            "name": "阳台封闭吊柜",
+            "rot": 270,
+            "type": "kitchenwall",
+            "w": 1240
+          },
+          {
+            "cabinet": {
+              "autoDoors": false,
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "handle": "none",
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "handle": "none",
+                  "shelves": []
+                }
+              ],
+              "doorOverlay": "full",
+              "plinth": 0,
+              "template": "wall",
+              "thickness": 18,
+              "version": 1
+            },
+            "color": "#bc936b",
+            "cx": 6990,
+            "cy": 1472,
+            "d": 320,
+            "flip": true,
+            "groupId": "fmvcerwa548",
+            "h": 200,
+            "id": "fmvcerwa852",
+            "mountHeight": 1600,
+            "name": "阳台双开放格",
+            "rot": 270,
+            "type": "kitchenwall",
+            "w": 1240
           }
         ],
         "measures": [],
@@ -8582,7 +8704,7 @@
         "scene3d": {
           "cut": 2.8,
           "furn": true,
-          "hour": 11,
+          "hour": 14,
           "labels": false,
           "lamps": false,
           "night": false
