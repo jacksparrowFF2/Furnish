@@ -65,7 +65,7 @@ function resetItemSel(){
   const items=movable(selItems());if(!items.length)return;
   let values;try{values=items.map(f=>{const it=libItem(f);return it?{f,value:{...FurnishDesign.resizeFurniture({...f,cabinet:undefined},{w:it[2],d:it[3],...(FurnishCabinet.supported(f)?{h:it[6]||FurnishCabinet.height({...f,h:undefined})}:it[6]!==undefined?{h:it[6]}:{})}),color:it[4],...(FurnishCabinet.supported(f)?{cabinet:it[9]?FurnishCabinet.preset(it[9]).cabinet:FurnishCabinet.config({...f,cabinet:undefined,w:it[2],d:it[3],h:it[6]})}:{}),...(f.type==='curtain'?{curtainStyle:it[8]||'double'}:{})}}:null;}).filter(Boolean);}catch(e){return toast(e.message);}
   if(!values.length)return toast(tr('找不到明确的原始规格，请在家具资料中手动编辑。','Original specifications unavailable; edit the product manually.'));
-  mutate(()=>values.forEach(({f,value})=>{Object.assign(f,value);delete f.flip;delete f.price;}));
+  mutate(()=>values.forEach(({f,value})=>{Object.assign(f,value);const spec=FurnishKitchen.catalogSpec(libItem(f));if(Object.hasOwn(spec,'flip'))f.flip=spec.flip;else delete f.flip;delete f.price;}));
   toast(tr('已恢复默认尺寸、颜色与参考价格'+(values.length<items.length?'；来源不明确的家具已跳过。':''),'Default specifications restored; unresolved sources skipped.'));
 }
 // 对齐 / 分布 / 等尺寸（多选）：以外包盒为准，锁定的家具作为参照不动
@@ -178,9 +178,13 @@ function pushOut(f){
 function addItem(it, x, y){
   if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
+  if(FurnishKitchen.isLaundryAreaItem(it)){
+   try{if(state.furniture.length+5>2000)throw Error('家具数量不足以放入完整洗衣区（5 件）');const items=FurnishKitchen.createLaundryArea(f,uid,uid(),it[10].endsWith('left')?'left':'right'),root=items[0],before=[root.cx,root.cy];pushOut(root);for(const member of items.slice(1)){member.cx+=root.cx-before[0];member.cy+=root.cy-before[1];}mutate(()=>state.furniture.push(...items));selectIds(items.map(f=>f.id),root.id);pushRecent(it);toast('已添加完整洗衣区：吊柜、开放格、水槽、地柜与洗衣机',{label:tr('撤销','Undo'),fn:undo});}catch(e){toast(e.message);}return;
+  }
   if(h!==undefined)f.h=h;
   Object.assign(f,FurnishDesign.products().initial(f));
   if(FurnishCabinet.supported(f)&&!f.kitchen&&it[9])Object.assign(f,FurnishCabinet.preset(it[9]));
+  Object.assign(f,FurnishKitchen.catalogSpec(it));
   if(type==='curtain')f.curtainStyle=it[8]||'double';
   if (type === 'custom' || type === 'customround'){ f.price = price; f.h = h; }   // 自定义家具删除定义后仍保留单价与高度
   if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}

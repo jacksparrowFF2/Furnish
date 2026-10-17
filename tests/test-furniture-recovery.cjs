@@ -28,7 +28,7 @@ const source=fs.readFileSync(require.resolve('../src/ui/canvas-interactions.js')
 for(const rot of [0,90,37])for(const flip of [false,true]){
  const f={...structuredClone(host),rot,flip,resizeAnchor:'right'},events={},el={textContent:'',innerHTML:'',addEventListener(){}};
  const ctx=vm.createContext({TAP:4,state:{furniture:[f]},ui:{layers:{wallSnap:false}},view:{s:1},FurnishDesign:D,FurnishSnapping:S,document:{addEventListener(){},querySelector:()=>null},svg:{addEventListener:(name,fn)=>events[name]=fn},$:()=>el,getF:()=>f,toMM:e=>({x:e.clientX,y:e.clientY}),clearTimeout(){},renderFurn(){},renderSel(){},syncFurnOrder(){},furnT:()=>''});
- vm.runInContext(source,ctx);ctx.toMM=e=>({x:e.clientX,y:e.clientY});vm.runInContext('initializeCanvasInteractions()',ctx);ctx.original=structuredClone(f);
+ vm.runInContext(source,ctx);ctx.toMM=e=>({x:e.clientX,y:e.clientY});require('./helpers/pointer-frames.cjs')(ctx);vm.runInContext('initializeCanvasInteractions()',ctx);ctx.original=structuredClone(f);
  vm.runInContext("drag={kind:'size',id:'k',original,startPoint:{x:0,y:0},sx:0,sy:0,axis:'both'}",ctx);
  const angle=rot*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),dx=300*c-100*s,dy=300*s+100*c;
  events.pointermove({pointerId:1,clientX:dx,clientY:dy,target:{closest:()=>null}});K.validate(f);assert.deepEqual([f.w,f.d],[2100,700]);

@@ -6,7 +6,58 @@ const isWall=f=>f?.type==='kitchenwall';
 const bodyHeight=f=>f.kitchen.baseHeight;
 const plinth=f=>isWall(f)?0:100;
 const baseElevation=f=>isWall(f)?(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null)).value(f,'mountHeight'):0;
-const moduleRoles=f=>isWall(f)?{door:'门柜',drawer:'抽屉柜',empty:'预留空位',custom:'保留内部结构'}:roles;
+const moduleRoles=f=>isWall(f)?{door:'门柜',drawer:'抽屉柜',empty:'预留空位',custom:'保留内部结构'}:isLaundry(f)?{...roles,open:'开放格'}:roles;
+const isLaundry=f=>f?.type==='counter'&&!!f.kitchen?.laundry;
+const hasCountertop=f=>!isWall(f)&&f.kitchen?.laundry?.countertop!==false;
+const laundryRules=()=>sinkProducts().definition('counter').laundry;
+function laundryPreset(){const r=laundryRules();return {version:1,shape:'straight',depth:r.depth,baseHeight:r.baseHeight,thickness:r.thickness,laundry:{countertop:true},modules:[{run:0,width:r.width-r.bayWidth,role:'sink'},{run:0,width:r.bayWidth,role:'empty'}]};}
+function catalogSpec(item){return ['laundry','laundry-left'].includes(item[10])?{kitchen:laundryPreset(),flip:item[10]==='laundry-left'}:{};}
+const isLaundryAreaItem=item=>['laundry-area-left','laundry-area-right'].includes(item?.[10]);
+function createLaundryArea(source,makeId,groupId,side='left'){
+ if(typeof makeId!=='function'||!['left','right'].includes(side)||![source.cx,source.cy].every(Number.isFinite))throw Error('洗衣区模板输入无效');sinkProducts().validateField({},'groupId',groupId);
+ const r=laundryRules(),a=r.area,C=cabinet(),base=configure({...source,type:'counter',flip:false,name:'洗衣机柜 · 水槽与设备空位'},{...laundryPreset(),laundry:{countertop:true,notch:{side:'left',width:a.notch,depth:a.notch}}});
+ delete base.flip;
+ const washer=centerLaundryInBay(base,{id:makeId(),name:'洗衣机',type:'washer',cx:base.cx,cy:base.cy,w:600,d:600,h:sinkProducts().height({type:'washer'}),...sinkProducts().initial({type:'washer'}),rot:base.rot||0,color:'#f3f4f1'},1);
+ const sink=attach({id:makeId(),name:'阳台定制水槽（可设异形缺角）',type:'ksink',cx:base.cx,cy:base.cy,w:a.sinkWidth,d:a.sinkDepth,rot:base.rot||0,color:'#ebe9e3',sinkNotch:{side:'left',width:a.notch,depth:a.notch}},base,0);
+ const wall=(name,depth,height,bottom,count,door,color)=>{const [cx,cy]=world(base,0,-base.d/2+a.serviceGap+depth/2);const f={id:makeId(),type:'kitchenwall',name,w:base.w,d:depth,h:height,mountHeight:bottom,cx,cy,rot:base.rot||0,color,cabinet:{...C.preset('wall').cabinet,plinth:0,autoDoors:false,doorOverlay:'full',columns:Array.from({length:count},()=>({door,doorOpen:false,handle:'none',shelves:[],drawers:[]}))}};C.validate(f);return f;};
+ let items=[base,washer,sink,wall('阳台封闭吊柜',a.upperDepth,a.upperHeight,a.upperBottom,4,'left','#f3f1ec'),wall('阳台双开放格',a.openDepth,a.openHeight,a.openBottom,2,'none','#bc936b')];
+ items.forEach(f=>f.groupId=groupId);normalize(items);if(side==='left')items=switchLaundrySides(items,base.id);items.forEach(f=>sinkProducts().validate(f));return items;
+}
+function setLaundryDoors(list,id,open){
+ if(typeof open!=='boolean')throw Error('柜门开合状态无效');const host=list.find(f=>f.id===id);if(!isLaundry(host))throw Error('请选择洗衣机柜');
+ const C=cabinet(),targets=list.filter(f=>(f.id===id||host.groupId&&f.groupId===host.groupId)&&(f.kitchen||C.supported(f)));
+ if(targets.some(f=>f.locked))throw Error('柜体已锁定，请先解锁');const ids=new Set(targets.map(f=>f.id));
+ return list.map(f=>{if(!ids.has(f.id))return f;let next=clone(f);if(next.kitchen){for(const m of cabinetLayout(next))if(m.role!=='empty'&&m.role!=='drawer'&&moduleDoor(next,m)!=='none')next=toggle(next,m.index,undefined,open);return next;}
+ const c=C.config(next);c.columns.forEach((col,i)=>{if(C.frontDoor(next,i,c)==='none')return;col.doorOpen=open;col.doorAngle=open?C.maxDoorAngle(c,col):0;col.doorLeaves?.forEach(leaf=>{leaf.open=open;leaf.angle=col.doorAngle;});if(col.doorSections)Object.values(col.doorSections).forEach(section=>{section.open=open;section.angle=col.doorAngle;});});next.cabinet=c;return C.validate(next);});
+}
+function laundrySide(f){const bay=isLaundry(f)&&layout(f).find(m=>m.role==='empty');return bay?(bay.x*(f.flip?-1:1)<0?'left':'right'):null;}
+// Reflect the host, attached devices, fitted laundry appliances and explicit group together.
+function switchLaundrySides(list,id){
+ const host=list.find(f=>f.id===id);if(!isLaundry(host))throw Error('请选择洗衣机柜');validate(host);
+ const bays=layout(host).filter(m=>m.role==='empty'),R=sinkProducts();
+ const inBay=f=>{
+  if(!['washer','dryer'].includes(f.type)||f.obj)return false;
+  const bottom=R.value(f,'mountHeight'),h=R.height(f);if(![f.cx,f.cy,f.w,f.d,bottom,h].every(Number.isFinite)||f.w<=0||f.d<=0||h<=0||bottom<0||hasCountertop(host)&&bottom+h>host.kitchen.baseHeight-dropHeight(host)+1e-6)return false;
+  const points=[[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]].map(p=>local(host,...world(f,...p)));
+  return bays.some(b=>points.every(([x,y])=>x>=b.x-b.width/2-1e-6&&x<=b.x+b.width/2+1e-6&&y>=b.y-runDepth(host,b.run)/2-1e-6&&y<=b.y+runDepth(host,b.run)/2+1e-6));
+ };
+ const moving=new Set(list.filter(f=>f.id===id||f.counterLink?.hostId===id||host.groupId&&f.groupId===host.groupId||inBay(f)).map(f=>f.id));
+ if(list.some(f=>moving.has(f.id)&&f.locked))throw Error('柜体或随同切换的设备／组成员已锁定，请先解锁');
+ return list.map(f=>{if(!moving.has(f.id))return f;const next=clone(f),[x,y]=local(host,f.cx,f.cy),[cx,cy]=world(host,-x,y);next.cx=cx;next.cy=cy;next.rot=((2*(host.rot||0)-(f.rot||0))%360+360)%360;if(f.flip)delete next.flip;else next.flip=true;return next;});
+}
+
+function notchedRing(w,d,n){const x=-w/2,y=-d/2;if(!n)return [[x,y],[x+w,y],[x+w,y+d],[x,y+d]];return n.side==='left'?[[x+n.width,y],[x+w,y],[x+w,y+d],[x,y+d],[x,y+n.depth],[x+n.width,y+n.depth]]:[[x,y],[x+w-n.width,y],[x+w-n.width,y+n.depth],[x+w,y+n.depth],[x+w,y+d],[x,y+d]];}
+function laundryCut(f){const n=f.kitchen?.laundry?.notch;if(!n)return [];const x=n.side==='left'?-f.w/2:f.w/2-n.width,y=-f.d/2;return [[x,y],[x+n.width,y],[x+n.width,y+n.depth],[x,y+n.depth]];}
+function centerLaundryInBay(host,device,index){
+ if(host.locked||device.locked)throw Error('请先解锁柜体与设备');
+ if(!isLaundry(host)||!['washer','dryer'].includes(device.type)||device.obj)throw Error('请选择洗衣机柜和洗烘设备');validate(host);
+ const m=layout(host).find(m=>m.index===index&&m.role==='empty');if(!m)throw Error('请选择设备空位');
+ const R=sinkProducts(),h=R.height(device),bottom=R.value(device,'mountHeight');
+ if(![device.w,device.d,h,bottom].every(Number.isFinite)||device.w>m.width||device.d>runDepth(host,m.run)||bottom<0||hasCountertop(host)&&bottom+h>host.kitchen.baseHeight-dropHeight(host))throw Error('洗烘设备超出空位净宽、净深或台面下净高');
+ const [cx,cy]=world(host,m.x,m.y+(runDepth(host,m.run)-device.d)/2),next={...device,cx,cy,rot:host.rot||0,flip:!!host.flip};
+ const cut=laundryCut(host);if(cut.length){const p=local(host,cx,cy),n=host.kitchen.laundry.notch,x=cut[0][0];if(p[0]+device.w/2>x&&p[0]-device.w/2<x+n.width&&p[1]-device.d/2<-host.d/2+n.depth)throw Error('设备与管道缺角相交');}
+ return next;
+}
 const edgeStyles={plain:'单板无下挂',square:'直角下挂',reverse:'反收下挂',bevel:'45°斜切下挂'};
 const cornerSide=f=>f.kitchen.corner??'left';
 const counterDepth=f=>isWall(f)?f.kitchen.depth:f.kitchen.counterDepth??f.kitchen.depth;
@@ -87,7 +138,7 @@ const cornerPartition=(m,side)=>m.cornerPartitions?.[side]??partitionRules().rol
 function validatePartitions(m){const p=m.cornerPartitions;if(p!==undefined&&(!p||Array.isArray(p)||typeof p!=='object'||Object.entries(p).some(([side,keep])=>!partitionRules().sides.includes(side)||typeof keep!=='boolean')))throw Error('转角竖向隔板须按模块左／右侧设置保留或取消');}
 const zones=()=>root.FurnishZoneGeometry||(typeof require==='function'?require('./zone-geometry.js'):null);
 const rectPoly=s=>[[-s.w/2,-s.d/2],[s.w/2,-s.d/2],[s.w/2,s.d/2],[-s.w/2,s.d/2]].map(([x,y])=>[x+s.x,y+s.y]);
-const moduleDoor=(f,m)=>m.role==='drawer'||m.role==='empty'?'none':m.door??'auto';
+const moduleDoor=(f,m)=>m.role==='drawer'||m.role==='empty'||m.role==='open'?'none':m.door??'auto';
 const moduleLeafCount=(f,m)=>{const door=moduleDoor(f,m);return door==='none'?0:door==='auto'?cabinet().autoDoorCount(m.width??m.length):door==='double'?2:1;};
 const moduleLeafState=(f,m,leaf)=>cabinet().doorLeafState(f.kitchen,m,leaf);
 const moduleLeafAngle=(f,m,leaf)=>cabinet().doorLeafAngle(f.kitchen,m,leaf);
@@ -96,6 +147,7 @@ const moduleAngle=(f,m)=>moduleDoor(f,m)==='none'?0:cabinet().doorAngle(f.kitche
 function defaults(f){const n=Math.max(1,Math.ceil(f.w/600));if(isWall(f))return {version:1,shape:'straight',depth:f.d,baseHeight:f.h??700,thickness:0,modules:Array.from({length:n},()=>({run:0,width:f.w/n,role:'door'}))};return {version:1,shape:'straight',depth:f.d,baseHeight:820,thickness:40,modules:Array.from({length:n},()=>({run:0,width:f.w/n,role:'door'}))};}
 function validate(f){
  if(!f.kitchen)return f;const k=f.kitchen,finite=Number.isFinite;
+ if(k.laundry!==undefined){const l=k.laundry,r=laundryRules();if(!isLaundry(f)||k.shape!=='straight'||!l||typeof l!=='object'||Array.isArray(l)||Object.keys(l).some(key=>!['countertop','notch'].includes(key))||l.countertop!==undefined&&typeof l.countertop!=='boolean'||k.endExtensions?.some(e=>e.length))throw Error('洗衣机柜仅支持一字形，台面开关须为布尔值');if(l.notch!==undefined){const n=l.notch;if(!n||Object.keys(n).some(key=>!['side','width','depth'].includes(key))||!['left','right'].includes(n.side)||![n.width,n.depth].every(finite)||n.width<r.notchMin||n.width>f.w-r.notchMin||n.depth<r.notchMin||n.depth>k.depth-r.minRemainingDepth)throw Error('管道后角缺口须保留至少 150 mm 柜深，缺口宽深至少 20 mm');}}
  if(![f.w,f.d].every(v=>finite(v)&&v>0&&v<=20000))throw Error('厨房外包宽深须在 0–20000 mm 内');
  if(k.corner!==undefined&&!['left','right'].includes(k.corner))throw Error('厨房转角须为左转角或右转角');
  if(k.doorOverlay!==undefined&&!['full','half','inset'].includes(k.doorOverlay))throw Error('厨房柜门盖板方式无效');
@@ -277,7 +329,7 @@ function cornerConnections(f,m,blinds=cornerLayout(f)){const a=m.rot*Math.PI/180
 function adjacentOpenings(f,m,blinds=cornerLayout(f),mirrored=false){return cornerConnections(f,m,blinds).map(o=>({...o,side:mirrored?(o.side==='left'?'right':'left'):o.side})).filter(o=>!cornerPartition(m,o.side));}
 function adjacentSides(f,m,blinds=cornerLayout(f)){return adjacentOpenings(f,m,blinds).map(o=>o.side);}
 // Shelf levels are measured above the base's inner floor, as in cabinet-core.
-function moduleShelves(m,h,wall=false){return m.role==='door'?m.shelves??[Math.round((h-(wall?36:140))/2)]:[];}
+function moduleShelves(m,h,wall=false){return m.role==='open'?[Math.round((h-140)/2)]:m.role==='door'?m.shelves??[Math.round((h-(wall?36:140))/2)]:[];}
 function cornerShelves(f,index){return cornerLayout(f)[index]?moduleShelves({role:'door'},f.kitchen.baseHeight,isWall(f)):[];}
 // Two hollow corners in U; the second reflects the first toward the opposite run.
 function cornerBoards(f,blocks=cornerLayout(f)){const t=18,h=f.kitchen.baseHeight,p=plinth(f);return blocks.flatMap((b,i)=>{const sign=i===1?-1:1,back=b.y-sign*b.d/2,sx=cornerSide(f)==='right'?1:-1,side=b.x+sx*(b.w-t)/2,shelves=b.shelves??cornerShelves(f,b.index??i);return [{x:b.x,y:b.y,w:b.w,d:b.d,bottom:p,top:p+t},{x:b.x,y:b.y,w:b.w,d:b.d,bottom:h-t,top:h},{x:b.x,y:back+sign*t/2,w:b.w,d:t,bottom:p+t,top:h-t},{x:side,y:b.y,w:t,d:b.d,bottom:p+t,top:h-t},...shelves.map(level=>({x:b.x-sx*t/2,y:b.y+sign*t/2,w:b.w-t,d:b.d-t,bottom:p+t+level,top:p+2*t+level,shelf:true}))].map(row=>({...row,cornerIndex:b.index??i}));});}
@@ -330,13 +382,13 @@ function outline(f){
  }
  const b=bodyBounds(f),D=counterDepth(f),a=extension(f,0),e=extension(f,1),points=[[0,0],[b.w+a.length,0]];if(a.length)points.push([b.w+a.length,a.depth],[b.w,a.depth]);points.push([b.w,D]);if(f.kitchen.shape==='straight')points.push([0,D]);else {points.push([D,D],[D,b.d]);if(e.length)points.push([e.depth,b.d],[e.depth,b.d+e.length]);points.push([0,b.d+e.length]);}const clean=points.filter((p,i)=>!i||p[0]!==points[i-1][0]||p[1]!==points[i-1][1]).map(([u,v])=>[b.x+(b.right?b.w-u:u),b.y+v]);return b.right?clean.reverse():clean;}
 function frontEdges(f){const points=topGeometry(f).rings.find(r=>zones().signed(r)>0)||outline(f),b=bodyBounds(f),a=extension(f,0),edges=[];for(let i=0;i<points.length;i++){const p=points[i],q=points[(i+1)%points.length],dx=q[0]-p[0],dy=q[1]-p[1],length=Math.hypot(dx,dy);if(!length)continue;const normal=[dy/length,-dx/length],u=b.right?b.x+b.w-p[0]:p[0]-b.x;if(f.kitchen.shape==='U'?(normal[1]>0&&p[1]<=b.y+runCounterDepth(f,0)+.01||normal[1]<0&&p[1]>=b.y+b.d-runCounterDepth(f,2)-.01||normal[0]===(b.right?-1:1)&&(u<runCounterDepth(f,1)+.01||endRuns(f).some(run=>Math.abs(u-runDepth(f,1)-runLength(f,run))<.01&&extension(f,run).length>0))):normal[1]>0||f.kitchen.shape==='L'&&normal[0]===(b.right?-1:1)&&u<counterDepth(f)+.01||a.length&&normal[0]===(b.right?-1:1)&&Math.abs(u-b.w)<.01&&a.depth<counterDepth(f))edges.push({a:p,b:q,normal});}return edges;}
-function edgeParts(f){const k=f.kitchen,h=dropHeight(f);if(!h)return [];const t=Math.min(k.thickness,20),parts=frontEdges(f).map(e=>({x:(e.a[0]+e.b[0])/2-e.normal[0]*t/2,y:(e.a[1]+e.b[1])/2-e.normal[1]*t/2,w:Math.abs(e.b[0]-e.a[0])||t,d:Math.abs(e.b[1]-e.a[1])||t,bottom:k.baseHeight-h,top:k.baseHeight,normal:e.normal}));if(k.shape!=='straight'){const b=bodyBounds(f),D=runCounterDepth(f,1),n=b.right?-1:1;for(const v of (k.shape==='U'?[1,-1]:[1])){const c=[b.x+(b.right?b.w-D:D),v===1?b.y+runCounterDepth(f,0):b.y+b.d-runCounterDepth(f,2)];parts.push({x:c[0]-n*t/2,y:c[1]-v*t/2,w:t,d:t,bottom:k.baseHeight-h,top:k.baseHeight,normal:[n,v]});}}if(edgeStyle(f)!=='reverse')return parts;const lip=Math.min(t,20),height=Math.min(10,h);return parts.flatMap(p=>[{...p,bottom:p.bottom+height},{...p,x:p.x-p.normal[0]*lip/2,y:p.y-p.normal[1]*lip/2,w:p.w+Math.abs(p.normal[0])*lip,d:p.d+Math.abs(p.normal[1])*lip,top:p.bottom+height}]).filter(p=>p.top>p.bottom);}
-function topGeometry(f){const cuts=f.kitchen.obstacleFit?.cuts||[],poly=outline(f);if(!cuts.length)return {poly,rings:[poly],polys:slabs(f).map(rectPoly)};const Z=zones(),pieces=Z.decompose([poly,...cuts],p=>Z.inside(p,poly)&&!cuts.some(c=>Z.inside(p,c)));return Z.outline(pieces);}
+function edgeParts(f){if(!hasCountertop(f))return [];const k=f.kitchen,h=dropHeight(f);if(!h)return [];const t=Math.min(k.thickness,20),parts=frontEdges(f).map(e=>({x:(e.a[0]+e.b[0])/2-e.normal[0]*t/2,y:(e.a[1]+e.b[1])/2-e.normal[1]*t/2,w:Math.abs(e.b[0]-e.a[0])||t,d:Math.abs(e.b[1]-e.a[1])||t,bottom:k.baseHeight-h,top:k.baseHeight,normal:e.normal}));if(k.shape!=='straight'){const b=bodyBounds(f),D=runCounterDepth(f,1),n=b.right?-1:1;for(const v of (k.shape==='U'?[1,-1]:[1])){const c=[b.x+(b.right?b.w-D:D),v===1?b.y+runCounterDepth(f,0):b.y+b.d-runCounterDepth(f,2)];parts.push({x:c[0]-n*t/2,y:c[1]-v*t/2,w:t,d:t,bottom:k.baseHeight-h,top:k.baseHeight,normal:[n,v]});}}if(edgeStyle(f)!=='reverse')return parts;const lip=Math.min(t,20),height=Math.min(10,h);return parts.flatMap(p=>[{...p,bottom:p.bottom+height},{...p,x:p.x-p.normal[0]*lip/2,y:p.y-p.normal[1]*lip/2,w:p.w+Math.abs(p.normal[0])*lip,d:p.d+Math.abs(p.normal[1])*lip,top:p.bottom+height}]).filter(p=>p.top>p.bottom);}
+function topGeometry(f){const cuts=[...(f.kitchen.obstacleFit?.cuts||[]),...(laundryCut(f).length?[laundryCut(f)]:[])],poly=outline(f);if(!cuts.length)return {poly,rings:[poly],polys:slabs(f).map(rectPoly)};const Z=zones(),pieces=Z.decompose([poly,...cuts],p=>Z.inside(p,poly)&&!cuts.some(c=>Z.inside(p,c)));return Z.outline(pieces);}
 function area(f){return zones().area(topGeometry(f).polys)/1e6;}
 function world(f,x,y){x*=f.flip?-1:1;const a=(f.rot||0)*Math.PI/180;return [f.cx+x*Math.cos(a)-y*Math.sin(a),f.cy+x*Math.sin(a)+y*Math.cos(a)];}
 function local(f,x,y){const a=(f.rot||0)*Math.PI/180,dx=x-f.cx,dy=y-f.cy;return [(dx*Math.cos(a)+dy*Math.sin(a))*(f.flip?-1:1),-dx*Math.sin(a)+dy*Math.cos(a)];}
 function footprints(f){if(isWall(f))return [...cabinetLayout(f).filter(m=>m.role!=='empty'),...cornerLayout(f)].map(m=>rectPoly(m).map(p=>world(f,...p)));let pieces=topGeometry(f).polys;if(f.kitchen.obstacleFit?.cuts.length){const Z=zones(),all=[...pieces,...cabinetLayout(f).filter(m=>m.role!=='empty').map(rectPoly),...(f.kitchen.shape!=='straight'?cornerBoards(f).map(rectPoly):[])];pieces=Z.decompose(all,p=>all.some(poly=>Z.inside(p,poly)));}return pieces.map(p=>p.map(([x,y])=>world(f,x,y)));}
-function bodyParts(f){if(isWall(f)){const bottom=baseElevation(f);return [...cabinetLayout(f).filter(m=>m.role!=='empty').map(m=>({p:rectPoly(m).map(p=>world(f,...p)),vertical:{bottom,top:bottom+f.kitchen.baseHeight}})),...cornerBoards(f).map(m=>({p:rectPoly(m).map(p=>world(f,...p)),vertical:{bottom:bottom+m.bottom,top:bottom+m.top}}))];}const k=f.kitchen,poly=s=>[[-s.w/2,-s.d/2],[s.w/2,-s.d/2],[s.w/2,s.d/2],[-s.w/2,s.d/2]].map(([x,y])=>world(f,x+s.x,y+s.y)),lower=cabinetLayout(f).filter(m=>m.role!=='empty');return [...(k.shape!=='straight'?[...cornerBoards(f),...cornerPlinth(f)].map(s=>({p:poly(s),vertical:{bottom:s.bottom,top:s.top}})):[]),...lower.map(s=>({p:poly(s),vertical:{bottom:0,top:k.baseHeight}})),...topGeometry(f).polys.map(p=>({p:p.map(([x,y])=>world(f,x,y)),vertical:{bottom:k.baseHeight,top:k.baseHeight+k.thickness}})),...edgeParts(f).map(s=>({p:poly(s),vertical:{bottom:s.bottom,top:s.top}}))];}
+function bodyParts(f){if(isWall(f)){const bottom=baseElevation(f);return [...cabinetLayout(f).filter(m=>m.role!=='empty').map(m=>({p:rectPoly(m).map(p=>world(f,...p)),vertical:{bottom,top:bottom+f.kitchen.baseHeight}})),...cornerBoards(f).map(m=>({p:rectPoly(m).map(p=>world(f,...p)),vertical:{bottom:bottom+m.bottom,top:bottom+m.top}}))];}const k=f.kitchen,poly=s=>[[-s.w/2,-s.d/2],[s.w/2,-s.d/2],[s.w/2,s.d/2],[-s.w/2,s.d/2]].map(([x,y])=>world(f,x+s.x,y+s.y)),lower=cabinetLayout(f).filter(m=>m.role!=='empty');return [...(k.shape!=='straight'?[...cornerBoards(f),...cornerPlinth(f)].map(s=>({p:poly(s),vertical:{bottom:s.bottom,top:s.top}})):[]),...lower.flatMap(s=>{const cut=laundryCut(f),Z=zones(),ring=rectPoly(s),pieces=cut.length?Z.decompose([ring,cut],p=>Z.inside(p,ring)&&!Z.inside(p,cut)):[ring];return pieces.map(p=>({p:p.map(p=>world(f,...p)),vertical:{bottom:0,top:k.baseHeight}}));}),...(hasCountertop(f)?topGeometry(f).polys:[]).map(p=>({p:p.map(([x,y])=>world(f,x,y)),vertical:{bottom:k.baseHeight,top:k.baseHeight+k.thickness}})),...edgeParts(f).map(s=>({p:poly(s),vertical:{bottom:s.bottom,top:s.top}}))];}
 const sinkProducts=()=>root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
 const arrowSink=f=>sinkProducts().family(f,'arrow-sink');
 const isSink=f=>f.type==='ksink'||arrowSink(f);
@@ -344,11 +396,11 @@ const isDevice=f=>isSink(f)||['stove','stove_fotile_th36b'].includes(f.type);
 const sinkMode=f=>{const R=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);return R.value(f,'sinkInstall');};
 const cutout=f=>arrowSink(f)?sinkMode(f)==='under'?{w:f.w-40,d:f.d*411/450,r:20*f.d/450}:{w:f.w-20,d:f.d*430/450,r:15*f.d/450}:sinkProducts().hobCutout(f)??{w:f.w-30,d:f.d-30};
 // Rounded openings share their transforms with the production countertop.
-function openingRing(f,spec=cutout(f)){const {w,d}=spec,r=Math.max(0,Math.min(spec.r||0,w/2,d/2)),p=[];for(const [x,y,start] of [[w/2-r,d/2-r,0],[-w/2+r,d/2-r,90],[-w/2+r,-d/2+r,180],[w/2-r,-d/2+r,270]])for(let j=0;j<=8;j++){const a=(start+j*90/8)*Math.PI/180;p.push([x+r*Math.cos(a),y+r*Math.sin(a)]);}return p;}
-function surfaceGeometry(host){const poly=[[-host.w/2,-host.d/2],[host.w/2,-host.d/2],[host.w/2,host.d/2],[-host.w/2,host.d/2]];return host.kitchen?topGeometry(host):{poly,polys:[poly],rings:[poly]};}
+function openingRing(f,spec=cutout(f)){if(f.sinkNotch){const n=f.sinkNotch;return notchedRing(spec.w,spec.d,{...n,width:n.width,depth:n.depth});}const {w,d}=spec,r=Math.max(0,Math.min(spec.r||0,w/2,d/2)),p=[];for(const [x,y,start] of [[w/2-r,d/2-r,0],[-w/2+r,d/2-r,90],[-w/2+r,-d/2+r,180],[w/2-r,-d/2+r,270]])for(let j=0;j<=8;j++){const a=(start+j*90/8)*Math.PI/180;p.push([x+r*Math.cos(a),y+r*Math.sin(a)]);}return p;}
+function surfaceGeometry(host){if(host.kitchen&&!hasCountertop(host))return {poly:[],polys:[],rings:[]};const poly=[[-host.w/2,-host.d/2],[host.w/2,-host.d/2],[host.w/2,host.d/2],[-host.w/2,host.d/2]];return host.kitchen?topGeometry(host):{poly,polys:[poly],rings:[poly]};}
 function onSurface(f,host){
  if(host.type!=='counter'||host.obj||host.id===f.id)return false;
- try{if(host.kitchen)validate(host);const Z=zones(),surface=surfaceGeometry(host),rect=[[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]].map(p=>local(host,...world(f,...p))),pieces=Z.decompose([rect,...surface.polys],p=>Z.inside(p,rect)&&!surface.polys.some(poly=>Z.inside(p,poly)));return Z.area(pieces)<.01;}catch{return false;}
+ try{if(host.kitchen)validate(host);const Z=zones(),surface=surfaceGeometry(host),rect=notchedRing(f.w,f.d,f.sinkNotch).map(p=>local(host,...world(f,...p))),pieces=Z.decompose([rect,...surface.polys],p=>Z.inside(p,rect)&&!surface.polys.some(poly=>Z.inside(p,poly)));return Z.area(pieces)<.01;}catch{return false;}
 }
 function support(f,list){const hosts=list.filter(h=>onSurface(f,h));return hosts.find(h=>h.id===f.counterLink?.hostId)||hosts[0]||null;}
 // A measuring cell is a module's strip of the actual top, not the full run.
@@ -371,7 +423,7 @@ function ringInside(point,ring){return zones().inside(point,ring);}
 function deviceSignature(host,list){return deviceOpenings(host,list).map(({device:f,ring})=>[f.id,f.type,f.w,f.d,f.h,f.sinkInstall,ring]);}
 // Nominal opening within the supplied adjustable range; resizing is a layout approximation.
 function validateLink(f){const l=f.counterLink;if(l===undefined)return;if(!isDevice(f)||!l||typeof l!=='object'||typeof l.hostId!=='string'||!l.hostId||l.hostId.length>200||!Number.isInteger(l.module)||l.module<0||l.module>47)throw Error('水槽／灶具的台面关联无效');}
-function fit(f,host,index){const m=layout(host)[index],role=isSink(f)?'sink':'hob';if(!m||m.role!==role)throw Error('请选择对应的水槽柜或灶台柜');const angle=m.rot,depth=runDepth(host,m.run);if(f.w>m.width-40||f.d>depth-40)throw Error('设备尺寸须在模块和柜深内保留模型边距 20 mm');return {m,angle};}
+function fit(f,host,index){const m=layout(host)[index],role=isSink(f)?'sink':'hob';if(!m||m.role!==role)throw Error('请选择对应的水槽柜或灶台柜');const angle=m.rot,depth=runDepth(host,m.run);if(f.w>m.width-40||f.d>depth-40)throw Error('设备尺寸须在模块和柜深内保留模型边距 20 mm');if(isLaundry(host)){if(!hasCountertop(host))throw Error('请先启用台面');const [cx,cy]=world(host,m.x,m.y);if(!onSurface({...f,cx,cy,rot:host.rot||0,flip:!!host.flip},host))throw Error('水槽与管道缺角相交，请调整尺寸或独立定位');}return {m,angle};}
 function attach(f,host,index){if(f.locked||host.locked)throw Error('请先解锁设备与厨房');fit(f,host,index);return {...f,counterLink:{hostId:host.id,module:index}};}
 function normalize(list,before=[]){
  for(const f of list){if(!f.counterLink)continue;const host=list.find(h=>h.id===f.counterLink.hostId&&h.type==='counter'&&h.kitchen&&!h.obj);if(!host){delete f.counterLink;continue;}
@@ -397,7 +449,7 @@ function kitchenModuleConfig(c,m,h,drop=0,k={},wall=false){
  const r=drawerRules(wall?{type:'kitchenwall'}:undefined);
  c.template='kitchen-base';if(m.backPanel!==undefined)c.backPanel=m.backPanel;c.plinth=r.plinth;c.autoDoors=false;if(m.door===undefined)c.autoFrontWidth=m.width;else delete c.autoFrontWidth;if(k.doorMaxAngle!==undefined)c.doorMaxAngle=k.doorMaxAngle;if(drop)c.frontTop=h-drop;else delete c.frontTop;
  const min=r.styles?.[drawerStyle(m)]?.minHeights;if(min&&!m.drawerHeights)m={...m,drawerHeights:[h-drop-r.plinth-min[1]-min[2],min[1],min[2]]};
- const front=h-drop,drawer=Math.max(r.legacyMin,(front-r.legacyOffset)/r.defaultCount),door=m.role==='drawer'||m.role==='empty'?'none':m.door??'left';let drawers=[];
+ const front=h-drop,drawer=Math.max(r.legacyMin,(front-r.legacyOffset)/r.defaultCount),door=m.role==='drawer'||m.role==='empty'||m.role==='open'?'none':m.door??'left';let drawers=[];
  if(m.role==='drawer'){
   drawers=m.drawerHeights?m.drawerHeights.map((height,i,values)=>({height:height-c.thickness*((i===0?1:0)+(i===values.length-1?1:0)),open:!!m.drawerOpen?.[i]})):Array.from({length:r.defaultCount},(_,i)=>({height:drawer,open:!!m.drawerOpen?.[i]}));
   // Absorb accepted sub-millimetre sum tolerance in the top box, never in the saved tiers.
@@ -449,6 +501,6 @@ function adaptObstacles(f,plan,list=[]){
  if(depths.length||cuts.length||corners.length)k.obstacleFit={depths,cuts,...(corners.length?{corners}:{})};validate(next);return {furniture:next,notes};
 }
 function normalizeObstacles(list,plan){if(!list.some(f=>f.kitchen?.autoAvoid))return list;const source=clone(list);for(const f of list){if(!f.kitchen?.autoAvoid||f.locked)continue;try{f.kitchen=adaptObstacles(f,plan,source).furniture.kitchen;}catch{/* Broken models keep their existing record and review warning. */}}return list;}
-const api={measurementSurface,drawerStyle,drawerStyleRule,drawerMinimum,drawerLabel,setDrawerStyle,isWall,plinth,baseElevation,bodyHeight,moduleRoles,fromWall,snapModuleShelf,moveModuleShelf,moduleShelfLimits,hoodHosts,drawerBoundaryTargets,resizeDrawerBoundary,drawerRules,drawerSpan,drawerHeights,setDrawerCount,setDrawerHeight,slabGeometry,ringArea,ringInside,isSink,arrowSink,sinkMode,openingRing,surfaceGeometry,onSurface,support,deviceOpenings,deviceSignature,normalizeSinks,dividerHandles,resizeDivider,depthRules,endResizeRules,extensionHandles,resizeExtension,partitionRules,cornerPartition,cornerConnections,moduleShelves,cornerShelves,adjacentOpenings,cornerLayout,runDepth,runCounterDepth,outerEdge,resizeOuter,runHandles,resizeRun,changeShape,shapeRules,runs,endRuns,runName,runNormal,runLength,cornerBlocks,adjacentSides,isDevice,cutout,roles,edgeStyles,counterDepth,extension,bodyBounds,cornerPlinth,endLayout,cabinetLayout,cornerBoards,edgeStyle,dropHeight,defaults,cornerSide,cornerBlock,validate,configure,resize,repairDimensions,layout,elevationRuns,slabs,outline,frontEdges,edgeParts,area,topGeometry,avoidanceRules,adaptObstacles,normalizeObstacles,world,local,footprints,bodyParts,validateLink,fit,attach,normalize,validateList,moduleFurniture,kitchenModuleConfig,moduleDoor,moduleLeafCount,moduleLeafState,moduleLeafAngle,moduleMaxAngle,moduleAngle,toggle,specification,openingZones};
+const api={isLaundryAreaItem,createLaundryArea,setLaundryDoors,laundrySide,switchLaundrySides,isLaundry,hasCountertop,laundryPreset,catalogSpec,notchedRing,laundryCut,centerLaundryInBay,measurementSurface,drawerStyle,drawerStyleRule,drawerMinimum,drawerLabel,setDrawerStyle,isWall,plinth,baseElevation,bodyHeight,moduleRoles,fromWall,snapModuleShelf,moveModuleShelf,moduleShelfLimits,hoodHosts,drawerBoundaryTargets,resizeDrawerBoundary,drawerRules,drawerSpan,drawerHeights,setDrawerCount,setDrawerHeight,slabGeometry,ringArea,ringInside,isSink,arrowSink,sinkMode,openingRing,surfaceGeometry,onSurface,support,deviceOpenings,deviceSignature,normalizeSinks,dividerHandles,resizeDivider,depthRules,endResizeRules,extensionHandles,resizeExtension,partitionRules,cornerPartition,cornerConnections,moduleShelves,cornerShelves,adjacentOpenings,cornerLayout,runDepth,runCounterDepth,outerEdge,resizeOuter,runHandles,resizeRun,changeShape,shapeRules,runs,endRuns,runName,runNormal,runLength,cornerBlocks,adjacentSides,isDevice,cutout,roles,edgeStyles,counterDepth,extension,bodyBounds,cornerPlinth,endLayout,cabinetLayout,cornerBoards,edgeStyle,dropHeight,defaults,cornerSide,cornerBlock,validate,configure,resize,repairDimensions,layout,elevationRuns,slabs,outline,frontEdges,edgeParts,area,topGeometry,avoidanceRules,adaptObstacles,normalizeObstacles,world,local,footprints,bodyParts,validateLink,fit,attach,normalize,validateList,moduleFurniture,kitchenModuleConfig,moduleDoor,moduleLeafCount,moduleLeafState,moduleLeafAngle,moduleMaxAngle,moduleAngle,toggle,specification,openingZones};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishKitchen=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

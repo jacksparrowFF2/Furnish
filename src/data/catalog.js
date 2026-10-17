@@ -82,6 +82,13 @@ const LIB = [
     ["island","大岛台",2400,1000,"#e9e5de",9800],
     ["desk","长书桌",1600,700,"#d8c2a2",2200]
   ]},
+  {cat:'阳台柜', items:[
+    ['counter','完整阳台洗衣区 · 左洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-left'],
+    ['counter','完整阳台洗衣区 · 右洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-right'],
+    ['counter','洗衣机柜 · 左洗衣机／右水槽',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-left'],
+    ['counter','洗衣机柜 · 水槽与设备空位',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry'],
+    ['ksink','阳台定制水槽（可设异形缺角）',600,500,'#e8e6df',undefined]
+  ]},
   {cat:'厨房', items:[
     ["counter","橱柜台面",1600,600,"#e9e5de",6400],
     ["kitchenwall","厨房吊柜",800,350,"#e9e5de",undefined,700],

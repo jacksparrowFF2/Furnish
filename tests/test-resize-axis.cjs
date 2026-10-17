@@ -38,7 +38,7 @@ for(const axis of ['w','d','both']){
     state:{furniture:[f]},getF:()=>f,selIds:()=>['f'],snap:()=>JSON.stringify({furniture:[f]}),
     FurnishSnapping:S,FurnishDesign:require('../src/core/design-core.js'),FurnishCabinet:{supported:()=>false},clearTimeout(){},renderFurn(){},syncFurnOrder(){},renderSel(){},furnT:()=>''});
   vm.runInContext(fs.readFileSync(require.resolve('../src/ui/canvas-interactions.js'),'utf8'),context);
-  context.initializeCanvasInteractions();
+  require('./helpers/pointer-frames.cjs')(context);context.initializeCanvasInteractions();
   const handle={dataset:{handle:'size',axis}},target={closest:selector=>selector==='[data-handle]'?handle:null};
   const event={button:0,pointerType:'mouse',pointerId:1,clientX:1770,clientY:2710,target};
   listeners.pointerdown(event);
