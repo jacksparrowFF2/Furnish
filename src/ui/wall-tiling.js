@@ -62,6 +62,6 @@ function refreshList(){
  document.querySelector('[data-wall-unify]').onclick=()=>openHeights();document.querySelectorAll('[data-wall-bulk]').forEach(b=>b.onclick=()=>run(()=>T.setEnabled(state,effective(),all.map(r=>r.id),b.dataset.wallBulk==='on')));
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-wall-tiles-open]'))openList();});
-window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='wall-tiles-open';b.dataset.wallTilesOpen='';b.textContent='墙砖';b.title='厨房、卫生间、阳台墙面铺贴';rail.append(b);});
+window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail .rail-finishes');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='wall-tiles-open';b.dataset.wallTilesOpen='';b.innerHTML=ico('wall-tile')+`<span data-zh="墙砖" data-en="Wall tiles">${tr('墙砖','Wall tiles')}</span>`;b.title='厨房、卫生间、阳台墙面铺贴';rail.append(b);});
 window.FurnishWallTilingUI={openList,openFace,openHeights,afterRender:()=>{refreshList();drawFocus();},afterView:drawFocus,svgOf};
 })();

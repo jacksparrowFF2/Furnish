@@ -111,6 +111,6 @@ function refreshList(){
  host.querySelectorAll('[data-floor-edit]').forEach(b=>b.onclick=()=>{closeDialog();select({kind:'room',id:b.dataset.floorEdit});openFloating();});
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-floor-list]'))openList();});
-window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail');if(!rail||document.querySelector('#floor-regions-open'))return;const button=document.createElement('button');button.className='btn';button.id='floor-regions-open';button.dataset.floorList='';button.textContent='地砖';button.title='区域地砖铺贴';rail.append(button);});
+window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail .rail-finishes');if(!rail||document.querySelector('#floor-regions-open'))return;const button=document.createElement('button');button.className='btn';button.id='floor-regions-open';button.dataset.floorList='';button.innerHTML=ico('floor-tile')+`<span data-zh="地砖" data-en="Floor tiles">${tr('地砖','Floor tiles')}</span>`;button.title='区域地砖铺贴';rail.append(button);});
 window.FurnishFloorFinishUI={panel,bind,furniturePanel,openFloating,openList,openUnified,afterRender,afterView:redrawOrigin,picking:()=>!!cancelPick};
 })();

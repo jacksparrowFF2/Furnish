@@ -842,7 +842,10 @@ async function setView(m){
     toast(tr('3D 引擎加载失败', 'Failed to load the 3D engine'));
   } finally { switching = false; document.body.classList.remove('busy');queueFabPosition(); }
 }
-document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => b.closest('details').open = false));
+document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => {
+  const menu = b.closest('details');
+  if (menu) menu.open = false; // Some controls are later moved into the canvas toolbar.
+}));
 document.querySelectorAll('#viewSeg .btn').forEach(b => b.onclick = () => setView(b.dataset.view));
 ['pointerenter', 'pointerdown', 'focusin'].forEach(t => $('#viewSeg').addEventListener(t, () => window.View3D?.load().catch(() => {}), {once:true}));
 

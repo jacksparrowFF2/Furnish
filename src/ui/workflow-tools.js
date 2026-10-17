@@ -77,7 +77,9 @@ function initialize(){
  const rail=document.createElement('div');rail.className='canvas-rail';rail.setAttribute('aria-label',t('画布工具','Canvas tools'));rail.setAttribute('role','toolbar');$('#stage').append(rail);rail.append($('#tools'),$('#modes3d'),$('#vIso').parentElement);
  const extra=document.createElement('div');extra.className='grp rail-more';rail.append(extra);extra.append($('#tracePlan'));$('#tracePlan').textContent=t('户型','Plan');$('#tracePlan').title=t('导入或编辑墙体、门窗与功能区','Import or edit walls, openings and zones');
  const style=document.createElement('button');style.className='btn';style.innerHTML=ico('palette');style.append(localized(document.createElement('span'),'风格','Style'));extra.append(style);style.onclick=()=>previewStyle(state.style||STYLES[0].id);
- localized($('#tracePlan'),'户型','Plan');localized($('#projectWorkspace'),'工作台','Workspace');
+ const planButton=$('#tracePlan');planButton.classList.remove('outline');delete planButton.dataset.en;delete planButton.dataset.zh;planButton.innerHTML=ico('plan');planButton.append(localized(document.createElement('span'),'户型','Plan'));
+ localized($('#projectWorkspace'),'工作台','Workspace');
+ const finishes=document.createElement('div');finishes.className='grp rail-finishes';rail.append(finishes);
  const pref=document.createElement('details');pref.className='menu workspace-preferences';pref.innerHTML=`<summary class="btn">${t('更多','More')}</summary><div class="menu-pop"></div>`;$('#fileMenu').before(pref);pref.lastElementChild.append($('#langSel'),$('#themeQuick'),$('#fullscreen'),$('#resetBtn'));
  localized(pref.firstElementChild,'更多','More');
  const light=document.createElement('div');light.className='scene-light only3d';light.setAttribute('aria-label',t('日照与夜景','Sunlight and night'));$('#stage').append(light);light.append($('#sun').closest('label'),document.querySelector('[data-t="night"]'));
