@@ -1828,7 +1828,7 @@ function retheme(){
 
 // Independent editor camera and scene; geometry uses exactly the room builder.
 function cabinetPreview(host,f,actions){
- return FurnishCabinetPreview.create({THREE,OrbitControls,box,host,f,actions,furniture:actions.furniture||state.furniture,plan:FurnishProject.effectivePlan(PLAN,state),background:DK()?'#252a30':'#eeeae3'});
+ return FurnishCabinetPreview.create({THREE,OrbitControls,box,host,f,actions,buildDevice:buildFurniture,furniture:actions.furniture||state.furniture,plan:FurnishProject.effectivePlan(PLAN,state),background:DK()?'#252a30':'#eeeae3'});
 }
 
 function ceilingPreview(host,data){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data});}

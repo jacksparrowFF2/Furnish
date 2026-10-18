@@ -99,10 +99,10 @@ function matchSizeSel(){
 let clip = null;
 function syncCutClipboard(){if(clip?.cut&&clip.movePlan===PLAN.id)clip.cutMoved=clip.items.some(f=>getF(f.id));}
 function copySel(cut, quiet){
-  const selected=selItems(),items=cut?movable(selected):selected;if(!items.length)return;
+  const chosen=new Set(selItems().map(f=>f.id)),selected=state.furniture.filter(f=>chosen.has(f.id)||f.laundryHostId&&chosen.has(f.laundryHostId)),items=cut?movable(selected):selected;if(!items.length)return;
   const [x0,y0,x1,y1] = groupBox(items);
   clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut};
-  if (cut) deleteSel(); else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
+  if(cut){const ids=new Set(items.map(f=>f.id));ui.sel=null;mutate(()=>state.furniture=state.furniture.filter(f=>!ids.has(f.id)));}else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
 }
 function paste(at){
   if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
@@ -179,7 +179,7 @@ function addItem(it, x, y){
   if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
   if(FurnishKitchen.isLaundryAreaItem(it)){
-   try{if(state.furniture.length+5>2000)throw Error('家具数量不足以放入完整洗衣区（5 件）');const items=FurnishKitchen.createLaundryArea(f,uid,uid(),it[10].endsWith('left')?'left':'right'),root=items[0],before=[root.cx,root.cy];pushOut(root);for(const member of items.slice(1)){member.cx+=root.cx-before[0];member.cy+=root.cy-before[1];}mutate(()=>state.furniture.push(...items));selectIds(items.map(f=>f.id),root.id);pushRecent(it);toast('已添加完整洗衣区：吊柜、开放格、水槽、地柜与洗衣机',{label:tr('撤销','Undo'),fn:undo});}catch(e){toast(e.message);}return;
+   try{if(state.furniture.length+2>2000)throw Error('家具数量不足以放入完整洗衣区（柜体及洗衣机）');const items=FurnishKitchen.createLaundryCabinet(f,uid,it[10].endsWith('left')?'left':'right'),root=items[0],before=[root.cx,root.cy];pushOut(root);for(const member of items.slice(1)){member.cx+=root.cx-before[0];member.cy+=root.cy-before[1];}mutate(()=>state.furniture.push(...items));selectIds([root.id],root.id);pushRecent(it);toast('已添加完整洗衣区：吊柜、开放格、水槽、地柜与洗衣机',{label:tr('撤销','Undo'),fn:undo});}catch(e){toast(e.message);}return;
   }
   if(h!==undefined)f.h=h;
   Object.assign(f,FurnishDesign.products().initial(f));

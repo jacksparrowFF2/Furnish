@@ -1,6 +1,6 @@
 /* Shared-model preview: structure picking, constrained drags and dimension overlays. */
 (function(root){
- function create({THREE,OrbitControls,box,host,f,actions,background,furniture=[],plan=null,elevation=null}){
+ function create({THREE,OrbitControls,box,host,f,actions,buildDevice=null,background,furniture=[],plan=null,elevation=null}){
   const C=root.FurnishCabinet,r=new THREE.WebGLRenderer({antialias:true}),sc=new THREE.Scene();let cam=new THREE.PerspectiveCamera(38,1,.01,100);
   r.setPixelRatio(Math.min(devicePixelRatio,2));r.toneMapping=THREE.ACESFilmicToneMapping;host.replaceChildren(r.domElement);
   sc.background=new THREE.Color(background);sc.add(new THREE.HemisphereLight(0xffffff,0x8f8170,1.5));
@@ -43,7 +43,7 @@
     if(options.column!==undefined){el.type='button';el.setAttribute('aria-label',options.title);el.title=options.title;el.onclick=()=>{if(actions.select?.({column:options.column})!==false){activeColumn=options.column;markActive();}};}
     labelLayer.appendChild(el);labels.push({el,point:p,...options});return el;};
    const measure=(text,a,b,offset=20)=>{if(settings.dimensions)add(text,a.clone().add(b).multiplyScalar(.5),{a,b,offset});};
-   const h=current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current),w=current.w,d=current.d;
+   const h=current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current),w=current.w,d=current.d;
    const isL=current.kitchen?.shape==='L',isU=current.kitchen?.shape==='U',runName=elevation?.title?.replace(/正视$/,'')??(elevation?.run===1?'转角边':'主边');
    summary=null;if(settings.dimensions){summary=document.createElement('div');summary.className='cab-size-summary';summary.textContent=isU?`主边总长 ${fmt(root.FurnishKitchen.runDepth(current,1)+root.FurnishKitchen.runLength(current,0)+root.FurnishKitchen.extension(current,0).length)} · 连接边总长 ${fmt(d)} · 回折边总长 ${fmt(root.FurnishKitchen.runDepth(current,1)+root.FurnishKitchen.runLength(current,2)+root.FurnishKitchen.extension(current,2).length)} · 三边柜深 ${[0,1,2].map(run=>fmt(root.FurnishKitchen.runDepth(current,run))).join("／")} · ${root.FurnishKitchen?.isWall(current)?'柜高':'台面高'} ${fmt(h)} mm`:isL?`主边总长 ${fmt(w)} · 转角边总长 ${fmt(d)} · 柜深 ${fmt(current.kitchen.depth)} · ${root.FurnishKitchen?.isWall(current)?'柜高':'台面高'} ${fmt(h)} mm`:elevation?`${runName}总长 ${fmt(w)} · 柜深 ${fmt(current.kitchen.depth)} · ${root.FurnishKitchen?.isWall(current)?'柜高':'台面高'} ${fmt(h)} mm`:`整体 宽 ${fmt(w)} × 深 ${fmt(d)} × 高 ${fmt(h)} mm`;labelLayer.appendChild(summary);}
    if(current.kitchen){const K=root.FurnishKitchen;for(const m of K.cabinetLayout(current)){
@@ -65,7 +65,7 @@
    }
    if(outer){if(isL)measure(`主边总长 ${fmt(w)}`,point(-w/2,h,-d/2),point(w/2,h,-d/2),26);
    else measure(`${elevation?runName+'总长':'总宽'} ${fmt(w)}`,point(-w/2,0,d/2),point(w/2,0,d/2),52);
-   measure(`${current.kitchen?(root.FurnishKitchen.isWall(current)?'柜高':'台面高'):'总高'} ${fmt(h)}`,point(-w/2,0,-d/2),point(-w/2,h,-d/2),36);
+   measure(`${current.kitchen?(current.kitchen.laundry?.assembly?'整柜高':root.FurnishKitchen.isWall(current)?'柜高':'台面高'):'总高'} ${fmt(h)}`,point(-w/2,0,-d/2),point(-w/2,h,-d/2),36);
    measure(`${isL?'转角边总长':'总深'} ${fmt(d)}`,point(w/2,h,-d/2),point(w/2,h,d/2),26);
    if(isL)measure(`柜深 ${fmt(current.kitchen.depth)}`,point(-w/2,h,-d/2),point(-w/2,h,-d/2+current.kitchen.depth),26);
    }
@@ -102,7 +102,7 @@
    const rect=cv.getBoundingClientRect(),width=rect.width,height=rect.height,occupied=[],paths=[];
    if(summary)occupied.push({left:8,top:8,right:8+(summary.offsetWidth||width-16),bottom:8+(summary.offsetHeight||24)});
    const project=p=>{const v=p.clone().project(cam);return {x:(v.x+1)*width/2,y:(1-v.y)*height/2,visible:v.z>=-1&&v.z<=1&&Math.abs(v.x)<=1&&Math.abs(v.y)<=1};};
-   const center=project(new THREE.Vector3(0,(current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current))/2000,0));
+   const center=project(new THREE.Vector3(0,(current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current))/2000,0));
    const line=(a,b)=>`M${a.x.toFixed(1)},${a.y.toFixed(1)}L${b.x.toFixed(1)},${b.y.toFixed(1)}`;
    // Numbers take priority. Move crowded labels with leaders; omit unreadable dimensions.
    const priority=item=>item.column!==undefined?0:item.offset>=26?1:item.doorSize?2:3;
@@ -181,14 +181,14 @@
    let ends=[points[0],points[1]],distance=0;for(const a of points)for(const b of points){const span=Math.hypot(a.x-b.x,a.y-b.y);if(span>distance){ends=[a,b];distance=span;}}
    let line=svg.querySelector('.cab-drawer-snap-guide');if(!line){line=document.createElementNS(svg.namespaceURI,'path');line.setAttribute('class','cab-drawer-snap-guide');line.setAttribute('aria-label','相邻抽屉层间已对齐');svg.appendChild(line);}line.dataset.targetColumn=String(elevation?elevation.indices[target.column]:target.column);line.dataset.height=String(target.height);line.setAttribute('d',`M${ends[0].x},${ends[0].y}L${ends[1].x},${ends[1].y}`);
   }
-  function update(value){current=value;clearModel();model=value.kitchen?root.FurnishKitchenModel.build(THREE,value,box,{furniture,plan,previewBlind:elevation?.blind,previewMirror:elevation?.mirror}):root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture,plan});if(value.kitchen)model.scale.x=value.flip?-1:1;
+  function update(value){current=value;clearModel();model=value.kitchen?root.FurnishKitchenModel.build(THREE,value,box,{furniture,plan,previewBlind:elevation?.blind,previewMirror:elevation?.mirror}):root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture,plan});if(value.kitchen?.laundry?.assembly&&buildDevice){const K=root.FurnishKitchen,device=furniture.find(p=>p.laundryHostId===value.id),bay=K.layout(value).find(m=>m.role==='empty');if(device&&bay){const aligned=K.centerLaundryInBay(value,{...device,...value.kitchen.laundry.appliance},bay.index),[x,z]=K.local(value,aligned.cx,aligned.cy),washer=buildDevice({...aligned,rot:0,flip:false});washer.position.set(x/1000,(aligned.mountHeight??0)/1000,z/1000);washer.rotation.set(0,0,0);washer.scale.x=Math.abs(washer.scale.x);washer.traverse(o=>o.userData.cabinetIgnorePick=true);model.add(washer);}}if(value.kitchen)model.scale.x=value.flip?-1:1;
    sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();syncSplit();}
   function fit(){
-   const h=(current.kitchen?current.kitchen.baseHeight+current.kitchen.thickness:C.height(current))/1000,w=current.w/1000,size=Math.max(w,h,current.d/1000),center=h/2;controls.target.set(0,center,0);
+   const h=(current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current))/1000,w=current.w/1000,size=Math.max(w,h,current.d/1000),center=h/2;controls.target.set(0,center,0);
    if(settings.front){viewHeight=Math.max(h+(elevation ? .35 : 0),w/(host.clientWidth/host.clientHeight||1))*(elevation?1.15:1.6);cam.position.set(0,center,Math.max(4,size*3));cam.zoom=1;resize();}
    else if(current.kitchen){const side=(root.FurnishKitchen.cornerSide(current)==='right'?-1:1)*(current.flip?-1:1);if(current.kitchen.shape==='U')cam.position.set(side*size*2,h/2+size*.9,size*.8);else cam.position.set(side*size,h/2+size*.7,size*2);}else cam.position.set(size*1.2,h/2+size*.6,size*2.4);controls.update();
   }
-  function resize(){const width=host.clientWidth||500,height=host.clientHeight||440,aspect=width/height;r.setSize(width,height);if(cam.isOrthographicCamera){if(elevation)viewHeight=Math.max((current.kitchen.baseHeight+current.kitchen.thickness)/1000+.35,current.w/1000/aspect)*1.15;cam.left=-viewHeight*aspect/2;cam.right=-cam.left;cam.top=viewHeight/2;cam.bottom=-cam.top;}else cam.aspect=aspect;cam.updateProjectionMatrix();if(splitRoot)syncSplit();}
+  function resize(){const width=host.clientWidth||500,height=host.clientHeight||440,aspect=width/height;r.setSize(width,height);if(cam.isOrthographicCamera){if(elevation)viewHeight=Math.max(((current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness))/1000+.35,current.w/1000/aspect)*1.15;cam.left=-viewHeight*aspect/2;cam.right=-cam.left;cam.top=viewHeight/2;cam.bottom=-cam.top;}else cam.aspect=aspect;cam.updateProjectionMatrix();if(splitRoot)syncSplit();}
   function rayAt(e){const rect=cv.getBoundingClientRect(),ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),cam);return ray;}
   function hitAt(ray){return ray.intersectObject(model,true).find(h=>h.object.isMesh&&!h.object.userData.cabinetIgnorePick);}
   function apply(part,value,snap=false){
@@ -227,7 +227,7 @@
   const observer=new ResizeObserver(resize);observer.observe(host);update(f);fit();resize();
   function render(){if(disposed)return;if(!splitRoot){if(!drag&&!drawerDrag)controls.update();r.render(sc,cam);projectLabels();projectDrawers();}frame=requestAnimationFrame(render);}render();
   return {
-   update:value=>{const dims=v=>[v.w,v.d,v.kitchen?v.kitchen.baseHeight+v.kitchen.thickness:v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
+   update:value=>{const dims=v=>[v.w,v.d,v.kitchen?(v.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(v):v.kitchen.baseHeight+v.kitchen.thickness):v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
    selectShelf:part=>{selected=part;const old=activeColumn;activeColumn=part?.column??null;highlight();if(old!==activeColumn)dimensions();else markActive();},focus:()=>cv.focus({preventScroll:true}),
    finishDrawerInput:()=>finishDrawerInput()&&splitPanels.every(panel=>panel.preview.finishDrawerInput()),
    setView:options=>{endDrawerDrag(true);endDrag(true);const change=options.front!==undefined&&options.front!==settings.front;settings={...settings,...options};if(change){controls.dispose();cam=settings.front?new THREE.OrthographicCamera(-1,1,1,-1,.01,100):new THREE.PerspectiveCamera(38,1,.01,100);controls=new OrbitControls(cam,cv);setupControls();fit();resize();}update(current);},

@@ -58,7 +58,7 @@
   const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{if(!moved){let id;do{id=makeId();}while(used.has(id)||reserved.has(id));f.id=id;f.purchaseStatus='planned';delete f.locked;}used.add(f.id);f.cx+=delta[0];f.cy+=delta[1];});
   const groups=new Map(),usedGroups=new Set([...existingGroupIds,...items.map(f=>f.groupId).filter(Boolean)]);
   for(const f of items)if(f.groupId){if(!groups.has(f.groupId)){let id=f.groupId;if(!moved||existingGroupIds.includes(id)){do{id=makeId();}while(usedGroups.has(id));}usedGroups.add(id);groups.set(f.groupId,id);}f.groupId=groups.get(f.groupId);}
-  const mapping=new Map(sourceIds.map((id,i)=>[id,items[i].id]));for(const f of items)if(f.counterLink){if(mapping.has(f.counterLink.hostId))f.counterLink.hostId=mapping.get(f.counterLink.hostId);else delete f.counterLink;}kitchen().normalize(items);
+  const mapping=new Map(sourceIds.map((id,i)=>[id,items[i].id]));for(const f of items)if(f.counterLink){if(mapping.has(f.counterLink.hostId))f.counterLink.hostId=mapping.get(f.counterLink.hostId);else delete f.counterLink;}for(const f of items)if(f.laundryHostId){if(mapping.has(f.laundryHostId))f.laundryHostId=mapping.get(f.laundryHostId);else delete f.laundryHostId;}kitchen().normalize(items);
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
  function replaceFurniture(f,c){

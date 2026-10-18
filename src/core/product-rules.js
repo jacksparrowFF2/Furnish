@@ -4,6 +4,7 @@
 const numeric=(min,max,message)=>({min,max,message});
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ laundryHostId:{string:true,max:200,message:'洗衣机柜关联编号无效'},
  groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
  hoodPanelOpen:{boolean:true,message:'烟机面板开合设置无效'},
  dishwasherDoorOpen:{boolean:true,message:'洗碗机折叠门开合设置无效'},
@@ -24,7 +25,7 @@ const fields={
  floorTrack:{boolean:true,message:'轨道设置无效'},
  heaterSocket:{point:true,message:'热水器插座须有有效 X、Y 和 0–20000 mm 离地高度'}
 };
-const laundry={family:'laundry',height:850,anchor:'bottom',defaults:{mountHeight:0,stackHeight:20},fields:['mountHeight','stackHeight'],create:['mountHeight']};
+const laundry={family:'laundry',height:850,anchor:'bottom',defaults:{mountHeight:0,stackHeight:20},fields:['mountHeight','stackHeight','laundryHostId'],create:['mountHeight']};
 const surfaceMeasurement={wallContactTolerance:5};
 const arrowSink={embedded:true,measureSurfaceBoundary:true,surfaceMeasurement,family:'arrow-sink',height:240,sink:{rimThickness:.8,nominalDepth:450,faucetRise:360,nominalInnerWidth:640},defaults:{counterElevation:860,sinkInstall:'top'},fields:['counterLink','counterElevation','sinkInstall'],create:['counterElevation','sinkInstall']};
 const doorPairing={values:['end','start'],default:'end',singleHinge:{values:['left','right'],default:'left'},layout:{values:['left','right','pair','paired'],maxLeaves:24}};
@@ -55,7 +56,7 @@ const types={
 };
 // Optional kitchen door pairing keeps the historical leading single leaf by default.
 types.counter.doorPairing=doorPairing;types.kitchenwall.doorPairing=doorPairing;
-types.counter.laundry={width:1340,depth:630,baseHeight:900,thickness:20,bayWidth:640,notchMin:20,minRemainingDepth:150,area:{upperHeight:600,upperBottom:1800,upperDepth:350,openHeight:200,openBottom:1600,openDepth:320,serviceGap:100,notch:100,sinkWidth:600,sinkDepth:500}};
+types.counter.laundry={sideThickness:18,sideMin:10,sideMax:50,width:1340,depth:630,baseHeight:900,thickness:20,bayWidth:640,notchMin:20,minRemainingDepth:150,area:{upperHeight:600,upperBottom:1800,upperDepth:350,openHeight:200,openBottom:1600,openDepth:320,serviceGap:100,notch:100,sinkWidth:600,sinkDepth:500}};
 // Preserve historical model envelopes, including dimension-derived bounds.
 const envelopes={acwall:()=>[2170,2510],waterheater:f=>[1300,1950+Math.min(f.d/2,230)],tv:f=>[1200-f.w*.5625/2,1200+f.w*.5625/2],wallart:f=>[1280,1280+Math.min(950,Math.max(500,f.w*.45))],mirror:()=>[50,1700],pendant:()=>[2100,2627],baycushion:()=>[450,900],stove:()=>[862,2330],ksink:()=>[850,1182],vanity:()=>[330,1960]};
 for(const [type,envelope] of Object.entries(envelopes))types[type]={...types[type],envelope};
@@ -150,7 +151,7 @@ function sinkInstallation(f,host){const spec=definition(f).sink,thickness=host?.
 function vertical(f){
  if(f.type==='ksink'&&f.sinkNotch){const base=f.counterElevation??862,r=definition(f).notch;return {bottom:base-r.bodyDepth,top:base+r.faucetRise,source:'model'};}
  if(family(f,'arrow-sink')){const {bottom,top}=sinkInstallation(f);return {bottom,top,source:'model'};}
- if(f.kitchen){const bottom=f.type==='kitchenwall'?value(f,'mountHeight'):0;return {bottom,top:bottom+f.kitchen.baseHeight+((f.kitchen.laundry?.countertop===false)?0:f.kitchen.thickness),source:'recorded'};}
+ if(f.kitchen){const bottom=f.type==='kitchenwall'?value(f,'mountHeight'):0;return {bottom,top:f.kitchen.laundry?.assembly?kitchen().laundryHeight(f):bottom+f.kitchen.baseHeight+((f.kitchen.laundry?.countertop===false)?0:f.kitchen.thickness),source:'recorded'};}
  if(f.type==='vanity'&&f.cabinet){const spec=cabinetSpec(f);return {bottom:spec.bottom,top:spec.bottom+(f.cabinet.bodyHeight??spec.bodyHeight)+spec.aboveBody,source:'recorded'};}
  if(f.type==='stove_fotile_th36b'){const h=height(f),base=value(f,'counterElevation');return {bottom:base-80*h/138,top:base+58*h/138,source:'model'};}
  if(['stove','ksink'].includes(f.type)&&f.counterElevation!==undefined)return {bottom:f.counterElevation-(f.type==='ksink'?200:0),top:f.counterElevation+(f.type==='ksink'?320:40),source:'model'};
