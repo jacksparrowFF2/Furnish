@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-18",
+  "workspace": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\pipebox-directions-final-gczb8ggk",
+  "fullCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": false,
+    "suiteCount": 206,
+    "passedSuites": 205,
+    "failedSuites": [
+      {
+        "name": "test-drawing.cjs",
+        "error": "TypeError: next.h is not iterable at layout-geometry.js:91 doorOverride()",
+        "context": "Concurrent door changes; drawing fixture has incomplete door hinge data. Reproduced in current workspace. Pipe enclosure direction tests pass."
+      }
+    ],
+    "remainingSuitesExecutedSeparately": 149,
+    "remainingSuitesPassed": 149,
+    "builtInPlansPassed": true,
+    "builtInPlans": 12,
+    "previewPages": 16,
+    "syntaxAndLocalAssetsPassed": true
+  },
+  "browser": {
+    "command": "node scripts/verify-browser.cjs pipebox",
+    "workspace": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\verification-UNy3vj",
+    "passed": true,
+    "modes": [
+      "offline file://",
+      "HTTP"
+    ],
+    "directions": 8,
+    "viewportWidths": [
+      1440,
+      390
+    ]
+  },
+  "sourceHashes": {
+    "index.html": "3a25dcf3e23240f6b6185810ef604e93acdb599f988a9e33e899fdb8786586cc",
+    "src/core/product-rules.js": "5f3b846f573908a8b8357d41a4564fa8f06c8ef9beaa6a13dcf313a8aa491f73",
+    "src/core/project-core.js": "d46e0594dc363bc0cbe405b1ad2034d1429ca66ceed92c4c09b76d0782362a96",
+    "src/ui/property-panel.js": "8b6f733287b0c411b37329860d569613cff3b569bfcc7e7c6e49546e5a8d760a",
+    "src/core/layout-geometry.js": "96ffe26094defa830c3a824c04c08a34afe4b7dbca71215791c6fad156a1faae",
+    "tests/test-pipebox.cjs": "0fee21eea131553272908babe17b767cb23e84d6d242ba5304804949dca2d081"
+  },
+  "notExecuted": [
+    "physical touch device",
+    "construction/installation validation"
+  ],
+  "preservedBoundaries": [
+    "wall/beam/door/selection/snapping outer-envelope rules"
+  ],
+  "followUp": {
+    "resolved": true,
+    "regressionSuitesPassed": 207,
+    "record": "../door-restore-20261018/regression.json"
+  }
+}

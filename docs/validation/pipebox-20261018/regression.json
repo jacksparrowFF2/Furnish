@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-18",
+  "builtInPlans": 12,
+  "workspace": "C:\\Users\\SPH\\AppData\\Local\\Temp\\furnish-pipebox-check-yIUvp7",
+  "previewPages": 16,
+  "passed": true,
+  "note": "Clean source copy with regenerated previews; historical output directories excluded.",
+  "regressionSuites": 206,
+  "command": "node scripts/check.cjs"
+}

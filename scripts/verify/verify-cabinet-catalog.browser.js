@@ -6,7 +6,7 @@ async (page,verification)=>{
   const check=(ok,label)=>{if(!ok)throw Error(mode+': '+label);};
   await p.goto(url);await p.locator('#lib').waitFor();
   await p.getByRole('button',{name:'柜体',exact:true}).click();
-  check(await p.locator('#lib .item').count()===8,'eight cabinet entries');
+  check(await p.locator('#lib .item').count()===9,'nine cabinet entries');
   check(await p.locator('#lib').getByText(/更多柜体款式/).isVisible(),'template discovery');
   await p.screenshot({path:root+'output/playwright/cabinet-catalog/'+mode+'-catalog.png'});
   await p.locator('#lib').getByText('衣柜',{exact:true}).click();
@@ -39,7 +39,7 @@ async (page,verification)=>{
   check(await p.locator('#cab-template').isVisible(),'mobile template selector');
   await p.screenshot({path:root+'output/playwright/cabinet-catalog/'+mode+'-mobile.png'});
   check(errors.length===0,'page errors: '+errors.join('; '));
-  results.push({mode,entries:8,templates:19,errors});await context.close();
+  results.push({mode,entries:9,templates:19,errors});await context.close();
  }
  console.log(JSON.stringify(results));
 }

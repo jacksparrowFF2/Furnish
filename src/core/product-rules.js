@@ -4,6 +4,10 @@
 const numeric=(min,max,message)=>({min,max,message});
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ pipeBoxShape:{values:['four','three','two'],message:'包管柜结构须为四面、三面或直角两面'},
+ pipeBoxOpenSide:{values:['back','front','left','right'],message:'包管柜敞开面须为前、后、左或右面'},
+ pipeBoxCorner:{values:['front-left','front-right','back-left','back-right'],message:'包管柜须保留两个相邻面'},
+ pipeBoxThickness:numeric(1,100,'包管柜板厚须为 1–100 mm'),
  laundryHostId:{string:true,max:200,message:'洗衣机柜关联编号无效'},
  groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
  hoodPanelOpen:{boolean:true,message:'烟机面板开合设置无效'},
@@ -32,6 +36,7 @@ const doorPairing={values:['end','start'],default:'end',singleHinge:{values:['le
 const hobCutoutLimits={min:1,max:20000};
 const foldingTable={family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const types={
+ pipebox:{family:'pipe-box',height:2400,anchor:'bottom',defaults:{mountHeight:0,pipeBoxThickness:18,pipeBoxShape:'three',pipeBoxOpenSide:'back',pipeBoxCorner:'front-left'},fields:['mountHeight','pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'],create:['mountHeight','pipeBoxThickness','pipeBoxShape']},
  table_folding_1100:{...foldingTable,folding:{diameter:1100,closedDepth:740,singleDepth:920,top:32,leg:75,apron:120}},
  table_folding_1200:{...foldingTable,folding:{diameter:1200,closedDepth:793,singleDepth:996.5,top:32,leg:75,apron:120}},
  table_folding_1300:{...foldingTable,folding:{diameter:1305,closedDepth:848,singleDepth:1075,top:32,leg:75,apron:120}},
@@ -90,12 +95,35 @@ function validateField(f,key,v){
  const finite=n=>typeof n==='number'&&Number.isFinite(n);
  const valid=rule.point?v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).every(k=>['x','y','z'].includes(k))&&[v.x,v.y,v.z].every(finite)&&Math.abs(v.x)<=1e6&&Math.abs(v.y)<=1e6&&v.z>=0&&v.z<=20000
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
- if(!valid)throw Error(rule.message);return v;
+ if(!valid)throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);return f;}
+function validate(f){for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);return f;}
 // Report broken model records without migrating, deleting or rewriting them.
 function modelError(f){try{validate(f);if(f.cabinet)(root.FurnishCabinet||require('./cabinet-core.js')).validate(f);return null;}catch(e){return e.message||String(e);}}
 function initial(f){const result={};for(const key of definition(f)?.create||[]){if(key==='kitchen'&&f.type==='kitchenwall'&&(!Number.isFinite(f.w)||!Number.isFinite(f.d)))continue;result[key]=key==='kitchen'?kitchen().defaults(f):value(f,key);}return {...result,...definition(f)?.identity};}
+// Static vertical boards; top/bottom stay open. Missing shape retains the legacy U. All values are mm.
+function pipeBoxSignature(f){
+ if(!family(f,'pipe-box')||f.obj)return null;
+ const shape=value(f,'pipeBoxShape');return [shape,shape==='three'?value(f,'pipeBoxOpenSide'):shape==='two'?value(f,'pipeBoxCorner'):null];
+}
+function pipeBoxSides(f){
+ if(!family(f,'pipe-box')||f.obj)return null;
+ const [shape,direction]=pipeBoxSignature(f),sides=['left','right','front','back'];
+ if(!fields.pipeBoxShape.values.includes(shape))throw Error(fields.pipeBoxShape.message);
+ if(shape==='four')return sides;
+ const key=shape==='three'?'pipeBoxOpenSide':'pipeBoxCorner';
+ if(!fields[key].values.includes(direction))throw Error(fields[key].message);
+ return sides.filter(side=>shape==='three'?side!==direction:direction.split('-').includes(side));
+}
+function pipeBoxPanels(f){
+ if(!family(f,'pipe-box')||f.obj)return null;
+ const w=f.w,d=f.d,h=height(f),t=value(f,'pipeBoxThickness'),bottom=value(f,'mountHeight'),sides=pipeBoxSides(f),rule=fields.pipeBoxThickness;
+ if(f.cabinet||f.kitchen)throw Error('包管柜不支持内部柜体结构');
+ if(![w,d,h,t,bottom].every(Number.isFinite)||w<50||d<50||h<10||Math.max(w,d,h)>20000||t<rule.min||t>rule.max||bottom<0||bottom>fields.mountHeight.max)throw Error('包管柜尺寸或离地高度无效');
+ const has=side=>sides.includes(side),widthBoards=Number(has('left'))+Number(has('right')),depthBoards=Number(has('front'))+Number(has('back'));
+ if(widthBoards*t>=w||depthBoards*t>=d)throw Error(`包管柜外宽须大于${widthBoards===2?'两倍':''}板厚，外深须大于${depthBoards===2?'两倍':''}板厚`);
+ return sides.map(key=>key==='left'||key==='right'?{key,w:t,d:d-depthBoards*t,h,x:(key==='left'?-1:1)*(w-t)/2,z:(Number(has('back'))-Number(has('front')))*t/2,bottom}:{key,w,d:t,h,x:0,z:(key==='front'?1:-1)*(d-t)/2,bottom});
+}
 // Missing overrides retain the historical opening; explicit values are absolute mm.
 function hobCutout(f){const spec=definition(f)?.hobCutout;if(!spec||f.obj)return null;return {w:f.hobCutout?.w??(spec.widthRatio===undefined?f.w-spec.inset:f.w*spec.widthRatio),d:f.hobCutout?.d??(spec.depthRatio===undefined?f.d-spec.inset:f.d*spec.depthRatio)};}
 function editHobCutout(f,key,n){if(f.locked)throw Error('家具已锁定，请先解锁');const next={...f,hobCutout:{...f.hobCutout,[key]:n}};validateField(next,'hobCutout',next.hobCutout);return next;}
@@ -171,13 +199,13 @@ function replacement(previous,next,candidate){
   const retain=retainReplacementField(previous,next,key);
   if(!retain)delete next[key];
  }
- if(family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
+ if(family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
  if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
  if(family(next,'arrow-shower')){delete next.mountHeight;next.showerMixerHeight=previous.type===next.type?showerInstallation(previous).mixer:value({type:next.type},'showerMixerHeight');for(const [key,v] of Object.entries(definition(next).identity))next[key]=candidate[key]||v;}
  if(next.type==='tripleslidingwindow')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
  if(next.type==='kitchenwall')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
- return next;
+ if(family(next,'pipe-box'))validate(next);return next;
 }
 // Derived geometry capability; no field is added to saved furniture instances.
 function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return !f.obj&&(C.supported(f)||['counter','vanity'].includes(f.type));}
@@ -186,6 +214,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,snapPi
  corner:{maxLegs:2,angle:90,lightSetback:0,lightRadius:8,compactInnerRadius:1,arcChordError:.05,arcMaxAngle:3,arcMaxSegments:1024},
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2}};
-const api={ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,vertical,replacementResizeSource,replacement,serviceCut};
+const api={ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "double-doors",
+    "pipebox"
+  ],
+  "results": [
+    {
+      "name": "double-doors",
+      "status": "PASS",
+      "seconds": 19,
+      "log": "double-doors.log"
+    },
+    {
+      "name": "pipebox",
+      "status": "PASS",
+      "seconds": 47.5,
+      "log": "pipebox.log"
+    }
+  ],
+  "notRun": []
+}

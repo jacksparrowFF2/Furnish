@@ -29,6 +29,7 @@
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
   products().resizeHoodGeometry(f,next);
+  if(products().family(next,'pipe-box'))products().validate(next);
   if(next.sinkNotch!==undefined)products().validateField(next,'sinkNotch',next.sinkNotch);
   if(next.hobCutout!==undefined)products().validateField(next,'hobCutout',next.hobCutout);
   const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return f.kitchen?kitchen().resize(f,next):cabinet().resize(f,next);

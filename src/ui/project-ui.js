@@ -11,7 +11,7 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
  if(f&&['dishwasher-opening','dishwasher-side'].includes(item.kind)){const result=P.dishwasherChecks(plan,f,{furniture});if(result)add(result.zones[item.kind==='dishwasher-side'?'vent':'opening']);}
  if(item.beamId){const beam=plan.beams?.find(b=>b.id===item.beamId);if(beam){const v=FurnishDraft.beamVertical(beam,P.ceilingHeight(plan));add(beam.poly,v?.assumed?null:v);}}
  for(const id of item.markerIds||[item.markerId]){const pipe=FurnishServices.pipes(plan).find(p=>p.id===id);if(pipe)add(pipe.poly,pipe.vertical);}
- const door=plan.doors?.[item.doorIndex];if(door){const points=[door.h];for(let i=0;i<=20;i++){const a=i/20*Math.PI/2;points.push([door.h[0]+door.len*(door.c[0]*Math.cos(a)+door.o[0]*Math.sin(a)),door.h[1]+door.len*(door.c[1]*Math.cos(a)+door.o[1]*Math.sin(a))]);}add(points);}
+ const door=plan.doors?.[item.doorIndex];if(door)for(const poly of FurnishGeometry.doorSwingPolygons(door))add(poly);
  if(!rows.length&&item.at){const [x,y]=item.at;add([[x-100,y-100],[x+100,y-100],[x+100,y+100],[x-100,y+100]]);}
  return rows;
 }

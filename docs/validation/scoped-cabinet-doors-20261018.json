@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-18",
+  "scope": [
+    "pipe enclosure catalog, geometry, selectable structure and orientation",
+    "double swing doors and inward/outward selection",
+    "rectangular/partial door restoration compatibility"
+  ],
+  "excludedUncommitted": [
+    "floor and wall tile changes",
+    "3D tiling origins",
+    "projects/workspace.furnish.json"
+  ],
+  "validationBasis": "Exact scoped candidate built from HEAD plus only the staged feature/fix changes. Other unstaged feature tests are intentionally absent. Earlier 207-suite records describe the combined worktree; this independently committable scope contains 204 suites.",
+  "fullCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 204,
+    "builtInPlans": 12,
+    "previewPages": 16,
+    "syntaxAndLocalAssetsPassed": true
+  },
+  "browser": {
+    "selected": [
+      "double-doors",
+      "pipebox",
+      "cabinet-catalog"
+    ],
+    "results": [
+      {
+        "name": "double-doors",
+        "status": "PASS",
+        "seconds": 14,
+        "log": "double-doors.log"
+      },
+      {
+        "name": "pipebox",
+        "status": "PASS",
+        "seconds": 31.9,
+        "log": "pipebox.log"
+      },
+      {
+        "name": "cabinet-catalog",
+        "status": "PASS",
+        "seconds": 11.2,
+        "log": "cabinet-catalog.log"
+      }
+    ],
+    "notRun": []
+  },
+  "sourceHashes": {
+    "index.html": "78638e8242d388ab11ac8d448a8c18fa185f7f1b0bbabcd2cf1a58da3ac12af2",
+    "src/app.js": "23efccbc0d4cc46f150ce0df1691ffc163453d9b6a01efe091c57999ad83400b",
+    "src/core/design-core.js": "87e82b84dec0a265dab9773c2523fb2226df9fe9f95d10ed534b4934b6ec3672",
+    "src/core/floorplan-core.js": "5957620c1aa6045b1fea6f8fe123f71c0a56eb6ca42c264f8665b340569fa99f",
+    "src/core/layout-geometry.js": "979558840a84ee210365863701036394fad65fe05686e55c92c7aee0babcead6",
+    "src/core/product-rules.js": "5f3b846f573908a8b8357d41a4564fa8f06c8ef9beaa6a13dcf313a8aa491f73",
+    "src/core/project-core.js": "d46e0594dc363bc0cbe405b1ad2034d1429ca66ceed92c4c09b76d0782362a96",
+    "src/core/service-core.js": "ae3a23a51b68df7f47eecd3624cd037ff71efe848362beedc1edc3daec64fe91",
+    "src/data/catalog.js": "0934102d64af7d6f3e8e6ceee04456469a78ef332fbbd268e2c24304444a53ea",
+    "src/data/i18n.js": "59977b3bb619d9430935507096312b6dd3ecc6d358e0f7235ebaa6ffe130235e",
+    "src/render/furniture-svg.js": "45d41c67eded1709c8dd05e4203666c44d2a572524c96dab17e28f3d1522e7ef",
+    "src/render/plan-renderer.js": "3659af98bc37235f58c82077ec6426fafb3ac862ee82b67b9806455922f499fe",
+    "src/ui/floorplan-editor.js": "d8db6a1153b9aeab9c526b964bc69c73e3090be1ee35dcd2cfab2009e4d46c49",
+    "src/ui/project-ui.js": "b51be4abaa521cf9250b5ef4f27148d20acdac35d317c796a19ed50a9974a216",
+    "src/ui/property-panel.js": "cf5d403489219d93a9576eb7cf31c95a96da9b7c7d7c4eac9ade3b8f92960c2f"
+  },
+  "notExecuted": [
+    "physical touch device",
+    "construction/installation validation"
+  ]
+}

@@ -28,6 +28,10 @@ const DASH = 'stroke-dasharray="4 3"';
     return s;
   }
   switch (t){
+    case 'pipebox': {
+      const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
+      return P.pipeBoxPanels({...f,type:t,w,d}).map(b=>rc(b.x-b.w/2,b.z-b.d/2,b.w,b.d,c)).join('');
+    }
     case 'aquarium_mijia_2pro': return rc(x,y,w,d,'#b8d8dc')
       +rc(x+w*.018,y+d*.02,w*.964,d*.96,'#b9d9d4')
       +rc(x,y,w,d*.27,c)+rc(x+w*.02,y+d*.27,w*.96,d*.035,'#6d9cbd')

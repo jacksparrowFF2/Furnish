@@ -41,6 +41,7 @@ const LIB = [
     ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
+    ["pipebox","管道包覆柜",400,300,"#f3f1ec",0,products.height({type:"pipebox"})],
     ["cabinet","收纳柜",1000,450,"#f3f1ec",1800,1800,null,null,"storage"],
     ["nightstand","床头柜",450,400,"#e8dccb",600],
     ["wardrobe","衣柜",2000,600,"#efe6d8",4500],

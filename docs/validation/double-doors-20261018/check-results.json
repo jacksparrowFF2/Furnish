@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-18",
+  "command": "node scripts/check.cjs",
+  "passed": true,
+  "suites": 207,
+  "builtInPlans": 12,
+  "previewPages": 0,
+  "scope": "Current source in an isolated copy; historical output excluded",
+  "checkedFiles": [
+    {
+      "file": "index.html",
+      "sha256": "3a25dcf3e23240f6b6185810ef604e93acdb599f988a9e33e899fdb8786586cc"
+    },
+    {
+      "file": "src/app.js",
+      "sha256": "23efccbc0d4cc46f150ce0df1691ffc163453d9b6a01efe091c57999ad83400b"
+    },
+    {
+      "file": "src/core/layout-geometry.js",
+      "sha256": "b4e9e64f9af9111954e6663f4e6f59fcf52f36c8a827ef3ea15c80ddc3126d0c"
+    },
+    {
+      "file": "src/core/project-core.js",
+      "sha256": "d46e0594dc363bc0cbe405b1ad2034d1429ca66ceed92c4c09b76d0782362a96"
+    },
+    {
+      "file": "src/core/floorplan-core.js",
+      "sha256": "5957620c1aa6045b1fea6f8fe123f71c0a56eb6ca42c264f8665b340569fa99f"
+    },
+    {
+      "file": "src/render/plan-renderer.js",
+      "sha256": "3659af98bc37235f58c82077ec6426fafb3ac862ee82b67b9806455922f499fe"
+    },
+    {
+      "file": "src/ui/property-panel.js",
+      "sha256": "8b6f733287b0c411b37329860d569613cff3b569bfcc7e7c6e49546e5a8d760a"
+    },
+    {
+      "file": "src/ui/floorplan-editor.js",
+      "sha256": "d8db6a1153b9aeab9c526b964bc69c73e3090be1ee35dcd2cfab2009e4d46c49"
+    },
+    {
+      "file": "src/ui/project-ui.js",
+      "sha256": "b51be4abaa521cf9250b5ef4f27148d20acdac35d317c796a19ed50a9974a216"
+    },
+    {
+      "file": "tests/test-double-doors.cjs",
+      "sha256": "3eeeb865096e24b159ec8f0385f18a6a2e666bf02b939c15c669094c51ae9bca"
+    },
+    {
+      "file": "scripts/verify/verify-double-doors.browser.js",
+      "sha256": "134ca66467294dd27a62714da8f5c874f926359e08696b2aaeb65e2c74eadd00"
+    }
+  ]
+}

@@ -30,6 +30,8 @@ function polygonOverlap(A,B,tolerance=5){for(const P of [A,B])for(let i=0;i<P.le
 function bodyParts(f){
   const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
   if(f.kitchen)return K.bodyParts(f);
+  const panels=P.pipeBoxPanels(f);
+  if(panels){const a=(f.rot||0)*Math.PI/180;return panels.map(b=>{const x=b.x*(f.flip?-1:1);return {p:corners({...f,w:b.w,d:b.d,cx:f.cx+x*Math.cos(a)-b.z*Math.sin(a),cy:f.cy+x*Math.sin(a)+b.z*Math.cos(a)}),vertical:{bottom:b.bottom,top:b.bottom+b.h,source:'model'}};});}
   const hood=P.hoodInstallation(f);
   if(hood){
     // The chimney shares the cabinet's height; the wider main body sits below it.
@@ -65,7 +67,7 @@ function collisions(furniture){
     if(!verticalOverlap(a,b,[vertical[i],vertical[j]]))continue;
     const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
     if(C&&(C.fridgeFitsBay(a,b)||C.fridgeFitsBay(b,a)||C.hoodBayFit(a,b)?.fits||C.hoodBayFit(b,a)?.fits))continue;
-    if (a.kitchen||b.kitchen?volumeOverlap(a,b):obbOverlap(a,b)) out.push([a.id, b.id]);
+    if (a.kitchen||b.kitchen||(root.FurnishProducts||require('./product-rules.js')).family(a,'pipe-box')||(root.FurnishProducts||require('./product-rules.js')).family(b,'pipe-box')?volumeOverlap(a,b):obbOverlap(a,b)) out.push([a.id, b.id]);
   }
   return out;
 }
@@ -74,14 +76,33 @@ const groupBox = items => { let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1
   return [x0, y0, x1, y1]; };
 
 
-// Local Z offset puts the closed leaf inside the wall, flush with the hinge face.
-// THREE's local Z at the closed angle maps to [-c.y, c.x] in plan coordinates.
+function doorLeaves(d){
+  if(d.doorType!=='double')return [d];
+  return [{...d,len:d.len/2},{...d,h:d.h.map((v,i)=>v+d.c[i]*d.len),c:d.c.map(v=>-v),len:d.len/2}];
+}
+function doorSwingPolygons(d){
+  return doorLeaves(d).map(leaf=>{const points=[leaf.h];for(let i=0;i<=20;i++){const a=i/20*Math.PI/2;points.push(leaf.h.map((v,k)=>v+leaf.len*(leaf.c[k]*Math.cos(a)+leaf.o[k]*Math.sin(a))));}return points;});
+}
+// Use the original wall face for legacy overrides that only reversed o.
+function doorOverride(d,value){
+  const base=d._base||d,next={...d,...base,...value};
+  // Dimension-only plans also accept rectangular openings without swing vectors.
+  for(const key of ['h','c','o'])if(Array.isArray(next[key]))next[key]=[...next[key]];
+  const hasVectors=door=>['h','c','o'].every(key=>Array.isArray(door[key])&&door[key].length===2&&door[key].every(Number.isFinite));
+  if(!hasVectors(base)||!hasVectors(next))return next;
+  const normal=Math.abs(next.c[0])>.5?1:0,flipped=next.o[0]*base.o[0]+next.o[1]*base.o[1]<0;
+  next.h[normal]=flipped?d.rect[normal]+d.rect[normal+2]-base.h[normal]:base.h[normal];
+  next.doorType=value?.doorType??base.doorType;
+  return next;
+}
+// Local Z puts the closed leaf inside the wall, flush with the hinge face.
+// At the closed angle, THREE's local Z maps to [-c.y, c.x] in plan coordinates.
 function doorLeafOffset(d, thickness=40){
   const normal=[-d.c[1],d.c[0]],center=[(d.rect[0]+d.rect[2])/2,(d.rect[1]+d.rect[3])/2];
   const inward=(center[0]-d.h[0])*normal[0]+(center[1]-d.h[1])*normal[1];
   return Math.sign(inward)*thickness/2;
 }
-  const api={solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,polygonOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatUnder,tuckedSeatPair,doorLeafOffset};
+  const api={solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,polygonOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatUnder,tuckedSeatPair,doorLeaves,doorSwingPolygons,doorOverride,doorLeafOffset};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishGeometry=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

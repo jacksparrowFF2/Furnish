@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-18",
+  "change": "Preserve rectangular/partial door opening records when the original swing baseline is unknown, including complete saved overrides; copy derived vectors without mutating sources.",
+  "workspace": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\door-restore-check-u738cvi6",
+  "fullCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 207,
+    "builtInPlans": 12,
+    "previewPages": 16,
+    "syntaxLocalAssetsSharedDeclarationsPassed": true
+  },
+  "browser": {
+    "command": "node scripts/verify-browser.cjs double-doors pipebox",
+    "workspace": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\verification-vlWf38",
+    "passed": true,
+    "cases": [
+      "double-doors",
+      "pipebox"
+    ],
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "coverage": [
+      "undo/redo",
+      "reset",
+      "refresh",
+      "real project export/import",
+      "390 px controls",
+      "production 3D"
+    ]
+  },
+  "sourceHashes": {
+    "src/core/layout-geometry.js": "979558840a84ee210365863701036394fad65fe05686e55c92c7aee0babcead6",
+    "src/core/project-core.js": "d46e0594dc363bc0cbe405b1ad2034d1429ca66ceed92c4c09b76d0782362a96",
+    "src/core/product-rules.js": "5f3b846f573908a8b8357d41a4564fa8f06c8ef9beaa6a13dcf313a8aa491f73",
+    "src/ui/property-panel.js": "8b6f733287b0c411b37329860d569613cff3b569bfcc7e7c6e49546e5a8d760a",
+    "index.html": "3a25dcf3e23240f6b6185810ef604e93acdb599f988a9e33e899fdb8786586cc",
+    "tests/test-drawing.cjs": "af1f69a005bfa23b1f9802949514a9df7f17ebeab795d492c5084763a12d18fd",
+    "tests/test-door-geometry.cjs": "95c75859ae5cbea23aa3c538def073c48c16b708d708add712aecbf0050cceea",
+    "tests/test-double-doors.cjs": "3eeeb865096e24b159ec8f0385f18a6a2e666bf02b939c15c669094c51ae9bca",
+    "tests/test-pipebox.cjs": "0fee21eea131553272908babe17b767cb23e84d6d242ba5304804949dca2d081"
+  },
+  "notExecuted": [
+    "physical touch device",
+    "construction/installation validation"
+  ],
+  "boundaries": [
+    "No swing direction or hinge-face correction is inferred without complete original vectors; existing planar swing and installation limits remain."
+  ]
+}

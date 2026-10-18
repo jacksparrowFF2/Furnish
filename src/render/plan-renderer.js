@@ -193,7 +193,7 @@ function renderOpenings(){
     else [1/3,2/3].forEach(t => s += `<line x1="${x0+w*t}" y1="${y0}" x2="${x0+w*t}" y2="${y1}" ${WS}/>`);
   });
   const DS = `stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"`;
-  DOORS.forEach(d => {
+  DOORS.flatMap(d=>FurnishGeometry.doorLeaves(d)).forEach(d => {
     const [hx,hy] = d.h, L = d.len, T = 40;
     const ox = hx + d.o[0]*L, oy = hy + d.o[1]*L, cx = hx + d.c[0]*L, cy = hy + d.c[1]*L;
     const sweep = d.o[0]*d.c[1] - d.o[1]*d.c[0] > 0 ? 1 : 0;

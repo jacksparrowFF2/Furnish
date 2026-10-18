@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-18",
+  "command": "node scripts/check.cjs",
+  "workspace": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\pipebox-shapes-check-kb05hoao",
+  "passed": true,
+  "regressionSuites": 206,
+  "builtInPlans": 12,
+  "previewPages": 16,
+  "productionHashes": {
+    "src/core/product-rules.js": "53823318e5430f049961e10687aea36e67bf12784caff9418945b46d266b7bda",
+    "src/core/project-core.js": "948b5ddc7db303599bf59385d9e1566c2fae77d5d3de87531a11f7a7d6cd9df1",
+    "src/ui/property-panel.js": "9c68b68142a7e383877c42c3d259d6289b749249be24f840ada9660183e7baee",
+    "index.html": "7ff91b0e3a5d8621a0d5e040ddca8b4cded5f4289a72753eb83700c82c1834d1",
+    "tests/test-pipebox.cjs": "f075474bfcae4068af7baed86b78e7489fc5f5cf605dd8f161f901e2efe94007"
+  },
+  "browser": {
+    "command": "node scripts/verify-browser.cjs pipebox",
+    "workspace": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\verification-XXIZxt",
+    "modes": [
+      "offline file://",
+      "HTTP"
+    ],
+    "passed": true
+  },
+  "notExecuted": [
+    "physical touch device",
+    "construction/installation validation"
+  ],
+  "boundaries": [
+    "selection, snapping, walls, beams and doors retain existing outer-envelope rules"
+  ],
+  "environment": "Sandbox denied local HTTP self-test (EACCES); identical clean-copy check passed outside sandbox."
+}

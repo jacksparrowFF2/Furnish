@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "cabinet-catalog"
+  ],
+  "results": [
+    {
+      "name": "cabinet-catalog",
+      "status": "PASS",
+      "seconds": 15.2,
+      "log": "cabinet-catalog.log"
+    }
+  ],
+  "notRun": []
+}

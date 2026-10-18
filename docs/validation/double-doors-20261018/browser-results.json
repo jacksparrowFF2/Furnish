@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-18",
+  "command": "node scripts/verify-browser.cjs double-doors",
+  "case": "double-doors",
+  "status": "PASS",
+  "result": [
+    {
+      "mode": "http",
+      "passed": true,
+      "saveUndoRedoRefresh": true,
+      "projectRoundtrip": true,
+      "mobile": true,
+      "production3D": true
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "saveUndoRedoRefresh": true,
+      "projectRoundtrip": true,
+      "mobile": true,
+      "production3D": true
+    }
+  ]
+}

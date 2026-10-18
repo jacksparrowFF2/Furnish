@@ -9,4 +9,28 @@ const work={furniture:[],rooms:{},drawing:{rotation:90,northAngle:32.5,dimension
 const restore=W.create({makeId:()=> 'id',colorFor:()=> '#fff',materials:M}).restore,first=restore(structuredClone(work),plan);assert.deepEqual(restore(structuredClone(first),plan),first);const legacy=restore({furniture:[]},plan);assert.equal(legacy.drawing,undefined);
 assert.throws(()=>restore({furniture:[],drawing:{northAngle:999}},plan));
 assert.equal(P.checkFingerprint({},P.effectivePlan(plan,{furniture:[],rooms:{}}),[],800),P.checkFingerprint({},P.effectivePlan(plan,work),[],800));
+// Dimension-only openings have no swing baseline; retain them without inventing one.
+const G=require('../src/core/layout-geometry.js'),clone=v=>JSON.parse(JSON.stringify(v));
+const override={h:[2900,1000],c:[0,1],o:[1,0],doorType:'double'};
+for(const partial of [{}, {h:[2900,1000]}, {h:[2900,1000],c:[0,1]}]){
+ const door={rect:[2900,1000,3100,1800],...partial},source=JSON.stringify(door);
+ const unchanged=G.doorOverride(door);assert.deepEqual(unchanged,door);assert.equal(JSON.stringify(door),source);
+ const configured=G.doorOverride(door,override);assert.deepEqual(configured,{...door,...override});
+ for(const key of ['h','c','o'])assert.notEqual(configured[key],override[key]);
+ const runtime={...door,_base:clone(door),...clone(override)};
+ assert.deepEqual(G.doorOverride(runtime,override).h,override.h);assert.equal(JSON.stringify(door),source);
+}
+for(const changes of [undefined,override]){
+ const restoredWork={...clone(work),...(changes?{open:{d:{0:clone(changes)}}}:{})};
+ const saved=P.unpack(P.pack({planId:plan.id,current:restoredWork,designs:[{name:'洞口',work:clone(restoredWork)}],catalog:[]}));
+ for(const w of [saved.current,saved.designs[0].work]){
+  let recovered=clone(w);
+  for(let i=0;i<3;i++){
+   recovered=restore(recovered,plan);const effective=P.effectivePlan(plan,recovered);
+   assert.deepEqual(effective.doors[0],changes?{...plan.doors[0],...changes}:plan.doors[0]);
+   assert(D.dimensions(effective,{openings:true}).some(d=>d.kind==='opening'&&d.value===800));
+   assert.equal(JSON.stringify(plan),before);
+  }
+ }
+}
 console.log('PASS projected automatic chains, openings, four display rotations, unknown north, sunlight direction, invalid input, named-project roundtrip and repeat restore');
