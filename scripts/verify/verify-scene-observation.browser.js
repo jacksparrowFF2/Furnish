@@ -7,7 +7,7 @@ async (page,verification)=>{
    await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();
    // Capture production camera/model references without adding debug APIs to the app.
    await p.evaluate(()=>{
-    const original=FurnishSceneObservation.create;FurnishSceneObservation.create=T=>{const observer=original(T),update=observer.update;window.__observation={T,observer};observer.update=(camera,bounds,architecture)=>{Object.assign(__observation,{camera,bounds:bounds.clone(),architecture});return update(camera,bounds,architecture);};return observer;};
+    const original=FurnishSceneObservation.create;FurnishSceneObservation.create=T=>{const observer=original(T),update=observer.update;window.__observation={T,observer};observer.update=(camera,bounds,architecture)=>{Object.assign(__observation,{observer,camera,bounds:bounds.clone(),architecture});return update(camera,bounds,architecture);};return observer;};
     const fit=FurnishSceneObservation.fit;FurnishSceneObservation.fit=(...args)=>{__observation.frame={bounds:args[2].clone(),options:args[4]};return fit(...args);};
     const room=ROOMS.find(r=>r.name==='阳台')||ROOMS.find(r=>r.name.includes('阳台'));if(!room)throw Error('balcony fixture missing');const b=bbox(room.poly);let n=0;
     const items=FurnishKitchen.createLaundryArea({id:'observe-base',cx:(b[0]+b[2])/2,cy:b[1]+340,rot:0,color:'#eee'},()=> 'observe-'+ ++n,'observation-group','left');

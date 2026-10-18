@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-18",
+  "scope": "Fixed wall tile width800 height400, wall-floor phase alignment and actual 1601 correction",
+  "basis": "User confirmed wall tile dimensions",
+  "actual": {
+    "planId": "custom_mv37igji",
+    "surfaces": 32,
+    "byRoom": {
+      "balcony": 9,
+      "kitchen": 8,
+      "bathroom": 15
+    },
+    "width": 800,
+    "height": 400,
+    "gap": 2,
+    "productionMeshes": 43,
+    "firstSeamOnly": 5,
+    "onlyCurrentWallTilingChanged": true,
+    "backup": ".local/furnish-recovery/wall-tile-size-20261018/before.furnish.json"
+  },
+  "browser": {
+    "wallFloorFollow": "output/playwright/verification-Dpx15m/results.json",
+    "tilingRenderAlignment": "output/playwright/verification-QhJw40/results.json",
+    "http": true,
+    "offlineFile": true,
+    "undoRedoRefresh": true,
+    "narrow390": true,
+    "visualActual": "output/playwright/wall-tile-fixed-size-actual/bathroom.jpg"
+  },
+  "limits": [
+    "Different tile pitches align the starting joint only",
+    "Existing doorway and wall corner clipping remains",
+    "No construction cutting list or full browser suite run"
+  ],
+  "codeCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 203,
+    "builtInPlans": 12,
+    "previewPages": 2033,
+    "syntaxAssetsAndSharedDeclarations": true
+  }
+}

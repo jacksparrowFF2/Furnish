@@ -7,7 +7,7 @@ const manual=T.setEnabled(work,ep(work),ids,true),linked=T.alignFloor(manual,ep(
 assert(linked.wallTiling.surfaces.every(s=>s.followFloor));assert(!T.requiresV7(manual));assert(T.requiresV7(linked));
 for(const angle of [0,90,180,270])for(const origin of [[0,0],[-145.25,871.3]]){
  const next=copy(linked);for(const a of Object.values(next.floorFinishes.areas))a.layout={width:600,height:300,gap:3,angle,origin};
- const derived=ep(next);for(const e of derived.wallTiling.surfaces){const f=T.faces(derived,next).find(f=>T.same(f,e.face)),expected=T.floorAlignment(derived,next,f);assert.deepEqual(e.layout,expected);assert.equal(e.layout.height,300);assert.equal(e.originZ,e.face.roomId===ids[0]?60:55);assert(T.cells(e).length);}
+ const derived=ep(next);for(const e of derived.wallTiling.surfaces){const f=T.faces(derived,next).find(f=>T.same(f,e.face)),expected=T.floorAlignment(derived,next,f);assert.deepEqual(e.layout,expected);assert.equal(e.layout.height,400);assert.equal(e.layout.width,800);assert.equal(e.layout.gap,2);assert.equal(e.originZ,e.face.roomId===ids[0]?60:55);assert(T.cells(e).length);}
  assert.deepEqual(next.wallTiling,seed,'floor edits never rewrite stored wall seeds');
  assert.notDeepEqual(derived.wallTiling.surfaces.map(e=>e.layout),ep(linked).wallTiling.surfaces.map(e=>e.layout),'same elevation layout changes invalidate cache');
  const old=copy(manual);old.floorFinishes=next.floorFinishes;assert(old.wallTiling.surfaces.every((s,i)=>JSON.stringify(ep(old).wallTiling.surfaces[i].layout)===JSON.stringify(s.layout)),'legacy remains manual');

@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-18",
+  "status": "PASS",
+  "change": "Aquarium scene regression injects production project/product cores and a valid minimal room into its VM.",
+  "singleTest": "node tests/test-aquarium.cjs",
+  "newAssertions": ["recorded 900 mm mount plus 60/80 mm finished floor gives physical 960/980 mm bottom", "unchanged floor datum reuses model", "changed floor datum rebuilds model", "no fallback model or rendering error"],
+  "fullCheck": {
+    "command": "node scripts/check.cjs",
+    "exitCode": 0,
+    "regressionSuites": 210,
+    "builtInPlans": 12,
+    "previewPages": 2993,
+    "syntaxAssetsAndSharedDeclarations": true,
+    "log": "check.log"
+  },
+  "diffCheck": "PASS",
+  "productionCodeChangedByThisFix": false,
+  "notRun": ["browser acceptance rerun"]
+}

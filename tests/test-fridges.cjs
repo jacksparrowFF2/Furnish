@@ -30,6 +30,7 @@ for(const type of ['fridge','fridge_french_drawer']){
   model.traverse(o=>{if(o.isMesh){assert.ok(o.geometry.attributes.position.array.every(Number.isFinite));assert.ok(o.geometry.attributes.normal.array.every(Number.isFinite));}});
  }
  ctx.state={furniture:[{...base}]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=f=>D.products().modelError(f);ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
+ Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildLabels(')),ctx);vm.runInContext('buildFurn()',ctx);const old=ctx.furnG.children[0];
  ctx.state.furniture[0].h=2100;vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],old);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).max.y,2.1);
  console.log('PASS fridge editing, lock, persistence, copy, default heights, 3D envelopes, rotation/mirroring and cache');

@@ -19,6 +19,7 @@ function fixture({openings=false,openingHosts=false,partition=false,reverse=fals
   });d.openings.find(o=>o.id==='window').length=1000;d.openings.find(o=>o.id==='door').length=2000;
  }
  const plan=F.build(d),work=W.create({makeId:()=> 'fixture',colorFor:()=> '#ddd',materials:{wood:{},tile800:{}}}).fresh(plan);
+ delete work.furnitureDatum; // This fixture represents a pre-datum project.
  work.furniture=[{id:'item',type:'custom',name:'验收柜',cx:500,cy:500,w:500,d:500,h:800,rot:0,color:'#bb9977'}];
  work.measures=[{a:{x:200,y:400},b:{x:4000,y:400}}];return {draft:d,plan,work};
 }

@@ -8,6 +8,7 @@ const model=require('../src/render/shower-arrow-model.js'),catalog=require('../s
  const ctx=vm.createContext({THREE,RoundedBoxGeometry,FurnishYeswoodSofaModel:require('../src/render/yeswood-sofa-model.js'),FurnishArrowShowerModel:model,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})});
  Object.assign(ctx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
+ Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js')});
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
  const item=catalog.library.flatMap(c=>c.items).find(i=>i[0]===model.type);assert.deepEqual([item[2],item[3],item[6]],model.spec);assert.equal(item[5],0);
  const f={id:'shower',mountHeight:350,type:model.type,name:item[1],w:item[2],d:item[3],h:item[6],color:item[4],cx:700,cy:900,rot:0};

@@ -87,9 +87,9 @@ function mountFabEditor(kind,title,content,{allowCanvas,dispose}={}){
   panel.id='fab-editor';panel.setAttribute('role','dialog');panel.setAttribute('aria-labelledby','fab-editor-title');
   panel.innerHTML=`<div class="fab-editor-head"><b id="fab-editor-title">${esc(title)}</b><button class="btn" data-fab-close aria-label="${tr('关闭快捷调整','Close quick adjustments')}">${ico('x')}</button></div>`+content;
   ($('#fab-dock')||$('#stage')).append(panel);$('#stage').classList.add('fab-editing');
-  const outside=e=>{if(allowCanvas?.()&&e.target.closest('#plan'))return;if(!e.target.closest('#fab,#fab-editor'))closeFabEditor(false);};
+  const outside=e=>{if(allowCanvas?.(e)&&e.target.closest('#plan,#view3d'))return;if(!e.target.closest('#fab,#fab-editor'))closeFabEditor(false);};
   document.addEventListener('pointerdown',outside,true);
-  const keydown=e=>{if(e.key==='Escape'&&!allowCanvas?.()){e.preventDefault();e.stopPropagation();closeFabEditor();}};
+  const keydown=e=>{if(e.key==='Escape'&&!allowCanvas?.(e)){e.preventDefault();e.stopPropagation();closeFabEditor();}};
   document.addEventListener('keydown',keydown,true);
   fabEditor={kind,dispose:()=>{dispose?.();document.removeEventListener('pointerdown',outside,true);document.removeEventListener('keydown',keydown,true);}};
   panel.querySelectorAll('[data-fab-close]').forEach(b=>b.onclick=()=>closeFabEditor());
@@ -281,7 +281,7 @@ function furniturePriceText(f){
 function furnitureDimensionSummary(f){
  const vertical=FurnishDesign.furnitureVerticalBounds(f),known=vertical&&[vertical.bottom,vertical.top].every(Number.isFinite),mm=v=>String(Number(v.toFixed(2)));
  const size=`${mm(f.w)} × ${mm(f.d)} × ${known?mm(vertical.top-vertical.bottom):'—'} mm`;
- return `<div class="furniture-dimensions" data-furniture-dimensions><b>${size}</b><small>${tr('占地宽 × 深 × 包络高','Footprint width × depth × envelope height')}</small><dl><div><dt>${tr('底部离地','Bottom above floor')}</dt><dd>${known?mm(vertical.bottom)+' mm':tr('待核对','Unknown')}</dd></div><div><dt>${tr('顶部离地','Top above floor')}</dt><dd>${known?mm(vertical.top)+' mm':tr('待核对','Unknown')}</dd></div></dl><small>${known?tr('标高按当前模型与方案参数派生','Elevations derived from the current model and design'):tr('高度未知，保留待核对','Height is unknown; verification required')}</small></div>`;
+ return `<div class="furniture-dimensions" data-furniture-dimensions><b>${size}</b><small>${tr('占地宽 × 深 × 包络高','Footprint width × depth × envelope height')}</small><dl><div><dt>${tr('底部离地','Bottom above floor')}</dt><dd>${known?mm(vertical.bottom)+' mm':tr('待核对','Unknown')}</dd></div><div><dt>${tr('顶部离地','Top above floor')}</dt><dd>${known?mm(vertical.top)+' mm':tr('待核对','Unknown')}</dd></div></dl><small>${known?tr(state.furnitureDatum==='finished-floor'?'高度按完成地面计；绝对标高见下方地面信息':'高度按毛坯测量基准计','Height datum follows the current design'):tr('高度未知，保留待核对','Height is unknown; verification required')}</small></div>`;
 }
 function waterheaterInstallationPanel(f){
   if(f.type!=='waterheater_flat')return '';

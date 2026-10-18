@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "count": 50,
+  "baseCounts": {
+    "55": 4,
+    "60": 46
+  },
+  "worldModelShift": true,
+  "balcony": {
+    "room": "area_fmv3p2ig914",
+    "label": "上边墙 8"
+  },
+  "realWallThickness": "user confirmed tile10 + bond20 mm, 32 faces",
+  "square": "preview only",
+  "errors": [],
+  "browser": [
+    {
+      "mode": "http",
+      "passed": true,
+      "bounds": {
+        "bottom": 59.99999925494194,
+        "top": 920.0000143051147,
+        "z": 60,
+        "base": 60
+      },
+      "undoRedoRefresh": true,
+      "projectRoundtrip": true,
+      "wallNumbers": 8,
+      "thickness": "10+20 synthetic input",
+      "singleWall800": true,
+      "narrow390": true,
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "bounds": {
+        "bottom": 59.99999925494194,
+        "top": 920.0000143051147,
+        "z": 60,
+        "base": 60
+      },
+      "undoRedoRefresh": true,
+      "projectRoundtrip": true,
+      "wallNumbers": 8,
+      "thickness": "10+20 synthetic input",
+      "singleWall800": true,
+      "narrow390": true,
+      "errors": []
+    }
+  ],
+  "screenshots": {
+    "scene": "output/playwright/real-finished-datum-balcony.png",
+    "square": "output/playwright/real-finished-datum-800-preview.png",
+    "narrow": "output/playwright/verification-shLR7D/workspace 迁移 #/output/playwright/furniture-finished-datum/file-mobile.png"
+  },
+  "fullCheck": {
+    "status": "failed",
+    "command": "node scripts/check.cjs",
+    "case": "tests/test-region-editor.cjs:82",
+    "detail": "Invalid intermediate area-boundary draft was accepted; this is in the concurrently maintained region editor.",
+    "log": "output/check-furniture-finished-datum.log"
+  },
+  "squareLayout": {
+    "wall": "outline_40",
+    "label": "阳台 · 上边墙 8",
+    "widthAfterFinish": 2958,
+    "tile": [
+      800,
+      800
+    ],
+    "gap": 2,
+    "reference": "floor",
+    "startHeight": -180,
+    "visibleRows": [
+      0,
+      3
+    ],
+    "oneRowPerWallBand": true
+  }
+}

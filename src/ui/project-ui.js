@@ -2,11 +2,11 @@
 // Read-only annotation data. Unknown height remains a footprint, never an inferred solid.
 function spaceIssueVolumes(plan,furniture,item,passage=800){
  const P=FurnishProject,rows=[],f=furniture.find(f=>f.id===item.id),add=(poly,vertical)=>{if(poly?.length)rows.push({poly,ranges:vertical?[[vertical.bottom,vertical.top]]:[]});};
- for(const id of [item.id,item.otherId]){const body=furniture.find(f=>f.id===id);if(body){try{for(const part of FurnishGeometry.bodyParts(body))add(part.p,part.vertical);}catch{add(P.polygon(body));}}}
+ for(const id of [item.id,item.otherId]){const body=furniture.find(f=>f.id===id);if(body){try{for(const part of FurnishGeometry.bodyParts(body,plan,furniture))add(part.p,part.vertical);}catch{add(P.polygon(body));}}}
  if(f&&item.kind==='front'){const c=f.frontClearance??600,a=(f.rot||0)*Math.PI/180;add(P.polygon({...f,cx:f.cx-Math.sin(a)*(f.d/2+c/2),cy:f.cy+Math.cos(a)*(f.d/2+c/2),d:c}));}
  if(f&&['cabinetdoor','cabinetdrawer','cabinetpassage'].includes(item.kind)){
   const zones=f.kitchen?FurnishKitchen.openingZones(f,{passage}):FurnishCabinet.openingZones(f,{passage});
-  for(const zone of zones)if(zone.kind===item.kind&&zone.column===item.column&&(!item.section||(zone.section||'storage')===item.section))rows.push({poly:zone.poly,ranges:zone.ranges});
+  for(const zone of zones)if(zone.kind===item.kind&&zone.column===item.column&&(!item.section||(zone.section||'storage')===item.section))rows.push({poly:zone.poly,ranges:FurnishCabinet.shiftOpening(zone,FurnishProducts.floorBase(plan,f,furniture).z).ranges});
  }
  if(f&&['dishwasher-opening','dishwasher-side'].includes(item.kind)){const result=P.dishwasherChecks(plan,f,{furniture});if(result)add(result.zones[item.kind==='dishwasher-side'?'vent':'opening']);}
  if(item.beamId){const beam=plan.beams?.find(b=>b.id===item.beamId);if(beam){const v=FurnishDraft.beamVertical(beam,P.ceilingHeight(plan));add(beam.poly,v?.assumed?null:v);}}

@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-18",
+  "scope": "Bathroom 3D floor-origin magnetic wall edges and continuous wall sliding",
+  "persistentFieldsAdded": false,
+  "behavior": {
+    "radiusPx": 12,
+    "priority": [
+      "completed-floor corner",
+      "physical wall edge",
+      "free interior"
+    ],
+    "release": "pull inward beyond 12px; far outside room retains last valid preview",
+    "wallSources": "intersection of completed room boundary and production wall/finish solids at finished floor elevation",
+    "excluded": [
+      "door gaps",
+      "overhead-only walls",
+      "virtual functional-zone edges"
+    ],
+    "interpolation": "screen closest point recovered with perspective fractional-linear world interpolation"
+  },
+  "browser": {
+    "results": "output/playwright/verification-5WCCeB/results.json",
+    "passed": [
+      "floor-origin-wall",
+      "floor-origin-corner",
+      "floor-origin-drag",
+      "floor-origin-3d"
+    ],
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "coverage": [
+      "off-centre grab approaching wall from outside",
+      "multiple tangential samples stay on exact wall line before release",
+      "wall-corner-wall transitions and free pull-off",
+      "Escape and cancellation restore",
+      "draft isolation, one application undo redo refresh",
+      "390px wall slide and cancel"
+    ]
+  },
+  "actual": {
+    "planId": "custom_mv37igji",
+    "roomId": "area_fmv3qdfiz23",
+    "angledProductionScene": true,
+    "wall": [
+      [
+        6493,
+        6621
+      ],
+      [
+        6493,
+        8180
+      ]
+    ],
+    "samples": [
+      [
+        6493,
+        7177.248552602955
+      ],
+      [
+        6493,
+        7411.0790398069785
+      ],
+      [
+        6493,
+        7644.909580758236
+      ]
+    ],
+    "draftOrigin": [
+      1681,
+      2820.91
+    ],
+    "cancelRestored": true,
+    "screenshot": "output/floor-origin-wall-actual/sliding.jpg",
+    "capture": "output/floor-origin-wall-actual/result.json",
+    "liveBrowserReloaded": false,
+    "liveBrowserReason": "User had left origin editor and was editing another item; leave current page intact.",
+    "captureStartEndUnchangedSHA256": "5C58180EE87C7BAE8D8508990260EE8D03CF3A634D2761A689C5A06DA905B266",
+    "workspaceLaterChangedOutsideCapture": true
+  },
+  "notRun": [
+    "full browser suite",
+    "physical touch device"
+  ],
+  "limits": [
+    "physical production walls use rectangular segments; diagonal projection helper tests do not add diagonal wall modeling",
+    "wall-floor unequal pitches align starting seam only",
+    "no wall-edge lock persists beyond this transient drag"
+  ],
+  "codeCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 204,
+    "builtInPlans": 12,
+    "previewPages": 2161,
+    "diffWhitespaceCheck": true,
+    "harnessUpdate": "room ceiling production excerpt now supplies the wall-edge cache and asserts it is cleared on architecture rebuild"
+  }
+}

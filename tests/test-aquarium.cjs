@@ -35,8 +35,15 @@ const svg=require('../src/render/furniture-svg.js').render(f.type,f.w,f.d,f.colo
  const o=Model.build(THREE,f),parts={};o.traverse(v=>{if(v.userData.aquariumPart)parts[v.userData.aquariumPart]=v;});
  assert(parts['front-glass'].position.z>0);assert(parts['filter-chamber'].position.z<0);assert(parts['front-glass'].material.transparent);assert.equal(parts['front-glass'].material.depthWrite,false);assert(parts.waterline.position.y<.296);assert(parts.plants&&parts.driftwood&&parts.fish);
  ctx.state={furniture:[installed]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=R.modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
+ // buildFurn now derives the furniture datum from the effective plan. Supply the
+ // production project/product cores so this test exercises the same scene path.
+ Object.assign(ctx,{FurnishProject:P,FurnishProducts:R,PLAN:{id:'aquarium_scene',walls:[],rooms:[{id:'aquarium_room',name:'鱼缸房间',poly:[[-1000,-1000],[1000,-1000],[1000,1000],[-1000,1000]],at:[0,0],mat:'wood'}]}});
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
  vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(before).min.y,.75);
  ctx.state.furniture=[{...installed,mountHeight:900}];vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).min.y,.9);
+ const floors=require('../src/core/floor-finish-core.js');ctx.state=floors.setLayers(ctx.state,ctx.PLAN,['aquarium_room'],{rawZ:0,tileThickness:10,baseThickness:50});ctx.state.furnitureDatum='finished-floor';
+ vm.runInContext('buildFurn()',ctx);const finished=ctx.furnG.children[0];assert.equal(ctx.furnitureRenderErrors.size,0);assert(!finished.userData.modelError);near(new THREE.Box3().setFromObject(finished).min.y,.96);
+ vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],finished,'unchanged finished-floor datum reuses the production model');
+ ctx.state=floors.setLayers(ctx.state,ctx.PLAN,['aquarium_room'],{rawZ:0,tileThickness:10,baseThickness:70});vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],finished,'changed floor datum invalidates the model cache');near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).min.y,.98);
  console.log('PASS aquarium defaults, validation, project/named roundtrip, repeated restore, copy/replacement, support elevation, production geometry and cache');
 })().catch(e=>{console.error(e);process.exitCode=1;});

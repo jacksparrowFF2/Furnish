@@ -29,7 +29,7 @@ function material(THREE,layout,{color='#e8e2d8'}={}){
 function uv(THREE,geometry,layout,{wx=v=>v/1000,wz=v=>v/1000}={}){
  const attr=geometry.attributes.position,out=[],a=layout.angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a),x0=wx(layout.origin[0]),z0=wz(layout.origin[1]);
  for(let i=0;i<attr.count;i++){const x=(attr.getX(i)-x0)*1000,y=(attr.getZ(i)-z0)*1000;out.push((c*x+s*y)/(layout.width+layout.gap),(-s*x+c*y)/(layout.height+layout.gap));}
- geometry.setAttribute('uv',new THREE.Float32BufferAttribute(out,2));return geometry;
+ const current=geometry.getAttribute('uv');if(current?.array.length===out.length){current.array.set(out);current.needsUpdate=true;}else geometry.setAttribute('uv',new THREE.Float32BufferAttribute(out,2));return geometry;
 }
 function surface(THREE,room,area,{wx=v=>v/1000,wz=v=>v/1000,material:provided,color}={}){
  const shapes=(room.polys||[room.poly]).map(poly=>{const s=new THREE.Shape();poly.forEach(([x,y],i)=>s[i?'lineTo':'moveTo'](wx(x),-wz(y)));return s;});

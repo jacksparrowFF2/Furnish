@@ -181,3 +181,6 @@ node scripts/verify-browser.cjs product-rules
 2026-10-16：`doorPairing.singleHinge={values:['left','right'],default:'left'}` 定义奇数自动门的独立门方向能力；新增可选模块／内部列 `doorSingleHinge`。缺失读取历史方向，不迁移旧数据，原 `door:right` 仍为右铰链；只有独立门索引消费此值。枚举、派生及新建／旧数据读取由共用柜体核心提供，模块功能替换沿用厨房清理，内部列结构保留。完整配置仍覆盖项目／命名方案、复制、采购、撤销、自动保存、几何和运动缓存及核对输入，无新增顶层字段或保存通道。详见 [独立门方向](KITCHEN-DESIGN.md#自动配门的配对顺序2026-10-15)。
 
 `counter` 与 `kitchenwall` 共享 `doorPairing={values:['end','start'],default:'end'}` 能力；可选模块 `doorPairing` 和内部结构列 `doorPairing` 由柜体核心校验。缺失不补写，旧奇数门首扇独立；start 使末扇独立。新模板仍沿用缺失默认。模块改为指定门型／无门功能／保留结构时清除模块设置，内部结构独立保留列设置；复制、替换、恢复、缓存及采购语义见 [自动门板配对](KITCHEN-DESIGN.md#自动配门的配对顺序2026-10-15)。没有新增顶层持久字段或 UI 清理名单。
+
+
+2026-10-18：产品核心新增validateDatum(work)与floorBase(plan,f,furniture)，定义家具相对完成地面的公共基准，优先关联宿主；缺少已知地面不推测标高。work.furnitureDatum为工作方案字段，无家具类型白名单／替换清理字段；复制与替换沿所在工作方案基准，旧家具保存结构不改写。设计与几何核心可显式传plan计算世界垂直包络，生产模型本体与独立预览仍读相对安装高度，主场景根组统一抬高。详细兼容与复验见FLOOR-FINISHES.md的家具基准节。

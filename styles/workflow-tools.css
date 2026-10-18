@@ -185,3 +185,26 @@ main.drawer-panel #fab-dock{visibility:hidden}
 #floor-level-rooms .floor-region-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 
 .scene-floor-step{padding:3px 7px;border:1px solid #9a8160;border-radius:6px;background:#fff9edeb;color:#65492c;font:600 11px/1.4 sans-serif;white-space:nowrap;pointer-events:none;box-shadow:0 1px 5px #0002}
+
+/* Origin-only previews keep a small form beside the existing main scene. */
+#fab-editor [data-floor-origin3d-editor] .form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+#fab-editor [data-floor-origin3d-editor] label,#fab-editor [data-floor-origin3d-editor] input{min-width:0;width:100%}
+#fab-editor [data-floor-origin3d-editor] p{font-size:12px;overflow-wrap:anywhere}
+#view3d.floor-origin-picking canvas{cursor:crosshair!important;touch-action:none}
+#view3d.floor-origin-dragging canvas{cursor:grabbing!important;touch-action:none}
+.floor-region-row>.floor-region-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+@media(max-width:600px){.floor-region-row>.floor-region-actions{grid-column:2;grid-row:1 / 3;flex-direction:column}}
+
+#fab-editor:has([data-floor-origin3d-editor]){left:auto!important;right:16px;top:80px!important;bottom:auto!important;width:320px;max-height:calc(100% - 180px)}
+@media(max-width:600px){#fab-editor:has([data-floor-origin3d-editor]){right:12px;top:auto!important;bottom:90px!important;width:calc(100% - 24px);max-height:46%}#fab-editor [data-floor-origin3d-editor]>p:first-child{display:none}}
+@media(max-width:600px){main.is3d:has([data-floor-origin3d-editor]) #property-peek,main.is3d:has([data-floor-origin3d-editor]) .scene-light{display:none}}
+
+#view3d.wall-origin-dragging canvas{cursor:grabbing!important;touch-action:none}
+#fab-editor:has([data-wall-origin3d-editor]){left:auto!important;right:16px;top:80px!important;bottom:auto!important;width:320px;max-height:calc(100% - 180px)}
+#fab-editor [data-wall-origin3d-editor] .form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+#fab-editor [data-wall-origin3d-editor] input{min-width:0;width:100%}
+#fab-editor [data-wall-origin3d-editor] p{font-size:12px;overflow-wrap:anywhere}
+@media(max-width:600px){#fab-editor:has([data-wall-origin3d-editor]){right:12px;top:auto!important;bottom:90px!important;width:calc(100% - 24px);max-height:46%}#fab-editor [data-wall-origin3d-editor]>p:first-child{display:none}main.is3d:has([data-wall-origin3d-editor]) #property-peek,main.is3d:has([data-wall-origin3d-editor]) .scene-light{display:none}}
+
+/* Compact scene IDs share the wall-layout list numbering. */
+.wall-tile-scene-number{pointer-events:auto;cursor:pointer;border:1px solid #087f5b;background:#fffdf4e8;color:#075c43;padding:3px 7px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 1px 4px #0003}

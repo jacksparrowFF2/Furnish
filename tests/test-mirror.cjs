@@ -27,6 +27,7 @@ assert.equal(D.furnitureVerticalBounds(base).top,1700);assert.equal(D.furnitureV
   model.traverse(o=>{if(o.isMesh){assert.ok(o.geometry.attributes.position.array.every(Number.isFinite));assert.ok(o.geometry.attributes.normal.array.every(Number.isFinite));if(o.geometry.type==='PlaneGeometry')assert.ok(o.geometry.parameters.height>0);}});
  }
  ctx.state={furniture:[{...base}]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=f=>D.products().modelError(f);ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
+ Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildLabels(')),ctx);vm.runInContext('buildFurn()',ctx);const old=ctx.furnG.children[0];
  ctx.state.furniture[0].h=1900;vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],old);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).max.y,1.95);
  console.log('PASS mirror height editing, validation, lock, history, persistence, copy, legacy defaults, production geometry and cache refresh');

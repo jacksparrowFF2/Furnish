@@ -176,6 +176,26 @@ function resizeHoodGeometry(f,next){
 }
 function migrate(f){const next={...f};if(family(f,'arrow-shower')){next.showerMixerHeight=showerInstallation(f).mixer;delete next.mountHeight;}return next;}
 function sinkInstallation(f,host){const spec=definition(f).sink,thickness=host?.kitchen?.thickness??40,surface=host?.kitchen?host.kitchen.baseHeight+thickness:860,upper=host?surface+(value(f,'sinkInstall')==='under'?-thickness:value(f,'sinkInstall')==='top'?spec.rimThickness:0):value(f,'counterElevation');return {upper,bottom:upper-height(f),top:upper+spec.faucetRise*Math.min(f.d/spec.nominalDepth,Math.max(0,f.w-40)/spec.nominalInnerWidth)};}
+// Furniture dimensions stay relative to the selected datum. Architectural
+// elevations (ceilings, openings, beams and fixed sockets) remain absolute.
+const furnitureDatum=Object.freeze({default:'finished-floor',legacy:'survey',values:Object.freeze(['survey','finished-floor'])});
+function floorBase(plan,f,furniture=plan?.furniture||[],trail=new Set()){
+ if(plan?.furnitureDatum!==furnitureDatum.default)return {z:0,known:true};
+ if(trail.has(f.id))return {z:0,known:false};trail=new Set(trail);trail.add(f.id);
+ const hostId=f.counterLink?.hostId||f.laundryHostId,host=hostId&&furniture.find(v=>v.id===hostId);
+ if(host)return floorBase(plan,host,furniture,trail);
+ const F=root.FurnishFloorFinish||require('./floor-finish-core.js');
+ let candidates=F.at(plan,[f.cx,f.cy]);
+ if(!candidates.length){
+  const G=root.FurnishGeometry||require('./layout-geometry.js'),Z=root.FurnishZoneGeometry||require('./zone-geometry.js'),footprints=G.footprints(f);
+  candidates=(plan.rooms||[]).filter(r=>r.counted!==false).map(room=>{const polys=room.polys||[room.poly],overlap=Z.area(Z.decompose([...polys,...footprints],p=>polys.some(q=>Z.inside(p,q))&&footprints.some(q=>Z.inside(p,q))));return {room,overlap,...(plan.floorFinish?.areas[room.id]||{id:room.id,finishedZ:0})};}).filter(a=>a.overlap>1e-6).sort((a,b)=>b.overlap-a.overlap);
+  // A bay platform is architectural. Furniture in it shares the adjoining
+  // room's floor datum, without moving the measured platform or window sill.
+  if(!candidates.length){const bay=(plan.rooms||[]).find(r=>r.counted===false&&Z.inside([f.cx,f.cy],r.poly));if(bay)for(let i=0;i<bay.poly.length&&!candidates.length;i++){const a=bay.poly[i],b=bay.poly[(i+1)%bay.poly.length],mid=a.map((v,j)=>(v+b[j])/2);candidates=[[.1,0],[-.1,0],[0,.1],[0,-.1]].flatMap(d=>F.at(plan,mid.map((v,j)=>v+d[j])));}}
+ }
+ const area=candidates[0];return area?{z:Number.isFinite(area.finishedZ)?area.finishedZ:0,known:Number.isFinite(area.finishedZ),roomId:area.roomId||area.id}:{z:0,known:false};
+}
+function validateDatum(work){if(work?.furnitureDatum!==undefined&&!furnitureDatum.values.includes(work.furnitureDatum))throw Error('家具高度基准须为毛坯或完成地面');}
 function vertical(f){
  if(f.type==='ksink'&&f.sinkNotch){const base=f.counterElevation??862,r=definition(f).notch;return {bottom:base-r.bodyDepth,top:base+r.faucetRise,source:'model'};}
  if(family(f,'arrow-sink')){const {bottom,top}=sinkInstallation(f);return {bottom,top,source:'model'};}
@@ -214,6 +234,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,snapPi
  corner:{maxLegs:2,angle:90,lightSetback:0,lightRadius:8,compactInnerRadius:1,arcChordError:.05,arcMaxAngle:3,arcMaxSegments:1024},
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2}};
-const api={ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,vertical,replacementResizeSource,replacement,serviceCut};
+const api={ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

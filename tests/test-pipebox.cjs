@@ -125,6 +125,7 @@ assert.doesNotThrow(()=>P.review(plan,{furniture:[{...f,pipeBoxOpenSide:'invalid
   const meshes=[];o.traverse(m=>{if(m.isMesh)meshes.push(m);});assert.equal(meshes.length,expected.length);
  }
  ctx.state={furniture:[{...f,mountHeight:750}]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=R.modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
+ Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
  vm.runInContext('buildFurn()',ctx);const original=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],original);
  ctx.state.furniture[0].pipeBoxThickness=30;vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],original);

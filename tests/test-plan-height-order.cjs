@@ -27,7 +27,7 @@ assert.deepEqual(ids([dining,...chairs]),[...chairs.map(v=>v.id),'dining'],'all 
 assert.deepEqual(ids([lamp,dining,...chairs,rug]),['rug',...chairs.map(v=>v.id),'dining','lamp'],'rug and pendant layers remain intact');
 const children=[{dataset:{fid:'tv'}},{dataset:{fid:'cab'}}],g={children,innerHTML:'',setAttribute(){},appendChild(node){children.splice(children.indexOf(node),1);children.push(node);}},nodes={'#gFurn':g,'#emptyHint':{hidden:true},'#furnHidden':{hidden:true}};
 const nodeFor=id=>({dataset:{fid:id},toggleAttribute(name,on){this[name]=on;}});children.splice(0,children.length,...children.map(v=>nodeFor(v.dataset.fid)));
-const ctx=vm.createContext({FurnishDesign:D,state:{furniture:original},furnitureRenderErrors:new Map(),furnitureError:D.products().modelError,renderableFurniture:()=>original.filter(f=>!D.products().modelError(f)),ui:{layers:{furn:true,collide:false}},$:s=>nodes[s],PAL:{text:'#111'},collisions:()=>[],furnSVG:()=>'<rect/>',esc:s=>s,nm:s=>s});
+const ctx=vm.createContext({FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishDesign:D,state:{furniture:original},furnitureRenderErrors:new Map(),furnitureError:D.products().modelError,renderableFurniture:()=>original.filter(f=>!D.products().modelError(f)),ui:{layers:{furn:true,collide:false}},$:s=>nodes[s],PAL:{text:'#111'},collisions:()=>[],furnSVG:()=>'<rect/>',esc:s=>s,nm:s=>s});
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),ctx);
 ctx.refreshHobOpenings=()=>{}; // This DOM fixture exercises furniture ordering only.
 ctx.renderFurn();assert(g.innerHTML.indexOf('data-fid="cab"')<g.innerHTML.indexOf('data-fid="tv"'),'real SVG adapter emits lower first');

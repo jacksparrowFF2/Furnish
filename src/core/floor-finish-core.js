@@ -155,7 +155,7 @@ function snapOrigin(point,rooms,tolerance){
  }
  return result;
 }
-function onlyChange(a,b){const strip=v=>{const c=clone(v);delete c.floorFinishes;return JSON.stringify(c);};return strip(a)===strip(b);}
+function onlyChange(a,b){const strip=v=>{const c=clone(v);delete c.floorFinishes;delete c.furnitureDatum;return JSON.stringify(c);};return strip(a)===strip(b);}
 function overlaps(a,b){
  const box=p=>[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))],x=box(a),y=box(b);
  if(x[2]<=y[0]||y[2]<=x[0]||x[3]<=y[1]||y[3]<=x[1])return false;
@@ -166,10 +166,10 @@ function checks(plan,furniture){
  const G=root.FurnishGeometry||require('./layout-geometry.js'),D=root.FurnishDesign||require('./design-core.js');
  for(const a of Object.values(data.areas))if(finite(a.finishedZ)&&a.finishedZ>=(a.room.ceilingHeight??plan.ceilingHeight??2800))issues.push({kind:'floorheight',id:'floor-'+a.id,roomId:a.id,name:a.room.name,message:'完成地面达到或超过天花标高，请核对毛坯基准与层厚'});
  for(const f of furniture){
-  const touched=surfaces(plan).filter(a=>G.footprints(f).some(p=>(a.room.polys||[a.room.poly]).some(q=>overlaps(p,q)))),areas=[...new Map(touched.map(a=>[a.roomId||a.id,a])).values()],known=areas.filter(a=>finite(a.finishedZ)),v=D.furnitureVerticalBounds(f);
+  const touched=surfaces(plan).filter(a=>G.footprints(f).some(p=>(a.room.polys||[a.room.poly]).some(q=>overlaps(p,q)))),areas=[...new Map(touched.map(a=>[a.roomId||a.id,a])).values()],known=areas.filter(a=>finite(a.finishedZ)),v=D.furnitureVerticalBounds(f,plan,furniture);
   if(!areas.length)continue;
   if(!v||areas.some(a=>!finite(a.finishedZ)))issues.push({kind:'floorheight',id:f.id,name:f.name,pending:true,message:'家具或所跨区域高度未知，地面净高待核对'});
-  else for(const a of known)if(v.bottom<a.finishedZ-1e-6)issues.push({kind:'floorheight',id:f.id,roomId:a.roomId||a.id,name:f.name,message:`家具底部低于 ${a.room.name} 完成地面 ${Number((a.finishedZ-v.bottom).toFixed(2))} mm；原高度保持，请人工核对安装`});
+  else for(const a of known)if(v.bottom<a.finishedZ-1e-6)issues.push({kind:'floorheight',id:f.id,roomId:a.roomId||a.id,name:f.name,message:`家具底部低于 ${a.room.name} 完成地面 ${Number((a.finishedZ-v.bottom).toFixed(2))} mm；请核对完成地面基准和安装高度`});
   const levels=[...known.map(a=>a.finishedZ),...(plan.rooms||[]).filter(r=>r.counted!==false&&G.footprints(f).some(p=>overlaps(p,r.poly))).map(r=>data.areas[r.id]?.finishedZ??(data.areas[r.id]?undefined:0))].filter(finite);
   if(levels.length&&Math.max(...levels)-Math.min(...levels)>1e-6&&v?.bottom<=Math.max(...levels)+5)issues.push({kind:'floorlevel',id:f.id,name:f.name,message:'家具支承范围跨越不同地面标高，请核对支脚与安装'});
  }

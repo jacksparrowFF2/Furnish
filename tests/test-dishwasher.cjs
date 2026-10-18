@@ -36,6 +36,7 @@ const closed=SVG.render(f.type,f.w,f.d,f.color,{ink:'#333'},f),open=SVG.render(f
  const closedModel=Model.build(T,{...f,mountHeight:0});closedModel.updateMatrixWorld(true);const rays=new T.Raycaster(new T.Vector3(0,.235,1),new T.Vector3(0,0,-1)),hits=rays.intersectObject(closedModel,true);assert(hits[0].object.userData.dishwasherPart.startsWith('display'),'front display is visible, not buried in the door');
  // Production app cache must rebuild after a pose or elevation edit.
  ctx.state={furniture:[f]};ctx.furnG=new T.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=R.modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
+ Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],before);ctx.state.furniture=[{...f,dishwasherDoorOpen:true,mountHeight:0}];vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],before);near(new T.Box3().setFromObject(ctx.furnG.children[0]).min.y,0);
  console.log('PASS countertop dishwasher defaults, validation, copy/replacement, restore, named project roundtrip, support contact, production poses, transforms and cache');
 })().catch(e=>{console.error(e);process.exitCode=1;});

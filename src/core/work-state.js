@@ -13,7 +13,7 @@
       return {
         furniture:plan.defaults.map(f => ({id:makeId(), type:f.t, name:f.n,
           cx:f.x, cy:f.y, w:f.w, d:f.d, rot:f.r || 0, color:f.c || colorFor(f.t),...(f.t==='counter'?design.products().initial({type:'counter',w:f.w,d:f.d}):{})})),
-        rooms, demolished:[], measures:[], notes:[], open:{},
+        rooms, furnitureDatum:design.products().furnitureDatum.default, demolished:[], measures:[], notes:[], open:{},
         ...(plan.customDraft ? {architecture:{draft:plan.customDraft, phase:'survey'}} : {}),
       };
     }
@@ -22,6 +22,7 @@
     }
     // Preserve the caller's work object and extra project fields, as before.
     function restore(work, plan){
+      design.products().validateDatum(work);
       (root.FurnishWallFinish||require('./wall-finish-core.js')).validate(work.wallFinishes);
       (root.FurnishFloorFinish||require('./floor-finish-core.js')).validate(work.floorFinishes);
       if(work.wallTiling!==undefined)(root.FurnishWallTiling||require('./wall-tiling-core.js')).validate(work.wallTiling);

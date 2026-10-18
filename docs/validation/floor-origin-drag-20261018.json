@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-18",
+  "scope": "Bathroom 3D live origin-handle drag on production floor and linked-wall UVs",
+  "persistentFieldsAdded": false,
+  "browser": {
+    "results": "output/playwright/verification-DwSZbB/results.json",
+    "passed": [
+      "floor-origin-drag",
+      "floor-origin-3d",
+      "floor-origin",
+      "wall-floor-follow"
+    ],
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "coverage": [
+      "multiple UV previews before mouse release",
+      "frozen camera while dragging",
+      "outside-room and outside-canvas release",
+      "Escape, pointercancel, capture loss and window blur restore previous draft",
+      "one-step apply undo redo refresh",
+      "390px unobscured handle and editor",
+      "other rooms and saved wall dimensions preserved"
+    ]
+  },
+  "actual": {
+    "planId": "custom_mv37igji",
+    "roomId": "area_fmv3qdfiz23",
+    "unchangedWorkspaceSHA256": "5C58180EE87C7BAE8D8508990260EE8D03CF3A634D2761A689C5A06DA905B266",
+    "savedOrigin": [
+      573.5,
+      2404
+    ],
+    "isolatedDragPreview": [
+      786.72,
+      2256.38
+    ],
+    "continuousUpdates": 16,
+    "meanCPUUpdateMs": 13.39,
+    "maxCPUUpdateMs": 14.4,
+    "timingScope": "headless Edge production preview call CPU time, excludes rendering and pointer transport; no FPS guarantee",
+    "cancelRestored": true,
+    "screenshots": [
+      "output/floor-origin-drag-actual/before.jpg",
+      "output/floor-origin-drag-actual/dragging.jpg"
+    ],
+    "captureData": "output/floor-origin-drag-actual/result.json",
+    "realChromeGesturePreview": [
+      861.79,
+      2211.81
+    ],
+    "realChromeResetToSaved": true,
+    "editorLeftOpenAtSavedOrigin": true
+  },
+  "notRun": [
+    "full browser suite",
+    "physical touch device"
+  ],
+  "limits": [
+    "only followFloor walls update with floor origin; manual walls stay manual",
+    "handle uses an equivalent in-room grid corner or interior translation proxy for very small regions",
+    "drag is constrained to current room at its finished-floor plane",
+    "wall-floor unequal pitches align the starting seam only; no slope, drain or cut optimization"
+  ],
+  "codeCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 204,
+    "builtInPlans": 12,
+    "previewPages": 2129,
+    "diffWhitespaceCheck": true
+  }
+}

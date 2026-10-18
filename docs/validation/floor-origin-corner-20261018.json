@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-18",
+  "scope": "Fix bathroom 3D origin-handle snapping to completed-floor boundary corners",
+  "cause": [
+    "dragging did not use corner snapping",
+    "strict polygon containment excluded some boundary points"
+  ],
+  "persistentFieldsAdded": false,
+  "browser": {
+    "results": "output/playwright/verification-Fq11Xg/results.json",
+    "passed": [
+      "floor-origin-corner",
+      "floor-origin-drag",
+      "floor-origin-3d"
+    ],
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "coverage": [
+      "off-centre grab approaching a corner from outside within 12 screen pixels",
+      "exact boundary marker retained after release",
+      "grab again at boundary and move out of snap radius",
+      "Escape restores snapped draft; cancel restores saved UVs",
+      "existing live drag, camera freeze, cancellation, apply undo redo refresh and 390px"
+    ]
+  },
+  "actual": {
+    "planId": "custom_mv37igji",
+    "roomId": "area_fmv3qdfiz23",
+    "unchangedWorkspaceSHA256": "5C58180EE87C7BAE8D8508990260EE8D03CF3A634D2761A689C5A06DA905B266",
+    "angledProductionScene": true,
+    "corner": [
+      4847,
+      6687
+    ],
+    "handle": [
+      4847,
+      6687
+    ],
+    "draftOrigin": [
+      35,
+      1863
+    ],
+    "cancelRestored": true,
+    "screenshot": "output/floor-origin-corner-actual/snapped.jpg",
+    "capture": "output/floor-origin-corner-actual/result.json",
+    "realChromePageUpdated": true,
+    "realChromeUserDraftRestored": [
+      -853.38,
+      3342.3
+    ]
+  },
+  "notRun": [
+    "full browser suite",
+    "physical touch device"
+  ],
+  "limits": [
+    "12px corner snapping only; no wall-edge magnetic snapping",
+    "wall-floor unequal pitches align starting seam only",
+    "other-room surfaces and hole interiors are not drop targets"
+  ],
+  "codeCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 204,
+    "builtInPlans": 12,
+    "previewPages": 2145,
+    "diffWhitespaceCheck": true,
+    "thresholdFollowup": "node tests/test-floor-origin-preview.cjs passed after adding 11.99 / 12 / 12.01px assertions"
+  }
+}

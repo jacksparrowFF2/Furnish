@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-18",
+  "scope": "Independent single-wall 3D origin drag and vertical corner / horizontal finished-floor snapping",
+  "persistentFieldsAdded": false,
+  "schema": "existing wallTiling layout.offset/startHeight/reference and optional followFloor",
+  "behavior": {
+    "radiusPx": 12,
+    "plane": "selected production wall in facing-wall U / absolute Z millimetres",
+    "snapTargets": [
+      "outer corner vertical lines",
+      "finished-floor horizontal line",
+      "their intersections"
+    ],
+    "excluded": [
+      "door and window openings",
+      "other walls",
+      "hidden area above production low-wall cut"
+    ],
+    "apply": "detach only selected wall from floor following and preserve effective size/gap/orientation/reference",
+    "cancel": "restore exact UV arrays and temporary clipping materials; retain original link"
+  },
+  "codeCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 206,
+    "builtInPlans": 12,
+    "previewPages": 2193,
+    "diffWhitespaceCheck": true
+  },
+  "browser": {
+    "runs": [
+      {
+        "results": "output/playwright/verification-4mnxpm/results.json",
+        "passed": [
+          "wall-origin-3d",
+          "floor-origin-wall",
+          "wall-floor-follow"
+        ]
+      },
+      {
+        "results": "output/playwright/verification-ujS2Gy/results.json",
+        "passed": [
+          "wall-origin-3d"
+        ],
+        "scope": "additional pointercancel, lost capture and blur restoration"
+      },
+      {
+        "results": "output/playwright/verification-HXK5WK/results.json",
+        "passed": [
+          "scene-observation"
+        ]
+      }
+    ],
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "testInstrumentationRepair": "scene-observation now records the observer instance performing the active update rather than assuming only one observer exists",
+    "coverage": [
+      "real continuous mouse drag before release",
+      "vertical corner and horizontal floor-line sliding, intersection priority",
+      "frozen camera and temporary foreground cutaway",
+      "reset, invalid input, Escape, pointercancel, capture loss and blur",
+      "draft excluded from storage/history/report image",
+      "one-face detach and undo restores old link; redo and refresh",
+      "390px editor and handle"
+    ]
+  },
+  "actual": {
+    "face": {
+      "wallId": "outline_21",
+      "side": 1,
+      "roomId": "area_fmv3qdfiz23"
+    },
+    "draftOrigin": [
+      543.4,
+      0
+    ],
+    "savedStateUnchanged": true,
+    "cancelRestored": true,
+    "captureComparedWorkspaceBytesAtStartAndEnd": true,
+    "screenshots": [
+      "output/wall-origin-3d-actual/corner.jpg",
+      "output/wall-origin-3d-actual/floor-line.jpg"
+    ],
+    "captureData": "output/wall-origin-3d-actual/result.json",
+    "liveUserBrowserChanged": false
+  },
+  "notRun": [
+    "full browser suite",
+    "physical touch device"
+  ],
+  "limits": [
+    "only previously enabled production wall surfaces can be previewed",
+    "unknown finished floor or wall position must be resolved first",
+    "manual origin preview does not render unsaved size/enable changes from the ordinary elevation form",
+    "furniture remains opaque; cutaway affects architecture only",
+    "no opening reveals, sloping walls, cutting or offcut optimization"
+  ]
+}

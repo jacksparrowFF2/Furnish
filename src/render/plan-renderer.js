@@ -98,7 +98,7 @@ function renderRooms(){
 
 // Floor rugs and translucent pendants retain their layers; separated height
 // ranges and tucked seats are drawn bottom to top where footprints overlap.
-const drawOrder = () => {const valid=renderableFurniture(),ids=new Set(valid.map(f=>f.id));return [...FurnishDesign.planFurnitureOrder(valid),...state.furniture.filter(f=>!ids.has(f.id))];};
+const drawOrder = () => {const valid=renderableFurniture(),ids=new Set(valid.map(f=>f.id));return [...FurnishDesign.planFurnitureOrder(valid,FurnishProject.effectivePlan(PLAN,state)),...state.furniture.filter(f=>!ids.has(f.id))];};
 // Drag feedback is derived from the current pointer operation, never saved.
 function syncTuckedSeatPreview(){
  const moving=new Set(typeof drag!=='undefined'&&drag?.kind==='move'&&drag.moved?drag.ids:[]),seats=state.furniture.filter(f=>moving.has(f.id)),G=globalThis.FurnishGeometry;

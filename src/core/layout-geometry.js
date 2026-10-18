@@ -27,7 +27,12 @@ function obbOverlap(a, b){
 }
 function footprints(f){const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);return f.kitchen?K.footprints(f):[corners(f)];}
 function polygonOverlap(A,B,tolerance=5){for(const P of [A,B])for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length],nx=q[1]-P[i][1],ny=P[i][0]-q[0],L=Math.hypot(nx,ny)||1,pa=A.map(p=>(p[0]*nx+p[1]*ny)/L),pb=B.map(p=>(p[0]*nx+p[1]*ny)/L);if(Math.max(...pa)<=Math.min(...pb)+tolerance||Math.max(...pb)<=Math.min(...pa)+tolerance)return false;}return true;}
-function bodyParts(f){
+function bodyParts(f,plan,furniture){
+  const parts=relativeBodyParts(f);if(!plan)return parts;
+  const base=(root.FurnishProducts||require('./product-rules.js')).floorBase(plan,f,furniture);
+  return parts.map(p=>({...p,vertical:p.vertical&&base.known?{...p.vertical,bottom:p.vertical.bottom+base.z,top:p.vertical.top+base.z}:null}));
+}
+function relativeBodyParts(f){
   const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
   if(f.kitchen)return K.bodyParts(f);
   const panels=P.pipeBoxPanels(f);
@@ -41,7 +46,7 @@ function bodyParts(f){
   }
   return [{p:corners(f),vertical:D?.furnitureVerticalBounds(f)}];
 }
-function volumeOverlap(a,b){return bodyParts(a).some(A=>bodyParts(b).some(B=>verticalOverlap(a,b,[A.vertical,B.vertical])&&polygonOverlap(A.p,B.p)));}
+function volumeOverlap(a,b,plan,furniture){return bodyParts(a,plan,furniture).some(A=>bodyParts(b,plan,furniture).some(B=>verticalOverlap(a,b,[A.vertical,B.vertical])&&polygonOverlap(A.p,B.p)));}
 // 不参与碰撞检查：地毯、墙挂 / 吊装、台面上的设备、绿植（枝叶可伸到家具上方）；椅子推进桌下也属正常
 const NOCOLLIDE = new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
 const SEATS = new Set(['chair','barstool','officechair','armchair']), TABLES = new Set(['table','roundtable','desk','island']);
@@ -56,18 +61,18 @@ function verticalOverlap(a,b,ranges){
   return !(A&&B&&Math.min(A.top,B.top)-Math.max(A.bottom,B.bottom)<=1e-6);
 }
 const solidForCollision=f=>!NOCOLLIDE.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded;
-function collisions(furniture){
+function collisions(furniture,plan){
   const L = furniture.filter(solidForCollision), out = [];
   const box = L.map(aabb);
-  const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),vertical=L.map(f=>D?.furnitureVerticalBounds(f));
+  const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),vertical=L.map(f=>D?.furnitureVerticalBounds(f,plan,furniture)),bases=plan?L.map(f=>(root.FurnishProducts||require('./product-rules.js')).floorBase(plan,f,furniture)):null;
   for (let i = 0; i < L.length; i++) for (let j = i+1; j < L.length; j++){
     const a = L[i], b = L[j];
     if (Math.abs(a.cx-b.cx) >= box[i].hw+box[j].hw || Math.abs(a.cy-b.cy) >= box[i].hh+box[j].hh) continue;   // 外包盒快速排除
     if (tuckedSeatPair(a,b)) continue;
     if(!verticalOverlap(a,b,[vertical[i],vertical[j]]))continue;
     const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
-    if(C&&(C.fridgeFitsBay(a,b)||C.fridgeFitsBay(b,a)||C.hoodBayFit(a,b)?.fits||C.hoodBayFit(b,a)?.fits))continue;
-    if (a.kitchen||b.kitchen||(root.FurnishProducts||require('./product-rules.js')).family(a,'pipe-box')||(root.FurnishProducts||require('./product-rules.js')).family(b,'pipe-box')?volumeOverlap(a,b):obbOverlap(a,b)) out.push([a.id, b.id]);
+    if(C&&(C.fridgeFitsBay(a,b)||C.fridgeFitsBay(b,a)||C.hoodBayFit(a,b)?.fits||C.hoodBayFit(b,a)?.fits)&&(!bases||bases[i].known&&bases[j].known&&Math.abs(bases[i].z-bases[j].z)<1e-6))continue;
+    if (a.kitchen||b.kitchen||(root.FurnishProducts||require('./product-rules.js')).family(a,'pipe-box')||(root.FurnishProducts||require('./product-rules.js')).family(b,'pipe-box')?volumeOverlap(a,b,plan,furniture):obbOverlap(a,b)) out.push([a.id, b.id]);
   }
   return out;
 }

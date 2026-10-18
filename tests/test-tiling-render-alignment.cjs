@@ -18,7 +18,7 @@ for(const floorAngle of [0,90,180,270])for(const wallAngle of [0,90]){
  const w=copy(tiled);for(const s of Object.values(w.floorFinishes.areas))s.layout.angle=floorAngle;
  const p=P.effectivePlan(plan,w);
  for(const face of faces){
-  const old={...T.defaults(),angle:wallAngle,startHeight:17,reference:'survey'},l=T.floorAlignment(p,w,face,old),e=T.elevation(p,w,face,l),floor=w.floorFinishes.areas[face.roomId].layout;
+  const floor=w.floorFinishes.areas[face.roomId].layout,size=(face.axis===0)===(floorAngle%180===0)?floor.width:floor.height,old={...T.defaults(),[wallAngle===90?'height':'width']:size,angle:wallAngle,startHeight:17,reference:'survey'},l=T.floorAlignment(p,w,face,old),e=T.elevation(p,w,face,l);
   assert.equal(l.startHeight,17);assert.equal(l.reference,'survey');assert.equal(l[wallAngle===90?'width':'height'],old[wallAngle===90?'width':'height']);
   const at=[0,0];at[e.axis]=e.zero;at[e.normal]=e.position;const q0=F.transform(floor,at,true);at[e.axis]+=e.dir;const q1=F.transform(floor,at,true),da=q1.map((v,i)=>v-q0[i]),ka=Math.abs(da[0])>.5?0:1,sz=ka===0?floor.width:floor.height;
   const samples=[13.3,58.7,123.45,401.25,799.1,801.3,1204.7,...[-1,0,1].flatMap(k=>[sz+floor.gap/2,sz/2].map(t=>(t+k*(sz+floor.gap)-q0[ka])/da[ka]))];

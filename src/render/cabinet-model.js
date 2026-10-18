@@ -235,7 +235,7 @@
  }
  function cutServices(THREE,g,f,options={}){
   const services=root.FurnishServices;
-  const pipes=services&&options.plan?services.pipes(options.plan).filter(p=>services.bodyHit(f,p,0)):[];
+  const pipes=services&&options.plan?services.pipes(options.plan).map(p=>{const z=(root.FurnishProducts||require('../core/product-rules.js')).floorBase(options.plan,f,options.furniture).z;return {...p,vertical:{bottom:p.vertical.bottom-z,top:p.vertical.top-z}};}).filter(p=>services.bodyHit(f,p,0)):[];
   if(!pipes.length)return g;
   // Cut in the closed pose once. The resulting holes travel with moving parts.
   const transforms=[];

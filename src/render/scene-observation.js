@@ -31,7 +31,7 @@ function create(THREE){
   plane.set(normal, -Math.min(...corners(THREE,bounds).map(p=>p.dot(normal)))+.12);
   const next=[...normal.toArray(),plane.constant].map(v=>v.toFixed(6)).join(',');let changed=next!==signature;signature=next;
   architecture.traverse(mesh=>{
-   if(!mesh.isMesh||mesh.userData.walkOnly||mesh.userData.room)return;
+   if(!mesh.isMesh||mesh.userData.walkOnly||mesh.userData.room||mesh.userData.wallOriginMarker)return;
    if(originals.has(mesh))return;
    const original=mesh.material,clone=m=>{const copy=m.clone();copy.clippingPlanes=[...(m.clippingPlanes||[]),plane];copy.clipShadows=true;return copy;};
    originals.set(mesh,original);mesh.material=Array.isArray(original)?original.map(clone):clone(original);changed=true;

@@ -9,7 +9,7 @@
   return {title,distance,status,color:check.ok===false?'#b62b20':check.ok===true?'#087a6d':'#946008'};
  }
  function build(THREE,f,checks,options={}){
-  const group=new THREE.Group(),w=f.w/1000,d=f.d/1000,h=(f.h??565)/1000,bottom=(f.mountHeight??1650)/1000;
+  const group=new THREE.Group(),w=f.w/1000,d=f.d/1000,h=(f.h??565)/1000,bottom=((f.mountHeight??1650)+(checks.floorBase?.z??0))/1000;
   group.userData.heaterClearance=f.id;group.rotation.y=-(f.rot||0)*Math.PI/180;
   const addLabel=(kind,check,position,center)=>{
    if(!options.CSS2DObject||!options.document)return;

@@ -135,7 +135,11 @@
  }
  // Recorded dimensions take priority. Legacy items use the existing model's
  // nominal envelope; unfamiliar items without a height remain unverified.
- function furnitureVerticalBounds(f){
+ function furnitureVerticalBounds(f,plan,furniture){
+  const v=relativeFurnitureVerticalBounds(f);if(!v||!plan)return v;
+  const base=products().floorBase(plan,f,furniture);return base.known?{...v,bottom:v.bottom+base.z,top:v.top+base.z}:null;
+ }
+ function relativeFurnitureVerticalBounds(f){
   const vertical=products().vertical(f);if(vertical)return vertical;
   if(f.type==='sofa_yeswood_cherry')return {bottom:0,top:products().height(f),source:f.h===undefined?'model':'recorded'};
   if(cabinet().supported(f))return {bottom:0,top:cabinet().height(f),source:f.h===undefined?'model':'recorded'};
@@ -148,9 +152,9 @@
  // Stable topological order for overlapping footprints: separated height ranges
  // and tucked seats below tabletops. Whole-seat height includes the backrest,
  // so it cannot determine which surface covers the seat in a plan view.
- function planFurnitureOrder(furniture){
+ function planFurnitureOrder(furniture,plan){
   const G=root.FurnishGeometry||require('./layout-geometry.js'),layer=f=>f.type==='rug'?0:f.type==='pendant'?2:1;
-  const items=furniture.map((f,index)=>({f,index,layer:layer(f),vertical:furnitureVerticalBounds(f),box:G.aabb({...f,rot:f.rot||0}),after:[],incoming:0}));
+  const items=furniture.map((f,index)=>({f,index,layer:layer(f),vertical:furnitureVerticalBounds(f,plan,furniture),box:G.aabb({...f,rot:f.rot||0}),after:[],incoming:0}));
   for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
    const a=items[i],b=items[j],A=a.vertical,B=b.vertical;
    if(a.layer!==b.layer)continue;
@@ -167,7 +171,7 @@
   if(f.type!=='waterheater_flat')return null;
   plan=finished(plan);
   const P=root.FurnishProject||require('./project-core.js'),location=P.ceilingAt(plan,f.cx,f.cy),ceilingHeight=options.ceilingHeight??location.height,wallHeight=plan.ceilingHeight??2800;
-  const bottom=products().value(f,'mountHeight'),height=products().height(f),angle=(f.rot||0)*Math.PI/180,sign=f.flip?-1:1;
+  const base=products().floorBase(plan,f,options.furniture),bottom=products().value(f,'mountHeight')+base.z,height=products().height(f),angle=(f.rot||0)*Math.PI/180,sign=f.flip?-1:1;
   const right=[Math.cos(angle)*sign,Math.sin(angle)*sign],depth=[-Math.sin(angle),Math.cos(angle)],edge=f.w/2;
   const local=([x,y])=>[(x-f.cx)*right[0]+(y-f.cy)*right[1],(x-f.cx)*depth[0]+(y-f.cy)*depth[1]];
   // Clip walls to the strip beyond the physical right side; the full side
@@ -191,7 +195,7 @@
   }
   for(const item of options.furniture||plan.furniture||[]){
    if(item===f||item.id!==undefined&&item.id===f.id)continue;
-   const vertical=furnitureVerticalBounds(item);
+   const vertical=furnitureVerticalBounds(item,plan,options.furniture);
    if(vertical&&Math.min(bottom+height,vertical.top)-Math.max(bottom,vertical.bottom)<=1e-6)continue;
    const value=distance(P.polygon({...item,rot:item.rot||0}));if(value===null)continue;
    if(!vertical){if(value<300-1e-6)unknown.push({id:item.id,name:item.name,gap:value});continue;}
@@ -208,7 +212,8 @@
    socket={...check(Math.hypot(a-x,b-y,s.z-z),300),point:{...s},nearest:{x:f.cx+x*Math.cos(angle)-y*Math.sin(angle),y:f.cy+x*Math.sin(angle)+y*Math.cos(angle),z},local:{point:[a,s.z,b],nearest:[x,z,y]}};
   }
   // `right` remains geometric diagnostics for older callers, not a socket verdict.
-  return {ceilingHeight,room:location.room,top:check(ceilingHeight===null?null:ceilingHeight-bottom-height,40),socket,right:{...rightCheck,blocker,unknown}};
+  if(!base.known){socket.ok=null;rightCheck.ok=null;}
+  return {floorBase:base,ceilingHeight,room:location.room,top:check(ceilingHeight===null||!base.known?null:ceilingHeight-bottom-height,40),socket,right:{...rightCheck,blocker,unknown}};
  }
  function wallGaps(plan,f){
   plan=finished(plan);

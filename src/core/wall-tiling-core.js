@@ -4,7 +4,7 @@
 const clone=v=>JSON.parse(JSON.stringify(v)),finite=n=>typeof n==='number'&&Number.isFinite(n),EPS=1e-6;
 const W=()=>root.FurnishWallFinish||require('./wall-finish-core.js'),F=()=>root.FurnishFloorFinish||require('./floor-finish-core.js');
 const eligible=(room,setting={})=>room.counted!==false&&['kitchen','bathroom','balcony'].includes(setting.use||room.use);
-const defaults=()=>({width:600,height:300,gap:2,angle:0,offset:0,startHeight:0,reference:'floor'});
+const defaults=()=>({width:800,height:400,gap:2,angle:0,offset:0,startHeight:0,reference:'floor'});
 const binding=f=>({roomId:f.roomId,wallId:f.wallId,side:f.side,range:[...f.range],...(f.cross?{cross:true}:{})});
 const same=(a,b)=>a.roomId===b.roomId&&W().same(a,b);
 function validate(data){
@@ -19,7 +19,8 @@ function validate(data){
  }
  return data;
 }
-function faces(plan,work){return W().faces({...plan,physicalRooms:plan.rooms.filter(r=>eligible(r,work.rooms?.[r.id]))});}
+const faceTitle=f=>`${f.cross?'墙端面 · ':''}${f.axis===0?(f.side===1?'上边墙':'下边墙'):(f.side===1?'左边墙':'右边墙')}`;
+function faces(plan,work){const counts=new Map();return W().faces({...plan,physicalRooms:plan.rooms.filter(r=>eligible(r,work.rooms?.[r.id]))}).map(f=>{const number=(counts.get(f.roomId)||0)+1;counts.set(f.roomId,number);return {...f,number,label:faceTitle(f)+' '+number};});}
 function record(work,face){return work.wallTiling?.surfaces.find(s=>same(s,face));}
 function edit(work,plan,face,values){
  if(!values||Object.keys(values).some(k=>!['enabled','followFloor','layout'].includes(k)))throw Error('墙砖修改仅接受排版参数和开关');
@@ -44,17 +45,29 @@ function setHeights(work,plan,roomIds,{reference,startHeight}){
   for(const f of faces(plan,work).filter(f=>f.roomId===id)){const old=record(next,f);next=edit(next,plan,f,{layout:{...(old?.layout||defaults()),reference,startHeight}});}
  }return clone(next);
 }
-function floorAlignment(plan,work,face,layout=record(work,face)?.layout||defaults()){
+function setSize(work,plan,roomIds,{width,height}){
+ if(!Array.isArray(roomIds)||!roomIds.length||![width,height].every(v=>finite(v)&&v>=20&&v<=6000))throw Error('请选择区域并填写 20–6000 mm 的墙砖宽度和高度');
+ let next=work;for(const id of new Set(roomIds)){
+  if(!plan.rooms.some(r=>r.id===id&&eligible(r,work.rooms?.[id])))throw Error('墙砖区域已变化');
+  for(const f of faces(plan,work).filter(f=>f.roomId===id)){const old=record(next,f);next=edit(next,plan,f,{layout:{...(old?.layout||defaults()),width,height,angle:0}});}
+ }return clone(next);
+}
+function floorAlignmentInfo(plan,work,face,layout){
  const a=plan.floorFinish?.areas[face.roomId],l=a?.layout;
  if(!l||!finite(a.finishedZ))throw Error('请先启用本区域地砖并确定完成标高、砖尺寸和起铺点');
  const e=elevation(plan,work,face,layout,{followFloor:false}),point=[0,0];point[e.axis]=e.zero;point[e.normal]=e.position;
  if(!finite(e.position))throw Error('墙面完成面位置待核对，暂不能墙地对缝');
  const start=F().transform(l,point,true);point[e.axis]+=e.dir;const end=F().transform(l,point,true),delta=end.map((v,i)=>v-start[i]),axis=Math.abs(delta[0])>Math.abs(delta[1])?0:1;
  if(Math.abs(Math.abs(delta[axis])-1)>EPS||Math.abs(delta[1-axis])>EPS)throw Error('地砖方向与此墙不平行；请先将地砖设为沿墙的 0°／90°方向');
- const size=axis===0?l.width:l.height,pitch=size+l.gap,positive=delta[axis]>0,mod=v=>((v%pitch)+pitch)%pitch;
+ const size=axis===0?l.width:l.height,pitch=size+l.gap,positive=delta[axis]>0,mod=(v,p)=>((v%p)+p)%p,wallSize=layout.angle===90?layout.height:layout.width,wallPitch=wallSize+layout.gap;
  // Reversed wall directions must align the tile's other edge, not its origin.
- const left=positive?-start[axis]:start[axis]-size,offset=mod(left+(layout.angle===90?size:0));
- return {...layout,[layout.angle===90?'height':'width']:size,gap:l.gap,offset:Number(offset.toFixed(6))};
+ const left=positive?-start[axis]:start[axis]-size,anchor=mod(left,pitch),offset=mod(anchor+(layout.angle===90?wallSize:0),wallPitch);
+ // Alignment changes phase only. Purchased wall tiles must never inherit floor dimensions.
+ const note=Math.abs(wallSize-size)>EPS||Math.abs(layout.gap-l.gap)>EPS?'墙地砖节距或缝宽不同：保留墙砖规格，仅对齐起铺缝，后续砖缝不能连续对齐':'';
+ return {layout:{...layout,offset:Number(offset.toFixed(6))},note};
+}
+function floorAlignment(plan,work,face,layout=record(work,face)?.layout||defaults()){
+ return floorAlignmentInfo(plan,work,face,layout).layout;
 }
 function alignFloor(work,plan,roomIds){
  if(!Array.isArray(roomIds)||!roomIds.length)throw Error('请选择需要墙地对缝的区域');
@@ -66,8 +79,8 @@ function alignFloor(work,plan,roomIds){
  let next=work;for(const [f,layout] of changes)next=edit(next,plan,f,{layout,followFloor:true});return clone(next);
 }
 function elevation(plan,work,face,layout=record(work,face)?.layout||defaults(),{followFloor=record(work,face)?.followFloor===true}={}){
- let alignmentPending;
- if(followFloor)try{layout=floorAlignment(plan,work,face,layout);}catch(e){alignmentPending='自动墙地对缝暂停：'+e.message;}
+ let alignmentPending,alignmentNote;
+ if(followFloor)try{const info=floorAlignmentInfo(plan,work,face,layout);layout=info.layout;alignmentNote=info.note;}catch(e){alignmentPending='自动墙地对缝暂停：'+e.message;}
  validate({version:1,surfaces:[{...binding(face),layout}]});
  const room=plan.rooms.find(r=>r.id===face.roomId),height=room?.ceilingHeight??plan.ceilingHeight??2800,area=plan.floorFinish?.areas[face.roomId],floorZ=area?area.finishedZ:0;
  const originZ=alignmentPending?undefined:layout.reference==='survey'?layout.startHeight:finite(floorZ)?floorZ+layout.startHeight:undefined;
@@ -89,7 +102,7 @@ function elevation(plan,work,face,layout=record(work,face)?.layout||defaults(),{
   return intervals.flatMap(([a,b])=>{const lo=Math.max(a,s.segment[face.axis]),hi=Math.min(b,s.segment[face.axis+2]),bottom=Math.max(s.bottom,finite(floorZ)?floorZ:0);return hi>lo+EPS&&s.top>bottom+EPS?[[Math.min(toU(lo),toU(hi)),bottom,Math.max(toU(lo),toU(hi)),s.top]]:[];});
  });
  if(plan.wallFinish?.pending.some(v=>v.roomIds?.includes(face.roomId)))pending.push('本区域墙面厚度待核对，沿墙净尺寸暂供参考');
- return {face:binding(face),width,height,layout:clone(layout),followFloor,alignmentPending,floorZ,originZ,dir,zero,axis:face.axis,normal:face.normal,position,sections,pending};
+ return {face:binding(face),width,height,layout:clone(layout),followFloor,alignmentPending,alignmentNote,floorZ,originZ,dir,zero,axis:face.axis,normal:face.normal,position,sections,pending};
 }
 let last=null;
 function derive(plan,work){
@@ -117,6 +130,6 @@ function remapBuiltin(work,before,after,shift){
  }work.wallTiling={version:1,surfaces:result};validate(work.wallTiling);
 }
 const requiresV7=work=>work?.wallTiling?.surfaces?.some(s=>s.followFloor===true)===true;
-const api={requiresV7,eligible,defaults,binding,same,validate,faces,record,edit,setEnabled,setHeights,floorAlignment,alignFloor,elevation,derive,grid,cells,onlyChange,remapBuiltin,has:w=>!!w?.wallTiling};
+const api={requiresV7,faceTitle,eligible,defaults,binding,same,validate,faces,record,edit,setEnabled,setHeights,setSize,floorAlignment,alignFloor,elevation,derive,grid,cells,onlyChange,remapBuiltin,has:w=>!!w?.wallTiling};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishWallTiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

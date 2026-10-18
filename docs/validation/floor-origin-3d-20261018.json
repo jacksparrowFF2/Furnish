@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-18",
+  "scope": "Bathroom main-scene 3D floor-origin picking and transient production UV preview",
+  "persistentFieldsAdded": false,
+  "codeCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 204,
+    "builtInPlans": 12,
+    "previewPages": 2097
+  },
+  "browser": {
+    "results": "output/playwright/verification-BUMi6a/results.json",
+    "passed": [
+      "floor-origin-3d",
+      "floor-origin",
+      "wall-floor-follow"
+    ],
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "coverage": [
+      "3D visible-floor mouse pick and occlusion rejection",
+      "numeric and 50mm nudge regeneration",
+      "saved-origin reset, invalid input and cancel restore",
+      "draft has no history or persistence and is excluded from report image",
+      "one-step apply, undo, redo and refresh",
+      "390px editor and page overflow"
+    ]
+  },
+  "actual": {
+    "planId": "custom_mv37igji",
+    "roomId": "area_fmv3qdfiz23",
+    "unchangedWorkspaceSHA256": "5C58180EE87C7BAE8D8508990260EE8D03CF3A634D2761A689C5A06DA905B266",
+    "savedOrigin": [
+      573.5,
+      2404
+    ],
+    "realPagePickPreview": [
+      5505.89,
+      7120.22
+    ],
+    "realPageReset": true,
+    "dialogLeftOpenAtSavedOrigin": true,
+    "isolatedCapture": "output/floor-origin-3d-actual/preview.jpg",
+    "captureData": "output/floor-origin-3d-actual/result.json"
+  },
+  "notRun": [
+    "full browser suite",
+    "physical touch device"
+  ],
+  "limits": [
+    "Wall/furniture/other-room surfaces are rejected as origin picks",
+    "Wall-floor unequal pitches align starting seam only",
+    "No slope, drain, construction cutting or offcut optimization"
+  ]
+}

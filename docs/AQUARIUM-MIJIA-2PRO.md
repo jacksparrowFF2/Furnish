@@ -54,6 +54,10 @@ HTTP 与断网 file 正面、斜视、[岩石近景](validation/models/aquarium/
 
 ## 查看与验证
 
+2026-10-18：场景缓存测试的 VM 注入真实项目核心、产品规则和最小房间，支持 `buildFurn()` 派生家具完成地面基准。新增生产包围盒验证：记录离地 900 mm，完成地面 60／80 mm 时实际底部为 960／980 mm；基准不变复用模型，变化重建，未生成错误占位。原旧离地与模型内部几何断言保留，无生产模型或数据字段变更。
+
+本轮单项与完整 `node scripts/check.cjs` 均通过：210 套回归、12 个内置户型、2993 页已有预览及语法／资源检查，`git diff --check` 通过。记录见 [摘要](validation/aquarium-test-context-20261018/summary.json)及[完整日志](validation/aquarium-test-context-20261018/check.log)。本轮未重复浏览器验收。
+
 - 生产构造器：`src/render/aquarium-model.js`；浏览器 / Node 共用。
 - 运行 [生成脚本](../scripts/preview-aquarium.cjs)（`node scripts/preview-aquarium.cjs`）重建 `output/aquarium/preview.html`，直接调用生产构造器与现有本地 Three.js import map。正面、斜视、背面、俯视与空缸视图可切换。
 - [水景斜视](validation/models/aquarium/file-angle.png)、[正面](validation/models/aquarium/file-front.png)、[空缸](validation/models/aquarium/file-empty.png) 已目视检查；应用 3D 和窄屏截图在 `output/playwright/aquarium/`。
