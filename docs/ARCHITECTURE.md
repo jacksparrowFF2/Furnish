@@ -1,5 +1,13 @@
 # 模块与加载约定
 
+2026-10-18：地面核心派生门洞两侧铺贴与真实高差，2D／3D／DXF／落点及核对共用；生产 surface／layers 分开纹理顶面与真实侧面，砖缝增强不改物理节距。墙砖核心 floorAlignment／alignFloor 用地砖坐标计算沿墙宽度及偏移，UI 单墙草稿或一次批量mutate保存 followFloor 关联，派生排版随地砖变化；含关联时使用外层v7。详见 [门洞与高差](FLOOR-FINISHES.md#门洞补铺可读砖缝与真实高差2026-10-18) 和 [墙地对缝](WALL-TILING.md#墙地对缝2026-10-18)。
+
+2026-10-18：地面核心 `setLayers()` 共用全区域层厚批量写入与卫生间例外，UI 草稿预览后一次 mutate，沿原 floorFinishes 记录与版本。墙砖批量入口默认各自完成地面以上0，与原单墙默认一致；引导接受直接层厚及各自起铺线，不强制参考高差或共用绝对线。旧显式起铺设置保留，详见 [地面标高](FLOOR-FINISHES.md#批量设置地面标高2026-10-18) 与 [墙砖](WALL-TILING.md)。
+
+2026-10-17：完整洗衣柜新增 `kitchen.laundry.assembly` 整体配置，通过 `laundryParts()` 派生吊柜、开放格与水槽供同一生产构造器和空间规则使用；家具列表仅整柜及复用的独立洗衣机，后者以产品能力字段 `laundryHostId` 对齐。统一设计器共享一个草稿和 mutate，实际旧五件模板经显式迁移收拢，普通恢复不自动转换。设备外侧支撑板进入净宽，落地水槽柜取消真实底板和底座。详见 [整体洗衣柜](LAUNDRY-CABINET.md#整体柜体支撑侧板与落地水槽柜2026-10-17-更新)。
+
+2026-10-17：`scene-observation.js` 提供主场景临时观察取景和建筑剖切。定位家具按全部选中生产模型的真实世界包围盒（含柜门姿态）适配透视画面与浮条预留，第一次朝主选中家具正面观察；相机朝向驱动建筑材质克隆上的裁切平面，原材质与共享缓存不变，拾取／落点排除被裁切交点。恢复、取消选择、漫游与退出清理临时状态；漫游以全高墙派生，不覆盖已存低墙偏好。无持久字段、历史或保存通道变化，见 [观察取景](IMPROVEMENTS.md#2026-10-17整组家具三维取景与临时建筑剖切)。
+
 2026-10-17：`kitchen-core.createLaundryArea()` 从产品能力生成五件已编组完整阳台洗衣区，目录组合标记仅在新增时使用，不进入持久数据；原 groupId／counterLink 保留复制与项目恢复。多选属性复用洗衣区左右和开门控制，`setLaundryDoors()` 委托原模块／柜体开合，所有应用沿 mutate。详见 [组合模板](LAUNDRY-CABINET.md#完整组合模板与柜门2026-10-17)。
 
 2026-10-17：阳台洗衣机柜复用 counter 的 kitchen 模块、连续台面和设备空位，新增可选 kitchen.laundry；定制 ksink 的可选 sinkNotch 共用凹形孔环。产品核心定义示例和边界，厨房核心派生缺角与设备定位，生产柜体／盆体／2D 和缓存核对同步消费，编辑仍走 mutate。详见 [洗衣机柜](LAUNDRY-CABINET.md)。
@@ -185,3 +193,6 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-16：起铺点通过 floor-finish-core.snapOrigin 比较区域完成面角点，UI 用真实屏幕矩阵换算 12 px 阈值。临时 gFloorOrigin 标记带 data-edit-overlay，随 applyView 重绘、取消或关闭清理，不进入状态或成果导出；点击仅改表单，应用仍走 mutate。
 
 2026-10-16：区域列表可打开全屋统一起铺点浮动表单，与单区域共用 bindOriginPicker。floor-finish-core.setLayoutBasis 只批量写现有 layout.origin／可选 angle，保持其它设置及开关；旧区域预设以 enabled:false 保存，不建立全局字段或隐式关联。一次 mutate 完成批量应用，仍可逐区独立修改。见 [统一起铺点](FLOOR-FINISHES.md#全区域统一起铺点)。
+
+
+2026-10-18：墙地自动对缝使用 wallTiling.surfaces[].followFloor 可选布尔字段，由 wall-tiling-core 派生有效布局，不改写地面编辑的状态与历史。墙砖派生缓存包含完整 floorFinishes 输入；2D立面／SVG／3D共用 elevation。新语义项目／工作区外层v7与huxing-design-v7缓存，旧记录缺字段保持手动，具体契约见 WALL-TILING.md。
