@@ -267,6 +267,8 @@ main.is3d #view3d{opacity:1;visibility:visible;transition:opacity .45s ease}
 #hint3d{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:var(--overlay);border:1px solid var(--line);border-radius:var(--r-pill);
   padding:6px 16px;font-size:12px;z-index:2;pointer-events:none;white-space:nowrap;transition:opacity .4s;
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:var(--shadow-md)}
+#hint3d:empty{display:none}
+#vRestoreWalls[hidden]{display:none!important}
 main.animating #hint3d{opacity:0}
 .rlabel{font-size:12px;font-weight:700;background:var(--overlay);border:1px solid var(--line);
   border-radius:var(--r-pill);padding:3px 10px;white-space:nowrap;pointer-events:none;box-shadow:0 6px 14px -8px rgba(0,0,0,.6)}

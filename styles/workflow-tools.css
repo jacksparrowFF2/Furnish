@@ -177,3 +177,11 @@ main.drawer-panel #fab-dock{visibility:hidden}
 .finish-guide-editor p{margin:6px 0}.finish-guide-editor .actions{flex-wrap:wrap}.finish-guide-editor [hidden]{display:none!important}
 .finish-guide-table{overflow-x:auto}.finish-guide-table table{width:100%;border-collapse:collapse;font-size:12px}.finish-guide-table th,.finish-guide-table td{padding:10px 6px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 @media(max-width:600px){.finish-guide-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.finish-guide-row{align-items:flex-start;gap:8px}.finish-guide-row .btn{max-width:45%;white-space:normal}.finish-guide-table th,.finish-guide-table td{padding:8px 3px}.finish-guide-editor .actions .btn{flex:1}}
+
+/* Bulk floor elevations keep selection and preview readable on narrow screens. */
+#floor-level-bathroom-fields[hidden]{display:none!important}
+#dlgBody:has([data-floor-level]) .form{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0}
+#dlgBody:has([data-floor-level]) .form label{min-width:0}
+#floor-level-rooms .floor-region-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+
+.scene-floor-step{padding:3px 7px;border:1px solid #9a8160;border-radius:6px;background:#fff9edeb;color:#65492c;font:600 11px/1.4 sans-serif;white-space:nowrap;pointer-events:none;box-shadow:0 1px 5px #0002}

@@ -109,6 +109,7 @@
       <button class="btn" id="vIso" data-en="Iso">斜视</button>
       <button class="btn" id="vTop" data-en="Top">俯视</button>
       <button class="btn" id="vSelection" data-en="Focus selection">定位选中</button>
+      <button class="btn" id="vRestoreWalls" hidden data-en="Restore walls">恢复墙体</button>
     </div>
     <div class="grp">
       <button class="btn" id="undo" title="撤销 (Ctrl+Z)" aria-label="撤销" data-en-title="Undo (Ctrl+Z)"><svg class="i"><use href="#i-undo"/></svg></button>
@@ -311,6 +312,7 @@
 <script src="src/core/cabinet-motion.js"></script>
 <script src="src/core/board-motion-collision.js"></script>
 <script src="src/render/solid-cut.js"></script>
+<script src="src/render/scene-observation.js"></script>
 <script src="src/render/robot-vacuum-model.js"></script>
 <script src="src/render/yeswood-sofa-model.js"></script>
 <script src="src/render/shower-arrow-model.js"></script>
@@ -417,6 +419,8 @@ let capturedImage=null,capturedState='';
 let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, glassMat, wallMat, capMat, frameMat;
 let archFloor, archUp, furnG, clearanceG, labelG, lampG, colliders = [], selKey = null, selHelper = null;
 let elevationG,issueG,sceneIssue=null,issueTimer=0;
+const observation=FurnishSceneObservation.create(THREE);
+let observationTarget=null,observationSelection='',observationRevision='';
 let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
 let sigNorth='';
 const doors = [], slidingDoors = [], keys = {};
@@ -435,6 +439,7 @@ function init(){
   renderer.setSize(SW(), SH());
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;
+  renderer.localClippingEnabled=true;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
   host.prepend(renderer.domElement);
   labelRenderer = new CSS2DRenderer();
@@ -539,7 +544,8 @@ function init(){
   cv.addEventListener('dblclick', e => { clearTimeout(cabinetTap); if(opt.mode!=='orbit'||anim)return;const hit=pick(e),id=hit?.fid||ui.sel?.id;if(id)window.FurnishCabinetEditor.open(id); });
   new ResizeObserver(() => {
     renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH());
-    camera.aspect = SW()/SH(); camera.updateProjectionMatrix(); invalidate();
+    camera.aspect = SW()/SH(); camera.updateProjectionMatrix();
+    if(observationTarget&&active&&!anim)frameObservation();invalidate();
   }).observe(stage);
   bindUI();
 }
@@ -1213,6 +1219,7 @@ function shapeOf(poly, flip){ const s = new THREE.Shape(); poly.forEach(([x, y],
 
 let floorScenePlan=null;
 function buildArch(){
+  observation.clear();
   clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
   const top = opt.cut===2.8?H:Math.min(opt.cut,H);
   const finishPlan=FurnishProject.effectivePlan(PLAN,state);floorScenePlan=finishPlan;
@@ -1361,6 +1368,7 @@ function buildLabels(){
   $('#roomList').innerHTML = counted.map(r => `<button data-room="${r.id}"><span>${esc(nm(state.rooms[r.id].name))}</span><small>${area(r.poly).toFixed(2)} m²</small></button>`).join('')
     + `<button data-room="__all"><span>${tr('全屋', 'Whole home')}</span><small>${counted.reduce((a, r) => a + area(r.poly), 0).toFixed(2)} m²</small></button>`;
   document.querySelectorAll('#roomList button').forEach(b => b.onclick = () => {
+    clearObservation();
     document.querySelectorAll('#roomList button').forEach(x => x.classList.toggle('on', x === b));
     if (opt.mode === 'walk') setMode('orbit');
     b.dataset.room === '__all' ? flyTo(isoWhole()) : flyToRoom(b.dataset.room);
@@ -1373,6 +1381,7 @@ function sync(force){
   H=FurnishProject.ceilingHeight(state)/1000;
   const settings=FurnishDesign.sceneSettings(state.scene3d),changed=Object.keys(settings).some(k=>opt[k]!==settings[k]);
   Object.assign(opt,settings);
+  if(opt.mode==='walk')opt.cut=2.8;
   const north=JSON.stringify(state.drawing?.northAngle??null);
   if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn;showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
   const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes,state.floorFinishes]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes,state.floorFinishes]);
@@ -1443,7 +1452,7 @@ function animate(dur, fn){ return new Promise(res => { anim = {t0:performance.no
 const wait = ms => new Promise(r => setTimeout(r, ms));
 function flyTo(B, dur = 900){ fly = {t0:performance.now(), dur, A:curPose(), B}; }
 function flyToRoom(id){
-  const r = ROOMS.find(r => r.id === id);if(!r)return;flyToBox(bbox(r.poly));
+  const r = ROOMS.find(r => r.id === id);if(!r)return;clearObservation();flyToBox(bbox(r.poly));
 }
 function flyToBox(box){
   const xs=[box[0],box[2]],ys=[box[1],box[3]];
@@ -1455,11 +1464,45 @@ function flyToBox(box){
 }
 function focusSelection(){
  if(!active||anim||opt.mode!=='orbit')return;
- let box;if(ui.sel?.kind==='furn'){const f=getF(ui.sel.id);if(f)box=FurnishDesign.bounds(f);}
- else if(ui.sel?.kind==='room'){const r=ROOMS.find(r=>r.id===ui.sel.id);if(r)box=bbox(r.poly);}
+ if(ui.sel?.kind==='furn'){
+  const ids=selIds();if(!ids.length)return;
+  observationTarget=[...ids];observationSelection=JSON.stringify(ui.sel);
+  $('#vRestoreWalls').hidden=false;syncHint3d();frameObservation(true);return;
+ }
+ clearObservation();
+ let box;if(ui.sel?.kind==='room'){const r=ROOMS.find(r=>r.id===ui.sel.id);if(r)box=bbox(r.poly);}
  else if(ui.sel?.kind==='win'){const win=WINS[ui.sel.id];if(win){const group=bayAssembly(win).group;box=[Math.min(...group.map(w=>w.rect[0])),Math.min(...group.map(w=>w.rect[1])),Math.max(...group.map(w=>w.rect[2])),Math.max(...group.map(w=>w.rect[3]))];}}
  else if(ui.sel?.kind==='door')box=DOORS[ui.sel.id]?.rect;
  if(box)flyToBox(box);else toast(tr('先选中房间、家具或门窗，再定位观察。','Select a room, item or opening first.'));
+}
+function observationBounds(){
+ const bounds=new THREE.Box3();furnG.updateWorldMatrix(true,true);
+ for(const id of observationTarget||[]){const model=furnG.children.find(g=>g.userData.fid===id);if(model)bounds.union(new THREE.Box3().setFromObject(model,true));}
+ return bounds;
+}
+function clearObservation(){
+ observationTarget=null;observationSelection='';if(observation.clear())invalidate(true);
+ $('#vRestoreWalls').hidden=true;syncHint3d();
+}
+function frameObservation(front=false){
+ const bounds=observationBounds();if(bounds.isEmpty()){clearObservation();return;}
+ positionFab();
+ let marginY=Math.min(160,SH()*.22);
+ const stageRect=stage.getBoundingClientRect();
+ for(const element of [$('#fab'),$('#hint3d'),$('#property-peek'),$('.scene-light'),$('.canvas-rail')]){if(!element||!element.getClientRects().length)continue;const r=element.getBoundingClientRect();if(r.bottom<=stageRect.top||r.top>=stageRect.bottom||r.left>stageRect.left+SW()*.7||r.right<stageRect.left+SW()*.3)continue;const depth=r.top<stageRect.top+SH()/2?r.bottom-stageRect.top:stageRect.bottom-r.top;marginY=Math.max(marginY,Math.min(depth+24,SH()*.43));}
+ const primary=front&&getF(ui.sel?.id),angle=primary?(primary.rot||0)*Math.PI/180:0;
+ const dir=primary?new THREE.Vector3(-Math.sin(angle),.22,Math.cos(angle)):camera.position.clone().sub(orbit.target).normalize();
+ // A shallow view shows both base and upper units without looking down behind them.
+ if(dir.lengthSq()<.01)dir.set(0,.2,1);dir.y=THREE.MathUtils.clamp(dir.y,.12,.45);dir.normalize();
+ const next=FurnishSceneObservation.fit(THREE,camera,bounds,dir,{width:SW(),height:SH(),marginX:Math.min(48,SW()*.1),marginY,minDistance:orbit.minDistance});
+ if(next){observationRevision=sigFurn;orbit.maxDistance=Math.max(45,next.p.distanceTo(next.t)*1.5);flyTo(next);}
+}
+function updateObservation(){
+ if(!observationTarget)return;
+ if(opt.mode!=='orbit'||anim||observationSelection!==JSON.stringify(ui.sel)){clearObservation();return;}
+ const bounds=observationBounds();if(bounds.isEmpty()){clearObservation();return;}
+ if(observationRevision!==sigFurn)frameObservation();
+ if(observation.update(camera,bounds,archUp))invalidate(true);
 }
 
 /* ======================= 进入 / 退出 3D ======================= */
@@ -1485,7 +1528,8 @@ async function enter(){
 }
 async function exit(){
   capturedImage=image();capturedState=JSON.stringify(state);
-  if (opt.mode === 'walk'){ walkCtl.unlock(); stopTouchWalk(); $('#hint3d').textContent = HINT_ORBIT(); $('#walkOverlay').style.display = 'none'; $('#cross').style.display = 'none';
+  clearObservation();
+  if (opt.mode === 'walk'){ walkCtl.unlock(); stopTouchWalk(); $('#hint3d').textContent = ''; $('#walkOverlay').style.display = 'none'; $('#cross').style.display = 'none';
     const dir = new THREE.Vector3(); camera.getWorldDirection(dir); orbit.target.copy(camera.position).addScaledVector(dir, 3).setY(0); opt.mode = 'orbit'; syncModeBtns(); }
   fly = null; orbit.enabled = false; showLabels(false); stage.classList.add('animating');
   const A = curPose(), B = planPose();
@@ -1515,11 +1559,12 @@ function pick(e){
   ray.setFromCamera(ptr, camera);
   const hits = ray.intersectObjects([...(opt.furn ? [furnG] : []), archUp, archFloor], true);
   for (const h of hits){
+    if(observation.clipped(h))continue;
     let o = h.object;
     // Raycaster also returns hidden ceilings and helper lines; only visible meshes may block a click.
     if(!o.isMesh)continue;
     let shown=true;for(let parent=o;parent;parent=parent.parent){if(!parent.visible){shown=false;break;}}if(!shown)continue;
-    if (o.material === glassMat) continue;
+    if (observation.material(o) === glassMat) continue;
     if (o.userData.cabinetPart) { let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {cabinetPart:o.userData.cabinetPart,fid:owner?.userData.fid,dist:h.distance}; }
     if (o.userData.door) { const door=o.userData.door;let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {door,dist:h.distance,fid:owner?.userData.fid}; }
     if (o.userData.room) return {room:o.userData.room};
@@ -1538,7 +1583,7 @@ function groundAt(x, y){
   ray.setFromCamera(ptr, camera);
   if (!ray.ray.intersectPlane(ground0, hit) || hit.distanceTo(camera.position) > 60) return null;
   // 视线先碰到墙体（或飘窗台）时，落点取碰到的位置，而不是穿过墙落到看不见的墙后
-  const wall = ray.intersectObjects([archUp, archFloor], true).find(h => h.object.material !== glassMat && h.object.visible);
+  const wall = ray.intersectObjects([archUp, archFloor], true).find(h => !observation.clipped(h) && observation.material(h.object) !== glassMat && h.object.visible);
   if (wall && wall.distance < hit.distanceTo(camera.position) - .01) hit.set(wall.point.x, 0, wall.point.z);
   const floorHit=ray.intersectObjects(archFloor.children,true).find(h=>h.object.userData.floor&&h.object.visible);
   if(floorHit&&(!wall||floorHit.distance<=wall.distance+.02))hit.copy(floorHit.point);
@@ -1588,11 +1633,8 @@ function highlightIssue(item,volumes){
 
 /* ======================= 漫游 ======================= */
 // 触屏漫游：左下虚拟摇杆移动，在画面上拖动转向（iPad 不支持鼠标指针锁定）
-const HINT_ORBIT = () => COARSE ? tr('单指旋转 · 双指缩放 / 平移 · 点选家具后可拖动摆放 · 点门／窗帘开关', '1 finger orbits · 2 fingers zoom / pan · select furniture to drag it · tap doors / curtains to open')
-  : tr('拖动空白处旋转 · 空格拖动平移 · 触摸板双指滑动平移／捏合缩放 · 鼠标滚轮缩放 · 选中家具后拖动可摆放 · 点击折叠桌切换形态 · 点击门／窗帘开关', 'Drag empty space to orbit · Space-drag pans · touchpad scroll pans / pinch zooms · mouse wheel zooms · select furniture to drag it · click folding tables to change shape · click doors / curtains to open');
-const HINT_TOUCHWALK = () => tr('左下摇杆移动 · 拖动画面转向 · 点门／窗帘开关', 'Joystick moves · drag to look · tap doors / curtains to open');
-const HINT_WALK = () => tr('WASD 移动 · 鼠标转向 · Shift 快走 · E 开关门 · Esc 暂停', 'WASD moves · mouse looks · Shift runs · E opens doors · Esc pauses');
-function syncHint3d(){ $('#hint3d').textContent = opt.mode === 'orbit' ? HINT_ORBIT() : touchWalk ? HINT_TOUCHWALK() : HINT_WALK(); }
+// Navigation help lives in the shortcuts dialog; keep the scene free of persistent banners.
+function syncHint3d(){ $('#hint3d').textContent = ''; }
 let touchWalk = false;
 const joy = {x:0, y:0, id:null}, eul = new THREE.Euler(0, 0, 0, 'YXZ');
 function lookBy(dx, dy){
@@ -1624,10 +1666,11 @@ function bindJoystick(){
 }
 function setMode(m){
   if (anim) return;
+  clearObservation();
   opt.mode = m; syncModeBtns();
   if (m === 'walk'){
     window.select(null);
-    if (opt.cut < H){ opt.cut = H; syncCutBtns(); sync(); }
+    sync();syncCutBtns();
     orbit.enabled = false; fly = null;
     // Spawn outside and look inward independently of the door's current swing.
     const ed = DOORS.find(d => d.entry), [rx0, ry0, rx1, ry1] = ed.rect;
@@ -1637,6 +1680,7 @@ function setMode(m){
     $('#walkOverlay').style.display = 'flex';
     syncHint3d();
   } else {
+    sync();syncCutBtns();
     walkCtl.unlock(); stopTouchWalk(); orbit.enabled = true;
     $('#walkOverlay').style.display = 'none'; $('#cross').style.display = 'none';
     syncHint3d();
@@ -1708,9 +1752,14 @@ function bindUI(){
   $('#walkExit').onclick = () => setMode('orbit');
   bindJoystick();
   syncWalkTexts();
-  $('#vIso').onclick = () => { if (opt.mode === 'walk') setMode('orbit'); else flyTo(isoWhole()); };
-  $('#vTop').onclick = () => { if (opt.mode === 'walk') setMode('orbit'); flyTo(topWhole()); };
-  const remember=()=>{state.scene3d=FurnishDesign.sceneSettings(opt);save();};
+  $('#vRestoreWalls').onclick = clearObservation;
+  $('#vIso').onclick = () => { clearObservation();if (opt.mode === 'walk') setMode('orbit'); else flyTo(isoWhole()); };
+  $('#vTop').onclick = () => { clearObservation();if (opt.mode === 'walk') setMode('orbit'); flyTo(topWhole()); };
+  const remember=()=>{
+    const settings=FurnishDesign.sceneSettings(opt);
+    if(opt.mode==='walk')settings.cut=FurnishDesign.sceneSettings(state.scene3d).cut;
+    state.scene3d=settings;save();
+  };
   document.querySelectorAll('[data-cut]').forEach(b => b.onclick = () => { if (opt.mode === 'walk') return; opt.cut = +b.dataset.cut; remember();syncCutBtns(); sync(); });
   document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => {
     const k = b.dataset.t; opt[k] = !opt[k]; b.classList.toggle('on', opt[k]);
@@ -1747,6 +1796,7 @@ function loop(){
   animateCurtains(dt);
   updateSel();
   if (!dirty) return;
+  updateObservation();
   dirty = false;
   selHelper?.children.forEach(h => h.update());
   renderer.render(scene, camera);
@@ -1762,6 +1812,7 @@ function image(){if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||s
 function relang(){ syncWalkTexts(); if (inited){buildLabels();buildHeaterClearances();} }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建
 function replan(){
+  clearObservation();
   clearSceneIssue();clearAnnotations(elevationG);selKey=null;
   capturedImage=null;capturedState='';
   computeCenter();

@@ -182,7 +182,15 @@ function positionFab(){
   if(typeof drag!=='undefined'&&drag)return;
   const bounds=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight;
   const key=[...selIds(),ui.sel?.kind==='room'?ui.sel.id:'',W,H].join('|');
-  if(is3D())clearFabDock();
+  if(is3D()){
+    clearFabDock();
+    if(!fabEditor){
+      // The 3D camera owns framing; keep this toolbar beside the scene rail.
+      const rail=$('.canvas-rail')?.getBoundingClientRect();
+      fab.style.left='50%';fab.style.top='auto';fab.style.bottom=(rail?Math.max(18,bounds.bottom-rail.top+12):18)+'px';fab.style.transform='translateX(-50%)';
+      return;
+    }
+  }
   else if(W<=720||fabDockKey===key||fabDockKey&&document.activeElement?.closest('#fab-editor')){dockFab(W>=600&&H<450||W>720?'right':'top',key);return;}
   else if(fabDockKey)clearFabDock();
   const local=r=>({x:r.left-bounds.left,y:r.top-bounds.top,w:r.width,h:r.height});
