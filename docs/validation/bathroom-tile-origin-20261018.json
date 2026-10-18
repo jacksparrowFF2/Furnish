@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-18",
+  "onlyBathroomOriginChanged": true,
+  "oldOrigin": [
+    839.5,
+    2337
+  ],
+  "origin": [
+    573.5,
+    2404
+  ],
+  "translation": [
+    -266,
+    67
+  ],
+  "minTileWidth": 305.5,
+  "minTileHeight": 137,
+  "floorPieces": 20,
+  "narrowFloorPieces": 0,
+  "oldRightEdge": 39.5,
+  "newRightEdge": 305.5,
+  "finishedZ": 55,
+  "wallSpecsPreserved": true,
+  "roundtrips": 3,
+  "backup": ".local/furnish-recovery/bathroom-origin-20261018/before.furnish.json",
+  "limits": "Thresholds are comparison preferences, not construction rules; structural returns and doorway clipping remain; no source code changes or full test rerun.",
+  "visual": {
+    "applied": "output/bathroom-tile-origin/preview/applied.jpg",
+    "top": "output/bathroom-tile-origin/preview/applied-top.jpg",
+    "installationLabelsHiddenInCaptureOnly": true
+  },
+  "verification": {
+    "actualPageRefresh": true,
+    "undoRestoredPreviousOrigin": true,
+    "reappliedThroughOriginalForm": true,
+    "savedFileOnlyOriginChanged": true,
+    "projectRoundtrips": 3,
+    "productionFloorClipping": true,
+    "codeChecksRerun": false,
+    "reason": "Only existing project data and maintenance documentation changed in this request"
+  }
+}

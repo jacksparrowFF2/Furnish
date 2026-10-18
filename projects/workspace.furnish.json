@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 9,
+  "version": 10,
   "workspace": {
     "customPlans": [
       {
@@ -4889,7 +4889,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 9,
+    "v": 10,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -7178,8 +7178,8 @@
                 "gap": 2,
                 "height": 400,
                 "origin": [
-                  839.5,
-                  2337
+                  573.5,
+                  2404
                 ],
                 "width": 800
               },
@@ -7425,6 +7425,7 @@
                 },
                 {
                   "door": "right",
+                  "doorAngle": 90,
                   "doorOpen": false,
                   "drawers": [
                     {
@@ -8151,9 +8152,9 @@
               "obstacleFit": {
                 "corners": [
                   {
-                    "depth": 364,
+                    "depth": 152,
                     "index": 1,
-                    "width": 600
+                    "width": 370
                   }
                 ],
                 "cuts": [
@@ -8228,6 +8229,24 @@
                       -40.25,
                       980
                     ]
+                  ],
+                  [
+                    [
+                      1067.75,
+                      572
+                    ],
+                    [
+                      1085.75,
+                      572
+                    ],
+                    [
+                      1085.75,
+                      784
+                    ],
+                    [
+                      1067.75,
+                      784
+                    ]
                   ]
                 ],
                 "depths": [
@@ -8260,10 +8279,10 @@
             "cx": 7043,
             "cy": 9996,
             "d": 368,
-            "h": 700,
+            "h": 800,
             "id": "fmv9mqxz91",
             "kitchen": {
-              "baseHeight": 700,
+              "baseHeight": 800,
               "depth": 368,
               "modules": [
                 {
@@ -8326,21 +8345,25 @@
                   "doorLeaves": [
                     {
                       "angle": 90,
-                      "open": false
+                      "open": true
                     },
                     {
                       "angle": 90,
                       "open": false
                     },
                     {
-                      "open": false
+                      "angle": 90,
+                      "open": true
                     }
                   ],
-                  "doorOpen": false,
+                  "doorOpen": true,
                   "doorPairing": "start",
                   "doorSingleHinge": "right",
                   "role": "door",
                   "run": 0,
+                  "shelves": [
+                    332
+                  ],
                   "width": 1076
                 }
               ],
@@ -8509,7 +8532,8 @@
                         },
                         {
                           "door": "left",
-                          "doorOpen": false,
+                          "doorAngle": 90,
+                          "doorOpen": true,
                           "drawers": [],
                           "handle": "none",
                           "shelves": []
@@ -8555,14 +8579,14 @@
                   "doorLeaves": [
                     {
                       "angle": 90,
-                      "open": true
+                      "open": false
                     },
                     {
                       "angle": 90,
-                      "open": true
+                      "open": false
                     }
                   ],
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "role": "sink",
                   "run": 0,
                   "width": 600
@@ -8596,8 +8620,56 @@
             "rot": 270,
             "type": "washer",
             "w": 600
+          },
+          {
+            "color": "#f3f1ec",
+            "cx": 6855,
+            "cy": 940,
+            "d": 250,
+            "h": 2400,
+            "id": "fmvdtz5aj1",
+            "mountHeight": 0,
+            "name": "管道包覆柜",
+            "pipeBoxShape": "two",
+            "pipeBoxThickness": 18,
+            "rot": 270,
+            "type": "pipebox",
+            "w": 200
+          },
+          {
+            "color": "#f3f1ec",
+            "cx": 6135,
+            "cy": 8531,
+            "d": 230,
+            "h": 2400,
+            "id": "fmvdvn6e11",
+            "mountHeight": 0,
+            "name": "管道包覆柜",
+            "pipeBoxCorner": "front-right",
+            "pipeBoxShape": "two",
+            "pipeBoxThickness": 18,
+            "rot": 0,
+            "type": "pipebox",
+            "w": 230
+          },
+          {
+            "color": "#f3f1ec",
+            "cx": 6170,
+            "cy": 10105,
+            "d": 150,
+            "h": 750,
+            "id": "fmvdvqyqj1",
+            "mountHeight": 910,
+            "name": "管道包覆柜",
+            "pipeBoxCorner": "back-right",
+            "pipeBoxShape": "two",
+            "pipeBoxThickness": 18,
+            "rot": 0,
+            "type": "pipebox",
+            "w": 300
           }
         ],
+        "furnitureDatum": "finished-floor",
         "measures": [],
         "notes": [],
         "open": {
@@ -8721,7 +8793,7 @@
           }
         },
         "scene3d": {
-          "cut": 1.2,
+          "cut": 2.8,
           "furn": true,
           "hour": 14,
           "labels": false,
@@ -8729,6 +8801,337 @@
           "night": false
         },
         "spaceThreshold": 800,
+        "wallFinishes": {
+          "surfaces": [
+            {
+              "bondThickness": 20,
+              "cross": true,
+              "range": [
+                0,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_7"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.880346232179226
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_8"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.639511201629328,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_8"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.3485967503692771,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_9"
+            },
+            {
+              "bondThickness": 20,
+              "cross": true,
+              "range": [
+                0,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_9"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_10"
+            },
+            {
+              "bondThickness": 20,
+              "cross": true,
+              "range": [
+                0.9833333333333333,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_10"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.0846262341325811,
+                0.806064880112835
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_11"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.6136363636363636
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_12"
+            },
+            {
+              "bondThickness": 20,
+              "cross": true,
+              "range": [
+                0,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_12"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.7017543859649122
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_13"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.19110854503464203
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_18"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.3749082905355833,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_20"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.5777777777777777,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_21"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.43223443223443225,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_22"
+            },
+            {
+              "bondThickness": 20,
+              "cross": true,
+              "range": [
+                0.3933463796477495,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_22"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.4772727272727273,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_23"
+            },
+            {
+              "bondThickness": 20,
+              "cross": true,
+              "range": [
+                0.6716417910447762,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_23"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.1384083044982699,
+                0.8673587081891581
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_25"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.7611630321910696
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_26"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.3821656050955414,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_27"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.48344370860927155,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_28"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.43795620437956206,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_31"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.028454810495626797
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_32"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.6712328767123288
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_33"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0.07969303423848882,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_35"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                0.17543859649122806
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_36"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_37"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_38"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_40"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                1
+              ],
+              "side": -1,
+              "tileThickness": 10,
+              "wallId": "outline_43"
+            },
+            {
+              "bondThickness": 20,
+              "range": [
+                0,
+                1
+              ],
+              "side": 1,
+              "tileThickness": 10,
+              "wallId": "outline_46"
+            }
+          ],
+          "version": 1
+        },
         "wallTiling": {
           "surfaces": [
             {
@@ -8737,7 +9140,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 571,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8757,7 +9160,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 571,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8777,7 +9180,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 525.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8797,7 +9200,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 668.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8817,7 +9220,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 695,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8837,7 +9240,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 477,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8857,7 +9260,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 446.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8877,7 +9280,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 137.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8897,7 +9300,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 387,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8917,7 +9320,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 433.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8937,7 +9340,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 106,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8958,7 +9361,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 471,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8978,7 +9381,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 10.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -8998,7 +9401,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 582,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9019,7 +9422,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 560.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9039,7 +9442,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 627,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9059,7 +9462,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 27,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9080,7 +9483,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 799.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9100,7 +9503,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 41.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9121,7 +9524,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 370.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9141,7 +9544,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 370.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9161,11 +9564,11 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 217,
                 "reference": "floor",
                 "startHeight": 0,
-                "width": 400
+                "width": 800
               },
               "range": [
                 0,
@@ -9181,11 +9584,11 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 288,
                 "reference": "floor",
                 "startHeight": 0,
-                "width": 400
+                "width": 800
               },
               "range": [
                 0.3749082905355833,
@@ -9201,7 +9604,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 2.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9221,7 +9624,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 108.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9242,11 +9645,11 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 240,
                 "reference": "floor",
                 "startHeight": 0,
-                "width": 400
+                "width": 800
               },
               "range": [
                 0.3933463796477495,
@@ -9262,7 +9665,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 600.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9283,11 +9686,11 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 332,
                 "reference": "floor",
                 "startHeight": 0,
-                "width": 400
+                "width": 800
               },
               "range": [
                 0.6716417910447762,
@@ -9303,11 +9706,11 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 138,
                 "reference": "floor",
                 "startHeight": 0,
-                "width": 400
+                "width": 800
               },
               "range": [
                 0.07969303423848882,
@@ -9323,7 +9726,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 10.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9343,7 +9746,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 718.5,
                 "reference": "floor",
                 "startHeight": 0,
@@ -9363,7 +9766,7 @@
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 300,
+                "height": 400,
                 "offset": 770.5,
                 "reference": "floor",
                 "startHeight": 0,
