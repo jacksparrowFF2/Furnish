@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-18",
+  "status": "PASS",
+  "userProjectEdited": false,
+  "fixture": "tests/fixtures/browser/short-wall-zones.furnish.json",
+  "browserCase": "short-wall-area-3d",
+  "browserModes": ["HTTP static server", "offline file://"],
+  "geometryObserved": "Actual main-scene floor mesh triangles, wall world bounds and downward ray intersections through production constructor references",
+  "areaToleranceSquareMetres": 0.00001,
+  "wallBoundsToleranceMillimetres": 0.01,
+  "netAreasSquareMetres": {"original": 67.792493, "twoWallsAtInitialTestPosition": 67.752193, "lowerWallAtScreenshot3803_6386": 67.747643, "lowerWallDetached3835_6350": 67.745693},
+  "checks": ["all room areas equal actual production triangle areas", "2D label formatting", "both walls retain 50 mm centerline length", "world wall rectangles match current geometry", "1200 mm cut wall height", "no floor triangles under either short wall", "adjacent floor remains", "edits saved while main 3D is active rebuild meshes", "undo and redo restore both areas and actual geometry", "refresh and actual project download/upload preserve results", "wall perimeter quantities exclude synthetic hole bridges"],
+  "productionFix": "project-core quantities now sums physical room ring perimeters instead of the bridged compatibility polygon",
+  "pageErrors": [],
+  "fullCheck": {"command": "node scripts/check.cjs", "exitCode": 0, "regressionSuites": 210, "builtInPlans": 12, "previewPages": 3073, "syntaxAssetsAndSharedDeclarations": true, "log": "check.log"},
+  "diffCheck": "PASS",
+  "details": "metrics.json",
+  "visualReview": ["two-walls.png", "screenshot-position.png", "moved-wall.png"],
+  "notRun": ["full browser suite", "physical touch device"]
+}

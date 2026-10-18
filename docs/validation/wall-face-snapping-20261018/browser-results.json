@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "wall-face-snapping",
+    "short-walls",
+    "short-wall-area-3d"
+  ],
+  "results": [
+    {
+      "name": "wall-face-snapping",
+      "status": "PASS",
+      "seconds": 22.6,
+      "log": "wall-face-snapping.log"
+    },
+    {
+      "name": "short-walls",
+      "status": "PASS",
+      "seconds": 8.2,
+      "log": "short-walls.log"
+    },
+    {
+      "name": "short-wall-area-3d",
+      "status": "PASS",
+      "seconds": 26.4,
+      "log": "short-wall-area-3d.log"
+    }
+  ],
+  "notRun": []
+}

@@ -51,7 +51,7 @@
   return {room,height:room.ceilingHeight??ceilingHeight(plan)};
  }
  function quantities(plan,arch){
-  const rooms=plan.rooms.filter(r=>r.counted!==false),net=rooms.reduce((n,r)=>n+area(r.poly),0),wall=(plan.physicalRooms||rooms).filter(r=>r.counted!==false).reduce((n,r)=>n+perimeter(r.poly)*ceilingHeight(plan)/1000,0);
+  const rooms=plan.rooms.filter(r=>r.counted!==false),net=rooms.reduce((n,r)=>n+area(r.poly),0),wall=(plan.physicalRooms||rooms).filter(r=>r.counted!==false).reduce((n,r)=>n+(r.rings||[r.poly]).reduce((sum,ring)=>sum+perimeter(ring),0)*ceilingHeight(plan)/1000,0);
   // Opening widths multiplied by their actual assumed vertical height, not plan-view wall depth.
   const deduction=(o,height)=>{const r=o.rect,width=r[2]-r[0],depth=r[3]-r[1],horizontal=width>=depth,center=[(r[0]+r[2])/2,(r[1]+r[3])/2],normal=horizontal?1:0,offset=Math.min(width,depth)/2+5;let faces=0;for(const side of [-1,1]){const p=[...center];p[normal]+=side*offset;if(rooms.some(room=>inside(p,room.poly)))faces++;}return Math.max(width,depth)/1000*height*Math.max(1,faces);};
   const holes=(plan.doors||[]).reduce((n,o)=>n+deduction(o,2.1),0)+(plan.wins||[]).reduce((n,o)=>n+(o.bayId?(o.paintRect?deduction({...o,rect:o.paintRect},o.head-o.sill):0):deduction(o,o.head-o.sill)),0)+(plan.slides||[]).reduce((n,o)=>n+deduction(o,o.v?2.4:2.1),0);

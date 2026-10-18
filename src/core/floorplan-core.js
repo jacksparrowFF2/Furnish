@@ -5,6 +5,7 @@
   const finite = v => typeof v === 'number' && Number.isFinite(v);
   const point = p => Array.isArray(p) && p.length === 2 && p.every(v => finite(v) && v >= 0 && v <= 4096);
   const clone = v => JSON.parse(JSON.stringify(v));
+  const minWallLength = 50;
   // Absolute millimetres above the finished floor; independent of XY calibration.
   const beamDefaults={thickness:300};
   function beamVertical(b,ceilingHeight){
@@ -49,7 +50,7 @@
       if(w.caps!==undefined&&(!Array.isArray(w.caps)||w.caps.length!==2||w.caps.some(v=>!finite(v)||v<0||v>600)))fail('Invalid wall caps');
       if([w.a,w.b].some(p=>p[0]>d.width||p[1]>d.height))fail('Wall extends outside the reference canvas');
       if (w.a[0] !== w.b[0] && w.a[1] !== w.b[1]) fail('Only horizontal and vertical walls are supported');
-      if (Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*d.scale < 100) fail('Wall too short');
+      if (Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*d.scale < minWallLength-1e-6) fail('Wall too short (minimum 50 mm)');
     }
     const openingIds = new Set();
     for (const o of d.openings) {
@@ -95,6 +96,43 @@
     const cap=p=>{if(!walls)return h;const other=1-axis,neighbors=walls.filter(v=>v.id!==w.id&&(w.kind==='n'||v.kind!=='n')),junctions=neighbors.filter(v=>v.a[axis]===v.b[axis]&&Math.abs(v.a[axis]-p[axis])<1e-6&&p[other]>=Math.min(v.a[other],v.b[other])-1e-6&&p[other]<=Math.max(v.a[other],v.b[other])+1e-6);if(junctions.length)return Math.max(...junctions.map(v=>v.thickness/2));const collinear=neighbors.some(v=>v.a[other]===v.b[other]&&Math.abs(v.a[other]-p[other])<1e-6&&(v.a[axis]===p[axis]||v.b[axis]===p[axis]));return collinear?0:h;};
     const r=[Math.min(a[0],b[0])-h,Math.min(a[1],b[1])-h,Math.max(a[0],b[0])+h,Math.max(a[1],b[1])+h,w.kind],low=w.a[axis]<=w.b[axis]?w.a:w.b,high=low===w.a?w.b:w.a;r[axis]=low[axis]*scale-(w.caps?.[0]??cap(low));r[axis+2]=high[axis]*scale+(w.caps?.[1]??cap(high));return r;
   }
+  function wallCorners(w,scale,walls){
+    const r=wallRect(w,scale,walls);return [[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];
+  }
+  // Radius is in tracing coordinates. Compare the actual, junction-aware wall faces in mm.
+  function snapWall(d,wall,{radius=0,mode='move',exclude=[]}={}){
+    const s=d.scale,axis=wall.a[1]===wall.b[1]?0:1,other=1-axis;
+    const scene=[...d.walls.filter(w=>w.id!==wall.id),wall],corners=wallCorners(wall,s,scene),candidates=[];
+    const face=mode==='move'?null:(wall[mode][axis]<wall[mode==='a'?'b':'a'][axis]?Math.min:Math.max)(...corners.map(p=>p[axis]));
+    const active=mode==='move'?corners:corners.filter(p=>Math.abs(p[axis]-face)<1e-6);
+    for(const target of scene.filter(w=>w.id!==wall.id&&!exclude.includes(w.id)))for(const to of wallCorners(target,s,scene))for(const from of active){
+      const delta=to.map((v,k)=>v-from[k]),distance=Math.hypot(...delta);if(distance>radius*s+1e-6||mode!=='move'&&Math.abs(delta[other])>1e-6)continue;
+      const next=clone(wall);if(mode==='move')for(const end of ['a','b'])next[end]=next[end].map((v,k)=>v+delta[k]/s);else next[mode][axis]+=delta[axis]/s;
+      if([next.a,next.b].some(p=>p.some((v,k)=>v<0||v>d[k?'height':'width']))||Math.hypot(next.b[0]-next.a[0],next.b[1]-next.a[1])*s<minWallLength-1e-6)continue;
+      if(mode!=='move'&&Math.sign(next.b[axis]-next.a[axis])!==Math.sign(wall.b[axis]-wall.a[axis]))continue;
+      const after=scene.map(w=>w.id===wall.id?next:w),actual=wallCorners(next,s,after),fixed=wallCorners(target,s,after);
+      if(!actual.some(p=>Math.hypot(p[0]-to[0],p[1]-to[1])<1e-6)||!fixed.some(p=>Math.hypot(p[0]-to[0],p[1]-to[1])<1e-6))continue;
+      candidates.push({wall:next,point:to.map(v=>v/s),target:target.id,distance,kind:'corner'});
+    }
+    // Resize/draw toward the finite near surface, keeping the opposite endpoint and axis.
+    // A physical end cap is part of the wall: snapping its centreline would leave a gap or overlap.
+    if(mode!=='move'){
+      const high=wall[mode][axis]>wall[mode==='a'?'b':'a'][axis],edge=axis+(high?2:0),opposite=axis+(high?0:2),rect=wallRect(wall,s,scene);
+      for(const target of scene.filter(w=>w.id!==wall.id&&!exclude.includes(w.id))){
+        const fixed=wallRect(target,s,scene),surface=fixed[opposite],delta=surface-rect[edge],distance=Math.min(Math.abs(delta),Math.abs(surface-wall[mode][axis]*s));
+        if(distance>radius*s+1e-6||rect[other]<fixed[other]-1e-6||rect[other+2]>fixed[other+2]+1e-6)continue;
+        if(target.a[axis]===target.b[axis]&&(d.openings||[]).some(o=>{if(o.wall!==target.id)return false;const center=(target.a[other]+(target.b[other]-target.a[other])*o.t)*s;return Math.min(rect[other+2],center+o.length/2)-Math.max(rect[other],center-o.length/2)>1e-6;}))continue;
+        const next=clone(wall);next[mode][axis]+=delta/s;
+        if([next.a,next.b].some(p=>p.some((v,k)=>v<0||v>d[k?'height':'width']))||Math.hypot(next.b[0]-next.a[0],next.b[1]-next.a[1])*s<minWallLength-1e-6||Math.sign(next.b[axis]-next.a[axis])!==Math.sign(wall.b[axis]-wall.a[axis]))continue;
+        const after=scene.map(w=>w.id===wall.id?next:w),actual=wallRect(next,s,after),to=wallRect(target,s,after);
+        // Junction-aware caps can change when endpoints coincide; only offer exact physical contact.
+        if(Math.abs(actual[edge]-to[opposite])>1e-6||Math.abs(to[opposite]-surface)>1e-6||actual[other]<to[other]-1e-6||actual[other+2]>to[other+2]+1e-6)continue;
+        const point=[0,0];point[axis]=surface/s;point[other]=(actual[other]+actual[other+2])/2/s;
+        candidates.push({wall:next,point,target:target.id,distance,kind:'face'});
+      }
+    }
+    candidates.sort((a,b)=>a.distance-b.distance);return candidates[0]||null;
+  }
   function batchWalls(input,ids,values){
     if(!Array.isArray(ids)||!ids.length||ids.some(id=>!input.walls.some(w=>w.id===id)))fail('请选择有效墙段');
     const d=clone(input);
@@ -103,7 +141,7 @@
       if(values.kind!==undefined)w.kind=values.kind;
       if(values.group!==undefined){if(values.group)w.group=values.group;else delete w.group;}
     }
-    build(d);return d;
+    return fitZonesToWalls(d);
   }
   // Coordinate decomposition gives exact wall-inner-face areas without a raster resolution error.
   function roomsFromWalls(rects) {
@@ -137,13 +175,15 @@
         if(!same(cx,cy+1)) add([x1,y1],[x0,y1]);
         if(!same(cx-1,cy)) add([x0,y1],[x0,y0]);
       }
-      const start=edges.values().next().value[0], poly=[]; let p=start;
-      do { const e=edges.get(key(p)); if(!e) fail('Invalid room boundary'); edges.delete(key(p)); poly.push(p); p=e[1]; } while(key(p)!==key(start));
-      if(edges.size) fail('Rooms with islands or courtyards are not supported in this version');
-      const reduced=poly.filter((p,i)=>{ const a=poly[(i+poly.length-1)%poly.length],b=poly[(i+1)%poly.length]; return (p[0]-a[0])*(b[1]-p[1])!==(p[1]-a[1])*(b[0]-p[0]); });
+      const rings=[];
+      while(edges.size){const start=edges.values().next().value[0],poly=[];let p=start;
+        do { const e=edges.get(key(p)); if(!e) fail('Invalid room boundary'); edges.delete(key(p)); poly.push(p); p=e[1]; } while(key(p)!==key(start));
+        rings.push(poly.filter((p,i)=>{const a=poly[(i+poly.length-1)%poly.length],b=poly[(i+1)%poly.length];return (p[0]-a[0])*(b[1]-p[1])!==(p[1]-a[1])*(b[0]-p[0]);}));
+      }
       const largest=own.reduce((best,c)=> (xs[c[0]+1]-xs[c[0]])*(ys[c[1]+1]-ys[c[1]])>best.area ? {area:(xs[c[0]+1]-xs[c[0]])*(ys[c[1]+1]-ys[c[1]]),c} : best,{area:0});
       const [cx,cy]=largest.c;
-      result.push({id:'room'+(result.length+1),name:'房间 '+(result.length+1),poly:reduced,mat:'wood',at:[(xs[cx]+xs[cx+1])/2,(ys[cy]+ys[cy+1])/2]});
+      const G=zoneGeometry(),path=rings.length>1?G.ringPath(rings):rings[0],geometry=rings.length>1?{poly:path,rings,polys:G.decompose(rings,p=>G.inside(p,path))}:{poly:path};
+      result.push({id:'room'+(result.length+1),name:'房间 '+(result.length+1),...geometry,mat:'wood',at:[(xs[cx]+xs[cx+1])/2,(ys[cy]+ys[cy+1])/2]});
     }
     return result;
   }
@@ -190,17 +230,20 @@
     }
     build(d);return d;
   }
-  function applyZones(input,zones,scale){
+  function applyZones(input,zones,scale,wallRects=[]){
     if(!zones.length)return input;
     const G=zoneGeometry(),rooms=clone(input),result=[];
     if(zones.some(z=>!rooms.some(r=>r.id===z.parent&&r.counted!==false)))fail('指定功能区对应空间不存在');
     for(const room of rooms){
       const defs=zones.filter(z=>z.parent===room.id);if(!defs.length){result.push(room);continue;}
       const polys=defs.map(z=>G.ringPath(z.rings||[z.poly]).map(p=>p.map(v=>Math.round(v*scale*1e6)/1e6))),all=[room.poly,...polys];
-      if(G.area(G.decompose(all,p=>polys.some(poly=>G.inside(p,poly))&&!G.inside(p,room.poly)))>.01)fail('指定区域超出原空间，不能跨越实际墙体或其他空间');
-      if(G.area(G.decompose(polys,p=>polys.filter(poly=>G.inside(p,poly)).length>1))>.01)fail('功能区不能重叠，请调整边界');
+      // Stored polygons describe design intent. Only their intersection with the
+      // current room is usable; wall footprints may cover an authored boundary.
+      const bounds=polys.flat(),min=k=>Math.min(...bounds.map(p=>p[k])),max=k=>Math.max(...bounds.map(p=>p[k])),nearWalls=wallRects.filter(r=>r[2]>=min(0)&&r[0]<=max(0)&&r[3]>=min(1)&&r[1]<=max(1)),wallPolys=nearWalls.map(r=>[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]]);
+      if(G.area(G.decompose([...all,...wallPolys],p=>polys.some(poly=>G.inside(p,poly))&&!G.inside(p,room.poly)&&!nearWalls.some(r=>p[0]>r[0]&&p[0]<r[2]&&p[1]>r[1]&&p[1]<r[3])))>.01)fail('指定区域超出原空间，不能跨越实际墙体或其他空间');
+      if(G.area(G.decompose(all,p=>G.inside(p,room.poly)&&polys.filter(poly=>G.inside(p,poly)).length>1))>.01)fail('功能区不能重叠，请调整边界');
       let total=0;
-      defs.forEach((z,i)=>{const pieces=G.decompose([polys[i]],p=>G.inside(p,polys[i])),geometry=G.outline(pieces),area=G.area(pieces);if(area<10000)fail('功能区面积至少为 0.01 m²');total+=area;
+      defs.forEach((z,i)=>{const pieces=G.decompose([room.poly,polys[i]],p=>G.inside(p,polys[i])&&G.inside(p,room.poly)),geometry=G.outline(pieces),area=G.area(pieces);if(area<10000)fail('功能区面积至少为 0.01 m²');total+=area;
         result.push({...room,...geometry,id:z.id,name:z.name,use:z.use,...(z.settingSource?{settingSource:z.settingSource}:{}),...(z.materialExplicit?{mat:z.mat,materialExplicit:true}: {}),zone:true,areaId:z.id,parentArea:room.id,parentRoom:room.parentRoom||room.id});});
       const pieces=G.decompose(all,p=>G.inside(p,room.poly)&&!polys.some(poly=>G.inside(p,poly))),remaining=G.area(pieces);total+=remaining;
       if(remaining>.01)result.push({...room,...G.outline(pieces),zone:true,remainder:true,parentArea:room.id,parentRoom:room.parentRoom||room.id});
@@ -307,6 +350,19 @@
   function regionDefinition(geometry,scale,values){
     const G=zoneGeometry(),rings=geometry.rings.map(r=>r.map(p=>p.map(v=>v/scale))),outer=rings.findIndex(r=>G.signed(r)>0);if(outer<0)fail('功能区轮廓为空');if(outer)rings.unshift(rings.splice(outer,1)[0]);
     return {...values,poly:clone(rings[0]),...(rings.length>1?{rings}: {})};
+  }
+  // Wall edits rebind room identity; authored zone outlines remain reversible.
+  function fitZonesToWalls(input){
+    const d=clone(input);if(!d.zones?.length){build(d);return d;}
+    const G=zoneGeometry(),plan=build({...d,zones:[]}),rooms=applyZoneSplits(plan.physicalRooms,d.zoneSplits||[],d.scale);
+    d.zones=d.zones.map(z=>{
+      const path=G.ringPath(z.rings||[z.poly]).map(p=>p.map(v=>Math.round(v*d.scale*1e6)/1e6));
+      const hits=rooms.filter(r=>r.counted!==false).map(room=>{const pieces=G.decompose([room.poly,path],p=>G.inside(p,path)&&G.inside(p,room.poly));return {room,pieces,area:G.area(pieces)};}).filter(v=>v.area>.01).sort((a,b)=>b.area-a.area);
+      if(hits.length!==1)fail(`墙体调整后「${z.name}」${hits.length?'跨越多个独立空间，请先拆分功能区':'已无可用面积，请先调整功能区边界'}`);
+      const hit=hits[0];if(hit.area<10000)fail(`墙体调整后「${z.name}」小于 0.01 m²，请先调整功能区边界`);
+      return z.parent===hit.room.id?z:{...z,parent:hit.room.id};
+    });
+    build(d);return d;
   }
   function setRegionSetting(input,id,values){
     const d=clone(input);if(!build(d).rooms.some(r=>r.id===id&&r.counted!==false))fail('区域不存在');
@@ -438,7 +494,7 @@
     const x0=Math.min(...extents.map(r=>r[0])),y0=Math.min(...extents.map(r=>r[1])),x1=Math.max(...extents.map(r=>r[2])),y1=Math.max(...extents.map(r=>r[3]));
     const physicalRooms=clone(rooms);
     rooms=applyZoneSplits(rooms,d.zoneSplits||[],d.scale);
-    rooms=applyZones(rooms,d.zones||[],d.scale);
+    rooms=applyZones(rooms,d.zones||[],d.scale,rects);
     if(recessedBays.length){
       const G=zoneGeometry();
       rooms=rooms.flatMap(room=>{
@@ -507,6 +563,6 @@
       if(openings(before)!==openings(after))fail('Bearing wall openings are locked');
     }
   }
-  root.FurnishDraft={build,validate,beamDefaults,editCeilingBeam,serviceDiameter,editService,beamVertical,editBeam,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
+  root.FurnishDraft={build,validate,minWallLength,wallCorners,snapWall,fitZonesToWalls,beamDefaults,editCeilingBeam,serviceDiameter,editService,beamVertical,editBeam,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
   if(typeof module!=='undefined') module.exports=root.FurnishDraft;
 })(typeof window==='undefined'?globalThis:window);

@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-18",
+  "scopedStatus": "PASS",
+  "reproduction": "Current floorplan copy, partition at X=3768 Y=6421 mm, centerline length 50 mm, thickness 130 mm; stale master-bedroom and corridor polygons prevent saving.",
+  "projectFileModified": false,
+  "regressionSuitesPassed": ["wall-zone-follow", "short-wall-snapping", "centerline-walls", "free-zones", "zone-boundaries", "region-operations", "functional-zones", "custom-plans", "project-validation", "wall-locks", "repository-workspace", "work-state"],
+  "browserSuitesPassed": ["short-wall-zones", "short-walls"],
+  "browserModes": ["HTTP static server", "offline file://"],
+  "browserChecks": ["actual floorplan", "drawing with existing zones", "50 mm numeric edit", "atomic wall and zone undo/redo", "save and reload", "recovery of unfit drafts created by the previous release", "project download/reimport", "existing corner-snapping behavior"],
+  "visualReview": ["saved-floorplan.png"],
+  "fullCheck": {
+    "command": "node scripts/check.cjs",
+    "status": "FAIL",
+    "file": "tests/test-aquarium.cjs:39",
+    "error": "ReferenceError: FurnishProject is not defined in the VM executing index.html buildFurn()",
+    "outsideThisChange": true
+  },
+  "diffCheck": "PASS",
+  "notRun": ["full browser suite", "physical touch device"],
+  "boundaries": ["Only explicit wall edits fit zone boundaries; imports and build stay strict", "Freed space remains unassigned", "Engulfed zones or zones spanning multiple independent rooms are rejected atomically", "Existing room-island limitation remains"]
+}

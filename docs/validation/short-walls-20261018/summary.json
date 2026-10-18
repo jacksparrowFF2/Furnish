@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-18",
+  "status": "PASS",
+  "productionCheck": {
+    "command": "node scripts/check.cjs",
+    "regressionSuites": 208,
+    "builtInPlans": 12,
+    "previewPages": 2849,
+    "syntaxAssetsAndSharedDeclarations": true
+  },
+  "browserCheck": {
+    "command": "node scripts/verify-browser.cjs short-walls",
+    "browser": "Chrome",
+    "modes": ["HTTP static server", "offline file://"],
+    "isolatedWorkspace": true,
+    "checks": ["49 mm rejected", "50 mm numeric input", "50 mm pointer tracing", "physical corner translation", "endpoint corner resize", "12 px snapping after zoom", "Shift bypass", "Escape rollback", "undo and redo", "save and refresh", "project export and reimport", "390 px viewport"],
+    "pageErrors": []
+  },
+  "visualReview": ["corners.png", "mobile.png"],
+  "diffCheck": "PASS",
+  "notRun": ["full browser suite", "physical touch device"],
+  "boundaries": ["orthogonal walls only", "length remains centerline length", "individual wall rectangles rather than union silhouette", "translation does not move neighboring walls", "endpoint resize preserves original axis"]
+}

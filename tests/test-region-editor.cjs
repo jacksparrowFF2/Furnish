@@ -71,16 +71,17 @@ $('#trace-undo').onclick();assert.equal(countVertices(),initialCount);
 $('#trace-redo').onclick();assert.equal(countVertices(),initialCount+1);
 $('#trace-redo').onclick();assert.equal(countVertices(),initialCount);
 assert.equal($('#area-boundary-apply').onclick(),true);
-// An invalid intermediate rectangle remains editable until final application.
+// A point outside the canvas remains editable until final application. A point
+// within a wall footprint is now a valid authored boundary, clipped at build.
 const vertexEvent={button:0,clientX:100,clientY:100,pointerId:1,target:{dataset:{areaVertex:'0'}},preventDefault(){}};
 canvas.events.pointerdown.forEach(fn=>fn(vertexEvent));
-canvas.events.pointermove.forEach(fn=>fn({...vertexEvent,clientX:0,clientY:0,shiftKey:true}));
+canvas.events.pointermove.forEach(fn=>fn({...vertexEvent,clientX:-10,clientY:-10,shiftKey:true}));
 canvas.events.pointerup.forEach(fn=>fn({...vertexEvent,type:'pointerup'}));
-assert.match(canvas.innerHTML,/data-area-vertex="0" cx="0" cy="0"/);
+assert.match(canvas.innerHTML,/data-area-vertex="0" cx="-10" cy="-10"/);
 $('#trace-undo').onclick();assert.match(canvas.innerHTML,/data-area-vertex="0" cx="100" cy="100"/);
-$('#trace-redo').onclick();assert.match(canvas.innerHTML,/data-area-vertex="0" cx="0" cy="0"/);
+$('#trace-redo').onclick();assert.match(canvas.innerHTML,/data-area-vertex="0" cx="-10" cy="-10"/);
 assert.equal($('#area-boundary-apply').onclick(),false);
-assert.match(canvas.innerHTML,/data-area-vertex="0" cx="0" cy="0"/);
+assert.match(canvas.innerHTML,/data-area-vertex="0" cx="-10" cy="-10"/);
 doubleClick({areaVertex:'0'});assert.equal(countVertices(),initialCount-1);
 const previewMid=canvas.innerHTML.match(/data-area-edge="0" cx="([^"]+)" cy="([^"]+)"/);
 canvas.events.dblclick.forEach(fn=>fn({clientX:Number(previewMid[1]),clientY:Number(previewMid[2]),target:{dataset:{areaEdge:'0'}},preventDefault(){}}));assert.equal(countVertices(),initialCount);

@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "short-wall-area-3d"
+  ],
+  "results": [
+    {
+      "name": "short-wall-area-3d",
+      "status": "PASS",
+      "seconds": 25.3,
+      "log": "short-wall-area-3d.log"
+    }
+  ],
+  "notRun": []
+}

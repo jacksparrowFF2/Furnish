@@ -1,0 +1,616 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "drawAndResize": true,
+    "shiftEscapeUndoRedo": true,
+    "before": {
+      "phase": "before",
+      "net": 2.8666,
+      "meshNet": 2.8666001647353196,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1760
+          ],
+          "length": 50,
+          "rect": [
+            735,
+            1645,
+            865,
+            1825
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.8666,
+          "meshArea": 2.8666001647353196,
+          "label": "房间 1\n      2.87 m²",
+          "formatted": "2.87"
+        }
+      ]
+    },
+    "after": {
+      "phase": "saved-active-3d",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzc2me48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "undone": {
+      "phase": "undo",
+      "net": 2.8666,
+      "meshNet": 2.8666001647353196,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1760
+          ],
+          "length": 50,
+          "rect": [
+            735,
+            1645,
+            865,
+            1825
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.8666,
+          "meshArea": 2.8666001647353196,
+          "label": "房间 1\n      2.87 m²",
+          "formatted": "2.87"
+        }
+      ]
+    },
+    "redone": {
+      "phase": "redo",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzc2me48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "refreshed": {
+      "phase": "refresh",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzc2me48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "roundtrip": {
+      "phase": "project-roundtrip",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzc2me48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "pageErrors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "drawAndResize": true,
+    "shiftEscapeUndoRedo": true,
+    "before": {
+      "phase": "before",
+      "net": 2.8666,
+      "meshNet": 2.8666001647353196,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1760
+          ],
+          "length": 50,
+          "rect": [
+            735,
+            1645,
+            865,
+            1825
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.8666,
+          "meshArea": 2.8666001647353196,
+          "label": "房间 1\n      2.87 m²",
+          "formatted": "2.87"
+        }
+      ]
+    },
+    "after": {
+      "phase": "saved-active-3d",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzcawa48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "undone": {
+      "phase": "undo",
+      "net": 2.8666,
+      "meshNet": 2.8666001647353196,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1760
+          ],
+          "length": 50,
+          "rect": [
+            735,
+            1645,
+            865,
+            1825
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.8666,
+          "meshArea": 2.8666001647353196,
+          "label": "房间 1\n      2.87 m²",
+          "formatted": "2.87"
+        }
+      ]
+    },
+    "redone": {
+      "phase": "redo",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzcawa48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "refreshed": {
+      "phase": "refresh",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzcawa48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "roundtrip": {
+      "phase": "project-roundtrip",
+      "net": 2.83995,
+      "meshNet": 2.83995016318858,
+      "walls": [
+        {
+          "id": "short",
+          "a": [
+            800,
+            1710
+          ],
+          "b": [
+            800,
+            1785
+          ],
+          "length": 75,
+          "rect": [
+            735,
+            1645,
+            865,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        },
+        {
+          "id": "w_fmvdzcawa48",
+          "a": [
+            1200,
+            1735
+          ],
+          "b": [
+            1200,
+            1785
+          ],
+          "length": 50,
+          "rect": [
+            1135,
+            1670,
+            1265,
+            1850
+          ],
+          "meshMatches": true,
+          "floorUnderEnd": 0,
+          "floorBeside": 1
+        }
+      ],
+      "rooms": [
+        {
+          "area": 2.83995,
+          "meshArea": 2.83995016318858,
+          "label": "房间 1\n      2.84 m²",
+          "formatted": "2.84"
+        }
+      ]
+    },
+    "pageErrors": []
+  }
+]

@@ -1,0 +1,1 @@
+{"case":"short-wall-zones","status":"PASS","result":[{"mode":"http","passed":true,"reportedFloorplan":true,"wallAndZoneAtomicUndoRedo":true,"saveRefresh":true,"previousDraftRecovery":true,"projectRoundtrip":true},{"mode":"file","passed":true,"reportedFloorplan":true,"wallAndZoneAtomicUndoRedo":true,"saveRefresh":true,"previousDraftRecovery":true,"projectRoundtrip":true}]}

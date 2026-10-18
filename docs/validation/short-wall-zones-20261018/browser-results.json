@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "short-wall-zones",
+    "short-walls"
+  ],
+  "results": [
+    {
+      "name": "short-wall-zones",
+      "status": "PASS",
+      "seconds": 8,
+      "log": "short-wall-zones.log"
+    },
+    {
+      "name": "short-walls",
+      "status": "PASS",
+      "seconds": 8,
+      "log": "short-walls.log"
+    }
+  ],
+  "notRun": []
+}

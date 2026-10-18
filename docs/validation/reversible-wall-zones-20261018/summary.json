@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-18",
+  "status": "PASS",
+  "change": "Preserve authored zone polygons; derive usable intersections against current rooms and wall footprints, with real holes for detached walls.",
+  "newPersistentFields": false,
+  "userProjectEdited": false,
+  "coreChecks": ["actual floorplan with repeated wall positions", "screenshot coordinates 3803/6386 mm", "temporary detached position 3835/6350 mm", "return equals direct final build", "unchanged authored polygons and metadata", "no unassigned remnants", "detached-wall project roundtrip", "floor ray misses under wall and hits adjacent surface", "production triangle area equals usable room area", "invalid point preview undo and refusal"],
+  "browserSuites": ["short-wall-zones", "short-walls"],
+  "browserModes": ["HTTP static server", "offline file://"],
+  "visualReview": "corners-without-remnants.png",
+  "fullCheck": {"command": "node scripts/check.cjs", "exitCode": 0, "regressionSuites": 210, "builtInPlans": 12, "previewPages": 3041, "syntaxAssetsAndSharedDeclarations": true, "log": "check.log"},
+  "diffCheck": "PASS",
+  "notRun": ["full browser suite", "physical touch device"],
+  "boundaries": ["historically saved clipped outlines cannot be reconstructed without an earlier design or backup", "point-touching room boundaries remain rejected", "some legacy straight-line subdivisions still reject holes"]
+}

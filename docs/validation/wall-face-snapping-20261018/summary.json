@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-18",
+  "status": "PASS",
+  "check": {
+    "command": "node scripts/check.cjs",
+    "suites": 211,
+    "builtInPlans": 12,
+    "previewPages": 3137,
+    "includesAquarium": true
+  },
+  "browser": {
+    "run": "output/playwright/verification-adusR7",
+    "cases": [
+      "wall-face-snapping",
+      "short-walls",
+      "short-wall-area-3d"
+    ],
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "allPassed": true
+  },
+  "visualReview": [
+    "http-snap.png",
+    "http-3d.png"
+  ],
+  "productionGeometry": {
+    "wallEndsY": 1850,
+    "baselineNet": 2.8666,
+    "afterNet": 2.83995,
+    "perRoomMeshAreaAndWallBoxes": true,
+    "floorFootprintRaycasts": true
+  },
+  "scope": [
+    "finite actual surface",
+    "draw or resize endpoint",
+    "minimum 50 mm",
+    "Shift and Escape",
+    "draft and main undo/redo",
+    "refresh and project roundtrip"
+  ],
+  "notRun": [
+    "all browser acceptance cases",
+    "physical touch device"
+  ],
+  "boundaries": [
+    "orthogonal walls",
+    "target face must cover full wall end",
+    "whole-wall movement retains corner snapping"
+  ],
+  "sources": {
+    "src/core/floorplan-core.js": "f2decfb2c3da0275dc4009c6c4e95ed00b1f8bc2fbb3403f4cb1a4169aefd8b8",
+    "src/ui/floorplan-editor.js": "80bf330b0dd5813c6f3f847c5a52d93fbf8b44bc2155ef5fa0915fd80d10ac94"
+  }
+}
