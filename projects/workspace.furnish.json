@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 3,
+  "version": 7,
   "workspace": {
     "customPlans": [
       {
@@ -4889,7 +4889,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 3,
+    "v": 7,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -7044,7 +7044,7 @@
         "floorFinishes": {
           "areas": {
             "area_fmv3oztg03": {
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7056,10 +7056,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3p1fkz7": {
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7071,10 +7072,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3p1yse11": {
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7086,9 +7088,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3p2ig914": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7100,9 +7104,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qajd93": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7114,9 +7120,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qb1oi4": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7128,9 +7136,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qb1oi5": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7142,9 +7152,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qcck717": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7156,10 +7168,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qdfiz23": {
-              "drop": 5,
+              "baseThickness": 45,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7170,8 +7183,9 @@
                 ],
                 "width": 800
               },
-              "mode": "reference",
-              "rawZ": 0
+              "mode": "layers",
+              "rawZ": 0,
+              "tileThickness": 10
             }
           },
           "version": 1
@@ -7320,8 +7334,8 @@
           },
           {
             "color": "#f5f6f5",
-            "cx": 7876,
-            "cy": 2512,
+            "cx": 7647,
+            "cy": 1247,
             "d": 450,
             "h": 450,
             "id": "fmv3wd35z9",
@@ -8416,21 +8430,139 @@
             "cy": 1472,
             "d": 630,
             "flip": true,
-            "groupId": "fmvcerwa548",
             "id": "fmvcerwa547",
             "kitchen": {
               "baseHeight": 900,
               "depth": 630,
               "laundry": {
+                "appliance": {
+                  "d": 600,
+                  "h": 850,
+                  "mountHeight": 0,
+                  "w": 600
+                },
+                "assembly": {
+                  "open": {
+                    "cabinet": {
+                      "autoDoors": false,
+                      "columns": [
+                        {
+                          "door": "none",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "none",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        }
+                      ],
+                      "doorOverlay": "full",
+                      "plinth": 0,
+                      "template": "wall",
+                      "thickness": 18,
+                      "version": 1
+                    },
+                    "color": "#bc936b",
+                    "d": 320,
+                    "h": 200,
+                    "mountHeight": 1600,
+                    "x": -1.0103336092965664e-14,
+                    "y": -55
+                  },
+                  "sink": {
+                    "color": "#ebe9e3",
+                    "d": 500,
+                    "module": 0,
+                    "sinkNotch": {
+                      "depth": 100,
+                      "side": "left",
+                      "width": 100
+                    },
+                    "w": 560,
+                    "x": 0,
+                    "y": 5.878304635907295e-14
+                  },
+                  "upper": {
+                    "cabinet": {
+                      "autoDoors": false,
+                      "columns": [
+                        {
+                          "door": "left",
+                          "doorAngle": 90,
+                          "doorOpen": true,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorAngle": 90,
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        }
+                      ],
+                      "doorOverlay": "full",
+                      "plinth": 0,
+                      "template": "wall",
+                      "thickness": 18,
+                      "version": 1
+                    },
+                    "color": "#f3f1ec",
+                    "d": 350,
+                    "h": 600,
+                    "mountHeight": 1800,
+                    "x": -7.347880794884118e-15,
+                    "y": -40
+                  }
+                },
                 "countertop": true,
+                "floorOpen": true,
                 "notch": {
                   "depth": 100,
                   "side": "left",
                   "width": 100
+                },
+                "sidePanels": {
+                  "left": true,
+                  "right": true,
+                  "thickness": 18
                 }
               },
               "modules": [
                 {
+                  "doorAngle": 90,
+                  "doorLeaves": [
+                    {
+                      "angle": 90,
+                      "open": true
+                    },
+                    {
+                      "angle": 90,
+                      "open": true
+                    }
+                  ],
+                  "doorOpen": true,
                   "role": "sink",
                   "run": 0,
                   "width": 600
@@ -8445,7 +8577,7 @@
               "thickness": 20,
               "version": 1
             },
-            "name": "洗衣机柜 · 水槽与设备空位",
+            "name": "完整阳台洗衣柜",
             "rot": 270,
             "type": "counter",
             "w": 1240
@@ -8453,130 +8585,17 @@
           {
             "color": "#e6ebee",
             "cx": 7060,
-            "cy": 1772,
+            "cy": 1763,
             "d": 600,
             "flip": true,
-            "groupId": "fmvcerwa548",
+            "h": 850,
             "id": "fmv58wvpj1",
+            "laundryHostId": "fmvcerwa547",
+            "mountHeight": 0,
             "name": "洗衣机",
             "rot": 270,
             "type": "washer",
             "w": 600
-          },
-          {
-            "color": "#ebe9e3",
-            "counterElevation": 920,
-            "counterLink": {
-              "hostId": "fmvcerwa547",
-              "module": 0
-            },
-            "cx": 7045,
-            "cy": 1152,
-            "d": 500,
-            "flip": true,
-            "groupId": "fmvcerwa548",
-            "id": "fmvcerwa750",
-            "name": "阳台定制水槽（可设异形缺角）",
-            "rot": 270,
-            "sinkNotch": {
-              "depth": 100,
-              "side": "left",
-              "width": 100
-            },
-            "type": "ksink",
-            "w": 560
-          },
-          {
-            "cabinet": {
-              "autoDoors": false,
-              "columns": [
-                {
-                  "door": "left",
-                  "doorOpen": false,
-                  "drawers": [],
-                  "handle": "none",
-                  "shelves": []
-                },
-                {
-                  "door": "left",
-                  "doorOpen": false,
-                  "drawers": [],
-                  "handle": "none",
-                  "shelves": []
-                },
-                {
-                  "door": "left",
-                  "doorOpen": false,
-                  "drawers": [],
-                  "handle": "none",
-                  "shelves": []
-                },
-                {
-                  "door": "left",
-                  "doorOpen": false,
-                  "drawers": [],
-                  "handle": "none",
-                  "shelves": []
-                }
-              ],
-              "doorOverlay": "full",
-              "plinth": 0,
-              "template": "wall",
-              "thickness": 18,
-              "version": 1
-            },
-            "color": "#f3f1ec",
-            "cx": 7005,
-            "cy": 1472,
-            "d": 350,
-            "flip": true,
-            "groupId": "fmvcerwa548",
-            "h": 600,
-            "id": "fmvcerwa751",
-            "mountHeight": 1800,
-            "name": "阳台封闭吊柜",
-            "rot": 270,
-            "type": "kitchenwall",
-            "w": 1240
-          },
-          {
-            "cabinet": {
-              "autoDoors": false,
-              "columns": [
-                {
-                  "door": "none",
-                  "doorOpen": false,
-                  "drawers": [],
-                  "handle": "none",
-                  "shelves": []
-                },
-                {
-                  "door": "none",
-                  "doorOpen": false,
-                  "drawers": [],
-                  "handle": "none",
-                  "shelves": []
-                }
-              ],
-              "doorOverlay": "full",
-              "plinth": 0,
-              "template": "wall",
-              "thickness": 18,
-              "version": 1
-            },
-            "color": "#bc936b",
-            "cx": 6990,
-            "cy": 1472,
-            "d": 320,
-            "flip": true,
-            "groupId": "fmvcerwa548",
-            "h": 200,
-            "id": "fmvcerwa852",
-            "mountHeight": 1600,
-            "name": "阳台双开放格",
-            "rot": 270,
-            "type": "kitchenwall",
-            "w": 1240
           }
         ],
         "measures": [],
@@ -8702,14 +8721,665 @@
           }
         },
         "scene3d": {
-          "cut": 2.8,
+          "cut": 1.2,
           "furn": true,
           "hour": 14,
           "labels": false,
           "lamps": false,
           "night": false
         },
-        "spaceThreshold": 800
+        "spaceThreshold": 800,
+        "wallTiling": {
+          "surfaces": [
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 571,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.1384083044982699,
+                0.8673587081891581
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_25"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 571,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                0.7611630321910696
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_26"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 525.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.3821656050955414,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_27"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 668.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.48344370860927155,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_28"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 695,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.43795620437956206,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_31"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 477,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                0.028454810495626797
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_32"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 446.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                0.6712328767123288
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_33"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 137.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_40"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 387,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_43"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 433.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.639511201629328,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_8"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 106,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.3485967503692771,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_9"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 471,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.9833333333333333,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_10"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 10.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.0846262341325811,
+                0.806064880112835
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_11"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 582,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                0.6136363636363636
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_12"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 560.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_12"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 627,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                0.7017543859649122
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_13"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 27,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_37"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 799.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_7"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 41.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                0.880346232179226
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_8"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 370.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_9"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 370.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_10"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 217,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
+              },
+              "range": [
+                0,
+                0.19110854503464203
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_18"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 288,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
+              },
+              "range": [
+                0.3749082905355833,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_20"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 2.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.5777777777777777,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_21"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 108.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.43223443223443225,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_22"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 240,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
+              },
+              "range": [
+                0.3933463796477495,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_22"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 600.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0.4772727272727273,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_23"
+            },
+            {
+              "cross": true,
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 332,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
+              },
+              "range": [
+                0.6716417910447762,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_23"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 138,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
+              },
+              "range": [
+                0.07969303423848882,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_35"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 10.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                0.17543859649122806
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_36"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 718.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_38"
+            },
+            {
+              "enabled": true,
+              "followFloor": true,
+              "layout": {
+                "angle": 0,
+                "gap": 2,
+                "height": 300,
+                "offset": 770.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
+              },
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_46"
+            }
+          ],
+          "version": 1
+        }
       },
       "p1": {
         "demolished": [],
