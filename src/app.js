@@ -69,7 +69,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v6';
+let STORE = 'huxing-design-v7';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);
@@ -163,7 +163,8 @@ function save(){
   if(repositoryBooting)return;
   store.updatedAt=Math.max(Date.now(),(store.updatedAt||0)+1);
   store.work[PLAN.id] = state;
-  if(Object.values(store.work).some(w=>FurnishCeiling.requiresV6(w))||store.designs.some(d=>FurnishCeiling.requiresV6(d.work))){store.v=6;STORE='huxing-design-v6';}
+  if(store.v>=7||[...Object.values(store.work),...store.designs.map(d=>d.work)].some(w=>FurnishWallTiling.requiresV7(w))){store.v=7;STORE='huxing-design-v7';}
+  else if(Object.values(store.work).some(w=>FurnishCeiling.requiresV6(w))||store.designs.some(d=>FurnishCeiling.requiresV6(d.work))){store.v=6;STORE='huxing-design-v6';}
   else if(store.v<6&&(Object.values(store.work).some(w=>w.ceilings)||store.designs.some(d=>d.work?.ceilings))){store.v=5;STORE='huxing-design-v5';}
   else if(store.v<5&&(Object.values(store.work).some(w=>w.wallTiling)||store.designs.some(d=>d.work?.wallTiling))){store.v=4;STORE='huxing-design-v4';}
   else if(store.v<4&&(Object.values(store.work).some(w=>w.floorFinishes)||store.designs.some(d=>d.work?.floorFinishes))){store.v=3;STORE='huxing-design-v3';}
@@ -543,7 +544,7 @@ function openReset(){
 function wipeAll(){
   // Erasing browser caches never deletes the Git-managed design file.
   const wipeNotice=repositoryClient?'仓库中的设计文件和本机恢复副本会保留，刷新后将重新加载仓库设计。':'';
-  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
+  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 
 function openHelp(){

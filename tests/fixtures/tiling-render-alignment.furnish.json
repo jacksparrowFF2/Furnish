@@ -1,0 +1,339 @@
+{
+  "format": "furnish-project",
+  "version": 4,
+  "createdAt": "2026-10-17T16:44:13.422Z",
+  "checksum": "f6ed5cd6",
+  "payload": {
+    "planId": "custom_finish",
+    "current": {
+      "furniture": [
+        {
+          "id": "item",
+          "type": "custom",
+          "name": "验收柜",
+          "cx": 500,
+          "cy": 500,
+          "w": 500,
+          "d": 500,
+          "h": 800,
+          "rot": 0,
+          "color": "#bb9977"
+        }
+      ],
+      "rooms": {
+        "room1": {
+          "name": "房间 1",
+          "mat": "tile800",
+          "use": "kitchen"
+        },
+        "room2": {
+          "name": "房间 2",
+          "mat": "tile800",
+          "use": "bathroom"
+        }
+      },
+      "demolished": [],
+      "measures": [
+        {
+          "a": {
+            "x": 200,
+            "y": 400
+          },
+          "b": {
+            "x": 4000,
+            "y": 400
+          }
+        }
+      ],
+      "notes": [],
+      "open": {},
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_finish",
+          "name": "完成面验收",
+          "source": "dxf",
+          "image": "",
+          "width": 450,
+          "height": 350,
+          "scale": 10,
+          "walls": [
+            {
+              "id": "north",
+              "a": [
+                10,
+                10
+              ],
+              "b": [
+                410,
+                10
+              ],
+              "kind": "b",
+              "thickness": 200
+            },
+            {
+              "id": "east",
+              "a": [
+                410,
+                10
+              ],
+              "b": [
+                410,
+                310
+              ],
+              "kind": "e",
+              "thickness": 200
+            },
+            {
+              "id": "south",
+              "a": [
+                410,
+                310
+              ],
+              "b": [
+                10,
+                310
+              ],
+              "kind": "n",
+              "thickness": 200
+            },
+            {
+              "id": "west",
+              "a": [
+                10,
+                310
+              ],
+              "b": [
+                10,
+                10
+              ],
+              "kind": "e",
+              "thickness": 200
+            },
+            {
+              "id": "middle",
+              "a": [
+                210,
+                10
+              ],
+              "b": [
+                210,
+                310
+              ],
+              "kind": "n",
+              "thickness": 100
+            }
+          ],
+          "openings": [
+            {
+              "id": "door",
+              "wall": "middle",
+              "kind": "door",
+              "t": 0.5,
+              "length": 900,
+              "side": 1,
+              "entry": false
+            }
+          ]
+        },
+        "phase": "survey"
+      },
+      "floorFinishes": {
+        "version": 1,
+        "areas": {
+          "room1": {
+            "rawZ": 0,
+            "mode": "layers",
+            "layout": {
+              "width": 800,
+              "height": 400,
+              "gap": 2,
+              "angle": 0,
+              "origin": [
+                -125.5,
+                312.25
+              ]
+            },
+            "tileThickness": 10,
+            "baseThickness": 50
+          },
+          "room2": {
+            "rawZ": 0,
+            "mode": "layers",
+            "layout": {
+              "width": 800,
+              "height": 400,
+              "gap": 2,
+              "angle": 0,
+              "origin": [
+                -125.5,
+                312.25
+              ]
+            },
+            "tileThickness": 10,
+            "baseThickness": 45
+          }
+        }
+      },
+      "wallTiling": {
+        "version": 1,
+        "surfaces": [
+          {
+            "roomId": "room1",
+            "wallId": "north",
+            "side": 1,
+            "range": [
+              0.047619047619047616,
+              0.4880952380952381
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          },
+          {
+            "roomId": "room1",
+            "wallId": "south",
+            "side": -1,
+            "range": [
+              0.047619047619047616,
+              0.4880952380952381
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          },
+          {
+            "roomId": "room1",
+            "wallId": "west",
+            "side": 1,
+            "range": [
+              0.0625,
+              0.9375
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          },
+          {
+            "roomId": "room1",
+            "wallId": "middle",
+            "side": -1,
+            "range": [
+              0.0625,
+              0.9375
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          },
+          {
+            "roomId": "room2",
+            "wallId": "north",
+            "side": 1,
+            "range": [
+              0.5119047619047619,
+              0.9523809523809523
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          },
+          {
+            "roomId": "room2",
+            "wallId": "east",
+            "side": -1,
+            "range": [
+              0.0625,
+              0.9375
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          },
+          {
+            "roomId": "room2",
+            "wallId": "south",
+            "side": -1,
+            "range": [
+              0.5119047619047619,
+              0.9523809523809523
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          },
+          {
+            "roomId": "room2",
+            "wallId": "middle",
+            "side": 1,
+            "range": [
+              0.0625,
+              0.9375
+            ],
+            "enabled": true,
+            "layout": {
+              "width": 600,
+              "height": 300,
+              "gap": 2,
+              "angle": 0,
+              "offset": 0,
+              "startHeight": 0,
+              "reference": "floor"
+            }
+          }
+        ]
+      }
+    },
+    "designs": [],
+    "catalog": []
+  }
+}

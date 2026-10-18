@@ -1202,7 +1202,7 @@ function buildFurniture(f){
 }
 
 /* ======================= 建筑 ======================= */
-function clearGroup(g){ g.traverse(o => { if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.wallTilingOwnMaterial){o.material.map?.dispose();o.material.dispose();} if(o.userData.cabinetOwnMaterial||o.userData.ceilingOwnMaterial||o.userData.beamDimension)o.material.dispose(); }); g.clear(); }
+function clearGroup(g){ g.traverse(o => { if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.wallTilingOwnMaterial||o.userData.floorFinishOwnMaterial){o.material.map?.dispose();o.material.dispose();} if(o.userData.cabinetOwnMaterial||o.userData.ceilingOwnMaterial||o.userData.beamDimension)o.material.dispose(); }); g.clear(); }
 function wallBox([x0, y0, x1, y1], yb, yt, m){
   if (yt - yb <= .001) return;
   const o = new THREE.Mesh(new THREE.BoxGeometry(M(x1-x0), yt-yb, M(y1-y0)), m || [wallMat, wallMat, capMat, wallMat, wallMat, wallMat]);
@@ -1227,10 +1227,9 @@ function buildArch(){
   FurnishWallFinish.spatial(finishPlan).rooms.filter(r=>r.poly.length).forEach(r => {
     const floor=finishPlan.floorFinish?.areas[r.id];
     const m = floor?.layout?FurnishFloorFinishModel.material(THREE,floor.layout,{wx,wz,color:MATS[state.rooms[r.id].mat]?.sw}):floorMat(state.rooms[r.id].mat), bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
-    const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)));
-    geo.rotateX(-Math.PI/2);
-    if(!bay&&floor?.layout)FurnishFloorFinishModel.uv(THREE,geo,floor.layout,{wx,wz});
-    const fl = new THREE.Mesh(geo, bay ? [m, mat('#e9e4da')] : m);
+    const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : null;
+    if(geo)geo.rotateX(-Math.PI/2);
+    const fl=bay?new THREE.Mesh(geo,[m,mat('#e9e4da')]):FurnishFloorFinishModel.surface(THREE,r,floor||{},{wx,wz,material:m});
     fl.receiveShadow = true; fl.userData.room = r.id;
     if(!bay){fl.position.y=(floor?.finishedZ??floor?.rawZ??0)/1000;fl.userData.floor=true;const layers=floor?FurnishFloorFinishModel.layers(THREE,r,floor,{wx,wz}):null;if(layers)archFloor.add(layers);}
     if (bay){ fl.castShadow = true; archUp.add(fl); } else archFloor.add(fl);
@@ -1243,7 +1242,17 @@ function buildArch(){
       const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), roomH - .25, wz(r.at[1])); lampG.add(pl);
     }
   });
-  [...DOORS, ...SLIDES].forEach(d => { const [x0, y0, x1, y1] = d.rect; const s = box(M(x1-x0), .012, M(y1-y0), mat('#d8d0c0', {roughness:.3}), wx((x0+x1)/2), 0, wz((y0+y1)/2)); s.castShadow = false; archFloor.add(s); });
+  // Fill the actual door opening with each adjoining room's floor, including
+  // its own grid and finished height. Legacy projects keep schematic sills.
+  for(const a of finishPlan.floorFinish?.doorways||[]){
+    const m=a.layout?FurnishFloorFinishModel.material(THREE,a.layout,{color:MATS[state.rooms[a.roomId].mat]?.sw}):floorMat(state.rooms[a.roomId].mat);
+    const mesh=FurnishFloorFinishModel.surface(THREE,a.room,a,{wx,wz,material:m});mesh.userData.doorway=a.id;archFloor.add(mesh);
+    const layers=FurnishFloorFinishModel.layers(THREE,a.room,a,{wx,wz});if(layers)archFloor.add(layers);
+  }
+  const floorSteps=finishPlan.floorFinish?.steps||[];archFloor.add(FurnishFloorFinishModel.stepEdges(THREE,floorSteps,{wx,wz}));
+  // Label the measured difference rather than exaggerating a 5 mm riser.
+  for(const step of floorSteps){const [[x,z],[X,Z]]=step.seam;const el=document.createElement('div');el.className='scene-floor-step';el.textContent=`${tr('地面高差','Floor step')} ${Number(step.drop.toFixed(2))} mm`;const label=new CSS2DObject(el);label.position.set(wx((x+X)/2),step.high/1000+.035,wz((z+Z)/2));archFloor.add(label);}
+  for(const [kind,list] of [['door',DOORS],['slide',SLIDES]])list.forEach((d,index)=>{if(finishPlan.floorFinish?.doorways.some(a=>a.kind===kind&&a.index===index))return;const [x0,y0,x1,y1]=d.rect,s=box(M(x1-x0),.012,M(y1-y0),mat('#d8d0c0',{roughness:.3}),wx((x0+x1)/2),0,wz((y0+y1)/2));s.castShadow=false;archFloor.add(s);});
   // Schematic risers: user default diameter 100 mm, floor to room ceiling.
   for(const marker of PLAN.markers||[]){
     const room=FurnishProject.ceilingAt(PLAN,...marker.at).room;

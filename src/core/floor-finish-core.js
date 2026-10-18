@@ -45,6 +45,18 @@ function setLayoutBasis(work,plan,ids,basis){
  }
  next.floorFinishes={version:1,areas};validate(next.floorFinishes);return next;
 }
+function setLayers(work,plan,ids,values){
+ if(!Array.isArray(ids)||!ids.length||!values||Object.keys(values).some(k=>!['rawZ','tileThickness','baseThickness','bathroomBaseThickness'].includes(k))||!['rawZ','tileThickness','baseThickness'].every(k=>finite(values[k]))||values.bathroomBaseThickness!==undefined&&!finite(values.bathroomBaseThickness))throw Error('请填写毛坯标高、面层厚度和粘结找平层厚度，并选择区域');
+ if(Math.abs(values.rawZ)>20000||['tileThickness','baseThickness','bathroomBaseThickness'].some(k=>values[k]!==undefined&&(values[k]<0||values[k]>1000)))throw Error('毛坯标高须为 −20000–20000 mm，厚度须为 0–1000 mm');
+ const next=clone(work),areas=next.floorFinishes?.areas||{};
+ for(const id of new Set(ids)){
+  const room=plan.rooms.find(r=>r.id===id&&r.counted!==false);if(!room)throw Error('地面区域已变化，请重新选择');
+  const old=areas[id]||defaults(room,work.rooms?.[id]),bath=(work.rooms?.[id]?.use||room.use)==='bathroom';
+  const s={...old,mode:'layers',rawZ:values.rawZ,tileThickness:values.tileThickness,baseThickness:bath&&values.bathroomBaseThickness!==undefined?values.bathroomBaseThickness:values.baseThickness};
+  delete s.enabled;delete s.targetZ;delete s.reference;delete s.drop;areas[id]=s;
+ }
+ next.floorFinishes={version:1,areas};validate(next.floorFinishes);return next;
+}
 function derive(plan,work){
  validate(work.floorFinishes);if(!work.floorFinishes)return plan;
  const areas=Object.create(null),pending=[],records=Object.fromEntries(Object.entries(work.floorFinishes.areas).filter(([,s])=>s.enabled!==false)),rooms=(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan).rooms.filter(r=>r.counted!==false);
@@ -56,7 +68,13 @@ function derive(plan,work){
   let target;
   if(s.mode==='reference'){
    const ref=resolve(s.reference,[...trail,id]);target=finite(ref?.finishedZ)&&finite(s.drop)?ref.finishedZ-s.drop:undefined;
-   if(!finite(target))a.pending='参考区域标高／降低量未确定，或参考关联需核对';
+   const name=work.rooms?.[s.reference]?.name||rooms.find(r=>r.id===s.reference)?.name||s.reference;
+   if(!s.reference)a.pending='请选择参考区域，并先确定该区域的完成标高';
+   else if(trail.includes(s.reference))a.pending='地面标高参考形成循环；请修改参考区域';
+   else if(!rooms.some(r=>r.id===s.reference))a.pending='参考区域已移除或不计入面积；请重新选择';
+   else if(!records[s.reference])a.pending=`参考区域标高未确定：「${name}」未启用地面设置；请先启用并设置其完成标高`;
+   else if(!finite(ref?.finishedZ))a.pending=`参考区域标高未确定：「${name}」${ref?.pending||'完成标高待确定'}；请先完成参考区域设置`;
+   else if(!finite(s.drop))a.pending='请填写比参考区域低的数值；同高可填 0 mm';
   }else if(s.mode==='level')target=s.targetZ;
   if(s.mode==='layers'){if([s.rawZ,s.tileThickness,s.baseThickness].every(finite))a.finishedZ=s.rawZ+s.tileThickness+s.baseThickness;}
   else if([target,s.rawZ,s.tileThickness].every(finite)){
@@ -71,12 +89,44 @@ function derive(plan,work){
  for(const id of Object.keys(records)){
   const a=resolve(id);if(!a)pending.push({id,message:'地面原区域已变化或移除，请重新关联／移除设置'});else if(a.pending)pending.push({id,message:a.pending});
  }
- const signature=Object.values(areas).map(a=>[a.id,a.rawZ,a.finishedZ,a.pending]);
- return {...plan,floorFinish:{areas,pending,signature}};
+ const doorways=doorwayAreas(plan,areas),steps=doorwaySteps(doorways),signature=[...Object.values(areas).map(a=>[a.id,a.rawZ,a.finishedZ,a.pending]),...doorways.map(a=>[a.id,a.roomId,a.room.polys,a.finishedZ])];
+ return {...plan,floorFinish:{areas,doorways,steps,pending,signature}};
 }
+// A doorway belongs to each adjoining room up to the wall centre line. These
+// are derived surfaces, never extra room area, quantities or saved settings.
+function doorwayAreas(plan,areas){
+ const z=Z(),rooms=(plan.rooms||[]).filter(r=>r.counted!==false),out=[];
+ for(const [kind,list] of [['door',plan.doors||[]],['slide',plan.slides||[]]])for(const [index,d] of list.entries()){
+  const r=d.rect;if(!r||r.length!==4||!r.every(finite))continue;
+  const axis=d.c?.some(v=>v)?(d.c[0]?0:1):(r[2]-r[0]>=r[3]-r[1]?0:1),normal=1-axis,mid=(r[normal]+r[normal+2])/2;
+  const cuts=[...new Set([r[axis],r[axis+2],...rooms.flatMap(room=>(room.rings||[room.poly]).flat().map(p=>p[axis])).filter(v=>v>=r[axis]&&v<=r[axis+2])])].sort((a,b)=>a-b);
+  for(let i=1;i<cuts.length;i++){
+   const lo=cuts[i-1],hi=cuts[i];if(hi-lo<.001)continue;
+   const sides=[-1,1].map(side=>{const p=[0,0];p[axis]=(lo+hi)/2;p[normal]=(side<0?r[normal]:r[normal+2])+side*.05;return rooms.find(room=>(room.polys||[room.poly]).some(q=>z.inside(p,q)));});
+   for(let side=0;side<2;side++){
+    const room=sides[side],a=room&&areas[room.id];if(!a)continue;
+    const band=r.slice();band[axis]=lo;band[axis+2]=hi;
+    // Exterior openings extend the sole interior finish through the whole hole.
+    if(sides[1-side]){band[normal]=side?mid:r[normal];band[normal+2]=side?r[normal+2]:mid;}
+    const poly=[[band[0],band[1]],[band[2],band[1]],[band[2],band[3]],[band[0],band[3]]],covered=Object.values(areas).flatMap(v=>v.room.polys||[v.room.poly]).filter(q=>Math.max(...q.map(p=>p[0]))>band[0]&&Math.min(...q.map(p=>p[0]))<band[2]&&Math.max(...q.map(p=>p[1]))>band[1]&&Math.min(...q.map(p=>p[1]))<band[3]);
+    const pieces=z.decompose([poly,...covered],p=>z.inside(p,poly)&&!covered.some(q=>z.inside(p,q)));if(!pieces.length)continue;
+    const shape=z.outline(pieces),seam=[[0,0],[0,0]];seam[0][axis]=lo;seam[1][axis]=hi;seam[0][normal]=seam[1][normal]=mid;
+    out.push({...a,id:`${kind}-${index}-${i}-${side}`,roomId:room.id,kind,index,seam,room:{...a.room,...shape}});
+   }
+  }
+ }
+ return out;
+}
+function doorwaySteps(areas){
+ const groups=new Map();for(const a of areas){const key=a.id.slice(0,a.id.lastIndexOf('-'));if(!groups.has(key))groups.set(key,[]);groups.get(key).push(a);}
+ const steps=[];for(const [part,pair] of groups){if(pair.length!==2||!pair.every(a=>finite(a.finishedZ)))continue;const low=Math.min(...pair.map(a=>a.finishedZ)),high=Math.max(...pair.map(a=>a.finishedZ));if(high-low<=1e-6)continue;
+  const id=part.slice(0,part.lastIndexOf('-')),seam=pair[0].seam.map(p=>p.slice()),last=steps.at(-1);if(last?.id===id&&last.low===low&&last.high===high&&last.seam[1].every((v,i)=>Math.abs(v-seam[0][i])<1e-6))last.seam[1]=seam[1];else steps.push({id,seam,low,high,drop:high-low});
+ }return steps;
+}
+function surfaces(plan){return [...Object.values(plan.floorFinish?.areas||{}),...(plan.floorFinish?.doorways||[])];}
 function at(plan,point){
- const matches=(plan.rooms||[]).filter(r=>r.counted!==false&&Z().inside(point,r.poly));
- return matches.map(r=>plan.floorFinish?.areas[r.id]||{id:r.id,finishedZ:0,legacy:true,room:r});
+ const matches=(plan.rooms||[]).filter(r=>r.counted!==false&&(r.polys||[r.poly]).some(p=>Z().inside(point,p)));
+ return [...matches.map(r=>plan.floorFinish?.areas[r.id]||{id:r.id,finishedZ:0,legacy:true,room:r}),...(plan.floorFinish?.doorways||[]).filter(a=>(a.room.polys||[a.room.poly]).some(p=>Z().inside(point,p)))];
 }
 function transform(layout,point,inverse=false){
  const a=layout.angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a),[x,y]=point;
@@ -116,11 +166,11 @@ function checks(plan,furniture){
  const G=root.FurnishGeometry||require('./layout-geometry.js'),D=root.FurnishDesign||require('./design-core.js');
  for(const a of Object.values(data.areas))if(finite(a.finishedZ)&&a.finishedZ>=(a.room.ceilingHeight??plan.ceilingHeight??2800))issues.push({kind:'floorheight',id:'floor-'+a.id,roomId:a.id,name:a.room.name,message:'完成地面达到或超过天花标高，请核对毛坯基准与层厚'});
  for(const f of furniture){
-  const areas=Object.values(data.areas).filter(a=>G.footprints(f).some(p=>overlaps(p,a.room.poly))),known=areas.filter(a=>finite(a.finishedZ)),v=D.furnitureVerticalBounds(f);
+  const touched=surfaces(plan).filter(a=>G.footprints(f).some(p=>(a.room.polys||[a.room.poly]).some(q=>overlaps(p,q)))),areas=[...new Map(touched.map(a=>[a.roomId||a.id,a])).values()],known=areas.filter(a=>finite(a.finishedZ)),v=D.furnitureVerticalBounds(f);
   if(!areas.length)continue;
   if(!v||areas.some(a=>!finite(a.finishedZ)))issues.push({kind:'floorheight',id:f.id,name:f.name,pending:true,message:'家具或所跨区域高度未知，地面净高待核对'});
-  else for(const a of known)if(v.bottom<a.finishedZ-1e-6)issues.push({kind:'floorheight',id:f.id,roomId:a.id,name:f.name,message:`家具底部低于 ${a.room.name} 完成地面 ${Number((a.finishedZ-v.bottom).toFixed(2))} mm；原高度保持，请人工核对安装`});
-  const levels=(plan.rooms||[]).filter(r=>r.counted!==false&&G.footprints(f).some(p=>overlaps(p,r.poly))).map(r=>data.areas[r.id]?.finishedZ??(data.areas[r.id]?undefined:0)).filter(finite);
+  else for(const a of known)if(v.bottom<a.finishedZ-1e-6)issues.push({kind:'floorheight',id:f.id,roomId:a.roomId||a.id,name:f.name,message:`家具底部低于 ${a.room.name} 完成地面 ${Number((a.finishedZ-v.bottom).toFixed(2))} mm；原高度保持，请人工核对安装`});
+  const levels=[...known.map(a=>a.finishedZ),...(plan.rooms||[]).filter(r=>r.counted!==false&&G.footprints(f).some(p=>overlaps(p,r.poly))).map(r=>data.areas[r.id]?.finishedZ??(data.areas[r.id]?undefined:0))].filter(finite);
   if(levels.length&&Math.max(...levels)-Math.min(...levels)>1e-6&&v?.bottom<=Math.max(...levels)+5)issues.push({kind:'floorlevel',id:f.id,name:f.name,message:'家具支承范围跨越不同地面标高，请核对支脚与安装'});
  }
  for(const [i,d] of (plan.doors||[]).entries()){
@@ -129,6 +179,6 @@ function checks(plan,furniture){
  }
  return issues;
 }
-const api={validate,defaults,setEnabled,setLayoutBasis,derive,at,transform,cells,snapOrigin,checks,onlyChange,tiled,has:w=>!!w?.floorFinishes};
+const api={validate,defaults,setEnabled,setLayoutBasis,setLayers,derive,doorwayAreas,surfaces,at,transform,cells,snapOrigin,checks,onlyChange,tiled,has:w=>!!w?.floorFinishes};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFloorFinish=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
