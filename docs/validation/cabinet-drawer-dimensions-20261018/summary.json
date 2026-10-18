@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-18",
+  "change": "Actual exterior drawer-front dimensions appear alongside doors immediately on entering the cabinet designer and in its complete front-size list.",
+  "regression": {
+    "command": "node scripts/check.cjs",
+    "status": "PASS",
+    "suites": 207,
+    "builtInPlans": 12,
+    "previewPages": 2721,
+    "log": "output/cabinet-drawer-check.log"
+  },
+  "browser": {
+    "status": "PASS",
+    "cases": [
+      "cabinet-drawer-dimensions",
+      "cabinet-custom-fronts",
+      "cabinet-door-coverage"
+    ],
+    "results": "browser-results.json",
+    "isolatedRun": "output/playwright/verification-aRGv3F",
+    "coverage": [
+      "initial overall dimensions",
+      "combined complete list",
+      "actual drawer resize",
+      "dimension toggle",
+      "module selection",
+      "basket two exterior fronts",
+      "all cabinet templates",
+      "L/U unfolded views",
+      "390px layout",
+      "cancel",
+      "save",
+      "undo/redo",
+      "refresh",
+      "existing project roundtrip"
+    ]
+  },
+  "visualInspection": [
+    "entry.png",
+    "mobile.png"
+  ],
+  "diffCheck": "PASS",
+  "notExecuted": [
+    "entire browser acceptance suite",
+    "physical touch device",
+    "file:// recheck for this change; loading unchanged"
+  ],
+  "limits": [
+    "Only actual exterior drawer fronts are listed; internal drawer-box boards, hidden basket rails and horizontal lids are excluded.",
+    "Dense projected labels can be temporarily hidden; the complete list preserves all panel sizes.",
+    "Layout model panel sizes are not fabrication specifications."
+  ],
+  "persistence": "Read-only cabinetDrawerSize metadata; no new persistent fields or save/history/spatial-check paths."
+}

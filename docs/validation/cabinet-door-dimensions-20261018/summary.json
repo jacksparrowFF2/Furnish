@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-18",
+  "change": "Show overall dimensions and all cabinet door sizes immediately on entering the cabinet designer; preserve a complete list across active-bay changes, including laundry upper cabinets, custom wall-cabinet bays and end cabinets.",
+  "regression": {
+    "command": "node scripts/check.cjs",
+    "status": "PASS",
+    "suites": 207,
+    "builtInPlans": 12,
+    "previewPages": 2705,
+    "log": "output/cabinet-door-check.log"
+  },
+  "browser": {
+    "command": "FURNISH_BROWSER_CHANNEL=chrome node scripts/verify-browser.cjs cabinet-door-coverage cabinet-custom-fronts",
+    "status": "PASS",
+    "results": "browser-results.json",
+    "isolatedRun": "output/playwright/verification-jO76ZM",
+    "coverage": ["initial overall tab", "complete lists", "all cabinet templates", "laundry upper doors", "end doors", "custom wall cabinet interiors", "L/U unfolded views", "dimensions switch", "390px layout", "cancel", "save", "undo/redo", "refresh", "project download/upload"]
+  },
+  "visualInspection": ["wall-entry.png", "wall-entry-mobile.png"],
+  "diffCheck": "PASS",
+  "notExecuted": ["entire browser acceptance suite", "physical touch device", "file:// browser recheck for this change (loading mechanism unchanged)"],
+  "limits": ["Dense projected labels can be hidden to avoid overlap; the full list preserves every door size.", "Drawer fronts, fixed panels and independent appliance doors are outside this cabinet-door size feature.", "Dimensions are production layout model panel sizes, not fabrication specifications."],
+  "persistence": "No new persistent fields; preview metadata and dimensions do not alter saved designs. Browser acceptance uses isolated copies and storage."
+}

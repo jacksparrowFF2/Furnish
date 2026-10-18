@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "cabinet-drawer-dimensions",
+    "cabinet-custom-fronts",
+    "cabinet-door-coverage"
+  ],
+  "results": [
+    {
+      "name": "cabinet-drawer-dimensions",
+      "status": "PASS",
+      "seconds": 3.4,
+      "log": "cabinet-drawer-dimensions.log"
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 16.9,
+      "log": "cabinet-custom-fronts.log"
+    },
+    {
+      "name": "cabinet-door-coverage",
+      "status": "PASS",
+      "seconds": 4.2,
+      "log": "cabinet-door-coverage.log"
+    }
+  ],
+  "notRun": []
+}

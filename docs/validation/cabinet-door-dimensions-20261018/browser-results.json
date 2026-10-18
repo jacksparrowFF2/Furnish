@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "cabinet-door-coverage",
+    "cabinet-custom-fronts"
+  ],
+  "results": [
+    {
+      "name": "cabinet-door-coverage",
+      "status": "PASS",
+      "seconds": 4.1,
+      "log": "cabinet-door-coverage.log"
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 16.9,
+      "log": "cabinet-custom-fronts.log"
+    }
+  ],
+  "notRun": []
+}

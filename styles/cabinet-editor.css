@@ -92,7 +92,7 @@
 .cab-drawer-snap-guide{fill:none;stroke:#008fa5;stroke-width:3;stroke-dasharray:7 4;pointer-events:none}
 @media(pointer:coarse){.cab-drawer-boundary-hit{stroke-width:24}.cab-drawer-height,.cab-drawer-height-input{min-height:28px}}
 
-.cab-door-dimension{font-size:11px;background:#fffdf4ed;color:#24556b}
+.cab-door-dimension,.cab-drawer-front-dimension{font-size:11px;background:#fffdf4ed;color:#24556b}
 .cab-door-sizes{position:absolute;left:8px;right:8px;bottom:8px;z-index:5;max-height:35%;overflow:auto;border:1px solid #d7d1c6;border-radius:6px;background:#fffdf5f2;color:#24556b;font:11px/1.6 system-ui;padding:3px 7px;pointer-events:auto}
 .cab-door-sizes[hidden]{display:none}.cab-door-sizes summary{cursor:pointer;font-weight:600}.cab-door-sizes div{padding:2px 0;border-top:1px solid #eee5d9}
 

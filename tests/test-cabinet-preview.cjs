@@ -47,7 +47,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  preview.setView({front:false,doors:'ghost',dimensions:false});tick();assert(camera.isPerspectiveCamera);assert.equal(controls.enableRotate,true);
  const annotations=host.children.find(el=>el.className==='cab-dimensions'),texts=()=>annotations.children.map(el=>el.textContent||'');
  draft={...draft,...C.preset('wardrobe')};preview.update(draft);const saved=JSON.stringify(draft);
- preview.setView({dimensionScope:'size',dimensions:true});tick();assert(texts().some(s=>s.startsWith('总宽')));assert(!texts().some(s=>s.startsWith('净宽')));assert(!texts().some(s=>/^\d+×\d+/.test(s)));
+ preview.setView({dimensionScope:'size',dimensions:true});tick();assert(texts().some(s=>s.startsWith('总宽')));assert(!texts().some(s=>s.startsWith('净宽')));assert(texts().some(s=>/^\d+×\d+/.test(s)),'door sizes are visible on the initial overall-size step');
  preview.selectShelf({column:1});preview.setView({dimensionScope:'bays'});tick();assert.equal(texts().filter(s=>s.startsWith('净宽')).length,1);assert(texts().includes('净宽 '+Number(C.widths(draft)[1].toFixed(2))));assert(!texts().some(s=>s.startsWith('总宽')));
  preview.selectShelf({column:0});tick();assert(texts().includes('净宽 '+Number(C.widths(draft)[0].toFixed(2))));
  preview.setView({dimensionScope:'front'});tick();assert(!texts().some(s=>s.startsWith('净宽')));assert(texts().some(s=>/^\d+×\d+/.test(s)));

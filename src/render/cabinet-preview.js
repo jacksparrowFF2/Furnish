@@ -37,7 +37,7 @@
   function dimensions(){
    labelLayer.replaceChildren(rulers);labels=[];readout.style.top=settings.dimensions?'42px':'12px';
    doorSizes.replaceChildren();doorSizes.hidden=true;doorSizeCount=0;
-   const scope=settings.dimensionScope,all=scope==='all',interior=all||['bays','modules'].includes(scope),fronts=all||scope==='front',outer=all||['size','space'].includes(scope),chosen=i=>all||i===(activeColumn??0);
+   const scope=settings.dimensionScope,all=scope==='all',interior=all||['bays','modules'].includes(scope),fronts=all||['size','front'].includes(scope),outer=all||['size','space'].includes(scope),chosen=i=>all||i===(activeColumn??0);
    const point=(x,y,z)=>new THREE.Vector3(x*(current.kitchen&&current.flip?-1:1)/1000,y/1000,z/1000),fmt=v=>String(Number(v.toFixed(2)));
    const add=(text,p,options={})=>{const el=document.createElement(options.column===undefined?'span':'button');el.className=options.column===undefined?'cab-dimension':'cab-module-number';el.textContent=text;
     if(options.column!==undefined){el.type='button';el.setAttribute('aria-label',options.title);el.title=options.title;el.onclick=()=>{if(actions.select?.({column:options.column})!==false){activeColumn=options.column;markActive();}};}
@@ -70,11 +70,18 @@
    if(isL)measure(`柜深 ${fmt(current.kitchen.depth)}`,point(-w/2,h,-d/2),point(-w/2,h,-d/2+current.kitchen.depth),26);
    }
    if(settings.dimensions&&fronts){
-    const rows=[];model?.traverse(o=>{const size=o.userData.cabinetDoorSize;if(!size)return;const part=o.userData.cabinetPart||{},index=part.column??0,column=elevation?(elevation.indices[index]??elevation.endIndex):index,section={upper:'上柜',lower:'下柜',display:'展示柜',fridgeUpper:'冰箱上柜',storage:''}[size.section]??size.section,caption=`${current.kitchen?'模块':'分区'} ${column===null?'盲角':column+1} ${section} · 门 ${size.leaf+1}`,text=`宽 ${fmt(size.width)} × 高 ${fmt(size.height)} mm`,pos=o.getWorldPosition(new THREE.Vector3());
-     if(!chosen(column))return;
-     const label=add(`${fmt(size.width)}×${fmt(size.height)}`,pos,{doorSize:true});label.className='cab-dimension cab-door-dimension';label.title=`${caption}：${text}`;label.setAttribute('data-door-width',String(size.width));label.setAttribute('data-door-height',String(size.height));rows.push(`${caption}：${text}`);
+    const rows=[];model?.traverse(o=>{const drawer=!!o.userData.cabinetDrawerSize,size=o.userData.cabinetDoorSize||o.userData.cabinetDrawerSize;if(!size)return;
+     const part=o.userData.cabinetPart||{},index=part.column??0,column=elevation?(elevation.indices[index]??elevation.endIndex):index;
+     const section={upper:'上柜',lower:'下柜',display:'展示柜',fridgeUpper:'冰箱上柜',storage:''}[size.section??'storage']??size.section,assembly=size.assembly,thin=!assembly&&current.kitchen&&index>=current.kitchen.modules.length;
+     const run=thin?(elevation?.run??root.FurnishKitchen.cabinetLayout(current).find(m=>m.index===index).run):null;
+     const location=assembly?`洗衣柜${{upper:'吊柜',open:'开放格'}[assembly]??assembly} · 分区 ${index+1}`:thin?`末端薄柜（${elevation?.title?.replace(/正视$/,'')??root.FurnishKitchen.runName(current,run)}）`:`${current.kitchen?'模块':'分区'} ${column===null?'盲角':column+1}`;
+     const bay=part.bay===undefined?'':` · 内部分区 ${part.bay+1}`,panel=drawer?(part.lid?'上盖联动抽屉面板':`抽屉 ${part.drawer+1} 面板${part.lane===undefined?'':` · 第 ${part.lane+1} 列`}`):`门 ${size.leaf+1}`,caption=`${location}${bay} ${section} · ${panel}`,text=`宽 ${fmt(size.width)} × 高 ${fmt(size.height)} mm`;
+     // The complete list must remain available for unselected bays and end cabinets.
+     rows.push(`${caption}：${text}`);
+     if(scope!=='size'&&!assembly&&!thin&&!chosen(column))return;
+     const pos=o.getWorldPosition(new THREE.Vector3()),label=add(`${fmt(size.width)}×${fmt(size.height)}`,pos,{doorSize:true});label.className='cab-dimension '+(drawer?'cab-drawer-front-dimension':'cab-door-dimension');label.title=`${caption}：${text}`;label.setAttribute(drawer?'data-drawer-width':'data-door-width',String(size.width));label.setAttribute(drawer?'data-drawer-height':'data-door-height',String(size.height));
     });
-    doorSizeCount=rows.length;if(rows.length){doorSizes.hidden=false;const heading=document.createElement('summary');heading.textContent=`柜门尺寸 · 宽 × 高（mm） · ${rows.length} 扇`;doorSizes.appendChild(heading);for(const text of rows){const row=document.createElement('div');row.textContent=text;doorSizes.appendChild(row);}}
+    doorSizeCount=rows.length;if(rows.length){doorSizes.hidden=!!splitRoot;const heading=document.createElement('summary');heading.textContent=`全部门板／抽屉面板尺寸 · 宽 × 高（mm） · ${rows.length} 块`;doorSizes.appendChild(heading);for(const text of rows){const row=document.createElement('div');row.textContent=text;doorSizes.appendChild(row);}}
    }
    markActive();
   }

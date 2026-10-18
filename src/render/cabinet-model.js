@@ -228,7 +228,10 @@
   return g;
  }
  function build(THREE,f,box,options={}){
-  return cutServices(THREE,buildRaw(THREE,f,box,options),f,{...options,cabinetOnly:f.type==='vanity'});
+  const model=buildRaw(THREE,f,box,options);
+  // Capture the actual exterior front before service cuts replace its geometry.
+  model.traverse(o=>{if(o.userData.cabinetDrawerBoard!=='front')return;const p=o.geometry.parameters;o.userData.cabinetDrawerSize={width:p.width*1000,height:p.height*1000};});
+  return cutServices(THREE,model,f,{...options,cabinetOnly:f.type==='vanity'});
  }
  function cutServices(THREE,g,f,options={}){
   const services=root.FurnishServices;
