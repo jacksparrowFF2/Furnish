@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-18",
+  "plan": "1601",
+  "planId": "custom_mv37igji",
+  "linkedWalls": 32,
+  "regions": {
+    "balcony": 9,
+    "kitchen": 8,
+    "bathroom": 15
+  },
+  "version": 7,
+  "verified": {
+    "size800to600": true,
+    "direction0to90": true,
+    "originXplus100": true,
+    "wallOffsetAutomaticallyUpdated": true,
+    "wallVerticalSize300Preserved": true,
+    "regionalFinishedFloor55And60": true,
+    "undoRestoredOriginalFloorParameters": true,
+    "refreshRetained32Links": true,
+    "furniture47Unchanged": true,
+    "architectureUnchanged": true,
+    "otherPlansAndNamedDesignsUnchanged": true,
+    "onlyPersistentChangeIsFollowFloor": true
+  },
+  "checks": {
+    "full": "PASS 199 regression suites, 12 built-in plans, 961 preview pages, production syntax and assets",
+    "browserCases": [
+      "wall-floor-follow",
+      "tiling-render-alignment"
+    ],
+    "browserModes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "browserLog": "output/playwright/verification-5OXB5N/results.json"
+  },
+  "limits": [
+    "orthogonal floor angles only; diagonal/disabled/unknown floor pauses grid and resumes automatically",
+    "layout widths follow floor; procurement specifications remain separately verified"
+  ],
+  "screenshots": {
+    "editor": "output/auto-wall-floor/1601-final-auto-editor.png",
+    "view2D": "output/auto-wall-floor/1601-final-2d.png",
+    "view3D": "output/auto-wall-floor/1601-final-3d.png"
+  }
+}

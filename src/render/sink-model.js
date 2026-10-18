@@ -63,5 +63,16 @@ function build(T,f){
  const pad=plate(iw*.65,id*.48,floor-.001,0,id*.2,dark,'sound-pad');pad.position.y=floor-.001;
  g.position.y=top;g.userData.sinkInstallation=K.sinkMode(f);return g;
 }
-const api={supported,build};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishSinkModel=api;
+function buildNotched(T,f){
+ const K=root.FurnishKitchen||(typeof require==='function'?require('../core/kitchen-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);P.validate(f);
+ const g=new T.Group(),material=new T.MeshStandardMaterial({color:f.color||'#e8e6df',roughness:.28,side:T.DoubleSide}),n=f.sinkNotch,r=P.definition(f).notch;
+ const ring=(w,d)=>K.notchedRing(w,d,n),shape=points=>{const s=new T.Shape();points.forEach(([x,y],i)=>i?s.lineTo(x/1000,y/1000):s.moveTo(x/1000,y/1000));s.closePath();return s;};
+ const outer=shape(ring(f.w,f.d)),inner=ring(f.w-2*r.rim,f.d-2*r.rim),hole=new T.Path();inner.slice().reverse().forEach(([x,y],i)=>i?hole.lineTo(x/1000,y/1000):hole.moveTo(x/1000,y/1000));hole.closePath();outer.holes.push(hole);
+ const add=(s,depth,top,name)=>{const geo=new T.ExtrudeGeometry(s,{depth,bevelEnabled:false});geo.rotateX(Math.PI/2);geo.translate(0,top,0);const mesh=new T.Mesh(geo,material);mesh.userData.sinkPart=name;g.add(mesh);};
+ add(outer,r.bodyDepth/1000,.862,'notched-walls');add(shape(inner),r.floor/1000,.862-(r.bodyDepth-r.floor)/1000,'notched-floor');
+ const chrome=new T.MeshStandardMaterial({color:'#abb2b8',metalness:.8,roughness:.22}),x=(n?.side==='left'?1:-1)*f.w*.32/1000,z=-f.d/2000+.035;
+ const pipe=new T.Mesh(new T.CylinderGeometry(.012,.012,.28,16),chrome);pipe.position.set(x,1.002,z);g.add(pipe);
+ const spout=new T.Mesh(new T.CylinderGeometry(.012,.012,.15,16),chrome);spout.rotation.x=Math.PI/2;spout.position.set(x,1.142,z+.075);g.add(spout);return g;
+}
+const api={supported,build,buildNotched};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishSinkModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

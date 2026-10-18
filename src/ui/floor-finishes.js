@@ -32,13 +32,13 @@ function panel(room,prefix='floor'){
  const s=state.floorFinishes?.areas[room.id],v=s||F.defaults(room,state.rooms[room.id]),p=FurnishProject.effectivePlan(PLAN,state),a=p.floorFinish?.areas[room.id];
  const input=(key,label,value,min,max)=>`<label>${label}<input data-floor="${key}" type="number" step="any" ${min!==undefined?`min="${min}" max="${max}"`:''} value="${value??''}" placeholder="待核对"></label>`;
  const spec=state.pricing?.materialSpecs?.[state.rooms[room.id].mat],mismatch=spec&&v.layout&&!((v.layout.width===spec.length&&v.layout.height===spec.width)||(v.layout.height===spec.length&&v.layout.width===spec.width));
- const options=ROOMS.filter(r=>r.id!==room.id&&r.counted!==false).map(r=>`<option value="${esc(r.id)}" ${v.reference===r.id?'selected':''}>${esc(state.rooms[r.id]?.name||r.name)}</option>`).join('');
+ const options=ROOMS.filter(r=>r.id!==room.id&&r.counted!==false).map(r=>`<option value="${esc(r.id)}" ${v.reference===r.id?'selected':''}>${esc(state.rooms[r.id]?.name||r.name)}${Number.isFinite(p.floorFinish?.areas[r.id]?.finishedZ)?` · 完成 ${p.floorFinish.areas[r.id].finishedZ} mm`:state.floorFinishes?.areas[r.id]&&state.floorFinishes.areas[r.id].enabled!==false?' · 标高待确定':' · 未启用地面'}</option>`).join('');
  const html=`<section id="floor-finish-panel" data-floor-room="${esc(room.id)}"><h3>地砖铺贴与地面标高</h3><label><input id="floor-enabled" type="checkbox" ${s&&s.enabled!==false?'checked':''}> 启用此区域地面设置</label>${prefix!=='floor'&&F.tiled(state.rooms[room.id].mat)?'<div class="floor-editor-tabs"><button class="btn on" data-floor-show="layout">铺贴参数</button><button class="btn" data-floor-show="height">地面标高</button></div>':''}<div data-floor-section="height"><p class="muted">所有标高相对原毛坯测量基准，单位 mm。厚度未知请留空。应用不会移动家具、抬高设备或改变柜体配置。</p><div class="form">
  ${input('rawZ','毛坯地面标高',v.rawZ,-20000,20000)}${input('tileThickness','面层／地砖厚度',v.tileThickness,0,1000)}${input('baseThickness','粘结＋找平层厚度',v.baseThickness,0,1000)}
  <label>标高计算<select data-floor="mode"><option value="layers" ${v.mode==='layers'?'selected':''}>按各层厚度计算</option><option value="level" ${v.mode==='level'?'selected':''}>按目标标高推算找平层</option><option value="reference" ${v.mode==='reference'?'selected':''}>低于参考区域</option></select></label>
  ${input('targetZ','目标完成标高（目标模式）',v.targetZ,-20000,20000)}<label>参考区域<select data-floor="reference"><option value="">请选择</option>${options}</select></label>${input('drop','比参考区域低（卫生间默认 5）',v.drop??5,0,1000)}</div><p class="muted">目标／参考模式：找平层留空时推算；已填厚度与目标不一致会提示冲突，保留输入。毛坯标高不随高差改变。</p>
  </div><div data-floor-section="layout">${F.tiled(state.rooms[room.id].mat)?`<h4>直铺参数</h4>${mismatch?'<p class="project-error">铺贴砖尺寸与已录入采购规格不同，请核对；采购数量与订单保持原设置。</p>':''}<div class="form">${input('width','砖长',v.layout?.width??800,20,6000)}${input('height','砖宽',v.layout?.height??800,20,6000)}${input('gap','砖缝',v.layout?.gap??2,0,50)}${input('angle','铺贴方向（原图角度）',v.layout?.angle??0,-360,360)}${input('originX','起铺砖角 X',v.layout?.origin[0]??0)}${input('originY','起铺砖角 Y',v.layout?.origin[1]??0)}</div><div class="actions"><button class="btn" data-floor-angle="0">0°</button><button class="btn" data-floor-angle="90">90°</button><button class="btn" id="floor-pick">图上选起铺点</button></div><label>沿用其它区域的起铺点与方向<select id="floor-copy"><option value="">独立设置</option>${options}</select></label><p class="muted">起铺点是参考整砖左上角，可在区域外；转动视图不会改变排版。材料预算仍按原面积估算，不含切砖优化。</p>`:'<p class="muted">当前材料不是瓷砖，仅设置地面标高。</p>'}
- </div><p data-floor-summary>${a?`毛坯 ${a.rawZ??'待定'} → 完成 ${a.finishedZ??'待定'} mm${a.requiredBase!==undefined?`；所需找平层 ${a.requiredBase} mm`:''}；完成面至天花 ${Number.isFinite(a.finishedZ)?FurnishProject.roomCeilingHeight(state,room)-a.finishedZ:'待定'} mm`: '未启用时保留旧项目的显示与高度'}</p>${a?.pending?`<p class="project-error">${esc(a.pending)}</p>`:''}<p data-floor-error class="project-error" role="alert"></p><div class="actions floor-editor-actions"><button class="btn primary" id="floor-apply">应用地面设置</button></div>${(p.floorFinish?.pending||[]).filter(v=>!ROOMS.some(r=>r.id===v.id)).map(v=>`<p class="project-error">${esc(v.id)}：${esc(v.message)} <button class="btn" data-floor-remove="${esc(v.id)}">移除失效设置</button></p>`).join('')}</section>`;
+ </div><p data-floor-summary>${a?`毛坯 ${a.rawZ??'待定'} → 完成 ${a.finishedZ??'待定'} mm${a.requiredBase!==undefined?`；所需找平层 ${a.requiredBase} mm`:''}；完成面至天花 ${Number.isFinite(a.finishedZ)?FurnishProject.roomCeilingHeight(state,room)-a.finishedZ:'待定'} mm`: '未启用时保留旧项目的显示与高度'}</p><p data-floor-pending class="project-error">${esc(a?.pending||'')}</p><p data-floor-error class="project-error" role="alert"></p><div class="floor-editor-actions"><p data-floor-status role="status"></p><div class="actions"><button class="btn primary" id="floor-apply">应用地面设置</button></div></div>${(p.floorFinish?.pending||[]).filter(v=>!ROOMS.some(r=>r.id===v.id)).map(v=>`<p class="project-error">${esc(v.id)}：${esc(v.message)} <button class="btn" data-floor-remove="${esc(v.id)}">移除失效设置</button></p>`).join('')}</section>`;
  return prefix==='floor'?html:html.replaceAll('id="floor-',`id="${prefix}-`);
 }
 function bind(host=document.querySelector('#floor-finish-panel'),{prefix='floor',onApplied}={}){
@@ -50,16 +50,32 @@ function bind(host=document.querySelector('#floor-finish-panel'),{prefix='floor'
  host.querySelectorAll('[data-floor-angle]').forEach(b=>b.onclick=()=>get('angle').value=b.dataset.floorAngle);
  const copy=q('#floor-copy');if(copy)copy.onchange=()=>{const l=state.floorFinishes?.areas[copy.value]?.layout;if(!l){if(copy.value)toast('参考区域尚未设置铺贴参数');return;}get('angle').value=l.angle;get('originX').value=l.origin[0];get('originY').value=l.origin[1];};
  const pick=q('#floor-pick');if(pick)bindOriginPicker(host,pick,get);
- q('#floor-apply').onclick=()=>{try{
+ const draft=()=>{
   const data=JSON.parse(JSON.stringify(state.floorFinishes||{version:1,areas:{}}));
   if(q('#floor-enabled').checked||data.areas[id]){
    const v={mode:get('mode').value,...(!q('#floor-enabled').checked?{enabled:false}:{})};for(const key of ['rawZ','tileThickness','baseThickness','targetZ','drop'])if(num(key)!==undefined)v[key]=num(key);
    if(get('reference').value)v.reference=get('reference').value;
    if(get('width'))v.layout={width:num('width'),height:num('height'),gap:num('gap'),angle:num('angle'),origin:[num('originX'),num('originY')]};else if(data.areas[id]?.layout)v.layout=data.areas[id].layout;data.areas[id]=v;
   }
-  F.validate(data);F.derive(FurnishProject.effectivePlan(PLAN,{...state,floorFinishes:undefined}),{...state,floorFinishes:data});
+  F.validate(data);
+  const plan=F.derive(FurnishProject.effectivePlan(PLAN,{...state,floorFinishes:undefined}),{...state,floorFinishes:data});
+  return {data,area:plan.floorFinish?.areas[id]};
+ };
+ const update=()=>{try{
+  const {area:a}=draft(),room=ROOMS.find(r=>r.id===id);
+  q('[data-floor-summary]').textContent=a?`预览：毛坯 ${a.rawZ??'待定'} → 完成 ${a.finishedZ??'待定'} mm${a.requiredBase!==undefined?`；所需找平层 ${a.requiredBase} mm`:''}；完成面至天花 ${Number.isFinite(a.finishedZ)?FurnishProject.roomCeilingHeight(state,room)-a.finishedZ:'待定'} mm`:'未启用地面设置；应用后保留参数并关闭此区域地面';
+  q('[data-floor-pending]').textContent=a?.pending||'';q('[data-floor-error]').textContent='';
+  q('[data-floor-status]').textContent='当前为输入预览；点击「应用地面设置」保存。';
+ }catch(e){q('[data-floor-error]').textContent=e.message;q('[data-floor-summary]').textContent='当前输入无法计算';q('[data-floor-pending]').textContent='';q('[data-floor-status]').textContent='输入尚未保存';}};
+ host.addEventListener('input',update);host.addEventListener('change',update);
+ q('#floor-apply').onclick=()=>{try{
+  const {data,area}=draft();
   mutate(()=>{if(Object.keys(data.areas).length)state.floorFinishes=data;else delete state.floorFinishes;});
-  toast('地面设置已应用；请核对家具底部、门底和完成面净高');onApplied?.();
+  onApplied?.();
+  const message=area?.pending?`参数已保存，完成标高仍待确定：${area.pending}`:area?`地面设置已应用，完成标高 ${area.finishedZ} mm；请核对家具底部、门底和完成面净高`:'地面设置已关闭，参数保留';
+  // mutate/onApplied may replace the form; report on the newly mounted instance.
+  const current=document.getElementById(host.id)?.querySelector('[data-floor-status]');if(current)current.textContent=message;
+  toast(message);
  }catch(e){q('[data-floor-error]').textContent=e.message;}};
  host.querySelectorAll('[data-floor-remove]').forEach(b=>b.onclick=()=>mutate(()=>{delete state.floorFinishes.areas[b.dataset.floorRemove];if(!Object.keys(state.floorFinishes.areas).length)delete state.floorFinishes;}));
 }
@@ -93,10 +109,20 @@ function openUnified(){
   closeFabEditor(false);toast(`已统一 ${ids.length} 个瓷砖区域的起铺点${basis.angle!==undefined?'及方向':''}；可撤销`);
  }catch(e){host.querySelector('[data-floor-error]').textContent=e.message;}};queueFabPosition();
 }
+function openLevels(){
+ const plan=FurnishProject.effectivePlan(PLAN,state),rooms=plan.rooms.filter(r=>r.counted!==false);if(!rooms.length)return toast('当前没有可设置的区域');
+ const common=key=>{const values=[...new Set(rooms.map(r=>state.floorFinishes?.areas[r.id]?.[key]).filter(Number.isFinite))];return values.length===1?values[0]:key==='rawZ'&&!values.length?0:'';};
+ const field=(key,label,value,min,max)=>`<label>${label}<input data-floor-level="${key}" type="number" step="any" min="${min}" max="${max}" value="${value}"></label>`;
+ closeFabEditor(false);openDialog({title:'批量设置地面标高',wide:true,body:`<section data-floor-level-editor><p>统一填写所选区域的各层厚度，完成标高＝毛坯标高＋面层厚度＋粘结找平层。单位 mm，毛坯标高共用同一水平基准。</p><p class="muted">应用后启用所选区域，改为按各层厚度计算；原目标标高及参考关系会移除。砖尺寸、砖缝、起铺点、家具和柜体保持。</p><div class="form">${field('rawZ','毛坯地面标高',common('rawZ'),-20000,20000)}${field('tileThickness','面层／瓷砖厚度',common('tileThickness'),0,1000)}${field('baseThickness','粘结＋找平层厚度',common('baseThickness'),0,1000)}</div><label><input type="checkbox" id="floor-level-bathroom"> 卫生间单独设置粘结＋找平层厚度</label><div class="form" id="floor-level-bathroom-fields" hidden>${field('bathroomBaseThickness','卫生间粘结＋找平层厚度','',0,1000)}</div><div class="actions"><button class="btn" data-floor-level-select="all">全选区域</button><button class="btn" data-floor-level-select="none">取消全选</button></div><div id="floor-level-rooms">${rooms.map(r=>`<div class="floor-region-row"><label><input type="checkbox" data-floor-level-room="${esc(r.id)}" checked> <b>${esc(state.rooms[r.id]?.name||r.name)}</b></label><p data-floor-level-preview="${esc(r.id)}">待填写</p></div>`).join('')}</div><p data-floor-level-error class="project-error" role="alert"></p><p class="muted">墙砖默认从各自区域的完成地面起铺；已有自定义起铺高度保持，可在墙砖列表调整。</p></section>`,actions:[{label:'返回区域列表',fn:()=>{openList();return false;}},{label:'应用并启用所选区域',cls:'primary',fn:()=>{try{const next=read();if(JSON.stringify(next.floorFinishes)!==JSON.stringify(state.floorFinishes))mutate(()=>state.floorFinishes=next.floorFinishes);openList();toast('所选区域地面标高已应用，可一次撤销');}catch(e){error.textContent=e.message;}return false;}}]});
+ const body=document.querySelector('#dlgBody [data-floor-level-editor]'),error=body.querySelector('[data-floor-level-error]'),bath=body.querySelector('#floor-level-bathroom');
+ function read(){const values={};for(const input of body.querySelectorAll('[data-floor-level]'))if(input.dataset.floorLevel!=='bathroomBaseThickness'||bath.checked)values[input.dataset.floorLevel]=input.value.trim()===''?NaN:Number(input.value);return F.setLayers(state,plan,[...body.querySelectorAll('[data-floor-level-room]:checked')].map(el=>el.dataset.floorLevelRoom),values);}
+ function update(){body.querySelector('#floor-level-bathroom-fields').hidden=!bath.checked;try{const next=read(),p=F.derive(FurnishProject.effectivePlan(PLAN,{...state,floorFinishes:undefined}),next);error.textContent='';for(const el of body.querySelectorAll('[data-floor-level-preview]')){const id=el.dataset.floorLevelPreview,selected=[...body.querySelectorAll('[data-floor-level-room]:checked')].some(v=>v.dataset.floorLevelRoom===id);el.textContent=selected?`预览完成标高 ${p.floorFinish.areas[id].finishedZ} mm`:'保持原设置';}}catch(e){error.textContent=e.message;body.querySelectorAll('[data-floor-level-preview]').forEach(el=>el.textContent='待填写有效参数');}}
+ body.addEventListener('input',update);body.addEventListener('change',update);body.querySelectorAll('[data-floor-level-select]').forEach(b=>b.onclick=()=>{body.querySelectorAll('[data-floor-level-room]').forEach(el=>el.checked=b.dataset.floorLevelSelect==='all');update();});
+}
 function openList(){
  closeFabEditor(false);
- openDialog({title:'区域地砖铺贴',wide:true,body:'<p>勾选立即启用，取消勾选保留参数。未知厚度保持待核对；不会移动家具或修改柜体。非瓷砖材质仅启用地面标高。</p><div class="actions"><button class="btn" data-floor-bulk="on">全部启用</button><button class="btn" data-floor-bulk="off">全部关闭</button><button class="btn" data-floor-unify>统一起铺点</button></div><p data-floor-count role="status"></p><div id="floor-region-list"></div>',actions:[{label:'关闭'}]});
- document.querySelector('[data-floor-unify]').onclick=openUnified;
+ openDialog({title:'区域地砖铺贴',wide:true,body:'<p>勾选立即启用，取消勾选保留参数。未知厚度保持待核对；不会移动家具或修改柜体。非瓷砖材质仅启用地面标高。</p><div class="actions"><button class="btn" data-floor-bulk="on">全部启用</button><button class="btn" data-floor-bulk="off">全部关闭</button><button class="btn" data-floor-unify>统一起铺点</button><button class="btn" data-floor-levels>批量设置地面标高</button></div><p data-floor-count role="status"></p><div id="floor-region-list"></div>',actions:[{label:'关闭'}]});
+ document.querySelector('[data-floor-unify]').onclick=openUnified;document.querySelector('[data-floor-levels]').onclick=openLevels;
  const guide=document.createElement('button');guide.className='btn';guide.dataset.finishGuideOpen='';guide.textContent='分步设定引导';document.querySelector('[data-floor-unify]').after(guide);
  refreshList();
  window.FurnishFinishGuideUI?.attachList('floor');
@@ -111,6 +137,6 @@ function refreshList(){
  host.querySelectorAll('[data-floor-edit]').forEach(b=>b.onclick=()=>{closeDialog();select({kind:'room',id:b.dataset.floorEdit});openFloating();});
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-floor-list]'))openList();});
-window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail');if(!rail||document.querySelector('#floor-regions-open'))return;const button=document.createElement('button');button.className='btn';button.id='floor-regions-open';button.dataset.floorList='';button.textContent='地砖';button.title='区域地砖铺贴';rail.append(button);});
-window.FurnishFloorFinishUI={panel,bind,furniturePanel,openFloating,openList,openUnified,afterRender,afterView:redrawOrigin,picking:()=>!!cancelPick};
+window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail .rail-finishes');if(!rail||document.querySelector('#floor-regions-open'))return;const button=document.createElement('button');button.className='btn';button.id='floor-regions-open';button.dataset.floorList='';button.innerHTML=ico('floor-tile')+`<span data-zh="地砖" data-en="Floor tiles">${tr('地砖','Floor tiles')}</span>`;button.title='区域地砖铺贴';rail.append(button);});
+window.FurnishFloorFinishUI={panel,bind,furniturePanel,openFloating,openList,openUnified,openLevels,afterRender,afterView:redrawOrigin,picking:()=>!!cancelPick};
 })();

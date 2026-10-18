@@ -3,11 +3,20 @@ const close=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`),f={id:'a',name:'A',
 const base={scale:1,rects:[[100,-100,120,100]],furniture:[f]};
 const before=JSON.stringify(base);
 close(S.point({x:55,y:17},base).x,50);close(S.point({x:55,y:17},base).y,17);
-assert.equal(S.measurePoint({x:58,y:17},base).edge,null); // Exactly 8px excluded.
-assert.equal(S.measurePoint({x:57.99,y:17},base).edge!==null,true);
-assert.equal(S.measurePoint({x:58.01,y:17},base).edge,null);
+assert.equal(S.measurePoint({x:62,y:17},base).edge!==null,true); // Exactly 12px included.
+assert.equal(S.measurePoint({x:61.99,y:17},base).edge!==null,true);
+assert.equal(S.measurePoint({x:62.01,y:17},base).edge,null);
 assert.equal(S.measurePoint({x:62,y:17},{...base,scale:.5}).edge!==null,true);
 assert.equal(S.measurePoint({x:102,y:500},base).edge,null); // No infinite wall extension.
+for(const scale of [.1,.5,1,2])for(const kind of ['wall','furniture']){
+ const options={scale,rects:kind==='wall'?[[100,-1000,120,1000]]:[],furniture:kind==='furniture'?[{...f,w:2000,d:2000}]:[]};
+ const x=kind==='wall'?100:1000,sign=kind==='wall'?-1:1;
+ for(const anchor of [undefined,{x:0,y:17}]){
+  const hit=S.measurePoint({x:x+sign*12/scale,y:17},{...options,anchor});
+  assert(hit.edge);close(hit.point.x,x);close(hit.point.y,17);
+  assert.equal(S.measurePoint({x:x+sign*12.01/scale,y:17},{...options,anchor}).edge,null);
+ }
+}
 for(const flip of [false,true]){
  const rotated={...f,rot:45,flip},q=S.point({x:38,y:38},{scale:1,rects:[],furniture:[rotated]});
  close(q.x+q.y,Math.SQRT2*50);

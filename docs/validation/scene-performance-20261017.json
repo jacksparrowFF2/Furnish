@@ -1,0 +1,375 @@
+{
+  "date": "2026-10-17",
+  "scope": "Main 3D scene shadow caching for camera-only redraws",
+  "hardware": {
+    "cpu": "12th Gen Intel(R) Core(TM) i5-12450H",
+    "gpu": "Intel UHD Graphics, ANGLE Direct3D11",
+    "totalMemoryGB": 15.714836120605469
+  },
+  "method": {
+    "browser": "isolated headless installed Chrome",
+    "viewport": [
+      1500,
+      1000
+    ],
+    "input": "explicit fixed snapshot of current 47-item workspace",
+    "snapshotSHA256": "80184f5d65027840072e38771b88cff1745e2c9b8f9574fd4e3ba014cadbedee",
+    "entrySHA256": "08bc68197eaed0973d152e6423eda85dca87b096a35f825a9f9d515c8b4b2f4e",
+    "comparison": "same production scene and camera pose; alternate automatic shadow regeneration and cached shadows, reverse order each pair; 4 warmup pairs and 20 measured pairs; WebGL drawElements/drawArrays calls counted",
+    "timing": "performance.now around renderer.render plus gl.finish; measures synchronous CPU/GPU completion, excludes CSS labels and pointer-event/UI overhead, not end-to-end FPS",
+    "settings": "original antialiasing, pixel ratio cap and desktop 4096 shadow map retained",
+    "command": "FURNISH_BROWSER_CHANNEL=chrome node scripts/inspect-scene-performance.cjs output/scene-input.furnish.json"
+  },
+  "result": {
+    "initial": {
+      "pixelRatio": 1,
+      "shadowSize": 4096,
+      "geometries": 1528,
+      "textures": 14,
+      "objects": 1831
+    },
+    "stats": {
+      "automatic": {
+        "median": 22.699999999953434,
+        "p90": 28.300000000046566,
+        "calls": [
+          3555,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554,
+          3554
+        ]
+      },
+      "cached": {
+        "median": 16.5,
+        "p90": 20.5,
+        "calls": [
+          1808,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807,
+          1807
+        ]
+      }
+    },
+    "stateUnchanged": true
+  },
+  "verification": {
+    "results": [
+      {
+        "mode": "file",
+        "rows": [
+          {
+            "name": "settled",
+            "cachedCalls": 1808,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "orbit-camera",
+            "cachedCalls": 1808,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "swing-door",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "swing-close",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "curtain",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "cabinet-opening",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "cabinet-undo",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "furniture-edit",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "undo",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "redo",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "sunlight",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "hide-furniture",
+            "cachedCalls": 777,
+            "referenceCalls": 777,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "show-furniture",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "wall-cut",
+            "cachedCalls": 3420,
+            "referenceCalls": 3420,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "wall-restore",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "walk-mode",
+            "cachedCalls": 2482,
+            "referenceCalls": 2482,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "orbit-mode",
+            "cachedCalls": 2978,
+            "referenceCalls": 2978,
+            "differentBytes": 0,
+            "maxDifference": 0
+          }
+        ],
+        "pixelRatio": 1,
+        "shadowSize": 4096,
+        "reenterAndReload": true,
+        "errors": []
+      },
+      {
+        "mode": "http",
+        "rows": [
+          {
+            "name": "settled",
+            "cachedCalls": 1808,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "orbit-camera",
+            "cachedCalls": 1808,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "swing-door",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "swing-close",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "curtain",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "cabinet-opening",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "cabinet-undo",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "furniture-edit",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "undo",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "redo",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "sunlight",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "hide-furniture",
+            "cachedCalls": 777,
+            "referenceCalls": 777,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "show-furniture",
+            "cachedCalls": 3556,
+            "referenceCalls": 3556,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "wall-cut",
+            "cachedCalls": 3420,
+            "referenceCalls": 3420,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "wall-restore",
+            "cachedCalls": 3555,
+            "referenceCalls": 3555,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "walk-mode",
+            "cachedCalls": 2482,
+            "referenceCalls": 2482,
+            "differentBytes": 0,
+            "maxDifference": 0
+          },
+          {
+            "name": "orbit-mode",
+            "cachedCalls": 2978,
+            "referenceCalls": 2978,
+            "differentBytes": 0,
+            "maxDifference": 0
+          }
+        ],
+        "pixelRatio": 1,
+        "shadowSize": 4096,
+        "reenterAndReload": true,
+        "errors": []
+      }
+    ],
+    "sourceUnchanged": true
+  },
+  "checks": {
+    "complete": "PASS 187 regression suites, 12 built-in plans, 16 preview pages, production syntax, local resources and shared declarations",
+    "unit": "production loop camera-only versus swing/sliding doors and curtains; explicit scene invalidation; settled scene skips redraw",
+    "pixels": "34 states across HTTP/file with zero differing framebuffer bytes versus forced shadow regeneration",
+    "visual": [
+      "1500x1000 orbit scene",
+      "390x844 orbit scene after closing side drawers",
+      "mode transitions and re-enter after reload"
+    ],
+    "notRun": [
+      "all browser cases",
+      "real touch hardware",
+      "actual interactive end-to-end FPS",
+      "cabinet preview performance"
+    ]
+  },
+  "sourceHandling": {
+    "verificationSourceUnchanged": true,
+    "laterSourceUpdatedDuringSeparateMeasurement": true,
+    "action": "Preserved the updated live workspace; measured a fixed copy in output instead. Inspector never writes the source design."
+  },
+  "boundaries": [
+    "Moving geometry or changing light/visibility still refreshes shadow maps",
+    "Cabinet standalone previews and property-panel work during 3D dragging unchanged",
+    "Initial construction and high mesh count unchanged",
+    "Future shadow-affecting edits must explicitly invalidate shadows"
+  ]
+}

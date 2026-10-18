@@ -4,7 +4,7 @@
 // ui.sel = {kind:'furn', id:主选中, ids:[全部选中]}；单选时 ids 可省略
 const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
 const selItems = () => selIds().map(getF).filter(Boolean);
-function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); updateHeader(); }
+function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); refreshHobOpenings(); updateHeader(); }
 function selectIds(ids, primary){
   ids = [...new Set(ids)].filter(id => getF(id));
   select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);
@@ -65,7 +65,7 @@ function resetItemSel(){
   const items=movable(selItems());if(!items.length)return;
   let values;try{values=items.map(f=>{const it=libItem(f);return it?{f,value:{...FurnishDesign.resizeFurniture({...f,cabinet:undefined},{w:it[2],d:it[3],...(FurnishCabinet.supported(f)?{h:it[6]||FurnishCabinet.height({...f,h:undefined})}:it[6]!==undefined?{h:it[6]}:{})}),color:it[4],...(FurnishCabinet.supported(f)?{cabinet:it[9]?FurnishCabinet.preset(it[9]).cabinet:FurnishCabinet.config({...f,cabinet:undefined,w:it[2],d:it[3],h:it[6]})}:{}),...(f.type==='curtain'?{curtainStyle:it[8]||'double'}:{})}}:null;}).filter(Boolean);}catch(e){return toast(e.message);}
   if(!values.length)return toast(tr('找不到明确的原始规格，请在家具资料中手动编辑。','Original specifications unavailable; edit the product manually.'));
-  mutate(()=>values.forEach(({f,value})=>{Object.assign(f,value);delete f.flip;delete f.price;}));
+  mutate(()=>values.forEach(({f,value})=>{Object.assign(f,value);const spec=FurnishKitchen.catalogSpec(libItem(f));if(Object.hasOwn(spec,'flip'))f.flip=spec.flip;else delete f.flip;delete f.price;}));
   toast(tr('已恢复默认尺寸、颜色与参考价格'+(values.length<items.length?'；来源不明确的家具已跳过。':''),'Default specifications restored; unresolved sources skipped.'));
 }
 // 对齐 / 分布 / 等尺寸（多选）：以外包盒为准，锁定的家具作为参照不动
@@ -99,10 +99,10 @@ function matchSizeSel(){
 let clip = null;
 function syncCutClipboard(){if(clip?.cut&&clip.movePlan===PLAN.id)clip.cutMoved=clip.items.some(f=>getF(f.id));}
 function copySel(cut, quiet){
-  const selected=selItems(),items=cut?movable(selected):selected;if(!items.length)return;
+  const chosen=new Set(selItems().map(f=>f.id)),selected=state.furniture.filter(f=>chosen.has(f.id)||f.laundryHostId&&chosen.has(f.laundryHostId)),items=cut?movable(selected):selected;if(!items.length)return;
   const [x0,y0,x1,y1] = groupBox(items);
   clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut};
-  if (cut) deleteSel(); else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
+  if(cut){const ids=new Set(items.map(f=>f.id));ui.sel=null;mutate(()=>state.furniture=state.furniture.filter(f=>!ids.has(f.id)));}else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
 }
 function paste(at){
   if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
@@ -151,7 +151,7 @@ function rescueOutside(ids){
 
 // 放下 / 拖完的家具若压在墙 / 窗上，沿位移最小的方向推出，刚好贴墙。
 // 只在家具中心原本所在的房间内推移，推不开（如家具比房间还大）就保持原位——宁可压墙，也不能被推到墙外「消失」
-function pushOut(f){
+function pushOut(f,axis){
   // Kitchen auto-avoid keeps the chosen position and fits individual bodies
   // and stone in commit(). Its L envelope includes the courtyard and flue
   // notch, so the rectangular push-out must not move the whole assembly.
@@ -167,10 +167,10 @@ function pushOut(f){
     }
     if (!worst) return true;
     const r = worst, best = [[r[0]-hw, f.cy], [r[2]+hw, f.cy], [f.cx, r[1]-hh], [f.cx, r[3]+hh]]
-      .filter(([x, y]) => okAt(x, y))
+      .filter(([x, y]) => (axis!=='x'||y===oy)&&(axis!=='y'||x===ox)&&okAt(x, y))
       .sort((p, q) => Math.hypot(p[0]-f.cx, p[1]-f.cy) - Math.hypot(q[0]-f.cx, q[1]-f.cy))[0];
     if (!best) break;
-    f.cx = Math.round(best[0]); f.cy = Math.round(best[1]);
+    f.cx = axis==='y'?ox:Math.round(best[0]); f.cy = axis==='x'?oy:Math.round(best[1]);
   }
   if (Math.hypot(f.cx-ox, f.cy-oy) > Math.max(f.w, f.d)){ f.cx = ox; f.cy = oy; }   // 推得太远 = 不合理，撤回
   return false;
@@ -178,9 +178,13 @@ function pushOut(f){
 function addItem(it, x, y){
   if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
+  if(FurnishKitchen.isLaundryAreaItem(it)){
+   try{if(state.furniture.length+2>2000)throw Error('家具数量不足以放入完整洗衣区（柜体及洗衣机）');const items=FurnishKitchen.createLaundryCabinet(f,uid,it[10].endsWith('left')?'left':'right'),root=items[0],before=[root.cx,root.cy];pushOut(root);for(const member of items.slice(1)){member.cx+=root.cx-before[0];member.cy+=root.cy-before[1];}mutate(()=>state.furniture.push(...items));selectIds([root.id],root.id);pushRecent(it);toast('已添加完整洗衣区：吊柜、开放格、水槽、地柜与洗衣机',{label:tr('撤销','Undo'),fn:undo});}catch(e){toast(e.message);}return;
+  }
   if(h!==undefined)f.h=h;
   Object.assign(f,FurnishDesign.products().initial(f));
   if(FurnishCabinet.supported(f)&&!f.kitchen&&it[9])Object.assign(f,FurnishCabinet.preset(it[9]));
+  Object.assign(f,FurnishKitchen.catalogSpec(it));
   if(type==='curtain')f.curtainStyle=it[8]||'double';
   if (type === 'custom' || type === 'customround'){ f.price = price; f.h = h; }   // 自定义家具删除定义后仍保留单价与高度
   if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}

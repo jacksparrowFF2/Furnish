@@ -48,15 +48,16 @@ function furnitureLabelSVG(f,v,palette=PAL){if(!v?.lines.length)return '';const 
 function refreshFurnitureLabels(root=svg,{scale=view.s,selected=selIds(),palette=PAL}={}){
  if(!globalThis.FurnishDrawing)return;const labels=furnitureLabelLayout(scale,selected),previous=appliedFurnitureLabels.get(root);if(previous?.labels===labels&&previous.color===palette.text)return;for(const g of root.querySelectorAll('#gFurn [data-fid]')){g.querySelector('[data-furniture-label]')?.remove();const f=getF(g.getAttribute('data-fid'));if(f&&!furnitureError(f))g.insertAdjacentHTML('beforeend',furnitureLabelSVG(f,labels.get(f.id),palette));}appliedFurnitureLabels.set(root,{labels,color:palette.text});
 }
-function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims}={}){
+function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims,selected=selIds()}={}){
  const K=globalThis.FurnishKitchen,S=globalThis.FurnishSnapping;if(!K||!S?.surfaceOpening)return '';
  const furniture=renderableFurniture(),color='#e99028',stroke=`stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"`,fmt=v=>String(Number(v.toFixed(1)));
  return furniture.map(f=>{
+  if(!selected.includes(f.id))return '';
   const opening=S.surfaceOpening(f,{...(typeof measurementScene==='function'?measurementScene():{}),furniture});if(!opening)return '';
   const {size,ring,gaps}=opening,font=scale>0?Math.min(12/scale,size.w/10,size.d/4):Math.min(36,size.w/20,size.d/10),angle=-drawingRotation();
   const text=(at,value,dx=0,dy=0)=>`<text transform="translate(${at[0]} ${at[1]}) rotate(${angle})" x="${dx}" y="${dy}" text-anchor="middle" dominant-baseline="central" font-size="${font}" font-weight="600" fill="${color}" stroke="${palette.halo}" stroke-width="${font*.22}" paint-order="stroke">${esc(value)}</text>`;
   let marks='';
-  if(dimensions){
+  if(dimensions&&selected.includes(f.id)){
    const sizeText=`${fmt(size.w)} × ${fmt(size.d)} mm`;
    marks=scale>0&&size.w*scale<170?text([f.cx,f.cy],tr('开孔','Cutout'),0,-font*.65)+text([f.cx,f.cy],sizeText,0,font*.65):text([f.cx,f.cy],tr(`开孔 ${sizeText}`,`Cutout ${sizeText}`));
    const names={l:tr('孔左','Cutout left'),r:tr('孔右','Cutout right'),t:tr('孔后','Cutout rear'),b:tr('孔前','Cutout front')};
@@ -74,22 +75,23 @@ function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims}={})
 function refreshHobOpenings(root=svg,options={}){
  const layer=root.querySelector('#gFurn');if(!layer)return;layer.querySelector('[data-hob-openings]')?.remove();
  layer.insertAdjacentHTML('beforeend',`<g data-hob-openings pointer-events="none">${hobOpeningsSVG(options)}</g>`);
- const marked=new Set([...layer.querySelectorAll('[data-hob-opening]')].map(g=>g.getAttribute('data-hob-opening')));
+ const marked=new Set([...layer.querySelectorAll('[data-hob-opening]')].filter(g=>g.querySelector('text')).map(g=>g.getAttribute('data-hob-opening')));
  for(const g of layer.querySelectorAll('[data-fid]'))g.querySelector('[data-furniture-label]')?.setAttribute('display',(options.dimensions??ui.layers.dims)&&marked.has(g.getAttribute('data-fid'))?'none':'inline');
 }
 function renderRooms(){
   let s = '';
-  const rooms=state.wallFinishes?FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state)).rooms:ROOMS;
+  const rooms=state.wallFinishes?FurnishWallFinish.spatial(canvasEffectivePlan()).rooms:ROOMS;
   document.querySelectorAll('#defs [data-floor-pattern]').forEach(p=>p.remove());
-  const floorPlan=state.floorFinishes?FurnishProject.effectivePlan(PLAN,state):null;
+  const floorPlan=state.floorFinishes?canvasEffectivePlan():null;
   for(const [i,r] of rooms.entries()){
     const l=floorPlan?.floorFinish?.areas[r.id]?.layout;if(!l)continue;
-    $('#defs').insertAdjacentHTML('beforeend',`<pattern data-floor-pattern id="floor-grid-${i}" patternUnits="userSpaceOnUse" width="${l.width+l.gap}" height="${l.height+l.gap}" patternTransform="translate(${l.origin.join(' ')}) rotate(${l.angle})"><rect width="${l.width+l.gap}" height="${l.height+l.gap}" fill="#b8b2a8"/><rect width="${l.width}" height="${l.height}" fill="${MATS[state.rooms[r.id].mat]?.sw||'#e8e2d8'}"/></pattern>`);
+    $('#defs').insertAdjacentHTML('beforeend',`<pattern data-floor-pattern id="floor-grid-${i}" patternUnits="userSpaceOnUse" width="${l.width+l.gap}" height="${l.height+l.gap}" patternTransform="translate(${l.origin.join(' ')}) rotate(${l.angle})"><rect width="${l.width+l.gap}" height="${l.height+l.gap}" fill="#817a70"/><rect width="${l.width}" height="${l.height}" fill="${MATS[state.rooms[r.id].mat]?.sw||'#e8e2d8'}"/></pattern>`);
   }
   rooms.forEach((r,i) => s += `<path class="room" data-room="${r.id}" d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="url(#${floorPlan?.floorFinish?.areas[r.id]?.layout?'floor-grid-'+i:'m-'+state.rooms[r.id].mat})" ${r.zone?'stroke="#139687" stroke-width="1" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"':''}/>`);
   const sill = ([a,b,c,d], extra='') => `<rect x="${a}" y="${b}" width="${c-a}" height="${d-b}" fill="${PAL.sill}" stroke="${PAL.sillLine}" stroke-width="1" vector-effect="non-scaling-stroke" ${extra}/>`;
   DOORS.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-door="${i}"`));
   SLIDES.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-slide="${i}"`));
+  if(floorPlan)for(const a of floorPlan.floorFinish?.doorways||[]){const i=rooms.findIndex(r=>r.id===a.roomId);s+=`<path class="sill pick" data-${a.kind}="${a.index}" d="${(a.room.polys||[a.room.poly]).map(p=>'M'+p.map(v=>v.join(',')).join('L')+'Z').join(' ')}" fill="${a.layout?'url(#floor-grid-'+i+')':MATS[state.rooms[a.roomId].mat]?.sw||PAL.sill}" stroke="none"/>`;}
   if(floorPlan)for(const r of rooms){const a=floorPlan.floorFinish?.areas[r.id];if(a&&r.at)s+=`<text data-floor-level x="${r.at[0]}" y="${r.at[1]+300}" font-size="105" text-anchor="middle" fill="#8b5725" pointer-events="none">${a.finishedZ===undefined?'标高待核对':`完成 ${a.finishedZ} mm`}</text>`;}
   $('#gRooms').innerHTML = s;
 }
@@ -117,7 +119,7 @@ function renderFurn(){
   const g = $('#gFurn');
   g.setAttribute('display', ui.layers.furn ? 'inline' : 'none');
   clashIds = new Set(collisions().flat());
-  const servicePipes=typeof FurnishServices!=='undefined'?FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state)):[];
+  const servicePipes=typeof FurnishServices!=='undefined'?FurnishServices.pipes(canvasEffectivePlan()):[];
   const labels=globalThis.FurnishDrawing?furnitureLabelLayout():null;
   g.innerHTML = drawOrder().map(f => {
     try{
@@ -166,7 +168,7 @@ function renderWalls(){
     return `<rect class="wall" data-wall="${id}" x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="${fill}" ${ex}><title>${k==='b'?tr('承重墙','Bearing wall'):k==='e'?tr('外墙','Exterior wall'):tr('非承重墙','Partition')} · ${tr('点击查看属性','Click for properties')}</title></rect>`;
   }).join('');
   if(!state.wallFinishes)return;
-  const data=FurnishProject.effectivePlan(PLAN,state).wallFinish;
+  const data=canvasEffectivePlan().wallFinish;
   if(data)$('#gWalls').insertAdjacentHTML('beforeend',`<g data-wall-finishes>${data.solids.filter(s=>s.bottom===0).map(s=>{
     const [x,y,X,Y]=s.rect,index=PLAN.wallRefs?PLAN.wallRefs.indexOf(s.wallId):Number(s.wallId.slice(8));let target=index>=0?`data-wall="w${index}"`:'';
     if(index<0){const o=PLAN.customDraft?.openings.find(o=>o.wall===s.wallId);if(o){const kind=o.kind==='window'?'win':o.kind,refs=kind==='win'?PLAN.winRefs:kind==='door'?PLAN.doorRefs:PLAN.slideRefs,i=kind==='win'&&o.bay?PLAN.wins.findIndex(w=>w.bayId===o.id):refs?.indexOf(o.id);if(i>=0)target=`data-${kind}="${i}"`;}}
@@ -225,16 +227,30 @@ function renderOpenings(){
   $('#gOpen').innerHTML = s;
 }
 
+// Read-only canvas derivation. Compare values because drafts and opening
+// overrides can be edited in place; object identity is not a revision.
+let canvasPlanCache=null,canvasPlanScope=null;
+function withCanvasPlan(draw){
+ if(canvasPlanScope)return draw();
+ canvasPlanScope={};try{return draw();}finally{canvasPlanScope=null;}
+}
+function canvasEffectivePlan(){
+ if(canvasPlanScope?.plan)return canvasPlanScope.plan;
+ const key=JSON.stringify([state.architecture?null:PLAN,state.architecture,state.rooms,state.demolished,state.open,state.ceilingHeight,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings]);
+ if(canvasPlanCache?.key!==key)canvasPlanCache={key,plan:FurnishProject.effectivePlan(PLAN,state)};
+ if(canvasPlanScope)canvasPlanScope.plan=canvasPlanCache.plan;
+ return canvasPlanCache.plan;
+}
 let roomLabelLayoutCache=null;
 function roomLabelLayout(){
- const rooms=(state.wallFinishes?FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state)).rooms:ROOMS).filter(r=>r.poly.length).map(r=>({...r,name:nm(state.rooms[r.id].name)})),obstacles=ui.layers.furn?renderableFurniture().filter(f=>!['rug','pendant','curtain','wallart'].includes(f.type)).flatMap(f=>FurnishGeometry.footprints(f)):[],rotation=drawingRotation(),key=JSON.stringify([rooms.map(r=>[r.id,r.at,r.name,r.poly,r.rings,r.polys]),obstacles,rotation]);
+ const rooms=(state.wallFinishes?FurnishWallFinish.spatial(canvasEffectivePlan()).rooms:ROOMS).filter(r=>r.poly.length).map(r=>({...r,name:nm(state.rooms[r.id].name)})),obstacles=ui.layers.furn?renderableFurniture().filter(f=>!['rug','pendant','curtain','wallart'].includes(f.type)).flatMap(f=>FurnishGeometry.footprints(f)):[],rotation=drawingRotation(),key=JSON.stringify([rooms.map(r=>[r.id,r.at,r.name,r.poly,r.rings,r.polys]),obstacles,rotation]);
  if(roomLabelLayoutCache?.key!==key)roomLabelLayoutCache={key,positions:new Map(FurnishDrawing.roomLabels(rooms,obstacles,{rotation}).map(v=>[v.id,v]))};return roomLabelLayoutCache.positions;
 }
 function renderLabels(){
   const g = $('#gLabels');
   g.setAttribute('display', ui.layers.labels ? 'inline' : 'none');
   const positions=globalThis.FurnishDrawing?roomLabelLayout():null;
-  const finishPlan=state.wallFinishes?FurnishProject.effectivePlan(PLAN,state):null;
+  const finishPlan=state.wallFinishes?canvasEffectivePlan():null;
   const rooms=finishPlan?FurnishWallFinish.spatial(finishPlan).rooms:ROOMS,finishPrefix=finishPlan?.wallFinish?.pending.length?tr('参考净 ','Provisional '):state.wallFinishes?tr('净 ','Clear '):'';
   g.innerHTML = rooms.filter(r => r.at).map(r => {
     const chosen=positions?.get(r.id),[x,y]=chosen?.at||r.at,size=chosen?.size||1,halo = `stroke="${PAL.halo}" stroke-width="45" paint-order="stroke" stroke-linejoin="round"`;
@@ -243,6 +259,7 @@ function renderLabels(){
   }).join('');
 }
 
+let canvasDimensionCache=null;
 function renderDims(){
   const DC = PAL.dim, LS = `stroke="${DC}" stroke-width="1" vector-effect="non-scaling-stroke"`, TK = `stroke="${DC}" stroke-width="2" vector-effect="non-scaling-stroke"`;
   const txt = (x,y,v,rot) => `<text x="${x}" y="${y}" font-size="${v<400?140:200}" text-anchor="middle" fill="${DC}" ${rot?`transform="rotate(-90 ${x} ${y})"`:''}>${v}</text>`;
@@ -256,7 +273,13 @@ function renderDims(){
     return s;
   };
   const g = $('#gDims');
-  g.innerHTML = globalThis.FurnishDrawing?drawingDimensionsSVG(FurnishDrawing.dimensions(FurnishProject.effectivePlan(PLAN,state),state.drawing),PAL.dim,drawingRotation(),view.s):PLAN.dims.map(d => chain(d.h, d.at, d.start, d.segs)).join('');
+  if(globalThis.FurnishDrawing){
+    const plan=canvasEffectivePlan(),settings=FurnishDrawing.settings(state.drawing),key=JSON.stringify([plan.walls,plan.doors,plan.wins,plan.slides,plan.dims,settings]);
+    if(canvasDimensionCache?.key!==key)canvasDimensionCache={key,lines:FurnishDrawing.dimensions(plan,settings)};
+    const layoutKey=JSON.stringify([PAL.dim,settings.rotation,view.s,LANG]);
+    if(canvasDimensionCache.layoutKey!==layoutKey){canvasDimensionCache.html=drawingDimensionsSVG(canvasDimensionCache.lines,PAL.dim,settings.rotation,view.s);canvasDimensionCache.layoutKey=layoutKey;canvasDimensionCache.domHTML=null;}
+    if(g.innerHTML!==canvasDimensionCache.domHTML){g.innerHTML=canvasDimensionCache.html;canvasDimensionCache.domHTML=g.innerHTML;}
+  }else g.innerHTML=PLAN.dims.map(d => chain(d.h, d.at, d.start, d.segs)).join('');
   g.setAttribute('display', ui.layers.dims ? 'inline' : 'none');
 }
 function drawingDimensionsSVG(lines,color=PAL.dim,rotation=globalThis.FurnishDrawing?FurnishDrawing.settings(state.drawing).rotation:0,scale=0){
@@ -294,7 +317,7 @@ function renderMeasure(){
   }).join('');
   if (ui.mA && ui.mCur) s += one(ui.mA, ui.mCur, true);
   if (ui.mA) s += `<circle cx="${ui.mA.x}" cy="${ui.mA.y}" r="${3*k}" fill="#0e8f83"/>`;
-  if(ui.tool==='measure'&&ui.mSnap){const {point:p,edge:e}=ui.mSnap;s+=`<g data-edit-overlay="true" pointer-events="none"><line x1="${e.a.x}" y1="${e.a.y}" x2="${e.b.x}" y2="${e.b.y}" stroke="#0e8f83" stroke-width="3" opacity=".65" vector-effect="non-scaling-stroke"/><circle cx="${p.x}" cy="${p.y}" r="${5*k}" fill="white" stroke="#0e8f83" stroke-width="2" vector-effect="non-scaling-stroke"/></g>`;}
+  if(ui.tool==='measure'&&ui.mSnap){const {point:p,edge:e}=ui.mSnap;s+=`<g data-edit-overlay="true" pointer-events="none"><line x1="${e.a.x}" y1="${e.a.y}" x2="${e.b.x}" y2="${e.b.y}" stroke="#0e8f83" stroke-width="3" opacity=".65" vector-effect="non-scaling-stroke"/>${ui.mSnap.kind==='corner'?`<rect data-measure-snap="corner" x="${p.x-5*k}" y="${p.y-5*k}" width="${10*k}" height="${10*k}" fill="white" stroke="#0e8f83" stroke-width="2" vector-effect="non-scaling-stroke"><title>${tr('角点吸附','Corner snap')}</title></rect>`:ui.mSnap.kind==='midpoint'?`<path data-measure-snap="midpoint" d="M${p.x} ${p.y-6*k}L${p.x+6*k} ${p.y+5*k}L${p.x-6*k} ${p.y+5*k}Z" fill="white" stroke="#0e8f83" stroke-width="2" vector-effect="non-scaling-stroke"><title>${tr('边中点吸附','Edge midpoint snap')}</title></path>`:`<circle cx="${p.x}" cy="${p.y}" r="${5*k}" fill="white" stroke="#0e8f83" stroke-width="2" vector-effect="non-scaling-stroke"/>`}</g>`;}
   $('#gMeasure').innerHTML = s;
 }
 
@@ -308,7 +331,7 @@ function renderSel(){
 function waterheaterClearanceSVG(){
   if(!ui.layers.furn)return '';
   const heaters=state.furniture.filter(f=>f.type==='waterheater_flat');if(!heaters.length)return '';
-  const plan=FurnishProject.effectivePlan(PLAN,state),k=1/view.s;
+  const plan=canvasEffectivePlan(),k=1/view.s;
   return heaters.map(f=>{
     const c=FurnishDesign.waterheaterClearances(plan,f,{furniture:state.furniture}),sign=f.flip?-1:1;
     const frame=(kind,x,w,label)=>`<g data-edit-overlay="heater-clearance" data-heater-id="${esc(f.id)}" data-clearance-kind="${kind}" pointer-events="none" transform="${furnT(f)}"><rect x="${x}" y="${-f.d/2}" width="${w}" height="${f.d}" fill="rgba(214,69,50,.12)" stroke="#d64532" stroke-width="2" stroke-dasharray="6 3" vector-effect="non-scaling-stroke"/><text x="${x+w/2}" y="${-f.d/2-(kind==='top'?24:8)*k}" font-size="${11*k}" text-anchor="middle" fill="#d64532" stroke="${PAL.halo}" stroke-width="${3*k}" paint-order="stroke">${esc(label)}</text></g>`;
@@ -319,7 +342,7 @@ function waterheaterClearanceSVG(){
 }
 function dishwasherClearanceSVG(){
  if(!ui.layers.furn)return '';const selected=new Set(selIds()),items=state.furniture.filter(f=>selected.has(f.id)&&!furnitureError(f)&&FurnishProducts.dishwasherInstallation(f));if(!items.length)return '';
- const plan=FurnishProject.effectivePlan(PLAN,state);
+ const plan=canvasEffectivePlan();
  return items.map(f=>{const result=FurnishProject.dishwasherChecks(plan,f,{furniture:state.furniture});return Object.entries(result.zones).map(([key,poly])=>{const checks=result.checks.filter(v=>v.kind==='dishwasher-'+(key==='vent'?'side':'opening')),color=checks.some(v=>v.ok===false)?'#d64532':checks.some(v=>v.ok===null)?'#b7791f':'#258072';return `<g data-edit-overlay="dishwasher-clearance" data-dishwasher-id="${esc(f.id)}" data-reservation="${key}" pointer-events="none"><title>${esc(key==='vent'?`出气侧 ${result.spec.sideClearance} mm`:`完全开门前伸 ${Math.round(result.spec.extension)} mm（保守包络）`)}</title><polygon points="${poly.map(p=>p.join(',')).join(' ')}" fill="${color}" fill-opacity=".09" stroke="${color}" stroke-width="2" stroke-dasharray="6 4" vector-effect="non-scaling-stroke"/></g>`;}).join('');}).join('');
 }
 function kitchenRunHandleSVG(f,k,hit,hs,A,resizeCursor){
@@ -425,7 +448,9 @@ function renderSelectedGeometry(){
     s += `<path d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="rgba(239,90,36,.08)" stroke="${ACC}" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
   }
   // 拖动时的对齐参考线
-  (ui.guides || []).forEach(g => s += g.line
+  (ui.guides || []).forEach(g => s += g.point
+    ? `<g data-edit-overlay="drag-snap" data-drag-snap="${g.kind}" pointer-events="none"><line x1="${g.edge.a.x}" y1="${g.edge.a.y}" x2="${g.edge.b.x}" y2="${g.edge.b.y}" stroke="#0e8f83" stroke-width="2" opacity=".65" vector-effect="non-scaling-stroke"/>${g.kind==='midpoint'?`<path d="M${g.point.x} ${g.point.y-6*k}L${g.point.x+6*k} ${g.point.y+5*k}L${g.point.x-6*k} ${g.point.y+5*k}Z" fill="white" stroke="#0e8f83" stroke-width="2" vector-effect="non-scaling-stroke"/>`:`<rect x="${g.point.x-5*k}" y="${g.point.y-5*k}" width="${10*k}" height="${10*k}" fill="white" stroke="#0e8f83" stroke-width="2" vector-effect="non-scaling-stroke"/>`}</g>`
+    : g.line
     ? `<line x1="${g.line[0].x}" y1="${g.line[0].y}" x2="${g.line[1].x}" y2="${g.line[1].y}" stroke="#d6336c" stroke-width="1" stroke-dasharray="4 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`
     : g.v
     ? `<line x1="${g.x}" y1="${g.a}" x2="${g.x}" y2="${g.b}" stroke="#d6336c" stroke-width="1" stroke-dasharray="4 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`
@@ -476,7 +501,9 @@ function renderAll(){
   window.FurnishDesignUI?.clearPlacementGuide();
   syncCustomArchitecture();
   applyOpeningOverrides(); renderOpenings(); ui.guides = null;
-  renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderDims(); renderMeasure(); renderNotes(); renderSel(); renderPanel(); updateHeader();
+  // These layers only read the design; share one derivation within this draw.
+  withCanvasPlan(()=>{renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderDims(); renderMeasure(); renderNotes(); renderSel();});
+  renderPanel(); updateHeader();
   window.View3D?.sync();
   window.FurnishWorkspace?.afterRender();
   window.FurnishWorkflowTools?.afterRender();

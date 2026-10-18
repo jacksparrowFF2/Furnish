@@ -53,15 +53,16 @@ function toMM(e){
 }
 
 /* ======================= 吸附适配 ======================= */
-function snapMove(f,cx,cy,skip){
+function snapMove(f,cx,cy,skip,disabled=false,axis,anchor){
   const result=FurnishSnapping.move(f,cx,cy,{grid:ui.grid,scale:view.s,
     wallSnap:ui.layers.wallSnap,guides:ui.layers.guides,
-    rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture,skip});
+    rects:ui.layers.wallSnap?snapRects():[],furniture:ui.layers.furn?state.furniture:[],skip,
+    moving:skip?state.furniture.filter(o=>skip.has(o.id)):[f],disabled,axis,anchor});
   ui.guides=result.guides;return result.position;
 }
 function snapPoint(p,shift){
   const result=FurnishSnapping.measurePoint(p,{scale:view.s,...measurementScene(),anchor:shift?ui.mA:null});
-  ui.mSnap=result.edge?{point:result.point,edge:result.edge}:null;return result.point;
+  ui.mSnap=result.edge?{point:result.point,edge:result.edge,kind:result.kind}:null;return result.point;
 }
 function measurementScene(){const rects=snapRects();return {rects,solidWallCount:rects.length-WINS.length,furniture:ui.layers.furn?state.furniture:[]};}
 function directionalMeasurements(f=selItems()){return FurnishSnapping.directional(f,{...measurementScene(),rotation:drawingRotation()});}
@@ -117,7 +118,15 @@ function pinchInfo(){
 }
 // 结束当前拖动：移动过的家具记入撤销栈
 let lpT = 0, spaceDown = false;
+let canvasPointerFrame=0,canvasPointerEvent=null;
+function flushCanvasPointer(cancel=false){
+  if(canvasPointerFrame)cancelAnimationFrame(canvasPointerFrame);
+  canvasPointerFrame=0;
+  const event=canvasPointerEvent;canvasPointerEvent=null;
+  if(event&&!cancel)processCanvasPointerMove(event);
+}
 function endDrag(cancel){
+  flushCanvasPointer(cancel);
   clearTimeout(lpT);
   const d = drag; drag = null; svg.classList.remove('panning');
   if(typeof queueFabPosition==='function')queueFabPosition();
@@ -142,6 +151,7 @@ function endDrag(cancel){
     if (!cancel && !d.moved && !d.quiet && ui.tool !== 'measure') select(d.room ? {kind:'room', id:d.room} : (d.keep ? ui.sel : null));
     return;
   }
+  if(d.shiftTap&&!d.moved&&!cancel){toggleSel(d.shiftTap);return;}
   if (d.kind === 'locked') return;
   if (cancel && d.before){ state=JSON.parse(d.before); store.work[PLAN.id]=state; ui.guides=null; renderAll(); return; }
   if (d.kind === 'note'){ if (d.moved){ commit(d.before); renderAll(); } return; }
@@ -150,7 +160,7 @@ function endDrag(cancel){
   if (d.moved){
     if (!['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&!d.edge&&(d.kind !== 'move' || d.ids.length === 1)){   // 独立厨房边保留锚点；普通单件拖完继续推离墙体
       const f = getF(d.id);
-      if (f){ const ox = f.cx, oy = f.cy; pushOut(f); if (Math.hypot(f.cx-ox, f.cy-oy) > 60) toast(tr('已自动避开墙体', 'Moved off the wall automatically')); }
+      if (f){ const ox = f.cx, oy = f.cy; pushOut(f,d.kind==='move'?d.axis:undefined); if (Math.hypot(f.cx-ox, f.cy-oy) > 60) toast(tr('已自动避开墙体', 'Moved off the wall automatically')); }
     }
     commit(d.before); renderAll();
     if(['size','kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&d.resizeError)toast(d.resizeError);
@@ -161,6 +171,104 @@ function startLongPress(e){
   clearTimeout(lpT);
   const x = e.clientX, y = e.clientY, target = e.target;
   lpT = setTimeout(() => { if (drag && !drag.moved && !pinch){ drag = null; navigator.vibrate?.(12); openCtx(x, y, target); } }, 550);
+}
+
+function processCanvasPointerMove(e){
+  if (touches.has(e.pointerId)) touches.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (pinch){
+    if (touches.size < 2) return;
+    const {d, c} = pinchInfo(), ns = Math.max(.012, Math.min(2, pinch.s * d / pinch.d));
+    view.s = ns; view.x0 = pinch.px - c[0]/ns; view.y0 = pinch.py - c[1]/ns; queueView();
+    return;
+  }
+  if(drag?.kind==='move')drag.pointer={clientX:e.clientX,clientY:e.clientY,pointerId:e.pointerId,shiftKey:e.shiftKey,altKey:e.altKey};
+  const p = toMM(e);
+  ui.ptr = p;
+  setText(cxEl, Math.round(p.x) + ' mm'); setText(cyEl, Math.round(p.y) + ' mm');
+  if (!drag){
+    const room = e.target.closest?.('[data-room]')?.dataset.room || '';
+    if (room !== hoverRoom){
+      hoverRoom = room;
+      hoverEl.innerHTML = room ? `<b>${esc(nm(state.rooms[room].name))}</b> ${fmt(area(ROOMS.find(r => r.id === room).poly))} m²` : '';
+    }
+    if (ui.tool === 'measure'){ const q=snapPoint(p,e.shiftKey);if(ui.mA)ui.mCur=q;renderMeasure(); }
+    return;
+  }
+  const far = Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) >= TAP;
+  if (far) clearTimeout(lpT);
+  if (drag.kind === 'measure'){
+    if (far) drag.moved = true;
+    ui.mCur = snapPoint(p, e.shiftKey); renderMeasure(); return;
+  }
+  if (drag.kind === 'pan'){
+    if (!drag.moved && !far) return;
+    drag.moved = true; svg.classList.add('panning');
+    view.x0 = drag.x0 - (e.clientX-drag.sx)/view.s; view.y0 = drag.y0 - (e.clientY-drag.sy)/view.s; queueView(); return;
+  }
+  if (drag.kind === 'marq'){
+    if (!drag.moved && !far) return;
+    drag.moved = true; ui.marq = [drag.a, p]; renderSel(); return;
+  }
+  if (drag.kind === 'note'){
+    if (!drag.moved && !far) return;
+    const n = getNote(drag.id); if (!n) return;
+    drag.moved = true; n.x = Math.round((p.x - drag.ox)/ui.grid)*ui.grid; n.y = Math.round((p.y - drag.oy)/ui.grid)*ui.grid;
+    renderNotes(); renderSel(); return;
+  }
+  if (drag.kind === 'locked'){
+    if(far)delete drag.shiftTap;
+    if (far && !drag.warned){ drag.warned = true; toast(tr('已锁定的家具不能移动（L 或面板中解锁）', 'Locked items cannot be moved (press L or unlock in the panel)')); }
+    return;
+  }
+  const f = getF(drag.id); if (!f) return;
+  if (!drag.moved && !far) return;             // 轻点家具不应让它抖动一下
+  drag.moved = true;
+  if (drag.kind === 'move'){
+    const start=drag.start[f.id],anchor={x:start[0],y:start[1]},x=p.x-drag.ox,y=p.y-drag.oy;
+    if(!e.shiftKey)delete drag.axis;
+    else if(!drag.axis)drag.axis=Math.abs(x-anchor.x)>=Math.abs(y-anchor.y)?'x':'y';
+    // 以按住的那件为基准吸附，整组按同一位移移动；限制在画布范围内，防止拖丢
+    const b = BOUNDS, [sx, sy] = snapMove(f,x,y,new Set(drag.ids),e.altKey,drag.axis,anchor);
+    const dx = drag.axis==='y'?0:Math.max(b.x, Math.min(b.x + b.w, sx)) - start[0], dy = drag.axis==='x'?0:Math.max(b.y, Math.min(b.y + b.h, sy)) - start[1];
+    // 拖动中只更新被拖家具的位姿，不重建全部家具
+    drag.ids.forEach(id => { const g = getF(id); if (!g) return;
+      g.cx = drag.start[id][0] + dx; g.cy = drag.start[id][1] + dy;
+      document.querySelector(`#gFurn [data-fid="${id}"]`)?.setAttribute('transform', furnT(g)); });
+    syncFurnOrder();
+    renderSel(); return;
+  }
+  if (drag.kind === 'rot'){
+    let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;
+    f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
+  } else if(drag.kind==='kitchen-divider'){
+    try{const result=FurnishSnapping.resizeKitchenDivider(drag.original,drag.divider,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+    renderFurn();
+  } else if(drag.kind==='kitchen-extension'){
+    try{const result=FurnishSnapping.resizeKitchenExtension(drag.original,drag.run,drag.field,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+    renderFurn();
+  } else if(drag.kind==='kitchen-run'){
+    try{
+      const result=FurnishSnapping.resizeKitchenRun(drag.original,drag.run,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});
+      Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;
+    }catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+    renderFurn();
+  } else if (drag.kind === 'size'){
+    if(drag.edge){
+      try{const result=FurnishSnapping.resizeKitchenOuter(drag.original,drag.edge,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+      renderFurn();syncFurnOrder();renderSel();return;
+    }
+    // Use pointer travel from the grab position, excluding the handle's padding.
+    const o=drag.original,a=o.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
+    const dx=p.x-drag.startPoint.x,dy=p.y-drag.startPoint.y;
+    const dw=drag.axis==='d'?0:dx*c+dy*s,dd=drag.axis==='w'?0:-dx*s+dy*c;
+    const corner={x:o.cx+o.w/2*c-o.d/2*s+dw*c-dd*s,y:o.cy+o.w/2*s+o.d/2*c+dw*s+dd*c};
+    const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
+    try{const next=FurnishDesign.resizeFurniture(drag.original,{w:result.furniture.w,d:result.furniture.d},'center');Object.assign(f,next,{cx:result.furniture.cx,cy:result.furniture.cy});ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
+    renderFurn();                              // 尺寸变了，图例需要重画
+  }
+  document.querySelector(`#gFurn [data-fid="${f.id}"]`)?.setAttribute('transform', furnT(f));
+  syncFurnOrder();
+  renderSel();
 }
 
 function initializeCanvasInteractions(){
@@ -174,6 +282,7 @@ svg.addEventListener('pointerdown', e => {
     svg.setPointerCapture(e.pointerId);
     if (touches.size >= 2){                    // 第二根手指落下：取消单指操作，进入双指缩放 / 平移
       clearTimeout(lpT);
+      flushCanvasPointer(); // Decide commit/cancel using the latest single-touch move.
       endDrag(drag?.kind === 'measure' || drag?.kind === 'pan' || drag?.kind === 'marq' || drag?.kind==='kitchen-divider'&&!drag.moved);
       const {d, c} = pinchInfo();
       pinch = {d, c, s:view.s, px:view.x0 + c[0]/view.s, py:view.y0 + c[1]/view.s};
@@ -214,11 +323,12 @@ svg.addEventListener('pointerdown', e => {
     drag = {kind:'note', id:n.id, ...base, ox:p.x-n.x, oy:p.y-n.y, before:snap()};
   } else if (picking && fEl){
     const id = fEl.dataset.fid;
-    if (e.shiftKey || e.metaKey || e.ctrlKey){ toggleSel(id); return; }       // 修饰键 + 点击：加入 / 移出选择
+    if (e.metaKey || e.ctrlKey || e.shiftKey&&!selIds().includes(id)){ toggleSel(id); return; }
     if (!selIds().includes(id)) selectIds([id]); else if (ui.sel.id !== id) selectIds(selIds(), id);
     const items = selItems(), f = getF(id);
     drag = items.some(g => g.locked) ? {kind:'locked', ...base}
       : {kind:'move', id, ids:items.map(g => g.id), start:Object.fromEntries(items.map(g => [g.id, [g.cx, g.cy]])), ...base, ox:p.x-f.cx, oy:p.y-f.cy, before:snap()};
+    if(e.shiftKey)drag.shiftTap=id; // Shift-click still toggles; a drag locks an axis.
     if (e.pointerType !== 'mouse') startLongPress(e);
   } else if (ui.tool === 'select' && t.closest('[data-door],[data-slide],[data-win]')){
     const de = t.closest('[data-door]'), se = t.closest('[data-slide]'), we = t.closest('[data-win]');
@@ -237,113 +347,44 @@ svg.addEventListener('pointerdown', e => {
 });
 
 svg.addEventListener('pointermove', e => {
-  if (touches.has(e.pointerId)) touches.set(e.pointerId, {x:e.clientX, y:e.clientY});
-  if (pinch){
-    if (touches.size < 2) return;
-    const {d, c} = pinchInfo(), ns = Math.max(.012, Math.min(2, pinch.s * d / pinch.d));
-    view.s = ns; view.x0 = pinch.px - c[0]/ns; view.y0 = pinch.py - c[1]/ns; queueView();
+  if(drag&&['move','rot','size','kitchen-run','kitchen-extension','kitchen-divider','note'].includes(drag.kind)&&!pinch){
+    canvasPointerEvent=e;
+    if(!canvasPointerFrame)canvasPointerFrame=requestAnimationFrame(()=>flushCanvasPointer());
     return;
   }
-  const p = toMM(e);
-  ui.ptr = p;
-  setText(cxEl, Math.round(p.x) + ' mm'); setText(cyEl, Math.round(p.y) + ' mm');
-  if (!drag){
-    const room = e.target.closest?.('[data-room]')?.dataset.room || '';
-    if (room !== hoverRoom){
-      hoverRoom = room;
-      hoverEl.innerHTML = room ? `<b>${esc(nm(state.rooms[room].name))}</b> ${fmt(area(ROOMS.find(r => r.id === room).poly))} m²` : '';
-    }
-    if (ui.tool === 'measure'){ const q=snapPoint(p,e.shiftKey);if(ui.mA)ui.mCur=q;renderMeasure(); }
-    return;
-  }
-  const far = Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) >= TAP;
-  if (far) clearTimeout(lpT);
-  if (drag.kind === 'measure'){
-    if (far) drag.moved = true;
-    ui.mCur = snapPoint(p, e.shiftKey); renderMeasure(); return;
-  }
-  if (drag.kind === 'pan'){
-    if (!drag.moved && !far) return;
-    drag.moved = true; svg.classList.add('panning');
-    view.x0 = drag.x0 - (e.clientX-drag.sx)/view.s; view.y0 = drag.y0 - (e.clientY-drag.sy)/view.s; queueView(); return;
-  }
-  if (drag.kind === 'marq'){
-    if (!drag.moved && !far) return;
-    drag.moved = true; ui.marq = [drag.a, p]; renderSel(); return;
-  }
-  if (drag.kind === 'note'){
-    if (!drag.moved && !far) return;
-    const n = getNote(drag.id); if (!n) return;
-    drag.moved = true; n.x = Math.round((p.x - drag.ox)/ui.grid)*ui.grid; n.y = Math.round((p.y - drag.oy)/ui.grid)*ui.grid;
-    renderNotes(); renderSel(); return;
-  }
-  if (drag.kind === 'locked'){
-    if (far && !drag.warned){ drag.warned = true; toast(tr('已锁定的家具不能移动（L 或面板中解锁）', 'Locked items cannot be moved (press L or unlock in the panel)')); }
-    return;
-  }
-  const f = getF(drag.id); if (!f) return;
-  if (!drag.moved && !far) return;             // 轻点家具不应让它抖动一下
-  drag.moved = true;
-  if (drag.kind === 'move'){
-    // 以按住的那件为基准吸附，整组按同一位移移动；限制在画布范围内，防止拖丢
-    const b = BOUNDS, [sx, sy] = snapMove(f, p.x-drag.ox, p.y-drag.oy, new Set(drag.ids));
-    const dx = Math.max(b.x, Math.min(b.x + b.w, sx)) - drag.start[f.id][0], dy = Math.max(b.y, Math.min(b.y + b.h, sy)) - drag.start[f.id][1];
-    // 拖动中只更新被拖家具的位姿，不重建全部家具
-    drag.ids.forEach(id => { const g = getF(id); if (!g) return;
-      g.cx = drag.start[id][0] + dx; g.cy = drag.start[id][1] + dy;
-      document.querySelector(`#gFurn [data-fid="${id}"]`)?.setAttribute('transform', furnT(g)); });
-    syncFurnOrder();
-    renderSel(); return;
-  }
-  if (drag.kind === 'rot'){
-    let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;
-    f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
-  } else if(drag.kind==='kitchen-divider'){
-    try{const result=FurnishSnapping.resizeKitchenDivider(drag.original,drag.divider,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
-    renderFurn();
-  } else if(drag.kind==='kitchen-extension'){
-    try{const result=FurnishSnapping.resizeKitchenExtension(drag.original,drag.run,drag.field,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
-    renderFurn();
-  } else if(drag.kind==='kitchen-run'){
-    try{
-      const result=FurnishSnapping.resizeKitchenRun(drag.original,drag.run,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});
-      Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;
-    }catch(e){drag.resizeError=e.message;ui.guides=null;return;}
-    renderFurn();
-  } else if (drag.kind === 'size'){
-    if(drag.edge){
-      try{const result=FurnishSnapping.resizeKitchenOuter(drag.original,drag.edge,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
-      renderFurn();syncFurnOrder();renderSel();return;
-    }
-    // Use pointer travel from the grab position, excluding the handle's padding.
-    const o=drag.original,a=o.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
-    const dx=p.x-drag.startPoint.x,dy=p.y-drag.startPoint.y;
-    const dw=drag.axis==='d'?0:dx*c+dy*s,dd=drag.axis==='w'?0:-dx*s+dy*c;
-    const corner={x:o.cx+o.w/2*c-o.d/2*s+dw*c-dd*s,y:o.cy+o.w/2*s+o.d/2*c+dw*s+dd*c};
-    const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
-    try{const next=FurnishDesign.resizeFurniture(drag.original,{w:result.furniture.w,d:result.furniture.d},'center');Object.assign(f,next,{cx:result.furniture.cx,cy:result.furniture.cy});ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
-    renderFurn();                              // 尺寸变了，图例需要重画
-  }
-  document.querySelector(`#gFurn [data-fid="${f.id}"]`)?.setAttribute('transform', furnT(f));
-  syncFurnOrder();
-  renderSel();
+  processCanvasPointerMove(e);
 });
-
 function onPointerEnd(e){
   touches.delete(e.pointerId);
   if (pinch){ if (touches.size < 2) pinch = null; return; }   // 双指结束后，剩下的手指不再触发操作
+  // A release can carry a newer position than the last pointermove.
+  if(e.type==='pointerup'&&drag?.kind==='measure')processCanvasPointerMove(e);
+  if(e.type==='pointerup'&&drag?.kind==='move'&&Number.isFinite(e.clientX)&&Number.isFinite(e.clientY)){
+    flushCanvasPointer(true);processCanvasPointerMove(e);
+  }
   endDrag(e.type === 'pointercancel');
 }
 svg.addEventListener('pointerup', onPointerEnd);
 svg.addEventListener('pointercancel', onPointerEnd);
 svg.addEventListener('pointerleave', () => { if (!drag) ui.ptr = null; });
+// Recompute at the last raw pointer position when a movement modifier changes.
+for(const type of ['keydown','keyup'])document.addEventListener(type,e=>{
+  if(!['Alt','Shift'].includes(e.key)||drag?.kind!=='move'||pinch)return;
+  const pointer=canvasPointerEvent||drag.pointer;if(!pointer)return;
+  e.preventDefault();
+  const at={clientX:pointer.clientX,clientY:pointer.clientY,pointerId:pointer.pointerId,shiftKey:e.key==='Shift'?type==='keydown':e.shiftKey,altKey:e.key==='Alt'?type==='keydown':e.altKey,target:svg};
+  flushCanvasPointer(true);processCanvasPointerMove(at);
+});
 // 阻止 iPad Safari 把双指手势当成整页缩放
 ['gesturestart','gesturechange','gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault()));
 
 svg.addEventListener('wheel', e => {
   e.preventDefault();
+  if(drag||pinch)return;
+  const action=FurnishNavigation.wheel(e);
+  if(action.kind==='pan'){view.x0+=action.x/view.s;view.y0+=action.y/view.s;queueView();return;}
   const r = svg.getBoundingClientRect();
-  zoomAt(view.s*Math.exp(-e.deltaY*(e.ctrlKey ? .01 : .0015)), e.clientX-r.left, e.clientY-r.top);
+  zoomAt(view.s*action.factor, e.clientX-r.left, e.clientY-r.top);
 }, {passive:false});
 svg.addEventListener('dblclick', e => {
   const ne = e.target.closest('[data-note]');

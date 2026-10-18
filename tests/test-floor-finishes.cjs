@@ -25,7 +25,7 @@ assert.throws(()=>F.cells({poly:[[0,0],[100000,0],[100000,100000],[0,100000]]},{
 const wf=WF.edit(next,WF.faces(plan)[0],{tileThickness:10,bondThickness:15}),sp=P.effectivePlan(plan,wf);near(Z.area(F.cells(sp.floorFinish.areas[id].room,zeroGap).flatMap(c=>c.polys)),P.area(sp.floorFinish.areas[id].room.poly)*1e6);
 for(const height of [50,49.999,51]){const appliance={...work.furniture[0],type:'washer',mountHeight:height};assert.equal(P.spaceCheck(ep,[appliance],{scanPassages:false}).some(i=>i.kind==='floorheight'),height<50);}
 for(const rot of [0,37,90,180])for(const flip of [false,true])assert(P.spaceCheck(ep,[{...work.furniture[0],cx:1500,cy:1500,rot,flip}],{scanPassages:false}).some(i=>i.kind==='floorheight'));
-assert(P.spaceCheck(ep,[{...work.furniture[0],type:'counter',kitchen:{version:99}}],{scanPassages:false}).some(i=>i.kind==='model'&&i.pending),'broken models remain reviewable with floor settings');
+assert(P.spaceCheck(ep,[{...work.furniture[0],type:'counter',kitchen:{version:109}}],{scanPassages:false}).some(i=>i.kind==='model'&&i.pending),'broken models remain reviewable with floor settings');
 const issue={kind:'floorheight',id:'item'},finger=P.checkFingerprint(issue,ep,next.furniture,800),gridChange=copy(next);gridChange.floorFinishes.areas[id].layout.angle=37;
 assert.equal(P.checkFingerprint(issue,P.effectivePlan(plan,gridChange),next.furniture,800),finger);gridChange.floorFinishes.areas[id].baseThickness=41;assert.notEqual(P.checkFingerprint(issue,P.effectivePlan(plan,gridChange),next.furniture,800),finger);
 const payload={planId:plan.id,current:next,designs:[{name:'地面',work:next}],catalog:[]},pack=P.pack(payload);assert.equal(pack.version,3);let restored=copy(next);
@@ -34,7 +34,7 @@ const bulk=F.setEnabled(original,plan,[id],true);assert.equal(bulk.floorFinishes
 assert.deepEqual(P.unpack(P.pack({...payload,current:disabled})).current.floorFinishes,disabled.floorFinishes);
 const restore=W.create({makeId:()=> 'new',colorFor:()=> '#ddd',materials:{tile800:{},wood:{}}}).restore;
 for(let i=0;i<4;i++){restored=restore(P.unpack(P.pack({...payload,current:restored})).current,plan);assert.deepEqual(restored.floorFinishes,next.floorFinishes);assert.deepEqual(restored.furniture,next.furniture);assert.deepEqual(restored.architecture.draft,next.architecture.draft);near(P.effectivePlan(plan,restored).floorFinish.areas[id].finishedZ,50);}
-const workspace={v:3,planId:plan.id,work:{[plan.id]:next},designs:[],customPlans:[plan.customDraft],custom:[]};assert.equal(JSON.parse(R.text(workspace)).version,3);assert.deepEqual(R.parse(JSON.parse(R.text(workspace))),R.portable(workspace));assert.throws(()=>R.parse({...JSON.parse(R.text(workspace)),version:9}));
+const workspace={v:3,planId:plan.id,work:{[plan.id]:next},designs:[],customPlans:[plan.customDraft],custom:[]};assert.equal(JSON.parse(R.text(workspace)).version,3);assert.deepEqual(R.parse(JSON.parse(R.text(workspace))),R.portable(workspace));assert.throws(()=>R.parse({...JSON.parse(R.text(workspace)),version:10}));
 assert.deepEqual(P.copyProject(payload,'custom_floor_copy').current.floorFinishes,next.floorFinishes);
 const ctx=vm.createContext({FurnishFloorFinish:F,state:next,undoStack:[],redoStack:[],save(){},snapshot(){},before:JSON.stringify(work)});vm.runInContext(fs.readFileSync(require.resolve('../src/app.js'),'utf8').match(/function commit\(before\)\{[^\n]+/)[0]+'\ncommit(before);',ctx);assert.deepEqual(next.furniture,work.furniture);assert.equal(ctx.undoStack.length,1);
 const cache=require('../src/io/workspace-cache.js'),read=k=>k==='huxing-design-v2'?JSON.stringify({...workspace,v:2}):null;assert.equal(cache.load({read,key:'huxing-design-v3',firstPlan:plan,restore}).v,2);
@@ -46,3 +46,19 @@ console.log('PASS floor elevations, editable bathroom drop, unknown/conflicts/cy
  const g=new THREE.PlaneGeometry(1,1);g.rotateX(-Math.PI/2);M.uv(THREE,g,layout);assert(g.attributes.uv.array.every(Number.isFinite));assert.equal(M.layers(THREE,a.room,{...a,finishedZ:undefined}),null);
  console.log('PASS production floor layer geometry and grid UV coordinates');
 })().catch(e=>{console.error(e);process.exitCode=1;});
+
+// Diagnostics must distinguish incomplete reference inputs from saved results.
+{
+ const w=copy(next);w.rooms.bath={name:'卫生间',mat:'tile600'};
+ const spec={mode:'reference',reference:id,rawZ:0,tileThickness:10,drop:5};
+ const pending=(ref,patch={})=>{w.floorFinishes.areas={...(ref?{[id]:ref}:{}),bath:{...spec,...patch}};return F.derive(two,w).floorFinish.areas.bath;};
+ assert.match(pending(undefined).pending,/未启用/);
+ assert.match(pending({...setting,baseThickness:undefined}).pending,/参考区域标高未确定/);
+ assert.match(pending(setting,{reference:undefined}).pending,/请选择参考区域/);
+ assert.match(pending(setting,{reference:'removed'}).pending,/已移除/);
+ assert.match(pending(setting,{drop:undefined}).pending,/同高可填 0/);
+ assert.match(pending(setting,{baseThickness:50}).pending,/冲突/);
+ assert.equal(pending(setting).finishedZ,45);
+ assert.equal(pending(setting,{drop:0}).finishedZ,50);
+ assert.match(cycle.floorFinish.areas.bath.pending,/循环/);
+}

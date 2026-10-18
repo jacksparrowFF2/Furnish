@@ -1,6 +1,7 @@
 /* Shared Three.js cabinet construction. box uses bottom-based vertical coordinates. */
 (function(root){
  function buildRaw(THREE,f,box,options={}){
+  if(f.laundryFloorOpen)options={...options,floorOpen:true};
   const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.height(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
   const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=box(W,H,D,shade,x,y,z);parent.add(mesh);return mesh;};
@@ -128,10 +129,10 @@
    });
    if(options.outlines)g.traverse(o=>{if(o.isMesh){const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x82776b,transparent:true,opacity:.55}));edge.userData.cabinetOwnMaterial=true;o.add(edge);}});return g;
   }
-  if(p)add(g,w,p,d-.04,0,0,-.02,wood);
+  if(p&&!options.floorOpen)add(g,w,p,d-.04,0,0,-.02,wood);
   const movable=col=>col.top==='drawer';
   if(c.hoodBayHeight!==undefined){const bays=C.layout(f),bay=bays[1];for(const i of [0,2]){const left=i===0?-w/2:(bay.left+bay.width)/1000,right=i===2?w/2:bay.left/1000;add(g,right-left,t,bodyDepth,(left+right)/2,p,bodyZ).userData.cabinetSection='hoodSideBottom';}if(C.hoodBayCeiling(f,c))add(g,bay.width/1000,t,bodyDepth,bay.center/1000,c.hoodBayHeight/1000,bodyZ).userData.cabinetSection='hoodCeiling';}
-  else add(g,w,t,bodyDepth,0,p,bodyZ);if(!c.columns.some(movable))add(g,w,t,bodyDepth,0,h-t,bodyZ).userData.cabinetTop=true;
+  else if(!options.floorOpen)add(g,w,t,bodyDepth,0,p,bodyZ);if(!c.columns.some(movable))add(g,w,t,bodyDepth,0,h-t,bodyZ).userData.cabinetTop=true;
   const bays=C.layout(f),inner=h-p-2*t;
   bays.forEach((bay,i)=>{
    if(!movable(c.columns[i])){
@@ -153,9 +154,9 @@
      const led=add(g,cw-.025,.004,.012,x,base+top-.01,d/2-t-.012,'#ffe4ab');led.material=led.material.clone();led.material.emissive=new THREE.Color('#ffe4ab');led.material.emissiveIntensity=.6;led.userData.cabinetOwnMaterial=true;
     }
    }
-   if(!i)sideBoard('left',t,h-p-2*t,bodyDepth,bay.left/1000-t/2,p+t,bodyZ);else add(g,t,h-p-2*t,bodyDepth,bay.left/1000-t/2,p+t,bodyZ).userData.cabinetDivider={divider:i-1,column:i-1};
+   if(!i)sideBoard('left',t,h-p-(options.floorOpen?t:2*t),bodyDepth,bay.left/1000-t/2,p+(options.floorOpen?0:t),bodyZ);else add(g,t,h-p-(options.floorOpen?t:2*t),bodyDepth,bay.left/1000-t/2,p+(options.floorOpen?0:t),bodyZ).userData.cabinetDivider={divider:i-1,column:i-1};
   });
-  sideBoard('right',t,h-p-2*t,bodyDepth,w/2-t/2,p+t,bodyZ);
+  sideBoard('right',t,h-p-(options.floorOpen?t:2*t),bodyDepth,w/2-t/2,p+(options.floorOpen?0:t),bodyZ);
   c.columns.forEach((col,i)=>{
    const cw=bays[i].width/1000,x=bays[i].center/1000,base=p+t;
    const handle=col.handle||'bar',faceColor=col.doorColor||(col.finish==='wood'?wood:entryStyle&&color==='#d5c4bb'?'#f3f1ec':color);

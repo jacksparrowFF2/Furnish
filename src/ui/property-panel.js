@@ -24,7 +24,7 @@ function renderPanelContent(object=true){
   window.FurnishWorkspace?.clearOpeningPreview();
   renderFab();
   const p = $('#panel'), ids = object?selIds():[];
-  if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); return; }
+  if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); const laundry=laundryGroupHost(selItems());if(laundry)bindKitchenPanel(laundry);return; }
   if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f)+(window.FurnishFloorFinishUI?.furniturePanel(f)||'');const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
   if (object && ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
   if (object && ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
@@ -182,7 +182,15 @@ function positionFab(){
   if(typeof drag!=='undefined'&&drag)return;
   const bounds=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight;
   const key=[...selIds(),ui.sel?.kind==='room'?ui.sel.id:'',W,H].join('|');
-  if(is3D())clearFabDock();
+  if(is3D()){
+    clearFabDock();
+    if(!fabEditor){
+      // The 3D camera owns framing; keep this toolbar beside the scene rail.
+      const rail=$('.canvas-rail')?.getBoundingClientRect();
+      fab.style.left='50%';fab.style.top='auto';fab.style.bottom=(rail?Math.max(18,bounds.bottom-rail.top+12):18)+'px';fab.style.transform='translateX(-50%)';
+      return;
+    }
+  }
   else if(W<=720||fabDockKey===key||fabDockKey&&document.activeElement?.closest('#fab-editor')){dockFab(W>=600&&H<450||W>720?'right':'top',key);return;}
   else if(fabDockKey)clearFabDock();
   const local=r=>({x:r.left-bounds.left,y:r.top-bounds.top,w:r.width,h:r.height});
@@ -404,7 +412,7 @@ function bindFurnPanel(f){
 function multiPanel(items){
   const [x0,y0,x1,y1] = groupBox(items), btn = (act, icon, label) => `<button class="btn" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   const lockedAll = items.every(f => f.locked), cost = items.reduce((a, f) => a + priceOf(f), 0);
-  return `<section><h3>${tr(`已选 ${items.length} 件家具`, `${items.length} items selected`)}</h3>
+  return `${laundryGroupHost(items)?laundryControls(laundryGroupHost(items)):''}<section><h3>${tr(`已选 ${items.length} 件家具`, `${items.length} items selected`)}</h3>
     <div class="stats"><div><small>${tr('整体尺寸','Group size')}</small><span class="big mid">${Math.round(x1-x0)} × ${Math.round(y1-y0)}</span></div>
       <div><small>${tr('参考价合计','Reference total')}</small><span class="big mid">${yen(cost)}</span></div></div>
     <div class="actions"><button class="btn" data-act="group">${tr('打组','Group')}</button>${items.some(f=>f.groupId)?`<button class="btn" data-act="ungroup">${tr('解组','Ungroup')}</button>`:''}</div><p class="muted">${tr(items.some(f=>f.groupId)?'点击组内任一家具会选中整组；解组后可单独调整。':'打组后可共同移动，保持相对位置。','Group members move together; ungroup to adjust individual items.')}</p>

@@ -69,7 +69,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v8';
+let STORE = 'huxing-design-v9';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);
@@ -163,12 +163,8 @@ function save(){
   if(repositoryBooting)return;
   store.updatedAt=Math.max(Date.now(),(store.updatedAt||0)+1);
   store.work[PLAN.id] = state;
-  if(Object.values(store.work).some(w=>FurnishCeiling.requiresV8(w))||store.designs.some(d=>FurnishCeiling.requiresV8(d.work))){store.v=8;STORE='huxing-design-v8';}
-  else if(store.v<8&&(Object.values(store.work).some(w=>FurnishCeiling.requiresV7(w))||store.designs.some(d=>FurnishCeiling.requiresV7(d.work)))){store.v=7;STORE='huxing-design-v7';}
-  else if(store.v<7&&(Object.values(store.work).some(w=>FurnishCeiling.requiresV6(w))||store.designs.some(d=>FurnishCeiling.requiresV6(d.work)))){store.v=6;STORE='huxing-design-v6';}
-  else if(store.v<6&&(Object.values(store.work).some(w=>w.ceilings)||store.designs.some(d=>d.work?.ceilings))){store.v=5;STORE='huxing-design-v5';}
-  else if(store.v<5&&(Object.values(store.work).some(w=>w.wallTiling)||store.designs.some(d=>d.work?.wallTiling))){store.v=4;STORE='huxing-design-v4';}
-  else if(store.v<4&&(Object.values(store.work).some(w=>w.floorFinishes)||store.designs.some(d=>d.work?.floorFinishes))){store.v=3;STORE='huxing-design-v3';}
+  const requiredVersion=FurnishProject.formatVersion([...Object.values(store.work),...store.designs.map(d=>d.work)]);
+  store.v=Math.max(store.v>=7?9:store.v,requiredVersion,2);STORE='huxing-design-v'+store.v;
   autosave.save(store);
   repositoryClient?.schedule(store);
 }
@@ -408,7 +404,7 @@ document.addEventListener('keydown', e => {
   if (mod && (k === 'c' || k === 'x')){ if (selIds().length){ e.preventDefault(); copySel(k === 'x'); } return; }
   if (mod && k === 'v'){ e.preventDefault(); paste(!is3D() && ui.ptr ? ui.ptr : null); return; }
   if (mod) return;
-  if (e.key === ' ' && !is3D()){ e.preventDefault(); if (!spaceDown){ spaceDown = true; svg.classList.add('space'); } return; }
+  if (e.key === ' '){ e.preventDefault(); if (!spaceDown){ spaceDown = true; svg.classList.add('space'); } return; }
   if (e.key === '?'){ openHelp(); return; }
   if (k === '[' || k === ']'){ drawer(k === '[' ? 'lib' : 'panel'); return; }
   if (k === 'f' && e.shiftKey){ toggleFullscreen(); return; }
@@ -545,13 +541,13 @@ function openReset(){
 function wipeAll(){
   // Erasing browser caches never deletes the Git-managed design file.
   const wipeNotice=repositoryClient?'仓库中的设计文件和本机恢复副本会保留，刷新后将重新加载仓库设计。':'';
-  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v8','huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
+  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v9','huxing-design-v8','huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 
 function openHelp(){
   const g = (title, rows) => `<h4>${title}</h4>` + rows.map(([k, zh, en]) => `<div><span>${tr(zh, en)}</span><kbd>${k}</kbd></div>`).join('');
-  openDialog({title:tr('快捷键与操作', 'Shortcuts & Controls'), wide:true, body:`<div class="keys">
-    ${g(tr('工具与视图', 'Tools & view'), [['V','选择 / 移动','Select / move'],['B','框选','Box select'],['M','测量（Shift 水平/垂直）','Measure (Shift = straight)'],['X','拆改非承重墙','Demolish walls'],['N','文字标注','Text note'],['Ctrl+K','命令面板：搜索一切','Command palette'],
+  openDialog({title:tr('快捷键与操作', 'Shortcuts & Controls'), wide:true, body:`<label>${tr('操作设备','Input device')} <select id="navigation-input">${[['auto','自动识别','Auto'],['touchpad','触摸板','Touchpad'],['mouse','鼠标','Mouse']].map(([v,zh,en])=>`<option value="${v}" ${FurnishNavigation.getMode()===v?'selected':''}>${tr(zh,en)}</option>`).join('')}</select></label><p class="muted">${tr('触摸板：双指滑动平移，捏合缩放。3D 按住空格拖动平移，拖动空白处旋转。自动识别不准时请手动选择；仅记住本机偏好。','Touchpad: two-finger scroll pans, pinch zooms. In 3D, Space-drag pans and dragging empty space orbits. Select a device if auto detection is inaccurate; saved on this device.')}</p><div class="keys">
+    ${g(tr('工具与视图', 'Tools & view'), [['V','选择 / 移动','Select / move'],['Alt','拖动家具时临时关闭吸附','Temporarily disable snapping while moving furniture'],['Shift','拖动家具时锁定水平／垂直方向','Lock horizontal/vertical movement while dragging furniture'],['B','框选','Box select'],['M','测量（Shift 水平/垂直）','Measure (Shift = straight)'],['X','拆改非承重墙','Demolish walls'],['N','文字标注','Text note'],['Ctrl+K','命令面板：搜索一切','Command palette'],
       ['T','切换 2D / 3D','Toggle 2D / 3D'],['F','适应窗口','Fit to window'],['Z','缩放到所选','Zoom to selection'],['+ / −','放大 / 缩小','Zoom in / out'],
       [tr('空格+拖动','Space+drag'),'平移画面（也可用中键）','Pan (or middle mouse)'],['[ / ]','收起 / 展开左右面板','Toggle side panels'],['Shift+F','全屏','Fullscreen'],['Esc','取消选择 / 退出工具','Deselect / exit tool']])}
     ${g(tr('编辑', 'Editing'), [['Ctrl+Z','撤销','Undo'],['Ctrl+Shift+Z','重做','Redo'],['Ctrl+C / X / V','复制 / 剪切 / 粘贴到指针处','Copy / cut / paste at pointer'],['Ctrl+D','创建副本','Duplicate'],['Ctrl+G / Ctrl+Shift+G','打组 / 解组','Group / ungroup'],
@@ -561,7 +557,7 @@ function openHelp(){
       [tr('右键 / 长按','Right-click / long-press'),'操作菜单','Action menu'],[tr('双击家具','Double-click'),'旋转 90°','Rotate 90°'],[tr('拖顶部圆点','Top dot'),'旋转（Shift 任意角度）','Rotate (Shift = free)'],
       [tr('拖右侧／下方白色手柄','Right / bottom white handle'),'单独调整宽／深','Resize width / depth'],[tr('拖角落橙色方块','Orange corner square'),'同时调整宽深','Resize both'],[tr('双指','2 fingers'),'缩放 / 平移','Zoom / pan']])}
     ${g(tr('3D 漫游', '3D walk'), [['W A S D','移动','Move'],['Shift','快走','Run'],['E','开关正前方的门','Toggle door ahead'],['Esc','暂停','Pause']])}
-  </div>`});
+  </div>`,onOpen:()=>{document.querySelector('#navigation-input').onchange=e=>FurnishNavigation.setMode(e.target.value);}});
 }
 
 // 自定义家具：任意名称 / 尺寸 / 形状 / 高度 / 颜色 / 单价，保存到「我的家具」
@@ -822,7 +818,7 @@ const is3D = () => viewMode === '3d';
 const TIPS = () => COARSE
   ? {'2d':tr('点或拖动家具库添加 · 单指拖动平移 · 双指缩放 · 选中家具后底部工具条可旋转 / 复制 / 删除', 'Tap or drag from the library · 1 finger pans · pinch zooms · bottom bar rotates / duplicates / deletes'),
      '3d':tr('单指旋转 · 双指缩放 / 平移 · 点家具或地面编辑 · 点门开关', '1 finger orbits · 2 fingers zoom / pan · tap furniture or floor to edit · tap doors to open')}
-  : {'2d':tr('拖动左侧家具到平面图 · 滚轮缩放 · 拖动空白处平移 · T 切换 3D', 'Drag furniture onto the plan · scroll to zoom · drag empty space to pan · T for 3D'),
+  : {'2d':tr('拖动家具到平面图 · 触摸板双指平移／捏合缩放 · 鼠标滚轮缩放 · ? 操作设置', 'Drag furniture onto the plan · touchpad scroll pans / pinch zooms · mouse wheel zooms · ? controls'),
      '3d':tr('3D 场景与平面方案实时同步 · 右侧面板修改会立即生效 · T 返回 2D', '3D stays in sync with the plan · panel edits apply instantly · T for 2D')};
 async function setView(m){
   if (m === viewMode || switching) return;
@@ -844,7 +840,10 @@ async function setView(m){
     toast(tr('3D 引擎加载失败', 'Failed to load the 3D engine'));
   } finally { switching = false; document.body.classList.remove('busy');queueFabPosition(); }
 }
-document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => b.closest('details').open = false));
+document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => {
+  const menu = b.closest('details');
+  if (menu) menu.open = false; // Some controls are later moved into the canvas toolbar.
+}));
 document.querySelectorAll('#viewSeg .btn').forEach(b => b.onclick = () => setView(b.dataset.view));
 ['pointerenter', 'pointerdown', 'focusin'].forEach(t => $('#viewSeg').addEventListener(t, () => window.View3D?.load().catch(() => {}), {once:true}));
 

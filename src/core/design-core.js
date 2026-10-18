@@ -29,6 +29,7 @@
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:50)||value>20000)throw Error('宽深须为 50–20000 mm，高须为 10–20000 mm');next[key]=value;}
   products().resizeHoodGeometry(f,next);
+  if(next.sinkNotch!==undefined)products().validateField(next,'sinkNotch',next.sinkNotch);
   if(next.hobCutout!==undefined)products().validateField(next,'hobCutout',next.hobCutout);
   const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return f.kitchen?kitchen().resize(f,next):cabinet().resize(f,next);
  }
@@ -57,7 +58,7 @@
   const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{if(!moved){let id;do{id=makeId();}while(used.has(id)||reserved.has(id));f.id=id;f.purchaseStatus='planned';delete f.locked;}used.add(f.id);f.cx+=delta[0];f.cy+=delta[1];});
   const groups=new Map(),usedGroups=new Set([...existingGroupIds,...items.map(f=>f.groupId).filter(Boolean)]);
   for(const f of items)if(f.groupId){if(!groups.has(f.groupId)){let id=f.groupId;if(!moved||existingGroupIds.includes(id)){do{id=makeId();}while(usedGroups.has(id));}usedGroups.add(id);groups.set(f.groupId,id);}f.groupId=groups.get(f.groupId);}
-  const mapping=new Map(sourceIds.map((id,i)=>[id,items[i].id]));for(const f of items)if(f.counterLink){if(mapping.has(f.counterLink.hostId))f.counterLink.hostId=mapping.get(f.counterLink.hostId);else delete f.counterLink;}kitchen().normalize(items);
+  const mapping=new Map(sourceIds.map((id,i)=>[id,items[i].id]));for(const f of items)if(f.counterLink){if(mapping.has(f.counterLink.hostId))f.counterLink.hostId=mapping.get(f.counterLink.hostId);else delete f.counterLink;}for(const f of items)if(f.laundryHostId){if(mapping.has(f.laundryHostId))f.laundryHostId=mapping.get(f.laundryHostId);else delete f.laundryHostId;}kitchen().normalize(items);
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
  function replaceFurniture(f,c){
@@ -68,6 +69,7 @@
   if(c.type==='curtain')next.curtainStyle=c.curtainStyle||'double';
   products().replacement(f,next,c);
   if(next.type==='counter'&&!c.obj||next.type==='kitchenwall'&&!c.obj&&(c.kitchen||!c.cabinet)){next.kitchen=c.kitchen?JSON.parse(JSON.stringify(c.kitchen)):kitchen().defaults(next);delete next.cabinet;}
+  if(kitchen().isLaundry(next)&&c.flip!==undefined)next.flip=!!c.flip;
   if(c.id){next.catalogId=c.id;next.catalogSnapshot=catalogSnapshot(c);}if(c.obj)next.obj=JSON.parse(JSON.stringify(c.obj));return next;
  }
  function catalogSnapshot(c){return {name:c.name,w:c.w,d:c.d,h:c.h,price:c.price,shape:c.shape==='round'?'round':'rect',color:c.color||'#bd9d78',brand:c.brand||'',model:c.model||''};}

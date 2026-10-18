@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 4,
+  "version": 9,
   "workspace": {
     "customPlans": [
       {
@@ -4889,7 +4889,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 4,
+    "v": 9,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -7044,7 +7044,7 @@
         "floorFinishes": {
           "areas": {
             "area_fmv3oztg03": {
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7056,10 +7056,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3p1fkz7": {
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7071,10 +7072,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3p1yse11": {
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7086,11 +7088,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3p2ig914": {
-              "baseThickness": 40,
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7106,6 +7108,7 @@
               "tileThickness": 10
             },
             "area_fmv3qajd93": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7117,9 +7120,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qb1oi4": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7131,9 +7136,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qb1oi5": {
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7145,11 +7152,11 @@
                 "width": 800
               },
               "mode": "layers",
-              "rawZ": 0
+              "rawZ": 0,
+              "tileThickness": 10
             },
             "area_fmv3qcck717": {
-              "baseThickness": 40,
-              "drop": 5,
+              "baseThickness": 50,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7165,7 +7172,7 @@
               "tileThickness": 10
             },
             "area_fmv3qdfiz23": {
-              "drop": 5,
+              "baseThickness": 45,
               "layout": {
                 "angle": 0,
                 "gap": 2,
@@ -7176,9 +7183,8 @@
                 ],
                 "width": 800
               },
-              "mode": "reference",
+              "mode": "layers",
               "rawZ": 0,
-              "reference": "area_fmv3qcck717",
               "tileThickness": 10
             }
           },
@@ -7226,15 +7232,9 @@
                 {
                   "door": "left",
                   "doorAngle": 90,
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "drawerColumns": 1,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7247,13 +7247,7 @@
                   "doorAngle": 90,
                   "doorOpen": false,
                   "drawerColumns": 2,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7264,15 +7258,9 @@
                 {
                   "door": "double",
                   "doorAngle": 90,
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "drawerColumns": 2,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7283,15 +7271,9 @@
                 {
                   "door": "double",
                   "doorAngle": 90,
-                  "doorOpen": true,
+                  "doorOpen": false,
                   "drawerColumns": 2,
-                  "drawers": [
-                    {
-                      "extension": 1,
-                      "height": 179,
-                      "open": false
-                    }
-                  ],
+                  "drawers": [],
                   "shelves": [
                     723,
                     1267,
@@ -7306,13 +7288,13 @@
               "version": 1
             },
             "color": "#efe6d8",
-            "cx": 3388,
+            "cx": 1155,
             "cy": 8034,
             "d": 630,
             "h": 2450,
             "id": "fmv3w4m2a4",
             "name": "衣柜 2.4m",
-            "rot": 90,
+            "rot": 270,
             "type": "wardrobe",
             "w": 3094
           },
@@ -7352,8 +7334,8 @@
           },
           {
             "color": "#f5f6f5",
-            "cx": 6955,
-            "cy": 2581,
+            "cx": 7647,
+            "cy": 1247,
             "d": 450,
             "h": 450,
             "id": "fmv3wd35z9",
@@ -7661,30 +7643,6 @@
             "w": 500
           },
           {
-            "color": "#e6ebee",
-            "cx": 7030,
-            "cy": 1804,
-            "d": 600,
-            "id": "fmv58wvpj1",
-            "name": "洗衣机",
-            "rot": 270,
-            "type": "washer",
-            "w": 600
-          },
-          {
-            "color": "#e6ebee",
-            "cx": 7030,
-            "cy": 1804,
-            "d": 600,
-            "id": "fmv58xaut2",
-            "mountHeight": 869,
-            "name": "烘干机",
-            "rot": 270,
-            "stackHeight": 19,
-            "type": "dryer",
-            "w": 600
-          },
-          {
             "color": "#f1f0ed",
             "cx": 7054,
             "cy": 7980,
@@ -7897,13 +7855,14 @@
           },
           {
             "color": "#e2cfb4",
-            "cx": 1140,
-            "cy": 8269,
+            "cx": 3403,
+            "cy": 8187,
             "d": 600,
             "flip": true,
+            "groupId": "fmvc885px1",
             "id": "fmv5c10yi4",
             "name": "书桌",
-            "rot": 270,
+            "rot": 90,
             "type": "desk",
             "w": 1400
           },
@@ -7925,13 +7884,14 @@
           },
           {
             "color": "#4a4f55",
-            "cx": 1750,
-            "cy": 8208,
+            "cx": 2793,
+            "cy": 8248,
             "d": 620,
             "flip": true,
+            "groupId": "fmvc885px1",
             "id": "fmv5dvzo81",
             "name": "办公椅",
-            "rot": 90,
+            "rot": 270,
             "type": "officechair",
             "w": 620
           },
@@ -8463,6 +8423,179 @@
             "rot": 0,
             "type": "dishwasher_mijia_countertop",
             "w": 550
+          },
+          {
+            "color": "#f3f1ec",
+            "cx": 7045,
+            "cy": 1472,
+            "d": 630,
+            "flip": true,
+            "id": "fmvcerwa547",
+            "kitchen": {
+              "baseHeight": 900,
+              "depth": 630,
+              "laundry": {
+                "appliance": {
+                  "d": 600,
+                  "h": 850,
+                  "mountHeight": 0,
+                  "w": 600
+                },
+                "assembly": {
+                  "open": {
+                    "cabinet": {
+                      "autoDoors": false,
+                      "columns": [
+                        {
+                          "door": "none",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "none",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        }
+                      ],
+                      "doorOverlay": "full",
+                      "plinth": 0,
+                      "template": "wall",
+                      "thickness": 18,
+                      "version": 1
+                    },
+                    "color": "#bc936b",
+                    "d": 320,
+                    "h": 200,
+                    "mountHeight": 1600,
+                    "x": -1.0103336092965664e-14,
+                    "y": -55
+                  },
+                  "sink": {
+                    "color": "#ebe9e3",
+                    "d": 500,
+                    "module": 0,
+                    "sinkNotch": {
+                      "depth": 100,
+                      "side": "left",
+                      "width": 100
+                    },
+                    "w": 560,
+                    "x": 0,
+                    "y": 5.878304635907295e-14
+                  },
+                  "upper": {
+                    "cabinet": {
+                      "autoDoors": false,
+                      "columns": [
+                        {
+                          "door": "left",
+                          "doorAngle": 90,
+                          "doorOpen": true,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorAngle": 90,
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        }
+                      ],
+                      "doorOverlay": "full",
+                      "plinth": 0,
+                      "template": "wall",
+                      "thickness": 18,
+                      "version": 1
+                    },
+                    "color": "#f3f1ec",
+                    "d": 350,
+                    "h": 600,
+                    "mountHeight": 1800,
+                    "x": -7.347880794884118e-15,
+                    "y": -40
+                  }
+                },
+                "countertop": true,
+                "floorOpen": true,
+                "notch": {
+                  "depth": 100,
+                  "side": "left",
+                  "width": 100
+                },
+                "sidePanels": {
+                  "left": true,
+                  "right": true,
+                  "thickness": 18
+                }
+              },
+              "modules": [
+                {
+                  "doorAngle": 90,
+                  "doorLeaves": [
+                    {
+                      "angle": 90,
+                      "open": true
+                    },
+                    {
+                      "angle": 90,
+                      "open": true
+                    }
+                  ],
+                  "doorOpen": true,
+                  "role": "sink",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "role": "empty",
+                  "run": 0,
+                  "width": 640
+                }
+              ],
+              "shape": "straight",
+              "thickness": 20,
+              "version": 1
+            },
+            "name": "完整阳台洗衣柜",
+            "rot": 270,
+            "type": "counter",
+            "w": 1240
+          },
+          {
+            "color": "#e6ebee",
+            "cx": 7060,
+            "cy": 1763,
+            "d": 600,
+            "flip": true,
+            "h": 850,
+            "id": "fmv58wvpj1",
+            "laundryHostId": "fmvcerwa547",
+            "mountHeight": 0,
+            "name": "洗衣机",
+            "rot": 270,
+            "type": "washer",
+            "w": 600
           }
         ],
         "measures": [],
@@ -8588,9 +8721,9 @@
           }
         },
         "scene3d": {
-          "cut": 2.8,
+          "cut": 1.2,
           "furn": true,
-          "hour": 11,
+          "hour": 14,
           "labels": false,
           "lamps": false,
           "night": false
@@ -8600,14 +8733,15 @@
           "surfaces": [
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 571,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.1384083044982699,
@@ -8619,14 +8753,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 571,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8638,14 +8773,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 525.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.3821656050955414,
@@ -8657,14 +8793,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 668.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.48344370860927155,
@@ -8676,14 +8813,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 695,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.43795620437956206,
@@ -8695,14 +8833,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 477,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8714,14 +8853,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 446.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8733,14 +8873,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 137.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8752,14 +8893,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 387,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8771,14 +8913,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 433.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.639511201629328,
@@ -8790,14 +8933,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 106,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.3485967503692771,
@@ -8810,14 +8954,15 @@
             {
               "cross": true,
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 471,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.9833333333333333,
@@ -8829,14 +8974,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 10.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.0846262341325811,
@@ -8848,14 +8994,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 582,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8868,14 +9015,15 @@
             {
               "cross": true,
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 560.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8887,14 +9035,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 627,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8906,14 +9055,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 27,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8926,14 +9076,15 @@
             {
               "cross": true,
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 799.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8945,14 +9096,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 41.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8965,14 +9117,15 @@
             {
               "cross": true,
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 370.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -8984,14 +9137,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 370.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -9003,14 +9157,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 217,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
               },
               "range": [
                 0,
@@ -9022,14 +9177,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 288,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
               },
               "range": [
                 0.3749082905355833,
@@ -9041,14 +9197,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 2.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.5777777777777777,
@@ -9060,14 +9217,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 108.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.43223443223443225,
@@ -9080,14 +9238,15 @@
             {
               "cross": true,
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 240,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
               },
               "range": [
                 0.3933463796477495,
@@ -9099,14 +9258,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 600.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0.4772727272727273,
@@ -9119,14 +9279,15 @@
             {
               "cross": true,
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 332,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
               },
               "range": [
                 0.6716417910447762,
@@ -9138,14 +9299,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 138,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 400
               },
               "range": [
                 0.07969303423848882,
@@ -9157,14 +9319,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 10.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -9176,14 +9339,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 718.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,
@@ -9195,14 +9359,15 @@
             },
             {
               "enabled": true,
+              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 300,
-                "offset": 0,
-                "reference": "survey",
-                "startHeight": 50,
-                "width": 600
+                "offset": 770.5,
+                "reference": "floor",
+                "startHeight": 0,
+                "width": 800
               },
               "range": [
                 0,

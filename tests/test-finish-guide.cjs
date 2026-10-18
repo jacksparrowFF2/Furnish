@@ -13,6 +13,9 @@ const zero=copy(tiled);zero.floorFinishes.areas[k].baseThickness=0;zero.floorFin
 const relative=copy(tiled);relative.wallTiling.surfaces.forEach(s=>{s.layout.reference='floor';s.layout.startHeight=0;});assert.equal(inspect(relative).uniform,false,'relative zeros on 50/45 floors cannot count as one absolute line');
 const mismatch=copy(tiled);mismatch.wallTiling.surfaces[0].layout.height=400;assert.equal(inspect(mismatch).uniform,true);assert.equal(inspect(mismatch).patternsMatch,false,'common origin does not assert later joints align');
 const off=copy(tiled);off.wallTiling.surfaces[0].enabled=false;assert(inspect(off).uniform,'intentionally disabled walls do not need enabling');off.wallTiling.surfaces.forEach(s=>s.enabled=false);assert(!inspect(off).uniform);
-const noReference=copy(tiled);noReference.floorFinishes.areas[b]={rawZ:0,tileThickness:10,baseThickness:35,mode:'layers'};assert.equal(inspect(noReference).rows.find(r=>r.id===b).finishedZ,45);assert.equal(inspect(noReference).ready[1],false,'a known absolute height is not a saved reference relation');
+const noReference=copy(tiled);noReference.floorFinishes.areas[b]={rawZ:0,tileThickness:10,baseThickness:35,mode:'layers'};assert.equal(inspect(noReference).rows.find(r=>r.id===b).finishedZ,45);assert.equal(inspect(noReference).ready[1],true,'known floor layers do not require a reference relation');
 const balcony=copy(tiled);balcony.rooms[k].use='balcony';assert.equal(inspect(balcony).ordinary[0].use,'balcony');balcony.rooms[k].use='bedroom';assert.equal(inspect(balcony).rows.length,1);
 console.log('PASS read-only setup progress, legacy/unknown/zero heights, bathroom references, absolute tile alignment, disabled walls, different joint pitches and project restoration');
+
+assert(inspect(relative).fromFloor);assert(inspect(relative).ready[2],'each room may start from its own finished floor');
+assert.equal(T.defaults().reference,'floor');assert.equal(T.defaults().startHeight,0);

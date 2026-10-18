@@ -1,13 +1,21 @@
 /* Cache reads and v1 migration; access may throw on restricted browser origins. */
 (function(root){
   'use strict';
+  const versions=[2,3,4,5,6,7,8,9];
+  function candidates({read,key='huxing-design-v9'}){
+    const version=Number(key.match(/^huxing-design-v([2-9])$/)?.[1]),keys=version?Array.from({length:version-1},(_,i)=>'huxing-design-v'+(version-i)):[key],result=[];
+    for(const k of keys)try{const value=JSON.parse(read(k));if(versions.includes(value?.v))result.push(value);}catch{/* Restricted or malformed caches remain untouched. */}
+    return result;
+  }
   function load({read, firstPlan, restore, key = 'huxing-design-v2'}){
-    try {
-      const saved = JSON.parse(read(key));
-      if(saved && [2,3,4,5,6,7,8].includes(saved.v)) return saved;
-    } catch(e) { /* A missing or unreadable cache falls back to migration. */ }
-    const previousKeys=key==='huxing-design-v8'?['huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2']:key==='huxing-design-v7'?['huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2']:key==='huxing-design-v6'?['huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2']:key==='huxing-design-v5'?['huxing-design-v4','huxing-design-v3','huxing-design-v2']:key==='huxing-design-v4'?['huxing-design-v3','huxing-design-v2']:key==='huxing-design-v3'?['huxing-design-v2']:[];
-    for(const previousKey of previousKeys)try{const previous=JSON.parse(read(previousKey));if([2,3,4,5,6,7].includes(previous?.v))return previous;}catch{}
+    // v7 and v8 were used independently on two branches. A new v9 cache is
+    // authoritative; before it exists choose the newest legacy edit, not the
+    // larger version. The repository client archives every divergent candidate.
+    let primary;try{primary=JSON.parse(read(key));}catch{}
+    if(versions.includes(primary?.v))return primary;
+    const previous=candidates({read,key});
+    if(key==='huxing-design-v9')previous.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+    if(previous.length)return previous[0];
     const workspace = {v:2, planId:firstPlan.id, work:{}, designs:[]};
     try {
       const legacy = JSON.parse(read('huxing-design-v1'));
@@ -15,7 +23,7 @@
     } catch(e) { /* Invalid legacy data must not prevent startup. */ }
     return workspace;
   }
-  const api = {load};
+  const api = {load,candidates};
   if(typeof module === 'object' && module.exports) module.exports = api;
   else root.FurnishWorkspaceCache = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

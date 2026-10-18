@@ -3,25 +3,43 @@
   'use strict';
   const geometry = typeof module === 'object' && module.exports ? require('./layout-geometry.js') : root.FurnishGeometry;
   const tolerance=(f,scale)=>['curtain','slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)?Math.min(250,32/scale):10/scale;
-  function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip}){
+  function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip,moving,disabled=false,axis,anchor}){
+    if(axis==='x')cy=anchor.y;else if(axis==='y')cx=anchor.x;
+    if(disabled)return {position:[cx,cy],guides:[]};
+    const targetRects=wallSnap?rects:[],targets=guides?furniture.filter(o=>o.id!==f.id&&!skip?.has(o.id)):[];
+    const scene=entities({rects:targetRects,furniture:targets}),capture=12/scale;
+    let feature=null;
+    // Every moving member contributes actual outline points; all share one delta.
+    for(const member of moving||[f]){
+      const placed={...member,cx:member.cx+cx-f.cx,cy:member.cy+cy-f.cy};
+      for(const entity of entities({furniture:[placed]}))for(const e of entity.edges)for(const source of [{point:e.a,kind:'corner'},{point:{x:(e.a.x+e.b.x)/2,y:(e.a.y+e.b.y)/2},kind:'midpoint'}]){
+        const hit=featureSnap(source.point,{scene,rects:targetRects,tol:capture,anchor:axis?source.point:null,horizontal:axis==='x'});
+        if(hit&&(!feature||hit.distance<feature.distance-1e-7))feature={...hit,source};
+      }
+    }
+    if(feature){
+      const x=axis==='y'?cx:cx+feature.point.x-feature.source.point.x,y=axis==='x'?cy:cy+feature.point.y-feature.source.point.y;
+      return {position:[x,y],guides:[{point:feature.point,kind:feature.kind,sourceKind:feature.source.kind,edge:feature.edge}]};
+    }
     let nx=Math.round(cx/grid)*grid,ny=Math.round(cy/grid)*grid;
+    if(axis==='x')ny=cy;else if(axis==='y')nx=cx;
     // Long, thin curtains need a wider visible capture area at overview zoom.
     const {hw,hh}=geometry.aabb(f),tol=tolerance(f,scale);
     let bx=tol,by=tol,gx=null,gy=null;
     if(wallSnap)for(const r of rects){
-      if(!(r[3]<cy-hh-tol||r[1]>cy+hh+tol))for(const ex of [r[0],r[2]])for(const c of [ex+hw,ex-hw])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;}
-      if(!(r[2]<nx-hw-tol||r[0]>nx+hw+tol))for(const ey of [r[1],r[3]])for(const c of [ey+hh,ey-hh])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;}
+      if(axis!=='y'&&!(r[3]<cy-hh-tol||r[1]>cy+hh+tol))for(const ex of [r[0],r[2]])for(const c of [ex+hw,ex-hw])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;}
+      if(axis!=='x'&&!(r[2]<nx-hw-tol||r[0]>nx+hw+tol))for(const ey of [r[1],r[3]])for(const c of [ey+hh,ey-hh])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;}
     }
     if(guides)for(const o of furniture){
       if(o.id===f.id||skip?.has(o.id)||Math.abs(o.cx-cx)>6000||Math.abs(o.cy-cy)>6000)continue;
       const B=geometry.aabb(o);
-      for(const v of [o.cx-B.hw,o.cx,o.cx+B.hw])for(const m of [-hw,0,hw]){const c=v-m;if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;gx={x:v,o,B};}}
-      for(const v of [o.cy-B.hh,o.cy,o.cy+B.hh])for(const m of [-hh,0,hh]){const c=v-m;if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;gy={y:v,o,B};}}
+      if(axis!=='y')for(const v of [o.cx-B.hw,o.cx,o.cx+B.hw])for(const m of [-hw,0,hw]){const c=v-m;if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;gx={x:v,o,B};}}
+      if(axis!=='x')for(const v of [o.cy-B.hh,o.cy,o.cy+B.hh])for(const m of [-hh,0,hh]){const c=v-m;if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;gy={y:v,o,B};}}
     }
     const lines=[];
     if(gx)lines.push({v:true,x:gx.x,a:Math.min(ny-hh,gx.o.cy-gx.B.hh)-150,b:Math.max(ny+hh,gx.o.cy+gx.B.hh)+150});
     if(gy)lines.push({v:false,y:gy.y,a:Math.min(nx-hw,gy.o.cx-gy.B.hw)-150,b:Math.max(nx+hw,gy.o.cx+gy.B.hw)+150});
-    return {position:[Math.round(nx),Math.round(ny)],guides:lines};
+    return {position:[axis==='y'?cx:Math.round(nx),axis==='x'?cy:Math.round(ny)],guides:lines};
   }
   // Resize from the original opposite corner, so snapping never moves that anchor.
   function resize(f,p,{scale,wallSnap,rects,axis='both'}){
@@ -162,21 +180,42 @@
     const dx=e.b.x-e.a.x,dy=e.b.y-e.a.y,t=((p.x-e.a.x)*dx+(p.y-e.a.y)*dy)/(dx*dx+dy*dy),u=Math.max(0,Math.min(1,t));
     return {point:{x:e.a.x+u*dx,y:e.a.y+u*dy},interior:t>=-1e-8&&t<=1+1e-8};
   }
+  function featureSnap(at,{scene,rects,tol,anchor,horizontal}){
+    // Feature points outrank edge projections, but never break the Shift axis.
+    let feature=null;
+    const considerFeature=(q,e,wall,kind='corner')=>{
+      if(anchor&&Math.abs(q[horizontal?'y':'x']-at[horizontal?'y':'x'])>1e-7)return;
+      const d=distance(at,q);if(d>tol+1e-7||feature&&d>=feature.distance-1e-7)return;
+      // Overlapping wall rectangles can hide their original end features.
+      if(wall&&rects.some(r=>q.x>r[0]+1e-7&&q.x<r[2]-1e-7&&q.y>r[1]+1e-7&&q.y<r[3]-1e-7))return;
+      feature={point:{x:q.x,y:q.y},edge:e,distance:d,kind};
+    };
+    for(const entity of scene)for(const e of entity.edges)considerFeature(e.a,e,entity.kind==='wall');
+    const nearbyWallEdges=scene.filter(e=>e.kind==='wall').flatMap(e=>e.edges).filter(e=>distance(at,project(at,e).point)<=tol+1e-7);
+    for(let i=0;i<nearbyWallEdges.length;i++)for(let j=i+1;j<nearbyWallEdges.length;j++){
+      const q=intersection(nearbyWallEdges[i],nearbyWallEdges[j]);if(q)considerFeature(q,nearbyWallEdges[i],true);
+    }
+    for(const entity of scene)for(const e of entity.edges)considerFeature({x:(e.a.x+e.b.x)/2,y:(e.a.y+e.b.y)/2},e,entity.kind==='wall','midpoint');
+    return feature;
+  }
   function measurePoint(p,{scale,rects=[],furniture=[],anchor}){
-    const tol=8/scale,horizontal=anchor&&Math.abs(p.x-anchor.x)>Math.abs(p.y-anchor.y);
+    const tol=12/scale,horizontal=anchor&&Math.abs(p.x-anchor.x)>Math.abs(p.y-anchor.y);
     const at=anchor?{x:horizontal?p.x:anchor.x,y:horizontal?anchor.y:p.y}:p;
     let best=tol,edge=null,point={x:Math.round(at.x/10)*10,y:Math.round(at.y/10)*10};
     if(anchor)point[horizontal?'y':'x']=anchor[horizontal?'y':'x'];
-    for(const entity of entities({rects,furniture}))for(const e of entity.edges){
+    const scene=entities({rects,furniture});
+    const feature=featureSnap(at,{scene,rects,tol,anchor,horizontal});
+    if(feature)return {point:feature.point,edge:feature.edge,kind:feature.kind};
+    for(const entity of scene)for(const e of entity.edges){
       let q;
       if(anchor){
         const key=horizontal?'y':'x',other=horizontal?'x':'y',delta=e.b[key]-e.a[key];
         if(Math.abs(delta)<1e-8){if(Math.abs(at[key]-e.a[key])>1e-7)continue;q=project(at,e).point;}
         else {const t=(at[key]-e.a[key])/delta;if(t<0||t>1)continue;q={...at,[other]:e.a[other]+t*(e.b[other]-e.a[other])};}
       }else q=project(at,e).point;
-      const d=distance(at,q);if(d<best){best=d;point=q;edge=e;}
+      const d=distance(at,q);if(d<=tol+1e-7&&(!edge||d<best-1e-7)){best=d;point=q;edge=e;}
     }
-    return {point,edge};
+    return {point,edge,kind:edge?'edge':null};
   }
   function point(p,options){return measurePoint(p,options).point;}
   function intersection(e,f){

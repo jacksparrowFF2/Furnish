@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-17",
+  "scope": "2D canvas performance; no persistence format or 3D quality changes",
+  "baselineCommit": "5f3dba3bcd339f171cf1d5c700f3e9d15e5a36e1",
+  "baselineRendererSHA256": "870243ccb5069c190d3cf4eb4ccbf14b4a397fabc9eadb77eb88c3e5e94ab4a8",
+  "rendererSHA256": "89b2c6f9099d21c4efea37dccee8168ec9639b2f509d322581c299a21fcebf3f",
+  "workspaceSHA256": "566dfb276680b83e048f2450c56dde27831d0aa6eafef149d370a0fd5e9c17a0",
+  "hardware": {
+    "cpu": "12th Gen Intel(R) Core(TM) i5-12450H",
+    "totalMemoryGB": 15.714836120605469,
+    "gpu": "Intel UHD Graphics, ANGLE D3D11"
+  },
+  "fixture": {
+    "furniture": 47,
+    "viewport": [
+      1500,
+      1000
+    ],
+    "devicePixelRatio": 1
+  },
+  "method": {
+    "browser": "isolated headless installed Chrome",
+    "transport": "file URL with external requests blocked",
+    "comparison": "same page, swap only changed renderer functions from pre-change source and current source; alternate order each iteration; 4 warmup pairs then 40 samples per variant; yield one animation frame between pairs",
+    "metrics": "synchronous function duration in ms; warmed unchanged design, no selection; not end-to-end FPS",
+    "command": "FURNISH_BROWSER_CHANNEL=chrome node scripts/inspect-canvas-performance.cjs projects/workspace.furnish.json output/performance-before",
+    "variability": "Separate-process 3-round trials showed substantial load variation. Same-page interleaved results are reported; cold first render and real gesture throughput were not benchmarked."
+  },
+  "result": {
+    "stats": {
+      "renderDims": {
+        "before": {
+          "median": 3.4000000001396984,
+          "p90": 4.7999999998137355,
+          "min": 3,
+          "max": 5.100000000093132,
+          "samples": 40
+        },
+        "after": {
+          "median": 1.5,
+          "p90": 2,
+          "min": 1.2999999998137355,
+          "max": 2.1000000000931323,
+          "samples": 40
+        }
+      },
+      "applyView": {
+        "before": {
+          "median": 15.199999999953434,
+          "p90": 20.700000000186265,
+          "min": 11.699999999953434,
+          "max": 24.800000000046566,
+          "samples": 40
+        },
+        "after": {
+          "median": 10.899999999906868,
+          "p90": 14.5,
+          "min": 8.399999999906868,
+          "max": 17.299999999813735,
+          "samples": 40
+        }
+      },
+      "renderAll": {
+        "before": {
+          "median": 70.30000000004657,
+          "p90": 82.19999999995343,
+          "min": 57.39999999990687,
+          "max": 89.69999999995343,
+          "samples": 40
+        },
+        "after": {
+          "median": 55.300000000046566,
+          "p90": 69.4000000001397,
+          "min": 43.39999999990687,
+          "max": 72.0999999998603,
+          "samples": 40
+        }
+      }
+    },
+    "stateUnchanged": true
+  },
+  "verification": {
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "mode": "file",
+        "burstEvents": 20,
+        "releaseClearedFrame": true,
+        "undoRedo": true,
+        "cancel": true,
+        "dimensionsMatchFresh": true,
+        "reload": true,
+        "errors": []
+      },
+      {
+        "mode": "http",
+        "burstEvents": 20,
+        "releaseClearedFrame": true,
+        "undoRedo": true,
+        "cancel": true,
+        "dimensionsMatchFresh": true,
+        "reload": true,
+        "errors": []
+      }
+    ]
+  },
+  "checks": {
+    "nodeCheck": "PASS: 186 regression suites, 12 built-in plans, 16 preview pages, assets, shared declarations and production syntax",
+    "extraTests": [
+      "value-based cache invalidation and scoped exception cleanup",
+      "burst latest-event coalescing, quick release, cancellation before/after frame, no delayed writes"
+    ],
+    "visualInspection": [
+      "1500x1000 file screenshot",
+      "390x844 file screenshot"
+    ],
+    "notRun": [
+      "all browser cases",
+      "real touch hardware",
+      "3D walk performance"
+    ]
+  },
+  "limitations": [
+    "Full refresh still exceeds a 16.7 ms frame budget",
+    "Complex kitchen selection remains expensive",
+    "First dimension generation still computes full geometry",
+    "No new persistent state; cached derived plan must remain read-only and key must cover any future effectivePlan input"
+  ]
+}

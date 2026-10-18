@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-18",
+  "feature": "Production tile contrast, doorway surfaces and wall-floor joint alignment",
+  "checks": {
+    "regressions": 198,
+    "builtInPlans": 12,
+    "previewPages": 929,
+    "syntaxAndAssets": "passed"
+  },
+  "browser": {
+    "floor-finishes": "HTTP and offline file passed",
+    "wall-tiling": "HTTP and offline file passed",
+    "floor-bulk-levels": "HTTP and offline file passed",
+    "tiling-render-alignment": "HTTP and offline file passed; shader, 5mm label, single draft, batch apply, undo/redo, refresh, 390px"
+  },
+  "real1601": {
+    "rooms": 9,
+    "doors": [
+      {
+        "index": 0,
+        "area": 259680,
+        "expected": 259680
+      },
+      {
+        "index": 1,
+        "area": 113620,
+        "expected": 113620
+      },
+      {
+        "index": 2,
+        "area": 102600,
+        "expected": 102600
+      }
+    ],
+    "steps": [
+      {
+        "id": "door-2",
+        "seam": [
+          [
+            5683,
+            6553.5
+          ],
+          [
+            6443,
+            6553.5
+          ]
+        ],
+        "low": 55,
+        "high": 60,
+        "drop": 5
+      }
+    ],
+    "alignedWallFaces": 32,
+    "unchangedFurniture": 47,
+    "unchangedFloorParameters": true,
+    "unchangedOtherPlansAndNamedDesigns": true
+  },
+  "evidence": "output/tiling-render-fix/",
+  "boundaries": [
+    "Door opening centre line is a visual floor assignment, not a measured threshold construction.",
+    "Wall-floor alignment is an explicit one-time match; diagonal floor grids are rejected.",
+    "Joint visibility enhancement changes screen coverage, not saved mm pitch or physical floor height.",
+    "Full browser suite and touch hardware were not run."
+  ]
+}

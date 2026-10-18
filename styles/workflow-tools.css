@@ -2,10 +2,13 @@
 .canvas-rail,.scene-light,.space-status,.preview-banner{--ink:var(--s-ink);--muted:var(--s-muted);--line:var(--s-line);--card:var(--s-card);--panel:var(--s-panel);--hover:var(--s-hover);--accent-soft:var(--s-accent-soft);--accent-ink:var(--s-accent-ink);--soft:var(--s-soft);color:var(--ink)}
 #stage{container-type:inline-size}
 .canvas-rail{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:5;display:flex;align-items:stretch;gap:6px;max-width:calc(100% - 24px);overflow-x:auto;padding:7px;background:var(--s-overlay);border:1px solid var(--s-line);border-radius:15px;box-shadow:var(--shadow-md)}
-.canvas-rail .grp{display:flex;flex:none;gap:4px}
-.canvas-rail .btn{display:flex;flex:none;flex-direction:column;justify-content:center;gap:3px;min-width:48px;min-height:44px;padding:6px;font-size:11px;white-space:nowrap}
+.canvas-rail .grp{display:flex;flex:none;gap:4px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.canvas-rail .btn{display:flex;flex:none;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:48px;min-height:54px;padding:7px 6px;border:1px solid transparent;border-radius:10px;background:transparent;box-shadow:none;font-size:11px;line-height:1.25;white-space:nowrap}
+.canvas-rail .btn .i{width:20px;height:20px;flex:none}
+.canvas-rail .btn:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+@media(hover:hover){.canvas-rail .btn:hover{background:var(--hover)}}
 .canvas-rail #tools .t{display:inline}
-.canvas-rail .rail-more{border-left:1px solid var(--line);padding-left:5px}
+.canvas-rail .rail-more,.canvas-rail .rail-finishes{border-left:1px solid var(--line);padding-left:6px}
 #stage #fab{bottom:94px}
 .canvas-rail .btn.on{background:var(--accent-soft);color:var(--accent-ink)}
 .space-status{position:absolute;left:12px;bottom:14px;z-index:5;max-width:48%;background:var(--panel);box-shadow:var(--shadow-sm);border:1px solid var(--line)}
@@ -35,7 +38,7 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
 .drawing-compass{position:absolute;right:12px;top:12px;width:76px;height:76px;border:0;background:transparent;cursor:pointer;z-index:4;padding:0;filter:drop-shadow(0 4px 10px #0002)}
 .drawing-compass svg{width:100%;height:100%}.drawing-rotate{position:absolute;bottom:12px;right:205px;display:flex;gap:4px;z-index:4}.drawing-check{display:flex;align-items:center;gap:8px}.drawing-check input{width:auto!important}
 @media(max-width:600px){.drawing-compass{width:58px;height:58px}.drawing-rotate{right:12px;bottom:58px}}
-@media(max-width:600px){.canvas-rail{padding:5px;gap:4px}.canvas-rail .grp{gap:2px;padding:2px}.canvas-rail .btn{min-width:40px;padding:6px 4px}.canvas-rail .rail-more{padding-left:3px}}
+@media(max-width:600px){.canvas-rail{padding:5px;gap:4px}.canvas-rail .grp{gap:2px}.canvas-rail .btn{min-width:40px;padding:6px 4px}.canvas-rail .rail-more,.canvas-rail .rail-finishes{padding-left:4px}}
 /* Sidebars can leave a narrow canvas even on a desktop-sized window. */
 @container(max-width:1100px){
  .space-status{bottom:142px;max-width:calc(100% - 120px);display:block;white-space:normal;text-align:left;line-height:1.4}
@@ -174,3 +177,11 @@ main.drawer-panel #fab-dock{visibility:hidden}
 .finish-guide-editor p{margin:6px 0}.finish-guide-editor .actions{flex-wrap:wrap}.finish-guide-editor [hidden]{display:none!important}
 .finish-guide-table{overflow-x:auto}.finish-guide-table table{width:100%;border-collapse:collapse;font-size:12px}.finish-guide-table th,.finish-guide-table td{padding:10px 6px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 @media(max-width:600px){.finish-guide-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.finish-guide-row{align-items:flex-start;gap:8px}.finish-guide-row .btn{max-width:45%;white-space:normal}.finish-guide-table th,.finish-guide-table td{padding:8px 3px}.finish-guide-editor .actions .btn{flex:1}}
+
+/* Bulk floor elevations keep selection and preview readable on narrow screens. */
+#floor-level-bathroom-fields[hidden]{display:none!important}
+#dlgBody:has([data-floor-level]) .form{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0}
+#dlgBody:has([data-floor-level]) .form label{min-width:0}
+#floor-level-rooms .floor-region-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+
+.scene-floor-step{padding:3px 7px;border:1px solid #9a8160;border-radius:6px;background:#fff9edeb;color:#65492c;font:600 11px/1.4 sans-serif;white-space:nowrap;pointer-events:none;box-shadow:0 1px 5px #0002}

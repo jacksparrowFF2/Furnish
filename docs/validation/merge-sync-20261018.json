@@ -1,0 +1,254 @@
+{
+  "date": "2026-10-18",
+  "parents": {
+    "local": "d93f3297fef4d65c214d65ebbbbf6fd57314b858",
+    "remote": "6f9e46270f5623f523ea4b395f4bdbc6c3213c3d"
+  },
+  "backups": {
+    "localBranch": "backup/local-before-sync-20261018",
+    "remoteBranch": "backup/remote-before-sync-20261018",
+    "rawDirectory": ".local/furnish-recovery/merge-20261018",
+    "sha256": {
+      "base": "ff1077324beff30b1a4fbb94c4dfc19d92fe7e809fc4bcbee7bddbe009764f05",
+      "local": "11e2b2933b7ee83936a2ede4cc833de45eeae7093a144c3681d4d391f70ef2e1",
+      "remote": "0f35519bba0207093b5bafc1c7fd9c594b7a066ea88cdd9b977e013ea90c371b"
+    },
+    "recoveryIds": {
+      "local": "56e35dd5c2cbda7b58455e4a475d0ac53839d99644f079d5201d045acd957aa1",
+      "remote": "2e9fd8a5f7e1edeefe384d09149a5276a53f8354d5772f670cec49c128a574a6"
+    }
+  },
+  "selection": {
+    "source": "remote whole workspace",
+    "onlyMetadataChanged": [
+      "version:7 -> 9",
+      "workspace.v:7 -> 9"
+    ],
+    "slots": 9,
+    "currentFurniture": 47,
+    "namedDesigns": 1,
+    "reason": [
+      "Local furniture unchanged from common ancestor; remote has integrated laundry cabinet, linked washer and updated placements.",
+      "Both contain 32 wall records, but local uses manual 600x300 survey/50mm layout while remote uses followFloor with per-axis 800/400 widths and floor/0 height.",
+      "Local floor thickness is partially unknown with two 40mm bases and a reference drop; remote explicitly uses 10+50mm, and 10+45mm for lower bathroom floor.",
+      "Both retain the same ground grid origins; local has no persisted ceiling objects. Remote forms a coherent newer layout.",
+      "No layout fields or furniture were spliced between workspaces. Local is fully recoverable."
+    ],
+    "unchangedRemoteLayout": true,
+    "selectedFileSHA256": "d861186edd6a1fb86ed1ec6179cced0781a2c4577f08b60e284c829d748e70f8"
+  },
+  "format": {
+    "writeEnhanced": 9,
+    "readProjectAndWorkspace": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "readCache": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "cache": "huxing-design-v9",
+    "legacyCachesRetained": true
+  },
+  "actualWorkspaceRoundtrips": [
+    {
+      "id": "custom_mv37igji",
+      "furniture": 47,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p1",
+      "furniture": 46,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p10",
+      "furniture": 37,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p3",
+      "furniture": 24,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p4",
+      "furniture": 45,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p5",
+      "furniture": 27,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p6",
+      "furniture": 33,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p7",
+      "furniture": 50,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    },
+    {
+      "id": "p9",
+      "furniture": 42,
+      "repeatedRoundtrips": 4,
+      "stable": true
+    }
+  ],
+  "validation": {
+    "check": {
+      "status": "PASS",
+      "regressionSuites": 202,
+      "builtInPlans": 12,
+      "previewPages": 1969,
+      "productionSyntax": true,
+      "sharedDeclarations": true,
+      "localAssets": true,
+      "log": ".local/furnish-recovery/merge-20261018/check.log"
+    },
+    "browserRuns": [
+      "output/playwright/verification-ZxT99A/results.json",
+      "output/playwright/verification-3A44Uc/results.json"
+    ],
+    "mergedCacheBrowserAPI": "mocked HTTP API; actual repository file writes, recovery storage and arbitration covered by Node regression",
+    "visualInspection": [
+      "ceiling-end-caps/file-mobile.png",
+      "ceiling-end-caps/file-start-cap.png",
+      "laundry-cabinet/file-3d.png",
+      "laundry-cabinet/file-mobile.png"
+    ],
+    "notRun": [
+      "Full browser suite",
+      "Physical phone touchscreen"
+    ],
+    "boundaries": [
+      "Historical v7 has two meanings; actual fields determine validation and new enhanced output is v9.",
+      "No automatic design merge; original manual layout retained as recovery copy."
+    ],
+    "browserCases": [
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "seconds": 11.9,
+        "log": "portable-smoke.log"
+      },
+      {
+        "name": "ceiling-continuous-light",
+        "status": "PASS",
+        "seconds": 30.7,
+        "log": "ceiling-continuous-light.log"
+      },
+      {
+        "name": "ceiling-end-caps",
+        "status": "PASS",
+        "seconds": 35.9,
+        "log": "ceiling-end-caps.log"
+      },
+      {
+        "name": "wall-floor-follow",
+        "status": "PASS",
+        "seconds": 16,
+        "log": "wall-floor-follow.log"
+      },
+      {
+        "name": "laundry-cabinet",
+        "status": "PASS",
+        "seconds": 27.9,
+        "log": "laundry-cabinet.log"
+      },
+      {
+        "name": "laundry-area",
+        "status": "PASS",
+        "seconds": 25.8,
+        "log": "laundry-area.log"
+      },
+      {
+        "name": "floor-bulk-levels",
+        "status": "PASS",
+        "seconds": 7.5,
+        "log": "floor-bulk-levels.log"
+      },
+      {
+        "name": "tiling-render-alignment",
+        "status": "PASS",
+        "seconds": 18.2,
+        "log": "tiling-render-alignment.log"
+      },
+      {
+        "name": "touchpad",
+        "status": "PASS",
+        "seconds": 32.6,
+        "log": "touchpad.log"
+      },
+      {
+        "name": "scene-observation",
+        "status": "PASS",
+        "seconds": 68.8,
+        "log": "scene-observation.log"
+      },
+      {
+        "name": "merged-cache",
+        "status": "PASS",
+        "seconds": 2.2,
+        "log": "merged-cache.log"
+      }
+    ],
+    "browserPassCount": 11,
+    "initialRestoreSpatialChanges": [],
+    "actualSelectedWorkspaceBrowser": [
+      {
+        "mode": "http",
+        "passed": true,
+        "furniture": 47,
+        "integratedLaundry": true,
+        "floorWallLink": true,
+        "v9": true,
+        "actualImportAndRefresh": true,
+        "production3D": true,
+        "errors": []
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "furniture": 47,
+        "integratedLaundry": true,
+        "floorWallLink": true,
+        "v9": true,
+        "actualImportAndRefresh": true,
+        "production3D": true,
+        "errors": []
+      }
+    ],
+    "actualSelectedWorkspaceScreenshots": [
+      ".local/furnish-recovery/merge-20261018/http-selected-2d.png",
+      ".local/furnish-recovery/merge-20261018/file-selected-3d.png"
+    ],
+    "actualCacheComparison": "Structural equality used because JSON object key ordering differs; cache values and array ordering match current work.",
+    "executionEnvironment": "Initial sandbox run denied loopback HTTP with EACCES; the unmodified complete check passed with normal local network permissions.",
+    "existingProjectReview": "The selected design retains its existing spatial review warnings/pending items; passing merge validation does not confirm construction or installation safety."
+  }
+}

@@ -13,7 +13,7 @@
 .ceiling-section [data-section-node]{cursor:grab}.ceiling-section [data-section-edge]{cursor:pointer}
 .ceiling-plan{width:100%;height:220px;display:block}.ceiling-editor [data-ceiling-3d]{height:280px;width:100%;margin-top:10px;border-radius:8px;overflow:hidden}
 .ceiling-editor [data-ceiling-3d] canvas{display:block;width:100%;height:100%;touch-action:none}
-.ceiling-bottom{position:sticky;bottom:-20px;background:var(--bg,#fff);padding:12px 0;border-top:1px solid var(--line);margin-top:12px}
+.ceiling-bottom{position:sticky;bottom:-20px;background:var(--panel);padding:12px 0;border-top:1px solid var(--line);margin-top:12px}
 .ceiling-editor [data-ceiling-pending]:not(:empty){padding:10px;border-radius:8px;background:#fff1d6;color:#795119;overflow-wrap:anywhere}
 .ceiling-editor [data-ceiling-error]{overflow-wrap:anywhere}.ceiling-editor small{display:block;font-size:11px;line-height:1.6;opacity:.8}
 @media(max-width:700px){.ceiling-workspace{grid-template-columns:1fr}.ceiling-controls{order:2}.ceiling-canvases{order:1}.ceiling-section{height:340px}.ceiling-editor .ceiling-tools .btn{font-size:11px}.ceiling-bottom{bottom:-20px}.ceiling-editor .form{gap:8px}}

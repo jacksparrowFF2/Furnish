@@ -51,8 +51,9 @@ function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null})
  const aspect=Math.max(.1,host.clientWidth/Math.max(180,host.clientHeight)),halfFov=Math.atan(Math.tan(Math.PI/9)*Math.min(1,aspect)),distance=Math.max(size.length()/2,.1)/Math.sin(halfFov)*1.15;
  const direction=endDirection||(profile?.path.segments?C.route(profile).reduce((sum,p)=>sum.map((v,i)=>v+p.normal[i]),[0,0]):n.map((v,i)=>v*1.1+t[i]*.85));
  camera.position.copy(center).add(new THREE.Vector3(direction[0],arc||plate?1.4:.65,direction[1]).normalize().multiplyScalar(distance));camera.lookAt(center);const controls=new OrbitControls(camera,renderer.domElement);controls.target.copy(center);controls.enableDamping=false;controls.update();
+ const unbindNavigation=root.FurnishNavigation?.bindOrbit(renderer.domElement,()=>controls)||(()=>{});
  const draw=()=>renderer.render(scene,camera),resize=()=>{const w=host.clientWidth,h=Math.max(180,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();draw();},observer=new ResizeObserver(resize);observer.observe(host);controls.addEventListener('change',draw);resize();
- return {dispose(){observer.disconnect();controls.dispose();group.traverse(o=>o.geometry?.dispose());const materials=new Set();group.traverse(o=>{if(o.material)materials.add(o.material);});materials.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}};
+ return {dispose(){unbindNavigation();observer.disconnect();controls.dispose();group.traverse(o=>o.geometry?.dispose());const materials=new Set();group.traverse(o=>{if(o.material)materials.add(o.material);});materials.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}};
 }
 const api={build,preview};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeilingModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
