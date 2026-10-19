@@ -3,11 +3,22 @@
   'use strict';
   const geometry = typeof module === 'object' && module.exports ? require('./layout-geometry.js') : root.FurnishGeometry;
   const tolerance=(f,scale)=>['curtain','slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)?Math.min(250,32/scale):10/scale;
-  function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip,moving,disabled=false,axis,anchor}){
+  function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip,moving,disabled=false,axis,anchor,finishFaces=[]}){
     if(axis==='x')cy=anchor.y;else if(axis==='y')cx=anchor.x;
     if(disabled)return {position:[cx,cy],guides:[]};
     const targetRects=wallSnap?rects:[],targets=guides?furniture.filter(o=>o.id!==f.id&&!skip?.has(o.id)):[];
     const scene=entities({rects:targetRects,furniture:targets}),capture=12/scale;
+    const finish=[null,null],finishGuides=[];
+    if(wallSnap)for(const member of moving||[f]){
+      const placed={...member,cx:member.cx+cx-f.cx,cy:member.cy+cy-f.cy},points=geometry.footprints(placed).flat();
+      for(const face of finishFaces){const n=face.normal,a=1-n;if(axis==='x'&&n===1||axis==='y'&&n===0)continue;
+        const support=face.side===1?Math.min(...points.map(p=>p[n])):Math.max(...points.map(p=>p[n])),delta=face.position-support,error=Math.abs(delta),lo=Math.min(...points.map(p=>p[a])),hi=Math.max(...points.map(p=>p[a]));
+        if(error>capture+1e-7||Math.min(hi,face.hi)-Math.max(lo,face.lo)<1e-7||finish[n]&&error>=finish[n].error-1e-7)continue;
+        const p=[0,0];p[n]=face.position+face.side*.01;p[a]=(Math.max(lo,face.lo)+Math.min(hi,face.hi))/2;if(targetRects.some(r=>p[0]>r[0]+1e-7&&p[0]<r[2]-1e-7&&p[1]>r[1]+1e-7&&p[1]<r[3]-1e-7))continue;
+        finish[n]={value:(n===0?cx:cy)+delta,error,guide:{v:n===0,...(n===0?{x:face.position}:{y:face.position}),a:Math.min(lo,face.lo),b:Math.max(hi,face.hi)}};
+      }
+    }
+    for(const hit of finish)if(hit)finishGuides.push(hit.guide);
     let feature=null;
     // Every moving member contributes actual outline points; all share one delta.
     for(const member of moving||[f]){
@@ -19,13 +30,14 @@
     }
     if(feature){
       const x=axis==='y'?cx:cx+feature.point.x-feature.source.point.x,y=axis==='x'?cy:cy+feature.point.y-feature.source.point.y;
-      return {position:[x,y],guides:[{point:feature.point,kind:feature.kind,sourceKind:feature.source.kind,edge:feature.edge}]};
+      return {position:[finish[0]?.value??x,finish[1]?.value??y],guides:finishGuides.length?finishGuides:[{point:feature.point,kind:feature.kind,sourceKind:feature.source.kind,edge:feature.edge}]};
     }
     let nx=Math.round(cx/grid)*grid,ny=Math.round(cy/grid)*grid;
     if(axis==='x')ny=cy;else if(axis==='y')nx=cx;
     // Long, thin curtains need a wider visible capture area at overview zoom.
     const {hw,hh}=geometry.aabb(f),tol=tolerance(f,scale);
-    let bx=tol,by=tol,gx=null,gy=null;
+    if(finish[0])nx=finish[0].value;if(finish[1])ny=finish[1].value;
+    let bx=finish[0]?0:tol,by=finish[1]?0:tol,gx=null,gy=null;
     if(wallSnap)for(const r of rects){
       if(axis!=='y'&&!(r[3]<cy-hh-tol||r[1]>cy+hh+tol))for(const ex of [r[0],r[2]])for(const c of [ex+hw,ex-hw])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;}
       if(axis!=='x'&&!(r[2]<nx-hw-tol||r[0]>nx+hw+tol))for(const ey of [r[1],r[3]])for(const c of [ey+hh,ey-hh])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;}
@@ -36,10 +48,10 @@
       if(axis!=='y')for(const v of [o.cx-B.hw,o.cx,o.cx+B.hw])for(const m of [-hw,0,hw]){const c=v-m;if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;gx={x:v,o,B};}}
       if(axis!=='x')for(const v of [o.cy-B.hh,o.cy,o.cy+B.hh])for(const m of [-hh,0,hh]){const c=v-m;if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;gy={y:v,o,B};}}
     }
-    const lines=[];
+    const lines=[...finishGuides];
     if(gx)lines.push({v:true,x:gx.x,a:Math.min(ny-hh,gx.o.cy-gx.B.hh)-150,b:Math.max(ny+hh,gx.o.cy+gx.B.hh)+150});
     if(gy)lines.push({v:false,y:gy.y,a:Math.min(nx-hw,gy.o.cx-gy.B.hw)-150,b:Math.max(nx+hw,gy.o.cx+gy.B.hw)+150});
-    return {position:[axis==='y'?cx:Math.round(nx),axis==='x'?cy:Math.round(ny)],guides:lines};
+    return {position:[axis==='y'?cx:finish[0]?.value??Math.round(nx),axis==='x'?cy:finish[1]?.value??Math.round(ny)],guides:lines};
   }
   // Resize from the original opposite corner, so snapping never moves that anchor.
   function resize(f,p,{scale,wallSnap,rects,axis='both'}){

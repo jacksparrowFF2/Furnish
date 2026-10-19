@@ -112,9 +112,16 @@ function elevation(plan,work,face,layout=record(work,face)?.layout||defaults(),{
   if(!intervals.length)pending.push('此墙面被其它完成面遮挡或净空间已消失，请核对');
  }
  const lo=intervals.length?intervals[0][0]:face.lo,hi=intervals.length?intervals.at(-1)[1]:face.hi,dir=face.axis===0?face.side:-face.side,zero=dir===1?lo:hi,toU=v=>(v-zero)*dir,width=hi-lo;
- const sections=W().faceSections(plan,face,height).flatMap(s=>{
+ let sections=W().faceSections(plan,face,height).flatMap(s=>{
   if(Math.abs(s.segment[face.normal+(face.side===1?2:0)]-face.position)>EPS)return [];
   return intervals.flatMap(([a,b])=>{const lo=Math.max(a,s.segment[face.axis]),hi=Math.min(b,s.segment[face.axis+2]),bottom=Math.max(s.bottom,finite(floorZ)?floorZ:0);return hi>lo+EPS&&s.top>bottom+EPS?[[Math.min(toU(lo),toU(hi)),bottom,Math.max(toU(lo),toU(hi)),s.top]]:[];});
+ });
+ // Preserve the saved local origin while extending the visible tile to mitered corners.
+ const finished=W().tileSections(plan,face);
+ if(finite(position)&&finished.length)sections=finished.flatMap(s=>{
+  const a=s.segment[face.axis],b=s.segment[face.axis+2],bottom=Math.max(s.bottom,finite(floorZ)?floorZ:0),top=Math.min(s.top,height);if(top<=bottom)return [];
+  const cuts=[...new Set([a,b,...(clear?.rings||[clear?.poly||[]]).flat().map(p=>p[face.axis]).filter(v=>v>a&&v<b)])].sort((x,y)=>x-y),out=[];
+  for(let i=1;i<cuts.length;i++){const point=[0,0];point[face.axis]=(cuts[i-1]+cuts[i])/2;point[face.normal]=position+face.side*.01;if(!clear||(clear.polys||[clear.poly]).some(poly=>Z.inside(point,poly)))out.push([Math.min(toU(cuts[i-1]),toU(cuts[i])),bottom,Math.max(toU(cuts[i-1]),toU(cuts[i])),top]);}return out;
  });
  if(plan.wallFinish?.pending.some(v=>v.roomIds?.includes(face.roomId)))pending.push('本区域墙面厚度待核对，沿墙净尺寸暂供参考');
  const result={face:binding(face),width,height,layout:clone(layout),followFloor,alignmentPending,alignmentNote,floorZ,originZ,dir,zero,axis:face.axis,normal:face.normal,position,sections,pending};

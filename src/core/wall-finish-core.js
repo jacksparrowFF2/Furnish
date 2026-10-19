@@ -87,12 +87,39 @@ function faceSections(plan,f,height=plan.rooms.find(r=>r.id===f.roomId)?.ceiling
  }
  return out;
 }
+// Adjacent finish layers meet on the corner bisector, rather than exposing bond.
+// Tile layers of equal thickness make a 45 degree joint even when bond differs.
+function joined(input){
+ const at=(s,n)=>s.rect[n+(s.side===1?0:2)],bounds=p=>[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))];
+ const adjacent=(s,t,end)=>t!==s&&t.roomId===s.roomId&&t.normal!==s.normal&&Math.abs(at(t,t.normal)-end)<EPS&&[t.rect[s.normal],t.rect[s.normal+2]].some(v=>Math.abs(v-at(s,s.normal))<EPS);
+ const out=[];
+ for(const s of input){const axis=1-s.normal,neighbors=input.filter(t=>[s.rect[axis],s.rect[axis+2]].some(end=>adjacent(s,t,end))),cuts=[...new Set([s.bottom,s.top,...neighbors.flatMap(t=>[t.bottom,t.top]).filter(z=>z>s.bottom&&z<s.top)])].sort((a,b)=>a-b);
+  for(let i=1;i<cuts.length;i++){
+   const bottom=cuts[i-1],top=cuts[i],mid=(bottom+top)/2,ends=[s.rect[axis],s.rect[axis+2]].map(end=>neighbors.find(t=>adjacent(s,t,end)&&t.bottom<mid&&t.top>mid));
+   const polygon=(inner,outer,part)=>{
+    const point=(end,depth,neighbor)=>{const p=[0,0];p[s.normal]=at(s,s.normal)+s.side*depth;p[axis]=end+(neighbor?neighbor.side*(part==='tile'?(depth===inner?neighbor.bondThickness:neighbor.bondThickness+neighbor.tileThickness):depth===inner?0:neighbor.bondThickness):0);return p;};
+    return [point(s.rect[axis],inner,ends[0]),point(s.rect[axis+2],inner,ends[1]),point(s.rect[axis+2],outer,ends[1]),point(s.rect[axis],outer,ends[0])];
+   };
+   const layers={bond:polygon(0,s.bondThickness,'bond'),tile:polygon(s.bondThickness,s.bondThickness+s.tileThickness,'tile')},poly=[layers.bond[0],layers.bond[1],layers.tile[2],layers.tile[3]];
+   // Excessive thickness must not create inverted strips on a tiny return.
+   const valid=Object.values(layers).every(p=>p[1][axis]>=p[0][axis]-EPS&&p[2][axis]>=p[3][axis]-EPS);
+   out.push(valid?{...s,rawRect:[...s.rect],rect:bounds(poly),poly,layers,bottom,top}:{...s,bottom,top});
+  }
+ }
+ return out;
+}
+function snapFaces(plan,vertical){
+ return (plan.wallFinish?.solids||[]).filter(s=>!vertical||Math.min(vertical.top,s.top)-Math.max(vertical.bottom,s.bottom)>EPS).map(s=>{const n=s.normal,axis=1-n,poly=s.layers?.tile,position=s.rect[n+(s.side===1?2:0)],a=poly?poly[2]:[s.rect[0],s.rect[1]],b=poly?poly[3]:[s.rect[2],s.rect[3]],lo=Math.min(a[axis],b[axis]),hi=Math.max(a[axis],b[axis]);return {normal:n,side:s.side,position,lo,hi};}).filter(f=>f.hi-f.lo>EPS);
+}
+function tileSections(plan,face){
+ return (plan.wallFinish?.solids||[]).filter(s=>s.layers&&s.wallId===face.wallId&&s.side===face.side&&s.normal===face.normal&&s.rawRect[face.axis+2]>face.lo+EPS&&s.rawRect[face.axis]<face.hi-EPS).map(s=>{const p=s.layers.tile,segment=[...face.source.rect];segment[face.axis]=Math.abs(Math.max(face.lo,s.rawRect[face.axis])-s.rawRect[face.axis])<EPS?Math.min(p[2][face.axis],p[3][face.axis]):face.lo;segment[face.axis+2]=Math.abs(Math.min(face.hi,s.rawRect[face.axis+2])-s.rawRect[face.axis+2])<EPS?Math.max(p[2][face.axis],p[3][face.axis]):face.hi;return {segment,bottom:s.bottom,top:s.top};});
+}
 function derive(plan,work){
  validate(work.wallFinishes);
  if(!has(work))return plan;
  const key=JSON.stringify([plan.walls,plan.wallRefs,plan.finishWallIds,plan.rooms,plan.physicalRooms,plan.customDraft?.walls,plan.customDraft?.scale,plan.doors,plan.wins,plan.slides,plan.ceilingHeight,work.wallFinishes]);
  if(lastDerivation?.key===key)return {...plan,wallFinish:clone(lastDerivation.data)};
- const available=faces(plan),records=work.wallFinishes?.surfaces||[],solids=[],bands=[],pending=[],Z=zones();
+ const available=faces(plan),records=work.wallFinishes?.surfaces||[];let solids=[],bands=[];const pending=[],Z=zones();
  for(const [index,s] of records.entries()){
   const matches=available.filter(f=>f.wallId===s.wallId&&f.side===s.side&&!!f.cross===!!s.cross&&Math.min(f.range[1],s.range[1])-Math.max(f.range[0],s.range[0])>EPS);
   if(!matches.length){pending.push({index,wallId:s.wallId,message:'饰面原墙侧已变化或拆除，请重新关联／移除设置'});continue;}
@@ -102,21 +129,22 @@ function derive(plan,work){
   for(const f of matches){
    const r=f.source.rect,length=r[f.axis+2]-r[f.axis],lo=Math.max(f.lo,r[f.axis]+length*s.range[0]),hi=Math.min(f.hi,r[f.axis]+length*s.range[1]),band=[0,0,0,0];
    band[f.axis]=lo;band[f.axis+2]=hi;band[f.normal]=Math.min(f.position,f.position+f.side*thickness);band[f.normal+2]=Math.max(f.position,f.position+f.side*thickness);
-   bands.push({rect:band,roomId:f.roomId,index});
+   bands.push({rect:band,roomId:f.roomId,index,normal:f.normal,side:f.side,tileThickness:s.tileThickness,bondThickness:s.bondThickness,bottom:0,top:plan.rooms.find(v=>v.id===f.roomId)?.ceilingHeight??plan.ceilingHeight??2800});
    const height=plan.rooms.find(v=>v.id===f.roomId)?.ceilingHeight??(plan.physicalRooms||plan.rooms).find(v=>v.id===f.roomId)?.ceilingHeight??plan.ceilingHeight??2800;
    const add=(segment,bottom,top)=>{
     if(Math.abs(segment[f.normal+(f.side===1?2:0)]-f.position)>EPS)return;
     const a=Math.max(lo,segment[f.axis]),b=Math.min(hi,segment[f.axis+2]);if(b-a<=EPS||top-bottom<=EPS)return;
     const rect=[...band];rect[f.axis]=a;rect[f.axis+2]=b;
-    solids.push({rect,bottom,top,wallId:s.wallId,side:s.side,normal:f.normal,index,tileThickness:s.tileThickness,bondThickness:s.bondThickness});
+    solids.push({rect,bottom,top,roomId:f.roomId,wallId:s.wallId,side:s.side,normal:f.normal,index,tileThickness:s.tileThickness,bondThickness:s.bondThickness});
    };
    for(const s of faceSections(plan,f,height))add(s.segment,s.bottom,s.top);
   }
  }
+ solids=joined(solids);bands=joined(bands);
  const clip=rooms=>(rooms||[]).map(room=>{
   if(room.counted===false)return room;
   const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),box=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
-  const polys=bands.filter(b=>b.rect[0]<box[2]&&b.rect[2]>box[0]&&b.rect[1]<box[3]&&b.rect[3]>box[1]).map(b=>rectPoly(b.rect)),rings=room.rings||[room.poly];
+  const polys=bands.filter(b=>b.rect[0]<box[2]&&b.rect[2]>box[0]&&b.rect[1]<box[3]&&b.rect[3]>box[1]).map(b=>b.poly||rectPoly(b.rect)),rings=room.rings||[room.poly];
   if(!polys.length)return room;
   // Clip the union once: corners do not double-subtract and functional splits remain zero-thickness.
   const pieces=Z.decompose([...rings,...polys],p=>Z.inside(p,room.poly)&&!polys.some(poly=>Z.inside(p,poly))),geometry=Z.outline(pieces);
@@ -147,6 +175,6 @@ function remapBuiltin(work,before,after,shift){
  }
  work.wallFinishes={version:1,surfaces:mapped};validate(work.wallFinishes);
 }
-const api={rules,validate,sources,faces,same,edit,editFields,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
+const api={joined,tileSections,snapFaces,rules,validate,sources,faces,same,edit,editFields,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishWallFinish=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

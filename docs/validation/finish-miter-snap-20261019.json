@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-19",
+  "core": {
+    "passed": true,
+    "suites": 222,
+    "builtinPlans": 12,
+    "previewPages": 16
+  },
+  "browser": {
+    "selected": [
+      "finish-miter-snap",
+      "tile-coplanar-wall",
+      "tile-shared-origin",
+      "tile-selection-outline"
+    ],
+    "results": [
+      {
+        "name": "finish-miter-snap",
+        "status": "PASS",
+        "seconds": 12.5,
+        "log": "finish-miter-snap.log"
+      },
+      {
+        "name": "tile-coplanar-wall",
+        "status": "PASS",
+        "seconds": 34.4,
+        "log": "tile-coplanar-wall.log"
+      },
+      {
+        "name": "tile-shared-origin",
+        "status": "PASS",
+        "seconds": 7.7,
+        "log": "tile-shared-origin.log"
+      },
+      {
+        "name": "tile-selection-outline",
+        "status": "PASS",
+        "seconds": 4.5,
+        "log": "tile-selection-outline.log"
+      }
+    ],
+    "notRun": []
+  },
+  "targetedBrowser": {
+    "case": "finish-miter-snap",
+    "status": "PASS",
+    "result": [
+      {
+        "mode": "http",
+        "passed": true,
+        "realDrag": true,
+        "southFinishFace": true,
+        "miterPlan": true,
+        "productionMiter": true,
+        "oneHistory": true,
+        "undoRedo": true,
+        "refresh": true,
+        "errors": []
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "realDrag": true,
+        "southFinishFace": true,
+        "miterPlan": true,
+        "productionMiter": true,
+        "oneHistory": true,
+        "undoRedo": true,
+        "refresh": true,
+        "errors": []
+      }
+    ]
+  },
+  "actualLayout": {
+    "readOnly": true,
+    "sha256": "155424a127e4390b945f6e51010b53de669560424636dee9342cb8db16b5d3c0",
+    "cornerRays": [
+      {
+        "physicalLayer": "tile",
+        "tileFace": "outline_12",
+        "point": [
+          8.035799980163574,
+          1.5,
+          9.746
+        ]
+      },
+      {
+        "physicalLayer": "tile",
+        "tileFace": "outline_12",
+        "point": [
+          8.037,
+          1.5,
+          9.744799613952637
+        ]
+      }
+    ],
+    "cabinetSnap": [
+      7043,
+      9935
+    ],
+    "fileUnchanged": true
+  },
+  "boundaries": [
+    "Equal tile thickness creates a 45-degree tile joint; differing thickness follows the actual layer intersections.",
+    "Unknown layers remain pending; impossibly short strips retain their original geometry.",
+    "No fabrication optimisation or physical touch-device acceptance."
+  ]
+}

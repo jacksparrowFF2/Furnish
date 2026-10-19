@@ -53,7 +53,8 @@ function toMM(e){
 
 /* ======================= 吸附适配 ======================= */
 function snapMove(f,cx,cy,skip,disabled=false,axis,anchor){
-  const result=FurnishSnapping.move(f,cx,cy,{grid:ui.grid,scale:view.s,
+  const finishPlan=state.wallFinishes?FurnishProject.effectivePlan(PLAN,state):null,vertical=finishPlan?FurnishDesign.furnitureVerticalBounds(f,finishPlan,state.furniture):null;
+  const result=FurnishSnapping.move(f,cx,cy,{finishFaces:finishPlan?FurnishWallFinish.snapFaces(finishPlan,vertical):[],grid:ui.grid,scale:view.s,
     wallSnap:ui.layers.wallSnap,guides:ui.layers.guides,
     rects:ui.layers.wallSnap?snapRects():[],furniture:ui.layers.furn?state.furniture:[],skip,
     moving:skip?state.furniture.filter(o=>skip.has(o.id)):[f],disabled,axis,anchor});

@@ -1,0 +1,35 @@
+{
+  "selected": [
+    "finish-miter-snap",
+    "tile-shared-origin",
+    "tile-multiselect",
+    "tile-coplanar-wall"
+  ],
+  "results": [
+    {
+      "name": "finish-miter-snap",
+      "status": "PASS",
+      "seconds": 12.3,
+      "log": "finish-miter-snap.log"
+    },
+    {
+      "name": "tile-shared-origin",
+      "status": "PASS",
+      "seconds": 7.7,
+      "log": "tile-shared-origin.log"
+    },
+    {
+      "name": "tile-multiselect",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "tile-multiselect.log"
+    },
+    {
+      "name": "tile-coplanar-wall",
+      "status": "PASS",
+      "seconds": 35,
+      "log": "tile-coplanar-wall.log"
+    }
+  ],
+  "notRun": []
+}

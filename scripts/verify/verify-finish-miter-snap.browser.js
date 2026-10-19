@@ -1,0 +1,18 @@
+async(page,verification)=>{
+ const check=(v,m)=>{if(!v)throw Error(m);},results=[];
+ for(const mode of ['http','file']){
+  const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
+  try{
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();await p.locator('#pr-file').setInputFiles(verification.root+'/tests/fixtures/finish-miter-snap.furnish.json');await p.locator('#pr-restore-confirm').click();await p.locator('#dlg').waitFor({state:'hidden'});
+   await p.evaluate(()=>{ui.layers.wallSnap=true;ui.layers.guides=true;fitView();});await verification.waitForCache(p);const baseline=await p.evaluate(()=>JSON.stringify(state)),history=await p.evaluate(()=>undoStack.length);
+   const screen=point=>p.evaluate(point=>{const v=new DOMPoint(...point).matrixTransform(svg.getScreenCTM());return {x:v.x,y:v.y};},point),start=await screen([1500,2500]),end=await screen([1517,2800]);await p.mouse.move(start.x,start.y);await p.mouse.down();await p.mouse.move(end.x,end.y,{steps:12});await p.mouse.up();
+   check(await p.evaluate(()=>Math.abs(getF('cab').cy-2795)<.01),'real southward cabinet drag snaps to tile face rather than raw wall or grid');check(await p.evaluate(()=>undoStack.length)===history+1,'one drag is one history record');const saved=await p.evaluate(()=>JSON.stringify(state));
+   await p.locator('#undo').click();check(await p.evaluate(()=>JSON.stringify(state))===baseline,'undo restores original cabinet');await p.locator('#redo').click();check(await p.evaluate(()=>JSON.stringify(state))===saved,'redo restores flush cabinet');await verification.waitForCache(p);await p.reload();check(await p.evaluate(()=>JSON.stringify(state))===saved,'refresh restores snapped position');
+   check(await p.locator('#gWalls [data-wall-finish]').evaluateAll(els=>els.every(el=>el.tagName.toLowerCase()==='path')),'plan finish follows actual miter polygons');
+   await p.evaluate(()=>{view.s=1;view.x0=2250-svg.clientWidth/2;view.y0=1100-svg.clientHeight/2;applyView();});await p.screenshot({path:verification.output('playwright/finish-miter-snap/'+mode+'-plan-corner.png')});await p.evaluate(()=>fitView());
+   await p.evaluate(()=>{const build=FurnishWallFinishModel.build;FurnishWallFinishModel.build=(...args)=>{const model=build(...args);window.__miterProduction=model;return model;};});await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);
+   check(await p.evaluate(()=>{const meshes=[];__miterProduction.traverse(m=>{if(m.userData.wallFinish?.wallId==='return'&&m.userData.wallFinish.layer==='tile')meshes.push(m);});return meshes.filter(m=>m.userData.wallFinish.poly?.some(v=>Math.abs(v[0]-2280)<.001&&Math.abs(v[1]-1130)<.001)).length===2&&meshes.every(m=>Array.from(m.geometry.attributes.position.array).every(Number.isFinite));}),'main production model has two tile miters meeting at same exterior corner');await p.screenshot({path:verification.output('playwright/finish-miter-snap/'+mode+'-3d.png')});
+   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);check(await p.evaluate(()=>JSON.stringify(state))===saved,'viewing miter does not rewrite design');check(!errors.length,errors.join('\n'));results.push({mode,passed:true,realDrag:true,southFinishFace:true,miterPlan:true,productionMiter:true,oneHistory:true,undoRedo:true,refresh:true,errors});
+  }finally{await context.close();}
+ }return results;
+}

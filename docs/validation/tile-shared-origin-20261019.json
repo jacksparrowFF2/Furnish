@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-19",
+  "core": {
+    "passed": true,
+    "suites": 221,
+    "builtinPlans": 12,
+    "previewPages": 16
+  },
+  "browser": {
+    "selected": [
+      "tile-shared-origin",
+      "tile-multiselect",
+      "tile-workspace-complete"
+    ],
+    "results": [
+      {
+        "name": "tile-shared-origin",
+        "status": "PASS",
+        "seconds": 7.9,
+        "log": "tile-shared-origin.log"
+      },
+      {
+        "name": "tile-multiselect",
+        "status": "PASS",
+        "seconds": 8.5,
+        "log": "tile-multiselect.log"
+      },
+      {
+        "name": "tile-workspace-complete",
+        "status": "PASS",
+        "seconds": 14.6,
+        "log": "tile-workspace-complete.log"
+      }
+    ],
+    "notRun": []
+  },
+  "sharedOrigin": {
+    "case": "tile-shared-origin",
+    "status": "PASS",
+    "result": [
+      {
+        "mode": "http",
+        "passed": true,
+        "graphPick": true,
+        "productionPreview": true,
+        "dragCancel": true,
+        "keyboard": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "presetGroups": true,
+        "mobile": true,
+        "errors": []
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "graphPick": true,
+        "productionPreview": true,
+        "dragCancel": true,
+        "keyboard": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "presetGroups": true,
+        "mobile": true,
+        "errors": []
+      }
+    ]
+  },
+  "data": "No new persistent fields. Only explicit origin edits affect selected floors; actual project file was not edited.",
+  "limitations": [
+    "Shared origin retains different tile dimensions, directions and gaps, so it does not guarantee alignment for different grids.",
+    "Physical touch device and full screen-reader audit not executed."
+  ]
+}

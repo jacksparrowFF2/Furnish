@@ -1,0 +1,29 @@
+{
+  "readOnly": true,
+  "sha256": "155424a127e4390b945f6e51010b53de669560424636dee9342cb8db16b5d3c0",
+  "cornerRays": [
+    {
+      "physicalLayer": "tile",
+      "tileFace": "outline_12",
+      "point": [
+        8.035799980163574,
+        1.5,
+        9.746
+      ]
+    },
+    {
+      "physicalLayer": "tile",
+      "tileFace": "outline_12",
+      "point": [
+        8.037,
+        1.5,
+        9.744799613952637
+      ]
+    }
+  ],
+  "cabinetSnap": [
+    7043,
+    9935
+  ],
+  "fileUnchanged": true
+}

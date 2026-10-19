@@ -9,7 +9,7 @@ function drawing(plan,work,{furniture=true,labels=true,measurements=true,dimensi
  for(const [name,color] of [['FLOOR_TILES',30],['WALLS',7],['WALL_FINISHES',30],['OPENINGS',4],['ROOMS',8],['FURNITURE',3],['LABELS',7],['MEASURES',2],['NOTES',6],['DIMENSIONS',8],['NORTH',1]])put(0,'LAYER',100,'AcDbSymbolTableRecord',100,'AcDbLayerTableRecord',2,name,70,0,62,color,6,'CONTINUOUS');
  put(0,'ENDTAB',0,'ENDSEC',0,'SECTION',2,'ENTITIES');
  for(const w of plan.walls){const [x,y,X,Y]=w;poly([[x,y],[X,y],[X,Y],[x,Y]],'WALLS');}
- for(const s of plan.wallFinish?.solids||[])if(s.bottom===0)poly([[s.rect[0],s.rect[1]],[s.rect[2],s.rect[1]],[s.rect[2],s.rect[3]],[s.rect[0],s.rect[3]]],'WALL_FINISHES');
+ for(const s of plan.wallFinish?.solids||[])if(s.bottom===0)poly(s.poly||[[s.rect[0],s.rect[1]],[s.rect[2],s.rect[1]],[s.rect[2],s.rect[3]],[s.rect[0],s.rect[3]]],'WALL_FINISHES');
  for(const o of [...plan.doors||[],...plan.wins||[],...plan.slides||[]]){const [x,y,X,Y]=o.rect;poly([[x,y],[X,y],[X,Y],[x,Y]],'OPENINGS');}
  for(const r of (root.FurnishWallFinish||require('../core/wall-finish-core.js')).spatial(plan).rooms){for(const ring of r.rings||[r.poly])poly(ring,'ROOMS');if(labels){const at=r.poly.reduce((n,p)=>[n[0]+p[0]/r.poly.length,n[1]+p[1]/r.poly.length],[0,0]);label(at,work.rooms?.[r.id]?.name||r.name);}}
  for(const a of (root.FurnishFloorFinish||require('../core/floor-finish-core.js')).surfaces(plan)){if(a.layout)for(const cell of (root.FurnishFloorFinish||require('../core/floor-finish-core.js')).cells(a.room,a.layout))for(const p of cell.polys)poly(p,'FLOOR_TILES');if(labels&&!a.roomId&&a.room.at)label(a.room.at,a.finishedZ===undefined?'地面标高待核对':`完成地面 ${a.finishedZ} mm`,'FLOOR_TILES');}

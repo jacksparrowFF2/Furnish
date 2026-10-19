@@ -172,7 +172,7 @@ function renderWalls(){
   if(data)$('#gWalls').insertAdjacentHTML('beforeend',`<g data-wall-finishes>${data.solids.filter(s=>s.bottom===0).map(s=>{
     const [x,y,X,Y]=s.rect,index=PLAN.wallRefs?PLAN.wallRefs.indexOf(s.wallId):Number(s.wallId.slice(8));let target=index>=0?`data-wall="w${index}"`:'';
     if(index<0){const o=PLAN.customDraft?.openings.find(o=>o.wall===s.wallId);if(o){const kind=o.kind==='window'?'win':o.kind,refs=kind==='win'?PLAN.winRefs:kind==='door'?PLAN.doorRefs:PLAN.slideRefs,i=kind==='win'&&o.bay?PLAN.wins.findIndex(w=>w.bayId===o.id):refs?.indexOf(o.id);if(i>=0)target=`data-${kind}="${i}"`;}}
-    return `<rect class="wall" ${target} data-wall-finish="${s.index}" x="${x}" y="${y}" width="${X-x}" height="${Y-y}" fill="#d5c2a2"><title>${tr('墙面完成面','Finished wall face')} · ${s.tileThickness+s.bondThickness} mm</title></rect>`;
+    const poly=s.poly||[[x,y],[X,y],[X,Y],[x,Y]];return `<path class="wall" ${target} data-wall-finish="${s.index}" d="M${poly.map(p=>p.join(',')).join('L')}Z" fill="#d5c2a2"><title>${tr('墙面完成面','Finished wall face')} · ${s.tileThickness+s.bondThickness} mm</title></path>`;
   }).join('')}</g>`);
 }
 

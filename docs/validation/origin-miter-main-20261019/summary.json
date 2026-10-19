@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-19",
+  "scope": [
+    "Shared floor origin",
+    "45-degree joints for equal-thickness tiles",
+    "Cabinet snapping to finished tile faces"
+  ],
+  "source": "Exact staged snapshot",
+  "excluded": [
+    "Uncommitted appliance-clearance work",
+    "Scene setting persistence",
+    "Actual workspace project"
+  ],
+  "core": {
+    "passed": true,
+    "regressionSuites": 221,
+    "builtinPlans": 12,
+    "note": "Clean index export has no generated preview pages; browser runner creates its own production previews."
+  },
+  "browser": {
+    "selected": [
+      "finish-miter-snap",
+      "tile-shared-origin",
+      "tile-multiselect",
+      "tile-coplanar-wall"
+    ],
+    "results": [
+      {
+        "name": "finish-miter-snap",
+        "status": "PASS",
+        "seconds": 12.3,
+        "log": "finish-miter-snap.log"
+      },
+      {
+        "name": "tile-shared-origin",
+        "status": "PASS",
+        "seconds": 7.7,
+        "log": "tile-shared-origin.log"
+      },
+      {
+        "name": "tile-multiselect",
+        "status": "PASS",
+        "seconds": 8.4,
+        "log": "tile-multiselect.log"
+      },
+      {
+        "name": "tile-coplanar-wall",
+        "status": "PASS",
+        "seconds": 35,
+        "log": "tile-coplanar-wall.log"
+      }
+    ],
+    "notRun": []
+  }
+}
