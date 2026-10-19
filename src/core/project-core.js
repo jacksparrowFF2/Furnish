@@ -418,7 +418,7 @@
   for(const v of Object.values(w.open?.w||{})){if(typeof v==='number'){if(!num(v)||v<0||v>2.4)fail('窗台高无效');}else if(!v||!num(v.sill)||!num(v.head)||v.sill<0||v.head<=v.sill||v.head>2.8||v.panels!==undefined&&![0,3].includes(v.panels)||v.stackSide!==undefined&&!['left','right'].includes(v.stackSide))fail('窗高度或窗扇形式无效');}
   if(w.pricing!==undefined)pricing(w.pricing);
   if(w.designNote!==undefined&&(typeof w.designNote!=='string'||w.designNote.length>500))fail('方案备注无效');
-  if(w.scene3d!==undefined){const s=w.scene3d;if(!s||typeof s!=='object'||Array.isArray(s)||!num(s.hour)||s.hour<7||s.hour>18||![1.2,2.8].includes(s.cut)||(s.lamps!==undefined&&typeof s.lamps!=='boolean')||['furn','labels','night'].some(k=>typeof s[k]!=='boolean'))fail('三维展示设置无效');}
+  if(w.scene3d!==undefined){const s=w.scene3d;if(!s||typeof s!=='object'||Array.isArray(s)||!num(s.hour)||s.hour<7||s.hour>18||![1.2,2.8].includes(s.cut)||['lamps','wallNumbers','clearances'].some(k=>s[k]!==undefined&&typeof s[k]!=='boolean')||['furn','labels','night'].some(k=>typeof s[k]!=='boolean'))fail('三维展示设置无效');}
   if(w.spaceThreshold!==undefined&&(!num(w.spaceThreshold)||w.spaceThreshold<300||w.spaceThreshold>2000))fail('通道阈值须为 300–2000 mm');
   if(w.spaceIgnored!==undefined&&(!Array.isArray(w.spaceIgnored)||w.spaceIgnored.length>100||w.spaceIgnored.some(v=>typeof v!=='string'||v.length>1000000)))fail('忽略提示数据无效');
   if(w.assets!==undefined&&(!Array.isArray(w.assets)||w.assets.length>5||w.assets.some(a=>!a||typeof a.name!=='string'||a.name.length>150||typeof a.data!=='string'||a.data.length>2700000||!(/^[A-Za-z0-9+/]*={0,2}$/.test(a.data)))))fail('项目附件无效');

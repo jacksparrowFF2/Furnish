@@ -6,6 +6,8 @@
 
 2026-10-19：主墙地砖入口收拢到`tile-workspace.js`，统一稳定表面选择、部分字段草稿、实际平面／立面及隔离生产3D预览，一次mutate应用。`tile-editor-core.js`复用墙地、美缝核心，保留现有字段、分带与预设关联；无迁移或版本变化。`tile-layout-preview.js`复用生产构造器，草稿不替换全局state；对话框增加可选beforeClose守护。旧入口转入同一工作区，预设管理从内部进入。流程与边界见[铺砖工作区](TILE-WORKSPACE.md)。
 
+2026-10-19：三维墙面编号与家电预留检查分别读取 `scene3d.wallNumbers/clearances`，沿原展示设置校验、恢复及保存，缺省为显示；无家具字段或项目版本变更。产品规则 `clearanceReview` 集中定义电器覆盖，三维共用原热水器与洗碗机检查，未知设备显示无数据，标注避让覆盖预留标签。视图开关不进入空间确认。见 [显示开关](IMPROVEMENTS.md#2026-10-19三维墙面编号与家电预留显示开关)。
+
 2026-10-19：铺贴预设应用后在`tilePresets.version=2`的`bindings`记录稳定墙侧／地面、预设分项及勾选参数组。`tile-preset-core.save(work,preset,plan)`原子同步关联表面，UI一次mutate保存库与实际排版；解除／删除关联保留实体参数。无关联旧快照不推断迁移。含关联使用外层版本14与v14缓存；恢复不隐式套用，复制内置户型时重映射墙侧绑定。详情见[关联更新](TILE-PRESET-INTERACTION.md#关联更新与独立设计)。
 
 2026-10-19：墙砖可选`bands`保存同墙上下分带，核心在`elevation()`派生各带布局、真实洞口裁切与分界缝，生产`wall-tiling-model.js`、立面和地面起点预览读取同一分带几何。`wall-tile-bands.js`共用数字表单用于单墙和预设，显式应用仍走mutate。可选行字段继承整墙，起铺／对缝独立；实际分带或分带预设使用外层版本13，不迁移旧数据。单墙整面3D手柄对分带转到数字编辑，避免错误覆盖多种规格。见[同墙上下分带](TILE-PRESET-INTERACTION.md#同一面墙上下分带)。

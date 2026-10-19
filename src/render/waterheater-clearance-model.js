@@ -4,7 +4,7 @@
  function annotation(kind,check,tr=(zh,en)=>zh){
   const mm=n=>Math.floor((n+1e-6)*10)/10;
   const title=`${kind==='top'?tr('顶部','Top'):tr('机身到插座','Heater to socket')} ${check.required} mm`;
-  const distance=Number.isFinite(check.gap)?`${tr('实际净距','Actual clearance')} ${mm(check.gap)} mm`:tr('实际净距待核对','Actual clearance unverified');
+  const distance=Number.isFinite(check.gap)?`${tr('实际净距','Actual clearance')} ${mm(check.gap)} mm`:tr('实际净距：无数据','Actual clearance: no data');
   const status=check.ok===false?`${tr('不足','Short by')} ${Math.max(.1,Math.ceil((check.required-check.gap-1e-6)*10)/10)} mm`:check.ok===null?tr('待核对','Unverified'):'';
   return {title,distance,status,color:check.ok===false?'#b62b20':check.ok===true?'#087a6d':'#946008'};
  }
@@ -37,5 +37,20 @@
   group.traverse(o=>{o.raycast=()=>{};}); // Frames must never intercept furniture picks.
   return group;
  }
- const api={build,annotation};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishHeaterClearanceModel=api;
+ function summary(f,result,tr=(zh,en)=>zh){
+  const title=`${f.name||f.type} · ${tr('预留检查','Installation clearances')}`;
+  if(!result)return {lines:[title,tr('预留尺寸：无数据','Clearance dimensions: no data')],color:'#946008'};
+  const checks=result.checks,failed=checks.filter(c=>c.ok===false).length,pending=checks.filter(c=>c.ok===null).length,s=result.spec;
+  return {lines:[title,`${tr('出气侧','Vent side')} ≥${s.sideClearance} mm · ${tr('机顶','Top access')} ≥${s.topAccess} mm`,`${tr('台面至柜底','Worktop to cabinet')} ≥${s.worktopToCabinet} mm · ${tr('前沿错开','Front offset')} >${s.frontOffset} mm`,tr('上方按组合条件核对，详见属性','Overhead conditions: see properties'),tr(`不满足 ${failed} 项 · 待核对 ${pending} 项`,`Unmet ${failed} · Unverified ${pending}`)],color:failed?'#b62b20':pending?'#946008':'#087a6d',details:checks.map(c=>c.message).join('\n')};
+ }
+ function buildSummary(THREE,f,result,bounds,options={}){
+  const group=new THREE.Group();group.userData.applianceClearance=f.id;
+  if(!options.CSS2DObject||!options.document)return group;
+  const info=summary(f,result,options.tr),el=options.document.createElement('div');el.className='appliance-clearance-label';el.dataset.clearanceItem=f.id;
+  Object.assign(el.style,{pointerEvents:'none',background:'rgba(255,255,255,.94)',color:info.color,border:`1px solid ${info.color}`,borderRadius:'6px',padding:'5px 8px',font:'600 12px/1.5 system-ui,sans-serif',maxWidth:'280px',overflowWrap:'anywhere',boxShadow:'0 2px 6px #0002'});
+  for(const text of info.lines){const line=options.document.createElement('div');line.textContent=text;el.appendChild(line);}
+  el.title=info.details||info.lines.join('\n');
+  const label=new options.CSS2DObject(el);label.position.set(0,(bounds?.top??0)/1000+.15,0);label.center.set(.5,1);label.renderOrder=22;group.add(label);group.traverse(o=>{o.raycast=()=>{};});return group;
+ }
+ const api={build,annotation,summary,buildSummary};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishHeaterClearanceModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

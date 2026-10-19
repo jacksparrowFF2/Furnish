@@ -13,7 +13,7 @@ for(const plan of plans){
   assert.equal(Object.keys(first.rooms).length,plan.rooms.length);
   assert.equal(new Set([...first.furniture,...second.furniture].map(f=>f.id)).size,2*plan.defaults.length);
   assert.notEqual(first.rooms,second.rooms);assert.notEqual(first.notes,second.notes);
-  assert.deepEqual(work.restore(structuredClone(first),plan),{...first,scene3d:{cut:2.8,furn:true,labels:true,lamps:true,night:false,hour:10}});
+  assert.deepEqual(work.restore(structuredClone(first),plan),{...first,scene3d:{cut:2.8,furn:true,labels:true,wallNumbers:true,clearances:true,lamps:true,night:false,hour:10}});
 }
 assert.deepEqual(plans,before);
 
@@ -33,7 +33,8 @@ assert.equal(legacy.rooms[room.id].name.length,80);assert.equal(legacy.rooms[roo
 assert.deepEqual(legacy.rooms.oldRoom,{name:'extra'});
 assert.equal(legacy.notes.length,2);assert.deepEqual([legacy.notes[0].x,legacy.notes[0].y,legacy.notes[0].color,legacy.notes[0].size],[12,-3,'accent',1]);
 assert.notEqual(legacy.notes[0].id,legacy.notes[1].id);assert.equal(legacy.notes[1].text.length,120);
-for(const key of ['open','measures','demolished','budget','attachments','scene3d'])assert.deepEqual(legacy[key],saved[key]);
+for(const key of ['open','measures','demolished','budget','attachments'])assert.deepEqual(legacy[key],saved[key]);
+assert.deepEqual(legacy.scene3d,{...saved.scene3d,wallNumbers:true,clearances:true});
 const empty=work.restore({},plan);assert.deepEqual(empty.furniture,[]);assert.deepEqual(empty.open,{});
 const capped=work.restore({notes:Array.from({length:2001},(_,i)=>({id:`n${i}`,text:'a',x:0,y:0}))},plan);assert.equal(capped.notes.length,2000);
 

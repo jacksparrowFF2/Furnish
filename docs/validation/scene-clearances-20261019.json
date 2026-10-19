@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-19",
+  "scope": "三维墙面编号与家电预留检查显示开关",
+  "checks": {
+    "command": "node scripts/check.cjs",
+    "status": "PASS",
+    "regressionSuites": 217,
+    "builtinPlans": 12,
+    "previewPagesChecked": 3553,
+    "includes": ["生产语法", "共享声明", "本地资源", "当前与命名方案项目往返", "旧数据与重复恢复", "所有电器库类型的预留显示能力", "热水器生产预留盒、插座连线、标注清理", "洗碗机原检查结果复用"]
+  },
+  "browser": {
+    "command": "FURNISH_BROWSER_CHANNEL=chrome node scripts/verify-browser.cjs scene-clearances",
+    "status": "PASS",
+    "modes": ["HTTP local static server", "offline file://"],
+    "viewports": ["1440x1000", "390x844"],
+    "verified": ["墙面编号与预留检查独立开关", "预留文字隐藏与重新显示", "家具隐藏后不覆盖预留开关", "缺失预留尺寸显示无数据", "米家台面洗碗机检查摘要", "保存刷新恢复", "家具编辑撤销重做保留开关", "窄屏实际操作两个开关", "无横向页面溢出", "无页面异常"],
+    "isolation": "临时仓库副本、全新浏览器存储、只读静态服务；未对用户项目文件执行保存",
+    "screenshots": ["scene-clearances-20261019/desktop.png", "scene-clearances-20261019/narrow.png"]
+  },
+  "dataContract": {
+    "fields": "work.scene3d.wallNumbers / clearances: optional boolean, missing => true",
+    "productCapability": "clearanceReview: heater / dishwasher / missing; not saved in furniture",
+    "projectVersionChange": false,
+    "spatialReviewInvalidation": false
+  },
+  "limits": ["无数据家电尚无新增安装参数表单或专用检查算法", "洗碗机继续使用既有已建模障碍、保守开启包络和上方组合条件，摘要不作施工验证", "密集标注可能超过有限避让范围", "未执行实体手机或触摸板验收", "未运行全套浏览器专项"],
+  "environment": "沙箱内完整检查因 127.0.0.1 访问限制中断；允许本地访问后重跑通过。浏览器使用本机 Chrome。"
+}
