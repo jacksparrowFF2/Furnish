@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-19",
+  "baseline": "98e5815",
+  "target": "origin/main",
+  "categories": [
+    {
+      "commit": "eea4ec8",
+      "feature": "柜门及抽屉面板尺寸完整标注"
+    },
+    {
+      "commit": "497b79a",
+      "feature": "短墙、墙面吸附与可逆功能区"
+    },
+    {
+      "commit": "0bf1a12",
+      "feature": "三维铺贴起点、墙砖规格及完成面家具基准"
+    },
+    {
+      "commit": "d3f00ea",
+      "feature": "1601 实际工作区数据"
+    }
+  ],
+  "checks": {
+    "production": {
+      "command": "node scripts/check.cjs",
+      "status": "PASS",
+      "regressionSuites": 211,
+      "builtInPlans": 12,
+      "previewPages": 3217,
+      "localAssets": true,
+      "sharedDeclarations": true,
+      "productionSyntax": true
+    },
+    "diffWhitespace": "PASS",
+    "browser": [
+      {
+        "selected": [
+          "portable-smoke"
+        ],
+        "results": [
+          {
+            "name": "portable-smoke",
+            "status": "PASS",
+            "seconds": 8.8,
+            "log": "portable-smoke.log"
+          }
+        ],
+        "notRun": [],
+        "resultPath": "output/playwright/verification-OjuT95/results.json"
+      },
+      {
+        "selected": [
+          "cabinet-drawer-dimensions",
+          "wall-face-snapping",
+          "floor-origin-wall",
+          "furniture-finished-datum"
+        ],
+        "results": [
+          {
+            "name": "cabinet-drawer-dimensions",
+            "status": "PASS",
+            "seconds": 3.6,
+            "log": "cabinet-drawer-dimensions.log"
+          },
+          {
+            "name": "wall-face-snapping",
+            "status": "PASS",
+            "seconds": 22.1,
+            "log": "wall-face-snapping.log"
+          },
+          {
+            "name": "floor-origin-wall",
+            "status": "PASS",
+            "seconds": 23.5,
+            "log": "floor-origin-wall.log"
+          },
+          {
+            "name": "furniture-finished-datum",
+            "status": "PASS",
+            "seconds": 13.5,
+            "log": "furniture-finished-datum.log"
+          }
+        ],
+        "notRun": [],
+        "resultPath": "output/playwright/verification-xKn33b/results.json"
+      }
+    ],
+    "workspace": {
+      "schema": "PASS",
+      "stableRoundtrip": "PASS",
+      "slots": 9,
+      "namedDesigns": 1,
+      "currentFurniture": 50,
+      "sha256": "e4d6eca057195121a450368c93506bf3263c79a646629fc68681b0be8c43b05c"
+    }
+  },
+  "limitations": [
+    "本轮未运行全套浏览器验收",
+    "本轮未新增人工视觉验收，既有功能验收截图和边界随分类提交保留",
+    "未执行物理触屏或施工验收"
+  ],
+  "environment": [
+    "默认 Playwright 配套 Chromium 未安装，改用已安装 Chrome",
+    "受限沙箱阻止回环网络，浏览器与完整检查改在允许本机网络的环境执行"
+  ]
+}
