@@ -1,0 +1,140 @@
+{
+  "date": "2026-10-19",
+  "browser": [
+    {
+      "run": "verification-WEtAyr",
+      "results": {
+        "selected": [
+          "tile-coplanar-wall",
+          "tile-workspace-complete",
+          "tile-multiselect",
+          "tile-selection-outline"
+        ],
+        "results": [
+          {
+            "name": "tile-coplanar-wall",
+            "status": "PASS",
+            "seconds": 6.6,
+            "log": "tile-coplanar-wall.log"
+          },
+          {
+            "name": "tile-workspace-complete",
+            "status": "PASS",
+            "seconds": 16.5,
+            "log": "tile-workspace-complete.log"
+          },
+          {
+            "name": "tile-multiselect",
+            "status": "PASS",
+            "seconds": 8.7,
+            "log": "tile-multiselect.log"
+          },
+          {
+            "name": "tile-selection-outline",
+            "status": "PASS",
+            "seconds": 4.5,
+            "log": "tile-selection-outline.log"
+          }
+        ],
+        "notRun": []
+      }
+    },
+    {
+      "run": "verification-OBeF7N",
+      "results": {
+        "selected": [
+          "tile-coplanar-wall",
+          "tile-workspace",
+          "tile-workspace-complete",
+          "tile-library"
+        ],
+        "results": [
+          {
+            "name": "tile-coplanar-wall",
+            "status": "PASS",
+            "seconds": 6.6,
+            "log": "tile-coplanar-wall.log"
+          },
+          {
+            "name": "tile-workspace",
+            "status": "PASS",
+            "seconds": 16.6,
+            "log": "tile-workspace.log"
+          },
+          {
+            "name": "tile-workspace-complete",
+            "status": "PASS",
+            "seconds": 14.5,
+            "log": "tile-workspace-complete.log"
+          },
+          {
+            "name": "tile-library",
+            "status": "PASS",
+            "seconds": 9.9,
+            "log": "tile-library.log"
+          }
+        ],
+        "notRun": []
+      }
+    },
+    {
+      "run": "verification-Aaiwjw",
+      "results": {
+        "selected": [
+          "tile-coplanar-wall",
+          "tile-multiselect"
+        ],
+        "results": [
+          {
+            "name": "tile-coplanar-wall",
+            "status": "PASS",
+            "seconds": 6.6,
+            "log": "tile-coplanar-wall.log"
+          },
+          {
+            "name": "tile-multiselect",
+            "status": "PASS",
+            "seconds": 8.5,
+            "log": "tile-multiselect.log"
+          }
+        ],
+        "notRun": []
+      }
+    },
+    {
+      "run": "verification-ewb2CN",
+      "results": {
+        "selected": [
+          "tile-coplanar-wall"
+        ],
+        "results": [
+          {
+            "name": "tile-coplanar-wall",
+            "status": "PASS",
+            "seconds": 6.5,
+            "log": "tile-coplanar-wall.log"
+          }
+        ],
+        "notRun": []
+      }
+    }
+  ],
+  "checks": [
+    "one logical coplanar wall",
+    "whole perimeter and real window hole",
+    "common world origin and gesture",
+    "existing records preserved until apply",
+    "one save, undo, redo, refresh",
+    "HTTP and offline file://",
+    "390px layout"
+  ],
+  "boundary": "Grouped origins and bands are local edits; other preset groups retain their existing subscriptions.",
+  "actualProject": "Read-only verified kitchen outline_9 / outline_37 / outline_13 and hidden outline_10 are one wall. No project file written by this change.",
+  "core": {
+    "passed": true,
+    "suites": 221,
+    "builtinPlans": 12,
+    "previewPages": 16,
+    "log": "tile-coplanar-wall-20261019/check.log"
+  }
+}

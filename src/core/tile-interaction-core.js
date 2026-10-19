@@ -10,7 +10,7 @@ function context(plan,work,target,bandId=''){
  }
  const saved=T.record(work,target.face);if(!saved||saved.enabled===false)throw Error('请先启用此墙排版，再调整砖缝基准');
  const face=T.faces(plan,work).find(f=>T.same(f,target.face));if(!face)throw Error('所选墙面已变化，请重新选择');
- const full=T.elevation(plan,work,face),e=full.bands?T.patterns(full).find(p=>p.band?.id===bandId):full;
+ const full=target.members?dep('FurnishTileEditor','./tile-editor-core.js').elevation(work,plan,target):T.elevation(plan,work,face),e=full.bands?T.patterns(full).find(p=>p.band?.id===bandId):full;
  if(!e)throw Error('此墙上下分带，请选择需要调整的带');
  if(![e.position,e.floorZ,e.originZ].every(Number.isFinite)||!e.sections.length)throw Error('墙面位置、完成地面或对缝条件待确定，不能调整起铺');
  const wall=dep('FurnishWallOriginPreview','../render/wall-origin-preview.js'),room=wall.space(e.sections),layout={...T.grid(e),origin:[e.layout.offset,e.originZ]};

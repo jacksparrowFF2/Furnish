@@ -1,0 +1,289 @@
+{
+  "date": "2026-10-19",
+  "actualProject": {
+    "readOnly": true,
+    "sha256": "49fef41c7c7911151bbb8c577ecbe496409d6bffd593dc6f98515f20f0dc7863",
+    "unchanged": true,
+    "rooms": [
+      {
+        "name": "阳台",
+        "use": "balcony",
+        "rawFaces": 9,
+        "walls": [
+          {
+            "number": 1,
+            "label": "左边墙 1 · 整墙",
+            "sources": [
+              "outline_25",
+              "outline_26"
+            ]
+          },
+          {
+            "number": 2,
+            "label": "上边墙 2 · 整墙",
+            "sources": [
+              "outline_27",
+              "outline_40"
+            ]
+          },
+          {
+            "number": 3,
+            "label": "下边墙 3",
+            "sources": [
+              "outline_28"
+            ]
+          },
+          {
+            "number": 4,
+            "label": "右边墙 4 · 整墙",
+            "sources": [
+              "outline_31",
+              "outline_43",
+              "outline_32"
+            ]
+          },
+          {
+            "number": 5,
+            "label": "下边墙 5",
+            "sources": [
+              "outline_33"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "厨房",
+        "use": "kitchen",
+        "rawFaces": 8,
+        "walls": [
+          {
+            "number": 1,
+            "label": "上边墙 1",
+            "sources": [
+              "outline_8"
+            ]
+          },
+          {
+            "number": 2,
+            "label": "左边墙 2 · 整墙",
+            "sources": [
+              "outline_9",
+              "outline_37",
+              "outline_13",
+              "outline_10"
+            ]
+          },
+          {
+            "number": 3,
+            "label": "下边墙 3",
+            "sources": [
+              "outline_11"
+            ]
+          },
+          {
+            "number": 4,
+            "label": "右边墙 4",
+            "sources": [
+              "outline_12"
+            ]
+          },
+          {
+            "number": 5,
+            "label": "墙端面 · 下边墙 5",
+            "sources": [
+              "outline_12"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "卫生间",
+        "use": "bathroom",
+        "rawFaces": 15,
+        "walls": [
+          {
+            "number": 1,
+            "label": "下边墙 1 · 整墙",
+            "sources": [
+              "outline_38",
+              "outline_8",
+              "outline_10",
+              "outline_7",
+              "outline_9"
+            ]
+          },
+          {
+            "number": 2,
+            "label": "左边墙 2 · 整墙",
+            "sources": [
+              "outline_18",
+              "outline_20"
+            ]
+          },
+          {
+            "number": 3,
+            "label": "上边墙 3 · 整墙",
+            "sources": [
+              "outline_21",
+              "outline_46",
+              "outline_36"
+            ]
+          },
+          {
+            "number": 4,
+            "label": "上边墙 4",
+            "sources": [
+              "outline_22"
+            ]
+          },
+          {
+            "number": 5,
+            "label": "墙端面 · 左边墙 5",
+            "sources": [
+              "outline_22"
+            ]
+          },
+          {
+            "number": 6,
+            "label": "上边墙 6",
+            "sources": [
+              "outline_23"
+            ]
+          },
+          {
+            "number": 7,
+            "label": "墙端面 · 左边墙 7",
+            "sources": [
+              "outline_23"
+            ]
+          },
+          {
+            "number": 8,
+            "label": "右边墙 8",
+            "sources": [
+              "outline_35"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "browser": {
+    "selected": [
+      "tile-coplanar-wall",
+      "tile-workspace-complete",
+      "scene-clearances"
+    ],
+    "results": [
+      {
+        "name": "tile-coplanar-wall",
+        "status": "PASS",
+        "seconds": 38.4,
+        "log": "tile-coplanar-wall.log"
+      },
+      {
+        "name": "tile-workspace-complete",
+        "status": "PASS",
+        "seconds": 19.5,
+        "log": "tile-workspace-complete.log"
+      },
+      {
+        "name": "scene-clearances",
+        "status": "PASS",
+        "seconds": 21.5,
+        "log": "scene-clearances.log"
+      }
+    ],
+    "notRun": []
+  },
+  "browserDetail": {
+    "case": "tile-coplanar-wall",
+    "status": "PASS",
+    "result": [
+      {
+        "mode": "http",
+        "use": "kitchen",
+        "passed": true,
+        "oneWall": true,
+        "sharedBasis": true,
+        "oldDataPreserved": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": []
+      },
+      {
+        "mode": "http",
+        "use": "balcony",
+        "passed": true,
+        "oneWall": true,
+        "sharedBasis": true,
+        "oldDataPreserved": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": []
+      },
+      {
+        "mode": "http",
+        "use": "bathroom",
+        "passed": true,
+        "oneWall": true,
+        "sharedBasis": true,
+        "oldDataPreserved": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": []
+      },
+      {
+        "mode": "file",
+        "use": "kitchen",
+        "passed": true,
+        "oneWall": true,
+        "sharedBasis": true,
+        "oldDataPreserved": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": []
+      },
+      {
+        "mode": "file",
+        "use": "balcony",
+        "passed": true,
+        "oneWall": true,
+        "sharedBasis": true,
+        "oldDataPreserved": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": []
+      },
+      {
+        "mode": "file",
+        "use": "bathroom",
+        "passed": true,
+        "oneWall": true,
+        "sharedBasis": true,
+        "oldDataPreserved": true,
+        "oneApply": true,
+        "undoRedo": true,
+        "refresh": true,
+        "narrow": true,
+        "errors": []
+      }
+    ]
+  },
+  "core": {
+    "passed": true,
+    "suites": 221,
+    "builtinPlans": 12,
+    "previewPages": 16
+  }
+}

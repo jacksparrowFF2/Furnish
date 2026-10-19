@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-19",
+  "issue": "多选高亮逐块描生产裁切矩形边缘，在窗洞侧边延伸出假砖缝",
+  "cause": "EdgesGeometry作用于每块墙面矩形，而不是整面可铺区域的合并轮廓；不属于真实砖网格",
+  "fix": "复用墙面空间核心合并sections后，每面墙只描真实外边界与门窗轮廓；保持选面填色，地面继续使用生产边界",
+  "core": {
+    "status": "PASS",
+    "command": "node scripts/check.cjs",
+    "regressionSuites": 220,
+    "builtInPlans": 12,
+    "freshPreviews": 16,
+    "productionSourceMatchesValidation": true,
+    "log": "tile-selection-outline-20261019/check.log"
+  },
+  "browser": {
+    "status": "PASS",
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "results": {
+      "selected": [
+        "tile-selection-outline",
+        "tile-multiselect",
+        "tile-workspace-complete"
+      ],
+      "results": [
+        {
+          "name": "tile-selection-outline",
+          "status": "PASS",
+          "seconds": 5.1,
+          "log": "tile-selection-outline.log"
+        },
+        {
+          "name": "tile-multiselect",
+          "status": "PASS",
+          "seconds": 8.4,
+          "log": "tile-multiselect.log"
+        },
+        {
+          "name": "tile-workspace-complete",
+          "status": "PASS",
+          "seconds": 14.6,
+          "log": "tile-workspace-complete.log"
+        }
+      ],
+      "notRun": []
+    },
+    "checks": [
+      "actual line endpoints have wall on exactly one side",
+      "four window clipping blocks do not create internal selection edges",
+      "source production positions and UV unchanged",
+      "single and multiple selection",
+      "saved tiling and undo history unchanged",
+      "refresh exact restore"
+    ]
+  },
+  "notChanged": [
+    "保存的尺寸/角度/起铺点/分带/关联",
+    "生产铺贴UV与几何",
+    "项目字段与保存通道"
+  ],
+  "evidence": [
+    "tile-selection-outline-20261019/window.png",
+    "tile-selection-outline-20261019/browser-results.json"
+  ],
+  "actualProjectSha256AtInspection": "dddb16c50e3d0d82b1dbd31e7c4e7308be6144c8443f79d69c53a23afd399a9c",
+  "screenshot": "独立带窗墙面夹具的默认观察视角，原UV和参数保留",
+  "followup": {
+    "scope": "仅启用目标墙面的独立带窗夹具，避免其它实体墙遮挡验收画面；没有改变生产代码",
+    "results": {
+      "selected": [
+        "tile-selection-outline"
+      ],
+      "results": [
+        {
+          "name": "tile-selection-outline",
+          "status": "PASS",
+          "seconds": 4.6,
+          "log": "tile-selection-outline.log"
+        }
+      ],
+      "notRun": []
+    }
+  },
+  "actualProjectSha256After": "dddb16c50e3d0d82b1dbd31e7c4e7308be6144c8443f79d69c53a23afd399a9c",
+  "actualProjectUnchangedDuringFix": true
+}

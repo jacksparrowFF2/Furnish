@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "tile-selection-outline",
+    "tile-multiselect",
+    "tile-workspace-complete"
+  ],
+  "results": [
+    {
+      "name": "tile-selection-outline",
+      "status": "PASS",
+      "seconds": 5.1,
+      "log": "tile-selection-outline.log"
+    },
+    {
+      "name": "tile-multiselect",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "tile-multiselect.log"
+    },
+    {
+      "name": "tile-workspace-complete",
+      "status": "PASS",
+      "seconds": 14.6,
+      "log": "tile-workspace-complete.log"
+    }
+  ],
+  "notRun": []
+}

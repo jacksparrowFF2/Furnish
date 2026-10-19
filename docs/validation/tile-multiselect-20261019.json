@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-19",
+  "scope": "铺砖3D全部选面高亮与单选/多选布局稳定",
+  "changes": [
+    "全部已选生产表面叠加半透明着色和轮廓，蓝绿表示其它已选，橙色表示当前查看",
+    "明确当前查看与全部编辑范围；多选时禁用单面起铺拖动",
+    "选择集合变化按真实几何包围球取景；仅切换查看面保留镜头",
+    "窗口与桌面三栏高度固定，参数栏独立滚动，二维/三维预览固定视口，长预设名可换行"
+  ],
+  "browser": {
+    "status": "PASS",
+    "cases": [
+      "tile-multiselect",
+      "tile-workspace",
+      "tile-workspace-complete",
+      "tile-library"
+    ],
+    "run": "verification-vDmb1J",
+    "results": {
+      "selected": [
+        "tile-multiselect",
+        "tile-workspace",
+        "tile-workspace-complete",
+        "tile-library"
+      ],
+      "results": [
+        {
+          "name": "tile-multiselect",
+          "status": "PASS",
+          "seconds": 8.6,
+          "log": "tile-multiselect.log"
+        },
+        {
+          "name": "tile-workspace",
+          "status": "PASS",
+          "seconds": 16.5,
+          "log": "tile-workspace.log"
+        },
+        {
+          "name": "tile-workspace-complete",
+          "status": "PASS",
+          "seconds": 14.4,
+          "log": "tile-workspace-complete.log"
+        },
+        {
+          "name": "tile-library",
+          "status": "PASS",
+          "seconds": 10.4,
+          "log": "tile-library.log"
+        }
+      ],
+      "notRun": []
+    },
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "measurements": [
+      "actual selected geometry overlays",
+      "entire selected geometry bounds projected inside viewport",
+      "focus switch preserves camera projection",
+      "dialog/column/preview x/width/height at 1440x1000",
+      "dialog/preview width/height at 1440x1280,900x900,390x844",
+      "saved state and undo stack unchanged by selection"
+    ]
+  },
+  "core": {
+    "status": "PASS",
+    "command": "node scripts/check.cjs",
+    "regressionSuites": 219,
+    "builtInPlans": 12,
+    "freshPreviews": 16,
+    "sourceCompared": [
+      "src/render/tile-layout-preview.js",
+      "src/ui/tile-workspace.js",
+      "styles/tile-workspace.css"
+    ],
+    "log": "tile-multiselect-20261019/check.log"
+  },
+  "boundaries": [
+    "未执行实体触屏与完整读屏验收",
+    "生产铺贴、层厚、标高、预设关联和项目字段不变"
+  ],
+  "evidence": [
+    "tile-multiselect-20261019/single.png",
+    "tile-multiselect-20261019/multi.png",
+    "tile-multiselect-20261019/mobile.png"
+  ],
+  "actualProjectSha256": "4b866815ca8f79ddbcc7f9237f163c600fdb2c8bd4fe9d45881e73332a83dca4"
+}

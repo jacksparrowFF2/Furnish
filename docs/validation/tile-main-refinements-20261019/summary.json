@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-19",
+  "scope": "Exact staged snapshot: coplanar walls for all tiling areas, scene numbering, selection outlines, multiselect and stable dialog",
+  "excluded": [
+    "appliance clearance changes",
+    "scene display setting persistence",
+    "actual workspace project"
+  ],
+  "core": {
+    "passed": true,
+    "regressionSuites": 220,
+    "builtinPlans": 12,
+    "note": "Clean index export has no pre-generated previews; browser runner generated its own production previews."
+  },
+  "browser": {
+    "selected": [
+      "tile-coplanar-wall",
+      "tile-multiselect",
+      "tile-selection-outline",
+      "tile-workspace-complete"
+    ],
+    "results": [
+      {
+        "name": "tile-coplanar-wall",
+        "status": "PASS",
+        "seconds": 37.4,
+        "log": "tile-coplanar-wall.log"
+      },
+      {
+        "name": "tile-multiselect",
+        "status": "PASS",
+        "seconds": 10.5,
+        "log": "tile-multiselect.log"
+      },
+      {
+        "name": "tile-selection-outline",
+        "status": "PASS",
+        "seconds": 4.6,
+        "log": "tile-selection-outline.log"
+      },
+      {
+        "name": "tile-workspace-complete",
+        "status": "PASS",
+        "seconds": 18.7,
+        "log": "tile-workspace-complete.log"
+      }
+    ],
+    "notRun": []
+  }
+}
