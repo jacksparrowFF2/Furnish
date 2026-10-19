@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-19",
+  "scope": "Laundry end resize and optional vessel sink; existing user workspace preserved",
+  "standardCheck": {
+    "command": "node scripts/check.cjs",
+    "status": "PASS",
+    "regressionSuites": 223,
+    "builtInPlans": 12,
+    "historicalPreviewPages": 4369,
+    "note": "Initial sandbox run failed at loopback EACCES; rerun with loopback access passed. Final product replacement changes also passed focused regression tests."
+  },
+  "browser": {
+    "newFeature": {
+      "status": "PASS",
+      "evidence": "output/playwright/verification-avFRzu/results.json",
+      "modes": [
+        "HTTP",
+        "offline file://"
+      ],
+      "errors": 0,
+      "checks": [
+        "real sink-end drag 1220 to 1120 mm",
+        "sink module and basin -100 mm; washer and bay unchanged",
+        "cancel, undo, redo",
+        "vessel style save and refresh",
+        "actual project download/upload",
+        "390 px editor",
+        "independent catalog, unknown price and production 3D"
+      ]
+    },
+    "existingFlows": {
+      "status": "PASS",
+      "evidence": "output/playwright/verification-ysCojk/results.json",
+      "cases": [
+        "kitchen-outer-handles",
+        "laundry-area"
+      ]
+    }
+  },
+  "limits": [
+    "Reference photo has no manufacturer dimensions; all vessel dimensions are editable layout assumptions.",
+    "Drain opening 45 mm is a model example, not fabrication data; separate faucet drilling and plumbing not modeled.",
+    "Legacy five-item groups retain independent basin sizing.",
+    "Physical touchscreen and on-site installation not tested."
+  ]
+}

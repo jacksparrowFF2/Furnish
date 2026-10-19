@@ -88,7 +88,8 @@ const LIB = [
     ['counter','完整阳台洗衣区 · 右洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-right'],
     ['counter','洗衣机柜 · 左洗衣机／右水槽',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-left'],
     ['counter','洗衣机柜 · 水槽与设备空位',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry'],
-    ['ksink','阳台定制水槽（可设异形缺角）',600,500,'#e8e6df',undefined]
+    ['ksink','阳台定制水槽（可设异形缺角）',600,500,'#e8e6df',undefined],
+    ['ksink','阳台台上盆 · 圆角单盆',560,400,'#f5f4ef',undefined,undefined,undefined,undefined,undefined,'vessel-sink']
   ]},
   {cat:'厨房', items:[
     ["counter","橱柜台面",1600,600,"#e9e5de",6400],

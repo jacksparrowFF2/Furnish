@@ -45,7 +45,7 @@ const libAll = () => store.custom?.length
 const typeColor = t => { for (const c of LIB) for (const i of c.items) if (i[0]===t) return i[4]; return '#d9d2c5'; };
 const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} return FurnishCatalogData.findItem(f.type,f.name); };
 // 单价：家具上手动填写的优先，其次是同名库存条目，最后按类型估算
-const priceOf = f => f.price ?? f.referencePrice ?? libItem(f)?.[5] ?? TYPE_PRICE[f.type] ?? 0;
+const priceOf = f => f.price ?? f.referencePrice ?? (FurnishProducts.vesselSink(f)?0:libItem(f)?.[5] ?? TYPE_PRICE[f.type]) ?? 0;
 
 let _n = 1;
 const uid = () => 'f' + Date.now().toString(36) + (_n++);
@@ -578,10 +578,10 @@ function openCustom(){
 }
 
 /* ======================= 家具库 ======================= */
-const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Math.max(w,d)*.08, source=cid?store.custom.find(c=>c.id===cid):null;
+const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Math.max(w,d)*.08, source=cid?store.custom.find(c=>c.id===cid):null,spec=FurnishKitchen.catalogSpec(it),preview=spec.sinkStyle?{type:t,w,d,...spec}:undefined;
   return `<div class="item ${cid ? 'custom' : ''}" data-key="${ci}:${ii}" title="${tr('点击添加，或拖到平面图中的指定位置', 'Click to add, or drag onto the plan')}${price ? ` · ¥${price}` : ''}">
     ${cid ? `<button class="del" style="z-index:1" data-cdel="${cid}" title="${tr('从「我的家具」删除', 'Remove from My Items')}">${ico('x')}</button>` : ''}
-    <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col)}</svg><b>${esc(nm(n))}</b><small>${w}×${d}${source?`×${source.h}`:''}</small>${source&&(source.brand||source.model)?`<small>${esc([source.brand,source.model].filter(Boolean).join(' · '))}</small>`:''}</div>`; };
+    <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col,preview)}</svg><b>${esc(nm(n))}</b><small>${w}×${d}${source?`×${source.h}`:''}</small>${source&&(source.brand||source.model)?`<small>${esc([source.brand,source.model].filter(Boolean).join(' · '))}</small>`:''}</div>`; };
 function buildLib(){
   const q = libUI.q.trim().toLowerCase();
   let html = (libUI.cat === 'all' && !q && !$('#catalog-max-w')?.value && !$('#catalog-max-d')?.value) ? recentsHTML() : '';
@@ -631,7 +631,7 @@ addEventListener('pointermove', e => {
   if (!libDrag.ghost){
     if (Math.hypot(e.clientX-libDrag.sx, e.clientY-libDrag.sy) < TAP) return;
     const g = libDrag.ghost = document.createElement('div'); g.id = 'ghost';
-    g.innerHTML = `<svg viewBox="${-it[2]/2} ${-it[3]/2} ${it[2]} ${it[3]}">${furnSVG(it[0],it[2],it[3],it[4])}</svg>`;
+    g.innerHTML = `<svg viewBox="${-it[2]/2} ${-it[3]/2} ${it[2]} ${it[3]}">${furnSVG(it[0],it[2],it[3],it[4],FurnishKitchen.catalogSpec(it).sinkStyle?{type:it[0],w:it[2],d:it[3],...FurnishKitchen.catalogSpec(it)}:undefined)}</svg>`;
     document.body.appendChild(g); libDrag.el.classList.add('dragging');
   }
   // 幽灵图按落点处的比例显示真实大小（3D 中近大远小）

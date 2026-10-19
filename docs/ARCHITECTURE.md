@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-19：洗衣柜通过 kitchen-core.outerResizable/outerEdge/resizeOuter 接入已有四边拖拽；水槽端同步调整内置定制盆宽，设备端独立，普通厨房规则不变。ksink 可选 sinkStyle/sinkBowlHeight 由产品核心统一定义，生产台上盆共用 sink-model.buildVessel 与排水孔几何；2D、包络、缓存、空间确认、项目及原 mutate 同步。见 [按端缩放与台上盆](LAUNDRY-CABINET.md#按端缩放与台上盆2026-10-19)。
+
 2026-10-19提交范围：本次main仅收录统一铺砖及其依赖，保留此前家电预留与实际户型文件改动在本地。准确暂存源码已通过218套回归、12个内置户型及HTTP／断网file://四项专项；此前219套记录为包含其它未提交修改的整工作区验收。见[提交验收](validation/tile-workspace-main-20261019/summary.json)。
 
 2026-10-19收尾：重复墙地／美缝／引导／起点UI删除表单与提交逻辑，只转发统一铺砖；预设库应用也转回同一草稿。`tile-parameters-core.js`共用字段、能力与关联组，`tile-editor-core.editLinked`显式区分本地组独立与预设订阅同步；恢复不重套预设。`tile-interaction-core.js`供实际SVG／生产三维共用毫米坐标、单带补丁和屏幕吸附，手势取消回退完整草稿，三维射线和户型图直接选面。`wall-finish-core.editFields`逐段保留未修改层厚，核对读取每带布局。家具基准、预设及铺贴仍一次mutate，无新保存通道／持久字段／版本。当前契约见[铺砖工作区](TILE-WORKSPACE.md)。

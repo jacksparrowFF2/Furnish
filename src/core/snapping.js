@@ -132,9 +132,9 @@
     return best;
   }
   function kitchenGaps(f,{furniture=[],scale=1,referenceId}={}){
-    const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);if(!f.kitchen||!K.shapeRules(f)?.outerResize)return [];
-    const targets=entities({furniture:furniture.filter(o=>o.id!==f.id&&o.counterLink?.hostId!==f.id&&(referenceId===undefined||o.id===referenceId))});
-    return [...['left','right','top','bottom'].map(e=>'outer:'+e),...K.runs(f).map(run=>'run:'+run)].map(key=>kitchenGapForEdge(f,key,targets,scale)).filter(Boolean);
+    const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);if(!f.kitchen||!K.outerResizable(f))return [];
+    const targets=entities({furniture:furniture.filter(o=>o.id!==f.id&&o.counterLink?.hostId!==f.id&&o.laundryHostId!==f.id&&(referenceId===undefined||o.id===referenceId))});
+    return [...['left','right','top','bottom'].map(e=>'outer:'+e),...K.runHandles(f).map(h=>'run:'+h.run)].map(key=>kitchenGapForEdge(f,key,targets,scale)).filter(Boolean);
   }
   function setKitchenGap(f,key,referenceId,gap,{furniture=[],scale=1}={}){
     if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('预留间距须为 0–20000 mm');

@@ -411,13 +411,13 @@ function renderSelectedGeometry(){
       const p = 5*k, hs = COARSE ? 1.7 : 1, ro = (COARSE ? 40 : 26)*k, hit = (COARSE ? 24 : 11)*k;
       const sx = f.w/2+p, sy = f.d/2+p;
       const resizeCursor=angle=>['ew-resize','nwse-resize','ns-resize','nesw-resize'][((Math.round(angle/45)%4)+4)%4];
-      const outer=!!f.kitchen&&!!globalThis.FurnishKitchen?.shapeRules(f)?.outerResize,drawing=typeof drawingRotation==='function'?drawingRotation():0;
+      const outer=!!globalThis.FurnishKitchen?.outerResizable(f),drawing=typeof drawingRotation==='function'?drawingRotation():0;
       const edgeHandle=(axis,x,y,angle,label)=>`<g data-handle="size" data-axis="${axis}" ${outer?`data-edit-overlay="kitchen-outer-edge" data-kitchen-edge="${axis==='w'?'right':'bottom'}"`:''} style="cursor:${resizeCursor(angle+drawing)}"><title>${label}</title>${outer?`<path d="${axis==='w'?`M${sx} ${-sy}L${sx} ${sy}`:`M${-sx} ${sy}L${sx} ${sy}`}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/>`:''}<circle cx="${x}" cy="${y}" r="${hit}" fill="transparent"/><rect x="${x-5*hs*k}" y="${y-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A} stroke-width="1.5"/></g>`;
       s += `<g transform="${furnT(f)}">
         <rect x="${-f.w/2-p}" y="${-f.d/2-p}" width="${f.w+2*p}" height="${f.d+2*p}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`;
       if (!f.locked){const runGrips=kitchenRunHandleSVG(f,k,hit,hs,A,resizeCursor);
         if(outer)for(const [edge,axis,x1,y1,x2,y2] of [['left','w',-sx,-sy,-sx,sy],['top','d',-sx,-sy,sx,-sy]]){
-          const canonical=f.flip?(edge==='left'?'right':edge==='right'?'left':edge):edge,target=FurnishKitchen.outerEdge(f,canonical),title=tr(`拖动整条外边，固定对侧；调整${FurnishKitchen.runName(f,target.run)}${target.kind==='depth'?'柜深（内侧固定）':'末端柜宽'}，保留薄柜尺寸`,'Drag outer edge; keep opposite edge and inner modules fixed');
+          const canonical=f.flip?(edge==='left'?'right':edge==='right'?'left':edge):edge,target=FurnishKitchen.outerEdge(f,canonical),title=tr(FurnishKitchen.isLaundry(f)?'拖动此端调整对应模块；水槽端同步调整定制盆宽，另一端固定':`拖动整条外边，固定对侧；调整${FurnishKitchen.runName(f,target.run)}${target.kind==='depth'?'柜深（内侧固定）':'末端柜宽'}，保留薄柜尺寸`,'Drag outer edge; keep opposite edge and inner modules fixed');
           s+=`<g data-edit-overlay="kitchen-outer-edge" data-handle="size" data-axis="${axis}" data-kitchen-edge="${edge}" style="cursor:${resizeCursor(f.rot+drawing+(axis==='d'?90:0))}"><title>${title}</title><path d="M${x1} ${y1}L${x2} ${y2}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/>${edge==='left'||edge==='top'?`<rect x="${(x1+x2)/2-5*hs*k}" y="${(y1+y2)/2-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A} stroke-width="1.5"/>`:''}</g>`;
         }
         s += `

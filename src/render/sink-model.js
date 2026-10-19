@@ -74,5 +74,24 @@ function buildNotched(T,f){
  const pipe=new T.Mesh(new T.CylinderGeometry(.012,.012,.28,16),chrome);pipe.position.set(x,1.002,z);g.add(pipe);
  const spout=new T.Mesh(new T.CylinderGeometry(.012,.012,.15,16),chrome);spout.rotation.x=Math.PI/2;spout.position.set(x,1.142,z+.075);g.add(spout);return g;
 }
-const api={supported,build,buildNotched};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishSinkModel=api;
+// Photo-based rectangular ceramic vessel. The underside rests on the top;
+// only the drain penetrates it. Dimensions are editable layout assumptions.
+function buildVessel(T,f){
+ const P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);P.validate(f);
+ const r=P.definition(f).vessel,g=new T.Group(),w=f.w/1000,d=f.d/1000,h=P.value(f,'sinkBowlHeight')/1000,t=r.rim/1000,b=r.floor/1000;
+ const ceramic=new T.MeshStandardMaterial({color:f.color||'#f6f5f1',roughness:.22,side:T.DoubleSide}),metal=new T.MeshStandardMaterial({color:'#f5f4ef',roughness:.24}),chrome=new T.MeshStandardMaterial({color:'#aab0b2',metalness:.75,roughness:.25});
+ const rounded=(w,d,r)=>{const s=new T.Shape();s.moveTo(-w/2+r,-d/2);s.lineTo(w/2-r,-d/2);s.quadraticCurveTo(w/2,-d/2,w/2,-d/2+r);s.lineTo(w/2,d/2-r);s.quadraticCurveTo(w/2,d/2,w/2-r,d/2);s.lineTo(-w/2+r,d/2);s.quadraticCurveTo(-w/2,d/2,-w/2,d/2-r);s.lineTo(-w/2,-d/2+r);s.quadraticCurveTo(-w/2,-d/2,-w/2+r,-d/2);return s;};
+ const add=(shape,depth,top,name)=>{const geo=new T.ExtrudeGeometry(shape,{depth,bevelEnabled:false,curveSegments:12});geo.rotateX(Math.PI/2);geo.translate(0,.862+top,0);const o=new T.Mesh(geo,ceramic);o.userData.sinkPart=name;o.castShadow=true;o.receiveShadow=true;g.add(o);return o;};
+ const radius=Math.min(.022,w*.08,d*.08),outer=rounded(w,d,radius),inner=rounded(w-2*t,d-2*t,Math.max(.004,radius-t));
+ outer.holes.push(new T.Path(inner.getPoints(12)));add(outer,h,h,'vessel-walls');
+ const floor=rounded(w-2*t,d-2*t,Math.max(.004,radius-t)),hole=new T.Path();hole.absarc(0,0,r.drain/2000,0,Math.PI*2,true);floor.holes.push(hole);add(floor,b,b,'vessel-floor');
+ const cylinder=(radius,height,x,y,z,material,name)=>{const o=new T.Mesh(new T.CylinderGeometry(radius,radius,height,32),material);o.position.set(x,.862+y,z);o.userData.sinkPart=name;g.add(o);return o;};
+ cylinder(r.drain/2000-.002,.002,0,b-.001,0,chrome,'vessel-drain');
+ // The tall faucet sits on a small rear deck inside the product footprint.
+ const fx=Math.min(w*.32,w/2-.055),fz=-d/2+t/2,rise=Math.max(r.faucetRise/1000,h+r.faucetClearance/1000);
+ cylinder(Math.min(.012,t*.45),rise,fx,rise/2,fz,metal,'vessel-faucet');
+ const spout=new T.Mesh(new T.BoxGeometry(.024,.022,Math.min(.12,d*.3)),metal);spout.position.set(fx,.862+rise-.025,fz+Math.min(.12,d*.3)/2);spout.userData.sinkPart='vessel-spout';g.add(spout);
+ const lever=new T.Mesh(new T.BoxGeometry(.065,.009,.014),metal);lever.position.set(fx+.02,.862+rise,fz);g.add(lever);return g;
+}
+const api={supported,build,buildNotched,buildVessel};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishSinkModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
