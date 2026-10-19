@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-19",
+  "baseline": "bbe8731",
+  "target": "origin/main",
+  "features": [
+    {"commit": "2e26c5b", "category": "三维墙面编号与家电预留显示"},
+    {"commit": "fccda97", "category": "洗衣柜按端缩放与台上盆"},
+    {"commit": "04350ed", "category": "柜门逐扇宽度与均分"},
+    {"commit": "24179f8", "category": "方块占位体"}
+  ],
+  "checks": {
+    "workingTree": {
+      "command": "node scripts/check.cjs",
+      "status": "PASS",
+      "regressionSuites": 225,
+      "builtInPlans": 12,
+      "historicalPreviewPages": 4561
+    },
+    "committedSnapshot": {
+      "method": "git checkout-index --all into an isolated ignored directory",
+      "command": "node scripts/check.cjs",
+      "status": "PASS",
+      "regressionSuites": 225,
+      "builtInPlans": 12,
+      "historicalPreviewPages": 0,
+      "note": "Uses the committed project file, excluding local project changes; production syntax, resources, shared declarations and all regression tests passed. Historical previews were checked separately in the original working tree."
+    },
+    "browser": {
+      "channel": "chrome",
+      "results": "output/playwright/verification-drKWbH/results.json",
+      "passed": ["scene-clearances", "laundry-resize-vessel", "kitchen-door-widths", "block-placeholder"],
+      "failed": [],
+      "notRunAmongSelected": [],
+      "note": "HTTP and offline file:// coverage follows each case; kitchen-door-widths checks HTTP only. Fresh isolated application copy and browser storage."
+    },
+    "diffWhitespace": "PASS"
+  },
+  "preservedLocalData": {
+    "path": "projects/workspace.furnish.json",
+    "includedInCommits": false,
+    "sha256AfterVerification": "ecb73dcaeeb827bdc8ccebffff63c6d2c890031d4598cf623f24682366162a1e",
+    "changedDuringThisTask": false
+  },
+  "notRun": [
+    "All browser acceptance cases",
+    "Additional manual visual acceptance during commit classification",
+    "Physical touchscreen or on-site installation acceptance"
+  ],
+  "boundaries": "Existing per-feature parameter assumptions, screenshots and algorithm limits remain in the associated model documents and validation records."
+}
