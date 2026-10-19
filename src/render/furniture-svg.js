@@ -28,6 +28,7 @@ const DASH = 'stroke-dasharray="4 3"';
     return s;
   }
   switch (t){
+    case 'block': return rc(x,y,w,d,c);
     case 'pipebox': {
       const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
       return P.pipeBoxPanels({...f,type:t,w,d}).map(b=>rc(b.x-b.w/2,b.z-b.d/2,b.w,b.d,c)).join('');

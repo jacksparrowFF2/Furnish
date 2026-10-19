@@ -14,6 +14,9 @@ const MATS = {
 };
 // 家具库：[类型, 名称, 宽, 深, 颜色, 参考单价 ¥]
 const LIB = [
+  {cat:'占位体', items:[
+    ['block','方块占位体',1000,1000,'#a8b6c4',undefined,products.height({type:'block'})]
+  ]},
   {cat:'电器', items:[
     ["aquarium_mijia_2pro","米家智能鱼缸 2 Pro",505,292,"#191c20",0,products.height({type:"aquarium_mijia_2pro"})],
     ["stove_fotile_th36b","方太燃气灶 TH36B-T",750,440,"#111214",0,products.height({type:"stove_fotile_th36b"})],

@@ -7,6 +7,7 @@ const S2T = new Map(('与與两兩个個为為书書于於仅僅从從价價会�
 const s2t = s => S2T_PHRASES.reduce((a, [f, t]) => a.replaceAll(f, t), s).replace(/[\u3400-\u9fff]/g, c => S2T.get(c) || c);
 // 内置的房间 / 材料 / 家具名称存的是中文；英文界面下显示译名，用户自己改过的名称原样显示
 const NAMES_EN = {
+  '占位体':'Placeholders', '方块占位体':'Block Placeholder',
   '管道包覆柜':'Pipe Enclosure',
   '源氏木语折叠餐桌 · 1100款':'YESWOOD Folding Dining Table · 1100',
   '源氏木语折叠餐桌 · 1200款':'YESWOOD Folding Dining Table · 1200',

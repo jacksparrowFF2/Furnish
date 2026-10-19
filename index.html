@@ -683,6 +683,9 @@ function buildFurniture(f){
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   switch (f.type){
+    case 'block':
+      g.add(box(w,M(FurnishProducts.height(f)),d,c,0,0,0));
+      break;
     case 'pipebox': {
       for(const b of FurnishProducts.pipeBoxPanels(f)){
         const panel=box(M(b.w),M(b.h),M(b.d),c,M(b.x),M(b.bottom),M(b.z));
