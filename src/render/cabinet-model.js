@@ -210,16 +210,16 @@
    });
    if(col.doorBottom!==undefined)y=base+col.doorBottom/1000;
    const door=C.frontDoor(f,i,c);if(door==='none'||options.doors==='hidden')return;
-   const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.frontHeight(f,c)/1000-faceInset,count=C.frontLeafCount(f,i,c),leafW=(span.right-span.left)/count,dh=doorTop-doorBottom;
+   const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.frontHeight(f,c)/1000-faceInset,count=C.frontLeafCount(f,i,c),dh=doorTop-doorBottom;
    for(let j=0;j<count;j++){
-    const front=d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0),pose=C.doorPose(door,span.left*1000,span.right*1000,doorBottom*1000,doorTop*1000,front*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,door),col.doorLayout),pivot=new THREE.Group();
+    const front=d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0),pose=C.doorPose(door,span.left*1000,span.right*1000,doorBottom*1000,doorTop*1000,front*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,door),col.doorLayout,col.doorRatios),pivot=new THREE.Group();
     pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorLeafAngle(c,col,j));
     pivot.userData.motion={kind:'cabinetdoor',column:i,section:'storage',leaf:j,axis:pose.axis,angle:pose.sign*C.maxDoorAngle(c,col)*Math.PI/180};
     const local=pose.localX/1000,vertical=!C.verticalDoor(door);
     const face=add(pivot,pose.width/1000,pose.height/1000,t,local,pose.localBottom/1000,0,faceColor);
     face.userData.cabinetDoorSize={width:pose.width,height:pose.height,leaf:j,section:'storage'};
     if(col.finish==='glass'||options.doors==='ghost'){face.material=face.material.clone();face.userData.cabinetOwnMaterial=true;face.material.transparent=true;face.material.opacity=options.doors==='ghost'?.15:.32;face.material.depthWrite=false;face.material.roughness=.15;}
-    handleMesh(pivot,vertical?local+(pose.right?-1:1)*(leafW/2-.04):local,pose.localBottom/1000+(vertical?dh*.5:door==='up'?.04:pose.height/1000-.04),.025,vertical);
+    handleMesh(pivot,vertical?local+(pose.right?-1:1)*((pose.width+2)/2000-.04):local,pose.localBottom/1000+(vertical?dh*.5:door==='up'?.04:pose.height/1000-.04),.025,vertical);
     if(options.doors==='ghost')pivot.traverse(o=>o.userData.cabinetIgnorePick=true);
     pivot.traverse(o=>o.userData.cabinetPart={column:i,leaf:j});g.add(pivot);
    }

@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-19",
+  "scope": "厨房普通模块双门及逐扇实际板面宽度",
+  "actualProject": {
+    "path": "projects/workspace.furnish.json",
+    "planId": "custom_mv37igji",
+    "furnitureId": "fmv9mqxz91",
+    "module": 2,
+    "width": 1006,
+    "door": "double",
+    "faceWidths": [
+      501,
+      501
+    ],
+    "faceHeight": 798,
+    "method": "Actual browser designer save, repository file readback, reload and UI verification",
+    "screenshot": "output/playwright/kitchen-door-widths/actual-two-doors.png"
+  },
+  "regression": {
+    "command": "node scripts/check.cjs",
+    "workspace": "output/playwright/verification-ggv3PR/workspace 迁移 #",
+    "status": "PASS",
+    "suites": 224,
+    "builtInPlans": 12,
+    "previews": 16,
+    "reason": "Same source copied to isolated workspace to avoid scanning 828 historical output directories; full tests, docs, skills, examples and projects copied. Existing output and user data preserved.",
+    "finalIncrement": [
+      "test-kitchen-door-widths.cjs",
+      "test-kitchen-extension-resize.cjs",
+      "test-kitchen-thin-end.cjs"
+    ],
+    "finalIncrementStatus": "PASS"
+  },
+  "browser": {
+    "command": "node scripts/verify-browser.cjs kitchen-door-widths cabinet-custom-fronts kitchen-wall-adjust",
+    "channel": "chrome",
+    "results": "output/playwright/verification-ggv3PR/results.json",
+    "status": "PASS",
+    "pageErrors": 0,
+    "visualReview": [
+      "desktop unequal front",
+      "390 px width inputs",
+      "actual project double doors and controls"
+    ]
+  },
+  "notRun": [
+    "file:// (loading unchanged)",
+    "physical touch device"
+  ],
+  "boundaries": [
+    "Layout dimensions, not a manufacturing or hinge certification",
+    "No self-interference or simultaneous multi-door motion simulation",
+    "No width input added for hood cross-partition doors, end cabinets, single or vertical doors"
+  ],
+  "sha256": {
+    "src/core/product-rules.js": "09c580b0331918deba7c137ded518d02555aa6e100ce1e5829caa2555404abd7",
+    "src/core/cabinet-core.js": "f14d36a447045b0d639470bc9add5f098e0479c0850cb79afd04c267b36e1662",
+    "src/core/kitchen-core.js": "36f77f7c3380eefeb3a68cd36048ff96b8610d2e7609e23483c1506fc5cb5104",
+    "src/core/project-core.js": "69ec814936efb0225f9b2a97e9881a2fceee63b85430415e04f0a56c00ac67da",
+    "src/render/cabinet-model.js": "af53887a085ac124e600e3f46631c2c04eb2291a34ac34efb7603e59fb773fa6",
+    "src/ui/kitchen-editor.js": "9c25ce0f2dfec25e4a002394369ac0efa30995ca35664c9c03ebb80ce0df6a91",
+    "src/ui/cabinet-editor.js": "a1816bec1e3ab685d050f1c3b88a6ded0d74fcf72d0d11c1fb6e310965ce6f43",
+    "styles/cabinet-editor.css": "548d02cb983ec14c649ce8046a34c3ea2c8f3c4932201d254d023444ac5ab78c",
+    "tests/test-kitchen-door-widths.cjs": "86f1dccc118202bd98d8007877e31e3ae427112624f56fff4d18f44ca28d2573",
+    "scripts/verify/verify-kitchen-door-widths.browser.js": "fcb2c887ba61d667fe33161b5618146ef1c12e81e04d99503dd6b0e059c56638"
+  }
+}

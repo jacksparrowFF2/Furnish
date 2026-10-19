@@ -19,7 +19,7 @@
      const structure=document.createElement('div'),doors=document.createElement('div');structure.dataset.cabSubpage='bays';doors.dataset.cabSubpage='front';
      for(const child of Array.from(node.children)){
       if(child.tagName==='LEGEND')continue;
-      const isFront=child.querySelector('[data-door],[data-finish],[data-handle],[data-door-color],[data-door-angle],[data-section-angle],[data-door-max],[data-display-door],[data-display-max],[data-display-angle],[data-door-pairing],[data-door-single-hinge],[data-door-layout]')||child.matches('[data-merge-doors],[data-door-note],[data-toggle-section]')||child.querySelector('[data-toggle-section]');
+      const isFront=child.querySelector('[data-door],[data-finish],[data-handle],[data-door-color],[data-door-angle],[data-section-angle],[data-door-max],[data-display-door],[data-display-max],[data-display-angle],[data-door-pairing],[data-door-single-hinge],[data-door-layout],[data-door-width],[data-door-width-equal]')||child.matches('[data-merge-doors],[data-door-note],[data-toggle-section]')||child.querySelector('[data-toggle-section]');
       (isFront?doors:structure).append(child);
      }
      node.append(structure,doors);bays.append(node);
@@ -73,6 +73,7 @@
      ${col.top==='drawer'?`<label>${tr('后侧走线留缝 mm（0 为无缺口）','Rear cable gap mm (0 disables notch)')}<input data-cable-gap type="number" min="0" max="100" value="${col.cableGap??0}"></label><button type="button" class="btn" data-toggle-column="${i}" data-toggle-lid="1">${col.topOpen?tr('收回上盖抽屉','Close top drawer'):tr('拉出上盖抽屉','Pull out top drawer')}</button>`:''}
      <label>${tr('柜门／开启方向','Door / opening direction')}<select data-door ${c.hoodBayHeight!==undefined&&i===1?'disabled':''}>${FurnishCabinet.doorOptions.map(([v,zh,en])=>`<option value="${v}" ${FurnishCabinet.frontDoor(draft,i,c)===v?'selected':''}>${tr(zh,en)}</option>`).join('')}</select></label>
      ${FurnishCabinet.frontLeafCount(draft,i,c)>=2?`<label class="full">门板配对顺序<select data-door-pairing>${FurnishCabinet.doorLayoutModes(FurnishCabinet.frontLeafCount(draft,i,c)).map(([v,label])=>`<option value="${v}" ${(col.doorLayout?'custom':FurnishCabinet.doorPairing(col))===v?'selected':''}>${label}</option>`).join('')}</select></label>${col.doorLayout?FurnishCabinet.doorLayout(FurnishCabinet.frontLeafCount(draft,i,c),col,col.door).map((v,leaf,layout)=>`<label>第 ${leaf+1} 扇<select data-door-layout="${leaf}">${[['left','独立 · 左铰链'],['right','独立 · 右铰链'],...(leaf<layout.length-1?[['pair',`与第 ${leaf+2} 扇对开`]]:[]),...(v==='paired'?[['paired',`与第 ${leaf} 扇对开`]]:[])].map(([value,label])=>`<option value="${value}" ${value===v?'selected':''} ${value==='paired'?'disabled':''}>${label}</option>`).join('')}</select></label>`).join(''):FurnishCabinet.singleDoorLeaf(FurnishCabinet.frontLeafCount(draft,i,c),FurnishCabinet.doorPairing(col))!==null?`<label class="full">独立门扇（第 ${FurnishCabinet.singleDoorLeaf(FurnishCabinet.frontLeafCount(draft,i,c),FurnishCabinet.doorPairing(col))+1} 扇）铰链<select data-door-single-hinge>${[['left','左铰链'],['right','右铰链']].map(([v,label])=>`<option value="${v}" ${FurnishCabinet.doorSingleHinge(col,col.door)===v?'selected':''}>${label}</option>`).join('')}</select></label>`:''}`:''}
+     ${c.template==='kitchen-base'&&c.hoodBayHeight===undefined&&FurnishCabinet.frontLeafCount(draft,i,c)>=2?`<div class="form">${FurnishCabinet.frontWidths(draft,i,c).map((v,j)=>`<label>第 ${j+1} 扇门板宽 mm<input data-door-width="${j}" type="number" min="${FurnishCabinet.doorWidthRules().minWidth}" step="any" value="${Number(v.toFixed(6))}"></label>`).join('')}<label><input data-door-width-equal type="checkbox">均分门宽</label><p class="muted">板面宽度已扣门缝，从面对正面的左侧起编号；其余门板从末扇起补差，内部隔间不变。</p></div>`:''}
      ${col.top==='drawer'?`<p class="cab-hint" data-door-note>当前分区是上盖抽屉；选择柜门会改用固定顶板。</p>`:''}
      ${c.sideboard&&!FurnishCabinet.sideboardDisplayGroups(draft).some(g=>g.column===i)&&FurnishCabinet.sideboardDisplayGroups(draft).some(g=>g.columns.includes(i))?`<p class="cab-hint" data-door-note>此分区的展示门与相邻分区共用。<button type="button" class="btn" data-show-display="${FurnishCabinet.sideboardDisplayGroups(draft).find(g=>g.columns.includes(i)).column}">调整共用展示门</button></p>`:''}
      ${i<c.columns.length-1&&['left','right'].includes(col.door)&&['left','right'].includes(c.columns[i+1].door)?`<button type="button" class="btn" data-merge-doors="${i}">${tr('与右侧单门合并为对开门（移除中间隔板）','Merge with right bay as paired doors (remove divider)')}</button>`:''}
@@ -93,7 +94,7 @@
    organizeForm();
   }finally{renderingForm=false;}}
   function read(preferHoodGap=false){
-   const next=JSON.parse(JSON.stringify(draft)),c=next.cabinet,oldWidths=FurnishCabinet.widths(draft),editedWidths=[];
+   let next=JSON.parse(JSON.stringify(draft));const c=next.cabinet,oldWidths=FurnishCabinet.widths(draft),editedWidths=[];
    const mount=$('#cab-mount-height');if(mount){if(!mount.value.trim())throw Error('请填写柜底离地高度');const value=FurnishProducts.validateField(next,'mountHeight',Number(mount.value));if(value!==FurnishProducts.value(draft,'mountHeight'))next.mountHeight=value;}
    const overlay=$('#cab-overlay');if(overlay&&overlay.value!==FurnishCabinet.doorOverlay(draft))c.doorOverlay=overlay.value;
    const automatic=$('#cab-auto-doors');if(automatic)c.autoDoors=automatic.checked;
@@ -130,7 +131,7 @@
     const top=el.querySelector('[data-top]').value;if(top!==(old.top||'fixed')){col.top=top;col.topOpen=false;if(top==='drawer'){col.door='none';col.doorOpen=false;col.drawers=[];col.shelves=[];}}
     if(old.top==='drawer'&&col.door!=='none'){col.top='fixed';col.topOpen=false;}
     if(col.doorAngle!==undefined)col.doorAngle=Math.min(col.doorAngle,FurnishCabinet.maxDoorAngle(c,col));if(col.displayAngle!==undefined)col.displayAngle=Math.min(col.displayAngle,FurnishCabinet.maxDoorAngle(c,col,'display'));
-    if(col.door==='none'){col.doorOpen=false;delete col.doorAngle;delete col.doorSections;}if(col.door==='none'||FurnishCabinet.verticalDoor(col.door))delete col.doorLayout;
+    if(col.door==='none'){col.doorOpen=false;delete col.doorAngle;delete col.doorSections;}if(col.door==='none'||FurnishCabinet.verticalDoor(col.door))delete col.doorLayout;if(col.door!==old.door)delete col.doorRatios;
     const gap=el.querySelector('[data-cable-gap]');if(gap){if(!gap.value.trim())throw Error('请填写后侧留缝');col.cableGap=Number(gap.value);}
    });
    const count=Number($('[data-cab-number="columns"]').value);if(!Number.isInteger(count)||count<1||count>12)throw Error('分区数须为 1–12 的整数');
@@ -145,8 +146,9 @@
     c.columns.forEach((col,i)=>col.width=Math.abs(editedWidths[i]-oldWidths[i])>.01?editedWidths[i]:oldWidths[i]);
     next.w=c.columns.reduce((n,col)=>n+col.width,0)+(count+1)*c.thickness;
    }else FurnishCabinet.scaleWidths(draft,next);
+   document.querySelectorAll('[data-cab-column]').forEach(el=>{const i=Number(el.dataset.cabColumn),col=next.cabinet.columns[i],old=draft.cabinet.columns[i];if(!col||col.door!==old.door)return;if(el.querySelector('[data-door-width-equal]')?.checked){delete col.doorRatios;return;}for(const input of el.querySelectorAll('[data-door-width]')){if(input.value===input.defaultValue)continue;if(!input.value.trim())throw Error('请填写门板宽度');next=FurnishCabinet.setDoorWidth(next,i,Number(input.dataset.doorWidth),Number(input.value));}});
    if($('#hood-bay-width'))return readHoodBayFields(next,$('#cab-form'),preferHoodGap);
-   return FurnishCabinet.validate(c.sideboard&&c.autoDoors&&!manual?FurnishCabinet.autoDoors(next):next);
+   return FurnishCabinet.validate(next.cabinet.sideboard&&next.cabinet.autoDoors&&!manual?FurnishCabinet.autoDoors(next):next);
   }
   function selectionStatus(){
    const status=$('#cab-selection');if(!status)return;

@@ -77,6 +77,10 @@
 .kitchen-drawer-tiers legend{padding:0 6px;font-weight:700}
 .kitchen-drawer-tiers .form .btn{align-self:end}
 .kitchen-drawer-tiers p{margin:10px 0 0}
+.cab-door-widths{grid-column:1/-1;min-width:0;margin:4px 0;padding:12px;border:1px solid var(--line);border-radius:var(--r-md)}
+.cab-door-widths legend{padding:0 6px;font-weight:700}
+.cab-door-widths .btn{margin-top:10px}
+.cab-door-widths p{margin:10px 0 0}
 .cab-drawer-edit{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .cab-drawer-edit[hidden]{display:none}
 .cab-drawer-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}

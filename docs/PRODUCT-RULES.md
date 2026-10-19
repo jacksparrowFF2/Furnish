@@ -1,5 +1,7 @@
 # 产品能力规则与兼容验收
 
+2026-10-19：counter／kitchenwall 共用 doorWidths:{minWidth:50,maxLeaves:24,gap:2}，定义多扇侧开门的板面编辑下限与原门缝；仅为模型约束。可选模块／保留结构列 doorRatios 由柜体核心统一校验与分配，缺失仍历史均分；宽度／盖板变化保留比例，功能／门数变化清理。真实板件与恢复链路见 [双门与门宽](KITCHEN-WALL-ADJUST.md#双门与逐扇门宽2026-10-19)。
+
 2026-10-19：ksink 新增可选 sinkStyle:inset|vessel、sinkBowlHeight:50–400 mm，缺失读取 inset／150，不补旧数据。vessel 统一定义盆宽深下限80、示例深400、壁15／底12、排水孔45及龙头高度规则，vesselSink/vertical 供生产几何与空间语义消费；counter.laundry.outerResize 启用按端拖拽。字段同型保留、跨类型清除，内置盆在原 assembly.sink 校验；独立三维缓存／核对与 kitchen 嵌套签名覆盖，配色仍不失效。见 [洗衣柜](LAUNDRY-CABINET.md#按端缩放与台上盆2026-10-19)。
 
 2026-10-19：`clearanceReview` 是派生显示能力，不写入家具实例。电器库类型统一覆盖：扁桶热水器 `heater`、米家台面洗碗机 `dishwasher` 复用现有检查，其余 `missing` 明确显示无数据；导入 OBJ 不冒用专用模型安装规则。无专用规则的设备不读取家具通用前方活动空间作为安装要求。开关属于工作方案 `scene3d.wallNumbers/clearances` 可选布尔，缺失为 true，原恢复／校验／项目／命名方案链路保留选择；复制替换无需增加家具字段清理，空间确认与几何缓存不读取开关。见 [显示开关与边界](IMPROVEMENTS.md#2026-10-19三维墙面编号与家电预留显示开关)。

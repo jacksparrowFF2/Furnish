@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-19：厨房普通模块的可选 doorRatios 保存门宽比例，柜体核心共用实际分扇跨度供生产板面、把手、铰轴和开启扫掠。逐扇 mm 输入及均分沿原草稿／mutate，保留结构内层复用；缺失均分、不补写旧数据。能力范围位于 product-rules，完整 kitchen/cabinet 进入原缓存与确认。见 [双门与门宽](KITCHEN-WALL-ADJUST.md#双门与逐扇门宽2026-10-19)。
+
 2026-10-19：洗衣柜通过 kitchen-core.outerResizable/outerEdge/resizeOuter 接入已有四边拖拽；水槽端同步调整内置定制盆宽，设备端独立，普通厨房规则不变。ksink 可选 sinkStyle/sinkBowlHeight 由产品核心统一定义，生产台上盆共用 sink-model.buildVessel 与排水孔几何；2D、包络、缓存、空间确认、项目及原 mutate 同步。见 [按端缩放与台上盆](LAUNDRY-CABINET.md#按端缩放与台上盆2026-10-19)。
 
 2026-10-19提交范围：本次main仅收录统一铺砖及其依赖，保留此前家电预留与实际户型文件改动在本地。准确暂存源码已通过218套回归、12个内置户型及HTTP／断网file://四项专项；此前219套记录为包含其它未提交修改的整工作区验收。见[提交验收](validation/tile-workspace-main-20261019/summary.json)。
