@@ -16,6 +16,8 @@
 <link rel="stylesheet" href="styles/floorplan-editor.css">
 <link rel="stylesheet" href="styles/project-workspace.css">
 <link rel="stylesheet" href="styles/workflow-tools.css">
+<link rel="stylesheet" href="styles/tile-presets.css">
+<link rel="stylesheet" href="styles/tile-workspace.css">
 <link rel="stylesheet" href="styles/ceiling-editor.css">
 </head>
 <body>
@@ -282,9 +284,16 @@
 <script src="src/core/floorplan-core.js"></script>
 <script src="src/core/wall-finish-core.js"></script>
 <script src="src/core/floor-finish-core.js"></script>
+<script src="src/core/tile-grout-core.js"></script>
 <script src="src/render/floor-finish-model.js"></script>
 <script src="src/render/wall-finish-model.js"></script>
 <script src="src/core/wall-tiling-core.js"></script>
+<script src="src/core/tile-parameters-core.js"></script>
+<script src="src/core/tile-preset-core.js"></script>
+<script src="src/core/tile-editor-core.js"></script>
+<script src="src/core/tile-interaction-core.js"></script>
+<script src="src/render/tile-layout-preview.js"></script>
+<script src="src/render/tile-layout-drawing.js"></script>
 <script src="src/core/finish-guide-core.js"></script>
 <script src="src/render/wall-tiling-model.js"></script>
 <script src="src/render/floor-origin-preview.js"></script>
@@ -349,10 +358,14 @@
 <script src="src/ui/floorplan-editor.js"></script>
 <script src="src/ui/project-ui.js"></script>
 <script src="src/ui/wall-finishes.js"></script>
+<script src="src/ui/tile-grout.js"></script>
 <script src="src/ui/wall-tiling.js"></script>
 <script src="src/ui/wall-origin-3d.js"></script>
 <script src="src/ui/ceiling-editor.js"></script>
 <script src="src/ui/floor-finishes.js"></script>
+<script src="src/ui/wall-tile-bands.js"></script>
+<script src="src/ui/tile-presets.js"></script>
+<script src="src/ui/tile-workspace.js"></script>
 <script src="src/ui/finish-guide.js"></script>
 <script src="src/ui/design-ui.js"></script>
 <script src="src/ui/procurement-ui.js"></script>
@@ -396,18 +409,9 @@ window.View3D = {
   shot:() => impl?.shot(), groundAt:(x, y) => impl?.groundAt(x, y) ?? null, flyToRoom:id => impl?.flyToRoom(id),
   image:() => globalThis.FurnishWorkflowTools?.styleId()?null:impl?.image()||null, focusSelection:() => impl?.focusSelection(),
   highlightIssue:(item,volumes) => impl?.highlightIssue(item,volumes),
-  previewFloorOrigin:(id,origin,handlePoint) => impl?.previewFloorOrigin(id,origin,handlePoint), clearFloorOriginPreview:() => impl?.clearFloorOriginPreview(),
-  floorOriginPoint:(x,y,id) => impl?.floorOriginPoint(x,y,id)??null,
-  floorOriginDragPoint:(x,y,id,offset,options) => impl?.floorOriginDragPoint(x,y,id,offset,options)??null,
-  floorOriginHandleHit:(x,y,id) => impl?.floorOriginHandleHit(x,y,id)??null,
-  lockFloorOriginDrag:value => impl?.lockFloorOriginDrag(value),
-  focusFloorOrigin:id => impl?.focusFloorOrigin(id),
-  previewWallOrigin:(face,layout,handlePoint) => impl?.previewWallOrigin(face,layout,handlePoint),
-  clearWallOriginPreview:() => impl?.clearWallOriginPreview(),
-  focusWallOrigin:() => impl?.focusWallOrigin(),
-  wallOriginHandleHit:(x,y) => impl?.wallOriginHandleHit(x,y)??null,
-  wallOriginDragPoint:(x,y,offset,options) => impl?.wallOriginDragPoint(x,y,offset,options)??null,
+  tileRoomAt:(x,y) => impl?.tileRoomAt(x,y)??null, refreshTileInspection:()=>impl?.refreshTileInspection(),
   ceilingPreview:(host,data,options) => load().then(() => impl.ceilingPreview(host,data,options)),
+  tileLayoutPreview:(host,options) => load().then(() => impl.tileLayoutPreview(host,options)),
   cabinetPreview:(host,f,onToggle) => load().then(() => impl.cabinetPreview(host,f,onToggle)),
   walking:() => !!impl?.walking(),
 };
@@ -436,8 +440,6 @@ let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, g
 let archFloor, archUp, furnG, clearanceG, labelG, wallLabelG, lampG, colliders = [], selKey = null, selHelper = null;
 let elevationG,issueG,sceneIssue=null,issueTimer=0;
 const observation=FurnishSceneObservation.create(THREE);
-const floorOriginPreview=FurnishFloorOriginPreview.create(THREE);
-const wallOriginPreview=FurnishWallOriginPreview.create(THREE),wallOriginObservation=FurnishSceneObservation.create(THREE);
 let observationTarget=null,observationSelection='',observationRevision='';
 let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
 let sigNorth='';
@@ -470,7 +472,7 @@ function init(){
   orbit = new OrbitControls(camera, renderer.domElement);
   FurnishNavigation.bindOrbit(renderer.domElement,()=>orbit);
   orbit.enableDamping = true; orbit.maxPolarAngle = Math.PI*.495; orbit.minDistance = 1.5; orbit.maxDistance = 45;
-  orbit.addEventListener('change', ()=>{floorOriginPreview.resizeHandle(camera,SH());updateWallOriginView();invalidate();});
+  orbit.addEventListener('change',invalidate);
   walkCtl = new PointerLockControls(camera, document.body);
   walkCtl.addEventListener('change', invalidate);
   walkCtl.addEventListener('lock', () => { $('#walkOverlay').style.display = 'none'; $('#cross').style.display = 'block'; });
@@ -563,7 +565,7 @@ function init(){
   new ResizeObserver(() => {
     renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH());
     camera.aspect = SW()/SH(); camera.updateProjectionMatrix();
-    if(observationTarget&&active&&!anim)frameObservation();updateWallOriginView();invalidate();
+    if(observationTarget&&active&&!anim)frameObservation();invalidate();
   }).observe(stage);
   bindUI();
 }
@@ -628,11 +630,11 @@ function floorMat(kind){
   } else {
     for (let k = 0; k < 1500; k++){ g.fillStyle = `rgba(0,0,0,${R()*.04})`; g.fillRect(R()*W, R()*Hh, 2, 2); }
   }
-  if (s.grout){ g.fillStyle = s.grout; g.fillRect(0, 0, W, 3); g.fillRect(0, 0, 3, Hh); }
+  if (s.grout){ g.fillStyle = FurnishTileGrout.autoColor(s.base); g.fillRect(0, 0, W, 3); g.fillRect(0, 0, 3, Hh); }
   const t = new THREE.CanvasTexture(cv);
   t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1/s.sx, 1/s.sy);
   t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  return floorMats[kind] = new THREE.MeshStandardMaterial({map:t, roughness:s.rough});
+  const m=new THREE.MeshStandardMaterial({map:t, roughness:s.rough});if(s.grout)m.userData.tileFinish={legacy:true,color:s.base,groutPixels:3};return floorMats[kind]=m;
 }
 
 /* ======================= 几何小工具（y = 底面高度） ======================= */
@@ -1242,17 +1244,16 @@ function wallBox([x0, y0, x1, y1], yb, yt, m){
 const edgeMat = new THREE.LineBasicMaterial({color:0x6f675b}), skirtMat = new THREE.MeshStandardMaterial({color:'#8b7f6e', roughness:.6});
 function shapeOf(poly, flip){ const s = new THREE.Shape(); poly.forEach(([x, y], i) => s[i ? 'lineTo' : 'moveTo'](wx(x), flip ? wz(y) : -wz(y))); return s; }
 
-let floorScenePlan=null;const floorOriginEdges=new Map();
+let floorScenePlan=null;
 function buildArch(){
-  clearFloorOriginPreview();clearWallOriginPreview();
   observation.clear();
   clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
   const top = opt.cut===2.8?H:Math.min(opt.cut,H);
-  const finishPlan=FurnishProject.effectivePlan(PLAN,state);floorScenePlan=finishPlan;floorOriginEdges.clear();
+  const finishPlan=FurnishProject.effectivePlan(PLAN,state);floorScenePlan=finishPlan;
   ground.position.y=Math.min(-.015,...Object.values(finishPlan.floorFinish?.areas||{}).flatMap(a=>[a.rawZ,a.finishedZ].filter(Number.isFinite).map(v=>v/1000-.015)));
   FurnishWallFinish.spatial(finishPlan).rooms.filter(r=>r.poly.length).forEach(r => {
     const floor=finishPlan.floorFinish?.areas[r.id];
-    const m = floor?.layout?FurnishFloorFinishModel.material(THREE,floor.layout,{wx,wz,color:MATS[state.rooms[r.id].mat]?.sw}):floorMat(state.rooms[r.id].mat), bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
+    const groutColor=FurnishTileGrout.color(state,r.id,'floor');let m = floor?.layout?FurnishFloorFinishModel.material(THREE,floor.layout,{wx,wz,color:MATS[state.rooms[r.id].mat]?.sw,groutColor}):floorMat(state.rooms[r.id].mat);if(!floor?.layout&&m.userData.tileFinish?.legacy&&groutColor)m=FurnishFloorFinishModel.legacyMaterial(THREE,m,{groutColor});const bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
     const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : null;
     if(geo)geo.rotateX(-Math.PI/2);
     const fl=bay?new THREE.Mesh(geo,[m,mat('#e9e4da')]):FurnishFloorFinishModel.surface(THREE,r,floor||{},{wx,wz,material:m});
@@ -1271,7 +1272,7 @@ function buildArch(){
   // Fill the actual door opening with each adjoining room's floor, including
   // its own grid and finished height. Legacy projects keep schematic sills.
   for(const a of finishPlan.floorFinish?.doorways||[]){
-    const m=a.layout?FurnishFloorFinishModel.material(THREE,a.layout,{color:MATS[state.rooms[a.roomId].mat]?.sw}):floorMat(state.rooms[a.roomId].mat);
+    const m=a.layout?FurnishFloorFinishModel.material(THREE,a.layout,{color:MATS[state.rooms[a.roomId].mat]?.sw,groutColor:FurnishTileGrout.color(state,a.roomId,'floor')}):floorMat(state.rooms[a.roomId].mat);
     const mesh=FurnishFloorFinishModel.surface(THREE,a.room,a,{wx,wz,material:m});mesh.userData.doorway=a.id;archFloor.add(mesh);
     const layers=FurnishFloorFinishModel.layers(THREE,a.room,a,{wx,wz});if(layers)archFloor.add(layers);
   }
@@ -1377,7 +1378,7 @@ function buildFurn(){
     }
   }
   furnG.children.slice().forEach(o => { if (!keep.has(o.userData.fid)){ clearGroup(o); furnG.remove(o); } });
-  furnG.visible = opt.furn; selKey = null; applyGrow();
+  furnG.visible = opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting(); selKey = null; applyGrow();
   syncModelErrors();
 }
 
@@ -1388,7 +1389,7 @@ function buildHeaterClearances(){
     const checks=FurnishDesign.waterheaterClearances(plan,f,{furniture:state.furniture}),group=FurnishHeaterClearanceModel.build(THREE,f,checks,{CSS2DObject,document,tr});
     group.position.set(wx(f.cx),0,wz(f.cy));clearanceG.add(group);
   }}
-  clearanceG.visible=opt.furn;clearanceG.scale.y=Math.max(furnGrow,.001);
+  clearanceG.visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();clearanceG.scale.y=Math.max(furnGrow,.001);
 }
 function buildLabels(){
   invalidate();
@@ -1428,8 +1429,8 @@ function sync(force){
   Object.assign(opt,settings);
   if(opt.mode==='walk')opt.cut=2.8;
   const north=JSON.stringify(state.drawing?.northAngle??null);
-  if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn;showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
-  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes,state.floorFinishes,state.furnitureDatum]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes,state.floorFinishes,state.wallTiling]);
+  if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
+  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes,state.floorFinishes,state.furnitureDatum]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes,state.floorFinishes,state.wallTiling]);
   if(force||a!==sigArch||f!==sigFurn){buildHeaterClearances();clearSceneIssue();selKey=null;}
   if (force || a !== sigArch){ sigArch = a; buildArch(); invalidate(true); }
   if (force || f !== sigFurn){ sigFurn = f; buildFurn(); invalidate(true); }
@@ -1438,7 +1439,7 @@ function sync(force){
 }
 
 // CSS2DRenderer 只看标签自身的 visible，不继承父级，所以逐个设置
-function showLabels(v){ labelG.visible = v; labelG.children.forEach(o => o.visible = v&&(o.userData.cutVisible??true)&&(!o.userData.wallTileLabel||wallTileNumbers));archUp?.traverse(o=>{if(o.userData.beamDimension)o.visible=v&&o.userData.cutVisible;});invalidate(); }
+function showLabels(v){ labelG.visible = v; labelG.children.forEach(o => o.visible = v&&(o.userData.cutVisible??true));archUp?.traverse(o=>{if(o.userData.beamDimension)o.visible=v&&o.userData.cutVisible;});invalidate(); }
 function applyGrow(){
   if (!inited) return;
   archUp.scale.y = Math.max(grow, .001);
@@ -1497,6 +1498,7 @@ function animate(dur, fn){ return new Promise(res => { anim = {t0:performance.no
 const wait = ms => new Promise(r => setTimeout(r, ms));
 function flyTo(B, dur = 900){ fly = {t0:performance.now(), dur, A:curPose(), B}; }
 function flyToRoom(id){
+  if(id==='__all'){clearObservation();flyTo(isoWhole());return;}
   const r = ROOMS.find(r => r.id === id);if(!r)return;clearObservation();flyToBox(bbox(r.poly));
 }
 function flyToBox(box){
@@ -1572,7 +1574,6 @@ async function enter(){
   stage.classList.remove('animating');
 }
 async function exit(){
-  clearFloorOriginPreview();clearWallOriginPreview();
   capturedImage=image();capturedState=JSON.stringify(state);
   clearObservation();
   if (opt.mode === 'walk'){ walkCtl.unlock(); stopTouchWalk(); $('#hint3d').textContent = ''; $('#walkOverlay').style.display = 'none'; $('#cross').style.display = 'none';
@@ -1603,7 +1604,7 @@ function pick(e){
   if (!e) ptr.set(0, 0);
   else { const r = renderer.domElement.getBoundingClientRect(); ptr.set((e.clientX - r.left)/r.width*2 - 1, -(e.clientY - r.top)/r.height*2 + 1); }
   ray.setFromCamera(ptr, camera);
-  const hits = ray.intersectObjects([...(opt.furn ? [furnG] : []), archUp, archFloor], true);
+  const hits = ray.intersectObjects([...(opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting() ? [furnG] : []), archUp, archFloor], true);
   for (const h of hits){
     if(observation.clipped(h))continue;
     let o = h.object;
@@ -1622,6 +1623,8 @@ function pick(e){
 }
 // 屏幕点 → 地面（y = 0）上的户型坐标 mm；s = 该处每 mm 对应的屏幕像素，用于拖放时的幽灵图大小
 const ground0 = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+function refreshTileInspection(){if(!inited)return;const visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();furnG.visible=visible;clearanceG.visible=visible;for(const group of [elevationG,issueG]){group.visible=visible&&opt.mode==='orbit'&&!anim;group.traverse(o=>{if(o.isCSS2DObject)o.visible=group.visible;});}clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=visible&&!anim;});selKey=null;invalidate(true);}
+function tileRoomAt(x,y){if(!active||anim)return null;const r=renderer.domElement.getBoundingClientRect();ptr.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);const hit=ray.intersectObjects(archFloor.children,true).find(h=>h.object.userData.floor&&h.object.visible&&!observation.clipped(h));return hit?.object.userData.room??null;}
 function groundAt(x, y){
   if (!active || anim) return null;
   const r = renderer.domElement.getBoundingClientRect(), hit = new THREE.Vector3();
@@ -1637,75 +1640,6 @@ function groundAt(x, y){
   const s = Math.max(a.distanceTo(px(hit.clone().add(new THREE.Vector3(1, 0, 0)).project(camera))),
                      a.distanceTo(px(hit.clone().add(new THREE.Vector3(0, 0, 1)).project(camera)))) / 1000;
   return {x:hit.x*1000 + OX, y:hit.z*1000 + OY, z:hit.y*1000, s};
-}
-let floorOriginCamera=null;
-function lockFloorOriginDrag(value){
- if(value){if(floorOriginCamera)return;fly=null;floorOriginCamera={enabled:orbit.enabled,damping:orbit.enableDamping};orbit.enableDamping=false;orbit.update();orbit.enabled=false;}
- else if(floorOriginCamera){orbit.enabled=floorOriginCamera.enabled;orbit.enableDamping=floorOriginCamera.damping;floorOriginCamera=null;}
-}
-function clearFloorOriginPreview(){lockFloorOriginDrag(false);floorOriginPreview.clear();invalidate();}
-function clearWallOriginPreview(){lockFloorOriginDrag(false);const clipped=wallOriginObservation.clear();wallOriginPreview.clear();invalidate(clipped);}
-function wallOriginBounds(){const e=wallOriginPreview.elevation,bounds=new THREE.Box3();if(e)for(const u of [0,e.width])for(const z of [e.floorZ,e.height])bounds.expandByPoint(wallOriginPreview.world(e,[u,z],{wx,wz}));return bounds;}
-function updateWallOriginView(){if(!wallOriginPreview.active)return;wallOriginPreview.resizeHandle(camera,SH());if(wallOriginObservation.update(camera,wallOriginBounds(),archUp))invalidate(true);}
-function previewWallOrigin(face,layout,handlePoint){
- if(!active||anim)throw Error('请等待三维场景加载完成');if(opt.mode==='walk')setMode('orbit');
- const T=FurnishWallTiling,p=FurnishProject.effectivePlan(PLAN,state),current=T.faces(p,state).find(f=>T.same(f,face));if(!current)throw Error('此墙侧已变化，请重新选择');
- const result=wallOriginPreview.update(T.elevation(p,state,current,layout,{followFloor:false}),{wallGroup:archUp,wx,wz,handlePoint});updateWallOriginView();invalidate();return result;
-}
-function focusWallOrigin(){
- const e=wallOriginPreview.elevation,editor=document.querySelector('[data-wall-origin3d-editor]')?.closest('#fab-editor');if(!active||anim||!e||!editor)return;clearObservation();
- const r=renderer.domElement.getBoundingClientRect(),p=editor.getBoundingClientRect(),free=[{x:r.left+20,y:r.top+30,w:p.left-r.left-40,h:r.height-140},{x:r.left+20,y:r.top+30,w:r.width-40,h:p.top-r.top-55}].filter(v=>v.w>160&&v.h>120).sort((a,b)=>b.w*b.h-a.w*a.h)[0]||{x:r.left+20,y:r.top+30,w:r.width-40,h:r.height-140};
- const out=new THREE.Vector3(e.normal===0?e.face.side:0,.18,e.normal===1?e.face.side:0).normalize(),right=new THREE.Vector3().crossVectors(camera.up,out).normalize(),up=new THREE.Vector3().crossVectors(out,right).normalize(),tan=Math.tan(FOV*Math.PI/360),distance=Math.max(1.5,e.width/1000/(2*tan*camera.aspect*free.w/r.width),(e.height-e.floorZ)/1000/(2*tan*free.h/r.height))*1.12,pixel=2*distance*tan/r.height;
- const t=wallOriginPreview.world(e,[e.width/2,(e.floorZ+e.height)/2],{wx,wz}).addScaledVector(right,(r.left+r.width/2-free.x-free.w/2)*pixel).addScaledVector(up,(free.y+free.h/2-r.top-r.height/2)*pixel);orbit.maxDistance=Math.max(45,distance*1.5);flyTo(pose(t,t.clone().addScaledVector(out,distance)));
-}
-function wallOriginHandleHit(x,y){
- if(!active||anim||opt.mode!=='orbit')return null;const h=wallOriginPreview.handle;if(!h)return null;const r=renderer.domElement.getBoundingClientRect(),q=h.point.project(camera),sx=r.left+(q.x+1)*r.width/2,sy=r.top+(1-q.y)*r.height/2;
- return q.z>=-1&&q.z<=1&&Math.hypot(x-sx,y-sy)<=24?{x:sx,y:sy,point:h.local}:null;
-}
-function wallOriginDragPoint(x,y,offset=[0,0],{start=false}={}){
- const e=wallOriginPreview.elevation;if(!active||anim||opt.mode!=='orbit'||!e)return null;
- const r=renderer.domElement.getBoundingClientRect(),n=new THREE.Vector3(e.normal===0?1:0,0,e.normal===1?1:0),at=wallOriginPreview.world(e,[0,0],{wx,wz});ptr.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);
- const hit=ray.ray.intersectPlane(new THREE.Plane().setFromNormalAndCoplanarPoint(n,at),new THREE.Vector3());if(!hit)return null;const point=[((e.axis===0?hit.x*1000+OX:hit.z*1000+OY)-e.zero)*e.dir,hit.y*1000];if(start)return {u:point[0],z:point[1]};
- const proposed=point.map((v,i)=>v+offset[i]),project=p=>{const q=wallOriginPreview.world(e,p,{wx,wz}).project(camera);return q.z>=-1&&q.z<=1?[r.left+(q.x+1)*r.width/2,r.top+(1-q.y)*r.height/2]:null;},result=FurnishWallOriginPreview.snap(e,wallOriginPreview.room,proposed,project);
- return result?{u:result.point[0]-offset[0],z:result.point[1]-offset[1],snapKind:result.kind}:null;
-}
-function focusFloorOrigin(id){
- if(!active||anim)return;const room=ROOMS.find(r=>r.id===id),editor=document.querySelector('[data-floor-origin3d-editor]')?.closest('#fab-editor');if(!room||!editor)return;
- clearObservation();if(opt.mode==='walk')setMode('orbit');
- const r=renderer.domElement.getBoundingClientRect(),p=editor.getBoundingClientRect(),box=bbox(room.poly),regions=[{x:r.left+20,y:r.top+30,w:p.left-r.left-40,h:r.height-140},{x:r.left+20,y:r.top+30,w:r.width-40,h:p.top-r.top-55}].filter(v=>v.w>160&&v.h>120).sort((a,b)=>b.w*b.h-a.w*a.h),free=regions[0]||{x:r.left+20,y:r.top+30,w:r.width-40,h:r.height-140};
- const tan=Math.tan(FOV*Math.PI/360),distance=Math.max(2,(box[2]-box[0])/1000/(2*tan*camera.aspect*free.w/r.width),(box[3]-box[1])/1000/(2*tan*free.h/r.height))*1.12,pixel=2*distance*tan/r.height;
- const area=FurnishProject.effectivePlan(PLAN,state).floorFinish?.areas[id],t=new THREE.Vector3(wx((box[0]+box[2])/2)+(r.left+r.width/2-free.x-free.w/2)*pixel,(area?.finishedZ??0)/1000,wz((box[1]+box[3])/2)+(r.top+r.height/2-free.y-free.h/2)*pixel);
- flyTo(pose(t,new THREE.Vector3(t.x,t.y+distance,t.z+.0001)));
-}
-function previewFloorOrigin(id,origin,handlePoint){
- if(!active||anim)throw Error('请等待三维场景加载完成');
- if(opt.mode==='walk')setMode('orbit');
- const next=FurnishFloorFinish.setLayoutBasis(state,FurnishProject.effectivePlan(PLAN,state),[id],{origin});
- const result=floorOriginPreview.update(FurnishProject.effectivePlan(PLAN,next),id,{floorGroup:archFloor,wallGroup:archUp,wx,wz,handlePoint});floorOriginPreview.resizeHandle(camera,SH());invalidate();return result;
-}
-function floorOriginHandleHit(x,y,id){
- if(!active||anim||opt.mode!=='orbit')return null;const handle=floorOriginPreview.handle;if(handle?.roomId!==id)return null;
- const r=renderer.domElement.getBoundingClientRect(),q=handle.point.clone().project(camera),sx=r.left+(q.x+1)*r.width/2,sy=r.top+(1-q.y)*r.height/2;
- return q.z>=-1&&q.z<=1&&Math.hypot(x-sx,y-sy)<=24?{x:sx,y:sy,point:[handle.point.x*1000+OX,handle.point.z*1000+OY]}:null;
-}
-function floorOriginDragPoint(x,y,id,offset=[0,0],{snap=false,start=false}={}){
- if(!active||anim||opt.mode!=='orbit')return null;const area=floorScenePlan?.floorFinish?.areas[id];if(!Number.isFinite(area?.finishedZ))return null;
- const r=renderer.domElement.getBoundingClientRect();ptr.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);
- const p=ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-area.finishedZ/1000),new THREE.Vector3());if(!p)return null;
- const point=[p.x*1000+OX,p.z*1000+OY];if(start)return{x:point[0],y:point[1]};
- const handle=point.map((v,i)=>v+offset[i]),project=point=>{const q=new THREE.Vector3(wx(point[0]),area.finishedZ/1000,wz(point[1])).project(camera);return q.z>=-1&&q.z<=1?[r.left+(q.x+1)*r.width/2,r.top+(1-q.y)*r.height/2]:null;};
- if(snap&&!floorOriginEdges.has(id))floorOriginEdges.set(id,FurnishFloorOriginPreview.wallEdges(floorScenePlan,id));
- const result=snap?FurnishFloorOriginPreview.snapHandle(area.room,handle,project,12,floorOriginEdges.get(id)):FurnishFloorOriginPreview.contains(area.room,handle)?{point:handle,snapped:false}:null;
- return result?{x:result.point[0]-offset[0],y:result.point[1]-offset[1],snapped:result.snapped,snapKind:result.kind}:null;
-}
-function floorOriginPoint(x,y,id){
- if(!active||anim||opt.mode!=='orbit')return null;
- const r=renderer.domElement.getBoundingClientRect();ptr.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);
- const visible=o=>{for(let p=o;p;p=p.parent)if(!p.visible)return false;return true;};
- const hit=ray.intersectObjects([archFloor,archUp,...(opt.furn?[furnG]:[])],true).find(h=>h.object.isMesh&&visible(h.object)&&!h.object.userData.floorOriginMarker&&!observation.clipped(h)&&observation.material(h.object)!==glassMat);
- if(!hit?.object.userData.floor||hit.object.userData.room!==id)return null;
- const project=p=>{const q=p.project(camera);return new THREE.Vector2(q.x*r.width/2,q.y*r.height/2);},at=project(hit.point.clone()),s=Math.max(at.distanceTo(project(hit.point.clone().add(new THREE.Vector3(1,0,0)))),at.distanceTo(project(hit.point.clone().add(new THREE.Vector3(0,0,1)))))/1000;
- return {x:hit.point.x*1000+OX,y:hit.point.z*1000+OY,s};
 }
 function updateSel(){
   const ids = selIds(), key = JSON.stringify(ui.sel);
@@ -1879,7 +1813,7 @@ function bindUI(){
   document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => {
     const k = b.dataset.t; opt[k] = !opt[k]; b.classList.toggle('on', opt[k]);
     remember();
-    if (k === 'furn'){ furnG.visible = clearanceG.visible = opt.furn; invalidate(true); if (!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
+    if (k === 'furn'){ refreshTileInspection(); if (k==='furn'&&!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
     if (k === 'labels') showLabels(opt.labels && opt.mode === 'orbit' && !anim);
     if (k === 'night' || k === 'lamps') applyLight();
   });
@@ -1915,21 +1849,21 @@ function loop(){
   updateObservation();
   dirty = false;
   selHelper?.children.forEach(h => h.update());
+  clearanceG.visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();
   renderer.render(scene, camera);
-  clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=opt.furn&&!anim;});
-  for(const group of [elevationG,issueG]){const visible=opt.furn&&opt.mode==='orbit'&&!anim;group.visible=visible;group.traverse(o=>{if(o.isCSS2DObject)o.visible=visible;});}
+  clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=clearanceG.visible&&!anim;});
+  for(const group of [elevationG,issueG]){const visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting()&&opt.mode==='orbit'&&!anim;group.visible=visible;group.traverse(o=>{if(o.isCSS2DObject)o.visible=visible;});}
   for(const o of wallLabelG.children)if(o.userData.wallTileLabel){const f=o.userData.wallTileLabel;o.visible=active&&wallTileNumbers&&opt.mode==='orbit'&&!anim&&!stage.classList.contains('animating')&&(f.normal===0?camera.position.x-o.position.x:camera.position.z-o.position.z)*f.side>0;}
   labelRenderer.render(scene, camera);
   fitSceneAnnotationLabels();
 }
 
-function shot(){ if(floorOriginPreview.active||wallOriginPreview.active)return toast('请先应用或取消起铺预览，再导出图片');const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
-function image(){if(floorOriginPreview.active||wallOriginPreview.active||globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
+function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
+function image(){if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
 
 function relang(){ syncWalkTexts(); if (inited){buildLabels();buildHeaterClearances();} }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建
 function replan(){
-  clearFloorOriginPreview();clearWallOriginPreview();
   clearObservation();
   clearSceneIssue();clearAnnotations(elevationG);selKey=null;
   capturedImage=null;capturedState='';
@@ -1950,7 +1884,8 @@ function cabinetPreview(host,f,actions){
 }
 
 function ceilingPreview(host,data,options){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data,...options});}
-return {ceilingPreview,cabinetPreview, enter, exit, relang, previewFloorOrigin,clearFloorOriginPreview,floorOriginPoint,floorOriginDragPoint,floorOriginHandleHit,lockFloorOriginDrag,focusFloorOrigin,previewWallOrigin,clearWallOriginPreview,focusWallOrigin,wallOriginHandleHit,wallOriginDragPoint, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
+function tileLayoutPreview(host,options){return FurnishTileLayoutPreview.create({THREE,OrbitControls,host,...options});}
+return {tileLayoutPreview,tileRoomAt,refreshTileInspection,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
 }
 </script>
 </body>

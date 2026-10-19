@@ -33,7 +33,7 @@ function create(THREE){
   architecture.traverse(mesh=>{
    if(!mesh.isMesh||mesh.userData.walkOnly||mesh.userData.room||mesh.userData.wallOriginMarker)return;
    if(originals.has(mesh))return;
-   const original=mesh.material,clone=m=>{const copy=m.clone();copy.clippingPlanes=[...(m.clippingPlanes||[]),plane];copy.clipShadows=true;return copy;};
+   const original=mesh.material,clone=m=>{const copy=m.clone();copy.onBeforeCompile=m.onBeforeCompile;copy.customProgramCacheKey=m.customProgramCacheKey;copy.clippingPlanes=[...(m.clippingPlanes||[]),plane];copy.clipShadows=true;return copy;};
    originals.set(mesh,original);mesh.material=Array.isArray(original)?original.map(clone):clone(original);changed=true;
   });
   return changed;

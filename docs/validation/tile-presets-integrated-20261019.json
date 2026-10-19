@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-19",
+  "status": "PASS",
+  "production": [
+    "src/core/tile-preset-core.js",
+    "src/ui/tile-presets.js",
+    "styles/tile-presets.css"
+  ],
+  "core": {
+    "suite": "tests/test-tile-presets.cjs",
+    "passed": true,
+    "covers": [
+      "saved snapshot save/delete/capture",
+      "numbered face recipes",
+      "default origin/elevation/layer/alignment preservation",
+      "advanced opt-in",
+      "per-face grout and room/unified resets",
+      "invalid and duplicate target atomicity",
+      "v12 repeated project/workspace/cache recovery",
+      "no unrelated furniture normalization or color-only spatial invalidation"
+    ]
+  },
+  "browser": {
+    "latestRun": "output/playwright/verification-hcH7wk",
+    "cases": [
+      {
+        "name": "tile-presets",
+        "status": "PASS",
+        "seconds": 14.3,
+        "log": "tile-presets.log"
+      }
+    ],
+    "compatibilityRun": "output/playwright/verification-QWirqq",
+    "compatibility": [
+      {
+        "name": "tile-presets",
+        "status": "PASS",
+        "seconds": 13.9,
+        "log": "tile-presets.log"
+      },
+      {
+        "name": "tile-grout-unified",
+        "status": "PASS",
+        "seconds": 19.9,
+        "log": "tile-grout-unified.log"
+      },
+      {
+        "name": "tile-grout",
+        "status": "PASS",
+        "seconds": 21.2,
+        "log": "tile-grout.log"
+      }
+    ],
+    "transports": [
+      "HTTP",
+      "offline file://"
+    ],
+    "covers": [
+      "native HTML5 card drop onto actual SVG room geometry",
+      "click room application",
+      "no automatic room/layout edits on open or preset save",
+      "preset save undo/redo",
+      "numbered wall variants and per-face color",
+      "draft elevation and floor grids",
+      "mixed room and mixed color editor keep defaults",
+      "default advanced opt-outs",
+      "production furniture groups hidden",
+      "view-only inspection and exit",
+      "refresh and v12 export/reimport",
+      "390px editor and review",
+      "production shaders without errors"
+    ]
+  },
+  "actual1601": {
+    "passed": true,
+    "actualPlan": "custom_mv37igji",
+    "rooms": 9,
+    "workSlots": 9,
+    "namedDesigns": 1,
+    "furniture": 50,
+    "wallNumbers": [
+      8,
+      9
+    ],
+    "presetCapturePreservesActualLayout": true,
+    "repositoryV12Save": true,
+    "numberedMixedSaveAndUndo": true,
+    "productionFaceColors": true,
+    "all50FurnitureHidden": true,
+    "layerHeightOriginAndOtherFacesPreserved": true,
+    "actualProjectSha256": "a6e43e77d759d7d8cf7464be812e303adb5441cd49293600361eaadb05d2b4c1",
+    "errors": []
+  },
+  "fullCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "regressionSuites": 214,
+    "builtInPlans": 12,
+    "previewPages": 3329,
+    "log": "output/tile-study-20261019/tile-presets-check.log"
+  },
+  "actualApp": {
+    "url": "http://127.0.0.1:8765/",
+    "verified": true,
+    "view": "balcony tile inspection with formal preset library",
+    "layoutFileUnchanged": true,
+    "existingWorkSlots": 9,
+    "namedDesigns": 1,
+    "furniture": 50
+  },
+  "visualArtifacts": [
+    "output/playwright/tile-presets-1601-library.png",
+    "output/playwright/tile-presets-1601-assignment.png",
+    "output/playwright/tile-presets-1601-inspection.png",
+    "output/playwright/tile-presets-1601-mobile.png"
+  ],
+  "limitations": [
+    "one room or its chosen wall faces per application",
+    "no single-wall top/bottom band recipes",
+    "no same-floor multi-size mosaics",
+    "no physical touch-screen test",
+    "not full browser suite",
+    "construction slopes, offcut reuse and real grout samples remain outside current grid model"
+  ]
+}

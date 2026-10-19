@@ -1,0 +1,167 @@
+{
+  "date": "2026-10-19",
+  "scope": "铺砖后续阶段全部收尾：重复编辑器清理、参数与预设语义、图面选择、二维/三维单带基准手势",
+  "browserCases": [
+    "portable-smoke",
+    "tile-workspace",
+    "tile-workspace-complete",
+    "tile-library"
+  ],
+  "browserRun": "verification-AtB3Yy",
+  "browserResults": {
+    "selected": [
+      "portable-smoke",
+      "tile-workspace",
+      "tile-workspace-complete",
+      "tile-library"
+    ],
+    "results": [
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "seconds": 8.4,
+        "log": "portable-smoke.log"
+      },
+      {
+        "name": "tile-workspace",
+        "status": "PASS",
+        "seconds": 16.4,
+        "log": "tile-workspace.log"
+      },
+      {
+        "name": "tile-workspace-complete",
+        "status": "PASS",
+        "seconds": 15.4,
+        "log": "tile-workspace-complete.log"
+      },
+      {
+        "name": "tile-library",
+        "status": "PASS",
+        "seconds": 10.6,
+        "log": "tile-library.log"
+      }
+    ],
+    "notRun": []
+  },
+  "passed": [
+    "HTTP和断网file://独立资料运行",
+    "单一铺砖入口及稳定表面多选",
+    "真实SVG户型选面及Shift键盘多选",
+    "生产三维射线选择",
+    "二维/三维实际拖动、Esc与失焦回退",
+    "选中分带独立调整，不改其它带、规格与分界",
+    "默认本地修改仅解除改变组；同值输入保留订阅",
+    "更新来源预设及所有订阅者在草稿内同步",
+    "预设库另存、统一草稿应用、来源保存同步、捕获、解除和删除",
+    "草稿不写state/历史，应用一次mutate",
+    "一次撤销重做、自动保存、刷新恢复",
+    "实际项目导出导入和生产场景材质",
+    "整案家具基准同一草稿应用/撤销/刷新，保留家具原输入",
+    "390px布局与固定应用按钮",
+    "SVG真实下载包含命名空间且排除临时手柄"
+  ],
+  "core": {
+    "status": "PASS",
+    "command": "node scripts/check.cjs",
+    "regressionSuites": 219,
+    "builtInPlans": 12,
+    "freshPreviewPages": 16,
+    "assetsAndSharedDeclarationsAndSyntax": true,
+    "location": "最终源码隔离副本；不递归重查工作区多年历史输出",
+    "sourceFilesCompared": 503,
+    "rootAndValidatedSourceIdentical": true,
+    "log": "tile-workspace-complete-20261019/check.log"
+  },
+  "actualProject": {
+    "file": "projects/workspace.furnish.json",
+    "sha256": "421dad2ae94816e45dd34190ce23185e5dece2239efdb0460f4653febccec3df",
+    "unchangedFromTurnStart": true
+  },
+  "cleanup": {
+    "editors": [
+      {
+        "file": "src/ui/floor-finishes.js",
+        "beforeBytes": 37396,
+        "afterBytes": 1531
+      },
+      {
+        "file": "src/ui/wall-tiling.js",
+        "beforeBytes": 26220,
+        "afterBytes": 481
+      },
+      {
+        "file": "src/ui/tile-grout.js",
+        "beforeBytes": 11689,
+        "afterBytes": 322
+      },
+      {
+        "file": "src/ui/finish-guide.js",
+        "beforeBytes": 10000,
+        "afterBytes": 169
+      },
+      {
+        "file": "src/ui/wall-origin-3d.js",
+        "beforeBytes": 8272,
+        "afterBytes": 182
+      },
+      {
+        "file": "src/ui/wall-tile-bands.js",
+        "beforeBytes": 10139,
+        "afterBytes": 7104
+      },
+      {
+        "file": "src/ui/tile-presets.js",
+        "beforeBytes": 29042,
+        "afterBytes": 20447
+      },
+      {
+        "file": "src/ui/tile-workspace.js",
+        "beforeBytes": 22875,
+        "afterBytes": 33420
+      }
+    ],
+    "beforeBytes": 155633,
+    "afterBytes": 63656,
+    "notes": [
+      "移除主场景无人调用的旧美缝及墙地起点预览接线和对应样式",
+      "旧UI兼容调用转发同一工作区，预设管理仍保留",
+      "历史独立UI验收命令明确映射到三份当前用例，不把已移除界面脚本称为通过"
+    ]
+  },
+  "evidence": [
+    "tile-workspace-complete-20261019/desktop.png",
+    "tile-workspace-complete-20261019/preview-floor.png",
+    "tile-workspace-complete-20261019/preview-band.png",
+    "tile-workspace-complete-20261019/plan.png",
+    "tile-workspace-complete-20261019/mobile.png"
+  ],
+  "notExecuted": [
+    "实体触屏硬件",
+    "完整键盘和读屏验收",
+    "全项目所有浏览器专项"
+  ],
+  "boundaries": [
+    "墙面范围沿用既有厨卫阳台识别",
+    "不支持地面大小砖组合、切砖优化、施工下料或找坡",
+    "墙地节距不同只对齐起铺缝",
+    "本次无持久字段/外层版本/缓存版本变化，旧记录恢复不套用预设"
+  ],
+  "followup": {
+    "run": "verification-mp5SoB",
+    "result": {
+      "selected": [
+        "tile-workspace-complete"
+      ],
+      "results": [
+        {
+          "name": "tile-workspace-complete",
+          "status": "PASS",
+          "seconds": 16.2,
+          "log": "tile-workspace-complete.log"
+        }
+      ],
+      "notRun": []
+    },
+    "scope": "最终SVG真实下载含命名空间，排除临时手柄，并重跑完整二维/三维/预设组交互"
+  }
+}

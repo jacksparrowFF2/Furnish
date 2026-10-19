@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "change": "未包含分带参数或选择整墙铺贴时隐藏分带明细，勾选／切换恢复原草稿",
+  "source": [
+    "src/ui/wall-tile-bands.js",
+    "styles/tile-presets.css"
+  ],
+  "browserCases": [
+    "tile-presets",
+    "wall-tile-bands"
+  ],
+  "actualProjectBeforeRevision": "421dad2ae94816e45dd34190ce23185e5dece2239efdb0460f4653febccec3df",
+  "persistenceChange": false,
+  "behavior": {
+    "uncheckedPresetHidesEntireBandGroup": true,
+    "uniformModeHidesRowsReferenceAddAndHints": true,
+    "recheckingRetainsDraft": true,
+    "modeSwitchRetainsDraft": true,
+    "existingSaveCancelAndUndoSemanticsPreserved": true
+  },
+  "browser": {
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "results": "../../output/playwright/verification-USzEhl/results.json",
+    "cases": [
+      "tile-presets",
+      "wall-tile-bands"
+    ],
+    "savedLibraryUndoRedo": true,
+    "actualProductionGeometry": true,
+    "projectV14RoundTrip": true,
+    "refresh": true,
+    "mobile390": true
+  },
+  "fullCheck": {
+    "status": "passed",
+    "regressionSuites": 217,
+    "builtInPlans": 12,
+    "previewPages": 3569,
+    "log": "../../output/tile-study-20261019/bands-visibility-check.log"
+  },
+  "actualUI": {
+    "uniformPreset": "preset_shared_wall_fb1881a9667b",
+    "bandGroupVisible": false,
+    "expandedWhenChecked": true,
+    "hiddenAfterUncheck": true,
+    "screenshot": "../../output/playwright/bands-disabled-compact-editor.png",
+    "workspaceAndRevisionUnchanged": true
+  },
+  "limits": [
+    "未运行全部浏览器套件或实体触屏；本次未保存或应用任何实际铺贴参数。"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "selected": [
+    "portable-smoke",
+    "tile-workspace",
+    "tile-workspace-complete",
+    "tile-library"
+  ],
+  "results": [
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 8.5,
+      "log": "portable-smoke.log"
+    },
+    {
+      "name": "tile-workspace",
+      "status": "PASS",
+      "seconds": 16.7,
+      "log": "tile-workspace.log"
+    },
+    {
+      "name": "tile-workspace-complete",
+      "status": "PASS",
+      "seconds": 15.7,
+      "log": "tile-workspace-complete.log"
+    },
+    {
+      "name": "tile-library",
+      "status": "PASS",
+      "seconds": 10.6,
+      "log": "tile-library.log"
+    }
+  ],
+  "notRun": []
+}

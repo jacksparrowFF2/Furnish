@@ -7,7 +7,7 @@
   async function archive(workspace){return request('/recoveries','POST',{workspace});}
   async function initialize(caches){
    const disk=await request('/workspace','GET');revision=disk.revision;
-   const candidates=caches.filter(w=>[2,3,4,5,6,7,8,9,10].includes(w?.v)&&Object.keys(w.work||{}).length).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+   const candidates=caches.filter(w=>[2,3,4,5,6,7,8,9,10,11,12,13,14].includes(w?.v)&&Object.keys(w.work||{}).length).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
    const seen=new Set();for(const c of candidates){const hash=await fingerprint(c);if(hash!==revision&&!seen.has(hash)){await archive(c);seen.add(hash);}}
    const cache=candidates[0];
    if(!disk.workspace){if(!cache){publish('ready','仓库自动保存已启用');return null;}publish('pending','正在迁移浏览器设计到仓库…');const result=await request('/workspace','PUT',{workspace:cache,baseRevision:null});revision=result.revision;publish('saved','设计已保存到仓库文件；Git 同步需手动提交和推送');return {...cache,_repository:{revision}};}

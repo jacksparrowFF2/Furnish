@@ -1,0 +1,613 @@
+{
+  "date": "2026-10-19",
+  "planId": "custom_mv37igji",
+  "application": "Applied through existing repository revision-checked writer; prior workspace is recoverable in app.",
+  "save": {
+    "revision": "a6e43e77d759d7d8cf7464be812e303adb5441cd49293600361eaadb05d2b4c1",
+    "recoveryId": "f43be3af264342f1b88a79f568af897636ef96adaa491070b5c16d2065f9480d",
+    "plans": 9,
+    "designs": 1,
+    "walls": 32
+  },
+  "preserved": {
+    "preservedFurniture": true,
+    "preservedArchitecture": true,
+    "preservedLayers": true,
+    "preservedBedroomsAndHall": true,
+    "roundtrips": 3,
+    "balconyCells": 8
+  },
+  "wallLayouts": [
+    {
+      "room": "卫生间",
+      "number": 1,
+      "label": "墙端面 · 下边墙 1",
+      "wallId": "outline_7",
+      "width": 74.00000000000045,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 432,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 2,
+      "label": "下边墙 2",
+      "wallId": "outline_8",
+      "width": 1699,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 446,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 1,
+      "label": "上边墙 1",
+      "wallId": "outline_8",
+      "width": 678,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 340,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 2,
+      "label": "左边墙 2",
+      "wallId": "outline_9",
+      "width": 411,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 41.5,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 3,
+      "label": "墙端面 · 下边墙 3",
+      "wallId": "outline_9",
+      "width": 240,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 3,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 4,
+      "label": "下边墙 4",
+      "wallId": "outline_10",
+      "width": 1256,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 3,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 3,
+      "label": "墙端面 · 左边墙 3",
+      "wallId": "outline_10",
+      "width": 4,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 6.5,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 4,
+      "label": "下边墙 4",
+      "wallId": "outline_11",
+      "width": 1986,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 391,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 5,
+      "label": "右边墙 5",
+      "wallId": "outline_12",
+      "width": 375,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 389.5,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 6,
+      "label": "墙端面 · 下边墙 6",
+      "wallId": "outline_12",
+      "width": 550,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 276,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 7,
+      "label": "左边墙 7",
+      "wallId": "outline_13",
+      "width": 570,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 128.5,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 5,
+      "label": "左边墙 5",
+      "wallId": "outline_18",
+      "width": 301,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 562.5,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 6,
+      "label": "左边墙 6",
+      "wallId": "outline_20",
+      "width": 822,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 261.5,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 7,
+      "label": "上边墙 7",
+      "wallId": "outline_21",
+      "width": 806,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 794,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 8,
+      "label": "上边墙 8",
+      "wallId": "outline_22",
+      "width": 280,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 542,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 9,
+      "label": "墙端面 · 左边墙 9",
+      "wallId": "outline_22",
+      "width": 280,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 542,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 10,
+      "label": "上边墙 10",
+      "wallId": "outline_23",
+      "width": 568,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 686,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 11,
+      "label": "墙端面 · 左边墙 11",
+      "wallId": "outline_23",
+      "width": 36,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 420,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 1,
+      "label": "左边墙 1",
+      "wallId": "outline_25",
+      "width": 1204,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 603,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 2,
+      "label": "左边墙 2",
+      "wallId": "outline_26",
+      "width": 703,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 603,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 3,
+      "label": "上边墙 3",
+      "wallId": "outline_27",
+      "width": 358,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": -21,
+        "startHeight": -180,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 4,
+      "label": "下边墙 4",
+      "wallId": "outline_28",
+      "width": 360,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": -20,
+        "startHeight": -180,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 5,
+      "label": "右边墙 5",
+      "wallId": "outline_31",
+      "width": 278,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": -61,
+        "startHeight": -180,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 6,
+      "label": "右边墙 6",
+      "wallId": "outline_32",
+      "width": 213.99999999999977,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": -93.00000000000011,
+        "startHeight": -180,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 7,
+      "label": "下边墙 7",
+      "wallId": "outline_33",
+      "width": 460,
+      "layout": {
+        "width": 800,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 0,
+        "startHeight": -180,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 12,
+      "label": "右边墙 12",
+      "wallId": "outline_35",
+      "width": 1499,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 750.5,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 13,
+      "label": "上边墙 13",
+      "wallId": "outline_36",
+      "width": 20,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 30,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "厨房",
+      "number": 8,
+      "label": "左边墙 8",
+      "wallId": "outline_37",
+      "width": 723,
+      "layout": {
+        "width": 400,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 362.5,
+        "startHeight": -348,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 14,
+      "label": "下边墙 14",
+      "wallId": "outline_38",
+      "width": 721,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 351,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 8,
+      "label": "上边墙 8",
+      "wallId": "outline_40",
+      "width": 2958,
+      "layout": {
+        "width": 800,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 678,
+        "startHeight": -180,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "阳台",
+      "number": 9,
+      "label": "右边墙 9",
+      "wallId": "outline_43",
+      "width": 712.0000000000002,
+      "layout": {
+        "width": 800,
+        "height": 800,
+        "gap": 2,
+        "angle": 0,
+        "offset": 0,
+        "startHeight": -180,
+        "reference": "floor"
+      }
+    },
+    {
+      "room": "卫生间",
+      "number": 15,
+      "label": "上边墙 15",
+      "wallId": "outline_46",
+      "width": 760,
+      "layout": {
+        "width": 800,
+        "height": 400,
+        "gap": 2,
+        "angle": 0,
+        "offset": 790,
+        "startHeight": -160,
+        "reference": "floor"
+      }
+    }
+  ],
+  "browser": {
+    "passed": true,
+    "rows": [
+      {
+        "mode": "http",
+        "passed": true,
+        "preservedFurniture": 50,
+        "walls": 32,
+        "materials": {
+          "meshes": 54,
+          "colors": [
+            {
+              "tile": [
+                232,
+                226,
+                216,
+                255
+              ],
+              "grout": [
+                221,
+                216,
+                206,
+                255
+              ]
+            }
+          ]
+        },
+        "refresh": true
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "preservedFurniture": 50,
+        "walls": 32,
+        "materials": {
+          "meshes": 54,
+          "colors": [
+            {
+              "tile": [
+                232,
+                226,
+                216,
+                255
+              ],
+              "grout": [
+                221,
+                216,
+                206,
+                255
+              ]
+            }
+          ]
+        },
+        "refresh": true
+      }
+    ]
+  },
+  "fullCheck": {
+    "passed": true,
+    "regressionSuites": 211,
+    "builtInPlans": 12,
+    "previewPages": 3217,
+    "syntaxAndAssets": true
+  },
+  "limitations": [
+    "No floor drain slopes or construction cut list",
+    "Grout colors are a shared 3D display rule, not a new saved project material field"
+  ],
+  "visual": {
+    "liveBrowser": "Chrome existing 1601 tab, balcony 3D view retained",
+    "liveBalconyImage": "../../output/playwright/tiles-applied-balcony-live-20261019.png",
+    "scenes": [
+      "balcony",
+      "kitchen",
+      "bathroom",
+      "floor"
+    ],
+    "notes": "Actual production scene rendering. Kitchen/bathroom use temporary architectural observation cutaway and camera framing; geometry and saved furniture are unchanged."
+  }
+}

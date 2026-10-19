@@ -66,7 +66,7 @@ function create(THREE){
   let floors=0,walls=0;
   try{
    floorGroup.traverse(mesh=>{if(mesh.userData.floor&&mesh.userData.room===id){remember(mesh);F.uv(THREE,mesh.geometry,area.layout,{wx,wz});floors++;}});
-   wallGroup.traverse(mesh=>{const info=mesh.userData.wallTiling;if(!info||info.roomId!==id)return;const e=plan.wallTiling?.surfaces.find(e=>T.same(e.face,info));if(!e?.followFloor||!Number.isFinite(e.originZ))return;remember(mesh);W.uv(THREE,mesh.geometry,T.grid(e),info.rect);walls++;});
+   wallGroup.traverse(mesh=>{const info=mesh.userData.wallTiling;if(!info||info.roomId!==id||info.bandJoint)return;const surface=plan.wallTiling?.surfaces.find(e=>T.same(e.face,info)),e=surface&&(info.band?T.patterns(surface).find(e=>e.band?.id===info.band):surface);if(!e?.followFloor||!Number.isFinite(e.originZ))return;remember(mesh);W.uv(THREE,mesh.geometry,T.grid(e),info.rect);walls++;});
    if(!floors)throw Error('当前场景没有此区域可预览的地砖表面');
    if(!marker){marker=new THREE.Group();const ring=new THREE.Mesh(new THREE.RingGeometry(.035,.05,32),new THREE.MeshBasicMaterial({color:'#e8590c',side:THREE.DoubleSide,depthTest:false}));ring.rotation.x=-Math.PI/2;ring.renderOrder=20;marker.add(ring);marker.traverse(o=>o.userData.floorOriginMarker=true);floorGroup.add(marker);}
    const point=anchor(area.room,area.layout,handlePoint);marker.visible=!!point;

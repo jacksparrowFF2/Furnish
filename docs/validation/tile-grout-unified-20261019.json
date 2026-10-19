@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-19",
+  "feature": "统一美缝颜色；预设拖放仅交互方案，保留当前项目排版",
+  "core": {"status": "passed", "test": "tests/test-tile-grout-unified.cjs", "existingRegressionSuites": 213},
+  "browser": {"status": "passed", "cases": ["tile-grout-unified", "tile-grout"], "run": "output/playwright/verification-IoUtAL", "compatibilityRun": "output/playwright/verification-JQeVLB", "modes": ["HTTP", "offline file://"], "coverage": ["room and wall/floor subsets", "production multi-room preview", "cancel and Escape", "mixed saved color protection", "invalid input and empty scope", "one undo redo refresh", "auto reset", "save colors without enabling layouts", "390px"]},
+  "presetDemo": {"status": "passed", "artifact": "docs/validation/tile-presets-20261019/demo.html", "actualRooms": 9, "offline": true, "dragAndClick": true, "mixedLayoutProtection": true, "wallNumbers8And9": true, "undo": true, "invalidRoomRejected": true, "mobile390": true, "actualProjectHashUnchanged": true, "persistentPresetsImplemented": false, "productionTilingChanged": false},
+  "fullCheck": {"status": "passed", "command": "node scripts/check.cjs", "regressionSuites": 213, "builtInPlans": 12, "previewPages": 3249, "localAssets": true, "sharedDeclarations": true, "productionSyntax": true, "diffCheck": "passed", "log": "output/tile-study-20261019/tile-grout-unified-check.log"},
+  "actualProject": {"status": "passed", "planId": "custom_mv37igji", "rooms": 9, "wallRoomGroups": 3, "floorRoomGroups": 9, "previewSurfaces": 77, "furniture": 50, "repositoryV11SaveUndo": true, "allOtherWorkFieldsUnchanged": true, "mobile390": true, "liveInAppBrowser": "refreshed and opened unified editor in auto mode", "colorMode": "follow each tile; original layout retained", "errors": []},
+  "notRun": ["all browser cases", "physical touchscreen", "physical grout sample comparison"]
+}

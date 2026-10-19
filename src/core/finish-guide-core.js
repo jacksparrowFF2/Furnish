@@ -7,11 +7,11 @@ function inspect(plan,work){
  const eligible=plan.rooms.filter(r=>T().eligible(r,work.rooms?.[r.id])),faces=T().faces(plan,work);
  const rows=eligible.map(r=>{
   const use=work.rooms?.[r.id]?.use||r.use,s=work.floorFinishes?.areas[r.id],a=plan.floorFinish?.areas[r.id],available=faces.filter(f=>f.roomId===r.id),enabled=available.filter(f=>{const v=T().record(work,f);return v&&v.enabled!==false;}).map(f=>T().elevation(plan,work,f));
-  const known=!!s&&s.enabled!==false&&finite(a?.finishedZ),heights=enabled.map(v=>v.originZ);
+  const patterns=enabled.flatMap(v=>T().patterns(v)),known=!!s&&s.enabled!==false&&finite(a?.finishedZ),heights=patterns.map(v=>v.originZ);
   const common=heights.length&&heights.every(v=>finite(v)&&Math.abs(v-heights[0])<=EPS)?heights[0]:null;
   return {id:r.id,name:work.rooms?.[r.id]?.name||r.name,use,rawZ:s?.rawZ??null,finishedZ:known?a.finishedZ:null,floorKnown:known,floorPending:a?.pending||(!s||s.enabled===false?'未启用地面设置':'标高待核对'),mode:s?.mode??null,reference:s?.reference??null,drop:s?.drop??null,
-   referenceReady:known&&s.mode==='reference'&&finite(s.drop)&&finite(plan.floorFinish?.areas[s.reference]?.finishedZ),faces:available.length,enabled:enabled.length,wallZ:common,wallKnown:enabled.length>0&&heights.every(finite),fromFloor:enabled.length>0&&enabled.every(v=>v.layout.reference==='floor'&&Math.abs(v.layout.startHeight)<=EPS),absolute:enabled.length>0&&enabled.every(v=>v.layout.reference==='survey'),
-   patternKeys:enabled.map(v=>JSON.stringify([v.layout.angle===90?v.layout.width:v.layout.height,v.layout.gap]))};
+   referenceReady:known&&s.mode==='reference'&&finite(s.drop)&&finite(plan.floorFinish?.areas[s.reference]?.finishedZ),faces:available.length,enabled:enabled.length,wallZ:common,wallKnown:heights.length>0&&heights.every(finite),fromFloor:patterns.length>0&&patterns.every(v=>v.layout.reference==='floor'&&Math.abs(v.layout.startHeight)<=EPS),absolute:patterns.length>0&&patterns.every(v=>v.layout.reference==='survey'),
+   patternKeys:patterns.map(v=>JSON.stringify([v.layout.angle===90?v.layout.width:v.layout.height,v.layout.gap]))};
  });
  const ordinary=rows.filter(r=>r.use!=='bathroom'),bathrooms=rows.filter(r=>r.use==='bathroom'),active=rows.filter(r=>r.enabled>0);
  const allActive=rows.some(r=>r.faces>0)&&rows.every(r=>r.enabled===r.faces),allAbsolute=active.length>0&&active.every(r=>r.absolute&&finite(r.wallZ)),uniform=allAbsolute&&active.every(r=>Math.abs(r.wallZ-active[0].wallZ)<=EPS);

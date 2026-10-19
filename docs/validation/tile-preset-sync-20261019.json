@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "scope": "预设关联更新实际墙面与地面",
+  "coreTest": "tests/test-tile-preset-sync.cjs",
+  "browser": {
+    "runner": "scripts/verify-browser.cjs",
+    "result": "../../output/playwright/verification-f6WUv6/results.json",
+    "cases": [
+      "tile-preset-sync",
+      "tile-presets",
+      "wall-tile-bands"
+    ],
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "productionWallBandsAndGrout": true,
+    "productionFloorMaterial": true,
+    "undoRedo": true,
+    "refresh": true,
+    "projectV14RoundTrip": true,
+    "unlink": true,
+    "mobile390": true
+  },
+  "fullCheck": {
+    "status": "passed",
+    "regressionSuites": 217,
+    "builtInPlans": 12,
+    "previewPages": 3569,
+    "localAssets": true,
+    "sharedDeclarations": true,
+    "productionSyntax": true,
+    "log": "../../output/tile-study-20261019/tile-preset-sync-check.log"
+  },
+  "actualProject": {
+    "planId": "custom_mv37igji",
+    "presetId": "preset_mvetf7h5_xjno04",
+    "binding": {
+      "face": {
+        "range": [
+          0,
+          1
+        ],
+        "roomId": "area_fmv3p2ig914",
+        "side": 1,
+        "wallId": "outline_40"
+      },
+      "groups": [
+        "spec",
+        "gap",
+        "grout",
+        "bands"
+      ],
+      "presetId": "preset_mvetf7h5_xjno04",
+      "roomId": "area_fmv3p2ig914",
+      "variantId": "v7"
+    },
+    "upperBand": {
+      "id": "band_mvet9i6x_5jhq",
+      "layout": {
+        "angle": 0,
+        "height": 400,
+        "width": 800
+      },
+      "name": "洞口以上",
+      "top": null
+    },
+    "grout": "#141414",
+    "preservedLayout": {
+      "angle": 0,
+      "gap": 2,
+      "height": 800,
+      "offset": 678,
+      "reference": "floor",
+      "startHeight": -180,
+      "width": 800
+    },
+    "wallLayerMm": [
+      10,
+      20
+    ],
+    "otherWallsAndFloorUnchanged": true,
+    "furnitureCount": 50,
+    "otherWorkSlotsUnchanged": true,
+    "namedDesignsUnchanged": true,
+    "presetParameterValuesUnchanged": true,
+    "viewDefaultsNormalized": [
+      "clearances:true",
+      "wallNumbers:true"
+    ],
+    "furnitureHidden": true,
+    "repositoryVersion": 14,
+    "recovery": "453e385343ee1052422ba7a869184dab1adfaa192f018792831335d25f010ec2",
+    "beforeRevision": "b1d535cc56e83828c7371020c8801ca988c673b790c12c44a51ff49f9d9a8e60",
+    "screenshot": "../../output/playwright/tile-preset-sync-actual-3d.png"
+  },
+  "limits": [
+    "旧项目不推断预设关联；此处8号墙已明确重新应用建立关联。",
+    "关联限定当前工作方案，不跨历史命名方案同步。",
+    "直接编辑关联表面不会自动解除，保存预设仍覆盖关联组；独立设计须先解除。",
+    "原墙侧或分项失效后解除关联并保留实际排版，不按新编号猜测转移。",
+    "未执行完整浏览器套件及实体触屏测试。"
+  ],
+  "regressionAdaptation": [
+    "拒绝未来版本的兼容断言更新为15，版本14现在受支持。",
+    "现有场景标注测试补齐clearanceG及DOMRect尺寸，匹配生产标注碰撞布局。"
+  ]
+}

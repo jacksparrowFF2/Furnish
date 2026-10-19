@@ -125,86 +125,9 @@ main.drawer-panel #fab-editor{visibility:hidden}
 main.drawer-panel #fab-dock{visibility:hidden}
 @media print{#fab-dock{display:none!important}.fab-docked-top #plan,.fab-docked-right #plan{width:100%!important;height:100%!important;margin-top:0!important}}
 
-/* The same floor form works in Properties and the selected-room floating editor. */
-:is([data-floor-room],[data-floor-unified]) [hidden]{display:none!important}
-.floor-editor-tabs{display:flex;gap:8px;margin:12px 0}
-#fab-editor :is([data-floor-room],[data-floor-unified])>h3{display:none}
-#fab-editor :is([data-floor-room],[data-floor-unified]) .form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-#fab-editor :is([data-floor-room],[data-floor-unified]) input,#fab-editor :is([data-floor-room],[data-floor-unified]) select{min-width:0;width:100%}
-#fab-editor :is([data-floor-room],[data-floor-unified]) input[type=checkbox]{width:auto}
-#fab-editor :is([data-floor-room],[data-floor-unified]) label{min-width:0;display:block}
-#fab-editor :is([data-floor-room],[data-floor-unified]) p{font-size:12px}
-#fab-editor :is([data-floor-room],[data-floor-unified]) .form label{font-size:12px}
-#fab-editor :is([data-floor-room],[data-floor-unified]) .form input,#fab-editor :is([data-floor-room],[data-floor-unified]) .form select{min-height:36px;padding:7px 9px}
-#fab-editor [data-floor-section]>p.muted{display:none}
-#fab-editor :is([data-floor-room],[data-floor-unified]) h4{margin:8px 0}
-#fab-editor .floor-editor-actions{position:sticky;bottom:-14px;padding:10px 0;background:var(--panel)}
-.floor-region-row{display:grid;grid-template-columns:minmax(110px,1fr) minmax(0,2fr) auto;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
-.floor-region-row label{display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0}
-.floor-region-row input{width:20px;height:20px;flex:none;accent-color:var(--accent-ink)}
-.floor-region-row p{margin:4px 0;font-size:12px;overflow-wrap:anywhere}
-.floor-region-row small{color:var(--muted)}
-@media(max-width:600px){.floor-region-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}.floor-region-row>div{grid-column:1;grid-row:2}.floor-region-row>button{grid-column:2;grid-row:1 / 3}}
-/* Floor origin picking is transient and never changes the project until Apply. */
-#plan.floor-origin-picking,#plan.floor-origin-picking *{cursor:crosshair!important}
-.floor-pick-status{font-size:12px;line-height:1.5;color:#087f5b;margin:8px 0}
-.btn.floor-pick-active{background:#087f5b;color:white;border-color:#087f5b}
-
-/* Whole-wall patterns use a floating form and an elevation in survey mm. */
-#fab-editor:has([data-wall-tiling]){width:620px}
-#fab-editor [data-wall-tiling]{font-size:12px}
-[data-wall-tiling] [hidden]{display:none!important}
-[data-wall-tiling] .form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-[data-wall-tiling] .form label{min-width:0;display:block}
-[data-wall-tiling] .form .full{grid-column:1/-1}
-[data-wall-tiling] .form input,[data-wall-tiling] .form select{width:100%;min-width:0;min-height:36px;padding:7px 9px}
-.wall-tile-elevation{display:block;width:100%;max-height:330px;background:#fffdf8;border:1px solid var(--line);border-radius:8px;cursor:crosshair;touch-action:none}
-.wall-tile-actions{position:sticky;bottom:-14px;background:var(--panel);padding:10px 0;flex-wrap:wrap}
-.wall-tile-region{border-top:1px solid var(--line);padding:12px 0}
-.wall-tile-region-head,.wall-tile-row{display:flex;gap:10px;align-items:center;justify-content:space-between;min-width:0;margin:8px 0}
-.wall-tile-row{padding-left:16px}.wall-tile-row span{font-size:12px;color:var(--muted)}
-.wall-tile-region label{min-width:0;display:flex;align-items:center;gap:6px}
-@media(max-width:600px){.wall-tile-row{flex-wrap:wrap;padding-left:0}.wall-tile-row span{flex:1}.wall-tile-region-head{flex-wrap:wrap}.wall-tile-actions .btn{flex:1 1 auto}}
-
-/* The setup guide reuses the ordinary editors and owns no project state. */
-.finish-guide-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
-.finish-guide-steps .btn{white-space:normal;text-align:left;line-height:1.5;min-width:0}
-.finish-guide-steps .on{background:var(--accent-soft);border-color:var(--accent-ink);color:var(--accent-ink)}
-.finish-guide-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
-.finish-guide-row>div{min-width:0;overflow-wrap:anywhere}.finish-guide-row p{margin:5px 0}.finish-guide-row .btn{flex:none}
-.finish-guide-bottom{margin-top:20px;justify-content:space-between}
-.finish-guide-editor{font-size:12px;line-height:1.5;padding:10px;margin:8px 0 14px;background:var(--accent-soft);border:1px solid var(--line);border-radius:10px}
-.finish-guide-editor p{margin:6px 0}.finish-guide-editor .actions{flex-wrap:wrap}.finish-guide-editor [hidden]{display:none!important}
-.finish-guide-table{overflow-x:auto}.finish-guide-table table{width:100%;border-collapse:collapse;font-size:12px}.finish-guide-table th,.finish-guide-table td{padding:10px 6px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
-@media(max-width:600px){.finish-guide-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.finish-guide-row{align-items:flex-start;gap:8px}.finish-guide-row .btn{max-width:45%;white-space:normal}.finish-guide-table th,.finish-guide-table td{padding:8px 3px}.finish-guide-editor .actions .btn{flex:1}}
-
-/* Bulk floor elevations keep selection and preview readable on narrow screens. */
-#floor-level-bathroom-fields[hidden]{display:none!important}
-#dlgBody:has([data-floor-level]) .form{grid-template-columns:repeat(2,minmax(0,1fr));margin:12px 0}
-#dlgBody:has([data-floor-level]) .form label{min-width:0}
-#floor-level-rooms .floor-region-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.wall-tile-elevation{display:block;width:100%;max-height:490px;background:#fffdf8;border:1px solid var(--line);border-radius:8px;touch-action:none}
 
 .scene-floor-step{padding:3px 7px;border:1px solid #9a8160;border-radius:6px;background:#fff9edeb;color:#65492c;font:600 11px/1.4 sans-serif;white-space:nowrap;pointer-events:none;box-shadow:0 1px 5px #0002}
-
-/* Origin-only previews keep a small form beside the existing main scene. */
-#fab-editor [data-floor-origin3d-editor] .form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-#fab-editor [data-floor-origin3d-editor] label,#fab-editor [data-floor-origin3d-editor] input{min-width:0;width:100%}
-#fab-editor [data-floor-origin3d-editor] p{font-size:12px;overflow-wrap:anywhere}
-#view3d.floor-origin-picking canvas{cursor:crosshair!important;touch-action:none}
-#view3d.floor-origin-dragging canvas{cursor:grabbing!important;touch-action:none}
-.floor-region-row>.floor-region-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-@media(max-width:600px){.floor-region-row>.floor-region-actions{grid-column:2;grid-row:1 / 3;flex-direction:column}}
-
-#fab-editor:has([data-floor-origin3d-editor]){left:auto!important;right:16px;top:80px!important;bottom:auto!important;width:320px;max-height:calc(100% - 180px)}
-@media(max-width:600px){#fab-editor:has([data-floor-origin3d-editor]){right:12px;top:auto!important;bottom:90px!important;width:calc(100% - 24px);max-height:46%}#fab-editor [data-floor-origin3d-editor]>p:first-child{display:none}}
-@media(max-width:600px){main.is3d:has([data-floor-origin3d-editor]) #property-peek,main.is3d:has([data-floor-origin3d-editor]) .scene-light{display:none}}
-
-#view3d.wall-origin-dragging canvas{cursor:grabbing!important;touch-action:none}
-#fab-editor:has([data-wall-origin3d-editor]){left:auto!important;right:16px;top:80px!important;bottom:auto!important;width:320px;max-height:calc(100% - 180px)}
-#fab-editor [data-wall-origin3d-editor] .form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-#fab-editor [data-wall-origin3d-editor] input{min-width:0;width:100%}
-#fab-editor [data-wall-origin3d-editor] p{font-size:12px;overflow-wrap:anywhere}
-@media(max-width:600px){#fab-editor:has([data-wall-origin3d-editor]){right:12px;top:auto!important;bottom:90px!important;width:calc(100% - 24px);max-height:46%}#fab-editor [data-wall-origin3d-editor]>p:first-child{display:none}main.is3d:has([data-wall-origin3d-editor]) #property-peek,main.is3d:has([data-wall-origin3d-editor]) .scene-light{display:none}}
 
 /* Compact scene IDs share the wall-layout list numbering. */
 .wall-tile-scene-number{pointer-events:auto;cursor:pointer;border:1px solid #087f5b;background:#fffdf4e8;color:#075c43;padding:3px 7px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 1px 4px #0003}

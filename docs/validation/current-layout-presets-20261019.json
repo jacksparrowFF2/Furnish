@@ -1,0 +1,225 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "scope": "当前实际1601项目的其余墙地铺贴整理为预设并建立关联，不改排版",
+  "planId": "custom_mv37igji",
+  "operation": "使用生产capture提取逐墙／逐区域快照；仅新增tilePresets记录；通过原项目导入／commit／撤销／仓库保存通道载入",
+  "created": [
+    {
+      "id": "preset_current_floor_area_fmv3p1fkz7",
+      "name": "主卧地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3p1fkz7",
+      "targets": [
+        "area_fmv3p1fkz7"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_floor_area_fmv3p1yse11",
+      "name": "走廊地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3p1yse11",
+      "targets": [
+        "area_fmv3p1yse11"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_wall_area_fmv3p2ig914",
+      "name": "阳台其余墙面｜现有混排",
+      "kind": "wall",
+      "roomId": "area_fmv3p2ig914",
+      "targets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9
+      ],
+      "variants": 6
+    },
+    {
+      "id": "preset_current_floor_area_fmv3p2ig914",
+      "name": "阳台地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3p2ig914",
+      "targets": [
+        "area_fmv3p2ig914"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_floor_area_fmv3qajd93",
+      "name": "餐厅地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3qajd93",
+      "targets": [
+        "area_fmv3qajd93"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_floor_area_fmv3qb1oi4",
+      "name": "客厅地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3qb1oi4",
+      "targets": [
+        "area_fmv3qb1oi4"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_floor_area_fmv3qb1oi5",
+      "name": "玄关地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3qb1oi5",
+      "targets": [
+        "area_fmv3qb1oi5"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_wall_area_fmv3qcck717",
+      "name": "厨房墙面｜现有铺贴",
+      "kind": "wall",
+      "roomId": "area_fmv3qcck717",
+      "targets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "variants": 8
+    },
+    {
+      "id": "preset_current_floor_area_fmv3qcck717",
+      "name": "厨房地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3qcck717",
+      "targets": [
+        "area_fmv3qcck717"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_floor_area_fmv3oztg03",
+      "name": "次卧地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3oztg03",
+      "targets": [
+        "area_fmv3oztg03"
+      ],
+      "variants": 1
+    },
+    {
+      "id": "preset_current_wall_area_fmv3qdfiz23",
+      "name": "卫生间墙面｜现有铺贴",
+      "kind": "wall",
+      "roomId": "area_fmv3qdfiz23",
+      "targets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "variants": 13
+    },
+    {
+      "id": "preset_current_floor_area_fmv3qdfiz23",
+      "name": "卫生间地面｜现有铺贴",
+      "kind": "floor",
+      "roomId": "area_fmv3qdfiz23",
+      "targets": [
+        "area_fmv3qdfiz23"
+      ],
+      "variants": 1
+    }
+  ],
+  "newPresets": 12,
+  "totalPresets": 13,
+  "newBindings": 40,
+  "totalBindings": 41,
+  "wallFaces": 32,
+  "floorAreas": 9,
+  "existingBalconyWall8PresetAndBindingUnchanged": true,
+  "linkedGroups": {
+    "wall": [
+      "spec",
+      "gap",
+      "grout",
+      "bands"
+    ],
+    "floor": [
+      "spec",
+      "gap",
+      "grout",
+      "material"
+    ]
+  },
+  "independentGroups": [
+    "origin",
+    "height",
+    "alignment",
+    "thickness",
+    "elevation",
+    "enabled"
+  ],
+  "preservation": {
+    "allLayoutMixedBandsOriginsElevationsLayersGroutExact": true,
+    "wallTilingHash": "233e404602a386140dcfe49c49dc75dc1a253525b59ebc03cb5c58b28e64fe01",
+    "floorFinishesHash": "405ae4ac6c7d7711dadbd0463d68d5a8eb9689a98395b168d3679e9c8ccfd0f2",
+    "all50FurnitureExact": true,
+    "otherWorkSlotsExact": true,
+    "namedDesignsExact": true,
+    "customPlansExact": true,
+    "catalogContentsExact": true,
+    "allOtherCurrentWorkFieldsExactExceptImportPlanMetadata": true,
+    "derived3DInputsExact": true
+  },
+  "verification": {
+    "actualRepositorySaved": true,
+    "oneUndoRestoresExactOriginalWork": true,
+    "oneRedoRestoresAllWorkSlots": true,
+    "refreshShows4WallPresetsAnd9FloorPresets": true,
+    "projectV14RoundTrip": true,
+    "all13PresetsUnchangedSaveIsIdempotent": true,
+    "visualInspectionFurnitureHidden": true,
+    "sourceCodeChanged": false,
+    "fullRegressionRerun": false
+  },
+  "compatibilityNormalization": {
+    "currentWorkPlanIdAdded": "custom_mv37igji",
+    "emptyCustomCatalogAdded": []
+  },
+  "beforeRevision": "31ab2febc6b409fe391411b1747eb1f227ca835c9a1cba9a3af3bfffe334c3fa",
+  "recovery": "4b17fa322d38c590706b3664ff56aa88dd3c76a9d644079472b05b0edaed8cec",
+  "preparedProject": "../../output/tile-study-20261019/current-layout-presets.furnish.json",
+  "screenshots": {
+    "wall": "../../output/playwright/current-layout-wall-presets.png",
+    "floor": "../../output/playwright/current-layout-floor-presets.png"
+  },
+  "limits": [
+    "本次为现有功能的数据整理，未改源码，未重复完整代码回归。",
+    "同步仍限定当前工作方案；其它历史方案保留原状。",
+    "起铺点、标高、层厚、对缝关联和开关未纳入本次同步范围。"
+  ]
+}

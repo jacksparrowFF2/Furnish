@@ -1,0 +1,152 @@
+{
+  "date": "2026-10-19",
+  "status": "PASS",
+  "feature": "same-wall vertical tile bands",
+  "persistentFields": {
+    "surface": "wallTiling.surfaces[].bands",
+    "preset": "tilePresets.items[].variants[].bands",
+    "version": 13,
+    "oldData": "no migration or automatic application",
+    "units": "mm; production geometry m"
+  },
+  "core": {
+    "suite": "tests/test-wall-tile-bands.cjs",
+    "passed": true,
+    "covers": [
+      "2–20 ordered bands and wall-top extent",
+      "floor-relative and survey absolute boundaries",
+      "base origin inheritance and explicit per-band overrides",
+      "known layer heights remain unchanged",
+      "strict invalid/duplicate/descending/below-threshold validation",
+      "real joints using max adjacent width",
+      "opening clipping and exact area with zero grout",
+      "reversed wall endpoints and builtin conversion offset preservation",
+      "production mesh bounds UV and material ownership",
+      "unknown floor heights suppress confirmed tile surfaces",
+      "temporary floor-origin UV per band and exact cancel restore",
+      "temporary grout coloring including boundary faces",
+      "current/named/copy/project/workspace repeated v13 restore",
+      "spatial confirmation unaffected by face pattern changes"
+    ]
+  },
+  "browser": {
+    "run": "output/playwright/verification-Vs5Z88",
+    "cases": [
+      {
+        "name": "wall-tile-bands",
+        "status": "PASS",
+        "seconds": 20.6,
+        "log": "wall-tile-bands.log"
+      },
+      {
+        "name": "tile-presets",
+        "status": "PASS",
+        "seconds": 14,
+        "log": "tile-presets.log"
+      },
+      {
+        "name": "tile-grout-unified",
+        "status": "PASS",
+        "seconds": 19.7,
+        "log": "tile-grout-unified.log"
+      },
+      {
+        "name": "floor-origin-wall",
+        "status": "PASS",
+        "seconds": 22.2,
+        "log": "floor-origin-wall.log"
+      },
+      {
+        "name": "wall-origin-3d",
+        "status": "PASS",
+        "seconds": 29.2,
+        "log": "wall-origin-3d.log"
+      }
+    ],
+    "transports": [
+      "HTTP",
+      "offline file://"
+    ],
+    "covers": [
+      "real opening upper/lower boundaries",
+      "no mutation on open",
+      "invalid height prevents apply",
+      "per-band origin",
+      "actual production geometry and boundary joints",
+      "undo/redo/refresh",
+      "save current bands to preset and edit/add/remove rows",
+      "apply saved band recipe while retaining target origin",
+      "v13 exported project reimport",
+      "390px editor",
+      "existing presets/grout/floor origin/wall origin compatibility"
+    ]
+  },
+  "actual1601": {
+    "passed": true,
+    "plan": "custom_mv37igji",
+    "selectedWall": 8,
+    "bandCount": 3,
+    "openingRelativeHeights": [
+      "587",
+      "2244",
+      "wall-top"
+    ],
+    "productionPieces": 6,
+    "visibleSpecs": [
+      "800x800",
+      "400x800"
+    ],
+    "repositoryV13": true,
+    "captureRecipe": true,
+    "twoUndoRestoreOriginal": true,
+    "allOtherWallRecordsUnchanged": true,
+    "all50FurnitureAndLayerHeightsUnchanged": true,
+    "workSlots": 9,
+    "namedDesigns": 1,
+    "actualProjectSha256": "a6e43e77d759d7d8cf7464be812e303adb5441cd49293600361eaadb05d2b4c1",
+    "errors": []
+  },
+  "actualUI": {
+    "verified": true,
+    "url": "http://127.0.0.1:8765/",
+    "editor": "balcony wall 8",
+    "draft": {
+      "reference": "finished floor",
+      "boundaries": [
+        587,
+        2244,
+        "wall top"
+      ],
+      "lower": [
+        800,
+        800
+      ],
+      "upper": [
+        400,
+        800
+      ]
+    },
+    "saved": false,
+    "actualLayoutFileUnchanged": true
+  },
+  "fullCheck": {
+    "command": "node scripts/check.cjs",
+    "passed": true,
+    "suites": 215,
+    "builtInPlans": 12,
+    "previewPages": 3409,
+    "log": "output/tile-study-20261019/wall-bands-check.log"
+  },
+  "visualArtifacts": [
+    "output/playwright/wall-bands-1601-editor.png",
+    "output/playwright/wall-bands-1601-3d.png",
+    "output/playwright/verification-Vs5Z88/workspace 迁移 #/output/playwright/wall-tile-bands/http-mobile.png"
+  ],
+  "limits": [
+    "vertical bands only; no same-floor multi-size mosaic",
+    "shared wall grout color and physical thickness across bands",
+    "per-band origin numeric editing; whole-wall 3D handle redirects to band editor",
+    "full browser suite and physical touch device not run",
+    "example layouts tested in isolated copy; actual layout kept unchanged"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-19",
+  "scope": "统一铺砖功能及所需美缝、分带、预设关联与保存兼容依赖",
+  "baseCommit": "993347c0b0d804af785033a1f8cf5487a54bd693",
+  "target": "origin/main",
+  "core": {
+    "command": "node scripts/check.cjs",
+    "status": "PASS",
+    "regressionSuites": 218,
+    "builtInPlans": 12,
+    "generatedPreviewPages": 32,
+    "log": "check.log"
+  },
+  "browser": {
+    "command": "node scripts/verify-browser.cjs portable-smoke tile-workspace tile-workspace-complete tile-library",
+    "status": "PASS",
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "results": [
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "seconds": 8.5,
+        "log": "portable-smoke.log"
+      },
+      {
+        "name": "tile-workspace",
+        "status": "PASS",
+        "seconds": 16.7,
+        "log": "tile-workspace.log"
+      },
+      {
+        "name": "tile-workspace-complete",
+        "status": "PASS",
+        "seconds": 15.7,
+        "log": "tile-workspace-complete.log"
+      },
+      {
+        "name": "tile-library",
+        "status": "PASS",
+        "seconds": 10.6,
+        "log": "tile-library.log"
+      }
+    ],
+    "notRun": [],
+    "details": "browser-results.json"
+  },
+  "excluded": [
+    "此前家电预留检查、展示开关及其专用规则/测试/文档",
+    "实际projects/workspace.furnish.json数据改动"
+  ],
+  "actualProjectSha256": "421dad2ae94816e45dd34190ce23185e5dece2239efdb0460f4653febccec3df",
+  "preserved": "未纳入提交的工作区文件及共享文件中的其它修改均保留在本地",
+  "validationContext": "从独立Git暂存索引导出的准确提交源码复验。此前整工作区219套记录包含未提交的家电预留专项；本次提交以本记录的独立复验数量为准。",
+  "notExecuted": [
+    "全项目全部浏览器专项",
+    "实体触屏",
+    "完整键盘和读屏验收"
+  ]
+}

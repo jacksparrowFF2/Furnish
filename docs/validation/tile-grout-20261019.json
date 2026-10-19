@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-19",
+  "feature": "按房间独立设置墙砖和地砖美缝颜色，默认跟随砖色，支持自定义、主3D预览及保存",
+  "core": {"status": "passed", "test": "tests/test-tile-grout.cjs", "regressionSuites": 212, "additionalCoverage": ["production Work.restore without repeated drift", "current and named design copy", "v11 cache candidates", "v11 atomic repository write and recovery", "legacy texture UV/repeat and material cleanup"]},
+  "browser": {"status": "passed", "case": "tile-grout", "run": "output/playwright/verification-3oMRE7", "modes": ["HTTP", "offline file://"], "coverage": ["production materials", "room and wall/floor isolation", "invalid input", "cancel and Escape", "save, undo and redo", "refresh", "v11 export and import", "390px", "legacy floor color without writing heights or layout"], "errors": []},
+  "fullCheck": {"status": "passed", "command": "node scripts/check.cjs", "regressionSuites": 212, "builtInPlans": 12, "previewPages": 3233, "localAssets": true, "sharedDeclarations": true, "productionSyntax": true, "diffCheck": "passed", "log": "output/tile-study-20261019/tile-grout-check.log"},
+  "actualProject": {"status": "passed", "planId": "custom_mv37igji", "furniture": 50, "wallFaces": 32, "balconyPreviewSurfaces": 15, "modes": ["HTTP", "offline file://"], "isolatedSaveUndoPreservesAllOtherFields": true, "liveChrome": "Balcony wall color editor opened; custom #b8ae9f preview verified and reset without saving", "colorMode": "follow tile color; original layout retained", "screenshots": ["output/playwright/tile-grout-actual-http-auto.png", "output/playwright/tile-grout-actual-http-preview.png"], "errors": []},
+  "repositoryBrowser": {"status": "passed", "scope": "isolated copy of the actual 1601 workspace", "customColorWritesV11File": true, "undoWritesFileAndRemovesCustomColor": true, "originalWorkspaceModified": false},
+  "notRun": ["all browser cases", "physical touchscreen", "physical grout sample comparison"],
+  "limits": ["2D construction lines retain their readable annotation color", "screen colors do not simulate grout gloss or physical sample differences"]
+}

@@ -24,6 +24,7 @@ function create(THREE){
  function update(e,{wallGroup,wx,wz,handlePoint}={}){
   const T=root.FurnishWallTiling||require('../core/wall-tiling-core.js'),W=root.FurnishWallTilingModel||require('./wall-tiling-model.js');
   try{
+   if(e.bands)throw Error('此墙已上下分带，请在分带编辑中分别设置各带起铺参数');
    if(![e.position,e.floorZ,e.originZ].every(Number.isFinite))throw Error('请先确定墙面位置、完成地面和起铺标高');
    if(current&&!T.same(current.face,e.face))clear();const meshes=[];wallGroup.traverse(m=>{if(m.userData.wallTiling&&T.same(m.userData.wallTiling,e.face))meshes.push(m);});if(!meshes.length)throw Error('当前场景没有此墙可预览表面，请启用排版、核对完成面，或切换全高墙');
    const sections=meshes.map(m=>m.userData.wallTiling.rect),signature=JSON.stringify(sections);if(!room||signature!==current?.sectionSignature){if(outline){outline.removeFromParent();outline.geometry.dispose();outline.material.dispose();outline=null;}room=space(sections);if(!room.poly.length)throw Error('当前墙面没有可拖动的铺贴区域');}

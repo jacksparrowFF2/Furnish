@@ -68,6 +68,13 @@ function edit(work,face,values){
  if(surfaces.length)next.wallFinishes={version:1,surfaces};else delete next.wallFinishes;
  validate(next.wallFinishes);return next;
 }
+// Patch only named layers, preserving other saved layers at every range split.
+function editFields(work,face,patch){
+ if(!patch||Object.keys(patch).some(k=>!['tileThickness','bondThickness'].includes(k)))throw Error('墙面层厚字段无效');
+ const records=(work.wallFinishes?.surfaces||[]).filter(s=>s.wallId===face.wallId&&s.side===face.side&&!!s.cross===!!face.cross&&s.range[1]>face.range[0]&&s.range[0]<face.range[1]),cuts=[...new Set([face.range[0],face.range[1],...records.flatMap(s=>s.range).filter(v=>v>face.range[0]&&v<face.range[1])])].sort((a,b)=>a-b);let next=work;
+ for(let i=1;i<cuts.length;i++){const middle=(cuts[i-1]+cuts[i])/2,previous=records.find(s=>s.range[0]<=middle&&s.range[1]>=middle),values={};for(const k of ['tileThickness','bondThickness']){const v=Object.hasOwn(patch,k)?patch[k]:previous?.[k];if(v!==null&&v!==undefined)values[k]=v;}next=edit(next,{...face,range:[cuts[i-1],cuts[i]]},values);}
+ return next;
+}
 function vertical(w,plan){return w[5]?.vertical||{bottom:0,top:w[4]==='low'?Math.min(1000,plan.ceilingHeight??2800):plan.ceilingHeight??2800};}
 // Both thickness solids and tile elevations use these same opening heights.
 function faceSections(plan,f,height=plan.rooms.find(r=>r.id===f.roomId)?.ceilingHeight??plan.ceilingHeight??2800){
@@ -140,6 +147,6 @@ function remapBuiltin(work,before,after,shift){
  }
  work.wallFinishes={version:1,surfaces:mapped};validate(work.wallFinishes);
 }
-const api={rules,validate,sources,faces,same,edit,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
+const api={rules,validate,sources,faces,same,edit,editFields,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishWallFinish=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

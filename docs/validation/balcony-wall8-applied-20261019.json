@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "scope": "用户明确要求将实际阳台8号墙当前草稿正式应用并保存为专用预设",
+  "planId": "custom_mv37igji",
+  "face": {
+    "number": 8
+  },
+  "preset": {
+    "id": "preset_mvetf7h5_xjno04",
+    "name": "阳台8号墙上下分带｜窗下800方砖·窗上400×800",
+    "variants": 1,
+    "assignments": [
+      {
+        "number": 8,
+        "variantId": "v7"
+      }
+    ]
+  },
+  "bands": {
+    "reference": "floor",
+    "rows": [
+      {
+        "id": "band_mvet9i6x_0zwo",
+        "layout": {
+          "angle": 0,
+          "height": 800,
+          "width": 800
+        },
+        "name": "洞口以下",
+        "top": 587
+      },
+      {
+        "id": "band_mvet9i6x_9431",
+        "layout": {
+          "angle": 0,
+          "height": 800,
+          "width": 800
+        },
+        "name": "洞口高度带 1",
+        "top": 2244
+      },
+      {
+        "id": "band_mvet9i6x_5jhq",
+        "layout": {
+          "angle": 0,
+          "height": 800,
+          "width": 400
+        },
+        "name": "洞口以上",
+        "top": null
+      }
+    ]
+  },
+  "preservedLayout": {
+    "angle": 0,
+    "gap": 2,
+    "height": 800,
+    "offset": 678,
+    "reference": "floor",
+    "startHeight": -180,
+    "width": 800
+  },
+  "preservedFinish": {
+    "bondThickness": 20,
+    "tileThickness": 10
+  },
+  "verification": {
+    "actualRepositorySaved": true,
+    "projectRoundTrip": true,
+    "otherWorkFieldsUnchanged": true,
+    "otherWorkSlotsUnchanged": true,
+    "namedDesignsUnchanged": true,
+    "customPlansUnchanged": true,
+    "furnitureCount": 50,
+    "inspectionFurnitureHidden": true,
+    "sourceCodeChangedThisOperation": false
+  },
+  "recovery": "0f5aa7956e198a45e9073e4ac1d5fc60654e812d0158d239c75209acc986d37f",
+  "beforeRevision": "a6e43e77d759d7d8cf7464be812e303adb5441cd49293600361eaadb05d2b4c1",
+  "screenshot": "../../output/playwright/balcony-wall8-applied-3d.png",
+  "limits": [
+    "本次为已实现功能的实际项目应用；未重跑完整代码回归，前次完整回归结果见 wall-tile-bands-20261019.json。",
+    "瓷砖观察为临时显示模式，退出恢复家具显示，不删除家具。"
+  ]
+}

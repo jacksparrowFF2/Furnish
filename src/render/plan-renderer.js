@@ -509,8 +509,7 @@ function renderAll(){
   window.FurnishWorkflowTools?.afterRender();
   window.FurnishDrawingUI?.afterRender();
   window.FurnishRoomMeasure?.afterRender();
-  window.FurnishFloorFinishUI?.afterRender();
-  window.FurnishWallTilingUI?.afterRender();
-  window.FurnishFinishGuideUI?.afterRender();
+  window.FurnishTilePresetUI?.afterRender();
+  window.FurnishTileWorkspace?.afterRender();
   window.FurnishCeilingUI?.afterRender();
 }

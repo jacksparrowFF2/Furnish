@@ -1,17 +1,20 @@
 /* Production floor layer solids in metres; grid UVs use the original mm datum. */
 (function(root){
 'use strict';
-function material(THREE,layout,{color='#e8e2d8'}={}){
+function material(THREE,layout,{color='#e8e2d8',groutColor:custom}={}){
+ const tileColor=/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(color)?color:'#e8e2d8',groutColor=custom?new THREE.Color(custom):new THREE.Color(tileColor).multiplyScalar(.9);
  const canvas=document.createElement('canvas');canvas.width=canvas.height=1024;const c=canvas.getContext('2d');
- c.fillStyle='#777167';c.fillRect(0,0,1024,1024);c.fillStyle=/^#[0-9a-f]{3,8}$/i.test(color)?color:'#e8e2d8';
+ c.fillStyle='#'+groutColor.getHexString();c.fillRect(0,0,1024,1024);c.fillStyle=tileColor;
  c.fillRect(0,0,1024*layout.width/(layout.width+layout.gap),1024*layout.height/(layout.height+layout.gap));
  const map=new THREE.CanvasTexture(canvas);map.wrapS=map.wrapT=THREE.RepeatWrapping;map.colorSpace=THREE.SRGBColorSpace;map.flipY=false;
  const material=new THREE.MeshStandardMaterial({map,roughness:.72});
+ material.userData.tileFinish={color:tileColor,layout:{width:layout.width,height:layout.height,gap:layout.gap},...(custom?{groutColor:custom}:{})};
  // Preserve the true grid pitch. A subpixel joint gets a modest screen-space
  // coverage floor instead of disappearing into texture mipmaps at room scale.
  material.onBeforeCompile=shader=>{
   shader.uniforms.furnishJoint={value:new THREE.Vector2(layout.gap/(layout.width+layout.gap),layout.gap/(layout.height+layout.gap))};
-  shader.fragmentShader='uniform vec2 furnishJoint;\n'+shader.fragmentShader;
+  shader.uniforms.furnishGroutColor={value:groutColor};
+  shader.fragmentShader='uniform vec2 furnishJoint;\nuniform vec3 furnishGroutColor;\n'+shader.fragmentShader;
   shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
    vec2 tileUV=vMapUv;
    vec2 pixel=max(fwidth(tileUV),vec2(0.000001));
@@ -21,11 +24,19 @@ function material(THREE,layout,{color='#e8e2d8'}={}){
    joint*=step(vec2(0.0000001),furnishJoint);
    float tone=fract(sin(dot(floor(tileUV),vec2(12.9898,78.233)))*43758.5453);
    diffuseColor.rgb*=0.965+0.045*tone;
-   diffuseColor.rgb=mix(diffuseColor.rgb,vec3(0.19,0.175,0.15),max(joint.x,joint.y)*0.9);
+   diffuseColor.rgb=mix(diffuseColor.rgb,furnishGroutColor,max(joint.x,joint.y)*0.9);
   `);
  };
- material.customProgramCacheKey=()=> 'furnish-tile-grid-v2';return material;
+ material.customProgramCacheKey=()=> 'furnish-tile-grid-v3';return material;
 }
+// Old room textures have illustrative pixel joints and metre UVs, without a
+// saved layout or known layer heights. Recolour only those existing pixels.
+function legacyMaterial(THREE,original,{groutColor:custom}={}){
+ const meta=original.userData.tileFinish,source=original.map.image,canvas=document.createElement('canvas');canvas.width=source.width;canvas.height=source.height;
+ const c=canvas.getContext('2d');c.drawImage(source,0,0);const color=custom?new THREE.Color(custom):new THREE.Color(meta.color).multiplyScalar(.9);c.fillStyle='#'+color.getHexString();c.fillRect(0,0,canvas.width,meta.groutPixels);c.fillRect(0,0,meta.groutPixels,canvas.height);
+ const map=original.map.clone();map.image=canvas;map.needsUpdate=true;const m=original.clone();m.map=map;m.userData.tileFinish={...meta,...(custom?{groutColor:custom}:{})};if(!custom)delete m.userData.tileFinish.groutColor;return m;
+}
+function groutMaterial(THREE,{color='#e8e2d8',groutColor}={}){const m=new THREE.MeshStandardMaterial({color:groutColor||new THREE.Color(color).multiplyScalar(.9),roughness:.72});m.userData.tileFinish={color,groutOnly:true,...(groutColor?{groutColor}:{})};return m;}
 function uv(THREE,geometry,layout,{wx=v=>v/1000,wz=v=>v/1000}={}){
  const attr=geometry.attributes.position,out=[],a=layout.angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a),x0=wx(layout.origin[0]),z0=wz(layout.origin[1]);
  for(let i=0;i<attr.count;i++){const x=(attr.getX(i)-x0)*1000,y=(attr.getZ(i)-z0)*1000;out.push((c*x+s*y)/(layout.width+layout.gap),(-s*x+c*y)/(layout.height+layout.gap));}
@@ -36,7 +47,7 @@ function surface(THREE,room,area,{wx=v=>v/1000,wz=v=>v/1000,material:provided,co
  const geometry=new THREE.ShapeGeometry(shapes);geometry.rotateX(-Math.PI/2);
  if(area.layout)uv(THREE,geometry,area.layout,{wx,wz});
  const m=provided||(typeof document==='undefined'||!area.layout?new THREE.MeshStandardMaterial({color:color||'#e8e2d8'}):material(THREE,area.layout,{color})),mesh=new THREE.Mesh(geometry,m);
- mesh.position.y=(area.finishedZ??area.rawZ??0)/1000;mesh.receiveShadow=true;mesh.userData.floor=true;mesh.userData.floorFinishOwnMaterial=!!area.layout||!provided;mesh.userData.room=area.roomId||room.id;return mesh;
+ mesh.position.y=(area.finishedZ??area.rawZ??0)/1000;mesh.receiveShadow=true;mesh.userData.floor=true;mesh.userData.floorFinishOwnMaterial=!!area.layout||!provided||!!provided.userData.tileFinish?.legacy&&!!provided.userData.tileFinish.groutColor;mesh.userData.room=area.roomId||room.id;return mesh;
 }
 function layers(THREE,room,area,{wx=v=>v/1000,wz=v=>v/1000}={}){
  if(!Number.isFinite(area?.finishedZ))return null;
@@ -62,5 +73,5 @@ function stepEdges(THREE,steps,{wx=v=>v/1000,wz=v=>v/1000}={}){
   const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:'#827564',roughness:1,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}));mesh.userData.floorStep=step;mesh.userData.floorFinishOwnMaterial=true;group.add(mesh);
  }return group;
 }
-const api={material,uv,surface,layers,stepEdges};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFloorFinishModel=api;
+const api={material,legacyMaterial,groutMaterial,uv,surface,layers,stepEdges};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFloorFinishModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

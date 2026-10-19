@@ -19,6 +19,10 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  ctx.clearanceG.updateMatrixWorld(true);assert.equal(new THREE.Raycaster(new THREE.Vector3(1,3,.5),new THREE.Vector3(0,-1,0)).intersectObject(ctx.clearanceG,true).length,0);
  ctx.opt.furn=false;build();assert.equal(ctx.clearanceG.visible,false);ctx.furnGrow=.5;build();near(ctx.clearanceG.scale.y,.5);
  const last=labels()[1];ctx.state.furniture=[];build();assert.equal(last.element.removed,true);assert.equal(ctx.clearanceG.children.length,0);
- assert.match(html,/buildHeaterClearances\(\);renderPanel\(\);selKey = null/);assert.match(html,/clearanceG\.traverse\(o=>\{if\(o.isCSS2DObject\)o.visible=opt.furn&&!anim;\}\)/);
+ assert.match(html,/buildHeaterClearances\(\);renderPanel\(\);selKey = null/);
+ const loop=html.slice(html.indexOf('function loop(){'),html.indexOf('function shot(){')).split('\n').filter(s=>s.trim().startsWith('clearanceG.visible=')||s.trim().startsWith('clearanceG.traverse(o=>')).join('\n'),label={isCSS2DObject:true},display={clearanceG:{traverse:fn=>fn(label)},opt:{furn:true},anim:false,FurnishTilePresetUI:{inspecting:()=>false}};
+ vm.runInNewContext(loop,display);assert.equal(label.visible,true);assert.equal(display.clearanceG.visible,true);
+ display.FurnishTilePresetUI.inspecting=()=>true;vm.runInNewContext(loop,display);assert.equal(label.visible,false,'tile inspection hides clearance captions');assert.equal(display.clearanceG.visible,false,'tile inspection hides clearance geometry');
+ display.FurnishTilePresetUI.inspecting=()=>false;display.anim=true;vm.runInNewContext(loop,display);assert.equal(label.visible,false,'animation hides captions');display.anim=false;display.opt.furn=false;vm.runInNewContext(loop,display);assert.equal(label.visible,false,'hidden furniture keeps clearance captions hidden');
  console.log('PASS 3D height/top volumes, unset socket, actual socket marker/distance/status, rotation/mirror, cleanup and non-picking geometry');
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,0 +1,275 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "scope": "合并当前实际项目中规格、方向、缝宽、美缝及分带参数相同的预设／分项，保留全部实际排版",
+  "before": {
+    "presets": 14,
+    "variants": 38,
+    "revision": "47cb20521aac5f94057508c61bc07a38cb07cb7af694f72e1001b503b5df91c8"
+  },
+  "after": {
+    "presets": 7,
+    "variants": 7,
+    "wallPresets": 5,
+    "floorPresets": 2,
+    "bindings": 41,
+    "wallFaces": 32,
+    "floorAreas": 9
+  },
+  "latestSavedKitchenWall1Direction90Preserved": true,
+  "comparisonFields": [
+    "wall/floor kind",
+    "layout width/height/angle/gap",
+    "grout mode/color",
+    "floor material",
+    "bands reference/boundaries/per-band specs and gaps"
+  ],
+  "excludedIndependentFields": [
+    "layout origin/offset",
+    "startHeight/reference",
+    "finish",
+    "elevation",
+    "followFloor",
+    "enabled",
+    "per-band origin/height/alignment"
+  ],
+  "mapping": [
+    {
+      "id": "preset_shared_wall_95db94f0e01f",
+      "name": "阳台窗墙上下分带｜800方砖＋800×400 · 深色美缝",
+      "oldVariants": [
+        {
+          "presetId": "preset_mvetf7h5_xjno04",
+          "variantId": "v7"
+        }
+      ],
+      "targets": 1
+    },
+    {
+      "id": "preset_shared_floor_d0b943434444",
+      "name": "地砖 800×800｜0° · 2mm缝 · 随砖色",
+      "oldVariants": [
+        {
+          "presetId": "preset_current_floor_area_fmv3p1fkz7",
+          "variantId": "main"
+        },
+        {
+          "presetId": "preset_current_floor_area_fmv3p1yse11",
+          "variantId": "main"
+        },
+        {
+          "presetId": "preset_current_floor_area_fmv3p2ig914",
+          "variantId": "main"
+        },
+        {
+          "presetId": "preset_current_floor_area_fmv3qajd93",
+          "variantId": "main"
+        },
+        {
+          "presetId": "preset_current_floor_area_fmv3qb1oi4",
+          "variantId": "main"
+        },
+        {
+          "presetId": "preset_current_floor_area_fmv3qb1oi5",
+          "variantId": "main"
+        },
+        {
+          "presetId": "preset_current_floor_area_fmv3qcck717",
+          "variantId": "main"
+        },
+        {
+          "presetId": "preset_current_floor_area_fmv3oztg03",
+          "variantId": "main"
+        }
+      ],
+      "targets": 8
+    },
+    {
+      "id": "preset_shared_wall_ee0d98ab64fc",
+      "name": "墙砖 800×400｜0° · 2mm缝 · 随砖色",
+      "oldVariants": [
+        {
+          "presetId": "preset_current_wall_area_fmv3p2ig914",
+          "variantId": "v1"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v1"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v2"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v3"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v4"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v5"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v6"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v7"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v8"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v9"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v10"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v11"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v12"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qdfiz23",
+          "variantId": "v13"
+        }
+      ],
+      "targets": 17
+    },
+    {
+      "id": "preset_shared_wall_4acea6128d01",
+      "name": "墙砖 400×800｜0° · 2mm缝 · 随砖色",
+      "oldVariants": [
+        {
+          "presetId": "preset_current_wall_area_fmv3p2ig914",
+          "variantId": "v2"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3p2ig914",
+          "variantId": "v3"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3p2ig914",
+          "variantId": "v4"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3p2ig914",
+          "variantId": "v5"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v2"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v3"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v4"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v5"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v6"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v7"
+        },
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v8"
+        }
+      ],
+      "targets": 11
+    },
+    {
+      "id": "preset_shared_wall_607c41c614fd",
+      "name": "墙砖 800×800｜0° · 2mm缝 · 随砖色",
+      "oldVariants": [
+        {
+          "presetId": "preset_current_wall_area_fmv3p2ig914",
+          "variantId": "v6"
+        }
+      ],
+      "targets": 2
+    },
+    {
+      "id": "preset_shared_wall_fb1881a9667b",
+      "name": "墙砖 400×800｜90° · 2mm缝 · 随砖色",
+      "oldVariants": [
+        {
+          "presetId": "preset_current_wall_area_fmv3qcck717",
+          "variantId": "v1"
+        },
+        {
+          "presetId": "preset_mveurrwq_51n9c7",
+          "variantId": "main"
+        }
+      ],
+      "targets": 1
+    },
+    {
+      "id": "preset_shared_floor_0d585812f77b",
+      "name": "地砖 800×400｜0° · 2mm缝 · 随砖色",
+      "oldVariants": [
+        {
+          "presetId": "preset_current_floor_area_fmv3qdfiz23",
+          "variantId": "main"
+        }
+      ],
+      "targets": 1
+    }
+  ],
+  "verification": {
+    "actualRepositorySaved": true,
+    "allCurrentFieldsExceptTilePresetsExact": true,
+    "allOtherWorkSlotsExact": true,
+    "namedDesignsAndCustomPlansExact": true,
+    "all50FurnitureExact": true,
+    "derived3DInputsExact": true,
+    "all7UnchangedSavesIdempotent": true,
+    "inMemoryColorChangeAffectsOnly17LinkedWalls": true,
+    "inMemorySpecChangeAffectsOnly8LinkedFloors": true,
+    "oneUndoRestoresOriginal14Presets38VariantsAndAllWorkSlots": true,
+    "oneRedoRestoresMergedLibrary": true,
+    "refreshPersisted": true,
+    "projectV14RoundTrip": true,
+    "visualInspectionFurnitureHidden": true,
+    "sourceCodeChanged": false,
+    "fullRegressionRerun": false
+  },
+  "recovery": "106cf8ab87e65a8d95c6d5c2c9678c7d0ac948a6a1853861801b998b2ad16ad2",
+  "preparedProject": "../../output/tile-study-20261019/merged-layout-presets.furnish.json",
+  "screenshots": {
+    "wall": "../../output/playwright/merged-layout-wall-presets.png",
+    "floor": "../../output/playwright/merged-layout-floor-presets.png"
+  },
+  "saveConflictRecovery": {
+    "firstStaleBrowserWriteStoppedWithoutOverwritingDisk": true,
+    "diskConfirmedEqualToPreparedBaseline": true,
+    "mergedDraftAndBeforeSnapshotPreserved": true,
+    "freshPageLoadedAuthoritativeDiskThenImportedViaOriginalCommit": true,
+    "stalePageReplacedAfterVerifiedFileSave": true
+  },
+  "limits": [
+    "本次只整理实际数据，无生产源码变化，未重复完整代码回归。",
+    "同参数关联现在共享预设；后续修改共享参数会同步其全部关联表面。",
+    "独立起点、标高、层厚、对缝关联和开关保留在实际墙地记录，未纳入共享同步。"
+  ]
+}

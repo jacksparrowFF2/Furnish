@@ -36,6 +36,21 @@ const noFloor=copy(tiled);noFloor.floorFinishes.areas[a].enabled=false;assert.th
 let restored=aligned;for(let i=0;i<3;i++){restored=P.unpack(P.pack({planId:plan.id,current:restored,designs:[{name:'对缝',work:restored}],catalog:[]})).current;assert.deepEqual(restored.wallTiling,aligned.wallTiling);assert.deepEqual(restored.floorFinishes,aligned.floorFinishes);}
 (async()=>{
  const THREE=await import(JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports.three),M=require('../src/render/floor-finish-model.js');
+ const previousDocument=global.document;
+ try{
+  for(const color of ['#e8e2d8','#536c78','#d3d8d4']){
+   const fills=[],context={fillStyle:'',fillRect(){fills.push(this.fillStyle);}};
+   global.document={createElement:()=>({getContext:()=>context})};
+   const material=M.material(THREE,{width:800,height:400,gap:2},{color}),shader={uniforms:{},fragmentShader:'#include <map_fragment>'};material.onBeforeCompile(shader);
+   const tile=new THREE.Color(color),grout=shader.uniforms.furnishGroutColor.value,a={},b={};tile.getHSL(a);grout.getHSL(b);
+   assert(Math.abs(a.h-b.h)<.002,'grout follows each tile hue');
+   assert(b.l<a.l&&b.l>a.l*.85,'grout is subtly darker than its tile');
+   assert.equal(fills[1],color);assert.equal(fills[0],'#'+grout.getHexString(),'canvas and shader use the same grout color');
+   near(shader.uniforms.furnishJoint.value.x,2/802);near(shader.uniforms.furnishJoint.value.y,2/402);
+   material.map.dispose();material.dispose();
+  }
+  const material=M.material(THREE,{width:800,height:800,gap:0}),shader={uniforms:{},fragmentShader:'#include <map_fragment>'};material.onBeforeCompile(shader);assert.equal(shader.uniforms.furnishJoint.value.length(),0);material.map.dispose();material.dispose();
+ }finally{if(previousDocument===undefined)delete global.document;else global.document=previousDocument;}
  const edges=M.stepEdges(THREE,ep.floorFinish.steps);assert(edges.children.length);for(const mesh of edges.children){const box=new THREE.Box3().setFromObject(mesh);near((box.max.y-box.min.y)*1000,5);}
  const scene=new THREE.Group();for(const area of F.surfaces(ep)){scene.add(M.surface(THREE,area.room,area));scene.add(M.layers(THREE,area.room,area));}scene.updateMatrixWorld(true);
  for(const p of portal){const poly=p.room.polys[0],q=poly.reduce((sum,v)=>sum.map((n,i)=>n+v[i]/poly.length),[0,0]),ray=new THREE.Raycaster(new THREE.Vector3(q[0]/1000,1,q[1]/1000),new THREE.Vector3(0,-1,0)),hits=ray.intersectObjects(scene.children,true);assert(hits.length);near(hits[0].point.y*1000,p.finishedZ);assert(hits[0].object.userData.floor,'textured surface must own the visible top, not an untextured layer cap');}
