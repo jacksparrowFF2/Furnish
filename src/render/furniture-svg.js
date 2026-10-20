@@ -156,6 +156,7 @@ const DASH = 'stroke-dasharray="4 3"';
       + rc(x+w*.955,y+d*.12,w*.025,d*.76,'#aeb0b2',`rx="${d*.06}"`)
       + rc(-w*.42,y+d*.84,w*.84,d*.1,'#17191c',`rx="${d*.04}"`);
     case 'tv': return rc(x,y,w,d,c,'rx="10"') + rc(x+w*.3,y+d,w*.4,Math.min(40,d),'#666');
+    case 'aircon_midea_ultra_2hp': {const P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),unit={type:t,w,d},pts=P.planBodyOutline(unit,64),outline=P.planOutline(unit);return pa('M'+outline.map(p=>p.join(',')).join('L')+'Z',c)+pa('M'+pts.slice(23,42).map(p=>[p[0]*.96,p[1]*.96].join(',')).join('L'),'none')+rc(-w*.23,d*.45,w*.46,d*.027,'#11191e',`rx="${w*.025}"`);}
     case 'aircon': return rc(x,y,w,d,c,'rx="30"') + ln(x+40,y+d*.72,x+w-40,y+d*.72) + ln(x+40,y+d*.86,x+w-40,y+d*.86);
     case 'acwall': {
       let s = rc(x,y,w,d,c,`rx="30" ${DASH}`);
@@ -169,7 +170,8 @@ const DASH = 'stroke-dasharray="4 3"';
     case 'dishwasher': return rc(x,y,w,d,c,'rx="15"') + ln(x,y+d-70,x+w,y+d-70) + rc(x+w*.3,y+d-45,w*.4,25,'#888');
     case 'ovencol': return rc(x,y,w,d,c) + ln(x,y,x+w,y+d) + ln(x+w,y,x,y+d);
     case 'water_purifier_mijia_1200g': return rc(x,y,w,d,c,`rx="${Math.min(w*.16,d*.06)}"`) + ln(x+w*.08,y+d*.94,x+w*.92,y+d*.94);
-    case 'tea_bar_mijia_pro': return rc(x,y,w,d,c,`rx="${w*.06}"`)+rc(x+w*.07,y+d*.02,w*.86,d*.14,'#afc5cc',`rx="${w*.02}"`)+rc(x,y+d*.15,w,d*.85,c,`rx="${w*.06}"`)+rc(x+w*.14,y+d*.92,w*.72,d*.05,'#172126','rx="3"')+`<circle cx="${w*58/315}" cy="${d*35/310}" r="${Math.min(w,d)*.20}" fill="#d7e4e5" stroke="${PAL.ink}" stroke-width="2"/>`+rc(w*.38,-d*.12,w*.10,d*.23,'none','rx="5"')+ln(-w*.32,d*.15,-w*.21,d*.15);
+    case 'tea_table_800': return rc(x,y,w,d,c)+rc(x+w*.025,y+d*.06,w*.60,d*.88,'#202521')+Array.from({length:18},(_,i)=>ln(x+w*(.045+i*.032),y+d*.12,x+w*(.045+i*.032),y+d*.87)).join('')+rc(x+w*.64,y+d*.06,w*.335,d*.88,'#101817')+[-.21,.175].map(z=>ec(w*251/800,d*z,w*57/800,d*57/400,'#c9ddda')+ec(w*251/800,d*z,w*40/800,d*40/400,'#aeb8b3')+ec(w*309/800,d*z,w*23/800,d*43/400,'none')).join('')+Array.from({length:6},(_,i)=>ec(w*(-315+i*72)/800,d*115/400,w*24/800,d*24/400,'#26483e')) .join('')+ec(-w*310/800,-d*94/400,w*31/800,d*31/400,'#26483e')+ec(-w*152/800,-d*80/400,w*41/800,d*41/400,'#26483e')+ec(-w*19/800,-d*86/400,w*33/800,d*33/400,'#26483e')+ln(x,y+d*.985,-x,y+d*.985);
+    case 'tea_bar_mijia_pro': return rc(x,y,w,d,c,`rx="${w*.06}"`)+rc(x+w*.07,y+d*.02,w*.86,d*.14,'#afc5cc',`rx="${w*.02}"`)+rc(x,y+d*.15,w,d*.85,c,`rx="${w*.06}"`)+rc(x+w*.14,y+d*.92,w*.72,d*.05,'#172126','rx="3"')+`<circle cx="${w*58/315}" cy="${d*35/310}" r="${Math.min(w,d)*.20}" fill="#d7e4e5" stroke="${PAL.ink}" stroke-width="2"/>`+rc(w*.38,-d*.12,w*.10,d*.23,'none','rx="5"')+ln(-w*.32,d*.15,-w*.21,d*.15)+((typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts).teaBarDoors(f||{type:t,w,d}).filter(d=>d.open).map(d=>pa('M'+d.poly.map(p=>p.join(',')).join('L')+'Z',c)).join(''));
     case 'purifier': return rc(x,y,w,d,c,'rx="60"') + rc(x+45,y+45,w-90,d-90,'none',`rx="40" ${DASH}`);
     case 'officechair': {
       let s = '';

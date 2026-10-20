@@ -1,0 +1,37 @@
+{
+  "browser": [
+    {
+      "mode": "http",
+      "metrics": {
+        "difference": 63.218171628725486,
+        "points": 79
+      },
+      "passed": true,
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "metrics": {
+        "difference": 63.218171628725486,
+        "points": 79
+      },
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "productionBoundsMaxDifferenceMm": 0.107,
+  "regressionSuites": 25,
+  "syntaxFiles": 9,
+  "classicScriptScope": "passed",
+  "notRun": [
+    "full scripts/check.cjs",
+    "unrelated historical previews",
+    "on-site installation validation"
+  ],
+  "initialFailures": [
+    "Sandbox Edge exited during startup; isolated run outside sandbox passed",
+    "1100px test window hid library; reran at standard 1440px",
+    "Production vertex checks exposed rear filter and label projections; incorporated in final footprint"
+  ],
+  "finalCheck": "Unregistered model snapping retains previous symmetric bounds; product, snapping, feature, wall-face and kitchen-edge regressions passed after scope restriction."
+}

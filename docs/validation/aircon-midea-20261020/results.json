@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-20",
+  "scope": "incremental, indoor unit only",
+  "browser": "Microsoft Edge, isolated workspace and fresh profiles",
+  "modes": [
+    {
+      "mode": "offline file://",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "mode": "HTTP static service",
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "covered": [
+    "production preview",
+    "catalog creation",
+    "width/depth/height editing",
+    "undo/redo",
+    "copy",
+    "autosave and refresh",
+    "project roundtrip",
+    "main 3D",
+    "390px viewport"
+  ],
+  "visualReview": [
+    "front",
+    "angle",
+    "top",
+    "main 3D",
+    "narrow property panel"
+  ],
+  "notRun": [
+    "full scripts/check.cjs",
+    "unrelated previews",
+    "physical installation verification"
+  ],
+  "initialFailure": "Sandbox Edge exited during launch; browser suite passed outside sandbox after height property integration."
+}

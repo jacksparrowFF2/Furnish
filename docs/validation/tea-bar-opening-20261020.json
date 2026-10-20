@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-20",
+  "model": "tea_bar_mijia_pro",
+  "scope": "Incremental independent door opening and cabinet/bottle interior integration",
+  "persistentFields": {
+    "teaBarUpperOpen": "optional boolean; default false; explicit in new instances; absent remains absent on legacy restore",
+    "teaBarLowerOpen": "optional boolean; same semantics"
+  },
+  "node": {
+    "status": "PASS",
+    "results": [
+      {
+        "file": "tests/test-tea-bar.cjs",
+        "passed": true,
+        "output": "PASS tea bar: catalog, defaults, project/named roundtrip, copy, replacement, repeated restore, SVG, production geometry, transforms, normals, independent door pivots, lock/mutate, cups/bottle raycasts and 3D opening boundaries\n"
+      },
+      {
+        "file": "tests/test-product-rules.cjs",
+        "passed": true,
+        "output": "PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API\n"
+      },
+      {
+        "file": "tests/test-project.cjs",
+        "passed": true,
+        "output": "PASS Survey preserves existing openings before structure confirmation\nPASS Old projects migrate to locked structures\nPASS Design rejects changes to the confirmed original bearing structure\nPASS Exterior walls are locked after confirmation\nPASS Real partition demolition merges rooms and updates area\nPASS Moving a partition changes both room areas while preserving bearing walls\nPASS Room materials follow spatial overlap after demolition\nPASS Automatic construction quantities update without overwriting manual values\nPASS Paint deductions use door height rather than wall thickness\nPASS Project backup roundtrip preserves baseline, designs, costs and catalog\nPASS Corrupt and future backups fail before import\nPASS Legacy plan JSON migrates to the portable project format\nPASS Spatial checks detect a blocked door swing\nPASS Cabinet front clearance rotates with the furniture\nPASS OBJ supports triangulation and negative indices\nPASS Overlapping door swings and swing-wall collisions are reported\nPASS Flat, non-finite and empty imported meshes are rejected before restoration\nPASS Backup preserves raw attachments and rejects malformed attachment data\nPASS Interior door deducts both painted wall faces\nPASS Retained openings keep sill heights and swing overrides after IDs reindex\n20 product roadmap regression checks passed\n"
+      },
+      {
+        "file": "tests/test-project-validation.cjs",
+        "passed": true,
+        "output": ""
+      },
+      {
+        "file": "tests/test-project-recovery.cjs",
+        "passed": true,
+        "output": "Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed\n"
+      },
+      {
+        "file": "tests/test-work-state.cjs",
+        "passed": true,
+        "output": "PASS work restoration, independent defaults, legacy fields and custom architecture\n"
+      },
+      {
+        "file": "tests/test-replacement.cjs",
+        "passed": true,
+        "output": ""
+      },
+      {
+        "file": "tests/test-mirror.cjs",
+        "passed": true,
+        "output": "PASS mirror height editing, validation, lock, history, persistence, copy, legacy defaults, production geometry and cache refresh\n"
+      },
+      {
+        "file": "tests/test-property-first-batch.cjs",
+        "passed": true,
+        "output": "PASS legacy summary envelopes and unknowns, confirmed/reference zero, clearing prices without default migration, exact installation deduplication and named project preservation\n"
+      },
+      {
+        "file": "tests/test-scene-shadow-cache.cjs",
+        "passed": true,
+        "output": "PASS production scene loop: camera-only redraws reuse shadows; swing/sliding doors, curtains and explicit scene changes refresh; settled scene stops drawing\n"
+      },
+      {
+        "file": "tests/test-cabinet-opening-3d.cjs",
+        "passed": true,
+        "output": "PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations\n"
+      },
+      {
+        "file": "tests/test-cabinet-opening-volume-model.cjs",
+        "passed": true,
+        "output": "PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes\n"
+      },
+      {
+        "file": "tests/test-pipe-collisions.cjs",
+        "passed": true,
+        "output": "PASS pipe entities, drawer range, tangent, vertical separation, position/diameter confirmation invalidation, production holes, edge notches, rotation/mirror and moving cut parts\n"
+      },
+      {
+        "file": "tests/test-cut-board-motion.cjs",
+        "passed": true,
+        "output": "PASS continuous cut-board motion: no phantom notch/removed-board hits, intermediate-only door/lift hits, rotation/mirror, 335 production board bounds and 4 actual cut-solid rays\n"
+      },
+      {
+        "file": "tests/test-directional-heights.cjs",
+        "passed": true,
+        "output": "PASS height-aware directional gaps: legacy/modular wall cabinets, exact contact and threshold sides, unknown/overlapping heights, closer targets, linked straight/L/U rotation/mirror, group members, project roundtrip and repeated restore\n"
+      }
+    ],
+    "lastAdditionalCheck": "PASS final production door vertices in shared opening hull/heights; final bottle dimensions and actual cavity containment"
+  },
+  "syntax": {
+    "status": "PASS",
+    "checks": [
+      "changed modules and scripts",
+      "entry inline 3D module",
+      "ordinary shared declarations",
+      "entry resources"
+    ]
+  },
+  "browser": {
+    "status": "PASS",
+    "isolatedRun": "output/playwright/tea-bar-Et48ku",
+    "results": [
+      {
+        "mode": "file",
+        "passed": true,
+        "errors": []
+      },
+      {
+        "mode": "http",
+        "passed": true,
+        "errors": []
+      }
+    ],
+    "checks": [
+      "independent preview upper and lower controls",
+      "both open / closed",
+      "actual preview door click",
+      "new catalog defaults",
+      "attribute door state changes",
+      "locked door controls",
+      "undo/redo",
+      "copy includes both door states",
+      "saved refresh preserves state",
+      "current and named project roundtrip",
+      "production 3D open and closed",
+      "390px door controls and no horizontal overflow",
+      "zero page errors"
+    ],
+    "environment": "Initial sandbox run passed file mode, then local HTTP was denied. Final isolated file/HTTP run passed outside sandbox. Production design was never used or written."
+  },
+  "visual": {
+    "status": "PASS",
+    "screenshots": "docs/validation/tea-bar-opening-20261020",
+    "features": [
+      "upper liner with ventilation slots, lights, cup basket and 6 inverted cups",
+      "lower transparent bottle with ribs, pump cap and immersed tube",
+      "replacement ramp and rollers",
+      "independent left hinges, closed envelope preserved"
+    ]
+  },
+  "notRun": [
+    "full repository check and unrelated historical previews",
+    "physical touch device",
+    "continuous hinge animation (instant pose changes)",
+    "physical replacement motion and manufacturer capacity/access verification"
+  ],
+  "boundaries": [
+    "internal sizes and 100 degree angle estimated from images",
+    "swept convex hull conservative with 2 degree sampling",
+    "whole body collision envelope remains conservative despite visible cavities",
+    "no automatic pipe cutouts",
+    "manufacturer bottle replacement/tank lifting clearances unknown"
+  ],
+  "userDesignEdited": false,
+  "referenceBottle": {
+    "diameterMm": 270,
+    "heightMm": 500,
+    "neckDiameterMm": 55,
+    "neckRegionHeightMm": 80,
+    "source": "docs/validation/tea-bar-opening-20261020/reference-bottle-dimensions.png",
+    "basis": "User supplied dimensions image; whole bottle 27/50 cm and neck callout 5.5/8 cm. Neck contour and installed adapter remain approximate.",
+    "layout": {
+      "bottomMm": 36,
+      "topMm": 536,
+      "adapterHeightMm": 22,
+      "cavityWidthMm": 283,
+      "cavityDepthMm": 276
+    },
+    "verification": "PASS actual production bottle+rib+cap envelope 270 x 270 x 500 mm, 55 mm cap, and containment inside physical cavity."
+  }
+}

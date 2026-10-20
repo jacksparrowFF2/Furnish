@@ -21,9 +21,10 @@
     for(const hit of finish)if(hit)finishGuides.push(hit.guide);
     let feature=null;
     // Every moving member contributes actual outline points; all share one delta.
+    // Smooth tessellation vertices are not physical corner/midpoint magnets.
     for(const member of moving||[f]){
       const placed={...member,cx:member.cx+cx-f.cx,cy:member.cy+cy-f.cy};
-      for(const entity of entities({furniture:[placed]}))for(const e of entity.edges)for(const source of [{point:e.a,kind:'corner'},{point:{x:(e.a.x+e.b.x)/2,y:(e.a.y+e.b.y)/2},kind:'midpoint'}]){
+      for(const entity of entities({furniture:[placed]}).filter(e=>!e.smooth))for(const e of entity.edges)for(const source of [{point:e.a,kind:'corner'},{point:{x:(e.a.x+e.b.x)/2,y:(e.a.y+e.b.y)/2},kind:'midpoint'}]){
         const hit=featureSnap(source.point,{scene,rects:targetRects,tol:capture,anchor:axis?source.point:null,horizontal:axis==='x'});
         if(hit&&(!feature||hit.distance<feature.distance-1e-7))feature={...hit,source};
       }
@@ -35,18 +36,18 @@
     let nx=Math.round(cx/grid)*grid,ny=Math.round(cy/grid)*grid;
     if(axis==='x')ny=cy;else if(axis==='y')nx=cx;
     // Long, thin curtains need a wider visible capture area at overview zoom.
-    const {hw,hh}=geometry.aabb(f),tol=tolerance(f,scale);
+    const {hw,hh}=geometry.aabb(f),tol=tolerance(f,scale),bounds=geometry.localOutline(f)?geometry.bbox(geometry.footprints(f).flat()):[f.cx-hw,f.cy-hh,f.cx+hw,f.cy+hh],xs=[bounds[0]-f.cx,0,bounds[2]-f.cx],ys=[bounds[1]-f.cy,0,bounds[3]-f.cy];
     if(finish[0])nx=finish[0].value;if(finish[1])ny=finish[1].value;
     let bx=finish[0]?0:tol,by=finish[1]?0:tol,gx=null,gy=null;
     if(wallSnap)for(const r of rects){
-      if(axis!=='y'&&!(r[3]<cy-hh-tol||r[1]>cy+hh+tol))for(const ex of [r[0],r[2]])for(const c of [ex+hw,ex-hw])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;}
-      if(axis!=='x'&&!(r[2]<nx-hw-tol||r[0]>nx+hw+tol))for(const ey of [r[1],r[3]])for(const c of [ey+hh,ey-hh])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;}
+      if(axis!=='y'&&!(r[3]<cy-hh-tol||r[1]>cy+hh+tol))for(const ex of [r[0],r[2]])for(const c of [ex-xs[0],ex-xs[2]])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;}
+      if(axis!=='x'&&!(r[2]<nx-hw-tol||r[0]>nx+hw+tol))for(const ey of [r[1],r[3]])for(const c of [ey-ys[0],ey-ys[2]])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;}
     }
     if(guides)for(const o of furniture){
       if(o.id===f.id||skip?.has(o.id)||Math.abs(o.cx-cx)>6000||Math.abs(o.cy-cy)>6000)continue;
-      const B=geometry.aabb(o);
-      if(axis!=='y')for(const v of [o.cx-B.hw,o.cx,o.cx+B.hw])for(const m of [-hw,0,hw]){const c=v-m;if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;gx={x:v,o,B};}}
-      if(axis!=='x')for(const v of [o.cy-B.hh,o.cy,o.cy+B.hh])for(const m of [-hh,0,hh]){const c=v-m;if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;gy={y:v,o,B};}}
+      const B=geometry.aabb(o),bounds=geometry.localOutline(o)?geometry.bbox(geometry.footprints(o).flat()):[o.cx-B.hw,o.cy-B.hh,o.cx+B.hw,o.cy+B.hh];
+      if(axis!=='y')for(const v of [bounds[0],o.cx,bounds[2]])for(const m of xs){const c=v-m;if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;gx={x:v,o,B};}}
+      if(axis!=='x')for(const v of [bounds[1],o.cy,bounds[3]])for(const m of ys){const c=v-m;if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;gy={y:v,o,B};}}
     }
     const lines=[...finishGuides];
     if(gx)lines.push({v:true,x:gx.x,a:Math.min(ny-hh,gx.o.cy-gx.B.hh)-150,b:Math.max(ny+hh,gx.o.cy+gx.B.hh)+150});
@@ -177,7 +178,7 @@
   const xy=p=>({x:p[0],y:p[1]}),distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
   function edges(rings){return rings.flatMap(poly=>poly.map((p,i)=>({a:xy(p),b:xy(poly[(i+1)%poly.length])}))).filter(e=>distance(e.a,e.b)>1e-7);}
   function furnitureRings(f){
-    if(!f.kitchen)return [geometry.corners(f)];
+    if(!f.kitchen)return geometry.footprints(f);
     const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
     if(K.isWall(f))return K.footprints(f);
     // Match the visible counter perimeter, including cutouts and narrowed ends.
@@ -185,7 +186,7 @@
   }
   function entities({rects=[],furniture=[]}){
     const out=rects.map((r,i)=>({kind:'wall',id:i,name:'',rings:[[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]]]}));
-    for(const f of furniture){try{out.push({kind:'furniture',id:f.id,name:f.name,rings:furnitureRings(f)});}catch{/* Invalid saved models cannot supply a reliable boundary. */}}
+    for(const f of furniture){try{out.push({kind:'furniture',id:f.id,name:f.name,smooth:!!geometry.localOutline(f),rings:furnitureRings(f)});}catch{/* Invalid saved models cannot supply a reliable boundary. */}}
     return out.map(e=>({...e,edges:edges(e.rings)}));
   }
   function project(p,e){
@@ -202,12 +203,12 @@
       if(wall&&rects.some(r=>q.x>r[0]+1e-7&&q.x<r[2]-1e-7&&q.y>r[1]+1e-7&&q.y<r[3]-1e-7))return;
       feature={point:{x:q.x,y:q.y},edge:e,distance:d,kind};
     };
-    for(const entity of scene)for(const e of entity.edges)considerFeature(e.a,e,entity.kind==='wall');
+    for(const entity of scene.filter(e=>!e.smooth))for(const e of entity.edges)considerFeature(e.a,e,entity.kind==='wall');
     const nearbyWallEdges=scene.filter(e=>e.kind==='wall').flatMap(e=>e.edges).filter(e=>distance(at,project(at,e).point)<=tol+1e-7);
     for(let i=0;i<nearbyWallEdges.length;i++)for(let j=i+1;j<nearbyWallEdges.length;j++){
       const q=intersection(nearbyWallEdges[i],nearbyWallEdges[j]);if(q)considerFeature(q,nearbyWallEdges[i],true);
     }
-    for(const entity of scene)for(const e of entity.edges)considerFeature({x:(e.a.x+e.b.x)/2,y:(e.a.y+e.b.y)/2},e,entity.kind==='wall','midpoint');
+    for(const entity of scene.filter(e=>!e.smooth))for(const e of entity.edges)considerFeature({x:(e.a.x+e.b.x)/2,y:(e.a.y+e.b.y)/2},e,entity.kind==='wall','midpoint');
     return feature;
   }
   function measurePoint(p,{scale,rects=[],furniture=[],anchor}){

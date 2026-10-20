@@ -34,6 +34,7 @@ const LIB = [
     ["tv","85 寸电视",1880,90,"#1d1d1f",8500,1060],
     ["tv","100 寸电视",2210,100,"#1d1d1f",15000,1245],
     ["aircon","柜机空调",500,380,"#f6f7f8",6500],
+    ["aircon_midea_ultra_2hp","美的酷省电 Ultra 立式空调 · 2匹室内机",395,436,"#e5e7e8",0,products.height({type:"aircon_midea_ultra_2hp"})],
     ["acwall","挂机空调",900,250,"#f6f7f8",3200],
     ["dishwasher","洗碗机",600,600,"#c9ced3",4500],
     ["dishwasher_mijia_countertop","米家台面洗碗机 · 5套",550,350,"#f4f3ef",0,products.height({type:"dishwasher_mijia_countertop"})],
@@ -73,6 +74,7 @@ const LIB = [
     ["armchair","阅读椅",750,800,"#c9a98a",1600]
   ]},
   {cat:'桌 · 台', items:[
+    ["tea_table_800","藤编移动茶台 · 80cm",800,400,"#68432e",0,products.height({type:"tea_table_800"})],
     ["dresser","梳妆台",1000,450,"#efe6d8",1500],
     ["desk","书桌",1200,600,"#e2cfb4",1200],
     ["coffeetable","茶几",1300,650,"#e8dccb",1500],

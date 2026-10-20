@@ -5,7 +5,8 @@
 const area = poly => Math.abs(poly.reduce((a,p,i) => { const q = poly[(i+1)%poly.length]; return a + p[0]*q[1] - q[0]*p[1]; }, 0)) / 2 / 1e6;
 const perim = poly => poly.reduce((a,p,i) => { const q = poly[(i+1)%poly.length]; return a + Math.hypot(q[0]-p[0], q[1]-p[1]); }, 0) / 1000;
 const bbox = poly => { const xs = poly.map(p=>p[0]), ys = poly.map(p=>p[1]); return [Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]; };
-function aabb(f){ const a = f.rot*Math.PI/180, c = Math.abs(Math.cos(a)), s = Math.abs(Math.sin(a)); return {hw:f.w/2*c + f.d/2*s, hh:f.w/2*s + f.d/2*c}; }
+function localOutline(f){return (root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null)).planOutline(f);}
+function aabb(f){ if(localOutline(f)){const [x0,y0,x1,y1]=bbox(footprints(f).flat());return {hw:Math.max(f.cx-x0,x1-f.cx),hh:Math.max(f.cy-y0,y1-f.cy)};}const a = f.rot*Math.PI/180, c = Math.abs(Math.cos(a)), s = Math.abs(Math.sin(a)); return {hw:f.w/2*c + f.d/2*s, hh:f.w/2*s + f.d/2*c}; }
 const inPoly = (x, y, poly) => { let c = false;
   for (let i = 0, j = poly.length-1; i < poly.length; j = i++){ const [xi,yi] = poly[i], [xj,yj] = poly[j];
     if ((yi > y) !== (yj > y) && x < (xj-xi)*(y-yi)/(yj-yi) + xi) c = !c; }
@@ -16,7 +17,7 @@ function corners(f){
 }
 // 分离轴定理判断两个旋转矩形是否重叠；重叠不足 5mm（刚好贴边）不算
 function obbOverlap(a, b){
-  if(a.kitchen||b.kitchen)return footprints(a).some(A=>footprints(b).some(B=>polygonOverlap(A,B)));
+  if(a.kitchen||b.kitchen||localOutline(a)||localOutline(b))return footprints(a).some(A=>footprints(b).some(B=>polygonOverlap(A,B)));
   const A = corners(a), B = corners(b);
   for (const P of [A, B]) for (let i = 0; i < 2; i++){
     const nx = P[i+1][1] - P[i][1], ny = P[i][0] - P[i+1][0], L = Math.hypot(nx, ny) || 1;
@@ -25,7 +26,23 @@ function obbOverlap(a, b){
   }
   return true;
 }
-function footprints(f){const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);return f.kitchen?K.footprints(f):[corners(f)];}
+function footprints(f){const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);if(f.kitchen)return K.footprints(f);const outline=localOutline(f);if(!outline)return [corners(f)];const a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [outline.map(([x,y])=>{x*=f.flip?-1:1;return [f.cx+x*c-y*s,f.cy+x*s+y*c];})];}
+// Union the chosen rooms, then subtract the union of floor-standing envelopes.
+// Uses the saved room boundaries (including holes), independent of layer visibility.
+function regionAreas(rooms,furniture=[]){
+  const Z=root.FurnishZoneGeometry||require('./zone-geometry.js'),D=root.FurnishDesign||require('./design-core.js'),P=root.FurnishProducts||require('./product-rules.js');
+  const regions=rooms.map(r=>r.rings?Z.ringPath(r.rings):r.poly),inRooms=p=>regions.some(r=>Z.inside(p,r));
+  if(!regions.length)return {empty:0,occupied:0,free:0,pending:[]};
+  const empty=Z.area(Z.decompose(regions,inRooms))/1e6,obstacles=[],pending=[];
+  for(const f of furniture){
+    const polys=footprints(f),touches=()=>Z.area(Z.decompose([...regions,...polys],p=>inRooms(p)&&polys.some(q=>Z.inside(p,q))))>1e-6;
+    const standing=P.floorStanding(f,D.furnitureVerticalBounds(f));
+    if(standing===null){if(touches())pending.push(f.id);continue;}
+    if(standing)obstacles.push(...polys);
+  }
+  const occupied=obstacles.length?Z.area(Z.decompose([...regions,...obstacles],p=>inRooms(p)&&obstacles.some(q=>Z.inside(p,q))))/1e6:0;
+  return {empty,occupied,free:Math.max(0,empty-occupied),pending};
+}
 function polygonOverlap(A,B,tolerance=5){for(const P of [A,B])for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length],nx=q[1]-P[i][1],ny=P[i][0]-q[0],L=Math.hypot(nx,ny)||1,pa=A.map(p=>(p[0]*nx+p[1]*ny)/L),pb=B.map(p=>(p[0]*nx+p[1]*ny)/L);if(Math.max(...pa)<=Math.min(...pb)+tolerance||Math.max(...pb)<=Math.min(...pa)+tolerance)return false;}return true;}
 function bodyParts(f,plan,furniture){
   const parts=relativeBodyParts(f);if(!plan)return parts;
@@ -44,7 +61,7 @@ function relativeBodyParts(f){
     const bottom=P.value(f,'mountHeight'),a=(f.rot||0)*Math.PI/180;
     return [{w:f.w,d:f.d,offset:0,bottom,top:bottom+hood.bodyHeight},{w:hood.coverWidth,d:hood.coverDepth,offset:hood.coverOffset,bottom:bottom+hood.bodyHeight,top:bottom+P.height(f)}].map(part=>({p:corners({...f,w:part.w,d:part.d,cx:f.cx-Math.sin(a)*part.offset,cy:f.cy+Math.cos(a)*part.offset}),vertical:{bottom:part.bottom,top:part.top,source:'model'}}));
   }
-  return [{p:corners(f),vertical:D?.furnitureVerticalBounds(f)}];
+  return footprints(f).map(p=>({p,vertical:D?.furnitureVerticalBounds(f)}));
 }
 function volumeOverlap(a,b,plan,furniture){return bodyParts(a,plan,furniture).some(A=>bodyParts(b,plan,furniture).some(B=>verticalOverlap(a,b,[A.vertical,B.vertical])&&polygonOverlap(A.p,B.p)));}
 // 不参与碰撞检查：地毯、墙挂 / 吊装、台面上的设备、绿植（枝叶可伸到家具上方）；椅子推进桌下也属正常
@@ -77,7 +94,7 @@ function collisions(furniture,plan){
   return out;
 }
 const groupBox = items => { let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-  items.forEach(f => { const {hw, hh} = aabb(f); x0 = Math.min(x0, f.cx-hw); y0 = Math.min(y0, f.cy-hh); x1 = Math.max(x1, f.cx+hw); y1 = Math.max(y1, f.cy+hh); });
+  items.forEach(f => { if(localOutline(f)){const b=bbox(footprints(f).flat());x0=Math.min(x0,b[0]);y0=Math.min(y0,b[1]);x1=Math.max(x1,b[2]);y1=Math.max(y1,b[3]);return;}const {hw, hh} = aabb(f); x0 = Math.min(x0, f.cx-hw); y0 = Math.min(y0, f.cy-hh); x1 = Math.max(x1, f.cx+hw); y1 = Math.max(y1, f.cy+hh); });
   return [x0, y0, x1, y1]; };
 
 
@@ -107,7 +124,7 @@ function doorLeafOffset(d, thickness=40){
   const inward=(center[0]-d.h[0])*normal[0]+(center[1]-d.h[1])*normal[1];
   return Math.sign(inward)*thickness/2;
 }
-  const api={solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,polygonOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatUnder,tuckedSeatPair,doorLeaves,doorSwingPolygons,doorOverride,doorLeafOffset};
+  const api={localOutline,regionAreas,solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,polygonOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatUnder,tuckedSeatPair,doorLeaves,doorSwingPolygons,doorOverride,doorLeafOffset};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishGeometry=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

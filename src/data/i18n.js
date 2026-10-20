@@ -7,6 +7,8 @@ const S2T = new Map(('与與两兩个個为為书書于於仅僅从從价價会�
 const s2t = s => S2T_PHRASES.reduce((a, [f, t]) => a.replaceAll(f, t), s).replace(/[\u3400-\u9fff]/g, c => S2T.get(c) || c);
 // 内置的房间 / 材料 / 家具名称存的是中文；英文界面下显示译名，用户自己改过的名称原样显示
 const NAMES_EN = {
+  '美的酷省电 Ultra 立式空调 · 2匹室内机':'Midea Ultra Floor Air Conditioner · 2 HP Indoor Unit',
+  '藤编移动茶台 · 80cm':'Woven Tea Cabinet · 80cm',
   '米家智能茶吧机 Pro 立式':'Mijia Smart Tea Bar Pro · Floor-standing',
   '占位体':'Placeholders', '方块占位体':'Block Placeholder',
   '管道包覆柜':'Pipe Enclosure',

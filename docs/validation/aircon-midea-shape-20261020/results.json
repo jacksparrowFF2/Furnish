@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-20",
+  "scope": "shape revision, incremental",
+  "passed": [
+    "production geometry dimensions/scaling/rotation/mirror",
+    "recessed outlet ray",
+    "roof slope and roof ray",
+    "SVG catalog/theme regression",
+    "changed JavaScript syntax",
+    "HTTP browser flow",
+    "offline file browser flow"
+  ],
+  "browserErrors": [],
+  "visualReview": [
+    "final top detail",
+    "angle",
+    "front",
+    "top view"
+  ],
+  "notRun": [
+    "full scripts/check.cjs",
+    "unrelated model previews",
+    "physical installation checks"
+  ],
+  "source": "user supplied product and dimension images; fine geometry estimated"
+}

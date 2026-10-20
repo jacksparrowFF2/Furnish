@@ -12,6 +12,8 @@ const fields={
  groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
  hoodPanelOpen:{boolean:true,message:'烟机面板开合设置无效'},
  dishwasherDoorOpen:{boolean:true,message:'洗碗机折叠门开合设置无效'},
+ teaBarUpperOpen:{boolean:true,message:'茶吧机上层柜门开合设置无效'},
+ teaBarLowerOpen:{boolean:true,message:'茶吧机下层柜门开合设置无效'},
  foldingTablePose:{values:['round','single','capsule'],message:'折叠桌形态须为圆桌、单边收起或胶囊桌'},
  hoodGeometry:{custom:true,message:'烟机几何尺寸无效'},
  hobCutout:{custom:true,message:'灶具开孔尺寸无效'},
@@ -40,7 +42,9 @@ const doorWidths={minWidth:50,maxLeaves:24,gap:2};
 const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
 const foldingTable={family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const types={
- tea_bar_mijia_pro:{family:'tea-bar',height:1155,envelope:()=>[0,1155],identity:{brand:'米家/Mijia',model:'智能茶吧机 Pro 立式'}},
+ aircon_midea_ultra_2hp:{family:'floor-aircon',height:1856,envelope:()=>[0,1856],planShape:{kind:'superellipse',exponent:.7,segments:96,bodyWidth:383,bodyDepth:424,label:{x:-135,width:16,offset:3},rear:{width:220,z:-213.5,referenceWidth:395,referenceDepth:436},version:1},clearanceReview:'missing',identity:{brand:'美的/Midea',model:'KFR-51LW/N8KS1-1U'}},
+ tea_table_800:{family:'tea-table',height:720,teaTable:{cabinetHeight:720,accessoryTop:897},envelope:()=>[0,720]},
+ tea_bar_mijia_pro:{family:'tea-bar',height:1155,envelope:()=>[0,1155],defaults:{teaBarUpperOpen:false,teaBarLowerOpen:false},fields:['teaBarUpperOpen','teaBarLowerOpen'],create:['teaBarUpperOpen','teaBarLowerOpen'],teaBar:{width:315,depth:310,height:1155,hingeX:-147.5,front:146,thickness:14,angle:100,bottle:{diameter:270,height:500,neckDiameter:55,neckHeight:80,bottom:36,z:0,capHeight:14,adapterHeight:22},doors:[{section:'upper',key:'teaBarUpperOpen',bottom:601.5,top:809},{section:'lower',key:'teaBarLowerOpen',bottom:17,top:600}]},identity:{brand:'米家/Mijia',model:'智能茶吧机 Pro 立式'}},
  pet_feeder_mijia_2:{family:'pet-feeder',height:370,envelope:()=>[0,370],identity:{brand:'米家/Mijia',model:'智能宠物喂食器 2'}},
  cat_tree:{family:'pet-cat-tree',height:1430,envelope:()=>[0,1430]},
  litter_box:{family:'pet-litter-box',height:400,envelope:()=>[0,400]},
@@ -85,6 +89,26 @@ types.vanity.cabinet={bodyHeight:450,bottom:330,aboveBody:1180,min:200,max:3200}
 function freeze(v){if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;}
 freeze(fields);freeze(types);
 const definition=f=>Object.hasOwn(types,typeof f==='string'?f:f?.type)?types[typeof f==='string'?f:f.type]:null;
+// Local mm outline; custom models retain the rectangular fallback.
+// Curvature is a visual estimate, never an installation requirement.
+function planBodyOutline(f,segments){
+ const shape=!f.obj&&definition(f)?.planShape;if(!shape)return null;
+ const count=segments||shape.segments,signed=v=>Math.abs(v)<1e-12?0:Math.sign(v)*Math.pow(Math.abs(v),shape.exponent);
+ return Array.from({length:count},(_,i)=>{const t=i*2*Math.PI/count;return [f.w/2*signed(Math.sin(t)),f.d/2*signed(Math.cos(t))];});
+}
+function planOutline(f,segments){
+ const points=planBodyOutline(f,segments);if(!points)return null;
+ const rear=definition(f).planShape.rear;if(!rear)return points;
+ const x=rear.width/2*f.w/rear.referenceWidth,z=rear.z*f.d/rear.referenceDepth;
+ // Convex hull includes the projecting rear filter; no recessed void is claimed.
+ const shape=definition(f).planShape,label=shape.label,labelZ=(shape.bodyDepth/2*Math.pow(1-Math.pow(Math.abs(label.x/(shape.bodyWidth/2)),2/shape.exponent),shape.exponent/2)+label.offset+.5)*f.d/rear.referenceDepth;
+ const labels=[-1,1].map(sign=>[(label.x+sign*label.width/2)*f.w/rear.referenceWidth,labelZ]);
+ const sorted=[...points,[-x,z],[x,z],...labels].sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+ const cross=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+ const half=pts=>{const out=[];for(const p of pts){while(out.length>1&&cross(out[out.length-2],out[out.length-1],p)<=0)out.pop();out.push(p);}out.pop();return out;};
+ return [...half(sorted),...half([...sorted].reverse())];
+}
+
 const supports=(f,key)=>key==='groupId'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 const value=(f,key)=>f[key]??definition(f)?.defaults?.[key];
@@ -118,6 +142,21 @@ const vesselSink=f=>f?.type==='ksink'&&!f.obj&&value(f,'sinkStyle')==='vessel';
 function modelError(f){try{validate(f);if(f.cabinet)(root.FurnishCabinet||require('./cabinet-core.js')).validate(f);return null;}catch(e){return e.message||String(e);}}
 function initial(f){const result={};for(const key of definition(f)?.create||[]){if(key==='kitchen'&&f.type==='kitchenwall'&&(!Number.isFinite(f.w)||!Number.isFinite(f.d)))continue;result[key]=key==='kitchen'?kitchen().defaults(f):value(f,key);}return {...result,...definition(f)?.identity};}
 // Static vertical boards; top/bottom stay open. Missing shape retains the legacy U. All values are mm.
+// Tea bar door geometry, shared by production, plan symbols and opening checks.
+function teaBarDoors(f){
+ const r=definition(f)?.teaBar;if(!r||f.obj)return [];
+ const sx=f.w/r.width,sz=f.d/r.depth,sy=height(f)/r.height;
+ return r.doors.map(door=>{
+  const polygon=degrees=>{const a=degrees*Math.PI/180;return [[-r.width/2-r.hingeX,-r.thickness/2],[r.width/2-r.hingeX,-r.thickness/2],[r.width/2-r.hingeX,r.thickness/2],[-r.width/2-r.hingeX,r.thickness/2]].map(([x,z])=>[(r.hingeX+x*Math.cos(a)-z*Math.sin(a))*sx,(r.front+x*Math.sin(a)+z*Math.cos(a))*sz]);};
+  return {...door,bottom:door.bottom*sy,top:door.top*sy,open:!!value(f,door.key),poly:polygon(value(f,door.key)?r.angle:0),polygon};
+ });
+}
+function teaBarOpeningZones(f){
+ const r=definition(f)?.teaBar;if(!r||f.obj)return [];
+ const hull=points=>{const sorted=points.sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}return out;};return [...half(sorted).slice(0,-1),...half(sorted.slice().reverse()).slice(0,-1)];};
+ const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a),transform=([x,y])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*co-y*si,(f.cy||0)+x*si+y*co];};
+ return teaBarDoors(f).map((d,column)=>({kind:'cabinetdoor',column,section:d.section,poly:hull(Array.from({length:51},(_,i)=>d.polygon(r.angle*i/50)).flat()).map(transform),ranges:[[d.bottom,d.top]]}));
+}
 function pipeBoxSignature(f){
  if(!family(f,'pipe-box')||f.obj)return null;
  const shape=value(f,'pipeBoxShape');return [shape,shape==='three'?value(f,'pipeBoxOpenSide'):shape==='two'?value(f,'pipeBoxCorner'):null];
@@ -211,6 +250,13 @@ function floorBase(plan,f,furniture=plan?.furniture||[],trail=new Set()){
  }
  const area=candidates[0];return area?{z:Number.isFinite(area.finishedZ)?area.finishedZ:0,known:Number.isFinite(area.finishedZ),roomId:area.roomId||area.id}:{z:0,known:false};
 }
+// Floor-use area counts the whole standing envelope, including legs/plinths;
+// textiles and hosted appliances do not reserve a second ground footprint.
+function floorStanding(f,range){
+ if(['rug','curtain'].includes(f.type)||definition(f)?.embedded||f.counterLink?.hostId||f.laundryHostId)return false;
+ if(!range)return null;
+ return range.bottom<=1e-6&&range.top>1e-6;
+}
 function validateDatum(work){if(work?.furnitureDatum!==undefined&&!furnitureDatum.values.includes(work.furnitureDatum))throw Error('家具高度基准须为毛坯或完成地面');}
 function vertical(f){
  if(vesselSink(f)){const base=f.counterElevation??862;return {bottom:base,top:base+Math.max(value(f,'sinkBowlHeight')+definition(f).vessel.faucetClearance,definition(f).vessel.faucetRise),source:'model'};}
@@ -220,7 +266,7 @@ function vertical(f){
  if(f.type==='vanity'&&f.cabinet){const spec=cabinetSpec(f);return {bottom:spec.bottom,top:spec.bottom+(f.cabinet.bodyHeight??spec.bodyHeight)+spec.aboveBody,source:'recorded'};}
  if(f.type==='stove_fotile_th36b'){const h=height(f),base=value(f,'counterElevation');return {bottom:base-80*h/138,top:base+58*h/138,source:'model'};}
  if(['stove','ksink'].includes(f.type)&&f.counterElevation!==undefined)return {bottom:f.counterElevation-(f.type==='ksink'?200:0),top:f.counterElevation+(f.type==='ksink'?320:40),source:'model'};
- const def=definition(f);if(def?.envelope){const [bottom,top]=def.envelope(f);return {bottom,top:f.h===undefined?top:bottom+f.h,source:f.h===undefined?'model':'recorded'};}
+ const def=definition(f);if(def?.teaTable&&!f.obj)return {bottom:0,top:height(f)*def.teaTable.accessoryTop/def.teaTable.cabinetHeight,source:'model'};if(def?.envelope){const [bottom,top]=def.envelope(f);return {bottom,top:f.h===undefined?top:bottom+f.h,source:f.h===undefined?'model':'recorded'};}
  if(!def?.anchor)return null;if(def.anchor==='mixer'){const {bottom,top}=showerInstallation(f);return {bottom,top,source:'model'};}
  const bottom=value(f,'mountHeight');return {bottom,top:bottom+height(f),source:f.h===undefined||f.type==='tripleslidingwindow'?'model':'recorded'};
 }
@@ -241,7 +287,7 @@ function replacement(previous,next,candidate){
   const retain=retainReplacementField(previous,next,key);
   if(!retain)delete next[key];
  }
- if(family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
+ if(family(next,'floor-aircon')||family(next,'tea-bar')||family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
  if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
  if(next.type==='ksink'){customSinkCandidate(next,candidate);validate(next);}
@@ -257,6 +303,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,snapPi
  corner:{maxLegs:2,angle:90,lightSetback:0,lightRadius:8,compactInnerRadius:1,arcChordError:.05,arcMaxAngle:3,arcMaxSegments:1024},
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2}};
-const api={vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

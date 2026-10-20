@@ -321,7 +321,9 @@
 <script src="src/render/water-purifier-model.js"></script>
 <script src="src/render/litter-box-model.js"></script>
 <script src="src/render/pet-feeder-model.js"></script>
+<script src="src/render/aircon-midea-model.js"></script>
 <script src="src/render/tea-bar-model.js"></script>
+<script src="src/render/tea-table-model.js"></script>
 <script src="src/render/cat-tree-model.js"></script>
 <script src="src/render/folding-table-model.js"></script>
 <script src="src/render/sink-model.js"></script>
@@ -558,11 +560,12 @@ function init(){
     const tap = downAt && e.pointerId===downAt[2] && downAt[3]===0 && !tapMoved && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= TAP;downAt=null;
     if (look?.id === e.pointerId){
       look = null;
-      if (tap){ const h = pick(e); if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5 && (!h.fid||!furnitureLocked(getF(h.fid)))) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
+      if (tap){ const h = pick(e); if(h?.teaBarDoor&&h.dist<3.5&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5 && (!h.fid||!furnitureLocked(getF(h.fid)))) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
       return;
     }
     if (anim || opt.mode !== 'orbit' || spaceDown || !tap) return;
     const h = pick(e);
+    if(h?.teaBarDoor&&!e.shiftKey&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;
     if(h?.fid&&!e.shiftKey&&cycleFoldingTable(h.fid))return;
     if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
     else if (h?.door){ if(!h.fid||!furnitureLocked(getF(h.fid)))h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
@@ -677,6 +680,8 @@ function buildFurniture(f){
   if(typeof FurnishFoldingTableModel!=='undefined'&&FurnishFoldingTableModel.supported(f)){const model=FurnishFoldingTableModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishWaterPurifierModel!=='undefined'&&FurnishWaterPurifierModel.supported(f)){const model=FurnishWaterPurifierModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),model.position.y,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishCatTreeModel!=='undefined'&&FurnishCatTreeModel.supported(f)){const model=FurnishCatTreeModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishAirconMideaModel!=='undefined'&&FurnishAirconMideaModel.supported(f)){const model=FurnishAirconMideaModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishTeaTableModel!=='undefined'&&FurnishTeaTableModel.supported(f)){const model=FurnishTeaTableModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishTeaBarModel!=='undefined'&&FurnishTeaBarModel.supported(f)){const model=FurnishTeaBarModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishPetFeederModel!=='undefined'&&FurnishPetFeederModel.supported(f)){const model=FurnishPetFeederModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishLitterBoxModel!=='undefined'&&FurnishLitterBoxModel.supported(f)){const model=FurnishLitterBoxModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
@@ -1379,7 +1384,7 @@ function buildFurn(){
     try{
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
-    const sig = JSON.stringify([base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.pipeBoxThickness,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.pipeBoxThickness,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       o.position.set(wx(f.cx),FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
@@ -1614,6 +1619,11 @@ async function exit(){
 }
 
 /* ======================= 选择 / 拾取 ======================= */
+function toggleTeaBarDoor(id,key){
+ const f=getF(id);if(!f||f.obj||!FurnishProducts.family(f,'tea-bar')||!FurnishProducts.definition(f).teaBar.doors.some(d=>d.key===key))return false;
+ if(!furnitureLocked(f))mutate(()=>f[key]=FurnishProducts.validateField(f,key,!FurnishProducts.value(f,key)));
+ window.selectIds([id]);return true;
+}
 function cycleFoldingTable(id){
   const f=getF(id);if(!f||f.obj||!FurnishProducts.family(f,'folding-table'))return false;
   if(!furnitureLocked(f)){try{const next=FurnishProducts.editFoldingTablePose(f);mutate(()=>Object.assign(f,next));}catch(error){toast(error.message);}}
@@ -1632,6 +1642,7 @@ function pick(e){
     if(!o.isMesh)continue;
     let shown=true;for(let parent=o;parent;parent=parent.parent){if(!parent.visible){shown=false;break;}}if(!shown)continue;
     if (observation.material(o) === glassMat) continue;
+    if(o.userData.teaBarDoor){let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {teaBarDoor:o.userData.teaBarDoor,fid:owner?.userData.fid,dist:h.distance};}
     if (o.userData.cabinetPart) { let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {cabinetPart:o.userData.cabinetPart,fid:owner?.userData.fid,dist:h.distance}; }
     if (o.userData.door) { const door=o.userData.door;let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {door,dist:h.distance,fid:owner?.userData.fid}; }
     if (o.userData.room) return {room:o.userData.room};
