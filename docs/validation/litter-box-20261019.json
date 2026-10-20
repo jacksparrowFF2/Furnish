@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-19",
+  "scope": "Incremental litter_box model integration; existing workspace edits preserved",
+  "dimensionsMm": [440, 510, 400],
+  "passed": {
+    "nodeSuites": [
+      "test-litter-box.cjs",
+      "test-product-rules.cjs",
+      "test-project.cjs",
+      "test-project-validation.cjs",
+      "test-work-state.cjs",
+      "test-furniture-svg.cjs",
+      "test-i18n.cjs",
+      "test-water-purifier.cjs",
+      "test-property-first-batch.cjs"
+    ],
+    "syntax": "Changed source, new generator/browser case/test, entry module, shared classic declarations and local script references",
+    "geometry": "Production constructor: nominal/resized bounds, bottom datum, 0/37/90/180 degree rotations, mirrors, finite positions/normals, translucent front doorway and actual grate holes",
+    "data": "Current and named project roundtrip, copy, incompatible mountHeight cleanup on replacement, three repeated restores without drift",
+    "browser": [
+      {"mode": "offline file://", "passed": true, "pageErrors": []},
+      {"mode": "localhost HTTP", "passed": true, "pageErrors": []}
+    ],
+    "browserCoverage": "Catalog creation, floating width/depth edit, property height edit, undo/redo, duplicate, autosave refresh, current/named pack/unpack, production 3D, 390px property panel and no horizontal overflow",
+    "visualReview": [
+      "litter-box-20261019/angle.png",
+      "litter-box-20261019/front.png",
+      "litter-box-20261019/app.png",
+      "litter-box-20261019/mobile.png"
+    ]
+  },
+  "notRun": ["Full scripts/check.cjs suite", "Unrelated historical previews", "Physical product or manufacturer installation verification", "Actual downloaded project upload UI (serialization verified directly)"],
+  "limitations": ["Static flap and lid", "Estimated interior/rounding/grate dimensions", "No scoop or deodorizer accessories", "Brand/model/price and cleaning clearances unknown", "Whole-envelope spatial checks do not expose the interior as furniture storage"]
+}

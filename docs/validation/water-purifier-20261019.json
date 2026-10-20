@@ -1,0 +1,41 @@
+{
+  "model": "water_purifier_mijia_1200g",
+  "dimensions_mm": {
+    "width": 163,
+    "depth": 445,
+    "height": 379
+  },
+  "scope": "White main unit only; no faucet, hoses or internals",
+  "checks": {
+    "nodeDedicated": "PASS; final source also rerun after adding legacy and washer replacement checks",
+    "fullCheck": {
+      "status": "PASS",
+      "command": "node scripts/check.cjs",
+      "location": "output/playwright/verification-VMDNQZ/workspace 迁移 #",
+      "regressionSuites": 227,
+      "builtInPlans": 12,
+      "previewPages": 17
+    },
+    "browser": {
+      "status": "PASS",
+      "runner": "node scripts/verify-browser.cjs water-purifier",
+      "browser": "Microsoft Edge; isolated profile",
+      "modes": [
+        "HTTP",
+        "offline file://"
+      ],
+      "pageErrors": 0,
+      "externalRequests": 0,
+      "results": "output/playwright/verification-VMDNQZ/results.json"
+    },
+    "visual": "Inspected production front and angle; output/water-purifier/file-front.png and file-angle.png",
+    "diffCheck": "PASS"
+  },
+  "limits": [
+    "Appearance details estimated from provided images",
+    "Unknown connections and installation/filter clearances",
+    "No real mobile touch-device test",
+    "Full check uses copied current source and generated previews, excludes historical output archives"
+  ],
+  "userData": "Existing workspace project and other concurrent changes preserved; browser uses isolated source copy and profile"
+}

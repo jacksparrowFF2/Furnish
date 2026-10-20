@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-19",
+  "model": "pet_feeder_mijia_2",
+  "referenceDimensionsMM": [
+    220,
+    324,
+    370
+  ],
+  "node": {
+    "passed": [
+      "test-pet-feeder.cjs",
+      "test-product-rules.cjs",
+      "test-project-validation.cjs",
+      "test-project-recovery.cjs",
+      "test-work-state.cjs",
+      "test-workspace-cache.cjs",
+      "test-litter-box.cjs",
+      "test-cat-tree.cjs"
+    ],
+    "scope": "Incremental only; no full check.cjs run"
+  },
+  "syntax": {
+    "passed": [
+      "affected source syntax",
+      "entry 3D module",
+      "combined ordinary script declarations",
+      "entry local script paths",
+      "new preview generator and regression syntax"
+    ]
+  },
+  "browser": [
+    {
+      "mode": "file",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "mode": "http",
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "browserCoverage": [
+    "isolated fresh profiles; no user workspace writes",
+    "HTTP and offline file:// preview and application",
+    "catalog creation",
+    "width/depth and height edits",
+    "undo/redo",
+    "copy",
+    "autosave and reload",
+    "current/named project roundtrip",
+    "production 3D without render errors",
+    "390x844 property panel and no document horizontal overflow"
+  ],
+  "visual": {
+    "reviewed": [
+      "http-angle.png",
+      "http-front.png",
+      "http-app.png",
+      "http-mobile.png"
+    ],
+    "screenshots": "pet-feeder-20261019/"
+  },
+  "notRun": [
+    "full check.cjs",
+    "unrelated historical preview verification",
+    "physical touch hardware"
+  ],
+  "limits": [
+    "220mm body depth and internal/detail sizes are visual estimates",
+    "static model; outlet is a dark surface approximation",
+    "no hopper internals, food, battery detail, cable or adapter",
+    "no manufacturer installation/refill/bowl removal clearances; unknown price",
+    "conservative rectangular spatial envelope"
+  ]
+}

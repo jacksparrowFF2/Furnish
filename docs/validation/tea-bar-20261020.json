@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-20",
+  "model": "tea_bar_mijia_pro",
+  "dimensionsMm": [
+    315,
+    310,
+    1155
+  ],
+  "scope": "Incremental model integration; no full repository check or historical preview traversal",
+  "node": {
+    "status": "PASS",
+    "suites": [
+      "tests/test-tea-bar.cjs",
+      "tests/test-product-rules.cjs",
+      "tests/test-pet-feeder.cjs",
+      "tests/test-project.cjs",
+      "tests/test-project-validation.cjs",
+      "tests/test-work-state.cjs",
+      "tests/test-replacement.cjs",
+      "tests/test-mirror.cjs",
+      "tests/test-property-first-batch.cjs",
+      "tests/test-i18n.cjs",
+      "tests/test-scene-shadow-cache.cjs",
+      "tests/test-catalog-links.cjs"
+    ]
+  },
+  "syntax": {
+    "status": "PASS",
+    "checks": [
+      "changed scripts",
+      "entry inline 3D module",
+      "ordinary script shared declarations",
+      "entry local resource paths",
+      "git diff --check for affected files"
+    ]
+  },
+  "browser": {
+    "status": "PASS",
+    "isolatedRun": "output/playwright/tea-bar-DciFvN",
+    "results": [
+      {
+        "mode": "file",
+        "passed": true,
+        "errors": []
+      },
+      {
+        "mode": "http",
+        "passed": true,
+        "errors": []
+      }
+    ],
+    "checks": [
+      "offline file://",
+      "local HTTP",
+      "catalog creation",
+      "width/depth and height edits",
+      "undo/redo",
+      "copy",
+      "saved refresh",
+      "current/named project roundtrip",
+      "production 3D",
+      "default-size focus selection",
+      "390px property panel and no overflow",
+      "zero page errors"
+    ],
+    "screenshots": "docs/validation/tea-bar-20261020",
+    "environmentNote": "Initial sandbox browser path was unavailable; explicit installed Playwright path used. Sandbox denied local HTTP; final successful runs used authorized escalation and isolated source copies, with static-only HTTP."
+  },
+  "visual": {
+    "status": "PASS",
+    "views": [
+      "front",
+      "oblique",
+      "top",
+      "application 3D",
+      "narrow property panel"
+    ],
+    "notes": "Production constructor used in preview and app; glass and detail are visual approximations. Application capture isolates the model from existing sample furniture to avoid plant occlusion."
+  },
+  "notRun": [
+    "full node scripts/check.cjs (outside incremental scope)",
+    "unrelated historical previews and browser suites",
+    "physical touch device"
+  ],
+  "boundaries": [
+    "static doors and folded tank handle",
+    "internal bottle, cabinet interior and supply hoses omitted",
+    "component dimensions estimated from photographs",
+    "manufacturer installation/access clearances unknown",
+    "whole rectangular envelope used for conservative spatial checks"
+  ],
+  "persistentFieldsAdded": false,
+  "userDesignEdited": false
+}

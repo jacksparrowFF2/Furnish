@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "block-placeholder"
+  ],
+  "results": [
+    {
+      "name": "block-placeholder",
+      "status": "PASS",
+      "seconds": 21.9,
+      "log": "block-placeholder.log"
+    }
+  ],
+  "notRun": []
+}

@@ -40,7 +40,11 @@ const doorWidths={minWidth:50,maxLeaves:24,gap:2};
 const hobCutoutLimits={min:1,max:20000};
 const foldingTable={family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const types={
- block:{family:'placeholder',height:1000,envelope:f=>[0,height(f)]},
+ tea_bar_mijia_pro:{family:'tea-bar',height:1155,envelope:()=>[0,1155],identity:{brand:'米家/Mijia',model:'智能茶吧机 Pro 立式'}},
+ pet_feeder_mijia_2:{family:'pet-feeder',height:370,envelope:()=>[0,370],identity:{brand:'米家/Mijia',model:'智能宠物喂食器 2'}},
+ cat_tree:{family:'pet-cat-tree',height:1430,envelope:()=>[0,1430]},
+ litter_box:{family:'pet-litter-box',height:400,envelope:()=>[0,400]},
+ block:{family:'placeholder',height:1000,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight']},
  pipebox:{family:'pipe-box',height:2400,anchor:'bottom',defaults:{mountHeight:0,pipeBoxThickness:18,pipeBoxShape:'three',pipeBoxOpenSide:'back',pipeBoxCorner:'front-left'},fields:['mountHeight','pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'],create:['mountHeight','pipeBoxThickness','pipeBoxShape']},
  table_folding_1100:{...foldingTable,folding:{diameter:1100,closedDepth:740,singleDepth:920,top:32,leg:75,apron:120}},
  table_folding_1200:{...foldingTable,folding:{diameter:1200,closedDepth:793,singleDepth:996.5,top:32,leg:75,apron:120}},
@@ -53,6 +57,7 @@ const types={
  rangehood_fotile_jcd10ta:{height:520,anchor:'bottom',hoodGeometry:{min:10,max:20000},defaults:{mountHeight:1315,hoodPanelOpen:false},fields:['mountHeight','hoodPanelOpen','hoodGeometry'],create:['mountHeight','hoodPanelOpen'],identity:{brand:'方太/FOTILE',model:'JCD10TA'}},
  stove:{measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,inset:30},fields:['counterLink','counterElevation','hobCutout']},ksink:{fields:['counterLink','counterElevation','sinkNotch','sinkStyle','sinkBowlHeight'],defaults:{sinkStyle:'inset',sinkBowlHeight:150},vessel:{minSize:80,defaultDepth:400,rim:15,floor:12,drain:45,faucetRise:300,faucetClearance:100},notch:{min:20,margin:80,bodyDepth:220,rim:20,floor:12,faucetRise:292}},
  washer:laundry,dryer:laundry,
+ water_purifier_mijia_1200g:{family:'under-sink-purifier',height:379,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'净水器 2 1200G'}},
  dishwasher_mijia_countertop:{family:'countertop-dishwasher',height:598,anchor:'bottom',defaults:{mountHeight:860,dishwasherDoorOpen:false},fields:['mountHeight','dishwasherDoorOpen'],create:['mountHeight','dishwasherDoorOpen'],identity:{brand:'米家/Mijia',model:'智能洗碗机 台式 5套'},foldDoor:{nominalWidth:550,nominalHeight:598,nominalDepth:350,openDepth:600,openingBottom:52,openingTop:584},installation:{ventSide:'left',sideClearance:200,worktopToCabinet:650,topAccess:50,frontOffset:80}},
  aquarium_mijia_2pro:{family:'aquarium',height:334,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'智能鱼缸 2 Pro',sourceUrl:'https://item.jd.com/100317574693.html'}},
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
@@ -65,7 +70,7 @@ const types={
  aircon:{height:1800},dishwasher:{height:840},rug:{height:16},bench:{height:440},beanbag:{height:720},barstool:{height:775},custom:{height:800},customround:{height:800},toilet:{height:796}
 };
 // Installation review coverage is a product capability, not a saved instance field.
-for(const type of ['aquarium_mijia_2pro','stove_fotile_th36b','rangehood_fotile_jcd10ta','stove','fridge','washer','waterheater','waterheater_flat','tv','fridge_french_drawer','aircon','acwall','dishwasher','dishwasher_mijia_countertop','dryer','purifier','robot_p20max_tank','robot_p20max_plumbed','robot_p20max']){
+for(const type of ['tea_bar_mijia_pro','water_purifier_mijia_1200g','aquarium_mijia_2pro','stove_fotile_th36b','rangehood_fotile_jcd10ta','stove','fridge','washer','waterheater','waterheater_flat','tv','fridge_french_drawer','aircon','acwall','dishwasher','dishwasher_mijia_countertop','dryer','purifier','robot_p20max_tank','robot_p20max_plumbed','robot_p20max']){
  types[type]={...types[type],clearanceReview:type==='waterheater_flat'?'heater':type==='dishwasher_mijia_countertop'?'dishwasher':'missing'};
 }
 // Optional kitchen door pairing keeps the historical leading single leaf by default.
@@ -236,7 +241,7 @@ function replacement(previous,next,candidate){
   const retain=retainReplacementField(previous,next,key);
   if(!retain)delete next[key];
  }
- if(family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
+ if(family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
  if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
  if(next.type==='ksink'){customSinkCandidate(next,candidate);validate(next);}

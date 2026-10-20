@@ -29,6 +29,13 @@ const DASH = 'stroke-dasharray="4 3"';
   }
   switch (t){
     case 'block': return rc(x,y,w,d,c);
+    case 'cat_tree': return rc(x,y,w,d,'#dfbd7d','rx="12"')+rc(-w*.19,-d*.4,w*.66,d*.64,c)+rc(-w*.02,d*.23,w*.34,d*.24,'#dfbd7d')+ec(-w*.21,-d*.27,w*.21,d*.21,'#eee7d2')+ec(w*.13,-d*.26,w*.21,d*.21,'#d7e2df')+ec(-w*.314,d*.19,w*.186,d*.186,'#dfbd7d')+ln(w*.01,d*.34,w*.29,d*.34)+ln(w*.01,d*.43,w*.29,d*.43);
+    case 'pet_feeder_mijia_2': return rc(-w*.45,-d*.07,w*.9,d*.57,c,`rx="${w*.11}"`)+rc(-w*.42,d*.03,w*.84,d*.44,'#b6b9b7',`rx="${w*.08}"`)+rc(x,y,w,d*220/324,c,`rx="${w*37/220}"`)+rc(-w*.27,-d*.30,w*.15,d*.07,shade(c,.9),'rx="4"')+ln(-w*.31,d*58/324,w*.31,d*58/324);
+    case 'litter_box': {
+      let s=rc(x,y,w,d,c,`rx="${m*.16}"`)+rc(x+w*.04,y+d*.04,w*.92,d*.92,shade(c,.86),`rx="${m*.13}"`);
+      for(let i=1;i<22;i++)s+=ln(x+w*.08+i*w*.038,y+d*.12,x+w*.08+i*w*.038,y+d*.88,'stroke-opacity=".4"');
+      return s+rc(-w*.18,-d*.18,w*.36,d*.30,c,`rx="${m*.035}"`)+ln(-w*.24,d*.48,w*.24,d*.48,'stroke-width="3"');
+    }
     case 'pipebox': {
       const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
       return P.pipeBoxPanels({...f,type:t,w,d}).map(b=>rc(b.x-b.w/2,b.z-b.d/2,b.w,b.d,c)).join('');
@@ -161,6 +168,8 @@ const DASH = 'stroke-dasharray="4 3"';
     }
     case 'dishwasher': return rc(x,y,w,d,c,'rx="15"') + ln(x,y+d-70,x+w,y+d-70) + rc(x+w*.3,y+d-45,w*.4,25,'#888');
     case 'ovencol': return rc(x,y,w,d,c) + ln(x,y,x+w,y+d) + ln(x+w,y,x,y+d);
+    case 'water_purifier_mijia_1200g': return rc(x,y,w,d,c,`rx="${Math.min(w*.16,d*.06)}"`) + ln(x+w*.08,y+d*.94,x+w*.92,y+d*.94);
+    case 'tea_bar_mijia_pro': return rc(x,y,w,d,c,`rx="${w*.06}"`)+rc(x+w*.07,y+d*.02,w*.86,d*.14,'#afc5cc',`rx="${w*.02}"`)+rc(x,y+d*.15,w,d*.85,c,`rx="${w*.06}"`)+rc(x+w*.14,y+d*.92,w*.72,d*.05,'#172126','rx="3"')+`<circle cx="${w*58/315}" cy="${d*35/310}" r="${Math.min(w,d)*.20}" fill="#d7e4e5" stroke="${PAL.ink}" stroke-width="2"/>`+rc(w*.38,-d*.12,w*.10,d*.23,'none','rx="5"')+ln(-w*.32,d*.15,-w*.21,d*.15);
     case 'purifier': return rc(x,y,w,d,c,'rx="60"') + rc(x+45,y+45,w-90,d-90,'none',`rx="40" ${DASH}`);
     case 'officechair': {
       let s = '';

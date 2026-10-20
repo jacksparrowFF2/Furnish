@@ -316,6 +316,11 @@
 <script src="src/render/sliding-opening-model.js"></script>
 <script src="src/render/aquarium-model.js"></script>
 <script src="src/render/dishwasher-model.js"></script>
+<script src="src/render/water-purifier-model.js"></script>
+<script src="src/render/litter-box-model.js"></script>
+<script src="src/render/pet-feeder-model.js"></script>
+<script src="src/render/tea-bar-model.js"></script>
+<script src="src/render/cat-tree-model.js"></script>
 <script src="src/render/folding-table-model.js"></script>
 <script src="src/render/sink-model.js"></script>
 <script src="src/core/wall-distance-core.js"></script>
@@ -666,6 +671,11 @@ function buildFurniture(f){
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
   if(typeof FurnishFoldingTableModel!=='undefined'&&FurnishFoldingTableModel.supported(f)){const model=FurnishFoldingTableModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishWaterPurifierModel!=='undefined'&&FurnishWaterPurifierModel.supported(f)){const model=FurnishWaterPurifierModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),model.position.y,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishCatTreeModel!=='undefined'&&FurnishCatTreeModel.supported(f)){const model=FurnishCatTreeModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishTeaBarModel!=='undefined'&&FurnishTeaBarModel.supported(f)){const model=FurnishTeaBarModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishPetFeederModel!=='undefined'&&FurnishPetFeederModel.supported(f)){const model=FurnishPetFeederModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishLitterBoxModel!=='undefined'&&FurnishLitterBoxModel.supported(f)){const model=FurnishLitterBoxModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishDishwasherModel!=='undefined'&&FurnishDishwasherModel.supported(f)){const model=FurnishDishwasherModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishFotileModel!=='undefined'&&FurnishFotileModel.supported(f)){const model=FurnishFotileModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishAquariumModel!=='undefined'&&FurnishAquariumModel.supported(f)){const model=FurnishAquariumModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
@@ -684,7 +694,7 @@ function buildFurniture(f){
   }
   switch (f.type){
     case 'block':
-      g.add(box(w,M(FurnishProducts.height(f)),d,c,0,0,0));
+      g.add(box(w,M(FurnishProducts.height(f)),d,c,0,M(FurnishProducts.value(f,'mountHeight')),0));
       break;
     case 'pipebox': {
       for(const b of FurnishProducts.pipeBoxPanels(f)){
@@ -1368,7 +1378,7 @@ function buildFurn(){
     const sig = JSON.stringify([base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.pipeBoxThickness,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
-      o.position.set(wx(f.cx),f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
+      o.position.set(wx(f.cx),FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
       continue;
     }
     if (o){ clearGroup(o); furnG.remove(o); }

@@ -38,6 +38,8 @@ const LIB = [
     ["dishwasher","洗碗机",600,600,"#c9ced3",4500],
     ["dishwasher_mijia_countertop","米家台面洗碗机 · 5套",550,350,"#f4f3ef",0,products.height({type:"dishwasher_mijia_countertop"})],
     ["dryer","烘干机",600,600,"#e6ebee",3800,products.height({type:"dryer"})],
+    ["water_purifier_mijia_1200g","米家净水器 2 · 1200G",163,445,"#f6f6f4",0,products.height({type:"water_purifier_mijia_1200g"})],
+    ["tea_bar_mijia_pro","米家智能茶吧机 Pro 立式",315,310,"#eeefec",0,products.height({type:"tea_bar_mijia_pro"})],
     ["purifier","空气净化器",400,300,"#f4f4f2",2000],
     ["robot_p20max_tank","石头 P20 Max 水箱版套装",450,450,"#f5f6f5",0,450],
     ["robot_p20max_plumbed","石头 P20 Max 上下水版套装",381,475,"#f5f6f5",0,300],
@@ -147,6 +149,9 @@ const LIB = [
     ["tripleslidingwindow","三联动推拉窗",1800,90,"#41474b",0,1500]
   ]},
   {cat:'生活用品', items:[
+    ["cat_tree","猫爬架 · 绿叶成荫围栏款",500,500,"#75a533",0,products.height({type:"cat_tree"})],
+    ["pet_feeder_mijia_2","米家智能宠物喂食器 2",220,324,"#efeee8",0,products.height({type:"pet_feeder_mijia_2"})],
+    ["litter_box","封闭式猫砂盆",440,510,"#eeede5",0,products.height({type:"litter_box"})],
     ["dryingrack","晾衣架",1400,550,"#cfd6d9",500]
   ]},
 ];

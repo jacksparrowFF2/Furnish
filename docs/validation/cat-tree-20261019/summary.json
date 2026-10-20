@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-19",
+  "model": "cat_tree",
+  "envelopeMm": [500, 500, 1430],
+  "nodePassed": ["tests/test-cat-tree.cjs", "tests/test-product-rules.cjs", "tests/test-litter-box.cjs"],
+  "syntaxPassed": ["src/render/cat-tree-model.js", "src/core/product-rules.js", "src/render/furniture-svg.js", "src/data/catalog.js", "src/data/i18n.js", "src/ui/property-panel.js", "scripts/preview-cat-tree.cjs"],
+  "browser": {"case": "cat-tree", "channel": "msedge", "fileOffline": "PASS", "http": "PASS", "pageErrors": 0, "result": "browser-results.json"},
+  "visualReview": ["front.png", "angle.png"],
+  "notRun": ["full repository check", "all browser cases", "physical touch device", "physical product installation or load validation"],
+  "limits": ["Internal dimensions and materials are visual estimates", "Existing spatial checks use conservative whole-item envelope", "Browser project roundtrip uses production serialization, not download/upload"]
+}
