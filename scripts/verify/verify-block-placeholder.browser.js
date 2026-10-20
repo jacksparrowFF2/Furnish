@@ -4,6 +4,7 @@ async (page,verification)=>{
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));const check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib').waitFor();
+  await p.locator('#catalog-filters summary').click();
   await p.locator('#libCats [data-cat="占位体"]').click();
   await p.locator('#lib').getByText('方块占位体',{exact:true}).first().click();
   const id=await p.evaluate(()=>selIds()[0]);

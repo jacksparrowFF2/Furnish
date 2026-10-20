@@ -2,6 +2,7 @@
 (function(root){
 'use strict';
 const products=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
+const cabinets=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet;
 const MATS = {
   wood:    {name:'橡木地板', price:320, sw:'#d8b88a'},
   walnut:  {name:'胡桃木地板', price:380, sw:'#9b7250'},
@@ -91,10 +92,8 @@ const LIB = [
     ["desk","长书桌",1600,700,"#d8c2a2",2200]
   ]},
   {cat:'阳台柜', items:[
-    ['counter','完整阳台洗衣区 · 左洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-left'],
-    ['counter','完整阳台洗衣区 · 右洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-right'],
-    ['counter','洗衣机柜 · 左洗衣机／右水槽',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-left'],
-    ['counter','洗衣机柜 · 水槽与设备空位',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry'],
+    ['counter','完整阳台洗衣柜',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-left'],
+    ['counter','基础洗衣机柜',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-left'],
     ['ksink','阳台定制水槽（可设异形缺角）',600,500,'#e8e6df',undefined],
     ['ksink','阳台台上盆 · 圆角单盆',560,400,'#f5f4ef',undefined,undefined,undefined,undefined,undefined,'vessel-sink']
   ]},
@@ -163,7 +162,13 @@ LIB.forEach(c=>c.items.forEach(i=>TYPE_PRICE[i[0]]??=i[5]));
 
 // Hidden historical specifications still serve placed items' price and size reset.
 const retiredItems=[
- ...(typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet).templates.filter(t=>t[0]!=='storage').map(t=>['cabinet',t[1],t[2],t[3],'#f3f1ec',['tv-floor','entry-pegboard','entry-console','sideboard-wall','sideboard-fridge'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
+ // Historical names keep their exact specifications and side when old projects look them up.
+    ['counter','完整阳台洗衣区 · 左洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-left'],
+    ['counter','完整阳台洗衣区 · 右洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-right'],
+    ['counter','洗衣机柜 · 左洗衣机／右水槽',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-left'],
+    ['counter','洗衣机柜 · 水槽与设备空位',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry'],
+
+ ...cabinets.templates.filter(t=>t[0]!=='storage').map(t=>['cabinet',t[1],t[2],t[3],'#f3f1ec',['tv-floor','entry-pegboard','entry-console','sideboard-wall','sideboard-fridge'].includes(t[0])?undefined:Math.round(t[2]*t[4]/1000),t[4],null,null,t[0]]),
  ['wardrobe','衣柜 2.4m',2400,600,'#efe6d8',5400],
  ['wardrobe','小衣柜',1200,550,'#efe6d8',2200],
  ['shoecab','玄关柜',1400,380,'#e6dccc',2600],
@@ -171,7 +176,46 @@ const retiredItems=[
  ['bookshelf','大书架',1600,350,'#e2cfb4',2400]
 ];
 const findItem=(type,name)=>LIB.flatMap(c=>c.items).find(i=>i[0]===type&&i[1]===name)||retiredItems.find(i=>i[0]===type&&i[1]===name)||null;
-const api={materials:MATS,library:LIB,typePrices:TYPE_PRICE,findItem};
+// Browsing is a derived view: historical specifications and price precedence stay unchanged.
+const categoryNames={'阳台柜':'洗衣 · 家政','厨房':'厨房橱柜','门 · 隔断':'门窗 · 隔断','生活用品':'宠物'};
+const petTypes=new Set(['aquarium_mijia_2pro','cat_tree','pet_feeder_mijia_2','litter_box']);
+function browseLibrary(){
+ const groups=new Map();
+ for(const c of LIB)for(const it of c.items){
+  const cat=petTypes.has(it[0])?'宠物':it[0]==='dryingrack'?'洗衣 · 家政':categoryNames[c.cat]||c.cat;
+  if(!groups.has(cat))groups.set(cat,[]);groups.get(cat).push(it);
+ }
+ // Keep the familiar category order, even when an early item moved to Pets.
+ return [...LIB.map(c=>categoryNames[c.cat]||c.cat)].filter((c,i,a)=>a.indexOf(c)===i&&groups.has(c)).map(cat=>({cat,items:groups.get(cat)}));
+}
+const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
+const useTypes={
+ living:['sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','roundtable','sidetable','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
+ bedroom:['bed','crib','nightstand','wardrobe','chest','dresser','curtain','mirror','acwall'],
+ dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
+ study:['desk','chair','officechair','bookshelf','armchair','floorlamp'],
+ kitchen:['stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
+ laundry:['washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
+ bathroom:['vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],
+ entry:['shoecab','bench','mirror'],pet:[...petTypes]
+};
+function itemUses(it){
+ const result=uses.filter(([id])=>useTypes[id].includes(it[0])).map(([id])=>id);
+ if(it[0]==='counter')result.push(String(it[10]||'').startsWith('laundry')?'laundry':'kitchen');
+ if(it[0]==='ksink'&&LIB.find(c=>c.cat==='阳台柜').items.includes(it))result.push('laundry');
+ return result;
+}
+const itemKey=it=>JSON.stringify(it[7]?['custom',it[7]]:[it[0],it[1]]);
+function itemHeight(it){
+ const f={type:it[0],name:it[1],w:it[2],d:it[3],h:it[6]};
+ return products.height(f)??(cabinets.supported(f)?cabinets.height(f):undefined);
+}
+function matches(it,{query='',maxWidth=0,maxDepth=0,use='all'}={},extra={}){
+ const identity=products.definition(it[0])?.identity||{};
+ const text=[it[1],...itemUses(it).map(id=>uses.find(u=>u[0]===id).slice(1).join(' ')),identity.brand,identity.model,extra.name,extra.brand,extra.model].join(' ').toLowerCase();
+ return query.trim().toLowerCase().split(/\s+/).every(word=>text.includes(word))&&(!maxWidth||it[2]<=maxWidth)&&(!maxDepth||it[3]<=maxDepth)&&(use==='all'||itemUses(it).includes(use));
+}
+const api={materials:MATS,library:LIB,typePrices:TYPE_PRICE,findItem,browseLibrary,uses,itemUses,itemKey,itemHeight,matches};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishCatalogData=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

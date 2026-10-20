@@ -7,6 +7,8 @@ const S2T = new Map(('与與两兩个個为為书書于於仅僅从從价價会�
 const s2t = s => S2T_PHRASES.reduce((a, [f, t]) => a.replaceAll(f, t), s).replace(/[\u3400-\u9fff]/g, c => S2T.get(c) || c);
 // 内置的房间 / 材料 / 家具名称存的是中文；英文界面下显示译名，用户自己改过的名称原样显示
 const NAMES_EN = {
+  '完整阳台洗衣柜':'Complete Balcony Laundry Cabinet',
+  '基础洗衣机柜':'Basic Washer Cabinet',
   '美的酷省电 Ultra 立式空调 · 2匹室内机':'Midea Ultra Floor Air Conditioner · 2 HP Indoor Unit',
   '藤编移动茶台 · 80cm':'Woven Tea Cabinet · 80cm',
   '米家智能茶吧机 Pro 立式':'Mijia Smart Tea Bar Pro · Floor-standing',
@@ -31,6 +33,7 @@ const NAMES_EN = {
   '横厅三居两卫 · 128㎡':'Wide-living 3BR · 2BA · 128m²', '两室一厅 · 59㎡':'2BR · 1LR · 59m²',
   '三室两厅一卫 · 95㎡':'3BR · 2LR · 1BA · 95m²', '四室两厅两卫 · 129㎡':'4BR · 2LR · 2BA · 129m²', '开间一居 · 42㎡':'Studio · 42m²',
   '次卧二':'Second Bedroom Ⅱ', '客卧一体':'Studio Living', '生活阳台':'Utility Balcony',
+  '洗衣 · 家政':'Laundry & Utility', '厨房橱柜':'Kitchen Cabinets', '门窗 · 隔断':'Doors, Windows & Partitions', '宠物':'Pets',
   '门 · 隔断':'Doors & Partitions', '双扇推拉门':'Two-panel Sliding Door', '三联动推拉门':'Three-panel Telescopic Door', '三联动推拉窗':'Three-panel Telescopic Window',
   '灯饰 · 布艺':'Lighting & Textile', '吊灯':'Pendant Lamp', '餐厅吊灯':'Dining Pendant', '窗帘 2.4m':'Curtains 2.4m', '窗帘 3m':'Curtains 3m',
   '装饰画 横':'Wall Art', '装饰画 小':'Small Wall Art', '穿衣镜':'Mirror', '换鞋凳':'Bench', '晾衣架':'Drying Rack', '六斗柜':'Chest of Drawers',

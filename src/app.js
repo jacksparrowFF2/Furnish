@@ -37,9 +37,10 @@ function applyOpeningOverrides(){
 const {materials:MATS,library:LIB,typePrices:TYPE_PRICE} = FurnishCatalogData;
 // 自定义家具保存在本机（store.custom），在家具库中显示为「我的家具」分类；条目多带 [6]=高度 mm、[7]=自定义 id
 const CUSTOM_CAT = '我的家具';
+const browseLIB = FurnishCatalogData.browseLibrary();
 const libAll = () => store.custom?.length
-  ? [...LIB, {cat:CUSTOM_CAT, items:store.custom.map(c => [c.shape === 'round' ? 'customround' : 'custom', c.name, c.w, c.d, c.color, c.price, c.h, c.id])}]
-  : LIB;
+  ? [...browseLIB, {cat:CUSTOM_CAT, items:store.custom.map(c => [c.shape === 'round' ? 'customround' : 'custom', c.name, c.w, c.d, c.color, c.price, c.h, c.id])}]
+  : browseLIB;
 const typeColor = t => { for (const c of LIB) for (const i of c.items) if (i[0]===t) return i[4]; return '#d9d2c5'; };
 const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} return FurnishCatalogData.findItem(f.type,f.name); };
 // 单价：家具上手动填写的优先，其次是同名库存条目，最后按类型估算
@@ -254,6 +255,7 @@ function syncPaneBtns(){
   $('#tgLib').title = vis('lib') ? tr('收起家具库 ( [ )', 'Hide library ( [ )') : tr('展开家具库 ( [ )', 'Show library ( [ )');
   $('#tgPanel').title = vis('panel') ? tr('收起属性面板 ( ] )', 'Hide properties ( ] )') : tr('展开属性面板 ( ] )', 'Show properties ( ] )');
   $('#stage').classList.toggle('drawer-panel', n && vis('panel'));   // 属性抽屉盖住画面时让出底部工具条
+  $('#stage').classList.toggle('drawer-library',n&&vis('lib'));
   const expand=$('#property-peek [aria-expanded]');if(expand)expand.setAttribute('aria-expanded',String(vis('panel')));
 }
 function closeDrawers(){ if (narrow()) drawer(null); }
@@ -567,7 +569,7 @@ function openCustom(){
       if (!(c.w >= 50 && c.d >= 50 && c.w <= 20000 && c.d <= 20000 && c.h > 0 && c.h <= 20000 && c.price <= 1e7)){ toast(tr('尺寸需在 50–20000 mm 之间', 'Size must be 50–20000 mm')); return false; }
       if((store.custom||[]).length>=500)return toast(tr('家具库最多 500 个自定义条目。','Up to 500 custom catalog entries.'));
       (store.custom ||= []).push(c); save();
-      libUI.cat = CUSTOM_CAT; libUI.q = ''; $('#libSearch').value = ''; buildCats(); buildLib();
+      resetCatalogFilters();libUI.collection='custom';buildCats();buildLib();
       const it = libAll().at(-1).items.at(-1);
       const p = ui.sel?.kind === 'room' ? (b => ({x:(b[0]+b[2])/2, y:(b[1]+b[3])/2}))(bbox(ROOMS.find(r => r.id === ui.sel.id).poly))
         : drawingCenter();
@@ -577,29 +579,50 @@ function openCustom(){
 
 /* ======================= 家具库 ======================= */
 const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Math.max(w,d)*.08, source=cid?store.custom.find(c=>c.id===cid):null,spec=FurnishKitchen.catalogSpec(it),preview=spec.sinkStyle?{type:t,w,d,...spec}:undefined;
+  const h=FurnishCatalogData.itemHeight(it),favorite=catalogFavorites.has(FurnishCatalogData.itemKey(it));
   return `<div class="item ${cid ? 'custom' : ''}" data-key="${ci}:${ii}" title="${tr('点击添加，或拖到平面图中的指定位置', 'Click to add, or drag onto the plan')}${price ? ` · ¥${price}` : ''}">
+    <button class="catalog-favorite" data-favorite aria-pressed="${favorite}" aria-label="${esc(tr(favorite?'取消收藏':'收藏到本机',favorite?'Remove favorite':'Save favorite on this device'))}">${ico('heart')}</button>
     ${cid ? `<button class="del" style="z-index:1" data-cdel="${cid}" title="${tr('从「我的家具」删除', 'Remove from My Items')}">${ico('x')}</button>` : ''}
-    <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col,preview)}</svg><b>${esc(nm(n))}</b><small>${w}×${d}${source?`×${source.h}`:''}</small>${source&&(source.brand||source.model)?`<small>${esc([source.brand,source.model].filter(Boolean).join(' · '))}</small>`:''}</div>`; };
+    <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col,preview)}</svg><b>${esc(nm(n))}</b><small>${w}×${d} mm</small><small>${tr('高','H')} ${Number.isFinite(h)?h+' mm':tr('未录入','Unknown')}</small>${source&&(source.brand||source.model)?`<small>${esc([source.brand,source.model].filter(Boolean).join(' · '))}</small>`:''}<button class="catalog-details" data-catalog-details>${tr('查看规格','Details')}</button></div>`; };
+function syncCatalogControls(){
+  const current=libUI.collection==='current';
+  $('#catalog-filters').hidden=current;$('#catalog-use').hidden=current;
+  document.querySelectorAll('#catalog-collections [data-collection]').forEach(b=>{
+    b.setAttribute('aria-pressed',b.dataset.collection===libUI.collection);
+    b.textContent=tr(...({all:['全部产品','All items'],favorites:['本机收藏','Favorites'],custom:['我的家具','My items'],current:['当前方案','Current plan']}[b.dataset.collection]));
+  });
+  $('#catalog-reset').textContent=tr('清除筛选','Clear filters');
+}
 function buildLib(){
+  syncCatalogControls();
+  if(libUI.collection==='current'){window.FurnishCurrentFurniture?.render();return;}
   const q = libUI.q.trim().toLowerCase();
-  let html = (libUI.cat === 'all' && !q && !$('#catalog-max-w')?.value && !$('#catalog-max-d')?.value) ? recentsHTML() : '';
+  let count=0;
+  let html = catalogUnfiltered() ? recentsHTML() : '';
   libAll().forEach((c, ci) => {
-    if (!q && libUI.cat !== 'all' && libUI.cat !== c.cat) return;
+    if (libUI.cat !== 'all' && libUI.cat !== c.cat) return;
+    if(libUI.collection==='custom'&&c.cat!==CUSTOM_CAT)return;
     const cards = c.items.map((it, ii) => ({it, ii}))
-      .filter(({it}) => window.FurnishCatalog ? FurnishCatalog.matches(it,q,Number($('#catalog-max-w')?.value),Number($('#catalog-max-d')?.value)) : !q || nm(it[1]).toLowerCase().includes(q) || it[1].toLowerCase().includes(q))
-      .map(({it, ii}) => itemCard(it, ci, ii)).join('');
+      .filter(({it}) => (libUI.collection!=='favorites'||catalogFavorites.has(FurnishCatalogData.itemKey(it)))&&FurnishCatalogData.matches(it,{query:q,maxWidth:Number($('#catalog-max-w')?.value),maxDepth:Number($('#catalog-max-d')?.value),use:libUI.use},{name:nm(it[1]),...((store.custom||[]).find(s=>s.id===it[7])||{})}))
+      .map(({it, ii}) => {count++;return itemCard(it, ci, ii);}).join('');
     if (!cards) return;
     html += `<h4>${nm(c.cat)}</h4><div class="lib-grid">${cards}</div>`;
     if(c.cat==='柜体')html+=`<p class="hint">${tr('更多柜体款式：添加常用柜体后，打开「柜体详细设计」选择模板；宽深高也可自由调整。','More cabinet styles: add a cabinet, then choose a template in Cabinet designer. Width, depth and height are adjustable.')}</p>`;
   });
-  $('#lib').innerHTML = (html || `<div class="hint">${tr('没有匹配的家具', 'No matching furniture')}</div>`) +
+  $('#catalog-result')?.replaceChildren(document.createTextNode(tr(`${count} 个条目` ,`${count} items`)));
+  $('#lib').innerHTML = (html || `<div class="hint catalog-empty"><b>${tr('没有匹配的家具', 'No matching furniture')}</b><p>${tr(libUI.collection==='favorites'?'点击条目上的爱心，收藏常用家具；收藏保存在本机。':libUI.collection==='custom'?'可用右上角“自定义”创建自己的家具，或放宽筛选条件。':'试试其他关键词，或清除分类、用途与尺寸筛选。',libUI.collection==='favorites'?'Use the heart on an item to save it on this device.':libUI.collection==='custom'?'Create an item with Custom, or clear the filters.':'Try other keywords or clear the filters.')}</p><button class="btn outline" data-catalog-reset>${tr('清除筛选','Clear filters')}</button></div>`) +
     `<div class="hint">${tr(
     `家具按真实尺寸（mm）绘制。${COARSE ? '点一下放到画面中央，或按住向右拖到平面图 / 3D 地面上的指定位置（上下滑动为滚动列表）。' : '点击添加到画面中央，或直接拖到平面图 / 3D 地面上。'}添加后可在右侧修改宽深与颜色。`,
     `Furniture is drawn at real size (mm). ${COARSE ? 'Tap to place at the center, or hold and drag right onto the plan / 3D floor (swipe up/down to scroll).' : 'Click to add at the center, or drag onto the plan / 3D floor.'} Edit size and color in the right panel afterwards.`)}</div>`;
   document.querySelectorAll('#lib .item').forEach(el => el.addEventListener('pointerdown', e => {
-    if (e.button || e.target.closest('.del')) return;
+    if (e.button || e.target.closest('button')) return;
     libDrag = {el, id:e.pointerId, sx:e.clientX, sy:e.clientY, it:itemOf(el), ghost:null};
   }));
+  document.querySelectorAll('#lib [data-favorite]').forEach(b=>b.onclick=()=>toggleCatalogFavorite(itemOf(b.closest('.item'))));
+  document.querySelectorAll('#lib [data-catalog-details]').forEach(b=>b.onclick=()=>window.FurnishCatalog?.details(itemOf(b.closest('.item'))));
+  $('#lib [data-catalog-reset]')?.addEventListener('click',()=>{resetCatalogFilters();buildCats();buildLib();});
+  if($('#catalog-filter-label'))$('#catalog-filter-label').textContent=libUI.cat==='all'?tr('分类与尺寸筛选','Category & size filters'):nm(libUI.cat);
+  if($('#catalog-use')){const value=libUI.use;$('#catalog-use').innerHTML=`<option value="all">${tr('全部用途','All uses')}</option>`+FurnishCatalogData.uses.map(([id,zh,en])=>`<option value="${id}">${tr(zh,en)}</option>`).join('');$('#catalog-use').value=value;}
   document.querySelectorAll('#lib [data-cdel]').forEach(b => b.onclick = e => {
     e.stopPropagation();
     openDialog({title:tr('删除家具库条目','Delete catalog item'),body:'<p>'+tr('已摆放家具会保留。可识别来源的家具也会保留原始规格与参考价格。','Placed furniture and identified original specifications are retained.')+'</p>',actions:[{label:tr('取消','Cancel')},{label:tr('删除库条目','Delete catalog item'),cls:'danger',fn:()=>{
@@ -777,7 +800,16 @@ addEventListener('afterprint', () => { if (printTheme === 'dark') setTheme('dark
 $('#printPlan').onclick = () => window.print();
 
 /* ======================= 家具库：搜索 / 分类 / 最近使用 ======================= */
-const libUI = {q:'', cat:'all'};
+const libUI = {q:'', cat:'all',use:'all',collection:'all'};
+const CATALOG_FAVORITES_KEY='huxing-catalog-favorites';
+let catalogFavorites=(()=>{try{const rows=JSON.parse(localStorage.getItem(CATALOG_FAVORITES_KEY));return new Set(Array.isArray(rows)?rows.filter(v=>typeof v==='string').slice(0,1000):[]);}catch{return new Set();}})();
+function toggleCatalogFavorite(it){
+ const key=FurnishCatalogData.itemKey(it),next=new Set(catalogFavorites);if(next.has(key))next.delete(key);else next.add(key);
+ try{localStorage.setItem(CATALOG_FAVORITES_KEY,JSON.stringify([...next]));}catch{toast(tr('收藏保存失败，请检查浏览器存储空间。','Could not save favorites. Check browser storage.'));return;}
+ catalogFavorites=next;buildLib();
+}
+function catalogUnfiltered(){return libUI.collection==='all'&&libUI.cat==='all'&&libUI.use==='all'&&!libUI.q.trim()&&!$('#catalog-max-w')?.value&&!$('#catalog-max-d')?.value;}
+function resetCatalogFilters(){libUI.cat='all';libUI.use='all';libUI.q='';$('#libSearch').value='';for(const id of ['catalog-max-w','catalog-max-d'])if($('#'+id))$('#'+id).value='';}
 const RECENT_KEY = 'huxing-recent';
 const recentKey = n => typeof n==='string'?'legacy:'+n:n.catalogId?'catalog:'+n.catalogId:n.type+':'+n.name;
 const findItem = n => { const matches=[];libAll().forEach((c,ci)=>c.items.forEach((it,ii)=>{if(typeof n==='string'?it[1]===n:n.catalogId?it[7]===n.catalogId:it[0]===n.type&&it[1]===n.name)matches.push([ci,ii]);}));return matches.length===1?matches[0]:null; };
@@ -790,12 +822,12 @@ function pushRecent(it){
   const entry={type:it[0],name:it[1],...(it[7]?{catalogId:it[7]}:{})};
   recents=[entry,...recents.filter(n=>recentKey(n)!==recentKey(entry))].slice(0,8);
   try{localStorage.setItem(RECENT_KEY,JSON.stringify(recents));}catch(e){}
-  const sec=$('#recentSec');if(sec)sec.outerHTML=recentsHTML();else if(libUI.cat==='all'&&!libUI.q.trim())buildLib();
+  if(catalogUnfiltered())buildLib();
 }
 function buildCats(){
   const cats = ['all', ...libAll().map(c => c.cat)];
   if (!cats.includes(libUI.cat)) libUI.cat = 'all';
-  $('#libCats').innerHTML = cats.map(c => `<button class="btn ${libUI.cat === c ? 'on' : ''}" data-cat="${c}">${c === 'all' ? tr('全部', 'All') : nm(c)}</button>`).join('');
+  $('#libCats').innerHTML = cats.map(c => `<button class="btn ${libUI.cat === c ? 'on' : ''}" aria-pressed="${libUI.cat===c}" data-cat="${c}">${c === 'all' ? tr('全部', 'All') : nm(c)}</button>`).join('');
   document.querySelectorAll('#libCats [data-cat]').forEach(b => b.onclick = () => { libUI.cat = b.dataset.cat; buildCats(); buildLib(); });
 }
 
@@ -923,7 +955,7 @@ $('#fileIn').onchange = e => {
   });
   e.target.value = '';
 };
-$('#libSearch').addEventListener('input', e => { libUI.q = e.target.value; buildLib(); });
+$('#libSearch').addEventListener('input', e => { libUI.q = e.target.value; if(libUI.collection==='current')window.FurnishCurrentFurniture?.filterChanged();else buildLib(); });
 // 横竖屏切换、表头换行等都会改变画布尺寸；尺寸从 0 恢复（如首次布局）时重新适应窗口
 // 其余尺寸变化（收起 / 展开面板等）保持画面中心不动
 let lastW = 0, lastH = 0;

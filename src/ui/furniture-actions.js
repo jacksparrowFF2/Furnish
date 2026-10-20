@@ -6,7 +6,7 @@ const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
 const selItems = () => selIds().map(getF).filter(Boolean);
 const selectedRooms = () => ui.sel?.kind==='room'?ROOMS.filter(r=>(ui.sel.roomIds||[ui.sel.id]).includes(r.id)):[];
 function toggleRoom(id){const ids=selectedRooms().map(r=>r.id),next=ids.includes(id)?ids.filter(v=>v!==id):[...ids,id];select(next.length?{kind:'room',id:next[next.length-1],roomIds:next}:null);}
-function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); refreshHobOpenings(); updateHeader(); }
+function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); refreshHobOpenings(); updateHeader(); globalThis.FurnishCurrentFurniture?.selectionChanged(); }
 function selectIds(ids, primary){
   ids = [...new Set(ids)].filter(id => getF(id));
   select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);

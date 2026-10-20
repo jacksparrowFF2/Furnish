@@ -23,6 +23,7 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-lib" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
   <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 9.5V20h14V9.5M10 20v-6h4v6"/></symbol>
   <symbol id="i-plan" viewBox="0 0 24 24"><path d="M9 21H3V3h18v18h-6M3 11h8V3M15 11h6M11 15v6"/></symbol>
@@ -201,12 +202,29 @@
       <h4 data-en="Rooms · click to fly there">房间 · 点击飞到该房间</h4>
       <div id="roomList"></div>
     </div>
-    <div id="libTools" class="only2d">
+    <div id="libTools">
       <div class="lib-search">
-        <input id="libSearch" type="search" placeholder="搜索家具…" data-en-placeholder="Search furniture…" aria-label="搜索家具">
+        <input id="libSearch" type="search" placeholder="名称、品牌、型号…" data-en-placeholder="Name, brand, model…" aria-label="搜索家具">
         <button class="btn outline" id="addCustom" title="新建自定义家具（任意尺寸 / 颜色 / 单价）" data-en-title="Create a custom item (any size / color / price)"><svg class="i"><use href="#i-plus"/></svg><span data-en="Custom">自定义</span></button>
       </div>
-      <div id="libCats"></div>
+      <div id="catalog-collections" aria-label="家居库入口">
+        <button class="btn" data-collection="all" aria-pressed="true">全部产品</button>
+        <button class="btn" data-collection="favorites" aria-pressed="false" title="收藏保存在本机浏览器，不随项目导出" data-en-title="Favorites stay in this browser and are not exported with projects">本机收藏</button>
+        <button class="btn" data-collection="custom" aria-pressed="false">我的家具</button>
+        <button class="btn" data-collection="current" aria-pressed="false">当前方案</button>
+      </div>
+      <select id="catalog-use" aria-label="按用途筛选"></select>
+      <details id="catalog-filters">
+        <summary id="catalog-filter-label">分类与尺寸筛选</summary>
+        <div class="catalog-filter-body">
+          <div id="libCats"></div>
+          <div class="catalog-sizes">
+            <label><span data-en="Max width · mm">最大宽 · mm</span><input id="catalog-max-w" type="number" min="50" max="20000" placeholder="不限" data-en-placeholder="Any"></label>
+            <label><span data-en="Max depth · mm">最大深 · mm</span><input id="catalog-max-d" type="number" min="50" max="20000" placeholder="不限" data-en-placeholder="Any"></label>
+          </div>
+        </div>
+      </details>
+      <div class="catalog-status"><span id="catalog-result" role="status" aria-live="polite"></span><button class="btn" id="catalog-reset">清除筛选</button></div>
     </div>
     <div id="lib"></div>
   </aside>
@@ -362,6 +380,7 @@
 <script src="src/ui/history-sharing.js"></script>
 <script src="src/ui/furniture-actions.js"></script>
 <script src="src/core/layout-geometry.js"></script>
+<script src="src/core/furniture-management-core.js"></script>
 <script src="src/core/snapping.js"></script>
 <script src="src/ui/canvas-interactions.js"></script>
 <script src="src/render/furniture-svg.js"></script>
@@ -383,6 +402,7 @@
 <script src="src/ui/design-ui.js"></script>
 <script src="src/ui/procurement-ui.js"></script>
 <script src="src/ui/catalog-ui.js"></script>
+<script src="src/ui/current-furniture.js"></script>
 <script src="src/ui/readiness-ui.js"></script>
 <script src="src/ui/cabinet-editor.js"></script>
 <script src="src/ui/kitchen-editor.js"></script>

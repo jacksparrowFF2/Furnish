@@ -518,4 +518,5 @@ function renderAll(){
   window.FurnishTilePresetUI?.afterRender();
   window.FurnishTileWorkspace?.afterRender();
   window.FurnishCeilingUI?.afterRender();
+  window.FurnishCurrentFurniture?.afterRender();
 }

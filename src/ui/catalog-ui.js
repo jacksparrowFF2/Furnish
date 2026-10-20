@@ -1,14 +1,29 @@
 /* Search specifications and preview a catalog replacement before committing. */
 (function(){
  const P=FurnishProject,D=FurnishDesign;
- const source=it=>({...((store.custom||[]).find(c=>c.id===it[7])||{}),...FurnishKitchen.catalogSpec(it),type:it[0],name:it[1],w:it[2],d:it[3],color:it[4],price:it[5],h:it[6],...(it[9]?{cabinet:FurnishCabinet.preset(it[9]).cabinet}:{}),...(it[0]==='curtain'?{curtainStyle:it[8]||'double'}:{})});
- function matches(it,q,w,d){const c=source(it);return [c.name,nm(c.name),c.brand,c.model].join(' ').toLowerCase().includes(q.toLowerCase())&&(!w||c.w<=w)&&(!d||c.d<=d);}
- $('#lib').insertAdjacentHTML('beforebegin','<div class="form" style="padding:8px"><label>最大宽 mm<input id="catalog-max-w" type="number" min="50" placeholder="不限"></label><label>最大深 mm<input id="catalog-max-d" type="number" min="50" placeholder="不限"></label></div>');
+ const source=it=>({...FurnishProducts.definition(it[0])?.identity,...((store.custom||[]).find(c=>c.id===it[7])||{}),...FurnishKitchen.catalogSpec(it),type:it[0],name:it[1],w:it[2],d:it[3],color:it[4],price:it[5],h:it[6],...(it[9]?{cabinet:FurnishCabinet.preset(it[9]).cabinet}:{}),...(it[0]==='curtain'?{curtainStyle:it[8]||'double'}:{})});
+ function matches(it,q,w,d){return FurnishCatalogData.matches(it,{query:q,maxWidth:w,maxDepth:d},{...source(it),name:nm(it[1])});}
  for(const id of ['catalog-max-w','catalog-max-d'])$('#'+id).oninput=buildLib;
+ $('#catalog-use').onchange=e=>{libUI.use=e.target.value;buildLib();};
+ $('#catalog-reset').onclick=()=>{resetCatalogFilters();if(libUI.collection==='current')window.FurnishCurrentFurniture?.reset();buildCats();buildLib();};
+ document.querySelectorAll('#catalog-collections [data-collection]').forEach(b=>b.onclick=()=>{if(libUI.collection===b.dataset.collection)return;resetCatalogFilters();libUI.collection=b.dataset.collection;if(libUI.collection==='current')window.FurnishCurrentFurniture?.reset();buildCats();buildLib();});
+ function details(it){
+  const c=source(it),h=FurnishCatalogData.itemHeight(it),uses=FurnishCatalogData.itemUses(it).map(id=>{const u=FurnishCatalogData.uses.find(u=>u[0]===id);return tr(u[1],u[2]);}),isArea=FurnishKitchen.isLaundryAreaItem(it),isLaundry=!!c.kitchen?.laundry;
+  const row=(label,value)=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`;
+  const price=Number.isFinite(c.price)&&(it[7]||c.price>0)?P.purchaseMoney(c.price):tr('未录入','Not recorded');
+  const dimensions=`${c.w} × ${c.d} × ${Number.isFinite(h)?h:tr('未录入','Unknown')} mm`;
+  const body=`<div class="catalog-spec-preview"><svg viewBox="${-c.w*.6} ${-c.d*.6} ${c.w*1.2} ${c.d*1.2}">${furnSVG(c.type,c.w,c.d,c.color,c)}</svg></div>
+    <dl class="catalog-spec">${row(tr('初始宽 × 深 × 高','Initial width × depth × height'),dimensions)}${c.brand?row(tr('品牌','Brand'),c.brand):''}${c.model?row(tr('型号','Model'),c.model):''}${row(tr('参考单价','Reference price'),price)}${uses.length?row(tr('用途','Uses'),uses.join(' · ')):''}${row(tr('条目来源','Source'),it[7]?tr('我的家具','My items'):tr('内置产品库','Built-in library'))}</dl>
+    <p class="hint">${tr(isArea?'包含地柜、吊柜、开放格、水槽及独立洗衣机。默认洗衣机居左，可在柜体设计中选择居左或居右。':isLaundry?'仅包含地柜与设备空位，不含水槽、洗衣机及吊柜。默认洗衣机空位居左，可在柜体设计中选择居左或居右。':'此处显示初始参数尺寸，柜体高度为柜身高。安装标高、整体包络和开启预留请查看添加后的属性。',isArea?'Includes base and upper cabinets, open storage, a sink and a separate washer. Washer starts on the left; choose either side in the cabinet designer.':isLaundry?'Base cabinet and appliance bay only; sink, washer and upper cabinets are separate. The bay starts on the left; choose either side in the cabinet designer.':'These are initial parameter dimensions; cabinet height refers to its body. See the placed item’s Properties for mounting elevation, overall bounds and opening clearances.')}</p>`;
+  openDialog({title:nm(c.name),body,actions:[{label:tr('关闭','Close')},{label:tr('添加到方案','Add to plan'),cls:'primary',fn:()=>{
+   let p=drawingCenter();if(ui.sel?.kind==='room'){const room=ROOMS.find(r=>r.id===ui.sel.id);if(room){const b=bbox(room.poly);p={x:(b[0]+b[2])/2,y:(b[1]+b[3])/2};}}
+   addItem(it,p.x,p.y);closeDrawers();
+  }}]});
+ }
  function replacement(){const f=selItems()[0];if(!f)return toast('请先选择一件家具');if(furnitureLocked(f))return toast('请先解锁家具');let candidate=null;
   openDialog({title:'查找并替换家具',wide:true,body:`<p>替换「${esc(f.name)}」，保留编号、旋转及尺寸调整基准；品牌规格和采购进度使用新产品。</p><div class="project-grid"><label>名称／品牌／型号<input id="replace-query"></label><label>最大宽 mm<input id="replace-w" type="number" min="50"></label><label>最大深 mm<input id="replace-d" type="number" min="50"></label></div><div id="replace-results" style="max-height:240px;overflow:auto;margin-top:12px;overflow-wrap:anywhere"></div><div id="replace-preview" role="status"></div>`,actions:[{label:'取消'},{label:'应用替换',cls:'primary',fn:()=>{try{if(!candidate)throw Error('请先选择候选家具');const next=D.replaceFurniture(getF(f.id),candidate);P.validateWork({furniture:[next]});mutate(()=>{Object.assign(getF(f.id),next);for(const key of Object.keys(getF(f.id)))if(!Object.hasOwn(next,key))delete getF(f.id)[key];});renderAll();return true;}catch(e){$('#replace-preview').textContent=e.message;return false;}}}],onOpen:()=>{
    const show=()=>{candidate=null;$('#replace-preview').textContent='';const rows=libAll().flatMap(c=>c.items).filter(it=>!FurnishKitchen.isLaundryAreaItem(it)&&matches(it,$('#replace-query').value,Number($('#replace-w').value),Number($('#replace-d').value)));$('#replace-results').innerHTML=rows.map((it,i)=>`<button class="btn" data-replacement="${i}" style="margin:4px;white-space:normal;max-width:calc(100% - 8px);overflow-wrap:anywhere">${esc(it[1])} · ${it[2]}×${it[3]} mm · ${esc([source(it).brand,source(it).model].filter(Boolean).join(' '))}</button>`).join('')||'<p>没有匹配家具。</p>';document.querySelectorAll('[data-replacement]').forEach(b=>b.onclick=()=>{candidate=source(rows[+b.dataset.replacement]);try{const next=D.replaceFurniture(f,candidate),issues=P.spaceCheck(P.effectivePlan(PLAN,state),state.furniture.map(v=>v.id===f.id?next:v),{focusId:f.id,scanPassages:false});$('#replace-preview').innerHTML=`<p>${esc(f.name)} → ${esc(candidate.name)} · ${next.w}×${next.d} mm · ${P.purchaseMoney(candidate.price)}</p>${issues.map(v=>`<p class="${v.pending?'project-note':'project-error'}">${esc(v.message)}</p>`).join('')||'<p>未发现占地冲突。</p>'}`;}catch(e){candidate=null;$('#replace-preview').textContent=e.message;}});};for(const id of ['replace-query','replace-w','replace-d'])$('#'+id).oninput=show;show();
   }});
  }
- window.FurnishCatalog={matches,replacement};document.addEventListener('click',e=>{if(e.target.closest('#replace-furniture'))replacement();});
+ window.FurnishCatalog={matches,replacement,details};document.addEventListener('click',e=>{if(e.target.closest('#replace-furniture'))replacement();});
 })();

@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "scope": "Current-plan room grouping, locate, independent checklist and atomic lock/layer/purchase batches",
+  "syntax": "Changed and new scripts, shared classic-script declarations and diff whitespace passed",
+  "nodeSuites": [
+    "test-furniture-management.cjs",
+    "test-observation-layers.cjs",
+    "test-procurement.cjs",
+    "test-furniture-groups.cjs",
+    "test-work-state.cjs",
+    "test-catalog-browsing.cjs",
+    "test-catalog-links.cjs",
+    "test-furniture-svg.cjs"
+  ],
+  "browser": {
+    "engine": "Installed Microsoft Edge, fresh isolated profiles",
+    "cases": ["current-furniture", "catalog-library"],
+    "modes": ["HTTP", "offline file://"],
+    "viewports": ["1500x950", "390x844"],
+    "workspace": "Isolated source copy, read-only static server; real project files were not used or changed",
+    "checks": [
+      "Room/search intersection, unknown heights, hidden layers and outside items",
+      "Read-only 2D locate, existing group selection and exact checklist IDs",
+      "Lock/unlock, layer assignment and purchase states in one mutation per effective batch",
+      "Atomic locked-layer failure, disabled locked targets and no silent layer visibility changes",
+      "Layer manager creation refreshes destination options",
+      "Zero price/notes retained and spatial confirmation fingerprint unchanged",
+      "Undo/redo, autosave/refresh and stale checks cleared on room/query/plan changes",
+      "3D selection locate and library navigation",
+      "Narrow-screen batch actions, light/dark screenshots and English labels"
+    ],
+    "pageErrors": [],
+    "localArtifacts": "output/playwright/catalog-library-8eEEKX/results.json"
+  },
+  "persistence": "Existing locked, objectLayers and purchaseStatus only; no format version or data migration added",
+  "boundaries": [
+    "Room membership follows the furniture center, not full-footprint containment",
+    "Outside classification uses the wall/room bounding range; unclaimed concavities and holes remain unassigned",
+    "Checklist does not expand groups; canvas locate retains existing group behavior",
+    "Hidden layers must be shown explicitly through Layer manager",
+    "Physical touch-device acceptance and the full regression suite were not run"
+  ],
+  "notRun": ["Full scripts/check.cjs", "Unrelated historical previews", "All historical browser cases", "Physical touch devices"]
+}

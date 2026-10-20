@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-20",
+  "scope": "Catalog browsing, classification, use filters, device-local favorites, specification details and existing add/custom-item flows",
+  "status": "PASS",
+  "syntax": {
+    "changedScripts": "PASS",
+    "entryClassicSharedDeclarations": "PASS",
+    "diffWhitespace": "PASS"
+  },
+  "nodeSuites": [
+    "test-catalog-browsing.cjs",
+    "test-cabinet-catalog.cjs",
+    "test-catalog-links.cjs",
+    "test-product-rules.cjs",
+    "test-work-state.cjs",
+    "test-furniture-recovery.cjs",
+    "test-furniture-svg.cjs"
+  ],
+  "browser": {
+    "engine": "Installed Microsoft Edge, fresh isolated profiles",
+    "workspace": "Temporary workspace under ignored output/playwright; static read-only HTTP server; no production project writes",
+    "execution": "Targeted runner reusing scripts/lib/browser-verification.cjs; historical preview generation was not run",
+    "cases": ["catalog-library", "cabinet-catalog", "block-placeholder"],
+    "modes": ["HTTP", "offline file://"],
+    "viewports": ["1500x950", "390x844"],
+    "catalogChecks": [
+      "110 unique built-in entries, category/use/query intersection and inclusive size limits",
+      "Favorites survive refresh without editing work",
+      "Details open without adding; add, click, drag, undo, redo and refresh",
+      "Custom library create, explicit zero price, refresh and deletion retaining placed instance",
+      "English identity search, narrow-screen drawer interaction and light/dark visual inspection"
+    ],
+    "pageErrors": [],
+    "localArtifacts": ["output/playwright/catalog-library-QgbkiG/results.json", "output/playwright/catalog-library-8qJa1z/results.json"]
+  },
+  "notRun": ["Full scripts/check.cjs", "All historical previews", "Physical touch devices", "Cross-browser favorites synchronization"],
+  "boundaries": [
+    "Favorites are browser preferences and are excluded from project/workspace export",
+    "Built-in favorites follow existing type/name identity; future renames require aliases or migration",
+    "Use labels are curated discovery metadata, not installation constraints",
+    "Initial parameter height is distinct from mounting elevation and overall spatial bounds"
+  ]
+}

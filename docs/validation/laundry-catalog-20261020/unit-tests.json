@@ -1,0 +1,252 @@
+[
+  {
+    "file": "tests\\test-design-management.cjs",
+    "status": "PASS",
+    "output": "Design management, scene persistence and swept placement checks passed\n"
+  },
+  {
+    "file": "tests\\test-catalog-browsing.cjs",
+    "status": "PASS",
+    "output": "PASS catalog browsing: complete unique view, unchanged specifications, identity search, combined uses, size boundaries and custom identity\n"
+  },
+  {
+    "file": "tests\\test-cabinet-catalog.cjs",
+    "status": "PASS",
+    "output": "PASS compact cabinet catalog, hidden legacy specs, grouped templates, installation and repeated recovery\n"
+  },
+  {
+    "file": "tests\\test-design-consistency.cjs",
+    "status": "PASS",
+    "output": "Independent geometry, opening quantities, shared review records and opening schedule checks passed\n"
+  },
+  {
+    "file": "tests\\test-catalog-links.cjs",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "tests\\test-design-workflow.cjs",
+    "status": "PASS",
+    "output": "PASS room use migration/priority, styles, rotated precise wall placement, locks, boundary/collision rejection, split inheritance and two-design portable backup\n"
+  },
+  {
+    "file": "tests\\test-furniture-recovery.cjs",
+    "status": "PASS",
+    "output": "PASS broken furniture retention, explicit immutable repairs, project roundtrip and actual kitchen pointer resize\nPASS actual 3D constructor failure isolation, placeholders and healthy cache retention\n"
+  },
+  {
+    "file": "tests\\test-kitchen-auto-avoid.cjs",
+    "status": "PASS",
+    "output": "PASS automatic rear thinning and real stone notches, front datum, heights, limits, rotation/mirror, protected devices/drawers, restoration and all production edge styles\n"
+  },
+  {
+    "file": "tests\\test-kitchen-corner-leaves.cjs",
+    "status": "PASS",
+    "output": "PASS independent three-leaf production doors, legacy fallback, group controls, resize cleanup, procurement and current/named restoration, mirrored elevations and corner plinth/cavity\n"
+  },
+  {
+    "file": "tests\\test-kitchen-corner-fit.cjs",
+    "status": "PASS",
+    "output": "PASS screenshot 383.5-to-364 corner rear alignment, true production boards/plinths, front datum, transforms, minimum/contact/unknown heights, validation and actual restoration/project roundtrip\n"
+  },
+  {
+    "file": "tests\\test-kitchen-dish-basket.cjs",
+    "status": "PASS",
+    "output": "PASS two-front three-tier dish basket: minima, independent hidden tray, production fronts and racks, transforms/elevations, persistence/restoration, copy/replacement, and spatial confirmation\n"
+  },
+  {
+    "file": "tests\\test-laundry-resize-vessel.cjs",
+    "status": "PASS",
+    "output": "Laundry end resize and vessel sink: transforms, fixed washer, atomic rejection, persistence, production bowl and drain passed\n"
+  },
+  {
+    "file": "tests\\test-laundry-notch-closure.cjs",
+    "status": "PASS",
+    "output": "Laundry notch closure: production panels, empty pipe void, sides, transforms and project roundtrip passed\n"
+  },
+  {
+    "file": "tests\\test-laundry-integrated.cjs",
+    "status": "PASS",
+    "output": "integrated laundry cabinet: production side panel, floor cavity, upper doors and persistence passed\n"
+  },
+  {
+    "file": "tests\\test-laundry-catalog.cjs",
+    "status": "PASS",
+    "output": "PASS two laundry catalog entries, both sinks, default left, four retired specifications, left/right and old project round trips\n"
+  },
+  {
+    "file": "tests\\test-laundry-cabinet.cjs",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "tests\\test-laundry-back-alignment.cjs",
+    "status": "PASS",
+    "output": "Laundry rear alignment: templates, explicit old-data action, depth resizing, transforms, production boards and roundtrip passed\n"
+  },
+  {
+    "file": "tests\\test-laundry-area.cjs",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "tests\\test-kitchen.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen legacy and named-project roundtrip, no drift, functional modules, attachment transforms, copy/removal/replacement, L void and actual countertop holes\n"
+  },
+  {
+    "file": "tests\\test-kitchen-worktop.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen worktop: 600/630 back datum, transforms, resize, all edge profiles, L continuity, real overhang and holes, shortened fronts/moving boards, open state, purchase specification and project restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-wall-adjust.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen wall assemblies: historical structures/hood bays, independent runs/depths/dividers, drawer totals, shelves, installation heights/volumes, actual no-worktop production, transforms/elevations and restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-u.cjs",
+    "status": "PASS",
+    "output": "PASS U three-run geometry, real continuous stone and void, two hollow corners, narrow ends, reverse arm holes, transforms, opening, obstacle thresholds, shape conversion, copy and project/work restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-thin-end.cjs",
+    "status": "PASS",
+    "output": "PASS hollow corner boards, thin end bodies and optional production back, narrowed continuous stone, transforms, devices, opening, resize, validation and project restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-single-hinge.cjs",
+    "status": "PASS",
+    "output": "PASS independent kitchen leaf hinges: paired production geometry and widths unchanged, sweeps, validation, old fallback, cleanup, drafts, copy and current/named restore\n"
+  },
+  {
+    "file": "tests\\test-kitchen-shelves.cjs",
+    "status": "PASS",
+    "output": "PASS actual L/U corner shelf boards, equal production shelf levels, left/right/rotations/mirrors, fitted depth/minimum width, role changes and independent sink/hob versus corner shelves, other/thin shelves, unfolded previews and legacy project restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-run-handles.cjs",
+    "status": "PASS",
+    "output": "PASS three independent U grips, exact fixed other modules, corner anchoring, short/long crossing, limits and linked appliance protection, rotated/mirrored projection, finite wall snapping, real pointer/selection/production geometry and project restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-right.cjs",
+    "status": "PASS",
+    "output": "PASS right kitchen corner: legacy left omission, geometry, opening ranges, appliance orientation, rotated/mirrored void, resize and named-project roundtrip\n"
+  },
+  {
+    "file": "tests\\test-kitchen-resize.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen terminal-only resize, fixed middle and short arms, limits, production widths, links, rotation/mirror, real pointer branch and project/work restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-preview.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen production preview, mirrored camera, picking, draft isolation, disposal and cabinet-only hood cavity previews with fitting room appliances\n"
+  },
+  {
+    "file": "tests\\test-kitchen-partitions.cjs",
+    "status": "PASS",
+    "output": "PASS per-module left/right corner partitions, real retained/open boards and mirrored elevations, independent corner shelves, fitted depth, legacy defaults, validation, role/resize/copy/replacement, signatures and actual project/work restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-overlay.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen full overlay: actual door/drawer coverage, nominal depth, front rays, moving boards, wall elevation, legacy generic isolation and no saved-data mutation\n"
+  },
+  {
+    "file": "tests\\test-kitchen-outer-edges.cjs",
+    "status": "PASS",
+    "output": "PASS four outer edges address touching row depth/free-end width; fixed inner/opposite edges, middle widths and thin ends; rotations, mirror, wall snap, limits, device fit, true pointer and production/elevation geometry, persistence/copy/restore\n"
+  },
+  {
+    "file": "tests\\test-kitchen-gap-input.cjs",
+    "status": "PASS",
+    "output": "PASS exact kitchen edge reservation edits, fixed other world modules and opposite fronts, independent depth/end width, rotated mirror, separated projection gaps, limits, no mutation and project roundtrip\n"
+  },
+  {
+    "file": "tests\\test-kitchen-form.cjs",
+    "status": "PASS",
+    "output": "PASS shared kitchen form: unblurred values, precision preservation, draft isolation, right corner control and link remapping\n"
+  },
+  {
+    "file": "tests\\test-kitchen-extension-resize.cjs",
+    "status": "PASS",
+    "output": "PASS thin-only width/depth, fixed regular cabinet sizes/world positions, all shapes/transforms, finite snap, pointer restoration, 50 mm actual production and unfolded depths, limits and project/restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-elevations.cjs",
+    "status": "PASS",
+    "output": "PASS left/right/mirrored production elevation rows, real blind geometry, exact source module indices, all width labels, real drawer ray mapping, input isolation, shape/view switching and renderer cleanup\n"
+  },
+  {
+    "file": "tests\\test-kitchen-edge-snapping.cjs",
+    "status": "PASS",
+    "output": "PASS outer and short-run furniture magnets, complete finite edge/end contact, exact pixel thresholds, transforms, toggles, linked/self exclusion, invalid candidates, fractional persistence and real rotated guide SVG\n"
+  },
+  {
+    "file": "tests\\test-kitchen-drawer-tiers.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen configurable drawer tiers and nominal heights, immutable compensation, historical geometry/no migration, limits/states/role/height/drop edits, actual front panels and positive boards, transforms/elevations/opening, copy/replacement and project/work restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-drawer-snapping.cjs",
+    "status": "PASS",
+    "output": "PASS adjacent drawer alignment targets, minimum boundary, independent totals, exclusion, transforms/elevations, production front seams and project restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-drawer-boundaries.cjs",
+    "status": "PASS",
+    "output": "PASS drawer boundary adjacent-only resizing, fixed total and other cabinets, exact minimum, no-op legacy, transforms/elevations and project restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-door-widths.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen two doors, unequal actual widths, production meshes and hinges, opening sweeps/transforms, minimum boundaries, overlay/resize, role cleanup, copy/replace and drift-free project/named restoration\n"
+  },
+  {
+    "file": "tests\\test-kitchen-door-pairing.cjs",
+    "status": "PASS",
+    "output": "PASS kitchen odd-leaf pairing: equal production faces, handles, hinges and sweeps, old defaults, current/named roundtrip, copy/replace, cleanup and form drafts\n"
+  },
+  {
+    "file": "tests\\test-kitchen-dividers.cjs",
+    "status": "PASS",
+    "output": "PASS real adjacent cabinet/extension divider, equal/opposite widths, exact outer frame and fixed other modules, full exposed side, shapes/transforms, limits/device fit, finite snapping, production pointer and 3D, elevations and project restoration\n"
+  },
+  {
+    "file": "tests\\test-project.cjs",
+    "status": "PASS",
+    "output": "PASS Survey preserves existing openings before structure confirmation\nPASS Old projects migrate to locked structures\nPASS Design rejects changes to the confirmed original bearing structure\nPASS Exterior walls are locked after confirmation\nPASS Real partition demolition merges rooms and updates area\nPASS Moving a partition changes both room areas while preserving bearing walls\nPASS Room materials follow spatial overlap after demolition\nPASS Automatic construction quantities update without overwriting manual values\nPASS Paint deductions use door height rather than wall thickness\nPASS Project backup roundtrip preserves baseline, designs, costs and catalog\nPASS Corrupt and future backups fail before import\nPASS Legacy plan JSON migrates to the portable project format\nPASS Spatial checks detect a blocked door swing\nPASS Cabinet front clearance rotates with the furniture\nPASS OBJ supports triangulation and negative indices\nPASS Overlapping door swings and swing-wall collisions are reported\nPASS Flat, non-finite and empty imported meshes are rejected before restoration\nPASS Backup preserves raw attachments and rejects malformed attachment data\nPASS Interior door deducts both painted wall faces\nPASS Retained openings keep sill heights and swing overrides after IDs reindex\n20 product roadmap regression checks passed\n"
+  },
+  {
+    "file": "tests\\test-project-validation.cjs",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "tests\\test-project-recovery.cjs",
+    "status": "PASS",
+    "output": "Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed\n"
+  },
+  {
+    "file": "tests\\test-product-rules.cjs",
+    "status": "PASS",
+    "output": "PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API\n"
+  },
+  {
+    "file": "tests\\test-laundry-stack.cjs",
+    "status": "PASS",
+    "output": "PASS laundry stacking, panel editing/lock/undo, persistence/copy/replacement, 3D height/offset/rotation and cache\n"
+  },
+  {
+    "file": "tests\\test-kitchen-divider-input.cjs",
+    "status": "PASS",
+    "output": "PASS divider click and keyboard input, either width compensates exactly, thin/regular pairs and transforms, draft/no-op/invalid/stale/locked safety and Enter application\n"
+  },
+  {
+    "file": "tests\\test-work-state.cjs",
+    "status": "PASS",
+    "output": "PASS work restoration, independent defaults, legacy fields and custom architecture\n"
+  }
+]

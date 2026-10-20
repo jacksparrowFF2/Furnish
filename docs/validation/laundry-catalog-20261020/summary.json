@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "scope": "四个阳台柜目录入口合并为完整／基础两种，在设计中选择左右；保留两种水槽及旧项目",
+  "behavior": {
+    "entries": [
+      "完整阳台洗衣柜",
+      "基础洗衣机柜"
+    ],
+    "defaultSide": "left",
+    "sinks": [
+      "阳台定制水槽（可设异形缺角）",
+      "阳台台上盆 · 圆角单盆"
+    ],
+    "legacy": "原四名称进入隐藏历史规格；原左右令牌与旧五件组合／整体柜继续读取，不迁移实例"
+  },
+  "unit": {
+    "passed": 50,
+    "log": "unit-tests.json",
+    "scope": "laundry/kitchen/catalog/product-rules/design/project/work-state/furniture-recovery/furniture-persistence 相关套件"
+  },
+  "browser": {
+    "passed": 4,
+    "results": [
+      {
+        "name": "catalog-library",
+        "status": "PASS",
+        "seconds": 16.1,
+        "log": "catalog-library.log",
+        "run": "verification-hsZyJu"
+      },
+      {
+        "name": "laundry-editing",
+        "status": "PASS",
+        "seconds": 10,
+        "log": "laundry-editing.log",
+        "run": "verification-hsZyJu"
+      },
+      {
+        "name": "laundry-resize-vessel",
+        "status": "PASS",
+        "seconds": 24.2,
+        "log": "laundry-resize-vessel.log",
+        "run": "verification-hsZyJu"
+      },
+      {
+        "name": "laundry-catalog",
+        "status": "PASS",
+        "seconds": 16.1,
+        "log": "laundry-catalog.log",
+        "run": "verification-EEcj2a"
+      }
+    ],
+    "note": "汇总两次隔离运行；首次新增专项用“洗衣”搜索意外包含家政用途项，改成用途＋柜关键词后专项 HTTP/file 最终通过，另外三个既有流程均首次通过。"
+  },
+  "verified": [
+    "两类真实家具库入口及规格添加",
+    "完整款 2 实例／基础款 1 实例，默认左、设计右／左、独立洗衣机随动",
+    "草稿取消、保存、单次撤销重做、刷新、实际项目下载上传",
+    "两种水槽独立添加",
+    "旧四名称左右规格、旧组合及当前／命名项目往返、重复恢复无漂移",
+    "50 套相关 Node 回归及 4 个浏览器用例，均包含 HTTP／断网 file://",
+    "1480px 桌面与 390px 窄屏视觉，无编辑器横向溢出",
+    "改动源码语法与 git diff --check"
+  ],
+  "notRun": [
+    "全量 node scripts/check.cjs：按实际目录与设计器影响采用增量范围",
+    "未运行全部历史浏览器用例",
+    "未做实体触屏硬件验收"
+  ],
+  "boundaries": [
+    "保留原布局模型尺寸、开启及安装规则边界；无新增模型／施工要求",
+    "历史最近／收藏不重显下架条目，旧项目实例仍可查找旧规格"
+  ],
+  "screenshots": [
+    "http-catalog.png",
+    "http-complete-right.png",
+    "http-basic-right.png",
+    "file-mobile-catalog.png",
+    "file-mobile-design.png"
+  ],
+  "sourceHashes": {
+    "src/data/catalog.js": "5b658e2be3f3618cbc482c554734d81078516e8500d9fba3b5ec372f1c221b0d",
+    "src/data/i18n.js": "178cdd11573d570cad7d402a0f30586576b5d4e8e4b58b50f79a7b6c35083051",
+    "src/ui/catalog-ui.js": "5ae33929792c5a9135ef7f17e148a01dbebcea888919145da8dc864e99b3b740",
+    "src/ui/kitchen-editor.js": "09a6e989577db4045ccf178824c418a8fab947dd7b7476dd592ac90a2b291416"
+  }
+}
