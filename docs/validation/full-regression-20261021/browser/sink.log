@@ -1,0 +1,1 @@
+{"case":"sink","status":"PASS","result":[{"mode":"http","passed":true,"errors":[],"externalRequests":0},{"mode":"file","passed":true,"errors":[],"externalRequests":0}]}

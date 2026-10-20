@@ -1,0 +1,1 @@
+{"case":"kitchen-drawer-tiers","status":"PASS","result":{"status":"PASS","checks":"legacy no migration, count/individual heights and compensation, minimum rejection, fourth drawer and open/close all, actual perspective/elevations, cancel/save/undo/redo/refresh, fixed other cabinets, equal heights/one-tier/390 px and project roundtrip","errors":[]}}

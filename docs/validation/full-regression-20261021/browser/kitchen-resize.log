@@ -1,0 +1,1 @@
+{"case":"kitchen-resize","status":"PASS","result":{"status":"PASS","widthsBefore":[482,482,482,450,600],"widthsAfter":[782,482,482,450,600],"checks":"real width/depth drags, 180-degree U, fixed middle/short arm/depths/thin end, limit feedback, save, undo/redo, refresh, production preview and 390px drag","errors":[]}}

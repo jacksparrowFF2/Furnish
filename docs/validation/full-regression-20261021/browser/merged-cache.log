@@ -1,0 +1,1 @@
+{"case":"merged-cache","status":"PASS","result":[{"mode":"http","passed":true,"newestLegacySelection":true,"legacyKeysPreserved":true,"realV9SaveAndRefresh":true,"bothCachesArchived":true,"errors":[]},{"mode":"file","passed":true,"newestLegacySelection":true,"legacyKeysPreserved":true,"realV9SaveAndRefresh":true,"bothCachesArchived":false,"errors":[]}]}

@@ -1,0 +1,1 @@
+{"case":"kitchen-dividers","status":"PASS","result":{"status":"PASS","thinWidth":750,"regularWidths":[622.34,623.66,976.5,738],"checks":"exposed full side hit, regular/thin and regular/regular equal/opposite widths, fixed frame/depths/other modules, cancel/no-op/invalid, undo/redo, production perspective/elevations, save/refresh, 390 px and project download/upload","errors":[]}}

@@ -1,0 +1,246 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "scope": "Shared planar move and generic resize audit beyond cabinetry",
+  "fixes": [
+    "Normalize directed computation edges after mirrored asymmetric outlines while keeping rings and relative hole winding unchanged",
+    "Protect and apply finite body contacts ahead of point and center guides, including oblique faces and curved support points",
+    "Retain fractional contact coordinates instead of final integer rounding",
+    "Solve curved resize support only within finite reference spans; recheck final curved contact after a corner resize"
+  ],
+  "node": {
+    "passed": 38,
+    "suites": [
+      "test-aircon-midea.cjs",
+      "test-cabinet-advanced.cjs",
+      "test-cabinet-boundary-snapping.cjs",
+      "test-cabinet-catalog.cjs",
+      "test-cabinet-custom-fronts.cjs",
+      "test-cabinet-design-upgrade.cjs",
+      "test-cabinet-dimensions.cjs",
+      "test-cabinet-door-settings.cjs",
+      "test-cabinet-drawer-joints.cjs",
+      "test-cabinet-edit-operations.cjs",
+      "test-cabinet-full-width-drawers.cjs",
+      "test-cabinet-interior-distances.cjs",
+      "test-cabinet-model.cjs",
+      "test-cabinet-opening-3d.cjs",
+      "test-cabinet-opening-volume-model.cjs",
+      "test-cabinet-overlay.cjs",
+      "test-cabinet-palette.cjs",
+      "test-cabinet-preview.cjs",
+      "test-cabinet-section-doors.cjs",
+      "test-cabinet-setting-inheritance.cjs",
+      "test-cabinet.cjs",
+      "test-drag-axis-lock.cjs",
+      "test-drag-feature-snapping.cjs",
+      "test-enclosed-boundary-distances.cjs",
+      "test-finish-miter-snap.cjs",
+      "test-floor-origin-snap.cjs",
+      "test-furniture-snapping-audit.cjs",
+      "test-kitchen-drawer-snapping.cjs",
+      "test-kitchen-edge-snapping.cjs",
+      "test-kitchen-extension-resize.cjs",
+      "test-kitchen-resize.cjs",
+      "test-laundry-cabinet.cjs",
+      "test-laundry-resize-vessel.cjs",
+      "test-legacy-cabinet-upgrade.cjs",
+      "test-resize-axis.cjs",
+      "test-short-wall-snapping.cjs",
+      "test-snapping.cjs",
+      "test-wall-face-snapping.cjs"
+    ],
+    "audit": {
+      "catalogRows": 109,
+      "types": 82,
+      "rotations": [
+        0,
+        37,
+        90,
+        180,
+        270
+      ],
+      "mirrors": true,
+      "moves": 2180,
+      "resizes": 2180,
+      "curvedFiniteEdgeCases": 10,
+      "includes": [
+        "capture equality and just outside",
+        "fixed opposite corner and inactive dimensions",
+        "immutable proposals",
+        "fractional coordinate project roundtrip",
+        "final corner-grip guide contact"
+      ]
+    },
+    "syntax": [
+      "src/core/snapping.js",
+      "scripts/verify/verify-furniture-snapping-audit.browser.js"
+    ]
+  },
+  "browser": [
+    {
+      "name": "furniture-snapping-audit",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "moveTypes": [
+            "bed",
+            "sofa",
+            "desk",
+            "chair",
+            "fridge",
+            "curtain",
+            "aircon_midea_ultra_2hp",
+            "block"
+          ],
+          "moveGestures": 48,
+          "rotations": [
+            0,
+            37,
+            90
+          ],
+          "mirrors": true,
+          "curvedResizes": 6,
+          "checks": [
+            "real pointers",
+            "finite curve contact",
+            "guides",
+            "undo/redo",
+            "reload"
+          ]
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "moveTypes": [
+            "bed",
+            "sofa",
+            "desk",
+            "chair",
+            "fridge",
+            "curtain",
+            "aircon_midea_ultra_2hp",
+            "block"
+          ],
+          "moveGestures": 48,
+          "rotations": [
+            0,
+            37,
+            90
+          ],
+          "mirrors": true,
+          "curvedResizes": 6,
+          "checks": [
+            "real pointers",
+            "finite curve contact",
+            "guides",
+            "undo/redo",
+            "reload"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cabinet-boundary-snapping",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "rotations": [
+            0,
+            37,
+            90,
+            180,
+            270
+          ],
+          "mirrors": true,
+          "axes": [
+            "w",
+            "d"
+          ],
+          "checks": [
+            "actual resize pointers to walls and furniture",
+            "guides",
+            "wall slide to cabinet end",
+            "undo/redo",
+            "refresh",
+            "narrow layout"
+          ]
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "rotations": [
+            0,
+            37,
+            90,
+            180,
+            270
+          ],
+          "mirrors": true,
+          "axes": [
+            "w",
+            "d"
+          ],
+          "checks": [
+            "actual resize pointers to walls and furniture",
+            "guides",
+            "wall slide to cabinet end",
+            "undo/redo",
+            "refresh",
+            "narrow layout"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "drag-feature-snapping",
+      "result": {
+        "status": "PASS",
+        "checks": "furniture/wall midpoints, rotated corners, member-based group snapping, undo/redo/cancel, release cleanup, rotated mobile and reload",
+        "errors": []
+      }
+    },
+    {
+      "name": "drag-axis-lock",
+      "result": {
+        "status": "PASS",
+        "checks": "stationary Shift/Alt changes, latched axes, on-axis magnets, Shift-before-drag and click compatibility, groups, four rotations, narrow screen, undo/redo and reload",
+        "errors": []
+      }
+    },
+    {
+      "name": "kitchen-edge-snapping",
+      "result": {
+        "status": "PASS",
+        "topDepth": 673.25,
+        "shortModule": 871.75,
+        "checks": "two screenshot borders snap to fridge bottom/side, full-edge hit and end contact, exact fractional coordinates, guides, fixed fridge and middle/thin dimensions, toggle, no-op/cancel/undo/redo/refresh, 37-degree mirror and 90-degree drawing, 390px mouse drag, real project download/upload",
+        "errors": []
+      }
+    }
+  ],
+  "visualInspection": [
+    "http-sofa-mirrored-oblique.png",
+    "file-curved-resize.png"
+  ],
+  "dataChanges": "No actual workspace or furniture positions written; verification uses isolated static copies and fresh browser profiles",
+  "notRun": [
+    "Full scripts/check.cjs",
+    "Unrelated generated previews",
+    "Physical touchscreen",
+    "Every catalog model in a real browser"
+  ],
+  "limits": [
+    "Catalog matrix checks current layout-core envelopes, not every production mesh",
+    "Unregistered circular/irregular/custom models keep existing rectangular layout envelopes",
+    "Curve accuracy follows current sampled polygon",
+    "Oblique movement chooses nearest reachable finite contact, not a simultaneous multi-obstacle collision solver",
+    "Planar magnets do not certify vertical clearance or installation"
+  ],
+  "attemptNotes": [
+    "Browser pointers exposed a closer center guide stealing contact after the initial point filter; fixed in the final implementation.",
+    "Added final curved corner-grip validation after the primary browser pass; reran all 38 relevant Node suites and the audit/cabinet browser cases."
+  ]
+}

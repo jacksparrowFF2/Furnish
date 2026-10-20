@@ -1,0 +1,61 @@
+{
+  "case": "pegboard-parts",
+  "status": "PASS",
+  "result": {
+    "passed": true,
+    "results": [
+      {
+        "mode": "http",
+        "passed": true,
+        "checks": [
+          "unchanged legacy save keeps missing configuration",
+          "upper toggle validates",
+          "cancel keeps original assembly",
+          "upper removal validates",
+          "left removal validates",
+          "right removal validates",
+          "lower removal validates",
+          "accessories removal validates",
+          "all removals saved",
+          "production contains exactly one 18mm perforated panel",
+          "one undo restores assembly",
+          "redo and refresh preserve pure panel",
+          "narrow control upper",
+          "narrow control left",
+          "narrow control right",
+          "narrow control lower",
+          "narrow control accessories",
+          "no narrow page overflow",
+          "re-enabling restores doors and drawers",
+          "no page errors"
+        ]
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "checks": [
+          "unchanged legacy save keeps missing configuration",
+          "upper toggle validates",
+          "cancel keeps original assembly",
+          "upper removal validates",
+          "left removal validates",
+          "right removal validates",
+          "lower removal validates",
+          "accessories removal validates",
+          "all removals saved",
+          "production contains exactly one 18mm perforated panel",
+          "one undo restores assembly",
+          "redo and refresh preserve pure panel",
+          "narrow control upper",
+          "narrow control left",
+          "narrow control right",
+          "narrow control lower",
+          "narrow control accessories",
+          "no narrow page overflow",
+          "re-enabling restores doors and drawers",
+          "no page errors"
+        ]
+      }
+    ]
+  }
+}

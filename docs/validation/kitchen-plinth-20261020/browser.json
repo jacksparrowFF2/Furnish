@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "legacy default is 100 mm",
+        "unchanged save preserves missing default",
+        "preview edits stay in draft",
+        "cancel discards plinth edit",
+        "over-limit value rejected",
+        "valid edit clears error",
+        "saved 50 mm",
+        "cabinet and worktop elevations stay fixed",
+        "drawer tiers follow available height",
+        "one undo restores original",
+        "redo and refresh restore parameter",
+        "mobile parameter visible",
+        "mobile has no page overflow",
+        "zero retained",
+        "current and named project roundtrip retains zero",
+        "zero survives refresh",
+        "no page errors"
+      ]
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "legacy default is 100 mm",
+        "unchanged save preserves missing default",
+        "preview edits stay in draft",
+        "cancel discards plinth edit",
+        "over-limit value rejected",
+        "valid edit clears error",
+        "saved 50 mm",
+        "cabinet and worktop elevations stay fixed",
+        "drawer tiers follow available height",
+        "one undo restores original",
+        "redo and refresh restore parameter",
+        "mobile parameter visible",
+        "mobile has no page overflow",
+        "zero retained",
+        "current and named project roundtrip retains zero",
+        "zero survives refresh",
+        "no page errors"
+      ]
+    }
+  ]
+}

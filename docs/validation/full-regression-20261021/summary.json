@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-21",
+  "status": "PASS",
+  "baseCommit": "9badbb6",
+  "request": "全量回归、修复异常、分类提交代码并单独提交装修方案到 main",
+  "node": {
+    "command": "node scripts/check.cjs --keep-going",
+    "regressionSuites": 266,
+    "builtInPlans": 12,
+    "previewPages": 31,
+    "checks": [
+      "production syntax",
+      "local assets",
+      "shared declarations",
+      "all registered Node regression suites"
+    ],
+    "log": "node-full.log"
+  },
+  "browser": {
+    "command": "all registered canonical cases via scripts/verify-browser.cjs; isolated copies, three lanes followed by affected-case retries",
+    "total": 160,
+    "passed": 160,
+    "failed": 0,
+    "missing": 0,
+    "results": "browser-results.json",
+    "coverage": [
+      "HTTP and offline file entry where supported by case",
+      "save/cancel, undo/redo and refresh",
+      "project import/export",
+      "production geometry and 3D",
+      "390 px narrow layout"
+    ],
+    "note": "每个场景记录修复后的最后一次结果；不是一次无失败的首轮运行。历史铺砖别名沿既有注册器映射到统一铺砖工作流。"
+  },
+  "workspace": {
+    "path": "projects/workspace.furnish.json",
+    "sha256": "b6fdc4296aed68dcb0e8a6e2feb0aef7a9c9ba5cc597180c4ed27f4ee666368f",
+    "workAndNamedEntries": 10,
+    "validation": true,
+    "canonicalRoundtrip": true,
+    "repeatedRestoreNoDrift": true,
+    "unchangedDuringRegression": true
+  },
+  "fixes": [
+    "测量移动补齐缺失 cx/cy 的历史调用上下文",
+    "旧吊柜 plinth:0 恢复兼容，非零底座仍拒绝",
+    "洗碗机上方安装核对使用模块包络，严格 >80mm 门槛不受板件后缩或门板姿态影响",
+    "抽屉非法输入在预览尺寸变化后仍保留并阻止保存",
+    "房间合并过滤低于既有有效面积阈值的伪孔洞，真实面积损失仍拒绝",
+    "洗衣柜详细设计左右切换共用设备联动，锁定拒绝且单次撤销",
+    "全量预览扫描排除完整隔离检验副本，保留普通模型预览",
+    "旧验收夹具及操作入口适配当前字段版本、两级部件查找与浮动控件；保持空间数值断言"
+  ],
+  "visualReviewed": [
+    "docs/validation/shoe-bench-20261020/shoe-bench/file-angle.png",
+    "docs/validation/cherry-coffee-table-20261020/file-angle.png",
+    "docs/validation/cabinet-layout-20261020/mobile.png"
+  ],
+  "notPerformed": [
+    "physical touchscreen hardware",
+    "manufacturer installation or construction verification"
+  ],
+  "boundaries": [
+    "自动浏览器和几何检查不能代替实物安装核验；未声明不存在其他缺陷。",
+    "历史生成的完整隔离仓库不作为生产预览重复校验。"
+  ]
+}

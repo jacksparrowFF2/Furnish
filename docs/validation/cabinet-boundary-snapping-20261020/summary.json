@@ -1,0 +1,165 @@
+{
+  "date": "2026-10-20",
+  "scope": "Shared 2D move and generic resize boundary snapping; existing workspace untouched",
+  "node": {
+    "passed": 36,
+    "suites": [
+      "test-cabinet-advanced.cjs",
+      "test-cabinet-boundary-snapping.cjs",
+      "test-cabinet-catalog.cjs",
+      "test-cabinet-custom-fronts.cjs",
+      "test-cabinet-design-upgrade.cjs",
+      "test-cabinet-dimensions.cjs",
+      "test-cabinet-door-settings.cjs",
+      "test-cabinet-drawer-joints.cjs",
+      "test-cabinet-edit-operations.cjs",
+      "test-cabinet-full-width-drawers.cjs",
+      "test-cabinet-interior-distances.cjs",
+      "test-cabinet-model.cjs",
+      "test-cabinet-opening-3d.cjs",
+      "test-cabinet-opening-volume-model.cjs",
+      "test-cabinet-overlay.cjs",
+      "test-cabinet-palette.cjs",
+      "test-cabinet-preview.cjs",
+      "test-cabinet-section-doors.cjs",
+      "test-cabinet-setting-inheritance.cjs",
+      "test-cabinet.cjs",
+      "test-drag-axis-lock.cjs",
+      "test-drag-feature-snapping.cjs",
+      "test-enclosed-boundary-distances.cjs",
+      "test-finish-miter-snap.cjs",
+      "test-floor-origin-snap.cjs",
+      "test-kitchen-drawer-snapping.cjs",
+      "test-kitchen-edge-snapping.cjs",
+      "test-kitchen-extension-resize.cjs",
+      "test-kitchen-resize.cjs",
+      "test-laundry-cabinet.cjs",
+      "test-laundry-resize-vessel.cjs",
+      "test-legacy-cabinet-upgrade.cjs",
+      "test-resize-axis.cjs",
+      "test-short-wall-snapping.cjs",
+      "test-snapping.cjs",
+      "test-wall-face-snapping.cjs"
+    ],
+    "specialCases": {
+      "cabinetTypes": 10,
+      "templates": 19,
+      "rotations": [
+        0,
+        37,
+        90,
+        180,
+        270
+      ],
+      "mirrors": true,
+      "axisResizeCombinations": 380
+    },
+    "syntax": [
+      "src/core/snapping.js",
+      "src/ui/canvas-interactions.js",
+      "scripts/verify/verify-cabinet-boundary-snapping.browser.js"
+    ]
+  },
+  "browser": [
+    {
+      "name": "cabinet-boundary-snapping",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "rotations": [
+            0,
+            37,
+            90,
+            180,
+            270
+          ],
+          "mirrors": true,
+          "axes": [
+            "w",
+            "d"
+          ],
+          "checks": [
+            "actual resize pointers to walls and furniture",
+            "guides",
+            "wall slide to cabinet end",
+            "undo/redo",
+            "refresh",
+            "narrow layout"
+          ]
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "rotations": [
+            0,
+            37,
+            90,
+            180,
+            270
+          ],
+          "mirrors": true,
+          "axes": [
+            "w",
+            "d"
+          ],
+          "checks": [
+            "actual resize pointers to walls and furniture",
+            "guides",
+            "wall slide to cabinet end",
+            "undo/redo",
+            "refresh",
+            "narrow layout"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "drag-feature-snapping",
+      "result": {
+        "status": "PASS",
+        "checks": "furniture/wall midpoints, rotated corners, member-based group snapping, undo/redo/cancel, release cleanup, rotated mobile and reload",
+        "errors": []
+      }
+    },
+    {
+      "name": "drag-axis-lock",
+      "result": {
+        "status": "PASS",
+        "checks": "stationary Shift/Alt changes, latched axes, on-axis magnets, Shift-before-drag and click compatibility, groups, four rotations, narrow screen, undo/redo and reload",
+        "errors": []
+      }
+    },
+    {
+      "name": "kitchen-edge-snapping",
+      "result": {
+        "status": "PASS",
+        "topDepth": 673.25,
+        "shortModule": 871.75,
+        "checks": "two screenshot borders snap to fridge bottom/side, full-edge hit and end contact, exact fractional coordinates, guides, fixed fridge and middle/thin dimensions, toggle, no-op/cancel/undo/redo/refresh, 37-degree mirror and 90-degree drawing, 390px mouse drag, real project download/upload",
+        "errors": []
+      }
+    }
+  ],
+  "visualInspection": [
+    "http-rotated-resize.png",
+    "http-wall-slide.png",
+    "file-narrow.png"
+  ],
+  "attemptNotes": [
+    "Initial sandbox browser attempt blocked loopback; rerun with approved local execution.",
+    "Corrected test fixture movement under click/drag pixel threshold and room settings retained for reload.",
+    "Kitchen browser regression had one pointer target miss; independent rerun passed without kitchen code changes.",
+    "Isolated static copies; no generated historical previews; actual workspace file never written by verification."
+  ],
+  "notRun": [
+    "Full scripts/check.cjs",
+    "Unrelated historical generated previews",
+    "Physical touchscreen"
+  ],
+  "boundaries": [
+    "Planar snapping does not certify collision safety or vertical clearance.",
+    "Edge resize magnets require finite parallel target edges; arbitrary-angle corner movement retains existing feature magnets.",
+    "Generic corner grip fixes its original opposite corner; no persistence fields or model geometry changed."
+  ]
+}

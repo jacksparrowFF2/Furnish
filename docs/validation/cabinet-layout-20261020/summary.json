@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "scope": "柜体设计界面布局、按钮与表单尺度，应用行为仅 CSS 变化",
+  "changes": [
+    "工具／操作按钮最小36px，输入选择与底部操作40px，同组按钮等宽",
+    "预览工具栏控件统一，整柜目标去除重复导航和标题",
+    "参数卡片分组与统一间距，桌面去外层双滚动，低高度预览弹性调整",
+    "390px 工具栏明确分行与对齐"
+  ],
+  "browser": {
+    "passed": 4,
+    "results": [
+      {
+        "name": "cabinet-object-inspector",
+        "status": "PASS",
+        "seconds": 12.9,
+        "log": "cabinet-object-inspector.log",
+        "run": "verification-QqFd15"
+      },
+      {
+        "name": "cabinet-setting-inheritance",
+        "status": "PASS",
+        "seconds": 9.1,
+        "log": "cabinet-setting-inheritance.log",
+        "run": "verification-QqFd15"
+      },
+      {
+        "name": "laundry-editing",
+        "status": "PASS",
+        "seconds": 8.1,
+        "log": "laundry-editing.log",
+        "run": "verification-QqFd15"
+      },
+      {
+        "name": "cabinet-layout",
+        "status": "PASS",
+        "seconds": 2.6,
+        "log": "cabinet-layout.log",
+        "run": "verification-WaKgi4"
+      }
+    ],
+    "note": "最后仅调整窄屏工具栏网格后重跑布局专项，行为流程此前同批通过。"
+  },
+  "verified": [
+    "1500×1000 和1280×720 控件尺寸与桌面无外层滚动测量",
+    "390×844 无横向溢出，人工查看最终桌面与手机截图",
+    "对象编辑、继承及洗衣柜 HTTP／断网 file://；保存取消、撤销重做、刷新与旧设计升级沿既有流程",
+    "node tests/test-entry-editor.cjs",
+    "新增浏览器脚本 node --check 和改动 git diff --check"
+  ],
+  "notRun": [
+    "未运行全量 node scripts/check.cjs：无数据或生产模型变化，采用布局及相关交互增量验收",
+    "未运行全部历史浏览器专项",
+    "未做实体触屏测试"
+  ],
+  "boundaries": [
+    "长文字按钮可自然增加高度，避免截断",
+    "小屏保留纵向滚动；生产预览内的部件编号及尺寸交互不套用表单按钮尺度"
+  ],
+  "screenshots": [
+    "body-1500.png",
+    "body-1280.png",
+    "door.png",
+    "drawer.png",
+    "mobile.png"
+  ],
+  "cssSha256": "2aefecb5f8475576f8436a417454040ad564d6ff7a7ef2a78b6abc83a96048fd"
+}

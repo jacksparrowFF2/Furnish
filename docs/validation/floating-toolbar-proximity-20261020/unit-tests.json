@@ -1,0 +1,12 @@
+[
+  {
+    "file": "test-property-first-batch.cjs",
+    "status": "PASS",
+    "output": "PASS legacy summary envelopes and unknowns, confirmed/reference zero, clearing prices without default migration, exact installation deduplication and named project preservation\n"
+  },
+  {
+    "file": "test-property-second-batch.cjs",
+    "status": "PASS",
+    "output": "PASS retained object navigation, legacy unknown elevation, rotated/mirrored production opening annotations and read-only compatibility\n"
+  }
+]

@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "scope": "柜体／厨房／洗衣柜编辑界面做减法、内容宽度及门板直接开合",
+  "changes": [
+    "全柜长列表改为默认折叠的隔间/模块→部件查找，共用唯一标题与上级导航",
+    "层板默认高度/复制/删除；组列表、抽屉层数/样式、门宽配对等保留在高级设置",
+    "128px数值框、220px短选择框；长列表整行，按钮按内容自然换行",
+    "宽屏弹窗最大1520px，优先扩展预览；窄屏保持无横向溢出",
+    "生产门板单击开合；普通柜分区/上下段/展示门、厨房逐扇和洗衣附属柜沿原核心，分边展开转发；标签/查找只选择",
+    "无新持久字段、版本、几何或安装规则；原草稿一次mutate保存与取消范围保持"
+  ],
+  "unit": {
+    "total": 69,
+    "passed": 69,
+    "log": "unit-tests.json",
+    "scope": "柜体/玄关/厨房/洗衣柜及项目、工作区、恢复、持久链路相关套件，最终小范围UI调整后复跑七套受影响编辑/生产预览回归"
+  },
+  "browser": {
+    "passed": 10,
+    "results": [
+      {
+        "name": "laundry-editing",
+        "status": "PASS",
+        "seconds": 10.1,
+        "log": "laundry-editing.log",
+        "run": "verification-pMO1wI"
+      },
+      {
+        "name": "laundry-catalog",
+        "status": "PASS",
+        "seconds": 16.5,
+        "log": "laundry-catalog.log",
+        "run": "verification-pMO1wI"
+      },
+      {
+        "name": "cabinet-setting-inheritance",
+        "status": "PASS",
+        "seconds": 17.5,
+        "log": "cabinet-setting-inheritance.log",
+        "run": "verification-3aiJNI"
+      },
+      {
+        "name": "cabinet-layout",
+        "status": "PASS",
+        "seconds": 2.9,
+        "log": "cabinet-layout.log",
+        "run": "verification-x9TuUI"
+      },
+      {
+        "name": "kitchen-layout",
+        "status": "PASS",
+        "seconds": 48.1,
+        "log": "kitchen-layout.log",
+        "run": "verification-x9TuUI"
+      },
+      {
+        "name": "cabinet-doors",
+        "status": "PASS",
+        "seconds": 33.4,
+        "log": "cabinet-doors.log",
+        "run": "verification-x9TuUI"
+      },
+      {
+        "name": "kitchen-door-widths",
+        "status": "PASS",
+        "seconds": 12.1,
+        "log": "kitchen-door-widths.log",
+        "run": "verification-x9TuUI"
+      },
+      {
+        "name": "cabinet-object-inspector",
+        "status": "PASS",
+        "seconds": 28.2,
+        "log": "cabinet-object-inspector.log",
+        "run": "verification-x9TuUI"
+      },
+      {
+        "name": "cabinet-simple",
+        "status": "PASS",
+        "seconds": 43.6,
+        "log": "cabinet-simple.log",
+        "run": "verification-nY1NTM"
+      },
+      {
+        "name": "kitchen-drawer-tiers",
+        "status": "PASS",
+        "seconds": 12.2,
+        "log": "kitchen-drawer-tiers.log",
+        "run": "verification-nY1NTM"
+      }
+    ],
+    "note": "多次增量运行汇总成功项，不代表一次全浏览器扫描；最后恢复内层控制聚焦及折叠后，新简化与抽屉分层专项HTTP/file通过。最后仅隐藏部件重复legend，未改交互。早期测试适配两级查找及折叠状态；真实点击选用未被尺寸标签遮挡的生产板面。抽屉旧脚本对非法输入自动复原的过时预期改为保留可修正值、确认原项目不变，未改产品校验逻辑。"
+  },
+  "verified": [
+    "69套相关Node回归",
+    "10项浏览器增量通过",
+    "1920宽屏大预览和短输入、1500/1280桌面及低高度滚动、390px窄屏人工截图",
+    "普通柜和厨房柜真实门板鼠标点击打开/再次点击关闭，取消不提交、保存一次撤销重做；分边展开吊柜和洗衣附属柜真实点击",
+    "未失焦输入经查找/返回导航正确读取，错误输入阻止切换并可修正",
+    "旧设计保存升级、项目/命名往返、撤销重做、刷新、精细门宽/抽屉层数/高度与补差",
+    "HTTP与断网file专项、相关源码语法及git diff --check"
+  ],
+  "notRun": [
+    "未运行全量node scripts/check.cjs：影响限于编辑器、预览事件与相关保存调用",
+    "未运行全部历史浏览器专项，未适配的历史UI脚本可能仍使用旧列表或未展开高级设置",
+    "未做实体触屏设备验收"
+  ],
+  "boundaries": [
+    "普通柜对开门仍按既有隔间/门段联动，厨房沿既有逐扇能力；没有新建独立五金状态",
+    "尺寸标注和部件查找用于编辑选择，不开合；直接点击生产门板才切换",
+    "旧项目的必要默认/恢复规则和生产模型简化边界保留"
+  ],
+  "screenshots": [
+    "http-shelf-wide.png",
+    "http-laundry-wide.png",
+    "http-simple-mobile.png",
+    "http-simple-k-mobile.png",
+    "http-simple-l-mobile.png",
+    "file-shelf-wide.png",
+    "file-simple-k-mobile.png"
+  ],
+  "sourceHashes": {
+    "src/ui/cabinet-editor.js": "7e60c8d3f547bd2dfa2f8797a32db5e7d2861525d3988fc159d50724cde6201a",
+    "src/ui/kitchen-editor.js": "9a7870ff075611c5fafb0a45c5df8676449b44d1d2be6b0adbb1f2a8f0726422",
+    "src/render/cabinet-preview.js": "e7c3eeac3e1510361cabdf7bf4aa2c4f4355fb14c5dede79cdb159bcf88c9899",
+    "styles/cabinet-editor.css": "94eaea14f696d926b1fc57e1fa9bc0008db42a7511ebb43ffc763c47521b3197"
+  }
+}

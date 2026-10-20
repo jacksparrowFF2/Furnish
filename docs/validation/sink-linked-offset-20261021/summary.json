@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-21",
+  "scope": "Linked sink directional-clearance offsets, normalization, production countertop openings and persistence; existing uncommitted workspace changes retained.",
+  "passed": {
+    "syntax": [
+      "src/core/product-rules.js",
+      "src/core/kitchen-core.js",
+      "src/core/design-core.js",
+      "src/core/snapping.js",
+      "src/ui/canvas-interactions.js",
+      "src/ui/kitchen-editor.js",
+      "scripts/verify/verify-sink-linked-offset.browser.js"
+    ],
+    "regressions": {
+      "passed": 46,
+      "total": 46,
+      "detail": "regressions.json",
+      "resolvedFixtureFailures": [
+        "test-directional-heights: removed unsupported wall-cabinet plinth field, preserving the height-filter scenario",
+        "test-kitchen-run-handles: supplied FurnishProducts to the production renderer VM fixture"
+      ]
+    },
+    "newBehaviorCases": {
+      "transformedShapeRunInstallation": 180,
+      "productionMeshRayCases": 36,
+      "also": [
+        "four directions including contact and outside thresholds",
+        "rotated drawing axes",
+        "front overhang usable depth",
+        "current/named project and repeated no-drift restoration",
+        "copy, replacement, relink, locks, cut surface rejection",
+        "cache and spatial fingerprint changes"
+      ]
+    },
+    "browser": [
+      {
+        "mode": "http",
+        "passed": true,
+        "errors": [],
+        "offset": true,
+        "undoRedo": true,
+        "atomicBoundary": true,
+        "hostTransforms": true,
+        "refresh": true,
+        "exportImport": true,
+        "scene3d": true,
+        "mobile": true
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "errors": [],
+        "offset": true,
+        "undoRedo": true,
+        "atomicBoundary": true,
+        "hostTransforms": true,
+        "refresh": true,
+        "exportImport": true,
+        "scene3d": true,
+        "mobile": true
+      }
+    ],
+    "visualInspection": [
+      "http-offset.png",
+      "http-3d.png",
+      "http-mobile.png",
+      "file-offset.png"
+    ],
+    "diffWhitespace": "PASS"
+  },
+  "notRun": [
+    "Full node scripts/check.cjs: incrementally scoped checks used per AGENTS.md",
+    "Physical touchscreen input"
+  ],
+  "boundaries": [
+    "Movement remains inside the original linked module width and actual worktop surface, including front overhang; no automatic module reassignment",
+    "Ordinary drag / coordinate edits retain the existing detach behaviour",
+    "Initial link size margins and layout-model installation assumptions remain; manufacturer installation/processing approval is not inferred",
+    "Old application versions do not understand the optional counterLink.offset field"
+  ]
+}

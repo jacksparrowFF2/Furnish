@@ -1,0 +1,1 @@
+{"case":"double-doors","status":"PASS","result":[{"mode":"http","passed":true,"saveUndoRedoRefresh":true,"projectRoundtrip":true,"mobile":true,"production3D":true},{"mode":"file","passed":true,"saveUndoRedoRefresh":true,"projectRoundtrip":true,"mobile":true,"production3D":true}]}

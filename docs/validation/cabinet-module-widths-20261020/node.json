@@ -1,0 +1,253 @@
+{
+  "scope": "incremental: cabinet/kitchen/laundry and directional kitchen solids",
+  "count": 61,
+  "results": [
+    {
+      "file": "test-cabinet-advanced.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-boundary-snapping.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-catalog.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-custom-fronts.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-design-upgrade.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-dimensions.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-door-settings.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-drawer-joints.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-edit-operations.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-full-width-drawers.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-interior-distances.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-model.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-module-widths.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-opening-3d.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-opening-volume-model.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-overlay.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-palette.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-preview.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-section-doors.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet-setting-inheritance.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-cabinet.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-directional-kitchen-solids.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-auto-avoid.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-corner-fit.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-corner-leaves.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-dish-basket.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-divider-input.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-dividers.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-door-pairing.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-door-widths.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-drawer-boundaries.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-drawer-snapping.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-drawer-tiers.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-edge-snapping.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-elevations.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-extension-resize.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-form.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-gap-input.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-outer-edges.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-overlay.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-partitions.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-plinth.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-preview.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-resize.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-right.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-run-handles.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-shelves.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-single-hinge.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-thin-end.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-u.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-wall-adjust.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen-worktop.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-kitchen.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-area.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-back-alignment.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-cabinet.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-catalog.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-integrated.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-notch-closure.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-resize-vessel.cjs",
+      "passed": true
+    },
+    {
+      "file": "test-laundry-stack.cjs",
+      "passed": true
+    }
+  ],
+  "rerun": [
+    "test-kitchen-elevations.cjs after updating expected outer-width label"
+  ]
+}

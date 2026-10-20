@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "real pointer drag increases current module",
+        "total input follows pointer growth",
+        "neighbor width input stays unchanged during pointer drag",
+        "Escape restores module and total",
+        "cancelled drag and save preserve complete original design",
+        "released pointer keeps grown width",
+        "saved pointer drag grows total and preserves every other module",
+        "one undo restores pointer growth",
+        "redo and refresh restore pointer growth",
+        "mobile keyboard shrinks only current module by one mm",
+        "keyboard shrink persists without neighbor compensation",
+        "no page errors"
+      ]
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "real pointer drag increases current module",
+        "total input follows pointer growth",
+        "neighbor width input stays unchanged during pointer drag",
+        "Escape restores module and total",
+        "cancelled drag and save preserve complete original design",
+        "released pointer keeps grown width",
+        "saved pointer drag grows total and preserves every other module",
+        "one undo restores pointer growth",
+        "redo and refresh restore pointer growth",
+        "mobile keyboard shrinks only current module by one mm",
+        "keyboard shrink persists without neighbor compensation",
+        "no page errors"
+      ]
+    }
+  ]
+}

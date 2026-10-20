@@ -1,0 +1,1 @@
+{"case":"purchase-orders","status":"PASS","result":{"actualForms":true,"validation":true,"receipts":true,"payments":true,"undoRedo":true,"cancel":true,"refresh":true,"namedDesign":true,"projectReimport":true,"csv":true,"report":true,"mobile390":true,"offline3D":true,"errors":[]}}

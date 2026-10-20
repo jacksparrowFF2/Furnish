@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "scope": "厨房地柜／吊柜／完整与基础洗衣柜设计器布局统一",
+  "changes": [
+    "直接生成外观、尺寸、避障、薄柜、台面参照与模块管理卡片",
+    "洗衣柜分离台面管道与洗衣机附属分区",
+    "模块功能尺寸、门板开合和抽屉分层明确分组",
+    "继承36px操作按钮及40px表单／底部操作，纠正厨房旧42px选择框规则",
+    "草稿刷新保留高级项展开或关闭状态，无新持久字段或几何变化"
+  ],
+  "unit": {
+    "passed": 40,
+    "log": "unit-tests.json",
+    "scope": "相关厨房／洗衣柜／玄关编辑套件；最终模板闭合修正后另外复跑厨房配对、抽屉分层、独立门铰链三项"
+  },
+  "browser": {
+    "passed": 7,
+    "results": [
+      {
+        "name": "kitchen-plinth",
+        "status": "PASS",
+        "seconds": 8.1,
+        "log": "kitchen-plinth.log",
+        "run": "verification-ekHGPi"
+      },
+      {
+        "name": "cabinet-object-inspector",
+        "status": "PASS",
+        "seconds": 17,
+        "log": "cabinet-object-inspector.log",
+        "run": "verification-ekHGPi"
+      },
+      {
+        "name": "laundry-editing",
+        "status": "PASS",
+        "seconds": 10.7,
+        "log": "laundry-editing.log",
+        "run": "verification-ekHGPi"
+      },
+      {
+        "name": "laundry-catalog",
+        "status": "PASS",
+        "seconds": 16.1,
+        "log": "laundry-catalog.log",
+        "run": "verification-ekHGPi"
+      },
+      {
+        "name": "cabinet-layout",
+        "status": "PASS",
+        "seconds": 2.7,
+        "log": "cabinet-layout.log",
+        "run": "verification-cQEL3O"
+      },
+      {
+        "name": "kitchen-wall-adjust",
+        "status": "PASS",
+        "seconds": 13.3,
+        "log": "kitchen-wall-adjust.log",
+        "run": "verification-cQEL3O"
+      },
+      {
+        "name": "kitchen-layout",
+        "status": "PASS",
+        "seconds": 46.4,
+        "log": "kitchen-layout.log",
+        "run": "verification-9PByKj"
+      }
+    ],
+    "note": "增量汇总通过日志。新增专项初次发现旧42px控件覆盖；尺寸测量改为等待动画结束并读取布局高度，附属柜选项明确kind/assembly。最终专项在最后模板闭合修正后HTTP及离线file全程通过。其他流程为本批相关依赖通过日志。"
+  },
+  "verified": [
+    "L地柜／U吊柜／完整及基础洗衣柜，1500x1000、1280x720、390x844",
+    "操作按钮至少36px，数字及选择字段和底部按钮40px",
+    "桌面外层无滚动／右侧独立滚动，窄屏无横向溢出",
+    "外观尺寸分组、普通模块及内层附属柜导航",
+    "草稿取消、未失焦保存、一次撤销重做、刷新、折叠状态保持",
+    "HTTP及断网file专项与相关真实生产预览人工视觉验收",
+    "语法及git diff --check"
+  ],
+  "notRun": [
+    "未运行全量node scripts/check.cjs：变化限于UI分组、临时展开状态及CSS",
+    "未运行全部历史浏览器专项",
+    "未做实体触屏硬件验收"
+  ],
+  "boundaries": [
+    "长文字操作保持可换行，不强制截断为36px",
+    "小屏保留纵向滚动，三边正视展开可在预览内滚动",
+    "原生产几何、底座和安装规则继续沿原模型边界"
+  ],
+  "screenshots": [
+    "http-base-desktop.png",
+    "http-wall-desktop.png",
+    "http-wall-module.png",
+    "http-laundry-desktop.png",
+    "http-basic-desktop.png",
+    "http-base-720.png",
+    "http-wall-720.png",
+    "file-base-mobile.png",
+    "file-wall-mobile.png",
+    "file-laundry-mobile.png",
+    "file-basic-mobile.png",
+    "file-nested.png"
+  ],
+  "sourceHashes": {
+    "src/ui/kitchen-editor.js": "e0b5da59a9e340d5c39a8553f943577f94395e5eda5e05930c734ae0e9b91834",
+    "styles/cabinet-editor.css": "ad4b2f7df48e0d4ee67a0b3da6b66488c788a0f17752b1b37b21867a4f8d9364"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-21",
+  "scope": "洗衣柜内置水槽实际偏移、嵌入盆竖向深度、缺角收口阳角",
+  "node": {
+    "passed": 20,
+    "tests": [
+      "test-cabinet-interior-distances.cjs",
+      "test-directional-kitchen-solids.cjs",
+      "test-kitchen-form.cjs",
+      "test-kitchen-partitions.cjs",
+      "test-kitchen-preview.cjs",
+      "test-kitchen-worktop.cjs",
+      "test-laundry-area.cjs",
+      "test-laundry-back-alignment.cjs",
+      "test-laundry-basin-joins.cjs",
+      "test-laundry-cabinet.cjs",
+      "test-laundry-catalog.cjs",
+      "test-laundry-integrated.cjs",
+      "test-laundry-notch-closure.cjs",
+      "test-laundry-resize-vessel.cjs",
+      "test-laundry-stack.cjs",
+      "test-product-rules.cjs",
+      "test-sink-linked-offset-model.cjs",
+      "test-sink-linked-offset.cjs",
+      "test-sink-surface.cjs",
+      "test-sink.cjs"
+    ]
+  },
+  "browser": [
+    {
+      "mode": "http",
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "status": "PASS",
+      "errors": []
+    }
+  ],
+  "visual": [
+    "http-production.png",
+    "http-corner.png",
+    "http-narrow.png",
+    "file-corner.png"
+  ],
+  "visualMethod": "生产柜体构造器；转角图仅为观察隐藏台面与柜顶，不改变生产几何。",
+  "notRun": [
+    "全量检查",
+    "实体触屏与施工验收"
+  ],
+  "projectData": "未修改实际户型数据",
+  "limits": "50–400 mm 为布局参数范围；含盆底的外侧深度，不是厂家有效槽深。未模拟五金、管路及施工连接。"
+}

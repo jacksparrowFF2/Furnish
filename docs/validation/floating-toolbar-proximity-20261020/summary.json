@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-20",
+  "status": "PASS",
+  "scope": "桌面普通浮动条靠近选中家具，保留展开编辑／窄屏停靠",
+  "unit": {
+    "passed": 2,
+    "log": "unit-tests.json",
+    "note": "旧属性测试桩缺dataset首次失败，补齐后两套通过，无产品渲染逻辑变更"
+  },
+  "browser": {
+    "passed": 2,
+    "results": [
+      {
+        "name": "floating-toolbar",
+        "status": "PASS",
+        "seconds": 21.6,
+        "log": "floating-toolbar.log",
+        "run": "verification-jr5W2r"
+      },
+      {
+        "name": "floating-toolbar-proximity",
+        "status": "PASS",
+        "seconds": 4.1,
+        "log": "floating-toolbar-proximity.log",
+        "run": "verification-ebweVk"
+      }
+    ]
+  },
+  "verified": [
+    "竖向有效1930×350柜体、缩放和平移后距离不超过120px且保持画布内",
+    "HTTP与断网file://完整浮动条回归，编辑保存／撤销重做／刷新／锁定／组合／旋转镜像",
+    "390/320px窄屏及横屏停靠、拖动不跳变和取消",
+    "人工查看最终截图、JS语法与diff检查"
+  ],
+  "notRun": [
+    "未运行全量检查，范围限于浮动UI定位及其调用流程",
+    "未做实体触屏测试"
+  ],
+  "boundaries": [
+    "附近尺寸文字可能局部被遮挡，以避免快捷条漂到画布远端",
+    "附近无法容纳或展开编辑面板时仍允许原停靠；窄屏保持原停靠布局"
+  ],
+  "screenshots": [
+    "http-vertical.png",
+    "http-pan.png",
+    "http-zoom.png",
+    "file-pan.png"
+  ]
+}

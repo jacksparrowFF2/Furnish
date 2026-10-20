@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "input uses external module width",
+        "object list uses external widths",
+        "production annotation uses module outer width",
+        "unchanged open/save preserves old data exactly",
+        "numeric external widths redistribute at fixed total",
+        "one undo restores old design",
+        "redo and refresh preserve converted widths",
+        "divider updates external width input immediately",
+        "divider updates object list immediately",
+        "divider keyboard follows the same outer width delta",
+        "invalid outer width rejected",
+        "equal action equalizes external widths",
+        "module outer width accessible at 390px",
+        "no mobile page overflow",
+        "current and named project roundtrip preserves internal data",
+        "hood centre also edits outer module width",
+        "hood unchanged save preserves physical cavity",
+        "hood outer edit keeps symmetric storage and correct cavity",
+        "no page errors"
+      ]
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "input uses external module width",
+        "object list uses external widths",
+        "production annotation uses module outer width",
+        "unchanged open/save preserves old data exactly",
+        "numeric external widths redistribute at fixed total",
+        "one undo restores old design",
+        "redo and refresh preserve converted widths",
+        "divider updates external width input immediately",
+        "divider updates object list immediately",
+        "divider keyboard follows the same outer width delta",
+        "invalid outer width rejected",
+        "equal action equalizes external widths",
+        "module outer width accessible at 390px",
+        "no mobile page overflow",
+        "current and named project roundtrip preserves internal data",
+        "hood centre also edits outer module width",
+        "hood unchanged save preserves physical cavity",
+        "hood outer edit keeps symmetric storage and correct cavity",
+        "no page errors"
+      ]
+    }
+  ]
+}

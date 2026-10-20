@@ -1,0 +1,2 @@
+{"passed":true,"checks":["add","copy","undo/redo","height precision","height undo","3D startup","refresh persistence"],"models":[{"type":"robot_p20max_tank","w":450,"d":450,"h":450},{"type":"robot_p20max_plumbed","w":381,"d":475,"h":300},{"type":"robot_p20max","w":350,"d":352,"h":79.8}]}
+{"case":"robot-vacuum","status":"PASS"}

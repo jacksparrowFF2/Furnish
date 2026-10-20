@@ -1,5 +1,25 @@
 # 模块与加载约定
 
+2026-10-21：水槽四向净距可保存 `counterLink.offset` 模块局部毫米偏移，产品核心集中能力与范围，厨房核心共用适配／恢复／生产孔环；设计核心数值定位和原 mutate 写入完整关联。旧缺失保持居中；既有 link／孔环缓存及核对输入覆盖偏移，无新加载脚本或保存通道。契约见 [关联偏移](SINK-ARROW.md#关联水槽的四向净距偏移2026-10-21)。
+
+2026-10-20：洞洞板置物板、挂钩和灯带由 cabinet-core.pegboardParts 共用单项／旧总开关回退规则，生产构造器分别生成三组实体；原 pegboardPlacement 继续平移全部保留子节点。UI 七项控制沿原草稿／mutate 保存，未编辑旧数据不物化新项；无新脚本或加载／格式变化。见 [独立附件](ENTRY-PEGBOARD-CABINET.md#置物板挂钩灯带独立开关2026-10-20)。
+
+
+2026-10-20：洞洞板独立离地能力由柜体核心 movablePegboard 共用判定（上柜／左右封板／下柜已移除，附件可保留）；原生产构造器平移全部保留子节点，预览与主场景／板件／外包继续共用 pegboardPlacement。无新保存通道或字段，确认升级为 pegboard-envelope-v3-accessory-height。见 [带附件离地](ENTRY-PEGBOARD-CABINET.md#洞洞板与保留附件共同调高2026-10-20)。
+
+
+2026-10-20：纯洞洞板可选 cabinet.pegboardBottom 由产品核心定义范围，柜体核心 pegboardPlacement 派生相对原构造位置的平移；生产构造器平移板件子节点，避免主场景重新定位根组时丢失高度。板件记录、实际外包、碰撞和尺寸预览复用此结果，原 mutate／缓存／项目链路保留，无新增脚本或加载变化。见 [纯板离地](ENTRY-PEGBOARD-CABINET.md#纯洞洞板独立离地高度2026-10-20)。
+
+
+2026-10-20：洞洞板部件删除后的整体尺寸统一由 cabinet-core.assemblyBounds() 从生产柜体毫米板件记录派生；产品核心 dimensions／planBodyOutline／vertical 共用，普通柜体预览、属性、平面占地及尺寸标注消费同一边界。原构造参数仅供重建，派生尺寸不反向物化或增加迁移；含删部件方案的确认增加 pegboard-envelope-v2。见 [实际尺寸](ENTRY-PEGBOARD-CABINET.md#剩余实体尺寸联动2026-10-20-复验)。
+
+
+2026-10-20：柜体与厨房编辑器共用 `cabinetObjectHeader()` 生成临时两级部件查找和唯一对象标题；选中部件的常用字段与高级组设置分开。生产预览 `activateDoor` 转发真实门板点击到原核心开合，尺寸标签仍只选择，分边预览共用回调。宽屏／内容尺寸仅影响布局；无新字段、版本或加载／保存通道。见 [柜体简化](CABINET-DESIGN.md)。
+
+2026-10-20：新增 `shoe-bench-model.js`，主场景与独立预览共用橡木软包换鞋凳生产构造器；目录 800 × 300 mm，产品核心默认高 450 mm。沿原普通脚本、尺寸／颜色／旋转镜像及保存链路，无新持久字段或版本。见 [换鞋凳模型](SHOE-BENCH.md)。
+
+2026-10-20：新增 `cherry-coffee-table-model.js`，主场景与独立预览共用樱桃木白色岩板茶几生产构造器；产品规则定义落地默认高 450 mm、目录 1200 × 650 mm，属性复用原高度编辑。普通脚本在主应用前加载，沿原旋转／镜像、缓存和保存链路，无新字段或版本。HTTP 与离线 file 专项通过，见 [模型说明](CHERRY-COFFEE-TABLE.md)。
+
 2026-10-20 飘窗复查：主画布与独立项目统一通过 `bay-window-core.applyWindows()` 应用窗覆盖及齐平高度；三个编辑界面的高度输入共用 `property-panel.linkWindowHeightInputs()`，保持原普通脚本加载顺序。尺寸预览／提交共用 `project-core.remapOpenings()` 保留窗扇形式与叠合侧，仅更新几何高度；内置编辑副本的高度写回整组建筑洞口，`floorplan-core.editOpening()` 同步关联窗面与台体。无新持久字段或项目版本，当前实际两处飘窗已按 HTTP／离线 file 及生产三维复验，源项目数据未改。见 [飘窗复查](BAY-WINDOWS.md#2026-10-20升级后复查与当前项目验收)。
 
 2026-10-20：`bay-window-core.js` 在 project-core 前加载，共用飘窗部件、范围、高度同步及锁定；窗体／台面进入同一属性与快捷栏。用户已确认台面完成面与窗体下沿始终齐平，共用高度参数，不增加独立下沿或偏移设置；修改台面高保持窗高并同步窗顶高。内置与自定义窗统一 `bayId`，原平面几何与已有 open.w／rooms／draft.bay 存储保留。`floorplan-core.upgrade()` 集中移除旧 bayGroup、补关联及物化原默认类型；恢复／导出覆盖当前、命名、基线与修订。含建筑飘窗使用项目／工作区 v16 与独立缓存；仓库保存区分磁盘旧修订和归一化结果，升级前归档旧工作区。详见 [飘窗整体与升级](BAY-WINDOWS.md)。
@@ -292,3 +312,6 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-20：`cabinet-motion.js` 扩展已有生产构造器记录器到静板与当前运动板，`solidParts/section/verticalSection` 供 `layout-geometry.bodyParts()`、四向测距与柜内定位共用。普通柜和厨房模块的设备空腔按实际板件判断，浮动净距补上下距离及负值穿板。原运动切孔 API、加载顺序和项目字段不变；确认增加 `cabinet-inner-solids-v1` 并读取普通柜有效默认结构，纯配色不清确认。厨房自动避让保留整体占位，梁命中按家具／梁去重；兼容与精度边界见 [柜内实际板件净距](CABINET-DESIGN.md#柜内设备与实际板件净距2026-10-20)。
 
 2026-10-20：产品核心集中旧柜结构参数，cabinet-core.legacyParts() 派生实际柜体；生产构造器与 cabinet-motion 共用，旧 counter／vanity 记录不物化新字段。见 [旧柜体升级](LEGACY-CABINET-UPGRADE.md)。
+
+
+2026-10-20：柜体核心 moduleLayout/moduleWidths/adjustModuleWidth 将旧 columns[].width 净空存储映射到模块外宽，普通柜设计器与生产预览共用；共用隔板按中心线分配，厨房父模块继续原外宽。无新字段、加载顺序或保存通道；具体参数及兼容性见 [模块外宽](CABINET-DESIGN.md#模块外宽统一入口2026-10-20)。

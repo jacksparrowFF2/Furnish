@@ -1,0 +1,1 @@
+{"case":"kitchen-thin-resize","status":"PASS","result":{"status":"PASS","thinWidth":400,"thinBodyDepth":120,"returnDepth":50,"regularModulesFixed":true,"checks":"actual full-edge hit, fixed regular dimensions/positions, cancel, return to start, invalid drag, undo/redo/refresh, 50 mm input and production elevations, 390px and actual project roundtrip","errors":[]}}

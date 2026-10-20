@@ -1,0 +1,1 @@
+{"case":"kitchen-door-widths","status":"PASS","result":{"status":"PASS","checks":["old save unchanged","two doors","actual unequal widths","production labels","cancel/save/undo/redo/refresh","minimum/invalid pending save","equalize","nested editor","390px","actual project roundtrip"],"errors":[]}}

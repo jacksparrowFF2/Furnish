@@ -1,0 +1,190 @@
+[
+  {
+    "file": "test-directional-config-order.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-directional-heights.cjs",
+    "status": "PASS",
+    "finalRerun": true
+  },
+  {
+    "file": "test-directional-kitchen-solids.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-directional-placement.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-enclosed-boundary-distances.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-group-directional-placement.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-auto-avoid.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-corner-fit.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-corner-leaves.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-dish-basket.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-divider-input.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-dividers.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-door-pairing.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-door-widths.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-drawer-boundaries.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-drawer-snapping.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-drawer-tiers.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-edge-snapping.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-elevations.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-extension-resize.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-form.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-gap-input.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-outer-edges.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-overlay.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-partitions.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-plinth.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-preview.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-resize.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-right.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-run-handles.cjs",
+    "status": "PASS",
+    "finalRerun": true
+  },
+  {
+    "file": "test-kitchen-shelves.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-single-hinge.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-thin-end.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-u.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-wall-adjust.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen-worktop.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-kitchen.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-product-rules.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-project-recovery.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-project-validation.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-project.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-sink-linked-offset-model.cjs",
+    "status": "PASS",
+    "finalRerun": true
+  },
+  {
+    "file": "test-sink-linked-offset.cjs",
+    "status": "PASS",
+    "finalRerun": true
+  },
+  {
+    "file": "test-sink-surface.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-sink.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "test-work-state.cjs",
+    "status": "PASS"
+  }
+]
