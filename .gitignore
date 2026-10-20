@@ -10,6 +10,7 @@
 .playwright-cli/
 /output/
 /node_modules/
+/debug.log
 
 # Machine-local recovery copies and interrupted atomic writes; projects stay tracked.
 /.local/
