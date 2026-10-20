@@ -1,7 +1,8 @@
 {
   "format": "furnish-workspace",
-  "version": 10,
+  "version": 14,
   "workspace": {
+    "custom": [],
     "customPlans": [
       {
         "beams": [],
@@ -4889,7 +4890,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 10,
+    "v": 14,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -7178,8 +7179,8 @@
                 "gap": 2,
                 "height": 400,
                 "origin": [
-                  573.5,
-                  2404
+                  839.5,
+                  2337
                 ],
                 "width": 800
               },
@@ -7334,8 +7335,8 @@
           },
           {
             "color": "#f5f6f5",
-            "cx": 7647,
-            "cy": 1247,
+            "cx": 8866,
+            "cy": 2997,
             "d": 450,
             "h": 450,
             "id": "fmv3wd35z9",
@@ -7346,8 +7347,8 @@
           },
           {
             "color": "#e8dccb",
-            "cx": 8280,
-            "cy": 3915,
+            "cx": 8291,
+            "cy": 4128,
             "d": 650,
             "id": "fmv3we1um10",
             "name": "茶几",
@@ -7694,14 +7695,14 @@
           {
             "color": "#dfe6ea",
             "cx": 8646,
-            "cy": 9875,
+            "cy": 9865,
             "d": 60,
             "h": 1800,
             "id": "fmv5ayw571",
             "name": "穿衣镜",
             "rot": 270,
             "type": "mirror",
-            "w": 640
+            "w": 660
           },
           {
             "cabinet": {
@@ -7809,7 +7810,7 @@
                     1382,
                     1843
                   ],
-                  "width": 873
+                  "width": 888
                 },
                 {
                   "door": "double",
@@ -7823,7 +7824,7 @@
                     1382,
                     1843
                   ],
-                  "width": 873
+                  "width": 888
                 }
               ],
               "plinth": 60,
@@ -7833,19 +7834,19 @@
             },
             "color": "#f3f1ec",
             "cx": 9931,
-            "cy": 7521,
+            "cy": 7402,
             "d": 350,
             "h": 2400,
             "id": "fmv5bl44k1",
             "name": "收纳柜",
             "rot": 90,
             "type": "cabinet",
-            "w": 1800
+            "w": 1830
           },
           {
             "color": "#eee9df",
-            "cx": 7180,
-            "cy": 3915,
+            "cx": 7176,
+            "cy": 4017,
             "d": 892,
             "h": 895,
             "id": "fmv5bzynf3",
@@ -8046,9 +8047,9 @@
           },
           {
             "color": "#e9e5de",
-            "cx": 7317.749999833334,
-            "cy": 9200,
-            "d": 1960,
+            "cx": 7333.000000000001,
+            "cy": 9298,
+            "d": 1704,
             "id": "fmv9dos7j1",
             "kitchen": {
               "autoAvoid": true,
@@ -8070,36 +8071,9 @@
                     }
                   ],
                   "doorOpen": false,
-                  "role": "door",
+                  "role": "hob",
                   "run": 0,
-                  "width": 549.9999993333333
-                },
-                {
-                  "drawerHeights": [
-                    730
-                  ],
-                  "drawerOpen": [
-                    false
-                  ],
-                  "role": "drawer",
-                  "run": 0,
-                  "width": 172.00000033333333
-                },
-                {
-                  "drawerHeights": [
-                    400,
-                    230.00000000000003,
-                    100
-                  ],
-                  "drawerOpen": [
-                    false,
-                    false,
-                    false
-                  ],
-                  "drawerStyle": "dish-basket",
-                  "role": "drawer",
-                  "run": 0,
-                  "width": 800
+                  "width": 579.9999993333334
                 },
                 {
                   "cornerPartitions": {
@@ -8143,127 +8117,43 @@
                   "width": 737.5
                 },
                 {
-                  "doorOpen": false,
-                  "role": "door",
+                  "role": "empty",
                   "run": 0,
-                  "width": 473.5
+                  "width": 980
+                },
+                {
+                  "role": "empty",
+                  "run": 0,
+                  "width": 406
                 }
               ],
               "obstacleFit": {
-                "corners": [
-                  {
-                    "depth": 152,
-                    "index": 1,
-                    "width": 370
-                  }
-                ],
                 "cuts": [
                   [
                     [
-                      589.75,
-                      784
+                      -733,
+                      -852
                     ],
                     [
-                      1297.7499998333333,
-                      784
+                      -733,
+                      -477
                     ],
                     [
-                      1297.7499998333333,
-                      980
+                      -1282.9999996666668,
+                      -477
                     ],
                     [
-                      589.75,
-                      980
-                    ]
-                  ],
-                  [
-                    [
-                      -748.25,
-                      -980
-                    ],
-                    [
-                      -748.25,
-                      -575
-                    ],
-                    [
-                      -1297.7499998333333,
-                      -575
-                    ],
-                    [
-                      -1297.7499998333333,
-                      -980
-                    ]
-                  ],
-                  [
-                    [
-                      -33.75,
-                      803.5
-                    ],
-                    [
-                      561.25,
-                      803.5
-                    ],
-                    [
-                      561.25,
-                      980
-                    ],
-                    [
-                      -33.75,
-                      980
-                    ]
-                  ],
-                  [
-                    [
-                      -40.25,
-                      784.5
-                    ],
-                    [
-                      589.75,
-                      784.5
-                    ],
-                    [
-                      589.75,
-                      980
-                    ],
-                    [
-                      -40.25,
-                      980
-                    ]
-                  ],
-                  [
-                    [
-                      1067.75,
-                      572
-                    ],
-                    [
-                      1085.75,
-                      572
-                    ],
-                    [
-                      1085.75,
-                      784
-                    ],
-                    [
-                      1067.75,
-                      784
+                      -1282.9999996666668,
+                      -852
                     ]
                   ]
                 ],
-                "depths": [
-                  {
-                    "depth": 195,
-                    "index": 0
-                  },
-                  {
-                    "depth": 364,
-                    "index": 4
-                  }
-                ]
+                "depths": []
               },
               "runDepths": [
                 600,
                 600,
-                560
+                304
               ],
               "shape": "U",
               "thickness": 20,
@@ -8272,18 +8162,18 @@
             "name": "橱柜台面",
             "rot": 180,
             "type": "counter",
-            "w": 2595.4999996666666
+            "w": 2565.9999993333336
           },
           {
             "color": "#e9e5de",
             "cx": 7043,
-            "cy": 9996,
-            "d": 368,
+            "cy": 9947.5,
+            "d": 405,
             "h": 800,
             "id": "fmv9mqxz91",
             "kitchen": {
               "baseHeight": 800,
-              "depth": 368,
+              "depth": 405,
               "modules": [
                 {
                   "role": "custom",
@@ -8301,9 +8191,9 @@
                           "drawers": [],
                           "handle": "none",
                           "shelves": [
-                            323
+                            372
                           ],
-                          "width": 224
+                          "width": 229
                         },
                         {
                           "door": "none",
@@ -8322,9 +8212,9 @@
                           "drawers": [],
                           "handle": "none",
                           "shelves": [
-                            323
+                            372
                           ],
-                          "width": 224
+                          "width": 229
                         }
                       ],
                       "hoodBayCeiling": false,
@@ -8334,37 +8224,29 @@
                       "thickness": 18,
                       "version": 1
                     },
-                    "d": 368,
-                    "h": 700,
-                    "w": 970
+                    "d": 405,
+                    "h": 800,
+                    "w": 980
                   },
-                  "width": 970
+                  "width": 980
                 },
                 {
+                  "door": "double",
                   "doorAngle": 90,
                   "doorLeaves": [
-                    {
-                      "angle": 90,
-                      "open": true
-                    },
                     {
                       "angle": 90,
                       "open": false
                     },
                     {
                       "angle": 90,
-                      "open": true
+                      "open": false
                     }
                   ],
-                  "doorOpen": true,
-                  "doorPairing": "start",
-                  "doorSingleHinge": "right",
+                  "doorOpen": false,
                   "role": "door",
                   "run": 0,
-                  "shelves": [
-                    332
-                  ],
-                  "width": 1076
+                  "width": 1006
                 }
               ],
               "shape": "straight",
@@ -8375,13 +8257,13 @@
             "name": "厨房吊柜",
             "rot": 180,
             "type": "kitchenwall",
-            "w": 2046
+            "w": 1986
           },
           {
             "brand": "方太/FOTILE",
             "color": "#111214",
-            "cx": 7581.25,
-            "cy": 9996,
+            "cx": 7551,
+            "cy": 9966,
             "d": 368,
             "flip": false,
             "h": 515,
@@ -8402,10 +8284,11 @@
           {
             "brand": "方太/FOTILE",
             "color": "#111214",
-            "counterElevation": 860,
-            "cx": 7581,
-            "cy": 9860,
+            "counterElevation": 850,
+            "cx": 7551,
+            "cy": 9810,
             "d": 440,
+            "flip": false,
             "h": 138,
             "id": "fmv9r1fzz1",
             "model": "TH36B-T",
@@ -8415,220 +8298,13 @@
             "w": 750
           },
           {
-            "brand": "ARROW/箭牌",
-            "color": "#85898a",
-            "counterElevation": 850.8,
-            "cx": 6365.499999833334,
-            "cy": 9180,
-            "d": 450,
-            "h": 240,
-            "id": "fmv9sjx5f1",
-            "model": "AE5575459G23-YNC",
-            "name": "箭牌日式集渣水槽 · 750",
-            "rot": 270,
-            "sinkInstall": "top",
-            "sourceUrl": "https://item.jd.com/100199201484.html",
-            "type": "sink_arrow_750",
-            "w": 750
-          },
-          {
-            "brand": "米家/Mijia",
-            "color": "#f4f3ef",
-            "cx": 7032,
-            "cy": 8596,
-            "d": 350,
-            "dishwasherDoorOpen": false,
-            "h": 598,
-            "id": "fmvafv38t1",
-            "model": "智能洗碗机 台式 5套",
-            "mountHeight": 860,
-            "name": "米家台面洗碗机 · 5套",
-            "rot": 0,
-            "type": "dishwasher_mijia_countertop",
-            "w": 550
-          },
-          {
-            "color": "#f3f1ec",
-            "cx": 7045,
-            "cy": 1472,
-            "d": 630,
-            "flip": true,
-            "id": "fmvcerwa547",
-            "kitchen": {
-              "baseHeight": 900,
-              "depth": 630,
-              "laundry": {
-                "appliance": {
-                  "d": 600,
-                  "h": 850,
-                  "mountHeight": 0,
-                  "w": 600
-                },
-                "assembly": {
-                  "open": {
-                    "cabinet": {
-                      "autoDoors": false,
-                      "columns": [
-                        {
-                          "door": "none",
-                          "doorOpen": false,
-                          "drawers": [],
-                          "handle": "none",
-                          "shelves": []
-                        },
-                        {
-                          "door": "none",
-                          "doorOpen": false,
-                          "drawers": [],
-                          "handle": "none",
-                          "shelves": []
-                        }
-                      ],
-                      "doorOverlay": "full",
-                      "plinth": 0,
-                      "template": "wall",
-                      "thickness": 18,
-                      "version": 1
-                    },
-                    "color": "#bc936b",
-                    "d": 320,
-                    "h": 200,
-                    "mountHeight": 1600,
-                    "x": -1.0103336092965664e-14,
-                    "y": -55
-                  },
-                  "sink": {
-                    "color": "#ebe9e3",
-                    "d": 500,
-                    "module": 0,
-                    "sinkNotch": {
-                      "depth": 100,
-                      "side": "left",
-                      "width": 100
-                    },
-                    "w": 560,
-                    "x": 0,
-                    "y": 5.878304635907295e-14
-                  },
-                  "upper": {
-                    "cabinet": {
-                      "autoDoors": false,
-                      "columns": [
-                        {
-                          "door": "left",
-                          "doorAngle": 90,
-                          "doorOpen": true,
-                          "drawers": [],
-                          "handle": "none",
-                          "shelves": []
-                        },
-                        {
-                          "door": "left",
-                          "doorAngle": 90,
-                          "doorOpen": false,
-                          "drawers": [],
-                          "handle": "none",
-                          "shelves": []
-                        },
-                        {
-                          "door": "left",
-                          "doorAngle": 90,
-                          "doorOpen": true,
-                          "drawers": [],
-                          "handle": "none",
-                          "shelves": []
-                        },
-                        {
-                          "door": "left",
-                          "doorOpen": false,
-                          "drawers": [],
-                          "handle": "none",
-                          "shelves": []
-                        }
-                      ],
-                      "doorOverlay": "full",
-                      "plinth": 0,
-                      "template": "wall",
-                      "thickness": 18,
-                      "version": 1
-                    },
-                    "color": "#f3f1ec",
-                    "d": 350,
-                    "h": 600,
-                    "mountHeight": 1800,
-                    "x": -7.347880794884118e-15,
-                    "y": -40
-                  }
-                },
-                "countertop": true,
-                "floorOpen": true,
-                "notch": {
-                  "depth": 100,
-                  "side": "left",
-                  "width": 100
-                },
-                "sidePanels": {
-                  "left": true,
-                  "right": true,
-                  "thickness": 18
-                }
-              },
-              "modules": [
-                {
-                  "doorAngle": 90,
-                  "doorLeaves": [
-                    {
-                      "angle": 90,
-                      "open": false
-                    },
-                    {
-                      "angle": 90,
-                      "open": false
-                    }
-                  ],
-                  "doorOpen": false,
-                  "role": "sink",
-                  "run": 0,
-                  "width": 600
-                },
-                {
-                  "role": "empty",
-                  "run": 0,
-                  "width": 640
-                }
-              ],
-              "shape": "straight",
-              "thickness": 20,
-              "version": 1
-            },
-            "name": "完整阳台洗衣柜",
-            "rot": 270,
-            "type": "counter",
-            "w": 1240
-          },
-          {
-            "color": "#e6ebee",
-            "cx": 7060,
-            "cy": 1763,
-            "d": 600,
-            "flip": true,
-            "h": 850,
-            "id": "fmv58wvpj1",
-            "laundryHostId": "fmvcerwa547",
-            "mountHeight": 0,
-            "name": "洗衣机",
-            "rot": 270,
-            "type": "washer",
-            "w": 600
-          },
-          {
             "color": "#f3f1ec",
             "cx": 6855,
             "cy": 940,
             "d": 250,
-            "h": 2400,
+            "h": 750,
             "id": "fmvdtz5aj1",
-            "mountHeight": 0,
+            "mountHeight": 860,
             "name": "管道包覆柜",
             "pipeBoxShape": "two",
             "pipeBoxThickness": 18,
@@ -8641,9 +8317,9 @@
             "cx": 6135,
             "cy": 8531,
             "d": 230,
-            "h": 2400,
+            "h": 1650,
             "id": "fmvdvn6e11",
-            "mountHeight": 0,
+            "mountHeight": 850,
             "name": "管道包覆柜",
             "pipeBoxCorner": "front-right",
             "pipeBoxShape": "two",
@@ -8659,7 +8335,7 @@
             "d": 150,
             "h": 750,
             "id": "fmvdvqyqj1",
-            "mountHeight": 910,
+            "mountHeight": 850,
             "name": "管道包覆柜",
             "pipeBoxCorner": "back-right",
             "pipeBoxShape": "two",
@@ -8667,6 +8343,117 @@
             "rot": 0,
             "type": "pipebox",
             "w": 300
+          },
+          {
+            "brand": "ARROW/箭牌",
+            "color": "#85898a",
+            "counterElevation": 850.8,
+            "cx": 6385,
+            "cy": 9150,
+            "d": 450,
+            "flip": false,
+            "h": 240,
+            "id": "fmvfa9n5i1",
+            "model": "AE5568459G23-YNC",
+            "name": "箭牌日式集渣水槽 · 680",
+            "rot": 270,
+            "sinkInstall": "top",
+            "sourceUrl": "https://item.jd.com/100199201484.html",
+            "type": "sink_arrow_680",
+            "w": 680
+          },
+          {
+            "color": "#a8b6c4",
+            "cx": 7443,
+            "cy": 10075.000000000002,
+            "d": 150,
+            "h": 540,
+            "id": "fmvfbobf81",
+            "name": "方块占位体",
+            "rot": 0,
+            "type": "block",
+            "w": 800
+          },
+          {
+            "color": "#f3f4f1",
+            "cx": 7075,
+            "cy": 1745,
+            "d": 600,
+            "flip": true,
+            "h": 850,
+            "id": "fmvfezfu83",
+            "mountHeight": 0,
+            "name": "洗衣机",
+            "rot": 270,
+            "type": "washer",
+            "w": 600
+          },
+          {
+            "brand": "米家/Mijia",
+            "color": "#191c20",
+            "cx": 9931,
+            "cy": 5168.5,
+            "d": 292,
+            "h": 334,
+            "id": "fmvffgmj31",
+            "model": "智能鱼缸 2 Pro",
+            "mountHeight": 350,
+            "name": "米家智能鱼缸 2 Pro",
+            "rot": 90,
+            "sourceUrl": "https://item.jd.com/100317574693.html",
+            "type": "aquarium_mijia_2pro",
+            "w": 505
+          },
+          {
+            "color": "#75a533",
+            "cx": 9316,
+            "cy": 5948,
+            "d": 500,
+            "h": 1430,
+            "id": "fmvffi29w2",
+            "name": "猫爬架 · 绿叶成荫围栏款",
+            "rot": 90,
+            "type": "cat_tree",
+            "w": 500
+          },
+          {
+            "brand": "米家/Mijia",
+            "color": "#efeee8",
+            "cx": 6965,
+            "cy": 5698,
+            "d": 324,
+            "h": 370,
+            "id": "fmvffj8v03",
+            "model": "智能宠物喂食器 2",
+            "name": "米家智能宠物喂食器 2",
+            "rot": 0,
+            "type": "pet_feeder_mijia_2",
+            "w": 220
+          },
+          {
+            "color": "#eeede5",
+            "cx": 9821,
+            "cy": 1854,
+            "d": 510,
+            "h": 400,
+            "id": "fmvffjihp4",
+            "name": "封闭式猫砂盆",
+            "rot": 90,
+            "type": "litter_box",
+            "w": 440
+          },
+          {
+            "color": "#a8b6c4",
+            "cx": 7177,
+            "cy": 5258.5,
+            "d": 323,
+            "h": 1000,
+            "id": "fmvffpfkg5",
+            "mountHeight": 0,
+            "name": "方块占位体",
+            "rot": 0,
+            "type": "block",
+            "w": 890
           }
         ],
         "furnitureDatum": "finished-floor",
@@ -8720,6 +8507,7 @@
           "s": {},
           "w": {}
         },
+        "plan": "custom_mv37igji",
         "rooms": {
           "area_fmv3oztg03": {
             "mat": "tile800",
@@ -8793,14 +8581,1335 @@
           }
         },
         "scene3d": {
+          "clearances": false,
           "cut": 2.8,
           "furn": true,
           "hour": 14,
           "labels": false,
           "lamps": false,
-          "night": false
+          "night": false,
+          "wallNumbers": true
         },
         "spaceThreshold": 800,
+        "tileGrout": {
+          "rooms": {
+            "area_fmv3oztg03": {
+              "floor": "#000000"
+            },
+            "area_fmv3p1fkz7": {
+              "floor": "#000000"
+            },
+            "area_fmv3p1yse11": {
+              "floor": "#000000"
+            },
+            "area_fmv3p2ig914": {
+              "floor": "#000000"
+            },
+            "area_fmv3qajd93": {
+              "floor": "#000000"
+            },
+            "area_fmv3qb1oi4": {
+              "floor": "#000000"
+            },
+            "area_fmv3qb1oi5": {
+              "floor": "#000000"
+            },
+            "area_fmv3qcck717": {
+              "floor": "#000000"
+            },
+            "area_fmv3qdfiz23": {
+              "floor": "#000000"
+            }
+          },
+          "version": 1,
+          "walls": [
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.639511201629328,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_8"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.1384083044982699,
+                0.8673587081891581
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_25"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.7611630321910696
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_26"
+            },
+            {
+              "color": "#000000",
+              "cross": true,
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_7"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.880346232179226
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_8"
+            },
+            {
+              "color": "#000000",
+              "cross": true,
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_9"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_10"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.19110854503464203
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_18"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.3749082905355833,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_20"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.5777777777777777,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_21"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.43223443223443225,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_22"
+            },
+            {
+              "color": "#000000",
+              "cross": true,
+              "mode": "custom",
+              "range": [
+                0.3933463796477495,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_22"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.4772727272727273,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_23"
+            },
+            {
+              "color": "#000000",
+              "cross": true,
+              "mode": "custom",
+              "range": [
+                0.6716417910447762,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_23"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.07969303423848882,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_35"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.17543859649122806
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_36"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": -1,
+              "wallId": "outline_38"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qdfiz23",
+              "side": 1,
+              "wallId": "outline_46"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.3821656050955414,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_27"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.48344370860927155,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_28"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.43795620437956206,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_31"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.028454810495626797
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_32"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.3485967503692771,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_9"
+            },
+            {
+              "color": "#000000",
+              "cross": true,
+              "mode": "custom",
+              "range": [
+                0.9833333333333333,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_10"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0.0846262341325811,
+                0.806064880112835
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_11"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.6136363636363636
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_12"
+            },
+            {
+              "color": "#000000",
+              "cross": true,
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": -1,
+              "wallId": "outline_12"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.7017543859649122
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_13"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3qcck717",
+              "side": 1,
+              "wallId": "outline_37"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                0.6712328767123288
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_33"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": -1,
+              "wallId": "outline_43"
+            },
+            {
+              "color": "#000000",
+              "mode": "custom",
+              "range": [
+                0,
+                1
+              ],
+              "roomId": "area_fmv3p2ig914",
+              "side": 1,
+              "wallId": "outline_40"
+            }
+          ]
+        },
+        "tilePresets": {
+          "bindings": [
+            {
+              "face": {
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": 1,
+                "wallId": "outline_40"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_95db94f0e01f",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3p1fkz7",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3p1yse11",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.1384083044982699,
+                  0.8673587081891581
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": 1,
+                "wallId": "outline_25"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.7611630321910696
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": 1,
+                "wallId": "outline_26"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.3821656050955414,
+                  1
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": 1,
+                "wallId": "outline_27"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.48344370860927155,
+                  1
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": -1,
+                "wallId": "outline_28"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.43795620437956206,
+                  1
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": -1,
+                "wallId": "outline_31"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.028454810495626797
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": -1,
+                "wallId": "outline_32"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.6712328767123288
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": -1,
+                "wallId": "outline_33"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_607c41c614fd",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3p2ig914",
+                "side": -1,
+                "wallId": "outline_43"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_607c41c614fd",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3p2ig914",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3qajd93",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3qb1oi4",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3qb1oi5",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.639511201629328,
+                  1
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": 1,
+                "wallId": "outline_8"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_fb1881a9667b",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.3485967503692771,
+                  1
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": 1,
+                "wallId": "outline_9"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "cross": true,
+                "range": [
+                  0.9833333333333333,
+                  1
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": 1,
+                "wallId": "outline_10"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.0846262341325811,
+                  0.806064880112835
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": -1,
+                "wallId": "outline_11"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.6136363636363636
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": -1,
+                "wallId": "outline_12"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "cross": true,
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": -1,
+                "wallId": "outline_12"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.7017543859649122
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": 1,
+                "wallId": "outline_13"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3qcck717",
+                "side": 1,
+                "wallId": "outline_37"
+              },
+              "groups": [
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_4acea6128d01",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3qcck717",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_d0b943434444",
+              "roomId": "area_fmv3oztg03",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "cross": true,
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": -1,
+                "wallId": "outline_7"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.880346232179226
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": -1,
+                "wallId": "outline_8"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "cross": true,
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": -1,
+                "wallId": "outline_9"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": -1,
+                "wallId": "outline_10"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.19110854503464203
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_18"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.3749082905355833,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_20"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.5777777777777777,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_21"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.43223443223443225,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_22"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "cross": true,
+                "range": [
+                  0.3933463796477495,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_22"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.4772727272727273,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_23"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "cross": true,
+                "range": [
+                  0.6716417910447762,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_23"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0.07969303423848882,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": -1,
+                "wallId": "outline_35"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  0.17543859649122806
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_36"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": -1,
+                "wallId": "outline_38"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "face": {
+                "range": [
+                  0,
+                  1
+                ],
+                "roomId": "area_fmv3qdfiz23",
+                "side": 1,
+                "wallId": "outline_46"
+              },
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "bands"
+              ],
+              "presetId": "preset_shared_wall_ee0d98ab64fc",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            },
+            {
+              "groups": [
+                "spec",
+                "gap",
+                "grout",
+                "material"
+              ],
+              "presetId": "preset_shared_floor_0d585812f77b",
+              "roomId": "area_fmv3qdfiz23",
+              "variantId": "main"
+            }
+          ],
+          "items": [
+            {
+              "id": "preset_shared_wall_95db94f0e01f",
+              "kind": "wall",
+              "name": "阳台窗墙上下分带｜800方砖＋800×400 · 深色美缝",
+              "variants": [
+                {
+                  "bands": {
+                    "reference": "floor",
+                    "rows": [
+                      {
+                        "id": "band_mvet9i6x_0zwo",
+                        "layout": {
+                          "angle": 0,
+                          "height": 800,
+                          "width": 800
+                        },
+                        "name": "洞口以下",
+                        "top": 587
+                      },
+                      {
+                        "id": "band_mvet9i6x_9431",
+                        "layout": {
+                          "angle": 0,
+                          "height": 800,
+                          "width": 800
+                        },
+                        "name": "洞口高度带 1",
+                        "top": 2244
+                      },
+                      {
+                        "id": "band_mvet9i6x_5jhq",
+                        "layout": {
+                          "angle": 0,
+                          "height": 400,
+                          "width": 800
+                        },
+                        "name": "洞口以上",
+                        "top": null
+                      }
+                    ]
+                  },
+                  "grout": {
+                    "color": "#000000",
+                    "mode": "custom"
+                  },
+                  "id": "main",
+                  "layout": {
+                    "angle": 0,
+                    "gap": 2,
+                    "height": 800,
+                    "width": 800
+                  },
+                  "name": "洞口下方／中带800方砖 · 上方800×400"
+                }
+              ]
+            },
+            {
+              "id": "preset_shared_floor_d0b943434444",
+              "kind": "floor",
+              "name": "地砖 800×800｜0° · 2mm缝 · 随砖色",
+              "variants": [
+                {
+                  "grout": {
+                    "color": "#000000",
+                    "mode": "custom"
+                  },
+                  "id": "main",
+                  "layout": {
+                    "angle": 0,
+                    "gap": 2,
+                    "height": 800,
+                    "width": 800
+                  },
+                  "material": "tile800",
+                  "name": "800×800 · 0°"
+                }
+              ]
+            },
+            {
+              "id": "preset_shared_wall_ee0d98ab64fc",
+              "kind": "wall",
+              "name": "墙砖 800×400｜0° · 2mm缝 · 随砖色",
+              "variants": [
+                {
+                  "grout": {
+                    "color": "#000000",
+                    "mode": "custom"
+                  },
+                  "id": "main",
+                  "layout": {
+                    "angle": 0,
+                    "gap": 2,
+                    "height": 400,
+                    "width": 800
+                  },
+                  "name": "800×400 · 0°"
+                }
+              ]
+            },
+            {
+              "id": "preset_shared_wall_4acea6128d01",
+              "kind": "wall",
+              "name": "墙砖 400×800｜0° · 2mm缝 · 随砖色",
+              "variants": [
+                {
+                  "grout": {
+                    "color": "#000000",
+                    "mode": "custom"
+                  },
+                  "id": "main",
+                  "layout": {
+                    "angle": 0,
+                    "gap": 2,
+                    "height": 800,
+                    "width": 400
+                  },
+                  "name": "400×800 · 0°"
+                }
+              ]
+            },
+            {
+              "id": "preset_shared_wall_607c41c614fd",
+              "kind": "wall",
+              "name": "墙砖 800×800｜0° · 2mm缝 · 随砖色",
+              "variants": [
+                {
+                  "grout": {
+                    "color": "#000000",
+                    "mode": "custom"
+                  },
+                  "id": "main",
+                  "layout": {
+                    "angle": 0,
+                    "gap": 2,
+                    "height": 800,
+                    "width": 800
+                  },
+                  "name": "800×800 · 0°"
+                }
+              ]
+            },
+            {
+              "id": "preset_shared_wall_fb1881a9667b",
+              "kind": "wall",
+              "name": "墙砖 400×800｜90° · 2mm缝 · 随砖色",
+              "variants": [
+                {
+                  "grout": {
+                    "color": "#000000",
+                    "mode": "custom"
+                  },
+                  "id": "main",
+                  "layout": {
+                    "angle": 90,
+                    "gap": 2,
+                    "height": 800,
+                    "width": 400
+                  },
+                  "name": "400×800 · 90°"
+                }
+              ]
+            },
+            {
+              "id": "preset_shared_floor_0d585812f77b",
+              "kind": "floor",
+              "name": "地砖 800×400｜0° · 2mm缝 · 随砖色",
+              "variants": [
+                {
+                  "grout": {
+                    "color": "#000000",
+                    "mode": "custom"
+                  },
+                  "id": "main",
+                  "layout": {
+                    "angle": 0,
+                    "gap": 2,
+                    "height": 400,
+                    "width": 800
+                  },
+                  "material": "tile800",
+                  "name": "800×400 · 0°"
+                }
+              ]
+            }
+          ],
+          "version": 2
+        },
         "wallFinishes": {
           "surfaces": [
             {
@@ -9136,14 +10245,13 @@
           "surfaces": [
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 571,
+                "offset": 603,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9156,14 +10264,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 571,
+                "offset": 603,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9176,15 +10283,14 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 400,
-                "offset": 525.5,
+                "height": 800,
+                "offset": -21,
                 "reference": "floor",
-                "startHeight": 0,
-                "width": 800
+                "startHeight": -180,
+                "width": 400
               },
               "range": [
                 0.3821656050955414,
@@ -9196,15 +10302,14 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 400,
-                "offset": 668.5,
+                "height": 800,
+                "offset": -20,
                 "reference": "floor",
-                "startHeight": 0,
-                "width": 800
+                "startHeight": -180,
+                "width": 400
               },
               "range": [
                 0.48344370860927155,
@@ -9216,15 +10321,14 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 400,
-                "offset": 695,
+                "height": 800,
+                "offset": -61,
                 "reference": "floor",
-                "startHeight": 0,
-                "width": 800
+                "startHeight": -180,
+                "width": 400
               },
               "range": [
                 0.43795620437956206,
@@ -9236,15 +10340,14 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 400,
-                "offset": 477,
+                "height": 800,
+                "offset": -93.00000000000011,
                 "reference": "floor",
-                "startHeight": 0,
-                "width": 800
+                "startHeight": -180,
+                "width": 400
               },
               "range": [
                 0,
@@ -9256,14 +10359,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 400,
-                "offset": 446.5,
+                "height": 800,
+                "offset": 0,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -180,
                 "width": 800
               },
               "range": [
@@ -9275,15 +10377,49 @@
               "wallId": "outline_33"
             },
             {
+              "bands": {
+                "reference": "floor",
+                "rows": [
+                  {
+                    "id": "band_mvet9i6x_0zwo",
+                    "layout": {
+                      "angle": 0,
+                      "height": 800,
+                      "width": 800
+                    },
+                    "name": "洞口以下",
+                    "top": 587
+                  },
+                  {
+                    "id": "band_mvet9i6x_9431",
+                    "layout": {
+                      "angle": 0,
+                      "height": 800,
+                      "width": 800
+                    },
+                    "name": "洞口高度带 1",
+                    "top": 2244
+                  },
+                  {
+                    "id": "band_mvet9i6x_5jhq",
+                    "layout": {
+                      "angle": 0,
+                      "height": 400,
+                      "width": 800
+                    },
+                    "name": "洞口以上",
+                    "top": null
+                  }
+                ]
+              },
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 400,
-                "offset": 137.5,
+                "height": 800,
+                "offset": 678,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -180,
                 "width": 800
               },
               "range": [
@@ -9296,14 +10432,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
-                "height": 400,
-                "offset": 387,
+                "height": 800,
+                "offset": 0,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -180,
                 "width": 800
               },
               "range": [
@@ -9321,9 +10456,9 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 433.5,
+                "offset": 0,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -2814,
                 "width": 800
               },
               "range": [
@@ -9341,9 +10476,9 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 106,
+                "offset": 411,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -3216,
                 "width": 800
               },
               "range": [
@@ -9362,9 +10497,9 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 471,
+                "offset": 608,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -348,
                 "width": 800
               },
               "range": [
@@ -9382,9 +10517,9 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 10.5,
+                "offset": 242,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -348,
                 "width": 800
               },
               "range": [
@@ -9402,9 +10537,9 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 582,
+                "offset": 445,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -348,
                 "width": 800
               },
               "range": [
@@ -9423,7 +10558,7 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 560.5,
+                "offset": 0,
                 "reference": "floor",
                 "startHeight": 0,
                 "width": 800
@@ -9443,9 +10578,9 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 627,
+                "offset": 0,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -5628,
                 "width": 800
               },
               "range": [
@@ -9463,9 +10598,9 @@
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 27,
+                "offset": 0,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -804,
                 "width": 800
               },
               "range": [
@@ -9479,14 +10614,13 @@
             {
               "cross": true,
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 799.5,
+                "offset": 432,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9499,14 +10633,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 41.5,
+                "offset": 446,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9520,14 +10653,13 @@
             {
               "cross": true,
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 370.5,
+                "offset": 3,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9540,14 +10672,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 370.5,
+                "offset": 3,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9560,14 +10691,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 217,
+                "offset": 562.5,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9580,14 +10710,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 288,
+                "offset": 261.5,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9600,14 +10729,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 2.5,
+                "offset": 794,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9620,14 +10748,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 108.5,
+                "offset": 542,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9641,14 +10768,13 @@
             {
               "cross": true,
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 240,
+                "offset": 542,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9661,14 +10787,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 600.5,
+                "offset": 686,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9682,14 +10807,13 @@
             {
               "cross": true,
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 332,
+                "offset": 420,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9702,14 +10826,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 138,
+                "offset": 750.5,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9722,14 +10845,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 10.5,
+                "offset": 30,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9742,14 +10864,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 718.5,
+                "offset": 351,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
@@ -9762,14 +10883,13 @@
             },
             {
               "enabled": true,
-              "followFloor": true,
               "layout": {
                 "angle": 0,
                 "gap": 2,
                 "height": 400,
-                "offset": 770.5,
+                "offset": 790,
                 "reference": "floor",
-                "startHeight": 0,
+                "startHeight": -160,
                 "width": 800
               },
               "range": [
