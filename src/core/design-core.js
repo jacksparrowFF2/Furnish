@@ -248,6 +248,12 @@
   return next;
  }
  // Keep the measured reference fixed; no snapping or push-out after solving.
+ // Persisted object key order is not configuration. Arrays retain their order.
+ function samePlacementData(a,b){
+  if(a===b)return true;
+  if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;
+  const keys=Object.keys(a);return keys.length===Object.keys(b).length&&keys.every(key=>Object.hasOwn(b,key)&&samePlacementData(a[key],b[key]));
+ }
  function placeAtDirectionalGap(plan,work,id,dir,gap,{rotation=0,visibleFurniture=true}={}){
   if(work.furniture.find(v=>v.id===id)?.groupId)throw Error('编组物体请使用整组净距定位入口，无需解组');
   return placeSelectionAtDirectionalGap(plan,work,[id],dir,gap,{rotation,visibleFurniture})[0];
@@ -269,7 +275,7 @@
   const proposed=JSON.parse(JSON.stringify(work.furniture));for(const f of proposed)if(ids.has(f.id)){f.cx+=dx;f.cy+=dy;}const expected=JSON.parse(JSON.stringify(proposed));
   if(proposed.some(v=>v.kitchen?.autoAvoid))K.normalizeObstacles(proposed,surveyPlan);
   K.normalize(proposed,work.furniture);normalizeLaundryStacks(proposed,work.furniture);
-  if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||JSON.stringify({...v,cx:expected[i].cx,cy:expected[i].cy})!==JSON.stringify(expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
+  if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||!samePlacementData({...v,cx:expected[i].cx,cy:expected[i].cy},expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
   const after=S.directional(moved,{...options,furniture:visibleFurniture?proposed:[]})[dir];
   if(!after||Math.abs(after.distance-gap)>.01||current.moduleBoundary&&after.entity.moduleKey!==current.entity.moduleKey)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
   const reference=S.directional(moved,{rotation,rects:current.entity.kind==='wall'?[rects[current.entity.id]]:[],furniture:current.entity.kind==='furniture'?[work.furniture.find(v=>v.id===current.entity.id)]:[]})[dir];

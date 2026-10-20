@@ -1,0 +1,53 @@
+{
+  "browser": [
+    {
+      "mode": "http",
+      "before": {
+        "cx": 3000,
+        "cy": 2900
+      },
+      "after": {
+        "cx": 3000,
+        "cy": 2920,
+        "gap": 130
+      },
+      "passed": true,
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "before": {
+        "cx": 3000,
+        "cy": 2900
+      },
+      "after": {
+        "cx": 3000,
+        "cy": 2920,
+        "gap": 130
+      },
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "regressions": [
+    "directional-config-order",
+    "directional-placement",
+    "group-directional-placement",
+    "directional-heights",
+    "directional-kitchen-solids",
+    "product-plan-outline",
+    "kitchen-auto-avoid"
+  ],
+  "actualSavedWorkspaceReadOnly": {
+    "originalGap": 150.41530404571495,
+    "targetGap": 130,
+    "movementMm": 20.415304045715,
+    "resultGap": 130,
+    "sourceModified": false
+  },
+  "notRun": [
+    "full scripts/check.cjs",
+    "unrelated browser workflows"
+  ],
+  "initialBrowserFixtureIssue": "The first synthetic placement measured a nearer sample-plan wall; moved fixture within the room so TV cabinet is the measured reference, then both modes passed."
+}
