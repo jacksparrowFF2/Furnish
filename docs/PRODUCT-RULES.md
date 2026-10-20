@@ -1,5 +1,14 @@
 # 产品能力规则与兼容验收
 
+2026-10-20：`tea_bar_mijia_pro` 定义 `tea-bar` 产品族、默认高 1155 mm、落地包络与产品身份；旧缺高只读取不补写，缩放仍读取实例高度。安装预留 `missing`，不推定开门、换桶或取放水箱空间。无新字段或迁移，见 [茶吧机模型](TEA-BAR-MIJIA-PRO.md)。
+
+2026-10-19：`pet_feeder_mijia_2` 定义独立 `pet-feeder` 产品族、默认高 370 mm 与落地包络；缺失高度只读取不补写。品牌/型号来自用户附图，无新增持久字段或安装预留要求，替换沿能力清理。见 [米家喂食器 2](PET-FEEDER-MIJIA-2.md)。
+
+
+2026-10-19：water_purifier_mijia_1200g 定义底部锚点、高 379 mm、默认底高 0，复用 mountHeight 的 0–20000 mm 能力与现有项目字段。缺失只读取默认，不迁移其它产品；同型保留、跨型清理，目标净水器补新建身份。生产几何、缓存复用、核对签名及恢复往返共用原参数。安装预留为 missing，不冒用空气净化器或洗碗机规则。见 [台下净水器](WATER-PURIFIER-MIJIA.md)。
+
+2026-10-19：block 复用 mountHeight（0–20000 mm），底部锚点默认 0，新建写入、旧缺失只读取。产品垂直范围为底部加块体高，生产网格在局部按该值抬升，原缓存与空间核对签名已覆盖；同型替换保留，跨型清理并采用目标默认。见 [方块占位体](BLOCK-PLACEHOLDER.md)。
+
 2026-10-19：counter／kitchenwall 共用 doorWidths:{minWidth:50,maxLeaves:24,gap:2}，定义多扇侧开门的板面编辑下限与原门缝；仅为模型约束。可选模块／保留结构列 doorRatios 由柜体核心统一校验与分配，缺失仍历史均分；宽度／盖板变化保留比例，功能／门数变化清理。真实板件与恢复链路见 [双门与门宽](KITCHEN-WALL-ADJUST.md#双门与逐扇门宽2026-10-19)。
 
 2026-10-19：ksink 新增可选 sinkStyle:inset|vessel、sinkBowlHeight:50–400 mm，缺失读取 inset／150，不补旧数据。vessel 统一定义盆宽深下限80、示例深400、壁15／底12、排水孔45及龙头高度规则，vesselSink/vertical 供生产几何与空间语义消费；counter.laundry.outerResize 启用按端拖拽。字段同型保留、跨类型清除，内置盆在原 assembly.sink 校验；独立三维缓存／核对与 kitchen 嵌套签名覆盖，配色仍不失效。见 [洗衣柜](LAUNDRY-CABINET.md#按端缩放与台上盆2026-10-19)。
@@ -190,3 +199,5 @@ node scripts/verify-browser.cjs product-rules
 
 
 2026-10-18：产品核心新增validateDatum(work)与floorBase(plan,f,furniture)，定义家具相对完成地面的公共基准，优先关联宿主；缺少已知地面不推测标高。work.furnitureDatum为工作方案字段，无家具类型白名单／替换清理字段；复制与替换沿所在工作方案基准，旧家具保存结构不改写。设计与几何核心可显式传plan计算世界垂直包络，生产模型本体与独立预览仍读相对安装高度，主场景根组统一抬高。详细兼容与复验见FLOOR-FINISHES.md的家具基准节。
+
+2026-10-19：两种灶具 hobCutout.moduleMargin=20 定义关联时开孔至模块边的布局模型余量，面板另验完整落入模块及实际台面。不是厂家安装要求。无新增实例字段或默认迁移；门柜显式改为灶台柜与关联一次 mutate，详见 [关联选项修复](FOTILE-APPLIANCES.md#关联选项修复2026-10-19)。

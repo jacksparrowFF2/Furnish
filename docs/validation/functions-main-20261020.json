@@ -1,0 +1,305 @@
+{
+  "date": "2026-10-20",
+  "baseline": "7fa71d4",
+  "target": "origin/main",
+  "categories": [
+    {
+      "commit": "504853a",
+      "scope": "增量验收约定"
+    },
+    {
+      "commit": "9eaadd6",
+      "scope": "服务实例复用、后端指纹更新与v15恢复"
+    },
+    {
+      "commit": "2d4aa57",
+      "scope": "宠物/生活家电生产模型与方块离地"
+    },
+    {
+      "commit": "62d27f7",
+      "scope": "图层、工具条、厨房净距/关联和洗衣柜编辑"
+    }
+  ],
+  "incremental": {
+    "date": "2026-10-20",
+    "root": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish",
+    "status": "PASS",
+    "scope": "Incremental checks of changed modules, callers and affected persistence/data chains; no historical preview scan",
+    "syntaxFiles": 91,
+    "entryModule": true,
+    "sharedDeclarations": true,
+    "localAssets": true,
+    "regressionSuites": 64,
+    "tests": [
+      "tests/test-artifact-layout.cjs",
+      "tests/test-block-placeholder.cjs",
+      "tests/test-cabinet-opening-3d.cjs",
+      "tests/test-cat-tree.cjs",
+      "tests/test-ceiling-height.cjs",
+      "tests/test-design-consistency.cjs",
+      "tests/test-directional-heights.cjs",
+      "tests/test-directional-kitchen-solids.cjs",
+      "tests/test-directional-placement.cjs",
+      "tests/test-entry-editor.cjs",
+      "tests/test-floor-finishes.cjs",
+      "tests/test-fridges.cjs",
+      "tests/test-furniture-groups.cjs",
+      "tests/test-furniture-recovery.cjs",
+      "tests/test-furniture-svg.cjs",
+      "tests/test-group-directional-placement.cjs",
+      "tests/test-hob-link-options.cjs",
+      "tests/test-kitchen-divider-input.cjs",
+      "tests/test-kitchen-door-widths.cjs",
+      "tests/test-kitchen-drawer-tiers.cjs",
+      "tests/test-kitchen-outer-edges.cjs",
+      "tests/test-kitchen-preview.cjs",
+      "tests/test-kitchen-run-handles.cjs",
+      "tests/test-kitchen.cjs",
+      "tests/test-laundry-area.cjs",
+      "tests/test-laundry-back-alignment.cjs",
+      "tests/test-laundry-cabinet.cjs",
+      "tests/test-laundry-notch-closure.cjs",
+      "tests/test-laundry-resize-vessel.cjs",
+      "tests/test-laundry-stack.cjs",
+      "tests/test-layout-geometry.cjs",
+      "tests/test-litter-box.cjs",
+      "tests/test-measure-boundaries.cjs",
+      "tests/test-merged-format.cjs",
+      "tests/test-mirror.cjs",
+      "tests/test-observation-layers.cjs",
+      "tests/test-pet-feeder.cjs",
+      "tests/test-plan-height-order.cjs",
+      "tests/test-preset-copy-ui.cjs",
+      "tests/test-product-rules.cjs",
+      "tests/test-project-recovery.cjs",
+      "tests/test-project-validation.cjs",
+      "tests/test-project.cjs",
+      "tests/test-property-first-batch.cjs",
+      "tests/test-repository-storage.cjs",
+      "tests/test-repository-workspace.cjs",
+      "tests/test-resize-axis.cjs",
+      "tests/test-room-ceiling-height.cjs",
+      "tests/test-scene-annotations.cjs",
+      "tests/test-scene-clearance-settings.cjs",
+      "tests/test-scene-observation.cjs",
+      "tests/test-scene-shadow-cache.cjs",
+      "tests/test-server-startup.cjs",
+      "tests/test-snapping.cjs",
+      "tests/test-spatial-review-cache.cjs",
+      "tests/test-tea-bar.cjs",
+      "tests/test-telescopic-ui.cjs",
+      "tests/test-wall-tiling.cjs",
+      "tests/test-water-purifier.cjs",
+      "tests/test-waterheater-clearances.cjs",
+      "tests/test-waterheater-flat.cjs",
+      "tests/test-waterheater-furniture-clearances.cjs",
+      "tests/test-work-state.cjs",
+      "tests/test-workspace-cache.cjs"
+    ],
+    "notRun": [
+      "Full scripts/check.cjs",
+      "Unrelated historical preview pages",
+      "All historical browser cases",
+      "Physical touch devices"
+    ]
+  },
+  "committedSnapshot": {
+    "date": "2026-10-20",
+    "root": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\.local\\release-20261020\\committed",
+    "status": "PASS",
+    "scope": "Incremental checks of changed modules, callers and affected persistence/data chains; no historical preview scan",
+    "syntaxFiles": 91,
+    "entryModule": true,
+    "sharedDeclarations": true,
+    "localAssets": true,
+    "regressionSuites": 64,
+    "tests": [
+      "tests/test-artifact-layout.cjs",
+      "tests/test-block-placeholder.cjs",
+      "tests/test-cabinet-opening-3d.cjs",
+      "tests/test-cat-tree.cjs",
+      "tests/test-ceiling-height.cjs",
+      "tests/test-design-consistency.cjs",
+      "tests/test-directional-heights.cjs",
+      "tests/test-directional-kitchen-solids.cjs",
+      "tests/test-directional-placement.cjs",
+      "tests/test-entry-editor.cjs",
+      "tests/test-floor-finishes.cjs",
+      "tests/test-fridges.cjs",
+      "tests/test-furniture-groups.cjs",
+      "tests/test-furniture-recovery.cjs",
+      "tests/test-furniture-svg.cjs",
+      "tests/test-group-directional-placement.cjs",
+      "tests/test-hob-link-options.cjs",
+      "tests/test-kitchen-divider-input.cjs",
+      "tests/test-kitchen-door-widths.cjs",
+      "tests/test-kitchen-drawer-tiers.cjs",
+      "tests/test-kitchen-outer-edges.cjs",
+      "tests/test-kitchen-preview.cjs",
+      "tests/test-kitchen-run-handles.cjs",
+      "tests/test-kitchen.cjs",
+      "tests/test-laundry-area.cjs",
+      "tests/test-laundry-back-alignment.cjs",
+      "tests/test-laundry-cabinet.cjs",
+      "tests/test-laundry-notch-closure.cjs",
+      "tests/test-laundry-resize-vessel.cjs",
+      "tests/test-laundry-stack.cjs",
+      "tests/test-layout-geometry.cjs",
+      "tests/test-litter-box.cjs",
+      "tests/test-measure-boundaries.cjs",
+      "tests/test-merged-format.cjs",
+      "tests/test-mirror.cjs",
+      "tests/test-observation-layers.cjs",
+      "tests/test-pet-feeder.cjs",
+      "tests/test-plan-height-order.cjs",
+      "tests/test-preset-copy-ui.cjs",
+      "tests/test-product-rules.cjs",
+      "tests/test-project-recovery.cjs",
+      "tests/test-project-validation.cjs",
+      "tests/test-project.cjs",
+      "tests/test-property-first-batch.cjs",
+      "tests/test-repository-storage.cjs",
+      "tests/test-repository-workspace.cjs",
+      "tests/test-resize-axis.cjs",
+      "tests/test-room-ceiling-height.cjs",
+      "tests/test-scene-annotations.cjs",
+      "tests/test-scene-clearance-settings.cjs",
+      "tests/test-scene-observation.cjs",
+      "tests/test-scene-shadow-cache.cjs",
+      "tests/test-server-startup.cjs",
+      "tests/test-snapping.cjs",
+      "tests/test-spatial-review-cache.cjs",
+      "tests/test-tea-bar.cjs",
+      "tests/test-telescopic-ui.cjs",
+      "tests/test-wall-tiling.cjs",
+      "tests/test-water-purifier.cjs",
+      "tests/test-waterheater-clearances.cjs",
+      "tests/test-waterheater-flat.cjs",
+      "tests/test-waterheater-furniture-clearances.cjs",
+      "tests/test-work-state.cjs",
+      "tests/test-workspace-cache.cjs"
+    ],
+    "notRun": [
+      "Full scripts/check.cjs",
+      "Unrelated historical preview pages",
+      "All historical browser cases",
+      "Physical touch devices"
+    ]
+  },
+  "browser": {
+    "status": "PASS",
+    "effectiveResults": [
+      {
+        "name": "block-placeholder",
+        "status": "PASS",
+        "seconds": 18.7,
+        "log": "block-placeholder.log"
+      },
+      {
+        "name": "cat-tree",
+        "status": "PASS",
+        "seconds": 15.2,
+        "log": "cat-tree.log"
+      },
+      {
+        "name": "pet-feeder",
+        "status": "PASS",
+        "seconds": 14.4,
+        "log": "pet-feeder.log"
+      },
+      {
+        "name": "litter-box",
+        "status": "PASS",
+        "seconds": 15.3,
+        "log": "litter-box.log"
+      },
+      {
+        "name": "tea-bar",
+        "status": "PASS",
+        "seconds": 15.5,
+        "log": "tea-bar.log"
+      },
+      {
+        "name": "water-purifier",
+        "status": "PASS",
+        "seconds": 17.2,
+        "log": "water-purifier.log"
+      },
+      {
+        "name": "layer-sidebar",
+        "status": "PASS",
+        "seconds": 16.1,
+        "log": "layer-sidebar.log"
+      },
+      {
+        "name": "observation-layers",
+        "status": "PASS",
+        "seconds": 14.5,
+        "log": "observation-layers.log"
+      },
+      {
+        "name": "directional-kitchen-solids",
+        "status": "PASS",
+        "seconds": 3.6,
+        "log": "directional-kitchen-solids.log"
+      },
+      {
+        "name": "hob-link-options",
+        "status": "PASS",
+        "seconds": 14.6,
+        "log": "hob-link-options.log"
+      },
+      {
+        "name": "laundry-editing",
+        "status": "PASS",
+        "seconds": 8.9,
+        "log": "laundry-editing.log"
+      },
+      {
+        "name": "floating-toolbar",
+        "status": "PASS",
+        "seconds": 19.9,
+        "log": "floating-toolbar.log"
+      }
+    ],
+    "runs": [
+      "output/playwright/verification-xw6vnb/results.json",
+      "output/playwright/verification-fGTkTF/results.json",
+      "output/playwright/verification-iudVST/results.json"
+    ],
+    "initialFailures": [
+      "Legacy block dimensions selector after toolbar consolidation",
+      "Layer sidebar measured before independent drawers finished closing"
+    ],
+    "resolution": "Updated actual toolbar controls and waited for drawers to finish closing; original geometry, locking, persistence and obstruction assertions retained.",
+    "scope": "Selected 12 cases, including each case existing HTTP and offline file coverage; not all historical browser cases"
+  },
+  "data": {
+    "separateLaterCommit": true,
+    "path": "projects/workspace.furnish.json",
+    "version": 14,
+    "slots": 9,
+    "namedDesigns": 1,
+    "currentFurniture": 54,
+    "expectedSha256": "a883abd83edcb32efd39e9b188fa335674ff741b4c971ec0ee89732ab1108f10",
+    "validation": {
+      "date": "2026-10-20",
+      "reader": "exact staged production snapshot",
+      "status": "PASS",
+      "formatVersion": 14,
+      "slots": 9,
+      "namedDesigns": 1,
+      "currentFurniture": 54,
+      "stableRoundtrips": 3,
+      "sha256": "a883abd83edcb32efd39e9b188fa335674ff741b4c971ec0ee89732ab1108f10"
+    }
+  },
+  "notRun": [
+    "Full scripts/check.cjs",
+    "Unrelated historical preview scan",
+    "All historical browser cases",
+    "Physical touchscreen or on-site installation acceptance"
+  ],
+  "visual": "Existing model reference and visual acceptance evidence retained. This classification run inspected layer-sidebar failure screenshots; it does not claim a new complete visual review of every model.",
+  "diffWhitespace": "PASS"
+}

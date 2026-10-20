@@ -38,7 +38,9 @@ async(page,V)=>{
   await p.locator('#layer-sidebar-close').click();check(await p.locator('#tgLayers').getAttribute('aria-expanded')==='false','close button');
   await p.locator('#showMenu summary').click();await p.locator('#observationLayers').click();check(await p.locator('#layer-sidebar').isVisible(),'original menu opens sidebar');
   for(const width of [390,320]){
-   await p.setViewportSize({width,height:844});const s=await p.locator('#stage').boundingBox(),b=await p.locator('#layer-sidebar').boundingBox();
+   await p.setViewportSize({width,height:844});await p.evaluate(()=>closeDrawers());
+   await p.waitForFunction(()=>document.querySelector('aside.lib').getBoundingClientRect().right<=0&&document.querySelector('aside.right').getBoundingClientRect().left>=innerWidth);
+   const s=await p.locator('#stage').boundingBox(),b=await p.locator('#layer-sidebar').boundingBox();
    check(b.height<=s.height*.55&&b.y>s.y+s.height*.4,'small screen leaves upper canvas exposed');
    check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no narrow overflow');
    check(await p.evaluate(()=>{const a=document.getElementById('layer-sidebar').getBoundingClientRect(),b=document.querySelector('.canvas-rail').getBoundingClientRect(),left=Math.max(a.left,b.left),right=Math.min(a.right,b.right),top=Math.max(a.top,b.top),bottom=Math.min(a.bottom,b.bottom);return left>=right||top>=bottom||!!document.elementFromPoint((left+right)/2,(top+bottom)/2)?.closest('#layer-sidebar');}),'canvas toolbar must not cover panel controls');
