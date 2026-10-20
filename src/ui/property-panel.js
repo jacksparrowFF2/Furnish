@@ -13,7 +13,7 @@ function renderPanel(){
 function panelSelectionName(){
  const sel=ui.sel;if(!sel)return tr('未选择对象','No selection');
  if(sel.kind==='furn')return selIds().length>1?tr(`已选 ${selIds().length} 件`,`${selIds().length} selected`):nm(getF(sel.id)?.name||tr('家具','Furniture'));
- if(sel.kind==='room')return nm(state.rooms[sel.id]?.name||ROOMS.find(r=>r.id===sel.id)?.name||tr('房间','Room'));
+ if(sel.kind==='room')return selectedRooms().length>1?tr(`已选 ${selectedRooms().length} 个区域`,`${selectedRooms().length} selected areas`):nm(state.rooms[sel.id]?.name||ROOMS.find(r=>r.id===sel.id)?.name||tr('房间','Room'));
  if(sel.kind==='note')return getNote(sel.id)?.text||tr('文字标注','Note');
  const names={wall:['墙体','Wall'],door:['房门','Door'],slide:['推拉门','Sliding door'],win:['窗户','Window'],measure:['测量线','Measurement']};
  return tr(...(names[sel.kind]||['已选对象','Selected object']));
@@ -28,7 +28,7 @@ function renderPanelContent(object=true){
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); const laundry=laundryGroupHost(selItems());if(laundry)bindKitchenPanel(laundry);return; }
   if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f)+(window.FurnishFloorFinishUI?.furniturePanel(f)||'');const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
   if (object && ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
-  if (object && ui.sel?.kind === 'room'){ p.innerHTML = roomPanel(ROOMS.find(r => r.id === ui.sel.id)); bindRoomPanel(); return; }
+  if (object && ui.sel?.kind === 'room'){const rooms=selectedRooms();p.innerHTML=rooms.length>1?roomAreaPanel(rooms):rooms.length?roomPanel(rooms[0]):'';if(rooms.length===1)bindRoomPanel();p.querySelectorAll('[data-area-room]').forEach(b=>b.onclick=()=>toggleRoom(b.dataset.areaRoom));return; }
   if (object && (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide')){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
   if (object && ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p)){window.FurnishWallFinishUI?.opening(ui.sel,p);return;} if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
   if (object && ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
@@ -51,7 +51,7 @@ function renderBrokenFurniturePanel(f,p){
 
 // 底部浮动工具条：触屏没有键盘，常用操作都放在这里
 function renderFab(){
-  const fab = $('#fab'), ids = selIds(), f = ids.length === 1 && getF(ids[0]), r = ui.sel?.kind === 'room' && ROOMS.find(r => r.id === ui.sel.id);
+  const fab = $('#fab'), ids = selIds(), f = ids.length === 1 && getF(ids[0]), r = ui.sel?.kind === 'room' && selectedRooms().length===1 && ROOMS.find(r => r.id === ui.sel.id);
   closeFabEditor(false);
   if(!ids.length&&!r)clearFabDock();
   fab.removeAttribute('style');
@@ -242,10 +242,14 @@ function positionFab(){
 }
 
 
+function roomAreaPanel(rooms){
+ let result;try{result=FurnishGeometry.regionAreas(rooms,state.furniture);}catch(e){return `<section><h3>${tr('区域面积','Region area')}</h3><p role="alert">${esc(e.message)}</p></section>`;}
+ return `<section data-region-areas><h3>${tr('区域面积','Region area')} · ${rooms.length}</h3><p class="muted">${tr('Shift 点击区域累加，再次点击移除；普通点击重新单选。也可点击下方区域移除。','Shift-click adds or removes areas; a plain click selects one. Click an area below to remove it.')}</p><div class="actions">${rooms.map(r=>`<button class="btn" data-area-room="${esc(r.id)}">${esc(nm(state.rooms[r.id]?.name||r.name))} ×</button>`).join('')}</div><div class="stats mt"><div><small>${tr('空房面积（无家具）','Empty-room area')}</small><span class="big" data-area-empty>${fmt(result.empty)}</span> m²</div><div><small>${tr('布置后剩余面积','Remaining floor area')}</small><span class="big" data-area-free>${fmt(result.free)}</span> m²</div></div><p>${tr('落地占地','Standing footprint')} ${fmt(result.occupied)} m²</p><p class="muted">${tr('按当前区域边界计算；扣除落地家具和家电的整体占地包络，重叠只扣一次。悬挂、台上及叠放设备、地毯和窗帘不扣除；隐藏图层仍计入。剩余面积不代表可通行面积。','Uses current area boundaries and standing furniture/appliance envelopes, counting overlaps once. Suspended or hosted items, rugs and curtains are excluded; hidden layers still count. Remaining area does not guarantee passage.')}</p>${result.pending.length?`<p role="status">${tr('落地状态待核对，尚未扣除：','Floor placement unknown, not subtracted: ')}${result.pending.map(id=>esc(nm(getF(id)?.name||id))).join('、')}</p>`:''}</section>`;
+}
 function roomPanel(r){
   const st = state.rooms[r.id], a = area(r.poly), [x0,y0,x1,y1] = bbox(r.poly), inside = state.furniture.filter(f => inPoly(f.cx, f.cy, r.poly));
   const mats = Object.entries(MATS).map(([k,m]) => `<button class="mat ${k===st.mat?'on':''}" data-mat="${k}"><i style="background:${m.sw}"></i><span>${nm(m.name)}<small>¥${m.price}/m²</small></span></button>`).join('');
-  return `<section><h3>${r.zone?tr('功能区','Functional area'):tr('房间','Room')}</h3>
+  return roomAreaPanel([r])+`<section><h3>${r.zone?tr('功能区','Functional area'):tr('房间','Room')}</h3>
     <div class="form"><label class="full">${tr('名称','Name')}<input id="rName" maxlength="80" value="${esc(nm(st.name))}"></label><label class="full">${tr('房间用途','Room use')}<select id="rUse" ${r.counted===false?'disabled':''}>${Object.entries(FurnishDesign.uses).filter(([id])=>r.counted===false?id==='bay':id!=='bay').map(([id,n])=>`<option value="${id}" ${FurnishDesign.inferUse(r,st)===id?'selected':''}>${tr(...n)}</option>`).join('')}</select></label></div>
     ${r.counted!==false?`<div class="form"><label class="full">${state.floorFinishes?tr('天花／吊顶标高 mm（毛坯基准）','Ceiling elevation mm (survey datum)'):tr('房间净高 / 吊顶完成面 mm','Room clear height / finished ceiling mm')}<input id="rCeilingHeight" type="number" min="1000" max="10000" step="10" value="${st.ceilingHeight??''}" placeholder="${FurnishProject.ceilingHeight(state)}"></label></div><p class="muted">${tr(`${state.floorFinishes?'当前天花绝对标高':'当前有效净高'} ${FurnishProject.roomCeilingHeight(state,r)} mm；留空沿用项目层高。用于本房间天花板、热水器顶部预留与柜门上翻检查，随项目保存。`,`${state.floorFinishes?'Ceiling elevation':'Effective clear height'} ${FurnishProject.roomCeilingHeight(state,r)} mm; leave empty to inherit project height. Used for this room's ceiling, heater clearance and cabinet opening checks; saved with the project.`)}</p><button class="btn" id="room-zones">划分功能区（不加墙）</button>`:''}<p class="muted">${tr('风格方案按用途匹配地面，修改名称不会改变已设置的用途。','Styles use room purpose; renaming preserves the selected purpose.')}</p>
     <div class="stats mt">

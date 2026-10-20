@@ -447,8 +447,9 @@ function renderSelectedGeometry(){
   } else if (ui.sel?.kind === 'wall'){
     const selected=ui.sel.wallIds?.length?WALLS.filter((_,i)=>ui.sel.wallIds.includes(PLAN.wallRefs?.[i])):[WALLS[Number(ui.sel.id.slice(1))]];for(const w of selected.filter(Boolean))s+=`<rect x="${w[0]}" y="${w[1]}" width="${w[2]-w[0]}" height="${w[3]-w[1]}" fill="none" ${A} stroke-width="3" pointer-events="none"/>`;
   } else if (ui.sel?.kind === 'room'){
-    const r = ROOMS.find(r => r.id === ui.sel.id);
+    for(const r of selectedRooms()){
     s += `<path d="${(r.rings||[r.poly]).map(p=>'M'+p.map(p=>p.join(',')).join('L')+'Z').join(' ')}" fill-rule="evenodd" fill="rgba(239,90,36,.08)" stroke="${ACC}" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
+    }
   }
   // 拖动时的对齐参考线
   (ui.guides || []).forEach(g => s += g.point

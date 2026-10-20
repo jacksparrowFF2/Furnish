@@ -148,6 +148,7 @@ function endDrag(cancel){
     return;
   }
   if (d.kind === 'pan'){
+    if(!cancel&&!d.moved&&d.addRoom){toggleRoom(d.addRoom);return;}
     if (!cancel && !d.moved && !d.quiet && ui.tool !== 'measure') select(d.room ? {kind:'room', id:d.room} : (d.keep ? ui.sel : null));
     return;
   }
@@ -336,6 +337,8 @@ svg.addEventListener('pointerdown', e => {
     drag = {kind:'pan', ...base, x0:view.x0, y0:view.y0, keep:true};   // 选中后仍可直接拖动画布
   } else if (ui.tool === 'select' && t.closest('[data-wall]')){
     const id=t.closest('[data-wall]').dataset.wall,ref=PLAN.wallRefs?.[Number(id.slice(1))];const wallIds=ref?(e.shiftKey&&ui.sel?.kind==='wall'?[...new Set([...(ui.sel.wallIds||[]),ref])]:[ref]):[];select({kind:'wall',id,wallIds}); return;
+  } else if(ui.tool==='select'&&e.shiftKey&&t.closest('[data-room]')){
+    drag={kind:'pan',...base,x0:view.x0,y0:view.y0,addRoom:t.closest('[data-room]').dataset.room};
   } else if (ui.tool === 'marquee' || (ui.tool === 'select' && e.shiftKey && e.pointerType === 'mouse')){
     drag = {kind:'marq', ...base, a:p, add:e.shiftKey, base:selIds()};
   } else {
