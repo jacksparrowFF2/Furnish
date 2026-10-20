@@ -7241,7 +7241,7 @@
                     1267,
                     1810
                   ],
-                  "width": 415
+                  "width": 541.5446071904128
                 },
                 {
                   "door": "double",
@@ -7254,7 +7254,7 @@
                     1267,
                     1810
                   ],
-                  "width": 866
+                  "width": 1130.0665778961384
                 },
                 {
                   "door": "double",
@@ -7267,7 +7267,7 @@
                     1267,
                     1810
                   ],
-                  "width": 866
+                  "width": 1130.0665778961384
                 },
                 {
                   "door": "double",
@@ -7280,7 +7280,7 @@
                     1267,
                     1810
                   ],
-                  "width": 857
+                  "width": 1118.3222370173103
                 }
               ],
               "plinth": 60,
@@ -7289,15 +7289,15 @@
               "version": 1
             },
             "color": "#efe6d8",
-            "cx": 1155,
-            "cy": 8034,
+            "cx": 1154.5,
+            "cy": 7576,
             "d": 630,
             "h": 2450,
             "id": "fmv3w4m2a4",
-            "name": "衣柜 2.4m",
+            "name": "衣柜",
             "rot": 270,
             "type": "wardrobe",
-            "w": 3094
+            "w": 4010
           },
           {
             "color": "#1d1d1f",
@@ -7312,8 +7312,8 @@
           },
           {
             "color": "#1d1d1f",
-            "cx": 10066,
-            "cy": 4128,
+            "cx": 10026,
+            "cy": 4168,
             "d": 80,
             "id": "fmv3w7rrw6",
             "name": "65 寸电视",
@@ -7323,8 +7323,8 @@
           },
           {
             "color": "#f5f6f5",
-            "cx": 8130,
-            "cy": 5610,
+            "cx": 9201,
+            "cy": 1745,
             "d": 352,
             "h": 79.8,
             "id": "fmv3wcfw38",
@@ -7344,17 +7344,6 @@
             "rot": 270,
             "type": "robot_p20max_tank",
             "w": 450
-          },
-          {
-            "color": "#e8dccb",
-            "cx": 8291,
-            "cy": 4128,
-            "d": 650,
-            "id": "fmv3we1um10",
-            "name": "茶几",
-            "rot": 270,
-            "type": "coffeetable",
-            "w": 1300
           },
           {
             "color": "#c9d3da",
@@ -7622,16 +7611,16 @@
               "thickness": 18,
               "version": 1
             },
-            "color": "#cbb08b",
+            "color": "#f3f1ec",
             "cx": 9931,
-            "cy": 4317,
+            "cy": 4167.5,
             "d": 350,
             "h": 350,
             "id": "fmv3yflqw1",
             "name": "落地电视柜 · 上盖抽屉藏线",
             "rot": 90,
             "type": "cabinet",
-            "w": 2586
+            "w": 2505
           },
           {
             "color": "#f1f0ed",
@@ -7695,11 +7684,10 @@
           },
           {
             "cabinet": {
-              "autoDoors": true,
               "columns": [
                 {
                   "door": "double",
-                  "doorBottom": 1796,
+                  "doorBottom": 2778,
                   "doorOpen": false,
                   "drawers": [
                     {
@@ -7714,30 +7702,37 @@
                   "handle": "none",
                   "pegboard": true,
                   "shelves": [
-                    1778
+                    2760
                   ],
-                  "width": 813
+                  "width": 810
                 }
               ],
+              "pegboardBottom": 0,
+              "pegboardParts": {
+                "accessories": false,
+                "left": false,
+                "lower": false,
+                "right": false,
+                "upper": false
+              },
               "plinth": 0,
               "template": "entry-pegboard",
               "thickness": 18,
               "version": 1
             },
             "color": "#f3f1ec",
-            "cx": 9931,
-            "cy": 9771,
+            "cx": 9949,
+            "cy": 9790,
             "d": 350,
-            "h": 2400,
+            "h": 2914,
             "id": "fmv5b76h91",
             "name": "玄关柜 · 洞洞板换鞋区",
             "rot": 90,
             "type": "cabinet",
-            "w": 849
+            "w": 846
           },
           {
             "cabinet": {
-              "autoDoors": true,
               "columns": [
                 {
                   "door": "double",
@@ -7755,12 +7750,11 @@
                     577,
                     1862
                   ],
-                  "width": 894
+                  "width": 934
                 }
               ],
               "doorMaxAngle": 90,
               "entry": {
-                "autoColumns": true,
                 "editable": true,
                 "lowerHeight": 620,
                 "nicheHeight": 379,
@@ -7774,32 +7768,31 @@
             },
             "color": "#f3f1ec",
             "cx": 9931,
-            "cy": 8882,
+            "cy": 8900,
             "d": 350,
             "h": 2400,
             "id": "fmv5b78gp2",
             "name": "玄关柜二 · 置物台与鞋柜",
             "rot": 90,
             "type": "cabinet",
-            "w": 930
+            "w": 970
           },
           {
             "cabinet": {
-              "autoDoors": true,
               "columns": [
                 {
-                  "door": "double",
+                  "door": "left",
                   "doorAngle": 90,
                   "doorOpen": false,
                   "drawerColumns": 2,
                   "drawers": [],
                   "shelves": [
-                    461,
-                    922,
-                    1382,
-                    1843
+                    463,
+                    926,
+                    1388,
+                    1851
                   ],
-                  "width": 888
+                  "width": 423
                 },
                 {
                   "door": "double",
@@ -7808,34 +7801,49 @@
                   "drawerColumns": 2,
                   "drawers": [],
                   "shelves": [
-                    461,
-                    922,
-                    1382,
-                    1843
+                    463,
+                    926,
+                    1388,
+                    1851
                   ],
-                  "width": 888
+                  "width": 882
+                },
+                {
+                  "door": "double",
+                  "doorAngle": 90,
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    463,
+                    926,
+                    1388,
+                    1851
+                  ],
+                  "topOpen": false,
+                  "width": 873
                 }
               ],
-              "plinth": 60,
+              "plinth": 50,
               "template": "storage",
               "thickness": 18,
               "version": 1
             },
             "color": "#f3f1ec",
             "cx": 9931,
-            "cy": 7402,
+            "cy": 7290,
             "d": 350,
             "h": 2400,
             "id": "fmv5bl44k1",
             "name": "收纳柜",
             "rot": 90,
             "type": "cabinet",
-            "w": 1830
+            "w": 2250
           },
           {
             "color": "#eee9df",
             "cx": 7176,
-            "cy": 3914,
+            "cy": 3940,
             "d": 892,
             "h": 895,
             "id": "fmv5bzynf3",
@@ -7980,8 +7988,8 @@
           },
           {
             "color": "#cfc6b8",
-            "cx": 8575,
-            "cy": 7004,
+            "cx": 8756,
+            "cy": 7014,
             "d": 540,
             "id": "fmv6wfmo91",
             "name": "餐椅",
@@ -8013,8 +8021,8 @@
           },
           {
             "color": "#cfc6b8",
-            "cx": 7926,
-            "cy": 7004,
+            "cx": 7731,
+            "cy": 7014,
             "d": 540,
             "id": "fmv6wg88q4",
             "name": "餐椅",
@@ -8062,14 +8070,14 @@
                   "doorLeaves": [
                     {
                       "angle": 90,
-                      "open": false
+                      "open": true
                     },
                     {
                       "angle": 90,
-                      "open": false
+                      "open": true
                     }
                   ],
-                  "doorOpen": false,
+                  "doorOpen": true,
                   "role": "sink",
                   "run": 1,
                   "width": 800
@@ -8277,10 +8285,10 @@
           },
           {
             "color": "#f3f1ec",
-            "cx": 6855,
-            "cy": 940,
-            "d": 250,
-            "h": 750,
+            "cx": 6870,
+            "cy": 955,
+            "d": 220,
+            "h": 500,
             "id": "fmvdtz5aj1",
             "mountHeight": 860,
             "name": "管道包覆柜",
@@ -8288,7 +8296,7 @@
             "pipeBoxThickness": 18,
             "rot": 270,
             "type": "pipebox",
-            "w": 200
+            "w": 170
           },
           {
             "color": "#f3f1ec",
@@ -8323,24 +8331,6 @@
             "w": 300
           },
           {
-            "brand": "ARROW/箭牌",
-            "color": "#85898a",
-            "counterElevation": 850.8,
-            "cx": 6385,
-            "cy": 9150,
-            "d": 450,
-            "flip": false,
-            "h": 240,
-            "id": "fmvfa9n5i1",
-            "model": "AE5568459G23-YNC",
-            "name": "箭牌日式集渣水槽 · 680",
-            "rot": 270,
-            "sinkInstall": "top",
-            "sourceUrl": "https://item.jd.com/100199201484.html",
-            "type": "sink_arrow_680",
-            "w": 680
-          },
-          {
             "color": "#a8b6c4",
             "cx": 7443,
             "cy": 10075.000000000002,
@@ -8353,29 +8343,15 @@
             "w": 800
           },
           {
-            "color": "#f3f4f1",
-            "cx": 7075,
-            "cy": 1745,
-            "d": 600,
-            "flip": true,
-            "h": 850,
-            "id": "fmvfezfu83",
-            "mountHeight": 0,
-            "name": "洗衣机",
-            "rot": 270,
-            "type": "washer",
-            "w": 600
-          },
-          {
             "brand": "米家/Mijia",
             "color": "#191c20",
-            "cx": 9931,
-            "cy": 5168.5,
+            "cx": 9930,
+            "cy": 5874,
             "d": 292,
             "h": 334,
             "id": "fmvffgmj31",
             "model": "智能鱼缸 2 Pro",
-            "mountHeight": 350,
+            "mountHeight": 950,
             "name": "米家智能鱼缸 2 Pro",
             "rot": 90,
             "sourceUrl": "https://item.jd.com/100317574693.html",
@@ -8397,8 +8373,8 @@
           {
             "brand": "米家/Mijia",
             "color": "#efeee8",
-            "cx": 9918,
-            "cy": 5610,
+            "cx": 9464,
+            "cy": 5731.5,
             "d": 324,
             "h": 370,
             "id": "fmvffj8v03",
@@ -8411,7 +8387,7 @@
           {
             "color": "#eeede5",
             "cx": 9821,
-            "cy": 1090,
+            "cy": 1190,
             "d": 510,
             "h": 400,
             "id": "fmvffjihp4",
@@ -8425,8 +8401,8 @@
             "color": "#bd925f",
             "cx": 8246,
             "cy": 7037,
-            "d": 740,
-            "foldingTablePose": "capsule",
+            "d": 1100,
+            "foldingTablePose": "round",
             "h": 760,
             "id": "fmvg0p9tc1",
             "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
@@ -8451,21 +8427,502 @@
           {
             "brand": "美的/Midea",
             "color": "#e5e7e8",
-            "cx": 9812,
-            "cy": 2643,
+            "cx": 9835,
+            "cy": 2664.584695954285,
             "d": 436,
+            "frontClearance": 600,
             "h": 1856,
             "id": "fmvg4z7am1",
             "model": "KFR-51LW/N8KS1-1U",
             "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+            "priceDate": "",
+            "purchaseNote": "空间极限预留450×560mm",
+            "purchaseStatus": "planned",
             "rot": 45,
+            "sourceUrl": "",
             "type": "aircon_midea_ultra_2hp",
             "w": 395
+          },
+          {
+            "color": "#c9d3da",
+            "curtainStyle": "double",
+            "cx": 8418,
+            "cy": 2384,
+            "d": 100,
+            "h": 2700,
+            "id": "fmvg9e7763",
+            "name": "客厅窗帘",
+            "rot": 0,
+            "type": "curtain",
+            "w": 3376
+          },
+          {
+            "color": "#a8b6c4",
+            "cx": 7250,
+            "cy": 2204,
+            "d": 260,
+            "h": 1000,
+            "id": "fmvgkqgg52",
+            "mountHeight": 0,
+            "name": "方块占位体",
+            "rot": 0,
+            "type": "block",
+            "w": 260
+          },
+          {
+            "brand": "源氏木语/YESWOOD",
+            "color": "#bd7846",
+            "cx": 8347,
+            "cy": 3940,
+            "d": 650,
+            "h": 450,
+            "id": "fmvglvcws1",
+            "model": "樱桃木茶几 · 1.2米白色岩板面",
+            "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+            "rot": 270,
+            "type": "coffeetable_yeswood_cherry",
+            "w": 1200
+          },
+          {
+            "brand": "米家/Mijia",
+            "color": "#f6f6f4",
+            "cx": 6392.5,
+            "cy": 9440.5,
+            "d": 445,
+            "h": 379,
+            "id": "fmvgn7dtt1",
+            "model": "净水器 2 1200G",
+            "mountHeight": 118,
+            "name": "米家净水器 2 · 1200G",
+            "rot": 270,
+            "type": "water_purifier_mijia_1200g",
+            "w": 163
+          },
+          {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorAngle": 90,
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    276,
+                    571
+                  ],
+                  "width": 709
+                }
+              ],
+              "plinth": 50,
+              "template": "storage",
+              "thickness": 18,
+              "version": 1
+            },
+            "color": "#f3f1ec",
+            "cx": 9931,
+            "cy": 5792.5,
+            "d": 350,
+            "h": 950,
+            "id": "fmvgnhl7h3",
+            "name": "收纳柜",
+            "rot": 90,
+            "type": "cabinet",
+            "w": 745
+          },
+          {
+            "brand": "源氏木语/YESWOOD",
+            "color": "#bd925f",
+            "cx": 9938,
+            "cy": 9790,
+            "d": 300,
+            "h": 450,
+            "id": "fmvgsj6ah1",
+            "model": "橡木软包换鞋凳 · 80cm",
+            "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+            "rot": 90,
+            "type": "bench_yeswood_oak",
+            "w": 800
+          },
+          {
+            "brand": "ARROW/箭牌",
+            "color": "#85898a",
+            "counterElevation": 850.8,
+            "counterLink": {
+              "hostId": "fmv9dos7j1",
+              "module": 1,
+              "offset": {
+                "x": 1.1154370584351894e-13,
+                "y": 34.99999966666678
+              }
+            },
+            "cx": 6385.000000000001,
+            "cy": 9150,
+            "d": 450,
+            "flip": false,
+            "h": 240,
+            "id": "fmvgv70l41",
+            "model": "AE5575459G23-YNC",
+            "name": "箭牌日式集渣水槽 · 750",
+            "rot": 270,
+            "sinkInstall": "top",
+            "sourceUrl": "https://item.jd.com/100199201484.html",
+            "type": "sink_arrow_750",
+            "w": 750
+          },
+          {
+            "color": "#f3f1ec",
+            "cx": 7085,
+            "cy": 1472,
+            "d": 620,
+            "flip": true,
+            "id": "fmvgvzisd1",
+            "kitchen": {
+              "baseHeight": 870,
+              "counterDepth": 620,
+              "depth": 600,
+              "laundry": {
+                "appliance": {
+                  "d": 600,
+                  "h": 850,
+                  "mountHeight": 0,
+                  "w": 600
+                },
+                "assembly": {
+                  "open": {
+                    "cabinet": {
+                      "columns": [
+                        {
+                          "door": "none",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "none",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        }
+                      ],
+                      "doorOverlay": "full",
+                      "plinth": 0,
+                      "template": "wall",
+                      "thickness": 18,
+                      "version": 1
+                    },
+                    "color": "#bc936b",
+                    "d": 320,
+                    "h": 200,
+                    "mountHeight": 1600,
+                    "x": 0,
+                    "y": -150
+                  },
+                  "sink": {
+                    "color": "#ebe9e3",
+                    "d": 300,
+                    "enabled": true,
+                    "module": 0,
+                    "sinkBowlHeight": 200,
+                    "sinkNotch": {
+                      "depth": 100,
+                      "side": "left",
+                      "width": 100
+                    },
+                    "w": 300,
+                    "x": 0,
+                    "y": 50
+                  },
+                  "upper": {
+                    "cabinet": {
+                      "columns": [
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        },
+                        {
+                          "door": "left",
+                          "doorOpen": false,
+                          "drawers": [],
+                          "handle": "none",
+                          "shelves": []
+                        }
+                      ],
+                      "doorOverlay": "full",
+                      "plinth": 0,
+                      "template": "wall",
+                      "thickness": 18,
+                      "version": 1
+                    },
+                    "color": "#f3f1ec",
+                    "d": 350,
+                    "h": 600,
+                    "mountHeight": 1800,
+                    "x": 0,
+                    "y": -135
+                  }
+                },
+                "countertop": true,
+                "floorOpen": true,
+                "notch": {
+                  "depth": 220,
+                  "side": "left",
+                  "width": 170
+                },
+                "sidePanels": {
+                  "left": true,
+                  "right": true,
+                  "thickness": 18
+                }
+              },
+              "modules": [
+                {
+                  "doorAngle": 90,
+                  "doorLeaves": [
+                    {
+                      "angle": 90,
+                      "open": true
+                    },
+                    {
+                      "angle": 90,
+                      "open": false
+                    }
+                  ],
+                  "doorOpen": true,
+                  "role": "sink",
+                  "run": 0,
+                  "width": 564
+                },
+                {
+                  "role": "empty",
+                  "run": 0,
+                  "width": 640
+                }
+              ],
+              "shape": "straight",
+              "thickness": 20,
+              "version": 1
+            },
+            "name": "完整阳台洗衣柜",
+            "rot": 270,
+            "type": "counter",
+            "w": 1204
+          },
+          {
+            "color": "#f3f4f1",
+            "cx": 7075,
+            "cy": 1745,
+            "d": 600,
+            "flip": true,
+            "h": 850,
+            "id": "fmvgvzise3",
+            "laundryHostId": "fmvgvzisd1",
+            "mountHeight": 0,
+            "name": "洗衣机",
+            "rot": 270,
+            "type": "washer",
+            "w": 600
+          },
+          {
+            "color": "#a8b6c4",
+            "cx": 7571,
+            "cy": 1170,
+            "d": 480,
+            "h": 1000,
+            "id": "fmvgwe3io7",
+            "mountHeight": 870,
+            "name": "方块占位体",
+            "rot": 0,
+            "type": "block",
+            "w": 320
           }
         ],
         "furnitureDatum": "finished-floor",
         "measures": [],
         "notes": [],
+        "objectLayers": {
+          "assignments": {
+            "floor:area_fmv3oztg03": "layer_fmvgek1jl1",
+            "floor:area_fmv3p1fkz7": "layer_fmvgek1jl1",
+            "floor:area_fmv3p1yse11": "layer_fmvgek1jl1",
+            "floor:area_fmv3p2ig914": "layer_fmvgek1jl1",
+            "floor:area_fmv3qajd93": "layer_fmvgek1jl1",
+            "floor:area_fmv3qb1oi4": "layer_fmvgek1jl1",
+            "floor:area_fmv3qb1oi5": "layer_fmvgek1jl1",
+            "floor:area_fmv3qcck717": "layer_fmvgek1jl1",
+            "floor:area_fmv3qdfiz23": "layer_fmvgek1jl1",
+            "floor:bay_cad_window_10_4": "layer_fmvgek1jl1",
+            "floor:bay_cad_window_11_5": "layer_fmvgek1jl1",
+            "furniture:fmv3vyflm1": "layer_fmvgcuwe97",
+            "furniture:fmv3w361v2": "layer_fmvgcuwe97",
+            "furniture:fmv3w3eqf3": "layer_fmvgcuwe97",
+            "furniture:fmv3w4m2a4": "layer_fmvgcuwe97",
+            "furniture:fmv3w5qkv5": "layer_fmvgcuwe97",
+            "furniture:fmv3w7rrw6": "layer_fmvgccsgu5",
+            "furniture:fmv3wt92611": "layer_fmvgcuwe97",
+            "furniture:fmv3wtxgq12": "layer_fmvgcuwe97",
+            "furniture:fmv3wyijp13": "layer_fmvgcvt7d9",
+            "furniture:fmv3wz0sb14": "layer_fmvgcvt7d9",
+            "furniture:fmv3wzkb515": "layer_fmvgcvt7d9",
+            "furniture:fmv3xgqxc1": "layer_fmvgcvt7d9",
+            "furniture:fmv3xgqxc2": "layer_fmvgcvt7d9",
+            "furniture:fmv3yflqw1": "layer_fmvgccsgu5",
+            "furniture:fmv5a1yhn1": "layer_fmvgcabp92",
+            "furniture:fmv5a582a1": "layer_fmvgc9f4l1",
+            "furniture:fmv5a6ciq2": "layer_fmvgc9f4l1",
+            "furniture:fmv5a6xfx3": "layer_fmvgc9f4l1",
+            "furniture:fmv5b76h91": "layer_fmvgccfse3",
+            "furniture:fmv5b78gp2": "layer_fmvgccfse3",
+            "furniture:fmv5bl44k1": "layer_fmvgccfse3",
+            "furniture:fmv5bzynf3": "layer_fmvgccsgu5",
+            "furniture:fmv5c10yi4": "layer_fmvgcuwe97",
+            "furniture:fmv5d24bx1": "layer_fmvgc9f4l1",
+            "furniture:fmv5dvzo81": "layer_fmvgcuwe97",
+            "furniture:fmv61w1091": "layer_fmvgcvt7d9",
+            "furniture:fmv62bwbp1": "layer_fmvgcabp92",
+            "furniture:fmv6wfmo91": "layer_fmvgcabp92",
+            "furniture:fmv6wfocm2": "layer_fmvgcabp92",
+            "furniture:fmv6wfol63": "layer_fmvgcabp92",
+            "furniture:fmv6wg88q4": "layer_fmvgcabp92",
+            "furniture:fmv9dos7j1": "layer_fmvg9iz545",
+            "furniture:fmv9mqxz91": "layer_fmvg9jp8o6",
+            "furniture:fmv9qrzqy1": "layer_fmvg9jp8o6",
+            "furniture:fmv9r1fzz1": "layer_fmvg9iz545",
+            "furniture:fmvffgmj31": "layer_fmvgccsgu5",
+            "furniture:fmvffj8v03": "layer_fmvgccsgu5",
+            "furniture:fmvffjihp4": "layer_fmvgd08sm10",
+            "furniture:fmvg0p9tc1": "layer_fmvgcabp92",
+            "furniture:fmvg2upqp1": "layer_fmvgccsgu5",
+            "furniture:fmvg4z7am1": "layer_fmvgccsgu5",
+            "furniture:fmvg9e7763": "layer_fmvgccsgu5",
+            "wallTile:[\"outline_10\",-1,false,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_10\",1,true,0.983333,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_11\",-1,false,0.084626,0.806065]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_12\",-1,false,0,0.613636]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_12\",-1,true,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_13\",1,false,0,0.701754]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_18\",1,false,0,0.191109]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_20\",1,false,0.374908,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_21\",1,false,0.577778,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_22\",1,false,0.432234,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_22\",1,true,0.393346,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_23\",1,false,0.477273,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_23\",1,true,0.671642,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_25\",1,false,0.138408,0.867359]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_26\",1,false,0,0.761163]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_27\",1,false,0.382166,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_28\",-1,false,0.483444,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_31\",-1,false,0.437956,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_32\",-1,false,0,0.028455]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_33\",-1,false,0,0.671233]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_35\",-1,false,0.079693,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_36\",1,false,0,0.175439]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_37\",1,false,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_38\",-1,false,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_40\",1,false,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_43\",-1,false,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_46\",1,false,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_7\",-1,true,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_8\",-1,false,0,0.880346]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_8\",1,false,0.639511,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_9\",-1,true,0,1]": "layer_fmvgd6ygf1",
+            "wallTile:[\"outline_9\",1,false,0.348597,1]": "layer_fmvgd6ygf1"
+          },
+          "layers": [
+            {
+              "id": "0",
+              "locked": false,
+              "name": "0",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvg9iz545",
+              "locked": false,
+              "name": "厨房地柜",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvg9jp8o6",
+              "locked": false,
+              "name": "厨房吊柜",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgc9f4l1",
+              "locked": false,
+              "name": "卫浴",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgcabp92",
+              "locked": false,
+              "name": "餐厅",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgccfse3",
+              "locked": false,
+              "name": "玄关",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgccsgu5",
+              "locked": false,
+              "name": "客厅",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgcuwe97",
+              "locked": false,
+              "name": "主卧",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgcvt7d9",
+              "locked": false,
+              "name": "小卧",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgd08sm10",
+              "locked": false,
+              "name": "阳台",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgd6ygf1",
+              "locked": false,
+              "name": "墙砖",
+              "visible": true
+            },
+            {
+              "id": "layer_fmvgek1jl1",
+              "locked": false,
+              "name": "地砖",
+              "visible": true
+            }
+          ],
+          "version": 1
+        },
         "open": {
           "d": {
             "0": {
