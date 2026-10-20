@@ -18,5 +18,3 @@ assert.throws(()=>D.placeSelectionAtDirectionalGap(plan,changed,['ac'],'b',130),
 const moved=D.placeSelectionAtDirectionalGap(plan,work,['ac'],'b',130),saved={...work,furniture:work.furniture.map(f=>moved.find(m=>m.id===f.id)||f)},payload={planId:plan.id,current:saved,designs:[{name:'定位',work:saved}],catalog:[]};
 assert.deepEqual(P.unpack(P.pack(payload)),payload);assert.equal(JSON.stringify(work),snapshot);
 console.log('PASS key-order-independent directional placement, 130 mm gap, drawing rotations/mirrors, actual configuration-change rejection, immutable input and project roundtrip');
-
-

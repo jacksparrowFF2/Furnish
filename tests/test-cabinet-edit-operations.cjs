@@ -43,4 +43,3 @@ const exact=make('entry-console');exact.cabinet.entry.nicheHeight+=.125;const sa
 const tolerant=make('sideboard-open');C.widths(tolerant).forEach((w,i)=>tolerant.cabinet.columns[i].width=w+(i===0?.001:0));C.validate(tolerant);const untouched=structuredClone(tolerant);C.scaleStructure(tolerant,untouched);assert.deepEqual(untouched,tolerant,'no-op preserves historical widths within the import tolerance');
 for(let i=0,restored=round(fitted);i<4;i++){const next=round(restored);assert.deepEqual(next,restored);restored=next;}
 console.log('PASS cabinet explicit edit operations: resize preservation, numeric/drag equivalence, thresholds, special bays, immutable actions and old project round trips');
-

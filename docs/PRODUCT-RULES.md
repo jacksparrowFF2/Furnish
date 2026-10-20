@@ -1,5 +1,12 @@
 # 产品能力规则与兼容验收
 
+2026-10-20：`tea_table_800.teaTable={cabinetHeight:720,accessoryTop:897}` 集中定义静态茶台陈设的高度语义。既有 h 保持柜体总高（含脚轮／挡边），`vertical()` 返回含台面茶具的 `height(f)*897/720`，不重写旧数据。茶具／储物罐随原 w/d/h 缩放与旋转镜像，无新持久字段或格式版本。含该型号的空间确认读取 `tea-table-accessories-v1`；纯价格／颜色仍不失效。边界、实际生产几何与往返验收见 [茶台模型](TEA-TABLE-800.md)。
+
+
+茶吧机 `teaBar.bottle` 集中记录参考桶直径 270 / 高 500 / 瓶口直径 55 / 瓶颈段高 80 mm；底高 36 与泵帽高 22 mm 为模型估算，不新增实例字段或改保存默认值。来源见 [茶吧机](TEA-BAR-MIJIA-PRO.md)。
+
+2026-10-20：茶吧机增加可选布尔 `teaBarUpperOpen/teaBarLowerOpen`，新建 false、旧缺失闭合但不补写，同型替换保留、跨型清理。`teaBarDoors/teaBarOpeningZones` 共用门轴、独立高度区间及 100° 图片估算角度；生产、2D 与完整扫掠检查消费同一规则，兼容、缓存和验证见 [茶吧机](TEA-BAR-MIJIA-PRO.md)。
+
 2026-10-20：`tea_bar_mijia_pro` 定义 `tea-bar` 产品族、默认高 1155 mm、落地包络与产品身份；旧缺高只读取不补写，缩放仍读取实例高度。安装预留 `missing`，不推定开门、换桶或取放水箱空间。无新字段或迁移，见 [茶吧机模型](TEA-BAR-MIJIA-PRO.md)。
 
 2026-10-19：`pet_feeder_mijia_2` 定义独立 `pet-feeder` 产品族、默认高 370 mm 与落地包络；缺失高度只读取不补写。品牌/型号来自用户附图，无新增持久字段或安装预留要求，替换沿能力清理。见 [米家喂食器 2](PET-FEEDER-MIJIA-2.md)。
@@ -201,3 +208,15 @@ node scripts/verify-browser.cjs product-rules
 2026-10-18：产品核心新增validateDatum(work)与floorBase(plan,f,furniture)，定义家具相对完成地面的公共基准，优先关联宿主；缺少已知地面不推测标高。work.furnitureDatum为工作方案字段，无家具类型白名单／替换清理字段；复制与替换沿所在工作方案基准，旧家具保存结构不改写。设计与几何核心可显式传plan计算世界垂直包络，生产模型本体与独立预览仍读相对安装高度，主场景根组统一抬高。详细兼容与复验见FLOOR-FINISHES.md的家具基准节。
 
 2026-10-19：两种灶具 hobCutout.moduleMargin=20 定义关联时开孔至模块边的布局模型余量，面板另验完整落入模块及实际台面。不是厂家安装要求。无新增实例字段或默认迁移；门柜显式改为灶台柜与关联一次 mutate，详见 [关联选项修复](FOTILE-APPLIANCES.md#关联选项修复2026-10-19)。
+### 区域落地面积口径（2026-10-20）
+
+`floorStanding(f, relativeRange)` 消费共用相对垂直范围：下沿 ≤ 1e-6 mm 且顶沿 > 1e-6 mm 计为落地；未知返回 null。地毯、窗帘、内嵌设备及带有效关联 ID 的台面／叠放设备返回 false。此规则用于整体占地包络扣除，不是厂家安装要求或腿脚接地面积。相对范围来自 `FurnishDesign.furnitureVerticalBounds(f)`，与家具基准地面抬高分离；普通家具仍按共用模型默认高度恢复，未知实例不添加高度。
+
+区域合计由 `FurnishGeometry.regionAreas()` 派生，去除区域及落地包络之间重复面积，未知物体仅在与所选区相交时列为待核对。无新实例字段，旧数据默认值、保存／恢复和项目版本不变。复验：`node tests/test-region-areas.cjs`、`node tests/test-product-rules.cjs`；浏览器：`node scripts/verify-browser.cjs region-areas`。
+
+
+## 产品平面轮廓（2026-10-20）
+
+`aircon_midea_ultra_2hp.planShape` 定义估算基体截面、参考尺寸与滤网／标签突出部。`planBodyOutline(f,segments)` 提供局部 mm 基体，`planOutline(f)` 提供完整凸投影；OBJ 与未登记类型返回 null，调用方使用原矩形。生产底座、SVG、布局投影共用规则，旋转镜像由几何边界统一应用。宽深编辑仍代表原外包尺寸，无实例字段或恢复写入。曲线离散点不作为物理角点吸附；凸投影保守覆盖凹陷。
+
+含该型号的核对上下文追加 `product-plan-shapes-v1`，后续改变轮廓语义须更新该标识；价格／颜色仍不参与。复验运行 `tests/test-product-plan-outline.cjs`、`tests/test-aircon-midea.cjs` 及受影响的布局／距离／吸附／项目回归，浏览器入口为 `verify-product-plan-outline.browser.js`。本次通过范围与未执行项见 [专项记录](validation/product-plan-outline-20261020/results.json)。
