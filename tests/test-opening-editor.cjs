@@ -17,7 +17,7 @@ class Element{
 const document={createElement:()=>new Element(),querySelector:()=>overlay,addEventListener(){},removeEventListener(){},body:{append(el){overlay=el;}}};
 const $=s=>{if(!nodes.has(s))nodes.set(s,new Element());return nodes.get(s);};$('#dlg').hidden=true;
 const d=C.fromPlan(plans.find(p=>p.id==='p10'),'custom_drag').draft,plan=C.build(d);let commits=0;
-const context=vm.createContext({document,$,window:{},FurnishDraft:C,FurnishProject:P,tr:s=>s,esc:s=>s,PLAN:plan,ROOMS:plan.rooms,state:{architecture:{draft:d,phase:'survey'},rooms:{},furniture:[],open:{}},store:{work:{},customPlans:[]},PLANS:[plan],uid:()=> 'test',undoStack:[],redoStack:[],snap:()=>'',commit(){commits++;},renderAll(){},fitView(){},buildPlanList(){},toast(){},save(){},snapshot(){},confirm:()=>true});
+const context=require('./helpers/layer-context.cjs').createContext({document,$,window:{},FurnishDraft:C,FurnishProject:P,tr:s=>s,esc:s=>s,PLAN:plan,ROOMS:plan.rooms,state:{architecture:{draft:d,phase:'survey'},rooms:{},furniture:[],open:{}},store:{work:{},customPlans:[]},PLANS:[plan],uid:()=> 'test',undoStack:[],redoStack:[],snap:()=>'',commit(){commits++;},renderAll(){},fitView(){},buildPlanList(){},toast(){},save(){},snapshot(){},confirm:()=>true});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/floorplan-editor.js'),'utf8'),context);
 context.window.FurnishEditor.open();
 const canvas=$('#trace-canvas'),event=(type,x,y,dataset={})=>{for(const fn of canvas.events[type]||[])fn({type,button:0,clientX:x,clientY:y,pointerId:1,target:{dataset},preventDefault(){}});};

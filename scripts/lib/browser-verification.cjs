@@ -2,13 +2,36 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {pathToFileURL}=require('node:url');
 const projectRoot=path.resolve(__dirname,'../..');
+async function editFurnitureField(page,selector,value){
+ if(selector!=='#fW'&&selector!=='#fD'){await page.locator(selector).fill(String(value));await page.locator(selector).press('Tab');return;}
+ await page.locator('#fab [data-fab-edit="size"]').click();
+ await page.locator(selector==='#fW'?'#fab-width':'#fab-depth').fill(String(value));
+ await page.locator('#fab-size-form [type="submit"]').click();
+ const cancel=page.locator('#fab-editor [data-fab-close]').first();if(await cancel.count())await cancel.click();
+}
+async function revealCabinetSettings(page){
+ for(let i=0;i<12;i++){
+  const summary=page.locator('.cab-fields details:not([open]):not(.cab-object-finder)>summary:visible').first();
+  if(!await summary.count())break;await summary.click();
+ }
+}
+async function openDistanceControls(page){if(!await page.locator('#fab-editor [data-distance-row]').count())await page.locator('#fab [data-fab-edit="distance"]').click();}
 function configuration(env=process.env){
  const root=path.resolve(env.FURNISH_VERIFY_ROOT||projectRoot);
  const url=new URL(env.FURNISH_VERIFY_URL||'http://127.0.0.1:8765/');
  if(url.protocol!=='http:'||!['127.0.0.1','localhost','[::1]'].includes(url.hostname)||url.username||url.password||url.pathname!=='/'||url.search||url.hash)throw Error('FURNISH_VERIFY_URL must be a loopback HTTP origin, for example http://127.0.0.1:9000/');
  const output=relative=>{const target=path.resolve(root,'output',relative);if(!target.startsWith(path.join(root,'output')+path.sep))throw Error('Output path escapes output/');fs.mkdirSync(path.dirname(target),{recursive:true});return target.replaceAll('\\','/');};
- const selectCabinetObject=async(page,part={})=>{const control=page.locator(await page.locator('#cab-object-target').count()?'#cab-object-target':'#cab-kitchen-object');const current=JSON.parse(await control.inputValue()),wanted={...part,kind:part.kind??current.kind};if(wanted.kind!=='body'&&wanted.column===undefined&&current.column!==undefined)wanted.column=current.column;const value=await control.locator('option').evaluateAll((options,wanted)=>{const match=o=>{const value=JSON.parse(o.value);return Object.entries(wanted).every(([k,v])=>v===undefined||value[k]===v);};return options.find(match)?.value??options.find(o=>{const v=JSON.parse(o.value);return v.kind==='bay'&&(wanted.column===undefined||wanted.column===v.column);})?.value;},wanted);if(!value)throw Error('Cabinet object unavailable: '+JSON.stringify(wanted));await control.selectOption(value);return JSON.parse(value);};
- return {root:root.replaceAll('\\','/')+'/',baseURL:url.href,fileBase:pathToFileURL(root+path.sep).href,output,selectCabinetObject,
+ const selectCabinetObject=async(page,part={})=>{
+  const kitchen=await page.locator('#cab-kitchen-object').count()>0,selector=kitchen?'#cab-kitchen-object':'#cab-object-target',control=page.locator(selector),current=JSON.parse(await control.inputValue()),wanted={...part,kind:part.kind??current.kind};
+  if(wanted.kind==='body'){const button=page.locator(kitchen?'[data-k-object="body"]':'[data-cab-target="body"]');if(await button.count())await button.click();return {kind:'body'};}
+  const finder=page.locator('.cab-object-finder');if(!await finder.evaluate(el=>el.open))await finder.locator('summary').click();
+  const group=String(wanted.assembly??wanted.column??current.column??0),groups=page.locator('[data-cab-find-group]');
+  if(await groups.inputValue()!==group){await groups.selectOption(group);if(wanted.assembly)return wanted;}
+  if(wanted.column===undefined)wanted.column=current.column??0;
+  const value=await page.locator(selector+' option').evaluateAll((options,wanted)=>options.find(o=>{const value=JSON.parse(o.value);return Object.entries(wanted).every(([k,v])=>v===undefined||value[k]===v);})?.value??options.find(o=>JSON.parse(o.value).kind==='bay')?.value,wanted);
+  if(!value)throw Error('Cabinet object unavailable: '+JSON.stringify(wanted));if(!await page.locator('.cab-object-finder').evaluate(el=>el.open))await page.locator('.cab-object-finder>summary').click();await page.locator(selector).selectOption(value);return JSON.parse(value);
+ };
+ return {root:root.replaceAll('\\','/')+'/',baseURL:url.href,fileBase:pathToFileURL(root+path.sep).href,output,selectCabinetObject,editFurnitureField,revealCabinetSettings,openDistanceControls,
   waitForCache:page=>page.waitForFunction(()=>{try{const cached=JSON.parse(localStorage.getItem(STORE));return !savePending&&!saveErr&&savedAt>0&&JSON.stringify(cached.work[PLAN.id])===JSON.stringify(state);}catch{return false;}}),
   fixture:name=>path.join(root,'tests/fixtures/browser',name),
   launchOptions:{headless:env.FURNISH_VERIFY_HEADED!=='1',...(env.FURNISH_BROWSER_PATH?{executablePath:env.FURNISH_BROWSER_PATH}:env.FURNISH_BROWSER_CHANNEL?{channel:env.FURNISH_BROWSER_CHANNEL}:{})}};

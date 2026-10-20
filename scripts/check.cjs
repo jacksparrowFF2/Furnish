@@ -5,14 +5,17 @@ const os = require('node:os');
 const vm = require('node:vm');
 const {spawnSync} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
+const keepGoing=process.argv.includes('--keep-going'),failures=[];
 function run(args) {
   const result = spawnSync(process.execPath, args, {cwd:root, encoding:'utf8'});
   if (result.error) throw result.error;
   if (result.status !== 0) {
     process.stdout.write(result.stdout || '');
     process.stderr.write(result.stderr || '');
-    process.exit(result.status || 1);
+    if(!keepGoing)process.exit(result.status || 1);
+    failures.push(args.join(' '));return false;
   }
+  return true;
 }
 function filesIn(dir) {
   return fs.readdirSync(dir, {withFileTypes:true}).flatMap(entry => {
@@ -51,7 +54,7 @@ for (const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+)"
 const sources = filesIn(path.join(root, 'src'));
 // Generated production previews have their own module scope. A generator's
 // syntax can be valid while the inserted model duplicates a declaration.
-const previews=fs.existsSync(path.join(root,'output'))?filesIn(path.join(root,'output')).filter(f=>path.basename(f)==='preview.html'):[];
+const previews=require('./lib/preview-files.cjs').previewFiles(path.join(root,'output'));
 for(const preview of previews){
   const classic=[];
   for(const match of fs.readFileSync(preview,'utf8').matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){
@@ -69,8 +72,9 @@ for (const file of [...sources, ...filesIn(__dirname), ...filesIn(path.join(root
 const tests=filesIn(path.join(root,'tests')).filter(f => /^test-.*\.cjs$/.test(path.basename(f))).sort();
 if(!tests.length) throw Error('No regression tests found');
 for (const file of tests) {
-  run([file]); console.log('PASS ' + path.relative(root,file));
+  if(run([file]))console.log('PASS ' + path.relative(root,file));else console.log('FAIL '+path.relative(root,file));
 }
 run([path.join(__dirname,'validate-plans.mjs')]);
 const plans=require('../src/data/plans.js');
-console.log(`PASS ${tests.length} regression suites, ${plans.length} built-in plans, ${previews.length} preview pages, local assets, shared declarations and all production syntax checks`);
+if(failures.length){console.error('FAIL '+failures.length+' checks:\n'+failures.join('\n'));process.exitCode=1;}
+else console.log(`PASS ${tests.length} regression suites, ${plans.length} built-in plans, ${previews.length} preview pages, local assets, shared declarations and all production syntax checks`);

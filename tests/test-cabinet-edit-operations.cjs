@@ -12,8 +12,8 @@ for(const [id] of C.templates){
 }
 const f=make('sideboard-open'),w=C.widths(f),before=JSON.stringify(f);
 for(const rot of [0,37,90])for(const flip of [false,true]){
- const source={...f,rot,flip},typed=C.adjustColumnWidth(source,0,w[0]+20.25),dragged=C.moveDivider(source,0,20.25);
- assert.deepEqual(typed,dragged);near(typed.w,f.w);near(C.widths(typed)[1],w[1]-20.25);near(C.widths(typed)[2],w[2]);
+ const source={...f,rot,flip},typed=C.adjustModuleWidth(source,0,C.moduleWidths(source)[0]+20.25),dragged=C.moveDivider(source,0,20.25);
+ assert.deepEqual(typed,dragged);near(typed.w,f.w+20.25);near(C.widths(typed)[1],w[1]);near(C.widths(typed)[2],w[2]);
  const last=C.adjustColumnWidth(source,2,w[2]+50);near(C.widths(last)[1],w[1]-50);near(last.w,f.w);
  assert.deepEqual(round(typed),typed);
 }

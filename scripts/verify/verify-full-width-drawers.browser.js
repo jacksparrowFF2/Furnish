@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column}).then(async picked=>{await verification.revealCabinetSettings(page);return picked;});
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(message);};
  try{

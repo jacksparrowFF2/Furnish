@@ -15,7 +15,7 @@ async (page,verification)=>{
   check((await p.locator('[data-beam-form="beam-door"] [data-beam-status]').innerText()).includes('参与三维'),'recorded status');
   await p.locator('#dlgClose').click();const known=await issues();
   for(const [id,kind]of [['peg','cabinetdoor'],['drawer','cabinetdrawer'],['side','cabinetdoor']])check(known.some(v=>v.id===id&&v.kind===kind&&!v.pending),'known beam '+id);
-  await p.evaluate(()=>selectIds(['side']));check((await p.locator('#fit-feedback').innerText()).includes('房梁'),'panel conflict');await p.locator('#cabinet-edit').click();await p.locator('#cab-preview canvas').waitFor();check((await p.locator('#cab-space').innerText()).includes('房梁'),'cabinet editor conflict');await p.getByRole('button',{name:'取消',exact:true}).click();
+  await p.evaluate(()=>selectIds(['side']));check((await p.locator('#fit-feedback').innerText()).includes('房梁'),'panel conflict');await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#cab-preview canvas').waitFor();check((await p.locator('#cab-space').textContent()).includes('房梁'),'cabinet editor conflict');await p.getByRole('button',{name:'取消',exact:true}).click();
   await structure();await heights(0,3900,4000);await p.locator('#dlgClose').click();check(!(await issues()).some(v=>v.id==='peg'),'high beam clear');
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();check((await issues()).some(v=>v.id==='peg'&&!v.pending),'undo beam');await p.getByRole('button',{name:'重做',exact:true}).first().click();check(!(await issues()).some(v=>v.id==='peg'),'redo beam');
   await structure();await p.locator('#beam-bottom-0').fill('500');await p.locator('[data-beam-cancel="0"]').click();check(await p.locator('#beam-bottom-0').inputValue()==='3900','cancel input');

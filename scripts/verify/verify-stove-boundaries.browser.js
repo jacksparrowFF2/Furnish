@@ -13,9 +13,9 @@ async (page,verification)=>{
   const read=()=>p.evaluate(()=>Object.fromEntries(Object.entries(directionalMeasurements()).map(([d,m])=>[d,m&&Math.round(m.distance)])));
   check(JSON.stringify(await read())===JSON.stringify({l:625,r:425,t:90,b:70}),'four distances to enclosing physical edges: '+JSON.stringify(await read()));
   check(await p.locator('[data-edit-overlay="directional-distance"]').count()===4,'four visible canvas labels');
-  check((await p.locator('[data-distance-row="r"]').innerText()).includes('台面边界'),'property panel identifies physical worktop edge');
+  check(((await verification.openDistanceControls(p),await p.locator('#fab-editor [data-distance-row="r"]').innerText())).includes('台面边界'),'property panel identifies physical worktop edge');
   await p.screenshot({path:dir+'desktop.png'});
-  await p.locator('#directional-measure-save').click();check(await p.evaluate(()=>state.measures.length===4),'save four lines atomically');
+  await verification.openDistanceControls(p);await p.locator('#fab-distance-save').click();check(await p.evaluate(()=>state.measures.length===4),'save four lines atomically');
   const saved=await p.evaluate(()=>JSON.stringify(state.measures));await p.keyboard.press('Control+z');check(await p.evaluate(()=>state.measures.length===0),'undo all four');await p.keyboard.press('Control+y');check(await p.evaluate(()=>JSON.stringify(state.measures))===saved,'redo endpoints');
   await p.keyboard.press('ArrowRight');check(JSON.stringify(await read())===JSON.stringify({l:635,r:415,t:90,b:70}),'moving hob updates edge distances');await p.keyboard.press('Control+z');
   await p.locator('#drawing-right').click();check(JSON.stringify(await read())===JSON.stringify({l:70,r:90,t:625,b:425}),'drawing rotation remaps all four labels');
@@ -24,9 +24,9 @@ async (page,verification)=>{
   check(JSON.stringify(await read())===JSON.stringify({l:225,r:225,t:80,b:80}),'linked L kitchen measures outer perimeter instead of cabinet seams/cutout');
   await p.screenshot({path:dir+'linked-l.png'});
   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{closeDrawers();zoomToBox([2600,1000,5000,3300],80);});
-  await p.screenshot({path:dir+'mobile-canvas.png'});await p.locator('#tgPanel').click();await p.locator('#directional-measure-save').scrollIntoViewIfNeeded();
+  await p.screenshot({path:dir+'mobile-canvas.png'});await verification.openDistanceControls(p);
   check(await p.locator('[data-distance-row]').count()===4,'four directions on mobile');check(await p.evaluate(()=>document.documentElement.scrollWidth<=390),'no horizontal overflow');await p.screenshot({path:dir+'mobile-panel.png'});
-  await p.locator('#directional-measure-save').click();check(await p.evaluate(()=>state.measures.length===4),'linked measurements can be saved');await p.waitForFunction(()=>!savePending);
+  await verification.openDistanceControls(p);await p.locator('#fab-distance-save').click();check(await p.evaluate(()=>state.measures.length===4),'linked measurements can be saved');await p.waitForFunction(()=>!savePending);
   const final=await p.evaluate(()=>JSON.stringify({furniture:state.furniture,measures:state.measures}));await p.reload();await p.locator('#drawing-compass').waitFor();
   check(await p.evaluate(()=>JSON.stringify({furniture:state.furniture,measures:state.measures}))===final,'refresh restores original structure and fixed measurements');check(!errors.length,errors.join('\n'));
   return {status:'PASS',fourDistances:true,canvas:true,propertyPanel:true,saveUndoRedo:true,movement:true,drawingRotation:true,linkedLKitchen:true,mobile390:true,refresh:true,errors};

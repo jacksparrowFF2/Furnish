@@ -1,0 +1,11 @@
+async(page,V)=>{
+ const ctx=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await ctx.newPage(),checks=[],errors=[];p.on('pageerror',e=>errors.push(e.message));
+ const check=(v,m)=>{if(!v)throw Error(m);checks.push(m);},shot=n=>p.screenshot({path:V.output('playwright/cabinet-layout/'+n+'.png')}),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click();
+ const metrics=()=>p.evaluate(()=>{const visible=el=>el.getClientRects().length>0,rect=el=>Math.round(el.getBoundingClientRect().height),editor=document.querySelector('.cab-editor'),box=editor.closest('.dlg-box'),body=box.querySelector('.dlg-body');return {buttons:[...editor.querySelectorAll('.btn')].filter(visible).map(rect),footer:[...box.querySelectorAll('.dlg-actions .btn')].map(rect),inputs:[...editor.querySelectorAll('.cab-fields input[type=number],.cab-fields select')].filter(visible).map(rect),outerScroll:body.scrollHeight-body.clientHeight,overflow:editor.scrollWidth-editor.clientWidth};});
+ try{
+  await p.goto(V.baseURL+'index.html');await p.locator('#lib').waitFor();await p.evaluate(()=>{const at=ROOMS.find(r=>r.name==='客厅').at;mutate(()=>state.furniture=[{id:'layout',type:'cabinet',cx:at[0],cy:at[1],rot:0,...FurnishCabinet.preset('sideboard-drawers')}]);FurnishCabinetEditor.open('layout');});await p.locator('#cab-preview canvas').waitFor();
+  for(const [w,h] of [[1500,1000],[1280,720]]){await p.setViewportSize({width:w,height:h});await p.waitForTimeout(250);const m=await metrics();check(m.buttons.every(v=>v===36),'36px workspace buttons at '+w);check(m.footer.every(v=>v===40),'40px equal footer controls at '+w);check(m.inputs.every(v=>v===40),'40px fields at '+w);check(m.outerScroll<=1,'no outer desktop scrollbar at '+w);await shot('body-'+w);}
+  await V.selectCabinetObject(p,{kind:'door',column:0});await shot('door');await V.selectCabinetObject(p,{kind:'drawer',column:0,drawer:0});await shot('drawer');
+  await p.setViewportSize({width:390,height:844});await p.waitForTimeout(250);check((await metrics()).overflow<=1,'390px no horizontal overflow');await shot('mobile');await cancel();check(errors.length===0,'no page errors');return {passed:true,checks};
+ }catch(e){await shot('failure');throw e;}finally{await ctx.close();}
+}

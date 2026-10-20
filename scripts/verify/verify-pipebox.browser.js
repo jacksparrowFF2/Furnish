@@ -7,7 +7,7 @@ async (page,verification)=>{
   const item=p.locator('#lib').getByText('管道包覆柜',{exact:true}).first();check(await item.count()===1,'catalog entry');await item.click();
   const id=await p.evaluate(()=>selIds()[0]);check(await p.evaluate(id=>{const f=getF(id);return f.type==='pipebox'&&f.pipeBoxThickness===18&&f.mountHeight===0&&!f.cabinet;},id),'create');
   for(const [selector,value,key] of [['#fW','600','w'],['#fD','400','d'],['#fH','1200','h'],['#fPipeBoxThickness','25.5','pipeBoxThickness'],['#fMountHeight','750','mountHeight']]){
-   await p.locator(selector).fill(value);await p.locator(selector).press('Tab');check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');
+   await verification.editFurnitureField(p,selector,value);check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');
   }
   await p.evaluate(()=>undo());check(await p.evaluate(id=>getF(id).mountHeight===0,id),'undo');await p.evaluate(()=>redo());check(await p.evaluate(id=>getF(id).mountHeight===750,id),'redo');
   for(const shape of ['four','three','two']){
@@ -27,11 +27,11 @@ async (page,verification)=>{
    await p.evaluate(()=>ui.sel&&zoomSel());await p.screenshot({path:verification.output('playwright/pipebox/'+mode+'-'+shape+'-2d.png')});
   }
   for(const [selector,value,key,expected] of [['#fPipeBoxThickness','0','pipeBoxThickness',25.5],['#fW','25','w',600],['#fMountHeight','-1','mountHeight',750]]){
-   await p.locator(selector).fill(value);await p.locator(selector).press('Tab');check(await p.evaluate(({id,key,expected})=>getF(id)[key]===expected,{id,key,expected}),'invalid '+key);
+   await verification.editFurnitureField(p,selector,value);check(await p.evaluate(({id,key,expected})=>getF(id)[key]===expected,{id,key,expected}),'invalid '+key);
   }
   await p.locator('#fMountHeight').fill('0');await p.locator('#fMountHeight').press('Tab');check(await p.evaluate(id=>getF(id).mountHeight===0,id),'zero elevation');await p.evaluate(()=>undo());
   await p.locator('[data-act="lock"]').first().click();check(await p.locator('#fPipeBoxThickness').isDisabled(),'lock');check(await p.locator('#fPipeBoxShape').isDisabled(),'shape lock');check(await p.locator('#fPipeBoxCorner').isDisabled(),'direction lock');await p.locator('[data-act="lock"]').first().click();
-  await p.getByRole('button',{name:'复制',exact:true}).click();check(await p.evaluate(()=>state.furniture.filter(f=>f.type==='pipebox'&&f.pipeBoxThickness===25.5&&f.mountHeight===750&&f.pipeBoxShape==='two'&&f.pipeBoxCorner==='back-right').length===2),'copy');await p.evaluate(()=>undo());
+  await p.locator('#fab [data-act="dup"]').click();check(await p.evaluate(()=>state.furniture.filter(f=>f.type==='pipebox'&&f.pipeBoxThickness===25.5&&f.mountHeight===750&&f.pipeBoxShape==='two'&&f.pipeBoxCorner==='back-right').length===2),'copy');await p.evaluate(()=>undo());
   await verification.waitForCache(p);const before=await p.evaluate(id=>JSON.stringify(getF(id)),id);await p.reload();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'reload');await p.evaluate(id=>selectIds([id]),id);
   await p.evaluate(()=>store.designs.push({id:'pipebox-check',name:'包管柜验收',planId:PLAN.id,ts:Date.now(),work:JSON.parse(JSON.stringify(state))}));
   await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();

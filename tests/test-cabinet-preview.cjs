@@ -42,15 +42,16 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  canvas.fire('pointerdown',{clientX:10,clientY:10});assert.equal(orbitPresses,1,'empty-space presses remain available for orbit controls');canvas.fire('pointerup',{clientX:10,clientY:10});
  preview.setView({front:true,doors:'hidden'});tick();assert(camera.isOrthographicCamera);assert.equal(controls.enableRotate,false);
  let dividerMesh;scene.traverse(o=>{if(o.isMesh&&o.userData.cabinetDivider?.divider===0)dividerMesh=o;});const point=dividerMesh.getWorldPosition(new three.Vector3());point.z+=dividerMesh.geometry.parameters.depth/2;point.project(camera);const dividerStart={clientX:(point.x+1)*250,clientY:(1-point.y)*220},oldWidths=C.widths(draft),total=draft.w;
- canvas.fire('pointerdown',dividerStart);assert.equal(picked.divider,0);canvas.fire('pointermove',{...dividerStart,clientX:dividerStart.clientX+25});assert(C.widths(draft)[0]>oldWidths[0]);assert(C.widths(draft)[1]<oldWidths[1]);assert.equal(draft.w,total);canvas.fire('keydown',{key:'Escape'});assert.deepEqual(C.widths(draft),oldWidths);
- canvas.fire('keydown',{key:'ArrowRight',shiftKey:true});assert.equal(C.widths(draft)[0],oldWidths[0]+1);assert.equal(draft.w,total);
+ canvas.fire('pointerdown',dividerStart);assert.equal(picked.divider,0);canvas.fire('pointermove',{...dividerStart,clientX:dividerStart.clientX+25});const freshDivider=()=>{let mesh;scene.traverse(o=>{if(o.isMesh&&o.userData.cabinetDivider?.divider===0)mesh=o;});const q=mesh.getWorldPosition(new three.Vector3());q.z+=mesh.geometry.parameters.depth/2;q.project(camera);return {clientX:(q.x+1)*250,clientY:(1-q.y)*220};};assert(Math.abs(freshDivider().clientX-dividerStart.clientX-25)<1e-4,'divider follows pointer while cabinet grows');assert(C.widths(draft)[0]>oldWidths[0]);assert.equal(C.widths(draft)[1],oldWidths[1]);assert(Math.abs(draft.w-total-(C.widths(draft)[0]-oldWidths[0]))<1e-6);canvas.fire('keydown',{key:'Escape'});assert.deepEqual(C.widths(draft),oldWidths);assert.equal(draft.w,total);
+ canvas.fire('keydown',{key:'ArrowRight',shiftKey:true});assert.equal(C.widths(draft)[0],oldWidths[0]+1);assert.equal(draft.w,total+1);
+ const beforeDividerCancel=JSON.stringify(draft),cancelDivider=freshDivider();canvas.fire('pointerdown',cancelDivider);canvas.fire('pointermove',{...cancelDivider,clientX:cancelDivider.clientX+30});canvas.fire('pointercancel',cancelDivider);assert.equal(JSON.stringify(draft),beforeDividerCancel,'pointer cancellation restores every draft field');const commitDivider=freshDivider(),commitWidth=draft.w,neighbor=C.widths(draft)[1];canvas.fire('pointerdown',commitDivider);canvas.fire('pointermove',{...commitDivider,clientX:commitDivider.clientX+20});canvas.fire('pointerup',{...commitDivider,clientX:commitDivider.clientX+20});assert(draft.w>commitWidth);assert.equal(C.widths(draft)[1],neighbor);
  preview.setView({front:false,doors:'ghost',dimensions:false});tick();assert(camera.isPerspectiveCamera);assert.equal(controls.enableRotate,true);
  const annotations=host.children.find(el=>el.className==='cab-dimensions'),texts=()=>annotations.children.map(el=>el.textContent||'');
  draft={...draft,...C.preset('wardrobe')};preview.update(draft);const saved=JSON.stringify(draft);
- preview.setView({dimensionScope:'size',dimensions:true});tick();assert(texts().some(s=>s.startsWith('总宽')));assert(!texts().some(s=>s.startsWith('净宽')));assert(texts().some(s=>/^\d+×\d+/.test(s)),'door sizes are visible on the initial overall-size step');
- preview.selectPart({column:1});preview.setView({dimensionScope:'bays'});tick();assert.equal(texts().filter(s=>s.startsWith('净宽')).length,1);assert(texts().includes('净宽 '+Number(C.widths(draft)[1].toFixed(2))));assert(!texts().some(s=>s.startsWith('总宽')));
- preview.selectPart({column:0});tick();assert(texts().includes('净宽 '+Number(C.widths(draft)[0].toFixed(2))));
- preview.setView({dimensionScope:'front'});tick();assert(!texts().some(s=>s.startsWith('净宽')));assert(texts().some(s=>/^\d+×\d+/.test(s)));
+ preview.setView({dimensionScope:'size',dimensions:true});tick();assert(texts().some(s=>s.startsWith('总宽')));assert(!texts().some(s=>s.startsWith('模块外宽')));assert(texts().some(s=>/^\d+×\d+/.test(s)),'door sizes are visible on the initial overall-size step');
+ preview.selectPart({column:1});preview.setView({dimensionScope:'bays'});tick();assert.equal(texts().filter(s=>s.startsWith('模块外宽')).length,1);assert(texts().includes('模块外宽 '+Number(C.moduleWidths(draft)[1].toFixed(2))));assert(!texts().some(s=>s.startsWith('总宽')));
+ preview.selectPart({column:0});tick();assert(texts().includes('模块外宽 '+Number(C.moduleWidths(draft)[0].toFixed(2))));
+ preview.setView({dimensionScope:'front'});tick();assert(!texts().some(s=>s.startsWith('模块外宽')));assert(texts().some(s=>/^\d+×\d+/.test(s)));
  preview.setView({dimensionScope:'space'});tick();assert(texts().some(s=>s.startsWith('总高')));assert(!texts().some(s=>/^\d+×\d+/.test(s)));assert.equal(JSON.stringify(draft),saved,'step navigation must not change the saved cabinet');
  preview.dispose();assert(disconnected);assert.equal(canvas.isConnected,false);
  // Real production ray picks now select objects rather than toggling motion.
@@ -62,6 +63,6 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   assert(inspected,kind+' can be selected by a real ray');assert.equal(kind==='shelf'&&inspected.shelf!==undefined?'shelf':inspected.kind,kind);
  }
  const untouched=JSON.stringify(fixture);canvas.fire('pointerdown',{clientX:5,clientY:5});canvas.fire('pointerup',{clientX:5,clientY:5});assert.equal(inspected.kind,'body');assert.equal(JSON.stringify(fixture),untouched,'selection must not toggle a door or drawer');inspector.dispose();
- console.log('PASS shelf/divider picking, constrained dragging, fixed total width, keyboard edits, cancellation, front view and preview cleanup');
+ console.log('PASS shelf/divider picking, constrained dragging, growing total width, unchanged neighbors, keyboard edits, cancellation, front view and preview cleanup');
 })().catch(e=>{console.error(e);process.exit(1);});
 

@@ -16,12 +16,12 @@ async (page,verification)=>{
    await p.locator('#dishwasher-door').selectOption('open');check(await p.evaluate(id=>getF(id).dishwasherDoorOpen,id),'door edit');check(await p.locator('[data-dishwasher-fold="open"]').count()>0,'2D folded door');
    await p.evaluate(()=>undo());check(await p.evaluate(id=>getF(id).dishwasherDoorOpen===false,id),'undo door');await p.evaluate(()=>redo());check(await p.evaluate(id=>getF(id).dishwasherDoorOpen===true,id),'redo door');
    for(const [selector,value,key] of [['#fMountHeight','900','mountHeight'],['#fH','620','h'],['#fW','600','w'],['#fD','400','d']]){
-    await p.locator(selector).fill(value);await p.locator(selector).press('Tab');check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');
+    await verification.editFurnitureField(p,selector,value);check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');
    }
    await p.locator('#fMountHeight').fill('0');await p.locator('#fMountHeight').press('Tab');check(await p.evaluate(id=>getF(id).mountHeight===0,id),'zero');await p.evaluate(()=>undo());
    await p.locator('#fMountHeight').fill('-1');await p.locator('#fMountHeight').press('Tab');check(await p.evaluate(id=>getF(id).mountHeight===900,id),'invalid elevation');
    await p.locator('[data-act="lock"]').first().click();check(await p.locator('#dishwasher-door').isDisabled(),'locked pose');check(await p.locator('#fMountHeight').isDisabled(),'locked elevation');await p.locator('[data-act="lock"]').first().click();
-   await p.getByRole('button',{name:'复制',exact:true}).click();check(await p.evaluate(()=>state.furniture.filter(f=>f.type==='dishwasher_mijia_countertop'&&f.dishwasherDoorOpen&&f.mountHeight===900).length===2),'copy');await p.evaluate(()=>undo());
+   await p.locator('#fab [data-act="dup"]').click();check(await p.evaluate(()=>state.furniture.filter(f=>f.type==='dishwasher_mijia_countertop'&&f.dishwasherDoorOpen&&f.mountHeight===900).length===2),'copy');await p.evaluate(()=>undo());
    const before=await p.evaluate(id=>JSON.stringify(getF(id)),id);await p.waitForFunction(()=>!savePending);await p.reload();await p.locator('#lib').waitFor();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'refresh');await p.evaluate(id=>selectIds([id]),id);
    await p.evaluate(()=>{store.designs.push({id:'dishwasher-check',name:'台面洗碗机验收',planId:PLAN.id,ts:Date.now(),work:JSON.parse(JSON.stringify(state))});});
    await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();

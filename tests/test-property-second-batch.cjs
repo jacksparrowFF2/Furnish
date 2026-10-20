@@ -15,7 +15,7 @@ const geometry=ctx.spaceIssueVolumes(plan,[f],{id:f.id,kind:'cabinetpassage',col
 // Exercise the real renderer boundary with a retained selection and both scopes.
 const property=vm.createContext({ui:{sel:{kind:'furn',id:'cab'},tab:'list'},window:{},globalThis:{},selIds:()=>['cab'],getF:()=>f,$:()=>({innerHTML:'',classList:{contains:()=>false}}),renderFab(){},furnitureError:()=>null,furnPanel:()=>'<p>OBJECT</p>',bindFurnPanel(){},collisions:()=>[],isOutside:()=>false,state:{furniture:[f]},ico:()=>'',tr:a=>a,listPanel:()=>'<p>DESIGN</p>',quotePanel:()=>'',overviewPanel:()=>'',bindOverview(){},nm:a=>a});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),property);
-const panel={innerHTML:'',querySelector:()=>null};property.$=selector=>selector==='#panel'?panel:null;property.renderFab=()=>{};property.furnPanel=()=>'<p>OBJECT</p>';property.bindFurnPanel=()=>{};
+const panel={innerHTML:'',dataset:{},querySelector:()=>null};property.$=selector=>selector==='#panel'?panel:null;property.renderFab=()=>{};property.furnPanel=()=>'<p>OBJECT</p>';property.bindFurnPanel=()=>{};
 property.renderPanelContent(false);assert(panel.innerHTML.includes('DESIGN'));assert.equal(property.ui.sel.id,'cab');
 property.renderPanelContent(true);assert.equal(panel.innerHTML,'<p>OBJECT</p>');assert.equal(property.ui.sel.id,'cab');
 console.log('PASS retained object navigation, legacy unknown elevation, rotated/mirrored production opening annotations and read-only compatibility');

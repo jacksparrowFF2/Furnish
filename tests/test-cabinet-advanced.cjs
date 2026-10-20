@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-core.js');
 const f={id:'cab',type:'cabinet',cx:1500,cy:1000,rot:0,color:'#efe6d8',...C.preset('sideboard-open')},original=JSON.stringify(f);
-const shifted=C.moveDivider(f,0,130),a=C.widths(f),b=C.widths(shifted);assert.equal(shifted.w,f.w);assert.equal(b[0],a[0]+130);assert(Math.abs(b[1]-(a[1]-130))<1e-8);assert.equal(b[2],a[2]);
-assert.equal(C.widths(C.moveDivider(f,0,9999))[1],100);assert.equal(C.widths(C.moveDivider(f,0,-9999))[0],100);assert.throws(()=>C.moveDivider(f,2,30),/分隔板/);
+const shifted=C.moveDivider(f,0,130),a=C.widths(f),b=C.widths(shifted);assert(Math.abs(shifted.w-f.w-130)<1e-8);assert.equal(b[0],a[0]+130);assert.equal(b[1],a[1]);assert.equal(b[2],a[2]);
+assert(Math.abs(C.moveDivider(f,0,9999).w-6000)<1e-8);assert.equal(C.widths(C.moveDivider(f,0,9999))[1],a[1]);assert.equal(C.widths(C.moveDivider(f,0,-9999))[0],100);assert.throws(()=>C.moveDivider(f,2,30),/分隔板/);
 const added=C.editStructure(f,0,'addShelf');assert.equal(added.cabinet.columns[0].shelves.length,3);C.validate(added);
 const copied=C.editStructure(added,0,'copyShelf',1);assert.equal(copied.cabinet.columns[0].shelves.length,4);
 const equal=C.editStructure(copied,0,'equalShelves'),gaps=C.spaces(equal,0);assert(Math.max(...gaps.map(g=>g.height))-Math.min(...gaps.map(g=>g.height))<=1);

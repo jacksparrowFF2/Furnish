@@ -14,7 +14,7 @@ for(const horizontal of [true,false])for(const end of [false,true])for(const fac
  const base={rect,h:horizontal?[end?900:0,face?thickness:0]:[face?thickness:0,end?900:0],c:horizontal?[end?-1:1,0]:[0,end?-1:1],o:horizontal?[0,face?1:-1]:[face?1:-1,0],len:900,entry:true};
  const nodes=new Map(),$=s=>{if(!nodes.has(s))nodes.set(s,{innerHTML:''});return nodes.get(s);};
  const plan={walls:[],wins:[],doors:[JSON.parse(JSON.stringify(base))],slides:[],rooms:[],bounds:{}};
- const ctx=vm.createContext({$,FurnishGeometry:G,FurnishPlans:[],state:{open:{d:{}}},window:{},PAL:{ink:'#000',leaf:'#fff'},tr:s=>s,select:()=>{}});
+ const ctx=require('./helpers/layer-context.cjs').createContext({$,FurnishGeometry:G,FurnishPlans:[],state:{open:{d:{}}},window:{},PAL:{ink:'#000',leaf:'#fff'},tr:s=>s,select:()=>{}});
  vm.runInContext(setup,ctx);ctx.plan=plan;vm.runInContext('PLAN=plan;applyPlanData();',ctx);
  vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),ctx);
  vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ctx);

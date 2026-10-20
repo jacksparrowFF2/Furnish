@@ -4,7 +4,7 @@ const hob={id:'hob',type:'stove_fotile_th36b',name:'燃气灶',cx:2100,cy:2010,w
 const wall={id:'upper',type:'kitchenwall',name:'吊柜',cx:2100,cy:2150,w:1200,d:400,rot:0,h:700,mountHeight:1480,color:'#ddd'};
 const baseline=S.directional(hob,{furniture:[host,hob]});
 // Adding either a legacy or a modular wall cabinet must preserve the worktop distances.
-const modular=K.configure(wall,{version:1,shape:'straight',depth:400,baseHeight:700,thickness:0,plinth:0,modules:[{run:0,width:1200,role:'door'}]});
+const modular=K.configure(wall,{version:1,shape:'straight',depth:400,baseHeight:700,thickness:0,modules:[{run:0,width:1200,role:'door'}]});
 for(const upper of [wall,modular]){
  const items=[host,hob,upper],before=JSON.stringify(items);
  assert.deepEqual(S.directional(hob,{furniture:items}),baseline);

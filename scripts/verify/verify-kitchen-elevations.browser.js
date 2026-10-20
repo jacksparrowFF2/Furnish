@@ -11,7 +11,7 @@ async (page,verification)=>{
   await p.getByRole('button',{name:'两边正视展开',exact:true}).click();
   check(await p.locator('.cab-elevation').count()===2,'two elevation panels');
   check(await p.locator('.cab-elevation .cab-module-number').count()===4,'each original module numbered once');
-  await choose(p,'bay');for(const [index,width] of [800,800,450,300].entries()){await choose(p,undefined,index);const label=p.locator('.cab-elevation .cab-dimension').filter({hasText:/^宽 /});check(await label.count()===1&&await label.textContent()==='宽 '+width,'selected module width '+index);check(await label.isVisible(),'selected module dimension visible '+index);}
+  await choose(p,'bay');for(const [index,width] of [800,800,450,300].entries()){await choose(p,undefined,index);const label=p.locator('.cab-elevation .cab-dimension').filter({hasText:/^模块外宽 /});check(await label.count()===1&&await label.textContent()==='模块外宽 '+width,'selected module width '+index);check(await label.isVisible(),'selected module dimension visible '+index);}
   check((await p.locator('.cab-elevation').nth(0).textContent()).includes('主边总长 1850'),'main total includes blind corner');
   check((await p.locator('.cab-elevation').nth(1).textContent()).includes('转角边总长 1700'),'return total includes blind corner');
   const number=i=>p.locator('.cab-elevation .cab-module-number').filter({hasText:new RegExp('^'+i+'$')});

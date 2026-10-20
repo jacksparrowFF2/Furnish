@@ -15,8 +15,8 @@ for(const [oldVersion,current] of [[7,ceiling],[8,ceiling],[7,linked],[9,mixed]]
  for(let i=0;i<4;i++){restored=restore(P.unpack(P.pack(payload(restored))).current,plan);assert.deepEqual(restored.ceilings,current.ceilings);assert.deepEqual(restored.wallTiling,current.wallTiling);}
  const saved=workspace(current,oldVersion);assert.deepEqual(R.parse({...JSON.parse(R.text(saved)),version:oldVersion}),R.portable(saved));assert.equal(JSON.parse(R.text(saved)).version,9);
 }
-assert.throws(()=>P.unpack({...P.pack(payload(mixed)),version:16}),/版本/);
-assert.throws(()=>R.parse({...JSON.parse(R.text(workspace(mixed))),version:16}),/版本/);
+assert.throws(()=>P.unpack({...P.pack(payload(mixed)),version:17}),/版本/);
+assert.throws(()=>R.parse({...JSON.parse(R.text(workspace(mixed))),version:17}),/版本/);
 const legacy7={...workspace(linked,7),updatedAt:200},legacy8={...workspace(ceiling,8),updatedAt:100},values={'huxing-design-v7':JSON.stringify(legacy7),'huxing-design-v8':JSON.stringify(legacy8)},original=copy(values),read=k=>values[k]||null;
 assert.deepEqual(Cache.load({read,key:'huxing-design-v9',firstPlan:plan,restore}),legacy7,'newest divergent legacy cache wins even with a lower version');
 const candidates=Cache.candidates({read,key:'huxing-design-v9'});assert.equal(candidates.length,2);assert.deepEqual(values,original,'reads retain both original keys');

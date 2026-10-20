@@ -1,6 +1,6 @@
 async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/hob-openings/';p.on('pageerror',e=>errors.push(e.message));
- const check=(ok,msg)=>{if(!ok)throw Error(msg);},edit=async(id,n)=>{await p.locator(id).fill(String(n));await p.locator(id).press('Tab');};
+ const check=(ok,msg)=>{if(!ok)throw Error(msg);},edit=async(id,n)=>verification.editFurnitureField(p,id,n);
  try{
   await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
@@ -18,8 +18,8 @@ async (page,verification)=>{
   await p.locator('#hob-cutout-reset').click();check(await p.evaluate(()=>getF('hob').hobCutout===undefined),'reset removes optional field');check(await p.locator('[data-hob-cutout]').getAttribute('d')===originalPath,'reset restores geometry');await p.evaluate(()=>undo());check(await current()===record,'reset undo');
   await p.evaluate(()=>mutate(()=>{getF('hob').locked=true;}));for(const id of ['#hob-cutout-w','#hob-cutout-d','#hob-cutout-reset'])check(await p.locator(id).isDisabled(),'locked '+id);await p.evaluate(()=>undo());
   await p.locator('#hob-cutout').scrollIntoViewIfNeeded();await p.screenshot({path:dir+'editable-desktop.png',animations:'disabled'});
-  check(await p.evaluate(()=>{const payload={planId:PLAN.id,current:state,designs:[{name:'自定义孔',work:state}],catalog:[]},result=FurnishProject.unpack(FurnishProject.pack(payload));return result.current.furniture[1].hobCutout.w===620&&result.designs[0].work.furniture[1].hobCutout.d===320&&preparePlanSVG().svg.querySelector('[data-hob-opening]').textContent.includes('620 × 320 mm');}),'current/named projects and export');
-  await p.waitForFunction(()=>!savePending);await p.reload();await p.locator('[data-hob-cutout]').waitFor();check(await current()===record,'autosave refresh');await p.evaluate(()=>selectIds(['hob']));
+  check(await p.evaluate(()=>{const payload={planId:PLAN.id,current:state,designs:[{name:'自定义孔',work:state}],catalog:[]},result=FurnishProject.unpack(FurnishProject.pack(payload));return result.current.furniture[1].hobCutout.w===620&&result.designs[0].work.furniture[1].hobCutout.d===320&&!preparePlanSVG().svg.querySelector('[data-hob-opening]');}),'current/named projects and export');
+  await p.waitForFunction(()=>!savePending);await p.reload();await p.waitForFunction(()=>!repositoryBooting);await p.evaluate(()=>selectIds(['hob']));await p.evaluate(()=>selectIds(['hob']));await p.locator('[data-hob-cutout]').waitFor();check(await current()===record,'autosave refresh');await p.evaluate(()=>selectIds(['hob']));
   // Observe the actual scene builder: editing must replace the cached slab,
   // and its top-triangle area must equal the worktop minus the edited hole.
   await p.evaluate(()=>{

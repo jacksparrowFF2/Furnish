@@ -21,7 +21,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   const host=new Element();let picked=null,clicked=null,preview;
   preview=context.FurnishCabinetPreview.create({THREE:{...T,WebGLRenderer:Renderer},OrbitControls:Controls,box,host,f,background:'#eee',actions:{select:part=>{picked=part;return true;},inspect:part=>{clicked=part;return true;}}});
   preview.setView({front:true,unfolded:true});tick();assert.equal(walk(host,'cab-elevation').length,2);assert.equal(walk(host,'cab-module-number').length,4);
-  const widths=walk(host,'cab-dimension').filter(e=>e.textContent.startsWith('宽 '));assert.equal(widths.length,4);assert(widths.every(e=>!e.hidden));
+  const widths=walk(host,'cab-dimension').filter(e=>e.textContent.startsWith('模块外宽 '));assert.equal(widths.length,4);assert(widths.every(e=>!e.hidden));
   const badge=walk(host,'cab-module-number').find(e=>e.textContent==='4');badge.onclick();assert.equal(picked.column,3);
   // Shoot a real Three.js ray through the return drawer face; its local row index maps back.
   const returnRenderer=renderers.filter(r=>!r.disposed).at(-1),row=rows[1],local=row.indices.indexOf(1);let face;

@@ -31,6 +31,13 @@ assert(bad('opening',[],f,{...plan,rooms:[{...plan.rooms[0],poly:[[-1000,-1000],
 assert.equal(bad('opening',[],f,{...plan,markers:[{id:'pipe',name:'排水管',kind:'drain',at:[0,300],pipeDiameter:50}]})[0].ok,false);
 // Guide conditions: table→cabinet 650, top access 50, strict outward offset >80.
 assert.equal(bad('overhead',[above(650)]).length,0);assert.equal(bad('overhead',[above(649)])[0].ok,null,'reference has a 2 mm transition between 650 and 598+50');assert.equal(bad('overhead',[above(648)])[0].ok,null,'50 mm is not less than 50');
+// Door display and inset board faces must not waive the strict front-offset limit.
+for(const offset of [79.99,80,80.01]){
+ const closed=K.configure(above(647,offset),K.defaults({...above(647,offset),w:800,d:320}));
+ const opened=K.toggle(closed,0,undefined,true);
+ assert.equal(bad('overhead',[closed]).length===0,offset>80);
+ assert.deepEqual(rows('overhead',[opened]),rows('overhead',[closed]),'overhead installation uses the same envelope with doors open');
+}
 assert.equal(bad('overhead',[above(647,80)])[0].ok,false);assert.equal(bad('overhead',[above(647,80.01)]).length,0);assert.equal(bad('overhead',[above(647,79.99)])[0].ok,false);
 assert.equal(bad('overhead',[above(598,81)]).length,0,'top contact with accessible front offset');assert.equal(bad('overhead',[above(597.99,81)])[0].ok,false,'front offset cannot waive body intrusion');
 assert.equal(bad('overhead',[{...above(),type:'unmodelled',mountHeight:undefined,h:undefined}])[0].ok,null);

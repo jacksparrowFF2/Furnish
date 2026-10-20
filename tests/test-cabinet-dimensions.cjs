@@ -33,8 +33,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   preview.setView({dimensionScope:'all'});
   if(['L','U'].includes(f.kitchen?.shape)){const parentTick=tick;preview.setView({front:true,unfolded:true,dimensionScope:'size'});preview.selectPart({column:0});assert.equal(list.hidden,true,'selection in unfolded view cannot redisplay the duplicate parent list');preview.setView({front:false,unfolded:false,dimensionScope:'all'});tick=parentTick;}
   assert.deepEqual(items('cab-module-number').map(e=>e.textContent),Array.from({length:count},(_,i)=>String(i+1)));
-  const widths=f.kitchen?f.kitchen.modules.map(m=>m.width):C.widths(f);
-  widths.forEach(v=>assert(items('cab-dimension').some(e=>e.textContent===(f.kitchen?'宽 ':'净宽 ')+Number(v.toFixed(2)))));
+  const widths=f.kitchen?f.kitchen.modules.map(m=>m.width):C.moduleWidths(f);
+  widths.forEach(v=>assert(items('cab-dimension').some(e=>e.textContent==='模块外宽 '+Number(v.toFixed(2)))));
   for(const front of [true,false]){
    preview.setView({front,doors:'hidden'});tick();
    assert.equal(items('cab-size-summary').length,1,'depth remains available even in front projection');

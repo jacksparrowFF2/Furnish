@@ -1,5 +1,5 @@
 async(page,verification)=>{
- const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
+ const choose=async(page,kind,column)=>{await verification.selectCabinetObject(page,{kind,column});const detail=page.locator('[data-k-details^="door-layout-"]:visible,[data-cab-details^="door-layout-"]:visible').first();if(await detail.count()&&!await detail.evaluate(el=>el.open))await detail.locator('>summary').click();};
  const context=await page.context().browser().newContext({viewport:{width:1440,height:1000}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
  const check=(v,m)=>{if(!v)throw Error(m);},equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b),read=()=>p.evaluate(()=>structuredClone(getF('width-test'))),width=j=>p.locator(`[data-k-door-row="1"] [data-k-door-width="${j}"]`),save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click(),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click();
  async function open(){await p.evaluate(()=>FurnishCabinetEditor.open('width-test'));await p.locator('#cab-preview canvas').waitFor();await choose(p,'door');await choose(p,undefined,1);}

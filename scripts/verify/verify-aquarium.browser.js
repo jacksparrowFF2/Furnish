@@ -11,13 +11,13 @@ async (page,verification)=>{
   await p.goto(base+'index.html');await p.locator('#lib').waitFor();await p.locator('#lib').getByText('米家智能鱼缸 2 Pro',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
   check(await p.evaluate(id=>{const f=getF(id);return f.w===505&&f.d===292&&f.h===334&&f.mountHeight===0&&f.model==='智能鱼缸 2 Pro';},id),'creation');
   for(const [selector,value,key] of [['#fMountHeight','750','mountHeight'],['#fH','400','h'],['#fW','600','w'],['#fD','320','d']]){
-   await p.locator(selector).fill(value);await p.locator(selector).press('Tab');check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');
+   await verification.editFurnitureField(p,selector,value);check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');
   }
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();check(await p.evaluate(id=>getF(id).d===292,id),'undo');await p.getByRole('button',{name:'重做',exact:true}).first().click();check(await p.evaluate(id=>getF(id).d===320,id),'redo');
   await p.locator('#fMountHeight').fill('0');await p.locator('#fMountHeight').press('Tab');check(await p.evaluate(id=>getF(id).mountHeight===0,id),'zero');await p.evaluate(()=>undo());
   await p.locator('#fMountHeight').fill('-1');await p.locator('#fMountHeight').press('Tab');check(await p.evaluate(id=>getF(id).mountHeight===750,id),'invalid elevation');
   await p.locator('[data-act="lock"]').first().click();check(await p.locator('#fMountHeight').isDisabled(),'lock');await p.locator('[data-act="lock"]').first().click();
-  await p.getByRole('button',{name:'复制',exact:true}).click();check(await p.evaluate(()=>state.furniture.filter(f=>f.type==='aquarium_mijia_2pro').length===2),'copy');await p.evaluate(()=>undo());
+  await p.locator('#fab [data-act="dup"]').click();check(await p.evaluate(()=>state.furniture.filter(f=>f.type==='aquarium_mijia_2pro').length===2),'copy');await p.evaluate(()=>undo());
   const before=await p.evaluate(id=>JSON.stringify(getF(id)),id);await p.reload();await p.locator('#lib').waitFor();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'refresh');await p.evaluate(id=>selectIds([id]),id);
   // Real project download/upload includes one named design as well as current work.
   await p.evaluate(()=>{store.designs.push({id:'aquarium-check',name:'鱼缸验收',planId:PLAN.id,ts:Date.now(),work:JSON.parse(JSON.stringify(state))});});

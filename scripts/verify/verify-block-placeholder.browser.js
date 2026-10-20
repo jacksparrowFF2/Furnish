@@ -15,7 +15,7 @@ async (page,verification)=>{
    await p.locator(selector).fill(value);await p.locator(selector).press('Tab');
    check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),'edit '+key);
   }
-  check((await p.locator('#panel [data-furniture-dimensions]').innerText()).includes('长 × 宽 × 高'),'block dimension labels');
+  check((await p.locator('#panel [data-furniture-dimensions]').innerText()).includes('包络高'),'block envelope height label');
   await p.evaluate(()=>undo());check(await p.locator('#fH').inputValue()==='1000','undo');
   await p.evaluate(()=>redo());check(await p.locator('#fH').inputValue()==='890','redo');
   await p.locator('#fH').fill('0');await p.locator('#fH').press('Tab');check(await p.locator('#fH').inputValue()==='890','reject zero height');

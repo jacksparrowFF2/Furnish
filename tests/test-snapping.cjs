@@ -3,7 +3,8 @@ const S=require('../src/core/snapping.js');
 const f={id:'moving',cx:0,cy:0,w:100,d:200,rot:0};
 const base={grid:100,scale:1,wallSnap:true,guides:true,rects:[[0,0,0,1000]],furniture:[]};
 assert.deepEqual(S.move(f,46,530,base),{position:[50,500],guides:[]});
-assert.deepEqual(S.move(f,40,530,base).position,[0,500]); // Legacy edge tolerance, away from feature points.
+assert.deepEqual(S.move(f,40,530,base).position,[50,500]); // Face contact includes the exact 10 px capture threshold.
+assert.deepEqual(S.move(f,39.99,530,base).position,[0,500]); // Just outside the face capture radius, retain grid fallback.
 assert.deepEqual(S.move(f,46,3000,base).position,[0,3000]); // No wall alignment outside its span.
 assert.deepEqual(S.move({...f,rot:90},98,500,base).position,[100,500]);
 assert.deepEqual(S.move(f,46,500,{...base,wallSnap:false}).position,[0,500]);

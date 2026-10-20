@@ -23,8 +23,8 @@ const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-co
   preview.update({...f,flip,kitchen:{...f.kitchen,baseHeight:920}});tick();const updated=scene.children.find(o=>o.isGroup);assert(Math.abs(new T.Box3().setFromObject(updated).max.y-.96)<1e-6);assert.equal(JSON.stringify(f),before);
   const labels=host.children.find(el=>el.className==='cab-dimensions'),doorList=host.children.find(el=>el.className==='cab-door-sizes'),text=()=>labels.children.map(el=>el.textContent||'');
   preview.selectPart({column:2});preview.setView({dimensionScope:'front'});tick();assert(text().some(s=>s.includes('×')));assert(labels.children.filter(el=>el.className==='cab-dimension cab-door-dimension').every(el=>el.title.startsWith('模块 3 ')),'projected door scope follows the production module index, including mirrored kitchens');assert(doorList.children.some(el=>el.textContent.startsWith('模块 1 '))&&doorList.children.some(el=>el.textContent.startsWith('模块 3 ')),'complete list preserves doors in unselected modules');
-  preview.setView({dimensionScope:'modules'});tick();assert.equal(text().filter(s=>s.startsWith('宽 ')).length,1);assert(text().includes('宽 1200'));assert(!text().some(s=>/^\d+.*×/.test(s)));
-  preview.selectPart({column:0});tick();assert(text().includes('宽 900'));assert(!text().includes('宽 1200'));assert.equal(JSON.stringify(f),before);
+  preview.setView({dimensionScope:'modules'});tick();assert.equal(text().filter(s=>s.startsWith('模块外宽 ')).length,1);assert(text().includes('模块外宽 1200'));assert(!text().some(s=>/^\d+.*×/.test(s)));
+  preview.selectPart({column:0});tick();assert(text().includes('模块外宽 900'));assert(!text().includes('模块外宽 1200'));assert.equal(JSON.stringify(f),before);
   preview.dispose();assert.equal(canvas.isConnected,false);
  }
  assert.equal(disposed,2);

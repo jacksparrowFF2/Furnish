@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column}).then(async picked=>{await verification.revealCabinetSettings(page);return picked;});
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1000}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
  const check=(v,m)=>{if(!v)throw Error(m);},read=()=>p.evaluate(()=>structuredClone(getF('pairing-test'))),equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b),save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click(),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click();
  async function open(){await p.evaluate(()=>FurnishCabinetEditor.open('pairing-test'));await p.locator('#cab-preview canvas').waitFor();await choose(p,'door');await choose(p,undefined,1);await p.waitForTimeout(200);}

@@ -1,5 +1,5 @@
 async (page,verification)=>{
- const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column}).then(async picked=>{await verification.revealCabinetSettings(page);return picked;});
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1040}}),p=await context.newPage(),errors=[];
  p.setDefaultTimeout(12000);p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(message);};
  try{
@@ -20,7 +20,7 @@ async (page,verification)=>{
   check(await p.locator('.cab-elevation').nth(1).getByText('盲角',{exact:true}).count()===2,'two blind corners in connector');
   await p.locator('.cab-module-number').filter({hasText:/^5$/}).click();await p.locator('[data-kitchen-row="4"] [data-k-width]').fill('820.25');
   await choose(p,'body');check((await p.locator('.cab-elevation').nth(2).textContent()).includes('1420.25'),'third width reads unblurred input');
-  await p.locator('[data-k-extension-length="2"]').fill('300');await p.locator('[data-k-extension-length="2"]').blur();await p.locator('[data-k-extension-depth="2"]').fill('200');await p.locator('[data-k-extension-depth="2"]').blur();
+  await choose(p,'body');await verification.revealCabinetSettings(p);await p.locator('[data-k-extension-length="2"]').fill('300');await p.locator('[data-k-extension-length="2"]').blur();await p.locator('[data-k-extension-depth="2"]').fill('200');await p.locator('[data-k-extension-depth="2"]').blur();
   await p.locator('[data-k-extension-cabinet-depth="2"]').fill('180');await p.locator('[data-k-extension-cabinet-depth="2"]').blur();
   await p.screenshot({path:'output/playwright/kitchen-u/elevations.png',animations:'disabled'});
   await p.getByRole('button',{name:'透视预览',exact:true}).click();check(await p.locator('.cab-elevation').count()===0,'unfolded renderers released');

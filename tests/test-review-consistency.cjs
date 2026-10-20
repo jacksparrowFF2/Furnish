@@ -8,10 +8,13 @@ console.log('PASS optimized review matches legacy confirmations, geometry/thresh
 // Same finding text can remain after a cavity or installation edit. It must
 // require a new confirmation even when x/y and overall w/d have not changed.
 const overlap=original.find(v=>v.kind==='overlap');
-for(const patch of [{h:900},{flip:true},{mountHeight:0},{obj:{}},{cabinet:{version:1}},{showerMixerHeight:1000}]){
+for(const patch of [{h:900},{flip:true},{mountHeight:0},{obj:{}},{showerMixerHeight:1000}]){
  const changed=[{...f,...patch},work.furniture[1]];
- assert.notEqual(P.checkFingerprint(overlap,plan,changed,800),key);
+ assert.notEqual(P.checkFingerprint(overlap,plan,changed,800),key,JSON.stringify(patch));
 }
+const C=require('../src/core/cabinet-core.js'),cab={...f,type:'wardrobe',...C.preset('wardrobe')},cabChanged=structuredClone(cab);cabChanged.cabinet.thickness+=1;
+assert.notEqual(P.checkFingerprint(overlap,plan,[cab,work.furniture[1]],800),P.checkFingerprint(overlap,plan,[cabChanged,work.furniture[1]],800),'effective cabinet board geometry invalidates confirmation');
+assert.equal(P.checkFingerprint(overlap,plan,[{...f,cabinet:{version:1}},work.furniture[1]],800),key,'unsupported cabinet metadata does not change chair geometry');
 const physical={...plan,physicalRooms:[{...plan.rooms[0],poly:[[0,0],[2000,0],[2000,3000],[0,3000]]}]};
 assert.notEqual(P.checkFingerprint(overlap,physical,work.furniture,800),key);
 assert.notEqual(P.checkFingerprint(overlap,{...plan,rooms:[{...plan.rooms[0],counted:false}]},work.furniture,800),key);

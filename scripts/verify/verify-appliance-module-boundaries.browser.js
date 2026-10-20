@@ -17,8 +17,8 @@ async (page,verification)=>{
    check(sink.t.wall&&Math.abs(sink.t.distance-88)<.001,'sink rear adjoining wall: '+JSON.stringify(sink));
    check(hob.t.wall&&Math.abs(hob.t.distance-128)<.001,'hob rear adjoining wall: '+JSON.stringify(hob));
    check(Math.abs(hob.l.distance-170)<.001&&Math.abs(hob.r.distance-170)<.001,'hob stops at own module ends');
-   check(await p.locator('[data-surface-opening="sink"] [data-hob-gap]').count()===4,'sink four orange labels');check(await p.locator('[data-surface-opening="hob"] [data-hob-gap]').count()===4,'hob four orange labels');
-   check((await p.locator('#panel').innerText()).includes('紧邻实体墙'),'panel names adjoining wall');check((await p.locator('#panel').innerText()).includes('模块边界'),'panel names module reference');
+   check(await p.locator('[data-surface-opening="sink"] [data-hob-gap]').count()===4,'selected sink four orange labels');await p.evaluate(()=>selectIds(['hob']));check(await p.locator('[data-surface-opening="hob"] [data-hob-gap]').count()===4,'selected hob four orange labels');await p.evaluate(()=>selectIds(['sink']));
+   await verification.openDistanceControls(p);check((await p.locator('#fab-editor').innerText()).includes('墙'),'panel names adjoining wall');check((await p.locator('#fab-editor').innerText()).includes('模块边界'),'panel names module reference');
    await p.screenshot({path:root+'output/playwright/sink-surface/'+mode+'-module-wall.png'});
    await p.evaluate(()=>mutate(()=>{state.demolished=['w0'];}));sink=await gaps('sink');check(!sink.t.wall&&Math.abs(sink.t.distance-85)<.001,'demolished wall falls back to module');await p.evaluate(()=>undo());check((await gaps('sink')).t.wall,'undo restores solid wall priority');await p.evaluate(()=>redo());check(!(await gaps('sink')).t.wall,'redo demolition');await p.evaluate(()=>undo());
    await p.evaluate(()=>{PLAN.walls=[];PLAN.wins=[{rect:[2480,2400,2597,5600],sill:.9,head:2.4}];applyPlanData();renderAll();});sink=await gaps('sink');check(!sink.t.wall&&Math.abs(sink.t.distance-85)<.001,'window cannot replace module reference');check(!(await gaps('hob')).t.wall,'open direction uses module');
