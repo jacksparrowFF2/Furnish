@@ -64,7 +64,7 @@ function renderFab(){
   const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   fab.innerHTML = ids.length
     ? `<div class="fab-primary"><span class="name">${f ? esc(nm(f.name)) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
-      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(f.w.toFixed(2))} × ${Number(f.d.toFixed(2))}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
+      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
       + `<button class="btn" data-fab-edit="distance" aria-haspopup="dialog" aria-expanded="false" ${selItems().some(v=>furnitureError(v))?'disabled':''}>${tr('四向净距','Clearances')}</button></div><div class="fab-actions">`
       + b('rotL', 'rotL', tr('逆时针 90°', 'Rotate left')) + b('rotR', 'rotR', tr('顺时针 90°', 'Rotate right')) + b('flip', 'flip', tr('镜像', 'Mirror'))
       + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
@@ -77,6 +77,14 @@ function renderFab(){
 }
 
 function furnitureUsesDetailedDesign(f){return FurnishCabinet.supported(f)||!!f.kitchen;}
+function openSelectionProperties(){
+  const items=selItems(),f=items.length===1&&items[0];
+  ui.panelScope='object';
+  if(f&&furnitureUsesDetailedDesign(f)&&!furnitureLocked(f)&&!furnitureError(f)){
+    openFabEditor('size');return;
+  }
+  renderPanel();drawer('panel',true);
+}
 let fabEditor=null,fabPositionFrame=0,fabDockKey='',fabRevealFrame=0,fabRevealPending=false;
 function closeFabEditor(focus=true){
   if(!fabEditor)return;
@@ -234,12 +242,21 @@ function positionFab(){
     const score=r=>obstacles.reduce((sum,o)=>{const area=overlap(r,o);return sum+(area?(o.weight===10?1e11:o.weight===35?1e10:o.weight===25?1e9:0)+area*o.weight:0);},0)+(focus?Math.hypot(r.x+w/2-(focus.x+focus.right)/2,r.y+h/2-(focus.y+focus.bottom)/2):H-r.y)*.02;
     return candidates.map(r=>({...r,score:score(r)}));
   };
-  const bars=choices(fab);let chosen=bars.reduce((a,b)=>a.score<=b.score?a:b),chosenEditor=null;
+  let bars=choices(fab);
+  // Keep the quick bar beside the visible selection. A distant empty corner
+  // must not win solely because a nearby dimension label needs avoidance.
+  if(focus&&!editor&&!is3D()){
+    const anchor={x:Math.max(0,focus.x),y:Math.max(0,focus.y),right:Math.min(W,focus.right),bottom:Math.min(H,focus.bottom)};
+    const gap=r=>Math.hypot(Math.max(0,anchor.x-r.x-r.w,r.x-anchor.right),Math.max(0,anchor.y-r.y-r.h,r.y-anchor.bottom));
+    const nearby=bars.filter(r=>gap(r)<=96);
+    if(nearby.length)bars=nearby;
+  }
+  let chosen=bars.reduce((a,b)=>a.score<=b.score?a:b),chosenEditor=null;
   if(editor){
     const panels=choices(editor);let score=Infinity;
     for(const bar of bars)for(const panel of panels){const area=overlap(bar,panel),value=bar.score+panel.score+(area?1e12+area*50:0);if(value<score){score=value;chosen=bar;chosenEditor=panel;}}
   }
-  if(!is3D()&&[chosen,chosenEditor].filter(Boolean).some(r=>obstacles.some(o=>o.weight>=10&&overlap(r,o)>0))){dockFab(W>720?'right':'top',key);return;}
+  if(!is3D()&&[chosen,chosenEditor].filter(Boolean).some(r=>obstacles.some(o=>(o.weight===10||o.weight===25||editor&&o.weight===35)&&overlap(r,o)>0))){dockFab(W>720?'right':'top',key);return;}
   for(const [el,r] of [[fab,chosen],[editor,chosenEditor]])if(el&&r){el.style.left=r.x+'px';el.style.top=r.y+'px';el.style.bottom='auto';el.style.transform='none';}
 }
 
@@ -264,7 +281,7 @@ function roomPanel(r){
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
     <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
   <section><h3>${tr('房间内家具','Furniture in room')} <small>${tr(`${inside.length} 件 · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`, `${inside.length} items · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`)}</small></h3>
-    ${inside.map(f => `<div class="irow ${clashIds.has(f.id) ? 'clash' : ''}" data-focus="${f.id}"><span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${esc(nm(f.name))}</span><small>${f.w}×${f.d}</small></div>`).join('') || `<div class="muted">${tr('暂无','None')}</div>`}
+    ${inside.map(f => `<div class="irow ${clashIds.has(f.id) ? 'clash' : ''}" data-focus="${f.id}"><span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${esc(nm(f.name))}</span><small>${Number(FurnishProducts.dimensions(f).w.toFixed(2))}×${Number(FurnishProducts.dimensions(f).d.toFixed(2))}</small></div>`).join('') || `<div class="muted">${tr('暂无','None')}</div>`}
     <div class="actions">
       <button class="btn" data-act="roomReset">${ico('reset')}${tr('恢复默认名称与地面','Reset name & floor')}</button>
       <button class="btn" data-act="home">${tr('← 返回总览','← Back to overview')}</button></div></section>`;
@@ -288,7 +305,7 @@ function furniturePriceText(f){
 }
 function furnitureDimensionSummary(f,{verticalOnly=false}={}){
  const vertical=FurnishDesign.furnitureVerticalBounds(f),known=vertical&&[vertical.bottom,vertical.top].every(Number.isFinite),mm=v=>String(Number(v.toFixed(2)));
- const height=known?mm(vertical.top-vertical.bottom):'—',size=verticalOnly?`${height} mm`:`${mm(f.w)} × ${mm(f.d)} × ${height} mm`;
+ const actual=FurnishProducts.dimensions(f),height=known?mm(vertical.top-vertical.bottom):'—',size=verticalOnly?`${height} mm`:`${mm(actual.w)} × ${mm(actual.d)} × ${height} mm`;
  return `<div class="furniture-dimensions" data-furniture-dimensions><b>${size}</b><small>${verticalOnly?tr('包络高','Envelope height'):f.type==='block'?tr('长 × 宽 × 高','Length × width × height'):tr('占地宽 × 深 × 包络高','Footprint width × depth × envelope height')}</small><dl><div><dt>${tr('底部离地','Bottom above floor')}</dt><dd>${known?mm(vertical.bottom)+' mm':tr('待核对','Unknown')}</dd></div><div><dt>${tr('顶部离地','Top above floor')}</dt><dd>${known?mm(vertical.top)+' mm':tr('待核对','Unknown')}</dd></div></dl><small>${known?tr(state.furnitureDatum==='finished-floor'?'高度按完成地面计；绝对标高见下方地面信息':'高度按毛坯测量基准计','Height datum follows the current design'):tr('高度未知，保留待核对','Height is unknown; verification required')}</small></div>`;
 }
 function waterheaterInstallationPanel(f){
@@ -348,6 +365,8 @@ function furnPanel(f){
       ${FurnishDesign.products().family(f,'countertop-dishwasher')?`<label>${tr('机身高度','Body height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="10" max="20000" step="1" ${lk}></label><label>${tr('底部离地高度','Bottom height above floor')} (mm)<input type="number" id="fMountHeight" value="${FurnishProducts.value(f,'mountHeight')}" min="0" max="20000" step="1" ${lk}></label><label class="full">${tr('折叠门','Folding door')}<select id="dishwasher-door" ${lk}><option value="closed" ${!FurnishProducts.value(f,'dishwasherDoorOpen')?'selected':''}>${tr('闭合','Closed')}</option><option value="open" ${FurnishProducts.value(f,'dishwasherDoorOpen')?'selected':''}>${tr('展开','Open')}</option></select></label><p class="muted" style="grid-column:1/-1;margin:0">${tr('原规格 550 × 350 × 598 mm，开门总深 600 mm。底部离地默认 860 mm 仅为布局初值，请填实际台面高度；尺寸修改仅作布局缩放。空间核对始终检查完全开启的保守包络、出气侧和上方吊柜条件；折叠连杆轨迹未模拟。','Nominal size 550 × 350 × 598 mm; open depth 600 mm. Default bottom elevation 860 mm is a layout starting point; enter the actual worktop height. Resizing is for layout only. Spatial checks always use the full opening reservation and check outlet-side and overhead clearances; folding linkages are not simulated.')}</p><details class="full muted"><summary>${tr('参考图安装指引','Reference installation guidance')}</summary><p>${tr('出气口距侧面橱柜／墙壁 ≥200 mm；台面前后深度不足 600 mm 时门可能凸出。台面至吊柜底 ≥650 mm 时图示可贴墙正常开门；若机顶至吊柜不足 50 mm，图示要求机门前端比吊柜前沿向外错开 >80 mm，以便操作顶部开门键。这些条件已接入下方自动核对；出气口位置未知，按整侧机身保守预留。水电接口、后部软管及承托荷载待核对。','Steam outlet to side cabinet/wall ≥200 mm. Open doors may overhang worktops shallower than 600 mm. The reference permits wall-adjacent placement with ≥650 mm from worktop to wall cabinet bottom. If top clearance is <50 mm, the door front should project >80 mm beyond the wall cabinet front for button access. These conditions are checked below. The entire outlet side is reserved conservatively because its exact location is unknown. Connections, rear hoses and load capacity need verification.')}</p></details>`:''}
       ${FurnishProducts.family(f,'pet-cat-tree')?`<label class="full">${tr('高度','Height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="50" max="20000" step="1" ${lk}></label><p class="muted small" style="grid-column:1/-1">${tr('参考图规格 500 × 500 × 1430 mm；内部尺寸、材质与细节为外观估算，尺寸编辑仅作布局缩放。梯子一侧为正面，静态模型；品牌、价格及安装要求未知。','Reference envelope 500 × 500 × 1430 mm. Internal sizes, materials and details are visual estimates; resizing is for layout. The ladder faces front. Static model; brand, price and installation requirements unknown.')}</p>`:''}
       ${FurnishProducts.family(f,'floor-aircon')&&!f.obj?`<label class="full">${tr('高度','Height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="50" max="20000" step="1" ${lk}></label><p class="muted small" style="grid-column:1/-1">${tr('美的酷省电 Ultra 2匹室内机，395 × 436 × 1856 mm，尺寸包含底座。静态外观；尺寸修改仅作布局缩放，安装间距与接管位置待确认。','Midea Ultra 2 HP indoor unit: 395 × 436 × 1856 mm including base. Static model; resizing is for layout. Installation clearances and connections are unknown.')}</p>`:''}
+      ${FurnishProducts.family(f,'shoe-bench')&&!f.obj?`<label class="full">${tr('高度','Height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="50" max="20000" step="1" ${lk}></label><p class="muted small" style="grid-column:1/-1">${tr('换鞋凳 800 × 300 × 450 mm，浅色软包、橡木框架与双层鞋架。颜色调整木色；尺寸修改为布局缩放。','Shoe bench 800 × 300 × 450 mm, light cushion, oak frame and two shoe shelves. Color edits the wood; resizing is for layout.')}</p>`:''}
+      ${FurnishProducts.family(f,'coffee-table')&&!f.obj?`<label class="full">${tr('高度','Height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="50" max="20000" step="1" ${lk}></label><p class="muted small" style="grid-column:1/-1">${tr('樱桃木茶几 1200 × 650 × 450 mm，白色岩板面、圆角板腿和静态抽屉。颜色调整木色；尺寸修改为布局缩放。','Cherry coffee table 1200 × 650 × 450 mm, white stone top, rounded side panels and static drawer. Color edits the wood; resizing is for layout.')}</p>`:''}
       ${FurnishProducts.family(f,'tea-table')&&!f.obj?`<label class="full">${tr('高度','Height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="50" max="20000" step="1" ${lk}></label><p class="muted small" style="grid-column:1/-1">${tr('柜体 800 × 400 × 720 mm；含茶具总高约 897 mm。茶壶、杯具和储物罐为静态陈设；高度输入控制柜体，整体同比例缩放。','Cabinet 800 × 400 × 720 mm; displayed height with tea ware about 897 mm. Static tea ware and storage jars. Height edits the cabinet; all parts scale together.')}</p>`:''}
       ${FurnishProducts.family(f,'tea-bar')&&!f.obj?`<label class="full">${tr('高度','Height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="50" max="20000" step="1" ${lk}></label><p class="muted small" style="grid-column:1/-1">${tr('米家智能茶吧机 Pro 立式，图示 315 × 310 × 1155 mm。上下柜门独立开启，内部杯架、水桶和约 100° 开门角为图片估算。尺寸修改仅作布局缩放；厂家操作预留待确认。','Mijia Smart Tea Bar Pro: 315 × 310 × 1155 mm. Independent doors; cup rack, bottle and 100° opening are visual estimates. Resizing is for layout only; manufacturer access clearances are unknown.')}</p>`:''}
       ${FurnishProducts.family(f,'tea-bar')&&!f.obj?FurnishProducts.definition(f).teaBar.doors.map(d=>`<label>${d.section==='upper'?tr('上层消毒柜门','Upper storage door'):tr('下层水桶柜门','Lower bottle door')}<select id="tea-bar-${d.section}-door" data-tea-bar-door="${d.key}" ${lk}><option value="closed" ${!FurnishProducts.value(f,d.key)?'selected':''}>${tr('闭合','Closed')}</option><option value="open" ${FurnishProducts.value(f,d.key)?'selected':''}>${tr('开启','Open')}</option></select></label>`).join(''):''}
@@ -360,7 +379,7 @@ function furnPanel(f){
       ${!cabinetDesign?`<label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>`:''}
     </div>
     ${!cabinetDesign?`<div class="swatches">${SWATCHES.map(c => `<button data-sw="${c}" class="${c === f.color ? 'on' : ''}" style="background:${c}" title="${c}"></button>`).join('')}</div>`:''}
-    <div class="muted desc">${tr('占地','Footprint')} ${fmt(f.kitchen?FurnishKitchen.area(f):f.w*f.d/1e6)} m² · ${tr('位于','In')} ${r ? esc(nm(state.rooms[r.id].name)) : isOutside(f) ? tr('户型外','outside') : tr('墙边 / 门口','wall / doorway')}</div>
+    <div class="muted desc">${tr('占地','Footprint')} ${fmt(f.kitchen?FurnishKitchen.area(f):FurnishProducts.dimensions(f).w*FurnishProducts.dimensions(f).d/1e6)} m² · ${tr('位于','In')} ${r ? esc(nm(state.rooms[r.id].name)) : isOutside(f) ? tr('户型外','outside') : tr('墙边 / 门口','wall / doorway')}</div>
     ${kitchenPanel(f)}
     ${waterheaterInstallationPanel(f)}${dishwasherInstallationPanel(f,installation)}
     ${window.FurnishDesignUI?.placementPanel(f,{shownIssues:installation?.checks||[]})||''}

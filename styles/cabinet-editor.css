@@ -109,9 +109,118 @@
 .cab-editor .btn.on:not(:disabled),
 .dlg-box:has(.cab-editor) .dlg-actions .btn.primary:not(:disabled){background:var(--cab-button-bg);color:var(--cab-button-ink)}
 @media(hover:hover){
- .cab-tabs button.on:hover,
  .cab-editor .btn.on:not(:disabled):hover,
  .dlg-box:has(.cab-editor) .dlg-actions .btn.primary:not(:disabled):hover{background:var(--cab-button-hover);color:var(--cab-button-ink)}
 }
 
 .cab-setting{min-width:0;margin-bottom:10px}.cab-setting-source{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}.cab-setting-source .btn{font-size:12px;padding:4px 8px}.cab-setting-source span{overflow-wrap:anywhere}
+
+/* Cabinet workspace rhythm: one control scale and one desktop parameter scroller. */
+.dlg-box:has(.cab-editor){--cab-control:40px;--cab-button:36px}
+.cab-editor .btn,.cab-setting-source .btn{box-sizing:border-box;min-height:var(--cab-button);padding:7px 12px;font-family:inherit;font-size:12px;font-weight:600;line-height:20px;border:1px solid var(--line);border-radius:8px;white-space:normal}
+.cab-editor .actions,.cab-kitchen-opening,.cab-shelf-buttons{gap:8px;align-items:stretch}
+.cab-editor .actions>.btn,.cab-kitchen-opening>.btn{flex:1 1 120px;min-width:96px}
+.cab-view-controls{gap:8px;padding:8px;background:var(--soft);border:1px solid var(--line);border-radius:10px;min-height:52px;box-sizing:border-box}
+.cab-view-controls label{min-height:36px;margin:0;gap:6px;font-size:12px;white-space:nowrap}
+.cab-view-controls select{box-sizing:border-box;height:36px;padding:6px 28px 6px 10px;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px}
+.cab-view-controls input[type=checkbox]{width:16px;height:16px;margin:0;accent-color:var(--accent)}
+.cab-fields input:not([type=checkbox]):not([type=range]):not([type=color]),.cab-fields select{box-sizing:border-box;height:var(--cab-control);min-height:var(--cab-control);padding:8px 10px;font-size:13px;line-height:22px}
+.cab-fields label,.cab-fields .form label{font-size:12px;font-weight:500;line-height:1.5;color:var(--muted)}
+.cab-fields .form{gap:12px;align-items:start}
+#cab-form label,#cab-kitchen-fields label{margin-bottom:12px}
+#cab-bay-picker,#cab-kitchen-picker{padding:12px;margin-bottom:16px;background:var(--soft);border-radius:10px}
+#cab-bay-picker>label,#cab-kitchen-picker>label{margin:0;color:var(--ink);font-weight:600}
+#cab-bay-picker .actions,#cab-kitchen-picker .actions{margin-top:10px}
+#cab-bay-picker:has(.actions>button:only-child) .actions,#cab-kitchen-picker:has(.actions>button:only-child) .actions,
+#cab-bay-picker:has(.actions>button:only-child) .cab-object-title,#cab-kitchen-picker:has(.actions>button:only-child) .cab-object-title{display:none}
+.cab-object-title{font-size:14px!important;margin-top:12px!important}
+#cab-form>section[data-cab-scope=body]{padding:16px;border:1px solid var(--line);border-radius:10px;margin-bottom:16px}
+.cab-fields h3{font-size:15px;margin:0 0 16px;line-height:1.4}
+.cab-fields h4{font-size:13px;line-height:1.5}
+.cab-setting-source{min-height:36px;gap:10px}
+.cab-setting-source .btn{flex:none;min-width:96px}
+.cab-fields .cab-help{padding:12px 0;margin-top:12px}
+.cab-help summary{font-weight:600;line-height:24px}
+.cab-visual>.cab-hint,.cab-visual>.muted,.cab-selection{font-size:12px;line-height:1.6;margin:10px 0!important;min-height:0}
+.cab-visual .project-error:empty{display:none}
+.dlg-box:has(.cab-editor) .dlg-actions .btn{box-sizing:border-box;min-height:40px;min-width:112px;padding:9px 16px;font-size:13px;line-height:20px;border-radius:8px}
+@media(min-width:701px){
+ .dlg-body:has(>.cab-editor){overflow:hidden;min-height:0}
+ .cab-editor{min-height:0;gap:20px}
+ .cab-visual{position:static;display:flex;flex-direction:column;height:100%;min-height:0;overflow:auto}
+ #cab-preview{flex:1 0 220px;height:auto;min-height:220px}
+ .cab-fields{scrollbar-gutter:stable;padding-right:6px}
+ .cab-visual>.actions,.cab-kitchen-opening{margin-top:auto;padding-top:8px}
+}
+@media(max-width:700px){
+ .cab-view-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:stretch}
+ .cab-view-controls>.btn{grid-column:1/-1}
+ .cab-view-controls label{justify-content:flex-start}
+ .cab-view-controls label:has(select){grid-column:1/-1;justify-content:space-between}
+ #cab-form>section[data-cab-scope=body]{padding:12px}
+ .cab-editor .actions>.btn,.cab-kitchen-opening>.btn{flex-basis:100px}
+ .cab-fields label{font-size:12px}
+}
+
+/* Kitchen and laundry use the cabinet workspace's control scale and direct form groups. */
+#cab-kitchen-fields .cab-parameter-group{min-width:0;padding:16px;margin:0 0 16px;border:1px solid var(--line);border-radius:10px}
+#cab-kitchen-fields .cab-parameter-group>h4{margin:0 0 14px;color:var(--ink)}
+#cab-kitchen-fields .form>.full,#cab-kitchen-fields .form>h4{grid-column:1/-1}
+#cab-kitchen-fields [data-kitchen-row]{padding:16px;border:1px solid var(--line);border-radius:10px;margin-bottom:16px;gap:16px}
+#cab-kitchen-fields [data-k-inspect]{gap:12px}
+#cab-kitchen-fields .form>.btn{align-self:end;width:100%;margin-bottom:12px}
+#cab-kitchen-fields .cab-kitchen-opening{grid-column:1/-1;margin:0}
+#cab-kitchen-fields .kitchen-end+.kitchen-end{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
+#cab-kitchen-fields details[data-k-details]{padding:12px;border:1px solid var(--line);border-radius:8px;margin:12px 0}
+#cab-kitchen-fields details[data-k-details]>summary{font-size:13px;font-weight:600;line-height:24px;cursor:pointer}
+#cab-kitchen-fields details[data-k-details][open]>summary{margin-bottom:14px}
+#cab-kitchen-fields .laundry-settings>p{font-size:12px;line-height:1.6}
+#cab-kitchen-fields input[type=checkbox]{width:16px;height:16px;flex:none;margin:2px 0 0;accent-color:var(--accent)}
+#cab-kitchen-fields .laundry-settings>.cab-parameter-group>.btn{width:100%;margin:0 0 12px}
+@media(max-width:700px){
+ #cab-kitchen-fields .cab-parameter-group,#cab-kitchen-fields [data-kitchen-row]{padding:12px}
+ #cab-kitchen-fields details[data-k-details]>.form{grid-template-columns:minmax(0,1fr)}
+ #cab-kitchen-fields .form>.btn{align-self:stretch}
+}
+
+.cab-fields .form select,.cab-fields .form input[type=number],.cab-fields .form input:not([type]){height:var(--cab-control);min-height:var(--cab-control)}
+
+/* Content-sized inspector: short values stay short, full-width lists remain available. */
+.cab-editor .actions>.btn,.cab-kitchen-opening>.btn{flex:0 1 auto;min-width:0}
+.cab-editor .actions,.cab-kitchen-opening{justify-content:flex-start}
+.cab-fields input[type=number],.cab-fields .form input[type=number]{width:128px;max-width:100%}
+.cab-fields select{width:220px;max-width:100%}
+.cab-fields .form{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+#cab-kitchen-fields .form>.btn{width:auto;justify-self:start}
+#cab-kitchen-fields .laundry-settings>.cab-parameter-group>.btn{width:auto}
+#cab-tools label{flex-direction:column;align-items:flex-start;gap:6px}
+#cab-tools input[type=number]{flex:none;width:128px}
+.cab-object-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.cab-object-heading .cab-object-title{margin:0!important}
+.cab-object-heading nav{display:flex;flex-wrap:wrap;gap:6px}
+.cab-object-finder{margin-top:10px;font-size:12px;color:var(--muted)}
+.cab-object-finder summary{cursor:pointer;line-height:24px}
+.cab-finder-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+#cab-bay-picker .cab-finder-fields label,#cab-kitchen-picker .cab-finder-fields label{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+#cab-object-target,#cab-kitchen-object,.cab-finder-fields [data-cab-find-group]{width:100%;max-width:100%}
+#cab-form[data-inspector-kind=shelf] fieldset{border:0;padding:0;margin:0}
+#cab-form[data-inspector-kind=shelf] fieldset>legend{display:none}
+.cab-selection{position:absolute!important;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+@media(min-width:1200px){
+ .dlg-box.wide:has(.cab-editor){width:min(1520px,calc(100vw - 48px));max-width:calc(100vw - 48px)}
+ .cab-editor{grid-template-columns:minmax(0,1.6fr) minmax(360px,1fr);height:min(760px,calc(100dvh - 190px))}
+}
+@media(max-width:700px){
+ .cab-editor .actions>.btn,.cab-kitchen-opening>.btn{flex:0 1 auto}
+ .cab-object-heading{align-items:flex-start;flex-direction:column}
+ .cab-fields .form{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cab-finder-fields{grid-template-columns:minmax(0,1fr)}
+ .cab-fields input[type=number]{max-width:100%}
+}
+
+#cab-form input[type=number],#cab-kitchen-fields input[type=number]{width:128px;max-width:100%}
+#cab-form select,#cab-kitchen-fields select{width:220px;max-width:100%}
+
+#cab-kitchen-picker input[type=number]{width:128px;max-width:100%;flex:none}
+
+#cab-form:not([data-inspector-kind=bay]) [data-cab-column]>legend{display:none}

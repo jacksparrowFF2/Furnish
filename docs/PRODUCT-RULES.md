@@ -1,5 +1,28 @@
 # 产品能力规则与兼容验收
 
+## 关联水槽局部偏移（2026-10-21）
+
+箭牌水槽及通用 ksink 的 `linkedSurfaceOffset={max:20000}` 定义已有 `counterLink` 内可选 `offset={x,y}`：模块局部宽／深轴、mm，各轴须为有限数值且绝对值不超过 max；不支持该能力的设备拒绝 offset。厨房核心再验证模块边界及实际台面完整承托。新建／旧缺失均读取居中，不物化偏移；首次编辑才保存。共用产品字段校验及替换清理，不新增顶层字段名单。复制整套保留并重映射 hostId，单独复制清关联；完整 link／孔环已进入原缓存和空间确认。详见 [水槽契约与复验](SINK-ARROW.md#关联水槽的四向净距偏移2026-10-21)。
+
+2026-10-20：pegboardAssembly.parts 为上柜、左右封板、下柜及 displayShelves/hooks/light 七项，accessoryParts 定义三个独立附件，legacyParts 保留 accessories 校验能力。柜体核心以单项值优先、缺失继承旧 accessories、再缺失默认保留的顺序派生；新控制读取同一接口。未编辑旧数据不补写，首次编辑部件写独立七项并移除旧总项；现有模板替换、完整 cabinet 缓存／确认／项目机制保留。见 [三类附件](ENTRY-PEGBOARD-CABINET.md#置物板挂钩灯带独立开关2026-10-20)。
+
+
+2026-10-20：pegboardAssembly.structureParts 集中定义上柜、左右封板和下柜，movablePegboard 判定独立离地能力时不再排除附件；pegboardPlacement 同时驱动通孔板和保留附件整体平移。沿用 pegboardBottom 字段、范围、缺失默认与模板清理，附件开关不重置高度；确认使用 pegboard-envelope-v3-accessory-height。见 [带附件调高](ENTRY-PEGBOARD-CABINET.md#洞洞板与保留附件共同调高2026-10-20)。
+
+
+2026-10-20：pegboardAssembly.bottom 集中定义纯洞洞板底部离地 0–20000 mm，允许 0／小数；可选 cabinet.pegboardBottom 仅在单块纯板时生效，缺失读取原构造底高不物化。柜体核心 pegboardPlacement 共用平移量，生产板件／预览／主场景／外包与空间检查同步。复制保留，换模板按整份 cabinet 清理，缓存及确认已覆盖完整 cabinet。见 [纯板离地高度](ENTRY-PEGBOARD-CABINET.md#纯洞洞板独立离地高度2026-10-20)。
+
+
+2026-10-20 复验：dimensions(f) 为尺寸显示提供共用入口；显式删除洞洞板组件后，assemblyBounds／planBodyOutline／vertical 共用生产板件实际边界（含位置偏移和附件突出），不再沿用完整柜体包络。尺寸不回写构造输入，无漂移迁移；确认使用 pegboard-envelope-v2。来源与复验见 [洞洞板实际外包](ENTRY-PEGBOARD-CABINET.md#剩余实体尺寸联动2026-10-20-复验)。
+
+
+2026-10-20：pegboardAssembly 集中定义洞洞板组合部件 upper/left/right/lower/accessories、显式配置板厚 18 mm 与旧缺失板厚 12 mm。柜体核心校验可选 cabinet.pegboardParts 并派生有效开关；新模板显式采用 18 mm，旧缺失不补写。模板替换和复制沿原完整 cabinet 机制，门抽屉停用配置保留供恢复。实际板件／开启／缓存／确认及验收见 [洞洞板组件](ENTRY-PEGBOARD-CABINET.md#组件独立删除2026-10-20)。
+
+
+2026-10-20：`bench_yeswood_oak` 定义 shoe-bench 产品族、落地包络与默认高 450 mm；目录 800 × 300 mm，缺高仅运行时读取，不物化旧数据。无新增字段、安装预留或空腔能力。见 [换鞋凳](SHOE-BENCH.md)。
+
+2026-10-20：`coffeetable_yeswood_cherry` 使用 `coffee-table` 产品族、默认高 450 mm 和落地包络；新建目录宽深 1200 × 650 mm，缺高只读取不补写，无新实例字段、迁移或额外预留。白色岩板固定，颜色编辑木色。生产模型、项目恢复及验收见 [樱桃木茶几](CHERRY-COFFEE-TABLE.md)。
+
 2026-10-20：`tea_table_800.teaTable={cabinetHeight:720,accessoryTop:897}` 集中定义静态茶台陈设的高度语义。既有 h 保持柜体总高（含脚轮／挡边），`vertical()` 返回含台面茶具的 `height(f)*897/720`，不重写旧数据。茶具／储物罐随原 w/d/h 缩放与旋转镜像，无新持久字段或格式版本。含该型号的空间确认读取 `tea-table-accessories-v1`；纯价格／颜色仍不失效。边界、实际生产几何与往返验收见 [茶台模型](TEA-TABLE-800.md)。
 
 
@@ -224,3 +247,6 @@ node scripts/verify-browser.cjs product-rules
 ## 旧柜体派生结构（2026-10-20）
 
 legacyCabinet(f) 仅匹配无 OBJ、无 kitchen／cabinet 的旧 counter／vanity；参数与依据见 [旧柜体升级](LEGACY-CABINET-UPGRADE.md)。不改恢复默认字段；旧 counter 的 vertical() 提供原生产模型总高 2180。复验 test-legacy-cabinet-upgrade.cjs、test-product-rules.cjs、test-region-areas.cjs 及 legacy-cabinet-upgrade 浏览器专项。
+
+
+2026-10-20：counter.kitchenPlinth 定义厨房组合地柜的底座默认 100 mm、范围 0–250 mm；可选 kitchen.plinth 由厨房核心统一校验与派生。新建／旧数据缺失均按历史 100 读取，不补写，0 为合法值；吊柜不接受。复制／替换、采购、空间确认及缓存继续消费完整 kitchen，不新增顶层字段清单。抽屉历史参数中的 plinth 保留为旧公式基准，实际底座与 legacyOffset 随配置派生，保证缺失配置时旧三抽几何不漂移。复验：test-kitchen-plinth.cjs、相关厨房／洗衣柜回归及 verify-kitchen-plinth.browser.js；详情见 [地柜底座高度](KITCHEN-DESIGN.md#地柜底座高度2026-10-20)。

@@ -135,7 +135,7 @@ function renderFurn(){
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
     const lock = furnitureLocked(f) ? `<g data-edit-overlay="lock" transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
       <rect x="-45" y="-12" width="90" height="62" rx="12" fill="${PAL.ink}"/><path d="M-28 -12v-18a28 28 0 0 1 56 0v18" fill="none" stroke="${PAL.ink}" stroke-width="16"/></g>` : '';
-    return `<g class="furn${furnitureLocked(f) ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}><title>${esc(nm(f.name))} · ${f.w} × ${f.d} mm</title>${flip}${clash}${label}${lock}</g>`;
+    return `<g class="furn${furnitureLocked(f) ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}><title>${esc(nm(f.name))} · ${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))} mm</title>${flip}${clash}${label}${lock}</g>`;
     }catch(e){const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return `<g class="furn" data-fid="${esc(f.id)}" data-model-error="true" transform="${furnT(f)}">${furnitureFallbackSVG(f,message)}</g>`;}
   }).join('');
   syncTuckedSeatPreview();
@@ -439,7 +439,7 @@ function renderSelectedGeometry(){
       if(!furnitureLocked(f)&&outer)s+=kitchenGapSVG(f,k);
       s += `</g>`;
       const {hh} = aabb(f);
-      s += `<text x="${f.cx}" y="${f.cy+hh+24*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${furnitureLocked(f) ? tr('已锁定 · ', 'Locked · ') : ''}${Math.round(f.w*10)/10} × ${Math.round(f.d*10)/10}</text>`;
+      s += `<text x="${f.cx}" y="${f.cy+hh+24*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${furnitureLocked(f) ? tr('已锁定 · ', 'Locked · ') : ''}${Math.round(FurnishProducts.dimensions(f).w*10)/10} × ${Math.round(FurnishProducts.dimensions(f).d*10)/10}</text>`;
       if (ui.layers.clear && (!drag || drag.kind === 'move')) s += clearanceSVG(f, k);
     }
   } else if (ui.sel?.kind === 'note' && noteBox[ui.sel.id]){

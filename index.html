@@ -969,7 +969,7 @@ function buildFurniture(f){
     }
     case 'ksink': {
       if(FurnishProducts.vesselSink(f)){g.add(FurnishSinkModel.buildVessel(THREE,f));break;}
-      if(f.sinkNotch){g.add(FurnishSinkModel.buildNotched(THREE,f));break;}
+      if(f.sinkNotch||f.sinkBowlHeight!==undefined){g.add(FurnishSinkModel.buildNotched(THREE,f));break;}
       const st = mat('#c7ccd1', {metalness:.85, roughness:.28}), inner = mat('#9aa1a8', {metalness:.8, roughness:.35}), two = w >= .75, bw = two ? w*.42 : w*.7, bd = d*.66;
       g.add(box(w, .008, d, st, 0, .862, 0));
       (two ? [-w*.23, w*.23] : [0]).forEach(x => g.add(shell(bw, bd, .02, .015, .04, st, x, .862, .03), box(bw - .03, .002, bd - .03, inner, x, .87, .03), cyl(.03, .03, .003, chrome(), x, .872, .03, 20)));

@@ -353,7 +353,10 @@
     if(!options.preview)build(d);return d;
   }
   function regionDefinition(geometry,scale,values){
-    const G=zoneGeometry(),rings=geometry.rings.map(r=>r.map(p=>p.map(v=>v/scale))),outer=rings.findIndex(r=>G.signed(r)>0);if(outer<0)fail('功能区轮廓为空');if(outer)rings.unshift(rings.splice(outer,1)[0]);
+    // Rounded shared faces can leave microscopic decomposition rings. Discard
+    // only rings below the same area floor required for authored polygons;
+    // split/merge coverage checks still reject any material loss of geometry.
+    const G=zoneGeometry(),rings=geometry.rings.map(r=>r.map(p=>p.map(v=>v/scale))).filter(r=>Math.abs(G.signed(r))>=1e-4),outer=rings.findIndex(r=>G.signed(r)>0);if(outer<0)fail('功能区轮廓为空');if(outer)rings.unshift(rings.splice(outer,1)[0]);
     return {...values,poly:clone(rings[0]),...(rings.length>1?{rings}: {})};
   }
   // Wall edits rebind room identity; authored zone outlines remain reversible.

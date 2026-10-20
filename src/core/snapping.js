@@ -3,7 +3,14 @@
   'use strict';
   const geometry = typeof module === 'object' && module.exports ? require('./layout-geometry.js') : root.FurnishGeometry;
   const tolerance=(f,scale)=>['curtain','slidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)?Math.min(250,32/scale):10/scale;
+  function spanSupport(rings,lo,hi){
+    let max=-Infinity;for(const ring of rings)for(let i=0;i<ring.length;i++){
+      const p=ring[i],q=ring[(i+1)%ring.length];if(p.t>=lo-1e-7&&p.t<=hi+1e-7)max=Math.max(max,p.n);
+      if(Math.abs(q.t-p.t)>1e-9)for(const t of [lo,hi]){const k=(t-p.t)/(q.t-p.t);if(k>=0&&k<=1)max=Math.max(max,p.n+k*(q.n-p.n));}
+    }return max;
+  }
   function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip,moving,disabled=false,axis,anchor,finishFaces=[]}){
+    if(f.cx===undefined||f.cy===undefined)f={...f,cx:f.cx??cx,cy:f.cy??cy};
     if(axis==='x')cy=anchor.y;else if(axis==='y')cx=anchor.x;
     if(disabled)return {position:[cx,cy],guides:[]};
     const targetRects=wallSnap?rects:[],targets=guides?furniture.filter(o=>o.id!==f.id&&!skip?.has(o.id)):[];
@@ -19,6 +26,36 @@
       }
     }
     for(const hit of finish)if(hit)finishGuides.push(hit.guide);
+    // A point magnet must not pull a closer face contact off its boundary.
+    // Opposing edges and finite overlap describe contact, not center alignment.
+    const boundaryContact=[null,null],slopedContacts=[];
+    for(const member of moving||[f]){
+      const placed={...member,cx:member.cx+cx-f.cx,cy:member.cy+cy-f.cy};
+      if(geometry.localOutline(placed))for(const target of scene)for(const edge of target.edges){
+        const dx=edge.b.x-edge.a.x,dy=edge.b.y-edge.a.y,L=Math.hypot(dx,dy),u=[dx/L,dy/L],out=[u[1],-u[0]],points=geometry.footprints(placed).flat();
+        const project=p=>p[0]*out[0]+p[1]*out[1],support=Math.min(...points.map(project)),ends=points.filter(p=>Math.abs(project(p)-support)<1e-7);
+        if(!ends.some(p=>{const t=(p[0]-edge.a.x)*u[0]+(p[1]-edge.a.y)*u[1];return t>=-1e-7&&t<=L+1e-7;}))continue;
+        const delta=edge.a.x*out[0]+edge.a.y*out[1]-support,factor=axis?out[axis==='x'?0:1]:1,error=Math.abs(delta/factor);
+        if(error<=tolerance(f,scale)+1e-7)slopedContacts.push({normal:out,delta,error,edge});
+      }
+      for(const source of entities({furniture:[placed]}))for(const a of source.edges)for(const target of scene)for(const b of target.edges){
+        const n=Math.abs(a.a.x-a.b.x)<1e-7?0:Math.abs(a.a.y-a.b.y)<1e-7?1:null;
+        if(n===null){
+          const dx=a.b.x-a.a.x,dy=a.b.y-a.a.y,L=Math.hypot(dx,dy),ex=b.b.x-b.a.x,ey=b.b.y-b.a.y;
+          if(Math.abs(dx*ey-dy*ex)>L*Math.hypot(ex,ey)*1e-7||dx*ex+dy*ey>=0)continue;
+          const u=[dx/L,dy/L],normal=[u[1],-u[0]],dot=p=>(p.x-a.a.x)*u[0]+(p.y-a.a.y)*u[1],lo=Math.min(dot(b.a),dot(b.b)),hi=Math.max(dot(b.a),dot(b.b));
+          const delta=(b.a.x-a.a.x)*normal[0]+(b.a.y-a.a.y)*normal[1],factor=axis?normal[axis==='x'?0:1]:1,error=Math.abs(delta/factor);
+          if(Math.min(L,hi)-Math.max(0,lo)>1e-7&&error<=tolerance(f,scale)+1e-7)slopedContacts.push({normal,delta,error,edge:b});
+          continue;
+        }
+        const t=1-n,key=n===0?'x':'y',other=t===0?'x':'y';
+        if(Math.abs(b.a[key]-b.b[key])>1e-7||axis==='x'&&n===1||axis==='y'&&n===0)continue;
+        if((a.b.x-a.a.x)*(b.b.x-b.a.x)+(a.b.y-a.a.y)*(b.b.y-b.a.y)>=0)continue;
+        const overlap=Math.min(Math.max(a.a[other],a.b[other]),Math.max(b.a[other],b.b[other]))-Math.max(Math.min(a.a[other],a.b[other]),Math.min(b.a[other],b.b[other]));
+        const delta=b.a[key]-a.a[key],error=Math.abs(delta);
+        if(overlap>1e-7&&error<=tolerance(f,scale)+1e-7&&(!boundaryContact[n]||error<boundaryContact[n].error))boundaryContact[n]={delta,error,edge:b,kind:target.kind};
+      }
+    }
     let feature=null;
     // Every moving member contributes actual outline points; all share one delta.
     // Smooth tessellation vertices are not physical corner/midpoint magnets.
@@ -26,7 +63,11 @@
       const placed={...member,cx:member.cx+cx-f.cx,cy:member.cy+cy-f.cy};
       for(const entity of entities({furniture:[placed]}).filter(e=>!e.smooth))for(const e of entity.edges)for(const source of [{point:e.a,kind:'corner'},{point:{x:(e.a.x+e.b.x)/2,y:(e.a.y+e.b.y)/2},kind:'midpoint'}]){
         const hit=featureSnap(source.point,{scene,rects:targetRects,tol:capture,anchor:axis?source.point:null,horizontal:axis==='x'});
-        if(hit&&(!feature||hit.distance<feature.distance-1e-7))feature={...hit,source};
+        if(hit){const delta=[hit.point.x-source.point.x,hit.point.y-source.point.y];
+          if(boundaryContact.some((contact,n)=>contact&&Math.abs(contact.delta-delta[n])>1e-7))continue;
+          if(slopedContacts.some(contact=>{const along=delta[0]*contact.normal[0]+delta[1]*contact.normal[1];return Math.abs(contact.delta-along)>1e-7;}))continue;
+          if(!feature||hit.distance<feature.distance-1e-7)feature={...hit,source};
+        }
       }
     }
     if(feature){
@@ -38,7 +79,8 @@
     // Long, thin curtains need a wider visible capture area at overview zoom.
     const {hw,hh}=geometry.aabb(f),tol=tolerance(f,scale),bounds=geometry.localOutline(f)?geometry.bbox(geometry.footprints(f).flat()):[f.cx-hw,f.cy-hh,f.cx+hw,f.cy+hh],xs=[bounds[0]-f.cx,0,bounds[2]-f.cx],ys=[bounds[1]-f.cy,0,bounds[3]-f.cy];
     if(finish[0])nx=finish[0].value;if(finish[1])ny=finish[1].value;
-    let bx=finish[0]?0:tol,by=finish[1]?0:tol,gx=null,gy=null;
+    if(!finish[0]&&boundaryContact[0])nx=cx+boundaryContact[0].delta;if(!finish[1]&&boundaryContact[1])ny=cy+boundaryContact[1].delta;
+    let bx=finish[0]||boundaryContact[0]?0:tol,by=finish[1]||boundaryContact[1]?0:tol,gx=null,gy=null;
     if(wallSnap)for(const r of rects){
       if(axis!=='y'&&!(r[3]<cy-hh-tol||r[1]>cy+hh+tol))for(const ex of [r[0],r[2]])for(const c of [ex-xs[0],ex-xs[2]])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;}
       if(axis!=='x'&&!(r[2]<nx-hw-tol||r[0]>nx+hw+tol))for(const ey of [r[1],r[3]])for(const c of [ey-ys[0],ey-ys[2]])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;}
@@ -50,33 +92,55 @@
       if(axis!=='x')for(const v of [bounds[1],o.cy,bounds[3]])for(const m of ys){const c=v-m;if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;gy={y:v,o,B};}}
     }
     const lines=[...finishGuides];
+    boundaryContact.forEach((contact,n)=>{if(contact?.kind==='furniture'&&!finish[n])lines.push({line:[contact.edge.a,contact.edge.b]});});
     if(gx)lines.push({v:true,x:gx.x,a:Math.min(ny-hh,gx.o.cy-gx.B.hh)-150,b:Math.max(ny+hh,gx.o.cy+gx.B.hh)+150});
     if(gy)lines.push({v:false,y:gy.y,a:Math.min(nx-hw,gy.o.cx-gy.B.hw)-150,b:Math.max(nx+hw,gy.o.cx+gy.B.hw)+150});
-    return {position:[axis==='y'?cx:finish[0]?.value??Math.round(nx),axis==='x'?cy:finish[1]?.value??Math.round(ny)],guides:lines};
+    const exact=value=>Math.round(value*1e6)/1e6;
+    const position=[axis==='y'?cx:finish[0]?.value??(bx<tol?exact(nx):Math.round(nx)),axis==='x'?cy:finish[1]?.value??(by<tol?exact(ny):Math.round(ny))];
+    // Keep oblique face contact after grid/AABB alignment too. Use the nearest
+    // reachable face; an axis lock still permits only its original motion axis.
+    const sloped=slopedContacts.sort((a,b)=>a.error-b.error)[0];
+    if(sloped){const normal=sloped.normal,remaining=sloped.delta-(position[0]-cx)*normal[0]-(position[1]-cy)*normal[1],u=axis?(axis==='x'?[1,0]:[0,1]):normal,factor=u[0]*normal[0]+u[1]*normal[1];
+      const next=position.map((value,n)=>value+u[n]*remaining/factor);
+      if(Math.hypot(next[0]-cx,next[1]-cy)<=Math.SQRT2*tol+1e-7){position[0]=next[0];position[1]=next[1];lines.push({line:[sloped.edge.a,sloped.edge.b]});}
+    }
+    return {position,guides:lines};
   }
   // Resize from the original opposite corner, so snapping never moves that anchor.
-  function resize(f,p,{scale,wallSnap,rects,axis='both'}){
+  function resize(f,p,{scale,wallSnap,rects,furniture=[],guides=false,axis='both'}){
     const a=f.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
     const anchor={x:f.cx-f.w/2*c+f.d/2*s,y:f.cy-f.w/2*s-f.d/2*c};
     const dimensions=q=>({w:axis==='d'?f.w:Math.max(100,Math.round(((q.x-anchor.x)*c+(q.y-anchor.y)*s)/10)*10),d:axis==='w'?f.d:Math.max(100,Math.round((-(q.x-anchor.x)*s+(q.y-anchor.y)*c)/10)*10)});
     const build=({w,d})=>({...f,w,d,cx:anchor.x+w/2*c-d/2*s,cy:anchor.y+w/2*s+d/2*c});
-    let next=build(dimensions(p));const guides=[];
-    if(wallSnap&&Math.abs(Math.sin(2*a))<1e-6){
-      const tol=tolerance(f,scale),B=geometry.aabb(next),corner={x:next.cx+next.w/2*c-next.d/2*s,y:next.cy+next.w/2*s+next.d/2*c};
-      let bx=tol,by=tol,gx=null,gy=null;
-      for(const r of rects){
-        if((axis==='both'||(axis==='w'?Math.abs(c):Math.abs(s))>.5)&&r[3]>=next.cy-B.hh-tol&&r[1]<=next.cy+B.hh+tol)for(const x of [r[0],r[2]])if(Math.abs(x-p.x)<bx){bx=Math.abs(x-p.x);gx=x;}
-        if((axis==='both'||(axis==='w'?Math.abs(s):Math.abs(c))>.5)&&r[2]>=next.cx-B.hw-tol&&r[0]<=next.cx+B.hw+tol)for(const y of [r[1],r[3]])if(Math.abs(y-p.y)<by){by=Math.abs(y-p.y);gy=y;}
+    let next=build(dimensions(p));
+    const hits=[];
+    const targets=entities({rects:wallSnap?rects:[],furniture:guides?furniture.filter(o=>o.id!==f.id):[]}),tol=tolerance(f,scale);
+    for(const dim of ['w','d']){
+      if(axis===(dim==='w'?'d':'w'))continue;
+      const u=dim==='w'?[c,s]:[-s,c],v=dim==='w'?[-s,c]:[c,s],span=next[dim==='w'?'d':'w'];
+      const dot=(q,b)=>(q.x-anchor.x)*b[0]+(q.y-anchor.y)*b[1],raw=dot(p,u);let best=null;
+      // A curved silhouette does not fill its nominal side. Clip its unit
+      // outline to the finite target span before solving the scaled support.
+      const unit=geometry.localOutline(f)?furnitureRings(build({...next,[dim]:1})).map(r=>r.map(p=>({n:dot({x:p[0],y:p[1]},u),t:dot({x:p[0],y:p[1]},v)}))):null;
+      for(const target of targets)for(const e of target.edges){
+        const dx=e.b.x-e.a.x,dy=e.b.y-e.a.y;
+        if(Math.abs(dx*u[0]+dy*u[1])>Math.hypot(dx,dy)*1e-7)continue;
+        const lo=Math.min(dot(e.a,v),dot(e.b,v)),hi=Math.max(dot(e.a,v),dot(e.b,v)),factor=unit?spanSupport(unit,lo,hi):1;
+        if(!(factor>1e-7))continue;
+        const value=dot(e.a,u)/factor,error=Math.abs(value-raw);
+        if(value<100||Math.min(span,hi)-Math.max(0,lo)<-1e-7||error>tol+1e-7||best&&error>=best.error-1e-7)continue;
+        best={value,error,e};
       }
-      // Keep exact wall coordinates rather than rounding a snapped dimension to grid.
-      if(gx!==null)corner.x=gx;if(gy!==null)corner.y=gy;
-      const w=(corner.x-anchor.x)*c+(corner.y-anchor.y)*s,d=-(corner.x-anchor.x)*s+(corner.y-anchor.y)*c;
-      next=build({w:axis==='d'?f.w:Math.max(100,Math.round(w*1e6)/1e6),d:axis==='w'?f.d:Math.max(100,Math.round(d*1e6)/1e6)});
-      const N=geometry.aabb(next),end={x:next.cx+next.w/2*c-next.d/2*s,y:next.cy+next.w/2*s+next.d/2*c};
-      if(gx!==null&&Math.abs(end.x-gx)<.01)guides.push({v:true,x:gx,a:next.cy-N.hh-150,b:next.cy+N.hh+150});
-      if(gy!==null&&Math.abs(end.y-gy)<.01)guides.push({v:false,y:gy,a:next.cx-N.hw-150,b:next.cx+N.hw+150});
+      if(best){next=build({...next,[dim]:Math.round(best.value*1e6)/1e6});hits.push({dim,e:best.e});}
     }
-    return {furniture:next,guides};
+    // A corner grip can shorten the other dimension after the first hit.
+    // Recheck the final finite span rather than showing a now unreachable edge.
+    for(let i=0;i<hits.length;){const {dim,e}=hits[i],v=dim==='w'?[-s,c]:[c,s],dot=q=>(q.x-anchor.x)*v[0]+(q.y-anchor.y)*v[1],lo=Math.min(dot(e.a),dot(e.b)),hi=Math.max(dot(e.a),dot(e.b));
+      const u=dim==='w'?[c,s]:[-s,c],normal=q=>(q.x-anchor.x)*u[0]+(q.y-anchor.y)*u[1];
+      const curved=geometry.localOutline(f)&&furnitureRings(next).map(r=>r.map(p=>({n:normal({x:p[0],y:p[1]}),t:dot({x:p[0],y:p[1]})})));
+      if(Math.min(next[dim==='w'?'d':'w'],hi)-Math.max(0,lo)<-1e-7||curved&&Math.abs(spanSupport(curved,lo,hi)-normal(e.a))>2e-6){next=build({...next,[dim]:dimensions(p)[dim]});hits.splice(i,1);i=0;}else i++;
+    }
+    return {furniture:next,guides:hits.map(hit=>({line:[hit.e.a,hit.e.b]}))};
   }
   // Snap the entire moving edge to finite parallel boundaries. Keep the old
   // wall/normal intersection for angled walls; furniture uses actual edge alignment.
@@ -187,7 +251,12 @@
   function entities({rects=[],furniture=[]}){
     const out=rects.map((r,i)=>({kind:'wall',id:i,name:'',rings:[[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]]]}));
     for(const f of furniture){try{out.push({kind:'furniture',id:f.id,name:f.name,smooth:!!geometry.localOutline(f),rings:furnitureRings(f)});}catch{/* Invalid saved models cannot supply a reliable boundary. */}}
-    return out.map(e=>({...e,edges:edges(e.rings)}));
+    return out.map(e=>{
+      // Mirroring reverses winding, but must not reverse which side of a
+      // boundary is solid. Preserve hole winding relative to the outer ring.
+      const ring=e.rings[0]||[],signed=ring.reduce((sum,p,i)=>{const q=ring[(i+1)%ring.length];return sum+p[0]*q[1]-q[0]*p[1];},0);
+      const boundary=edges(e.rings);return {...e,edges:signed<0?boundary.map(edge=>({a:edge.b,b:edge.a})):boundary};
+    });
   }
   function project(p,e){
     const dx=e.b.x-e.a.x,dy=e.b.y-e.a.y,t=((p.x-e.a.x)*dx+(p.y-e.a.y)*dy)/(dx*dx+dy*dy),u=Math.max(0,Math.min(1,t));
@@ -280,7 +349,7 @@
     const transform=e=>({...e,edges:e.edges.map(g=>({a:rotate(g.a),b:rotate(g.b)}))});
     const members=Array.isArray(f)?f:[f],sources=entities({furniture:members});if(!sources.length||sources.length!==members.length)return out;
     const ids=new Set(members.map(v=>v.id)),transformedSources=sources.map(transform);
-    const products=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),surfaceSource=members.length===1&&products?.definition(members[0])?.measureSurfaceBoundary&&!members[0].obj?members[0]:null;
+    const products=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),surfaceSource=members.length===1&&(products?.definition(members[0])?.measureSurfaceBoundary||members[0].counterLink&&products?.definition(members[0])?.linkedSurfaceOffset)&&!members[0].obj?members[0]:null;
     const cabinets=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
     const design=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),verticals=members.map(member=>design.furnitureVerticalBounds(member,options.plan,options.furniture));
     const fitsHoodBay=(a,b)=>products.hoodInstallation(b)&&cabinets.hoodBayFit(a,b)?.fits||products.hoodInstallation(a)&&cabinets.hoodBayFit(b,a)?.fits;

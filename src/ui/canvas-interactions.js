@@ -91,11 +91,11 @@ function editDirectionalDistance(direction){
     if(PLAN.id!==planId||snap()!==before||drawingRotation()!==options.rotation||ui.layers.furn!==options.visibleFurniture)throw Error(tr('方案已变化，请关闭后重新选择距离','The design changed; close and select the distance again'));
     const input=$('#directional-gap-input');if(!input.value.trim())throw Error(tr('请输入目标净距','Enter a target clearance'));
     const moved=FurnishDesign.placeSelectionAtDirectionalGap(plan,state,ids,direction,Number(input.value),options);
-    if(moved.some(next=>Math.hypot(next.cx-getF(next.id).cx,next.cy-getF(next.id).cy)>1e-7))mutate(()=>moved.forEach(next=>Object.assign(getF(next.id),{cx:next.cx,cy:next.cy})));
+    if(moved.some(next=>Math.hypot(next.cx-getF(next.id).cx,next.cy-getF(next.id).cy)>1e-7))mutate(()=>moved.forEach(next=>Object.assign(getF(next.id),{cx:next.cx,cy:next.cy,...(next.counterLink?{counterLink:next.counterLink}:{})})));
     return true;
   }catch(e){$('#directional-gap-error').textContent=e.message;return false;}};
-  const name=items.length===1?nm(items[0].name):tr(`整组 ${items.length} 件`,`${items.length} selected items`);
-  openDialog({title:tr('编辑四向净距','Edit directional clearance'),body:`<p><b>${esc(name)}</b> · ${labels[direction]} → ${esc(target)}</p><label>${tr('目标净距 (mm)','Target clearance (mm)')}<input id="directional-gap-input" type="number" min="0" max="20000" step="any" value="${Math.round(current.distance*1000)/1000}"></label><p class="muted">${tr('固定参考实体，所有选中成员沿此方向移动相同距离，保持相对位置。输入 0 可贴边；保存的测量线保持原位置。','Keeps the reference fixed and translates all selected items equally, preserving relative positions. Use 0 for contact. Saved measurements stay fixed.')}</p><p id="directional-gap-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('应用距离','Apply distance'),cls:'primary',fn:apply}],onOpen:()=>{const input=$('#directional-gap-input');input.select();input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(apply())closeDialog();}};}});
+  const name=items.length===1?nm(items[0].name):tr(`整组 ${items.length} 件`,`${items.length} selected items`),linkedSink=items.length===1&&items[0].counterLink&&FurnishProducts.definition(items[0])?.linkedSurfaceOffset;
+  openDialog({title:tr('编辑四向净距','Edit directional clearance'),body:`<p><b>${esc(name)}</b> · ${labels[direction]} → ${esc(target)}</p><label>${tr('目标净距 (mm)','Target clearance (mm)')}<input id="directional-gap-input" type="number" min="0" max="20000" step="any" value="${Math.round(current.distance*1000)/1000}"></label><p class="muted">${linkedSink?tr('在关联模块及台面内调整水槽，保留关联并随橱柜移动、旋转和镜像。超出边界时不应用；保存的测量线保持原位置。','Repositions the sink within its linked module and worktop, retaining the link through cabinet movement, rotation and mirroring. Out-of-bounds edits are rejected; saved measurements stay fixed.'):tr('固定参考实体，所有选中成员沿此方向移动相同距离，保持相对位置。输入 0 可贴边；保存的测量线保持原位置。','Keeps the reference fixed and translates all selected items equally, preserving relative positions. Use 0 for contact. Saved measurements stay fixed.')}</p><p id="directional-gap-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('应用距离','Apply distance'),cls:'primary',fn:apply}],onOpen:()=>{const input=$('#directional-gap-input');input.select();input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(apply())closeDialog();}};}});
 }
 function saveDirectionalMeasurements(direction){
   const items=selItems();if(!items.length)return;
@@ -263,7 +263,7 @@ function processCanvasPointerMove(e){
     const dx=p.x-drag.startPoint.x,dy=p.y-drag.startPoint.y;
     const dw=drag.axis==='d'?0:dx*c+dy*s,dd=drag.axis==='w'?0:-dx*s+dy*c;
     const corner={x:o.cx+o.w/2*c-o.d/2*s+dw*c-dd*s,y:o.cy+o.w/2*s+o.d/2*c+dw*s+dd*c};
-    const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[]});
+    const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[],guides:!!ui.layers.guides,furniture:ui.layers.furn?state.furniture:[]});
     try{const next=FurnishDesign.resizeFurniture(drag.original,{w:result.furniture.w,d:result.furniture.d},'center');Object.assign(f,next,{cx:result.furniture.cx,cy:result.furniture.cy});ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
     renderFurn();                              // 尺寸变了，图例需要重画
   }

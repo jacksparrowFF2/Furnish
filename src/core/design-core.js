@@ -266,14 +266,16 @@
   if(members.some(f=>f.locked))throw Error('选中物体或组内成员已锁定，请先解锁整组');
   if(!['l','r','t','b'].includes(dir))throw Error('请选择有效方向');
   if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('目标净距须为 0–20000 mm');
-  for(const f of members){const stack=laundryStack(f,work.furniture);if(f.counterLink&&!ids.has(f.counterLink.hostId)||stack&&!ids.has(stack.lowerId)||work.furniture.some(v=>!ids.has(v.id)&&(v.counterLink?.hostId===f.id||laundryStack(v,work.furniture)?.lowerId===f.id)))throw Error('请将关联厨房设备或叠放设备全部选中后整体定位');}
+  const localSink=f=>f.counterLink&&!ids.has(f.counterLink.hostId)&&products().definition(f)?.linkedSurfaceOffset;
+  for(const f of members){const stack=laundryStack(f,work.furniture);if(f.counterLink&&!ids.has(f.counterLink.hostId)&&!localSink(f)||stack&&!ids.has(stack.lowerId)||work.furniture.some(v=>!ids.has(v.id)&&(v.counterLink?.hostId===f.id||laundryStack(v,work.furniture)?.lowerId===f.id)))throw Error('请将关联厨房设备或叠放设备全部选中后整体定位');}
   const rects=(plan.walls||[]).map(w=>w.slice(0,4)).concat((plan.wins||[]).map(w=>w.rect)),options={plan,rotation,rects,solidWallCount:(plan.walls||[]).length,furniture:visibleFurniture?work.furniture:[]},current=S.directional(members,options)[dir];
   if(!current)throw Error('该方向没有可用的参考实体');
   if(current.containedBoundary&&Math.abs(current.distance-gap)>1e-7)throw Error('当前为包络内边距，尚未确认柜内空腔；请拖动定位并核对实际板件');
   const sign=dir==='r'||dir==='b'?1:-1,a=rotation*Math.PI/180,delta=sign*(current.distance-gap),dx=(dir==='l'||dir==='r'?Math.cos(a):Math.sin(a))*delta,dy=(dir==='l'||dir==='r'?-Math.sin(a):Math.cos(a))*delta;
-  const moved=members.map(f=>({...f,cx:f.cx+dx,cy:f.cy+dy}));
+  let moved=members.map(f=>({...f,cx:f.cx+dx,cy:f.cy+dy}));
   if(Math.abs(dx)+Math.abs(dy)<1e-7)return moved;
-  const proposed=JSON.parse(JSON.stringify(work.furniture));for(const f of proposed)if(ids.has(f.id)){f.cx+=dx;f.cy+=dy;}const expected=JSON.parse(JSON.stringify(proposed));
+  moved=moved.map(f=>localSink(f)?K.moveLinkedSink(f,work.furniture.find(h=>h.id===f.counterLink.hostId),f.cx,f.cy):f);
+  const proposed=JSON.parse(JSON.stringify(work.furniture));for(const f of proposed)if(ids.has(f.id)){const next=moved.find(v=>v.id===f.id);Object.assign(f,{cx:next.cx,cy:next.cy,...(next.counterLink?{counterLink:next.counterLink}:{})});}const expected=JSON.parse(JSON.stringify(proposed));
   if(proposed.some(v=>v.kitchen?.autoAvoid))K.normalizeObstacles(proposed,surveyPlan);
   K.normalize(proposed,work.furniture);normalizeLaundryStacks(proposed,work.furniture);
   if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||!samePlacementData({...v,cx:expected[i].cx,cy:expected[i].cy},expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');

@@ -69,7 +69,7 @@ function buildNotched(T,f){
  const ring=(w,d)=>K.notchedRing(w,d,n),shape=points=>{const s=new T.Shape();points.forEach(([x,y],i)=>i?s.lineTo(x/1000,y/1000):s.moveTo(x/1000,y/1000));s.closePath();return s;};
  const outer=shape(ring(f.w,f.d)),inner=ring(f.w-2*r.rim,f.d-2*r.rim),hole=new T.Path();inner.slice().reverse().forEach(([x,y],i)=>i?hole.lineTo(x/1000,y/1000):hole.moveTo(x/1000,y/1000));hole.closePath();outer.holes.push(hole);
  const add=(s,depth,top,name)=>{const geo=new T.ExtrudeGeometry(s,{depth,bevelEnabled:false});geo.rotateX(Math.PI/2);geo.translate(0,top,0);const mesh=new T.Mesh(geo,material);mesh.userData.sinkPart=name;g.add(mesh);};
- add(outer,r.bodyDepth/1000,.862,'notched-walls');add(shape(inner),r.floor/1000,.862-(r.bodyDepth-r.floor)/1000,'notched-floor');
+ const depth=P.sinkBodyDepth(f);add(outer,depth/1000,.862,'notched-walls');add(shape(inner),r.floor/1000,.862-(depth-r.floor)/1000,'notched-floor');
  const chrome=new T.MeshStandardMaterial({color:'#abb2b8',metalness:.8,roughness:.22}),x=(n?.side==='left'?1:-1)*f.w*.32/1000,z=-f.d/2000+.035;
  const pipe=new T.Mesh(new T.CylinderGeometry(.012,.012,.28,16),chrome);pipe.position.set(x,1.002,z);g.add(pipe);
  const spout=new T.Mesh(new T.CylinderGeometry(.012,.012,.15,16),chrome);spout.rotation.x=Math.PI/2;spout.position.set(x,1.142,z+.075);g.add(spout);return g;

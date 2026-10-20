@@ -349,7 +349,7 @@ const ACT = {
   spaceCheck:()=>{FurnishWorkspace.open('space');$('#space-run').click();},
   al:() => alignSel('l'), ac:() => alignSel('c'), ar:() => alignSel('r'), at:() => alignSel('t'), am:() => alignSel('m'), ab:() => alignSel('b'),
   dh:() => distributeSel('h'), dv:() => distributeSel('v'),
-  home:() => {ui.panelScope='design';renderPanel();}, done:() => { select(null); closeDrawers(); }, prop:() => {ui.panelScope='object';renderPanel();drawer('panel', true);},
+  home:() => {ui.panelScope='design';renderPanel();}, done:() => { select(null); closeDrawers(); }, prop:openSelectionProperties,
   rescue:() => rescueOutside(), rescueOne:() => rescueOutside(selIds()), clash:() => { const ids = [...new Set(collisions().flat())]; selectIds(ids); if (ids.length) zoomSel(); },
   clearFurn:clearLayout, reset:() => openReset(), help:() => openHelp(), csv:exportCSV, custom:() => openCustom(), fit:() => fitView(),
   roomFurn:() => { const r = ROOMS.find(r => r.id === (ui.sel?.kind === 'room' ? ui.sel.id : ui.ctxRoom)); if (r) selectIds(state.furniture.filter(f => inPoly(f.cx, f.cy, r.poly)).map(f => f.id)); },

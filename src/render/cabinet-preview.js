@@ -41,8 +41,8 @@
     const limits=C.shelfLimits(current,column,shelf),geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(bay.center/1000,base+limits.min/1000,z),new THREE.Vector3(bay.center/1000,base+limits.max/1000,z)]);
     guide=new THREE.Line(geo,new THREE.LineBasicMaterial({color:0x168de2,depthTest:false}));guide.renderOrder=9;sc.add(guide);
     readout.textContent=`分区 ${column+1} · 层板 ${shelf+1} · ${c.columns[column].shelves[shelf]} mm`;
-   }else if(divider!==undefined)readout.textContent=`分隔板 ${divider+1} · 左 ${Math.round(bay.width)} / 右 ${Math.round(C.widths(current)[divider+1])} mm`;
-   else readout.textContent=`分区 ${column+1} · 净宽 ${Math.round(bay.width)} mm`;
+   }else if(divider!==undefined)readout.textContent=`分隔板 ${divider+1} · 左模块 ${Math.round(C.moduleWidths(current)[divider])} / 右模块 ${Math.round(C.moduleWidths(current)[divider+1])} mm`;
+   else readout.textContent=`分区 ${column+1} · 模块外宽 ${Math.round(C.moduleWidths(current)[column])} mm`;
   }
   function dimensions(){
    labelLayer.replaceChildren(rulers);labels=[];readout.style.top=settings.dimensions?'42px':'12px';
@@ -54,7 +54,8 @@
     if(options.column!==undefined){el.type='button';el.setAttribute('aria-label',options.title);el.title=options.title;el.onclick=()=>{if(actions.select?.({column:options.column})!==false){activeColumn=options.column;markActive();}};}
     labelLayer.appendChild(el);labels.push({el,point:p,...options});return el;};
    const measure=(text,a,b,offset=20)=>{if(settings.dimensions)add(text,a.clone().add(b).multiplyScalar(.5),{a,b,offset});};
-   const h=current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current),w=current.w,d=current.d;
+   const bounds=C.assemblyBounds(current),actual=bounds??{w:current.w,d:current.d};
+   const h=bounds?bounds.h:current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current),w=actual.w,d=actual.d;
    const isL=current.kitchen?.shape==='L',isU=current.kitchen?.shape==='U',runName=elevation?.title?.replace(/正视$/,'')??(elevation?.run===1?'转角边':'主边');
    summary=null;if(settings.dimensions){summary=document.createElement('div');summary.className='cab-size-summary';summary.textContent=isU?`主边总长 ${fmt(root.FurnishKitchen.runDepth(current,1)+root.FurnishKitchen.runLength(current,0)+root.FurnishKitchen.extension(current,0).length)} · 连接边总长 ${fmt(d)} · 回折边总长 ${fmt(root.FurnishKitchen.runDepth(current,1)+root.FurnishKitchen.runLength(current,2)+root.FurnishKitchen.extension(current,2).length)} · 三边柜深 ${[0,1,2].map(run=>fmt(root.FurnishKitchen.runDepth(current,run))).join("／")} · ${root.FurnishKitchen?.isWall(current)?'柜高':'台面高'} ${fmt(h)} mm`:isL?`主边总长 ${fmt(w)} · 转角边总长 ${fmt(d)} · 柜深 ${fmt(current.kitchen.depth)} · ${root.FurnishKitchen?.isWall(current)?'柜高':'台面高'} ${fmt(h)} mm`:elevation?`${runName}总长 ${fmt(w)} · 柜深 ${fmt(current.kitchen.depth)} · ${root.FurnishKitchen?.isWall(current)?'柜高':'台面高'} ${fmt(h)} mm`:`整体 宽 ${fmt(w)} × 深 ${fmt(d)} × 高 ${fmt(h)} mm`;labelLayer.appendChild(summary);}
    if(current.kitchen){const K=root.FurnishKitchen;for(const m of K.cabinetLayout(current)){
@@ -63,18 +64,21 @@
     if(end||index===null){const el=add(end?'薄柜':'盲角',point(x,h*.55,z));el.className='cab-blind-label';}
     else add(String(index+1),point(x,h*.55,z),{column:index,title:`模块 ${index+1} · ${K.moduleRoles(current)[m.role]} · 宽 ${fmt(m.width)} mm`});
     if(interior&&chosen(index)&&current.kitchen.obstacleFit?.depths.some(row=>row.index===m.index))add(`柜深 ${fmt(m.depth)}`,point(x,h*.3,z));
-    if(interior&&chosen(index))measure(`${end?'薄柜宽':index===null?'盲角':'宽'} ${fmt(m.width)}`,point(x-(m.run!==1?m.width/2:0),0,z-(m.run===1?m.width/2:0)),point(x+(m.run!==1?m.width/2:0),0,z+(m.run===1?m.width/2:0)));
+    if(interior&&chosen(index))measure(`${end?'薄柜宽':index===null?'盲角':'模块外宽'} ${fmt(m.width)}`,point(x-(m.run!==1?m.width/2:0),0,z-(m.run===1?m.width/2:0)),point(x+(m.run!==1?m.width/2:0),0,z+(m.run===1?m.width/2:0)));
    }}else{
-   const c=C.config(current),base=c.plinth+c.thickness;
+   const c=C.config(current),base=c.plinth+c.thickness,modules=C.moduleLayout(current);
    C.layout(current).forEach((bay,i)=>{
-    add(String(i+1),point(bay.center,h*.65,d/2+25),{column:i,title:`分区 ${i+1} · 净宽 ${fmt(bay.width)} mm`});
-    if(interior&&chosen(i))measure(`净宽 ${fmt(bay.width)}`,point(bay.left,0,d/2),point(bay.left+bay.width,0,d/2));
+    add(String(i+1),point(bay.center,(bounds?.bottom??0)+h*.65,(bounds?.front??d/2)+25),{column:i,title:`模块 ${i+1} · 外宽 ${fmt(modules[i].width)} mm`});
+    if(bounds&&c.columns.length===1){if(interior&&chosen(i))measure(`实体宽 ${fmt(w)}`,point(bounds.left,bounds.bottom,bounds.front),point(bounds.right,bounds.bottom,bounds.front));return;}
+    if(interior&&chosen(i))measure(`模块外宽 ${fmt(modules[i].width)}`,point(modules[i].left,0,d/2),point(modules[i].right,0,d/2));
     if(!settings.dimensions||!interior||!chosen(i))return;
     if(all&&settings.doors==='normal'&&(c.hoodBayHeight!==undefined?!c.columns[0].doorOpen&&!c.columns[2].doorOpen:c.columns[i].door!=='none'&&!c.columns[i].doorOpen&&!(c.columns[i].doorSections&&Object.values(c.columns[i].doorSections).some(s=>s.open))))return;
     C.spaces(current,i).forEach(gap=>measure(`净高 ${fmt(gap.height)}`,point(bay.center,base+gap.bottom,d/2+25),point(bay.center,base+gap.top,d/2+25),12));
    });
    }
-   if(outer){if(isL)measure(`主边总长 ${fmt(w)}`,point(-w/2,h,-d/2),point(w/2,h,-d/2),26);
+   if(outer&&bounds){measure(`总宽 ${fmt(w)}`,point(bounds.left,bounds.bottom,bounds.front),point(bounds.right,bounds.bottom,bounds.front),52);measure(`总高 ${fmt(h)}`,point(bounds.left,bounds.bottom,bounds.back),point(bounds.left,bounds.top,bounds.back),36);measure(`总深 ${fmt(d)}`,point(bounds.right,bounds.top,bounds.back),point(bounds.right,bounds.top,bounds.front),26);}
+   if(outer&&bounds&&C.movablePegboard(current)){if(bounds.bottom>0)measure(`底部离地 ${fmt(bounds.bottom)}`,point(bounds.right,0,bounds.front),point(bounds.right,bounds.bottom,bounds.front),38);else if(settings.dimensions)add('底部离地 0',point(bounds.right,0,bounds.front));}
+   if(outer&&!bounds){if(isL)measure(`主边总长 ${fmt(w)}`,point(-w/2,h,-d/2),point(w/2,h,-d/2),26);
    else measure(`${elevation?runName+'总长':'总宽'} ${fmt(w)}`,point(-w/2,0,d/2),point(w/2,0,d/2),52);
    measure(`${current.kitchen?(current.kitchen.laundry?.assembly?'整柜高':root.FurnishKitchen.isWall(current)?'柜高':'台面高'):'总高'} ${fmt(h)}`,point(-w/2,0,-d/2),point(-w/2,h,-d/2),36);
    measure(`${isL?'转角边总长':'总深'} ${fmt(d)}`,point(w/2,h,-d/2),point(w/2,h,d/2),26);
@@ -113,7 +117,7 @@
     const min=Math.min(...row.furniture.kitchen.modules.map(m=>m.width));panel.surface.style.width=`${Math.max(280,Math.ceil(row.furniture.w/min*66+100))}px`;
     panel.devices.splice(0,panel.devices.length,...furniture.filter(v=>v.counterLink?.hostId===current.id).flatMap(v=>{const index=row.indices.indexOf(v.counterLink.module);return index<0?[]:[{...v,counterLink:{...v.counterLink,module:index}}];}));
     const drawerRow=value=>value&&root.FurnishKitchen.elevationRuns(value).find(r=>r.run===panel.meta.run)?.furniture;
-    if(!panel.preview)panel.preview=create({THREE,OrbitControls,box,host:panel.surface,f:row.furniture,elevation:panel.meta,furniture:panel.devices,background,actions:{select:part=>actions.select?.(part),...(actions.inspect?{inspect:part=>actions.inspect(part)}:{}),...(actions.drawerBoundary?{drawerBoundary:(part,delta,phase)=>drawerRow(actions.drawerBoundary(part,delta,phase)),drawerHeight:(column,tier,value)=>drawerRow(actions.drawerHeight(column,tier,value)),move:(part,value)=>drawerRow(actions.move(part,value))}:{})}});
+    if(!panel.preview)panel.preview=create({THREE,OrbitControls,box,host:panel.surface,f:row.furniture,elevation:panel.meta,furniture:panel.devices,background,actions:{select:part=>actions.select?.(part),...(actions.inspect?{inspect:part=>actions.inspect(part)}:{}),...(actions.activateDoor?{activateDoor:part=>actions.activateDoor(part)}:{}),...(actions.drawerBoundary?{drawerBoundary:(part,delta,phase)=>drawerRow(actions.drawerBoundary(part,delta,phase)),drawerHeight:(column,tier,value)=>drawerRow(actions.drawerHeight(column,tier,value)),move:(part,value)=>drawerRow(actions.move(part,value))}:{})}});
     else panel.preview.update(row.furniture);
     panel.preview.setView({front:true,dimensions:settings.dimensions,dimensionScope:settings.dimensionScope});panel.preview.selectPart(activeColumn===null?null:{column:activeColumn});
    });
@@ -152,7 +156,10 @@
    const next=actions.drawerBoundary(previous.part,0,cancel?'cancel':'end');if(next)update(next);
   }
   function drawerDimensions(){
-   if(drawerEditing){drawerEditing=null;controls.enabled=true;}drawerLayer.replaceChildren();drawerEdges=[];drawerLabels=[];const K=root.FurnishKitchen;
+   // Error feedback can resize the preview. Keep the active input (including
+   // invalid text) until it is explicitly applied or cancelled; a layout refresh
+   // must not silently discard it and allow Save to bypass validation.
+   if(drawerEditing)return;drawerLayer.replaceChildren();drawerEdges=[];drawerLabels=[];const K=root.FurnishKitchen;
    const activeDrawer=current.kitchen&&K.cabinetLayout(current).find(m=>m.role==='drawer'&&(elevation?elevation.indices[m.index]:m.index)===activeColumn),count=activeDrawer?K.drawerHeights(current,activeDrawer).length:0;host.style.minHeight=count>6&&!settings.unfolded?`${count*32+60}px`:'';
    if(!['all','modules'].includes(settings.dimensionScope)||!settings.dimensions||!current.kitchen||current.locked||!actions.drawerBoundary||!actions.drawerHeight||!K.drawerRules(current).boundaryResize)return;
    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('class','cab-drawer-lines');drawerLayer.appendChild(svg);
@@ -204,18 +211,19 @@
   function update(value){current=value;clearModel();model=value.kitchen?root.FurnishKitchenModel.build(THREE,value,box,{furniture,plan,previewBlind:elevation?.blind,previewMirror:elevation?.mirror}):root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture,plan});if(value.kitchen?.laundry?.assembly&&buildDevice){const K=root.FurnishKitchen,device=furniture.find(p=>p.laundryHostId===value.id),bay=K.layout(value).find(m=>m.role==='empty');if(device&&bay){const aligned=K.centerLaundryInBay(value,{...device,...value.kitchen.laundry.appliance},bay.index),[x,z]=K.local(value,aligned.cx,aligned.cy),washer=buildDevice({...aligned,rot:0,flip:false});washer.position.set(x/1000,(aligned.mountHeight??0)/1000,z/1000);washer.rotation.set(0,0,0);washer.scale.x=Math.abs(washer.scale.x);washer.traverse(o=>o.userData.cabinetIgnorePick=true);model.add(washer);}}if(value.kitchen)model.scale.x=value.flip?-1:1;
    sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();syncSplit();}
   function fit(){
-   const h=(current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current))/1000,w=current.w/1000,size=Math.max(w,h,current.d/1000),center=h/2;controls.target.set(0,center,0);
-   if(settings.front){viewHeight=Math.max(h+(elevation ? .35 : 0),w/(host.clientWidth/host.clientHeight||1))*(elevation?1.15:1.6);cam.position.set(0,center,Math.max(4,size*3));cam.zoom=1;resize();}
-   else if(current.kitchen){const side=(root.FurnishKitchen.cornerSide(current)==='right'?-1:1)*(current.flip?-1:1);if(current.kitchen.shape==='U')cam.position.set(side*size*2,h/2+size*.9,size*.8);else cam.position.set(side*size,h/2+size*.7,size*2);}else cam.position.set(size*1.2,h/2+size*.6,size*2.4);controls.update();
+   const bounds=C.assemblyBounds(current),actual=bounds??{w:current.w,d:current.d};
+   const h=(bounds?bounds.h+(C.movablePegboard(current)?bounds.bottom:0):current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current))/1000,w=actual.w/1000,size=Math.max(w,h,actual.d/1000),center=(C.movablePegboard(current)?0:(bounds?.bottom??0))/1000+h/2,cx=bounds?(bounds.left+bounds.right)/2000:0,cz=bounds?(bounds.back+bounds.front)/2000:0;controls.target.set(cx,center,cz);
+   if(settings.front){viewHeight=Math.max(h+(elevation ? .35 : 0),w/(host.clientWidth/host.clientHeight||1))*(elevation?1.15:1.6);cam.position.set(cx,center,cz+Math.max(4,size*3));cam.zoom=1;resize();}
+   else if(current.kitchen){const side=(root.FurnishKitchen.cornerSide(current)==='right'?-1:1)*(current.flip?-1:1);if(current.kitchen.shape==='U')cam.position.set(side*size*2,h/2+size*.9,size*.8);else cam.position.set(side*size,h/2+size*.7,size*2);}else cam.position.set(cx+size*1.2,center+size*.6,cz+size*2.4);controls.update();
   }
   function resize(){const width=host.clientWidth||500,height=host.clientHeight||440,aspect=width/height;r.setSize(width,height);if(cam.isOrthographicCamera){if(elevation)viewHeight=Math.max(((current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness))/1000+.35,current.w/1000/aspect)*1.15;cam.left=-viewHeight*aspect/2;cam.right=-cam.left;cam.top=viewHeight/2;cam.bottom=-cam.top;}else cam.aspect=aspect;cam.updateProjectionMatrix();if(splitRoot)syncSplit();}
   function rayAt(e){const rect=cv.getBoundingClientRect(),ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),cam);return ray;}
   function hitAt(ray){return ray.intersectObject(model,true).find(h=>h.object.isMesh&&!h.object.userData.cabinetIgnorePick);}
-  function apply(part,value,snap=false){
+  function apply(part,value,snap=false,phase){
    if(part.shelf!==undefined&&snap&&settings.snap)value=current.kitchen?root.FurnishKitchen.snapModuleShelf(current,part.kitchenModule,part.shelf,value):C.snapShelf(current,part.column,part.shelf,value);
-   const next=part.divider!==undefined?actions.divider?.(part.divider,value):actions.move(part,value);if(next){update(next);return true;}return false;
+   const next=part.divider!==undefined?actions.divider?.(part.divider,value,phase):actions.move(part,value);if(next){update(next);return true;}return false;
   }
-  function endDrag(cancel){if(!drag)return;const previous=drag;drag=null;if(cancel)apply(previous.part,previous.value);controls.enabled=true;cv.style.cursor=selected?'grab':'';if(cv.hasPointerCapture(previous.id))cv.releasePointerCapture(previous.id);}
+  function endDrag(cancel){if(!drag)return;const previous=drag;drag=null;if(previous.part.divider!==undefined)apply(previous.part,cancel?previous.value:C.widths(current)[previous.part.divider],false,cancel?'cancel':'end');else if(cancel)apply(previous.part,previous.value);controls.enabled=true;cv.style.cursor=selected?'grab':'';if(cv.hasPointerCapture(previous.id))cv.releasePointerCapture(previous.id);}
   cv.addEventListener('pointerdown',e=>{
    if(e.button!==0||drag)return;down={x:e.clientX,y:e.clientY,id:e.pointerId};const ray=rayAt(e),hit=hitAt(ray),part=hit&&tag(hit.object);if(!part)return;
    if(part.shelf===undefined&&part.divider===undefined)return;
@@ -223,18 +231,20 @@
    const normal=cam.getWorldDirection(new THREE.Vector3());normal.y=0;if(normal.lengthSq()<1e-8)normal.set(0,0,1);normal.normalize();
    const plane=new THREE.Plane().setFromNormalAndCoplanarPoint(normal,hit.point),start=ray.ray.intersectPlane(plane,new THREE.Vector3());if(!start)return;
    drag={id:e.pointerId,part:{...part},value:current.kitchen?root.FurnishKitchen.moduleShelves(current.kitchen.modules[part.kitchenModule],current.kitchen.baseHeight,true)[part.shelf]:part.divider!==undefined?C.widths(current)[part.divider]:C.config(current).columns[part.column].shelves[part.shelf],plane,start,x:e.clientX,y:e.clientY};
+   if(part.divider!==undefined)apply(part,drag.value,false,'start');
    controls.enabled=false;cv.setPointerCapture(e.pointerId);cv.style.cursor=part.divider!==undefined?'ew-resize':'ns-resize';
   },true);
   cv.addEventListener('pointermove',e=>{
    if(drawerDrag?.id===e.pointerId){e.stopImmediatePropagation();e.preventDefault();const d=drawerDrag;if(!d.moved&&Math.hypot(e.clientX-d.x,e.clientY-d.y)<3)return;d.moved=true;const point=rayAt(e).ray.intersectPlane(d.plane,new THREE.Vector3());if(point){const delta=drawerSnapDelta(d,point,e.altKey),next=actions.drawerBoundary(d.part,delta,'move');if(next)update(next);else d.snap=null;}return;}
    if(!drag||drag.id!==e.pointerId)return;e.stopImmediatePropagation();e.preventDefault();if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<3)return;
-   const point=rayAt(e).ray.intersectPlane(drag.plane,new THREE.Vector3());if(point){const delta=drag.part.divider!==undefined?point.x-drag.start.x:point.y-drag.start.y;apply(drag.part,drag.value+delta*1000,!e.altKey);cv.style.cursor=drag.part.divider!==undefined?'ew-resize':'ns-resize';}
+   // Cabinet geometry stays centred: changing one module by 2 dx moves its divider by dx.
+   const point=rayAt(e).ray.intersectPlane(drag.plane,new THREE.Vector3());if(point){const delta=drag.part.divider!==undefined?point.x-drag.start.x:point.y-drag.start.y;apply(drag.part,drag.value+delta*(drag.part.divider!==undefined?2000:1000),!e.altKey,'move');cv.style.cursor=drag.part.divider!==undefined?'ew-resize':'ns-resize';}
   },true);
   cv.addEventListener('pointerup',e=>{
    if(drawerDrag?.id===e.pointerId){e.stopImmediatePropagation();e.preventDefault();endDrawerDrag(false);down=null;return;}
    if(drag?.id===e.pointerId){e.stopImmediatePropagation();e.preventDefault();endDrag(false);down=null;return;}
    if(!down||down.id!==e.pointerId||Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)return;down=null;
-   const hit=hitAt(rayAt(e)),target=inspectPart(hit?.object),choose=actions.inspect||actions.select;if(choose?.(target)!==false){selected=target;highlight();cv.focus({preventScroll:true});}
+   const hit=hitAt(rayAt(e)),target=inspectPart(hit?.object),choose=target.kind==='door'&&actions.activateDoor?actions.activateDoor:actions.inspect||actions.select;if(choose?.(target)!==false){selected=target;highlight();cv.focus({preventScroll:true});}
   },true);
   cv.addEventListener('pointercancel',e=>{if(drawerDrag?.id===e.pointerId){e.stopImmediatePropagation();endDrawerDrag(true);}if(drag?.id===e.pointerId){e.stopImmediatePropagation();endDrag(true);}down=null;},true);
   cv.addEventListener('lostpointercapture',e=>{if(drawerDrag?.id===e.pointerId)endDrawerDrag(true);if(drag?.id===e.pointerId)endDrag(true);},true);
@@ -247,7 +257,7 @@
   const observer=new ResizeObserver(resize);observer.observe(host);update(f);fit();resize();
   function render(){if(disposed)return;if(!splitRoot){if(!drag&&!drawerDrag)controls.update();r.render(sc,cam);projectLabels();projectDrawers();}frame=requestAnimationFrame(render);}render();
   return {
-   update:value=>{const dims=v=>[v.w,v.d,v.kitchen?(v.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(v):v.kitchen.baseHeight+v.kitchen.thickness):v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
+   update:value=>{const dims=v=>[C.assemblyBounds(v),v.w,v.d,v.kitchen?(v.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(v):v.kitchen.baseHeight+v.kitchen.thickness):v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
    selectPart:part=>{selected=part;const old=activeColumn;activeColumn=part?.column??null;highlight();if(old!==activeColumn)dimensions();else markActive();},focus:()=>cv.focus({preventScroll:true}),
    finishDrawerInput:()=>finishDrawerInput()&&splitPanels.every(panel=>panel.preview.finishDrawerInput()),
    setView:options=>{endDrawerDrag(true);endDrag(true);const change=options.front!==undefined&&options.front!==settings.front;settings={...settings,...options};if(change){controls.dispose();cam=settings.front?new THREE.OrthographicCamera(-1,1,1,-1,.01,100):new THREE.PerspectiveCamera(38,1,.01,100);controls=new OrbitControls(cam,cv);setupControls();fit();resize();}update(current);},
