@@ -103,6 +103,8 @@ const DASH = 'stroke-dasharray="4 3"';
     case 'chair': return rc(x+25,y+d*.16,w-50,d*.84-10,c,'rx="60"') + rc(x,y,w,d*.2,shade(c,.78),'rx="40"');
     case 'bookshelf': { let s = rc(x,y,w,d,c); for (let bx = x+400; bx < x+w-50; bx += 400) s += ln(bx,y,bx,y+d); return s; }
     case 'baycushion': return rc(x,y,w,d,c,'rx="60"') + rc(x+60,y+80,w-120,Math.min(300,d*.2),'#fff','rx="60"') + rc(x+60,y+d-80-Math.min(300,d*.2),w-120,Math.min(300,d*.2),'#fff','rx="60"');
+    case 'bench_yeswood_oak': return rc(x,y,w,d,c,`rx="${w*.015}"`)+rc(-w*372.5/800,y,w*745/800,d,'#d7d1c5',`rx="${w*.0175}" ry="${d*14/300}"`)+[-1,1].map(s=>ln(s*w*300/800,y+d*.06,s*w*300/800,y+d*.94)).join('');
+    case 'coffeetable_yeswood_cherry': return rc(x,y,w,d,c,`rx="${w*.05}" ry="${d*60/650}"`)+rc(x+w*.003,y+d*.005,w*.994,d*.99,'#f5f5f1',`rx="${w*.049}" ry="${d*59/650}"`);
     case 'coffeetable': return rc(x,y,w,d,c,'rx="80"') + rc(x+60,y+60,w-120,d-120,shade(c,1.06),'rx="50"');
     case 'tvstand': return rc(x,y,w,d,c) + rc(x+w*.15,y+30,w*.7,55,'#3a3a3a');
     case 'rug': return rc(x,y,w,d,c,'rx="40" fill-opacity=".6"') + rc(x+90,y+90,w-180,d-180,'none','rx="30" stroke-dasharray="3 3" opacity=".6"');

@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "cherry-coffee-table"
+  ],
+  "results": [
+    {
+      "name": "cherry-coffee-table",
+      "status": "PASS",
+      "seconds": 15.2,
+      "log": "cherry-coffee-table.log.txt"
+    }
+  ],
+  "notRun": []
+}

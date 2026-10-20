@@ -75,6 +75,7 @@ const LIB = [
     ["armchair","阅读椅",750,800,"#c9a98a",1600]
   ]},
   {cat:'桌 · 台', items:[
+    ["coffeetable_yeswood_cherry","源氏木语 樱桃木茶几 · 1.2m（白色岩板）",1200,650,"#bd7846",0,products.height({type:"coffeetable_yeswood_cherry"})],
     ["tea_table_800","藤编移动茶台 · 80cm",800,400,"#68432e",0,products.height({type:"tea_table_800"})],
     ["dresser","梳妆台",1000,450,"#efe6d8",1500],
     ["desk","书桌",1200,600,"#e2cfb4",1200],
@@ -103,6 +104,7 @@ const LIB = [
     ["ovencol","蒸烤箱高柜",600,600,"#efe6d8",9000]
   ]},
   {cat:'椅 · 凳', items:[
+    ["bench_yeswood_oak","源氏木语 橡木软包换鞋凳 · 80cm",800,300,"#bd925f",0,products.height({type:"bench_yeswood_oak"})],
     ["chair","椅子",450,480,"#cfc6b8",400],
     ["chair","餐椅",450,480,"#cfc6b8",450],
     ["barstool","吧椅",420,420,"#6b5d4c",500],
@@ -190,14 +192,14 @@ function browseLibrary(){
 }
 const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
 const useTypes={
- living:['sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','roundtable','sidetable','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
+ living:['sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
  bedroom:['bed','crib','nightstand','wardrobe','chest','dresser','curtain','mirror','acwall'],
  dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
  study:['desk','chair','officechair','bookshelf','armchair','floorlamp'],
  kitchen:['stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
  laundry:['washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
  bathroom:['vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],
- entry:['shoecab','bench','mirror'],pet:[...petTypes]
+ entry:['shoecab','bench_yeswood_oak','bench','mirror'],pet:[...petTypes]
 };
 function itemUses(it){
  const result=uses.filter(([id])=>useTypes[id].includes(it[0])).map(([id])=>id);

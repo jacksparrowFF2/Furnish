@@ -343,6 +343,8 @@
 <script src="src/render/aircon-midea-model.js"></script>
 <script src="src/render/tea-bar-model.js"></script>
 <script src="src/render/tea-table-model.js"></script>
+<script src="src/render/shoe-bench-model.js"></script>
+<script src="src/render/cherry-coffee-table-model.js"></script>
 <script src="src/render/cat-tree-model.js"></script>
 <script src="src/render/folding-table-model.js"></script>
 <script src="src/render/sink-model.js"></script>
@@ -703,6 +705,8 @@ function buildFurniture(f){
   if(typeof FurnishWaterPurifierModel!=='undefined'&&FurnishWaterPurifierModel.supported(f)){const model=FurnishWaterPurifierModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),model.position.y,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishCatTreeModel!=='undefined'&&FurnishCatTreeModel.supported(f)){const model=FurnishCatTreeModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishAirconMideaModel!=='undefined'&&FurnishAirconMideaModel.supported(f)){const model=FurnishAirconMideaModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishShoeBenchModel!=='undefined'&&FurnishShoeBenchModel.supported(f)){const model=FurnishShoeBenchModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishCherryCoffeeTableModel!=='undefined'&&FurnishCherryCoffeeTableModel.supported(f)){const model=FurnishCherryCoffeeTableModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishTeaTableModel!=='undefined'&&FurnishTeaTableModel.supported(f)){const model=FurnishTeaTableModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishTeaBarModel!=='undefined'&&FurnishTeaBarModel.supported(f)){const model=FurnishTeaBarModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishPetFeederModel!=='undefined'&&FurnishPetFeederModel.supported(f)){const model=FurnishPetFeederModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
