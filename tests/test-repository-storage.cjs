@@ -19,6 +19,8 @@ const fingerprint=async w=>S.digest(C.text(w));
  assert.throws(()=>api.write(a,first.revision),e=>e.status===409);assert.equal(api.read().revision,second.revision);
  assert.deepEqual(api.write({...b,updatedAt:500},second.revision),second);
  const r=api.recover(a);assert.equal(api.recover(a).id,r.id);assert.equal(api.recoveries().length,1);assert.equal(api.read().revision,second.revision);
+ const layered=clone(a);layered.v=15;layered.work[plan.id].objectLayers={layers:[],assignments:{}};
+ const layeredCopy=api.recover(layered);assert.equal(api.recover(layered).id,layeredCopy.id);assert.deepEqual(api.recoveries().find(entry=>entry.id===layeredCopy.id).workspace,layered);assert.equal(api.read().revision,second.revision);
  // Unmerged Git edits cannot be overwritten, even with a previously valid revision.
  const file=path.join(dir,'projects/workspace.furnish.json'),valid=fs.readFileSync(file,'utf8');fs.writeFileSync(file,'<<<<<<< HEAD\n');assert.throws(()=>api.read());assert.throws(()=>api.write(a,second.revision));assert.match(fs.readFileSync(file,'utf8'),/HEAD/);fs.writeFileSync(file,valid);
  const server=http.createServer((req,res)=>api.handle(req,res));await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const url='http://127.0.0.1:'+server.address().port;

@@ -8,8 +8,7 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-echo Keep this window open while using Furnish.
-echo Close this window or press Ctrl+C to stop and release the port.
+echo Checking Furnish backend updates, then starting or opening the page...
 echo.
 node scripts/serve.cjs --open
 if errorlevel 1 pause
