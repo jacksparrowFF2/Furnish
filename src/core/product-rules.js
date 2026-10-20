@@ -37,7 +37,7 @@ const arrowSink={embedded:true,measureSurfaceBoundary:true,surfaceMeasurement,fa
 const doorPairing={values:['end','start'],default:'end',singleHinge:{values:['left','right'],default:'left'},layout:{values:['left','right','pair','paired'],maxLeaves:24}};
 // Editable leaf widths are model dimensions, not hardware installation limits.
 const doorWidths={minWidth:50,maxLeaves:24,gap:2};
-const hobCutoutLimits={min:1,max:20000};
+const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
 const foldingTable={family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const types={
  tea_bar_mijia_pro:{family:'tea-bar',height:1155,envelope:()=>[0,1155],identity:{brand:'米家/Mijia',model:'智能茶吧机 Pro 立式'}},
@@ -76,7 +76,7 @@ for(const type of ['tea_bar_mijia_pro','water_purifier_mijia_1200g','aquarium_mi
 // Optional kitchen door pairing keeps the historical leading single leaf by default.
 types.counter.doorPairing=doorPairing;types.kitchenwall.doorPairing=doorPairing;
 types.counter.doorWidths=doorWidths;types.kitchenwall.doorWidths=doorWidths;
-types.counter.laundry={outerResize:true,sideThickness:18,sideMin:10,sideMax:50,width:1340,depth:630,baseHeight:900,thickness:20,bayWidth:640,notchMin:20,minRemainingDepth:150,area:{upperHeight:600,upperBottom:1800,upperDepth:350,openHeight:200,openBottom:1600,openDepth:320,serviceGap:100,notch:100,sinkWidth:600,sinkDepth:500}};
+types.counter.laundry={outerResize:true,sideThickness:18,sideMin:10,sideMax:50,width:1340,depth:630,baseHeight:900,thickness:20,bayWidth:640,notchMin:20,minRemainingDepth:150,area:{upperHeight:600,upperBottom:1800,upperDepth:350,openHeight:200,openBottom:1600,openDepth:320,serviceGap:0,notch:100,sinkWidth:600,sinkDepth:500}};
 // Preserve historical model envelopes, including dimension-derived bounds.
 const envelopes={acwall:()=>[2170,2510],waterheater:f=>[1300,1950+Math.min(f.d/2,230)],tv:f=>[1200-f.w*.5625/2,1200+f.w*.5625/2],wallart:f=>[1280,1280+Math.min(950,Math.max(500,f.w*.45))],mirror:()=>[50,1700],pendant:()=>[2100,2627],baycushion:()=>[450,900],stove:()=>[862,2330],ksink:()=>[850,1182],vanity:()=>[330,1960]};
 for(const [type,envelope] of Object.entries(envelopes))types[type]={...types[type],envelope};

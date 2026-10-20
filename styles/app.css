@@ -643,3 +643,51 @@ footer kbd{background:var(--card);border-color:var(--line);color:var(--muted);fo
 .laundry-settings details{margin:12px 0;padding:10px;border:1px solid var(--line,#ddd);border-radius:8px}.laundry-settings summary{cursor:pointer;font-weight:600}.laundry-settings textarea{box-sizing:border-box;width:100%;max-width:100%;font:12px monospace}.laundry-settings .form{margin-top:8px}
 
 .laundry-settings input[type="checkbox"]{width:auto;min-height:0;justify-self:start}.laundry-settings label:has(input[type="checkbox"]){display:flex;align-items:center;gap:8px}
+
+/* Named object layer manager */
+.layer-toolbar { display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0; }
+.layer-toolbar input { flex:1;min-width:130px; }
+.layer-toolbar select { max-width:100%;min-width:100px; }
+.layer-table-wrap { overflow:auto;max-height:30vh;border:1px solid var(--line);border-radius:8px; }
+.layer-table { width:100%;border-collapse:collapse;font-size:13px; }
+.layer-table th,.layer-table td { padding:8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap; }
+.layer-table th { position:sticky;top:0;background:var(--paper); }
+.layer-table tr.on { background:rgba(14,143,131,.12); }
+.layer-select { background:none;border:0;color:inherit;cursor:pointer;text-align:left;min-width:80px;max-width:240px;white-space:normal;overflow-wrap:anywhere; }
+.layer-table tr.on .layer-select { font-weight:700; }
+.layer-object-list { max-height:27vh;overflow:auto;border-top:1px solid var(--line); }
+.observation-row { display:flex;align-items:center;gap:10px;min-height:42px;overflow-wrap:anywhere; }
+.observation-row input { flex:none; }
+.observation-row small { display:block;opacity:.65;font-size:11px; }
+@media(max-width:600px) { .layer-toolbar .btn { flex:1; }.layer-table th,.layer-table td { padding:6px; }.layer-table .btn { padding:5px; }.layer-select { max-width:120px; } }
+
+/* Non-modal layers beside the drawing; small screens keep the upper canvas usable. */
+.layer-sidebar { position:relative;z-index:5;grid-row:2;grid-column:2;min-height:0;display:flex;flex-direction:column;margin-right:var(--gap);background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-md); }
+.layer-sidebar[hidden] { display:none; }
+.app.layers-open > main { isolation:isolate; }
+.layer-sidebar-head { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line); }
+.layer-sidebar-head .btn { min-width:30px;min-height:30px;padding:2px 8px;font-size:20px; }
+.layer-sidebar-body { min-height:0;overflow:auto;padding:0 12px 12px;scrollbar-width:thin; }
+.layer-sidebar .layer-toolbar { gap:6px;margin:10px 0; }
+.layer-sidebar .layer-toolbar .btn { flex:1;padding:6px;min-height:32px;font-size:12px; }
+.layer-sidebar .layer-toolbar input,.layer-sidebar .layer-toolbar select { min-width:0;max-width:100%;padding:7px 8px;border:1px solid var(--line);background:var(--soft);border-radius:7px; }
+.layer-sidebar #layer-name,.layer-sidebar #layer-query { flex:1 1 160px; }
+.layer-sidebar .layer-table { font-size:12px; }
+.layer-sidebar .layer-table th,.layer-sidebar .layer-table td { padding:6px 4px; }
+.layer-sidebar .layer-select { min-width:30px;max-width:90px;padding:2px; }
+.layer-sidebar .layer-table .btn { padding:4px 2px;font-size:11px; }
+.layer-sidebar .layer-object-list { max-height:none;overflow:visible; }
+.layer-sidebar .observation-row { border-bottom:1px solid var(--line-soft);padding:4px 0; }
+.layer-sidebar #layer-inline-edit input { max-width:100%; }
+header #paneBtns #tgLayers span { display:inline; }
+@media(min-width:1101px) {
+ .app.layers-open { grid-template-columns:var(--lib-w) 330px minmax(0,1fr) var(--panel-w); }
+ .app.layers-open.hide-lib { grid-template-columns:0 330px minmax(0,1fr) var(--panel-w); }
+ .app.layers-open.hide-panel { grid-template-columns:var(--lib-w) 330px minmax(0,1fr) 0; }
+ .app.layers-open.hide-lib.hide-panel { grid-template-columns:0 330px minmax(0,1fr) 0; }
+ .app.layers-open > aside.lib { grid-row:2;grid-column:1; }
+ .app.layers-open > main { grid-row:2;grid-column:3; }
+ .app.layers-open > aside.right { grid-row:2;grid-column:4; }
+}
+@media(max-width:1100px) { .layer-sidebar { grid-column:1;align-self:end;justify-self:start;height:52%;max-height:52%;width:min(420px,calc(100% - 24px));margin:12px; } }
+@media print { .layer-sidebar { display:none!important; } }

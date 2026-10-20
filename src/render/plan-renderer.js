@@ -51,7 +51,7 @@ function refreshFurnitureLabels(root=svg,{scale=view.s,selected=selIds(),palette
 function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims,selected=selIds()}={}){
  const K=globalThis.FurnishKitchen,S=globalThis.FurnishSnapping;if(!K||!S?.surfaceOpening)return '';
  const furniture=renderableFurniture(),color='#e99028',stroke=`stroke="${color}" stroke-width="1.5" vector-effect="non-scaling-stroke"`,fmt=v=>String(Number(v.toFixed(1)));
- return furniture.map(f=>{
+ return furniture.filter(f=>!globalThis.FurnishObservationLayers||FurnishObservationLayers.visible(f)).map(f=>{
   if(!selected.includes(f.id))return '';
   const opening=S.surfaceOpening(f,{...(typeof measurementScene==='function'?measurementScene():{}),furniture});if(!opening)return '';
   const {size,ring,gaps}=opening,font=scale>0?Math.min(12/scale,size.w/10,size.d/4):Math.min(36,size.w/20,size.d/10),angle=-drawingRotation();
@@ -91,9 +91,10 @@ function renderRooms(){
   const sill = ([a,b,c,d], extra='') => `<rect x="${a}" y="${b}" width="${c-a}" height="${d-b}" fill="${PAL.sill}" stroke="${PAL.sillLine}" stroke-width="1" vector-effect="non-scaling-stroke" ${extra}/>`;
   DOORS.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-door="${i}"`));
   SLIDES.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-slide="${i}"`));
-  if(floorPlan)for(const a of floorPlan.floorFinish?.doorways||[]){const i=rooms.findIndex(r=>r.id===a.roomId);s+=`<path class="sill pick" data-${a.kind}="${a.index}" d="${(a.room.polys||[a.room.poly]).map(p=>'M'+p.map(v=>v.join(',')).join('L')+'Z').join(' ')}" fill="${a.layout?'url(#floor-grid-'+i+')':MATS[state.rooms[a.roomId].mat]?.sw||PAL.sill}" stroke="none"/>`;}
-  if(floorPlan)for(const r of rooms){const a=floorPlan.floorFinish?.areas[r.id];if(a&&r.at)s+=`<text data-floor-level x="${r.at[0]}" y="${r.at[1]+300}" font-size="105" text-anchor="middle" fill="#8b5725" pointer-events="none">${a.finishedZ===undefined?'标高待核对':`完成 ${a.finishedZ} mm`}</text>`;}
+  if(floorPlan)for(const a of floorPlan.floorFinish?.doorways||[]){const i=rooms.findIndex(r=>r.id===a.roomId);s+=`<path class="sill pick" data-${a.kind}="${a.index}" data-layer-floor="${esc(a.roomId)}" d="${(a.room.polys||[a.room.poly]).map(p=>'M'+p.map(v=>v.join(',')).join('L')+'Z').join(' ')}" fill="${a.layout?'url(#floor-grid-'+i+')':MATS[state.rooms[a.roomId].mat]?.sw||PAL.sill}" stroke="none"/>`;}
+  if(floorPlan)for(const r of rooms){const a=floorPlan.floorFinish?.areas[r.id];if(a&&r.at)s+=`<text data-floor-level data-layer-floor="${esc(r.id)}" x="${r.at[0]}" y="${r.at[1]+300}" font-size="105" text-anchor="middle" fill="#8b5725" pointer-events="none">${a.finishedZ===undefined?'标高待核对':`完成 ${a.finishedZ} mm`}</text>`;}
   $('#gRooms').innerHTML = s;
+  globalThis.FurnishObservationLayers?.applyPlan();
 }
 
 // Floor rugs and translucent pendants retain their layers; separated height
@@ -132,14 +133,15 @@ function renderFurn(){
     const clash = ui.layers.collide && clashIds.has(f.id)
       ? `<rect data-edit-overlay="clash" x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="url(#clash)" stroke="#d64532" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"/>` : '';
     // 锁定标记：固定 150mm 的小锁，随家具一起摆放但保持正向
-    const lock = f.locked ? `<g data-edit-overlay="lock" transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    const lock = furnitureLocked(f) ? `<g data-edit-overlay="lock" transform="translate(${f.w/2-110} ${-f.d/2+110}) rotate(${-f.rot})" pointer-events="none"><circle r="95" fill="${PAL.halo}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>
       <rect x="-45" y="-12" width="90" height="62" rx="12" fill="${PAL.ink}"/><path d="M-28 -12v-18a28 28 0 0 1 56 0v18" fill="none" stroke="${PAL.ink}" stroke-width="16"/></g>` : '';
-    return `<g class="furn${f.locked ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}><title>${esc(nm(f.name))} · ${f.w} × ${f.d} mm</title>${flip}${clash}${label}${lock}</g>`;
+    return `<g class="furn${furnitureLocked(f) ? ' locked' : ''}" data-fid="${f.id}"${furnitureError(f)?' data-model-error="true"':''} transform="${furnT(f)}"${f.type === 'pendant' ? ' opacity=".6"' : ''}><title>${esc(nm(f.name))} · ${f.w} × ${f.d} mm</title>${flip}${clash}${label}${lock}</g>`;
     }catch(e){const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return `<g class="furn" data-fid="${esc(f.id)}" data-model-error="true" transform="${furnT(f)}">${furnitureFallbackSVG(f,message)}</g>`;}
   }).join('');
   syncTuckedSeatPreview();
   refreshHobOpenings();
   syncFurnBadge(); syncEmpty(); syncModelErrors();
+  globalThis.FurnishObservationLayers?.applyPlan();
 }
 function syncModelErrors(){
  const errors=state.furniture.filter(f=>furnitureError(f)),badge=$('#modelErrors');if(!badge)return;
@@ -293,7 +295,7 @@ function renderGrid(){
   $('#gGrid').innerHTML = `<rect x="-20000" y="-20000" width="55000" height="55000" fill="${ui.layers.grid ? 'url(#grid)' : 'transparent'}" data-bg="1"/>`;
 }
 
-function directionalEditAttributes(dir,f,label){return dir&&ui.tool==='select'&&!(Array.isArray(f)?f:[f]).some(v=>v?.locked)?`data-distance-edit="${dir}" role="button" tabindex="0" pointer-events="all" style="cursor:pointer;text-decoration:underline" aria-label="${esc(label||tr('编辑目标净距','Edit target clearance'))}"`:'';}
+function directionalEditAttributes(dir,f,label){return dir&&ui.tool==='select'&&!(Array.isArray(f)?f:[f]).some(v=>furnitureLocked(v))?`data-distance-edit="${dir}" role="button" tabindex="0" pointer-events="all" style="cursor:pointer;text-decoration:underline" aria-label="${esc(label||tr('编辑目标净距','Edit target clearance'))}"`:'';}
 function sameMeasurement(a,b,m){const same=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y)<.01;return same(a,m.a)&&same(b,m.b)||same(a,m.b)&&same(b,m.a);}
 function renderMeasure(){
   const k = 1/view.s, fs = 12*k;
@@ -323,6 +325,7 @@ function renderMeasure(){
 
 const ACC = '#ef5a24', TEAL = '#0e8f83';
 function renderSel(){
+  if(globalThis.FurnishObservationLayers&&selIds().some(id=>!FurnishObservationLayers.visible(getF(id))))ui.sel=null;
   const preview=window.FurnishWorkspace?.openingPreviewPlan?.();if(!preview)return renderSelectedGeometry();
   const actual=[WALLS,WINS,DOORS,SLIDES,ROOMS];try{({walls:WALLS,wins:WINS,doors:DOORS,slides:SLIDES,rooms:ROOMS}=preview);renderSelectedGeometry();}finally{[WALLS,WINS,DOORS,SLIDES,ROOMS]=actual;}
 }
@@ -330,7 +333,7 @@ function renderSel(){
 // snapping, placement validation or persisted project data.
 function waterheaterClearanceSVG(){
   if(!ui.layers.furn)return '';
-  const heaters=state.furniture.filter(f=>f.type==='waterheater_flat');if(!heaters.length)return '';
+  const heaters=state.furniture.filter(f=>f.type==='waterheater_flat'&&(!globalThis.FurnishObservationLayers||FurnishObservationLayers.visible(f)));if(!heaters.length)return '';
   const plan=canvasEffectivePlan(),k=1/view.s;
   return heaters.map(f=>{
     const c=FurnishDesign.waterheaterClearances(plan,f,{furniture:state.furniture}),sign=f.flip?-1:1;
@@ -415,7 +418,7 @@ function renderSelectedGeometry(){
       const edgeHandle=(axis,x,y,angle,label)=>`<g data-handle="size" data-axis="${axis}" ${outer?`data-edit-overlay="kitchen-outer-edge" data-kitchen-edge="${axis==='w'?'right':'bottom'}"`:''} style="cursor:${resizeCursor(angle+drawing)}"><title>${label}</title>${outer?`<path d="${axis==='w'?`M${sx} ${-sy}L${sx} ${sy}`:`M${-sx} ${sy}L${sx} ${sy}`}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/>`:''}<circle cx="${x}" cy="${y}" r="${hit}" fill="transparent"/><rect x="${x-5*hs*k}" y="${y-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A} stroke-width="1.5"/></g>`;
       s += `<g transform="${furnT(f)}">
         <rect x="${-f.w/2-p}" y="${-f.d/2-p}" width="${f.w+2*p}" height="${f.d+2*p}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`;
-      if (!f.locked){const runGrips=kitchenRunHandleSVG(f,k,hit,hs,A,resizeCursor);
+      if (!furnitureLocked(f)){const runGrips=kitchenRunHandleSVG(f,k,hit,hs,A,resizeCursor);
         if(outer)for(const [edge,axis,x1,y1,x2,y2] of [['left','w',-sx,-sy,-sx,sy],['top','d',-sx,-sy,sx,-sy]]){
           const canonical=f.flip?(edge==='left'?'right':edge==='right'?'left':edge):edge,target=FurnishKitchen.outerEdge(f,canonical),title=tr(FurnishKitchen.isLaundry(f)?'拖动此端调整对应模块；水槽端同步调整定制盆宽，另一端固定':`拖动整条外边，固定对侧；调整${FurnishKitchen.runName(f,target.run)}${target.kind==='depth'?'柜深（内侧固定）':'末端柜宽'}，保留薄柜尺寸`,'Drag outer edge; keep opposite edge and inner modules fixed');
           s+=`<g data-edit-overlay="kitchen-outer-edge" data-handle="size" data-axis="${axis}" data-kitchen-edge="${edge}" style="cursor:${resizeCursor(f.rot+drawing+(axis==='d'?90:0))}"><title>${title}</title><path d="M${x1} ${y1}L${x2} ${y2}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/>${edge==='left'||edge==='top'?`<rect x="${(x1+x2)/2-5*hs*k}" y="${(y1+y2)/2-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A} stroke-width="1.5"/>`:''}</g>`;
@@ -429,11 +432,11 @@ function renderSelectedGeometry(){
         ${edgeHandle('d',0,sy,f.rot+90,outer?tr('调整这条外边柜深，固定对侧和内侧；保留薄柜尺寸','Resize this row depth; keep opposite and inner edges fixed'):tr('只调整深度（固定对侧边）','Resize depth only (opposite edge stays fixed)'))}
         <g data-handle="size" ${outer?'data-kitchen-edge="corner"':''} style="cursor:${resizeCursor(f.rot+drawing+45)}"><title>${tr('同时调整宽度和深度','Resize width and depth together')}</title><circle cx="${sx}" cy="${sy}" r="${hit}" fill="transparent"/>
         <rect x="${sx-5*hs*k}" y="${sy-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" fill="${ACC}"/></g>`;}
-      if(!f.locked)s+=kitchenExtensionHandleSVG(f,k,hs,A,resizeCursor)+kitchenDividerHandleSVG(f,k,hs,A,resizeCursor);
-      if(!f.locked&&outer)s+=kitchenGapSVG(f,k);
+      if(!furnitureLocked(f))s+=kitchenExtensionHandleSVG(f,k,hs,A,resizeCursor)+kitchenDividerHandleSVG(f,k,hs,A,resizeCursor);
+      if(!furnitureLocked(f)&&outer)s+=kitchenGapSVG(f,k);
       s += `</g>`;
       const {hh} = aabb(f);
-      s += `<text x="${f.cx}" y="${f.cy+hh+24*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${f.locked ? tr('已锁定 · ', 'Locked · ') : ''}${Math.round(f.w*10)/10} × ${Math.round(f.d*10)/10}</text>`;
+      s += `<text x="${f.cx}" y="${f.cy+hh+24*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${furnitureLocked(f) ? tr('已锁定 · ', 'Locked · ') : ''}${Math.round(f.w*10)/10} × ${Math.round(f.d*10)/10}</text>`;
       if (ui.layers.clear && (!drag || drag.kind === 'move')) s += clearanceSVG(f, k);
     }
   } else if (ui.sel?.kind === 'note' && noteBox[ui.sel.id]){

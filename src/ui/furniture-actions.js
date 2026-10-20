@@ -11,19 +11,20 @@ function selectIds(ids, primary){
 }
 function toggleSel(id){ const ids = selIds(),members=new Set(FurnishDesign.expandGroups(state.furniture,[id])); selectIds(ids.includes(id) ? ids.filter(x => !members.has(x)) : [...ids, ...members]); }
 function groupSel(){
+ if(selItems().some(furnitureLocked))return toast(tr('请先解锁家具及所在图层','Unlock the items and their layers first'));
  const ids=selIds();if(ids.length<2)return toast(tr('请先选择至少 2 件家具','Select at least 2 items first'));
  let groupId;do{groupId=uid();}while(state.furniture.some(f=>f.groupId===groupId));
  mutate(()=>state.furniture=FurnishDesign.groupFurniture(state.furniture,ids,groupId));selectIds(ids,ui.sel?.id);
  toast(tr('已打组：点击任一成员可移动整组','Grouped: select any member to move the group'));
 }
-function ungroupSel(){const ids=selIds();if(!selItems().some(f=>f.groupId))return;mutate(()=>state.furniture=FurnishDesign.ungroupFurniture(state.furniture,ids));selectIds(ids,ui.sel?.id);toast(tr('已解组','Ungrouped'));}
+function ungroupSel(){if(selItems().some(furnitureLocked))return toast(tr('请先解锁家具及所在图层','Unlock the items and their layers first'));const ids=selIds();if(!selItems().some(f=>f.groupId))return;mutate(()=>state.furniture=FurnishDesign.ungroupFurniture(state.furniture,ids));selectIds(ids,ui.sel?.id);toast(tr('已解组','Ungrouped'));}
 function selectAll(){ selectIds(state.furniture.map(f => f.id)); }
 // 锁定的家具不参与移动 / 旋转 / 删除等操作
 function movable(items){
-  const blocked=new Set(items.filter(f=>f.locked&&f.groupId).map(f=>f.groupId));
-  const n = items.filter(f => f.locked||blocked.has(f.groupId)).length;
+  const blocked=new Set(items.filter(f=>furnitureLocked(f)&&f.groupId).map(f=>f.groupId));
+  const n = items.filter(f => furnitureLocked(f)||blocked.has(f.groupId)).length;
   if (n) toast(tr(`${n} 件家具已锁定，未作修改（L 解锁）`, `${n} locked item(s) left unchanged (L to unlock)`));
-  return items.filter(f => !f.locked&&!blocked.has(f.groupId));
+  return items.filter(f => !furnitureLocked(f)&&!blocked.has(f.groupId));
 }
 
 /* ======================= 编辑操作 ======================= */
@@ -45,18 +46,20 @@ function deleteSel(){
   const all = selItems(); if (!all.length) return;
   const items = movable(all); if (!items.length) return;
   const ids = new Set(items.map(f => f.id));
-  ui.sel = null; mutate(() => state.furniture = state.furniture.filter(f => !ids.has(f.id)));
+  ui.sel = null; mutate(() => {state.furniture=state.furniture.filter(f=>!ids.has(f.id));if(state.objectLayers)for(const id of ids)delete state.objectLayers.assignments['furniture:'+id];});
   toast(items.length === 1 ? tr(`已删除「${nm(items[0].name)}」`, `Deleted "${nm(items[0].name)}"`) : tr(`已删除 ${items.length} 件家具`, `Deleted ${items.length} items`),
     {label:tr('撤销', 'Undo'), fn:undo});
 }
 function flipSel(){ const items = movable(selItems()); if (items.length) mutate(() => items.forEach(f => { if (f.flip) delete f.flip; else f.flip = true; })); }
 function lockSel(){
+ if(selItems().some(f=>FurnishLayers.locked(state,'furniture:'+f.id)))return toast(tr('请先在图层管理中解锁所在图层','Unlock the layer in Layer manager first'));
   const items = selItems(); if (!items.length) return;
   const lock = !items.every(f => f.locked);
   mutate(() => items.forEach(f => { if (lock) f.locked = true; else delete f.locked; }));
   toast(lock ? tr('已锁定：不会被误拖动或删除', 'Locked: protected from moves and deletes') : tr('已解锁', 'Unlocked'));
 }
 function orderSel(top){
+ if(selItems().some(furnitureLocked))return toast(tr('请先解锁家具及所在图层','Unlock the items and their layers first'));
   const ids = new Set(selIds()); if (!ids.size) return;
   mutate(() => { const a = state.furniture.filter(f => ids.has(f.id)), b = state.furniture.filter(f => !ids.has(f.id)); state.furniture = top ? [...b, ...a] : [...a, ...b]; });
 }
@@ -84,7 +87,7 @@ function distributeSel(axis){
   const h = axis === 'h', key = f => h ? f.cx - aabb(f).hw : f.cy - aabb(f).hh, size = f => h ? 2*aabb(f).hw : 2*aabb(f).hh;
   const items = [...all].sort((a, b) => key(a) - key(b)), first = items[0], last = items[items.length-1];
   const gap = (key(last) + size(last) - key(first) - items.reduce((a, f) => a + size(f), 0)) / (items.length - 1);
-  if (items.some(f => f.locked)) return toast(tr('含锁定家具，无法分布', 'Cannot distribute locked items'));
+  if (items.some(f => furnitureLocked(f))) return toast(tr('含锁定家具，无法分布', 'Cannot distribute locked items'));
   mutate(() => { let p = key(first);
     items.forEach(f => { const s = size(f); if (h) f.cx = Math.round(p + s/2); else f.cy = Math.round(p + s/2); p += s + gap; }); });
 }
@@ -101,15 +104,15 @@ function syncCutClipboard(){if(clip?.cut&&clip.movePlan===PLAN.id)clip.cutMoved=
 function copySel(cut, quiet){
   const chosen=new Set(selItems().map(f=>f.id)),selected=state.furniture.filter(f=>chosen.has(f.id)||f.laundryHostId&&chosen.has(f.laundryHostId)),items=cut?movable(selected):selected;if(!items.length)return;
   const [x0,y0,x1,y1] = groupBox(items);
-  clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut};
-  if(cut){const ids=new Set(items.map(f=>f.id));ui.sel=null;mutate(()=>state.furniture=state.furniture.filter(f=>!ids.has(f.id)));}else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
+  clip = {cx:(x0+x1)/2, cy:(y0+y1)/2, items:JSON.parse(JSON.stringify(items)),cut:!!cut,layerPlan:PLAN.id,layerIds:items.map(f=>FurnishLayers.layerId(state,'furniture:'+f.id))};
+  if(cut){const ids=new Set(items.map(f=>f.id));ui.sel=null;mutate(()=>{state.furniture=state.furniture.filter(f=>!ids.has(f.id));if(state.objectLayers)for(const id of ids)delete state.objectLayers.assignments['furniture:'+id];});}else if (!quiet) toast(tr(`已复制 ${items.length} 件 · Ctrl+V 粘贴`, `Copied ${items.length} · Ctrl+V to paste`));
 }
 function paste(at){
   if (!clip) return toast(tr('剪贴板为空：先选中家具按 Ctrl+C', 'Clipboard is empty — select items and press Ctrl+C'));
   const step=(clip.pastes||0)+1,p=at||{x:clip.cx+300*step,y:clip.cy+300*step};
   let result;try{result=FurnishDesign.pasteFurniture(clip,p,BOUNDS,uid,2000-state.furniture.length,state.furniture.map(f=>f.id),state.furniture.map(f=>f.groupId).filter(Boolean));}catch(e){return toast(e.message);}
   const news=result.items;
-  mutate(() => state.furniture.push(...news));
+  mutate(() => {state.furniture.push(...news);if(clip.layerPlan===PLAN.id&&clip.layerIds){state.objectLayers=FurnishLayers.copyAssignments(state,clip.items.map(f=>'furniture:'+f.id),news.map(f=>'furniture:'+f.id),{layerIds:clip.layerIds}).objectLayers;}});
   if(clip.cut)clip.cutMoved=true;if(result.moved)clip.movePlan=PLAN.id;
   if(!at)clip.pastes=step;
   selectIds(news.map(f => f.id));

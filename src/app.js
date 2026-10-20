@@ -58,7 +58,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v14';
+let STORE = 'huxing-design-v15';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);
@@ -169,8 +169,8 @@ function syncSaved(){
     : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 const snap = () => JSON.stringify(state);
-function commit(before){ const previous=JSON.parse(before);if(!(globalThis.FurnishTileEditor?.onlyChange(previous,state)||globalThis.FurnishTilePresets?.onlyChange(previous,state)||globalThis.FurnishTileGrout?.onlyChange(previous,state)||(previous.furnitureDatum!==state.furnitureDatum&&FurnishFloorFinish.onlyChange(previous,state))||((previous.wallFinishes||state.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,state))||((previous.floorFinishes||state.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,state))||((previous.wallTiling||state.wallTiling)&&FurnishWallTiling.onlyChange(previous,state))||((previous.ceilings||state.ceilings)&&FurnishCeiling.onlyChange(previous,state)))){if(state.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(state.furniture,FurnishProject.effectivePlan(PLAN,state)); FurnishKitchen.normalize(state.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,previous.furniture);} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
-function mutate(fn){ const b = snap(); fn(); commit(b); renderAll(); }
+function commit(before){ const previous=JSON.parse(before);if(!(globalThis.FurnishLayers?.onlyChange(previous,state)||globalThis.FurnishTileEditor?.onlyChange(previous,state)||globalThis.FurnishTilePresets?.onlyChange(previous,state)||globalThis.FurnishTileGrout?.onlyChange(previous,state)||(previous.furnitureDatum!==state.furnitureDatum&&FurnishFloorFinish.onlyChange(previous,state))||((previous.wallFinishes||state.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,state))||((previous.floorFinishes||state.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,state))||((previous.wallTiling||state.wallTiling)&&FurnishWallTiling.onlyChange(previous,state))||((previous.ceilings||state.ceilings)&&FurnishCeiling.onlyChange(previous,state)))){if(state.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(state.furniture,FurnishProject.effectivePlan(PLAN,state)); FurnishKitchen.normalize(state.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,previous.furniture);} if(arguments[1]===true){try{FurnishLayers.assertEditable(previous,state);}catch(e){state=previous;renderAll();throw e;}} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
+function mutate(fn){ const b=snap();try{fn();FurnishLayers.assertEditable(JSON.parse(b),state);}catch(e){state=JSON.parse(b);renderAll();throw e;}if(snap()===b)return;commit(b,true);renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function validateSel(){ if (ui.sel?.kind==='furn' && !getF(ui.sel.id)||ui.sel?.kind==='measure'&&!state.measures[ui.sel.id]) ui.sel = null; }
@@ -366,7 +366,7 @@ $('#panel').addEventListener('click', e => {
   const t = e.target;
   const scope=t.closest('[data-panel-scope]');if(scope){ui.panelScope=scope.dataset.panelScope;renderPanel();$('aside.right').scrollTop=0;$('#panel [data-panel-scope][aria-pressed="true"]')?.focus({preventScroll:true});return;}
   const tab = t.closest('[data-tab]'); if (tab){ ui.tab = tab.dataset.tab;ui.panelScope='design';saveUI();renderPanel();$('aside.right').scrollTop=0;return; }
-  const lk = t.closest('[data-lockid]'); if (lk){ e.stopPropagation(); const f = getF(lk.dataset.lockid); if (f) mutate(() => { if (f.locked) delete f.locked; else f.locked = true; }); return; }
+  const lk = t.closest('[data-lockid]'); if (lk){ e.stopPropagation(); const f = getF(lk.dataset.lockid); if(f&&FurnishLayers.locked(state,'furniture:'+f.id)){toast(tr('请先在图层管理中解锁所在图层','Unlock the layer in Layer manager first'));return;} if (f) mutate(() => { if (f.locked) delete f.locked; else f.locked = true; }); return; }
   const act = t.closest('[data-act]'); if (act){ runAct(act); return; }
   const st = t.closest('[data-style]'); if (st){ applyStyle(st.dataset.style); return; }
   const fo = t.closest('[data-focus]'); if (fo) focusItem(fo.dataset.focus);
@@ -434,7 +434,7 @@ function openCtx(x, y, target){
   }
   ui.ctxRoom = target?.closest?.('[data-room]')?.dataset.room || roomAt(ui.ctxAt.x, ui.ctxAt.y)?.id || null;
   if (fEl && !selIds().includes(fEl.dataset.fid)) selectIds([fEl.dataset.fid]);
-  const items = fEl ? selItems() : [], n = items.length, locked = n && items.every(f => f.locked);
+  const items = fEl ? selItems() : [], n = items.length, locked = n && items.every(f => furnitureLocked(f));
   const it = (act, icon, zh, en, key = '', o = {}) => `<button role="menuitem" data-act="${act}" ${o.dis ? 'disabled' : ''} class="${o.cls || ''}">${ico(icon)}<span>${tr(zh, en)}</span>${key ? `<kbd>${key}</kbd>` : ''}</button>`;
   const sep = '<div class="sep"></div>';
   let h;
@@ -531,7 +531,7 @@ function openReset(){
 function wipeAll(){
   // Erasing browser caches never deletes the Git-managed design file.
   const wipeNotice=repositoryClient?'仓库中的设计文件和本机恢复副本会保留，刷新后将重新加载仓库设计。':'';
-  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v14','huxing-design-v13','huxing-design-v12','huxing-design-v11','huxing-design-v10','huxing-design-v9','huxing-design-v8','huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
+  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v15','huxing-design-v14','huxing-design-v13','huxing-design-v12','huxing-design-v11','huxing-design-v10','huxing-design-v9','huxing-design-v8','huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 
 function openHelp(){

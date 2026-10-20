@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "laundry-editing"
+  ],
+  "results": [
+    {
+      "name": "laundry-editing",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "laundry-editing.log"
+    }
+  ],
+  "notRun": []
+}

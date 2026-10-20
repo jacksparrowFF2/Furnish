@@ -4,7 +4,7 @@ const original=presets.find(p=>p.id==='p10'),initial=JSON.stringify(original),no
 const element=()=>({style:{},dataset:{},after(){},remove(){},addEventListener(){},innerHTML:'',insertAdjacentHTML(_,s){this.innerHTML+=s;}}),$=s=>{if(!nodes.has(s))nodes.set(s,element());return nodes.get(s);};
 const work={plan:'p10',furniture:[{id:'bed',type:'bed',name:'床',cx:1000,cy:1300,w:1500,d:2000,rot:0}],rooms:{child:{name:'我的卧室',mat:'wood'}},notes:[{x:100,y:200,text:'test'}],measures:[{a:{x:10,y:20},b:{x:30,y:40}}],demolished:[],open:{w:{0:{sill:800/1000,head:2200/1000}},d:{}}};
 const before=JSON.stringify(work),messages=[];
-const ctx=vm.createContext({FurnishDraft:C,FurnishProject:P,window:{},PLAN:original,PLANS:[...presets],state:work,store:{work:{p10:work},customPlans:[]},ui:{},svg:element(),document:{createElement:element,body:{append(){}}},$,tr:s=>s,uid:()=> 'copy',toast:s=>messages.push(s),setTimeout:()=>0,clearTimeout(){}});
+const ctx=require('./helpers/layer-context.cjs').createContext({FurnishDraft:C,FurnishProject:P,window:{},PLAN:original,PLANS:[...presets],state:work,store:{work:{p10:work},customPlans:[]},ui:{},svg:element(),document:{createElement:element,body:{append(){}}},$,tr:s=>s,uid:()=> 'copy',toast:s=>messages.push(s),setTimeout:()=>0,clearTimeout(){}});
 vm.runInContext('function setPlan(id){PLAN=PLANS.find(p=>p.id===id);state=store.work[id];}function select(v){ui.sel=v;}',ctx);
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/project-ui.js'),'utf8'),ctx);
 assert.equal(ctx.window.FurnishWorkspace.copyBuiltin({kind:'win',id:0}),true);

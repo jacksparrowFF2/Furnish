@@ -1,6 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const nodes=new Map(),$=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:''});return nodes.get(id);};
-const ctx=vm.createContext({$,window:{},state:{furniture:[],open:{}},SLIDES:[{panels:3,floorTrack:false,stackSide:'left'}],WINS:[{rect:[0,0,1800,90],sill:.9,head:2.4,panels:0}],undoStack:[],redoStack:[],FurnishKitchen:require('../src/core/kitchen-core.js'),FurnishDesign:require('../src/core/design-core.js'),save(){},snapshot(){},renderAll(){},syncCutClipboard(){},validateSel(){},toast(){},tr:s=>s,select(){}});
+const ctx=require('./helpers/layer-context.cjs').createContext({$,window:{},state:{furniture:[],open:{}},SLIDES:[{panels:3,floorTrack:false,stackSide:'left'}],WINS:[{rect:[0,0,1800,90],sill:.9,head:2.4,panels:0}],undoStack:[],redoStack:[],FurnishKitchen:require('../src/core/kitchen-core.js'),FurnishDesign:require('../src/core/design-core.js'),save(){},snapshot(){},renderAll(){},syncCutClipboard(){},validateSel(){},toast(){},tr:s=>s,select(){}});
 const app=fs.readFileSync(require.resolve('../src/app.js'),'utf8');
 vm.runInContext(app.slice(app.indexOf('const snap ='),app.indexOf('function validateSel')),ctx);
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ctx);

@@ -8,6 +8,7 @@ function renderPanel(){
   let peek=$('#property-peek');if(!peek){peek=document.createElement('div');peek.id='property-peek';$('#stage').append(peek);peek.onclick=e=>{const b=e.target.closest('[data-peek-scope]');if(!b)return;ui.panelScope=b.dataset.peekScope;renderPanel();drawer('panel',true);};}
   peek.hidden=!ui.sel;peek.dataset.kind=ui.sel?.kind||'';
   peek.innerHTML=`<div><b>${esc(name)}</b>${f?furnitureDimensionSummary(f):''}</div><button class="btn" data-peek-scope="object" aria-expanded="${$('aside.right').classList.contains('open')}" aria-controls="panel">${tr('展开属性','Expand properties')}</button>`;
+  window.FurnishObservationLayers?.afterRender();
 }
 function panelSelectionName(){
  const sel=ui.sel;if(!sel)return tr('未选择对象','No selection');
@@ -43,7 +44,7 @@ function renderPanelContent(object=true){
   window.FurnishWorkflowTools?.afterPanel();
 }
 function renderBrokenFurniturePanel(f,p){
- p.innerHTML=`<section><h3>${esc(nm(f.name))}</h3><p class="project-error" role="alert">${esc(furnitureError(f))}</p><p>${tr('原方案记录已保留。画布虚线框仅表示保存的外包尺寸，空间核对待修复。','Original record retained. The dashed box shows the saved envelope; spatial checks require repair.')}</p><p>${f.w} × ${f.d} mm</p>${f.kitchen?`<p>${tr('按现有宽深修复会按每边原比例调整模块；按模块修复会重新计算总宽深。位置、旋转、镜像和其他资料保留，可撤销。','Keep envelope to scale modules proportionally, or keep modules to recalculate the envelope. Position and other details are retained; repairs can be undone.')}</p><div class="actions"><button class="btn primary" id="repair-kitchen-envelope" ${f.locked?'disabled':''}>${tr('按现有宽深修复模块','Keep envelope; repair modules')}</button><button class="btn" id="repair-kitchen-modules" ${f.locked?'disabled':''}>${tr('按模块修复总宽深','Keep modules; repair envelope')}</button></div>`:''}${f.locked?`<button class="btn" data-act="lock">${tr('解锁','Unlock')}</button>`:''}<button class="btn" id="broken-furniture-backup">${tr('备份当前原始方案 JSON','Back up raw plan JSON')}</button><p id="model-repair-error" role="alert"></p></section>`;
+ p.innerHTML=`<section><h3>${esc(nm(f.name))}</h3><p class="project-error" role="alert">${esc(furnitureError(f))}</p><p>${tr('原方案记录已保留。画布虚线框仅表示保存的外包尺寸，空间核对待修复。','Original record retained. The dashed box shows the saved envelope; spatial checks require repair.')}</p><p>${f.w} × ${f.d} mm</p>${f.kitchen?`<p>${tr('按现有宽深修复会按每边原比例调整模块；按模块修复会重新计算总宽深。位置、旋转、镜像和其他资料保留，可撤销。','Keep envelope to scale modules proportionally, or keep modules to recalculate the envelope. Position and other details are retained; repairs can be undone.')}</p><div class="actions"><button class="btn primary" id="repair-kitchen-envelope" ${furnitureLocked(f)?'disabled':''}>${tr('按现有宽深修复模块','Keep envelope; repair modules')}</button><button class="btn" id="repair-kitchen-modules" ${furnitureLocked(f)?'disabled':''}>${tr('按模块修复总宽深','Keep modules; repair envelope')}</button></div>`:''}${furnitureLocked(f)?`<button class="btn" data-act="lock">${tr('解锁','Unlock')}</button>`:''}<button class="btn" id="broken-furniture-backup">${tr('备份当前原始方案 JSON','Back up raw plan JSON')}</button><p id="model-repair-error" role="alert"></p></section>`;
  for(const [id,keep] of [['repair-kitchen-envelope',true],['repair-kitchen-modules',false]]){const b=$('#'+id);if(b)b.onclick=()=>{try{const next=FurnishKitchen.repairDimensions(getF(f.id),keep);mutate(()=>Object.assign(getF(f.id),next));}catch(e){$('#model-repair-error').textContent=e.message;}};}
  $('#broken-furniture-backup').onclick=()=>download(PLAN.id+'-recovery.json',new Blob([JSON.stringify({plan:PLAN.id,name:PLAN.name,...state},null,2)],{type:'application/json'}));
 }
@@ -60,11 +61,11 @@ function renderFab(){
   const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   fab.innerHTML = ids.length
     ? `<div class="fab-primary"><span class="name">${f ? esc(nm(f.name)) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
-      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${f.locked||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(f.w.toFixed(2))} × ${Number(f.d.toFixed(2))}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
+      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(f.w.toFixed(2))} × ${Number(f.d.toFixed(2))}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
       + `<button class="btn" data-fab-edit="distance" aria-haspopup="dialog" aria-expanded="false" ${selItems().some(v=>furnitureError(v))?'disabled':''}>${tr('四向净距','Clearances')}</button></div><div class="fab-actions">`
       + b('rotL', 'rotL', tr('逆时针 90°', 'Rotate left')) + b('rotR', 'rotR', tr('顺时针 90°', 'Rotate right')) + b('flip', 'flip', tr('镜像', 'Mirror'))
       + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
-      + b('lock', selItems().every(x => x.locked) ? 'lock' : 'unlock', tr('锁定 / 解锁', 'Lock / unlock')) + b('dup', 'copy', tr('复制一份', 'Duplicate')) + b('del', 'trash', tr('删除', 'Delete'), 'danger')
+      + b('lock', selItems().every(x => furnitureLocked(x)) ? 'lock' : 'unlock', tr('锁定 / 解锁', 'Lock / unlock')) + b('dup', 'copy', tr('复制一份', 'Duplicate')) + b('del', 'trash', tr('删除', 'Delete'), 'danger')
       + `<span class="sep"></span><button class="btn" data-act="prop">${tr('属性','Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button></div>`
     : `<div class="fab-primary"><span class="name">${esc(nm(state.rooms[r.id].name))}</span>${r.counted!==false?'<button class="btn" data-tiling-open aria-haspopup="dialog">铺砖</button>':''}</div><div class="fab-actions"><button class="btn" data-act="roomFurn">${tr('选中房间内家具','Select its furniture')}</button><button class="btn narrow-only" data-act="prop">${tr('地面 / 属性','Floor / Properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button></div>`;
   fab.classList.add('show');
@@ -103,7 +104,7 @@ function openFabEditor(kind){
   closeFabEditor(false);
   const items=selItems(),f=items.length===1&&items[0];if(!items.length)return;
   if(kind==='size'){
-    if(!f||f.locked||furnitureError(f))return;
+    if(!f||furnitureLocked(f)||furnitureError(f))return;
     if(furnitureUsesDetailedDesign(f)){FurnishCabinetEditor.open(f.id);return;}
     if(FurnishDesign.products().hoodInstallation(f)){ACT.prop();return;}
   }
@@ -126,6 +127,8 @@ function openFabEditor(kind){
   };
   else{
     panel.querySelectorAll('[data-distance-edit]').forEach(b=>b.onclick=()=>{const dir=b.dataset.distanceEdit;closeFabEditor();editDirectionalDistance(dir);});
+    panel.querySelectorAll('[data-distance-save]').forEach(b=>b.onclick=()=>saveDirectionalMeasurements(b.dataset.distanceSave));
+    panel.querySelector('#fab-distance-save').onclick=()=>saveDirectionalMeasurements();
   }
   $(`#fab [data-fab-edit="${kind}"]`)?.setAttribute('aria-expanded','true');
   queueFabPosition();
@@ -289,7 +292,7 @@ function waterheaterInstallationPanel(f){
   const row=(label,check,top=false)=>check.gap===null
     ? `<p class="muted">${label}：${tr(top?'未找到所在房间，请调整位置并核对至少':'未找到该方向墙体或已知高度家具，请核对至少',top?'No room found; adjust position and verify at least':'No wall or furniture with known height found in this direction; verify at least')} ${check.required} mm ${tr('预留空间','clearance')}。</p>`
     : `<p class="${check.ok===false?'project-error':'muted'}">${label}：${mm(check.gap)} mm · ${tr('要求至少','Requires at least')} ${check.required} mm${check.ok===null?' · '+tr('待核对家具高度','Verify furniture height'):check.ok?' · '+tr('满足','Met'):' · '+tr('不足','Short by')+' '+shortfall(check.required-check.gap)+' mm'}</p>`;
-  const s=f.heaterSocket,lk=f.locked?'disabled':'';
+  const s=f.heaterSocket,lk=furnitureLocked(f)?'disabled':'';
   const socketRow=checks.socket.gap===null?`<p class="muted">${tr('机身到插座：插座位置未设置，待核对至少 300 mm；不以右侧墙体或家具距离代替。','Heater to socket: position unset; verify at least 300 mm. Side walls or furniture do not determine this distance.')}</p>`:row(tr('机身到插座净距','Heater to socket clearance'),checks.socket);
   return `<h3>${tr('热水器安装预留','Heater installation clearance')}</h3><div id="waterheater-clearance" role="status" aria-live="polite">${row(tr('顶部净距','Top clearance'),checks.top,true)}${socketRow}</div><p class="muted small">${tr(`顶部按${checks.room?esc(nm(checks.room.name))+'的房间净高':'项目层高'} ${checks.ceilingHeight??'未知'} mm 核对；插座净距为机身外包面到插座中心的最短三维直线距离，不限制插座必须在右侧，也不代表电源线走线路径长度。`,`Top checked against ${checks.room?esc(nm(checks.room.name))+' room clear height':'project ceiling height'} of ${checks.ceilingHeight??'unknown'} mm. Socket clearance is the shortest 3D distance from the body envelope to the socket centre, on any side; not the cable route length.`)}</p><div class="form"><label class="full">${tr('插座位置','Socket position')}<select id="heaterSocketMode" ${lk}><option value="unset" ${!s?'selected':''}>${tr('未定 · 待核对','Unset · unverified')}</option><option value="set" ${s?'selected':''}>${tr('已定位 · 输入坐标','Located · enter coordinates')}</option></select></label>${s?['x','y','z'].map((key,i)=>`<label class="${i===2?'full':''}">${i===2?tr('插座中心离地高度','Socket centre height'):tr('插座中心','Socket centre')+' '+key.toUpperCase()} (mm)<input type="number" id="heaterSocket${key.toUpperCase()}" value="${s[key]}" min="${i===2?0:-1000000}" max="${i===2?20000:1000000}" step="10" ${lk}></label>`).join(''):''}</div>${s?`<p class="muted small">${tr('插座坐标固定在项目中；移动或旋转热水器不会移动插座。默认坐标只是输入起点，请按实际位置修改。','Socket coordinates stay fixed when the heater moves or rotates. Initial coordinates are placeholders; enter the actual location.')}</p>`:''}<button class="btn" id="heater-ceiling-settings">${checks.room?tr('修改房间净高','Change room clear height'):tr('修改层高','Change ceiling height')}</button>`;
 }
@@ -306,16 +309,15 @@ function furnPanel(f){
   const fridgeCabinets=fridge?state.furniture.filter(g=>!furnitureError(g)&&FurnishCabinet.supported(g)&&g.cabinet?.sideboard&&g.cabinet.columns.some(col=>col.fridgeBay)).sort((a,b)=>Math.hypot(a.cx-f.cx,a.cy-f.cy)-Math.hypot(b.cx-f.cx,b.cy-f.cy)):[];
   const laundry=FurnishDesign.products().family(f,'laundry');
   const robotSpec=typeof FurnishRobotVacuumModel!=='undefined'?FurnishRobotVacuumModel.specs[f.type]:null;
-  const r = isOutside(f) ? null : roomAt(f.cx, f.cy), custom = f.type === 'custom' || f.type === 'customround', lk = f.locked ? 'disabled' : '';
+  const r = isOutside(f) ? null : roomAt(f.cx, f.cy), custom = f.type === 'custom' || f.type === 'customround', lk = furnitureLocked(f) ? 'disabled' : '';
   const clashWith = collisions().filter(p => p.includes(f.id)).map(p => getF(p[0] === f.id ? p[1] : p[0])).filter(Boolean);
   const fridgeConflictDetails=clashWith.flatMap(g=>{const fit=FurnishCabinet.fridgeBayFit(f,g)||FurnishCabinet.fridgeBayFit(g,f)||FurnishCabinet.hoodBayFit(f,g)||FurnishCabinet.hoodBayFit(g,f);return fit&&!fit.fits?fit.reasons:[];});
   const btn = (act, icon, label, on) => `<button class="btn ${on ? 'on' : ''}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   const pad = Math.max(f.w, f.d)*.1;
   return `<section><div class="fhead"><div class="fthumb"><svg viewBox="${-f.w/2-pad} ${-f.d/2-pad} ${f.w+2*pad} ${f.d+2*pad}">${f.flip ? `<g transform="scale(-1 1)">${furnSVG(f.type,f.w,f.d,f.color,f)}</g>` : furnSVG(f.type,f.w,f.d,f.color,f)}</svg></div>
-      <div><b>${esc(nm(f.name))}</b><small data-furniture-price>${furniturePriceText(f)}</small>${f.locked ? `<span class="tag">${ico('lock')}${tr('已锁定','Locked')}</span>` : ''}</div></div>
+      <div><b>${esc(nm(f.name))}</b><small data-furniture-price>${furniturePriceText(f)}</small>${furnitureLocked(f) ? `<span class="tag">${ico('lock')}${tr('已锁定','Locked')}</span>` : ''}</div></div><button class="btn" onclick="FurnishObservationLayers.open()">${tr('图层：','Layer: ')}${esc(FurnishLayers.layer(state,'furniture:'+f.id).name)}${FurnishLayers.locked(state,'furniture:'+f.id)?' · '+tr('图层已锁定','Layer locked'):''}</button>
     ${furnitureDimensionSummary(f)}
     <h3>${tr('家具属性','Furniture')}</h3>
-    ${cabinetDesign?`<button class="btn primary" id="cabinet-edit" ${lk}>${tr('柜体详细设计','Design cabinet')}</button><p class="muted">${f.type==='kitchenwall'?tr('吊柜形状、各边柜深、模块、层板、抽屉与柜底离地高度在详细设计中编辑；保存后应用。','Edit wall cabinet shape, run depths, modules, shelves, drawers and mounting height in the designer. Save to apply.'):f.kitchen?tr('柜体尺寸、台面、模块、门板和配色统一在详细设计中编辑；保存后应用，取消保留原方案。','Edit cabinet dimensions, countertops, modules, fronts and colors in the designer. Save to apply; cancel to keep the current design.'):tr('柜体尺寸、结构、门板、配色和吊柜安装高度统一在详细设计中编辑；3D 中双击柜体也可进入。','Edit dimensions, structure, fronts, colors and wall cabinet mounting height in the designer; double-click a cabinet in 3D to open.')}</p>`:''}
     ${fridge&&fridgeCabinets.length?`<div class="form"><label class="full">${tr('目标餐边柜','Target sideboard')}<select id="fridge-bay-target" ${lk}>${fridgeCabinets.map(g=>`<option value="${esc(g.id)}">${esc(nm(g.name))} · ${g.w}×${g.d} mm</option>`).join('')}</select></label></div><button class="btn" id="fridge-center-bay" ${lk}>${tr('在冰箱位左右居中','Center within fridge bay')}</button><p class="muted">${tr('只沿柜体宽度方向移动冰箱，前后位置及朝向保持不变。调整柜体后可再次点击对齐。','Moves only across the cabinet width; front/back position and orientation stay unchanged. Click again after moving or resizing the cabinet.')}</p>`:''}
     ${f.type==='curtain'?`<div class="form"><label class="full">${tr('窗帘样式','Curtain style')}<select id="curtainStyle" ${lk}><option value="single" ${f.curtainStyle==='single'?'selected':''}>${tr('单开 · 向一侧收拢','Single · stack to one side')}</option><option value="double" ${f.curtainStyle!=='single'?'selected':''}>${tr('双开 · 向两侧收拢','Double · stack to both sides')}</option></select></label></div><p class="muted">${tr('3D 点击布幔开启／关闭；单开窗帘可用镜像改变收拢侧。','Click cloth in 3D to open or close; mirror a single curtain to switch sides.')}</p>`:''}
     ${FurnishDesign.products().supports(f,'floorTrack')?`<div class="form"><label class="full">${tr('下轨道','Bottom track')}<select id="fFloorTrack" ${lk}><option value="false" ${(FurnishDesign.products().value(f,'floorTrack'))===false?'selected':''}>${tr('无地轨 · 吊轨','No floor track')}</option><option value="true" ${(FurnishDesign.products().value(f,'floorTrack'))===true?'selected':''}>${tr('有下轨道','With bottom track')}</option></select></label></div><p class="muted">${tr('进入 3D 点击门窗扇开关；镜像可改变叠合侧。独立门窗按家具摆放；墙体洞口请在「编辑户型」中添加门窗，再选中洞口设置扇型。','Click panels in 3D to open or close; mirror to change the stacking side. For a wall opening, add a door or window in the floor-plan editor and then select its panel style.')}</p>`:''}
@@ -328,8 +330,6 @@ function furnPanel(f){
       ${f.type==='tripleslidingwindow'?`<label class="full">${tr('窗台高','Sill height')} (mm)<input id="fMountHeight" type="number" min="0" max="20000" value="${FurnishDesign.products().value(f,'mountHeight')}" ${lk}></label>`:''}
       <label class="full">${tr('名称','Name')}<input id="fName" value="${esc(nm(f.name))}"></label>
       ${FurnishProducts.family(f,'folding-table')&&!f.obj?`<label class="full">${tr('桌面形态','Table shape')}<select id="folding-table-pose" ${lk}>${[['round','圆桌 · 全展开','Round · fully open'],['single','单边收起 · 扇形桌','One leaf down'],['capsule','双边收起 · 胶囊桌','Both leaves down']].map(([v,zh,en])=>`<option value="${v}" ${FurnishProducts.value(f,'foldingTablePose')===v?'selected':''}>${tr(zh,en)}</option>`).join('')}</select></label><label class="full">${tr('桌面离地高度','Tabletop height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="10" max="20000" step="1" ${lk}></label><p class="muted full" style="grid-column:1/-1;margin:0">${tr('宽／深为当前形态占地，切换时桌架位置保持。1100款收起深740；1300款图示实标1305，单边1075／双边848 mm。1200款双边793、单边996.5 mm为插值草模；1100款单边920 mm为对称推算。高度760 mm；尺寸编辑为布局缩放，价格待填写。','Width/depth describe the current shape; folding keeps the frame in place. 1100: closed depth 740. 1300: reference diameter 1305, single 1075 / closed 848 mm. 1200 uses interpolated depths 996.5 / 793; 1100 single depth 920 is inferred. Height 760 mm; resizing is for layout. Price unknown.')}</p>`:''}
-      ${!cabinetDesign&&!FurnishDesign.products().hoodInstallation(f)?`<label>${f.type==='block'?tr('长','Length'):tr('宽','Width')} (mm)<input type="number" id="fW" value="${f.w}" min="50" step="10" ${lk}></label>
-      <label>${f.type==='block'?tr('宽','Width'):tr('深','Depth')} (mm)<input type="number" id="fD" value="${f.d}" min="50" step="10" ${lk}></label>`:''}
       ${f.type==='block'?`<label class="full">${tr('高','Height')} (mm)<input type="number" id="fH" value="${FurnishProducts.height(f)}" min="10" max="20000" step="1" ${lk}></label><label class="full">${tr('底部离地高度','Bottom height above floor')} (mm)<input type="number" id="fMountHeight" value="${FurnishProducts.value(f,'mountHeight')}" min="${FurnishProducts.fields.mountHeight.min}" max="${FurnishProducts.fields.mountHeight.max}" step="1" ${lk}></label><p class="muted full" style="grid-column:1/-1;margin:0">${tr('长、宽、高为块体外部尺寸；底部离地高度相对于家具地面基准，0 为落地，可设为悬空物体。','Length, width and height are the outer dimensions. Bottom height is relative to the furniture floor datum; use 0 for floor standing or a positive value for a suspended object.')}</p>`:''}
       <label>${tr('中心','Center')} X (mm)<input type="number" id="fX" value="${Math.round(f.cx)}" step="10" ${lk}></label>
       <label>${tr('中心','Center')} Y (mm)<input type="number" id="fY" value="${Math.round(f.cy)}" step="10" ${lk}></label>
@@ -356,26 +356,20 @@ function furnPanel(f){
     ${kitchenPanel(f)}
     ${waterheaterInstallationPanel(f)}${dishwasherInstallationPanel(f,installation)}
     ${window.FurnishDesignUI?.placementPanel(f,{shownIssues:installation?.checks||[]})||''}
-    ${directionalMeasurementPanel(f)}
     <div class="iconrow">
-      ${btn('rotL', 'rotL', tr('逆时针 90°（Shift+R）','Rotate left (Shift+R)'))}${btn('rotR', 'rotR', tr('顺时针 90°（R）','Rotate right (R)'))}
-      ${btn('flip', 'flip', tr('左右镜像（H）','Mirror (H)'), f.flip)}${btn('lock', f.locked ? 'lock' : 'unlock', tr('锁定 / 解锁（L）','Lock / unlock (L)'), f.locked)}
       ${btn('front', 'front', tr('置于顶层','Bring to front'))}${btn('toBack', 'back', tr('置于底层','Send to back'))}
     </div>
     <div class="actions">
-      ${f.groupId?`<button class="btn" data-act="ungroup">${tr('解组','Ungroup')}</button>`:''}
-      <button class="btn" data-act="dup">${ico('copy')}${tr('复制','Duplicate')}</button>
       <button class="btn" id="full-product-details">完整家具资料</button><button class="btn" id="replace-furniture">查找并替换</button><button class="btn" data-act="resetItem">${ico('reset')}${tr('恢复默认','Reset item')}</button>
       <button class="btn" data-act="zoom">${ico('target')}${tr('定位','Zoom to')}</button>
-      <button class="btn danger" data-act="del">${ico('trash')}${tr('删除','Delete')}</button>
       <button class="btn" data-act="home">${tr('← 返回','← Back')}</button>
     </div></section>
   <section class="muted small">${tr('拖动家具移动（会对齐其他家具并显示参考线）；拖上方圆点旋转、右侧白色手柄只改宽、下方白色手柄只改深，角落橙色方块同时改宽深；调整尺寸固定对侧边。Shift+点击可多选，右键查看更多操作。', 'Drag to move (snaps with guides); drag the top dot to rotate, the right white handle for width, the bottom white handle for depth, or the orange corner for both. Resizing fixes the opposite edge. Shift+click to multi-select; right-click for more.')}</section>`;
 }
 function directionalMeasurementPanel(f,saveAllId='directional-measure-save',compact=false){
- const members=Array.isArray(f)?f:[f],locked=members.some(v=>v.locked),distances=directionalMeasurements(f),labels={t:tr('上方','Up'),b:tr('下方','Down'),l:tr('左侧','Left'),r:tr('右侧','Right')};
+ const members=Array.isArray(f)?f:[f],locked=members.some(v=>furnitureLocked(v)),distances=directionalMeasurements(f),labels={t:tr('上方','Up'),b:tr('下方','Down'),l:tr('左侧','Left'),r:tr('右侧','Right')};
  const surfaceBoundary=Object.values(distances).some(m=>m?.surfaceBoundary||m?.wallPriority);
- if(compact)return `<div class="fab-distance-grid">${Object.entries(labels).map(([dir,label])=>{const m=distances[dir],name=measurementReferenceName(m);return `<button class="btn fab-gap-choice" data-distance-row="${dir}" data-distance-edit="${dir}" ${!m||locked?'disabled':''} aria-label="${esc(`${label} ${m?Math.round(m.distance)+' mm':''} · ${name}`)}"><span>${label}<b>${m?Math.round(m.distance)+' mm':'—'}</b></span><small>${esc(name)}</small></button>`;}).join('')}</div><p class="muted small">${locked?tr('选中项含锁定家具，请先解锁。','Selection contains locked furniture; unlock first.'):tr('按图纸上下左右，外沿 → 最近参照；点击数值定位，0 可贴边。','Drawing directions, footprint edge → nearest reference. Click to position; 0 means contact.')}</p>`;
+ if(compact)return `<div class="fab-distance-grid">${Object.entries(labels).map(([dir,label])=>{const m=distances[dir],name=measurementReferenceName(m);return `<button class="btn fab-gap-choice" data-distance-row="${dir}" data-distance-edit="${dir}" ${!m||locked?'disabled':''} aria-label="${esc(`${label} ${m?Math.round(m.distance)+' mm':''} · ${name}`)}"><span>${label}<b>${m?Math.round(m.distance)+' mm':'—'}</b></span><small>${esc(name)}</small></button>`;}).join('')}</div><p class="muted small">${locked?tr('选中项含锁定家具，请先解锁。','Selection contains locked furniture; unlock first.'):tr('按图纸上下左右，外沿 → 最近参照；点击数值定位，0 可贴边。','Drawing directions, footprint edge → nearest reference. Click to position; 0 means contact.')}</p><div class="actions">${Object.entries(labels).map(([dir,label])=>`<button class="btn" data-distance-save="${dir}" ${!distances[dir]||distances[dir].distance<1?'disabled':''}>${label}${tr('留图',' · Keep')}</button>`).join('')}<button class="btn" id="${saveAllId}" ${Object.values(distances).some(m=>m&&m.distance>=1)?'':'disabled'}>${tr('全部留在图纸','Keep all on drawing')}</button></div><p class="muted small">${tr('留图后端点固定，不随家具移动。','Kept endpoints stay fixed when furniture moves.')}</p>`;
  return `<div class="mt directional-measurements"><h4>${members.length>1?tr('整组四向净距（2D）','Group clearance in four directions (2D)'):surfaceBoundary?tr('四向实体边界距离（2D）','Distance to entity boundaries (2D)'):tr('四向最近净距（2D）','Nearest clearance in four directions (2D)')}</h4>
  <p class="measurement-basis">${tr('占地外沿 → 最近参照 · 按图纸上下左右','Footprint edge → nearest reference · drawing up/down/left/right')}</p>
  ${Object.entries(labels).map(([dir,label])=>{const m=distances[dir],name=measurementReferenceName(m),action=m?`${label} ${Math.round(m.distance)} mm · ${tr('外沿到','Edge to')} ${name}`:'';return `<div class="irow" data-distance-row="${dir}"><span class="nm"><b>${label}</b><br><small>${m?esc(tr('外沿 → ','Edge → ')+name):name}</small></span>${m?`<button class="btn" data-distance-edit="${dir}" aria-label="${esc(action)}" title="${tr('输入目标净距并移动物体','Set target clearance and move item')}" ${locked?'disabled':''}>${Math.round(m.distance)} mm</button>`:'<b>—</b>'}<button class="btn" data-distance-save="${dir}" title="${tr('固定当前测量端点，不随家具移动','Keep fixed endpoints; does not follow furniture')}" ${!m||m.distance<1?'disabled':''}>${tr('留图','Keep')}</button></div>`;}).join('')}
@@ -392,17 +386,16 @@ function bindFurnPanel(f){
   bindDirectionalMeasurementPanel();
   if(typeof bindKitchenPanel==='function')bindKitchenPanel(f);
   if(f.type==='waterheater_flat')$('#heater-ceiling-settings').onclick=()=>{const room=FurnishProject.ceilingAt(FurnishProject.effectivePlan(PLAN,state),f.cx,f.cy).room;if(room){ui.sel={kind:'room',id:room.id};renderPanel();}else FurnishWorkspace.open('settings');};
-  if(FurnishCabinet.supported(f)||f.kitchen)$('#cabinet-edit').onclick=()=>FurnishCabinetEditor.open(f.id);
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
-  for(const [selector,key] of [['#fPipeBoxShape','pipeBoxShape'],['#fPipeBoxOpenSide','pipeBoxOpenSide'],['#fPipeBoxCorner','pipeBoxCorner']]){const el=$(selector);if(el)el.onchange=e=>{try{const g=getF(f.id);if(g.locked)throw Error('家具已锁定，请先解锁');const v=FurnishProducts.validateField(g,key,e.target.value);upd(g=>g[key]=v);}catch(error){toast(error.message);renderPanel();}};}
+  for(const [selector,key] of [['#fPipeBoxShape','pipeBoxShape'],['#fPipeBoxOpenSide','pipeBoxOpenSide'],['#fPipeBoxCorner','pipeBoxCorner']]){const el=$(selector);if(el)el.onchange=e=>{try{const g=getF(f.id);if(furnitureLocked(g))throw Error('家具已锁定，请先解锁');const v=FurnishProducts.validateField(g,key,e.target.value);upd(g=>g[key]=v);}catch(error){toast(error.message);renderPanel();}};}
   const foldingPose=$('#folding-table-pose');if(foldingPose)foldingPose.onchange=e=>{try{const next=FurnishProducts.editFoldingTablePose(getF(f.id),e.target.value);upd(g=>Object.assign(g,next));}catch(error){toast(error.message);renderPanel();}};
-  const dishwasherDoor=$('#dishwasher-door');if(dishwasherDoor)dishwasherDoor.onchange=e=>{if(getF(f.id).locked)return;upd(g=>g.dishwasherDoorOpen=FurnishProducts.validateField(g,'dishwasherDoorOpen',e.target.value==='open'));};
-  const socketMode=$('#heaterSocketMode');if(f.type==='waterheater_flat'&&socketMode){socketMode.onchange=e=>{if(getF(f.id).locked)return;upd(g=>{if(e.target.value==='set')g.heaterSocket={x:g.cx,y:g.cy,z:FurnishDesign.products().value(g,'mountHeight')};else delete g.heaterSocket;});};for(const key of ['x','y','z']){const el=$('#heaterSocket'+key.toUpperCase());if(el)el.onchange=e=>{try{if(getF(f.id).locked)throw Error('家具已锁定，请先解锁');const v=Number(e.target.value);if(!e.target.value.trim()||!Number.isFinite(v)||Math.abs(v)>1000000||key==='z'&&(v<0||v>20000))throw Error('请输入有效插座坐标；离地高度须为 0–20000 mm');upd(g=>g.heaterSocket={...g.heaterSocket,[key]:Math.round(v)});}catch(error){toast(error.message);renderPanel();}};}}
-  if(FurnishDesign.products().supports(f,'floorTrack'))$('#fFloorTrack').onchange=e=>{if(getF(f.id).locked)return;upd(g=>g.floorTrack=e.target.value==='true');};
-  if(f.type==='curtain')$('#curtainStyle').onchange=e=>{if(getF(f.id).locked)return;upd(g=>g.curtainStyle=e.target.value);};
+  const dishwasherDoor=$('#dishwasher-door');if(dishwasherDoor)dishwasherDoor.onchange=e=>{if(furnitureLocked(getF(f.id)))return;upd(g=>g.dishwasherDoorOpen=FurnishProducts.validateField(g,'dishwasherDoorOpen',e.target.value==='open'));};
+  const socketMode=$('#heaterSocketMode');if(f.type==='waterheater_flat'&&socketMode){socketMode.onchange=e=>{if(furnitureLocked(getF(f.id)))return;upd(g=>{if(e.target.value==='set')g.heaterSocket={x:g.cx,y:g.cy,z:FurnishDesign.products().value(g,'mountHeight')};else delete g.heaterSocket;});};for(const key of ['x','y','z']){const el=$('#heaterSocket'+key.toUpperCase());if(el)el.onchange=e=>{try{if(furnitureLocked(getF(f.id)))throw Error('家具已锁定，请先解锁');const v=Number(e.target.value);if(!e.target.value.trim()||!Number.isFinite(v)||Math.abs(v)>1000000||key==='z'&&(v<0||v>20000))throw Error('请输入有效插座坐标；离地高度须为 0–20000 mm');upd(g=>g.heaterSocket={...g.heaterSocket,[key]:Math.round(v)});}catch(error){toast(error.message);renderPanel();}};}}
+  if(FurnishDesign.products().supports(f,'floorTrack'))$('#fFloorTrack').onchange=e=>{if(furnitureLocked(getF(f.id)))return;upd(g=>g.floorTrack=e.target.value==='true');};
+  if(f.type==='curtain')$('#curtainStyle').onchange=e=>{if(furnitureLocked(getF(f.id)))return;upd(g=>g.curtainStyle=e.target.value);};
   const centerFridge=$('#fridge-center-bay');if(centerFridge)centerFridge.onclick=()=>{try{const cabinet=getF($('#fridge-bay-target').value),next=FurnishCabinet.centerFridgeInBay(cabinet,getF(f.id));upd(g=>Object.assign(g,next));toast(tr('已在冰箱预留位左右居中，前后位置保持不变','Centered in fridge bay; front/back position unchanged'));}catch(error){toast(error.message);}};
-  const num = (id, fn) => { const el = $(id); if (el) el.onchange = e => {const v=Number(e.target.value);try{if(!e.target.value.trim()||!Number.isFinite(v))throw Error('请输入有效数字');if(['#fW','#fD','#fH','#fX','#fY','#fR','#fMountHeight','#fStackHeight','#fPipeBoxThickness','#fShowerRise','#fShowerHandAngle','#fShowerMixerHeight'].includes(id)&&getF(f.id).locked)throw Error('家具已锁定，请先解锁');upd(g=>fn(g,v));}catch(error){toast(error.message);renderPanel();}}; };
+  const num = (id, fn) => { const el = $(id); if (el) el.onchange = e => {const v=Number(e.target.value);try{if(!e.target.value.trim()||!Number.isFinite(v))throw Error('请输入有效数字');if(['#fW','#fD','#fH','#fX','#fY','#fR','#fMountHeight','#fStackHeight','#fPipeBoxThickness','#fShowerRise','#fShowerHandAngle','#fShowerMixerHeight'].includes(id)&&furnitureLocked(getF(f.id)))throw Error('家具已锁定，请先解锁');upd(g=>fn(g,v));}catch(error){toast(error.message);renderPanel();}}; };
   $('#fName').onchange = e => upd(g => g.name = e.target.value.trim() || g.name);
   num('#fW', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{w:Math.round(v)})));
   num('#fD', (g,v) => Object.assign(g,FurnishDesign.resizeFurniture(g,{d:Math.round(v)})));
@@ -420,25 +413,20 @@ function bindFurnPanel(f){
 }
 function multiPanel(items){
   const [x0,y0,x1,y1] = groupBox(items), btn = (act, icon, label) => `<button class="btn" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
-  const lockedAll = items.every(f => f.locked), cost = items.reduce((a, f) => a + priceOf(f), 0);
+  const cost = items.reduce((a, f) => a + priceOf(f), 0);
   return `${laundryGroupHost(items)?laundryControls(laundryGroupHost(items)):''}<section><h3>${tr(`已选 ${items.length} 件家具`, `${items.length} items selected`)}</h3>
     <div class="stats"><div><small>${tr('整体尺寸','Group size')}</small><span class="big mid">${Math.round(x1-x0)} × ${Math.round(y1-y0)}</span></div>
       <div><small>${tr('参考价合计','Reference total')}</small><span class="big mid">${yen(cost)}</span></div></div>
-    <div class="actions"><button class="btn" data-act="group">${tr('打组','Group')}</button>${items.some(f=>f.groupId)?`<button class="btn" data-act="ungroup">${tr('解组','Ungroup')}</button>`:''}</div><p class="muted">${tr(items.some(f=>f.groupId)?'点击组内任一家具会选中整组；解组后可单独调整。':'打组后可共同移动，保持相对位置。','Group members move together; ungroup to adjust individual items.')}</p>
     ${window.FurnishDesignUI?.groupPlacementPanel(items)||''}
-    ${directionalMeasurementPanel(items)}
     <div class="lbl">${tr('对齐','Align')}</div>
     <div class="iconrow">${btn('al','al',tr('左对齐','Align left'))}${btn('ac','ac',tr('水平居中','Align centers horizontally'))}${btn('ar','ar',tr('右对齐','Align right'))}${btn('at','at',tr('顶对齐','Align top'))}${btn('am','am',tr('垂直居中','Align middles'))}${btn('ab','ab',tr('底对齐','Align bottom'))}</div>
-    <div class="lbl">${tr('分布 · 尺寸 · 变换','Distribute · size · transform')}</div>
-    <div class="iconrow">${btn('dh','dh',tr('水平等距分布','Distribute horizontally'))}${btn('dv','dv',tr('垂直等距分布','Distribute vertically'))}${btn('match','size',tr('统一为主选中项的尺寸','Match size of the primary item'))}${btn('rotL','rotL',tr('整组逆时针 90°','Rotate group left'))}${btn('rotR','rotR',tr('整组顺时针 90°','Rotate group right'))}${btn('flip','flip',tr('镜像','Mirror'))}</div>
+    <div class="lbl">${tr('分布 · 尺寸','Distribute · size')}</div>
+    <div class="iconrow">${btn('dh','dh',tr('水平等距分布','Distribute horizontally'))}${btn('dv','dv',tr('垂直等距分布','Distribute vertically'))}${btn('match','size',tr('统一为主选中项的尺寸','Match size of the primary item'))}</div>
     <div class="actions">
-      <button class="btn" data-act="lock">${ico(lockedAll ? 'unlock' : 'lock')}${lockedAll ? tr('解锁','Unlock') : tr('锁定','Lock')}</button>
-      <button class="btn" data-act="dup">${ico('copy')}${tr('复制','Duplicate')}</button>
       <button class="btn" data-act="zoom">${ico('target')}${tr('定位','Zoom to')}</button>
-      <button class="btn danger" data-act="del">${ico('trash')}${tr('删除','Delete')}</button>
       <button class="btn" data-act="home">${tr('取消选择','Deselect')}</button></div></section>
   <section><h3>${tr('选中项','Selection')}</h3>
-    ${items.map(f => `<div class="irow ${f.id === ui.sel.id ? 'on' : ''}" data-focus="${f.id}"><span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${f.locked ? ico('lock') + ' ' : ''}${esc(nm(f.name))}</span><small>${f.w}×${f.d}</small></div>`).join('')}
+    ${items.map(f => `<div class="irow ${f.id === ui.sel.id ? 'on' : ''}" data-focus="${f.id}"><span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${furnitureLocked(f) ? ico('lock') + ' ' : ''}${esc(nm(f.name))}</span><small>${f.w}×${f.d}</small></div>`).join('')}
     <div class="muted note">${tr('高亮项为主选中项（统一尺寸的基准）。Shift+点击可增减选择。','The highlighted item is primary (used by Match size). Shift+click to add/remove.')}</div></section>`;
 }
 

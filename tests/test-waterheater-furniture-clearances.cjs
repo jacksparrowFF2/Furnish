@@ -36,7 +36,7 @@ assert.equal(check([unknown,tall]).right.ok,false,'known obstruction remains a d
 assert.equal(check([],heater,{...plan,walls:[]}).right.ok,null);
 const work={furniture:[heater,tall]},saved=P.unpack(P.pack({planId:plan.id,current:work,designs:[],catalog:[]}));
 assert.deepEqual(check(saved.current.furniture.slice(1),saved.current.furniture[0]),check());
-const context=vm.createContext({FurnishDesign:D,FurnishProject:P,PLAN:plan,state:work,tr:zh=>zh,nm:v=>v,esc:v=>String(v).replaceAll('<','&lt;').replaceAll('>','&gt;')});
+const context=require('./helpers/layer-context.cjs').createContext({FurnishDesign:D,FurnishProject:P,PLAN:plan,state:work,tr:zh=>zh,nm:v=>v,esc:v=>String(v).replaceAll('<','&lt;').replaceAll('>','&gt;')});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),context);context.f=heater;
 const render=()=>vm.runInContext('waterheaterInstallationPanel(f)',context);
 assert.match(render(),/插座位置未设置，待核对/);assert.doesNotMatch(render(),/机身右侧净距/);

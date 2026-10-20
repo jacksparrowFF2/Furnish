@@ -67,7 +67,7 @@ function snapPoint(p,shift){
 function measurementScene(){const rects=snapRects();return {rects,solidWallCount:rects.length-WINS.length,furniture:ui.layers.furn?state.furniture:[]};}
 function directionalMeasurements(f=selItems()){return FurnishSnapping.directional(f,{...measurementScene(),rotation:drawingRotation()});}
 function editKitchenDivider(key,side='left'){
- const items=selItems();if(items.length!==1)return;const f=items[0],K=FurnishKitchen;if(f.locked||!f.kitchen)return;
+ const items=selItems();if(items.length!==1)return;const f=items[0],K=FurnishKitchen;if(furnitureLocked(f)||!f.kitchen)return;
  const h=K.dividerHandles(f).find(h=>h.key===key);if(!h)return;
  const before=snap(),planId=PLAN.id,hostId=f.id,total=h.leftWidth+h.rightWidth,modules=K.cabinetLayout(f),sides=side==='right'?['right','left']:['left','right'];let active=sides[0];
  const label=side=>{const m=modules.find(m=>m.index===h[side]);return m.index<f.kitchen.modules.length?tr(`模块 ${m.index+1} · ${K.moduleRoles(f)[m.role]}`,`Module ${m.index+1} · ${m.role}`):tr(`${K.runName(f,m.run)}末端薄柜`,'Thin end cabinet');};
@@ -76,7 +76,7 @@ function editKitchenDivider(key,side='left'){
  openDialog({title:tr('调整相邻柜宽','Adjust adjacent cabinet widths'),body:`<p><b>${esc(K.runName(f,h.run))}</b> · ${tr('两柜总宽','Combined width')} ${Math.round(total*1e6)/1e6} mm</p><div class="form">${sides.map(side=>`<label class="full">${esc(label(side))} · mm<input id="kitchen-divider-${side}" type="number" step="any" value="${h[side+'Width']}" inputmode="decimal" aria-describedby="kitchen-divider-help kitchen-divider-error"></label>`).join('')}</div><p id="kitchen-divider-help" class="muted">${tr('修改任意一柜，另一柜自动补差。整排总长、柜深及其他柜体尺寸和位置保持不变。','Edit either width; the other adjusts automatically. Run length, depths and all other cabinets stay fixed.')}</p><p id="kitchen-divider-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('应用柜宽','Apply widths'),cls:'primary',fn:apply}],onOpen:()=>{for(const side of sides){const input=$('#kitchen-divider-'+side);input.oninput=()=>{active=side;const other=$('#kitchen-divider-'+(side==='left'?'right':'left'));other.value=input.value.trim()?String(Math.round((total-Number(input.value))*1e6)/1e6):'';try{proposal();$('#kitchen-divider-error').textContent='';}catch(e){$('#kitchen-divider-error').textContent=e.message;}};input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(apply())closeDialog();}};}$('#kitchen-divider-'+sides[0]).select();}});
 }
 function editKitchenGap(key){
- const items=selItems();if(items.length!==1)return;const f=items[0];if(f.locked)return;
+ const items=selItems();if(items.length!==1)return;const f=items[0];if(furnitureLocked(f))return;
  const row=FurnishSnapping.kitchenGaps(f,{furniture:state.furniture,scale:view.s}).find(r=>r.key===key);if(!row)return;
  const before=snap(),planId=PLAN.id,scale=view.s,hostId=f.id,K=FurnishKitchen,target=row.kind==='run'?'末端常规柜宽':K.outerEdge(f,f.flip?(key.endsWith('left')?'right':key.endsWith('right')?'left':key.split(':')[1]):key.split(':')[1]).kind==='depth'?'这一排柜深':'末端常规柜宽';
  const apply=()=>{try{if(PLAN.id!==planId||snap()!==before)throw Error('方案已变化，请重新打开间距输入');const input=$('#kitchen-gap-input');if(!input.value.trim())throw Error('请输入预留间距');const next=FurnishSnapping.setKitchenGap(getF(hostId),key,row.reference.id,Number(input.value),{furniture:state.furniture,scale});if(JSON.stringify(next)!==JSON.stringify(getF(hostId)))mutate(()=>Object.assign(getF(hostId),next));return true;}catch(e){$('#kitchen-gap-error').textContent=e.message;return false;}};
@@ -154,7 +154,7 @@ function endDrag(cancel){
   if(d.shiftTap&&!d.moved&&!cancel){toggleSel(d.shiftTap);return;}
   if (d.kind === 'locked') return;
   if (cancel && d.before){ state=JSON.parse(d.before); store.work[PLAN.id]=state; ui.guides=null; renderAll(); return; }
-  if (d.kind === 'note'){ if (d.moved){ commit(d.before); renderAll(); } return; }
+  if (d.kind === 'note'){ if (d.moved){ try{commit(d.before,true);}catch(error){toast(error.message);} renderAll(); } return; }
   if(d.kind==='kitchen-divider'&&!d.moved){ui.guides=null;editKitchenDivider(d.divider);return;}
   if((['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)||d.kind==='size'&&(d.edge||d.resizeError))&&snap()===d.before){ui.guides=null;renderAll();if(d.resizeError)toast(d.resizeError);return;}
   if (d.moved){
@@ -162,7 +162,7 @@ function endDrag(cancel){
       const f = getF(d.id);
       if (f){ const ox = f.cx, oy = f.cy; pushOut(f,d.kind==='move'?d.axis:undefined); if (Math.hypot(f.cx-ox, f.cy-oy) > 60) toast(tr('已自动避开墙体', 'Moved off the wall automatically')); }
     }
-    commit(d.before); renderAll();
+    try{commit(d.before,true);}catch(error){toast(error.message);} renderAll();
     if(['size','kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&d.resizeError)toast(d.resizeError);
   }
 }
@@ -315,7 +315,7 @@ svg.addEventListener('pointerdown', e => {
   if (h && selIds().length === 1){
     if(h.dataset.handle==='kitchen-divider')h.focus?.({preventScroll:true});
     const f=getF(selIds()[0]);
-    drag = {kind:f.locked?'locked':h.dataset.handle, axis:h.dataset.axis||'both', edge:h.dataset.kitchenEdge, run:Number(h.dataset.kitchenRun), field:h.dataset.kitchenExtension, divider:h.dataset.kitchenDivider, startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
+    drag = {kind:furnitureLocked(f)?'locked':h.dataset.handle, axis:h.dataset.axis||'both', edge:h.dataset.kitchenEdge, run:Number(h.dataset.kitchenRun), field:h.dataset.kitchenExtension, divider:h.dataset.kitchenDivider, startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
   } else if (ui.tool === 'demolish' && t.closest('[data-wall]')){
     toggleWall(t.closest('[data-wall]').dataset.wall); return;
   } else if (picking && nEl){
@@ -326,7 +326,7 @@ svg.addEventListener('pointerdown', e => {
     if (e.metaKey || e.ctrlKey || e.shiftKey&&!selIds().includes(id)){ toggleSel(id); return; }
     if (!selIds().includes(id)) selectIds([id]); else if (ui.sel.id !== id) selectIds(selIds(), id);
     const items = selItems(), f = getF(id);
-    drag = items.some(g => g.locked) ? {kind:'locked', ...base}
+    drag = items.some(g => furnitureLocked(g)) ? {kind:'locked', ...base}
       : {kind:'move', id, ids:items.map(g => g.id), start:Object.fromEntries(items.map(g => [g.id, [g.cx, g.cy]])), ...base, ox:p.x-f.cx, oy:p.y-f.cy, before:snap()};
     if(e.shiftKey)drag.shiftTap=id; // Shift-click still toggles; a drag locks an axis.
     if (e.pointerType !== 'mouse') startLongPress(e);

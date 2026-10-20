@@ -20,8 +20,28 @@ function laundryParts(f){
  return ['upper','open','sink'].flatMap(key=>{const s=a[key];if(!s||s.enabled===false)return [];const slot=key==='sink'?layout(laundryBase(f)).find(m=>m.index===s.module):null,[cx,cy]=world(f,(slot?.x??0)+(s.x??0),(slot?.y??0)+(s.y??0)),part={...clone(s),id:f.id+':'+key,type:key==='sink'?'ksink':'kitchenwall',w:s.w??f.w,cx,cy,rot:f.rot||0,flip:!!f.flip};delete part.x;delete part.y;delete part.enabled;
  if(key==='sink'){part.counterLink={hostId:f.id,module:s.module};part.counterElevation=f.kitchen.baseHeight+f.kitchen.thickness;delete part.module;}return [{key,furniture:part}];});
 }
+function alignLaundryBack(f){
+ if(!isLaundry(f)||!f.kitchen.laundry.assembly)throw Error('请选择整体洗衣柜');
+ if(f.locked)throw Error('柜体已锁定');
+ const next=clone(f);for(const key of ['upper','open']){const part=next.kitchen.laundry.assembly[key];if(part)part.y=(part.d-next.d)/2;}
+ return configure(next,next.kitchen);
+}
 function laundrySideBoards(f){
  const s=f.kitchen?.laundry?.sidePanels;if(!s)return [];return layout(f).filter(m=>m.role==='empty').flatMap(m=>[['left',-1],['right',1]].flatMap(([side,sign])=>s[side]&&Math.abs(m.x+sign*m.width/2-sign*f.w/2)<.01?[{side,x:sign*(f.w/2-s.thickness/2),y:m.y,w:s.thickness,d:runDepth(f,m.run),bottom:0,top:f.kitchen.baseHeight}]:[]));
+}
+// Close the two newly exposed rear-notch faces, inside the remaining carcass.
+function laundryNotchBoards(f){
+ const n=f.kitchen?.laundry?.notch;if(!n)return [];
+ const sign=n.side==='left'?-1:1,edge=sign*(f.w/2-n.width),back=-f.d/2,boards=[];
+ for(const m of cabinetLayout(f).filter(m=>m.role!=='empty')){
+  const t=moduleFurniture(f,m).cabinet.thickness,bottom=f.kitchen.laundry.floorOpen&&m.role==='sink'?0:plinth(f),top=f.kitchen.baseHeight;
+  const left=m.x-m.width/2,right=m.x+m.width/2,rear=m.y-(m.depth??f.kitchen.depth)/2,front=m.y+(m.depth??f.kitchen.depth)/2;
+  const x1=Math.max(left,n.side==='left'?-f.w/2:edge),x2=Math.min(right,n.side==='left'?edge:f.w/2),y=back+n.depth;
+  if(x2>x1&&y>=rear&&y+t<=front)boards.push({x:(x1+x2)/2,y:y+t/2,w:x2-x1,d:t,bottom,top});
+  const y1=Math.max(rear,back),y2=Math.min(front,y),x=edge-sign*t/2;
+  if(y2>y1&&x-t/2>=left-.01&&x+t/2<=right+.01)boards.push({x,y:(y1+y2)/2,w:t,d:y2-y1,bottom,top});
+ }
+ return boards;
 }
 function laundryBay(f,m){const boards=laundrySideBoards(f).filter(b=>Math.abs(b.x-m.x)<m.width/2),left=boards.filter(b=>b.x<m.x).reduce((n,b)=>n+b.w,0),right=boards.filter(b=>b.x>m.x).reduce((n,b)=>n+b.w,0);return {...m,width:m.width-left-right,x:m.x+(left-right)/2};}
 function laundryHeight(f){return Math.max(f.kitchen.baseHeight+(hasCountertop(f)?f.kitchen.thickness:0),...laundryParts(f).map(({key,furniture:p})=>key==='sink'?sinkProducts().vertical(p).top:p.mountHeight+p.h));}
@@ -200,6 +220,7 @@ function configure(f,k){
   const dy=k.shape==='U'?(next.d-f.d)/2-(runDepth(next,0)-runDepth(f,0)):k.shape==='L'?(k.endExtensions!==undefined||f.kitchen.endExtensions!==undefined?(next.d-f.d)/2:0):k.counterDepth!==undefined?(next.d-f.d)/2:0;
   const [cx,cy]=world(f,dx,dy);next.cx=cx;next.cy=cy;
  }
+ if(isLaundry(next)&&next.d!==f.d)for(const key of ['upper','open']){const old=f.kitchen?.laundry?.assembly?.[key],part=next.kitchen.laundry.assembly?.[key];if(old&&part&&Math.abs((old.y??0)-(old.d-f.d)/2)<.01&&part.y===old.y)part.y=(part.d-next.d)/2;}
  delete next.kitchen.obstacleFit;
  for(const m of next.kitchen.modules){if(m.role==='custom')for(const key of ['door','doorOpen','doorAngle','doorMaxAngle','doorLeaves','doorPairing','doorSingleHinge','doorLayout','doorRatios','shelves'])delete m[key];if(m.role==='drawer'||m.role==='empty')for(const key of ['door','doorOpen','doorAngle','doorMaxAngle','doorLeaves','doorPairing','doorSingleHinge','doorLayout','doorRatios'])delete m[key];if(moduleDoor(next,m)!=='auto'){delete m.doorPairing;delete m.doorSingleHinge;delete m.doorLayout;}if(moduleDoor(next,m)==='none'||cabinet().verticalDoor(moduleDoor(next,m))||m.doorRatios&&m.doorRatios.length!==moduleLeafCount(next,m))delete m.doorRatios;if(moduleDoor(next,m)==='none'){delete m.doorOpen;delete m.doorAngle;delete m.doorLeaves;}if(m.role!=='custom')delete m.structure;if(m.role!=='door')delete m.shelves;if(m.role!=='drawer'){delete m.drawerOpen;delete m.drawerHeights;delete m.drawerStyle;}else if(Array.isArray(m.drawerOpen))m.drawerOpen=Array.from({length:drawerHeights(next,m).length},(_,i)=>m.drawerOpen[i]??false);}for(const m of [...next.kitchen.modules,...(next.kitchen.endExtensions||[])]){const count=moduleLeafCount(next,m);if(m.doorLayout){cabinet().validateDoorSettings(m);if(count)m.doorLayout=cabinet().fitDoorLayout(m.doorLayout,count);else delete m.doorLayout;}if(!count)delete m.doorLeaves;else if(m.doorLeaves){m.doorLeaves=Array.from({length:count},(_,i)=>m.doorLeaves[i]??{open:false});m.doorOpen=m.doorLeaves.some(s=>s.open);}}if(isWall(next))next.h=next.kitchen.baseHeight;else delete next.h;delete next.cabinet;return validate(next);}
 // Explicit shape edits preserve retained module indices and remap only removed runs.
@@ -450,8 +471,30 @@ function ringInside(point,ring){return zones().inside(point,ring);}
 function deviceSignature(host,list){return deviceOpenings(host,list).map(({device:f,ring})=>[f.id,f.type,f.w,f.d,f.h,f.sinkInstall,f.sinkStyle,f.sinkBowlHeight,ring]);}
 // Nominal opening within the supplied adjustable range; resizing is a layout approximation.
 function validateLink(f){const l=f.counterLink;if(l===undefined)return;if(!isDevice(f)||!l||typeof l!=='object'||typeof l.hostId!=='string'||!l.hostId||l.hostId.length>200||!Number.isInteger(l.module)||l.module<0||l.module>47)throw Error('水槽／灶具的台面关联无效');}
-function fit(f,host,index){const m=layout(host)[index],role=isSink(f)?'sink':'hob';if(!m||m.role!==role)throw Error('请选择对应的水槽柜或灶台柜');const angle=m.rot,depth=runDepth(host,m.run);if(f.w>m.width-40||f.d>depth-40)throw Error('设备尺寸须在模块和柜深内保留模型边距 20 mm');if(isLaundry(host)){if(!hasCountertop(host))throw Error('请先启用台面');const [cx,cy]=world(host,m.x,m.y);if(!onSurface({...f,cx,cy,rot:host.rot||0,flip:!!host.flip},host))throw Error('水槽与管道缺角相交，请调整尺寸或独立定位');}return {m,angle};}
+function fit(f,host,index){const m=layout(host)[index],role=isSink(f)?'sink':'hob';if(!m||m.role!==role)throw Error('请选择对应的水槽柜或灶台柜');const angle=m.rot,depth=runDepth(host,m.run),opening=sinkProducts().hobCutout(f),margin=sinkProducts().definition(f)?.hobCutout?.moduleMargin;
+ if(opening){if(Math.max(f.w,opening.w+2*margin)>m.width||Math.max(f.d,opening.d+2*margin)>depth)throw Error('灶具面板须在模块内，开孔须保留模型边距 '+margin+' mm');}
+ else if(f.w>m.width-40||f.d>depth-40)throw Error('设备尺寸须在模块和柜深内保留模型边距 20 mm');
+ if(isLaundry(host)||opening){if(!hasCountertop(host))throw Error('请先启用台面');const [cx,cy]=world(host,m.x,m.y);if(!onSurface({...f,cx,cy,rot:((host.rot||0)+(host.flip?-angle:angle)+360)%360,flip:!!host.flip},host))throw Error('设备面板超出台面或与台面缺口相交，请调整尺寸或独立定位');}return {m,angle};}
 function attach(f,host,index){if(f.locked||host.locked)throw Error('请先解锁设备与厨房');fit(f,host,index);return {...f,counterLink:{hostId:host.id,module:index}};}
+// Explicit linking may convert an ordinary door cabinet; never replace other functions.
+function attachment(list,id,hostId,index){
+ const f=list.find(v=>v.id===id),host=list.find(v=>v.id===hostId);
+ if(!f||!isDevice(f)||f.obj||!host||host.type!=='counter'||!host.kitchen||host.obj)throw Error('请选择有效设备与模块厨房');
+ if(f.locked||host.locked)throw Error('请先解锁设备与厨房');
+ if(list.some(v=>v.id!==id&&v.counterLink?.hostId===hostId&&v.counterLink.module===index))throw Error('该模块已关联设备');
+ validate(host);const k=clone(host.kitchen),m=k.modules[index];let next=host;
+ if(!isSink(f)&&m?.role==='door'&&!isLaundry(host)){m.role='hob';next=configure(host,k);}
+ return {host:next,device:attach(f,next,index)};
+}
+function attachmentTargets(f,list){
+ const targets=[];for(const host of list.filter(h=>h.type==='counter'&&h.kitchen&&!h.obj)){
+  try{validate(host);}catch{continue;}
+  for(const m of layout(host))if(m.role===(isSink(f)?'sink':'hob')||!isSink(f)&&m.role==='door'&&!isLaundry(host)){
+   let reason='';try{attachment(list,f.id,host.id,m.index);}catch(e){reason=e.message;}
+   targets.push({host,m,convert:m.role==='door',reason});
+  }
+ }return targets;
+}
 function normalize(list,before=[]){
  for(const f of list){if(!f.laundryHostId)continue;const host=list.find(h=>h.id===f.laundryHostId&&isLaundry(h));if(!host){delete f.laundryHostId;continue;}const settings=host.kitchen.laundry.appliance;if(settings&&!f.locked)Object.assign(f,clone(settings));const bay=layout(host).find(m=>m.role==='empty');if(bay&&!f.locked)Object.assign(f,centerLaundryInBay({...host,locked:false},f,bay.index));}
 
@@ -535,6 +578,6 @@ function normalizeObstacles(list,plan){if(!list.some(f=>f.kitchen?.autoAvoid))re
 function bodyParts(f){return [...lowerBodyParts(f),...laundrySideBoards(f).map(b=>({p:rectPoly(b).map(p=>world(f,...p)),vertical:{bottom:b.bottom,top:b.top}})),...laundryParts(f).filter(p=>p.key!=='sink').flatMap(({furniture:p})=>cabinet().layout(p).map(()=>({p:rectPoly({x:0,y:0,w:p.w,d:p.d}).map(v=>world(p,...v)),vertical:{bottom:p.mountHeight,top:p.mountHeight+p.h}})).slice(0,1))];}
 function openingZones(f,options){return [...lowerOpeningZones(f,options),...laundryParts(f).filter(p=>p.key!=='sink').flatMap(({key,furniture:p})=>cabinet().openingZones(p,options).map(z=>({...z,sourceSection:z.section,section:'laundry:'+key})))];}
 function spatialConfig(f){if(!f.kitchen)return undefined;const k=clone(f.kitchen),scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor'].includes(key))delete v[key];else scrub(v[key]);}};if(k.laundry?.assembly)scrub(k.laundry.assembly);return k;}
-const api={moduleDoorWidths,setModuleDoorWidth,outerResizable,spatialConfig,laundryParts,laundryHeight,laundrySideBoards,laundryBay,integrateLaundryArea,createLaundryCabinet,isLaundryAreaItem,createLaundryArea,setLaundryDoors,laundrySide,switchLaundrySides,isLaundry,hasCountertop,laundryPreset,catalogSpec,notchedRing,laundryCut,centerLaundryInBay,measurementSurface,drawerStyle,drawerStyleRule,drawerMinimum,drawerLabel,setDrawerStyle,isWall,plinth,baseElevation,bodyHeight,moduleRoles,fromWall,snapModuleShelf,moveModuleShelf,moduleShelfLimits,hoodHosts,drawerBoundaryTargets,resizeDrawerBoundary,drawerRules,drawerSpan,drawerHeights,setDrawerCount,setDrawerHeight,slabGeometry,ringArea,ringInside,isSink,arrowSink,sinkMode,openingRing,surfaceGeometry,onSurface,support,deviceOpenings,deviceSignature,normalizeSinks,dividerHandles,resizeDivider,depthRules,endResizeRules,extensionHandles,resizeExtension,partitionRules,cornerPartition,cornerConnections,moduleShelves,cornerShelves,adjacentOpenings,cornerLayout,runDepth,runCounterDepth,outerEdge,resizeOuter,runHandles,resizeRun,changeShape,shapeRules,runs,endRuns,runName,runNormal,runLength,cornerBlocks,adjacentSides,isDevice,cutout,roles,edgeStyles,counterDepth,extension,bodyBounds,cornerPlinth,endLayout,cabinetLayout,cornerBoards,edgeStyle,dropHeight,defaults,cornerSide,cornerBlock,validate,configure,resize,repairDimensions,layout,elevationRuns,slabs,outline,frontEdges,edgeParts,area,topGeometry,avoidanceRules,adaptObstacles,normalizeObstacles,world,local,footprints,bodyParts,validateLink,fit,attach,normalize,validateList,moduleFurniture,kitchenModuleConfig,moduleDoor,moduleLeafCount,moduleLeafState,moduleLeafAngle,moduleMaxAngle,moduleAngle,toggle,specification,openingZones};
+const api={attachment,attachmentTargets,moduleDoorWidths,setModuleDoorWidth,outerResizable,spatialConfig,alignLaundryBack,laundryNotchBoards,laundryParts,laundryHeight,laundrySideBoards,laundryBay,integrateLaundryArea,createLaundryCabinet,isLaundryAreaItem,createLaundryArea,setLaundryDoors,laundrySide,switchLaundrySides,isLaundry,hasCountertop,laundryPreset,catalogSpec,notchedRing,laundryCut,centerLaundryInBay,measurementSurface,drawerStyle,drawerStyleRule,drawerMinimum,drawerLabel,setDrawerStyle,isWall,plinth,baseElevation,bodyHeight,moduleRoles,fromWall,snapModuleShelf,moveModuleShelf,moduleShelfLimits,hoodHosts,drawerBoundaryTargets,resizeDrawerBoundary,drawerRules,drawerSpan,drawerHeights,setDrawerCount,setDrawerHeight,slabGeometry,ringArea,ringInside,isSink,arrowSink,sinkMode,openingRing,surfaceGeometry,onSurface,support,deviceOpenings,deviceSignature,normalizeSinks,dividerHandles,resizeDivider,depthRules,endResizeRules,extensionHandles,resizeExtension,partitionRules,cornerPartition,cornerConnections,moduleShelves,cornerShelves,adjacentOpenings,cornerLayout,runDepth,runCounterDepth,outerEdge,resizeOuter,runHandles,resizeRun,changeShape,shapeRules,runs,endRuns,runName,runNormal,runLength,cornerBlocks,adjacentSides,isDevice,cutout,roles,edgeStyles,counterDepth,extension,bodyBounds,cornerPlinth,endLayout,cabinetLayout,cornerBoards,edgeStyle,dropHeight,defaults,cornerSide,cornerBlock,validate,configure,resize,repairDimensions,layout,elevationRuns,slabs,outline,frontEdges,edgeParts,area,topGeometry,avoidanceRules,adaptObstacles,normalizeObstacles,world,local,footprints,bodyParts,validateLink,fit,attach,normalize,validateList,moduleFurniture,kitchenModuleConfig,moduleDoor,moduleLeafCount,moduleLeafState,moduleLeafAngle,moduleMaxAngle,moduleAngle,toggle,specification,openingZones};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishKitchen=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

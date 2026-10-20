@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-19",
+  "change": "燃气灶关联选项、显式门柜转换及开孔/面板适配",
+  "userProject": "只读检查当前文件：约 766 mm 的模块 1 可关联，737.5/600 mm 门柜显示尺寸不足；未改写实际项目",
+  "browser": {
+    "status": "PASS",
+    "command": "node scripts/verify-browser.cjs hob-link-options",
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "checks": [
+      "candidate labels and disabled reasons",
+      "atomic role and link update",
+      "undo/redo",
+      "refresh persistence",
+      "move/rotation/mirror/height following",
+      "detach preserves elevation",
+      "actual download/upload with current and named design",
+      "3D scene",
+      "390px panel"
+    ],
+    "errors": 0,
+    "screenshots": [
+      "linked.png",
+      "mobile.png"
+    ]
+  },
+  "core": {
+    "status": "PASS",
+    "command": "node tests/test-hob-link-options.cjs",
+    "checks": [
+      "input immutability",
+      "role conversion and shelf removal",
+      "size equality and below threshold",
+      "locks and occupied modules",
+      "rotation/mirror and height",
+      "repeated restore",
+      "current/named project roundtrip",
+      "production countertop raycast hole"
+    ]
+  },
+  "fullCheck": {
+    "status": "PASS",
+    "command": "node scripts/check.cjs",
+    "workspace": "output/check-hob-link-SKM1YT",
+    "scope": "当前源码、全部 tests、正式顶层生产预览；排除历史验收输出的重复工作区。原仓库命令已运行，因扫描数千份历史预览而中止。",
+    "suites": 227,
+    "builtInPlans": 12,
+    "productionPreviews": 17,
+    "additional": [
+      "local assets",
+      "shared declarations",
+      "all production syntax"
+    ]
+  },
+  "notRun": [
+    "实机触屏操作"
+  ],
+  "boundary": "20 mm 是布局模型开孔边距，非厂家安装要求；没有现场燃气、通风和加工验证。"
+}

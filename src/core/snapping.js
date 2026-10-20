@@ -273,6 +273,7 @@
     const ids=new Set(members.map(v=>v.id)),transformedSources=sources.map(transform);
     const products=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),surfaceSource=members.length===1&&products?.definition(members[0])?.measureSurfaceBoundary&&!members[0].obj?members[0]:null;
     const cabinets=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
+    const design=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),verticals=members.map(member=>design.furnitureVerticalBounds(member));
     const fitsHoodBay=(a,b)=>products.hoodInstallation(b)&&cabinets.hoodBayFit(a,b)?.fits||products.hoodInstallation(a)&&cabinets.hoodBayFit(b,a)?.fits;
     const K=surfaceSource&&(root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null)),furnitureById=new Map((options.furniture||[]).map(v=>[v.id,v])),host=K&&K.support(surfaceSource,options.furniture||[]),region=host&&K.measurementSurface(surfaceSource,host),cell=region&&{rings:region.rings.map(r=>r.map(p=>K.world(host,...p)))};
     if(cell)cell.edges=edges(cell.rings);
@@ -280,12 +281,17 @@
     const section=(entity,key,cross,value)=>entity.edges.filter(e=>value>Math.min(e.a[cross],e.b[cross])&&value<Math.max(e.a[cross],e.b[cross])).sort((a,b)=>at(a,key,cross,value)-at(b,key,cross,value));
     for(const entity of entities(options)){
       if(host&&entity.kind==='wall'&&entity.id>=(options.solidWallCount??(options.rects||[]).length))continue;
-      const moduleTarget=host&&entity.kind==='furniture'&&entity.id===host.id,originalTarget=moduleTarget?{...entity,...cell,name:region.moduleKey?host.name+' · '+region.moduleName:host.name}:entity;
-      if(originalTarget.kind==='furniture'&&ids.has(originalTarget.id))continue;
+      const moduleTarget=host&&entity.kind==='furniture'&&entity.id===host.id;
+      if(entity.kind==='furniture'&&ids.has(entity.id))continue;
+      const targetFurniture=entity.kind==='furniture'?furnitureById.get(entity.id):null;
+      // The top projection includes appliance bays and overhead slabs. Only
+      // actual kitchen solids sharing the source height can obstruct a gap.
+      // Supported hobs/sinks still measure to their worktop's exit boundary.
+      const targets=moduleTarget?[{...entity,...cell,name:region.moduleKey?host.name+' · '+region.moduleName:host.name}]:targetFurniture?.kitchen?geometry.bodyParts(targetFurniture).map(part=>({...entity,edges:edges([part.p]),vertical:part.vertical})):[entity];
+      for(const originalTarget of targets){
       // Only members sharing the target's height can define its measuring edge.
       // Unknown heights stay conservative; walls still use every member.
-      const targetFurniture=originalTarget.kind==='furniture'?furnitureById.get(originalTarget.id):null;
-      const eligible=transformedSources.filter((_,i)=>!targetFurniture||(moduleTarget||geometry.verticalOverlap(members[i],targetFurniture))&&!fitsHoodBay(members[i],targetFurniture));
+      const eligible=transformedSources.filter((_,i)=>!targetFurniture||(moduleTarget||geometry.verticalOverlap(members[i],targetFurniture,targetFurniture.kitchen?[verticals[i],originalTarget.vertical]:undefined))&&!fitsHoodBay(members[i],targetFurniture));
       if(!eligible.length)continue;
       const source={edges:eligible.flatMap(e=>e.edges)},sourceHits=[];
       // Overlapping rotated members may exchange the outermost edge between vertices.
@@ -315,6 +321,7 @@
           }
         }
       }
+    }
     }
     for(const dir of Object.keys(out))if(preferredWalls[dir])out[dir]=preferredWalls[dir];return out;
   }

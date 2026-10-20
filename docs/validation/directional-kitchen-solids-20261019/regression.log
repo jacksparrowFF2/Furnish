@@ -1,0 +1,13 @@
+PASS tests/test-directional-kitchen-solids.cjs
+PASS tests/test-directional-heights.cjs
+PASS tests/test-directional-placement.cjs
+PASS tests/test-group-directional-placement.cjs
+PASS tests/test-stove-boundaries.cjs
+PASS tests/test-sink-surface.cjs
+PASS tests/test-measure-boundaries.cjs
+PASS tests/test-measure-corners.cjs
+PASS tests/test-measure-midpoints.cjs
+PASS tests/test-snapping.cjs
+PASS tests/test-block-placeholder.cjs
+PASS tests/test-hood-bay.cjs
+PASS 12 related regression suites; incremental verification only

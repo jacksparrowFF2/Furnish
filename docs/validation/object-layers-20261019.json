@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-19",
+  "feature": "Named object layers with implicit layer 0",
+  "checks": {
+    "full": {
+      "command": "node scripts/check.cjs",
+      "scope": "Isolated current-source snapshot; production previews regenerated once; historical verification copies excluded",
+      "log": "output/layers-final-check-HcnXz6/check.cjs.log",
+      "regressionSuites": 229,
+      "builtInPlans": 12,
+      "productionPreviews": 17,
+      "status": "PASS"
+    },
+    "browser": {
+      "command": "node scripts/verify-browser.cjs observation-layers",
+      "results": "output/playwright/verification-TpPKJE/results.json",
+      "status": "PASS",
+      "modes": [
+        "http",
+        "offline file://"
+      ],
+      "flows": [
+        "layer 0",
+        "create",
+        "assign selected and filtered objects",
+        "visibility",
+        "layer lock",
+        "duplicate inheritance",
+        "rename",
+        "delete to 0",
+        "undo/redo",
+        "refresh",
+        "project download/reimport",
+        "current and full SVG visibility",
+        "3D annotation hiding",
+        "390px viewport",
+        "2D ceiling visibility and complete SVG restoration"
+      ]
+    },
+    "visual": {
+      "reviewed": [
+        "desktop manager",
+        "390px manager",
+        "3D hidden layers",
+        "previous 3D restored comparison"
+      ],
+      "directory": "output/playwright/verification-TpPKJE/workspace 迁移 #/output/playwright/observation-layers"
+    },
+    "documentation": {
+      "command": "node tests/test-artifact-layout.cjs",
+      "status": "PASS",
+      "links": 613
+    }
+  },
+  "notRun": [
+    "physical touchscreen",
+    "all historical browser scenarios"
+  ],
+  "boundaries": [
+    "managed objects: whole furniture/appliances, floors, wall-tile faces, decorative and room ceilings",
+    "architectural walls/openings/beams and cabinet subparts continue existing controls",
+    "changed architectural face/range identities default to 0; unmatched bindings retained"
+  ],
+  "sourceDifferencesSinceSnapshot": []
+}

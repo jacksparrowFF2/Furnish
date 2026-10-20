@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-19",
+  "feature": "Docked layer sidebar and direct header toggle",
+  "scope": "UI-only incremental validation; no project schema or layer rule changes",
+  "entryPoints": [
+    "Top header: Layers",
+    "View → Layer manager",
+    "Selected furniture layer button"
+  ],
+  "uiPreference": "Existing huxing-panes.showLayers",
+  "checks": {
+    "syntax": {
+      "status": "PASS",
+      "scope": "Changed scripts and combined classic declarations"
+    },
+    "regressions": {
+      "status": "PASS",
+      "suites": [
+        "observation-layers",
+        "property-first-batch",
+        "property-second-batch",
+        "furniture-groups",
+        "scene-annotations",
+        "drawing-export",
+        "artifact-layout"
+      ]
+    },
+    "browser": {
+      "status": "PASS",
+      "results": "output/playwright/verification-jjaWU0/results.json",
+      "cases": [
+        "layer-sidebar",
+        "observation-layers"
+      ],
+      "modes": [
+        "HTTP",
+        "offline file://"
+      ],
+      "flows": [
+        "Docked desktop column",
+        "Library/property collapse combinations",
+        "Header toggle and close button",
+        "Non-modal canvas selection and property editing",
+        "External undo control sync",
+        "Draft name preservation",
+        "Refresh remembers open and closed",
+        "2D/3D switching",
+        "320/390 px bottom panel",
+        "Canvas toolbar does not cover panel controls",
+        "Existing layer CRUD, locks and project round trip"
+      ]
+    },
+    "visual": {
+      "status": "PASS",
+      "reviewed": [
+        "desktop",
+        "3D",
+        "390 px",
+        "320 px"
+      ],
+      "directory": "output/playwright/verification-JDtvez/workspace 迁移 #/output/playwright/layer-sidebar"
+    }
+  },
+  "scopedSourceDifferencesSinceBrowserCopy": [],
+  "outOfScopeChanges": "Property-panel pet-feeder fields were added concurrently after the browser copy; renderPanel sidebar hook is unchanged and current source syntax/regressions are checked.",
+  "notRun": [
+    "Full regression suite",
+    "All historical browser cases",
+    "Physical touch device"
+  ]
+}

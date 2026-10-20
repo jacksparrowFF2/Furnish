@@ -31,7 +31,7 @@ assert.equal(check({...f,type:'waterheater'}),null);
 const restored=P.unpack(P.pack({planId:plan.id,current:{furniture:[f]},designs:[],catalog:[]})).current.furniture[0];
 assert.deepEqual(check(restored),check(f));
 const source=fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8');
-const ctx=vm.createContext({FurnishDesign:D,FurnishProject:{effectivePlan:()=>plan},PLAN:plan,state:{},tr:zh=>zh});
+const ctx=require('./helpers/layer-context.cjs').createContext({FurnishDesign:D,FurnishProject:{effectivePlan:()=>plan},PLAN:plan,state:{},tr:zh=>zh});
 vm.runInContext(source,ctx);
 const render=item=>{ctx.f=item;return vm.runInContext('waterheaterInstallationPanel(f)',ctx);};
 assert.match(render(f),/顶部净距：40 mm.*满足/);assert.match(render(f),/插座位置未设置，待核对/);assert.doesNotMatch(render(f),/机身右侧净距/);

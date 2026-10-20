@@ -33,7 +33,7 @@ for(const axis of ['w','d','both']){
   const f={id:'f',type:'custom',cx:2000,cy:2000,w:1320,d:610,rot:90};
   const listeners={},nodes={},svg={addEventListener:(name,fn)=>listeners[name]=fn,setPointerCapture(){},
     createSVGPoint:()=>({matrixTransform(){return {x:this.x,y:this.y};}}),getScreenCTM:()=>({inverse:()=>null})};
-  const context=vm.createContext({svg,$:key=>nodes[key]||= {},document:{querySelectorAll:()=>[],querySelector:()=>null,addEventListener(){}},
+  const context=require('./helpers/layer-context.cjs').createContext({svg,$:key=>nodes[key]||= {},document:{querySelectorAll:()=>[],querySelector:()=>null,addEventListener(){}},
     closeCtx(){},closeDrawers(){},ui:{tool:'select',layers:{furn:true,wallSnap:false}},view:{s:.2},TAP:3,
     state:{furniture:[f]},getF:()=>f,selIds:()=>['f'],snap:()=>JSON.stringify({furniture:[f]}),
     FurnishSnapping:S,FurnishDesign:require('../src/core/design-core.js'),FurnishCabinet:{supported:()=>false},clearTimeout(){},renderFurn(){},syncFurnOrder(){},renderSel(){},furnT:()=>''});
@@ -48,7 +48,7 @@ for(const axis of ['w','d','both']){
   listeners.pointermove(event);assert.equal(f.w,1320);assert.equal(f.d,610);
 }
 const f={id:'f',type:'custom',cx:0,cy:0,w:1320,d:610.0000000000001,rot:0},node={};
-const renderer=vm.createContext({window:{},ui:{layers:{furn:false},guides:null},view:{s:.2},COARSE:false,
+const renderer=require('./helpers/layer-context.cjs').createContext({window:{},ui:{layers:{furn:false},guides:null},view:{s:.2},COARSE:false,
   selIds:()=>['f'],getF:()=>f,tr:zh=>zh,PAL:{halo:'#fff'},furnT:()=>'',aabb:()=>({hh:f.d/2}),$:()=>node});
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),renderer);
 renderer.renderSelectedGeometry();assert.match(node.innerHTML,/data-axis="w"/);assert.match(node.innerHTML,/data-axis="d"/);

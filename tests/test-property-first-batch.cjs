@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),C=require('../src/core/cabinet-core.js');
 const source=fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8');
 const priceOf=f=>f.price??f.referencePrice??0;
-const ctx=vm.createContext({state:{},FurnishDesign:D,FurnishProject:P,FurnishCabinet:C,priceOf,tr:a=>a,esc:a=>String(a),yen:n=>'¥'+n,window:{}});
+const ctx=require('./helpers/layer-context.cjs').createContext({state:{},FurnishDesign:D,FurnishProject:P,FurnishCabinet:C,priceOf,tr:a=>a,esc:a=>String(a),yen:n=>'¥'+n,window:{}});
 vm.runInContext(source,ctx);
 const base={id:'item',name:'测试',w:800,d:350,cx:1500,cy:1500,rot:0};
 for(const [item,bottom,top] of [
@@ -39,7 +39,7 @@ assert.equal(history.length,4);assert.equal(errors.length,3);assert(!Object.hasO
 const plan={id:'p',rooms:[{id:'r',name:'厨房',poly:[[0,0],[5000,0],[5000,5000],[0,5000]]}],walls:[],doors:[],wins:[]};
 const appliance={...base,type:'dishwasher_mijia_countertop',w:550,d:350},installation=P.dishwasherChecks(plan,appliance,{furniture:[appliance]});
 const installationIssues=installation.checks.filter(v=>v.ok!==true),other={kind:'wall',id:appliance.id,message:'实体进入墙体'},related={...installationIssues[0],id:'other',otherId:appliance.id};
-const ui=vm.createContext({window:{},FurnishDesign:D,FurnishProject:{...P,effectivePlan:()=>plan,spaceCheck:()=>[...installationIssues,other,related]},PLAN:plan,state:{furniture:[appliance]},tr:a=>a,esc:a=>String(a),$:()=>({after(){}}),document:{createElement:()=>({})},FurnishWorkspace:{open(){}},renderPanel(){}});
+const ui=require('./helpers/layer-context.cjs').createContext({window:{},FurnishDesign:D,FurnishProject:{...P,effectivePlan:()=>plan,spaceCheck:()=>[...installationIssues,other,related]},PLAN:plan,state:{furniture:[appliance]},tr:a=>a,esc:a=>String(a),$:()=>({after(){}}),document:{createElement:()=>({})},FurnishWorkspace:{open(){}},renderPanel(){}});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/design-ui.js'),'utf8'),ui);
 const html=ui.window.FurnishDesignUI.placementPanel(appliance,{shownIssues:installation.checks});
 assert(html.includes(other.message),'unrelated spatial risks stay visible');
@@ -50,7 +50,7 @@ const before=JSON.stringify(appliance);
 const packed=P.unpack(P.pack({planId:'p',current:{furniture:[appliance]},designs:[{name:'旧方案',work:{furniture:[appliance]}}],catalog:[]}));
 assert.equal(JSON.stringify(packed.current.furniture[0]),before);assert.equal(JSON.stringify(packed.designs[0].work.furniture[0]),before);
 const layer={},distance={a:{x:0,y:0},b:{x:100,y:0},distance:100,entity:{kind:'wall',id:'wall',name:'墙'}};
-const renderer=vm.createContext({tr:a=>a,esc:a=>String(a),view:{s:1},ui:{tool:'select',layers:{clear:true}},state:{measures:[{a:distance.a,b:distance.b},{a:{x:0,y:20},b:{x:200,y:20}}]},selItems:()=>[base],directionalMeasurements:()=>({r:distance}),drawingRotation:()=>0,PAL:{halo:'#fff'},COARSE:false,$:()=>layer});
+const renderer=require('./helpers/layer-context.cjs').createContext({tr:a=>a,esc:a=>String(a),view:{s:1},ui:{tool:'select',layers:{clear:true}},state:{measures:[{a:distance.a,b:distance.b},{a:{x:0,y:20},b:{x:200,y:20}}]},selItems:()=>[base],directionalMeasurements:()=>({r:distance}),drawingRotation:()=>0,PAL:{halo:'#fff'},COARSE:false,$:()=>layer});
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),renderer);
 renderer.renderMeasure();assert(layer.innerHTML.includes('右 100 mm · 墙面'));assert(layer.innerHTML.includes('200 mm'));
 assert(!/undefined|NaN/.test(layer.innerHTML),'matching and independent fixed measurements both render without invalid labels');

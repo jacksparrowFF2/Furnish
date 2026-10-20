@@ -24,7 +24,7 @@ for(const groupId of ['',42,' '.repeat(4),'a'.repeat(201)])assert.throws(()=>P.v
 const replacement=D.replaceFurniture(items[0],{type:'chair',name:'替换',w:450,d:480,color:'#ffffff'});assert.equal(replacement.groupId,'merged');
 assert(P.spaceCheck(plan,D.groupFurniture([table,{...table,id:'other'}],['t','other'],'clash'),{scanPassages:false}).some(v=>v.kind==='overlap'),'group membership does not suppress real overlaps');
 const issue={kind:'outside',id:'t'};assert.equal(P.checkFingerprint(issue,plan,[table],800),P.checkFingerprint(issue,plan,[{...table,groupId:'g'}],800),'group membership is not spatial geometry');
-const ctx={state:{furniture:items},ui:{},FurnishDesign:D,closeCtx(){},renderSel(){},renderMeasure(){},renderPanel(){},refreshHobOpenings(){},updateHeader(){},toast(){},tr:a=>a};ctx.getF=id=>ctx.state.furniture.find(f=>f.id===id);vm.createContext(ctx);vm.runInContext(fs.readFileSync('src/ui/furniture-actions.js','utf8'),ctx);
+const ctx={state:{furniture:items},ui:{},FurnishDesign:D,closeCtx(){},renderSel(){},renderMeasure(){},renderPanel(){},refreshHobOpenings(){},updateHeader(){},toast(){},tr:a=>a};ctx.getF=id=>ctx.state.furniture.find(f=>f.id===id);require('./helpers/layer-context.cjs').createContext(ctx);vm.runInContext(fs.readFileSync('src/ui/furniture-actions.js','utf8'),ctx);
 vm.runInContext("selectIds(['c']);toggleSel('c');",ctx);assert.equal(ctx.ui.sel,null);
 vm.runInContext("selectIds(['t']);",ctx);assert.equal(ctx.ui.sel.ids.length,3);
 ctx.state.furniture[1]={...ctx.state.furniture[1],locked:true};assert.equal(vm.runInContext('movable(selItems()).length',ctx),0);

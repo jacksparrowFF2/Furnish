@@ -88,6 +88,7 @@
     <div class="grp" id="paneBtns">
       <button class="btn chip" id="tgLib"><svg class="i"><use href="#i-lib"/></svg><span data-en="Library">家具库</span></button>
       <button class="btn chip" id="tgPanel"><span data-en="Properties">属性</span><svg class="i"><use href="#i-panel"/></svg></button>
+      <button class="btn chip" id="tgLayers" aria-controls="layer-sidebar" aria-expanded="false" onclick="FurnishObservationLayers.toggle()"><svg class="i"><use href="#i-layers"/></svg><span data-en="Layers">图层</span></button>
     </div>
     <button class="btn outline" id="planBtn" title="户型库：浏览并切换户型" data-en-title="Floor plan gallery"><svg class="i"><use href="#i-grid"/></svg><span data-en="Plans">户型库</span><span class="cnt" id="planCnt"></span></button>
     <div class="brand"><span class="logo" aria-hidden="true"><svg class="i"><use href="#i-home"/></svg></span><div><b data-en="3BR 2LR 2BA · Interior Design">三室两厅两卫 · 装修设计</b><span id="subtitle">原始户型 1:60 · 尺寸单位 mm</span></div></div>
@@ -121,6 +122,7 @@
     <details class="menu" id="showMenu">
       <summary class="btn"><svg class="i"><use href="#i-layers"/></svg><span data-en="View ▾">显示 ▾</span></summary>
       <div class="menu-pop showpop">
+        <div class="showsec"><button class="btn" id="observationLayers" onclick="FurnishObservationLayers.open()">图层管理</button></div>
         <div class="showsec only2d"><b data-en="Plan layers">平面图层</b>
           <div class="chiprow">
             <button class="btn chip on" data-layer="dims" data-en="Dims">尺寸</button>
@@ -337,6 +339,7 @@
 <script src="src/render/waterheater-clearance-model.js"></script>
 <script src="src/render/cabinet-preview.js"></script>
 <script src="src/core/design-core.js"></script>
+<script src="src/core/layers-core.js"></script>
 <script src="src/core/work-state.js"></script>
 <script src="src/io/workspace-cache.js"></script>
 <script src="src/io/project-storage.js"></script>
@@ -360,6 +363,7 @@
 <script src="src/ui/canvas-interactions.js"></script>
 <script src="src/render/furniture-svg.js"></script>
 <script src="src/render/plan-renderer.js"></script>
+<script src="src/ui/observation-layers.js"></script>
 <script src="src/app.js"></script>
 <script src="src/ui/floorplan-editor.js"></script>
 <script src="src/ui/project-ui.js"></script>
@@ -415,7 +419,7 @@ window.View3D = {
   shot:() => impl?.shot(), groundAt:(x, y) => impl?.groundAt(x, y) ?? null, flyToRoom:id => impl?.flyToRoom(id),
   image:() => globalThis.FurnishWorkflowTools?.styleId()?null:impl?.image()||null, focusSelection:() => impl?.focusSelection(),
   highlightIssue:(item,volumes) => impl?.highlightIssue(item,volumes),
-  tileRoomAt:(x,y) => impl?.tileRoomAt(x,y)??null, refreshTileInspection:()=>impl?.refreshTileInspection(),
+  tileRoomAt:(x,y) => impl?.tileRoomAt(x,y)??null, refreshTileInspection:()=>impl?.refreshTileInspection(), refreshObservationLayers:()=>impl?.refreshObservationLayers(),
   ceilingPreview:(host,data,options) => load().then(() => impl.ceilingPreview(host,data,options)),
   tileLayoutPreview:(host,options) => load().then(() => impl.tileLayoutPreview(host,options)),
   cabinetPreview:(host,f,onToggle) => load().then(() => impl.cabinetPreview(host,f,onToggle)),
@@ -524,7 +528,7 @@ function init(){
     const ids = selIds(), h = pick(e), f = h?.fid && ids.includes(h.fid) && getF(h.fid), g = f && groundAt(e.clientX, e.clientY);
     if (!g) return;
     const items = selItems();
-    if (items.some(x => x.locked)){ toast(tr('已锁定的家具不能移动', 'Locked items cannot be moved')); return; }
+    if (items.some(x => furnitureLocked(x))){ toast(tr('已锁定的家具不能移动', 'Locked items cannot be moved')); return; }
     fdrag = {id:f.id, ids, start:Object.fromEntries(items.map(x => [x.id, [x.cx, x.cy]])), pid:e.pointerId, sx:e.clientX, sy:e.clientY, ox:g.x - f.cx, oy:g.y - f.cy, before:snap(), moved:false};
     orbit.enabled = false; fly = null; cv.setPointerCapture(e.pointerId);
   }, true);
@@ -545,7 +549,7 @@ function init(){
     const d = fdrag; fdrag = null; orbit.enabled = true; cv.style.cursor = '';
     if (d.moved){
       if (d.ids.length === 1){ const f = getF(d.id); if (f) pushOut(f); }
-      commit(d.before); renderAll();
+      try{commit(d.before,true);}catch(error){toast(error.message);} renderAll();
     }
   };
   cv.addEventListener('pointerup', endF); cv.addEventListener('pointercancel', endF);
@@ -554,14 +558,14 @@ function init(){
     const tap = downAt && e.pointerId===downAt[2] && downAt[3]===0 && !tapMoved && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= TAP;downAt=null;
     if (look?.id === e.pointerId){
       look = null;
-      if (tap){ const h = pick(e); if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
+      if (tap){ const h = pick(e); if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5 && (!h.fid||!furnitureLocked(getF(h.fid)))) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
       return;
     }
     if (anim || opt.mode !== 'orbit' || spaceDown || !tap) return;
     const h = pick(e);
     if(h?.fid&&!e.shiftKey&&cycleFoldingTable(h.fid))return;
     if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
-    else if (h?.door){ h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
+    else if (h?.door){ if(!h.fid||!furnitureLocked(getF(h.fid)))h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
     else if (h?.fid) e.shiftKey ? window.toggleSel(h.fid) : window.selectIds([h.fid]);
     else if (h?.room) window.select({kind:'room', id:h.room});
     else window.select(null);
@@ -1271,26 +1275,26 @@ function buildArch(){
     const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : null;
     if(geo)geo.rotateX(-Math.PI/2);
     const fl=bay?new THREE.Mesh(geo,[m,mat('#e9e4da')]):FurnishFloorFinishModel.surface(THREE,r,floor||{},{wx,wz,material:m});
-    fl.receiveShadow = true; fl.userData.room = r.id;
+    fl.receiveShadow = true; fl.userData.room = r.id; fl.userData.layerObject="floor:"+r.id;
     if(!bay){fl.position.y=(floor?.finishedZ??floor?.rawZ??0)/1000;fl.userData.floor=true;const layers=floor?FurnishFloorFinishModel.layers(THREE,r,floor,{wx,wz}):null;if(layers)archFloor.add(layers);}
     if (bay){ fl.castShadow = true; archUp.add(fl); } else archFloor.add(fl);
     // 天花：法线朝下，只在室内仰视时可见
     const cg = new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p,true))); cg.rotateX(Math.PI/2);
-    const ceil = new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1})); ceil.position.y = roomH; ceil.visible = opt.cut===2.8 || top >= roomH; archUp.add(ceil);
+    const ceil = new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1})); ceil.position.y = roomH; ceil.visible = opt.cut===2.8 || top >= roomH; archUp.add(observationLayer(ceil,'roomCeiling:'+r.id));
     if (r.at){
       const lamp = new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, .02, 32), new THREE.MeshStandardMaterial({color:'#fff', emissive:'#fff2d6', emissiveIntensity:.3}));
-      lamp.position.set(wx(r.at[0]), roomH - .012, wz(r.at[1])); lamp.userData.cutVisible = opt.cut===2.8 || top >= roomH; lamp.visible = opt.lamps && lamp.userData.cutVisible; lampG.add(lamp);
-      const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), roomH - .25, wz(r.at[1])); lampG.add(pl);
+      lamp.position.set(wx(r.at[0]), roomH - .012, wz(r.at[1])); lamp.userData.cutVisible = opt.cut===2.8 || top >= roomH; lamp.visible = opt.lamps && lamp.userData.cutVisible; lampG.add(observationLayer(lamp,"roomCeiling:"+r.id));
+      const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), roomH - .25, wz(r.at[1])); lampG.add(observationLayer(pl,"roomCeiling:"+r.id));
     }
   });
   // Fill the actual door opening with each adjoining room's floor, including
   // its own grid and finished height. Legacy projects keep schematic sills.
   for(const a of finishPlan.floorFinish?.doorways||[]){
     const m=a.layout?FurnishFloorFinishModel.material(THREE,a.layout,{color:MATS[state.rooms[a.roomId].mat]?.sw,groutColor:FurnishTileGrout.color(state,a.roomId,'floor')}):floorMat(state.rooms[a.roomId].mat);
-    const mesh=FurnishFloorFinishModel.surface(THREE,a.room,a,{wx,wz,material:m});mesh.userData.doorway=a.id;archFloor.add(mesh);
+    const mesh=FurnishFloorFinishModel.surface(THREE,a.room,a,{wx,wz,material:m});mesh.userData.doorway=a.id;mesh.userData.layerObject="floor:"+a.roomId;archFloor.add(mesh);
     const layers=FurnishFloorFinishModel.layers(THREE,a.room,a,{wx,wz});if(layers)archFloor.add(layers);
   }
-  const floorSteps=finishPlan.floorFinish?.steps||[];archFloor.add(FurnishFloorFinishModel.stepEdges(THREE,floorSteps,{wx,wz}));
+  const floorSteps=finishPlan.floorFinish?.steps||[],floorEdges=FurnishFloorFinishModel.stepEdges(THREE,floorSteps,{wx,wz});floorEdges.traverse(o=>{if(o.userData.floorStep){const step=o.userData.floorStep,a=finishPlan.floorFinish.doorways.find(a=>a.id.startsWith(step.id+"-")&&a.finishedZ===step.high);if(a)o.userData.layerObject="floor:"+a.roomId;}});archFloor.add(floorEdges);
   // Label the measured difference rather than exaggerating a 5 mm riser.
   for(const step of floorSteps){const [[x,z],[X,Z]]=step.seam;const el=document.createElement('div');el.className='scene-floor-step';el.textContent=`${tr('地面高差','Floor step')} ${Number(step.drop.toFixed(2))} mm`;const label=new CSS2DObject(el);label.position.set(wx((x+X)/2),step.high/1000+.035,wz((z+Z)/2));archFloor.add(label);}
   for(const [kind,list] of [['door',DOORS],['slide',SLIDES]])list.forEach((d,index)=>{if(finishPlan.floorFinish?.doorways.some(a=>a.kind===kind&&a.index===index))return;const [x0,y0,x1,y1]=d.rect,s=box(M(x1-x0),.012,M(y1-y0),mat('#d8d0c0',{roughness:.3}),wx((x0+x1)/2),0,wz((y0+y1)/2));s.castShadow=false;archFloor.add(s);});
@@ -1402,7 +1406,7 @@ function buildHeaterClearances(){
   if(appliances.length){const plan=FurnishProject.effectivePlan(PLAN,state);for(const f of appliances){
     const kind=f.obj?'missing':products.definition(f).clearanceReview,options={CSS2DObject,document,tr};
     const group=kind==='heater'?FurnishHeaterClearanceModel.build(THREE,f,FurnishDesign.waterheaterClearances(plan,f,{furniture:state.furniture}),options):FurnishHeaterClearanceModel.buildSummary(THREE,f,kind==='dishwasher'?FurnishProject.dishwasherChecks(plan,f,{furniture:state.furniture}):null,FurnishDesign.furnitureVerticalBounds(f,plan,state.furniture),options);
-    group.position.set(wx(f.cx),0,wz(f.cy));clearanceG.add(group);
+    group.position.set(wx(f.cx),0,wz(f.cy));group.userData.observationOwner=f.id;clearanceG.add(group);
   }}
   clearanceG.visible=opt.clearances&&opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();clearanceG.scale.y=Math.max(furnGrow,.001);
 }
@@ -1423,7 +1427,7 @@ function buildLabels(){
     const face={...target.face,number:target.number,label:target.label},e=FurnishTileEditor.elevation(state,finishPlan,target),rect=e.sections.map(r=>[r[0],r[1],r[2],Math.min(r[3],Math.min(opt.cut,H)*1000)]).filter(r=>r[3]>r[1]).sort((a,b)=>(b[2]-b[0])*(b[3]-b[1])-(a[2]-a[0])*(a[3]-a[1]))[0];if(!rect||!Number.isFinite(e.position))continue;
     const point=[0,0];point[e.axis]=e.zero+e.dir*(rect[0]+rect[2])/2;point[e.normal]=e.position+face.side*8;
     const el=document.createElement('button');el.className='rlabel wall-tile-scene-number';el.textContent=`${state.rooms[face.roomId]?.name||face.roomName} · ${face.number}`;el.title=face.label+' · 点击编辑此墙排版';el.dataset.wallTileNumber=String(face.number);el.dataset.wallTileRoom=face.roomId;el.onpointerdown=e=>e.stopPropagation();el.onclick=e=>{e.stopPropagation();window.FurnishWallTilingUI.openFace(face);};
-    const o=new CSS2DObject(el);o.position.set(wx(point[0]),M((rect[1]+rect[3])/2),wz(point[1]));o.userData.wallTileLabel={normal:e.normal,side:face.side};o.visible=opt.wallNumbers;wallLabelG.add(o);
+    const o=new CSS2DObject(el);o.position.set(wx(point[0]),M((rect[1]+rect[3])/2),wz(point[1]));o.userData.layerObject=FurnishLayers.faceKey(face);o.userData.wallTileLabel={normal:e.normal,side:face.side};o.visible=opt.wallNumbers;wallLabelG.add(o);
   }
   const counted = finishedRooms.filter(r => r.counted !== false);
   $('#roomList').innerHTML = counted.map(r => `<button data-room="${r.id}"><span>${esc(nm(state.rooms[r.id].name))}</span><small>${area(r.poly).toFixed(2)} m²</small></button>`).join('')
@@ -1450,6 +1454,7 @@ function sync(force){
   if (force || a !== sigArch){ sigArch = a; buildArch(); invalidate(true); }
   if (force || f !== sigFurn){ sigFurn = f; buildFurn(); invalidate(true); }
   if (force || l !== sigLabels){ sigLabels = l; buildLabels(); }
+  applyObservationLayers();
   invalidate();
 }
 
@@ -1611,7 +1616,7 @@ async function exit(){
 /* ======================= 选择 / 拾取 ======================= */
 function cycleFoldingTable(id){
   const f=getF(id);if(!f||f.obj||!FurnishProducts.family(f,'folding-table'))return false;
-  if(!f.locked){try{const next=FurnishProducts.editFoldingTablePose(f);mutate(()=>Object.assign(f,next));}catch(error){toast(error.message);}}
+  if(!furnitureLocked(f)){try{const next=FurnishProducts.editFoldingTablePose(f);mutate(()=>Object.assign(f,next));}catch(error){toast(error.message);}}
   window.selectIds([id]);return true;
 }
 const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
@@ -1638,8 +1643,12 @@ function pick(e){
 }
 // 屏幕点 → 地面（y = 0）上的户型坐标 mm；s = 该处每 mm 对应的屏幕像素，用于拖放时的幽灵图大小
 const ground0 = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+function observationLayer(g,key){if(key.startsWith('roomCeiling:'))g.userData.layerObject=key;return g;}
+function applyObservationLayers(){FurnishObservationLayers.applyScene({furnG,archFloor,archUp,clearanceG,elevationG,issueG,wallLabelG,lampG});}
+function refreshObservationLayers(){if(!inited)return;selKey=null;clearSceneIssue();applyObservationLayers();invalidate(true);}
+function sceneObjectShown(o){for(let p=o;p;p=p.parent)if(!p.visible)return false;return true;}
 function refreshTileInspection(){if(!inited)return;const visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();furnG.visible=visible;clearanceG.visible=visible&&opt.clearances;for(const group of [elevationG,issueG]){group.visible=visible&&opt.mode==='orbit'&&!anim;group.traverse(o=>{if(o.isCSS2DObject)o.visible=group.visible;});}clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=visible&&opt.clearances&&!anim;});selKey=null;invalidate(true);}
-function tileRoomAt(x,y){if(!active||anim)return null;const r=renderer.domElement.getBoundingClientRect();ptr.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);const hit=ray.intersectObjects(archFloor.children,true).find(h=>h.object.userData.floor&&h.object.visible&&!observation.clipped(h));return hit?.object.userData.room??null;}
+function tileRoomAt(x,y){if(!active||anim)return null;const r=renderer.domElement.getBoundingClientRect();ptr.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);const hit=ray.intersectObjects(archFloor.children,true).find(h=>h.object.userData.floor&&sceneObjectShown(h.object)&&!FurnishLayers.locked(state,'floor:'+h.object.userData.room)&&!observation.clipped(h));return hit?.object.userData.room??null;}
 function groundAt(x, y){
   if (!active || anim) return null;
   const r = renderer.domElement.getBoundingClientRect(), hit = new THREE.Vector3();
@@ -1647,9 +1656,9 @@ function groundAt(x, y){
   ray.setFromCamera(ptr, camera);
   if (!ray.ray.intersectPlane(ground0, hit) || hit.distanceTo(camera.position) > 60) return null;
   // 视线先碰到墙体（或飘窗台）时，落点取碰到的位置，而不是穿过墙落到看不见的墙后
-  const wall = ray.intersectObjects([archUp, archFloor], true).find(h => !observation.clipped(h) && observation.material(h.object) !== glassMat && h.object.visible);
+  const wall = ray.intersectObjects([archUp, archFloor], true).find(h => !observation.clipped(h) && observation.material(h.object) !== glassMat && sceneObjectShown(h.object));
   if (wall && wall.distance < hit.distanceTo(camera.position) - .01) hit.set(wall.point.x, 0, wall.point.z);
-  const floorHit=ray.intersectObjects(archFloor.children,true).find(h=>h.object.userData.floor&&h.object.visible);
+  const floorHit=ray.intersectObjects(archFloor.children,true).find(h=>h.object.userData.floor&&sceneObjectShown(h.object));
   if(floorHit&&(!wall||floorHit.distance<=wall.distance+.02))hit.copy(floorHit.point);
   const px = v => new THREE.Vector2(v.x*r.width/2, v.y*r.height/2), a = px(hit.clone().project(camera));
   const s = Math.max(a.distanceTo(px(hit.clone().add(new THREE.Vector3(1, 0, 0)).project(camera))),
@@ -1689,7 +1698,7 @@ function buildSelectionElevation(ids){
 }
 function clearSceneIssue(){clearTimeout(issueTimer);sceneIssue=null;clearAnnotations(issueG);invalidate();}
 function highlightIssue(item,volumes){
- if(!active)return;clearSceneIssue();sceneIssue={selection:JSON.stringify(ui.sel)};const color=item.pending?0xb38118:0xe45e2b;
+ if(!active||getF(item.id)&&!FurnishObservationLayers.visible(getF(item.id)))return;clearSceneIssue();sceneIssue={selection:JSON.stringify(ui.sel)};const color=item.pending?0xb38118:0xe45e2b;
  const points=[];for(const row of volumes){const ranges=row.ranges?.length?row.ranges:[[18,18]];for(const [bottom,top] of ranges){for(let i=0;i<row.poly.length;i++){const a=row.poly[i],b=row.poly[(i+1)%row.poly.length],V=(p,h)=>new THREE.Vector3(wx(p[0]),M(h),wz(p[1]));points.push(V(a,bottom),V(b,bottom));if(top!==bottom){points.push(V(a,top),V(b,top));if(i%Math.ceil(row.poly.length/6)===0)points.push(V(a,bottom),V(a,top));}}}}
  annotationLine(issueG,points,color);const f=getF(item.id),at=item.at||(f?[f.cx,f.cy]:volumes[0]?.poly[0]);
  if(at)annotationLabel(issueG,tr(item.pending?'待确认 · 高亮范围示意':'空间问题 · 高亮范围示意',item.pending?'Needs review · highlighted area':'Spatial issue · highlighted area'),wx(at[0]),.12,wz(at[1]),'scene-issue-label'+(item.pending?' pending':''));
@@ -1866,10 +1875,12 @@ function loop(){
   dirty = false;
   selHelper?.children.forEach(h => h.update());
   clearanceG.visible=opt.clearances&&opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();
+  applyObservationLayers();
   renderer.render(scene, camera);
   clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=clearanceG.visible&&!anim;});
   for(const group of [elevationG,issueG]){const visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting()&&opt.mode==='orbit'&&!anim;group.visible=visible;group.traverse(o=>{if(o.isCSS2DObject)o.visible=visible;});}
   for(const o of wallLabelG.children)if(o.userData.wallTileLabel){const f=o.userData.wallTileLabel;o.visible=active&&opt.wallNumbers&&opt.mode==='orbit'&&!anim&&!stage.classList.contains('animating')&&(f.normal===0?camera.position.x-o.position.x:camera.position.z-o.position.z)*f.side>0;}
+  applyObservationLayers();
   labelRenderer.render(scene, camera);
   fitSceneAnnotationLabels();
 }
@@ -1901,7 +1912,7 @@ function cabinetPreview(host,f,actions){
 
 function ceilingPreview(host,data,options){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data,...options});}
 function tileLayoutPreview(host,options){return FurnishTileLayoutPreview.create({THREE,OrbitControls,host,...options});}
-return {tileLayoutPreview,tileRoomAt,refreshTileInspection,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
+return {refreshObservationLayers,tileLayoutPreview,tileRoomAt,refreshTileInspection,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
 }
 </script>
 </body>

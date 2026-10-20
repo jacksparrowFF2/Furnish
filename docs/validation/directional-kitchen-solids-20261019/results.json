@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "directional-kitchen-solids"
+  ],
+  "results": [
+    {
+      "name": "directional-kitchen-solids",
+      "status": "PASS",
+      "seconds": 4.5,
+      "log": "directional-kitchen-solids.log"
+    }
+  ],
+  "notRun": []
+}
