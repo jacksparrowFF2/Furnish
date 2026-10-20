@@ -24,6 +24,16 @@
  const locked=(work,key)=>layer(work,key).locked;
  const furnitureKey=f=>'furniture:'+f.id;
  const faceKey=f=>'wallTile:'+JSON.stringify([f.wallId,f.side,!!f.cross,...f.range.map(n=>Number(n.toFixed(6)))]);
+ // Joined finish solids retain raw along-wall extents. Functional areas and
+ // physical rooms can have different ids; bind by source, side, normal and range.
+ function wallFinishKey(plan,solid){
+  if(!plan.wallTiling?.surfaces?.length)return null;
+  const source=(root.FurnishWallFinish||require('./wall-finish-core.js')).sources(plan).find(s=>s.id===solid.wallId);
+  if(!source)return null;
+  const rect=solid.rawRect||solid.rect,axis=1-solid.normal,origin=source.rect[axis],length=source.rect[axis+2]-origin;
+  const face=plan.wallTiling.surfaces.find(e=>{const f=e.face;return f.wallId===solid.wallId&&f.side===solid.side&&e.normal===solid.normal&&rect[axis]>=origin+length*f.range[0]-1e-6&&rect[axis+2]<=origin+length*f.range[1]+1e-6;})?.face;
+  return face?faceKey(face):null;
+ }
  function edit(work,fn){const next=clone(work);next.objectLayers??={version:1,layers:[zero()],assignments:{}};fn(next.objectLayers,next);validate(next.objectLayers);return next;}
  function create(work,id,name){return edit(work,d=>d.layers.push({id,name:name.trim(),visible:true,locked:false}));}
  function update(work,id,values){return edit(work,d=>{const l=d.layers.find(l=>l.id===id);if(!l)bad('图层不存在');if(id==='0'&&values.name!==undefined&&values.name!=='0')bad('0 图层不能重命名');Object.assign(l,values);});}
@@ -62,6 +72,6 @@
   }
   work.objectLayers.assignments=assignments;validate(work.objectLayers);
  }
- const api={validate,list,layerId,layer,visible,locked,furnitureKey,faceKey,create,update,remove,assign,onlyChange,assertEditable,copyAssignments,remapBuiltin};
+ const api={validate,list,layerId,layer,visible,locked,furnitureKey,faceKey,wallFinishKey,create,update,remove,assign,onlyChange,assertEditable,copyAssignments,remapBuiltin};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishLayers=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

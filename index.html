@@ -1552,7 +1552,8 @@ function focusSelection(){
  }
  clearObservation();
  const bay=FurnishBayWindows.selected(PLAN,ui.sel);
- let box;if(bay)box=bay.bounds;
+ let box;if(ui.sel?.layerObject)box=FurnishObservationLayers.bounds(ui.sel.layerObject);
+ else if(bay)box=bay.bounds;
  else if(ui.sel?.kind==='room'){const r=ROOMS.find(r=>r.id===ui.sel.id);if(r)box=bbox(r.poly);}
  else if(ui.sel?.kind==='win')box=WINS[ui.sel.id]?.rect;
  else if(ui.sel?.kind==='door')box=DOORS[ui.sel.id]?.rect;
@@ -1697,7 +1698,7 @@ function updateSel(){
   if (selHelper){ selHelper.children.forEach(h => {h.geometry.dispose();h.material.dispose();}); scene.remove(selHelper); selHelper = null; }
   const gs = ids.map(id => furnG.children.find(g => g.userData.fid === id)).filter(Boolean);
   if (gs.length){ selHelper = new THREE.Group(); gs.forEach(g => selHelper.add(new THREE.BoxHelper(g, 0xef5a24))); scene.add(selHelper); }
-  const selectedBay=FurnishBayWindows.selected(PLAN,ui.sel),layerKey=selectedBay?'floor:'+selectedBay.platform.id:null;
+  const selectedBay=FurnishBayWindows.selected(PLAN,ui.sel),layerKey=ui.sel?.layerObject||(selectedBay?'floor:'+selectedBay.platform.id:ui.sel?.kind==='room'?'floor:'+ui.sel.id:null);
   if(layerKey){const box=new THREE.Box3(),meshes=[];for(const group of [archFloor,archUp])group.traverse(o=>{if(o.isMesh&&sceneObjectShown(o)&&(FurnishObservationLayers.sceneKey(o)===layerKey||selectedBay&&selectedBay.windows.some(w=>o.userData.bayWindowIndex===w.index))){meshes.push(o);box.union(new THREE.Box3().setFromObject(o));}});if(!box.isEmpty()){selHelper=new THREE.Group();const outline=new THREE.Box3Helper(box,0xef5a24);outline.material.depthTest=false;outline.renderOrder=40;outline.userData.layerSelection=layerKey;outline.userData.layerMeshes=meshes;selHelper.add(outline);scene.add(selHelper);}}
 
   invalidate();

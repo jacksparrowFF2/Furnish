@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-20",
+  "feature": "Resizable layer sidebar and click-to-switch layer inventory",
+  "scope": "UI-only incremental checks; no project data migration",
+  "preferences": [
+    "huxing-panes.showLayers",
+    "huxing-panes.layerWidth"
+  ],
+  "checks": {
+    "syntax": "PASS: observation-layers.js, sidebar and layer browser cases, combined classic script declarations",
+    "node": {
+      "status": "PASS",
+      "suites": [
+        "test-observation-layers.cjs",
+        "test-furniture-management.cjs"
+      ]
+    },
+    "browser": {
+      "status": "PASS",
+      "results": [
+        "output/playwright/verification-50HkX4/results.json",
+        "output/playwright/verification-JyRuoC/results.json"
+      ],
+      "cases": [
+        "layer-sidebar",
+        "observation-layers"
+      ],
+      "modes": [
+        "HTTP",
+        "offline file://"
+      ],
+      "flows": [
+        "drag width and keyboard adjustment",
+        "minimum and maximum width preserve canvas",
+        "Escape cancellation",
+        "reload preference restoration",
+        "desktop/narrow/desktop preference restoration",
+        "0 and named layer inventory and assignment target",
+        "reset stale filters on layer click",
+        "hidden and locked layer click preserves state",
+        "selection, undo, redo, 2D and 3D",
+        "project export/import round trip",
+        "390px and 320px layout"
+      ]
+    },
+    "visual": "PASS: desktop and narrow screenshots reviewed"
+  },
+  "notRun": [
+    "full scripts/check.cjs",
+    "all historical browser cases",
+    "physical touch device"
+  ],
+  "limitations": [
+    "Width preference is local to browser, not transferred with project",
+    "Click changes inventory and assignment target; visibility remains explicit checkbox control"
+  ]
+}

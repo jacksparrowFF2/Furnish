@@ -736,13 +736,28 @@ footer kbd{background:var(--card);border-color:var(--line);color:var(--muted);fo
 .layer-sidebar #layer-inline-edit input { max-width:100%; }
 header #paneBtns #tgLayers span { display:inline; }
 @media(min-width:1101px) {
- .app.layers-open { grid-template-columns:var(--lib-w) 330px minmax(0,1fr) var(--panel-w); }
- .app.layers-open.hide-lib { grid-template-columns:0 330px minmax(0,1fr) var(--panel-w); }
- .app.layers-open.hide-panel { grid-template-columns:var(--lib-w) 330px minmax(0,1fr) 0; }
- .app.layers-open.hide-lib.hide-panel { grid-template-columns:0 330px minmax(0,1fr) 0; }
+ .app.layers-open { grid-template-columns:var(--lib-w) var(--layer-w) minmax(0,1fr) var(--panel-w); }
+ .app.layers-open.hide-lib { grid-template-columns:0 var(--layer-w) minmax(0,1fr) var(--panel-w); }
+ .app.layers-open.hide-panel { grid-template-columns:var(--lib-w) var(--layer-w) minmax(0,1fr) 0; }
+ .app.layers-open.hide-lib.hide-panel { grid-template-columns:0 var(--layer-w) minmax(0,1fr) 0; }
  .app.layers-open > aside.lib { grid-row:2;grid-column:1; }
  .app.layers-open > main { grid-row:2;grid-column:3; }
  .app.layers-open > aside.right { grid-row:2;grid-column:4; }
 }
 @media(max-width:1100px) { .layer-sidebar { grid-column:1;align-self:end;justify-self:start;height:52%;max-height:52%;width:min(420px,calc(100% - 24px));margin:12px; } }
 @media print { .layer-sidebar { display:none!important; } }
+
+/* Layer width is a local pane preference; reserve space for the drawing. */
+.app {--layer-available:calc(100vw - var(--lib-w) - var(--panel-w) - 260px);--layer-w:clamp(260px,var(--layer-sidebar-width,330px),max(260px,var(--layer-available)))}
+.app.hide-lib {--layer-available:calc(100vw - var(--panel-w) - 260px)}
+.app.hide-panel {--layer-available:calc(100vw - var(--lib-w) - 260px)}
+.app.hide-lib.hide-panel {--layer-available:calc(100vw - 260px)}
+.app.layers-resizing {transition:none;user-select:none;cursor:col-resize}
+#layer-resize {position:absolute;top:10px;bottom:10px;right:-7px;width:12px;cursor:col-resize;touch-action:none;border-radius:6px;z-index:2}
+#layer-resize:hover,#layer-resize:focus-visible {background:var(--accent);opacity:.5;outline:2px solid var(--accent)}
+.layer-sidebar .layer-select {max-width:none;white-space:normal;overflow-wrap:anywhere;text-align:left}
+.layer-sidebar .layer-table {width:100%}
+@media(max-width:1100px) {#layer-resize {display:none}}
+
+.layer-locate {border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;min-width:0;flex:1;cursor:pointer}
+.layer-locate:hover {color:var(--accent)}

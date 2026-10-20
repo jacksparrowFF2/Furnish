@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-20",
+  "feature": "Locate layer inventory objects and show architectural selection boxes",
+  "scope": "Temporary selection and camera state; no project schema or model geometry change",
+  "checks": {
+    "syntax": "PASS: changed scripts, combined classic declarations and inline modules",
+    "node": {
+      "status": "PASS",
+      "suites": [
+        "test-observation-layers.cjs",
+        "test-wall-layer-finishes.cjs",
+        "test-furniture-management.cjs",
+        "test-scene-annotations.cjs"
+      ]
+    },
+    "browser": {
+      "status": "PASS",
+      "results": [
+        "output/playwright/verification-unEgnT/results.json",
+        "output/playwright/verification-FFJvtc/results.json"
+      ],
+      "cases": [
+        "layer-location",
+        "layer-range",
+        "layer-sidebar",
+        "wall-layer-finishes"
+      ],
+      "modes": [
+        "HTTP",
+        "offline file://"
+      ],
+      "coverage": [
+        "name locates bay without checking",
+        "2D target outline",
+        "3D outline includes real bay platform height",
+        "real canvas click on exposed bay selects room with outline",
+        "furniture selection retained",
+        "checkbox and Shift ranges retained",
+        "hidden location does not reveal layer or change selection",
+        "location does not add project fields or history",
+        "undo after assigning and hiding",
+        "390px layout"
+      ]
+    },
+    "visual": "PASS: bay selection outline and narrow screenshots reviewed"
+  },
+  "notRun": [
+    "full scripts/check.cjs",
+    "all historical browser suites",
+    "physical touch device"
+  ],
+  "boundaries": [
+    "Architectural selection boxes use visible production meshes; parts outside the current cut remain hidden",
+    "Existing furniture group selection is retained",
+    "Picking follows visible surfaces; furniture on a bay can intercept clicks"
+  ]
+}

@@ -174,8 +174,9 @@ function renderWalls(){
   if(data)$('#gWalls').insertAdjacentHTML('beforeend',`<g data-wall-finishes>${data.solids.filter(s=>s.bottom===0).map(s=>{
     const [x,y,X,Y]=s.rect,index=PLAN.wallRefs?PLAN.wallRefs.indexOf(s.wallId):Number(s.wallId.slice(8));let target=index>=0?`data-wall="w${index}"`:'';
     if(index<0){const o=PLAN.customDraft?.openings.find(o=>o.wall===s.wallId);if(o){const kind=o.kind==='window'?'win':o.kind,refs=kind==='win'?PLAN.winRefs:kind==='door'?PLAN.doorRefs:PLAN.slideRefs,i=kind==='win'&&o.bay?PLAN.wins.findIndex(w=>w.bayId===o.id):refs?.indexOf(o.id);if(i>=0)target=`data-${kind}="${i}"`;}}
-    const poly=s.poly||[[x,y],[X,y],[X,Y],[x,Y]];return `<path class="wall" ${target} data-wall-finish="${s.index}" d="M${poly.map(p=>p.join(',')).join('L')}Z" fill="#d5c2a2"><title>${tr('墙面完成面','Finished wall face')} · ${s.tileThickness+s.bondThickness} mm</title></path>`;
+    const layerKey=FurnishLayers.wallFinishKey(canvasEffectivePlan(),s),poly=s.poly||[[x,y],[X,y],[X,Y],[x,Y]];return `<path class="wall" ${target} data-wall-finish="${s.index}" ${layerKey?`data-layer-wall="${esc(layerKey)}"`:''} d="M${poly.map(p=>p.join(',')).join('L')}Z" fill="#d5c2a2"><title>${tr('墙面完成面','Finished wall face')} · ${s.tileThickness+s.bondThickness} mm</title></path>`;
   }).join('')}</g>`);
+  globalThis.FurnishObservationLayers?.applyPlan();
 }
 
 function offsetBayPath(points,d){
@@ -398,6 +399,8 @@ function kitchenGapSVG(f,k){
 }
 function renderSelectedGeometry(){
   const k = 1/view.s, ids = selIds(); let s = '';
+  if(ui.sel?.layerObject&&FurnishLayers.visible(state,ui.sel.layerObject)){const b=FurnishObservationLayers.bounds(ui.sel.layerObject);if(b)s+=`<rect data-layer-selection="${esc(ui.sel.layerObject)}" x="${b[0]}" y="${b[1]}" width="${Math.max(1,b[2]-b[0])}" height="${Math.max(1,b[3]-b[1])}" fill="none" stroke="${ACC}" stroke-width="2" vector-effect="non-scaling-stroke" pointer-events="none"/>`;}
+
   const A = `stroke="${ACC}" vector-effect="non-scaling-stroke"`;
   const halo = w => `stroke="${PAL.halo}" stroke-width="${w*k}" paint-order="stroke"`;
   if (ids.length > 1){

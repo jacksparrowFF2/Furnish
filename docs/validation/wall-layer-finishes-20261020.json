@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-20",
+  "feature": "Wall tile layers hide patterned surfaces, tile/bond thickness solids and 2D finish paths together",
+  "scope": "Shared derived binding and render visibility only; no persistent schema or geometry change",
+  "checks": {
+    "syntax": "PASS: five changed production scripts, browser case and combined classic declarations",
+    "node": {
+      "status": "PASS",
+      "suites": [
+        "test-wall-layer-finishes.cjs",
+        "test-wall-finishes.cjs",
+        "test-finish-miter-snap.cjs",
+        "test-wall-tiling.cjs",
+        "test-observation-layers.cjs",
+        "test-drawing-export.cjs"
+      ]
+    },
+    "browser": {
+      "status": "PASS",
+      "results": "output/playwright/verification-HwygWy/results.json",
+      "cases": [
+        "wall-layer-finishes",
+        "observation-layers"
+      ],
+      "modes": [
+        "HTTP",
+        "offline file://"
+      ],
+      "coverage": [
+        "assigned vs unassigned 2D finish paths",
+        "tile and bond production meshes share visibility with pattern",
+        "restore original visibility",
+        "current vs full SVG",
+        "undo/redo",
+        "refresh",
+        "existing project round trip"
+      ]
+    },
+    "actualWorkspace": {
+      "mode": "Read only",
+      "finishSolids": 38,
+      "activeWallTileFaces": 32,
+      "matchedFinishSolids": 38,
+      "notes": "Verified functional area ids differ from physical room ids; source/side/normal/range binding succeeds without rewriting workspace"
+    },
+    "visual": "PASS: hidden/visible 3D and hidden 2D screenshots reviewed"
+  },
+  "notRun": [
+    "full scripts/check.cjs",
+    "all historical browser suites",
+    "physical touch device"
+  ],
+  "boundaries": [
+    "Structural walls remain visible",
+    "Layer hiding does not change physical clear dimensions, snapping or space checks",
+    "Independent finish faces without active wall tile patterns retain prior behavior"
+  ]
+}

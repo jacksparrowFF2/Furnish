@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-20",
+  "feature": "Shift-click range checking in layer object inventory",
+  "scope": "Temporary UI selection only; project fields and history unchanged",
+  "checks": {
+    "syntax": "PASS: changed scripts and combined classic declarations",
+    "node": "PASS: tests/test-observation-layers.cjs",
+    "browser": {
+      "status": "PASS",
+      "results": "output/playwright/verification-5lT0K3/results.json",
+      "cases": [
+        "layer-range",
+        "layer-sidebar"
+      ],
+      "modes": [
+        "HTTP",
+        "offline file://"
+      ],
+      "coverage": [
+        "inclusive forward and reverse range",
+        "range uncheck",
+        "label text and checkbox clicks",
+        "ordinary clicks preserve unrelated checks",
+        "anchor survives redraw",
+        "filter changes reset anchor",
+        "range limited to displayed filtered order",
+        "actual batch assignment and undo",
+        "selection does not change project state",
+        "390px layout",
+        "existing sidebar width, refresh, 2D/3D and undo behavior"
+      ]
+    },
+    "visual": "PASS: desktop and narrow screenshot review"
+  },
+  "notRun": [
+    "full scripts/check.cjs",
+    "all historical browser suites",
+    "physical touch device"
+  ],
+  "notes": [
+    "Search and type changes retain existing explicit checked objects per original UI behavior; only range anchor resets",
+    "An initial test assertion counted hidden checked items as displayed; corrected to assert visible count and total batch count separately"
+  ]
+}
