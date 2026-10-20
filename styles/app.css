@@ -112,6 +112,8 @@ footer .saved.err .i{color:inherit}
 .grp{display:flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;background:transparent;padding:6px 10px;border-radius:var(--r-sm);
   cursor:pointer;white-space:nowrap;transition:background-color .15s,color .15s,box-shadow .15s,border-color .15s}
+/* Content actions need a visible button surface; component variants override it. */
+:where(#panel,.dlg-body) .btn{border:1px solid var(--line);background:var(--card)}
 @media (hover:hover){
   .btn:hover{background:var(--hover)}
   .btn.primary:hover{background:var(--action-hover)}
@@ -669,7 +671,8 @@ footer kbd{background:var(--card);border-color:var(--line);color:var(--muted);fo
 .layer-sidebar-head .btn { min-width:30px;min-height:30px;padding:2px 8px;font-size:20px; }
 .layer-sidebar-body { min-height:0;overflow:auto;padding:0 12px 12px;scrollbar-width:thin; }
 .layer-sidebar .layer-toolbar { gap:6px;margin:10px 0; }
-.layer-sidebar .layer-toolbar .btn { flex:1;padding:6px;min-height:32px;font-size:12px; }
+.layer-sidebar .layer-toolbar .btn { flex:1;padding:6px;min-height:32px;font-size:12px;border:1px solid var(--line);background:var(--card); }
+@media (hover:hover) { .layer-sidebar .layer-toolbar .btn:not(:disabled):hover { background:var(--hover);border-color:var(--muted); } }
 .layer-sidebar .layer-toolbar input,.layer-sidebar .layer-toolbar select { min-width:0;max-width:100%;padding:7px 8px;border:1px solid var(--line);background:var(--soft);border-radius:7px; }
 .layer-sidebar #layer-name,.layer-sidebar #layer-query { flex:1 1 160px; }
 .layer-sidebar .layer-table { font-size:12px; }
