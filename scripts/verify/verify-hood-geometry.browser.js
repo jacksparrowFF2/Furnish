@@ -6,7 +6,7 @@ async (page,verification)=>{
   try{
    await p.goto(url);await p.locator('#lib').waitFor();await p.locator('#lib').getByText('方太抽油烟机 JCD10TA',{exact:true}).first().click();
    const id=await p.evaluate(()=>selIds()[0]);check(await p.evaluate(id=>getF(id).hoodGeometry===undefined,id),'legacy geometry defaults');
-   const dimensions=['#fW','#fD','#hood-height','#hood-bodyHeight','#hood-coverWidth','#hood-coverDepth'];
+   const dimensions=['#hood-height','#hood-bodyHeight','#hood-coverWidth','#hood-coverDepth'];
    for(const selector of dimensions){check(await p.locator(selector).count()===1,'single field '+selector);check(await p.locator('#hood-geometry '+selector).count()===1,'grouped geometry '+selector);}
    const edit=async(selector,value)=>{await p.locator(selector).fill(String(value));await p.locator(selector).press('Tab');};
    await edit('#hood-height',515);await edit('#hood-bodyHeight',330);await edit('#hood-coverWidth',600);await edit('#hood-coverDepth',280);
@@ -19,7 +19,7 @@ async (page,verification)=>{
    const before=await p.evaluate(id=>JSON.stringify(getF(id)),id);await p.waitForTimeout(500);await p.reload();await p.locator('#lib').waitFor();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'refresh and autosave');
    await p.evaluate(id=>selectIds([id]),id);
    check(await p.evaluate(()=>{const payload={planId:PLAN.id,current:state,designs:[{name:'烟机几何',work:state}],catalog:[]},out=FurnishProject.unpack(FurnishProject.pack(payload));return JSON.stringify(out.current.furniture)===JSON.stringify(state.furniture)&&JSON.stringify(out.designs[0].work.furniture)===JSON.stringify(state.furniture);}), 'current and named project roundtrip');
-   await edit('#fW',1080);await edit('#fD',420);check(await p.evaluate(id=>{const g=getF(id).hoodGeometry;return g.coverWidth===720&&g.coverDepth===336&&g.bodyHeight===330;},id),'outer resize scales sections');await p.evaluate(()=>undo());await p.evaluate(()=>undo());
+   await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#fab-width').fill('1080');await p.locator('#fab-depth').fill('420');await p.getByRole('button',{name:'应用尺寸',exact:true}).click();check(await p.evaluate(id=>{const g=getF(id).hoodGeometry;return g.coverWidth===720&&g.coverDepth===336&&g.bodyHeight===330;},id),'outer resize scales sections');await p.evaluate(()=>undo());
    await p.locator('#hood-geometry').scrollIntoViewIfNeeded();await p.screenshot({path:root+'output/playwright/hood-geometry/'+mode+'-fields.png'});
    await p.evaluate(id=>{mutate(()=>{state.furniture=state.furniture.filter(f=>f.id===id);state.scene3d={cut:1.2,lamps:false,labels:false};const f=getF(id);f.cx=3000;f.cy=3000;});selectIds([id]);zoomSel();},id);
    await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await p.locator('#view3d canvas').waitFor({state:'visible'});await p.waitForTimeout(600);

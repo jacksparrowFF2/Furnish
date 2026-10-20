@@ -34,7 +34,7 @@ function renderPanelContent(object=true){
   if (object && ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel,p)){window.FurnishWallFinishUI?.opening(ui.sel,p);return;} if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
   if (object && ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
   if(object && ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){
-    const m=state.measures[ui.sel.id];p.innerHTML=`<section><h3>${tr('测量线','Measurement')}</h3><p class="big">${Math.round(Math.hypot(m.b.x-m.a.x,m.b.y-m.a.y))} mm</p><p class="muted">${tr('固定端点；家具或墙体改变后请重新测量。','Fixed endpoints; remeasure after moving furniture or walls.')}</p><div class="actions"><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="home">${tr('返回','Back')}</button></div><p class="muted">${tr('也可按 Delete / Backspace 删除，Ctrl+Z 撤销。','Delete / Backspace removes it; Ctrl+Z undoes.')}</p></section>`;return;
+    const m=state.measures[ui.sel.id];p.innerHTML=`<section><h3>${tr('测量线','Measurement')}</h3><p class="big">${Math.round(Math.hypot(m.b.x-m.a.x,m.b.y-m.a.y))} mm</p><p class="muted">${tr('固定端点；家具或墙体改变后请重新测量。','Fixed endpoints; remeasure after moving furniture or walls.')}</p><p class="muted">${tr('也可按 Delete / Backspace 删除，Ctrl+Z 撤销。','Delete / Backspace removes it; Ctrl+Z undoes.')}</p><div class="actions"><button class="btn" data-act="home">${tr('查看整案','View whole design')}</button></div></section>`;return;
   }
   if(window.FurnishWorkflowTools&&['space','style'].includes(ui.tab)){p.innerHTML=ui.tab==='space'?FurnishWorkflowTools.spacePanel():FurnishWorkflowTools.stylePanel();return;}
   const lost = state.furniture.filter(isOutside).length, clashN = collisions().length;
@@ -109,7 +109,6 @@ function openFabEditor(kind){
   if(kind==='size'){
     if(!f||furnitureLocked(f)||furnitureError(f))return;
     if(furnitureUsesDetailedDesign(f)){FurnishCabinetEditor.open(f.id);return;}
-    if(FurnishDesign.products().hoodInstallation(f)){ACT.prop();return;}
   }
   const before=snap(),planId=PLAN.id,ids=selIds().join('\n');
   const title=kind==='size'?tr('调整占地尺寸','Edit footprint size'):tr('四向净距定位','Position by clearance');
@@ -261,13 +260,12 @@ function roomPanel(r){
       </div>
     <div class="muted">${r.zone?tr('功能区分界不产生实际墙体；墙面工程量按原空间轮廓计算。','Functional boundaries do not create walls; wall quantities use the physical space.'):tr(`墙面面积（层高 ${FurnishProject.ceilingHeight(state)/1000}m，未扣门窗）约 ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`, `Wall area (${FurnishProject.ceilingHeight(state)/1000}m ceiling, openings not deducted) ≈ ${fmt(perim(r.poly)*FurnishProject.ceilingHeight(state)/1000,1)} m²`)}</div></section>
   ${window.FurnishWallFinishUI?.roomPanel(r)||''}
-  ${window.FurnishFloorFinishUI?.panel(r)||''}
   ${window.FurnishRoomMeasure?.panel(r)||''}
   <section><h3>${tr('地面材料','Flooring')}</h3><div class="mats">${mats}</div>
     <div class="total"><span>${tr('材料估价','Estimated cost')}</span><b>${yen(a*(state.pricing?.materials?.[st.mat]??MATS[st.mat].price)*(1+FurnishProject.pricing(state.pricing).floorWaste/100))}</b></div></section>
   <section><h3>${tr('房间内家具','Furniture in room')} <small>${tr(`${inside.length} 件 · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`, `${inside.length} items · ${yen(inside.reduce((s,f) => s + priceOf(f), 0))}`)}</small></h3>
     ${inside.map(f => `<div class="irow ${clashIds.has(f.id) ? 'clash' : ''}" data-focus="${f.id}"><span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${esc(nm(f.name))}</span><small>${f.w}×${f.d}</small></div>`).join('') || `<div class="muted">${tr('暂无','None')}</div>`}
-    <div class="actions">${inside.length ? `<button class="btn" data-act="roomFurn">${tr('全部选中','Select all')}</button>` : ''}
+    <div class="actions">
       <button class="btn" data-act="roomReset">${ico('reset')}${tr('恢复默认名称与地面','Reset name & floor')}</button>
       <button class="btn" data-act="home">${tr('← 返回总览','← Back to overview')}</button></div></section>`;
 }
@@ -288,10 +286,10 @@ function furniturePriceText(f){
  const value=priceOf(f),basis=FurnishProject.furniturePriceBasis(f,value);
  return basis==='missing'?tr('价格待填写','Price not entered'):`${yen(value)} · ${basis==='confirmed'?tr('已确认价','Confirmed price'):tr('参考价','Reference price')}`;
 }
-function furnitureDimensionSummary(f){
+function furnitureDimensionSummary(f,{verticalOnly=false}={}){
  const vertical=FurnishDesign.furnitureVerticalBounds(f),known=vertical&&[vertical.bottom,vertical.top].every(Number.isFinite),mm=v=>String(Number(v.toFixed(2)));
- const size=`${mm(f.w)} × ${mm(f.d)} × ${known?mm(vertical.top-vertical.bottom):'—'} mm`;
- return `<div class="furniture-dimensions" data-furniture-dimensions><b>${size}</b><small>${f.type==='block'?tr('长 × 宽 × 高','Length × width × height'):tr('占地宽 × 深 × 包络高','Footprint width × depth × envelope height')}</small><dl><div><dt>${tr('底部离地','Bottom above floor')}</dt><dd>${known?mm(vertical.bottom)+' mm':tr('待核对','Unknown')}</dd></div><div><dt>${tr('顶部离地','Top above floor')}</dt><dd>${known?mm(vertical.top)+' mm':tr('待核对','Unknown')}</dd></div></dl><small>${known?tr(state.furnitureDatum==='finished-floor'?'高度按完成地面计；绝对标高见下方地面信息':'高度按毛坯测量基准计','Height datum follows the current design'):tr('高度未知，保留待核对','Height is unknown; verification required')}</small></div>`;
+ const height=known?mm(vertical.top-vertical.bottom):'—',size=verticalOnly?`${height} mm`:`${mm(f.w)} × ${mm(f.d)} × ${height} mm`;
+ return `<div class="furniture-dimensions" data-furniture-dimensions><b>${size}</b><small>${verticalOnly?tr('包络高','Envelope height'):f.type==='block'?tr('长 × 宽 × 高','Length × width × height'):tr('占地宽 × 深 × 包络高','Footprint width × depth × envelope height')}</small><dl><div><dt>${tr('底部离地','Bottom above floor')}</dt><dd>${known?mm(vertical.bottom)+' mm':tr('待核对','Unknown')}</dd></div><div><dt>${tr('顶部离地','Top above floor')}</dt><dd>${known?mm(vertical.top)+' mm':tr('待核对','Unknown')}</dd></div></dl><small>${known?tr(state.furnitureDatum==='finished-floor'?'高度按完成地面计；绝对标高见下方地面信息':'高度按毛坯测量基准计','Height datum follows the current design'):tr('高度未知，保留待核对','Height is unknown; verification required')}</small></div>`;
 }
 function waterheaterInstallationPanel(f){
   if(f.type!=='waterheater_flat')return '';
@@ -323,7 +321,7 @@ function furnPanel(f){
   const pad = Math.max(f.w, f.d)*.1;
   return `<section><div class="fhead"><div class="fthumb"><svg viewBox="${-f.w/2-pad} ${-f.d/2-pad} ${f.w+2*pad} ${f.d+2*pad}">${f.flip ? `<g transform="scale(-1 1)">${furnSVG(f.type,f.w,f.d,f.color,f)}</g>` : furnSVG(f.type,f.w,f.d,f.color,f)}</svg></div>
       <div><b>${esc(nm(f.name))}</b><small data-furniture-price>${furniturePriceText(f)}</small>${furnitureLocked(f) ? `<span class="tag">${ico('lock')}${tr('已锁定','Locked')}</span>` : ''}</div></div><button class="btn" onclick="FurnishObservationLayers.open()">${tr('图层：','Layer: ')}${esc(FurnishLayers.layer(state,'furniture:'+f.id).name)}${FurnishLayers.locked(state,'furniture:'+f.id)?' · '+tr('图层已锁定','Layer locked'):''}</button>
-    ${furnitureDimensionSummary(f)}
+    ${furnitureDimensionSummary(f,{verticalOnly:true})}
     <h3>${tr('家具属性','Furniture')}</h3>
     ${fridge&&fridgeCabinets.length?`<div class="form"><label class="full">${tr('目标餐边柜','Target sideboard')}<select id="fridge-bay-target" ${lk}>${fridgeCabinets.map(g=>`<option value="${esc(g.id)}">${esc(nm(g.name))} · ${g.w}×${g.d} mm</option>`).join('')}</select></label></div><button class="btn" id="fridge-center-bay" ${lk}>${tr('在冰箱位左右居中','Center within fridge bay')}</button><p class="muted">${tr('只沿柜体宽度方向移动冰箱，前后位置及朝向保持不变。调整柜体后可再次点击对齐。','Moves only across the cabinet width; front/back position and orientation stay unchanged. Click again after moving or resizing the cabinet.')}</p>`:''}
     ${f.type==='curtain'?`<div class="form"><label class="full">${tr('窗帘样式','Curtain style')}<select id="curtainStyle" ${lk}><option value="single" ${f.curtainStyle==='single'?'selected':''}>${tr('单开 · 向一侧收拢','Single · stack to one side')}</option><option value="double" ${f.curtainStyle!=='single'?'selected':''}>${tr('双开 · 向两侧收拢','Double · stack to both sides')}</option></select></label></div><p class="muted">${tr('3D 点击布幔开启／关闭；单开窗帘可用镜像改变收拢侧。','Click cloth in 3D to open or close; mirror a single curtain to switch sides.')}</p>`:''}
@@ -443,7 +441,7 @@ function multiPanel(items){
     <div class="iconrow">${btn('dh','dh',tr('水平等距分布','Distribute horizontally'))}${btn('dv','dv',tr('垂直等距分布','Distribute vertically'))}${btn('match','size',tr('统一为主选中项的尺寸','Match size of the primary item'))}</div>
     <div class="actions">
       <button class="btn" data-act="zoom">${ico('target')}${tr('定位','Zoom to')}</button>
-      <button class="btn" data-act="home">${tr('取消选择','Deselect')}</button></div></section>
+      <button class="btn" data-act="home">${tr('查看整案','View whole design')}</button></div></section>
   <section><h3>${tr('选中项','Selection')}</h3>
     ${items.map(f => `<div class="irow ${f.id === ui.sel.id ? 'on' : ''}" data-focus="${f.id}"><span class="sw" style="background:${esc(f.color)}"></span><span class="nm">${furnitureLocked(f) ? ico('lock') + ' ' : ''}${esc(nm(f.name))}</span><small>${f.w}×${f.d}</small></div>`).join('')}
     <div class="muted note">${tr('高亮项为主选中项（统一尺寸的基准）。Shift+点击可增减选择。','The highlighted item is primary (used by Match size). Shift+click to add/remove.')}</div></section>`;
