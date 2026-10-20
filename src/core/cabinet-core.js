@@ -560,7 +560,26 @@
    const side=dx*(f.flip?-1:1)>0?'right':'left';if(!result.some(v=>v.side===side))result.push({side,owner:!entry});
   }return result;
  }
- const api={palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
+ function legacyParts(f){
+  const spec=products().legacyCabinet(f);if(!spec)return null;
+  const parts=[],boards=[],make=(key,d,h,bottom,z,count)=>{
+   const a=(f.rot||0)*Math.PI/180,cabinet={version:1,template:spec.kind==='kitchen'?'kitchen-base':'base',thickness:spec.board,plinth:key==='lower'?spec.plinth:0,doorOverlay:'full',columns:Array.from({length:count},()=>({door:spec.kind==='vanity'?'double':'left',doorOpen:false,handle:'none',shelves:[],drawers:[]}))};
+   parts.push({key,bottom,z,furniture:{...f,id:f.id+':legacy:'+key,type:'cabinet',cx:(f.cx||0)-z*Math.sin(a),cy:(f.cy||0)+z*Math.cos(a),w:f.w,d,h,cabinet}});
+  };
+  if(spec.kind==='vanity'){const inset=Math.min(spec.depthInset,Math.max(0,f.d-2*spec.board-1));make('body',f.d-inset,spec.bodyHeight,spec.bottom,-inset/2,f.w>=1100?2:1);}
+  else{
+   const n=Math.max(1,Math.round(f.w/spec.bayWidth));make('lower',f.d,spec.lowerHeight,0,0,n);make('upper',spec.upperDepth,spec.upperHeight,spec.upperBottom,-f.d/2+spec.upperDepth/2,n);
+   boards.push({w:f.w,d:f.d,x:0,z:0,bottom:spec.lowerHeight,top:spec.lowerHeight+spec.top,key:'countertop'});
+   boards.push({w:f.w,d:spec.backThickness,x:0,z:-f.d/2+spec.backThickness/2,bottom:spec.lowerHeight+spec.top,top:spec.upperBottom,key:'backsplash'});
+  }
+  return {parts,boards};
+ }
+ function spatialConfig(f){
+  if(!supported(f)||f.kitchen)return undefined;
+  let c;try{c=config(f);}catch{c={invalid:f.cabinet===undefined?null:JSON.parse(JSON.stringify(f.cabinet))};}
+  const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);return c;
+ }
+ const api={legacyParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
  Object.assign(api,{withDoorSetting,templateGroups,templateType,adjustColumnWidth,repartition,fitDoors,scaleStructure,upgradeDesign});
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

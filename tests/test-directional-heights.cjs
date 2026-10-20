@@ -23,6 +23,7 @@ for(const delta of [-.001,0,.001]){
 const unknown={...wall,type:'unknown-height'};delete unknown.h;delete unknown.mountHeight;
 close(S.directional(hob,{furniture:[host,hob,unknown]}).b.distance,0);
 const neighbor={...wall,id:'neighbor',type:'fridge',cx:2625,cy:2010,w:100,d:100,h:1800};
+delete neighbor.mountHeight; // A floor fridge does not inherit a wall cabinet's unsupported mounting field.
 const nearest=S.directional(hob,{furniture:[host,hob,wall,neighbor]});close(nearest.r.distance,100);assert.equal(nearest.r.entity.id,'neighbor');
 // Rotation/mirror, linked production surfaces and drawing axes use the same height filter.
 for(const shape of ['straight','L','U'])for(const rot of [0,37,90,180,270])for(const flip of [false,true]){

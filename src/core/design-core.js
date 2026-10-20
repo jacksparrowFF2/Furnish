@@ -267,8 +267,9 @@
   if(!['l','r','t','b'].includes(dir))throw Error('请选择有效方向');
   if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('目标净距须为 0–20000 mm');
   for(const f of members){const stack=laundryStack(f,work.furniture);if(f.counterLink&&!ids.has(f.counterLink.hostId)||stack&&!ids.has(stack.lowerId)||work.furniture.some(v=>!ids.has(v.id)&&(v.counterLink?.hostId===f.id||laundryStack(v,work.furniture)?.lowerId===f.id)))throw Error('请将关联厨房设备或叠放设备全部选中后整体定位');}
-  const rects=(plan.walls||[]).map(w=>w.slice(0,4)).concat((plan.wins||[]).map(w=>w.rect)),options={rotation,rects,solidWallCount:(plan.walls||[]).length,furniture:visibleFurniture?work.furniture:[]},current=S.directional(members,options)[dir];
+  const rects=(plan.walls||[]).map(w=>w.slice(0,4)).concat((plan.wins||[]).map(w=>w.rect)),options={plan,rotation,rects,solidWallCount:(plan.walls||[]).length,furniture:visibleFurniture?work.furniture:[]},current=S.directional(members,options)[dir];
   if(!current)throw Error('该方向没有可用的参考实体');
+  if(current.containedBoundary&&Math.abs(current.distance-gap)>1e-7)throw Error('当前为包络内边距，尚未确认柜内空腔；请拖动定位并核对实际板件');
   const sign=dir==='r'||dir==='b'?1:-1,a=rotation*Math.PI/180,delta=sign*(current.distance-gap),dx=(dir==='l'||dir==='r'?Math.cos(a):Math.sin(a))*delta,dy=(dir==='l'||dir==='r'?-Math.sin(a):Math.cos(a))*delta;
   const moved=members.map(f=>({...f,cx:f.cx+dx,cy:f.cy+dy}));
   if(Math.abs(dx)+Math.abs(dy)<1e-7)return moved;
@@ -277,21 +278,22 @@
   K.normalize(proposed,work.furniture);normalizeLaundryStacks(proposed,work.furniture);
   if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||!samePlacementData({...v,cx:expected[i].cx,cy:expected[i].cy},expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
   const after=S.directional(moved,{...options,furniture:visibleFurniture?proposed:[]})[dir];
-  if(!after||Math.abs(after.distance-gap)>.01||current.moduleBoundary&&after.entity.moduleKey!==current.entity.moduleKey)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
-  const reference=S.directional(moved,{rotation,rects:current.entity.kind==='wall'?[rects[current.entity.id]]:[],furniture:current.entity.kind==='furniture'?[work.furniture.find(v=>v.id===current.entity.id)]:[]})[dir];
-  if(!reference||Math.abs(reference.distance-gap)>.01)throw Error('无法相对原参考实体达到目标净距，请重新选择');
-  const parts=members.flatMap(f=>G.bodyParts(f).map(part=>({...part,owner:f,end:part.p.map(p=>[p[0]+dx,p[1]+dy]),swept:translationHull(part.p,dx,dy)}))),overlap=(a,b)=>G.polygonOverlap(a,b,1e-6),rooms=plan.physicalRooms||plan.rooms;
+  if(!after||Math.abs(after.distance-gap)>.01||current.moduleBoundary&&after.entity.moduleKey!==current.entity.moduleKey||current.cabinetInterior&&after.entity.boardKey!==current.entity.boardKey)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
+  const reference=S.directional(moved,{plan,rotation,rects:current.entity.kind==='wall'?[rects[current.entity.id]]:[],furniture:current.entity.kind==='furniture'?[work.furniture.find(v=>v.id===current.entity.id)]:[]})[dir];
+  if(!reference||Math.abs(reference.distance-gap)>.01||current.cabinetInterior&&reference.entity.boardKey!==current.entity.boardKey)throw Error('无法相对原参考实体达到目标净距，请重新选择');
+  const parts=members.flatMap(f=>G.bodyParts(f,plan,work.furniture).map(part=>({...part,owner:f,end:part.p.map(p=>[p[0]+dx,p[1]+dy]),swept:translationHull(part.p,dx,dy)}))),overlap=(a,b)=>G.polygonOverlap(a,b,1e-6),rooms=plan.physicalRooms||plan.rooms;
   for(const part of parts){
    if(!P.fitsInRooms(rooms,part.end)||P.fitsInRooms(rooms,part.p)&&!P.fitsInRooms(rooms,part.swept))throw Error('移动后物体超出房间，或路径穿过房间边界');
    for(const r of rects){const poly=[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];if(overlap(part.end,poly))throw Error('调整后物体会与墙体或窗边重叠');if(!overlap(part.p,poly)&&overlap(part.swept,poly))throw Error('移动路径被墙体或窗边阻挡');}
   }
   for(const other of work.furniture){
    if(ids.has(other.id)||!G.solidForCollision(other))continue;
-   for(const part of parts)for(const obstacle of G.bodyParts(other)){
+   for(const part of parts)for(const obstacle of G.bodyParts(other,plan,work.furniture)){
     const f=part.owner;if(!G.solidForCollision(f)||G.tuckedSeatPair(f,other))continue;
     if(!G.verticalOverlap(f,other,[part.vertical,obstacle.vertical]))continue;
-    if(overlap(part.end,obstacle.p))throw Error('调整后物体会与其他家具或柜体重叠');
-    if(!overlap(part.p,obstacle.p)&&overlap(part.swept,obstacle.p))throw Error('移动路径被其他家具或柜体阻挡');
+    const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),p=M.section(part,obstacle.vertical),target=M.section(obstacle,part.vertical),end=p.map(v=>[v[0]+dx,v[1]+dy]);
+    if(overlap(end,target))throw Error('调整后物体会与其他家具或柜体重叠');
+    if(!overlap(p,target)&&overlap(translationHull(p,dx,dy),target))throw Error('移动路径被其他家具或柜体阻挡');
    }
   }
   return moved;

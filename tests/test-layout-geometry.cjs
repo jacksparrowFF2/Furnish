@@ -63,9 +63,10 @@ console.log('PASS metric units, concave rooms, rotated bounds, 5 mm tolerance an
   const host={...cabinet,rot,flip},a=rot*Math.PI/180,lx=bay.center*(flip?-1:1),ly=-cabinet.d/2+595/2,guest={...fridge,cx:host.cx+lx*Math.cos(a)-ly*Math.sin(a),cy:host.cy+lx*Math.sin(a)+ly*Math.cos(a),rot};
   assert(C.fridgeFitsBay(host,guest),'rotation/mirroring preserve cavity containment');assert.deepEqual(G.collisions([guest,host]),[]);assert.deepEqual(overlaps([host,guest]),[]);
  }
- for(const invalid of [{...fridge,w:810},{...fridge,d:620},{...fridge,h:1951},{...fridge,cx:fridge.cx+12},{...fridge,type:'cabinet'},{...fridge,type:'sofa'}]){
-  assert(!C.fridgeFitsBay(cabinet,invalid));assert.equal(G.collisions([cabinet,invalid]).length,1,'oversize, panel intersection or non-fridge retains overlap');assert.equal(overlaps([cabinet,invalid]).length,1);
+ for(const invalid of [{...fridge,w:810},{...fridge,h:1951},{...fridge,cx:fridge.cx+12}]){
+  assert(!C.fridgeFitsBay(cabinet,invalid));assert.equal(G.collisions([cabinet,invalid]).length,1,'penetrating an actual side or ceiling board retains overlap');assert.equal(overlaps([cabinet,invalid]).length,1);
  }
+ for(const guest of [{...fridge,d:620},{...fridge,type:'cabinet'},{...fridge,type:'sofa'}]){assert(!C.fridgeFitsBay(cabinet,guest));assert.equal(G.collisions([cabinet,guest]).length,0,'open front or other device type does not invent a solid in a real cavity');assert.equal(overlaps([cabinet,guest]).length,0);}
  const exact={...fridge,w:800,d:600,cy:cabinet.cy,h:1950};assert(C.fridgeFitsBay(cabinet,exact),'exact cavity boundary fit');
  assert(!C.fridgeFitsBay(cabinet,{...exact,cx:exact.cx+.1}),'no exemption for a fridge entering the side panel');
  const legacyHeight={...fridge};delete legacyHeight.h;assert(C.fridgeFitsBay(cabinet,legacyHeight),'known fridge model height supplies missing field');

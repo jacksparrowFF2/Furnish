@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),S=require('../src/core/snapping.js'),K=require('../src/core/kitchen-core.js');
-const close=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`),f={id:'a',name:'A',type:'counter',cx:0,cy:0,w:100,d:100,rot:0};
+const close=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`),f={id:'a',name:'A',type:'block',cx:0,cy:0,w:100,d:100,rot:0};
 const base={scale:1,rects:[[100,-100,120,100]],furniture:[f]};
 const before=JSON.stringify(base);
 close(S.point({x:55,y:17},base).x,50);close(S.point({x:55,y:17},base).y,17);
@@ -35,7 +35,7 @@ for(const rot of [0,45,90,180])for(const flip of [false,true]){
  const a=rot*Math.PI/180,transform=g=>({...g,rot,flip,cx:g.cx*Math.cos(a)-g.cy*Math.sin(a),cy:g.cx*Math.sin(a)+g.cy*Math.cos(a)});
  const result=S.nearest(transform(f),{furniture:[transform(other)]});close(result.distance,70);assert(result.perpendicular);
 }
-const kitchen=K.configure({...f,id:'k'},{version:1,shape:'L',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1200,role:'door'},{run:1,width:900,role:'door'}]});
+const kitchen=K.configure({...f,type:'counter',id:'k'},{version:1,shape:'L',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1200,role:'door'},{run:1,width:900,role:'door'}]});
 const ring=K.topGeometry(kitchen).rings[0],point=K.world(kitchen,...ring[0]);
 assert(S.measurePoint({x:point[0],y:point[1]},{scale:1,furniture:[kitchen]}).edge);
 for(const rot of [0,45,180])for(const flip of [false,true]){

@@ -543,7 +543,10 @@ function adaptObstacles(f,plan,list=[]){
  const add=(p,vertical,name)=>{if(!p?.length)return;obstacles.push({p:p.map(([x,y])=>local(next,x,y)),vertical:vertical?{...vertical,bottom:vertical.bottom-baseElevation(next),top:vertical.top-baseElevation(next)}:null,name});};
  for(const w of plan.walls||[])add([[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]],{bottom:0,top:w[4]==='low'?Math.min(1000,plan.ceilingHeight??2800):plan.ceilingHeight??2800},'墙体');
  for(const b of plan.beams||[]){const v=Draft.beamVertical(b,plan.ceilingHeight??2800);add(b.poly,v?.assumed?null:v,b.name||'房梁');}
- for(const other of list){if(other.id===f.id||other.kitchen||!G.solidForCollision(other)||R.modelError(other))continue;for(const part of G.bodyParts(other))add(part.p,part.vertical,other.name||'障碍物');}
+ // Automatic trimming must not nest a kitchen into another cabinet's cavity.
+ // Keep that operation's placement envelope; deliberate internal measurements
+ // and collision checks use actual boards through the geometry core.
+ for(const other of list){if(other.id===f.id||other.kitchen||!G.solidForCollision(other)||R.modelError(other))continue;const parts=cabinet().supported(other)?G.footprints(other).map(p=>({p,vertical:(root.FurnishDesign||require('./design-core.js')).furnitureVerticalBounds(other)})):G.bodyParts(other);for(const part of parts)add(part.p,part.vertical,other.name||'障碍物');}
  const overlapsHeight=(v,lo,hi)=>v&&Math.min(v.top,hi)-Math.max(v.bottom,lo)>1e-6,depths=[],cuts=[],corners=[],top=outline(next),linked=new Set(list.filter(v=>v.counterLink?.hostId===f.id).map(v=>v.counterLink.module));
  const usable=obstacles.map(o=>({...o,pieces:Z.decompose([o.p],p=>Z.inside(p,o.p))}));
  for(const m of cabinetLayout(next)){

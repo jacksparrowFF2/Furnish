@@ -43,14 +43,16 @@ function regionAreas(rooms,furniture=[]){
   const occupied=obstacles.length?Z.area(Z.decompose([...regions,...obstacles],p=>inRooms(p)&&obstacles.some(q=>Z.inside(p,q))))/1e6:0;
   return {empty,occupied,free:Math.max(0,empty-occupied),pending};
 }
-function polygonOverlap(A,B,tolerance=5){for(const P of [A,B])for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length],nx=q[1]-P[i][1],ny=P[i][0]-q[0],L=Math.hypot(nx,ny)||1,pa=A.map(p=>(p[0]*nx+p[1]*ny)/L),pb=B.map(p=>(p[0]*nx+p[1]*ny)/L);if(Math.max(...pa)<=Math.min(...pb)+tolerance||Math.max(...pb)<=Math.min(...pa)+tolerance)return false;}return true;}
+function polygonOverlap(A,B,tolerance=5){if(A.length<3||B.length<3)return false;for(const P of [A,B])for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length],nx=q[1]-P[i][1],ny=P[i][0]-q[0],L=Math.hypot(nx,ny)||1,pa=A.map(p=>(p[0]*nx+p[1]*ny)/L),pb=B.map(p=>(p[0]*nx+p[1]*ny)/L);if(Math.max(...pa)<=Math.min(...pb)+tolerance||Math.max(...pb)<=Math.min(...pa)+tolerance)return false;}return true;}
 function bodyParts(f,plan,furniture){
-  const parts=relativeBodyParts(f);if(!plan)return parts;
+  const parts=relativeBodyParts(f,furniture);if(!plan)return parts;
   const base=(root.FurnishProducts||require('./product-rules.js')).floorBase(plan,f,furniture);
-  return parts.map(p=>({...p,vertical:p.vertical&&base.known?{...p.vertical,bottom:p.vertical.bottom+base.z,top:p.vertical.top+base.z}:null}));
+  return parts.map(p=>({...p,...(p.vertices&&base.known?{vertices:p.vertices.map(v=>[v[0],v[1]+base.z,v[2]])}:{}),vertical:p.vertical&&base.known?{...p.vertical,bottom:p.vertical.bottom+base.z,top:p.vertical.top+base.z}:null}));
 }
-function relativeBodyParts(f){
+function relativeBodyParts(f,furniture){
   const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
+  const M=root.FurnishCabinetMotion||(typeof require==='function'?require('./cabinet-motion.js'):null);
+  if(M.supportsSolids(f))return M.solidParts(f,{furniture:furniture||[]});
   if(f.kitchen)return K.bodyParts(f);
   const panels=P.pipeBoxPanels(f);
   if(panels){const a=(f.rot||0)*Math.PI/180;return panels.map(b=>{const x=b.x*(f.flip?-1:1);return {p:corners({...f,w:b.w,d:b.d,cx:f.cx+x*Math.cos(a)-b.z*Math.sin(a),cy:f.cy+x*Math.sin(a)+b.z*Math.cos(a)}),vertical:{bottom:b.bottom,top:b.bottom+b.h,source:'model'}};});}
@@ -63,7 +65,7 @@ function relativeBodyParts(f){
   }
   return footprints(f).map(p=>({p,vertical:D?.furnitureVerticalBounds(f)}));
 }
-function volumeOverlap(a,b,plan,furniture){return bodyParts(a,plan,furniture).some(A=>bodyParts(b,plan,furniture).some(B=>verticalOverlap(a,b,[A.vertical,B.vertical])&&polygonOverlap(A.p,B.p)));}
+function volumeOverlap(a,b,plan,furniture){const M=root.FurnishCabinetMotion||require('./cabinet-motion.js');return bodyParts(a,plan,furniture).some(A=>bodyParts(b,plan,furniture).some(B=>verticalOverlap(a,b,[A.vertical,B.vertical])&&polygonOverlap(M.section(A,B.vertical),M.section(B,A.vertical),A.actualBoard||B.actualBoard?1e-6:5)));}
 // 不参与碰撞检查：地毯、墙挂 / 吊装、台面上的设备、绿植（枝叶可伸到家具上方）；椅子推进桌下也属正常
 const NOCOLLIDE = new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
 const SEATS = new Set(['chair','barstool','officechair','armchair']), TABLES = new Set(['table','roundtable','desk','island']);
@@ -89,7 +91,8 @@ function collisions(furniture,plan){
     if(!verticalOverlap(a,b,[vertical[i],vertical[j]]))continue;
     const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
     if(C&&(C.fridgeFitsBay(a,b)||C.fridgeFitsBay(b,a)||C.hoodBayFit(a,b)?.fits||C.hoodBayFit(b,a)?.fits)&&(!bases||bases[i].known&&bases[j].known&&Math.abs(bases[i].z-bases[j].z)<1e-6))continue;
-    if (a.kitchen||b.kitchen||(root.FurnishProducts||require('./product-rules.js')).family(a,'pipe-box')||(root.FurnishProducts||require('./product-rules.js')).family(b,'pipe-box')?volumeOverlap(a,b,plan,furniture):obbOverlap(a,b)) out.push([a.id, b.id]);
+    const M=root.FurnishCabinetMotion||require('./cabinet-motion.js');
+    if (M.supportsSolids(a)||M.supportsSolids(b)||(root.FurnishProducts||require('./product-rules.js')).family(a,'pipe-box')||(root.FurnishProducts||require('./product-rules.js')).family(b,'pipe-box')?volumeOverlap(a,b,plan,furniture):obbOverlap(a,b)) out.push([a.id, b.id]);
   }
   return out;
 }

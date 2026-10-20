@@ -220,3 +220,7 @@ node scripts/verify-browser.cjs product-rules
 `aircon_midea_ultra_2hp.planShape` 定义估算基体截面、参考尺寸与滤网／标签突出部。`planBodyOutline(f,segments)` 提供局部 mm 基体，`planOutline(f)` 提供完整凸投影；OBJ 与未登记类型返回 null，调用方使用原矩形。生产底座、SVG、布局投影共用规则，旋转镜像由几何边界统一应用。宽深编辑仍代表原外包尺寸，无实例字段或恢复写入。曲线离散点不作为物理角点吸附；凸投影保守覆盖凹陷。
 
 含该型号的核对上下文追加 `product-plan-shapes-v1`，后续改变轮廓语义须更新该标识；价格／颜色仍不参与。复验运行 `tests/test-product-plan-outline.cjs`、`tests/test-aircon-midea.cjs` 及受影响的布局／距离／吸附／项目回归，浏览器入口为 `verify-product-plan-outline.browser.js`。本次通过范围与未执行项见 [专项记录](validation/product-plan-outline-20261020/results.json)。
+
+## 旧柜体派生结构（2026-10-20）
+
+legacyCabinet(f) 仅匹配无 OBJ、无 kitchen／cabinet 的旧 counter／vanity；参数与依据见 [旧柜体升级](LEGACY-CABINET-UPGRADE.md)。不改恢复默认字段；旧 counter 的 vertical() 提供原生产模型总高 2180。复验 test-legacy-cabinet-upgrade.cjs、test-product-rules.cjs、test-region-areas.cjs 及 legacy-cabinet-upgrade 浏览器专项。

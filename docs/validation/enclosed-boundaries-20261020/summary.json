@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-20",
+  "scope": "Shared directional boundary measurements; no project data migration or collision-rule exemption",
+  "catalog": {
+    "uniqueTypes": 81,
+    "variantsPerEntry": 8
+  },
+  "regressions": [
+    {
+      "name": "snapping",
+      "status": "PASS"
+    },
+    {
+      "name": "drag-feature-snapping",
+      "status": "PASS"
+    },
+    {
+      "name": "measure-boundaries",
+      "status": "PASS"
+    },
+    {
+      "name": "appliance-module-boundaries",
+      "status": "PASS"
+    },
+    {
+      "name": "directional-placement",
+      "status": "PASS"
+    },
+    {
+      "name": "enclosed-boundary-distances",
+      "status": "PASS"
+    },
+    {
+      "name": "stove-boundaries",
+      "status": "PASS"
+    },
+    {
+      "name": "water-purifier",
+      "status": "PASS"
+    },
+    {
+      "name": "hood-cavity-clearance",
+      "status": "PASS"
+    },
+    {
+      "name": "group-placement",
+      "status": "PASS"
+    }
+  ],
+  "browser": {
+    "status": "PASS",
+    "results": [
+      {
+        "mode": "http",
+        "status": "PASS",
+        "distances": {
+          "l": 72.5,
+          "r": 82.5,
+          "t": 931.5,
+          "b": 69.5
+        },
+        "saveUndoRedoRefresh": true,
+        "narrow": true,
+        "errors": []
+      },
+      {
+        "mode": "offline-file",
+        "status": "PASS",
+        "distances": {
+          "l": 72.5,
+          "r": 82.5,
+          "t": 931.5,
+          "b": 69.5
+        },
+        "saveUndoRedoRefresh": true,
+        "narrow": true,
+        "errors": []
+      }
+    ]
+  },
+  "visual": "HTTP screenshot inspected: four nonzero distances, enclosing-boundary labels, preserved collision warning; 390px layout checked in browser",
+  "notRun": [
+    "Full scripts/check.cjs",
+    "Individual production geometry audit of every catalog model"
+  ],
+  "boundaries": [
+    "Unknown cabinet cavities remain unverified",
+    "Planar outline fallback still approximates unregistered curved products",
+    "Walls/windows retain current plan-projection behavior; no new 3D wall-height measurement"
+  ]
+}

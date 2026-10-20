@@ -1,0 +1,414 @@
+{
+  "date": "2026-10-20",
+  "scope": "Shared cabinet board geometry, directional/vertical clearances, interior placement, collision and confirmation inputs; no project field migration",
+  "node": {
+    "total": 66,
+    "passed": 66,
+    "suites": [
+      {
+        "name": "test-appliance-module-boundaries.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-beam-body-collisions.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-advanced.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-catalog.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-custom-fronts.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-design-upgrade.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-dimensions.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-door-settings.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-drawer-joints.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-edit-operations.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-full-width-drawers.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-interior-distances.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-model.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-opening-3d.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-opening-volume-model.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-overlay.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-palette.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-preview.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-section-doors.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet-setting-inheritance.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cabinet.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-cut-board-motion.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-directional-config-order.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-directional-heights.cjs",
+        "status": "PASS",
+        "rerunAfterFixtureFix": true
+      },
+      {
+        "name": "test-directional-kitchen-solids.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-directional-placement.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-enclosed-boundary-distances.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-furniture-finished-datum.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-hood-cavity-clearance.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-hood-cavity-details.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-auto-avoid.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-corner-fit.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-corner-leaves.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-dish-basket.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-divider-input.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-dividers.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-door-pairing.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-door-widths.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-drawer-boundaries.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-drawer-snapping.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-drawer-tiers.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-edge-snapping.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-elevations.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-extension-resize.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-form.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-gap-input.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-outer-edges.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-overlay.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-partitions.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-preview.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-resize.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-right.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-run-handles.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-shelves.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-single-hinge.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-thin-end.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-u.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-wall-adjust.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen-worktop.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-kitchen.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-laundry-cabinet.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-layout-geometry.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-measure-boundaries.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-stove-boundaries.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-water-purifier.cjs",
+        "status": "PASS"
+      },
+      {
+        "name": "test-project-validation.cjs",
+        "status": "PASS"
+      }
+    ]
+  },
+  "production": {
+    "boardComparisons": 1260,
+    "heightClippedLiftDoorRays": 960
+  },
+  "browser": {
+    "status": "PASS",
+    "results": [
+      {
+        "mode": "http",
+        "status": "PASS",
+        "sixDirections": true,
+        "numericPlacement": true,
+        "actualShelfCollision": true,
+        "openDoor": true,
+        "production3D": true,
+        "narrow": true,
+        "saveUndoRedoRefresh": true,
+        "roundtrip": true,
+        "errors": []
+      },
+      {
+        "mode": "offline-file",
+        "status": "PASS",
+        "sixDirections": true,
+        "numericPlacement": true,
+        "actualShelfCollision": true,
+        "openDoor": true,
+        "production3D": true,
+        "narrow": true,
+        "saveUndoRedoRefresh": true,
+        "roundtrip": true,
+        "errors": []
+      }
+    ]
+  },
+  "legacyEnvelopeRegression": {
+    "status": "PASS",
+    "results": [
+      {
+        "mode": "http",
+        "status": "PASS",
+        "distances": {
+          "l": 72.5,
+          "r": 82.5,
+          "t": 931.5,
+          "b": 69.5
+        },
+        "saveUndoRedoRefresh": true,
+        "narrow": true,
+        "errors": []
+      },
+      {
+        "mode": "offline-file",
+        "status": "PASS",
+        "distances": {
+          "l": 72.5,
+          "r": 82.5,
+          "t": 931.5,
+          "b": 69.5
+        },
+        "saveUndoRedoRefresh": true,
+        "narrow": true,
+        "errors": []
+      }
+    ]
+  },
+  "installation": [
+    {
+      "deviceId": "fmvgha5081",
+      "recordedMountHeight": 0,
+      "current": {
+        "bottom": {
+          "distance": -118,
+          "hostId": "fmv9dos7j1",
+          "hostName": "橱柜台面",
+          "boardKey": "module:1/board:1",
+          "boardName": "底板"
+        },
+        "top": {
+          "distance": 433,
+          "hostId": "fmv9dos7j1",
+          "hostName": "橱柜台面",
+          "boardKey": "module:1/board:2",
+          "boardName": "顶板"
+        },
+        "pending": false,
+        "collisions": [
+          {
+            "hostId": "fmv9dos7j1",
+            "hostName": "橱柜台面",
+            "boardKey": "module:1/board:0",
+            "boardName": "踢脚底座"
+          },
+          {
+            "hostId": "fmv9dos7j1",
+            "hostName": "橱柜台面",
+            "boardKey": "module:1/board:1",
+            "boardName": "底板"
+          }
+        ]
+      },
+      "trialMountHeight": 118,
+      "trial": {
+        "bottom": {
+          "distance": 0,
+          "hostId": "fmv9dos7j1",
+          "hostName": "橱柜台面",
+          "boardKey": "module:1/board:1",
+          "boardName": "底板"
+        },
+        "top": {
+          "distance": 315,
+          "hostId": "fmv9dos7j1",
+          "hostName": "橱柜台面",
+          "boardKey": "module:1/board:2",
+          "boardName": "顶板"
+        },
+        "pending": false,
+        "collisions": []
+      },
+      "writtenToProject": false
+    }
+  ],
+  "visualInspection": [
+    "HTTP desktop board references and above/below values",
+    "Open-door production 3D cabinet with purifier on the bottom board",
+    "390px scrollable panel and reachable measurement actions"
+  ],
+  "notRun": [
+    "Full scripts/check.cjs",
+    "Unrelated historical generated previews",
+    "Manufacturer installation validation"
+  ],
+  "knownBounds": [
+    "Legacy solid counters and undesigned vanity blocks retain envelope fallback",
+    "Service/pegboard perforations, bevel profile and moving laundry-notch cuts remain conservative",
+    "Vanity basin/mirror keep a conservative upper envelope",
+    "Mutual collisions between two tilted board prisms use conservative height-clipped projections"
+  ]
+}

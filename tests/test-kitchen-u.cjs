@@ -5,7 +5,7 @@ const config={version:1,shape:'U',depth:600,counterDepth:630,baseHeight:820,thic
 const plan={id:'p',name:'测试',rooms:[{id:'r',name:'厨房',mat:'tile',poly:[[-10000,-10000],[20000,-10000],[20000,20000],[-10000,20000]]}],walls:[],doors:[],wins:[],slides:[],beams:[],defaults:[],ceilingHeight:2800};
 const near=(a,b)=>assert(Math.abs(a-b)<1e-5,`${a} != ${b}`),pointNear=(a,b)=>a.forEach((v,i)=>near(v,b[i]));
 const fixture=items=>({planId:'p',current:{furniture:items},designs:[{name:'U 形',work:{furniture:items}}],catalog:[]});
-function obstacle(f,m,intrusion=350,height=2800){const normal=K.runNormal(m),[cx,cy]=K.world(f,m.x+normal[0]*(intrusion/2-(m.depth??600)/2),m.y+normal[1]*(intrusion/2-(m.depth??600)/2));return {id:'flue',type:'cabinet',name:'烟道',cx,cy,w:m.width/2,d:intrusion,h:height,rot:(f.rot+(f.flip?-m.rot:m.rot)+360)%360,color:'#aaa'};}
+function obstacle(f,m,intrusion=350,height=2800){const normal=K.runNormal(m),[cx,cy]=K.world(f,m.x+normal[0]*(intrusion/2-(m.depth??600)/2),m.y+normal[1]*(intrusion/2-(m.depth??600)/2));return {id:'flue',type:'block',name:'烟道',cx,cy,w:m.width/2,d:intrusion,h:height,rot:(f.rot+(f.flip?-m.rot:m.rot)+360)%360,color:'#aaa'};}
 for(const corner of ['left','right'])for(const rot of [0,37,90,270])for(const flip of [false,true]){
  const f=K.configure({...base,rot,flip},{...config,corner});assert.deepEqual([f.w,f.d],[2600,2400]);assert.equal(K.cornerBlocks(f).length,2);assert.equal(K.cornerBoards(f).length,10);assert.equal(K.cornerPlinth(f).length,4);
  near(K.area(f),K.slabs(f).reduce((sum,s)=>sum+s.w*s.d,0)/1e6);assert.equal(K.topGeometry(f).rings.length,1);

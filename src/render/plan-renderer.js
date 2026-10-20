@@ -2,7 +2,7 @@ function measurementReferenceName(m){
  if(!m)return tr('该方向无实体','No entity in this direction');
  const name=m.entity.kind==='wall'?(m.wallPriority?tr('紧邻实体墙','Adjoining solid wall'):tr('墙面／窗边','Wall / window')):m.entity.kind==='window'?tr('窗边','Window edge'):(typeof nm==='function'?nm(m.entity.name):m.entity.name);
  const pendingThickness=state.wallFinishes?.surfaces.some(s=>s.tileThickness===undefined||s.bondThickness===undefined);
- return name+(state.wallFinishes&&m.entity.kind==='wall'?(pendingThickness?tr(' · 完成面厚度待定',' · Finish thickness pending'):tr(' · 完成面',' · Finished face')):'')+(m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
+ return name+(state.wallFinishes&&m.entity.kind==='wall'?(pendingThickness?tr(' · 完成面厚度待定',' · Finish thickness pending'):tr(' · 完成面',' · Finished face')):'')+(m.cabinetInterior?tr(' · 实际板件：',' · Board: ')+tr(m.entity.boardName,m.entity.boardName):m.containedBoundary?tr(' · 包络内边距',' · Enclosing boundary'):m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
 }
 function measurementDirectionLabel(dir,m){
  const labels={l:tr('左','Left'),r:tr('右','Right'),t:tr('上','Up'),b:tr('下','Down')};

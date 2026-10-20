@@ -928,19 +928,7 @@ function buildFurniture(f){
       break;
     }
     case 'counter': {
-      const cm = mat(c, {roughness:.45}), stone = mat('#dcd7cf', {roughness:.22}), n = Math.max(1, Math.round(w/.6)), fz = d/2 - .04;
-      g.add(box(w - .01, .1, d - .1, '#4a4641', 0, 0, -.05));const body=box(w, .72, d - .04, cm, 0, .1, -.02);body.userData.legacyCounterBody=true;g.add(body);
-      fronts(g, -w/2, .64, w, .18, fz, n, 1, cm, 'bar'); fronts(g, -w/2, .1, w, .54, fz, n, 1, cm, 'bar', .56);
-      g.add(FurnishKitchenModel.countertop(THREE,f,stone,furniture), box(w, .62, .01, mat('#efece6', {roughness:.3}), 0, .86, bz + .005));
-      g.add(box(w, .7, .33, cm, 0, 1.48, bz + .165)); fronts(g, -w/2, 1.48, w, .7, bz + .33, n, 1, cm, 'bar', 1.56);
-      g.add(box(w - .04, .01, .02, glowMat('#fff7e6', '#ffe9c4', .8), 0, 1.47, bz + .29));
-      if (w >= .8&&!FurnishKitchen.deviceOpenings(f,furniture).length){
-        g.add(rbox(.36, .018, .25, woodM('#c9a27a'), -w/2 + .3, .86, .0, .005));
-        [.07, .06, .05].forEach((r, i) => g.add(cyl(r, r, .16 - i*.03, mat(['#e9e2d6', '#d6cfc3', '#bfb6a8'][i], {roughness:.4}), w/2 - .15 - i*.15, .86, bz + .1, 24)));
-        g.add(cyl(.05, .045, .14, ceramic({roughness:.3}), w/2 - .6, .86, bz + .1, 20));
-        for (let k = 0; k < 4; k++) g.add(rod([w/2 - .6, .9, bz + .1], [w/2 - .6 + (k - 1.5)*.018, 1.1, bz + .1 + (k % 2 - .5)*.02], .005, woodM('#8d7258'), .006, 6));
-      }
-      FurnishKitchenModel.cutSinkBodies(THREE,g,f,furniture);
+      g.add(FurnishKitchenModel.legacy(THREE,f,box,{furniture}));
       break;
     }
     case 'stove': {
@@ -979,9 +967,8 @@ function buildFurniture(f){
       break;
     }
     case 'vanity': {
-      const vm = mat(c, {roughness:.5}), stone = mat('#fafafa', {roughness:.18}), nb = w >= 1.1 ? 2 : 1, cd = d - .04, cm = chrome();
-      if(f.cabinet){const body=FurnishCabinetModel.build(THREE,f,box,{furniture});body.position.y=M(FurnishProducts.cabinetBase(f));g.add(body);}
-      else {g.add(rbox(w, .45, cd, vm, 0, .33, bz + cd/2, .008));fronts(g, -w/2 + .005, .335, w - .01, .44, d/2 - .04, nb, 2, vm, 'edge');}
+      const stone = mat('#fafafa', {roughness:.18}), nb = w >= 1.1 ? 2 : 1, cm = chrome();
+      {const body=FurnishCabinetModel.build(THREE,f,box,{furniture});body.position.y=M(FurnishProducts.cabinetBase(f));g.add(body);}
       const decor=new THREE.Group();decor.position.y=f.cabinet?M(FurnishCabinet.height(f)-FurnishProducts.cabinetSpec(f).bodyHeight):0;g.add(decor);
       decor.add(rbox(w, .03, d, stone, 0, .78, 0, .006));
       const rb = Math.min(.19, w/nb*.36);

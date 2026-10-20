@@ -64,7 +64,7 @@ function snapPoint(p,shift){
   const result=FurnishSnapping.measurePoint(p,{scale:view.s,...measurementScene(),anchor:shift?ui.mA:null});
   ui.mSnap=result.edge?{point:result.point,edge:result.edge,kind:result.kind}:null;return result.point;
 }
-function measurementScene(){const rects=snapRects();return {rects,solidWallCount:rects.length-WINS.length,furniture:ui.layers.furn?state.furniture:[]};}
+function measurementScene(){const rects=snapRects();return {plan:FurnishProject.effectivePlan(PLAN,state),rects,solidWallCount:rects.length-WINS.length,furniture:ui.layers.furn?state.furniture:[]};}
 function directionalMeasurements(f=selItems()){return FurnishSnapping.directional(f,{...measurementScene(),rotation:drawingRotation()});}
 function editKitchenDivider(key,side='left'){
  const items=selItems();if(items.length!==1)return;const f=items[0],K=FurnishKitchen;if(furnitureLocked(f)||!f.kitchen)return;

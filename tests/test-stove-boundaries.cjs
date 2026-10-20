@@ -10,8 +10,9 @@ for(const type of ['stove_fotile_th36b','stove']){
 for(const gap of [0,.999,1,1.001]){
  const f={...stove,cx:host.cx+host.w/2-stove.w/2-gap},m=S.directional(f,{furniture:[host,f]}).r;close(m.distance,gap);assert(m.surfaceBoundary);close(m.b.x,2900);
 }
-// A different appliance or an overhanging hob still has ordinary overlap semantics.
-assert(Object.values(S.directional({...stove,type:'custom'},scene)).every(m=>m.distance===0&&!m.surfaceBoundary));
+// Other enclosed products share boundary distances, without gaining worktop semantics.
+const enclosed=S.directional({...stove,type:'custom'},scene);assert(Object.values(enclosed).every(m=>m.distance===0));
+assert(Object.values(enclosed).every(m=>m.cabinetInterior&&!m.containedBoundary&&!m.surfaceBoundary));
 assert(!S.directional({...stove,cx:2900-stove.w/2+1},scene).r?.surfaceBoundary);
 assert(Object.values(S.directional(stove,{furniture:[stove]})).every(m=>m===null));
 const neighbor={...host,id:'neighbor',type:'cabinet',cx:2625,cy:2010,w:100,d:100};

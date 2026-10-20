@@ -1,0 +1,32 @@
+async(page,verification)=>{
+ const results=[];
+ for(const file of [false,true]){
+  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];
+  p.on('pageerror',e=>errors.push(e.stack||e.message));const check=(v,m)=>{if(!v)throw Error(m);},open=()=>p.locator('[data-fab-edit="distance"]').click();
+  try{
+   if(file)await context.route('**/*',route=>/^https?:/.test(route.request().url())?route.abort():route.continue());
+   await p.goto(file?verification.fileBase+'index.html':verification.baseURL);await p.locator('#drawing-compass').waitFor();
+   await p.evaluate(()=>{
+    const oldRooms=structuredClone(state.rooms);PLAN={...PLAN,bounds:{x:-100,y:-100,w:5200,h:5200},walls:[[-100,-100,0,5100],[5000,-100,5100,5100],[0,-100,5000,0],[0,5000,5000,5100]],wins:[],doors:[],slides:[],beams:[],rooms:[{id:'inside-test',name:'柜内净距验收',mat:'tile800',at:[2000,2000],poly:[[0,0],[5000,0],[5000,5000],[0,5000]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...oldRooms,...state.rooms};
+    const host={id:'inside-host',type:'cabinet',...FurnishCabinet.preset('base'),cx:2000,cy:2000,rot:0};host.name='柜内板件验收';host.cabinet.plinth=80;host.cabinet.columns=[{door:'double',doorOpen:false,handle:'none',shelves:[],drawers:[]}];
+    state.furniture=[host,{id:'inside-device',type:'water_purifier_mijia_1200g',name:'米家净水器 2 · 1200G',cx:2000,cy:2000,w:163,d:445,h:379,mountHeight:98,rot:0,color:'#fff'}];ui.layers.clear=true;ui.layers.wallSnap=false;renderAll();selectIds(['inside-device']);zoomToBox([1450,1550,2450,2450],100);
+   });
+   const read=()=>p.evaluate(()=>({gaps:Object.fromEntries(Object.entries(directionalMeasurements(getF('inside-device'))).map(([dir,m])=>[dir,m?.distance])),interior:FurnishSnapping.cabinetInterior(getF('inside-device'),measurementScene()),collisions:collisions()}));
+   const first=await read();for(const [dir,value]of Object.entries({l:300.5,r:300.5,t:59.5,b:59.5}))check(Math.abs(first.gaps[dir]-value)<.01,dir+' actual board');check(first.collisions.length===0,'actual cavity has no overlap');
+   await open();check((await p.locator('[data-distance-row="l"]').innerText()).includes('左侧板'),'board identity');check((await p.locator('[data-interior-gap="top"]').innerText())==='355 mm','top board gap');check((await p.locator('[data-interior-gap="bottom"]').innerText())==='0 mm','on bottom board');
+   await p.screenshot({path:verification.output('playwright/cabinet-interior/'+(file?'file':'http')+'-desktop.png')});
+   await p.locator('[data-distance-row="l"]').click();await p.locator('#directional-gap-input').fill('40');await p.getByRole('button',{name:'应用距离',exact:true}).click();check(Math.abs((await read()).gaps.l-40)<.01,'numeric positioning inside actual cavity');
+   await p.evaluate(()=>undo());check(Math.abs((await read()).gaps.l-300.5)<.01,'undo position');await p.evaluate(()=>redo());check(Math.abs((await read()).gaps.l-40)<.01,'redo position');await p.evaluate(()=>undo());
+   await open();await p.locator('#fab-distance-save').click();check(await p.evaluate(()=>state.measures.length===4),'save actual gap endpoints');
+   await p.evaluate(()=>{closeFabEditor();mutate(()=>getF('inside-host').cabinet.columns[0].shelves=[300]);});check((await read()).interior.collisions.some(v=>v.boardName==='层板'),'shelf penetration reported');check((await read()).collisions.length===1,'no blanket cavity exemption');await p.evaluate(()=>undo());
+   await p.evaluate(()=>{mutate(()=>{getF('inside-host').cabinet.columns[0].doorOpen=true;getF('inside-host').cabinet.columns[0].doorAngle=90;});});check(await p.evaluate(()=>directionalMeasurements(getF('inside-device')).b.entity.kind==='wall'),'open door leaves front clear to the distant wall');
+   await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await p.evaluate(()=>selectIds(['inside-host']));await p.locator('#vSelection').click();await p.waitForTimeout(400);check(await p.evaluate(()=>furnitureRenderErrors.size===0),'production 3D');await p.screenshot({path:verification.output('playwright/cabinet-interior/'+(file?'file':'http')+'-3d.png')});
+   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);await p.evaluate(()=>undo());
+   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{closeDrawers();selectIds(['inside-device']);});await open();check(await p.locator('[data-cabinet-interior]').isVisible(),'narrow actual board summary');await p.locator('#fab-distance-save').scrollIntoViewIfNeeded();check(await p.locator('#fab-distance-save').isVisible(),'narrow measurement actions reachable');await p.locator('[data-cabinet-interior]').scrollIntoViewIfNeeded();check(await p.evaluate(()=>document.documentElement.scrollWidth<=390),'no horizontal overflow');await p.screenshot({path:verification.output('playwright/cabinet-interior/'+(file?'file':'http')+'-narrow.png')});
+   await verification.waitForCache(p);await p.reload();await p.locator('#drawing-compass').waitFor();await p.evaluate(()=>{ui.layers.wallSnap=false;selectIds(['inside-device']);});const final=await read();const boardGap=await p.evaluate(()=>FurnishSnapping.directional(getF('inside-device'),{furniture:state.furniture,plan:FurnishProject.effectivePlan(PLAN,state)}).l.distance);check(Math.abs(boardGap-300.5)<.01,'refresh recalculates cabinet boards independently of restored plan walls');check(await p.evaluate(()=>state.measures.length===4),'refresh keeps measurements');
+   const roundtrip=await p.evaluate(()=>{const payload=FurnishProject.unpack(FurnishProject.pack({planId:PLAN.id,current:state,designs:[{name:'柜内',work:state}],catalog:[]}));return FurnishSnapping.cabinetInterior(payload.current.furniture.find(f=>f.id==='inside-device'),{furniture:payload.current.furniture});});check(roundtrip.collisions.length===0&&Math.abs(roundtrip.top.distance-355)<.01,'current/named project roundtrip');
+   check(!errors.length,errors.join('\n'));results.push({mode:file?'offline-file':'http',status:'PASS',sixDirections:true,numericPlacement:true,actualShelfCollision:true,openDoor:true,production3D:true,narrow:true,saveUndoRedoRefresh:true,roundtrip:true,errors});
+  }finally{await context.close();}
+ }
+ return {status:'PASS',results};
+}

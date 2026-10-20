@@ -1,6 +1,12 @@
 /* Shared Three.js cabinet construction. box uses bottom-based vertical coordinates. */
 (function(root){
  function buildRaw(THREE,f,box,options={}){
+  const legacy=(root.FurnishCabinet||require('../core/cabinet-core.js')).legacyParts(f);
+  if(legacy&&f.type==='vanity'){
+   const part=legacy.parts[0],model=buildRaw(THREE,{...part.furniture,cx:0,cy:0,rot:0,flip:false},box,options);model.position.z=part.z/1000;
+   // Old instances remain static until an explicit detailed design is saved.
+   model.traverse(o=>{delete o.userData.cabinetPart;delete o.userData.motion;});return model;
+  }
   if(f.laundryFloorOpen)options={...options,floorOpen:true};
   const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.height(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
@@ -129,10 +135,10 @@
    });
    if(options.outlines)g.traverse(o=>{if(o.isMesh){const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x82776b,transparent:true,opacity:.55}));edge.userData.cabinetOwnMaterial=true;o.add(edge);}});return g;
   }
-  if(p&&!options.floorOpen)add(g,w,p,d-.04,0,0,-.02,wood);
+  if(p&&!options.floorOpen)add(g,w,p,d-.04,0,0,-.02,wood).userData.cabinetSection='plinth';
   const movable=col=>col.top==='drawer';
   if(c.hoodBayHeight!==undefined){const bays=C.layout(f),bay=bays[1];for(const i of [0,2]){const left=i===0?-w/2:(bay.left+bay.width)/1000,right=i===2?w/2:bay.left/1000;add(g,right-left,t,bodyDepth,(left+right)/2,p,bodyZ).userData.cabinetSection='hoodSideBottom';}if(C.hoodBayCeiling(f,c))add(g,bay.width/1000,t,bodyDepth,bay.center/1000,c.hoodBayHeight/1000,bodyZ).userData.cabinetSection='hoodCeiling';}
-  else if(!options.floorOpen)add(g,w,t,bodyDepth,0,p,bodyZ);if(!c.columns.some(movable))add(g,w,t,bodyDepth,0,h-t,bodyZ).userData.cabinetTop=true;
+  else if(!options.floorOpen)add(g,w,t,bodyDepth,0,p,bodyZ).userData.cabinetSection='bottom';if(!c.columns.some(movable))add(g,w,t,bodyDepth,0,h-t,bodyZ).userData.cabinetTop=true;
   const bays=C.layout(f),inner=h-p-2*t;
   bays.forEach((bay,i)=>{
    if(!movable(c.columns[i])){

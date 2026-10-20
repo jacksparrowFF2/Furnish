@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-20",
+  "scope": "Derived production boards for legacy counter/vanity; no saved furniture migration or project file edits",
+  "node": {
+    "total": 68,
+    "passed": 68
+  },
+  "production": {
+    "meshes": 28,
+    "cavityRays": true,
+    "rotationMirror": true,
+    "sixDirections": true,
+    "contactPenetration": true,
+    "repeatRestoreNoDrift": true,
+    "currentNamedRoundtrip": true
+  },
+  "browser": {
+    "selected": [
+      "legacy-cabinet-upgrade",
+      "cabinet-interior",
+      "enclosed-boundaries"
+    ],
+    "results": [
+      {
+        "name": "legacy-cabinet-upgrade",
+        "status": "PASS",
+        "seconds": 14.8,
+        "log": "legacy-cabinet-upgrade.log"
+      },
+      {
+        "name": "cabinet-interior",
+        "status": "PASS",
+        "seconds": 15,
+        "log": "cabinet-interior.log"
+      },
+      {
+        "name": "enclosed-boundaries",
+        "status": "PASS",
+        "seconds": 2.6,
+        "log": "enclosed-boundaries.log"
+      }
+    ],
+    "notRun": []
+  },
+  "screenshots": [
+    "file-3d.png",
+    "file-desktop.png",
+    "http-3d.png",
+    "http-desktop.png"
+  ],
+  "visualReview": "3D and 2D reviewed; original combined upper/lower cabinets and vanity silhouette retained",
+  "finalIncremental": "Small-depth inset and unused variable cleanup: syntax, legacy, product-rules, region-areas passed after browser run",
+  "notRun": [
+    "Full scripts/check.cjs",
+    "Unrelated historical previews",
+    "Physical touchscreen",
+    "Manufacturer installation validation"
+  ],
+  "knownBounds": [
+    "Default structural assumptions are not manufacturer dimensions",
+    "Legacy static doors require explicit detailed design to become interactive",
+    "Vanity upper basin/mirror conservative envelope",
+    "Unknown sink underside, plumbing and hardware occupancy"
+  ]
+}
