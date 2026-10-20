@@ -1,4 +1,5 @@
 async (page,verification)=>{
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
  const root=verification.root,out=root+'output/playwright/kitchen/',results=[];
  for(const [mode,url,offline] of [['file',verification.fileBase+'index.html',true],['http',(verification.baseURL+'index.html'),false]]){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline}),p=await context.newPage(),errors=[];
@@ -8,12 +9,12 @@ async (page,verification)=>{
   check(await p.evaluate(()=>!!getF(selIds()[0]).kitchen),'catalog creates modular kitchen');
   await p.evaluate(()=>{const draft={version:1,id:'custom_kitchen_acceptance',name:'厨房验收空间',source:'dxf',width:700,height:700,image:'',scale:10,walls:[{id:'top',a:[0,0],b:[700,0],thickness:200,kind:'e'},{id:'right',a:[700,0],b:[700,700],thickness:200,kind:'e'},{id:'bottom',a:[700,700],b:[0,700],thickness:200,kind:'e'},{id:'left',a:[0,700],b:[0,0],thickness:200,kind:'e'}],openings:[]};const plan=FurnishDraft.build(draft);store.customPlans.push(draft);PLANS.push(plan);setPlan(plan.id);mutate(()=>{state.furniture=[{id:'legacy-kitchen',type:'counter',name:'兼容厨房',cx:3500,cy:3500,w:1800,d:600,rot:0,color:'#e9e5de'}];});selectIds(['legacy-kitchen']);});
   check(await p.locator('#kitchen-convert').count()===1,'legacy conversion available');await p.locator('#kitchen-convert').click();
-  const save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click();await p.locator('#cabinet-edit').click();await p.locator('#cab-kitchen-shape').selectOption('L');await p.locator('[data-k-tab="modules"]').click();
-  await p.locator('#cab-kitchen-active').selectOption('3');await p.locator('[data-kitchen-row="3"] [data-k-width]').fill('1200');await p.locator('[data-kitchen-row="3"] [data-k-width]').press('Tab');
-  await p.locator('#cab-kitchen-active').selectOption('0');await p.locator('[data-kitchen-row="0"] [data-k-width]').fill('900');await p.locator('[data-kitchen-row="0"] [data-k-width]').press('Tab');
+  const save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click();await p.locator('#cabinet-edit').click();await p.locator('#cab-kitchen-shape').selectOption('L');await choose(p,'bay');
+  await choose(p,undefined,3);await p.locator('[data-kitchen-row="3"] [data-k-width]').fill('1200');await p.locator('[data-kitchen-row="3"] [data-k-width]').press('Tab');
+  await choose(p,undefined,0);await p.locator('[data-kitchen-row="0"] [data-k-width]').fill('900');await p.locator('[data-kitchen-row="0"] [data-k-width]').press('Tab');
   await p.locator('[data-kitchen-row="0"] [data-k-role]').selectOption('sink');
-  await p.locator('#cab-kitchen-active').selectOption('1');await p.locator('[data-kitchen-row="1"] [data-k-width]').fill('900');await p.locator('[data-kitchen-row="1"] [data-k-width]').press('Tab');
-  await p.locator('[data-kitchen-row="1"] [data-k-role]').selectOption('hob');await p.locator('#cab-kitchen-active').selectOption('2');await p.locator('[data-kitchen-row="2"] [data-k-role]').selectOption('drawer');await save();
+  await choose(p,undefined,1);await p.locator('[data-kitchen-row="1"] [data-k-width]').fill('900');await p.locator('[data-kitchen-row="1"] [data-k-width]').press('Tab');
+  await p.locator('[data-kitchen-row="1"] [data-k-role]').selectOption('hob');await choose(p,undefined,2);await p.locator('[data-kitchen-row="2"] [data-k-role]').selectOption('drawer');await save();
   await p.evaluate(()=>{mutate(()=>state.furniture.push({id:'sink-test',type:'ksink',name:'水槽',cx:1000,cy:1000,w:760,d:450,rot:0,color:'#ccc'},{id:'hob-test',type:'stove',name:'灶具',cx:1500,cy:1000,w:750,d:450,rot:0,color:'#111'}));selectIds(['sink-test']);});
   await p.locator('#kitchen-link').selectOption('legacy-kitchen:0');await p.evaluate(()=>selectIds(['hob-test']));await p.locator('#kitchen-link').selectOption('legacy-kitchen:1');
   await p.evaluate(()=>selectIds(['legacy-kitchen']));await p.locator('#cabinet-edit').click();await p.locator('#cab-kitchen-baseHeight').fill('900');await p.locator('#cab-kitchen-baseHeight').press('Tab');await save();
@@ -31,7 +32,7 @@ async (page,verification)=>{
   await p.evaluate(()=>{closeDialog();mutate(()=>{const f=getF('legacy-kitchen');f.rot=0;f.flip=false;});selectIds(['legacy-kitchen']);zoomSel();});await p.screenshot({path:out+mode+'-plan.png'});
   await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.locator('#view3d canvas').waitFor({state:'visible'});await p.waitForFunction(()=>is3D()&&!switching);await p.waitForTimeout(1200);await p.screenshot({path:out+mode+'-3d.png'});
   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);
-  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>selectIds(['legacy-kitchen']));await p.locator('#fab [data-act="prop"]').click();await p.waitForTimeout(450);await p.screenshot({path:out+mode+'-mobile.png'});check(await p.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'mobile document fits');await p.locator('#cabinet-edit').click();check(await p.locator('#cab-kitchen-shape').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=window.innerWidth;}),'mobile kitchen controls fit');await p.locator('[data-k-tab="modules"]').click();await p.locator('#cab-kitchen-add').scrollIntoViewIfNeeded();await p.screenshot({path:out+mode+'-mobile-modules.png'});
+  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>selectIds(['legacy-kitchen']));await p.locator('#fab [data-act="prop"]').click();await p.waitForTimeout(450);await p.screenshot({path:out+mode+'-mobile.png'});check(await p.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),'mobile document fits');await p.locator('#cabinet-edit').click();check(await p.locator('#cab-kitchen-shape').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=window.innerWidth;}),'mobile kitchen controls fit');await choose(p,'bay');await p.locator('#cab-kitchen-add').scrollIntoViewIfNeeded();await p.screenshot({path:out+mode+'-mobile-modules.png'});
   check(errors.length===0,'page errors '+errors.join('; '));results.push({mode,status:'PASS',errors});await context.close();
  }
  return results;

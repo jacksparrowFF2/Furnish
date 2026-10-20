@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-20",
+  "scope": "柜体设计第三批收尾：来源／单独设置／恢复继承，外观高级项与对象提示",
+  "status": "PASS",
+  "changes": [
+    "同值可显式固定，恢复删除覆盖字段并持续跟随上级",
+    "隔间和厨房模块沿用整柜角度，展示门沿用隔间",
+    "颜色恢复整柜／木色材质默认，材质与把手恢复既有默认值",
+    "外观折叠，修改保持展开；层板工具收起抽屉操作",
+    "沿原草稿和单次 mutate，旧设计继续第二批保存升级，无新持久字段或加载机制"
+  ],
+  "unit": {
+    "total": 68,
+    "passed": 68,
+    "log": "unit-tests.json",
+    "scope": "柜体／玄关／厨房／洗衣柜及相关产品、设计、项目、恢复、持久链路。增量运行，测试环境补齐共用 UI helper 后复跑三项，最后工具／提示调整后复跑 entry-editor。"
+  },
+  "browser": {
+    "total": 6,
+    "results": [
+      {
+        "name": "cabinet-doors",
+        "status": "PASS",
+        "seconds": 14.5,
+        "log": "cabinet-doors.log",
+        "run": "verification-gNfzoy"
+      },
+      {
+        "name": "cabinet-custom-fronts",
+        "status": "PASS",
+        "seconds": 21.7,
+        "log": "cabinet-custom-fronts.log",
+        "run": "verification-gNfzoy"
+      },
+      {
+        "name": "laundry-editing",
+        "status": "PASS",
+        "seconds": 7.9,
+        "log": "laundry-editing.log",
+        "run": "verification-gNfzoy"
+      },
+      {
+        "name": "kitchen-door-pairing",
+        "status": "PASS",
+        "seconds": 6.2,
+        "log": "kitchen-door-pairing.log",
+        "run": "verification-dK1i4a"
+      },
+      {
+        "name": "cabinet-setting-inheritance",
+        "status": "PASS",
+        "seconds": 8.7,
+        "log": "cabinet-setting-inheritance.log",
+        "run": "verification-dK1i4a"
+      },
+      {
+        "name": "cabinet-object-inspector",
+        "status": "PASS",
+        "seconds": 11.3,
+        "log": "cabinet-object-inspector.log",
+        "run": "verification-dK1i4a"
+      }
+    ],
+    "note": "汇总两次隔离浏览器运行的通过项；首次厨房配对旧预期未纳入第二批保存升级，补齐后最后一次通过。最后一次重跑新继承与对象完整流程。"
+  },
+  "verified": [
+    "68 套相关 Node 回归",
+    "6 项浏览器验收，继承／对象完整流程与洗衣柜覆盖 HTTP 和断网 file://",
+    "继承／同值固定／未来上级变更／展示门链／厨房链／木色与默认外观",
+    "保存／取消／单次撤销重做／刷新／项目往返，厨房配对实际下载上传",
+    "19 模板与历史设计生产几何、开启区、采购规格、重复恢复回归",
+    "1500px 与 390px 截图视觉验收、无横向溢出",
+    "改动 JS 语法检查及 diff 空白检查"
+  ],
+  "notRun": [
+    "未运行 node scripts/check.cjs 全量检查，范围按本批核心和编辑器依赖限定",
+    "未运行全部历史浏览器用例",
+    "未使用实体触屏硬件"
+  ],
+  "boundaries": [
+    "不新增整柜材质／把手继承模型，保留现有 solid/bar 和木色默认",
+    "恢复默认是用户显式操作；历史模板显式值在操作前保持",
+    "五金连杆、自身干涉和加工单精度仍遵循已有布局模型边界"
+  ],
+  "screenshots": [
+    "http-desktop.png",
+    "http-mobile.png",
+    "file-desktop.png",
+    "file-mobile.png"
+  ],
+  "sourceHashes": {
+    "src/core/cabinet-core.js": "76ed6831200df30fc96b6b17b82058b7908aa885da3c5773a1a234eb066dc6ee",
+    "src/ui/cabinet-editor.js": "d54b4b3d6047bff8553ab5e42f3f6218b5302572dec2af8a5b27819aa724b969",
+    "src/ui/kitchen-editor.js": "b3036bfeffce76de19b0a523b1aefbf2179b8c4314329bba1bdd9156f87556c6",
+    "styles/cabinet-editor.css": "a83a551b5098eb4b98bf2f9e6115478ddb95dafa612b04210eb320ed84b59f8d"
+  }
+}

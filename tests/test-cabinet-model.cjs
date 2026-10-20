@@ -20,14 +20,14 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  const ghost=context.FurnishCabinetModel.build(THREE,styled,box,{doors:'ghost'});assert.equal(part(ghost,undefined).userData.cabinetIgnorePick,true);
  console.log('PASS all cabinet meshes have finite dimensions, correct heights, hinge rotations and drawer travel');
  for(const id of ['sideboard','entry-console']){
-  const initial={type:'cabinet',...C.preset(id)},f=C.resize(initial,{...initial,w:1350}),model=build(f),dividers=[],shelves=[];
+  const initial={type:'cabinet',...C.preset(id)},f=C.validate(C.autoDoors({...initial,w:1350})),model=build(f),dividers=[],shelves=[];
   model.traverse(o=>{if(o.userData.cabinetDivider)dividers.push(o);if(o.userData.cabinetShelf?.column===1)shelves.push(o);});
   assert.equal(dividers.length,id==='entry-console'?2:1,'only the boundary between single and paired bays has a divider');
   for(const shelf of shelves)assert(Math.abs(shelf.geometry.parameters.width-C.widths(f)[1]/1000)<1e-8,'shelves span both leaves');
   model.updateMatrixWorld(true);const bay=C.layout(f)[1],origin=new THREE.Vector3((bay.left+bay.width-30)/1000,id==='entry-console'?2.15:.7,0),hit=new THREE.Raycaster(origin,new THREE.Vector3(-1,0,0)).intersectObject(model,true)[0];
   assert(hit&&hit.distance>bay.width/2000,'ray crosses paired-door center without hitting a partition');
  }
- const entryStart={type:'cabinet',...C.preset('entry-console')},entry=C.resize(entryStart,{...entryStart,w:1350});
+ const entryStart={type:'cabinet',...C.preset('entry-console')},entry=C.validate(C.autoDoors({...entryStart,w:1350}));
  const drawerParts=model=>{const parts=[];model.traverse(o=>{if(o.userData.cabinetDrawerBoard==='front')parts.push(o);});return parts;};
  const fronts=drawerParts(build(entry));assert.equal(fronts.length,3,'1350 mm retains three independent drawers');for(const front of fronts)assert(Math.abs(front.geometry.parameters.width-.448)<1e-8);
  const singleOpen=C.toggle(entry,1,0,false,1),openFronts=drawerParts(build(singleOpen));for(const front of openFronts){const active=front.userData.cabinetPart.column===1&&front.userData.cabinetPart.lane===1;assert(Math.abs(front.parent.position.z-(active?.245:0))<1e-8,'only clicked drawer moves');}

@@ -27,10 +27,13 @@
 .cab-elevation-preview canvas {max-width:none!important}
 #cab-preview[data-unfolded=true] {height:570px}
 .cab-fields {min-width:0;height:100%;overflow:auto;padding-right:8px;overscroll-behavior:contain}
-.cab-tabs {display:grid;grid-template-columns:repeat(4,1fr);gap:4px;position:sticky;top:0;z-index:2;background:var(--panel,#fffdf9);padding:4px 0 14px;margin-bottom:12px;border-bottom:1px solid var(--line,#ddd)}
-.cab-tabs button {font:inherit;font-size:12px;cursor:pointer;padding:10px 4px;border:0;border-radius:8px;background:var(--soft,#f3f0e9);color:var(--ink,#302c25)}
-.cab-tabs button.on {background:var(--cab-button-bg);color:var(--cab-button-ink)}
-.cab-tabs button:focus-visible {outline:2px solid #168de2;outline-offset:2px}
+.cab-object-title {margin:14px 0 0!important;font-size:15px!important}
+.cab-fields [data-inspect-group],.cab-fields [data-k-inspect] {grid-column:1/-1;min-width:0}
+.cab-fields [data-kitchen-row] {border-top:1px solid var(--line,#ddd);padding-top:14px}
+#cab-object-target,#cab-kitchen-object {width:100%;min-width:0}
+#cab-bay-picker,#cab-kitchen-picker {position:sticky;top:0;z-index:3;background:var(--panel,#fffdf9);border:1px solid var(--line,#ddd)}
+.cab-dimension[data-cabinet-object] {pointer-events:auto;cursor:pointer}
+.cab-dimension[data-cabinet-object]:focus-visible {outline:2px solid #168de2}
 .cab-editor [hidden] {display:none!important}
 #cab-bay-picker {padding:12px;margin-bottom:14px;background:var(--soft,#f3f0e9);border-radius:10px}
 #cab-bay-picker label {display:flex;align-items:center;gap:12px;font-size:13px}
@@ -43,7 +46,7 @@
 .cab-help {border-top:1px solid var(--line,#ddd);padding:12px 0;margin-top:12px}
 .cab-help summary {cursor:pointer}
 .cab-fields h3 {font-size:16px;margin:0 0 16px}
-.cab-part-section + .cab-part-section {border-top:1px solid var(--line,#ddd);margin-top:16px;padding-top:16px}
+.cab-part-section:not([hidden]) ~ .cab-part-section:not([hidden]) {border-top:1px solid var(--line,#ddd);margin-top:16px;padding-top:16px}
 .cab-part-section h4 {font-size:13px;margin:0 0 12px}
 .cab-fields input:not([type=checkbox]):not([type=range]):not([type=color]),.cab-fields select {width:100%;min-width:0;padding:9px 10px;font:inherit;font-size:13px;border:1px solid var(--line,#ddd);border-radius:8px;background:var(--panel,#fffdf9);color:inherit}
 .cab-fields .form select,.cab-fields select {height:auto;min-height:42px;line-height:1.5;padding:8px 10px}
@@ -71,8 +74,8 @@
 .kitchen-partitions {grid-column:1/-1;display:grid;gap:8px;padding:12px 0}
 .kitchen-partitions label {display:flex;align-items:center;gap:8px}
 .kitchen-partitions input[type=checkbox] {width:18px;height:18px;flex:none;accent-color:var(--accent)}
-@media(max-width:700px){.cab-editor{grid-template-columns:1fr;height:auto;min-height:0;gap:16px}.cab-visual{position:static}.cab-fields{height:auto;overflow:visible;padding:0}#cab-preview{height:240px}.cab-tabs{position:static}.cab-selection{min-height:0}.cab-view-controls{font-size:11px}.cab-tabs button{font-size:11px}}
-@media(max-width:700px){.cab-editor{display:flex;flex-direction:column;gap:12px}.cab-editor>.cab-fields{display:contents}.cab-editor .cab-tabs{order:-1;position:sticky;top:-1px;width:100%;padding:6px 0;margin:0;z-index:8}.cab-editor .cab-tabs button{min-height:44px}.cab-editor>.cab-visual{width:100%}.cab-editor #cab-form,.cab-editor #cab-kitchen-fields,.cab-editor #cab-bay-picker,.cab-editor #cab-kitchen-picker{width:100%;box-sizing:border-box}}
+@media(max-width:700px){.cab-editor{grid-template-columns:1fr;height:auto;min-height:0;gap:16px}.cab-visual{position:static}.cab-fields{height:auto;overflow:visible;padding:0}#cab-preview{height:240px}.cab-selection{min-height:0}.cab-view-controls{font-size:11px}}
+@media(max-width:700px){.cab-editor{display:flex;flex-direction:column;gap:12px}.cab-editor>.cab-fields{display:contents}.cab-editor>.cab-visual{width:100%}.cab-editor #cab-form,.cab-editor #cab-kitchen-fields,.cab-editor #cab-bay-picker,.cab-editor #cab-kitchen-picker{width:100%;box-sizing:border-box}}
 .kitchen-drawer-tiers{grid-column:1/-1;min-width:0;margin:4px 0;padding:12px;border:1px solid var(--line);border-radius:var(--r-md)}
 .kitchen-drawer-tiers legend{padding:0 6px;font-weight:700}
 .kitchen-drawer-tiers .form .btn{align-self:end}
@@ -110,3 +113,5 @@
  .cab-editor .btn.on:not(:disabled):hover,
  .dlg-box:has(.cab-editor) .dlg-actions .btn.primary:not(:disabled):hover{background:var(--cab-button-hover);color:var(--cab-button-ink)}
 }
+
+.cab-setting{min-width:0;margin-bottom:10px}.cab-setting-source{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}.cab-setting-source .btn{font-size:12px;padding:4px 8px}.cab-setting-source span{overflow-wrap:anywhere}

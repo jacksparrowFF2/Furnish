@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-20",
+  "scope": "柜体设计第一批；增量检查，不是全量检查",
+  "status": "PASS",
+  "source_sha256": {
+    "src/core/cabinet-core.js": "9ccfae31d59bb75f9db17f1cb479d088e1abf267b97c8df62735193e1dc89dea",
+    "src/ui/cabinet-editor.js": "95f9057b942c42d9e5ae87ec338bdcc56e699801e5934e562cb8aae73f5796bb"
+  },
+  "syntax_and_diff_check": "PASS: 两个修改源码及两个浏览器脚本语法检查；本批文件 git diff --check",
+  "unit_tests": {
+    "passed": 66,
+    "failed": 0,
+    "details": "unit-tests.json",
+    "selection": "tests/test-(cabinet|entry|kitchen|laundry|product-rules|design|project|work-state|furniture-recovery|furniture-persistence)*.cjs"
+  },
+  "browser_cases": [
+    {
+      "name": "cabinet-edit-operations",
+      "status": "PASS",
+      "seconds": 20.7,
+      "log": "cabinet-edit-operations.log"
+    },
+    {
+      "name": "cabinet-doors",
+      "status": "PASS",
+      "seconds": 16.4,
+      "log": "cabinet-doors.log"
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 21.2,
+      "log": "cabinet-custom-fronts.log"
+    },
+    {
+      "name": "cabinet-dimensions",
+      "status": "PASS",
+      "seconds": 5.7,
+      "log": "cabinet-dimensions.log"
+    },
+    {
+      "name": "cabinet-door-coverage",
+      "status": "PASS",
+      "seconds": 4.3,
+      "log": "cabinet-door-coverage.log"
+    },
+    {
+      "name": "cabinet-drawer-dimensions",
+      "status": "PASS",
+      "seconds": 3.4,
+      "log": "cabinet-drawer-dimensions.log"
+    },
+    {
+      "name": "kitchen-wall-adjust",
+      "status": "PASS",
+      "seconds": 10.4,
+      "log": "kitchen-wall-adjust.log"
+    },
+    {
+      "name": "laundry-editing",
+      "status": "PASS",
+      "seconds": 7.9,
+      "log": "laundry-editing.log"
+    }
+  ],
+  "browser_coverage": [
+    "固定总宽的数字净宽／生产预览隔板键盘补差、显式改总宽、非法输入恢复",
+    "显式重分隔间及配门、草稿保存／取消、单次撤销重做、刷新",
+    "19 个模板打开／切页／无修改保存无漂移",
+    "未修改分区的小数净宽不受表单显示精度影响",
+    "六种门型、玻璃展示门、浴室柜、烟机嵌合、厨房保留结构",
+    "实际项目下载／上传往返、门板与抽屉面板生产尺寸标注",
+    "洗衣柜编辑 HTTP 及断网 file://；新操作完整流程使用 HTTP 隔离副本"
+  ],
+  "visual_review": {
+    "status": "PASS",
+    "viewports": [
+      "1500×1000",
+      "390×844"
+    ],
+    "screenshots": [
+      "desktop-interior.png",
+      "desktop-doors.png",
+      "mobile-size.png",
+      "mobile-interior.png"
+    ],
+    "observed": "生产柜体与尺寸标注可见；页面与当前分区表单正常；窄屏控件可滚动访问，固定保存／取消可用，无横向溢出。"
+  },
+  "compatibility": [
+    "不新增持久字段／版本／自动迁移；保留旧自动偏好与原结构",
+    "尺寸修改不再触发旧自动偏好的隐式重排；模板初始生成保留",
+    "按原 mutate 保存并保留既有复制、替换、命名方案与恢复链路"
+  ],
+  "not_run": [
+    "未运行 node scripts/check.cjs 全量检查；影响可限定到柜体编辑、相关共享核心调用与数据链路",
+    "未做真实手机／触摸屏硬件验收；窄屏使用浏览器 390px 视口",
+    "未重复所有新操作的完整断网 file:// 流程；加载机制未修改，相关洗衣柜离线编辑已实际通过"
+  ],
+  "boundaries": [
+    "重分按序号保留／复制／移除储物格；不推断用户需要保留哪一格。取消草稿可回退。",
+    "配门是普通隔间单门／对开建议，保留既有精细编辑；并非五金或加工认证。",
+    "烟机嵌合柜继续专用居中三分区与门板设置，通用重分／配门禁用。",
+    "空间算法未扩展，沿原完整配置及生产派生核对，不声明解决所有剩余缺陷。"
+  ]
+}

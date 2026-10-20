@@ -1,4 +1,5 @@
 async (page,verification)=>{
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
  const root=verification.root,results=[];
  for(const mode of ['file','http']){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],external=[];
@@ -6,7 +7,7 @@ async (page,verification)=>{
   const check=(ok,msg)=>{if(!ok)throw Error(mode+': '+msg);},select=id=>p.evaluate(id=>selectIds([id]),id),edit=async(selector,value)=>{await p.locator(selector).fill(String(value));await p.locator(selector).press('Tab');};
   const states=kind=>p.locator('#dishwasher-checks [data-dishwasher-check="dishwasher-'+kind+'"]').evaluateAll(els=>els.map(el=>el.dataset.checkOk));
   const backup=async()=>{await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();};
-  const upperHeight=async value=>{await select('upper');await p.locator('#cabinet-edit').click();await p.locator('#cab-kitchen-mount-height').waitFor();await edit('#cab-kitchen-mount-height',value);await p.locator('[data-k-tab="space"]').click();return p.locator('#cab-kitchen-space').innerText();};
+  const upperHeight=async value=>{await select('upper');await p.locator('#cabinet-edit').click();await p.locator('#cab-kitchen-mount-height').waitFor();await edit('#cab-kitchen-mount-height',value);await choose(p,'body');return p.locator('#cab-kitchen-space').innerText();};
   try{
    await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib').waitFor();await backup();await p.locator('#pr-file').setInputFiles(root+'tests/fixtures/dishwasher-clearances-project.json');await p.locator('#pr-restore-confirm').click();
    await select('dish');await p.evaluate(()=>zoomToBox([2000,2300,4000,3900],60));

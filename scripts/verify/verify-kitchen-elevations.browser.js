@@ -1,4 +1,5 @@
 async (page,verification)=>{
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(v,message)=>{if(!v)throw Error(message);};
  try{
@@ -10,19 +11,19 @@ async (page,verification)=>{
   await p.getByRole('button',{name:'两边正视展开',exact:true}).click();
   check(await p.locator('.cab-elevation').count()===2,'two elevation panels');
   check(await p.locator('.cab-elevation .cab-module-number').count()===4,'each original module numbered once');
-  await p.locator('[data-k-tab="modules"]').click();for(const [index,width] of [800,800,450,300].entries()){await p.locator('#cab-kitchen-active').selectOption(String(index));const label=p.locator('.cab-elevation .cab-dimension').filter({hasText:/^宽 /});check(await label.count()===1&&await label.textContent()==='宽 '+width,'selected module width '+index);check(await label.isVisible(),'selected module dimension visible '+index);}
+  await choose(p,'bay');for(const [index,width] of [800,800,450,300].entries()){await choose(p,undefined,index);const label=p.locator('.cab-elevation .cab-dimension').filter({hasText:/^宽 /});check(await label.count()===1&&await label.textContent()==='宽 '+width,'selected module width '+index);check(await label.isVisible(),'selected module dimension visible '+index);}
   check((await p.locator('.cab-elevation').nth(0).textContent()).includes('主边总长 1850'),'main total includes blind corner');
   check((await p.locator('.cab-elevation').nth(1).textContent()).includes('转角边总长 1700'),'return total includes blind corner');
   const number=i=>p.locator('.cab-elevation .cab-module-number').filter({hasText:new RegExp('^'+i+'$')});
   await p.screenshot({animations:'disabled',path:'output/playwright/kitchen-elevations-desktop.png'});
-  await number(4).click();check(await p.locator('#cab-kitchen-active').inputValue()==='3','empty module selected through unfolded number');
+  await number(4).click();check(JSON.parse(await p.locator('#cab-kitchen-object').inputValue()).column===3,'empty module selected through unfolded number');
   await number(2).click();await p.locator('[data-kitchen-row="1"] [data-k-width]').fill('810.25');await number(3).click();
   check((await p.locator('.cab-elevation').nth(1).textContent()).includes('1710.25'),'unblurred input reflected in return total');
   await p.locator('#cab-kitchen-dimensions').uncheck();check(await p.locator('.cab-elevation .cab-module-number').count()===4,'numbers retained without dimensions');await p.locator('#cab-kitchen-dimensions').check();
   await p.setViewportSize({width:390,height:844});
   await p.waitForFunction(count=>{const els=[...document.querySelectorAll('.cab-elevation-scroll')];return els.length===count&&els.every(e=>e.scrollWidth>e.clientWidth);},2);check(await p.locator('.cab-elevation-scroll').evaluateAll(els=>els.every(e=>e.scrollWidth>e.clientWidth)),'each mobile elevation scrolls horizontally');
   await p.locator('.cab-elevation-scroll').nth(1).evaluate(el=>el.scrollLeft=el.scrollWidth);await number(4).click();
-  check(await p.locator('#cab-kitchen-active').inputValue()==='3','offscreen module accessible by horizontal scroll');
+  check(JSON.parse(await p.locator('#cab-kitchen-object').inputValue()).column===3,'offscreen module accessible by horizontal scroll');
   check(await p.locator('.cab-editor').evaluate(el=>el.scrollWidth<=el.clientWidth),'dialog has no horizontal overflow');
   await p.screenshot({animations:'disabled',path:'output/playwright/kitchen-elevations-mobile.png'});
   await p.getByRole('button',{name:'保存柜体设计',exact:true}).click();

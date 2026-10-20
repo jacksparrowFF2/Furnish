@@ -1,4 +1,5 @@
 async (page,verification)=>{
+ const choose=(kind,column)=>verification.selectCabinetObject(p,{kind,column});
  const p=page,errors=[];p.on('pageerror',e=>errors.push(e.message));await p.setViewportSize({width:1440,height:1000});
  const check=(v,m)=>{if(!v)throw Error(m);},rows=()=>p.locator('.cab-door-sizes:not([hidden]) > div').allTextContents();
  await p.goto(verification.baseURL);await p.locator('#lib').waitFor();
@@ -13,9 +14,9 @@ async (page,verification)=>{
   },kind);await p.locator('#cab-preview canvas').waitFor();await p.waitForFunction(()=>document.querySelector('.cab-door-sizes > div'));
  }
  const snapshot=()=>p.evaluate(()=>JSON.stringify(getF('coverage')));
- await open('laundry');const original=await snapshot(),all=await rows();check(all.length===6,'two sink doors plus four upper doors');check(await p.locator('.cab-door-dimension').count()===6,'initial overall tab annotates all leaves');await p.locator('[data-k-tab="front"]').click();
+ await open('laundry');const original=await snapshot(),all=await rows();check(all.length===6,'two sink doors plus four upper doors');check(await p.locator('.cab-door-dimension').count()===6,'initial overall tab annotates all leaves');await choose('door');
  check(all.filter(s=>s.startsWith('洗衣柜吊柜')).length===4,'four individually identified upper leaves');
- await p.locator('#cab-kitchen-active').selectOption('1');check(JSON.stringify(await rows())===JSON.stringify(all),'empty washer module preserves the complete list');
+ await choose(undefined,1);check(JSON.stringify(await rows())===JSON.stringify(all),'empty washer module preserves the complete list');
  check(await p.locator('.cab-door-dimension').count()===4,'upper leaves remain annotated when selecting the washer bay');
  await p.locator('#cab-kitchen-front').click();await p.locator('.cab-door-sizes summary').click();
  await p.screenshot({path:verification.output('playwright/cabinet-door-coverage/laundry.png')});

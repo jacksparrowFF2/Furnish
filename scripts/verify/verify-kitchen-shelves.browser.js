@@ -1,8 +1,9 @@
 async (page,verification)=>{
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
  const context=await page.context().browser().newContext({viewport:{width:1540,height:1040}}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(15000);
  const check=(v,m)=>{if(!v)throw Error(m);},read=()=>p.evaluate(()=>structuredClone(getF('shelf-kitchen'))),latest=()=>p.evaluate(()=>window.__shelfBuilt.filter(v=>v.shape==='U').at(-1));
  async function open(){await p.evaluate(()=>FurnishCabinetEditor.open('shelf-kitchen'));await p.locator('#cab-preview canvas').waitFor();await p.waitForFunction(()=>window.__shelfBuilt?.some(v=>v.shape==='U'));await p.locator('#cab-kitchen-dimensions').uncheck();}
- async function module3(){await p.locator('[data-k-tab="modules"]').click();await p.locator('#cab-kitchen-active').selectOption('2');}
+ async function module3(){await choose(p,'bay');await choose(p,undefined,2);}
  async function closeup(){await p.waitForFunction(()=>window.__shelfMain&&window.__shelfControls);await p.evaluate(()=>{const v=window.__shelfMain,c=window.__shelfControls,b=FurnishKitchen.cornerLayout(window.__shelfBuilt.filter(v=>v.shape==='U').at(-1).f)[1];c.target.set(b.x/1000,.44,b.y/1000);v.camera.position.set(b.x/1000-1.25,.68,b.y/1000-.62);c.update();v.renderer.render(v.scene,v.camera);});await p.waitForTimeout(300);}
  async function install(){await p.evaluate(()=>{
   window.__shelfBuilt=[];const build=FurnishKitchenModel.build;FurnishKitchenModel.build=function(...args){const model=build.apply(this,args),f=args[1],shelves=[],corners=[],panels=[];model.traverse(o=>{if(o.userData.kitchenShelf)shelves.push(o.userData.kitchenShelf.module);if(o.userData.kitchenCornerShelf)corners.push(o.userData.kitchenCornerIndex);if(o.userData.cabinetSide&&o.geometry?.parameters?.height>.6&&o.geometry?.parameters?.depth>.1){let n=o;while(n&&n.userData.kitchenModule===undefined)n=n.parent;if(n)panels.push({module:n.userData.kitchenModule,side:o.userData.cabinetSide});}});window.__shelfBuilt.push({shape:f.kitchen.shape,f:structuredClone(f),shelves,corners,panels});return model;};

@@ -6,7 +6,7 @@ const f=make('sideboard-drawers'),original=JSON.stringify(f);
 const open=C.toggle(f,0);assert.equal(open.cabinet.columns[0].doorOpen,true);assert.equal(JSON.stringify(f),original);
 const drawer=C.toggle(open,0,1);assert.equal(drawer.cabinet.columns[0].drawers[1].open,true);assert.equal(C.toggle(drawer,0,1).cabinet.columns[0].drawers[1].open,false);
 const taller=D.resizeFurniture(f,{h:1200});assert.equal(taller.h,1200);assert(taller.cabinet.columns[0].shelves[0]>f.cabinet.columns[0].shelves[0]);C.validate(taller);
-C.validate(D.resizeFurniture(f,{w:150}));
+assert.throws(()=>D.resizeFurniture(f,{w:150}),/净宽/,'resizing must not remove bays to fit');
 assert.throws(()=>D.resizeFurniture({...f,locked:true},{h:1300}),/锁定/);
 const invalid=JSON.parse(original);invalid.cabinet.columns[0].shelves=[100,90];assert.throws(()=>C.validate(invalid),/层板/);assert.throws(()=>P.validateWork({furniture:[invalid]}),/层板/);
 invalid.cabinet.columns[0].shelves=[];invalid.cabinet.columns[0].drawers=[{height:900,open:false}];assert.throws(()=>C.validate(invalid),/总高度/);
@@ -30,7 +30,7 @@ assert.deepEqual(P.unpack(P.pack({...payload,current:{furniture:[C.moveShelf(une
 console.log('Cabinet templates, geometry constraints, resize, persistence and immutable opening passed');
 // Nominal 450 mm leaves: one single bay and one continuous paired bay.
 for(const id of ['storage','pantry800','pantry500','sideboard','sideboard-drawers','wardrobe','shoe','base','wall','entry-pegboard','entry-console']){
- const base=make(id),paired=C.resize(base,{...base,w:1350});C.validate(paired);
+ const base=make(id),paired=C.validate(C.autoDoors({...base,w:1350}));C.validate(paired);
  assert.deepEqual(paired.cabinet.columns.map(c=>c.door),['left','double'],id);
  const bays=C.layout(paired),t=paired.cabinet.thickness;
  assert(Math.abs(bays[0].width+1.5*t-450)<1e-8);

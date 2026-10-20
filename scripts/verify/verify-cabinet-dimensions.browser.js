@@ -1,4 +1,5 @@
 async (page,verification)=>{
+ const choose=(kind,column)=>verification.selectCabinetObject(p,{kind,column});
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[];
  p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(message);};
  try{
@@ -13,13 +14,13 @@ async (page,verification)=>{
   check(await p.locator('.cab-module-number').count()===4,'all modules including empty numbered');
   check((await p.locator('.cab-size-summary').textContent()).includes('主边总长 1850 · 转角边总长 1500'),'overall dimensions');
   await p.screenshot({animations:'disabled',path:'output/playwright/cabinet-dimensions-kitchen.png'});
-  await badge(4).click();check(await p.locator('#cab-kitchen-active').inputValue()==='3','badge selects empty module without opening');
+  await badge(4).click();check(JSON.parse(await p.locator('#cab-kitchen-object').inputValue()).column===3,'badge selects empty module without opening');
   await p.locator('#cab-kitchen-dimensions').uncheck();check(await p.locator('.cab-dimension').count()===0,'dimension checkbox hides rulers');check(await p.locator('.cab-module-number').count()===4,'numbers retained');
   await p.locator('#cab-kitchen-dimensions').check();
   await badge(3).click();await p.locator('[data-kitchen-row="2"] [data-k-width]').fill('460.25');
   await badge(1).click();check((await p.locator('.cab-size-summary').textContent()).includes('1860.25'),'badge commits unblurred dimension to draft');
   await p.locator('#cab-kitchen-front').click();
-  await p.setViewportSize({width:390,height:844});
+  await p.setViewportSize({width:390,height:844});await p.waitForTimeout(300);
   const overlaps=await p.locator('.cab-elevation-preview').evaluateAll(hosts=>{let outside=false,overlap=false;for(const host of hosts){const bound=host.getBoundingClientRect(),els=[...host.querySelectorAll('.cab-dimension,.cab-module-number')].filter(e=>!e.hidden),rects=els.map(e=>e.getBoundingClientRect());outside ||=rects.some(r=>r.left<bound.left||r.right>bound.right||r.top<bound.top||r.bottom>bound.bottom);overlap ||=rects.some((r,i)=>rects.some((q,j)=>i<j&&r.left<q.right&&r.right>q.left&&r.top<q.bottom&&r.bottom>q.top));}return {outside,overlap};});
   check(!overlaps.outside&&!overlaps.overlap,'front mobile labels fit without overlap');
   await p.screenshot({animations:'disabled',path:'output/playwright/cabinet-dimensions-mobile.png'});
@@ -29,7 +30,7 @@ async (page,verification)=>{
   await p.reload();await p.locator('#lib').waitFor();check(await width()===460.25,'refresh restores saved width');
   await p.setViewportSize({width:1500,height:950});await p.evaluate(()=>FurnishCabinetEditor.open('dimension-cab'));await p.locator('#cab-preview canvas').waitFor();
   await p.locator('#cab-front').click();await p.locator('#cab-door-view').selectOption('hidden');
-  await badge(2).click();check(await p.locator('#cab-active-bay').inputValue()==='1','regular cabinet badge selects matching bay');
+  await badge(2).click();check(JSON.parse(await p.locator('#cab-object-target').inputValue()).column===1,'regular cabinet badge selects matching bay');
   await p.screenshot({animations:'disabled',path:'output/playwright/cabinet-dimensions-wardrobe.png'});
   await p.locator('#cab-dimensions').uncheck();check(await p.locator('.cab-module-number').count()>0&&await p.locator('.cab-dimension').count()===0,'regular numbers independent');
   await p.getByRole('button',{name:'取消',exact:true}).click();

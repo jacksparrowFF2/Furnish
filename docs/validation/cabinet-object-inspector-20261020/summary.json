@@ -1,0 +1,179 @@
+{
+  "date": "2026-10-20",
+  "scope": "柜体设计第二批；增量组合验收，非全量检查",
+  "status": "PASS",
+  "source_sha256": {
+    "src/core/cabinet-core.js": "dd955424cf7d0d61777117b103f9001f7c53ff5a8e2a2654143aef80fb5e2398",
+    "src/render/cabinet-model.js": "eca3b3c014f4027b5789293adde8d5e92b533e71357ff6ee76096d4f57c609f9",
+    "src/render/cabinet-preview.js": "edcd6e475ec5bf58d995e42be2dd2444b48118d5cee0e6d635be92b7743fc09e",
+    "src/render/kitchen-model.js": "998bc407f960f1a7163891250f222fc6f92719d6246da543ad8c64e2eefda578",
+    "src/ui/cabinet-editor.js": "377b95b9d3c203ee263f2e7784ea1c2b4a8103df913d54c22d5d9e07b4e41a94",
+    "src/ui/kitchen-editor.js": "fceabe1c0b74848cf92f29cd59d42af0f7d1ff8875c3024d044af3067de17038",
+    "styles/cabinet-editor.css": "31a89ab858b899d5532a06dcbf270c02167005956c13309795284efd48c7dde1"
+  },
+  "unit_tests": {
+    "passed": 67,
+    "failed": 0,
+    "details": "unit-tests.json",
+    "selection": "test-(cabinet|entry|kitchen|laundry|product-rules|design|project|work-state|furniture-recovery|furniture-persistence)*.cjs"
+  },
+  "browser_cases": [
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 11.5,
+      "log": "cabinet-object-inspector.log",
+      "run": "verification-LEWRjn"
+    },
+    {
+      "name": "cabinet-edit-operations",
+      "status": "PASS",
+      "seconds": 14.3,
+      "log": "cabinet-edit-operations.log",
+      "run": "verification-0GTgGB"
+    },
+    {
+      "name": "cabinet-doors",
+      "status": "PASS",
+      "seconds": 14.7,
+      "log": "cabinet-doors.log",
+      "run": "verification-0GTgGB"
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 21.7,
+      "log": "cabinet-custom-fronts.log",
+      "run": "verification-0paoVg"
+    },
+    {
+      "name": "cabinet-dimensions",
+      "status": "PASS",
+      "seconds": 5.9,
+      "log": "cabinet-dimensions.log",
+      "run": "verification-0paoVg"
+    },
+    {
+      "name": "cabinet-door-coverage",
+      "status": "PASS",
+      "seconds": 4,
+      "log": "cabinet-door-coverage.log",
+      "run": "verification-0GTgGB"
+    },
+    {
+      "name": "cabinet-drawer-dimensions",
+      "status": "PASS",
+      "seconds": 2.8,
+      "log": "cabinet-drawer-dimensions.log",
+      "run": "verification-0GTgGB"
+    },
+    {
+      "name": "kitchen-wall-adjust",
+      "status": "PASS",
+      "seconds": 9.8,
+      "log": "kitchen-wall-adjust.log",
+      "run": "verification-0GTgGB"
+    },
+    {
+      "name": "laundry-editing",
+      "status": "PASS",
+      "seconds": 7.8,
+      "log": "laundry-editing.log",
+      "run": "verification-0GTgGB"
+    },
+    {
+      "name": "kitchen-drawer-boundaries",
+      "status": "PASS",
+      "seconds": 19.6,
+      "log": "kitchen-drawer-boundaries.log",
+      "run": "verification-0GTgGB"
+    },
+    {
+      "name": "kitchen-elevations",
+      "status": "PASS",
+      "seconds": 5.7,
+      "log": "kitchen-elevations.log",
+      "run": "verification-RRQjx9"
+    },
+    {
+      "name": "full-width-drawers",
+      "status": "PASS",
+      "seconds": 2.5,
+      "log": "full-width-drawers.log",
+      "run": "verification-zToq0V"
+    },
+    {
+      "name": "kitchen-drawer-snapping",
+      "status": "PASS",
+      "seconds": 6.6,
+      "log": "kitchen-drawer-snapping.log",
+      "run": "verification-zToq0V"
+    },
+    {
+      "name": "kitchen-shelves",
+      "status": "PASS",
+      "seconds": 6.7,
+      "log": "kitchen-shelves.log",
+      "run": "verification-zToq0V"
+    },
+    {
+      "name": "kitchen-door-widths",
+      "status": "PASS",
+      "seconds": 5.5,
+      "log": "kitchen-door-widths.log",
+      "run": "verification-zToq0V"
+    }
+  ],
+  "syntax_and_diff": "相关修改源码与浏览器用例 node --check 通过，git diff --check 通过；未执行全量检查脚本",
+  "coverage": [
+    "生产 Three.js 射线选中柜体、隔间、层板、门板、抽屉，单击不改变开合",
+    "对象列表／生产尺寸标注点击与键盘选择；未失焦输入、Enter 草稿应用、非法输入阻止切换",
+    "HTTP 与断网 file:// 对象编辑、旧无结构柜体升级、重复升级、保存取消、一次撤销重做、刷新",
+    "19 个模板及旧无结构／旧玄关设计升级前后实际生产板件几何、开启范围相同",
+    "已有结构纯升级的采购规格保持；当前／命名方案往返与重复恢复无漂移",
+    "精细门型、盖板方式、展示门、上下门、逐扇配对与门宽、上盖／多列抽屉、层板精确位置",
+    "L／U、左右／镜像展开、完整生产面板尺寸清单、抽屉层间拖动／吸附与键盘调整",
+    "厨房保留结构与洗衣柜附属柜沿父子草稿保存／取消；实际项目下载再上传"
+  ],
+  "visual_review": {
+    "status": "PASS",
+    "viewports": [
+      "1500×1000",
+      "390×844"
+    ],
+    "screenshots": [
+      "http-door.png",
+      "http-mobile.png",
+      "file-door.png",
+      "file-mobile.png"
+    ],
+    "observed": "对象标题与选择保持可达；门板／抽屉参数聚焦当前部件，专家列表折叠保留；切换后参数区回顶，保存／取消固定可达，无横向溢出。"
+  },
+  "upgrade": {
+    "when": "保存柜体设计时；打开／选择／取消不改原记录",
+    "removed": [
+      "停用的 autoDoors / entry.autoColumns 偏好",
+      "旧四页导航与页面状态",
+      "厨房 arrange() DOM 搬移分类",
+      "预览单击同时开合的旧分支"
+    ],
+    "preserved": [
+      "旧实际结构、可选默认值、安装高度与特殊柜型语义",
+      "精细门板与抽屉参数、原 mutate／历史／自动保存／项目链路"
+    ],
+    "new_persistent_fields": false,
+    "project_version_change": false
+  },
+  "not_run": [
+    "node scripts/check.cjs 全量检查：本次影响可限定；未遍历无关生成预览作为验收",
+    "未做真实手机／触摸屏硬件验收；窄屏为浏览器视口",
+    "已迁移对象入口但未列入 browser_cases 的其他历史浏览器用例未逐项执行，不声明通过"
+  ],
+  "boundaries": [
+    "材质／门型为隔间共用参数，抽屉高度／列数为组参数，不虚构逐板独立加工能力",
+    "保留结构模块和洗衣附属柜使用同一内层对象编辑器，保存后仍须提交父草稿；父级取消完整回退",
+    "末端薄柜沿整柜对应末端参数编辑；L／U 密集展开需要滚动查看各边与完整尺寸表",
+    "空间检查算法和五金建模范围未扩展，不声明解决全部剩余缺陷"
+  ],
+  "verification_notes": "用例按增量组合记录最近通过结果；对象区最终滚动修正后重跑 HTTP／file 全流程，相关生产预览与升级核心另行复验。早期用例发现的旧选择器及展开标注同步问题已修正，以上各项最终均通过。"
+}

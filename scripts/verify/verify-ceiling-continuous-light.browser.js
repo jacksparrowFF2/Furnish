@@ -1,4 +1,5 @@
 async(page,verification)=>{
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
  const results=[],check=(v,m)=>{if(!v)throw Error(m);};
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1480,height:1050},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.stack||e.message));

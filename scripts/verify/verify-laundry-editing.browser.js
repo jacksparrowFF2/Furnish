@@ -1,4 +1,5 @@
 async (page,V)=>{
+ const choose=(kind,column)=>V.selectCabinetObject(p,{kind,column});
  const results=[];
  for(const [mode,url,offline] of [['http',V.baseURL+'index.html',false],['file',V.fileBase+'index.html',true]]){
   const context=await page.context().browser().newContext({viewport:{width:1480,height:1050},offline}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));

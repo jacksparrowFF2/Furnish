@@ -1,17 +1,18 @@
 async (page,verification)=>{
+ const choose=(page,kind,column)=>verification.selectCabinetObject(page,{kind,column});
  const results=[];
  for(const [mode,url,offline] of [['http',verification.baseURL+'index.html',false],['file',verification.fileBase+'index.html',true]]){
   const context=await page.context().browser().newContext({viewport:{width:1480,height:1000},offline}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(20000);
   const check=(v,m)=>{if(!v)throw Error(mode+': '+m);},read=()=>p.evaluate(()=>structuredClone(getF('laundry-test'))),eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
   const screenshot=name=>p.screenshot({path:verification.output('playwright/laundry-cabinet/'+mode+'-'+name+'.png')});
-  async function open(){await p.evaluate(()=>FurnishCabinetEditor.open('laundry-test'));await p.locator('#cab-preview canvas').waitFor();await p.locator('[data-k-tab="size"]').click();}
+  async function open(){await p.evaluate(()=>FurnishCabinetEditor.open('laundry-test'));await p.locator('#cab-preview canvas').waitFor();await choose(p,'body');}
   async function clean(){check((await p.locator('#cab-kitchen-error').textContent()).trim()==='','designer error');}
   try{
    await p.goto(url);await p.locator('#lib').waitFor();
    await p.evaluate(()=>{const item=FurnishCatalogData.findItem('counter','洗衣机柜 · 水槽与设备空位'),at=ROOMS.find(r=>r.name==='客厅').at;mutate(()=>state.furniture=[]);addItem(item,at[0],at[1]);state.furniture[0].id='laundry-test';selectIds(['laundry-test']);zoomSel();});
    const initial=await read();check(!!initial.kitchen.laundry,'catalog creation uses laundry style');await open();
    await p.locator('#cab-kitchen-notch-side').selectOption('left');await clean();check(await p.locator('#cab-kitchen-notch-width').inputValue()==='100','default notch width');await screenshot('designer');
-   await p.locator('[data-k-tab="modules"]').click();await p.locator('[data-kitchen-row="0"] [data-k-role]').selectOption('open');await clean();check(await p.locator('[data-kitchen-row="0"] [data-k-role]').inputValue()==='open','open storage role');
+   await choose(p,'bay');await p.locator('[data-kitchen-row="0"] [data-k-role]').selectOption('open');await clean();check(await p.locator('[data-kitchen-row="0"] [data-k-role]').inputValue()==='open','open storage role');
    await p.locator('[data-kitchen-row="0"] [data-k-role]').selectOption('sink');await p.getByRole('button',{name:'保存柜体设计',exact:true}).click();const saved=await read();check(saved.kitchen.laundry.notch.side==='left','save manual notch');await p.evaluate(()=>undo());check(eq(await read(),initial),'single undo');await p.evaluate(()=>redo());check(eq(await read(),saved),'redo');await p.waitForTimeout(600);await p.reload();await p.locator('#lib').waitFor();check(eq(await read(),saved),'refresh preserves style and notch');
    await p.evaluate(()=>{const h=getF('laundry-test'),w=F('washer','洗衣机',h.cx,h.cy+1200,600,600,0,'#fff');w.id='washer-test';Object.assign(w,FurnishProducts.initial(w));mutate(()=>state.furniture.push(w));selectIds([w.id]);});await p.locator('#laundry-align').click();check(await p.evaluate(()=>!FurnishGeometry.volumeOverlap(getF('laundry-test'),getF('washer-test'))),'real UI alignment enters cavity without collision');
    await p.evaluate(()=>{const h=getF('laundry-test'),s=F('ksink','阳台定制水槽',h.cx,h.cy,600,500,0,'#eee');s.id='sink-test';mutate(()=>state.furniture.push(s));selectIds([s.id]);});await p.locator('#sink-notch-side').selectOption('left');check(await p.evaluate(()=>getF('sink-test').sinkNotch.side==='left'),'basin notch saves separately');await p.locator('#kitchen-link').selectOption('laundry-test:0');check(await p.evaluate(()=>getF('sink-test').counterElevation===920),'basin aligns to worktop height');

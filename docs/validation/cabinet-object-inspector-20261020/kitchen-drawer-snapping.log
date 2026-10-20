@@ -1,0 +1,1 @@
+{"case":"kitchen-drawer-snapping","status":"PASS","result":{"status":"PASS","checks":"8px threshold, exact snapping, live guide and heights, Alt bypass, origin/cancel, fixed other cabinets, save/undo/redo/refresh and 390px","errors":[]}}

@@ -1,0 +1,1 @@
+{"case":"cabinet-custom-fronts","status":"PASS","result":{"status":"PASS","templates":19,"checks":["three independent","adjacent custom pairs","five middle independent","individual hinges","dimensions and complete lists","unchanged widths/interiors","save cancel undo redo refresh","nested editor","actual project roundtrip","390 px"],"errors":[]}}
