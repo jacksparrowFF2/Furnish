@@ -24,7 +24,7 @@ globalThis.FurnishObservationLayers=(()=>{
  }
  function objects(){
   const plan=FurnishProject.effectivePlan(PLAN,state),out=state.furniture.map(f=>({key:key(f),name:nm(f.name),type:'furniture',detail:`${f.w} × ${f.d} mm`,id:f.id}));
-  for(const r of plan.rooms){out.push({key:'floor:'+r.id,name:nm(state.rooms[r.id]?.name||r.name),type:'floor',detail:tr('地面 / 地砖','Floor / tiles')});out.push({key:'roomCeiling:'+r.id,name:nm(state.rooms[r.id]?.name||r.name),type:'ceiling',detail:tr('天花','Room ceiling')});}
+  for(const r of plan.rooms){out.push({key:'floor:'+r.id,name:nm(state.rooms[r.id]?.name||r.name),type:'floor',detail:r.bayId?tr('飘窗 · 台面饰材','Bay window · platform'):tr('地面 / 地砖','Floor / tiles')});if(!r.bayId)out.push({key:'roomCeiling:'+r.id,name:nm(state.rooms[r.id]?.name||r.name),type:'ceiling',detail:tr('天花','Room ceiling')});}
   const faces=new Set();for(const e of plan.wallTiling?.surfaces||[]){const k=FurnishLayers.faceKey(e.face);if(faces.has(k))continue;faces.add(k);out.push({key:k,name:nm(state.rooms[e.face.roomId]?.name||e.face.roomName||e.face.wallId),type:'wallTile',detail:tr(`墙砖 · ${e.face.number||e.face.wallId}`,`Wall tiles · ${e.face.number||e.face.wallId}`)});}
   for(const c of state.ceilings?.items||[])out.push({key:'ceiling:'+c.id,name:c.name||tr('吊顶','Ceiling'),type:'ceiling',detail:tr('吊顶构件','Ceiling element')});return out;
  }
@@ -73,5 +73,5 @@ globalThis.FurnishObservationLayers=(()=>{
  function toggle(){const panel=document.getElementById('layer-sidebar');if(panel&&!panel.hidden)close();else open();}
  function afterRender(){if(document.getElementById('layer-sidebar')?.hidden===false)draw();}
  if(typeof window!=='undefined')window.addEventListener('load',()=>{if(panes.showLayers)open();else syncSidebarButton();});
- return {visible,applyPlan,applyScene,open,close,toggle,afterRender,objects};
+ return {visible,applyPlan,applyScene,open,close,toggle,afterRender,objects,sceneKey};
 })();

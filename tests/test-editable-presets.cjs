@@ -8,7 +8,7 @@ for(const preset of plans){
  preset.rooms.forEach((room,i)=>{assert.equal(copy.rooms[i].name,room.name);assert.deepEqual(copy.rooms[i].poly,room.poly.map(p=>p.map(v=>v+shift)));assert.equal(P.area(copy.rooms[i].poly),P.area(room.poly));});
  for(const [kind,list,refs,newList] of [['door',preset.doors,copy.doorRefs,copy.doors],['window',preset.wins,copy.winRefs,copy.wins],['slide',preset.slides,copy.slideRefs,copy.slides]]){
   assert.equal(newList.length,list.length);
-  list.forEach((o,i)=>{const n=newList[refs.indexOf('preset_'+kind+i)];assert.ok(n);n.rect.forEach((v,j)=>assert.ok(Math.abs(v-o.rect[j]-shift)<1e-6));if(kind==='door'){assert.deepEqual(n.h,o.h.map(v=>v+shift));assert.deepEqual(n.c,o.c);assert.deepEqual(n.o,o.o);}if(kind==='window'){assert.equal(n.sill,o.sill);assert.equal(n.bayGroup,o.bayGroup);}});
+  list.forEach((o,i)=>{const n=newList[refs.indexOf('preset_'+kind+i)];assert.ok(n);n.rect.forEach((v,j)=>assert.ok(Math.abs(v-o.rect[j]-shift)<1e-6));if(kind==='door'){assert.deepEqual(n.h,o.h.map(v=>v+shift));assert.deepEqual(n.c,o.c);assert.deepEqual(n.o,o.o);}if(kind==='window'){assert.equal(n.sill,o.sill);assert.equal(n.bayId,o.bayId);}});
  }
  // Sample every cell in the combined rectangle decomposition, including each
  // wall classification. Rejoining a door must not turn partitions into bearing walls.

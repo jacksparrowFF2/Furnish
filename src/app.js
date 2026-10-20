@@ -28,13 +28,11 @@ function applyPlanData(){
 function applyOpeningOverrides(){
   if (!state) return;                                                  // renderAll 前必然已初始化
   DOORS.forEach((d,i) => Object.assign(d,FurnishGeometry.doorOverride(d,state.open?.d?.[i])));
-  WINS.forEach(w => { if (w._sill0 !== undefined) {w.sill = w._sill0;w.head=w._head0;w.panels=w._panels0;w.stackSide=w._stackSide0;} });
-  ROOMS.filter(r=>r.counted===false&&r._height0!==undefined).forEach(r=>r.height=r._height0);
   SLIDES.forEach(s=>{s.panels=s._panels0||2;s.floorTrack=s._floorTrack0;s.stackSide=s._stackSide0;});
   const o = state.open;
-  if (!o) return;
+  if (!o){FurnishBayWindows.applyWindows(PLAN);return;}
   Object.entries(o.s || {}).forEach(([i,v])=>{if(SLIDES[+i])Object.assign(SLIDES[+i],v);});
-  Object.entries(o.w || {}).forEach(([i, v]) => { const w = WINS[+i]; if (w) {if(typeof v==='number')w.sill=v;else if(v&&Number.isFinite(v.sill)&&Number.isFinite(v.head)){w.sill=v.sill;w.head=v.head;w.panels=v.panels??w.panels;w.stackSide=v.stackSide??w.stackSide;}if(w.bayGroup){const room=ROOMS.find(r=>r.id===w.bayGroup);if(room)room.height=w.sill;}} });
+  FurnishBayWindows.applyWindows(PLAN,o.w);
 }
 const {materials:MATS,library:LIB,typePrices:TYPE_PRICE} = FurnishCatalogData;
 // 自定义家具保存在本机（store.custom），在家具库中显示为「我的家具」分类；条目多带 [6]=高度 mm、[7]=自定义 id
@@ -58,7 +56,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v15';
+let STORE = 'huxing-design-v16';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);
@@ -451,7 +449,7 @@ function openCtx(x, y, target){
   } else {
     h = it('paste', 'paste', '粘贴到此处', 'Paste here', 'Ctrl+V', {dis:!clip}) + it('selAll', 'box', '全选家具', 'Select all furniture', 'Ctrl+A', {dis:!state.furniture.length});
     if (ui.ctxRoom) h += sep + `<div class="cap">${esc(nm(state.rooms[ui.ctxRoom].name))}</div>`
-      + it('roomSel', 'home', '房间属性 / 更换地面', 'Room properties / flooring') + it('roomFurn', 'box', '选中房间内全部家具', 'Select furniture in this room');
+      + (FurnishBayWindows.selected(PLAN,{kind:'room',id:ui.ctxRoom})?it('roomSel','home','飘窗属性 / 台面饰材','Bay properties / platform'):it('roomSel', 'home', '房间属性 / 更换地面', 'Room properties / flooring') + it('roomFurn', 'box', '选中房间内全部家具', 'Select furniture in this room'));
     h += sep + it('addNote', 'note', '在此添加标注', 'Add a note here', 'N') + it('cmd', 'search', '命令面板', 'Command palette', 'Ctrl K')
       + it('fit', 'fit', '适应窗口', 'Fit to window', 'F') + it('reset', 'reset', '重置…', 'Reset…') + it('help', 'kbd', '快捷键', 'Shortcuts', '?');
   }
@@ -531,7 +529,7 @@ function openReset(){
 function wipeAll(){
   // Erasing browser caches never deletes the Git-managed design file.
   const wipeNotice=repositoryClient?'仓库中的设计文件和本机恢复副本会保留，刷新后将重新加载仓库设计。':'';
-  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v15','huxing-design-v14','huxing-design-v13','huxing-design-v12','huxing-design-v11','huxing-design-v10','huxing-design-v9','huxing-design-v8','huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
+  openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v16','huxing-design-v15','huxing-design-v14','huxing-design-v13','huxing-design-v12','huxing-design-v11','huxing-design-v10','huxing-design-v9','huxing-design-v8','huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 
 function openHelp(){

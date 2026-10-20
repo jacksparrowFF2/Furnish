@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-20",
+  "scope": "Exact staged bay-window changes exported with git checkout-index; unrelated working-tree changes excluded",
+  "checks": {
+    "node": {
+      "passed": [
+        "bay-editing",
+        "bay-assemblies",
+        "bay-windows",
+        "recessed-bay-windows",
+        "window-dimensions",
+        "editable-presets",
+        "design-consistency",
+        "project",
+        "project-validation",
+        "project-recovery",
+        "plan-sharing",
+        "work-state",
+        "workspace-cache",
+        "observation-layers",
+        "custom-plans",
+        "spatial-review-cache",
+        "share-codec",
+        "repository-workspace",
+        "repository-storage",
+        "server-startup"
+      ],
+      "count": 20
+    },
+    "entry": "PASS combined classic script declarations, inline 3D module syntax and local asset paths",
+    "browser": {
+      "passed": [
+        "bay-assemblies",
+        "current-bays",
+        "recessed-bay"
+      ],
+      "modes": "bay-assemblies/current-bays: HTTP and offline file://; recessed-bay: existing standalone file flow",
+      "visual": "Inspected staged-source current-project 3D geometry/assembly outline and 390 px offline panel screenshots"
+    },
+    "staged_snapshot": "All 36 staged blobs match the exported and tested snapshot",
+    "diff_check": "PASS"
+  },
+  "selection": {
+    "project_data": "Only outer version and workspace.v changed from 14 to 16; furniture/layout/layer edits remain uncommitted",
+    "mixed_files": "Only bay-related code/document fragments staged; 3D generic layer-location changes remain uncommitted",
+    "worktree": "Selective staging uses index blobs without overwriting working files; unrelated concurrent edits preserved"
+  },
+  "not_run": [
+    "Full scripts/check.cjs",
+    "Unrelated historical previews and browser suites",
+    "Physical touch devices"
+  ],
+  "local_results": "output/bay-commit-index/; output/bay-commit-snapshot/output/playwright/"
+}

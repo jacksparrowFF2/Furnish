@@ -1,0 +1,197 @@
+{
+  "date": "2026-10-20",
+  "scope": "Review of bay migration/runtime duplication plus current-project display, geometry and editing",
+  "resolved": [
+    "Three copies of height-input binding reduced to property-panel.linkWindowHeightInputs",
+    "Live canvas and independent project window overrides unified in bay-window-core.applyWindows",
+    "Dimension changes preserve per-face panels and stackSide during preview, commit and plan-editor save",
+    "Generated bay geometry always takes sill and head from the authoritative architectural opening",
+    "Preset edit copies write a shared architectural height, avoiding a separate panel-only overlay",
+    "Grouped architectural face edits update siblings and the platform",
+    "Removed empty selection branch and redundant 3D bay grouping"
+  ],
+  "retained_by_design": [
+    "Distinct three-sided/recessed physical geometry constructors",
+    "One boundary reader for bayGroup and old missing bay type",
+    "Existing builtin open.w storage, existing architectural fields and original mutate/history/autosave"
+  ],
+  "node": {
+    "count": 20,
+    "passed": [
+      "tests/test-bay-editing.cjs",
+      "tests/test-bay-assemblies.cjs",
+      "tests/test-bay-windows.cjs",
+      "tests/test-recessed-bay-windows.cjs",
+      "tests/test-window-dimensions.cjs",
+      "tests/test-editable-presets.cjs",
+      "tests/test-design-consistency.cjs",
+      "tests/test-project.cjs",
+      "tests/test-project-validation.cjs",
+      "tests/test-project-recovery.cjs",
+      "tests/test-plan-sharing.cjs",
+      "tests/test-work-state.cjs",
+      "tests/test-workspace-cache.cjs",
+      "tests/test-observation-layers.cjs",
+      "tests/test-custom-plans.cjs",
+      "tests/test-spatial-review-cache.cjs",
+      "tests/test-share-codec.cjs",
+      "tests/test-repository-workspace.cjs",
+      "tests/test-repository-storage.cjs",
+      "tests/test-server-startup.cjs"
+    ]
+  },
+  "browser": {
+    "currentProject": {
+      "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\bay-verification-ZcAnSF",
+      "results": [
+        {
+          "mode": "http",
+          "planId": "custom_mv37igji",
+          "bays": [
+            {
+              "id": "cad_window_10_4",
+              "room": "bay_cad_window_10_4",
+              "index": 4,
+              "depth": 718,
+              "height": 647,
+              "head": 2304,
+              "name": "飘窗台",
+              "mat": "marble"
+            },
+            {
+              "id": "cad_window_11_5",
+              "room": "bay_cad_window_11_5",
+              "index": 5,
+              "depth": 712,
+              "height": 647,
+              "head": 2295,
+              "name": "飘窗台",
+              "mat": "marble"
+            }
+          ],
+          "passed": true,
+          "pageErrors": []
+        },
+        {
+          "mode": "file",
+          "planId": "custom_mv37igji",
+          "bays": [
+            {
+              "id": "cad_window_10_4",
+              "room": "bay_cad_window_10_4",
+              "index": 4,
+              "depth": 718,
+              "height": 647,
+              "head": 2304,
+              "name": "飘窗台",
+              "mat": "marble"
+            },
+            {
+              "id": "cad_window_11_5",
+              "room": "bay_cad_window_11_5",
+              "index": 5,
+              "depth": 712,
+              "height": 647,
+              "head": 2295,
+              "name": "飘窗台",
+              "mat": "marble"
+            }
+          ],
+          "passed": true,
+          "pageErrors": []
+        }
+      ],
+      "checks": [
+        "2D current measurements and assembly selection",
+        "Current cushions retained; furniture view temporarily hidden to expose covered platform for click",
+        "Face style and stack direction survive height and depth preview/cancel",
+        "Height edit, undo/redo, surface name/material, refresh",
+        "Actual project file download and production importer roundtrip",
+        "Normal furnished 3D view and temporary furniture-hidden geometry inspection",
+        "Actual production platform/window lower surface alignment",
+        "Real 3D glass/frame click using the actual render camera",
+        "3D live height edit rebuild and subsequent refresh",
+        "390px panel layout"
+      ],
+      "testEdits": "Isolated copy only: height +20 mm in 2D then +5 mm in active 3D; source file is unchanged"
+    },
+    "assemblies": {
+      "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\bay-verification-5eGL8e",
+      "results": [
+        {
+          "mode": "http",
+          "passed": true,
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "errors": []
+        }
+      ],
+      "additionalChecks": [
+        "Builtin edit-copy panel and floorplan editor both read 650 mm",
+        "Floorplan editor change to 675 mm updates all grouped window faces"
+      ]
+    },
+    "recessedLegacy": {
+      "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\bay-verification-GenBgK",
+      "passed": true
+    }
+  },
+  "visualReview": {
+    "passed": true,
+    "screenshots": [
+      "bay-review-20261020/http-0-2d.png",
+      "bay-review-20261020/http-0-3d.png",
+      "bay-review-20261020/http-0-3d-inspect.png",
+      "bay-review-20261020/file-1-3d-inspect.png",
+      "bay-review-20261020/file-mobile.png"
+    ]
+  },
+  "currentProjectPreservation": {
+    "file": "projects/workspace.furnish.json",
+    "sha256": "696d5bfc2e66673b9aefdc4c320f3466a72a363ad7b6c7f27da5738669bec645",
+    "unchangedSinceSnapshot": true,
+    "planId": "custom_mv37igji",
+    "originalBays": [
+      {
+        "id": "cad_window_10_4",
+        "room": "bay_cad_window_10_4",
+        "index": 4,
+        "depth": 718,
+        "height": 647,
+        "head": 2304,
+        "name": "飘窗台",
+        "mat": "marble"
+      },
+      {
+        "id": "cad_window_11_5",
+        "room": "bay_cad_window_11_5",
+        "index": 5,
+        "depth": 712,
+        "height": 647,
+        "head": 2295,
+        "name": "飘窗台",
+        "mat": "marble"
+      }
+    ]
+  },
+  "syntaxAndDiff": {
+    "classicSharedDeclarations": true,
+    "inline3DModule": true,
+    "entryLocalResources": true,
+    "changedModules": true,
+    "diffWhitespace": true
+  },
+  "notRun": [
+    "Full node scripts/check.cjs suite",
+    "Unrelated historical browser cases/generated previews",
+    "Physical touch-device acceptance"
+  ],
+  "boundaries": [
+    "Platform and window lower edge stay aligned; no independent lower-edge setting",
+    "Existing rectilinear three-sided and recessed bay shapes only",
+    "Current project was validated via isolated snapshot; no source-data edits or batch historical-file rewriting"
+  ]
+}

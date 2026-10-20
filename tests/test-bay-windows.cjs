@@ -30,5 +30,5 @@ assert.equal(C.build(nearJamb).wins.length,3);
 const bad=clone(d);bad.openings[0].bay.height=2500;assert.throws(()=>C.build(bad),/台高/);
 const crossing=clone(d);crossing.openings[0].t=.5;assert.throws(()=>C.build(crossing),/junction/);
 const locked=P.architecture({draft:d,phase:'design'}),change=clone(d);change.openings[0].bay.depth=800;assert.throws(()=>P.assertStructure(locked.baseline,change),/locked/);
-const packed=P.unpack(P.pack({planId:d.id,current:{furniture:[],architecture:{draft:d,phase:'survey'}},designs:[],catalog:[]}));assert.deepEqual(packed.current.architecture.draft.openings[0].bay,d.openings[0].bay);
+const packed=P.unpack(P.pack({planId:d.id,current:{furniture:[],architecture:{draft:d,phase:'survey'}},designs:[],catalog:[]}));assert.deepEqual(packed.current.architecture.draft.openings[0].bay,C.upgrade(d).openings[0].bay);
 console.log('PASS bay platform, 3 faces, area/paint, horizontal/vertical/reversed walls, invalid placement/heights, structural lock and backup roundtrip');

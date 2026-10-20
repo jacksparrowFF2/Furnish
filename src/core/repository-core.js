@@ -11,7 +11,7 @@
  const text=input=>JSON.stringify({format:'furnish-workspace',version:version(input),workspace:portable(input)},null,2)+'\n';
  function validate(input){
   const w=clone(input),P=root.FurnishProject||require('./project-core.js'),plans=root.FurnishPlans||require('../data/plans.js');
-  if(!w||![2,3,4,5,6,7,8,9,10,11,12,13,14,15].includes(w.v)||!w.work||typeof w.work!=='object'||Array.isArray(w.work)||typeof w.planId!=='string'||!Array.isArray(w.designs)||Object.keys(w.work).length>200||w.designs.length>20000)throw Error('工作区结构无效');
+  if(!w||![2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].includes(w.v)||!w.work||typeof w.work!=='object'||Array.isArray(w.work)||typeof w.planId!=='string'||!Array.isArray(w.designs)||Object.keys(w.work).length>200||w.designs.length>20000)throw Error('工作区结构无效');
   const drafts=w.customPlans||[],ids=new Set();if(!Array.isArray(drafts)||drafts.length>200)throw Error('自定义户型列表无效');
   for(const d of drafts){if(!d||typeof d.id!=='string'||ids.has(d.id)||plans.some(p=>p.id===d.id&&!p.customDraft))throw Error('自定义户型编号无效或重复');ids.add(d.id);}
   for(const [id,work] of Object.entries(w.work)){
@@ -20,11 +20,13 @@
    const checked=P.unpack(P.pack(payload));P.previewPlan(checked,plans);P.validatePlanWork(P.previewPlan(checked,plans),checked.current);
    for(const d of checked.designs)P.validatePlanWork(P.previewPlan({...checked,current:d.work},plans),d.work);
    if(work.architecture&&!ids.has(id))throw Error('自定义户型未登记');
+   w.work[id]=checked.current;let i=0;w.designs=w.designs.map(d=>d.planId===id?checked.designs[i++]:d);
   }
   if(!Object.hasOwn(w.work,w.planId)||w.designs.some(d=>!d||!Object.hasOwn(w.work,d.planId))||drafts.some(d=>!w.work[d.id]?.architecture))throw Error('工作区引用了缺失的户型');
+  if(w.customPlans)w.customPlans=drafts.map(d=>P.architecture({draft:d,phase:'survey'}).draft);if(version(w)===16)w.v=16;
   return w;
  }
- function parse(value){if(value?.format!=='furnish-workspace'||![1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].includes(value.version))throw Error('不支持的工作区文件版本');return validate(value.workspace);}
+ function parse(value){if(value?.format!=='furnish-workspace'||![1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].includes(value.version))throw Error('不支持的工作区文件版本');return validate(value.workspace);}
  function decision(revision,cacheRevision,cacheFingerprint,cleanFingerprint=cacheRevision){
   if(!revision)return 'migrate';if(cacheFingerprint===revision)return 'file';
   if(cleanFingerprint&&cacheFingerprint===cleanFingerprint)return 'file';

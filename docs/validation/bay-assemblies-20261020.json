@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-20",
+  "scope": "Incremental bay assembly UI, canonical relation migration, project/workspace/cache and repository upgrade writeback",
+  "node": {
+    "passed": [
+      "tests/test-bay-assemblies.cjs",
+      "tests/test-bay-windows.cjs",
+      "tests/test-recessed-bay-windows.cjs",
+      "tests/test-window-dimensions.cjs",
+      "tests/test-editable-presets.cjs",
+      "tests/test-design-consistency.cjs",
+      "tests/test-plan-sharing.cjs",
+      "tests/test-work-state.cjs",
+      "tests/test-workspace-cache.cjs",
+      "tests/test-repository-workspace.cjs",
+      "tests/test-repository-storage.cjs",
+      "tests/test-observation-layers.cjs",
+      "tests/test-project.cjs",
+      "tests/test-project-validation.cjs",
+      "tests/test-project-recovery.cjs",
+      "tests/test-custom-plans.cjs",
+      "tests/test-spatial-review-cache.cjs",
+      "tests/test-share-codec.cjs",
+      "tests/test-entry-shared-board.cjs",
+      "tests/test-server-startup.cjs"
+    ],
+    "count": 20,
+    "environment": "Atomic replacement and loopback HTTP suites rerun with approved unsandboxed execution after sandbox EPERM/EACCES; passed."
+  },
+  "syntax": {
+    "entry_shared_declarations": true,
+    "inline_3d_module": true,
+    "local_referenced_resources": true,
+    "affected_scripts": true
+  },
+  "browser": {
+    "passed": [
+      {
+        "case": "bay-assemblies",
+        "modes": [
+          "http",
+          "offline-file"
+        ],
+        "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\bay-verification-pN1ReQ",
+        "pageErrors": []
+      },
+      {
+        "case": "recessed-bay",
+        "mode": "file",
+        "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\bay-verification-iOjuUU",
+        "pageErrors": []
+      }
+    ],
+    "flows": [
+      "actual bare platform click in 2D",
+      "same assembly from either part",
+      "height linkage",
+      "material and name save",
+      "undo/redo",
+      "refresh",
+      "legacy current/named/baseline/revision restore",
+      "structural locks and surface editing",
+      "v16 project format",
+      "3D actual visible platform/window mesh outline",
+      "real 3D glass/frame ray click",
+      "390px layout",
+      "recessed geometry edit from platform"
+    ],
+    "visual_review": [
+      "bay-assemblies-20261020/http-3d.png",
+      "bay-assemblies-20261020/file-mobile.png"
+    ],
+    "note": "Final window-face fallback labels were renumbered within each bay after screenshots; syntax checked, no behavior changes."
+  },
+  "current_workspace_upgrade": {
+    "file": "projects/workspace.furnish.json",
+    "from": 15,
+    "to": 16,
+    "workPlans": 9,
+    "namedDesigns": 1,
+    "payload_changes": [
+      "workspace.v"
+    ],
+    "unchanged": [
+      "furniture",
+      "dimensions",
+      "coordinates",
+      "materials",
+      "all current/named design content"
+    ],
+    "backup": ".local/furnish-recovery/09ecd9f264d82a1f15ba585699ce8647d5be698cdb4776ca60d40ee3d3c40a27.json",
+    "method": "existing repository-server lock, revision check, automatic pre-upgrade recovery archive and atomic replacement"
+  },
+  "legacy_read_boundary": "src/core/floorplan-core.js upgrade(); bayGroup removed from runtime/UI/render; explicit original three-sided default",
+  "not_run": [
+    "node scripts/check.cjs full project suite",
+    "unrelated historical browser cases/generated previews",
+    "physical touch device"
+  ],
+  "boundaries": [
+    "Platform and window bottom remain aligned; no independent sill or finish thickness added",
+    "Existing rectilinear three-sided/recessed geometry only",
+    "Historical exported files are upgraded on read/export, not batch overwritten"
+  ]
+}

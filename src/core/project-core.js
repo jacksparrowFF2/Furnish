@@ -4,6 +4,7 @@
  const clone=v=>JSON.parse(JSON.stringify(v)),fail=m=>{throw new Error(m);},num=v=>typeof v==='number'&&Number.isFinite(v);
  const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>[k,canonical(v[k])])):v;
  const core=()=>root.FurnishDraft || require('./floorplan-core.js');
+ const bays=()=>root.FurnishBayWindows || require('./bay-window-core.js');
  const geometry=()=>root.FurnishGeometry || require('./layout-geometry.js');
  const design=()=>root.FurnishDesign || require('./design-core.js');
  const finishes=()=>root.FurnishWallFinish || require('./wall-finish-core.js');
@@ -14,8 +15,11 @@
  const inside=(p,poly)=>{let result=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])result=!result;}return result;};
  const area=p=>Math.abs(p.reduce((n,a,i)=>{const b=p[(i+1)%p.length];return n+a[0]*b[1]-a[1]*b[0];},0))/2/1e6;
  const perimeter=p=>p.reduce((n,a,i)=>n+Math.hypot(a[0]-p[(i+1)%p.length][0],a[1]-p[(i+1)%p.length][1]),0)/1000;
+ function upgradeArchitecture(input){
+  const a=clone(input);for(const key of ['draft','baseline'])if(a[key])a[key]=core().upgrade(a[key]);if(a.originalRevisions)a.originalRevisions=a.originalRevisions.map(d=>core().upgrade(d));return a;
+ }
  function architecture(input){
-  const a=clone(input);core().build(a.draft);
+  const a=upgradeArchitecture(input);core().build(a.draft);if(a.originalRevisions)a.originalRevisions.forEach(d=>core().build(d));
   a.phase=a.phase==='survey'?'survey':'design';
   if(a.phase==='design'){a.baseline=a.baseline||clone(a.draft);core().build(a.baseline);if(a.baseline.id!==a.draft.id)fail('Original structure identity mismatch');assertStructure(a.baseline,a.draft);}
   else delete a.baseline;
@@ -55,7 +59,7 @@
   const rooms=plan.rooms.filter(r=>r.counted!==false),net=rooms.reduce((n,r)=>n+area(r.poly),0),wall=(plan.physicalRooms||rooms).filter(r=>r.counted!==false).reduce((n,r)=>n+(r.rings||[r.poly]).reduce((sum,ring)=>sum+perimeter(ring),0)*ceilingHeight(plan)/1000,0);
   // Opening widths multiplied by their actual assumed vertical height, not plan-view wall depth.
   const deduction=(o,height)=>{const r=o.rect,width=r[2]-r[0],depth=r[3]-r[1],horizontal=width>=depth,center=[(r[0]+r[2])/2,(r[1]+r[3])/2],normal=horizontal?1:0,offset=Math.min(width,depth)/2+5;let faces=0;for(const side of [-1,1]){const p=[...center];p[normal]+=side*offset;if(rooms.some(room=>inside(p,room.poly)))faces++;}return Math.max(width,depth)/1000*height*Math.max(1,faces);};
-  const holes=(plan.doors||[]).reduce((n,o)=>n+deduction(o,2.1),0)+(plan.wins||[]).reduce((n,o)=>n+(o.bayId?(o.paintRect?deduction({...o,rect:o.paintRect},o.head-o.sill):0):deduction(o,o.head-o.sill)),0)+(plan.slides||[]).reduce((n,o)=>n+deduction(o,o.v?2.4:2.1),0);
+  const holes=(plan.doors||[]).reduce((n,o)=>n+deduction(o,2.1),0)+(plan.wins||[]).reduce((n,o)=>n+(o.bayId&&(o.frameLine||o.bayType==='recessed')?(o.paintRect?deduction({...o,rect:o.paintRect},o.head-o.sill):0):deduction(o,o.head-o.sill)),0)+(plan.slides||[]).reduce((n,o)=>n+deduction(o,o.v?2.4:2.1),0);
   let removed=0,added=0;
   if(arch?.baseline){const c=changes(arch.baseline,arch.draft);const len=(w,d)=>Math.hypot(w.a[0]-w.b[0],w.a[1]-w.b[1])*d.scale/1000;removed=c.removed.reduce((n,w)=>n+len(w,arch.baseline),0);added=c.added.reduce((n,w)=>n+len(w,arch.draft),0);}
   return {net,wall,paint:Math.max(0,wall-holes),removed,added,rooms:rooms.length};
@@ -116,9 +120,8 @@
   plan.walls=kept.map(i=>plan.walls[i]);
   (plan.doors||[]).forEach((d,i)=>Object.assign(d,geometry().doorOverride(d,work.open?.d?.[i])));
   (plan.slides||[]).forEach((s,i)=>Object.assign(s,{panels:s._panels0??s.panels??2,floorTrack:s._floorTrack0??s.floorTrack,stackSide:s._stackSide0??s.stackSide},work.open?.s?.[i]||{}));
-  (plan.wins||[]).forEach((w,i)=>{w.sill=w._sill0??w.sill;w.head=w._head0??w.head??2.4;w.panels=w._panels0??w.panels??0;w.stackSide=w._stackSide0??w.stackSide??'left';const v=work.open?.w?.[i];if(typeof v==='number')w.sill=v;else if(v)Object.assign(w,v);});
+  bays().applyWindows(plan,work.open?.w);
   plan.rooms=plan.rooms.map(r=>({...r,name:work.rooms?.[r.id]?.name||r.name,ceilingHeight:roomCeilingHeight(work,r)}));
-  (plan.wins||[]).forEach(w=>{if(w.bayGroup){const r=plan.rooms.find(r=>r.id===w.bayGroup);if(r)r.height=w.sill;}});
   const finished=floors().derive(finishes().derive(plan,work),work),tiled=work.wallTiling?wallTiles().derive(finished,work):finished;return ceilings().derive(tiled,work);
  }
  function validatePlanWork(base,work){
@@ -171,7 +174,7 @@
   const width=o=>Math.round(Math.max(o.rect[2]-o.rect[0],o.rect[3]-o.rect[1])),rows=[],seen=new Set();
   (plan.doors||[]).forEach((d,i)=>rows.push({name:d.name||'门 '+(i+1),type:d.doorType==='double'?'对开门':'平开门',width:width(d),height:2100,sill:0,depth:null,parts:d.doorType==='double'?2:1}));
   (plan.slides||[]).forEach((d,i)=>rows.push({name:d.name||'推拉门 '+(i+1),type:d.panels===3?'三联动推拉门':'双扇推拉门',width:width(d),height:d.v?2400:2100,sill:0,depth:null,parts:d.panels===3?3:2}));
-  (plan.wins||[]).forEach((w,i)=>{const group=w.bayId||w.bayGroup;if(group&&seen.has(group))return;if(group)seen.add(group);const opening=work.architecture?.draft.openings.find(o=>o.id===group),parts=group?plan.wins.filter(v=>(v.bayId||v.bayGroup)===group):[w];rows.push({name:group?'飘窗 '+seen.size:'窗 '+(i+1),type:group?(w.bayType==='recessed'?'正面窗飘窗（两侧实墙）':'三面飘窗'):w.panels===3?'三联动推拉窗':'普通窗',width:opening?.length??(group?parts.map(width).join(' / '):width(w)),height:Math.round((w.head-w.sill)*1000),sill:Math.round(w.sill*1000),depth:opening?.bay?.depth??null,parts:!group&&w.panels===3?3:parts.length});});
+  (plan.wins||[]).forEach((w,i)=>{const group=w.bayId;if(group&&seen.has(group))return;if(group)seen.add(group);const opening=work.architecture?.draft.openings.find(o=>o.id===group),parts=group?plan.wins.filter(v=>(v.bayId)===group):[w];rows.push({name:group?'飘窗 '+seen.size:'窗 '+(i+1),type:group?(w.bayType==='recessed'?'正面窗飘窗（两侧实墙）':'三面飘窗'):w.panels===3?'三联动推拉窗':'普通窗',width:opening?.length??(group?parts.map(width).join(' / '):width(w)),height:Math.round((w.head-w.sill)*1000),sill:Math.round(w.sill*1000),depth:opening?.bay?.depth??null,parts:!group&&w.panels===3?3:parts.length});});
   return rows;
  }
  const purchaseStates={planned:'待选型',confirmed:'已确认',ordered:'已下单',received:'已到货'};
@@ -204,10 +207,20 @@
   const G=root.FurnishZoneGeometry||require('./zone-geometry.js'),overlap=(A,B)=>G.area(G.decompose([A,B],p=>G.inside(p,A)&&G.inside(p,B)));
   const used=new Map();const mapped=Object.fromEntries(newRooms.map(r=>{if(r.bayId&&r.counted===false){const old=oldRooms.find(o=>o.bayId===r.bayId&&o.counted===false);return [r.id,old&&settings[old.id]?clone(settings[old.id]):{name:r.name,mat:r.mat,use:'bay'}];}if(settings[r.id]&&oldRooms.some(o=>o.parentArea===r.id))return [r.id,clone(settings[r.id])];if(r.zone){const existing=oldRooms.find(o=>o.id===r.id);if(existing&&settings[r.id])return [r.id,clone(settings[r.id])];if(r.settingSource&&settings[r.settingSource])return [r.id,clone(settings[r.settingSource])];const source=oldRooms.map(o=>({o,a:overlap(o.poly,r.poly)})).sort((a,b)=>b.a-a.a)[0];return [r.id,{name:r.name,use:r.use,mat:(r.materialExplicit?r.mat:null)||(source?.a>0?settings[source.o.id]?.mat:null)||settings[r.parentRoom]?.mat||r.mat}];}const candidates=oldRooms.map(o=>({o,a:overlap(o.poly,r.poly)})).sort((a,b)=>b.a-a.a),match=candidates[0];if(!match||match.a<=0)return [r.id,{name:r.name,mat:r.mat,use:design().inferUse(r)}];const old=match.o,setting=clone(settings[old.id]||{name:old.name,mat:old.mat});setting.use=design().inferUse(r,setting);const count=used.get(old.id)||0;used.set(old.id,count+1);if(count)setting.name+=' · 分区 '+(count+1);return [r.id,setting];}));for(const r of newRooms)if(r.parentArea&&settings[r.parentArea]&&!mapped[r.parentArea])mapped[r.parentArea]=clone(settings[r.parentArea]);return mapped;
  }
- function remapOpenings(before,after,settings){const out={d:{},w:{},s:{}};
+ function remapOpenings(before,after,settings,{windowId}={}){const out={d:{},w:{},s:{}};
   (after.doorRefs||[]).forEach((id,index)=>{const previous=(before.doorRefs||[]).indexOf(id),value=settings.d?.[previous];if(previous<0||!value)return;const old=before.doors[previous].rect,next=after.doors[index].rect,h=value.h.map((v,axis)=>Math.abs(v-old[axis])<=Math.abs(v-old[axis+2])?next[axis]:next[axis+2]);out.d[index]={...clone(value),h};});
   (after.slideRefs||[]).forEach((id,index)=>{const previous=(before.slideRefs||[]).indexOf(id);if(previous>=0&&settings.s?.[previous])out.s[index]=clone(settings.s[previous]);});
-  (after.winRefs||[]).forEach((id,index)=>{const previous=(before.winRefs||[]).indexOf(id);if(previous>=0&&settings.w?.[previous]!==undefined)out.w[index]=settings.w[previous];});return out;
+  (after.winRefs||[]).forEach((id,index)=>{
+   let previous=(before.winRefs||[]).indexOf(id);
+   if(previous<0&&windowId&&(id===windowId||id===windowId+':front'))previous=(before.winRefs||[]).indexOf(id===windowId?windowId+':front':windowId);
+   const value=settings.w?.[previous];if(previous<0||value===undefined)return;
+   const old=before.wins?.[previous],next=after.wins?.[index],edited=next&&windowId&&(id===windowId||id.startsWith(windowId+':')),heightChanged=old&&next&&((old._sill0??old.sill)!==next.sill||(old._head0??old.head??2.4)!==(next.head??2.4));
+   // Dimension edits replace geometry heights while retaining each face's style.
+   if(edited||heightChanged){
+    if(typeof value!=='object'||value===null||value.panels===undefined&&value.stackSide===undefined)return;
+    out.w[index]={sill:next.sill,head:next.head??2.4,...(value.panels!==undefined?{panels:value.panels}:{}),...(value.stackSide!==undefined?{stackSide:value.stackSide}:{})};
+   }else out.w[index]=clone(value);
+  });return out;
  }
  function polygon(f){const a=f.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]].map(([x,y])=>[f.cx+x*c-y*s,f.cy+x*s+y*c]);}
  function fitsInRooms(rooms,footprint){
@@ -439,8 +452,8 @@
   }
   return {catalog,payload};
  }
- function formatVersion(works){return works.some(w=>w?.objectLayers)?15:works.some(w=>w?.tilePresets?.version===2)?14:works.some(w=>w?.wallTiling?.surfaces?.some(s=>s.bands)||w?.tilePresets?.items?.some(p=>p.variants.some(v=>v.bands!==undefined)))?13:works.some(w=>w?.tilePresets||w?.tileGrout?.walls?.length)?12:works.some(w=>w?.tileGrout)?11:works.some(w=>w?.furnitureDatum==='finished-floor')?10:works.some(w=>ceilings().requiresV8(w)||ceilings().requiresV7(w)||wallTiles().requiresV7(w))?9:works.some(w=>ceilings().requiresV6(w))?6:works.some(w=>w?.ceilings)?5:works.some(w=>w?.wallTiling)?4:works.some(w=>floors().has(w))?3:works.some(w=>finishes().has(w))?2:1;}
- function pack(payload){return {format:'furnish-project',version:formatVersion([payload.current,...(payload.designs||[]).map(d=>d.work)]),createdAt:new Date().toISOString(),checksum:checksum(payload),payload:clone(payload)};}
+ function formatVersion(works){return works.some(w=>[w?.architecture?.draft,w?.architecture?.baseline,...(w?.architecture?.originalRevisions||[])].some(d=>d?.openings?.some(o=>o.bayId||o.bay)))?16:works.some(w=>w?.objectLayers)?15:works.some(w=>w?.tilePresets?.version===2)?14:works.some(w=>w?.wallTiling?.surfaces?.some(s=>s.bands)||w?.tilePresets?.items?.some(p=>p.variants.some(v=>v.bands!==undefined)))?13:works.some(w=>w?.tilePresets||w?.tileGrout?.walls?.length)?12:works.some(w=>w?.tileGrout)?11:works.some(w=>w?.furnitureDatum==='finished-floor')?10:works.some(w=>ceilings().requiresV8(w)||ceilings().requiresV7(w)||wallTiles().requiresV7(w))?9:works.some(w=>ceilings().requiresV6(w))?6:works.some(w=>w?.ceilings)?5:works.some(w=>w?.wallTiling)?4:works.some(w=>floors().has(w))?3:works.some(w=>finishes().has(w))?2:1;}
+ function pack(input){const payload=clone(input);for(const work of [payload.current,...(payload.designs||[]).map(d=>d.work)])if(work?.architecture)work.architecture=upgradeArchitecture(work.architecture);return {format:'furnish-project',version:formatVersion([payload.current,...(payload.designs||[]).map(d=>d.work)]),createdAt:new Date().toISOString(),checksum:checksum(payload),payload:clone(payload)};}
  function historyEntries(entries){const counts=new Map(),result=[];for(const entry of [...entries].sort((a,b)=>(b?.ts||0)-(a?.ts||0))){if(!entry||typeof entry.planId!=='string'||!num(entry.ts)||!entry.data||result.some(v=>v.ts===entry.ts&&v.planId===entry.planId))continue;const count=counts.get(entry.planId)||0;if(count>=8)continue;counts.set(entry.planId,count+1);result.push(entry);if(result.length===64)break;}return result;}
  function recoveryEntry(entries,planId,work,reason,now=Date.now()){
   entries=historyEntries(entries);const data=clone(work),ts=Math.max(now,...entries.map(v=>v.ts+1)),entry={ts,planId,n:data.furniture.length,reason:String(reason).slice(0,80),data};
@@ -448,7 +461,7 @@
  }
  function mergeDesigns(existing,incoming,planId){const result=clone(existing);for(const entry of incoming){const key=JSON.stringify(canonical(entry.work));if(result.some(d=>d.planId===planId&&(d.name===entry.name||d.name.startsWith(entry.name.slice(0,65)+' · 导入 '))&&JSON.stringify(canonical(d.work))===key))continue;let name=entry.name,n=1;while(result.some(d=>d.planId===planId&&d.name===name))name=entry.name.slice(0,65)+' · 导入 '+n++;if(result.filter(d=>d.planId===planId).length>=100)fail('合并后命名方案超过 100 份，请先精简已有方案');result.push({...clone(entry),name,planId});}return result;}
  function copyProject(input,id){const p=clone(input);if(!/^custom_[a-z0-9_]+$/.test(id)||!p.current.architecture)fail('只能复制自定义户型');p.planId=id;for(const w of [p.current,...p.designs.map(d=>d.work)]){w.plan=id;const a=w.architecture;if(!a)fail('方案缺少自定义户型');a.draft.id=id;if(a.baseline)a.baseline.id=id;for(const d of a.originalRevisions||[])d.id=id;}for(const d of p.designs)d.planId=id;return p;}
- function unpack(input){let data=clone(input);if(data.format==='furnish-project'){if(![1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].includes(data.version))fail('不支持的项目版本');if(checksum(data.payload)!==data.checksum)fail('项目完整性校验失败，文件可能被修改或损坏');data=data.payload;}else if(Array.isArray(data.furniture)){data={planId:data.plan,current:data,designs:[],catalog:[]};}else fail('不是 Furnish 项目文件');
+ function unpack(input){let data=clone(input);if(data.format==='furnish-project'){if(![1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].includes(data.version))fail('不支持的项目版本');if(checksum(data.payload)!==data.checksum)fail('项目完整性校验失败，文件可能被修改或损坏');data=data.payload;}else if(Array.isArray(data.furniture)){data={planId:data.plan,current:data,designs:[],catalog:[]};}else fail('不是 Furnish 项目文件');
   if(!data||typeof data.planId!=='string'||!Array.isArray(data.designs)||data.designs.length>100||!Array.isArray(data.catalog)||data.catalog.length>500)fail('项目结构无效');const checked=(label,work)=>{try{return validateWork(work);}catch(e){fail(label+'：'+e.message);}};data.current=checked('当前方案',data.current);data.designs=data.designs.map(d=>{if(typeof d.name!=='string'||d.name.length>80)fail('方案名称无效');return {...d,work:checked('命名方案「'+d.name+'」',d.work)};});if(data.current.architecture){const id=data.current.architecture.draft.id;if(id!==data.planId||data.designs.some(d=>d.work.architecture?.draft.id!==id))fail('方案户型不一致');}
   for(const [label,work] of [['当前方案',data.current],...data.designs.map(d=>['命名方案「'+d.name+'」',d.work])])if(work.plan!==undefined&&work.plan!==data.planId)fail(label+'：方案户型编号与项目不一致');
   const catalogIds=new Set();for(const c of data.catalog){if(c?.id!==undefined){if(typeof c.id!=='string'||!c.id||c.id.length>200||catalogIds.has(c.id))fail('家具库编号无效或重复');catalogIds.add(c.id);}if(!c||typeof c.name!=='string'||c.name.length>80||![c.w,c.d,c.h,c.price].every(num)||c.w<50||c.d<50||c.w>20000||c.d>20000||c.h<=0||c.h>20000||c.price<0)fail('家具库数据无效');validateWork({furniture:[{...c,id:'model',cx:0,cy:0,rot:0}]});}return data;

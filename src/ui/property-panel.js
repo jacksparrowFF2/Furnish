@@ -14,6 +14,7 @@ function panelSelectionName(){
  const sel=ui.sel;if(!sel)return tr('未选择对象','No selection');
  if(sel.kind==='furn')return selIds().length>1?tr(`已选 ${selIds().length} 件`,`${selIds().length} selected`):nm(getF(sel.id)?.name||tr('家具','Furniture'));
  if(sel.kind==='room')return selectedRooms().length>1?tr(`已选 ${selectedRooms().length} 个区域`,`${selectedRooms().length} selected areas`):nm(state.rooms[sel.id]?.name||ROOMS.find(r=>r.id===sel.id)?.name||tr('房间','Room'));
+ const bay=FurnishBayWindows.selected(PLAN,sel);if(bay)return nm(state.rooms[bay.platform.id]?.name||bay.platform.name)+' · '+tr(sel.kind==='room'?'台面':'窗体',sel.kind==='room'?'Platform':'Window');
  if(sel.kind==='note')return getNote(sel.id)?.text||tr('文字标注','Note');
  const names={wall:['墙体','Wall'],door:['房门','Door'],slide:['推拉门','Sliding door'],win:['窗户','Window'],measure:['测量线','Measurement']};
  return tr(...(names[sel.kind]||['已选对象','Selected object']));
@@ -24,13 +25,13 @@ function renderPanelContent(object=true){
   if(ui.sel?.kind!=='wall')window.FurnishWorkflowTools?.clearDistances();
   window.FurnishWorkspace?.clearOpeningPreview();
   renderFab();
-  const p = $('#panel'), ids = object?selIds():[];
+  const p = $('#panel'), ids = object?selIds():[];delete p.dataset.bayId;
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); const laundry=laundryGroupHost(selItems());if(laundry)bindKitchenPanel(laundry);return; }
   if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f)+(window.FurnishFloorFinishUI?.furniturePanel(f)||'');const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }
   if (object && ui.sel?.kind === 'wall' && window.FurnishWorkspace){ window.FurnishWorkspace.wallPanel(ui.sel.id,p); window.FurnishWorkflowTools?.afterPanel(); return; }
-  if (object && ui.sel?.kind === 'room'){const rooms=selectedRooms();p.innerHTML=rooms.length>1?roomAreaPanel(rooms):rooms.length?roomPanel(rooms[0]):'';if(rooms.length===1)bindRoomPanel();p.querySelectorAll('[data-area-room]').forEach(b=>b.onclick=()=>toggleRoom(b.dataset.areaRoom));return; }
+  if (object && ui.sel?.kind === 'room'){const rooms=selectedRooms();if(rooms.length===1&&window.FurnishWorkspace?.bayPanel(ui.sel,p))return;p.innerHTML=rooms.length>1?roomAreaPanel(rooms):rooms.length?roomPanel(rooms[0]):'';if(rooms.length===1)bindRoomPanel();p.querySelectorAll('[data-area-room]').forEach(b=>b.onclick=()=>toggleRoom(b.dataset.areaRoom));return; }
   if (object && (ui.sel?.kind === 'door' || ui.sel?.kind === 'slide')){ p.innerHTML = openingPanel(ui.sel); bindOpeningPanel(ui.sel); window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
-  if (object && ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel.id,p)){window.FurnishWallFinishUI?.opening(ui.sel,p);return;} if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
+  if (object && ui.sel?.kind === 'win'){ if(window.FurnishWorkspace?.bayPanel(ui.sel,p)){window.FurnishWallFinishUI?.opening(ui.sel,p);return;} if(!window.FurnishWorkspace?.windowPanel(ui.sel.id,p)){p.innerHTML = winPanel(ui.sel.id); bindWinPanel(ui.sel.id);} window.FurnishWorkspace?.openingGeometry(ui.sel,p); window.FurnishWallFinishUI?.opening(ui.sel,p); return; }
   if (object && ui.sel?.kind === 'note'){ const n = getNote(ui.sel.id); if (n){ p.innerHTML = notePanel(n); return; } }
   if(object && ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){
     const m=state.measures[ui.sel.id];p.innerHTML=`<section><h3>${tr('测量线','Measurement')}</h3><p class="big">${Math.round(Math.hypot(m.b.x-m.a.x,m.b.y-m.a.y))} mm</p><p class="muted">${tr('固定端点；家具或墙体改变后请重新测量。','Fixed endpoints; remeasure after moving furniture or walls.')}</p><div class="actions"><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="home">${tr('返回','Back')}</button></div><p class="muted">${tr('也可按 Delete / Backspace 删除，Ctrl+Z 撤销。','Delete / Backspace removes it; Ctrl+Z undoes.')}</p></section>`;return;
@@ -57,6 +58,8 @@ function renderFab(){
   fab.removeAttribute('style');
   fab.setAttribute('role','toolbar');fab.setAttribute('aria-label',tr('选中对象快捷调整','Selection quick adjustments'));
   if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){fab.innerHTML=`<span class="name">${tr('测量线','Measurement')}</span><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');return;}
+  const bay=FurnishBayWindows.selected(PLAN,ui.sel);
+  if(bay){fab.innerHTML=`<span class="name">${esc(nm(state.rooms[bay.platform.id].name))}</span><button class="btn" data-bay-fab="window">${tr('窗体','Window')}</button><button class="btn" data-bay-fab="platform">${tr('台面','Platform')}</button><button class="btn" data-act="prop">${tr('飘窗属性','Bay properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');fab.querySelector('[data-bay-fab="window"]').onclick=()=>select({kind:'win',id:bay.windows[0].index});fab.querySelector('[data-bay-fab="platform"]').onclick=()=>select({kind:'room',id:bay.platform.id});queueFabPosition();return;}
   if (!ids.length && !r){ fab.classList.remove('show'); return; }
   const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   fab.innerHTML = ids.length
@@ -508,10 +511,9 @@ function bindOpeningPanel(sel){
 }
 function winPanel(i){
  const w=WINS[i],width=Math.round(Math.max(w.rect[2]-w.rect[0],w.rect[3]-w.rect[1])),height=Math.round(((w.head??2.4)-w.sill)*1000);
- return `<section><h3>窗尺寸</h3><p>窗宽 ${width} mm · 窗高 ${height} mm</p><div class="form"><label class="full">窗扇形式<select id="wPanels"><option value="0" ${w.panels!==3?'selected':''}>普通固定窗</option><option value="3" ${w.panels===3?'selected':''}>三联动推拉窗</option></select></label><label class="full">叠合侧<select id="wStackSide"><option value="left" ${w.stackSide!=='right'?'selected':''}>左侧</option><option value="right" ${w.stackSide==='right'?'selected':''}>右侧</option></select></label><label class="full">窗台高 mm<input type="number" id="wSill" min="0" max="2400" step="1" value="${Math.round(w.sill*1000)}"></label><label class="full">窗户高度 mm<input type="number" id="wHeight" min="100" max="2800" step="1" value="${height}"></label><label class="full">窗顶高（距地面）mm<input type="number" id="wHead" max="2800" step="1" value="${Math.round((w.head??2.4)*1000)}"></label></div><p>窗户高度 = 窗顶高 − 窗台高，两项自动联动；修改窗台高时保持窗户高度。</p><p>${w.bayGroup?'同一飘窗的三面窗与窗台高度同步调整。':''}内置布局窗宽按预设图纸定义；导入自定义户型可编辑窗宽。</p><p id="wError" role="alert"></p><div class="actions"><button class="btn primary" id="wApply">应用尺寸</button><button class="btn" id="wReset">重置</button><button class="btn" id="wback">返回总览</button></div></section>`;
+ return `<section><h3>窗尺寸</h3><p>窗宽 ${width} mm · 窗高 ${height} mm</p><div class="form"><label class="full">窗扇形式<select id="wPanels"><option value="0" ${w.panels!==3?'selected':''}>普通固定窗</option><option value="3" ${w.panels===3?'selected':''}>三联动推拉窗</option></select></label><label class="full">叠合侧<select id="wStackSide"><option value="left" ${w.stackSide!=='right'?'selected':''}>左侧</option><option value="right" ${w.stackSide==='right'?'selected':''}>右侧</option></select></label><label class="full">窗台高 mm<input type="number" id="wSill" min="0" max="2400" step="1" value="${Math.round(w.sill*1000)}"></label><label class="full">窗户高度 mm<input type="number" id="wHeight" min="100" max="2800" step="1" value="${height}"></label><label class="full">窗顶高（距地面）mm<input type="number" id="wHead" max="2800" step="1" value="${Math.round((w.head??2.4)*1000)}"></label></div><p>窗户高度 = 窗顶高 − 窗台高，两项自动联动；修改窗台高时保持窗户高度。</p><p>内置布局窗宽按预设图纸定义；导入自定义户型可编辑窗宽。</p><p id="wError" role="alert"></p><div class="actions"><button class="btn primary" id="wApply">应用尺寸</button><button class="btn" id="wReset">重置</button><button class="btn" id="wback">返回总览</button></div></section>`;
 }
-function bindWinPanel(i){
-  function linkHeightInputs(sill,height,head){
+function linkWindowHeightInputs(sill,height,head){
     const number=input=>input.value.trim()!==''&&Number.isFinite(Number(input.value))?Number(input.value):null;
     for(const input of [sill,height,head]){const previous=input.oninput;input.oninput=()=>{
       const a=number(sill),b=number(input===head?head:height),target=input===head?height:head;
@@ -519,7 +521,9 @@ function bindWinPanel(i){
       previous?.();
     };}
   }
-  linkHeightInputs($('#wSill'),$('#wHeight'),$('#wHead'));
- $('#wApply').onclick=()=>{const sill=Number($('#wSill').value)/1000,height=Number($('#wHeight').value)/1000;if(['wSill','wHeight','wHead'].some(id=>!$('#'+id).value.trim())||!Number.isFinite(sill)||!Number.isFinite(height)||sill<0||sill>2.4||height<.1||sill+height>2.8){$('#wError').textContent='窗高至少100 mm，窗顶不得超过2800 mm';return;}mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)state.open.w[j]={...(typeof state.open.w[j]==='object'?state.open.w[j]:{}),sill,head:sill+height,...(j===i?{panels:Number($('#wPanels').value),stackSide:$('#wStackSide').value}:{panels:w.panels??0,stackSide:w.stackSide||'left'})};});});};
- $('#wReset').onclick=()=>mutate(()=>{state.open.w=state.open.w||{};const group=WINS[i].bayGroup;WINS.forEach((w,j)=>{if(j===i||group&&w.bayGroup===group)delete state.open.w[j];});});$('#wback').onclick=()=>select(null);
+
+function bindWinPanel(i){
+  linkWindowHeightInputs($('#wSill'),$('#wHeight'),$('#wHead'));
+ $('#wApply').onclick=()=>{const sill=Number($('#wSill').value)/1000,height=Number($('#wHeight').value)/1000;if(['wSill','wHeight','wHead'].some(id=>!$('#'+id).value.trim())||!Number.isFinite(sill)||!Number.isFinite(height)||sill<0||sill>2.4||height<.1||sill+height>2.8){$('#wError').textContent='窗高至少100 mm，窗顶不得超过2800 mm';return;}mutate(()=>{state.open.w??={};state.open.w[i]={sill,head:sill+height,panels:Number($('#wPanels').value),stackSide:$('#wStackSide').value};});};
+ $('#wReset').onclick=()=>mutate(()=>{if(state.open.w)delete state.open.w[i];});$('#wback').onclick=()=>select(null);
 }

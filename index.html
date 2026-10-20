@@ -304,6 +304,7 @@
 <script src="src/core/drawing-core.js"></script>
 <script src="src/core/purchasing-core.js"></script>
 <script src="src/core/service-core.js"></script>
+<script src="src/core/bay-window-core.js"></script>
 <script src="src/core/project-core.js"></script>
 <script src="src/core/cabinet-core.js"></script>
 <script src="src/core/kitchen-core.js"></script>
@@ -570,6 +571,7 @@ function init(){
     if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
     else if (h?.door){ if(!h.fid||!furnitureLocked(getF(h.fid)))h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
     else if (h?.fid) e.shiftKey ? window.toggleSel(h.fid) : window.selectIds([h.fid]);
+    else if (h?.win!==undefined) window.select({kind:'win',id:h.win});
     else if (h?.room) window.select({kind:'room', id:h.room});
     else window.select(null);
   });
@@ -1334,7 +1336,7 @@ function buildArch(){
   [...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
     .forEach(([r, h]) => { if (top > h) wallBox(r, h, top); });
   const bayPosts=new Set();
-  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, bayType, paintRect,panels,stackSide}) => {
+  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, bayType, paintRect,panels,stackSide},windowIndex) => {
     if(bayId&&paintRect&&bayType!=='recessed'){wallBox(paintRect,0,Math.min(sill,top));if(top>head)wallBox(paintRect,head,top);}
     wallBox(rect, 0, Math.min(sill, top)); if (top > head) wallBox(rect, head, top);
     colliders.push([wx(rect[0]), wz(rect[1]), wx(rect[2]), wz(rect[3])]);
@@ -1343,13 +1345,13 @@ function buildArch(){
     if(panels===3){
       const model=buildSlidingDoor(L,.09,gh,3,'#41474b',{floorTrack:true,stackSide});
       model.position.set(cx,sill,cz);model.rotation.y=hz?0:-Math.PI/2;
-      archUp.add(model);slidingDoors.push(model.userData.slidingDoor);return;
+      model.traverse(o=>o.userData.bayWindowIndex=windowIndex);archUp.add(model);slidingDoors.push(model.userData.slidingDoor);return;
     }
-    const pane = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .01, gh, hz ? .01 : L), glassMat); pane.position.set(cx, sill + gh/2, cz); archUp.add(pane);
+    const pane = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .01, gh, hz ? .01 : L), glassMat); pane.userData.bayWindowIndex=windowIndex; pane.position.set(cx, sill + gh/2, cz); archUp.add(pane);
     const n = Math.max(1, Math.round(L/.9));
-    for (let k = 0; k <= n; k++){ const t = -L/2 + k*L/n,px=cx+(hz?t:0),pz=cz+(hz?0:t),key=[bayId,px.toFixed(6),pz.toFixed(6),sill,gTop].join(':');if(bayId&&(k===0||k===n)){if(bayPosts.has(key))continue;bayPosts.add(key);}const mu = new THREE.Mesh(new THREE.BoxGeometry(bayId ? .06 : hz ? .04 : .06, gh, bayId ? .06 : hz ? .06 : .04), frameMat);
-      mu.position.set(cx + (hz ? t : 0), sill + gh/2, cz + (hz ? 0 : t)); mu.castShadow = true; archUp.add(mu); }
-    [sill + .02, gTop - .02].forEach(y => { const tr = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .06, .04, hz ? .06 : L), frameMat); tr.position.set(cx, y, cz); archUp.add(tr); });
+    for (let k = 0; k <= n; k++){ const t = -L/2 + k*L/n,px=cx+(hz?t:0),pz=cz+(hz?0:t),key=[bayId,px.toFixed(6),pz.toFixed(6),sill,gTop].join(':');if(frameLine&&(k===0||k===n)){if(bayPosts.has(key))continue;bayPosts.add(key);}const mu = new THREE.Mesh(new THREE.BoxGeometry(frameLine ? .06 : hz ? .04 : .06, gh, frameLine ? .06 : hz ? .06 : .04), frameMat);
+      mu.position.set(cx + (hz ? t : 0), sill + gh/2, cz + (hz ? 0 : t)); mu.castShadow = true;mu.userData.bayWindowIndex=windowIndex; archUp.add(mu); }
+    [sill + .02, gTop - .02].forEach(y => { const tr = new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .06, .04, hz ? .06 : L), frameMat); tr.position.set(cx, y, cz);tr.userData.bayWindowIndex=windowIndex; archUp.add(tr); });
   });
   DOORS.forEach(d => {
     const control={open:true};
@@ -1542,8 +1544,10 @@ function focusSelection(){
   $('#vRestoreWalls').hidden=false;syncHint3d();frameObservation(true);return;
  }
  clearObservation();
- let box;if(ui.sel?.kind==='room'){const r=ROOMS.find(r=>r.id===ui.sel.id);if(r)box=bbox(r.poly);}
- else if(ui.sel?.kind==='win'){const win=WINS[ui.sel.id];if(win){const group=bayAssembly(win).group;box=[Math.min(...group.map(w=>w.rect[0])),Math.min(...group.map(w=>w.rect[1])),Math.max(...group.map(w=>w.rect[2])),Math.max(...group.map(w=>w.rect[3]))];}}
+ const bay=FurnishBayWindows.selected(PLAN,ui.sel);
+ let box;if(bay)box=bay.bounds;
+ else if(ui.sel?.kind==='room'){const r=ROOMS.find(r=>r.id===ui.sel.id);if(r)box=bbox(r.poly);}
+ else if(ui.sel?.kind==='win')box=WINS[ui.sel.id]?.rect;
  else if(ui.sel?.kind==='door')box=DOORS[ui.sel.id]?.rect;
  if(box)flyToBox(box);else toast(tr('先选中房间、家具或门窗，再定位观察。','Select a room, item or opening first.'));
 }
@@ -1641,6 +1645,7 @@ function pick(e){
     // Raycaster also returns hidden ceilings and helper lines; only visible meshes may block a click.
     if(!o.isMesh)continue;
     let shown=true;for(let parent=o;parent;parent=parent.parent){if(!parent.visible){shown=false;break;}}if(!shown)continue;
+    if(o.userData.bayWindowIndex!==undefined&&WINS[o.userData.bayWindowIndex]?.bayId)return {win:o.userData.bayWindowIndex};
     if (observation.material(o) === glassMat) continue;
     if(o.userData.teaBarDoor){let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {teaBarDoor:o.userData.teaBarDoor,fid:owner?.userData.fid,dist:h.distance};}
     if (o.userData.cabinetPart) { let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {cabinetPart:o.userData.cabinetPart,fid:owner?.userData.fid,dist:h.distance}; }
@@ -1685,6 +1690,9 @@ function updateSel(){
   if (selHelper){ selHelper.children.forEach(h => {h.geometry.dispose();h.material.dispose();}); scene.remove(selHelper); selHelper = null; }
   const gs = ids.map(id => furnG.children.find(g => g.userData.fid === id)).filter(Boolean);
   if (gs.length){ selHelper = new THREE.Group(); gs.forEach(g => selHelper.add(new THREE.BoxHelper(g, 0xef5a24))); scene.add(selHelper); }
+  const selectedBay=FurnishBayWindows.selected(PLAN,ui.sel),layerKey=selectedBay?'floor:'+selectedBay.platform.id:null;
+  if(layerKey){const box=new THREE.Box3(),meshes=[];for(const group of [archFloor,archUp])group.traverse(o=>{if(o.isMesh&&sceneObjectShown(o)&&(FurnishObservationLayers.sceneKey(o)===layerKey||selectedBay&&selectedBay.windows.some(w=>o.userData.bayWindowIndex===w.index))){meshes.push(o);box.union(new THREE.Box3().setFromObject(o));}});if(!box.isEmpty()){selHelper=new THREE.Group();const outline=new THREE.Box3Helper(box,0xef5a24);outline.material.depthTest=false;outline.renderOrder=40;outline.userData.layerSelection=layerKey;outline.userData.layerMeshes=meshes;selHelper.add(outline);scene.add(selHelper);}}
+
   invalidate();
 }
 
@@ -1884,7 +1892,7 @@ function loop(){
   if (!dirty) return;
   updateObservation();
   dirty = false;
-  selHelper?.children.forEach(h => h.update());
+  selHelper?.children.forEach(h => {if(h.userData.layerMeshes){h.box.makeEmpty();for(const o of h.userData.layerMeshes)if(sceneObjectShown(o))h.box.union(new THREE.Box3().setFromObject(o));}else h.update?.();});
   clearanceG.visible=opt.clearances&&opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();
   applyObservationLayers();
   renderer.render(scene, camera);

@@ -3,14 +3,7 @@
   'use strict';
   const copy=v=>JSON.parse(JSON.stringify(v));
   const text=(zh,en)=>tr(zh,en);
-  function linkHeightInputs(sill,height,head){
-    const number=input=>input.value.trim()!==''&&Number.isFinite(Number(input.value))?Number(input.value):null;
-    for(const input of [sill,height,head]){const previous=input.oninput;input.oninput=()=>{
-      const a=number(sill),b=number(input===head?head:height),target=input===head?height:head;
-      target.value=a===null||b===null?'':String(Math.round((input===head?b-a:a+b)*1000)/1000);
-      previous?.();
-    };}
-  }
+
 
   const button=document.createElement('button');
   button.id='tracePlan'; button.className='btn outline'; button.dataset.en='Edit floor plan'; button.textContent='编辑户型';
@@ -403,8 +396,8 @@
     const redoDraft=()=>{if(boundaryBase){if(!boundaryFuture.length)return;boundaryPast.push(copy(draft));draft=boundaryFuture.pop();areaDrag=null;areaSnap=null;render();return;}if(!future.length)return;vertexAction=null;areaSnap=null;wallSnap=null;past.push(copy(draft));draft=future.pop();pendingOpening=null;anchor=null;areaPoints=[];pathEndOnBoundary=false;rectDrag=null;selectedArea=null;selectedOpening=null;selectedWall=null;dirty=true;render();};
     q('#trace-undo').onclick=undoDraft;q('#trace-redo').onclick=redoDraft;
     q('#trace-fit').onclick=()=>{box=[0,0,draft.width,draft.height];try{const plan=cachedBuild(draft),points=plan.rooms.filter(r=>r.bayId).flatMap(r=>r.poly.map(p=>p.map(v=>v/draft.scale)));if(points.length){const x=Math.min(0,...points.map(p=>p[0]))-30,y=Math.min(0,...points.map(p=>p[1]))-30;box=[x,y,Math.max(draft.width,...points.map(p=>p[0]))-x+30,Math.max(draft.height,...points.map(p=>p[1]))-y+30];}}catch(e){}render();};q('#trace-opacity').oninput=render;
-    linkHeightInputs(q('#trace-window-sill'),q('#trace-window-height'),q('#trace-window-head'));
-    linkHeightInputs(q('#trace-bay-height'),q('#trace-bay-window-height'),q('#trace-bay-head'));
+    linkWindowHeightInputs(q('#trace-window-sill'),q('#trace-window-height'),q('#trace-window-head'));
+    linkWindowHeightInputs(q('#trace-bay-height'),q('#trace-bay-window-height'),q('#trace-bay-head'));
     function key(e){if(!$('#dlg').hidden)return;e.stopImmediatePropagation();
       if(mode==='zone-split-path'&&pathEndOnBoundary&&areaPoints.length>=2&&!e.target.matches('input,select,textarea')){if(e.key==='Escape'){e.preventDefault();pathDrag=null;cursor=null;areaSnap=null;render();report('连线已保留，可按 Enter 或点击“完成折线拆分”确认。');return;}if(e.key==='Enter'){e.preventDefault();completeRegionPath();return;}}
       if(e.key==='Tab'){const controls=[...overlay.querySelectorAll('button,input,select,[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);const first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
@@ -451,7 +444,7 @@
       const read=()=>{if(readonly)throw Error('原始结构已锁定');const ids=['op-position','op-width',...(o.kind==='window'?['op-sill','op-height','op-head',...(q('#op-type').value==='plain'?[]:['op-depth'])]:[])];if(ids.some(id=>q('#'+id).value.trim()===''))throw Error('请输入完整尺寸');const values=FurnishDraft.openingPlacement(base,o.id,q('#op-reference').value,Number(q('#op-position').value),Number(q('#op-width').value));if(o.kind==='window'){const height=Number(q('#op-height').value);if(!Number.isFinite(height)||height<100)throw Error('窗高至少100 mm');values.sill=Number(q('#op-sill').value);values.head=values.sill+height;values.bay=q('#op-type').value==='plain'?undefined:{type:q('#op-type').value,depth:Number(q('#op-depth').value),height:values.sill,head:values.head};}const next=FurnishDraft.editOpening(base,o.id,values);if(phase==='design')FurnishProject.assertStructure(baseline,next);return next;};
       const preview=()=>{try{pendingOpening={next:read(),before:base};render();report('尺寸预览中 · 确认修改后记录，取消可恢复。');}catch(err){pendingOpening=null;render();report('未应用：'+err.message,true);}};
       ['op-position','op-width',...(o.kind==='window'?['op-sill','op-height','op-head',...(q('#op-type').value==='plain'?[]:['op-depth'])]:[])].forEach(id=>q('#'+id).oninput=preview);
-      if(o.kind==='window'){linkHeightInputs(q('#op-sill'),q('#op-height'),q('#op-head'));q('#op-type').onchange=preview;q('#op-depth').oninput=preview;}
+      if(o.kind==='window'){linkWindowHeightInputs(q('#op-sill'),q('#op-height'),q('#op-head'));q('#op-type').onchange=preview;q('#op-depth').oninput=preview;}
       q('#op-reference').onchange=()=>{const ref=FurnishDraft.openingReferences(pendingOpening?.next||base,o.id).find(r=>r.id===q('#op-reference').value);if(ref)q('#op-position').value=String(Math.round(ref.distance));preview();};
       q('#op-apply').onclick=()=>{try{const next=read();pendingOpening=null;checkpoint();draft=next;openingProperties();report('门窗修改已确认，保存户型后同步主画布。');}catch(err){report('未应用：'+err.message,true);}};
       q('#op-cancel').onclick=()=>{pendingOpening=null;openingProperties();};render();

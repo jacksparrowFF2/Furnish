@@ -36,6 +36,11 @@
     if(![x,y,diameter].every(finite)||diameter<10||diameter>2000)fail('请输入有效坐标及 10–2000 mm 管径');
     m.sourceAt=m.sourceAt||clone(m.at);m.at=[x/d.scale,y/d.scale];m.pipeDiameter=diameter;validate(next);return next;
   }
+  function upgrade(input){
+    const d=clone(input);for(const o of d.openings||[]){if(!o)continue;if(o.bay&&typeof o.bay==='object'&&o.bay.type===undefined)o.bay.type='three-sided';if(o.bayGroup!==undefined){if(o.bayId!==undefined&&o.bayId!==o.bayGroup)fail('Conflicting bay identity');o.bayId=o.bayGroup;delete o.bayGroup;}}
+    if(d.roomLayout)for(const r of d.roomLayout.rooms||[])if(r.counted===false&&!r.bayId&&d.openings?.some(o=>o.bayId===r.id))r.bayId=r.id;
+    return d;
+  }
   function validate(d) {
     if(d?.sourceDXF!==undefined&&(typeof d.sourceDXF!=='string'||d.sourceDXF.length>20000000))fail('Invalid saved DXF');
     if (!d || d.version !== 1 || !/^custom_[a-z0-9_]+$/.test(d.id) || typeof d.name !== 'string' || !d.name.trim() || d.name.length > 80) fail('Invalid plan identity');
@@ -61,7 +66,7 @@
       if(o.doorType!==undefined&&(o.kind!=='door'||!['single','double'].includes(o.doorType)))fail('门类型须为单扇平开门或对开门');
       if(o.panels!==undefined&&(!['slide','window'].includes(o.kind)||!(o.kind==='window'?[0,3]:[2,3]).includes(o.panels)))fail('Invalid sliding door panels');
       if(o.floorTrack!==undefined&&(o.kind!=='slide'||typeof o.floorTrack!=='boolean')||o.stackSide!==undefined&&(!['slide','window'].includes(o.kind)||!['left','right'].includes(o.stackSide)))fail('Invalid sliding frame options');
-      if(o.hingeEnd!==undefined&&typeof o.hingeEnd!=='boolean'||o.hingeSide!==undefined&&![-1,1].includes(o.hingeSide)||o.name!==undefined&&(typeof o.name!=='string'||o.name.length>80)||o.bayGroup!==undefined&&typeof o.bayGroup!=='string')fail('Invalid opening attributes');
+      if(o.hingeEnd!==undefined&&typeof o.hingeEnd!=='boolean'||o.hingeSide!==undefined&&![-1,1].includes(o.hingeSide)||o.name!==undefined&&(typeof o.name!=='string'||o.name.length>80)||o.bayId!==undefined&&typeof o.bayId!=='string')fail('Invalid opening attributes');
       if(o.sill!==undefined&&(!finite(o.sill)||o.sill<0||o.sill>2400)||o.head!==undefined&&(!finite(o.head)||o.head<=0||o.head>2800)||(o.kind==='window'&&!o.bay&&(o.head??2400)<=(o.sill??900)))fail('窗台高须为0–2400 mm，窗顶高于窗台且不超过2800 mm');
       if(o.bay?.type!==undefined&&!['three-sided','recessed'].includes(o.bay.type))fail('飘窗类型无效');
       if(o.bay!==undefined&&(!o.bay||o.kind!=='window'||!finite(o.bay.depth)||o.bay.depth<200||o.bay.depth>2000||!finite(o.bay.height)||o.bay.height<100||o.bay.height>1800||!finite(o.bay.head)||o.bay.head<=o.bay.height||o.bay.head>2800))fail('飘窗进深须为200–2000 mm，台高100–1800 mm，窗顶高于窗台且不超过2800 mm');
@@ -424,7 +429,7 @@
   function build(input) {
     // The DXF -> canvas -> mm round trip can differ by 1e-12 at shared faces.
     // Normalize below a micrometre before grid decomposition to avoid false cracks.
-    const d=validate(clone(input)), rects=d.walls.map(w=>wallRect(w,d.scale,d.walls).map((v,i)=>i<4?Math.round(v*1e6)/1e6:v));
+    const d=validate(upgrade(input)), rects=d.walls.map(w=>wallRect(w,d.scale,d.walls).map((v,i)=>i<4?Math.round(v*1e6)/1e6:v));
     let rooms=d.roomLayout?.walls===layoutKey(d.walls)&&d.roomLayout.scale===d.scale?clone(d.roomLayout.rooms):roomsFromWalls(rects); if(!rooms.length) fail('No enclosed room found. Close the wall outline first.');
     const walls=[],wins=[],doors=[],slides=[],wallRefs=[],doorRefs=[],winRefs=[],slideRefs=[],recessedBays=[];
     d.walls.forEach((w,i)=>{
@@ -472,7 +477,7 @@
           left[axis]=a-frame;left[axis+2]=a;right[axis]=b;right[axis+2]=b+frame;
           for(const [part,q,line] of [['front',frontRect,[at(a-frame/2,front),at(b+frame/2,front)]],['left',left,[at(a-frame/2,base),at(a-frame/2,front)]],['right',right,[at(b+frame/2,base),at(b+frame/2,front)]]]){wins.push({rect:q,frameLine:line,sill:o.bay.height/1000,head:o.bay.head/1000,bayId:o.id,bayPart:part,paintRect:part==='front'?opening:null});winRefs.push(o.id+':'+part);}
         }
-        else if(o.kind==='window'){wins.push({rect:opening,sill:(o.sill??900)/1000,head:(o.head??2400)/1000,...(o.panels!==undefined?{panels:o.panels}:{}),...(o.stackSide?{stackSide:o.stackSide}:{}),...(o.bayGroup?{bayGroup:o.bayGroup}:{})});winRefs.push(o.id);}
+        else if(o.kind==='window'){wins.push({rect:opening,sill:(o.sill??900)/1000,head:(o.head??2400)/1000,...(o.panels!==undefined?{panels:o.panels}:{}),...(o.stackSide?{stackSide:o.stackSide}:{}),...(o.bayId?{bayId:o.bayId}:{})});winRefs.push(o.id);}
         else if(o.kind==='slide'){slides.push({rect:opening,v:!horizontal,panels:o.panels||2,...(o.floorTrack!==undefined?{floorTrack:o.floorTrack}:{}),...(o.stackSide?{stackSide:o.stackSide}:{})});slideRefs.push(o.id);}
         else {
           let side=o.side;
@@ -525,14 +530,23 @@
       for(const part of sorted){const last=runs.at(-1);if(last&&part.kind===last.parts[0].kind&&part.lo<=last.hi+1e-6){last.hi=Math.max(last.hi,part.hi);last.parts.push(part);}else runs.push({lo:part.lo,hi:part.hi,parts:[part]});}
       for(const run of runs){const {axis,normal}=group,center=(group.lo+group.hi)/2,a=[0,0],b=[0,0];a[axis]=(run.lo+shift)/scale;b[axis]=(run.hi+shift)/scale;a[normal]=b[normal]=(center+shift)/scale;
         const kind=run.parts[0].kind,wall={id:'preset_w'+d.walls.length,a,b,kind,thickness:group.hi-group.lo,caps:[0,0]};d.walls.push(wall);
-        for(const p of run.parts.filter(p=>p.opening)){const {kind,index,value:v}=p.opening,o={id:'preset_'+kind+index,wall:wall.id,kind,t:((p.lo+p.hi)/2-run.lo)/(run.hi-run.lo),length:p.hi-p.lo,side:kind==='door'?(v.o[normal]<0?-1:1):1,entry:!!v.entry};if(kind==='door'){o.name=v.name||'房门';if(v.doorType)o.doorType=v.doorType;o.hingeEnd=v.c[axis]<0;o.hingeSide=Math.abs(v.h[normal]-group.hi)<Math.abs(v.h[normal]-group.lo)?1:-1;}if(kind==='slide'){o.panels=v.panels===3?3:2;if(v.floorTrack!==undefined)o.floorTrack=v.floorTrack;if(v.stackSide)o.stackSide=v.stackSide;}if(kind==='window'){if(v.panels!==undefined)o.panels=v.panels;if(v.stackSide)o.stackSide=v.stackSide;o.sill=v.sill*1000;o.head=(v.head??2.4)*1000;if(v.bayGroup)o.bayGroup=v.bayGroup;}d.openings.push(o);}
+        for(const p of run.parts.filter(p=>p.opening)){const {kind,index,value:v}=p.opening,o={id:'preset_'+kind+index,wall:wall.id,kind,t:((p.lo+p.hi)/2-run.lo)/(run.hi-run.lo),length:p.hi-p.lo,side:kind==='door'?(v.o[normal]<0?-1:1):1,entry:!!v.entry};if(kind==='door'){o.name=v.name||'房门';if(v.doorType)o.doorType=v.doorType;o.hingeEnd=v.c[axis]<0;o.hingeSide=Math.abs(v.h[normal]-group.hi)<Math.abs(v.h[normal]-group.lo)?1:-1;}if(kind==='slide'){o.panels=v.panels===3?3:2;if(v.floorTrack!==undefined)o.floorTrack=v.floorTrack;if(v.stackSide)o.stackSide=v.stackSide;}if(kind==='window'){if(v.panels!==undefined)o.panels=v.panels;if(v.stackSide)o.stackSide=v.stackSide;o.sill=v.sill*1000;o.head=(v.head??2.4)*1000;if(v.bayId)o.bayId=v.bayId;}d.openings.push(o);}
       }
     }
     d.width=Math.max(...d.walls.flatMap(w=>[w.a[0],w.b[0]]))+100;d.height=Math.max(...d.walls.flatMap(w=>[w.a[1],w.b[1]]))+100;
     const rooms=clone(plan.rooms);for(const r of rooms){r.poly=r.poly.map(p=>p.map(v=>v+shift));r.at=(r.at||[r.poly.reduce((n,p)=>n+p[0],0)/r.poly.length-shift,r.poly.reduce((n,p)=>n+p[1],0)/r.poly.length-shift]).map(v=>v+shift);if(r.bayRect)r.bayRect=r.bayRect.map(v=>v+shift);}
     d.roomLayout={walls:layoutKey(d.walls),scale,rooms};build(d);return {draft:d,shift};
   }
-  function editOpening(input,id,values){const d=clone(input),o=d.openings.find(v=>v.id===id);if(!o)fail('门窗不存在');Object.assign(o,values);if(o.review==='window-height'&&values.sill!==undefined&&values.head!==undefined||o.review==='door-gap'&&values.t!==undefined&&values.length!==undefined)delete o.review;build(d);return d;}
+  function editOpening(input,id,values){
+    const d=upgrade(input),o=d.openings.find(v=>v.id===id);if(!o)fail('门窗不存在');Object.assign(o,values);
+    // Preset-derived faces keep their original geometry, but share one bay height.
+    if(o.bayId&&!o.bay){
+      for(const sibling of d.openings.filter(v=>v.kind==='window'&&v.bayId===o.bayId))for(const key of ['sill','head'])if(values[key]!==undefined)sibling[key]=values[key];
+      if(values.sill!==undefined)for(const room of d.roomLayout?.rooms||[])if(room.counted===false&&room.bayId===o.bayId)room.height=values.sill/1000;
+    }
+    if(o.review==='window-height'&&values.sill!==undefined&&values.head!==undefined||o.review==='door-gap'&&values.t!==undefined&&values.length!==undefined)delete o.review;
+    build(d);return d;
+  }
   function openingReferences(d,id){
     const o=d.openings.find(v=>v.id===id),w=d.walls.find(v=>v.id===o?.wall);if(!w)fail('门窗不存在');
     const axis=w.a[1]===w.b[1]?0:1,normal=1-axis,center=(w.a[axis]+(w.b[axis]-w.a[axis])*o.t)*d.scale,host=wallRect(w,d.scale,d.walls),refs=[];
@@ -555,6 +569,7 @@
     return {a,b,distance:ref.distance,wall:ref.wallId?wallRect(d.walls.find(w=>w.id===ref.wallId),d.scale,d.walls):null};
   }
   function assertBearingUnchanged(before,after){
+    before=upgrade(before);after=upgrade(after);
     for(const w of before.walls.filter(w=>w.kind==='b')){
       const next=after.walls.find(v=>v.id===w.id);
       const physical=(v,d)=>[...v.a.map(x=>x*d.scale),...v.b.map(x=>x*d.scale),v.thickness,...(v.caps||[-1,-1])];
@@ -563,6 +578,6 @@
       if(openings(before)!==openings(after))fail('Bearing wall openings are locked');
     }
   }
-  root.FurnishDraft={build,validate,minWallLength,wallCorners,snapWall,fitZonesToWalls,beamDefaults,editCeilingBeam,serviceDiameter,editService,beamVertical,editBeam,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
+  root.FurnishDraft={build,validate,upgrade,minWallLength,wallCorners,snapWall,fitZonesToWalls,beamDefaults,editCeilingBeam,serviceDiameter,editService,beamVertical,editBeam,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
   if(typeof module!=='undefined') module.exports=root.FurnishDraft;
 })(typeof window==='undefined'?globalThis:window);

@@ -73,8 +73,8 @@ const P1 = {
     {id:'hall', name:'过道', poly:[[4820,2320],[6360,2320],[6360,3370],[6083,3370],[6083,6610],[4820,6610]], mat:'tile800', at:[5450,4450]},
     {id:'living', name:'客厅', poly:R(4820,6610,10270,10560), mat:'tile800', at:[7600,7560]},
     {id:'balcony', name:'休闲阳台', poly:R(10510,6610,11850,10560), mat:'walnut', at:[11180,9450]},
-    {id:'bay1', name:'主卧飘窗', poly:[[10270,800],[10510,800],[10510,760],[11030,760],[11030,2650],[10510,2650],[10510,2600],[10270,2600]], mat:'marble', counted:false},
-    {id:'bay2', name:'子女房飘窗', poly:[[10270,4260],[10510,4260],[10510,4210],[11030,4210],[11030,5785],[10510,5785],[10510,5740],[10270,5740]], mat:'marble', counted:false},
+    {id:'bay1', bayId:'bay1', name:'主卧飘窗', poly:[[10270,800],[10510,800],[10510,760],[11030,760],[11030,2650],[10510,2650],[10510,2600],[10270,2600]], mat:'marble', counted:false},
+    {id:'bay2', bayId:'bay2', name:'子女房飘窗', poly:[[10270,4260],[10510,4260],[10510,4210],[11030,4210],[11030,5785],[10510,5785],[10510,5740],[10270,5740]], mat:'marble', counted:false},
   ],
   dims:[
     {h:1,at:-750, start:0, segs:[1580,240,2760,240,1540,240,3670]},
@@ -1044,7 +1044,7 @@ const P12 = {
 };
 
 const PLANS = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12];
-P1.wins.forEach((w,i)=>{if(i>=6&&i<=11)w.bayGroup=i<=8?'bay1':'bay2';});
+P1.wins.forEach((w,i)=>{if(i>=6&&i<=11)w.bayId=i<=8?'bay1':'bay2';});
 
 if(typeof module==='object' && module.exports) module.exports=PLANS;
 else root.FurnishPlans=PLANS;
