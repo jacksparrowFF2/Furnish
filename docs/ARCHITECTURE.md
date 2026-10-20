@@ -4,6 +4,12 @@
 
 2026-10-20：`bay-window-core.js` 在 project-core 前加载，共用飘窗部件、范围、高度同步及锁定；窗体／台面进入同一属性与快捷栏。用户已确认台面完成面与窗体下沿始终齐平，共用高度参数，不增加独立下沿或偏移设置；修改台面高保持窗高并同步窗顶高。内置与自定义窗统一 `bayId`，原平面几何与已有 open.w／rooms／draft.bay 存储保留。`floorplan-core.upgrade()` 集中移除旧 bayGroup、补关联及物化原默认类型；恢复／导出覆盖当前、命名、基线与修订。含建筑飘窗使用项目／工作区 v16 与独立缓存；仓库保存区分磁盘旧修订和归一化结果，升级前归档旧工作区。详见 [飘窗整体与升级](BAY-WINDOWS.md)。
 
+2026-10-20：阳台洗衣柜目录合并为完整／基础两入口，沿用原 `laundry-area-left/laundry-left` 新建能力及设计器左右镜像；旧四名称只保留于隐藏规格查找，不重写项目。规格面板说明组合内容，两个水槽保持，未增加字段／加载／保存通道。见 [洗衣柜入口](LAUNDRY-CABINET.md)。
+
+2026-10-20：家居库“当前方案”通过 `src/core/furniture-management-core.js` 共用中心点房间归属、检索和整批锁定／图层／采购修改；`src/ui/current-furniture.js` 管理临时房间筛选及独立勾选，接入原 `mutate()`、`renderAll()` 与选择高亮钩子。核心普通脚本加载在布局几何后，UI 加载在 catalog-ui 后；2D／3D 均可进入。复用现有 `locked/objectLayers/purchaseStatus`，无新增持久字段或版本。语义与验收见 [当前方案家具管理](IMPROVEMENTS.md#2026-10-20当前方案家具管理)。
+
+2026-10-20：家居库通过 `catalog.browseLibrary()` 派生展示分类，原始 `library/findItem/typePrices` 保留规格及估价顺序；用途标签、多词及品牌型号搜索共用目录纯函数。主应用沿原索引添加／拖放与 mutate；`catalog-ui.js` 提供规格详情及原添加入口。`huxing-catalog-favorites` 仅为本机浏览器偏好，不加入项目／工作区或空间确认；搜索／分类／用途／尺寸状态不持久化。无新脚本、加载顺序或项目版本变化。具体范围与边界见 [家居库改进](IMPROVEMENTS.md#2026-10-20家居库分类用途筛选与本机收藏)。
+
 2026-10-20 第三批收尾：`cabinet-core.withDoorSetting()` 共用可选门板外观／铰链字段覆盖及删除校验，两个设计器复用 `cabinetSettingControl()` 显示来源、固定相同值和恢复继承。只删除用户主动恢复的覆盖，保留历史默认及原草稿／mutate；无新字段、版本、加载或保存通道。见 [柜体设计](CABINET-DESIGN.md)。
 
 2026-10-20 第二批：柜体／厨房设计用临时对象目标驱动同一草稿参数区，生产预览 `selectPart()` 与射线／标注点击统一选择柜体、隔间、层板、门板及抽屉；开合留在显式控件。厨房表单直接生成对象分组，删除 `arrange()` 与旧页面状态。旧设计在保存时经 `cabinet-core.upgradeDesign()` 统一物化／清理停用偏好，取消不升级；实际板件、安装语义与采购规格保留，无新持久字段／版本／加载顺序变化。见 [对象参数与升级](CABINET-DESIGN.md#对象参数与旧设计升级2026-10-20第二批)。
@@ -281,3 +287,8 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 
 
 2026-10-20：产品规则 `planBodyOutline/planOutline` 为显式登记的美的空调提供基体截面与含突出部的凸投影；布局核心统一旋转镜像，选择／距离／吸附／实体与梁检查／占地共用轮廓，其它类型矩形回退。曲线采样点不作为角点磁吸。无新增持久字段或加载变化，含该型号的核对使用 `product-plan-shapes-v1`；详见 [模型边界](AIRCON-MIDEA-ULTRA.md#2026-10-20-旋转边界与净距修正)。
+
+
+2026-10-20：`cabinet-motion.js` 扩展已有生产构造器记录器到静板与当前运动板，`solidParts/section/verticalSection` 供 `layout-geometry.bodyParts()`、四向测距与柜内定位共用。普通柜和厨房模块的设备空腔按实际板件判断，浮动净距补上下距离及负值穿板。原运动切孔 API、加载顺序和项目字段不变；确认增加 `cabinet-inner-solids-v1` 并读取普通柜有效默认结构，纯配色不清确认。厨房自动避让保留整体占位，梁命中按家具／梁去重；兼容与精度边界见 [柜内实际板件净距](CABINET-DESIGN.md#柜内设备与实际板件净距2026-10-20)。
+
+2026-10-20：产品核心集中旧柜结构参数，cabinet-core.legacyParts() 派生实际柜体；生产构造器与 cabinet-motion 共用，旧 counter／vanity 记录不物化新字段。见 [旧柜体升级](LEGACY-CABINET-UPGRADE.md)。
