@@ -1,0 +1,31 @@
+{
+  "total": 24,
+  "passed": 24,
+  "failed": [],
+  "names": [
+    "test-block-placeholder.cjs",
+    "test-cabinet-door-settings.cjs",
+    "test-cabinet-edit-operations.cjs",
+    "test-cabinet-model.cjs",
+    "test-cabinet.cjs",
+    "test-furniture-fit.cjs",
+    "test-furniture-snapping-audit.cjs",
+    "test-hob-cutout.cjs",
+    "test-hood-geometry.cjs",
+    "test-kitchen-resize.cjs",
+    "test-kitchen-right.cjs",
+    "test-kitchen-thin-end.cjs",
+    "test-kitchen-u.cjs",
+    "test-kitchen-wall-adjust.cjs",
+    "test-kitchen-worktop.cjs",
+    "test-kitchen.cjs",
+    "test-laundry-cabinet.cjs",
+    "test-laundry-resize-vessel.cjs",
+    "test-laundry-stack.cjs",
+    "test-legacy-cabinet-upgrade.cjs",
+    "test-pipebox.cjs",
+    "test-shower-arrow.cjs",
+    "test-tv-floor.cjs",
+    "test-waterheater-flat.cjs"
+  ]
+}

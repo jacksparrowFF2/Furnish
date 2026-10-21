@@ -1,0 +1,147 @@
+{
+  "total": 20,
+  "passed": 20,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "cabinet-edit-operations",
+      "status": "PASS",
+      "seconds": 23.1,
+      "log": "browser/cabinet-edit-operations.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "cabinet-interior",
+      "status": "PASS",
+      "seconds": 13.4,
+      "log": "browser/cabinet-interior.log",
+      "run": "verification-O4kMjc"
+    },
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 13.4,
+      "log": "browser/cabinet-object-inspector.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "cabinet-opening-3d",
+      "status": "PASS",
+      "seconds": 23.5,
+      "log": "browser/cabinet-opening-3d.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "cabinet-setting-inheritance",
+      "status": "PASS",
+      "seconds": 9.3,
+      "log": "browser/cabinet-setting-inheritance.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "cabinet-simple",
+      "status": "PASS",
+      "seconds": 28.3,
+      "log": "browser/cabinet-simple.log",
+      "run": "verification-O4kMjc"
+    },
+    {
+      "name": "cherry-coffee-table",
+      "status": "PASS",
+      "seconds": 17,
+      "log": "browser/cherry-coffee-table.log",
+      "run": "verification-O4kMjc"
+    },
+    {
+      "name": "furniture-solids",
+      "status": "PASS",
+      "seconds": 12.5,
+      "log": "browser/furniture-solids.log",
+      "run": "verification-NNHccc"
+    },
+    {
+      "name": "kitchen",
+      "status": "PASS",
+      "seconds": 21.6,
+      "log": "browser/kitchen.log",
+      "run": "verification-mp04fV"
+    },
+    {
+      "name": "kitchen-wall-adjust",
+      "status": "PASS",
+      "seconds": 11.2,
+      "log": "browser/kitchen-wall-adjust.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "laundry-area",
+      "status": "PASS",
+      "seconds": 25.4,
+      "log": "browser/laundry-area.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "laundry-cabinet",
+      "status": "PASS",
+      "seconds": 21.6,
+      "log": "browser/laundry-cabinet.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "laundry-catalog",
+      "status": "PASS",
+      "seconds": 12.9,
+      "log": "browser/laundry-catalog.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "laundry-editing",
+      "status": "PASS",
+      "seconds": 8.7,
+      "log": "browser/laundry-editing.log",
+      "run": "verification-mp04fV"
+    },
+    {
+      "name": "laundry-resize-vessel",
+      "status": "PASS",
+      "seconds": 17.9,
+      "log": "browser/laundry-resize-vessel.log",
+      "run": "verification-mp04fV"
+    },
+    {
+      "name": "legacy-cabinet-upgrade",
+      "status": "PASS",
+      "seconds": 13.4,
+      "log": "browser/legacy-cabinet-upgrade.log",
+      "run": "verification-NNHccc"
+    },
+    {
+      "name": "pegboard-accessories",
+      "status": "PASS",
+      "seconds": 17,
+      "log": "browser/pegboard-accessories.log",
+      "run": "verification-mp04fV"
+    },
+    {
+      "name": "pegboard-height",
+      "status": "PASS",
+      "seconds": 34.4,
+      "log": "browser/pegboard-height.log",
+      "run": "verification-mp04fV"
+    },
+    {
+      "name": "pegboard-parts",
+      "status": "PASS",
+      "seconds": 21.5,
+      "log": "browser/pegboard-parts.log",
+      "run": "verification-6ukdZu"
+    },
+    {
+      "name": "shoe-bench",
+      "status": "PASS",
+      "seconds": 16,
+      "log": "browser/shoe-bench.log",
+      "run": "verification-O4kMjc"
+    }
+  ]
+}

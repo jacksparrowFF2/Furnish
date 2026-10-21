@@ -1,0 +1,80 @@
+{
+  "date": "2026-10-21",
+  "baseCommit": "5884da4",
+  "status": "PASS",
+  "scope": [
+    "production structural meshes for oak shoe bench and cherry coffee table",
+    "shared height-clipped clearance/body collision/beam checks",
+    "single upgrade boundary for ordinary, nested, current and named furniture",
+    "local renovation workspace migration"
+  ],
+  "node": {
+    "full": {
+      "regressionSuites": 267,
+      "builtInPlans": 12,
+      "previewPages": 31,
+      "command": "node scripts/check.cjs --keep-going",
+      "log": "node-full.log"
+    },
+    "afterFull": {
+      "resizeSuites": 24,
+      "log": "resize-regressions.log",
+      "additional": [
+        "test-furniture-production-solids",
+        "test-legacy-cabinet-upgrade",
+        "test-block-placeholder",
+        "test-laundry-area",
+        "test-review-consistency",
+        "changed script syntax"
+      ],
+      "reason": "全量通过后补齐已有薄尺寸的编辑规则、采购状态继承和中文结构名称，执行受影响增量复验。"
+    }
+  },
+  "browser": {
+    "total": 20,
+    "passed": 20,
+    "results": "browser-results.json",
+    "entryPoints": [
+      "HTTP",
+      "offline file://"
+    ],
+    "checks": [
+      "production meshes and model selection view",
+      "real collisions retained and cavity false positives removed",
+      "save/cancel and undo/redo",
+      "current/named design upgrade",
+      "real project download/reimport",
+      "refresh/no repeated components",
+      "390px layout",
+      "thin backsplash width editing at unchanged 10mm depth"
+    ],
+    "note": "修复后最新结果；未重跑全部浏览器注册场景。"
+  },
+  "dataUpgrade": "data-upgrade.json",
+  "newPersistentFields": false,
+  "formatVersionChange": false,
+  "removedRuntimeBranches": [
+    "Cabinet.legacyParts",
+    "Products.legacyCabinet / legacyStructure",
+    "KitchenModel.legacy",
+    "cabinet-model old vanity construction",
+    "legacy 12mm pegboard thickness path",
+    "persistent autoDoors / entry.autoColumns writes"
+  ],
+  "knownBoundaries": [
+    "仅有可读取生产结构的已接入模型采用细分实体；其他未知模型和 OBJ 继续保守，不推定空腔。",
+    "RoundedBox 基础件的圆边仍使用小范围外盒，换鞋凳最大相关圆角14mm；弯曲腿板按每四列形成窄凸条，保留小范围保守曲率误差。",
+    "静态抽屉、连接件外观估算与空隙不构成操作路径、承重或安装合格确认。",
+    "缺失结构按当前标准模型升级，旧内部分板／净空不保证逐板相同，旧空间确认需重新核对。"
+  ],
+  "notRun": [
+    "all other browser registry cases",
+    "physical touchscreen",
+    "manufacturer installation/construction verification"
+  ],
+  "visualReviewed": [
+    "furniture-solids-http-3d.png",
+    "unified-furniture-http-3d.png",
+    "furniture-solids-http-narrow.png"
+  ]
+}

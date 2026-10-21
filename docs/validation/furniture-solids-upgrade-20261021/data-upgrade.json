@@ -1,0 +1,16 @@
+{
+  "workEntries": 9,
+  "namedDesigns": 1,
+  "originalFurnitureRecords": 404,
+  "currentFurnitureRecords": 426,
+  "previouslyUnconfiguredCabinets": 89,
+  "oldCombinedKitchens": 11,
+  "remainingUnconfiguredCabinets": 0,
+  "preservedOriginalRecords": 404,
+  "allOriginalNonStructureFieldsPreserved": true,
+  "groupsLayersLocksAndPurchasing": "production test and browser import/export/undo verified",
+  "canonicalRoundtrip": true,
+  "repeatedRestoreNoDrift": true,
+  "beforeSha256": "b6fdc4296aed68dcb0e8a6e2feb0aef7a9c9ba5cc597180c4ed27f4ee666368f",
+  "afterSha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54"
+}

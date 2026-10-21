@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-21：家具空隙和统一升级。product-rules 的 solidModel 能力将换鞋凳／樱桃木茶几接入 furniture-solids 数值记录器；直接执行生产构造器，共用 CabinetMotion.section / verticalSection、Geometry.bodyParts / volumeOverlap 和 Snapping.directional。弯板按窄条拆分，记录实际杆件与网格；圆角基础件保留边缘小范围保守盒。furniture-upgrade 统一将旧组合厨房转换为标准地柜＋吊柜＋背板，普通／嵌套柜体物化当前配置，取消散落的 legacyParts / KitchenModel.legacy 生产分支；恢复、导入和新建沿原保存链路。没有新字段／格式版本；原当前、命名方案及图层一并升级。详见 [统一升级](CABINET-DESIGN.md#统一家具升级与实际实体2026-10-21)、[验收记录](validation/furniture-solids-upgrade-20261021/summary.json)。
+
 2026-10-21：水槽四向净距可保存 `counterLink.offset` 模块局部毫米偏移，产品核心集中能力与范围，厨房核心共用适配／恢复／生产孔环；设计核心数值定位和原 mutate 写入完整关联。旧缺失保持居中；既有 link／孔环缓存及核对输入覆盖偏移，无新加载脚本或保存通道。契约见 [关联偏移](SINK-ARROW.md#关联水槽的四向净距偏移2026-10-21)。
 
 2026-10-20：洞洞板置物板、挂钩和灯带由 cabinet-core.pegboardParts 共用单项／旧总开关回退规则，生产构造器分别生成三组实体；原 pegboardPlacement 继续平移全部保留子节点。UI 七项控制沿原草稿／mutate 保存，未编辑旧数据不物化新项；无新脚本或加载／格式变化。见 [独立附件](ENTRY-PEGBOARD-CABINET.md#置物板挂钩灯带独立开关2026-10-20)。
