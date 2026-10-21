@@ -9,7 +9,7 @@ async (page,verification)=>{
   await p.evaluate(()=>{
    const originalRooms=structuredClone(state.rooms);
    PLAN={...PLAN,walls:[[3000,-1000,3200,3000]],wins:[],doors:[],slides:[],rooms:[{id:'measure-room',name:'测量验收',mat:'tile800',at:[1000,1000],poly:[[-1000,-1000],[3000,-1000],[3000,3000],[-1000,3000]]}]};applyPlanData();state=freshWork(PLAN);
-   state.rooms={...originalRooms,...state.rooms};const a=F('counter','测试台面 A',1000,1000,600,550,0,'#d9cbb7'),b=F('counter','测试台面 B',2100,1000,600,550,0,'#c4d7db');a.id='measure-a';b.id='measure-b';state.furniture=[a,b];ui.layers.clear=true;renderAll();zoomToBox([400,200,2700,1800],300);
+   state.rooms={...originalRooms,...state.rooms};const a=F('counter','测试台面 A',1000,1000,600,550,0,'#d9cbb7'),b=F('counter','测试台面 B',2100,1000,600,550,0,'#c4d7db');a.id='measure-a';b.id='measure-b';state.furniture=[a,b].map(f=>FurnishKitchen.configure(f,{...FurnishKitchen.defaults(f),modules:[{run:0,width:f.w,role:'door'}]}));ui.layers.clear=true;renderAll();zoomToBox([400,200,2700,1800],300);
   });
   await p.evaluate(()=>zoomToBox([500,-1300,3500,1500],80));
   await p.keyboard.press('m');

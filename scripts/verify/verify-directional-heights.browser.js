@@ -7,7 +7,7 @@ async (page,verification)=>{
    const rooms=structuredClone(state.rooms);
    PLAN={...PLAN,walls:[[0,0,100,6000],[0,0,6000,100],[5900,0,6000,6000],[0,5900,6000,6000]],wins:[],doors:[],slides:[],rooms:[{id:'height-room',name:'燃气灶与吊柜',mat:'tile800',at:[3000,3000],poly:[[100,100],[5900,100],[5900,5900],[100,5900]]}]};applyPlanData();
    state=freshWork(PLAN);state.rooms={...rooms,...state.rooms};state.furniture=[F('counter','实体台面',3800,2200,1800,600,0,'#e0ccb0'),F('stove_fotile_th36b','方太燃气灶 TH36B-T',3900,2210,750,440,0,'#111214')];
-   delete state.furniture[0].kitchen;state.furniture[0].h=860;state.furniture[0].id='height-host';state.furniture[1].id='height-stove';state.measures=[];ui.layers.clear=true;renderAll();selectIds(['height-stove']);zoomToBox([2600,1600,5000,2900],180);
+   Object.assign(state.furniture[0],FurnishKitchen.configure(state.furniture[0],{...FurnishKitchen.defaults(state.furniture[0]),modules:[{run:0,width:1800,role:'door'}]}));state.furniture[0].h=860;state.furniture[0].id='height-host';state.furniture[1].id='height-stove';state.measures=[];ui.layers.clear=true;renderAll();selectIds(['height-stove']);zoomToBox([2600,1600,5000,2900],180);
   });
   const read=()=>p.evaluate(()=>Object.fromEntries(Object.entries(directionalMeasurements()).map(([d,m])=>[d,m&&Math.round(m.distance)])));
   const baseline=JSON.stringify(await read());check(baseline===JSON.stringify({l:625,r:425,t:90,b:70}),'baseline physical distances');
@@ -27,7 +27,7 @@ async (page,verification)=>{
   await p.screenshot({animations:'disabled',path:dir+'rotated.png'});
   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{closeDrawers();zoomToBox([2600,1600,5000,2900],80);});await p.screenshot({animations:'disabled',path:dir+'mobile-canvas.png'});
   await verification.openDistanceControls(p);check(await p.locator('[data-distance-row]').count()===4,'mobile panel');check(await p.evaluate(()=>document.documentElement.scrollWidth<=390),'no horizontal overflow');await p.screenshot({animations:'disabled',path:dir+'mobile-panel.png'});
-  await p.waitForFunction(()=>!savePending);const final=await p.evaluate(()=>JSON.stringify({furniture:state.furniture,measures:state.measures}));await p.reload();await p.locator('#drawing-compass').waitFor();
+  await p.waitForFunction(()=>!savePending);const final=await p.evaluate(()=>JSON.stringify({furniture:FurnishFurnitureUpgrade.upgradeList(state.furniture).furniture,measures:state.measures}));await p.reload();await p.locator('#drawing-compass').waitFor();
   check(await p.evaluate(()=>JSON.stringify({furniture:state.furniture,measures:state.measures}))===final,'refresh preserves cabinets and measurements');const restoredDistances=await p.evaluate(()=>Object.fromEntries(Object.entries(FurnishSnapping.directional(getF('height-stove'),{furniture:state.furniture,rotation:drawingRotation()})).map(([d,m])=>[d,m&&Math.round(m.distance)])));check(JSON.stringify(restoredDistances)===JSON.stringify({l:70,r:90,t:625,b:425}),'refresh furniture distances');check(!errors.length,errors.join('\n'));
   return {status:'PASS',legacyAndModular:true,addUndoRedo:true,saveUndoRedo:true,canvasAndPanel:true,drawingRotation:true,mobile390:true,refresh:true,errors};
  }catch(e){return {status:'FAIL',message:e.message,stack:e.stack,errors};}finally{await context.close();}
