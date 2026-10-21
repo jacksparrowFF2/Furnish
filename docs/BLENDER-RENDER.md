@@ -52,7 +52,7 @@ node scripts/serve.cjs --open
 
 增量验收记录见 [summary.json](validation/blender-render-20261021/summary.json)。覆盖普通脚本共享声明与入口资源、快照米制与旋转镜像、相机、隐藏与顶面、实例化属性、GLB 校验、接口同源限制、单任务、启动器提前退出、失败、取消和结果下载。HTTP 和断网 `file://` 生产导出、刷新与 390 px 窄屏通过；实际商店版 Blender 导入、Cycles 渲染、界面关闭重开及 PNG/BLEND/GLB 下载通过。
 
-未执行全量 `node scripts/check.cjs` 或无关历史预览遍历。未验证其他操作系统或其他 Blender 版本；GPU 验收范围见上节。保留相机与空间几何不保证与 WebGL 的光照观感相同；当前基础世界光适合作为后续精修起点，未实现实时同步、动画片段导出、浏览器着色器烘焙或 Blender 修改反向写回。
+未执行全量 `node scripts/check.cjs` 或无关历史预览遍历。未验证其他操作系统或其他 Blender 版本；GPU 验收范围见上节。保留相机与空间几何不保证与 WebGL 的光照观感相同；当前基础世界光适合作为后续精修起点，另有本机单向[持续同步试用版](BLENDER-SYNC.md)；尚不支持动画片段导出、浏览器着色器烘焙或 Blender 修改反向写回。
 
 增量复验：
 

@@ -418,6 +418,7 @@
 <script src="src/ui/repository-workspace.js"></script>
 <script src="vendor/three-r160/gltf-exporter.offline.js"></script>
 <script src="src/io/blender-export.js"></script>
+<script src="src/ui/blender-sync.js"></script>
 <script src="src/ui/blender-render.js"></script>
 <!-- three.js r160（base64 内联，离线可用）。放在页面末尾：先完成 2D 界面的解析与首屏绘制 -->
 <script type="importmap">
@@ -456,6 +457,7 @@ window.View3D = {
   cabinetPreview:(host,f,onToggle) => load().then(() => impl.cabinetPreview(host,f,onToggle)),
   walking:() => !!impl?.walking(),
   blenderScene:options => load().then(() => impl.blenderScene(options)),
+  blenderSyncSignature:() => impl?.blenderSyncSignature(),
 };
 
 // 以下函数体即原 3D 模块（未重新缩进）
@@ -1925,8 +1927,9 @@ function blenderScene(options={}){
  if(!inited||!active||anim||fly)throw Error(tr('请等待三维视角稳定后重试。','Wait for the 3D camera to settle and retry.'));
  sync();
  if(furnitureRenderErrors.size)throw Error(tr('请先修复三维模型错误再导出。','Resolve 3D model errors before exporting.'));
- return FurnishBlenderExport.encode(THREE,{groups:[archFloor,archUp,furnG,lampG],camera,sun,material:o=>observation.material(o),...options,meta:{plan:PLAN.name,originMm:[OX,OY],cut:opt.cut,temporaryFocusClipping:false}});
+ return FurnishBlenderExport.encode(THREE,{groups:[archFloor,archUp,furnG,lampG],camera,sun,material:o=>observation.material(o),...options,meta:{plan:PLAN.name,planId:PLAN.id,originMm:[OX,OY],cut:opt.cut,temporaryFocusClipping:false}});
 }
+function blenderSyncSignature(){if(!inited||!active||anim||fly)return null;sync();return JSON.stringify([PLAN.id,sigArch,sigFurn,state.objectLayers?.assignments,state.objectLayers?.layers?.map(l=>[l.id,l.visible]),opt.furn,opt.lamps]);}
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
 function image(){if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
 
@@ -1954,7 +1957,7 @@ function cabinetPreview(host,f,actions){
 
 function ceilingPreview(host,data,options){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data,...options});}
 function tileLayoutPreview(host,options){return FurnishTileLayoutPreview.create({THREE,OrbitControls,host,...options});}
-return {blenderScene,refreshObservationLayers,tileLayoutPreview,tileRoomAt,refreshTileInspection,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
+return {blenderScene,blenderSyncSignature,refreshObservationLayers,tileLayoutPreview,tileRoomAt,refreshTileInspection,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
 }
 </script>
 </body>

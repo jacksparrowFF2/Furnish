@@ -1,22 +1,29 @@
 /* Snapshot production geometry, without serializing live userData or modifying the scene. */
 (function(root){
 'use strict';
-function snapshot(T,{groups,camera,sun,material=o=>o.material,includeCeilings=false,meta={}}){
- const scene=new T.Scene();scene.name='Furnish';scene.userData={furnish:{version:1,unit:'m',...meta}};
- const materials=new Map();let meshCount=0;
+function snapshot(T,{groups,camera,sun,material=o=>o.material,includeCeilings=false,expandInstances=false,includeHidden=false,meta={}}){
+ const scene=new T.Scene();scene.name='Furnish';scene.userData={furnish:{version:1,syncSchema:1,unit:'m',...meta}};
+ const materials=new Map(),counts=new Map();let meshCount=0,legacyCount=0;
  function clean(m){if(materials.has(m))return materials.get(m);const c=m.clone();c.userData={};c.clippingPlanes=null;c.envMap=null;c.onBeforeCompile=()=>{};materials.set(m,c);return c;}
- function visit(o,owner='',shown=true){
-  shown=shown&&o.visible;if(!shown||o.isCSS2DObject||o.isLine||o.isPoints||o.isHelper||o.userData.modelError||o.userData.wallOriginMarker)return;
-  owner=o.userData.fid||owner;
-  const key=o.userData.layerObject||'';
-  if(!includeCeilings&&(key.startsWith('roomCeiling:')||o.userData.ceiling))return;
+ function visit(o,owner='',shown=true,part='',layer=''){
+  shown=shown&&o.visible;if(!shown&&!includeHidden||o.isCSS2DObject||o.isLine||o.isPoints||o.isHelper||o.userData.modelError||o.userData.wallOriginMarker)return;
+  if(o.userData.fid&&o.userData.fid!==owner){owner=o.userData.fid;part='';}
+  const key=o.userData.layerObject||layer;
+  if(!includeCeilings&&(key.startsWith('roomCeiling:')||o.userData.ceiling)){if(!includeHidden)return;shown=false;}
   if(o.isMesh&&!o.material?.wireframe){
-   const m=material(o),geometry=o.geometry.clone(),mats=Array.isArray(m)?m.map(clean):clean(m),mesh=o.isInstancedMesh?new T.InstancedMesh(geometry,mats,o.count):new T.Mesh(geometry,mats);
-   if(o.isInstancedMesh){mesh.instanceMatrix=o.instanceMatrix.clone();if(o.instanceColor)mesh.instanceColor=o.instanceColor.clone();}
-   mesh.name=(owner?'Furniture_'+owner:'Architecture')+'_'+(++meshCount);mesh.matrix.copy(o.matrixWorld);mesh.matrixAutoUpdate=false;
-   mesh.userData={...(owner?{furnishId:owner}:{}),...(key?{layerObject:key}:{})};scene.add(mesh);
+   const m=material(o),geometry=o.geometry.clone(),mats=Array.isArray(m)?m.map(clean):clean(m),prefix=owner?'furniture:'+owner+':'+part:'architecture:'+key;
+   const ordinal=counts.get(prefix)||0;counts.set(prefix,ordinal+1);const id=owner?prefix:prefix+':'+ordinal;
+   const kind=String(o.userData.cherryCoffeePart||o.userData.partKind||o.geometry.type||'Mesh');
+   const legacyName=(owner?'Furniture_'+owner:'Architecture')+'_'+(++legacyCount);
+   const add=(mesh,matrix,suffix='')=>{meshCount++;mesh.name=legacyName+suffix.replace('/instance:','_instance_');mesh.matrix.copy(matrix);mesh.matrixAutoUpdate=false;mesh.userData={furnishObjectId:id+suffix,furnishPartKind:kind,furnishLegacyName:legacyName,furnishVisible:shown,...(owner?{furnishId:owner}:{}),...(key?{layerObject:key}:{})};scene.add(mesh);};
+   if(o.isInstancedMesh&&expandInstances){
+    for(let i=0;i<o.count;i++){const transform=new T.Matrix4();o.getMatrixAt(i,transform);let instanceMats=mats;
+     if(o.instanceColor){const color=new T.Color();o.getColorAt(i,color);const tint=c=>{const n=c.clone();n.color.multiply(color);materials.set(n,n);return n;};instanceMats=Array.isArray(mats)?mats.map(tint):tint(mats);}
+     add(new T.Mesh(geometry,instanceMats),new T.Matrix4().multiplyMatrices(o.matrixWorld,transform),'/instance:'+i);
+    }
+   }else{const mesh=o.isInstancedMesh?new T.InstancedMesh(geometry,mats,o.count):new T.Mesh(geometry,mats);if(o.isInstancedMesh){mesh.instanceMatrix=o.instanceMatrix.clone();if(o.instanceColor)mesh.instanceColor=o.instanceColor.clone();}add(mesh,o.matrixWorld);}
   }else if(o.isPointLight&&o.intensity>0){const light=new T.PointLight(o.color,o.intensity,o.distance,2);light.position.setFromMatrixPosition(o.matrixWorld);light.name='FurnishLamp';scene.add(light);}
-  for(const child of o.children)visit(child,owner,shown);
+  o.children.forEach((child,i)=>visit(child,owner,shown,part+'/'+i,key));
  }
  for(const group of groups){group.updateWorldMatrix(true,true);visit(group);}
  if(!meshCount)throw Error('没有可导出的实体 / No visible meshes');

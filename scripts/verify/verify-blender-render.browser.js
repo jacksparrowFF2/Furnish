@@ -20,8 +20,13 @@ async (page,verification)=>{
    await p.locator('#dlgClose').click();await p.setViewportSize({width:390,height:844});await p.locator('#vBlender').click();
    check(await p.locator('#blender-export').isVisible(),'mobile export visible');check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'mobile page overflow');
    check(await p.locator('.blender-render').evaluate(e=>e.scrollWidth<=e.clientWidth),'mobile panel overflow');await p.screenshot({path:verification.output('playwright/blender/'+mode+'-mobile.png'),animations:'disabled'});
+   await p.locator('.blender-sync>summary').click();
+   check(await p.locator('[data-sync-auto]').isDisabled()===(mode==='file'),'sync requires local service mode');
+   if(mode==='file')check(await p.locator('[data-sync-send]').isDisabled(),'offline sync push disabled');
+   else{await p.locator('[data-sync-auto]').check();check(await p.evaluate(()=>FurnishBlenderSync.state().enabled),'sync enabled before reload');}
    await p.locator('#dlgClose').click();await p.reload();await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await p.waitForTimeout(1000);await p.locator('#vBlender').click();check(await p.locator('#blender-export').isEnabled(),'reload export');
-   check(!errors.length,errors.join(';'));check(!external.length,external.join(';'));results.push({mode,passed:true,projectUnchanged:true,mirroredRotatedProductionFurniture:true,downloads:true,ceilingsOption:true,mobile:true,reload:true,errors,external});
+   check(await p.evaluate(()=>!FurnishBlenderSync.state().enabled),'reload stops automatic sync');
+   check(!errors.length,errors.join(';'));check(!external.length,external.join(';'));results.push({mode,passed:true,projectUnchanged:true,mirroredRotatedProductionFurniture:true,downloads:true,ceilingsOption:true,mobile:true,reload:true,syncOfflineAndReload:true,errors,external});
   }finally{await context.close();}
  }
  return results;

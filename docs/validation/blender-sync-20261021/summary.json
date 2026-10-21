@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-21",
+  "scope": "Incremental one-way Furnish to Blender continuous sync preview",
+  "passed": true,
+  "checkpointPushed": "cd9ae37a915e9d24adb3b20256924e5da4e60791",
+  "checks": {
+    "node": [
+      "tests/test-blender-sync.cjs",
+      "tests/test-blender-render.cjs",
+      "tests/test-blender-device.cjs",
+      "tests/test-server-startup.cjs"
+    ],
+    "browser": {
+      "path": "output/playwright/verification-4ytyW8/results.json",
+      "cases": [
+        "blender-render",
+        "portable-smoke"
+      ],
+      "httpAndOfflineFile": true,
+      "syncDisabledOffline": true,
+      "automaticSyncStopsOnReload": true
+    },
+    "realBlender": {
+      "path": "output/playwright/blender-sync-J7T1Nv/summary.json",
+      "passed": true,
+      "browserErrors": [],
+      "publisherAutoWhilePanelClosed": true,
+      "priceIgnored": true,
+      "narrowScreen": true,
+      "receiver": {
+        "passed": true,
+        "steps": [
+          {
+            "step": "first",
+            "objects": 1338,
+            "materialPreserved": true,
+            "cameraAndLightPreserved": true,
+            "acknowledged": true
+          },
+          {
+            "step": "moved",
+            "objects": 1354,
+            "materialPreserved": true,
+            "cameraAndLightPreserved": true,
+            "acknowledged": true
+          },
+          {
+            "step": "hidden",
+            "objects": 1354,
+            "materialPreserved": true,
+            "cameraAndLightPreserved": true,
+            "acknowledged": true
+          },
+          {
+            "step": "deleted",
+            "objects": 339,
+            "materialPreserved": true,
+            "cameraAndLightPreserved": true,
+            "acknowledged": true
+          },
+          {
+            "step": "restored",
+            "objects": 1354,
+            "materialPreserved": true,
+            "cameraAndLightPreserved": true,
+            "acknowledged": true
+          },
+          {
+            "step": "origin",
+            "objects": 1354,
+            "materialPreserved": true,
+            "cameraAndLightPreserved": true,
+            "acknowledged": true
+          }
+        ],
+        "zipInstalledAndRegistered": true,
+        "sourceMatrixMirrorVerified": true,
+        "hiddenMaterialRetained": true,
+        "deleteUndoMaterialRestored": true,
+        "originNoDrift": true,
+        "repeatedApplyNoDuplicates": true,
+        "poseLock": true,
+        "sourceMaterialsOption": true,
+        "unrelatedObjectsPreserved": true,
+        "planAndDuplicateGuards": true,
+        "addonUnregistered": true,
+        "matchedLegacyAdoption": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        }
+      },
+      "repeatedDataCountsStable": true
+    }
+  },
+  "artifacts": {
+    "addon": "D:/1601装修/渲染/Furnish持续同步/furnish-sync.zip",
+    "addonSha256": "ce68edaecaa457c3cecdcfc93295f8d504ea941a63866407d1661ea621eb1b39"
+  },
+  "isolation": "Browser workspace and Blender add-on installation isolated; user workspaces and Blender preferences untouched.",
+  "notRun": [
+    "Full repository regression",
+    "Other platforms and Blender versions",
+    "Full adoption of the original refined 1601 study",
+    "Two-way editing and conflict merge"
+  ],
+  "limits": [
+    "Full snapshots after settled 3D edits; no animation streaming",
+    "Source owns mesh geometry; default retains compatible Blender material slots",
+    "Architecture ordinals and changed model child paths are not semantic cross-version identities",
+    "No automatic Blender file save or complete exception rollback",
+    "Historical GLB snapshots and deleted-material fake users require manual cleanup"
+  ]
+}

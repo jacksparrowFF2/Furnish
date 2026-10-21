@@ -25,6 +25,7 @@ function validateGLB(buffer){
  return json;
 }
 function create(root,{discover=findBlender,spawn=cp.spawn,kill=pid=>process.kill(pid),pollMs=700,startupMs=90000,timeoutMs=30*60*1000}={}){
+ const sync=require('./blender-sync-server.cjs').create(root,{validateGLB});
  const jobs=new Map(),base=path.join(root,'.local','blender-renders'),script=path.join(root,'scripts','blender-render.py');let accepting=false;
  function publicJob(j){return {id:j.id,state:j.state,message:j.message,width:j.width,height:j.height,quality:j.quality,device:j.device,renderDevice:j.renderDevice||null,created:j.created,...(j.state==='done'?{image:`/api/furnish/blender/jobs/${j.id}/image`,blend:`/api/furnish/blender/jobs/${j.id}/blend`,scene:`/api/furnish/blender/jobs/${j.id}/scene`}:{})};}
  function finish(j,state,message){j.state=state;j.message=message;clearInterval(j.timer);j.timer=null;}
@@ -78,6 +79,7 @@ function create(root,{discover=findBlender,spawn=cp.spawn,kill=pid=>process.kill
   try{
    const host=req.headers.host||'',origin=req.headers.origin;
    if(!/^(127\.0\.0\.1|localhost):\d+$/.test(host)||origin&&origin!=='http://'+host||req.headers['sec-fetch-site']==='cross-site')throw Object.assign(Error('仅允许本机同源访问'),{status:403});
+   if(await sync.handle(req,res))return true;
    if(req.method==='GET'&&url.pathname==='/api/furnish/blender/status'){const executable=discover();reply(200,{available:!!executable,executable,job:[...jobs.values()].reverse().map(publicJob)[0]||null});return true;}
    if(req.method==='POST'&&req.headers['x-furnish-request']!=='blender-v1')throw Object.assign(Error('无效的渲染请求'),{status:403});
    if(req.method==='POST'&&url.pathname==='/api/furnish/blender/jobs'){

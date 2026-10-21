@@ -17,12 +17,13 @@ function open(){
   <p class="muted">${tr('鸟瞰建议保留顶面关闭；完整墙体请先在“显示”中选“全高墙”。自动模式优先 GPU，不可用时回退 CPU；仅 GPU 模式失败会明确报错。材质和布光效果可能与三维预览不同。','Keep ceilings off for aerial views; select Full walls in View for full-height architecture. Auto prefers GPU and falls back to CPU; GPU-only failures are reported. Materials and lighting may differ from the preview.')}</p>
   <p id="blender-service" role="status">${tr('正在检测本地 Blender…','Checking local Blender…')}</p>
   <div class="blender-buttons"><button class="btn" id="blender-export">${tr('导出 Blender 场景 GLB','Export GLB for Blender')}</button><button class="btn primary" id="blender-start" disabled>${tr('一键渲染','Render')}</button><button class="btn" id="blender-cancel" hidden>${tr('取消渲染','Cancel render')}</button></div>
-  <p id="blender-progress" role="status" aria-live="polite"></p><p id="blender-device-result"></p><div id="blender-result"></div>
+  <p id="blender-progress" role="status" aria-live="polite"></p><p id="blender-device-result"></p><div id="blender-result"></div><div id="blender-sync-host"></div>
   <details><summary>${tr('使用说明','Instructions')}</summary><p>${tr('GLB 可在 Blender 的“文件 → 导入 → glTF 2.0”打开。内嵌纹理、相机和基础灯光；导入后将活动相机设为 FurnishCamera。','In Blender, use File → Import → glTF 2.0. Textures, camera and basic lights are embedded; set FurnishCamera as the active camera.')}</p><p>${tr('一键渲染需要通过本地服务打开 Furnish：node scripts/serve.cjs --open。支持 Blender 4.2+，包括商店版 blender-launcher.exe；自定义位置可通过 FURNISH_BLENDER 环境变量设置。','For one-click rendering, open Furnish through node scripts/serve.cjs --open. Blender 4.2+ is supported, including the Store launcher; set FURNISH_BLENDER for a custom executable.')}</p><p>${tr('关闭此面板后任务继续运行，重新打开可查看结果。服务重启后任务列表清空，文件保留在 .local/blender-renders。','Jobs continue when this panel closes. Reopen to see results. Restarting the service clears the job list; files remain in .local/blender-renders.')}</p></details></div>`,
   actions:[{label:tr('关闭','Close')}],onClose:()=>{if(token===session){session++;clearTimeout(timer);}},onOpen:()=>bind(token)});
 }
 function bind(token){
  const box=document.querySelector('.blender-render'),q=s=>box.querySelector(s),alive=()=>token===session&&box.isConnected;
+ root.FurnishBlenderSync?.mount(q('#blender-sync-host'));
  let available=false,busy=false;
  const progress=text=>{if(alive())q('#blender-progress').textContent=text;};
  const running=()=>!!currentJob&&['starting','importing','rendering','cancelling'].includes(currentJob.state);

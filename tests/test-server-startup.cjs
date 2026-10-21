@@ -38,7 +38,7 @@ function listen(server){return new Promise((resolve,reject)=>{server.once('error
  let active;
  try{
   fs.mkdirSync(path.join(isolated,'scripts'));
-  for(const file of ['serve.cjs','repository-server.cjs','server-runtime.cjs','blender-server.cjs','blender-render.py'])fs.copyFileSync(path.join(root,'scripts',file),path.join(isolated,'scripts',file));
+  for(const file of ['serve.cjs','repository-server.cjs','server-runtime.cjs','blender-server.cjs','blender-render.py','blender-sync-server.cjs','blender-sync-addon.py'])fs.copyFileSync(path.join(root,'scripts',file),path.join(isolated,'scripts',file));
   fs.cpSync(path.join(root,'src'),path.join(isolated,'src'),{recursive:true});
   active=run(port,isolated);await active.ready;
   const url=`http://127.0.0.1:${port}`;
