@@ -48,14 +48,18 @@ def main():
     parser.add_argument('--height', type=int, default=640)
     parser.add_argument('--samples', type=int, default=32)
     parser.add_argument('--device', choices=('auto', 'gpu', 'cpu'), default='auto')
+    parser.add_argument('--template')
+    parser.add_argument('--camera',choices=('source','active','living','dining','kitchen','bedroom'),default='source')
+    parser.add_argument('--quality',choices=('preview','final'),default='preview')
     args = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
     target = Path(args.progress)
     render_device = None
+    render_info = None
 
     def progress(state, message):
         temp = target.with_suffix('.tmp')
         temp.write_text(json.dumps(dict(token=args.token, pid=os.getpid(), state=state,
-                                        message=message, renderDevice=render_device)), encoding='utf-8')
+                                        message=message, renderDevice=render_device,renderInfo=render_info)), encoding='utf-8')
         temp.replace(target)
 
     try:
@@ -65,31 +69,36 @@ def main():
             return
         if bpy.app.version < (4, 2, 0):
             raise RuntimeError('需要 Blender 4.2 或更高版本')
-        bpy.ops.wm.read_factory_settings(use_empty=True)
-        bpy.ops.import_scene.gltf(filepath=str(Path(args.input).resolve()))
-        scene = bpy.context.scene
-        cameras = [o for o in scene.objects if o.type == 'CAMERA']
-        if not cameras:
-            raise RuntimeError('导出场景缺少相机')
-        scene.camera = next((o for o in cameras if o.name.startswith('FurnishCamera')), cameras[0])
+        if args.template:
+            import importlib.util
+            progress('importing','正在加载精修材质、布光并更新布局')
+            spec=importlib.util.spec_from_file_location('refined_worker',Path(__file__).with_name('blender-refined.py'));helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+            scene,render_info=helper.prepare(args.template,args.input,args.camera)
+            if scene.render.engine!='CYCLES':raise ValueError('当前精修入口需要Cycles工程')
+        else:
+            bpy.ops.wm.read_factory_settings(use_empty=True)
+            bpy.ops.import_scene.gltf(filepath=str(Path(args.input).resolve()))
+            scene = bpy.context.scene
+            cameras = [o for o in scene.objects if o.type == 'CAMERA']
+            if not cameras:raise RuntimeError('导出场景缺少相机')
+            scene.camera = next((o for o in cameras if o.name.startswith('FurnishCamera')), cameras[0])
         scene.unit_settings.system = 'METRIC'
         scene.unit_settings.scale_length = 1
         scene.render.engine = 'CYCLES'
         render_device = select_device(scene, args.device, bpy.context.preferences.addons['cycles'].preferences)
-        scene.cycles.samples = args.samples
-        scene.cycles.use_denoising = True
+        if not args.template or args.quality=='preview':scene.cycles.samples=min(scene.cycles.samples,args.samples) if args.template else args.samples
+        if not args.template:scene.cycles.use_denoising = True
         scene.render.resolution_x = args.width
         scene.render.resolution_y = args.height
         scene.render.resolution_percentage = 100
         scene.render.image_settings.file_format = 'PNG'
         scene.render.filepath = str(Path(args.output).resolve())
-        scene.render.film_transparent = False
-        scene.world = bpy.data.worlds.new('Furnish World')
-        scene.world.use_nodes = True
-        background = scene.world.node_tree.nodes.get('Background')
-        background.inputs['Color'].default_value = (0.75, 0.82, 1.0, 1.0)
-        background.inputs['Strength'].default_value = 0.35
-        scene.view_settings.view_transform = 'AgX'
+        if not args.template:
+            scene.render.film_transparent = False
+            scene.world = bpy.data.worlds.new('Furnish World');scene.world.use_nodes = True
+            background = scene.world.node_tree.nodes.get('Background');background.inputs['Color'].default_value = (0.75, 0.82, 1.0, 1.0);background.inputs['Strength'].default_value = 0.35
+            scene.view_settings.view_transform = 'AgX'
+        if render_info:render_info.update(samples=scene.cycles.samples,exposure=scene.view_settings.exposure,viewTransform=scene.view_settings.view_transform,resolution=[args.width,args.height])
         bpy.ops.file.pack_all()
         bpy.ops.wm.save_as_mainfile(filepath=str(Path(args.blend).resolve()))
         if (target.parent / 'cancel').exists():

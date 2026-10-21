@@ -86,7 +86,7 @@ def fetch_snapshot(url, token, revision):
         raise
 
 
-def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_legacy=False):
+def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_legacy=False, capture_camera=False):
     """Called on Blender's main thread only. Managed meshes own geometry/transforms."""
     plan = manifest['planId']; origin = manifest['originMm']
     collections = [c for c in scene.collection.children if c.get('furnishPlanId')]
@@ -189,10 +189,19 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
         if first and not any(o.type=='LIGHT' for o in before if o.name in scene.objects):
             for light in (o for o in incoming if o.type=='LIGHT'):
                 light.matrix_world=delta @ light.matrix_world;collection.objects.link(light);retained.add(light)
+        render_camera=None
+        if capture_camera:
+            render_camera=next((o for o in incoming if o.type=='CAMERA'),None)
+            if render_camera is None:raise ValueError('导出场景缺少渲染相机')
+            render_camera.matrix_world=delta @ render_camera.matrix_world
+            if render_camera.name not in scene.collection.objects:scene.collection.objects.link(render_camera)
+            retained.add(render_camera)
         collection['furnishRevision']=manifest['revision']
         collection['furnishMaterialBank']=json.dumps(bank)
         bpy.context.view_layer.update()
-        return dict(added=added,updated=updated,deleted=deleted,adopted=adopted,revision=manifest['revision'])
+        result=dict(added=added,updated=updated,deleted=deleted,adopted=adopted,revision=manifest['revision'])
+        if render_camera:result['renderCamera']=render_camera.name
+        return result
     finally:
         if active_camera:scene.camera=active_camera
         scene.world=world

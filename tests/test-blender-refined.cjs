@@ -1,0 +1,17 @@
+'use strict';
+const assert=require('assert/strict'),fs=require('fs'),path=require('path'),os=require('os'),http=require('http'),events=require('events');
+const B=require('../scripts/blender-server.cjs'),P=require('../scripts/blender-project.cjs');
+function glb(planId='test'){const json=Buffer.from(JSON.stringify({asset:{version:'2.0'},meshes:[{}],cameras:[{}],nodes:[{mesh:0,extras:{furnishObjectId:'f:a:/0'}}],scenes:[{extras:{furnish:{syncSchema:1,unit:'m',planId,originMm:[1,2]}}}]})),size=Math.ceil(json.length/4)*4,b=Buffer.alloc(20+size,32);b.writeUInt32LE(0x46546c67);b.writeUInt32LE(2,4);b.writeUInt32LE(b.length,8);b.writeUInt32LE(size,12);b.writeUInt32LE(0x4e4f534a,16);json.copy(b,20);return b;}
+async function main(){
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'furnish-refined-')),file=path.join(root,'refined.blend');fs.writeFileSync(file,'BLENDER fixture');assert.equal(P.read(root),null);assert.throws(()=>P.register(root,file,'../bad'));P.register(root,file,'test');assert.equal(P.read(root).planId,'test');let args;
+ const bridge=B.create(root,{discover:()=>'/fake/blender',spawn:(_exe,argv)=>{args=argv;const child=new events.EventEmitter();child.stdout=new events.EventEmitter();child.stderr=new events.EventEmitter();child.kill=()=>{};return child;},pollMs:10});const server=http.createServer((req,res)=>bridge.handle(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port+'/api/furnish/blender';
+ async function post(query,body=glb()){const r=await fetch(base+'/jobs?width=960&height=720&quality=preview&source=refined&'+query,{method:'POST',headers:{'Content-Type':'model/gltf-binary','X-Furnish-Request':'blender-v1'},body});return {code:r.status,data:await r.json()};}
+ try{
+  const status=await(await fetch(base+'/status')).json();assert.equal(status.refinedProject.name,'refined.blend');assert.equal(status.refinedProject.file,undefined);
+  assert.equal((await post('camera=active',glb('other'))).code,400);assert.equal((await post('camera=../../evil')).code,400);
+  const result=await post('camera=active&template=C:/untrusted.blend');assert.equal(result.code,202);assert.equal(result.data.source,'refined');const job=bridge.jobs.get(result.data.id),copy=path.join(job.dir,'template.blend');assert(args.includes(copy));assert(!args.includes('C:/untrusted.blend'));assert.equal(fs.readFileSync(copy,'utf8'),'BLENDER fixture');fs.writeFileSync(file,'changed after submission');assert.equal(fs.readFileSync(copy,'utf8'),'BLENDER fixture');
+  const progress={token:job.id,pid:123,state:'done',message:'Refined complete',renderDevice:{backend:'OPTIX'},renderInfo:{source:'refined',world:'Kept World',exposure:-.6}};fs.writeFileSync(path.join(job.dir,'render.png'),'PNG');fs.writeFileSync(path.join(job.dir,'scene.blend'),'BLEND');fs.writeFileSync(path.join(job.dir,'progress.json'),JSON.stringify(progress));await new Promise(r=>setTimeout(r,40));assert.equal(job.state,'done');const done=await(await fetch(base+'/jobs/'+job.id)).json();assert.equal(done.renderInfo.world,'Kept World');assert.equal(done.renderInfo.exposure,-.6);
+ }finally{bridge.close();for(const job of bridge.jobs.values())clearInterval(job.timer);await new Promise(r=>server.close(r));assert(path.resolve(root).startsWith(path.resolve(os.tmpdir())+path.sep));fs.rmSync(root,{recursive:true,force:true});}
+ console.log('PASS refined registration, plan/camera guards, trusted template snapshot, progress and preserved-look report');
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});

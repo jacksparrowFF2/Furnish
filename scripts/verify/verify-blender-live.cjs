@@ -16,7 +16,7 @@ async function main(){
   if(await page.locator('#blender-cancel').isVisible())throw Error('Idle cancel button must be hidden');
   if(await page.locator('#blender-device').inputValue()!=='auto')throw Error('Default device should prefer GPU');
   console.log('Starting real render through UI');await page.locator('#blender-start').click();await page.waitForFunction(()=>!document.querySelector('#blender-cancel').hidden||document.querySelector('#blender-result img'));
-  await page.locator('#dlgClose').click();await page.locator('#vBlender').click();await page.waitForFunction(()=>!!document.querySelector('#blender-result img'),{},{timeout:180000});await page.locator('#blender-result img').evaluate(img=>img.decode());
+  await page.locator('#blender-dock-close').click();await page.locator('#vBlender').click();await page.waitForFunction(()=>!!document.querySelector('#blender-result img'),{},{timeout:180000});await page.locator('#blender-result img').evaluate(img=>img.decode());
   if(!(await page.locator('#blender-device-result').innerText()).trim())throw Error('Actual device was not displayed');
   if(await page.evaluate(()=>JSON.stringify(state))!==original)throw Error('Rendering changed project state');
   await page.screenshot({path:path.join(run,'desktop.png'),animations:'disabled'});
