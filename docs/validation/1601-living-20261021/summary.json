@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-21",
+  "status": "PASS",
+  "scope": "Saved 1601 living-room interior visualization study; no general application or data-rule changes",
+  "source": {
+    "workspace": "projects/workspace.furnish.json",
+    "sha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54",
+    "planId": "custom_mv37igji",
+    "planName": "1601",
+    "furnitureCount": 61,
+    "unchangedAfterDelivery": true
+  },
+  "productionCapture": {"gltfMeshes": 2704, "gltfNodes": 2707, "materials": 296},
+  "blender": {"version": "4.5.14 LTS", "distribution": "Microsoft Store", "backend": "OPTIX", "gpu": "NVIDIA GeForce RTX 4070 Ti SUPER"},
+  "outputs": {
+    "directory": "D:/1601装修/渲染/1601客厅样板-20261021",
+    "resolution": [1920, 1440],
+    "samples": 256,
+    "images": ["01-沙发主视角.png", "02-电视墙视角.png", "03-客厅全景.png", "04-同机位基础管线-闭帘.png"],
+    "packedProject": "1601客厅室内样板.blend",
+    "parameters": "渲染参数与源数据核对.json"
+  },
+  "passed": [
+    "Read-only browser production capture of saved 1601, with write API denied and no page errors",
+    "Changed Node script syntax and Python AST syntax",
+    "Real import and GPU rendering, all four delivered images visually inspected",
+    "All four PNG headers checked for 1920x1440 dimensions; BLEND header checked",
+    "4299 imported mesh objects retained; world matrices unchanged except two curtain panels and four TV parts",
+    "Raw GLB PBR factors used for texture-connected material colors",
+    "800mm tile grid preserves saved 2mm joint and layout origin",
+    "Source workspace SHA-256 verified unchanged after capture and delivery"
+  ],
+  "renderOnlyDifferences": [
+    "Procedural material refinements and photographic daylight/fill",
+    "Curtain panels opened; rod and finials preserved",
+    "TV rotated 180 degrees around saved centre to face the sofa; original saved orientation remains unchanged"
+  ],
+  "notRun": ["Full regression suite", "Physical material scan/color matching", "Measured lighting or solar-position calibration", "Construction/installation validation"],
+  "limits": [
+    "Standalone sample preset, not a new general-purpose one-click render mode",
+    "Some original appliance and architectural details remain simplified",
+    "No invented exterior scenery or additional rugs/artwork",
+    "Baseline preserves closed curtains and the original generic pipeline, so it is much darker"
+  ]
+}

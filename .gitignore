@@ -11,6 +11,8 @@
 /output/
 /node_modules/
 /debug.log
+__pycache__/
+*.pyc
 
 # Machine-local recovery copies and interrupted atomic writes; projects stay tracked.
 /.local/

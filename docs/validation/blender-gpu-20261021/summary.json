@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-21",
+  "scope": "Incremental GPU device selection, API, worker and UI verification",
+  "status": "PASS",
+  "hardware": {"gpu": "NVIDIA GeForce RTX 4070 Ti SUPER", "memoryMiB": 16376, "driver": "617.42"},
+  "blender": {"version": "4.5.14 LTS", "distribution": "Microsoft Store", "actualBackend": "OPTIX"},
+  "passed": [
+    "GPU-only actual rendering of the production GLB (540 meshes, including GPU instancing) and PNG/BLEND/GLB downloads",
+    "Default auto mode actual GPU rendering through production HTTP API and UI",
+    "Actual backend and GPU name displayed after panel reopen; project state unchanged",
+    "Desktop and 390px narrow-screen visual inspection",
+    "HTTP and offline file:// export, refreshed device panel and narrow-screen layout",
+    "Backend selection order, CPU exclusion, simulated CUDA/HIP/oneAPI/Metal alternatives, no-GPU auto fallback and strict GPU failure",
+    "Device parameter validation, backward-compatible automatic mode and worker argument forwarding",
+    "Changed JavaScript and Python syntax, classic-script declarations and git diff whitespace checks"
+  ],
+  "evidence": {
+    "deviceTests": "node tests/test-blender-device.cjs",
+    "apiTests": "node tests/test-blender-render.cjs",
+    "actualGPU": "output/playwright/blender/local-result.json",
+    "actualUI": "output/playwright/blender-live-YarGGX/summary.json",
+    "offlineAndHTTP": "output/playwright/verification-kqltBy/results.json",
+    "screenshots": ["desktop.png", "mobile.png"]
+  },
+  "notRun": ["Full regression suite", "Physical AMD/Intel/Apple GPU tests", "GPU driver crash and out-of-memory fault injection", "Speed benchmark against CPU"],
+  "limits": [
+    "GPU acceleration does not itself add lighting, material or model detail",
+    "Recoverable RuntimeError can retry on CPU in auto mode; fatal process/driver failures still report a failed job",
+    "Current basic lighting/material pipeline is not claimed to deliver finished photorealistic interior visualization"
+  ]
+}

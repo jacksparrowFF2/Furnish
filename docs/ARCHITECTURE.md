@@ -1,5 +1,11 @@
 # 模块与加载约定
 
+2026-10-21：`render-1601-living.cjs` 通过隔离浏览器只读导出保存的真实 1601；`blender-1601-living.py` 在独立工程中实现客厅材质／光照／机位样板，记录源哈希、网格及姿态差异，不挂接主应用加载或持久化。见 [1601 客厅样板](BLENDER-1601-LIVING.md)。
+
+2026-10-21：Blender worker 增加自动优先 GPU／仅 GPU／CPU 参数，旧客户端默认自动；设备后端及回退结果随任务原子进度文件进入 API 和 UI，不新增项目持久字段。支持商店版并通过本机 RTX 4070 Ti SUPER OptiX 实测，见 [GPU 渲染](BLENDER-RENDER.md#gpu-渲染2026-10-21)。
+
+2026-10-21：三维新增 Blender GLB 导出与本地一键渲染。`blender-export.js` 快照生产网格、世界姿态、相机及基础灯光，离线使用 r160 官方导出器普通脚本工厂；`blender-render.js` 管理临时 UI，原三维门面仅增加快照接口。本地 `blender-server.cjs` 在仓库 API 前处理固定 worker 任务，支持商店执行别名和进度文件，不改项目数据或保存链路。见 [Blender 渲染契约](BLENDER-RENDER.md)。
+
 2026-10-21：家具空隙和统一升级。product-rules 的 solidModel 能力将换鞋凳／樱桃木茶几接入 furniture-solids 数值记录器；直接执行生产构造器，共用 CabinetMotion.section / verticalSection、Geometry.bodyParts / volumeOverlap 和 Snapping.directional。弯板按窄条拆分，记录实际杆件与网格；圆角基础件保留边缘小范围保守盒。furniture-upgrade 统一将旧组合厨房转换为标准地柜＋吊柜＋背板，普通／嵌套柜体物化当前配置，取消散落的 legacyParts / KitchenModel.legacy 生产分支；恢复、导入和新建沿原保存链路。没有新字段／格式版本；原当前、命名方案及图层一并升级。详见 [统一升级](CABINET-DESIGN.md#统一家具升级与实际实体2026-10-21)、[验收记录](validation/furniture-solids-upgrade-20261021/summary.json)。
 
 2026-10-21：水槽四向净距可保存 `counterLink.offset` 模块局部毫米偏移，产品核心集中能力与范围，厨房核心共用适配／恢复／生产孔环；设计核心数值定位和原 mutate 写入完整关联。旧缺失保持居中；既有 link／孔环缓存及核对输入覆盖偏移，无新加载脚本或保存通道。契约见 [关联偏移](SINK-ARROW.md#关联水槽的四向净距偏移2026-10-21)。

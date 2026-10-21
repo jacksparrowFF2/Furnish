@@ -761,3 +761,16 @@ header #paneBtns #tgLayers span { display:inline; }
 
 .layer-locate {border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;min-width:0;flex:1;cursor:pointer}
 .layer-locate:hover {color:var(--accent)}
+.blender-render {display:grid;gap:12px;min-width:0}
+.blender-render [hidden] {display:none!important}
+.blender-render p {margin:0;overflow-wrap:anywhere}
+.blender-options {display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.blender-options label {display:grid;gap:6px;max-width:100%}
+.blender-options select {max-width:100%}
+.blender-options .blender-check {display:flex;align-items:center}
+.blender-buttons {display:flex;gap:8px;flex-wrap:wrap}
+#blender-progress {white-space:pre-wrap;max-height:180px;overflow:auto}
+#blender-result img {display:block;max-width:100%;max-height:55vh;object-fit:contain;margin-bottom:10px}
+#blender-result .btn {margin:0 8px 8px 0}
+#blender-result a.btn {color:var(--ink);text-decoration:none}
+.blender-render details p {margin-top:10px}

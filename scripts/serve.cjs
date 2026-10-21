@@ -4,6 +4,7 @@ const root=path.resolve(__dirname,'..'),port=Number(process.env.FURNISH_PORT||87
 const runtime=require('./server-runtime.cjs'),codeFingerprint=runtime.fingerprint(__filename);
 const instance={app:'furnish',protocol:1,root:fs.realpathSync(root),fingerprint:codeFingerprint,pid:process.pid,token:require('node:crypto').randomUUID()};
 const repository=require('./repository-server.cjs').create(root);
+const blender=require('./blender-server.cjs').create(root);
 const mime={'.html':'text/html;charset=utf-8','.js':'text/javascript;charset=utf-8','.mjs':'text/javascript;charset=utf-8','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.json':'application/json','.webmanifest':'application/manifest+json','.pdf':'application/pdf','.wasm':'application/wasm','.dxf':'text/plain','.obj':'text/plain'};
 function control(req,res){
  const route=req.url.split('?')[0];if(!['/api/furnish/server','/api/furnish/server/restart'].includes(route))return false;
@@ -16,7 +17,8 @@ function control(req,res){
  }else reply(403,{error:'Invalid control request'});
  return true;
 }
-const server=http.createServer(async(req,res)=>{if(control(req,res)||await repository.handle(req,res))return;let file;try{const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);file=path.resolve(root,'.'+(pathname==='/'?'/index.html':pathname));if(!file.startsWith(root+path.sep)||file.slice(root.length+1).split(path.sep).some(s=>s.startsWith('.'))){res.writeHead(403).end();return;}}catch{res.writeHead(400).end();return;}fs.readFile(file,(err,data)=>{if(err){res.writeHead(404).end();return;}res.writeHead(200,{'Content-Type':mime[path.extname(file).toLowerCase()]||'application/octet-stream','Cache-Control':'no-store'});res.end(data);});});
+const server=http.createServer(async(req,res)=>{if(control(req,res)||await blender.handle(req,res)||await repository.handle(req,res))return;let file;try{const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);file=path.resolve(root,'.'+(pathname==='/'?'/index.html':pathname));if(!file.startsWith(root+path.sep)||file.slice(root.length+1).split(path.sep).some(s=>s.startsWith('.'))){res.writeHead(403).end();return;}}catch{res.writeHead(400).end();return;}fs.readFile(file,(err,data)=>{if(err){res.writeHead(404).end();return;}res.writeHead(200,{'Content-Type':mime[path.extname(file).toLowerCase()]||'application/octet-stream','Cache-Control':'no-store'});res.end(data);});});
+server.on('close',()=>blender.close());
 const url=`http://127.0.0.1:${port}/`;
 function openPage(){
  if(!process.argv.includes('--open')||process.platform!=='win32')return;

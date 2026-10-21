@@ -38,12 +38,13 @@ function listen(server){return new Promise((resolve,reject)=>{server.once('error
  let active;
  try{
   fs.mkdirSync(path.join(isolated,'scripts'));
-  for(const file of ['serve.cjs','repository-server.cjs','server-runtime.cjs'])fs.copyFileSync(path.join(root,'scripts',file),path.join(isolated,'scripts',file));
+  for(const file of ['serve.cjs','repository-server.cjs','server-runtime.cjs','blender-server.cjs','blender-render.py'])fs.copyFileSync(path.join(root,'scripts',file),path.join(isolated,'scripts',file));
   fs.cpSync(path.join(root,'src'),path.join(isolated,'src'),{recursive:true});
   active=run(port,isolated);await active.ready;
   const url=`http://127.0.0.1:${port}`;
   const info=await (await fetch(url+'/api/furnish/server')).json();
   assert.equal(info.pid,active.child.pid);
+  assert.equal((await fetch(url+'/api/furnish/blender/status')).status,200);
   assert.equal((await fetch(url+'/api/furnish/server/restart',{method:'POST'})).status,403);
   assert.equal((await fetch(url+'/api/furnish/server/restart',{method:'POST',headers:{'X-Furnish-Restart':info.token,Origin:'https://other.example'}})).status,403);
   // A different checkout cannot stop or reuse this server.
@@ -64,6 +65,9 @@ function listen(server){return new Promise((resolve,reject)=>{server.once('error
   const old=active;active=run(port,isolated);await active.ready;await old.closed;
   const updated=await (await fetch(url+'/api/furnish/server')).json();
   assert.notEqual(updated.pid,info.pid);assert.notEqual(updated.fingerprint,info.fingerprint);
+  fs.appendFileSync(path.join(isolated,'scripts/blender-server.cjs'),'\n// Updated render bridge\n');
+  const previousRender=active;active=run(port,isolated);await active.ready;await previousRender.closed;
+  assert.notEqual((await (await fetch(url+'/api/furnish/server')).json()).fingerprint,updated.fingerprint);
   assert.equal((await (await fetch(url+'/api/furnish/workspace')).json()).revision,revision);
   assert.equal((await run(port,isolated).closed).code,0);
   const afterRestart=await fetch(url+'/api/furnish/workspace',{method:'PUT',headers:{'Content-Type':'application/json','X-Furnish-Request':'workspace-v1'},body:JSON.stringify({workspace,baseRevision:revision})});

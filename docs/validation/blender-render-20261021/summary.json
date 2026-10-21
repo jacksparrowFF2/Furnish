@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-21",
+  "scope": "Incremental Blender export, local render bridge, UI and server dependency/startup verification",
+  "status": "PASS",
+  "installedBlender": {
+    "distribution": "Microsoft Store",
+    "version": "4.5.14 LTS",
+    "entry": "%LOCALAPPDATA%/Microsoft/WindowsApps/blender-launcher.exe",
+    "reinstallRequired": false
+  },
+  "passed": [
+    "Changed JavaScript syntax, Python AST syntax, classic shared declarations and entry resource references",
+    "Snapshot world matrices, metres, rotation/mirror, camera, hidden objects, ceiling option, material isolation and InstancedMesh attributes",
+    "GLB magic/version/length/resources validation and camera/mesh requirements",
+    "Loopback API origin/custom-header/parameter limits, busy job, failure, cancellation, downloadable results",
+    "Store launcher exit 0 does not imply render completion; worker progress controls lifecycle",
+    "Production server reuse, backend dependency fingerprints/restart, same-origin control and existing workspace persistence",
+    "Production GLB export through HTTP and offline file://, with no external requests",
+    "Rotated/mirrored bed and tea-table production model with EXT_mesh_gpu_instancing; actual Store Blender import and Cycles rendering",
+    "Export preserves project state, reload works, 390px viewport inspected",
+    "Real production API and UI one-click render, panel close/reopen, unchanged work, PNG/BLEND/GLB downloads, desktop and mobile screenshots",
+    "Portable smoke: HTTP/file loading, production 3D, cache reload and undo/redo"
+  ],
+  "evidence": {
+    "unitCommand": "node tests/test-blender-render.cjs",
+    "serverCommand": "node tests/test-server-startup.cjs",
+    "browserRun": "output/playwright/verification-lgiQvq/results.json",
+    "browserWithInstances": "output/playwright/verification-SY85A0/results.json",
+    "liveUIRun": "output/playwright/blender-live-Odo7xh/summary.json",
+    "liveRenderRun": "output/playwright/blender/local-result.json",
+    "realGLBMeshCount": 540,
+    "realGLBExtensions": ["KHR_texture_transform", "EXT_mesh_gpu_instancing", "KHR_lights_punctual"],
+    "screenshots": ["desktop.png", "mobile.png"],
+    "renderExample": "render.png"
+  },
+  "resolvedDuringVerification": [
+    "Store execution alias cannot be followed by stat: identify its reparse point using lstat",
+    "Hidden cancel control overridden by button styling: scope hidden display rule",
+    "Existing isolated startup fixture needed the new Blender backend dependency and worker"
+  ],
+  "notRun": [
+    "Full node scripts/check.cjs and unrelated historical preview/browser suites",
+    "Other Blender versions or operating systems",
+    "GPU rendering and device performance comparison",
+    "Manual operation of the Blender desktop editor"
+  ],
+  "boundaries": [
+    "Cycles CPU with basic world light; WebGL shader, exposure and reflection appearance is not reproduced exactly",
+    "Temporary focus clipping is excluded; actual wall-cut production geometry and visible layers are exported",
+    "No live synchronization, animation clip export, custom shader baking or reverse updates",
+    "Generated disk results are retained; service restart clears the in-memory job list"
+  ]
+}

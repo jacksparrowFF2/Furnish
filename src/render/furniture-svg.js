@@ -158,7 +158,7 @@ const DASH = 'stroke-dasharray="4 3"';
       + rc(x+w*.02,y+d*.12,w*.025,d*.76,'#aeb0b2',`rx="${d*.06}"`)
       + rc(x+w*.955,y+d*.12,w*.025,d*.76,'#aeb0b2',`rx="${d*.06}"`)
       + rc(-w*.42,y+d*.84,w*.84,d*.1,'#17191c',`rx="${d*.04}"`);
-    case 'tv': return rc(x,y,w,d,c,'rx="10"') + rc(x+w*.3,y+d,w*.4,Math.min(40,d),'#666');
+    case 'tv': return rc(-w*.3,y,w*.6,d*.6,'#333','data-tv-part="rear"') + rc(x,y+d*.6,w,d*.4,c,'rx="4" data-tv-part="panel"');
     case 'aircon_midea_ultra_2hp': {const P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),unit={type:t,w,d},pts=P.planBodyOutline(unit,64),outline=P.planOutline(unit);return pa('M'+outline.map(p=>p.join(',')).join('L')+'Z',c)+pa('M'+pts.slice(23,42).map(p=>[p[0]*.96,p[1]*.96].join(',')).join('L'),'none')+rc(-w*.23,d*.45,w*.46,d*.027,'#11191e',`rx="${w*.025}"`);}
     case 'aircon': return rc(x,y,w,d,c,'rx="30"') + ln(x+40,y+d*.72,x+w-40,y+d*.72) + ln(x+40,y+d*.86,x+w-40,y+d*.86);
     case 'acwall': {
