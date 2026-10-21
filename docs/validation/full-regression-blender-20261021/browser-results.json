@@ -1,0 +1,1390 @@
+{
+  "canonicalCases": 163,
+  "results": [
+    {
+      "name": "aircon-midea",
+      "status": "PASS",
+      "seconds": 18.9,
+      "log": "aircon-midea.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"aircon-midea\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "appliance-module-boundaries",
+      "status": "PASS",
+      "seconds": 2.7,
+      "log": "appliance-module-boundaries.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"appliance-module-boundaries\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"sinkAndHob\":true,\"localModules\":true,\"adjoiningWalls\":true,\"demolitionUndoRedo\":true,\"windowAndDistantWall\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"sinkAndHob\":true,\"localModules\":true,\"adjoiningWalls\":true,\"demolitionUndoRedo\":true,\"windowAndDistantWall\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "aquarium",
+      "status": "PASS",
+      "seconds": 26.3,
+      "log": "aquarium.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"aquarium\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"errors\":[],\"externalRequests\":0}]}\n"
+    },
+    {
+      "name": "bay-assemblies",
+      "status": "PASS",
+      "seconds": 18.4,
+      "log": "bay-assemblies.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"bay-assemblies\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "beam-body",
+      "status": "PASS",
+      "seconds": 33.6,
+      "log": "beam-body.log",
+      "run": "OSfFyf",
+      "output": "{\"case\":\"beam-body\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"file\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0}]}}\n"
+    },
+    {
+      "name": "beam-heights",
+      "status": "PASS",
+      "seconds": 24.5,
+      "log": "beam-heights.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"beam-heights\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"file\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0}]}}\n"
+    },
+    {
+      "name": "blender-render",
+      "status": "PASS",
+      "seconds": 26,
+      "log": "blender-render.log",
+      "run": "7YbW4S",
+      "output": "{\"case\":\"blender-render\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"projectUnchanged\":true,\"mirroredRotatedProductionFurniture\":true,\"downloads\":true,\"ceilingsOption\":true,\"mobile\":true,\"reload\":true,\"syncOfflineAndReload\":true,\"errors\":[],\"external\":[]},{\"mode\":\"file\",\"passed\":true,\"projectUnchanged\":true,\"mirroredRotatedProductionFurniture\":true,\"downloads\":true,\"ceilingsOption\":true,\"mobile\":true,\"reload\":true,\"syncOfflineAndReload\":true,\"errors\":[],\"external\":[]},{\"mode\":\"refined-panel\",\"passed\":true,\"ceilingChoiceRetained\":true}]}\n"
+    },
+    {
+      "name": "block-placeholder",
+      "status": "PASS",
+      "seconds": 26.6,
+      "log": "block-placeholder.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"block-placeholder\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true},{\"mode\":\"http\",\"passed\":true}]}\n"
+    },
+    {
+      "name": "cabinet-boundary-snapping",
+      "status": "PASS",
+      "seconds": 11.8,
+      "log": "cabinet-boundary-snapping.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-boundary-snapping\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"rotations\":[0,37,90,180,270],\"mirrors\":true,\"axes\":[\"w\",\"d\"],\"checks\":[\"actual resize pointers to walls and furniture\",\"guides\",\"wall slide to cabinet end\",\"undo/redo\",\"refresh\",\"narrow layout\"]},{\"mode\":\"file\",\"passed\":true,\"rotations\":[0,37,90,180,270],\"mirrors\":true,\"axes\":[\"w\",\"d\"],\"checks\":[\"actual resize pointers to walls and furniture\",\"guides\",\"wall slide to cabinet end\",\"undo/redo\",\"refresh\",\"narrow layout\"]}]}\n"
+    },
+    {
+      "name": "cabinet-catalog",
+      "status": "PASS",
+      "seconds": 12.7,
+      "log": "cabinet-catalog.log",
+      "run": "kP4RUE",
+      "output": "[{\"mode\":\"file-offline\",\"entries\":9,\"templates\":19,\"errors\":[]},{\"mode\":\"http\",\"entries\":9,\"templates\":19,\"errors\":[]}]\n{\"case\":\"cabinet-catalog\",\"status\":\"PASS\"}\n"
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 67.8,
+      "log": "cabinet-custom-fronts.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-custom-fronts\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"templates\":19,\"checks\":[\"three independent\",\"adjacent custom pairs\",\"five middle independent\",\"individual hinges\",\"dimensions and complete lists\",\"unchanged widths/interiors\",\"save cancel undo redo refresh\",\"nested editor\",\"actual project roundtrip\",\"390 px\"],\"errors\":[]}}\n"
+    },
+    {
+      "name": "cabinet-dimensions",
+      "status": "PASS",
+      "seconds": 9.1,
+      "log": "cabinet-dimensions.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-dimensions\",\"status\":\"PASS\",\"result\":{\"passed\":\"overall/module dimensions, L/interleaved indices, empty module, number selection, dimension toggle, precision, save/undo/redo/refresh, front, hidden doors, mobile\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "cabinet-divider-growth",
+      "status": "PASS",
+      "seconds": 11.7,
+      "log": "cabinet-divider-growth.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-divider-growth\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"passed\":true,\"checks\":[\"real pointer drag increases current module\",\"total input follows pointer growth\",\"neighbor width input stays unchanged during pointer drag\",\"Escape restores module and total\",\"cancelled drag and save preserve complete original design\",\"released pointer keeps grown width\",\"saved pointer drag grows total and preserves every other module\",\"one undo restores pointer growth\",\"redo and refresh restore pointer growth\",\"mobile keyboard shrinks only current module by one mm\",\"keyboard shrink persists without neighbor compensation\",\"no page errors\"]},{\"mode\":\"file\",\"passed\":true,\"checks\":[\"real pointer drag increases current module\",\"total input follows pointer growth\",\"neighbor width input stays unchanged during pointer drag\",\"Escape restores module and total\",\"cancelled drag and save preserve complete original design\",\"released pointer keeps grown width\",\"saved pointer drag grows total and preserves every other module\",\"one undo restores pointer growth\",\"redo and refresh restore pointer growth\",\"mobile keyboard shrinks only current module by one mm\",\"keyboard shrink persists without neighbor compensation\",\"no page errors\"]}]}}\n"
+    },
+    {
+      "name": "cabinet-door-coverage",
+      "status": "PASS",
+      "seconds": 5.3,
+      "log": "cabinet-door-coverage.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-door-coverage\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"laundryDoors\":6,\"thinDoors\":5,\"errors\":[]}}\n"
+    },
+    {
+      "name": "cabinet-doors",
+      "status": "PASS",
+      "seconds": 25.6,
+      "log": "cabinet-doors.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-doors\",\"status\":\"PASS\",\"result\":{\"passed\":\"six directions, none, global/bay/display limits, current angle, automatic legacy kitchen, unfolded view, vanity body, real room 3D, mobile, save/cancel/undo/redo/refresh and actual project download/upload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "cabinet-drawer-dimensions",
+      "status": "PASS",
+      "seconds": 4.6,
+      "log": "cabinet-drawer-dimensions.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-drawer-dimensions\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"initialFronts\":5,\"drawerFronts\":3,\"basketFronts\":2,\"errors\":[]}}\n"
+    },
+    {
+      "name": "cabinet-edit-operations",
+      "status": "PASS",
+      "seconds": 37.8,
+      "log": "cabinet-edit-operations.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-edit-operations\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"checks\":[\"legacy automatic toggles removed\",\"editor has no error\",\"total resize preserves three existing bays\",\"editor has no error\",\"numeric bay resize grows total width\",\"numeric width preserves right neighbor\",\"resizing preserves shelf positions\",\"one undo restores whole edit\",\"redo restores edit\",\"production preview divider grows total and preserves neighbors\",\"preview refresh preserves untouched fractional bay widths\",\"divider edit undo\",\"invalid width gives actionable lower bound\",\"editor has no error\",\"invalid/corrected/cancel keeps saved state\",\"module numeric edits always grow total\",\"save closes dialog\",\"explicit grow-total preserves other widths\",\"typing a target count does not repartition\",\"editor has no error\",\"explicit repartition updates draft\",\"cancel discards repartition\",\"repartition saves without resizing total\",\"editor has no error\",\"fit adds doors to existing open bay\",\"fit does not alter interiors or widths\",\"refresh restores saved design\",\"open and save without edits preserves data\",\"390px designer fits viewport\",\"390px bay width accessible\",\"390px fit doors accessible\",\"template storage opens/navigates/saves without data drift\",\"template pantry800 opens/navigates/saves without data drift\",\"template pantry500 opens/navigates/saves without data drift\",\"template sideboard opens/navigates/saves without data drift\",\"template sideboard-drawers opens/navigates/saves without data drift\",\"template sideboard-open opens/navigates/saves without data drift\",\"template sideboard-mixed opens/navigates/saves without data drift\",\"template sideboard-wall opens/navigates/saves without data drift\",\"template sideboard-fridge opens/navigates/saves without data drift\",\"template wardrobe opens/navigates/saves without data drift\",\"template shoe opens/navigates/saves without data drift\",\"template book opens/navigates/saves without data drift\",\"template chest opens/navigates/saves without data drift\",\"template base opens/navigates/saves without data drift\",\"template wall opens/navigates/saves without data drift\",\"template tv opens/navigates/saves without data drift\",\"template tv-floor opens/navigates/saves without data drift\",\"template entry-pegboard opens/navigates/saves without data drift\",\"template entry-console opens/navigates/saves without data drift\",\"no page errors\"],\"errors\":[]}}\n"
+    },
+    {
+      "name": "cabinet-interior",
+      "status": "PASS",
+      "seconds": 15.7,
+      "log": "cabinet-interior.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-interior\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"results\":[{\"mode\":\"http\",\"status\":\"PASS\",\"sixDirections\":true,\"numericPlacement\":true,\"actualShelfCollision\":true,\"openDoor\":true,\"production3D\":true,\"narrow\":true,\"saveUndoRedoRefresh\":true,\"roundtrip\":true,\"errors\":[]},{\"mode\":\"offline-file\",\"status\":\"PASS\",\"sixDirections\":true,\"numericPlacement\":true,\"actualShelfCollision\":true,\"openDoor\":true,\"production3D\":true,\"narrow\":true,\"saveUndoRedoRefresh\":true,\"roundtrip\":true,\"errors\":[]}]}}\n"
+    },
+    {
+      "name": "cabinet-layout",
+      "status": "PASS",
+      "seconds": 3.3,
+      "log": "cabinet-layout.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-layout\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"checks\":[\"36px workspace buttons at 1500\",\"40px equal footer controls at 1500\",\"40px fields at 1500\",\"no outer desktop scrollbar at 1500\",\"36px workspace buttons at 1280\",\"40px equal footer controls at 1280\",\"40px fields at 1280\",\"no outer desktop scrollbar at 1280\",\"390px no horizontal overflow\",\"no page errors\"]}}\n"
+    },
+    {
+      "name": "cabinet-module-widths",
+      "status": "PASS",
+      "seconds": 26.4,
+      "log": "cabinet-module-widths.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-module-widths\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"passed\":true,\"checks\":[\"no optional grow checkbox is needed\",\"input uses external module width\",\"finder retains module selection\",\"production annotation uses module outer width\",\"unchanged open/save preserves old data exactly\",\"numeric module width grows total and preserves neighbors\",\"one undo restores old design\",\"redo and refresh preserve converted widths\",\"divider updates external width input immediately\",\"divider updates object list immediately\",\"divider grows total without changing neighboring width\",\"invalid outer width rejected\",\"equal action equalizes external widths\",\"module outer width accessible at 390px\",\"no mobile page overflow\",\"current and named project roundtrip preserves internal data\",\"hood centre also edits outer module width\",\"hood unchanged save preserves physical cavity\",\"hood outer edit grows total and preserves both storage modules\",\"nested width edit stays in parent draft\",\"parent cancel discards nested growth\",\"nested cabinet growth updates parent width and preserves adjacent module\",\"nested save is one parent undo\",\"nested growth survives redo and refresh\",\"laundry upper cabinet width changes independently inside its host footprint\",\"laundry upper neighboring module widths stay unchanged\",\"laundry footprint overflow rejected\",\"rejected nested growth and cancel preserve last valid assembly\",\"no page errors\"]},{\"mode\":\"file\",\"passed\":true,\"checks\":[\"no optional grow checkbox is needed\",\"input uses external module width\",\"finder retains module selection\",\"production annotation uses module outer width\",\"unchanged open/save preserves old data exactly\",\"numeric module width grows total and preserves neighbors\",\"one undo restores old design\",\"redo and refresh preserve converted widths\",\"divider updates external width input immediately\",\"divider updates object list immediately\",\"divider grows total without changing neighboring width\",\"invalid outer width rejected\",\"equal action equalizes external widths\",\"module outer width accessible at 390px\",\"no mobile page overflow\",\"current and named project roundtrip preserves internal data\",\"hood centre also edits outer module width\",\"hood unchanged save preserves physical cavity\",\"hood outer edit grows total and preserves both storage modules\",\"nested width edit stays in parent draft\",\"parent cancel discards nested growth\",\"nested cabinet growth updates parent width and preserves adjacent module\",\"nested save is one parent undo\",\"nested growth survives redo and refresh\",\"laundry upper cabinet width changes independently inside its host footprint\",\"laundry upper neighboring module widths stay unchanged\",\"laundry footprint overflow rejected\",\"rejected nested growth and cancel preserve last valid assembly\",\"no page errors\"]}]}}\n"
+    },
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 19.8,
+      "log": "cabinet-object-inspector.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-object-inspector\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"passed\":true,\"checks\":[\"no legacy pages\",\"bay fields follow selection\",\"shelf has direct number input\",\"Enter applies number within draft without closing designer\",\"drawer fields follow selection and commit shelf\",\"fit opens door inspector\",\"production face annotation selects door parameters\",\"unblurred inputs saved through object switching\",\"door editing preserves full-width drawers\",\"one undo restores original old structure\",\"redo and refresh preserve edited structure\",\"invalid number blocks selection with useful error\",\"cancel discards current object edits\",\"cancel never upgrades old work\",\"save upgrades old implicit design\",\"upgrade idempotent\",\"kitchen direct door inspector\",\"kitchen shelf inspector\",\"kitchen drawer inspector\",\"kitchen shelf selection commits correctly\",\"parent cancel discards attached cabinet edits\",\"390px no horizontal overflow\",\"no page errors\"],\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"checks\":[\"no legacy pages\",\"bay fields follow selection\",\"shelf has direct number input\",\"Enter applies number within draft without closing designer\",\"drawer fields follow selection and commit shelf\",\"fit opens door inspector\",\"production face annotation selects door parameters\",\"unblurred inputs saved through object switching\",\"door editing preserves full-width drawers\",\"one undo restores original old structure\",\"redo and refresh preserve edited structure\",\"invalid number blocks selection with useful error\",\"cancel discards current object edits\",\"cancel never upgrades old work\",\"save upgrades old implicit design\",\"upgrade idempotent\",\"kitchen direct door inspector\",\"kitchen shelf inspector\",\"kitchen drawer inspector\",\"kitchen shelf selection commits correctly\",\"parent cancel discards attached cabinet edits\",\"390px no horizontal overflow\",\"no page errors\"],\"errors\":[]}]}}\n"
+    },
+    {
+      "name": "cabinet-opening-3d",
+      "status": "PASS",
+      "seconds": 29.2,
+      "log": "cabinet-opening-3d.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-opening-3d\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"offline-file\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0}],\"checks\":[\"legacy import\",\"height separation\",\"raised/lowered obstacle UI\",\"undo/redo\",\"maximum angle save/cancel\",\"room ceiling UI\",\"panel/editor/full check consistency\",\"3D\",\"real download/reimport\",\"refresh\",\"390px\",\"offline file\"]}}\n"
+    },
+    {
+      "name": "cabinet-panel",
+      "status": "PASS",
+      "seconds": 12.7,
+      "log": "cabinet-panel.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-panel\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"errors\":[],\"checks\":\"cabinet sidebar, ordinary furniture, kitchen drafts, wall mounting and hood drafts, save/cancel/undo/redo/refresh, 390px\"}}\n"
+    },
+    {
+      "name": "cabinet-setting-inheritance",
+      "status": "PASS",
+      "seconds": 13.9,
+      "log": "cabinet-setting-inheritance.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-setting-inheritance\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"checks\":[\"inherited angle source visible\",\"pin equal inherited value stays independent\",\"restore immediately follows parent\",\"future parent change propagates after restore\",\"advanced appearance stays expanded after change\",\"pinned color independent\",\"reset color follows whole cabinet\",\"wood default remains material color\",\"restore material default\",\"restore handle default\",\"save persists absence instead of default copies\",\"one undo restores prior project\",\"redo refresh preserves inheritance\",\"cancel discards pinned settings\",\"display restores bay angle\",\"display override deleted\",\"kitchen pin independent\",\"kitchen reset follows parent\",\"kitchen save removes override\",\"390px inspector has no horizontal overflow\",\"no page errors\"],\"passed\":true},{\"mode\":\"file\",\"checks\":[\"inherited angle source visible\",\"pin equal inherited value stays independent\",\"restore immediately follows parent\",\"future parent change propagates after restore\",\"advanced appearance stays expanded after change\",\"pinned color independent\",\"reset color follows whole cabinet\",\"wood default remains material color\",\"restore material default\",\"restore handle default\",\"save persists absence instead of default copies\",\"one undo restores prior project\",\"redo refresh preserves inheritance\",\"cancel discards pinned settings\",\"display restores bay angle\",\"display override deleted\",\"kitchen pin independent\",\"kitchen reset follows parent\",\"kitchen save removes override\",\"390px inspector has no horizontal overflow\",\"no page errors\"],\"passed\":true}]}}\n"
+    },
+    {
+      "name": "cabinet-simple",
+      "status": "PASS",
+      "seconds": 39.4,
+      "log": "cabinet-simple.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cabinet-simple\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"checks\":[\"finder collapsed by default\",\"finder closes after selecting part\",\"shelf input compact\",\"selected shelf only copy and delete\",\"shelf group list folded\",\"wide dialog uses available screen\",\"wide preview expanded\",\"unblurred shelf saved via navigation\",\"shelf one undo\",\"shelf redo refresh\",\"door click stays draft click\",\"actual face click opens click {\\\"col\\\":{\\\"door\\\":\\\"left\\\",\\\"doorOpen\\\":true,\\\"shelves\\\":[351,701,1052,1403,1753],\\\"drawers\\\":[],\\\"width\\\":464,\\\"drawerColumns\\\":1,\\\"doorAngle\\\":90},\\\"pick\\\":{\\\"column\\\":0,\\\"leaf\\\":0,\\\"kind\\\":\\\"door\\\"}}\",\"door click one undo click\",\"actual open face click closes click\",\"cancel door click click\",\"door click stays draft simple-k\",\"actual face click opens simple-k {\\\"col\\\":{\\\"run\\\":0,\\\"width\\\":600,\\\"role\\\":\\\"door\\\",\\\"doorLeaves\\\":[{\\\"open\\\":true,\\\"angle\\\":90},{\\\"open\\\":false,\\\"angle\\\":90}],\\\"doorOpen\\\":true,\\\"doorAngle\\\":90},\\\"pick\\\":{\\\"column\\\":0,\\\"leaf\\\":0,\\\"kind\\\":\\\"door\\\"}}\",\"door click one undo simple-k\",\"actual open face click closes simple-k\",\"cancel door click simple-k\",\"door click stays draft simple-wall\",\"actual face click opens simple-wall {\\\"col\\\":{\\\"run\\\":0,\\\"width\\\":800,\\\"role\\\":\\\"door\\\",\\\"doorLeaves\\\":[{\\\"open\\\":true,\\\"angle\\\":90},{\\\"open\\\":false,\\\"angle\\\":90}],\\\"doorOpen\\\":true,\\\"doorAngle\\\":90},\\\"pick\\\":{\\\"column\\\":0,\\\"leaf\\\":0,\\\"kind\\\":\\\"door\\\"}}\",\"door click one undo simple-wall\",\"actual open face click closes simple-wall\",\"cancel door click simple-wall\",\"attached laundry door opens directly\",\"no mobile overflow simple\",\"no mobile overflow simple-k\",\"no mobile overflow simple-l\",\"no page errors\"],\"passed\":true},{\"mode\":\"file\",\"checks\":[\"finder collapsed by default\",\"finder closes after selecting part\",\"shelf input compact\",\"selected shelf only copy and delete\",\"shelf group list folded\",\"wide dialog uses available screen\",\"wide preview expanded\",\"unblurred shelf saved via navigation\",\"shelf one undo\",\"shelf redo refresh\",\"door click stays draft click\",\"actual face click opens click {\\\"col\\\":{\\\"door\\\":\\\"left\\\",\\\"doorOpen\\\":true,\\\"shelves\\\":[351,701,1052,1403,1753],\\\"drawers\\\":[],\\\"width\\\":464,\\\"drawerColumns\\\":1,\\\"doorAngle\\\":90},\\\"pick\\\":{\\\"column\\\":0,\\\"leaf\\\":0,\\\"kind\\\":\\\"door\\\"}}\",\"door click one undo click\",\"actual open face click closes click\",\"cancel door click click\",\"door click stays draft simple-k\",\"actual face click opens simple-k {\\\"col\\\":{\\\"run\\\":0,\\\"width\\\":600,\\\"role\\\":\\\"door\\\",\\\"doorLeaves\\\":[{\\\"open\\\":true,\\\"angle\\\":90},{\\\"open\\\":false,\\\"angle\\\":90}],\\\"doorOpen\\\":true,\\\"doorAngle\\\":90},\\\"pick\\\":{\\\"column\\\":0,\\\"leaf\\\":0,\\\"kind\\\":\\\"door\\\"}}\",\"door click one undo simple-k\",\"actual open face click closes simple-k\",\"cancel door click simple-k\",\"door click stays draft simple-wall\",\"actual face click opens simple-wall {\\\"col\\\":{\\\"run\\\":0,\\\"width\\\":800,\\\"role\\\":\\\"door\\\",\\\"doorLeaves\\\":[{\\\"open\\\":true,\\\"angle\\\":90},{\\\"open\\\":false,\\\"angle\\\":90}],\\\"doorOpen\\\":true,\\\"doorAngle\\\":90},\\\"pick\\\":{\\\"column\\\":0,\\\"leaf\\\":0,\\\"kind\\\":\\\"door\\\"}}\",\"door click one undo simple-wall\",\"actual open face click closes simple-wall\",\"cancel door click simple-wall\",\"attached laundry door opens directly\",\"no mobile overflow simple\",\"no mobile overflow simple-k\",\"no mobile overflow simple-l\",\"no page errors\"],\"passed\":true}]}}\n"
+    },
+    {
+      "name": "cat-tree",
+      "status": "PASS",
+      "seconds": 27.9,
+      "log": "cat-tree.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cat-tree\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "catalog-library",
+      "status": "PASS",
+      "seconds": 18.5,
+      "log": "catalog-library.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"catalog-library\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "ceiling-continuous-light",
+      "status": "PASS",
+      "seconds": 24.2,
+      "log": "ceiling-continuous-light.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"ceiling-continuous-light\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"legacySegmented\":true,\"continuousProductionCloseup\":true,\"arcOnlyCollision\":true,\"sectionUpdates\":true,\"rawInputAndInnerRadiusGuard\":true,\"shortArmGuard\":true,\"atomicUndoRedo\":true,\"modeUndoRedo\":true,\"savedWarningAndUndo\":true,\"cancel\":true,\"v7CacheAndV6Preservation\":true,\"refreshAndActualProjectRoundtrip\":true,\"mobile390\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"legacySegmented\":true,\"continuousProductionCloseup\":true,\"arcOnlyCollision\":true,\"sectionUpdates\":true,\"rawInputAndInnerRadiusGuard\":true,\"shortArmGuard\":true,\"atomicUndoRedo\":true,\"modeUndoRedo\":true,\"savedWarningAndUndo\":true,\"cancel\":true,\"v7CacheAndV6Preservation\":true,\"refreshAndActualProjectRoundtrip\":true,\"mobile390\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "ceiling-corners",
+      "status": "PASS",
+      "seconds": 23.4,
+      "log": "ceiling-corners.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"ceiling-corners\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"adjacentWalls\":true,\"productionMiterAndAssembly\":true,\"segmentedLightSetback\":true,\"twoFaceFlatBinding\":true,\"dependentUpdates\":true,\"invalidInputKeepsPreview\":true,\"topologyPending\":true,\"atomicUndoRedo\":true,\"cancel\":true,\"v6RefreshAndRealFileRoundtrip\":true,\"mobile390\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"adjacentWalls\":true,\"productionMiterAndAssembly\":true,\"segmentedLightSetback\":true,\"twoFaceFlatBinding\":true,\"dependentUpdates\":true,\"invalidInputKeepsPreview\":true,\"topologyPending\":true,\"atomicUndoRedo\":true,\"cancel\":true,\"v6RefreshAndRealFileRoundtrip\":true,\"mobile390\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "PASS",
+      "seconds": 25.3,
+      "log": "ceiling-end-caps.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"ceiling-end-caps\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"compactRadiusPreset\":true,\"legacyRetention\":true,\"independentEndCaps\":true,\"insideRetreats\":true,\"invalidInputRetention\":true,\"sectionHeightAndFlatLinkage\":true,\"disabledConfigRetention\":true,\"shortArmAndMissingReference\":true,\"atomicUndoRedo\":true,\"cancel\":true,\"v8CacheAndV7Retention\":true,\"refreshAndActualProjectRoundtrip\":true,\"productionCloseViews\":true,\"mobile390\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"compactRadiusPreset\":true,\"legacyRetention\":true,\"independentEndCaps\":true,\"insideRetreats\":true,\"invalidInputRetention\":true,\"sectionHeightAndFlatLinkage\":true,\"disabledConfigRetention\":true,\"shortArmAndMissingReference\":true,\"atomicUndoRedo\":true,\"cancel\":true,\"v8CacheAndV7Retention\":true,\"refreshAndActualProjectRoundtrip\":true,\"productionCloseViews\":true,\"mobile390\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "ceilings",
+      "status": "PASS",
+      "seconds": 28.5,
+      "log": "ceilings.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"ceilings\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"drawAndDimensions\":true,\"pendingAndInvalidInput\":true,\"lightSnap\":true,\"flatAttachment\":true,\"sharedProductionPreview\":true,\"atomicUndoRedo\":true,\"localCancel\":true,\"fullThicknessPending\":true,\"v5RefreshAndActualProjectRoundtrip\":true,\"mobile390\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"drawAndDimensions\":true,\"pendingAndInvalidInput\":true,\"lightSnap\":true,\"flatAttachment\":true,\"sharedProductionPreview\":true,\"atomicUndoRedo\":true,\"localCancel\":true,\"fullThicknessPending\":true,\"v5RefreshAndActualProjectRoundtrip\":true,\"mobile390\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "cherry-coffee-table",
+      "status": "PASS",
+      "seconds": 24.8,
+      "log": "cherry-coffee-table.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"cherry-coffee-table\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "current-bays",
+      "status": "PASS",
+      "seconds": 65.3,
+      "log": "current-bays.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"current-bays\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"planId\":\"custom_mv37igji\",\"bays\":[{\"id\":\"cad_window_10_4\",\"room\":\"bay_cad_window_10_4\",\"index\":4,\"depth\":718,\"height\":647,\"head\":2304,\"name\":\"飘窗台\",\"mat\":\"marble\"},{\"id\":\"cad_window_11_5\",\"room\":\"bay_cad_window_11_5\",\"index\":5,\"depth\":712,\"height\":647,\"head\":2295,\"name\":\"飘窗台\",\"mat\":\"marble\"}],\"passed\":true,\"pageErrors\":[]},{\"mode\":\"file\",\"planId\":\"custom_mv37igji\",\"bays\":[{\"id\":\"cad_window_10_4\",\"room\":\"bay_cad_window_10_4\",\"index\":4,\"depth\":718,\"height\":647,\"head\":2304,\"name\":\"飘窗台\",\"mat\":\"marble\"},{\"id\":\"cad_window_11_5\",\"room\":\"bay_cad_window_11_5\",\"index\":5,\"depth\":712,\"height\":647,\"head\":2295,\"name\":\"飘窗台\",\"mat\":\"marble\"}],\"passed\":true,\"pageErrors\":[]}]}\n"
+    },
+    {
+      "name": "current-furniture",
+      "status": "PASS",
+      "seconds": 23.9,
+      "log": "current-furniture.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"current-furniture\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "dimension-density",
+      "status": "PASS",
+      "seconds": 8.2,
+      "log": "dimension-density.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"dimension-density\",\"status\":\"PASS\",\"result\":{\"compact\":{\"chains\":13,\"total\":2},\"detailed\":{\"chains\":70,\"total\":4},\"undoRedo\":true,\"rotatedSides\":true,\"physicalDataPreserved\":true,\"exports\":true,\"refresh\":true,\"projectReimport\":true,\"mobile390\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "directional-config-order",
+      "status": "PASS",
+      "seconds": 4,
+      "log": "directional-config-order.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"directional-config-order\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"before\":{\"cx\":3000,\"cy\":2900},\"after\":{\"cx\":3000,\"cy\":2920,\"gap\":130},\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"before\":{\"cx\":3000,\"cy\":2900},\"after\":{\"cx\":3000,\"cy\":2920,\"gap\":130},\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "directional-distances",
+      "status": "PASS",
+      "seconds": 2.8,
+      "log": "directional-distances.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"directional-distances\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"fourDirections\":true,\"offCenterTarget\":true,\"atomicSave\":true,\"singleSave\":true,\"undoRedo\":true,\"rotation\":true,\"movement\":true,\"hiddenFurniture\":true,\"mobile390\":true,\"export\":true,\"refresh\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "directional-heights",
+      "status": "PASS",
+      "seconds": 2.2,
+      "log": "directional-heights.log",
+      "run": "AEWX1u",
+      "output": "{\"case\":\"directional-heights\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"legacyAndModular\":true,\"addUndoRedo\":true,\"saveUndoRedo\":true,\"canvasAndPanel\":true,\"drawingRotation\":true,\"mobile390\":true,\"refresh\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "directional-kitchen-solids",
+      "status": "PASS",
+      "seconds": 4.7,
+      "log": "directional-kitchen-solids.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"directional-kitchen-solids\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"baseline\":{\"l\":100,\"r\":100,\"t\":2225,\"b\":2225}},{\"mode\":\"file\",\"passed\":true,\"baseline\":{\"l\":100,\"r\":100,\"t\":2225,\"b\":2225}}]}\n"
+    },
+    {
+      "name": "directional-placement",
+      "status": "PASS",
+      "seconds": 3.5,
+      "log": "directional-placement.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"directional-placement\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"canvasClick\":true,\"cancel\":true,\"negativeInput\":true,\"blockedMove\":true,\"zeroContact\":true,\"savedLabelEdit\":true,\"referenceFixed\":true,\"undoRedo\":true,\"rotatedKeyboard\":true,\"locked\":true,\"mobile390\":true,\"refresh\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "dishwasher-clearances",
+      "status": "PASS",
+      "seconds": 11.1,
+      "log": "dishwasher-clearances.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"dishwasher-clearances\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"pageErrors\":[],\"externalRequests\":0}]}\n"
+    },
+    {
+      "name": "dishwasher",
+      "status": "PASS",
+      "seconds": 24.7,
+      "log": "dishwasher.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"dishwasher\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"errors\":[],\"externalRequests\":0}]}\n"
+    },
+    {
+      "name": "double-doors",
+      "status": "PASS",
+      "seconds": 14.9,
+      "log": "double-doors.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"double-doors\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"saveUndoRedoRefresh\":true,\"projectRoundtrip\":true,\"mobile\":true,\"production3D\":true},{\"mode\":\"file\",\"passed\":true,\"saveUndoRedoRefresh\":true,\"projectRoundtrip\":true,\"mobile\":true,\"production3D\":true}]}\n"
+    },
+    {
+      "name": "drag-axis-lock",
+      "status": "PASS",
+      "seconds": 3.9,
+      "log": "drag-axis-lock.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"drag-axis-lock\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"stationary Shift/Alt changes, latched axes, on-axis magnets, Shift-before-drag and click compatibility, groups, four rotations, narrow screen, undo/redo and reload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "drag-feature-snapping",
+      "status": "PASS",
+      "seconds": 3.5,
+      "log": "drag-feature-snapping.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"drag-feature-snapping\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"furniture/wall midpoints, rotated corners, member-based group snapping, undo/redo/cancel, release cleanup, rotated mobile and reload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "drawing-export",
+      "status": "PASS",
+      "seconds": 1.9,
+      "log": "drawing-export.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"drawing-export\",\"status\":\"PASS\",\"result\":{\"fullBounds\":true,\"overlaysExcluded\":true,\"pngDownloaded\":true,\"printClean\":true,\"zoomIndependent\":true,\"projectDataPreserved\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "workflow-reimport",
+      "status": "PASS",
+      "seconds": 17.6,
+      "log": "workflow-reimport.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"workflow-reimport\",\"status\":\"PASS\",\"result\":[{\"mode\":\"HTTP startup with external requests blocked; offline editing/import/3D after load\",\"fullProjectReimport\":true,\"undoRedo\":true,\"reload\":true,\"repeatImport\":true,\"externalRequests\":[],\"pageErrors\":[]}]}\n"
+    },
+    {
+      "name": "drawing-readability",
+      "status": "PASS",
+      "seconds": 3.7,
+      "log": "drawing-readability.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"drawing-readability\",\"status\":\"PASS\",\"result\":{\"roomLabelAvoidance\":true,\"printComplete\":true,\"printCleanup\":true,\"geometryPreserved\":true,\"mobile390\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "drawing",
+      "status": "PASS",
+      "seconds": 14.3,
+      "log": "drawing.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"drawing\",\"status\":\"PASS\",\"result\":{\"drawing\":true,\"wallColours\":true,\"automaticDimensions\":true,\"north\":true,\"realPointerDrag\":true,\"undoRedo\":true,\"refresh\":true,\"fullProjectReimport\":true,\"mobile390\":true,\"pageErrors\":[]}}\n"
+    },
+    {
+      "name": "enclosed-boundaries",
+      "status": "PASS",
+      "seconds": 3.6,
+      "log": "enclosed-boundaries.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"enclosed-boundaries\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"results\":[{\"mode\":\"http\",\"status\":\"PASS\",\"distances\":{\"l\":72.5,\"r\":82.5,\"t\":931.5,\"b\":69.5},\"saveUndoRedoRefresh\":true,\"narrow\":true,\"errors\":[]},{\"mode\":\"offline-file\",\"status\":\"PASS\",\"distances\":{\"l\":72.5,\"r\":82.5,\"t\":931.5,\"b\":69.5},\"saveUndoRedoRefresh\":true,\"narrow\":true,\"errors\":[]}]}}\n"
+    },
+    {
+      "name": "tile-workspace",
+      "status": "PASS",
+      "seconds": 19.5,
+      "log": "tile-workspace.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"tile-workspace\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"oneEntry\":true,\"previewNoWrites\":true,\"oneCommit\":true,\"bandsAndPresetLinks\":true,\"undoRedo\":true,\"saveRefresh\":true,\"productionModels\":true,\"cancel\":true,\"originPicking\":true,\"mobile390\":true,\"projectRoundTrip\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"oneEntry\":true,\"previewNoWrites\":true,\"oneCommit\":true,\"bandsAndPresetLinks\":true,\"undoRedo\":true,\"saveRefresh\":true,\"productionModels\":true,\"cancel\":true,\"originPicking\":true,\"mobile390\":true,\"projectRoundTrip\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tile-workspace-complete",
+      "status": "PASS",
+      "seconds": 22,
+      "log": "tile-workspace-complete.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"tile-workspace-complete\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"planAndKeyboardSelection\":true,\"localGroupDetach\":true,\"sourcePresetSync\":true,\"svgDragCancelAndBlur\":true,\"keyboard10mm\":true,\"productionRayDrag\":true,\"bandSpecific2D3D\":true,\"globalDatum\":true,\"oneUndoRedo\":true,\"saveRefresh\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"planAndKeyboardSelection\":true,\"localGroupDetach\":true,\"sourcePresetSync\":true,\"svgDragCancelAndBlur\":true,\"keyboard10mm\":true,\"productionRayDrag\":true,\"bandSpecific2D3D\":true,\"globalDatum\":true,\"oneUndoRedo\":true,\"saveRefresh\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tile-library",
+      "status": "PASS",
+      "seconds": 12.7,
+      "log": "tile-library.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"tile-library\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"libraryViaWorkspace\":true,\"editableCopy\":true,\"sameApplicationDraft\":true,\"explicitLink\":true,\"sourceSaveSync\":true,\"undoRedo\":true,\"detachPreservesData\":true,\"capture\":true,\"deletePreservesData\":true,\"refresh\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"libraryViaWorkspace\":true,\"editableCopy\":true,\"sameApplicationDraft\":true,\"explicitLink\":true,\"sourceSaveSync\":true,\"undoRedo\":true,\"detachPreservesData\":true,\"capture\":true,\"deletePreservesData\":true,\"refresh\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "finish-miter-snap",
+      "status": "PASS",
+      "seconds": 13.2,
+      "log": "finish-miter-snap.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"finish-miter-snap\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"realDrag\":true,\"southFinishFace\":true,\"miterPlan\":true,\"productionMiter\":true,\"oneHistory\":true,\"undoRedo\":true,\"refresh\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"realDrag\":true,\"southFinishFace\":true,\"miterPlan\":true,\"productionMiter\":true,\"oneHistory\":true,\"undoRedo\":true,\"refresh\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "floating-toolbar-proximity",
+      "status": "PASS",
+      "seconds": 4.6,
+      "log": "floating-toolbar-proximity.log",
+      "run": "kP4RUE",
+      "output": "{\"case\":\"floating-toolbar-proximity\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"checks\":[{\"name\":\"vertical\",\"gap\":34.00441066066068,\"docked\":false,\"inside\":true},{\"name\":\"pan\",\"gap\":33.9887856606606,\"docked\":false,\"inside\":true},{\"name\":\"zoom\",\"gap\":33.99996246246246,\"docked\":false,\"inside\":true}],\"passed\":true},{\"mode\":\"file\",\"checks\":[{\"name\":\"vertical\",\"gap\":34.00441066066068,\"docked\":false,\"inside\":true},{\"name\":\"pan\",\"gap\":33.9887856606606,\"docked\":false,\"inside\":true},{\"name\":\"zoom\",\"gap\":33.99996246246246,\"docked\":false,\"inside\":true}],\"passed\":true}]}}\n"
+    },
+    {
+      "name": "floating-toolbar",
+      "status": "PASS",
+      "seconds": 27.6,
+      "log": "floating-toolbar.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"floating-toolbar\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"sizeCancelApplyUndoRedo\":true,\"preciseClearance\":true,\"locked\":true,\"cabinetDesigner\":true,\"rotatedMirror\":true,\"mobile390\":true,\"refresh\":true,\"layout\":{\"inside\":true,\"objectVisible\":true,\"objectClear\":true,\"labelsClear\":true,\"controlsClear\":true,\"panelClear\":true}},{\"mode\":\"file\",\"passed\":true,\"sizeCancelApplyUndoRedo\":true,\"preciseClearance\":true,\"locked\":true,\"cabinetDesigner\":true,\"rotatedMirror\":true,\"mobile390\":true,\"refresh\":true,\"layout\":{\"inside\":true,\"objectVisible\":true,\"objectClear\":true,\"labelsClear\":true,\"controlsClear\":true,\"panelClear\":true}}]}\n"
+    },
+    {
+      "name": "folding-table-click",
+      "status": "PASS",
+      "seconds": 22.1,
+      "log": "folding-table-click.log",
+      "run": "7YbW4S",
+      "output": "{\"case\":\"folding-table-click\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "folding-table",
+      "status": "PASS",
+      "seconds": 32.9,
+      "log": "folding-table.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"folding-table\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"errors\":[],\"externalRequests\":0}]}\n"
+    },
+    {
+      "name": "fotile-previews",
+      "status": "PASS",
+      "seconds": 5.3,
+      "log": "fotile-previews.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"fotile-previews\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"preview\":\"hob\",\"status\":\"PASS\",\"appliances\":1},{\"mode\":\"file\",\"preview\":\"hood\",\"status\":\"PASS\",\"appliances\":1},{\"mode\":\"http\",\"preview\":\"hob\",\"status\":\"PASS\",\"appliances\":1},{\"mode\":\"http\",\"preview\":\"hood\",\"status\":\"PASS\",\"appliances\":1}]}\n"
+    },
+    {
+      "name": "fotile",
+      "status": "PASS",
+      "seconds": 21.3,
+      "log": "fotile.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"fotile\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"preview\":\"hob\",\"status\":\"PASS\",\"appliances\":1},{\"preview\":\"hood\",\"status\":\"PASS\",\"appliances\":1}]}\n"
+    },
+    {
+      "name": "full-width-drawers",
+      "status": "PASS",
+      "seconds": 4.9,
+      "log": "full-width-drawers.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"full-width-drawers\",\"status\":\"PASS\",\"result\":{\"passed\":\"merge, independent motion, mobile, save, undo/redo, refresh, split and cancel\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "furniture-groups",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "furniture-groups.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"furniture-groups\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true},{\"mode\":\"file-offline\",\"passed\":true}]}\n"
+    },
+    {
+      "name": "room-net",
+      "status": "PASS",
+      "seconds": 7.3,
+      "log": "room-net.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"room-net\",\"status\":\"PASS\",\"result\":{\"rotatedPointer\":true,\"preview\":true,\"atomicUndoRedo\":true,\"refresh\":true,\"projectReimport\":true,\"mobile390\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "purchase-orders",
+      "status": "PASS",
+      "seconds": 11,
+      "log": "purchase-orders.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"purchase-orders\",\"status\":\"PASS\",\"result\":{\"actualForms\":true,\"validation\":true,\"receipts\":true,\"payments\":true,\"undoRedo\":true,\"cancel\":true,\"refresh\":true,\"namedDesign\":true,\"projectReimport\":true,\"csv\":true,\"report\":true,\"mobile390\":true,\"offline3D\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "furniture-labels",
+      "status": "PASS",
+      "seconds": 5.9,
+      "log": "furniture-labels.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"furniture-labels\",\"status\":\"PASS\",\"result\":{\"twoLines\":true,\"fullTitle\":true,\"rotations\":true,\"zoomDensity\":true,\"fixedExport\":true,\"productionDOMPreserved\":true,\"nameUndoRedo\":true,\"refresh\":true,\"projectReimport\":true,\"mobile390\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "furniture-snapping-audit",
+      "status": "PASS",
+      "seconds": 25.6,
+      "log": "furniture-snapping-audit.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"furniture-snapping-audit\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"moveTypes\":[\"bed\",\"sofa\",\"desk\",\"chair\",\"fridge\",\"curtain\",\"aircon_midea_ultra_2hp\",\"block\"],\"moveGestures\":48,\"rotations\":[0,37,90],\"mirrors\":true,\"curvedResizes\":6,\"checks\":[\"real pointers\",\"finite curve contact\",\"guides\",\"undo/redo\",\"reload\"]},{\"mode\":\"file\",\"passed\":true,\"moveTypes\":[\"bed\",\"sofa\",\"desk\",\"chair\",\"fridge\",\"curtain\",\"aircon_midea_ultra_2hp\",\"block\"],\"moveGestures\":48,\"rotations\":[0,37,90],\"mirrors\":true,\"curvedResizes\":6,\"checks\":[\"real pointers\",\"finite curve contact\",\"guides\",\"undo/redo\",\"reload\"]}]}\n"
+    },
+    {
+      "name": "furniture-solids",
+      "status": "PASS",
+      "seconds": 15.3,
+      "log": "furniture-solids.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"furniture-solids\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\"},{\"mode\":\"file\",\"status\":\"PASS\"}]}\n"
+    },
+    {
+      "name": "group-directional-placement",
+      "status": "PASS",
+      "seconds": 3.1,
+      "log": "group-directional-placement.log",
+      "run": "23U5WG",
+      "output": "{\"case\":\"group-directional-placement\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"realGrouping\":true,\"wholeGroupSelection\":true,\"fourDirections\":true,\"allMembersSameTranslation\":true,\"relativePosePreserved\":true,\"referenceFixed\":true,\"cancel\":true,\"undoRedo\":true,\"rotatedView\":true,\"atomicObstacleAndLock\":true,\"mobile390\":true,\"saveAndRefresh\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "hob-cutout",
+      "status": "PASS",
+      "seconds": 9.1,
+      "log": "hob-cutout.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"hob-cutout\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"manualSizeAndFourMargins\":true,\"invalidAndLocked\":true,\"absoluteSizing\":true,\"reset\":true,\"undoRedo\":true,\"refresh\":true,\"projectAndExport\":true,\"actual3DSlabCache\":true,\"mobile390\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "hob-link-options",
+      "status": "PASS",
+      "seconds": 19,
+      "log": "hob-link-options.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"hob-link-options\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\"},{\"mode\":\"file\",\"status\":\"PASS\"}]}\n"
+    },
+    {
+      "name": "hob-openings",
+      "status": "PASS",
+      "seconds": 2.9,
+      "log": "hob-openings.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"hob-openings\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"margins\":true,\"drag\":true,\"undoRedo\":true,\"rotationMirror\":true,\"linkedL\":true,\"dimensionToggle\":true,\"exports\":true,\"refresh\":true,\"mobile390\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "hood-bay",
+      "status": "PASS",
+      "seconds": 11.9,
+      "log": "hood-bay.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"hood-bay\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "hood-geometry",
+      "status": "PASS",
+      "seconds": 24.2,
+      "log": "hood-geometry.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"hood-geometry\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "kitchen-auto-avoid",
+      "status": "PASS",
+      "seconds": 6.9,
+      "log": "kitchen-auto-avoid.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-auto-avoid\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"enable, actual fit/stone, undo/redo, obstacle move/resize, refresh, disable/cancel, mobile and actual export/import\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-corner-leaves",
+      "status": "PASS",
+      "seconds": 6.5,
+      "log": "kitchen-corner-leaves.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-corner-leaves\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"real leaf rays, independent controls, group operation, save/cancel, undo/redo, refresh, unfolded view, bottom geometry, mobile and project download/import\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-dish-basket",
+      "status": "PASS",
+      "seconds": 17.9,
+      "log": "kitchen-dish-basket.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-dish-basket\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "kitchen-divider-input",
+      "status": "PASS",
+      "seconds": 5.9,
+      "log": "kitchen-divider-input.log",
+      "run": "7IxJg5",
+      "output": "{\"case\":\"kitchen-divider-input\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"actual full-divider click, either cabinet width and live decimal complement, draft/cancel/no-op/invalid, undo/redo, continued drag, keyboard Enter, save/refresh, 390 px, production preview and project roundtrip\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-divider-labels",
+      "status": "PASS",
+      "seconds": 7.9,
+      "log": "kitchen-divider-labels.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-divider-labels\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"both widths display and update before pointerup, two drag frames, either number focuses corresponding exact input, compensation/fixed other cabinets, decimal display versus storage, invalid/cancel, undo/redo, keyboard, refresh, rotation/mirror/drawing rotation, 390 px and project roundtrip\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-dividers",
+      "status": "PASS",
+      "seconds": 7.1,
+      "log": "kitchen-dividers.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-dividers\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"thinWidth\":750,\"regularWidths\":[622.34,623.66,976.5,738],\"checks\":\"exposed full side hit, regular/thin and regular/regular equal/opposite widths, fixed frame/depths/other modules, cancel/no-op/invalid, undo/redo, production perspective/elevations, save/refresh, 390 px and project download/upload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-door-pairing",
+      "status": "PASS",
+      "seconds": 13,
+      "log": "kitchen-door-pairing.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-door-pairing\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":[\"wall preview\",\"cancel\",\"save\",\"undo redo\",\"refresh\",\"project download upload\",\"nested editor\",\"390 px\",\"base cabinet\"],\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-door-widths",
+      "status": "PASS",
+      "seconds": 13.1,
+      "log": "kitchen-door-widths.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-door-widths\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":[\"old save unchanged\",\"two doors\",\"actual unequal widths\",\"production labels\",\"cancel/save/undo/redo/refresh\",\"minimum/invalid pending save\",\"equalize\",\"nested editor\",\"390px\",\"actual project roundtrip\"],\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-drawer-boundaries",
+      "status": "PASS",
+      "seconds": 33.9,
+      "log": "kitchen-drawer-boundaries.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-drawer-boundaries\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"live drag, adjacent-only compensation, cancel, keyboard, decimal inputs, minimum, blocked invalid save, save/undo/redo/refresh, fixed dimensions, perspective, elevations, narrow input\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-drawer-snapping",
+      "status": "PASS",
+      "seconds": 9.4,
+      "log": "kitchen-drawer-snapping.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-drawer-snapping\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"8px threshold, exact snapping, live guide and heights, Alt bypass, origin/cancel, fixed other cabinets, save/undo/redo/refresh and 390px\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-drawer-tiers",
+      "status": "PASS",
+      "seconds": 13,
+      "log": "kitchen-drawer-tiers.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-drawer-tiers\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"legacy no migration, count/individual heights and compensation, minimum rejection, fourth drawer and open/close all, actual perspective/elevations, cancel/save/undo/redo/refresh, fixed other cabinets, equal heights/one-tier/390 px and project roundtrip\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-edge-snapping",
+      "status": "PASS",
+      "seconds": 4.6,
+      "log": "kitchen-edge-snapping.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-edge-snapping\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"topDepth\":673.25,\"shortModule\":871.75,\"checks\":\"two screenshot borders snap to fridge bottom/side, full-edge hit and end contact, exact fractional coordinates, guides, fixed fridge and middle/thin dimensions, toggle, no-op/cancel/undo/redo/refresh, 37-degree mirror and 90-degree drawing, 390px mouse drag, real project download/upload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-elevations",
+      "status": "PASS",
+      "seconds": 8.6,
+      "log": "kitchen-elevations.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-elevations\",\"status\":\"PASS\",\"result\":{\"passed\":\"two elevations, all labels, real module indices, left/right/mirror order, blind/length/depth wording, mobile scrolling, precise draft/save/undo/redo/refresh and cleanup\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-gap-model",
+      "status": "PASS",
+      "seconds": 10.5,
+      "log": "kitchen-gap-model.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-gap-model\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"gapDepth\":649.5,\"gapEndWidth\":812.75,\"nominalReturnDepth\":383.5,\"actualReturnAndCorner\":364,\"checks\":\"two real input dialogs adjust dimensions without translating internal modules, reference fixed, middle/thin unchanged, invalid/cancel/undo/redo/refresh/390px, actual screenshot geometry corner rear aligned, production perspective/rotated/unfolded preview, saved corner restore and real project download/upload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-layout",
+      "status": "PASS",
+      "seconds": 43.4,
+      "log": "kitchen-layout.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-layout\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"checks\":[\"36px minimum buttons base {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer base {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll base\",\"appearance and dimensions grouped base\",\"draft remains uncommitted base\",\"cancel restores base\",\"save unblurred field base\",\"single undo base\",\"redo refresh base\",\"low desktop no outer scroll base\",\"module controls accessible base\",\"390px no horizontal overflow base\",\"36px minimum buttons wall {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与分排\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer wall {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与分排\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll wall\",\"appearance and dimensions grouped wall\",\"draft remains uncommitted wall\",\"cancel restores wall\",\"save unblurred field wall\",\"single undo wall\",\"redo refresh wall\",\"low desktop no outer scroll wall\",\"module controls accessible wall\",\"390px no horizontal overflow wall\",\"36px minimum buttons laundry {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer laundry {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll laundry\",\"appearance and dimensions grouped laundry\",\"expanded panel survives refresh\",\"draft remains uncommitted laundry\",\"cancel restores laundry\",\"save unblurred field laundry\",\"single undo laundry\",\"redo refresh laundry\",\"low desktop no outer scroll laundry\",\"module controls accessible laundry\",\"390px no horizontal overflow laundry\",\"36px minimum buttons basic {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer basic {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll basic\",\"appearance and dimensions grouped basic\",\"draft remains uncommitted basic\",\"cancel restores basic\",\"save unblurred field basic\",\"single undo basic\",\"redo refresh basic\",\"low desktop no outer scroll basic\",\"module controls accessible basic\",\"390px no horizontal overflow basic\",\"nested laundry designer accessible\",\"no page errors\"],\"passed\":true},{\"mode\":\"file\",\"checks\":[\"36px minimum buttons base {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer base {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll base\",\"appearance and dimensions grouped base\",\"draft remains uncommitted base\",\"cancel restores base\",\"save unblurred field base\",\"single undo base\",\"redo refresh base\",\"low desktop no outer scroll base\",\"module controls accessible base\",\"390px no horizontal overflow base\",\"36px minimum buttons wall {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与分排\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer wall {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"门板与铰链\\\",\\\"尺寸与分排\\\",\\\"障碍避让\\\",\\\"主边末端薄柜\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll wall\",\"appearance and dimensions grouped wall\",\"draft remains uncommitted wall\",\"cancel restores wall\",\"save unblurred field wall\",\"single undo wall\",\"redo refresh wall\",\"low desktop no outer scroll wall\",\"module controls accessible wall\",\"390px no horizontal overflow wall\",\"36px minimum buttons laundry {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer laundry {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll laundry\",\"appearance and dimensions grouped laundry\",\"expanded panel survives refresh\",\"draft remains uncommitted laundry\",\"cancel restores laundry\",\"save unblurred field laundry\",\"single undo laundry\",\"redo refresh laundry\",\"low desktop no outer scroll laundry\",\"module controls accessible laundry\",\"390px no horizontal overflow laundry\",\"36px minimum buttons basic {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"40px inputs and footer basic {\\\"outer\\\":0,\\\"overflow\\\":0,\\\"buttons\\\":[36,36,36,36],\\\"small\\\":[],\\\"inputs\\\":[40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],\\\"footer\\\":[40,40],\\\"groups\\\":[\\\"台面与管道避让\\\",\\\"洗衣机与附属分区\\\",\\\"门板与铰链\\\",\\\"尺寸与台面\\\",\\\"障碍避让\\\",\\\"台面边缘与整体参照\\\",\\\"模块管理\\\"]}\",\"single desktop parameter scroll basic\",\"appearance and dimensions grouped basic\",\"draft remains uncommitted basic\",\"cancel restores basic\",\"save unblurred field basic\",\"single undo basic\",\"redo refresh basic\",\"low desktop no outer scroll basic\",\"module controls accessible basic\",\"390px no horizontal overflow basic\",\"nested laundry designer accessible\",\"no page errors\"],\"passed\":true}]}}\n"
+    },
+    {
+      "name": "kitchen-outer-handles",
+      "status": "PASS",
+      "seconds": 5.4,
+      "log": "kitchen-outer-handles.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-outer-handles\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"depthsAfterFourEdges\":[680,690,700],\"widthsAfterFourEdges\":[602,482,482,200,220,400,341],\"checks\":\"all four full edges away from midpoint, row depths/free-end width, fixed inner/opposite edges/middle widths/thin end, cancel/no-op/limit, undo/redo/refresh, row depth fields, production elevations, rotated mirror/drawing, 390px drag, actual project download/upload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-plinth",
+      "status": "PASS",
+      "seconds": 8.7,
+      "log": "kitchen-plinth.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-plinth\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"passed\":true,\"checks\":[\"legacy default is 100 mm\",\"unchanged save preserves missing default\",\"preview edits stay in draft\",\"cancel discards plinth edit\",\"over-limit value rejected\",\"valid edit clears error\",\"saved 50 mm\",\"cabinet and worktop elevations stay fixed\",\"drawer tiers follow available height\",\"one undo restores original\",\"redo and refresh restore parameter\",\"mobile parameter visible\",\"mobile has no page overflow\",\"zero retained\",\"current and named project roundtrip retains zero\",\"zero survives refresh\",\"no page errors\"]},{\"mode\":\"file\",\"passed\":true,\"checks\":[\"legacy default is 100 mm\",\"unchanged save preserves missing default\",\"preview edits stay in draft\",\"cancel discards plinth edit\",\"over-limit value rejected\",\"valid edit clears error\",\"saved 50 mm\",\"cabinet and worktop elevations stay fixed\",\"drawer tiers follow available height\",\"one undo restores original\",\"redo and refresh restore parameter\",\"mobile parameter visible\",\"mobile has no page overflow\",\"zero retained\",\"current and named project roundtrip retains zero\",\"zero survives refresh\",\"no page errors\"]}]}}\n"
+    },
+    {
+      "name": "kitchen-resize",
+      "status": "PASS",
+      "seconds": 3.7,
+      "log": "kitchen-resize.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-resize\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"widthsBefore\":[482,482,482,450,600],\"widthsAfter\":[782,482,482,450,600],\"checks\":\"real width/depth drags, 180-degree U, fixed middle/short arm/depths/thin end, limit feedback, save, undo/redo, refresh, production preview and 390px drag\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-run-handles",
+      "status": "PASS",
+      "seconds": 4.8,
+      "log": "kitchen-run-handles.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-run-handles\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"original\":[482,482,482,300,450,400,600],\"shortReturn\":[482,482,482,300,450,400,800],\"main\":[782,482,482,300,450,400,800],\"connector\":[782,482,482,300,600,400,800],\"checks\":\"three real independent grips including short return, fixed other modules/thin end, limit rejection, one-step undo/redo, refresh, rotated/mirrored/drawing orientation, production elevations, 390px drag and project download/upload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-shelves",
+      "status": "PASS",
+      "seconds": 10,
+      "log": "kitchen-shelves.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-shelves\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"doorCornerShelves\":2,\"sinkCornerShelves\":2,\"otherAndThinShelves\":4,\"checks\":\"production corner shelves independent of sink, local left/right partition checkboxes and actual side boards, fitted depth, three unfolded views, cancel, save, single undo/redo, refresh, 390px and real project roundtrip\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-single-hinge",
+      "status": "PASS",
+      "seconds": 10.4,
+      "log": "kitchen-single-hinge.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-single-hinge\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":[\"wall independent hinge\",\"cancel\",\"save\",\"undo redo\",\"refresh\",\"project download upload\",\"nested editor\",\"390 px\",\"base independent hinge\"],\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-thin-end",
+      "status": "PASS",
+      "seconds": 6.1,
+      "log": "kitchen-thin-end.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-thin-end\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"thin cabinet, depth clamp, back toggle, hollow preview, elevations, unblurred save, undo/redo, refresh, 390 px and real download/upload\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-thin-resize",
+      "status": "PASS",
+      "seconds": 6.9,
+      "log": "kitchen-thin-resize.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-thin-resize\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"thinWidth\":400,\"thinBodyDepth\":120,\"returnDepth\":50,\"regularModulesFixed\":true,\"checks\":\"actual full-edge hit, fixed regular dimensions/positions, cancel, return to start, invalid drag, undo/redo/refresh, 50 mm input and production elevations, 390px and actual project roundtrip\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-u",
+      "status": "PASS",
+      "seconds": 17,
+      "log": "kitchen-u.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-u\",\"status\":\"PASS\",\"result\":{\"passed\":\"real L to U form, retained narrow ends and links, three production views, precise third-arm edit, save/undo/redo/refresh/cancel, left/right shape changes, 390px scrolling and real download/upload/project/named design roundtrip\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-wall-adjust",
+      "status": "PASS",
+      "seconds": 14.1,
+      "log": "kitchen-wall-adjust.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-wall-adjust\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-wall-anchor",
+      "status": "PASS",
+      "seconds": 2.1,
+      "log": "kitchen-wall-anchor.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-wall-anchor\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"result\":{\"cx\":7318,\"cy\":9304,\"depth\":599.5,\"overlap\":false},\"checks\":\"real drag release, flue fit, exact input, undo/redo and refresh\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-wall-canvas",
+      "status": "PASS",
+      "seconds": 15.4,
+      "log": "kitchen-wall-canvas.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-wall-canvas\",\"status\":\"PASS\",\"result\":[{\"status\":\"PASS\",\"original\":[482,482,482,300,450,400,600],\"shortReturn\":[482,482,482,300,450,400,800],\"main\":[782,482,482,300,450,400,800],\"connector\":[782,482,482,300,600,400,800],\"checks\":\"three real independent grips including short return, fixed other modules/thin end, limit rejection, one-step undo/redo, refresh, rotated/mirrored/drawing orientation, production elevations, 390px drag and project download/upload\",\"errors\":[]},{\"status\":\"PASS\",\"depthsAfterFourEdges\":[680,690,700],\"widthsAfterFourEdges\":[602,482,482,200,220,400,341],\"checks\":\"all four full edges away from midpoint, row depths/free-end width, fixed inner/opposite edges/middle widths/thin end, cancel/no-op/limit, undo/redo/refresh, row depth fields, production elevations, rotated mirror/drawing, 390px drag, actual project download/upload\",\"errors\":[]},{\"status\":\"PASS\",\"checks\":\"actual full-divider click, either cabinet width and live decimal complement, draft/cancel/no-op/invalid, undo/redo, continued drag, keyboard Enter, save/refresh, 390 px, production preview and project roundtrip\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "kitchen-wall-drawers",
+      "status": "PASS",
+      "seconds": 8.9,
+      "log": "kitchen-wall-drawers.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-wall-drawers\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"8px threshold, exact snapping, live guide and heights, Alt bypass, origin/cancel, fixed other cabinets, save/undo/redo/refresh and 390px\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen-wall-shelves",
+      "status": "PASS",
+      "seconds": 2.6,
+      "log": "kitchen-wall-shelves.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen-wall-shelves\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"production shelf picking, live drag/readout, keyboard, save/undo, fixed mount height\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "kitchen",
+      "status": "PASS",
+      "seconds": 25.2,
+      "log": "kitchen.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"kitchen\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "laundry-area",
+      "status": "PASS",
+      "seconds": 31.5,
+      "log": "laundry-area.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"laundry-area\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "laundry-basin-joins",
+      "status": "PASS",
+      "seconds": 6,
+      "log": "laundry-basin-joins.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"laundry-basin-joins\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "laundry-cabinet",
+      "status": "PASS",
+      "seconds": 25.8,
+      "log": "laundry-cabinet.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"laundry-cabinet\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "laundry-catalog",
+      "status": "PASS",
+      "seconds": 14.3,
+      "log": "laundry-catalog.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"laundry-catalog\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"checks\":[\"exactly two laundry cabinet entries\",\"one complete entry\",\"one basic entry\",\"spec explains 完整阳台洗衣柜\",\"完整阳台洗衣柜 adds correct members\",\"starts on left\",\"correct assembly scope\",\"single undo removes added entry\",\"redo restores members\",\"cancel keeps left and companions\",\"design saves right position\",\"real washer follows switched host\",\"design one undo\",\"right position survives redo refresh\",\"reopened design reads right\",\"design can switch back left\",\"spec explains 基础洗衣机柜\",\"基础洗衣机柜 adds correct members\",\"starts on left\",\"correct assembly scope\",\"single undo removes added entry\",\"redo restores members\",\"cancel keeps left and companions\",\"design saves right position\",\"design one undo\",\"right position survives redo refresh\",\"reopened design reads right\",\"design can switch back left\",\"sink retained 阳台定制水槽（可设异形缺角）\",\"sink adds correct model\",\"sink retained 阳台台上盆 · 圆角单盆\",\"sink adds correct model\",\"actual project export/import retains cabinets and sinks\",\"390px design no horizontal overflow\",\"no page errors\"],\"passed\":true},{\"mode\":\"file\",\"checks\":[\"exactly two laundry cabinet entries\",\"one complete entry\",\"one basic entry\",\"spec explains 完整阳台洗衣柜\",\"完整阳台洗衣柜 adds correct members\",\"starts on left\",\"correct assembly scope\",\"single undo removes added entry\",\"redo restores members\",\"cancel keeps left and companions\",\"design saves right position\",\"real washer follows switched host\",\"design one undo\",\"right position survives redo refresh\",\"reopened design reads right\",\"design can switch back left\",\"spec explains 基础洗衣机柜\",\"基础洗衣机柜 adds correct members\",\"starts on left\",\"correct assembly scope\",\"single undo removes added entry\",\"redo restores members\",\"cancel keeps left and companions\",\"design saves right position\",\"design one undo\",\"right position survives redo refresh\",\"reopened design reads right\",\"design can switch back left\",\"sink retained 阳台定制水槽（可设异形缺角）\",\"sink adds correct model\",\"sink retained 阳台台上盆 · 圆角单盆\",\"sink adds correct model\",\"actual project export/import retains cabinets and sinks\",\"390px design no horizontal overflow\",\"no page errors\"],\"passed\":true}]}}\n"
+    },
+    {
+      "name": "laundry-editing",
+      "status": "PASS",
+      "seconds": 9.9,
+      "log": "laundry-editing.log",
+      "run": "s9ovkd",
+      "output": "{\"case\":\"laundry-editing\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "laundry-resize-vessel",
+      "status": "PASS",
+      "seconds": 20.8,
+      "log": "laundry-resize-vessel.log",
+      "run": "7IxJg5",
+      "output": "{\"case\":\"laundry-resize-vessel\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"errors\":[]}]}\n"
+    },
+    {
+      "name": "layer-location",
+      "status": "PASS",
+      "seconds": 20.3,
+      "log": "layer-location.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"layer-location\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "layer-range",
+      "status": "PASS",
+      "seconds": 5.4,
+      "log": "layer-range.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"layer-range\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "layer-sidebar",
+      "status": "PASS",
+      "seconds": 32.7,
+      "log": "layer-sidebar.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"layer-sidebar\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "legacy-cabinet-upgrade",
+      "status": "PASS",
+      "seconds": 15.3,
+      "log": "legacy-cabinet-upgrade.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"legacy-cabinet-upgrade\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\"},{\"mode\":\"file\",\"status\":\"PASS\"}]}\n"
+    },
+    {
+      "name": "litter-box",
+      "status": "PASS",
+      "seconds": 23.7,
+      "log": "litter-box.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"litter-box\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "measure-boundaries",
+      "status": "PASS",
+      "seconds": 4.3,
+      "log": "measure-boundaries.log",
+      "run": "AF656c",
+      "output": "{\"case\":\"measure-boundaries\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"checks\":\"finite furniture snapping, actual pointer selection, individual delete, keyboard/mobile delete, undo/redo, nearest save, rotated pointer, export cleanup and refresh\",\"errors\":[]}}\n"
+    },
+    {
+      "name": "merged-cache",
+      "status": "PASS",
+      "seconds": 3,
+      "log": "merged-cache.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"merged-cache\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"newestLegacySelection\":true,\"legacyKeysPreserved\":true,\"realV9SaveAndRefresh\":true,\"bothCachesArchived\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"newestLegacySelection\":true,\"legacyKeysPreserved\":true,\"realV9SaveAndRefresh\":true,\"bothCachesArchived\":false,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "model-entry",
+      "status": "PASS",
+      "seconds": 17.8,
+      "log": "model-entry.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"model-entry\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"productionPreviews\":4,\"main3D\":true,\"laundryAndSliding\":true,\"zeroMount\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[],\"external\":[]},{\"mode\":\"file\",\"passed\":true,\"productionPreviews\":4,\"main3D\":true,\"laundryAndSliding\":true,\"zeroMount\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[],\"external\":[]}]}\n"
+    },
+    {
+      "name": "observation-layers",
+      "status": "PASS",
+      "seconds": 19.8,
+      "log": "observation-layers.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"observation-layers\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "pegboard-accessories",
+      "status": "PASS",
+      "seconds": 24.3,
+      "log": "pegboard-accessories.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"pegboard-accessories\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"passed\":true,\"checks\":[\"no aggregate accessory switch\",\"legacy false initializes displayShelves unchecked\",\"legacy false initializes hooks unchecked\",\"legacy false initializes light unchecked\",\"unchanged save preserves upgraded accessory fields\",\"combination 0 validates\",\"actual preview meshes reflect independent combination 0\",\"height applies to retained combination 0\",\"combination 1 validates\",\"actual preview meshes reflect independent combination 1\",\"height applies to retained combination 1\",\"combination 2 validates\",\"actual preview meshes reflect independent combination 2\",\"height applies to retained combination 2\",\"combination 3 validates\",\"actual preview meshes reflect independent combination 3\",\"height applies to retained combination 3\",\"combination 4 validates\",\"actual preview meshes reflect independent combination 4\",\"height applies to retained combination 4\",\"combination 5 validates\",\"actual preview meshes reflect independent combination 5\",\"height applies to retained combination 5\",\"combination 6 validates\",\"actual preview meshes reflect independent combination 6\",\"height applies to retained combination 6\",\"combination 7 validates\",\"actual preview meshes reflect independent combination 7\",\"height applies to retained combination 7\",\"changed save writes independent flags and removes legacy aggregate\",\"undo restores original aggregate and height\",\"redo and refresh preserve independent flags\",\"cancel keeps saved independent flags\",\"independent displayShelves accessible at 390px\",\"independent hooks accessible at 390px\",\"independent light accessible at 390px\",\"no page errors\"]},{\"mode\":\"file\",\"passed\":true,\"checks\":[\"no aggregate accessory switch\",\"legacy false initializes displayShelves unchecked\",\"legacy false initializes hooks unchecked\",\"legacy false initializes light unchecked\",\"unchanged save preserves upgraded accessory fields\",\"combination 0 validates\",\"actual preview meshes reflect independent combination 0\",\"height applies to retained combination 0\",\"combination 1 validates\",\"actual preview meshes reflect independent combination 1\",\"height applies to retained combination 1\",\"combination 2 validates\",\"actual preview meshes reflect independent combination 2\",\"height applies to retained combination 2\",\"combination 3 validates\",\"actual preview meshes reflect independent combination 3\",\"height applies to retained combination 3\",\"combination 4 validates\",\"actual preview meshes reflect independent combination 4\",\"height applies to retained combination 4\",\"combination 5 validates\",\"actual preview meshes reflect independent combination 5\",\"height applies to retained combination 5\",\"combination 6 validates\",\"actual preview meshes reflect independent combination 6\",\"height applies to retained combination 6\",\"combination 7 validates\",\"actual preview meshes reflect independent combination 7\",\"height applies to retained combination 7\",\"changed save writes independent flags and removes legacy aggregate\",\"undo restores original aggregate and height\",\"redo and refresh preserve independent flags\",\"cancel keeps saved independent flags\",\"independent displayShelves accessible at 390px\",\"independent hooks accessible at 390px\",\"independent light accessible at 390px\",\"no page errors\"]}]}}\n"
+    },
+    {
+      "name": "pegboard-height",
+      "status": "PASS",
+      "seconds": 42.4,
+      "log": "pegboard-height.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"pegboard-height\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"accessories\":false,\"passed\":true,\"checks\":[\"legacy missing height reads original bottom\",\"unchanged save does not materialize height\",\"preview dimension updates immediately\",\"moving keeps board height\",\"cancel discards height\",\"zero height persists\",\"one undo restores missing height\",\"redo and reload preserve zero\",\"production recorder and bounds shift together\",\"main 3D preserves child elevation after root positioning\",\"production includes retained shelves hooks and light\",\"main scene cache rebuilds after height change\",\"every retained part moves by the same delta\",\"negative input rejected\",\"fractional height accepted\",\"fractional height survives refresh\",\"height input accessible at 390px\",\"no page errors\"]},{\"mode\":\"file\",\"accessories\":false,\"passed\":true,\"checks\":[\"legacy missing height reads original bottom\",\"unchanged save does not materialize height\",\"preview dimension updates immediately\",\"moving keeps board height\",\"cancel discards height\",\"zero height persists\",\"one undo restores missing height\",\"redo and reload preserve zero\",\"production recorder and bounds shift together\",\"main 3D preserves child elevation after root positioning\",\"production includes retained shelves hooks and light\",\"main scene cache rebuilds after height change\",\"every retained part moves by the same delta\",\"negative input rejected\",\"fractional height accepted\",\"fractional height survives refresh\",\"height input accessible at 390px\",\"no page errors\"]},{\"mode\":\"http\",\"accessories\":true,\"passed\":true,\"checks\":[\"legacy missing height reads original bottom\",\"unchanged save does not materialize height\",\"preview dimension updates immediately\",\"moving keeps board height\",\"cancel discards height\",\"zero height persists\",\"one undo restores missing height\",\"redo and reload preserve zero\",\"production recorder and bounds shift together\",\"main 3D preserves child elevation after root positioning\",\"production includes retained shelves hooks and light\",\"main scene cache rebuilds after height change\",\"every retained part moves by the same delta\",\"negative input rejected\",\"fractional height accepted\",\"fractional height survives refresh\",\"height input accessible at 390px\",\"no page errors\"]},{\"mode\":\"file\",\"accessories\":true,\"passed\":true,\"checks\":[\"legacy missing height reads original bottom\",\"unchanged save does not materialize height\",\"preview dimension updates immediately\",\"moving keeps board height\",\"cancel discards height\",\"zero height persists\",\"one undo restores missing height\",\"redo and reload preserve zero\",\"production recorder and bounds shift together\",\"main 3D preserves child elevation after root positioning\",\"production includes retained shelves hooks and light\",\"main scene cache rebuilds after height change\",\"every retained part moves by the same delta\",\"negative input rejected\",\"fractional height accepted\",\"fractional height survives refresh\",\"height input accessible at 390px\",\"no page errors\"]}]}}\n"
+    },
+    {
+      "name": "pegboard-parts",
+      "status": "PASS",
+      "seconds": 38.2,
+      "log": "pegboard-parts.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"pegboard-parts\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"http\",\"passed\":true,\"checks\":[\"unchanged save preserves canonical configuration\",\"upper toggle validates\",\"cancel keeps original assembly\",\"upper removal validates\",\"left removal validates\",\"right removal validates\",\"lower removal validates\",\"displayShelves removal validates\",\"hooks removal validates\",\"light removal validates\",\"overall fields immediately use remaining panel dimensions\",\"preview summary and rulers use remaining geometry\",\"all removals saved\",\"production contains exactly one 18mm perforated panel\",\"one undo restores assembly\",\"redo and refresh preserve pure panel\",\"narrow control upper\",\"narrow control left\",\"narrow control right\",\"narrow control lower\",\"narrow control displayShelves\",\"narrow control hooks\",\"narrow control light\",\"no narrow page overflow\",\"remaining panel width edit validates\",\"remaining panel height edit validates\",\"editing actual width/height changes production panel\",\"actual resized envelope survives refresh\",\"main properties show actual envelope\",\"plan footprint uses actual panel area\",\"plan dimension label shows actual size\",\"retained accessories immediately expand actual depth\",\"re-enabling restores doors and drawers\",\"no page errors\"]},{\"mode\":\"file\",\"passed\":true,\"checks\":[\"unchanged save preserves canonical configuration\",\"upper toggle validates\",\"cancel keeps original assembly\",\"upper removal validates\",\"left removal validates\",\"right removal validates\",\"lower removal validates\",\"displayShelves removal validates\",\"hooks removal validates\",\"light removal validates\",\"overall fields immediately use remaining panel dimensions\",\"preview summary and rulers use remaining geometry\",\"all removals saved\",\"production contains exactly one 18mm perforated panel\",\"one undo restores assembly\",\"redo and refresh preserve pure panel\",\"narrow control upper\",\"narrow control left\",\"narrow control right\",\"narrow control lower\",\"narrow control displayShelves\",\"narrow control hooks\",\"narrow control light\",\"no narrow page overflow\",\"remaining panel width edit validates\",\"remaining panel height edit validates\",\"editing actual width/height changes production panel\",\"actual resized envelope survives refresh\",\"main properties show actual envelope\",\"plan footprint uses actual panel area\",\"plan dimension label shows actual size\",\"retained accessories immediately expand actual depth\",\"re-enabling restores doors and drawers\",\"no page errors\"]}]}}\n"
+    },
+    {
+      "name": "pet-feeder",
+      "status": "PASS",
+      "seconds": 19.9,
+      "log": "pet-feeder.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"pet-feeder\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "pipebox",
+      "status": "PASS",
+      "seconds": 43.8,
+      "log": "pipebox.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"pipebox\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true},{\"mode\":\"http\",\"passed\":true}]}\n"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 10.3,
+      "log": "portable-smoke.log",
+      "run": "7IxJg5",
+      "output": "{\"case\":\"portable-smoke\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"cacheReload\":true,\"undoRedo\":true,\"production3D\":true},{\"mode\":\"file\",\"passed\":true,\"cacheReload\":true,\"undoRedo\":true,\"production3D\":true}]}\n"
+    },
+    {
+      "name": "product-plan-outline",
+      "status": "PASS",
+      "seconds": 8.9,
+      "log": "product-plan-outline.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"product-plan-outline\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"metrics\":{\"difference\":63.218171628725486,\"points\":79},\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"metrics\":{\"difference\":63.218171628725486,\"points\":79},\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "product-rules",
+      "status": "PASS",
+      "seconds": 24.9,
+      "log": "product-rules.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"product-rules\",\"status\":\"PASS\",\"result\":{\"passed\":true,\"results\":[{\"mode\":\"file-offline\",\"passed\":true,\"legacy\":{\"showerBottom\":350,\"flat\":{\"bottom\":1650,\"top\":2215,\"source\":\"model\"},\"stack\":[],\"designs\":1},\"errors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"legacy\":{\"showerBottom\":350,\"flat\":{\"bottom\":1650,\"top\":2215,\"source\":\"model\"},\"stack\":[],\"designs\":1},\"errors\":[],\"externalRequests\":0}],\"previews\":[{\"name\":\"fridges\",\"passed\":true,\"errors\":[]},{\"name\":\"laundry-stack\",\"passed\":true,\"errors\":[]},{\"name\":\"telescopic\",\"passed\":true,\"errors\":[]},{\"name\":\"shower-arrow\",\"passed\":true,\"errors\":[]}],\"checks\":[\"new defaults\",\"legacy project and named version import\",\"omitted defaults\",\"no-drift mixer migration\",\"stack overlap\",\"edit/zero/invalid fields\",\"undo/redo\",\"UI replacement field cleanup\",\"real project download/reimport\",\"3D\",\"refresh\",\"390px property drawer\",\"offline file reload\",\"no external requests\",\"four offline production previews\"]}}\n"
+    },
+    {
+      "name": "property-dedup",
+      "status": "PASS",
+      "seconds": 4.9,
+      "log": "property-dedup.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"property-dedup\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true},{\"mode\":\"file\",\"passed\":true}]}\n"
+    },
+    {
+      "name": "property-open",
+      "status": "PASS",
+      "seconds": 7.6,
+      "log": "property-open.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"property-open\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"widths\":[1500,1088,390],\"checks\":[\"direct cabinet entry with sidebar already open\",\"cancel\",\"save\",\"undo\",\"redo\",\"refresh\",\"kitchen entry\",\"ordinary furniture\",\"multiselection\",\"locked cabinet\"]},{\"mode\":\"file\",\"passed\":true,\"widths\":[1500,1088,390],\"checks\":[\"direct cabinet entry with sidebar already open\",\"cancel\",\"save\",\"undo\",\"redo\",\"refresh\",\"kitchen entry\",\"ordinary furniture\",\"multiselection\",\"locked cabinet\"]}]}\n"
+    },
+    {
+      "name": "property-scopes",
+      "status": "PASS",
+      "seconds": 17.3,
+      "log": "property-scopes.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"property-scopes\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"checks\":[\"multi has no duplicated floating actions\",\"all unique alignment distribution and size controls retained\",\"group purchasing checks and member list retained\",\"multi has no single-item size editor\",\"sidebar alignment works\",\"alignment undo\",\"sidebar match size works\",\"floating group and ungroup retained\",\"view whole design preserves multiselection\",\"unique multi edit reachable on mobile\",\"floating done clears selection\",\"legacy laundry selects five grouped members\",\"legacy group keeps laundry-switch-sides\",\"legacy group keeps laundry-doors-open\",\"legacy group keeps laundry-doors-close\",\"legacy group keeps laundry-integrate\",\"legacy group retains its only designer entry\",\"legacy group side switch works\",\"legacy group switch undo\",\"no floating editor for door\",\"builtin door keeps oType\",\"builtin door keeps oSwing\",\"builtin door keeps oFlip\",\"builtin door keeps oHinge\",\"builtin door keeps oReset\",\"no floating editor for slide\",\"builtin slide keeps slidePanels\",\"builtin slide keeps slideFloorTrack\",\"builtin slide keeps slideStackSide\",\"no floating editor for win\",\"builtin win keeps wPanels\",\"builtin win keeps wStackSide\",\"builtin win keeps wSill\",\"builtin win keeps wHeight\",\"builtin win keeps wHead\",\"builtin win keeps wApply\",\"builtin win keeps wReset\",\"no floating editor for wall\",\"builtin wall keeps wall-editor\",\"builtin wall keeps wall-finish-panel\",\"door hinge edit works\",\"door hinge undo\",\"door edit survives redo and refresh\",\"builtin window height edit works\",\"window undo\",\"create editable architectural copy\",\"no floating editor for door\",\"custom door keeps oType\",\"custom door keeps oSwing\",\"custom door keeps oHinge\",\"custom door keeps opening-position\",\"custom door keeps opening-width\",\"custom door keeps opening-reference\",\"custom door keeps opening-apply\",\"no floating editor for win\",\"custom window keeps window-position\",\"custom window keeps window-width\",\"custom window keeps window-height\",\"custom window keeps window-sill\",\"custom window keeps window-head\",\"custom window keeps window-apply\",\"custom window keeps window-to-bay\",\"bay window keeps bay-type\",\"bay window keeps bay-width\",\"bay window keeps bay-depth\",\"bay window keeps bay-height\",\"bay window keeps bay-window-height\",\"bay window keeps bay-head\",\"bay window keeps bay-remove\",\"bay keeps assembly navigation without furniture editors\",\"no floating editor for wall\",\"wall keeps wall-x\",\"wall keeps wall-y\",\"wall keeps wall-length\",\"wall keeps wall-thickness\",\"wall keeps wall-kind\",\"wall keeps wall-apply\",\"wall keeps wall-editor\",\"wall keeps wall-group-select\",\"wall keeps wall-group-create\",\"wall keeps wall-group-clear\",\"wall keeps wall-batch-thickness\",\"wall keeps wall-batch-apply\",\"wall keeps wall-finish-panel\",\"batch wall thickness edit works\",\"wall edit undo\",\"mobile wall batch edit reachable\",\"restored measurement view design keeps selection\",\"no page errors: \"]},{\"mode\":\"file\",\"passed\":true,\"checks\":[\"multi has no duplicated floating actions\",\"all unique alignment distribution and size controls retained\",\"group purchasing checks and member list retained\",\"multi has no single-item size editor\",\"sidebar alignment works\",\"alignment undo\",\"sidebar match size works\",\"floating group and ungroup retained\",\"view whole design preserves multiselection\",\"unique multi edit reachable on mobile\",\"floating done clears selection\",\"legacy laundry selects five grouped members\",\"legacy group keeps laundry-switch-sides\",\"legacy group keeps laundry-doors-open\",\"legacy group keeps laundry-doors-close\",\"legacy group keeps laundry-integrate\",\"legacy group retains its only designer entry\",\"legacy group side switch works\",\"legacy group switch undo\",\"no floating editor for door\",\"builtin door keeps oType\",\"builtin door keeps oSwing\",\"builtin door keeps oFlip\",\"builtin door keeps oHinge\",\"builtin door keeps oReset\",\"no floating editor for slide\",\"builtin slide keeps slidePanels\",\"builtin slide keeps slideFloorTrack\",\"builtin slide keeps slideStackSide\",\"no floating editor for win\",\"builtin win keeps wPanels\",\"builtin win keeps wStackSide\",\"builtin win keeps wSill\",\"builtin win keeps wHeight\",\"builtin win keeps wHead\",\"builtin win keeps wApply\",\"builtin win keeps wReset\",\"no floating editor for wall\",\"builtin wall keeps wall-editor\",\"builtin wall keeps wall-finish-panel\",\"door hinge edit works\",\"door hinge undo\",\"door edit survives redo and refresh\",\"builtin window height edit works\",\"window undo\",\"create editable architectural copy\",\"no floating editor for door\",\"custom door keeps oType\",\"custom door keeps oSwing\",\"custom door keeps oHinge\",\"custom door keeps opening-position\",\"custom door keeps opening-width\",\"custom door keeps opening-reference\",\"custom door keeps opening-apply\",\"no floating editor for win\",\"custom window keeps window-position\",\"custom window keeps window-width\",\"custom window keeps window-height\",\"custom window keeps window-sill\",\"custom window keeps window-head\",\"custom window keeps window-apply\",\"custom window keeps window-to-bay\",\"bay window keeps bay-type\",\"bay window keeps bay-width\",\"bay window keeps bay-depth\",\"bay window keeps bay-height\",\"bay window keeps bay-window-height\",\"bay window keeps bay-head\",\"bay window keeps bay-remove\",\"bay keeps assembly navigation without furniture editors\",\"no floating editor for wall\",\"wall keeps wall-x\",\"wall keeps wall-y\",\"wall keeps wall-length\",\"wall keeps wall-thickness\",\"wall keeps wall-kind\",\"wall keeps wall-apply\",\"wall keeps wall-editor\",\"wall keeps wall-group-select\",\"wall keeps wall-group-create\",\"wall keeps wall-group-clear\",\"wall keeps wall-batch-thickness\",\"wall keeps wall-batch-apply\",\"wall keeps wall-finish-panel\",\"batch wall thickness edit works\",\"wall edit undo\",\"mobile wall batch edit reachable\",\"restored measurement view design keeps selection\",\"no page errors: \"]}]}\n"
+    },
+    {
+      "name": "purchase-relink",
+      "status": "PASS",
+      "seconds": 10.1,
+      "log": "purchase-relink.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"purchase-relink\",\"status\":\"PASS\",\"result\":{\"valuesPreserved\":true,\"crossUnitRefused\":true,\"undoRedo\":true,\"refresh\":true,\"projectReimport\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "region-areas",
+      "status": "PASS",
+      "seconds": 7.1,
+      "log": "region-areas.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"region-areas\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"protocols\":[\"http\",\"file\"],\"checks\":[\"Shift add/remove\",\"plain click reset\",\"two areas\",\"ephemeral state\",\"save/refresh\",\"undo/redo\",\"390px removal\"],\"errors\":[]}}\n"
+    },
+    {
+      "name": "robot-vacuum",
+      "status": "PASS",
+      "seconds": 8.2,
+      "log": "robot-vacuum.log",
+      "run": "KGf4ao",
+      "output": "{\"passed\":true,\"checks\":[\"add\",\"copy\",\"undo/redo\",\"height precision\",\"height undo\",\"3D startup\",\"refresh persistence\"],\"models\":[{\"type\":\"robot_p20max_tank\",\"w\":450,\"d\":450,\"h\":450},{\"type\":\"robot_p20max_plumbed\",\"w\":381,\"d\":475,\"h\":300},{\"type\":\"robot_p20max\",\"w\":350,\"d\":352,\"h\":79.8}]}\n{\"case\":\"robot-vacuum\",\"status\":\"PASS\"}\n"
+    },
+    {
+      "name": "scene-clearances",
+      "status": "PASS",
+      "seconds": 23.7,
+      "log": "scene-clearances.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"scene-clearances\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"independentSwitches\":true,\"reload\":true,\"undoRedo\":true,\"missingData\":true,\"dishwasher\":true,\"narrow\":true},{\"mode\":\"file\",\"passed\":true,\"independentSwitches\":true,\"reload\":true,\"undoRedo\":true,\"missingData\":true,\"dishwasher\":true,\"narrow\":true}]}\n"
+    },
+    {
+      "name": "scene-observation",
+      "status": "PASS",
+      "seconds": 44,
+      "log": "scene-observation.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"scene-observation\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"status\":\"PASS\",\"info\":{\"projected\":[[-0.2760932894266358,-0.41505544396749666,0.9842296405440729],[-0.32578634344538127,-0.5853554704129413,0.9813311838719629],[-0.301092415027901,0.5409867411031413,0.9827715115595157],[-0.36117099228804644,0.5429541111397775,0.9792672964021045],[0.2760932894266358,-0.41505544396749666,0.9842296405440729],[0.32578634344538127,-0.5853554704129413,0.9813311838719629],[0.301092415027901,0.5409867411031413,0.9827715115595157],[0.36117099228804644,0.5429541111397775,0.9792672964021045]],\"sx\":0.896551724137931,\"sy\":0.632183908045977,\"clips\":206,\"toolbarOverlap\":false,\"cutHits\":1,\"visibleHits\":0,\"top\":2.39999999961257},\"walk\":{\"walking\":true,\"clips\":0,\"top\":2.800000002980232,\"eye\":1.6,\"cut\":1.2,\"fov\":45},\"initialDesignBytes\":2716,\"errors\":[]},{\"mode\":\"file\",\"status\":\"PASS\",\"info\":{\"projected\":[[-0.2760932894266358,-0.41505544396749666,0.9842296405440729],[-0.32578634344538127,-0.5853554704129413,0.9813311838719629],[-0.301092415027901,0.5409867411031413,0.9827715115595157],[-0.36117099228804644,0.5429541111397775,0.9792672964021045],[0.2760932894266358,-0.41505544396749666,0.9842296405440729],[0.32578634344538127,-0.5853554704129413,0.9813311838719629],[0.301092415027901,0.5409867411031413,0.9827715115595157],[0.36117099228804644,0.5429541111397775,0.9792672964021045]],\"sx\":0.896551724137931,\"sy\":0.632183908045977,\"clips\":206,\"toolbarOverlap\":false,\"cutHits\":1,\"visibleHits\":0,\"top\":2.39999999961257},\"walk\":{\"walking\":true,\"clips\":0,\"top\":2.800000002980232,\"eye\":1.6,\"cut\":1.2,\"fov\":45},\"initialDesignBytes\":2716,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "shoe-bench",
+      "status": "PASS",
+      "seconds": 19.5,
+      "log": "shoe-bench.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"shoe-bench\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "short-wall-area-3d",
+      "status": "PASS",
+      "seconds": 31.4,
+      "log": "short-wall-area-3d.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"short-wall-area-3d\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"before\":{\"phase\":\"before\",\"net\":67.79249300000001,\"wallArea\":212.04680000000002,\"paintArea\":187.16338100000002,\"meshNet\":67.79249276109113,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.224117,\"meshArea\":3.224116948595822,\"label\":\"走廊\\n      3.22 m²\",\"formatted\":\"3.22\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[],\"remainder\":false},\"after\":{\"phase\":\"two-walls-active-3d\",\"net\":67.752193,\"wallArea\":213.7828,\"paintArea\":188.899381,\"meshNet\":67.75219276322795,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773842219672,\"meshArea\":20.773841049653434,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.183840780328,\"meshArea\":3.1838407327395357,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tk3n48\",\"a\":[3768,6421],\"b\":[3768,6471.000000000001],\"length\":50.00000000000021,\"rect\":[3703,6356,3833,6536.000000000001],\"meshRect\":[-1.7469999976158141,0.8559999964237213,-1.6170000023841857,1.0360000035762786],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tkef50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"screenshotPosition\":{\"phase\":\"screenshot-position-active-3d\",\"net\":67.747643,\"wallArea\":213.97880000000004,\"paintArea\":189.09538100000003,\"meshNet\":67.74764275998547,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.179267,\"meshArea\":3.179266947490156,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tk3n48\",\"a\":[3802.9999999999995,6386],\"b\":[3802.9999999999995,6436],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,6321,3867.9999999999995,6501],\"meshRect\":[-1.7119999976158142,0.8209999964237213,-1.5820000023841858,1.0010000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tkef50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"moved\":{\"phase\":\"detached-active-3d\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tk3n48\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tkef50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"undone\":{\"phase\":\"undo-active-3d\",\"net\":67.747643,\"wallArea\":213.97880000000004,\"paintArea\":189.09538100000003,\"meshNet\":67.74764275998547,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.179267,\"meshArea\":3.179266947490156,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tk3n48\",\"a\":[3802.9999999999995,6386],\"b\":[3802.9999999999995,6436],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,6321,3867.9999999999995,6501],\"meshRect\":[-1.7119999976158142,0.8209999964237213,-1.5820000023841858,1.0010000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tkef50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"redone\":{\"phase\":\"redo-active-3d\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tk3n48\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tkef50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"refreshed\":{\"phase\":\"refresh\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tk3n48\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tkef50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"roundtrip\":{\"phase\":\"project-roundtrip\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tk3n48\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tkef50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"pageErrors\":[]},{\"mode\":\"file\",\"passed\":true,\"before\":{\"phase\":\"before\",\"net\":67.79249300000001,\"wallArea\":212.04680000000002,\"paintArea\":187.16338100000002,\"meshNet\":67.79249276109113,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.224117,\"meshArea\":3.224116948595822,\"label\":\"走廊\\n      3.22 m²\",\"formatted\":\"3.22\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[],\"remainder\":false},\"after\":{\"phase\":\"two-walls-active-3d\",\"net\":67.752193,\"wallArea\":213.7828,\"paintArea\":188.899381,\"meshNet\":67.75219276322795,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773842219672,\"meshArea\":20.773841049653434,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.183840780328,\"meshArea\":3.1838407327395357,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tvs048\",\"a\":[3768,6421],\"b\":[3768,6471.000000000001],\"length\":50.00000000000021,\"rect\":[3703,6356,3833,6536.000000000001],\"meshRect\":[-1.7469999976158141,0.8559999964237213,-1.6170000023841857,1.0360000035762786],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tw1s50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"screenshotPosition\":{\"phase\":\"screenshot-position-active-3d\",\"net\":67.747643,\"wallArea\":213.97880000000004,\"paintArea\":189.09538100000003,\"meshNet\":67.74764275998547,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.179267,\"meshArea\":3.179266947490156,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tvs048\",\"a\":[3802.9999999999995,6386],\"b\":[3802.9999999999995,6436],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,6321,3867.9999999999995,6501],\"meshRect\":[-1.7119999976158142,0.8209999964237213,-1.5820000023841858,1.0010000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tw1s50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"moved\":{\"phase\":\"detached-active-3d\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tvs048\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tw1s50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"undone\":{\"phase\":\"undo-active-3d\",\"net\":67.747643,\"wallArea\":213.97880000000004,\"paintArea\":189.09538100000003,\"meshNet\":67.74764275998547,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.179267,\"meshArea\":3.179266947490156,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tvs048\",\"a\":[3802.9999999999995,6386],\"b\":[3802.9999999999995,6436],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,6321,3867.9999999999995,6501],\"meshRect\":[-1.7119999976158142,0.8209999964237213,-1.5820000023841858,1.0010000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tw1s50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"redone\":{\"phase\":\"redo-active-3d\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tvs048\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tw1s50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"refreshed\":{\"phase\":\"refresh\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tvs048\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tw1s50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"roundtrip\":{\"phase\":\"project-roundtrip\",\"net\":67.745693,\"wallArea\":214.7908,\"paintArea\":189.907381,\"meshNet\":67.74569276966525,\"perRoom\":[{\"id\":\"area_fmv3p1fkz7\",\"name\":\"主卧\",\"area\":20.773866,\"meshArea\":20.77386483166032,\"label\":\"主卧\\n      20.77 m²\",\"formatted\":\"20.77\"},{\"id\":\"area_fmv3p1yse11\",\"name\":\"走廊\",\"area\":3.177317,\"meshArea\":3.1773169571699498,\"label\":\"走廊\\n      3.18 m²\",\"formatted\":\"3.18\"},{\"id\":\"area_fmv3p2ig914\",\"name\":\"阳台\",\"area\":4.267264,\"meshArea\":4.267264003692617,\"label\":\"阳台\\n      4.27 m²\",\"formatted\":\"4.27\"},{\"id\":\"area_fmv3qajd93\",\"name\":\"餐厅\",\"area\":3.64384,\"meshArea\":3.64383958045007,\"label\":\"餐厅\\n      3.64 m²\",\"formatted\":\"3.64\"},{\"id\":\"area_fmv3qb1oi4\",\"name\":\"客厅\",\"area\":14.588380008560001,\"meshArea\":14.58838035974511,\"label\":\"客厅\\n      14.59 m²\",\"formatted\":\"14.59\"},{\"id\":\"area_fmv3qb1oi5\",\"name\":\"玄关\",\"area\":5.530327991439998,\"meshArea\":5.530329152209816,\"label\":\"玄关\\n      5.53 m²\",\"formatted\":\"5.53\"},{\"id\":\"area_fmv3qcck717\",\"name\":\"厨房\",\"area\":4.356594,\"meshArea\":4.3565938252029355,\"label\":\"厨房\\n      4.36 m²\",\"formatted\":\"4.36\"},{\"id\":\"area_fmv3oztg03\",\"name\":\"次卧\",\"area\":7.582446,\"meshArea\":7.582445980394729,\"label\":\"次卧\\n      7.58 m²\",\"formatted\":\"7.58\"},{\"id\":\"area_fmv3qdfiz23\",\"name\":\"卫生间\",\"area\":3.825658,\"meshArea\":3.825658079139714,\"label\":\"卫生间\\n      3.83 m²\",\"formatted\":\"3.83\"}],\"walls\":[{\"id\":\"w_fmvi8tvs048\",\"a\":[3835,6350],\"b\":[3835,6400],\"length\":50.00000000000021,\"rect\":[3770,6285,3900,6465],\"meshRect\":[-1.6799999976158142,0.7849999964237213,-1.5500000023841858,0.9650000035762787],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1},{\"id\":\"w_fmvi8tw1s50\",\"a\":[3802.9999999999995,5485],\"b\":[3802.9999999999995,5535],\"length\":50.00000000000021,\"rect\":[3737.9999999999995,5420,3867.9999999999995,5600],\"meshRect\":[-1.7119999976158142,-0.08000000357627869,-1.5820000023841858,0.10000000357627868],\"wallHeight\":1200.0000476837158,\"floorUnderWall\":0,\"floorBesideWall\":1}],\"remainder\":false},\"pageErrors\":[]}]}\n"
+    },
+    {
+      "name": "short-wall-zones",
+      "status": "PASS",
+      "seconds": 12.9,
+      "log": "short-wall-zones.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"short-wall-zones\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"reportedFloorplan\":true,\"wallAndZoneAtomicUndoRedo\":true,\"saveRefresh\":true,\"previousDraftRecovery\":true,\"projectRoundtrip\":true},{\"mode\":\"file\",\"passed\":true,\"reportedFloorplan\":true,\"wallAndZoneAtomicUndoRedo\":true,\"saveRefresh\":true,\"previousDraftRecovery\":true,\"projectRoundtrip\":true}]}\n"
+    },
+    {
+      "name": "short-walls",
+      "status": "PASS",
+      "seconds": 9.2,
+      "log": "short-walls.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"short-walls\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"numericAndDraw50\":true,\"cornerDrag\":true,\"shiftAndEscape\":true,\"undoRedo\":true,\"saveRefreshAndProject\":true,\"narrowScreen\":true},{\"mode\":\"file\",\"passed\":true,\"numericAndDraw50\":true,\"cornerDrag\":true,\"shiftAndEscape\":true,\"undoRedo\":true,\"saveRefreshAndProject\":true,\"narrowScreen\":true}]}\n"
+    },
+    {
+      "name": "sink-linked-offset",
+      "status": "PASS",
+      "seconds": 20.4,
+      "log": "sink-linked-offset.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"sink-linked-offset\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[],\"offset\":true,\"undoRedo\":true,\"atomicBoundary\":true,\"hostTransforms\":true,\"refresh\":true,\"exportImport\":true,\"scene3d\":true,\"mobile\":true},{\"mode\":\"file\",\"passed\":true,\"errors\":[],\"offset\":true,\"undoRedo\":true,\"atomicBoundary\":true,\"hostTransforms\":true,\"refresh\":true,\"exportImport\":true,\"scene3d\":true,\"mobile\":true}]}\n"
+    },
+    {
+      "name": "sink-surface",
+      "status": "PASS",
+      "seconds": 9,
+      "log": "sink-surface.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"sink-surface\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[],\"outerMargins\":true,\"openingMargins\":true,\"dragAndPrecisePosition\":true,\"threeInstallations\":true,\"exports\":true,\"undoRedo\":true,\"rotatedLinkedL\":true,\"refresh\":true,\"mobile\":true},{\"mode\":\"file\",\"passed\":true,\"errors\":[],\"outerMargins\":true,\"openingMargins\":true,\"dragAndPrecisePosition\":true,\"threeInstallations\":true,\"exports\":true,\"undoRedo\":true,\"rotatedLinkedL\":true,\"refresh\":true,\"mobile\":true}]}\n"
+    },
+    {
+      "name": "sink",
+      "status": "PASS",
+      "seconds": 26.3,
+      "log": "sink.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"sink\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[],\"externalRequests\":0},{\"mode\":\"file\",\"passed\":true,\"errors\":[],\"externalRequests\":0}]}\n"
+    },
+    {
+      "name": "stove-boundaries",
+      "status": "PASS",
+      "seconds": 2.8,
+      "log": "stove-boundaries.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"stove-boundaries\",\"status\":\"PASS\",\"result\":{\"status\":\"PASS\",\"fourDistances\":true,\"canvas\":true,\"propertyPanel\":true,\"saveUndoRedo\":true,\"movement\":true,\"drawingRotation\":true,\"linkedLKitchen\":true,\"mobile390\":true,\"refresh\":true,\"errors\":[]}}\n"
+    },
+    {
+      "name": "tank-preview",
+      "status": "PASS",
+      "seconds": 2,
+      "log": "tank-preview.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tank-preview\",\"status\":\"PASS\"}\n"
+    },
+    {
+      "name": "tea-bar",
+      "status": "PASS",
+      "seconds": 24.6,
+      "log": "tea-bar.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tea-bar\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tea-table",
+      "status": "PASS",
+      "seconds": 18.6,
+      "log": "tea-table.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tea-table\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[]},{\"mode\":\"http\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tile-coplanar-wall",
+      "status": "PASS",
+      "seconds": 40.2,
+      "log": "tile-coplanar-wall.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tile-coplanar-wall\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"use\":\"kitchen\",\"passed\":true,\"oneWall\":true,\"sharedBasis\":true,\"oldDataPreserved\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[]},{\"mode\":\"http\",\"use\":\"balcony\",\"passed\":true,\"oneWall\":true,\"sharedBasis\":true,\"oldDataPreserved\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[]},{\"mode\":\"http\",\"use\":\"bathroom\",\"passed\":true,\"oneWall\":true,\"sharedBasis\":true,\"oldDataPreserved\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[]},{\"mode\":\"file\",\"use\":\"kitchen\",\"passed\":true,\"oneWall\":true,\"sharedBasis\":true,\"oldDataPreserved\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[]},{\"mode\":\"file\",\"use\":\"balcony\",\"passed\":true,\"oneWall\":true,\"sharedBasis\":true,\"oldDataPreserved\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[]},{\"mode\":\"file\",\"use\":\"bathroom\",\"passed\":true,\"oneWall\":true,\"sharedBasis\":true,\"oldDataPreserved\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"narrow\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tile-multiselect",
+      "status": "PASS",
+      "seconds": 10.3,
+      "log": "tile-multiselect.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tile-multiselect\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"allSelectedSurfacesTinted\":true,\"focusDistinct\":true,\"groupCamera\":true,\"focusKeepsFraming\":true,\"mixedSurfaces\":true,\"stable1440x1000\":true,\"stable1440x1280\":true,\"stable900\":true,\"stable390\":true,\"noWrites\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"allSelectedSurfacesTinted\":true,\"focusDistinct\":true,\"groupCamera\":true,\"focusKeepsFraming\":true,\"mixedSurfaces\":true,\"stable1440x1000\":true,\"stable1440x1280\":true,\"stable900\":true,\"stable390\":true,\"noWrites\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tile-selection-outline",
+      "status": "PASS",
+      "seconds": 5.3,
+      "log": "tile-selection-outline.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tile-selection-outline\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"rectangles\":4,\"realBoundarySegments\":8,\"noClippingSeams\":true,\"openingPreserved\":true,\"productionUVUnchanged\":true,\"singleAndMulti\":true,\"noDataWrites\":true,\"refresh\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"rectangles\":4,\"realBoundarySegments\":8,\"noClippingSeams\":true,\"openingPreserved\":true,\"productionUVUnchanged\":true,\"singleAndMulti\":true,\"noDataWrites\":true,\"refresh\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tile-shared-origin",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "tile-shared-origin.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tile-shared-origin\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"graphPick\":true,\"productionPreview\":true,\"dragCancel\":true,\"keyboard\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"presetGroups\":true,\"mobile\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"graphPick\":true,\"productionPreview\":true,\"dragCancel\":true,\"keyboard\":true,\"oneApply\":true,\"undoRedo\":true,\"refresh\":true,\"presetGroups\":true,\"mobile\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "tiling-render-alignment",
+      "status": "PASS",
+      "seconds": 14.8,
+      "log": "tiling-render-alignment.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tiling-render-alignment\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true},{\"mode\":\"file\",\"passed\":true}]}\n"
+    },
+    {
+      "name": "touchpad",
+      "status": "PASS",
+      "seconds": 10.2,
+      "log": "touchpad.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"touchpad\",\"status\":\"PASS\",\"result\":[{\"protocol\":\"http\",\"pan\":true,\"pinch\":true,\"scene\":true,\"spacePan\":true,\"preferenceReload\":true,\"narrow\":true,\"designUnchanged\":true},{\"protocol\":\"file\",\"pan\":true,\"pinch\":true,\"scene\":true,\"spacePan\":true,\"preferenceReload\":true,\"narrow\":true,\"designUnchanged\":true}]}\n"
+    },
+    {
+      "name": "tv-views",
+      "status": "PASS",
+      "seconds": 13.9,
+      "log": "tv-views.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"tv-views\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "wall-face-snapping",
+      "status": "PASS",
+      "seconds": 21.9,
+      "log": "wall-face-snapping.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"wall-face-snapping\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"drawAndResize\":true,\"shiftEscapeUndoRedo\":true,\"before\":{\"phase\":\"before\",\"net\":2.8666,\"meshNet\":2.8666001647353196,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1760],\"length\":50,\"rect\":[735,1645,865,1825],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.8666,\"meshArea\":2.8666001647353196,\"label\":\"房间 1\\n      2.87 m²\",\"formatted\":\"2.87\"}]},\"after\":{\"phase\":\"saved-active-3d\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8z4q748\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"undone\":{\"phase\":\"undo\",\"net\":2.8666,\"meshNet\":2.8666001647353196,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1760],\"length\":50,\"rect\":[735,1645,865,1825],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.8666,\"meshArea\":2.8666001647353196,\"label\":\"房间 1\\n      2.87 m²\",\"formatted\":\"2.87\"}]},\"redone\":{\"phase\":\"redo\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8z4q748\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"refreshed\":{\"phase\":\"refresh\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8z4q748\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"roundtrip\":{\"phase\":\"project-roundtrip\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8z4q748\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"pageErrors\":[]},{\"mode\":\"file\",\"passed\":true,\"drawAndResize\":true,\"shiftEscapeUndoRedo\":true,\"before\":{\"phase\":\"before\",\"net\":2.8666,\"meshNet\":2.8666001647353196,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1760],\"length\":50,\"rect\":[735,1645,865,1825],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.8666,\"meshArea\":2.8666001647353196,\"label\":\"房间 1\\n      2.87 m²\",\"formatted\":\"2.87\"}]},\"after\":{\"phase\":\"saved-active-3d\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8zd4e48\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"undone\":{\"phase\":\"undo\",\"net\":2.8666,\"meshNet\":2.8666001647353196,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1760],\"length\":50,\"rect\":[735,1645,865,1825],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.8666,\"meshArea\":2.8666001647353196,\"label\":\"房间 1\\n      2.87 m²\",\"formatted\":\"2.87\"}]},\"redone\":{\"phase\":\"redo\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8zd4e48\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"refreshed\":{\"phase\":\"refresh\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8zd4e48\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"roundtrip\":{\"phase\":\"project-roundtrip\",\"net\":2.83995,\"meshNet\":2.83995016318858,\"walls\":[{\"id\":\"short\",\"a\":[800,1710],\"b\":[800,1785],\"length\":75,\"rect\":[735,1645,865,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1},{\"id\":\"w_fmvi8zd4e48\",\"a\":[1200,1735],\"b\":[1200,1785],\"length\":50,\"rect\":[1135,1670,1265,1850],\"meshMatches\":true,\"floorUnderEnd\":0,\"floorBeside\":1}],\"rooms\":[{\"area\":2.83995,\"meshArea\":2.83995016318858,\"label\":\"房间 1\\n      2.84 m²\",\"formatted\":\"2.84\"}]},\"pageErrors\":[]}]}\n"
+    },
+    {
+      "name": "wall-layer-finishes",
+      "status": "PASS",
+      "seconds": 10.8,
+      "log": "wall-layer-finishes.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"wall-layer-finishes\",\"status\":\"PASS\",\"result\":[{\"mode\":\"http\",\"passed\":true,\"errors\":[]},{\"mode\":\"file\",\"passed\":true,\"errors\":[]}]}\n"
+    },
+    {
+      "name": "water-purifier",
+      "status": "PASS",
+      "seconds": 19.4,
+      "log": "water-purifier.log",
+      "run": "KGf4ao",
+      "output": "{\"case\":\"water-purifier\",\"status\":\"PASS\",\"result\":[{\"mode\":\"file\",\"passed\":true,\"errors\":[],\"externalRequests\":0},{\"mode\":\"http\",\"passed\":true,\"errors\":[],\"externalRequests\":0}]}\n"
+    },
+    {
+      "name": "beam-roof",
+      "status": "PASS",
+      "seconds": 20.6,
+      "log": "beam-roof.log",
+      "run": "KGf4ao",
+      "output": "PASS http 1601 default 3D beams, direct editor click, thickness/bottom, validation, roof follow, undo/redo, refresh, narrow, unchanged walls/furniture\nPASS file 1601 default 3D beams, direct editor click, thickness/bottom, validation, roof follow, undo/redo, refresh, narrow, unchanged walls/furniture\n"
+    },
+    {
+      "name": "cut-board-motion",
+      "status": "PASS",
+      "seconds": 12.7,
+      "log": "cut-board-motion.log",
+      "run": "KGf4ao",
+      "output": "PASS http cut hinge clear, intermediate collision, editor agreement, moved/expanded pipe, undo/redo, refresh and 3D\nPASS file cut hinge clear, intermediate collision, editor agreement, moved/expanded pipe, undo/redo, refresh and 3D\n"
+    },
+    {
+      "name": "dining-plan-order",
+      "status": "PASS",
+      "seconds": 4.8,
+      "log": "dining-plan-order.log",
+      "run": "KGf4ao",
+      "output": "{\"fileOffline\":true,\"fourChairs\":true,\"roundtableAndDesk\":true,\"dragOpacity\":true,\"previewReleaseAndCancel\":true,\"previewExcludedFromExport\":true,\"hitTargets\":true,\"liveDrag\":true,\"undoRedo\":true,\"refresh\":true,\"export\":true,\"fourDrawingRotations\":true,\"mobile390\":true,\"errors\":[]}\n"
+    },
+    {
+      "name": "dxf-supplement",
+      "status": "PASS",
+      "seconds": 12.8,
+      "log": "dxf-supplement.log",
+      "run": "KGf4ao",
+      "output": "PASS http 1601 fixed frame, furniture, supplement, pipe edit, undo/redo, 3D, refresh, narrow screenshot\nPASS file 1601 fixed frame, furniture, supplement, pipe edit, undo/redo, 3D, refresh, narrow screenshot\n"
+    },
+    {
+      "name": "furniture-recovery",
+      "status": "PASS",
+      "seconds": 14.6,
+      "log": "furniture-recovery.log",
+      "run": "zq2m5X",
+      "output": "PASS http startup, raw backup, repair, undo/redo, reload, named data, 3D, injected model failure, narrow screen\nPASS file startup, raw backup, repair, undo/redo, reload, named data, 3D, injected model failure, narrow screen\n"
+    },
+    {
+      "name": "multi-region-merge",
+      "status": "PASS",
+      "seconds": 10.9,
+      "log": "multi-region-merge.log",
+      "run": "KGf4ao",
+      "output": "{\n  \"source\": \"C:\\\\Users\\\\SPH\\\\Documents\\\\GitHub\\\\Furnish\\\\output\\\\playwright\\\\verification-KGf4ao\\\\workspace 迁移 #\\\\tests\\\\fixtures\\\\browser\\\\1601-source.dxf\",\n  \"sha256\": \"34641bffa1c645a76acc2997098313b48bb65920d8114c9c53565dedf3e7267b\",\n  \"mergedArea\": 15.25,\n  \"net\": 70.25202300000001,\n  \"coverageDifferenceMM2\": 0.0008494984358549118,\n  \"regions\": [\n    {\n      \"name\": \"起居区\",\n      \"id\": \"area_fmv2lp4ab47\",\n      \"area\": 3.494251380780237\n    },\n    {\n      \"name\": \"阅读区\",\n      \"id\": \"area_fmv2lp4ab48\",\n      \"area\": 3.289249198654149\n    },\n    {\n      \"name\": \"餐厅\",\n      \"id\": \"area_dining\",\n      \"area\": 8.466499419873143\n    }\n  ],\n  \"retained\": {\n    \"name\": \"起居区\",\n    \"use\": \"study\",\n    \"mat\": \"marble\"\n  },\n  \"hole\": {\n    \"area\": 13.55555555364444,\n    \"islandArea\": 1.694444446355557,\n    \"rings\": 2\n  },\n  \"counts\": {\n    \"wallCenterlines\": 47,\n    \"wallBands\": 37,\n    \"windows\": 7,\n    \"beams\": 2,\n    \"markers\": 3\n  },\n  \"checks\": [\n    \"latest DXF GUI import run separately\",\n    \"dynamic IDs by name\",\n    \"three-region real preview\",\n    \"independent name/use/material sources\",\n    \"preview state unchanged and safe cancel\",\n    \"atomic undo/redo\",\n    \"unchanged other regions and structure\",\n    \"save refresh export Blob and fresh-context deep equality\",\n    \"later property-panel material survives editor save refresh and fresh import\",\n    \"four-region hole preview on labelled real-drawing fixture\",\n    \"island retained; hole save refresh and fresh import\"\n  ],\n  \"errors\": []\n}\n"
+    },
+    {
+      "name": "pipe-collisions",
+      "status": "PASS",
+      "seconds": 16.4,
+      "log": "pipe-collisions.log",
+      "run": "KGf4ao",
+      "output": "PASS http pipe bodies, drawer sweep, cabinet preview, real 3D cuts, edited position, undo/redo, refresh, unchanged furniture\nPASS file pipe bodies, drawer sweep, cabinet preview, real 3D cuts, edited position, undo/redo, refresh, unchanged furniture\n"
+    },
+    {
+      "name": "recessed-bay",
+      "status": "PASS",
+      "seconds": 6.4,
+      "log": "recessed-bay.log",
+      "run": "KGf4ao",
+      "output": "PASS browser bidirectional window heights, sill changes, empty input, conversion, cancel/apply, undo, restore, editor, save/reload and 3D without page errors\n"
+    }
+  ],
+  "initialFailures": [
+    {
+      "name": "beam-body",
+      "status": "FAIL",
+      "seconds": 2,
+      "log": "beam-body.log",
+      "run": "kP4RUE"
+    },
+    {
+      "name": "directional-heights",
+      "status": "FAIL",
+      "seconds": 2.2,
+      "log": "directional-heights.log",
+      "run": "kP4RUE"
+    },
+    {
+      "name": "folding-table-click",
+      "status": "FAIL",
+      "seconds": 8.6,
+      "log": "folding-table-click.log",
+      "run": "s9ovkd"
+    },
+    {
+      "name": "group-directional-placement",
+      "status": "FAIL",
+      "seconds": 3.6,
+      "log": "group-directional-placement.log",
+      "run": "s9ovkd"
+    },
+    {
+      "name": "kitchen-divider-input",
+      "status": "FAIL",
+      "seconds": 19.6,
+      "log": "kitchen-divider-input.log",
+      "run": "s9ovkd"
+    },
+    {
+      "name": "laundry-resize-vessel",
+      "status": "FAIL",
+      "seconds": 1.9,
+      "log": "laundry-resize-vessel.log",
+      "run": "s9ovkd"
+    },
+    {
+      "name": "measure-boundaries",
+      "status": "FAIL",
+      "seconds": 4.1,
+      "log": "measure-boundaries.log",
+      "run": "KGf4ao"
+    },
+    {
+      "name": "furniture-recovery",
+      "status": "FAIL",
+      "seconds": 31.3,
+      "log": "furniture-recovery.log",
+      "run": "KGf4ao"
+    },
+    {
+      "name": "directional-heights",
+      "status": "FAIL",
+      "seconds": 1.5,
+      "log": "directional-heights.log",
+      "run": "23U5WG"
+    },
+    {
+      "name": "kitchen-divider-input",
+      "status": "FAIL",
+      "seconds": 1.5,
+      "log": "kitchen-divider-input.log",
+      "run": "23U5WG"
+    },
+    {
+      "name": "kitchen-divider-input",
+      "status": "FAIL",
+      "seconds": 1.5,
+      "log": "kitchen-divider-input.log",
+      "run": "AEWX1u"
+    }
+  ],
+  "notRun": [],
+  "note": "Three isolated lanes with dependency overlap; affected cases rechecked after fixes. Retired tiling aliases run current consolidated cases."
+}

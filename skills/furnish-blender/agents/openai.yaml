@@ -1,0 +1,3 @@
+interface:
+  display_name: "Furnish · Blender 精修渲染"
+  short_description: "复用精修材质与布光，完成 Furnish 持续同步、GPU渲染及区域机位出图"

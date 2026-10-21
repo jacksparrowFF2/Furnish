@@ -1,0 +1,134 @@
+{
+  "date": "2026-10-21",
+  "passed": true,
+  "scope": "Incremental non-modal render sidebar, local Blender user configuration and 1601 fixed-region rendering",
+  "checks": {
+    "node": [
+      "tests/test-blender-render.cjs"
+    ],
+    "browser": [
+      "output/playwright/verification-syNr0f/results.json",
+      "output/playwright/verification-Vqa8ls/results.json"
+    ],
+    "realTask": "output/playwright/blender-live-AsPPAW/summary.json",
+    "actual1601SidebarProof": "output/blender/1601-sync-demo-20261021/furnish-live-sidebar.png",
+    "userBlenderConnection": {
+      "enabled": true,
+      "revision": "ec22f691806f8b5c1df499b34f8af802de0d9d393643164644e9a9c88e18e834",
+      "status": "已同步：新增 0／更新 4355／删除 0",
+      "materialLibrary": "D:/1601装修/Blender材质库",
+      "file": "D:\\1601装修\\渲染\\1601持续同步演示-20261021\\1601-持续同步试用.blend",
+      "saved": true
+    },
+    "fixedRegions": {
+      "passed": true,
+      "source": "D:/1601装修/渲染/1601持续同步演示-20261021/1601-持续同步试用.blend",
+      "shots": {
+        "living": {
+          "name": "01-客厅",
+          "position": [
+            9750,
+            5740,
+            1400
+          ],
+          "target": [
+            7180,
+            3860,
+            1080
+          ],
+          "lens": 27
+        },
+        "dining": {
+          "name": "02-餐厅",
+          "position": [
+            9470,
+            6350,
+            1500
+          ],
+          "target": [
+            7350,
+            7460,
+            1000
+          ],
+          "lens": 24
+        },
+        "kitchen": {
+          "name": "03-厨房",
+          "position": [
+            8350,
+            8620,
+            1450
+          ],
+          "target": [
+            6540,
+            9580,
+            1050
+          ],
+          "lens": 20
+        },
+        "bedroom": {
+          "name": "04-主卧",
+          "position": [
+            3400,
+            5800,
+            1450
+          ],
+          "target": [
+            1820,
+            3600,
+            950
+          ],
+          "lens": 24
+        }
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "images": [
+        {
+          "view": "living",
+          "file": "D:\\1601装修\\渲染\\1601固定区域效果图-20261021\\01-客厅.png",
+          "seconds": 16.47
+        },
+        {
+          "view": "dining",
+          "file": "D:\\1601装修\\渲染\\1601固定区域效果图-20261021\\02-餐厅.png",
+          "seconds": 16.49
+        },
+        {
+          "view": "kitchen",
+          "file": "D:\\1601装修\\渲染\\1601固定区域效果图-20261021\\03-厨房.png",
+          "seconds": 16.79
+        },
+        {
+          "view": "bedroom",
+          "file": "D:\\1601装修\\渲染\\1601固定区域效果图-20261021\\04-主卧.png",
+          "seconds": 16.99
+        }
+      ],
+      "resolution": [
+        1600,
+        1200
+      ],
+      "samples": 128,
+      "note": "Independent copy; source layout unchanged. Added illustrative soft fill only."
+    }
+  },
+  "notRun": [
+    "Full regression suite",
+    "Other Blender versions or platforms",
+    "Real-time path tracing while orbiting",
+    "Rendering through an already-open refined Blender project from the Furnish button"
+  ],
+  "limits": [
+    "Furnish sidebar renders exported basic materials and lights; refinement stays in Blender",
+    "Fixed cameras and photographic fills are specific to this saved 1601 layout",
+    "Material asset library is procedural, not measured product scans"
+  ]
+}

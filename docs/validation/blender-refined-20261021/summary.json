@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-21",
+  "passed": true,
+  "scope": "Incremental refined project rendering and reusable skill",
+  "liveJob": {
+    "id": "062ced96-068e-48a4-8af4-e0ad0cb2a431",
+    "state": "done",
+    "message": "渲染完成 · OPTIX",
+    "width": 1920,
+    "height": 1440,
+    "quality": "final",
+    "device": "auto",
+    "source": "refined",
+    "camera": "living",
+    "renderInfo": {
+      "source": "refined",
+      "cameraMode": "living",
+      "camera": "1601固定机位 | 01-客厅",
+      "world": "Study | daylight sky",
+      "existingMaterialBindingsPreserved": 4355,
+      "existingManagedMeshes": 4355,
+      "lightsPreserved": 8,
+      "sync": {
+        "added": 0,
+        "updated": 4355,
+        "deleted": 0,
+        "adopted": 0,
+        "revision": "bb6b248066dc8d19f5fae66913183f7f5a42a8212b1f994629115b38e6ec3fdd"
+      },
+      "samples": 128,
+      "exposure": -0.6000000238418579,
+      "viewTransform": "AgX",
+      "resolution": [
+        1920,
+        1440
+      ]
+    },
+    "renderDevice": {
+      "requested": "auto",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "created": "2026-10-21T11:54:28.818Z",
+    "image": "/api/furnish/blender/jobs/062ced96-068e-48a4-8af4-e0ad0cb2a431/image",
+    "blend": "/api/furnish/blender/jobs/062ced96-068e-48a4-8af4-e0ad0cb2a431/blend",
+    "scene": "/api/furnish/blender/jobs/062ced96-068e-48a4-8af4-e0ad0cb2a431/scene"
+  },
+  "checks": {
+    "node": [
+      "tests/test-blender-render.cjs",
+      "tests/test-blender-refined.cjs",
+      "tests/test-server-startup.cjs",
+      "tests/test-blender-device.cjs",
+      "tests/test-blender-sync.cjs"
+    ],
+    "httpFileAndNarrow": "output/playwright/verification-7gMrwY/results.json",
+    "savedCamera": "output/playwright/blender-refined-e5G9is/summary.json",
+    "furnishCamera": "output/playwright/blender-refined-oYVIjT/summary.json",
+    "skill": "quick_validate.py PASS using Python UTF-8 and isolated PyYAML dependency"
+  },
+  "artifacts": "D:/1601装修/渲染/1601精修联动-20261021",
+  "skill": "C:/Users/SPH/.codex/skills/furnish-blender",
+  "notRun": [
+    "Full repository regression",
+    "Other Blender versions and platforms",
+    "Automatic capture of unsaved interactive Blender changes",
+    "Third-party MCP installation"
+  ],
+  "limits": [
+    "Registered saved .blend is authoritative for refinement; browser cannot select arbitrary file paths",
+    "Preview caps samples; fine preserves saved Cycles samples",
+    "Saved/named cameras use 4:3; Furnish camera uses exported aspect",
+    "Compatibility of part type/material slot count remains required"
+  ]
+}

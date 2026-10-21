@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-21",
+  "passed": true,
+  "baseCommit": "3e1fc8e",
+  "scope": "Full registered Node/browser regression plus actual isolated Blender base/refined rendering and continuous sync",
+  "checks": {
+    "nodeSuites": 273,
+    "builtInPlans": 12,
+    "productionPreviews": 31,
+    "canonicalBrowserCases": 163,
+    "pythonScriptsParsed": 6,
+    "httpAndOfflineFile": true,
+    "chrome": true,
+    "realBlender": true,
+    "sourceFilesUnchanged": true,
+    "finalTargetedChecks": [
+      "test-browser-verification.cjs",
+      "test-cabinet-design-upgrade.cjs",
+      "test-legacy-cabinet-upgrade.cjs",
+      "test-furniture-recovery.cjs",
+      "test-blender-affine.cjs"
+    ]
+  },
+  "fixes": [
+    {
+      "kind": "product",
+      "issue": "Corrupt cabinet configuration aborted the input upgrade and blocked the existing startup recovery UI",
+      "fix": "Retain the complete broken record, upgrade healthy siblings, and preserve strict import validation"
+    },
+    {
+      "kind": "product",
+      "issue": "Nonuniform scale with rotation/mirror introduced about 1 mm Blender geometry error through TRS decomposition",
+      "fix": "Normalize exported TRS rotation and bake residual shear only into private snapshot geometry; expand sheared instances"
+    },
+    {
+      "kind": "product",
+      "issue": "Invisible 3D layer could intercept 2D clicks during its delayed visibility transition",
+      "fix": "Disable 3D hit testing in 2D and enable it only while 3D is active"
+    },
+    {
+      "kind": "product",
+      "issue": "Reopening a refined render panel reset the explicit ceiling choice",
+      "fix": "Apply default ceilings only until the user makes a choice"
+    },
+    {
+      "kind": "verification",
+      "issue": "Legacy fixtures expected absent cabinet fields or implicitly created combined kitchen groups on refresh",
+      "fix": "Use canonical independent structures and current upgrade expectations without changing distance thresholds"
+    },
+    {
+      "kind": "verification",
+      "issue": "Folding-table clicks used stale camera/geometry coordinates before the real camera transition completed",
+      "fix": "Wait for the production stable-camera signature and project the current model using its real camera"
+    },
+    {
+      "kind": "verification",
+      "issue": "Real Blender sync acceptance exceeded its three-minute wait during full regression",
+      "fix": "Allow ten minutes for the isolated receiver and compare every sofa component rather than a random first component"
+    }
+  ],
+  "data": {
+    "passed": true,
+    "path": "projects/workspace.furnish.json",
+    "sha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54",
+    "workspaces": 9,
+    "namedDesigns": 1,
+    "workspaceFurniture": 383,
+    "namedFurniture": 43,
+    "canonicalByteEqual": true,
+    "roundTrip": true,
+    "repeatedRestoreNoDrift": true,
+    "unchanged": true,
+    "alreadyInRemoteMain": true,
+    "gitBlob": "c045c62b15e55e3fd321410f7df990c03a9f8fdf",
+    "priorDataCommit": "5a067ea"
+  },
+  "artifacts": {
+    "node": "node-full.log",
+    "browser": "browser-results.json",
+    "blender": "blender-results.json"
+  },
+  "notRun": [
+    "Other operating systems, Blender versions and physical GPUs other than local OptiX",
+    "Physical touch devices and manufacturer installation/construction verification",
+    "Re-rendering the historical four-region 1601 final images or reinstalling third-party MCP in this run"
+  ],
+  "knownLimits": [
+    "Furniture without production solid data retains conservative envelopes; curved/rounded approximations remain documented",
+    "Blender synchronization remains one-way complete snapshots and is not interactive real-time path tracing",
+    "Refinement uses the registered saved .blend; unsaved interactive edits are not automatically captured",
+    "Arbitrary external linked assets/modifiers are not covered; historical render/sync files are not auto-cleaned"
+  ],
+  "environment": "Windows; Chrome; installed Store Blender; NVIDIA GeForce RTX 4070 Ti SUPER / OptiX",
+  "notes": [
+    "Initial sandbox EACCES/EPERM were rechecked with normal local permissions; they are not classified as product defects",
+    "No local project bytes changed; data already exists on origin/main and no empty data commit is needed",
+    "The sync receiver PNG is a diagnostic render for pipeline verification, not an interior composition/quality acceptance image."
+  ]
+}

@@ -1,5 +1,7 @@
 # Furnish → Blender 持续同步（试用）
 
+2026-10-21 后续全量回归见 [记录](validation/full-regression-blender-20261021/summary.json)。修复旋转、镜像与非等比缩放组合的导出剪切损失，真实接收器逐一核对沙发全部部件的世界几何边界；原点变化、隐藏、删除撤销、材质与机位保留及OptiX渲染通过。本轮使用隔离插件目录和工程，未改写活动Blender窗口或真实装修数据。
+
 2026-10-21：本机单向同步，Furnish 管户型、家具尺寸和布局，Blender 保留材质精修、灯光、机位及用户添加的物体。无需更换商店版 Blender；实测 Microsoft Store Blender 4.5.14 LTS。
 
 ## 使用

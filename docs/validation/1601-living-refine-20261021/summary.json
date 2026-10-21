@@ -1,0 +1,210 @@
+{
+  "passed": true,
+  "geometryAndWorldTransformsIdentical": true,
+  "meshCount": 4355,
+  "boundFile": "D:\\1601装修\\渲染\\1601-BlenderMCP验证-20261021\\1601-MCP精修验证.blend",
+  "camera": "1601固定机位 | 01-客厅",
+  "shots": [
+    [
+      "1601固定机位 | 01-客厅",
+      [
+        9700,
+        6220,
+        1420
+      ],
+      [
+        7700,
+        3950,
+        1420
+      ],
+      24,
+      -0.085
+    ],
+    [
+      "1601精修 | 02-电视与阳台",
+      [
+        6900,
+        5290,
+        1420
+      ],
+      [
+        9850,
+        3760,
+        1420
+      ],
+      24,
+      -0.07
+    ],
+    [
+      "1601精修 | 03-客厅全景",
+      [
+        8350,
+        6380,
+        1420
+      ],
+      [
+        8418,
+        3250,
+        1420
+      ],
+      22,
+      -0.07
+    ],
+    [
+      "1601精修 | 04-木作与茶席",
+      [
+        9450,
+        5740,
+        1250
+      ],
+      [
+        7000,
+        4950,
+        770
+      ],
+      40,
+      0
+    ]
+  ],
+  "world": "Study | daylight sky",
+  "exposure": -0.75,
+  "viewTransform": "AgX",
+  "samples": 160,
+  "resolution": [
+    1920,
+    1440
+  ],
+  "lights": [
+    {
+      "name": "FurnishSun",
+      "energy": 0.004078536760061979
+    },
+    {
+      "name": "Study | balcony daylight",
+      "energy": 340.0
+    },
+    {
+      "name": "Study | subtle photographic fill",
+      "energy": 18.0
+    },
+    {
+      "name": "Study | ceiling bounced warm fill",
+      "energy": 12.0
+    },
+    {
+      "name": "Study | soft morning sunlight",
+      "energy": 1.2999999523162842
+    },
+    {
+      "name": "Regions | 餐厅 soft fill",
+      "energy": 55.0
+    },
+    {
+      "name": "Regions | 厨房 soft fill",
+      "energy": 65.0
+    },
+    {
+      "name": "Regions | 主卧 soft fill",
+      "energy": 100.0
+    }
+  ],
+  "nativeMcp": true,
+  "images": [
+    {
+      "file": "D:\\1601装修\\渲染\\1601客厅精修-20261021\\01-沙发与阳台.png",
+      "resolution": [
+        1920,
+        1440
+      ],
+      "bytes": 3094522,
+      "sha256": "4a721e2aae58081a1ca3f5f8b00f1f980bc879a9f1b806fdbe4fe71dae806cb2"
+    },
+    {
+      "file": "D:\\1601装修\\渲染\\1601客厅精修-20261021\\02-电视墙与阳台.png",
+      "resolution": [
+        1920,
+        1440
+      ],
+      "bytes": 2931095,
+      "sha256": "30d39c0f6e5cd58ef30bc182727f8239d43dcf2f3e48f73350f9edc582d4e7b1"
+    },
+    {
+      "file": "D:\\1601装修\\渲染\\1601客厅精修-20261021\\03-客厅全景.png",
+      "resolution": [
+        1920,
+        1440
+      ],
+      "bytes": 3008891,
+      "sha256": "05524941520127f23bb4547fc4900b4680678e559b8f853a4cf73e4c7ca36004"
+    },
+    {
+      "file": "D:\\1601装修\\渲染\\1601客厅精修-20261021\\04-茶席与木作细节.png",
+      "resolution": [
+        1920,
+        1440
+      ],
+      "bytes": 2998403,
+      "sha256": "369de26eff5de46c0a4468b3f7e2a026a14d842c052b7c0ece97faa9d009d376"
+    }
+  ],
+  "visualChecked": true,
+  "furnishUi": {
+    "passed": true,
+    "job": {
+      "id": "e87e3e03-5d18-42de-ba4e-d4582ee08493",
+      "state": "done",
+      "message": "渲染完成 · OPTIX",
+      "width": 960,
+      "height": 720,
+      "quality": "preview",
+      "device": "auto",
+      "source": "refined",
+      "camera": "active",
+      "renderInfo": {
+        "source": "refined",
+        "cameraMode": "active",
+        "camera": "1601固定机位 | 01-客厅",
+        "world": "Study | daylight sky",
+        "existingMaterialBindingsPreserved": 4355,
+        "existingManagedMeshes": 4355,
+        "lightsPreserved": 8,
+        "sync": {
+          "added": 0,
+          "updated": 4355,
+          "deleted": 0,
+          "adopted": 0,
+          "revision": "ecbdec3a1c93acf0a2e5213a90fcfa0cce59856e9f6c39b9c6ec99b0da33c67e"
+        },
+        "samples": 32,
+        "exposure": -0.75,
+        "viewTransform": "AgX",
+        "resolution": [
+          960,
+          720
+        ]
+      },
+      "renderDevice": {
+        "requested": "auto",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "created": "2026-10-21T14:33:09.734Z",
+      "image": "/api/furnish/blender/jobs/e87e3e03-5d18-42de-ba4e-d4582ee08493/image",
+      "blend": "/api/furnish/blender/jobs/e87e3e03-5d18-42de-ba4e-d4582ee08493/blend",
+      "scene": "/api/furnish/blender/jobs/e87e3e03-5d18-42de-ba4e-d4582ee08493/scene"
+    },
+    "templateUnchanged": true,
+    "workspaceUnchanged": true,
+    "reopen": true,
+    "narrowScreen": true,
+    "errors": []
+  },
+  "fullSuiteRun": false,
+  "sourceWorkspaceUnchanged": true,
+  "backup": "D:\\1601装修\\渲染\\1601客厅精修-20261021\\1601-精修前备份.blend",
+  "archive": "D:\\1601装修\\渲染\\1601客厅精修-20261021\\1601-客厅精修归档.blend"
+}

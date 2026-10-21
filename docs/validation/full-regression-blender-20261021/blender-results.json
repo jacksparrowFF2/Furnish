@@ -1,0 +1,198 @@
+{
+  "live": {
+    "passed": true,
+    "realStoreBlender": true,
+    "productionAPI": true,
+    "panelReopen": true,
+    "projectUnchanged": true,
+    "pngBlendGlbDownloads": true,
+    "narrowScreen": true,
+    "errors": []
+  },
+  "refinedActive": {
+    "passed": true,
+    "job": {
+      "id": "08349384-d783-4d06-a81a-5fedf79ec73a",
+      "state": "done",
+      "message": "渲染完成 · OPTIX",
+      "width": 960,
+      "height": 720,
+      "quality": "preview",
+      "device": "auto",
+      "source": "refined",
+      "camera": "active",
+      "renderInfo": {
+        "source": "refined",
+        "cameraMode": "active",
+        "camera": "1601固定机位 | 01-客厅",
+        "world": "Study | daylight sky",
+        "existingMaterialBindingsPreserved": 4355,
+        "existingManagedMeshes": 4355,
+        "lightsPreserved": 8,
+        "sync": {
+          "added": 0,
+          "updated": 4355,
+          "deleted": 0,
+          "adopted": 0,
+          "revision": "3a2d4f83057e8227acc5e7f6330fe565697bba35672bb45af54c6916459503c4"
+        },
+        "samples": 32,
+        "exposure": -0.75,
+        "viewTransform": "AgX",
+        "resolution": [
+          960,
+          720
+        ]
+      },
+      "renderDevice": {
+        "requested": "auto",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "created": "2026-10-21T14:54:22.644Z",
+      "image": "/api/furnish/blender/jobs/08349384-d783-4d06-a81a-5fedf79ec73a/image",
+      "blend": "/api/furnish/blender/jobs/08349384-d783-4d06-a81a-5fedf79ec73a/blend",
+      "scene": "/api/furnish/blender/jobs/08349384-d783-4d06-a81a-5fedf79ec73a/scene"
+    },
+    "templateUnchanged": true,
+    "workspaceUnchanged": true,
+    "reopen": true,
+    "narrowScreen": true,
+    "errors": []
+  },
+  "refinedSourceAfterAffineFix": {
+    "passed": true,
+    "job": {
+      "id": "c0a62a71-873f-4784-8a94-48aa3a35fe29",
+      "state": "done",
+      "message": "渲染完成 · OPTIX",
+      "width": 951,
+      "height": 960,
+      "quality": "preview",
+      "device": "auto",
+      "source": "refined",
+      "camera": "source",
+      "renderInfo": {
+        "source": "refined",
+        "cameraMode": "source",
+        "camera": "FurnishCamera.001",
+        "world": "Study | daylight sky",
+        "existingMaterialBindingsPreserved": 4355,
+        "existingManagedMeshes": 4355,
+        "lightsPreserved": 8,
+        "sync": {
+          "added": 0,
+          "updated": 4355,
+          "deleted": 0,
+          "adopted": 0,
+          "revision": "ed4ea29ae9f51e60cce169d3fac638c2a12414901236be2a373fd41a237248b5",
+          "renderCamera": "FurnishCamera.001"
+        },
+        "samples": 32,
+        "exposure": -0.75,
+        "viewTransform": "AgX",
+        "resolution": [
+          951,
+          960
+        ]
+      },
+      "renderDevice": {
+        "requested": "auto",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "created": "2026-10-21T15:16:59.786Z",
+      "image": "/api/furnish/blender/jobs/c0a62a71-873f-4784-8a94-48aa3a35fe29/image",
+      "blend": "/api/furnish/blender/jobs/c0a62a71-873f-4784-8a94-48aa3a35fe29/blend",
+      "scene": "/api/furnish/blender/jobs/c0a62a71-873f-4784-8a94-48aa3a35fe29/scene"
+    },
+    "templateUnchanged": true,
+    "workspaceUnchanged": true,
+    "reopen": true,
+    "narrowScreen": true,
+    "errors": []
+  },
+  "syncAllSofaPartsAfterAffineFix": {
+    "passed": true,
+    "browserErrors": [],
+    "publisherAutoWhilePanelClosed": true,
+    "priceIgnored": true,
+    "narrowScreen": true,
+    "receiver": {
+      "passed": true,
+      "steps": [
+        {
+          "step": "first",
+          "objects": 1338,
+          "materialPreserved": true,
+          "cameraAndLightPreserved": true,
+          "acknowledged": true
+        },
+        {
+          "step": "moved",
+          "objects": 1354,
+          "materialPreserved": true,
+          "cameraAndLightPreserved": true,
+          "acknowledged": true
+        },
+        {
+          "step": "hidden",
+          "objects": 1354,
+          "materialPreserved": true,
+          "cameraAndLightPreserved": true,
+          "acknowledged": true
+        },
+        {
+          "step": "deleted",
+          "objects": 339,
+          "materialPreserved": true,
+          "cameraAndLightPreserved": true,
+          "acknowledged": true
+        },
+        {
+          "step": "restored",
+          "objects": 1354,
+          "materialPreserved": true,
+          "cameraAndLightPreserved": true,
+          "acknowledged": true
+        },
+        {
+          "step": "origin",
+          "objects": 1354,
+          "materialPreserved": true,
+          "cameraAndLightPreserved": true,
+          "acknowledged": true
+        }
+      ],
+      "zipInstalledAndRegistered": true,
+      "sourceMatrixMirrorVerified": true,
+      "hiddenMaterialRetained": true,
+      "deleteUndoMaterialRestored": true,
+      "originNoDrift": true,
+      "repeatedApplyNoDuplicates": true,
+      "poseLock": true,
+      "sourceMaterialsOption": true,
+      "unrelatedObjectsPreserved": true,
+      "planAndDuplicateGuards": true,
+      "addonUnregistered": true,
+      "matchedLegacyAdoption": true,
+      "renderDevice": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "passed": true,
+  "date": "2026-10-21",
+  "package": "mcp-for-blender==2.2.2",
+  "addonVersion": "1.8",
+  "protocol": 14,
+  "blender": "4.5.14 LTS Microsoft Store",
+  "endpoint": "127.0.0.1:9876",
+  "codexConfigRegistered": true,
+  "currentTurnNativeToolHotReload": false,
+  "transportVerified": "MCP stdio via official SDK",
+  "mcpEdit": {
+    "passed": true,
+    "file": "D:\\1601装修\\渲染\\1601-BlenderMCP验证-20261021\\1601-MCP精修验证.blend",
+    "before": {
+      "roughness": 0.8199999928474426,
+      "sheen": 0.25,
+      "fillWatts": 20.0
+    },
+    "after": {
+      "roughness": 0.8600000143051147,
+      "sheen": 0.30000001192092896,
+      "fillWatts": 24.0
+    },
+    "geometryAndTransformsUnchanged": true,
+    "meshes": 4355,
+    "camera": "1601固定机位 | 01-客厅",
+    "world": "Study | daylight sky",
+    "viewTransform": "AgX",
+    "exposure": -0.6000000238418579,
+    "backend": "OPTIX",
+    "devices": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER"
+    ]
+  },
+  "mcpRender": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Code executed successfully: {\"rendered\": \"D:/1601装修/渲染/1601-BlenderMCP验证-20261021/01-MCP客厅验证.png\", \"resolution\": [1280, 960], \"samples\": 64, \"device\": \"GPU\"}\n"
+      }
+    ],
+    "structuredContent": {
+      "result": "Code executed successfully: {\"rendered\": \"D:/1601装修/渲染/1601-BlenderMCP验证-20261021/01-MCP客厅验证.png\", \"resolution\": [1280, 960], \"samples\": 64, \"device\": \"GPU\"}\n"
+    },
+    "isError": false,
+    "executionSucceeded": true
+  },
+  "imageReturnedByLook": true,
+  "clientRejectsScriptFailure": true,
+  "furnishUi": {
+    "passed": true,
+    "job": {
+      "id": "fc8d6115-1583-4f1c-b4cd-d154228fa3d4",
+      "state": "done",
+      "message": "渲染完成 · OPTIX",
+      "width": 960,
+      "height": 720,
+      "quality": "preview",
+      "device": "auto",
+      "source": "refined",
+      "camera": "active",
+      "renderInfo": {
+        "source": "refined",
+        "cameraMode": "active",
+        "camera": "1601固定机位 | 01-客厅",
+        "world": "Study | daylight sky",
+        "existingMaterialBindingsPreserved": 4355,
+        "existingManagedMeshes": 4355,
+        "lightsPreserved": 8,
+        "sync": {
+          "added": 0,
+          "updated": 4355,
+          "deleted": 0,
+          "adopted": 0,
+          "revision": "ecbdec3a1c93acf0a2e5213a90fcfa0cce59856e9f6c39b9c6ec99b0da33c67e"
+        },
+        "samples": 32,
+        "exposure": -0.6000000238418579,
+        "viewTransform": "AgX",
+        "resolution": [
+          960,
+          720
+        ]
+      },
+      "renderDevice": {
+        "requested": "auto",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "created": "2026-10-21T12:43:05.931Z",
+      "image": "/api/furnish/blender/jobs/fc8d6115-1583-4f1c-b4cd-d154228fa3d4/image",
+      "blend": "/api/furnish/blender/jobs/fc8d6115-1583-4f1c-b4cd-d154228fa3d4/blend",
+      "scene": "/api/furnish/blender/jobs/fc8d6115-1583-4f1c-b4cd-d154228fa3d4/scene"
+    },
+    "templateUnchanged": true,
+    "workspaceUnchanged": true,
+    "reopen": true,
+    "narrowScreen": true,
+    "errors": []
+  },
+  "savedRoundtrip": {
+    "roughness": 0.8600000143051147,
+    "sheen": 0.30000001192092896,
+    "fillWatts": 24.0,
+    "world": "Study | daylight sky",
+    "skyTypes": [
+      "NISHITA"
+    ],
+    "camera": "1601固定机位 | 01-客厅",
+    "viewTransform": "AgX",
+    "exposure": -0.6000000238418579,
+    "passed": true
+  },
+  "skillValidated": true,
+  "fullSuiteRun": false
+}
