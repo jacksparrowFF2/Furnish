@@ -46,9 +46,11 @@
  // Read static and current moving solids from the same builder used in 3D.
  // No device-type list: any device can query these board faces.
  const solidCache=new Map();
- const supportsSolids=f=>!!f&&!f.obj&&!!(f.kitchen||C().supported(f)||(root.FurnishProducts||require('./product-rules.js')).legacyCabinet(f));
+ const furnitureSolids=()=>root.FurnishFurnitureSolids||(typeof require==='function'?require('./furniture-solids.js'):null);
+ const supportsSolids=f=>!!f&&!f.obj&&!!(furnitureSolids()?.supported(f)||f.kitchen||C().supported(f)||(root.FurnishProducts||require('./product-rules.js')).legacyCabinet(f));
  function solidParts(f,{furniture=[]}={}){
   if(!supportsSolids(f))return null;
+  if(furnitureSolids()?.supported(f))return furnitureSolids().parts(f);
   const products=root.FurnishProducts||require('./product-rules.js');furniture=furniture.filter(v=>!products.modelError(v));
   const kitchen=root.FurnishKitchen||require('./kitchen-core.js');
   const key=JSON.stringify([f,f.kitchen||products.legacyCabinet(f)?.kind==='kitchen'?kitchen.deviceSignature(f,furniture):null,furniture.filter(v=>C().supported(v)).map(v=>[v.id,v.type,v.name,v.cx,v.cy,v.w,v.d,v.h,v.rot,v.flip,v.cabinet])]);
@@ -114,17 +116,19 @@
  // Clip a convex production prism to the device's height interval before 2D
  // measurement. This avoids phantom obstructions below an opened lift-up door.
  function section(part,range){
-  if(!range||!part.vertices||!part.vertical)return part.p;
+  if(!range)return part.p||hull(part.vertices.map(v=>[v[0],v[2]]));
+  if(!part.vertices||!part.vertical)return part.p;
   const points=part.vertices,n=points.length/2,lo=range.bottom,hi=range.top;
   if(Math.min(hi,part.vertical.top)-Math.max(lo,part.vertical.bottom)<=1e-7)return [];
   const clipped=points.filter(p=>p[1]>=lo&&p[1]<=hi),cut=(a,b)=>{for(const y of [lo,hi])if((a[1]<y&&b[1]>y)||(b[1]<y&&a[1]>y)){const t=(y-a[1])/(b[1]-a[1]);clipped.push(a.map((v,i)=>v+t*(b[i]-v)));}};
-  for(let i=0;i<n;i++){cut(points[i],points[(i+1)%n]);cut(points[i+n],points[(i+1)%n+n]);cut(points[i],points[i+n]);}
+  if(part.faces)for(const face of part.faces)for(let i=0;i<face.length;i++)cut(points[face[i]],points[face[(i+1)%face.length]]);
+  else for(let i=0;i<n;i++){cut(points[i],points[(i+1)%n]);cut(points[i+n],points[(i+1)%n+n]);cut(points[i],points[i+n]);}
   return hull(clipped.map(p=>[p[0],p[2]]));
  }
  function verticalSection(part,poly){
   if(!part.vertices)return part.vertical;
   const points=part.vertices,n=points.length/2;
-  let faces=[points.slice(0,n),points.slice(n),...Array.from({length:n},(_,i)=>[points[i],points[(i+1)%n],points[(i+1)%n+n],points[i+n]])];
+  let faces=part.faces?part.faces.map(face=>face.map(i=>points[i])):[points.slice(0,n),points.slice(n),...Array.from({length:n},(_,i)=>[points[i],points[(i+1)%n],points[(i+1)%n+n],points[i+n]])];
   const sign=poly.reduce((s,a,i)=>{const b=poly[(i+1)%poly.length];return s+a[0]*b[1]-a[1]*b[0];},0)>=0?1:-1;
   for(let i=0;i<poly.length;i++){
    const a=poly[i],b=poly[(i+1)%poly.length],distance=p=>sign*((b[0]-a[0])*(p[2]-a[1])-(b[1]-a[1])*(p[0]-a[0])),next=[];
