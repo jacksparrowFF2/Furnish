@@ -62,7 +62,7 @@ function createLaundryArea(source,makeId,groupId,side='left'){
  delete base.flip;
  const washer=centerLaundryInBay(base,{id:makeId(),name:'洗衣机',type:'washer',cx:base.cx,cy:base.cy,w:600,d:600,h:sinkProducts().height({type:'washer'}),...sinkProducts().initial({type:'washer'}),rot:base.rot||0,color:'#f3f4f1'},1);
  const sink=attach({id:makeId(),name:'阳台定制水槽（可设异形缺角）',type:'ksink',cx:base.cx,cy:base.cy,w:a.sinkWidth,d:a.sinkDepth,rot:base.rot||0,color:'#ebe9e3',sinkNotch:{side:'left',width:a.notch,depth:a.notch}},base,0);
- const wall=(name,depth,height,bottom,count,door,color)=>{const [cx,cy]=world(base,0,-base.d/2+a.serviceGap+depth/2);const f={id:makeId(),type:'kitchenwall',name,w:base.w,d:depth,h:height,mountHeight:bottom,cx,cy,rot:base.rot||0,color,cabinet:{...C.preset('wall').cabinet,plinth:0,autoDoors:false,doorOverlay:'full',columns:Array.from({length:count},()=>({door,doorOpen:false,handle:'none',shelves:[],drawers:[]}))}};C.validate(f);return f;};
+ const wall=(name,depth,height,bottom,count,door,color)=>{const [cx,cy]=world(base,0,-base.d/2+a.serviceGap+depth/2);const f={id:makeId(),type:'kitchenwall',name,w:base.w,d:depth,h:height,mountHeight:bottom,cx,cy,rot:base.rot||0,color,cabinet:{...C.preset('wall').cabinet,plinth:0,doorOverlay:'full',columns:Array.from({length:count},()=>({door,doorOpen:false,handle:'none',shelves:[],drawers:[]}))}};C.validate(f);return f;};
  let items=[base,washer,sink,wall('阳台封闭吊柜',a.upperDepth,a.upperHeight,a.upperBottom,4,'left','#f3f1ec'),wall('阳台双开放格',a.openDepth,a.openHeight,a.openBottom,2,'none','#bc936b')];
  items.forEach(f=>f.groupId=groupId);normalize(items);if(side==='left')items=switchLaundrySides(items,base.id);items.forEach(f=>sinkProducts().validate(f));return items;
 }
@@ -543,7 +543,7 @@ function snapModuleShelf(f,index,shelf,value){const m=cabinetLayout(f).find(m=>m
 function hoodHosts(f){return isWall(f)&&f.kitchen?cabinetLayout(f).filter(m=>m.role==='custom').map(m=>moduleFurniture(f,m)).filter(part=>cabinet().hoodBay(part)):[];}
 function kitchenModuleConfig(c,m,h,drop=0,k={},wall=false){
  const r=drawerRules({type:wall?'kitchenwall':'counter',kitchen:k});
- c.template='kitchen-base';if(m.backPanel!==undefined)c.backPanel=m.backPanel;c.plinth=r.plinth;c.autoDoors=false;if(m.door===undefined)c.autoFrontWidth=m.width;else delete c.autoFrontWidth;if(k.doorMaxAngle!==undefined)c.doorMaxAngle=k.doorMaxAngle;if(drop)c.frontTop=h-drop;else delete c.frontTop;
+ c.template='kitchen-base';if(m.backPanel!==undefined)c.backPanel=m.backPanel;c.plinth=r.plinth;if(m.door===undefined)c.autoFrontWidth=m.width;else delete c.autoFrontWidth;if(k.doorMaxAngle!==undefined)c.doorMaxAngle=k.doorMaxAngle;if(drop)c.frontTop=h-drop;else delete c.frontTop;
  const min=r.styles?.[drawerStyle(m)]?.minHeights;if(min&&!m.drawerHeights)m={...m,drawerHeights:[h-drop-r.plinth-min[1]-min[2],min[1],min[2]]};
  const front=h-drop,drawer=Math.max(r.legacyMin,(front-r.legacyOffset)/r.defaultCount),door=m.role==='drawer'||m.role==='empty'||m.role==='open'?'none':m.door??'left';let drawers=[];
  if(m.role==='drawer'){

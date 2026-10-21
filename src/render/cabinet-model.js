@@ -1,12 +1,6 @@
 /* Shared Three.js cabinet construction. box uses bottom-based vertical coordinates. */
 (function(root){
  function buildRaw(THREE,f,box,options={}){
-  const legacy=(root.FurnishCabinet||require('../core/cabinet-core.js')).legacyParts(f);
-  if(legacy&&f.type==='vanity'){
-   const part=legacy.parts[0],model=buildRaw(THREE,{...part.furniture,cx:0,cy:0,rot:0,flip:false},box,options);model.position.z=part.z/1000;
-   // Old instances remain static until an explicit detailed design is saved.
-   model.traverse(o=>{delete o.userData.cabinetPart;delete o.userData.motion;});return model;
-  }
   if(f.laundryFloorOpen)options={...options,floorOpen:true};
   const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.height(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
   const assembly=C.pegboardParts(f,c),hasUpper=assembly?.upper!==false,hasLower=assembly?.lower!==false;

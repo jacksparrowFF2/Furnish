@@ -1,3 +1,4 @@
+const normalized=require('./helpers/current-furniture.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const C=require('../src/core/cabinet-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js');
 (async()=>{
@@ -19,8 +20,8 @@ const C=require('../src/core/cabinet-core.js'),D=require('../src/core/design-cor
   const closed=C.toggle(next,index,0,false,0);assert.equal(closed.cabinet.columns[index].drawers[0].lanes[0].open,false);
   const resized=C.resize(next,{...next,w:next.w+100});assert.equal(C.drawerCount(resized.cabinet.columns[index]),1);
   const restored=P.unpack(P.pack({planId:'demo',current:{furniture:[next]},designs:[{id:'saved',name:'saved',work:{furniture:[next]}}],catalog:[]})).current.furniture[0];
-  assert.deepEqual(restored.cabinet,next.cabinet);const options={makeId:()=> 'new',colorFor:()=> '#efe6d8'};
-  assert.deepEqual(D.restoreFurniture(D.restoreFurniture([restored],options),options)[0].cabinet,next.cabinet);
+  assert.deepEqual(restored.cabinet,normalized.item(next).cabinet);const options={makeId:()=> 'new',colorFor:()=> '#efe6d8'};
+  assert.deepEqual(D.restoreFurniture(D.restoreFurniture([restored],options),options)[0].cabinet,normalized.item(next).cabinet);
   assert.notDeepEqual(C.specification(next),C.specification(JSON.parse(before)),'drawer structure changes procurement specification');
   const split=C.withDrawerColumns(next.cabinet.columns[index],2);assert.equal(split.drawers[0].lanes.length,2);assert(split.drawers[0].lanes.every(v=>v.open&&v.extension===.4));
  }

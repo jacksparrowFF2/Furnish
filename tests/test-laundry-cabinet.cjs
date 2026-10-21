@@ -1,3 +1,4 @@
+const normalized=require('./helpers/current-furniture.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-core.js'),R=require('../src/core/product-rules.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),G=require('../src/core/layout-geometry.js');
 const base={id:'laundry',type:'counter',name:'洗衣机柜',cx:2000,cy:2000,rot:0,color:'#f3f1ec'};
@@ -46,7 +47,7 @@ for(const rot of [0,90,37,270])for(const flip of [undefined,true]){
  K.normalize(switched,items);assert.deepEqual(switched[2].counterLink,s.counterLink);assert.deepEqual(switched[2].sinkNotch,s.sinkNotch);assert.deepEqual(switched[0].kitchen,h.kitchen);assert.equal(switched[3].mountHeight,1800);
  assert(!G.volumeOverlap(switched[0],switched[1]));const twice=K.switchLaundrySides(switched,h.id);K.normalize(twice,switched);
  for(let i=0;i<items.length;i++){assert(Math.abs(twice[i].cx-items[i].cx)<1e-6);assert(Math.abs(twice[i].cy-items[i].cy)<1e-6);assert.equal(!!twice[i].flip,!!items[i].flip);assert.equal(twice[i].rot,items[i].rot);}
- const payload={planId:'test',current:{furniture:switched},designs:[{name:'左洗衣机',work:{furniture:switched}}],catalog:[]};assert.deepEqual(P.unpack(P.pack(payload)).current.furniture,switched);
+ const payload={planId:'test',current:{furniture:switched},designs:[{name:'左洗衣机',work:{furniture:switched}}],catalog:[]};assert.deepEqual(P.unpack(P.pack(payload)).current.furniture,normalized.items(switched));
  assert.throws(()=>K.switchLaundrySides(items.map(f=>f.id===w.id?{...f,locked:true}:f),h.id),/锁定/);assert.equal(JSON.stringify(items),source);
 }
 (async()=>{

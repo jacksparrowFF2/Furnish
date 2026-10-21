@@ -1,9 +1,10 @@
+const normalized=require('./helpers/current-furniture.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const K=require('../src/core/kitchen-core.js'),D=require('../src/core/design-core.js'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-core.js'),G=require('../src/core/layout-geometry.js'),R=require('../src/core/product-rules.js');
 const old={id:'k',type:'counter',name:'厨房',cx:2000,cy:2000,w:1800,d:600,rot:0,color:'#e9e5de'};
 const fixture=items=>({planId:'test',current:{furniture:items},designs:[{id:'saved',name:'命名厨房',work:{furniture:items}}],catalog:[]});
-assert.deepEqual(P.unpack(P.pack(fixture([old]))).current.furniture[0],old);
-assert.equal(D.restoreFurniture([old],{makeId:()=> 'new',colorFor:()=> '#eee'})[0].kitchen,undefined);
+assert.deepEqual(P.unpack(P.pack(fixture([old]))).current.furniture[0],normalized.item(old));
+assert.deepEqual(D.restoreFurniture([old],{makeId:()=> 'new',colorFor:()=> '#eee'}),normalized.items([old]));
 let host=K.configure(old,{...K.defaults(old),shape:'L',modules:[{run:0,width:900,role:'sink'},{run:0,width:900,role:'drawer'},{run:1,width:900,role:'hob'},{run:1,width:600,role:'empty'}]});
 assert.deepEqual([host.w,host.d],[2400,2100]);assert.equal(K.slabs(host).reduce((a,s)=>a+s.w*s.d,0),2400*600+1500*600);
 const sink={id:'sink',type:'ksink',name:'水槽',cx:0,cy:0,w:760,d:450,rot:0,color:'#eee'},hob={id:'hob',type:'stove',name:'灶具',cx:0,cy:0,w:750,d:450,rot:0,color:'#eee'};

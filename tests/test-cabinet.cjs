@@ -37,7 +37,7 @@ for(const id of ['storage','pantry800','pantry500','sideboard','sideboard-drawer
  assert(Math.abs(bays[1].width+1.5*t-900)<1e-8);
  assert.equal(C.openingZones(paired).filter(z=>z.kind==='cabinetdoor').length,3);
  assert.deepEqual(P.unpack(P.pack({planId:'demo',current:{furniture:[paired]},designs:[],catalog:[]})).current.furniture[0].cabinet,paired.cabinet);
- const manual=C.moveDivider(paired,0,20),resized=C.resize(manual,{...manual,w:1800});assert.equal(resized.cabinet.autoDoors,false);assert.equal(resized.cabinet.columns.length,2);
+ const manual=C.moveDivider(paired,0,20),resized=C.resize(manual,{...manual,w:1800});assert.equal(resized.cabinet.autoDoors,undefined);assert.equal(resized.cabinet.columns.length,2);
  assert.deepEqual(C.specification(paired),C.specification({...paired,cabinet:{...paired.cabinet,autoDoors:false,...(paired.cabinet.entry?{entry:{...paired.cabinet.entry,autoColumns:false}}:{})}}));
 }
 const singles=make('sideboard');singles.cabinet.autoDoors=false;singles.cabinet.columns.forEach((col,i)=>{col.door=i?'right':'left';});

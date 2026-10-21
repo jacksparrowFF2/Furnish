@@ -11,14 +11,14 @@
       const rooms = {};
       plan.rooms.forEach(room => rooms[room.id] = {name:room.name, mat:room.mat, use:design.inferUse(room)});
       return {
-        furniture:plan.defaults.map(f => ({id:makeId(), type:f.t, name:f.n,
-          cx:f.x, cy:f.y, w:f.w, d:f.d, rot:f.r || 0, color:f.c || colorFor(f.t),...(f.t==='counter'?design.products().initial({type:'counter',w:f.w,d:f.d}):{})})),
+        furniture:(root.FurnishFurnitureUpgrade||require('./furniture-upgrade.js')).upgradeList(plan.defaults.map(f => ({id:makeId(), type:f.t, name:f.n,
+          cx:f.x, cy:f.y, w:f.w, d:f.d, rot:f.r || 0, color:f.c || colorFor(f.t),...(f.t==='counter'?design.products().initial({type:'counter',w:f.w,d:f.d}):{})}))).furniture,
         rooms, furnitureDatum:design.products().furnitureDatum.default, demolished:[], measures:[], notes:[], open:{},
         ...(plan.customDraft ? {architecture:{draft:plan.customDraft, phase:'survey'}} : {}),
       };
     }
-    function restoreFurniture(list){
-      return design.restoreFurniture(list, {makeId, colorFor});
+    function restoreFurniture(list,work){
+      return design.restoreFurniture(list, {makeId, colorFor,onUpgrade:added=>{if(work)(root.FurnishFurnitureUpgrade||require('./furniture-upgrade.js')).inheritLayers(work,added);}});
     }
     // Preserve the caller's work object and extra project fields, as before.
     function restore(work, plan){
@@ -56,7 +56,7 @@
       work.notes = design.restoreNotes((Array.isArray(work.notes) ? work.notes : [])
         .filter(note => note && typeof note.text === 'string' && note.text.trim() && [note.x,note.y].every(coordinate))
         .slice(0,2000).map(note => ({...note, text:note.text.slice(0,120)})), makeId);
-      work.furniture = design.normalizeLaundryStacks(restoreFurniture(work.furniture));
+      work.furniture = design.normalizeLaundryStacks(restoreFurniture(work.furniture,work));
       if(!work.wallFinishes&&!work.floorFinishes&&!work.wallTiling&&!work.ceilings&&work.furniture.some(f=>f.kitchen?.autoAvoid))(root.FurnishKitchen||(inNode?require('./kitchen-core.js'):null)).normalizeObstacles(work.furniture,project.effectivePlan(plan,work));
       work.scene3d = design.sceneSettings(work.scene3d);
       return work;

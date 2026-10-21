@@ -1,0 +1,113 @@
+{
+  "format": "furnish-project",
+  "version": 15,
+  "createdAt": "2026-10-21T02:16:57.274Z",
+  "checksum": "2416ebb3",
+  "payload": {
+    "planId": "p1",
+    "current": {
+      "furniture": [
+        {
+          "id": "old-counter",
+          "type": "counter",
+          "name": "旧组合橱柜",
+          "w": 1200,
+          "d": 600,
+          "cx": 8435,
+          "cy": 2420,
+          "rot": 37,
+          "flip": true,
+          "color": "#aabbcc",
+          "price": 2000
+        },
+        {
+          "id": "old-wardrobe",
+          "type": "wardrobe",
+          "name": "旧衣柜",
+          "w": 1600,
+          "d": 600,
+          "h": 2200,
+          "cx": 10235,
+          "cy": 2420,
+          "rot": 0,
+          "color": "#eeeeee"
+        }
+      ],
+      "objectLayers": {
+        "version": 1,
+        "layers": [
+          {
+            "id": "0",
+            "name": "0",
+            "visible": true,
+            "locked": false
+          },
+          {
+            "id": "k",
+            "name": "厨房",
+            "visible": true,
+            "locked": false
+          }
+        ],
+        "assignments": {
+          "furniture:old-counter": "k"
+        }
+      }
+    },
+    "designs": [
+      {
+        "name": "统一升级前",
+        "work": {
+          "furniture": [
+            {
+              "id": "old-counter",
+              "type": "counter",
+              "name": "旧组合橱柜",
+              "w": 1200,
+              "d": 600,
+              "cx": 8435,
+              "cy": 2420,
+              "rot": 37,
+              "flip": true,
+              "color": "#aabbcc",
+              "price": 2000
+            },
+            {
+              "id": "old-wardrobe",
+              "type": "wardrobe",
+              "name": "旧衣柜",
+              "w": 1600,
+              "d": 600,
+              "h": 2200,
+              "cx": 10235,
+              "cy": 2420,
+              "rot": 0,
+              "color": "#eeeeee"
+            }
+          ],
+          "objectLayers": {
+            "version": 1,
+            "layers": [
+              {
+                "id": "0",
+                "name": "0",
+                "visible": true,
+                "locked": false
+              },
+              {
+                "id": "k",
+                "name": "厨房",
+                "visible": true,
+                "locked": false
+              }
+            ],
+            "assignments": {
+              "furniture:old-counter": "k"
+            }
+          }
+        }
+      }
+    ],
+    "catalog": []
+  }
+}

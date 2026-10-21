@@ -1,7 +1,9 @@
+const normalized=require('./helpers/current-furniture.cjs');
 const assert=require('node:assert/strict'),S=require('../src/core/snapping.js'),K=require('../src/core/kitchen-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js');
 const close=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`);
 const hob={id:'hob',type:'stove_fotile_th36b',name:'燃气灶',cx:2100,cy:2010,w:750,d:440,rot:0,color:'#111'},host={id:'top',type:'counter',name:'台面',cx:2000,cy:2000,w:1800,d:600,rot:0,color:'#ddd'};
 const wall={id:'upper',type:'kitchenwall',name:'吊柜',cx:2100,cy:2150,w:1200,d:400,rot:0,h:700,mountHeight:1480,color:'#ddd'};
+host.kitchen={version:1,shape:'straight',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1800,role:'door'}]};
 const baseline=S.directional(hob,{furniture:[host,hob]});
 // Adding either a legacy or a modular wall cabinet must preserve the worktop distances.
 const modular=K.configure(wall,{version:1,shape:'straight',depth:400,baseHeight:700,thickness:0,modules:[{run:0,width:1200,role:'door'}]});
@@ -10,9 +12,9 @@ for(const upper of [wall,modular]){
  assert.deepEqual(S.directional(hob,{furniture:items}),baseline);
  assert.deepEqual(S.directional(upper,{furniture:[hob]}),{l:null,r:null,t:null,b:null});
  const work={furniture:items,measures:Object.values(baseline).map(({a,b})=>({a,b}))},payload={planId:'height-gap',current:work,designs:[{name:'吊柜边距',work}],catalog:[]};
- const restored=P.unpack(P.pack(payload));assert.deepEqual(restored,payload);
+ const restored=P.unpack(P.pack(payload));assert.deepEqual(restored,normalized.project(payload));
  let list=restored.current.furniture;for(let i=0;i<3;i++)list=D.restoreFurniture(list,{makeId:()=> 'new',colorFor:()=> '#ddd'});
- assert.deepEqual(list,items);assert.deepEqual(S.directional(list[1],{furniture:list}),baseline);assert.equal(JSON.stringify(items),before);
+ assert.deepEqual(list,normalized.items(items));assert.deepEqual(S.directional(list[1],{furniture:list}),baseline);assert.equal(JSON.stringify(items),before);
 }
 const top=D.furnitureVerticalBounds(hob).top;
 for(const delta of [-.001,0,.001]){

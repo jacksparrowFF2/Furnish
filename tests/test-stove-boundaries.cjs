@@ -1,6 +1,7 @@
 const assert=require('node:assert/strict'),S=require('../src/core/snapping.js'),K=require('../src/core/kitchen-core.js'),P=require('../src/core/project-core.js'),D=require('../src/core/design-core.js');
 const close=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`),values=m=>Object.fromEntries(Object.entries(m).map(([d,m])=>[d,m?.distance]));
 const host={id:'top',type:'counter',name:'实体台面',cx:2000,cy:2000,w:1800,d:600,rot:0,color:'#ddd'},stove={id:'hob',type:'stove_fotile_th36b',name:'燃气灶',cx:2100,cy:2010,w:750,d:440,rot:0,color:'#111'};
+
 const expected={l:625,r:425,t:90,b:70},scene={furniture:[host,stove]},before=JSON.stringify(scene);
 for(const type of ['stove_fotile_th36b','stove']){
  const f={...stove,type},single=S.directional(f,scene);assert.deepEqual(values(single),expected);assert.deepEqual(S.directional([f],scene),single);
@@ -11,7 +12,7 @@ for(const gap of [0,.999,1,1.001]){
  const f={...stove,cx:host.cx+host.w/2-stove.w/2-gap},m=S.directional(f,{furniture:[host,f]}).r;close(m.distance,gap);assert(m.surfaceBoundary);close(m.b.x,2900);
 }
 // Other enclosed products share boundary distances, without gaining worktop semantics.
-const enclosed=S.directional({...stove,type:'custom'},scene);assert(Object.values(enclosed).every(m=>m.distance===0));
+const enclosing=K.configure(host,{version:1,shape:'straight',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1800,role:'door'}]});const enclosed=S.directional({...stove,type:'custom'},{furniture:[enclosing,stove]});assert(Object.values(enclosed).every(m=>m.distance===0));
 assert(Object.values(enclosed).every(m=>m.cabinetInterior&&!m.containedBoundary&&!m.surfaceBoundary));
 assert(!S.directional({...stove,cx:2900-stove.w/2+1},scene).r?.surfaceBoundary);
 assert(Object.values(S.directional(stove,{furniture:[stove]})).every(m=>m===null));

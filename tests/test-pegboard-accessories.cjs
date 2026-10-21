@@ -11,8 +11,8 @@ for(let mask=0;mask<128;mask++){
  }
 }
 for(const legacy of [undefined,false,true]){
- const old=structuredClone(f);old.cabinet.pegboardParts=legacy===undefined?{}:{accessories:legacy};const before=JSON.stringify(old);assert.deepEqual(counts(M.boards(old,{includeStatic:true})),legacy===false?{displayShelf:0,hook:0,light:0}:{displayShelf:2,hook:6,light:1});C.upgradeDesign(old);assert.equal(JSON.stringify(old),before);
- const mixed=structuredClone(old);mixed.cabinet.pegboardParts.hooks=legacy===false;C.validate(mixed);assert.equal(C.pegboardParts(mixed).hooks,legacy===false);assert.equal(C.pegboardParts(mixed).displayShelves,legacy!==false);assert.equal(C.pegboardParts(mixed).light,legacy!==false);
+ const old=structuredClone(f);old.cabinet.pegboardParts=legacy===undefined?{}:{accessories:legacy};const before=JSON.stringify(old);assert.deepEqual(counts(M.boards(C.upgradeDesign(old),{includeStatic:true})),legacy===false?{displayShelf:0,hook:0,light:0}:{displayShelf:2,hook:6,light:1});C.upgradeDesign(old);assert.equal(JSON.stringify(old),before);
+ const mixed=structuredClone(old);mixed.cabinet.pegboardParts.hooks=legacy===false;C.validate(mixed);assert.equal(C.pegboardParts(C.upgradeDesign(mixed)).hooks,legacy===false);assert.equal(C.pegboardParts(C.upgradeDesign(mixed)).displayShelves,legacy!==false);assert.equal(C.pegboardParts(C.upgradeDesign(mixed)).light,legacy!==false);
 }
 for(const key of rule.accessoryParts){const bad=structuredClone(f);bad.cabinet.pegboardParts[key]='false';assert.throws(()=>C.validate(bad),/组件/);}
 (async()=>{

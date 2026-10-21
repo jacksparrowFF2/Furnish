@@ -188,6 +188,7 @@ function addItem(it, x, y){
   }
   if(h!==undefined)f.h=h;
   Object.assign(f,FurnishDesign.products().initial(f));
+  if(FurnishCabinet.supported(f)&&!f.kitchen)Object.assign(f,FurnishCabinet.upgradeDesign(f));
   if(FurnishCabinet.supported(f)&&!f.kitchen&&it[9])Object.assign(f,FurnishCabinet.preset(it[9]));
   Object.assign(f,FurnishKitchen.catalogSpec(it));
   if(type==='curtain')f.curtainStyle=it[8]||'double';

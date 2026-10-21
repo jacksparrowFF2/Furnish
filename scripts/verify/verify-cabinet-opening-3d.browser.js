@@ -9,7 +9,7 @@ async (page,verification)=>{
   const issues=async(id,kind)=>p.evaluate(({id,kind})=>FurnishProject.spaceCheck(FurnishProject.effectivePlan(PLAN,state),state.furniture,{focusId:id,scanPassages:false}).filter(v=>v.kind===kind),{id,kind});
   const backup=async()=>{await p.locator('#projectWorkspace').click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();};
   await p.goto(url);await p.locator('#lib').waitFor();await backup();await p.locator('#pr-file').setInputFiles(root+'tests/fixtures/cabinet-opening-3d-project.json');await p.locator('#pr-restore-confirm').click();
-  check(await p.evaluate(()=>getF('legacy-basic').cabinet===undefined&&store.designs.some(v=>v.name==='旧柜体方案')),'legacy cabinet and named version preserved');
+  check(await p.evaluate(()=>!!getF('legacy-basic').cabinet&&store.designs.some(v=>v.name==='旧柜体方案')),'legacy cabinet and named version preserved');
   await select('peg');check((await issues('peg','cabinetdoor')).length===0,'low equipment beneath upper doors');
   check(!(await p.locator('#fit-feedback').innerText()).includes('柜门三维开启'),'property feedback no false upper door conflict');
   await select('peg-blocker');await p.locator('#fMountHeight').fill('1850');await p.locator('#fMountHeight').press('Tab');

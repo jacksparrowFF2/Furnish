@@ -61,12 +61,5 @@ function build(THREE,f,box,{furniture=[],plan,previewBlind=null,previewMirror=fa
 
  if(plan)root.FurnishCabinetModel.cutServices(THREE,g,f,{plan});return g;
 }
-function legacy(THREE,f,box,{furniture=[]}={}){
- const C=root.FurnishCabinet||require('../core/cabinet-core.js'),assembly=C.legacyParts(f),g=new THREE.Group();if(!assembly)throw Error('请选择旧组合柜体');
- for(const part of assembly.parts){const model=root.FurnishCabinetModel.build(THREE,{...part.furniture,cx:0,cy:0,rot:0,flip:false},box,{furniture:[]});model.position.set(0,part.bottom/1000,part.z/1000);model.traverse(o=>{delete o.userData.cabinetPart;delete o.userData.motion;});g.add(model);}
- for(const b of assembly.boards)if(b.key!=='countertop')g.add(box(b.w/1000,(b.top-b.bottom)/1000,b.d/1000,'#efece6',b.x/1000,b.bottom/1000,b.z/1000));
- // Existing production countertop keeps its sink openings and appearance.
- g.add(countertop(THREE,f,new THREE.MeshStandardMaterial({color:'#dcd7cf',roughness:.22}),furniture));cutSinkBodies(THREE,g,f,furniture);return g;
-}
-root.FurnishKitchenModel={legacy,build,countertop,cutSinkBodies};if(typeof module==='object'&&module.exports)module.exports=root.FurnishKitchenModel;
+root.FurnishKitchenModel={build,countertop,cutSinkBodies};if(typeof module==='object'&&module.exports)module.exports=root.FurnishKitchenModel;
 })(typeof globalThis!=='undefined'?globalThis:this);

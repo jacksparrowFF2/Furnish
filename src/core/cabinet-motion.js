@@ -47,24 +47,14 @@
  // No device-type list: any device can query these board faces.
  const solidCache=new Map();
  const furnitureSolids=()=>root.FurnishFurnitureSolids||(typeof require==='function'?require('./furniture-solids.js'):null);
- const supportsSolids=f=>!!f&&!f.obj&&!!(furnitureSolids()?.supported(f)||f.kitchen||C().supported(f)||(root.FurnishProducts||require('./product-rules.js')).legacyCabinet(f));
+ const supportsSolids=f=>!!f&&!f.obj&&!!(furnitureSolids()?.supported(f)||f.kitchen||C().supported(f));
  function solidParts(f,{furniture=[]}={}){
   if(!supportsSolids(f))return null;
   if(furnitureSolids()?.supported(f))return furnitureSolids().parts(f);
   const products=root.FurnishProducts||require('./product-rules.js');furniture=furniture.filter(v=>!products.modelError(v));
   const kitchen=root.FurnishKitchen||require('./kitchen-core.js');
-  const key=JSON.stringify([f,f.kitchen||products.legacyCabinet(f)?.kind==='kitchen'?kitchen.deviceSignature(f,furniture):null,furniture.filter(v=>C().supported(v)).map(v=>[v.id,v.type,v.name,v.cx,v.cy,v.w,v.d,v.h,v.rot,v.flip,v.cabinet])]);
+  const key=JSON.stringify([f,f.kitchen?kitchen.deviceSignature(f,furniture):null,furniture.filter(v=>C().supported(v)).map(v=>[v.id,v.type,v.name,v.cx,v.cy,v.w,v.d,v.h,v.rot,v.flip,v.cabinet])]);
   if(solidCache.has(key))return solidCache.get(key);
-  const legacy=C().legacyParts(f);
-  if(legacy){
-   let result=legacy.parts.flatMap(part=>solidParts(part.furniture,{furniture}).map(p=>({...p,boardKey:'legacy:'+part.key+'/'+p.boardKey,vertices:p.vertices.map(v=>[v[0],v[1]+part.bottom,v[2]]),vertical:{...p.vertical,bottom:p.vertical.bottom+part.bottom,top:p.vertical.top+part.bottom}})));
-   if(products.legacyCabinet(f).kind==='kitchen'){const cuts=kitchen.deviceOpenings(f,furniture).filter(v=>kitchen.arrowSink(v.device)||v.device.sinkNotch||v.device.id?.endsWith(':sink')).map(v=>v.ring.map(p=>kitchen.world(f,...p))),z=Z();if(cuts.length)result=result.flatMap(part=>part.boardKey.startsWith('legacy:lower/')&&part.boardName==='顶板'?z.decompose([part.p,...cuts],p=>z.inside(p,part.p)&&!cuts.some(c=>z.inside(p,c))).map(p=>({...part,p,vertices:[part.vertical.bottom,part.vertical.top].flatMap(y=>p.map(q=>[q[0],y,q[1]]))})): [part]);}
-   const a=(f.rot||0)*Math.PI/180;
-   const add=(b,actual=true)=>{const poly=[[-b.w/2,-b.d/2],[b.w/2,-b.d/2],[b.w/2,b.d/2],[-b.w/2,b.d/2]].map(([x,q])=>{x=(x+b.x)*(f.flip?-1:1);q+=b.z;return [(f.cx||0)+x*Math.cos(a)-q*Math.sin(a),(f.cy||0)+x*Math.sin(a)+q*Math.cos(a)];});result.push({p:poly,vertices:[b.bottom,b.top].flatMap(y=>poly.map(p=>[p[0],y,p[1]])),vertical:{bottom:b.bottom,top:b.top,source:'production-board'},actualBoard:actual,boardKey:'legacy:'+b.key,boardName:b.key==='countertop'?'台面':b.key==='backsplash'?'挡水背板':'上部组件（包络）'});};
-   for(const b of legacy.boards){if(b.key==='countertop'){const rings=kitchen.slabGeometry(f,furniture).rings,z=Z();for(const p of z.decompose(rings,q=>rings.reduce((inside,r)=>inside!==z.inside(q,r),false))){const poly=p.map(q=>kitchen.world(f,...q));result.push({p:poly,vertices:[b.bottom,b.top].flatMap(y=>poly.map(p=>[p[0],y,p[1]])),vertical:{bottom:b.bottom,top:b.top,source:'production-board'},actualBoard:true,boardKey:'legacy:countertop',boardName:'台面'});}}else add(b);}
-   if(f.type==='vanity'){const s=products.legacyCabinet(f),v=products.vertical(f);add({key:'upper-components',w:f.w,d:f.d,x:0,z:0,bottom:s.bottom+s.bodyHeight,top:v.top},false);}
-   solidCache.set(key,result);if(solidCache.size>64)solidCache.delete(solidCache.keys().next().value);return result;
-  }
   const K=root.FurnishKitchen||require('./kitchen-core.js'),P=root.FurnishProducts||require('./product-rules.js'),B=root.FurnishBoardCollision||require('./board-motion-collision.js'),z=Z(),records=[];
   const identity=p=>p;
   const subtract=(board,cutters)=>{

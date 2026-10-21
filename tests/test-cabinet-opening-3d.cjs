@@ -1,3 +1,4 @@
+const normalized=require('./helpers/current-furniture.cjs');
 const assert=require('node:assert/strict'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-core.js'),D=require('../src/core/design-core.js');
 const make=template=>({id:'cab',type:'cabinet',cx:2500,cy:2500,rot:0,color:'#fff',...C.preset(template)});
 const plan={rooms:[{id:'room',name:'Room',poly:[[0,0],[8000,0],[8000,8000],[0,8000]],ceilingHeight:4000}],walls:[],doors:[],ceilingHeight:4000};
@@ -54,7 +55,7 @@ assert(P.spaceCheck(plan,[side,{...overhead,mountHeight:0}],{scanPassages:false}
 const beamPlan={...plan,beams:[{id:'beam',name:'投影梁',poly:zone.poly,review:'beam-height'}]};
 assert(P.spaceCheck(beamPlan,[side],{scanPassages:false}).some(v=>v.section==='display'&&v.pending&&/梁高未录入/.test(v.message)));
 const legacy={...peg};delete legacy.cabinet;const before=JSON.stringify(legacy);assert(C.openingZones(legacy).every(v=>v.ranges?.length));assert.equal(JSON.stringify(legacy),before);
-for(const f of [peg,gap,side,flipped,tall,legacy]){const payload={planId:'p1',current:{furniture:[f]},designs:[{name:'旧方案',work:{furniture:[f]}}],catalog:[]};const restored=P.unpack(P.pack(payload));assert.deepEqual(restored.current.furniture[0],f);assert.deepEqual(C.openingZones(restored.current.furniture[0]),C.openingZones(f));}
+for(const f of [peg,gap,side,flipped,tall,legacy]){const payload={planId:'p1',current:{furniture:[f]},designs:[{name:'旧方案',work:{furniture:[f]}}],catalog:[]};const restored=P.unpack(P.pack(payload));assert.deepEqual(restored.current.furniture[0],normalized.item(f));assert.deepEqual(C.openingZones(restored.current.furniture[0]),C.openingZones(normalized.item(f)));}
 const issue=physical(peg,upperObstacle)[0],key=P.checkFingerprint(issue,plan,[peg,upperObstacle],800);
 assert.notEqual(P.checkFingerprint(issue,ceilingAt(3000),[peg,upperObstacle],800),key);
 assert.notEqual(P.checkFingerprint(issue,beamPlan,[peg,upperObstacle],800),key);

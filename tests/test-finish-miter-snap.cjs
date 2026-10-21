@@ -1,3 +1,4 @@
+const normalized=require('./helpers/current-furniture.cjs');
 'use strict';
 const assert=require('node:assert/strict'),W=require('../src/core/wall-finish-core'),P=require('../src/core/project-core'),C=require('../src/core/floorplan-core'),F=require('../src/core/floor-finish-core'),T=require('../src/core/wall-tiling-core'),G=require('../src/core/layout-geometry'),S=require('../src/core/snapping'),D=require('../src/core/design-core'),Z=require('../src/core/zone-geometry'),{fixture}=require('./helpers/wall-finish-fixture.cjs');
 const near=(a,b)=>assert(Math.abs(a-b)<1e-4,`${a} != ${b}`);
@@ -17,7 +18,7 @@ for(const reverse of [false,true]){
  const face=W.snapFaces(p)[0],n=face.normal,axis=1-n,item={...work.furniture[0],rot:0},half=n===0?item.w/2:item.d/2,xy=[2100,1600];xy[axis]=(face.lo+face.hi)/2;const center=face.position+face.side*half;xy[n]=center+face.side*24;
  const options={grid:10,scale:.5,wallSnap:true,guides:false,rects:[],furniture:[],finishFaces:[face]};near(S.move(item,...xy,options).position[n],center);xy[n]+=face.side*.01;assert.equal(S.move(item,...xy,options).guides.length,0,'outside capture threshold does not magnetise');assert.deepEqual(S.move(item,...xy,{...options,disabled:true}).position,xy);
  assert.equal(W.snapFaces(p,{bottom:4000,top:5000}).length,0);assert(W.snapFaces(p,null).length,'unknown height remains conservative');assert.equal(JSON.stringify(work),saved,'derivation and snapping do not mutate saved design');
- let round=work;for(let i=0;i<3;i++)round=P.unpack(P.pack({planId:plan.id,current:round,designs:[],catalog:[]})).current;assert.deepEqual(round,work);assert.deepEqual(P.effectivePlan(plan,round).wallFinish,p.wallFinish,'repeat restore does not accumulate miters');
+ let round=work;for(let i=0;i<3;i++)round=P.unpack(P.pack({planId:plan.id,current:round,designs:[],catalog:[]})).current;assert.deepEqual(round,normalized.work(work));assert.deepEqual(P.effectivePlan(plan,round).wallFinish,p.wallFinish,'repeat restore does not accumulate miters');
 }
 // A shorter neighbour only joins where the two actual vertical solids overlap.
 const joined=W.joined([{rect:[0,0,20,100],normal:0,side:1,bondThickness:10,tileThickness:10,roomId:'r',bottom:0,top:2800},{rect:[0,100,100,120],normal:1,side:1,bondThickness:10,tileThickness:10,roomId:'r',bottom:900,top:2000}]);assert(joined.some(s=>s.normal===0&&s.bottom===0&&s.top===900&&Math.max(...s.poly.map(p=>p[1]))===100));assert(joined.some(s=>s.normal===0&&s.bottom===900&&Math.max(...s.poly.map(p=>p[1]))===120));

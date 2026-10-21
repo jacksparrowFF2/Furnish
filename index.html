@@ -362,6 +362,7 @@
 <script src="src/render/shower-arrow-model.js"></script>
 <script src="src/render/waterheater-clearance-model.js"></script>
 <script src="src/render/cabinet-preview.js"></script>
+<script src="src/core/furniture-upgrade.js"></script>
 <script src="src/core/design-core.js"></script>
 <script src="src/core/layers-core.js"></script>
 <script src="src/core/work-state.js"></script>
@@ -952,10 +953,7 @@ function buildFurniture(f){
       vase(g, 0, top, 0, .05, .18, '#e9e2d6', R);
       break;
     }
-    case 'counter': {
-      g.add(FurnishKitchenModel.legacy(THREE,f,box,{furniture}));
-      break;
-    }
+
     case 'stove': {
       const sm = mat('#b9bec3', {metalness:.8, roughness:.3});
       g.add(rbox(w, .012, d, mat('#0d0d0e', {roughness:.06, metalness:.3}), 0, .862, 0, .004));

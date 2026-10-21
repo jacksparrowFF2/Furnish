@@ -1,3 +1,4 @@
+const normalized=require('./helpers/current-furniture.cjs');
 const assert=require('node:assert/strict'),D=require('../src/core/design-core.js'),K=require('../src/core/kitchen-core.js'),P=require('../src/core/project-core.js'),S=require('../src/core/snapping.js');
 const plan={id:'order',rooms:[{id:'r',poly:[[-20000,-20000],[20000,-20000],[20000,20000],[-20000,20000]]}],walls:[],wins:[],doors:[],beams:[]};
 const ac={id:'ac',type:'aircon_midea_ultra_2hp',cx:0,cy:0,w:395,d:436,h:1856,rot:45},target={id:'target',type:'custom',cx:0,cy:800,w:1500,d:400,h:500,rot:0};
@@ -16,5 +17,5 @@ assert.throws(()=>D.placeSelectionAtDirectionalGap(plan,work,['flue'],'l',20),/�
 const changed=structuredClone(work);changed.furniture[2].kitchen.obstacleFit.depths[0].depth+=1;
 assert.throws(()=>D.placeSelectionAtDirectionalGap(plan,changed,['ac'],'b',130),/改变厨房或设备配置/,'numeric configuration drift remains blocked');
 const moved=D.placeSelectionAtDirectionalGap(plan,work,['ac'],'b',130),saved={...work,furniture:work.furniture.map(f=>moved.find(m=>m.id===f.id)||f)},payload={planId:plan.id,current:saved,designs:[{name:'定位',work:saved}],catalog:[]};
-assert.deepEqual(P.unpack(P.pack(payload)),payload);assert.equal(JSON.stringify(work),snapshot);
+assert.deepEqual(P.unpack(P.pack(payload)),normalized.project(payload));assert.equal(JSON.stringify(work),snapshot);
 console.log('PASS key-order-independent directional placement, 130 mm gap, drawing rotations/mirrors, actual configuration-change rejection, immutable input and project roundtrip');

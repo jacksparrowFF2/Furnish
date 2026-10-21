@@ -9,7 +9,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  const legacy=structuredClone(f);delete legacy.cabinet.entry.editable;legacy.cabinet.columns.forEach(col=>col.shelves=[]);const restored=C.config(legacy);assert.equal(restored.columns[0].shelves.length,2);assert.equal(legacy.cabinet.columns[0].shelves.length,0);
  const manual=structuredClone(f);manual.cabinet.entry.autoColumns=false;assert.equal(C.resize(manual,{...manual,w:1600}).cabinet.columns.length,2);
  assert.deepEqual(C.specification(f),C.specification(manual),'auto/manual preference does not change purchase geometry');
- assert.equal(C.moveDivider(f,0,20).cabinet.entry.autoColumns,false);assert.equal(C.setColumnWidth(f,0,400).cabinet.entry.autoColumns,false);
+ assert.equal(C.moveDivider(f,0,20).cabinet.entry.autoColumns,undefined);assert.equal(C.setColumnWidth(f,0,400).cabinet.entry.autoColumns,undefined);
  const inputs=[],selects=[],fieldsets=[],nodes={},history=[];let dialog,last,actions;
  const attrs=raw=>Object.fromEntries([...raw.matchAll(/([\w-]+)(?:="([^"]*)")?/g)].map(m=>[m[1],m[2]??'']));
  const element=raw=>{const a=attrs(raw),el={attributes:a,id:a.id,type:a.type,value:a.value??'',defaultValue:a.value??'',hasAttribute:name=>Object.hasOwn(a,name),checked:Object.hasOwn(a,'checked'),dataset:{},isConnected:true};for(const [k,v] of Object.entries(a))if(k.startsWith('data-'))el.dataset[k.slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]=v;return el;};
@@ -28,7 +28,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  assert($('#cab-template'));assert($('[data-cab-number="thickness"]'));assert($('[data-cab-number="plinth"]'));assert(fieldsets[0].querySelector('[data-finish]'));assert(fieldsets[0].querySelector('[data-handle]'));assert(nodes['#cab-tools'].innerHTML.includes('addShelf'));
  const change=target=>nodes['#cab-form'].onchange({target:{hasAttribute:()=>false,...target}});
  $('[data-cab-number="w"]').value='1600';change({id:'',type:'number'});assert.equal(last.cabinet.columns.length,2);
- $('#cab-repartition-count').value='3';nodes['#cab-form'].onclick({target:{closest:selector=>selector==='#cab-repartition'?{}:null}});assert.equal(last.cabinet.columns.length,3);assert.equal(last.cabinet.entry.autoColumns,false);
+ $('#cab-repartition-count').value='3';nodes['#cab-form'].onclick({target:{closest:selector=>selector==='#cab-repartition'?{}:null}});assert.equal(last.cabinet.columns.length,3);assert.equal(last.cabinet.entry.autoColumns,undefined);
  fieldsets[0].querySelector('[data-finish]').value='glass';fieldsets[0].querySelector('[data-handle]').value='knob';fieldsets[0].querySelector('[data-section-angle="upper"]').value='45';change({id:'',type:'select'});assert.equal(last.cabinet.columns[0].finish,'glass');assert.equal(last.cabinet.columns[0].handle,'knob');assert.equal(last.cabinet.columns[0].doorSections.upper.angle,45);assert.equal(last.cabinet.columns[0].doorSections.lower.open,false);
  const count=last.cabinet.columns[0].shelves.length;nodes['#cab-tools'].onclick({target:{closest:()=>({dataset:{cabOp:'addShelf'}})}});assert.equal(last.cabinet.columns[0].shelves.length,count+1);
  $('[data-cab-number="plinth"]').value='60';change({id:'',type:'number'});assert.equal(last.cabinet.plinth,60);C.validate(last);

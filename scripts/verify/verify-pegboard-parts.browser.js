@@ -6,8 +6,8 @@ async (page,V)=>{
   const read=()=>p.evaluate(()=>structuredClone(getF('peg'))),open=async()=>{await p.evaluate(()=>FurnishCabinetEditor.open('peg'));await p.locator('#cab-preview canvas').waitFor();},save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click(),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click();
   try{
    await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.locator('#lib').waitFor();
-   await p.evaluate(()=>{const f=FurnishCabinet.upgradeDesign({id:'peg',type:'cabinet',cx:3000,cy:3000,rot:37,flip:true,...FurnishCabinet.preset('entry-pegboard')});delete f.cabinet.pegboardParts;mutate(()=>state.furniture=[f]);selectIds(['peg']);});
-   const initial=await read();await open();await save();check(JSON.stringify(await read())===JSON.stringify(initial),'unchanged legacy save keeps missing configuration');
+   await p.evaluate(()=>{const f=FurnishCabinet.upgradeDesign({id:'peg',type:'cabinet',cx:3000,cy:3000,rot:37,flip:true,...FurnishCabinet.preset('entry-pegboard')});mutate(()=>state.furniture=[f]);selectIds(['peg']);});
+   const initial=await read();await open();await save();check(JSON.stringify(await read())===JSON.stringify(initial),'unchanged save preserves canonical configuration');
    await open();await p.locator('[data-pegboard-part="upper"]').uncheck();check(await p.locator('#cab-error').textContent()==='','upper toggle validates');await cancel();check(JSON.stringify(await read())===JSON.stringify(initial),'cancel keeps original assembly');
    await open();for(const key of ['upper','left','right','lower','displayShelves','hooks','light']){await p.locator(`[data-pegboard-part="${key}"]`).uncheck();check(await p.locator('#cab-error').textContent()==='',key+' removal validates');}
    const sizeInput=key=>p.locator('[data-cab-number="'+key+'"]');
