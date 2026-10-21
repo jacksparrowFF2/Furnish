@@ -67,17 +67,19 @@ def main(directory):
         else:
             sofa=find(sofa_id);assert sofa.as_pointer()==sofa_pointer;assert sofa.material_slots[0].material==sofa_material;assert max(abs(a-b) for a,b in zip(matrix_tuple(camera),camera_matrix))<1e-5, 'Camera moved: '+name
         if name=='moved':
-            assert objects('live-new');gltf=json.loads(payload[20:20+int.from_bytes(payload[12:16],'little')]);node=next(n for n in gltf['nodes'] if n.get('extras',{}).get('furnishObjectId')==sofa_id)
-            values=node.get('matrix',[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);m=Matrix(tuple(tuple(values[col*4+row] for col in range(4)) for row in range(4)))
-            primitive=gltf['meshes'][node['mesh']]['primitives'][0];accessor=gltf['accessors'][primitive['attributes']['POSITION']];view=gltf['bufferViews'][accessor['bufferView']]
-            offset=28+int.from_bytes(payload[12:16],'little')+view.get('byteOffset',0)+accessor.get('byteOffset',0);assert accessor['componentType']==5126
-            expected=[]
-            for i in range(accessor['count']):
-                raw=Vector(struct.unpack_from('<fff',payload,offset+i*view.get('byteStride',12)));point=m @ raw;expected.append((point.x,-point.z,point.y))
-            actual=[sofa.matrix_world @ v.co for v in sofa.data.vertices]
-            expected_bounds=[fn(p[i] for p in expected) for fn in (min,max) for i in range(3)];actual_bounds=[fn(p[i] for p in actual) for fn in (min,max) for i in range(3)]
-            assert max(abs(a-b) for a,b in zip(actual_bounds,expected_bounds))<2e-4, repr((actual_bounds,expected_bounds))
-            assert sofa.matrix_world.determinant()<0
+            assert objects('live-new');gltf=json.loads(payload[20:20+int.from_bytes(payload[12:16],'little')])
+            for part in objects('live-sofa'):
+                node=next(n for n in gltf['nodes'] if n.get('extras',{}).get('furnishObjectId')==part['furnishObjectId'])
+                values=node.get('matrix',[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);m=Matrix(tuple(tuple(values[col*4+row] for col in range(4)) for row in range(4)))
+                primitive=gltf['meshes'][node['mesh']]['primitives'][0];accessor=gltf['accessors'][primitive['attributes']['POSITION']];view=gltf['bufferViews'][accessor['bufferView']]
+                offset=28+int.from_bytes(payload[12:16],'little')+view.get('byteOffset',0)+accessor.get('byteOffset',0);assert accessor['componentType']==5126
+                expected=[]
+                for i in range(accessor['count']):
+                    raw=Vector(struct.unpack_from('<fff',payload,offset+i*view.get('byteStride',12)));point=m @ raw;expected.append((point.x,-point.z,point.y))
+                actual=[part.matrix_world @ v.co for v in part.data.vertices]
+                expected_bounds=[fn(p[i] for p in expected) for fn in (min,max) for i in range(3)];actual_bounds=[fn(p[i] for p in actual) for fn in (min,max) for i in range(3)]
+                assert max(abs(a-b) for a,b in zip(actual_bounds,expected_bounds))<2e-4, repr((actual_bounds,expected_bounds))
+                assert part.matrix_world.determinant()<0
         if name=='hidden':assert all(o.hide_render and o.hide_get() for o in objects('live-sofa'))
         if name=='deleted':assert not objects('live-tea');assert not any(o.hide_render for o in objects('live-sofa'))
         if name=='restored':

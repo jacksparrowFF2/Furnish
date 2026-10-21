@@ -3,11 +3,13 @@
  'use strict';
  const copy=v=>JSON.parse(JSON.stringify(v));
  function upgradeList(input){
-  const C=root.FurnishCabinet||require('./cabinet-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js');
+  const C=root.FurnishCabinet||require('./cabinet-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js'),P=root.FurnishProducts||require('./product-rules.js');
   const list=copy(input),ids=new Set(list.map(f=>f.id)),added=[];
   const allocate=(id,part)=>{const base=id.slice(0,150)+'_upgraded_'+part;let next=base,n=1;while(ids.has(next))next=base+'_'+n++;ids.add(next);return next;};
   for(let i=0;i<list.length;i++){
    let f=list[i];if(f.obj)continue;
+   const original=copy(f),addedBefore=added.length;
+   try{
    if(f.type==='counter'&&!f.kitchen){
     if(f.w<150||f.d<50){list[i]={...f,type:'block',h:f.h??2180,mountHeight:0};continue;}
     // Former combined kitchen: preserve the two physical rows and backsplash,
@@ -26,6 +28,13 @@
     for(const m of f.kitchen.modules)if(m.structure)m.structure.cabinet=C.upgradeDesign({type:'kitchenwall',...m.structure}).cabinet;
     for(const part of K.laundryParts(f).filter(p=>p.key!=='sink'))f.kitchen.laundry.assembly[part.key].cabinet=C.upgradeDesign(part.furniture).cabinet;
    }else if(C.supported(f))list[i]=C.upgradeDesign(f);
+   }catch(error){
+    // Invalid saved structures belong to the existing recovery UI. Upgrade
+    // healthy siblings, retain the complete broken record, and keep strict
+    // project/import validation responsible for rejecting it on normal saves.
+    if(!P.modelError(original))throw error;
+    list[i]=original;added.splice(addedBefore);
+   }
   }
   return {furniture:list.concat(added.flatMap(a=>a.items)),added};
  }

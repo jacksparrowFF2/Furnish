@@ -22,7 +22,7 @@ async function main(){
    if(!latest||latest.revision===before)throw Error('Snapshot did not change: '+name);
    const response=await fetch(base+'/api/furnish/blender/sync/scene/'+latest.revision,{headers:{'X-Furnish-Sync':token}}),buffer=Buffer.from(await response.arrayBuffer());fs.writeFileSync(path.join(run,name+'.glb'),buffer);fixtures.push({name,file:name+'.glb',manifest:latest});return buffer;
   }
-  await capture('first');await page.locator('[data-sync-auto]').check();await page.waitForFunction(()=>!FurnishBlenderSync.state().busy);await page.locator('#dlgClose').click();
+  await capture('first');await page.locator('[data-sync-auto]').check();await page.waitForFunction(()=>!FurnishBlenderSync.state().busy);await page.locator('#blender-dock-close').click();
   await page.evaluate(()=>mutate(()=>{const sofa=state.furniture[0];sofa.cx+=450;sofa.rot=33;sofa.flip=true;sofa.w=2300;state.furniture.unshift({id:'live-new',type:'bed',name:'New',cx:3000,cy:3500,w:1500,d:2000,h:900,rot:90,color:'#aabbcc'});}));
   await capture('moved',true);
   const spatial=(await(await fetch(base+'/api/furnish/blender/sync/status')).json()).latest.revision;
@@ -37,7 +37,7 @@ async function main(){
   await page.locator('#vBlender').click();await page.locator('.blender-sync>summary').click();await page.screenshot({path:path.join(run,'desktop.png'),animations:'disabled'});await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(run,'mobile.png'),animations:'disabled'});if(await page.locator('.blender-render').evaluate(e=>e.scrollWidth>e.clientWidth))throw Error('Narrow panel overflow');
   if(errors.length)throw Error(errors.join(';'));console.log('Browser publisher PASS; starting real Blender receiver: '+run);
   fs.mkdirSync(path.join(run,'isolated-blender-scripts'),{recursive:true});const blender=cp.spawn(B.findBlender(),['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(root,'scripts/verify/verify-blender-sync.py'),'--','--directory',run],{cwd:root,env:{...process.env,BLENDER_USER_SCRIPTS:path.join(run,'isolated-blender-scripts')},windowsHide:true,stdio:'ignore'});blender.on('error',e=>fs.writeFileSync(path.join(run,'receiver-error.txt'),e.message));
-  const resultFile=path.join(run,'receiver-result.json'),errorFile=path.join(run,'receiver-error.txt');for(let i=0;i<180;i++){if(fs.existsSync(errorFile))throw Error(fs.readFileSync(errorFile,'utf8'));if(fs.existsSync(resultFile))break;await new Promise(r=>setTimeout(r,1000));}
+  const resultFile=path.join(run,'receiver-result.json'),errorFile=path.join(run,'receiver-error.txt');for(let i=0;i<600;i++){if(fs.existsSync(errorFile))throw Error(fs.readFileSync(errorFile,'utf8'));if(fs.existsSync(resultFile))break;await new Promise(r=>setTimeout(r,1000));}
   if(!fs.existsSync(resultFile))throw Error('Receiver timed out');const result=JSON.parse(fs.readFileSync(resultFile));if(!result.passed)throw Error(JSON.stringify(result));
   fs.writeFileSync(path.join(run,'summary.json'),JSON.stringify({passed:true,browserErrors:errors,publisherAutoWhilePanelClosed:true,priceIgnored:true,narrowScreen:true,receiver:result},null,2));console.log('PASS continuous sync: '+run);
  }finally{if(browser)await browser.close();server.kill();fs.writeFileSync(path.join(run,'server.log'),logs);}

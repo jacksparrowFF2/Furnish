@@ -8,6 +8,12 @@ assert.match(R.modelError(broken),/外包尺寸/);
 const options={makeId:()=> 'new',colorFor:()=> '#ddd'};
 assert.equal(JSON.stringify(D.restoreFurniture([broken,device],options)),snapshot);
 assert.equal(JSON.stringify(D.restoreFurniture(D.restoreFurniture([broken,device],options),options)),snapshot,'repeat restoration retains broken records and links');
+const invalidCabinet={...base,id:'broken-cabinet',type:'cabinet',cabinet:{version:1,columns:null}},invalidKitchen={...host,id:'missing-modules',kitchen:{...host.kitchen,modules:null}};
+for(const invalid of [invalidCabinet,invalidKitchen]){
+ const saved=structuredClone(invalid),healthy={...base,id:'healthy-cabinet',type:'cabinet'},restored=D.restoreFurniture([invalid,healthy],options);
+ assert.deepEqual(restored[0],saved,'failed upgrade retains complete invalid record for manual recovery');assert(restored[1].cabinet,'healthy sibling still upgrades');assert(R.modelError(restored[0]));
+ assert.deepEqual(D.restoreFurniture(restored,options),restored,'repeated recovery does not drift');assert.throws(()=>P.validateWork({furniture:restored}),'strict import still rejects broken structures');assert.deepEqual(invalid,saved,'upgrade failure never changes input');
+}
 const plan={walls:[],wins:[],doors:[],slides:[],rooms:[{id:'room',name:'房间',poly:[[0,0],[5000,0],[5000,5000],[0,5000]]}],bounds:{x:0,y:0,w:5000,h:5000},markers:[]};
 const normal={...base,id:'normal',type:'custom',w:800,d:400};
 const issues=P.spaceCheck(plan,[broken,device,normal],{scanPassages:false});
