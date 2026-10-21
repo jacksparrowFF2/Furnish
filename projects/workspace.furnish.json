@@ -3886,7 +3886,39 @@
               "cx": 7043,
               "cy": 9880,
               "d": 600,
+              "groupId": "upgraded_fmv3vtxb61",
               "id": "fmv3vtxb61",
+              "kitchen": {
+                "baseHeight": 820,
+                "depth": 600,
+                "modules": [
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 682
+                  },
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 682
+                  },
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 682
+                  }
+                ],
+                "plinth": 100,
+                "shape": "straight",
+                "thickness": 40,
+                "version": 1
+              },
               "name": "橱柜台面",
               "rot": 180,
               "type": "counter",
@@ -3897,7 +3929,32 @@
               "cx": 6325,
               "cy": 8998,
               "d": 600,
+              "groupId": "upgraded_fmv3vutm42",
               "id": "fmv3vutm42",
+              "kitchen": {
+                "baseHeight": 820,
+                "depth": 600,
+                "modules": [
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 582
+                  },
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 582
+                  }
+                ],
+                "plinth": 100,
+                "shape": "straight",
+                "thickness": 40,
+                "version": 1
+              },
               "name": "橱柜台面",
               "purchaseStatus": "planned",
               "rot": 270,
@@ -3905,6 +3962,29 @@
               "w": 1164
             },
             {
+              "cabinet": {
+                "columns": [
+                  {
+                    "door": "none",
+                    "doorOpen": false,
+                    "drawers": [
+                      {
+                        "height": 67,
+                        "open": false
+                      },
+                      {
+                        "height": 67,
+                        "open": false
+                      }
+                    ],
+                    "shelves": []
+                  }
+                ],
+                "plinth": 60,
+                "template": "chest",
+                "thickness": 18,
+                "version": 1
+              },
               "color": "#e8dccb",
               "cx": 1015,
               "cy": 2737,
@@ -3927,6 +4007,29 @@
               "w": 1800
             },
             {
+              "cabinet": {
+                "columns": [
+                  {
+                    "door": "none",
+                    "doorOpen": false,
+                    "drawers": [
+                      {
+                        "height": 67,
+                        "open": false
+                      },
+                      {
+                        "height": 67,
+                        "open": false
+                      }
+                    ],
+                    "shelves": []
+                  }
+                ],
+                "plinth": 60,
+                "template": "chest",
+                "thickness": 18,
+                "version": 1
+              },
               "color": "#e8dccb",
               "cx": 1015,
               "cy": 4937,
@@ -3940,7 +4043,6 @@
             },
             {
               "cabinet": {
-                "autoDoors": true,
                 "columns": [
                   {
                     "door": "left",
@@ -4128,6 +4230,29 @@
               "w": 1200
             },
             {
+              "cabinet": {
+                "columns": [
+                  {
+                    "door": "none",
+                    "doorOpen": false,
+                    "drawers": [
+                      {
+                        "height": 67,
+                        "open": false
+                      },
+                      {
+                        "height": 67,
+                        "open": false
+                      }
+                    ],
+                    "shelves": []
+                  }
+                ],
+                "plinth": 60,
+                "template": "chest",
+                "thickness": 18,
+                "version": 1
+              },
               "color": "#e8dccb",
               "cx": 4114,
               "cy": 2737,
@@ -4473,6 +4598,20 @@
               "w": 400
             },
             {
+              "cabinet": {
+                "columns": [
+                  {
+                    "door": "double",
+                    "doorOpen": false,
+                    "drawers": [],
+                    "shelves": []
+                  }
+                ],
+                "plinth": 0,
+                "template": "base",
+                "thickness": 18,
+                "version": 1
+              },
               "color": "#eef1f3",
               "cx": 6093,
               "cy": 7930,
@@ -4497,7 +4636,6 @@
             },
             {
               "cabinet": {
-                "autoDoors": true,
                 "columns": [
                   {
                     "door": "double",
@@ -4521,6 +4659,15 @@
                     "width": 813
                   }
                 ],
+                "pegboardParts": {
+                  "displayShelves": true,
+                  "hooks": true,
+                  "left": true,
+                  "light": true,
+                  "lower": true,
+                  "right": true,
+                  "upper": true
+                },
                 "plinth": 0,
                 "template": "entry-pegboard",
                 "thickness": 18,
@@ -4539,7 +4686,6 @@
             },
             {
               "cabinet": {
-                "autoDoors": true,
                 "columns": [
                   {
                     "door": "double",
@@ -4562,7 +4708,6 @@
                 ],
                 "doorMaxAngle": 90,
                 "entry": {
-                  "autoColumns": true,
                   "editable": true,
                   "lowerHeight": 620,
                   "nicheHeight": 379,
@@ -4587,7 +4732,6 @@
             },
             {
               "cabinet": {
-                "autoDoors": true,
                 "columns": [
                   {
                     "door": "double",
@@ -4697,7 +4841,6 @@
             },
             {
               "cabinet": {
-                "autoDoors": true,
                 "columns": [
                   {
                     "door": "double",
@@ -4753,6 +4896,121 @@
               "rot": 270,
               "type": "cabinet",
               "w": 1850
+            },
+            {
+              "color": "#e9e5de",
+              "cx": 7043,
+              "cy": 10015,
+              "d": 330,
+              "groupId": "upgraded_fmv3vtxb61",
+              "h": 700,
+              "id": "fmv3vtxb61_upgraded_upper",
+              "kitchen": {
+                "baseHeight": 700,
+                "depth": 330,
+                "modules": [
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 682
+                  },
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 682
+                  },
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 682
+                  }
+                ],
+                "shape": "straight",
+                "thickness": 0,
+                "version": 1
+              },
+              "mountHeight": 1480,
+              "name": "橱柜台面 · 吊柜",
+              "price": 0,
+              "rot": 180,
+              "type": "kitchenwall",
+              "w": 2046
+            },
+            {
+              "color": "#efece6",
+              "cx": 7043,
+              "cy": 10175,
+              "d": 10,
+              "groupId": "upgraded_fmv3vtxb61",
+              "h": 620,
+              "id": "fmv3vtxb61_upgraded_back",
+              "mountHeight": 860,
+              "name": "橱柜台面 · 挡水背板",
+              "price": 0,
+              "rot": 180,
+              "type": "block",
+              "w": 2046
+            },
+            {
+              "color": "#e9e5de",
+              "cx": 6190,
+              "cy": 8998,
+              "d": 330,
+              "groupId": "upgraded_fmv3vutm42",
+              "h": 700,
+              "id": "fmv3vutm42_upgraded_upper",
+              "kitchen": {
+                "baseHeight": 700,
+                "depth": 330,
+                "modules": [
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 582
+                  },
+                  {
+                    "door": "left",
+                    "handle": "none",
+                    "role": "door",
+                    "run": 0,
+                    "width": 582
+                  }
+                ],
+                "shape": "straight",
+                "thickness": 0,
+                "version": 1
+              },
+              "mountHeight": 1480,
+              "name": "橱柜台面 · 吊柜",
+              "price": 0,
+              "purchaseStatus": "planned",
+              "rot": 270,
+              "type": "kitchenwall",
+              "w": 1164
+            },
+            {
+              "color": "#efece6",
+              "cx": 6030,
+              "cy": 8998,
+              "d": 10,
+              "groupId": "upgraded_fmv3vutm42",
+              "h": 620,
+              "id": "fmv3vutm42_upgraded_back",
+              "mountHeight": 860,
+              "name": "橱柜台面 · 挡水背板",
+              "price": 0,
+              "purchaseStatus": "planned",
+              "rot": 270,
+              "type": "block",
+              "w": 1164
             }
           ],
           "measures": [],
@@ -7193,6 +7451,29 @@
         },
         "furniture": [
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 1015,
             "cy": 2737,
@@ -7215,6 +7496,29 @@
             "w": 1800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 1015,
             "cy": 4937,
@@ -7228,7 +7532,6 @@
           },
           {
             "cabinet": {
-              "autoDoors": true,
               "columns": [
                 {
                   "door": "left",
@@ -7384,6 +7687,29 @@
             "w": 1200
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 4114,
             "cy": 2737,
@@ -7660,6 +7986,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 6063,
             "cy": 7900,
@@ -7709,8 +8049,10 @@
               ],
               "pegboardBottom": 0,
               "pegboardParts": {
-                "accessories": false,
+                "displayShelves": false,
+                "hooks": false,
                 "left": false,
+                "light": false,
                 "lower": false,
                 "right": false,
                 "upper": false
@@ -7907,7 +8249,6 @@
           },
           {
             "cabinet": {
-              "autoDoors": false,
               "columns": [
                 {
                   "door": "double",
@@ -8166,7 +8507,6 @@
                   "run": 0,
                   "structure": {
                     "cabinet": {
-                      "autoDoors": false,
                       "autoFrontWidth": 970,
                       "columns": [
                         {
@@ -11383,6 +11723,29 @@
             "w": 1800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 7150,
             "cy": 220,
@@ -11394,6 +11757,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 9450,
             "cy": 220,
@@ -11405,6 +11791,68 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 453
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 942
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 933
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 8800,
             "cy": 3070,
@@ -11449,6 +11897,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 6110,
             "cy": 700,
@@ -11493,6 +11955,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 4280,
             "cy": 1000,
@@ -11504,6 +12010,50 @@
             "w": 1600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                }
+              ],
+              "plinth": 60,
+              "template": "book",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 3500,
             "cy": 150,
@@ -11537,6 +12087,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 4150,
             "cy": 3840,
@@ -11559,6 +12123,20 @@
             "w": 600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 250,
             "cy": 4600,
@@ -11574,7 +12152,53 @@
             "cx": 300,
             "cy": 6575,
             "d": 600,
+            "groupId": "upgraded_fmuyuxsjk19",
             "id": "fmuyuxsjk19",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 270,
             "type": "counter",
@@ -11585,7 +12209,39 @@
             "cx": 1390,
             "cy": 7660,
             "d": 600,
+            "groupId": "upgraded_fmuyuxsjk20",
             "id": "fmuyuxsjk20",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 526.6666666666666
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 526.6666666666666
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 526.6666666666666
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 180,
             "type": "counter",
@@ -11680,6 +12336,34 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "sideboard",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 3500,
             "cy": 7785,
@@ -11702,6 +12386,58 @@
             "w": 2600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 7600,
             "cy": 6810,
@@ -11746,6 +12482,27 @@
             "w": 850
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 4995,
             "cy": 9900,
@@ -11790,6 +12547,50 @@
             "w": 1500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 973
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 973
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 8500,
             "cy": 3910,
@@ -11876,6 +12677,140 @@
             "rot": 0,
             "type": "plant",
             "w": 500
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 165,
+            "cy": 6575,
+            "d": 330,
+            "groupId": "upgraded_fmuyuxsjk19",
+            "h": 700,
+            "id": "fmuyuxsjk19_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 554
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 270,
+            "type": "kitchenwall",
+            "w": 2770
+          },
+          {
+            "color": "#efece6",
+            "cx": 5,
+            "cy": 6575,
+            "d": 10,
+            "groupId": "upgraded_fmuyuxsjk19",
+            "h": 620,
+            "id": "fmuyuxsjk19_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 270,
+            "type": "block",
+            "w": 2770
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 1390,
+            "cy": 7795,
+            "d": 330,
+            "groupId": "upgraded_fmuyuxsjk20",
+            "h": 700,
+            "id": "fmuyuxsjk20_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 526.6666666666666
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 526.6666666666666
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 526.6666666666666
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 180,
+            "type": "kitchenwall",
+            "w": 1580
+          },
+          {
+            "color": "#efece6",
+            "cx": 1390,
+            "cy": 7955,
+            "d": 10,
+            "groupId": "upgraded_fmuyuxsjk20",
+            "h": 620,
+            "id": "fmuyuxsjk20_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 180,
+            "type": "block",
+            "w": 1580
           }
         ],
         "measures": [],
@@ -11951,6 +12886,29 @@
             "w": 1500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 225,
             "cy": 325,
@@ -11962,6 +12920,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 225,
             "cy": 2275,
@@ -11973,6 +12954,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 1000,
             "cy": 3300,
@@ -12028,6 +13053,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 5150,
             "cy": 1400,
@@ -12061,6 +13100,29 @@
             "w": 1800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 9375,
             "cy": 375,
@@ -12072,6 +13134,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 9375,
             "cy": 2625,
@@ -12083,6 +13168,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 973
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 973
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 5940,
             "cy": 1300,
@@ -12109,7 +13238,46 @@
             "cx": 300,
             "cy": 5070,
             "d": 600,
+            "groupId": "upgraded_fmv1o937t16",
             "id": "fmv1o937t16",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 270,
             "type": "counter",
@@ -12120,7 +13288,39 @@
             "cx": 1500,
             "cy": 4140,
             "d": 600,
+            "groupId": "upgraded_fmv1o937t17",
             "id": "fmv1o937t17",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 0,
             "type": "counter",
@@ -12171,6 +13371,50 @@
             "w": 1200
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 373
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 800,
             "cy": 6815,
@@ -12270,6 +13514,58 @@
             "w": 2400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 7800,
             "cy": 4040,
@@ -12325,6 +13621,27 @@
             "w": 850
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 5100,
             "cy": 8825,
@@ -12345,6 +13662,133 @@
             "rot": 0,
             "type": "plant",
             "w": 500
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 165,
+            "cy": 5070,
+            "d": 330,
+            "groupId": "upgraded_fmv1o937t16",
+            "h": 700,
+            "id": "fmv1o937t16_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 615
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 270,
+            "type": "kitchenwall",
+            "w": 2460
+          },
+          {
+            "color": "#efece6",
+            "cx": 5,
+            "cy": 5070,
+            "d": 10,
+            "groupId": "upgraded_fmv1o937t16",
+            "h": 620,
+            "id": "fmv1o937t16_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 270,
+            "type": "block",
+            "w": 2460
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 1500,
+            "cy": 4005,
+            "d": 330,
+            "groupId": "upgraded_fmv1o937t17",
+            "h": 700,
+            "id": "fmv1o937t17_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 0,
+            "type": "kitchenwall",
+            "w": 1600
+          },
+          {
+            "color": "#efece6",
+            "cx": 1500,
+            "cy": 3845,
+            "d": 10,
+            "groupId": "upgraded_fmv1o937t17",
+            "h": 620,
+            "id": "fmv1o937t17_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 0,
+            "type": "block",
+            "w": 1600
           }
         ],
         "measures": [],
@@ -12410,6 +13854,29 @@
             "w": 1500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 6350,
             "cy": 300,
@@ -12421,6 +13888,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 373
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 5700,
             "cy": 3325,
@@ -12465,6 +13976,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 300,
             "cy": 1500,
@@ -12588,6 +14113,58 @@
             "w": 1000
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 200,
             "cy": 6900,
@@ -12665,6 +14242,27 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 4600,
             "cy": 8220,
@@ -12728,6 +14326,29 @@
             "w": 1800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 300,
             "cy": 400,
@@ -12739,6 +14360,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 300,
             "cy": 2600,
@@ -12750,6 +14394,68 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 413
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 862
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 853
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 1100,
             "cy": 3600,
@@ -12783,6 +14489,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 5750,
             "cy": 1900,
@@ -12794,6 +14514,50 @@
             "w": 800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 373
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 5725,
             "cy": 3270,
@@ -12849,6 +14613,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 373
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 8100,
             "cy": 3625,
@@ -12882,6 +14690,50 @@
             "w": 620
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                }
+              ],
+              "plinth": 60,
+              "template": "book",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 9415,
             "cy": 2000,
@@ -12893,6 +14745,50 @@
             "w": 1600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                }
+              ],
+              "plinth": 60,
+              "template": "book",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 11600,
             "cy": 150,
@@ -12915,6 +14811,27 @@
             "w": 750
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 10450,
             "cy": 4890,
@@ -12930,7 +14847,39 @@
             "cx": 11700,
             "cy": 6420,
             "d": 600,
+            "groupId": "upgraded_fmuyzwj1420",
             "id": "fmuyzwj1420",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 90,
             "type": "counter",
@@ -12992,6 +14941,20 @@
             "w": 900
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 11650,
             "cy": 9000,
@@ -13113,6 +15076,34 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "sideboard",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 2100,
             "cy": 7900,
@@ -13135,6 +15126,58 @@
             "w": 2600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 200,
             "cy": 9700,
@@ -13210,6 +15253,66 @@
             "rot": 0,
             "type": "plant",
             "w": 500
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 11835,
+            "cy": 6420,
+            "d": 330,
+            "groupId": "upgraded_fmuyzwj1420",
+            "h": 700,
+            "id": "fmuyzwj1420_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 90,
+            "type": "kitchenwall",
+            "w": 1800
+          },
+          {
+            "color": "#efece6",
+            "cx": 11995,
+            "cy": 6420,
+            "d": 10,
+            "groupId": "upgraded_fmuyzwj1420",
+            "h": 620,
+            "id": "fmuyzwj1420_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 90,
+            "type": "block",
+            "w": 1800
           }
         ],
         "measures": [],
@@ -13277,6 +15380,29 @@
             "w": 1500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dcc6",
             "cx": 2700,
             "cy": 300,
@@ -13288,6 +15414,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dcc6",
             "cx": 1250,
             "cy": 3325,
@@ -13332,6 +15502,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 373
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dcc6",
             "cx": 1400,
             "cy": 7225,
@@ -13347,7 +15561,39 @@
             "cx": 4800,
             "cy": 1200,
             "d": 600,
+            "groupId": "upgraded_fmuz9pc8l8",
             "id": "fmuz9pc8l8",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 90,
             "type": "counter",
@@ -13409,6 +15655,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 5600,
             "cy": 1700,
@@ -13453,6 +15713,58 @@
             "w": 1300
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dcc6",
             "cx": 4000,
             "cy": 8450,
@@ -13530,6 +15842,27 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dcc6",
             "cx": 2290,
             "cy": 8325,
@@ -13561,6 +15894,66 @@
             "rot": 0,
             "type": "plant",
             "w": 500
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 4935,
+            "cy": 1200,
+            "d": 330,
+            "groupId": "upgraded_fmuz9pc8l8",
+            "h": 700,
+            "id": "fmuz9pc8l8_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 533.3333333333334
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 90,
+            "type": "kitchenwall",
+            "w": 1600
+          },
+          {
+            "color": "#efece6",
+            "cx": 5095,
+            "cy": 1200,
+            "d": 10,
+            "groupId": "upgraded_fmuz9pc8l8",
+            "h": 620,
+            "id": "fmuz9pc8l8_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 90,
+            "type": "block",
+            "w": 1600
           }
         ],
         "measures": [],
@@ -13605,6 +15998,29 @@
             "w": 1800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 500,
             "cy": 300,
@@ -13616,6 +16032,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 2900,
             "cy": 300,
@@ -13627,6 +16066,68 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 413
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 862
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 853
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 1200,
             "cy": 3600,
@@ -13660,6 +16161,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 4150,
             "cy": 1700,
@@ -13682,6 +16197,29 @@
             "w": 1500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 8650,
             "cy": 300,
@@ -13715,6 +16253,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 8700,
             "cy": 3325,
@@ -13730,7 +16312,39 @@
             "cx": 9600,
             "cy": 5070,
             "d": 600,
+            "groupId": "upgraded_fmv3qg6lu91",
             "id": "fmv3qg6lu91",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 90,
             "type": "counter",
@@ -13825,6 +16439,34 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 439.6666666666667
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 906.3333333333334
+                }
+              ],
+              "plinth": 60,
+              "template": "sideboard",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 1500,
             "cy": 4315,
@@ -13869,6 +16511,58 @@
             "w": 1300
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 3600,
             "cy": 9900,
@@ -13902,6 +16596,27 @@
             "w": 850
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 814
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 6450,
             "cy": 10025,
@@ -13955,6 +16670,66 @@
             "rot": 0,
             "type": "plant",
             "w": 700
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 9735,
+            "cy": 5070,
+            "d": 330,
+            "groupId": "upgraded_fmv3qg6lu91",
+            "h": 700,
+            "id": "fmv3qg6lu91_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 90,
+            "type": "kitchenwall",
+            "w": 1800
+          },
+          {
+            "color": "#efece6",
+            "cx": 9895,
+            "cy": 5070,
+            "d": 10,
+            "groupId": "upgraded_fmv3qg6lu91",
+            "h": 620,
+            "id": "fmv3qg6lu91_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 90,
+            "type": "block",
+            "w": 1800
           }
         ],
         "measures": [],
@@ -14013,6 +16788,29 @@
             "w": 1800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 350,
             "cy": 500,
@@ -14024,6 +16822,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 350,
             "cy": 2700,
@@ -14035,6 +16856,68 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 453
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 942
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 933
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 1300,
             "cy": 3900,
@@ -14068,6 +16951,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 6050,
             "cy": 1900,
@@ -14079,6 +16976,50 @@
             "w": 800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 373
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 6025,
             "cy": 3420,
@@ -14112,6 +17053,29 @@
             "w": 1500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 8650,
             "cy": 300,
@@ -14145,6 +17109,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 9200,
             "cy": 3625,
@@ -14178,6 +17186,50 @@
             "w": 620
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                }
+              ],
+              "plinth": 60,
+              "template": "book",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 10615,
             "cy": 1800,
@@ -14189,6 +17241,50 @@
             "w": 1600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": [
+                    284,
+                    568,
+                    852,
+                    1136,
+                    1420
+                  ]
+                }
+              ],
+              "plinth": 60,
+              "template": "book",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 12600,
             "cy": 150,
@@ -14200,6 +17296,27 @@
             "w": 800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 11200,
             "cy": 4900,
@@ -14288,6 +17405,34 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "sideboard",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 1600,
             "cy": 4665,
@@ -14310,6 +17455,58 @@
             "w": 2600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 200,
             "cy": 9400,
@@ -14391,7 +17588,39 @@
             "cx": 12900,
             "cy": 6570,
             "d": 600,
+            "groupId": "upgraded_fmv3qg0mu63",
             "id": "fmv3qg0mu63",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 90,
             "type": "counter",
@@ -14453,6 +17682,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 10350,
             "cy": 7100,
@@ -14497,6 +17740,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "left",
+                  "doorOpen": false,
+                  "drawerColumns": 1,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 373
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 10200,
             "cy": 10525,
@@ -14519,6 +17806,20 @@
             "w": 600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 11500,
             "cy": 9100,
@@ -14550,6 +17851,66 @@
             "rot": 0,
             "type": "plant",
             "w": 500
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 13035,
+            "cy": 6570,
+            "d": 330,
+            "groupId": "upgraded_fmv3qg0mu63",
+            "h": 700,
+            "id": "fmv3qg0mu63_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 600
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 90,
+            "type": "kitchenwall",
+            "w": 1800
+          },
+          {
+            "color": "#efece6",
+            "cx": 13195,
+            "cy": 6570,
+            "d": 10,
+            "groupId": "upgraded_fmv3qg0mu63",
+            "h": 620,
+            "id": "fmv3qg0mu63_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 90,
+            "type": "block",
+            "w": 1800
           }
         ],
         "measures": [],
@@ -14633,6 +17994,29 @@
             "w": 1800
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 225,
             "cy": 525,
@@ -14644,6 +18028,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 225,
             "cy": 2875,
@@ -14655,6 +18062,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 913
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 913
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 1050,
             "cy": 3605,
@@ -14699,6 +18150,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 4690,
             "cy": 2000,
@@ -14721,6 +18186,29 @@
             "w": 1500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 7400,
             "cy": 225,
@@ -14732,6 +18220,29 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 67,
+                      "open": false
+                    },
+                    {
+                      "height": 67,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "chest",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e8dccb",
             "cx": 9800,
             "cy": 225,
@@ -14743,6 +18254,50 @@
             "w": 450
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 873
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [
+                    {
+                      "extension": 1,
+                      "height": 160,
+                      "open": false
+                    }
+                  ],
+                  "shelves": [
+                    646,
+                    1132,
+                    1618
+                  ],
+                  "width": 873
+                }
+              ],
+              "plinth": 60,
+              "template": "wardrobe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 9900,
             "cy": 2900,
@@ -14780,7 +18335,46 @@
             "cx": 300,
             "cy": 5320,
             "d": 600,
+            "groupId": "upgraded_fmv24edg316",
             "id": "fmv24edg316",
+            "kitchen": {
+              "baseHeight": 820,
+              "depth": 600,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                }
+              ],
+              "plinth": 100,
+              "shape": "straight",
+              "thickness": 40,
+              "version": 1
+            },
             "name": "橱柜台面",
             "rot": 270,
             "type": "counter",
@@ -14842,6 +18436,20 @@
             "w": 400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawers": [],
+                  "shelves": []
+                }
+              ],
+              "plinth": 0,
+              "template": "base",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#eef1f3",
             "cx": 1300,
             "cy": 7090,
@@ -14930,6 +18538,58 @@
             "w": 2400
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                },
+                {
+                  "door": "none",
+                  "doorOpen": false,
+                  "drawers": [
+                    {
+                      "height": 117,
+                      "open": false
+                    }
+                  ],
+                  "shelves": []
+                }
+              ],
+              "plinth": 60,
+              "template": "tv",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#e2cfb4",
             "cx": 8100,
             "cy": 4240,
@@ -14985,6 +18645,27 @@
             "w": 850
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    181,
+                    362,
+                    542,
+                    723
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "shoe",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 4450,
             "cy": 8525,
@@ -15062,6 +18743,34 @@
             "w": 500
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                },
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    402
+                  ],
+                  "width": 773
+                }
+              ],
+              "plinth": 60,
+              "template": "sideboard",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 4950,
             "cy": 6700,
@@ -15073,6 +18782,27 @@
             "w": 1600
           },
           {
+            "cabinet": {
+              "columns": [
+                {
+                  "door": "double",
+                  "doorOpen": false,
+                  "drawerColumns": 2,
+                  "drawers": [],
+                  "shelves": [
+                    341,
+                    682,
+                    1022,
+                    1363
+                  ],
+                  "width": 964
+                }
+              ],
+              "plinth": 60,
+              "template": "storage",
+              "thickness": 18,
+              "version": 1
+            },
             "color": "#efe6d8",
             "cx": 7825,
             "cy": 7900,
@@ -15082,6 +18812,73 @@
             "rot": 0,
             "type": "cabinet",
             "w": 1000
+          },
+          {
+            "color": "#e9e5de",
+            "cx": 165,
+            "cy": 5320,
+            "d": 330,
+            "groupId": "upgraded_fmv24edg316",
+            "h": 700,
+            "id": "fmv24edg316_upgraded_upper",
+            "kitchen": {
+              "baseHeight": 700,
+              "depth": 330,
+              "modules": [
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                },
+                {
+                  "door": "left",
+                  "handle": "none",
+                  "role": "door",
+                  "run": 0,
+                  "width": 640
+                }
+              ],
+              "shape": "straight",
+              "thickness": 0,
+              "version": 1
+            },
+            "mountHeight": 1480,
+            "name": "橱柜台面 · 吊柜",
+            "price": 0,
+            "rot": 270,
+            "type": "kitchenwall",
+            "w": 2560
+          },
+          {
+            "color": "#efece6",
+            "cx": 5,
+            "cy": 5320,
+            "d": 10,
+            "groupId": "upgraded_fmv24edg316",
+            "h": 620,
+            "id": "fmv24edg316_upgraded_back",
+            "mountHeight": 860,
+            "name": "橱柜台面 · 挡水背板",
+            "price": 0,
+            "rot": 270,
+            "type": "block",
+            "w": 2560
           }
         ],
         "measures": [],
