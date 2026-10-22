@@ -63,7 +63,7 @@ elements['#fStackHeight'].onchange({target:{value:'0'}});assert.equal(current.st
  const roundedSource=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString('utf8').replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(roundedSource).toString('base64'));
  const modelCtx=require('./helpers/layer-context.cjs').createContext({THREE,RoundedBoxGeometry,FurnishDesign:D,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o}),screenMat:()=>new THREE.MeshStandardMaterial({color:'#1f6f6a'})});
- Object.assign(modelCtx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
+ Object.assign(modelCtx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),modelCtx);
  const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-6,`${a} != ${b}`);
  for(const type of ['washer','dryer'])for(const h of [undefined,700,1000])for(const mountHeight of [undefined,0,850])for(const rot of [0,90])for(const flip of [false,true]){

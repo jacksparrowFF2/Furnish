@@ -42,15 +42,15 @@ const doorPairing={values:['end','start'],default:'end',singleHinge:{values:['le
 // Editable leaf widths are model dimensions, not hardware installation limits.
 const doorWidths={minWidth:50,maxLeaves:24,gap:2};
 const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
-const foldingTable={family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
+const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'folding-table'},family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const types={
  bench_yeswood_oak:{solidModel:{global:'FurnishShoeBenchModel',module:'shoe-bench'},family:'shoe-bench',height:450,envelope:()=>[0,450],identity:{brand:'源氏木语/YESWOOD',model:'橡木软包换鞋凳 · 80cm'}},
  coffeetable_yeswood_cherry:{solidModel:{global:'FurnishCherryCoffeeTableModel',module:'cherry-coffee-table'},family:'coffee-table',height:450,envelope:()=>[0,450],identity:{brand:'源氏木语/YESWOOD',model:'樱桃木茶几 · 1.2米白色岩板面'}},
  aircon_midea_ultra_2hp:{family:'floor-aircon',height:1856,envelope:()=>[0,1856],planShape:{kind:'superellipse',exponent:.7,segments:96,bodyWidth:383,bodyDepth:424,label:{x:-135,width:16,offset:3},rear:{width:220,z:-213.5,referenceWidth:395,referenceDepth:436},version:1},clearanceReview:'missing',identity:{brand:'美的/Midea',model:'KFR-51LW/N8KS1-1U'}},
- tea_table_800:{family:'tea-table',height:720,teaTable:{cabinetHeight:720,accessoryTop:897},envelope:()=>[0,720]},
- tea_bar_mijia_pro:{family:'tea-bar',height:1155,envelope:()=>[0,1155],defaults:{teaBarUpperOpen:false,teaBarLowerOpen:false},fields:['teaBarUpperOpen','teaBarLowerOpen'],create:['teaBarUpperOpen','teaBarLowerOpen'],teaBar:{width:315,depth:310,height:1155,hingeX:-147.5,front:146,thickness:14,angle:100,bottle:{diameter:270,height:500,neckDiameter:55,neckHeight:80,bottom:36,z:0,capHeight:14,adapterHeight:22},doors:[{section:'upper',key:'teaBarUpperOpen',bottom:601.5,top:809},{section:'lower',key:'teaBarLowerOpen',bottom:17,top:600}]},identity:{brand:'米家/Mijia',model:'智能茶吧机 Pro 立式'}},
- pet_feeder_mijia_2:{family:'pet-feeder',height:370,envelope:()=>[0,370],identity:{brand:'米家/Mijia',model:'智能宠物喂食器 2'}},
- cat_tree:{family:'pet-cat-tree',height:1430,envelope:()=>[0,1430]},
+ tea_table_800:{solidModel:{global:'FurnishTeaTableModel',module:'tea-table'},family:'tea-table',height:720,teaTable:{cabinetHeight:720,accessoryTop:897},envelope:()=>[0,720]},
+ tea_bar_mijia_pro:{solidModel:{global:'FurnishTeaBarModel',module:'tea-bar'},family:'tea-bar',height:1155,envelope:()=>[0,1155],defaults:{teaBarUpperOpen:false,teaBarLowerOpen:false},fields:['teaBarUpperOpen','teaBarLowerOpen'],create:['teaBarUpperOpen','teaBarLowerOpen'],teaBar:{width:315,depth:310,height:1155,hingeX:-147.5,front:146,thickness:14,angle:100,bottle:{diameter:270,height:500,neckDiameter:55,neckHeight:80,bottom:36,z:0,capHeight:14,adapterHeight:22},doors:[{section:'upper',key:'teaBarUpperOpen',bottom:601.5,top:809},{section:'lower',key:'teaBarLowerOpen',bottom:17,top:600}]},identity:{brand:'米家/Mijia',model:'智能茶吧机 Pro 立式'}},
+ pet_feeder_mijia_2:{solidModel:{global:'FurnishPetFeederModel',module:'pet-feeder'},family:'pet-feeder',height:370,envelope:()=>[0,370],identity:{brand:'米家/Mijia',model:'智能宠物喂食器 2'}},
+ cat_tree:{solidModel:{global:'FurnishCatTreeModel',module:'cat-tree'},family:'pet-cat-tree',height:1430,envelope:()=>[0,1430]},
  litter_box:{family:'pet-litter-box',height:400,envelope:()=>[0,400]},
  block:{family:'placeholder',height:1000,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight']},
  pipebox:{family:'pipe-box',height:2400,anchor:'bottom',defaults:{mountHeight:0,pipeBoxThickness:18,pipeBoxShape:'three',pipeBoxOpenSide:'back',pipeBoxCorner:'front-left'},fields:['mountHeight','pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'],create:['mountHeight','pipeBoxThickness','pipeBoxShape']},
@@ -74,9 +74,10 @@ const types={
  tripleslidingdoor:{family:'sliding',height:2400,defaults:{floorTrack:false},fields:['floorTrack']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
  curtain:{height:2400,defaults:{curtainStyle:'double'},fields:['curtainStyle'],create:['curtainStyle']},
- fridge:{height:1800},fridge_french_drawer:{height:1910},sofa_yeswood_cherry:{height:895},mirror:{height:1650},
+ fridge:{height:1800},fridge_french_drawer:{height:1910},sofa_yeswood_cherry:{solidModel:{global:'FurnishYeswoodSofaModel',module:'yeswood-sofa',rounded:true},height:895},mirror:{height:1650},
  aircon:{height:1800},dishwasher:{height:840},rug:{height:16},bench:{height:440},beanbag:{height:720},barstool:{height:775},custom:{height:800},customround:{height:800},toilet:{height:796}
 };
+for(const type of ["bed","sofa","armchair","cornersofa","dresser","desk","chair","coffeetable","table","roundtable","island","barstool","officechair","bench"])types[type]={...types[type],solidModel:{global:'FurnishBasicFurnitureModel',module:'basic-furniture',positionSeed:true}};
 // Installation review coverage is a product capability, not a saved instance field.
 for(const type of ['tea_bar_mijia_pro','water_purifier_mijia_1200g','aquarium_mijia_2pro','stove_fotile_th36b','rangehood_fotile_jcd10ta','stove','fridge','washer','waterheater','waterheater_flat','tv','fridge_french_drawer','aircon','acwall','dishwasher','dishwasher_mijia_countertop','dryer','purifier','robot_p20max_tank','robot_p20max_plumbed','robot_p20max']){
  types[type]={...types[type],clearanceReview:type==='waterheater_flat'?'heater':type==='dishwasher_mijia_countertop'?'dishwasher':'missing'};

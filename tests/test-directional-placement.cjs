@@ -22,7 +22,7 @@ assert.throws(()=>D.placeAtDirectionalGap(plan,work,'a','r',500),/重叠|阻挡|
 assert.throws(()=>D.placeAtDirectionalGap(plan,solo,'a','r',20000),/房间|边界|参考/);
 assert.throws(()=>D.placeAtDirectionalGap(plan,work,'a','r',0,{visibleFurniture:false}),/路径.*家具/); // Hidden furniture still blocks the swept path to the wall.
 assert.throws(()=>D.placeAtDirectionalGap(plan,{...work,furniture:[f,{...right,h:undefined}]},'a','r',0,{visibleFurniture:false}),/路径.*家具/); // Unknown height remains conservative.
-const low={...f,type:'table',h:500},high={...right,type:'kitchenwall',h:500,mountHeight:2000};
+const low={...f,type:'block',h:500,mountHeight:0},high={...right,type:'kitchenwall',h:500,mountHeight:2000};
 close(D.placeAtDirectionalGap(plan,{...work,furniture:[low,high]},'a','r',0,{visibleFurniture:false}).cx,850); // Known vertical separation allows passage underneath.
 const edge=G.corners(f);assert(G.polygonOverlap(edge,G.corners({...f,cx:99}),1e-6));assert(!G.polygonOverlap(edge,G.corners({...f,cx:100}),1e-6));assert(!G.polygonOverlap(edge,G.corners({...f,cx:99}))); // Existing 5 mm collision tolerance is unchanged.
 const kitchen=K.configure({...f,type:'counter',id:'k'},{version:1,shape:'L',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1200,role:'door'},{run:1,width:900,role:'door'}]}),large={...plan,rooms:[{...room,poly:[[-5000,-5000],[5000,-5000],[5000,5000],[-5000,5000]]}],walls:[[3500,-5000,3600,5000]]},kw={...work,furniture:[kitchen]},gap=S.directional(kitchen,{rects:large.walls}).r.distance;
