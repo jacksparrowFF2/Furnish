@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "workspaces": 9,
+  "namedDesigns": 1,
+  "furniture": 383,
+  "namedFurniture": 43,
+  "repeatedRoundtripNoDrift": true,
+  "bytesUnchanged": true,
+  "sha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54"
+}

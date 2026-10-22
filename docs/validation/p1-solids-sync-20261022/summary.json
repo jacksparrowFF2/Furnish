@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-22",
+  "scope": "P1 furniture production solids and Blender sync rollback/part matching",
+  "baseCommit": "4aa74a5c7cf41b6fd1220e134d14427a0c3d5238",
+  "passed": true,
+  "spatial": {
+    "types": 24,
+    "newTypes": 22,
+    "productionBoundsAllTypes": true,
+    "voidAndSolidFixtures": 11,
+    "rotationDegrees": [
+      0,
+      37,
+      90
+    ],
+    "mirroring": true,
+    "teaBarDoorCache": true,
+    "foldingPoses": true,
+    "catInlayQuaternion": true,
+    "noNewPersistentFields": true,
+    "noEmptySolidRecords": true
+  },
+  "node": {
+    "command": "node scripts/check.cjs --keep-going",
+    "suites": 275,
+    "builtInPlans": 12,
+    "previewPages": 31,
+    "result": "PASS",
+    "log": "node-full.log",
+    "additionalFinalCoverage": "coverage-final.log",
+    "finalBlenderRecheck": "blender-node-final.log",
+    "fullLogVerified": true
+  },
+  "browser": {
+    "scope": "Affected cases only; full canonical browser suite not run",
+    "uniqueCases": 11,
+    "results": [
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "seconds": 9.5,
+        "log": "browser-portable-smoke.log"
+      },
+      {
+        "name": "furniture-solids",
+        "status": "PASS",
+        "seconds": 24,
+        "log": "browser-furniture-solids.log"
+      },
+      {
+        "name": "folding-table",
+        "status": "PASS",
+        "seconds": 25.1,
+        "log": "browser-folding-table.log"
+      },
+      {
+        "name": "tea-table",
+        "status": "PASS",
+        "seconds": 18.3,
+        "log": "browser-tea-table.log"
+      },
+      {
+        "name": "tea-bar",
+        "status": "PASS",
+        "seconds": 25.4,
+        "log": "browser-tea-bar.log"
+      },
+      {
+        "name": "cat-tree",
+        "status": "PASS",
+        "seconds": 28,
+        "log": "browser-cat-tree.log"
+      },
+      {
+        "name": "directional-placement",
+        "status": "PASS",
+        "seconds": 3.4,
+        "log": "browser-directional-placement.log"
+      },
+      {
+        "name": "measure-boundaries",
+        "status": "PASS",
+        "seconds": 4.2,
+        "log": "browser-measure-boundaries.log"
+      },
+      {
+        "name": "blender-render",
+        "status": "PASS",
+        "seconds": 25.7,
+        "log": "browser-blender-render.log"
+      },
+      {
+        "name": "furniture-snapping-audit",
+        "status": "PASS",
+        "seconds": 15.3,
+        "log": "browser-furniture-snapping-audit.log"
+      },
+      {
+        "name": "group-directional-placement",
+        "status": "PASS",
+        "seconds": 3.1,
+        "log": "browser-group-directional-placement.log"
+      }
+    ],
+    "httpAndOfflineFile": true,
+    "narrow390": true,
+    "undoRedoRefresh": true,
+    "production3DVisualReview": true
+  },
+  "blender": {
+    "transaction": "blender-transaction.json",
+    "zipPublisherAndReceiver": "blender-sync.json",
+    "platform": "Windows / Microsoft Store Blender 4.5.14 LTS",
+    "gpu": "OptiX / NVIDIA GeForce RTX 4070 Ti SUPER",
+    "renderNote": "Sync GPU render is a technical execution smoke check, not interior image quality acceptance; scene camera may face walls.",
+    "refined": "blender-refined.json",
+    "sourceCamera": "blender-source-camera.json",
+    "refinedMaterialBindings": 4355,
+    "refinedLights": 8,
+    "sourceFilesUnchanged": true,
+    "structuredCabinetRoles": true
+  },
+  "localData": {
+    "passed": true,
+    "workspaces": 9,
+    "namedDesigns": 1,
+    "furniture": 383,
+    "namedFurniture": 43,
+    "repeatedRoundtripNoDrift": true,
+    "bytesUnchanged": true,
+    "sha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54"
+  },
+  "knownLimits": [
+    "Unrecorded furniture, including complex perforated litter-box boards, retains existing conservative envelope; imported models have no automatic structural recognition.",
+    "Rounded edges, curved tubes and individual nonconvex parts can remain locally conservative.",
+    "Untagged or coincident indistinguishable Blender parts retain path matching; arbitrary structural rewrites cannot guarantee material inheritance.",
+    "Blender process crash, forced termination, OOM, rollback failure, other versions/platforms and arbitrary third-party modifiers are not covered."
+  ],
+  "notRun": [
+    "Full canonical browser suite",
+    "Full user 1601 legacy engineering takeover",
+    "Other Blender platforms/versions",
+    "Real process-crash recovery",
+    "Historical four-region final-quality interior re-rendering (only current preview acceptance executed)"
+  ],
+  "instructions": "Re-download and reinstall the updated Furnish Live Sync ZIP before reconnecting; no live user Blender state or preferences were modified.",
+  "commits": {
+    "spatial": "f6dc32e",
+    "blender": "b82522c"
+  }
+}

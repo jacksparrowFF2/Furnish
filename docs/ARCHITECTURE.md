@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-22：基础家具生产构造器抽到 `basic-furniture-model.js`；`model-solid-recorder.js` 为生产构造器提供同步数值适配，`furniture-solids.js` 共用读取 24 类实体，不新增持久结构或兼容分支。开门／折叠／随机种子进入缓存，空间确认标识升级 v2。Blender 导出补充部件角色身份，接收器先规划匹配再可回滚地应用，提交后清理旧对象。见 [实体覆盖](FURNITURE-SOLIDS.md)、[同步契约](BLENDER-SYNC.md) 和 [验收](validation/p1-solids-sync-20261022/summary.json)。
+
 2026-10-21 全量回归：家具输入升级对原本结构损坏的记录保留完整原值，继续升级正常同伴，由既有修复界面处理；项目导入／保存仍严格校验，不补造损坏结构。Blender快照将非等比缩放与旋转产生的残余剪切烘焙到独立网格，输出可准确分解的镜像TRS；带剪切的实例自动展开，源模型不变。二维模式显式关闭透明三维层的鼠标命中。见 [本轮验收](validation/full-regression-blender-20261021/summary.json)。
 
 2026-10-21：`blender-project.cjs`仅通过本机CLI登记精修工程；原任务API增加基础／精修来源及有限机位选项，提交复制工程快照。`blender-refined.py`从快照加载精修参数并调用同步合并，`apply_snapshot(...,capture_camera=True)`可保留本次GLB相机供自由视角渲染，默认同步行为不变。进度返回`renderInfo`，无新增项目字段。`skills/furnish-blender`记录可复用操作契约。详见 [精修工程绑定](BLENDER-RENDER.md#精修工程绑定)。

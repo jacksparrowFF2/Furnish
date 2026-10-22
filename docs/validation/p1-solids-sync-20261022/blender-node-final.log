@@ -1,0 +1,4 @@
+PASS live sync: validated identities/origin, immutable revisions, deduplication, token/CSRF, ack, addon ZIP, persistence and token rotation
+PASS Blender semantic part identity: child reorder, unrelated insertion, source pose/mirror, repeated counts and ambiguity
+PASS Blender affine world geometry, mirrored TRS, sheared instance expansion and source isolation
+PASS Blender GLB validation, world transforms/mirror/camera/ceilings, classic loading, Store launcher lifecycle, API origin/parameters/busy/results/failure/cancel
