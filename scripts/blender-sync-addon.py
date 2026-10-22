@@ -3,6 +3,7 @@ bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 0
            "blender": (4, 2, 0), "location": "3D View > Sidebar > Furnish", "category": "Import-Export"}
 
 import hashlib
+import copy
 import json
 import shutil
 import tempfile
@@ -86,6 +87,58 @@ def fetch_snapshot(url, token, revision):
         raise
 
 
+SYNC_PROPERTIES = ('furnishObjectId','furnishId','furnishPartKind','layerObject','furnishLegacyName','furnishPartKey','furnishPartCount','furnishPartAmbiguous','furnish_sync_keep_transform')
+
+
+def _checkpoint(stage):
+    """Internal fault-injection seam; never exposed to the network or UI."""
+
+
+def _import_snapshot(filepath):
+    bpy.ops.import_scene.gltf(filepath=filepath)
+
+
+def _part_identity(obj):
+    key=obj.get('furnishPartKey')
+    if key is None:return None
+    scope=obj.get('furnishId') or obj.get('layerObject') or ''
+    count=obj.get('furnishPartCount')
+    if not isinstance(key,str) or not key or not isinstance(scope,str) or type(count) is not int or count<1:
+        raise ValueError('部件身份或同类数量无效，已保留原工程')
+    return (scope,key)
+
+
+def _bank_key(obj):
+    identity=_part_identity(obj)
+    return 'part:'+json.dumps(identity,ensure_ascii=False) if identity else obj['furnishObjectId']
+
+
+def _copy_property(value):
+    if hasattr(value,'to_dict'):return {k:_copy_property(v) for k,v in value.to_dict().items()}
+    if hasattr(value,'to_list'):return [_copy_property(v) for v in value.to_list()]
+    if isinstance(value,bpy.types.ID):return value
+    return copy.deepcopy(value)
+
+
+def _saved_object(obj):
+    return dict(data=obj.data,matrix=obj.matrix_world.copy(),owners=list(obj.users_collection),
+                slots=[(s.link,s.material) for s in obj.material_slots],hidden=obj.hide_get(),render=obj.hide_render,
+                properties={k:_copy_property(obj[k]) for k in SYNC_PROPERTIES if k in obj})
+
+
+def _restore_object(obj,value):
+    obj.data=value['data'];obj.matrix_world=value['matrix']
+    for i,(link,material) in enumerate(value['slots']):obj.material_slots[i].link=link;obj.material_slots[i].material=material
+    for owner in list(obj.users_collection):
+        if owner not in value['owners']:owner.objects.unlink(obj)
+    for owner in value['owners']:
+        if obj.name not in owner.objects:owner.objects.link(obj)
+    obj.hide_render=value['render'];obj.hide_set(value['hidden'])
+    for k in SYNC_PROPERTIES:
+        if k in value['properties']:obj[k]=value['properties'][k]
+        elif k in obj:del obj[k]
+
+
 def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_legacy=False, capture_camera=False):
     """Called on Blender's main thread only. Managed meshes own geometry/transforms."""
     plan = manifest['planId']; origin = manifest['originMm']
@@ -106,18 +159,53 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
                 if obj.type!='MESH':raise ValueError('同步实体类型已改变，请移出非网格对象')
                 existing[key] = obj
     before = set(bpy.data.objects); before_meshes=set(bpy.data.meshes); before_mats=set(bpy.data.materials); before_images=set(bpy.data.images)
-    before_cameras=set(bpy.data.cameras);before_lights=set(bpy.data.lights)
+    before_cameras=set(bpy.data.cameras);before_lights=set(bpy.data.lights);before_collections=set(bpy.data.collections)
+    selected=[(o.name,o.as_pointer()) for o in bpy.context.selected_objects];active=bpy.context.view_layer.objects.active
+    active_identity=(active.name,active.as_pointer()) if active else None
+    fake_users={m:m.use_fake_user for m in before_mats}
+    object_state={};old_meshes=set();removed=[];committed=False;cleanup_errors=[]
+    def discard(blocks,block):
+        try:blocks.remove(block)
+        except Exception as error:cleanup_errors.append(str(error))
+    collection_properties={k:_copy_property(collection[k]) for k in collection.keys()} if collection else None
     incoming=[]; retained=set(); added=updated=deleted=adopted=0
     active_camera=scene.camera;world=scene.world
     try:
-        bpy.ops.import_scene.gltf(filepath=filepath)
+        _import_snapshot(filepath)
         incoming = list(set(bpy.data.objects)-before)
+        _checkpoint('imported')
         meshes = [o for o in incoming if o.type == 'MESH']
         for material in set(bpy.data.materials)-before_mats:material['_furnish_sync_imported']=True
         for image in set(bpy.data.images)-before_images:image['_furnish_sync_imported']=True
         keys = [o.get('furnishObjectId') for o in meshes];key_set=set(keys)
         if not meshes or any(not isinstance(k,str) or not k for k in keys) or len(set(keys)) != len(keys):
             raise ValueError('导入实体缺少唯一标识；请使用 Furnish 的持续同步推送')
+        semantic={};incoming_semantic=set()
+        for old in existing.values():
+            identity=_part_identity(old)
+            if identity:
+                if identity in semantic:raise ValueError('Blender 中有重复部件身份，请先处理复制或歧义对象')
+                semantic[identity]=old
+        matches={};used=set();semantic_matches=0
+        for obj in meshes:
+            identity=_part_identity(obj)
+            if identity:
+                if identity in incoming_semantic:raise ValueError('导入场景有重复部件身份，已保留原工程')
+                incoming_semantic.add(identity)
+            candidate=semantic.get(identity) if identity else None
+            if candidate:
+                if preserve_materials and candidate.get('furnishPartCount')!=obj.get('furnishPartCount'):
+                    raise ValueError('同类部件数量已变化，无法可靠继承材质；请先核对或关闭保留材质')
+                semantic_matches+=1
+            else:
+                candidate=existing.get(obj['furnishObjectId'])
+                if candidate and _part_identity(candidate) and _part_identity(candidate)!=identity:candidate=None
+            saved_part=bank.get(_bank_key(obj),{})
+            if preserve_materials and not candidate and saved_part.get('count') is not None and saved_part['count']!=obj.get('furnishPartCount'):
+                raise ValueError('已删除部件的同类数量已变化，无法可靠恢复材质')
+            if candidate:
+                if candidate in used:raise ValueError('部件匹配不唯一，已保留原工程')
+                used.add(candidate);matches[obj['furnishObjectId']]=candidate
         # Check all candidates before modifying existing objects.
         if first and adopt_legacy:
             used=set()
@@ -127,16 +215,18 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
                 candidate=next((o for o in eligible if o.name==name and '/instance:' not in obj['furnishObjectId']),None)
                 if candidate is None:
                     matrix=delta @ obj.matrix_world
-                    matches=[o for o in eligible if len(o.data.vertices)==len(obj.data.vertices) and max(abs(o.matrix_world[i][j]-matrix[i][j]) for i in range(4) for j in range(4))<1e-5]
-                    if len(matches)==1:candidate=matches[0]
-                if candidate:existing[obj['furnishObjectId']]=candidate;used.add(candidate);adopted+=1
+                    legacy_matches=[o for o in eligible if len(o.data.vertices)==len(obj.data.vertices) and max(abs(o.matrix_world[i][j]-matrix[i][j]) for i in range(4) for j in range(4))<1e-5]
+                    if len(legacy_matches)==1:candidate=legacy_matches[0]
+                if candidate:existing[obj['furnishObjectId']]=candidate;matches[obj['furnishObjectId']]=candidate;used.add(candidate);adopted+=1
             legacy=[o for o in before if o.name in scene.objects and o.type=='MESH' and (o.get('furnishId') or o.get('layerObject') or o.name.startswith('Architecture_'))]
             if any(o not in used for o in legacy):raise ValueError('旧工程有无法唯一匹配的导出对象，请从新文件建立同步后迁移材质')
+        _checkpoint('matched')
+        object_state={obj:_saved_object(obj) for obj in existing.values()}
         if collection is None:
             collection=bpy.data.collections.new('Furnish | '+manifest.get('plan',plan));scene.collection.children.link(collection)
             collection['furnishPlanId']=plan;collection['furnishOriginMm']=anchor
         for obj in meshes:
-            key=obj['furnishObjectId'];old=existing.get(key)
+            key=obj['furnishObjectId'];old=matches.get(key)
             matrix=delta @ obj.matrix_world
             source_materials=[slot.material for slot in obj.material_slots]
             if old:
@@ -146,18 +236,20 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
                 if not old.get('furnish_sync_keep_transform',False):old.matrix_world=matrix
                 chosen=keep if preserve_materials and compatible and len(keep)==len(old.material_slots) else source_materials
                 for i,material in enumerate(chosen):old.material_slots[i].link='OBJECT';old.material_slots[i].material=material
-                if previous.users==0:bpy.data.meshes.remove(previous)
+                old_meshes.add(previous)
                 updated+=1;target=old
             else:
                 target=obj;target.matrix_world=matrix;retained.add(obj);added+=1
-                saved=bank.get(key,{})
+                saved=bank.get(_bank_key(obj),bank.get(key,{}))
                 if preserve_materials and saved.get('kind')==obj.get('furnishPartKind') and len(saved.get('materials',[]))==len(obj.material_slots):
                     for i,name in enumerate(saved['materials']):
                         material=bpy.data.materials.get(name) if name else None
                         if material:obj.material_slots[i].link='OBJECT';obj.material_slots[i].material=material
-            if not preserve_materials:bank.pop(key,None)
-            for property_name in ('furnishObjectId','furnishId','furnishPartKind','layerObject','furnishLegacyName'):
+            if not preserve_materials:bank.pop(_bank_key(obj),None);bank.pop(key,None)
+            for property_name in SYNC_PROPERTIES:
+                if property_name=='furnish_sync_keep_transform':continue
                 if property_name in obj:target[property_name]=obj[property_name]
+                elif property_name in target:del target[property_name]
             if 'furnish_sync_keep_transform' not in target:target['furnish_sync_keep_transform']=False
             # Store every binding on the object. Shared imported mesh slots must not
             # keep a second, unused copy of source materials alive on every update.
@@ -168,19 +260,22 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
             if target.name not in collection.objects:collection.objects.link(target)
             for owner in list(target.users_collection):
                 if owner != collection:owner.objects.unlink(target)
-        for target in collection.all_objects:
-            if target.type=='MESH' and target.get('furnishObjectId'):
+            _checkpoint('updated')
+        for target in [matches.get(obj['furnishObjectId'],obj) for obj in meshes]:
+            if target.type=='MESH':
                 for i in range(len(target.data.materials)):target.data.materials[i]=None
         for key,old in existing.items():
-            if key not in key_set:
+            if old not in used:
                 if preserve_materials:
                     materials=[s.material for s in old.material_slots]
-                    bank[key]={'kind':old.get('furnishPartKind',''),'materials':[m.name if m else None for m in materials]}
+                    bank[_bank_key(old)]={'kind':old.get('furnishPartKind',''),'materials':[m.name if m else None for m in materials],'count':old.get('furnishPartCount')}
                     for material in materials:
                         if material:material.use_fake_user=True
-                data=old.data;bpy.data.objects.remove(old,do_unlink=True)
-                if data.users==0:bpy.data.meshes.remove(data)
+                old_meshes.add(old.data)
+                for owner in list(old.users_collection):owner.objects.unlink(old)
+                removed.append(old)
                 deleted+=1
+        _checkpoint('removed')
         scene.camera=active_camera;scene.world=world
         if first and active_camera is None:
             camera=next((o for o in incoming if o.type=='CAMERA'),None)
@@ -198,25 +293,53 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
             retained.add(render_camera)
         collection['furnishRevision']=manifest['revision']
         collection['furnishMaterialBank']=json.dumps(bank)
+        _checkpoint('metadata')
         bpy.context.view_layer.update()
-        result=dict(added=added,updated=updated,deleted=deleted,adopted=adopted,revision=manifest['revision'])
+        _checkpoint('validated')
+        result=dict(added=added,updated=updated,deleted=deleted,adopted=adopted,matchedByPartKey=semantic_matches,revision=manifest['revision'],cleanupWarnings=cleanup_errors)
         if render_camera:result['renderCamera']=render_camera.name
+        committed=True
         return result
+    except Exception:
+        for obj,value in object_state.items():_restore_object(obj,value)
+        for material,value in fake_users.items():material.use_fake_user=value
+        if collection_properties is not None:
+            for k in list(collection.keys()):del collection[k]
+            for k,v in collection_properties.items():collection[k]=v
+        retained.clear()
+        raise
     finally:
-        if active_camera:scene.camera=active_camera
+        scene.camera=active_camera if active_camera else (scene.camera if committed else None)
         scene.world=world
+        # Import may raise after creating only some objects. Discover its entire
+        # allocation even then; old meshes/objects remain alive until commit.
+        incoming=list(set(bpy.data.objects)-before)
         # Remove temporary imports and only their unused data, never unrelated user data.
         for obj in incoming:
-            if obj not in retained and obj.name in bpy.data.objects:bpy.data.objects.remove(obj,do_unlink=True)
+            if obj not in retained and obj.name in bpy.data.objects:
+                for owner in list(obj.users_collection):owner.objects.unlink(obj)
+                discard(bpy.data.objects,obj)
+        if committed:
+            for obj in removed:discard(bpy.data.objects,obj)
+            for mesh in old_meshes:
+                if mesh.users==0:discard(bpy.data.meshes,mesh)
         for mesh in list(set(bpy.data.meshes)-before_meshes):
-            if mesh.users==0:bpy.data.meshes.remove(mesh)
+            if mesh.users==0:discard(bpy.data.meshes,mesh)
         for blocks,previous in ((bpy.data.cameras,before_cameras),(bpy.data.lights,before_lights)):
             for block in list(set(blocks)-previous):
-                if block.users==0:blocks.remove(block)
+                if block.users==0:discard(blocks,block)
         for mat in list(bpy.data.materials):
-            if mat.get('_furnish_sync_imported') and mat.users==0:bpy.data.materials.remove(mat)
+            if (mat not in before_mats or committed and mat.get('_furnish_sync_imported')) and mat.users==0:discard(bpy.data.materials,mat)
         for image in list(bpy.data.images):
-            if image.get('_furnish_sync_imported') and image.users==0:bpy.data.images.remove(image)
+            if (image not in before_images or committed and image.get('_furnish_sync_imported')) and image.users==0:discard(bpy.data.images,image)
+        for owner in list(set(bpy.data.collections)-before_collections):
+            if not owner.objects and not owner.children:discard(bpy.data.collections,owner)
+        for obj in bpy.context.selected_objects:obj.select_set(False)
+        for name,pointer in selected:
+            obj=bpy.context.view_layer.objects.get(name)
+            if obj and obj.as_pointer()==pointer:obj.select_set(True)
+        active=bpy.context.view_layer.objects.get(active_identity[0]) if active_identity else None
+        bpy.context.view_layer.objects.active=active if active and active.as_pointer()==active_identity[1] else None
 
 
 def send_ack(url,token,revision,state,message):
@@ -239,6 +362,7 @@ def tick():
             try:
                 result=apply_snapshot(scene,pending['path'],manifest,settings.preserve_materials,settings.adopt_legacy)
                 _runtime['revision']=manifest['revision'];settings.status='已同步：新增 {added}／更新 {updated}／删除 {deleted}'.format(**result)
+                if result.get('cleanupWarnings'):settings.status+='；临时数据清理未完成，请检查孤立数据'
                 threading.Thread(target=send_ack,args=(settings.server,settings.token,manifest['revision'],'applied',settings.status),daemon=True).start()
             except Exception as error:
                 settings.status='同步失败，暂停：'+str(error)[:250];_runtime['enabled']=False
