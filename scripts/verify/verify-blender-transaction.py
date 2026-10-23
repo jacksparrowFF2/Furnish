@@ -12,7 +12,7 @@ def glb(file,objects):
     file.write_bytes(struct.pack('<III',0x46546c67,2,28+len(text)+len(binary))+struct.pack('<II',len(text),0x4e4f534a)+text+struct.pack('<II',len(binary),0x004e4942)+binary)
 
 def fingerprint(scene):
-    return dict(objects=sorted((o.name,o.as_pointer(),o.data.as_pointer() if o.data else 0,tuple(round(v,7) for row in o.matrix_world for v in row),tuple(sorted(c.name for c in o.users_collection)),o.hide_get(),o.hide_render,tuple((s.link,s.material.as_pointer() if s.material else 0) for s in o.material_slots) if o.type=='MESH' else (),tuple(sorted((k,str(o[k])) for k in o.keys())),o.select_get()) for o in scene.objects),collections=sorted((c.name,tuple(sorted(o.name for o in c.objects)),tuple(sorted((k,str(c[k])) for k in c.keys()))) for c in bpy.data.collections),meshes=sorted((m.name,m.as_pointer()) for m in bpy.data.meshes),materials=sorted((m.name,m.as_pointer(),m.use_fake_user,m.users) for m in bpy.data.materials),camera=scene.camera.as_pointer() if scene.camera else 0,world=scene.world.as_pointer() if scene.world else 0,active=bpy.context.view_layer.objects.active.name if bpy.context.view_layer.objects.active else None)
+    return dict(transformChannels=sorted((o.name,o.rotation_mode,tuple((k,tuple(getattr(o,k))) for k in ('location','rotation_euler','rotation_quaternion','rotation_axis_angle','scale','delta_location','delta_rotation_euler','delta_rotation_quaternion','delta_scale'))) for o in scene.objects),objects=sorted((o.name,o.as_pointer(),o.data.as_pointer() if o.data else 0,tuple(round(v,7) for row in o.matrix_world for v in row),tuple(sorted(c.name for c in o.users_collection)),o.hide_get(),o.hide_render,tuple((s.link,s.material.as_pointer() if s.material else 0) for s in o.material_slots) if o.type=='MESH' else (),tuple(sorted((k,str(o[k])) for k in o.keys())),o.select_get()) for o in scene.objects),collections=sorted((c.name,tuple(sorted(o.name for o in c.objects)),tuple(sorted((k,str(c[k])) for k in c.keys()))) for c in bpy.data.collections),meshes=sorted((m.name,m.as_pointer()) for m in bpy.data.meshes),materials=sorted((m.name,m.as_pointer(),m.use_fake_user,m.users) for m in bpy.data.materials),camera=scene.camera.as_pointer() if scene.camera else 0,world=scene.world.as_pointer() if scene.world else 0,active=bpy.context.view_layer.objects.active.name if bpy.context.view_layer.objects.active else None)
 
 def main(directory):
     bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -34,9 +34,15 @@ def main(directory):
     shared_material=bpy.data.materials.new('User Shared Mesh Material');unrelated.material_slots[0].link='DATA';unrelated.material_slots[0].material=shared_material
     camera=bpy.data.objects.new('User Camera',bpy.data.cameras.new('User Camera'));scene.collection.objects.link(camera);scene.camera=camera
     scene.world=bpy.data.worlds.new('User World');a.hide_render=True;a.hide_set(True);a['furnish_sync_keep_transform']=True
+    a.rotation_euler=(.31,-.17,1.5707963267948966);a.scale=(-1.2345,.73,2.2)
+    a.delta_location=(.002,-.003,.004);a.delta_rotation_euler=(.011,-.013,.017);a.delta_scale=(1.1,.9,1.02)
+    b.rotation_mode='QUATERNION';b.rotation_quaternion=(.91,.17,-.21,.28);b.rotation_quaternion.normalize();b.scale=(1.3,.7,-1.1)
     b.select_set(True);bpy.context.view_layer.objects.active=b;bpy.context.view_layer.update()
     original=fingerprint(scene);passed=[]
     for fault in ['imported','matched','updated','removed','metadata','validated','partial-import','missing-camera']:
+        if fault=='metadata':
+            b.rotation_mode='AXIS_ANGLE';b.rotation_axis_angle=(.7,.2,.3,.4)
+            bpy.context.view_layer.update();original=fingerprint(scene)
         count=0
         def fail(stage):
             nonlocal count
@@ -77,7 +83,7 @@ def main(directory):
     before=counts()
     for _ in range(3):addon.apply_snapshot(scene,str(second),{**manifest,'revision':'repeat'})
     assert counts()==before,'Repeated update leaked datablocks'
-    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True),indent=2))
+    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True),indent=2))
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--directory',required=True);directory=Path(parser.parse_args(sys.argv[sys.argv.index('--')+1:]).directory)

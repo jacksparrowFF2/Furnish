@@ -1,0 +1,193 @@
+{
+  "passed": true,
+  "date": "2026-10-23",
+  "current": {
+    "planId": "custom_mv37igji",
+    "name": "1601",
+    "furniture": 61,
+    "target": "fmvglvcws1"
+  },
+  "installation": {
+    "passed": true,
+    "blender": "4.5.14 LTS",
+    "scripts": "C:\\Users\\SPH\\AppData\\Roaming\\Blender Foundation\\Blender\\4.5\\scripts",
+    "installed": "C:\\Users\\SPH\\AppData\\Roaming\\Blender Foundation\\Blender\\4.5\\scripts\\addons\\furnish_sync\\__init__.py",
+    "previousSha256": "54ad2a9e8e77b344f5f945a7a98f63117724b60a2303e57543a0ca5ad2309af8",
+    "installedSha256": "4f93127a51ab97552cd5685979807d5724a9428705e7a288e3b8d87014caa33f",
+    "enabled": true,
+    "preferencesSaved": true,
+    "otherAddonsPreserved": true,
+    "backup": "D:\\1601装修\\渲染\\LiveSync更新验证-20261023-iKkG67\\插件再次更新前备份-1792762976085900700",
+    "version": [
+      0,
+      1,
+      1
+    ],
+    "physicalStoreAddon": "C:/Users/SPH/AppData/Local/Packages/BlenderFoundation.Blender4.5LTS_ppwjx1n5r4v9t/LocalCache/Roaming/Blender Foundation/Blender/4.5/scripts/addons/furnish_sync/__init__.py",
+    "physicalStoreSha256": "4f93127a51ab97552cd5685979807d5724a9428705e7a288e3b8d87014caa33f"
+  },
+  "verification": {
+    "passed": true,
+    "installedAddonLoadedAfterRestart": true,
+    "addonVersion": [
+      0,
+      1,
+      1
+    ],
+    "addonFile": "C:\\Users\\SPH\\AppData\\Roaming\\Blender Foundation\\Blender\\4.5\\scripts\\addons\\furnish_sync\\__init__.py",
+    "addonSha256": "4f93127a51ab97552cd5685979807d5724a9428705e7a288e3b8d87014caa33f",
+    "currentPlan": "custom_mv37igji",
+    "furniture": 61,
+    "managedMeshes": 4355,
+    "materialBindingsPreserved": 4355,
+    "failurePhases": [
+      "updated",
+      "removed",
+      "metadata"
+    ],
+    "rollbackStateExactlyRestored": true,
+    "failurePausesReceiving": true,
+    "httpAcksVerified": true,
+    "moveRotateMirrorAndSourceColor": true,
+    "deleteUndoMaterials": true,
+    "originalLayoutRestored": true,
+    "repeatNoLeak": true,
+    "cameraPreserved": "1601固定机位 | 01-客厅",
+    "worldPreserved": "Study | daylight sky",
+    "lightsPreserved": 8,
+    "steps": [
+      {
+        "snapshot": "original",
+        "fault": null,
+        "status": "已同步：新增 0／更新 4355／删除 0",
+        "ack": "applied",
+        "revision": "d83addddd23bb5cd32be505cf257fe941e6110d4e74ddde5443495e4bbe6c723",
+        "seconds": 57.27
+      },
+      {
+        "snapshot": "moved",
+        "fault": "updated",
+        "status": "同步失败，暂停：Verification fault: updated",
+        "ack": "failed",
+        "revision": "43987e20a1ce85ebcb14002af4325cfcc3f4df74e0d2a08d602b40a0dcfb4ef2",
+        "seconds": 66.31
+      },
+      {
+        "snapshot": "deleted",
+        "fault": "removed",
+        "status": "同步失败，暂停：Verification fault: removed",
+        "ack": "failed",
+        "revision": "03e42b8534669a860c54049b4af6f7b8fa4359e07a6256c7aa43711ebde4134b",
+        "seconds": 70.98
+      },
+      {
+        "snapshot": "moved",
+        "fault": "metadata",
+        "status": "同步失败，暂停：Verification fault: metadata",
+        "ack": "failed",
+        "revision": "43987e20a1ce85ebcb14002af4325cfcc3f4df74e0d2a08d602b40a0dcfb4ef2",
+        "seconds": 75.03
+      },
+      {
+        "snapshot": "moved",
+        "fault": null,
+        "status": "已同步：新增 0／更新 4355／删除 0",
+        "ack": "applied",
+        "revision": "43987e20a1ce85ebcb14002af4325cfcc3f4df74e0d2a08d602b40a0dcfb4ef2",
+        "seconds": 74.41
+      },
+      {
+        "snapshot": "deleted",
+        "fault": null,
+        "status": "已同步：新增 0／更新 4306／删除 49",
+        "ack": "applied",
+        "revision": "03e42b8534669a860c54049b4af6f7b8fa4359e07a6256c7aa43711ebde4134b",
+        "seconds": 76.02
+      },
+      {
+        "snapshot": "restored",
+        "fault": null,
+        "status": "已同步：新增 49／更新 4306／删除 0",
+        "ack": "applied",
+        "revision": "54db464cb59bc4e95f8d8d370b6945f2cf94a6ce0e61f324d0853897d09bfb3a",
+        "seconds": 78.11
+      },
+      {
+        "snapshot": "original-restored",
+        "fault": null,
+        "status": "已同步：新增 0／更新 4355／删除 0",
+        "ack": "applied",
+        "revision": "b458cb964d2ebd38a637a8453ec68e9c308943ce4496ec54a70f6fac175a5d02",
+        "seconds": 81.44
+      },
+      {
+        "snapshot": "original-restored",
+        "fault": null,
+        "status": "已同步：新增 0／更新 4355／删除 0",
+        "ack": "applied",
+        "revision": "b458cb964d2ebd38a637a8453ec68e9c308943ce4496ec54a70f6fac175a5d02",
+        "seconds": 80.72
+      }
+    ],
+    "verifiedCopy": "D:\\1601装修\\渲染\\LiveSync更新验证-20261023-iKkG67\\1601-LiveSync验证副本.blend"
+  },
+  "originalBlendUnchanged": true,
+  "originalWorkspaceUnchanged": true,
+  "templateSha256": "794e29bb9409bda434eca663d0625fab11b618a4762e803b9e02db93f72c0075",
+  "workspaceSha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54",
+  "originalBackup": "D:\\1601装修\\渲染\\LiveSync更新验证-20261023-iKkG67\\原精修工程-只读备份.blend",
+  "verifiedCopy": "D:\\1601装修\\渲染\\LiveSync更新验证-20261023-iKkG67\\1601-LiveSync验证副本.blend",
+  "fixFoundDuringValidation": {
+    "issue": "Matrix decomposition during rollback caused up to 5e-7 matrix drift; no translation drift or material loss.",
+    "fix": "Restore exact original location/rotation/scale and delta channels.",
+    "evidence": "首次实测漂移证据/rollback-difference.json"
+  },
+  "scope": "Installed user-profile add-on; actual current 1601 snapshot, HTTP receive/ack, three injected failure phases, no full application regression.",
+  "reopen": {
+    "passed": true,
+    "addonVersion": [
+      0,
+      1,
+      1
+    ],
+    "enabledAfterAnotherRestart": true,
+    "savedCopyMaterialBindings": 4355,
+    "camera": "1601固定机位 | 01-客厅",
+    "world": "Study | daylight sky",
+    "lights": 8,
+    "renderSettingsPreserved": true
+  },
+  "refinementBindingUnchanged": true,
+  "regression": {
+    "passed": true,
+    "failureStages": [
+      "imported",
+      "matched",
+      "updated",
+      "removed",
+      "metadata",
+      "validated",
+      "partial-import",
+      "missing-camera"
+    ],
+    "semanticReorder": true,
+    "duplicateAndCountGuards": true,
+    "objectIdentity": true,
+    "modifiersAndPoseLock": true,
+    "unmanagedSharedMesh": true,
+    "repeatNoLeak": true,
+    "semanticDeleteUndo": true,
+    "exactTransformChannels": true
+  },
+  "nodeChecks": [
+    "PASS live sync: validated identities/origin, immutable revisions, deduplication, token/CSRF, ack, addon ZIP, persistence and token rotation",
+    "PASS refined registration, plan/camera guards, trusted template snapshot, progress and preserved-look report",
+    "PASS Blender GLB validation, world transforms/mirror/camera/ceilings, classic loading, Store launcher lifecycle, API origin/parameters/busy/results/failure/cancel"
+  ],
+  "notRun": [
+    "Application full regression",
+    "Blender forced termination/process-crash recovery",
+    "Other Blender versions or operating systems",
+    "New render image acceptance"
+  ]
+}

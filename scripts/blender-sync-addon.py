@@ -1,5 +1,5 @@
 """Local, one-way Furnish scene synchronization. Networking never calls bpy."""
-bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 0),
+bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 1),
            "blender": (4, 2, 0), "location": "3D View > Sidebar > Furnish", "category": "Import-Export"}
 
 import hashlib
@@ -122,12 +122,20 @@ def _copy_property(value):
 
 def _saved_object(obj):
     return dict(data=obj.data,matrix=obj.matrix_world.copy(),owners=list(obj.users_collection),
+                transform={k:getattr(obj,k).copy() if hasattr(getattr(obj,k),'copy') else tuple(getattr(obj,k)) for k in
+                           ('location','rotation_euler','rotation_quaternion','rotation_axis_angle','scale',
+                            'delta_location','delta_rotation_euler','delta_rotation_quaternion','delta_scale')},
+                rotation_mode=obj.rotation_mode,
                 slots=[(s.link,s.material) for s in obj.material_slots],hidden=obj.hide_get(),render=obj.hide_render,
                 properties={k:_copy_property(obj[k]) for k in SYNC_PROPERTIES if k in obj})
 
 
 def _restore_object(obj,value):
-    obj.data=value['data'];obj.matrix_world=value['matrix']
+    obj.data=value['data']
+    # Reassigning matrix_world decomposes it again; repeated rollback can drift
+    # rotated/mirrored objects. Preserve the original transform channels exactly.
+    obj.rotation_mode=value['rotation_mode']
+    for k,v in value['transform'].items():setattr(obj,k,v)
     for i,(link,material) in enumerate(value['slots']):obj.material_slots[i].link=link;obj.material_slots[i].material=material
     for owner in list(obj.users_collection):
         if owner not in value['owners']:owner.objects.unlink(obj)
@@ -306,6 +314,7 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
         if collection_properties is not None:
             for k in list(collection.keys()):del collection[k]
             for k,v in collection_properties.items():collection[k]=v
+        bpy.context.view_layer.update()
         retained.clear()
         raise
     finally:

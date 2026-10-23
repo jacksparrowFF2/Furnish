@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "addonVersion": [
+    0,
+    1,
+    1
+  ],
+  "enabledAfterAnotherRestart": true,
+  "savedCopyMaterialBindings": 4355,
+  "camera": "1601固定机位 | 01-客厅",
+  "world": "Study | daylight sky",
+  "lights": 8,
+  "renderSettingsPreserved": true
+}

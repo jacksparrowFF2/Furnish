@@ -1,0 +1,3 @@
+PASS live sync: validated identities/origin, immutable revisions, deduplication, token/CSRF, ack, addon ZIP, persistence and token rotation
+PASS refined registration, plan/camera guards, trusted template snapshot, progress and preserved-look report
+PASS Blender GLB validation, world transforms/mirror/camera/ceilings, classic loading, Store launcher lifecycle, API origin/parameters/busy/results/failure/cancel
