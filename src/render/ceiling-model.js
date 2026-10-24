@@ -4,7 +4,7 @@
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
-function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true}={}){
+function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bodies=[]}={}){
  const C=root.FurnishCeiling||require('../core/ceiling-core.js'),group=new THREE.Group();group.name='ceilings';
  const surface=new THREE.MeshStandardMaterial({color:'#f4f1e9',roughness:.95,side:THREE.DoubleSide}),light=new THREE.MeshStandardMaterial({color:'#fff4d8',emissive:'#ffde9e',emissiveIntensity:lamps?1.8:0,roughness:.5});
  let conflictLight=null;const lightMaterial=layout=>{if(!layout.pending.some(m=>m.includes('相交')))return light;if(!conflictLight){conflictLight=light.clone();conflictLight.color.set('#e96842');conflictLight.emissive.set('#e35030');conflictLight.emissiveIntensity=lamps?1:0;}return conflictLight;};
@@ -36,7 +36,9 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true}={}
    for(const plate of syncIdentity.records("ceiling-model.js:generator-2",C.endCaps(c).plates)){const m=syncIdentity.produce("ceiling-model.js:generator-call-3",()=>sweep({...c,path:plate.path},plate.section,surface,'end-cap'));if(m)m.userData.ceiling.end=plate.end;}
    if(c.section.light){const layout=C.lightLayout(c);if(layout.continuous){const material=lightMaterial(layout),m=syncIdentity.produce("ceiling-model.js:generator-call-4",()=>ringSweep(c,C.lightPolygon(c.section.light),layout.continuous.rings,material,'light'));if(m)m.userData.ceiling.mode='arc';}else for(const piece of syncIdentity.records("ceiling-model.js:generator-3",layout.pieces)){const before=group.children.length;syncIdentity.produce("ceiling-model.js:generator-call-5",()=>sweep({...c,path:piece.path},C.lightPolygon(c.section.light),light,'light'));if(group.children.length>before)group.children.at(-1).userData.ceiling.legId=piece.legId;}}
   }else{
-   const g=new THREE.ExtrudeGeometry(shape(c.polygon.map(([x,y])=>[x,-y])),{depth:c.thickness/1000,bevelEnabled:false});g.rotateX(-Math.PI/2);
+   const outline=shape(c.polygon.map(([x,y])=>[x,-y]));
+   for(const h of C.downlightHoles(c,bodies)){const hole=new THREE.Path();hole.absellipse(h.x/1000,-h.y/1000,h.r/1000,h.r/1000,0,Math.PI*2,false,0);outline.holes.push(hole);}
+   const g=new THREE.ExtrudeGeometry(outline,{depth:c.thickness/1000,bevelEnabled:false,curveSegments:32});g.rotateX(-Math.PI/2);
    g.translate(wx(0),c.height/1000,wz(0));if(c.height>=top){g.dispose();continue;}syncIdentity.produce("ceiling-model:site-4",()=>mesh(g,surface,c,'flat'));
   }
  }

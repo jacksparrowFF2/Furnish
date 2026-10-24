@@ -7,7 +7,7 @@
  const labels={leg:'凳腿','seat-apron':'座框','seat-end':'端框','shelf-end':'层架端撑','shoe-rod':'鞋架横杆',cushion:'软包',piping:'包边',strap:'织带','strap-top':'上织带','top-substrate':'木台面','white-stone':'岩板','leg-wing':'弯曲腿板','side-inlay':'桌腿中脊','leg-inner-cleat':'内侧横撑','leg-mount-block':'固定块','leg-fastener':'连接件',shelf:'层板','drawer-front':'抽屉前板','drawer-back':'抽屉背板','drawer-bottom':'抽屉底板','drawer-side':'抽屉侧板','finger-rebate':'指扣','shelf-seam':'拼缝'};
  const rule=f=>(root.FurnishProducts||require('./product-rules.js')).definition(f)?.solidModel;
  const supported=f=>!!f&&!f.obj&&!!rule(f);
- const cache=new Map();
+ const cache=new Map(),worldCache=new Map();
  function parts(f){
   if(!supported(f))return null;
   const r=rule(f),key=JSON.stringify([r,f.type,f.w,f.d,f.h,f.mountHeight,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
@@ -27,8 +27,13 @@
    });
    cache.set(key,records);if(cache.size>32)cache.delete(cache.keys().next().value);
   }
+  // Repeated plan labels, clearances and collisions share immutable world
+  // records. Use the production key plus every world transform input.
+  const worldKey=JSON.stringify([key,f.cx,f.cy,f.rot,f.flip]);
+  if(worldCache.has(worldKey))return worldCache.get(worldKey);
   const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),angle=(f.rot||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
-  return records.map((r,i)=>{const vertices=r.vertices.map(([x,y,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,y,(f.cy||0)+x*s+z*c];});return {...r,vertices,boardKey:'furniture:'+i,p:M.section({vertices,faces:r.faces},null),vertical:{bottom:Math.min(...vertices.map(v=>v[1])),top:Math.max(...vertices.map(v=>v[1])),source:'production-mesh'}};});
+  const result=records.map((r,i)=>{const vertices=r.vertices.map(([x,y,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,y,(f.cy||0)+x*s+z*c];});return {...r,vertices,boardKey:'furniture:'+i,p:M.section({vertices,faces:r.faces},null),vertical:{bottom:Math.min(...vertices.map(v=>v[1])),top:Math.max(...vertices.map(v=>v[1])),source:'production-mesh'}};});
+  worldCache.set(worldKey,result);if(worldCache.size>128)worldCache.delete(worldCache.keys().next().value);return result;
  }
  const api={supported,parts};root.FurnishFurnitureSolids=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

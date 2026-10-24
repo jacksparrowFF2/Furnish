@@ -19,7 +19,8 @@ const LIB = [
     ['block','方块占位体',1000,1000,'#a8b6c4',undefined,products.height({type:'block'})]
   ]},
   {cat:'电器', items:[
-    ['heating_manifold','地暖分水器（路数可调）',950,140,'#c6a258',undefined,products.height({type:'heating_manifold'})],
+    ["downlight_philips_dl269","飞利浦品焕筒灯 DL269",85,85,"#f4f4f0",undefined,45],
+    ['heating_manifold','地暖分水器（路数可调）',products.definition('heating_manifold').manifold.width,products.definition('heating_manifold').manifold.depth,'#c6a258',undefined,products.height({type:'heating_manifold'})],
     ['electrical_box_strong','强电箱（尺寸自定）',300,120,'#eceeea',undefined,400],
     ['electrical_box_weak','弱电箱（尺寸自定）',400,120,'#eceeea',undefined,400],
     ["aquarium_mijia_2pro","米家智能鱼缸 2 Pro",505,292,"#191c20",0,products.height({type:"aquarium_mijia_2pro"})],

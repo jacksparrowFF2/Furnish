@@ -42,6 +42,7 @@ function snapshot(T,{groups,camera,sun,material=o=>o.material,includeCeilings=fa
      add(new T.Mesh(geometry,instanceMats),new T.Matrix4().multiplyMatrices(o.matrixWorld,transform),'/instance:'+i);
     }
    }else{const mesh=o.isInstancedMesh?new T.InstancedMesh(geometry,mats,o.count):new T.Mesh(geometry,mats);if(o.isInstancedMesh){mesh.instanceMatrix=o.instanceMatrix.clone();if(o.instanceColor)mesh.instanceColor=o.instanceColor.clone();}add(mesh,o.matrixWorld);}
+  }else if(o.isSpotLight&&o.intensity>0){const light=new T.SpotLight(o.color,o.intensity,o.distance,o.angle,o.penumbra,2);light.position.setFromMatrixPosition(o.matrixWorld);o.target.updateWorldMatrix(true,false);const target=new T.Vector3().setFromMatrixPosition(o.target.matrixWorld);light.lookAt(target);light.target.position.set(0,0,-1);light.add(light.target);light.name='FurnishDownlight';scene.add(light);
   }else if(o.isPointLight&&o.intensity>0){const light=new T.PointLight(o.color,o.intensity,o.distance,2);light.position.setFromMatrixPosition(o.matrixWorld);light.name='FurnishLamp';scene.add(light);}
   o.children.forEach((child,i)=>visit(child,owner,shown,part+'/'+i,key,ownerNode,roles,sources));
  }

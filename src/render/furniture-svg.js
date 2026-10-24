@@ -152,6 +152,7 @@ const DASH = 'stroke-dasharray="4 3"';
     }
     case 'beanbag': return ec(0,0,w/2,d/2,c) + ec(-w*.04,-d*.06,w*.3,d*.28,shade(c,1.12),'opacity=".9"');
     case 'sidetable': return ec(0,0,w/2,d/2,c) + ec(0,0,w*.12,d*.12,'none','opacity=".5"');
+    case 'downlight_philips_dl269': return `<ellipse rx="${w/2}" ry="${d/2}" fill="${c}" ${ST()}/><ellipse rx="${w*.32}" ry="${d*.32}" fill="#fff5dd" ${ST()}/><path d="M ${-w*.12} 0 H ${w*.12} M 0 ${-d*.12} V ${d*.12}" ${ST()}/>`;
     case 'floorlamp': return `<circle r="${m*.5}" fill="#fff6dd" fill-opacity=".85" ${ST()}/>` + `<circle r="${m*.32}" fill="none" ${ST()} ${DASH}/>` + `<circle r="${m*.07}" fill="${c}" ${ST()}/>`;
     case 'island': return rc(x,y,w,d,c) + ln(x,y+d-250,x+w,y+d-250,DASH);
     case 'barstool': return `<circle r="${m/2}" fill="${c}" ${ST()}/><circle r="${m*.3}" fill="${shade(c,1.15)}" ${ST()}/>`;

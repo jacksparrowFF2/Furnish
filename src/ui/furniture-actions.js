@@ -167,7 +167,7 @@ function pushOut(f,axis){
   for (let n = 0; n < 6; n++){
     const {hw, hh} = aabb(f);
     let worst = null, wa = 1;
-    for (const r of snapRects()){
+    for (const r of snapRects(f)){
       const ix = Math.min(f.cx+hw, r[2]) - Math.max(f.cx-hw, r[0]), iy = Math.min(f.cy+hh, r[3]) - Math.max(f.cy-hh, r[1]);
       if (ix > 1 && iy > 1 && ix*iy > wa){ wa = ix*iy; worst = r; }
     }

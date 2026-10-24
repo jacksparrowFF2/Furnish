@@ -262,7 +262,8 @@
   const surveyPlan=plan;plan=finished(plan);
   const S=root.FurnishSnapping||require('./snapping.js'),G=root.FurnishGeometry||require('./layout-geometry.js'),P=root.FurnishProject||require('./project-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js');
   if(!Array.isArray(selection)||!selection.length||selection.some(id=>!work.furniture.some(f=>f.id===id)))throw Error('物体已不存在，请重新选择');
-  const ids=new Set(expandGroups(work.furniture,selection)),members=work.furniture.filter(f=>ids.has(f.id));
+  const ids=new Set(expandGroups(work.furniture,selection)),members=work.furniture.filter(f=>ids.has(f.id)),serviceMove=members.some(f=>!f.obj&&products().definition(f)?.wallFinishOpening);
+  const placementData=f=>{if(!serviceMove||!f.kitchen)return f;const kitchen={...f.kitchen};delete kitchen.obstacleFit;return {...f,kitchen};};
   if(members.some(f=>f.locked))throw Error('选中物体或组内成员已锁定，请先解锁整组');
   if(!['l','r','t','b'].includes(dir))throw Error('请选择有效方向');
   if(!Number.isFinite(gap)||gap<0||gap>20000)throw Error('目标净距须为 0–20000 mm');
@@ -278,15 +279,17 @@
   const proposed=JSON.parse(JSON.stringify(work.furniture));for(const f of proposed)if(ids.has(f.id)){const next=moved.find(v=>v.id===f.id);Object.assign(f,{cx:next.cx,cy:next.cy,...(next.counterLink?{counterLink:next.counterLink}:{})});}const expected=JSON.parse(JSON.stringify(proposed));
   if(proposed.some(v=>v.kitchen?.autoAvoid))K.normalizeObstacles(proposed,surveyPlan);
   K.normalize(proposed,work.furniture);normalizeLaundryStacks(proposed,work.furniture);
-  if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||!samePlacementData({...v,cx:expected[i].cx,cy:expected[i].cy},expected[i])))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
-  const after=S.directional(moved,{...options,furniture:visibleFurniture?proposed:[]})[dir];
+  if(proposed.length!==expected.length||proposed.some((v,i)=>Math.hypot(v.cx-expected[i].cx,v.cy-expected[i].cy)>1e-6||!samePlacementData(placementData({...v,cx:expected[i].cx,cy:expected[i].cy}),placementData(expected[i]))))throw Error('此次移动会改变厨房或设备配置，请使用常规拖动后重新测量');
+  const destination=serviceMove?finished(P.effectivePlan(surveyPlan,{...work,furniture:proposed})):plan,destinationRects=(destination.walls||[]).map(w=>w.slice(0,4)).concat((destination.wins||[]).map(w=>w.rect));
+  const after=S.directional(moved,{...options,plan:destination,rects:destinationRects,solidWallCount:destination.walls.length,furniture:visibleFurniture?proposed:[]})[dir];
   if(!after||Math.abs(after.distance-gap)>.01||current.moduleBoundary&&after.entity.moduleKey!==current.entity.moduleKey||current.cabinetInterior&&after.entity.boardKey!==current.entity.boardKey)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
   const reference=S.directional(moved,{plan,rotation,rects:current.entity.kind==='wall'?[rects[current.entity.id]]:[],furniture:current.entity.kind==='furniture'?[work.furniture.find(v=>v.id===current.entity.id)]:[]})[dir];
   if(!reference||Math.abs(reference.distance-gap)>.01||current.cabinetInterior&&reference.entity.boardKey!==current.entity.boardKey)throw Error('无法相对原参考实体达到目标净距，请重新选择');
   const parts=members.flatMap(f=>G.bodyParts(f,plan,work.furniture).map(part=>({...part,owner:f,end:part.p.map(p=>[p[0]+dx,p[1]+dy]),swept:translationHull(part.p,dx,dy)}))),overlap=(a,b)=>G.polygonOverlap(a,b,1e-6),rooms=plan.physicalRooms||plan.rooms;
   for(const part of parts){
-   if(!P.fitsInRooms(rooms,part.end)||P.fitsInRooms(rooms,part.p)&&!P.fitsInRooms(rooms,part.swept))throw Error('移动后物体超出房间，或路径穿过房间边界');
-   for(const r of rects){const poly=[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];if(overlap(part.end,poly))throw Error('调整后物体会与墙体或窗边重叠');if(!overlap(part.p,poly)&&overlap(part.swept,poly))throw Error('移动路径被墙体或窗边阻挡');}
+   const endVertical=furnitureVerticalBounds(moved.find(f=>f.id===part.owner.id),destination,proposed),targetRooms=serviceMove?(root.FurnishWallFinish||require('./wall-finish-core.js')).roomsAtHeight(destination,endVertical):rooms;
+   if(!P.fitsInRooms(targetRooms,part.end)||P.fitsInRooms(targetRooms,part.p)&&!P.fitsInRooms(targetRooms,part.swept))throw Error('移动后物体超出房间，或路径穿过房间边界');
+   for(const [wallIndex,r] of (serviceMove?destinationRects:rects).entries()){if(wallIndex<destination.walls.length&&part.vertical&&!G.verticalOverlap(part.owner,null,[part.vertical,(root.FurnishWallFinish||require('./wall-finish-core.js')).vertical(destination.walls[wallIndex],destination)]))continue;const poly=[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];if(overlap(part.end,poly))throw Error('调整后物体会与墙体或窗边重叠');if(!overlap(part.p,poly)&&overlap(part.swept,poly))throw Error('移动路径被墙体或窗边阻挡');}
   }
   for(const other of work.furniture){
    if(ids.has(other.id)||!G.solidForCollision(other))continue;

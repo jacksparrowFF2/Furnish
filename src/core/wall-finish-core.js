@@ -114,10 +114,35 @@ function snapFaces(plan,vertical){
 function tileSections(plan,face){
  return (plan.wallFinish?.solids||[]).filter(s=>s.layers&&s.wallId===face.wallId&&s.side===face.side&&s.normal===face.normal&&s.rawRect[face.axis+2]>face.lo+EPS&&s.rawRect[face.axis]<face.hi-EPS).map(s=>{const p=s.layers.tile,segment=[...face.source.rect];segment[face.axis]=Math.abs(Math.max(face.lo,s.rawRect[face.axis])-s.rawRect[face.axis])<EPS?Math.min(p[2][face.axis],p[3][face.axis]):face.lo;segment[face.axis+2]=Math.abs(Math.min(face.hi,s.rawRect[face.axis+2])-s.rawRect[face.axis+2])<EPS?Math.max(p[2][face.axis],p[3][face.axis]):face.hi;return {segment,bottom:s.bottom,top:s.top};});
 }
+// A rectangular un-tiled service zone; the structural wall is never cut.
+function serviceOpenings(plan,work){
+ const R=root.FurnishProducts||require('./product-rules.js'),items=(work.furniture||[]).filter(f=>f&&!f.obj&&R.definition(f)?.wallFinishOpening==='rectangle'&&!R.modelError(f));
+ if(!items.length)return [];
+ const floorPlan=plan.floorFinish?plan:(root.FurnishFloorFinish||require('./floor-finish-core.js')).derive({...plan,furnitureDatum:work.furnitureDatum,furniture:work.furniture},work),G=root.FurnishGeometry||require('./layout-geometry.js');
+ return items.flatMap(f=>{const base=R.floorBase(floorPlan,f,work.furniture),v=R.vertical(f),a=(f.rot||0)*Math.PI/180;if(!base.known||!v)return [];return [{id:f.id,poly:G.corners(f),front:[-Math.sin(a),Math.cos(a)],bottom:v.bottom+base.z,top:v.top+base.z}];});
+}
+function openingRects(face,openings){
+ return openings.filter(o=>o.front[face.normal]*face.side>EPS&&Math.max(...o.poly.map(p=>p[face.normal]))>face.rect[face.normal]+EPS&&Math.min(...o.poly.map(p=>p[face.normal]))<face.rect[face.normal+2]-EPS).map(o=>({id:o.id,lo:Math.min(...o.poly.map(p=>p[1-face.normal])),hi:Math.max(...o.poly.map(p=>p[1-face.normal])),bottom:o.bottom,top:o.top}));
+}
+function trimServiceSolids(solids,openings){
+ return solids.flatMap(s=>{let pieces=[s];const axis=1-s.normal;
+  for(const cut of openingRects(s,openings).sort((a,b)=>String(a.id).localeCompare(String(b.id))))pieces=pieces.flatMap(b=>{const lo=Math.max(b.rect[axis],cut.lo),hi=Math.min(b.rect[axis+2],cut.hi),bottom=Math.max(b.bottom,cut.bottom),top=Math.min(b.top,cut.top);if(hi-lo<=EPS||top-bottom<=EPS)return [b];
+   return [["before",b.rect[axis],lo,b.bottom,b.top],["after",hi,b.rect[axis+2],b.bottom,b.top],["below",lo,hi,b.bottom,bottom],["above",lo,hi,top,b.top]].filter(([,l,r,b,t])=>r-l>EPS&&t-b>EPS).map(([role,l,r,bottom,top])=>{const rect=[...b.rect];rect[axis]=l;rect[axis+2]=r;return {...b,...(b.partId?{partId:b.partId+"/service:"+JSON.stringify([cut.id,role])}:{}),rect,bottom,top};});
+  });return pieces;
+ });
+}
+function trimServiceSections(sections,face,openings,zero,dir,thickness){
+ const rect=[...face.source.rect],n=face.normal;rect[n]=Math.min(face.position,face.position+face.side*Math.max(thickness,.01));rect[n+2]=Math.max(face.position,face.position+face.side*Math.max(thickness,.01));
+ let pieces=sections;
+ for(const cut of openingRects({...face,rect},openings)){
+  const a=(cut.lo-zero)*dir,b=(cut.hi-zero)*dir,lo=Math.min(a,b),hi=Math.max(a,b);
+  pieces=pieces.flatMap(([l,b,r,t])=>{const x=Math.max(l,lo),X=Math.min(r,hi),y=Math.max(b,cut.bottom),Y=Math.min(t,cut.top);if(X-x<=EPS||Y-y<=EPS)return [[l,b,r,t]];return [[l,b,x,t],[X,b,r,t],[x,b,X,y],[x,Y,X,t]].filter(([l,b,r,t])=>r-l>EPS&&t-b>EPS);});
+ }return pieces;
+}
 function derive(plan,work){
  validate(work.wallFinishes);
  if(!has(work))return plan;
- const key=JSON.stringify([plan.walls,plan.wallRefs,plan.finishWallIds,plan.rooms,plan.physicalRooms,plan.customDraft?.walls,plan.customDraft?.scale,plan.doors,plan.wins,plan.slides,plan.ceilingHeight,work.wallFinishes]);
+ const openings=serviceOpenings(plan,work),key=JSON.stringify([plan.walls,plan.wallRefs,plan.finishWallIds,plan.rooms,plan.physicalRooms,plan.customDraft?.walls,plan.customDraft?.scale,plan.doors,plan.wins,plan.slides,plan.ceilingHeight,work.wallFinishes,openings]);
  if(lastDerivation?.key===key)return {...plan,wallFinish:clone(lastDerivation.data)};
  const available=faces(plan),records=work.wallFinishes?.surfaces||[];let solids=[],bands=[];const pending=[],Z=zones();
  for(const [index,s] of records.entries()){
@@ -140,7 +165,7 @@ function derive(plan,work){
    for(const [section,s]of faceSections(plan,f,height).entries())add(s.segment,s.bottom,s.top,section);
   }
  }
- solids=joined(solids);bands=joined(bands);
+ solids=joined(trimServiceSolids(solids,openings));bands=joined(bands);
  const clip=rooms=>(rooms||[]).map(room=>{
   if(room.counted===false)return room;
   const xs=room.poly.map(p=>p[0]),ys=room.poly.map(p=>p[1]),box=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
@@ -150,14 +175,30 @@ function derive(plan,work){
   const pieces=Z.decompose([...rings,...polys],p=>Z.inside(p,room.poly)&&!polys.some(poly=>Z.inside(p,poly))),geometry=Z.outline(pieces);
   return {...room,...geometry,surveyPoly:room.poly};
  });
- const data={solids,bands,pending,rooms:clip(plan.rooms),physicalRooms:clip(plan.physicalRooms||plan.rooms),signature:JSON.stringify(records)};
+ const data={solids,bands,pending,rooms:clip(plan.rooms),physicalRooms:clip(plan.physicalRooms||plan.rooms),...(openings.length?{serviceOpenings:openings}:{}),signature:JSON.stringify(openings.length?[records,openings]:records)};
  lastDerivation={key,data:clone(data)};
  return {...plan,wallFinish:data};
 }
 function spatial(plan){
  if(!plan.wallFinish||plan.finishSpatial)return plan;
  const data=plan.wallFinish;
- return {...plan,finishSpatial:true,walls:[...plan.walls,...data.solids.map(s=>[...s.rect,'finish',{vertical:{bottom:s.bottom,top:s.top},index:s.index}])],rooms:data.rooms,physicalRooms:data.physicalRooms};
+ return {...plan,finishSpatial:true,finishSurveyRooms:plan.rooms,walls:[...plan.walls,...data.solids.map(s=>[...s.rect,'finish',{vertical:{bottom:s.bottom,top:s.top},index:s.index,normal:s.normal,side:s.side}])],rooms:data.rooms,physicalRooms:data.physicalRooms};
+}
+// Rear-mounted service equipment uses the structural face as its zero datum,
+// including before it reaches the wall and creates the actual finish opening.
+function measurementWallRelevant(w,f,vertical){
+ const v=w[5]?.vertical;if(v&&vertical&&finite(vertical.bottom)&&finite(vertical.top)&&Math.min(v.top,vertical.top)-Math.max(v.bottom,vertical.bottom)<=EPS)return false;
+ const data=w[5],R=root.FurnishProducts||require('./product-rules.js');
+ if(w[4]!=='finish'||f.obj||!R.definition(f)?.wallFinishOpening||!Number.isInteger(data?.normal)||!vertical||!finite(vertical.bottom)||!finite(vertical.top))return true;
+ const a=(f.rot||0)*Math.PI/180,front=[-Math.sin(a),Math.cos(a)],n=data.normal,center=n===0?f.cx:f.cy,face=w[n+(data.side===1?2:0)];
+ return !(front[n]*data.side>EPS&&(center-face)*data.side>=-EPS);
+}
+// Floor-area bands remain conservative; furniture boundaries use actual layers
+// over the furniture's complete height where a service opening exists.
+function roomsAtHeight(plan,vertical){
+ if(!plan.wallFinish?.serviceOpenings?.length||!vertical||!finite(vertical.bottom)||!finite(vertical.top))return plan.rooms;
+ const Z=zones(),solids=plan.wallFinish.solids.filter(s=>Math.min(vertical.top,s.top)-Math.max(vertical.bottom,s.bottom)>EPS),rooms=plan.finishSurveyRooms||plan.rooms;
+ return rooms.map(room=>{const rings=room.rings||[room.poly],polys=solids.map(s=>s.poly||rectPoly(s.rect));if(!polys.length)return room;const pieces=Z.decompose([...rings,...polys],p=>Z.inside(p,room.poly)&&!polys.some(poly=>Z.inside(p,poly)));return {...room,...Z.outline(pieces)};});
 }
 function onlyFinishChange(before,after){if(JSON.stringify(before.wallFinishes)===JSON.stringify(after.wallFinishes))return false;const a={...before},b={...after};delete a.wallFinishes;delete b.wallFinishes;return JSON.stringify(a)===JSON.stringify(b);}
 function has(work){return !!work?.wallFinishes?.surfaces?.length;}
@@ -175,6 +216,6 @@ function remapBuiltin(work,before,after,shift){
  }
  work.wallFinishes={version:1,surfaces:mapped};validate(work.wallFinishes);
 }
-const api={joined,tileSections,snapFaces,rules,validate,sources,faces,same,edit,editFields,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
+const api={measurementWallRelevant,serviceOpenings,trimServiceSections,roomsAtHeight,joined,tileSections,snapFaces,rules,validate,sources,faces,same,edit,editFields,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishWallFinish=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

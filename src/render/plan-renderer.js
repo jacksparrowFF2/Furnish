@@ -2,7 +2,7 @@ function measurementReferenceName(m){
  if(!m)return tr('该方向无实体','No entity in this direction');
  const name=m.entity.kind==='wall'?(m.wallPriority?tr('紧邻实体墙','Adjoining solid wall'):tr('墙面／窗边','Wall / window')):m.entity.kind==='window'?tr('窗边','Window edge'):(typeof nm==='function'?nm(m.entity.name):m.entity.name);
  const pendingThickness=state.wallFinishes?.surfaces.some(s=>s.tileThickness===undefined||s.bondThickness===undefined);
- return name+(state.wallFinishes&&m.entity.kind==='wall'?(pendingThickness?tr(' · 完成面厚度待定',' · Finish thickness pending'):tr(' · 完成面',' · Finished face')):'')+(m.cabinetInterior?tr(' · 实际板件：',' · Board: ')+tr(m.entity.boardName,m.entity.boardName):m.containedBoundary?tr(' · 包络内边距',' · Enclosing boundary'):m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
+ return name+(state.wallFinishes&&m.entity.kind==='wall'?(m.entity.wallDatum==='survey'?tr(' · 毛坯墙面',' · Structural wall face'):pendingThickness?tr(' · 完成面厚度待定',' · Finish thickness pending'):tr(' · 完成面',' · Finished face')):'')+(m.cabinetInterior?tr(' · 实际板件：',' · Board: ')+tr(m.entity.boardName,m.entity.boardName):m.containedBoundary?tr(' · 包络内边距',' · Enclosing boundary'):m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
 }
 function measurementDirectionLabel(dir,m){
  const labels={l:tr('左','Left'),r:tr('右','Right'),t:tr('上','Up'),b:tr('下','Down')};
@@ -99,7 +99,7 @@ function renderRooms(){
 
 // Floor rugs and translucent pendants retain their layers; separated height
 // ranges and tucked seats are drawn bottom to top where footprints overlap.
-const drawOrder = () => {const valid=renderableFurniture(),ids=new Set(valid.map(f=>f.id));return [...FurnishDesign.planFurnitureOrder(valid,FurnishProject.effectivePlan(PLAN,state)),...state.furniture.filter(f=>!ids.has(f.id))];};
+const drawOrder = () => {const valid=renderableFurniture(),ids=new Set(valid.map(f=>f.id));return [...FurnishDesign.planFurnitureOrder(valid,canvasEffectivePlan()),...state.furniture.filter(f=>!ids.has(f.id))];};
 // Drag feedback is derived from the current pointer operation, never saved.
 function syncTuckedSeatPreview(){
  const moving=new Set(typeof drag!=='undefined'&&drag?.kind==='move'&&drag.moved?drag.ids:[]),seats=state.furniture.filter(f=>moving.has(f.id)),G=globalThis.FurnishGeometry;
@@ -244,7 +244,9 @@ function withCanvasPlan(draw){
 }
 function canvasEffectivePlan(){
  if(canvasPlanScope?.plan)return canvasPlanScope.plan;
- const key=JSON.stringify([state.architecture?null:PLAN,state.architecture,state.rooms,state.demolished,state.open,state.ceilingHeight,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings]);
+ // effectivePlan also carries the live furniture array for dependent devices
+ // and finished-floor datums. Undo/import can replace that array entirely.
+ const key=JSON.stringify([PLAN,state.architecture,state.rooms,state.demolished,state.open,state.ceilingHeight,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout,state.furnitureDatum,state.furniture]);
  if(canvasPlanCache?.key!==key)canvasPlanCache={key,plan:FurnishProject.effectivePlan(PLAN,state)};
  if(canvasPlanScope)canvasPlanScope.plan=canvasPlanCache.plan;
  return canvasPlanCache.plan;

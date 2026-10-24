@@ -4,8 +4,8 @@ const plan={id:'p',name:'厨房测试',rooms:[{id:'r',name:'厨房',mat:'tile',p
 const config={version:1,shape:'straight',depth:600,counterDepth:630,baseHeight:820,thickness:20,autoAvoid:true,modules:[{run:0,width:600,role:'door'},{run:0,width:600,role:'drawer'}]};
 const near=(a,b)=>assert(Math.abs(a-b)<1e-5,`${a} != ${b}`);
 function host(extra={}){return K.configure({id:'k',name:'厨房',type:'counter',cx:3000,cy:3000,rot:0,color:'#eee',...extra},config);}
-function manifold(f,{y=-230,d=140,h=500,mountHeight=0}={}){const [cx,cy]=K.world(f,0,y);return {id:'m',type:'heating_manifold',name:'分水器',w:950,d,h,cx,cy,rot:f.rot,flip:f.flip,color:'#c6a258',...R.initial({type:'heating_manifold'}),mountHeight};}
-assert.equal(R.height({type:'heating_manifold'}),500);
+function manifold(f,{y=-230,d=140,h=500,mountHeight=0}={}){const [cx,cy]=K.world(f,0,y);return {id:'m',type:'heating_manifold',name:'分水器',w:950,d,h,cx,cy,rot:f.rot,flip:f.flip,color:'#c6a258',...R.initial({type:'heating_manifold',w:950}),mountHeight};}
+assert.equal(R.height({type:'heating_manifold'}),600);
 assert.equal(R.height({type:'heating_manifold',h:900}),900,'explicit existing height survives');
 for(const rot of [0,37,90,270])for(const flip of [false,true])for(const basket of [false,true]){
  const f=host({rot,flip});if(basket)f.kitchen.modules[1].drawerStyle='dish-basket';

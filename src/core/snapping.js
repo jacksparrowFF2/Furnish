@@ -349,12 +349,14 @@
     const transform=e=>({...e,edges:e.edges.map(g=>({a:rotate(g.a),b:rotate(g.b)}))});
     const members=Array.isArray(f)?f:[f],sources=entities({furniture:members});if(!sources.length||sources.length!==members.length)return out;
     const ids=new Set(members.map(v=>v.id)),transformedSources=sources.map(transform);
+    const sourceBounds=new Map(transformedSources.map(source=>{const points=source.edges.flatMap(e=>[e.a,e.b]);return [source,{x0:Math.min(...points.map(p=>p.x)),x1:Math.max(...points.map(p=>p.x)),y0:Math.min(...points.map(p=>p.y)),y1:Math.max(...points.map(p=>p.y))}];}));
     const products=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),surfaceSource=members.length===1&&(products?.definition(members[0])?.measureSurfaceBoundary||members[0].counterLink&&products?.definition(members[0])?.linkedSurfaceOffset)&&!members[0].obj?members[0]:null;
     const cabinets=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
     const design=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),verticals=members.map(member=>design.furnitureVerticalBounds(member,options.plan,options.furniture));
     const fitsHoodBay=(a,b)=>products.hoodInstallation(b)&&cabinets.hoodBayFit(a,b)?.fits||products.hoodInstallation(a)&&cabinets.hoodBayFit(b,a)?.fits;
     const K=surfaceSource&&(root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null)),furnitureById=new Map((options.furniture||[]).map(v=>[v.id,v])),host=K&&K.support(surfaceSource,options.furniture||[]),region=host&&K.measurementSurface(surfaceSource,host),cell=region&&{rings:region.rings.map(r=>r.map(p=>K.world(host,...p)))};
     if(cell)cell.edges=edges(cell.rings);
+    const finishes=root.FurnishWallFinish||(typeof require==='function'?require('./wall-finish-core.js'):null),walls=options.plan?finishes.spatial(options.plan).walls:[];
     const at=(edge,key,cross,value)=>edge.a[key]+(value-edge.a[cross])*(edge.b[key]-edge.a[key])/(edge.b[cross]-edge.a[cross]);
     const section=(entity,key,cross,value)=>entity.edges.filter(e=>value>Math.min(e.a[cross],e.b[cross])&&value<Math.max(e.a[cross],e.b[cross])).sort((a,b)=>at(a,key,cross,value)-at(b,key,cross,value));
     for(const entity of entities(options)){
@@ -370,8 +372,16 @@
       for(let originalTarget of targets){
       // Only members sharing the target's height can define its measuring edge.
       // Unknown heights stay conservative; walls still use every member.
-      const eligible=transformedSources.filter((_,i)=>(originalTarget.sourceIndex===undefined||originalTarget.sourceIndex===i)&&(!targetFurniture||(moduleTarget||geometry.verticalOverlap(members[i],targetFurniture,[verticals[i],originalTarget.vertical]))&&!fitsHoodBay(members[i],targetFurniture)));
+      const wall=entity.kind==='wall'&&entity.id<(options.solidWallCount??(options.rects||[]).length)&&walls[entity.id]?.slice(0,4).every((v,i)=>Math.abs(v-options.rects[entity.id][i])<1e-6)?walls[entity.id]:null;
+      const eligible=transformedSources.filter((_,i)=>(!wall||finishes.measurementWallRelevant(wall,members[i],verticals[i]))&&(originalTarget.sourceIndex===undefined||originalTarget.sourceIndex===i)&&(!targetFurniture||(moduleTarget||geometry.verticalOverlap(members[i],targetFurniture,[verticals[i],originalTarget.vertical]))&&!fitsHoodBay(members[i],targetFurniture)));
       if(!eligible.length)continue;
+      // A directional ray requires positive overlap on its cross axis. Reject
+      // diagonal parts using their full production projection before clipping
+      // expensive mesh sections. This is conservative for groups and holes.
+      const projected=originalTarget.rings.flatMap(r=>r.map(([x,y])=>rotate({x,y}))),boxes=eligible.map(e=>sourceBounds.get(e));
+      const overlapX=Math.min(Math.max(...boxes.map(b=>b.x1)),Math.max(...projected.map(p=>p.x)))-Math.max(Math.min(...boxes.map(b=>b.x0)),Math.min(...projected.map(p=>p.x)));
+      const overlapY=Math.min(Math.max(...boxes.map(b=>b.y1)),Math.max(...projected.map(p=>p.y)))-Math.max(Math.min(...boxes.map(b=>b.y0)),Math.min(...projected.map(p=>p.y)));
+      if(overlapX<1e-7&&overlapY<1e-7)continue;
       if(originalTarget.actualBoard){
         const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),ranges=verticals.filter((_,i)=>eligible.includes(transformedSources[i])),range=ranges.every(Boolean)?{bottom:Math.min(...ranges.map(r=>r.bottom)),top:Math.max(...ranges.map(r=>r.top))}:null,p=M.section(originalTarget,range);
         if(p.length<3)continue;originalTarget={...originalTarget,rings:[p],edges:edges([p])};
@@ -398,7 +408,7 @@
             if(sign*(at(far,key,cross,mid)-at(edge,key,cross,mid))<-1e-7)continue; // Entirely behind the outward silhouette.
             for(const value of [mid,low,high]){
               const start=at(edge,key,cross,value),end=at(near,key,cross,value),gap=Math.max(0,sign*(end-start));
-              const result={a:unrotate({[key]:start,[cross]:value}),b:unrotate({[key]:start+sign*gap,[cross]:value}),distance:gap,entity:{kind:target.kind,id:target.id,name:target.name,...(target.actualBoard?{boardKey:target.boardKey,boardName:target.boardName}:{}),...(surfaceBoundary&&region.moduleKey?{moduleKey:region.moduleKey,moduleIndex:region.moduleIndex}:{})},...(target.actualBoard?{cabinetInterior:true}:{}),...(surfaceBoundary?{surfaceBoundary:true,...(region.moduleKey?{moduleBoundary:true}:{})}:{}),...(containedBoundary?{containedBoundary:true}:{}),...(wallPriority?{wallPriority:true}:{})};
+              const result={a:unrotate({[key]:start,[cross]:value}),b:unrotate({[key]:start+sign*gap,[cross]:value}),distance:gap,entity:{kind:target.kind,id:target.id,name:target.name,...(wall?{wallDatum:wall[4]==='finish'?'finished':'survey'}:{}),...(target.actualBoard?{boardKey:target.boardKey,boardName:target.boardName}:{}),...(surfaceBoundary&&region.moduleKey?{moduleKey:region.moduleKey,moduleIndex:region.moduleIndex}:{})},...(target.actualBoard?{cabinetInterior:true}:{}),...(surfaceBoundary?{surfaceBoundary:true,...(region.moduleKey?{moduleBoundary:true}:{})}:{}),...(containedBoundary?{containedBoundary:true}:{}),...(wallPriority?{wallPriority:true}:{})};
               if(!out[dir]||gap<out[dir].distance-1e-7)out[dir]=result;
               if(wallPriority&&(!preferredWalls[dir]||gap<preferredWalls[dir].distance-1e-7))preferredWalls[dir]=result;
             }

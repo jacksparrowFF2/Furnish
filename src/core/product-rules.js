@@ -5,6 +5,8 @@ const numeric=(min,max,message)=>({min,max,message});
 const pegboardAssembly={parts:['upper','left','right','lower','displayShelves','hooks','light'],accessoryParts:['displayShelves','hooks','light'],legacyParts:['accessories'],structureParts:['upper','left','right','lower'],thickness:18,hatch:{modes:['manual','auto'],margin:20,min:50,gap:2,angle:100,defaultWidth:400,defaultHeight:300,fitPadding:10,padding:{sides:['top','bottom','left','right'],min:0,max:100},maxRearGap:500,alignmentDegrees:1},holes:{diameter:9,minDiameter:2,maxDiameter:30,margin:30,pitch:40,maxCount:3000,maxAxis:200,minWeb:2},bottom:{min:0,max:20000}};
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ downlightWatts:{values:[5,7],message:"筒灯功率须为5W或7W"},
+ downlightKelvin:{values:[3000,4000,6500],message:"筒灯色温须为3000K、4000K或6500K"},
  manifoldLengths:{custom:true,message:'上下排主管长度须分别为 55–10000 mm'},
  manifoldLoops:{...numeric(1,12,'分水器路数须为 1–12 的整数'),integer:true},
  pipeBoxShape:{values:['four','three','two'],message:'包管柜结构须为四面、三面或直角两面'},
@@ -47,7 +49,8 @@ const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
 const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'folding-table'},family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
 const types={
- heating_manifold:{rearService:true,solidModel:{global:'FurnishManifoldModel',module:'manifold'},family:'heating-manifold',height:500,anchor:'bottom',defaults:{mountHeight:0,manifoldLoops:5},fields:['mountHeight','manifoldLoops','manifoldLengths'],create:['mountHeight','manifoldLoops','manifoldLengths'],manifold:{pitch:50,endWidth:150,minLeft:100,minRun:55,maxLeft:10000,minHeight:400,minDepth:80}},
+ downlight_philips_dl269:{family:"downlight",height:45,anchor:"bottom",defaults:{mountHeight:2500,downlightWatts:5,downlightKelvin:4000},fields:["mountHeight","downlightWatts","downlightKelvin"],create:["mountHeight","downlightWatts","downlightKelvin"],planShape:{exponent:1,segments:64},downlight:{diameter:85,rim:2,cutout:76.5,cutoutMin:75,cutoutMax:78,lumens:380,kelvin:4000,watts:5,beam:100,flux:{5:{3000:360,4000:380,6500:380},7:{3000:480,4000:500,6500:500}},colors:{3000:"#ffb16e",4000:"#ffd1a3",6500:"#fffafe"}},identity:{brand:"飞利浦/PHILIPS",model:"品焕 DL269"}},
+ heating_manifold:{wallFinishOpening:'rectangle',rearService:true,solidModel:{global:'FurnishManifoldModel',module:'manifold'},family:'heating-manifold',height:600,anchor:'bottom',defaults:{mountHeight:0,manifoldLoops:5},fields:['mountHeight','manifoldLoops','manifoldLengths'],create:['mountHeight','manifoldLoops','manifoldLengths'],manifold:{width:800,depth:180,pitch:50,endWidth:150,minLeft:100,minRun:55,maxLeft:10000,minHeight:400,minDepth:80}},
  electrical_box_strong:{...electricalBox},electrical_box_weak:{...electricalBox},
  bench_yeswood_oak:{solidModel:{global:'FurnishShoeBenchModel',module:'shoe-bench'},family:'shoe-bench',height:450,envelope:()=>[0,450],identity:{brand:'源氏木语/YESWOOD',model:'橡木软包换鞋凳 · 80cm'}},
  coffeetable_yeswood_cherry:{solidModel:{global:'FurnishCherryCoffeeTableModel',module:'cherry-coffee-table'},family:'coffee-table',height:450,envelope:()=>[0,450],identity:{brand:'源氏木语/YESWOOD',model:'樱桃木茶几 · 1.2米白色岩板面'}},
@@ -180,11 +183,23 @@ const sinkBodyDepth=f=>f.sinkBowlHeight??definition(f).notch.bodyDepth;
 const vesselSink=f=>f?.type==='ksink'&&!f.obj&&value(f,'sinkStyle')==='vessel';
 // Report broken model records without migrating, deleting or rewriting them.
 function modelError(f){try{validate(f);if(f.cabinet)(root.FurnishCabinet||require('./cabinet-core.js')).validate(f);return null;}catch(e){return e.message||String(e);}}
+function downlightSpec(f){
+ const spec=!f?.obj&&definition(f)?.downlight;if(!spec)return null;
+ const watts=value(f,'downlightWatts'),kelvin=value(f,'downlightKelvin');validateField(f,'downlightWatts',watts);validateField(f,'downlightKelvin',kelvin);
+ return {watts,kelvin,lumens:spec.flux[watts][kelvin],color:spec.colors[kelvin],beam:spec.beam};
+}
+function editDownlight(f,key,v){
+ if(!definition(f)?.downlight||!['downlightWatts','downlightKelvin'].includes(key)||f.obj)throw Error('不支持的筒灯参数');
+ validateField(f,key,v);const next={...f,[key]:v};
+ if(next.name==='飞利浦品焕筒灯 DL269 · 5W 4000K')next.name='飞利浦品焕筒灯 DL269';
+ if(next.model==='品焕 DL269 · 5W 4000K')next.model=definition(f).identity.model;
+ return next;
+}
 function initial(f){
  const result={};for(const key of definition(f)?.create||[]){
   if(key==='kitchen'&&f.type==='kitchenwall'&&(!Number.isFinite(f.w)||!Number.isFinite(f.d)))continue;
   if(key==='manifoldLengths'){
-   const r=definition(f).manifold,upper=f.w===undefined?600:f.w-r.endWidth-(value(f,'manifoldLoops')-1)*r.pitch;
+   const r=definition(f).manifold,upper=(f.w??r.width)-r.endWidth-(value(f,'manifoldLoops')-1)*r.pitch;
    result[key]={...(f.manifoldLengths??{upper,lower:Math.min(330,upper)})};
   }else result[key]=key==='kitchen'?kitchen().defaults(f):value(f,key);
  }
@@ -344,7 +359,7 @@ function replacement(previous,next,candidate){
   const retain=retainReplacementField(previous,next,key);
   if(!retain)delete next[key];
  }
- if(definition(next)?.manifold||family(next,'floor-aircon')||family(next,'tea-bar')||family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
+ if(definition(next)?.downlight||definition(next)?.manifold||family(next,'floor-aircon')||family(next,'tea-bar')||family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
  if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
  if(next.type==='ksink'){customSinkCandidate(next,candidate);validate(next);}
@@ -360,6 +375,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,snapPi
  corner:{maxLegs:2,angle:90,lightSetback:0,lightRadius:8,compactInnerRadius:1,arcChordError:.05,arcMaxAngle:3,arcMaxSegments:1024},
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2}};
-const api={manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

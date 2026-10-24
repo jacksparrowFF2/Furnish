@@ -159,7 +159,7 @@
             <button class="btn chip on" id="wall-tile-numbers" data-t="wallNumbers" title="显示或隐藏墙面编号，点击编号可编辑铺贴" data-en-title="Show wall face numbers; click a number to edit tiling" data-en="Wall numbers">墙面编号</button>
             <button class="btn chip on" data-t="clearances" title="显示或隐藏家电安装预留框、检查结果及无数据提示" data-en-title="Show appliance installation clearances, checks and missing data" data-en="Clearance checks">预留检查</button>
             <button class="btn chip on" data-t="labels" data-en="Labels">房间名</button>
-            <button class="btn chip on" data-t="lamps" title="显示或隐藏自动顶灯，保留夜景照明" data-en-title="Show or hide automatic ceiling lamps while keeping night lighting" data-en="Ceiling lamps">顶灯</button>
+            <button class="btn chip on" data-t="lamps" title="显示或隐藏顶灯与筒灯，保留夜景照明" data-en-title="Show or hide ceiling lamps and downlights while keeping night lighting" data-en="Ceiling lamps">顶灯</button>
             <button class="btn chip" data-t="night" data-en="Night">夜景</button>
           </div>
           <label class="range"><span data-en="Sun">日照</span> <input type="range" id="sun" min="7" max="18" step=".25" value="10"><span id="sunT">10:00</span></label>
@@ -336,6 +336,7 @@
 <script src="src/core/ceiling-core.js"></script>
 <script src="src/core/navigation-input.js"></script>
 <script src="src/render/ceiling-model.js"></script>
+<script src="src/render/downlight-model.js"></script>
 <script src="src/render/model-primitives.js"></script>
 <script src="src/render/basic-furniture-model.js"></script>
 <script src="src/render/appliance-model.js"></script>
@@ -711,6 +712,7 @@ function buildFurniture(f){
 const syncIdentity=FurnishPartIdentity;
 
   if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(FurnishDownlightModel.supported(f)){const model=FurnishDownlightModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   const furniture=typeof state!=='undefined'?state.furniture.filter(item=>typeof furnitureError!=='function'||!furnitureError(item)):[];
   if(f.obj?.positions?.length){
     const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(f.obj.positions,3));geo.computeVertexNormals();geo.computeBoundingBox();const b=geo.boundingBox,size=new THREE.Vector3();b.getSize(size);geo.translate(-(b.min.x+b.max.x)/2,-b.min.y,-(b.min.z+b.max.z)/2);const mesh=syncIdentity.produce("index:site-1",()=>new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:f.color||'#d9d2c5',roughness:.75,side:THREE.DoubleSide})));mesh.scale.set(f.w/1000/size.x,(f.h||800)/1000/size.y,f.d/1000/size.z);mesh.castShadow=true;mesh.receiveShadow=true;const g=new THREE.Group();g.add(mesh);g.userData.fid=f.id;g.position.set(wx(f.cx),0,wz(f.cy));g.rotation.y=-f.rot*Math.PI/180;return g;
@@ -1206,7 +1208,7 @@ const syncIdentity=FurnishPartIdentity;
   },(item,slot)=>item.id||"plan-slot:"+slot);
   archUp.add(FurnishWallFinishModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
   if(finishPlan.wallTiling)archUp.add(FurnishWallTilingModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
-  if(finishPlan.ceilings)archUp.add(FurnishCeilingModel.build(THREE,finishPlan.ceilings,{wx,wz,top:opt.cut===2.8?Infinity:top*1000,lamps:opt.lamps}));
+  if(finishPlan.ceilings)archUp.add(FurnishCeilingModel.build(THREE,finishPlan.ceilings,{wx,wz,top:opt.cut===2.8?Infinity:top*1000,lamps:opt.lamps,bodies:state.furniture.filter(f=>!furnitureError(f)).map(f=>({f,vertical:FurnishDesign.furnitureVerticalBounds(f,finishPlan,state.furniture)}))}));
   for(const s of finishPlan.wallFinish?.solids||[])if(s.bottom===0)colliders.push([wx(s.rect[0]),wz(s.rect[1]),wx(s.rect[2]),wz(s.rect[3])]);
   // 门洞、窗洞上方过梁（门窗矩形即洞口，head 默认 2.4m）
   syncIdentity.each("index.html:generator-46",[...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])],([r, h]) => { if (top > h) syncIdentity.produce("index.html:generator-call-15",()=>wallBox(r, h, top)); });
@@ -1266,7 +1268,7 @@ function buildFurn(){
     try{
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
-    const sig = JSON.stringify([base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       o.position.set(wx(f.cx),FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
@@ -1284,6 +1286,7 @@ function buildFurn(){
   }
   furnG.children.slice().forEach(o => { if (!keep.has(o.userData.fid)){ clearGroup(o); furnG.remove(o); } });
   furnG.visible = opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting(); selKey = null; applyGrow();
+  FurnishDownlightModel.setLights(furnG,opt.lamps);
   syncModelErrors();
 }
 
@@ -1336,7 +1339,7 @@ function sync(force){
   if(opt.mode==='walk')opt.cut=2.8;
   const north=JSON.stringify(state.drawing?.northAngle??null);
   if(changed||force||sigNorth!==north){sigNorth=north;syncCutBtns();document.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!opt[b.dataset.t]));$('#sun').value=opt.hour;furnG.visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();showLabels(opt.labels&&opt.mode==='orbit'&&!anim);applyLight();}
-  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout,typeof FurnishElectricalBox==='undefined'?[]:FurnishElectricalBox.cuts(FurnishProject.effectivePlan(PLAN,state),state.furniture)]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes,state.floorFinishes,state.furnitureDatum]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes,state.floorFinishes,state.wallTiling]);
+  const a = JSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.furniture.filter(f=>FurnishDesign.products().definition(f)?.downlight&&!f.obj).map(f=>[f.id,f.cx,f.cy,f.w,f.d,f.h,f.mountHeight]),state.furnitureDatum,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout,typeof FurnishWallFinish==='undefined'?[]:FurnishWallFinish.serviceOpenings(PLAN,state),typeof FurnishElectricalBox==='undefined'?[]:FurnishElectricalBox.cuts(FurnishProject.effectivePlan(PLAN,state),state.furniture)]), f = JSON.stringify([state.furniture.map(({price,referencePrice,priceDate,purchaseStatus,purchaseNote,sourceUrl,...shape})=>shape),PLAN.markers,state.rooms,H,globalThis.FurnishWorkflowTools?.styleId(),state.wallFinishes,state.floorFinishes,state.furnitureDatum]), l = JSON.stringify([state.rooms, opt.cut,H,PLAN.beams,state.wallFinishes,state.floorFinishes,state.wallTiling]);
   if(force||a!==sigArch||f!==sigFurn){buildHeaterClearances();clearSceneIssue();selKey=null;}
   if (force || a !== sigArch){ sigArch = a; buildArch(); invalidate(true); }
   if (force || f !== sigFurn){ sigFurn = f; buildFurn(); invalidate(true); }
@@ -1358,6 +1361,7 @@ function applyGrow(){
 
 /* ======================= 日照 / 夜景 ======================= */
 function applyLight(){
+  FurnishDownlightModel.setLights(furnG,opt.lamps);
   lampG.children.forEach(o => { if (o.isMesh) o.visible = opt.lamps && o.userData.cutVisible; });
   const t = (opt.hour - 6) / 12, az = Math.PI * (.15 + t*.7), el = Math.sin(Math.PI*t) * 1.05 + .15, warm = 1 - Math.sin(Math.PI*t);
   const horizontal=globalThis.FurnishDrawing?FurnishDrawing.sun([Math.cos(az)*18,-Math.sin(az)*10+8],state.drawing):[Math.cos(az)*18,-Math.sin(az)*10+8];

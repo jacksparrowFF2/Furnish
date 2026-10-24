@@ -10,6 +10,9 @@ function displayBounds(){return globalThis.FurnishDrawing?FurnishDrawing.bounds(
 function syncDrawingTransform(){const rotation=drawingRotation();for(const g of svg.children)if(g.tagName.toLowerCase()==='g'&&g.id!=='gCompass')g.setAttribute('transform',`rotate(${rotation})`);window.FurnishDrawingUI?.syncCompass();}
 function queueView(){ if (!viewRaf) viewRaf = requestAnimationFrame(() => { viewRaf = 0; applyView(); }); }
 function applyView(){
+  return withCanvasPlan(applyCanvasView);
+}
+function applyCanvasView(){
   if (viewRaf){ cancelAnimationFrame(viewRaf); viewRaf = 0; }
   const W = svg.clientWidth, H = svg.clientHeight;
   svg.setAttribute('viewBox', `${view.x0} ${view.y0} ${W/view.s} ${H/view.s}`);
@@ -53,10 +56,11 @@ function toMM(e){
 
 /* ======================= 吸附适配 ======================= */
 function snapMove(f,cx,cy,skip,disabled=false,axis,anchor){
-  const finishPlan=state.wallFinishes?FurnishProject.effectivePlan(PLAN,state):null,vertical=finishPlan?FurnishDesign.furnitureVerticalBounds(f,finishPlan,state.furniture):null;
+  const service=!f.obj&&FurnishProducts.definition(f)?.wallFinishOpening,target=service?{...f,cx,cy}:null,work=service?{...state,furniture:[...state.furniture.filter(o=>o.id!==f.id),target]}:state;
+  const finishPlan=state.wallFinishes?(service?FurnishProject.effectivePlan(PLAN,work):canvasEffectivePlan()):null,vertical=finishPlan?FurnishDesign.furnitureVerticalBounds(target||f,finishPlan,work.furniture):null;
   const result=FurnishSnapping.move(f,cx,cy,{finishFaces:finishPlan?FurnishWallFinish.snapFaces(finishPlan,vertical):[],grid:ui.grid,scale:view.s,
     wallSnap:ui.layers.wallSnap,guides:ui.layers.guides,
-    rects:ui.layers.wallSnap?snapRects():[],furniture:ui.layers.furn?state.furniture:[],skip,
+    rects:ui.layers.wallSnap?snapRects(target):[],furniture:ui.layers.furn?state.furniture:[],skip,
     moving:skip?state.furniture.filter(o=>skip.has(o.id)):[f],disabled,axis,anchor});
   ui.guides=result.guides;return result.position;
 }
@@ -64,8 +68,16 @@ function snapPoint(p,shift){
   const result=FurnishSnapping.measurePoint(p,{scale:view.s,...measurementScene(),anchor:shift?ui.mA:null});
   ui.mSnap=result.edge?{point:result.point,edge:result.edge,kind:result.kind}:null;return result.point;
 }
-function measurementScene(){const rects=snapRects();return {plan:FurnishProject.effectivePlan(PLAN,state),rects,solidWallCount:rects.length-WINS.length,furniture:ui.layers.furn?state.furniture:[]};}
-function directionalMeasurements(f=selItems()){return FurnishSnapping.directional(f,{...measurementScene(),rotation:drawingRotation()});}
+function measurementScene(){const plan=canvasEffectivePlan(),rects=snapRects(null,plan);return {plan,rects,solidWallCount:rects.length-WINS.length,furniture:ui.layers.furn?state.furniture:[]};}
+let directionalMeasurementCache=null;
+function directionalMeasurements(f=selItems()){
+  // Include the full work, selected values and temporary opening geometry:
+  // moving a neighbour, opening a door or restoring data must never reuse gaps.
+  // View translation/scale do not change millimetre distances.
+  const members=Array.isArray(f)?f:[f],rotation=drawingRotation(),key=JSON.stringify([PLAN,state,WALLS,WINS,members,ui.layers.furn,rotation]);
+  if(directionalMeasurementCache?.key!==key)directionalMeasurementCache={key,value:FurnishSnapping.directional(members,{...measurementScene(),rotation})};
+  return directionalMeasurementCache.value;
+}
 function editKitchenDivider(key,side='left'){
  const items=selItems();if(items.length!==1)return;const f=items[0],K=FurnishKitchen;if(furnitureLocked(f)||!f.kitchen)return;
  const h=K.dividerHandles(f).find(h=>h.key===key);if(!h)return;

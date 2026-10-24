@@ -179,7 +179,7 @@ const getF = id => state.furniture.find(f => f.id === id);
 const {area,perim,bbox,aabb,inPoly,corners,obbOverlap,groupBox} = FurnishGeometry;
 const fmt = (n, d=2) => n.toFixed(d);
 const norm = a => ((Math.round(a) % 360) + 360) % 360;
-const snapRects = () => {if(!state.wallFinishes)return WALLS.filter((w,i)=>!state.demolished.includes('w'+i)).map(w=>w.slice(0,4)).concat(WINS.map(w=>w.rect));const p=FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,state));return p.walls.map(w=>w.slice(0,4)).concat(p.wins.map(w=>w.rect));};
+const snapRects = (target,plan) => {if(target&&!target.obj&&FurnishProducts.definition(target)?.wallFinishOpening){const furniture=[...state.furniture.filter(f=>f.id!==target.id),target],p=FurnishWallFinish.spatial(FurnishProject.effectivePlan(PLAN,{...state,furniture})),v=FurnishDesign.furnitureVerticalBounds(target,p,furniture);return p.walls.filter(w=>!w[5]||FurnishGeometry.verticalOverlap(target,null,[v,FurnishWallFinish.vertical(w,p)])).map(w=>w.slice(0,4)).concat(p.wins.map(w=>w.rect));}if(!state.wallFinishes)return WALLS.filter((w,i)=>!state.demolished.includes('w'+i)).map(w=>w.slice(0,4)).concat(WINS.map(w=>w.rect));const p=FurnishWallFinish.spatial(plan||canvasEffectivePlan());return p.walls.map(w=>w.slice(0,4)).concat(p.wins.map(w=>w.rect));};
 
 /* ======================= 家具几何：房间归属 / 旋转矩形碰撞 ======================= */
 const roomAt = (x, y) => ROOMS.find(r => inPoly(x, y, r.poly)) || null;
@@ -188,11 +188,16 @@ const wallBox = () => { const xs = WALLS.flatMap(w => [w[0], w[2]]), ys = WALLS.
 const isOutside = f => { const [x0,y0,x1,y1] = wallBox(); return f.cx < x0 || f.cx > x1 || f.cy < y0 || f.cy > y1; };
 const furnitureRenderErrors = new Map();
 function furnitureError(f){return FurnishProducts.modelError(f)||furnitureRenderErrors.get(f.id)||null;}
+// This validation reads only f (bodyParts has no scene arguments here). Keep
+// successful validations by value; in-place edits and restored objects recheck.
+const renderableFurnitureCache=new WeakMap();
 function renderableFurniture(){return state.furniture.filter(f=>{
-  if(furnitureError(f))return false;
-  try{FurnishGeometry.bodyParts(f);return true;}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));return false;}
+  if(furnitureRenderErrors.has(f.id))return false;
+  const key=JSON.stringify(f);if(renderableFurnitureCache.get(f)===key)return true;
+  if(FurnishProducts.modelError(f))return false;
+  try{FurnishGeometry.bodyParts(f);renderableFurnitureCache.set(f,key);return true;}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));return false;}
 });}
-function collisions(){return FurnishGeometry.collisions(renderableFurniture(),FurnishProject.effectivePlan(PLAN,state));}
+function collisions(){return FurnishGeometry.collisions(renderableFurniture(),canvasEffectivePlan());}
 
 /* ======================= 颜色 / 材质图案 ======================= */
 const shade = FurnishFurnitureSVG.shade;

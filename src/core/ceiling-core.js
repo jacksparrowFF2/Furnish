@@ -210,11 +210,41 @@ function derive(plan,work){if(!work.ceilings)return plan;const data=resolve(work
  }}return {...plan,ceilings:data};}
 function onlyChange(a,b){const strip=v=>{const c=clone(v);delete c.ceilings;return JSON.stringify(c);};return strip(a)===strip(b);}
 function intersection(subject,boundary){let out=subject,sign=area(boundary)>0?1:-1;for(let i=0;i<boundary.length&&out.length;i++){const a=boundary[i],b=boundary[(i+1)%boundary.length],L=distance(a,b);out=clip(out,a,[-(b[1]-a[1])*sign/L,(b[0]-a[0])*sign/L],0);}return out;}
+// Derived holes only: a standard lamp rim must meet the actual flat bottom.
+function downlightHoles(c,bodies){
+ if(c.kind!=='flat')return [];
+ const P=root.FurnishProducts||require('./product-rules.js'),seen=new Set(),holes=[];
+ for(const {f,vertical} of bodies){
+  if(seen.has(f.id))continue;seen.add(f.id);const spec=!f.obj&&P.definition(f)?.downlight;
+  if(!spec||!vertical||Math.abs(f.w-spec.diameter)>eps()||Math.abs(f.d-spec.diameter)>eps()||Math.abs(P.height(f)-P.definition(f).height)>eps()||Math.abs(vertical.bottom+spec.rim-c.height)>eps())continue;
+  const r=spec.cutout/2,center=[f.cx,f.cy];if(!inside(center,c.polygon,false))continue;
+  const edgeDistance=(a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((center[0]-a[0])*dx+(center[1]-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(center[0]-a[0]-t*dx,center[1]-a[1]-t*dy);};
+  // Keep the whole trim supported, not just the hole centre.
+  if(c.polygon.some((a,i)=>edgeDistance(a,c.polygon[(i+1)%c.polygon.length])<spec.diameter/2-eps()))continue;
+  holes.push({id:f.id,x:f.cx,y:f.cy,r});
+ }
+ return holes.filter(h=>!holes.some(o=>o!==h&&Math.hypot(o.x-h.x,o.y-h.y)<o.r+h.r-eps()));
+}
+function fitDownlight(plan,f,furniture=[]){
+ const P=root.FurnishProducts||require('./product-rules.js'),spec=P.definition(f)?.downlight;
+ if(!spec||f.obj)fail('当前对象不支持筒灯安装');
+ const base=P.floorBase(plan,f,furniture),choices=[];
+ if(!base.known)fail('家具基准地面标高未知，请先核对');
+ for(const c of plan.ceilings?.items||[]){
+  const bottom=c.height-spec.rim,mountHeight=bottom-base.z;
+  if(mountHeight<0||mountHeight>20000)continue;
+  if(downlightHoles(c,[{f,vertical:{bottom,top:bottom+P.height(f)}}]).length)choices.push(mountHeight);
+ }
+ if(choices.length!==1)fail(choices.length?'所在位置有多个平顶，请手动填写安装高度':'当前位置没有可完整容纳标准筒灯的平顶');
+ return choices[0];
+}
 function checks(plan,bodies){
  const out=(plan.ceilings?.pending||[]).map(p=>({kind:'ceiling',id:p.id,ceilingId:p.id,name:'吊顶',pending:true,message:p.message}));
+ const apertures=new Map((plan.ceilings?.items||[]).map(c=>[c.id,downlightHoles(c,bodies)]));
  for(const c of plan.ceilings?.items||[])for(const {f,p,vertical} of bodies){
   let hit=false;
   if(c.kind==='flat'){
+   if(apertures.get(c.id).some(h=>h.id===f.id))continue;
    const overlap=intersection(c.polygon,p);if(overlap.length<3||Math.abs(area(overlap))<=eps()**2)continue;
    hit=!vertical||Math.min(vertical.top,c.height+c.thickness)-Math.max(vertical.bottom,c.height)>eps();
   }else{
@@ -234,6 +264,6 @@ function shift(work,offset){if(!work.ceilings)return;for(const c of work.ceiling
 function requiresV6(work){return !!work?.ceilings?.items.some(c=>c.kind==='profile'&&(c.path?.segments||c.section?.light?.cornerSetback!==undefined)||c.attachment?.legs);}
 function requiresV7(work){return !!work?.ceilings?.items.some(c=>c.section?.light?.corner!==undefined);}
 function requiresV8(work){return !!work?.ceilings?.items.some(c=>c.ends!==undefined);}
-const api={rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+const api={fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

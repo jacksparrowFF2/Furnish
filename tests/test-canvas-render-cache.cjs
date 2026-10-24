@@ -8,19 +8,21 @@ vm.createContext(context);vm.runInContext(source,context);
 const run=()=>vm.runInContext('renderDims()',context);
 run();const original=html;run();assert.equal(derives,1);assert.equal(dimensions,1);assert.equal(writes,1);
 context.view.x0=100;run();assert.equal(writes,1,'pan must reuse dimension DOM');
-context.state.furniture.push({cx:100,price:50});run();assert.equal(derives,1,'furniture edits do not change the architectural derivation');
+context.state.furniture.push({cx:100,price:50});run();assert.equal(derives,2,'effectivePlan includes furniture for dependent devices');assert.equal(dimensions,1,'furniture edits still reuse dimension chains');
 context.view.s=.02;run();assert.equal(dimensions,1,'zoom reuses the dimension chains');assert.equal(writes,2);
 context.PAL.dim='#f00';run();assert(html.includes('#f00'));assert.equal(dimensions,1);
 context.state.drawing={rotation:90};run();assert.equal(dimensions,2);assert.notEqual(html,original);
-plan.walls[0][2]=6500;run();assert.equal(derives,2);assert.equal(dimensions,3,'in-place architecture edits invalidate');
+plan.walls[0][2]=6500;run();assert.equal(derives,3);assert.equal(dimensions,3,'in-place architecture edits invalidate');
 // Every work input consumed by effectivePlan must invalidate even on the same object.
-for(const field of ['architecture','rooms','demolished','open','ceilingHeight','wallFinishes','floorFinishes','wallTiling','ceilings']){
+for(const field of ['architecture','rooms','demolished','open','ceilingHeight','wallFinishes','floorFinishes','wallTiling','ceilings','tileGrout','furnitureDatum']){
  const before=derives;context.state[field]={probe:1};run();assert.equal(derives,before+1,field);context.state[field].probe=2;run();assert.equal(derives,before+2,field+' in place');delete context.state[field];run();
 }
+const beforeFurniture=derives;context.state.furniture[0].cx=200;run();assert.equal(derives,beforeFurniture+1,'in-place furniture edit invalidates');
+context.state.furniture=JSON.parse(JSON.stringify(context.state.furniture));context.state.furniture[0].cx=300;run();assert.equal(derives,beforeFurniture+2,'restored furniture invalidates');
 // Restoring an earlier value (undo/import) must not reuse the later geometry.
 plan.walls[0][2]=6000;context.state.rooms={};context.state.drawing=undefined;context.PAL.dim='#777';context.view.s=.1;run();assert.equal(html,original);
 html='external alteration';run();assert.equal(html,original,'repair replaced DOM');
 vm.runInContext("withCanvasPlan(()=>{canvasEffectivePlan();withCanvasPlan(()=>canvasEffectivePlan());})",context);
 assert.throws(()=>vm.runInContext("withCanvasPlan(()=>{canvasEffectivePlan();throw Error('draw failed');})",context),/draw failed/);
 const beforeFailure=derives;context.state.ceilingHeight=3000;run();assert.equal(derives,beforeFailure+1,'a failed render must release its scoped plan');
-console.log('PASS canvas cache: value-based architecture/finish invalidation, furniture exclusion, pan reuse, zoom/theme/rotation, undo and DOM replacement');
+console.log('PASS canvas cache: architecture/finish/furniture/datum/grout invalidation, dimension-chain reuse, pan, zoom/theme/rotation, undo and DOM replacement');
