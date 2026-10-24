@@ -1,9 +1,10 @@
 """Local, one-way Furnish scene synchronization. Networking never calls bpy."""
-bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 1),
+bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 2),
            "blender": (4, 2, 0), "location": "3D View > Sidebar > Furnish", "category": "Import-Export"}
 
 import hashlib
 import copy
+from array import array
 import json
 import shutil
 import tempfile
@@ -66,7 +67,7 @@ def fetch_snapshot(url, token, revision):
     if not latest or latest.get('revision') == revision:
         return None
     digest = latest.get('revision', '')
-    if len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest) or latest.get('protocol') != 1 or not 0 < latest.get('bytes', 0) <= MAX_BYTES:
+    if len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest) or latest.get('protocol') not in (1,2) or not 0 < latest.get('bytes', 0) <= MAX_BYTES:
         raise ValueError('同步版本信息无效')
     directory = Path(tempfile.mkdtemp(prefix='furnish-sync-'))
     try:
@@ -87,7 +88,7 @@ def fetch_snapshot(url, token, revision):
         raise
 
 
-SYNC_PROPERTIES = ('furnishObjectId','furnishId','furnishPartKind','layerObject','furnishLegacyName','furnishPartKey','furnishPartCount','furnishPartAmbiguous','furnish_sync_keep_transform')
+SYNC_PROPERTIES = ('furnishObjectId','furnishId','furnishPartKind','layerObject','furnishLegacyName','furnishPartKey','furnishPartCount','furnishPartAmbiguous','furnishPartVersion','furnish_sync_keep_transform')
 
 
 def _checkpoint(stage):
@@ -100,12 +101,31 @@ def _import_snapshot(filepath):
 
 def _part_identity(obj):
     key=obj.get('furnishPartKey')
-    if key is None:return None
+    if key is None:
+        if obj.get('furnishPartVersion')==2:raise ValueError('新版部件缺少身份，已保留原工程')
+        return None
     scope=obj.get('furnishId') or obj.get('layerObject') or ''
     count=obj.get('furnishPartCount')
     if not isinstance(key,str) or not key or not isinstance(scope,str) or type(count) is not int or count<1:
         raise ValueError('部件身份或同类数量无效，已保留原工程')
     return (scope,key)
+
+
+def _same_source_geometry(old, incoming):
+    # One-time v1 -> v2 adoption requires matching imported local topology/coordinates.
+    a,b=old.data,incoming.data
+    if (old.get('furnishId')!=incoming.get('furnishId') or
+        old.get('layerObject')!=incoming.get('layerObject') or
+        old.get('furnishPartKind')!=incoming.get('furnishPartKind') or
+        len(old.material_slots)!=len(incoming.material_slots) or
+        len(a.vertices)!=len(b.vertices) or len(a.polygons)!=len(b.polygons) or len(a.loops)!=len(b.loops)):
+        return False
+    def values(collection,field,width,kind):
+        result=array(kind,[0])*(len(collection)*width);collection.foreach_get(field,result);return result
+    x=values(a.vertices,'co',3,'f');y=values(b.vertices,'co',3,'f')
+    if x!=y and any(abs(i-j)>=1e-7 for i,j in zip(x,y)):return False
+    return all(values(left,field,1,'i')==values(right,field,1,'i') for left,right,field in
+               [(a.loops,b.loops,'vertex_index'),(a.polygons,b.polygons,'loop_start'),(a.polygons,b.polygons,'loop_total')])
 
 
 def _bank_key(obj):
@@ -188,13 +208,15 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
         keys = [o.get('furnishObjectId') for o in meshes];key_set=set(keys)
         if not meshes or any(not isinstance(k,str) or not k for k in keys) or len(set(keys)) != len(keys):
             raise ValueError('导入实体缺少唯一标识；请使用 Furnish 的持续同步推送')
+        if any(o.get('furnishPartVersion')==2 for o in existing.values()) and any(o.get('furnishPartVersion')!=2 for o in meshes):
+            raise ValueError('工程已升级新版部件身份，拒绝退回旧路径快照；原工程已保留')
         semantic={};incoming_semantic=set()
         for old in existing.values():
             identity=_part_identity(old)
             if identity:
                 if identity in semantic:raise ValueError('Blender 中有重复部件身份，请先处理复制或歧义对象')
                 semantic[identity]=old
-        matches={};used=set();semantic_matches=0
+        matches={};used=set();semantic_matches=0;migrated_parts=0
         for obj in meshes:
             identity=_part_identity(obj)
             if identity:
@@ -207,13 +229,21 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
                 semantic_matches+=1
             else:
                 candidate=existing.get(obj['furnishObjectId'])
-                if candidate and _part_identity(candidate) and _part_identity(candidate)!=identity:candidate=None
+                if candidate and obj.get('furnishPartVersion')==2 and candidate.get('furnishPartVersion',1)<2:
+                    if preserve_materials and not _same_source_geometry(candidate,obj):
+                        raise ValueError('旧部件几何已变化，无法安全升级标识；请先用原结构同步，原工程已保留')
+                    migrated_parts+=1
+                elif candidate and _part_identity(candidate) and _part_identity(candidate)!=identity:candidate=None
             saved_part=bank.get(_bank_key(obj),{})
             if preserve_materials and not candidate and saved_part.get('count') is not None and saved_part['count']!=obj.get('furnishPartCount'):
                 raise ValueError('已删除部件的同类数量已变化，无法可靠恢复材质')
             if candidate:
                 if candidate in used:raise ValueError('部件匹配不唯一，已保留原工程')
                 used.add(candidate);matches[obj['furnishObjectId']]=candidate
+        if preserve_materials and any(o.get('furnishPartVersion')==2 for o in meshes):
+            incoming_scopes={o.get('furnishId') or o.get('layerObject') or '' for o in meshes}
+            if any(o not in used and o.get('furnishPartVersion',1)<2 and (o.get('furnishId') or o.get('layerObject') or '') in incoming_scopes for o in existing.values()):
+                raise ValueError('旧工程有未匹配部件，请先用原结构完成标识升级；原工程已保留')
         # Check all candidates before modifying existing objects.
         if first and adopt_legacy:
             used=set()
@@ -304,7 +334,7 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
         _checkpoint('metadata')
         bpy.context.view_layer.update()
         _checkpoint('validated')
-        result=dict(added=added,updated=updated,deleted=deleted,adopted=adopted,matchedByPartKey=semantic_matches,revision=manifest['revision'],cleanupWarnings=cleanup_errors)
+        result=dict(added=added,updated=updated,deleted=deleted,adopted=adopted,matchedByPartKey=semantic_matches,migratedPartKeys=migrated_parts,revision=manifest['revision'],cleanupWarnings=cleanup_errors)
         if render_camera:result['renderCamera']=render_camera.name
         committed=True
         return result

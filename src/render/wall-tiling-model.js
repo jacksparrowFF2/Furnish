@@ -1,6 +1,9 @@
 /* Surface-only patterns: physical thickness remains owned by wall-finish-model. */
 (function(root){
 'use strict';
+// Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
+const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+
 function uv(THREE,geometry,layout,[u0,bottom,u1,height]){
  const F=root.FurnishFloorFinish||require('../core/floor-finish-core.js'),out=[];
  for(const point of [[u0,bottom],[u1,bottom],[u1,height],[u0,bottom],[u1,height],[u0,height]]){const q=F.transform(layout,point,true);out.push(q[0]/(layout.width+layout.gap),q[1]/(layout.height+layout.gap));}
@@ -18,7 +21,7 @@ function build(THREE,plan,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity}={}){
    const local=[[u0,bottom],[u1,bottom],[u1,height],[u0,bottom],[u1,height],[u0,height]],positions=[];
    for(const [u,z] of local){const point=[0,0];point[e.axis]=e.zero+e.dir*u;point[e.normal]=e.position+e.face.side*.2;positions.push(wx(point[0]),z/1000,wz(point[1]));}
    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));uv(THREE,geometry,layout,[u0,bottom,u1,height]);geometry.computeVertexNormals();
-   const material=materials.get(key),mesh=new THREE.Mesh(geometry,material);mesh.receiveShadow=true;if(!owners.has(material)){mesh.userData.wallTilingOwnMaterial=true;owners.add(material);}mesh.userData.wallTiling={...e.face,rect:[u0,bottom,u1,height],originZ:e.originZ,position:e.position,...(e.band?{band:e.band.id}:{}),...(e.bandJoint?{bandJoint:true}:{})};group.add(mesh);
+   const material=materials.get(key),mesh=syncPart(new THREE.Mesh(geometry,material),"wall-tiling-model:site-1");mesh.receiveShadow=true;if(!owners.has(material)){mesh.userData.wallTilingOwnMaterial=true;owners.add(material);}mesh.userData.wallTiling={...e.face,rect:[u0,bottom,u1,height],originZ:e.originZ,position:e.position,...(e.band?{band:e.band.id}:{}),...(e.bandJoint?{bandJoint:true}:{})};group.add(mesh);
   }
  }
  return group;

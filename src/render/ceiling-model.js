@@ -1,19 +1,22 @@
 /* The editor preview and the main scene use this same production constructor. */
 (function(root){
 'use strict';
+// Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
+const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+
 function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true}={}){
  const C=root.FurnishCeiling||require('../core/ceiling-core.js'),group=new THREE.Group();group.name='ceilings';
  const surface=new THREE.MeshStandardMaterial({color:'#f4f1e9',roughness:.95,side:THREE.DoubleSide}),light=new THREE.MeshStandardMaterial({color:'#fff4d8',emissive:'#ffde9e',emissiveIntensity:lamps?1.8:0,roughness:.5});
  let conflictLight=null;const lightMaterial=layout=>{if(!layout.pending.some(m=>m.includes('相交')))return light;if(!conflictLight){conflictLight=light.clone();conflictLight.color.set('#e96842');conflictLight.emissive.set('#e35030');conflictLight.emissiveIntensity=lamps?1:0;}return conflictLight;};
  const shape=p=>{const s=new THREE.Shape();p.forEach(([x,y],i)=>s[i?'lineTo':'moveTo'](x/1000,y/1000));s.closePath();return s;};
- function mesh(geometry,material,c,part){const m=new THREE.Mesh(geometry,material);m.userData.ceiling={id:c.id,part};m.userData.ceilingOwnMaterial=true;m.castShadow=part!=='light';m.receiveShadow=true;group.add(m);return m;}
+ function mesh(geometry,material,c,part){const m=syncPart(new THREE.Mesh(geometry,material),"ceiling-model:site-1");m.userData.ceiling={id:c.id,part};m.userData.ceilingOwnMaterial=true;m.castShadow=part!=='light';m.receiveShadow=true;group.add(m);return m;}
  function sweep(c,p,material,part){
   const L=Math.hypot(c.path.b[0]-c.path.a[0],c.path.b[1]-c.path.a[1]),t=c.path.b.map((v,i)=>(v-c.path.a[i])/L),n=c.path.normal;
   const g=new THREE.ExtrudeGeometry(shape(p.map(([u,d])=>[u,-d])),{depth:L/1000,bevelEnabled:false,steps:1});
   const matrix=new THREE.Matrix4().set(n[0],0,t[0],wx(c.path.a[0]),0,1,0,c.height/1000,n[1],0,t[1],wz(c.path.a[1]),0,0,0,1);g.applyMatrix4(matrix);
   // Inward normals can make this basis a reflection; preserve outward winding.
   if(matrix.determinant()<0){const a=g.attributes.position.array;for(const name of ['position','normal','uv']){const attr=g.attributes[name];if(!attr)continue;for(let i=0;i<a.length/3;i+=3)for(let k=0;k<attr.itemSize;k++){const j=(i+1)*attr.itemSize+k,l=(i+2)*attr.itemSize+k,tmp=attr.array[j];attr.array[j]=attr.array[l];attr.array[l]=tmp;}attr.needsUpdate=true;}}
-  g.computeBoundingBox();if(g.boundingBox.min.y*1000>=top){g.dispose();return;}return mesh(g,material,c,part);
+  g.computeBoundingBox();if(g.boundingBox.min.y*1000>=top){g.dispose();return;}return syncPart(mesh(g,material,c,part),"ceiling-model:site-2");
  }
  function ringSweep(c,p,rings,material,part){
   // Shared rings have no internal caps. This represents both the mitered cove
@@ -25,7 +28,7 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true}={}
   let volume=0;for(let i=0;i<indices.length;i+=3){const a=indices[i]*3,b=indices[i+1]*3,d=indices[i+2]*3;volume+=positions[a]*(positions[b+1]*positions[d+2]-positions[b+2]*positions[d+1])+positions[a+1]*(positions[b+2]*positions[d]-positions[b]*positions[d+2])+positions[a+2]*(positions[b]*positions[d+1]-positions[b+1]*positions[d]);}
   if(volume<0)for(let i=0;i<indices.length;i+=3)[indices[i+1],indices[i+2]]=[indices[i+2],indices[i+1]];
   const indexed=new THREE.BufferGeometry();indexed.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));indexed.setIndex(indices);const g=indexed.toNonIndexed();indexed.dispose();g.computeVertexNormals();g.computeBoundingBox();
-  if(g.boundingBox.min.y*1000>=top){g.dispose();return;}return mesh(g,material,c,part);
+  if(g.boundingBox.min.y*1000>=top){g.dispose();return;}return syncPart(mesh(g,material,c,part),"ceiling-model:site-3");
  }
  for(const c of data?.items||[]){
   if(c.kind==='profile'){
@@ -34,7 +37,7 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true}={}
    if(c.section.light){const layout=C.lightLayout(c);if(layout.continuous){const material=lightMaterial(layout),m=ringSweep(c,C.lightPolygon(c.section.light),layout.continuous.rings,material,'light');if(m)m.userData.ceiling.mode='arc';}else for(const piece of layout.pieces){const before=group.children.length;sweep({...c,path:piece.path},C.lightPolygon(c.section.light),light,'light');if(group.children.length>before)group.children.at(-1).userData.ceiling.legId=piece.legId;}}
   }else{
    const g=new THREE.ExtrudeGeometry(shape(c.polygon.map(([x,y])=>[x,-y])),{depth:c.thickness/1000,bevelEnabled:false});g.rotateX(-Math.PI/2);
-   g.translate(wx(0),c.height/1000,wz(0));if(c.height>=top){g.dispose();continue;}mesh(g,surface,c,'flat');
+   g.translate(wx(0),c.height/1000,wz(0));if(c.height>=top){g.dispose();continue;}syncPart(mesh(g,surface,c,'flat'),"ceiling-model:site-4");
   }
  }
  if(!group.children.some(m=>m.material===surface))surface.dispose();if(!group.children.some(m=>m.material===light))light.dispose();if(conflictLight&&!group.children.some(m=>m.material===conflictLight))conflictLight.dispose();return group;

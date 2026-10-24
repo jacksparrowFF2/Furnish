@@ -1,6 +1,9 @@
 /* YESWOOD cherry / pear-white sofa. Shared production and preview geometry, metres. */
 (function(root){
 'use strict';
+// Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
+const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+
 const type='sofa_yeswood_cherry',spec=[2160,892,895];
 function build(THREE,f,RoundedBoxGeometry,materials={}){
  const g=new THREE.Group();
@@ -11,8 +14,8 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
  cloth.bumpMap=texture(64,(x,y)=>Math.round(120+40*Math.sin(x*Math.PI/2)*Math.sin(y*Math.PI/2)+12*Math.sin(x*17+y*23)));cloth.bumpMap.repeat.set(35,22);cloth.bumpScale=.0006;
  wood.map=texture(128,(x,y)=>Math.round(223+12*Math.sin(y*.32+3*Math.sin(x*.032))+7*Math.sin(y*1.7+Math.sin(x*.085))));wood.map.colorSpace=THREE.SRGBColorSpace;
  const seam=new THREE.MeshStandardMaterial({color:f.color||'#eee9df',roughness:1});
- function add(geo,material,x,y,z){const mesh=new THREE.Mesh(geo,material);mesh.position.set(x,y,z);mesh.castShadow=mesh.receiveShadow=true;g.add(mesh);return mesh;}
- function block(w,h,d,material,x,y,z,r=.012){return add(new RoundedBoxGeometry(w,h,d,4,Math.min(r,w/2,h/2,d/2)*.99),material,x,y+h/2,z);}
+ function add(geo,material,x,y,z){const mesh=syncPart(new THREE.Mesh(geo,material),"yeswood-sofa-model:site-1");mesh.position.set(x,y,z);mesh.castShadow=mesh.receiveShadow=true;g.add(mesh);return mesh;}
+ function block(w,h,d,material,x,y,z,r=.012){return syncPart(add(new RoundedBoxGeometry(w,h,d,4,Math.min(r,w/2,h/2,d/2)*.99),material,x,y+h/2,z),"yeswood-sofa-model:site-2");}
  function cushion(w,h,d,x,y,z,angle=0){
   const geo=new RoundedBoxGeometry(w,h,d,7,Math.min(.065,h*.28,d*.28));
   // Broad soft bulges and restrained edge gathers; deterministic, no random state.
@@ -23,7 +26,7 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
    const puff=.017*Math.max(0,1-u**4)*Math.max(0,1-v**4)*Math.abs(n.getZ(i))+.013*Math.max(0,1-u**4)*Math.max(0,1-t**4)*Math.abs(n.getY(i))+gather;
    p.setXYZ(i,px+n.getX(i)*puff,py+n.getY(i)*puff,pz+n.getZ(i)*puff);
   }
-  geo.computeVertexNormals();const mesh=add(geo,cloth,x,y+h/2,z);mesh.rotation.x=angle;return mesh;
+  geo.computeVertexNormals();const mesh=syncPart(add(geo,cloth,x,y+h/2,z),"yeswood-sofa-model:site-3");mesh.rotation.x=angle;return mesh;
  }
  // Lower frame is open underneath; six feet including two middle supports.
  block(2.06,.075,.83,wood,0,.155,0,.016);
@@ -31,7 +34,7 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
  block(2.04,.065,.045,wood,0,.205,-.420,.010);
  for(const side of [-1,1]){
   for(const z of [-.390,.390]){
-   const foot=add(new THREE.CylinderGeometry(.026,.017,.48,16),wood,side*1.043,.240,z);
+   const foot=syncPart(add(new THREE.CylinderGeometry(.026,.017,.48,16),wood,side*1.043,.240,z),"yeswood-sofa-model:site-4");
    foot.rotation.z=-side*.035;
   }
   // Two separate horizontal side boards and a visible gap match the product photo.
@@ -39,7 +42,7 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
   block(.042,.190,.755,wood,side*1.038,.385,-.005,.025);
   cushion(.170,.405,.800,side*.937,.270,.006);
  }
- for(const x of [-.305,.305])add(new THREE.CylinderGeometry(.023,.019,.175,16),wood,x,.0875,.285);
+ for(const x of [-.305,.305])syncPart(add(new THREE.CylinderGeometry(.023,.019,.175,16),wood,x,.0875,.285),"yeswood-sofa-model:site-5");
  // Rear wood support is approximate: the supplied photos do not expose the back.
  block(2.04,.115,.042,wood,0,.520,-.425,.012);
  for(const x of [-.975,0,.975])block(.035,.430,.035,wood,x,.245,-.418,.009);
@@ -52,7 +55,7 @@ function build(THREE,f,RoundedBoxGeometry,materials={}){
   path.lineTo(hw,hh-r);path.quadraticCurveTo(hw,hh,hw-r,hh);path.lineTo(-hw+r,hh);
   path.quadraticCurveTo(-hw,hh,-hw,hh-r);path.lineTo(-hw,-hh+r);path.quadraticCurveTo(-hw,-hh,-hw+r,-hh);
   const points=path.getPoints(64).map(p=>new THREE.Vector3(p.x,p.y,.087));
-  const piping=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points,true),80,.0013,5,true),seam);
+  const piping=syncPart(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points,true),80,.0013,5,true),seam),"yeswood-sofa-model:site-6");
   piping.castShadow=true;back.add(piping);
  }
  // Fit the whole exterior, including feet and upholstery, to the stated envelope.

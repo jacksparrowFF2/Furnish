@@ -2,14 +2,17 @@
  * All dimensions are mm until mesh construction; no external texture assets. */
 (function(root){
 'use strict';
+// Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
+const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+
 const products=()=>root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
 const supported=f=>products().family(f,'folding-table')&&!f.obj;
 function build(T,input){
  const P=products(),target=P.foldingTableGeometry(input),f={...input,w:target.diameter,d:target.diameter*target.ratio,h:760},s=P.foldingTableGeometry(f),g=new T.Group(),frame=new T.Group(),h=P.height(f),m=v=>v/1000;
  const sx=f.w/s.diameter,sz=s.fullDepth/s.diameter,sy=h/760,top=s.top*sy,stone=5*sy,leg=s.leg*sx,apron=s.apron*sy;
  const wood=new T.MeshStandardMaterial({color:f.color||'#bd925f',roughness:.64}),ivory=new T.MeshStandardMaterial({color:'#f4f3ee',roughness:.30}),metal=new T.MeshStandardMaterial({color:'#65645e',metalness:.65,roughness:.4});
- function add(geometry,material,part,parent=g){const mesh=new T.Mesh(geometry,material);mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData.foldingTablePart=part;parent.add(mesh);return mesh;}
- function box(w,height,d,x,y,z,part,material=wood,parent=frame){const o=add(new T.BoxGeometry(m(w),m(height),m(d)),material,part,parent);o.position.set(m(x),m(y+height/2),m(z));return o;}
+ function add(geometry,material,part,parent=g){const mesh=syncPart(new T.Mesh(geometry,material),"folding-table-model:site-1");mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData.foldingTablePart=part;parent.add(mesh);return mesh;}
+ function box(w,height,d,x,y,z,part,material=wood,parent=frame){const o=syncPart(add(new T.BoxGeometry(m(w),m(height),m(d)),material,part,parent),"folding-table-model:site-2");o.position.set(m(x),m(y+height/2),m(z));return o;}
  // A shared polygon defines the exact same chord cuts in the SVG and each slab.
  function slab(region,folded,side){
   const pts=P.foldingTableOutline(f,region),shape=new T.Shape();pts.forEach(([x,z],i)=>i?shape.lineTo(x,z):shape.moveTo(x,z));shape.closePath();
@@ -25,10 +28,10 @@ function build(T,input){
     // hanging semicircles. Approximate a 180-degree fold at the underside.
     a.setXYZ(i,m(x),m(folded?h-2*top+t:h-t),m(folded?2*hinge-z:z));
    }
-   a.needsUpdate=true;geo.computeVertexNormals();add(geo,mat,region+'-'+label,group);
+   a.needsUpdate=true;geo.computeVertexNormals();syncPart(add(geo,mat,region+'-'+label,group),"folding-table-model:site-3");
   }
  }
- slab('center',false,0);slab('front',s.pose!=='round',1);slab('back',s.pose==='capsule',-1);
+ syncPart(slab('center',false,0),"folding-table-model:site-4");syncPart(slab('front',s.pose!=='round',1),"folding-table-model:site-5");syncPart(slab('back',s.pose==='capsule',-1),"folding-table-model:site-6");
  // Rounded solid legs and a rectangular apron are appearance estimates. The
  // 75 / 120 / 32 reference dimensions apply at nominal size, not hidden joinery.
  const zLeg=Math.min(s.cut,s.backCut)-top-leg/2-8*sz,xLeg=Math.min(f.w*.31,Math.sqrt(1-(2*zLeg/s.fullDepth)**2)*f.w/2-leg*.8),legH=h-2*top;
@@ -37,18 +40,18 @@ function build(T,input){
   const radius=leg/2,shape=new T.Shape(),k=.5522848;
   shape.moveTo(-radius,0);shape.bezierCurveTo(-radius,k*radius,-k*radius,radius,0,radius);shape.bezierCurveTo(k*radius,radius,radius,k*radius,radius,0);shape.bezierCurveTo(radius,-k*radius,k*radius,-radius,0,-radius);shape.bezierCurveTo(-k*radius,-radius,-radius,-k*radius,-radius,0);
   const geo=new T.ExtrudeGeometry(shape,{depth:legH,bevelEnabled:false,curveSegments:10});geo.rotateX(-Math.PI/2);geo.scale(.001,.001,.001);
-  const o=add(geo,wood,'leg',frame);o.position.set(m(x),0,m(z));
+  const o=syncPart(add(geo,wood,'leg',frame),"folding-table-model:site-7");o.position.set(m(x),0,m(z));
  }
- for(const z of [-zLeg,zLeg])box(xLeg*2,apron,22*sx,0,legH-apron,z,'front-apron');
- for(const x of [-xLeg,xLeg])box(22*sx,apron,zLeg*2,x,legH-apron,0,'side-apron');
- for(const z of [-s.fullDepth*.08,s.fullDepth*.08])box(xLeg*2+22*sx,top,32*sz,0,legH,z,'central-batten');
+ for(const z of [-zLeg,zLeg])syncPart(box(xLeg*2,apron,22*sx,0,legH-apron,z,'front-apron'),"folding-table-model:site-8");
+ for(const x of [-xLeg,xLeg])syncPart(box(22*sx,apron,zLeg*2,x,legH-apron,0,'side-apron'),"folding-table-model:site-9");
+ for(const z of [-s.fullDepth*.08,s.fullDepth*.08])syncPart(box(xLeg*2+22*sx,top,32*sz,0,legH,z,'central-batten'),"folding-table-model:site-10");
  // Recessed pull, hinge plates and sliding support arms give scale to the fold.
  for(const side of [-1,1]){
-  box(95*sx,9*sy,2*sz,0,legH-18*sy,side*(zLeg+12*sz),'recessed-pull',metal);
+  syncPart(box(95*sx,9*sy,2*sz,0,legH-18*sy,side*(zLeg+12*sz),'recessed-pull',metal),"folding-table-model:site-11");
   for(const x of [-xLeg*.65,xLeg*.65]){
-   box(34*sx,4*sy,40*sz,x,h-top-4*sy,side*(side>0?s.cut:s.backCut)-side*23*sz,'hinge',metal);
+   syncPart(box(34*sx,4*sy,40*sz,x,h-top-4*sy,side*(side>0?s.cut:s.backCut)-side*23*sz,'hinge',metal),"folding-table-model:site-12");
    const open=side>0?s.pose==='round':s.pose!=='capsule',length=open?s.fullDepth*.22:s.fullDepth*.10;
-   box(25*sx,16*sy,length,x,open?h-top-23*sy:legH-20*sy,side*(zLeg+(open?length*.25:-length*.5)),'support-arm',metal);
+   syncPart(box(25*sx,16*sy,length,x,open?h-top-23*sy:legH-20*sy,side*(zLeg+(open?length*.25:-length*.5)),'support-arm',metal),"folding-table-model:site-13");
   }
  }
  // Deterministic subtle grain carved into the material shader; works offline

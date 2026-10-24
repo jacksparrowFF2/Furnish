@@ -1,15 +1,18 @@
 /* Production model shared by the app, previews and geometry checks. Units: m. */
 (function(root){
 'use strict';
+// Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
+const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+
 const specs={robot_p20max:[350,352,79.8],robot_p20max_tank:[450,450,450],robot_p20max_plumbed:[381,475,300]};
 function build(THREE,f,RoundedBoxGeometry){
  const nominal=specs[f.type];if(!nominal)throw Error('Unknown robot vacuum model');
  const g=new THREE.Group(),white=new THREE.MeshStandardMaterial({color:f.color||'#f5f6f5',roughness:.24}),
  grey=new THREE.MeshStandardMaterial({color:'#cbd0d0',roughness:.42}),dark=new THREE.MeshStandardMaterial({color:'#20272b',roughness:.32}),
  lens=new THREE.MeshStandardMaterial({color:'#121b22',metalness:.3,roughness:.12});
- const add=(geo,mat,x,y,z)=>{const o=new THREE.Mesh(geo,mat);o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;g.add(o);return o;};
- const box=(w,h,d,mat,x,y,z,r=.006)=>add(new RoundedBoxGeometry(w,h,d,4,Math.min(r,w/2,h/2,d/2)*.99),mat,x,y+h/2,z);
- const disc=(rx,rz,h,mat,x,y,z)=>{const o=add(new THREE.CylinderGeometry(1,1,h,96),mat,x,y+h/2,z);o.scale.set(rx,1,rz);return o;};
+ const add=(geo,mat,x,y,z)=>{const o=syncPart(new THREE.Mesh(geo,mat),"robot-vacuum-model:site-1");o.position.set(x,y,z);o.castShadow=o.receiveShadow=true;g.add(o);return o;};
+ const box=(w,h,d,mat,x,y,z,r=.006)=>syncPart(add(new RoundedBoxGeometry(w,h,d,4,Math.min(r,w/2,h/2,d/2)*.99),mat,x,y+h/2,z),"robot-vacuum-model:site-2");
+ const disc=(rx,rz,h,mat,x,y,z)=>{const o=syncPart(add(new THREE.CylinderGeometry(1,1,h,96),mat,x,y+h/2,z),"robot-vacuum-model:site-3");o.scale.set(rx,1,rz);return o;};
  // Rounded rectangle rings, lofted vertically: both front and sides are curved.
  const sp=(v,p=.5)=>Math.sign(v)*Math.pow(Math.abs(v),p);
  function loft(profile,material,offset=-.010,exponent=.5,sampledRows){
@@ -22,7 +25,7 @@ function build(THREE,f,RoundedBoxGeometry){
   const sx=2*Math.max(...profile.map(r=>r[1]))/size.x,sz=2*Math.max(...profile.map(r=>r[2]))/size.z,sy=(maxY-minY)/size.y;
   if(!sampledRows){const originalMinY=b.min.y;geo.translate(0,-originalMinY,-offset);geo.scale(sx,sy,sz);geo.translate(0,minY,offset);
    rows.forEach(r=>{r.x*=sx;r.z*=sz;r.y=(r.y-originalMinY)*sy+minY;});}geo.computeVertexNormals();
-  const o=add(geo,material,0,0,0);o.userData.surfaceRows=rows;return o;
+  const o=syncPart(add(geo,material,0,0,0),"robot-vacuum-model:site-4");o.userData.surfaceRows=rows;return o;
  }
  function tankDock(){
   const base=new THREE.MeshStandardMaterial({color:'#9ca7ad',roughness:.48}),trim=new THREE.MeshStandardMaterial({color:'#69757d',roughness:.48});
@@ -71,21 +74,21 @@ function build(THREE,f,RoundedBoxGeometry){
   for(const k of [0,levels])for(let j=0;j<n;j++){const a=k*n+j,b=k*n+(j+1)%n,c=a+count,e=b+count;indices.push(...(k?[a,c,b,b,c,e]:[a,b,c,b,e,c]));}
   const lower=new THREE.BufferGeometry();lower.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));lower.setIndex(indices);lower.computeVertexNormals();
   for(let j=0;j<n;j++){const normal=joinNormal(j/n*Math.PI*2);lower.attributes.normal.setXYZ(levels*n+j,normal.x,normal.y,normal.z);}
-  add(lower,base,0,0,0).userData.part='tank-opening';
+  syncPart(add(lower,base,0,0,0),"robot-vacuum-model:site-5").userData.part='tank-opening';
   // Subtle side service seam and small vent dimples, mapped to the curved skin.
   const recess=new THREE.MeshStandardMaterial({color:'#667279',roughness:.8});
   const sideX=(y,z)=>radius(y,1)*Math.pow(Math.max(0,1-((z+.006)/radius(y,2))**4),.25);
   for(const sign of [1]){
    const seamPoints=Array.from({length:30},(_,i)=>{const y=.022+i*(join-.024)/29,z=-.015;return new THREE.Vector3(sign*(sideX(y,z)+.00012),y,z);});
-   add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(seamPoints),36,.00018,4,false),recess,0,0,0).userData.part='tank-side-seam';
+   syncPart(add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(seamPoints),36,.00018,4,false),recess,0,0,0),"robot-vacuum-model:site-6").userData.part='tank-side-seam';
    for(let row=0;row<9;row++)for(let col=0;col<6;col++){
     const y=.049+row*.008,z=-.062-col*.008+(row%2)*.002,x=sign*(sideX(y,z)+.00015);
-    const vent=add(new THREE.CircleGeometry(.00085,8),recess,x,y,z);
+    const vent=syncPart(add(new THREE.CircleGeometry(.00085,8),recess,x,y,z),"robot-vacuum-model:site-7");
     const dz=.00001,slope=(sideX(y,z+dz)-sideX(y,z-dz))/(2*dz);
     vent.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),new THREE.Vector3(sign,0,-slope).normalize());vent.userData.part='tank-side-vent';
    }
   }
-  box(.375,.108,.095,base,0,.016,-.158,.016);
+  syncPart(box(.375,.108,.095,base,0,.016,-.158,.016),"robot-vacuum-model:site-8");
   const bodyRows=Array.from({length:201},(_,k)=>{const y=join+(.402-join)*k/200;return new THREE.Vector3(radius(y,1),y,radius(y,2));});
   const body=loft(profile.slice(2),shell,-.006,.5,bodyRows);
   for(let j=0;j<256;j++){const normal=joinNormal(j/256*Math.PI*2);body.geometry.attributes.normal.setXYZ(j,normal.x,normal.y,normal.z);}
@@ -94,38 +97,38 @@ function build(THREE,f,RoundedBoxGeometry){
   loft([[.402,.191,.184],[.404,.191,.184]],trim).userData.part='tank-lid-seam';
   loft([[.404,.191,.184],[.418,.181,.175],[.434,.153,.150],[.445,.103,.103],[.449,.047,.047],[.450,.0001,.0001]],shell).userData.part='tank-lid';
   const led=new THREE.MeshStandardMaterial({color:'#dbf4ff',emissive:'#a7dfff',emissiveIntensity:.7,roughness:.25});
-  box(.070,.003,.001,led,0,.395,.183,.001).userData.part='tank-status-light';
+  syncPart(box(.070,.003,.001,led,0,.395,.183,.001),"robot-vacuum-model:site-9").userData.part='tank-status-light';
   // Two shallow inclined wheel tracks, with actual transverse ribs.
   const incline=.11;
   for(const x of [-.132,.132]){
-   const track=box(.042,.004,.260,trim,x,.031,.069,.001);track.rotation.x=incline;
-   for(let k=0;k<43;k++){const z=-.056+k*.006;const rib=box(.040,.0015,.0018,base,x,.034-(z-.069)*.11,z,.0003);rib.rotation.x=incline;}
+   const track=syncPart(box(.042,.004,.260,trim,x,.031,.069,.001),"robot-vacuum-model:site-10");track.rotation.x=incline;
+   for(let k=0;k<43;k++){const z=-.056+k*.006;const rib=syncPart(box(.040,.0015,.0018,base,x,.034-(z-.069)*.11,z,.0003),"robot-vacuum-model:site-11");rib.rotation.x=incline;}
   }
   // Small vector wordmark follows the curved front, no font/network dependency.
   const rows=body.userData.surfaceRows,surface=(x,y)=>{let i=1;while(i<rows.length-1&&rows[i].y<y)i++;const a=rows[i-1],b=rows[i],t=(y-a.y)/(b.y-a.y),rx=a.x+(b.x-a.x)*t,rz=a.z+(b.z-a.z)*t;return -.006+rz*Math.pow(1-Math.pow(Math.abs(x)/rx,4),.25)+.0006;};
   const glyphs={r:[[[0,0],[0,.8],[.35,1],[.65,.8]]],o:[[[.35,0],[0,.25],[0,.75],[.35,1],[.7,.75],[.7,.25],[.35,0]]],b:[[[0,1.5],[0,0]],[[0,.8],[.35,1],[.7,.75],[.7,.25],[.35,0],[0,.2]]],c:[[[.7,.85],[.35,1],[0,.75],[0,.25],[.35,0],[.7,.15]]],k:[[[0,0],[0,1.5]],[[.7,1],[0,.4],[.7,0]]]};
-  [...'roborock'].forEach((letter,i)=>{for(const stroke of glyphs[letter]){const pts=stroke.map(([u,v])=>{const x=-.029+i*.0075+u*.006,y=.318+v*.005;return new THREE.Vector3(x,y,surface(x,y));});const o=add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,.00028,5,false),trim,0,0,0);o.userData.part='tank-wordmark';}});
+  [...'roborock'].forEach((letter,i)=>{for(const stroke of glyphs[letter]){const pts=stroke.map(([u,v])=>{const x=-.029+i*.0075+u*.006,y=.318+v*.005;return new THREE.Vector3(x,y,syncPart(surface(x,y),"robot-vacuum-model:site-12"));});const o=syncPart(add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),20,.00028,5,false),trim,0,0,0),"robot-vacuum-model:site-13");o.userData.part='tank-wordmark';}});
   const first=g.children.length;robot(.040,.027);
   const parked=new THREE.Group();parked.userData.part='tank-parked-robot';
   g.children.slice(first).forEach(o=>parked.add(o));g.add(parked);
-  const panel=box(.036,.0007,.014,grey,0,.120,.090,.002);parked.add(panel);
-  for(const x of [-.009,.009]){const key=disc(.003,.003,.0004,led,x,.1207,.090);parked.add(key);}
+  const panel=syncPart(box(.036,.0007,.014,grey,0,.120,.090,.002),"robot-vacuum-model:site-14");parked.add(panel);
+  for(const x of [-.009,.009]){const key=syncPart(disc(.003,.003,.0004,led,x,.1207,.090),"robot-vacuum-model:site-15");parked.add(key);}
  }
  // Low-profile P20 Max: flush top sensor, bumper seam and front camera window.
  function robot(y,z){
-  const bumper=(h,mat,base)=>{const o=disc(.175,.176,h,mat,0,base,z),a=o.geometry.attributes.position;
+  const bumper=(h,mat,base)=>{const o=syncPart(disc(.175,.176,h,mat,0,base,z),"robot-vacuum-model:site-16"),a=o.geometry.attributes.position;
    for(let i=0;i<a.count;i++)if(a.getZ(i)*.176>.173)a.setZ(i,.173/.176);a.needsUpdate=true;o.geometry.computeVertexNormals();return o;};
-  disc(.169,.170,.010,dark,0,y,z);
+  syncPart(disc(.169,.170,.010,dark,0,y,z),"robot-vacuum-model:site-17");
   bumper(.059,white,y+.010);
   bumper(.0015,grey,y+.0675);
-  disc(.172,.173,.0108,white,0,y+.069,z);
-  disc(.025,.024,.0008,grey,0,y+.079,z-.040);
-  box(.029,.0006,.003,grey,0,y+.0792,z+.062,.001);
-  box(.067,.032,.002,grey,0,y+.023,z+.174,.006);
-  box(.054,.024,.001,lens,0,y+.027,z+.1752,.004);
-  for(const x of [-.015,.015]){const o=disc(.004,.004,.001,grey,x,0,0);o.rotation.x=Math.PI/2;o.position.set(x,y+.039,z+.1755);}
+  syncPart(disc(.172,.173,.0108,white,0,y+.069,z),"robot-vacuum-model:site-18");
+  syncPart(disc(.025,.024,.0008,grey,0,y+.079,z-.040),"robot-vacuum-model:site-19");
+  syncPart(box(.029,.0006,.003,grey,0,y+.0792,z+.062,.001),"robot-vacuum-model:site-20");
+  syncPart(box(.067,.032,.002,grey,0,y+.023,z+.174,.006),"robot-vacuum-model:site-21");
+  syncPart(box(.054,.024,.001,lens,0,y+.027,z+.1752,.004),"robot-vacuum-model:site-22");
+  for(const x of [-.015,.015]){const o=syncPart(disc(.004,.004,.001,grey,x,0,0),"robot-vacuum-model:site-23");o.rotation.x=Math.PI/2;o.position.set(x,y+.039,z+.1755);}
   // Brush is tucked inside the supplied machine envelope; extension is unknown.
-  for(const a of [-.7,0,.7]){const o=box(.030,.002,.004,grey,-.133,y+.005,z+.096,.001);o.rotation.y=a;}
+  for(const a of [-.7,0,.7]){const o=syncPart(box(.030,.002,.004,grey,-.133,y+.005,z+.096,.001),"robot-vacuum-model:site-24");o.rotation.y=a;}
  }
  if(f.type==='robot_p20max')robot(0,0);
  else if(f.type==='robot_p20max_tank')tankDock();
@@ -133,21 +136,21 @@ function build(THREE,f,RoundedBoxGeometry){
   const w=nominal[0]/1000,d=nominal[1]/1000,h=nominal[2]/1000;
   const front=d/2,back=-d/2,opening=.130;
   // Tray, rear service body and real hollow entrance (no painted-on black hole).
-  box(w,.012,d,white,0,0,0,.014);
-  box(w,h-.014,.105,white,0,.012,back+.105/2,.013);
+  syncPart(box(w,.012,d,white,0,0,0,.014),"robot-vacuum-model:site-25");
+  syncPart(box(w,h-.014,.105,white,0,.012,back+.105/2,.013),"robot-vacuum-model:site-26");
   {
-   for(const s of [-1,1])box(.013,opening-.012,d-.025,white,s*(w-.013)/2,.012,.006,.006);
-   box(w,h-opening,d,white,0,opening,0,.018);
-   box(w*.91,.001,d*.72,white,0,h-.003,-d*.025,.009);
-   box(w*.72,.001,.002,grey,0,h-.001,d*.26,.0004);
+   for(const s of [-1,1])syncPart(box(.013,opening-.012,d-.025,white,s*(w-.013)/2,.012,.006,.006),"robot-vacuum-model:site-27");
+   syncPart(box(w,h-opening,d,white,0,opening,0,.018),"robot-vacuum-model:site-28");
+   syncPart(box(w*.91,.001,d*.72,white,0,h-.003,-d*.025,.009),"robot-vacuum-model:site-29");
+   syncPart(box(w*.72,.001,.002,grey,0,h-.001,d*.26,.0004),"robot-vacuum-model:site-30");
   }
   // Lid separation and small recessed front status bar.
-  box(w*.87,.002,.001,grey,0,.139,front-.001,.0004);
-  box(.041,.003,.001,grey,0,h*.78,front-.001,.0004);
-  box(.090,.025,.004,dark,0,.085,back+.110,.003);
-  for(const x of [-.034,.034])box(.012,.010,.006,grey,x,.029,back+.112,.002);
-  for(const x of [-.091,.091])disc(.057,.057,.002,grey,x,.012,.015);
-  for(const x of [-w*.31,w*.31])box(.004,.001,d*.35,grey,x,.012,front-d*.18,.001);
+  syncPart(box(w*.87,.002,.001,grey,0,.139,front-.001,.0004),"robot-vacuum-model:site-31");
+  syncPart(box(.041,.003,.001,grey,0,h*.78,front-.001,.0004),"robot-vacuum-model:site-32");
+  syncPart(box(.090,.025,.004,dark,0,.085,back+.110,.003),"robot-vacuum-model:site-33");
+  for(const x of [-.034,.034])syncPart(box(.012,.010,.006,grey,x,.029,back+.112,.002),"robot-vacuum-model:site-34");
+  for(const x of [-.091,.091])syncPart(disc(.057,.057,.002,grey,x,.012,.015),"robot-vacuum-model:site-35");
+  for(const x of [-w*.31,w*.31])syncPart(box(.004,.001,d*.35,grey,x,.012,front-d*.18,.001),"robot-vacuum-model:site-36");
   robot(.014,.055);
  }
  // Size editing is a layout approximation; details scale with the envelope.
