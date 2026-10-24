@@ -8671,18 +8671,6 @@
             "w": 300
           },
           {
-            "color": "#a8b6c4",
-            "cx": 7443,
-            "cy": 10075.000000000002,
-            "d": 150,
-            "h": 540,
-            "id": "fmvfbobf81",
-            "name": "方块占位体",
-            "rot": 0,
-            "type": "block",
-            "w": 800
-          },
-          {
             "brand": "米家/Mijia",
             "color": "#191c20",
             "cx": 9930,
@@ -9094,6 +9082,24 @@
             "rot": 0,
             "type": "block",
             "w": 320
+          },
+          {
+            "color": "#c6a258",
+            "cx": 7456,
+            "cy": 10060,
+            "d": 180,
+            "h": 600,
+            "id": "fmvmjggtd1",
+            "manifoldLengths": {
+              "lower": 330,
+              "upper": 450
+            },
+            "manifoldLoops": 5,
+            "mountHeight": 0,
+            "name": "地暖分水器（路数可调）",
+            "rot": 180,
+            "type": "heating_manifold",
+            "w": 800
           }
         ],
         "furnitureDatum": "finished-floor",
@@ -9198,13 +9204,13 @@
               "id": "layer_fmvg9iz545",
               "locked": false,
               "name": "厨房地柜",
-              "visible": true
+              "visible": false
             },
             {
               "id": "layer_fmvg9jp8o6",
               "locked": false,
               "name": "厨房吊柜",
-              "visible": true
+              "visible": false
             },
             {
               "id": "layer_fmvgc9f4l1",
