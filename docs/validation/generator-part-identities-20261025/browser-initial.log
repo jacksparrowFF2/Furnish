@@ -1,0 +1,17 @@
+Isolated browser verification: C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\output\playwright\verification-fdD9Ch
+Static service: http://127.0.0.1:62784/
+RUN portable-smoke
+PASS portable-smoke
+RUN blender-render
+PASS blender-render
+RUN aircon-midea
+FAIL aircon-midea
+page.waitForFunction: Timeout 30000ms exceeded.
+    at eval (<anonymous>:8:65)
+    at async worker (C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\scripts\verify-browser.cjs:35:50)
+
+Results: C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\output\playwright\verification-fdD9Ch\results.json
+Error: Browser verification failed; inspect the case log.
+    at main (C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\scripts\verify-browser.cjs:58:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)

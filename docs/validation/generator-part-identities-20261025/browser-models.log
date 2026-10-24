@@ -1,0 +1,13 @@
+Isolated browser verification: C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\output\playwright\verification-6ivmTg
+Static service: http://127.0.0.1:60494/
+RUN aircon-midea
+PASS aircon-midea
+RUN aquarium
+PASS aquarium
+RUN cherry-coffee-table
+PASS cherry-coffee-table
+RUN catalog-library
+PASS catalog-library
+RUN cabinet-catalog
+PASS cabinet-catalog
+Results: C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\output\playwright\verification-6ivmTg\results.json

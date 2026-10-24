@@ -1,0 +1,16 @@
+{
+  "template": "D:\\1601装修\\渲染\\LiveSync0.1.2稳定标识升级-20261024\\1601-稳定部件标识.blend",
+  "planId": "custom_mv37igji",
+  "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-part-identities\\Furnish\\output\\playwright\\blender-parts-Vj98zB",
+  "coverage": {
+    "meshes": 4355,
+    "missing": 0,
+    "ambiguous": 0
+  },
+  "changed": {
+    "reversedGenerators": 412,
+    "priorObjects": 2760,
+    "changedPaths": 3799
+  },
+  "v2BridgeSha256": "54670754000a486db15601641ca7a768fb7816c6011a7463f364fb8baa6ca8b2"
+}

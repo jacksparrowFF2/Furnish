@@ -1,0 +1,42 @@
+{
+  "selected": [
+    "aircon-midea",
+    "aquarium",
+    "cherry-coffee-table",
+    "catalog-library",
+    "cabinet-catalog"
+  ],
+  "results": [
+    {
+      "name": "aircon-midea",
+      "status": "PASS",
+      "seconds": 22.3,
+      "log": "aircon-midea.log"
+    },
+    {
+      "name": "aquarium",
+      "status": "PASS",
+      "seconds": 28.1,
+      "log": "aquarium.log"
+    },
+    {
+      "name": "cherry-coffee-table",
+      "status": "PASS",
+      "seconds": 25.1,
+      "log": "cherry-coffee-table.log"
+    },
+    {
+      "name": "catalog-library",
+      "status": "PASS",
+      "seconds": 14.1,
+      "log": "catalog-library.log"
+    },
+    {
+      "name": "cabinet-catalog",
+      "status": "PASS",
+      "seconds": 12.6,
+      "log": "cabinet-catalog.log"
+    }
+  ],
+  "notRun": []
+}

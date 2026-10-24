@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\scripts\verify\verify-blender-generators.py", line 89, in <module>
+    try:main(directory)
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\scripts\verify\verify-blender-generators.py", line 38, in main
+    migration=addon.apply_snapshot(scene,str(directory/'baseline.glb'),manifest)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\scripts\blender-sync-addon.py", line 234, in apply_snapshot
+    raise ValueError('旧生成器的几何、位置或数量已变化，拒绝按顺序猜测身份；请先用原布局升级副本：'+obj['furnishObjectId']+' geometry='+str(_same_source_geometry(prior,obj))+' pose='+str(same_pose)+' count='+str(prior.get('furnishPartCount')==obj.get('furnishPreviousPartCount')))
+ValueError: 旧生成器的几何、位置或数量已变化，拒绝按顺序猜测身份；请先用原布局升级副本：furniture:fmv3w7rrw6:/0 geometry=True pose=False count=True

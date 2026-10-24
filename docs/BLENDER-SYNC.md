@@ -88,3 +88,30 @@ node scripts/verify/verify-blender-sync.cjs
 ```
 
 当前方案覆盖、实际结构调整、原材质与独立材质核对、失败记录及未执行范围见 [本轮记录](validation/blender-part-identities-20261024/summary.json)。仍不承诺任意外部拓扑重写、重复生成器内未命名项的语义互换、其他平台／版本或进程强退恢复。
+
+## 2026-10-25：生成器内部身份 v3
+
+Live Sync 0.1.3 使用 partIdentity=3 / protocol 3。旧接收器会在导入前拒绝新版协议，需要安装配套 ZIP；v3 工程拒绝 v1/v2 快照降级。
+
+共享模块 `src/core/part-identity.js` 必须在模型脚本前加载，包括独立预览。`produce(site, fn)` 建立同步调用范围；`items(site, [[name, data], ...])` 让固定名称随数据移动，不能在重排后用新下标重算名称；`records` 使用明确业务字段，缺少身份的对象拒绝构建；`range` 的逻辑槽位对应参数角色；`each` 保留回调的逻辑下标；`instances` 将名称、矩阵和颜色作为同一记录重排，再记录实际实例槽位。循环中异常与提前退出均释放作用域。作用域不可跨异步函数。
+
+现有 site / generator / item 名称都是固定源码标识，代码移动时原样保留，新增点分配新名，不能用自动编号重写已有名称。数字数组（例如层板高度）仍表达第几个参数角色，没有新增保存格式或为旧用户数据批量写入字段。厨房、墙面所需 partId 由核心派生，不进入装修方案。重复身份导出直接失败，不回退到按创建顺序猜测。
+
+v2 创建顺序仅用于一次性升级别名，v3 正式键使用完整具名作用域。升级副本先匹配旧别名并核对所属家具／图层、几何、材质槽、数量与世界姿态；不允许将初次升级和等数量互换合并。若旧精修副本有交互姿态变化，先用确认未变的 v2 生产快照在临时副本中记录源姿态，再执行严格升级。源姿态单独保存为 Blender 管理属性 furnishSourceMatrix，并纳入事务回滚；用户锁定的精修姿态仍保留。本轮 4,355 部件的冻结 v2 快照与上一轮留存快照逐字节相同；旧副本仅电视／窗帘 6 个姿态不同，几何全部相同。原始及上一轮精修文件均不覆盖。
+
+升级后，等数量条目互换、辅助构造器调用重排与实例存储重排均按名称匹配；原对象、材质及修改器继续保留。族数量变化仍受保留材质模式约束。创建新生成器时必须扩展覆盖与重排回归，不能假设任意外部模型或重复复用相同名称的克隆已具备身份。
+
+验证入口：
+
+```text
+node tests/test-generator-part-identities.cjs
+node tests/test-blender-model-identities.cjs
+node tests/test-blender-sync.cjs
+node scripts/verify/verify-blender-generators.cjs
+node scripts/verify/verify-blender-transaction.cjs
+node scripts/verify/verify-blender-sync.cjs
+```
+
+完整 Node 与影响范围内 file:// / HTTP 浏览器、真实 Blender 证据见 [本轮记录](validation/generator-part-identities-20261025/summary.json)。未执行其余历史浏览器全集、其他平台／版本、进程崩溃或任意外部模型重写验收。
+
+验证 CLI 默认严格升级。需要在验证副本中先写入旧源姿态时，显式传入 `--v2-sha256 <已确认的旧版快照SHA256>`；散列必须与捕获的冻结 v2 快照一致，否则拒绝刷新。不能只因为几何／姿态校验失败就绕过保护。

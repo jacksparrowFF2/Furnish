@@ -1,0 +1,37 @@
+{
+  "selected": [
+    "portable-smoke",
+    "blender-render",
+    "aircon-midea",
+    "aquarium",
+    "cherry-coffee-table",
+    "catalog-library",
+    "cabinet-catalog"
+  ],
+  "results": [
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 11.6,
+      "log": "portable-smoke.log"
+    },
+    {
+      "name": "blender-render",
+      "status": "PASS",
+      "seconds": 32,
+      "log": "blender-render.log"
+    },
+    {
+      "name": "aircon-midea",
+      "status": "FAIL",
+      "seconds": 30.6,
+      "log": "aircon-midea.log"
+    }
+  ],
+  "notRun": [
+    "aquarium",
+    "cherry-coffee-table",
+    "catalog-library",
+    "cabinet-catalog"
+  ]
+}
