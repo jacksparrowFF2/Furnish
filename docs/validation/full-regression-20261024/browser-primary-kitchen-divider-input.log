@@ -1,0 +1,1 @@
+{"case":"kitchen-divider-input","status":"PASS","result":{"status":"PASS","checks":"actual full-divider click, either cabinet width and live decimal complement, draft/cancel/no-op/invalid, undo/redo, continued drag, keyboard Enter, save/refresh, 390 px, production preview and project roundtrip","errors":[]}}

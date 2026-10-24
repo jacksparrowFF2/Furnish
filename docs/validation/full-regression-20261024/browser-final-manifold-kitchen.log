@@ -1,0 +1,27 @@
+C:\Users\SPH\Documents\GitHub\Furnish\output\manifold-kitchen\preview.html
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "catalogHeight": 500,
+    "realCommit": true,
+    "doorAndDrawers": true,
+    "moveUndoRedo": true,
+    "refresh": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "catalogHeight": 500,
+    "realCommit": true,
+    "doorAndDrawers": true,
+    "moveUndoRedo": true,
+    "refresh": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  }
+]

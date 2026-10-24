@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-23",
+  "scope": "incremental",
+  "syntax": [
+    "src/core/product-rules.js",
+    "src/core/cabinet-core.js",
+    "src/render/cabinet-model.js",
+    "src/ui/cabinet-editor.js",
+    "tests/test-pegboard-hatch.cjs"
+  ],
+  "tests": [
+    {
+      "file": "tests/test-pegboard-hatch.cjs",
+      "status": "passed",
+      "output": "PASS pegboard hatch: strict dimensions/edges, legacy omission, real hole and hinged perforated leaf, current solids, opening height/rotation/mirror, installation shift, toggle/specification, confirmation and current/named no-drift restoration"
+    },
+    {
+      "file": "tests/test-entry-pegboard.cjs",
+      "status": "passed",
+      "output": "PASS entry pegboard: 1418 mm niche, exterior bounds, upper doors, drawer travel, shelf linkage, resize, validation and project round trip"
+    },
+    {
+      "file": "tests/test-pegboard-parts.cjs",
+      "status": "passed",
+      "output": "PASS pegboard parts: all 128 combinations, production solid boards, 18 mm pure panel, unified 18 mm after input upgrade, independent openings, rotated/mirrored poses, resizing, named/current project and repeated restoration, shared sides and validation\nPASS actual Three.js pure-panel mesh: one perforated 638 × 1418 × 18 mm board, bottom 378 mm; 2D depth 18 mm"
+    },
+    {
+      "file": "tests/test-pegboard-accessories.cjs",
+      "status": "passed",
+      "output": "PASS independent pegboard accessories: all 128 structural/accessory combinations, legacy aggregate fallback and explicit overrides, real meshes, height linkage, depth, validation and current/named project repeated restoration"
+    },
+    {
+      "file": "tests/test-cabinet-opening-3d.cjs",
+      "status": "passed",
+      "output": "PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations"
+    },
+    {
+      "file": "tests/test-cabinet-opening-volume-model.cjs",
+      "status": "passed",
+      "output": "PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes"
+    },
+    {
+      "file": "tests/test-cut-board-motion.cjs",
+      "status": "passed",
+      "output": "PASS continuous cut-board motion: no phantom notch/removed-board hits, intermediate-only door/lift hits, rotation/mirror, 335 production board bounds and 4 actual cut-solid rays"
+    },
+    {
+      "file": "tests/test-cabinet-design-upgrade.cjs",
+      "status": "passed",
+      "output": "PASS 19 templates and legacy designs upgrade without changing production geometry, openings, named/current project data or repeated restoration"
+    },
+    {
+      "file": "tests/test-enclosed-boundary-distances.cjs",
+      "status": "passed",
+      "output": "PASS enclosed boundaries: screenshot fixture, 85 catalog types × 8 transforms, partial overlap/contact, height separation/unknowns, groups, drawing rotation, real panels, preserved collision checks and project roundtrip"
+    },
+    {
+      "file": "tests/test-review-consistency.cjs",
+      "status": "passed",
+      "output": "PASS optimized review matches legacy confirmations, geometry/threshold invalidation and malformed record handling\nPASS versioned spatial confirmations, height/cavity/mirror/physical-room invalidation and non-spatial edit stability"
+    },
+    {
+      "file": "tests/test-electrical-box.cjs",
+      "status": "passed",
+      "output": "PASS electrical boxes: catalog, placement, bounds, collision, distances, restore/roundtrip, production geometry and wall cut triangles"
+    }
+  ],
+  "browser": {
+    "url": "http://127.0.0.1:8768/",
+    "isolatedWorkspace": "output/playwright/pegboard-hatch-workspace",
+    "steps": [
+      "Enable hatch on existing pure pegboard",
+      "Edit width 420 and height 320 mm",
+      "Preview right and left hinges",
+      "Save closed hatch; undo removes it; redo restores left=119 bottom=559 w=420 h=320 hinge=left open=false",
+      "Click actual scene hatch opens and reveals the separate wall box",
+      "Verify isolated repository JSON contains open=true",
+      "Refresh and reopen designer: verify retained values and open state"
+    ],
+    "screenshots": [
+      "output/playwright/pegboard-hatch/closed.jpg",
+      "output/playwright/pegboard-hatch/open.jpg",
+      "output/playwright/pegboard-hatch/closed-full.jpg",
+      "output/playwright/pegboard-hatch/open-full.jpg"
+    ]
+  },
+  "notRun": [
+    "full regression",
+    "file://",
+    "narrow screen"
+  ],
+  "boundaries": [
+    "one manual hatch per pegboard bay",
+    "fixed accessories are not moved onto hatch automatically",
+    "hinge gap, edge margin and opening angle are modeling assumptions, not construction instructions"
+  ]
+}

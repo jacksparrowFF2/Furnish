@@ -255,3 +255,6 @@ legacyCabinet(f) 仅匹配无 OBJ、无 kitchen／cabinet 的旧 counter／vanit
 
 
 2026-10-20：counter.kitchenPlinth 定义厨房组合地柜的底座默认 100 mm、范围 0–250 mm；可选 kitchen.plinth 由厨房核心统一校验与派生。新建／旧数据缺失均按历史 100 读取，不补写，0 为合法值；吊柜不接受。复制／替换、采购、空间确认及缓存继续消费完整 kitchen，不新增顶层字段清单。抽屉历史参数中的 plinth 保留为旧公式基准，实际底座与 legacyOffset 随配置派生，保证缺失配置时旧三抽几何不漂移。复验：test-kitchen-plinth.cjs、相关厨房／洗衣柜回归及 verify-kitchen-plinth.browser.js；详情见 [地柜底座高度](KITCHEN-DESIGN.md#地柜底座高度2026-10-20)。
+
+
+2026-10-23：heating_manifold 默认总高按用户确认设为 500 mm，显式旧高度保持；rearService:true 为非 OBJ 生产分水器提供厨房后部设备整体让空能力，不是碰撞豁免或厂家操作预留。厨房仍需开启原 autoAvoid，后部受影响模块派生 obstacleFit.depths[].rearService:true，由生产布局取消背板并共同减深层板／抽屉。旧记录不新增标记，正常恢复按实际家具重新派生，详见 [分水器后方安装](HEATING-MANIFOLD.md#厨房地柜后方安装2026-10-23)。

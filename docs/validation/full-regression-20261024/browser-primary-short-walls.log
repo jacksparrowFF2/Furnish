@@ -1,0 +1,1 @@
+{"case":"short-walls","status":"PASS","result":[{"mode":"http","passed":true,"numericAndDraw50":true,"cornerDrag":true,"shiftAndEscape":true,"undoRedo":true,"saveRefreshAndProject":true,"narrowScreen":true},{"mode":"file","passed":true,"numericAndDraw50":true,"cornerDrag":true,"shiftAndEscape":true,"undoRedo":true,"saveRefreshAndProject":true,"narrowScreen":true}]}

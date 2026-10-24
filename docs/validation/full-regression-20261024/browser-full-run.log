@@ -1,0 +1,379 @@
+Retired tiling UI cases use tile-workspace, tile-workspace-complete and tile-library; historical scripts are not executed.
+Isolated browser verification: C:\Users\SPH\Documents\GitHub\Furnish\output\playwright\verification-UxhTz6
+Static service: http://127.0.0.1:60309/
+RUN aircon-midea
+PASS aircon-midea
+RUN appliance-module-boundaries
+PASS appliance-module-boundaries
+RUN aquarium
+PASS aquarium
+RUN bay-assemblies
+PASS bay-assemblies
+RUN beam-body
+PASS beam-body
+RUN beam-heights
+PASS beam-heights
+RUN blender-render
+PASS blender-render
+RUN block-placeholder
+PASS block-placeholder
+RUN cabinet-boundary-snapping
+PASS cabinet-boundary-snapping
+RUN cabinet-catalog
+PASS cabinet-catalog
+RUN cabinet-custom-fronts
+PASS cabinet-custom-fronts
+RUN cabinet-dimensions
+PASS cabinet-dimensions
+RUN cabinet-divider-growth
+PASS cabinet-divider-growth
+RUN cabinet-door-coverage
+PASS cabinet-door-coverage
+RUN cabinet-doors
+PASS cabinet-doors
+RUN cabinet-drawer-dimensions
+PASS cabinet-drawer-dimensions
+RUN cabinet-edit-operations
+PASS cabinet-edit-operations
+RUN cabinet-interior
+PASS cabinet-interior
+RUN cabinet-layout
+PASS cabinet-layout
+RUN cabinet-module-widths
+PASS cabinet-module-widths
+RUN cabinet-object-inspector
+PASS cabinet-object-inspector
+RUN cabinet-opening-3d
+PASS cabinet-opening-3d
+RUN cabinet-panel
+PASS cabinet-panel
+RUN cabinet-setting-inheritance
+PASS cabinet-setting-inheritance
+RUN cabinet-simple
+PASS cabinet-simple
+RUN cat-tree
+PASS cat-tree
+RUN catalog-library
+PASS catalog-library
+RUN ceiling-continuous-light
+PASS ceiling-continuous-light
+RUN ceiling-corners
+PASS ceiling-corners
+RUN ceiling-end-caps
+PASS ceiling-end-caps
+RUN ceilings
+PASS ceilings
+RUN cherry-coffee-table
+PASS cherry-coffee-table
+RUN current-bays
+PASS current-bays
+RUN current-furniture
+PASS current-furniture
+RUN dimension-density
+PASS dimension-density
+RUN directional-config-order
+PASS directional-config-order
+RUN directional-distances
+PASS directional-distances
+RUN directional-heights
+PASS directional-heights
+RUN directional-kitchen-solids
+PASS directional-kitchen-solids
+RUN directional-placement
+PASS directional-placement
+RUN dishwasher-clearances
+PASS dishwasher-clearances
+RUN dishwasher
+PASS dishwasher
+RUN double-doors
+PASS double-doors
+RUN drag-axis-lock
+FAIL drag-axis-lock
+RUN drag-feature-snapping
+Error: {"status":"FAIL","message":"axis-a expected 1505,1020 actual 1505.0000610351562,1016.9129028320312","stack":"Error: axis-a expected 1505,1020 actual 1505.0000610351562,1016.9129028320312\n    at check (eval at worker (C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\scripts\\verify-browser.cjs:22:16), <anonymous>:4:247)\n    at at (eval at worker (C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\scripts\\verify-browser.cjs:22:16), <anonymous>:7:91)\n    at async eval (eval at worker (C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\scripts\\verify-browser.cjs:22:16), <anonymous>:14:90)\n    at async worker (C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\scripts\\verify-browser.cjs:23:16)\n    at async main (C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\scripts\\verify-browser.cjs:35:50)","errors":[]}
+    at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:66)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)
+
+PASS drag-feature-snapping
+RUN drawing-export
+PASS drawing-export
+RUN workflow-reimport
+PASS workflow-reimport
+RUN drawing-readability
+PASS drawing-readability
+RUN drawing
+PASS drawing
+RUN enclosed-boundaries
+PASS enclosed-boundaries
+RUN tile-workspace
+PASS tile-workspace
+RUN tile-workspace-complete
+PASS tile-workspace-complete
+RUN tile-library
+PASS tile-library
+RUN finish-miter-snap
+PASS finish-miter-snap
+RUN floating-toolbar-proximity
+PASS floating-toolbar-proximity
+RUN floating-toolbar
+PASS floating-toolbar
+RUN folding-table-click
+PASS folding-table-click
+RUN folding-table
+PASS folding-table
+RUN fotile-previews
+PASS fotile-previews
+RUN fotile
+PASS fotile
+RUN full-width-drawers
+PASS full-width-drawers
+RUN furniture-groups
+PASS furniture-groups
+RUN room-net
+PASS room-net
+RUN purchase-orders
+PASS purchase-orders
+RUN furniture-labels
+PASS furniture-labels
+RUN furniture-snapping-audit
+PASS furniture-snapping-audit
+RUN furniture-solids
+PASS furniture-solids
+RUN group-directional-placement
+PASS group-directional-placement
+RUN hob-cutout
+PASS hob-cutout
+RUN hob-link-options
+PASS hob-link-options
+RUN hob-openings
+PASS hob-openings
+RUN hood-bay
+PASS hood-bay
+RUN hood-geometry
+PASS hood-geometry
+RUN kitchen-auto-avoid
+PASS kitchen-auto-avoid
+RUN kitchen-corner-leaves
+PASS kitchen-corner-leaves
+RUN kitchen-dish-basket
+PASS kitchen-dish-basket
+RUN kitchen-divider-input
+PASS kitchen-divider-input
+RUN kitchen-divider-labels
+PASS kitchen-divider-labels
+RUN kitchen-dividers
+PASS kitchen-dividers
+RUN kitchen-door-pairing
+PASS kitchen-door-pairing
+RUN kitchen-door-widths
+PASS kitchen-door-widths
+RUN kitchen-drawer-boundaries
+PASS kitchen-drawer-boundaries
+RUN kitchen-drawer-snapping
+PASS kitchen-drawer-snapping
+RUN kitchen-drawer-tiers
+PASS kitchen-drawer-tiers
+RUN kitchen-edge-snapping
+PASS kitchen-edge-snapping
+RUN kitchen-elevations
+PASS kitchen-elevations
+RUN kitchen-gap-model
+PASS kitchen-gap-model
+RUN kitchen-layout
+PASS kitchen-layout
+RUN kitchen-outer-handles
+PASS kitchen-outer-handles
+RUN kitchen-plinth
+PASS kitchen-plinth
+RUN kitchen-resize
+PASS kitchen-resize
+RUN kitchen-run-handles
+PASS kitchen-run-handles
+RUN kitchen-shelves
+PASS kitchen-shelves
+RUN kitchen-single-hinge
+PASS kitchen-single-hinge
+RUN kitchen-thin-end
+PASS kitchen-thin-end
+RUN kitchen-thin-resize
+PASS kitchen-thin-resize
+RUN kitchen-u
+PASS kitchen-u
+RUN kitchen-wall-adjust
+PASS kitchen-wall-adjust
+RUN kitchen-wall-anchor
+PASS kitchen-wall-anchor
+RUN kitchen-wall-canvas
+PASS kitchen-wall-canvas
+RUN kitchen-wall-drawers
+PASS kitchen-wall-drawers
+RUN kitchen-wall-shelves
+PASS kitchen-wall-shelves
+RUN kitchen
+PASS kitchen
+RUN laundry-area
+PASS laundry-area
+RUN laundry-basin-joins
+PASS laundry-basin-joins
+RUN laundry-cabinet
+PASS laundry-cabinet
+RUN laundry-catalog
+PASS laundry-catalog
+RUN laundry-editing
+PASS laundry-editing
+RUN laundry-resize-vessel
+PASS laundry-resize-vessel
+RUN layer-location
+PASS layer-location
+RUN layer-range
+PASS layer-range
+RUN layer-sidebar
+PASS layer-sidebar
+RUN legacy-cabinet-upgrade
+PASS legacy-cabinet-upgrade
+RUN litter-box
+PASS litter-box
+RUN measure-boundaries
+PASS measure-boundaries
+RUN merged-cache
+PASS merged-cache
+RUN model-entry
+PASS model-entry
+RUN observation-layers
+PASS observation-layers
+RUN pegboard-accessories
+PASS pegboard-accessories
+RUN pegboard-height
+PASS pegboard-height
+RUN pegboard-parts
+PASS pegboard-parts
+RUN pet-feeder
+PASS pet-feeder
+RUN pipebox
+PASS pipebox
+RUN portable-smoke
+PASS portable-smoke
+RUN product-plan-outline
+PASS product-plan-outline
+RUN product-rules
+PASS product-rules
+RUN property-dedup
+PASS property-dedup
+RUN property-open
+PASS property-open
+RUN property-scopes
+PASS property-scopes
+RUN purchase-relink
+PASS purchase-relink
+RUN region-areas
+FAIL region-areas
+locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-area-room="area-b"]')
+    - locator resolved to <button class="btn" data-area-room="area-b">面积 B ×</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not stable
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not stable
+    - retrying click action
+      - waiting 100ms
+    57 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - element is outside of the viewport
+     - retrying click action
+       - waiting 500ms
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+
+    at eval (<anonymous>:32:49)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)
+
+RUN robot-vacuum
+PASS robot-vacuum
+RUN scene-clearances
+PASS scene-clearances
+RUN scene-observation
+PASS scene-observation
+RUN shoe-bench
+PASS shoe-bench
+RUN short-wall-area-3d
+PASS short-wall-area-3d
+RUN short-wall-zones
+PASS short-wall-zones
+RUN short-walls
+PASS short-walls
+RUN sink-linked-offset
+PASS sink-linked-offset
+RUN sink-surface
+PASS sink-surface
+RUN sink
+PASS sink
+RUN stove-boundaries
+PASS stove-boundaries
+RUN tank-preview
+PASS tank-preview
+RUN tea-bar
+PASS tea-bar
+RUN tea-table
+PASS tea-table
+RUN tile-coplanar-wall
+PASS tile-coplanar-wall
+RUN tile-multiselect
+PASS tile-multiselect
+RUN tile-selection-outline
+PASS tile-selection-outline
+RUN tile-shared-origin
+PASS tile-shared-origin
+RUN tiling-render-alignment
+PASS tiling-render-alignment
+RUN touchpad
+PASS touchpad
+RUN tv-views
+PASS tv-views
+RUN wall-face-snapping
+PASS wall-face-snapping
+RUN wall-layer-finishes
+PASS wall-layer-finishes
+RUN water-purifier
+PASS water-purifier
+RUN beam-roof
+PASS beam-roof
+RUN cut-board-motion
+PASS cut-board-motion
+RUN dining-plan-order
+PASS dining-plan-order
+RUN dxf-supplement
+PASS dxf-supplement
+RUN furniture-recovery
+FAIL furniture-recovery
+RUN multi-region-merge
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+2 !== 1
+
+    at C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify\verify-furniture-recovery.cjs:29:62 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 1,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+PASS multi-region-merge
+RUN pipe-collisions
+PASS pipe-collisions
+RUN recessed-bay
+PASS recessed-bay
+Results: C:\Users\SPH\Documents\GitHub\Furnish\output\playwright\verification-UxhTz6\results.json
+Error: Browser verification failed; inspect the case log.
+    at main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:58:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)

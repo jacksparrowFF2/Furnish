@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-23",
+  "scope": "incremental",
+  "tests": [
+    {
+      "file": "tests/test-pegboard-alignment.cjs",
+      "status": "passed",
+      "output": "PASS pegboard alignment: actual vs target, signed mismatch/zero, local projected outlines, stable closed datum, height offset, rotation/mirror, union, missing source, no mutation\n"
+    },
+    {
+      "file": "tests/test-pegboard-padding.cjs",
+      "status": "passed",
+      "output": "PASS pegboard four-side padding: defaults/legacy omission, asymmetric/zero/decimal/upper bounds, strict import validation, move/resize/height with persistent settings, transforms, manual/resume/pending, production solids, copy/specification/replacement and repeated current/named restoration\n"
+    },
+    {
+      "file": "tests/test-pegboard-auto.cjs",
+      "status": "passed",
+      "output": "PASS pegboard automatic/manual: live move/resize/height, freeze/resume, invalid/missing sources and recovery, locks, transforms, geometry/fingerprint, copy, current/named work restore and production atomic undo/redo\n"
+    },
+    {
+      "file": "tests/test-pegboard-fit-grid.cjs",
+      "status": "passed",
+      "output": "PASS pegboard auto fit/grid: projection, rotation/mirror, union, 500 mm boundary, strict fit, manual state, uniform lattice, diameter/count production geometry, spatial confirmation, copy and current/named repeated restore\n"
+    },
+    {
+      "file": "tests/test-pegboard-hatch.cjs",
+      "status": "passed",
+      "output": "PASS pegboard hatch: strict dimensions/edges, legacy omission, real hole and hinged perforated leaf, current solids, opening height/rotation/mirror, installation shift, toggle/specification, confirmation and current/named no-drift restoration\n"
+    },
+    {
+      "file": "tests/test-cabinet-preview.cjs",
+      "status": "passed",
+      "output": "PASS shelf/divider picking, constrained dragging, growing total width, unchanged neighbors, keyboard edits, cancellation, front view and preview cleanup\n"
+    },
+    {
+      "file": "tests/test-cabinet-dimensions.cjs",
+      "status": "passed",
+      "output": "PASS all cabinet templates, straight/left/right/mirrored kitchen module numbering, empty/interleaved modules, precise clear/nominal dimensions, production projection, selection refusal, dimension toggle and draft isolation\n"
+    },
+    {
+      "file": "tests/test-dimension-density.cjs",
+      "status": "passed",
+      "output": "PASS compact outer-envelope chains, no opposite-side duplicates, repeated values at distinct positions, internal-wall exclusion, opening fill, four screen-top/left orientations and production project/restore compatibility\n"
+    },
+    {
+      "file": "tests/test-preview-generation.cjs",
+      "status": "passed",
+      "output": "PASS clean-checkout generation of 19 previews without index model code, standalone dependency recovery, offline engines, script syntax and local links\n"
+    },
+    {
+      "file": "tests/test-work-state.cjs",
+      "status": "passed",
+      "output": "PASS work restoration, independent defaults, legacy fields and custom architecture\n"
+    },
+    {
+      "file": "tests/test-project-validation.cjs",
+      "status": "passed",
+      "output": ""
+    },
+    {
+      "file": "tests/test-review-consistency.cjs",
+      "status": "passed",
+      "output": "PASS optimized review matches legacy confirmations, geometry/threshold invalidation and malformed record handling\nPASS versioned spatial confirmations, height/cavity/mirror/physical-room invalidation and non-spatial edit stability\n"
+    }
+  ],
+  "browser": {
+    "origin": "http://127.0.0.1:8768/",
+    "isolatedWorkspace": "output/playwright/pegboard-hatch-workspace",
+    "userProjectsModified": false,
+    "checks": [
+      {
+        "name": "initial measurement",
+        "result": "top30 bottom20 left5 right15; all actual=target"
+      },
+      {
+        "name": "input before blur",
+        "result": "typing top40 immediately updates top actual/target40 and opening contour"
+      },
+      {
+        "name": "manual mismatch",
+        "result": "width400 leaves right actual -5 vs target15, orange warning class"
+      },
+      {
+        "name": "dimension toggle",
+        "result": "off removes all four annotations; on restores"
+      },
+      {
+        "name": "save and undo/redo",
+        "result": "saved top40; undo preview top30; redo top40"
+      },
+      {
+        "name": "refresh",
+        "result": "top40 bottom20 left5 right15 restored with matching actual values"
+      },
+      {
+        "name": "visual",
+        "result": "3D projection and leader labels visible; zoom shows box dashed outline and fixed closed opening outline"
+      }
+    ],
+    "screenshots": [
+      "alignment.jpg",
+      "manual-mismatch.jpg"
+    ]
+  },
+  "syntax": "passed",
+  "diffCheck": "passed",
+  "notExecuted": [
+    "full scripts/check.cjs: incremental preview/core scope only",
+    "file:// browser validation: no loading changes",
+    "narrow-screen browser validation"
+  ],
+  "boundaries": [
+    "measurements use closed access-opening datum rather than moving leaf edges and exclude the 2 mm leaf seam",
+    "box front face projected onto panel plane; does not express rear depth clearance",
+    "multiple eligible boxes use combined boundary",
+    "extreme view angles, off-screen endpoints and dense labels remain subject to projection visibility and overlap avoidance",
+    "invalid input retains last valid preview; no new persistent fields"
+  ]
+}

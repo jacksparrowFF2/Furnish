@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "job": {
+    "id": "080875c9-9eeb-447b-91a5-8e3be4449dee",
+    "state": "done",
+    "message": "渲染完成 · OPTIX",
+    "width": 951,
+    "height": 960,
+    "quality": "preview",
+    "device": "auto",
+    "source": "refined",
+    "camera": "source",
+    "renderInfo": {
+      "source": "refined",
+      "cameraMode": "source",
+      "camera": "FurnishCamera.001",
+      "world": "Study | daylight sky",
+      "existingMaterialBindingsPreserved": 4355,
+      "existingManagedMeshes": 4355,
+      "lightsPreserved": 8,
+      "sync": {
+        "added": 0,
+        "updated": 4355,
+        "deleted": 0,
+        "adopted": 0,
+        "matchedByPartKey": 0,
+        "revision": "47fe8f185f1a710649b0f0856c1c137d0600d5118d66e65aa2239fb9014b0aaa",
+        "cleanupWarnings": [],
+        "renderCamera": "FurnishCamera.001"
+      },
+      "samples": 32,
+      "exposure": -0.75,
+      "viewTransform": "AgX",
+      "resolution": [
+        951,
+        960
+      ]
+    },
+    "renderDevice": {
+      "requested": "auto",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "created": "2026-10-24T13:09:48.976Z",
+    "image": "/api/furnish/blender/jobs/080875c9-9eeb-447b-91a5-8e3be4449dee/image",
+    "blend": "/api/furnish/blender/jobs/080875c9-9eeb-447b-91a5-8e3be4449dee/blend",
+    "scene": "/api/furnish/blender/jobs/080875c9-9eeb-447b-91a5-8e3be4449dee/scene"
+  },
+  "templateUnchanged": true,
+  "workspaceUnchanged": true,
+  "reopen": true,
+  "narrowScreen": true,
+  "errors": []
+}

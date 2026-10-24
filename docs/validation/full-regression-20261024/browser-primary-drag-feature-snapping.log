@@ -1,0 +1,1 @@
+{"case":"drag-feature-snapping","status":"PASS","result":{"status":"PASS","checks":"furniture/wall midpoints, rotated corners, member-based group snapping, undo/redo/cancel, release cleanup, rotated mobile and reload","errors":[]}}

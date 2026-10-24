@@ -1,5 +1,34 @@
 # 模块与加载约定
 
+2026-10-24 全量复验：自动检修盖板的入口扫描先检查分区数组／成员，损坏旧记录继续进入原恢复界面，不影响正常家具事务；安装资料待核对能力集中补入产品定义。专用浏览器验收归入 scripts/verify，预览遵守 FURNISH_VERIFY_ROOT，禁止覆盖真实预览。无新持久版本或保存通道。见 [完整记录](validation/full-regression-20261024/summary.json)。
+
+2026-10-23：分水器默认总高 500 mm（用户确认）；产品能力 rearService 供厨房自动避让预留完整后部空间，派生 obstacleFit.depths[].rearService:true。cabinetLayout 共用减深及取消背板，生产板件、抽屉运动、测距与展开预览读取同一结果；原恢复／commit 重算，无新加载或保存通道。确认追加 manifold-rear-service-v1，详见 [后方安装](HEATING-MANIFOLD.md#厨房地柜后方安装2026-10-23)。
+
+2026-10-23：分水器可选 manifoldLengths={upper,lower} 保存独立上下排主管长度，产品核心派生最大长度外包并校验 w 一致性；旧缺失读取原几何、首次编辑才物化。生产模型用相切圆弧网格及分段实体记录器共用转角；两项长度进入三维／实体缓存、空间确认与采购分组，确认语义加入 manifold-curved-elbows-v2。无新脚本或保存通道，见 [分水器](HEATING-MANIFOLD.md)。
+
+
+2026-10-23：预览余量标注的就地输入通过 actions.hatchMargin 转发柜体核心 editPegboardHatchMargin；自动模式重适配，手动模式保持对边。柜体保存先提交未完成输入，沿原 read／refresh／mutate，无新字段或加载脚本。见 [点击余量编辑](ENTRY-PEGBOARD-CABINET.md#点击预览余量直接编辑2026-10-23)。
+
+
+2026-10-23：`manifold-model.js` 提供分水器生产／独立预览及实体记录器共用构造器，产品核心集中路数范围、右排宽与左长编辑。可选 manifoldLoops 和既有 w／d／h／mountHeight 沿原恢复、项目与 mutate 链路；路数覆盖实体／三维缓存、空间确认及采购分组。普通脚本在主场景前加载，HTTP 和断网 file:// 专项通过，无新格式或保存通道。见 [分水器](HEATING-MANIFOLD.md)。
+
+
+2026-10-23：柜体核心 pegboardHatchAlignment 派生电箱投影、关闭检修口及四边实测／设定余量；cabinet-preview 复用原相机、SVG 轮廓和尺寸开关。编辑器 input 更新生产草稿预览，保存仍为一次 mutate；无新字段、加载脚本或缓存输入。见 [预览对齐](ENTRY-PEGBOARD-CABINET.md#三维预览的电箱对齐标注2026-10-23)。
+
+
+2026-10-23：检修盖板可选 padding={top,bottom,left,right}，产品核心集中方向／默认／范围，柜体核心统一严格读取。适配、自动同步和恢复共用已保存四边余量，旧缺失各 10 mm 且不补写。沿完整 cabinet 缓存／确认和原保存历史，无新加载脚本。见 [四边余量](ENTRY-PEGBOARD-CABINET.md#自动适配的四边独立余量2026-10-23)。
+
+
+2026-10-23：检修盖板可选 mode=manual/auto，柜体核心集中模式校验、同步及失配核对。应用 commit 保存前、work-state 恢复后调用 normalizePegboardHatches，电箱和盖板为同一历史事务；失配保留有效几何并进入项目 pending 检查。旧缺失为手动，无 ID 绑定、额外保存或新加载脚本。见 [自动／手动](ENTRY-PEGBOARD-CABINET.md#检修盖板自动手动模式2026-10-23)。
+
+
+2026-10-23：柜体核心新增洞洞板电箱投影适配和统一孔阵，规则集中在 pegboardAssembly；可选 columns[].pegboardHoles 沿原完整 cabinet 保存／缓存，空间确认忽略普通圆孔配置。固定板生产 Shape 含矩形检修孔，cabinet-motion 直接读取矩形孔派生四片板件；无新增加载脚本。见 [电箱适配与孔阵](ENTRY-PEGBOARD-CABINET.md#按后方电箱适配与可调孔阵2026-10-23)。
+
+
+2026-10-23：玄关洞洞板局部检修盖板使用可选 `cabinet.columns[].pegboardHatch`，产品核心集中范围，柜体核心共用局部区域、校验及包含板厚的扫掠。生产柜体分割静板并记录穿孔运动盖板，沿现有 solidParts／开启／预览／主场景及完整 cabinet 缓存与存储链路；没有新加载脚本或顶层字段。见 [洞洞板检修盖板](ENTRY-PEGBOARD-CABINET.md#电箱前的局部检修盖板2026-10-23)。
+
+2026-10-23：`electrical-box-core.js` 共用强／弱电箱的墙面定位、裁切输入及容纳检查，产品核心登记 wallRecess 能力并沿用现有尺寸／mountHeight 字段；`electrical-box-model.js` 提供生产模型和保留 UV 的墙面三角裁切。二维墙层按箱体投影剪裁，属性仍通过原 mutate 编辑。建筑缓存加入裁切输入，原家具缓存覆盖尺寸与安装；无新持久字段、项目版本或存储通道。见 [强弱电箱](ELECTRICAL-BOXES.md)。
+
 2026-10-22：基础家具生产构造器抽到 `basic-furniture-model.js`；`model-solid-recorder.js` 为生产构造器提供同步数值适配，`furniture-solids.js` 共用读取 24 类实体，不新增持久结构或兼容分支。开门／折叠／随机种子进入缓存，空间确认标识升级 v2。Blender 导出补充部件角色身份，接收器先规划匹配再可回滚地应用，提交后清理旧对象。见 [实体覆盖](FURNITURE-SOLIDS.md)、[同步契约](BLENDER-SYNC.md) 和 [验收](validation/p1-solids-sync-20261022/summary.json)。
 
 2026-10-21 全量回归：家具输入升级对原本结构损坏的记录保留完整原值，继续升级正常同伴，由既有修复界面处理；项目导入／保存仍严格校验，不补造损坏结构。Blender快照将非等比缩放与旋转产生的残余剪切烘焙到独立网格，输出可准确分解的镜像TRS；带剪切的实例自动展开，源模型不变。二维模式显式关闭透明三维层的鼠标命中。见 [本轮验收](validation/full-regression-blender-20261021/summary.json)。

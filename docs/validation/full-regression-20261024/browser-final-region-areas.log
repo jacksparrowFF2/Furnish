@@ -1,0 +1,1 @@
+{"case":"region-areas","status":"PASS","result":{"status":"PASS","protocols":["http","file"],"checks":["Shift add/remove","plain click reset","two areas","ephemeral state","save/refresh","undo/redo","390px removal"],"errors":[]}}

@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-23",
+  "scope": "incremental",
+  "syntax": {
+    "files": [
+      "src/core/electrical-box-core.js",
+      "src/core/product-rules.js",
+      "src/core/project-core.js",
+      "src/data/catalog.js",
+      "src/render/electrical-box-model.js",
+      "src/render/furniture-svg.js",
+      "src/render/plan-renderer.js",
+      "src/ui/furniture-actions.js",
+      "src/ui/property-panel.js",
+      "tests/test-electrical-box.cjs"
+    ],
+    "inlineModules": 1,
+    "entryAssets": "passed",
+    "sharedClassicDeclarations": "passed by electrical-box test"
+  },
+  "tests": [
+    {
+      "test": "tests/test-electrical-box.cjs",
+      "status": "passed",
+      "output": "PASS electrical boxes: catalog, placement, bounds, collision, distances, restore/roundtrip, production geometry and wall cut triangles"
+    },
+    {
+      "test": "tests/test-product-rules.cjs",
+      "status": "passed",
+      "output": "PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API"
+    },
+    {
+      "test": "tests/test-block-placeholder.cjs",
+      "status": "passed",
+      "output": "PASS block placeholder dimensions, production geometry, persistence and spatial bounds"
+    },
+    {
+      "test": "tests/test-enclosed-boundary-distances.cjs",
+      "status": "passed",
+      "output": "PASS enclosed boundaries: screenshot fixture, 85 catalog types × 8 transforms, partial overlap/contact, height separation/unknowns, groups, drawing rotation, real panels, preserved collision checks and project roundtrip"
+    },
+    {
+      "test": "tests/test-review-consistency.cjs",
+      "status": "passed",
+      "output": "PASS optimized review matches legacy confirmations, geometry/threshold invalidation and malformed record handling\nPASS versioned spatial confirmations, height/cavity/mirror/physical-room invalidation and non-spatial edit stability"
+    },
+    {
+      "test": "tests/test-spatial-review-cache.cjs",
+      "status": "passed",
+      "output": "PASS spatial review cache source immutability, pricing/north independence, naming/geometry invalidation and issue explanation"
+    },
+    {
+      "test": "tests/test-work-state.cjs",
+      "status": "passed",
+      "output": "PASS work restoration, independent defaults, legacy fields and custom architecture"
+    },
+    {
+      "test": "tests/test-wall-finishes.cjs",
+      "status": "passed",
+      "output": "PASS finish boundaries, snapping, numeric placement, rooms, thresholds, mirrored/rotated groups, openings, side binding, versions, calibration, copies, repeated recovery and unchanged cabinets\nPASS real Three.js tile / bond solids, millimetre boundaries, cut heights and door openings"
+    },
+    {
+      "test": "tests/test-wall-tiling.cjs",
+      "status": "passed",
+      "output": "PASS wall tile regions/both faces/virtual dividers, exact openings, finished corners, absolute/relative heights, unknowns, disabled settings, independent thickness, atomic validation, spatial confirmations and v4 repeated recovery\nPASS production wall-pattern planes, UVs, normals, millimetre bounds, ceiling cuts and one-time material/texture disposal"
+    },
+    {
+      "test": "tests/test-floor-finishes.cjs",
+      "status": "passed",
+      "output": "PASS floor elevations, editable bathroom drop, unknown/conflicts/cycles, grids/holes/angles/origins, thresholds, confirmations, versions/copies/repeated recovery and unchanged furniture\nPASS production floor layer geometry and grid UV coordinates"
+    },
+    {
+      "test": "tests/test-furniture-production-solids.cjs",
+      "status": "passed",
+      "output": "PASS production furniture solids: cavities, real intersections, exact contact, rotations/mirrors, height clipping, unknowns, canvas/project agreement, current/named roundtrip and real Three geometry"
+    }
+  ],
+  "notRun": [
+    "full scripts/check.cjs",
+    "historical generated previews",
+    "file://: prior browser URL policy block; HTTP explicitly verified in follow-up",
+    "narrow screen"
+  ],
+  "boundaries": [
+    "static generic exterior, no product installation specification",
+    "triangle-surface recess cuts have no new architectural reveal caps"
+  ],
+  "browserAcceptance": "browser-manual.json"
+}

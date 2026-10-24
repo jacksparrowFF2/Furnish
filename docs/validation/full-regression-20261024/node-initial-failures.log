@@ -1,0 +1,1831 @@
+PASS tests\test-aircon-midea.cjs
+PASS tests\test-appliance-module-boundaries.cjs
+FAIL tests\test-aquarium.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-aquarium.cjs:30:74
+PASS tests\test-artifact-layout.cjs
+PASS tests\test-autosave.cjs
+PASS tests\test-bay-assemblies.cjs
+PASS tests\test-bay-editing.cjs
+PASS tests\test-bay-windows.cjs
+PASS tests\test-beam-body-collisions.cjs
+PASS tests\test-beam-heights.cjs
+PASS tests\test-beam-roof.cjs
+PASS tests\test-blender-affine.cjs
+PASS tests\test-blender-device.cjs
+PASS tests\test-blender-part-identity.cjs
+PASS tests\test-blender-refined.cjs
+PASS tests\test-blender-render.cjs
+PASS tests\test-blender-sync.cjs
+FAIL tests\test-block-placeholder.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-block-placeholder.cjs:57:82
+PASS tests\test-browser-verification.cjs
+PASS tests\test-cabinet-advanced.cjs
+PASS tests\test-cabinet-boundary-snapping.cjs
+PASS tests\test-cabinet-catalog.cjs
+PASS tests\test-cabinet-custom-fronts.cjs
+PASS tests\test-cabinet-design-upgrade.cjs
+PASS tests\test-cabinet-dimensions.cjs
+PASS tests\test-cabinet-door-settings.cjs
+PASS tests\test-cabinet-drawer-joints.cjs
+PASS tests\test-cabinet-edit-operations.cjs
+PASS tests\test-cabinet-full-width-drawers.cjs
+PASS tests\test-cabinet-interior-distances.cjs
+PASS tests\test-cabinet-model.cjs
+PASS tests\test-cabinet-module-widths.cjs
+PASS tests\test-cabinet-opening-3d.cjs
+PASS tests\test-cabinet-opening-volume-model.cjs
+PASS tests\test-cabinet-overlay.cjs
+PASS tests\test-cabinet-palette.cjs
+PASS tests\test-cabinet-preview.cjs
+PASS tests\test-cabinet-section-doors.cjs
+PASS tests\test-cabinet-setting-inheritance.cjs
+PASS tests\test-cabinet.cjs
+PASS tests\test-canvas-cancel.cjs
+PASS tests\test-canvas-pointer-frames.cjs
+PASS tests\test-canvas-render-cache.cjs
+evalmachine.<anonymous>:19
+FAIL tests\test-cat-tree.cjs
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-cat-tree.cjs:16:66
+PASS tests\test-catalog-browsing.cjs
+PASS tests\test-catalog-links.cjs
+PASS tests\test-ceiling-continuous-light.cjs
+PASS tests\test-ceiling-corners.cjs
+PASS tests\test-ceiling-end-caps.cjs
+PASS tests\test-ceiling-height.cjs
+PASS tests\test-ceiling-storage.cjs
+PASS tests\test-ceilings.cjs
+PASS tests\test-centerline-walls.cjs
+PASS tests\test-cherry-coffee-table.cjs
+PASS tests\test-complete-template.cjs
+PASS tests\test-copy-purchase.cjs
+FAIL tests\test-curtains-sliding.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-curtains-sliding.cjs:73:18
+PASS tests\test-custom-plans.cjs
+PASS tests\test-cut-board-motion.cjs
+PASS tests\test-delivery.cjs
+PASS tests\test-design-consistency.cjs
+PASS tests\test-design-management.cjs
+PASS tests\test-design-workflow.cjs
+PASS tests\test-dimension-density.cjs
+PASS tests\test-directional-config-order.cjs
+PASS tests\test-directional-heights.cjs
+PASS tests\test-directional-kitchen-solids.cjs
+PASS tests\test-directional-placement.cjs
+PASS tests\test-dishwasher-clearances.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-dishwasher.cjs:28:93
+FAIL tests\test-dishwasher.cjs
+PASS tests\test-door-2d-refresh.cjs
+PASS tests\test-door-geometry.cjs
+PASS tests\test-double-doors.cjs
+evalmachine.<anonymous>:160
+  if(FurnishProducts.definition(f)?.wallRecess)return false;
+  ^
+
+ReferenceError: FurnishProducts is not defined
+    at pushOut (evalmachine.<anonymous>:160:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at Object.<anonymous> (C:\Users\SPH\Documents\GitHub\Furnish\tests\test-drag-axis-lock.cjs:13:100)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object..js (node:internal/modules/cjs/loader:2060:10)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+
+Node.js v24.20.0
+FAIL tests\test-drag-axis-lock.cjs
+PASS tests\test-drag-feature-snapping.cjs
+PASS tests\test-drawing-export.cjs
+PASS tests\test-drawing-readability.cjs
+evalmachine.<anonymous>:10
+  const recesses=state.furniture.filter(f=>FurnishProducts.definition(f)?.wallRecess&&!f.obj&&!furnitureError(f)).map(f=>FurnishGeometry.corners(f));
+                                 ^
+
+TypeError: Cannot read properties of undefined (reading 'filter')
+    at renderWalls (evalmachine.<anonymous>:10:34)
+    at evalmachine.<anonymous>:24:2
+FAIL tests\test-drawing-walls.cjs
+    at Script.runInContext (node:vm:149:12)
+    at Script.runInNewContext (node:vm:154:17)
+    at Object.runInNewContext (node:vm:310:38)
+    at Object.<anonymous> (C:\Users\SPH\Documents\GitHub\Furnish\tests\test-drawing-walls.cjs:4:4)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object..js (node:internal/modules/cjs/loader:2060:10)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+
+Node.js v24.20.0
+PASS tests\test-drawing.cjs
+PASS tests\test-dxf-inspection.cjs
+PASS tests\test-dxf-outlines.cjs
+PASS tests\test-dxf-repair.cjs
+PASS tests\test-dxf-supplement.cjs
+PASS tests\test-dxf-templates.cjs
+PASS tests\test-editable-presets.cjs
+PASS tests\test-electrical-box.cjs
+PASS tests\test-enclosed-boundary-distances.cjs
+PASS tests\test-entry-console.cjs
+PASS tests\test-entry-editor.cjs
+PASS tests\test-entry-pegboard.cjs
+PASS tests\test-entry-shared-board.cjs
+PASS tests\test-finish-guide.cjs
+PASS tests\test-finish-miter-snap.cjs
+PASS tests\test-floor-bulk-levels.cjs
+PASS tests\test-floor-finishes.cjs
+PASS tests\test-floor-origin-preview.cjs
+PASS tests\test-floor-origin-snap.cjs
+PASS tests\test-floor-unified-origin.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-folding-table.cjs:40:114
+FAIL tests\test-folding-table.cjs
+PASS tests\test-fotile.cjs
+PASS tests\test-free-zones-3d.cjs
+PASS tests\test-free-zones.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-fridges.cjs:28:54
+FAIL tests\test-fridges.cjs
+PASS tests\test-functional-zones.cjs
+PASS tests\test-furniture-finished-datum.cjs
+PASS tests\test-furniture-fit.cjs
+PASS tests\test-furniture-groups.cjs
+PASS tests\test-furniture-labels.cjs
+PASS tests\test-furniture-management.cjs
+PASS tests\test-furniture-production-solids.cjs
+PASS tests\test-furniture-recovery.cjs
+PASS tests\test-furniture-snapping-audit.cjs
+PASS tests\test-furniture-solids-coverage.cjs
+PASS tests\test-furniture-svg.cjs
+PASS tests\test-group-directional-placement.cjs
+PASS tests\test-group-placement.cjs
+PASS tests\test-hob-cutout.cjs
+PASS tests\test-hob-link-options.cjs
+PASS tests\test-hob-openings.cjs
+PASS tests\test-hood-bay-modules.cjs
+PASS tests\test-hood-bay.cjs
+PASS tests\test-hood-cavity-clearance.cjs
+PASS tests\test-hood-cavity-details.cjs
+PASS tests\test-hood-geometry.cjs
+PASS tests\test-i18n.cjs
+PASS tests\test-import-consistency.cjs
+PASS tests\test-kitchen-auto-avoid.cjs
+PASS tests\test-kitchen-corner-fit.cjs
+PASS tests\test-kitchen-corner-leaves.cjs
+PASS tests\test-kitchen-dish-basket.cjs
+PASS tests\test-kitchen-divider-input.cjs
+PASS tests\test-kitchen-dividers.cjs
+PASS tests\test-kitchen-door-pairing.cjs
+PASS tests\test-kitchen-door-widths.cjs
+PASS tests\test-kitchen-drawer-boundaries.cjs
+PASS tests\test-kitchen-drawer-snapping.cjs
+PASS tests\test-kitchen-drawer-tiers.cjs
+PASS tests\test-kitchen-edge-snapping.cjs
+PASS tests\test-kitchen-elevations.cjs
+PASS tests\test-kitchen-extension-resize.cjs
+PASS tests\test-kitchen-form.cjs
+PASS tests\test-kitchen-gap-input.cjs
+PASS tests\test-kitchen-outer-edges.cjs
+PASS tests\test-kitchen-overlay.cjs
+PASS tests\test-kitchen-partitions.cjs
+PASS tests\test-kitchen-plinth.cjs
+PASS tests\test-kitchen-preview.cjs
+PASS tests\test-kitchen-resize.cjs
+PASS tests\test-kitchen-right.cjs
+PASS tests\test-kitchen-run-handles.cjs
+PASS tests\test-kitchen-shelves.cjs
+PASS tests\test-kitchen-single-hinge.cjs
+PASS tests\test-kitchen-thin-end.cjs
+PASS tests\test-kitchen-u.cjs
+PASS tests\test-kitchen-wall-adjust.cjs
+PASS tests\test-kitchen-worktop.cjs
+PASS tests\test-kitchen.cjs
+PASS tests\test-laundry-area.cjs
+PASS tests\test-laundry-back-alignment.cjs
+PASS tests\test-laundry-basin-joins.cjs
+PASS tests\test-laundry-cabinet.cjs
+PASS tests\test-laundry-catalog.cjs
+PASS tests\test-laundry-integrated.cjs
+PASS tests\test-laundry-notch-closure.cjs
+PASS tests\test-laundry-resize-vessel.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-laundry-stack.cjs:70:69
+FAIL tests\test-laundry-stack.cjs
+PASS tests\test-layout-dxf.cjs
+PASS tests\test-layout-geometry.cjs
+PASS tests\test-legacy-cabinet-upgrade.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-litter-box.cjs:16:66
+FAIL tests\test-litter-box.cjs
+PASS tests\test-manifold-kitchen.cjs
+PASS tests\test-manifold.cjs
+PASS tests\test-material-purchasing.cjs
+PASS tests\test-measure-boundaries.cjs
+PASS tests\test-measure-corners.cjs
+PASS tests\test-measure-midpoints.cjs
+PASS tests\test-merged-format.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-mirror.cjs:25:45
+FAIL tests\test-mirror.cjs
+PASS tests\test-multi-region-merge.cjs
+PASS tests\test-navigation-input.cjs
+PASS tests\test-observation-layers.cjs
+PASS tests\test-opening-editor.cjs
+PASS tests\test-opening-references.cjs
+PASS tests\test-pegboard-accessories.cjs
+PASS tests\test-pegboard-alignment.cjs
+PASS tests\test-pegboard-auto.cjs
+PASS tests\test-pegboard-fit-grid.cjs
+PASS tests\test-pegboard-hatch.cjs
+PASS tests\test-pegboard-margin-edit.cjs
+PASS tests\test-pegboard-padding.cjs
+PASS tests\test-pegboard-parts.cjs
+evalmachine.<anonymous>:19
+FAIL tests\test-pet-feeder.cjs
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-pet-feeder.cjs:16:66
+PASS tests\test-pipe-collisions.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-pipebox.cjs:111:126
+FAIL tests\test-pipebox.cjs
+PASS tests\test-placement-suggestions.cjs
+PASS tests\test-plan-height-order.cjs
+PASS tests\test-plan-sharing.cjs
+PASS tests\test-preset-copy-ui.cjs
+PASS tests\test-preview-files.cjs
+PASS tests\test-preview-generation.cjs
+PASS tests\test-pricing.cjs
+PASS tests\test-procurement.cjs
+PASS tests\test-product-plan-outline.cjs
+PASS tests\test-product-rules.cjs
+PASS tests\test-project-recovery.cjs
+PASS tests\test-project-validation.cjs
+PASS tests\test-project.cjs
+PASS tests\test-property-first-batch.cjs
+PASS tests\test-property-second-batch.cjs
+PASS tests\test-purchase-group.cjs
+PASS tests\test-purchase-orders.cjs
+PASS tests\test-purchase-relink.cjs
+PASS tests\test-readiness.cjs
+PASS tests\test-recessed-bay-windows.cjs
+PASS tests\test-recovery-storage.cjs
+PASS tests\test-region-areas.cjs
+PASS tests\test-region-editor.cjs
+PASS tests\test-region-merge-rounded.cjs
+PASS tests\test-region-operations.cjs
+PASS tests\test-replacement.cjs
+PASS tests\test-repository-storage.cjs
+PASS tests\test-repository-workspace.cjs
+PASS tests\test-resize-axis.cjs
+PASS tests\test-review-consistency.cjs
+FAIL tests\test-robot-vacuum.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-robot-vacuum.cjs:20:20
+PASS tests\test-room-ceiling-height.cjs
+PASS tests\test-room-net.cjs
+PASS tests\test-scene-annotations.cjs
+node:internal/assert/utils:77
+    throw err;
+    ^
+
+AssertionError [ERR_ASSERTION]: appliance coverage: heating_manifold
+    at Object.<anonymous> (C:\Users\SPH\Documents\GitHub\Furnish\tests\test-scene-clearance-settings.cjs:12:70)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object..js (node:internal/modules/cjs/loader:2060:10)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.20.0
+FAIL tests\test-scene-clearance-settings.cjs
+PASS tests\test-scene-observation.cjs
+PASS tests\test-scene-shadow-cache.cjs
+PASS tests\test-server-startup.cjs
+PASS tests\test-share-codec.cjs
+PASS tests\test-shared-appliance-model.cjs
+PASS tests\test-shoe-bench.cjs
+PASS tests\test-short-wall-snapping.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-shower-arrow.cjs:21:71
+FAIL tests\test-shower-arrow.cjs
+PASS tests\test-sideboard-board-edges.cjs
+PASS tests\test-sink-linked-offset-model.cjs
+PASS tests\test-sink-linked-offset.cjs
+PASS tests\test-sink-surface.cjs
+AssertionError [ERR_ASSERTION]: Expected "actual" to be reference-equal to "expected":
++ actual - expected
+... Skipped lines
+
++ <ref *1> Wl {
+- Wl {
+    animations: [],
+    castShadow: false,
++   children: [
++     Xs {
++       animations: [],
++       castShadow: false,
++       children: [],
++       frustumCulled: true,
++       geometry: qs {
++         attributes: {
++           normal: vs {
++             _updateRange: {
++               count: -1,
++               offset: 0
++             },
++             array: Float32Array(72) [
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1,
++               0,
++               0,
++               -1
++             ],
++             count: 24,
++             gpuType: 1015,
++             isBufferAttribute: true,
++             itemSize: 3,
++             name: '',
++             normalized: false,
++             updateRanges: [],
++             usage: 35044,
++             version: 0
++           },
++           position: vs {
++             _updateRange: {
++               count: -1,
++               offset: 0
++             },
++             array: Float32Array(72) [
++               0.5,
++               0.05000000074505806,
++               0.30000001192092896,
++               0.5,
++               0.05000000074505806,
++               -0.30000001192092896,
++               0.5,
++               -0.05000000074505806,
++               0.30000001192092896,
++               0.5,
++               -0.05000000074505806,
++               -0.30000001192092896,
++               -0.5,
++               0.05000000074505806,
++               -0.30000001192092896,
++               -0.5,
++               0.05000000074505806,
++               0.30000001192092896,
++               -0.5,
++               -0.05000000074505806,
++               -0.30000001192092896,
++               -0.5,
++               -0.05000000074505806,
++               0.30000001192092896,
++               -0.5,
++               0.05000000074505806,
++               -0.30000001192092896,
++               0.5,
++               0.05000000074505806,
++               -0.30000001192092896,
++               -0.5,
++               0.05000000074505806,
++               0.30000001192092896,
++               0.5,
++               0.05000000074505806,
++               0.30000001192092896,
++               -0.5,
++               -0.05000000074505806,
++               0.30000001192092896,
++               0.5,
++               -0.05000000074505806,
++               0.30000001192092896,
++               -0.5,
++               -0.05000000074505806,
++               -0.30000001192092896,
++               0.5,
++               -0.05000000074505806,
++               -0.30000001192092896,
++               -0.5,
++               0.05000000074505806,
++               0.30000001192092896,
++               0.5,
++               0.05000000074505806,
++               0.30000001192092896,
++               -0.5,
++               -0.05000000074505806,
++               0.30000001192092896,
++               0.5,
++               -0.05000000074505806,
++               0.30000001192092896,
++               0.5,
++               0.05000000074505806,
++               -0.30000001192092896,
++               -0.5,
++               0.05000000074505806,
++               -0.30000001192092896,
++               0.5,
++               -0.05000000074505806,
++               -0.30000001192092896,
++               -0.5,
++               -0.05000000074505806,
++               -0.30000001192092896
++             ],
++             count: 24,
++             gpuType: 1015,
++             isBufferAttribute: true,
++             itemSize: 3,
++             name: '',
++             normalized: false,
++             updateRanges: [],
++             usage: 35044,
++             version: 0
++           },
++           uv: vs {
++             _updateRange: {
++               count: -1,
++               offset: 0
++             },
++             array: Float32Array(48) [
++               0,
++               1,
++               1,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               1,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               1,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               1,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               1,
++               1,
++               0,
++               0,
++               1,
++               0,
++               0,
++               1,
++               1,
++               1,
++               0,
++               0,
++               1,
++               0
++             ],
++             count: 24,
++             gpuType: 1015,
++             isBufferAttribute: true,
++             itemSize: 2,
++             name: '',
++             normalized: false,
++             updateRanges: [],
++             usage: 35044,
++             version: 0
++           }
++         },
++         boundingBox: null,
++         boundingSphere: null,
++         drawRange: {
++           count: Infinity,
++           start: 0
++         },
++         groups: [
++           {
++             count: 6,
++             materialIndex: 0,
++             start: 0
++           },
++           {
++             count: 6,
++             materialIndex: 1,
++             start: 6
++           },
++           {
++             count: 6,
++             materialIndex: 2,
++             start: 12
++           },
++           {
++             count: 6,
++             materialIndex: 3,
++             start: 18
++           },
++           {
++             count: 6,
++             materialIndex: 4,
++             start: 24
++           },
++           {
++             count: 6,
++             materialIndex: 5,
++             start: 30
++           }
++         ],
++         index: ms {
++           _updateRange: {
++             count: -1,
++             offset: 0
++           },
++           array: Uint16Array(36) [
++             0,
++             2,
++             1,
++             2,
++             3,
++             1,
++             4,
++             6,
++             5,
++             6,
++             7,
++             5,
++             8,
++             10,
++             9,
++             10,
++             11,
++             9,
++             12,
++             14,
++             13,
++             14,
++             15,
++             13,
++             16,
++             18,
++             17,
++             18,
++             19,
++             17,
++             20,
++             22,
++             21,
++             22,
++             23,
++             21
++           ],
++           count: 36,
++           gpuType: 1015,
++           isBufferAttribute: true,
++           itemSize: 1,
++           name: '',
++           normalized: false,
++           updateRanges: [],
++           usage: 35044,
++           version: 0
++         },
++         isBufferGeometry: true,
++         morphAttributes: {},
++         morphTargetsRelative: false,
++         name: '',
++         parameters: {
++           depth: 0.6,
++           depthSegments: 1,
++           height: 0.1,
++           heightSegments: 1,
++           width: 1,
++           widthSegments: 1
++         },
++         type: 'BoxGeometry',
++         userData: {},
++         uuid: '3cd4f6a3-4a9a-4a9c-bd86-ee01ac637a4b'
++       },
++       isMesh: true,
++       isObject3D: true,
++       layers: yr {
++         mask: 1
++       },
++       material: es {
++         _alphaTest: 0,
++         alphaHash: false,
++         alphaMap: null,
++         alphaToCoverage: false,
++         aoMap: null,
++         aoMapIntensity: 1,
++         blendAlpha: 0,
++         blendColor: Kr {
++           b: 0,
++           g: 0,
++           isColor: true,
++           r: 0
++         },
++         blendDst: 205,
++         blendDstAlpha: null,
++         blendEquation: 100,
++         blendEquationAlpha: null,
++         blendSrc: 204,
++         blendSrcAlpha: null,
++         blending: 1,
++         clipIntersection: false,
++         clipShadows: false,
++         clippingPlanes: null,
++         color: Kr {
++           b: 0.04231141061442144,
++           g: 0.10461648408208657,
++           isColor: true,
++           r: 0.5647115056965487
++         },
++         colorWrite: true,
++         combine: 0,
++         depthFunc: 3,
++         depthTest: true,
++         depthWrite: true,
++         dithering: false,
++         envMap: null,
++         fog: true,
++         forceSinglePass: false,
++         isMaterial: true,
++         isMeshBasicMaterial: true,
++         lightMap: null,
++         lightMapIntensity: 1,
++         map: null,
++         name: '',
++         opacity: 1,
++         polygonOffset: false,
++         polygonOffsetFactor: 0,
++         polygonOffsetUnits: 0,
++         precision: null,
++         premultipliedAlpha: false,
++         reflectivity: 1,
++         refractionRatio: 0.98,
++         shadowSide: null,
++         side: 0,
++         specularMap: null,
++         stencilFail: 7680,
++         stencilFunc: 519,
++         stencilFuncMask: 255,
++         stencilRef: 0,
++         stencilWrite: false,
++         stencilWriteMask: 255,
++         stencilZFail: 7680,
++         stencilZPass: 7680,
++         toneMapped: true,
++         transparent: false,
++         type: 'MeshBasicMaterial',
++         userData: {},
++         uuid: '2f08425d-3efa-4f09-bef4-ac4bcd5b22a4',
++         version: 0,
++         vertexColors: false,
++         visible: true,
++         wireframe: true,
++         wireframeLinecap: 'round',
++         wireframeLinejoin: 'round',
++         wireframeLinewidth: 1
++       },
++       matrix: cr {
++         elements: [
++           1,
++           0,
++           0,
++           0,
++           0,
++           1,
++           0,
++           0,
++           0,
++           0,
++           1,
++           0,
++           0,
++           0,
++           0,
++           1
++         ]
++       },
++       matrixAutoUpdate: true,
++       matrixWorld: cr {
++         elements: [
++           1,
++           0,
++           0,
++           0,
++           0,
++           1,
++           0,
++           0,
++           0,
++           0,
++           1,
++           0,
++           0,
++           0,
++           0,
++           1
++         ]
++       },
++       matrixWorldAutoUpdate: true,
++       matrixWorldNeedsUpdate: false,
++       name: '',
++       parent: [Circular *1],
++       position: Ui {
++         x: 0,
++         y: 0.05,
++         z: 0
++       },
++       quaternion: Ii {
++         _onChangeCallback: [Function (anonymous)],
++         _w: 1,
++         _x: 0,
++         _y: 0,
++         _z: 0,
++         isQuaternion: true
++       },
++       receiveShadow: false,
++       renderOrder: 0,
++       rotation: xr {
++         _onChangeCallback: [Function (anonymous)],
++         _order: 'XYZ',
++         _x: 0,
++         _y: 0,
++         _z: 0,
++         isEuler: true
++       },
++       scale: Ui {
++         x: 1,
++         y: 1,
++         z: 1
++       },
++       type: 'Mesh',
++       up: Ui {
++         x: 0,
++         y: 1,
++         z: 0
++       },
++       userData: {},
++       uuid: 'c9cc578b-753e-4114-a53a-36ccd46684b2',
++       visible: true
++     }
++   ],
+-   children: [],
+    frustumCulled: true,
+    isGroup: true,
+    isObject3D: true,
+    layers: yr {
+      mask: 1
+...
+    name: '',
++   parent: <ref *2> Wl {
++     animations: [],
++     castShadow: false,
++     children: [
++       [Circular *1],
++       <ref *3> Wl {
++         animations: [],
++         castShadow: false,
++         children: [
++           Xs {
++             animations: [],
++             castShadow: false,
++             children: [],
++             frustumCulled: true,
++             geometry: qs {
++               attributes: {
++                 normal: vs {
++                   _updateRange: {
++                     count: -1,
++                     offset: 0
++                   },
++                   array: Float32Array(72) [
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1,
++                     0,
++                     0,
++                     -1
++                   ],
++                   count: 24,
++                   gpuType: 1015,
++                   isBufferAttribute: true,
++                   itemSize: 3,
++                   name: '',
++                   normalized: false,
++                   updateRanges: [],
++                   usage: 35044,
++                   version: 0
++                 },
++                 position: vs {
++                   _updateRange: {
++                     count: -1,
++                     offset: 0
++                   },
++                   array: Float32Array(72) [
++                     0.3400000035762787,
++                     0.11999999731779099,
++                     0.22499999403953552,
++                     0.3400000035762787,
++                     0.11999999731779099,
++                     -0.22499999403953552,
++                     0.3400000035762787,
++                     -0.11999999731779099,
++                     0.22499999403953552,
++                     0.3400000035762787,
++                     -0.11999999731779099,
++                     -0.22499999403953552,
++                     -0.3400000035762787,
++                     0.11999999731779099,
++                     -0.22499999403953552,
++                     -0.3400000035762787,
++                     0.11999999731779099,
++                     0.22499999403953552,
++                     -0.3400000035762787,
++                     -0.11999999731779099,
++                     -0.22499999403953552,
++                     -0.3400000035762787,
++                     -0.11999999731779099,
++                     0.22499999403953552,
++                     -0.3400000035762787,
++                     0.11999999731779099,
++                     -0.22499999403953552,
++                     0.3400000035762787,
++                     0.11999999731779099,
++                     -0.22499999403953552,
++                     -0.3400000035762787,
++                     0.11999999731779099,
++                     0.22499999403953552,
++                     0.3400000035762787,
++                     0.11999999731779099,
++                     0.22499999403953552,
++                     -0.3400000035762787,
++                     -0.11999999731779099,
++                     0.22499999403953552,
++                     0.3400000035762787,
++                     -0.11999999731779099,
++                     0.22499999403953552,
++                     -0.3400000035762787,
++                     -0.11999999731779099,
++                     -0.22499999403953552,
++                     0.3400000035762787,
++                     -0.11999999731779099,
++                     -0.22499999403953552,
++                     -0.3400000035762787,
++                     0.11999999731779099,
++                     0.22499999403953552,
++                     0.3400000035762787,
++                     0.11999999731779099,
++                     0.22499999403953552,
++                     -0.3400000035762787,
++                     -0.11999999731779099,
++                     0.22499999403953552,
++                     0.3400000035762787,
++                     -0.11999999731779099,
++                     0.22499999403953552,
++                     0.3400000035762787,
++                     0.11999999731779099,
++                     -0.22499999403953552,
++                     -0.3400000035762787,
++                     0.11999999731779099,
++                     -0.22499999403953552,
++                     0.3400000035762787,
++                     -0.11999999731779099,
++                     -0.22499999403953552,
++                     -0.3400000035762787,
++                     -0.11999999731779099,
++                     -0.22499999403953552
++                   ],
++                   count: 24,
++                   gpuType: 1015,
++                   isBufferAttribute: true,
++                   itemSize: 3,
++                   name: '',
++                   normalized: false,
++                   updateRanges: [],
++                   usage: 35044,
++                   version: 0
++                 },
++                 uv: vs {
++                   _updateRange: {
++                     count: -1,
++                     offset: 0
++                   },
++                   array: Float32Array(48) [
++                     0,
++                     1,
++                     1,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     1,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     1,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     1,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     1,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0,
++                     0,
++                     1,
++                     1,
++                     1,
++                     0,
++                     0,
++                     1,
++                     0
++                   ],
++                   count: 24,
++                   gpuType: 1015,
++                   isBufferAttribute: true,
++                   itemSize: 2,
++                   name: '',
++                   normalized: false,
++                   updateRanges: [],
++                   usage: 35044,
++                   version: 0
++                 }
++               },
++               boundingBox: null,
++               boundingSphere: null,
++               drawRange: {
++                 count: Infinity,
++                 start: 0
++               },
++               groups: [
++                 {
++                   count: 6,
++                   materialIndex: 0,
++                   start: 0
++                 },
++                 {
++                   count: 6,
++                   materialIndex: 1,
++                   start: 6
++                 },
++                 {
++                   count: 6,
++                   materialIndex: 2,
++                   start: 12
++                 },
++                 {
++                   count: 6,
++                   materialIndex: 3,
++                   start: 18
++                 },
++                 {
++                   count: 6,
++                   materialIndex: 4,
++                   start: 24
++                 },
++                 {
++                   count: 6,
++                   materialIndex: 5,
++                   start: 30
++                 }
++               ],
++               index: ms {
++                 _updateRange: {
++                   count: -1,
++                   offset: 0
++                 },
++                 array: Uint16Array(36) [
++                   0,
++                   2,
++                   1,
++                   2,
++                   3,
++                   1,
++                   4,
++                   6,
++                   5,
++                   6,
++                   7,
++                   5,
++                   8,
++                   10,
++                   9,
++                   10,
++                   11,
++                   9,
++                   12,
++                   14,
++                   13,
++                   14,
++                   15,
++                   13,
++                   16,
++                   18,
++                   17,
++                   18,
++                   19,
++                   17,
++                   20,
++                   22,
++                   21,
++                   22,
++                   23,
++                   21
++                 ],
++                 count: 36,
++                 gpuType: 1015,
++                 isBufferAttribute: true,
++                 itemSize: 1,
++                 name: '',
++                 normalized: false,
++                 updateRanges: [],
++                 usage: 35044,
++                 version: 0
++               },
++               isBufferGeometry: true,
++               morphAttributes: {},
++               morphTargetsRelative: false,
++               name: '',
++               parameters: {
++                 depth: 0.45,
++                 depthSegments: 1,
++                 height: 0.24,
++                 heightSegments: 1,
++                 width: 0.68,
++                 widthSegments: 1
++               },
++               type: 'BoxGeometry',
++               userData: {},
++               uuid: 'e2726bbf-e92a-405d-ba15-065f275b0091'
++             },
++             isMesh: true,
++             isObject3D: true,
++             layers: yr {
++               mask: 1
++             },
++             material: es {
++               _alphaTest: 0,
++               alphaHash: false,
++               alphaMap: null,
++               alphaToCoverage: false,
++               aoMap: null,
++               aoMapIntensity: 1,
++               blendAlpha: 0,
++               blendColor: Kr {
++                 b: 0,
++                 g: 0,
++                 isColor: true,
++                 r: 0
++               },
++               blendDst: 205,
++               blendDstAlpha: null,
++               blendEquation: 100,
++               blendEquationAlpha: null,
++               blendSrc: 204,
++               blendSrcAlpha: null,
++               blending: 1,
++               clipIntersection: false,
++               clipShadows: false,
++               clippingPlanes: null,
++               color: Kr {
++                 b: 0.04231141061442144,
++                 g: 0.10461648408208657,
++                 isColor: true,
++                 r: 0.5647115056965487
++               },
++               colorWrite: true,
++               combine: 0,
++               depthFunc: 3,
++               depthTest: true,
++               depthWrite: true,
++               dithering: false,
++               envMap: null,
++               fog: true,
++               forceSinglePass: false,
++               isMaterial: true,
++               isMeshBasicMaterial: true,
++               lightMap: null,
++               lightMapIntensity: 1,
++               map: null,
++               name: '',
++               opacity: 1,
++               polygonOffset: false,
++               polygonOffsetFactor: 0,
++               polygonOffsetUnits: 0,
++               precision: null,
++               premultipliedAlpha: false,
++               reflectivity: 1,
++               refractionRatio: 0.98,
++               shadowSide: null,
++               side: 0,
++               specularMap: null,
++               stencilFail: 7680,
++               stencilFunc: 519,
++               stencilFuncMask: 255,
++               stencilRef: 0,
++               stencilWrite: false,
++               stencilWriteMask: 255,
++               stencilZFail: 7680,
++               stencilZPass: 7680,
++               toneMapped: true,
++               transparent: false,
++               type: 'MeshBasicMaterial',
++               userData: {},
++               uuid: '0da5d748-317b-4e41-990e-a804561badee',
++               version: 0,
++               vertexColors: false,
++               visible: true,
++               wireframe: true,
++               wireframeLinecap: 'round',
++               wireframeLinejoin: 'round',
++               wireframeLinewidth: 1
++             },
++             matrix: cr {
++               elements: [
++                 1,
++                 0,
++                 0,
++                 0,
++                 0,
++                 1,
++                 0,
++                 0,
++                 0,
++                 0,
++                 1,
++                 0,
++                 0,
++                 0,
++                 0,
++                 1
++               ]
++             },
++             matrixAutoUpdate: true,
++             matrixWorld: cr {
++               elements: [
++                 1,
++                 0,
++                 0,
++                 0,
++                 0,
++                 1,
++                 0,
++                 0,
++                 0,
++                 0,
++                 1,
++                 0,
++                 0,
++                 0,
++                 0,
++                 1
++               ]
++             },
++             matrixWorldAutoUpdate: true,
++             matrixWorldNeedsUpdate: false,
++             name: '',
++             parent: [Circular *3],
++             position: Ui {
++               x: 0,
++               y: 0.12,
++               z: 0
++             },
++             quaternion: Ii {
++               _onChangeCallback: [Function (anonymous)],
++               _w: 1,
++               _x: 0,
++               _y: 0,
++               _z: 0,
++               isQuaternion: true
++             },
++             receiveShadow: false,
++             renderOrder: 0,
++             rotation: xr {
++               _onChangeCallback: [Function (anonymous)],
++               _order: 'XYZ',
++               _x: 0,
++               _y: 0,
++               _z: 0,
++               isEuler: true
++             },
++             scale: Ui {
++               x: 1,
++               y: 1,
++               z: 1
++             },
++             type: 'Mesh',
++             up: Ui {
++               x: 0,
++               y: 1,
++               z: 0
++             },
++             userData: {},
++             uuid: '10c6a7e2-d557-40e7-8bb2-e6232ecec6d3',
++             visible: true
++           }
++         ],
++         frustumCulled: true,
++         isGroup: true,
++         isObject3D: true,
++         layers: yr {
++           mask: 1
++         },
++         matrix: cr {
++           elements: [
++             1,
++             0,
++             0,
++             0,
++             0,
++             1,
++             0,
++             0,
++             0,
++             0,
++             1,
++             0,
++             0,
++             0,
++             0,
++             1
++           ]
++         },
++         matrixAutoUpdate: true,
++         matrixWorld: cr {
++           elements: [
++             1,
++             0,
++             0,
++             0,
++             0,
++             1,
++             0,
++             0,
++             0,
++             0,
++             1,
++             0,
++             0,
++             0,
++             0,
++             1
++           ]
++         },
++         matrixWorldAutoUpdate: true,
++         matrixWorldNeedsUpdate: false,
++         name: '',
++         parent: [Circular *2],
++         position: Ui {
++           x: 0,
++           y: 0,
++           z: 0
++         },
++         quaternion: Ii {
++           _onChangeCallback: [Function (anonymous)],
++           _w: 1,
++           _x: 0,
++           _y: -0,
++           _z: 0,
++           isQuaternion: true
++         },
++         receiveShadow: false,
++         renderOrder: 0,
++         rotation: xr {
++           _onChangeCallback: [Function (anonymous)],
++           _order: 'XYZ',
++           _x: 0,
++           _y: -0,
++           _z: 0,
++           isEuler: true
++         },
++         scale: Ui {
++           x: 1,
++           y: 1,
++           z: 1
++         },
++         type: 'Group',
++         up: Ui {
++           x: 0,
++           y: 1,
++           z: 0
++         },
++         userData: {
++           fid: 'sink',
++           modelError: true
++         },
++         uuid: 'cb67679b-b601-46f2-a3f6-f45879ea4f96',
++         visible: true
++       }
++     ],
++     frustumCulled: true,
++     isGroup: true,
++     isObject3D: true,
++     layers: yr {
++       mask: 1
++     },
++     matrix: cr {
++       elements: [
++         1,
++         0,
++         0,
++         0,
++         0,
++         1,
++         0,
++         0,
++         0,
++         0,
++         1,
++         0,
++         0,
++         0,
++         0,
++         1
++       ]
++     },
++     matrixAutoUpdate: true,
++     matrixWorld: cr {
++       elements: [
++         1,
++         0,
++         0,
++         0,
++         0,
++         1,
++         0,
++         0,
++         0,
++         0,
++         1,
++         0,
++         0,
++         0,
++         0,
++         1
++       ]
++     },
++     matrixWorldAutoUpdate: true,
++     matrixWorldNeedsUpdate: false,
++     name: '',
++     parent: null,
++     position: Ui {
++       x: 0,
++       y: 0,
++       z: 0
++     },
++     quaternion: Ii {
++       _onChangeCallback: [Function (anonymous)],
++       _w: 1,
++       _x: 0,
++       _y: 0,
++       _z: 0,
++       isQuaternion: true
++     },
++     receiveShadow: false,
++     renderOrder: 0,
++     rotation: xr {
+FAIL tests\test-sink.cjs
++       _onChangeCallback: [Function (anonymous)],
++       _order: 'XYZ',
++       _x: 0,
++       _y: 0,
++       _z: 0,
++       isEuler: true
++     },
++     scale: Ui {
++       x: 1,
++       y: 1,
++       z: 1
++     },
++     type: 'Group',
++     up: Ui {
++       x: 0,
++       y: 1,
++       z: 0
++     },
++     userData: {},
++     uuid: 'bfd5b639-190f-4d1f-86c0-734523b8544b',
++     visible: true
++   },
+-   parent: null,
+    position: Ui {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+...
+    },
++   uuid: '996ee463-66f2-4364-80e1-7fa7b1832f1a',
+-   uuid: '2342eb1f-7dc9-45eb-8238-afb55cd84470',
+    visible: true
+  }
+
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-sink.cjs:58:83 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Wl],
+  expected: [Wl],
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+PASS tests\test-snapping.cjs
+PASS tests\test-spatial-review-cache.cjs
+PASS tests\test-stove-boundaries.cjs
+PASS tests\test-style-presets.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-tea-bar.cjs:42:66
+FAIL tests\test-tea-bar.cjs
+PASS tests\test-tea-table.cjs
+PASS tests\test-telescopic-ui.cjs
+PASS tests\test-tile-coplanar-wall.cjs
+PASS tests\test-tile-editor.cjs
+PASS tests\test-tile-grout-unified.cjs
+PASS tests\test-tile-grout.cjs
+PASS tests\test-tile-preset-sync.cjs
+PASS tests\test-tile-presets.cjs
+PASS tests\test-tile-selection-outline.cjs
+PASS tests\test-tile-workspace-complete.cjs
+PASS tests\test-tiling-render-alignment.cjs
+PASS tests\test-tv-floor.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-tv-view-consistency.cjs:12:14
+FAIL tests\test-tv-view-consistency.cjs
+PASS tests\test-wall-distance.cjs
+PASS tests\test-wall-face-snapping.cjs
+PASS tests\test-wall-finishes.cjs
+PASS tests\test-wall-floor-follow.cjs
+PASS tests\test-wall-layer-finishes.cjs
+PASS tests\test-wall-locks.cjs
+PASS tests\test-wall-origin-preview.cjs
+PASS tests\test-wall-tile-bands.cjs
+PASS tests\test-wall-tile-fixed-size.cjs
+PASS tests\test-wall-tiling-storage.cjs
+PASS tests\test-wall-tiling.cjs
+PASS tests\test-wall-zone-follow.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-water-purifier.cjs:25:74
+FAIL tests\test-water-purifier.cjs
+PASS tests\test-waterheater-clearance-3d.cjs
+PASS tests\test-waterheater-clearance-overlay.cjs
+PASS tests\test-waterheater-clearances.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-waterheater-flat.cjs:45:77
+FAIL tests\test-waterheater-flat.cjs
+PASS tests\test-waterheater-furniture-clearances.cjs
+PASS tests\test-waterheater-socket.cjs
+PASS tests\test-window-dimensions.cjs
+PASS tests\test-work-state.cjs
+PASS tests\test-workspace-cache.cjs
+evalmachine.<anonymous>:19
+  if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  ^
+
+ReferenceError: FurnishManifoldModel is not defined
+    at buildFurniture (evalmachine.<anonymous>:19:3)
+    at evalmachine.<anonymous>:1:1
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-yeswood-sofa.cjs:19:71
+FAIL tests\test-yeswood-sofa.cjs
+PASS tests\test-zone-boundaries.cjs
+FAIL 23 checks:
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-aquarium.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-block-placeholder.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-cat-tree.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-curtains-sliding.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-dishwasher.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-drag-axis-lock.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-drawing-walls.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-folding-table.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-fridges.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-laundry-stack.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-litter-box.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-mirror.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-pet-feeder.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-pipebox.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-robot-vacuum.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-scene-clearance-settings.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-shower-arrow.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-sink.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-tea-bar.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-tv-view-consistency.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-water-purifier.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-waterheater-flat.cjs
+C:\Users\SPH\Documents\GitHub\Furnish\tests\test-yeswood-sofa.cjs

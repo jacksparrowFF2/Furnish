@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-23",
+  "scope": "incremental",
+  "tests": [
+    {
+      "file": "tests/test-pegboard-auto.cjs",
+      "status": "passed",
+      "output": "PASS pegboard automatic/manual: live move/resize/height, freeze/resume, invalid/missing sources and recovery, locks, transforms, geometry/fingerprint, copy, current/named work restore and production atomic undo/redo\n"
+    },
+    {
+      "file": "tests/test-pegboard-fit-grid.cjs",
+      "status": "passed",
+      "output": "PASS pegboard auto fit/grid: projection, rotation/mirror, union, 500 mm boundary, strict fit, manual state, uniform lattice, diameter/count production geometry, spatial confirmation, copy and current/named repeated restore\n"
+    },
+    {
+      "file": "tests/test-pegboard-hatch.cjs",
+      "status": "passed",
+      "output": "PASS pegboard hatch: strict dimensions/edges, legacy omission, real hole and hinged perforated leaf, current solids, opening height/rotation/mirror, installation shift, toggle/specification, confirmation and current/named no-drift restoration\n"
+    },
+    {
+      "file": "tests/test-work-state.cjs",
+      "status": "passed",
+      "output": "PASS work restoration, independent defaults, legacy fields and custom architecture\n"
+    },
+    {
+      "file": "tests/test-review-consistency.cjs",
+      "status": "passed",
+      "output": "PASS optimized review matches legacy confirmations, geometry/threshold invalidation and malformed record handling\nPASS versioned spatial confirmations, height/cavity/mirror/physical-room invalidation and non-spatial edit stability\n"
+    },
+    {
+      "file": "tests/test-cabinet-design-upgrade.cjs",
+      "status": "passed",
+      "output": "PASS 19 templates and legacy designs upgrade without changing production geometry, openings, named/current project data or repeated restoration\n"
+    },
+    {
+      "file": "tests/test-entry-pegboard.cjs",
+      "status": "passed",
+      "output": "PASS entry pegboard: 1418 mm niche, exterior bounds, upper doors, drawer travel, shelf linkage, resize, validation and project round trip\n"
+    },
+    {
+      "file": "tests/test-pegboard-parts.cjs",
+      "status": "passed",
+      "output": "PASS pegboard parts: all 128 combinations, production solid boards, 18 mm pure panel, unified 18 mm after input upgrade, independent openings, rotated/mirrored poses, resizing, named/current project and repeated restoration, shared sides and validation\nPASS actual Three.js pure-panel mesh: one perforated 638 × 1418 × 18 mm board, bottom 378 mm; 2D depth 18 mm\n"
+    },
+    {
+      "file": "tests/test-pegboard-accessories.cjs",
+      "status": "passed",
+      "output": "PASS independent pegboard accessories: all 128 structural/accessory combinations, legacy aggregate fallback and explicit overrides, real meshes, height linkage, depth, validation and current/named project repeated restoration\n"
+    },
+    {
+      "file": "tests/test-cabinet-opening-3d.cjs",
+      "status": "passed",
+      "output": "PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations\n"
+    },
+    {
+      "file": "tests/test-cabinet-opening-volume-model.cjs",
+      "status": "passed",
+      "output": "PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes\n"
+    },
+    {
+      "file": "tests/test-cut-board-motion.cjs",
+      "status": "passed",
+      "output": "PASS continuous cut-board motion: no phantom notch/removed-board hits, intermediate-only door/lift hits, rotation/mirror, 335 production board bounds and 4 actual cut-solid rays\n"
+    },
+    {
+      "file": "tests/test-electrical-box.cjs",
+      "status": "passed",
+      "output": "PASS electrical boxes: catalog, placement, bounds, collision, distances, restore/roundtrip, production geometry and wall cut triangles\n"
+    },
+    {
+      "file": "tests/test-project.cjs",
+      "status": "passed",
+      "output": "PASS Survey preserves existing openings before structure confirmation\nPASS Old projects migrate to locked structures\nPASS Design rejects changes to the confirmed original bearing structure\nPASS Exterior walls are locked after confirmation\nPASS Real partition demolition merges rooms and updates area\nPASS Moving a partition changes both room areas while preserving bearing walls\nPASS Room materials follow spatial overlap after demolition\nPASS Automatic construction quantities update without overwriting manual values\nPASS Paint deductions use door height rather than wall thickness\nPASS Project backup roundtrip preserves baseline, designs, costs and catalog\nPASS Corrupt and future backups fail before import\nPASS Legacy plan JSON migrates to the portable project format\nPASS Spatial checks detect a blocked door swing\nPASS Cabinet front clearance rotates with the furniture\nPASS OBJ supports triangulation and negative indices\nPASS Overlapping door swings and swing-wall collisions are reported\nPASS Flat, non-finite and empty imported meshes are rejected before restoration\nPASS Backup preserves raw attachments and rejects malformed attachment data\nPASS Interior door deducts both painted wall faces\nPASS Retained openings keep sill heights and swing overrides after IDs reindex\n20 product roadmap regression checks passed\n"
+    },
+    {
+      "file": "tests/test-project-validation.cjs",
+      "status": "passed",
+      "output": ""
+    },
+    {
+      "file": "tests/test-project-recovery.cjs",
+      "status": "passed",
+      "output": "Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed\n"
+    },
+    {
+      "file": "tests/test-observation-layers.cjs",
+      "status": "passed",
+      "output": "PASS named layers: legacy 0, CRUD, validation, assignments, locks, copy, project v15, repeated restore, cache migration and scene visibility\n"
+    },
+    {
+      "file": "tests/test-repository-workspace.cjs",
+      "status": "passed",
+      "output": "PASS file-mode cache recovery without repository requests, stale custom plan removal, unavailable-service IndexedDB fallback and registered custom-plan validation\n"
+    }
+  ],
+  "syntax": "passed: product-rules, cabinet-core, project-core, work-state, cabinet-editor, app and new test",
+  "browser": {
+    "origin": "http://127.0.0.1:8768/",
+    "workspace": "output/playwright/pegboard-hatch-workspace",
+    "userProjectsChanged": false,
+    "checks": [
+      {
+        "name": "auto toggle",
+        "result": "auto selected; left159 bottom590 width320 height240; dimension inputs disabled"
+      },
+      {
+        "name": "source edits",
+        "result": "box X8040,width360,height260 → hatch left169 bottom590 width380 height280"
+      },
+      {
+        "name": "atomic undo and redo",
+        "result": "undo width360 →300 also restores hatch380 →320 and left169 →199; redo reapplies together"
+      },
+      {
+        "name": "manual mode",
+        "result": "retains auto geometry, enables inputs; left180,width400 saved"
+      },
+      {
+        "name": "manual freeze",
+        "result": "box height260 →300 leaves manual hatch height280,width400,left180 unchanged"
+      },
+      {
+        "name": "resume auto",
+        "result": "left169 bottom590 width380 height320"
+      },
+      {
+        "name": "refresh",
+        "result": "auto mode and left169 bottom590 width380 height320 restored; inputs remain disabled"
+      },
+      {
+        "name": "visual",
+        "result": "production cabinet preview and main 3D show opened hatch at updated location"
+      }
+    ],
+    "screenshot": "automatic-mode.jpg",
+    "fixtureService": "Restarted to reload new backend field validation. Initial fixture revision conflict cleared by refresh; subsequent autosave and refresh passed."
+  },
+  "boundaries": [
+    "auto matches all spatially eligible boxes, with no persistent box-ID binding",
+    "no candidate/oversize/unknown datum retains last valid geometry and reports pending",
+    "locked cabinet/layer skips normalization, pending if stale",
+    "manual switch freezes current result; older manual dimensions are not separately stored",
+    "no full checks, file:// or narrow screen test this round"
+  ],
+  "commandCorrection": "test-project-core.cjs does not exist; ran test-project.cjs plus project-validation and project-recovery instead"
+}

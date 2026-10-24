@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "browserErrors": [],
+  "publisherAutoWhilePanelClosed": true,
+  "priceIgnored": true,
+  "narrowScreen": true,
+  "receiver": {
+    "passed": true,
+    "steps": [
+      {
+        "step": "first",
+        "objects": 1338,
+        "materialPreserved": true,
+        "cameraAndLightPreserved": true,
+        "acknowledged": true
+      },
+      {
+        "step": "moved",
+        "objects": 1354,
+        "materialPreserved": true,
+        "cameraAndLightPreserved": true,
+        "acknowledged": true
+      },
+      {
+        "step": "hidden",
+        "objects": 1354,
+        "materialPreserved": true,
+        "cameraAndLightPreserved": true,
+        "acknowledged": true
+      },
+      {
+        "step": "deleted",
+        "objects": 339,
+        "materialPreserved": true,
+        "cameraAndLightPreserved": true,
+        "acknowledged": true
+      },
+      {
+        "step": "restored",
+        "objects": 1354,
+        "materialPreserved": true,
+        "cameraAndLightPreserved": true,
+        "acknowledged": true
+      },
+      {
+        "step": "origin",
+        "objects": 1354,
+        "materialPreserved": true,
+        "cameraAndLightPreserved": true,
+        "acknowledged": true
+      }
+    ],
+    "zipInstalledAndRegistered": true,
+    "sourceMatrixMirrorVerified": true,
+    "hiddenMaterialRetained": true,
+    "deleteUndoMaterialRestored": true,
+    "originNoDrift": true,
+    "repeatedApplyNoDuplicates": true,
+    "poseLock": true,
+    "sourceMaterialsOption": true,
+    "unrelatedObjectsPreserved": true,
+    "planAndDuplicateGuards": true,
+    "addonUnregistered": true,
+    "matchedLegacyAdoption": true,
+    "renderDevice": {
+      "requested": "gpu",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    }
+  }
+}

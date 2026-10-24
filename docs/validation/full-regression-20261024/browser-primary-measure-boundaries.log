@@ -1,0 +1,1 @@
+{"case":"measure-boundaries","status":"PASS","result":{"status":"PASS","checks":"finite furniture snapping, actual pointer selection, individual delete, keyboard/mobile delete, undo/redo, nearest save, rotated pointer, export cleanup and refresh","errors":[]}}

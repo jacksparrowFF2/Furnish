@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-24",
+  "passed": true,
+  "requestedScope": "Full application regression, fix defects, categorise and push pending features plus current local renovation data to main",
+  "baseCommit": "922297b6e04624accad7712ef31b64735b6fa68b",
+  "commits": {
+    "features": "4e1382d",
+    "browser": "14e892d"
+  },
+  "node": {
+    "suites": 284,
+    "builtInPlans": 12,
+    "previewPages": 46,
+    "log": "node-full.log",
+    "command": "node scripts/check.cjs --keep-going"
+  },
+  "browser": {
+    "cases": 167,
+    "primaryCases": 163,
+    "manifest": "browser-final-results.json",
+    "httpAndOfflineFile": true,
+    "narrow390": true,
+    "failuresFixedAndRechecked": true
+  },
+  "blender": {
+    "continuousSync": "blender-sync.json",
+    "rollback": "blender-transaction.json",
+    "refinedActive": "blender-refined.json",
+    "refinedSourceCamera": "blender-source-camera.json",
+    "materialBindings": 4355,
+    "lights": 8,
+    "gpu": "OPTIX / NVIDIA GeForce RTX 4070 Ti SUPER",
+    "sourceBlendAndWorkspaceUnchanged": true
+  },
+  "localWorkspace": {
+    "sha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54",
+    "gitBlob": "c045c62b15e55e3fd321410f7df990c03a9f8fdf",
+    "headBlob": "c045c62b15e55e3fd321410f7df990c03a9f8fdf",
+    "workspaces": 9,
+    "named": 1,
+    "furniture": 383,
+    "namedFurniture": 43,
+    "parseChanges": false,
+    "roundtripNoDrift": true,
+    "bytesUnchanged": true,
+    "matchesExistingMain": true
+  },
+  "productFixes": [
+    {
+      "priority": "P1",
+      "issue": "Malformed saved cabinet columns could crash automatic hatch scanning during restoration/commit.",
+      "fix": "Guard array/member shape; retain broken original record for existing recovery, preserve healthy siblings and strict import rejection."
+    },
+    {
+      "priority": "P2",
+      "issue": "New equipment did not declare missing manufacturer installation-review coverage.",
+      "fix": "Central product rules mark manifold and both recessed box types as missing installation data."
+    },
+    {
+      "priority": "P3",
+      "issue": "Manifold help text still described the old 900 mm height.",
+      "fix": "Align help with 500 mm new-instance default; saved explicit heights stay unchanged."
+    }
+  ],
+  "verificationFixes": [
+    "VM fixtures inject the actual new model/product dependencies and full wall renderer state.",
+    "Drag acceptance awaits repository/fonts/layout before computing the grab point; unchanged 0.1 mm assertions.",
+    "Region-area mobile acceptance awaits drawer viewport bounds before actual click; unchanged area assertions.",
+    "Focused acceptance implementations live in scripts/verify and preview generators honour the isolated root; child-process regression prevents real preview overwrite."
+  ],
+  "knownBoundaries": [
+    "Electrical auto-placement is limited to axis-aligned wall faces; display cuts do not create structural opening seals.",
+    "Manifold dimensions, pipe discretisation and cabinet rear-service envelopes remain layout assumptions, with no manufacturer maintenance/installation certification.",
+    "Pegboard microholes and some curved/nonconvex parts retain conservative collision approximations; other unrecorded furniture retains envelopes.",
+    "Blender is one-way full-scene sync; ambiguous/untagged parts retain path matching and arbitrary structural rewrites cannot guarantee material inheritance.",
+    "No actual mobile touch hardware, other OS/Blender versions, forced-process-crash recovery or construction/hydraulic/structural engineering validation."
+  ],
+  "notRun": [
+    "Real mobile touch hardware",
+    "Other OS/Blender versions",
+    "Blender forced process-crash/OOM recovery",
+    "Historical four-region final-quality image re-rendering",
+    "Construction/electrical/plumbing/structural certification"
+  ]
+}

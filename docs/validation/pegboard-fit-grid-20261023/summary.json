@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-23",
+  "scope": "incremental",
+  "tests": [
+    {
+      "file": "tests/test-pegboard-fit-grid.cjs",
+      "status": "passed",
+      "output": "PASS pegboard auto fit/grid: projection, rotation/mirror, union, 500 mm boundary, strict fit, manual state, uniform lattice, diameter/count production geometry, spatial confirmation, copy and current/named repeated restore\n"
+    },
+    {
+      "file": "tests/test-pegboard-hatch.cjs",
+      "status": "passed",
+      "output": "PASS pegboard hatch: strict dimensions/edges, legacy omission, real hole and hinged perforated leaf, current solids, opening height/rotation/mirror, installation shift, toggle/specification, confirmation and current/named no-drift restoration\n"
+    },
+    {
+      "file": "tests/test-entry-pegboard.cjs",
+      "status": "passed",
+      "output": "PASS entry pegboard: 1418 mm niche, exterior bounds, upper doors, drawer travel, shelf linkage, resize, validation and project round trip\n"
+    },
+    {
+      "file": "tests/test-pegboard-parts.cjs",
+      "status": "passed",
+      "output": "PASS pegboard parts: all 128 combinations, production solid boards, 18 mm pure panel, unified 18 mm after input upgrade, independent openings, rotated/mirrored poses, resizing, named/current project and repeated restoration, shared sides and validation\nPASS actual Three.js pure-panel mesh: one perforated 638 × 1418 × 18 mm board, bottom 378 mm; 2D depth 18 mm\n"
+    },
+    {
+      "file": "tests/test-pegboard-accessories.cjs",
+      "status": "passed",
+      "output": "PASS independent pegboard accessories: all 128 structural/accessory combinations, legacy aggregate fallback and explicit overrides, real meshes, height linkage, depth, validation and current/named project repeated restoration\n"
+    },
+    {
+      "file": "tests/test-cabinet-opening-3d.cjs",
+      "status": "passed",
+      "output": "PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations\n"
+    },
+    {
+      "file": "tests/test-cabinet-opening-volume-model.cjs",
+      "status": "passed",
+      "output": "PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes\n"
+    },
+    {
+      "file": "tests/test-cut-board-motion.cjs",
+      "status": "passed",
+      "output": "PASS continuous cut-board motion: no phantom notch/removed-board hits, intermediate-only door/lift hits, rotation/mirror, 335 production board bounds and 4 actual cut-solid rays\n"
+    },
+    {
+      "file": "tests/test-cabinet-design-upgrade.cjs",
+      "status": "passed",
+      "output": "PASS 19 templates and legacy designs upgrade without changing production geometry, openings, named/current project data or repeated restoration\n"
+    },
+    {
+      "file": "tests/test-enclosed-boundary-distances.cjs",
+      "status": "passed",
+      "output": "PASS enclosed boundaries: screenshot fixture, 85 catalog types × 8 transforms, partial overlap/contact, height separation/unknowns, groups, drawing rotation, real panels, preserved collision checks and project roundtrip\n"
+    },
+    {
+      "file": "tests/test-review-consistency.cjs",
+      "status": "passed",
+      "output": "PASS optimized review matches legacy confirmations, geometry/threshold invalidation and malformed record handling\nPASS versioned spatial confirmations, height/cavity/mirror/physical-room invalidation and non-spatial edit stability\n"
+    },
+    {
+      "file": "tests/test-electrical-box.cjs",
+      "status": "passed",
+      "output": "PASS electrical boxes: catalog, placement, bounds, collision, distances, restore/roundtrip, production geometry and wall cut triangles\n"
+    }
+  ],
+  "syntax": {
+    "status": "passed",
+    "files": [
+      "src/core/product-rules.js",
+      "src/core/cabinet-core.js",
+      "src/core/cabinet-motion.js",
+      "src/render/cabinet-model.js",
+      "src/ui/cabinet-editor.js",
+      "tests/test-pegboard-hatch.cjs",
+      "tests/test-pegboard-fit-grid.cjs"
+    ]
+  },
+  "browser": {
+    "url": "http://127.0.0.1:8768/",
+    "isolatedWorkspace": "output/playwright/pegboard-hatch-workspace",
+    "userProjectModified": false,
+    "checks": [
+      {
+        "name": "auto fit",
+        "result": "300×220 box → left159 bottom590 w320 h240 mm; existing hinge/open retained"
+      },
+      {
+        "name": "manual override and save",
+        "result": "diameter12 rows30 columns14, width340 mm saved"
+      },
+      {
+        "name": "undo",
+        "result": "restored diameter9 rows34 columns15, left119 bottom559 w420 h320"
+      },
+      {
+        "name": "redo and refresh",
+        "result": "restored and retained diameter12 rows30 columns14, left159 bottom590 w340 h240"
+      },
+      {
+        "name": "invalid density",
+        "result": "rows200 rejected with minimum web error; saved data preserved"
+      },
+      {
+        "name": "production visual",
+        "result": "continuous fixed panel, uniform grid, opened perforated leaf and visible electrical box"
+      }
+    ],
+    "screenshot": "open.jpg"
+  },
+  "notExecuted": [
+    "full scripts/check.cjs: scope limited to cabinet pegboard and relevant consumers",
+    "file://: no loading mechanism changed; prior browser URL-policy restriction",
+    "narrow screen: not revalidated this round"
+  ],
+  "boundaries": [
+    "one hatch per pegboard bay; multiple matching boxes merged",
+    "fit is explicit, not a saved live association",
+    "500 mm rear search / 1° alignment / 10 mm padding are layout assumptions",
+    "circular perforations remain conservative solids for collision; fixed accessories are not moved"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-23",
+  "scope": "HTTP manual browser acceptance using Chrome through browser connector",
+  "url": "http://127.0.0.1:8767/",
+  "isolatedWorkspace": "output/playwright/electrical-box-workspace",
+  "sourceProjectDataChanged": false,
+  "status": "passed",
+  "checks": [
+    "Catalog adds both electrical box types",
+    "2D embedded boxes remain selectable through wall clip",
+    "Strong width/depth changed from 300x120 to 360x160 mm",
+    "Strong height native keyboard edit 400 to 520 mm; undo 400, redo 520",
+    "Weak width/depth 400x120 to 460x140 mm; undo 400x120, redo 460x140",
+    "Weak height 450 mm and bottom 1300 mm committed via native keyboard",
+    "Embed front aligned with wall Y=6610 mm for both boxes",
+    "3D close screenshots show closed doors, latch and weak-box ventilation lines",
+    "Actual scene cache regression identified root Y reset and fixed by child-mesh installation offset",
+    "Automatic save confirmed by UI and isolated repository workspace JSON",
+    "Page reload preserves type, width, depth, height, mountHeight and placement for both boxes",
+    "Named design 强弱电箱嵌墙验收 saved through dialog and still listed after reload",
+    "No application-origin console errors observed; Zotero browser-extension connection errors appeared after a later reload"
+  ],
+  "savedBoxes": [
+    {
+      "type": "electrical_box_strong",
+      "w": 360,
+      "d": 160,
+      "h": 520,
+      "mountHeight": 1200,
+      "cx": 8000,
+      "cy": 6530,
+      "rot": 0
+    },
+    {
+      "type": "electrical_box_weak",
+      "w": 460,
+      "d": 140,
+      "h": 450,
+      "mountHeight": 1300,
+      "cx": 8750,
+      "cy": 6540,
+      "rot": 0
+    }
+  ],
+  "screenshots": [
+    "output/playwright/electrical-boxes/strong-in-wall.jpg",
+    "output/playwright/electrical-boxes/strong-close.jpg",
+    "output/playwright/electrical-boxes/weak-in-wall.jpg",
+    "output/playwright/electrical-boxes/weak-close.jpg",
+    "output/playwright/electrical-boxes/plan-after-refresh.jpg"
+  ],
+  "incrementalRerun": [
+    "node --check src/render/electrical-box-model.js",
+    "tests/test-electrical-box.cjs (includes production scene cache reuse)",
+    "tests/test-block-placeholder.cjs"
+  ],
+  "notRun": [
+    "file://",
+    "narrow screen",
+    "full regression"
+  ]
+}
