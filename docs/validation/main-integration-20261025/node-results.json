@@ -1,0 +1,132 @@
+[
+  {
+    "file": "test-blender-model-identities.cjs",
+    "exit": 0,
+    "output": "PASS production identities: priority meshes, all basic furniture, rebuild/size stability, child reorder, unrelated insertion/deletion, local movement and unique full keys\n"
+  },
+  {
+    "file": "test-blender-sync.cjs",
+    "exit": 0,
+    "output": "PASS live sync: validated identities/origin, immutable revisions, deduplication, token/CSRF, ack, addon ZIP, persistence and token rotation\n"
+  },
+  {
+    "file": "test-canvas-render-cache.cjs",
+    "exit": 0,
+    "output": "PASS canvas cache: architecture/finish/furniture/datum/grout invalidation, dimension-chain reuse, pan, zoom/theme/rotation, undo and DOM replacement\n"
+  },
+  {
+    "file": "test-ceiling-continuous-light.cjs",
+    "exit": 0,
+    "output": "PASS continuous light geometry rules, tangent collision, section dependency, inner-radius guards, segmented fallback, cache signature and v7 persistence\nPASS production continuous light manifold, winding, exact faceted volume, chord error, 64 rotated/directional variants and physical cove intersection rays\n"
+  },
+  {
+    "file": "test-ceiling-corners.cjs",
+    "exit": 0,
+    "output": "PASS L route, two-face attachment, dependency updates, topology invalidation, segmented lights, short-edge guards, shift and v6 repeated recovery\nPASS production L mesh watertightness, exact volume, open cavity and lip, separated lights and both-arm collisions in eight corners plus 37 degree rotations and reversed sections\n"
+  },
+  {
+    "file": "test-ceiling-end-caps.cjs",
+    "exit": 0,
+    "output": "PASS end opening derivation, cap dimensions, inner retreats, compact radius, independent endpoints, sample clipping, actual occupancy and v8 repeated recovery\nPASS production end-cap volume, heights, open-top rays and exact light retreat in 32 rotated/reversed variants plus section resize\n"
+  },
+  {
+    "file": "test-ceiling-height.cjs",
+    "exit": 0,
+    "output": "PASS editable ceiling validation, default compatibility, current/saved project round trip, heater clearance, wall estimates and production 3D rebuild/full-wall height\n"
+  },
+  {
+    "file": "test-ceiling-storage.cjs",
+    "exit": 0,
+    "output": "PASS v5/v6/v7/v8 actual repository writes, reads, named designs, recovery copies and cache migration in isolated directories\n"
+  },
+  {
+    "file": "test-ceilings.cjs",
+    "exit": 0,
+    "output": "PASS ceiling contours, inward paths, true cavity collision, full-thickness attachments, dependency updates, atomic validation, v5 project/workspace recovery and spatial confirmation\nPASS shared production ceiling meshes, cavity rays, positive volume on four orientations, finite normals, flat thickness and low-wall cut\n"
+  },
+  {
+    "file": "test-downlight-section.cjs",
+    "exit": 0,
+    "output": "{\n  \"plateThicknessMm\": 12,\n  \"plateBottomAboveLampBottomMm\": 2,\n  \"lampEnvelopeMm\": [\n    85,\n    45,\n    85\n  ],\n  \"apertureDiameterMm\": 76.5,\n  \"bodyDiameterMm\": 70,\n  \"bodySideClearanceMm\": 3.25,\n  \"rimOuterDiameterMm\": 85,\n  \"rimSeatingOverlapMm\": 4.25,\n  \"rimTopMm\": 2,\n  \"plateBottomMm\": 2,\n  \"rimSeatingGapMm\": 0,\n  \"topAbovePlateBottomMm\": 43,\n  \"holeVertices\": 64,\n  \"productionTriangles\": {\n    \"testedTriangles\": 276,\n    \"minApertureClearanceMm\": 0.17832025491465073,\n    \"collidingTriangles\": 0,\n    \"collisionParts\": []\n  },\n  \"negativeControlRaisedRimPoint2Mm\": {\n    \"testedTriangles\": 532,\n    \"minApertureClearanceMm\": -4.244883074267509,\n    \"collidingTriangles\": 256,\n    \"collisionParts\": [\n      \"housing-and-reflector\"\n    ]\n  },\n  \"scope\": \"Standard DL269 with modeled 12 mm flat ceiling; geometry only, excluding wiring, driver and thermal clearance.\"\n}\n"
+  },
+  {
+    "file": "test-downlight.cjs",
+    "exit": 0,
+    "output": "PASS downlight catalog, height, restore, copy/replacement, finished-floor/unknown datum, project roundtrip, fit/cutout boundaries, rotation/mirror, unknown height, real geometry, cone photometry and production ceiling hole\n"
+  },
+  {
+    "file": "test-furniture-solids-cache.cjs",
+    "exit": 0,
+    "output": "PASS production world cache: 204 fresh-builder comparisons, position/rotation/mirror/size/height/install/doors, no mutation and restored objects\n"
+  },
+  {
+    "file": "test-generator-part-identities.cjs",
+    "exit": 0,
+    "output": "PASS named generators: equal-count record exchange, physical position swap, instance reindex, actual production rebuild permutations (49 generators), duplicate rejection and exception scope cleanup\n"
+  },
+  {
+    "file": "test-manifold-kitchen.cjs",
+    "exit": 0,
+    "output": "PASS manifold 500 mm, rear service envelope, shelves/back panels, doors/drawers/baskets, limits, rotation/mirror, opt-out, project and repeated real restoration, production geometry\n"
+  },
+  {
+    "file": "test-manifold-wall-finish.cjs",
+    "exit": 0,
+    "output": "PASS 800×180×600 defaults, rectangular tile/bond opening, raw walls, actual collision/room boundary, cache invalidation, four wall faces/mirror, floor datum/unknowns, roundtrip and real production meshes\n"
+  },
+  {
+    "file": "test-manifold-zero-gap.cjs",
+    "exit": 0,
+    "output": "PASS manifold rear zero uses raw wall at contact and from a gap; four wall directions/mirrors, 0/5/30 mm boundaries, drawing rotation, actual tile/collision agreement, no drift, named roundtrip and ordinary-furniture behavior\n"
+  },
+  {
+    "file": "test-manifold.cjs",
+    "exit": 0,
+    "output": "PASS manifold: parameter boundaries, restoration, copy/replacement, project/named roundtrip, fingerprints, directional/body parts, real production geometry and entry declarations\n"
+  },
+  {
+    "file": "test-directional-config-order.cjs",
+    "exit": 0,
+    "output": "PASS key-order-independent directional placement, 130 mm gap, drawing rotations/mirrors, actual configuration-change rejection, immutable input and project roundtrip\n"
+  },
+  {
+    "file": "test-directional-heights.cjs",
+    "exit": 0,
+    "output": "PASS height-aware directional gaps: legacy/modular wall cabinets, exact contact and threshold sides, unknown/overlapping heights, closer targets, linked straight/L/U rotation/mirror, group members, project roundtrip and repeated restore\n"
+  },
+  {
+    "file": "test-directional-kitchen-solids.cjs",
+    "exit": 0,
+    "output": "PASS kitchen solid directional gaps: empty bay, slab height thresholds, rotation/mirror, unknown heights, groups, numeric positioning and repeated project restore\n"
+  },
+  {
+    "file": "test-directional-placement.cjs",
+    "exit": 0,
+    "output": "PASS directional target placement, exact contact, rotated axes, mirror, fixed references, input limits, locks/relationships, swept blockers, known/unknown heights, kitchen outlines and project roundtrip\n"
+  },
+  {
+    "file": "test-electrical-box.cjs",
+    "exit": 0,
+    "output": "PASS electrical boxes: catalog, placement, bounds, collision, distances, restore/roundtrip, production geometry and wall cut triangles\n"
+  },
+  {
+    "file": "test-snapping.cjs",
+    "exit": 0,
+    "output": "PASS grid, rotated bounds, tolerance, nearby guides, exclusions and measurement anchors\n"
+  },
+  {
+    "file": "test-wall-finishes.cjs",
+    "exit": 0,
+    "output": "PASS finish boundaries, snapping, numeric placement, rooms, thresholds, mirrored/rotated groups, openings, side binding, versions, calibration, copies, repeated recovery and unchanged cabinets\nPASS real Three.js tile / bond solids, millimetre boundaries, cut heights and door openings\n"
+  },
+  {
+    "file": "test-wall-tiling-storage.cjs",
+    "exit": 0,
+    "output": "PASS actual v4 repository writes/reads/recoveries and migration of a wall-tiling browser cache, isolated from user data\n"
+  },
+  {
+    "file": "test-wall-tiling.cjs",
+    "exit": 0,
+    "output": "PASS wall tile regions/both faces/virtual dividers, exact openings, finished corners, absolute/relative heights, unknowns, disabled settings, independent thickness, atomic validation, spatial confirmations and v4 repeated recovery\nPASS production wall-pattern planes, UVs, normals, millimetre bounds, ceiling cuts and one-time material/texture disposal\n"
+  }
+]

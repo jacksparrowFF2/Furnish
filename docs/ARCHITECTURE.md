@@ -4,6 +4,15 @@
 
 2026-10-24：生产模型在固定构造点记录 furnishPartSource 与仅用于组内排序的创建标记，Blender 导出生成实例作用域内的 v2 部件身份；几何与节点路径不再作为已覆盖部件的身份。明确部件优先使用 furnishStablePart，重复生成族携带数量约束。传输 protocol 2 防止旧插件误接新版身份。无项目字段、保存或加载依赖变化，见 [同步契约](BLENDER-SYNC.md)。
 
+2026-10-24：2D 成功模型校验按完整家具值复用；furniture-solids 的生产网格世界变换使用有界缓存。canvasEffectivePlan 覆盖家具、安装基准与填缝输入，平移/缩放同次绘制共用派生计划；吸附、绘制顺序和碰撞读取同一接口，设备临时位置仍独立派生。四向净距缓存覆盖完整 PLAN/work、临时墙窗、所选成员、可见家具开关及图纸旋转，单件与成员数组统一；平移/缩放不改变毫米结果。核心测距先按生产板件完整投影保守排除双轴均无交叠的候选，再走原高度裁剪与精确截面。无新持久字段或加载路径，详见 [1601 性能验收](validation/performance-2d-20261024/README.md)。
+
+2026-10-24：墙层派生实体补充墙侧方向，measurementWallRelevant供四向测距读取真实高度与分水器毛坯零点；数值定位按候选位置重算饰层缺口及边界，允许厨房派生避让变化、保留名义配置保护。wallDatum只为测量元数据，沿原mutate与坐标保存；见[零点复核](HEATING-MANIFOLD.md#四向净距的毛坯墙零点复核2026-10-24)。
+
+2026-10-24：`downlight-model.js` 提供DL269生产几何和向下SpotLight，`ceiling-core.downlightHoles/fitDownlight` 共用标准筒灯与平顶安装判定，生产平顶由此派生圆孔；安装只写原mountHeight并沿mutate，缓存补齐筒灯输入，Blender快照保留SpotLight。光源规格增加可选downlightWatts／downlightKelvin，产品核心共用六种光通量与近似灯色；安装不新增字段，无新格式版本。详见 [筒灯](DOWNLIGHT-PHILIPS-DL269.md)。
+
+
+2026-10-24：分水器外包默认 800×180×600 mm；wallFinishOpening 能力在墙层核心派生矩形不贴砖区，生产瓷砖／粘结层、墙砖立面及空间边界共用。原墙不变；画布／建筑缓存覆盖设备及地面标高，放置与单件吸附按临时设备计划核对。无新持久字段或加载脚本，见 [墙砖避让](HEATING-MANIFOLD.md#毛坯墙基准与后铺瓷砖避让2026-10-24)。
+
 2026-10-24 全量复验：自动检修盖板的入口扫描先检查分区数组／成员，损坏旧记录继续进入原恢复界面，不影响正常家具事务；安装资料待核对能力集中补入产品定义。专用浏览器验收归入 scripts/verify，预览遵守 FURNISH_VERIFY_ROOT，禁止覆盖真实预览。无新持久版本或保存通道。见 [完整记录](validation/full-regression-20261024/summary.json)。
 
 2026-10-23：分水器默认总高 500 mm（用户确认）；产品能力 rearService 供厨房自动避让预留完整后部空间，派生 obstacleFit.depths[].rearService:true。cabinetLayout 共用减深及取消背板，生产板件、抽屉运动、测距与展开预览读取同一结果；原恢复／commit 重算，无新加载或保存通道。确认追加 manifold-rear-service-v1，详见 [后方安装](HEATING-MANIFOLD.md#厨房地柜后方安装2026-10-23)。

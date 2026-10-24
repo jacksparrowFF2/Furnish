@@ -2,7 +2,7 @@
   {
     "mode": "http",
     "passed": true,
-    "catalogHeight": 500,
+    "catalogHeight": 600,
     "realCommit": true,
     "doorAndDrawers": true,
     "moveUndoRedo": true,
@@ -14,7 +14,7 @@
   {
     "mode": "file",
     "passed": true,
-    "catalogHeight": 500,
+    "catalogHeight": 600,
     "realCommit": true,
     "doorAndDrawers": true,
     "moveUndoRedo": true,

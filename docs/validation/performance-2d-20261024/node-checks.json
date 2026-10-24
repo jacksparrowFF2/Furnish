@@ -1,0 +1,102 @@
+{
+  "scope": "Incremental checks only; not scripts/check.cjs",
+  "syntax": [
+    "src/app.js",
+    "src/ui/canvas-interactions.js",
+    "src/render/plan-renderer.js",
+    "src/core/furniture-solids.js",
+    "src/core/snapping.js",
+    "scripts/verify/verify-2d-performance.cjs",
+    "tests/test-canvas-render-cache.cjs",
+    "tests/test-furniture-solids-cache.cjs"
+  ],
+  "sharedDeclarations": "PASS",
+  "tests": [
+    {
+      "file": "tests/test-canvas-render-cache.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-drag-feature-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-wall-face-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-short-wall-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-cabinet-boundary-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-kitchen-edge-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-kitchen-drawer-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-cabinet-interior-distances.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-directional-kitchen-solids.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-enclosed-boundary-distances.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-furniture-production-solids.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-furniture-solids-coverage.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-beam-body-collisions.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-pipe-collisions.cjs",
+      "status": "FAIL",
+      "reason": "Existing test VM does not provide FurnishDownlightModel; ReferenceError in buildFurn. Reproduced with pre-change source via output/playwright/baseline-preload.cjs.",
+      "reproducedBeforeChange": true
+    },
+    {
+      "file": "tests/test-furniture-recovery.cjs",
+      "status": "FAIL",
+      "reason": "Existing test VM does not provide FurnishDownlightModel; ReferenceError in buildFurn. Reproduced with pre-change source via output/playwright/baseline-preload.cjs.",
+      "reproducedBeforeChange": true
+    },
+    {
+      "file": "tests/test-project-recovery.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-manifold-wall-finish.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-manifold-zero-gap.cjs",
+      "status": "PASS"
+    },
+    {
+      "file": "tests/test-furniture-solids-cache.cjs",
+      "status": "PASS"
+    }
+  ],
+  "passed": 18,
+  "failed": 2
+}

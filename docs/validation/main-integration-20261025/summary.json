@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "base": "420b30b",
+  "incrementalNodeSuites": 26,
+  "syntaxModules": 42,
+  "combinedClassicSyntax": true,
+  "browser": [
+    "verify-downlight: HTTP and offline file",
+    "verify-manifold-zero-gap: HTTP and offline file",
+    "capture-downlight-section: offline file",
+    "verify-2d-performance: HTTP and offline file, 166 identical answers"
+  ],
+  "visualInspection": [
+    "downlight file application screenshot",
+    "manifold file installed screenshot"
+  ],
+  "savedProjectMatchesStash": true,
+  "deletedMergedBranches": [
+    "backup/local-before-sync-20261018",
+    "backup/remote-before-sync-20261018",
+    "codex/blender-part-identities"
+  ],
+  "retainedDetachedWorktree": "Blender worktree retained because ignored .local/output contain verification and refinement materials",
+  "recovery": "stash entry Furnish completed local work before main integration 20261025 retained",
+  "notRun": [
+    "full scripts/check.cjs",
+    "all historical browser cases",
+    "real Blender full scene export/render after integration",
+    "cross-platform tests"
+  ]
+}

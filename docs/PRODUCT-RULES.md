@@ -1,5 +1,10 @@
 # 产品能力规则与兼容验收
 
+## DL269光源规格（2026-10-24）
+
+`downlightWatts`与`downlightKelvin`为筒灯可选枚举字段，新建5/4000、旧缺失读取5/4000不补写。`downlightSpec`集中派生六种光通量／颜色，切换只影响照明与采购规格，不影响空间确认或开孔。复制保留，非筒灯替换由共用字段能力清理；导入严格校验。复验test-downlight、test-product-rules、test-purchase-orders、test-procurement、test-work-state及verify-downlight的HTTP／file界面链路。见 [详细契约](DOWNLIGHT-PHILIPS-DL269.md#可切换的光源规格)。
+
+
 ## 标准结构与统一升级（2026-10-21）
 
 本次用户要求优先统一升级旧家具。本节覆盖下方旧记录中“保留旧缺失结构／12 mm 洞洞板运行时回退”的策略：恢复和项目输入经 furniture-upgrade 统一物化结构，再供各层消费；已知旧字段只在入口转换，不在生产模型另维护历史柜体。柜体、厨房组合和洞洞板的具体升级与保留项见 [统一升级](CABINET-DESIGN.md#统一家具升级与实际实体2026-10-21)。solidModel 是产品定义内的共用能力，无新持久字段；未知模型及 OBJ 继续保守，不凭包络推定内腔。[验收记录](validation/furniture-solids-upgrade-20261021/summary.json)。
@@ -258,3 +263,6 @@ legacyCabinet(f) 仅匹配无 OBJ、无 kitchen／cabinet 的旧 counter／vanit
 
 
 2026-10-23：heating_manifold 默认总高按用户确认设为 500 mm，显式旧高度保持；rearService:true 为非 OBJ 生产分水器提供厨房后部设备整体让空能力，不是碰撞豁免或厂家操作预留。厨房仍需开启原 autoAvoid，后部受影响模块派生 obstacleFit.depths[].rearService:true，由生产布局取消背板并共同减深层板／抽屉。旧记录不新增标记，正常恢复按实际家具重新派生，详见 [分水器后方安装](HEATING-MANIFOLD.md#厨房地柜后方安装2026-10-23)。
+
+
+2026-10-24：heating_manifold 默认宽／深集中于 manifold.width=800、depth=180，高 600 mm；新建 5 路时左长450／330 mm，旧显式尺寸及两排配置保持。wallFinishOpening=rectangle 为非 OBJ 生产模型的派生墙面饰层避让能力，不切结构墙、不增加默认检修余量。沿原实例字段和 mutate，墙层／墙砖／生产缓存及空间确认覆盖实际读取输入，无新持久字段。见 [毛坯墙基准](HEATING-MANIFOLD.md#毛坯墙基准与后铺瓷砖避让2026-10-24)。

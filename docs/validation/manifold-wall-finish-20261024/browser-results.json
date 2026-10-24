@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "dimensions": [
+      800,
+      180,
+      600
+    ],
+    "rawWall": true,
+    "finishAndTileOpening": true,
+    "realCommit": true,
+    "canvasCache": true,
+    "undoRedo": true,
+    "refresh": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "dimensions": [
+      800,
+      180,
+      600
+    ],
+    "rawWall": true,
+    "finishAndTileOpening": true,
+    "realCommit": true,
+    "canvasCache": true,
+    "undoRedo": true,
+    "refresh": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  }
+]

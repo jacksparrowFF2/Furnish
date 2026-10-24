@@ -1,0 +1,34 @@
+{
+  "plateThicknessMm": 12,
+  "plateBottomAboveLampBottomMm": 2,
+  "lampEnvelopeMm": [
+    85,
+    45,
+    85
+  ],
+  "apertureDiameterMm": 76.5,
+  "bodyDiameterMm": 70,
+  "bodySideClearanceMm": 3.25,
+  "rimOuterDiameterMm": 85,
+  "rimSeatingOverlapMm": 4.25,
+  "rimTopMm": 2,
+  "plateBottomMm": 2,
+  "rimSeatingGapMm": 0,
+  "topAbovePlateBottomMm": 43,
+  "holeVertices": 64,
+  "productionTriangles": {
+    "testedTriangles": 276,
+    "minApertureClearanceMm": 0.17832025491465073,
+    "collidingTriangles": 0,
+    "collisionParts": []
+  },
+  "negativeControlRaisedRimPoint2Mm": {
+    "testedTriangles": 532,
+    "minApertureClearanceMm": -4.244883074267509,
+    "collidingTriangles": 256,
+    "collisionParts": [
+      "housing-and-reflector"
+    ]
+  },
+  "scope": "Standard DL269 with modeled 12 mm flat ceiling; geometry only, excluding wiring, driver and thermal clearance."
+}

@@ -26,4 +26,3 @@ function pose(detail){syncing=true;for(const v of views){v.camera.position.set(.
 function resize(){for(const v of views){const h=innerWidth<850?280:348;v.renderer.setSize(v.card.clientWidth,h);v.camera.aspect=v.card.clientWidth/h;v.camera.updateProjectionMatrix();v.render();}}
 document.querySelector('#room').onclick=()=>pose(false);document.querySelector('#detail').onclick=()=>pose(true);window.addEventListener('resize',resize);pose(false);resize();window.comparison={views,pose};window.previewReady=true;
 </script></html>`);console.log(path.join(dir,'comparison.html'));
-
