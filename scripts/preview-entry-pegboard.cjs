@@ -6,7 +6,7 @@ fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN
 <header><h1>玄关柜 · 洞洞板换鞋区</h1><p>宽 674 × 深 350 × 高 2400 mm · 中间开放区净高 1418 mm<br>参考图红框左侧；深度与总高按用户确认作为草模尺寸。板厚、抽屉及上柜分配为草模假设。</p></header>
 <main><article><h2>正面 · 双门上柜 / 洞洞板 / 两层抽屉</h2><canvas></canvas></article><article><h2>斜视 · 可旋转检查结构</h2><canvas></canvas></article></main>
 <footer><button id="doors">开合上柜门</button><button id="drawers">开合抽屉</button><p>拖动旋转，滚轮缩放。洞洞板为真实通孔，短置物板与挂钩为固定示意；灯带仅作外观表示。装饰摆件、衣物与篮子省略。此模型用于布局与外观预览。</p></footer>
-<script src="../../src/core/cabinet-core.js"></script><script src="../../src/render/cabinet-model.js"></script>${map}<script type="module">
+<script src="../../src/core/part-identity.js"></script><script src="../../src/core/cabinet-core.js"></script><script src="../../src/render/cabinet-model.js"></script>${map}<script type="module">
 import * as THREE from 'three';import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const views=[],box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color,roughness:.72}));m.position.set(x,y+h/2,z);return m;};
 for(const [i,canvas] of [...document.querySelectorAll('canvas')].entries()){

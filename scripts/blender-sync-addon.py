@@ -1,5 +1,5 @@
 """Local, one-way Furnish scene synchronization. Networking never calls bpy."""
-bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 2),
+bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 3),
            "blender": (4, 2, 0), "location": "3D View > Sidebar > Furnish", "category": "Import-Export"}
 
 import hashlib
@@ -67,7 +67,7 @@ def fetch_snapshot(url, token, revision):
     if not latest or latest.get('revision') == revision:
         return None
     digest = latest.get('revision', '')
-    if len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest) or latest.get('protocol') not in (1,2) or not 0 < latest.get('bytes', 0) <= MAX_BYTES:
+    if len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest) or latest.get('protocol') not in (1,2,3) or not 0 < latest.get('bytes', 0) <= MAX_BYTES:
         raise ValueError('同步版本信息无效')
     directory = Path(tempfile.mkdtemp(prefix='furnish-sync-'))
     try:
@@ -88,7 +88,7 @@ def fetch_snapshot(url, token, revision):
         raise
 
 
-SYNC_PROPERTIES = ('furnishObjectId','furnishId','furnishPartKind','layerObject','furnishLegacyName','furnishPartKey','furnishPartCount','furnishPartAmbiguous','furnishPartVersion','furnish_sync_keep_transform')
+SYNC_PROPERTIES = ('furnishObjectId','furnishId','furnishPartKind','layerObject','furnishLegacyName','furnishPartKey','furnishPartCount','furnishPartAmbiguous','furnishPartVersion','furnishPreviousPartKey','furnishPreviousPartCount','furnishSourceMatrix','furnish_sync_keep_transform')
 
 
 def _checkpoint(stage):
@@ -102,7 +102,7 @@ def _import_snapshot(filepath):
 def _part_identity(obj):
     key=obj.get('furnishPartKey')
     if key is None:
-        if obj.get('furnishPartVersion')==2:raise ValueError('新版部件缺少身份，已保留原工程')
+        if obj.get('furnishPartVersion',1)>=2:raise ValueError('新版部件缺少身份，已保留原工程')
         return None
     scope=obj.get('furnishId') or obj.get('layerObject') or ''
     count=obj.get('furnishPartCount')
@@ -111,8 +111,16 @@ def _part_identity(obj):
     return (scope,key)
 
 
+def _source_matrix(obj):
+    # Compare authored poses without treating a user's locked refinement as source.
+    values=obj.get('furnishSourceMatrix')
+    if values is not None and len(values)==16:
+        return Matrix([list(values[row*4:row*4+4]) for row in range(4)])
+    return obj.matrix_world
+
+
 def _same_source_geometry(old, incoming):
-    # One-time v1 -> v2 adoption requires matching imported local topology/coordinates.
+    # Identity adoption requires matching imported local topology and coordinates.
     a,b=old.data,incoming.data
     if (old.get('furnishId')!=incoming.get('furnishId') or
         old.get('layerObject')!=incoming.get('layerObject') or
@@ -208,7 +216,8 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
         keys = [o.get('furnishObjectId') for o in meshes];key_set=set(keys)
         if not meshes or any(not isinstance(k,str) or not k for k in keys) or len(set(keys)) != len(keys):
             raise ValueError('导入实体缺少唯一标识；请使用 Furnish 的持续同步推送')
-        if any(o.get('furnishPartVersion')==2 for o in existing.values()) and any(o.get('furnishPartVersion')!=2 for o in meshes):
+        existing_version=max((o.get('furnishPartVersion',1) for o in existing.values()),default=1)
+        if existing_version>=2 and any(o.get('furnishPartVersion',1)<existing_version for o in meshes):
             raise ValueError('工程已升级新版部件身份，拒绝退回旧路径快照；原工程已保留')
         semantic={};incoming_semantic=set()
         for old in existing.values():
@@ -223,14 +232,23 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
                 if identity in incoming_semantic:raise ValueError('导入场景有重复部件身份，已保留原工程')
                 incoming_semantic.add(identity)
             candidate=semantic.get(identity) if identity else None
+            if candidate is None and obj.get('furnishPartVersion')==3 and obj.get('furnishPreviousPartKey'):
+                alias=(obj.get('furnishId') or obj.get('layerObject') or '',obj['furnishPreviousPartKey'])
+                prior=semantic.get(alias)
+                if prior and prior.get('furnishPartVersion',1)<3:
+                    matrix=delta @ obj.matrix_world
+                    same_pose=max(abs(_source_matrix(prior)[i][j]-matrix[i][j]) for i in range(4) for j in range(4))<2e-5
+                    if preserve_materials and (not _same_source_geometry(prior,obj) or not same_pose or prior.get('furnishPartCount')!=obj.get('furnishPreviousPartCount')):
+                        raise ValueError('旧生成器的几何、位置或数量已变化，拒绝按顺序猜测身份；请先用原布局升级副本：'+obj['furnishObjectId']+' geometry='+str(_same_source_geometry(prior,obj))+' pose='+str(same_pose)+' count='+str(prior.get('furnishPartCount')==obj.get('furnishPreviousPartCount')))
+                    candidate=prior;migrated_parts+=1
             if candidate:
-                if preserve_materials and candidate.get('furnishPartCount')!=obj.get('furnishPartCount'):
+                if preserve_materials and candidate.get('furnishPartVersion',1)==obj.get('furnishPartVersion',1) and candidate.get('furnishPartCount')!=obj.get('furnishPartCount'):
                     raise ValueError('同类部件数量已变化，无法可靠继承材质；请先核对或关闭保留材质')
                 semantic_matches+=1
             else:
                 candidate=existing.get(obj['furnishObjectId'])
-                if candidate and obj.get('furnishPartVersion')==2 and candidate.get('furnishPartVersion',1)<2:
-                    if preserve_materials and not _same_source_geometry(candidate,obj):
+                if candidate and obj.get('furnishPartVersion',1)>=2 and candidate.get('furnishPartVersion',1)<obj.get('furnishPartVersion'):
+                    if preserve_materials and (not _same_source_geometry(candidate,obj) or obj.get('furnishPartVersion')==3 and max(abs(_source_matrix(candidate)[i][j]-(delta @ obj.matrix_world)[i][j]) for i in range(4) for j in range(4))>=2e-5):
                         raise ValueError('旧部件几何已变化，无法安全升级标识；请先用原结构同步，原工程已保留')
                     migrated_parts+=1
                 elif candidate and _part_identity(candidate) and _part_identity(candidate)!=identity:candidate=None
@@ -240,9 +258,10 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
             if candidate:
                 if candidate in used:raise ValueError('部件匹配不唯一，已保留原工程')
                 used.add(candidate);matches[obj['furnishObjectId']]=candidate
-        if preserve_materials and any(o.get('furnishPartVersion')==2 for o in meshes):
+        incoming_version=max((o.get('furnishPartVersion',1) for o in meshes),default=1)
+        if preserve_materials and incoming_version>=2:
             incoming_scopes={o.get('furnishId') or o.get('layerObject') or '' for o in meshes}
-            if any(o not in used and o.get('furnishPartVersion',1)<2 and (o.get('furnishId') or o.get('layerObject') or '') in incoming_scopes for o in existing.values()):
+            if any(o not in used and o.get('furnishPartVersion',1)<incoming_version and (o.get('furnishId') or o.get('layerObject') or '') in incoming_scopes for o in existing.values()):
                 raise ValueError('旧工程有未匹配部件，请先用原结构完成标识升级；原工程已保留')
         # Check all candidates before modifying existing objects.
         if first and adopt_legacy:
@@ -288,6 +307,7 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
                 if property_name=='furnish_sync_keep_transform':continue
                 if property_name in obj:target[property_name]=obj[property_name]
                 elif property_name in target:del target[property_name]
+            target['furnishSourceMatrix']=[v for row in matrix for v in row]
             if 'furnish_sync_keep_transform' not in target:target['furnish_sync_keep_transform']=False
             # Store every binding on the object. Shared imported mesh slots must not
             # keep a second, unused copy of source materials alive on every update.

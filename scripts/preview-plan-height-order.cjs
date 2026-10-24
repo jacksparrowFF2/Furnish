@@ -4,7 +4,7 @@ fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN
 <header><h1>2D 高度遮挡修正</h1><p>墙挂电视位于低矮电视柜上方。平面占地重叠，高度范围分离。</p></header>
 <main><article><h2>原有显示 · 电视先添加、柜体后添加</h2><svg id="before" viewBox="-1700 -360 3400 720"></svg><small>按添加顺序绘制，电视被柜体盖住。</small></article><article><h2>修正后 · 上方电视显示在柜体之上</h2><svg viewBox="-1700 -360 3400 720"><g id="gFurn"></g></svg><small id="order"></small></article></main>
 <footer><button id="reverse">切换添加顺序</button><p>切换顺序后，按高度绘制的电视始终位于柜体之上。预览使用生产 2D 渲染器；不修改当前项目。</p></footer><div hidden id="emptyHint"></div><div hidden id="furnHidden"></div>
-<script src="../../src/core/cabinet-core.js"></script><script src="../../src/core/design-core.js"></script><script src="../../src/core/layout-geometry.js"></script><script src="../../src/render/furniture-svg.js"></script>
+<script src="../../src/core/part-identity.js"></script><script src="../../src/core/cabinet-core.js"></script><script src="../../src/core/design-core.js"></script><script src="../../src/core/layout-geometry.js"></script><script src="../../src/render/furniture-svg.js"></script>
 <script>
 const $=s=>document.querySelector(s),PAL={ink:'#3a3833',text:'#544b3f'},ui={layers:{furn:true,collide:false}},esc=s=>s,nm=s=>s,collisions=()=>[],furnSVG=(t,w,d,c,f)=>FurnishFurnitureSVG.render(t,w,d,c,PAL,f);
 const tv={id:'tv',type:'tv',name:'电视',w:1660,d:80,cx:0,cy:-150,rot:0,color:'#18181a'},cab={id:'cab',type:'cabinet',color:'#cbb08b',cx:0,cy:0,rot:0,...FurnishCabinet.preset('tv-floor')},state={furniture:[tv,cab]};

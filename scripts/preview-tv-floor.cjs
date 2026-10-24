@@ -5,7 +5,7 @@ fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN
 <style>body{margin:0;background:#f4efe7;color:#4b3d30;font:16px system-ui}header,footer{padding:24px 32px}h1{margin:0 0 10px;font-size:26px}p{margin:0;line-height:1.8}main{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 24px}article{background:#fcfaf6;border-radius:12px;overflow:hidden}h2{font-size:17px;margin:18px 24px}canvas{display:block;width:100%;height:430px}button{padding:8px 18px}@media(max-width:800px){main{grid-template-columns:1fr}}</style>
 <header><h1>落地电视柜 · 上盖抽屉藏线</h1><p>可调起始尺寸 3000 × 400 × 240 mm · 贴地、五分区、无把手<br>中央后侧留缝 30 mm，带取盖缺口；尺寸除留缝外均为草模假设。</p></header>
 <main><article><h2>关闭 · 分段顶板</h2><canvas></canvas></article><article><h2>中央拉出 · 后侧敞开藏线</h2><canvas></canvas></article></main><footer><button id="toggle">开合中央上盖抽屉</button> <button id="sides">开合两侧普通抽屉</button><p>两侧四格为普通抽屉，上方台面保持固定。拖动旋转、滚轮缩放。抽拉行程为柜深的 70%，未指定实际滑轨；墙上插座由房间单独配置。使用生产模型。</p></footer>
-<script src="../../src/core/cabinet-core.js"></script><script src="../../src/render/cabinet-model.js"></script>${map}<script type="module">
+<script src="../../src/core/part-identity.js"></script><script src="../../src/core/cabinet-core.js"></script><script src="../../src/render/cabinet-model.js"></script>${map}<script type="module">
 import * as THREE from 'three';import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const views=[];const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color,roughness:.65}));m.position.set(x,y+h/2,z);m.castShadow=true;m.receiveShadow=true;return m;};
 for(const [i,canvas] of [...document.querySelectorAll('canvas')].entries()){

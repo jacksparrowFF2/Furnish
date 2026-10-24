@@ -2,7 +2,7 @@
 (function(root){
 'use strict';
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
-const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
 function material(THREE,layout,{color='#e8e2d8',groutColor:custom}={}){
  const tileColor=/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(color)?color:'#e8e2d8',groutColor=custom?new THREE.Color(custom):new THREE.Color(tileColor).multiplyScalar(.9);
@@ -49,17 +49,17 @@ function surface(THREE,room,area,{wx=v=>v/1000,wz=v=>v/1000,material:provided,co
  const shapes=(room.polys||[room.poly]).map(poly=>{const s=new THREE.Shape();poly.forEach(([x,y],i)=>s[i?'lineTo':'moveTo'](wx(x),-wz(y)));return s;});
  const geometry=new THREE.ShapeGeometry(shapes);geometry.rotateX(-Math.PI/2);
  if(area.layout)uv(THREE,geometry,area.layout,{wx,wz});
- const m=provided||(typeof document==='undefined'||!area.layout?new THREE.MeshStandardMaterial({color:color||'#e8e2d8'}):material(THREE,area.layout,{color})),mesh=syncPart(new THREE.Mesh(geometry,m),"floor-finish-model:site-1");
+ const m=provided||(typeof document==='undefined'||!area.layout?new THREE.MeshStandardMaterial({color:color||'#e8e2d8'}):material(THREE,area.layout,{color})),mesh=syncIdentity.produce("floor:generator-call-surface:"+(area.id||room.id),()=>syncIdentity.produce("floor-finish-model:site-1",()=>new THREE.Mesh(geometry,m)));
  mesh.position.y=(area.finishedZ??area.rawZ??0)/1000;mesh.receiveShadow=true;mesh.userData.floor=true;mesh.userData.floorFinishOwnMaterial=!!area.layout||!provided||!!provided.userData.tileFinish?.legacy&&!!provided.userData.tileFinish.groutColor;mesh.userData.room=area.roomId||room.id;return mesh;
 }
 function layers(THREE,room,area,{wx=v=>v/1000,wz=v=>v/1000}={}){
  if(!Number.isFinite(area?.finishedZ))return null;
  const group=new THREE.Group();let bottom=area.rawZ;
- for(const [layer,height,color] of [['base',area.baseThickness,'#aaa397'],['tile',area.tileThickness,'#9e9485']]){
+ for(const [layer,height,color] of syncIdentity.items("floor-finish-model.js:generator-1",[["item-a",['base',area.baseThickness,'#aaa397']],["item-b",['tile',area.tileThickness,'#9e9485']]])){
   if(height>0){
    const shapes=(room.polys||[room.poly]).map(poly=>{const s=new THREE.Shape();poly.forEach(([x,y],i)=>s[i?'lineTo':'moveTo'](wx(x),-wz(y)));return s;});
    const geo=new THREE.ExtrudeGeometry(shapes,{depth:height/1000,bevelEnabled:false});geo.rotateX(-Math.PI/2);
-   const mesh=syncPart(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color,roughness:1,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1})),"floor-finish-model:site-2");mesh.position.y=bottom/1000;
+   const mesh=syncIdentity.produce("floor:generator-call-layers:"+(area.id||room.id),()=>syncIdentity.produce("floor-finish-model:site-2",()=>new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color,roughness:1,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1}))));mesh.position.y=bottom/1000;
    // The textured production surface owns the top face. Keep layer sides and
    // undersides only; coplanar untextured caps could hide the tile grid.
    const index=geo.index,positions=geo.attributes.position,kept=[];
@@ -71,9 +71,9 @@ function layers(THREE,room,area,{wx=v=>v/1000,wz=v=>v/1000}={}){
  return group;
 }
 function stepEdges(THREE,steps,{wx=v=>v/1000,wz=v=>v/1000}={}){
- const group=new THREE.Group();for(const step of steps){const [[x,z],[X,Z]]=step.seam,lo=step.low/1000,hi=step.high/1000,positions=[wx(x),lo,wz(z),wx(X),lo,wz(Z),wx(X),hi,wz(Z),wx(x),lo,wz(z),wx(X),hi,wz(Z),wx(x),hi,wz(z)];
+ const group=new THREE.Group();for(const step of syncIdentity.records("floor-finish-model.js:generator-2",steps)){const [[x,z],[X,Z]]=step.seam,lo=step.low/1000,hi=step.high/1000,positions=[wx(x),lo,wz(z),wx(X),lo,wz(Z),wx(X),hi,wz(Z),wx(x),lo,wz(z),wx(X),hi,wz(Z),wx(x),hi,wz(z)];
   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.computeVertexNormals();
-  const mesh=syncPart(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:'#827564',roughness:1,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})),"floor-finish-model:site-3");mesh.userData.floorStep=step;mesh.userData.floorFinishOwnMaterial=true;group.add(mesh);
+  const mesh=syncIdentity.produce("floor-finish-model:site-3",()=>new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:'#827564',roughness:1,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})));mesh.userData.floorStep=step;mesh.userData.floorFinishOwnMaterial=true;group.add(mesh);
  }return group;
 }
 const api={material,legacyMaterial,groutMaterial,uv,surface,layers,stepEdges};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFloorFinishModel=api;

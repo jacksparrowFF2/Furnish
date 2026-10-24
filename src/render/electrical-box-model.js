@@ -1,20 +1,20 @@
 (function(root){
 'use strict';
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
-const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
 function build(T,f){
  const P=root.FurnishProducts||require('../core/product-rules.js'),g=new T.Group(),w=f.w/1000,d=f.d/1000,h=P.height(f)/1000,t=Math.min(.003,w/15,d/8,h/15),bottom=P.value(f,'mountHeight')/1000;
  const body=new T.MeshStandardMaterial({color:f.color||'#eceeea',roughness:.65}),dark=new T.MeshStandardMaterial({color:'#586169',roughness:.8});
- function box(W,H,D,x,y,z,m,part){const mesh=syncPart(new T.Mesh(new T.BoxGeometry(W,H,D),m),"electrical-box-model:site-1");mesh.position.set(x,y+bottom,z);mesh.userData.electricalBoxPart=part;mesh.castShadow=mesh.receiveShadow=true;g.add(mesh);}
- syncPart(box(w,h,t,0,h/2,-d/2+t/2,body,'back'),"electrical-box-model:site-2");
- for(const x of [-1,1])syncPart(box(t,h,d-t,x*(w-t)/2,h/2,t/2,body,'side'),"electrical-box-model:site-3");
- for(const y of [t/2,h-t/2])syncPart(box(w-2*t,t,d-t,0,y,t/2,body,'horizontal'),"electrical-box-model:site-4");
- syncPart(box(w*.94,h*.94,t*.3,0,h/2,d/2-t*.65,dark,'door-seam'),"electrical-box-model:site-5");
- syncPart(box(w*.92,h*.92,t*.6,0,h/2,d/2-t*.5,body,'door'),"electrical-box-model:site-6");
- syncPart(box(w*.025,h*.12,t*.2,w*.35,h*.5,d/2-t*.1,dark,'latch'),"electrical-box-model:site-7");
+ function box(W,H,D,x,y,z,m,part){const mesh=syncIdentity.produce("electrical-box-model:site-1",()=>new T.Mesh(new T.BoxGeometry(W,H,D),m));mesh.position.set(x,y+bottom,z);mesh.userData.electricalBoxPart=part;mesh.castShadow=mesh.receiveShadow=true;g.add(mesh);}
+ syncIdentity.produce("electrical-box-model:site-2",()=>box(w,h,t,0,h/2,-d/2+t/2,body,'back'));
+ for(const x of syncIdentity.items("electrical-box-model.js:generator-1",[["item-a",-1],["item-b",1]]))syncIdentity.produce("electrical-box-model:site-3",()=>box(t,h,d-t,x*(w-t)/2,h/2,t/2,body,'side'));
+ for(const y of syncIdentity.items("electrical-box-model.js:generator-2",[["item-a",t/2],["item-b",h-t/2]]))syncIdentity.produce("electrical-box-model:site-4",()=>box(w-2*t,t,d-t,0,y,t/2,body,'horizontal'));
+ syncIdentity.produce("electrical-box-model:site-5",()=>box(w*.94,h*.94,t*.3,0,h/2,d/2-t*.65,dark,'door-seam'));
+ syncIdentity.produce("electrical-box-model:site-6",()=>box(w*.92,h*.92,t*.6,0,h/2,d/2-t*.5,body,'door'));
+ syncIdentity.produce("electrical-box-model:site-7",()=>box(w*.025,h*.12,t*.2,w*.35,h*.5,d/2-t*.1,dark,'latch'));
  const weak=f.type==='electrical_box_weak';
- for(let i=0;i<(weak?5:1);i++)syncPart(box(w*(weak?.36:.18),h*.012,t*.1,0,h*(weak?.22+i*.035:.76),d/2-t*.05,dark,weak?'vent':'label'),"electrical-box-model:site-8");
+ for(let i of syncIdentity.range("electrical-box-model.js:generator-3",0,weak?5:1,1,false))syncIdentity.produce("electrical-box-model:site-8",()=>box(w*(weak?.36:.18),h*.012,t*.1,0,h*(weak?.22+i*.035:.76),d/2-t*.05,dark,weak?'vent':'label'));
  return g;
 }
 // Subtract convex box interiors from wall triangles; interpolate UVs and normals.

@@ -103,7 +103,7 @@ function joined(input){
    const layers={bond:polygon(0,s.bondThickness,'bond'),tile:polygon(s.bondThickness,s.bondThickness+s.tileThickness,'tile')},poly=[layers.bond[0],layers.bond[1],layers.tile[2],layers.tile[3]];
    // Excessive thickness must not create inverted strips on a tiny return.
    const valid=Object.values(layers).every(p=>p[1][axis]>=p[0][axis]-EPS&&p[2][axis]>=p[3][axis]-EPS);
-   out.push(valid?{...s,rawRect:[...s.rect],rect:bounds(poly),poly,layers,bottom,top}:{...s,bottom,top});
+   out.push(valid?{...s,...(s.partId?{partId:s.partId+'/joined-band-'+(i-1)}:{}),rawRect:[...s.rect],rect:bounds(poly),poly,layers,bottom,top}:{...s,...(s.partId?{partId:s.partId+'/joined-band-'+(i-1)}:{}),bottom,top});
   }
  }
  return out;
@@ -131,13 +131,13 @@ function derive(plan,work){
    band[f.axis]=lo;band[f.axis+2]=hi;band[f.normal]=Math.min(f.position,f.position+f.side*thickness);band[f.normal+2]=Math.max(f.position,f.position+f.side*thickness);
    bands.push({rect:band,roomId:f.roomId,index,normal:f.normal,side:f.side,tileThickness:s.tileThickness,bondThickness:s.bondThickness,bottom:0,top:plan.rooms.find(v=>v.id===f.roomId)?.ceilingHeight??plan.ceilingHeight??2800});
    const height=plan.rooms.find(v=>v.id===f.roomId)?.ceilingHeight??(plan.physicalRooms||plan.rooms).find(v=>v.id===f.roomId)?.ceilingHeight??plan.ceilingHeight??2800;
-   const add=(segment,bottom,top)=>{
+   const add=(segment,bottom,top,section)=>{
     if(Math.abs(segment[f.normal+(f.side===1?2:0)]-f.position)>EPS)return;
     const a=Math.max(lo,segment[f.axis]),b=Math.min(hi,segment[f.axis+2]);if(b-a<=EPS||top-bottom<=EPS)return;
     const rect=[...band];rect[f.axis]=a;rect[f.axis+2]=b;
-    solids.push({rect,bottom,top,roomId:f.roomId,wallId:s.wallId,side:s.side,normal:f.normal,index,tileThickness:s.tileThickness,bondThickness:s.bondThickness});
+    solids.push({partId:JSON.stringify([s.wallId,s.side,!!s.cross,f.roomId,s.range,section]),rect,bottom,top,roomId:f.roomId,wallId:s.wallId,side:s.side,normal:f.normal,index,tileThickness:s.tileThickness,bondThickness:s.bondThickness});
    };
-   for(const s of faceSections(plan,f,height))add(s.segment,s.bottom,s.top);
+   for(const [section,s]of faceSections(plan,f,height).entries())add(s.segment,s.bottom,s.top,section);
   }
  }
  solids=joined(solids);bands=joined(bands);

@@ -302,6 +302,7 @@
 <script src="src/io/dxf-import.js"></script>
 <script src="src/io/dxf-repair.js"></script>
 <script src="src/io/dxf-outline.js"></script>
+<script src="src/core/part-identity.js"></script>
 <script src="src/core/zone-geometry.js"></script>
 <script src="src/core/floorplan-core.js"></script>
 <script src="src/core/wall-finish-core.js"></script>
@@ -707,12 +708,12 @@ function animateCurtains(dt){
 }
 function buildFurniture(f){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
-const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+const syncIdentity=FurnishPartIdentity;
 
   if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   const furniture=typeof state!=='undefined'?state.furniture.filter(item=>typeof furnitureError!=='function'||!furnitureError(item)):[];
   if(f.obj?.positions?.length){
-    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(f.obj.positions,3));geo.computeVertexNormals();geo.computeBoundingBox();const b=geo.boundingBox,size=new THREE.Vector3();b.getSize(size);geo.translate(-(b.min.x+b.max.x)/2,-b.min.y,-(b.min.z+b.max.z)/2);const mesh=Object.assign(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:f.color||'#d9d2c5',roughness:.75,side:THREE.DoubleSide})),{userData:{furnishPartSource:"index:site-1"}});mesh.scale.set(f.w/1000/size.x,(f.h||800)/1000/size.y,f.d/1000/size.z);mesh.castShadow=true;mesh.receiveShadow=true;const g=new THREE.Group();g.add(mesh);g.userData.fid=f.id;g.position.set(wx(f.cx),0,wz(f.cy));g.rotation.y=-f.rot*Math.PI/180;return g;
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(f.obj.positions,3));geo.computeVertexNormals();geo.computeBoundingBox();const b=geo.boundingBox,size=new THREE.Vector3();b.getSize(size);geo.translate(-(b.min.x+b.max.x)/2,-b.min.y,-(b.min.z+b.max.z)/2);const mesh=syncIdentity.produce("index:site-1",()=>new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:f.color||'#d9d2c5',roughness:.75,side:THREE.DoubleSide})));mesh.scale.set(f.w/1000/size.x,(f.h||800)/1000/size.y,f.d/1000/size.z);mesh.castShadow=true;mesh.receiveShadow=true;const g=new THREE.Group();g.add(mesh);g.userData.fid=f.id;g.position.set(wx(f.cx),0,wz(f.cy));g.rotation.y=-f.rot*Math.PI/180;return g;
   }
   if(typeof FurnishElectricalBox!=='undefined'&&FurnishElectricalBox.supported(f)){const model=FurnishElectricalBoxModel.build(THREE,f);model.position.set(wx(f.cx),model.position.y,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   const g = new THREE.Group(), w = M(f.w), d = M(f.d), c = f.color || '#ddd', bz = -d/2, R = rng(Math.round(f.w*7 + f.d*13 + f.cx + f.cy));
@@ -749,130 +750,130 @@ const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPar
   if(FurnishBasicFurnitureModel.supported(f)){const model=FurnishBasicFurnitureModel.build(THREE,f,RoundedBoxGeometry,{primitives});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   switch (f.type){
     case 'block':
-      g.add(syncPart(box(w,M(FurnishProducts.height(f)),d,c,0,M(FurnishProducts.value(f,'mountHeight')),0),"index:site-2"));
+      g.add(syncIdentity.produce("index:site-2",()=>box(w,M(FurnishProducts.height(f)),d,c,0,M(FurnishProducts.value(f,'mountHeight')),0)));
       break;
     case 'pipebox': {
-      for(const b of FurnishProducts.pipeBoxPanels(f)){
-        const panel=syncPart(box(M(b.w),M(b.h),M(b.d),c,M(b.x),M(b.bottom),M(b.z)),"index:site-3");
+      for(const b of syncIdentity.records("index.html:generator-1",FurnishProducts.pipeBoxPanels(f))){
+        const panel=syncIdentity.produce("index:site-3",()=>box(M(b.w),M(b.h),M(b.d),c,M(b.x),M(b.bottom),M(b.z)));
         panel.userData.pipeBoxPanel=b.key;g.add(panel);
       }
       break;
     }
     case 'nightstand': {
       const wm = woodM(c);
-      legs(g, w, d, .1, woodM('#5a4a3b'), .04, .014);
-      g.add(syncPart(rbox(w, .4, d - .02, wm, 0, .1, -.01, .012),"index:site-4"));
-      fronts(g, -w/2 + .02, .12, w - .04, .36, d/2 - .02, 1, 2, wm, 'bar');
-      syncPart(tableLamp(g, -w*.12, .5, -d*.12),"index:site-5");
-      g.add(syncPart(box(.16, .025, .22, '#0e8f83', w*.24, .5, .04),"index:site-6"), syncPart(box(.14, .02, .2, '#e6dccd', w*.24, .525, .04),"index:site-7"));
+      syncIdentity.produce("index.html:generator-call-1",()=>legs(g, w, d, .1, woodM('#5a4a3b'), .04, .014));
+      g.add(syncIdentity.produce("index:site-4",()=>rbox(w, .4, d - .02, wm, 0, .1, -.01, .012)));
+      syncIdentity.produce("index.html:generator-call-2",()=>fronts(g, -w/2 + .02, .12, w - .04, .36, d/2 - .02, 1, 2, wm, 'bar'));
+      syncIdentity.produce("index:site-5",()=>tableLamp(g, -w*.12, .5, -d*.12));
+      g.add(syncIdentity.produce("index:site-6",()=>box(.16, .025, .22, '#0e8f83', w*.24, .5, .04)), syncIdentity.produce("index:site-7",()=>box(.14, .02, .2, '#e6dccd', w*.24, .525, .04)));
       break;
     }
     case 'wardrobe': case 'cabinet': case 'shoecab': {
       const cm = mat(c, {roughness:.55}), fz = d/2 - .02;
       if (f.type === 'wardrobe'){
         const h = 2.2, n = Math.max(1, Math.round(w/.5));
-        g.add(syncPart(box(w - .02, .08, d - .06, '#4a4641', 0, 0, -.03),"index:site-8"), syncPart(box(w, h - .08, d - .02, cm, 0, .08, -.01),"index:site-9"));
-        fronts(g, -w/2, .08, w, h - .1, fz, n, 1, cm, 'bar', 1.05);
-        g.add(syncPart(box(w, .02, d - .02, darker(c, .9), 0, h - .02, -.01),"index:site-10"));
+        g.add(syncIdentity.produce("index:site-8",()=>box(w - .02, .08, d - .06, '#4a4641', 0, 0, -.03)), syncIdentity.produce("index:site-9",()=>box(w, h - .08, d - .02, cm, 0, .08, -.01)));
+        syncIdentity.produce("index.html:generator-call-3",()=>fronts(g, -w/2, .08, w, h - .1, fz, n, 1, cm, 'bar', 1.05));
+        g.add(syncIdentity.produce("index:site-10",()=>box(w, .02, d - .02, darker(c, .9), 0, h - .02, -.01)));
       } else if (f.type === 'shoecab'){
         const h = 1.0, y0 = .16, n = Math.max(1, Math.round(w/.45));
-        g.add(syncPart(box(w, h - y0, d - .02, cm, 0, y0, -.01),"index:site-11"), syncPart(box(w - .04, .01, .03, glowMat('#fff7e6', '#ffe9c4', .8), 0, y0 - .01, fz - .06),"index:site-12"));   // 悬空 + 底部灯带
-        fronts(g, -w/2, y0, w, h - y0, fz, n, 1, cm, 'edge');
-        g.add(syncPart(rbox(w + .01, .025, d, woodM(darker(c, .8)), 0, h, 0, .006),"index:site-13"));
-        g.add(syncPart(rbox(.22, .015, .14, woodM('#6b543f'), -w*.25, h + .025, 0, .006),"index:site-14"));
-        syncPart(vase(g, w*.28, h + .025, -.03, .05, .2, '#d8cfc2', R),"index:site-15");
+        g.add(syncIdentity.produce("index:site-11",()=>box(w, h - y0, d - .02, cm, 0, y0, -.01)), syncIdentity.produce("index:site-12",()=>box(w - .04, .01, .03, glowMat('#fff7e6', '#ffe9c4', .8), 0, y0 - .01, fz - .06)));   // 悬空 + 底部灯带
+        syncIdentity.produce("index.html:generator-call-4",()=>fronts(g, -w/2, y0, w, h - y0, fz, n, 1, cm, 'edge'));
+        g.add(syncIdentity.produce("index:site-13",()=>rbox(w + .01, .025, d, woodM(darker(c, .8)), 0, h, 0, .006)));
+        g.add(syncIdentity.produce("index:site-14",()=>rbox(.22, .015, .14, woodM('#6b543f'), -w*.25, h + .025, 0, .006)));
+        syncIdentity.produce("index:site-15",()=>vase(g, w*.28, h + .025, -.03, .05, .2, '#d8cfc2', R));
       } else {
         const h = .85, n = Math.max(1, Math.round(w/.5));
-        legs(g, w, d, .1, woodM('#3a3027'), .05, .016);
-        g.add(syncPart(box(w, h - .13, d - .02, cm, 0, .1, -.01),"index:site-16"));
-        fronts(g, -w/2, .62, w, .2, fz, n, 1, cm, 'bar');
-        fronts(g, -w/2, .1, w, .52, fz, n, 1, cm, 'bar', .52);
-        g.add(syncPart(rbox(w + .02, .03, d + .01, woodM(darker(c, .78)), 0, h - .03, 0, .008),"index:site-17"));
-        syncPart(vase(g, w*.3, h, 0, .07, .24, '#e9e2d6', R),"index:site-18");
-        g.add(rot(syncPart(box(.3, .38, .02, woodM('#3a3027'), -w*.25, h, bz + .06),"index:site-19"), -.12), rot(syncPart(box(.25, .33, .005, '#d9cfbf', -w*.25, h + .03, bz + .075),"index:site-20"), -.12));   // 靠墙画框
-        g.add(syncPart(lathe([[0, 0], [.05, 0], [.12, .06], [.13, .07]], mat('#b8a58c', {roughness:.5, side:THREE.DoubleSide}), 0, h, .02, 32),"index:site-21"));
-        for (let k = 0; k < 3; k++) g.add(syncPart(blob(.035, .035, .035, ['#d98c4a', '#c9ad4f', '#b5463a'][k], Math.cos(k*2.1)*.04, h + .045, .02 + Math.sin(k*2.1)*.04, 14),"index:site-22"));
+        syncIdentity.produce("index.html:generator-call-5",()=>legs(g, w, d, .1, woodM('#3a3027'), .05, .016));
+        g.add(syncIdentity.produce("index:site-16",()=>box(w, h - .13, d - .02, cm, 0, .1, -.01)));
+        syncIdentity.produce("index.html:generator-call-6",()=>fronts(g, -w/2, .62, w, .2, fz, n, 1, cm, 'bar'));
+        syncIdentity.produce("index.html:generator-call-7",()=>fronts(g, -w/2, .1, w, .52, fz, n, 1, cm, 'bar', .52));
+        g.add(syncIdentity.produce("index:site-17",()=>rbox(w + .02, .03, d + .01, woodM(darker(c, .78)), 0, h - .03, 0, .008)));
+        syncIdentity.produce("index:site-18",()=>vase(g, w*.3, h, 0, .07, .24, '#e9e2d6', R));
+        g.add(rot(syncIdentity.produce("index:site-19",()=>box(.3, .38, .02, woodM('#3a3027'), -w*.25, h, bz + .06)), -.12), rot(syncIdentity.produce("index:site-20",()=>box(.25, .33, .005, '#d9cfbf', -w*.25, h + .03, bz + .075)), -.12));   // 靠墙画框
+        g.add(syncIdentity.produce("index:site-21",()=>lathe([[0, 0], [.05, 0], [.12, .06], [.13, .07]], mat('#b8a58c', {roughness:.5, side:THREE.DoubleSide}), 0, h, .02, 32)));
+        for(let k of syncIdentity.range("index.html:generator-2",0,3,1,false))g.add(syncIdentity.produce("index:site-22",()=>blob(.035, .035, .035, ['#d98c4a', '#c9ad4f', '#b5463a'][k], Math.cos(k*2.1)*.04, h + .045, .02 + Math.sin(k*2.1)*.04, 14)));
       }
       break;
     }
     case 'bookshelf': {
       const h = 1.8, t = .022, ns = 5, wm = woodM(c), sh0 = (h - .06 - t)/ns, cols = ['#b88a6a','#6f8f8a','#d9c08c','#9aa58c','#a8675e','#e6dccd','#7d8ea3','#c9bfae'];
-      g.add(syncPart(box(w, h, .012, woodM(darker(c, .85)), 0, 0, bz + .006),"index:site-23"), syncPart(box(t, h, d, wm, -w/2 + t/2),"index:site-24"), syncPart(box(t, h, d, wm, w/2 - t/2),"index:site-25"), syncPart(box(w - 2*t, .06, d - .03, wm, 0, 0, .0),"index:site-26"));
-      for (let s = 0; s <= ns; s++){
-        const y = s < ns ? .06 + s*sh0 : h - t; g.add(syncPart(box(w - 2*t, t, d - .012, wm, 0, y, .006),"index:site-27"));
+      g.add(syncIdentity.produce("index:site-23",()=>box(w, h, .012, woodM(darker(c, .85)), 0, 0, bz + .006)), syncIdentity.produce("index:site-24",()=>box(t, h, d, wm, -w/2 + t/2)), syncIdentity.produce("index:site-25",()=>box(t, h, d, wm, w/2 - t/2)), syncIdentity.produce("index:site-26",()=>box(w - 2*t, .06, d - .03, wm, 0, 0, .0)));
+      for(let s of syncIdentity.range("index.html:generator-3",0,ns,1,true)){
+        const y = s < ns ? .06 + s*sh0 : h - t; g.add(syncIdentity.produce("index:site-27",()=>box(w - 2*t, t, d - .012, wm, 0, y, .006)));
         if (s === ns) break;
         const yb = y + t, end = w/2 - t - .01; let x = -w/2 + t + .01, deco = R() < .55 ? x + R()*(w - .45) : 99;
         while (x < end - .03){
           if (x >= deco){
             deco = 99;
-            if (R() < .5) syncPart(vase(g, x + .07, yb, 0, .045, .16, cols[Math.floor(R()*8)], R, false),"index:site-28");
-            else for (let k = 0; k < 3; k++) g.add(syncPart(box(.2 - k*.02, .028, d*.7, mat(cols[Math.floor(R()*8)], {roughness:.8}), x + .1, yb + k*.028, .01),"index:site-29"));
+            if (R() < .5) syncIdentity.produce("index:site-28",()=>vase(g, x + .07, yb, 0, .045, .16, cols[Math.floor(R()*8)], R, false));
+            else for(let k of syncIdentity.range("index.html:generator-4",0,3,1,false))g.add(syncIdentity.produce("index:site-29",()=>box(.2 - k*.02, .028, d*.7, mat(cols[Math.floor(R()*8)], {roughness:.8}), x + .1, yb + k*.028, .01)));
             x += .2; continue;
           }
           if (R() < .07){ x += .03 + R()*.05; continue; }
           const bw = .018 + R()*.03, bh = Math.min(sh0 - t - .03, .17 + R()*.13), bd = d*(.62 + R()*.22);
           if (x + bw > end) break;
-          g.add(syncPart(box(bw, bh, bd, mat(cols[Math.floor(R()*8)], {roughness:.75}), x + bw/2, yb, d/2 - .015 - bd/2),"index:site-30"));
+          g.add(syncIdentity.produce("index:site-30",()=>box(bw, bh, bd, mat(cols[Math.floor(R()*8)], {roughness:.75}), x + bw/2, yb, d/2 - .015 - bd/2)));
           x += bw + .002;
         }
       }
       break;
     }
     case 'baycushion':
-      g.add(syncPart(rbox(w, .08, d, fabric(c), 0, .45, 0, .03),"index:site-31"));
-      g.add(rot(syncPart(rbox(w - .1, .34, .14, fabric('#ffffff'), 0, .52, bz + .14, .06),"index:site-32"), .25), rot(syncPart(rbox(w - .1, .34, .14, fabric('#f0e6d6'), 0, .52, d/2 - .14, .06),"index:site-33"), -.25));
-      g.add(syncPart(rbox(w*.8, .04, .3, fabric(darker(c, .7)), 0, .53, d*.12, .02),"index:site-34"), syncPart(rbox(.28, .015, .2, woodM('#8d7258'), 0, .53, -d*.15, .006),"index:site-35"), syncPart(cyl(.035, .03, .06, ceramic(), 0, .545, -d*.15, 20),"index:site-36"));
+      g.add(syncIdentity.produce("index:site-31",()=>rbox(w, .08, d, fabric(c), 0, .45, 0, .03)));
+      g.add(rot(syncIdentity.produce("index:site-32",()=>rbox(w - .1, .34, .14, fabric('#ffffff'), 0, .52, bz + .14, .06)), .25), rot(syncIdentity.produce("index:site-33",()=>rbox(w - .1, .34, .14, fabric('#f0e6d6'), 0, .52, d/2 - .14, .06)), -.25));
+      g.add(syncIdentity.produce("index:site-34",()=>rbox(w*.8, .04, .3, fabric(darker(c, .7)), 0, .53, d*.12, .02)), syncIdentity.produce("index:site-35",()=>rbox(.28, .015, .2, woodM('#8d7258'), 0, .53, -d*.15, .006)), syncIdentity.produce("index:site-36",()=>cyl(.035, .03, .06, ceramic(), 0, .545, -d*.15, 20)));
       break;
     case 'tvstand': {
       const sm = mat(c, {roughness:.5}), n = Math.max(2, Math.round(w/.6));
-      legs(g, w, d, .1, blackMetal(), .08, .012);
-      g.add(syncPart(rbox(w, .4, d - .02, sm, 0, .1, -.01, .01),"index:site-37"));
-      fronts(g, -w/2 + .005, .105, w - .01, .39, d/2 - .02, n, 1, sm, 'edge');
-      g.add(syncPart(rbox(1.45, .84, .025, mat('#18181a', {roughness:.4, metalness:.3}), 0, .95, bz + .03, .004),"index:site-38"), syncPart(box(1.43, .81, .002, screenMat(), 0, .962, bz + .0435),"index:site-39"));
-      g.add(syncPart(rbox(.9, .06, .09, '#2a2a2c', 0, .5, -.02, .02),"index:site-40"), syncPart(box(.86, .045, .002, fabric('#3a3a3c'), 0, .507, .026),"index:site-41"));
-      syncPart(vase(g, w/2 - .25, .5, 0, .06, .26, '#d8cfc2', R),"index:site-42");
-      g.add(syncPart(box(.25, .035, .18, '#a9433b', -w/2 + .3, .5, 0),"index:site-43"), syncPart(box(.22, .03, .16, '#e6dccd', -w/2 + .3, .535, 0),"index:site-44"));
+      syncIdentity.produce("index.html:generator-call-8",()=>legs(g, w, d, .1, blackMetal(), .08, .012));
+      g.add(syncIdentity.produce("index:site-37",()=>rbox(w, .4, d - .02, sm, 0, .1, -.01, .01)));
+      syncIdentity.produce("index.html:generator-call-9",()=>fronts(g, -w/2 + .005, .105, w - .01, .39, d/2 - .02, n, 1, sm, 'edge'));
+      g.add(syncIdentity.produce("index:site-38",()=>rbox(1.45, .84, .025, mat('#18181a', {roughness:.4, metalness:.3}), 0, .95, bz + .03, .004)), syncIdentity.produce("index:site-39",()=>box(1.43, .81, .002, screenMat(), 0, .962, bz + .0435)));
+      g.add(syncIdentity.produce("index:site-40",()=>rbox(.9, .06, .09, '#2a2a2c', 0, .5, -.02, .02)), syncIdentity.produce("index:site-41",()=>box(.86, .045, .002, fabric('#3a3a3c'), 0, .507, .026)));
+      syncIdentity.produce("index:site-42",()=>vase(g, w/2 - .25, .5, 0, .06, .26, '#d8cfc2', R));
+      g.add(syncIdentity.produce("index:site-43",()=>box(.25, .035, .18, '#a9433b', -w/2 + .3, .5, 0)), syncIdentity.produce("index:site-44",()=>box(.22, .03, .16, '#e6dccd', -w/2 + .3, .535, 0)));
       break;
     }
     case 'rug':
-      [[w, d, .01, c, 0], [w - .16, d - .16, .002, darker(c, .82), .01], [w - .26, d - .26, .002, lighter(c, .12), .0115]].forEach(([a, b, h, cc, y]) => {
-        const r = syncPart(box(a, h, b, mat(cc, {roughness:1}), 0, y + .002),"index:site-45"); r.castShadow = false; g.add(r);
+      syncIdentity.each("index.html:generator-5",[[w, d, .01, c, 0], [w - .16, d - .16, .002, darker(c, .82), .01], [w - .26, d - .26, .002, lighter(c, .12), .0115]],([a, b, h, cc, y]) => {
+        const r = syncIdentity.produce("index:site-45",()=>box(a, h, b, mat(cc, {roughness:1}), 0, y + .002)); r.castShadow = false; g.add(r);
       });
       break;
     case 'plant': {
       const r = Math.min(w, d)/2, H = .9 + r*1.6, pot = mat('#d9d2c5', {roughness:.6}), lm = [mat('#5f8f4e', {roughness:.6, side:THREE.DoubleSide}), mat('#79a862', {roughness:.6, side:THREE.DoubleSide})];
-      g.add(syncPart(lathe([[0, 0], [r*.4, 0], [r*.44, .02], [r*.54, .36], [r*.57, .4], [r*.52, .4], [r*.5, .37], [0, .37]], pot, 0, 0, 0, 36),"index:site-46"), syncPart(cyl(r*.49, r*.49, .005, '#4a3a2c', 0, .368, 0, 28),"index:site-47"));
-      g.add(syncPart(rod([0, .37, 0], [.02, H*.62, -.01], .016, '#6b5540', .009),"index:site-48"));
+      g.add(syncIdentity.produce("index:site-46",()=>lathe([[0, 0], [r*.4, 0], [r*.44, .02], [r*.54, .36], [r*.57, .4], [r*.52, .4], [r*.5, .37], [0, .37]], pot, 0, 0, 0, 36)), syncIdentity.produce("index:site-47",()=>cyl(r*.49, r*.49, .005, '#4a3a2c', 0, .368, 0, 28)));
+      g.add(syncIdentity.produce("index:site-48",()=>rod([0, .37, 0], [.02, H*.62, -.01], .016, '#6b5540', .009)));
       const N = 20 + Math.round(r*36), sc = Math.sqrt(r/.25);
-      for (let k = 0; k < N; k++){
+      for(let k of syncIdentity.range("index.html:generator-6",0,N,1,false)){
         const t = k/N, a = k*2.399 + R()*.3, len = (.14 + R()*.08)*(1.1 - t*.4)*sc, s0 = .03 + R()*.08*sc, p = new THREE.Group();
         p.position.set(0, H*(.42 + .58*t), 0); p.rotation.set(0, -a, .1 + t*.5 + R()*.3, 'YXZ');
-        const lf = syncPart(blob(len/2, .005, len*.27, lm[k % 2], s0 + len/2, 0, 0, 16),"index:site-49"); lf.rotation.z = -.3;
-        p.add(syncPart(box(s0, .005, .005, '#6f8f4a', s0/2, 0, 0),"index:site-50"), lf); g.add(p);
+        const lf = syncIdentity.produce("index:site-49",()=>blob(len/2, .005, len*.27, lm[k % 2], s0 + len/2, 0, 0, 16)); lf.rotation.z = -.3;
+        p.add(syncIdentity.produce("index:site-50",()=>box(s0, .005, .005, '#6f8f4a', s0/2, 0, 0)), lf); g.add(p);
       }
       break;
     }
     case 'stove': {
       const sm = mat('#b9bec3', {metalness:.8, roughness:.3});
-      g.add(syncPart(rbox(w, .012, d, mat('#0d0d0e', {roughness:.06, metalness:.3}), 0, .862, 0, .004),"index:site-51"));
-      (w/d > 1.4 ? [[-w/4, 0], [w/4, 0]] : [[-w/4,-d/4],[w/4,-d/4],[-w/4,d/4],[w/4,d/4]]).forEach(([x, z]) => {
-        g.add(syncPart(cyl(.085, .09, .008, '#2b2b2b', x, .874, z, 32),"index:site-52"), syncPart(cyl(.045, .05, .014, mat('#6b5a45', {metalness:.7, roughness:.35}), x, .874, z, 28),"index:site-53"), syncPart(cyl(.028, .028, .022, '#1a1a1a', x, .874, z, 20),"index:site-54"));
-        for (let k = 0; k < 5; k++){ const a = k*Math.PI*2/5; g.add(rot(syncPart(box(.07, .014, .012, '#1c1c1c', x + Math.cos(a)*.1, .874, z + Math.sin(a)*.1),"index:site-55"), 0, -a)); }
-        g.add(syncPart(cyl(.02, .022, .018, '#222', x, .874, d/2 - .04, 20),"index:site-56"));
+      g.add(syncIdentity.produce("index:site-51",()=>rbox(w, .012, d, mat('#0d0d0e', {roughness:.06, metalness:.3}), 0, .862, 0, .004)));
+      syncIdentity.each("index.html:generator-7",w/d > 1.4 ? [[-w/4, 0], [w/4, 0]] : [[-w/4,-d/4],[w/4,-d/4],[-w/4,d/4],[w/4,d/4]],([x, z]) => {
+        g.add(syncIdentity.produce("index:site-52",()=>cyl(.085, .09, .008, '#2b2b2b', x, .874, z, 32)), syncIdentity.produce("index:site-53",()=>cyl(.045, .05, .014, mat('#6b5a45', {metalness:.7, roughness:.35}), x, .874, z, 28)), syncIdentity.produce("index:site-54",()=>cyl(.028, .028, .022, '#1a1a1a', x, .874, z, 20)));
+        for(let k of syncIdentity.range("index.html:generator-8",0,5,1,false)){ const a = k*Math.PI*2/5; g.add(rot(syncIdentity.produce("index:site-55",()=>box(.07, .014, .012, '#1c1c1c', x + Math.cos(a)*.1, .874, z + Math.sin(a)*.1)), 0, -a)); }
+        g.add(syncIdentity.produce("index:site-56",()=>cyl(.02, .022, .018, '#222', x, .874, d/2 - .04, 20)));
       });
-      if(f.counterElevation===undefined){g.add(syncPart(rbox(w, .06, .5, sm, 0, 1.55, bz + .25, .01),"index:site-57"), syncPart(box(.3, .72, .26, sm, 0, 1.61, bz + .13),"index:site-58"));
-      g.add(rot(syncPart(box(w - .02, .3, .008, mat('#15181b', {roughness:.05, metalness:.5}), 0, 1.58, bz + .38),"index:site-59"), -.9), syncPart(box(.16, .012, .003, mat('#101214', {emissive:'#6fd0ff', emissiveIntensity:.6}), 0, 1.575, bz + .502),"index:site-60"));
+      if(f.counterElevation===undefined){g.add(syncIdentity.produce("index:site-57",()=>rbox(w, .06, .5, sm, 0, 1.55, bz + .25, .01)), syncIdentity.produce("index:site-58",()=>box(.3, .72, .26, sm, 0, 1.61, bz + .13)));
+      g.add(rot(syncIdentity.produce("index:site-59",()=>box(w - .02, .3, .008, mat('#15181b', {roughness:.05, metalness:.5}), 0, 1.58, bz + .38)), -.9), syncIdentity.produce("index:site-60",()=>box(.16, .012, .003, mat('#101214', {emissive:'#6fd0ff', emissiveIntensity:.6}), 0, 1.575, bz + .502)));
       }break;
     }
     case 'ksink': {
       if(FurnishProducts.vesselSink(f)){g.add(FurnishSinkModel.buildVessel(THREE,f));break;}
       if(f.sinkNotch||f.sinkBowlHeight!==undefined){g.add(FurnishSinkModel.buildNotched(THREE,f));break;}
       const st = mat('#c7ccd1', {metalness:.85, roughness:.28}), inner = mat('#9aa1a8', {metalness:.8, roughness:.35}), two = w >= .75, bw = two ? w*.42 : w*.7, bd = d*.66;
-      g.add(syncPart(box(w, .008, d, st, 0, .862, 0),"index:site-61"));
-      (two ? [-w*.23, w*.23] : [0]).forEach(x => g.add(syncPart(shell(bw, bd, .02, .015, .04, st, x, .862, .03),"index:site-62"), syncPart(box(bw - .03, .002, bd - .03, inner, x, .87, .03),"index:site-63"), syncPart(cyl(.03, .03, .003, chrome(), x, .872, .03, 20),"index:site-64")));
+      g.add(syncIdentity.produce("index:site-61",()=>box(w, .008, d, st, 0, .862, 0)));
+      syncIdentity.each("index.html:generator-9",two ? [-w*.23, w*.23] : [0],x => g.add(syncIdentity.produce("index:site-62",()=>shell(bw, bd, .02, .015, .04, st, x, .862, .03)), syncIdentity.produce("index:site-63",()=>box(bw - .03, .002, bd - .03, inner, x, .87, .03)), syncIdentity.produce("index:site-64",()=>cyl(.03, .03, .003, chrome(), x, .872, .03, 20))));
       const fx = two ? 0 : w*.3, cm = chrome();
-      g.add(syncPart(cyl(.025, .028, .03, cm, fx, .87, bz + .06, 20),"index:site-65"), syncPart(tube([[fx, .9, bz + .06], [fx, 1.12, bz + .06], [fx, 1.17, bz + .1], [fx, 1.14, bz + .18], [fx, 1.08, bz + .2]], .012, cm),"index:site-66"));
-      g.add(rot(syncPart(box(.012, .012, .09, cm, fx + .035, .98, bz + .09),"index:site-67"), -.3));
+      g.add(syncIdentity.produce("index:site-65",()=>cyl(.025, .028, .03, cm, fx, .87, bz + .06, 20)), syncIdentity.produce("index:site-66",()=>tube([[fx, .9, bz + .06], [fx, 1.12, bz + .06], [fx, 1.17, bz + .1], [fx, 1.14, bz + .18], [fx, 1.08, bz + .2]], .012, cm)));
+      g.add(rot(syncIdentity.produce("index:site-67",()=>box(.012, .012, .09, cm, fx + .035, .98, bz + .09)), -.3));
       break;
     }
     case 'fridge': case 'fridge_french_drawer': case 'waterheater_flat': case 'washer': case 'dryer': {
@@ -880,177 +881,177 @@ const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPar
     }
     case 'toilet': {
       const cer = ceramic(), Rb = w*.45, zc = bz + d*.62, kz = (d*.37)/Rb, cm = chrome();
-      g.add(syncPart(rbox(w*.88, .4, d*.24, cer, 0, .36, bz + d*.12, .04),"index:site-68"), syncPart(rbox(w*.92, .03, d*.27, cer, 0, .76, bz + d*.135, .012),"index:site-69"), syncPart(cyl(.022, .022, .006, cm, 0, .79, bz + d*.135, 20),"index:site-70"));
-      const ped = syncPart(lathe([[0, 0], [Rb*.62, 0], [Rb*.66, .02], [Rb*.56, .12], [Rb*.62, .22], [Rb*.92, .33], [Rb, .37]], cer, 0, 0, zc, 40),"index:site-71");
-      const seat = syncPart(cyl(Rb*1.01, Rb*1.01, .022, mat('#f4f4f2', {roughness:.2}), 0, .37, zc, 40),"index:site-72"), lid = syncPart(cyl(Rb*.97, Rb*.99, .02, mat('#f4f4f2', {roughness:.2}), 0, .392, zc, 40),"index:site-73");
+      g.add(syncIdentity.produce("index:site-68",()=>rbox(w*.88, .4, d*.24, cer, 0, .36, bz + d*.12, .04)), syncIdentity.produce("index:site-69",()=>rbox(w*.92, .03, d*.27, cer, 0, .76, bz + d*.135, .012)), syncIdentity.produce("index:site-70",()=>cyl(.022, .022, .006, cm, 0, .79, bz + d*.135, 20)));
+      const ped = syncIdentity.produce("index:site-71",()=>lathe([[0, 0], [Rb*.62, 0], [Rb*.66, .02], [Rb*.56, .12], [Rb*.62, .22], [Rb*.92, .33], [Rb, .37]], cer, 0, 0, zc, 40));
+      const seat = syncIdentity.produce("index:site-72",()=>cyl(Rb*1.01, Rb*1.01, .022, mat('#f4f4f2', {roughness:.2}), 0, .37, zc, 40)), lid = syncIdentity.produce("index:site-73",()=>cyl(Rb*.97, Rb*.99, .02, mat('#f4f4f2', {roughness:.2}), 0, .392, zc, 40));
       ped.scale.z = seat.scale.z = lid.scale.z = kz; g.add(ped, seat, lid);
-      [-1, 1].forEach(s => g.add(syncPart(box(.03, .02, .03, cm, s*w*.18, .39, zc - Rb*kz - .005),"index:site-74")));
+      syncIdentity.each("index.html:generator-10",[-1, 1],s => g.add(syncIdentity.produce("index:site-74",()=>box(.03, .02, .03, cm, s*w*.18, .39, zc - Rb*kz - .005))));
       break;
     }
     case 'vanity': {
       const stone = mat('#fafafa', {roughness:.18}), nb = w >= 1.1 ? 2 : 1, cm = chrome();
       {const body=FurnishCabinetModel.build(THREE,f,box,{furniture});body.position.y=M(FurnishProducts.cabinetBase(f));g.add(body);}
       const decor=new THREE.Group();decor.position.y=f.cabinet?M(FurnishCabinet.height(f)-FurnishProducts.cabinetSpec(f).bodyHeight):0;g.add(decor);
-      decor.add(syncPart(rbox(w, .03, d, stone, 0, .78, 0, .006),"index:site-75"));
+      decor.add(syncIdentity.produce("index:site-75",()=>rbox(w, .03, d, stone, 0, .78, 0, .006)));
       const rb = Math.min(.19, w/nb*.36);
-      for (let i = 0; i < nb; i++){
+      for(let i of syncIdentity.range("index.html:generator-11",0,nb,1,false)){
         const x = nb === 1 ? 0 : (i ? w/4 : -w/4);
-        decor.add(syncPart(lathe([[0, 0], [rb*.55, 0], [rb*.85, .03], [rb, .1], [rb*.97, .12]], ceramic({side:THREE.DoubleSide}), x, .81, .03, 40),"index:site-76"), syncPart(cyl(.018, .018, .003, cm, x, .812, .03, 16),"index:site-77"));
-        decor.add(syncPart(cyl(.02, .022, .02, cm, x, .81, bz + .06, 16),"index:site-78"), syncPart(tube([[x, .83, bz + .06], [x, 1.03, bz + .06], [x, 1.07, bz + .11], [x, 1.03, bz + .15]], .01, cm),"index:site-79"), rot(syncPart(box(.01, .01, .06, cm, x, 1.05, bz + .04),"index:site-80"), .4));
+        decor.add(syncIdentity.produce("index:site-76",()=>lathe([[0, 0], [rb*.55, 0], [rb*.85, .03], [rb, .1], [rb*.97, .12]], ceramic({side:THREE.DoubleSide}), x, .81, .03, 40)), syncIdentity.produce("index:site-77",()=>cyl(.018, .018, .003, cm, x, .812, .03, 16)));
+        decor.add(syncIdentity.produce("index:site-78",()=>cyl(.02, .022, .02, cm, x, .81, bz + .06, 16)), syncIdentity.produce("index:site-79",()=>tube([[x, .83, bz + .06], [x, 1.03, bz + .06], [x, 1.07, bz + .11], [x, 1.03, bz + .15]], .01, cm)), rot(syncIdentity.produce("index:site-80",()=>box(.01, .01, .06, cm, x, 1.05, bz + .04)), .4));
       }
       const mw = Math.min(w*.9, nb*.7);
-      decor.add(syncPart(rbox(mw + .02, .82, .02, glowMat('#fff7e6', '#ffe9c4', .9), 0, 1.14, bz + .01, .01),"index:site-81"), syncPart(box(mw, .8, .01, mirror(), 0, 1.15, bz + .025),"index:site-82"));
-      decor.add(syncPart(cyl(.028, .028, .12, mat('#c8b8a6', {roughness:.3}), w/2 - .08, .81, bz + .1, 16),"index:site-83"), syncPart(rbox(.18, .03, .12, fabric('#e9e2d6'), -w/2 + .12, .81, .05, .012),"index:site-84"));
+      decor.add(syncIdentity.produce("index:site-81",()=>rbox(mw + .02, .82, .02, glowMat('#fff7e6', '#ffe9c4', .9), 0, 1.14, bz + .01, .01)), syncIdentity.produce("index:site-82",()=>box(mw, .8, .01, mirror(), 0, 1.15, bz + .025)));
+      decor.add(syncIdentity.produce("index:site-83",()=>cyl(.028, .028, .12, mat('#c8b8a6', {roughness:.3}), w/2 - .08, .81, bz + .1, 16)), syncIdentity.produce("index:site-84",()=>rbox(.18, .03, .12, fabric('#e9e2d6'), -w/2 + .12, .81, .05, .012)));
       break;
     }
     case 'shower': {
       const cm = chrome(), x = -w/4;
-      g.add(syncPart(rbox(w, .05, d, mat('#f4f4f2', {roughness:.3}), 0, 0, 0, .01),"index:site-85"), syncPart(box(w*.6, .003, .05, mat('#9aa1a8', {metalness:.8, roughness:.3}), 0, .05, bz + .08),"index:site-86"));
-      [[w, .01, 0, d/2 - .005], [.01, d, w/2 - .005, 0]].forEach(([gw, gd, px, pz]) => { const p = syncPart(box(gw, 1.95, gd, glassMat, px, .05, pz),"index:site-87"); p.castShadow = false; g.add(p); });
-      g.add(syncPart(box(.02, 1.95, .02, frameMat, w/2 - .01, .05, d/2 - .01),"index:site-88"), syncPart(box(.02, 1.95, .03, frameMat, -w/2 + .01, .05, d/2 - .005),"index:site-89"), syncPart(box(.03, 1.95, .02, frameMat, w/2 - .005, .05, bz + .01),"index:site-90"));
-      g.add(syncPart(box(w, .015, .02, frameMat, 0, 1.985, d/2 - .005),"index:site-91"), syncPart(box(.02, .015, d, frameMat, w/2 - .005, 1.985, 0),"index:site-92"));
-      g.add(syncPart(rbox(.14, .1, .04, cm, x, 1.0, bz + .02, .01),"index:site-93"), syncPart(rod([x, 1.1, bz + .03], [x, 1.95, bz + .03], .012, cm),"index:site-94"));
-      g.add(syncPart(tube([[x, 1.95, bz + .03], [x, 2.02, bz + .06], [x, 2.03, bz + .22]], .01, cm),"index:site-95"), syncPart(rbox(.24, .012, .24, cm, x, 2.02, bz + .25, .004),"index:site-96"));
-      g.add(rot(syncPart(cyl(.015, .02, .2, cm, x + .1, 1.25, bz + .05, 16),"index:site-97"), .25), syncPart(blob(.03, .012, .03, cm, x + .1, 1.47, bz + .08, 16),"index:site-98"));
-      g.add(syncPart(box(.26, .012, .1, ceramic(), w/2 - .2, 1.2, bz + .05),"index:site-99"));
-      [['#e6dccd', .03, .18], ['#0e8f83', .025, .15], ['#f4f4f2', .028, .12]].forEach(([cc, r, hh], i) => g.add(syncPart(cyl(r, r, hh, mat(cc, {roughness:.3}), w/2 - .28 + i*.07, 1.212, bz + .05, 16),"index:site-100")));
+      g.add(syncIdentity.produce("index:site-85",()=>rbox(w, .05, d, mat('#f4f4f2', {roughness:.3}), 0, 0, 0, .01)), syncIdentity.produce("index:site-86",()=>box(w*.6, .003, .05, mat('#9aa1a8', {metalness:.8, roughness:.3}), 0, .05, bz + .08)));
+      syncIdentity.each("index.html:generator-12",[[w, .01, 0, d/2 - .005], [.01, d, w/2 - .005, 0]],([gw, gd, px, pz]) => { const p = syncIdentity.produce("index:site-87",()=>box(gw, 1.95, gd, glassMat, px, .05, pz)); p.castShadow = false; g.add(p); });
+      g.add(syncIdentity.produce("index:site-88",()=>box(.02, 1.95, .02, frameMat, w/2 - .01, .05, d/2 - .01)), syncIdentity.produce("index:site-89",()=>box(.02, 1.95, .03, frameMat, -w/2 + .01, .05, d/2 - .005)), syncIdentity.produce("index:site-90",()=>box(.03, 1.95, .02, frameMat, w/2 - .005, .05, bz + .01)));
+      g.add(syncIdentity.produce("index:site-91",()=>box(w, .015, .02, frameMat, 0, 1.985, d/2 - .005)), syncIdentity.produce("index:site-92",()=>box(.02, .015, d, frameMat, w/2 - .005, 1.985, 0)));
+      g.add(syncIdentity.produce("index:site-93",()=>rbox(.14, .1, .04, cm, x, 1.0, bz + .02, .01)), syncIdentity.produce("index:site-94",()=>rod([x, 1.1, bz + .03], [x, 1.95, bz + .03], .012, cm)));
+      g.add(syncIdentity.produce("index:site-95",()=>tube([[x, 1.95, bz + .03], [x, 2.02, bz + .06], [x, 2.03, bz + .22]], .01, cm)), syncIdentity.produce("index:site-96",()=>rbox(.24, .012, .24, cm, x, 2.02, bz + .25, .004)));
+      g.add(rot(syncIdentity.produce("index:site-97",()=>cyl(.015, .02, .2, cm, x + .1, 1.25, bz + .05, 16)), .25), syncIdentity.produce("index:site-98",()=>blob(.03, .012, .03, cm, x + .1, 1.47, bz + .08, 16)));
+      g.add(syncIdentity.produce("index:site-99",()=>box(.26, .012, .1, ceramic(), w/2 - .2, 1.2, bz + .05)));
+      syncIdentity.each("index.html:generator-13",[['#e6dccd', .03, .18], ['#0e8f83', .025, .15], ['#f4f4f2', .028, .12]],([cc, r, hh], i) => g.add(syncIdentity.produce("index:site-100",()=>cyl(r, r, hh, mat(cc, {roughness:.3}), w/2 - .28 + i*.07, 1.212, bz + .05, 16))));
       break;
     }
     case 'bathtub': {
       const cer = ceramic(), h = .56, t = .07, cm = chrome();
-      g.add(syncPart(shell(w, d, h, t, .14, cer),"index:site-101"), syncPart(box(w - .1, .12, d - .1, cer, 0, 0, 0),"index:site-102"), syncPart(box(w - 2*t + .004, .004, d - 2*t + .004, mat('#bfe0ea', {roughness:.03, transparent:true, opacity:.6}), 0, .4, 0),"index:site-103"));
+      g.add(syncIdentity.produce("index:site-101",()=>shell(w, d, h, t, .14, cer)), syncIdentity.produce("index:site-102",()=>box(w - .1, .12, d - .1, cer, 0, 0, 0)), syncIdentity.produce("index:site-103",()=>box(w - 2*t + .004, .004, d - 2*t + .004, mat('#bfe0ea', {roughness:.03, transparent:true, opacity:.6}), 0, .4, 0)));
       const fx = w/2 - t/2;
-      g.add(syncPart(tube([[fx, h - .02, 0], [fx, h + .1, 0], [fx - .06, h + .13, 0], [fx - .13, h + .09, 0]], .014, cm),"index:site-104"));
-      [-1, 1].forEach(s => g.add(syncPart(cyl(.02, .02, .04, cm, fx, h, s*.1, 16),"index:site-105")));
-      g.add(rot(syncPart(rbox(.08, .16, .3, cer, -w/2 + t + .06, h - .12, 0, .04),"index:site-106"), 0, 0, -.5), syncPart(rbox(.22, .05, .16, fabric('#e9e2d6'), fx - .05, h, d/2 - .1, .02),"index:site-107"));
+      g.add(syncIdentity.produce("index:site-104",()=>tube([[fx, h - .02, 0], [fx, h + .1, 0], [fx - .06, h + .13, 0], [fx - .13, h + .09, 0]], .014, cm)));
+      syncIdentity.each("index.html:generator-14",[-1, 1],s => g.add(syncIdentity.produce("index:site-105",()=>cyl(.02, .02, .04, cm, fx, h, s*.1, 16))));
+      g.add(rot(syncIdentity.produce("index:site-106",()=>rbox(.08, .16, .3, cer, -w/2 + t + .06, h - .12, 0, .04)), 0, 0, -.5), syncIdentity.produce("index:site-107",()=>rbox(.22, .05, .16, fabric('#e9e2d6'), fx - .05, h, d/2 - .1, .02)));
       break;
     }
     case 'crib': {
       const wm = woodM(c);
-      g.add(syncPart(rbox(w - .09, .12, d - .09, fabric('#ffffff'), 0, .3, 0, .04),"index:site-108"), syncPart(box(w - .06, .025, d - .06, wm, 0, .28),"index:site-109"));
-      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a, b]) => g.add(syncPart(rbox(.045, .95, .045, wm, a*(w/2 - .022), 0, b*(d/2 - .022), .008),"index:site-110"), syncPart(blob(.028, .028, .028, wm, a*(w/2 - .022), .97, b*(d/2 - .022), 14),"index:site-111")));
-      [-1, 1].forEach(s => {
+      g.add(syncIdentity.produce("index:site-108",()=>rbox(w - .09, .12, d - .09, fabric('#ffffff'), 0, .3, 0, .04)), syncIdentity.produce("index:site-109",()=>box(w - .06, .025, d - .06, wm, 0, .28)));
+      syncIdentity.each("index.html:generator-15",[[-1,-1],[1,-1],[-1,1],[1,1]],([a, b]) => g.add(syncIdentity.produce("index:site-110",()=>rbox(.045, .95, .045, wm, a*(w/2 - .022), 0, b*(d/2 - .022), .008)), syncIdentity.produce("index:site-111",()=>blob(.028, .028, .028, wm, a*(w/2 - .022), .97, b*(d/2 - .022), 14))));
+      syncIdentity.each("index.html:generator-16",[-1, 1],s => {
         const z = s*(d/2 - .022), x = s*(w/2 - .022);
-        g.add(syncPart(rbox(w - .05, .035, .03, wm, 0, .88, z, .008),"index:site-112"), syncPart(rbox(w - .05, .035, .03, wm, 0, .25, z, .008),"index:site-113"), syncPart(rbox(.03, .035, d - .05, wm, x, .88, 0, .008),"index:site-114"), syncPart(rbox(.03, .035, d - .05, wm, x, .25, 0, .008),"index:site-115"));
-        for (let p = -w/2 + .09; p < w/2 - .05; p += .075) g.add(syncPart(rod([p, .28, z], [p, .88, z], .009, wm, .009, 8),"index:site-116"));
-        for (let p = -d/2 + .09; p < d/2 - .05; p += .075) g.add(syncPart(rod([x, .28, p], [x, .88, p], .009, wm, .009, 8),"index:site-117"));
+        g.add(syncIdentity.produce("index:site-112",()=>rbox(w - .05, .035, .03, wm, 0, .88, z, .008)), syncIdentity.produce("index:site-113",()=>rbox(w - .05, .035, .03, wm, 0, .25, z, .008)), syncIdentity.produce("index:site-114",()=>rbox(.03, .035, d - .05, wm, x, .88, 0, .008)), syncIdentity.produce("index:site-115",()=>rbox(.03, .035, d - .05, wm, x, .25, 0, .008)));
+        for(let p of syncIdentity.range("index.html:generator-17",-w/2 + .09,w/2 - .05,(.075),false))g.add(syncIdentity.produce("index:site-116",()=>rod([p, .28, z], [p, .88, z], .009, wm, .009, 8)));
+        for(let p of syncIdentity.range("index.html:generator-18",-d/2 + .09,d/2 - .05,(.075),false))g.add(syncIdentity.produce("index:site-117",()=>rod([x, .28, p], [x, .88, p], .009, wm, .009, 8)));
       });
-      g.add(syncPart(rbox(w*.5, .03, d - .14, fabric('#f3d9c9'), w*.12, .42, 0, .015),"index:site-118"), syncPart(rbox(.3, .06, .2, fabric('#fbfaf7'), -w/2 + .22, .42, 0, .03),"index:site-119"));
+      g.add(syncIdentity.produce("index:site-118",()=>rbox(w*.5, .03, d - .14, fabric('#f3d9c9'), w*.12, .42, 0, .015)), syncIdentity.produce("index:site-119",()=>rbox(.3, .06, .2, fabric('#fbfaf7'), -w/2 + .22, .42, 0, .03)));
       const bx = -w*.3 + .1, bear = '#c9a27a';
-      g.add(syncPart(blob(.05, .06, .045, bear, bx, .5, .12),"index:site-120"), syncPart(blob(.045, .042, .04, bear, bx, .59, .12),"index:site-121"), syncPart(blob(.016, .016, .01, bear, bx - .032, .625, .12),"index:site-122"), syncPart(blob(.016, .016, .01, bear, bx + .032, .625, .12),"index:site-123"));
+      g.add(syncIdentity.produce("index:site-120",()=>blob(.05, .06, .045, bear, bx, .5, .12)), syncIdentity.produce("index:site-121",()=>blob(.045, .042, .04, bear, bx, .59, .12)), syncIdentity.produce("index:site-122",()=>blob(.016, .016, .01, bear, bx - .032, .625, .12)), syncIdentity.produce("index:site-123",()=>blob(.016, .016, .01, bear, bx + .032, .625, .12)));
       break;
     }
     case 'beanbag': {
       const fab = mat(c, {roughness:.95});
-      g.add(syncPart(blob(w*.5, .3, d*.5, fab, 0, .3, 0, 40),"index:site-124"), syncPart(blob(w*.42, .22, d*.22, fab, 0, .5, bz + d*.26, 32),"index:site-125"));
+      g.add(syncIdentity.produce("index:site-124",()=>blob(w*.5, .3, d*.5, fab, 0, .3, 0, 40)), syncIdentity.produce("index:site-125",()=>blob(w*.42, .22, d*.22, fab, 0, .5, bz + d*.26, 32)));
       break;
     }
     case 'sidetable': {
       const r = Math.min(w, d)/2, bm = blackMetal();
-      g.add(syncPart(lathe([[r*.55, 0], [r*.55, .012], [.03, .035], [.018, .3], [.025, .5], [.08, .52]], bm, 0, 0, 0, 40),"index:site-126"), syncPart(cyl(r, r*.98, .025, mat(c, {roughness:.35}), 0, .52, 0, 48),"index:site-127"));
-      g.add(syncPart(box(.16, .02, .12, '#4f6b8a', -r*.25, .545, 0),"index:site-128"));
-      syncPart(vase(g, r*.35, .545, -r*.1, .035, .12, '#e9e2d6', R, false),"index:site-129");
+      g.add(syncIdentity.produce("index:site-126",()=>lathe([[r*.55, 0], [r*.55, .012], [.03, .035], [.018, .3], [.025, .5], [.08, .52]], bm, 0, 0, 0, 40)), syncIdentity.produce("index:site-127",()=>cyl(r, r*.98, .025, mat(c, {roughness:.35}), 0, .52, 0, 48)));
+      g.add(syncIdentity.produce("index:site-128",()=>box(.16, .02, .12, '#4f6b8a', -r*.25, .545, 0)));
+      syncIdentity.produce("index:site-129",()=>vase(g, r*.35, .545, -r*.1, .035, .12, '#e9e2d6', R, false));
       break;
     }
     case 'floorlamp': {
       const r = Math.min(w, d)/2, lm = mat(c, {roughness:.35, metalness:.5});
-      g.add(syncPart(lathe([[0, 0], [r*.55, 0], [r*.58, .012], [r*.5, .03], [.02, .035]], lm, 0, 0, 0, 40),"index:site-130"), syncPart(rod([0, .03, 0], [0, 1.36, 0], .011, lm),"index:site-131"));
-      g.add(syncPart(lathe([[r*.85, 0], [r*.55, .36]], glowMat('#f6ecd9', '#ffdca0', .45), 0, 1.22, 0, 48),"index:site-132"), syncPart(blob(.035, .035, .035, glowMat('#fff', '#ffe2b0', 1.2), 0, 1.36, 0, 12),"index:site-133"));
-      g.add(syncPart(ring(r*.85, .004, lm, 0, 1.22, 0),"index:site-134"), syncPart(ring(r*.55, .004, lm, 0, 1.58, 0),"index:site-135"));
+      g.add(syncIdentity.produce("index:site-130",()=>lathe([[0, 0], [r*.55, 0], [r*.58, .012], [r*.5, .03], [.02, .035]], lm, 0, 0, 0, 40)), syncIdentity.produce("index:site-131",()=>rod([0, .03, 0], [0, 1.36, 0], .011, lm)));
+      g.add(syncIdentity.produce("index:site-132",()=>lathe([[r*.85, 0], [r*.55, .36]], glowMat('#f6ecd9', '#ffdca0', .45), 0, 1.22, 0, 48)), syncIdentity.produce("index:site-133",()=>blob(.035, .035, .035, glowMat('#fff', '#ffe2b0', 1.2), 0, 1.36, 0, 12)));
+      g.add(syncIdentity.produce("index:site-134",()=>ring(r*.85, .004, lm, 0, 1.22, 0)), syncIdentity.produce("index:site-135",()=>ring(r*.55, .004, lm, 0, 1.58, 0)));
       break;
     }
     case 'waterheater': {
       const r = Math.min(d/2, .23), L = w - .06, yc = 1.95, zc = bz + r + .02, tm = mat(c, {roughness:.35}), cp = mat('#cfd4d8', {roughness:.4});
-      const tank = syncPart(mesh(new THREE.CylinderGeometry(r, r, L, 40), tm),"index:site-136"); tank.rotation.z = Math.PI/2; tank.position.set(0, yc, zc); g.add(tank);
-      [-1, 1].forEach(s => g.add(syncPart(blob(.035, r*.99, r*.99, cp, s*L/2, yc, zc, 32),"index:site-137"), syncPart(box(.05, r*1.1, .02, '#9a9ea3', s*L*.3, yc - r*.55, bz + .01),"index:site-138")));
-      g.add(syncPart(rbox(.2, .09, .02, '#e7eaec', L*.18, yc - .05, zc + r*.93, .008),"index:site-139"), syncPart(box(.07, .03, .002, screenMat('#2f8f7a'), L*.18 - .04, yc - .02, zc + r*.93 + .011),"index:site-140"));
-      [[-L*.3, '#3b7bbf'], [-L*.18, '#c0463a']].forEach(([x, cc]) => g.add(syncPart(rod([x, yc - r*.8, zc], [x, 1.3, zc], .012, metal()),"index:site-141"), syncPart(cyl(.02, .02, .03, cc, x, 1.5, zc, 12),"index:site-142")));
+      const tank = syncIdentity.produce("index:site-136",()=>mesh(new THREE.CylinderGeometry(r, r, L, 40), tm)); tank.rotation.z = Math.PI/2; tank.position.set(0, yc, zc); g.add(tank);
+      syncIdentity.each("index.html:generator-19",[-1, 1],s => g.add(syncIdentity.produce("index:site-137",()=>blob(.035, r*.99, r*.99, cp, s*L/2, yc, zc, 32)), syncIdentity.produce("index:site-138",()=>box(.05, r*1.1, .02, '#9a9ea3', s*L*.3, yc - r*.55, bz + .01))));
+      g.add(syncIdentity.produce("index:site-139",()=>rbox(.2, .09, .02, '#e7eaec', L*.18, yc - .05, zc + r*.93, .008)), syncIdentity.produce("index:site-140",()=>box(.07, .03, .002, screenMat('#2f8f7a'), L*.18 - .04, yc - .02, zc + r*.93 + .011)));
+      syncIdentity.each("index.html:generator-20",[[-L*.3, '#3b7bbf'], [-L*.18, '#c0463a']],([x, cc]) => g.add(syncIdentity.produce("index:site-141",()=>rod([x, yc - r*.8, zc], [x, 1.3, zc], .012, metal())), syncIdentity.produce("index:site-142",()=>cyl(.02, .02, .03, cc, x, 1.5, zc, 12))));
       break;
     }
     case 'tv': {
       const th = w*.5625, yb = 1.2 - th/2, face = d/2, glass = Math.min(.002,d*.04);
       // Match the plan: rear housing at -Z, full-width panel at +Z, all within w × d.
-      g.add(syncPart(rbox(w*.6, th*.6, d*.6, '#222', 0, yb + th*.2, -d*.2, Math.min(.01,d*.1)),"index:site-143"));
-      g.add(syncPart(rbox(w, th, d*.4-glass, mat(c, {roughness:.4, metalness:.3}), 0, yb, d*.3-glass/2, Math.min(.004,d*.05)),"index:site-144"), syncPart(box(w - .016, th - .022, glass, screenMat('#1f2b3a'), 0, yb + .014, face-glass/2),"index:site-145"), syncPart(box(.04, .006, glass, '#8a8a8e', 0, yb + .004, face-glass/2),"index:site-146"));
+      g.add(syncIdentity.produce("index:site-143",()=>rbox(w*.6, th*.6, d*.6, '#222', 0, yb + th*.2, -d*.2, Math.min(.01,d*.1))));
+      g.add(syncIdentity.produce("index:site-144",()=>rbox(w, th, d*.4-glass, mat(c, {roughness:.4, metalness:.3}), 0, yb, d*.3-glass/2, Math.min(.004,d*.05))), syncIdentity.produce("index:site-145",()=>box(w - .016, th - .022, glass, screenMat('#1f2b3a'), 0, yb + .014, face-glass/2)), syncIdentity.produce("index:site-146",()=>box(.04, .006, glass, '#8a8a8e', 0, yb + .004, face-glass/2)));
       break;
     }
     case 'aircon': {
       const am = mat(c, {roughness:.3}), h = 1.8, fz = d/2 - .005;
-      g.add(syncPart(rbox(w, .06, d, '#cfd3d6', 0, 0, 0, .015),"index:site-147"), syncPart(rbox(w - .01, h - .06, d - .01, am, 0, .06, 0, .06),"index:site-148"));
-      g.add(syncPart(rbox(w - .06, 1.0, .01, mat(lighter(c, .4), {roughness:.12}), 0, .22, fz, .005),"index:site-149"), syncPart(box(w - .1, .42, .01, '#3d4145', 0, 1.28, fz),"index:site-150"));
-      for (let i = 0; i < 8; i++) g.add(rot(syncPart(box(w - .11, .012, .03, '#e4e7ea', 0, 1.3 + i*.05, fz + .008),"index:site-151"), -.35));
-      g.add(syncPart(box(.1, .035, .003, mat('#101214', {emissive:'#4fb3a5', emissiveIntensity:.7}), 0, 1.12, fz + .006),"index:site-152"));
-      for (let i = 0; i < 8; i++) g.add(syncPart(box(w - .12, .005, .004, '#b9bfc4', 0, .09 + i*.015, fz + .002),"index:site-153"));
+      g.add(syncIdentity.produce("index:site-147",()=>rbox(w, .06, d, '#cfd3d6', 0, 0, 0, .015)), syncIdentity.produce("index:site-148",()=>rbox(w - .01, h - .06, d - .01, am, 0, .06, 0, .06)));
+      g.add(syncIdentity.produce("index:site-149",()=>rbox(w - .06, 1.0, .01, mat(lighter(c, .4), {roughness:.12}), 0, .22, fz, .005)), syncIdentity.produce("index:site-150",()=>box(w - .1, .42, .01, '#3d4145', 0, 1.28, fz)));
+      for(let i of syncIdentity.range("index.html:generator-21",0,8,1,false))g.add(rot(syncIdentity.produce("index:site-151",()=>box(w - .11, .012, .03, '#e4e7ea', 0, 1.3 + i*.05, fz + .008)), -.35));
+      g.add(syncIdentity.produce("index:site-152",()=>box(.1, .035, .003, mat('#101214', {emissive:'#4fb3a5', emissiveIntensity:.7}), 0, 1.12, fz + .006)));
+      for(let i of syncIdentity.range("index.html:generator-22",0,8,1,false))g.add(syncIdentity.produce("index:site-153",()=>box(w - .12, .005, .004, '#b9bfc4', 0, .09 + i*.015, fz + .002)));
       break;
     }
     case 'acwall': {
       const h = .3, am = mat(c, {roughness:.3}), s = new THREE.Shape();
       s.moveTo(0, .02); s.lineTo(0, h); s.lineTo(d*.75, h); s.quadraticCurveTo(d, h, d, h*.55); s.quadraticCurveTo(d, 0, d*.55, 0); s.lineTo(.02, 0); s.lineTo(0, .02);
       const geo = new THREE.ExtrudeGeometry(s, {depth:w - .02, bevelEnabled:true, bevelThickness:.01, bevelSize:.006, bevelSegments:3, curveSegments:16});
-      geo.rotateY(-Math.PI/2); geo.translate((w - .02)/2, 2.2, bz); g.add(syncPart(mesh(geo, am),"index:site-154"));
-      g.add(syncPart(box(w - .12, .004, .07, '#3a3d40', 0, 2.19, bz + d*.55),"index:site-155"), rot(syncPart(box(w - .12, .008, .06, am, 0, 2.18, bz + d*.72),"index:site-156"), .35));
-      g.add(syncPart(box(.06, .018, .002, mat('#101214', {emissive:'#4fb3a5', emissiveIntensity:.7}), w*.3, 2.2 + h*.5, bz + d + .007),"index:site-157"));
-      for (let i = 0; i < 6; i++) g.add(syncPart(box(w - .12, .003, .008, '#d5d9dc', 0, 2.2 + h + .006, bz + .03 + i*.022),"index:site-158"));
+      geo.rotateY(-Math.PI/2); geo.translate((w - .02)/2, 2.2, bz); g.add(syncIdentity.produce("index:site-154",()=>mesh(geo, am)));
+      g.add(syncIdentity.produce("index:site-155",()=>box(w - .12, .004, .07, '#3a3d40', 0, 2.19, bz + d*.55)), rot(syncIdentity.produce("index:site-156",()=>box(w - .12, .008, .06, am, 0, 2.18, bz + d*.72)), .35));
+      g.add(syncIdentity.produce("index:site-157",()=>box(.06, .018, .002, mat('#101214', {emissive:'#4fb3a5', emissiveIntensity:.7}), w*.3, 2.2 + h*.5, bz + d + .007)));
+      for(let i of syncIdentity.range("index.html:generator-23",0,6,1,false))g.add(syncIdentity.produce("index:site-158",()=>box(w - .12, .003, .008, '#d5d9dc', 0, 2.2 + h + .006, bz + .03 + i*.022)));
       break;
     }
     case 'dishwasher': {
       const dm = mat(c, {metalness:.55, roughness:.28}), fz = d/2 - .02;
-      g.add(syncPart(box(w - .01, .08, d - .07, '#3a3834', 0, 0, -.035),"index:site-159"), syncPart(box(w - .005, .76, d - .03, '#8b9095', 0, .08, -.015),"index:site-160"));
-      g.add(syncPart(rbox(w - .006, .7, .02, dm, 0, .085, fz, .004),"index:site-161"), syncPart(box(w - .006, .055, .02, '#26282a', 0, .785, fz),"index:site-162"));
-      for (let i = 0; i < 4; i++) g.add(syncPart(box(.012, .006, .002, mat('#101214', {emissive:i ? '#6fd0ff' : '#7fe08a', emissiveIntensity:.8}), w*.1 + i*.03, .81, fz + .011),"index:site-163"));
-      syncPart(pull(g, w*.6, false, 0, .74, fz + .01),"index:site-164");
+      g.add(syncIdentity.produce("index:site-159",()=>box(w - .01, .08, d - .07, '#3a3834', 0, 0, -.035)), syncIdentity.produce("index:site-160",()=>box(w - .005, .76, d - .03, '#8b9095', 0, .08, -.015)));
+      g.add(syncIdentity.produce("index:site-161",()=>rbox(w - .006, .7, .02, dm, 0, .085, fz, .004)), syncIdentity.produce("index:site-162",()=>box(w - .006, .055, .02, '#26282a', 0, .785, fz)));
+      for(let i of syncIdentity.range("index.html:generator-24",0,4,1,false))g.add(syncIdentity.produce("index:site-163",()=>box(.012, .006, .002, mat('#101214', {emissive:i ? '#6fd0ff' : '#7fe08a', emissiveIntensity:.8}), w*.1 + i*.03, .81, fz + .011)));
+      syncIdentity.produce("index:site-164",()=>pull(g, w*.6, false, 0, .74, fz + .01));
       break;
     }
     case 'ovencol': {
       const cm = mat(c, {roughness:.5}), h = 2.1, fz = d/2 - .02, frm = mat('#1c1d1f', {roughness:.3, metalness:.5}), gl = mat('#0b0c0d', {roughness:.03, metalness:.6});
-      g.add(syncPart(box(w - .02, .08, d - .06, '#4a4641', 0, 0, -.03),"index:site-165"), syncPart(box(w, h - .08, d - .02, cm, 0, .08, -.01),"index:site-166"));
-      fronts(g, -w/2, .08, w, .6, fz, 1, 2, cm, 'bar'); fronts(g, -w/2, 1.78, w, h - 1.8, fz, 1, 1, cm, 'bar', 1.84);
-      [[.7, .58], [1.3, .46]].forEach(([y, ah]) => {
-        g.add(syncPart(box(w - .02, ah - .01, .02, frm, 0, y, fz + .01),"index:site-167"), syncPart(box(w - .1, ah*.52, .003, gl, 0, y + ah*.1, fz + .021),"index:site-168"), syncPart(box(w - .04, .06, .003, '#2a2c2e', 0, y + ah - .075, fz + .021),"index:site-169"));
-        g.add(syncPart(box(.08, .022, .002, mat('#101214', {emissive:'#ff9a3c', emissiveIntensity:.7}), 0, y + ah - .056, fz + .023),"index:site-170"));
-        syncPart(pull(g, w*.7, false, 0, y + ah*.72, fz + .02),"index:site-171");
+      g.add(syncIdentity.produce("index:site-165",()=>box(w - .02, .08, d - .06, '#4a4641', 0, 0, -.03)), syncIdentity.produce("index:site-166",()=>box(w, h - .08, d - .02, cm, 0, .08, -.01)));
+      syncIdentity.produce("index.html:generator-call-10",()=>fronts(g, -w/2, .08, w, .6, fz, 1, 2, cm, 'bar')); syncIdentity.produce("index.html:generator-call-11",()=>fronts(g, -w/2, 1.78, w, h - 1.8, fz, 1, 1, cm, 'bar', 1.84));
+      syncIdentity.each("index.html:generator-25",[[.7, .58], [1.3, .46]],([y, ah]) => {
+        g.add(syncIdentity.produce("index:site-167",()=>box(w - .02, ah - .01, .02, frm, 0, y, fz + .01)), syncIdentity.produce("index:site-168",()=>box(w - .1, ah*.52, .003, gl, 0, y + ah*.1, fz + .021)), syncIdentity.produce("index:site-169",()=>box(w - .04, .06, .003, '#2a2c2e', 0, y + ah - .075, fz + .021)));
+        g.add(syncIdentity.produce("index:site-170",()=>box(.08, .022, .002, mat('#101214', {emissive:'#ff9a3c', emissiveIntensity:.7}), 0, y + ah - .056, fz + .023)));
+        syncIdentity.produce("index:site-171",()=>pull(g, w*.7, false, 0, y + ah*.72, fz + .02));
       });
       break;
     }
     case 'purifier': {
       const pm = mat(c, {roughness:.45}), h = .72;
-      g.add(syncPart(rbox(w, h, d, pm, 0, 0, 0, Math.min(w, d)*.2),"index:site-172"), syncPart(rbox(w - .05, .006, d - .05, '#8d959b', 0, h - .002, 0, .02),"index:site-173"));
-      for (let i = 0; i < 7; i++) g.add(syncPart(box(w - .07, .004, .006, '#6f777d', 0, h + .002, -d/2 + .05 + i*(d - .1)/6),"index:site-174"));
-      g.add(syncPart(rbox(w - .06, .42, .006, fabric('#c8ccd0'), 0, .06, d/2 - .001, .01),"index:site-175"));
-      const rg = Object.assign(new THREE.Mesh(new THREE.TorusGeometry(.03, .004, 8, 32), mat('#101214', {emissive:'#4fb3a5', emissiveIntensity:.8})),{userData:{furnishPartSource:"index:site-176"}}); rg.position.set(0, .6, d/2 + .002); g.add(rg);
+      g.add(syncIdentity.produce("index:site-172",()=>rbox(w, h, d, pm, 0, 0, 0, Math.min(w, d)*.2)), syncIdentity.produce("index:site-173",()=>rbox(w - .05, .006, d - .05, '#8d959b', 0, h - .002, 0, .02)));
+      for(let i of syncIdentity.range("index.html:generator-26",0,7,1,false))g.add(syncIdentity.produce("index:site-174",()=>box(w - .07, .004, .006, '#6f777d', 0, h + .002, -d/2 + .05 + i*(d - .1)/6)));
+      g.add(syncIdentity.produce("index:site-175",()=>rbox(w - .06, .42, .006, fabric('#c8ccd0'), 0, .06, d/2 - .001, .01)));
+      const rg = syncIdentity.produce("index:site-176",()=>new THREE.Mesh(new THREE.TorusGeometry(.03, .004, 8, 32), mat('#101214', {emissive:'#4fb3a5', emissiveIntensity:.8}))); rg.position.set(0, .6, d/2 + .002); g.add(rg);
       break;
     }
     case 'piano': {
       const pk = mat(c, {roughness:.12, metalness:.1}), bd = d*.5, kz = bz + bd, h = 1.25, kd = d*.22 - .03, iv = mat('#faf8f3', {roughness:.3}), eb = mat('#111', {roughness:.25}), kw = (w - .12)/52;
-      g.add(syncPart(box(w, h, bd, pk, 0, 0, bz + bd/2),"index:site-177"), syncPart(rbox(w + .02, .03, bd + .03, pk, 0, h, bz + bd/2 + .01, .008),"index:site-178"));
-      [-1, 1].forEach(s => g.add(syncPart(rbox(.06, .13, kd + .06, pk, s*(w/2 - .03), .6, kz + (kd + .06)/2, .01),"index:site-179"), syncPart(box(.05, .6, .05, pk, s*(w/2 - .08), 0, kz + kd + .01),"index:site-180"), syncPart(box(.06, .04, d - bd, pk, s*(w/2 - .08), 0, kz + (d - bd)/2),"index:site-181")));
-      g.add(syncPart(box(w - .12, .08, kd + .05, pk, 0, .6, kz + (kd + .05)/2),"index:site-182"), syncPart(box(w - .12, .1, .03, pk, 0, .68, kz + .015),"index:site-183"));
-      for (let i = 0; i < 52; i++){
-        const x = -w/2 + .06 + kw*(i + .5); g.add(syncPart(box(kw - .0015, .022, kd, iv, x, .68, kz + .03 + kd/2),"index:site-184"));
-        if (i < 51 && 'ACDFG'.includes('ABCDEFG'[i % 7])) g.add(syncPart(box(kw*.58, .02, kd*.62, eb, x + kw/2, .7, kz + .03 + kd*.31),"index:site-185"));
+      g.add(syncIdentity.produce("index:site-177",()=>box(w, h, bd, pk, 0, 0, bz + bd/2)), syncIdentity.produce("index:site-178",()=>rbox(w + .02, .03, bd + .03, pk, 0, h, bz + bd/2 + .01, .008)));
+      syncIdentity.each("index.html:generator-27",[-1, 1],s => g.add(syncIdentity.produce("index:site-179",()=>rbox(.06, .13, kd + .06, pk, s*(w/2 - .03), .6, kz + (kd + .06)/2, .01)), syncIdentity.produce("index:site-180",()=>box(.05, .6, .05, pk, s*(w/2 - .08), 0, kz + kd + .01)), syncIdentity.produce("index:site-181",()=>box(.06, .04, d - bd, pk, s*(w/2 - .08), 0, kz + (d - bd)/2))));
+      g.add(syncIdentity.produce("index:site-182",()=>box(w - .12, .08, kd + .05, pk, 0, .6, kz + (kd + .05)/2)), syncIdentity.produce("index:site-183",()=>box(w - .12, .1, .03, pk, 0, .68, kz + .015)));
+      for(let i of syncIdentity.range("index.html:generator-28",0,52,1,false)){
+        const x = -w/2 + .06 + kw*(i + .5); g.add(syncIdentity.produce("index:site-184",()=>box(kw - .0015, .022, kd, iv, x, .68, kz + .03 + kd/2)));
+        if (i < 51 && 'ACDFG'.includes('ABCDEFG'[i % 7])) g.add(syncIdentity.produce("index:site-185",()=>box(kw*.58, .02, kd*.62, eb, x + kw/2, .7, kz + .03 + kd*.31)));
       }
-      g.add(rot(syncPart(box(w*.42, .18, .012, pk, 0, .84, kz + .012),"index:site-186"), -.25));
-      [-.06, 0, .06].forEach(x => g.add(syncPart(box(.025, .012, .07, mat('#c9a35a', {metalness:.9, roughness:.3}), x, .05, kz + .03),"index:site-187")));
-      const mt = syncPart(cyl(.0, .05, .2, woodM('#5a3e2b'), w*.3, h + .03, bz + bd/2, 4),"index:site-188"); mt.rotation.y = Math.PI/4; g.add(mt);
-      g.add(rot(syncPart(box(.14, .18, .015, woodM('#c9a27a'), -w*.3, h + .03, bz + .06),"index:site-189"), -.15), rot(syncPart(box(.11, .14, .002, '#9fb3c2', -w*.3, h + .05, bz + .07),"index:site-190"), -.15));
+      g.add(rot(syncIdentity.produce("index:site-186",()=>box(w*.42, .18, .012, pk, 0, .84, kz + .012)), -.25));
+      syncIdentity.each("index.html:generator-29",[-.06, 0, .06],x => g.add(syncIdentity.produce("index:site-187",()=>box(.025, .012, .07, mat('#c9a35a', {metalness:.9, roughness:.3}), x, .05, kz + .03))));
+      const mt = syncIdentity.produce("index:site-188",()=>cyl(.0, .05, .2, woodM('#5a3e2b'), w*.3, h + .03, bz + bd/2, 4)); mt.rotation.y = Math.PI/4; g.add(mt);
+      g.add(rot(syncIdentity.produce("index:site-189",()=>box(.14, .18, .015, woodM('#c9a27a'), -w*.3, h + .03, bz + .06)), -.15), rot(syncIdentity.produce("index:site-190",()=>box(.11, .14, .002, '#9fb3c2', -w*.3, h + .05, bz + .07)), -.15));
       break;
     }
     case 'treadmill': {
       const tm = mat(c, {roughness:.55}), bm = mat('#2a2a2c', {roughness:.5}), al = mat('#9a9ea3', {metalness:.6, roughness:.4});
-      g.add(syncPart(rbox(w, .14, d - .25, tm, 0, .03, .125, .03),"index:site-191"), syncPart(box(w - .16, .006, d - .5, '#141414', 0, .17, .15),"index:site-192"));
-      [-1, 1].forEach(s => g.add(syncPart(box(.07, .008, d - .45, al, s*(w/2 - .05), .17, .15),"index:site-193")));
-      [bz + .06, d/2 - .06].forEach(z => [-1, 1].forEach(s => g.add(syncPart(box(.06, .03, .06, bm, s*(w/2 - .06), 0, z),"index:site-194"))));
-      g.add(syncPart(rbox(w, .22, .32, tm, 0, 0, bz + .16, .05),"index:site-195"));
-      [-1, 1].forEach(s => g.add(syncPart(rod([s*(w/2 - .06), .15, bz + .2], [s*(w/2 - .06), 1.15, bz + .3], .025, bm, .022),"index:site-196"), syncPart(tube([[s*(w/2 - .06), 1.0, bz + .28], [s*(w/2 - .06), 1.0, bz + .5], [s*(w/2 - .07), .97, bz + .62]], .018, bm),"index:site-197")));
+      g.add(syncIdentity.produce("index:site-191",()=>rbox(w, .14, d - .25, tm, 0, .03, .125, .03)), syncIdentity.produce("index:site-192",()=>box(w - .16, .006, d - .5, '#141414', 0, .17, .15)));
+      syncIdentity.each("index.html:generator-30",[-1, 1],s => g.add(syncIdentity.produce("index:site-193",()=>box(.07, .008, d - .45, al, s*(w/2 - .05), .17, .15))));
+      syncIdentity.each("index.html:generator-31",[bz + .06, d/2 - .06],z => syncIdentity.each("index.html:generator-32",[-1, 1],s => g.add(syncIdentity.produce("index:site-194",()=>box(.06, .03, .06, bm, s*(w/2 - .06), 0, z)))));
+      g.add(syncIdentity.produce("index:site-195",()=>rbox(w, .22, .32, tm, 0, 0, bz + .16, .05)));
+      syncIdentity.each("index.html:generator-33",[-1, 1],s => g.add(syncIdentity.produce("index:site-196",()=>rod([s*(w/2 - .06), .15, bz + .2], [s*(w/2 - .06), 1.15, bz + .3], .025, bm, .022)), syncIdentity.produce("index:site-197",()=>tube([[s*(w/2 - .06), 1.0, bz + .28], [s*(w/2 - .06), 1.0, bz + .5], [s*(w/2 - .07), .97, bz + .62]], .018, bm))));
       const cg = new THREE.Group(); cg.position.set(0, 1.2, bz + .31); cg.rotation.x = -.5;
-      cg.add(syncPart(rbox(w*.8, .2, .08, bm, 0, -.1, 0, .02),"index:site-198"), syncPart(box(w*.4, .11, .004, screenMat('#2a5d8f'), 0, -.055, .041),"index:site-199")); g.add(cg);
+      cg.add(syncIdentity.produce("index:site-198",()=>rbox(w*.8, .2, .08, bm, 0, -.1, 0, .02)), syncIdentity.produce("index:site-199",()=>box(w*.4, .11, .004, screenMat('#2a5d8f'), 0, -.055, .041))); g.add(cg);
       break;
     }
     case 'pendant': {   // 吊灯：从天花板垂下
       const r = Math.min(w, d)/2;
-      g.add(syncPart(rod([0, 2.62, 0], [0, 2.18, 0], .007, blackMetal()),"index:site-200"));
-      g.add(syncPart(lathe([[r*.95, 2.14], [r*.72, 2.26], [r*.5, 2.34]], mat(c, {roughness:.4, side:THREE.DoubleSide}), 0, 0, 0, 40),"index:site-201"));
-      g.add(syncPart(blob(r*.42, r*.16, r*.42, glowMat('#fff6dd', '#ffdca0', .9), 0, 2.12, 0, 20),"index:site-202"));
+      g.add(syncIdentity.produce("index:site-200",()=>rod([0, 2.62, 0], [0, 2.18, 0], .007, blackMetal())));
+      g.add(syncIdentity.produce("index:site-201",()=>lathe([[r*.95, 2.14], [r*.72, 2.26], [r*.5, 2.34]], mat(c, {roughness:.4, side:THREE.DoubleSide}), 0, 0, 0, 40)));
+      g.add(syncIdentity.produce("index:site-202",()=>blob(r*.42, r*.16, r*.42, glowMat('#fff6dd', '#ffdca0', .9), 0, 2.12, 0, 20)));
       break;
     }
     case 'slidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
@@ -1058,10 +1059,10 @@ const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPar
     }
     case 'curtain': {
       const height=M(f.h||2400),rodM=woodM('#6b543f'),radius=Math.min(.014,d*.08);
-      g.add(syncPart(rod([-w/2,height,0],[w/2,height,0],radius,rodM),"index:site-203"));
-      [-1,1].forEach(s=>g.add(syncPart(blob(radius*1.5,radius*1.5,radius*1.5,rodM,s*(w/2-radius*1.5),height,0,12),"index:site-204")));
+      g.add(syncIdentity.produce("index:site-203",()=>rod([-w/2,height,0],[w/2,height,0],radius,rodM)));
+      syncIdentity.each("index.html:generator-34",[-1,1],s=>g.add(syncIdentity.produce("index:site-204",()=>blob(radius*1.5,radius*1.5,radius*1.5,rodM,s*(w/2-radius*1.5),height,0,12))));
       const count=f.curtainStyle==='single'?1:2,curtain={kind:'curtain',open:false,cur:0,panels:[]};
-      for(let panel=0;panel<count;panel++){
+      for(let panel of syncIdentity.range("index.html:generator-35",0,count,1,false)){
         const width=w/count-(count===2?.006:0),folds=Math.max(4,Math.round(width/.12)),cols=folds*12,rows=12,positions=[],indices=[],amplitude=Math.min(d*.4,.065);
         for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){
           const t=i/cols,v=j/rows;
@@ -1069,7 +1070,7 @@ const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPar
         }
         for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=j*(cols+1)+i,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);}
         const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();
-        const cloth=syncPart(mesh(geo,mat(c,{roughness:1,side:THREE.DoubleSide})),"index:site-205"),closed=-w/2+w/count*(panel+.5),packScale=.16,opened=(panel===0?-1:1)*(w/2-width*packScale/2);
+        const cloth=syncIdentity.produce("index:site-205",()=>mesh(geo,mat(c,{roughness:1,side:THREE.DoubleSide}))),closed=-w/2+w/count*(panel+.5),packScale=.16,opened=(panel===0?-1:1)*(w/2-width*packScale/2);
         cloth.position.x=closed;cloth.userData.door=curtain;g.add(cloth);curtain.panels.push({node:cloth,closed,opened,packScale});
       }
       g.userData.curtain=curtain;
@@ -1077,42 +1078,42 @@ const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPar
     }
     case 'wallart': {   // 装饰画：挂墙（背侧）
       const ah = Math.min(.95, Math.max(.5, w*.45)), cy = 1.28 + ah/2;
-      g.add(syncPart(box(w, ah, .04, woodM(darker(c, .75)), 0, cy, bz + .02),"index:site-206"));
-      g.add(syncPart(box(w - .1, ah - .1, .012, mat('#e9e2d4', {roughness:.85}), 0, cy, bz + .044),"index:site-207"));
-      g.add(syncPart(blob(w*.22, ah*.32, .003, mat(c, {roughness:.6}), -w*.14, cy - ah*.05, bz + .054, 14),"index:site-208"));
-      g.add(syncPart(blob(w*.3, ah*.2, .003, mat(lighter(c, .25), {roughness:.6}), w*.12, cy + ah*.08, bz + .054, 14),"index:site-209"));
+      g.add(syncIdentity.produce("index:site-206",()=>box(w, ah, .04, woodM(darker(c, .75)), 0, cy, bz + .02)));
+      g.add(syncIdentity.produce("index:site-207",()=>box(w - .1, ah - .1, .012, mat('#e9e2d4', {roughness:.85}), 0, cy, bz + .044)));
+      g.add(syncIdentity.produce("index:site-208",()=>blob(w*.22, ah*.32, .003, mat(c, {roughness:.6}), -w*.14, cy - ah*.05, bz + .054, 14)));
+      g.add(syncIdentity.produce("index:site-209",()=>blob(w*.3, ah*.2, .003, mat(lighter(c, .25), {roughness:.6}), w*.12, cy + ah*.08, bz + .054, 14)));
       break;
     }
     case 'mirror': {    // 穿衣镜：贴墙立镜
       const mh = M(f.h??1650), frame = Math.min(.07, w*.4, mh*.4);
-      g.add(syncPart(rbox(w, mh, .05, woodM('#5a4a3b'), 0, .05, bz + .03, .012),"index:site-210"));
-      const glass = Object.assign(new THREE.Mesh(new THREE.PlaneGeometry(w - frame, mh - frame), mirror()),{userData:{furnishPartSource:"index:site-211"}});
+      g.add(syncIdentity.produce("index:site-210",()=>rbox(w, mh, .05, woodM('#5a4a3b'), 0, .05, bz + .03, .012)));
+      const glass = syncIdentity.produce("index:site-211",()=>new THREE.Mesh(new THREE.PlaneGeometry(w - frame, mh - frame), mirror()));
       glass.position.set(0, .05 + mh/2, bz + .058); sh(glass); g.add(glass);
       break;
     }
     case 'dryingrack': {   // 晾衣架：双杆 + 吊杆 + A 字腿
       const barM = metal();
-      [bz + .05, d/2 - .05].forEach(z => g.add(syncPart(rod([-w/2 + .03, 1.34, z], [w/2 - .03, 1.34, z], .013, barM),"index:site-212")));
-      for (let i = 0; i < 6; i++){
+      syncIdentity.each("index.html:generator-36",[bz + .05, d/2 - .05],z => g.add(syncIdentity.produce("index:site-212",()=>rod([-w/2 + .03, 1.34, z], [w/2 - .03, 1.34, z], .013, barM))));
+      for(let i of syncIdentity.range("index.html:generator-37",0,6,1,false)){
         const px = -w/2 + .08 + i*(w - .16)/5;
-        g.add(syncPart(rod([px, 1.34, bz + .05], [px, .58, bz + .05], .008, barM, .008, 8),"index:site-213"));
+        g.add(syncIdentity.produce("index:site-213",()=>rod([px, 1.34, bz + .05], [px, .58, bz + .05], .008, barM, .008, 8)));
       }
-      [-1, 1].forEach(s => [bz + .05, d/2 - .05].forEach(z =>
-        g.add(syncPart(rod([s*(w/2 - .06), 0, z], [s*(w/2 - .06), 1.34, z], .016, barM),"index:site-214"))));
+      syncIdentity.each("index.html:generator-38",[-1, 1],s => syncIdentity.each("index.html:generator-39",[bz + .05, d/2 - .05],z =>
+        g.add(syncIdentity.produce("index:site-214",()=>rod([s*(w/2 - .06), 0, z], [s*(w/2 - .06), 1.34, z], .016, barM)))));
       break;
     }
     case 'chest': {   // 六斗柜
       const wm = woodM(c);
-      legs(g, w, d, .08, wm, .04, .012);
-      g.add(syncPart(box(w, .92, d - .02, wm, 0, .08, -.01),"index:site-215"));
-      fronts(g, -w/2, .1, w, .86, d/2 - .02, 2, 3, wm, 'knob');
-      g.add(syncPart(rbox(w + .02, .03, d + .01, woodM(darker(c, .8)), 0, .99, 0, .006),"index:site-216"));
-      syncPart(vase(g, -w*.2, 1.02, 0, .05, .16, '#e9e2d6', R),"index:site-217");
+      syncIdentity.produce("index.html:generator-call-12",()=>legs(g, w, d, .08, wm, .04, .012));
+      g.add(syncIdentity.produce("index:site-215",()=>box(w, .92, d - .02, wm, 0, .08, -.01)));
+      syncIdentity.produce("index.html:generator-call-13",()=>fronts(g, -w/2, .1, w, .86, d/2 - .02, 2, 3, wm, 'knob'));
+      g.add(syncIdentity.produce("index:site-216",()=>rbox(w + .02, .03, d + .01, woodM(darker(c, .8)), 0, .99, 0, .006)));
+      syncIdentity.produce("index:site-217",()=>vase(g, -w*.2, 1.02, 0, .05, .16, '#e9e2d6', R));
       break;
     }
-    case 'custom': g.add(syncPart(rbox(w, M(f.h || 800), d, c, 0, 0, 0, .012),"index:site-218")); break;
-    case 'customround': { const o = syncPart(cyl(.5, .5, M(f.h || 800), c),"index:site-219"); o.scale.set(w, 1, d); g.add(o); break; }
-    default: g.add(syncPart(box(w, .8, d, c),"index:site-220"));
+    case 'custom': g.add(syncIdentity.produce("index:site-218",()=>rbox(w, M(f.h || 800), d, c, 0, 0, 0, .012))); break;
+    case 'customround': { const o = syncIdentity.produce("index:site-219",()=>cyl(.5, .5, M(f.h || 800), c)); o.scale.set(w, 1, d); g.add(o); break; }
+    default: g.add(syncIdentity.produce("index:site-220",()=>box(w, .8, d, c)));
   }
   if(typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f))FurnishCabinetModel.cutServices(THREE,g,f,{plan:FurnishProject.effectivePlan(PLAN,state)});
   g.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));
@@ -1126,15 +1127,15 @@ const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPar
 function clearGroup(g){ g.traverse(o => { if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.wallTilingOwnMaterial||o.userData.floorFinishOwnMaterial){o.material.map?.dispose();o.material.dispose();} if(o.userData.wallFinishOwnMaterial||o.userData.cabinetOwnMaterial||o.userData.ceilingOwnMaterial||o.userData.beamDimension)o.material.dispose(); }); g.clear(); }
 function wallBox([x0, y0, x1, y1], yb, yt, m){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
-const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+const syncIdentity=FurnishPartIdentity;
 
   if (yt - yb <= .001) return;
-  const o = Object.assign(new THREE.Mesh(new THREE.BoxGeometry(M(x1-x0), yt-yb, M(y1-y0)), m || [wallMat, wallMat, capMat, wallMat, wallMat, wallMat]),{userData:{furnishPartSource:"index:site-221"}});
+  const o = syncIdentity.produce("index:site-221",()=>new THREE.Mesh(new THREE.BoxGeometry(M(x1-x0), yt-yb, M(y1-y0)), m || [wallMat, wallMat, capMat, wallMat, wallMat, wallMat]));
   o.position.set(wx((x0+x1)/2), (yb+yt)/2, wz((y0+y1)/2)); o.castShadow = o.receiveShadow = true; o.userData.recessWall=true;archUp.add(o);
   // 漫游辅助：墙体棱线 + 踢脚线，让相邻墙面、墙角一眼可分（仅漫游模式显示）
   const ln = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry), edgeMat); ln.position.copy(o.position); ln.userData.recessEdge=true;ln.userData.recessSourceId=o.uuid;ln.userData.walkOnly = true; ln.visible = opt.mode === 'walk'; archUp.add(ln);
   if (yb <= .001){
-    const p = o.geometry.parameters, sh = Math.min(.12, yt), sk = Object.assign(new THREE.Mesh(new THREE.BoxGeometry(p.width + .02, sh, p.depth + .02), skirtMat),{userData:{furnishPartSource:"index:site-222"}});
+    const p = o.geometry.parameters, sh = Math.min(.12, yt), sk = syncIdentity.produce("index:site-222",()=>new THREE.Mesh(new THREE.BoxGeometry(p.width + .02, sh, p.depth + .02), skirtMat));
     sk.position.set(o.position.x, sh/2, o.position.z); sk.userData.recessWall=true;sk.userData.walkOnly = true; sk.visible = opt.mode === 'walk'; archUp.add(sk);
   }
 }
@@ -1144,27 +1145,27 @@ function shapeOf(poly, flip){ const s = new THREE.Shape(); poly.forEach(([x, y],
 let floorScenePlan=null;
 function buildArch(){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
-const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPartSource=source;object.userData.furnishPartOrdinal??=object.id;}return object;};
+const syncIdentity=FurnishPartIdentity;
 
   observation.clear();
   clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
   const top = opt.cut===2.8?H:Math.min(opt.cut,H);
   const finishPlan=FurnishProject.effectivePlan(PLAN,state);floorScenePlan=finishPlan;
   ground.position.y=Math.min(-.015,...Object.values(finishPlan.floorFinish?.areas||{}).flatMap(a=>[a.rawZ,a.finishedZ].filter(Number.isFinite).map(v=>v/1000-.015)));
-  FurnishWallFinish.spatial(finishPlan).rooms.filter(r=>r.poly.length).forEach(r => {
+  syncIdentity.each("index.html:generator-40",FurnishWallFinish.spatial(finishPlan).rooms.filter(r=>r.poly.length),r => {
     const floor=finishPlan.floorFinish?.areas[r.id];
     const groutColor=FurnishTileGrout.color(state,r.id,'floor');let m = floor?.layout?FurnishFloorFinishModel.material(THREE,floor.layout,{wx,wz,color:MATS[state.rooms[r.id].mat]?.sw,groutColor}):floorMat(state.rooms[r.id].mat);if(!floor?.layout&&m.userData.tileFinish?.legacy&&groutColor)m=FurnishFloorFinishModel.legacyMaterial(THREE,m,{groutColor});const bay = r.counted === false, roomH=FurnishProject.roomCeilingHeight(state,r)/1000;
     const geo = bay ? new THREE.ExtrudeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p)), {depth:r.height??.45, bevelEnabled:false}) : null;
     if(geo)geo.rotateX(-Math.PI/2);
-    const fl=bay?Object.assign(new THREE.Mesh(geo,[m,mat('#e9e4da')]),{userData:{furnishPartSource:"index:site-223"}}):FurnishFloorFinishModel.surface(THREE,r,floor||{},{wx,wz,material:m});
+    const fl=bay?syncIdentity.produce("index:site-223",()=>new THREE.Mesh(geo,[m,mat('#e9e4da')])):FurnishFloorFinishModel.surface(THREE,r,floor||{},{wx,wz,material:m});
     fl.receiveShadow = true; fl.userData.room = r.id; fl.userData.layerObject="floor:"+r.id;
     if(!bay){fl.position.y=(floor?.finishedZ??floor?.rawZ??0)/1000;fl.userData.floor=true;const layers=floor?FurnishFloorFinishModel.layers(THREE,r,floor,{wx,wz}):null;if(layers)archFloor.add(layers);}
     if (bay){ fl.castShadow = true; archUp.add(fl); } else archFloor.add(fl);
     // 天花：法线朝下，只在室内仰视时可见
     const cg = new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p,true))); cg.rotateX(Math.PI/2);
-    const ceil = Object.assign(new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1})),{userData:{furnishPartSource:"index:site-224"}}); ceil.position.y = roomH; ceil.visible = opt.cut===2.8 || top >= roomH; archUp.add(observationLayer(ceil,'roomCeiling:'+r.id));
+    const ceil = syncIdentity.produce("index:site-224",()=>new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1}))); ceil.position.y = roomH; ceil.visible = opt.cut===2.8 || top >= roomH; archUp.add(observationLayer(ceil,'roomCeiling:'+r.id));
     if (r.at){
-      const lamp = Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, .02, 32), new THREE.MeshStandardMaterial({color:'#fff', emissive:'#fff2d6', emissiveIntensity:.3})),{userData:{furnishPartSource:"index:site-225"}});
+      const lamp = syncIdentity.produce("index:site-225",()=>new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, .02, 32), new THREE.MeshStandardMaterial({color:'#fff', emissive:'#fff2d6', emissiveIntensity:.3})));
       lamp.position.set(wx(r.at[0]), roomH - .012, wz(r.at[1])); lamp.userData.cutVisible = opt.cut===2.8 || top >= roomH; lamp.visible = opt.lamps && lamp.userData.cutVisible; lampG.add(observationLayer(lamp,"roomCeiling:"+r.id));
       const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), roomH - .25, wz(r.at[1])); lampG.add(observationLayer(pl,"roomCeiling:"+r.id));
     }
@@ -1179,75 +1180,74 @@ const syncPart=(object,source)=>{if(object?.userData){object.userData.furnishPar
   const floorSteps=finishPlan.floorFinish?.steps||[],floorEdges=FurnishFloorFinishModel.stepEdges(THREE,floorSteps,{wx,wz});floorEdges.traverse(o=>{if(o.userData.floorStep){const step=o.userData.floorStep,a=finishPlan.floorFinish.doorways.find(a=>a.id.startsWith(step.id+"-")&&a.finishedZ===step.high);if(a)o.userData.layerObject="floor:"+a.roomId;}});archFloor.add(floorEdges);
   // Label the measured difference rather than exaggerating a 5 mm riser.
   for(const step of floorSteps){const [[x,z],[X,Z]]=step.seam;const el=document.createElement('div');el.className='scene-floor-step';el.textContent=`${tr('地面高差','Floor step')} ${Number(step.drop.toFixed(2))} mm`;const label=new CSS2DObject(el);label.position.set(wx((x+X)/2),step.high/1000+.035,wz((z+Z)/2));archFloor.add(label);}
-  for(const [kind,list] of [['door',DOORS],['slide',SLIDES]])list.forEach((d,index)=>{if(finishPlan.floorFinish?.doorways.some(a=>a.kind===kind&&a.index===index))return;const [x0,y0,x1,y1]=d.rect,s=syncPart(box(M(x1-x0),.012,M(y1-y0),mat('#d8d0c0',{roughness:.3}),wx((x0+x1)/2),0,wz((y0+y1)/2)),"index:site-226");s.castShadow=false;archFloor.add(s);});
+  for(const [kind,list] of syncIdentity.items("index.html:generator-41",[["item-a",['door',DOORS]],["item-b",['slide',SLIDES]]]))syncIdentity.each("index.html:generator-42",list,(d,index)=>{if(finishPlan.floorFinish?.doorways.some(a=>a.kind===kind&&a.index===index))return;const [x0,y0,x1,y1]=d.rect,s=syncIdentity.produce("index:site-226",()=>box(M(x1-x0),.012,M(y1-y0),mat('#d8d0c0',{roughness:.3}),wx((x0+x1)/2),0,wz((y0+y1)/2)));s.castShadow=false;archFloor.add(s);},(item,slot)=>item.id||"plan-slot:"+slot);
   // Schematic risers: user default diameter 100 mm, floor to room ceiling.
-  for(const marker of PLAN.markers||[]){
+  for(const marker of syncIdentity.records("index.html:generator-43",PLAN.markers||[])){
     const room=FurnishProject.ceilingAt(PLAN,...marker.at).room;
     const height=M(room?FurnishProject.roomCeilingHeight(state,room):FurnishProject.ceilingHeight(state));
     const visibleHeight=opt.cut===2.8?height:Math.min(height,top),radius=M(FurnishDraft.serviceDiameter(marker)/2);
-    const pipe=Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,visibleHeight,64),mat(marker.kind==='gas'?'#c35b20':'#d8dde0',{roughness:.65})),{userData:{furnishPartSource:"index:site-227"}});
+    const pipe=syncIdentity.produce("index:site-227",()=>new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,visibleHeight,64),mat(marker.kind==='gas'?'#c35b20':'#d8dde0',{roughness:.65})));
     pipe.position.set(wx(marker.at[0]),visibleHeight/2,wz(marker.at[1]));pipe.userData.service=marker.id;pipe.castShadow=true;pipe.receiveShadow=true;archUp.add(pipe);
   }
-  for(const beam of PLAN.beams||[]){
+  for(const beam of syncIdentity.records("index.html:generator-44",PLAN.beams||[])){
     const roof=typeof state!=='undefined'&&typeof FurnishProject!=='undefined'?FurnishProject.ceilingHeight(state):undefined;
     const vertical=FurnishDraft.beamVertical(beam,roof);if(!vertical)continue;
     const bottom=M(vertical.bottom),height=M(vertical.top-vertical.bottom);
     const geometry=new THREE.ExtrudeGeometry(shapeOf(beam.poly),{depth:height,bevelEnabled:false});geometry.rotateX(-Math.PI/2);
-    const mesh=Object.assign(new THREE.Mesh(geometry,mat('#b9a8cd',{roughness:1})),{userData:{furnishPartSource:"index:site-228"}});mesh.position.y=bottom;mesh.userData.beam=beam.id;mesh.visible=opt.cut===2.8||bottom<top;mesh.castShadow=true;mesh.receiveShadow=true;archUp.add(mesh);
+    const mesh=syncIdentity.produce("index:site-228",()=>new THREE.Mesh(geometry,mat('#b9a8cd',{roughness:1})));mesh.position.y=bottom;mesh.userData.beam=beam.id;mesh.visible=opt.cut===2.8||bottom<top;mesh.castShadow=true;mesh.receiveShadow=true;archUp.add(mesh);
     if(opt.labels!==undefined&&bottom>0){const x=(Math.min(...beam.poly.map(p=>p[0]))+Math.max(...beam.poly.map(p=>p[0])))/2,z=(Math.min(...beam.poly.map(p=>p[1]))+Math.max(...beam.poly.map(p=>p[1])))/2;
       const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(wx(x),.02,wz(z)),new THREE.Vector3(wx(x),bottom,wz(z))]),new THREE.LineBasicMaterial({color:0x9467bd,transparent:true,opacity:.4}));line.userData.beamDimension=true;line.userData.cutVisible=mesh.visible;line.visible=mesh.visible&&opt.labels;archUp.add(line);
     }
   }
-  WALLS.forEach((w, i) => {
+  syncIdentity.each("index.html:generator-45",WALLS,(w, i) => {
     if (state.demolished.includes('w'+i)) return;
-    wallBox(w, 0, w[4] === 'low' ? Math.min(1, top) : top);
+    syncIdentity.produce("index.html:generator-call-14",()=>wallBox(w, 0, w[4] === 'low' ? Math.min(1, top) : top));
     colliders.push([wx(w[0]), wz(w[1]), wx(w[2]), wz(w[3])]);
-  });
+  },(item,slot)=>item.id||"plan-slot:"+slot);
   archUp.add(FurnishWallFinishModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
   if(finishPlan.wallTiling)archUp.add(FurnishWallTilingModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
   if(finishPlan.ceilings)archUp.add(FurnishCeilingModel.build(THREE,finishPlan.ceilings,{wx,wz,top:opt.cut===2.8?Infinity:top*1000,lamps:opt.lamps}));
   for(const s of finishPlan.wallFinish?.solids||[])if(s.bottom===0)colliders.push([wx(s.rect[0]),wz(s.rect[1]),wx(s.rect[2]),wz(s.rect[3])]);
   // 门洞、窗洞上方过梁（门窗矩形即洞口，head 默认 2.4m）
-  [...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])]
-    .forEach(([r, h]) => { if (top > h) wallBox(r, h, top); });
+  syncIdentity.each("index.html:generator-46",[...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])],([r, h]) => { if (top > h) syncIdentity.produce("index.html:generator-call-15",()=>wallBox(r, h, top)); });
   const bayPosts=new Set();
-  WINS.forEach(({rect, sill, head = 2.4, frameLine, bayId, bayType, paintRect,panels,stackSide},windowIndex) => {
-    if(bayId&&paintRect&&bayType!=='recessed'){wallBox(paintRect,0,Math.min(sill,top));if(top>head)wallBox(paintRect,head,top);}
-    wallBox(rect, 0, Math.min(sill, top)); if (top > head) wallBox(rect, head, top);
+  syncIdentity.each("index.html:generator-47",WINS,({rect, sill, head = 2.4, frameLine, bayId, bayType, paintRect,panels,stackSide},windowIndex) => {
+    if(bayId&&paintRect&&bayType!=='recessed'){syncIdentity.produce("index.html:generator-call-16",()=>wallBox(paintRect,0,Math.min(sill,top)));if(top>head)syncIdentity.produce("index.html:generator-call-17",()=>wallBox(paintRect,head,top));}
+    syncIdentity.produce("index.html:generator-call-18",()=>wallBox(rect, 0, Math.min(sill, top))); if (top > head) syncIdentity.produce("index.html:generator-call-19",()=>wallBox(rect, head, top));
     colliders.push([wx(rect[0]), wz(rect[1]), wx(rect[2]), wz(rect[3])]);
     const gTop = Math.min(head, top); if (gTop <= sill) return;
     const [x0, y0, x1, y1] = frameLine?[Math.min(frameLine[0][0],frameLine[1][0]),Math.min(frameLine[0][1],frameLine[1][1]),Math.max(frameLine[0][0],frameLine[1][0]),Math.max(frameLine[0][1],frameLine[1][1])]:rect, hz = (x1-x0) >= (y1-y0), L = M(hz ? x1-x0 : y1-y0), gh = gTop - sill, cx = wx((x0+x1)/2), cz = wz((y0+y1)/2);
     if(panels===3){
-      const model=buildSlidingDoor(L,.09,gh,3,'#41474b',{floorTrack:true,stackSide});
+      const model=syncIdentity.produce("index.html:generator-call-20",()=>buildSlidingDoor(L,.09,gh,3,'#41474b',{floorTrack:true,stackSide}));
       model.position.set(cx,sill,cz);model.rotation.y=hz?0:-Math.PI/2;
       model.traverse(o=>o.userData.bayWindowIndex=windowIndex);archUp.add(model);slidingDoors.push(model.userData.slidingDoor);return;
     }
-    const pane = Object.assign(new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .01, gh, hz ? .01 : L), glassMat),{userData:{furnishPartSource:"index:site-229"}}); pane.userData.bayWindowIndex=windowIndex; pane.position.set(cx, sill + gh/2, cz); archUp.add(pane);
+    const pane = syncIdentity.produce("index:site-229",()=>new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .01, gh, hz ? .01 : L), glassMat)); pane.userData.bayWindowIndex=windowIndex; pane.position.set(cx, sill + gh/2, cz); archUp.add(pane);
     const n = Math.max(1, Math.round(L/.9));
-    for (let k = 0; k <= n; k++){ const t = -L/2 + k*L/n,px=cx+(hz?t:0),pz=cz+(hz?0:t),key=[bayId,px.toFixed(6),pz.toFixed(6),sill,gTop].join(':');if(frameLine&&(k===0||k===n)){if(bayPosts.has(key))continue;bayPosts.add(key);}const mu = Object.assign(new THREE.Mesh(new THREE.BoxGeometry(frameLine ? .06 : hz ? .04 : .06, gh, frameLine ? .06 : hz ? .06 : .04), frameMat),{userData:{furnishPartSource:"index:site-230"}});
+    for(let k of syncIdentity.range("index.html:generator-48",0,n,1,true)){ const t = -L/2 + k*L/n,px=cx+(hz?t:0),pz=cz+(hz?0:t),key=[bayId,px.toFixed(6),pz.toFixed(6),sill,gTop].join(':');if(frameLine&&(k===0||k===n)){if(bayPosts.has(key))continue;bayPosts.add(key);}const mu = syncIdentity.produce("index:site-230",()=>new THREE.Mesh(new THREE.BoxGeometry(frameLine ? .06 : hz ? .04 : .06, gh, frameLine ? .06 : hz ? .06 : .04), frameMat));
       mu.position.set(cx + (hz ? t : 0), sill + gh/2, cz + (hz ? 0 : t)); mu.castShadow = true;mu.userData.bayWindowIndex=windowIndex; archUp.add(mu); }
-    [sill + .02, gTop - .02].forEach(y => { const tr = Object.assign(new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .06, .04, hz ? .06 : L), frameMat),{userData:{furnishPartSource:"index:site-231"}}); tr.position.set(cx, y, cz);tr.userData.bayWindowIndex=windowIndex; archUp.add(tr); });
-  });
-  DOORS.forEach(d => {
+    syncIdentity.each("index.html:generator-49",[sill + .02, gTop - .02],y => { const tr = syncIdentity.produce("index:site-231",()=>new THREE.Mesh(new THREE.BoxGeometry(hz ? L : .06, .04, hz ? .06 : L), frameMat)); tr.position.set(cx, y, cz);tr.userData.bayWindowIndex=windowIndex; archUp.add(tr); });
+  },(item,slot)=>item.id||"plan-slot:"+slot);
+  syncIdentity.each("index.html:generator-50",DOORS,d => {
     const control={open:true};
-    FurnishGeometry.doorLeaves(d).forEach(d=>{
+    syncIdentity.each("index.html:generator-51",FurnishGeometry.doorLeaves(d),d=>{
     const pivot = new THREE.Group(), L = M(d.len), dh = Math.min(SWING_DOOR_HEIGHT, top);
     pivot.position.set(wx(d.h[0]), 0, wz(d.h[1]));
     const leafOffset = M(FurnishGeometry.doorLeafOffset(d));
-    const leaf = box(L, dh, .04, mat(d.entry ? '#6b4f3a' : '#efe6d8', {roughness:.5}), L/2, 0, leafOffset);leaf.userData.furnishPartSource="index:site-232";
-    const knob = Object.assign(new THREE.Mesh(new THREE.SphereGeometry(.03, 12, 8), metal()),{userData:{furnishPartSource:"index:site-233"}}); knob.position.set(L - .07, Math.min(1, dh - .05), leafOffset); knob.scale.z = 2.2;
+    const leaf = syncIdentity.produce("index.html:generator-call-21",()=>box(L, dh, .04, mat(d.entry ? '#6b4f3a' : '#efe6d8', {roughness:.5}), L/2, 0, leafOffset));leaf.userData.furnishPartSource="index:site-232";
+    const knob = syncIdentity.produce("index:site-233",()=>new THREE.Mesh(new THREE.SphereGeometry(.03, 12, 8), metal())); knob.position.set(L - .07, Math.min(1, dh - .05), leafOffset); knob.scale.z = 2.2;
     pivot.add(leaf, knob);
     const ang = v => Math.atan2(-v[1], v[0]), door = {pivot, length:L, a0:ang(d.c), a1:ang(d.o),get open(){return control.open;},set open(value){control.open=value;}};
     if (door.a1 - door.a0 > Math.PI) door.a1 -= Math.PI*2; if (door.a0 - door.a1 > Math.PI) door.a1 += Math.PI*2;
     door.cur = door.a1; pivot.rotation.y = door.cur; leaf.userData.door = knob.userData.door = door;
     doors.push(door); archUp.add(pivot);
-    });
-  });
-  SLIDES.forEach(({rect:[x0,y0,x1,y1],v,panels,floorTrack,stackSide})=>{
-    const model=buildSlidingDoor(M(v?y1-y0:x1-x0),M(v?x1-x0:y1-y0),Math.min(v?2.4:2.1,top),panels===3?3:2,'#41474b',{floorTrack,stackSide});
+    },(_,leaf)=>leaf===0?"hinge-leaf":"opposite-leaf");
+  },(item,slot)=>item.id||"plan-slot:"+slot);
+  syncIdentity.each("index.html:generator-52",SLIDES,({rect:[x0,y0,x1,y1],v,panels,floorTrack,stackSide})=>{
+    const model=syncIdentity.produce("index.html:generator-call-22",()=>buildSlidingDoor(M(v?y1-y0:x1-x0),M(v?x1-x0:y1-y0),Math.min(v?2.4:2.1,top),panels===3?3:2,'#41474b',{floorTrack,stackSide}));
     model.position.set(wx((x0+x1)/2),0,wz((y0+y1)/2));model.rotation.y=v?-Math.PI/2:0;
     archUp.add(model);slidingDoors.push(model.userData.slidingDoor);
-  });
+  },(item,slot)=>item.id||"plan-slot:"+slot);
   archUp.scale.setScalar(1);cutElectricalBoxWalls();
   applyLight(); applyGrow();
 }

@@ -134,7 +134,7 @@ function elevation(plan,work,face,layout=record(work,face)?.layout||defaults(),{
    rows.push({...result,layout:l,followFloor:linked,originZ:z,alignmentPending,alignmentNote,sections:finite(bottom)&&finite(top)?clip(bottom,top):[],pending:[...pending,...(alignmentPending?[alignmentPending]:[])],band:{id:r.id,name:r.name,bottom,top,reference:bands.reference}});bottom=top;
   }
   const joints=[];
-  for(let i=1;i<rows.length;i++){const z=rows[i].band.bottom,gap=Math.max(rows[i-1].layout.gap,rows[i].layout.gap);if(finite(z)&&z>floorZ&&z<height&&gap>0){const lo=Math.max(floorZ,z-gap/2),hi=Math.min(height,z+gap/2);joints.push({z,gap,sections:clip(lo,hi)});rows[i-1].sections=rows[i-1].sections.map(([x,b,X,t])=>[x,b,X,Math.min(t,lo)]).filter(r=>r[3]>r[1]+EPS);rows[i].sections=rows[i].sections.map(([x,b,X,t])=>[x,Math.max(b,hi),X,t]).filter(r=>r[3]>r[1]+EPS);}}
+  for(let i=1;i<rows.length;i++){const z=rows[i].band.bottom,gap=Math.max(rows[i-1].layout.gap,rows[i].layout.gap);if(finite(z)&&z>floorZ&&z<height&&gap>0){const lo=Math.max(floorZ,z-gap/2),hi=Math.min(height,z+gap/2);joints.push({partId:rows[i-1].band.id+'~'+rows[i].band.id,z,gap,sections:clip(lo,hi)});rows[i-1].sections=rows[i-1].sections.map(([x,b,X,t])=>[x,b,X,Math.min(t,lo)]).filter(r=>r[3]>r[1]+EPS);rows[i].sections=rows[i].sections.map(([x,b,X,t])=>[x,Math.max(b,hi),X,t]).filter(r=>r[3]>r[1]+EPS);}}
   result.bands=clone(bands);result.patterns=rows;result.bandJoints=joints;
   for(const r of rows){if(r.alignmentPending)pending.push(`${r.band.name}：${r.alignmentPending}`);if(finite(r.band.top)&&r.band.top<=floorZ)pending.push(`${r.band.name}分界不高于完成地面，该带无有效墙面`);}
  }
