@@ -1,0 +1,112 @@
+{
+  "date": "2026-10-24",
+  "passed": true,
+  "base": "54a5664",
+  "commits": {
+    "production": "f877c11",
+    "regression": "12f2979"
+  },
+  "addon": {
+    "version": "0.1.2",
+    "protocol": 2,
+    "installation": "installation.json",
+    "zip": "D:/1601装修/渲染/LiveSync0.1.2稳定标识升级-20261024/furnish-sync-0.1.2.zip"
+  },
+  "before": {
+    "meshes": 4355,
+    "keys": 2894,
+    "missing": 1461,
+    "ambiguous": 246
+  },
+  "after": {
+    "meshes": 4355,
+    "missing": 0,
+    "ambiguous": 0
+  },
+  "priority": {
+    "airconShell": 220,
+    "airconBrandStrokes": 7,
+    "aquariumDriftwood": 9,
+    "aquariumPlants": 6,
+    "coffeeTableLegWings": 4
+  },
+  "node": {
+    "suites": 285,
+    "builtInPlans": 12,
+    "preexistingPreviewPages": 0,
+    "log": "node-full.log"
+  },
+  "browser": {
+    "cases": 7,
+    "scope": [
+      "blender-render",
+      "portable-smoke",
+      "aircon-midea",
+      "aquarium",
+      "cherry-coffee-table",
+      "catalog-library",
+      "cabinet-catalog"
+    ],
+    "manifest": "browser-results.json",
+    "full167SuiteRepeated": false,
+    "httpAndOfflineFile": true
+  },
+  "actualBlender": {
+    "currentPlan": "current-plan-worker.json",
+    "rollbackAndDowngrade": "transactions.json",
+    "installedZip": "installed-zip-sync.json",
+    "refinedRender": "refined-render.json",
+    "originalMaterialMeshes": 4355,
+    "reorderedGroups": 193,
+    "independentAddedParts": 3,
+    "uniqueMaterialMeshes": 4355,
+    "lights": 8,
+    "backend": "OPTIX"
+  },
+  "migration": {
+    "directV2InitiallyRefused": true,
+    "oldMeshesWithGeometryDifferences": 27,
+    "v1V2BinaryGeometryIdentical": true,
+    "explicitV1RefreshOnlyInDisposableCopy": true,
+    "legacyFixtureNotLoadedByProduction": true,
+    "orchestratorFirstTimeoutMinutes": 10,
+    "orchestratorTimeoutFixedMinutes": 30,
+    "finalWorkerCompleted": true
+  },
+  "preservation": {
+    "originalBlend": "D:\\1601装修\\渲染\\1601-BlenderMCP验证-20261021\\1601-MCP精修验证.blend",
+    "originalSha256": "794e29bb9409bda434eca663d0625fab11b618a4762e803b9e02db93f72c0075",
+    "workspaceSha256": "9a8323069717c106e309fe498e600de107d79c90e188f970e3a6af1e2c5e54e9",
+    "workspaceLfSha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54",
+    "primaryWorkspaceSha256": "7cc81637ac2af802f4943f0660e7a221fca974e4f523289f6a715442dd2e6b54",
+    "checkoutUsesCRLF": true,
+    "originalAndWorkspaceUnchanged": true,
+    "preferencesUnchanged": true,
+    "otherPrimaryWorkspaceChangesKept": true
+  },
+  "deliveredRefinement": {
+    "passed": true,
+    "file": "D:\\1601装修\\渲染\\LiveSync0.1.2稳定标识升级-20261024\\1601-稳定部件标识.blend",
+    "managedMeshes": 4355,
+    "materialBindingsPreserved": 4355,
+    "lights": 8,
+    "camera": "1601固定机位 | 01-客厅",
+    "world": "Study | daylight sky",
+    "missingImages": [],
+    "sourceSha256": "ef58bc162f3eb9e7bd85adaa58107d180ae04866f952aef6a396827f8195485f",
+    "savedSha256": "273026f25e29534666f3cdec48608aa0382942723e1c33451eccbec3ff309d4e"
+  },
+  "knownBoundaries": [
+    "Same-generator equal-count semantic permutations still require authored item IDs; arbitrary external topology rewrites are not inferred.",
+    "Repeated-family count changes are rejected under material preservation until reviewed.",
+    "Stale v1 refinement geometry must be refreshed in a copy before strict identity upgrade.",
+    "v2 scenes reject old v1 snapshots; use the matching main application and 0.1.2 receiver."
+  ],
+  "notRun": [
+    "All 167 historical browser cases in this round",
+    "Other OS or Blender versions",
+    "Real process crash/OOM recovery",
+    "Historical four-region final-quality render batch",
+    "Unrelated historical generated previews"
+  ]
+}

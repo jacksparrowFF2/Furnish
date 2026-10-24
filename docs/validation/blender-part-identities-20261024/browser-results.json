@@ -1,0 +1,56 @@
+{
+  "selected": [
+    "blender-render",
+    "portable-smoke",
+    "aircon-midea",
+    "aquarium",
+    "cherry-coffee-table",
+    "catalog-library",
+    "cabinet-catalog"
+  ],
+  "results": [
+    {
+      "name": "blender-render",
+      "status": "PASS",
+      "seconds": 39.8,
+      "log": "blender-render.log"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 14.6,
+      "log": "portable-smoke.log"
+    },
+    {
+      "name": "aircon-midea",
+      "status": "PASS",
+      "seconds": 34.3,
+      "log": "aircon-midea.log"
+    },
+    {
+      "name": "aquarium",
+      "status": "PASS",
+      "seconds": 50,
+      "log": "aquarium.log"
+    },
+    {
+      "name": "cherry-coffee-table",
+      "status": "PASS",
+      "seconds": 41.4,
+      "log": "cherry-coffee-table.log"
+    },
+    {
+      "name": "catalog-library",
+      "status": "PASS",
+      "seconds": 18.9,
+      "log": "catalog-library.log"
+    },
+    {
+      "name": "cabinet-catalog",
+      "status": "PASS",
+      "seconds": 19.2,
+      "log": "cabinet-catalog.log"
+    }
+  ],
+  "notRun": []
+}

@@ -1,0 +1,2 @@
+Error: Blender identity verification timed out
+    at main (C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\scripts\verify\verify-blender-parts.cjs:37:57)

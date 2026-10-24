@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "failureStages": [
+    "imported",
+    "matched",
+    "updated",
+    "removed",
+    "metadata",
+    "validated",
+    "partial-import",
+    "missing-camera"
+  ],
+  "semanticReorder": true,
+  "duplicateAndCountGuards": true,
+  "objectIdentity": true,
+  "modifiersAndPoseLock": true,
+  "unmanagedSharedMesh": true,
+  "repeatNoLeak": true,
+  "semanticDeleteUndo": true,
+  "exactTransformChannels": true,
+  "v2GeometryGuard": true,
+  "v2OneTimeMigration": true,
+  "v1DowngradeRejected": true
+}

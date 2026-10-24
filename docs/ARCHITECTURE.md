@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-24：生产模型在固定构造点记录 furnishPartSource 与仅用于组内排序的创建标记，Blender 导出生成实例作用域内的 v2 部件身份；几何与节点路径不再作为已覆盖部件的身份。明确部件优先使用 furnishStablePart，重复生成族携带数量约束。传输 protocol 2 防止旧插件误接新版身份。无项目字段、保存或加载依赖变化，见 [同步契约](BLENDER-SYNC.md)。
+
 2026-10-24 全量复验：自动检修盖板的入口扫描先检查分区数组／成员，损坏旧记录继续进入原恢复界面，不影响正常家具事务；安装资料待核对能力集中补入产品定义。专用浏览器验收归入 scripts/verify，预览遵守 FURNISH_VERIFY_ROOT，禁止覆盖真实预览。无新持久版本或保存通道。见 [完整记录](validation/full-regression-20261024/summary.json)。
 
 2026-10-23：分水器默认总高 500 mm（用户确认）；产品能力 rearService 供厨房自动避让预留完整后部空间，派生 obstacleFit.depths[].rearService:true。cabinetLayout 共用减深及取消背板，生产板件、抽屉运动、测距与展开预览读取同一结果；原恢复／commit 重算，无新加载或保存通道。确认追加 manifold-rear-service-v1，详见 [后方安装](HEATING-MANIFOLD.md#厨房地柜后方安装2026-10-23)。

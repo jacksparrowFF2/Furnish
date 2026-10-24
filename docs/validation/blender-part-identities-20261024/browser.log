@@ -1,0 +1,17 @@
+Isolated browser verification: C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\output\playwright\verification-oNIDjN
+Static service: http://127.0.0.1:54041/
+RUN blender-render
+PASS blender-render
+RUN portable-smoke
+PASS portable-smoke
+RUN aircon-midea
+PASS aircon-midea
+RUN aquarium
+PASS aquarium
+RUN cherry-coffee-table
+PASS cherry-coffee-table
+RUN catalog-library
+PASS catalog-library
+RUN cabinet-catalog
+PASS cabinet-catalog
+Results: C:\Users\SPH\.codex\worktrees\blender-part-identities\Furnish\output\playwright\verification-oNIDjN\results.json

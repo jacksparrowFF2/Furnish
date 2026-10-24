@@ -1,0 +1,14 @@
+{
+  "template": "D:\\1601装修\\渲染\\1601-BlenderMCP验证-20261021\\1601-MCP精修验证.blend",
+  "planId": "custom_mv37igji",
+  "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-part-identities\\Furnish\\output\\playwright\\blender-parts-pJpzq9",
+  "coverage": {
+    "meshes": 4355,
+    "missing": 0,
+    "ambiguous": 0
+  },
+  "changed": {
+    "reorderedGroups": 193,
+    "added": 3
+  }
+}

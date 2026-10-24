@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "sourceMaterialBindingsPreserved": 4355,
+  "uniquePartMaterialsVerified": 4355,
+  "legacyGeometryRefresh": {
+    "added": 0,
+    "updated": 4355,
+    "deleted": 0,
+    "adopted": 0,
+    "matchedByPartKey": 0,
+    "migratedPartKeys": 0,
+    "revision": "legacy-refresh",
+    "cleanupWarnings": []
+  },
+  "migration": {
+    "added": 0,
+    "updated": 4355,
+    "deleted": 0,
+    "adopted": 0,
+    "matchedByPartKey": 0,
+    "migratedPartKeys": 4355,
+    "revision": "parts-baseline",
+    "cleanupWarnings": []
+  },
+  "restructured": {
+    "added": 3,
+    "updated": 4355,
+    "deleted": 0,
+    "adopted": 0,
+    "matchedByPartKey": 4355,
+    "migratedPartKeys": 0,
+    "revision": "restructured",
+    "cleanupWarnings": []
+  },
+  "deleted": {
+    "added": 0,
+    "updated": 4357,
+    "deleted": 1,
+    "adopted": 0,
+    "matchedByPartKey": 4357,
+    "migratedPartKeys": 0,
+    "revision": "deleted",
+    "cleanupWarnings": []
+  },
+  "restored": {
+    "added": 1,
+    "updated": 4357,
+    "deleted": 0,
+    "adopted": 0,
+    "matchedByPartKey": 4357,
+    "migratedPartKeys": 0,
+    "revision": "restored",
+    "cleanupWarnings": []
+  },
+  "geometryMismatchRejectedAndRolledBack": true,
+  "countMismatchRejectedAndRolledBack": true,
+  "exactTransformRollback": true,
+  "semanticDeletionUndo": true,
+  "repeatNoLeak": true,
+  "reopen": true,
+  "sourceTemplateUnchanged": true
+}
