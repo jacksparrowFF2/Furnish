@@ -20,7 +20,14 @@ const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts
   }
   const fixtures=path.join(V.projectRoot,'tests/fixtures/browser');assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(fixtures,'1601-source.dxf'))).digest('hex'),JSON.parse(fs.readFileSync(path.join(fixtures,'shared-boundaries-validation.json'))).sha256);
   const P=require('../src/core/project-core.js');for(const name of fs.readdirSync(fixtures).filter(n=>n.endsWith('.furnish.json')))P.unpack(JSON.parse(fs.readFileSync(path.join(fixtures,name))));
-  fs.mkdirSync(root,{recursive:true});fs.writeFileSync(path.join(root,'index.html'),'<h1>isolated clone</h1>');const secret=path.join(temp,'secret.txt');fs.writeFileSync(secret,'outside');
+  fs.mkdirSync(root,{recursive:true});fs.copyFileSync(path.join(V.projectRoot,'index.html'),path.join(root,'index.html'));
+  for(const name of ['manifold','manifold-kitchen']){
+   const actual=path.join(V.projectRoot,'output',name,'preview.html'),before=fs.existsSync(actual)?fs.readFileSync(actual):null;
+   require('node:child_process').execFileSync(process.execPath,[path.join(V.projectRoot,'scripts/preview-'+name+'.cjs')],{env:{...process.env,FURNISH_VERIFY_ROOT:root},stdio:'pipe'});
+   assert(fs.existsSync(path.join(root,'output',name,'preview.html')),'focused preview belongs to isolated workspace');
+   if(before)assert.deepEqual(fs.readFileSync(actual),before,'verification must not overwrite user preview');else assert(!fs.existsSync(actual));
+  }
+  fs.writeFileSync(path.join(root,'index.html'),'<h1>isolated clone</h1>');const secret=path.join(temp,'secret.txt');fs.writeFileSync(secret,'outside');
   const server=await V.staticServer(root);try{
    const home=await fetch(server.baseURL);assert.equal(home.status,200);assert.match(await home.text(),/isolated clone/);
    assert.equal((await fetch(server.baseURL+'api/furnish/workspace',{method:'PUT',body:'{}'})).status,405);

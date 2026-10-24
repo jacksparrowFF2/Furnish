@@ -8,7 +8,7 @@ const K=require('../../src/core/kitchen-core.js'),W=require('../../src/core/work
  const plan=plans[0],work=W.create({makeId:()=> 'unused',colorFor:()=> '#ddd',materials:catalog.materials}).fresh(plan);
  const kitchen={id:'broken-kitchen',type:'counter',name:'异常厨房',cx:6000,cy:6500,w:2200,d:650,rot:37,flip:true,color:'#ddd',price:321,brand:'保留品牌',purchaseStatus:'ordered',kitchen:K.defaults({w:1800,d:600})};kitchen.kitchen.modules[0].role='sink';
  const device={id:'linked-sink',type:'ksink',name:'关联水槽',cx:5300,cy:6200,w:500,d:400,rot:37,flip:true,color:'#ddd',counterLink:{hostId:kitchen.id,module:0},counterElevation:860};
- const cabinet={id:'broken-cabinet',type:'cabinet',name:'异常柜体',cx:3500,cy:6500,w:1200,d:450,rot:0,color:'#ddd',cabinet:{version:1,columns:null}};
+ const cabinet={id:'broken-cabinet',type:'cabinet',name:'异常柜体',cx:3500,cy:6500,w:1200,d:450,rot:0,color:'#ddd',cabinet:{version:1,columns:'damaged'}};
  const bed={id:'normal-bed',type:'bed',name:'正常家具',cx:4000,cy:3500,w:1800,d:2000,rot:0,color:'#ddd'};
  work.furniture=[kitchen,device,cabinet,bed];const initial=structuredClone(work.furniture);
  const seed={v:2,planId:plan.id,work:{[plan.id]:work},designs:[{id:'named',planId:plan.id,name:'原始命名方案',work:structuredClone(work)}],custom:[],customPlans:[]};

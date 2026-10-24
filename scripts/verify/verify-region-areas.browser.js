@@ -25,7 +25,7 @@ async(page,V)=>{
    await p.evaluate(()=>mutate(()=>state.furniture[0].mountHeight=1000));check(await p.locator('[data-area-free]').innerText()==='8.00','raised appliance excluded');
    await p.keyboard.press('Control+z');check(await p.locator('[data-area-free]').innerText()==='7.00','undo recalculates');
    await p.keyboard.press('Control+y');check(await p.locator('[data-area-free]').innerText()==='8.00','redo recalculates');
-   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{renderAll();drawer('panel',true);});await p.screenshot({path:V.output('playwright/region-areas/'+(file?'file':'http')+'-mobile.png')});
+   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{renderAll();drawer('panel',true);});await p.waitForFunction(()=>{const r=document.querySelector('aside.right').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;});await p.screenshot({path:V.output('playwright/region-areas/'+(file?'file':'http')+'-mobile.png')});
    check(await p.locator('[data-area-free]').isVisible(),'narrow panel area visible');
    await p.locator('[data-area-room="area-b"]').click();check(await p.evaluate(()=>selectedRooms().length===1),'touch-friendly removal');
    await p.setViewportSize({width:1500,height:1000});

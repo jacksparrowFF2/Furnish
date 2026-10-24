@@ -4,9 +4,9 @@ async(page,verification)=>{
  const move=async(x,y)=>{const q=await screen(x,y);await p.mouse.move(q.x,q.y,{steps:5});await p.waitForFunction(()=>!canvasPointerFrame);};
  const at=async(id,x,y)=>{const actual=await p.evaluate(id=>[getF(id).cx,getF(id).cy],id);check(Math.hypot(actual[0]-x,actual[1]-y)<.1,id+' expected '+[x,y]+' actual '+actual);};
  const setup=async(rotation=0,group=false)=>p.evaluate(({rotation,group})=>{const a=F('counter','轴向移动',1000,1000,600,400,0,'#d9cbb7'),b=F('counter','参考家具',2100,1000,600,600,0,'#c4d7db');a.id='axis-a';b.id='axis-b';state.furniture=[a,b];if(group){const c={...a,id:'axis-c',cy:2400};a.groupId=c.groupId='axis-group';state.furniture.push(c);}state.drawing={...FurnishDrawing.settings(state.drawing),rotation};ui.layers.furn=ui.layers.guides=ui.layers.wallSnap=true;selectIds(group?['axis-a','axis-c']:['axis-a'],'axis-a');renderAll();zoomToBox([400,300,2700,2900],100);},{rotation,group});
- const down=async(x,y)=>{await move(x,y);await p.mouse.down();};
+ const down=async(x,y)=>{await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await move(x,y);await p.mouse.down();};
  try{
-  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();await p.evaluate(()=>{const rooms=structuredClone(state.rooms);PLAN={...PLAN,walls:[[3500,0,3700,3200]],wins:[],doors:[],slides:[],rooms:[{id:'axis-room',name:'轴向移动验收',mat:'tile800',at:[1000,1000],poly:[[-1000,-1000],[4000,-1000],[4000,4000],[-1000,4000]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...rooms,...state.rooms};});
+  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();await p.waitForFunction(()=>!repositoryBooting);await p.evaluate(()=>document.fonts.ready);await p.evaluate(()=>{const rooms=structuredClone(state.rooms);PLAN={...PLAN,walls:[[3500,0,3700,3200]],wins:[],doors:[],slides:[],rooms:[{id:'axis-room',name:'轴向移动验收',mat:'tile800',at:[1000,1000],poly:[[-1000,-1000],[4000,-1000],[4000,4000],[-1000,4000]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...rooms,...state.rooms};});
   await setup();await down(1000,1000);await move(1505,1020);await p.keyboard.down('Shift');await at('axis-a',1500,1000);
   check(await p.locator('[data-drag-snap="midpoint"]').count()===1,'axis-compatible midpoint remains snapped');await p.screenshot({path:dir+'shift-midpoint.png'});
   await p.keyboard.down('Alt');await at('axis-a',1505,1000);await p.keyboard.up('Shift');await at('axis-a',1505,1020);await p.keyboard.down('Shift');await at('axis-a',1505,1000);
@@ -23,5 +23,5 @@ async(page,verification)=>{
   await down(1000,1000);await p.keyboard.down('Shift');await p.keyboard.down('Alt');await move(1080,1400);await at('axis-a',1000,1400);await p.screenshot({path:dir+'shift-mobile.png'});await p.mouse.up();await p.keyboard.up('Alt');await p.keyboard.up('Shift');
   await p.waitForFunction(()=>!savePending);await p.reload();await p.locator('#drawing-compass').waitFor();await at('axis-a',1000,1400);
   check(!errors.length,errors.join('\n'));return {status:'PASS',checks:'stationary Shift/Alt changes, latched axes, on-axis magnets, Shift-before-drag and click compatibility, groups, four rotations, narrow screen, undo/redo and reload',errors};
- }catch(e){return {status:'FAIL',message:e.message,stack:e.stack,errors};}finally{await context.close();}
+ }catch(e){return {status:'FAIL',message:e.message,stack:e.stack,errors,diagnostic:await p.evaluate(()=>({drag:drag&&{ox:drag.ox,oy:drag.oy,start:drag.start,pointer:drag.pointer},view,rect:svg.getBoundingClientRect().toJSON(),matrix:Array.from(['a','b','c','d','e','f'],k=>svg.getScreenCTM()[k])}))};}finally{await context.close();}
 }
