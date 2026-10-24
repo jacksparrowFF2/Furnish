@@ -10,7 +10,7 @@
  const cache=new Map();
  function parts(f){
   if(!supported(f))return null;
-  const r=rule(f),key=JSON.stringify([r,f.type,f.w,f.d,f.h,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
+  const r=rule(f),key=JSON.stringify([r,f.type,f.w,f.d,f.h,f.mountHeight,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
   if(!records){
    const model=root[r.global]||(typeof require==='function'?require('../render/'+r.module+'-model.js'):null);if(!model)throw Error('家具实体模型未加载：'+r.global);
    const {T,Box,Rounded,point}=adapter(),built=model.build(T,f,r.rounded?Rounded:Box);records=[];

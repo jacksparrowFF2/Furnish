@@ -29,6 +29,8 @@ const DASH = 'stroke-dasharray="4 3"';
     return s;
   }
   switch (t){
+    case 'heating_manifold': {const m=(root.FurnishProducts||require('../core/product-rules.js')).manifoldLayout({...f,type:t,w,d}),inlet=m.inlet;return rc(inlet-m.lengths.upper,y+d*.18,m.lengths.upper,d*.25,'#abb3af')+rc(inlet-m.lengths.lower,y+d*.43,m.lengths.lower,d*.25,'#abb3af')+rc(inlet,y+d*.20,m.railWidth,d*.44,c)+Array.from({length:m.loops},(_,i)=>{const bx=inlet+65+i*m.pitch;return rc(bx-9,y+d*.45,18,d*.48,'#343a3a')+rc(bx-15,y+d*.38,30,d*.16,'#b94135');}).join('')+rc(inlet-35,y+d*.16,17,d*.50,'#35529a');}
+    case 'electrical_box_strong': case 'electrical_box_weak': return rc(x,y,w,d,c)+rc(x+w*.06,y+d*.72,w*.88,d*.22,'#697681');
     case 'block': return rc(x,y,w,d,c);
     case 'cat_tree': return rc(x,y,w,d,'#dfbd7d','rx="12"')+rc(-w*.19,-d*.4,w*.66,d*.64,c)+rc(-w*.02,d*.23,w*.34,d*.24,'#dfbd7d')+ec(-w*.21,-d*.27,w*.21,d*.21,'#eee7d2')+ec(w*.13,-d*.26,w*.21,d*.21,'#d7e2df')+ec(-w*.314,d*.19,w*.186,d*.186,'#dfbd7d')+ln(w*.01,d*.34,w*.29,d*.34)+ln(w*.01,d*.43,w*.29,d*.43);
     case 'pet_feeder_mijia_2': return rc(-w*.45,-d*.07,w*.9,d*.57,c,`rx="${w*.11}"`)+rc(-w*.42,d*.03,w*.84,d*.44,'#b6b9b7',`rx="${w*.08}"`)+rc(x,y,w,d*220/324,c,`rx="${w*37/220}"`)+rc(-w*.27,-d*.30,w*.15,d*.07,shade(c,.9),'rx="4"')+ln(-w*.31,d*58/324,w*.31,d*58/324);

@@ -224,3 +224,19 @@
 #cab-kitchen-picker input[type=number]{width:128px;max-width:100%;flex:none}
 
 #cab-form:not([data-inspector-kind=bay]) [data-cab-column]>legend{display:none}
+
+/* Pegboard alignment annotations share the preview camera and dimension switch. */
+.cab-dimension-lines path.cab-hatch-box-outline {stroke:#087f8c;stroke-width:2;stroke-dasharray:5 3;opacity:1}
+.cab-dimension-lines path.cab-hatch-opening-outline {stroke:#ce6519;stroke-width:2;opacity:1}
+.cab-hatch-margin {background:#effffc;color:#075f62;border:1px solid #77b9b4;font-weight:600}
+.cab-hatch-margin.cab-hatch-mismatch {background:#fff1e9;color:#a13d12;border-color:#e49a75}
+.cab-hatch-legend {position:absolute;bottom:8px;left:8px;max-width:calc(100% - 16px);padding:4px 7px;border-radius:4px;background:#fffef1ec;color:#285168;font-size:11px}
+.cab-hatch-warning {bottom:32px;color:#a13d12}
+
+.cab-hatch-editable {pointer-events:auto;cursor:pointer}
+.cab-hatch-editable:hover,.cab-hatch-editable:focus-visible {outline:2px solid #168de2}
+.cab-hatch-input {position:absolute;z-index:15;width:240px;padding:10px;border:1px solid #77b9b4;border-radius:8px;background:#fff;box-shadow:0 3px 16px #0003;color:#285168;font-size:12px}
+.cab-hatch-input label {display:block;margin-bottom:8px}
+.cab-hatch-input input {display:block;width:100%;margin-top:4px;box-sizing:border-box}
+.cab-hatch-input button {margin-right:8px;cursor:pointer}
+.cab-hatch-input [role=alert] {color:#a13d12;margin-top:6px}

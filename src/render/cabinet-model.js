@@ -144,11 +144,22 @@
      const bottom=col.drawers.reduce((n,v)=>n+v.height,0)/1000,top=col.doorBottom/1000-t,H=top-bottom,wood='#bc936b';
      if(hasLower&&bottom>0)add(g,cw,bottom,t,x,base,-d/2+t/2);
      if(hasUpper)add(g,cw,inner-top,t,x,base+top,-d/2+t/2);
-     const shape=new THREE.Shape();shape.moveTo(-cw/2,0);shape.lineTo(cw/2,0);shape.lineTo(cw/2,H);shape.lineTo(-cw/2,H);shape.closePath();
-     const nx=Math.max(2,Math.floor((cw-.06)/.04)),ny=Math.max(2,Math.floor((H-.06)/.045));
-     for(let a=0;a<nx;a++)for(let b=0;b<ny;b++){const hole=new THREE.Path();hole.absarc(-cw/2+.03+(cw-.06)*a/(nx-1),.03+(H-.06)*b/(ny-1),.0045,0,Math.PI*2,true);shape.holes.push(hole);}
-     const panelThickness=(assembly?.thickness??12)/1000;
-     const panel=add(g,cw,H,panelThickness,x,base+bottom,-d/2+t+panelThickness/2,wood);panel.geometry.dispose();panel.geometry=new THREE.ExtrudeGeometry(shape,{depth:panelThickness,bevelEnabled:false,curveSegments:8});panel.position.set(x,base+bottom,-d/2+t);panel.userData.cabinetBay={column:i};panel.userData.cabinetPegboard=true;
+     const grid=C.pegboardHoles(f,i,c),radius=grid.diameter/2000,panelThickness=(assembly?.thickness??12)/1000,hatch=C.pegboardHatch(f,i,c);
+     const holes=[];for(let a=0;a<grid.columns;a++)for(let b=0;b<grid.rows;b++)holes.push([-cw/2+(grid.marginX+grid.pitchX*a)/1000,(grid.marginY+grid.pitchY*b)/1000]);
+     function panel(parent,rect,originX=0,originY=0,moving=false,opening=null){
+      const [left,right,bottom,top]=rect;if(right-left<1e-8||top-bottom<1e-8)return;
+      const shape=new THREE.Shape();shape.moveTo(left-originX,bottom-originY);shape.lineTo(right-originX,bottom-originY);shape.lineTo(right-originX,top-originY);shape.lineTo(left-originX,top-originY);shape.closePath();
+      if(opening){const [l,r,b,t]=opening,hole=new THREE.Path();hole.moveTo(l,b);hole.lineTo(l,t);hole.lineTo(r,t);hole.lineTo(r,b);hole.closePath();shape.holes.push(hole);}
+      for(const [hx,hy] of holes)if(hx-radius>left&&hx+radius<right&&hy-radius>bottom&&hy+radius<top&&(!opening||hx+radius<opening[0]||hx-radius>opening[1]||hy+radius<opening[2]||hy-radius>opening[3])){const hole=new THREE.Path();hole.absarc(hx-originX,hy-originY,radius,0,Math.PI*2,true);shape.holes.push(hole);}
+      const mesh=add(parent,right-left,top-bottom,panelThickness,0,0,0,wood);mesh.geometry.dispose();mesh.geometry=new THREE.ExtrudeGeometry(shape,{depth:panelThickness,bevelEnabled:false,curveSegments:8});mesh.position.set(moving?0:x,moving?0:base+col.drawers.reduce((n,v)=>n+v.height,0)/1000,moving?-panelThickness:-d/2+t);mesh.userData.cabinetBay={column:i};mesh.userData.cabinetPegboard=true;
+      if(moving){mesh.userData.cabinetPart={column:i,section:'pegboardHatch'};if(options.doors==='ghost'){mesh.material=mesh.material.clone();mesh.material.transparent=true;mesh.material.opacity=.15;mesh.userData.cabinetOwnMaterial=true;}}
+     }
+     if(!hatch)panel(g,[-cw/2,cw/2,0,H]);
+     else{
+      const left=hatch.left/1000-x,right=left+hatch.w/1000,bottom=hatch.bottom/1000-(base+col.drawers.reduce((n,v)=>n+v.height,0)/1000),top=bottom+hatch.h/1000,gap=hatch.gap/1000;
+      panel(g,[-cw/2,cw/2,0,H],0,0,false,[left,right,bottom,top]);
+      if(options.doors!=='hidden'){const hinge=hatch.hinge==='left'?left+gap:right-gap,sign=hatch.hinge==='left'?-1:1,pivot=new THREE.Group();pivot.position.set(x+hinge,base+col.drawers.reduce((n,v)=>n+v.height,0)/1000+bottom+gap,-d/2+t+panelThickness);pivot.rotation.y=hatch.open?sign*hatch.angle*Math.PI/180:0;pivot.userData.motion={kind:'cabinetdoor',column:i,section:'pegboardHatch',axis:'y',angle:sign*hatch.angle*Math.PI/180};pivot.userData.cabinetPart={column:i,section:'pegboardHatch'};panel(pivot,[left+gap,right-gap,bottom+gap,top-gap],hinge,bottom+gap,true);g.add(pivot);}
+     }
      if(!entryStyle)for(const side of [-1,1]){const outer=side<0&&i===0||side>0&&i===bays.length-1;if(outer)sideBoard(side<0?'left':'right',.006,H,d-t,x+side*(cw/2-.003),base+bottom,t/2,wood);else add(g,.006,H,d-t,x+side*(cw/2-.003),base+bottom,t/2,wood);}
      if(hasLower)add(g,cw,t,d-t,x,base+bottom-(entryStyle?t:0),t/2,wood);
      if(hasUpper)add(g,cw,.006,d-2*t,x,base+top-.006,-t/2,wood);

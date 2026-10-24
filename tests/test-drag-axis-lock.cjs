@@ -9,6 +9,6 @@ for(const axis of ['x','y'])for(const rot of [0,37,90])for(const disabled of [fa
 const aligned=S.move(f,304.25,209,{...base,axis:'x'});assert.equal(aligned.position[0],300.25);assert.equal(aligned.position[1],f.cy);assert(aligned.guides.some(g=>g.point));
 const off=S.move(f,304.25,209,{...base,axis:'x',furniture:[f,{...target,cy:f.cy+4}]});assert.equal(off.position[1],f.cy);assert(!off.guides.some(g=>g.point),'off-axis points cannot pull furniture off its path');
 // The production release avoidance may only move along the chosen axis.
-const ctx=vm.createContext({aabb:G.aabb,inPoly:G.inPoly,roomAt:()=>({poly:[[-5000,-5000],[5000,-5000],[5000,5000],[-5000,5000]]}),snapRects:()=>[[0,0,200,1000]]});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/furniture-actions.js'),'utf8'),ctx);
+const ctx=vm.createContext({FurnishProducts:require('../src/core/product-rules.js'),aabb:G.aabb,inPoly:G.inPoly,roomAt:()=>({poly:[[-5000,-5000],[5000,-5000],[5000,5000],[-5000,5000]]}),snapRects:()=>[[0,0,200,1000]]});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/furniture-actions.js'),'utf8'),ctx);
 for(const axis of ['x','y']){const item={...f,cx:180.25,cy:500.375};ctx.item=item;ctx.axis=axis;vm.runInContext('pushOut(item,axis)',ctx);assert.equal(item[axis==='x'?'cy':'cx'],axis==='x'?500.375:180.25);}
 console.log('PASS drag axis constraints with grid/features/Alt, fractional anchors, off-axis targets and production release avoidance');

@@ -19,6 +19,9 @@ const LIB = [
     ['block','方块占位体',1000,1000,'#a8b6c4',undefined,products.height({type:'block'})]
   ]},
   {cat:'电器', items:[
+    ['heating_manifold','地暖分水器（路数可调）',950,140,'#c6a258',undefined,products.height({type:'heating_manifold'})],
+    ['electrical_box_strong','强电箱（尺寸自定）',300,120,'#eceeea',undefined,400],
+    ['electrical_box_weak','弱电箱（尺寸自定）',400,120,'#eceeea',undefined,400],
     ["aquarium_mijia_2pro","米家智能鱼缸 2 Pro",505,292,"#191c20",0,products.height({type:"aquarium_mijia_2pro"})],
     ["stove_fotile_th36b","方太燃气灶 TH36B-T",750,440,"#111214",0,products.height({type:"stove_fotile_th36b"})],
     ["rangehood_fotile_jcd10ta","方太抽油烟机 JCD10TA",900,350,"#111214",0,products.height({type:"rangehood_fotile_jcd10ta"})],
@@ -199,7 +202,7 @@ const useTypes={
  kitchen:['stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
  laundry:['washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
  bathroom:['vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],
- entry:['shoecab','bench_yeswood_oak','bench','mirror'],pet:[...petTypes]
+ entry:['electrical_box_strong','electrical_box_weak','shoecab','bench_yeswood_oak','bench','mirror'],pet:[...petTypes]
 };
 function itemUses(it){
  const result=uses.filter(([id])=>useTypes[id].includes(it[0])).map(([id])=>id);

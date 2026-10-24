@@ -13,6 +13,8 @@
   const rulers=document.createElementNS('http://www.w3.org/2000/svg','svg'),rulerPath=document.createElementNS('http://www.w3.org/2000/svg','path');rulers.setAttribute('class','cab-dimension-lines');rulers.setAttribute('aria-hidden','true');rulers.appendChild(rulerPath);labelLayer.appendChild(rulers);
   let controls=new OrbitControls(cam,cv),model=null,frame=0,disposed=false,current=f,down=null,selected=null,helper=null,guide=null,drag=null,labels=[];
   let settings={front:false,unfolded:false,doors:'normal',dimensions:true,snap:true,dimensionScope:'all'},viewHeight=3,activeColumn=null,summary=null,splitRoot=null,splitPanels=[];
+  let hatchOutlines=[],hatchEditing=null;
+  const hatchBoxPath=document.createElementNS('http://www.w3.org/2000/svg','path'),hatchOpeningPath=document.createElementNS('http://www.w3.org/2000/svg','path');hatchBoxPath.setAttribute('class','cab-hatch-box-outline');hatchOpeningPath.setAttribute('class','cab-hatch-opening-outline');rulers.appendChild(hatchBoxPath);rulers.appendChild(hatchOpeningPath);
   let drawerEdges=[],drawerLabels=[],drawerDrag=null,drawerEditing=null,doorSizeCount=0;
   function setupControls(){controls.enableDamping=true;controls.minDistance=.3;controls.maxDistance=20;controls.enableRotate=!settings.front;}
   setupControls();
@@ -45,7 +47,7 @@
    else readout.textContent=`分区 ${column+1} · 模块外宽 ${Math.round(C.moduleWidths(current)[column])} mm`;
   }
   function dimensions(){
-   labelLayer.replaceChildren(rulers);labels=[];readout.style.top=settings.dimensions?'42px':'12px';
+   labelLayer.replaceChildren(rulers);labels=[];hatchOutlines=[];hatchBoxPath.setAttribute('d','');hatchOpeningPath.setAttribute('d','');readout.style.top=settings.dimensions?'42px':'12px';
    doorSizes.replaceChildren();doorSizes.hidden=true;doorSizeCount=0;
    const scope=settings.dimensionScope,all=scope==='all',interior=all||['bays','modules'].includes(scope),outer=all||['size','space'].includes(scope),chosen=i=>all||i===(activeColumn??0);
    host.setAttribute('data-dimension-scope',scope);host.setAttribute('data-active-column',String(activeColumn));
@@ -75,6 +77,17 @@
     if(all&&settings.doors==='normal'&&(c.hoodBayHeight!==undefined?!c.columns[0].doorOpen&&!c.columns[2].doorOpen:c.columns[i].door!=='none'&&!c.columns[i].doorOpen&&!(c.columns[i].doorSections&&Object.values(c.columns[i].doorSections).some(s=>s.open))))return;
     C.spaces(current,i).forEach(gap=>measure(`净高 ${fmt(gap.height)}`,point(bay.center,base+gap.bottom,d/2+25),point(bay.center,base+gap.top,d/2+25),12));
    });
+   }
+   if(settings.dimensions&&!current.kitchen){
+    const results=C.config(current).columns.map((col,i)=>col.pegboardHatch?C.pegboardHatchAlignment(current,i,furniture,plan):null).filter(Boolean);
+    if(results.length){const legend=document.createElement('div');legend.className='cab-hatch-legend';legend.textContent='青线：电箱投影 · 橙线：检修开口（关闭位置）';labelLayer.appendChild(legend);}
+    for(const data of results){
+     if(data.pending){const warning=document.createElement('div');warning.className='cab-hatch-legend cab-hatch-warning';warning.textContent=`分区 ${data.column+1}：${data.message}`;labelLayer.appendChild(warning);continue;}
+     hatchOutlines.push({box:data.box.map(p=>point(...p)),opening:data.opening.map(p=>point(...p))});
+     for(const side of data.sides){const a=point(...side.a),b=point(...side.b),caption={top:'上',bottom:'下',left:'左',right:'右'}[side.side],text=`${caption} 实测 ${fmt(side.actual)} / 设定 ${fmt(side.target)} mm`,el=add(text,a.clone().add(b).multiplyScalar(.5),{a,b,pegPadding:side.side});el.className+=' cab-hatch-margin'+(side.matches?'':' cab-hatch-mismatch');el.setAttribute('data-hatch-margin',side.side);el.setAttribute('data-hatch-actual',String(side.actual));el.setAttribute('data-hatch-target',String(side.target));el.title=`分区 ${data.column+1}，${side.actual<0?'电箱超出开口，尚未完整覆盖':side.matches?'实际余量与设定一致':'实际余量与设定不同'}；电箱外沿至检修开口，不含盖板边缝`;if(actions.hatchMargin&&!current.locked){el.setAttribute('role','button');el.tabIndex=0;el.className+=' cab-hatch-editable';el.title+='；点击输入余量，Enter 应用，Esc 取消';el.onclick=e=>{e.stopPropagation();openHatchInput(data.column,side.side,side.target,el);};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();openHatchInput(data.column,side.side,side.target,el);}};}
+
+     }
+    }
    }
    if(outer&&bounds){measure(`总宽 ${fmt(w)}`,point(bounds.left,bounds.bottom,bounds.front),point(bounds.right,bounds.bottom,bounds.front),52);measure(`总高 ${fmt(h)}`,point(bounds.left,bounds.bottom,bounds.back),point(bounds.left,bounds.top,bounds.back),36);measure(`总深 ${fmt(d)}`,point(bounds.right,bounds.top,bounds.back),point(bounds.right,bounds.top,bounds.front),26);}
    if(outer&&bounds&&C.movablePegboard(current)){if(bounds.bottom>0)measure(`底部离地 ${fmt(bounds.bottom)}`,point(bounds.right,0,bounds.front),point(bounds.right,bounds.bottom,bounds.front),38);else if(settings.dimensions)add('底部离地 0',point(bounds.right,0,bounds.front));}
@@ -129,14 +142,15 @@
    const center=project(new THREE.Vector3(0,(current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current))/2000,0));
    const line=(a,b)=>`M${a.x.toFixed(1)},${a.y.toFixed(1)}L${b.x.toFixed(1)},${b.y.toFixed(1)}`;
    // Numbers take priority. Move crowded labels with leaders; omit unreadable dimensions.
-   const priority=item=>item.column!==undefined?0:item.offset>=26?1:item.doorSize?2:3;
+   const priority=item=>item.pegPadding?-1:item.column!==undefined?0:item.offset>=26?1:item.doorSize?2:3;
    for(const item of [...labels].sort((a,b)=>priority(a)-priority(b))){const {el,point,a,b,offset}=item,p=project(point);let x=p.x,y=p.y,draw='',anchor={x,y};el.hidden=!p.visible;if(el.hidden)continue;
-    if(a){const start=project(a),end=project(b),dx=end.x-start.x,dy=end.y-start.y,length=Math.hypot(dx,dy);if(!start.visible||!end.visible||length<14){el.hidden=true;continue;}
-     let nx=-dy/length,ny=dx/length;if(nx*(p.x-center.x)+ny*(p.y-center.y)<0){nx=-nx;ny=-ny;}
+    if(a){const start=project(a),end=project(b),dx=end.x-start.x,dy=end.y-start.y,length=Math.hypot(dx,dy);if(!start.visible||!end.visible||length<14&&!item.pegPadding){el.hidden=true;continue;}
+     const divisor=length||1;let nx=-dy/divisor,ny=dx/divisor;if(nx*(p.x-center.x)+ny*(p.y-center.y)<0){nx=-nx;ny=-ny;}
      const u={x:start.x+nx*offset,y:start.y+ny*offset},v={x:end.x+nx*offset,y:end.y+ny*offset};x=(u.x+v.x)/2;y=(u.y+v.y)/2;anchor={x,y};
      draw=line(start,{x:u.x+nx*4,y:u.y+ny*4})+line(end,{x:v.x+nx*4,y:v.y+ny*4})+line(u,v);
-     for(const q of [u,v])draw+=line({x:q.x-dx/length*3-nx*3,y:q.y-dy/length*3-ny*3},{x:q.x+dx/length*3+nx*3,y:q.y+dy/length*3+ny*3});
+     for(const q of [u,v])draw+=line({x:q.x-dx/divisor*3-nx*3,y:q.y-dy/divisor*3-ny*3},{x:q.x+dx/divisor*3+nx*3,y:q.y+dy/divisor*3+ny*3});
     }
+    if(item.pegPadding){const shifts={left:[-135,0],right:[135,0],top:[0,-48],bottom:[0,48]},shift=shifts[item.pegPadding];x=p.x+shift[0];y=p.y+shift[1];anchor={x:p.x,y:p.y};draw=line(project(a),project(b));}
     const ew=el.offsetWidth||Math.max(24,el.textContent.length*7+8),eh=el.offsetHeight||22;
     x=Math.max(ew/2+5,Math.min(width-ew/2-5,x));y=Math.max(eh/2+5,Math.min(height-eh/2-5,y));
     let placed=false;for(const shift of [0,24,-24,48,-48,72,-72]){const yy=y+shift,box={left:x-ew/2-3,right:x+ew/2+3,top:yy-eh/2-3,bottom:yy+eh/2+3};if(box.top<2||box.bottom>height-2||occupied.some(o=>box.left<o.right&&box.right>o.left&&box.top<o.bottom&&box.bottom>o.top))continue;occupied.push(box);y=yy;placed=true;break;}
@@ -144,7 +158,24 @@
     if(Math.hypot(x-anchor.x,y-anchor.y)>8)draw+=line(anchor,{x,y});
     el.style.left=`${x}px`;el.style.top=`${y}px`;paths.push(draw);
    }
+   const contour=key=>hatchOutlines.map(row=>{const points=row[key].map(project);return points.every(p=>p.visible)?points.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('')+'Z':'';}).join('');hatchBoxPath.setAttribute('d',contour('box'));hatchOpeningPath.setAttribute('d',contour('opening'));
    rulers.setAttribute('viewBox',`0 0 ${width} ${height}`);rulerPath.setAttribute('d',paths.join(''));
+  }
+  function finishHatchInput(commit=true){
+   if(!hatchEditing)return true;const edit=hatchEditing;
+   if(!commit){hatchEditing=null;edit.form.remove();controls.enabled=true;return true;}
+   try{
+    if(!edit.input.value.trim())throw Error('请输入余量');const value=Number(edit.input.value),rule=C.pegboardHatchPadding({padding:Object.fromEntries(root.FurnishProducts.pegboardAssembly.hatch.padding.sides.map(side=>[side,value]))});
+    const next=actions.hatchMargin(edit.column,edit.side,rule[edit.side]);if(!next)throw Error('无法应用，请检查余量与板边界');
+    hatchEditing=null;edit.form.remove();controls.enabled=true;update(next);return true;
+   }catch(e){edit.message.textContent=e.message;edit.input.setAttribute('aria-invalid','true');edit.input.focus({preventScroll:true});return false;}
+  }
+  function openHatchInput(column,side,value,button){
+   if(!finishHatchInput())return;
+   const form=document.createElement('form'),label=document.createElement('label'),input=document.createElement('input'),apply=document.createElement('button'),cancel=document.createElement('button'),message=document.createElement('div'),caption={top:'上',bottom:'下',left:'左',right:'右'}[side];
+   form.className='cab-hatch-input';form.setAttribute('aria-label',`分区 ${column+1} · ${caption}余量编辑`);label.textContent=`${caption}余量 mm`;input.type='number';input.step='any';input.min=root.FurnishProducts.pegboardAssembly.hatch.padding.min;input.max=root.FurnishProducts.pegboardAssembly.hatch.padding.max;input.value=String(value);input.setAttribute('aria-label',`预览${caption}余量 mm`);apply.type='submit';apply.textContent='应用余量';cancel.type='button';cancel.textContent='取消修改';message.setAttribute('role','alert');label.appendChild(input);form.appendChild(label);form.appendChild(apply);form.appendChild(cancel);form.appendChild(message);host.appendChild(form);
+   form.style.left=`${Math.max(8,Math.min((host.clientWidth||500)-248,parseFloat(button.style.left)||8))}px`;form.style.top=`${Math.max(40,Math.min((host.clientHeight||440)-130,(parseFloat(button.style.top)||40)+18))}px`;
+   hatchEditing={column,side,form,input,message};controls.enabled=false;form.onsubmit=e=>{e.preventDefault();e.stopPropagation();finishHatchInput();};cancel.onclick=e=>{e.stopPropagation();finishHatchInput(false);};input.onkeydown=e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();finishHatchInput(false);}else if(e.key==='Enter'){e.preventDefault();finishHatchInput();}};input.focus({preventScroll:true});input.select();
   }
   function finishDrawerInput(commit=true){
    if(!drawerEditing)return true;const edit=drawerEditing;drawerEditing=null;controls.enabled=true;
@@ -259,9 +290,10 @@
   return {
    update:value=>{const dims=v=>[C.assemblyBounds(v),v.w,v.d,v.kitchen?(v.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(v):v.kitchen.baseHeight+v.kitchen.thickness):v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
    selectPart:part=>{selected=part;const old=activeColumn;activeColumn=part?.column??null;highlight();if(old!==activeColumn)dimensions();else markActive();},focus:()=>cv.focus({preventScroll:true}),
+   finishHatchInput:()=>finishHatchInput(),
    finishDrawerInput:()=>finishDrawerInput()&&splitPanels.every(panel=>panel.preview.finishDrawerInput()),
    setView:options=>{endDrawerDrag(true);endDrag(true);const change=options.front!==undefined&&options.front!==settings.front;settings={...settings,...options};if(change){controls.dispose();cam=settings.front?new THREE.OrthographicCamera(-1,1,1,-1,.01,100):new THREE.PerspectiveCamera(38,1,.01,100);controls=new OrbitControls(cam,cv);setupControls();fit();resize();}update(current);},
-   dispose:()=>{unbindNavigation();disposed=true;drag=null;drawerDrag=null;drawerEditing=null;cancelAnimationFrame(frame);clearSplit();observer.disconnect();controls.dispose();clearHighlight();clearModel();r.dispose();r.forceContextLoss();cv.remove();readout.remove();labelLayer.remove();doorSizes.remove();drawerLayer.remove();},
+   dispose:()=>{unbindNavigation();disposed=true;finishHatchInput(false);drag=null;drawerDrag=null;drawerEditing=null;cancelAnimationFrame(frame);clearSplit();observer.disconnect();controls.dispose();clearHighlight();clearModel();r.dispose();r.forceContextLoss();cv.remove();readout.remove();labelLayer.remove();doorSizes.remove();drawerLayer.remove();},
   };
  }
  root.FurnishCabinetPreview={create};

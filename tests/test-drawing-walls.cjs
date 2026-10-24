@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const source=fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),code=source.slice(source.indexOf('function renderWalls()'),source.indexOf('function offsetBayPath('));
-const element={innerHTML:''},context={WALLS:[[0,0,100,1000,'b'],[100,0,200,1000,'e'],[200,0,300,1000,'n']],state:{demolished:[]},ui:{layers:{bearing:false}},PAL:{wallN:'normal',wallB:'bearing',wallE:'exterior',paper:'paper'},tr:s=>s,$:()=>element};
+const element={innerHTML:'',setAttribute(){},removeAttribute(){}},context={WALLS:[[0,0,100,1000,'b'],[100,0,200,1000,'e'],[200,0,300,1000,'n']],FurnishProducts:require('../src/core/product-rules.js'),FurnishGeometry:require('../src/core/layout-geometry.js'),furnitureError:()=>null,state:{demolished:[],furniture:[]},ui:{layers:{bearing:false}},PAL:{wallN:'normal',wallB:'bearing',wallE:'exterior',paper:'paper'},tr:s=>s,$:()=>element};
 vm.runInNewContext(code+';renderWalls();',context);assert.equal((element.innerHTML.match(/fill="normal"/g)||[]).length,3);assert(!element.innerHTML.includes('stroke-dasharray'));assert(element.innerHTML.includes('承重墙'));
 context.ui.layers.bearing=true;vm.runInNewContext('renderWalls()',context);assert(element.innerHTML.includes('fill="#c8553c"'));assert(element.innerHTML.includes('fill="exterior"'));assert(element.innerHTML.includes('stroke-dasharray="3 2"'));
 console.log('PASS production wall rendering: unified ordinary colour, explicit bearing distinction and retained structural type');

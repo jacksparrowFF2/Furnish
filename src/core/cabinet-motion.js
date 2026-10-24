@@ -24,7 +24,16 @@
    else return; // Round knobs are accessories, not boards.
    let pivot=[0,0,0];for(let n=moving;n;n=n.parent){const m=n.userData.motion;pivot=pivot.map((v,i)=>v+[n.position.x,n.position.y,m?.axis==='z'?m.closedZ:n.position.z][i]);}
    const motion=moving?.userData.motion;
-   result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000,(z+offset[2])*1000]),bottom:(bottom+offset[1])*1000,top:(top+offset[1])*1000,...(motion?{motion:{...motion,pivot:pivot.map(v=>v*1000),travel:(motion.travel||0)*1000}}:{}),...(includeStatic?{metadata:{...node.userData},phase:motion?(motion.axis==='z'?(moving.position.z-motion.closedZ)/(motion.travel||1):moving.rotation[motion.axis]/(motion.angle||1)):0}:{} )});
+   let pieces=[{poly,bottom,top}];
+   if(node.userData.cabinetPegboard&&g.shape&&!g.angle)for(const hole of g.shape.holes||[]){
+    if(hole.points.length!==4)continue;
+    const xs=hole.points.map(p=>p[0]),ys=hole.points.map(p=>p[1]),left=Math.min(...xs),right=Math.max(...xs),low=Math.min(...ys),high=Math.max(...ys);
+    if(!hole.points.every(([x,y])=>(x===left||x===right)&&(y===low||y===high)))continue;
+    const x0=Math.min(...poly.map(p=>p[0])),x1=Math.max(...poly.map(p=>p[0]));
+    pieces=[[x0,left,bottom,top],[right,x1,bottom,top],[left,right,bottom,low],[left,right,high,top]].filter(([l,r,b,t])=>r>l&&t>b).map(([l,r,b,t])=>({poly:[[l,0],[r,0],[r,g.depth],[l,g.depth]],bottom:b,top:t}));
+   }
+   for(const {poly,bottom,top} of pieces)
+result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000,(z+offset[2])*1000]),bottom:(bottom+offset[1])*1000,top:(top+offset[1])*1000,...(motion?{motion:{...motion,pivot:pivot.map(v=>v*1000),travel:(motion.travel||0)*1000}}:{}),...(includeStatic?{metadata:{...node.userData},phase:motion?(motion.axis==='z'?(moving.position.z-motion.closedZ)/(motion.travel||1):moving.rotation[motion.axis]/(motion.angle||1)):0}:{} )});
   });return result;
  }
  const cache=new Map();

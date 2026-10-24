@@ -157,6 +157,7 @@ function rescueOutside(ids){
 // 放下 / 拖完的家具若压在墙 / 窗上，沿位移最小的方向推出，刚好贴墙。
 // 只在家具中心原本所在的房间内推移，推不开（如家具比房间还大）就保持原位——宁可压墙，也不能被推到墙外「消失」
 function pushOut(f,axis){
+  if(FurnishProducts.definition(f)?.wallRecess)return false;
   // Kitchen auto-avoid keeps the chosen position and fits individual bodies
   // and stone in commit(). Its L envelope includes the courtyard and flue
   // notch, so the rectangular push-out must not move the whole assembly.

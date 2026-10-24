@@ -15,7 +15,7 @@ for(const shape of ['straight','L'])for(const corner of ['left','right'])for(con
 const f=K.configure(base,config),m=K.layout(f)[0];
 // The drag-release adapter must preserve the kitchen's anchor before commit
 // fits its flue notch. The enclosing rectangle intentionally overlaps it.
-const movement=vm.createContext({aabb:G.aabb,roomAt:()=>plan.rooms[0],inPoly:G.inPoly,snapRects:()=>[[3200,2800,3600,3200]]});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/furniture-actions.js'),'utf8'),movement);
+const movement=vm.createContext({FurnishProducts:require('../src/core/product-rules.js'),aabb:G.aabb,roomAt:()=>plan.rooms[0],inPoly:G.inPoly,snapRects:()=>[[3200,2800,3600,3200]]});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/furniture-actions.js'),'utf8'),movement);
 const anchored=structuredClone(f);movement.pushOut(anchored);assert.deepEqual(anchored,f,'auto-fit drag release does not push the whole kitchen');
 const plain={id:'plain',type:'cabinet',cx:3300,cy:3000,w:600,d:600,rot:0};movement.pushOut(plain);assert.notDeepEqual([plain.cx,plain.cy],[3300,3000],'ordinary cabinets retain the existing wall push-out');
 for(const intrusion of [450,450.001,0]){const block=obstacle(f,m,intrusion||1);if(!intrusion){block.cy-=.5;}const result=K.adaptObstacles(f,plan,[f,block]);if(intrusion===450)near(result.furniture.kitchen.obstacleFit.depths[0].depth,150);if(intrusion>450){assert(result.notes.some(v=>v.includes('不足')));assert.equal(result.furniture.kitchen.obstacleFit.depths.length,0);}}

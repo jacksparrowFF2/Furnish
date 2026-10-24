@@ -169,6 +169,11 @@ function renderWalls(){
     if (dem){ fill = PAL.demFill; ex = 'stroke="#c65b3a" stroke-width="1.2" stroke-dasharray="5 3" vector-effect="non-scaling-stroke"'; }
     return `<rect class="wall" data-wall="${id}" x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="${fill}" ${ex}><title>${k==='b'?tr('承重墙','Bearing wall'):k==='e'?tr('外墙','Exterior wall'):tr('非承重墙','Partition')} · ${tr('点击查看属性','Click for properties')}</title></rect>`;
   }).join('');
+  // Clip wall paint and hit testing so recessed furniture remains visible/selectable beneath it.
+  const recesses=state.furniture.filter(f=>FurnishProducts.definition(f)?.wallRecess&&!f.obj&&!furnitureError(f)).map(f=>FurnishGeometry.corners(f));
+  const wallLayer=$('#gWalls');wallLayer.removeAttribute('clip-path');
+  if(recesses.length&&WALLS.length){const xs=WALLS.flatMap(w=>[w[0],w[2]]),ys=WALLS.flatMap(w=>[w[1],w[3]]),x=Math.min(...xs)-10000,X=Math.max(...xs)+10000,y=Math.min(...ys)-10000,Y=Math.max(...ys)+10000,outer=[[x,y],[X,y],[X,Y],[x,Y]],Z=FurnishZoneGeometry,polys=Z.decompose([outer,...recesses],p=>Z.inside(p,outer)&&!recesses.some(r=>Z.inside(p,r)));
+   wallLayer.insertAdjacentHTML('afterbegin',`<defs><clipPath id="electrical-wall-plan-cut" clipPathUnits="userSpaceOnUse">${polys.map(p=>`<path d="M${p.map(q=>q.join(',')).join('L')}Z"/>`).join('')}</clipPath></defs>`);wallLayer.setAttribute('clip-path','url(#electrical-wall-plan-cut)');}
   if(!state.wallFinishes)return;
   const data=canvasEffectivePlan().wallFinish;
   if(data)$('#gWalls').insertAdjacentHTML('beforeend',`<g data-wall-finishes>${data.solids.filter(s=>s.bottom===0).map(s=>{

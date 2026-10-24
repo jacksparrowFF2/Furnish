@@ -58,6 +58,7 @@
         .slice(0,2000).map(note => ({...note, text:note.text.slice(0,120)})), makeId);
       work.furniture = design.normalizeLaundryStacks(restoreFurniture(work.furniture,work));
       if(!work.wallFinishes&&!work.floorFinishes&&!work.wallTiling&&!work.ceilings&&work.furniture.some(f=>f.kitchen?.autoAvoid))(root.FurnishKitchen||(inNode?require('./kitchen-core.js'):null)).normalizeObstacles(work.furniture,project.effectivePlan(plan,work));
+      if(work.furniture.some(f=>(Array.isArray(f.cabinet?.columns)&&f.cabinet.columns.some(col=>col?.pegboardHatch?.mode==='auto'))))(root.FurnishCabinet||require('./cabinet-core.js')).normalizePegboardHatches(work.furniture,project.effectivePlan(plan,work),{editable:f=>!f.locked&&!(root.FurnishLayers||require('./layers-core.js')).locked(work,(root.FurnishLayers||require('./layers-core.js')).furnitureKey(f))});
       work.scene3d = design.sceneSettings(work.scene3d);
       return work;
     }
