@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-core.js'),Motion=require('../src/core/cabinet-motion.js');
 (async()=>{
- const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(map.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});
+ const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(map.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C}));
  for(const name of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  const base={id:'k',type:'counter',cx:0,cy:0,w:2000,d:600,rot:0,color:'#f3f1ec'},host=K.configure(base,{version:1,shape:'straight',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:400,role:'door'},{run:0,width:800,role:'sink'},{run:0,width:800,role:'drawer'}]}),before=JSON.stringify(host);

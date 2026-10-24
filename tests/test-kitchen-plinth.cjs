@@ -30,7 +30,7 @@ const restoredWall=P.unpack(P.pack({planId:'p',current:{furniture:[historicalWal
 const basket=K.setDrawerStyle(old,0,'dish-basket'),raised=K.configure(basket,{...basket.kitchen,plinth:150});assert(K.drawerHeights(raised,raised.kitchen.modules[0]).every((v,i)=>v>=[300,220,100][i]));assert.throws(()=>K.configure(basket,{...basket.kitchen,plinth:250}),/碗碟篮/);
 const invalid=P.unpack(P.pack({planId:'p',current:{furniture:[old]},designs:[],catalog:[]}));invalid.current.furniture[0].kitchen.plinth=-1;assert.throws(()=>P.unpack(P.pack(invalid)),/底座/);
 (async()=>{
- const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(map.three),ctx=require('./helpers/layer-context.cjs').createContext({FurnishKitchen:K,FurnishCabinet:C});
+ const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(map.three),ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C}));
  for(const name of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{assert(w>0&&h>0&&d>0);const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  for(const shape of ['straight','L','U'])for(const p of [0,50,100,250])for(const corner of ['left','right'])for(const flip of [false,true]){

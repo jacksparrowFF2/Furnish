@@ -51,7 +51,7 @@ K.normalizeObstacles(copied,plan);assert(copied.find(v=>v.kitchen).kitchen.obsta
 assert.equal(D.replaceFurniture(fit,{type:'chair',name:'椅',w:400,d:400}).kitchen,undefined,'replacement clears the complete derived fit');
 // Production Three.js, including shelf bounds, back-panel absence and drawer travel.
 (async()=>{
- const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C}));
  for(const file of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const o=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));o.position.set(x,y+h/2,z);return o;};
  const model=ctx.FurnishKitchenModel.build(T,fit,box);model.updateMatrixWorld(true);const shelves=[],motions=[];

@@ -51,7 +51,7 @@ for(const rot of [0,90,37,270])for(const flip of [undefined,true]){
  assert.throws(()=>K.switchLaundrySides(items.map(f=>f.id===w.id?{...f,locked:true}:f),h.id),/锁定/);assert.equal(JSON.stringify(items),source);
 }
 (async()=>{
- const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C,FurnishProducts:R});
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C,FurnishProducts:R}));
  for(const name of ['solid-cut','cabinet-model','kitchen-model','sink-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  for(const side of ['left','right']){

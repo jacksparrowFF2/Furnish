@@ -1,9 +1,9 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const G=require('../src/core/layout-geometry.js');
 const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
-const door3D=html.slice(html.indexOf('  DOORS.forEach(d => {'),html.indexOf('  SLIDES.forEach',html.indexOf('  DOORS.forEach(d => {')));
+const door3D=html.slice(html.indexOf('  syncIdentity.each("index.html:generator-50",DOORS,d => {'),html.indexOf('  syncIdentity.each("index.html:generator-52",SLIDES',html.indexOf('  syncIdentity.each("index.html:generator-50",DOORS,d => {')));
 const doorHeight=html.match(/const SWING_DOOR_HEIGHT = [^;]+;/)[0];
-const lintels=html.slice(html.indexOf('  [...DOORS.map(d =>'),html.indexOf('  const bayPosts='));
+const lintels=html.slice(html.indexOf('  syncIdentity.each("index.html:generator-46",[...DOORS.map(d =>'),html.indexOf('  const bayPosts='));
 const app=fs.readFileSync(require.resolve('../src/app.js'),'utf8');
 const setup=app.slice(app.indexOf('const PLANS ='),app.indexOf('const {materials:'));
 class Group {constructor(){this.children=[];this.position={set:(x,y,z)=>Object.assign(this.position,{x,y,z})};this.rotation={};}add(...v){this.children.push(...v);}}
@@ -34,7 +34,7 @@ for(const horizontal of [true,false])for(const end of [false,true])for(const fac
  // Run the actual production 3D door builder, then transform the closed leaf corners.
  const three={Group,Mesh,SphereGeometry:class{}};
  const spans=[];
- const scene=vm.createContext({DOORS:[d],SLIDES:[],wallBox:(r,bottom,top)=>spans.push({bottom,top}),THREE:three,FurnishGeometry:G,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,top:2.8,mat:()=>{},metal:()=>{},doors:[],archUp:new Group(),box:(w,h,t,m,x,y,z)=>{const leaf=new Mesh();leaf.position.set(x,y+h/2,z);leaf.width=w;leaf.height=h;leaf.depth=t;return leaf;}});
+ const scene=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{DOORS:[d],SLIDES:[],wallBox:(r,bottom,top)=>spans.push({bottom,top}),THREE:three,FurnishGeometry:G,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,top:2.8,mat:()=>{},metal:()=>{},doors:[],archUp:new Group(),box:(w,h,t,m,x,y,z)=>{const leaf=new Mesh();leaf.position.set(x,y+h/2,z);leaf.width=w;leaf.height=h;leaf.depth=t;return leaf;}}));
  vm.runInContext(doorHeight,scene);
  for(const cut of [1,2.05,2.1,2.8]){
   scene.top=cut;scene.doors.length=0;spans.length=0;

@@ -3,11 +3,13 @@ import argparse,importlib.util,json,struct,sys,traceback
 from pathlib import Path
 import bpy
 
-def glb(file,objects,version=None):
+def glb(file,objects,version=None,previous=None):
     vertices=[[-.1,-.1,-.1],[.1,-.1,-.1],[.1,.1,-.1],[-.1,.1,-.1],[-.1,-.1,.1],[.1,-.1,.1],[.1,.1,.1],[-.1,.1,.1]]
     indices=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,2,3,7,2,7,6,0,4,7,0,7,3,1,2,6,1,6,5]
     binary=struct.pack('<24f',*sum(vertices,[]))+struct.pack('<36H',*indices)
     data=dict(asset={'version':'2.0'},buffers=[{'byteLength':len(binary)}],bufferViews=[{'buffer':0,'byteOffset':0,'byteLength':96},{'buffer':0,'byteOffset':96,'byteLength':72}],accessors=[{'bufferView':0,'componentType':5126,'count':8,'type':'VEC3','min':[-.1]*3,'max':[.1]*3},{'bufferView':1,'componentType':5123,'count':36,'type':'SCALAR'}],materials=[{'pbrMetallicRoughness':{'baseColorFactor':[.2,.4,.6,1]}}],meshes=[{'primitives':[{'attributes':{'POSITION':0},'indices':1,'material':0}]}],nodes=[{'mesh':0,'translation':[i,0,0],'extras':{'furnishObjectId':key,'furnishId':'owner','furnishPartKind':'BoxGeometry','furnishPartKey':role,'furnishPartCount':count,**({'furnishPartVersion':version} if version else {})}} for i,(key,role,count) in enumerate(objects)],scenes=[{'nodes':list(range(len(objects)))}],scene=0)
+    if previous:
+        for node,prior in zip(data['nodes'],previous):node['extras'].update(furnishPreviousPartKey=prior,furnishPreviousPartCount=1)
     text=json.dumps(data).encode();text+=b' '*(-len(text)%4);binary+=b'\0'*(-len(binary)%4)
     file.write_bytes(struct.pack('<III',0x46546c67,2,28+len(text)+len(binary))+struct.pack('<II',len(text),0x4e4f534a)+text+struct.pack('<II',len(binary),0x004e4942)+binary)
 
@@ -99,7 +101,36 @@ def main(directory):
     except ValueError:pass
     else:raise AssertionError('v2 refinement must reject old path snapshots')
     assert fingerprint(scene)==stable
-    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True,v2GeometryGuard=True,v2OneTimeMigration=True,v1DowngradeRejected=True),indent=2))
+    # Start a clean two-part fixture: unique refinements must follow named records,
+    # even when equal-count parts exchange positions and old hierarchy paths.
+    bpy.ops.wm.read_factory_settings(use_empty=True);scene=bpy.context.scene
+    old=directory/'v2-base.glb';glb(old,[('left','old-left',1),('right','old-right',1)],2)
+    addon.apply_snapshot(scene,str(old),manifest)
+    managed=next(c for c in scene.collection.children if c.get('furnishPlanId'))
+    left=next(o for o in managed.objects if o.get('furnishObjectId')=='left');right=next(o for o in managed.objects if o.get('furnishObjectId')=='right')
+    lm=bpy.data.materials.new('Left refinement');rm=bpy.data.materials.new('Right refinement');left.material_slots[0].material=lm;right.material_slots[0].material=rm
+    upgrade=directory/'v3-base.glb';glb(upgrade,[('left','named:left',1),('right','named:right',1)],3,['old-left','old-right'])
+    switched=directory/'v3-switched.glb';glb(switched,[('left','named:right',1),('right','named:left',1)],3,['old-right','old-left'])
+    stable=fingerprint(scene)
+    try:addon.apply_snapshot(scene,str(switched),manifest)
+    except ValueError:pass
+    else:raise AssertionError('Upgrade after position swap must be rejected')
+    assert fingerprint(scene)==stable
+    source_pose=left.matrix_world.copy();left['furnish_sync_keep_transform']=True;left.location.z+=.3;bpy.context.view_layer.update();locked_pose=left.matrix_world.copy()
+    migrated=addon.apply_snapshot(scene,str(upgrade),manifest);assert migrated['migratedPartKeys']==2
+    assert left.matrix_world==locked_pose,'Locked refinement must survive identity upgrade using source-pose stamp'
+    left['furnish_sync_keep_transform']=False;left.matrix_world=source_pose;bpy.context.view_layer.update()
+    pointers=(left.as_pointer(),right.as_pointer());left_pose=left.matrix_world.copy();right_pose=right.matrix_world.copy()
+    swapped=addon.apply_snapshot(scene,str(switched),manifest)
+    assert swapped['matchedByPartKey']==2 and swapped['added']==swapped['deleted']==0
+    assert (left.as_pointer(),right.as_pointer())==pointers and left.matrix_world==right_pose and right.matrix_world==left_pose
+    assert left.material_slots[0].material==lm and right.material_slots[0].material==rm
+    stable=fingerprint(scene)
+    try:addon.apply_snapshot(scene,str(old),manifest)
+    except ValueError:pass
+    else:raise AssertionError('v3 must reject v2 downgrade')
+    assert fingerprint(scene)==stable
+    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True,v2GeometryGuard=True,v2OneTimeMigration=True,v1DowngradeRejected=True,v3MigrationPoseGuard=True,v3EqualCountSwap=True,v3UniqueMaterials=True,v3LockedPoseMigration=True,v2DowngradeRejected=True),indent=2))
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--directory',required=True);directory=Path(parser.parse_args(sys.argv[sys.argv.index('--')+1:]).directory)

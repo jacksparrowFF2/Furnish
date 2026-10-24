@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const O=require('../src/render/scene-observation.js'),K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/product-rules.js');
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
- const ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C,FurnishProducts:P});for(const file of ['solid-cut','cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
+ const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C,FurnishProducts:P}));for(const file of ['solid-cut','cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  for(const rot of [0,37,90,180,270])for(const side of ['left','right'])for(const open of [false,true]){
   let n=0;let items=K.createLaundryArea({id:'base',cx:0,cy:0,rot,color:'#eee'},()=> 'f'+ ++n,'group',side);if(open)items=K.setLaundryDoors(items,'base',true);

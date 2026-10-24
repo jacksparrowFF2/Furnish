@@ -17,8 +17,8 @@ const round=P.unpack(P.pack({planId:draft.id,current:work,designs:[{id:'saved',n
 assert.deepEqual(round.current.furniture,furniture);assert.deepEqual(round.current.architecture.draft.markers,edited.markers);assert.deepEqual(round.current.architecture.draft.sourceDXF,raw);
 (async()=>{
  const html=fs.readFileSync('index.html','utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
- const block=html.slice(html.indexOf('  // Schematic risers:'),html.indexOf('  for(const beam of PLAN.beams||[]){'));
- const context=vm.createContext({THREE,FurnishDraft:F,FurnishProject:P,PLAN:F.build(edited),state:{ceilingHeight:3100,rooms:{}},M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,opt:{cut:2.8},top:3.1,mat:()=>new THREE.MeshStandardMaterial(),archUp:new THREE.Group()});
+ const block=html.slice(html.indexOf('  // Schematic risers:'),html.indexOf('  for(const beam of syncIdentity.records('));
+ const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishDraft:F,FurnishProject:P,PLAN:F.build(edited),state:{ceilingHeight:3100,rooms:{}},M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,opt:{cut:2.8},top:3.1,mat:()=>new THREE.MeshStandardMaterial(),archUp:new THREE.Group()}));
  vm.runInContext(block,context);const box=new THREE.Box3().setFromObject(context.archUp.children[0]),size=box.getSize(new THREE.Vector3());assert(Math.abs(size.x-.16)<1e-6);assert(Math.abs(size.y-3.1)<1e-6);assert(Math.abs(box.min.y)<1e-6);
  console.log('PASS DXF supplement: fixed frame, atomic failure, duplicates, edited service persistence, named project roundtrip, actual pipe geometry');
 })().catch(e=>{console.error(e);process.exitCode=1;});

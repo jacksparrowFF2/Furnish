@@ -19,7 +19,7 @@ for(const rot of [0,37,90,270])for(const flip of [false,true]){
 }
 (async()=>{
  const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
- const ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:require('../src/core/cabinet-core.js')});
+ const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:require('../src/core/cabinet-core.js')}));
  for(const file of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const linked=K.attach(hob,host,0),list=[host,linked];K.normalize(list);const kitchenModel=ctx.FurnishKitchenModel.build(THREE,host,box,{furniture:list});kitchenModel.updateMatrixWorld(true);

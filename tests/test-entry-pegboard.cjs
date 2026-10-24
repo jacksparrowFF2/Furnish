@@ -10,7 +10,7 @@ const C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-co
  const opened=C.toggle(C.toggle(f,0),0,1);assert.deepEqual(C.specification(opened),C.specification(f));
  assert.deepEqual(P.unpack(P.pack({planId:'demo',current:{furniture:[opened]},designs:[],catalog:[]})).current.furniture[0].cabinet,opened.cabinet);
  const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
- const ctx=vm.createContext({FurnishCabinet:C});vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),ctx);
+ const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C}));vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const build=f=>ctx.FurnishCabinetModel.build(THREE,f,box),closed=build(f),bounds=new THREE.Box3().setFromObject(closed),size=bounds.getSize(new THREE.Vector3());
  for(const [axis,mm] of [['x',f.w],['y',f.h],['z',f.d]])assert(Math.abs(size[axis]-mm/1000)<1e-7,axis+' bounds');

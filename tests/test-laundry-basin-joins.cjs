@@ -4,7 +4,7 @@ function fixture(){let i=0;const f=K.createLaundryCabinet({id:'basin-joins',cx:2
  Object.assign(f,{w:1204,d:620});Object.assign(f.kitchen,{depth:600,counterDepth:620,baseHeight:870});f.kitchen.modules[0].width=564;
  Object.assign(f.kitchen.laundry,{notch:{side:'left',width:170,depth:220},assembly:{sink:{w:420,d:380,module:0,x:0,y:50,sinkNotch:{side:'left',width:100,depth:100}}}});return f;}
 (async()=>{
- const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishProducts:R,FurnishCabinet:C});
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishProducts:R,FurnishCabinet:C}));
  for(const name of ['solid-cut','cabinet-model','sink-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  for(const flip of [false,true])for(const rot of [0,37,90,270]){

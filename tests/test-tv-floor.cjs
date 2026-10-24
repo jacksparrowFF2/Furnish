@@ -12,7 +12,7 @@ const C=require('../src/core/cabinet-core.js'),P=require('../src/core/project-co
  for(const value of [-1,101,NaN,'30']){const bad=structuredClone(f);bad.cabinet.columns[2].cableGap=value;assert.throws(()=>C.validate(bad),/留缝/);}
  const bad=structuredClone(f);bad.cabinet.columns[2].drawers=[{height:60,open:false}];assert.throws(()=>C.validate(bad),/上盖/);
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
- const ctx=vm.createContext({FurnishCabinet:C});vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),ctx);
+ const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C}));vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const build=f=>ctx.FurnishCabinetModel.build(THREE,f,box),closed=build(f),size=new THREE.Box3().setFromObject(closed),v=size.getSize(new THREE.Vector3());
  assert(Math.abs(size.min.y)<1e-8);assert(Math.abs(v.x-f.w/1000)<1e-8);assert(Math.abs(v.y-f.h/1000)<1e-8);assert(Math.abs(v.z-f.d/1000)<1e-8);

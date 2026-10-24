@@ -17,7 +17,7 @@ for(const side of ['left','right'])for(const rot of [0,37,90,270]){
 const legacy=K.createLaundryArea({id:'old',cx:2000,cy:2000},id,'legacy','left');legacy[1].purchaseStatus='bought';legacy[1].price=1234;
 const integrated=K.integrateLaundryArea(legacy,'old');assert.equal(integrated[1].id,legacy[1].id);assert.equal(integrated[1].price,1234);assert.deepEqual(K.integrateLaundryArea(integrated,'old'),integrated);assert.equal(legacy.length,5);
 (async()=>{
- const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishProducts:R,FurnishCabinet:C});
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishProducts:R,FurnishCabinet:C}));
  for(const n of ['solid-cut','cabinet-model','sink-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+n+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const items=make('right'),f=items[0],model=ctx.FurnishKitchenModel.build(T,f,box,{furniture:items});model.updateMatrixWorld(true);assert(Math.abs(new T.Box3().setFromObject(model).max.y-2.4)<.001);

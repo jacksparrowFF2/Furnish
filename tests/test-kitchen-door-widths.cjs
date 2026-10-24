@@ -3,7 +3,7 @@ const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-co
 const near=(a,b)=>assert(Math.abs(a-b)<1e-4,`${a} != ${b}`),part=f=>K.moduleFurniture(f,K.cabinetLayout(f)[1]);
 const make=(type='kitchenwall')=>K.configure({id:'widths',type,name:'门宽测试',cx:6000,cy:6000,rot:0,color:'#eeeeee',...(type==='kitchenwall'?{mountHeight:1660}:{})},{version:1,shape:'straight',depth:405,baseHeight:800,thickness:type==='kitchenwall'?0:20,modules:[{run:0,width:980,role:'door'},{run:0,width:1006,role:'door'}]});
 (async()=>{
- const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(map.three),ctx=vm.createContext({FurnishCabinet:C});vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),ctx);
+ const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(map.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C}));vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  for(const type of ['kitchenwall','counter']){
   const old=make(type),snapshot=structuredClone(old),k=structuredClone(old.kitchen);assert.equal(K.moduleLeafCount(old,k.modules[1]),3);assert(!K.configure(old,old.kitchen).kitchen.modules[1].doorRatios);

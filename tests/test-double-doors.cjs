@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const G=require('../src/core/layout-geometry.js'),P=require('../src/core/project-core.js'),Draft=require('../src/core/floorplan-core.js');
 const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
-const start=html.indexOf('  DOORS.forEach(d => {'),builder=html.slice(start,html.indexOf('  SLIDES.forEach',start));
+const start=html.indexOf('  syncIdentity.each("index.html:generator-50",DOORS,d => {'),builder=html.slice(start,html.indexOf('  syncIdentity.each("index.html:generator-52",SLIDES',start));
 const near=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`);
 const clone=v=>JSON.parse(JSON.stringify(v));
 const base={name:'双门',rect:[0,0,1200,200],h:[0,200],c:[1,0],o:[0,1],len:1200,entry:true};
@@ -38,7 +38,7 @@ assert.throws(()=>Draft.build({...draft,openings:[{...draft.openings[0],doorType
   const axis=horizontal?0:1,normal=1-axis,h=[0,0],c=[0,0],o=[0,0];h[axis]=reversed?1200:0;h[normal]=outward?0:thickness;c[axis]=reversed?-1:1;o[normal]=outward?-1:1;
   const d={rect:horizontal?[0,0,1200,thickness]:[0,0,thickness,1200],h,c,o,len:1200,doorType:'double'};
   const leaves=G.doorLeaves(d);assert.equal(leaves.length,2);leaves.forEach(leaf=>near(leaf.len,600));
-  const ctx=vm.createContext({DOORS:[d],FurnishGeometry:G,THREE:T,SWING_DOOR_HEIGHT:2.1,top:2.8,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,mat:()=>new T.MeshBasicMaterial(),metal:()=>new T.MeshBasicMaterial(),doors:[],archUp:new T.Group(),box:(w,h,t,m,x,y,z)=>{const leaf=new T.Mesh(new T.BoxGeometry(w,h,t),m);leaf.position.set(x,y+h/2,z);return leaf;}});
+  const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{DOORS:[d],FurnishGeometry:G,THREE:T,SWING_DOOR_HEIGHT:2.1,top:2.8,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,mat:()=>new T.MeshBasicMaterial(),metal:()=>new T.MeshBasicMaterial(),doors:[],archUp:new T.Group(),box:(w,h,t,m,x,y,z)=>{const leaf=new T.Mesh(new T.BoxGeometry(w,h,t),m);leaf.position.set(x,y+h/2,z);return leaf;}}));
   vm.runInContext(builder,ctx);assert.equal(ctx.doors.length,2);
   ctx.doors[0].open=false;assert.equal(ctx.doors[1].open,false);ctx.doors[1].open=true;assert.equal(ctx.doors[0].open,true);
   const closed=new T.Box3();for(const door of ctx.doors){near(door.length,.6);door.pivot.rotation.y=door.a0;door.pivot.updateWorldMatrix(true,true);closed.union(new T.Box3().setFromObject(door.pivot.children[0]));}

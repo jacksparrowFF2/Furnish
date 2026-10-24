@@ -19,7 +19,7 @@ for(const rot of [0,90,37,270])for(const flip of [false,true]){
 }
 // Verify the solid geometry and holes produced by the exact room constructor.
 (async()=>{
- const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(map.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});
+ const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(map.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C}));
  for(const file of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  const hob=K.attach({id:'hob',type:'stove',cx:0,cy:0,w:750,d:450,rot:0},right,2),model=ctx.FurnishKitchenModel.build(THREE,right,box,{furniture:[hob]});model.updateMatrixWorld(true);

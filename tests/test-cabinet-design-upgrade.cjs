@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const C=require('../src/core/cabinet-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js');
 (async()=>{
  const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
- const context=vm.createContext({FurnishCabinet:C});vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),context);
+ const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C}));vm.runInContext(fs.readFileSync(require.resolve('../src/render/cabinet-model.js'),'utf8'),context);
  const box=(w,h,d,color,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const geometry=f=>{const g=context.FurnishCabinetModel.build(T,f,box),hash=crypto.createHash('sha256');g.updateMatrixWorld(true);g.traverse(o=>{if(!o.geometry)return;hash.update(JSON.stringify(o.matrixWorld.elements));for(const key of ['position','normal','uv'])if(o.geometry.attributes[key])hash.update(Buffer.from(o.geometry.attributes[key].array.buffer));});return hash.digest('hex');};
  const pack=f=>P.unpack(P.pack({planId:'demo',current:{furniture:[f]},designs:[{name:'升级设计',work:{furniture:[f]}}],catalog:[]}));

@@ -11,7 +11,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  let tick;
  class Renderer{constructor(){this.domElement=new Element();}setPixelRatio(){}setSize(){}render(s,c){s.updateMatrixWorld(true);c.updateMatrixWorld(true);}dispose(){}forceContextLoss(){}}
  class Controls{constructor(c){this.camera=c;this.target=new T.Vector3();}update(){this.camera.lookAt(this.target);this.camera.updateMatrixWorld(true);}dispose(){}}
- const ctx=vm.createContext({FurnishCabinet:C,FurnishKitchen:K,FurnishProducts:require('../src/core/product-rules.js'),document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}});
+ const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C,FurnishKitchen:K,FurnishProducts:require('../src/core/product-rules.js'),document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}}));
  for(const file of ['solid-cut','cabinet-model','sink-model','kitchen-model','cabinet-preview'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  function inspect(f){

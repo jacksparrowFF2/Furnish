@@ -13,7 +13,7 @@ function signature(group){
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
  const THREE=await import(imports.three),source=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString().replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
- const browser=vm.createContext({FurnishProducts:products,FurnishDesign:design});
+ const browser=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishProducts:products,FurnishDesign:design}));
  for(const file of ['model-primitives','appliance-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),browser);
  const nodeBuilder=models.create(THREE,RoundedBoxGeometry),browserBuilder=browser.FurnishApplianceModel.create(THREE,RoundedBoxGeometry);
  assert.equal(models.supported({type:'bed'}),false);assert.equal(models.supported(null),false);assert.throws(()=>nodeBuilder.build({type:'bed'}),/Unsupported/);

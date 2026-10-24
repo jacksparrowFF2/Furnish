@@ -20,7 +20,7 @@ const support={id:'support',type:'custom',name:'承托台',w:1000,d:700,h:860,cx
 const closed=SVG.render(f.type,f.w,f.d,f.color,{ink:'#333'},f),open=SVG.render(f.type,f.w,f.d,f.color,{ink:'#333'},installed);assert(!/NaN|undefined/.test(open));assert(!closed.includes('data-dishwasher-fold'));assert(open.includes('data-dishwasher-fold'));
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
- const ctx=vm.createContext({THREE:T,FurnishDishwasherModel:Model,FurnishCabinet:require('../src/core/cabinet-core.js'),FurnishDesign:D,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5});
+ const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE:T,FurnishDishwasherModel:Model,FurnishCabinet:require('../src/core/cabinet-core.js'),FurnishDesign:D,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5}));
  Object.assign(ctx,{RoundedBoxGeometry:ctx.RoundedBoxGeometry,mat:ctx.mat,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const near=(a,b)=>assert(Math.abs(a-b)<2e-6,`${a} versus ${b}`);

@@ -1,7 +1,7 @@
 const normalized=require('./helpers/current-furniture.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),C=require('../src/core/cabinet-core.js'),K=require('../src/core/kitchen-core.js'),P=require('../src/core/project-core.js'),D=require('../src/core/design-core.js'),R=require('../src/core/product-rules.js'),W=require('../src/core/work-state.js'),G=require('../src/core/layout-geometry.js');
 (async()=>{
- const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishCabinet:C,FurnishKitchen:K});
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C,FurnishKitchen:K}));
  for(const name of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),ctx);
  let active='';const box=(w,h,d,color,x,y,z)=>{assert([w,h,d].every(v=>v>0),'positive production boards: '+active+' '+[w,h,d]);const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const build=f=>{active=f.cabinet?.template||f.type;return f.kitchen?ctx.FurnishKitchenModel.build(T,f,box):ctx.FurnishCabinetModel.build(T,f,box);},motions=g=>{const out=[];g.traverse(o=>{if(o.userData.motion?.kind==='cabinetdoor')out.push(o);});return out;};

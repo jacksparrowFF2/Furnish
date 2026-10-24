@@ -24,7 +24,7 @@ for(const rot of [0,37,90,180,270])for(const flip of [false,true]){
  cases.push({f,aligned});
 }
 (async()=>{
- const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(map.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C,FurnishProducts:R});for(const name of ['cabinet-model','kitchen-model','fotile-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),ctx);
+ const map=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(map.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C,FurnishProducts:R}));for(const name of ['cabinet-model','kitchen-model','fotile-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+name+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{assert(w>0&&h>0&&d>0);const o=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));o.position.set(x,y+h/2,z);return o;};
  for(const {f,aligned} of cases){
   const model=ctx.FurnishKitchenModel.build(T,f,box),module=model.children.find(o=>o.userData.kitchenModule===0),leaves=[];module.traverse(o=>{if(o.userData.motion?.kind==='cabinetdoor')leaves.push(o);});assert.equal(leaves.length,2);assert.deepEqual(leaves.map(o=>o.userData.motion.column),[0,2]);close(leaves[0].position.x,-.485);close(leaves[1].position.x,.485);

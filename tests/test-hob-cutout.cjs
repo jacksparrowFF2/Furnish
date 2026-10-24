@@ -22,7 +22,7 @@ const plan={rooms:[],walls:[],doors:[]},issue={kind:'test'},key=P.checkFingerpri
 assert.notEqual(key,P.checkFingerprint(issue,plan,[R.editHobCutout(custom,'w',621)],800));assert.equal(key,P.checkFingerprint(issue,plan,[{...custom,color:'#fff',price:500,purchaseStatus:'ordered'}],800));
 (async()=>{
  const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
- const context=vm.createContext({FurnishKitchen:K});vm.runInContext(fs.readFileSync(require.resolve('../src/render/kitchen-model.js'),'utf8'),context);const Model=context.FurnishKitchenModel;
+ const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K}));vm.runInContext(fs.readFileSync(require.resolve('../src/render/kitchen-model.js'),'utf8'),context);const Model=context.FurnishKitchenModel;
  for(const shape of ['straight','L','U'])for(const rot of [0,37,90])for(const flip of [false,true]){
   const h=K.configure({id:'top',type:'counter',cx:2000,cy:2000,w:2400,d:1800,rot,flip,color:'#ddd'},{version:1,shape,depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1200,role:'hob'},...(shape!=='straight'?[{run:1,width:1000,role:'door'}]:[]),...(shape==='U'?[{run:2,width:1200,role:'door'}]:[])]});
   const f=K.attach(custom,h,0),items=[h,f];K.normalize(items);R.validate(f);

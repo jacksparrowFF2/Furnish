@@ -36,7 +36,7 @@ for(const role of ['sink','drawer','empty']){const h=K.configure(host,{...host.k
 const wall={...host,id:'wall',type:'kitchenwall'};assert.equal(K.attachmentTargets(hob,[wall,hob]).length,0);
 // Production cabinet and slab must reflect the role change, including a real hole.
 (async()=>{
- const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:require('../src/core/cabinet-core.js')});
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:require('../src/core/cabinet-core.js')}));
  for(const file of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  const model=ctx.FurnishKitchenModel.build(THREE,items[0],box,{furniture:items});model.updateMatrixWorld(true);

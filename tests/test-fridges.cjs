@@ -5,7 +5,7 @@ assert.deepEqual(item.slice(2,4),[833,595]);assert.equal(item[6],1910);
 const base={id:'fridge',type:'fridge',name:'冰箱',w:700,d:700,cx:0,cy:0,rot:0,color:'#f1f0ed'};
 for(const type of ['fridge','fridge_french_drawer']){
  let current={...base,type};const els=Object.fromEntries(['#full-product-details','#fName','#fW','#fD','#fH','#fC'].map(id=>[id,{}])),history=[];
- const ctx=require('./helpers/layer-context.cjs').createContext({window:{},FurnishCabinet:C,FurnishDesign:D,$:id=>els[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{history.push({...current});fn();},toast:()=>{},renderPanel:()=>{}});
+ const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{window:{},FurnishCabinet:C,FurnishDesign:D,$:id=>els[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{history.push({...current});fn();},toast:()=>{},renderPanel:()=>{}}));
  vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ctx);ctx.renderPanel=()=>{};ctx.f=current;vm.runInContext('bindFurnPanel(f)',ctx);
  for(const [key,value] of [['W',950],['D',610],['H',2000]])els['#f'+key].onchange({target:{value:String(value)}});
  assert.deepEqual([current.w,current.d,current.h],[950,610,2000]);assert.equal(history[2].h,undefined);
@@ -20,7 +20,7 @@ for(const type of ['fridge','fridge_french_drawer']){
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
  const roundedSource=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString('utf8').replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(roundedSource).toString('base64'));
- const ctx=require('./helpers/layer-context.cjs').createContext({THREE,RoundedBoxGeometry,FurnishDesign:D,FurnishCabinet:C,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})});
+ const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishDesign:D,FurnishCabinet:C,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})}));
  Object.assign(ctx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-6,`${a} != ${b}`);

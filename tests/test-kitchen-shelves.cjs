@@ -33,7 +33,7 @@ for(const shape of ['L','U'])for(const corner of ['left','right'])for(const rot 
  assert(!JSON.stringify(f).includes('"shelves":'));
 }
 (async()=>{
- const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext({FurnishKitchen:K,FurnishCabinet:C});
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C}));
  for(const file of ['cabinet-model','kitchen-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;},build=(f,options={})=>{const g=ctx.FurnishKitchenModel.build(T,f,box,options);g.updateMatrixWorld(true);return g;},collect=(g,tag)=>{const a=[];g.traverse(o=>{if(o.userData[tag])a.push(o);});return a;};
  for(const corner of ['left','right'])for(const flip of [false,true]){
