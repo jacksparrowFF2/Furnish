@@ -1,0 +1,22 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto'),E=require('../src/io/blender-export.js');
+(async()=>{
+ const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
+ global.FurnishProducts=require('../src/core/product-rules.js');
+ const camera=new T.PerspectiveCamera(),items=[
+  ['aircon-midea',{type:'aircon_midea_ultra_2hp',w:395,d:436,h:1856},227],
+  ['aquarium',{type:'aquarium_mijia_2pro',w:510,d:278,h:330},15],
+  ['cherry-coffee-table',{type:'coffeetable_yeswood_cherry',w:1200,d:650,h:450},4]
+ ];
+ function read(g){const s=E.snapshot(T,{groups:[g],camera,includeHidden:true,expandInstances:true});try{return s.scene.children.filter(n=>n.isMesh).map(n=>({key:n.userData.furnishPartKey,count:n.userData.furnishPartCount,version:n.userData.furnishPartVersion,id:n.userData.furnishObjectId,hash:crypto.createHash('sha256').update(Buffer.from(n.geometry.attributes.position.array.buffer)).digest('hex')}));}finally{s.dispose();}}
+ for(const [module,f,priorityCount]of items){const build=require('../src/render/'+module+'-model.js').build,g=build(T,f);g.userData.fid=module;const before=read(g);assert(before.every(n=>n.key&&n.version===2));assert.equal(new Set(before.map(n=>n.key)).size,before.length);assert(before.filter(n=>n.key.startsWith('explicit:')).length>=priorityCount);
+  g.traverse(n=>n.children.reverse());assert.deepEqual(read(g.clone(true)).map(n=>[n.key,n.hash]).sort(),before.map(n=>[n.key,n.hash]).sort(),'cloning a reordered graph preserves authored creation tokens');const reordered=read(g);assert.deepEqual(reordered.map(n=>[n.key,n.hash]).sort(),before.map(n=>[n.key,n.hash]).sort(),'production node reordering must preserve each actual geometry identity');assert(before.some(n=>reordered.find(x=>x.key===n.key).id!==n.id));
+  const added=new T.Mesh(new T.BoxGeometry(.01,.01,.01),new T.MeshStandardMaterial());added.userData.furnishPartSource='test:independent-added-component';g.add(added);g.children.unshift(g.children.pop());const extra=read(g);for(const n of before)assert.deepEqual(extra.find(x=>x.key===n.key)?.hash,n.hash);g.remove(added);assert.deepEqual(read(g).map(n=>[n.key,n.hash]).sort(),before.map(n=>[n.key,n.hash]).sort());
+  const rebuilt=build(T,{...f,w:f.w*1.1,h:f.h*1.05,d:f.d*1.1});rebuilt.userData.fid=module;assert.deepEqual(read(rebuilt).map(n=>n.key).sort(),before.map(n=>n.key).sort(),'size changes do not change component identities');
+ }
+ const Basic=require('../src/render/basic-furniture-model.js'),P=require('../src/render/model-primitives.js');const roundedSource=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString().replace("from 'three'",`from '${imports.three}'`),{RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(roundedSource).toString('base64'));
+ for(const type of Basic.types){const g=Basic.build(T,{type,w:1800,d:900,h:800,cx:0,cy:0,color:'#aaa'},RoundedBoxGeometry);g.userData.fid=type;const a=read(g);assert(a.every(n=>n.key));g.traverse(n=>n.children.reverse());assert.deepEqual(read(g).map(n=>[n.key,n.hash]).sort(),a.map(n=>[n.key,n.hash]).sort());}
+ const primitives=P.create(T,RoundedBoxGeometry),root=new T.Group();root.userData.fid='primitives';root.add(primitives.box(1,1,1,'#aaa'),primitives.box(2,1,1,'#aaa'));const a=read(root);root.children[0].position.x=5;root.children.reverse();assert.deepEqual(read(root).map(n=>[n.key,n.hash]).sort(),a.map(n=>[n.key,n.hash]).sort(),'creation labels are independent of current position');
+ const duplicateRoot=new T.Group();duplicateRoot.userData.fid='duplicate';let cloned=0,disposed=0;const geometry=new T.BoxGeometry(),clone=geometry.clone.bind(geometry);geometry.clone=()=>{cloned++;const g=clone();g.addEventListener('dispose',()=>disposed++);return g;};for(let i=0;i<2;i++){const o=new T.Mesh(geometry,new T.MeshStandardMaterial());o.userData.furnishStablePart='duplicate-key';duplicateRoot.add(o);}assert.throws(()=>read(duplicateRoot),/Duplicate production part/);assert.equal(disposed,cloned,'rejected snapshots release every private cloned geometry');
+ console.log('PASS production identities: priority meshes, all basic furniture, rebuild/size stability, child reorder, unrelated insertion/deletion, local movement and unique full keys');
+})().catch(e=>{console.error(e.stack);process.exitCode=1;});

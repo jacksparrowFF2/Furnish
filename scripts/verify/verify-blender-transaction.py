@@ -3,11 +3,11 @@ import argparse,importlib.util,json,struct,sys,traceback
 from pathlib import Path
 import bpy
 
-def glb(file,objects):
+def glb(file,objects,version=None):
     vertices=[[-.1,-.1,-.1],[.1,-.1,-.1],[.1,.1,-.1],[-.1,.1,-.1],[-.1,-.1,.1],[.1,-.1,.1],[.1,.1,.1],[-.1,.1,.1]]
     indices=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,2,3,7,2,7,6,0,4,7,0,7,3,1,2,6,1,6,5]
     binary=struct.pack('<24f',*sum(vertices,[]))+struct.pack('<36H',*indices)
-    data=dict(asset={'version':'2.0'},buffers=[{'byteLength':len(binary)}],bufferViews=[{'buffer':0,'byteOffset':0,'byteLength':96},{'buffer':0,'byteOffset':96,'byteLength':72}],accessors=[{'bufferView':0,'componentType':5126,'count':8,'type':'VEC3','min':[-.1]*3,'max':[.1]*3},{'bufferView':1,'componentType':5123,'count':36,'type':'SCALAR'}],materials=[{'pbrMetallicRoughness':{'baseColorFactor':[.2,.4,.6,1]}}],meshes=[{'primitives':[{'attributes':{'POSITION':0},'indices':1,'material':0}]}],nodes=[{'mesh':0,'translation':[i,0,0],'extras':{'furnishObjectId':key,'furnishId':'owner','furnishPartKind':'BoxGeometry','furnishPartKey':role,'furnishPartCount':count}} for i,(key,role,count) in enumerate(objects)],scenes=[{'nodes':list(range(len(objects)))}],scene=0)
+    data=dict(asset={'version':'2.0'},buffers=[{'byteLength':len(binary)}],bufferViews=[{'buffer':0,'byteOffset':0,'byteLength':96},{'buffer':0,'byteOffset':96,'byteLength':72}],accessors=[{'bufferView':0,'componentType':5126,'count':8,'type':'VEC3','min':[-.1]*3,'max':[.1]*3},{'bufferView':1,'componentType':5123,'count':36,'type':'SCALAR'}],materials=[{'pbrMetallicRoughness':{'baseColorFactor':[.2,.4,.6,1]}}],meshes=[{'primitives':[{'attributes':{'POSITION':0},'indices':1,'material':0}]}],nodes=[{'mesh':0,'translation':[i,0,0],'extras':{'furnishObjectId':key,'furnishId':'owner','furnishPartKind':'BoxGeometry','furnishPartKey':role,'furnishPartCount':count,**({'furnishPartVersion':version} if version else {})}} for i,(key,role,count) in enumerate(objects)],scenes=[{'nodes':list(range(len(objects)))}],scene=0)
     text=json.dumps(data).encode();text+=b' '*(-len(text)%4);binary+=b'\0'*(-len(binary)%4)
     file.write_bytes(struct.pack('<III',0x46546c67,2,28+len(text)+len(binary))+struct.pack('<II',len(text),0x4e4f534a)+text+struct.pack('<II',len(binary),0x004e4942)+binary)
 
@@ -83,7 +83,23 @@ def main(directory):
     before=counts()
     for _ in range(3):addon.apply_snapshot(scene,str(second),{**manifest,'revision':'repeat'})
     assert counts()==before,'Repeated update leaked datablocks'
-    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True),indent=2))
+    # v2 upgrade uses exact imported geometry and changes identity only once.
+    modern=directory/'modern.glb';glb(modern,[('b','v2-frame#0',1),('c','v2-new#0',1)],2)
+    damaged=directory/'damaged-modern.glb';payload=bytearray(modern.read_bytes());offset=28+int.from_bytes(payload[12:16],'little');struct.pack_into('<f',payload,offset,.9);damaged.write_bytes(payload)
+    stable=fingerprint(scene)
+    try:addon.apply_snapshot(scene,str(damaged),{**manifest,'revision':'bad-upgrade'})
+    except ValueError:pass
+    else:raise AssertionError('Changed old geometry must reject v2 upgrade')
+    assert fingerprint(scene)==stable
+    result=addon.apply_snapshot(scene,str(modern),{**manifest,'revision':'v2'})
+    assert result['migratedPartKeys']==2 and result['added']==result['deleted']==0
+    assert all(o.get('furnishPartVersion')==2 for o in managed.objects)
+    stable=fingerprint(scene)
+    try:addon.apply_snapshot(scene,str(second),{**manifest,'revision':'v1-downgrade'})
+    except ValueError:pass
+    else:raise AssertionError('v2 refinement must reject old path snapshots')
+    assert fingerprint(scene)==stable
+    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True,v2GeometryGuard=True,v2OneTimeMigration=True,v1DowngradeRejected=True),indent=2))
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--directory',required=True);directory=Path(parser.parse_args(sys.argv[sys.argv.index('--')+1:]).directory)
