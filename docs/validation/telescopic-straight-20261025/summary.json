@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-25",
+  "scope": "双／三联动活动扇可选正背面；移动门框取消45度切角，转角采用矩形端贴侧搭接；二维三维共用布局",
+  "field": {
+    "name": "slidingTrackOrder",
+    "values": [
+      "leading-front",
+      "leading-back"
+    ],
+    "legacyDefault": "leading-front",
+    "materializeMissing": false,
+    "replaceRetain": "双／三联动互换",
+    "replaceClear": "其他不支持类型"
+  },
+  "nodeSuites": [
+    {
+      "command": "node tests/test-telescopic-corners.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-curtains-sliding.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-svg.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-product-rules.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-enclosed-boundary-distances.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-directional-kitchen-solids.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-work-state.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-project.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-spatial-review-cache.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-production-solids.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-solids-cache.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-finished-datum.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-solids-coverage.cjs",
+      "status": "PASS"
+    }
+  ],
+  "production": {
+    "status": "PASS",
+    "combinations": 512,
+    "rectangularMeshes": true,
+    "exactButtContact": true,
+    "matchingPlanAndScene": true,
+    "mirroringAndRotation": true,
+    "knownAndUnknownHeights": true,
+    "floorTrackCombinations": 4,
+    "unequalFinishedFloors": true,
+    "invalidPartnerPreserved": true
+  },
+  "syntax": {
+    "status": "PASS",
+    "changedScripts": 12,
+    "mainAndAffectedPreviewInlineModules": true,
+    "sharedClassicDeclarations": true
+  },
+  "browser": {
+    "status": "PASS",
+    "report": "browser-results.json",
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "channel": "msedge",
+    "isolatedWorkspace": true
+  },
+  "visual": {
+    "status": "PASS",
+    "reviewed": [
+      "http-3-2-open.png",
+      "http-reversed-closed.png",
+      "http-mobile.png"
+    ],
+    "notes": "打开后矩形端框无尖角；转角闭合直边贴合；可选内外及窄屏属性正常"
+  },
+  "notExecuted": [
+    "全量 node scripts/check.cjs（按AGENTS采用增量范围）",
+    "实机触屏",
+    "厂家五金、密封与施工承重验证"
+  ],
+  "boundaries": [
+    "保留现有唯一垂直端部、同高转角判定",
+    "顶轨保留原拼接面，移动门扇全部矩形",
+    "开合仍为临时展示状态，空间检查为关闭实体"
+  ],
+  "workspaceData": "真实projects/workspace.furnish.json未改写、未暂存"
+}

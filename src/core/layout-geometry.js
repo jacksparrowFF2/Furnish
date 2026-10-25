@@ -26,7 +26,7 @@ function obbOverlap(a, b){
   }
   return true;
 }
-function footprints(f,context){if(context&&typeof context==='object'&&(root.FurnishProducts||require('./product-rules.js')).definition(f)?.telescopic&&!f.obj){const rail=bodyParts(f,context.plan,context.furniture).find(p=>p.partRole==='top-track');if(rail)return [rail.p];}const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);if(f.kitchen)return K.footprints(f);const outline=localOutline(f);if(!outline)return [corners(f)];const a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [outline.map(([x,y])=>{x*=f.flip?-1:1;return [f.cx+x*c-y*s,f.cy+x*s+y*c];})];}
+function footprints(f,context){if(context&&typeof context==='object'&&(root.FurnishProducts||require('./product-rules.js')).definition(f)?.telescopic&&!f.obj){const parts=bodyParts(f,context.plan,context.furniture),motion=root.FurnishCabinetMotion||require('./cabinet-motion.js');return [motion.section({vertices:parts.flatMap(p=>p.vertices)},null)];}const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);if(f.kitchen)return K.footprints(f);const outline=localOutline(f);if(!outline)return [corners(f)];const a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [outline.map(([x,y])=>{x*=f.flip?-1:1;return [f.cx+x*c-y*s,f.cy+x*s+y*c];})];}
 // Union the chosen rooms, then subtract the union of floor-standing envelopes.
 // Uses the saved room boundaries (including holes), independent of layer visibility.
 function regionAreas(rooms,furniture=[]){

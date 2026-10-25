@@ -129,7 +129,7 @@ function renderFurn(){
     try{
     const fs = Math.max(80, Math.min(170, Math.min(f.w,f.d)*.2));
     const label = labels?furnitureLabelSVG(f,labels.get(f.id)):(Math.min(f.w,f.d)>=380&&!NOLABEL.includes(f.type)?`<text transform="rotate(${-f.rot})" font-size="${fs}" text-anchor="middle" dominant-baseline="central" fill="${PAL.text}" opacity=".8" pointer-events="none">${esc(nm(f.name))}</text>`:'');
-    const body = furnSVG(f.type,f.w,f.d,f.color,f), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
+    const body = furnSVG(f.type,f.w,f.d,f.color,f,{furniture:state.furniture,plan:canvasEffectivePlan()}), mirrored = f.flip ? `<g transform="scale(-1 1)">${body}</g>` : body;
     const pipes=!furnitureError(f)&&servicePipes.length&&FurnishProducts.serviceCut(f)?servicePipes.filter(p=>FurnishServices.bodyHit(f,p,0)):[];
     const maskId='pipe-cut-'+f.id,mask=pipes.length?`<defs><mask id="${esc(maskId)}" maskUnits="userSpaceOnUse" x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}"><rect x="${-f.w/2-100}" y="${-f.d/2-100}" width="${f.w+200}" height="${f.d+200}" fill="white"/>${pipes.map(p=>{const local=FurnishServices.local({...f,flip:false},p);return `<circle cx="${local.at[0]}" cy="${local.at[1]}" r="${p.radius}" fill="black"/>`;}).join('')}</mask></defs>`:'';
     const flip=pipes.length?`${mask}<g mask="url(#${esc(maskId)})">${mirrored}</g>`:mirrored;

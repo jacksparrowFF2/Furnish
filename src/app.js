@@ -207,9 +207,9 @@ function collisions(){return FurnishGeometry.collisions(renderableFurniture(),ca
 const shade = FurnishFurnitureSVG.shade;
 
 function furnitureFallbackSVG(f,message){return `<rect x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="${PAL.paper}" stroke="#c65b3a" stroke-width="2" stroke-dasharray="6 4" vector-effect="non-scaling-stroke"/><path d="M${-f.w/2} ${-f.d/2}L${f.w/2} ${f.d/2}M${f.w/2} ${-f.d/2}L${-f.w/2} ${f.d/2}" stroke="#c65b3a" stroke-width="1" vector-effect="non-scaling-stroke"/><title>${esc(tr('模型异常，原数据已保留：','Model error; original data retained: ')+message)}</title>`;}
-function furnSVG(type,w,d,color,f){
+function furnSVG(type,w,d,color,f,context){
   const error=f&&furnitureError(f);if(error)return furnitureFallbackSVG(f,error);
-  try{return FurnishFurnitureSVG.render(type,w,d,color,PAL,f);}catch(e){if(!f)throw e;const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return furnitureFallbackSVG(f,message);}
+  try{return FurnishFurnitureSVG.render(type,w,d,color,PAL,f,context);}catch(e){if(!f)throw e;const message=e.message||String(e);furnitureRenderErrors.set(f.id,message);return furnitureFallbackSVG(f,message);}
 }
 
 function updateHeader(){

@@ -36,6 +36,7 @@ const fields={
  showerHandAngle:numeric(0,35,'手持花洒角度须为 0–35°'),
  curtainStyle:{values:['single','double'],message:'窗帘样式须为单开或双开'},
  floorTrack:{boolean:true,message:'轨道设置无效'},
+ slidingTrackOrder:{values:['leading-front','leading-back'],message:'活动扇所在侧须为靠正面或靠背面'},
  heaterSocket:{point:true,message:'热水器插座须有有效 X、Y 和 0–20000 mm 离地高度'}
 };
 const laundry={family:'laundry',height:850,anchor:'bottom',defaults:{mountHeight:0,stackHeight:20},fields:['mountHeight','stackHeight','laundryHostId'],create:['mountHeight']};
@@ -79,8 +80,8 @@ const types={
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
  shower_arrow_cream:{family:'arrow-shower',height:1749,anchor:'mixer',defaults:{showerMixerHeight:1000,showerRise:400,showerHandAngle:180*.20/Math.PI},fields:['mountHeight','showerMixerHeight','showerRise','showerHandAngle'],create:['showerMixerHeight'],identity:{brand:'ARROW/箭牌',model:'AE34129ZMKW-P2'}},
  tripleslidingwindow:{family:'sliding',height:1500,anchor:'bottom',defaults:{mountHeight:900,floorTrack:true},fields:['mountHeight','floorTrack'],create:['mountHeight']},
- doubleslidingdoor:{family:'sliding',telescopic:{panels:2,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false},fields:['floorTrack']},
- tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false},fields:['floorTrack']},
+ doubleslidingdoor:{family:'sliding',telescopic:{panels:2,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
+ tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
  curtain:{height:2400,defaults:{curtainStyle:'double'},fields:['curtainStyle'],create:['curtainStyle']},
  fridge:{height:1800},fridge_french_drawer:{height:1910},sofa_yeswood_cherry:{solidModel:{global:'FurnishYeswoodSofaModel',module:'yeswood-sofa',rounded:true},height:895},mirror:{height:1650},
@@ -338,7 +339,7 @@ function vertical(f){
  if(!def?.anchor)return null;if(def.anchor==='mixer'){const {bottom,top}=showerInstallation(f);return {bottom,top,source:'model'};}
  const bottom=value(f,'mountHeight');return {bottom,top:bottom+height(f),source:f.h===undefined||f.type==='tripleslidingwindow'?'model':'recorded'};
 }
-function retainReplacementField(previous,next,key){return key==='groupId'||supports(next,key)&&supports(previous,key)&&(key==='floorTrack'||previous.type===next.type||family(previous,'laundry')&&family(next,'laundry'));}
+function retainReplacementField(previous,next,key){return key==='groupId'||supports(next,key)&&supports(previous,key)&&(key==='floorTrack'||key==='slidingTrackOrder'||previous.type===next.type||family(previous,'laundry')&&family(next,'laundry'));}
 // Remove incompatible parameters before checking the replacement's outer size.
 function customSinkCandidate(next,candidate){
  if(next.type!=='ksink')return;
@@ -370,10 +371,21 @@ function replacement(previous,next,candidate){
  if(next.type==='kitchenwall')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
  if(definition(next)?.manifold||family(next,'pipe-box'))validate(next);return next;
 }
+// Shared millimetre track geometry. The leading leaf is furthest from the stack.
+function slidingTracks(f,{panels=definition(f)?.telescopic?.panels??3,slim=true,order=value(f,'slidingTrackOrder')??'leading-front'}={}){
+ const leafDepth=Math.min(slim?18:25,f.d/(panels+1)*.7),pitch=(f.d-leafDepth)/panels,direction=order==='leading-back'?-1:1;
+ return {panels,leafDepth,pitch,direction,leadingOffset:(panels-1)/2*pitch*direction};
+}
+function slidingLayout(f,corner=null,options={}){
+ const tracks=slidingTracks(f,options),slim=options.slim??true,edge=Math.min(slim?16:28,f.w/20,height(f)/12),jamb=slim?9:edge;
+ const mirrored=(options.stackSide??(corner?.side==='left'?'right':'left'))==='right',sign=mirrored?-1:1,end=corner?corner.leafEnd*sign:f.w/2-jamb;
+ const width=(end+f.w/2-jamb+(tracks.panels-1)*edge)/tracks.panels,step=width-edge,opened=-f.w/2+jamb+width/2;
+ return {...tracks,edge,jamb,width,mirrored,leaves:Array.from({length:tracks.panels},(_,i)=>({x:(opened+step*i)*sign,opened:opened*sign,z:(i-(tracks.panels-1)/2)*tracks.pitch*tracks.direction,width}))};
+}
 // Automatic L joint: only a unique perpendicular end-to-end partner at the
 // same known rail elevation. Mid-span crossings and ambiguous junctions stay intact.
 function slidingCorner(f,furniture=[],plan){
- const eligible=v=>!!definition(v)?.telescopic&&!v.obj&&[v.cx,v.cy,v.w,v.d,height(v)].every(Number.isFinite)&&v.w>v.d*2&&v.d>0&&height(v)>0&&Number.isFinite(v.rot??0);
+ const eligible=v=>!!definition(v)?.telescopic&&!v.obj&&[v.cx,v.cy,v.w,v.d,height(v)].every(Number.isFinite)&&v.w>v.d*2&&v.d>0&&height(v)>0&&Number.isFinite(v.rot??0)&&!modelError(v);
  if(!eligible(f))return null;
  const items=[f,...furniture.filter(v=>v.id!==f.id&&eligible(v))];
  const axis=v=>{const a=(v.rot||0)*Math.PI/180;return [Math.cos(a),Math.sin(a)];};
@@ -389,11 +401,18 @@ function slidingCorner(f,furniture=[],plan){
    // Native coordinates include furniture mirroring; the builder may mirror
    // again to stack away from this free corner.
    const flip=v.flip?-1:1,x=t*flip,side=x>0?'right':'left',towardOther=[-Math.sign(s)*q[0],-Math.sign(s)*q[1]],normal=[-u[1],u[0]];
-   out.push({other,side,x,slope:-Math.sign(t)*flip*other.d/(dot(towardOther,normal)*v.d)});
+   // Rectangular leaves meet end-to-face, never on the rail's miter plane.
+   // One leaf runs through the joint; the other stops at its near surface.
+   // Directed corner axes choose complementary roles, independent of IDs.
+   const otherTracks=slidingTracks(other),through=cross(u,q)*Math.sign(t)*Math.sign(s)>0;
+   const otherNormal=[-q[1],q[0]],leafEnd=(t+dot(otherNormal,u)*otherTracks.leadingOffset+Math.sign(t)*(through?1:-1)*otherTracks.leafDepth/2)*flip;
+   const layout=slidingLayout(v,{side,leafEnd});if(layout.width<=2*layout.edge)continue;
+   const bottom=v=>value(v,'floorTrack')?Math.min(8,height(v)/20):4,floorClearance=Math.max(bottom(v),otherBase.z-base.z+bottom(other));
+   out.push({other,side,x,leafEnd,through,floorClearance,slope:-Math.sign(t)*flip*other.d/(dot(towardOther,normal)*v.d)});
   }return out;
  };
  const hits=candidates(f);if(hits.length!==1||candidates(hits[0].other).length!==1)return null;
- const {other,side,x,slope}=hits[0];return {partnerId:other.id,side,x,slope};
+ const {other,side,x,slope,leafEnd,through,floorClearance}=hits[0];return {partnerId:other.id,side,x,slope,leafEnd,through,floorClearance};
 }
 // Derived geometry capability; no field is added to saved furniture instances.
 function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return !f.obj&&(C.supported(f)||['counter','vanity'].includes(f.type));}
@@ -407,6 +426,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -4,7 +4,7 @@
 function hex2rgb(h){ h = h.replace('#',''); if (h.length===3) h = h.split('').map(c=>c+c).join(''); const n = parseInt(h,16); return [(n>>16)&255,(n>>8)&255,n&255]; }
 function shade(h,k){ const f = v => Math.max(0,Math.min(255,Math.round(k>1 ? v+(255-v)*(k-1)*2 : v*k))); return '#'+hex2rgb(h).map(v=>f(v).toString(16).padStart(2,'0')).join(''); }
 
-function render(t,w,d,c,PAL,f){
+function render(t,w,d,c,PAL,f,context={}){
   // Bind helpers to this call's palette so switching themes cannot retain ink.
   const ST = () => `stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"`;
 const rc = (x,y,w,h,f,ex='') => `<rect x="${x}" y="${y}" width="${Math.max(0,w)}" height="${Math.max(0,h)}" fill="${f}" ${ST()} ${ex}/>`;
@@ -204,7 +204,13 @@ const DASH = 'stroke-dasharray="4 3"';
     case 'treadmill': return rc(x,y,w,d,c,'rx="50"') + rc(x+90,y+320,w-180,d-400,'#1c1c1e','rx="25"') + rc(x,y,w,230,shade(c,1.4),'rx="40"');
     case 'pendant': return `<circle r="${m*.44}" fill="none" ${ST()} stroke-dasharray="5 4"/>` + ec(0,0,m*.3,m*.3,c) + ec(0,0,m*.17,m*.17,shade(c,1.15));
     case 'slidingdoor': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
-      const n=(t==='slidingdoor'||t==='doubleslidingdoor')?2:3;
+      const products=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
+      if(products?.definition(t)?.telescopic){
+        const item=f||{type:t,w,d},corner=products.slidingCorner(item,context.furniture,context.plan),layout=products.slidingLayout(item,corner);
+        // The parent applies furniture mirroring; this layout includes only stacking.
+        return layout.leaves.map((leaf,i)=>'<g data-sliding-leaf="'+i+'">'+rc(leaf.x-leaf.width/2,leaf.z-layout.leafDepth/2,leaf.width,layout.leafDepth,c)+rc(leaf.x-leaf.width/2+layout.edge,leaf.z-layout.leafDepth/6,leaf.width-2*layout.edge,layout.leafDepth/3,'#dce8ec')+'</g>').join('');
+      }
+      const n=t==='slidingdoor'?2:3;
       let s=rc(x,y,w,d,c);
       for(let i=0;i<n;i++)s+=rc(x+i*w/n,y+d*(i+.15)/n,w/n,d*.65/n,'#dce8ec')+ln(x+i*w/n+w/n*.85,y+d*(i+.15)/n,x+i*w/n+w/n*.85,y+d*(i+.8)/n);
       return s;
