@@ -1222,7 +1222,7 @@ const syncIdentity=FurnishPartIdentity;
     const gTop = Math.min(head, top); if (gTop <= sill) return;
     const [x0, y0, x1, y1] = frameLine?[Math.min(frameLine[0][0],frameLine[1][0]),Math.min(frameLine[0][1],frameLine[1][1]),Math.max(frameLine[0][0],frameLine[1][0]),Math.max(frameLine[0][1],frameLine[1][1])]:rect, hz = (x1-x0) >= (y1-y0), L = M(hz ? x1-x0 : y1-y0), gh = gTop - sill, cx = wx((x0+x1)/2), cz = wz((y0+y1)/2);
     if(panels===3){
-      const model=syncIdentity.produce("index.html:generator-call-20",()=>buildSlidingDoor(L,.09,gh,3,'#41474b',{floorTrack:true,stackSide}));
+      const model=syncIdentity.produce("index.html:generator-call-20",()=>buildSlidingDoor(L,.09,gh,3,'#41474b',{floorTrack:true,stackSide,floorTrackMode:'all'}));
       model.position.set(cx,sill,cz);model.rotation.y=hz?0:-Math.PI/2;
       model.traverse(o=>o.userData.bayWindowIndex=windowIndex);archUp.add(model);slidingDoors.push(model.userData.slidingDoor);return;
     }

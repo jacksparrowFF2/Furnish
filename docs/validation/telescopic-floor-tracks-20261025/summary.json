@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-25",
+  "scope": "双／三联动门默认吊轨；地轨按真实移动门扇生成，双联动一条／三联动两条；打开后轨道留在地面",
+  "reference": "用户提供的吊轨／普通地轨／极简地轨对比图；细条外观参考，未获得施工尺寸",
+  "persistentField": "沿用可选布尔floorTrack，缺失及false为吊轨，true为地轨；显式旧选择保留",
+  "nodeSuites": [
+    {
+      "command": "node tests/test-telescopic-floor-tracks.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-telescopic-corners.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-curtains-sliding.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-svg.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-product-rules.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-solids-cache.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-finished-datum.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-spatial-review-cache.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-enclosed-boundary-distances.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-project.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-work-state.cjs",
+      "status": "PASS"
+    }
+  ],
+  "production": {
+    "status": "PASS",
+    "floorCombinations": 128,
+    "cornerCombinations": 512,
+    "movingLeafMapping": true,
+    "frontBackRotationMirror": true,
+    "fixedAfterOpening": true,
+    "solidPartsAndPlanMatch": true,
+    "windowAndOrdinaryDoorLegacy": true,
+    "rawFourPanelsThreeRails": true
+  },
+  "syntax": {
+    "status": "PASS",
+    "changedScripts": 8,
+    "mainAndAffectedPreviewInlineModules": true,
+    "classicSharedDeclarations": true
+  },
+  "browser": {
+    "status": "PASS",
+    "report": "browser-results.json",
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "channel": "msedge",
+    "isolatedWorkspace": true,
+    "realWorkspaceWritten": false
+  },
+  "visual": {
+    "status": "PASS",
+    "reviewed": [
+      "http-3-3-ground-open.png",
+      "http-hanging-open.png"
+    ],
+    "notes": "地轨模式打开后留下连续金属灰细条，吊轨模式地面不留贯穿轨道"
+  },
+  "spaceConfirmation": "仅带地轨的多联动门追加telescopic-moving-floor-tracks-v1；吊轨确认保持原契约",
+  "notExecuted": [
+    "全量node scripts/check.cjs",
+    "实机触屏",
+    "厂家轨道规格、嵌地深度和施工承重核验"
+  ],
+  "retained": [
+    "真实projects/workspace.furnish.json未提交数据",
+    "其他对话的吊顶修复",
+    "既有Blender工作树"
+  ],
+  "newPersistentFields": false,
+  "afterConcurrentMainUpdate": {
+    "base": "22d6e04",
+    "status": "PASS",
+    "rechecked": [
+      "test-telescopic-floor-tracks",
+      "test-curtains-sliding"
+    ]
+  }
+}

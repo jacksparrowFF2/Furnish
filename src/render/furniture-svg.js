@@ -210,7 +210,8 @@ const DASH = 'stroke-dasharray="4 3"';
         // The top rail is visible in a plan projection: omitting it makes the
         // staggered leaves appear disconnected. Parent applies furniture mirroring.
         const railFill=shade(c,1.15),rail=pa('M'+layout.railOutline.map(p=>p.join(' ')).join('L')+'Z',railFill,`data-sliding-track="top" style="stroke:${railFill}"`);
-        return rail+layout.leaves.map((leaf,i)=>'<g data-sliding-leaf="'+i+'">'+rc(leaf.x-leaf.width/2,leaf.z-layout.leafDepth/2,leaf.width,layout.leafDepth,c)+rc(leaf.x-leaf.width/2+layout.edge,leaf.z-layout.leafDepth/6,leaf.width-2*layout.edge,layout.leafDepth/3,'#dce8ec')+'</g>').join('');
+        const floor=products.value(item,'floorTrack')?layout.floorTracks.map(t=>ln(t.start,t.z,t.end,t.z,`data-sliding-floor-track="${t.leafIndex}" style="stroke:#c5c8c4;stroke-dasharray:6 4"`)).join(''):'';
+        return rail+floor+layout.leaves.map((leaf,i)=>'<g data-sliding-leaf="'+i+'">'+rc(leaf.x-leaf.width/2,leaf.z-layout.leafDepth/2,leaf.width,layout.leafDepth,c)+rc(leaf.x-leaf.width/2+layout.edge,leaf.z-layout.leafDepth/6,leaf.width-2*layout.edge,layout.leafDepth/3,'#dce8ec')+'</g>').join('');
       }
       const n=t==='slidingdoor'?2:3;
       let s=rc(x,y,w,d,c);
