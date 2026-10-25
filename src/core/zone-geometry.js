@@ -43,6 +43,19 @@
   const polygon=poly.map((p,i)=>moving.has(i)?p.map((v,k)=>v+n[k]*offset):[...p]),point=mid.map((v,k)=>v+n[k]*offset),axis=Math.abs(dx)<EPS?0:Math.abs(dy)<EPS?1:null;
   return {polygon,point,offset,edge:[polygon[index],polygon[(index+1)%poly.length]],reference:hit?.reference,guides:hit&&axis!==null?[{axis,from:point}]:[],kind:hit?'edge':null,label:hit?'房间边界吸附':'边线平行移动'};
  }
+ function boundaryEdgeMeasurements(poly,index,references){
+  const a=poly[index],b=poly[(index+1)%poly.length];if(!a||!b)return [];const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);if(length<EPS)return [];
+  const sign=signed(poly)>=0?1:-1,t=[dx/length,dy/length],normal=[t[1]*sign,-t[0]*sign],along=p=>(p[0]-a[0])*t[0]+(p[1]-a[1])*t[1],result=[];
+  for(const ref of references){const ring=ref.polygon,orientation=ref.orientation??(signed(ring)>=0?1:-1);for(let i=0;i<ring.length;i++){const p=ring[i],q=ring[(i+1)%ring.length],x=q[0]-p[0],y=q[1]-p[1],L=Math.hypot(x,y);if(L<EPS||Math.abs(x*normal[0]+y*normal[1])/L>1e-6||(y*orientation*normal[0]-x*orientation*normal[1])/L<1-1e-6)continue;
+   const lo=Math.max(0,Math.min(along(p),along(q))),hi=Math.min(length,Math.max(along(p),along(q)));if(hi-lo<=EPS)continue;
+   const signedGap=(p[0]-a[0])*normal[0]+(p[1]-a[1])*normal[1],gap=Math.abs(signedGap)<1e-6?0:signedGap,from=a.map((v,k)=>v+t[k]*(lo+hi)/2),to=from.map((v,k)=>v+normal[k]*gap);
+   result.push({id:ref.id+':'+i,label:ref.label+' · 边 '+(i+1),roomId:ref.roomId,gap,normal,from,to,edge:[a,b],reference:[p,q]});
+  }}return result.sort((a,b)=>Math.abs(a.gap)-Math.abs(b.gap)||a.id.localeCompare(b.id));
+ }
+ function setBoundaryEdgeDistance(poly,index,references,referenceId,distance){
+  if(!Number.isFinite(distance)||distance<0)fail('退让尺寸须为非负毫米数值');const m=boundaryEdgeMeasurements(poly,index,references).find(m=>m.id===referenceId);if(!m)fail('参考房间边界已变化，请重新选择');
+  const a=poly[index],b=poly[(index+1)%poly.length],target=a.map((v,k)=>(v+b[k])/2+m.normal[k]*(m.gap-distance)),next=moveBoundaryEdge(poly,index,target,{snap:false}).polygon,actual=boundaryEdgeMeasurements(next,index,references).find(m=>m.id===referenceId);if(!actual||Math.abs(actual.gap-distance)>1e-5)fail('退让后边线越过区域，请减小尺寸');return next;
+ }
  function intersection(a,b,c,d){const dx=b[0]-a[0],dy=b[1]-a[1],ex=d[0]-c[0],ey=d[1]-c[1],det=dx*ey-dy*ex;if(Math.abs(det)<EPS)return null;
   const t=((c[0]-a[0])*ey-(c[1]-a[1])*ex)/det,u=((c[0]-a[0])*dy-(c[1]-a[1])*dx)/det;
   return t>=-EPS&&t<=1+EPS&&u>=-EPS&&u<=1+EPS?[a[0]+t*dx,a[1]+t*dy]:null;
@@ -130,5 +143,5 @@
   const combined=result.flatMap(g=>g.polys),difference=area(decompose([...rings,...combined],p=>inside(p,original)!==combined.some(poly=>inside(p,poly))));if(difference>.01||Math.abs(area(combined)-Math.abs(signed(original)))>.1)fail('折线拆分面积校验失败');
   return result;
  }
- const api={moveBoundaryEdge,alignPoint,projectSegment,snapBoundaryPoint,moveOrthogonalVertex,inside,signed,validatePolygon,decompose,outline,area,ringPath,adjacent,splitRegion};root.FurnishZoneGeometry=api;if(typeof module!=='undefined')module.exports=api;
+ const api={boundaryEdgeMeasurements,setBoundaryEdgeDistance,moveBoundaryEdge,alignPoint,projectSegment,snapBoundaryPoint,moveOrthogonalVertex,inside,signed,validatePolygon,decompose,outline,area,ringPath,adjacent,splitRegion};root.FurnishZoneGeometry=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

@@ -75,6 +75,14 @@
 .ceiling-node-tools label{display:flex;align-items:center;gap:6px;font-size:12px}
 .ceiling-studio .ceiling-node-tools select{width:90px;margin:0;padding:6px}
 .ceiling-node-tools .btn{font-size:11px;padding:6px 8px}
+.ceiling-edge-distance{display:flex;align-items:end;flex-wrap:wrap;gap:5px 10px;margin:10px 0;padding:9px 10px;background:#f4f9f8;border:1px solid #d3e6e3;border-radius:8px}
+.ceiling-edge-distance>b{width:100%;font-size:12px;color:#196d74}
+.ceiling-edge-distance label{font-size:11px;flex:1;min-width:120px}
+.ceiling-edge-distance label:has([data-design="edge-distance"]){flex:0 1 130px;min-width:105px}
+.ceiling-studio .ceiling-edge-distance input,.ceiling-studio .ceiling-edge-distance select{padding:5px 7px;margin:3px 0 0}
+.ceiling-edge-distance .actions{padding-bottom:1px;gap:5px}
+.ceiling-edge-distance .btn{font-size:11px;padding:6px 8px}
+.ceiling-studio .ceiling-edge-distance small{width:100%;font-size:11px;margin:1px 0 0;color:#376f72;overflow-wrap:anywhere}
 .ceiling-snap-options{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;margin:10px 0;font-size:12px}
 .ceiling-snap-options label{display:flex;align-items:center;gap:5px;cursor:pointer}
 .ceiling-snap-options input{margin:0}

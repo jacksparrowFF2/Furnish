@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-edge-distances"
+  ],
+  "results": [
+    {
+      "name": "ceiling-edge-distances",
+      "status": "PASS",
+      "seconds": 17.9,
+      "log": "ceiling-edge-distances.log"
+    }
+  ],
+  "notRun": []
+}
