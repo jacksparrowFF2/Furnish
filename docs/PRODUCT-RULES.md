@@ -302,3 +302,7 @@ pegboardAssembly.hatch.maxPanels=16／minWeb=20 集中定义局部盖板数与�
 `ceiling.upChannel`集中保存新建预设默认值，旧实例不补写默认。39／22.5／13.6／18.6 mm来自用户截面图，其余壁厚、卡边、柔光板与灯带尺寸均为可编辑示意值；共用核心校验轮廓、灯带与柔光板关系。中央平顶翼边连接由相同实际型材尺寸派生，不复制到界面规则。详见 [吊顶截面](CEILINGS.md#分部件截面与中央板连接2026-10-25)。
 
 吊顶截面整体转向规则：`sectionRotationStep=15`度、`sectionRotationTolerance=4`度，移动吸附复用12px阈值；`upChannel.rotation=0`仅用于新建／计算，0不补写旧模板。非零旋转与u/d锚点、实际轮廓及灯光共存，以v19保存；倾斜翼边作为中央平顶水平连接时共用核心拒绝。
+
+## 筒灯安装资料覆盖（2026-10-25）
+
+DL269 的 clearanceReview=missing 与其余缺资料设备共用待核对入口。已知外包、孔径和面环基准不代表散热、驱动器及检修净空已知；没有新增持久字段、默认高度或厂家间距假设。`test-scene-clearance-settings` 继续遍历电器目录验证资料覆盖。见 [全量记录](validation/full-regression-main-20261025/README.md)。

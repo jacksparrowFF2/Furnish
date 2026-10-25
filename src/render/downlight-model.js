@@ -11,7 +11,7 @@ function build(T,f){
  const black=new T.MeshStandardMaterial({color:'#303237',roughness:.7}),silver=new T.MeshStandardMaterial({color:'#b8bcc0',metalness:.8,roughness:.3});
  const glow=new T.MeshStandardMaterial({color:spec.color,emissive:spec.color,emissiveIntensity:1.5,roughness:.55});
  glow.userData.downlightEmitter=true;
- const add=(geometry,material,name,y=0)=>{const m=new T.Mesh(geometry,material);m.position.y=y;m.name=name;m.userData.furnishPartSource='downlight:'+name;m.castShadow=m.receiveShadow=true;m.userData.ceilingOwnMaterial=true;body.add(m);return m;};
+ const add=(geometry,material,name,y=0)=>{const m=new T.Mesh(geometry,material);m.position.y=y;m.name=name;m.userData.furnishPartSource='downlight:'+name;m.userData.furnishStablePart='downlight:'+name;m.castShadow=m.receiveShadow=true;m.userData.ceilingOwnMaterial=true;body.add(m);return m;};
  // All authored dimensions are mm before the boundary scale below.
  const profile=[[35,45],[35,15],[35,2],[42.5,2],[42.5,0],[35,0],[27.5,34]];
  add(new T.LatheGeometry(profile.map(([x,y])=>new T.Vector2(x,y)),64),white,'housing-and-reflector');

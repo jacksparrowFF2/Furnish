@@ -54,21 +54,27 @@ mountHeight 是最低点距当前家具基准地面的高度；新建默认2500 
 
 - `tests/test-downlight.cjs`：目录、默认／0高度、重复恢复、复制替换、当前与命名项目往返、完整包含／边界／偏差、旋转镜像、未知高度、孔重叠、生产实体尺寸／有限法线、真实圆孔射线、六种光束光通量／灯色与开关、Blender灯光方向与强度、规格分组／订单签名及空间确认保留。
 - 相关增量回归：product-rules、ceilings、ceiling-storage、ceiling-height、ceiling-continuous-light、furniture-finished-datum、enclosed-boundary-distances、catalog-browsing、project、project-validation、snapping、blender-part-identity、blender-affine。
-- `scripts/preview-downlight.cjs` 生成 [生产模型独立预览](../output/downlight/preview.html)；`scripts/verify/verify-downlight.cjs` 在隔离副本验收HTTP与断网file模式，记录 [结果](validation/downlight-20261024/results.json)，包含目录添加、贴合、六种参数切换／撤销重做、刷新、实际三维规格重建、地面亮度变化及390px窄屏。已查看近景与嵌入截图。
+- `scripts/preview-downlight.cjs` 生成 生产模型独立预览（本地生成：`../output/downlight/preview.html`）；`scripts/verify/verify-downlight.cjs` 在隔离副本验收HTTP与断网file模式，记录 [结果](validation/downlight-20261024/results.json)，包含目录添加、贴合、六种参数切换／撤销重做、刷新、实际三维规格重建、地面亮度变化及390px窄屏。已查看近景与嵌入截图。
 - 未执行全量 `scripts/check.cjs`、真实手机触屏、密集布灯性能测试、施工及实测照度验算；真实用户项目未修改。
 
 ## 六规格照明对比预览
 
-`scripts/preview-downlight-comparison.cjs` 生成 [交互对比](../output/downlight/comparison.html)，使用真实筒灯生产构造器，在相同3×3 m中性材质示范空间中逐一放置单灯，面环安装高2.5 m，六幅保持相同机位／固定曝光／环境光；不是对用户真实项目的布灯修改。支持整体／近景及联动旋转。
+`scripts/preview-downlight-comparison.cjs` 生成 交互对比（本地生成：`../output/downlight/comparison.html`），使用真实筒灯生产构造器，在相同3×3 m中性材质示范空间中逐一放置单灯，面环安装高2.5 m，六幅保持相同机位／固定曝光／环境光；不是对用户真实项目的布灯修改。支持整体／近景及联动旋转。
 
 `scripts/verify/capture-downlight-comparison.cjs` 已验证离线file渲染、六种实际参数及一致相机／曝光，截图见 [整体对比](validation/downlight-20261024/six-variants-room.png) 和 [近景对比](validation/downlight-20261024/six-variants-detail.png)，设置见 [记录](validation/downlight-20261024/six-variants-settings.json)。这是当前实时近似灯光效果，未增加实测配光、间接光反弹或照度验证。
 
 ## 实际生产网格剖面验收（2026-10-24）
 
-[剖面图](validation/downlight-20261024/production-section.png) 与 [可旋转半剖预览](../output/downlight/section.html) 使用实际筒灯／平顶构造器，Z=0中心剖线直接从生产三角形与剖面求交，不另画替代产品几何。示例为标准85×85×45 mm灯体、76.5 mm孔、12 mm平顶、面环顶对齐板底。
+[剖面图](validation/downlight-20261024/production-section.png) 与 可旋转半剖预览（本地生成：`../output/downlight/section.html`） 使用实际筒灯／平顶构造器，Z=0中心剖线直接从生产三角形与剖面求交，不另画替代产品几何。示例为标准85×85×45 mm灯体、76.5 mm孔、12 mm平顶、面环顶对齐板底。
 
 `tests/test-downlight-section.cjs` 读取生产平顶64边孔壁，把每个灯具三角形裁到板厚开放区间（边界带0.00001 mm），对其全部裁后顶点验证实际凸孔边界半平面。正常位姿276个相交板高范围的三角形均处于孔内，无正体积穿板；卡扣处最小边界余量0.178320 mm，机身名义每侧3.25 mm。面环顶与板底均为最低点+2 mm，几何缝隙0；面环超出孔边4.25 mm作覆盖。灯体顶部高于板底43 mm。
 
 正向射线穿孔中心和37 mm半径为空，39 mm半径命中真实板件。负对照保持同一开孔、故意将灯具上移0.2 mm，检出256个面环相关穿板三角形，证明检测能捕获穿入。完整结果见 [数值记录](validation/downlight-20261024/section-geometry.json)。已通过相关筒灯回归与离线file剖面渲染，已实际查看截图；未运行全量检查。
 
 结论只覆盖本次12 mm板厚与标准模型。未验证任意板厚、承托荷载／装拆弹簧运动；生产弹簧和卡扣为外观近似，不能把0.178 mm模型余量当厂家施工公差。没有修改生产模型、项目保存数据或增加正式空间核对算法；此处逐三角形验收不等于主应用所有场景都已采用同等检测。
+
+## 全量复验修复（2026-10-25）
+
+灯壳／反射杯、后盖、柔光面、左右卡扣与弹簧七个网格使用固定运行时部件身份，发布与当前 partIdentity=3／protocol 3 一致，不写入装修方案。结构重排及尺寸调整仍保留相同逻辑名称，已加入生产身份回归与实际 ZIP 接收验证。产品能力统一设置安装预留资料缺失待核对，不把已知开孔尺寸推断为驱动器、散热或装拆净空已通过。
+
+独立预览生成器遵守 FURNISH_VERIFY_ROOT；文档中的 output 路径仅表示本地生成产物，长期证据保存在 validation。完整验收与边界见 [本轮记录](validation/full-regression-main-20261025/README.md)。

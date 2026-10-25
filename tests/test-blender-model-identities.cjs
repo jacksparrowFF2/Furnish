@@ -6,7 +6,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require(
  const camera=new T.PerspectiveCamera(),items=[
   ['aircon-midea',{type:'aircon_midea_ultra_2hp',w:395,d:436,h:1856},227],
   ['aquarium',{type:'aquarium_mijia_2pro',w:510,d:278,h:330},15],
-  ['cherry-coffee-table',{type:'coffeetable_yeswood_cherry',w:1200,d:650,h:450},4]
+  ['cherry-coffee-table',{type:'coffeetable_yeswood_cherry',w:1200,d:650,h:450},4],
+  ['downlight',{type:'downlight_philips_dl269',w:85,d:85,h:45,mountHeight:2500},7]
  ];
  function read(g){const s=E.snapshot(T,{groups:[g],camera,includeHidden:true,expandInstances:true});try{return s.scene.children.filter(n=>n.isMesh).map(n=>({key:n.userData.furnishPartKey,count:n.userData.furnishPartCount,version:n.userData.furnishPartVersion,id:n.userData.furnishObjectId,hash:crypto.createHash('sha256').update(Buffer.from(n.geometry.attributes.position.array.buffer)).digest('hex')}));}finally{s.dispose();}}
  for(const [module,f,priorityCount]of items){const build=require('../src/render/'+module+'-model.js').build,g=build(T,f);g.userData.fid=module;const before=read(g);assert(before.every(n=>n.key&&n.version===3));assert.equal(new Set(before.map(n=>n.key)).size,before.length);assert(before.filter(n=>n.key.startsWith('explicit:')).length>=priorityCount);

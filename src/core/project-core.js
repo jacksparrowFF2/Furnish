@@ -410,8 +410,8 @@
      const hit=(poly,vertical)=>C.openingIntersects(opening,poly,vertical,intersects),physical=opening.kind!=='cabinetpassage';
      const floorHit=physical&&floors().surfaces(plan).some(a=>Number.isFinite(a.finishedZ)&&(a.room.polys||[a.room.poly]).some(p=>hit(p,{bottom:-20000,top:a.finishedZ})));
      const wallHit=plan.walls.some((w,i)=>hit(walls[i],finishes().vertical(w,plan)));
-     const obstacles=rigidBodies,blocked=[],unknown=[],pipeIds=[],motionUnknown=[];
-     for(const b of obstacles){if(b.f.id===f.id)continue;const vertical=b.vertical??design().furnitureVerticalBounds(b.f,plan,furniture);if(!hit(b.p,vertical))continue;(!vertical?unknown:blocked).push(b.f.name||b.f.id);}
+     const obstacles=rigidBodies,blocked=[],unknown=[],blockedIds=new Set(),unknownIds=new Set(),pipeIds=[],motionUnknown=[];
+     for(const b of obstacles){if(b.f.id===f.id)continue;const vertical=b.vertical??design().furnitureVerticalBounds(b.f,plan,furniture);if(!hit(b.p,vertical))continue;const ids=vertical?blockedIds:unknownIds;if(!ids.has(b.f.id)){ids.add(b.f.id);(vertical?blocked:unknown).push(b.f.name||b.f.id);}}
      const ceilingRooms=physical?(plan.rooms||[]).filter(r=>r.counted!==false&&(r.polys||[r.poly]).some(poly=>hit(poly,{bottom:r.ceilingHeight??ceilingHeight(plan),top:Infinity}))):[];
      const ceilingHit=physical&&(ceilingRooms.length>0||!plan.rooms.length&&hit(opening.poly,{bottom:ceilingHeight(plan),top:Infinity}));
      for(const {beam,vertical} of beams){if(vertical){if(hit(beam.poly,vertical))blocked.push((beam.name||beam.id)+'（房梁）');}else if(physical&&hit(beam.poly,null))unknown.push((beam.name||beam.id)+'（梁高未录入）');}
@@ -438,7 +438,7 @@
    for(const axis of [0,1]){const low=axis?x0:y0,high=axis?x1:y1;for(let fixed=low+200;fixed<high;fixed+=200){const other=1-axis,active=bodies.filter(b=>b.box[other]<=fixed&&b.box[other+2]>=fixed),cuts=[...(axis?ys:xs),...raised.flatMap(r=>r.poly.map(p=>p[axis]))];for(const {p} of active)for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];if((a[other]<=fixed&&b[other]>=fixed)||(b[other]<=fixed&&a[other]>=fixed)){if(a[other]!==b[other])cuts.push(a[axis]+(b[axis]-a[axis])*(fixed-a[other])/(b[other]-a[other]));}}const sorted=[...new Set(cuts)].sort((a,b)=>a-b);let run=0,start=0;for(let i=0;i<sorted.length-1;i++){const point=axis?[fixed,(sorted[i]+sorted[i+1])/2]:[(sorted[i]+sorted[i+1])/2,fixed];const free=inside(point,room.poly)&&!raised.some(r=>inside(point,r.poly))&&!active.some(b=>inside(point,b.p));if(free){if(!run)start=sorted[i];run+=sorted[i+1]-sorted[i];}if((!free||i===sorted.length-2)&&run){if(run>=100&&run<passage&&(!narrow||run<narrow.width))narrow={width:run,at:axis?[fixed,start+run/2]:[start+run/2,fixed]};run=0;}}}}
    if(narrow)issues.push({kind:'passage',id:room.id,name:room.name,message:`候选狭窄间隙约 ${Math.round(narrow.width)} mm，低于自设 ${passage} mm 阈值`,at:narrow.at});
   }
-  const unique=[...new Map(issues.map(v=>[JSON.stringify([v.kind,v.id,v.otherId,v.ceilingId,v.beamId,v.markerId,v.column,v.section,v.message]),v])).values()];return targets?unique.filter(v=>targets.has(v.id)||targets.has(v.otherId)):unique;
+  const unique=[...new Map(issues.map(v=>[JSON.stringify([v.kind,v.id,v.otherId,v.ceilingId,v.beamId,v.markerId,v.column,v.section,v.kind.startsWith('cabinet')?v.at:undefined,v.message]),v])).values()];return targets?unique.filter(v=>targets.has(v.id)||targets.has(v.otherId)):unique;
  }
  function parseOBJ(text){
   if(typeof text!=='string'||text.length>2e6)fail('OBJ 上限 2 MB');const vertices=[],positions=[];
