@@ -46,3 +46,38 @@
 .ceiling-design-result{align-self:start}.ceiling-design [role=alert]{overflow-wrap:anywhere}
 .ceiling-design [hidden]{display:none!important}
 @media(max-width:760px){.ceiling-design-grid{grid-template-columns:minmax(0,1fr);gap:0}.ceiling-design section{padding:12px}.ceiling-style-options{grid-template-columns:1fr}.ceiling-style-options b{display:inline;margin-left:6px}.ceiling-style-options small{margin-left:24px}.ceiling-design-plan{height:230px}.ceiling-design .ceiling-bottom{bottom:-12px}}
+
+.dlg-box.wide:has(.ceiling-studio){width:min(1360px,calc(100vw - 32px));max-width:calc(100vw - 32px)}
+.ceiling-studio{max-width:none}
+.ceiling-studio-intro{margin:0 0 16px;color:var(--muted);font-size:13px}
+.ceiling-studio-grid{display:grid;grid-template-columns:minmax(270px,330px) minmax(0,1fr);gap:20px;align-items:start}
+.ceiling-studio-sidebar{min-width:0}
+.ceiling-studio section{padding:14px;margin-bottom:12px}
+.ceiling-studio input:not([type=radio]):not([type=checkbox]),.ceiling-studio select{font:inherit;box-sizing:border-box;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--soft);color:var(--ink);padding:8px 10px;margin:5px 0 10px;min-width:0}
+.ceiling-studio small{margin:6px 0 8px}
+.ceiling-studio .ceiling-style-options{grid-template-columns:minmax(0,1fr);gap:8px;margin-bottom:16px}
+.ceiling-studio .ceiling-style-options b{display:inline;margin-left:7px}
+.ceiling-studio .ceiling-style-options small{margin:3px 0 0 26px}
+.ceiling-stage-tabs{display:flex;gap:4px;margin:12px 0}
+.ceiling-stage-tabs .btn{flex:1;padding:9px 5px;border-radius:8px}
+.ceiling-stage-tabs .on,.ceiling-map-tools .on{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
+.ceiling-studio .ceiling-preset-gallery{gap:5px}.ceiling-studio .ceiling-preset svg{height:75px}.ceiling-studio .ceiling-preset b{font-size:11px}
+.ceiling-studio .ceiling-design-section svg{height:180px}
+.ceiling-studio .ceiling-studio-canvas{position:sticky;top:0;min-width:0;margin:0;padding:12px;background:var(--card)}
+.ceiling-map-tools{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.ceiling-map-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0;font-size:12px}
+.ceiling-map-heading .btn{font-size:11px;padding:6px 8px}
+.ceiling-studio-map{height:480px;min-height:280px;overflow:hidden;background:#faf9f4;border:1px solid var(--line);border-radius:9px;color-scheme:light}
+.ceiling-map-svg{display:block;width:100%;height:100%;touch-action:none;user-select:none}
+.ceiling-map-svg [data-design-region]{cursor:pointer}.ceiling-map-svg [data-design-vertex]{cursor:grab}
+.ceiling-studio [data-design-3d]{height:480px;margin:0;background:#e8e7e2;border-radius:9px}
+.ceiling-studio [data-design-help]{font-size:12px;margin:10px 0}
+.ceiling-studio [data-design-pending]{font-size:12px;overflow-wrap:anywhere}
+.ceiling-pending:not(:empty){padding:10px;border-radius:8px;background:#fff1d6;color:#795119}
+.ceiling-studio-footer{position:sticky;bottom:-20px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:12px 0;background:var(--panel);border-top:1px solid var(--line)}
+.ceiling-studio-footer p{font-size:12px;margin:0;color:var(--muted)}
+.ceiling-studio-footer .actions{flex-shrink:0}
+.ceiling-copy-room,.ceiling-legacy{font-size:12px;margin:12px 0}
+.ceiling-copy-room summary,.ceiling-legacy summary{cursor:pointer;font-weight:600;margin-bottom:8px}
+.ceiling-legacy [data-design-legacy]>div{display:flex;flex-direction:column;gap:6px;margin:12px 0}.ceiling-legacy .btn{font-size:11px;white-space:normal}
+@media(max-width:850px){.ceiling-studio-grid{grid-template-columns:minmax(0,1fr)}.ceiling-studio .ceiling-studio-canvas{position:static;grid-row:1}.ceiling-studio-map,.ceiling-studio [data-design-3d]{height:300px}.ceiling-map-heading{flex-wrap:wrap}.ceiling-studio-footer{flex-direction:column;align-items:stretch;bottom:-20px}.ceiling-studio-footer .actions{justify-content:flex-end}.ceiling-map-tools .btn{font-size:11px;padding:6px}.ceiling-studio-sidebar .ceiling-preset svg{height:100px}}

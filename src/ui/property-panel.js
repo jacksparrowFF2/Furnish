@@ -16,6 +16,7 @@ function panelSelectionName(){
  if(sel.kind==='room')return selectedRooms().length>1?tr(`已选 ${selectedRooms().length} 个区域`,`${selectedRooms().length} selected areas`):nm(state.rooms[sel.id]?.name||ROOMS.find(r=>r.id===sel.id)?.name||tr('房间','Room'));
  const bay=FurnishBayWindows.selected(PLAN,sel);if(bay)return nm(state.rooms[bay.platform.id]?.name||bay.platform.name)+' · '+tr(sel.kind==='room'?'台面':'窗体',sel.kind==='room'?'Platform':'Window');
  if(sel.kind==='note')return getNote(sel.id)?.text||tr('文字标注','Note');
+ if(sel.kind==='ceiling')return state.ceilings?.regions?.find(r=>r.id===sel.regionId)?.name||state.ceilings?.items.find(c=>c.id===sel.id)?.name||tr('吊顶','Ceiling');
  const names={wall:['墙体','Wall'],door:['房门','Door'],slide:['推拉门','Sliding door'],win:['窗户','Window'],measure:['测量线','Measurement']};
  return tr(...(names[sel.kind]||['已选对象','Selected object']));
 }
@@ -25,6 +26,10 @@ function renderPanelContent(object=true){
   if(ui.sel?.kind!=='wall')window.FurnishWorkflowTools?.clearDistances();
   window.FurnishWorkspace?.clearOpeningPreview();
   renderFab();
+  if(object&&ui.sel?.kind==='ceiling'){
+    const c=state.ceilings?.items.find(c=>c.id===ui.sel.id),r=state.ceilings?.regions?.find(r=>r.id===c?.regionId);
+    if(c&&r){const p=$('#panel');p.innerHTML=`<section><h3>${esc(r.name)}</h3><p>${tr('独立吊顶区域','Independent ceiling area')} · ${Math.abs(FurnishCeiling.area(r.polygon)/1e6).toFixed(2)} m²</p><p class="muted">${tr('边界、样式和截面在吊顶设计中编辑。','Edit the boundary, style and section in the ceiling workspace.')}</p><button class="btn" data-edit-ceiling-object>${tr('编辑吊顶区域','Edit ceiling area')}</button></section>`;p.querySelector('[data-edit-ceiling-object]').onclick=()=>FurnishCeilingUI.open(c.id);return;}
+  }
   const p = $('#panel'), ids = object?selIds():[];delete p.dataset.bayId;
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); const laundry=laundryGroupHost(selItems());if(laundry)bindKitchenPanel(laundry);return; }
   if (object && ui.sel?.kind === 'furn'){ const f = getF(ui.sel.id); if (f){ if(furnitureError(f)){renderBrokenFurniturePanel(f,p);return;}try{p.innerHTML = furnPanel(f)+(window.FurnishFloorFinishUI?.furniturePanel(f)||'');const wallDetails=p.querySelector('.wall-distance-panel');if(wallDetails&&wallDetails.dataset.wallDistanceOwner===wallDistanceOpen)wallDetails.open=true;bindFurnPanel(f);}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));renderBrokenFurniturePanel(f,p);}return; } }

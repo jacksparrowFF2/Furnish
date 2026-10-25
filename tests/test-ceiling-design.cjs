@@ -5,7 +5,7 @@ for(const preset of ['low','wide','wash'])for(const reverse of [false,true])for(
  const r=copy(room),transform=([x,y])=>[Math.cos(angle)*x-Math.sin(angle)*y+15000,Math.sin(angle)*x+Math.cos(angle)*y-8000];
  r.poly=r.poly.map(transform);if(reverse)r.poly.reverse();delete r.rings;delete r.polys;
  const sections=C.sectionPreset(preset),items=C.designRegion(r,{style:'ring',height:2500,sections},id);
- assert.equal(items.length,preset==='wash'?9:5);assert.equal(C.resolve({version:1,items}).pending.length,0);
+ assert.equal(items.length,preset==='wash'?3:2);assert.equal(C.resolve({version:1,items}).pending.length,0);
  assert.equal(C.derive({rooms:[{...r,ceilingHeight:2800}]},{ceilings:{version:1,items}}).ceilings.pending.length,0);
  const flat=items.find(c=>c.kind==='flat');assert(flat.polygon.every(p=>C.inside(p,r.poly)));assert.equal(flat.height,2500);
  for(const c of items.filter(c=>c.kind==='profile'))assert.equal(c.height-Math.max(...sections.flatMap(s=>s.section.vertices.map(v=>v.d))),2500);
@@ -16,7 +16,7 @@ assert.equal(C.designRegion(room,{style:'flat',height:0,thickness:.1},id)[0].hei
 assert.throws(()=>C.designRegion(room,{style:'flat',height:2500,thickness:0},id));
 assert.throws(()=>C.designRegion(room,{style:'flat',height:NaN},id));
 assert.throws(()=>C.designRegion({...room,poly:[[0,0],[200,0],[200,200],[0,200]],rings:undefined},{style:'ring',height:2500,sections:C.sectionPreset('wide')},id));
-assert.throws(()=>C.designRegion({...room,poly:[[0,0],[3000,0],[3000,3000],[1000,4000],[0,3000]],rings:undefined},{style:'ring',height:2500},id),/矩形/);
+assert.equal(C.designRegion({...room,poly:[[0,0],[3000,0],[3000,3000],[1000,4000],[0,3000]],rings:undefined},{style:'ring',height:2500},id).length,2);
 const housing=C.sectionPreset('wash')[1].section,us=housing.vertices.map(v=>v.u),ds=housing.vertices.map(v=>v.d);assert.equal(Math.max(...us)-Math.min(...us),43.5);assert.equal(Math.max(...ds)-Math.min(...ds),18.5);assert.deepEqual(C.lightIssues(housing),[]);
 const original=copy(work);original.ceilings={version:1,items:C.designRegion(room,{style:'ring',height:2500,sections:C.sectionPreset('wash')},id)};
 const restore=W.create({makeId:id,colorFor:()=> '#ddd',materials:require('../src/data/catalog.js').materials}).restore;
@@ -26,10 +26,10 @@ console.log('PASS region styles, rotated/reversed closed ring, separate wash hou
 (async()=>{
  const THREE=await import(JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports.three),M=require('../src/render/ceiling-model.js');
  const items=original.ceilings.items,model=M.build(THREE,C.resolve(original.ceilings));
- assert.equal(model.children.filter(c=>c.userData.ceiling.part==='section').length,8);
+ assert.equal(model.children.filter(c=>c.userData.ceiling.part==='section').length,2);
  for(const mesh of model.children){assert(mesh.geometry.attributes.position.array.every(Number.isFinite));assert(mesh.geometry.attributes.normal.array.every(Number.isFinite));}
- // Mid-edge seam planes of adjacent L sweeps coincide. Sum the production
- // gypsum volumes against section-area * centreline perimeter with miters.
+ // Check the closed production sweep volume against an independent section
+ // centroid integral of the shrinking rectangular perimeter.
  const profiles=items.filter(c=>c.kind==='profile'&&c.name.includes('石膏'));
  let measured=0;for(const mesh of model.children.filter(c=>profiles.some(p=>p.id===c.userData.ceiling.id))){const a=mesh.geometry.attributes.position.array;for(let i=0;i<a.length;i+=9){const A=new THREE.Vector3(...a.slice(i,i+3)),B=new THREE.Vector3(...a.slice(i+3,i+6)),D=new THREE.Vector3(...a.slice(i+6,i+9));measured+=A.dot(B.cross(D))/6;}}
  const shape=profiles[0].section.vertices.map(v=>[v.u,v.d]),perimeter=C.boundaryPaths(room).reduce((s,p)=>s+Math.hypot(p.b[0]-p.a[0],p.b[1]-p.a[1]),0);

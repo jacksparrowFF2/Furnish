@@ -33,7 +33,7 @@ globalThis.FurnishObservationLayers=(()=>{
  function bounds(objectKey){
   const plan=FurnishProject.effectivePlan(PLAN,state),[kind,...parts]=objectKey.split(':'),id=parts.join(':');let points;
   if(kind==='floor'||kind==='roomCeiling'){const r=plan.rooms.find(r=>r.id===id);points=r&&(r.polys||[r.poly]).flat();}
-  else if(kind==='ceiling')points=state.ceilings?.items.find(c=>c.id===id)?.polygon;
+  else if(kind==='ceiling'){const c=state.ceilings?.items.find(c=>c.id===id);points=c?.kind==='profile'?FurnishCeiling.footprint(c):c?.polygon;}
   else if(kind==='wallTile'){const e=plan.wallTiling?.surfaces.find(e=>FurnishLayers.faceKey(e.face)===objectKey),source=e&&FurnishWallFinish.sources(plan).find(s=>s.id===e.face.wallId);if(source){const r=source.rect,a=e.axis,n=e.normal,lo=r[a]+(r[a+2]-r[a])*e.face.range[0],hi=r[a]+(r[a+2]-r[a])*e.face.range[1],p=[0,0],q=[0,0];p[a]=lo;q[a]=hi;p[n]=e.position-10;q[n]=e.position+10;points=[p,q];}}
   if(!points?.length)return null;return [Math.min(...points.map(p=>p[0])),Math.min(...points.map(p=>p[1])),Math.max(...points.map(p=>p[0])),Math.max(...points.map(p=>p[1]))];
  }
@@ -43,7 +43,8 @@ globalThis.FurnishObservationLayers=(()=>{
   if(object.type==='furniture'){selectIds([object.id]);if(is3D())window.View3D?.focusSelection();else focusItem(object.id);return;}
   const plan=FurnishProject.effectivePlan(PLAN,state),box=bounds(objectKey);if(!box)return;
   const roomId=objectKey.startsWith('floor:')?objectKey.slice(6):objectKey.startsWith('roomCeiling:')?objectKey.slice(12):object.type==='wallTile'?plan.wallTiling?.surfaces.find(e=>FurnishLayers.faceKey(e.face)===objectKey)?.face.roomId:state.ceilings?.items.find(c=>'ceiling:'+c.id===objectKey)?.roomId;
-  select({kind:'room',id:roomId,layerObject:objectKey});
+  const ceiling=objectKey.startsWith('ceiling:')&&state.ceilings?.items.find(c=>'ceiling:'+c.id===objectKey);
+  select(ceiling?.regionId?{kind:'ceiling',id:ceiling.id,regionId:ceiling.regionId,layerObject:objectKey}:{kind:'room',id:roomId,layerObject:objectKey});
   if(is3D())window.View3D?.focusSelection();else zoomToBox(box,600);
  }
  function apply(next){mutate(()=>state.objectLayers=next.objectLayers);applyPlan();window.View3D?.refreshObservationLayers?.();}

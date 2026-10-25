@@ -1,5 +1,9 @@
 # 产品能力规则与兼容验收
 
+## 独立吊顶区域（2026-10-25）
+
+`ceiling` 集中保留原mm范围、截面预设、灯带和板厚默认值，增加 `maxRegions=100`、`maxSections=8`；总生成构件仍限200、单轮廓仍限128节点。区域缺失时不物化默认值，UI新建默认平顶、底标高取当前原顶减300 mm（最低0）、板厚12 mm，均为可编辑设计初值。新持久结构由 `ceiling-core.validateRegion/setRegion/regionItems` 共用，复制新区域保留边界与配置并分配新ID，项目副本平移同时移动区域边界及生成构件。字段、版本和恢复契约见 [吊顶独立区域](CEILINGS.md#独立区域与多边形回型2026-10-25第二轮)。
+
 ## 拖动缓存的承托依赖（2026-10-25）
 
 `floorHost(f,furniture)` 集中读取现有 `counterLink.hostId / laundryHostId` 的直接承托对象，`floorBase` 与绘制排序缓存共用该查找；排序跟踪完整承托链的值，宿主位置/安装/配置变化、缺失和恢复均重新计算高度。没有新增字段、型号白名单、默认值或恢复迁移，循环依赖仍由原 `floorBase` 保留未知。见 [拖动复验](validation/drag-performance-20261025/README.md)。

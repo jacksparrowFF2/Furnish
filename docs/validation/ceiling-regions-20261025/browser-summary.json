@@ -1,0 +1,252 @@
+{
+  "scope": "incremental, HTTP and offline file://",
+  "results": [
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "sourceRun": "verification-PwDUGo",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "independentDrawing": true,
+          "physicalDataUnchanged": true,
+          "concaveProductionPreview": true,
+          "customSectionDraft": true,
+          "automaticPreview": true,
+          "nodeEditing": true,
+          "invalidInputRetention": true,
+          "undoRedoRefreshProjectRoundtrip": true,
+          "v17Cache": true,
+          "noneAreaPreserved": true,
+          "otherRegionsPreserved": true,
+          "lockedAndConcurrentGuards": true,
+          "mobile390": true,
+          "mixedLegacyEditingAndExplicitRebuild": true,
+          "independentLayerLocationAndProperties": true
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "independentDrawing": true,
+          "physicalDataUnchanged": true,
+          "concaveProductionPreview": true,
+          "customSectionDraft": true,
+          "automaticPreview": true,
+          "nodeEditing": true,
+          "invalidInputRetention": true,
+          "undoRedoRefreshProjectRoundtrip": true,
+          "v17Cache": true,
+          "noneAreaPreserved": true,
+          "otherRegionsPreserved": true,
+          "lockedAndConcurrentGuards": true,
+          "mobile390": true,
+          "mixedLegacyEditingAndExplicitRebuild": true,
+          "independentLayerLocationAndProperties": true
+        }
+      ]
+    },
+    {
+      "name": "ceilings",
+      "status": "PASS",
+      "sourceRun": "verification-Wcyc8r",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "drawAndDimensions": true,
+          "pendingAndInvalidInput": true,
+          "lightSnap": true,
+          "flatAttachment": true,
+          "sharedProductionPreview": true,
+          "atomicUndoRedo": true,
+          "localCancel": true,
+          "fullThicknessPending": true,
+          "v5RefreshAndActualProjectRoundtrip": true,
+          "mobile390": true,
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "drawAndDimensions": true,
+          "pendingAndInvalidInput": true,
+          "lightSnap": true,
+          "flatAttachment": true,
+          "sharedProductionPreview": true,
+          "atomicUndoRedo": true,
+          "localCancel": true,
+          "fullThicknessPending": true,
+          "v5RefreshAndActualProjectRoundtrip": true,
+          "mobile390": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "ceiling-corners",
+      "status": "PASS",
+      "sourceRun": "verification-Wcyc8r",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "adjacentWalls": true,
+          "productionMiterAndAssembly": true,
+          "segmentedLightSetback": true,
+          "twoFaceFlatBinding": true,
+          "dependentUpdates": true,
+          "invalidInputKeepsPreview": true,
+          "topologyPending": true,
+          "atomicUndoRedo": true,
+          "cancel": true,
+          "v6RefreshAndRealFileRoundtrip": true,
+          "mobile390": true,
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "adjacentWalls": true,
+          "productionMiterAndAssembly": true,
+          "segmentedLightSetback": true,
+          "twoFaceFlatBinding": true,
+          "dependentUpdates": true,
+          "invalidInputKeepsPreview": true,
+          "topologyPending": true,
+          "atomicUndoRedo": true,
+          "cancel": true,
+          "v6RefreshAndRealFileRoundtrip": true,
+          "mobile390": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "PASS",
+      "sourceRun": "verification-Wcyc8r",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "compactRadiusPreset": true,
+          "legacyRetention": true,
+          "independentEndCaps": true,
+          "insideRetreats": true,
+          "invalidInputRetention": true,
+          "sectionHeightAndFlatLinkage": true,
+          "disabledConfigRetention": true,
+          "shortArmAndMissingReference": true,
+          "atomicUndoRedo": true,
+          "cancel": true,
+          "v8CacheAndV7Retention": true,
+          "refreshAndActualProjectRoundtrip": true,
+          "productionCloseViews": true,
+          "mobile390": true,
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "compactRadiusPreset": true,
+          "legacyRetention": true,
+          "independentEndCaps": true,
+          "insideRetreats": true,
+          "invalidInputRetention": true,
+          "sectionHeightAndFlatLinkage": true,
+          "disabledConfigRetention": true,
+          "shortArmAndMissingReference": true,
+          "atomicUndoRedo": true,
+          "cancel": true,
+          "v8CacheAndV7Retention": true,
+          "refreshAndActualProjectRoundtrip": true,
+          "productionCloseViews": true,
+          "mobile390": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "ceiling-continuous-light",
+      "status": "PASS",
+      "sourceRun": "verification-PwDUGo",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "legacySegmented": true,
+          "continuousProductionCloseup": true,
+          "arcOnlyCollision": true,
+          "sectionUpdates": true,
+          "rawInputAndInnerRadiusGuard": true,
+          "shortArmGuard": true,
+          "atomicUndoRedo": true,
+          "modeUndoRedo": true,
+          "savedWarningAndUndo": true,
+          "cancel": true,
+          "v7CacheAndV6Preservation": true,
+          "refreshAndActualProjectRoundtrip": true,
+          "mobile390": true,
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "legacySegmented": true,
+          "continuousProductionCloseup": true,
+          "arcOnlyCollision": true,
+          "sectionUpdates": true,
+          "rawInputAndInnerRadiusGuard": true,
+          "shortArmGuard": true,
+          "atomicUndoRedo": true,
+          "modeUndoRedo": true,
+          "savedWarningAndUndo": true,
+          "cancel": true,
+          "v7CacheAndV6Preservation": true,
+          "refreshAndActualProjectRoundtrip": true,
+          "mobile390": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "sourceRun": "verification-Wcyc8r",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "cacheReload": true,
+          "undoRedo": true,
+          "production3D": true
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "cacheReload": true,
+          "undoRedo": true,
+          "production3D": true
+        }
+      ]
+    },
+    {
+      "name": "layer-location",
+      "status": "PASS",
+      "sourceRun": "verification-cxnOtY",
+      "result": [
+        {
+          "mode": "http",
+          "passed": true,
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "passed": true,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

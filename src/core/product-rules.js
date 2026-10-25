@@ -372,7 +372,7 @@ function replacement(previous,next,candidate){
 // Derived geometry capability; no field is added to saved furniture instances.
 function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return !f.obj&&(C.supported(f)||['counter','vanity'].includes(f.type));}
 // Ceiling defaults describe design examples, not manufacturer requirements.
-const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,snapPixels:12,flatThickness:12,
+const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxRegions:100,maxSections:8,snapPixels:12,flatThickness:12,
  corner:{maxLegs:2,angle:90,lightSetback:0,lightRadius:8,compactInnerRadius:1,arcChordError:.05,arcMaxAngle:3,arcMaxSegments:1024},
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2},
