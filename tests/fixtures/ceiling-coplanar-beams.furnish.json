@@ -1,0 +1,271 @@
+{
+  "format": "furnish-project",
+  "version": 17,
+  "createdAt": "2026-10-25T12:42:18.721Z",
+  "checksum": "c8f2c219",
+  "payload": {
+    "planId": "custom_finish",
+    "current": {
+      "furniture": [],
+      "rooms": {
+        "room1": {
+          "name": "走廊共面验收",
+          "mat": "wood",
+          "use": "bathroom"
+        }
+      },
+      "demolished": [],
+      "measures": [],
+      "notes": [],
+      "open": {},
+      "architecture": {
+        "draft": {
+          "version": 1,
+          "id": "custom_finish",
+          "name": "完成面验收",
+          "source": "dxf",
+          "image": "",
+          "width": 450,
+          "height": 350,
+          "scale": 10,
+          "walls": [
+            {
+              "id": "north",
+              "a": [
+                10,
+                10
+              ],
+              "b": [
+                410,
+                10
+              ],
+              "kind": "b",
+              "thickness": 200
+            },
+            {
+              "id": "east",
+              "a": [
+                410,
+                10
+              ],
+              "b": [
+                410,
+                310
+              ],
+              "kind": "e",
+              "thickness": 200
+            },
+            {
+              "id": "south",
+              "a": [
+                410,
+                310
+              ],
+              "b": [
+                10,
+                310
+              ],
+              "kind": "n",
+              "thickness": 200
+            },
+            {
+              "id": "west",
+              "a": [
+                10,
+                310
+              ],
+              "b": [
+                10,
+                10
+              ],
+              "kind": "e",
+              "thickness": 200
+            }
+          ],
+          "openings": [],
+          "beams": [
+            {
+              "id": "beam_explicit",
+              "name": "明确高度梁",
+              "poly": [
+                [
+                  80,
+                  110
+                ],
+                [
+                  100,
+                  110
+                ],
+                [
+                  100,
+                  210
+                ],
+                [
+                  80,
+                  210
+                ]
+              ],
+              "bottomHeight": 2400,
+              "topHeight": 2700,
+              "review": "beam-height"
+            },
+            {
+              "id": "beam_legacy",
+              "name": "示意高度梁",
+              "poly": [
+                [
+                  300,
+                  110
+                ],
+                [
+                  320,
+                  110
+                ],
+                [
+                  320,
+                  210
+                ],
+                [
+                  300,
+                  210
+                ]
+              ],
+              "ceilingThickness": 300,
+              "review": "beam-height"
+            }
+          ]
+        },
+        "phase": "survey"
+      },
+      "ceilingHeight": 2700,
+      "ceilings": {
+        "version": 1,
+        "items": [
+          {
+            "id": "ceiling_demo_part_0",
+            "kind": "flat",
+            "name": "走廊平顶 · 平面吊顶",
+            "height": 2400,
+            "thickness": 12,
+            "polygon": [
+              [
+                400,
+                1100
+              ],
+              [
+                3800,
+                1100
+              ],
+              [
+                3800,
+                2100
+              ],
+              [
+                400,
+                2100
+              ]
+            ],
+            "regionId": "ceiling_demo"
+          }
+        ],
+        "regions": [
+          {
+            "id": "ceiling_demo",
+            "name": "走廊平顶",
+            "polygon": [
+              [
+                400,
+                1100
+              ],
+              [
+                3800,
+                1100
+              ],
+              [
+                3800,
+                2100
+              ],
+              [
+                400,
+                2100
+              ]
+            ],
+            "style": "flat",
+            "height": 2400,
+            "thickness": 12,
+            "sections": [
+              {
+                "name": "石膏灯槽",
+                "section": {
+                  "vertices": [
+                    {
+                      "id": "v0",
+                      "u": 0,
+                      "d": 0
+                    },
+                    {
+                      "id": "v1",
+                      "u": 20,
+                      "d": 0
+                    },
+                    {
+                      "id": "v2",
+                      "u": 20,
+                      "d": 290
+                    },
+                    {
+                      "id": "v3",
+                      "u": 60,
+                      "d": 290
+                    },
+                    {
+                      "id": "v4",
+                      "u": 60,
+                      "d": 270
+                    },
+                    {
+                      "id": "v5",
+                      "u": 70,
+                      "d": 270
+                    },
+                    {
+                      "id": "v6",
+                      "u": 70,
+                      "d": 300
+                    },
+                    {
+                      "id": "v7",
+                      "u": 0,
+                      "d": 300
+                    }
+                  ],
+                  "light": {
+                    "u": 40,
+                    "d": 290,
+                    "angle": -90,
+                    "width": 10,
+                    "thickness": 2
+                  },
+                  "template": {
+                    "kind": "lowCove",
+                    "values": {
+                      "drop": 300,
+                      "projection": 70,
+                      "back": 20,
+                      "bottom": 10,
+                      "front": 10,
+                      "lip": 30
+                    }
+                  }
+                }
+              }
+            ],
+            "center": true
+          }
+        ]
+      }
+    },
+    "designs": [],
+    "catalog": []
+  }
+}

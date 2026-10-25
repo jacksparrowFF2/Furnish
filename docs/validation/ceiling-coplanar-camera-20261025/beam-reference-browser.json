@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-beam-reference"
+  ],
+  "results": [
+    {
+      "name": "ceiling-beam-reference",
+      "status": "PASS",
+      "seconds": 10.8,
+      "log": "ceiling-beam-reference.log"
+    }
+  ],
+  "notRun": []
+}

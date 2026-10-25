@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "scene-observation",
+    "beam-heights"
+  ],
+  "results": [
+    {
+      "name": "scene-observation",
+      "status": "PASS",
+      "seconds": 63.8,
+      "log": "scene-observation.log"
+    },
+    {
+      "name": "beam-heights",
+      "status": "PASS",
+      "seconds": 26.6,
+      "log": "beam-heights.log"
+    }
+  ],
+  "notRun": []
+}

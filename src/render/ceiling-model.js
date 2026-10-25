@@ -7,6 +7,9 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
 function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bodies=[]}={}){
  const C=root.FurnishCeiling||require('../core/ceiling-core.js'),group=new THREE.Group();group.name='ceilings';
  const surface=new THREE.MeshStandardMaterial({color:'#f4f1e9',roughness:.95,side:THREE.DoubleSide}),light=new THREE.MeshStandardMaterial({color:'#fff4d8',emissive:'#ffde9e',emissiveIntensity:lamps?1.8:0,roughness:.5});
+ // A flush finished ceiling wins the depth tie with a structural beam underside.
+ // Raster depth bias keeps the saved height and production vertices unchanged.
+ const flatSurface=surface.clone();flatSurface.polygonOffset=true;flatSurface.polygonOffsetFactor=-1;flatSurface.polygonOffsetUnits=-1;
  const aluminum=new THREE.MeshStandardMaterial({color:'#a7afb3',metalness:.65,roughness:.35,side:THREE.DoubleSide}),diffuser=new THREE.MeshStandardMaterial({color:'#f6f7ef',emissive:'#fff1d2',emissiveIntensity:lamps ? .22 : 0,roughness:.65,transparent:true,opacity:.8,side:THREE.DoubleSide}),diffuserOff=diffuser.clone();diffuserOff.emissiveIntensity=0;
  let conflictLight=null;const lightMaterial=layout=>{if(!layout.pending.some(m=>m.includes('相交')))return light;if(!conflictLight){conflictLight=light.clone();conflictLight.color.set('#e96842');conflictLight.emissive.set('#e35030');conflictLight.emissiveIntensity=lamps?1:0;}return conflictLight;};
  const shape=p=>{const s=new THREE.Shape();p.forEach(([x,y],i)=>s[i?'lineTo':'moveTo'](x/1000,y/1000));s.closePath();return s;};
@@ -41,10 +44,10 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
    const outline=shape(c.polygon.map(([x,y])=>[x,-y]));
    for(const h of C.downlightHoles(c,bodies)){const hole=new THREE.Path();hole.absellipse(h.x/1000,-h.y/1000,h.r/1000,h.r/1000,0,Math.PI*2,false,0);outline.holes.push(hole);}
    const g=new THREE.ExtrudeGeometry(outline,{depth:c.thickness/1000,bevelEnabled:false,curveSegments:32});g.rotateX(-Math.PI/2);
-   g.translate(wx(0),c.height/1000,wz(0));if(c.height>=top){g.dispose();continue;}syncIdentity.produce("ceiling-model:site-4",()=>mesh(g,surface,c,'flat'));
+   g.translate(wx(0),c.height/1000,wz(0));if(c.height>=top){g.dispose();continue;}syncIdentity.produce("ceiling-model:site-4",()=>mesh(g,flatSurface,c,'flat'));
   }
  }
- for(const material of [surface,light,aluminum,diffuser,diffuserOff,conflictLight])if(material&&!group.children.some(m=>m.material===material))material.dispose();return group;
+ for(const material of [surface,flatSurface,light,aluminum,diffuser,diffuserOff,conflictLight])if(material&&!group.children.some(m=>m.material===material))material.dispose();return group;
 }
 function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null,focusAssembly=false}){
  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.8;host.append(renderer.domElement);

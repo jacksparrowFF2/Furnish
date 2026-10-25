@@ -42,7 +42,7 @@ console.log('PASS beam heights: absolute units, atomic validation, clearing, leg
  assert(Math.abs(bounds.min.x-(Math.min(...known.beams[0].poly.map(p=>p[0]))*d.scale/1000-5))<1e-6);assert(Math.abs(bounds.min.z-(Math.min(...known.beams[0].poly.map(p=>p[1]))*d.scale/1000-5))<1e-6);
  context.archUp.clear();context.opt.cut=1.2;context.top=1.2;vm.runInContext(source,context);assert.equal(context.archUp.children[0].visible,false);
  const signature=html.match(/const a = (JSON\.stringify\(\[.*?\]\)), f =/);assert(signature,'production architecture cache expression');
- context.state={rooms:{},demolished:{},open:{}};context.H=2.8;context.PLAN=F.build(d);
+ context.state={rooms:{},demolished:{},open:{},furniture:[]};context.H=2.8;context.PLAN=F.build(d);
  const unknownSignature=vm.runInContext(signature[1],context);context.PLAN=F.build(known);
  assert.notEqual(vm.runInContext(signature[1],context),unknownSignature,'beam height edits invalidate production architecture geometry');
  console.log('PASS production Three.js beam extrusion, true XYZ placement, unknown omission, cut visibility and cache dependency');

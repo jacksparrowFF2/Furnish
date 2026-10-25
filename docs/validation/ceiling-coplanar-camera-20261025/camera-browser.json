@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-coplanar-camera"
+  ],
+  "results": [
+    {
+      "name": "ceiling-coplanar-camera",
+      "status": "PASS",
+      "seconds": 15,
+      "log": "ceiling-coplanar-camera.log"
+    }
+  ],
+  "notRun": []
+}

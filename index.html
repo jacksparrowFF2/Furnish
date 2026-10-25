@@ -523,7 +523,7 @@ function init(){
   camera = new THREE.PerspectiveCamera(FOV, SW()/SH(), .05, 300);
   orbit = new OrbitControls(camera, renderer.domElement);
   FurnishNavigation.bindOrbit(renderer.domElement,()=>orbit);
-  orbit.enableDamping = true; orbit.maxPolarAngle = Math.PI*.495; orbit.minDistance = 1.5; orbit.maxDistance = 45;
+  orbit.enableDamping = true; orbit.maxPolarAngle = Math.PI*.995; orbit.minDistance = 1.5; orbit.maxDistance = 45;
   orbit.addEventListener('change',invalidate);
   walkCtl = new PointerLockControls(camera, document.body);
   walkCtl.addEventListener('change', invalidate);
