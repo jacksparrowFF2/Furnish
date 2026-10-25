@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "ceiling-assembly",
+    "ceiling-design"
+  ],
+  "results": [
+    {
+      "name": "ceiling-assembly",
+      "status": "PASS",
+      "seconds": 18.3,
+      "log": "ceiling-assembly.log"
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 25.1,
+      "log": "ceiling-design.log"
+    }
+  ],
+  "notRun": []
+}

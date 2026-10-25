@@ -281,3 +281,6 @@ legacyCabinet(f) 仅匹配无 OBJ、无 kitchen／cabinet 的旧 counter／vanit
 pegboardAssembly.hatch.maxPanels=16／minWeb=20 集中定义局部盖板数与间隔建模下限。可选 pegboardHatch.panels 每项 left/bottom/w/h（mm）、hinge、open；父级保留总范围但不是实体板。单块／旧手动缺失保持原结构；自动及显式适配按分离的电箱投影生成，近邻才合并。旧自动通过原 commit／work.restore 重算，不另建迁移或保存通道。
 
 完整 cabinet 覆盖新建示例、旧恢复、严格导入、复制替换、当前／命名方案、撤销重做、自动保存、项目往返和缓存。采购将父／子 open 清零，确认新增 pegboard-local-hatches-v2；配色等非空间输入沿旧排除。具体几何、验证和限制见 [分块契约](ENTRY-PEGBOARD-CABINET.md#分开的电箱使用局部检修盖板2026-10-25)。
+## 吊顶上发光型材参数补充（2026-10-25）
+
+`ceiling.upChannel`集中保存新建预设默认值，旧实例不补写默认。39／22.5／13.6／18.6 mm来自用户截面图，其余壁厚、卡边、柔光板与灯带尺寸均为可编辑示意值；共用核心校验轮廓、灯带与柔光板关系。中央平顶翼边连接由相同实际型材尺寸派生，不复制到界面规则。详见 [吊顶截面](CEILINGS.md#分部件截面与中央板连接2026-10-25)。
