@@ -69,7 +69,7 @@ function renderFab(){
   const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   fab.innerHTML = ids.length
     ? `<div class="fab-primary"><span class="name">${f ? esc(nm(f.name)) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
-      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
+      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):FurnishProducts.definition(f)?.wallRecess?tr('调整箱体宽、深、高','Edit box width, depth and height'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))}${FurnishProducts.definition(f)?.wallRecess?' × '+Number(FurnishProducts.height(f).toFixed(2)):''}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
       + `<button class="btn" data-fab-edit="distance" aria-haspopup="dialog" aria-expanded="false" ${selItems().some(v=>furnitureError(v))?'disabled':''}>${tr('四向净距','Clearances')}</button></div><div class="fab-actions">`
       + b('rotL', 'rotL', tr('逆时针 90°', 'Rotate left')) + b('rotR', 'rotR', tr('顺时针 90°', 'Rotate right')) + b('flip', 'flip', tr('镜像', 'Mirror'))
       + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
@@ -124,8 +124,9 @@ function openFabEditor(kind){
     if(furnitureUsesDetailedDesign(f)){FurnishCabinetEditor.open(f.id);return;}
   }
   const before=snap(),planId=PLAN.id,ids=selIds().join('\n');
-  const title=kind==='size'?tr('调整占地尺寸','Edit footprint size'):tr('四向净距定位','Position by clearance');
-  const panel=mountFabEditor(kind,title,(kind==='size'?`<form id="fab-size-form"><div class="form"><label>${tr('宽','Width')} (mm)<input id="fab-width" type="number" min="${FurnishProducts.footprintMinimum(f,'w')}" max="20000" step="any" value="${f.w}" required></label><label>${tr('深','Depth')} (mm)<input id="fab-depth" type="number" min="${FurnishProducts.footprintMinimum(f,'d')}" max="20000" step="any" value="${f.d}" required></label></div><p class="muted small">${tr('占地宽 × 深；尺寸修改用于布局缩放。','Footprint width × depth; resizing is for layout.')} ${tr('固定基准','Fixed anchor')}：${tr(...FurnishDesign.resizeAnchors[f.resizeAnchor||'center'])}</p><p id="fab-size-error" class="project-error" role="alert"></p><div class="actions"><button class="btn" type="button" data-fab-close>${tr('取消','Cancel')}</button><button class="btn primary" type="submit">${tr('应用尺寸','Apply size')}</button></div></form>`
+  const boxSize=kind==='size'&&FurnishProducts.definition(f)?.wallRecess;
+  const title=kind==='size'?(boxSize?tr('调整箱体尺寸','Edit box dimensions'):tr('调整占地尺寸','Edit footprint size')):tr('四向净距定位','Position by clearance');
+  const panel=mountFabEditor(kind,title,(kind==='size'?`<form id="fab-size-form"><div class="form"><label>${tr('宽','Width')} (mm)<input id="fab-width" type="number" min="${FurnishProducts.footprintMinimum(f,'w')}" max="20000" step="any" value="${f.w}" required></label><label>${tr('深','Depth')} (mm)<input id="fab-depth" type="number" min="${FurnishProducts.footprintMinimum(f,'d')}" max="20000" step="any" value="${f.d}" required></label>${boxSize?`<label>${tr('高','Height')} (mm)<input id="fab-height" type="number" min="10" max="20000" step="any" value="${FurnishProducts.height(f)}" required></label>`:''}</div><p class="muted small">${boxSize?tr('箱体宽 × 深 × 高（含面板）；深为入墙方向，箱底离地单独设置。','Box width × depth × height, including panel; depth goes into the wall. Set bottom height separately.'):tr('占地宽 × 深；尺寸修改用于布局缩放。','Footprint width × depth; resizing is for layout.')} ${tr('固定基准','Fixed anchor')}：${tr(...FurnishDesign.resizeAnchors[f.resizeAnchor||'center'])}</p><p id="fab-size-error" class="project-error" role="alert"></p><div class="actions"><button class="btn" type="button" data-fab-close>${tr('取消','Cancel')}</button><button class="btn primary" type="submit">${tr('应用尺寸','Apply size')}</button></div></form>`
     :directionalMeasurementPanel(items,'fab-distance-save',true)));
   panel.querySelectorAll('[data-fab-close]').forEach(b=>b.onclick=()=>closeFabEditor());
   // Keep the app's canvas shortcuts from firing while using this small editor.
@@ -135,8 +136,10 @@ function openFabEditor(kind){
       if(PLAN.id!==planId||snap()!==before||selIds().join('\n')!==ids)throw Error(tr('方案已变化，请重新打开尺寸调整','Design changed; reopen size adjustment'));
       const w=panel.querySelector('#fab-width'),d=panel.querySelector('#fab-depth');
       if(!w.value.trim()||!d.value.trim())throw Error(tr('请输入有效宽度和深度','Enter a valid width and depth'));
-      const next=FurnishDesign.resizeFurniture(getF(f.id),{w:Number(w.value),d:Number(d.value)});
-      closeFabEditor(false);if(next.w!==f.w||next.d!==f.d)mutate(()=>Object.assign(getF(f.id),next));
+      const h=panel.querySelector('#fab-height');
+      if(h&&!h.value.trim())throw Error(tr('请输入有效高度','Enter a valid height'));
+      const next=FurnishDesign.resizeFurniture(getF(f.id),{w:Number(w.value),d:Number(d.value),...(h?{h:Number(h.value)}:{})});
+      closeFabEditor(false);if(next.w!==f.w||next.d!==f.d||h&&next.h!==f.h)mutate(()=>Object.assign(getF(f.id),next));
       $('#fab [data-fab-edit="size"]')?.focus({preventScroll:true});
     }catch(error){panel.querySelector('#fab-size-error').textContent=error.message;}
   };

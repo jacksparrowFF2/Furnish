@@ -269,6 +269,24 @@
   const outline=rect=>[[rect.left,rect.bottom],[rect.right,rect.bottom],[rect.right,rect.top],[rect.left,rect.top]].map(([x,y])=>point(x,y));
   return {column,boxIds:boxes.map(b=>b.id),box:outline(box),opening:outline(opening),sides:products().pegboardAssembly.hatch.padding.sides.map(side=>({side,actual:Math.round(actual[side]*1e6)/1e6,target:padding[side],matches:Math.abs(actual[side]-padding[side])<=1e-6,a:edges[side][0],b:edges[side][1]}))};
  }
+ // Separate local openings retain the fixed web between distant boxes.
+ function pegboardHatchEnvelope(h){
+  if(!h.panels)return h;
+  const left=Math.min(...h.panels.map(p=>p.left)),bottom=Math.min(...h.panels.map(p=>p.bottom));
+  return {...h,left,bottom,w:Math.max(...h.panels.map(p=>p.left+p.w))-left,h:Math.max(...h.panels.map(p=>p.bottom+p.h))-bottom};
+ }
+ function pegboardHatches(f,column,c=config(f)){
+  const r=pegboardRegion(f,column,c),h=c.columns[column]?.pegboardHatch;if(!r||!h)return [];
+  const rule=products().pegboardAssembly.hatch;
+  return (h.panels??[h]).map((p,leaf)=>({...p,leaf,left:r.left+p.left,bottom:r.bottom+p.bottom,top:r.bottom+p.bottom+p.h,depth:r.depth,thickness:r.thickness,offset:r.offset,gap:rule.gap,angle:rule.angle}));
+ }
+ function pegboardHatchAlignments(f,column,furniture,plan){
+  const h=config(f).columns[column]?.pegboardHatch;if(!h?.panels)return [pegboardHatchAlignment(f,column,furniture,plan)].filter(Boolean);
+  const boxes=pegboardBoxCandidates(f,column,furniture,plan);
+  return h.panels.map((p,leaf)=>{const next=JSON.parse(JSON.stringify(f));next.cabinet.columns[column].pegboardHatch={...h,...p};delete next.cabinet.columns[column].pegboardHatch.panels;
+   const ids=new Set(boxes.filter(b=>b.right>p.left&&b.left<p.left+p.w&&b.top>p.bottom&&b.bottom<p.bottom+p.h).map(b=>b.id));
+   return {...pegboardHatchAlignment(next,column,furniture.filter(b=>ids.has(b.id)),plan),leaf};});
+ }
  function pegboardHatchPadding(hatch){
   const rule=products().pegboardAssembly.hatch,padding=hatch?.padding;
   if(padding===undefined)return Object.fromEntries(rule.padding.sides.map(key=>[key,rule.fitPadding]));
@@ -279,22 +297,34 @@
   if(f.locked)throw Error('家具已锁定，请先解锁');
   const sides=products().pegboardAssembly.hatch.padding.sides,insets=padding===undefined?pegboardHatchPadding(f.cabinet?.columns?.[column]?.pegboardHatch):pegboardHatchPadding({padding:typeof padding==='number'?Object.fromEntries(sides.map(key=>[key,padding])):padding});
   const boxes=pegboardBoxCandidates(f,column,furniture??[],plan);if(!boxes.length)throw Error('未找到板后 500 mm 内、正面朝向一致且投影相交的电箱，请核对位置和高度基准');
-  const next=JSON.parse(JSON.stringify(f)),col=next.cabinet.columns[column],left=Math.min(...boxes.map(b=>b.left))-insets.left,bottom=Math.min(...boxes.map(b=>b.bottom))-insets.bottom;
-  col.pegboardHatch={...(col.pegboardHatch??defaultPegboardHatch(f,column)),left,bottom,w:Math.max(...boxes.map(b=>b.right))+insets.right-left,h:Math.max(...boxes.map(b=>b.top))+insets.top-bottom};
-  for(const key of ['left','bottom','w','h'])col.pegboardHatch[key]=Math.round(col.pegboardHatch[key]*1e6)/1e6;
+  const next=JSON.parse(JSON.stringify(f)),col=next.cabinet.columns[column],old=col.pegboardHatch??defaultPegboardHatch(f,column),rule=products().pegboardAssembly.hatch;
+  let panels=boxes.map(b=>({left:b.left-insets.left,bottom:b.bottom-insets.bottom,w:b.right-b.left+insets.left+insets.right,h:b.top-b.bottom+insets.top+insets.bottom}));
+  // Only adjacent/overlapping access areas share a cover; distant boxes never bridge the intervening board.
+  for(let merged=true;merged;){merged=false;outer:for(let i=0;i<panels.length;i++)for(let j=i+1;j<panels.length;j++){
+   const a=panels[i],b=panels[j],dx=Math.max(a.left,b.left)-Math.min(a.left+a.w,b.left+b.w),dy=Math.max(a.bottom,b.bottom)-Math.min(a.bottom+a.h,b.bottom+b.h);
+   if(dx>=rule.minWeb-1e-7||dy>=rule.minWeb-1e-7)continue;
+   panels[i]=pegboardHatchEnvelope({panels:[a,b]});delete panels[i].panels;panels.splice(j,1);merged=true;break outer;
+  }}
+  panels.sort((a,b)=>a.bottom-b.bottom||a.left-b.left);
+  const prior=old.panels??[old],used=new Set();
+  panels=panels.map(p=>{const match=prior.map((v,i)=>({v,i,d:Math.hypot(v.left+v.w/2-p.left-p.w/2,v.bottom+v.h/2-p.bottom-p.h/2)})).filter(v=>!used.has(v.i)).sort((a,b)=>a.d-b.d)[0];if(match)used.add(match.i);
+   return {...Object.fromEntries(['left','bottom','w','h'].map(k=>[k,Math.round(p[k]*1e6)/1e6])),hinge:match?.v.hinge??old.hinge,open:match?.v.open??old.open};});
+  col.pegboardHatch=panels.length===1?{...old,...panels[0]}:pegboardHatchEnvelope({...old,panels});
+  if(panels.length===1)delete col.pegboardHatch.panels;
   try{return validate(next);}catch(e){throw Error('适配范围超出洞洞板可用区域，请调整电箱／板的位置或余量。'+e.message);}
  }
  // Recompute in the existing application transaction, storing only valid geometry.
- function editPegboardHatchMargin(f,column,side,value,context){
+ function editPegboardHatchMargin(f,column,side,value,context,leaf){
   if(f.locked)throw Error('家具已锁定，请先解锁');
   const rule=products().pegboardAssembly.hatch.padding;if(!rule.sides.includes(side))throw Error('余量方向无效');
   const next=JSON.parse(JSON.stringify(f)),h=next.cabinet?.columns[column]?.pegboardHatch;if(!h)throw Error('检修盖板不存在');
   h.padding={...pegboardHatchPadding(h),[side]:value};pegboardHatchPadding(h);
   if(h.mode==='auto')return fitPegboardHatch(next,column,context);
-  const alignment=pegboardHatchAlignment(f,column,context.furniture,context.plan);if(!alignment||alignment.pending)throw Error('未找到后方电箱，无法按余量定位');
+  const target=h.panels?.[leaf??0]??h,alignment=pegboardHatchAlignments(f,column,context.furniture,context.plan)[leaf??0];if(!alignment||alignment.pending)throw Error('未找到后方电箱，无法按余量定位');
   const actual=alignment.sides.find(s=>s.side===side).actual,delta=value-actual;
-  if(side==='left'){h.left-=delta;h.w+=delta;}else if(side==='right')h.w+=delta;else if(side==='bottom'){h.bottom-=delta;h.h+=delta;}else h.h+=delta;
-  for(const key of ['left','bottom','w','h'])h[key]=Math.round(h[key]*1e6)/1e6;
+  if(side==='left'){target.left-=delta;target.w+=delta;}else if(side==='right')target.w+=delta;else if(side==='bottom'){target.bottom-=delta;target.h+=delta;}else target.h+=delta;
+  for(const key of ['left','bottom','w','h'])target[key]=Math.round(target[key]*1e6)/1e6;
+  next.cabinet.columns[column].pegboardHatch=pegboardHatchEnvelope(h);
   return validate(next);
  }
  function setPegboardHatchMode(f,column,mode,context){
@@ -318,7 +348,7 @@
   const issues=[];
   f.cabinet?.columns?.forEach((col,column)=>{
    const h=col.pegboardHatch;if(h?.mode!=='auto')return;
-   try{const next=fitPegboardHatch({...f,locked:false},column,{furniture,plan}).cabinet.columns[column].pegboardHatch;if(['left','bottom','w','h'].some(k=>Math.abs(h[k]-next[k])>1e-6))throw Error('盖板尚未同步，请解除柜体／图层锁定后重新适配');}
+   try{const next=fitPegboardHatch({...f,locked:false},column,{furniture,plan}).cabinet.columns[column].pegboardHatch;if(['left','bottom','w','h'].some(k=>Math.abs(h[k]-next[k])>1e-6)||(h.panels?.length??0)!==(next.panels?.length??0)||h.panels?.some((p,i)=>['left','bottom','w','h'].some(k=>Math.abs(p[k]-next.panels[i][k])>1e-6)))throw Error('盖板尚未同步，请解除柜体／图层锁定后重新适配');}
    catch(e){issues.push({kind:'pegboardfit',id:f.id,column,name:f.name,pending:true,message:`${f.name||'洞洞板'} · 分区 ${column+1} 自动适配待核对：${e.message}，保留上次有效盖板`});}
   });return issues;
  }
@@ -330,8 +360,14 @@
  }
  function validatePegboardHatch(f,column){
   const c=f.cabinet,h=c.columns[column].pegboardHatch;if(h===undefined)return;
-  const r=pegboardRegion(f,column,c),rule=products().pegboardAssembly.hatch,keys=['left','bottom','w','h','hinge','open','mode','padding'];
+  const r=pegboardRegion(f,column,c),rule=products().pegboardAssembly.hatch,keys=['left','bottom','w','h','hinge','open','mode','padding','panels'];
   pegboardHatchPadding(h);
+  if(h?.panels!==undefined){
+   if(!Array.isArray(h.panels)||h.panels.length<2||h.panels.length>rule.maxPanels)throw Error('检修盖板分块数量无效');
+   for(const p of h.panels){if(!p||typeof p!=='object'||Array.isArray(p)||Object.keys(p).some(k=>!['left','bottom','w','h','hinge','open'].includes(k)))throw Error('检修盖板分块字段无效');const single=JSON.parse(JSON.stringify(f));single.cabinet.columns[column].pegboardHatch={...p};validatePegboardHatch(single,column);}
+   const envelope=pegboardHatchEnvelope(h);if(['left','bottom','w','h'].some(k=>Math.abs(h[k]-envelope[k])>1e-6))throw Error('检修盖板分块与总范围不一致');
+   for(let i=0;i<h.panels.length;i++)for(let j=i+1;j<h.panels.length;j++){const a=h.panels[i],b=h.panels[j],dx=Math.max(a.left,b.left)-Math.min(a.left+a.w,b.left+b.w),dy=Math.max(a.bottom,b.bottom)-Math.min(a.bottom+a.h,b.bottom+b.h);if(dx<rule.minWeb-1e-7&&dy<rule.minWeb-1e-7)throw Error('检修盖板分块之间须保留至少 '+rule.minWeb+' mm 固定板');}
+  }
   if(!r||!h||h.mode!==undefined&&!rule.modes.includes(h.mode)||typeof h!=='object'||Array.isArray(h)||Object.keys(h).some(k=>!keys.includes(k))||!['left','right'].includes(h.hinge)||typeof h.open!=='boolean'||![h.left,h.bottom,h.w,h.h].every(Number.isFinite)||h.w<rule.min||h.h<rule.min||h.left<rule.margin||h.bottom<rule.margin||h.left+h.w>r.width-rule.margin+1e-7||h.bottom+h.h>r.top-r.bottom-rule.margin+1e-7)throw Error('检修盖板宽高至少 50 mm，四边须保留 20 mm 固定板；仅用于玄关洞洞板开放区');
  }
  // Actual closed assembly envelope. The numeric production recorder also powers collision geometry.
@@ -598,10 +634,10 @@
    if(verticalDoor(door))verticalZone(group.column,'display',door,group.left+1,group.left+group.width-1,bottom,top,front-c.thickness/2,angle,c.thickness/2+1);
    else {const n=door==='double'?2:1,leaf=group.width/n;for(let j=0;j<n;j++){const rightHinge=rightDoorHinge(door,j,n),hinge=group.left+leaf*(j+(rightHinge?1:0)),sign=rightHinge?-1:1,points=[[hinge,front]];for(let k=0;k<=24;k++){const a=angle*Math.PI/180*k/24;points.push([hinge+sign*leaf*Math.cos(a),front+leaf*Math.sin(a)]);}zones.push({column:group.column,kind:'cabinetdoor',section:'display',leaf:j,poly:transform(points),ranges:[[bottom,top]]});}}
   }
-  c.columns.forEach((col,i)=>{const h=pegboardHatch(f,i,c);if(!h)return;const right=h.hinge==='right',sign=right?-1:1,left=h.left+h.gap,width=h.w-2*h.gap,hinge=left+(right?width:0),front=h.depth+h.thickness,points=[];
+  c.columns.forEach((col,i)=>{for(const h of pegboardHatches(f,i,c)){const right=h.hinge==='right',sign=right?-1:1,left=h.left+h.gap,width=h.w-2*h.gap,hinge=left+(right?width:0),front=h.depth+h.thickness,points=[];
    for(let k=0;k<=50;k++){const a=h.angle*Math.PI/180*k/50;for(const x of [0,sign*width])for(const z of [-h.thickness,0])points.push([hinge+x*Math.cos(a)-sign*z*Math.sin(a),front+sign*x*Math.sin(a)+z*Math.cos(a)]);}
-   zones.push({column:i,kind:'cabinetdoor',section:'pegboardHatch',poly:transform(convexHull(points)),ranges:[[h.bottom+h.gap+h.offset,h.top-h.gap+h.offset]]});
-  });
+   zones.push({column:i,kind:'cabinetdoor',section:'pegboardHatch',leaf:h.leaf,poly:transform(convexHull(points)),ranges:[[h.bottom+h.gap+h.offset,h.top-h.gap+h.offset]]});
+  }});
   const bottom=f.type==='kitchenwall'||f.type==='vanity'?products().cabinetBase(f):0;if(bottom)for(const zone of zones){zone.ranges=zone.ranges.map(([a,b])=>[a+bottom,b+bottom]);if(zone.sweep)zone.sweep.profile=zone.sweep.profile.map(([z,y])=>[z,y+bottom]);}return zones;
  }
  function shiftOpening(zone,z){return {...zone,ranges:zone.ranges.map(([a,b])=>[a+z,b+z]),...(zone.sweep?{sweep:{...zone.sweep,profile:zone.sweep.profile.map(([d,h])=>[d,h+z])}}:{})};}
@@ -692,16 +728,16 @@
   if(!f.cabinet){if(supported(next))validate({...next,cabinet:config(next)});return next;}
   return validate(scaleStructure(f,{...next,cabinet:JSON.parse(JSON.stringify(next.cabinet??config(f)))}));
  }
- function toggle(f,column,drawer,lid=false,lane,section){
+ function toggle(f,column,drawer,lid=false,lane,section,leaf){
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
-  if(section==='pegboardHatch'){if(!pegboardHatch(f,column,c))throw Error('检修盖板不存在');col.pegboardHatch.open=!col.pegboardHatch.open;}
+  if(section==='pegboardHatch'){if(!pegboardHatch(f,column,c))throw Error('检修盖板不存在');const h=col.pegboardHatch;if(h.panels&&leaf!==undefined){if(!Number.isInteger(leaf)||!h.panels[leaf])throw Error('检修盖板分块不存在');h.panels[leaf].open=!h.panels[leaf].open;}else{h.open=!h.open;h.panels?.forEach(p=>p.open=h.open);}}
   else if(section==='display'){if(!c.sideboard||displayDoor(col)==='none'||!sideboardDisplayGroups(f).some(group=>group.column===column))throw Error('玻璃展示柜不存在');col.displayOpen=!col.displayOpen;if(col.displayOpen)col.displayAngle=maxDoorAngle(c,col,'display');}
   else if(['lower','upper'].includes(section)&&splitDoors(c,col)&&drawer===undefined){if(frontDoor(f,column,c)==='none')throw Error('该分区没有柜门');col.doorSections??={lower:{open:col.doorOpen,angle:col.doorAngle??maxDoorAngle(c,col)},upper:{open:col.doorOpen,angle:col.doorAngle??maxDoorAngle(c,col)}};const state=col.doorSections[section];state.open=!state.open;if(state.open)state.angle=maxDoorAngle(c,col);}
   else if(lid){if(col.top!=='drawer')throw Error('此分区没有可开合上盖');col.topOpen=!col.topOpen;}
   else if(drawer===undefined){if(frontDoor(f,column,c)==='none')throw Error('该分区没有柜门');col.doorOpen=!col.doorOpen;if(col.doorOpen)col.doorAngle=maxDoorAngle(c,col);if(col.doorSections)for(const state of Object.values(col.doorSections)){state.open=col.doorOpen;state.angle=maxDoorAngle(c,col);}}else{const d=col.drawers[drawer];if(!d)throw Error('抽屉不存在');if(lane!==undefined){if(!Number.isInteger(lane)||lane<0||lane>=drawerCount(col))throw Error('抽屉列不存在');if(!d.lanes)d.lanes=Array.from({length:drawerCount(col)},()=>({open:d.open,extension:d.extension??1}));const state=d.lanes[lane];state.open=!state.open;if(state.open&&state.extension===0)state.extension=1;}else{d.open=!d.open;if(d.open&&d.extension===0)d.extension=1;d.lanes?.forEach(v=>{v.open=d.open;if(v.open&&v.extension===0)v.extension=1;});}}
   return validate(f.type==='vanity'?{...f,cabinet:c}:{...f,h:height(f),cabinet:c});
  }
- function specification(f){const c=config(f);delete c.autoDoors;if(c.entry){delete c.entry.autoColumns;delete c.entry.editable;}return {...c,columns:c.columns.map(col=>{const {doorAngle,doorLeaves,doorSections,topOpen,displayOpen,displayAngle,...rest}=col;return {...rest,...(col.pegboardHatch?{pegboardHatch:{...col.pegboardHatch,open:false}}:{}),doorOpen:false,drawers:col.drawers.map(d=>{const {extension,lanes,...rest}=d;return {...rest,open:false};})};})};}
+ function specification(f){const c=config(f);delete c.autoDoors;if(c.entry){delete c.entry.autoColumns;delete c.entry.editable;}return {...c,columns:c.columns.map(col=>{const {doorAngle,doorLeaves,doorSections,topOpen,displayOpen,displayAngle,...rest}=col;return {...rest,...(col.pegboardHatch?{pegboardHatch:{...col.pegboardHatch,open:false,...(col.pegboardHatch.panels?{panels:col.pegboardHatch.panels.map(p=>({...p,open:false}))}:{})}}:{}),doorOpen:false,drawers:col.drawers.map(d=>{const {extension,lanes,...rest}=d;return {...rest,open:false};})};})};}
  // Derived side openings: only matching, parallel entry cabinets within 20 mm.
  // Plan-local X reverses under mirroring; height remains floor-based.
  function sideOpenings(f,items=[]){
@@ -743,7 +779,7 @@
   let c;try{c=config(f);}catch{c={invalid:f.cabinet===undefined?null:JSON.parse(JSON.stringify(f.cabinet))};}
   const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);return c;
  }
- const api={editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
+ const api={pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
  Object.assign(api,{moduleLayout,moduleWidths,moduleWidthLimits,adjustModuleWidth,withDoorSetting,templateGroups,templateType,adjustColumnWidth,repartition,fitDoors,scaleStructure,upgradeDesign});
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

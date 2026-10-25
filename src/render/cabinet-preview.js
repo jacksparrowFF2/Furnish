@@ -79,12 +79,12 @@
    });
    }
    if(settings.dimensions&&!current.kitchen){
-    const results=C.config(current).columns.map((col,i)=>col.pegboardHatch?C.pegboardHatchAlignment(current,i,furniture,plan):null).filter(Boolean);
+    const results=C.config(current).columns.flatMap((col,i)=>col.pegboardHatch?C.pegboardHatchAlignments(current,i,furniture,plan):[]);
     if(results.length){const legend=document.createElement('div');legend.className='cab-hatch-legend';legend.textContent='青线：电箱投影 · 橙线：检修开口（关闭位置）';labelLayer.appendChild(legend);}
     for(const data of results){
      if(data.pending){const warning=document.createElement('div');warning.className='cab-hatch-legend cab-hatch-warning';warning.textContent=`分区 ${data.column+1}：${data.message}`;labelLayer.appendChild(warning);continue;}
      hatchOutlines.push({box:data.box.map(p=>point(...p)),opening:data.opening.map(p=>point(...p))});
-     for(const side of data.sides){const a=point(...side.a),b=point(...side.b),caption={top:'上',bottom:'下',left:'左',right:'右'}[side.side],text=`${caption} 实测 ${fmt(side.actual)} / 设定 ${fmt(side.target)} mm`,el=add(text,a.clone().add(b).multiplyScalar(.5),{a,b,pegPadding:side.side});el.className+=' cab-hatch-margin'+(side.matches?'':' cab-hatch-mismatch');el.setAttribute('data-hatch-margin',side.side);el.setAttribute('data-hatch-actual',String(side.actual));el.setAttribute('data-hatch-target',String(side.target));el.title=`分区 ${data.column+1}，${side.actual<0?'电箱超出开口，尚未完整覆盖':side.matches?'实际余量与设定一致':'实际余量与设定不同'}；电箱外沿至检修开口，不含盖板边缝`;if(actions.hatchMargin&&!current.locked){el.setAttribute('role','button');el.tabIndex=0;el.className+=' cab-hatch-editable';el.title+='；点击输入余量，Enter 应用，Esc 取消';el.onclick=e=>{e.stopPropagation();openHatchInput(data.column,side.side,side.target,el);};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();openHatchInput(data.column,side.side,side.target,el);}};}
+     for(const side of data.sides){const a=point(...side.a),b=point(...side.b),caption={top:'上',bottom:'下',left:'左',right:'右'}[side.side],text=`${caption} 实测 ${fmt(side.actual)} / 设定 ${fmt(side.target)} mm`,el=add(text,a.clone().add(b).multiplyScalar(.5),{a,b,pegPadding:side.side});el.className+=' cab-hatch-margin'+(side.matches?'':' cab-hatch-mismatch');el.setAttribute('data-hatch-margin',side.side);if(data.leaf!==undefined)el.setAttribute('data-hatch-leaf',String(data.leaf));el.setAttribute('data-hatch-actual',String(side.actual));el.setAttribute('data-hatch-target',String(side.target));el.title=`分区 ${data.column+1}，${side.actual<0?'电箱超出开口，尚未完整覆盖':side.matches?'实际余量与设定一致':'实际余量与设定不同'}；电箱外沿至检修开口，不含盖板边缝`;if(actions.hatchMargin&&!current.locked){el.setAttribute('role','button');el.tabIndex=0;el.className+=' cab-hatch-editable';el.title+='；点击输入余量，Enter 应用，Esc 取消';el.onclick=e=>{e.stopPropagation();openHatchInput(data.column,side.side,side.target,el,data.leaf);};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();openHatchInput(data.column,side.side,side.target,el,data.leaf);}};}
 
      }
     }
@@ -166,16 +166,16 @@
    if(!commit){hatchEditing=null;edit.form.remove();controls.enabled=true;return true;}
    try{
     if(!edit.input.value.trim())throw Error('请输入余量');const value=Number(edit.input.value),rule=C.pegboardHatchPadding({padding:Object.fromEntries(root.FurnishProducts.pegboardAssembly.hatch.padding.sides.map(side=>[side,value]))});
-    const next=actions.hatchMargin(edit.column,edit.side,rule[edit.side]);if(!next)throw Error('无法应用，请检查余量与板边界');
+    const next=actions.hatchMargin(edit.column,edit.side,rule[edit.side],edit.leaf);if(!next)throw Error('无法应用，请检查余量与板边界');
     hatchEditing=null;edit.form.remove();controls.enabled=true;update(next);return true;
    }catch(e){edit.message.textContent=e.message;edit.input.setAttribute('aria-invalid','true');edit.input.focus({preventScroll:true});return false;}
   }
-  function openHatchInput(column,side,value,button){
+  function openHatchInput(column,side,value,button,leaf){
    if(!finishHatchInput())return;
    const form=document.createElement('form'),label=document.createElement('label'),input=document.createElement('input'),apply=document.createElement('button'),cancel=document.createElement('button'),message=document.createElement('div'),caption={top:'上',bottom:'下',left:'左',right:'右'}[side];
    form.className='cab-hatch-input';form.setAttribute('aria-label',`分区 ${column+1} · ${caption}余量编辑`);label.textContent=`${caption}余量 mm`;input.type='number';input.step='any';input.min=root.FurnishProducts.pegboardAssembly.hatch.padding.min;input.max=root.FurnishProducts.pegboardAssembly.hatch.padding.max;input.value=String(value);input.setAttribute('aria-label',`预览${caption}余量 mm`);apply.type='submit';apply.textContent='应用余量';cancel.type='button';cancel.textContent='取消修改';message.setAttribute('role','alert');label.appendChild(input);form.appendChild(label);form.appendChild(apply);form.appendChild(cancel);form.appendChild(message);host.appendChild(form);
    form.style.left=`${Math.max(8,Math.min((host.clientWidth||500)-248,parseFloat(button.style.left)||8))}px`;form.style.top=`${Math.max(40,Math.min((host.clientHeight||440)-130,(parseFloat(button.style.top)||40)+18))}px`;
-   hatchEditing={column,side,form,input,message};controls.enabled=false;form.onsubmit=e=>{e.preventDefault();e.stopPropagation();finishHatchInput();};cancel.onclick=e=>{e.stopPropagation();finishHatchInput(false);};input.onkeydown=e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();finishHatchInput(false);}else if(e.key==='Enter'){e.preventDefault();finishHatchInput();}};input.focus({preventScroll:true});input.select();
+   hatchEditing={column,side,leaf,form,input,message};controls.enabled=false;form.onsubmit=e=>{e.preventDefault();e.stopPropagation();finishHatchInput();};cancel.onclick=e=>{e.stopPropagation();finishHatchInput(false);};input.onkeydown=e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();finishHatchInput(false);}else if(e.key==='Enter'){e.preventDefault();finishHatchInput();}};input.focus({preventScroll:true});input.select();
   }
   function finishDrawerInput(commit=true){
    if(!drawerEditing)return true;const edit=drawerEditing;drawerEditing=null;controls.enabled=true;

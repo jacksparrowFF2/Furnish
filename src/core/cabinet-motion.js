@@ -20,7 +20,7 @@
    let poly,bottom,top;const g=node.geometry;
    if(g.box){const [w,h,d]=g.box;if(Math.min(w,h,d)<=0)return;poly=[[-w/2,-d/2],[w/2,-d/2],[w/2,d/2],[-w/2,d/2]];bottom=-h/2;top=h/2;}
    else if(g.shape&&Math.abs(g.angle-Math.PI/2)<1e-8){poly=g.shape.points;bottom=-g.depth;top=0;}
-   else if(includeStatic&&g.shape&&!g.angle){const xs=g.shape.points.map(p=>p[0]),ys=g.shape.points.map(p=>p[1]);poly=[[Math.min(...xs),0],[Math.max(...xs),0],[Math.max(...xs),g.depth],[Math.min(...xs),g.depth]];bottom=Math.min(...ys);top=Math.max(...ys);}
+   else if((includeStatic||moving)&&g.shape&&!g.angle){const xs=g.shape.points.map(p=>p[0]),ys=g.shape.points.map(p=>p[1]);poly=[[Math.min(...xs),0],[Math.max(...xs),0],[Math.max(...xs),g.depth],[Math.min(...xs),g.depth]];bottom=Math.min(...ys);top=Math.max(...ys);}
    else return; // Round knobs are accessories, not boards.
    let pivot=[0,0,0];for(let n=moving;n;n=n.parent){const m=n.userData.motion;pivot=pivot.map((v,i)=>v+[n.position.x,n.position.y,m?.axis==='z'?m.closedZ:n.position.z][i]);}
    const motion=moving?.userData.motion;
@@ -29,8 +29,9 @@
     if(hole.points.length!==4)continue;
     const xs=hole.points.map(p=>p[0]),ys=hole.points.map(p=>p[1]),left=Math.min(...xs),right=Math.max(...xs),low=Math.min(...ys),high=Math.max(...ys);
     if(!hole.points.every(([x,y])=>(x===left||x===right)&&(y===low||y===high)))continue;
-    const x0=Math.min(...poly.map(p=>p[0])),x1=Math.max(...poly.map(p=>p[0]));
-    pieces=[[x0,left,bottom,top],[right,x1,bottom,top],[left,right,bottom,low],[left,right,high,top]].filter(([l,r,b,t])=>r>l&&t>b).map(([l,r,b,t])=>({poly:[[l,0],[r,0],[r,g.depth],[l,g.depth]],bottom:b,top:t}));
+    pieces=pieces.flatMap(piece=>{const x0=Math.min(...piece.poly.map(p=>p[0])),x1=Math.max(...piece.poly.map(p=>p[0])),l=Math.max(x0,left),r=Math.min(x1,right),b=Math.max(piece.bottom,low),t=Math.min(piece.top,high);
+     if(r<=l||t<=b)return [piece];
+     return [[x0,l,piece.bottom,piece.top],[r,x1,piece.bottom,piece.top],[l,r,piece.bottom,b],[l,r,t,piece.top]].filter(([l,r,b,t])=>r>l&&t>b).map(([l,r,b,t])=>({poly:[[l,0],[r,0],[r,g.depth],[l,g.depth]],bottom:b,top:t}));});
    }
    for(const {poly,bottom,top} of pieces)
 result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000,(z+offset[2])*1000]),bottom:(bottom+offset[1])*1000,top:(top+offset[1])*1000,...(motion?{motion:{...motion,pivot:pivot.map(v=>v*1000),travel:(motion.travel||0)*1000}}:{}),...(includeStatic?{metadata:{...node.userData},phase:motion?(motion.axis==='z'?(moving.position.z-motion.closedZ)/(motion.travel||1):moving.rotation[motion.axis]/(motion.angle||1)):0}:{} )});

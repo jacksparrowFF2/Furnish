@@ -274,3 +274,10 @@ legacyCabinet(f) 仅匹配无 OBJ、无 kitchen／cabinet 的旧 counter／vanit
 
 
 2026-10-24：heating_manifold 默认宽／深集中于 manifold.width=800、depth=180，高 600 mm；新建 5 路时左长450／330 mm，旧显式尺寸及两排配置保持。wallFinishOpening=rectangle 为非 OBJ 生产模型的派生墙面饰层避让能力，不切结构墙、不增加默认检修余量。沿原实例字段和 mutate，墙层／墙砖／生产缓存及空间确认覆盖实际读取输入，无新持久字段。见 [毛坯墙基准](HEATING-MANIFOLD.md#毛坯墙基准与后铺瓷砖避让2026-10-24)。
+
+
+## 洞洞板检修盖板分块（2026-10-25）
+
+pegboardAssembly.hatch.maxPanels=16／minWeb=20 集中定义局部盖板数与间隔建模下限。可选 pegboardHatch.panels 每项 left/bottom/w/h（mm）、hinge、open；父级保留总范围但不是实体板。单块／旧手动缺失保持原结构；自动及显式适配按分离的电箱投影生成，近邻才合并。旧自动通过原 commit／work.restore 重算，不另建迁移或保存通道。
+
+完整 cabinet 覆盖新建示例、旧恢复、严格导入、复制替换、当前／命名方案、撤销重做、自动保存、项目往返和缓存。采购将父／子 open 清零，确认新增 pegboard-local-hatches-v2；配色等非空间输入沿旧排除。具体几何、验证和限制见 [分块契约](ENTRY-PEGBOARD-CABINET.md#分开的电箱使用局部检修盖板2026-10-25)。
