@@ -17,6 +17,9 @@ from mathutils import Matrix, Vector
 
 def main(directory):
     settings=json.loads((directory/'receiver-input.json').read_text(encoding='utf-8'))
+    def progress(stage):
+        (directory/'receiver-progress.json').write_text(json.dumps({'stage':stage,'time':time.time()}),encoding='utf-8')
+    progress('initializing isolated receiver')
     base=settings['server'];token=settings['token']
     bpy.ops.wm.read_factory_settings(use_empty=True)
     assert Path(bpy.utils.user_resource('SCRIPTS')).resolve().is_relative_to(directory/'isolated-blender-scripts'), 'Blender test script directory must be isolated'
@@ -40,7 +43,7 @@ def main(directory):
     def find(key):return next(o for o in managed().all_objects if o.get('furnishObjectId')==key)
     def matrix_tuple(obj):return tuple(obj.matrix_world[i][j] for i in range(4) for j in range(4))
     for fixture in settings['fixtures']:
-        name=fixture['name'];payload=(directory/fixture['file']).read_bytes()
+        name=fixture['name'];progress('receiving '+name);payload=(directory/fixture['file']).read_bytes()
         manifest=post('/api/furnish/blender/sync/publish',payload,{'Content-Type':'model/gltf-binary','X-Furnish-Request':'blender-v1'})
         assert manifest['revision']==fixture['manifest']['revision']
         addon._runtime['polled']=0
@@ -87,6 +90,7 @@ def main(directory):
             before_origin=matrix_tuple(sofa)
         if name=='origin':assert max(abs(a-b) for a,b in zip(matrix_tuple(sofa),before_origin))<2e-4
         results.append({'step':name,'objects':len(ids),'materialPreserved':True,'cameraAndLightPreserved':True,'acknowledged':True})
+    progress('all HTTP fixtures acknowledged')
     bpy.ops.furnish.sync_stop()
     last=settings['fixtures'][-1];manifest=last['manifest'];file=str(directory/last['file'])
     count=len(bpy.data.objects);first=addon.apply_snapshot(scene,file,manifest);assert first['added']==first['deleted']==0 and len(bpy.data.objects)==count
@@ -94,7 +98,8 @@ def main(directory):
     sofa['furnish_sync_keep_transform']=False;addon.apply_snapshot(scene,file,manifest,False);assert sofa.material_slots[0].material!=sofa_material
     def data_counts():return tuple(len(blocks) for blocks in (bpy.data.objects,bpy.data.meshes,bpy.data.materials,bpy.data.images,bpy.data.cameras,bpy.data.lights))
     stable=data_counts()
-    for _ in range(3):addon.apply_snapshot(scene,file,manifest)
+    for i in range(3):
+        progress('repeat and leak checks '+str(i+1));addon.apply_snapshot(scene,file,manifest)
     assert data_counts()==stable, repr((stable,data_counts()))
     before=len(bpy.data.objects)
     try:addon.apply_snapshot(scene,file,{**manifest,'planId':'other-plan'})
@@ -113,6 +118,7 @@ def main(directory):
     bpy.ops.preferences.addon_disable(module='furnish_sync')
     assert not hasattr(bpy.types.Scene,'furnish_sync')
     bpy.ops.wm.read_factory_settings(use_empty=True)
+    progress('legacy adoption')
     first=settings['fixtures'][0];legacy_file=str(directory/first['file']);bpy.ops.import_scene.gltf(filepath=legacy_file)
     scene=bpy.context.scene;legacy_meshes=[o for o in scene.objects if o.type=='MESH']
     for obj in legacy_meshes:del obj['furnishObjectId']
@@ -121,6 +127,7 @@ def main(directory):
     assert adopted['added']==0 and adopted['adopted']==len(legacy_meshes)
     assert len([o for o in scene.objects if o.type=='MESH'])==len(legacy_meshes) and legacy_meshes[0].material_slots[0].material==custom
     result={'passed':True,'steps':results,'zipInstalledAndRegistered':True,'sourceMatrixMirrorVerified':True,'hiddenMaterialRetained':True,'deleteUndoMaterialRestored':True,'originNoDrift':True,'repeatedApplyNoDuplicates':True,'poseLock':True,'sourceMaterialsOption':True,'unrelatedObjectsPreserved':True,'planAndDuplicateGuards':True,'addonUnregistered':True,'matchedLegacyAdoption':True,'renderDevice':device}
+    progress('all checks passed')
     (directory/'receiver-result.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
 
 

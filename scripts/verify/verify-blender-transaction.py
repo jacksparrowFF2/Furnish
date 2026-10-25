@@ -3,11 +3,11 @@ import argparse,importlib.util,json,struct,sys,traceback
 from pathlib import Path
 import bpy
 
-def glb(file,objects,version=None,previous=None):
+def glb(file,objects,version=None,previous=None,kind='BoxGeometry'):
     vertices=[[-.1,-.1,-.1],[.1,-.1,-.1],[.1,.1,-.1],[-.1,.1,-.1],[-.1,-.1,.1],[.1,-.1,.1],[.1,.1,.1],[-.1,.1,.1]]
     indices=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,2,3,7,2,7,6,0,4,7,0,7,3,1,2,6,1,6,5]
     binary=struct.pack('<24f',*sum(vertices,[]))+struct.pack('<36H',*indices)
-    data=dict(asset={'version':'2.0'},buffers=[{'byteLength':len(binary)}],bufferViews=[{'buffer':0,'byteOffset':0,'byteLength':96},{'buffer':0,'byteOffset':96,'byteLength':72}],accessors=[{'bufferView':0,'componentType':5126,'count':8,'type':'VEC3','min':[-.1]*3,'max':[.1]*3},{'bufferView':1,'componentType':5123,'count':36,'type':'SCALAR'}],materials=[{'pbrMetallicRoughness':{'baseColorFactor':[.2,.4,.6,1]}}],meshes=[{'primitives':[{'attributes':{'POSITION':0},'indices':1,'material':0}]}],nodes=[{'mesh':0,'translation':[i,0,0],'extras':{'furnishObjectId':key,'furnishId':'owner','furnishPartKind':'BoxGeometry','furnishPartKey':role,'furnishPartCount':count,**({'furnishPartVersion':version} if version else {})}} for i,(key,role,count) in enumerate(objects)],scenes=[{'nodes':list(range(len(objects)))}],scene=0)
+    data=dict(asset={'version':'2.0'},buffers=[{'byteLength':len(binary)}],bufferViews=[{'buffer':0,'byteOffset':0,'byteLength':96},{'buffer':0,'byteOffset':96,'byteLength':72}],accessors=[{'bufferView':0,'componentType':5126,'count':8,'type':'VEC3','min':[-.1]*3,'max':[.1]*3},{'bufferView':1,'componentType':5123,'count':36,'type':'SCALAR'}],materials=[{'pbrMetallicRoughness':{'baseColorFactor':[.2,.4,.6,1]}}],meshes=[{'primitives':[{'attributes':{'POSITION':0},'indices':1,'material':0}]}],nodes=[{'mesh':0,'translation':[i,0,0],'extras':{'furnishObjectId':key,'furnishId':'owner','furnishPartKind':kind,'furnishPartKey':role,'furnishPartCount':count,**({'furnishPartVersion':version} if version else {})}} for i,(key,role,count) in enumerate(objects)],scenes=[{'nodes':list(range(len(objects)))}],scene=0)
     if previous:
         for node,prior in zip(data['nodes'],previous):node['extras'].update(furnishPreviousPartKey=prior,furnishPreviousPartCount=1)
     text=json.dumps(data).encode();text+=b' '*(-len(text)%4);binary+=b'\0'*(-len(binary)%4)
@@ -130,7 +130,21 @@ def main(directory):
     except ValueError:pass
     else:raise AssertionError('v3 must reject v2 downgrade')
     assert fingerprint(scene)==stable
-    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True,v2GeometryGuard=True,v2OneTimeMigration=True,v1DowngradeRejected=True,v3MigrationPoseGuard=True,v3EqualCountSwap=True,v3UniqueMaterials=True,v3LockedPoseMigration=True,v2DowngradeRejected=True),indent=2))
+    cut=directory/'v3-cut.glb';glb(cut,[('left','named:right',1),('right','named:left',1)],3,kind='BufferGeometry')
+    payload=bytearray(cut.read_bytes());offset=28+int.from_bytes(payload[12:16],'little');struct.pack_into('<f',payload,offset,-.08);cut.write_bytes(payload)
+    changed=addon.apply_snapshot(scene,str(cut),manifest)
+    assert changed['matchedByPartKey']==2 and changed['added']==changed['deleted']==0
+    assert left.material_slots[0].material==lm and right.material_slots[0].material==rm,'Stable v3 parts must keep refinements through geometry-class changes'
+    assert left.get('furnishPartKind')=='BufferGeometry' and any(abs(v.co.x+.08)<1e-6 for v in left.data.vertices)
+    foreign=directory/'v3-foreign.glb';glb(foreign,[('left','named:foreign-a',1),('right','named:foreign-b',1)],3,kind='BufferGeometry')
+    replacement=addon.apply_snapshot(scene,str(foreign),manifest);assert replacement['added']==replacement['deleted']==2
+    assert all(o.material_slots[0].material not in (lm,rm) for o in managed.objects if o.type=='MESH'),'Different v3 identities must not inherit a nearby old refinement'
+    bpy.ops.wm.read_factory_settings(use_empty=True);scene=bpy.context.scene
+    legacy=directory/'legacy-kind.glb';glb(legacy,[('a','legacy',1)],2);addon.apply_snapshot(scene,str(legacy),manifest)
+    target=next(o for o in scene.objects if o.type=='MESH');legacy_material=bpy.data.materials.new('Legacy refinement');target.material_slots[0].material=legacy_material
+    legacy_cut=directory/'legacy-kind-cut.glb';glb(legacy_cut,[('a','legacy',1)],2,kind='BufferGeometry');addon.apply_snapshot(scene,str(legacy_cut),manifest)
+    assert target.material_slots[0].material!=legacy_material,'Legacy identity retains the conservative geometry-kind compatibility check'
+    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True,v2GeometryGuard=True,v2OneTimeMigration=True,v1DowngradeRejected=True,v3MigrationPoseGuard=True,v3EqualCountSwap=True,v3GeometryClassMaterialPreserved=True,v3ForeignIdentityNotInherited=True,legacyGeometryKindConservative=True,v3UniqueMaterials=True,v3LockedPoseMigration=True,v2DowngradeRejected=True),indent=2))
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--directory',required=True);directory=Path(parser.parse_args(sys.argv[sys.argv.index('--')+1:]).directory)

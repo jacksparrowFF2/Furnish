@@ -1,5 +1,5 @@
 """Local, one-way Furnish scene synchronization. Networking never calls bpy."""
-bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 3),
+bl_info = {"name": "Furnish Live Sync", "author": "Furnish", "version": (0, 1, 4),
            "blender": (4, 2, 0), "location": "3D View > Sidebar > Furnish", "category": "Import-Export"}
 
 import hashlib
@@ -288,7 +288,9 @@ def apply_snapshot(scene, filepath, manifest, preserve_materials=True, adopt_leg
             source_materials=[slot.material for slot in obj.material_slots]
             if old:
                 keep=[slot.material for slot in old.material_slots]
-                compatible=old.get('furnishPartKind',obj.get('furnishPartKind'))==obj.get('furnishPartKind')
+                # Authored v3 identity survives source boolean cuts / geometry-class changes.
+                authored=old.get('furnishPartVersion')==obj.get('furnishPartVersion')==3 and _part_identity(old)==_part_identity(obj)
+                compatible=authored or old.get('furnishPartKind',obj.get('furnishPartKind'))==obj.get('furnishPartKind')
                 previous=old.data;old.data=obj.data
                 if not old.get('furnish_sync_keep_transform',False):old.matrix_world=matrix
                 chosen=keep if preserve_materials and compatible and len(keep)==len(old.material_slots) else source_materials
