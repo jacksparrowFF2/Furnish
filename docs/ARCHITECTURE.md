@@ -383,3 +383,5 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-20：柜体核心 moduleLayout/moduleWidths/adjustModuleWidth 将旧 columns[].width 净空存储映射到模块外宽，普通柜设计器与生产预览共用；共用隔板按中心线分配，厨房父模块继续原外宽。无新字段、加载顺序或保存通道；具体参数及兼容性见 [模块外宽](CABINET-DESIGN.md#模块外宽统一入口2026-10-20)。
 
 2026-10-25（截面直接变换）：共用ceiling-core提供整体变换、顶点／边线和角度吸附；section-editor在原草稿同步型材、灯带和柔光板，复用生产三维更新。右键菜单由ceiling-editor共用，区域和轮廓沿原几何校验增删节点。可选模板rotation需要v19，0缺失保持v18；不新增状态或撤销通道。详见 [截面交互](CEILINGS.md#截面直接变换与鼠标节点编辑2026-10-25)。
+
+2026-10-25（独立截面实时编辑）：ceiling-editor在原会话上自动校验输入、实时更新拖点和生产预览；节点／尺寸注记以像素适配，组合放大图共用注记并响应resize。ceiling-core提供sectionMeasurements及mirrorSection，镜像保留参数模板、同步光源与柔光板；新可选镜像及关闭中央板时未激活的翼边参照使用v20，旧v18／v19不补字段。沿原mutate／缓存／撤销链路，无新加载脚本。见 [实时截面](CEILINGS.md#独立截面自动更新标注与镜像2026-10-25)。

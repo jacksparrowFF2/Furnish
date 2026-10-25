@@ -306,3 +306,5 @@ pegboardAssembly.hatch.maxPanels=16／minWeb=20 集中定义局部盖板数与�
 ## 筒灯安装资料覆盖（2026-10-25）
 
 DL269 的 clearanceReview=missing 与其余缺资料设备共用待核对入口。已知外包、孔径和面环基准不代表散热、驱动器及检修净空已知；没有新增持久字段、默认高度或厂家间距假设。`test-scene-clearance-settings` 继续遍历电器目录验证资料覆盖。见 [全量记录](validation/full-regression-main-20261025/README.md)。
+
+吊顶型材镜像补充：`upChannel.mirrorU/mirrorD=false`为新建／计算默认，false不写旧实例；保留参数的镜像字段需要v20。屏幕左右／上下镜像由核心转换局部反射、旋转和锚点，灯带与柔光板同变换。上口基准处上下镜像允许锚点d=0，实际顶点仍由原0～20000 mm校验。四项尺寸标注共用实际模板姿态，自绘只派生包络宽高；无新型号或厂家安装假设。
