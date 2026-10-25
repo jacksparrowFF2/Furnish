@@ -57,8 +57,11 @@ function setLayers(work,plan,ids,values){
  }
  next.floorFinishes={version:1,areas};validate(next.floorFinishes);return next;
 }
+const derivationCache=new Map();
 function derive(plan,work){
  validate(work.floorFinishes);if(!work.floorFinishes)return plan;
+ const key=JSON.stringify([plan.rooms,plan.wallFinish?.rooms,plan.doors,plan.slides,work.floorFinishes,work.rooms]);
+ if(derivationCache.has(key))return {...plan,floorFinish:clone(derivationCache.get(key))};
  const areas=Object.create(null),pending=[],records=Object.fromEntries(Object.entries(work.floorFinishes.areas).filter(([,s])=>s.enabled!==false)),rooms=(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan).rooms.filter(r=>r.counted!==false);
  function resolve(id,trail=[]){
   if(areas[id])return areas[id];const s=records[id],room=rooms.find(r=>r.id===id);
@@ -90,7 +93,7 @@ function derive(plan,work){
   const a=resolve(id);if(!a)pending.push({id,message:'地面原区域已变化或移除，请重新关联／移除设置'});else if(a.pending)pending.push({id,message:a.pending});
  }
  const doorways=doorwayAreas(plan,areas),steps=doorwaySteps(doorways),signature=[...Object.values(areas).map(a=>[a.id,a.rawZ,a.finishedZ,a.pending]),...doorways.map(a=>[a.id,a.roomId,a.room.polys,a.finishedZ])];
- return {...plan,floorFinish:{areas,doorways,steps,pending,signature}};
+ const data={areas,doorways,steps,pending,signature};derivationCache.set(key,clone(data));if(derivationCache.size>4)derivationCache.delete(derivationCache.keys().next().value);return {...plan,floorFinish:data};
 }
 // A doorway belongs to each adjoining room up to the wall centre line. These
 // are derived surfaces, never extra room area, quantities or saved settings.

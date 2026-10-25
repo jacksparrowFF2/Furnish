@@ -40,13 +40,14 @@ function buildDefs(){
 const NOLABEL = ['plant','floorlamp','sidetable','barstool','beanbag'];
 let furnitureLabelCache=null;
 const appliedFurnitureLabels=new WeakMap();
+const appliedFurnitureLabelMarkup=new WeakMap();
 function furnitureLabelLayout(scale=view.s,selected=selIds()){
  const items=renderableFurniture().filter(f=>!NOLABEL.includes(f.type)).map(f=>({id:f.id,type:f.type,name:nm(f.name),w:f.w,d:f.d,cx:f.cx,cy:f.cy,rot:f.rot})),rotation=drawingRotation(),key=JSON.stringify([items,rotation,scale,selected]);
  if(furnitureLabelCache?.key!==key)furnitureLabelCache={key,labels:new Map(FurnishDrawing.furnitureLabels(items,{rotation,scale,selected}).map(v=>[v.id,v]))};return furnitureLabelCache.labels;
 }
 function furnitureLabelSVG(f,v,palette=PAL){if(!v?.lines.length)return '';const angle=-f.rot-drawingRotation();return `<g data-furniture-label transform="rotate(${angle}) translate(${v.at[0]} ${v.at[1]})" pointer-events="none"><text font-size="${v.font}" text-anchor="middle" dominant-baseline="central" fill="${palette.text}" opacity=".85">${v.lines.map((line,i)=>`<tspan x="0" y="${(i-(v.lines.length-1)/2)*v.font*1.2}">${esc(line)}</tspan>`).join('')}</text></g>`;}
 function refreshFurnitureLabels(root=svg,{scale=view.s,selected=selIds(),palette=PAL}={}){
- if(!globalThis.FurnishDrawing)return;const labels=furnitureLabelLayout(scale,selected),previous=appliedFurnitureLabels.get(root);if(previous?.labels===labels&&previous.color===palette.text)return;for(const g of root.querySelectorAll('#gFurn [data-fid]')){g.querySelector('[data-furniture-label]')?.remove();const f=getF(g.getAttribute('data-fid'));if(f&&!furnitureError(f))g.insertAdjacentHTML('beforeend',furnitureLabelSVG(f,labels.get(f.id),palette));}appliedFurnitureLabels.set(root,{labels,color:palette.text});
+ if(!globalThis.FurnishDrawing)return;const labels=furnitureLabelLayout(scale,selected),previous=appliedFurnitureLabels.get(root);if(previous?.labels===labels&&previous.color===palette.text)return;for(const g of root.querySelectorAll('#gFurn [data-fid]')){const f=getF(g.getAttribute('data-fid')),markup=f&&!furnitureError(f)?furnitureLabelSVG(f,labels.get(f.id),palette):'',node=g.querySelector('[data-furniture-label]');if(appliedFurnitureLabelMarkup.get(g)===markup&&!!node===!!markup)continue;node?.remove();if(markup)g.insertAdjacentHTML('beforeend',markup);appliedFurnitureLabelMarkup.set(g,markup);}appliedFurnitureLabels.set(root,{labels,color:palette.text});
 }
 function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims,selected=selIds()}={}){
  const K=globalThis.FurnishKitchen,S=globalThis.FurnishSnapping;if(!K||!S?.surfaceOpening)return '';
@@ -113,6 +114,8 @@ function syncFurnOrder(){
  syncTuckedSeatPreview();
  refreshHobOpenings();
 }
+// Call only after applying the new position: no reads span a furniture write.
+function renderFurnitureMovement(){return withCanvasPlan(()=>{syncFurnOrder();renderSel();});}
 const furnT = f => `translate(${f.cx} ${f.cy}) rotate(${f.rot})`;
 let clashIds = new Set();
 function renderFurn(){
@@ -246,8 +249,12 @@ function canvasEffectivePlan(){
  if(canvasPlanScope?.plan)return canvasPlanScope.plan;
  // effectivePlan also carries the live furniture array for dependent devices
  // and finished-floor datums. Undo/import can replace that array entirely.
- const key=JSON.stringify([PLAN,state.architecture,state.rooms,state.demolished,state.open,state.ceilingHeight,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout,state.furnitureDatum,state.furniture]);
- if(canvasPlanCache?.key!==key)canvasPlanCache={key,plan:FurnishProject.effectivePlan(PLAN,state)};
+ // Compare raw DXF strings directly instead of escaping hundreds of KB into
+ // JSON per pointer frame. Custom work does not read the base PLAN.
+ const a=state.architecture,base=a?null:PLAN,sourceDXF=a?.draft?.sourceDXF,baseDXF=base?.customDraft?.sourceDXF;
+ const architecture=a?{...a,draft:{...a.draft,sourceDXF:undefined}}:a,baseInput=base?.customDraft?{...base,customDraft:{...base.customDraft,sourceDXF:undefined}}:base;
+ const key=JSON.stringify([baseInput,architecture,state.rooms,state.demolished,state.open,state.ceilingHeight,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout,state.furnitureDatum,state.furniture]);
+ if(canvasPlanCache?.key!==key||canvasPlanCache.sourceDXF!==sourceDXF||canvasPlanCache.baseDXF!==baseDXF)canvasPlanCache={key,sourceDXF,baseDXF,plan:FurnishProject.effectivePlan(PLAN,state)};
  if(canvasPlanScope)canvasPlanScope.plan=canvasPlanCache.plan;
  return canvasPlanCache.plan;
 }

@@ -248,15 +248,19 @@
     // Match the visible counter perimeter, including cutouts and narrowed ends.
     return K.topGeometry(f).rings.map(r=>r.map(p=>K.world(f,...p)));
   }
+  const furnitureEntityCache=new WeakMap();
+  function orientEntity(e){const ring=e.rings[0]||[],signed=ring.reduce((sum,p,i)=>{const q=ring[(i+1)%ring.length];return sum+p[0]*q[1]-q[0]*p[1];},0),boundary=edges(e.rings);return {...e,edges:signed<0?boundary.map(edge=>({a:edge.b,b:edge.a})):boundary};}
+  function furnitureEntity(f){const key=JSON.stringify(f),old=furnitureEntityCache.get(f);if(old?.key===key)return old.entity;const entity=orientEntity({kind:'furniture',id:f.id,name:f.name,smooth:!!geometry.localOutline(f),rings:furnitureRings(f)});furnitureEntityCache.set(f,{key,entity});return entity;}
   function entities({rects=[],furniture=[]}){
     const out=rects.map((r,i)=>({kind:'wall',id:i,name:'',rings:[[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]]]}));
-    for(const f of furniture){try{out.push({kind:'furniture',id:f.id,name:f.name,smooth:!!geometry.localOutline(f),rings:furnitureRings(f)});}catch{/* Invalid saved models cannot supply a reliable boundary. */}}
-    return out.map(e=>{
+    const walls=out.map(e=>{
       // Mirroring reverses winding, but must not reverse which side of a
       // boundary is solid. Preserve hole winding relative to the outer ring.
       const ring=e.rings[0]||[],signed=ring.reduce((sum,p,i)=>{const q=ring[(i+1)%ring.length];return sum+p[0]*q[1]-q[0]*p[1];},0);
       const boundary=edges(e.rings);return {...e,edges:signed<0?boundary.map(edge=>({a:edge.b,b:edge.a})):boundary};
     });
+    for(const f of furniture){try{walls.push(furnitureEntity(f));}catch{/* Invalid saved models cannot supply a reliable boundary. */}}
+    return walls;
   }
   function project(p,e){
     const dx=e.b.x-e.a.x,dy=e.b.y-e.a.y,t=((p.x-e.a.x)*dx+(p.y-e.a.y)*dy)/(dx*dx+dy*dy),u=Math.max(0,Math.min(1,t));
@@ -343,6 +347,10 @@
   }
   // Sweep the actual silhouette in drawing coordinates. Within each slab the
   // boundary coordinates and directional gaps are affine, so endpoints suffice.
+  const targetPartsCache=new WeakMap(),targetSectionsCache=new WeakMap(),targetRotationCache=new WeakMap();
+  function solidTargets(entity,parts){let cache=targetPartsCache.get(parts);if(!cache){cache=new WeakMap();targetPartsCache.set(parts,cache);}let targets=cache.get(entity);if(!targets){targets=parts.map(part=>({...entity,...part,rings:[part.p],edges:edges([part.p])}));cache.set(entity,targets);}return targets;}
+  function clippedTarget(source,range,M){let cache=targetSectionsCache.get(source);if(!cache){cache=new Map();targetSectionsCache.set(source,cache);}const key=range?range.bottom+':'+range.top:'all';if(cache.has(key))return cache.get(key);const p=M.section(source,range),value={...source,rings:[p],edges:edges([p])};cache.set(key,value);if(cache.size>8)cache.delete(cache.keys().next().value);return value;}
+  function rotatedTarget(target,rotation,rotate){let cache=targetRotationCache.get(target);if(!cache){cache=new Map();targetRotationCache.set(target,cache);}if(!cache.has(rotation)){const list=target.edges.map(g=>({a:rotate(g.a),b:rotate(g.b)})),points=list.flatMap(e=>[e.a,e.b]),bounds={x0:Math.min(...points.map(p=>p.x)),x1:Math.max(...points.map(p=>p.x)),y0:Math.min(...points.map(p=>p.y)),y1:Math.max(...points.map(p=>p.y))};cache.set(rotation,{...target,edges:list,bounds});if(cache.size>4)cache.delete(cache.keys().next().value);}return cache.get(rotation);}
   function directional(f,{rotation=0,...options}){
     const out={l:null,r:null,t:null,b:null},preferredWalls={l:null,r:null,t:null,b:null},angle=rotation*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
     const rotate=p=>({x:p.x*c-p.y*s,y:p.x*s+p.y*c}),unrotate=p=>({x:p.x*c+p.y*s,y:-p.x*s+p.y*c});
@@ -368,25 +376,36 @@
       // The top projection includes appliance bays and overhead slabs. Only
       // actual kitchen solids sharing the source height can obstruct a gap.
       // Supported hobs/sinks still measure to their worktop's exit boundary.
-      const targets=moduleTarget?[{...entity,...cell,name:region.moduleKey?host.name+' · '+region.moduleName:host.name}]:targetFurniture?geometry.bodyParts(targetFurniture,options.plan,options.furniture).flatMap(part=>(part.actualBoard?members.map((_,sourceIndex)=>({...part,sourceIndex})):[part]).map(part=>({...entity,...part,rings:[part.p],edges:edges([part.p])}))):[entity];
-      for(let originalTarget of targets){
+      const targets=moduleTarget?[{...entity,...cell,name:region.moduleKey?host.name+' · '+region.moduleName:host.name}]:targetFurniture?solidTargets(entity,geometry.bodyParts(targetFurniture,options.plan,options.furniture)):[entity];
+      for(const baseTarget of targets)for(let memberIndex=0;memberIndex<(baseTarget.actualBoard?members.length:1);memberIndex++){
+      let originalTarget=baseTarget;const sourceIndex=baseTarget.actualBoard?memberIndex:undefined;
       // Only members sharing the target's height can define its measuring edge.
       // Unknown heights stay conservative; walls still use every member.
       const wall=entity.kind==='wall'&&entity.id<(options.solidWallCount??(options.rects||[]).length)&&walls[entity.id]?.slice(0,4).every((v,i)=>Math.abs(v-options.rects[entity.id][i])<1e-6)?walls[entity.id]:null;
-      const eligible=transformedSources.filter((_,i)=>(!wall||finishes.measurementWallRelevant(wall,members[i],verticals[i]))&&(originalTarget.sourceIndex===undefined||originalTarget.sourceIndex===i)&&(!targetFurniture||(moduleTarget||geometry.verticalOverlap(members[i],targetFurniture,[verticals[i],originalTarget.vertical]))&&!fitsHoodBay(members[i],targetFurniture)));
+      const eligible=transformedSources.filter((_,i)=>(!wall||finishes.measurementWallRelevant(wall,members[i],verticals[i]))&&(sourceIndex===undefined||sourceIndex===i)&&(!targetFurniture||(moduleTarget||geometry.verticalOverlap(members[i],targetFurniture,[verticals[i],originalTarget.vertical]))&&!fitsHoodBay(members[i],targetFurniture)));
       if(!eligible.length)continue;
       // A directional ray requires positive overlap on its cross axis. Reject
       // diagonal parts using their full production projection before clipping
       // expensive mesh sections. This is conservative for groups and holes.
-      const projected=originalTarget.rings.flatMap(r=>r.map(([x,y])=>rotate({x,y}))),boxes=eligible.map(e=>sourceBounds.get(e));
-      const overlapX=Math.min(Math.max(...boxes.map(b=>b.x1)),Math.max(...projected.map(p=>p.x)))-Math.max(Math.min(...boxes.map(b=>b.x0)),Math.min(...projected.map(p=>p.x)));
-      const overlapY=Math.min(Math.max(...boxes.map(b=>b.y1)),Math.max(...projected.map(p=>p.y)))-Math.max(Math.min(...boxes.map(b=>b.y0)),Math.min(...projected.map(p=>p.y)));
+      const box=rotatedTarget(originalTarget,rotation,rotate).bounds,boxes=eligible.map(e=>sourceBounds.get(e)),sourceBox=boxes.length===1?boxes[0]:{x0:Math.min(...boxes.map(b=>b.x0)),x1:Math.max(...boxes.map(b=>b.x1)),y0:Math.min(...boxes.map(b=>b.y0)),y1:Math.max(...boxes.map(b=>b.y1))};
+      const overlapX=Math.min(sourceBox.x1,box.x1)-Math.max(sourceBox.x0,box.x0);
+      const overlapY=Math.min(sourceBox.y1,box.y1)-Math.max(sourceBox.y0,box.y0);
       if(overlapX<1e-7&&overlapY<1e-7)continue;
-      if(originalTarget.actualBoard){
-        const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),ranges=verticals.filter((_,i)=>eligible.includes(transformedSources[i])),range=ranges.every(Boolean)?{bottom:Math.min(...ranges.map(r=>r.bottom)),top:Math.max(...ranges.map(r=>r.top))}:null,p=M.section(originalTarget,range);
-        if(p.length<3)continue;originalTarget={...originalTarget,rings:[p],edges:edges([p])};
+      // Full production projections give lower bounds even before height
+      // clipping. Skip only when no ray can improve an existing exact result.
+      // Adjoining worktop walls retain their independent priority search.
+      if(!(cell&&entity.kind==='wall')){
+        const left=box.x0>sourceBox.x1+1e-7||out.l&&Math.max(0,sourceBox.x0-box.x1)>=out.l.distance-1e-7;
+        const right=box.x1<sourceBox.x0-1e-7||out.r&&Math.max(0,box.x0-sourceBox.x1)>=out.r.distance-1e-7;
+        const top=box.y0>sourceBox.y1+1e-7||out.t&&Math.max(0,sourceBox.y0-box.y1)>=out.t.distance-1e-7;
+        const bottom=box.y1<sourceBox.y0-1e-7||out.b&&Math.max(0,box.y0-sourceBox.y1)>=out.b.distance-1e-7;
+        if((overlapY<1e-7||left&&right)&&(overlapX<1e-7||top&&bottom))continue;
       }
-      const source={edges:eligible.flatMap(e=>e.edges)},sourceHits=[];
+      if(originalTarget.actualBoard){
+        const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),ranges=verticals.filter((_,i)=>eligible.includes(transformedSources[i])),range=ranges.every(Boolean)?{bottom:Math.min(...ranges.map(r=>r.bottom)),top:Math.max(...ranges.map(r=>r.top))}:null;
+        originalTarget=clippedTarget(originalTarget,range,M);if(originalTarget.rings[0].length<3)continue;
+      }
+      const source=eligible.length===1?eligible[0]:{edges:eligible.flatMap(e=>e.edges)},sourceHits=[];
       // Overlapping rotated members may exchange the outermost edge between vertices.
       if(eligible.length>1)for(let i=0;i<source.edges.length;i++)for(let j=i+1;j<source.edges.length;j++){const p=intersection(source.edges[i],source.edges[j]);if(p)sourceHits.push(p);}
       // A supported appliance sits inside the worktop: measure to the exit edge of
@@ -394,7 +413,7 @@
       // Reuse full production-surface containment (concavities/cuts included).
       const containedBoundary=!!targetFurniture&&!moduleTarget&&!originalTarget.actualBoard&&encloses(originalTarget,sources.filter((_,i)=>eligible.includes(transformedSources[i])));
       const surfaceBoundary=!!moduleTarget,exitBoundary=surfaceBoundary||containedBoundary,wallPriority=!!(cell&&originalTarget.kind==='wall'&&adjoiningWall(originalTarget,cell,products.definition(surfaceSource).surfaceMeasurement.wallContactTolerance));
-      const target=transform(originalTarget),hits=[...sourceHits];
+      const target=rotatedTarget(originalTarget,rotation,rotate),hits=[...sourceHits];
       for(const a of source.edges)for(const b of target.edges){const p=intersection(a,b);if(p)hits.push(p);}
       for(const [key,cross,negative,positive] of [['x','y','l','r'],['y','x','t','b']]){
         const coords=e=>e.edges.flatMap(g=>[g.a[cross],g.b[cross]]),a=coords(source),b=coords(target),lo=Math.max(Math.min(...a),Math.min(...b)),hi=Math.min(Math.max(...a),Math.max(...b));
@@ -408,9 +427,11 @@
             if(sign*(at(far,key,cross,mid)-at(edge,key,cross,mid))<-1e-7)continue; // Entirely behind the outward silhouette.
             for(const value of [mid,low,high]){
               const start=at(edge,key,cross,value),end=at(near,key,cross,value),gap=Math.max(0,sign*(end-start));
+              const best=!out[dir]||gap<out[dir].distance-1e-7,preferred=wallPriority&&(!preferredWalls[dir]||gap<preferredWalls[dir].distance-1e-7);
+              if(!best&&!preferred)continue;
               const result={a:unrotate({[key]:start,[cross]:value}),b:unrotate({[key]:start+sign*gap,[cross]:value}),distance:gap,entity:{kind:target.kind,id:target.id,name:target.name,...(wall?{wallDatum:wall[4]==='finish'?'finished':'survey'}:{}),...(target.actualBoard?{boardKey:target.boardKey,boardName:target.boardName}:{}),...(surfaceBoundary&&region.moduleKey?{moduleKey:region.moduleKey,moduleIndex:region.moduleIndex}:{})},...(target.actualBoard?{cabinetInterior:true}:{}),...(surfaceBoundary?{surfaceBoundary:true,...(region.moduleKey?{moduleBoundary:true}:{})}:{}),...(containedBoundary?{containedBoundary:true}:{}),...(wallPriority?{wallPriority:true}:{})};
-              if(!out[dir]||gap<out[dir].distance-1e-7)out[dir]=result;
-              if(wallPriority&&(!preferredWalls[dir]||gap<preferredWalls[dir].distance-1e-7))preferredWalls[dir]=result;
+              if(best)out[dir]=result;
+              if(preferred)preferredWalls[dir]=result;
             }
           }
         }

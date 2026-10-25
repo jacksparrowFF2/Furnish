@@ -11,6 +11,7 @@
  function parts(f){
   if(!supported(f))return null;
   const r=rule(f),key=JSON.stringify([r,f.type,f.w,f.d,f.h,f.mountHeight,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
+  if(records){cache.delete(key);cache.set(key,records);}
   if(!records){
    const model=root[r.global]||(typeof require==='function'?require('../render/'+r.module+'-model.js'):null);if(!model)throw Error('家具实体模型未加载：'+r.global);
    const {T,Box,Rounded,point}=adapter(),built=model.build(T,f,r.rounded?Rounded:Box);records=[];
@@ -30,7 +31,7 @@
   // Repeated plan labels, clearances and collisions share immutable world
   // records. Use the production key plus every world transform input.
   const worldKey=JSON.stringify([key,f.cx,f.cy,f.rot,f.flip]);
-  if(worldCache.has(worldKey))return worldCache.get(worldKey);
+  if(worldCache.has(worldKey)){const hit=worldCache.get(worldKey);worldCache.delete(worldKey);worldCache.set(worldKey,hit);return hit;}
   const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),angle=(f.rot||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
   const result=records.map((r,i)=>{const vertices=r.vertices.map(([x,y,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,y,(f.cy||0)+x*s+z*c];});return {...r,vertices,boardKey:'furniture:'+i,p:M.section({vertices,faces:r.faces},null),vertical:{bottom:Math.min(...vertices.map(v=>v[1])),top:Math.max(...vertices.map(v=>v[1])),source:'production-mesh'}};});
   worldCache.set(worldKey,result);if(worldCache.size>128)worldCache.delete(worldCache.keys().next().value);return result;

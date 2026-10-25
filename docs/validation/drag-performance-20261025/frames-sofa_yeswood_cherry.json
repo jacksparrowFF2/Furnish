@@ -1,0 +1,3444 @@
+{
+  "workspaceSha256": "0f081c05a6c3120f6426a8c2d50ecbf74117332e64e1416a1fc5f3f0c1920f39",
+  "type": "sofa_yeswood_cherry",
+  "inputHz": 60,
+  "frames": 240,
+  "warmupInputs": 40,
+  "sourceHashes": {
+    "src/app.js": {
+      "after": "a0c95c72fe0e09bb6b6ffbbff3f11d176fee7ef5705d279e93e8fac94827514d"
+    },
+    "src/core/design-core.js": {
+      "after": "8611afff3ea721a1163a883b5ffe444d02cf4706a8dfe0785b173b1c552158ba"
+    },
+    "src/core/product-rules.js": {
+      "after": "af31a0cfecc2aa4054c74c450ab542b6de449984d73aacf2620f08ad90256388"
+    },
+    "src/core/furniture-solids.js": {
+      "after": "c7f4c7803437eeca13b654a9bac31401888d1b08ab3942b501267bbe6a7354c4"
+    },
+    "src/core/cabinet-motion.js": {
+      "after": "4de46ca4ca71f2331e30d876e146460f4ca0a995b1cf5b01301462036add8eac"
+    },
+    "src/core/layout-geometry.js": {
+      "after": "4df3369d9b013350f393ca6e5cda93b993a8bfd3e9937dfc2f5bda9d8a83eb48"
+    },
+    "src/core/floor-finish-core.js": {
+      "after": "ca902114adae2dad67f8e8e073eee13cdcef8c4255a16f05f62b246193630624"
+    },
+    "src/core/project-core.js": {
+      "after": "abb74f597b282472704d92364a8bdfd5589e8a71238ffdab06f1a3c0071cad14"
+    },
+    "src/core/snapping.js": {
+      "after": "0e3dde2e4aa1c25e7eaa5b458d1ca07af8451e9a958714fb29eca6e393ceb0cd"
+    },
+    "src/render/plan-renderer.js": {
+      "after": "5886904e97e7f1327bfa5371b550d47d07bafb0f818297eadd95f3024918894e"
+    },
+    "src/ui/canvas-interactions.js": {
+      "after": "0d6bc430beb064ccf2edb069261f14d0dad7edd0839701ccdb09c650f9e385d0"
+    }
+  },
+  "results": [
+    {
+      "mode": "after-http",
+      "inputCount": 240,
+      "processedCount": 240,
+      "updatesHz": 59.95239960237962,
+      "handler": {
+        "n": 200,
+        "mean": 5.94,
+        "p50": 4.299999997019768,
+        "p95": 15.399999998509884,
+        "p99": 19.299999997019768,
+        "max": 19.80000000447035
+      },
+      "updateIntervals": {
+        "n": 199,
+        "mean": 16.679899497472462,
+        "p50": 14.200000002980232,
+        "p95": 27.899999998509884,
+        "p99": 34.80000000447035,
+        "max": 35.29999999701977
+      },
+      "over33ms": 3,
+      "cold": {
+        "n": 40,
+        "mean": 7.199999999627471,
+        "p50": 4.5999999940395355,
+        "p95": 19.799999997019768,
+        "p99": 26.5,
+        "max": 26.5
+      },
+      "samples": [
+        {
+          "at": 2257,
+          "ms": 26.5,
+          "x": 7176,
+          "y": 4140,
+          "stages": {
+            "snapMove": 3,
+            "syncFurnOrder": 7.899999998509884,
+            "directionalMeasurements": 14.400000005960464,
+            "renderSel": 15.400000005960464,
+            "renderFurnitureMovement": 23.30000000447035
+          }
+        },
+        {
+          "at": 2290.5,
+          "ms": 5.399999998509884,
+          "x": 7176,
+          "y": 4140,
+          "stages": {
+            "snapMove": 1.4000000059604645,
+            "syncFurnOrder": 2.7999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 1.1000000014901161,
+            "renderFurnitureMovement": 3.899999998509884
+          }
+        },
+        {
+          "at": 2304.0999999940395,
+          "ms": 4.800000004470348,
+          "x": 7176,
+          "y": 4140,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 2318.2999999970198,
+          "ms": 19.799999997019768,
+          "x": 7316,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.3999999985098839,
+            "syncFurnOrder": 4.699999995529652,
+            "directionalMeasurements": 12.399999998509884,
+            "renderSel": 13.399999998509884,
+            "renderFurnitureMovement": 18.099999994039536
+          }
+        },
+        {
+          "at": 2345.7999999970198,
+          "ms": 18.600000001490116,
+          "x": 7333,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 4.399999998509884,
+            "directionalMeasurements": 11.199999995529652,
+            "renderSel": 12.600000001490116,
+            "renderFurnitureMovement": 17
+          }
+        },
+        {
+          "at": 2374.0999999940395,
+          "ms": 5.100000001490116,
+          "x": 7333,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2999999970197678,
+            "syncFurnOrder": 2.600000001490116,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 2387.6999999955297,
+          "ms": 4.899999998509884,
+          "x": 7333,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2999999970197678,
+            "syncFurnOrder": 2.600000001490116,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 2401.6999999955297,
+          "ms": 16.700000002980232,
+          "x": 7351.5,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2999999970197678,
+            "syncFurnOrder": 4.5,
+            "directionalMeasurements": 9.600000001490116,
+            "renderSel": 10.700000002980232,
+            "renderFurnitureMovement": 15.200000002980232
+          }
+        },
+        {
+          "at": 2429.5,
+          "ms": 4.699999995529652,
+          "x": 7351.5,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 2443.1999999955297,
+          "ms": 4.899999998509884,
+          "x": 7351.5,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2999999970197678,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 2457.6999999955297,
+          "ms": 16,
+          "x": 7358,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2999999970197678,
+            "syncFurnOrder": 4.5,
+            "directionalMeasurements": 9.100000001490116,
+            "renderSel": 10.100000001490116,
+            "renderFurnitureMovement": 14.600000001490116
+          }
+        },
+        {
+          "at": 2485,
+          "ms": 4.5999999940395355,
+          "x": 7358,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 2498.6999999955297,
+          "ms": 17.80000000447035,
+          "x": 7375,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2999999970197678,
+            "syncFurnOrder": 4.300000004470348,
+            "directionalMeasurements": 11.199999995529652,
+            "renderSel": 12.100000001490116,
+            "renderFurnitureMovement": 16.400000005960464
+          }
+        },
+        {
+          "at": 2526.5999999940395,
+          "ms": 4.700000002980232,
+          "x": 7375,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 2540.5999999940395,
+          "ms": 14.5,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 4.5,
+            "directionalMeasurements": 7.899999998509884,
+            "renderSel": 8.799999997019768,
+            "renderFurnitureMovement": 13.299999997019768
+          }
+        },
+        {
+          "at": 2571.1999999955297,
+          "ms": 4.399999998509884,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 2582.1999999955297,
+          "ms": 4.200000002980232,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 2595.7999999970198,
+          "ms": 4.200000002980232,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 2609.89999999851,
+          "ms": 4.199999995529652,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 2624,
+          "ms": 4.0999999940395355,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 2637.6999999955297,
+          "ms": 4.100000001490116,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 2651.6999999955297,
+          "ms": 4.200000002980232,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 2665.5999999940395,
+          "ms": 4.300000004470348,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 2679.5,
+          "ms": 4.399999998509884,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.5999999940395355,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 2692.89999999851,
+          "ms": 4.299999997019768,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 2707,
+          "ms": 4.199999995529652,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.6000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 2720.6999999955297,
+          "ms": 4.399999998509884,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 2734.89999999851,
+          "ms": 14,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 4.300000004470348,
+            "directionalMeasurements": 7.399999998509884,
+            "renderSel": 8.399999998509884,
+            "renderFurnitureMovement": 12.700000002980232
+          }
+        },
+        {
+          "at": 2755.6999999955297,
+          "ms": 4.700000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.600000001490116,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 2769.5,
+          "ms": 4.5999999940395355,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 2783.1999999955297,
+          "ms": 4.700000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 2797.5,
+          "ms": 5.0999999940395355,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3
+          }
+        },
+        {
+          "at": 2811.39999999851,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 2825.1999999955297,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 2838.7999999970198,
+          "ms": 4.399999998509884,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 2852.89999999851,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 2867,
+          "ms": 5.299999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 3.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 4.100000001490116
+          }
+        },
+        {
+          "at": 2880.7999999970198,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 2894.39999999851,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 2914.2999999970198,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0.09999999403953552,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 2936.2999999970198,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 2950.39999999851,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 2964.0999999940395,
+          "ms": 4.4000000059604645,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 2978.1999999955297,
+          "ms": 4.300000004470348,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 2992.0999999940395,
+          "ms": 4.5,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 3007.6999999955297,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3023.1999999955297,
+          "ms": 4.399999998509884,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 3054.1999999955297,
+          "ms": 4.300000004470348,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 3068.39999999851,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 3081.89999999851,
+          "ms": 4.399999998509884,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 3096.0999999940395,
+          "ms": 4.4000000059604645,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.4000000059604645
+          }
+        },
+        {
+          "at": 3115.7999999970198,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7000000029802322,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3130.6999999955297,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3144.6999999955297,
+          "ms": 4.300000004470348,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3161.7999999970198,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3177.89999999851,
+          "ms": 15.100000001490116,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 4.299999997019768,
+            "directionalMeasurements": 8.899999998509884,
+            "renderSel": 9.900000005960464,
+            "renderFurnitureMovement": 14.200000002980232
+          }
+        },
+        {
+          "at": 3200.0999999940395,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3214.1999999955297,
+          "ms": 4.300000004470348,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3227.6999999955297,
+          "ms": 4.399999998509884,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 3248.5,
+          "ms": 4.0999999940395355,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.0999999940395355
+          }
+        },
+        {
+          "at": 3262.6999999955297,
+          "ms": 4,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 3290.1999999955297,
+          "ms": 4.300000004470348,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.4000000059604645
+          }
+        },
+        {
+          "at": 3304.5,
+          "ms": 3.899999998509884,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3318.1999999955297,
+          "ms": 4,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 3332.6999999955297,
+          "ms": 3.899999998509884,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.0999999940395355
+          }
+        },
+        {
+          "at": 3346.0999999940395,
+          "ms": 4,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 3363.6999999955297,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3380,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 3395.6999999955297,
+          "ms": 4,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 3415.2999999970198,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3429.5,
+          "ms": 4,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0.09999999403953552,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3443,
+          "ms": 4,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3458.89999999851,
+          "ms": 3.899999998509884,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3473.6999999955297,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 3489.2999999970198,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 3520.5999999940395,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 3533.6999999955297,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3547.0999999940395,
+          "ms": 19.80000000447035,
+          "x": 7696,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 4.600000001490116,
+            "directionalMeasurements": 12.899999998509884,
+            "renderSel": 14,
+            "renderFurnitureMovement": 18.600000001490116
+          }
+        },
+        {
+          "at": 3575.39999999851,
+          "ms": 4.5,
+          "x": 7696,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0.09999999403953552,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 3589.0999999940395,
+          "ms": 15.100000001490116,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 4.600000001490116,
+            "directionalMeasurements": 8.399999998509884,
+            "renderSel": 9.399999998509884,
+            "renderFurnitureMovement": 14.100000001490116
+          }
+        },
+        {
+          "at": 3609.89999999851,
+          "ms": 4.399999998509884,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3623.5999999940395,
+          "ms": 4.300000004470348,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3637.5,
+          "ms": 5,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.7999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.7000000029802322
+          }
+        },
+        {
+          "at": 3651.5999999940395,
+          "ms": 5.200000002980232,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.7000000029802322,
+            "directionalMeasurements": 0.09999999403953552,
+            "renderSel": 1.2999999970197678,
+            "renderFurnitureMovement": 4
+          }
+        },
+        {
+          "at": 3665.5999999940395,
+          "ms": 4.5,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 1.0999999940395355,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 3679.0999999940395,
+          "ms": 4.700000002980232,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 1.1000000014901161,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 3693.0999999940395,
+          "ms": 18.400000005960464,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 5,
+            "directionalMeasurements": 11.200000002980232,
+            "renderSel": 12.200000002980232,
+            "renderFurnitureMovement": 17.200000002980232
+          }
+        },
+        {
+          "at": 3720.7999999970198,
+          "ms": 4.5,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 3734.7999999970198,
+          "ms": 4.399999998509884,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 3748.5999999940395,
+          "ms": 4.4000000059604645,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3762.7999999970198,
+          "ms": 4.299999997019768,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.0999999940395355
+          }
+        },
+        {
+          "at": 3790.39999999851,
+          "ms": 4.299999997019768,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 3804.5999999940395,
+          "ms": 4.200000002980232,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 3818.5,
+          "ms": 19.299999997019768,
+          "x": 7797.5,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 4.199999995529652,
+            "directionalMeasurements": 13.100000001490116,
+            "renderSel": 14.100000001490116,
+            "renderFurnitureMovement": 18.299999997019768
+          }
+        },
+        {
+          "at": 3846,
+          "ms": 4.899999998509884,
+          "x": 7797.5,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.8000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.7000000029802322
+          }
+        },
+        {
+          "at": 3860,
+          "ms": 15.099999994039536,
+          "x": 7804,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 4.5,
+            "directionalMeasurements": 8.399999998509884,
+            "renderSel": 9.399999998509884,
+            "renderFurnitureMovement": 13.899999998509884
+          }
+        },
+        {
+          "at": 3880.5999999940395,
+          "ms": 3.9000000059604645,
+          "x": 7804,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3
+          }
+        },
+        {
+          "at": 3894.7999999970198,
+          "ms": 14.299999997019768,
+          "x": 7815,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 4.100000001490116,
+            "directionalMeasurements": 8.100000001490116,
+            "renderSel": 8.799999997019768,
+            "renderFurnitureMovement": 12.899999998509884
+          }
+        },
+        {
+          "at": 3915.5999999940395,
+          "ms": 4.4000000059604645,
+          "x": 7815,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 3929.0999999940395,
+          "ms": 14.300000004470348,
+          "x": 7821,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 4.200000002980232,
+            "directionalMeasurements": 8.199999995529652,
+            "renderSel": 9,
+            "renderFurnitureMovement": 13.200000002980232
+          }
+        },
+        {
+          "at": 3950.39999999851,
+          "ms": 15.199999995529652,
+          "x": 7826,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.0999999940395355,
+            "syncFurnOrder": 4.4000000059604645,
+            "directionalMeasurements": 8.799999997019768,
+            "renderSel": 9.599999994039536,
+            "renderFurnitureMovement": 14
+          }
+        },
+        {
+          "at": 3971.2999999970198,
+          "ms": 4.899999998509884,
+          "x": 7826,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 1.1000000014901161,
+            "renderFurnitureMovement": 3.600000001490116
+          }
+        },
+        {
+          "at": 3984.89999999851,
+          "ms": 15.399999998509884,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 4.299999997019768,
+            "directionalMeasurements": 9.200000002980232,
+            "renderSel": 10.100000001490116,
+            "renderFurnitureMovement": 14.399999998509884
+          }
+        },
+        {
+          "at": 4005.5,
+          "ms": 4.299999997019768,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4019.5,
+          "ms": 4.299999997019768,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4033.7999999970198,
+          "ms": 5.399999998509884,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.6999999955296516,
+            "syncFurnOrder": 2.8000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.600000001490116
+          }
+        },
+        {
+          "at": 4047.5,
+          "ms": 5,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 4061.2999999970198,
+          "ms": 4,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4075,
+          "ms": 4.299999997019768,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4088.7999999970198,
+          "ms": 4.5,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4102.79999999702,
+          "ms": 4.299999997019768,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4116.89999999851,
+          "ms": 4.199999995529652,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4131,
+          "ms": 4.0999999940395355,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4144.5999999940395,
+          "ms": 4.200000002980232,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4165.39999999851,
+          "ms": 4.100000001490116,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4179.5999999940395,
+          "ms": 4,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4193.19999999553,
+          "ms": 4.5,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4207.19999999553,
+          "ms": 4.399999998509884,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4242,
+          "ms": 4.5,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 4255.69999999553,
+          "ms": 4.600000001490116,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4269.79999999702,
+          "ms": 14.799999997019768,
+          "x": 7316,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 4.399999998509884,
+            "directionalMeasurements": 8.299999997019768,
+            "renderSel": 9.199999995529652,
+            "renderFurnitureMovement": 13.599999994039536
+          }
+        },
+        {
+          "at": 4290.39999999851,
+          "ms": 4.600000001490116,
+          "x": 7316,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1999999955296516,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 4304.5999999940395,
+          "ms": 4.300000004470348,
+          "x": 7316,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4318.19999999553,
+          "ms": 4.300000004470348,
+          "x": 7316,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4332.0999999940395,
+          "ms": 15.600000001490116,
+          "x": 7333,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 4.299999997019768,
+            "directionalMeasurements": 9,
+            "renderSel": 10.100000001490116,
+            "renderFurnitureMovement": 14.399999998509884
+          }
+        },
+        {
+          "at": 4352.69999999553,
+          "ms": 4.100000001490116,
+          "x": 7333,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0.09999999403953552,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4367,
+          "ms": 13.899999998509884,
+          "x": 7333,
+          "y": 4017,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 4.199999995529652,
+            "directionalMeasurements": 7.700000002980232,
+            "renderSel": 8.700000002980232,
+            "renderFurnitureMovement": 12.899999998509884
+          }
+        },
+        {
+          "at": 4387.89999999851,
+          "ms": 15.299999997019768,
+          "x": 7351.5,
+          "y": 4017,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 4.700000002980232,
+            "directionalMeasurements": 8.5,
+            "renderSel": 9.399999998509884,
+            "renderFurnitureMovement": 14.100000001490116
+          }
+        },
+        {
+          "at": 4409.39999999851,
+          "ms": 17.299999997019768,
+          "x": 7351.5,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.0999999940395355,
+            "syncFurnOrder": 4.300000004470348,
+            "directionalMeasurements": 10.800000004470348,
+            "renderSel": 11.699999995529652,
+            "renderFurnitureMovement": 16
+          }
+        },
+        {
+          "at": 4436,
+          "ms": 4.299999997019768,
+          "x": 7351.5,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4450.0999999940395,
+          "ms": 13.700000002980232,
+          "x": 7358,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 4.300000004470348,
+            "directionalMeasurements": 7.5,
+            "renderSel": 8.299999997019768,
+            "renderFurnitureMovement": 12.600000001490116
+          }
+        },
+        {
+          "at": 4470.89999999851,
+          "ms": 4.600000001490116,
+          "x": 7358,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.0999999940395355,
+            "syncFurnOrder": 2.600000001490116,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.4000000059604645
+          }
+        },
+        {
+          "at": 4484.69999999553,
+          "ms": 13.600000001490116,
+          "x": 7375,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 4.100000001490116,
+            "directionalMeasurements": 7.600000001490116,
+            "renderSel": 8.399999998509884,
+            "renderFurnitureMovement": 12.5
+          }
+        },
+        {
+          "at": 4505.5,
+          "ms": 4.5999999940395355,
+          "x": 7375,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.6999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.5999999940395355
+          }
+        },
+        {
+          "at": 4519.69999999553,
+          "ms": 16,
+          "x": 7380,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 5.799999997019768,
+            "directionalMeasurements": 8.100000001490116,
+            "renderSel": 9,
+            "renderFurnitureMovement": 14.799999997019768
+          }
+        },
+        {
+          "at": 4540.5,
+          "ms": 14,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 4.299999997019768,
+            "directionalMeasurements": 8,
+            "renderSel": 8.900000005960464,
+            "renderFurnitureMovement": 13.200000002980232
+          }
+        },
+        {
+          "at": 4561.0999999940395,
+          "ms": 4.100000001490116,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4574.89999999851,
+          "ms": 4.199999995529652,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 4588.69999999553,
+          "ms": 4,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4602.79999999702,
+          "ms": 4.600000001490116,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.7999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.600000001490116
+          }
+        },
+        {
+          "at": 4616.89999999851,
+          "ms": 4.199999995529652,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4630.5,
+          "ms": 3.7999999970197678,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4644.69999999553,
+          "ms": 4,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4658.39999999851,
+          "ms": 4.100000001490116,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4672.39999999851,
+          "ms": 4,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4686.29999999702,
+          "ms": 4.100000001490116,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4699.89999999851,
+          "ms": 4.399999998509884,
+          "x": 7530,
+          "y": 4140,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.600000001490116,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.5
+          }
+        },
+        {
+          "at": 4714,
+          "ms": 15.799999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 4.199999995529652,
+            "directionalMeasurements": 9.800000004470348,
+            "renderSel": 10.600000001490116,
+            "renderFurnitureMovement": 14.799999997019768
+          }
+        },
+        {
+          "at": 4741.89999999851,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.0999999940395355
+          }
+        },
+        {
+          "at": 4755.5,
+          "ms": 4.5,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.600000001490116,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.600000001490116
+          }
+        },
+        {
+          "at": 4769.5,
+          "ms": 4.0999999940395355,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4783.5999999940395,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4797.0999999940395,
+          "ms": 4.300000004470348,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 4811,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4826.29999999702,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4841.79999999702,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4858,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4873.89999999851,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4888.5999999940395,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4922.5,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 4936.19999999553,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 4950.19999999553,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 4964.0999999940395,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 4978.0999999940395,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 4998.5,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3
+          }
+        },
+        {
+          "at": 5012.89999999851,
+          "ms": 4.5,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0.09999999403953552,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 5029.29999999702,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 5044.89999999851,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5060.39999999851,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5076.39999999851,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5092.39999999851,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5107.89999999851,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5123.69999999553,
+          "ms": 4.399999998509884,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5139.89999999851,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5172.29999999702,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5186.29999999702,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 5200.39999999851,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5214.0999999940395,
+          "ms": 4.5,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 5227.69999999553,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 5255.69999999553,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5269.5999999940395,
+          "ms": 4,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5283.5,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5297.39999999851,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5311.39999999851,
+          "ms": 4.399999998509884,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5325.79999999702,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5340.89999999851,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7000000029802322,
+            "renderFurnitureMovement": 3
+          }
+        },
+        {
+          "at": 5356.29999999702,
+          "ms": 4.399999998509884,
+          "x": 7576,
+          "y": 4137,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 5387.39999999851,
+          "ms": 13.199999995529652,
+          "x": 7576,
+          "y": 4017,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 4.299999997019768,
+            "directionalMeasurements": 6.700000002980232,
+            "renderSel": 7.9000000059604645,
+            "renderFurnitureMovement": 12.200000002980232
+          }
+        },
+        {
+          "at": 5408.29999999702,
+          "ms": 4.600000001490116,
+          "x": 7576,
+          "y": 4017,
+          "stages": {
+            "snapMove": 1.1000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 5422.5,
+          "ms": 12,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 4.100000001490116,
+            "directionalMeasurements": 6.0999999940395355,
+            "renderSel": 7,
+            "renderFurnitureMovement": 11.100000001490116
+          }
+        },
+        {
+          "at": 5443.0999999940395,
+          "ms": 4.4000000059604645,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 5456.79999999702,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5471.19999999553,
+          "ms": 4.100000001490116,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5484.69999999553,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5505.5,
+          "ms": 4.199999995529652,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5519.79999999702,
+          "ms": 4.200000002980232,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 5540.5,
+          "ms": 4.299999997019768,
+          "x": 7576,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.399999998509884
+          }
+        },
+        {
+          "at": 5561.5,
+          "ms": 14,
+          "x": 7696,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 4.100000001490116,
+            "directionalMeasurements": 8.099999994039536,
+            "renderSel": 9,
+            "renderFurnitureMovement": 13.100000001490116
+          }
+        },
+        {
+          "at": 5582.19999999553,
+          "ms": 4.300000004470348,
+          "x": 7696,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.4000000059604645
+          }
+        },
+        {
+          "at": 5595.89999999851,
+          "ms": 13.299999997019768,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 4,
+            "directionalMeasurements": 7.5,
+            "renderSel": 8.199999995529652,
+            "renderFurnitureMovement": 12.299999997019768
+          }
+        },
+        {
+          "at": 5616.69999999553,
+          "ms": 4.200000002980232,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 5630.89999999851,
+          "ms": 4.299999997019768,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5644.5,
+          "ms": 4.5999999940395355,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.2000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5658.5,
+          "ms": 5.199999995529652,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.7000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5672.5,
+          "ms": 4.0999999940395355,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.1999999955296516,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.0999999940395355
+          }
+        },
+        {
+          "at": 5686.0999999940395,
+          "ms": 4.200000002980232,
+          "x": 7731,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5700.19999999553,
+          "ms": 15.100000001490116,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 4.300000004470348,
+            "directionalMeasurements": 8.899999998509884,
+            "renderSel": 9.799999997019768,
+            "renderFurnitureMovement": 14.100000001490116
+          }
+        },
+        {
+          "at": 5720.89999999851,
+          "ms": 4.899999998509884,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.899999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.899999998509884
+          }
+        },
+        {
+          "at": 5735.89999999851,
+          "ms": 4.299999997019768,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5748.5,
+          "ms": 4.299999997019768,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 5762.69999999553,
+          "ms": 4.200000002980232,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5790.19999999553,
+          "ms": 4.100000001490116,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5804.5999999940395,
+          "ms": 4,
+          "x": 7779,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 5818.19999999553,
+          "ms": 15.5,
+          "x": 7797.5,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 4,
+            "directionalMeasurements": 9.5,
+            "renderSel": 10.399999998509884,
+            "renderFurnitureMovement": 14.399999998509884
+          }
+        },
+        {
+          "at": 5839.19999999553,
+          "ms": 4,
+          "x": 7797.5,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 5852.79999999702,
+          "ms": 16.600000001490116,
+          "x": 7804,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 4.100000001490116,
+            "directionalMeasurements": 10.699999995529652,
+            "renderSel": 11.600000001490116,
+            "renderFurnitureMovement": 15.700000002980232
+          }
+        },
+        {
+          "at": 5874.29999999702,
+          "ms": 4.200000002980232,
+          "x": 7804,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.3000000044703484,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 5887.5999999940395,
+          "ms": 14.100000001490116,
+          "x": 7815,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.9000000059604645,
+            "syncFurnOrder": 4.0999999940395355,
+            "directionalMeasurements": 8.200000002980232,
+            "renderSel": 9.100000001490116,
+            "renderFurnitureMovement": 13.199999995529652
+          }
+        },
+        {
+          "at": 5908.79999999702,
+          "ms": 4.600000001490116,
+          "x": 7815,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1,
+            "syncFurnOrder": 2.7000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.600000001490116
+          }
+        },
+        {
+          "at": 5922.39999999851,
+          "ms": 14.299999997019768,
+          "x": 7821,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 4.200000002980232,
+            "directionalMeasurements": 8.299999997019768,
+            "renderSel": 9.199999995529652,
+            "renderFurnitureMovement": 13.399999998509884
+          }
+        },
+        {
+          "at": 5942.89999999851,
+          "ms": 14.799999997019768,
+          "x": 7826,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 4.199999995529652,
+            "directionalMeasurements": 8.800000004470348,
+            "renderSel": 9.600000001490116,
+            "renderFurnitureMovement": 13.799999997019768
+          }
+        },
+        {
+          "at": 5964.0999999940395,
+          "ms": 4.200000002980232,
+          "x": 7826,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 5977.5999999940395,
+          "ms": 14,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 4.0999999940395355,
+            "directionalMeasurements": 8.200000002980232,
+            "renderSel": 9,
+            "renderFurnitureMovement": 13.099999994039536
+          }
+        },
+        {
+          "at": 5998.69999999553,
+          "ms": 4.200000002980232,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 6012.39999999851,
+          "ms": 4.199999995529652,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 6026.69999999553,
+          "ms": 4.300000004470348,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.9000000059604645,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 6040.5,
+          "ms": 4.899999998509884,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 1.6000000014901161,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 6054.0999999940395,
+          "ms": 4.200000002980232,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.5,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 6068.0999999940395,
+          "ms": 3.8000000044703484,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7000000029802322,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 6081.89999999851,
+          "ms": 4.100000001490116,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7999999970197678,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 1,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 6096,
+          "ms": 4.0999999940395355,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.0999999940395355
+          }
+        },
+        {
+          "at": 6113.79999999702,
+          "ms": 4,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 6128.69999999553,
+          "ms": 4.100000001490116,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.2999999970197678
+          }
+        },
+        {
+          "at": 6143.89999999851,
+          "ms": 4,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0.10000000149011612,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 6159.39999999851,
+          "ms": 3.899999998509884,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.5999999940395355,
+            "syncFurnOrder": 2.2000000029802322,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        },
+        {
+          "at": 6175.29999999702,
+          "ms": 4.100000001490116,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8999999985098839,
+            "renderFurnitureMovement": 3.3000000044703484
+          }
+        },
+        {
+          "at": 6191.29999999702,
+          "ms": 4,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.6999999955296516,
+            "syncFurnOrder": 2.4000000059604645,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 6206.29999999702,
+          "ms": 4.100000001490116,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8999999985098839,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.2000000029802322
+          }
+        },
+        {
+          "at": 6241.5999999940395,
+          "ms": 4,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.7000000029802322,
+            "syncFurnOrder": 2.399999998509884,
+            "directionalMeasurements": 0,
+            "renderSel": 0.7999999970197678,
+            "renderFurnitureMovement": 3.1999999955296516
+          }
+        },
+        {
+          "at": 6255.5999999940395,
+          "ms": 3.9000000059604645,
+          "x": 7976,
+          "y": 3940,
+          "stages": {
+            "snapMove": 0.8000000044703484,
+            "syncFurnOrder": 2.2999999970197678,
+            "directionalMeasurements": 0,
+            "renderSel": 0.8000000044703484,
+            "renderFurnitureMovement": 3.100000001490116
+          }
+        }
+      ],
+      "sent": [
+        0.0019999999999527063,
+        33.940200000000004,
+        45.29509999999982,
+        58.29340000000002,
+        89.5340000000001,
+        114.21399999999994,
+        128.26870000000008,
+        142.21079999999984,
+        167.56989999999996,
+        183.2835,
+        197.4411,
+        224.45139999999992,
+        239.1936999999998,
+        265.54010000000017,
+        280.5655999999999,
+        305.31190000000015,
+        324.49339999999984,
+        335.09360000000015,
+        348.6938,
+        362.9077000000002,
+        376.8796000000002,
+        390.3762999999999,
+        404.44579999999996,
+        418.56989999999996,
+        432.62750000000005,
+        445.8773000000001,
+        459.9616000000001,
+        474.1129000000001,
+        497.8872000000001,
+        509.3807999999999,
+        522.7710000000002,
+        536.7015000000001,
+        551.5527000000002,
+        564.0736000000002,
+        578.3674999999998,
+        592.1635000000001,
+        606.0693000000001,
+        620.9012000000002,
+        633.5245,
+        658.2190999999998,
+        667.1671000000001,
+        689.2485999999999,
+        703.6316999999999,
+        717.3678,
+        736.0403999999999,
+        751.5551,
+        767.0466999999999,
+        797.8876,
+        807.1156000000001,
+        821.7336,
+        835.1304,
+        859.6282999999999,
+        868.9283,
+        883.5372000000002,
+        905.6913,
+        921.2910999999999,
+        942.096,
+        953.0445,
+        967.1754999999998,
+        983.9016999999999,
+        1001.3712,
+        1030.1028999999999,
+        1044.6862,
+        1057.4636,
+        1070.8470000000002,
+        1085.3987000000002,
+        1107.7355000000002,
+        1123.7676999999999,
+        1139.6332000000002,
+        1154.6513,
+        1168.0659,
+        1186.0675999999999,
+        1202.2213000000002,
+        1217.6413000000002,
+        1233.0201000000002,
+        1263.6634,
+        1273.4646000000002,
+        1286.7417,
+        1315.9389999999999,
+        1329.6080000000002,
+        1353.0171,
+        1363.3202,
+        1376.9897,
+        1391.4996,
+        1405.4102000000003,
+        1418.7972,
+        1436.0693,
+        1462.6163999999999,
+        1473.937,
+        1487.6733999999997,
+        1501.9841999999999,
+        1529.2695999999996,
+        1543.2735000000002,
+        1557.8571000000002,
+        1586.7120999999997,
+        1599.7468,
+        1623.8766999999998,
+        1632.96,
+        1659.3567000000003,
+        1669.3588,
+        1692.4898999999996,
+        1714.2772999999997,
+        1725.2923,
+        1749.5356000000002,
+        1758.8089,
+        1772.6620000000003,
+        1788.0438999999997,
+        1801.3427000000001,
+        1814.1535999999996,
+        1828.3123999999998,
+        1842.3346000000001,
+        1855.9789,
+        1869.9542000000001,
+        1883.9979000000003,
+        1903.5253000000002,
+        1918.6148000000003,
+        1934.8932999999997,
+        1950.1886000000004,
+        1981.5067,
+        1995.2046,
+        2009.2119000000002,
+        2033.5339000000004,
+        2044.0577999999996,
+        2057.5287,
+        2071.0398000000005,
+        2096.5546000000004,
+        2105.6522999999997,
+        2129.5762000000004,
+        2153.5096000000003,
+        2175.7315,
+        2188.8787,
+        2212.5526,
+        2224.6625999999997,
+        2247.0822,
+        2258.9719999999998,
+        2284.3566,
+        2303.2353000000003,
+        2313.8909999999996,
+        2327.8181000000004,
+        2341.3473000000004,
+        2356.2569000000003,
+        2370.6041999999998,
+        2383.2111999999997,
+        2397.0698,
+        2411.2617,
+        2424.8547,
+        2439.1598999999997,
+        2452.8188,
+        2479.4002,
+        2494.947,
+        2508.9091,
+        2522.2021000000004,
+        2536.4210000000003,
+        2550.2218000000003,
+        2570.1258,
+        2585.7834000000003,
+        2601.871,
+        2617.5185,
+        2632.5861000000004,
+        2664.6378000000004,
+        2675.5460999999996,
+        2689.135,
+        2702.9818999999998,
+        2716.8086999999996,
+        2742.3149999999996,
+        2751.2291999999998,
+        2773.1364999999996,
+        2788.6654,
+        2804.184,
+        2820.2156999999997,
+        2836.1817,
+        2851.7888000000003,
+        2867.5422,
+        2883.3809,
+        2913.7448999999997,
+        2925.2334,
+        2939.4573,
+        2953.7882,
+        2967.318,
+        2992.4210000000003,
+        3008.7946,
+        3022.2852000000003,
+        3036.5998,
+        3050.3529,
+        3069.7429,
+        3084.8176999999996,
+        3099.9726,
+        3129.7553,
+        3149.4271,
+        3161.8041999999996,
+        3183.4857,
+        3196.0026,
+        3209.8442000000005,
+        3223.9142,
+        3238.2340999999997,
+        3258.3370999999997,
+        3272.7652,
+        3293.558,
+        3324.2733,
+        3335.4939999999997,
+        3358.1686,
+        3370.182,
+        3383.6985999999997,
+        3398.0191999999997,
+        3412.2124999999996,
+        3425.1405999999997,
+        3438.8221000000003,
+        3464.4368999999997,
+        3474.4772000000003,
+        3489.0158,
+        3501.232,
+        3531.5712000000003,
+        3542.9587,
+        3557.5577000000003,
+        3583.3590999999997,
+        3591.7826000000005,
+        3618.3023999999996,
+        3626.9969,
+        3650.6630999999998,
+        3662.1964,
+        3685.4053999999996,
+        3706.4678000000004,
+        3717.0861999999997,
+        3740.3464000000004,
+        3751.7753000000002,
+        3765.4727000000003,
+        3779.6431000000002,
+        3794.2803999999996,
+        3808.1697000000004,
+        3820.7685,
+        3834.7439000000004,
+        3857.7479000000003,
+        3872.6732,
+        3887.7868,
+        3903.1924,
+        3919.1278,
+        3935.0946000000004,
+        3950.1017,
+        3980.7898999999998,
+        3994.3773
+      ],
+      "errors": [],
+      "meetsComputeBudget": true,
+      "keepsUpWith60HzInput": true,
+      "meets60HzBudget": false
+    }
+  ],
+  "workspaceUnchanged": true
+}

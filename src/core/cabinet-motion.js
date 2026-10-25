@@ -57,13 +57,19 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
  const solidCache=new Map();
  const furnitureSolids=()=>root.FurnishFurnitureSolids||(typeof require==='function'?require('./furniture-solids.js'):null);
  const supportsSolids=f=>!!f&&!f.obj&&!!(furnitureSolids()?.supported(f)||f.kitchen||C().supported(f));
+ const validModels=new WeakMap();
+ function validModel(f,products){if(!f||typeof f!=='object')return !products.modelError(f);const key=JSON.stringify(f),old=validModels.get(f);if(old?.key===key)return old.valid;const valid=!products.modelError(f);validModels.set(f,{key,valid});return valid;}
  function solidParts(f,{furniture=[]}={}){
   if(!supportsSolids(f))return null;
   if(furnitureSolids()?.supported(f))return furnitureSolids().parts(f);
-  const products=root.FurnishProducts||require('./product-rules.js');furniture=furniture.filter(v=>!products.modelError(v));
+  const products=root.FurnishProducts||require('./product-rules.js');furniture=furniture.filter(v=>validModel(v,products));
   const kitchen=root.FurnishKitchen||require('./kitchen-core.js');
-  const key=JSON.stringify([f,f.kitchen?kitchen.deviceSignature(f,furniture):null,furniture.filter(v=>C().supported(v)).map(v=>[v.id,v.type,v.name,v.cx,v.cy,v.w,v.d,v.h,v.rot,v.flip,v.cabinet])]);
-  if(solidCache.has(key))return solidCache.get(key);
+  // Record the actual scene inputs read by buildRaw/slabGeometry, rather than
+  // invalidating every cabinet when any unrelated cabinet moves. Full device
+  // records include notch/installation changes as well as their opening rings.
+  const dependencies=f.kitchen?kitchen.deviceOpenings(f,furniture).map(({device,ring})=>[device,ring]):[C().sharedSides(f,furniture),C().sideOpenings(f,furniture),C().joinedSideFinishes(f,furniture)];
+  const key=JSON.stringify([f,dependencies]);
+  if(solidCache.has(key)){const hit=solidCache.get(key);solidCache.delete(key);solidCache.set(key,hit);return hit;}
   const K=root.FurnishKitchen||require('./kitchen-core.js'),P=root.FurnishProducts||require('./product-rules.js'),B=root.FurnishBoardCollision||require('./board-motion-collision.js'),z=Z(),records=[];
   const identity=p=>p;
   const subtract=(board,cutters)=>{

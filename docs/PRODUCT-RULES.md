@@ -1,5 +1,9 @@
 # 产品能力规则与兼容验收
 
+## 拖动缓存的承托依赖（2026-10-25）
+
+`floorHost(f,furniture)` 集中读取现有 `counterLink.hostId / laundryHostId` 的直接承托对象，`floorBase` 与绘制排序缓存共用该查找；排序跟踪完整承托链的值，宿主位置/安装/配置变化、缺失和恢复均重新计算高度。没有新增字段、型号白名单、默认值或恢复迁移，循环依赖仍由原 `floorBase` 保留未知。见 [拖动复验](validation/drag-performance-20261025/README.md)。
+
 ## DL269光源规格（2026-10-24）
 
 `downlightWatts`与`downlightKelvin`为筒灯可选枚举字段，新建5/4000、旧缺失读取5/4000不补写。`downlightSpec`集中派生六种光通量／颜色，切换只影响照明与采购规格，不影响空间确认或开孔。复制保留，非筒灯替换由共用字段能力清理；导入严格校验。复验test-downlight、test-product-rules、test-purchase-orders、test-procurement、test-work-state及verify-downlight的HTTP／file界面链路。见 [详细契约](DOWNLIGHT-PHILIPS-DL269.md#可切换的光源规格)。

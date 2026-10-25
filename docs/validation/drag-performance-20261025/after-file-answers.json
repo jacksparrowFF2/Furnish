@@ -1,0 +1,7026 @@
+[
+  {
+    "label": "all:fmv3vyflm1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 2737
+        },
+        "b": {
+          "x": 839.5,
+          "y": 2737
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 1190,
+          "y": 2932
+        },
+        "b": {
+          "x": 1590.7999999999995,
+          "y": 2932
+        },
+        "distance": 400.7999999999995,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w361v2",
+          "name": "双人床 1.8m",
+          "boardKey": "furniture:10",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 1015,
+          "y": 2537
+        },
+        "b": {
+          "x": 1015,
+          "y": 2537
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wtxgq12",
+          "name": "双开窗帘 2.4m"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 1055,
+          "y": 2937
+        },
+        "b": {
+          "x": 1055,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w361v2",
+          "name": "双人床 1.8m",
+          "boardKey": "furniture:1",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3vyflm1",
+    "position": [
+      1014.5,
+      2737
+    ]
+  },
+  {
+    "label": "all:fmv3w361v2",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3w361v2",
+    "position": [
+      1839.5,
+      3837
+    ]
+  },
+  {
+    "label": "all:fmv3w3eqf3",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 4937
+        },
+        "b": {
+          "x": 839.5,
+          "y": 4937
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 1190,
+          "y": 4742
+        },
+        "b": {
+          "x": 1590.8,
+          "y": 4742
+        },
+        "distance": 400.79999999999995,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w361v2",
+          "name": "双人床 1.8m",
+          "boardKey": "furniture:10",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 1055,
+          "y": 4737
+        },
+        "b": {
+          "x": 1055,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w361v2",
+          "name": "双人床 1.8m",
+          "boardKey": "furniture:1",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 1015,
+          "y": 5137
+        },
+        "b": {
+          "x": 1015,
+          "y": 5571
+        },
+        "distance": 434,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w4m2a4",
+          "name": "衣柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3w3eqf3",
+    "position": [
+      1014.5,
+      4937
+    ]
+  },
+  {
+    "label": "all:fmv3w4m2a4",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 839.5,
+          "y": 7576
+        },
+        "b": {
+          "x": 839.5,
+          "y": 7576
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 1469.5000000000002,
+          "y": 8248
+        },
+        "b": {
+          "x": 2478,
+          "y": 8248
+        },
+        "distance": 1008.4999999999998,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5dvzo81",
+          "name": "办公椅",
+          "boardKey": "furniture:135",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 5571
+        },
+        "b": {
+          "x": 995,
+          "y": 5137
+        },
+        "distance": 434,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 1154.4999999999995,
+          "y": 9581
+        },
+        "b": {
+          "x": 1154.4999999999995,
+          "y": 9581
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 2,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3w4m2a4",
+    "position": [
+      1154.4999999999995,
+      7576
+    ]
+  },
+  {
+    "label": "all:fmv3w5qkv5",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3626,
+          "y": 4439.333333333334
+        },
+        "b": {
+          "x": 950,
+          "y": 4439.333333333334
+        },
+        "distance": 2676,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w361v2",
+          "name": "双人床 1.8m",
+          "boardKey": "furniture:3",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 3706,
+          "y": 4422
+        },
+        "b": {
+          "x": 3706,
+          "y": 4422
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 16,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 3666,
+          "y": 3222
+        },
+        "b": {
+          "x": 3666,
+          "y": 2537
+        },
+        "distance": 685,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wtxgq12",
+          "name": "双开窗帘 2.4m"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 3704.5,
+          "y": 4452
+        },
+        "b": {
+          "x": 3704.5,
+          "y": 6486
+        },
+        "distance": 2034,
+        "entity": {
+          "kind": "wall",
+          "id": 20,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3w5qkv5",
+    "position": [
+      3666,
+      3777
+    ]
+  },
+  {
+    "label": "all:fmv3w7rrw6",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9986,
+          "y": 3999.544319898601
+        },
+        "b": {
+          "x": 6956.907513353483,
+          "y": 3999.544319898601
+        },
+        "distance": 3029.0924866465166,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bzynf3",
+          "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+          "boardKey": "furniture:20",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10066,
+          "y": 4168
+        },
+        "b": {
+          "x": 10106,
+          "y": 4168
+        },
+        "distance": 40,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9986,
+          "y": 3443
+        },
+        "b": {
+          "x": 9986,
+          "y": 2792.6820056642678
+        },
+        "distance": 650.3179943357322,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg4z7am1",
+          "name": "美的酷省电 Ultra 立式空调 · 2匹室内机"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 10026,
+          "y": 4893
+        },
+        "b": {
+          "x": 10026,
+          "y": 5420
+        },
+        "distance": 527,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgnhl7h3",
+          "name": "收纳柜",
+          "boardKey": "board:2",
+          "boardName": "顶板"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3w7rrw6",
+    "position": [
+      10066,
+      4167.5
+    ]
+  },
+  {
+    "label": "all:fmv3wcfw38",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9026,
+          "y": 1745
+        },
+        "b": {
+          "x": 7375,
+          "y": 1745
+        },
+        "distance": 1651,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzise3",
+          "name": "洗衣机"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 9376,
+          "y": 1772.5
+        },
+        "b": {
+          "x": 9626,
+          "y": 1772.5
+        },
+        "distance": 250,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wd35z9",
+          "name": "石头 P20 Max 水箱版套装"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9201,
+          "y": 1569
+        },
+        "b": {
+          "x": 9201,
+          "y": 870
+        },
+        "distance": 699,
+        "entity": {
+          "kind": "wall",
+          "id": 71,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 9201,
+          "y": 1921
+        },
+        "b": {
+          "x": 9201,
+          "y": 2334
+        },
+        "distance": 413,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg9e7763",
+          "name": "客厅窗帘"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3wcfw38",
+    "position": [
+      9201,
+      1745
+    ]
+  },
+  {
+    "label": "all:fmv3wd35z9",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9626,
+          "y": 1772.5
+        },
+        "b": {
+          "x": 9376,
+          "y": 1772.5
+        },
+        "distance": 250,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wcfw38",
+          "name": "石头 P20 Max 扫拖机器人"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 10076,
+          "y": 1967
+        },
+        "b": {
+          "x": 10076,
+          "y": 1967
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 63,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9851,
+          "y": 1624
+        },
+        "b": {
+          "x": 9851,
+          "y": 1410
+        },
+        "distance": 214,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvffjihp4",
+          "name": "封闭式猫砂盆"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 9851,
+          "y": 2074
+        },
+        "b": {
+          "x": 9851,
+          "y": 2074
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 64,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3wd35z9",
+    "position": [
+      9851,
+      1849
+    ]
+  },
+  {
+    "label": "all:fmv3wt92611",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 839.75,
+          "y": 2387
+        },
+        "b": {
+          "x": 839.5,
+          "y": 2387
+        },
+        "distance": 0.25,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 3706.25,
+          "y": 2387
+        },
+        "b": {
+          "x": 3706.25,
+          "y": 2387
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 1108,
+          "y": 2337
+        },
+        "b": {
+          "x": 1108,
+          "y": 2337
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 1,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 3706.125,
+          "y": 2437
+        },
+        "b": {
+          "x": 3706.125,
+          "y": 2437
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3wt92611",
+    "position": [
+      2272.75,
+      2387
+    ]
+  },
+  {
+    "label": "all:fmv3wtxgq12",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 839.75,
+          "y": 2487
+        },
+        "b": {
+          "x": 839.5,
+          "y": 2487
+        },
+        "distance": 0.25,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 3706.25,
+          "y": 2487
+        },
+        "b": {
+          "x": 3706.25,
+          "y": 2487
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 3706.125,
+          "y": 2437
+        },
+        "b": {
+          "x": 3706.125,
+          "y": 2437
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 3706.125,
+          "y": 2537
+        },
+        "b": {
+          "x": 3706.125,
+          "y": 2537
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3wtxgq12",
+    "position": [
+      2272.75,
+      2487
+    ]
+  },
+  {
+    "label": "all:fmv3wyijp13",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3939,
+          "y": 3537
+        },
+        "b": {
+          "x": 3939,
+          "y": 3537
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 5939,
+          "y": 3537
+        },
+        "b": {
+          "x": 6413,
+          "y": 3537
+        },
+        "distance": 474,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv61w1091",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 4094,
+          "y": 2937
+        },
+        "b": {
+          "x": 4094,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wz0sb14",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 5203.875,
+          "y": 4137
+        },
+        "b": {
+          "x": 5203.875,
+          "y": 4631.5
+        },
+        "distance": 494.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wzkb515",
+          "name": "衣柜",
+          "boardKey": "board:22",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3wyijp13",
+    "position": [
+      4939,
+      3537
+    ]
+  },
+  {
+    "label": "all:fmv3wz0sb14",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3939,
+          "y": 2737
+        },
+        "b": {
+          "x": 3939,
+          "y": 2737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 4289,
+          "y": 2932
+        },
+        "b": {
+          "x": 4689.8,
+          "y": 2932
+        },
+        "distance": 400.8000000000002,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wyijp13",
+          "name": "单人床",
+          "boardKey": "furniture:8",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 4114.375,
+          "y": 2537
+        },
+        "b": {
+          "x": 4114.375,
+          "y": 2534
+        },
+        "distance": 3,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3xgqxc2",
+          "name": "双开窗帘 2.4m"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 4154,
+          "y": 2937
+        },
+        "b": {
+          "x": 4154,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wyijp13",
+          "name": "单人床",
+          "boardKey": "furniture:1",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3wz0sb14",
+    "position": [
+      4114,
+      2737
+    ]
+  },
+  {
+    "label": "all:fmv3wzkb515",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3940.25,
+          "y": 4975
+        },
+        "b": {
+          "x": 3939,
+          "y": 4975
+        },
+        "distance": 1.25,
+        "entity": {
+          "kind": "wall",
+          "id": 16,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 5577.75,
+          "y": 4975
+        },
+        "b": {
+          "x": 6500,
+          "y": 4975
+        },
+        "distance": 922.25,
+        "entity": {
+          "kind": "wall",
+          "id": 29,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 5478.375,
+          "y": 4660
+        },
+        "b": {
+          "x": 5478.375,
+          "y": 4162
+        },
+        "distance": 498,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wyijp13",
+          "name": "单人床",
+          "boardKey": "furniture:10",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 4758.125,
+          "y": 5290
+        },
+        "b": {
+          "x": 4758.125,
+          "y": 5290
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 15,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3wzkb515",
+    "position": [
+      4757.75,
+      4975
+    ]
+  },
+  {
+    "label": "all:fmv3xgqxc1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3939.75,
+          "y": 2384
+        },
+        "b": {
+          "x": 3939,
+          "y": 2384
+        },
+        "distance": 0.75,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 6500,
+          "y": 2384
+        },
+        "b": {
+          "x": 6500,
+          "y": 2384
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 24,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 6495,
+          "y": 2334
+        },
+        "b": {
+          "x": 6495,
+          "y": 2334
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 25,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 5219.875,
+          "y": 2434
+        },
+        "b": {
+          "x": 5219.875,
+          "y": 2434
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3xgqxc2",
+          "name": "双开窗帘 2.4m"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3xgqxc1",
+    "position": [
+      5219.875,
+      2384
+    ]
+  },
+  {
+    "label": "all:fmv3xgqxc2",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3939.75,
+          "y": 2484
+        },
+        "b": {
+          "x": 3939,
+          "y": 2484
+        },
+        "distance": 0.75,
+        "entity": {
+          "kind": "wall",
+          "id": 17,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 6500,
+          "y": 2484
+        },
+        "b": {
+          "x": 6500,
+          "y": 2484
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 24,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 5219.875,
+          "y": 2434
+        },
+        "b": {
+          "x": 5219.875,
+          "y": 2434
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3xgqxc1",
+          "name": "双开窗帘 2.4m"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 4094.375,
+          "y": 2534
+        },
+        "b": {
+          "x": 4094.375,
+          "y": 2537
+        },
+        "distance": 3,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wz0sb14",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3xgqxc2",
+    "position": [
+      5219.875,
+      2487
+    ]
+  },
+  {
+    "label": "all:fmv3xj82h3",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 4894,
+          "y": 2213
+        },
+        "b": {
+          "x": 4894,
+          "y": 2213
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 4,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 6365,
+          "y": 1970
+        },
+        "b": {
+          "x": 6365,
+          "y": 1970
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 26,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 5629.5,
+          "y": 1611
+        },
+        "b": {
+          "x": 5629.5,
+          "y": 1611
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 80,
+          "name": ""
+        }
+      },
+      "b": {
+        "a": {
+          "x": 5629.5,
+          "y": 2329
+        },
+        "b": {
+          "x": 5629.5,
+          "y": 2334
+        },
+        "distance": 5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3xgqxc1",
+          "name": "双开窗帘 2.4m"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3xj82h3",
+    "position": [
+      5629.5,
+      1975
+    ]
+  },
+  {
+    "label": "all:fmv3xjwfp4",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 1228,
+          "y": 1974
+        },
+        "b": {
+          "x": 1228,
+          "y": 1974
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 1,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 3199.5,
+          "y": 2213
+        },
+        "b": {
+          "x": 3199.5,
+          "y": 2213
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 4,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 3199.25,
+          "y": 1619
+        },
+        "b": {
+          "x": 3199.25,
+          "y": 1619
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 6,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 3199.25,
+          "y": 2329
+        },
+        "b": {
+          "x": 3199.25,
+          "y": 2329
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 4,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3xjwfp4",
+    "position": [
+      2213.75,
+      1982
+    ]
+  },
+  {
+    "label": "all:fmv3yflqw1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9756,
+          "y": 3940
+        },
+        "b": {
+          "x": 8618.2,
+          "y": 3940
+        },
+        "distance": 1137.7999999999993,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvglvcws1",
+          "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+          "boardKey": "furniture:138",
+          "boardName": "指扣"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10106,
+          "y": 4167.5
+        },
+        "b": {
+          "x": 10106,
+          "y": 4167.5
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9813.085957297779,
+          "y": 2915
+        },
+        "b": {
+          "x": 9813.085957297779,
+          "y": 2895.16939190857
+        },
+        "distance": 19.830608091429895,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg4z7am1",
+          "name": "美的酷省电 Ultra 立式空调 · 2匹室内机"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 9951,
+          "y": 5420
+        },
+        "b": {
+          "x": 9951,
+          "y": 5420
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgnhl7h3",
+          "name": "收纳柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv3yflqw1",
+    "position": [
+      9931,
+      4167.5
+    ]
+  },
+  {
+    "label": "all:fmv5a1yhn1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6756.5,
+          "y": 8288.25
+        },
+        "b": {
+          "x": 6728,
+          "y": 8288.25
+        },
+        "distance": 28.5,
+        "entity": {
+          "kind": "wall",
+          "id": 8,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 7351.5,
+          "y": 7648.75
+        },
+        "b": {
+          "x": 8056,
+          "y": 7648.75
+        },
+        "distance": 704.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wfol63",
+          "name": "餐椅",
+          "boardKey": "furniture:9",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 6958.25,
+          "y": 7563.5
+        },
+        "b": {
+          "x": 6958.25,
+          "y": 7562.5
+        },
+        "distance": 1,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv62bwbp1",
+          "name": "餐边柜 · 冰箱位与玻璃展示柜",
+          "boardKey": "board:0",
+          "boardName": "底板"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 7054,
+          "y": 8396.5
+        },
+        "b": {
+          "x": 7054,
+          "y": 8397.5
+        },
+        "distance": 1,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv62bwbp1",
+          "name": "餐边柜 · 冰箱位与玻璃展示柜",
+          "boardKey": "board:10",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5a1yhn1",
+    "position": [
+      7025.5,
+      8029.5
+    ]
+  },
+  {
+    "label": "all:fmv5a582a1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 4870,
+          "y": 7999.5
+        },
+        "b": {
+          "x": 3969.0000000000005,
+          "y": 7999.5
+        },
+        "distance": 900.9999999999995,
+        "entity": {
+          "kind": "wall",
+          "id": 49,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 5570,
+          "y": 7990
+        },
+        "b": {
+          "x": 5663,
+          "y": 7990
+        },
+        "distance": 93,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5a6xfx3",
+          "name": "浴室柜",
+          "boardKey": "浴室柜上部组件:board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 4873.5,
+          "y": 7830
+        },
+        "b": {
+          "x": 4873.5,
+          "y": 6717
+        },
+        "distance": 1113,
+        "entity": {
+          "kind": "wall",
+          "id": 54,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 5220,
+          "y": 8150
+        },
+        "b": {
+          "x": 5220,
+          "y": 8150
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 39,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5a582a1",
+    "position": [
+      5313,
+      7990
+    ]
+  },
+  {
+    "label": "all:fmv5a6ciq2",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 5020,
+          "y": 7614.5
+        },
+        "b": {
+          "x": 4484,
+          "y": 7614.5
+        },
+        "distance": 536,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5d24bx1",
+          "name": "箭牌 奶油白壁挂花洒 AE34129ZMKW-P2"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 5420,
+          "y": 7909
+        },
+        "b": {
+          "x": 5663,
+          "y": 7909
+        },
+        "distance": 243,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5a6xfx3",
+          "name": "浴室柜",
+          "boardKey": "board:0",
+          "boardName": "底板"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 5220,
+          "y": 7450
+        },
+        "b": {
+          "x": 5220,
+          "y": 6651
+        },
+        "distance": 799,
+        "entity": {
+          "kind": "wall",
+          "id": 51,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 5220,
+          "y": 8150
+        },
+        "b": {
+          "x": 5220,
+          "y": 8150
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 39,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5a6ciq2",
+    "position": [
+      5220,
+      7800
+    ]
+  },
+  {
+    "label": "all:fmv5a6xfx3",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 5663,
+          "y": 7990
+        },
+        "b": {
+          "x": 5570,
+          "y": 7990
+        },
+        "distance": 93,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5a582a1",
+          "name": "扁桶电热水器 60L"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 6463,
+          "y": 7900
+        },
+        "b": {
+          "x": 6463,
+          "y": 7900
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 65,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 5673,
+          "y": 7650
+        },
+        "b": {
+          "x": 5673,
+          "y": 6651
+        },
+        "distance": 999,
+        "entity": {
+          "kind": "wall",
+          "id": 51,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 6063,
+          "y": 8150
+        },
+        "b": {
+          "x": 6063,
+          "y": 8150
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 39,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5a6xfx3",
+    "position": [
+      6063,
+      7900
+    ]
+  },
+  {
+    "label": "all:fmv5ayw571",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 8616,
+          "y": 10187.5
+        },
+        "b": {
+          "x": 8616,
+          "y": 10187.5
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 11,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 8676,
+          "y": 9848.75
+        },
+        "b": {
+          "x": 9788,
+          "y": 9848.75
+        },
+        "distance": 1112,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgsj6ah1",
+          "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+          "boardKey": "furniture:22",
+          "boardName": "软包"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 8616,
+          "y": 9535
+        },
+        "b": {
+          "x": 8616,
+          "y": 7443.939799
+        },
+        "distance": 2091.0602010000002,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:50",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 8646,
+          "y": 10195
+        },
+        "b": {
+          "x": 8646,
+          "y": 10195
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 14,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5ayw571",
+    "position": [
+      8646,
+      9865
+    ]
+  },
+  {
+    "label": "all:fmv5b76h91",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 10088,
+          "y": 9790
+        },
+        "b": {
+          "x": 10088,
+          "y": 9790
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgsj6ah1",
+          "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+          "boardKey": "furniture:22",
+          "boardName": "软包"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10106,
+          "y": 9790
+        },
+        "b": {
+          "x": 10106,
+          "y": 9790
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 10097,
+          "y": 9385
+        },
+        "b": {
+          "x": 10097,
+          "y": 9385
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5b78gp2",
+          "name": "玄关柜二 · 置物台与鞋柜",
+          "boardKey": "board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 10097,
+          "y": 10195
+        },
+        "b": {
+          "x": 10097,
+          "y": 10195
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 34,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5b76h91",
+    "position": [
+      9949,
+      9790
+    ]
+  },
+  {
+    "label": "all:fmv5b78gp2",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9756,
+          "y": 8578
+        },
+        "b": {
+          "x": 7387.500000333334,
+          "y": 8578
+        },
+        "distance": 2368.4999996666656,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:2/board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10106,
+          "y": 8900
+        },
+        "b": {
+          "x": 10106,
+          "y": 8900
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9951,
+          "y": 8415
+        },
+        "b": {
+          "x": 9951,
+          "y": 8415
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bl44k1",
+          "name": "收纳柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 10097,
+          "y": 9385
+        },
+        "b": {
+          "x": 10097,
+          "y": 9385
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5b76h91",
+          "name": "玄关柜 · 洞洞板换鞋区",
+          "boardKey": "board:0",
+          "boardName": "背板"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5b78gp2",
+    "position": [
+      9931,
+      8905
+    ]
+  },
+  {
+    "label": "all:fmv5bl44k1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9756,
+          "y": 6829.003239413923
+        },
+        "b": {
+          "x": 9007.987042344308,
+          "y": 6829.003239413923
+        },
+        "distance": 748.0129576556919,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wfmo91",
+          "name": "餐椅",
+          "boardKey": "furniture:2",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10106,
+          "y": 7290
+        },
+        "b": {
+          "x": 10106,
+          "y": 7290
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9951,
+          "y": 6165
+        },
+        "b": {
+          "x": 9951,
+          "y": 6165
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgnhl7h3",
+          "name": "收纳柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 9940,
+          "y": 8415
+        },
+        "b": {
+          "x": 9940,
+          "y": 8415
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5b78gp2",
+          "name": "玄关柜二 · 置物台与鞋柜",
+          "boardKey": "board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5bl44k1",
+    "position": [
+      9931,
+      7290
+    ]
+  },
+  {
+    "label": "all:fmv5bzynf3",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6730,
+          "y": 3542.5
+        },
+        "b": {
+          "x": 6730,
+          "y": 3542.5
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 24,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 7622,
+          "y": 3400
+        },
+        "b": {
+          "x": 8022,
+          "y": 3400
+        },
+        "distance": 400,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvglvcws1",
+          "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+          "boardKey": "furniture:0",
+          "boardName": "木台面"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 7176,
+          "y": 2860
+        },
+        "b": {
+          "x": 7176,
+          "y": 2434
+        },
+        "distance": 426,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg9e7763",
+          "name": "客厅窗帘"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 7130,
+          "y": 5020
+        },
+        "b": {
+          "x": 7130,
+          "y": 5020
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg2upqp1",
+          "name": "藤编移动茶台 · 80cm",
+          "boardKey": "furniture:8",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5bzynf3",
+    "position": [
+      7176,
+      3940
+    ]
+  },
+  {
+    "label": "all:fmv5c10yi4",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3103,
+          "y": 8248
+        },
+        "b": {
+          "x": 3089.94,
+          "y": 8248
+        },
+        "distance": 13.059999999999945,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5dvzo81",
+          "name": "办公椅",
+          "boardKey": "furniture:2",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 3703,
+          "y": 8368
+        },
+        "b": {
+          "x": 3703,
+          "y": 8368
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 18,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 3664.5,
+          "y": 7487
+        },
+        "b": {
+          "x": 3664.5,
+          "y": 4452
+        },
+        "distance": 3035,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 3453,
+          "y": 8887
+        },
+        "b": {
+          "x": 3453,
+          "y": 9081
+        },
+        "distance": 194,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvffi29w2",
+          "name": "猫爬架 · 绿叶成荫围栏款",
+          "boardKey": "furniture:0",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5c10yi4",
+    "position": [
+      3403,
+      8248
+    ]
+  },
+  {
+    "label": "all:fmv5d24bx1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3969,
+          "y": 7569
+        },
+        "b": {
+          "x": 3969,
+          "y": 7569
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 50,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 4484,
+          "y": 7614.5
+        },
+        "b": {
+          "x": 5020,
+          "y": 7614.5
+        },
+        "distance": 536,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5a6ciq2",
+          "name": "马桶"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 4124,
+          "y": 7359
+        },
+        "b": {
+          "x": 4124,
+          "y": 7027
+        },
+        "distance": 332,
+        "entity": {
+          "kind": "wall",
+          "id": 52,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 4006,
+          "y": 7779
+        },
+        "b": {
+          "x": 4006,
+          "y": 8149.999999999999
+        },
+        "distance": 370.9999999999991,
+        "entity": {
+          "kind": "wall",
+          "id": 38,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5d24bx1",
+    "position": [
+      4226.5,
+      7633
+    ]
+  },
+  {
+    "label": "all:fmv5dvzo81",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 2483,
+          "y": 8478.422104
+        },
+        "b": {
+          "x": 1498.0000000000002,
+          "y": 8478.422104
+        },
+        "distance": 984.9999999999998,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w4m2a4",
+          "name": "衣柜",
+          "boardKey": "board:21",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 3103,
+          "y": 8248
+        },
+        "b": {
+          "x": 3103,
+          "y": 8248
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5c10yi4",
+          "name": "书桌",
+          "boardKey": "furniture:0",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 2591.5,
+          "y": 7938
+        },
+        "b": {
+          "x": 2591.5,
+          "y": 4762
+        },
+        "distance": 3176,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w361v2",
+          "name": "双人床 1.8m",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 3052.5,
+          "y": 8558
+        },
+        "b": {
+          "x": 3052.5,
+          "y": 9581
+        },
+        "distance": 1023,
+        "entity": {
+          "kind": "wall",
+          "id": 19,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv5dvzo81",
+    "position": [
+      2793,
+      8187
+    ]
+  },
+  {
+    "label": "all:fmv61w1091",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6413,
+          "y": 3972
+        },
+        "b": {
+          "x": 4049,
+          "y": 3972
+        },
+        "distance": 2364,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wyijp13",
+          "name": "单人床",
+          "boardKey": "furniture:3",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 6493,
+          "y": 3522
+        },
+        "b": {
+          "x": 6500,
+          "y": 3522
+        },
+        "distance": 7,
+        "entity": {
+          "kind": "wall",
+          "id": 24,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 6453,
+          "y": 2907
+        },
+        "b": {
+          "x": 6453,
+          "y": 2534
+        },
+        "distance": 373,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3xgqxc2",
+          "name": "双开窗帘 2.4m"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 6471.5,
+          "y": 4137
+        },
+        "b": {
+          "x": 6471.5,
+          "y": 5290
+        },
+        "distance": 1153,
+        "entity": {
+          "kind": "wall",
+          "id": 30,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv61w1091",
+    "position": [
+      6460,
+      3610
+    ]
+  },
+  {
+    "label": "all:fmv62bwbp1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6728,
+          "y": 8297.75
+        },
+        "b": {
+          "x": 6728,
+          "y": 8297.75
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 8,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 7358,
+          "y": 7198.996760586077
+        },
+        "b": {
+          "x": 7479.012957655692,
+          "y": 7198.996760586077
+        },
+        "distance": 121.01295765569193,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wg88q4",
+          "name": "餐椅",
+          "boardKey": "furniture:2",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 6729,
+          "y": 6504
+        },
+        "b": {
+          "x": 6729,
+          "y": 5420
+        },
+        "distance": 1084,
+        "entity": {
+          "kind": "wall",
+          "id": 29,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 7043,
+          "y": 8415.5
+        },
+        "b": {
+          "x": 7043,
+          "y": 8446
+        },
+        "distance": 30.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:2/board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv62bwbp1",
+    "position": [
+      7043,
+      7490.25
+    ]
+  },
+  {
+    "label": "all:fmv6wfmo91",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 8486,
+          "y": 7014
+        },
+        "b": {
+          "x": 8486,
+          "y": 7014
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 9026,
+          "y": 7025
+        },
+        "b": {
+          "x": 9727.5,
+          "y": 7025
+        },
+        "distance": 701.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bl44k1",
+          "name": "收纳柜",
+          "boardKey": "board:21",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 8551,
+          "y": 6789
+        },
+        "b": {
+          "x": 8551,
+          "y": 6789
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 8551,
+          "y": 7239
+        },
+        "b": {
+          "x": 8551,
+          "y": 7239
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv6wfmo91",
+    "position": [
+      8756,
+      7014
+    ]
+  },
+  {
+    "label": "all:fmv6wfocm2",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 8021,
+          "y": 6704.5301005
+        },
+        "b": {
+          "x": 8021,
+          "y": 6704.5301005
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 8471,
+          "y": 6704.5301005
+        },
+        "b": {
+          "x": 8471,
+          "y": 6704.5301005
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 8082,
+          "y": 6239
+        },
+        "b": {
+          "x": 8082,
+          "y": 4540
+        },
+        "distance": 1699,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvglvcws1",
+          "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+          "boardKey": "furniture:0",
+          "boardName": "木台面"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 8246,
+          "y": 6779
+        },
+        "b": {
+          "x": 8246,
+          "y": 6779
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv6wfocm2",
+    "position": [
+      8261,
+      6519
+    ]
+  },
+  {
+    "label": "all:fmv6wfol63",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 8036,
+          "y": 7542.44663696808
+        },
+        "b": {
+          "x": 8036,
+          "y": 7542.44663696808
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:6",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 8486,
+          "y": 7528.047649732068
+        },
+        "b": {
+          "x": 8486,
+          "y": 7528.047649732068
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:7",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 8261,
+          "y": 7239
+        },
+        "b": {
+          "x": 8261,
+          "y": 7239
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 8366.000000000002,
+          "y": 7779
+        },
+        "b": {
+          "x": 8366.000000000002,
+          "y": 9521.5
+        },
+        "distance": 1742.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:0/board:7",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv6wfol63",
+    "position": [
+      8261,
+      7509
+    ]
+  },
+  {
+    "label": "all:fmv6wg88q4",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 7461,
+          "y": 7014
+        },
+        "b": {
+          "x": 7178,
+          "y": 7014
+        },
+        "distance": 283,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv62bwbp1",
+          "name": "餐边柜 · 冰箱位与玻璃展示柜",
+          "boardKey": "board:2",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 8001,
+          "y": 7014
+        },
+        "b": {
+          "x": 8001,
+          "y": 7014
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 7938.5,
+          "y": 6789
+        },
+        "b": {
+          "x": 7938.5,
+          "y": 6789
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 7938.5,
+          "y": 7239
+        },
+        "b": {
+          "x": 7938.5,
+          "y": 7239
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg0p9tc1",
+          "name": "源氏木语折叠餐桌 · 1100款",
+          "boardKey": "furniture:12",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv6wg88q4",
+    "position": [
+      7766,
+      7014
+    ]
+  },
+  {
+    "label": "all:fmv9dos7j1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6050.000000000001,
+          "y": 8608
+        },
+        "b": {
+          "x": 6050,
+          "y": 8608
+        },
+        "distance": 9.094947017729282e-13,
+        "entity": {
+          "kind": "wall",
+          "id": 41,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 8066.000000000001,
+          "y": 9962.5
+        },
+        "b": {
+          "x": 8066.000000000001,
+          "y": 9962.5
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 12,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 6360.000000000001,
+          "y": 8446
+        },
+        "b": {
+          "x": 6360.000000000001,
+          "y": 8446
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 40,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 8341,
+          "y": 9775
+        },
+        "b": {
+          "x": 8341,
+          "y": 9775
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 12,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv9dos7j1",
+    "position": [
+      7333,
+      9298
+    ]
+  },
+  {
+    "label": "all:fmv9mqxz91",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6050,
+          "y": 9947.5
+        },
+        "b": {
+          "x": 6050,
+          "y": 9947.5
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 48,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 8036,
+          "y": 9947.5
+        },
+        "b": {
+          "x": 8036,
+          "y": 9947.5
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 46,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 6150,
+          "y": 9745
+        },
+        "b": {
+          "x": 6150,
+          "y": 8646
+        },
+        "distance": 1099,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvdvn6e11",
+          "name": "管道包覆柜"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 6553,
+          "y": 10150
+        },
+        "b": {
+          "x": 6553,
+          "y": 10150
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 45,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv9mqxz91",
+    "position": [
+      7043,
+      9947.5
+    ]
+  },
+  {
+    "label": "all:fmv9qrzqy1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 7101,
+          "y": 10099
+        },
+        "b": {
+          "x": 6320,
+          "y": 10099
+        },
+        "distance": 781,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvdvqyqj1",
+          "name": "管道包覆柜"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 8001,
+          "y": 9966
+        },
+        "b": {
+          "x": 8036,
+          "y": 9966
+        },
+        "distance": 35,
+        "entity": {
+          "kind": "wall",
+          "id": 46,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 7229.5,
+          "y": 9782
+        },
+        "b": {
+          "x": 7229.5,
+          "y": 8415.5
+        },
+        "distance": 1366.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv62bwbp1",
+          "name": "餐边柜 · 冰箱位与玻璃展示柜",
+          "boardKey": "board:10",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 7551,
+          "y": 10150
+        },
+        "b": {
+          "x": 7551,
+          "y": 10150
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 45,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmv9qrzqy1",
+    "position": [
+      7586,
+      9966
+    ]
+  },
+  {
+    "label": "all:fmv9r1fzz1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 7176,
+          "y": 9810
+        },
+        "b": {
+          "x": 7056.000000000001,
+          "y": 9810
+        },
+        "distance": 119.99999999999909,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面 · 模块 4",
+          "moduleKey": "module:3",
+          "moduleIndex": 3
+        },
+        "surfaceBoundary": true,
+        "moduleBoundary": true
+      },
+      "r": {
+        "a": {
+          "x": 7926,
+          "y": 9887.5
+        },
+        "b": {
+          "x": 8036,
+          "y": 9887.5
+        },
+        "distance": 110,
+        "entity": {
+          "kind": "wall",
+          "id": 46,
+          "name": "",
+          "wallDatum": "finished"
+        },
+        "wallPriority": true
+      },
+      "t": {
+        "a": {
+          "x": 7551,
+          "y": 9590
+        },
+        "b": {
+          "x": 7551,
+          "y": 9530
+        },
+        "distance": 60,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面 · 模块 4",
+          "moduleKey": "module:3",
+          "moduleIndex": 3
+        },
+        "surfaceBoundary": true,
+        "moduleBoundary": true
+      },
+      "b": {
+        "a": {
+          "x": 7551,
+          "y": 10030
+        },
+        "b": {
+          "x": 7551,
+          "y": 10150
+        },
+        "distance": 120,
+        "entity": {
+          "kind": "wall",
+          "id": 45,
+          "name": "",
+          "wallDatum": "finished"
+        },
+        "wallPriority": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmv9r1fzz1",
+    "position": [
+      7661,
+      9930
+    ]
+  },
+  {
+    "label": "all:fmvdtz5aj1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6760,
+          "y": 955
+        },
+        "b": {
+          "x": 6760,
+          "y": 955
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 56,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 6980,
+          "y": 943.5
+        },
+        "b": {
+          "x": 6995,
+          "y": 943.5
+        },
+        "distance": 15,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzisd1",
+          "name": "完整阳台洗衣柜",
+          "boardKey": "module:0/board:0",
+          "boardName": "顶板"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 6870,
+          "y": 870
+        },
+        "b": {
+          "x": 6870,
+          "y": 870
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 58,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 6877.5,
+          "y": 1040
+        },
+        "b": {
+          "x": 6877.5,
+          "y": 1040
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzisd1",
+          "name": "完整阳台洗衣柜",
+          "boardKey": "module:0/board:0",
+          "boardName": "顶板"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvdtz5aj1",
+    "position": [
+      6870,
+      955
+    ]
+  },
+  {
+    "label": "all:fmvdvn6e11",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6020,
+          "y": 8531
+        },
+        "b": {
+          "x": 6020,
+          "y": 8531
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 9,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 6250,
+          "y": 8431
+        },
+        "b": {
+          "x": 6250,
+          "y": 8431
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 40,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 6135,
+          "y": 8416
+        },
+        "b": {
+          "x": 6135,
+          "y": 8416
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 8,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 6035,
+          "y": 8646
+        },
+        "b": {
+          "x": 6035,
+          "y": 8646
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 41,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvdvn6e11",
+    "position": [
+      6165,
+      8561
+    ]
+  },
+  {
+    "label": "all:fmvdvqyqj1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6020,
+          "y": 10105
+        },
+        "b": {
+          "x": 6020,
+          "y": 10105
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 13,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 6320,
+          "y": 10165
+        },
+        "b": {
+          "x": 6320,
+          "y": 10165
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 45,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 6035,
+          "y": 10030
+        },
+        "b": {
+          "x": 6035,
+          "y": 10030
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 48,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 6170,
+          "y": 10180
+        },
+        "b": {
+          "x": 6170,
+          "y": 10180
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 11,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvdvqyqj1",
+    "position": [
+      6200,
+      10075
+    ]
+  },
+  {
+    "label": "all:fmvffgmj31",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9784,
+          "y": 6103.661119
+        },
+        "b": {
+          "x": 1498,
+          "y": 6103.661119
+        },
+        "distance": 8286,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w4m2a4",
+          "name": "衣柜",
+          "boardKey": "board:37",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10076,
+          "y": 5874
+        },
+        "b": {
+          "x": 10106,
+          "y": 5874
+        },
+        "distance": 30,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 10026,
+          "y": 5621.5
+        },
+        "b": {
+          "x": 10026,
+          "y": 4893
+        },
+        "distance": 728.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w7rrw6",
+          "name": "65 寸电视"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 9930,
+          "y": 6126.5
+        },
+        "b": {
+          "x": 9930,
+          "y": 6165
+        },
+        "distance": 38.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bl44k1",
+          "name": "收纳柜",
+          "boardKey": "board:4",
+          "boardName": "左侧板"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvffgmj31",
+    "position": [
+      9960,
+      5912.5
+    ]
+  },
+  {
+    "label": "all:fmvffi29w2",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 3203,
+          "y": 9330.5
+        },
+        "b": {
+          "x": 1469.5000000000005,
+          "y": 9330.5
+        },
+        "distance": 1733.4999999999995,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w4m2a4",
+          "name": "衣柜",
+          "boardKey": "board:15",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 3703,
+          "y": 9331
+        },
+        "b": {
+          "x": 3703,
+          "y": 9331
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 18,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 3453,
+          "y": 9081
+        },
+        "b": {
+          "x": 3453,
+          "y": 8887
+        },
+        "distance": 194,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5c10yi4",
+          "name": "书桌",
+          "boardKey": "furniture:0",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 3453,
+          "y": 9581
+        },
+        "b": {
+          "x": 3453,
+          "y": 9581
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 19,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvffi29w2",
+    "position": [
+      3453,
+      9331
+    ]
+  },
+  {
+    "label": "all:fmvffj8v03",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9302,
+          "y": 5731.5
+        },
+        "b": {
+          "x": 1469.5,
+          "y": 5731.5
+        },
+        "distance": 7832.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w4m2a4",
+          "name": "衣柜",
+          "boardKey": "board:36",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 9626,
+          "y": 5706.5
+        },
+        "b": {
+          "x": 9756,
+          "y": 5706.5
+        },
+        "distance": 130,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgnhl7h3",
+          "name": "收纳柜",
+          "boardKey": "board:8",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 9626,
+          "y": 5621.5
+        },
+        "b": {
+          "x": 9626,
+          "y": 2753.8484997053047
+        },
+        "distance": 2867.6515002946953,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg4z7am1",
+          "name": "美的酷省电 Ultra 立式空调 · 2匹室内机"
+        }
+      },
+      "b": null
+    }
+  },
+  {
+    "label": "snap:fmvffj8v03",
+    "position": [
+      9594,
+      5792.5
+    ]
+  },
+  {
+    "label": "all:fmvffjihp4",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9566,
+          "y": 1281.5
+        },
+        "b": {
+          "x": 7375,
+          "y": 1281.5
+        },
+        "distance": 2191,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzisd1",
+          "name": "完整阳台洗衣柜",
+          "boardKey": "module:0/board:6",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10076,
+          "y": 1059
+        },
+        "b": {
+          "x": 10076,
+          "y": 1059
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 60,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9821,
+          "y": 970
+        },
+        "b": {
+          "x": 9821,
+          "y": 870
+        },
+        "distance": 100,
+        "entity": {
+          "kind": "wall",
+          "id": 71,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 9851,
+          "y": 1410
+        },
+        "b": {
+          "x": 9851,
+          "y": 1624
+        },
+        "distance": 214,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wd35z9",
+          "name": "石头 P20 Max 水箱版套装"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvffjihp4",
+    "position": [
+      9821,
+      1090
+    ]
+  },
+  {
+    "label": "all:fmvg0p9tc1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 7696,
+          "y": 7194
+        },
+        "b": {
+          "x": 7696,
+          "y": 7194
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wg88q4",
+          "name": "餐椅",
+          "boardKey": "furniture:6",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 8796,
+          "y": 6834
+        },
+        "b": {
+          "x": 8796,
+          "y": 6834
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wfmo91",
+          "name": "餐椅",
+          "boardKey": "furniture:6",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 8066,
+          "y": 6487
+        },
+        "b": {
+          "x": 8066,
+          "y": 6487
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wfocm2",
+          "name": "餐椅",
+          "boardKey": "furniture:6",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 8441,
+          "y": 7587
+        },
+        "b": {
+          "x": 8441,
+          "y": 7587
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wfol63",
+          "name": "餐椅",
+          "boardKey": "furniture:6",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvg0p9tc1",
+    "position": [
+      8246,
+      7054
+    ]
+  },
+  {
+    "label": "all:fmvg2upqp1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6730,
+          "y": 5220
+        },
+        "b": {
+          "x": 6730,
+          "y": 5220
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 29,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 7530,
+          "y": 5220
+        },
+        "b": {
+          "x": 9756,
+          "y": 5220
+        },
+        "distance": 2226,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3yflqw1",
+          "name": "落地电视柜 · 上盖抽屉藏线",
+          "boardKey": "board:0",
+          "boardName": "底板"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 6787.218785796105,
+          "y": 5020
+        },
+        "b": {
+          "x": 6787.218785796105,
+          "y": 5020
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bzynf3",
+          "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+          "boardKey": "furniture:3",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 6945,
+          "y": 5420
+        },
+        "b": {
+          "x": 6945,
+          "y": 6504
+        },
+        "distance": 1084,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv62bwbp1",
+          "name": "餐边柜 · 冰箱位与玻璃展示柜",
+          "boardKey": "board:0",
+          "boardName": "底板"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvg2upqp1",
+    "position": [
+      7130,
+      5220
+    ]
+  },
+  {
+    "label": "all:fmvg4z7am1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9736.489109001106,
+          "y": 2867.629050669466
+        },
+        "b": {
+          "x": 7602.979633985427,
+          "y": 2867.629050669466
+        },
+        "distance": 2133.5094750156786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bzynf3",
+          "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+          "boardKey": "furniture:9",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10065.584695954287,
+          "y": 2642.670653252064
+        },
+        "b": {
+          "x": 10106,
+          "y": 2642.670653252064
+        },
+        "distance": 40.41530404571313,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9856.914042702221,
+          "y": 2434
+        },
+        "b": {
+          "x": 9856.914042702221,
+          "y": 2434
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg9e7763",
+          "name": "客厅窗帘"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 9813.085957297779,
+          "y": 2895.16939190857
+        },
+        "b": {
+          "x": 9813.085957297779,
+          "y": 2915
+        },
+        "distance": 19.830608091429895,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3yflqw1",
+          "name": "落地电视柜 · 上盖抽屉藏线",
+          "boardKey": "board:0",
+          "boardName": "底板"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvg4z7am1",
+    "position": [
+      9845.415304,
+      2684.415304045715
+    ]
+  },
+  {
+    "label": "all:fmvg9e7763",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6730,
+          "y": 2384
+        },
+        "b": {
+          "x": 6730,
+          "y": 2384
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 24,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 10106,
+          "y": 2384
+        },
+        "b": {
+          "x": 10106,
+          "y": 2384
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 6925,
+          "y": 2334
+        },
+        "b": {
+          "x": 6925,
+          "y": 2334
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 28,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 9856.914042702221,
+          "y": 2434
+        },
+        "b": {
+          "x": 9856.914042702221,
+          "y": 2434
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg4z7am1",
+          "name": "美的酷省电 Ultra 立式空调 · 2匹室内机"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvg9e7763",
+    "position": [
+      8418,
+      2384
+    ]
+  },
+  {
+    "label": "all:fmvgkqgg52",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 7120,
+          "y": 2219
+        },
+        "b": {
+          "x": 7120,
+          "y": 2219
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 28,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 7380,
+          "y": 2219
+        },
+        "b": {
+          "x": 9616,
+          "y": 2219
+        },
+        "distance": 2236,
+        "entity": {
+          "kind": "wall",
+          "id": 33,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 7247.5,
+          "y": 2074
+        },
+        "b": {
+          "x": 7247.5,
+          "y": 2074
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzisd1",
+          "name": "完整阳台洗衣柜",
+          "boardKey": "结构板:board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 7250,
+          "y": 2334
+        },
+        "b": {
+          "x": 7250,
+          "y": 2334
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg9e7763",
+          "name": "客厅窗帘"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgkqgg52",
+    "position": [
+      7250,
+      2204
+    ]
+  },
+  {
+    "label": "all:fmvglvcws1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 8022,
+          "y": 3940
+        },
+        "b": {
+          "x": 7622,
+          "y": 3940
+        },
+        "distance": 400,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bzynf3",
+          "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+          "boardKey": "furniture:1",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 8672,
+          "y": 3940
+        },
+        "b": {
+          "x": 9756,
+          "y": 3940
+        },
+        "distance": 1084,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3yflqw1",
+          "name": "落地电视柜 · 上盖抽屉藏线",
+          "boardKey": "board:0",
+          "boardName": "底板"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 8347,
+          "y": 3340
+        },
+        "b": {
+          "x": 8347,
+          "y": 2434
+        },
+        "distance": 906,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg9e7763",
+          "name": "客厅窗帘"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 8061.003239413923,
+          "y": 4540
+        },
+        "b": {
+          "x": 8061.003239413923,
+          "y": 6257.012957655692
+        },
+        "distance": 1717.012957655692,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv6wfocm2",
+          "name": "餐椅",
+          "boardKey": "furniture:2",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvglvcws1",
+    "position": [
+      8351,
+      3940
+    ]
+  },
+  {
+    "label": "all:fmvgn7dtt1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6170,
+          "y": 9440.5
+        },
+        "b": {
+          "x": 6068.000000333334,
+          "y": 9440.5
+        },
+        "distance": 101.99999966666564,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:1/board:3",
+          "boardName": "背板"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 6615,
+          "y": 9521.75
+        },
+        "b": {
+          "x": 8280.000000000002,
+          "y": 9521.75
+        },
+        "distance": 1665.0000000000018,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:0/board:9",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 6392.5,
+          "y": 9359
+        },
+        "b": {
+          "x": 6392.5,
+          "y": 8768
+        },
+        "distance": 591,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:1/board:5",
+          "boardName": "右侧板"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 6392.5,
+          "y": 9522
+        },
+        "b": {
+          "x": 6392.5,
+          "y": 9532
+        },
+        "distance": 10,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:1/board:4",
+          "boardName": "左侧板"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgn7dtt1",
+    "position": [
+      6272.5,
+      9379.5
+    ]
+  },
+  {
+    "label": "all:fmvgnhl7h3",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9756,
+          "y": 5658.5
+        },
+        "b": {
+          "x": 9626,
+          "y": 5658.5
+        },
+        "distance": 130,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvffj8v03",
+          "name": "米家智能宠物喂食器 2",
+          "boardKey": "furniture:15",
+          "boardName": "结构件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 10106,
+          "y": 5792.5
+        },
+        "b": {
+          "x": 10106,
+          "y": 5792.5
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 32,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 9931,
+          "y": 5420
+        },
+        "b": {
+          "x": 9931,
+          "y": 5420
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3yflqw1",
+          "name": "落地电视柜 · 上盖抽屉藏线",
+          "boardKey": "board:0",
+          "boardName": "底板"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 9951,
+          "y": 6165
+        },
+        "b": {
+          "x": 9951,
+          "y": 6165
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5bl44k1",
+          "name": "收纳柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgnhl7h3",
+    "position": [
+      9931,
+      5792.5
+    ]
+  },
+  {
+    "label": "all:fmvgsj6ah1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 9788,
+          "y": 9862.5
+        },
+        "b": {
+          "x": 8676,
+          "y": 9862.5
+        },
+        "distance": 1112,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5ayw571",
+          "name": "穿衣镜"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 10088,
+          "y": 9790
+        },
+        "b": {
+          "x": 10088,
+          "y": 9790
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5b76h91",
+          "name": "玄关柜 · 洞洞板换鞋区",
+          "boardKey": "board:0",
+          "boardName": "背板"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 9938,
+          "y": 9390
+        },
+        "b": {
+          "x": 9938,
+          "y": 9385
+        },
+        "distance": 5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv5b78gp2",
+          "name": "玄关柜二 · 置物台与鞋柜",
+          "boardKey": "board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 9940.5,
+          "y": 10190
+        },
+        "b": {
+          "x": 9940.5,
+          "y": 10195
+        },
+        "distance": 5,
+        "entity": {
+          "kind": "wall",
+          "id": 34,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgsj6ah1",
+    "position": [
+      9938,
+      9795
+    ]
+  },
+  {
+    "label": "all:fmvgv70l41",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6160.000000000001,
+          "y": 8816
+        },
+        "b": {
+          "x": 6050,
+          "y": 8816
+        },
+        "distance": 110.00000000000091,
+        "entity": {
+          "kind": "wall",
+          "id": 41,
+          "name": "",
+          "wallDatum": "finished"
+        },
+        "wallPriority": true
+      },
+      "r": {
+        "a": {
+          "x": 6610.000000000001,
+          "y": 9150
+        },
+        "b": {
+          "x": 6670.000000000001,
+          "y": 9150
+        },
+        "distance": 60,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面 · 模块 2",
+          "moduleKey": "module:1",
+          "moduleIndex": 1
+        },
+        "surfaceBoundary": true,
+        "moduleBoundary": true
+      },
+      "t": {
+        "a": {
+          "x": 6385.000000000001,
+          "y": 8775
+        },
+        "b": {
+          "x": 6385.000000000001,
+          "y": 8750
+        },
+        "distance": 25,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面 · 模块 2",
+          "moduleKey": "module:1",
+          "moduleIndex": 1
+        },
+        "surfaceBoundary": true,
+        "moduleBoundary": true
+      },
+      "b": {
+        "a": {
+          "x": 6385.000000000001,
+          "y": 9525
+        },
+        "b": {
+          "x": 6385.000000000001,
+          "y": 9550
+        },
+        "distance": 25,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面 · 模块 2",
+          "moduleKey": "module:1",
+          "moduleIndex": 1
+        },
+        "surfaceBoundary": true,
+        "moduleBoundary": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgv70l41",
+    "position": [
+      6275,
+      9218.5
+    ]
+  },
+  {
+    "label": "all:fmvgvzisd1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6775,
+          "y": 1745
+        },
+        "b": {
+          "x": 6775,
+          "y": 1745
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzise3",
+          "name": "洗衣机"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 7395,
+          "y": 985
+        },
+        "b": {
+          "x": 7411,
+          "y": 985
+        },
+        "distance": 16,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgwe3io7",
+          "name": "方块占位体"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 7056.5,
+          "y": 870
+        },
+        "b": {
+          "x": 7056.5,
+          "y": 870
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 58,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 6885,
+          "y": 2074
+        },
+        "b": {
+          "x": 6885,
+          "y": 2074
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 59,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgvzisd1",
+    "position": [
+      7070,
+      1472
+    ]
+  },
+  {
+    "label": "all:fmvgvzise3",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 6775,
+          "y": 1745
+        },
+        "b": {
+          "x": 6760,
+          "y": 1745
+        },
+        "distance": 15,
+        "entity": {
+          "kind": "wall",
+          "id": 56,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 7375,
+          "y": 1745
+        },
+        "b": {
+          "x": 9026,
+          "y": 1745
+        },
+        "distance": 1651,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wcfw38",
+          "name": "石头 P20 Max 扫拖机器人"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 7066,
+          "y": 1445
+        },
+        "b": {
+          "x": 7066,
+          "y": 1434
+        },
+        "distance": 11,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzisd1",
+          "name": "完整阳台洗衣柜",
+          "boardKey": "module:0/board:3",
+          "boardName": "右侧板"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 7075,
+          "y": 2045
+        },
+        "b": {
+          "x": 7075,
+          "y": 2056
+        },
+        "distance": 11,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzisd1",
+          "name": "完整阳台洗衣柜",
+          "boardKey": "结构板:board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgvzise3",
+    "position": [
+      7060,
+      1774
+    ]
+  },
+  {
+    "label": "all:fmvgwe3io7",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 7411,
+          "y": 973.5
+        },
+        "b": {
+          "x": 7395,
+          "y": 973.5
+        },
+        "distance": 16,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvgvzisd1",
+          "name": "完整阳台洗衣柜",
+          "boardKey": "台面:board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 7731,
+          "y": 1039
+        },
+        "b": {
+          "x": 10076,
+          "y": 1039
+        },
+        "distance": 2345,
+        "entity": {
+          "kind": "wall",
+          "id": 61,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 7571,
+          "y": 930
+        },
+        "b": {
+          "x": 7571,
+          "y": 840
+        },
+        "distance": 90,
+        "entity": {
+          "kind": "wall",
+          "id": 79,
+          "name": ""
+        }
+      },
+      "b": {
+        "a": {
+          "x": 7571,
+          "y": 1410
+        },
+        "b": {
+          "x": 7571,
+          "y": 2334
+        },
+        "distance": 924,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmvg9e7763",
+          "name": "客厅窗帘"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvgwe3io7",
+    "position": [
+      7555,
+      1110
+    ]
+  },
+  {
+    "label": "all:fmvmjggtd1",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 7056,
+          "y": 10060
+        },
+        "b": {
+          "x": 6650.000000000001,
+          "y": 10060
+        },
+        "distance": 405.9999999999991,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "结构板:board:0",
+          "boardName": "柜体板件"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 7856,
+          "y": 10060
+        },
+        "b": {
+          "x": 8036,
+          "y": 10060
+        },
+        "distance": 180,
+        "entity": {
+          "kind": "wall",
+          "id": 46,
+          "name": "",
+          "wallDatum": "finished"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 7060.375000166667,
+          "y": 9970
+        },
+        "b": {
+          "x": 7060.375000166667,
+          "y": 8778.5
+        },
+        "distance": 1191.5,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv9dos7j1",
+          "name": "橱柜台面",
+          "boardKey": "module:2/board:10",
+          "boardName": "柜门／抽屉"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 7456,
+          "y": 10150
+        },
+        "b": {
+          "x": 7456,
+          "y": 10180
+        },
+        "distance": 30,
+        "entity": {
+          "kind": "wall",
+          "id": 11,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "snap:fmvmjggtd1",
+    "position": [
+      7463,
+      10090
+    ]
+  },
+  {
+    "label": "drawing:90",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 994.9999999999999,
+          "y": 4737
+        },
+        "b": {
+          "x": 994.9999999999999,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "t": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 2839.9999999999995,
+          "y": 3837
+        },
+        "b": {
+          "x": 3625.9999999999995,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      }
+    }
+  },
+  {
+    "label": "collision:drawing:90",
+    "value": []
+  },
+  {
+    "label": "group:90",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 1014.9999999999999,
+          "y": 5137
+        },
+        "b": {
+          "x": 1014.9999999999999,
+          "y": 5571
+        },
+        "distance": 434,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w4m2a4",
+          "name": "衣柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "r": {
+        "a": {
+          "x": 1014.9999999999999,
+          "y": 2537
+        },
+        "b": {
+          "x": 1014.9999999999999,
+          "y": 2537
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wtxgq12",
+          "name": "双开窗帘 2.4m"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 840,
+          "y": 4937
+        },
+        "b": {
+          "x": 839.4999999999999,
+          "y": 4937
+        },
+        "distance": 0.5000000000001137,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 2839.9999999999995,
+          "y": 3837
+        },
+        "b": {
+          "x": 3625.9999999999995,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      }
+    }
+  },
+  {
+    "label": "collision:group:90",
+    "value": []
+  },
+  {
+    "label": "drawing:180",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 2840,
+          "y": 3837.0000000000005
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837.0000000000005
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995.0000000000001,
+          "y": 4737
+        },
+        "b": {
+          "x": 995.0000000000001,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995.0000000000003,
+          "y": 2937
+        },
+        "b": {
+          "x": 995.0000000000003,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:drawing:180",
+    "value": []
+  },
+  {
+    "label": "group:180",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 2840,
+          "y": 3837.0000000000005
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837.0000000000005
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 840.0000000000001,
+          "y": 4937
+        },
+        "b": {
+          "x": 839.5,
+          "y": 4937
+        },
+        "distance": 0.5000000000001137,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 1015,
+          "y": 5137
+        },
+        "b": {
+          "x": 1015,
+          "y": 5571
+        },
+        "distance": 434,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w4m2a4",
+          "name": "衣柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 1015.0000000000003,
+          "y": 2537
+        },
+        "b": {
+          "x": 1015.0000000000003,
+          "y": 2537
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wtxgq12",
+          "name": "双开窗帘 2.4m"
+        }
+      }
+    }
+  },
+  {
+    "label": "collision:group:180",
+    "value": []
+  },
+  {
+    "label": "restore",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:restore",
+    "value": []
+  },
+  {
+    "label": "source:cx",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 977,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 137.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2977,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 649,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 1063.5,
+          "y": 2937
+        },
+        "b": {
+          "x": 1063.5,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 1063.5,
+          "y": 4737
+        },
+        "b": {
+          "x": 1063.5,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:source:cx",
+    "value": []
+  },
+  {
+    "label": "source:rot",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 839.5000000000001,
+          "y": 3669.232217020985
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3669.232217020985
+        },
+        "distance": 1.1368683772161603e-13,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 1749.7624685627177,
+          "y": 2516.8654845579317
+        },
+        "b": {
+          "x": 1749.7624685627177,
+          "y": 2516.8654845579317
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3wtxgq12",
+          "name": "双开窗帘 2.4m"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 719.75,
+          "y": 3828.1458344100292
+        },
+        "b": {
+          "x": 719.75,
+          "y": 3828.1458344100292
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 719.75,
+          "y": 4244.96673352857
+        },
+        "b": {
+          "x": 719.75,
+          "y": 4244.96673352857
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "collision:source:rot",
+    "value": []
+  },
+  {
+    "label": "source:flip",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:source:flip",
+    "value": []
+  },
+  {
+    "label": "source:h",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 4564.5
+        },
+        "b": {
+          "x": 3706,
+          "y": 4564.5
+        },
+        "distance": 866,
+        "entity": {
+          "kind": "wall",
+          "id": 16,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:source:h",
+    "value": []
+  },
+  {
+    "label": "source:mountHeight",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:source:mountHeight",
+    "value": []
+  },
+  {
+    "label": "neighbour moved",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3600,
+          "y": 3837
+        },
+        "distance": 760,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:neighbour moved",
+    "value": []
+  },
+  {
+    "label": "neighbour unknown height",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3600,
+          "y": 3837
+        },
+        "distance": 760,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:neighbour unknown height",
+    "value": []
+  },
+  {
+    "label": "cabinet door",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:cabinet door",
+    "value": []
+  },
+  {
+    "label": "wall finish",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:wall finish",
+    "value": []
+  },
+  {
+    "label": "floor finish",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:floor finish",
+    "value": []
+  },
+  {
+    "label": "survey datum",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:survey datum",
+    "value": []
+  },
+  {
+    "label": "hidden furniture",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 4564.5
+        },
+        "b": {
+          "x": 3706,
+          "y": 4564.5
+        },
+        "distance": 866,
+        "entity": {
+          "kind": "wall",
+          "id": 16,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 1108,
+          "y": 2937
+        },
+        "b": {
+          "x": 1108,
+          "y": 2337
+        },
+        "distance": 600,
+        "entity": {
+          "kind": "wall",
+          "id": 1,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "b": {
+        "a": {
+          "x": 1194,
+          "y": 4737
+        },
+        "b": {
+          "x": 1194,
+          "y": 9581
+        },
+        "distance": 4844,
+        "entity": {
+          "kind": "wall",
+          "id": 2,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      }
+    }
+  },
+  {
+    "label": "collision:hidden furniture",
+    "value": []
+  },
+  {
+    "label": "collisions",
+    "value": []
+  },
+  {
+    "label": "space",
+    "value": [
+      {
+        "kind": "floorheight",
+        "id": "fmv3w361v2",
+        "name": "双人床 1.8m",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floorheight",
+        "id": "fmv3wyijp13",
+        "name": "单人床",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floorheight",
+        "id": "fmv5c10yi4",
+        "name": "书桌",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floorheight",
+        "id": "fmv5dvzo81",
+        "name": "办公椅",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floorheight",
+        "id": "fmv6wfmo91",
+        "name": "餐椅",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floorheight",
+        "id": "fmv6wfocm2",
+        "name": "餐椅",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floorheight",
+        "id": "fmv6wfol63",
+        "name": "餐椅",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floorheight",
+        "id": "fmv6wg88q4",
+        "name": "餐椅",
+        "pending": true,
+        "message": "家具或所跨区域高度未知，地面净高待核对"
+      },
+      {
+        "kind": "floor-door",
+        "id": "floor-door-0",
+        "doorIndex": 0,
+        "name": "入户门（断口推导）",
+        "pending": true,
+        "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+      },
+      {
+        "kind": "floor-door",
+        "id": "floor-door-1",
+        "doorIndex": 1,
+        "name": "房门",
+        "pending": true,
+        "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+      },
+      {
+        "kind": "floor-door",
+        "id": "floor-door-2",
+        "doorIndex": 2,
+        "name": "房门",
+        "pending": true,
+        "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+      },
+      {
+        "kind": "pipe",
+        "id": "fmv9dos7j1",
+        "markerId": "cad_61E4A",
+        "name": "橱柜台面",
+        "pending": false,
+        "cut": true,
+        "at": [
+          6135.835793234891,
+          8538.978344727278
+        ],
+        "message": "柜体与 下水 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+      },
+      {
+        "kind": "pipe",
+        "id": "fmv9dos7j1",
+        "markerId": "cad_61E4B",
+        "name": "橱柜台面",
+        "pending": false,
+        "cut": true,
+        "at": [
+          6135.835793234891,
+          10091.96537013368
+        ],
+        "message": "柜体与 燃气 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+      },
+      {
+        "kind": "pipe",
+        "id": "fmv9mqxz91",
+        "markerId": "cad_61E4B",
+        "name": "厨房吊柜",
+        "pending": false,
+        "cut": true,
+        "at": [
+          6135.835793234891,
+          10091.96537013368
+        ],
+        "message": "柜体与 燃气 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+      },
+      {
+        "kind": "pipe",
+        "id": "fmvdvqyqj1",
+        "markerId": "cad_61E4B",
+        "name": "管道包覆柜",
+        "pending": false,
+        "cut": false,
+        "at": [
+          6135.835793234891,
+          10091.96537013368
+        ],
+        "message": "家具实体与竖管相交：燃气（管径 100 mm）"
+      },
+      {
+        "kind": "cabinetpassage",
+        "id": "fmv3wzkb515",
+        "markerIds": [],
+        "name": "衣柜",
+        "column": 0,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          5577.75,
+          4219
+        ],
+        "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 单人床、单人床、单人床、单人床、单人床 占用"
+      },
+      {
+        "kind": "cabinetpassage",
+        "id": "fmv3wzkb515",
+        "markerIds": [],
+        "name": "衣柜",
+        "column": 1,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          5163.875,
+          4219
+        ],
+        "message": "分区 2 抽屉拉出后前方 800 mm 地面操作空间被 单人床、单人床、单人床、单人床、单人床 占用"
+      },
+      {
+        "kind": "cabinetpassage",
+        "id": "fmv3wzkb515",
+        "markerIds": [],
+        "name": "衣柜",
+        "column": 2,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          4759,
+          4219
+        ],
+        "message": "分区 3 抽屉拉出后前方 800 mm 地面操作空间被 单人床、单人床、单人床、单人床、单人床、单人床、单人床 占用"
+      },
+      {
+        "kind": "cabinetpassage",
+        "id": "fmv3wzkb515",
+        "markerIds": [],
+        "name": "衣柜",
+        "column": 3,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          4354.125,
+          4219
+        ],
+        "message": "分区 4 抽屉拉出后前方 800 mm 地面操作空间被 单人床、单人床、单人床、单人床、单人床、单人床、单人床、单人床 占用"
+      },
+      {
+        "kind": "outside",
+        "id": "fmv3xjwfp4",
+        "name": "飘窗垫",
+        "message": "家具占地超出房间范围（含折角／凹口）"
+      },
+      {
+        "kind": "cabinetdoor",
+        "id": "fmv62bwbp1",
+        "markerIds": [],
+        "name": "餐边柜 · 冰箱位与玻璃展示柜",
+        "column": 1,
+        "section": "lower",
+        "pending": false,
+        "at": [
+          7178,
+          6522
+        ],
+        "message": "分区 2 柜门三维开启范围被 餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅 占用"
+      },
+      {
+        "kind": "cabinetdrawer",
+        "id": "fmv62bwbp1",
+        "markerIds": [],
+        "name": "餐边柜 · 冰箱位与玻璃展示柜",
+        "column": 1,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          7178,
+          7544.5
+        ],
+        "message": "分区 2 抽屉完全拉出范围被 餐椅、餐椅 占用"
+      },
+      {
+        "kind": "cabinetpassage",
+        "id": "fmv62bwbp1",
+        "markerIds": [],
+        "name": "餐边柜 · 冰箱位与玻璃展示柜",
+        "column": 1,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          7493,
+          7544.5
+        ],
+        "message": "分区 2 抽屉拉出后前方 800 mm 地面操作空间被 餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、餐椅、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款、源氏木语折叠餐桌 · 1100款 占用"
+      },
+      {
+        "kind": "wall",
+        "id": "fmv9dos7j1",
+        "name": "橱柜台面",
+        "message": "家具占用墙体空间"
+      },
+      {
+        "kind": "outside",
+        "id": "fmv9dos7j1",
+        "name": "橱柜台面",
+        "message": "家具占地超出房间范围（含折角／凹口）"
+      },
+      {
+        "kind": "wall",
+        "id": "fmvdvn6e11",
+        "name": "管道包覆柜",
+        "message": "家具占用墙体空间"
+      },
+      {
+        "kind": "outside",
+        "id": "fmvdvn6e11",
+        "name": "管道包覆柜",
+        "message": "家具占地超出房间范围（含折角／凹口）"
+      },
+      {
+        "kind": "wall",
+        "id": "fmvdvqyqj1",
+        "name": "管道包覆柜",
+        "message": "家具占用墙体空间"
+      },
+      {
+        "kind": "outside",
+        "id": "fmvdvqyqj1",
+        "name": "管道包覆柜",
+        "message": "家具占地超出房间范围（含折角／凹口）"
+      },
+      {
+        "kind": "front",
+        "id": "fmvg4z7am1",
+        "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+        "message": "正面 600 mm 使用空间不足（柜门／抽屉）"
+      },
+      {
+        "kind": "cabinetdoor",
+        "id": "fmvgnhl7h3",
+        "markerIds": [],
+        "name": "收纳柜",
+        "column": 0,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          9765,
+          5420
+        ],
+        "message": "分区 1 柜门三维开启范围被 米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2 占用"
+      },
+      {
+        "kind": "cabinetdoor",
+        "id": "fmvgnhl7h3",
+        "markerIds": [],
+        "name": "收纳柜",
+        "column": 0,
+        "section": "storage",
+        "pending": false,
+        "at": [
+          9765,
+          6165
+        ],
+        "message": "分区 1 柜门三维开启范围被 米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2、米家智能宠物喂食器 2 占用"
+      }
+    ]
+  },
+  {
+    "label": "project roundtrip",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:project roundtrip",
+    "value": []
+  },
+  {
+    "label": "mutate",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 977,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 137.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2977,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 649,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 1063.5,
+          "y": 2937
+        },
+        "b": {
+          "x": 1063.5,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 1063.5,
+          "y": 4737
+        },
+        "b": {
+          "x": 1063.5,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:mutate",
+    "value": []
+  },
+  {
+    "label": "undo",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 840,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 0.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2840,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 786,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 995,
+          "y": 2937
+        },
+        "b": {
+          "x": 995,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 995,
+          "y": 4737
+        },
+        "b": {
+          "x": 995,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:undo",
+    "value": []
+  },
+  {
+    "label": "redo",
+    "gaps": {
+      "l": {
+        "a": {
+          "x": 977,
+          "y": 3837
+        },
+        "b": {
+          "x": 839.5,
+          "y": 3837
+        },
+        "distance": 137.5,
+        "entity": {
+          "kind": "wall",
+          "id": 0,
+          "name": "",
+          "wallDatum": "survey"
+        }
+      },
+      "r": {
+        "a": {
+          "x": 2977,
+          "y": 3837
+        },
+        "b": {
+          "x": 3626,
+          "y": 3837
+        },
+        "distance": 649,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w5qkv5",
+          "name": "55 寸电视"
+        }
+      },
+      "t": {
+        "a": {
+          "x": 1063.5,
+          "y": 2937
+        },
+        "b": {
+          "x": 1063.5,
+          "y": 2937
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3vyflm1",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      },
+      "b": {
+        "a": {
+          "x": 1063.5,
+          "y": 4737
+        },
+        "b": {
+          "x": 1063.5,
+          "y": 4737
+        },
+        "distance": 0,
+        "entity": {
+          "kind": "furniture",
+          "id": "fmv3w3eqf3",
+          "name": "床头柜",
+          "boardKey": "board:0",
+          "boardName": "踢脚底座"
+        },
+        "cabinetInterior": true
+      }
+    }
+  },
+  {
+    "label": "collision:redo",
+    "value": []
+  }
+]

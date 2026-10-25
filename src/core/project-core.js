@@ -108,9 +108,13 @@
   const floor=mats.reduce((n,r)=>n+r.c,0),paintQuantity=q.paint*(1+settings.paintWaste/100),paintCost=paintQuantity*settings.paintPrice,furniture=work.furniture.reduce((n,f)=>n+priceOf(f),0),extra=extraCosts(work.renovation||[],q);
   return {...q,settings,counted,tot:q.net,mats,floor,wallArea:q.wall,paintArea:q.paint,paintQuantity,paint:paintCost,paintCost,furniture,furn:furniture,extra:extra.items,renovation:extra.total,total:floor+paintCost+furniture+extra.total};
  }
+ // Draft topology is independent of furniture positions. Keep one value-based
+ // build and clone it before applying mutable opening/finish overrides.
+ let effectiveDraftCache=null;
  // Read a version without inheriting the currently rendered opening overrides.
  function effectivePlan(base,work){
-  const plan=work.architecture?core().build(work.architecture.draft):clone(base);
+  let plan;
+  if(work.architecture){const draft=work.architecture.draft,sourceDXF=draft.sourceDXF,key=JSON.stringify({...draft,sourceDXF:undefined});if(effectiveDraftCache?.key!==key||effectiveDraftCache.sourceDXF!==sourceDXF)effectiveDraftCache={key,sourceDXF,plan:core().build(draft)};const cached=effectiveDraftCache.plan;plan=clone({...cached,customDraft:{...cached.customDraft,sourceDXF:undefined}});if(sourceDXF!==undefined)plan.customDraft.sourceDXF=sourceDXF;}else plan=clone(base);
   plan.ceilingHeight=ceilingHeight(work);
   plan.furnitureDatum=work.furnitureDatum;plan.furniture=work.furniture;
   if(work.tileGrout)plan.tileGrout=clone(work.tileGrout);else delete plan.tileGrout;

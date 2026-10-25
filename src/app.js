@@ -193,7 +193,11 @@ function furnitureError(f){return FurnishProducts.modelError(f)||furnitureRender
 const renderableFurnitureCache=new WeakMap();
 function renderableFurniture(){return state.furniture.filter(f=>{
   if(furnitureRenderErrors.has(f.id))return false;
-  const key=JSON.stringify(f);if(renderableFurnitureCache.get(f)===key)return true;
+  // During an actual rigid drag, finite translation/rotation/reflection cannot
+  // invalidate a previously checked local model. Position-seeded builders keep
+  // the full pose key; normal renders and release always validate the full f.
+  const moving=typeof drag!=='undefined'&&drag?.kind==='move'&&drag.ids?.includes(f.id),local=moving&&!FurnishProducts.definition(f)?.solidModel?.positionSeed&&[f.cx,f.cy,f.rot].every(Number.isFinite);
+  const {cx,cy,rot,flip,...model}=f,key=JSON.stringify(local?['drag-local',model]:f);if(renderableFurnitureCache.get(f)===key)return true;
   if(FurnishProducts.modelError(f))return false;
   try{FurnishGeometry.bodyParts(f);renderableFurnitureCache.set(f,key);return true;}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));return false;}
 });}

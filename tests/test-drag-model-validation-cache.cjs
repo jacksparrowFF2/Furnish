@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const app=fs.readFileSync(require.resolve('../src/app.js'),'utf8'),source=app.slice(app.indexOf('const furnitureRenderErrors ='),app.indexOf('function collisions()'));
+let calls=0;const f={id:'f',type:'block',cx:100,cy:200,rot:0,w:100,d:100,h:100},context={state:{furniture:[f]},drag:null,FurnishProducts:{definition:f=>({solidModel:{positionSeed:!!f.seeded}}),modelError:f=>f.bad?'invalid model':null},FurnishGeometry:{bodyParts(f){calls++;if(f.failGeometry||!Number.isFinite(f.cx))throw Error('invalid geometry');return [];}}};
+vm.createContext(context);vm.runInContext(source,context);const render=()=>context.renderableFurniture();
+assert.equal(render().length,1);render();assert.equal(calls,1);
+context.drag={kind:'move',ids:['f']};render();const movingCalls=calls;f.cx+=100;f.cy-=100;f.rot=90;f.flip=true;render();assert.equal(calls,movingCalls,'rigid drag reuses only local model validity');
+f.w=150;render();assert.equal(calls,movingCalls+1,'size changes still check production geometry');context.drag=null;render();assert.equal(calls,movingCalls+2,'release revalidates full world pose');
+context.drag={kind:'move',ids:['f']};f.seeded=true;render();const seeded=calls;f.cx+=10;render();assert.equal(calls,seeded+1,'position-seeded builder always checks changed positions');
+delete f.seeded;render();f.cx=NaN;assert.equal(render().length,0,'nonfinite pose cannot reuse a successful local check');vm.runInContext('furnitureRenderErrors.clear()',context);f.cx=200;f.bad=true;assert.equal(render().length,0,'model error remains visible');delete f.bad;f.failGeometry=true;assert.equal(render().length,0,'production geometry error remains visible');
+assert.equal(context.state.furniture[0],f,'cache does not replace saved input');
+console.log('PASS rigid-drag validation cache: pose/size/release, seeded positions, malformed pose and retained model/geometry errors');

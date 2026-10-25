@@ -1,0 +1,226 @@
+{
+  "scope": "Incremental only; no scripts/check.cjs or historical previews",
+  "syntax": [
+    "src/app.js",
+    "src/core/cabinet-motion.js",
+    "src/core/design-core.js",
+    "src/core/floor-finish-core.js",
+    "src/core/furniture-solids.js",
+    "src/core/layout-geometry.js",
+    "src/core/product-rules.js",
+    "src/core/project-core.js",
+    "src/core/snapping.js",
+    "src/render/plan-renderer.js",
+    "src/ui/canvas-interactions.js",
+    "scripts/verify/verify-drag-performance.cjs",
+    "scripts/verify/verify-drag-frames.cjs",
+    "tests/test-drag-derived-cache.cjs",
+    "tests/test-plan-label-dom-cache.cjs",
+    "tests/test-drag-model-validation-cache.cjs"
+  ],
+  "sharedDeclarations": "PASS",
+  "tests": [
+    {
+      "file": "tests/test-canvas-render-cache.cjs",
+      "status": "PASS",
+      "output": "PASS canvas cache: architecture/finish/furniture/datum/grout invalidation, dimension-chain reuse, pan, zoom/theme/rotation, undo and DOM replacement\n"
+    },
+    {
+      "file": "tests/test-snapping.cjs",
+      "status": "PASS",
+      "output": "PASS grid, rotated bounds, tolerance, nearby guides, exclusions and measurement anchors\n"
+    },
+    {
+      "file": "tests/test-drag-feature-snapping.cjs",
+      "status": "PASS",
+      "output": "PASS drag corner/midpoint pairs, exact rotated coordinates, thresholds, switches, group member anchors, exclusions, production kitchen outline and project roundtrip\n"
+    },
+    {
+      "file": "tests/test-cabinet-boundary-snapping.cjs",
+      "status": "PASS",
+      "output": "PASS all 10 legacy cabinet types, 19 templates / 380 rotated/mirrored axis resize cases, finite contacts, thresholds, switches, fixed anchors and repeated project roundtrip\n"
+    },
+    {
+      "file": "tests/test-furniture-production-solids.cjs",
+      "status": "PASS",
+      "output": "PASS production furniture solids: cavities, real intersections, exact contact, rotations/mirrors, height clipping, unknowns, canvas/project agreement, current/named roundtrip and real Three geometry\n"
+    },
+    {
+      "file": "tests/test-furniture-solids-coverage.cjs",
+      "status": "PASS",
+      "output": "PASS production furniture coverage: real voids/solids, rotation/mirror, poses, distances, project roundtrip and actual Three bounds\n"
+    },
+    {
+      "file": "tests/test-furniture-solids-cache.cjs",
+      "status": "PASS",
+      "output": "PASS production world cache: 204 fresh-builder comparisons, position/rotation/mirror/size/height/install/doors, no mutation and restored objects\n"
+    },
+    {
+      "file": "tests/test-floor-finishes.cjs",
+      "status": "PASS",
+      "output": "PASS floor elevations, editable bathroom drop, unknown/conflicts/cycles, grids/holes/angles/origins, thresholds, confirmations, versions/copies/repeated recovery and unchanged furniture\nPASS production floor layer geometry and grid UV coordinates\n"
+    },
+    {
+      "file": "tests/test-furniture-finished-datum.cjs",
+      "status": "PASS",
+      "output": "PASS explicit finished-floor datum, legacy/unknown, host links, rotation/mirror, beam contact, opening ranges, confirmations, v10 and repeated recovery\nPASS physical wall layer widths at actual thickness, contrasting cut colors and shared wall numbering\n"
+    },
+    {
+      "file": "tests/test-wall-finishes.cjs",
+      "status": "PASS",
+      "output": "PASS finish boundaries, snapping, numeric placement, rooms, thresholds, mirrored/rotated groups, openings, side binding, versions, calibration, copies, repeated recovery and unchanged cabinets\nPASS real Three.js tile / bond solids, millimetre boundaries, cut heights and door openings\n"
+    },
+    {
+      "file": "tests/test-manifold-wall-finish.cjs",
+      "status": "PASS",
+      "output": "PASS 800×180×600 defaults, rectangular tile/bond opening, raw walls, actual collision/room boundary, cache invalidation, four wall faces/mirror, floor datum/unknowns, roundtrip and real production meshes\n"
+    },
+    {
+      "file": "tests/test-manifold-zero-gap.cjs",
+      "status": "PASS",
+      "output": "PASS manifold rear zero uses raw wall at contact and from a gap; four wall directions/mirrors, 0/5/30 mm boundaries, drawing rotation, actual tile/collision agreement, no drift, named roundtrip and ordinary-furniture behavior\n"
+    },
+    {
+      "file": "tests/test-project-recovery.cjs",
+      "status": "PASS",
+      "output": "Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed\n"
+    },
+    {
+      "file": "tests/test-spatial-review-cache.cjs",
+      "status": "PASS",
+      "output": "PASS spatial review cache source immutability, pricing/north independence, naming/geometry invalidation and issue explanation\n"
+    },
+    {
+      "file": "tests/test-cabinet-interior-distances.cjs",
+      "status": "PASS",
+      "output": "PASS cabinet interiors: six directions, signed penetration, placement, shelves, unknowns, generic devices, mixed-height groups, open doors, straight/L/U transforms, project/restore, 1260 production boards and 960 height-clipped door rays\n"
+    },
+    {
+      "file": "tests/test-directional-kitchen-solids.cjs",
+      "status": "PASS",
+      "output": "PASS kitchen solid directional gaps: empty bay, slab height thresholds, rotation/mirror, unknown heights, groups, numeric positioning and repeated project restore\n"
+    },
+    {
+      "file": "tests/test-enclosed-boundary-distances.cjs",
+      "status": "PASS",
+      "output": "PASS enclosed boundaries: screenshot fixture, 87 catalog types × 8 transforms, partial overlap/contact, height separation/unknowns, groups, drawing rotation, real panels, preserved collision checks and project roundtrip\n"
+    },
+    {
+      "file": "tests/test-beam-body-collisions.cjs",
+      "status": "PASS",
+      "output": "PASS beam/body: cabinet top/contact/1mm, default old height, vertical separation, mounted objects, unknown heights, rotated/mirrored projection, tolerance, focus/limit, review invalidation and backup\n"
+    },
+    {
+      "file": "tests/test-cut-board-motion.cjs",
+      "status": "PASS",
+      "output": "PASS continuous cut-board motion: no phantom notch/removed-board hits, intermediate-only door/lift hits, rotation/mirror, 335 production board bounds and 4 actual cut-solid rays\n"
+    },
+    {
+      "file": "tests/test-cabinet-opening-volume-model.cjs",
+      "status": "PASS",
+      "output": "PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes\n"
+    },
+    {
+      "file": "tests/test-cabinet-opening-3d.cjs",
+      "status": "PASS",
+      "output": "PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations\n"
+    },
+    {
+      "file": "tests/test-blender-part-identity.cjs",
+      "status": "PASS",
+      "output": "PASS Blender semantic part identity: child reorder, unrelated insertion, source pose/mirror, repeated counts and ambiguity\n"
+    },
+    {
+      "file": "tests/test-plan-height-order.cjs",
+      "status": "PASS",
+      "output": "PASS plan height stacking: TV/cabinet, chains, manual order, unknown heights, rotation, layers and live DOM reordering\n"
+    },
+    {
+      "file": "tests/test-product-rules.cjs",
+      "status": "PASS",
+      "output": "PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API\n"
+    },
+    {
+      "file": "tests/test-directional-config-order.cjs",
+      "status": "PASS",
+      "output": "PASS key-order-independent directional placement, 130 mm gap, drawing rotations/mirrors, actual configuration-change rejection, immutable input and project roundtrip\n"
+    },
+    {
+      "file": "tests/test-furniture-labels.cjs",
+      "status": "PASS",
+      "output": "PASS furniture label wrapping/truncation, projected footprint containment, four views, seat/table occlusion, low-zoom density, selected priority and unchanged saved names\n"
+    },
+    {
+      "file": "tests/test-drag-derived-cache.cjs",
+      "status": "PASS",
+      "output": "PASS drag derived caches: raw DXF/topology changes, returned-object isolation, floor thresholds/unknowns, cache eviction and repeated restore\n"
+    },
+    {
+      "file": "tests/test-plan-label-dom-cache.cjs",
+      "status": "PASS",
+      "output": "PASS label DOM cache: unchanged text reuse, isolated update, palette, rebuilt node and hidden label\n"
+    },
+    {
+      "file": "tests/test-drag-model-validation-cache.cjs",
+      "status": "PASS",
+      "output": "PASS rigid-drag validation cache: pose/size/release, seeded positions, malformed pose and retained model/geometry errors\n"
+    },
+    {
+      "file": "tests/test-project-validation.cjs",
+      "status": "PASS",
+      "output": ""
+    },
+    {
+      "file": "tests/test-project.cjs",
+      "status": "PASS",
+      "output": "PASS Survey preserves existing openings before structure confirmation\nPASS Old projects migrate to locked structures\nPASS Design rejects changes to the confirmed original bearing structure\nPASS Exterior walls are locked after confirmation\nPASS Real partition demolition merges rooms and updates area\nPASS Moving a partition changes both room areas while preserving bearing walls\nPASS Room materials follow spatial overlap after demolition\nPASS Automatic construction quantities update without overwriting manual values\nPASS Paint deductions use door height rather than wall thickness\nPASS Project backup roundtrip preserves baseline, designs, costs and catalog\nPASS Corrupt and future backups fail before import\nPASS Legacy plan JSON migrates to the portable project format\nPASS Spatial checks detect a blocked door swing\nPASS Cabinet front clearance rotates with the furniture\nPASS OBJ supports triangulation and negative indices\nPASS Overlapping door swings and swing-wall collisions are reported\nPASS Flat, non-finite and empty imported meshes are rejected before restoration\nPASS Backup preserves raw attachments and rejects malformed attachment data\nPASS Interior door deducts both painted wall faces\nPASS Retained openings keep sill heights and swing overrides after IDs reindex\n20 product roadmap regression checks passed\n"
+    },
+    {
+      "file": "tests/test-pipe-collisions.cjs",
+      "status": "FAIL",
+      "output": "evalmachine.<anonymous>:29\n  FurnishDownlightModel.setLights(furnG,opt.lamps);\n  ^\n\nReferenceError: FurnishDownlightModel is not defined\n    at buildFurn (evalmachine.<anonymous>:29:3)\n    at evalmachine.<anonymous>:1:1\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\tests\\test-pipe-collisions.cjs:33:128\n",
+      "baselineReproduction": {
+        "confirmed": true,
+        "error": "ReferenceError: FurnishDownlightModel is not defined",
+        "preload": "output/playwright/drag60-baseline-preload.cjs"
+      }
+    },
+    {
+      "file": "tests/test-furniture-recovery.cjs",
+      "status": "FAIL",
+      "output": "PASS broken furniture retention, explicit immutable repairs, project roundtrip and actual kitchen pointer resize\nReferenceError: FurnishDownlightModel is not defined\n    at Object.buildFurn (evalmachine.<anonymous>:29:3)\n    at C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\tests\\test-furniture-recovery.cjs:49:131\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n",
+      "baselineReproduction": {
+        "confirmed": true,
+        "error": "ReferenceError: FurnishDownlightModel is not defined",
+        "preload": "output/playwright/drag60-baseline-preload.cjs"
+      }
+    },
+    {
+      "file": "tests/test-entry-shared-board.cjs",
+      "status": "PASS",
+      "output": "PASS shared 18 mm board: no duplicate side/lining, full-overlay white faces, wood behind open doors, notches, counter join, bounds, separation and rotated/mirrored adjacency\n"
+    },
+    {
+      "file": "tests/test-entry-console.cjs",
+      "status": "PASS",
+      "output": "PASS second entry cabinet: independent preset, 379 mm niche, side choice, adjacency, rotation/mirror, ray-tested connected holes, partial depth, bounds, open/close and serialization\n"
+    },
+    {
+      "file": "tests/test-entry-pegboard.cjs",
+      "status": "PASS",
+      "output": "PASS entry pegboard: 1418 mm niche, exterior bounds, upper doors, drawer travel, shelf linkage, resize, validation and project round trip\n"
+    },
+    {
+      "file": "tests/test-sink-surface.cjs",
+      "status": "PASS",
+      "output": "PASS sink worktop outer-edge and cutout margins, three mounting modes, contact thresholds, rotated/mirrored views, real straight/L/U surfaces, production holes, notches, blockers, precise placement, legacy/unknown records and project restoration\n"
+    },
+    {
+      "file": "tests/test-sink-linked-offset-model.cjs",
+      "status": "PASS",
+      "output": "PASS 36 production kitchen ray cases: old hole fills, offset hole opens across straight/L/U runs, rotations and mirrors\n"
+    }
+  ],
+  "passed": 36,
+  "failed": 2
+}

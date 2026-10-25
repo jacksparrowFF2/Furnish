@@ -1,0 +1,13 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+let writes=0;
+const node=id=>({id,label:null,getAttribute(){return id;},querySelector(){return this.label;},insertAdjacentHTML(_at,html){writes++;this.label={html,remove:()=>{this.label=null;}};}}),nodes=[node('a'),node('b')],root={querySelectorAll:()=>nodes};
+let labels=new Map(['a','b'].map(id=>[id,{lines:[id],at:[0,0],font:12}]));
+const context={svg:root,view:{s:.1},PAL:{text:'#000'},FurnishDrawing:{},selIds:()=>[],drawingRotation:()=>0,esc:s=>s,getF:id=>({id,rot:0}),furnitureError:()=>null};
+vm.createContext(context);vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),context);context.furnitureLabelLayout=()=>labels;
+context.refreshFurnitureLabels();assert.equal(writes,2);labels=new Map(labels);context.refreshFurnitureLabels();assert.equal(writes,2,'equal labels must not rewrite DOM when scene layout is recomputed');
+labels=new Map(labels);labels.set('a',{...labels.get('a'),lines:['changed']});context.refreshFurnitureLabels();assert.equal(writes,3,'only changed furniture text is replaced');
+context.PAL.text='#f00';context.refreshFurnitureLabels();assert.equal(writes,5,'palette changes update both labels');
+nodes[0]=node('a');labels=new Map(labels);context.refreshFurnitureLabels();assert.equal(writes,6,'a rebuilt furniture node receives its label');
+labels=new Map(labels);labels.set('b',{lines:[]});context.refreshFurnitureLabels();assert.equal(nodes[1].label,null,'hidden label is removed');
+console.log('PASS label DOM cache: unchanged text reuse, isolated update, palette, rebuilt node and hidden label');

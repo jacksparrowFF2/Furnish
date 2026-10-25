@@ -1,0 +1,29 @@
+/* Native mouse input paced at 60 Hz. Each mode runs serially in a fresh profile.
+ * RAF is a browser scheduling measurement, not a GPU/compositor trace. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url'),{performance}=require('node:perf_hooks'),V=require('../lib/browser-verification.cjs');
+const root=V.projectRoot,args=process.argv.slice(2),baseline=args.includes('--baseline-dir')?path.resolve(args[args.indexOf('--baseline-dir')+1]):null;
+const type=args.includes('--type')?args[args.indexOf('--type')+1]:'bed';
+const files=['src/app.js','src/core/design-core.js','src/core/product-rules.js','src/core/furniture-solids.js','src/core/cabinet-motion.js','src/core/layout-geometry.js','src/core/floor-finish-core.js','src/core/project-core.js','src/core/snapping.js','src/render/plan-renderer.js','src/ui/canvas-interactions.js'];
+const out=path.join(root,'docs/validation/drag-performance-20261025'),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const summary=a=>{const sorted=a.slice().sort((a,b)=>a-b);return {n:a.length,mean:a.reduce((a,b)=>a+b,0)/a.length,p50:sorted[Math.floor(a.length*.5)],p95:sorted[Math.floor(a.length*.95)],p99:sorted[Math.floor(a.length*.99)],max:sorted.at(-1)};};
+(async()=>{
+ const bytes=fs.readFileSync(path.join(root,'projects/workspace.furnish.json')),workspace=JSON.parse(bytes).workspace;fs.mkdirSync(out,{recursive:true});
+ const server=await V.staticServer(root),browser=await V.loadPlaywright().chromium.launch({headless:true,channel:'chrome'}),report={workspaceSha256:sha(bytes),type,inputHz:60,frames:240,warmupInputs:40,sourceHashes:Object.fromEntries(files.map(f=>[f,{after:sha(fs.readFileSync(path.join(root,f))),...(baseline?{before:sha(fs.readFileSync(path.join(baseline,f)))}:{})}])),results:[]};
+ try{for(const mode of [...(baseline?['before-http']:[]),'after-http',...(args.includes('--http-only')?[]:['after-file'])]){
+  const context=await browser.newContext({viewport:{width:1900,height:1100},offline:mode.endsWith('file')}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await context.addInitScript(ws=>localStorage.setItem('huxing-design-v16',JSON.stringify(ws)),workspace);
+  if(mode.startsWith('before'))for(const f of files)await page.route('**/'+f,route=>route.fulfill({path:path.join(baseline,f),contentType:'text/javascript'}));
+  try{
+   await page.goto(mode.endsWith('file')?pathToFileURL(path.join(root,'index.html')).href:server.baseURL);await page.locator('#repository-loading').waitFor({state:'hidden'});await page.locator('#lib .item').first().waitFor();
+   const start=await page.evaluate(type=>{const f=state.furniture.find(f=>f.type===type&&!furnitureLocked(f)&&(!globalThis.FurnishObservationLayers||FurnishObservationLayers.visible(f)));if(!f)throw Error('No visible unlocked '+type);selectIds([f.id]);const pt=svg.createSVGPoint();let at;for(const dx of [0,-.3,.3])for(const dy of [0,-.3,.3]){pt.x=f.cx+dx*f.w;pt.y=f.cy+dy*f.d;const p=pt.matrixTransform(svg.getScreenCTM());if(document.elementFromPoint(p.x,p.y)?.closest('[data-fid]')?.dataset.fid===f.id&&!at)at=p;}if(!at)throw Error('Furniture is occluded: '+type);window.dragSamples=[];window.dragStage={};for(const key of ['snapMove','renderFurnitureMovement','syncFurnOrder','renderSel','directionalMeasurements']){const old=window[key];if(typeof old==='function')window[key]=function(...args){const t=performance.now();try{return old(...args);}finally{dragStage[key]=(dragStage[key]||0)+performance.now()-t;}};}const fn=processCanvasPointerMove;processCanvasPointerMove=function(e){const moving=drag?.kind==='move',t=performance.now();dragStage={};try{return fn(e);}finally{if(moving)dragSamples.push({at:t,ms:performance.now()-t,x:getF(f.id).cx,y:getF(f.id).cy,stages:dragStage});}};return {x:at.x,y:at.y,id:f.id,work:snap()};},type);
+   await page.mouse.move(start.x,start.y);await page.mouse.down();assert.equal(await page.evaluate(()=>drag?.kind),'move');
+   const sent=[],t0=performance.now();for(let i=0;i<240;i++){const delay=t0+i*1000/60-performance.now();if(delay>0)await new Promise(r=>setTimeout(r,delay));sent.push(performance.now()-t0);await page.mouse.move(start.x+10+(i%120)*.4,start.y+10+5*Math.sin(i/20));}
+   await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+   const samples=await page.evaluate(()=>dragSamples),steady=samples.slice(40),intervals=steady.slice(1).map((s,i)=>s.at-steady[i].at),updatesHz=(steady.length-1)*1000/(steady.at(-1).at-steady[0].at);
+   await page.mouse.up();await page.evaluate(before=>{const moved=snap();undo();if(snap()!==before)throw Error('native drag undo');redo();if(snap()!==moved)throw Error('native drag redo');},start.work);
+   const item={mode,inputCount:sent.length,processedCount:samples.length,updatesHz,handler:summary(steady.map(s=>s.ms)),updateIntervals:summary(intervals),over33ms:intervals.filter(v=>v>1000/30+.5).length,cold:summary(samples.slice(0,40).map(s=>s.ms)),samples,sent,errors};
+   item.meetsComputeBudget=item.handler.p95<=1000/60;item.keepsUpWith60HzInput=updatesHz>=58;item.meets60HzBudget=item.meetsComputeBudget&&item.keepsUpWith60HzInput&&item.over33ms/intervals.length<=.01;assert.deepEqual(errors,[]);report.results.push(item);console.log(JSON.stringify({...item,samples:undefined,sent:undefined}));
+  }finally{await context.close();}
+ }}finally{await browser.close();await server.close();report.workspaceUnchanged=sha(fs.readFileSync(path.join(root,'projects/workspace.furnish.json')))===report.workspaceSha256;assert(report.workspaceUnchanged);fs.writeFileSync(path.join(out,type==='bed'?'frames.json':'frames-'+type+'.json'),JSON.stringify(report,null,2));}
+})().catch(e=>{console.error(e);process.exitCode=1;});

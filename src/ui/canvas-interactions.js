@@ -56,6 +56,9 @@ function toMM(e){
 
 /* ======================= 吸附适配 ======================= */
 function snapMove(f,cx,cy,skip,disabled=false,axis,anchor){
+  return withCanvasPlan(()=>snapCanvasMove(f,cx,cy,skip,disabled,axis,anchor));
+}
+function snapCanvasMove(f,cx,cy,skip,disabled=false,axis,anchor){
   const service=!f.obj&&FurnishProducts.definition(f)?.wallFinishOpening,target=service?{...f,cx,cy}:null,work=service?{...state,furniture:[...state.furniture.filter(o=>o.id!==f.id),target]}:state;
   const finishPlan=state.wallFinishes?(service?FurnishProject.effectivePlan(PLAN,work):canvasEffectivePlan()):null,vertical=finishPlan?FurnishDesign.furnitureVerticalBounds(target||f,finishPlan,work.furniture):null;
   const result=FurnishSnapping.move(f,cx,cy,{finishFaces:finishPlan?FurnishWallFinish.snapFaces(finishPlan,vertical):[],grid:ui.grid,scale:view.s,
@@ -74,8 +77,8 @@ function directionalMeasurements(f=selItems()){
   // Include the full work, selected values and temporary opening geometry:
   // moving a neighbour, opening a door or restoring data must never reuse gaps.
   // View translation/scale do not change millimetre distances.
-  const members=Array.isArray(f)?f:[f],rotation=drawingRotation(),key=JSON.stringify([PLAN,state,WALLS,WINS,members,ui.layers.furn,rotation]);
-  if(directionalMeasurementCache?.key!==key)directionalMeasurementCache={key,value:FurnishSnapping.directional(members,{...measurementScene(),rotation})};
+  const members=Array.isArray(f)?f:[f],rotation=drawingRotation(),plan=canvasEffectivePlan(),key=JSON.stringify([WALLS,WINS,members,ui.layers.furn,rotation]);
+  if(directionalMeasurementCache?.key!==key||directionalMeasurementCache.plan!==plan)directionalMeasurementCache={key,plan,value:FurnishSnapping.directional(members,{...measurementScene(),rotation})};
   return directionalMeasurementCache.value;
 }
 function editKitchenDivider(key,side='left'){
@@ -247,8 +250,7 @@ function processCanvasPointerMove(e){
     drag.ids.forEach(id => { const g = getF(id); if (!g) return;
       g.cx = drag.start[id][0] + dx; g.cy = drag.start[id][1] + dy;
       document.querySelector(`#gFurn [data-fid="${id}"]`)?.setAttribute('transform', furnT(g)); });
-    syncFurnOrder();
-    renderSel(); return;
+    renderFurnitureMovement(); return;
   }
   if (drag.kind === 'rot'){
     let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;

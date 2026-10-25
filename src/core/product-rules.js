@@ -298,10 +298,11 @@ function sinkInstallation(f,host){const spec=definition(f).sink,thickness=host?.
 // Furniture dimensions stay relative to the selected datum. Architectural
 // elevations (ceilings, openings, beams and fixed sockets) remain absolute.
 const furnitureDatum=Object.freeze({default:'finished-floor',legacy:'survey',values:Object.freeze(['survey','finished-floor'])});
+function floorHost(f,furniture){const id=f.counterLink?.hostId||f.laundryHostId;return id&&furniture.find(v=>v.id===id);}
 function floorBase(plan,f,furniture=plan?.furniture||[],trail=new Set()){
  if(plan?.furnitureDatum!==furnitureDatum.default)return {z:0,known:true};
  if(trail.has(f.id))return {z:0,known:false};trail=new Set(trail);trail.add(f.id);
- const hostId=f.counterLink?.hostId||f.laundryHostId,host=hostId&&furniture.find(v=>v.id===hostId);
+ const host=floorHost(f,furniture);
  if(host)return floorBase(plan,host,furniture,trail);
  const F=root.FurnishFloorFinish||require('./floor-finish-core.js');
  let candidates=F.at(plan,[f.cx,f.cy]);
@@ -375,6 +376,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,snapPi
  corner:{maxLegs:2,angle:90,lightSetback:0,lightRadius:8,compactInnerRadius:1,arcChordError:.05,arcMaxAngle:3,arcMaxSegments:1024},
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2}};
-const api={downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

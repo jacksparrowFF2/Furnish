@@ -152,9 +152,18 @@
  // Stable topological order for overlapping footprints: separated height ranges
  // and tucked seats below tabletops. Whole-seat height includes the backrest,
  // so it cannot determine which surface covers the seat in a plan view.
+ const orderBoundsCache=new WeakMap();
  function planFurnitureOrder(furniture,plan){
   const G=root.FurnishGeometry||require('./layout-geometry.js'),layer=f=>f.type==='rug'?0:f.type==='pendant'?2:1;
-  const items=furniture.map((f,index)=>({f,index,layer:layer(f),vertical:furnitureVerticalBounds(f,plan,furniture),box:G.aabb({...f,rot:f.rot||0}),after:[],incoming:0}));
+  const floorKey=JSON.stringify([plan?.furnitureDatum,plan?.rooms,plan?.floorFinish]);
+  const items=furniture.map((f,index)=>{
+   // Only vertical/box derivations are reused. Every pair's current overlap
+   // and topological order are still checked after each movement.
+   const lineage=[],seen=new Set();for(let host=f;host&&!seen.has(host.id);host=products().floorHost(host,furniture)){seen.add(host.id);lineage.push(host);}
+   const key=JSON.stringify(lineage);let bounds=orderBoundsCache.get(f);
+   if(bounds?.key!==key||bounds.floorKey!==floorKey){bounds={key,floorKey,vertical:furnitureVerticalBounds(f,plan,furniture),box:G.aabb({...f,rot:f.rot||0})};orderBoundsCache.set(f,bounds);}
+   return {f,index,layer:layer(f),vertical:bounds.vertical,box:bounds.box,after:[],incoming:0};
+  });
   for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
    const a=items[i],b=items[j],A=a.vertical,B=b.vertical;
    if(a.layer!==b.layer)continue;

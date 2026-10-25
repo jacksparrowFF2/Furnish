@@ -44,10 +44,15 @@ function regionAreas(rooms,furniture=[]){
   return {empty,occupied,free:Math.max(0,empty-occupied),pending};
 }
 function polygonOverlap(A,B,tolerance=5){if(A.length<3||B.length<3)return false;for(const P of [A,B])for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length],nx=q[1]-P[i][1],ny=P[i][0]-q[0],L=Math.hypot(nx,ny)||1,pa=A.map(p=>(p[0]*nx+p[1]*ny)/L),pb=B.map(p=>(p[0]*nx+p[1]*ny)/L);if(Math.max(...pa)<=Math.min(...pb)+tolerance||Math.max(...pb)<=Math.min(...pa)+tolerance)return false;}return true;}
+const groundedPartsCache=new WeakMap();
 function bodyParts(f,plan,furniture){
   const parts=relativeBodyParts(f,furniture);if(!plan)return parts;
   const base=(root.FurnishProducts||require('./product-rules.js')).floorBase(plan,f,furniture);
-  return parts.map(p=>({...p,...(p.vertices&&base.known?{vertices:p.vertices.map(v=>[v[0],v[1]+base.z,v[2]])}:{}),vertical:p.vertical&&base.known?{...p.vertical,bottom:p.vertical.bottom+base.z,top:p.vertical.top+base.z}:null}));
+  // Relative production arrays are immutable cached records. Resolve the datum
+  // every time, and reuse the shifted records only at the same known elevation.
+  const old=groundedPartsCache.get(parts);if(old&&old.known===base.known&&old.z===base.z)return old.parts;
+  const shifted=parts.map(p=>({...p,...(p.vertices&&base.known?{vertices:p.vertices.map(v=>[v[0],v[1]+base.z,v[2]])}:{}),vertical:p.vertical&&base.known?{...p.vertical,bottom:p.vertical.bottom+base.z,top:p.vertical.top+base.z}:null}));
+  groundedPartsCache.set(parts,{known:base.known,z:base.z,parts:shifted});return shifted;
 }
 function relativeBodyParts(f,furniture){
   const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
