@@ -75,6 +75,14 @@
 .ceiling-node-tools label{display:flex;align-items:center;gap:6px;font-size:12px}
 .ceiling-studio .ceiling-node-tools select{width:90px;margin:0;padding:6px}
 .ceiling-node-tools .btn{font-size:11px;padding:6px 8px}
+.ceiling-uniform-inset{margin:10px 0;border:1px solid #d3e6e3;border-radius:8px;padding:9px 10px;background:#f4f9f8}
+.ceiling-uniform-inset>summary{font-size:12px;font-weight:700;color:#196d74;cursor:pointer}
+.ceiling-uniform-fields{display:flex;align-items:end;flex-wrap:wrap;gap:8px 10px;margin-top:8px}
+.ceiling-uniform-fields label{font-size:11px;flex:1;min-width:120px}
+.ceiling-uniform-fields label:has([data-design="uniform-distance"]){flex:0 1 150px}
+.ceiling-studio .ceiling-uniform-fields input,.ceiling-studio .ceiling-uniform-fields select{padding:5px 7px;margin:3px 0 0}
+.ceiling-uniform-fields .btn{font-size:11px;padding:6px 8px}
+.ceiling-studio .ceiling-uniform-inset small{font-size:11px;margin:6px 0 0;overflow-wrap:anywhere}
 .ceiling-edge-distance{display:flex;align-items:end;flex-wrap:wrap;gap:5px 10px;margin:10px 0;padding:9px 10px;background:#f4f9f8;border:1px solid #d3e6e3;border-radius:8px}
 .ceiling-edge-distance>b{width:100%;font-size:12px;color:#196d74}
 .ceiling-edge-distance label{font-size:11px;flex:1;min-width:120px}

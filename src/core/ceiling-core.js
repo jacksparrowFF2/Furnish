@@ -260,6 +260,10 @@ function boundaryRing(input){
  const p=clone(input);if(!Array.isArray(p)||!p.every(point))fail('区域边界节点无效');while(p.length>3&&distance(p[0],p.at(-1))<=eps())p.pop();polygon(p,'区域边界');return p;
 }
 function regionBoundary(room){if(room.rings?.length>1)fail('首版平顶暂不支持带孔或多片区域，请先划分区域');return boundaryRing(room.rings?.[0]||room.poly);}
+function roomInsetBoundary(room,inset){
+ if(!finite(inset)||inset<0||inset>rules().max)fail('统一退让须为0～'+rules().max+' mm');if(room.rings?.length>1)fail('统一退让暂不支持带孔或多片房间，请先划分区域');const poly=regionBoundary(room);if(inset===0)return poly;
+ try{const path={closed:true,join:'miter',segments:boundaryPaths({poly}).map((p,i)=>({...p,id:'edge'+i}))};return closedOffset({path},inset);}catch{fail('该距离无法生成有效的退让边界，请减小尺寸或调整参考房间');}
+}
 function boundaryPaths(room){
  return (room.rings?.length?room.rings:[room.poly]).flatMap(ring=>{const poly=boundaryRing(ring);return poly.map((a,i)=>{
   const b=poly[(i+1)%poly.length],L=distance(a,b),t=b.map((v,k)=>(v-a[k])/L),mid=a.map((v,k)=>(v+b[k])/2);let n=[-t[1],t[0]];
@@ -384,6 +388,6 @@ function requiresV7(work){return !!work?.ceilings?.items.some(c=>c.section?.ligh
 function requiresV8(work){return !!work?.ceilings?.items.some(c=>c.ends!==undefined);}
 function requiresV17(work){return work?.ceilings?.regions!==undefined||work?.ceilings?.items?.some(c=>c.regionId!==undefined||c.path?.closed===true)===true;}
 function requiresV18(work){const sections=[...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))];return !!work?.ceilings?.regions?.some(r=>r.centerConnection!==undefined)||sections.some(s=>s?.template?.kind==='upChannel'||s?.diffuser!==undefined||s?.material!==undefined);}
-const api={assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+const api={roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

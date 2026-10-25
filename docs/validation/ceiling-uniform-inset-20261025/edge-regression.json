@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-uniform-inset",
+    "ceiling-edge-distances",
+    "ceiling-edges"
+  ],
+  "results": [
+    {
+      "name": "ceiling-uniform-inset",
+      "status": "PASS",
+      "seconds": 19.8,
+      "log": "ceiling-uniform-inset.log"
+    },
+    {
+      "name": "ceiling-edge-distances",
+      "status": "PASS",
+      "seconds": 18,
+      "log": "ceiling-edge-distances.log"
+    },
+    {
+      "name": "ceiling-edges",
+      "status": "PASS",
+      "seconds": 22.8,
+      "log": "ceiling-edges.log"
+    }
+  ],
+  "notRun": []
+}

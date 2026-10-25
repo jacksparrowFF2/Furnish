@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "ceiling-uniform-inset",
+    "ceiling-design"
+  ],
+  "results": [
+    {
+      "name": "ceiling-uniform-inset",
+      "status": "PASS",
+      "seconds": 19.3,
+      "log": "ceiling-uniform-inset.log"
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 33.4,
+      "log": "ceiling-design.log"
+    }
+  ],
+  "notRun": []
+}
