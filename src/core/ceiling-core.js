@@ -36,6 +36,43 @@ function lowCove(values={}){
  const coordinates=[[0,0],[B,0],[B,D-T],[P-F,D-T],[P-F,D-L],[P,D-L],[P,D],[0,D]];
  return {vertices:coordinates.map(([u,d],i)=>({id:'v'+i,u,d})),light:clone(rules().light),template:{kind:'lowCove',values:q}};
 }
+// Presets are expanded into ordinary production sections, never new saved types.
+function sectionPreset(kind){
+ if(!['low','wide','wash'].includes(kind))fail('未知截面样式');
+ const body=lowCove(rules().sectionPresets[kind==='low'?'low':'wide']),q=body.template.values;
+ body.light={...body.light,u:(q.back+q.projection-q.front)/2,d:q.drop-q.bottom};
+ if(kind!=='wash')return [{name:'石膏灯槽',section:body}];
+ delete body.light;const h=rules().washChannel,u=q.projection-q.front-h.gap-h.width,d=q.drop-q.bottom,top=d-h.height,w=h.clearWidth+2*h.wall;
+ const points=[[u,top],[u+h.wall,top],[u+h.wall,d-h.wall],[u+w-h.wall,d-h.wall],[u+w-h.wall,top],[u+w,top],[u+w,d-h.wall],[u+h.width,d-h.wall],[u+h.width,d],[u,d]];
+ const housing={vertices:points.map(([u,d],i)=>({id:'channel'+i,u,d})),light:{...rules().light,u:u+w/2,d:d-h.wall}};
+ section(housing);return [{name:'石膏灯槽',section:body},{name:'洗顶灯槽型材（示意）',section:housing}];
+}
+// Four half-edge L sweeps share their middle end planes and existing 45° miters.
+// This gives a closed rectangular perimeter without a new persistence format.
+function designRegion(room,{style,height,thickness=rules().flatThickness,sections=sectionPreset('low'),center=true},makeId){
+ if(!['none','flat','ring'].includes(style))fail('请选择吊顶样式');
+ if(style==='none')return [];
+ const poly=regionBoundary(room);polygon(poly,'吊顶区域');
+ const makeFlat=p=>({id:makeId(),kind:'flat',roomId:room.id,name:(room.name+' · 平面吊顶').slice(0,80),height,thickness,polygon:clone(p)});
+ if(style==='flat'){const items=[makeFlat(poly)];validate({version:1,items});return items;}
+ const paths=boundaryPaths(room);if(poly.length!==4||paths.length!==4||!convex(poly))fail('闭合回型目前支持无孔矩形区域；请划分矩形区域，或使用高级直线／L形设计');
+ if(!Array.isArray(sections)||!sections.length)fail('请先创建截面');
+ sections.forEach(s=>section(s.section));
+ const bottom=Math.max(...sections.flatMap(s=>s.section.vertices.map(v=>v.d))),base=height+bottom;
+ let inner=clone(poly);const inset=Math.max(...sections.flatMap(s=>s.section.vertices.map(v=>v.u)));
+ for(const p of paths)inner=clip(inner,p.a,p.normal,inset);
+ polygon(inner,'回型中央区域');
+ const midpoint=p=>p.a.map((v,i)=>(v+p.b[i])/2),items=[];
+ for(let i=0;i<4;i++){
+  const a=paths[i],b=paths[(i+1)%4],path=joinedPath({...clone(a),a:midpoint(a)},{...clone(b),b:midpoint(b)});
+  for(const s of sections)items.push({id:makeId(),kind:'profile',roomId:room.id,name:(room.name+' · 回型 '+(i+1)+' · '+s.name).slice(0,80),height:base,path:clone(path),section:clone(s.section)});
+ }
+ if(center)items.push(makeFlat(inner));
+ validate({version:1,items});
+ // Reuse real occupancy, including the full centre-panel thickness.
+ if(center&&checks({ceilings:{items:items.filter(c=>c.kind==='profile')}},[{f:{id:'center',name:'中央平顶'},p:inner,vertical:{bottom:height,top:height+thickness}}]).length)fail('中央平顶与截面实体相交，请修改截面或板厚');
+ return items;
+}
 function section(s){
  if(!s||!Array.isArray(s.vertices))fail('缺少吊顶截面');const ids=new Set();
  for(const v of s.vertices){if(!v||!key(v.id)||ids.has(v.id)||![v.u,v.d].every(n=>finite(n)&&n>=0&&n<=rules().max))fail('截面节点编号须唯一，坐标须为0～20000 mm');ids.add(v.id);}
@@ -264,6 +301,6 @@ function shift(work,offset){if(!work.ceilings)return;for(const c of work.ceiling
 function requiresV6(work){return !!work?.ceilings?.items.some(c=>c.kind==='profile'&&(c.path?.segments||c.section?.light?.cornerSetback!==undefined)||c.attachment?.legs);}
 function requiresV7(work){return !!work?.ceilings?.items.some(c=>c.section?.light?.corner!==undefined);}
 function requiresV8(work){return !!work?.ceilings?.items.some(c=>c.ends!==undefined);}
-const api={fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+const api={sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

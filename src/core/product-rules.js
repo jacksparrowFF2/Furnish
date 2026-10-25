@@ -375,7 +375,10 @@ function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'
 const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,snapPixels:12,flatThickness:12,
  corner:{maxLegs:2,angle:90,lightSetback:0,lightRadius:8,compactInnerRadius:1,arcChordError:.05,arcMaxAngle:3,arcMaxSegments:1024},
  endCap:{thickness:12,lightGap:5},
- lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2}};
+ lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2},
+ // Design examples; the wash-channel envelope is read from the user's image.
+ sectionPresets:{low:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},wide:{drop:250,projection:300,back:12,bottom:12,front:12,lip:40}},
+ washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8}};
 const api={downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

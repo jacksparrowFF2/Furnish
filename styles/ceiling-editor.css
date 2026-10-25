@@ -19,3 +19,30 @@
 @media(max-width:700px){.ceiling-workspace{grid-template-columns:1fr}.ceiling-controls{order:2}.ceiling-canvases{order:1}.ceiling-section{height:340px}.ceiling-editor .ceiling-tools .btn{font-size:11px}.ceiling-bottom{bottom:-20px}.ceiling-editor .form{gap:8px}}
 
 .ceiling-editor [data-ceiling-preview-status][data-conflict="true"]{color:#b3482b}
+
+.dlg-box.wide:has(.ceiling-design){width:min(1120px,calc(100vw - 32px));max-width:calc(100vw - 32px)}
+.ceiling-editor [hidden]{display:none!important}
+.ceiling-design{max-width:1180px;margin:auto;line-height:1.6}
+.ceiling-design-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px}
+.ceiling-design section{min-width:0;margin:0 0 16px;padding:16px;border:1px solid var(--line);border-radius:12px}
+.ceiling-design h3{margin:0 0 12px;font-size:15px}
+.ceiling-design label{display:block;font-size:13px}
+.ceiling-design select,.ceiling-design input[type=number]{display:block;width:100%;min-width:0;box-sizing:border-box}
+.ceiling-design small{display:block;font-size:11px;line-height:1.6;color:var(--muted);margin-top:6px}
+.ceiling-design .form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ceiling-style-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ceiling-style-options label{padding:9px;border:1px solid var(--line);border-radius:9px;cursor:pointer}
+.ceiling-style-options label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.ceiling-style-options b{display:block;font-size:12px}
+.ceiling-preset-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ceiling-preset-gallery .ceiling-preset{display:block;white-space:normal;padding:8px;min-width:0;text-align:left}
+.ceiling-preset svg{width:100%;height:85px;display:block;background:#faf9f4;border-radius:5px}
+.ceiling-preset b{font-size:12px}.ceiling-preset.on{border-color:var(--accent);background:var(--accent-soft)}
+.ceiling-design-section svg{width:100%;height:200px;display:block;background:#faf9f4;border-radius:8px;margin-bottom:12px}
+.ceiling-design-plan{width:100%;height:270px;display:block}
+.ceiling-design .actions{display:flex;gap:8px;flex-wrap:wrap}
+.ceiling-design [data-design-3d]{height:320px;margin-top:12px;overflow:hidden;border-radius:8px}
+.ceiling-design [data-design-3d] canvas{display:block;width:100%;height:100%}
+.ceiling-design-result{align-self:start}.ceiling-design [role=alert]{overflow-wrap:anywhere}
+.ceiling-design [hidden]{display:none!important}
+@media(max-width:760px){.ceiling-design-grid{grid-template-columns:minmax(0,1fr);gap:0}.ceiling-design section{padding:12px}.ceiling-style-options{grid-template-columns:1fr}.ceiling-style-options b{display:inline;margin-left:6px}.ceiling-style-options small{margin-left:24px}.ceiling-design-plan{height:230px}.ceiling-design .ceiling-bottom{bottom:-12px}}
