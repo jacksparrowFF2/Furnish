@@ -186,6 +186,15 @@ function spatial(plan){
 }
 // Rear-mounted service equipment uses the structural face as its zero datum,
 // including before it reaches the wall and creates the actual finish opening.
+// In plan view show the service opening's projection, including raised equipment.
+// The physical layers and floor-area bands retain their actual vertical ranges.
+function planSolids(plan){
+ const Z=zones(),openings=plan.wallFinish?.serviceOpenings||[];
+ return (plan.wallFinish?.solids||[]).filter(s=>s.bottom===0).flatMap(s=>{
+  const poly=s.poly||rectPoly(s.rect),axis=1-s.normal,cuts=openingRects(s,openings).map(c=>{const r=[...s.rect];r[axis]=c.lo;r[axis+2]=c.hi;return rectPoly(r);});
+  if(!cuts.length)return [s];return Z.decompose([poly,...cuts],p=>Z.inside(p,poly)&&!cuts.some(c=>Z.inside(p,c))).map(poly=>({...s,poly}));
+ });
+}
 function measurementWallRelevant(w,f,vertical){
  const v=w[5]?.vertical;if(v&&vertical&&finite(vertical.bottom)&&finite(vertical.top)&&Math.min(v.top,vertical.top)-Math.max(v.bottom,vertical.bottom)<=EPS)return false;
  const data=w[5],R=root.FurnishProducts||require('./product-rules.js');
@@ -195,10 +204,14 @@ function measurementWallRelevant(w,f,vertical){
 }
 // Floor-area bands remain conservative; furniture boundaries use actual layers
 // over the furniture's complete height where a service opening exists.
+const heightRoomCache=new Map();
 function roomsAtHeight(plan,vertical){
  if(!plan.wallFinish?.serviceOpenings?.length||!vertical||!finite(vertical.bottom)||!finite(vertical.top))return plan.rooms;
  const Z=zones(),solids=plan.wallFinish.solids.filter(s=>Math.min(vertical.top,s.top)-Math.max(vertical.bottom,s.bottom)>EPS),rooms=plan.finishSurveyRooms||plan.rooms;
- return rooms.map(room=>{const rings=room.rings||[room.poly],polys=solids.map(s=>s.poly||rectPoly(s.rect));if(!polys.length)return room;const pieces=Z.decompose([...rings,...polys],p=>Z.inside(p,room.poly)&&!polys.some(poly=>Z.inside(p,poly)));return {...room,...Z.outline(pieces)};});
+ const polys=solids.map(s=>s.poly||rectPoly(s.rect)),key=JSON.stringify([rooms,polys]);
+ if(heightRoomCache.has(key)){const value=heightRoomCache.get(key);heightRoomCache.delete(key);heightRoomCache.set(key,value);return clone(value);}
+ const result=rooms.map(room=>{const rings=room.rings||[room.poly];if(!polys.length)return room;const pieces=Z.decompose([...rings,...polys],p=>Z.inside(p,room.poly)&&!polys.some(poly=>Z.inside(p,poly)));return {...room,...Z.outline(pieces)};});
+ heightRoomCache.set(key,clone(result));if(heightRoomCache.size>16)heightRoomCache.delete(heightRoomCache.keys().next().value);return result;
 }
 function onlyFinishChange(before,after){if(JSON.stringify(before.wallFinishes)===JSON.stringify(after.wallFinishes))return false;const a={...before},b={...after};delete a.wallFinishes;delete b.wallFinishes;return JSON.stringify(a)===JSON.stringify(b);}
 function has(work){return !!work?.wallFinishes?.surfaces?.length;}
@@ -216,6 +229,6 @@ function remapBuiltin(work,before,after,shift){
  }
  work.wallFinishes={version:1,surfaces:mapped};validate(work.wallFinishes);
 }
-const api={measurementWallRelevant,serviceOpenings,trimServiceSections,roomsAtHeight,joined,tileSections,snapFaces,rules,validate,sources,faces,same,edit,editFields,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
+const api={planSolids,measurementWallRelevant,serviceOpenings,trimServiceSections,roomsAtHeight,joined,tileSections,snapFaces,rules,validate,sources,faces,same,edit,editFields,derive,spatial,vertical,faceSections,onlyFinishChange,has,remapBuiltin};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishWallFinish=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

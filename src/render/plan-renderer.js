@@ -179,7 +179,7 @@ function renderWalls(){
    wallLayer.insertAdjacentHTML('afterbegin',`<defs><clipPath id="electrical-wall-plan-cut" clipPathUnits="userSpaceOnUse">${polys.map(p=>`<path d="M${p.map(q=>q.join(',')).join('L')}Z"/>`).join('')}</clipPath></defs>`);wallLayer.setAttribute('clip-path','url(#electrical-wall-plan-cut)');}
   if(!state.wallFinishes)return;
   const data=canvasEffectivePlan().wallFinish;
-  if(data)$('#gWalls').insertAdjacentHTML('beforeend',`<g data-wall-finishes>${data.solids.filter(s=>s.bottom===0).map(s=>{
+  if(data)$('#gWalls').insertAdjacentHTML('beforeend',`<g data-wall-finishes>${FurnishWallFinish.planSolids(canvasEffectivePlan()).map(s=>{
     const [x,y,X,Y]=s.rect,index=PLAN.wallRefs?PLAN.wallRefs.indexOf(s.wallId):Number(s.wallId.slice(8));let target=index>=0?`data-wall="w${index}"`:'';
     if(index<0){const o=PLAN.customDraft?.openings.find(o=>o.wall===s.wallId);if(o){const kind=o.kind==='window'?'win':o.kind,refs=kind==='win'?PLAN.winRefs:kind==='door'?PLAN.doorRefs:PLAN.slideRefs,i=kind==='win'&&o.bay?PLAN.wins.findIndex(w=>w.bayId===o.id):refs?.indexOf(o.id);if(i>=0)target=`data-${kind}="${i}"`;}}
     const layerKey=FurnishLayers.wallFinishKey(canvasEffectivePlan(),s),poly=s.poly||[[x,y],[X,y],[X,Y],[x,Y]];return `<path class="wall" ${target} data-wall-finish="${s.index}" ${layerKey?`data-layer-wall="${esc(layerKey)}"`:''} d="M${poly.map(p=>p.join(',')).join('L')}Z" fill="#d5c2a2"><title>${tr('墙面完成面','Finished wall face')} · ${s.tileThickness+s.bondThickness} mm</title></path>`;

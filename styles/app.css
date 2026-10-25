@@ -785,3 +785,10 @@ main:not(.is3d) #blender-dock {display:none}
 .blender-sync .blender-buttons {align-items:center}
 .blender-sync .blender-buttons label {display:flex;gap:4px;align-items:center}
 .blender-sync a.btn {color:var(--ink);text-decoration:none}
+
+/* Small numeric editors leave the canvas interactive. */
+.dlg.floating{pointer-events:none;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;animation:none}
+.dlg.floating .dlg-box{pointer-events:auto;position:fixed;left:max(12px,calc(100vw - 530px));top:92px;width:min(500px,calc(100vw - 24px));max-height:calc(100dvh - 104px);animation:none}
+.dlg.floating .dlg-head{cursor:move;touch-action:none;user-select:none}
+.dlg.floating .dlg-box[aria-busy="true"] .dlg-actions{cursor:progress}
+@media(max-height:450px){.dlg.floating .dlg-box{top:12px;max-height:calc(100dvh - 24px)}}

@@ -294,15 +294,21 @@
   if(!after||Math.abs(after.distance-gap)>.01||current.moduleBoundary&&after.entity.moduleKey!==current.entity.moduleKey||current.cabinetInterior&&after.entity.boardKey!==current.entity.boardKey)throw Error('移动后最近参考发生变化或存在重叠，无法达到目标净距');
   const reference=S.directional(moved,{plan,rotation,rects:current.entity.kind==='wall'?[rects[current.entity.id]]:[],furniture:current.entity.kind==='furniture'?[work.furniture.find(v=>v.id===current.entity.id)]:[]})[dir];
   if(!reference||Math.abs(reference.distance-gap)>.01||current.cabinetInterior&&reference.entity.boardKey!==current.entity.boardKey)throw Error('无法相对原参考实体达到目标净距，请重新选择');
+  const boxOf=poly=>[Math.min(...poly.map(p=>p[0])),Math.min(...poly.map(p=>p[1])),Math.max(...poly.map(p=>p[0])),Math.max(...poly.map(p=>p[1]))],disjoint=(a,b)=>a[2]<b[0]||b[2]<a[0]||a[3]<b[1]||b[3]<a[1];
   const parts=members.flatMap(f=>G.bodyParts(f,plan,work.furniture).map(part=>({...part,owner:f,end:part.p.map(p=>[p[0]+dx,p[1]+dy]),swept:translationHull(part.p,dx,dy)}))),overlap=(a,b)=>G.polygonOverlap(a,b,1e-6),rooms=plan.physicalRooms||plan.rooms;
+  for(const part of parts)part.sweepBox=boxOf(part.swept);
+  const roomChecks=new Map();
   for(const part of parts){
-   const endVertical=furnitureVerticalBounds(moved.find(f=>f.id===part.owner.id),destination,proposed),targetRooms=serviceMove?(root.FurnishWallFinish||require('./wall-finish-core.js')).roomsAtHeight(destination,endVertical):rooms;
+   if(!roomChecks.has(part.owner.id)){const endVertical=furnitureVerticalBounds(moved.find(f=>f.id===part.owner.id),destination,proposed),targetRooms=serviceMove?(root.FurnishWallFinish||require('./wall-finish-core.js')).roomsAtHeight(destination,endVertical):rooms;roomChecks.set(part.owner.id,targetRooms);}
+   const targetRooms=roomChecks.get(part.owner.id);
    if(!P.fitsInRooms(targetRooms,part.end)||P.fitsInRooms(targetRooms,part.p)&&!P.fitsInRooms(targetRooms,part.swept))throw Error('移动后物体超出房间，或路径穿过房间边界');
-   for(const [wallIndex,r] of (serviceMove?destinationRects:rects).entries()){if(wallIndex<destination.walls.length&&part.vertical&&!G.verticalOverlap(part.owner,null,[part.vertical,(root.FurnishWallFinish||require('./wall-finish-core.js')).vertical(destination.walls[wallIndex],destination)]))continue;const poly=[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];if(overlap(part.end,poly))throw Error('调整后物体会与墙体或窗边重叠');if(!overlap(part.p,poly)&&overlap(part.swept,poly))throw Error('移动路径被墙体或窗边阻挡');}
+   for(const [wallIndex,r] of (serviceMove?destinationRects:rects).entries()){if(disjoint(part.sweepBox,r))continue;if(wallIndex<destination.walls.length&&part.vertical&&!G.verticalOverlap(part.owner,null,[part.vertical,(root.FurnishWallFinish||require('./wall-finish-core.js')).vertical(destination.walls[wallIndex],destination)]))continue;const poly=[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];if(overlap(part.end,poly))throw Error('调整后物体会与墙体或窗边重叠');if(!overlap(part.p,poly)&&overlap(part.swept,poly))throw Error('移动路径被墙体或窗边阻挡');}
   }
   for(const other of work.furniture){
    if(ids.has(other.id)||!G.solidForCollision(other))continue;
-   for(const part of parts)for(const obstacle of G.bodyParts(other,plan,work.furniture)){
+   const obstacles=G.bodyParts(other,plan,work.furniture).map(part=>({...part,box:boxOf(part.p)}));
+   for(const part of parts)for(const obstacle of obstacles){
+    if(disjoint(part.sweepBox,obstacle.box))continue;
     const f=part.owner;if(!G.solidForCollision(f)||G.tuckedSeatPair(f,other))continue;
     if(!G.verticalOverlap(f,other,[part.vertical,obstacle.vertical]))continue;
     const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),p=M.section(part,obstacle.vertical),target=M.section(obstacle,part.vertical),end=p.map(v=>[v[0]+dx,v[1]+dy]);

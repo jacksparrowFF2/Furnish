@@ -29,7 +29,16 @@ const DASH = 'stroke-dasharray="4 3"';
     return s;
   }
   switch (t){
-    case 'heating_manifold': {const m=(root.FurnishProducts||require('../core/product-rules.js')).manifoldLayout({...f,type:t,w,d}),inlet=m.inlet;return rc(inlet-m.lengths.upper,y+d*.18,m.lengths.upper,d*.25,'#abb3af')+rc(inlet-m.lengths.lower,y+d*.43,m.lengths.lower,d*.25,'#abb3af')+rc(inlet,y+d*.20,m.railWidth,d*.44,c)+Array.from({length:m.loops},(_,i)=>{const bx=inlet+65+i*m.pitch;return rc(bx-9,y+d*.45,18,d*.48,'#343a3a')+rc(bx-15,y+d*.38,30,d*.16,'#b94135');}).join('')+rc(inlet-35,y+d*.16,17,d*.50,'#35529a');}
+    case 'heating_manifold': {
+      const m=(root.FurnishProducts||require('../core/product-rules.js')).manifoldLayout({...f,type:t,w,d}),inlet=m.inlet,k=d/140;
+      // True top view: vertical risers project to circles; both headers share Z.
+      let svg=[inlet+28,w/2-28].map(x=>rc(x-7,-70*k,14,8*k,'#a5aaa5')).join('');
+      for(const length of [m.lengths.upper,m.lengths.lower]){const start=inlet-length+18;svg+=rc(start,-28*k,inlet-start,36*k,'#aeb8b1','rx="8"')+ec(start,-10*k,18,18*k,'#aeb8b1');}
+      svg+=rc(inlet-22,-34*k,42,48*k,c)+rc(inlet+20,-29*k,m.railWidth-40,38*k,c)+ec(w/2-23,-10*k,23,23*k,c);
+      for(const z of [-42,25])for(let i=0;i<m.loops;i++){const x=inlet+65+i*m.pitch;svg+=rc(x-7,Math.min(-10,z)*k,14,Math.abs(z+10)*k,'#a5aaa5')+ec(x,z*k,12,12*k,'#303635')+rc(x-14.5,(z+19.5)*k,29,11*k,'#bb3931');}
+      svg+=rc(inlet-18,-10*k,20,75*k,'#a5aaa5')+rc(inlet-14,60*k,12,10*k,'#254f9d');
+      return `<g data-manifold-plan="top">${svg}</g>`;
+    }
     case 'electrical_box_strong': case 'electrical_box_weak': return rc(x,y,w,d,c)+rc(x+w*.06,y+d*.72,w*.88,d*.22,'#697681');
     case 'block': return rc(x,y,w,d,c);
     case 'cat_tree': return rc(x,y,w,d,'#dfbd7d','rx="12"')+rc(-w*.19,-d*.4,w*.66,d*.64,c)+rc(-w*.02,d*.23,w*.34,d*.24,'#dfbd7d')+ec(-w*.21,-d*.27,w*.21,d*.21,'#eee7d2')+ec(w*.13,-d*.26,w*.21,d*.21,'#d7e2df')+ec(-w*.314,d*.19,w*.186,d*.186,'#dfbd7d')+ln(w*.01,d*.34,w*.29,d*.34)+ln(w*.01,d*.43,w*.29,d*.43);

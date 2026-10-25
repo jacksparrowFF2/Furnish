@@ -227,9 +227,19 @@
   });return out;
  }
  function polygon(f){const a=f.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]].map(([x,y])=>[f.cx+x*c-y*s,f.cy+x*s+y*c]);}
+ const roomPolygonInfo=new WeakMap();
+ function roomPolyInfo(poly){
+  const key=JSON.stringify(poly);let info=roomPolygonInfo.get(poly);if(info?.key===key)return info;
+  const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);let sign=0,convex=true;
+  for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],c=poly[(i+2)%poly.length],cross=(b[0]-a[0])*(c[1]-b[1])-(b[1]-a[1])*(c[0]-b[0]);if(Math.abs(cross)<1e-9)continue;const next=Math.sign(cross);if(sign&&sign!==next)convex=false;sign=next;}
+  info={key,box:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)],convex:convex&&!!sign,sign};roomPolygonInfo.set(poly,info);return info;
+ }
  function fitsInRooms(rooms,footprint){
   if(rooms.some(r=>r.polys)){
-   const G=root.FurnishZoneGeometry||require('./zone-geometry.js'),polys=rooms.flatMap(r=>r.polys||[r.poly]);
+   const G=root.FurnishZoneGeometry||require('./zone-geometry.js'),xs=footprint.map(p=>p[0]),ys=footprint.map(p=>p[1]),box=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)],polys=rooms.flatMap(r=>r.polys||[r.poly]).filter(p=>{const b=roomPolyInfo(p).box;return b[2]>=box[0]&&b[0]<=box[2]&&b[3]>=box[1]&&b[1]<=box[3];});
+   // A convex cell containing every footprint vertex proves containment. Other
+   // cases keep the exact union test, including seams, concavities and gaps.
+   if(polys.some(poly=>{const info=roomPolyInfo(poly);return info.convex&&footprint.every(p=>poly.every((a,i)=>{const b=poly[(i+1)%poly.length];return info.sign*((b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]))>=0;}));}))return true;
    return G.area(G.decompose([footprint,...polys],p=>G.inside(p,footprint)&&!polys.some(poly=>G.inside(p,poly))))<=1;
   }
   // Room boundaries are orthogonal. Every grid cell has a uniform room membership;
