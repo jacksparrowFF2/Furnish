@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "model-entry"
+  ],
+  "results": [
+    {
+      "name": "model-entry",
+      "status": "PASS",
+      "seconds": 32.2,
+      "log": "model-entry.log"
+    }
+  ],
+  "notRun": []
+}

@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "cabinet-interior"
+  ],
+  "results": [
+    {
+      "name": "cabinet-interior",
+      "status": "PASS",
+      "seconds": 21,
+      "log": "cabinet-interior.log"
+    }
+  ],
+  "notRun": []
+}

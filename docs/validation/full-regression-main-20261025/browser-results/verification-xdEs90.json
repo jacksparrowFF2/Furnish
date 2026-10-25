@@ -1,0 +1,441 @@
+{
+  "selected": [
+    "appliance-module-boundaries",
+    "beam-body",
+    "block-placeholder",
+    "cabinet-custom-fronts",
+    "cabinet-door-coverage",
+    "cabinet-edit-operations",
+    "cabinet-module-widths",
+    "cabinet-panel",
+    "cat-tree",
+    "ceiling-beam-reference",
+    "ceiling-coplanar-camera",
+    "ceiling-edge-distances",
+    "ceiling-section-interaction",
+    "cherry-coffee-table",
+    "dimension-density",
+    "directional-heights",
+    "dishwasher-clearances",
+    "drag-axis-lock",
+    "workflow-reimport",
+    "electrical-boxes",
+    "tile-workspace-complete",
+    "floating-toolbar-proximity",
+    "folding-table",
+    "full-width-drawers",
+    "room-net",
+    "purchase-orders",
+    "furniture-solids",
+    "hob-link-options",
+    "hood-geometry",
+    "kitchen-dish-basket",
+    "kitchen-dividers",
+    "kitchen-drawer-boundaries",
+    "kitchen-edge-snapping",
+    "kitchen-layout",
+    "kitchen-resize",
+    "kitchen-single-hinge",
+    "kitchen-u",
+    "kitchen-wall-canvas",
+    "kitchen",
+    "laundry-cabinet",
+    "laundry-resize-vessel",
+    "layer-sidebar",
+    "measure-boundaries",
+    "observation-layers",
+    "pegboard-height",
+    "pet-feeder",
+    "product-plan-outline",
+    "property-open",
+    "region-areas",
+    "scene-observation",
+    "short-wall-zones",
+    "sink-surface",
+    "tank-preview",
+    "tile-coplanar-wall",
+    "tile-shared-origin",
+    "tv-views",
+    "water-purifier",
+    "dining-plan-order",
+    "multi-region-merge",
+    "manifold",
+    "manifold-wall-finish",
+    "telescopic-corners"
+  ],
+  "results": [
+    {
+      "name": "appliance-module-boundaries",
+      "status": "PASS",
+      "seconds": 4.3,
+      "log": "appliance-module-boundaries.log"
+    },
+    {
+      "name": "beam-body",
+      "status": "PASS",
+      "seconds": 66.3,
+      "log": "beam-body.log"
+    },
+    {
+      "name": "block-placeholder",
+      "status": "PASS",
+      "seconds": 69,
+      "log": "block-placeholder.log"
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 142,
+      "log": "cabinet-custom-fronts.log"
+    },
+    {
+      "name": "cabinet-door-coverage",
+      "status": "PASS",
+      "seconds": 6.5,
+      "log": "cabinet-door-coverage.log"
+    },
+    {
+      "name": "cabinet-edit-operations",
+      "status": "PASS",
+      "seconds": 100.6,
+      "log": "cabinet-edit-operations.log"
+    },
+    {
+      "name": "cabinet-module-widths",
+      "status": "PASS",
+      "seconds": 45.6,
+      "log": "cabinet-module-widths.log"
+    },
+    {
+      "name": "cabinet-panel",
+      "status": "PASS",
+      "seconds": 25.8,
+      "log": "cabinet-panel.log"
+    },
+    {
+      "name": "cat-tree",
+      "status": "PASS",
+      "seconds": 58.4,
+      "log": "cat-tree.log"
+    },
+    {
+      "name": "ceiling-beam-reference",
+      "status": "PASS",
+      "seconds": 15.8,
+      "log": "ceiling-beam-reference.log"
+    },
+    {
+      "name": "ceiling-coplanar-camera",
+      "status": "PASS",
+      "seconds": 26.3,
+      "log": "ceiling-coplanar-camera.log"
+    },
+    {
+      "name": "ceiling-edge-distances",
+      "status": "PASS",
+      "seconds": 23,
+      "log": "ceiling-edge-distances.log"
+    },
+    {
+      "name": "ceiling-section-interaction",
+      "status": "PASS",
+      "seconds": 31.1,
+      "log": "ceiling-section-interaction.log"
+    },
+    {
+      "name": "cherry-coffee-table",
+      "status": "PASS",
+      "seconds": 40.3,
+      "log": "cherry-coffee-table.log"
+    },
+    {
+      "name": "dimension-density",
+      "status": "PASS",
+      "seconds": 10,
+      "log": "dimension-density.log"
+    },
+    {
+      "name": "directional-heights",
+      "status": "PASS",
+      "seconds": 2.6,
+      "log": "directional-heights.log"
+    },
+    {
+      "name": "dishwasher-clearances",
+      "status": "PASS",
+      "seconds": 32.8,
+      "log": "dishwasher-clearances.log"
+    },
+    {
+      "name": "drag-axis-lock",
+      "status": "PASS",
+      "seconds": 4.6,
+      "log": "drag-axis-lock.log"
+    },
+    {
+      "name": "workflow-reimport",
+      "status": "PASS",
+      "seconds": 28.4,
+      "log": "workflow-reimport.log"
+    },
+    {
+      "name": "electrical-boxes",
+      "status": "PASS",
+      "seconds": 40.2,
+      "log": "electrical-boxes.log"
+    },
+    {
+      "name": "tile-workspace-complete",
+      "status": "PASS",
+      "seconds": 79.3,
+      "log": "tile-workspace-complete.log"
+    },
+    {
+      "name": "floating-toolbar-proximity",
+      "status": "PASS",
+      "seconds": 6.8,
+      "log": "floating-toolbar-proximity.log"
+    },
+    {
+      "name": "folding-table",
+      "status": "PASS",
+      "seconds": 71.9,
+      "log": "folding-table.log"
+    },
+    {
+      "name": "full-width-drawers",
+      "status": "PASS",
+      "seconds": 7.3,
+      "log": "full-width-drawers.log"
+    },
+    {
+      "name": "room-net",
+      "status": "PASS",
+      "seconds": 7.6,
+      "log": "room-net.log"
+    },
+    {
+      "name": "purchase-orders",
+      "status": "PASS",
+      "seconds": 20.7,
+      "log": "purchase-orders.log"
+    },
+    {
+      "name": "furniture-solids",
+      "status": "PASS",
+      "seconds": 59.1,
+      "log": "furniture-solids.log"
+    },
+    {
+      "name": "hob-link-options",
+      "status": "PASS",
+      "seconds": 30.3,
+      "log": "hob-link-options.log"
+    },
+    {
+      "name": "hood-geometry",
+      "status": "PASS",
+      "seconds": 36.9,
+      "log": "hood-geometry.log"
+    },
+    {
+      "name": "kitchen-dish-basket",
+      "status": "PASS",
+      "seconds": 37.7,
+      "log": "kitchen-dish-basket.log"
+    },
+    {
+      "name": "kitchen-dividers",
+      "status": "PASS",
+      "seconds": 7.4,
+      "log": "kitchen-dividers.log"
+    },
+    {
+      "name": "kitchen-drawer-boundaries",
+      "status": "PASS",
+      "seconds": 65.2,
+      "log": "kitchen-drawer-boundaries.log"
+    },
+    {
+      "name": "kitchen-edge-snapping",
+      "status": "PASS",
+      "seconds": 30.4,
+      "log": "kitchen-edge-snapping.log"
+    },
+    {
+      "name": "kitchen-layout",
+      "status": "PASS",
+      "seconds": 79.5,
+      "log": "kitchen-layout.log"
+    },
+    {
+      "name": "kitchen-resize",
+      "status": "PASS",
+      "seconds": 4.7,
+      "log": "kitchen-resize.log"
+    },
+    {
+      "name": "kitchen-single-hinge",
+      "status": "PASS",
+      "seconds": 28,
+      "log": "kitchen-single-hinge.log"
+    },
+    {
+      "name": "kitchen-u",
+      "status": "PASS",
+      "seconds": 28.7,
+      "log": "kitchen-u.log"
+    },
+    {
+      "name": "kitchen-wall-canvas",
+      "status": "PASS",
+      "seconds": 35.2,
+      "log": "kitchen-wall-canvas.log"
+    },
+    {
+      "name": "kitchen",
+      "status": "PASS",
+      "seconds": 63.1,
+      "log": "kitchen.log"
+    },
+    {
+      "name": "laundry-cabinet",
+      "status": "PASS",
+      "seconds": 62.9,
+      "log": "laundry-cabinet.log"
+    },
+    {
+      "name": "laundry-resize-vessel",
+      "status": "PASS",
+      "seconds": 47.9,
+      "log": "laundry-resize-vessel.log"
+    },
+    {
+      "name": "layer-sidebar",
+      "status": "PASS",
+      "seconds": 92.6,
+      "log": "layer-sidebar.log"
+    },
+    {
+      "name": "measure-boundaries",
+      "status": "PASS",
+      "seconds": 11.3,
+      "log": "measure-boundaries.log"
+    },
+    {
+      "name": "observation-layers",
+      "status": "PASS",
+      "seconds": 30.3,
+      "log": "observation-layers.log"
+    },
+    {
+      "name": "pegboard-height",
+      "status": "PASS",
+      "seconds": 119.2,
+      "log": "pegboard-height.log"
+    },
+    {
+      "name": "pet-feeder",
+      "status": "PASS",
+      "seconds": 28.5,
+      "log": "pet-feeder.log"
+    },
+    {
+      "name": "product-plan-outline",
+      "status": "PASS",
+      "seconds": 4.4,
+      "log": "product-plan-outline.log"
+    },
+    {
+      "name": "property-open",
+      "status": "PASS",
+      "seconds": 9.4,
+      "log": "property-open.log"
+    },
+    {
+      "name": "region-areas",
+      "status": "PASS",
+      "seconds": 3.7,
+      "log": "region-areas.log"
+    },
+    {
+      "name": "scene-observation",
+      "status": "PASS",
+      "seconds": 63.9,
+      "log": "scene-observation.log"
+    },
+    {
+      "name": "short-wall-zones",
+      "status": "PASS",
+      "seconds": 10.8,
+      "log": "short-wall-zones.log"
+    },
+    {
+      "name": "sink-surface",
+      "status": "PASS",
+      "seconds": 4.9,
+      "log": "sink-surface.log"
+    },
+    {
+      "name": "tank-preview",
+      "status": "PASS",
+      "seconds": 4,
+      "log": "tank-preview.log"
+    },
+    {
+      "name": "tile-coplanar-wall",
+      "status": "PASS",
+      "seconds": 64.6,
+      "log": "tile-coplanar-wall.log"
+    },
+    {
+      "name": "tile-shared-origin",
+      "status": "PASS",
+      "seconds": 18.4,
+      "log": "tile-shared-origin.log"
+    },
+    {
+      "name": "tv-views",
+      "status": "PASS",
+      "seconds": 23,
+      "log": "tv-views.log"
+    },
+    {
+      "name": "water-purifier",
+      "status": "PASS",
+      "seconds": 24.9,
+      "log": "water-purifier.log"
+    },
+    {
+      "name": "dining-plan-order",
+      "status": "PASS",
+      "seconds": 4.5,
+      "log": "dining-plan-order.log"
+    },
+    {
+      "name": "multi-region-merge",
+      "status": "PASS",
+      "seconds": 10.8,
+      "log": "multi-region-merge.log"
+    },
+    {
+      "name": "manifold",
+      "status": "PASS",
+      "seconds": 24.8,
+      "log": "manifold.log"
+    },
+    {
+      "name": "manifold-wall-finish",
+      "status": "PASS",
+      "seconds": 13.8,
+      "log": "manifold-wall-finish.log"
+    },
+    {
+      "name": "telescopic-corners",
+      "status": "PASS",
+      "seconds": 62.8,
+      "log": "telescopic-corners.log"
+    }
+  ],
+  "notRun": []
+}

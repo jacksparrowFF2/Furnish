@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "manifold-kitchen",
+    "manifold-floating-distance"
+  ],
+  "results": [
+    {
+      "name": "manifold-kitchen",
+      "status": "PASS",
+      "seconds": 20.1,
+      "log": "manifold-kitchen.log"
+    },
+    {
+      "name": "manifold-floating-distance",
+      "status": "PASS",
+      "seconds": 33.8,
+      "log": "manifold-floating-distance.log"
+    }
+  ],
+  "notRun": []
+}

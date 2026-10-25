@@ -1,0 +1,31 @@
+{
+  "template": "D:/1601装修/渲染/LiveSync0.1.3生成器身份升级-20261025/1601-生成器稳定身份.blend",
+  "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\saved-workspace-QB75Or\\current.glb",
+  "output": "D:/1601装修/渲染/全量回归-20261025/1601-最新方案精修副本-65件.blend",
+  "sourceSha256": "dc964e6632f4ba7a20e396cd7265f99b8a388fd77789a79ac2e1313e4e08fe18",
+  "inputSha256": "7c2f86528284f54d7aa5efa72a45609aae61f35d6d776efdc21e1b62a1c15490",
+  "countChanged": [
+    {
+      "scope": "",
+      "key": "named:[\"item:[\\\"wall-tiling-model.js:generator-1\\\",\\\"[\\\\\\\"face\\\\\\\",{\\\\\\\"roomId\\\\\\\":\\\\\\\"area_fmv3qcck717\\\\\\\",\\\\\\\"wallId\\\\\\\":\\\\\\\"outline_11\\\\\\\",\\\\\\\"side\\\\\\\":-1,\\\\\\\"range\\\\\\\":[0.0846262341325811,0.806064880112835]},\\\\\\\"base\\\\\\\",false,null]\\\"]\",\"item:[\\\"wall-tiling-model.js:generator-2\\\",\\\"slot:0\\\"]\",\"call:wall-tiling-model:site-1\"]",
+      "before": 2,
+      "after": 4,
+      "materials": [
+        "Study | warm white mineral paint"
+      ],
+      "locked": false,
+      "modifiers": []
+    },
+    {
+      "scope": "",
+      "key": "named:[\"item:[\\\"wall-tiling-model.js:generator-1\\\",\\\"[\\\\\\\"face\\\\\\\",{\\\\\\\"roomId\\\\\\\":\\\\\\\"area_fmv3qcck717\\\\\\\",\\\\\\\"wallId\\\\\\\":\\\\\\\"outline_11\\\\\\\",\\\\\\\"side\\\\\\\":-1,\\\\\\\"range\\\\\\\":[0.0846262341325811,0.806064880112835]},\\\\\\\"base\\\\\\\",false,null]\\\"]\",\"item:[\\\"wall-tiling-model.js:generator-2\\\",\\\"slot:1\\\"]\",\"call:wall-tiling-model:site-1\"]",
+      "before": 2,
+      "after": 4,
+      "materials": [
+        "Study | warm white mineral paint"
+      ],
+      "locked": false,
+      "modifiers": []
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "current-bays",
+    "directional-kitchen-solids"
+  ],
+  "results": [
+    {
+      "name": "current-bays",
+      "status": "PASS",
+      "seconds": 198.4,
+      "log": "current-bays.log"
+    },
+    {
+      "name": "directional-kitchen-solids",
+      "status": "PASS",
+      "seconds": 7.7,
+      "log": "directional-kitchen-solids.log"
+    }
+  ],
+  "notRun": []
+}

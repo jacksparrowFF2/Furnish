@@ -1,0 +1,1 @@
+{"case":"enclosed-boundaries","status":"PASS","result":{"status":"PASS","results":[{"mode":"http","status":"PASS","distances":{"l":72.5,"r":82.5,"t":931.5,"b":69.5},"saveUndoRedoRefresh":true,"narrow":true,"errors":[]},{"mode":"offline-file","status":"PASS","distances":{"l":72.5,"r":82.5,"t":931.5,"b":69.5},"saveUndoRedoRefresh":true,"narrow":true,"errors":[]}]}}

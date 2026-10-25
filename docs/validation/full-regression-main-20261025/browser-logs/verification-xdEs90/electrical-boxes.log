@@ -1,0 +1,1 @@
+{"case":"electrical-boxes","status":"PASS","result":[{"mode":"http","passed":true,"types":2,"threeDimensions":true,"heightCache":true,"undoRedoRefresh":true,"narrow":true,"errors":[]},{"mode":"file","passed":true,"types":2,"threeDimensions":true,"heightCache":true,"undoRedoRefresh":true,"narrow":true,"errors":[]}]}

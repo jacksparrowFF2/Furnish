@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "uniformFamilyAccepted": true,
+  "validationReadOnly": true,
+  "rejected": [
+    "distinct per-fragment materials",
+    "locked refinement pose",
+    "user modifier",
+    "unreviewed count",
+    "unrelated generator",
+    "incomplete reviewed key set"
+  ],
+  "instanceSuffixNotParsedAsWall": true
+}

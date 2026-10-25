@@ -1,0 +1,5 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(before.every(n=>n.key&&n.version===3))
+
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-blender-model-identities.cjs:13:165

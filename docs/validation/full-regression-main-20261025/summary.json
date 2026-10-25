@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-25",
+  "base": "368e59310441f2bb5331de4db4d97e1c5aa7a4e1",
+  "codeRegressionPassed": true,
+  "node": {
+    "suites": 309,
+    "builtInPlans": 12,
+    "previewPages": 69
+  },
+  "browser": {
+    "cases": 183,
+    "failed": [],
+    "initialFailures": 10,
+    "repairedAndRerun": true
+  },
+  "blender": {
+    "addon": "0.1.4",
+    "continuousSync": true,
+    "rollbackStages": 8,
+    "reviewedSnapshotMeshes": 4525,
+    "preservedCommonBindings": 4351,
+    "originalProjectsUnchanged": true,
+    "refinedUi": "passed",
+    "refinedUiAllBindingsPreserved": 4525
+  },
+  "snapshots": [
+    {
+      "furniture": 66,
+      "scope": "HTTP/file restore, finite geometry, v3 publication, GPU basic render, performance, spatial issue comparison"
+    },
+    {
+      "furniture": 65,
+      "sha256": "10cbf8bdb47c5e81cd9516c7219d40a6536bd3191ed0809afba90197c8525981",
+      "scope": "HTTP/file restore, finite geometry, v3 publication, reviewed refinement copy"
+    }
+  ],
+  "finalPlanValidation": "deferred_until_user_finishes_editing",
+  "planDataCommitted": false,
+  "knownLimitations": [
+    "Current editing plan has not received final acceptance. Snapshot spatial findings require design review.",
+    "Automatic arbitrary topology/material-intent migration remains unsupported.",
+    "66-object performance snapshot: numeric edits about 1.6 s; drag does not meet 60 Hz.",
+    "No forced process-crash/OOM, other Blender versions/OS, physical mobile device or final four-region production render validation."
+  ]
+}

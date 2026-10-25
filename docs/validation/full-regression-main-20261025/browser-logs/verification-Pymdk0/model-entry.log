@@ -1,0 +1,4 @@
+page.waitForFunction: Timeout 30000ms exceeded.
+    at eval (<anonymous>:11:36)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)

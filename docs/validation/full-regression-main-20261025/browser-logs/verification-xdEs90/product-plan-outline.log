@@ -1,0 +1,1 @@
+{"case":"product-plan-outline","status":"PASS","result":[{"mode":"http","metrics":{"difference":63.218171628725486,"points":79},"passed":true,"errors":[]},{"mode":"file","metrics":{"difference":63.218171628725486,"points":79},"passed":true,"errors":[]}]}

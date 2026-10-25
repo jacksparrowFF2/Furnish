@@ -1,0 +1,16 @@
+Error: ENOENT: no such file or directory, open 'C:\Users\SPH\Documents\GitHub\Furnish\output\playwright\verification-Pymdk0\workspace 迁移 #\projects\workspace.furnish.json'
+    at Object.readFileSync (node:fs:484:20)
+    at C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify\verify-manifold-floating-distance.cjs:6:28
+    at Object.<anonymous> (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify\verify-manifold-floating-distance.cjs:33:3)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object..js (node:internal/modules/cjs/loader:2060:10)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.require (node:internal/modules/cjs/loader:1674:12)
+    at require (node:internal/modules/helpers:157:16) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\verification-Pymdk0\\workspace 迁移 #\\projects\\workspace.furnish.json'
+}

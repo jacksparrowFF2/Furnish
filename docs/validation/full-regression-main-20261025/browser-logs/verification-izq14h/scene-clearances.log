@@ -1,0 +1,1 @@
+{"case":"scene-clearances","status":"PASS","result":[{"mode":"http","passed":true,"independentSwitches":true,"reload":true,"undoRedo":true,"missingData":true,"dishwasher":true,"narrow":true},{"mode":"file","passed":true,"independentSwitches":true,"reload":true,"undoRedo":true,"missingData":true,"dishwasher":true,"narrow":true}]}

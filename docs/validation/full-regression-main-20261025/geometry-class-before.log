@@ -1,0 +1,10 @@
+Error: Traceback (most recent call last):
+  File "C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify\verify-blender-transaction.py", line 143, in <module>
+    try:main(directory)
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify\verify-blender-transaction.py", line 137, in main
+    assert left.material_slots[0].material==lm and right.material_slots[0].material==rm,'Stable v3 parts must keep refinements through geometry-class changes'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Stable v3 parts must keep refinements through geometry-class changes
+
+    at C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify\verify-blender-transaction.cjs:6:87

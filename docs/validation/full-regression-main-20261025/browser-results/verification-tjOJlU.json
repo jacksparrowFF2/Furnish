@@ -1,0 +1,35 @@
+{
+  "selected": [
+    "model-entry",
+    "directional-placement",
+    "group-directional-placement",
+    "kitchen-gap-model"
+  ],
+  "results": [
+    {
+      "name": "model-entry",
+      "status": "PASS",
+      "seconds": 55.8,
+      "log": "model-entry.log"
+    },
+    {
+      "name": "directional-placement",
+      "status": "PASS",
+      "seconds": 15.6,
+      "log": "directional-placement.log"
+    },
+    {
+      "name": "group-directional-placement",
+      "status": "PASS",
+      "seconds": 5.2,
+      "log": "group-directional-placement.log"
+    },
+    {
+      "name": "kitchen-gap-model",
+      "status": "PASS",
+      "seconds": 17.9,
+      "log": "kitchen-gap-model.log"
+    }
+  ],
+  "notRun": []
+}

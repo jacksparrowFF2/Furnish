@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-25（最新主线全量复验）：筒灯生产网格使用固定 furnishStablePart，与 v3 同步协议一致，安装资料缺失由产品能力统一进入待核对。开启碰撞仍逐板判断，结果按家具 ID 汇总名称，独立扫掠按位置区分，避免重复板件刷屏或同文案门扇合并；没有新增持久字段。所有预览生成器遵守 FURNISH_VERIFY_ROOT，遗留生产预览模板在模型前加载共享身份模块。验收工具在私有副本中复制当前方案，数值编辑等待浮动窗口忙碌状态结束；真实 Blender 记录阶段、延长大场景验收等待。见 [全量记录](validation/full-regression-main-20261025/README.md)。
+
 2026-10-25（平顶共面与仰视）：生产`ceiling-model`为flat单独分配有负polygonOffset的饰面材质，梁底共面时由平顶饰面赢得深度测试；不改顶点、板底板厚或模型身份。主场景OrbitControls最大极角从0.495π放宽至0.995π，允许观察目标下方，漫游控制与俯视预设保持。`ceiling-design`从有效方案画梁投影，复用beamVertical标注，ResizeObserver仅更新参考图示尺寸并随会话销毁。无新持久字段、加载脚本或空间规则。见 [共面与仰视](CEILINGS.md#平顶共面闪纹与环绕仰视2026-10-25)。
 
 2026-10-25（联动门直边修正）：产品核心共用 `slidingTracks/slidingLayout` 与转角直边搭接端点；生产移动门扇全部改为矩形，二维由原渲染入口传入方案／家具上下文读取同一布局。可选 `slidingTrackOrder` 沿原字段能力、mutate、项目与缓存链路，空间确认使用 v2；顶轨连接及无转角柱保留，无新脚本或保存通道。见 [活动扇内外](TELESCOPIC-OPENINGS.md#活动扇内外与矩形直边搭接2026-10-25-后续修正)。
@@ -36,7 +38,6 @@
 
 2026-10-24：`downlight-model.js` 提供DL269生产几何和向下SpotLight，`ceiling-core.downlightHoles/fitDownlight` 共用标准筒灯与平顶安装判定，生产平顶由此派生圆孔；安装只写原mountHeight并沿mutate，缓存补齐筒灯输入，Blender快照保留SpotLight。光源规格增加可选downlightWatts／downlightKelvin，产品核心共用六种光通量与近似灯色；安装不新增字段，无新格式版本。详见 [筒灯](DOWNLIGHT-PHILIPS-DL269.md)。
 
-
 2026-10-24：分水器外包默认 800×180×600 mm；wallFinishOpening 能力在墙层核心派生矩形不贴砖区，生产瓷砖／粘结层、墙砖立面及空间边界共用。原墙不变；画布／建筑缓存覆盖设备及地面标高，放置与单件吸附按临时设备计划核对。无新持久字段或加载脚本，见 [墙砖避让](HEATING-MANIFOLD.md#毛坯墙基准与后铺瓷砖避让2026-10-24)。
 
 2026-10-24 全量复验：自动检修盖板的入口扫描先检查分区数组／成员，损坏旧记录继续进入原恢复界面，不影响正常家具事务；安装资料待核对能力集中补入产品定义。专用浏览器验收归入 scripts/verify，预览遵守 FURNISH_VERIFY_ROOT，禁止覆盖真实预览。无新持久版本或保存通道。见 [完整记录](validation/full-regression-20261024/summary.json)。
@@ -45,24 +46,17 @@
 
 2026-10-23：分水器可选 manifoldLengths={upper,lower} 保存独立上下排主管长度，产品核心派生最大长度外包并校验 w 一致性；旧缺失读取原几何、首次编辑才物化。生产模型用相切圆弧网格及分段实体记录器共用转角；两项长度进入三维／实体缓存、空间确认与采购分组，确认语义加入 manifold-curved-elbows-v2。无新脚本或保存通道，见 [分水器](HEATING-MANIFOLD.md)。
 
-
 2026-10-23：预览余量标注的就地输入通过 actions.hatchMargin 转发柜体核心 editPegboardHatchMargin；自动模式重适配，手动模式保持对边。柜体保存先提交未完成输入，沿原 read／refresh／mutate，无新字段或加载脚本。见 [点击余量编辑](ENTRY-PEGBOARD-CABINET.md#点击预览余量直接编辑2026-10-23)。
-
 
 2026-10-23：`manifold-model.js` 提供分水器生产／独立预览及实体记录器共用构造器，产品核心集中路数范围、右排宽与左长编辑。可选 manifoldLoops 和既有 w／d／h／mountHeight 沿原恢复、项目与 mutate 链路；路数覆盖实体／三维缓存、空间确认及采购分组。普通脚本在主场景前加载，HTTP 和断网 file:// 专项通过，无新格式或保存通道。见 [分水器](HEATING-MANIFOLD.md)。
 
-
 2026-10-23：柜体核心 pegboardHatchAlignment 派生电箱投影、关闭检修口及四边实测／设定余量；cabinet-preview 复用原相机、SVG 轮廓和尺寸开关。编辑器 input 更新生产草稿预览，保存仍为一次 mutate；无新字段、加载脚本或缓存输入。见 [预览对齐](ENTRY-PEGBOARD-CABINET.md#三维预览的电箱对齐标注2026-10-23)。
-
 
 2026-10-23：检修盖板可选 padding={top,bottom,left,right}，产品核心集中方向／默认／范围，柜体核心统一严格读取。适配、自动同步和恢复共用已保存四边余量，旧缺失各 10 mm 且不补写。沿完整 cabinet 缓存／确认和原保存历史，无新加载脚本。见 [四边余量](ENTRY-PEGBOARD-CABINET.md#自动适配的四边独立余量2026-10-23)。
 
-
 2026-10-23：检修盖板可选 mode=manual/auto，柜体核心集中模式校验、同步及失配核对。应用 commit 保存前、work-state 恢复后调用 normalizePegboardHatches，电箱和盖板为同一历史事务；失配保留有效几何并进入项目 pending 检查。旧缺失为手动，无 ID 绑定、额外保存或新加载脚本。见 [自动／手动](ENTRY-PEGBOARD-CABINET.md#检修盖板自动手动模式2026-10-23)。
 
-
 2026-10-23：柜体核心新增洞洞板电箱投影适配和统一孔阵，规则集中在 pegboardAssembly；可选 columns[].pegboardHoles 沿原完整 cabinet 保存／缓存，空间确认忽略普通圆孔配置。固定板生产 Shape 含矩形检修孔，cabinet-motion 直接读取矩形孔派生四片板件；无新增加载脚本。见 [电箱适配与孔阵](ENTRY-PEGBOARD-CABINET.md#按后方电箱适配与可调孔阵2026-10-23)。
-
 
 2026-10-23：玄关洞洞板局部检修盖板使用可选 `cabinet.columns[].pegboardHatch`，产品核心集中范围，柜体核心共用局部区域、校验及包含板厚的扫掠。生产柜体分割静板并记录穿孔运动盖板，沿现有 solidParts／开启／预览／主场景及完整 cabinet 缓存与存储链路；没有新加载脚本或顶层字段。见 [洞洞板检修盖板](ENTRY-PEGBOARD-CABINET.md#电箱前的局部检修盖板2026-10-23)。
 
@@ -90,15 +84,11 @@
 
 2026-10-20：洞洞板置物板、挂钩和灯带由 cabinet-core.pegboardParts 共用单项／旧总开关回退规则，生产构造器分别生成三组实体；原 pegboardPlacement 继续平移全部保留子节点。UI 七项控制沿原草稿／mutate 保存，未编辑旧数据不物化新项；无新脚本或加载／格式变化。见 [独立附件](ENTRY-PEGBOARD-CABINET.md#置物板挂钩灯带独立开关2026-10-20)。
 
-
 2026-10-20：洞洞板独立离地能力由柜体核心 movablePegboard 共用判定（上柜／左右封板／下柜已移除，附件可保留）；原生产构造器平移全部保留子节点，预览与主场景／板件／外包继续共用 pegboardPlacement。无新保存通道或字段，确认升级为 pegboard-envelope-v3-accessory-height。见 [带附件离地](ENTRY-PEGBOARD-CABINET.md#洞洞板与保留附件共同调高2026-10-20)。
-
 
 2026-10-20：纯洞洞板可选 cabinet.pegboardBottom 由产品核心定义范围，柜体核心 pegboardPlacement 派生相对原构造位置的平移；生产构造器平移板件子节点，避免主场景重新定位根组时丢失高度。板件记录、实际外包、碰撞和尺寸预览复用此结果，原 mutate／缓存／项目链路保留，无新增脚本或加载变化。见 [纯板离地](ENTRY-PEGBOARD-CABINET.md#纯洞洞板独立离地高度2026-10-20)。
 
-
 2026-10-20：洞洞板部件删除后的整体尺寸统一由 cabinet-core.assemblyBounds() 从生产柜体毫米板件记录派生；产品核心 dimensions／planBodyOutline／vertical 共用，普通柜体预览、属性、平面占地及尺寸标注消费同一边界。原构造参数仅供重建，派生尺寸不反向物化或增加迁移；含删部件方案的确认增加 pegboard-envelope-v2。见 [实际尺寸](ENTRY-PEGBOARD-CABINET.md#剩余实体尺寸联动2026-10-20-复验)。
-
 
 2026-10-20：柜体与厨房编辑器共用 `cabinetObjectHeader()` 生成临时两级部件查找和唯一对象标题；选中部件的常用字段与高级组设置分开。生产预览 `activateDoor` 转发真实门板点击到原核心开合，尺寸标签仍只选择，分边预览共用回调。宽屏／内容尺寸仅影响布局；无新字段、版本或加载／保存通道。见 [柜体简化](CABINET-DESIGN.md)。
 
@@ -122,11 +112,9 @@
 
 2026-10-20：茶台生产模型补充静态茶具与储物罐，h 仍为柜体高；`product-rules.types.tea_table_800.teaTable` 定义720 mm柜体／897 mm含陈设默认包络，`vertical()` 派生比例总高。无新持久字段，`tea-table-accessories-v1` 只对含本型号的空间确认升级语义。见 [茶台模型](TEA-TABLE-800.md)。
 
-
 2026-10-20：柜体普通缩放与详细设计共用 `cabinet-core.scaleStructure()`，保持分区并按比例分配普通净宽；数值净宽与生产隔板操作共用 `adjustColumnWidth()`。重分隔间 `repartition()` 和保留隔间配门 `fitDoors()` 为独立草稿操作，旧自动偏好不再触发隐式重排。表单直接生成所属页面／结构分组，删除控件选择器推断分类。无新持久字段或加载变化，见 [柜体操作契约](CABINET-DESIGN.md#尺寸与显式设计操作2026-10-20)。
 
 2026-10-20：新增 `tea-table-model.js` 供静态藤编移动茶台生产 3D 与独立预览共用，目录 800 × 400 mm、产品核心默认高 720 mm（含脚轮与挡边）；无新持久字段。2D、原尺寸编辑／保存恢复和缓存复用既有链路。见 [茶台模型](TEA-TABLE-800.md)。
-
 
 2026-10-20：茶吧机上下柜门与内部结构沿生产构造器实现，`product-rules` 共用门轴、100° 估算角度、当前投影及完整开启范围；可选 `teaBarUpperOpen/teaBarLowerOpen` 进入原属性 / mutate、保存恢复、缓存和空间核对。内胆 / 杯架与水桶可由独立柜门露出，见 [茶吧机](TEA-BAR-MIJIA-PRO.md)。
 
@@ -135,7 +123,6 @@
 2026-10-19：本地服务启动通过 `server-runtime.cjs` 对入口及递归静态相对 require 依赖生成内容指纹，覆盖延迟加载的后端校验。`serve.cjs` 提供同源实例信息与带实例令牌的重启接口；重复启动只复用相同真实目录及相同指纹的服务，代码变化时请求原进程排空连接并关闭，由新启动进程接管端口。磁盘设计、缓存及独立 UI 文件不进入后端指纹。旧版无控制接口的服务须先停止一次，不猜测或强杀端口进程。
 
 2026-10-19：新增 `pet-feeder-model.js`，生产 3D、独立预览共用静态米家喂食器 2 构造器，目录与产品核心给出 220 × 324 × 370 mm（总深含食盆）。2D、属性高度及原保存/撤销链路同步，无新持久字段。见 [喂食器模型](PET-FEEDER-MIJIA-2.md)。
-
 
 2026-10-19：`layers-core.js` 共用命名图层、隐式 0 层、稳定物体分配与层锁；`observation-layers.js` 提供管理表和生产 2D／3D 可见性适配。可选 work.objectLayers 沿原 mutate／历史／保存，含图层使用外层 v15 与独立缓存。层锁与单件锁叠加，归一化前后保护编辑；显隐不改空间输入、几何缓存或确认。数据、复制与成果输出契约见 [物体图层](OBJECT-LAYERS.md)。
 
@@ -273,7 +260,6 @@
 
 U 形画布增加三边独立手柄，并保留原外包宽／深／角点手柄：`kitchen-core.runHandles()` 提供生产局部坐标，`resizeRun()` 只改目标末端模块，`snapping.resizeKitchenRun()` 做旋转／镜像投影、相对网格及有限墙面吸附。独立边 UI 沿用原指针快照／commit，固定首转角，不做整组推离；连接边变化仅平移回折边。独立边长能力为 `counter.kitchenShapes.U.independentResize`。U 形四条外框边共用 `outerEdge()`／`resizeOuter()` 与 `snapping.resizeKitchenOuter()`，整边抓取，固定对侧和内侧；背边只改对应一排柜深，开口边只改长边末端柜宽。可选 `kitchen.runDepths` 缺失时沿用原 depth，生产模型、矩形盲角展开、设备及空间检查共用每排深度，详见 [四边与柜深](KITCHEN-DESIGN.md#u-形外框四边与独立柜深2026-10-15)。旧 `resize()` 仍供整体尺寸兼容调用。见 [三边手柄](KITCHEN-DESIGN.md#u-形三边独立拉伸手柄2026-10-15)。
 
-
 Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` 的兼容性是拆分代码时的约束；三维场景协调与 Three.js 的 data-URL import map 继续保留在入口中。
 
 ## 生产模型与预览入口（分两批，2026-10-16）
@@ -374,7 +360,6 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-14：`src/io/image-export.js` 的 `preparePlanSVG()` 是 PNG、成果 SVG 和打印共用的清理／定字号／内容范围路径。PNG 使用当前可见图层，成果使用浅色完整图层；去除所有 `[data-edit-overlay]` 及临时定位图层。`drawing-core.rasterSize()` 限制栅格单边和总像素，不限制矢量 SVG。
 2026-10-14：`drawing-core.furnitureLabels()` 在显示坐标下计算最多两行家具名称、字号、冲突筛选及内部位置；毫米模型坐标不变。`plan-renderer` 缓存派生结果，`refreshFurnitureLabels()` 只更新文字并在相同排版下跳过 DOM 更新，选择／缩放和 `preparePlanSVG()` 共用接口。完整名称留在根 title、属性和成果表格。
 
-
 2026-10-15：模块地柜抽屉可选 `drawerStyle: dish-basket`。产品能力定义三层下限，厨房核心共用样式、层高及内外抽开合联动，生产柜体列派生两块外面板与三层篮架；外部分界和相邻吸附排除隐藏内抽分界。保存仍走编辑器草稿／mutate，完整 kitchen 进入原缓存与核对签名。见 [碗碟篮](KITCHEN-DESIGN.md#碗碟篮两块外面板与三层内部抽篮2026-10-15)。
 
 2026-10-16：`floor-finish-core.js` 统一功能区地面层厚、目标／参考标高及原图直铺网格；`effectivePlan()` 在墙面完成面后派生地面，`floor-finish-model.js` 提供生产层厚实体与同基准 UV。属性通过原 mutate 编辑，空间核对只读取标高与区域几何，纯排版不清确认。新文件外层版本 3，含地面设置后使用独立 v3 缓存，旧项目无设置时保持。见 [地面数据契约](FLOOR-FINISHES.md)。
@@ -385,20 +370,15 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 
 2026-10-16：区域列表可打开全屋统一起铺点浮动表单，与单区域共用 bindOriginPicker。floor-finish-core.setLayoutBasis 只批量写现有 layout.origin／可选 angle，保持其它设置及开关；旧区域预设以 enabled:false 保存，不建立全局字段或隐式关联。一次 mutate 完成批量应用，仍可逐区独立修改。见 [统一起铺点](FLOOR-FINISHES.md#全区域统一起铺点)。
 
-
 2026-10-18：墙地自动对缝使用 wallTiling.surfaces[].followFloor 可选布尔字段，由 wall-tiling-core 派生有效布局，不改写地面编辑的状态与历史。墙砖派生缓存包含完整 floorFinishes 输入；2D立面／SVG／3D共用 elevation。新语义项目／工作区外层v7与huxing-design-v7缓存，旧记录缺字段保持手动，具体契约见 WALL-TILING.md。
-
 
 2026-10-18：可选work.furnitureDatum由产品核心floorBase统一派生完成地面基准；新建为finished-floor、旧缺失保留survey。生产家具根组加一次偏移，世界实体／开启／梁吊顶／安装预留及切孔同步，原高度字段不累计。版本10与独立v10缓存保留旧项目／缓存读取。墙面枚举共用区域内编号，三维编号点击原单墙编辑，批量墙层厚复用wallFinishes；详情见FLOOR-FINISHES.md与WALL-TILING.md。
 
-
 2026-10-20：产品规则 `planBodyOutline/planOutline` 为显式登记的美的空调提供基体截面与含突出部的凸投影；布局核心统一旋转镜像，选择／距离／吸附／实体与梁检查／占地共用轮廓，其它类型矩形回退。曲线采样点不作为角点磁吸。无新增持久字段或加载变化，含该型号的核对使用 `product-plan-shapes-v1`；详见 [模型边界](AIRCON-MIDEA-ULTRA.md#2026-10-20-旋转边界与净距修正)。
-
 
 2026-10-20：`cabinet-motion.js` 扩展已有生产构造器记录器到静板与当前运动板，`solidParts/section/verticalSection` 供 `layout-geometry.bodyParts()`、四向测距与柜内定位共用。普通柜和厨房模块的设备空腔按实际板件判断，浮动净距补上下距离及负值穿板。原运动切孔 API、加载顺序和项目字段不变；确认增加 `cabinet-inner-solids-v1` 并读取普通柜有效默认结构，纯配色不清确认。厨房自动避让保留整体占位，梁命中按家具／梁去重；兼容与精度边界见 [柜内实际板件净距](CABINET-DESIGN.md#柜内设备与实际板件净距2026-10-20)。
 
 2026-10-20：产品核心集中旧柜结构参数，cabinet-core.legacyParts() 派生实际柜体；生产构造器与 cabinet-motion 共用，旧 counter／vanity 记录不物化新字段。见 [旧柜体升级](LEGACY-CABINET-UPGRADE.md)。
-
 
 2026-10-20：柜体核心 moduleLayout/moduleWidths/adjustModuleWidth 将旧 columns[].width 净空存储映射到模块外宽，普通柜设计器与生产预览共用；共用隔板按中心线分配，厨房父模块继续原外宽。无新字段、加载顺序或保存通道；具体参数及兼容性见 [模块外宽](CABINET-DESIGN.md#模块外宽统一入口2026-10-20)。
 

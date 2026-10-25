@@ -1,0 +1,57 @@
+C:\Users\SPH\Documents\GitHub\Furnish\output\playwright\verification-xdEs90\workspace 迁移 #\output\telescopic\preview.html
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "combinations": [
+      "3-2",
+      "2-2",
+      "3-3"
+    ],
+    "continuousRailProjection": true,
+    "currentKitchenVisual": false,
+    "readOnlySnapshot": false,
+    "independentAnimation": true,
+    "railJoins": true,
+    "rectangularLeaves": true,
+    "trackOrder": true,
+    "copy": true,
+    "undoRedo": true,
+    "planPositions": true,
+    "mixedFloorTrack": true,
+    "catalog": true,
+    "heightUndoRedo": true,
+    "refresh": true,
+    "neighborInvalidation": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "combinations": [
+      "3-2",
+      "2-2",
+      "3-3"
+    ],
+    "continuousRailProjection": true,
+    "currentKitchenVisual": false,
+    "readOnlySnapshot": false,
+    "independentAnimation": true,
+    "railJoins": true,
+    "rectangularLeaves": true,
+    "trackOrder": true,
+    "copy": true,
+    "undoRedo": true,
+    "planPositions": true,
+    "mixedFloorTrack": true,
+    "catalog": true,
+    "heightUndoRedo": true,
+    "refresh": true,
+    "neighborInvalidation": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  }
+]

@@ -1,0 +1,55 @@
+{
+  "source": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\verification-xdEs90\\workspace 迁移 #\\tests\\fixtures\\browser\\1601-source.dxf",
+  "sha256": "34641bffa1c645a76acc2997098313b48bb65920d8114c9c53565dedf3e7267b",
+  "mergedArea": 15.25,
+  "net": 70.25202300000001,
+  "coverageDifferenceMM2": 0.0008494984358549118,
+  "regions": [
+    {
+      "name": "起居区",
+      "id": "area_fmv2lp4ab47",
+      "area": 3.494251380780237
+    },
+    {
+      "name": "阅读区",
+      "id": "area_fmv2lp4ab48",
+      "area": 3.289249198654149
+    },
+    {
+      "name": "餐厅",
+      "id": "area_dining",
+      "area": 8.466499419873143
+    }
+  ],
+  "retained": {
+    "name": "起居区",
+    "use": "study",
+    "mat": "marble"
+  },
+  "hole": {
+    "area": 13.55555555364444,
+    "islandArea": 1.694444446355557,
+    "rings": 2
+  },
+  "counts": {
+    "wallCenterlines": 47,
+    "wallBands": 37,
+    "windows": 7,
+    "beams": 2,
+    "markers": 3
+  },
+  "checks": [
+    "latest DXF GUI import run separately",
+    "dynamic IDs by name",
+    "three-region real preview",
+    "independent name/use/material sources",
+    "preview state unchanged and safe cancel",
+    "atomic undo/redo",
+    "unchanged other regions and structure",
+    "save refresh export Blob and fresh-context deep equality",
+    "later property-panel material survives editor save refresh and fresh import",
+    "four-region hole preview on labelled real-drawing fixture",
+    "island retained; hole save refresh and fresh import"
+  ],
+  "errors": []
+}

@@ -1,0 +1,1 @@
+{"case":"kitchen-shelves","status":"PASS","result":{"status":"PASS","doorCornerShelves":2,"sinkCornerShelves":2,"otherAndThinShelves":4,"checks":"production corner shelves independent of sink, local left/right partition checkboxes and actual side boards, fitted depth, three unfolded views, cancel, save, single undo/redo, refresh, 390px and real project roundtrip","errors":[]}}

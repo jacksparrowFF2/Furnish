@@ -1,0 +1,1 @@
+{"case":"kitchen-wall-anchor","status":"PASS","result":{"status":"PASS","result":{"cx":7318,"cy":9304,"depth":599.5,"overlap":false},"checks":"real drag release, flue fit, exact input, undo/redo and refresh","errors":[]}}

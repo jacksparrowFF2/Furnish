@@ -1,0 +1,6 @@
+Error: http: current project export v16
+    at check (eval at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:22:16), <anonymous>:9:87)
+    at eval (eval at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:22:16), <anonymous>:38:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)

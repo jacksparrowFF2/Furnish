@@ -1,0 +1,1 @@
+{"case":"appliance-module-boundaries","status":"PASS","result":[{"mode":"http","passed":true,"sinkAndHob":true,"localModules":true,"adjoiningWalls":true,"demolitionUndoRedo":true,"windowAndDistantWall":true,"errors":[]},{"mode":"file","passed":true,"sinkAndHob":true,"localModules":true,"adjoiningWalls":true,"demolitionUndoRedo":true,"windowAndDistantWall":true,"errors":[]}]}

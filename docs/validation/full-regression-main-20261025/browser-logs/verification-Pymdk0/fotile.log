@@ -1,0 +1,1 @@
+{"case":"fotile","status":"PASS","result":[{"mode":"file","status":"PASS","errors":[]},{"mode":"http","status":"PASS","errors":[]},{"preview":"hob","status":"PASS","appliances":1},{"preview":"hood","status":"PASS","appliances":1}]}

@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "planId": "custom_mv37igji",
+  "furniture": 65,
+  "sourceSha256": "10cbf8bdb47c5e81cd9516c7219d40a6536bd3191ed0809afba90197c8525981",
+  "workspaceUnchanged": true,
+  "publish": {
+    "protocol": 3,
+    "revision": "7c2f86528284f54d7aa5efa72a45609aae61f35d6d776efdc21e1b62a1c15490",
+    "planId": "custom_mv37igji",
+    "plan": "1601",
+    "originMm": [
+      5450,
+      5500
+    ],
+    "bytes": 85350916,
+    "objects": 4525,
+    "created": "2026-10-25T14:28:05.169Z"
+  },
+  "results": [
+    {
+      "mode": "http",
+      "passed": true,
+      "meshes": 4525,
+      "invalid": [],
+      "modelErrors": [],
+      "reloadNoDrift": true,
+      "narrow": true,
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "meshes": 4525,
+      "invalid": [],
+      "modelErrors": [],
+      "reloadNoDrift": true,
+      "narrow": true,
+      "errors": []
+    }
+  ]
+}

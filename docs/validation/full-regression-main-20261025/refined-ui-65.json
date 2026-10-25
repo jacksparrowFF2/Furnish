@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "job": {
+    "id": "0544cccc-d442-4955-b885-2a8d0ed467fa",
+    "state": "done",
+    "message": "渲染完成 · OPTIX",
+    "width": 960,
+    "height": 720,
+    "quality": "preview",
+    "device": "auto",
+    "source": "refined",
+    "camera": "active",
+    "renderInfo": {
+      "source": "refined",
+      "cameraMode": "active",
+      "camera": "1601固定机位 | 01-客厅",
+      "world": "Study | daylight sky",
+      "existingMaterialBindingsPreserved": 4525,
+      "existingManagedMeshes": 4525,
+      "lightsPreserved": 8,
+      "sync": {
+        "added": 0,
+        "updated": 4525,
+        "deleted": 0,
+        "adopted": 0,
+        "matchedByPartKey": 4525,
+        "migratedPartKeys": 0,
+        "revision": "7b74a807d83865cb62e2f3eb58c65cd18de0ea2a26315592e511b904f18fab5a",
+        "cleanupWarnings": []
+      },
+      "samples": 32,
+      "exposure": -0.75,
+      "viewTransform": "AgX",
+      "resolution": [
+        960,
+        720
+      ]
+    },
+    "renderDevice": {
+      "requested": "auto",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "created": "2026-10-25T14:41:47.515Z",
+    "image": "/api/furnish/blender/jobs/0544cccc-d442-4955-b885-2a8d0ed467fa/image",
+    "blend": "/api/furnish/blender/jobs/0544cccc-d442-4955-b885-2a8d0ed467fa/blend",
+    "scene": "/api/furnish/blender/jobs/0544cccc-d442-4955-b885-2a8d0ed467fa/scene"
+  },
+  "workspaceSource": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\saved-workspace-QB75Or\\workspace 迁移 #\\projects\\workspace.furnish.json",
+  "workspaceSha256": "10cbf8bdb47c5e81cd9516c7219d40a6536bd3191ed0809afba90197c8525981",
+  "templateSource": "D:\\1601装修\\渲染\\全量回归-20261025\\1601-最新方案精修副本-65件.blend",
+  "templateSha256": "fc5e98a11f786121adf1039f17338d83a014e16b7bfca16c17ae093d32f1daae",
+  "templateUnchanged": true,
+  "workspaceUnchanged": true,
+  "reopen": true,
+  "narrowScreen": true,
+  "errors": []
+}

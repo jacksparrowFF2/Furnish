@@ -1,0 +1,1 @@
+{"case":"workflow-reimport","status":"PASS","result":[{"mode":"HTTP startup with external requests blocked; offline editing/import/3D after load","fullProjectReimport":true,"undoRedo":true,"reload":true,"repeatImport":true,"externalRequests":[],"pageErrors":[]}]}

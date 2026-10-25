@@ -1,0 +1,6 @@
+C:\Users\SPH\Documents\GitHub\Furnish\output\playwright\verification-LZC4bj\workspace 迁移 #\output\manifold-kitchen\preview.html
+page.waitForFunction: Timeout 30000ms exceeded.
+    at C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify\verify-manifold-kitchen.cjs:12:76 {
+  log: [],
+  name: 'TimeoutError'
+}

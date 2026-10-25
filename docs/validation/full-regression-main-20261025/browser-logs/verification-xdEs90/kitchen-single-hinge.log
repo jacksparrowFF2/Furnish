@@ -1,0 +1,1 @@
+{"case":"kitchen-single-hinge","status":"PASS","result":{"status":"PASS","checks":["wall independent hinge","cancel","save","undo redo","refresh","project download upload","nested editor","390 px","base independent hinge"],"errors":[]}}

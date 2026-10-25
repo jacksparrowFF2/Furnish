@@ -1,0 +1,6 @@
+after-http timing complete
+after-http numerical checks complete
+after-http [{"name":"pan-unselected","mean":4.01,"p95":4.9},{"name":"pan-selected","mean":5.68,"p95":8.7},{"name":"zoom-selected","mean":11.85,"p95":17.8},{"name":"drag-work-selected","mean":30.15,"p95":35.7},{"name":"renderAll","mean":664.23,"p95":723.7}]
+after-file timing complete
+after-file numerical checks complete
+after-file [{"name":"pan-unselected","mean":4.07,"p95":4.9},{"name":"pan-selected","mean":8.31,"p95":10.8},{"name":"zoom-selected","mean":11.7,"p95":19.1},{"name":"drag-work-selected","mean":29.91,"p95":39.4},{"name":"renderAll","mean":639.35,"p95":653.7}]

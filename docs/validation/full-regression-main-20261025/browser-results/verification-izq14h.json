@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "scene-clearances"
+  ],
+  "results": [
+    {
+      "name": "scene-clearances",
+      "status": "PASS",
+      "seconds": 74,
+      "log": "scene-clearances.log"
+    }
+  ],
+  "notRun": []
+}

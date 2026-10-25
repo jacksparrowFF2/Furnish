@@ -1,0 +1,5 @@
+Error: numeric positioning inside actual cavity
+    at check (eval at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:22:16), <anonymous>:7:88)
+    at eval (eval at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:22:16), <anonymous>:20:169)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)

@@ -1,0 +1,1 @@
+{"case":"directional-kitchen-solids","status":"PASS","result":[{"mode":"http","passed":true,"baseline":{"l":100,"r":100,"t":2225,"b":2225}},{"mode":"file","passed":true,"baseline":{"l":100,"r":100,"t":2225,"b":2225}}]}
