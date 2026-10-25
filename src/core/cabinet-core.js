@@ -648,9 +648,11 @@
  }
  function clipOpening(poly,axis,edge,above){const out=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],ai=above?a[axis]>=edge:a[axis]<=edge,bi=above?b[axis]>=edge:b[axis]<=edge;if(ai)out.push(a);if(ai!==bi){const k=(edge-a[axis])/(b[axis]-a[axis]);out.push(a.map((v,j)=>v+k*(b[j]-v)));}}return out;}
  function openingIntersects(zone,poly,vertical,intersects){
+  // Disjoint known heights cannot intersect, regardless of the XY sweep.
+  // Unknown heights still use the exact planar check and remain pending.
+  if(vertical&&!zone.ranges.some(([bottom,top])=>Math.min(top,vertical.top)-Math.max(bottom,vertical.bottom)>1e-6))return false;
   if(!intersects(zone.poly,poly))return false;
   if(!vertical)return true; // Caller labels missing height as pending verification.
-  if(!zone.ranges.some(([bottom,top])=>Math.min(top,vertical.top)-Math.max(bottom,vertical.bottom)>1e-6))return false;
   if(!zone.sweep)return true;
   const s=zone.sweep,a=s.rot*Math.PI/180,co=Math.cos(a),si=Math.sin(a);
   let footprint=poly.map(([x,y])=>{x-=s.cx;y-=s.cy;return [(x*co+y*si)*(s.flip?-1:1),-x*si+y*co];});

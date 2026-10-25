@@ -1,0 +1,98 @@
+[
+  {
+    "test": "polygon-intersection-parity",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS: 2000 rotated/mirrored SAT pairs, exact 5 mm boundary, repeated vertices and known/unknown opening heights\n"
+  },
+  {
+    "test": "project",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS Survey preserves existing openings before structure confirmation\nPASS Old projects migrate to locked structures\nPASS Design rejects changes to the confirmed original bearing structure\nPASS Exterior walls are locked after confirmation\nPASS Real partition demolition merges rooms and updates area\nPASS Moving a partition changes both room areas while preserving bearing walls\nPASS Room materials follow spatial overlap after demolition\nPASS Automatic construction quantities update without overwriting manual values\nPASS Paint deductions use door height rather than wall thickness\nPASS Project backup roundtrip preserves baseline, designs, costs and catalog\nPASS Corrupt and future backups fail before import\nPASS Legacy plan JSON migrates to the portable project format\nPASS Spatial checks detect a blocked door swing\nPASS Cabinet front clearance rotates with the furniture\nPASS OBJ supports triangulation and negative indices\nPASS Overlapping door swings and swing-wall collisions are reported\nPASS Flat, non-finite and empty imported meshes are rejected before restoration\nPASS Backup preserves raw attachments and rejects malformed attachment data\nPASS Interior door deducts both painted wall faces\nPASS Retained openings keep sill heights and swing overrides after IDs reindex\n20 product roadmap regression checks passed\n"
+  },
+  {
+    "test": "cabinet-opening-3d",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations\n"
+  },
+  {
+    "test": "cabinet-opening-volume-model",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes\n"
+  },
+  {
+    "test": "pipe-collisions",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS pipe entities, drawer range, tangent, vertical separation, position/diameter confirmation invalidation, production holes, edge notches, rotation/mirror and moving cut parts\n"
+  },
+  {
+    "test": "cabinet-interior-distances",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS cabinet interiors: six directions, signed penetration, placement, shelves, unknowns, generic devices, mixed-height groups, open doors, straight/L/U transforms, project/restore, 1260 production boards and 960 height-clipped door rays\n"
+  },
+  {
+    "test": "directional-kitchen-solids",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS kitchen solid directional gaps: empty bay, slab height thresholds, rotation/mirror, unknown heights, groups, numeric positioning and repeated project restore\n"
+  },
+  {
+    "test": "kitchen-auto-avoid",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS automatic rear thinning and real stone notches, front datum, heights, limits, rotation/mirror, protected devices/drawers, restoration and all production edge styles\n"
+  },
+  {
+    "test": "project-recovery",
+    "mode": "after",
+    "status": 0,
+    "output": "Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed\n"
+  },
+  {
+    "test": "dishwasher-clearances",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS dishwasher side / overhead / full opening / support conditions, exact thresholds, unknown heights, rotations/mirrors, real modules/holes, project focus/review and production moving vertices\n"
+  },
+  {
+    "test": "cut-board-motion",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS continuous cut-board motion: no phantom notch/removed-board hits, intermediate-only door/lift hits, rotation/mirror, 335 production board bounds and 4 actual cut-solid rays\n"
+  },
+  {
+    "test": "furniture-recovery",
+    "mode": "after",
+    "status": 0,
+    "output": "PASS broken furniture retention, explicit immutable repairs, project roundtrip and actual kitchen pointer resize\nPASS actual 3D constructor failure isolation, placeholders, healthy cache retention and real downlight toggles\n"
+  },
+  {
+    "test": "beam-heights",
+    "mode": "after",
+    "status": 1,
+    "output": "PASS beam heights: absolute units, atomic validation, clearing, legacy unknown, known doors/drawers/lift sweep, face contact, locked baseline and named backup\nevalmachine.<anonymous>:1\nJSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.furniture.filter(f=>FurnishDesign.products().definition(f)?.downlight&&!f.obj).map(f=>[f.id,f.cx,f.cy,f.w,f.d,f.h,f.mountHeight]),state.furnitureDatum,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout,typeof FurnishWallFinish==='undefined'?[]:FurnishWallFinish.serviceOpenings(PLAN,state),typeof FurnishElectricalBox==='undefined'?[]:FurnishElectricalBox.cuts(FurnishProject.effectivePlan(PLAN,state),state.furniture)])\n                                                                                                                         ^\n\nTypeError: Cannot read properties of undefined (reading 'filter')\n    at evalmachine.<anonymous>:1:122\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\tests\\test-beam-heights.cjs:46:28\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n"
+  },
+  {
+    "test": "floor-finishes",
+    "mode": "after",
+    "status": 1,
+    "output": "node:assert:152\r\n  throw new AssertionError(obj);\r\n  ^\r\n\r\nAssertionError [ERR_ASSERTION]: Missing expected exception.\r\n    at Object.<anonymous> (C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\tests\\test-floor-finishes.cjs:37:252)\r\n    at Module._compile (node:internal/modules/cjs/loader:1929:14)\r\n    at Object..js (node:internal/modules/cjs/loader:2060:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1651:32)\r\n    at Module._load (node:internal/modules/cjs/loader:1443:12)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: undefined,\r\n  expected: undefined,\r\n  operator: 'throws',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v24.20.0\r\n"
+  },
+  {
+    "test": "beam-heights",
+    "mode": "before",
+    "status": 1,
+    "output": "PASS beam heights: absolute units, atomic validation, clearing, legacy unknown, known doors/drawers/lift sweep, face contact, locked baseline and named backup\nevalmachine.<anonymous>:1\nJSON.stringify([state.rooms, state.demolished, state.open, PLAN.beams, opt.cut,opt.lamps,H, PLAN.markers,state.furniture.filter(f=>FurnishDesign.products().definition(f)?.downlight&&!f.obj).map(f=>[f.id,f.cx,f.cy,f.w,f.d,f.h,f.mountHeight]),state.furnitureDatum,state.wallFinishes,state.floorFinishes,state.wallTiling,state.ceilings,state.tileGrout,typeof FurnishWallFinish==='undefined'?[]:FurnishWallFinish.serviceOpenings(PLAN,state),typeof FurnishElectricalBox==='undefined'?[]:FurnishElectricalBox.cuts(FurnishProject.effectivePlan(PLAN,state),state.furniture)])\n                                                                                                                         ^\n\nTypeError: Cannot read properties of undefined (reading 'filter')\n    at evalmachine.<anonymous>:1:122\n    at Script.runInContext (node:vm:149:12)\n    at Object.runInContext (node:vm:301:6)\n    at C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\tests\\test-beam-heights.cjs:46:28\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n"
+  },
+  {
+    "test": "floor-finishes",
+    "mode": "before",
+    "status": 1,
+    "output": "node:assert:152\r\n  throw new AssertionError(obj);\r\n  ^\r\n\r\nAssertionError [ERR_ASSERTION]: Missing expected exception.\r\n    at Object.<anonymous> (C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\tests\\test-floor-finishes.cjs:37:252)\r\n    at Module._compile (node:internal/modules/cjs/loader:1929:14)\r\n    at node:internal/modules/cjs/loader:2060:10\r\n    at M._extensions..js ([eval]:1:354)\r\n    at Module.load (node:internal/modules/cjs/loader:1651:32)\r\n    at Module._load (node:internal/modules/cjs/loader:1443:12)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\r\n    at Module.require (node:internal/modules/cjs/loader:1674:12)\r\n    at require (node:internal/modules/helpers:157:16)\r\n    at [eval]:1:365 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: undefined,\r\n  expected: undefined,\r\n  operator: 'throws',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v24.20.0\r\n"
+  }
+]

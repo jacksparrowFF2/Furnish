@@ -1,0 +1,111 @@
+{
+  "workspaceSha256": "c8ad68d07f52d3005802b8efbc440e55c78786dba6635c91638642b82c849ca9",
+  "exactNumericalParity": true,
+  "results": [
+    {
+      "mode": "before-http",
+      "id": "fmv3w361v2",
+      "name": "1601",
+      "count": 65,
+      "rows": [
+        {
+          "field": "w",
+          "times": [
+            2061.7999999970198,
+            2019.5,
+            2035.2999999970198,
+            2116.1000000089407
+          ],
+          "mean": 2058.175000000745
+        },
+        {
+          "field": "cx",
+          "times": [
+            2050.3999999910593,
+            2043.4000000059605,
+            2026.8999999910593,
+            2009.7999999970198
+          ],
+          "mean": 2032.6249999962747
+        }
+      ],
+      "answerSha256": "6150b2d9a271426a271f81799ec0ab288a2cdc7a4c9bf2ca8b3679680bbc24ea",
+      "sizeForm": true,
+      "distanceDialog": true,
+      "undoRedo": true,
+      "refresh": true,
+      "projectRoundtrip": true,
+      "errors": []
+    },
+    {
+      "mode": "after-http",
+      "id": "fmv3w361v2",
+      "name": "1601",
+      "count": 65,
+      "rows": [
+        {
+          "field": "w",
+          "times": [
+            620,
+            786.5999999940395,
+            865.1000000089407,
+            857
+          ],
+          "mean": 782.1750000007451
+        },
+        {
+          "field": "cx",
+          "times": [
+            824.7000000029802,
+            782.6999999880791,
+            837.8000000119209,
+            868.8999999910593
+          ],
+          "mean": 828.5249999985099
+        }
+      ],
+      "answerSha256": "6150b2d9a271426a271f81799ec0ab288a2cdc7a4c9bf2ca8b3679680bbc24ea",
+      "sizeForm": true,
+      "distanceDialog": true,
+      "undoRedo": true,
+      "refresh": true,
+      "projectRoundtrip": true,
+      "errors": []
+    },
+    {
+      "mode": "after-file",
+      "id": "fmv3w361v2",
+      "name": "1601",
+      "count": 65,
+      "rows": [
+        {
+          "field": "w",
+          "times": [
+            875.5,
+            880.2000000029802,
+            980.5,
+            877.7999999970198
+          ],
+          "mean": 903.5
+        },
+        {
+          "field": "cx",
+          "times": [
+            830.2000000029802,
+            850,
+            859.2000000029802,
+            980.7999999970198
+          ],
+          "mean": 880.0500000007451
+        }
+      ],
+      "answerSha256": "6150b2d9a271426a271f81799ec0ab288a2cdc7a4c9bf2ca8b3679680bbc24ea",
+      "sizeForm": true,
+      "distanceDialog": true,
+      "undoRedo": true,
+      "refresh": true,
+      "projectRoundtrip": true,
+      "errors": []
+    }
+  ]
+}

@@ -250,7 +250,24 @@
   let outside=0;for(let i=0;i<xx.length-1;i++)for(let j=0;j<yy.length-1;j++){if(rooms.some(r=>inside([(xx[i]+xx[i+1])/2,(yy[j]+yy[j+1])/2],r.poly)))continue;let piece=footprint;for(const [axis,edge,sign] of [[0,xx[i],1],[0,xx[i+1],-1],[1,yy[j],1],[1,yy[j+1],-1]])piece=clip(piece,axis,edge,sign);if(piece.length>2)outside+=area(piece)*1e6;if(outside>1)return false;}return true;
  }
  const rect=r=>[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]];
- function intersects(A,B){for(const axis of [0,1])if(Math.max(...A.map(p=>p[axis]))<=Math.min(...B.map(p=>p[axis]))||Math.max(...B.map(p=>p[axis]))<=Math.min(...A.map(p=>p[axis])))return false;for(const P of [A,B])for(let i=0;i<P.length;i++){const a=P[i],b=P[(i+1)%P.length],nx=b[1]-a[1],ny=a[0]-b[0],l=Math.hypot(nx,ny);if(!l)continue;const pa=A.map(p=>(p[0]*nx+p[1]*ny)/l),pb=B.map(p=>(p[0]*nx+p[1]*ny)/l);if(Math.max(...pa)<=Math.min(...pb)+5||Math.max(...pb)<=Math.min(...pa)+5)return false;}return true;}
+ function intersects(A,B){
+  // Keep the original SAT axes, division and 5 mm tolerance. Streaming extrema
+  // avoid allocating four projection arrays for every edge of a swept polygon.
+  for(let axis=0;axis<2;axis++){
+   let amin=Infinity,amax=-Infinity,bmin=Infinity,bmax=-Infinity;
+   for(const p of A){amin=Math.min(amin,p[axis]);amax=Math.max(amax,p[axis]);}
+   for(const p of B){bmin=Math.min(bmin,p[axis]);bmax=Math.max(bmax,p[axis]);}
+   if(amax<=bmin||bmax<=amin)return false;
+  }
+  for(const P of [A,B])for(let i=0;i<P.length;i++){
+   const a=P[i],b=P[(i+1)%P.length],nx=b[1]-a[1],ny=a[0]-b[0],l=Math.hypot(nx,ny);if(!l)continue;
+   let amin=Infinity,amax=-Infinity,bmin=Infinity,bmax=-Infinity;
+   for(const p of A){const v=(p[0]*nx+p[1]*ny)/l;amin=Math.min(amin,v);amax=Math.max(amax,v);}
+   for(const p of B){const v=(p[0]*nx+p[1]*ny)/l;bmin=Math.min(bmin,v);bmax=Math.max(bmax,v);}
+   if(amax<=bmin+5||bmax<=amin+5)return false;
+  }
+  return true;
+ }
  // Source-backed installation reservations, separate from body collision and
  // independent of the door's current display pose. No state is mutated here.
  function dishwasherChecks(plan,f,{furniture=plan.furniture||[],rigidBodies}={}){
