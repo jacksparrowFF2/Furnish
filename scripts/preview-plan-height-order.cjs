@@ -1,4 +1,4 @@
-const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..'),dir=path.join(root,'output/plan-height-order');fs.mkdirSync(dir,{recursive:true});
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.join(__dirname,'..')),dir=path.join(root,'output/plan-height-order');fs.mkdirSync(dir,{recursive:true});
 fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>2D 高度遮挡修正</title>
 <style>body{margin:0;background:#f2ede5;color:#463b31;font:16px system-ui}header,footer{padding:24px}h1{font-size:25px;margin:0 0 12px}p{line-height:1.7;margin:0}main{display:grid;gap:16px;padding:0 24px}article{background:#fffaf3;border-radius:12px;padding:16px}h2{font-size:17px;margin:0 0 14px}svg{display:block;width:100%;height:200px}button{padding:9px 16px}small{display:block;color:#796b5a;line-height:1.7}</style>
 <header><h1>2D 高度遮挡修正</h1><p>墙挂电视位于低矮电视柜上方。平面占地重叠，高度范围分离。</p></header>

@@ -1,6 +1,6 @@
 /* Generate a standalone viewer using the exact production model and local Three.js map. */
 const fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),dir=path.join(root,'output/robot-p20max');fs.mkdirSync(dir,{recursive:true});
+const root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.join(__dirname,'..')),dir=path.join(root,'output/robot-p20max');fs.mkdirSync(dir,{recursive:true});
 const map=fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
 fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>石头 P20 Max 模型预览</title>
 <style>*{box-sizing:border-box}body{margin:0;background:#e9eef2;color:#233644;font:15px system-ui}header{padding:26px 36px}h1{margin:0 0 8px;font-size:28px}header p{margin:0;color:#617583}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 24px}article{background:#f8fafb;border-radius:18px;overflow:hidden}h2{margin:20px 24px 5px;font-size:20px}p{margin:0 24px 14px;color:#617583}canvas{width:100%;height:470px;display:block}footer{margin:20px 36px;color:#617583}button{padding:7px 14px;margin:0 6px;border:1px solid #a8bbc7;background:white;border-radius:6px;color:#233644}</style>

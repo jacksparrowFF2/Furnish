@@ -26,7 +26,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  ctx.FurnishDesign=D;ctx.FurnishProducts=D.products();
  vm.runInContext(fs.readFileSync(require.resolve('../src/ui/cabinet-editor.js'),'utf8'),ctx);ctx.window.FurnishCabinetEditor.open(f.id);await Promise.resolve();await Promise.resolve();
  assert($('#cab-template'));assert($('[data-cab-number="thickness"]'));assert($('[data-cab-number="plinth"]'));assert(fieldsets[0].querySelector('[data-finish]'));assert(fieldsets[0].querySelector('[data-handle]'));assert(nodes['#cab-tools'].innerHTML.includes('addShelf'));
- const change=target=>nodes['#cab-form'].onchange({target:{hasAttribute:()=>false,...target}});
+ const change=target=>nodes['#cab-form'].onchange({target:{hasAttribute:()=>false,matches:()=>false,...target}});
  $('[data-cab-number="w"]').value='1600';change({id:'',type:'number'});assert.equal(last.cabinet.columns.length,2);
  $('#cab-repartition-count').value='3';nodes['#cab-form'].onclick({target:{closest:selector=>selector==='#cab-repartition'?{}:null}});assert.equal(last.cabinet.columns.length,3);assert.equal(last.cabinet.entry.autoColumns,undefined);
  fieldsets[0].querySelector('[data-finish]').value='glass';fieldsets[0].querySelector('[data-handle]').value='knob';fieldsets[0].querySelector('[data-section-angle="upper"]').value='45';change({id:'',type:'select'});assert.equal(last.cabinet.columns[0].finish,'glass');assert.equal(last.cabinet.columns[0].handle,'knob');assert.equal(last.cabinet.columns[0].doorSections.upper.angle,45);assert.equal(last.cabinet.columns[0].doorSections.lower.open,false);

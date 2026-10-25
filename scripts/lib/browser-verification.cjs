@@ -32,6 +32,7 @@ function configuration(env=process.env){
   if(!value)throw Error('Cabinet object unavailable: '+JSON.stringify(wanted));if(!await page.locator('.cab-object-finder').evaluate(el=>el.open))await page.locator('.cab-object-finder>summary').click();await page.locator(selector).selectOption(value);return JSON.parse(value);
  };
  return {root:root.replaceAll('\\','/')+'/',baseURL:url.href,fileBase:pathToFileURL(root+path.sep).href,output,selectCabinetObject,editFurnitureField,revealCabinetSettings,openDistanceControls,
+  waitForDialogAction:page=>page.waitForFunction(()=>!document.querySelector('#dlg .dlg-box[aria-busy="true"]')),
   waitForCache:page=>page.waitForFunction(()=>{try{const cached=JSON.parse(localStorage.getItem(STORE));return !savePending&&!saveErr&&savedAt>0&&JSON.stringify(cached.work[PLAN.id])===JSON.stringify(state);}catch{return false;}}),
   fixture:name=>path.join(root,'tests/fixtures/browser',name),
   launchOptions:{headless:env.FURNISH_VERIFY_HEADED!=='1',...(env.FURNISH_BROWSER_PATH?{executablePath:env.FURNISH_BROWSER_PATH}:env.FURNISH_BROWSER_CHANNEL?{channel:env.FURNISH_BROWSER_CHANNEL}:{})}};

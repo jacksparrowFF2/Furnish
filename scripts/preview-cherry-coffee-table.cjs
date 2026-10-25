@@ -1,5 +1,5 @@
 /* Reproducible standalone viewer of the production model, using the offline import map. */
-const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..'),dir=path.join(root,'output/cherry-coffee-table');
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.join(__dirname,'..')),dir=path.join(root,'output/cherry-coffee-table');
 fs.mkdirSync(dir,{recursive:true});
 const map=fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
 fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>樱桃木茶几 · 白色岩板 · 模型预览</title>

@@ -5,13 +5,13 @@ async (page,verification)=>{
   const base=mode==='file'?verification.fileBase:verification.baseURL,check=(ok,message)=>{if(!ok)throw Error(mode+': '+message);};
   p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&new URL(r.url()).origin!==new URL(verification.baseURL).origin)external.push(r.url());});
   try{
-   for(const [name,url] of [['fridge','output/fridges/preview.html'],['heater','output/waterheater-flat-preview.html'],['laundry','output/laundry-stack/preview.html'],['telescopic','output/telescopic/preview.html']]){
-    await p.goto(base+url);await p.waitForFunction(()=>window.previewReady===true);
-    check(await p.locator('canvas').count()===1,name+' canvas');check(await p.evaluate(()=>!!(globalThis.FurnishApplianceModel||globalThis.FurnishSlidingOpeningModel)&&!!globalThis.FurnishModelPrimitives),name+' shared modules');
+   for(const [name,url] of [['fridge','output/fridges/preview.html'],['heater','output/waterheater-flat-preview.html'],['laundry','output/laundry-stack/preview.html'],['telescopic','output/telescopic/preview.html'],['sideboard','output/sideboard/preview.html']]){
+    await p.goto(base+url);await p.waitForFunction(()=>window.previewReady===true).catch(e=>{throw Error(name+' preview failed: '+errors.join('; ')+' '+e.message);});
+    check(name==='sideboard'?await p.locator('canvas').count()>0:await p.locator('canvas').count()===1,name+' canvas');check(await p.evaluate(name=>name==='sideboard'?!!globalThis.FurnishCabinetModel:!!(globalThis.FurnishApplianceModel||globalThis.FurnishSlidingOpeningModel)&&!!globalThis.FurnishModelPrimitives,name),name+' shared modules');
     if(name==='fridge')await p.locator('#front').click();
     await p.screenshot({path:verification.output('playwright/model-entry/'+mode+'-'+name+'-front.png')});
     if(name==='fridge'){await p.locator('#angle').click();await p.screenshot({path:verification.output('playwright/model-entry/'+mode+'-fridge-angle.png')});}
-    if(name==='heater')check(await p.locator('#error').innerText()==='','heater render error');
+    if(name==='heater'||name==='sideboard')check(await p.locator('#error').innerText()==='','heater render error');
     if(name==='telescopic'){await p.locator('#door').click();await p.locator('#window').click();await p.locator('#track').selectOption('true');await p.locator('#side').click();await p.locator('#front').click();await p.screenshot({path:verification.output('playwright/model-entry/'+mode+'-telescopic-controls.png')});}
    }
    await p.goto(base+'index.html');await p.locator('#lib .item').first().waitFor();

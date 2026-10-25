@@ -18,14 +18,23 @@ const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts
    if(file.endsWith('.browser.js')){const run=new vm.Script('('+source+'\n)').runInNewContext();assert.equal(typeof run,'function');assert.equal(run.length,2,file+' must accept page and verification');}
    else{const resolve=createRequire(path.join(V.projectRoot,'scripts',file));for(const [,target]of source.matchAll(/require\('([^']+)'\)/g))assert.doesNotThrow(()=>resolve.resolve(target),file+' cannot resolve '+target);}
   }
+  const previousBinary=process.env.FURNISH_BROWSER_PATH;try{process.env.FURNISH_BROWSER_PATH=path.join(temp,'absent-browser.exe');await assert.rejects(R.main(['portable-smoke']),/Browser executable missing/);}finally{if(previousBinary===undefined)delete process.env.FURNISH_BROWSER_PATH;else process.env.FURNISH_BROWSER_PATH=previousBinary;}
   const fixtures=path.join(V.projectRoot,'tests/fixtures/browser');assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(fixtures,'1601-source.dxf'))).digest('hex'),JSON.parse(fs.readFileSync(path.join(fixtures,'shared-boundaries-validation.json'))).sha256);
   const P=require('../src/core/project-core.js');for(const name of fs.readdirSync(fixtures).filter(n=>n.endsWith('.furnish.json')))P.unpack(JSON.parse(fs.readFileSync(path.join(fixtures,name))));
   fs.mkdirSync(root,{recursive:true});fs.copyFileSync(path.join(V.projectRoot,'index.html'),path.join(root,'index.html'));
-  for(const name of ['manifold','manifold-kitchen']){
+  for(const name of ['manifold','manifold-kitchen','downlight','telescopic']){
    const actual=path.join(V.projectRoot,'output',name,'preview.html'),before=fs.existsSync(actual)?fs.readFileSync(actual):null;
    require('node:child_process').execFileSync(process.execPath,[path.join(V.projectRoot,'scripts/preview-'+name+'.cjs')],{env:{...process.env,FURNISH_VERIFY_ROOT:root},stdio:'pipe'});
    assert(fs.existsSync(path.join(root,'output',name,'preview.html')),'focused preview belongs to isolated workspace');
    if(before)assert.deepEqual(fs.readFileSync(actual),before,'verification must not overwrite user preview');else assert(!fs.existsSync(actual));
+  }
+  fs.mkdirSync(path.join(root,'templates/previews'),{recursive:true});
+  for(const name of ['waterheater-flat','sideboard']){
+   const destination=name==='sideboard'?'output/sideboard/preview.html':'output/waterheater-flat-preview.html',actual=path.join(V.projectRoot,destination),before=fs.existsSync(actual)?fs.readFileSync(actual):null;
+   fs.copyFileSync(path.join(V.projectRoot,'templates/previews',name+'.html'),path.join(root,'templates/previews',name+'.html'));
+   require('node:child_process').execFileSync(process.execPath,[path.join(V.projectRoot,'scripts/preview-'+name+'.cjs')],{env:{...process.env,FURNISH_VERIFY_ROOT:root},stdio:'pipe'});
+   const html=fs.readFileSync(path.join(root,destination),'utf8');assert(html.indexOf('src/core/part-identity.js')<html.indexOf('src/render/'),'shared identity is available before production constructors');
+   if(before)assert.deepEqual(fs.readFileSync(actual),before,'template preview must stay isolated');else assert(!fs.existsSync(actual));
   }
   fs.writeFileSync(path.join(root,'index.html'),'<h1>isolated clone</h1>');const secret=path.join(temp,'secret.txt');fs.writeFileSync(secret,'outside');
   const server=await V.staticServer(root);try{

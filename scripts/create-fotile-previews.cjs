@@ -1,4 +1,4 @@
-const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..'),out=path.join(root,'output/fotile');
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.join(__dirname,'..')),out=path.join(root,'output/fotile');
 const imports=JSON.parse(fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
 const map={imports:{three:imports.three,'three/addons/controls/OrbitControls.js':imports['three/addons/controls/OrbitControls.js']}};
 fs.mkdirSync(out,{recursive:true});

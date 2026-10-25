@@ -9,10 +9,10 @@ async (page,verification)=>{
    await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();
    await p.evaluate(()=>{
     const room=PLAN.rooms.find(r=>r.id==='kitchen')||PLAN.rooms.find(r=>r.counted!==false),[cx,cy]=room.at;
-    mutate(()=>{state.furniture=[{id:'check-heater',type:'waterheater_flat',name:'热水器',cx:cx-900,cy,w:700,d:320,h:565,mountHeight:1650,rot:0,color:'#fafafa'},{id:'check-fridge',type:'fridge',name:'冰箱',cx,cy,w:700,d:700,h:1800,rot:0,color:'#ddd'},{id:'check-dishwasher',type:'dishwasher_mijia_countertop',name:'台面洗碗机',cx:cx+900,cy,w:550,d:350,h:598,mountHeight:860,rot:0,color:'#eee'}];state.scene3d=FurnishDesign.sceneSettings();});
+    mutate(()=>{state.furniture=[{id:'check-heater',type:'waterheater_flat',name:'热水器',cx:cx-900,cy,w:700,d:320,h:565,mountHeight:1650,rot:0,color:'#fafafa'},{id:'check-fridge',type:'fridge',name:'冰箱',cx,cy,w:700,d:700,h:1800,rot:0,color:'#ddd'},{id:'check-dishwasher',type:'dishwasher_mijia_countertop',name:'台面洗碗机',cx:cx+900,cy,w:550,d:350,h:598,mountHeight:860,rot:0,color:'#eee'}];state.scene3d=FurnishDesign.sceneSettings();state.wallTiling=FurnishWallTiling.setEnabled(state,FurnishProject.effectivePlan(PLAN,state),[room.id],true).wallTiling;});
    });
    await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await p.waitForTimeout(250);
-   if(!await visible('.wall-tile-scene-number'))throw Error('no wall numbers');
+   await p.waitForFunction(()=>[...document.querySelectorAll('.wall-tile-scene-number')].some(e=>getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().width>0));
    if(await visible('.heater-clearance-label')!==2||await visible('.appliance-clearance-label')!==2)throw Error('missing appliance labels');
    if(!await p.locator('[data-clearance-item="check-fridge"]').textContent().then(t=>t.includes('预留尺寸：无数据')))throw Error('no missing-data message');
    if(!await p.locator('[data-clearance-item="check-dishwasher"]').textContent().then(t=>t.includes('200 mm')&&t.includes('待核对')))throw Error('no dishwasher checks');

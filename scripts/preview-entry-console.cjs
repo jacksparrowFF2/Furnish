@@ -1,4 +1,4 @@
-const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..'),dir=path.join(root,'output/entry-console');fs.mkdirSync(dir,{recursive:true});
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.join(__dirname,'..')),dir=path.join(root,'output/entry-console');fs.mkdirSync(dir,{recursive:true});
 // Rebuild the input on every run: a fresh clone has no generated output files.
 require('./preview-entry-pegboard.cjs');
 let html=fs.readFileSync(path.join(root,'output/entry-pegboard/preview.html'),'utf8');

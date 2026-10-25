@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
 const V=require('./lib/browser-verification.cjs');
-const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay','manifold','manifold-kitchen'];
+const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay','manifold','manifold-kitchen','downlight','manifold-wall-finish','manifold-zero-gap','manifold-floating-distance','telescopic-corners','telescopic-floor-tracks'];
 const dependencies={'drawing':['workflow-reimport'],'drawing-readability':['workflow-reimport'],'room-net':['workflow-reimport'],'purchase-orders':['room-net'],'purchase-relink':['purchase-orders'],'furniture-labels':['purchase-orders']};
 // Historical standalone-editor scripts remain as evidence. Their CLI names now
 // run the consolidated flow instead of trying to find UI that was removed.
@@ -39,13 +39,14 @@ async function main(args=process.argv.slice(2)){
  const selected=plan(names.includes('--all')?[...registry.keys()]:names.length?names:['portable-smoke']);
  if(names.includes('--all')||names.some(name=>tilingReplacements[name]))console.log('Retired tiling UI cases use tile-workspace, tile-workspace-complete and tile-library; historical scripts are not executed.');
  // Validate dependency installation and URL before copying or starting work.
- V.loadPlaywright();V.configuration();
+ const engine=V.loadPlaywright(),config=V.configuration();if(!config.launchOptions.channel){const executable=config.launchOptions.executablePath||engine.chromium.executablePath();if(!fs.existsSync(executable))throw Error('Browser executable missing: '+executable+'. Install the matching Playwright browser or configure PLAYWRIGHT_BROWSERS_PATH / FURNISH_BROWSER_PATH before running acceptance.');}
  const output=path.join(V.projectRoot,'output/playwright');fs.mkdirSync(output,{recursive:true});
  const run=fs.mkdtempSync(path.join(output,'verification-'));
  const root=path.join(run,'workspace 迁移 #');fs.mkdirSync(root);
  for(const name of ['src','styles','assets','vendor','templates','scripts'])if(fs.existsSync(path.join(V.projectRoot,name)))fs.cpSync(path.join(V.projectRoot,name),path.join(root,name),{recursive:true});
  fs.copyFileSync(path.join(V.projectRoot,'index.html'),path.join(root,'index.html'));
  fs.cpSync(path.join(V.projectRoot,'tests/fixtures'),path.join(root,'tests/fixtures'),{recursive:true});
+ fs.mkdirSync(path.join(root,'projects'),{recursive:true});fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(root,'projects/workspace.furnish.json'));
  const fixtureDir=path.join(root,'tests/fixtures/browser');
  if(selected.includes('current-bays'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'current-bay-workspace.json'));
  fs.mkdirSync(path.join(root,'output/playwright/workflow-tools'),{recursive:true});fs.copyFileSync(path.join(fixtureDir,'reimport-input.furnish.json'),path.join(root,'output/playwright/workflow-tools/reimport-input.furnish.json'));

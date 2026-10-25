@@ -1,6 +1,6 @@
 /* Standalone viewer of the production geometry; existing offline Three.js import map. */
 const fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),dir=path.join(root,'output/shower-arrow');fs.mkdirSync(dir,{recursive:true});
+const root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.join(__dirname,'..')),dir=path.join(root,'output/shower-arrow');fs.mkdirSync(dir,{recursive:true});
 const map=fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
 fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>箭牌 · 奶油白壁挂花洒</title>
 <style>*{box-sizing:border-box}body{margin:0;background:#f1ede5;color:#4a382c;font:15px system-ui}header{padding:28px 36px}h1{margin:0 0 9px;font-size:28px}p{margin:0;color:#796d60;line-height:1.8}.views{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:0 28px}article{background:#faf8f3;border-radius:14px;overflow:hidden}h2{margin:20px 24px 0;font-size:17px}canvas{display:block;width:100%;height:680px}footer{padding:20px 36px;color:#796d60}@media(max-width:800px){.views{grid-template-columns:1fr}}</style>

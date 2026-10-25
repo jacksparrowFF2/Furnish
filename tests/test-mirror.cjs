@@ -4,7 +4,7 @@ const item=require('../src/data/catalog.js').library.flatMap(c=>c.items).find(i=
 assert.equal(item[6],1650);
 const base={id:'mirror',type:'mirror',name:'穿衣镜',w:500,d:60,cx:0,cy:0,rot:0,color:'#dfe6ea'};
 let current={...base};const els=Object.fromEntries(['#full-product-details','#fName','#fW','#fD','#fH','#fC'].map(id=>[id,{}])),history=[];
-const ui=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{window:{},FurnishCabinet:C,FurnishDesign:D,$:id=>els[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{history.push({...current});fn();},toast:()=>{},renderPanel:()=>{}}));
+const ui=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{window:{},FurnishCabinet:C,FurnishDesign:D,$:id=>els[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{history.push({...current});fn();},toast:()=>{},renderPanel:()=>{}}));
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ui);ui.renderPanel=()=>{};ui.f=current;vm.runInContext('bindFurnPanel(f)',ui);
 els['#fH'].onchange({target:{value:'1900'}});assert.equal(current.h,1900);assert.equal(history[0].h,undefined);
 for(const value of ['','bad','-1','0','49','20001'])els['#fH'].onchange({target:{value}});assert.equal(current.h,1900);
@@ -17,7 +17,7 @@ assert.equal(D.furnitureVerticalBounds(base).top,1700);assert.equal(D.furnitureV
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
  const source=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString('utf8').replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
- const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishDesign:D,FurnishCabinet:C,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})}));
+ const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishDesign:D,FurnishCabinet:C,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})}));
  Object.assign(ctx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-6,`${a} != ${b}`);

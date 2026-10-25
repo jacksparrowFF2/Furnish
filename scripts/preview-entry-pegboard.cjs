@@ -1,5 +1,5 @@
 /* Preview production cabinet geometry, including its real openings. */
-const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..'),dir=path.join(root,'output/entry-pegboard');fs.mkdirSync(dir,{recursive:true});
+const fs=require('node:fs'),path=require('node:path'),root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.join(__dirname,'..')),dir=path.join(root,'output/entry-pegboard');fs.mkdirSync(dir,{recursive:true});
 const map=fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
 fs.writeFileSync(path.join(dir,'preview.html'),`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>洞洞板玄关柜</title>
 <style>body{margin:0;background:#f3eee8;color:#56473d;font:16px system-ui}header,footer{padding:20px 30px}h1{margin:0 0 8px;font-size:25px}p{margin:0;line-height:1.8}main{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 24px}article{background:#fcfaf7;border-radius:14px;overflow:hidden}h2{font-size:16px;margin:16px 22px}canvas{display:block;width:100%;height:560px}button{padding:8px 16px;margin-right:10px}@media(max-width:750px){main{grid-template-columns:1fr}}</style>

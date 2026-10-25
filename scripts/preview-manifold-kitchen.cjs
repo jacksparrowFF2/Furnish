@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),root=path.resolve(process.env.FURNISH_VERIFY_ROOT||path.resolve(__dirname,'..'));
 const map=fs.readFileSync(path.join(root,'index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1],out=path.join(root,'output/manifold-kitchen');fs.mkdirSync(out,{recursive:true});
 fs.writeFileSync(path.join(out,'preview.html'),`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>分水器与厨房地柜</title><style>body{margin:0;background:#e8e9e5;font:15px system-ui;color:#27342f}aside{position:absolute;top:20px;left:20px;z-index:2;width:250px;background:#fffE;padding:20px;border-radius:12px}h1{font-size:22px;margin:0}p{line-height:1.6}button{padding:8px;margin:4px}canvas{display:block}</style><aside><h1>分水器 · 后部让空</h1><p>分水器 800 × 180 × 600 mm<br>柜深 600 → 420 mm<br>层板／抽屉同步减深，背板取消。台面及柜门前沿不变。</p><button id="front">正面检修</button><button id="rear">后方结构</button><button id="toggle">全部打开</button><p>后部空间按模型外包预留，未附加厂家操作间距。抽屉柜检修需要取出抽屉。</p></aside>
-${['core/product-rules','core/zone-geometry','core/cabinet-core','core/kitchen-core','render/cabinet-model','render/kitchen-model','render/manifold-model'].map(s=>'<script src="../../src/'+s+'.js"></script>').join('')}
+${['core/part-identity','core/product-rules','core/zone-geometry','core/cabinet-core','core/kitchen-core','render/cabinet-model','render/kitchen-model','render/manifold-model'].map(s=>'<script src="../../src/'+s+'.js"></script>').join('')}
 <script type="importmap">${map}</script><script type="module">
 import * as T from 'three';
 const renderer=new T.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor('#e8e9e5');document.body.appendChild(renderer.domElement);

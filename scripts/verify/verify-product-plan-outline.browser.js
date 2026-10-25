@@ -14,7 +14,7 @@ async (page,verification)=>{
   check(metrics.difference>40&&metrics.points>=64,'contour selection and tight bounds');
   await p.screenshot({path:verification.output('product-plan-outline/'+mode+'-selected.png')});
   await p.evaluate(id=>{mutate(()=>{const f=getF(id),box=FurnishGeometry.bbox(FurnishGeometry.footprints(f)[0]);state.furniture.push({...f,id:'outline-reference',name:'净距参考柜',type:'custom',cx:box[2]+90,cy:f.cy,w:100,d:1000,rot:0});});editDirectionalDistance('r');},id);
-  await p.locator('#directional-gap-input').fill('75');await p.getByRole('button',{name:'应用距离',exact:true}).click();
+  await p.locator('#directional-gap-input').fill('75');await p.getByRole('button',{name:'应用距离',exact:true}).click();await verification.waitForDialogAction(p);
   check(await p.evaluate(id=>Math.abs(directionalMeasurements(getF(id)).r.distance-75)<.01,id),'edit actual contour clearance');
   await p.evaluate(()=>undo());check(await p.evaluate(id=>Math.abs(directionalMeasurements(getF(id)).r.distance-40)<.01,id),'clearance undo');
   await p.evaluate(()=>redo());check(await p.evaluate(id=>Math.abs(directionalMeasurements(getF(id)).r.distance-75)<.01,id),'clearance redo');

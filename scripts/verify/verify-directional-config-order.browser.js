@@ -12,7 +12,7 @@ async (page,verification)=>{
    const sorted=v=>v&&typeof v==='object'?Array.isArray(v)?v.map(sorted):Object.fromEntries(Object.keys(v).sort().map(k=>[k,sorted(v[k])])):v;
    state.furniture=sorted(state.furniture);selectIds([ac.id]);zoomSel();editDirectionalDistance('b');return {cx:ac.cx,cy:ac.cy};
   });
-  await p.locator('#directional-gap-input').fill('130');await p.getByRole('button',{name:'应用距离',exact:true}).click();
+  await p.locator('#directional-gap-input').fill('130');await p.getByRole('button',{name:'应用距离',exact:true}).click();await verification.waitForDialogAction(p);
   check(await p.locator('#directional-gap-input').count()===0,'dialog closes after Apply');
   const after=await p.evaluate(()=>{const f=getF('order-ac');return {cx:f.cx,cy:f.cy,gap:directionalMeasurements(f).b.distance};});
   check(Math.abs(after.cx-before.cx)<.01&&Math.abs(after.cy-before.cy-20)<.01&&Math.abs(after.gap-130)<.01,'moves 20 mm and measures 130 mm: '+JSON.stringify({before,after}));

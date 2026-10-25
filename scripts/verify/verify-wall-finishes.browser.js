@@ -27,7 +27,7 @@ async (page,verification)=>{
    check(await p.evaluate(()=>measurementReferenceName(directionalMeasurements(getF('item')).t).includes('厚度待定')),'numeric clearance labels disclose unknown finish thickness');
    await form().locator('[data-finish-bond]').fill('15');await form().locator('[data-finish-apply]').click();
    await p.screenshot({path:verification.output('playwright/wall-finishes/'+mode+'-desktop.png')});
-   await p.evaluate(()=>selectIds(['item']));await p.locator('#panel [data-distance-edit="t"]').click();await p.locator('#directional-gap-input').fill('0');await p.getByRole('button',{name:'应用距离',exact:true}).click();check(await p.evaluate(()=>getF('item').cy===475),'real numeric edit contacts finished face');
+   await p.evaluate(()=>selectIds(['item']));await p.locator('#panel [data-distance-edit="t"]').click();await p.locator('#directional-gap-input').fill('0');await p.getByRole('button',{name:'应用距离',exact:true}).click();await verification.waitForDialogAction(p);check(await p.evaluate(()=>getF('item').cy===475),'real numeric edit contacts finished face');
    await p.locator('#undo').click();check(await p.evaluate(()=>JSON.stringify(state.furniture))===before.furniture,'undo restores furniture exactly');
    await p.evaluate(()=>{store.designs.push({id:'finish-saved',name:'饰面保留方案',planId:PLAN.id,work:JSON.parse(JSON.stringify(state)),ts:Date.now()});save();});
    await verification.waitForCache(p);await p.reload();check(await p.evaluate(()=>state.wallFinishes.surfaces[0].bondThickness===15),'reload retains finish');check(await p.evaluate(()=>JSON.stringify(state.furniture))===before.furniture,'reload does not recompute cabinets');

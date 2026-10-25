@@ -15,7 +15,7 @@ async (page,verification)=>{
   const baseline=await read();check(JSON.stringify(baseline)===JSON.stringify({l:100,r:100,t:2225,b:2225}),'empty bay distances');
   check(await p.locator('[data-edit-overlay="directional-distance"]').count()===4,'four canvas labels');
   await p.screenshot({animations:'disabled',path:verification.output('playwright/directional-kitchen-solids/'+mode+'-2d.png')});
-  await p.locator('#plan [data-distance-edit="r"]').first().click();await p.locator('#directional-gap-input').fill('50');await p.locator('#directional-gap-input').press('Enter');
+  await p.locator('#plan [data-distance-edit="r"]').first().click();await p.locator('#directional-gap-input').fill('50');await p.locator('#directional-gap-input').press('Enter');await verification.waitForDialogAction(p);
   check(await p.evaluate(()=>getF('gap-block').cx===2550),'numeric positioning');check((await read()).r===50,'positioned clearance');
   await p.evaluate(()=>undo());check((await read()).r===100,'undo');await p.evaluate(()=>redo());check((await read()).r===50,'redo');await p.evaluate(()=>undo());
   await p.locator('#fH').fill('801');await p.locator('#fH').press('Tab');check(Object.values(await read()).every(v=>v===0),'real slab overlap remains zero');
