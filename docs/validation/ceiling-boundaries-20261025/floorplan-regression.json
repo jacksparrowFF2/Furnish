@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "short-wall-zones"
+  ],
+  "results": [
+    {
+      "name": "short-wall-zones",
+      "status": "PASS",
+      "seconds": 13,
+      "log": "short-wall-zones.log"
+    }
+  ],
+  "notRun": []
+}

@@ -8,6 +8,31 @@
  const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
  const on=(p,a,b)=>Math.abs(cross(a,b,p))<EPS&&p[0]>=Math.min(a[0],b[0])-EPS&&p[0]<=Math.max(a[0],b[0])+EPS&&p[1]>=Math.min(a[1],b[1])-EPS&&p[1]<=Math.max(a[1],b[1])+EPS;
  const segments=polys=>polys.flatMap(p=>p.map((a,i)=>[a,p[(i+1)%p.length]]).filter(([a,b])=>Math.hypot(a[0]-b[0],a[1]-b[1])>EPS));
+ function alignPoint(target,vertices,radius){
+  const point=[...target],guides=[];
+  for(const axis of [0,1]){const near=vertices.map(p=>({p,d:Math.abs(p[axis]-target[axis])})).filter(v=>v.d<=radius).sort((a,b)=>a.d-b.d)[0];if(near){point[axis]=near.p[axis];guides.push({axis,from:near.p});}}
+  return {point,guides,label:guides.length===2?'水平／垂直对齐':guides[0]?.axis===0?'垂直对齐':'水平对齐'};
+ }
+ function projectSegment(point,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],l2=dx*dx+dy*dy,t=l2>EPS*EPS?Math.max(0,Math.min(1,((point[0]-a[0])*dx+(point[1]-a[1])*dy)/l2)):0;return {point:[a[0]+t*dx,a[1]+t*dy],t};}
+ function snapBoundaryPoint(target,{vertices=[],polygons=[],radius=0,anchor=null,orthogonal=false,snap=true}={}){
+  const point=[...target],fixed=orthogonal&&anchor?(Math.abs(point[0]-anchor[0])>=Math.abs(point[1]-anchor[1])?1:0):null;
+  if(fixed!==null)point[fixed]=anchor[fixed];
+  const free=[0,1].filter(axis=>axis!==fixed),guides=fixed===null?[]:[{axis:fixed,from:[...anchor]}],label=fixed===0?'垂直约束':'水平约束';
+  if(!snap)return {point,guides,label:fixed===null?'自由移动':label};
+  const points=[...vertices,...polygons.flat()],distance=p=>Math.hypot(p[0]-point[0],p[1]-point[1]),compatible=p=>fixed===null||Math.abs(p[fixed]-point[fixed])<1e-6;
+  const near=points.filter(compatible).map(p=>({point:[...p],distance:distance(p)})).filter(p=>p.distance<=radius).sort((a,b)=>a.distance-b.distance)[0];
+  if(near)return {...near,guides,label:'顶点吸附',kind:'vertex'};
+  const edges=[];
+  for(const [a,b]of segments(polygons)){let q;if(fixed===null)q=projectSegment(point,a,b).point;else{const delta=b[fixed]-a[fixed],axis=1-fixed;if(Math.abs(delta)<EPS){if(Math.abs(a[fixed]-point[fixed])>1e-6)continue;q=[...point];q[axis]=Math.max(Math.min(a[axis],b[axis]),Math.min(Math.max(a[axis],b[axis]),point[axis]));}else{const t=(point[fixed]-a[fixed])/delta;if(t<0||t>1)continue;q=[...point];q[axis]=a[axis]+t*(b[axis]-a[axis]);}}const d=distance(q);if(d<=radius)edges.push({point:q,distance:d,edge:[a,b]});}
+  edges.sort((a,b)=>a.distance-b.distance);if(edges.length)return {...edges[0],guides,label:'边界吸附',kind:'edge'};
+  const aligned=alignPoint(point,points,radius);for(const axis of free){const guide=aligned.guides.find(g=>g.axis===axis);if(guide){point[axis]=aligned.point[axis];guides.push(guide);}}
+  return {point,guides,label:guides.length===2?'水平／垂直对齐':guides.length?(guides[0].axis===0?'垂直对齐':'水平对齐'):'未吸附',kind:guides.length?'alignment':null};
+ }
+ function moveOrthogonalVertex(poly,index,target,{closed=true}={}){
+  const result=poly.map(p=>[...p]);result[index]=[...target];
+  for(const axis of [0,1]){const queue=[index],seen=new Set(queue);while(queue.length){const k=queue.shift();for(let n of [k-1,k+1]){if(closed)n=(n+poly.length)%poly.length;if(n<0||n>=poly.length||seen.has(n)||Math.abs(poly[k][axis]-poly[n][axis])>=1e-6)continue;seen.add(n);result[n][axis]=target[axis];queue.push(n);}}}
+  return result;
+ }
  function intersection(a,b,c,d){const dx=b[0]-a[0],dy=b[1]-a[1],ex=d[0]-c[0],ey=d[1]-c[1],det=dx*ey-dy*ex;if(Math.abs(det)<EPS)return null;
   const t=((c[0]-a[0])*ey-(c[1]-a[1])*ex)/det,u=((c[0]-a[0])*dy-(c[1]-a[1])*dx)/det;
   return t>=-EPS&&t<=1+EPS&&u>=-EPS&&u<=1+EPS?[a[0]+t*dx,a[1]+t*dy]:null;
@@ -95,5 +120,5 @@
   const combined=result.flatMap(g=>g.polys),difference=area(decompose([...rings,...combined],p=>inside(p,original)!==combined.some(poly=>inside(p,poly))));if(difference>.01||Math.abs(area(combined)-Math.abs(signed(original)))>.1)fail('折线拆分面积校验失败');
   return result;
  }
- const api={inside,signed,validatePolygon,decompose,outline,area,ringPath,adjacent,splitRegion};root.FurnishZoneGeometry=api;if(typeof module!=='undefined')module.exports=api;
+ const api={alignPoint,projectSegment,snapBoundaryPoint,moveOrthogonalVertex,inside,signed,validatePolygon,decompose,outline,area,ringPath,adjacent,splitRegion};root.FurnishZoneGeometry=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

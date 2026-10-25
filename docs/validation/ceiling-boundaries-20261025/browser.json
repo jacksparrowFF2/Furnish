@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-boundaries"
+  ],
+  "results": [
+    {
+      "name": "ceiling-boundaries",
+      "status": "PASS",
+      "seconds": 22.7,
+      "log": "ceiling-boundaries.log"
+    }
+  ],
+  "notRun": []
+}

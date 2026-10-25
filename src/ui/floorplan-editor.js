@@ -198,9 +198,7 @@
       return areaSnap?areaSnap.point:target;
     }
     function alignPoint(target,vertices,radius){
-      const point=[...target],guides=[];
-      for(const axis of [0,1]){const near=vertices.map(p=>({p,d:Math.abs(p[axis]-target[axis])})).filter(v=>v.d<=radius).sort((a,b)=>a.d-b.d)[0];if(near){point[axis]=near.p[axis];guides.push({axis,from:near.p});}}
-      return {point,guides,label:guides.length===2?'水平／垂直对齐':guides[0]?.axis===0?'垂直对齐':'水平对齐'};
+      return FurnishZoneGeometry.alignPoint(target,vertices,radius);
     }
     function areaPrecision(){
       const base=copy(draft),z=base.zones.find(z=>z.id===selectedArea);if(!z)return;

@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-boundaries",
+    "ceiling-design",
+    "ceiling-assembly"
+  ],
+  "results": [
+    {
+      "name": "ceiling-boundaries",
+      "status": "PASS",
+      "seconds": 25.6,
+      "log": "ceiling-boundaries.log"
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 37.7,
+      "log": "ceiling-design.log"
+    },
+    {
+      "name": "ceiling-assembly",
+      "status": "PASS",
+      "seconds": 24.9,
+      "log": "ceiling-assembly.log"
+    }
+  ],
+  "notRun": []
+}
