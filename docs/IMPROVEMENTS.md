@@ -1,5 +1,11 @@
 # Furnish 主线改进与验收
 
+## 2026-10-25：补齐管道碰撞与家具恢复测试的筒灯依赖
+
+`test-pipe-collisions.cjs` 和 `test-furniture-recovery.cjs` 提取生产 `buildFurn()` 到独立 VM，却未注入其新增的 `FurnishDownlightModel`，导致尾部场景断言之前出现 ReferenceError。现两个环境接入真实 CommonJS 生产模块并明确设置 `opt.lamps`；恢复测试另用实际筒灯验证健康模型缓存命中、同伴构造失败时，SpotLight 可见性与发光材质仍随开关更新，错误占位及原始记录保持。未修改生产代码、模型或持久数据。
+
+8 项增量回归全部通过：`test-pipe-collisions`、`test-furniture-recovery`、`test-downlight`、`test-downlight-section`、`test-shared-appliance-model`、`test-cut-board-motion`、`test-project-recovery`、`test-cabinet-interior-distances`（均为 `tests/test-*.cjs`）。两份改动脚本语法与差异检查通过。此前性能验收中保留的两项失败属于历史运行记录，不改写为当时通过；本轮未重跑全量或浏览器视觉验收，因为只修复测试环境和补充断言，生产加载机制与界面不变。工作区另有方案修改，保留且不纳入本次提交。
+
 ## 2026-10-25：连续拖动的板件、拓扑与标签复用
 
 上一轮拖动仍反复转义 DXF 原文、构造户型拓扑、转换静止板件边线并验证其它家具。本轮按完整值缓存拓扑/地面/生产世界板件及其高度截面；吸附与位姿绘制各自只读共享派生计划。精确测距增加保守的方向下界与背向排除，仅在不能改善现有精确结果时跳过；工作台墙面优先、未知高度与既有容差保留。生产柜体缓存按实际共板/开口/饰面/设备孔环输入失效，减少移动不相关柜体时的连带重建；热用实体使用有界 LRU。绘制排序继续逐对检查实际重叠，标签只更新变化的 DOM。承托链由产品核心 floorHost 共用，无新持久字段、保存通道或加载机制。

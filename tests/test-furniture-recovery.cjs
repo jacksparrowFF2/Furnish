@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const K=require('../src/core/kitchen-core.js'),D=require('../src/core/design-core.js'),R=require('../src/core/product-rules.js'),P=require('../src/core/project-core.js'),G=require('../src/core/layout-geometry.js'),S=require('../src/core/snapping.js');
+const K=require('../src/core/kitchen-core.js'),D=require('../src/core/design-core.js'),R=require('../src/core/product-rules.js'),P=require('../src/core/project-core.js'),G=require('../src/core/layout-geometry.js'),S=require('../src/core/snapping.js'),Downlight=require('../src/render/downlight-model.js');
 const base={id:'k',type:'counter',name:'厨房',cx:2000,cy:2000,w:1800,d:600,rot:0,color:'#ddd',price:321,brand:'保留',purchaseStatus:'ordered'};
 const host={...base,kitchen:{...K.defaults(base),modules:[{run:0,width:900,role:'sink'},{run:0,width:900,role:'drawer'}]}};
 const broken={...host,w:2200,d:650},device={id:'s',type:'ksink',name:'水槽',color:'#ddd',cx:111,cy:222,w:760,d:450,rot:90,counterLink:{hostId:'k',module:0},counterElevation:860};
@@ -45,9 +45,15 @@ console.log('PASS broken furniture retention, explicit immutable repairs, projec
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three),records=[{...base,id:'throwing'},{...normal,id:'healthy'}],before=JSON.stringify(records),errors=new Map();
  const scene=vm.createContext({THREE,state:{furniture:records},furnitureError:()=>null,furnitureRenderErrors:errors,syncModelErrors(){},furnG:new THREE.Group(),opt:{furn:true},applyGrow(){},M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,FurnishCabinet:{sideOpenings:()=>null,joinedSideFinishes:()=>null,sharedSides:()=>null},clearGroup:g=>g.clear(),buildFurniture:f=>{if(f.id==='throwing')throw Error('constructor failure');const g=new THREE.Group();g.userData.fid=f.id;return g;}});
- Object.assign(scene,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
+ Object.assign(scene,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),FurnishDownlightModel:Downlight,M:v=>v/1000});scene.opt.lamps=true;
  vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),scene);scene.buildFurn();
  assert.equal(scene.furnG.children.length,2);assert(scene.furnG.children.find(g=>g.userData.fid==='throwing').userData.modelError);assert(!scene.furnG.children.find(g=>g.userData.fid==='healthy').userData.modelError);assert.equal(errors.get('throwing'),'constructor failure');assert.equal(JSON.stringify(records),before);
  const old=scene.furnG.children.find(g=>g.userData.fid==='healthy');scene.buildFurn();assert.equal(scene.furnG.children.length,2);assert.equal(scene.furnG.children.find(g=>g.userData.fid==='healthy'),old,'healthy cached geometry survives failing sibling');
- console.log('PASS actual 3D constructor failure isolation, placeholders and healthy cache retention');
+ // Exercise the real production dependency on the cached path as well as the
+ // constructor-failure path, without replacing it with a no-op VM stub.
+ const downlight=Downlight.build(THREE,{type:'downlight_philips_dl269',w:85,d:85,h:45,mountHeight:2400});old.add(downlight);
+ const lamp=downlight.getObjectByProperty('isSpotLight',true);let emitter;downlight.traverse(o=>{if(o.material?.userData?.downlightEmitter)emitter=o.material;});assert(lamp&&emitter);
+ for(const on of [false,true]){scene.opt.lamps=on;scene.buildFurn();assert.equal(lamp.visible,on);assert.equal(emitter.emissiveIntensity,on?1.5:0);assert.equal(scene.furnG.children.find(g=>g.userData.fid==='healthy'),old,'lamp switch retains cached healthy model');assert(scene.furnG.children.find(g=>g.userData.fid==='throwing').userData.modelError);}
+ assert.equal(errors.get('throwing'),'constructor failure');assert.equal(JSON.stringify(records),before,'light switching and failure isolation retain saved records');
+ console.log('PASS actual 3D constructor failure isolation, placeholders, healthy cache retention and real downlight toggles');
 })().catch(e=>{console.error(e);process.exitCode=1;});
