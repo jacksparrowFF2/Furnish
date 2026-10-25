@@ -62,20 +62,20 @@ assert.throws(()=>P.validateWork({...settings,open:{w:{0:{sill:.9,head:2.4,panel
  const roundedSource=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString().replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(roundedSource).toString('base64'));
  const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishDesign:design,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,options)=>new THREE.MeshStandardMaterial({color,...options}),slidingDoors:[],furnG:new THREE.Group(),dirty:false,doors:[],colliders:[],clamp01:v=>Math.max(0,Math.min(1,v))}));
- Object.assign(ctx,{RoundedBoxGeometry,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
+ Object.assign(ctx,{RoundedBoxGeometry,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishDownlightModel:require('../src/render/downlight-model.js'),FurnishProducts:design.products(),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  ctx.invalidate=()=>{ctx.dirty=true;};
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const loop=html.slice(html.indexOf('  for(const d of [...slidingDoors,...furnG.children'),html.indexOf('  updateSel();\n  if (!dirty)'));
  vm.runInContext(`function tick(dt){${loop}}`,ctx);
  vm.runInContext(html.slice(html.indexOf('function blocked('),html.indexOf('function stepWalk(')),ctx);
- for(const type of ['slidingdoor','tripleslidingdoor'])for(const rot of [0,90,180,270])for(const flip of [false,true]){
+ for(const type of ['slidingdoor','doubleslidingdoor','tripleslidingdoor'])for(const rot of [0,90,180,270])for(const flip of [false,true]){
   ctx.f={id:'door',type,cx:3000,cy:4000,w:2400,d:180,h:2400,rot,flip,color:'#41474b'};
   const model=vm.runInContext('buildFurniture(f)',ctx),door=model.userData.slidingDoor;
   ctx.furnG.clear();ctx.furnG.add(model);
   model.updateWorldMatrix(true,true);
   const crossing=model.localToWorld(new THREE.Vector3(.5,0,0));
   assert.equal(ctx.blocked(crossing.x,crossing.z,.1),true,'closed leaf blocks passage');
-  assert.equal(door.leaves.length,type==='slidingdoor'?2:3);
+  assert.equal(door.leaves.length,type==='tripleslidingdoor'?3:2);
   door.leaves.forEach(l=>near(l.node.position.x,l.closed));
   door.open=true;for(let i=0;i<150;i++)ctx.tick(1/60);
   door.leaves.forEach(l=>near(l.node.position.x,l.opened));

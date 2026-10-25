@@ -79,7 +79,8 @@ const types={
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
  shower_arrow_cream:{family:'arrow-shower',height:1749,anchor:'mixer',defaults:{showerMixerHeight:1000,showerRise:400,showerHandAngle:180*.20/Math.PI},fields:['mountHeight','showerMixerHeight','showerRise','showerHandAngle'],create:['showerMixerHeight'],identity:{brand:'ARROW/箭牌',model:'AE34129ZMKW-P2'}},
  tripleslidingwindow:{family:'sliding',height:1500,anchor:'bottom',defaults:{mountHeight:900,floorTrack:true},fields:['mountHeight','floorTrack'],create:['mountHeight']},
- tripleslidingdoor:{family:'sliding',height:2400,defaults:{floorTrack:false},fields:['floorTrack']},
+ doubleslidingdoor:{family:'sliding',telescopic:{panels:2,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false},fields:['floorTrack']},
+ tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false},fields:['floorTrack']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
  curtain:{height:2400,defaults:{curtainStyle:'double'},fields:['curtainStyle'],create:['curtainStyle']},
  fridge:{height:1800},fridge_french_drawer:{height:1910},sofa_yeswood_cherry:{solidModel:{global:'FurnishYeswoodSofaModel',module:'yeswood-sofa',rounded:true},height:895},mirror:{height:1650},
@@ -369,6 +370,31 @@ function replacement(previous,next,candidate){
  if(next.type==='kitchenwall')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
  if(definition(next)?.manifold||family(next,'pipe-box'))validate(next);return next;
 }
+// Automatic L joint: only a unique perpendicular end-to-end partner at the
+// same known rail elevation. Mid-span crossings and ambiguous junctions stay intact.
+function slidingCorner(f,furniture=[],plan){
+ const eligible=v=>!!definition(v)?.telescopic&&!v.obj&&[v.cx,v.cy,v.w,v.d,height(v)].every(Number.isFinite)&&v.w>v.d*2&&v.d>0&&height(v)>0&&Number.isFinite(v.rot??0);
+ if(!eligible(f))return null;
+ const items=[f,...furniture.filter(v=>v.id!==f.id&&eligible(v))];
+ const axis=v=>{const a=(v.rot||0)*Math.PI/180;return [Math.cos(a),Math.sin(a)];};
+ const cross=(a,b)=>a[0]*b[1]-a[1]*b[0],dot=(a,b)=>a[0]*b[0]+a[1]*b[1];
+ const candidates=v=>{
+  const u=axis(v),base=floorBase(plan,v,items),out=[];if(!base.known)return out;
+  for(const other of items){
+   if(other.id===v.id)continue;const q=axis(other);if(Math.abs(dot(u,q))>1e-6)continue;
+   const otherBase=floorBase(plan,other,items),tol=definition(v).telescopic.cornerTolerance;
+   if(!otherBase.known||Math.abs(base.z+height(v)-otherBase.z-height(other))>tol)continue;
+   const delta=[other.cx-v.cx,other.cy-v.cy],den=cross(u,q),t=cross(delta,q)/den,s=cross(delta,u)/den;
+   if(Math.abs(Math.abs(t)-v.w/2)>other.d/2+tol||Math.abs(Math.abs(s)-other.w/2)>v.d/2+tol)continue;
+   // Native coordinates include furniture mirroring; the builder may mirror
+   // again to stack away from this free corner.
+   const flip=v.flip?-1:1,x=t*flip,side=x>0?'right':'left',towardOther=[-Math.sign(s)*q[0],-Math.sign(s)*q[1]],normal=[-u[1],u[0]];
+   out.push({other,side,x,slope:-Math.sign(t)*flip*other.d/(dot(towardOther,normal)*v.d)});
+  }return out;
+ };
+ const hits=candidates(f);if(hits.length!==1||candidates(hits[0].other).length!==1)return null;
+ const {other,side,x,slope}=hits[0];return {partnerId:other.id,side,x,slope};
+}
 // Derived geometry capability; no field is added to saved furniture instances.
 function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return !f.obj&&(C.supported(f)||['counter','vanity'].includes(f.type));}
 // Ceiling defaults describe design examples, not manufacturer requirements.
@@ -381,6 +407,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

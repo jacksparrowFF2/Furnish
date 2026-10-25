@@ -709,7 +709,7 @@ function animateCurtains(dt){
     invalidate(true);
   }
 }
-function buildFurniture(f){
+function buildFurniture(f,context={}){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=FurnishPartIdentity;
 
@@ -1058,8 +1058,8 @@ const syncIdentity=FurnishPartIdentity;
       g.add(syncIdentity.produce("index:site-202",()=>blob(r*.42, r*.16, r*.42, glowMat('#fff6dd', '#ffdca0', .9), 0, 2.12, 0, 20)));
       break;
     }
-    case 'slidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
-      const model=slidingModels.build(f);g.add(...model.children.slice());g.userData.slidingDoor=model.userData.slidingDoor;break;
+    case 'slidingdoor': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
+      const model=slidingModels.build(f,{furniture,...context});g.add(...model.children.slice());g.userData.slidingDoor=model.userData.slidingDoor;break;
     }
     case 'curtain': {
       const height=M(f.h||2400),rodM=woodM('#6b543f'),radius=Math.min(.014,d*.08);
@@ -1270,14 +1270,15 @@ function buildFurn(){
     try{
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
-    const sig = JSON.stringify([base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const corner=FurnishProducts.slidingCorner(f,validFurniture,plan);
+    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       o.position.set(wx(f.cx),FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
       continue;
     }
     if (o){ clearGroup(o); furnG.remove(o); }
-    const g = buildFurniture(f);g.position.y+=M(base.z);g.userData.floorBase=base; g.userData.sig = sig; furnG.add(g);
+    const g = buildFurniture(f,{corner});g.position.y+=M(base.z);g.userData.floorBase=base; g.userData.sig = sig; furnG.add(g);
     }catch(e){
       furnitureRenderErrors.set(f.id,e.message||String(e));
       const old=byId.get(f.id);if(old){clearGroup(old);furnG.remove(old);}

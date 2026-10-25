@@ -152,6 +152,7 @@ const LIB = [
   ]},
   {cat:'门 · 隔断', items:[
     ["slidingdoor","双扇推拉门",1800,120,"#41474b",2800,2100],
+    ["doubleslidingdoor","双联动推拉门",1800,90,"#41474b",0,2400],
     ["tripleslidingdoor","三联动推拉门",2400,90,"#41474b",4800,2400],
     ["tripleslidingwindow","三联动推拉窗",1800,90,"#41474b",0,1500]
   ]},

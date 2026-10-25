@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "combinations": [
+      "3-2",
+      "2-2",
+      "3-3"
+    ],
+    "independentAnimation": true,
+    "productionMiters": true,
+    "catalog": true,
+    "heightUndoRedo": true,
+    "refresh": true,
+    "neighborInvalidation": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "combinations": [
+      "3-2",
+      "2-2",
+      "3-3"
+    ],
+    "independentAnimation": true,
+    "productionMiters": true,
+    "catalog": true,
+    "heightUndoRedo": true,
+    "refresh": true,
+    "neighborInvalidation": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  }
+]

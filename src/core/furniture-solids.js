@@ -8,13 +8,13 @@
  const rule=f=>(root.FurnishProducts||require('./product-rules.js')).definition(f)?.solidModel;
  const supported=f=>!!f&&!f.obj&&!!rule(f);
  const cache=new Map(),worldCache=new Map();
- function parts(f){
+ function parts(f,{furniture=[],plan}={}){
   if(!supported(f))return null;
-  const r=rule(f),key=JSON.stringify([r,f.type,f.w,f.d,f.h,f.mountHeight,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
+  const r=rule(f),products=root.FurnishProducts||require('./product-rules.js'),corner=r.sliding?products.slidingCorner(f,furniture,plan):null,key=JSON.stringify([r,corner,f.floorTrack,f.type,f.w,f.d,f.h,f.mountHeight,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
   if(records){cache.delete(key);cache.set(key,records);}
   if(!records){
    const model=root[r.global]||(typeof require==='function'?require('../render/'+r.module+'-model.js'):null);if(!model)throw Error('家具实体模型未加载：'+r.global);
-   const {T,Box,Rounded,point}=adapter(),built=model.build(T,f,r.rounded?Rounded:Box);records=[];
+   const {T,Box,Rounded,point}=adapter(),built=model.build(T,f,r.sliding?{corner}:r.rounded?Rounded:Box);records=[];
    built.traverse(node=>{
     const g=node.geometry;if(!g)return;const data=g.attributes.position.array;if([0,1,2].some(axis=>Math.max(...data.filter((_,i)=>i%3===axis))-Math.min(...data.filter((_,i)=>i%3===axis))<1e-10))return;const a=data,vertices=Array.from({length:a.length/3},(_,i)=>point(node,a.slice(i*3,i*3+3)).map(v=>v*1000)),name=Object.entries(node.userData).find(([key,v])=>key.endsWith('Part')&&typeof v==='string')?.[1]||'结构';
     const add=(vs,faces)=>records.push({vertices:vs,faces,boardName:labels[name]||'结构件',partRole:name,actualBoard:true});

@@ -60,9 +60,9 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
  const supportsSolids=f=>!!f&&!f.obj&&!!(furnitureSolids()?.supported(f)||f.kitchen||C().supported(f));
  const validModels=new WeakMap();
  function validModel(f,products){if(!f||typeof f!=='object')return !products.modelError(f);const key=JSON.stringify(f),old=validModels.get(f);if(old?.key===key)return old.valid;const valid=!products.modelError(f);validModels.set(f,{key,valid});return valid;}
- function solidParts(f,{furniture=[]}={}){
+ function solidParts(f,{furniture=[],plan}={}){
   if(!supportsSolids(f))return null;
-  if(furnitureSolids()?.supported(f))return furnitureSolids().parts(f);
+  if(furnitureSolids()?.supported(f))return furnitureSolids().parts(f,{furniture,plan});
   const products=root.FurnishProducts||require('./product-rules.js');furniture=furniture.filter(v=>validModel(v,products));
   const kitchen=root.FurnishKitchen||require('./kitchen-core.js');
   // Record the actual scene inputs read by buildRaw/slabGeometry, rather than

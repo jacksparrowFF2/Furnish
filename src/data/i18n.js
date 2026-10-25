@@ -34,7 +34,7 @@ const NAMES_EN = {
   '三室两厅一卫 · 95㎡':'3BR · 2LR · 1BA · 95m²', '四室两厅两卫 · 129㎡':'4BR · 2LR · 2BA · 129m²', '开间一居 · 42㎡':'Studio · 42m²',
   '次卧二':'Second Bedroom Ⅱ', '客卧一体':'Studio Living', '生活阳台':'Utility Balcony',
   '洗衣 · 家政':'Laundry & Utility', '厨房橱柜':'Kitchen Cabinets', '门窗 · 隔断':'Doors, Windows & Partitions', '宠物':'Pets',
-  '门 · 隔断':'Doors & Partitions', '双扇推拉门':'Two-panel Sliding Door', '三联动推拉门':'Three-panel Telescopic Door', '三联动推拉窗':'Three-panel Telescopic Window',
+  '门 · 隔断':'Doors & Partitions', '双扇推拉门':'Two-panel Sliding Door', '双联动推拉门':'Two-panel Telescopic Door', '三联动推拉门':'Three-panel Telescopic Door', '三联动推拉窗':'Three-panel Telescopic Window',
   '灯饰 · 布艺':'Lighting & Textile', '吊灯':'Pendant Lamp', '餐厅吊灯':'Dining Pendant', '窗帘 2.4m':'Curtains 2.4m', '窗帘 3m':'Curtains 3m',
   '装饰画 横':'Wall Art', '装饰画 小':'Small Wall Art', '穿衣镜':'Mirror', '换鞋凳':'Bench', '晾衣架':'Drying Rack', '六斗柜':'Chest of Drawers',
   '主卧室':'Master Bedroom', '次卧室':'Second Bedroom', '次卧':'Second Bedroom', '主卫浴':'Master Bath', '小孩房':"Kids' Room", '客卫浴':'Guest Bath', '洗衣阳台':'Laundry Balcony',

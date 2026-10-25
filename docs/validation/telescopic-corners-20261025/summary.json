@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-25",
+  "scope": "家具双／三联动移门的自动无立柱 L 形转角；新增双联动目录；生产几何、实体、缓存与原项目链路",
+  "nodeSuites": [
+    {
+      "command": "node tests/test-telescopic-corners.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-curtains-sliding.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-product-rules.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-enclosed-boundary-distances.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-work-state.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-project.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-production-solids.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-solids-cache.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-spatial-review-cache.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-snapping.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-finished-datum.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-directional-kitchen-solids.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-solids-coverage.cjs",
+      "status": "PASS"
+    }
+  ],
+  "syntax": {
+    "status": "PASS",
+    "changedScripts": 15,
+    "mainInlineModules": true,
+    "affectedPreviewInlineModules": true,
+    "sharedClassicDeclarations": true
+  },
+  "browser": {
+    "command": "node scripts/verify/verify-telescopic-corners.cjs",
+    "channel": "msedge",
+    "status": "PASS",
+    "modes": [
+      "http",
+      "offline file://"
+    ],
+    "report": "browser-results.json",
+    "isolatedWorkspace": true,
+    "actualWorkspaceDataWritten": false
+  },
+  "visual": {
+    "status": "PASS",
+    "reviewed": [
+      "http-3-2-open.png",
+      "http-closed.png",
+      "http-mobile.png"
+    ],
+    "notes": "两组顶轨连续，无固定转角柱；独立收拢；移动窄屏属性栏稳定后无裁切"
+  },
+  "notExecuted": [
+    "node scripts/check.cjs 全量回归（按 AGENTS 使用实际影响的增量范围）",
+    "实机触屏",
+    "厂家安装承重、玻璃边加工、密封与五金施工验证"
+  ],
+  "boundaries": [
+    "仅家具双／三联动门的唯一垂直端部配对",
+    "不支持中段交叉、非直角、多伙伴与未知实际顶标高的自动连接",
+    "建筑洞口与三联动窗保持原接口",
+    "空间检查采用关闭状态，开合是原临时展示状态"
+  ],
+  "retained": [
+    "原普通双扇门",
+    "旧家具尺寸和保存结构",
+    "用户 projects/workspace.furnish.json 未提交改动",
+    "其他对话的吊顶编辑改动"
+  ],
+  "afterConcurrentMainUpdate": {
+    "base": "ef2aad4",
+    "status": "PASS",
+    "recheckedSuites": [
+      "test-telescopic-corners",
+      "test-curtains-sliding",
+      "test-spatial-review-cache"
+    ],
+    "note": "待吊顶与性能对话提交结束后复验；只提交本轮移门路径"
+  }
+}
