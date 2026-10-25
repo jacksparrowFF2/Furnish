@@ -61,6 +61,8 @@ assert.notEqual(fingerprint([{...a,slidingTrackOrder:'leading-back'},b]),key);
    near(door.leaves.at(-1).node.position.z,P.slidingTracks(f).leadingOffset/1000);
    for(const leaf of door.leaves)leaf.node.traverse(o=>{if(o.geometry)assert.equal(o.geometry.type,'BoxGeometry','all moving glass/frame parts remain rectangular, including fully open');});
    const layout=P.slidingLayout(f,join),svg=require('../src/render/furniture-svg.js').render(f.type,f.w,f.d,f.color,{ink:'#222'},f,{furniture:items});
+   assert.match(svg,/<path[^>]*data-sliding-track="top"/,'plan includes the continuous top-track projection');
+   for(const [x,z] of layout.railOutline){const nativeX=x*(f.flip?-1:1),a=f.rot*Math.PI/180,point=new THREE.Vector3((f.cx+nativeX*Math.cos(a)-z*Math.sin(a))/1000,2.4,(f.cy+nativeX*Math.sin(a)+z*Math.cos(a))/1000);assert.ok(vertices.some(v=>v.distanceTo(point)<1e-6),'2D rail outline matches the actual production rail under rotations and mirrors');}
    const rects=[...svg.matchAll(/data-sliding-leaf="\d+"><rect x="([^"]+)" y="([^"]+)" width="([^"]+)" height="([^"]+)"/g)];assert.equal(rects.length,door.leaves.length);
    rects.forEach((r,i)=>{near(Number(r[1]),layout.leaves[i].x-layout.width/2);near(Number(r[2]),door.leaves[i].node.position.z*1000-layout.leafDepth/2);near(Number(r[3]),door.leaves[i].width*1000);});
    if(!join.through){

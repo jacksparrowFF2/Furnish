@@ -207,8 +207,10 @@ const DASH = 'stroke-dasharray="4 3"';
       const products=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
       if(products?.definition(t)?.telescopic){
         const item=f||{type:t,w,d},corner=products.slidingCorner(item,context.furniture,context.plan),layout=products.slidingLayout(item,corner);
-        // The parent applies furniture mirroring; this layout includes only stacking.
-        return layout.leaves.map((leaf,i)=>'<g data-sliding-leaf="'+i+'">'+rc(leaf.x-leaf.width/2,leaf.z-layout.leafDepth/2,leaf.width,layout.leafDepth,c)+rc(leaf.x-leaf.width/2+layout.edge,leaf.z-layout.leafDepth/6,leaf.width-2*layout.edge,layout.leafDepth/3,'#dce8ec')+'</g>').join('');
+        // The top rail is visible in a plan projection: omitting it makes the
+        // staggered leaves appear disconnected. Parent applies furniture mirroring.
+        const railFill=shade(c,1.15),rail=pa('M'+layout.railOutline.map(p=>p.join(' ')).join('L')+'Z',railFill,`data-sliding-track="top" style="stroke:${railFill}"`);
+        return rail+layout.leaves.map((leaf,i)=>'<g data-sliding-leaf="'+i+'">'+rc(leaf.x-leaf.width/2,leaf.z-layout.leafDepth/2,leaf.width,layout.leafDepth,c)+rc(leaf.x-leaf.width/2+layout.edge,leaf.z-layout.leafDepth/6,leaf.width-2*layout.edge,layout.leafDepth/3,'#dce8ec')+'</g>').join('');
       }
       const n=t==='slidingdoor'?2:3;
       let s=rc(x,y,w,d,c);

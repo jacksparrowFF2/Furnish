@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-25",
+  "scope": "恢复双／三联动门二维顶轨完整投影，避免错轨门扇呈断续细线；保留内外顺序、尺寸及三维几何",
+  "nodeSuites": [
+    {
+      "command": "node tests/test-telescopic-corners.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-furniture-svg.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node tests/test-curtains-sliding.cjs",
+      "status": "PASS"
+    }
+  ],
+  "productionRailCorners": {
+    "status": "PASS",
+    "combinations": 512,
+    "includes": "双／三混搭、正反转角、旋转、双方镜像、内外顺序"
+  },
+  "syntax": {
+    "status": "PASS",
+    "changedScripts": 4
+  },
+  "browser": {
+    "status": "PASS",
+    "modes": [
+      "HTTP",
+      "offline file://"
+    ],
+    "report": "browser-results.json",
+    "currentKitchenSeed": "只读当前保存方案，独立浏览器配置；截图比对用户位置",
+    "workspaceBytesUnchanged": true,
+    "command": "$env:FURNISH_BROWSER_CHANNEL='msedge'; node scripts/verify/verify-telescopic-corners.cjs --current-plan",
+    "defaultPortable": true
+  },
+  "visual": {
+    "status": "PASS",
+    "reviewed": [
+      "http-current-kitchen.png"
+    ],
+    "notes": "完整连续顶轨底色覆盖错轨门扇间隔，转角相接，内外顺序仍可辨识"
+  },
+  "notExecuted": [
+    "全量 node scripts/check.cjs",
+    "实机触屏"
+  ],
+  "retained": [
+    "用户projects/workspace.furnish.json未提交修改",
+    "既有Blender工作树"
+  ],
+  "newPersistentFields": false,
+  "loadingChanges": false,
+  "spatialRuleChanges": false
+}

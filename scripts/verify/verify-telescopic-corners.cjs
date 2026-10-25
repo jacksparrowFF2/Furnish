@@ -2,7 +2,8 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url'),V=require('../lib/browser-verification.cjs');
 (async()=>{
- const root=V.configuration().root,out=path.join(root,'docs/validation/telescopic-straight-20261025');fs.mkdirSync(out,{recursive:true});
+ const root=V.configuration().root,out=path.join(root,'docs/validation/telescopic-plan-20261025');fs.mkdirSync(out,{recursive:true});
+ const workspaceFile=path.join(root,'projects/workspace.furnish.json'),snapshot=process.argv.includes('--current-plan')?fs.readFileSync(workspaceFile):null,seed=snapshot?JSON.parse(snapshot).workspace:null;
  require('../preview-telescopic.cjs');
  const run=fs.mkdtempSync(path.join(root,'output/playwright/telescopic-')),workspace=path.join(run,'workspace 迁移 #');fs.mkdirSync(workspace);
  for(const name of ['src','styles','assets','vendor'])if(fs.existsSync(path.join(root,name)))fs.cpSync(path.join(root,name),path.join(workspace,name),{recursive:true});
@@ -37,6 +38,7 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
     const a=add('tripleslidingdoor',3000,3000),b=add('doubleslidingdoor',4200,3900);mutate(()=>{Object.assign(getF(a),{cx:3000,cy:3000});Object.assign(getF(b),{cx:4200,cy:3900,rot:90});});selectIds([b]);return [a,b];
    });
    check(await page.evaluate(ids=>FurnishProducts.slidingCorner(getF(ids[0]),state.furniture)?.partnerId===ids[1],ids),'catalog creates connected door pair');
+   check(await page.locator('#gFurn [data-sliding-track="top"]').count()===2,'both complete rail projections are drawn');
    check(await page.locator('#fSlidingTrackOrder').inputValue()==='leading-front','legacy default track order');
    const planBefore=await page.locator('#gFurn').innerHTML();await page.locator('#fSlidingTrackOrder').selectOption('leading-back');
    check(await page.evaluate(id=>getF(id).slidingTrackOrder,ids[1])==='leading-back','track order saved through property control');check(await page.locator('#gFurn').innerHTML()!==planBefore,'2D panel positions update');
@@ -62,8 +64,21 @@ const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('n
    await page.getByRole('button',{name:'2D 平面',exact:true}).click();await page.waitForFunction(()=>!is3D()&&!switching);await page.setViewportSize({width:390,height:844});await page.evaluate(id=>selectIds([id]),ids[1]);await page.locator('#fab [data-act="prop"]').click();await page.locator('#fH').waitFor({state:'visible'});
    await page.locator('#fSlidingTrackOrder').scrollIntoViewIfNeeded();await page.waitForFunction(()=>{const r=document.querySelector('aside.right').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;});
    check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'narrow viewport');await page.screenshot({path:path.join(out,mode+'-mobile.png')});
-   check(errors.length===0,JSON.stringify(errors));results.push({mode,passed:true,combinations:['3-2','2-2','3-3'],independentAnimation:true,railJoins:true,rectangularLeaves:true,trackOrder:true,copy:true,undoRedo:true,planPositions:true,mixedFloorTrack:true,catalog:true,heightUndoRedo:true,refresh:true,neighborInvalidation:true,production3D:true,narrow:true,errors});
+   // Read-only current-plan reproduction in a fresh profile; no repository API.
+   if(seed){const actualContext=await browser.newContext({viewport:{width:1500,height:1100},offline:mode==='file'});
+   try{
+    await actualContext.addInitScript(seed=>localStorage.setItem('huxing-design-v18',JSON.stringify(seed)),seed);
+    const actual=await actualContext.newPage();actual.on('pageerror',e=>errors.push(e.message));await actual.goto(base+'index.html');await actual.locator('#repository-loading').waitFor({state:'hidden'});
+    check(await actual.evaluate(id=>PLAN.id===id,seed.planId),'current saved plan restored in isolated profile');
+    const before=await actual.evaluate(()=>JSON.stringify(state.furniture));
+    await actual.evaluate(()=>{select(null);zoomToBox([6600,8250,8850,10300],80);});
+    check(await actual.locator('#gFurn [data-sliding-track="top"]').count()>=2,'current kitchen has complete connected rail projections');
+    const clip=await actual.evaluate(()=>{const m=document.querySelector('#gFurn').getScreenCTM(),p=[[6600,8250],[8850,8250],[8850,10300],[6600,10300]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(m)),x=Math.max(0,Math.min(...p.map(v=>v.x))-8),y=Math.max(0,Math.min(...p.map(v=>v.y))-8);return {x,y,width:Math.min(innerWidth-x,Math.max(...p.map(v=>v.x))-x+8),height:Math.min(innerHeight-y,Math.max(...p.map(v=>v.y))-y+8)};});
+    await actual.screenshot({path:path.join(out,mode+'-current-kitchen.png'),clip});
+    check(await actual.evaluate(()=>JSON.stringify(state.furniture))===before,'visual review never edits saved furniture');
+   }finally{await actualContext.close();}}
+   check(errors.length===0,JSON.stringify(errors));results.push({mode,passed:true,combinations:['3-2','2-2','3-3'],continuousRailProjection:true,currentKitchenVisual:!!seed,readOnlySnapshot:!!seed,independentAnimation:true,railJoins:true,rectangularLeaves:true,trackOrder:true,copy:true,undoRedo:true,planPositions:true,mixedFloorTrack:true,catalog:true,heightUndoRedo:true,refresh:true,neighborInvalidation:true,production3D:true,narrow:true,errors});
   }catch(e){await page.screenshot({path:path.join(out,mode+'-failure.png')});throw e;}finally{await context.close();}
- }}finally{await browser.close();await server.close();fs.writeFileSync(path.join(out,'browser-results.json'),JSON.stringify(results,null,2));}
+ }}finally{await browser.close();await server.close();if(snapshot&&!fs.readFileSync(workspaceFile).equals(snapshot))throw Error('Current workspace file changed during the read-only verification');fs.writeFileSync(path.join(out,'browser-results.json'),JSON.stringify(results,null,2));}
  console.log(JSON.stringify(results,null,2));
 })().catch(e=>{console.error(e);process.exitCode=1;});

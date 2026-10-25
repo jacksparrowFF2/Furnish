@@ -380,7 +380,8 @@ function slidingLayout(f,corner=null,options={}){
  const tracks=slidingTracks(f,options),slim=options.slim??true,edge=Math.min(slim?16:28,f.w/20,height(f)/12),jamb=slim?9:edge;
  const mirrored=(options.stackSide??(corner?.side==='left'?'right':'left'))==='right',sign=mirrored?-1:1,end=corner?corner.leafEnd*sign:f.w/2-jamb;
  const width=(end+f.w/2-jamb+(tracks.panels-1)*edge)/tracks.panels,step=width-edge,opened=-f.w/2+jamb+width/2;
- return {...tracks,edge,jamb,width,mirrored,leaves:Array.from({length:tracks.panels},(_,i)=>({x:(opened+step*i)*sign,opened:opened*sign,z:(i-(tracks.panels-1)/2)*tracks.pitch*tracks.direction,width}))};
+ const railOutline=corner?[[sign*-f.w/2,-f.d/2],[corner.x-corner.slope*f.d/2,-f.d/2],[corner.x+corner.slope*f.d/2,f.d/2],[sign*-f.w/2,f.d/2]]:[[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]];
+ return {...tracks,edge,jamb,width,mirrored,railOutline,leaves:Array.from({length:tracks.panels},(_,i)=>({x:(opened+step*i)*sign,opened:opened*sign,z:(i-(tracks.panels-1)/2)*tracks.pitch*tracks.direction,width}))};
 }
 // Automatic L joint: only a unique perpendicular end-to-end partner at the
 // same known rail elevation. Mid-span crossings and ambiguous junctions stay intact.
@@ -406,9 +407,9 @@ function slidingCorner(f,furniture=[],plan){
    // Directed corner axes choose complementary roles, independent of IDs.
    const otherTracks=slidingTracks(other),through=cross(u,q)*Math.sign(t)*Math.sign(s)>0;
    const otherNormal=[-q[1],q[0]],leafEnd=(t+dot(otherNormal,u)*otherTracks.leadingOffset+Math.sign(t)*(through?1:-1)*otherTracks.leafDepth/2)*flip;
-   const layout=slidingLayout(v,{side,leafEnd});if(layout.width<=2*layout.edge)continue;
+   const slope=-Math.sign(t)*flip*other.d/(dot(towardOther,normal)*v.d),layout=slidingLayout(v,{side,leafEnd,x,slope});if(layout.width<=2*layout.edge)continue;
    const bottom=v=>value(v,'floorTrack')?Math.min(8,height(v)/20):4,floorClearance=Math.max(bottom(v),otherBase.z-base.z+bottom(other));
-   out.push({other,side,x,leafEnd,through,floorClearance,slope:-Math.sign(t)*flip*other.d/(dot(towardOther,normal)*v.d)});
+   out.push({other,side,x,leafEnd,through,floorClearance,slope});
   }return out;
  };
  const hits=candidates(f);if(hits.length!==1||candidates(hits[0].other).length!==1)return null;
