@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "ceiling-edges",
+    "ceiling-boundaries"
+  ],
+  "results": [
+    {
+      "name": "ceiling-edges",
+      "status": "PASS",
+      "seconds": 22.9,
+      "log": "ceiling-edges.log"
+    },
+    {
+      "name": "ceiling-boundaries",
+      "status": "PASS",
+      "seconds": 22.7,
+      "log": "ceiling-boundaries.log"
+    }
+  ],
+  "notRun": []
+}
