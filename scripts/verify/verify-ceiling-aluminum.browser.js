@@ -1,0 +1,19 @@
+async(page,V)=>{
+ const results=[],check=(v,m)=>{if(!v)throw Error(m);};
+ for(const mode of ['http','file']){
+  const ctx=await page.context().browser().newContext({viewport:{width:1440,height:1040},offline:mode==='file'}),p=await ctx.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
+  const design=k=>p.locator(`[data-design-action="${k}"]`),field=k=>p.locator(`[data-design="${k}"]`),valid=()=>p.waitForFunction(()=>!document.querySelector('[data-design-action="save"]').disabled),importUI=async file=>{await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();await p.locator('#pr-file').setInputFiles(file);await p.locator('#pr-restore-confirm').click();await p.locator('#dlg').waitFor({state:'hidden'});};
+  try{
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await importUI(V.root+'/tests/fixtures/ceilings.furnish.json');await p.locator('#ceiling-open').click();await p.locator('.ceiling-copy-room summary').click();await design('copy-room').click();await p.locator('[name="ceiling-design-style"][value="aluminum"]').check();await valid();
+   check(await field('thickness').inputValue()==='8','new aluminum construction depth');await field('panelDirection').selectOption('90');await field('panelGap').fill('2');await field('panelTrim').fill('25');await valid();await p.waitForTimeout(200);
+   await field('panelGap').fill('0');await p.waitForTimeout(200);check(await design('save').isDisabled(),'invalid seam blocks save');check(await field('panelGap').inputValue()==='0','invalid text retained');await field('panelGap').fill('1');await valid();await p.waitForTimeout(200);
+   await p.locator('[data-design-view="3d"]').click();await p.locator('[data-design-3d] canvas').waitFor();await p.waitForTimeout(300);await p.screenshot({path:V.output('playwright/ceiling-aluminum/'+mode+'-3d.png'),animations:'disabled'});
+   await design('save').click();await p.locator('#dlg').waitFor({state:'hidden'});const saved=await p.evaluate(()=>JSON.stringify(state.ceilings));check(await p.evaluate(()=>state.ceilings.regions[0].style==='aluminum'&&state.ceilings.items[0].aluminum.direction===90),'saved panel config');
+   await p.locator('#undo').click();check(await p.evaluate(()=>!state.ceilings),'undo');await p.locator('#redo').click();check(await p.evaluate(()=>JSON.stringify(state.ceilings))===saved,'redo');await V.waitForCache(p);check(await p.evaluate(()=>store.v===21&&STORE==='huxing-design-v21'),'v21 cache');await p.reload();check(await p.evaluate(()=>JSON.stringify(state.ceilings))===saved,'reload');
+   await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();const download=p.waitForEvent('download');await p.locator('#pr-export').click();const file=V.output('playwright/ceiling-aluminum/'+mode+'.furnish.json');await(await download).saveAs(file);await p.locator('#dlgClose').click();await importUI(file);check(await p.evaluate(()=>JSON.stringify(state.ceilings))===saved,'export/import');
+   await p.locator('#ceiling-open').click();await p.locator('[data-design-stage="style"]').click();await p.setViewportSize({width:390,height:844});await p.waitForTimeout(150);check(await p.locator('#ceiling-design').evaluate(el=>el.scrollWidth<=el.clientWidth+1),'390px no overflow');await p.screenshot({path:V.output('playwright/ceiling-aluminum/'+mode+'-mobile.png'),animations:'disabled'});await field('panelDirection').selectOption('0');await p.waitForTimeout(200);await design('cancel').click();check(await p.evaluate(()=>JSON.stringify(state.ceilings))===saved,'cancel retains saved config');check(!errors.length,errors.join('\n'));
+   results.push({mode,passed:true,production3D:true,invalidInputs:true,undoRedo:true,reload:true,exportImport:true,mobile390:true,cancel:true});
+  }finally{await ctx.close();}
+ }
+ return results;
+}

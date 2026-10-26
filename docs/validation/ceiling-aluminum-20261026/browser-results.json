@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-aluminum",
+    "ceiling-live",
+    "portable-smoke"
+  ],
+  "results": [
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 12.2,
+      "log": "browser-aluminum.log"
+    },
+    {
+      "name": "ceiling-live",
+      "status": "PASS",
+      "seconds": 17.7,
+      "log": "browser-live.log"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 10.8,
+      "log": "browser-smoke.log"
+    }
+  ],
+  "notRun": []
+}
