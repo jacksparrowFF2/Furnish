@@ -115,6 +115,11 @@
 .ceiling-section-reuse{margin:10px 0 14px}.ceiling-section-reuse summary{cursor:pointer;font-weight:600}
 .ceiling-studio-footer .actions{flex-wrap:wrap}
 .ceiling-studio .ceiling-preset.on{color:var(--accent-ink)}
+.ceiling-preset-card{min-width:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ceiling-preset-card .ceiling-preset{width:100%;border:0;border-radius:0}
+.ceiling-preset-card .ceiling-preset-delete{display:block;width:100%;border:0;border-top:1px solid var(--line);border-radius:0;padding:5px;font-size:11px;color:var(--muted)}
+.ceiling-component-members{margin:12px 0}.ceiling-component-members>div{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
+.ceiling-component-members .btn{white-space:normal;flex-shrink:0;font-size:11px}
 .ceiling-assembly-2d.ceiling-assembly-single{grid-template-columns:minmax(0,1fr)}
 .ceiling-assembly-tabs{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
 .ceiling-assembly-tabs .btn{flex:1;white-space:normal;padding:8px 4px;font-size:11px}

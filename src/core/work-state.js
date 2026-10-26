@@ -29,7 +29,7 @@
       (root.FurnishWallFinish||require('./wall-finish-core.js')).validate(work.wallFinishes);
       (root.FurnishFloorFinish||require('./floor-finish-core.js')).validate(work.floorFinishes);
       if(work.wallTiling!==undefined)(root.FurnishWallTiling||require('./wall-tiling-core.js')).validate(work.wallTiling);
-      (root.FurnishCeiling||require('./ceiling-core.js')).validate(work.ceilings);
+      if(work.ceilings)Object.assign(work,(root.FurnishCeiling||require('./ceiling-core.js')).upgradeWork(work));(root.FurnishCeiling||require('./ceiling-core.js')).validate(work.ceilings);
       if(work.purchaseOrders!==undefined)(root.FurnishPurchasing||require('./purchasing-core.js')).validate(work.purchaseOrders);
       if(work.drawing!==undefined)(root.FurnishDrawing||require('./drawing-core.js')).settings(work.drawing);
       if(work.architecture){

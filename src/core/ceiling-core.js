@@ -87,13 +87,57 @@ function snapSectionMove(input,du,dd,references,radius){const anchors=[...input.
 function snapSectionAngle(angle,references){const step=rules().sectionRotationStep,candidates=[Math.round(angle/step)*step];for(const poly of references)for(let i=0;i<poly.length;i++){const b=poly[(i+1)%poly.length],a=poly[i],v=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;for(let k=-8;k<=8;k++)candidates.push(v+k*90);}const nearest=candidates.sort((a,b)=>Math.abs(a-angle)-Math.abs(b-angle))[0];return Math.abs(nearest-angle)<=rules().sectionRotationTolerance?{angle:nearest,snapped:true}:{angle,snapped:false};}
 
 function centerLayout({height,thickness,sections,centerConnection,center},base){
- const inset=Math.max(...sections.flatMap(s=>sectionPoints(s.section).map(v=>v.u))),mode=centerConnection?.mode||'flush';
+ const inset=Math.max(0,...sections.flatMap(s=>sectionPoints(s.section).map(v=>v.u))),mode=centerConnection?.mode||'flush';
  if(mode==='flush')return {mode,height,inset,overlap:0};
  if(mode==='independent')return {mode,height:centerConnection.height,inset:centerConnection.inset,overlap:0};
  const source=sections[centerConnection.sectionIndex],q=channelValues(source?.section);if(!q){if(center===false)return {mode,height,inset,overlap:0,inactive:true};fail('中央平顶的翼边参照已变化，请重新选择连接方式');}if(center!==false&&(Math.abs(q.rotation||0)>eps()||q.mirrorU||q.mirrorD))fail('镜像或旋转后的灯槽不能作为水平翼边连接，请关闭中央平顶或改用独立连接');
  return {mode,height:base-q.d-thickness,inset:q.u+q.bodyWidth,overlap:q.width-q.bodyWidth,contactD:q.d,contactEnd:q.u+q.width,sectionIndex:centerConnection.sectionIndex};
 }
-function assemblyInfo(r){const gypsumIndex=r.sections.findIndex(s=>s.section.template?.kind==='lowCove'||plainSoffitValues(s.section)),channelIndex=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),gypsum=gypsumIndex>=0?clone(r.sections[gypsumIndex].section.template?.values||plainSoffitValues(r.sections[gypsumIndex].section)):null,channel=channelIndex>=0?channelValues(r.sections[channelIndex].section):null,bottom=Math.max(...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d))),base=r.height+bottom;return {gypsumIndex,channelIndex,gypsum,channel,bottom,base,center:centerLayout(r,base)};}
+// One section has one owner; lighting is only authored on channel sections.
+function sectionRole(s){return s.material==='aluminum'||s.template?.kind==='upChannel'?'channel':'gypsum';}
+function upgradeRole(s,index=0){return s.material||s.template||plainSoffitValues(s)?sectionRole(s):s.light||index>0?'channel':'gypsum';}
+function componentPresets(family){const p=rules().componentPresets[family];if(!p)fail('请选择边吊或灯槽');return clone(p);}
+function componentPreset(family,kind){
+ if(!componentPresets(family).some(p=>p.id===kind))fail('未知部件预设');
+ if(family==='gypsum'){const item=clone(sectionPreset(kind)[0]);delete item.section.light;item.section.material='gypsum';item.name=componentPresets(family).find(p=>p.id===kind).name;return item;}
+ const item=clone(sectionPreset(kind)[1]);item.section.material='aluminum';item.name=componentPresets(family).find(p=>p.id===kind).name;return item;
+}
+function stableRegionParts(r){if(!r.partIds)r.partIds=r.sections.map((_,i)=>r.id+(r.style==='ring'?'_part_':'_section_')+i);if(!r.centerId)r.centerId=r.id+'_part_'+(r.style==='ring'?r.sections.length:0);return r;}
+function duplicateRegion(region,id){const next=clone(region);next.id=id;delete next.partIds;delete next.centerId;return stableRegionParts(next);}
+function nextRegionPartId(r){let n=0,id;do{id=r.id+'_section_'+n++;}while(r.partIds.includes(id)||id===r.centerId);return id;}
+function replaceAssemblyPart(region,family,kind){
+ const r=stableRegionParts(clone(region)),old=r.sections.findIndex((s,i)=>sectionRole(s.section,i)===family),item=componentPreset(family,kind),info=assemblyInfo(r);
+ if(family==='channel'&&info.gypsum){const source=assemblyInfo({height:0,thickness:r.thickness,sections:sectionPreset(kind),center:false}),du=info.gypsum.projection-source.gypsum.projection,dd=info.gypsum.drop-info.gypsum.bottom-source.gypsum.drop+source.gypsum.bottom;item.section=transformSection(item.section,{du,dd});}
+ if(old<0){r.partIds.push(nextRegionPartId(r));r.sections.push(item);}else r.sections[old]=item;
+ if(r.centerConnection?.mode==='flange'){const i=r.sections.findIndex(s=>s.section.template?.kind==='upChannel');if(i<0)delete r.centerConnection;else r.centerConnection.sectionIndex=i;}
+ regionItems(r);return r;
+}
+function removeAssemblyPart(region,index){
+ const r=stableRegionParts(clone(region));if(!Number.isInteger(index)||index<0||index>=r.sections.length)fail('请选择要删除的截面');
+ const info=assemblyInfo(r),central=info.center;r.sections.splice(index,1);r.partIds.splice(index,1);r.sections.forEach((s,i)=>{if(!s.section.material)s.section.material=sectionRole(region.sections[i>=index?i+1:i].section,i>=index?i+1:i)==='channel'?'aluminum':'gypsum';});
+ const bottom=Math.max(0,...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d)));r.height=info.base-bottom;
+ if(r.centerConnection?.mode==='flange'){if(r.centerConnection.sectionIndex===index)r.centerConnection={mode:'independent',height:central.height,inset:central.inset};else if(r.centerConnection.sectionIndex>index)r.centerConnection.sectionIndex--;}
+ // Keep a flush center at its real saved elevation when the controlling part leaves.
+ if(r.center&&r.height!==region.height&&(!r.centerConnection||r.centerConnection.mode==='flush'))r.centerConnection={mode:'independent',height:central.height,inset:central.inset};
+ regionItems(r);return r;
+}
+function setPresetExcluded(data,family,kind,excluded=true){
+ componentPreset(family,kind);const next=clone(data||{version:1,items:[]}),key=family+':'+kind,keys=new Set(next.excludedPresets||[]);if(excluded)keys.add(key);else keys.delete(key);if(keys.size)next.excludedPresets=[...keys].sort();else delete next.excludedPresets;validate(next);return next;
+}
+function channelForLight(light){
+ const l=clone(light),q=rules().upChannel,opening=Math.max(q.opening,l.width+2),bodyWidth=Math.max(q.bodyWidth,opening+2*q.wall+2),width=bodyWidth+rules().min;
+ let result=upChannel({u:l.u-bodyWidth/2,d:l.d,opening,bodyWidth,width,lightWidth:l.width,lightThickness:l.thickness,diffuserEnabled:false});
+ if(Math.abs(l.angle+90)>eps())result=transformSection(result,{angle:l.angle+90,pivot:[l.u,l.d]});const a=l.angle*Math.PI/180;result.light={...l,u:l.u+Math.cos(a)*q.wall,d:l.d+Math.sin(a)*q.wall};section(result);return result;
+}
+function upgrade(data,{onAdded=()=>{}}={}){
+ if(data===undefined)return data;validate(data);const next=clone(data),ids=new Set((next.items||[]).map(c=>c.id));
+ const extraId=id=>{let key=id+'_channel',n=1;while(ids.has(key))key=id+'_channel_'+n++;ids.add(key);return key;};
+ for(const r of next.regions||[]){let changed=false;const before=assemblyInfo(r),extra=[],sources=[];r.sections.forEach((item,i)=>{const role=upgradeRole(item.section,i);if(!item.section.material){item.section.material=role==='channel'?'aluminum':'gypsum';changed=true;}if(role==='gypsum'&&item.section.light){extra.push({name:('灯槽 · '+item.name).slice(0,80),section:channelForLight(item.section.light)});sources.push(i);delete item.section.light;changed=true;}});if(extra.length){stableRegionParts(r);for(const [j,item]of extra.entries()){const id=nextRegionPartId(r);onAdded(r.partIds[sources[j]],id);r.partIds.push(id);r.sections.push(item);}const bottom=Math.max(0,...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d)));if(r.style==='ring')r.height=before.base-bottom;if(r.center&&(!r.centerConnection||r.centerConnection.mode==='flush'))r.centerConnection={mode:'independent',height:before.center.height,inset:before.center.inset};}if(changed){const generated=regionItems(r);next.items=next.items.filter(c=>c.regionId!==r.id).concat(generated);}}
+ const additions=[];for(const item of next.items||[])if(!item.regionId&&item.kind==='profile'){const role=upgradeRole(item.section);if(!item.section.material)item.section.material=role==='channel'?'aluminum':'gypsum';if(role==='gypsum'&&item.section.light){const housing=clone(item);housing.id=extraId(item.id);housing.name=('灯槽 · '+item.name).slice(0,80);housing.section=channelForLight(item.section.light);delete item.section.light;item.section.material='gypsum';additions.push(housing);onAdded(item.id,housing.id);}}next.items.push(...additions);validate(next);return next;
+}
+function upgradeWork(work){if(!work?.ceilings)return work;const next=clone(work);next.ceilings=upgrade(next.ceilings,{onAdded(source,target){const assignments=next.objectLayers?.assignments,layer=assignments?.['ceiling:'+source];if(layer)assignments['ceiling:'+target]=layer;}});return next;}
+function requiresV24(work){return !!work?.ceilings?.excludedPresets?.length||!!work?.ceilings?.regions?.some(r=>!r.sections.length||r.partIds!==undefined||r.centerId!==undefined);}
+function assemblyInfo(r){const gypsumIndex=r.sections.findIndex((s,i)=>sectionRole(s.section,i)==='gypsum'&&(s.section.template?.kind==='lowCove'||plainSoffitValues(s.section))),channelIndex=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),gypsum=gypsumIndex>=0?clone(r.sections[gypsumIndex].section.template?.values||plainSoffitValues(r.sections[gypsumIndex].section)):null,channel=channelIndex>=0?channelValues(r.sections[channelIndex].section):null,bottom=Math.max(0,...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d))),base=r.height+bottom;return {gypsumIndex,channelIndex,gypsum,channel,bottom,base,center:centerLayout(r,base)};}
 function editAssembly(region,{gypsum,channel,centerConnection,addChannel=false,replaceChannelIndex}={}){
  const r=clone(region),gi=r.sections.findIndex(s=>s.section.template?.kind==='lowCove'||plainSoffitValues(s.section)),ci=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),before=gi>=0?r.sections[gi].section.template?.values||plainSoffitValues(r.sections[gi].section):null;let q=ci>=0?channelValues(r.sections[ci].section):null;
  if(gypsum){if(!before)fail('当前石膏为自绘轮廓，请使用高级截面编辑或选择参数化预设');const old=r.sections[gi].section,next=(plainSoffitValues(old)?plainSoffit:lowCove)({...before,...gypsum});if(old.light)next.light=clone(old.light);else delete next.light;if(old.material)next.material=old.material;r.sections[gi].section=next;}
@@ -105,7 +149,7 @@ function editAssembly(region,{gypsum,channel,centerConnection,addChannel=false,r
  if(q){const item={name:ci>=0?r.sections[ci].name:'上发光型材 · 含柔光板',section:upChannel(q)};if(ci>=0)r.sections[ci]=item;else if(replaceChannelIndex!==undefined){r.sections[replaceChannelIndex]=item;if(gi>=0)delete r.sections[gi].section.light;}else{if(gi>=0)delete r.sections[gi].section.light;r.sections.push(item);}}
  if(centerConnection!==undefined)r.centerConnection=clone(centerConnection);return r;
 }
-function reuseAssembly(target,source){if(!source||!Array.isArray(source.sections)||!source.sections.length||source.sections.length>rules().maxSections||!finite(source.height)||!finite(target.height))fail('请选择有效的已建截面');const next=clone(target);next.sections=clone(source.sections);next.center=source.center===true;if(source.centerConnection){next.centerConnection=clone(source.centerConnection);if(next.centerConnection.mode==='independent')next.centerConnection.height+=target.height-source.height;}else delete next.centerConnection;regionItems(next);return next;}
+function reuseAssembly(target,source){if(!source||!Array.isArray(source.sections)||!source.sections.length||source.sections.length>rules().maxSections||!finite(source.height)||!finite(target.height))fail('请选择有效的已建截面');const next=clone(target);next.sections=clone(source.sections);if(next.partIds){while(next.partIds.length<next.sections.length)next.partIds.push(nextRegionPartId(next));next.partIds.length=next.sections.length;}next.center=source.center===true;if(source.centerConnection){next.centerConnection=clone(source.centerConnection);if(next.centerConnection.mode==='independent')next.centerConnection.height+=target.height-source.height;}else delete next.centerConnection;regionItems(next);return next;}
 function assemblySample(r,length=600){
  const info=assemblyInfo(r),path={a:[0,0],b:[length,0],normal:[0,1]},items=r.sections.map((s,i)=>({id:'assembly_section_'+i,kind:'profile',name:s.name,roomId:'assembly_sample',height:info.base,path:clone(path),section:clone(s.section)}));
  if(r.center)items.push({id:'assembly_flat',kind:'flat',name:'中央平顶 · 样段截断',roomId:'assembly_sample',height:info.center.height,thickness:r.thickness,polygon:[[0,info.center.inset],[length,info.center.inset],[length,info.center.inset+350],[0,info.center.inset+350]]});
@@ -117,13 +161,13 @@ function designRegion(room,{style,height,thickness=rules().flatThickness,section
  if(!['none','flat','ring','aluminum'].includes(style))fail('请选择吊顶样式');
  if(style==='none')return [];
  const poly=regionBoundary(room);polygon(poly,'吊顶区域');
- const makeFlat=(p,z=height)=>({id:makeId(),kind:'flat',roomId:room.id,name:(room.name+' · 平面吊顶').slice(0,80),height:z,thickness,polygon:clone(p)});
+ const makeFlat=(p,z=height)=>({id:makeId('flat'),kind:'flat',roomId:room.id,name:(room.name+' · 平面吊顶').slice(0,80),height:z,thickness,polygon:clone(p)});
  if(style==='flat'||style==='aluminum'){const item=makeFlat(poly);if(style==='aluminum'){item.name=(room.name+' · 300×600铝扣板').slice(0,80);item.aluminum=clone(aluminum||aluminumDefaults());}const items=[item];validate({version:1,items});return items;}
  const paths=boundaryPaths(room),path={closed:true,join:'miter',segments:paths.map((p,i)=>({...p,id:'edge'+i}))};
- if(!Array.isArray(sections)||!sections.length)fail('请先创建截面');
+ if(!Array.isArray(sections))fail('请先创建截面');if(!sections.length)return center?[makeFlat(centerConnection?.mode==='independent'?roomInsetBoundary(room,centerConnection.inset):poly,centerConnection?.mode==='independent'?centerConnection.height:height)]:[];
  sections.forEach(s=>section(s.section));
  const bottom=Math.max(...sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d))),base=height+bottom;
- const items=sections.map(s=>({id:makeId(),kind:'profile',roomId:room.id,name:(room.name+' · '+s.name).slice(0,80),height:base,path:clone(path),section:clone(s.section)}));
+ const items=sections.map((s,index)=>({id:makeId('profile',index),kind:'profile',roomId:room.id,name:(room.name+' · '+s.name).slice(0,80),height:base,path:clone(path),section:clone(s.section)}));
  const connection=centerLayout({height,thickness,sections,centerConnection,center},base),inner=closedOffset(items[0],connection.inset);
  if(center)items.push(makeFlat(inner,connection.height));
  validate({version:1,items});
@@ -133,15 +177,15 @@ function designRegion(room,{style,height,thickness=rules().flatThickness,section
 }
 function sameValue(a,b){if(typeof a==='number'&&typeof b==='number')return Math.abs(a-b)<=eps();if(a===b)return true;if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;const ka=Object.keys(a).sort(),kb=Object.keys(b).sort();return ka.length===kb.length&&ka.every((k,i)=>k===kb[i]&&sameValue(a[k],b[k]));}
 function validateRegion(r){
- if(!r||Object.keys(r).some(k=>!['id','name','polygon','style','height','thickness','sections','center','centerConnection','aluminum'].includes(k))||!key(r.id)||typeof r.name!=='string'||!r.name.trim()||r.name.length>80||!['none','flat','ring','aluminum'].includes(r.style)||!finite(r.height)||r.height<0||r.height>rules().max||!solid(r.thickness)||typeof r.center!=='boolean'||!Array.isArray(r.sections)||!r.sections.length||r.sections.length>rules().maxSections)fail('吊顶独立区域、样式或尺寸无效');
- if(r.aluminum!==undefined)validateAluminum(r.aluminum);
+ if(!r||Object.keys(r).some(k=>!['id','name','polygon','style','height','thickness','sections','center','centerConnection','aluminum','partIds','centerId'].includes(k))||!key(r.id)||typeof r.name!=='string'||!r.name.trim()||r.name.length>80||!['none','flat','ring','aluminum'].includes(r.style)||!finite(r.height)||r.height<0||r.height>rules().max||!solid(r.thickness)||typeof r.center!=='boolean'||!Array.isArray(r.sections)||r.sections.length>rules().maxSections)fail('吊顶独立区域、样式或尺寸无效');
+ if(r.aluminum!==undefined)validateAluminum(r.aluminum);if(r.partIds!==undefined&&(!Array.isArray(r.partIds)||r.partIds.length!==r.sections.length||r.partIds.some(id=>!key(id))||new Set(r.partIds).size!==r.partIds.length))fail('吊顶截面身份无效');if(r.centerId!==undefined&&(!key(r.centerId)||r.partIds?.includes(r.centerId)))fail('中央平顶身份无效');
  polygon(r.polygon,'吊顶独立区域');for(const s of r.sections){if(!s||Object.keys(s).some(k=>!['name','section'].includes(k))||typeof s.name!=='string'||!s.name.trim()||s.name.length>80)fail('吊顶区域截面名称无效');section(s.section);}
  if(r.centerConnection!==undefined){const c=r.centerConnection;if(!c||Object.keys(c).some(k=>!['mode','sectionIndex','height','inset'].includes(k))||!['flush','flange','independent'].includes(c.mode))fail('中央平顶连接方式无效');if(c.mode==='flange'&&(!Number.isInteger(c.sectionIndex)||c.sectionIndex<0||c.sectionIndex>=r.sections.length||r.center!==false&&!channelValues(r.sections[c.sectionIndex]?.section)))fail('请选择实际的上发光型材翼边');if(c.mode==='independent'&&(!finite(c.height)||c.height<0||c.height>rules().max||!finite(c.inset)||c.inset<0||c.inset>rules().max))fail('中央平顶独立标高或边距无效');}
  return r;
 }
-function regionItems(r){validateRegion(r);let i=0;return designRegion({id:r.id,name:r.name,poly:r.polygon},r,()=>r.id+'_part_'+i++).map(c=>{delete c.roomId;return {...c,regionId:r.id};});}
+function regionItems(r){validateRegion(r);let i=0;return designRegion({id:r.id,name:r.name,poly:r.polygon},r,(kind,index)=>kind==='flat'&&r.centerId?r.centerId:kind==='profile'&&r.partIds?r.partIds[index]:r.id+'_part_'+i++).map(c=>{delete c.roomId;return {...c,regionId:r.id};});}
 function setRegion(work,r){const next=clone(work);validateRegion(r);const data=next.ceilings||{version:1,items:[]},regions=clone(data.regions||[]),i=regions.findIndex(v=>v.id===r.id);if(i<0)regions.push(clone(r));else regions[i]=clone(r);next.ceilings={...data,regions,items:[...data.items.filter(c=>c.regionId!==r.id),...regionItems(r)]};validate(next.ceilings);return next;}
-function removeRegion(work,id){const next=clone(work);if(!next.ceilings?.regions?.some(r=>r.id===id))fail('吊顶独立区域不存在');next.ceilings.regions=next.ceilings.regions.filter(r=>r.id!==id);next.ceilings.items=next.ceilings.items.filter(c=>c.regionId!==id);if(!next.ceilings.regions.length)delete next.ceilings.regions;if(!next.ceilings.items.length&&!next.ceilings.regions)delete next.ceilings;return next;}
+function removeRegion(work,id){const next=clone(work);if(!next.ceilings?.regions?.some(r=>r.id===id))fail('吊顶独立区域不存在');next.ceilings.regions=next.ceilings.regions.filter(r=>r.id!==id);next.ceilings.items=next.ceilings.items.filter(c=>c.regionId!==id);if(!next.ceilings.regions.length)delete next.ceilings.regions;if(!next.ceilings.items.length&&!next.ceilings.regions&&!next.ceilings.excludedPresets?.length)delete next.ceilings;return next;}
 function section(s){
  if(!s||!Array.isArray(s.vertices))fail('缺少吊顶截面');const ids=new Set();
  for(const v of s.vertices){if(!v||!key(v.id)||ids.has(v.id)||![v.u,v.d].every(n=>finite(n)&&n>=0&&n<=rules().max))fail('截面节点编号须唯一，坐标须为0～20000 mm');ids.add(v.id);}
@@ -259,7 +303,7 @@ function sample(c){
  const t0=tangent(legs[0]),t1=tangent(legs[1]),original0=distance(legs[0].a,legs[0].b),original1=distance(legs[1].a,legs[1].b),L0=Math.min(need,original0),L1=Math.min(need,original1);if(L0<original0-eps()&&offset('start')>=original0-L0-eps()||L1<original1-eps()&&offset('end')>=original1-L1-eps())return out;legs[0].a=legs[0].b.map((v,i)=>v-t0[i]*L0);legs[1].b=legs[1].a.map((v,i)=>v+t1[i]*L1);if(L0<original0-eps())drop('start');if(L1<original1-eps())drop('end');return out;
 }
 function validate(data){
- if(data===undefined)return;if(!data||data.version!==1||!Array.isArray(data.items)||data.items.length>rules().maxItems)fail('吊顶数据版本或数量无效');const ids=new Set();
+ if(data===undefined)return;if(!data||data.version!==1||!Array.isArray(data.items)||data.items.length>rules().maxItems)fail('吊顶数据版本或数量无效');if(data.excludedPresets!==undefined&&(!Array.isArray(data.excludedPresets)||new Set(data.excludedPresets).size!==data.excludedPresets.length||data.excludedPresets.some(k=>typeof k!=='string'||!Object.entries(rules().componentPresets).some(([family,presets])=>presets.some(p=>family+':'+p.id===k)))))fail('吊顶预设删除记录无效');const ids=new Set();
  const regions=data.regions===undefined?[]:data.regions;if(!Array.isArray(regions)||regions.length>rules().maxRegions)fail('吊顶独立区域数量无效');const regionIds=new Set();for(const r of regions){validateRegion(r);if(regionIds.has(r.id))fail('吊顶独立区域编号重复');regionIds.add(r.id);}
  for(const c of data.items){
   if(!c||!key(c.id)||ids.has(c.id)||!(c.regionId!==undefined?key(c.regionId)&&regionIds.has(c.regionId)&&c.roomId===undefined:key(c.roomId))||typeof c.name!=='string'||!c.name.trim()||c.name.length>80||!finite(c.height)||c.height<0||c.height>rules().max)fail('吊顶编号、区域、名称或标高无效');ids.add(c.id);
@@ -333,7 +377,7 @@ function resolve(data){
  return {items,pending,...(data?.regions?{regions:clone(data.regions)}:{})};
 }
 function edit(work,item){const next=clone(work);next.ceilings=next.ceilings||{version:1,items:[]};const i=next.ceilings.items.findIndex(c=>c.id===item.id);if(i<0)next.ceilings.items.push(clone(item));else next.ceilings.items[i]=clone(item);validate(next.ceilings);return next;}
-function remove(work,id){const next=clone(work);if(next.ceilings){if(next.ceilings.items.find(c=>c.id===id)?.regionId)fail('请在区域设计中修改或删除完整吊顶区域');const current=resolve(next.ceilings);next.ceilings.items=current.items.filter(c=>c.id!==id).map(c=>{if(c.attachment?.profileId===id){delete c.attachment;delete c.basePolygon;}return c;});if(!next.ceilings.items.length&&!next.ceilings.regions?.length)delete next.ceilings;}return next;}
+function remove(work,id){const next=clone(work);if(next.ceilings){if(next.ceilings.items.find(c=>c.id===id)?.regionId)fail('请在区域设计中修改或删除完整吊顶区域');const current=resolve(next.ceilings);next.ceilings.items=current.items.filter(c=>c.id!==id).map(c=>{if(c.attachment?.profileId===id){delete c.attachment;delete c.basePolygon;}return c;});if(!next.ceilings.items.length&&!next.ceilings.regions?.length&&!next.ceilings.excludedPresets?.length)delete next.ceilings;}return next;}
 function overlapArea(a,b){const Z=zones();return Z.area(Z.decompose([a,b],p=>Z.inside(p,a)&&Z.inside(p,b)));}
 function regionContext(plan,r){
  const rooms=(plan.rooms||[]).filter(room=>room.counted!==false),Z=zones(),polys=rooms.flatMap(room=>room.polys||[room.poly]),outside=polys.length?Z.area(Z.decompose([r.polygon,...polys],p=>Z.inside(p,r.polygon)&&!polys.some(poly=>Z.inside(p,poly)))):Math.abs(area(r.polygon));
@@ -494,6 +538,6 @@ function requiresV18(work){const sections=[...(work?.ceilings?.items||[]).filter
 function requiresV21(work){return !!work?.ceilings?.regions?.some(r=>r.style==='aluminum'||r.aluminum!==undefined)||!!work?.ceilings?.items?.some(c=>c.aluminum!==undefined);}
 function requiresV23(work){return [...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))].some(s=>s?.template?.kind==='upChannel'&&Object.keys(s.template.values).some(k=>k.startsWith('mount')));}
 function requiresV22(work){return [...(work?.ceilings?.regions||[]),...(work?.ceilings?.items||[])].some(c=>c.aluminum&&(c.aluminum.origin!==undefined||![0,90].includes(c.aluminum.direction)));}
-const api={plainSoffit,plainSoffitValues,reuseAssembly,requiresV23,requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+const api={duplicateRegion,upgradeWork,stableRegionParts,sectionRole,componentPresets,componentPreset,replaceAssemblyPart,removeAssemblyPart,setPresetExcluded,upgrade,requiresV24,plainSoffit,plainSoffitValues,reuseAssembly,requiresV23,requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

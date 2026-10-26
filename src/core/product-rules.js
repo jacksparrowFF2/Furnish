@@ -430,6 +430,7 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2},
  // Design examples; the wash-channel envelope is read from the user's image.
+ componentPresets:{gypsum:[{id:'plain',name:'封闭边吊'},{id:'low',name:'窄边托板'},{id:'wide',name:'宽边托板'}],channel:[{id:'wash',name:'43.5 mm 洗顶灯槽'},{id:'upMount',name:'39 mm 上发光 · 安装卡槽'},{id:'up',name:'39 mm 上发光 · 简化'}]},
  soffit:{drop:250,projection:300,back:12,bottom:12,front:12},
  sectionPresets:{low:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},wide:{drop:250,projection:300,back:12,bottom:12,front:12,lip:40}},
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},

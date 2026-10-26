@@ -1,0 +1,130 @@
+{
+  "results": [
+    {
+      "name": "ceiling-components",
+      "status": "PASS",
+      "seconds": 0.378
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 0.182
+    },
+    {
+      "name": "ceiling-regions",
+      "status": "PASS",
+      "seconds": 0.534
+    },
+    {
+      "name": "ceiling-storage",
+      "status": "PASS",
+      "seconds": 0.439
+    },
+    {
+      "name": "ceilings",
+      "status": "PASS",
+      "seconds": 0.186
+    },
+    {
+      "name": "ceiling-corners",
+      "status": "PASS",
+      "seconds": 0.216
+    },
+    {
+      "name": "ceiling-continuous-light",
+      "status": "PASS",
+      "seconds": 0.406
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "PASS",
+      "seconds": 0.225
+    },
+    {
+      "name": "ceiling-assembly",
+      "status": "PASS",
+      "seconds": 0.332
+    },
+    {
+      "name": "ceiling-plain-soffit",
+      "status": "PASS",
+      "seconds": 0.161
+    },
+    {
+      "name": "ceiling-reuse",
+      "status": "PASS",
+      "seconds": 0.24
+    },
+    {
+      "name": "ceiling-section-transforms",
+      "status": "PASS",
+      "seconds": 0.302
+    },
+    {
+      "name": "ceiling-mirror-dimensions",
+      "status": "PASS",
+      "seconds": 0.315
+    },
+    {
+      "name": "ceiling-mount-contact",
+      "status": "PASS",
+      "seconds": 0.558
+    },
+    {
+      "name": "ceiling-panel-layout",
+      "status": "PASS",
+      "seconds": 0.456
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 0.26
+    },
+    {
+      "name": "ceiling-panel-devices",
+      "status": "PASS",
+      "seconds": 0.223
+    },
+    {
+      "name": "ceiling-check-broadphase",
+      "status": "PASS",
+      "seconds": 0.314
+    },
+    {
+      "name": "project",
+      "status": "PASS",
+      "seconds": 0.098
+    },
+    {
+      "name": "project-recovery",
+      "status": "PASS",
+      "seconds": 0.055
+    },
+    {
+      "name": "project-validation",
+      "status": "PASS",
+      "seconds": 0.078
+    },
+    {
+      "name": "work-state",
+      "status": "PASS",
+      "seconds": 0.131
+    },
+    {
+      "name": "workspace-cache",
+      "status": "PASS",
+      "seconds": 0.083
+    },
+    {
+      "name": "repository-workspace",
+      "status": "PASS",
+      "seconds": 0.108
+    },
+    {
+      "name": "repository-storage",
+      "status": "PASS",
+      "seconds": 0.323
+    }
+  ],
+  "notRun": []
+}

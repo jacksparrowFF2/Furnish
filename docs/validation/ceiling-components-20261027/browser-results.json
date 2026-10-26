@@ -1,0 +1,67 @@
+[
+  {
+    "case": "ceiling-components",
+    "status": "PASS",
+    "source": "verification-duN8lR"
+  },
+  {
+    "case": "ceiling-upgrade",
+    "status": "PASS",
+    "source": "verification-AHIY4P"
+  },
+  {
+    "case": "ceiling-uniform-inset",
+    "status": "PASS",
+    "source": "verification-2v1506"
+  },
+  {
+    "case": "ceiling-section-interaction",
+    "status": "PASS",
+    "source": "verification-FXPmuz"
+  },
+  {
+    "case": "ceiling-optional-cove",
+    "status": "PASS",
+    "source": "verification-FXPmuz"
+  },
+  {
+    "case": "ceiling-style-flow",
+    "status": "PASS",
+    "source": "verification-brM4uR"
+  },
+  {
+    "case": "ceiling-contact",
+    "status": "PASS",
+    "source": "verification-brM4uR"
+  },
+  {
+    "case": "ceiling-design",
+    "status": "PASS",
+    "source": "verification-brM4uR"
+  },
+  {
+    "case": "ceiling-assembly",
+    "status": "PASS",
+    "source": "verification-brM4uR"
+  },
+  {
+    "case": "ceiling-live",
+    "status": "PASS",
+    "source": "verification-brM4uR"
+  },
+  {
+    "case": "ceiling-reuse-pick",
+    "status": "PASS",
+    "source": "verification-axsOmP"
+  },
+  {
+    "case": "ceiling-panel-layout",
+    "status": "PASS",
+    "source": "verification-axsOmP"
+  },
+  {
+    "case": "portable-smoke",
+    "status": "PASS",
+    "source": "verification-axsOmP"
+  }
+]
