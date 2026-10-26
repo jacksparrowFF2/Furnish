@@ -316,3 +316,7 @@ pegboardAssembly.hatch.maxPanels=16／minWeb=20 集中定义局部盖板数与�
 DL269 的 clearanceReview=missing 与其余缺资料设备共用待核对入口。已知外包、孔径和面环基准不代表散热、驱动器及检修净空已知；没有新增持久字段、默认高度或厂家间距假设。`test-scene-clearance-settings` 继续遍历电器目录验证资料覆盖。见 [全量记录](validation/full-regression-main-20261025/README.md)。
 
 吊顶型材镜像补充：`upChannel.mirrorU/mirrorD=false`为新建／计算默认，false不写旧实例；保留参数的镜像字段需要v20。屏幕左右／上下镜像由核心转换局部反射、旋转和锚点，灯带与柔光板同变换。上口基准处上下镜像允许锚点d=0，实际顶点仍由原0～20000 mm校验。四项尺寸标注共用实际模板姿态，自绘只派生包络宽高；无新型号或厂家安装假设。
+
+## 型材安装卡槽（2026-10-26）
+
+`ceiling.upChannel.mountDetail=false`保留旧模板；新安装卡槽预设显式开启。mountProjection=4、mountHeight=7、mountBridge=3.5、mountFootHeight=4.5 mm为参考图未标的小尺寸示意，可在组合和独立编辑中调整。H形肋、空槽和下挡边进入共用生产轮廓，限制横肋上下实体、下挡边高于翼板和上下卡槽之间的净空；全局39／22.5／13.6／18.6 mm不改。关闭细节不补新字段，细节字段需要v23，旧恢复保留原几何。见 [型材卡槽](CEILINGS.md#组合剖面缩放精确贴合与安装卡槽2026-10-26)。

@@ -134,3 +134,6 @@
 @media(max-width:1000px){.ceiling-assembly-2d{grid-template-columns:minmax(0,1fr)}.ceiling-assembly-2d svg{height:250px}.ceiling-assembly-2d .ceiling-channel-detail svg{height:160px}.ceiling-studio [data-assembly-preview]{height:280px}}
 
 .ceiling-assembly-gesture-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:12px;color:#087b83;margin:8px 0}.ceiling-assembly-gesture-tools label{display:flex;align-items:center;gap:5px}.ceiling-assembly-gesture-tools input{width:auto}.ceiling-assembly-2d [data-assembly-diagram]{touch-action:none}.ceiling-assembly-2d [data-assembly-drag]{cursor:grab}.ceiling-assembly-2d [data-assembly-rotate]{cursor:crosshair}.ceiling-assembly-pose{margin-top:12px}
+
+.ceiling-assembly-2d .ceiling-fitting [data-assembly-node],.ceiling-assembly-2d .ceiling-fitting [data-assembly-edge]{cursor:crosshair}
+.ceiling-assembly-gesture-tools .btn.on{background:#d45d20;color:white}
