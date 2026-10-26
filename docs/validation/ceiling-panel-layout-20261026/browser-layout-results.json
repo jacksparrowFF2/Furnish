@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-panel-layout"
+  ],
+  "results": [
+    {
+      "name": "ceiling-panel-layout",
+      "status": "PASS",
+      "seconds": 19.9,
+      "log": "ceiling-panel-layout.log"
+    }
+  ],
+  "notRun": []
+}

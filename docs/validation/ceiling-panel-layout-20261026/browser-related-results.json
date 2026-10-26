@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-panel-layout",
+    "ceiling-panel-devices",
+    "ceiling-aluminum"
+  ],
+  "results": [
+    {
+      "name": "ceiling-panel-layout",
+      "status": "PASS",
+      "seconds": 15.3,
+      "log": "ceiling-panel-layout.log"
+    },
+    {
+      "name": "ceiling-panel-devices",
+      "status": "PASS",
+      "seconds": 19.2,
+      "log": "ceiling-panel-devices.log"
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 11.5,
+      "log": "ceiling-aluminum.log"
+    }
+  ],
+  "notRun": []
+}

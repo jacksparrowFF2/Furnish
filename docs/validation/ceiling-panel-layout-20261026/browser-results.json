@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-panel-layout",
+    "ceiling-live",
+    "portable-smoke"
+  ],
+  "results": [
+    {
+      "name": "ceiling-panel-layout",
+      "status": "PASS",
+      "seconds": 15.7,
+      "log": "ceiling-panel-layout.log"
+    },
+    {
+      "name": "ceiling-live",
+      "status": "PASS",
+      "seconds": 18,
+      "log": "ceiling-live.log"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 11,
+      "log": "portable-smoke.log"
+    }
+  ],
+  "notRun": []
+}

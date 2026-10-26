@@ -372,11 +372,11 @@ function fitDownlight(plan,f,furniture=[]){
  return choices[0];
 }
 function installationBodies(plan,furniture){const D=root.FurnishDesign||require('./design-core.js');return furniture.map(f=>({f,vertical:D.furnitureVerticalBounds(f,plan,furniture)}));}
-function circleInSlot(h,cell){const x=Math.max(cell[0][0],Math.min(h.x,cell[2][0])),y=Math.max(cell[0][1],Math.min(h.y,cell[2][1]));return Math.hypot(h.x-x,h.y-y)<h.r+eps();}
+function circleInSlot(h,cell){const p=[h.x,h.y];return inside(p,cell)||cell.some((a,i)=>{const b=cell[(i+1)%cell.length],dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)<h.r+eps();});}
 function panelSlot(c,row,col,grid=aluminumGrid(c)){
  const {start,pitch,count,inner}=grid;if(row<0||col<0||row>=count[1]||col>=count[0])return null;
- const x=start[0]+col*pitch[0],y=start[1]+row*pitch[1],cell=[[x,y],[x+pitch[0],y],[x+pitch[0],y+pitch[1]],[x,y+pitch[1]]];
- return {id:'panel_'+row+'_'+col,row,col,cell,cx:x+pitch[0]/2,cy:y+pitch[1]/2,full:Math.abs(overlapArea(cell,inner)-pitch[0]*pitch[1])<.01};
+ const x=start[0]+col*pitch[0],y=start[1]+row*pitch[1],cell=[[x,y],[x+pitch[0],y],[x+pitch[0],y+pitch[1]],[x,y+pitch[1]]].map(grid.toWorld),center=grid.toWorld([x+pitch[0]/2,y+pitch[1]/2]);
+ return {id:'panel_'+(row+grid.index[1])+'_'+(col+grid.index[0]),row,col,cell,cx:center[0],cy:center[1],full:Math.abs(overlapArea(cell,inner)-pitch[0]*pitch[1])<.01};
 }
 // A heater removes one complete nominal cell, including its seams/backing.
 // Position, orientation, elevation and other installed devices are rechecked on every derivation.
@@ -387,7 +387,7 @@ function panelReplacements(c,bodies){
   const spec=P.definition(f).ceilingPanel;
   if(!vertical||Math.abs(vertical.bottom+spec.rim-c.height)>eps()||P.height(f)<=spec.rim||Math.abs(f.w-spec.width)>eps()||Math.abs(f.d-spec.length)>eps())continue;
   const angle=(((f.rot||0)-c.aluminum.direction)%180+180)%180;if(Math.min(angle,180-angle)>eps())continue;
-  const col=Math.floor((f.cx-grid.start[0])/grid.pitch[0]),row=Math.floor((f.cy-grid.start[1])/grid.pitch[1]),slot=panelSlot(c,row,col,grid);
+  const local=grid.toLocal([f.cx,f.cy]),col=Math.floor((local[0]-grid.start[0])/grid.pitch[0]),row=Math.floor((local[1]-grid.start[1])/grid.pitch[1]),slot=panelSlot(c,row,col,grid);
   if(!slot?.full||Math.hypot(slot.cx-f.cx,slot.cy-f.cy)>spec.alignment||lamps.some(h=>circleInSlot(h,slot.cell)))continue;
   out.push({...slot,fid:f.id});
  }
@@ -397,7 +397,7 @@ function fitCeilingPanel(plan,f,furniture=[]){
  const P=root.FurnishProducts||require('./product-rules.js'),spec=!f.obj&&P.definition(f)?.ceilingPanel;if(!spec)fail('当前设备不支持整板替换');
  if(Math.abs(f.w-spec.width)>eps()||Math.abs(f.d-spec.length)>eps()||P.height(f)<=spec.rim)fail('请恢复300×600 mm标准面板尺寸和有效机身高度后安装');
  const ceilings=(plan.ceilings?.items||[]).filter(c=>c.kind==='flat'&&c.aluminum&&inside([f.cx,f.cy],c.polygon));if(ceilings.length!==1)fail(ceilings.length?'当前位置有多个铝扣板区域，请先调整区域或设备位置':'请先将浴霸放到铝扣板区域内');
- const c=ceilings[0],grid=aluminumGrid(c),slots=[];for(let row=0;row<grid.count[1];row++)for(let col=0;col<grid.count[0];col++){const x=grid.start[0]+(col+.5)*grid.pitch[0],y=grid.start[1]+(row+.5)*grid.pitch[1];slots.push({row,col,distance:Math.hypot(x-f.cx,y-f.cy)});}slots.sort((a,b)=>a.distance-b.distance||a.row-b.row||a.col-b.col);
+ const c=ceilings[0],grid=aluminumGrid(c),slots=[];for(let row=0;row<grid.count[1];row++)for(let col=0;col<grid.count[0];col++){const x=grid.start[0]+(col+.5)*grid.pitch[0],y=grid.start[1]+(row+.5)*grid.pitch[1];slots.push({row,col,distance:Math.hypot(grid.toWorld([x,y])[0]-f.cx,grid.toWorld([x,y])[1]-f.cy)});}slots.sort((a,b)=>a.distance-b.distance||a.row-b.row||a.col-b.col);
  const others=installationBodies(plan,furniture.filter(v=>v.id!==f.id)),occupied=panelReplacements(c,others);
  for(const {row,col}of slots){const slot=panelSlot(c,row,col,grid);if(!slot.full||occupied.some(s=>s.id===slot.id))continue;const candidate={...clone(f),cx:slot.cx,cy:slot.cy,rot:((c.aluminum.direction+Math.round(((f.rot||0)-c.aluminum.direction)/180)*180)%360+360)%360},base=P.floorBase(plan,candidate,furniture);if(!base.known)fail('家具基准地面标高未知，请先核对');candidate.mountHeight=c.height-spec.rim-base.z;if(candidate.mountHeight<0||candidate.mountHeight>rules().max)continue;
   if(panelReplacements(c,[...others,{f:candidate,vertical:{bottom:c.height-spec.rim,top:c.height-spec.rim+P.height(f)}}]).some(s=>s.fid===f.id))return candidate;
@@ -431,22 +431,26 @@ function checks(plan,bodies){
 }
 // Gaps and edge trim are visual details, never collision exemptions.
 function aluminumDefaults(){const {direction,gap,trim}=rules().aluminum;return {direction,gap,trim};}
-function validateAluminum(a){if(!a||Object.keys(a).some(k=>!['direction','gap','trim'].includes(k))||![0,90].includes(a.direction)||!finite(a.gap)||a.gap<.2||a.gap>5||!finite(a.trim)||a.trim<0||a.trim>100)fail('铝扣板方向须为0或90°，拼缝0.2～5 mm，收边0～100 mm');}
+function validateAluminum(a){if(!a||Object.keys(a).some(k=>!['direction','gap','trim','origin'].includes(k))||!finite(a.direction)||Math.abs(a.direction)>rules().aluminum.maxAngle||!finite(a.gap)||a.gap<.2||a.gap>5||!finite(a.trim)||a.trim<0||a.trim>100||a.origin!==undefined&&!point(a.origin))fail('铝扣板角度须为−360～360°，拼缝0.2～5 mm，收边0～100 mm，起铺点须为有效毫米坐标');}
 function aluminumGrid(c){
- const a=c.aluminum,poly=c.polygon,paths=boundaryPaths({poly}),inner=a.trim?closedOffset({path:{closed:true,segments:paths}},a.trim):clone(poly),xs=inner.map(p=>p[0]),ys=inner.map(p=>p[1]),min=[Math.min(...xs),Math.min(...ys)],max=[Math.max(...xs),Math.max(...ys)],r=rules().aluminum,pitch=a.direction===90?[r.length,r.width]:[r.width,r.length],count=min.map((v,i)=>Math.ceil((max[i]-v)/pitch[i]));
- if(count[0]*count[1]>r.maxPanels)fail('铝扣板区域过大，请拆分为较小区域');
- const start=min.map((v,i)=>(v+max[i]-count[i]*pitch[i])/2);return {inner,pitch,count,start};
+ const a=c.aluminum,poly=c.polygon,paths=boundaryPaths({poly}),inner=a.trim?closedOffset({path:{closed:true,segments:paths}},a.trim):clone(poly),turn=((a.direction%180)+180)%180,swapped=turn>=90,angle=(swapped?turn-90:turn)*Math.PI/180,cos=Math.cos(angle),sin=Math.sin(angle),toLocal=p=>[p[0]*cos+p[1]*sin,-p[0]*sin+p[1]*cos],toWorld=p=>[p[0]*cos-p[1]*sin,p[0]*sin+p[1]*cos],local=inner.map(toLocal),min=[0,1].map(i=>Math.min(...local.map(p=>p[i]))),max=[0,1].map(i=>Math.max(...local.map(p=>p[i]))),r=rules().aluminum,pitch=swapped?[r.length,r.width]:[r.width,r.length];
+ let count,start,index=[0,0];
+ if(a.origin){const origin=toLocal(a.origin);index=min.map((v,i)=>Math.floor((v-origin[i]+eps())/pitch[i]));const end=max.map((v,i)=>Math.ceil((v-origin[i]-eps())/pitch[i]));count=end.map((v,i)=>v-index[i]);start=origin.map((v,i)=>v+index[i]*pitch[i]);}
+ else{count=min.map((v,i)=>Math.ceil((max[i]-v)/pitch[i]));start=min.map((v,i)=>(v+max[i]-count[i]*pitch[i])/2);}
+ if(count.some(n=>n<1)||count[0]*count[1]>r.maxPanels)fail('铝扣板区域过大，请拆分为较小区域');
+ return {inner,pitch,count,start,index,toLocal,toWorld,origin:a.origin?clone(a.origin):toWorld(start)};
 }
+function aluminumBasis(c){const {origin,inner,pitch}=aluminumGrid(c);return {origin,inner,pitch};}
 function aluminumLayout(c){
  validateAluminum(c.aluminum);const grid=aluminumGrid(c),Z=zones(),{inner,pitch,count,start}=grid,panels=[];
  for(let row=0;row<count[1];row++)for(let col=0;col<count[0];col++){
-  const x=start[0]+col*pitch[0],y=start[1]+row*pitch[1],g=c.aluminum.gap/2,rect=[[x+g,y+g],[x+pitch[0]-g,y+g],[x+pitch[0]-g,y+pitch[1]-g],[x+g,y+pitch[1]-g]],polygons=Z.decompose([inner,rect],p=>Z.inside(p,inner)&&Z.inside(p,rect));
-  if(polygons.length)panels.push({id:'panel_'+row+'_'+col,row,col,polygons:Z.outline(polygons).rings});
+  const x=start[0]+col*pitch[0],y=start[1]+row*pitch[1],g=c.aluminum.gap/2,rect=[[x+g,y+g],[x+pitch[0]-g,y+g],[x+pitch[0]-g,y+pitch[1]-g],[x+g,y+pitch[1]-g]].map(grid.toWorld),polygons=Z.decompose([inner,rect],p=>Z.inside(p,inner)&&Z.inside(p,rect));
+  if(polygons.length){const slot=panelSlot(c,row,col,grid);panels.push({id:slot.id,row,col,full:slot.full,cell:slot.cell,polygons:Z.outline(polygons).rings});}
  }
- const trim=c.aluminum.trim?Z.decompose([c.polygon,inner],p=>Z.inside(p,c.polygon)&&!Z.inside(p,inner)):[];return {...grid,panels,trim};
+ const trim=c.aluminum.trim?Z.decompose([c.polygon,inner],p=>Z.inside(p,c.polygon)&&!Z.inside(p,inner)):[];return {...grid,panels,trim,stats:{whole:panels.filter(p=>p.full).length,cut:panels.filter(p=>!p.full).length}};
 }
-function signature(data,furniture=[]){const P=root.FurnishProducts||require('./product-rules.js'),panelDevices=furniture.some(f=>!f.obj&&P.definition(f)?.ceilingPanel);return data?data.items.map(({name,...geometry})=>{const g=clone(geometry);if(!panelDevices)delete g.aluminum;else if(g.aluminum)g.aluminum={direction:g.aluminum.direction,trim:g.aluminum.trim};if(g.section){delete g.section.template;delete g.section.material;}return g;}):null;}
-function shift(work,offset){if(!work.ceilings)return;for(const r of work.ceilings.regions||[])r.polygon=r.polygon.map(p=>p.map(v=>v+offset));for(const c of work.ceilings.items){if(c.kind==='profile'){for(const p of route(c))for(const k of ['a','b'])p[k]=p[k].map(v=>v+offset);if(!c.path.segments){c.path.a=c.path.a.map(v=>v+offset);c.path.b=c.path.b.map(v=>v+offset);}}else for(const k of ['polygon','basePolygon'])if(c[k])c[k]=c[k].map(p=>p.map(v=>v+offset));}}
+function signature(data,furniture=[]){const P=root.FurnishProducts||require('./product-rules.js'),panelDevices=furniture.some(f=>!f.obj&&P.definition(f)?.ceilingPanel);return data?data.items.map(({name,...geometry})=>{const g=clone(geometry);if(!panelDevices)delete g.aluminum;else if(g.aluminum)g.aluminum={direction:g.aluminum.direction,trim:g.aluminum.trim,...(g.aluminum.origin?{origin:clone(g.aluminum.origin)}:{})};if(g.section){delete g.section.template;delete g.section.material;}return g;}):null;}
+function shift(work,offset){if(!work.ceilings)return;for(const r of work.ceilings.regions||[]){r.polygon=r.polygon.map(p=>p.map(v=>v+offset));if(r.aluminum?.origin)r.aluminum.origin=r.aluminum.origin.map(v=>v+offset);}for(const c of work.ceilings.items){if(c.aluminum?.origin)c.aluminum.origin=c.aluminum.origin.map(v=>v+offset);if(c.kind==='profile'){for(const p of route(c))for(const k of ['a','b'])p[k]=p[k].map(v=>v+offset);if(!c.path.segments){c.path.a=c.path.a.map(v=>v+offset);c.path.b=c.path.b.map(v=>v+offset);}}else for(const k of ['polygon','basePolygon'])if(c[k])c[k]=c[k].map(p=>p.map(v=>v+offset));}}
 function requiresV6(work){return !!work?.ceilings?.items.some(c=>c.kind==='profile'&&(c.path?.segments||c.section?.light?.cornerSetback!==undefined)||c.attachment?.legs);}
 function requiresV7(work){return !!work?.ceilings?.items.some(c=>c.section?.light?.corner!==undefined);}
 function requiresV8(work){return !!work?.ceilings?.items.some(c=>c.ends!==undefined);}
@@ -455,6 +459,7 @@ function requiresV20(work){return (work?.ceilings?.regions||[]).some(r=>r.center
 function requiresV19(work){return [...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))].some(s=>s?.template?.kind==='upChannel'&&s.template.values.rotation!==undefined);}
 function requiresV18(work){const sections=[...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))];return !!work?.ceilings?.regions?.some(r=>r.centerConnection!==undefined)||sections.some(s=>s?.template?.kind==='upChannel'||s?.diffuser!==undefined||s?.material!==undefined);}
 function requiresV21(work){return !!work?.ceilings?.regions?.some(r=>r.style==='aluminum'||r.aluminum!==undefined)||!!work?.ceilings?.items?.some(c=>c.aluminum!==undefined);}
-const api={panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+function requiresV22(work){return [...(work?.ceilings?.regions||[]),...(work?.ceilings?.items||[])].some(c=>c.aluminum&&(c.aluminum.origin!==undefined||![0,90].includes(c.aluminum.direction)));}
+const api={requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
