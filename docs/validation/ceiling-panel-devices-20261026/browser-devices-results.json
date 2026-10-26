@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-panel-devices"
+  ],
+  "results": [
+    {
+      "name": "ceiling-panel-devices",
+      "status": "PASS",
+      "seconds": 19.9,
+      "log": "ceiling-panel-devices.log"
+    }
+  ],
+  "notRun": []
+}

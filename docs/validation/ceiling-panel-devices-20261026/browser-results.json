@@ -1,0 +1,35 @@
+{
+  "selected": [
+    "ceiling-panel-devices",
+    "ceiling-aluminum",
+    "ceiling-live",
+    "portable-smoke"
+  ],
+  "results": [
+    {
+      "name": "ceiling-panel-devices",
+      "status": "PASS",
+      "seconds": 15.9,
+      "log": "ceiling-panel-devices.log"
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 12,
+      "log": "ceiling-aluminum.log"
+    },
+    {
+      "name": "ceiling-live",
+      "status": "PASS",
+      "seconds": 17.5,
+      "log": "ceiling-live.log"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 10.7,
+      "log": "portable-smoke.log"
+    }
+  ],
+  "notRun": []
+}

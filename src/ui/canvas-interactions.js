@@ -178,6 +178,7 @@ function endDrag(cancel){
       const f = getF(d.id);
       if (f){ const ox = f.cx, oy = f.cy; pushOut(f,d.kind==='move'?d.axis:undefined); if (Math.hypot(f.cx-ox, f.cy-oy) > 60) toast(tr('已自动避开墙体', 'Moved off the wall automatically')); }
     }
+    if(d.kind==='move'&&d.ids.length===1){const f=getF(d.id);if(f&&!f.obj&&FurnishProducts.definition(f)?.ceilingPanel){try{Object.assign(f,FurnishCeiling.fitCeilingPanel(FurnishProject.effectivePlan(PLAN,state),f,state.furniture));}catch(error){toast(error.message);}}}
     try{commit(d.before,true);}catch(error){toast(error.message);} renderAll();
     if(['size','kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&d.resizeError)toast(d.resizeError);
   }

@@ -1,0 +1,72 @@
+RUN tests/test-ceiling-panel-devices.cjs
+PASS ceiling devices: complete-slot placement/rotation/mirror, crop/duplicate/lamp conflicts, existing circular holes, actual replacement/backing/model geometry, multipart solids, restoration, signatures and project roundtrips
+RUN tests/test-ceiling-aluminum.cjs
+PASS 300×600 production panels, physical seams/trim, concave/reversed/rotated outlines, dimensions, identities, limits, conservative signature, v21 repeated restoration and legacy cache
+RUN tests/test-downlight.cjs
+PASS downlight catalog, height, restore, copy/replacement, finished-floor/unknown datum, project roundtrip, fit/cutout boundaries, rotation/mirror, unknown height, real geometry, cone photometry and production ceiling hole
+RUN tests/test-ceilings.cjs
+PASS ceiling contours, inward paths, true cavity collision, full-thickness attachments, dependency updates, atomic validation, v5 project/workspace recovery and spatial confirmation
+PASS shared production ceiling meshes, cavity rays, positive volume on four orientations, finite normals, flat thickness and low-wall cut
+RUN tests/test-ceiling-regions.cjs
+PASS independent regions, isolation, concave collision, invalid import, v17 project/repository/cache roundtrips and no-drift restoration
+PASS 12 rotated/reversed convex, sloping and concave production sweeps: exact volumes, closed topology, finite normals and separate light/channel
+RUN tests/test-ceiling-design.cjs
+PASS region styles, rotated/reversed closed ring, separate wash housing, boundary guards and repeated project restoration
+PASS production closed-ring volume, finite geometry and central-board elevation/thickness
+RUN tests/test-ceiling-assembly.cjs
+PASS separate gypsum/channel/diffuser parameters, flange connection, identity, collision, v18 roundtrip and legacy preservation
+PASS production diffuser dimensions/rays/occupancy, central-board flange contact, real materials, finite geometry and light switch
+RUN tests/test-ceiling-mirror-dimensions.cjs
+PASS world-axis mirrors, diffuser/light reflection, rotation+resize, actual measurements, center guard, production meshes and repeated v20 project/cache/repository restore
+RUN tests/test-ceiling-section-transforms.cjs
+PASS section rigid transform, light/diffuser geometry, rotation parameter regeneration, snapping, center guard, production mesh and v19 repeated project/repository/cache restore
+RUN tests/test-ceiling-coplanar.cjs
+PASS production flat finish depth priority, exact 2400–2412 mm geometry, explicit/legacy beam tie, unchanged profile material/cut and project roundtrip
+RUN tests/test-ceiling-storage.cjs
+PASS v5/v6/v7/v8 actual repository writes, reads, named designs, recovery copies and cache migration in isolated directories
+RUN tests/test-product-rules.cjs
+PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API
+RUN tests/test-furniture-production-solids.cjs
+PASS production furniture solids: cavities, real intersections, exact contact, rotations/mirrors, height clipping, unknowns, canvas/project agreement, current/named roundtrip and real Three geometry
+RUN tests/test-shared-appliance-model.cjs
+PASS 27 shared appliance builds and four laundry stacks: real browser/Node geometry and materials, legacy/zero mounting, local coordinates, immutable input and cached material injection
+RUN tests/test-enclosed-boundary-distances.cjs
+PASS enclosed boundaries: screenshot fixture, 89 catalog types × 8 transforms, partial overlap/contact, height separation/unknowns, groups, drawing rotation, real panels, preserved collision checks and project roundtrip
+RUN tests/test-cabinet-opening-3d.cjs
+PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations
+RUN tests/test-snapping.cjs
+PASS grid, rotated bounds, tolerance, nearby guides, exclusions and measurement anchors
+RUN tests/test-work-state.cjs
+PASS work restoration, independent defaults, legacy fields and custom architecture
+RUN tests/test-procurement.cjs
+Distinct furniture specs, grouped counts/rooms, progress totals, metadata backups and CSV checks passed
+RUN tests/test-purchase-orders.cjs
+PASS partial/multiple deliveries, exact/over orders, actual payments, zero prices, stale links and units, copies, unchanged spatial confirmation, invalid ledger, named-project and repeat production restore
+RUN tests/test-project.cjs
+PASS Survey preserves existing openings before structure confirmation
+PASS Old projects migrate to locked structures
+PASS Design rejects changes to the confirmed original bearing structure
+PASS Exterior walls are locked after confirmation
+PASS Real partition demolition merges rooms and updates area
+PASS Moving a partition changes both room areas while preserving bearing walls
+PASS Room materials follow spatial overlap after demolition
+PASS Automatic construction quantities update without overwriting manual values
+PASS Paint deductions use door height rather than wall thickness
+PASS Project backup roundtrip preserves baseline, designs, costs and catalog
+PASS Corrupt and future backups fail before import
+PASS Legacy plan JSON migrates to the portable project format
+PASS Spatial checks detect a blocked door swing
+PASS Cabinet front clearance rotates with the furniture
+PASS OBJ supports triangulation and negative indices
+PASS Overlapping door swings and swing-wall collisions are reported
+PASS Flat, non-finite and empty imported meshes are rejected before restoration
+PASS Backup preserves raw attachments and rejects malformed attachment data
+PASS Interior door deducts both painted wall faces
+PASS Retained openings keep sill heights and swing overrides after IDs reindex
+20 product roadmap regression checks passed
+RUN tests/test-project-validation.cjs
+RUN tests/test-project-recovery.cjs
+Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed
+RUN tests/test-blender-model-identities.cjs
+PASS production identities: priority meshes, all basic furniture, rebuild/size stability, child reorder, unrelated insertion/deletion, local movement and unique full keys
+PASS ceiling devices: complete-slot placement/rotation/mirror, crop/duplicate/lamp conflicts, existing circular holes, actual replacement/backing/model geometry, multipart solids, restoration, signatures and project roundtrips

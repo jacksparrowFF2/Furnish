@@ -365,18 +365,55 @@ function fitDownlight(plan,f,furniture=[]){
  for(const c of plan.ceilings?.items||[]){
   const bottom=c.height-spec.rim,mountHeight=bottom-base.z;
   if(mountHeight<0||mountHeight>20000)continue;
-  if(downlightHoles(c,[{f,vertical:{bottom,top:bottom+P.height(f)}}]).length)choices.push(mountHeight);
+  const holes=downlightHoles(c,[{f,vertical:{bottom,top:bottom+P.height(f)}}]);
+  if(holes.length&&!panelReplacements(c,installationBodies(plan,furniture.filter(v=>v.id!==f.id))).some(s=>circleInSlot(holes[0],s.cell)))choices.push(mountHeight);
  }
  if(choices.length!==1)fail(choices.length?'所在位置有多个平顶，请手动填写安装高度':'当前位置没有可完整容纳标准筒灯的平顶');
  return choices[0];
 }
+function installationBodies(plan,furniture){const D=root.FurnishDesign||require('./design-core.js');return furniture.map(f=>({f,vertical:D.furnitureVerticalBounds(f,plan,furniture)}));}
+function circleInSlot(h,cell){const x=Math.max(cell[0][0],Math.min(h.x,cell[2][0])),y=Math.max(cell[0][1],Math.min(h.y,cell[2][1]));return Math.hypot(h.x-x,h.y-y)<h.r+eps();}
+function panelSlot(c,row,col,grid=aluminumGrid(c)){
+ const {start,pitch,count,inner}=grid;if(row<0||col<0||row>=count[1]||col>=count[0])return null;
+ const x=start[0]+col*pitch[0],y=start[1]+row*pitch[1],cell=[[x,y],[x+pitch[0],y],[x+pitch[0],y+pitch[1]],[x,y+pitch[1]]];
+ return {id:'panel_'+row+'_'+col,row,col,cell,cx:x+pitch[0]/2,cy:y+pitch[1]/2,full:Math.abs(overlapArea(cell,inner)-pitch[0]*pitch[1])<.01};
+}
+// A heater removes one complete nominal cell, including its seams/backing.
+// Position, orientation, elevation and other installed devices are rechecked on every derivation.
+function panelReplacements(c,bodies){
+ if(c.kind!=='flat'||!c.aluminum)return [];const P=root.FurnishProducts||require('./product-rules.js'),grid=aluminumGrid(c),entries=new Map(),out=[],lamps=downlightHoles(c,bodies);
+ for(const {f,vertical}of bodies){if(f.obj||!P.definition(f)?.ceilingPanel)continue;const old=entries.get(f.id);if(old){old.vertical=old.vertical&&vertical?{bottom:Math.min(old.vertical.bottom,vertical.bottom),top:Math.max(old.vertical.top,vertical.top)}:null;}else entries.set(f.id,{f,vertical:vertical&&{...vertical}});}
+ for(const {f,vertical}of entries.values()){
+  const spec=P.definition(f).ceilingPanel;
+  if(!vertical||Math.abs(vertical.bottom+spec.rim-c.height)>eps()||P.height(f)<=spec.rim||Math.abs(f.w-spec.width)>eps()||Math.abs(f.d-spec.length)>eps())continue;
+  const angle=(((f.rot||0)-c.aluminum.direction)%180+180)%180;if(Math.min(angle,180-angle)>eps())continue;
+  const col=Math.floor((f.cx-grid.start[0])/grid.pitch[0]),row=Math.floor((f.cy-grid.start[1])/grid.pitch[1]),slot=panelSlot(c,row,col,grid);
+  if(!slot?.full||Math.hypot(slot.cx-f.cx,slot.cy-f.cy)>spec.alignment||lamps.some(h=>circleInSlot(h,slot.cell)))continue;
+  out.push({...slot,fid:f.id});
+ }
+ return out.filter(a=>!out.some(b=>b.fid!==a.fid&&b.id===a.id));
+}
+function fitCeilingPanel(plan,f,furniture=[]){
+ const P=root.FurnishProducts||require('./product-rules.js'),spec=!f.obj&&P.definition(f)?.ceilingPanel;if(!spec)fail('当前设备不支持整板替换');
+ if(Math.abs(f.w-spec.width)>eps()||Math.abs(f.d-spec.length)>eps()||P.height(f)<=spec.rim)fail('请恢复300×600 mm标准面板尺寸和有效机身高度后安装');
+ const ceilings=(plan.ceilings?.items||[]).filter(c=>c.kind==='flat'&&c.aluminum&&inside([f.cx,f.cy],c.polygon));if(ceilings.length!==1)fail(ceilings.length?'当前位置有多个铝扣板区域，请先调整区域或设备位置':'请先将浴霸放到铝扣板区域内');
+ const c=ceilings[0],grid=aluminumGrid(c),slots=[];for(let row=0;row<grid.count[1];row++)for(let col=0;col<grid.count[0];col++){const x=grid.start[0]+(col+.5)*grid.pitch[0],y=grid.start[1]+(row+.5)*grid.pitch[1];slots.push({row,col,distance:Math.hypot(x-f.cx,y-f.cy)});}slots.sort((a,b)=>a.distance-b.distance||a.row-b.row||a.col-b.col);
+ const others=installationBodies(plan,furniture.filter(v=>v.id!==f.id)),occupied=panelReplacements(c,others);
+ for(const {row,col}of slots){const slot=panelSlot(c,row,col,grid);if(!slot.full||occupied.some(s=>s.id===slot.id))continue;const candidate={...clone(f),cx:slot.cx,cy:slot.cy,rot:((c.aluminum.direction+Math.round(((f.rot||0)-c.aluminum.direction)/180)*180)%360+360)%360},base=P.floorBase(plan,candidate,furniture);if(!base.known)fail('家具基准地面标高未知，请先核对');candidate.mountHeight=c.height-spec.rim-base.z;if(candidate.mountHeight<0||candidate.mountHeight>rules().max)continue;
+  if(panelReplacements(c,[...others,{f:candidate,vertical:{bottom:c.height-spec.rim,top:c.height-spec.rim+P.height(f)}}]).some(s=>s.fid===f.id))return candidate;
+ }
+ fail('区域内没有可替换的完整空闲300×600铝扣板；裁切板、收边或已安装筒灯／浴霸的格子不能替换');
+}
 function checks(plan,bodies){
  const out=(plan.ceilings?.pending||[]).map(p=>({kind:'ceiling',id:p.id,ceilingId:p.id,name:'吊顶',pending:true,message:p.message}));
- const apertures=new Map((plan.ceilings?.items||[]).map(c=>[c.id,downlightHoles(c,bodies)]));
+ const apertures=new Map((plan.ceilings?.items||[]).map(c=>[c.id,downlightHoles(c,bodies)])),replacements=new Map((plan.ceilings?.items||[]).map(c=>[c.id,panelReplacements(c,bodies)]));
+ const P=root.FurnishProducts||require('./product-rules.js'),seenDevices=new Set();for(const {f}of bodies)if(!f.obj&&P.definition(f)?.ceilingPanel&&!seenDevices.has(f.id)){seenDevices.add(f.id);if(![...replacements.values()].some(slots=>slots.some(s=>s.fid===f.id)))out.push({kind:'ceiling',id:f.id,ceilingId:'panel-installation',name:f.name,pending:true,at:[f.cx,f.cy],message:f.name+'未替换完整铝扣板：请使用整板安装，核对300×600尺寸、方向、标高及格内筒灯／浴霸占用'});}
  for(const c of plan.ceilings?.items||[])for(const {f,p,vertical} of bodies){
   let hit=false;
   if(c.kind==='flat'){
    if(apertures.get(c.id).some(h=>h.id===f.id))continue;
+   const slots=replacements.get(c.id);if(slots.some(s=>s.fid===f.id))continue;
+   if(slots.length){const Z=zones(),cuts=slots.map(s=>s.cell),remaining=Z.decompose([c.polygon,p,...cuts],q=>Z.inside(q,c.polygon)&&Z.inside(q,p)&&!cuts.some(cut=>Z.inside(q,cut)));if(Z.area(remaining)<=eps()**2)continue;}
    if(convex(c.polygon)){const overlap=intersection(p,c.polygon);if(overlap.length<3||Math.abs(area(overlap))<=eps()**2)continue;}else if(overlapArea(c.polygon,p)<=eps()**2)continue;
    hit=!vertical||Math.min(vertical.top,c.height+c.thickness)-Math.max(vertical.bottom,c.height)>eps();
   }else{
@@ -408,7 +445,7 @@ function aluminumLayout(c){
  }
  const trim=c.aluminum.trim?Z.decompose([c.polygon,inner],p=>Z.inside(p,c.polygon)&&!Z.inside(p,inner)):[];return {...grid,panels,trim};
 }
-function signature(data){return data?data.items.map(({name,...geometry})=>{const g=clone(geometry);delete g.aluminum;if(g.section){delete g.section.template;delete g.section.material;}return g;}):null;}
+function signature(data,furniture=[]){const P=root.FurnishProducts||require('./product-rules.js'),panelDevices=furniture.some(f=>!f.obj&&P.definition(f)?.ceilingPanel);return data?data.items.map(({name,...geometry})=>{const g=clone(geometry);if(!panelDevices)delete g.aluminum;else if(g.aluminum)g.aluminum={direction:g.aluminum.direction,trim:g.aluminum.trim};if(g.section){delete g.section.template;delete g.section.material;}return g;}):null;}
 function shift(work,offset){if(!work.ceilings)return;for(const r of work.ceilings.regions||[])r.polygon=r.polygon.map(p=>p.map(v=>v+offset));for(const c of work.ceilings.items){if(c.kind==='profile'){for(const p of route(c))for(const k of ['a','b'])p[k]=p[k].map(v=>v+offset);if(!c.path.segments){c.path.a=c.path.a.map(v=>v+offset);c.path.b=c.path.b.map(v=>v+offset);}}else for(const k of ['polygon','basePolygon'])if(c[k])c[k]=c[k].map(p=>p.map(v=>v+offset));}}
 function requiresV6(work){return !!work?.ceilings?.items.some(c=>c.kind==='profile'&&(c.path?.segments||c.section?.light?.cornerSetback!==undefined)||c.attachment?.legs);}
 function requiresV7(work){return !!work?.ceilings?.items.some(c=>c.section?.light?.corner!==undefined);}
@@ -418,6 +455,6 @@ function requiresV20(work){return (work?.ceilings?.regions||[]).some(r=>r.center
 function requiresV19(work){return [...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))].some(s=>s?.template?.kind==='upChannel'&&s.template.values.rotation!==undefined);}
 function requiresV18(work){const sections=[...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))];return !!work?.ceilings?.regions?.some(r=>r.centerConnection!==undefined)||sections.some(s=>s?.template?.kind==='upChannel'||s?.diffuser!==undefined||s?.material!==undefined);}
 function requiresV21(work){return !!work?.ceilings?.regions?.some(r=>r.style==='aluminum'||r.aluminum!==undefined)||!!work?.ceilings?.items?.some(c=>c.aluminum!==undefined);}
-const api={requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+const api={panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

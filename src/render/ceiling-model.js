@@ -45,7 +45,7 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
   }else{
    if(c.aluminum){
     if(c.height>=top)continue;
-    const layout=C.aluminumLayout(c),holes=C.downlightHoles(c,bodies),holePolys=holes.map(h=>Array.from({length:64},(_,i)=>[h.x+h.r*Math.cos(i*Math.PI/32),h.y+h.r*Math.sin(i*Math.PI/32)]));
+    const layout=C.aluminumLayout(c),replacements=C.panelReplacements(c,bodies),holes=C.downlightHoles(c,bodies),holePolys=holes.map(h=>Array.from({length:64},(_,i)=>[h.x+h.r*Math.cos(i*Math.PI/32),h.y+h.r*Math.sin(i*Math.PI/32)])).concat(replacements.map(s=>s.cell));
     function panelMesh(polygons,bottom,material,part,token){
      const positions=[],normals=[];
      for(const poly of polygons){
@@ -56,7 +56,7 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
     }
     panelMesh([c.polygon],1.2,seamSurface,'panel-backing','backing');
     panelMesh(layout.trim,0,panelSurface,'panel-trim','trim');
-    for(const panel of syncIdentity.records('ceiling-aluminum:panels',layout.panels))panelMesh(panel.polygons,.35,panelSurface,'panel',panel.id);
+    for(const panel of syncIdentity.records('ceiling-aluminum:panels',layout.panels.filter(p=>!replacements.some(s=>s.id===p.id))))panelMesh(panel.polygons,.35,panelSurface,'panel',panel.id);
     continue;
    }
    const outline=shape(c.polygon.map(([x,y])=>[x,-y]));
@@ -67,10 +67,13 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
  }
  for(const material of [surface,flatSurface,panelSurface,seamSurface,light,aluminum,diffuser,diffuserOff,conflictLight])if(material&&!group.children.some(m=>m.material===material))material.dispose();return group;
 }
-function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null,focusAssembly=false}){
+function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null,focusAssembly=false,bodies=[]}){
  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.8;host.append(renderer.domElement);
  const scene=new THREE.Scene();scene.background=new THREE.Color('#e8e7e2');scene.add(new THREE.HemisphereLight(0xffffff,0x6b6861,2.5));const sun=new THREE.DirectionalLight(0xffffff,3);sun.position.set(2,5,3);scene.add(sun);const underside=new THREE.DirectionalLight(0xffffff,2);underside.position.set(-2,-5,1);scene.add(underside);underside.visible=data.items.some(c=>c.aluminum);
- function makeGroup(value){const group=syncIdentity.produce("ceiling-model.js:generator-call-6",()=>build(THREE,value)),outline=new THREE.LineBasicMaterial({color:'#81796b',transparent:true,opacity:.55});for(const mesh of group.children.slice())if(mesh.userData.ceiling.part!=='light'&&!mesh.userData.ceiling.part.startsWith('panel'))group.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,30),outline));if(!group.children.some(o=>o.material===outline))outline.dispose();return group;}
+ function makeGroup(value){const group=syncIdentity.produce("ceiling-model.js:generator-call-6",()=>build(THREE,value,{bodies})),outline=new THREE.LineBasicMaterial({color:'#81796b',transparent:true,opacity:.55});for(const mesh of group.children.slice())if(mesh.userData.ceiling.part!=='light'&&!mesh.userData.ceiling.part.startsWith('panel'))group.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,30),outline));if(!group.children.some(o=>o.material===outline))outline.dispose();
+  const core=root.FurnishCeiling||(typeof require==='function'?require('../core/ceiling-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),ids=new Set(value.items.flatMap(c=>[...core.downlightHoles(c,bodies).map(h=>h.id),...core.panelReplacements(c,bodies).map(s=>s.fid)])),seen=new Set();
+  for(const {f,vertical}of bodies){if(!ids.has(f.id)||seen.has(f.id)||!vertical)continue;seen.add(f.id);const builder=P.definition(f)?.ceilingPanel?root.FurnishBathHeaterModel:root.FurnishDownlightModel;if(!builder)continue;const model=builder.build(THREE,f);model.position.set(f.cx/1000,(vertical.bottom-P.value(f,'mountHeight'))/1000,f.cy/1000);model.rotation.y=-(f.rot||0)*Math.PI/180;model.scale.x=f.flip?-1:1;group.add(model);}
+  return group;}
  function release(group){const materials=new Set();group.traverse(o=>{o.geometry?.dispose();if(o.material)materials.add(o.material);});materials.forEach(m=>m.dispose());}
  let group=makeGroup(data);scene.add(group);
  const C=root.FurnishCeiling||require('../core/ceiling-core.js'),profile=data.items.find(c=>c.kind==='profile'),arc=focusLight&&profile&&C.lightLayout(profile).continuous,plate=focusEnd&&profile&&C.endCaps(profile).plates.find(p=>p.end===focusEnd);
