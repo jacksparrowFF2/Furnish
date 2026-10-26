@@ -612,11 +612,12 @@ function init(){
     if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
     else if (h?.door){ if(!h.fid||!furnitureLocked(getF(h.fid)))h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
     else if (h?.fid) e.shiftKey ? window.toggleSel(h.fid) : window.selectIds([h.fid]);
+    else if (h?.ceiling) window.FurnishCeilingUI.selectObject(h.ceiling);
     else if (h?.win!==undefined) window.select({kind:'win',id:h.win});
     else if (h?.room) window.select({kind:'room', id:h.room});
     else window.select(null);
   });
-  cv.addEventListener('dblclick', e => { clearTimeout(cabinetTap); if(opt.mode!=='orbit'||anim)return;const hit=pick(e),id=hit?.fid||ui.sel?.id;if(id)window.FurnishCabinetEditor.open(id); });
+  cv.addEventListener('dblclick', e => { clearTimeout(cabinetTap); if(opt.mode!=='orbit'||anim)return;const hit=pick(e);if(hit?.ceiling)return window.FurnishCeilingUI.selectObject(hit.ceiling,true);const id=hit?.fid||(ui.sel?.kind==='furn'?ui.sel.id:null);if(id)window.FurnishCabinetEditor.open(id); });
   new ResizeObserver(() => {
     renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH());
     camera.aspect = SW()/SH(); camera.updateProjectionMatrix();
@@ -1535,6 +1536,7 @@ function pick(e){
     // Raycaster also returns hidden ceilings and helper lines; only visible meshes may block a click.
     if(!o.isMesh)continue;
     let shown=true;for(let parent=o;parent;parent=parent.parent){if(!parent.visible){shown=false;break;}}if(!shown)continue;
+    if(o.userData.ceiling?.id)return {ceiling:o.userData.ceiling.id,dist:h.distance};
     if(o.userData.bayWindowIndex!==undefined&&WINS[o.userData.bayWindowIndex]?.bayId)return {win:o.userData.bayWindowIndex};
     if (observation.material(o) === glassMat) continue;
     if(o.userData.teaBarDoor){let owner=o;while(owner&&!owner.userData.fid)owner=owner.parent;return {teaBarDoor:o.userData.teaBarDoor,fid:owner?.userData.fid,dist:h.distance};}

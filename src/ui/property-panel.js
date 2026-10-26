@@ -28,7 +28,7 @@ function renderPanelContent(object=true){
   renderFab();
   if(object&&ui.sel?.kind==='ceiling'){
     const c=state.ceilings?.items.find(c=>c.id===ui.sel.id),r=state.ceilings?.regions?.find(r=>r.id===c?.regionId);
-    if(c&&r){const p=$('#panel');p.innerHTML=`<section><h3>${esc(r.name)}</h3><p>${tr('独立吊顶区域','Independent ceiling area')} · ${Math.abs(FurnishCeiling.area(r.polygon)/1e6).toFixed(2)} m²</p><p class="muted">${tr('边界、样式和截面在吊顶设计中编辑。','Edit the boundary, style and section in the ceiling workspace.')}</p><button class="btn" data-edit-ceiling-object>${tr('编辑吊顶区域','Edit ceiling area')}</button></section>`;p.querySelector('[data-edit-ceiling-object]').onclick=()=>FurnishCeilingUI.open(c.id);return;}
+    if(c){const p=$('#panel');p.innerHTML=`<section><h3>${esc(r?.name||c.name)}</h3><p>${r?tr('独立吊顶区域','Independent ceiling area')+' · '+Math.abs(FurnishCeiling.area(r.polygon)/1e6).toFixed(2)+' m²':tr('旧吊顶构件','Existing ceiling element')}</p><p class="muted">${tr('点击浮动栏「编辑吊顶」，进入吊顶设计页面。','Use Edit ceiling in the floating toolbar to open the ceiling workspace.')}</p></section>`;return;}
   }
   const p = $('#panel'), ids = object?selIds():[];delete p.dataset.bayId;
   if (ids.length > 1){ p.innerHTML = multiPanel(selItems()); bindDirectionalMeasurementPanel(); const laundry=laundryGroupHost(selItems());if(laundry)bindKitchenPanel(laundry);return; }
@@ -63,6 +63,8 @@ function renderFab(){
   fab.removeAttribute('style');
   fab.setAttribute('role','toolbar');fab.setAttribute('aria-label',tr('选中对象快捷调整','Selection quick adjustments'));
   if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){fab.innerHTML=`<span class="name">${tr('测量线','Measurement')}</span><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');return;}
+  const ceiling=ui.sel?.kind==='ceiling'&&state.ceilings?.items.find(c=>c.id===ui.sel.id);
+  if(ceiling){fab.innerHTML=`<span class="name">${esc(panelSelectionName())}</span><button class="btn primary" data-ceiling-fab aria-haspopup="dialog" ${FurnishLayers.locked(state,'ceiling:'+ceiling.id)?'disabled':''}>${tr('编辑吊顶','Edit ceiling')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');fab.querySelector('[data-ceiling-fab]').onclick=()=>FurnishCeilingUI.selectObject(ceiling.id,true);queueFabPosition();return;}
   const bay=FurnishBayWindows.selected(PLAN,ui.sel);
   if(bay){fab.innerHTML=`<span class="name">${esc(nm(state.rooms[bay.platform.id].name))}</span><button class="btn" data-bay-fab="window">${tr('窗体','Window')}</button><button class="btn" data-bay-fab="platform">${tr('台面','Platform')}</button><button class="btn" data-act="prop">${tr('飘窗属性','Bay properties')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');fab.querySelector('[data-bay-fab="window"]').onclick=()=>select({kind:'win',id:bay.windows[0].index});fab.querySelector('[data-bay-fab="platform"]').onclick=()=>select({kind:'room',id:bay.platform.id});queueFabPosition();return;}
   if (!ids.length && !r){ fab.classList.remove('show'); return; }
@@ -198,17 +200,17 @@ function revealFabSelection(){
   if(Math.abs(dx)>.5||Math.abs(dy)>.5){view.x0+=dx/view.s;view.y0+=dy/view.s;applyView();}
 }
 function positionFab(){
-  const fab=$('#fab'),stage=$('#stage');if(!fab?.classList.contains('show')||(!selIds().length&&ui.sel?.kind!=='room'))return;
+  const fab=$('#fab'),stage=$('#stage');if(!fab?.classList.contains('show')||(!selIds().length&&!['room','ceiling'].includes(ui.sel?.kind)))return;
   // A new selection may be the start of a drag. Keep its pointer mapping stable.
   if(typeof drag!=='undefined'&&drag)return;
   const bounds=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight;
-  const key=[...selIds(),ui.sel?.kind==='room'?ui.sel.id:'',W,H].join('|');
+  const key=[...selIds(),['room','ceiling'].includes(ui.sel?.kind)?ui.sel.id:'',W,H].join('|');
   if(is3D()){
     clearFabDock();
     if(!fabEditor){
       // The 3D camera owns framing; keep this toolbar beside the scene rail.
-      const rail=$('.canvas-rail')?.getBoundingClientRect();
-      fab.style.left='50%';fab.style.top='auto';fab.style.bottom=(rail?Math.max(18,bounds.bottom-rail.top+12):18)+'px';fab.style.transform='translateX(-50%)';
+      const rail=$('.canvas-rail')?.getBoundingClientRect(),status=ui.sel?.kind==='ceiling'&&W<=720?$('.space-status')?.getBoundingClientRect():null;
+      fab.style.left='50%';fab.style.top='auto';fab.style.bottom=Math.max(18,rail?bounds.bottom-rail.top+12:0,status?bounds.bottom-status.top+12:0)+'px';fab.style.transform='translateX(-50%)';
       return;
     }
   }

@@ -137,3 +137,5 @@
 
 .ceiling-assembly-2d .ceiling-fitting [data-assembly-node],.ceiling-assembly-2d .ceiling-fitting [data-assembly-edge]{cursor:crosshair}
 .ceiling-assembly-gesture-tools .btn.on{background:#d45d20;color:white}
+
+.ceiling-section-reuse{padding:10px;margin-bottom:12px;background:var(--soft);border-radius:8px}.ceiling-section-reuse select{margin:6px 0}.ceiling-section-reuse small{display:block;margin-top:6px}
