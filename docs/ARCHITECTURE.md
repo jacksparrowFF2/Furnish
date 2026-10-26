@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-26（可选灯槽与流程）：ceiling-core的plainSoffit生成无模板普通板形，plainSoffitValues仅对完整匹配轮廓派生尺寸，assemblyInfo/editAssembly共用。product-rules集中设计示例；ceiling-design按区域／形式／构造组织控件与可选方案，新区域默认无槽配方，section-editor按实际构造显示参数及生产预览。仍沿原regions/items、完整缓存／确认和一次mutate，无新字段、版本或加载脚本。见[可选灯槽](CEILINGS.md#吊顶形式与可选灯槽2026-10-26)。
+
 2026-10-26（吊顶截面复用与点选）：ceiling-core.reuseAssembly深复制组合截面及连接，并以目标底标高换算独立中央板；ceiling-design在原草稿复用项目内区域和旧截面，不新增存储。ceiling-editor共用selectObject入口，主二维轮廓固定像素命中、主三维沿现有可见网格射线命中及层过滤；浮动栏「编辑吊顶」、双击进入对应区域或旧编辑器。load补绘已保存二维轮廓，沿原mutate／恢复，无新字段或版本。见 [吊顶复用](CEILINGS.md#复用已建截面与主画布编辑入口2026-10-26)。
 
 2026-10-26（铝扣板排版）：ceiling-core统一排板局部／世界变换、固定起点和完整格匹配，旧0°／90°保持原索引，二维／生产三维／圆孔及浴霸开口共用。ceiling-design在原草稿提供数值、取点、拖动、居中／沿边和复制基准，仍一次mutate；新origin与扩展direction使用v22项目／工作区／缓存，旧数据不补写，项目平移同步起点。有浴霸时起点进入空间确认，保留纯饰面及非空间编辑契约，见 [排版](CEILINGS.md#铝扣板排版与固定起铺点2026-10-26)。

@@ -430,6 +430,7 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  endCap:{thickness:12,lightGap:5},
  lowCove:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},light:{u:40,d:290,angle:-90,width:10,thickness:2},
  // Design examples; the wash-channel envelope is read from the user's image.
+ soffit:{drop:250,projection:300,back:12,bottom:12,front:12},
  sectionPresets:{low:{drop:300,projection:70,back:20,bottom:10,front:10,lip:30},wide:{drop:250,projection:300,back:12,bottom:12,front:12,lip:40}},
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.

@@ -38,7 +38,19 @@ function lowCove(values={}){
  return {vertices:coordinates.map(([u,d],i)=>({id:'v'+i,u,d})),light:clone(rules().light),template:{kind:'lowCove',values:q}};
 }
 // Presets are expanded into ordinary production sections, never new saved types.
+function plainSoffit(values={}){
+ const q={...rules().soffit,...values},D=q.drop,P=q.projection,B=q.back,T=q.bottom,F=q.front;
+ if(Object.keys(q).some(k=>!Object.hasOwn(rules().soffit,k))||![D,P,B,T,F].every(solidValue=>solid(solidValue))||!solid(P-B-F)||!solid(D-T))fail('普通边吊的宽度、下吊和板厚须有效，内部净宽和净高须大于0');
+ // Two full-height returns and a bottom board: no open cove, strip or housing.
+ return {material:'gypsum',vertices:[[0,0],[B,0],[B,D-T],[P-F,D-T],[P-F,0],[P,0],[P,D],[0,D]].map(([u,d],i)=>({id:'v'+i,u,d}))};
+}
+function plainSoffitValues(s){
+ if(!s||s.template||s.light||s.diffuser||s.vertices?.length!==8||!s.vertices.every(v=>v&&finite(v.u)&&finite(v.d)))return null;
+ const v=s.vertices,q={drop:v[6].d,projection:v[6].u,back:v[1].u,bottom:v[6].d-v[2].d,front:v[6].u-v[3].u};
+ try{return plainSoffit(q).vertices.every((p,i)=>Math.abs(p.u-v[i].u)<=eps()&&Math.abs(p.d-v[i].d)<=eps())?q:null;}catch{return null;}
+}
 function sectionPreset(kind){
+ if(kind==='plain')return [{name:'普通边吊 · 无灯槽',section:plainSoffit()}];
  if(kind==='up'||kind==='upMount'){const gypsum=lowCove(rules().sectionPresets.wide);delete gypsum.light;gypsum.material='gypsum';return [{name:'石膏边吊',section:gypsum},{name:'上发光型材 · 含柔光板',section:upChannel(kind==='upMount'?{mountDetail:true}:{})}];}
  if(!['low','wide','wash'].includes(kind))fail('未知截面样式');
  const body=lowCove(rules().sectionPresets[kind==='low'?'low':'wide']),q=body.template.values;
@@ -81,11 +93,11 @@ function centerLayout({height,thickness,sections,centerConnection,center},base){
  const source=sections[centerConnection.sectionIndex],q=channelValues(source?.section);if(!q){if(center===false)return {mode,height,inset,overlap:0,inactive:true};fail('中央平顶的翼边参照已变化，请重新选择连接方式');}if(center!==false&&(Math.abs(q.rotation||0)>eps()||q.mirrorU||q.mirrorD))fail('镜像或旋转后的灯槽不能作为水平翼边连接，请关闭中央平顶或改用独立连接');
  return {mode,height:base-q.d-thickness,inset:q.u+q.bodyWidth,overlap:q.width-q.bodyWidth,contactD:q.d,contactEnd:q.u+q.width,sectionIndex:centerConnection.sectionIndex};
 }
-function assemblyInfo(r){const gypsumIndex=r.sections.findIndex(s=>s.section.template?.kind==='lowCove'),channelIndex=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),gypsum=gypsumIndex>=0?clone(r.sections[gypsumIndex].section.template.values):null,channel=channelIndex>=0?channelValues(r.sections[channelIndex].section):null,bottom=Math.max(...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d))),base=r.height+bottom;return {gypsumIndex,channelIndex,gypsum,channel,bottom,base,center:centerLayout(r,base)};}
+function assemblyInfo(r){const gypsumIndex=r.sections.findIndex(s=>s.section.template?.kind==='lowCove'||plainSoffitValues(s.section)),channelIndex=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),gypsum=gypsumIndex>=0?clone(r.sections[gypsumIndex].section.template?.values||plainSoffitValues(r.sections[gypsumIndex].section)):null,channel=channelIndex>=0?channelValues(r.sections[channelIndex].section):null,bottom=Math.max(...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d))),base=r.height+bottom;return {gypsumIndex,channelIndex,gypsum,channel,bottom,base,center:centerLayout(r,base)};}
 function editAssembly(region,{gypsum,channel,centerConnection,addChannel=false,replaceChannelIndex}={}){
- const r=clone(region),gi=r.sections.findIndex(s=>s.section.template?.kind==='lowCove'),ci=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),before=gi>=0?r.sections[gi].section.template.values:null;let q=ci>=0?channelValues(r.sections[ci].section):null;
- if(gypsum){if(!before)fail('当前石膏为自绘轮廓，请使用高级截面编辑或选择参数化预设');const old=r.sections[gi].section,next=lowCove({...before,...gypsum});if(old.light)next.light=clone(old.light);else delete next.light;if(old.material)next.material=old.material;r.sections[gi].section=next;}
- const current=gi>=0?r.sections[gi].section.template.values:null;
+ const r=clone(region),gi=r.sections.findIndex(s=>s.section.template?.kind==='lowCove'||plainSoffitValues(s.section)),ci=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),before=gi>=0?r.sections[gi].section.template?.values||plainSoffitValues(r.sections[gi].section):null;let q=ci>=0?channelValues(r.sections[ci].section):null;
+ if(gypsum){if(!before)fail('当前石膏为自绘轮廓，请使用高级截面编辑或选择参数化预设');const old=r.sections[gi].section,next=(plainSoffitValues(old)?plainSoffit:lowCove)({...before,...gypsum});if(old.light)next.light=clone(old.light);else delete next.light;if(old.material)next.material=old.material;r.sections[gi].section=next;}
+ const current=gi>=0?r.sections[gi].section.template?.values||plainSoffitValues(r.sections[gi].section):null;
  if(q&&gypsum){q.u+=current.projection-before.projection;q.d+=current.drop-current.bottom-before.drop+before.bottom;}
  if(channel||addChannel){if(!q){if(!addChannel)fail('当前型材为自绘轮廓，请选择上发光预设');if(r.sections.length>1&&replaceChannelIndex===undefined)fail('请先选择上发光预设，避免覆盖已有自绘型材');if(replaceChannelIndex!==undefined&&(!Number.isInteger(replaceChannelIndex)||replaceChannelIndex<0||replaceChannelIndex>=r.sections.length||replaceChannelIndex===gi))fail('请选择需要替换的灯槽截面');q={...rules().upChannel,u:current?.projection??rules().upChannel.u,d:current?current.drop-current.bottom:rules().upChannel.d};}
   const patch={...channel};delete patch.offsetU;delete patch.offsetD;Object.assign(q,patch);if(channel?.offsetU!==undefined)q.u=(current?.projection??0)+channel.offsetU;if(channel?.offsetD!==undefined)q.d=(current?current.drop-current.bottom:0)+channel.offsetD;
@@ -482,6 +494,6 @@ function requiresV18(work){const sections=[...(work?.ceilings?.items||[]).filter
 function requiresV21(work){return !!work?.ceilings?.regions?.some(r=>r.style==='aluminum'||r.aluminum!==undefined)||!!work?.ceilings?.items?.some(c=>c.aluminum!==undefined);}
 function requiresV23(work){return [...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))].some(s=>s?.template?.kind==='upChannel'&&Object.keys(s.template.values).some(k=>k.startsWith('mount')));}
 function requiresV22(work){return [...(work?.ceilings?.regions||[]),...(work?.ceilings?.items||[])].some(c=>c.aluminum&&(c.aluminum.origin!==undefined||![0,90].includes(c.aluminum.direction)));}
-const api={reuseAssembly,requiresV23,requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+const api={plainSoffit,plainSoffitValues,reuseAssembly,requiresV23,requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
