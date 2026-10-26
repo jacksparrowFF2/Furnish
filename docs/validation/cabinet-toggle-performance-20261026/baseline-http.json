@@ -1,0 +1,1015 @@
+{
+  "mode": "http",
+  "legacy": true,
+  "baselineRef": "4889a8e",
+  "workspaceSha256": "45ef0da295218c744328edd5e6eb78b6218ae7a129752000a96fc351a1564ea2",
+  "plan": "1601",
+  "count": 65,
+  "rows": [
+    {
+      "id": "fmv3w4m2a4",
+      "name": "衣柜",
+      "ms": 1897.699999988079,
+      "stats": {
+        "effectivePlan": {
+          "calls": 27,
+          "ms": 139.69999998807907
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 192.40000000596046
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 5
+        },
+        "save": {
+          "calls": 1,
+          "ms": 11.900000005960464
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 283.69999998807907
+        },
+        "sharedSides": {
+          "calls": 183,
+          "ms": 0.7000000178813934
+        },
+        "sideOpenings": {
+          "calls": 171,
+          "ms": 8.5
+        },
+        "joinedSideFinishes": {
+          "calls": 183,
+          "ms": 8.00000011920929
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 108.59999999403954
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 2.199999988079071
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.30000001192092896
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 592.0999999940395
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 686.5
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 151.10000002384186
+        },
+        "review": {
+          "calls": 1,
+          "ms": 605.5
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1605.800000011921
+        }
+      }
+    },
+    {
+      "id": "fmv3w4m2a4",
+      "name": "衣柜",
+      "ms": 1317.699999988079,
+      "stats": {
+        "effectivePlan": {
+          "calls": 26,
+          "ms": 112.90000000596046
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 106.30000001192093
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 2
+        },
+        "save": {
+          "calls": 1,
+          "ms": 6.299999982118607
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 150.19999998807907
+        },
+        "sharedSides": {
+          "calls": 169,
+          "ms": 0.20000001788139343
+        },
+        "sideOpenings": {
+          "calls": 169,
+          "ms": 4.700000077486038
+        },
+        "joinedSideFinishes": {
+          "calls": 169,
+          "ms": 3.899999976158142
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 44.30000001192093
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 2
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.29999998211860657
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 370.90000000596046
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 422.09999999403954
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 92.30000001192093
+        },
+        "review": {
+          "calls": 1,
+          "ms": 570.5999999940395
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1163.5
+        }
+      }
+    },
+    {
+      "id": "fmv3wzkb515",
+      "name": "衣柜",
+      "ms": 1315.5,
+      "stats": {
+        "effectivePlan": {
+          "calls": 26,
+          "ms": 109.2999999821186
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 105.09999999403954
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 1.7000000178813934
+        },
+        "save": {
+          "calls": 1,
+          "ms": 8.299999982118607
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 150.39999997615814
+        },
+        "sharedSides": {
+          "calls": 171,
+          "ms": 0.6999999582767487
+        },
+        "sideOpenings": {
+          "calls": 171,
+          "ms": 4.799999982118607
+        },
+        "joinedSideFinishes": {
+          "calls": 171,
+          "ms": 4.200000107288361
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 48.19999998807907
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 1
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.4000000059604645
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 375.40000000596046
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 426.80000001192093
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 90
+        },
+        "review": {
+          "calls": 1,
+          "ms": 562.3999999761581
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1160.800000011921
+        }
+      }
+    },
+    {
+      "id": "fmv3wzkb515",
+      "name": "衣柜",
+      "ms": 1276.5999999940395,
+      "stats": {
+        "effectivePlan": {
+          "calls": 26,
+          "ms": 113.29999995231628
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 88.30000001192093
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 1.5999999940395355
+        },
+        "save": {
+          "calls": 1,
+          "ms": 6.9000000059604645
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 130.80000001192093
+        },
+        "sharedSides": {
+          "calls": 171,
+          "ms": 0.4999999701976776
+        },
+        "sideOpenings": {
+          "calls": 171,
+          "ms": 4.300000041723251
+        },
+        "joinedSideFinishes": {
+          "calls": 171,
+          "ms": 3.800000101327896
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 45.099999994039536
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 1.0999999940395355
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.30000001192092896
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 367.5
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 417.69999998807907
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 94.10000002384186
+        },
+        "review": {
+          "calls": 1,
+          "ms": 557.4000000059605
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1141.5999999940395
+        }
+      }
+    },
+    {
+      "id": "fmv5b76h91",
+      "name": "玄关柜 · 洞洞板换鞋区",
+      "ms": 1415.9000000059605,
+      "stats": {
+        "effectivePlan": {
+          "calls": 26,
+          "ms": 111.19999998807907
+        },
+        "sharedSides": {
+          "calls": 173,
+          "ms": 0.8000000715255737
+        },
+        "sideOpenings": {
+          "calls": 173,
+          "ms": 3.799999952316284
+        },
+        "joinedSideFinishes": {
+          "calls": 173,
+          "ms": 3.8999998569488525
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 80.59999999403954
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 1.5999999940395355
+        },
+        "save": {
+          "calls": 1,
+          "ms": 6.5999999940395355
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 121
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 44.599999994039536
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 1.100000023841858
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.29999998211860657
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 369
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 418.69999998807907
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 222.2000000178814
+        },
+        "review": {
+          "calls": 1,
+          "ms": 572.3000000119209
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1290.7000000178814
+        }
+      }
+    },
+    {
+      "id": "fmv5b76h91",
+      "name": "玄关柜 · 洞洞板换鞋区",
+      "ms": 1371.0999999940395,
+      "stats": {
+        "effectivePlan": {
+          "calls": 26,
+          "ms": 108.2000000178814
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 76.60000002384186
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 1.699999988079071
+        },
+        "save": {
+          "calls": 1,
+          "ms": 6.800000011920929
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 117.90000000596046
+        },
+        "sharedSides": {
+          "calls": 169,
+          "ms": 0.4000000059604645
+        },
+        "sideOpenings": {
+          "calls": 169,
+          "ms": 3.6999999582767487
+        },
+        "joinedSideFinishes": {
+          "calls": 169,
+          "ms": 3.799999922513962
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 44
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 1.0999999940395355
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.30000001192092896
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 368.19999998807907
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 419.69999998807907
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 186.69999998807907
+        },
+        "review": {
+          "calls": 1,
+          "ms": 570.8000000119209
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1249
+        }
+      }
+    },
+    {
+      "id": "fmv9dos7j1",
+      "name": "橱柜台面",
+      "ms": 1452.7000000178814,
+      "stats": {
+        "effectivePlan": {
+          "calls": 26,
+          "ms": 114.69999998807907
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 77.39999997615814
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 2.7000000178813934
+        },
+        "save": {
+          "calls": 1,
+          "ms": 6.5
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 118.89999997615814
+        },
+        "sharedSides": {
+          "calls": 181,
+          "ms": 0.29999998211860657
+        },
+        "joinedSideFinishes": {
+          "calls": 181,
+          "ms": 3.7000000178813934
+        },
+        "sideOpenings": {
+          "calls": 169,
+          "ms": 3.0999999940395355
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 49.900000005960464
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 12.5
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.4000000059604645
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 491.59999999403954
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 540.6999999880791
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 123.80000001192093
+        },
+        "review": {
+          "calls": 1,
+          "ms": 572
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1329.1000000238419
+        }
+      }
+    },
+    {
+      "id": "fmv9dos7j1",
+      "name": "橱柜台面",
+      "ms": 1422.5999999940395,
+      "stats": {
+        "effectivePlan": {
+          "calls": 26,
+          "ms": 107.80000001192093
+        },
+        "normalizeObstacles": {
+          "calls": 1,
+          "ms": 76.69999998807907
+        },
+        "normalize": {
+          "calls": 1,
+          "ms": 1.800000011920929
+        },
+        "save": {
+          "calls": 1,
+          "ms": 6.5
+        },
+        "commit": {
+          "calls": 1,
+          "ms": 120.60000002384186
+        },
+        "sharedSides": {
+          "calls": 172,
+          "ms": 0.5000000298023224
+        },
+        "sideOpenings": {
+          "calls": 168,
+          "ms": 4.199999958276749
+        },
+        "joinedSideFinishes": {
+          "calls": 172,
+          "ms": 4.8999998569488525
+        },
+        "renderFurn": {
+          "calls": 1,
+          "ms": 44.69999998807907
+        },
+        "renderSel": {
+          "calls": 1,
+          "ms": 6
+        },
+        "renderFab": {
+          "calls": 1,
+          "ms": 0.29999998211860657
+        },
+        "spaceCheck": {
+          "calls": 1,
+          "ms": 480.59999999403954
+        },
+        "renderPanel": {
+          "calls": 1,
+          "ms": 531.3000000119209
+        },
+        "sync": {
+          "calls": 1,
+          "ms": 118.90000000596046
+        },
+        "review": {
+          "calls": 1,
+          "ms": 565.8000000119209
+        },
+        "renderAll": {
+          "calls": 1,
+          "ms": 1297.699999988079
+        }
+      }
+    }
+  ],
+  "undoRedo": true,
+  "roundtrip": true,
+  "issues": [
+    {
+      "kind": "floorheight",
+      "id": "fmv3w361v2",
+      "name": "双人床 1.8m",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv3wyijp13",
+      "name": "单人床",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv5c10yi4",
+      "name": "书桌",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv5dvzo81",
+      "name": "办公椅",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv6wfmo91",
+      "name": "餐椅",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv6wfocm2",
+      "name": "餐椅",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv6wfol63",
+      "name": "餐椅",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv6wg88q4",
+      "name": "餐椅",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floor-door",
+      "id": "floor-door-0",
+      "doorIndex": 0,
+      "name": "入户门（断口推导）",
+      "pending": true,
+      "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+    },
+    {
+      "kind": "floor-door",
+      "id": "floor-door-1",
+      "doorIndex": 1,
+      "name": "房门",
+      "pending": true,
+      "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+    },
+    {
+      "kind": "floor-door",
+      "id": "floor-door-2",
+      "doorIndex": 2,
+      "name": "房门",
+      "pending": true,
+      "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+    },
+    {
+      "kind": "ceiling",
+      "id": "ceiling_area_fmvnstmsv1",
+      "ceilingId": "ceiling_area_fmvnstmsv1",
+      "name": "吊顶",
+      "pending": true,
+      "message": "走廊吊顶：吊顶区域超出可用空间或跨越墙体，请核对边界"
+    },
+    {
+      "kind": "ceiling",
+      "id": "fmv62bwbp1",
+      "ceilingId": "ceiling_area_fmvntr1ym2_part_0",
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "pending": false,
+      "at": [
+        7043,
+        7361
+      ],
+      "message": "餐边柜 · 冰箱位与玻璃展示柜与客厅吊顶 · 石膏灯槽实体相交"
+    },
+    {
+      "kind": "ceiling",
+      "id": "fmv62bwbp1",
+      "ceilingId": "ceiling_area_fmvntr1ym2_part_1",
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "pending": false,
+      "at": [
+        7043,
+        7361
+      ],
+      "message": "餐边柜 · 冰箱位与玻璃展示柜与客厅吊顶 · 上发光型材 · 含柔光板实体相交"
+    },
+    {
+      "kind": "ceiling",
+      "id": "fmv5b76h91",
+      "ceilingId": "ceiling_area_fmvpaql4s1_part_0",
+      "name": "玄关柜 · 洞洞板换鞋区",
+      "pending": false,
+      "at": [
+        9949,
+        9790
+      ],
+      "message": "玄关柜 · 洞洞板换鞋区与柜子边吊 · 平面吊顶实体相交"
+    },
+    {
+      "kind": "ceiling",
+      "id": "fmv5b78gp2",
+      "ceilingId": "ceiling_area_fmvpaql4s1_part_0",
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "pending": false,
+      "at": [
+        9931,
+        8900
+      ],
+      "message": "玄关柜二 · 置物台与鞋柜与柜子边吊 · 平面吊顶实体相交"
+    },
+    {
+      "kind": "ceiling",
+      "id": "fmv5bl44k1",
+      "ceilingId": "ceiling_area_fmvpaql4s1_part_0",
+      "name": "收纳柜",
+      "pending": false,
+      "at": [
+        9931,
+        7290
+      ],
+      "message": "收纳柜与柜子边吊 · 平面吊顶实体相交"
+    },
+    {
+      "kind": "pipe",
+      "id": "fmv9dos7j1",
+      "markerId": "cad_61E4A",
+      "name": "橱柜台面",
+      "pending": false,
+      "cut": true,
+      "at": [
+        6135.835793234891,
+        8538.978344727278
+      ],
+      "message": "柜体与 下水 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+    },
+    {
+      "kind": "pipe",
+      "id": "fmv9dos7j1",
+      "markerId": "cad_61E4B",
+      "name": "橱柜台面",
+      "pending": false,
+      "cut": true,
+      "at": [
+        6135.835793234891,
+        10091.96537013368
+      ],
+      "message": "柜体与 燃气 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+    },
+    {
+      "kind": "pipe",
+      "id": "fmv9mqxz91",
+      "markerId": "cad_61E4B",
+      "name": "厨房吊柜",
+      "pending": false,
+      "cut": true,
+      "at": [
+        6135.835793234891,
+        10091.96537013368
+      ],
+      "message": "柜体与 燃气 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+    },
+    {
+      "kind": "pipe",
+      "id": "fmvdvqyqj1",
+      "markerId": "cad_61E4B",
+      "name": "管道包覆柜",
+      "pending": false,
+      "cut": false,
+      "at": [
+        6135.835793234891,
+        10091.96537013368
+      ],
+      "message": "家具实体与竖管相交：燃气（管径 100 mm）"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "衣柜",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        5577.75,
+        4219
+      ],
+      "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "衣柜",
+      "column": 1,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        5163.875,
+        4219
+      ],
+      "message": "分区 2 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "衣柜",
+      "column": 2,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        4759,
+        4219
+      ],
+      "message": "分区 3 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "衣柜",
+      "column": 3,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        4354.125,
+        4219
+      ],
+      "message": "分区 4 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+    },
+    {
+      "kind": "outside",
+      "id": "fmv3xjwfp4",
+      "name": "飘窗垫",
+      "message": "家具占地超出房间范围（含折角／凹口）"
+    },
+    {
+      "kind": "cabinetdoor",
+      "id": "fmv5b78gp2",
+      "markerIds": [],
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        9765,
+        8415
+      ],
+      "message": "分区 1 柜门三维开启范围被 收纳柜 占用"
+    },
+    {
+      "kind": "cabinetdrawer",
+      "id": "fmv5b78gp2",
+      "markerIds": [],
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        9756,
+        8415
+      ],
+      "message": "分区 1 抽屉完全拉出范围被 收纳柜 占用"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv5b78gp2",
+      "markerIds": [],
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        9511,
+        8415
+      ],
+      "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 收纳柜、三联动推拉门 占用"
+    },
+    {
+      "kind": "cabinetdoor",
+      "id": "fmv62bwbp1",
+      "markerIds": [],
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "column": 1,
+      "section": "lower",
+      "pending": false,
+      "at": [
+        7178,
+        7425
+      ],
+      "message": "分区 2 柜门三维开启范围被 餐椅 占用"
+    },
+    {
+      "kind": "cabinetdoor",
+      "id": "fmv62bwbp1",
+      "markerIds": [],
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "column": 1,
+      "section": "lower",
+      "pending": false,
+      "at": [
+        7178,
+        6444
+      ],
+      "message": "分区 2 柜门三维开启范围被 餐椅 占用"
+    },
+    {
+      "kind": "cabinetdrawer",
+      "id": "fmv62bwbp1",
+      "markerIds": [],
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "column": 1,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        7178,
+        7425
+      ],
+      "message": "分区 2 抽屉完全拉出范围被 餐椅 占用"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv62bwbp1",
+      "markerIds": [],
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "column": 1,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        7493,
+        7425
+      ],
+      "message": "分区 2 抽屉拉出后前方 800 mm 地面操作空间被 餐椅、餐椅、餐椅、源氏木语折叠餐桌 · 1100款 占用"
+    },
+    {
+      "kind": "wall",
+      "id": "fmv9dos7j1",
+      "name": "橱柜台面",
+      "message": "家具占用墙体空间"
+    },
+    {
+      "kind": "outside",
+      "id": "fmv9dos7j1",
+      "name": "橱柜台面",
+      "message": "家具占地超出房间范围（含折角／凹口）"
+    },
+    {
+      "kind": "wall",
+      "id": "fmvdvn6e11",
+      "name": "管道包覆柜",
+      "message": "家具占用墙体空间"
+    },
+    {
+      "kind": "outside",
+      "id": "fmvdvn6e11",
+      "name": "管道包覆柜",
+      "message": "家具占地超出房间范围（含折角／凹口）"
+    },
+    {
+      "kind": "wall",
+      "id": "fmvdvqyqj1",
+      "name": "管道包覆柜",
+      "message": "家具占用墙体空间"
+    },
+    {
+      "kind": "outside",
+      "id": "fmvdvqyqj1",
+      "name": "管道包覆柜",
+      "message": "家具占地超出房间范围（含折角／凹口）"
+    },
+    {
+      "kind": "front",
+      "id": "fmvg4z7am1",
+      "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+      "message": "正面 600 mm 使用空间不足（柜门／抽屉）"
+    },
+    {
+      "kind": "cabinetdoor",
+      "id": "fmvgnhl7h3",
+      "markerIds": [],
+      "name": "收纳柜",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        9765,
+        5420
+      ],
+      "message": "分区 1 柜门三维开启范围被 米家智能宠物喂食器 2 占用"
+    },
+    {
+      "kind": "cabinetdoor",
+      "id": "fmvgnhl7h3",
+      "markerIds": [],
+      "name": "收纳柜",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        9765,
+        6165
+      ],
+      "message": "分区 1 柜门三维开启范围被 米家智能宠物喂食器 2 占用"
+    }
+  ],
+  "refresh": true,
+  "narrow": true,
+  "errors": []
+}

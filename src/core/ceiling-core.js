@@ -410,24 +410,42 @@ function checks(plan,bodies){
  const out=(plan.ceilings?.pending||[]).map(p=>({kind:'ceiling',id:p.id,ceilingId:p.id,name:'吊顶',pending:true,message:p.message}));
  const apertures=new Map((plan.ceilings?.items||[]).map(c=>[c.id,downlightHoles(c,bodies)])),replacements=new Map((plan.ceilings?.items||[]).map(c=>[c.id,panelReplacements(c,bodies)]));
  const P=root.FurnishProducts||require('./product-rules.js'),seenDevices=new Set();for(const {f}of bodies)if(!f.obj&&P.definition(f)?.ceilingPanel&&!seenDevices.has(f.id)){seenDevices.add(f.id);if(![...replacements.values()].some(slots=>slots.some(s=>s.fid===f.id)))out.push({kind:'ceiling',id:f.id,ceilingId:'panel-installation',name:f.name,pending:true,at:[f.cx,f.cy],message:f.name+'未替换完整铝扣板：请使用整板安装，核对300×600尺寸、方向、标高及格内筒灯／浴霸占用'});}
- for(const c of plan.ceilings?.items||[])for(const {f,p,vertical} of bodies){
+ // Prepare invariant section sweeps once per ceiling, not once per furniture
+ // board. Bounds only reject disjoint candidates; the original exact section
+ // intersection still decides every possible hit, including unknown heights.
+ const bounds=poly=>[Math.min(...poly.map(p=>p[0])),Math.min(...poly.map(p=>p[1])),Math.max(...poly.map(p=>p[0])),Math.max(...poly.map(p=>p[1]))];
+ const disjoint=(a,b)=>a[2]<b[0]-eps()||b[2]<a[0]-eps()||a[3]<b[1]-eps()||b[3]<a[1]-eps();
+ for(const c of plan.ceilings?.items||[]){
+ const sections=c.kind==='flat'?[]:sectionContours(c.section).map(vertices=>{
+  const outline=vertices.map(v=>[v.u,v.d]),bottom=c.height-Math.max(...vertices.map(v=>v.d)),top=c.height-Math.min(...vertices.map(v=>v.d));
+  return {outline,bottom,top,legs:route(c).map((leg,i)=>{const poly=legFootprint(c,i,outline.map(v=>v[0]));return {leg,poly,box:bounds(poly)};})};
+ });
+ const caps=c.kind==='flat'?[]:endCaps(c).plates.map(plate=>({...plate,box:bounds(plate.footprint),bottom:c.height-Math.max(...plate.section.map(p=>p[1])),top:c.height-Math.min(...plate.section.map(p=>p[1]))}));
+ const flatBox=c.kind==='flat'?bounds(c.polygon):null,flatConvex=c.kind==='flat'&&convex(c.polygon);
+ for(const {f,p,vertical} of bodies){
+  const box=bounds(p),separated=(bottom,top,tolerance=eps())=>vertical&&Math.min(vertical.top,top)-Math.max(vertical.bottom,bottom)<=tolerance;
   let hit=false;
   if(c.kind==='flat'){
+   if(separated(c.height,c.height+c.thickness)||disjoint(box,flatBox))continue;
    if(apertures.get(c.id).some(h=>h.id===f.id))continue;
    const slots=replacements.get(c.id);if(slots.some(s=>s.fid===f.id))continue;
    if(slots.length){const Z=zones(),cuts=slots.map(s=>s.cell),remaining=Z.decompose([c.polygon,p,...cuts],q=>Z.inside(q,c.polygon)&&Z.inside(q,p)&&!cuts.some(cut=>Z.inside(q,cut)));if(Z.area(remaining)<=eps()**2)continue;}
-   if(convex(c.polygon)){const overlap=intersection(p,c.polygon);if(overlap.length<3||Math.abs(area(overlap))<=eps()**2)continue;}else if(overlapArea(c.polygon,p)<=eps()**2)continue;
+   if(flatConvex){const overlap=intersection(p,c.polygon);if(overlap.length<3||Math.abs(area(overlap))<=eps()**2)continue;}else if(overlapArea(c.polygon,p)<=eps()**2)continue;
    hit=!vertical||Math.min(vertical.top,c.height+c.thickness)-Math.max(vertical.bottom,c.height)>eps();
   }else{
-   for(const vertices of sectionContours(c.section)){const outline=vertices.map(v=>[v.u,v.d]);for(const [i,leg] of route(c).entries()){
-    const poly=intersection(p,legFootprint(c,i,outline.map(v=>v[0])));if(poly.length<3||Math.abs(area(poly))<=eps()**2)continue;
+   // Section contact is decided by clipped area, so retain even sub-epsilon
+   // height overlap and the clipper's numerical boundary allowance.
+   for(const {outline,bottom,top,legs} of sections){if(separated(bottom,top,-eps()))continue;for(const {leg,poly:footprint,box:legBox} of legs){
+    if(disjoint(box,legBox))continue;
+    const poly=intersection(p,footprint);if(poly.length<3||Math.abs(area(poly))<=eps()**2)continue;
     const us=poly.map(v=>(v[0]-leg.a[0])*leg.normal[0]+(v[1]-leg.a[1])*leg.normal[1]),u0=Math.min(...us),u1=Math.max(...us),d0=vertical?c.height-vertical.top:-rules().max,d1=vertical?c.height-vertical.bottom:rules().max;
     const overlap=intersection(outline,[[u0,d0],[u1,d0],[u1,d1],[u0,d1]]);if(overlap.length>=3&&Math.abs(area(overlap))>eps()**2){hit=true;break;}
    }
    if(hit)break;}
-   if(!hit)for(const plate of endCaps(c).plates){const poly=intersection(p,plate.footprint);if(poly.length<3||Math.abs(area(poly))<=eps()**2)continue;const bottom=c.height-Math.max(...plate.section.map(p=>p[1])),top=c.height-Math.min(...plate.section.map(p=>p[1]));if(!vertical||Math.min(vertical.top,top)-Math.max(vertical.bottom,bottom)>eps()){hit=true;break;}}
+   if(!hit)for(const plate of caps){if(separated(plate.bottom,plate.top)||disjoint(box,plate.box))continue;const poly=intersection(p,plate.footprint);if(poly.length<3||Math.abs(area(poly))<=eps()**2)continue;hit=true;break;}
   }
   if(hit)out.push({kind:'ceiling',id:f.id,ceilingId:c.id,name:f.name,pending:!vertical,at:[f.cx,f.cy],message:`${f.name}与${c.name}${vertical?'实体相交':'投影重叠，家具高度未知，待核对'}`});
+ }
  }
  return out;
 }

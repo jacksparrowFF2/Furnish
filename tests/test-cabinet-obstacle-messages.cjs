@@ -11,4 +11,10 @@ for(const rot of [0,37,90,180])for(const flip of [false,true]){
 const double={id:'double',type:'cabinet',cx:2500,cy:2500,rot:0,...C.preset('base')};double.cabinet.columns=[{door:'double',doorOpen:false,handle:'none',shelves:[],drawers:[]}];
 const obstacle={id:'blocker',name:'One blocker',type:'bed',cx:2500,cy:2900,w:1800,d:900,h:850,rot:0};
 const doors=P.spaceCheck(plan,[double,obstacle],{scanPassages:false}).filter(i=>i.id===double.id&&i.kind==='cabinetdoor');assert.equal(doors.length,2,'different physical door sweeps remain independently locatable despite equal summaries');assert.notDeepEqual(doors[0].at,doors[1].at);
-console.log('PASS obstacle summaries: production multipart collisions, per-identity deduplication, distinct same-name furniture, rotated/mirrored geometry and vertical separation');
+// A remote bed has many real production parts. None should reach the exact
+// door-sweep predicate; near parts above still use it and retain their messages.
+const far={...obstacle,id:'far',cx:6500,cy:6500},exact=C.openingIntersects;let remoteCalls=0;
+try{C.openingIntersects=function(zone,poly,...args){if(poly.every(p=>p[0]>5000&&p[1]>5000))remoteCalls++;return exact(zone,poly,...args);};
+ const result=P.spaceCheck(plan,[double,far],{scanPassages:false});assert(!result.some(i=>i.id===double.id&&i.kind==='cabinetdoor'));assert.equal(remoteCalls,0,'remote production boards must be rejected before repeated exact sweep tests');
+}finally{C.openingIntersects=exact;}
+console.log('PASS obstacle summaries: production multipart collisions, per-identity deduplication, distinct same-name furniture, rotated/mirrored geometry, vertical separation and remote-board broad phase');

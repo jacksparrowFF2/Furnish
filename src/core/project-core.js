@@ -366,6 +366,8 @@
   // Beam bodies and opening obstacles share the same rigid-object height envelopes.
   // Wall-mounted objects are exempt from floor-footprint checks, not overhead collisions.
   const rigidBodies=furniture.filter(f=>!['rug','plant','curtain'].includes(f.type)).flatMap(f=>(root.FurnishGeometry||require('./layout-geometry.js')).bodyParts(f,plan,furniture).map(part=>({f,...part})));
+  const openingBox=p=>[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))];
+  const openingObstacles=rigidBodies.map(b=>({...b,box:openingBox(b.p)}));
   broken.push(...ceilings().checks(plan,rigidBodies).filter(i=>!targets||targets.has(i.id)));
   const beams=(plan.beams||[]).map(beam=>{const vertical=core().beamVertical(beam,ceilingHeight(plan));return {beam,vertical:vertical?.assumed?null:vertical};});
   const S=root.FurnishServices||(typeof require==='function'?require('./service-core.js'):null),pipes=S.pipes(plan);
@@ -410,8 +412,10 @@
      const hit=(poly,vertical)=>C.openingIntersects(opening,poly,vertical,intersects),physical=opening.kind!=='cabinetpassage';
      const floorHit=physical&&floors().surfaces(plan).some(a=>Number.isFinite(a.finishedZ)&&(a.room.polys||[a.room.poly]).some(p=>hit(p,{bottom:-20000,top:a.finishedZ})));
      const wallHit=plan.walls.some((w,i)=>hit(walls[i],finishes().vertical(w,plan)));
-     const obstacles=rigidBodies,blocked=[],unknown=[],blockedIds=new Set(),unknownIds=new Set(),pipeIds=[],motionUnknown=[];
-     for(const b of obstacles){if(b.f.id===f.id)continue;const vertical=b.vertical??design().furnitureVerticalBounds(b.f,plan,furniture);if(!hit(b.p,vertical))continue;const ids=vertical?blockedIds:unknownIds;if(!ids.has(b.f.id)){ids.add(b.f.id);(vertical?blocked:unknown).push(b.f.name||b.f.id);}}
+     const obstacles=openingObstacles,sweepBox=openingBox(opening.poly),blocked=[],unknown=[],blockedIds=new Set(),unknownIds=new Set(),pipeIds=[],motionUnknown=[];
+     // The exact planar predicate already rejects touching/disjoint XY bounds.
+     // Reuse bounds instead of scanning the full sweep for every remote board.
+     for(const b of obstacles){if(b.f.id===f.id||b.box[2]<=sweepBox[0]||sweepBox[2]<=b.box[0]||b.box[3]<=sweepBox[1]||sweepBox[3]<=b.box[1])continue;const vertical=b.vertical??design().furnitureVerticalBounds(b.f,plan,furniture),ids=vertical?blockedIds:unknownIds;if(ids.has(b.f.id)||!hit(b.p,vertical))continue;ids.add(b.f.id);(vertical?blocked:unknown).push(b.f.name||b.f.id);}
      const ceilingRooms=physical?(plan.rooms||[]).filter(r=>r.counted!==false&&(r.polys||[r.poly]).some(poly=>hit(poly,{bottom:r.ceilingHeight??ceilingHeight(plan),top:Infinity}))):[];
      const ceilingHit=physical&&(ceilingRooms.length>0||!plan.rooms.length&&hit(opening.poly,{bottom:ceilingHeight(plan),top:Infinity}));
      for(const {beam,vertical} of beams){if(vertical){if(hit(beam.poly,vertical))blocked.push((beam.name||beam.id)+'（房梁）');}else if(physical&&hit(beam.poly,null))unknown.push((beam.name||beam.id)+'（梁高未录入）');}

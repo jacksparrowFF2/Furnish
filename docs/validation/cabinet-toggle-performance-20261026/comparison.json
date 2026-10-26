@@ -1,0 +1,35 @@
+{
+  "baselineRef": "4889a8e",
+  "workspaceSha256": "45ef0da295218c744328edd5e6eb78b6218ae7a129752000a96fc351a1564ea2",
+  "exactSpaceCheckParity": true,
+  "comparison": [
+    {
+      "id": "fmv3w4m2a4",
+      "name": "衣柜",
+      "beforeMedian": 1607.699999988079,
+      "afterMedian": 661.5,
+      "fileMedian": 652.7000000178814
+    },
+    {
+      "id": "fmv3wzkb515",
+      "name": "衣柜",
+      "beforeMedian": 1296.0499999970198,
+      "afterMedian": 583.5,
+      "fileMedian": 591.2999999821186
+    },
+    {
+      "id": "fmv5b76h91",
+      "name": "玄关柜 · 洞洞板换鞋区",
+      "beforeMedian": 1393.5,
+      "afterMedian": 648.0499999970198,
+      "fileMedian": 714.5499999970198
+    },
+    {
+      "id": "fmv9dos7j1",
+      "name": "橱柜台面",
+      "beforeMedian": 1437.6500000059605,
+      "afterMedian": 670.5500000119209,
+      "fileMedian": 672.3500000089407
+    }
+  ]
+}
