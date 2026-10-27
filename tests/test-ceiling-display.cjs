@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),C=require('../src/core/ceiling-core.js'),M=require('../src/render/ceiling-model.js');
+(async()=>{
+ const T=await import(JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports.three);
+ const item={id:'panels',kind:'flat',polygon:[[0,0],[1240,0],[1240,1840],[0,1840]],height:2500,thickness:8,aluminum:C.aluminumDefaults()},data={items:[item]},saved=JSON.stringify(data),group=M.build(T,data),display=M.createDisplay(T),camera=new T.PerspectiveCamera(),meshes=group.children.slice(),original=meshes.map(m=>({material:m.material,geometry:Array.from(m.geometry.attributes.position.array),token:m.userData.furnishStablePart}));
+ const panel=meshes.find(m=>m.userData.ceiling.part==='panel'),backing=meshes.find(m=>m.userData.ceiling.part==='panel-backing');
+ assert.equal(panel.material.polygonOffsetFactor,-2);assert.equal(panel.material.polygonOffsetUnits,-4);
+ camera.position.set(0,5,0);assert(display.update(group,camera,'ghost'));assert.equal(panel.material.opacity,.25);assert.equal(panel.material.depthWrite,false);assert.equal(panel.material.side,T.FrontSide);assert.equal(panel.castShadow,false);assert.equal(backing.visible,false);assert(panel.children.some(o=>o.isLineSegments&&o.visible));
+ assert.equal(display.update(group,camera,'ghost'),false,'steady camera does not invalidate shadow map');
+ camera.position.y=2;assert(display.update(group,camera,'ghost'));assert.equal(panel.material,original[meshes.indexOf(panel)].material);assert.equal(panel.material.opacity,1);assert.equal(backing.visible,true);assert.equal(panel.castShadow,true);assert(panel.children.every(o=>!o.visible));
+ camera.position.y=5;display.update(group,camera,'solid');assert.equal(panel.material.opacity,1);display.update(group,camera,'hidden');assert(meshes.every(m=>!m.visible));
+ display.restore();panel.visible=false;display.update(group,camera,'ghost');assert.equal(panel.visible,false,'display never reveals a hidden layer');display.restore();assert.equal(panel.visible,false);panel.visible=true;
+ // Independent heights, including an exactly coplanar camera, use actual bounds.
+ panel.geometry.computeBoundingBox();camera.position.y=panel.geometry.boundingBox.max.y;display.update(group,camera,'ghost');assert.equal(panel.material.opacity,1);camera.position.y+=.001;display.update(group,camera,'ghost');assert.equal(panel.material.opacity,.25);
+ display.restore();for(let i=0;i<meshes.length;i++){assert.equal(meshes[i].material,original[i].material);assert.deepEqual(Array.from(meshes[i].geometry.attributes.position.array),original[i].geometry);assert.equal(meshes[i].userData.furnishStablePart,original[i].token);}assert.equal(JSON.stringify(data),saved);
+ const ghosts=new Set();display.update(group,camera,'ghost');for(const m of meshes)if(m.material.transparent)ghosts.add(m.material);let disposed=0;for(const m of ghosts)m.addEventListener('dispose',()=>disposed++);display.clear();assert.equal(disposed,ghosts.size);assert(meshes.every(m=>!m.children.length));assert.equal(panel.material.opacity,1);
+ console.log('PASS ceiling display: 25% top view, solid underside, hidden/layers, depth/shadows, exact height, stable geometry/identity, restoration and disposal');
+})().catch(e=>{console.error(e);process.exitCode=1;});

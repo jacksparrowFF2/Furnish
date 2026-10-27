@@ -11,6 +11,9 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
  // Raster depth bias keeps the saved height and production vertices unchanged.
  const flatSurface=surface.clone();flatSurface.polygonOffset=true;flatSurface.polygonOffsetFactor=-1;flatSurface.polygonOffsetUnits=-1;
  const panelSurface=flatSurface.clone();panelSurface.color.set('#f5f5f0');panelSurface.roughness=.48;panelSurface.metalness=.12;
+ // At whole-home camera distances the 0.5 mm top separation can quantize
+ // to one depth value. Give the panel a distinct raster priority over backing.
+ panelSurface.polygonOffsetFactor=-2;panelSurface.polygonOffsetUnits=-4;
  const seamSurface=flatSurface.clone();seamSurface.color.set('#aaa99f');seamSurface.roughness=.85;
  const aluminum=new THREE.MeshStandardMaterial({color:'#a7afb3',metalness:.65,roughness:.35,side:THREE.DoubleSide}),diffuser=new THREE.MeshStandardMaterial({color:'#f6f7ef',emissive:'#fff1d2',emissiveIntensity:lamps ? .22 : 0,roughness:.65,transparent:true,opacity:.8,side:THREE.DoubleSide}),diffuserOff=diffuser.clone();diffuserOff.emissiveIntensity=0;
  let conflictLight=null;const lightMaterial=layout=>{if(!layout.pending.some(m=>m.includes('相交')))return light;if(!conflictLight){conflictLight=light.clone();conflictLight.color.set('#e96842');conflictLight.emissive.set('#e35030');conflictLight.emissiveIntensity=lamps?1:0;}return conflictLight;};
@@ -88,5 +91,34 @@ function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null,f
  const draw=()=>renderer.render(scene,camera),resize=()=>{const w=host.clientWidth,h=Math.max(180,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();draw();},observer=new ResizeObserver(resize);observer.observe(host);controls.addEventListener('change',draw);resize();
  return {update(value){const oldBox=framingBox(data,group),oldCenter=oldBox.getCenter(new THREE.Vector3()),next=makeGroup(value),box=framingBox(value,next),center=box.getCenter(new THREE.Vector3()),delta=center.clone().sub(oldCenter),oldSize=oldBox.getSize(new THREE.Vector3()).length(),newSize=box.getSize(new THREE.Vector3()).length();scene.remove(group);release(group);group=next;data=value;underside.visible=data.items.some(c=>c.aluminum);scene.add(group);camera.position.add(delta);controls.target.add(delta);if(newSize>oldSize*1.35&&oldSize>0)camera.position.sub(controls.target).multiplyScalar(newSize/oldSize).add(controls.target);controls.update();draw();},dispose(){unbindNavigation();observer.disconnect();controls.dispose();release(group);renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}};
 }
-const api={build,preview};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeilingModel=api;
+// View-only overrides. Restore before layers/clipping/export inspect the scene;
+// neither production geometry nor saved materials are changed by this mode.
+function createDisplay(THREE){
+ const overrides=new Map(),materials=new Map(),outlines=new Map(),states=new Map(),position=new THREE.Vector3(),bounds=new THREE.Box3();
+ function restore(){for(const [m,s]of overrides){m.material=s.material;m.visible=s.visible;m.castShadow=s.castShadow;m.renderOrder=s.renderOrder;}overrides.clear();for(const line of outlines.values())line.visible=false;}
+ function clear(){restore();for(const m of materials.values())m.dispose();materials.clear();for(const line of outlines.values()){line.removeFromParent();line.geometry.dispose();line.material.dispose();}outlines.clear();states.clear();}
+ function update(group,camera,mode='solid'){
+  restore();camera.getWorldPosition(position);group.updateWorldMatrix(true,true);let changed=false;
+  group.traverse(m=>{
+   const part=m.userData.ceiling?.part;if(!m.isMesh||!part)return;
+   if(!m.geometry.boundingBox)m.geometry.computeBoundingBox();bounds.copy(m.geometry.boundingBox).applyMatrix4(m.matrixWorld);
+   const luminous=part==='light'||part==='diffuser',above=mode==='ghost'&&position.y>bounds.max.y,hidden=mode==='hidden'&&!luminous||above&&part==='panel-backing',ghost=above&&!luminous&&!hidden,next=hidden?'hidden':ghost?'ghost':'solid';
+   if(states.get(m)!==next){states.set(m,next);changed=true;}
+   if(next==='solid')return;
+   overrides.set(m,{material:m.material,visible:m.visible,castShadow:m.castShadow,renderOrder:m.renderOrder});
+   if(hidden){m.visible=false;return;}
+   let material=materials.get(m.material);if(!material){material=m.material.clone();material.transparent=true;material.opacity=.25;material.depthWrite=false;material.side=THREE.FrontSide;material.onBeforeCompile=m.material.onBeforeCompile;material.customProgramCacheKey=m.material.customProgramCacheKey;materials.set(m.material,material);}
+   m.material=material;m.castShadow=false;m.renderOrder=1;
+   if(part==='panel'||part==='panel-trim'){
+    let line=outlines.get(m);if(!line){
+     const edges=new THREE.EdgesGeometry(m.geometry),a=edges.attributes.position.array,vertices=[];m.geometry.computeBoundingBox();const top=m.geometry.boundingBox.max.y;
+     for(let i=0;i<a.length;i+=6)if(Math.abs(a[i+1]-top)<1e-5&&Math.abs(a[i+4]-top)<1e-5)vertices.push(...a.slice(i,i+6));edges.dispose();
+     const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));line=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:'#81796b',transparent:true,opacity:.45,depthWrite:false}));line.renderOrder=2;line.userData.ceilingViewHelper=true;m.add(line);outlines.set(m,line);
+    }line.material.clippingPlanes=material.clippingPlanes;line.visible=true;
+   }
+  });return changed;
+ }
+ return {restore,clear,update};
+}
+const api={build,preview,createDisplay};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeilingModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

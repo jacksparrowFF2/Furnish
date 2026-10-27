@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-display",
+    "ceiling-aluminum",
+    "ceiling-coplanar-camera"
+  ],
+  "results": [
+    {
+      "name": "ceiling-display",
+      "status": "PASS",
+      "seconds": 29.6,
+      "log": "ceiling-display.log"
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 13.2,
+      "log": "ceiling-aluminum.log"
+    },
+    {
+      "name": "ceiling-coplanar-camera",
+      "status": "PASS",
+      "seconds": 21.5,
+      "log": "ceiling-coplanar-camera.log"
+    }
+  ],
+  "notRun": []
+}

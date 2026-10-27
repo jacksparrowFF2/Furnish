@@ -162,6 +162,11 @@
             <button class="btn chip on" data-t="lamps" title="控制已放置的筒灯、平板灯与吊顶灯带" data-en-title="Toggle placed downlights, panel lights and ceiling light strips" data-en="Ceiling lamps">顶灯</button>
             <button class="btn chip" data-t="night" data-en="Night">夜景</button>
           </div>
+          <div class="chiprow" role="group" aria-label="吊顶显示 / Ceiling display"><span class="chip-cap" data-en="Ceiling">吊顶</span>
+            <button class="btn chip" data-ceiling-display="solid" aria-pressed="false" data-en="Solid">实体</button>
+            <button class="btn chip on" data-ceiling-display="ghost" aria-pressed="true" title="俯视25%不透明度，仰视保留实体" data-en-title="25% opacity from above; solid from below" data-en="See-through">透视</button>
+            <button class="btn chip" data-ceiling-display="hidden" aria-pressed="false" data-en="Hidden">隐藏</button>
+          </div>
           <label class="range"><span data-en="Sun">日照</span> <input type="range" id="sun" min="7" max="18" step=".25" value="10"><span id="sunT">10:00</span></label>
         </div>
         <div class="showsec"><b data-en="Appearance">外观</b>
@@ -500,6 +505,7 @@ let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, g
 let archFloor, archUp, furnG, clearanceG, labelG, wallLabelG, lampG, colliders = [], selKey = null, selHelper = null;
 let elevationG,issueG,sceneIssue=null,issueTimer=0;
 const observation=FurnishSceneObservation.create(THREE);
+const ceilingDisplay=FurnishCeilingModel.createDisplay(THREE);
 let observationTarget=null,observationSelection='',observationRevision='';
 let sigArch = '', sigFurn = '', sigLabels = '', grow = 1, furnGrow = 1;
 let sigNorth='';
@@ -1161,7 +1167,7 @@ function buildArch(){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=FurnishPartIdentity;
 
-  observation.clear();
+  ceilingDisplay.clear();observation.clear();
   clearGroup(archFloor); clearGroup(archUp); lampG.clear(); doors.length = 0; slidingDoors.length = 0; colliders = [];
   const top = opt.cut===2.8?H:Math.min(opt.cut,H);
   const finishPlan=FurnishProject.effectivePlan(PLAN,state);floorScenePlan=finishPlan;
@@ -1448,6 +1454,7 @@ function observationBounds(){
  return bounds;
 }
 function clearObservation(){
+ ceilingDisplay.clear();
  observationTarget=null;observationSelection='';if(observation.clear())invalidate(true);
  $('#vRestoreWalls').hidden=true;syncHint3d();
 }
@@ -1465,6 +1472,7 @@ function frameObservation(front=false){
  if(next){observationRevision=sigFurn;orbit.maxDistance=Math.max(45,next.p.distanceTo(next.t)*1.5);flyTo(next);}
 }
 function updateObservation(){
+ ceilingDisplay.restore();
  if(!observationTarget)return;
  if(opt.mode!=='orbit'||anim||observationSelection!==JSON.stringify(ui.sel)){clearObservation();return;}
  const bounds=observationBounds();if(bounds.isEmpty()){clearObservation();return;}
@@ -1552,7 +1560,7 @@ function pick(e){
 // 屏幕点 → 地面（y = 0）上的户型坐标 mm；s = 该处每 mm 对应的屏幕像素，用于拖放时的幽灵图大小
 const ground0 = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 function observationLayer(g,key){if(key.startsWith('roomCeiling:'))g.userData.layerObject=key;return g;}
-function applyObservationLayers(){FurnishObservationLayers.applyScene({furnG,archFloor,archUp,clearanceG,elevationG,issueG,wallLabelG,lampG});}
+function applyObservationLayers(){ceilingDisplay.restore();FurnishObservationLayers.applyScene({furnG,archFloor,archUp,clearanceG,elevationG,issueG,wallLabelG,lampG});if(ceilingDisplay.update(archUp,camera,ui.ceilingMode))invalidate(true);}
 function refreshObservationLayers(){if(!inited)return;selKey=null;clearSceneIssue();applyObservationLayers();invalidate(true);}
 function sceneObjectShown(o){for(let p=o;p;p=p.parent)if(!p.visible)return false;return true;}
 function refreshTileInspection(){if(!inited)return;const visible=opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting();furnG.visible=visible;clearanceG.visible=visible&&opt.clearances;for(const group of [elevationG,issueG]){group.visible=visible&&opt.mode==='orbit'&&!anim;group.traverse(o=>{if(o.isCSS2DObject)o.visible=group.visible;});}clearanceG.traverse(o=>{if(o.isCSS2DObject)o.visible=visible&&opt.clearances&&!anim;});selKey=null;invalidate(true);}
@@ -1740,6 +1748,8 @@ function bindUI(){
   $('#vRestoreWalls').onclick = clearObservation;
   $('#vIso').onclick = () => { clearObservation();if (opt.mode === 'walk') setMode('orbit'); else flyTo(isoWhole()); };
   $('#vTop').onclick = () => { clearObservation();if (opt.mode === 'walk') setMode('orbit'); flyTo(topWhole()); };
+  document.querySelectorAll('[data-ceiling-display]').forEach(b=>b.onclick=()=>{ui.ceilingMode=b.dataset.ceilingDisplay;saveUI();syncCeilingModeButtons();applyObservationLayers();invalidate();});
+  syncCeilingModeButtons();
   const remember=()=>{
     const settings=FurnishDesign.sceneSettings(opt);
     if(opt.mode==='walk')settings.cut=FurnishDesign.sceneSettings(state.scene3d).cut;
@@ -1796,11 +1806,13 @@ function loop(){
   fitSceneAnnotationLabels();
 }
 
+function syncCeilingModeButtons(){document.querySelectorAll('[data-ceiling-display]').forEach(b=>{const on=b.dataset.ceilingDisplay===ui.ceilingMode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});}
 function blenderScene(options={}){
  if(!inited||!active||anim||fly)throw Error(tr('请等待三维视角稳定后重试。','Wait for the 3D camera to settle and retry.'));
  sync();
  if(furnitureRenderErrors.size)throw Error(tr('请先修复三维模型错误再导出。','Resolve 3D model errors before exporting.'));
- return FurnishBlenderExport.encode(THREE,{groups:[archFloor,archUp,furnG,lampG],camera,sun,material:o=>observation.material(o),...options,meta:{plan:PLAN.name,planId:PLAN.id,originMm:[OX,OY],cut:opt.cut,temporaryFocusClipping:false}});
+ ceilingDisplay.restore();
+ try{return FurnishBlenderExport.encode(THREE,{groups:[archFloor,archUp,furnG,lampG],camera,sun,material:o=>observation.material(o),...options,meta:{plan:PLAN.name,planId:PLAN.id,originMm:[OX,OY],cut:opt.cut,temporaryFocusClipping:false}});}finally{applyObservationLayers();}
 }
 function blenderSyncSignature(){if(!inited||!active||anim||fly)return null;sync();return JSON.stringify([PLAN.id,sigArch,sigFurn,state.objectLayers?.assignments,state.objectLayers?.layers?.map(l=>[l.id,l.visible]),opt.furn,opt.lamps]);}
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }

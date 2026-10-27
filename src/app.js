@@ -128,13 +128,15 @@ const ui = {tool:'select', sel:null, mA:null, mCur:null, guides:null, marq:null,
 // 图层与编辑辅助设置跨会话记住
 const UI_KEY = 'huxing-ui';
 ui.planMode='furniture';
+ui.ceilingMode='ghost';
 try { const u = JSON.parse(localStorage.getItem(UI_KEY)) || {};
   if (['furniture','ceiling'].includes(u.planMode)) ui.planMode=u.planMode;
+  if (['solid','ghost','hidden'].includes(u.ceilingMode)) ui.ceilingMode=u.ceilingMode;
   Object.keys(ui.layers).forEach(k => { if (typeof u.layers?.[k] === 'boolean') ui.layers[k] = u.layers[k]; });
   if ([1, 10, 50, 100].includes(u.grid)) ui.grid = u.grid;
   if (['overview', 'list', 'quote'].includes(u.tab)) ui.tab = u.tab;
 } catch(e) {}
-const saveUI = () => { try { localStorage.setItem(UI_KEY, JSON.stringify({layers:ui.layers, grid:ui.grid, tab:ui.tab, planMode:ui.planMode})); } catch(e) {} };
+const saveUI = () => { try { localStorage.setItem(UI_KEY, JSON.stringify({layers:ui.layers, grid:ui.grid, tab:ui.tab, planMode:ui.planMode, ceilingMode:ui.ceilingMode})); } catch(e) {} };
 let view = {x0:0, y0:0, s:.06};
 const undoStack = [], redoStack = [];
 
