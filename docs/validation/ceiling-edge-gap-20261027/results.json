@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-reference-snapping"
+  ],
+  "results": [
+    {
+      "name": "ceiling-reference-snapping",
+      "status": "PASS",
+      "seconds": 15.3,
+      "log": "ceiling-reference-snapping.log"
+    }
+  ],
+  "notRun": []
+}

@@ -33,15 +33,22 @@
   for(const axis of [0,1]){const queue=[index],seen=new Set(queue);while(queue.length){const k=queue.shift();for(let n of [k-1,k+1]){if(closed)n=(n+poly.length)%poly.length;if(n<0||n>=poly.length||seen.has(n)||Math.abs(poly[k][axis]-poly[n][axis])>=1e-6)continue;seen.add(n);result[n][axis]=target[axis];queue.push(n);}}}
   return result;
  }
- function moveBoundaryEdge(poly,index,target,{polygons=[],radius=0,snap=true}={}){
+ function moveBoundaryEdge(poly,index,target,{polygons=[],radius=0,gapRadius=radius,snap=true}={}){
   const a=poly[index],b=poly[(index+1)%poly.length],dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);if(length<EPS)fail('边线长度无效');
   const t=[dx/length,dy/length],n=[-t[1],t[0]],mid=a.map((v,k)=>(v+b[k])/2);let offset=target.reduce((sum,v,k)=>sum+(v-mid[k])*n[k],0),hit=null;
-  const along=p=>(p[0]-a[0])*t[0]+(p[1]-a[1])*t[1];
-  if(snap)for(const [p,q]of segments(polygons)){const L=Math.hypot(q[0]-p[0],q[1]-p[1]);if(Math.abs((q[0]-p[0])*n[0]+(q[1]-p[1])*n[1])/L>1e-6)continue;if(Math.min(length,Math.max(along(p),along(q)))-Math.max(0,Math.min(along(p),along(q)))<=EPS)continue;const value=(p[0]-a[0])*n[0]+(p[1]-a[1])*n[1],distance=Math.abs(value-offset);if(distance<=radius&&(!hit||distance<hit.distance))hit={value,distance,reference:[p,q]};}
-  if(hit)offset=hit.value;
   const moving=new Set([index,(index+1)%poly.length]),queue=[...moving];while(queue.length){const k=queue.shift();for(const j of [(k+poly.length-1)%poly.length,(k+1)%poly.length])if(!moving.has(j)&&Math.abs((poly[j][0]-a[0])*n[0]+(poly[j][1]-a[1])*n[1])<1e-6){moving.add(j);queue.push(j);}}
-  const polygon=poly.map((p,i)=>moving.has(i)?p.map((v,k)=>v+n[k]*offset):[...p]),point=mid.map((v,k)=>v+n[k]*offset),axis=Math.abs(dx)<EPS?0:Math.abs(dy)<EPS?1:null;
-  return {polygon,point,offset,edge:[polygon[index],polygon[(index+1)%poly.length]],reference:hit?.reference,guides:hit&&axis!==null?[{axis,from:point}]:[],kind:hit?'edge':null,label:hit?'边界吸附':'边线平行移动'};
+  const along=p=>(p[0]-a[0])*t[0]+(p[1]-a[1])*t[1];
+  if(snap)for(const [p,q]of segments(polygons)){
+   const L=Math.hypot(q[0]-p[0],q[1]-p[1]),rn=[-(q[1]-p[1])/L,(q[0]-p[0])/L],dot=n[0]*rn[0]+n[1]*rn[1],angle=Math.abs((q[0]-p[0])*n[0]+(q[1]-p[1])*n[1])/L;
+   // Small imported skew may be corrected only within the pointer's snap band.
+   if(angle>Math.max(1e-6,Math.min(.02,2*radius/length)))continue;
+   const overlap=Math.min(length,Math.max(along(p),along(q)))-Math.max(0,Math.min(along(p),along(q))),gap=Math.max(0,-overlap);if(gap>gapRadius+EPS)continue;
+   const offsets=new Map([...moving].map(i=>[i,((p[0]-poly[i][0])*rn[0]+(p[1]-poly[i][1])*rn[1])/dot])),distance=Math.max(...[...offsets.values()].map(v=>Math.abs(v-offset)));
+   if(distance<=radius+EPS&&(!hit||distance<hit.distance-EPS||Math.abs(distance-hit.distance)<=EPS&&gap<hit.gap))hit={distance,gap,offsets,reference:[p,q],separated:overlap<=EPS};
+  }
+  if(hit)offset=((hit.offsets.get(index)||0)+(hit.offsets.get((index+1)%poly.length)||0))/2;
+  const polygon=poly.map((p,i)=>moving.has(i)?p.map((v,k)=>v+n[k]*(hit?hit.offsets.get(i):offset)):[...p]),point=polygon[index].map((v,k)=>(v+polygon[(index+1)%poly.length][k])/2),axis=Math.abs(dx)<EPS?0:Math.abs(dy)<EPS?1:null;
+  return {polygon,point,offset,edge:[polygon[index],polygon[(index+1)%poly.length]],reference:hit?.reference,separated:!!hit?.separated,guides:hit&&axis!==null?[{axis,from:point}]:[],kind:hit?'edge':null,label:hit?(hit.separated?'边线对齐吸附':'边界吸附'):'边线平行移动'};
  }
  function boundaryEdgeMeasurements(poly,index,references){
   const a=poly[index],b=poly[(index+1)%poly.length];if(!a||!b)return [];const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);if(length<EPS)return [];
