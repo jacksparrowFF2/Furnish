@@ -1,0 +1,21 @@
+PASS Survey preserves existing openings before structure confirmation
+PASS Old projects migrate to locked structures
+PASS Design rejects changes to the confirmed original bearing structure
+PASS Exterior walls are locked after confirmation
+PASS Real partition demolition merges rooms and updates area
+PASS Moving a partition changes both room areas while preserving bearing walls
+PASS Room materials follow spatial overlap after demolition
+PASS Automatic construction quantities update without overwriting manual values
+PASS Paint deductions use door height rather than wall thickness
+PASS Project backup roundtrip preserves baseline, designs, costs and catalog
+PASS Corrupt and future backups fail before import
+PASS Legacy plan JSON migrates to the portable project format
+PASS Spatial checks detect a blocked door swing
+PASS Cabinet front clearance rotates with the furniture
+PASS OBJ supports triangulation and negative indices
+PASS Overlapping door swings and swing-wall collisions are reported
+PASS Flat, non-finite and empty imported meshes are rejected before restoration
+PASS Backup preserves raw attachments and rejects malformed attachment data
+PASS Interior door deducts both painted wall faces
+PASS Retained openings keep sill heights and swing overrides after IDs reindex
+20 product roadmap regression checks passed

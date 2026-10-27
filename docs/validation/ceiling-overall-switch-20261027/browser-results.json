@@ -1,0 +1,122 @@
+{
+  "results": [
+    {
+      "name": "ceiling-components",
+      "status": "PASS",
+      "seconds": 18.5,
+      "log": "ceiling-components.log",
+      "run": "verification-BDCw8S"
+    },
+    {
+      "name": "ceiling-panel-layout",
+      "status": "PASS",
+      "seconds": 15.5,
+      "log": "ceiling-panel-layout.log",
+      "run": "verification-BDCw8S"
+    },
+    {
+      "name": "ceiling-overall-switch",
+      "status": "PASS",
+      "seconds": 15.2,
+      "log": "ceiling-overall-switch.log",
+      "run": "verification-YlKSPQ"
+    },
+    {
+      "name": "ceiling-boundaries",
+      "status": "PASS",
+      "seconds": 15.9,
+      "log": "ceiling-boundaries.log",
+      "run": "verification-Jq8wyV"
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 26.4,
+      "log": "ceiling-design.log",
+      "run": "verification-Jq8wyV"
+    },
+    {
+      "name": "ceiling-contact",
+      "status": "PASS",
+      "seconds": 19.5,
+      "log": "ceiling-contact.log",
+      "run": "verification-Jq8wyV"
+    },
+    {
+      "name": "ceiling-edges",
+      "status": "PASS",
+      "seconds": 14.9,
+      "log": "ceiling-edges.log",
+      "run": "verification-PggAtV"
+    },
+    {
+      "name": "ceiling-edge-distances",
+      "status": "PASS",
+      "seconds": 13.9,
+      "log": "ceiling-edge-distances.log",
+      "run": "verification-W0TnSQ"
+    },
+    {
+      "name": "ceiling-assembly",
+      "status": "PASS",
+      "seconds": 20.5,
+      "log": "ceiling-assembly.log",
+      "run": "verification-evndcy"
+    },
+    {
+      "name": "ceiling-section-interaction",
+      "status": "PASS",
+      "seconds": 21.6,
+      "log": "ceiling-section-interaction.log",
+      "run": "verification-evndcy"
+    },
+    {
+      "name": "ceiling-style-flow",
+      "status": "PASS",
+      "seconds": 15.3,
+      "log": "ceiling-style-flow.log",
+      "run": "verification-evndcy"
+    },
+    {
+      "name": "ceiling-live",
+      "status": "PASS",
+      "seconds": 18.5,
+      "log": "ceiling-live.log",
+      "run": "verification-evndcy"
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 11.7,
+      "log": "ceiling-aluminum.log",
+      "run": "verification-evndcy"
+    },
+    {
+      "name": "ceiling-uniform-inset",
+      "status": "PASS",
+      "seconds": 14.3,
+      "log": "ceiling-uniform-inset.log",
+      "run": "verification-evndcy"
+    },
+    {
+      "name": "ceiling-optional-cove",
+      "status": "PASS",
+      "seconds": 3.1,
+      "log": "ceiling-optional-cove.log",
+      "run": "verification-evndcy"
+    },
+    {
+      "name": "ceiling-upgrade",
+      "status": "PASS",
+      "seconds": 8.3,
+      "log": "ceiling-upgrade.log",
+      "run": "verification-evndcy"
+    }
+  ],
+  "notRun": [
+    "Full check.cjs",
+    "Real touch input",
+    "Blender synchronization",
+    "On-site construction"
+  ]
+}

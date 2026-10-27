@@ -1,0 +1,2 @@
+PASS continuous light geometry rules, tangent collision, section dependency, inner-radius guards, segmented fallback, cache signature and v7 persistence
+PASS production continuous light manifold, winding, exact faceted volume, chord error, 64 rotated/directional variants and physical cove intersection rays

@@ -1,0 +1,2 @@
+PASS whole-channel enable/disable, exact surviving geometry/IDs, flange height, all presets, inactive configuration, v25 project/named-design/repository/cache, copy/reuse and repeated restore
+PASS actual production mesh excludes channel, diffuser and strip when disabled

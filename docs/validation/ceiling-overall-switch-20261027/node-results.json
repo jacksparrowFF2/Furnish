@@ -1,0 +1,139 @@
+{
+  "results": [
+    {
+      "name": "ceiling-components",
+      "status": "PASS",
+      "seconds": 0.357
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 0.187
+    },
+    {
+      "name": "ceiling-regions",
+      "status": "PASS",
+      "seconds": 0.565
+    },
+    {
+      "name": "ceiling-storage",
+      "status": "PASS",
+      "seconds": 0.438
+    },
+    {
+      "name": "ceilings",
+      "status": "PASS",
+      "seconds": 0.192
+    },
+    {
+      "name": "ceiling-corners",
+      "status": "PASS",
+      "seconds": 0.227
+    },
+    {
+      "name": "ceiling-continuous-light",
+      "status": "PASS",
+      "seconds": 0.428
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "PASS",
+      "seconds": 0.236
+    },
+    {
+      "name": "ceiling-assembly",
+      "status": "PASS",
+      "seconds": 0.352
+    },
+    {
+      "name": "ceiling-plain-soffit",
+      "status": "PASS",
+      "seconds": 0.169
+    },
+    {
+      "name": "ceiling-reuse",
+      "status": "PASS",
+      "seconds": 0.246
+    },
+    {
+      "name": "ceiling-section-transforms",
+      "status": "PASS",
+      "seconds": 0.327
+    },
+    {
+      "name": "ceiling-mirror-dimensions",
+      "status": "PASS",
+      "seconds": 0.322
+    },
+    {
+      "name": "ceiling-mount-contact",
+      "status": "PASS",
+      "seconds": 0.58
+    },
+    {
+      "name": "ceiling-panel-layout",
+      "status": "PASS",
+      "seconds": 0.462
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 0.27
+    },
+    {
+      "name": "ceiling-panel-devices",
+      "status": "PASS",
+      "seconds": 0.244
+    },
+    {
+      "name": "ceiling-check-broadphase",
+      "status": "PASS",
+      "seconds": 0.325
+    },
+    {
+      "name": "project",
+      "status": "PASS",
+      "seconds": 0.135
+    },
+    {
+      "name": "project-recovery",
+      "status": "PASS",
+      "seconds": 0.06
+    },
+    {
+      "name": "project-validation",
+      "status": "PASS",
+      "seconds": 0.09
+    },
+    {
+      "name": "work-state",
+      "status": "PASS",
+      "seconds": 0.133
+    },
+    {
+      "name": "workspace-cache",
+      "status": "PASS",
+      "seconds": 0.084
+    },
+    {
+      "name": "repository-workspace",
+      "status": "PASS",
+      "seconds": 0.117
+    },
+    {
+      "name": "repository-storage",
+      "status": "PASS",
+      "seconds": 0.311
+    },
+    {
+      "name": "ceiling-channel-switch",
+      "status": "PASS",
+      "seconds": 0.538
+    },
+    {
+      "name": "ceiling-edge-distances",
+      "status": "PASS",
+      "seconds": 0.142
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "file": "scripts/verify/verify-ceiling-aluminum.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-assembly.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-boundaries.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-components.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-contact.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-design.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-edge-distances.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-edges.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-live.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-optional-cove.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-panel-layout.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-section-interaction.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-style-flow.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-uniform-inset.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-upgrade.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/app.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/core/ceiling-core.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/core/product-rules.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/core/project-core.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/core/repository-core.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/io/repository-storage.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/io/workspace-cache.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/ui/ceiling-design.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/ui/ceiling-section-editor.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "src/ui/repository-workspace.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "tests/test-ceiling-edge-distances.cjs",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "scripts/verify/verify-ceiling-overall-switch.browser.js",
+    "status": "PASS",
+    "output": ""
+  },
+  {
+    "file": "tests/test-ceiling-channel-switch.cjs",
+    "status": "PASS",
+    "output": ""
+  }
+]

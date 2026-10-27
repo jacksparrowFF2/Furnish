@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-27（总体截面与灯槽启停）：section-editor默认总体组合，部件页仍只画当前截面；ceiling-core以sectionActive统一过滤停用灯槽实体，setChannelEnabled保留完整配方和稳定身份，其他板件继续使用完整配方定位。可选channelEnabled进入v25项目／工作区／缓存、复制与复用，沿原mutate及升级通道。移除重复节点按钮及普通区域中新建直线／L形入口，已有独立构件按需显示。见[总体与启停](CEILINGS.md#总体效果与灯槽启停2026-10-27)。
+
 2026-10-27（吊顶部件统一编辑）：ceiling-core集中componentPreset／replaceAssemblyPart／removeAssemblyPart、稳定partIds／centerId及excludedPresets校验；upgradeWork由恢复与项目导入调用，拆分石膏光源并继承图层。section-editor按材质归属组织部件预设、单独轮廓与生产预览，组合视图显式选择；设计页仅保留整套构造复用。新字段和空区域使用v24项目／工作区／独立缓存，原mutate及旧缓存恢复保持，无新加载脚本。详见[部件与升级](CEILINGS.md#按部件编辑删除预设与旧设计升级2026-10-27)。
 
 2026-10-26（可选灯槽与流程）：ceiling-core的plainSoffit生成无模板普通板形，plainSoffitValues仅对完整匹配轮廓派生尺寸，assemblyInfo/editAssembly共用。product-rules集中设计示例；ceiling-design按区域／形式／构造组织控件与可选方案，新区域默认无槽配方，section-editor按实际构造显示参数及生产预览。仍沿原regions/items、完整缓存／确认和一次mutate，无新字段、版本或加载脚本。见[可选灯槽](CEILINGS.md#吊顶形式与可选灯槽2026-10-26)。
