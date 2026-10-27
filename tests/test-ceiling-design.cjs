@@ -20,7 +20,7 @@ assert.equal(C.designRegion({...room,poly:[[0,0],[3000,0],[3000,3000],[1000,4000
 const housing=C.sectionPreset('wash')[1].section,us=housing.vertices.map(v=>v.u),ds=housing.vertices.map(v=>v.d);assert.equal(Math.max(...us)-Math.min(...us),43.5);assert.equal(Math.max(...ds)-Math.min(...ds),18.5);assert.deepEqual(C.lightIssues(housing),[]);
 const original=copy(work);original.ceilings={version:1,items:C.designRegion(room,{style:'ring',height:2500,sections:C.sectionPreset('wash')},id)};
 const restore=W.create({makeId:id,colorFor:()=> '#ddd',materials:require('../src/data/catalog.js').materials}).restore;
-original.ceilings=C.upgrade(original.ceilings);let saved=copy(original);for(let i=0;i<4;i++){const payload={planId:plan.id,current:saved,designs:[{name:'回型',work:saved}],catalog:[]},loaded=P.unpack(P.pack(payload));saved=restore(loaded.current,plan);assert.deepEqual(saved.ceilings,original.ceilings);assert.deepEqual(loaded.designs[0].work.ceilings,original.ceilings);}
+original.ceilings=original.ceilings;let saved=copy(original);for(let i=0;i<4;i++){const payload={planId:plan.id,current:saved,designs:[{name:'回型',work:saved}],catalog:[]},loaded=P.unpack(P.pack(payload));saved=restore(loaded.current,plan);assert.deepEqual(saved.ceilings,original.ceilings);assert.deepEqual(loaded.designs[0].work.ceilings,original.ceilings);}
 const unknown=C.derive({...plan,rooms:plan.rooms.map(r=>({...r,ceilingHeight:undefined}))},saved);assert(unknown.ceilings.pending.some(p=>p.message.includes('高度待核对')));
 console.log('PASS region styles, rotated/reversed closed ring, separate wash housing, boundary guards and repeated project restoration');
 (async()=>{

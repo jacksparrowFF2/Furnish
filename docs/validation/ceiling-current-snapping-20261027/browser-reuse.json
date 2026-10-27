@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "ceiling-section-interaction",
+    "ceiling-reuse-pick"
+  ],
+  "results": [
+    {
+      "name": "ceiling-section-interaction",
+      "status": "PASS",
+      "seconds": 32.8,
+      "log": "ceiling-section-interaction.log"
+    },
+    {
+      "name": "ceiling-reuse-pick",
+      "status": "PASS",
+      "seconds": 25.9,
+      "log": "ceiling-reuse-pick.log"
+    }
+  ],
+  "notRun": []
+}

@@ -4,10 +4,10 @@ const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:chil
 const V=require('./lib/browser-verification.cjs');
 const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay','manifold','manifold-kitchen','downlight','manifold-wall-finish','manifold-zero-gap','manifold-floating-distance','telescopic-corners','telescopic-floor-tracks'];
 const dependencies={'drawing':['workflow-reimport'],'drawing-readability':['workflow-reimport'],'room-net':['workflow-reimport'],'purchase-orders':['room-net'],'purchase-relink':['purchase-orders'],'furniture-labels':['purchase-orders']};
-// Historical standalone-editor scripts remain as evidence. Their CLI names now
-// run the consolidated flow instead of trying to find UI that was removed.
+// Retired editor CLI names run the current consolidated flows.
+// Obsolete ceiling editor scripts have been removed.
 const tilingReplacements=Object.fromEntries(['floor-finishes','floor-controls','floor-origin','floor-origin-3d','floor-origin-corner','floor-origin-drag','floor-origin-wall','floor-unified','floor-bulk-levels','furniture-finished-datum','finish-guide','wall-finishes','wall-tiling','wall-floor-follow','wall-origin-3d','tile-grout','tile-grout-unified','tile-preset-sync','tile-presets','wall-tile-bands'].map(name=>[name,['tile-workspace','tile-workspace-complete','tile-library']]));
-const ceilingReplacements={ceilings:['ceiling-section-interaction','ceiling-components','ceiling-upgrade'],'ceiling-corners':['ceiling-boundaries','ceiling-continuous-light','ceiling-end-caps','ceiling-upgrade']};
+const ceilingReplacements={ceilings:['ceiling-section-interaction','ceiling-components','ceiling-current'],'ceiling-corners':['ceiling-boundaries','ceiling-current'],'ceiling-upgrade':['ceiling-current'],'ceiling-end-caps':['ceiling-current'],'ceiling-continuous-light':['ceiling-current'],'ceiling-live':['ceiling-section-interaction','ceiling-current']};
 const replacements={...tilingReplacements,...ceilingReplacements};
 function cases(){const entries=fs.readdirSync(path.join(__dirname,'verify')).filter(n=>/^verify-.*\.browser\.js$/.test(n)).map(file=>[file.slice(7,-11),'verify/'+file]);return new Map([...entries,...standalone.map(n=>[n,'verify/verify-'+n+'.cjs'])]);}
 function plan(names,registry=cases()){

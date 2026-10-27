@@ -1,4 +1,4 @@
-/* Millimetre ceiling sections, boundary sweeps and explicit flat attachments. */
+/* Millimetre ceiling regions, component sections and production boundary sweeps. */
 (function(root){
 'use strict';
 const clone=v=>JSON.parse(JSON.stringify(v)),finite=v=>typeof v==='number'&&Number.isFinite(v),fail=m=>{throw Error(m);};
@@ -54,11 +54,11 @@ function sectionPreset(kind){
  if(kind==='up'||kind==='upMount'){const gypsum=lowCove(rules().sectionPresets.wide);delete gypsum.light;gypsum.material='gypsum';return [{name:'石膏边吊',section:gypsum},{name:'上发光型材 · 含柔光板',section:upChannel(kind==='upMount'?{mountDetail:true}:{})}];}
  if(!['low','wide','wash'].includes(kind))fail('未知截面样式');
  const body=lowCove(rules().sectionPresets[kind==='low'?'low':'wide']),q=body.template.values;
- body.light={...body.light,u:(q.back+q.projection-q.front)/2,d:q.drop-q.bottom};
+ body.material='gypsum';delete body.light;
  if(kind!=='wash')return [{name:'石膏灯槽',section:body}];
  delete body.light;const h=rules().washChannel,u=q.projection-q.front-h.gap-h.width,d=q.drop-q.bottom,top=d-h.height,w=h.clearWidth+2*h.wall;
  const points=[[u,top],[u+h.wall,top],[u+h.wall,d-h.wall],[u+w-h.wall,d-h.wall],[u+w-h.wall,top],[u+w,top],[u+w,d-h.wall],[u+h.width,d-h.wall],[u+h.width,d],[u,d]];
- const housing={vertices:points.map(([u,d],i)=>({id:'channel'+i,u,d})),light:{...rules().light,u:u+w/2,d:d-h.wall}};
+ const housing={material:'aluminum',vertices:points.map(([u,d],i)=>({id:'channel'+i,u,d})),light:{...rules().light,u:u+w/2,d:d-h.wall}};
  section(housing);return [{name:'石膏灯槽',section:body},{name:'洗顶灯槽型材（示意）',section:housing}];
 }
 function upChannel(values={}){
@@ -95,7 +95,7 @@ function centerLayout({height,thickness,sections,centerConnection,center},base){
 }
 // One section has one owner; lighting is only authored on channel sections.
 function sectionRole(s){return s.material==='aluminum'||s.template?.kind==='upChannel'?'channel':'gypsum';}
-function upgradeRole(s,index=0){return s.material||s.template||plainSoffitValues(s)?sectionRole(s):s.light||index>0?'channel':'gypsum';}
+
 function componentPresets(family){const p=rules().componentPresets[family];if(!p)fail('请选择边吊或灯槽');return clone(p);}
 function componentPreset(family,kind){
  if(!componentPresets(family).some(p=>p.id===kind))fail('未知部件预设');
@@ -126,18 +126,6 @@ function removeAssemblyPart(region,index){
 function setPresetExcluded(data,family,kind,excluded=true){
  componentPreset(family,kind);const next=clone(data||{version:1,items:[]}),key=family+':'+kind,keys=new Set(next.excludedPresets||[]);if(excluded)keys.add(key);else keys.delete(key);if(keys.size)next.excludedPresets=[...keys].sort();else delete next.excludedPresets;validate(next);return next;
 }
-function channelForLight(light){
- const l=clone(light),q=rules().upChannel,opening=Math.max(q.opening,l.width+2),bodyWidth=Math.max(q.bodyWidth,opening+2*q.wall+2),width=bodyWidth+rules().min;
- let result=upChannel({u:l.u-bodyWidth/2,d:l.d,opening,bodyWidth,width,lightWidth:l.width,lightThickness:l.thickness,diffuserEnabled:false});
- if(Math.abs(l.angle+90)>eps())result=transformSection(result,{angle:l.angle+90,pivot:[l.u,l.d]});const a=l.angle*Math.PI/180;result.light={...l,u:l.u+Math.cos(a)*q.wall,d:l.d+Math.sin(a)*q.wall};section(result);return result;
-}
-function upgrade(data,{onAdded=()=>{}}={}){
- if(data===undefined)return data;validate(data);const next=clone(data),ids=new Set((next.items||[]).map(c=>c.id));
- const extraId=id=>{let key=id+'_channel',n=1;while(ids.has(key))key=id+'_channel_'+n++;ids.add(key);return key;};
- for(const r of next.regions||[]){let changed=false;const before=assemblyInfo(r),extra=[],sources=[];r.sections.forEach((item,i)=>{const role=upgradeRole(item.section,i);if(!item.section.material){item.section.material=role==='channel'?'aluminum':'gypsum';changed=true;}if(role==='gypsum'&&item.section.light){extra.push({name:('灯槽 · '+item.name).slice(0,80),section:channelForLight(item.section.light)});sources.push(i);delete item.section.light;changed=true;}});if(extra.length){stableRegionParts(r);for(const [j,item]of extra.entries()){const id=nextRegionPartId(r);onAdded(r.partIds[sources[j]],id);r.partIds.push(id);r.sections.push(item);}const bottom=Math.max(0,...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d)));if(r.style==='ring')r.height=before.base-bottom;if(r.center&&(!r.centerConnection||r.centerConnection.mode==='flush'))r.centerConnection={mode:'independent',height:before.center.height,inset:before.center.inset};}if(changed){const generated=regionItems(r);next.items=next.items.filter(c=>c.regionId!==r.id).concat(generated);}}
- const additions=[];for(const item of next.items||[])if(!item.regionId&&item.kind==='profile'){const role=upgradeRole(item.section);if(!item.section.material)item.section.material=role==='channel'?'aluminum':'gypsum';if(role==='gypsum'&&item.section.light){const housing=clone(item);housing.id=extraId(item.id);housing.name=('灯槽 · '+item.name).slice(0,80);housing.section=channelForLight(item.section.light);delete item.section.light;item.section.material='gypsum';additions.push(housing);onAdded(item.id,housing.id);}}next.items.push(...additions);validate(next);return next;
-}
-function upgradeWork(work){if(!work?.ceilings)return work;const next=clone(work);next.ceilings=upgrade(next.ceilings,{onAdded(source,target){const assignments=next.objectLayers?.assignments,layer=assignments?.['ceiling:'+source];if(layer)assignments['ceiling:'+target]=layer;}});return next;}
 function requiresV25(work){return !!work?.ceilings?.regions?.some(r=>r.channelEnabled!==undefined);}
 function requiresV24(work){return !!work?.ceilings?.excludedPresets?.length||!!work?.ceilings?.regions?.some(r=>!r.sections.length||r.partIds!==undefined||r.centerId!==undefined);}
 function assemblyInfo(r){const gypsumIndex=r.sections.findIndex((s,i)=>sectionRole(s.section,i)==='gypsum'&&(s.section.template?.kind==='lowCove'||plainSoffitValues(s.section))),channelIndex=r.sections.findIndex(s=>s.section.template?.kind==='upChannel'),gypsum=gypsumIndex>=0?clone(r.sections[gypsumIndex].section.template?.values||plainSoffitValues(r.sections[gypsumIndex].section)):null,channel=channelIndex>=0?channelValues(r.sections[channelIndex].section):null,bottom=Math.max(0,...r.sections.flatMap(s=>sectionPoints(s.section).map(v=>v.d))),base=r.height+bottom;return {gypsumIndex,channelIndex,gypsum,channel,bottom,base,center:centerLayout(r,base)};}
@@ -310,6 +298,7 @@ function validate(data){
  const regions=data.regions===undefined?[]:data.regions;if(!Array.isArray(regions)||regions.length>rules().maxRegions)fail('吊顶独立区域数量无效');const regionIds=new Set();for(const r of regions){validateRegion(r);if(regionIds.has(r.id))fail('吊顶独立区域编号重复');regionIds.add(r.id);}
  for(const c of data.items){
   if(!c||!key(c.id)||ids.has(c.id)||!(c.regionId!==undefined?key(c.regionId)&&regionIds.has(c.regionId)&&c.roomId===undefined:key(c.roomId))||typeof c.name!=='string'||!c.name.trim()||c.name.length>80||!finite(c.height)||c.height<0||c.height>rules().max)fail('吊顶编号、区域、名称或标高无效');ids.add(c.id);
+  if(c.attachment!==undefined||c.basePolygon!==undefined)fail('旧版平顶固定关系已停用，请使用区域部件连接');
   if(c.ends!==undefined&&c.kind!=='profile')fail('端板收口仅支持沿边截面造型');
   if(c.aluminum!==undefined&&c.kind!=='flat')fail('铝扣板仅支持平面吊顶');
   if(c.kind==='profile'){
@@ -322,8 +311,6 @@ function validate(data){
   }else if(c.kind==='flat'){
    polygon(c.polygon,'平顶边界');if(!solid(c.thickness)||c.height+c.thickness>rules().max)fail('平顶板厚或顶部标高无效');
    if(c.aluminum!==undefined){validateAluminum(c.aluminum);if(c.thickness<2)fail('铝扣板模型构造厚度至少2 mm');aluminumGrid(c);}
-   if(c.basePolygon)polygon(c.basePolygon,'平顶原区域');
-   if(c.attachment&&(!key(c.attachment.profileId)||!key(c.attachment.startId)||!key(c.attachment.endId)||!c.basePolygon||c.attachment.legs!==undefined&&(!Array.isArray(c.attachment.legs)||c.attachment.legs.length!==2||c.attachment.legs.some(v=>!key(v))||new Set(c.attachment.legs).size!==2)))fail('平顶固定连接参照无效');
   }else fail('吊顶类型无效');
  }
  for(const r of regions){const expected=regionItems(r),actual=data.items.filter(c=>c.regionId===r.id);if(actual.length!==expected.length||expected.some(e=>!actual.some(c=>c.id===e.id&&sameValue(c,e))))fail('吊顶区域配置与生成构件不一致，请重新生成区域');}
@@ -347,40 +334,22 @@ function boundaryPaths(room){
 }
 function pointAt(c,u,s=0,index=0){const p=route(c)[index],t=tangent(p);return p.a.map((v,i)=>v+p.normal[i]*u+t[i]*s);}
 function footprint(c,u=sectionPoints(c.section).map(v=>v.u)){return [...offsetStations(c,Math.min(...u)),...offsetStations(c,Math.max(...u)).reverse()];}
-function faces(c){return c.section.vertices.flatMap((a,i)=>{const b=c.section.vertices[(i+1)%c.section.vertices.length];if(Math.abs(a.u-b.u)>eps()||!solid(Math.abs(a.d-b.d),Math.max(a.d,b.d)))return [];const mid=[a.u+Math.max(.0001,eps()*10),(a.d+b.d)/2];if(inside(mid,c.section.vertices.map(v=>[v.u,v.d]),false))return [];return [{startId:a.id,endId:b.id,u:a.u,bottom:c.height-Math.max(a.d,b.d),top:c.height-Math.min(a.d,b.d)}];});}
-// Clip one simple convex region. Concave/multiple-ring regions are rejected by the
-// attachment operation rather than silently bridging disconnected components.
 function convex(p){let sign=0;for(let i=0;i<p.length;i++){const x=cross(p[i],p[(i+1)%p.length],p[(i+2)%p.length]);if(Math.abs(x)<=eps())continue;if(sign&&Math.sign(x)!==sign)return false;sign=Math.sign(x);}return true;}
 function clip(p,a,n,u){
  const out=[],value=v=>(v[0]-a[0])*n[0]+(v[1]-a[1])*n[1]-u;
  for(let i=0;i<p.length;i++){const v=p[i],w=p[(i+1)%p.length],x=value(v),y=value(w);if(x>=-eps())out.push(clone(v));if(x>eps()&&y< -eps()||x< -eps()&&y>eps()){const t=x/(x-y);out.push(v.map((q,k)=>q+(w[k]-q)*t));}}
  return out.filter((p,i)=>distance(p,out[(i+out.length-1)%out.length])>eps());
 }
-function attach(flat,profile,edge){
- if(profile.path.closed)fail('闭合回型的中央平顶请在区域设计中设置');
- if(flat.roomId!==profile.roomId)fail('当前仅支持同一区域内吸附平顶');
- const face=faces(profile).find(f=>f.startId===edge.startId&&f.endId===edge.endId);if(!face)fail('原截面立面已变化，请重新选择吸附面');
- if(face.top-face.bottom<flat.thickness-eps())fail('目标立面不能覆盖平顶全板厚，请选择更高的立面或修改板厚');
- const base=clone(flat.basePolygon||flat.polygon);if(!convex(base))fail('首版吸附平顶支持凸多边形区域，凹形区域请先划分');
- const legs=route(profile),stations=offsetStations(profile,face.u);let poly=base;for(const leg of legs)poly=clip(poly,leg.a,leg.normal,face.u);polygon(poly,'吸附后平顶');
- for(const [i,leg] of legs.entries()){
-  const t=tangent(leg),along=p=>(p[0]-leg.a[0])*t[0]+(p[1]-leg.a[1])*t[1],contact=poly.filter(p=>Math.abs((p[0]-leg.a[0])*leg.normal[0]+(p[1]-leg.a[1])*leg.normal[1]-face.u)<=eps()),range=[along(stations[i]),along(stations[i+1])];
-  if(contact.length<2||Math.max(...contact.map(along))-Math.min(...contact.map(along))<rules().min-eps()||Math.min(...contact.map(along))<range[0]-eps()||Math.max(...contact.map(along))>range[1]+eps())fail(`第${i+1}段目标路径未完整覆盖平顶连接边`);
- }
- if(checks({ceilings:{items:[profile]}},[{f:{id:flat.id,name:flat.name},p:poly,vertical:{bottom:face.bottom,top:face.bottom+flat.thickness}}]).length)fail('吸附后平顶与截面其他实体相交，请更换立面或修改截面');
- return {...clone(flat),polygon:poly,basePolygon:base,height:face.bottom,attachment:{profileId:profile.id,startId:face.startId,endId:face.endId,...(legs.length===2?{legs:legs.map(p=>p.id)}:{})}};
-}
 function assemblyIssues(r){const out=[];if(r.style!=='ring')return out;for(let i=0;i<r.sections.length;i++)for(let j=i+1;j<r.sections.length;j++){const a=r.sections[i],b=r.sections[j];if(!sectionActive(r,a)||!sectionActive(r,b))continue;if(sectionContours(a.section).some(A=>sectionContours(b.section).some(B=>overlapArea(A.map(v=>[v.u,v.d]),B.map(v=>[v.u,v.d]))>eps()**2)))out.push(a.name+'与'+b.name+'实体相交，请核对相对位置');}return out;}
 function resolve(data){
  validate(data);const items=clone(data?.items||[]),pending=[];for(const r of data?.regions||[])for(const message of assemblyIssues(r))pending.push({id:r.id,message});
  for(let i=0;i<items.length;i++){
   const c=items[i];if(c.kind==='profile')for(const message of [...endCaps(c).pending,...lightIssues(c.section),...lightLayout(c).pending])pending.push({id:c.id,message});
-  if(c.kind==='flat'&&c.attachment){const source=items.find(v=>v.id===c.attachment.profileId&&v.kind==='profile');try{if(!source)fail('固定连接的吊顶已不存在，请重新吸附或解除固定');const legs=route(source);if(JSON.stringify(c.attachment.legs||[])!==JSON.stringify(legs.length===2?legs.map(p=>p.id):[]))fail('固定边数量或参照已变化，请重新吸附平顶');items[i]=attach(c,source,c.attachment);}catch(e){pending.push({id:c.id,message:e.message});}}
  }
  return {items,pending,...(data?.regions?{regions:clone(data.regions)}:{})};
 }
 function edit(work,item){const next=clone(work);next.ceilings=next.ceilings||{version:1,items:[]};const i=next.ceilings.items.findIndex(c=>c.id===item.id);if(i<0)next.ceilings.items.push(clone(item));else next.ceilings.items[i]=clone(item);validate(next.ceilings);return next;}
-function remove(work,id){const next=clone(work);if(next.ceilings){if(next.ceilings.items.find(c=>c.id===id)?.regionId)fail('请在区域设计中修改或删除完整吊顶区域');const current=resolve(next.ceilings);next.ceilings.items=current.items.filter(c=>c.id!==id).map(c=>{if(c.attachment?.profileId===id){delete c.attachment;delete c.basePolygon;}return c;});if(!next.ceilings.items.length&&!next.ceilings.regions?.length&&!next.ceilings.excludedPresets?.length)delete next.ceilings;}return next;}
+
 function overlapArea(a,b){const Z=zones();return Z.area(Z.decompose([a,b],p=>Z.inside(p,a)&&Z.inside(p,b)));}
 function regionContext(plan,r){
  const rooms=(plan.rooms||[]).filter(room=>room.counted!==false),Z=zones(),polys=rooms.flatMap(room=>room.polys||[room.poly]),outside=polys.length?Z.area(Z.decompose([r.polygon,...polys],p=>Z.inside(p,r.polygon)&&!polys.some(poly=>Z.inside(p,poly)))):Math.abs(area(r.polygon));
@@ -530,8 +499,8 @@ function aluminumLayout(c){
  const trim=c.aluminum.trim?Z.decompose([c.polygon,inner],p=>Z.inside(p,c.polygon)&&!Z.inside(p,inner)):[];return {...grid,panels,trim,stats:{whole:panels.filter(p=>p.full).length,cut:panels.filter(p=>!p.full).length}};
 }
 function signature(data,furniture=[]){const P=root.FurnishProducts||require('./product-rules.js'),panelDevices=furniture.some(f=>!f.obj&&P.definition(f)?.ceilingPanel);return data?data.items.map(({name,...geometry})=>{const g=clone(geometry);if(!panelDevices)delete g.aluminum;else if(g.aluminum)g.aluminum={direction:g.aluminum.direction,trim:g.aluminum.trim,...(g.aluminum.origin?{origin:clone(g.aluminum.origin)}:{})};if(g.section){delete g.section.template;delete g.section.material;}return g;}):null;}
-function shift(work,offset){if(!work.ceilings)return;for(const r of work.ceilings.regions||[]){r.polygon=r.polygon.map(p=>p.map(v=>v+offset));if(r.aluminum?.origin)r.aluminum.origin=r.aluminum.origin.map(v=>v+offset);}for(const c of work.ceilings.items){if(c.aluminum?.origin)c.aluminum.origin=c.aluminum.origin.map(v=>v+offset);if(c.kind==='profile'){for(const p of route(c))for(const k of ['a','b'])p[k]=p[k].map(v=>v+offset);if(!c.path.segments){c.path.a=c.path.a.map(v=>v+offset);c.path.b=c.path.b.map(v=>v+offset);}}else for(const k of ['polygon','basePolygon'])if(c[k])c[k]=c[k].map(p=>p.map(v=>v+offset));}}
-function requiresV6(work){return !!work?.ceilings?.items.some(c=>c.kind==='profile'&&(c.path?.segments||c.section?.light?.cornerSetback!==undefined)||c.attachment?.legs);}
+function shift(work,offset){if(!work.ceilings)return;for(const r of work.ceilings.regions||[]){r.polygon=r.polygon.map(p=>p.map(v=>v+offset));if(r.aluminum?.origin)r.aluminum.origin=r.aluminum.origin.map(v=>v+offset);}for(const c of work.ceilings.items){if(c.aluminum?.origin)c.aluminum.origin=c.aluminum.origin.map(v=>v+offset);if(c.kind==='profile'){for(const p of route(c))for(const k of ['a','b'])p[k]=p[k].map(v=>v+offset);if(!c.path.segments){c.path.a=c.path.a.map(v=>v+offset);c.path.b=c.path.b.map(v=>v+offset);}}else c.polygon=c.polygon.map(p=>p.map(v=>v+offset));}}
+function requiresV6(work){return !!work?.ceilings?.items.some(c=>c.kind==='profile'&&(c.path?.segments||c.section?.light?.cornerSetback!==undefined));}
 function requiresV7(work){return !!work?.ceilings?.items.some(c=>c.section?.light?.corner!==undefined);}
 function requiresV8(work){return !!work?.ceilings?.items.some(c=>c.ends!==undefined);}
 function requiresV17(work){return work?.ceilings?.regions!==undefined||work?.ceilings?.items?.some(c=>c.regionId!==undefined||c.path?.closed===true)===true;}
@@ -541,6 +510,6 @@ function requiresV18(work){const sections=[...(work?.ceilings?.items||[]).filter
 function requiresV21(work){return !!work?.ceilings?.regions?.some(r=>r.style==='aluminum'||r.aluminum!==undefined)||!!work?.ceilings?.items?.some(c=>c.aluminum!==undefined);}
 function requiresV23(work){return [...(work?.ceilings?.items||[]).filter(c=>c.kind==='profile').map(c=>c.section),...(work?.ceilings?.regions||[]).flatMap(r=>r.sections.map(s=>s.section))].some(s=>s?.template?.kind==='upChannel'&&Object.keys(s.template.values).some(k=>k.startsWith('mount')));}
 function requiresV22(work){return [...(work?.ceilings?.regions||[]),...(work?.ceilings?.items||[])].some(c=>c.aluminum&&(c.aluminum.origin!==undefined||![0,90].includes(c.aluminum.direction)));}
-const api={sectionActive,setChannelEnabled,requiresV25,duplicateRegion,upgradeWork,stableRegionParts,sectionRole,componentPresets,componentPreset,replaceAssemblyPart,removeAssemblyPart,setPresetExcluded,upgrade,requiresV24,plainSoffit,plainSoffitValues,reuseAssembly,requiresV23,requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,faces,attach,resolve,edit,remove,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
+const api={sectionActive,setChannelEnabled,requiresV25,duplicateRegion,stableRegionParts,sectionRole,componentPresets,componentPreset,replaceAssemblyPart,removeAssemblyPart,setPresetExcluded,requiresV24,plainSoffit,plainSoffitValues,reuseAssembly,requiresV23,requiresV22,aluminumBasis,panelReplacements,fitCeilingPanel,requiresV21,aluminumDefaults,aluminumLayout,requiresV20,mirrorSection,sectionMeasurements,requiresV19,transformSection,snapSectionMove,snapSectionAngle,rotateUD,roomInsetBoundary,assemblyIssues,assemblySample,upChannel,sectionContours,sectionPoints,channelValues,centerLayout,assemblyInfo,editAssembly,requiresV18,sameValue,requiresV17,validateRegion,regionItems,setRegion,removeRegion,closedOffset,regionContext,sectionPreset,designRegion,fitDownlight,downlightHoles,rules,lowCove,section,validate,polygon,area,inside,lightPolygon,lightIssues,route,tangent,samePath,joinedPath,offsetStations,legFootprint,compactLightRadius,endOpening,endCaps,lightLayout,sample,regionBoundary,boundaryPaths,pointAt,footprint,resolve,edit,derive,onlyChange,checks,signature,shift,requiresV6,requiresV7,requiresV8};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeiling=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

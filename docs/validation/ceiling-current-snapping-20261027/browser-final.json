@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-current",
+    "ceiling-section-interaction",
+    "ceiling-reference-snapping"
+  ],
+  "results": [
+    {
+      "name": "ceiling-current",
+      "status": "PASS",
+      "seconds": 8.1,
+      "log": "ceiling-current.log"
+    },
+    {
+      "name": "ceiling-section-interaction",
+      "status": "PASS",
+      "seconds": 33.2,
+      "log": "ceiling-section-interaction.log"
+    },
+    {
+      "name": "ceiling-reference-snapping",
+      "status": "PASS",
+      "seconds": 23.5,
+      "log": "ceiling-reference-snapping.log"
+    }
+  ],
+  "notRun": []
+}

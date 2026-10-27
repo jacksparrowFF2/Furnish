@@ -1,8 +1,8 @@
 {
   "format": "furnish-project",
-  "version": 8,
-  "createdAt": "2026-10-16T16:31:29.150Z",
-  "checksum": "f19a8132",
+  "version": 9,
+  "createdAt": "2026-10-27T13:00:27.081Z",
+  "checksum": "cf64f6f3",
   "payload": {
     "planId": "custom_finish",
     "name": "完成面验收",
@@ -256,34 +256,7 @@
               ]
             ],
             "height": 2480,
-            "thickness": 12,
-            "basePolygon": [
-              [
-                200,
-                200
-              ],
-              [
-                4000,
-                200
-              ],
-              [
-                4000,
-                3000
-              ],
-              [
-                200,
-                3000
-              ]
-            ],
-            "attachment": {
-              "profileId": "ceiling_fmvb57n9247",
-              "startId": "v5",
-              "endId": "v6",
-              "legs": [
-                "leg0",
-                "leg1"
-              ]
-            }
+            "thickness": 12
           }
         ]
       }

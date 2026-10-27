@@ -11,7 +11,7 @@ const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts
   assert.deepEqual(V.configuration({FURNISH_BROWSER_CHANNEL:'msedge',FURNISH_VERIFY_HEADED:'1'}).launchOptions,{headless:false,channel:'msedge'});
   assert.deepEqual(R.plan(['purchase-relink','drawing']),['workflow-reimport','room-net','purchase-orders','purchase-relink','drawing']);assert.throws(()=>R.plan(['does-not-exist']));assert(R.failed([{status:'FAIL'}]));assert(!R.failed([{status:'PASS'}]));
   assert.deepEqual(R.plan(['floor-origin','wall-origin-3d','tile-presets','tile-workspace']),['tile-workspace','tile-workspace-complete','tile-library'],'retired editors resolve visibly to one set of current acceptance cases');
-  assert.deepEqual(R.plan(['ceilings','ceiling-corners']),['ceiling-section-interaction','ceiling-components','ceiling-upgrade','ceiling-boundaries','ceiling-continuous-light','ceiling-end-caps'],'retired standalone creation is covered through current component, migration and lighting flows');
+  assert.deepEqual(R.plan(['ceilings','ceiling-corners']),['ceiling-section-interaction','ceiling-components','ceiling-current','ceiling-boundaries'],'retired standalone commands resolve to current regions and components without old migration or editor scripts');
   await assert.rejects(R.main(['--worker','portable-smoke']),/isolated copy/);
   for(const file of R.cases().values()){
    assert(file.startsWith('verify/'),'Acceptance implementation belongs in scripts/verify: '+file);

@@ -11,8 +11,7 @@ assert.equal(P.formatVersion([ceiling]),9);assert.equal(P.formatVersion([linked]
 assert.equal(P.pack({...payload(work),designs:[{name:'吊顶',work:ceiling},{name:'铺贴',work:linked}]}).version,9);
 const restore=W.create({makeId:()=> 'restored',colorFor:()=> '#ddd',materials:require('../src/data/catalog.js').materials}).restore;
 for(const [oldVersion,current] of [[7,ceiling],[8,ceiling],[7,linked],[9,mixed]]){
- const old={...P.pack(payload(current)),version:oldVersion};let restored=P.unpack(old).current;const normalized=C.upgradeWork(current),source=copy(current);
- if(current.ceilings){assert.equal(normalized.ceilings.items.length,current.ceilings.items.length+1);const body=normalized.ceilings.items.find(c=>c.id===cove.id),channel=normalized.ceilings.items.find(c=>c.id===cove.id+'_channel');assert.deepEqual(body.section.vertices,cove.section.vertices);assert.equal(body.section.light,undefined);assert.equal(channel.section.light.corner.mode,'arc');assert.equal(channel.section.light.corner.radius,8);assert.deepEqual(C.upgradeWork(normalized),normalized);}
+ const old={...P.pack(payload(current)),version:oldVersion};let restored=P.unpack(old).current;const normalized=current,source=copy(current);
  for(let i=0;i<4;i++){restored=restore(P.unpack(P.pack(payload(restored))).current,plan);assert.deepEqual(restored.ceilings,normalized.ceilings);assert.deepEqual(restored.wallTiling,current.wallTiling);}
  const saved=workspace(current,oldVersion);assert.deepEqual(R.parse({...JSON.parse(R.text(saved)),version:oldVersion}),R.portable({...saved,v:P.formatVersion([normalized])>=16?Math.max(oldVersion,P.formatVersion([normalized])):oldVersion,work:{[plan.id]:normalized}}));assert.deepEqual(current,source,'restore never rewrites legacy input');assert.equal(JSON.parse(R.text(saved)).version,9);
 }
@@ -29,7 +28,7 @@ for(const current of [ceiling,linked,mixed])for(const v of [6,7,8,9]){
 (async()=>{
  const dir=path.resolve(__dirname,'../output/playwright');fs.mkdirSync(dir,{recursive:true});const root=fs.mkdtempSync(path.join(dir,'merged-format-')),api=Server.create(root);api.write(workspace(mixed),null);
  const client=Client.create({request:async(route,method='GET',body)=>route==='/workspace'?(method==='GET'?api.read():api.write(body.workspace,body.baseRevision)):api.recover(body.workspace),fingerprint:async w=>Server.digest(R.text(w)),onChange(){}});
- const restored=await client.initialize(candidates);assert.deepEqual(restored.work[plan.id].ceilings,C.upgradeWork(mixed).ceilings);assert.deepEqual(restored.work[plan.id].wallTiling,mixed.wallTiling);
+ const restored=await client.initialize(candidates);assert.deepEqual(restored.work[plan.id].ceilings,mixed.ceilings);assert.deepEqual(restored.work[plan.id].wallTiling,mixed.wallTiling);
  assert.equal(api.recoveries().length,2,'both divergent legacy caches are archived before file arbitration');assert(api.recoveries().some(e=>JSON.stringify(e.workspace)===JSON.stringify(legacy7)));assert(api.recoveries().some(e=>JSON.stringify(e.workspace)===JSON.stringify(legacy8)));client.stop();
  console.log('PASS unified v9 ceiling/tiling current and named designs, legacy v7/v8 roundtrips, non-destructive cache upgrade, actual save and repository arbitration with both recovery copies');
 })().catch(e=>{console.error(e);process.exitCode=1;});

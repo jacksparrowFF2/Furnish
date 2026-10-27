@@ -8359,7 +8359,12 @@
                 }
               ],
               "style": "ring",
-              "thickness": 12
+              "thickness": 12,
+              "partIds": [
+                "ceiling_area_fmvntr1ym2_part_0",
+                "ceiling_area_fmvntr1ym2_part_1"
+              ],
+              "centerId": "ceiling_area_fmvntr1ym2_part_2"
             },
             {
               "center": false,
@@ -8906,7 +8911,11 @@
                 }
               ],
               "style": "flat",
-              "thickness": 12
+              "thickness": 12,
+              "partIds": [
+                "ceiling_area_fmvqf798i1_section_0"
+              ],
+              "centerId": "ceiling_area_fmvqf798i1_part_0"
             }
           ],
           "version": 1

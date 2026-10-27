@@ -1,0 +1,15 @@
+{
+  "sourceRun": "verification-PUJBsD",
+  "selected": [
+    "ceiling-components"
+  ],
+  "results": [
+    {
+      "name": "ceiling-components",
+      "status": "PASS",
+      "seconds": 23,
+      "log": "ceiling-components.log"
+    }
+  ],
+  "notRun": []
+}
