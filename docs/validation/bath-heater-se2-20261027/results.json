@@ -1,0 +1,96 @@
+[
+  {
+    "mode": "http",
+    "productionPreview": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "productionPreview": true,
+    "errors": []
+  },
+  {
+    "device": "bath_heater_aopu_se2",
+    "mode": "http",
+    "passed": true,
+    "catalogPlacement": true,
+    "downlightFit": true,
+    "wholePanelPlan": true,
+    "liveArchitectureRotationCache": true,
+    "productionPreview": true,
+    "undoRedo": true,
+    "reloadExportImport": true,
+    "mobile390": true,
+    "deletionRestores": true
+  },
+  {
+    "device": "bath_heater_aopu_se2",
+    "mode": "file",
+    "passed": true,
+    "catalogPlacement": true,
+    "downlightFit": true,
+    "wholePanelPlan": true,
+    "liveArchitectureRotationCache": true,
+    "productionPreview": true,
+    "undoRedo": true,
+    "reloadExportImport": true,
+    "mobile390": true,
+    "deletionRestores": true
+  },
+  {
+    "device": "bath_heater_300x600",
+    "mode": "http",
+    "passed": true,
+    "catalogPlacement": true,
+    "downlightFit": true,
+    "wholePanelPlan": true,
+    "liveArchitectureRotationCache": true,
+    "productionPreview": true,
+    "undoRedo": true,
+    "reloadExportImport": true,
+    "mobile390": true,
+    "deletionRestores": true
+  },
+  {
+    "device": "bath_heater_300x600",
+    "mode": "file",
+    "passed": true,
+    "catalogPlacement": true,
+    "downlightFit": true,
+    "wholePanelPlan": true,
+    "liveArchitectureRotationCache": true,
+    "productionPreview": true,
+    "undoRedo": true,
+    "reloadExportImport": true,
+    "mobile390": true,
+    "deletionRestores": true
+  },
+  {
+    "device": "panel_light_300x600",
+    "mode": "http",
+    "passed": true,
+    "catalogPlacement": true,
+    "downlightFit": true,
+    "wholePanelPlan": true,
+    "liveArchitectureRotationCache": true,
+    "productionPreview": true,
+    "undoRedo": true,
+    "reloadExportImport": true,
+    "mobile390": true,
+    "deletionRestores": true
+  },
+  {
+    "device": "panel_light_300x600",
+    "mode": "file",
+    "passed": true,
+    "catalogPlacement": true,
+    "downlightFit": true,
+    "wholePanelPlan": true,
+    "liveArchitectureRotationCache": true,
+    "productionPreview": true,
+    "undoRedo": true,
+    "reloadExportImport": true,
+    "mobile390": true,
+    "deletionRestores": true
+  }
+]

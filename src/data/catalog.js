@@ -20,6 +20,7 @@ const LIB = [
   ]},
   {cat:'电器', items:[
     ['panel_light_300x600','厨房平板灯 · 300×600 · 24W',300,600,'#f5f5f2',undefined,products.height({type:'panel_light_300x600'})],
+    ['bath_heater_aopu_se2','奥普 SE2 风暖浴霸',300,600,'#f5f5f3',undefined,products.height({type:'bath_heater_aopu_se2'})],
     ['bath_heater_300x600','风暖浴霸 · 300×600通用占位',300,600,'#f5f5f0',undefined,products.height({type:'bath_heater_300x600'})],
     ["downlight_philips_dl269","飞利浦品焕筒灯 DL269",85,85,"#f4f4f0",undefined,45],
     ['heating_manifold','地暖分水器（路数可调）',products.definition('heating_manifold').manifold.width,products.definition('heating_manifold').manifold.depth,'#c6a258',undefined,products.height({type:'heating_manifold'})],
@@ -205,7 +206,7 @@ const useTypes={
  study:['desk','chair','officechair','bookshelf','armchair','floorlamp'],
  kitchen:['panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
  laundry:['washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
- bathroom:['bath_heater_300x600','vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],
+ bathroom:['bath_heater_aopu_se2','bath_heater_300x600','vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],
  entry:['electrical_box_strong','electrical_box_weak','shoecab','bench_yeswood_oak','bench','mirror'],pet:[...petTypes]
 };
 function itemUses(it){

@@ -3,6 +3,9 @@
 ## 厨房平板灯（2026-10-27）
 
 panel_light_300x600：300×600×35 mm、24 W来自用户图片；anchor=bottom，mountHeight新建／缺省2500 mm仅作初值。ceilingPanel共用300×600、2 mm面板贴合基准及0.1 mm数值对齐容差；panelLight集中3 mm边框、展示灯色与强度假设。无新字段，旧数据不补灯具，复制／替换沿原字段能力，实体／缓存／确认共用整板路径。见 [参数与验收](KITCHEN-PANEL-LIGHT.md)。
+## 奥普SE2浴霸（2026-10-27）
+
+`bath_heater_aopu_se2`：面罩300×600、箱体110 mm、吊顶安装空间≥130 mm来自用户图；模型面板厚2 mm为近似，总高112 mm。ceilingPanel集中profile=se2／bodyHeight=110／minCeilingDrop=130，后者仅保留资料，不自动判定安装合格；缺省mountHeight=2500仅作布局初值。无新字段，旧通用占位保持180 mm；实际实体、安装、缓存及恢复复用已有能力，详见[SE2](BATH-HEATER-AOPU-SE2.md)。
 
 
 ## 铝扣板排版能力（2026-10-26）

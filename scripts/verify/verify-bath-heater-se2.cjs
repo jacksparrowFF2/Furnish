@@ -1,0 +1,14 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url'),V=require('../lib/browser-verification.cjs');
+(async()=>{
+ const root=V.projectRoot,out=path.join(root,'docs/validation/bath-heater-se2-20261027');fs.mkdirSync(out,{recursive:true});require('../preview-bath-heater-se2.cjs');
+ const run=fs.mkdtempSync(path.join(root,'output/se2-verify-')),workspace=path.join(run,'workspace');fs.mkdirSync(workspace);for(const name of ['src','styles','assets','vendor','tests/fixtures'])if(fs.existsSync(path.join(root,name)))fs.cpSync(path.join(root,name),path.join(workspace,name),{recursive:true});fs.copyFileSync(path.join(root,'index.html'),path.join(workspace,'index.html'));fs.cpSync(path.join(root,'output/bath-heater-se2'),path.join(workspace,'output/bath-heater-se2'),{recursive:true});
+ const server=await V.staticServer(workspace),browser=await V.loadPlaywright().chromium.launch(V.configuration().launchOptions),results=[];
+ try{
+ for(const mode of ['http','file']){const ctx=await browser.newContext({viewport:{width:1440,height:1040},offline:mode==='file'}),page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto((mode==='http'?server.baseURL:pathToFileURL(workspace+path.sep).href)+'output/bath-heater-se2/preview.html');await page.waitForFunction(()=>window.previewReady);await page.screenshot({path:path.join(out,mode+'-front.png')});await page.locator('#side').click();await page.screenshot({path:path.join(out,mode+'-side.png')});if(errors.length)throw Error(errors.join('\n'));results.push({mode,productionPreview:true,errors});await ctx.close();}
+ const config=V.configuration({FURNISH_VERIFY_ROOT:workspace,FURNISH_VERIFY_URL:server.baseURL}),page=await browser.newPage();const verify=new Function('return ('+fs.readFileSync(path.join(root,'scripts/verify/verify-ceiling-panel-devices.browser.js'),'utf8')+'\n);')();results.push(...(await verify(page,{...config,bathHeaterType:'bath_heater_aopu_se2'})).map(r=>({device:'bath_heater_aopu_se2',...r})));
+ results.push(...(await verify(page,config)).map(r=>({device:'bath_heater_300x600',...r})));
+ const verifyLight=new Function('return ('+fs.readFileSync(path.join(root,'scripts/verify/verify-panel-light.browser.js'),'utf8')+'\n);')();results.push(...(await verifyLight(page,config)).map(r=>({device:'panel_light_300x600',...r})));
+ for(const mode of ['http','file'])for(const view of ['installed','mobile'])fs.copyFileSync(path.join(workspace,'output/playwright/bath_heater_aopu_se2',mode+'-'+view+'.png'),path.join(out,mode+'-'+view+'.png'));
+ }finally{await browser.close();await server.close();fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(results,null,2));}console.log(JSON.stringify(results,null,2));
+})().catch(e=>{console.error(e);process.exitCode=1;});
