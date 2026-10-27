@@ -174,7 +174,7 @@ function endDrag(cancel){
   if(d.kind==='kitchen-divider'&&!d.moved){ui.guides=null;editKitchenDivider(d.divider);return;}
   if((['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)||d.kind==='size'&&(d.edge||d.resizeError))&&snap()===d.before){ui.guides=null;renderAll();if(d.resizeError)toast(d.resizeError);return;}
   if (d.moved){
-    if (!['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&!d.edge&&(d.kind !== 'move' || d.ids.length === 1)){   // 独立厨房边保留锚点；普通单件拖完继续推离墙体
+    if (!['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&!d.edge&&(!d.ids || d.ids.length === 1)){   // 整组变换保留相对位置；普通单件拖完继续推离墙体
       const f = getF(d.id);
       if (f){ const ox = f.cx, oy = f.cy; pushOut(f,d.kind==='move'?d.axis:undefined); if (Math.hypot(f.cx-ox, f.cy-oy) > 60) toast(tr('已自动避开墙体', 'Moved off the wall automatically')); }
     }
@@ -254,8 +254,15 @@ function processCanvasPointerMove(e){
     renderFurnitureMovement(); return;
   }
   if (drag.kind === 'rot'){
-    let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;
-    f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
+    if(drag.ids){
+      const raw=Math.atan2(p.y-drag.cy,p.x-drag.cx)*180/Math.PI-drag.pointerAngle;
+      const angle=e.shiftKey?raw:Math.round(raw/15)*15,a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a);drag.angle=angle;
+      for(const id of drag.ids){const item=getF(id),o=drag.start[id],dx=o.cx-drag.cx,dy=o.cy-drag.cy;if(!item)continue;item.cx=drag.cx+dx*c-dy*s;item.cy=drag.cy+dx*s+dy*c;item.rot=norm(o.rot+angle);}
+      renderFurn();
+    }else{
+      let a = Math.atan2(p.y-f.cy, p.x-f.cx)*180/Math.PI + 90;
+      f.rot = norm(e.shiftKey ? a : Math.round(a/15)*15);
+    }
   } else if(drag.kind==='kitchen-divider'){
     try{const result=FurnishSnapping.resizeKitchenDivider(drag.original,drag.divider,p,{start:drag.startPoint,grid:ui.grid,scale:view.s,wallSnap:ui.layers.wallSnap,guides:!!ui.layers.guides,rects:ui.layers.wallSnap?snapRects():[],furniture:state.furniture});Object.assign(f,result.furniture);ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
     renderFurn();
@@ -328,7 +335,10 @@ svg.addEventListener('pointerdown', e => {
   const h = t.closest('[data-handle]'), fEl = ui.layers.furn && t.closest('[data-fid]'), picking = ui.tool === 'select' || ui.tool === 'marquee';
   const nEl = ui.layers.notes && t.closest('[data-note]'),mEl=t.closest('[data-measure]');
   if (picking && mEl){select({kind:'measure',id:Number(mEl.dataset.measure)});return;}
-  if (h && selIds().length === 1){
+  if(h?.dataset.handle==='rot'&&selIds().length>1){
+    const items=selItems(),[x0,y0,x1,y1]=groupBox(items),cx=(x0+x1)/2,cy=(y0+y1)/2;
+    drag={kind:items.some(furnitureLocked)?'locked':'rot',ids:items.map(f=>f.id),id:items[0].id,cx,cy,radius:(y1-y0)/2+(COARSE?40:26)/view.s,pointerAngle:Math.atan2(p.y-cy,p.x-cx)*180/Math.PI,start:Object.fromEntries(items.map(f=>[f.id,{cx:f.cx,cy:f.cy,rot:f.rot}])),...base,before:snap()};
+  } else if (h && selIds().length === 1){
     if(h.dataset.handle==='kitchen-divider')h.focus?.({preventScroll:true});
     const f=getF(selIds()[0]);
     drag = {kind:furnitureLocked(f)?'locked':h.dataset.handle, axis:h.dataset.axis||'both', edge:h.dataset.kitchenEdge, run:Number(h.dataset.kitchenRun), field:h.dataset.kitchenExtension, divider:h.dataset.kitchenDivider, startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};

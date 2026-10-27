@@ -228,7 +228,7 @@ function positionFab(){
       const r={x:Math.min(...xs)-12,y:Math.min(...ys)-22,w:Math.max(...xs)-Math.min(...xs)+24,h:Math.max(...ys)-Math.min(...ys)+44,weight:selectedIds.has(f.id)?10:5};
       if(visible(r))obstacles.push(r);
     }
-    for(const el of stage.querySelectorAll('#gSel text,#gMeasure text,[data-hob-gap] text,#gDims text')){
+    for(const el of stage.querySelectorAll('#gSel text,#gSel [data-edit-overlay="group-rotation"],#gMeasure text,[data-hob-gap] text,#gDims text')){
       const r=local(el.getBoundingClientRect());if(visible(r))obstacles.push({...r,weight:35});
     }
   }

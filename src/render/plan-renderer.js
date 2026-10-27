@@ -424,6 +424,12 @@ function renderSelectedGeometry(){
     const [x0,y0,x1,y1] = groupBox(items), p = 8*k;
     s += `<rect x="${x0-p}" y="${y0-p}" width="${x1-x0+2*p}" height="${y1-y0+2*p}" fill="none" ${A} stroke-width="1.2" stroke-dasharray="6 4" pointer-events="none"/>
       <text x="${(x0+x1)/2}" y="${y1+p+18*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${tr(`已选 ${items.length} 件`, `${items.length} selected`)} · ${Math.round(x1-x0)} × ${Math.round(y1-y0)}</text>`;
+    if(!items.some(furnitureLocked)){
+      const rotating=drag?.kind==='rot'&&drag.ids, cx=rotating?drag.cx:(x0+x1)/2, cy=rotating?drag.cy:(y0+y1)/2;
+      const radius=rotating?drag.radius:(y1-y0)/2+(COARSE?40:26)*k, angle=rotating?drag.angle||0:0, a=angle*Math.PI/180;
+      const hx=cx+Math.sin(a)*radius,hy=cy-Math.cos(a)*radius,hit=(COARSE?24:11)*k;
+      s+=`<g data-edit-overlay="group-rotation" style="cursor:grab"><line x1="${cx}" y1="${cy}" x2="${hx}" y2="${hy}" ${A} stroke-width="1" pointer-events="none"/><circle data-handle="rot" cx="${hx}" cy="${hy}" r="${hit}" fill="transparent"/><circle data-handle="rot" cx="${hx}" cy="${hy}" r="${(COARSE?10:6)*k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动旋转整组（Shift 自由角度）','Drag to rotate selection (Shift for free angle)')}</title></circle></g>`;
+    }
     if(ui.layers.clear&&(!drag||drag.kind==='move'))s+=clearanceSVG(items,k);
   } else if (ids.length === 1){
     const f = getF(ids[0]);
