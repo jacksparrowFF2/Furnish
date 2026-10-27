@@ -7,9 +7,11 @@ const dependencies={'drawing':['workflow-reimport'],'drawing-readability':['work
 // Historical standalone-editor scripts remain as evidence. Their CLI names now
 // run the consolidated flow instead of trying to find UI that was removed.
 const tilingReplacements=Object.fromEntries(['floor-finishes','floor-controls','floor-origin','floor-origin-3d','floor-origin-corner','floor-origin-drag','floor-origin-wall','floor-unified','floor-bulk-levels','furniture-finished-datum','finish-guide','wall-finishes','wall-tiling','wall-floor-follow','wall-origin-3d','tile-grout','tile-grout-unified','tile-preset-sync','tile-presets','wall-tile-bands'].map(name=>[name,['tile-workspace','tile-workspace-complete','tile-library']]));
+const ceilingReplacements={ceilings:['ceiling-section-interaction','ceiling-components','ceiling-upgrade'],'ceiling-corners':['ceiling-boundaries','ceiling-continuous-light','ceiling-end-caps','ceiling-upgrade']};
+const replacements={...tilingReplacements,...ceilingReplacements};
 function cases(){const entries=fs.readdirSync(path.join(__dirname,'verify')).filter(n=>/^verify-.*\.browser\.js$/.test(n)).map(file=>[file.slice(7,-11),'verify/'+file]);return new Map([...entries,...standalone.map(n=>[n,'verify/verify-'+n+'.cjs'])]);}
 function plan(names,registry=cases()){
- const result=[],seen=new Set(),visiting=new Set();function add(name){if(tilingReplacements[name]){for(const next of tilingReplacements[name])add(next);return;}if(!registry.has(name))throw Error('Unknown browser case: '+name+' (use --list)');if(visiting.has(name))throw Error('Cyclic browser dependency: '+name);if(seen.has(name))return;visiting.add(name);for(const dep of dependencies[name]||[])add(dep);visiting.delete(name);seen.add(name);result.push(name);}for(const name of names)add(name);return result;
+ const result=[],seen=new Set(),visiting=new Set();function add(name){if(replacements[name]){for(const next of replacements[name])add(next);return;}if(!registry.has(name))throw Error('Unknown browser case: '+name+' (use --list)');if(visiting.has(name))throw Error('Cyclic browser dependency: '+name);if(seen.has(name))return;visiting.add(name);for(const dep of dependencies[name]||[])add(dep);visiting.delete(name);seen.add(name);result.push(name);}for(const name of names)add(name);return result;
 }
 function failed(value){return !!value&&typeof value==='object'&&(value.status==='FAIL'||value.passed===false||Object.values(value).some(v=>v&&typeof v==='object'&&failed(v)));}
 async function worker(name){
@@ -33,11 +35,11 @@ function child(args,options={}){
 }
 async function main(args=process.argv.slice(2)){
  const registry=cases();if(args[0]==='--worker'){await worker(args[1]);return;}
- if(args.includes('--list')){for(const name of registry.keys())console.log(name+(tilingReplacements[name]?' -> '+tilingReplacements[name].join(', '):''));return;}
+ if(args.includes('--list')){for(const name of registry.keys())console.log(name+(replacements[name]?' -> '+replacements[name].join(', '):''));return;}
  if(args.includes('--help')){console.log('node scripts/verify-browser.cjs [case ... | --all | --list] [--keep-going]\nDefault: portable-smoke (HTTP and offline file://). --keep-going collects all failures and still exits nonzero. Optional environment: FURNISH_VERIFY_URL (bind a dedicated loopback origin), FURNISH_BROWSER_CHANNEL, FURNISH_BROWSER_PATH, FURNISH_VERIFY_HEADED=1, FURNISH_VERIFY_TIMEOUT (ms).');return;}
  const keepGoing=args.includes('--keep-going'),names=args.filter(arg=>arg!=='--keep-going');
  const selected=plan(names.includes('--all')?[...registry.keys()]:names.length?names:['portable-smoke']);
- if(names.includes('--all')||names.some(name=>tilingReplacements[name]))console.log('Retired tiling UI cases use tile-workspace, tile-workspace-complete and tile-library; historical scripts are not executed.');
+ if(names.includes('--all')||names.some(name=>replacements[name]))console.log('Retired tiling and standalone ceiling creation cases resolve to current editors; --list shows replacements. Historical UI scripts are not executed.');
  // Validate dependency installation and URL before copying or starting work.
  const engine=V.loadPlaywright(),config=V.configuration();if(!config.launchOptions.channel){const executable=config.launchOptions.executablePath||engine.chromium.executablePath();if(!fs.existsSync(executable))throw Error('Browser executable missing: '+executable+'. Install the matching Playwright browser or configure PLAYWRIGHT_BROWSERS_PATH / FURNISH_BROWSER_PATH before running acceptance.');}
  const output=path.join(V.projectRoot,'output/playwright');fs.mkdirSync(output,{recursive:true});
