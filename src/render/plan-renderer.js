@@ -93,7 +93,7 @@ function renderRooms(){
   DOORS.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-door="${i}"`));
   SLIDES.forEach((d,i) => s += sill(d.rect, `class="sill pick" data-slide="${i}"`));
   if(floorPlan)for(const a of floorPlan.floorFinish?.doorways||[]){const i=rooms.findIndex(r=>r.id===a.roomId);s+=`<path class="sill pick" data-${a.kind}="${a.index}" data-layer-floor="${esc(a.roomId)}" d="${(a.room.polys||[a.room.poly]).map(p=>'M'+p.map(v=>v.join(',')).join('L')+'Z').join(' ')}" fill="${a.layout?'url(#floor-grid-'+i+')':MATS[state.rooms[a.roomId].mat]?.sw||PAL.sill}" stroke="none"/>`;}
-  if(floorPlan)for(const r of rooms){const a=floorPlan.floorFinish?.areas[r.id];if(a&&r.at)s+=`<text data-floor-level data-layer-floor="${esc(r.id)}" x="${r.at[0]}" y="${r.at[1]+300}" font-size="105" text-anchor="middle" fill="#8b5725" pointer-events="none">${a.finishedZ===undefined?'标高待核对':`完成 ${a.finishedZ} mm`}</text>`;}
+  if(floorPlan)for(const r of rooms){const a=floorPlan.floorFinish?.areas[r.id];if(a&&r.at)s+=`<text data-floor-level data-layer-floor="${esc(r.id)}" x="${r.at[0]}" y="${r.at[1]+300}" font-size="105" text-anchor="middle" fill="#8b5725" pointer-events="none">${a.finishedZ===undefined?'地面完成面标高待核对':`地面完成面 ${a.finishedZ>=0?'+':''}${a.finishedZ} mm`}</text>`;}
   $('#gRooms').innerHTML = s;
   globalThis.FurnishObservationLayers?.applyPlan();
 }
@@ -340,6 +340,7 @@ function renderMeasure(){
 
 const ACC = '#ef5a24', TEAL = '#0e8f83';
 function renderSel(){
+  window.FurnishCeilingUI?.selectionChanged();
   if(globalThis.FurnishObservationLayers&&selIds().some(id=>!FurnishObservationLayers.visible(getF(id))))ui.sel=null;
   const preview=window.FurnishWorkspace?.openingPreviewPlan?.();if(!preview)return renderSelectedGeometry();
   const actual=[WALLS,WINS,DOORS,SLIDES,ROOMS];try{({walls:WALLS,wins:WINS,doors:DOORS,slides:SLIDES,rooms:ROOMS}=preview);renderSelectedGeometry();}finally{[WALLS,WINS,DOORS,SLIDES,ROOMS]=actual;}

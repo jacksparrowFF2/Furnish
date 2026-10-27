@@ -244,6 +244,13 @@
       <g id="gNotes"></g>
       <g id="gSel"></g>
     </svg>
+    <div class="plan-display only2d" role="group" aria-label="平面显示模式" data-en-aria="Plan display mode">
+      <div class="plan-display-buttons">
+        <button class="btn" data-plan-mode="furniture" aria-pressed="true" data-en="Furniture layout">家具布局</button>
+        <button class="btn" data-plan-mode="ceiling" aria-pressed="false" data-en="Ceiling plan">吊顶布置</button>
+      </div>
+      <small id="plan-display-note"></small>
+    </div>
     <div class="hud only2d" id="zoomHud">
       <button class="btn" id="zoomOut" title="缩小 (-)" aria-label="缩小" data-en-title="Zoom out (-)"><svg class="i"><use href="#i-minus"/></svg></button>
       <button class="btn ratio" id="hudRatio" title="点击切换常用比例 1:50 / 1:60 / 1:100 / 1:200" data-en-title="Cycle common scales 1:50 / 1:60 / 1:100 / 1:200">1:60</button>

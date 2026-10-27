@@ -1,0 +1,10 @@
+[
+  {
+    "mode": "http",
+    "status": "PASS"
+  },
+  {
+    "mode": "file",
+    "status": "PASS"
+  }
+]

@@ -154,13 +154,72 @@ function dispose(s){clearTimeout(s.autoTimer);s.sectionObserver?.disconnect();cl
 function selectObject(id,edit=false){const c=state.ceilings?.items.find(c=>c.id===id);if(!c||!FurnishLayers.visible(state,'ceiling:'+id))return false;select({kind:'ceiling',id:c.id,regionId:c.regionId,layerObject:'ceiling:'+c.id});if(edit){if(FurnishLayers.locked(state,'ceiling:'+id)){toast('请先解锁此吊顶');return false;}open(id);}return true;}
 function editFlat(c){const entry=JSON.stringify(state.ceilings),planId=PLAN.id;openDialog({title:'编辑平面吊顶',body:`<div class="form"><label>名称<input id="ceiling-flat-name" maxlength="80" value="${esc(c.name)}"></label><label>底标高 mm<input id="ceiling-flat-height" type="number" value="${c.height}"></label><label>板厚 mm<input id="ceiling-flat-thickness" type="number" value="${c.thickness}"></label></div><p class="muted">保留旧平顶的原多边形边界；修改区域边界可在「吊顶设计 → 已有造型」中明确重建。</p><p id="ceiling-flat-error" role="alert"></p>`,actions:[{label:'取消'},{label:'保存',cls:'primary',fn:()=>{try{if(planId!==PLAN.id||entry!==JSON.stringify(state.ceilings))throw Error('吊顶已变化，请重新打开');const height=$('#ceiling-flat-height').value,thickness=$('#ceiling-flat-thickness').value;if(!height.trim()||!thickness.trim())throw Error('请输入完整尺寸');const next={...copy(c),name:$('#ceiling-flat-name').value.trim(),height:Number(height),thickness:Number(thickness)},work=C.edit(state,next);FurnishLayers.assertEditable(state,work);mutate(()=>state.ceilings=work.ceilings);}catch(e){$('#ceiling-flat-error').textContent=e.message;return false;}}}]});}
 
+// View preferences stay outside the project and its undo/save transactions.
+const displayOpacity=new WeakMap();
+function planOpacity(node,value){
+ if(!displayOpacity.has(node))displayOpacity.set(node,node.getAttribute('opacity'));
+ const next=value??displayOpacity.get(node);if(next===null)node.removeAttribute('opacity');else node.setAttribute('opacity',next);
+}
+function planMode(){return ui.planMode==='ceiling'?'ceiling':'furniture';}
+function ceilingPoints(c){return (c.kind==='profile'?C.footprint(c):c.polygon).map(p=>p.join(',')).join(' ');}
+function selectionChanged(){
+ applyMode();refreshLevels();
+ let overlay=document.querySelector('#gCeilingSelection');
+ if(!overlay){overlay=document.createElementNS(NS,'g');overlay.id='gCeilingSelection';overlay.dataset.editOverlay='ceiling-selection';overlay.setAttribute('pointer-events','none');document.querySelector('#plan')?.append(overlay);}
+ overlay.setAttribute('transform',`rotate(${drawingRotation()})`);
+ const selected=ui.sel?.kind==='ceiling'&&state.ceilings?.items.find(c=>c.id===ui.sel.id);
+ const items=selected&&FurnishLayers.visible(state,'ceiling:'+selected.id)?(FurnishProject.effectivePlan(PLAN,state).ceilings?.items||[]).filter(c=>(selected.regionId?c.regionId===selected.regionId:c.id===selected.id)&&FurnishLayers.visible(state,'ceiling:'+c.id)):[];
+ overlay.innerHTML=items.map(c=>`<polygon points="${ceilingPoints(c)}" fill="none" stroke="${PAL.halo}" stroke-width="6" vector-effect="non-scaling-stroke"/><polygon data-ceiling-highlight="${esc(c.id)}" points="${ceilingPoints(c)}" fill="none" stroke="${ACC}" stroke-width="3" vector-effect="non-scaling-stroke"/>`).join('');
+}
+function applyMode(){
+ const ceiling=planMode()==='ceiling';
+ document.querySelectorAll('[data-plan-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.planMode===planMode())));
+ const note=document.querySelector('#plan-display-note');if(note)note.textContent=ceiling?tr('吊顶底标高与地面完成面均以测量地面为零点','Ceiling and floor levels use the surveyed floor datum'):tr('虚线为头顶吊顶投影 · 标高以测量地面为零点','Dashed lines: overhead ceiling · levels use the surveyed floor datum');
+ // Explicit SVG attributes survive PNG/SVG export without external CSS.
+ for(const node of document.querySelectorAll('#gFurn > [data-fid]')){
+  const f=getF(node.dataset.fid),spec=FurnishProducts.definition(f);
+  planOpacity(node,ceiling&&!spec?.downlight&&!spec?.ceilingPanel&&f?.type!=='pendant'?'.25':null);
+ }
+ for(const node of document.querySelectorAll('#gRooms [data-room],#gRooms [data-floor-level]')){
+  planOpacity(node,ceiling?(node.hasAttribute('data-floor-level')?'0':'.12'):null);
+ }
+}
+function levelLabels(items,visibleOnly=true,scale=view.s){
+ const groups=new Map();for(const c of items){if(visibleOnly&&!FurnishLayers.visible(state,'ceiling:'+c.id))continue;const key=c.regionId||c.id;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(c);}
+ return [...groups.values()].map(list=>{
+  const first=list[0],region=state.ceilings?.regions?.find(r=>r.id===first.regionId),poly=region?.polygon||(first.kind==='flat'?first.polygon:C.footprint(first)),display=poly.map(p=>drawingPoint(p)),xs=display.map(p=>p[0]),ys=display.map(p=>p[1]),left=Math.min(...xs),right=Math.max(...xs),top=Math.min(...ys),bottom=Math.max(...ys);
+  const levels=list.map(c=>c.kind==='flat'?c.height:c.height-Math.max(...C.sectionPoints(c.section).map(v=>v.d))),lo=Math.min(...levels),hi=Math.max(...levels),mm=v=>(v>=0?'+':'')+Number(v.toFixed(1)),text=tr('底标高 ','Underside ')+mm(lo)+(hi-lo>.1?'～'+mm(hi):'')+' mm',name=region?.name||first.name;
+  const font=Math.min(Math.max(120,10/Math.max(scale,.001)),Math.max(100,(right-left-100)/Math.max(name.length,text.length)/.65)),margin=font*1.5;
+  // Place labels inside the projected region, with readable horizontal text even
+  // after drawing rotation. Concave regions use an interior candidate search.
+  const candidates=[[(left+right)/2,top+margin],...[[.25,.2],[.75,.2],[.5,.35],[.5,.65],[.25,.75],[.75,.75]].map(([x,y])=>[left+(right-left)*x,top+(bottom-top)*y])];
+  const at=candidates.find(p=>C.inside(p,display)&&C.inside([p[0],p[1]+font*1.25],display))||display[0],world=drawingPoint(at,true);
+  return `<g data-ceiling-level="${esc(first.regionId||first.id)}" pointer-events="none" transform="translate(${world.join(' ')}) rotate(${-drawingRotation()})"><title>${esc(name)} · ${tr('吊顶','Ceiling ')}${esc(text)} · ${tr('以测量地面为零点，非距完成地面净高','Surveyed floor datum, not finished-floor clearance')}</title><text text-anchor="middle" font-size="${font}" fill="#317580" stroke="${PAL.halo}" stroke-width="${font*.3}" paint-order="stroke">${esc(name)}</text><text y="${font*1.25}" text-anchor="middle" font-size="${font}" fill="#317580" stroke="${PAL.halo}" stroke-width="${font*.3}" paint-order="stroke">${esc(text)}</text></g>`;
+ }).join('');
+}
+let labelViewKey='';
+function refreshLevels(){
+ const key=JSON.stringify([planMode(),view.s,drawingRotation()]);if(key===labelViewKey)return;labelViewKey=key;
+ const g=document.querySelector('#gCeilings');if(!g)return;g.querySelectorAll('[data-ceiling-level]').forEach(n=>n.remove());
+ if(planMode()==='ceiling')g.insertAdjacentHTML('beforeend',levelLabels(FurnishProject.effectivePlan(PLAN,state).ceilings?.items||[]));
+}
+function prepareExport(root,{visibleLayers=true}={}){
+ root.querySelectorAll('[data-ceiling-target],#gCeilingSelection').forEach(n=>n.remove());
+ root.querySelectorAll('[data-ceiling-level]').forEach(n=>n.remove());
+ if(planMode()==='ceiling')root.querySelector('#gCeilings')?.insertAdjacentHTML('beforeend',levelLabels(FurnishProject.effectivePlan(PLAN,state).ceilings?.items||[],visibleLayers,.06));
+}
 function afterRender(){
- let g=document.querySelector('#gCeilings');if(!g){g=document.createElementNS(NS,'g');g.id='gCeilings';document.querySelector('#gRooms')?.after(g);}g.setAttribute('transform',`rotate(${drawingRotation()})`);
- const data=FurnishProject.effectivePlan(PLAN,state).ceilings;g.innerHTML=(data?.items||[]).map(c=>{const points=(c.kind==='profile'?C.footprint(c):c.polygon).map(p=>p.join(',')).join(' '),style=FurnishLayers.visible(state,'ceiling:'+c.id)?'':'display:none';return `<g><polygon data-ceiling-id="${esc(c.id)}" style="${style}" points="${points}" fill="${c.kind==='profile'?'#d7b580':'#a9d5dd'}" fill-opacity=".22" stroke="${c.kind==='profile'?'#b88037':'#588d98'}" stroke-width="1.5" vector-effect="non-scaling-stroke" pointer-events="none"><title>${esc(c.name)} · 吊顶</title></polygon><polygon data-ceiling-target="${esc(c.id)}" style="${style};cursor:pointer" points="${points}" fill="none" stroke="transparent" stroke-width="10" vector-effect="non-scaling-stroke" pointer-events="stroke"><title>${esc(c.name)} · 单击选中，双击编辑</title></polygon></g>`;}).join('');
+ let g=document.querySelector('#gCeilings');if(!g){g=document.createElementNS(NS,'g');g.id='gCeilings';}
+ const ceiling=planMode()==='ceiling';if(ceiling)document.querySelector('#gLabels')?.before(g);else document.querySelector('#gRooms')?.after(g);
+ g.setAttribute('transform',`rotate(${drawingRotation()})`);
+ const data=FurnishProject.effectivePlan(PLAN,state).ceilings;
+ labelViewKey=JSON.stringify([planMode(),view.s,drawingRotation()]);
+ g.innerHTML=(data?.items||[]).map(c=>{const points=ceilingPoints(c),style=FurnishLayers.visible(state,'ceiling:'+c.id)?'':'display:none';return `<g><polygon data-ceiling-id="${esc(c.id)}" style="${style}" points="${points}" fill="${ceiling?(c.kind==='profile'?'#d7b580':'#a9d5dd'):'none'}" fill-opacity=".08" stroke="${ceiling?(c.kind==='profile'?'#a9732c':'#317580'):'#64868b'}" stroke-dasharray="${ceiling?'8 3 2 3':'6 4'}" stroke-width="${ceiling?'1.7':'1'}" vector-effect="non-scaling-stroke" pointer-events="none"><title>${esc(c.name)} · ${tr('吊顶投影','Overhead ceiling')}</title></polygon><polygon data-ceiling-target="${esc(c.id)}" style="${style};cursor:pointer" points="${points}" fill="none" stroke="transparent" stroke-width="10" vector-effect="non-scaling-stroke" pointer-events="stroke"><title>${esc(c.name)} · 单击选中，双击编辑</title></polygon></g>`;}).join('')+(ceiling?levelLabels(data?.items||[]):'');
+ selectionChanged();
  let down=null;const id=e=>e.target.closest('[data-ceiling-target]')?.dataset.ceilingTarget;g.onpointerdown=e=>{if(ui.tool==='select'&&e.button===0&&!spaceDown&&id(e)){e.stopPropagation();down=[e.clientX,e.clientY];}};g.onclick=e=>{const target=id(e);if(ui.tool==='select'&&target&&down&&Math.hypot(e.clientX-down[0],e.clientY-down[1])<6){e.stopPropagation();selectObject(target);}down=null;};g.ondblclick=e=>{const target=id(e);if(ui.tool==='select'&&target){e.preventDefault();e.stopPropagation();selectObject(target,true);}};
 
 }
 function design(previous,selectionId){return FurnishCeilingDesign.open({selectionId:selectionId||(ui.sel?.kind==='ceiling'?ui.sel.regionId:undefined)});}
-window.addEventListener('load',()=>{afterRender();const rail=document.querySelector('.canvas-rail .rail-finishes');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='ceiling-open';b.innerHTML=ico('ceiling')+`<span data-zh="吊顶" data-en="Ceiling">${tr('吊顶','Ceiling')}</span>`;b.onclick=()=>design();rail.append(b);});
-window.FurnishCeilingUI={selectObject,annotateSection,open,design,afterRender,pointerMenu,closePointerMenu};
+window.addEventListener('load',()=>{document.querySelectorAll('[data-plan-mode]').forEach(b=>b.onclick=()=>{ui.planMode=b.dataset.planMode;saveUI();afterRender();});afterRender();const rail=document.querySelector('.canvas-rail .rail-finishes');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='ceiling-open';b.innerHTML=ico('ceiling')+`<span data-zh="吊顶" data-en="Ceiling">${tr('吊顶','Ceiling')}</span>`;b.onclick=()=>design();rail.append(b);});
+window.FurnishCeilingUI={selectObject,annotateSection,open,design,afterRender,selectionChanged,prepareExport,pointerMenu,closePointerMenu};
 })();

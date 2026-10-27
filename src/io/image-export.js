@@ -9,6 +9,7 @@ function preparePlanSVG({dimensions=true,measurements=true,notes=true,light=fals
   s.querySelectorAll('#gSel,#gGrid,#gSpaceFocus,#gGuides,#gPlacement,#gWallNet,#gProposal,#gCompass,[data-edit-overlay],script,foreignObject').forEach(g=>g.remove());
   if(!visibleLayers)for(const layer of ['gRooms','gWalls','gOpen','gFurn','gLabels','gDims','gMeasure','gNotes'])s.querySelector('#'+layer)?.removeAttribute('display');
   if(!visibleLayers)s.querySelectorAll('[data-fid], [data-room], [data-layer-floor], [data-layer-wall], [data-ceiling-id]').forEach(n=>n.style.removeProperty('display'));
+  window.FurnishCeilingUI?.prepareExport(s,{visibleLayers});
   if(!dimensions)s.querySelector('#gDims')?.remove();if(!notes)s.querySelector('#gNotes')?.remove();
   if(globalThis.FurnishDrawing)refreshFurnitureLabels(s,{scale:0,selected:[],palette});
   refreshHobOpenings(s,{scale:0,palette,dimensions:false,selected:[]});
