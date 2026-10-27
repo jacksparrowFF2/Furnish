@@ -4,7 +4,7 @@
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
-function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bodies=[]}={}){
+function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bodies=[],wash=true}={}){
  const C=root.FurnishCeiling||require('../core/ceiling-core.js'),group=new THREE.Group();group.name='ceilings';
  const surface=new THREE.MeshStandardMaterial({color:'#f4f1e9',roughness:.95,side:THREE.DoubleSide}),light=new THREE.MeshStandardMaterial({color:'#fff4d8',emissive:'#ffde9e',emissiveIntensity:lamps?1.8:0,roughness:.5});
  // A flush finished ceiling wins the depth tie with a structural beam underside.
@@ -36,6 +36,24 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
   const indexed=new THREE.BufferGeometry();indexed.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));indexed.setIndex(indices);const g=indexed.toNonIndexed();indexed.dispose();g.computeVertexNormals();g.computeBoundingBox();
   if(g.boundingBox.min.y*1000>=top){g.dispose();return;}return syncIdentity.produce("ceiling-model:site-3",()=>mesh(g,material,c,part));
  }
+ // Realtime raster lighting has no emissive bounce. Sample the actual emitting
+ // face, including trimmed ends and bends, with length-weighted soft lights.
+ // These preview intensities are visual assumptions, not product photometry.
+ function illuminate(m,c,rings){
+  if(!m||!lamps||!THREE.SpotLight||!THREE.Object3D)return;
+  const p=C.lightPolygon(c.section.light),face=ring=>new THREE.Vector3(wx((ring[2][0]+ring[3][0])/2),(c.height-(p[2][1]+p[3][1])/2)/1000,wz((ring[2][1]+ring[3][1])/2)),normal=ring=>new THREE.Vector3(wx(ring[2][0])-wx(ring[1][0]),-(p[2][1]-p[1][1])/1000,wz(ring[2][1])-wz(ring[1][1])).normalize(),points=rings.map(face),lengths=points.slice(1).map((v,i)=>v.distanceTo(points[i])),total=lengths.reduce((a,b)=>a+b,0);
+  if(total<1e-6)return;
+  // Keep the continuous emitting edge for the ceiling wash shader. Point
+  // samples alone make scallops when the ceiling is close to a long strip.
+  m.userData.ceilingWash=points.slice(1).flatMap((b,i)=>normal(rings[i]).y>.5?Array.from({length:5},(_,sample)=>{const t=(sample+.5)/5,edge=ring=>[wx(ring[2][0]*t+ring[3][0]*(1-t)),(c.height-p[2][1]*t-p[3][1]*(1-t))/1000,wz(ring[2][1]*t+ring[3][1]*(1-t))];return [edge(rings[i]),edge(rings[i+1]),sample];}):[]);
+  const count=Math.min(8,Math.max(1,Math.ceil(total/1.2))),weight=total/count;
+  for(let i=0;i<count;i++){
+   let along=(i+.5)*weight,k=0;while(k<lengths.length-1&&along>lengths[k])along-=lengths[k++];
+   const t=lengths[k]>0?along/lengths[k]:0,position=points[k].clone().lerp(points[k+1],t),direction=normal(rings[k]).lerp(normal(rings[k+1]),t).normalize();
+   function spot(origin,dir,intensity,range,part){const lamp=new THREE.SpotLight('#ffde9e',intensity*weight,range,Math.PI*.46,1,2),target=new THREE.Object3D();lamp.position.copy(origin);target.position.copy(origin).add(dir);lamp.target=target;lamp.userData.ceilingStripLight=part;lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.025;m.add(lamp,target);}
+   if(direction.y<=.5)spot(position.clone().addScaledVector(direction,.003),direction,12,5,'direct');
+  }
+ }
  for(const c of syncIdentity.records("ceiling-model.js:generator-1",data?.items||[])){
   if(c.kind==='profile'){
    const p=c.section.vertices.map(v=>[v.u,v.d]),bodyMaterial=c.section.material==='aluminum'?aluminum:surface;if(c.path.segments)syncIdentity.produce("ceiling-model.js:generator-call-1",()=>ringSweep(c,p,C.offsetStations(c,0).map((_,k)=>p.map(([u])=>C.offsetStations(c,u)[k])),bodyMaterial,'section'));else syncIdentity.produce("ceiling-model.js:generator-call-2",()=>sweep(c,p,bodyMaterial,'section'));
@@ -65,8 +83,66 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
    g.translate(wx(0),c.height/1000,wz(0));if(c.height>=top){g.dispose();continue;}syncIdentity.produce("ceiling-model:site-4",()=>mesh(g,flatSurface,c,'flat'));
   }
  }
+ for(const m of group.children.filter(m=>m.userData.ceiling.part==='light')){
+  const c=data.items.find(c=>c.id===m.userData.ceiling.id),layout=C.lightLayout(c);
+  if(layout.continuous)illuminate(m,c,layout.continuous.rings);
+  else{const piece=layout.pieces.find(p=>p.legId===m.userData.ceiling.legId),p=C.lightPolygon(c.section.light);if(piece)illuminate(m,c,[piece.path.a,piece.path.b].map(a=>p.map(([u])=>a.map((v,i)=>v+piece.path.normal[i]*u))));}
+ }
+ if(wash)applyWash(THREE,group);
  for(const material of [surface,flatSurface,panelSurface,seamSurface,light,aluminum,diffuser,diffuserOff,conflictLight])if(material&&!group.children.some(m=>m.material===material))material.dispose();return group;
 }
+// Bake the continuous wash only where a ray from the emitting face reaches
+// a real ceiling. Opaque production meshes, including channel walls/base, block it.
+function applyWash(T,group){
+ if(!T.Raycaster||!T.DataTexture)return;
+ group.updateWorldMatrix(true,true);
+ const segments=[],blockers=[];
+ group.traverse(o=>{if(o.userData.ceilingWash)segments.push(...o.userData.ceilingWash.map(s=>({a:new T.Vector3(...s[0]),b:new T.Vector3(...s[1]),sample:s[2]||0})));if(o.isMesh&&o.userData.ceiling?.part!=='light'&&o.userData.ceiling?.part!=='diffuser'&&!o.material?.transparent)blockers.push(o);});
+ if(!segments.length)return;
+ const ray=new T.Raycaster(),up=new T.Vector3(0,1,0),smooth=(a,b,x)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
+ group.traverse(o=>{
+  const roof=o.userData.layerObject?.startsWith('roomCeiling:'),part=o.userData.ceiling?.part;
+  if(!o.isMesh||o.userData.ceilingWashApplied||!(roof||part==='flat')||Array.isArray(o.material))return;
+  o.geometry.computeBoundingBox();const bounds=o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld),size=bounds.getSize(new T.Vector3()),height=bounds.min.y;
+  const sources=segments.filter(({a})=>height-a.y>.002&&height-a.y<.8);if(!sources.length||size.x<.001||size.z<.001)return;
+  const width=Math.min(192,Math.max(16,Math.ceil(size.x/.04))),depth=Math.min(192,Math.max(16,Math.ceil(size.z/.04))),pixels=new Uint8Array(width*depth*4),point=new T.Vector3(),direction=new T.Vector3();let sum=0;
+  const obstacles=blockers.filter(m=>m!==o);
+  for(let y=0;y<depth;y++)for(let x=0;x<width;x++){
+   point.set(bounds.min.x+(x+.5)*size.x/width,height,bounds.min.z+(y+.5)*size.z/depth);ray.set(point.clone().addScaledVector(up,-.003),up);ray.near=0;ray.far=.006;if(!ray.intersectObject(o,false).length)continue;const values=[0,0,0,0,0];
+   for(const {a,b,sample}of sources){
+    const dx=b.x-a.x,dz=b.z-a.z,t=Math.max(0,Math.min(1,((point.x-a.x)*dx+(point.z-a.z)*dz)/Math.max(1e-9,dx*dx+dz*dz))),source=a.clone().lerp(b,t),rise=point.y-source.y,d=Math.hypot(point.x-source.x,point.z-source.z),value=Math.exp(-d/.16)*smooth(.002,.035,rise)*(1-smooth(.5,.8,rise));
+    if(value<=Math.max(values[sample],.004))continue;
+    direction.copy(point).sub(source);const distance=direction.length();direction.normalize();ray.set(source.addScaledVector(direction,.0005),direction);ray.near=0;ray.far=distance-.002;
+    if(!ray.intersectObjects(obstacles,false).length)values[sample]=value;
+   }
+   const glow=values.reduce((a,b)=>a+b,0)/5,i=(y*width+x)*4,v=Math.round(glow*255);pixels[i]=pixels[i+1]=pixels[i+2]=v;pixels[i+3]=255;sum+=glow;
+  }
+  const energy=sum*size.x*size.z/(width*depth);o.userData.ceilingWashEnergy=energy;
+  if(energy<.00001)return;
+  const texture=new T.DataTexture(pixels,width,depth,T.RGBAFormat);texture.minFilter=texture.magFilter=T.LinearFilter;texture.generateMipmaps=false;texture.needsUpdate=true;
+  const material=o.material.clone();o.material=material;o.userData.ceilingOwnMaterial=true;o.userData.ceilingWashApplied=true;material.addEventListener('dispose',()=>texture.dispose());
+  material.customProgramCacheKey=()=> 'ceiling-visible-wash-v2';
+  material.onBeforeCompile=shader=>{
+   shader.uniforms.furnishWashMask={value:texture};shader.uniforms.furnishWashBounds={value:new T.Vector4(bounds.min.x,bounds.min.z,size.x,size.z)};shader.uniforms.furnishWashColor={value:new T.Color('#ffde9e')};
+   const varying='varying vec3 vFurnishWashPosition;varying vec3 vFurnishWashNormal;\n';
+   shader.vertexShader=varying+shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvFurnishWashPosition=(modelMatrix*vec4(transformed,1.0)).xyz;vFurnishWashNormal=normalize(mat3(modelMatrix)*normal);');
+   shader.fragmentShader=varying+'uniform sampler2D furnishWashMask;uniform vec4 furnishWashBounds;uniform vec3 furnishWashColor;\n'+shader.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
+    vec2 washUV=(vFurnishWashPosition.xz-furnishWashBounds.xy)/furnishWashBounds.zw;
+    float wash=texture2D(furnishWashMask,washUV).r*max(0.0,-vFurnishWashNormal.y*(gl_FrontFacing?1.0:-1.0));
+    totalEmissiveRadiance+=furnishWashColor*wash*1.3;
+   `);
+  };
+  // A virtual diffuse ceiling bounce is created only after direct light has
+  // actually reached this receiver. It never originates below a sealed channel.
+  const axis=size.x>=size.z?'x':'z',count=Math.min(4,Math.max(1,Math.ceil(size[axis]/3))),center=bounds.getCenter(new T.Vector3());
+  for(let i=0;i<count;i++){
+   const world=center.clone();world[axis]=bounds.min[axis]+size[axis]*(i+.5)/count;world.y=height-.015;
+   ray.set(world,up);ray.near=0;ray.far=.03;if(!ray.intersectObject(o,false).length)continue;
+   const lamp=new T.SpotLight('#ffde9e',energy*12/count,7,Math.PI*.45,1,2),target=new T.Object3D();lamp.position.copy(o.worldToLocal(world.clone()));target.position.copy(o.worldToLocal(world.clone().add(new T.Vector3(0,-1,0))));lamp.target=target;lamp.userData.ceilingStripLight='bounce';lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.025;o.add(lamp,target);
+  }
+ });
+}
+
 function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null,focusAssembly=false,bodies=[]}){
  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.8;host.append(renderer.domElement);
  const scene=new THREE.Scene();scene.background=new THREE.Color('#e8e7e2');scene.add(new THREE.HemisphereLight(0xffffff,0x6b6861,2.5));const sun=new THREE.DirectionalLight(0xffffff,3);sun.position.set(2,5,3);scene.add(sun);const underside=new THREE.DirectionalLight(0xffffff,2);underside.position.set(-2,-5,1);scene.add(underside);underside.visible=data.items.some(c=>c.aluminum);
@@ -74,7 +150,7 @@ function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null,f
   const core=root.FurnishCeiling||(typeof require==='function'?require('../core/ceiling-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),ids=new Set(value.items.flatMap(c=>[...core.downlightHoles(c,bodies).map(h=>h.id),...core.panelReplacements(c,bodies).map(s=>s.fid)])),seen=new Set();
   for(const {f,vertical}of bodies){if(!ids.has(f.id)||seen.has(f.id)||!vertical)continue;seen.add(f.id);const builder=P.definition(f)?.ceilingPanel?root.FurnishBathHeaterModel:root.FurnishDownlightModel;if(!builder)continue;const model=builder.build(THREE,f);model.position.set(f.cx/1000,(vertical.bottom-P.value(f,'mountHeight'))/1000,f.cy/1000);model.rotation.y=-(f.rot||0)*Math.PI/180;model.scale.x=f.flip?-1:1;group.add(model);}
   return group;}
- function release(group){const materials=new Set();group.traverse(o=>{o.geometry?.dispose();if(o.material)materials.add(o.material);});materials.forEach(m=>m.dispose());}
+ function release(group){const materials=new Set();group.traverse(o=>{o.shadow?.dispose();o.geometry?.dispose();if(o.material)materials.add(o.material);});materials.forEach(m=>m.dispose());}
  let group=makeGroup(data);scene.add(group);
  const C=root.FurnishCeiling||require('../core/ceiling-core.js'),profile=data.items.find(c=>c.kind==='profile'),arc=focusLight&&profile&&C.lightLayout(profile).continuous,plate=focusEnd&&profile&&C.endCaps(profile).plates.find(p=>p.end===focusEnd);
  let endBox=null,endDirection=null;if(plate){const legs=C.route(profile),index=focusEnd==='start'?0:legs.length-1,leg=legs[index],L=Math.hypot(leg.b[0]-leg.a[0],leg.b[1]-leg.a[1]),t=C.tangent(leg),travel=Math.min(L,Math.max(80,plate.thickness+plate.lightGap+40)),points=[];for(const [u,d] of plate.section)for(const s of [0,travel]){const q=C.pointAt(profile,u,focusEnd==='start'?s:L-s,index);points.push(new THREE.Vector3(q[0]/1000,(profile.height-d)/1000,q[1]/1000));}endBox=new THREE.Box3().setFromPoints(points).expandByScalar(.025);endDirection=t.map((v,i)=>v*(focusEnd==='start'?1:-1)+leg.normal[i]*.8);}
@@ -88,5 +164,5 @@ function preview({THREE,OrbitControls,host,data,focusLight=false,focusEnd=null,f
  const draw=()=>renderer.render(scene,camera),resize=()=>{const w=host.clientWidth,h=Math.max(180,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();draw();},observer=new ResizeObserver(resize);observer.observe(host);controls.addEventListener('change',draw);resize();
  return {update(value){const oldBox=framingBox(data,group),oldCenter=oldBox.getCenter(new THREE.Vector3()),next=makeGroup(value),box=framingBox(value,next),center=box.getCenter(new THREE.Vector3()),delta=center.clone().sub(oldCenter),oldSize=oldBox.getSize(new THREE.Vector3()).length(),newSize=box.getSize(new THREE.Vector3()).length();scene.remove(group);release(group);group=next;data=value;underside.visible=data.items.some(c=>c.aluminum);scene.add(group);camera.position.add(delta);controls.target.add(delta);if(newSize>oldSize*1.35&&oldSize>0)camera.position.sub(controls.target).multiplyScalar(newSize/oldSize).add(controls.target);controls.update();draw();},dispose(){unbindNavigation();observer.disconnect();controls.dispose();release(group);renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();}};
 }
-const api={build,preview};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeilingModel=api;
+const api={build,preview,applyWash};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCeilingModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

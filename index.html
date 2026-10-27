@@ -1138,7 +1138,7 @@ const syncIdentity=FurnishPartIdentity;
 }
 
 /* ======================= 建筑 ======================= */
-function clearGroup(g){ g.traverse(o => { if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.wallTilingOwnMaterial||o.userData.floorFinishOwnMaterial){o.material.map?.dispose();o.material.dispose();} if(o.userData.wallFinishOwnMaterial||o.userData.cabinetOwnMaterial||o.userData.ceilingOwnMaterial||o.userData.beamDimension)o.material.dispose(); }); g.clear(); }
+function clearGroup(g){ g.traverse(o => { if(o.userData.ceilingStripLight)o.shadow?.dispose(); if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.wallTilingOwnMaterial||o.userData.floorFinishOwnMaterial){o.material.map?.dispose();o.material.dispose();} if(o.userData.wallFinishOwnMaterial||o.userData.cabinetOwnMaterial||o.userData.ceilingOwnMaterial||o.userData.beamDimension)o.material.dispose(); }); g.clear(); }
 function wallBox([x0, y0, x1, y1], yb, yt, m){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=FurnishPartIdentity;
@@ -1215,7 +1215,7 @@ const syncIdentity=FurnishPartIdentity;
   },(item,slot)=>item.id||"plan-slot:"+slot);
   archUp.add(FurnishWallFinishModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
   if(finishPlan.wallTiling)archUp.add(FurnishWallTilingModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
-  if(finishPlan.ceilings)archUp.add(FurnishCeilingModel.build(THREE,finishPlan.ceilings,{wx,wz,top:opt.cut===2.8?Infinity:top*1000,lamps:opt.lamps,bodies:state.furniture.filter(f=>!furnitureError(f)).map(f=>({f,vertical:FurnishDesign.furnitureVerticalBounds(f,finishPlan,state.furniture)}))}));
+  if(finishPlan.ceilings)archUp.add(FurnishCeilingModel.build(THREE,finishPlan.ceilings,{wx,wz,top:opt.cut===2.8?Infinity:top*1000,lamps:opt.lamps,wash:false,bodies:state.furniture.filter(f=>!furnitureError(f)).map(f=>({f,vertical:FurnishDesign.furnitureVerticalBounds(f,finishPlan,state.furniture)}))}));
   for(const s of finishPlan.wallFinish?.solids||[])if(s.bottom===0)colliders.push([wx(s.rect[0]),wz(s.rect[1]),wx(s.rect[2]),wz(s.rect[3])]);
   // 门洞、窗洞上方过梁（门窗矩形即洞口，head 默认 2.4m）
   syncIdentity.each("index.html:generator-46",[...DOORS.map(d => [d.rect, SWING_DOOR_HEIGHT]), ...SLIDES.map(s => [s.rect, s.v ? 2.4 : 2.1])],([r, h]) => { if (top > h) syncIdentity.produce("index.html:generator-call-15",()=>wallBox(r, h, top)); });
@@ -1257,6 +1257,7 @@ const syncIdentity=FurnishPartIdentity;
     model.position.set(wx((x0+x1)/2),0,wz((y0+y1)/2));model.rotation.y=v?-Math.PI/2:0;
     archUp.add(model);slidingDoors.push(model.userData.slidingDoor);
   },(item,slot)=>item.id||"plan-slot:"+slot);
+  FurnishCeilingModel.applyWash(THREE,archUp);
   archUp.scale.setScalar(1);cutElectricalBoxWalls();
   applyLight(); applyGrow();
 }
@@ -1752,6 +1753,7 @@ function bindUI(){
     if (k === 'furn'||k === 'clearances'){ refreshTileInspection(); if (k==='furn'&&!opt.furn && ui.sel?.kind === 'furn') window.select(null); }
     if (k === 'wallNumbers') invalidate();
     if (k === 'labels') showLabels(opt.labels && opt.mode === 'orbit' && !anim);
+    if (k === 'lamps') sync();
     if (k === 'night' || k === 'lamps') applyLight();
   });
   $('#sun').oninput = e => { opt.hour = +e.target.value;applyLight(); };
