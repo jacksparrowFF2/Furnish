@@ -1,13 +1,20 @@
 {
   "selected": [
-    "ceiling-display"
+    "ceiling-display",
+    "ceiling-section-interaction"
   ],
   "results": [
     {
       "name": "ceiling-display",
       "status": "PASS",
-      "seconds": 25,
+      "seconds": 25.8,
       "log": "ceiling-display.log"
+    },
+    {
+      "name": "ceiling-section-interaction",
+      "status": "PASS",
+      "seconds": 29.1,
+      "log": "ceiling-section-interaction.log"
     }
   ],
   "notRun": []

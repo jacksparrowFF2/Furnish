@@ -5,13 +5,14 @@
 ## 已通过
 
 - 改动模块语法、index内联模块及全体普通脚本联合声明检查。
-- `node tests/test-ceiling-display.cjs`：实际生产网格25%上视／实体下视、三模式、图层隐藏、顶面高度边界、几何／部件身份不变、材质恢复及资源释放。
+- `node tests/test-ceiling-display.cjs`：实际生产网格25%上视／实体下视、三模式、图层隐藏、顶面高度边界、几何／部件身份不变、材质恢复及资源释放；缓存透明材质与轮廓共用实时定位裁切平面。
 - `node tests/test-ceiling-aluminum.cjs`：真实板缝／收边、凹形／反向／旋转轮廓、尺寸／身份、保守确认、重复项目／缓存／仓库恢复。
 - `node tests/test-ceiling-panel-layout.cjs`：旧排版一致性、任意角度、固定起点、整板／裁板、浴霸冲突、平移与重复恢复。
 - `node tests/test-ceiling-panel-devices.cjs`：设备整格、旋转／镜像、筒灯孔、实际生产开口／缝底、重复恢复与项目往返。
 - `node scripts/verify-browser.cjs ceiling-display ceiling-aluminum ceiling-coplanar-camera`：全部HTTP与离线file://通过。显示流程在后续单独复跑时增加真实GLB打包、撤销历史不变和可见室内仰视／展开窄屏菜单截图。
 - 显示浏览器：真实按钮三模式、上方25%／下方原实体材质、缝底隐藏、查看偏好刷新、方案与撤销历史不变、真实GLB导出前实体可见性和材质、390px全部按钮可用，无页面异常。
 - 原铝扣板编辑浏览器：生产预览、非法值保留、保存、撤销／重做、刷新、实际项目下载再导入、390px、取消。
+- 合入平板灯柔光主线65cd491后，`test-panel-light.cjs`及设备开孔／显示Node复验通过；`ceiling-display`与`ceiling-section-interaction`的HTTP／离线file://联合复验通过。原截面工具和新显示按钮使用不同的data属性，保留绘制／选择／灯带取点行为。
 - 梁底共面浏览器：原平顶与梁底显示优先、实际鼠标环绕仰视、俯视预设及390px。
 - 当前装修方案只读副本：生成实体／透视对照，前后方案序列化一致，无页面异常；没有写入主目录工作区。
 
@@ -25,7 +26,7 @@
 
 当前方案：[实体](current-solid.png)、[25%透视](current-ghost.png)、[同视角旧深度参数](current-before.png)。另见[室内仰视](http-underside.png)、[390px显示菜单](http-mobile.png)。上述截图均已人工查看。
 
-结果：[显示流程](display-results.json)、[显示详细日志](display.log)、[相关三组流程](related-browser-results.json)。截图及对照使用隔离浏览器、新用户配置和只读项目副本。
+结果：[显示流程及截面联合复验](display-results.json)、[显示详细日志](display.log)、[相关三组流程](related-browser-results.json)。截图及对照使用隔离浏览器、新用户配置和只读项目副本。
 
 ## 边界／未执行
 
