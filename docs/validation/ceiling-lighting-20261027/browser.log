@@ -1,0 +1,1 @@
+{"case":"ceiling-lighting","status":"PASS","result":[{"mode":"http","passed":true,"lights":2,"offAndCut":true,"screenshotBeforeAfter":true},{"mode":"file","passed":true,"lights":2,"offAndCut":true,"screenshotBeforeAfter":true}]}
