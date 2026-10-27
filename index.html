@@ -159,7 +159,7 @@
             <button class="btn chip on" id="wall-tile-numbers" data-t="wallNumbers" title="显示或隐藏墙面编号，点击编号可编辑铺贴" data-en-title="Show wall face numbers; click a number to edit tiling" data-en="Wall numbers">墙面编号</button>
             <button class="btn chip on" data-t="clearances" title="显示或隐藏家电安装预留框、检查结果及无数据提示" data-en-title="Show appliance installation clearances, checks and missing data" data-en="Clearance checks">预留检查</button>
             <button class="btn chip on" data-t="labels" data-en="Labels">房间名</button>
-            <button class="btn chip on" data-t="lamps" title="显示或隐藏顶灯与筒灯，保留夜景照明" data-en-title="Show or hide ceiling lamps and downlights while keeping night lighting" data-en="Ceiling lamps">顶灯</button>
+            <button class="btn chip on" data-t="lamps" title="控制已放置的筒灯与吊顶灯带" data-en-title="Toggle placed downlights and ceiling light strips" data-en="Ceiling lamps">顶灯</button>
             <button class="btn chip" data-t="night" data-en="Night">夜景</button>
           </div>
           <label class="range"><span data-en="Sun">日照</span> <input type="range" id="sun" min="7" max="18" step=".25" value="10"><span id="sunT">10:00</span></label>
@@ -1178,11 +1178,6 @@ const syncIdentity=FurnishPartIdentity;
     // 天花：法线朝下，只在室内仰视时可见
     const cg = new THREE.ShapeGeometry((r.polys||[r.poly]).map(p=>shapeOf(p,true))); cg.rotateX(Math.PI/2);
     const ceil = syncIdentity.produce("index:site-224",()=>new THREE.Mesh(cg, mat(DK() ? '#2c2924' : '#fbfaf7', {roughness:1}))); ceil.position.y = roomH; ceil.visible = opt.cut===2.8 || top >= roomH; archUp.add(observationLayer(ceil,'roomCeiling:'+r.id));
-    if (r.at){
-      const lamp = syncIdentity.produce("index:site-225",()=>new THREE.Mesh(new THREE.CylinderGeometry(.22, .22, .02, 32), new THREE.MeshStandardMaterial({color:'#fff', emissive:'#fff2d6', emissiveIntensity:.3})));
-      lamp.position.set(wx(r.at[0]), roomH - .012, wz(r.at[1])); lamp.userData.cutVisible = opt.cut===2.8 || top >= roomH; lamp.visible = opt.lamps && lamp.userData.cutVisible; lampG.add(observationLayer(lamp,"roomCeiling:"+r.id));
-      const pl = new THREE.PointLight(0xffd9a8, 0, 7, 1.6); pl.position.set(wx(r.at[0]), roomH - .25, wz(r.at[1])); lampG.add(observationLayer(pl,"roomCeiling:"+r.id));
-    }
   });
   // Fill the actual door opening with each adjoining room's floor, including
   // its own grid and finished height. Legacy projects keep schematic sills.
@@ -1375,7 +1370,6 @@ function applyGrow(){
 /* ======================= 日照 / 夜景 ======================= */
 function applyLight(){
   FurnishDownlightModel.setLights(furnG,opt.lamps);
-  lampG.children.forEach(o => { if (o.isMesh) o.visible = opt.lamps && o.userData.cutVisible; });
   const t = (opt.hour - 6) / 12, az = Math.PI * (.15 + t*.7), el = Math.sin(Math.PI*t) * 1.05 + .15, warm = 1 - Math.sin(Math.PI*t);
   const horizontal=globalThis.FurnishDrawing?FurnishDrawing.sun([Math.cos(az)*18,-Math.sin(az)*10+8],state.drawing):[Math.cos(az)*18,-Math.sin(az)*10+8];
   sun.position.set(horizontal[0], Math.sin(el)*20 + 3, horizontal[1]); sun.target.position.set(0, 0, 0);
@@ -1384,7 +1378,6 @@ function applyLight(){
   hemi.intensity = opt.night ? .12 : 1.1;
   scene.background = new THREE.Color(opt.night ? 0x1c2130 : DK() ? 0x121110 : 0xf5f2ea);
   ground.material.color.set(opt.night ? 0x2a2e38 : DK() ? 0x26231e : 0xf2eee7);
-  lampG.children.forEach(o => { if (o.isPointLight) o.intensity = opt.night ? 6 : 0; else o.material.emissiveIntensity = opt.night ? 2 : .3; });
   renderer.toneMappingExposure = opt.night ? 1.25 : 1.05;
   envK = opt.night ? .15 : 1; matCache.forEach(m => { if (m.envMap) m.envMapIntensity = m.userData.env*envK; });
   const h = Math.floor(opt.hour), m = Math.round((opt.hour - h)*60);

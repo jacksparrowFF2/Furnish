@@ -1,0 +1,20 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "automaticMeshesAndPointLights": 0,
+    "authoredDownlightRetained": true,
+    "dayNightAndLightToggle": true,
+    "reload": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "automaticMeshesAndPointLights": 0,
+    "authoredDownlightRetained": true,
+    "dayNightAndLightToggle": true,
+    "reload": true,
+    "errors": []
+  }
+]
