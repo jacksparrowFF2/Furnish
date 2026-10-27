@@ -107,7 +107,7 @@ function createDisplay(THREE){
    if(next==='solid')return;
    overrides.set(m,{material:m.material,visible:m.visible,castShadow:m.castShadow,renderOrder:m.renderOrder});
    if(hidden){m.visible=false;return;}
-   let material=materials.get(m.material);if(!material){material=m.material.clone();material.transparent=true;material.opacity=.25;material.depthWrite=false;material.side=THREE.FrontSide;material.onBeforeCompile=m.material.onBeforeCompile;material.customProgramCacheKey=m.material.customProgramCacheKey;materials.set(m.material,material);}
+   let material=materials.get(m.material);if(!material){material=m.material.clone();material.transparent=true;material.opacity=.25;material.depthWrite=false;material.side=THREE.FrontSide;material.clippingPlanes=m.material.clippingPlanes;material.onBeforeCompile=m.material.onBeforeCompile;material.customProgramCacheKey=m.material.customProgramCacheKey;materials.set(m.material,material);}
    m.material=material;m.castShadow=false;m.renderOrder=1;
    if(part==='panel'||part==='panel-trim'){
     let line=outlines.get(m);if(!line){
