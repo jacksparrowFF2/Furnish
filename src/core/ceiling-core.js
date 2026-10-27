@@ -409,7 +409,7 @@ function panelSlot(c,row,col,grid=aluminumGrid(c)){
  const x=start[0]+col*pitch[0],y=start[1]+row*pitch[1],cell=[[x,y],[x+pitch[0],y],[x+pitch[0],y+pitch[1]],[x,y+pitch[1]]].map(grid.toWorld),center=grid.toWorld([x+pitch[0]/2,y+pitch[1]/2]);
  return {id:'panel_'+(row+grid.index[1])+'_'+(col+grid.index[0]),row,col,cell,cx:center[0],cy:center[1],full:Math.abs(overlapArea(cell,inner)-pitch[0]*pitch[1])<.01};
 }
-// A heater removes one complete nominal cell, including its seams/backing.
+// A ceiling panel device removes one complete nominal cell, including its seams/backing.
 // Position, orientation, elevation and other installed devices are rechecked on every derivation.
 function panelReplacements(c,bodies){
  if(c.kind!=='flat'||!c.aluminum)return [];const P=root.FurnishProducts||require('./product-rules.js'),grid=aluminumGrid(c),entries=new Map(),out=[],lamps=downlightHoles(c,bodies);
@@ -427,18 +427,18 @@ function panelReplacements(c,bodies){
 function fitCeilingPanel(plan,f,furniture=[]){
  const P=root.FurnishProducts||require('./product-rules.js'),spec=!f.obj&&P.definition(f)?.ceilingPanel;if(!spec)fail('当前设备不支持整板替换');
  if(Math.abs(f.w-spec.width)>eps()||Math.abs(f.d-spec.length)>eps()||P.height(f)<=spec.rim)fail('请恢复300×600 mm标准面板尺寸和有效机身高度后安装');
- const ceilings=(plan.ceilings?.items||[]).filter(c=>c.kind==='flat'&&c.aluminum&&inside([f.cx,f.cy],c.polygon));if(ceilings.length!==1)fail(ceilings.length?'当前位置有多个铝扣板区域，请先调整区域或设备位置':'请先将浴霸放到铝扣板区域内');
+ const ceilings=(plan.ceilings?.items||[]).filter(c=>c.kind==='flat'&&c.aluminum&&inside([f.cx,f.cy],c.polygon));if(ceilings.length!==1)fail(ceilings.length?'当前位置有多个铝扣板区域，请先调整区域或设备位置':'请先将设备放到铝扣板区域内');
  const c=ceilings[0],grid=aluminumGrid(c),slots=[];for(let row=0;row<grid.count[1];row++)for(let col=0;col<grid.count[0];col++){const x=grid.start[0]+(col+.5)*grid.pitch[0],y=grid.start[1]+(row+.5)*grid.pitch[1];slots.push({row,col,distance:Math.hypot(grid.toWorld([x,y])[0]-f.cx,grid.toWorld([x,y])[1]-f.cy)});}slots.sort((a,b)=>a.distance-b.distance||a.row-b.row||a.col-b.col);
  const others=installationBodies(plan,furniture.filter(v=>v.id!==f.id)),occupied=panelReplacements(c,others);
  for(const {row,col}of slots){const slot=panelSlot(c,row,col,grid);if(!slot.full||occupied.some(s=>s.id===slot.id))continue;const candidate={...clone(f),cx:slot.cx,cy:slot.cy,rot:((c.aluminum.direction+Math.round(((f.rot||0)-c.aluminum.direction)/180)*180)%360+360)%360},base=P.floorBase(plan,candidate,furniture);if(!base.known)fail('家具基准地面标高未知，请先核对');candidate.mountHeight=c.height-spec.rim-base.z;if(candidate.mountHeight<0||candidate.mountHeight>rules().max)continue;
   if(panelReplacements(c,[...others,{f:candidate,vertical:{bottom:c.height-spec.rim,top:c.height-spec.rim+P.height(f)}}]).some(s=>s.fid===f.id))return candidate;
  }
- fail('区域内没有可替换的完整空闲300×600铝扣板；裁切板、收边或已安装筒灯／浴霸的格子不能替换');
+ fail('区域内没有可替换的完整空闲300×600铝扣板；裁切板、收边或已安装筒灯／整板设备的格子不能替换');
 }
 function checks(plan,bodies){
  const out=(plan.ceilings?.pending||[]).map(p=>({kind:'ceiling',id:p.id,ceilingId:p.id,name:'吊顶',pending:true,message:p.message}));
  const apertures=new Map((plan.ceilings?.items||[]).map(c=>[c.id,downlightHoles(c,bodies)])),replacements=new Map((plan.ceilings?.items||[]).map(c=>[c.id,panelReplacements(c,bodies)]));
- const P=root.FurnishProducts||require('./product-rules.js'),seenDevices=new Set();for(const {f}of bodies)if(!f.obj&&P.definition(f)?.ceilingPanel&&!seenDevices.has(f.id)){seenDevices.add(f.id);if(![...replacements.values()].some(slots=>slots.some(s=>s.fid===f.id)))out.push({kind:'ceiling',id:f.id,ceilingId:'panel-installation',name:f.name,pending:true,at:[f.cx,f.cy],message:f.name+'未替换完整铝扣板：请使用整板安装，核对300×600尺寸、方向、标高及格内筒灯／浴霸占用'});}
+ const P=root.FurnishProducts||require('./product-rules.js'),seenDevices=new Set();for(const {f}of bodies)if(!f.obj&&P.definition(f)?.ceilingPanel&&!seenDevices.has(f.id)){seenDevices.add(f.id);if(![...replacements.values()].some(slots=>slots.some(s=>s.fid===f.id)))out.push({kind:'ceiling',id:f.id,ceilingId:'panel-installation',name:f.name,pending:true,at:[f.cx,f.cy],message:f.name+'未替换完整铝扣板：请使用整板安装，核对300×600尺寸、方向、标高及格内筒灯／整板设备占用'});}
  // Prepare invariant section sweeps once per ceiling, not once per furniture
  // board. Bounds only reject disjoint candidates; the original exact section
  // intersection still decides every possible hit, including unknown heights.

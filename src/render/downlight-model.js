@@ -29,6 +29,6 @@ function build(T,f){
  lamp.position.y=-.001;target.position.y=-1;lamp.target=target;lamp.userData.downlightLight=true;lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.bias=-.0001;lightGroup.add(lamp,target);result.add(lightGroup);
  return result;
 }
-function setLights(group,on){group?.traverse(o=>{if(o.userData.downlightLight)o.visible=on;if(o.material?.userData?.downlightEmitter)o.material.emissiveIntensity=on?1.5:0;});}
+function setLights(group,on){group?.traverse(o=>{if(o.userData.downlightLight||o.userData.ceilingPanelLight)o.visible=on;if(o.material?.userData?.downlightEmitter||o.material?.userData?.ceilingPanelEmitter)o.material.emissiveIntensity=on?1.5:0;});}
 const api={supported,build,setLights};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDownlightModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
