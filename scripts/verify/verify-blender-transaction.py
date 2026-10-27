@@ -19,6 +19,7 @@ def fingerprint(scene):
 def main(directory):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     spec=importlib.util.spec_from_file_location('sync',Path(__file__).resolve().parents[1]/'blender-sync-addon.py');addon=importlib.util.module_from_spec(spec);spec.loader.exec_module(addon)
+    spec=importlib.util.spec_from_file_location('refined',Path(__file__).resolve().parents[1]/'blender-refined.py');refined=importlib.util.module_from_spec(spec);spec.loader.exec_module(refined)
     scene=bpy.context.scene;first=directory/'first.glb';second=directory/'second.glb';glb(first,[('a','frame#0',1),('b','shelf#0',1)]);glb(second,[('b','frame#0',1),('c','new#0',1)])
     manifest=dict(planId='test',originMm=[1000,2000],revision='first')
     # First-connection failure must not leave a half-created managed collection.
@@ -66,7 +67,9 @@ def main(directory):
     # Source node paths changed: semantic identity retains the original object,
     # modifier stack, pose lock, and refinement instead of matching old path b.
     a.modifiers.new('User Subdivision','SUBSURF');pointer=a.as_pointer();pose=a.matrix_world.copy()
+    bindings=refined.material_bindings(managed)
     result=addon.apply_snapshot(scene,str(second),{**manifest,'revision':'second'})
+    assert refined.material_retention(managed,bindings)==dict(existingMaterialBindingsPreserved=1,existingManagedMeshes=2,matchedManagedMeshes=1,removedManagedMeshes=1)
     assert result['matchedByPartKey']==1 and result['added']==1 and result['deleted']==1
     assert a.as_pointer()==pointer and a['furnishObjectId']=='b' and a.material_slots[0].material==material and a.matrix_world==pose and a.modifiers.get('User Subdivision')
     assert unrelated.data!=a.data and unrelated.material_slots[0].material==shared_material,'Unmanaged shared geometry and data materials must remain untouched'
@@ -121,7 +124,12 @@ def main(directory):
     assert left.matrix_world==locked_pose,'Locked refinement must survive identity upgrade using source-pose stamp'
     left['furnish_sync_keep_transform']=False;left.matrix_world=source_pose;bpy.context.view_layer.update()
     pointers=(left.as_pointer(),right.as_pointer());left_pose=left.matrix_world.copy();right_pose=right.matrix_world.copy()
+    bindings=refined.material_bindings(managed)
     swapped=addon.apply_snapshot(scene,str(switched),manifest)
+    assert refined.material_retention(managed,bindings)==dict(existingMaterialBindingsPreserved=2,existingManagedMeshes=2,matchedManagedMeshes=2,removedManagedMeshes=0)
+    left.material_slots[0].material=rm
+    assert refined.material_retention(managed,bindings)['existingMaterialBindingsPreserved']==1
+    left.material_slots[0].material=lm
     assert swapped['matchedByPartKey']==2 and swapped['added']==swapped['deleted']==0
     assert (left.as_pointer(),right.as_pointer())==pointers and left.matrix_world==right_pose and right.matrix_world==left_pose
     assert left.material_slots[0].material==lm and right.material_slots[0].material==rm
@@ -144,7 +152,7 @@ def main(directory):
     target=next(o for o in scene.objects if o.type=='MESH');legacy_material=bpy.data.materials.new('Legacy refinement');target.material_slots[0].material=legacy_material
     legacy_cut=directory/'legacy-kind-cut.glb';glb(legacy_cut,[('a','legacy',1)],2,kind='BufferGeometry');addon.apply_snapshot(scene,str(legacy_cut),manifest)
     assert target.material_slots[0].material!=legacy_material,'Legacy identity retains the conservative geometry-kind compatibility check'
-    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True,v2GeometryGuard=True,v2OneTimeMigration=True,v1DowngradeRejected=True,v3MigrationPoseGuard=True,v3EqualCountSwap=True,v3GeometryClassMaterialPreserved=True,v3ForeignIdentityNotInherited=True,legacyGeometryKindConservative=True,v3UniqueMaterials=True,v3LockedPoseMigration=True,v2DowngradeRejected=True),indent=2))
+    (directory/'transaction-result.json').write_text(json.dumps(dict(passed=True,refinedRetentionPathReorder=True,refinedRetentionRemoval=True,refinedRetentionDetectsLoss=True,failureStages=passed,semanticReorder=True,duplicateAndCountGuards=True,objectIdentity=True,modifiersAndPoseLock=True,unmanagedSharedMesh=True,repeatNoLeak=True,semanticDeleteUndo=True,exactTransformChannels=True,v2GeometryGuard=True,v2OneTimeMigration=True,v1DowngradeRejected=True,v3MigrationPoseGuard=True,v3EqualCountSwap=True,v3GeometryClassMaterialPreserved=True,v3ForeignIdentityNotInherited=True,legacyGeometryKindConservative=True,v3UniqueMaterials=True,v3LockedPoseMigration=True,v2DowngradeRejected=True),indent=2))
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--directory',required=True);directory=Path(parser.parse_args(sys.argv[sys.argv.index('--')+1:]).directory)
