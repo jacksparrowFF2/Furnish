@@ -41,7 +41,7 @@
   if(hit)offset=hit.value;
   const moving=new Set([index,(index+1)%poly.length]),queue=[...moving];while(queue.length){const k=queue.shift();for(const j of [(k+poly.length-1)%poly.length,(k+1)%poly.length])if(!moving.has(j)&&Math.abs((poly[j][0]-a[0])*n[0]+(poly[j][1]-a[1])*n[1])<1e-6){moving.add(j);queue.push(j);}}
   const polygon=poly.map((p,i)=>moving.has(i)?p.map((v,k)=>v+n[k]*offset):[...p]),point=mid.map((v,k)=>v+n[k]*offset),axis=Math.abs(dx)<EPS?0:Math.abs(dy)<EPS?1:null;
-  return {polygon,point,offset,edge:[polygon[index],polygon[(index+1)%poly.length]],reference:hit?.reference,guides:hit&&axis!==null?[{axis,from:point}]:[],kind:hit?'edge':null,label:hit?'房间边界吸附':'边线平行移动'};
+  return {polygon,point,offset,edge:[polygon[index],polygon[(index+1)%poly.length]],reference:hit?.reference,guides:hit&&axis!==null?[{axis,from:point}]:[],kind:hit?'edge':null,label:hit?'边界吸附':'边线平行移动'};
  }
  function boundaryEdgeMeasurements(poly,index,references){
   const a=poly[index],b=poly[(index+1)%poly.length];if(!a||!b)return [];const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);if(length<EPS)return [];

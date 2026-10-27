@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-reference-snapping",
+    "ceiling-edges",
+    "ceiling-boundaries"
+  ],
+  "results": [
+    {
+      "name": "ceiling-reference-snapping",
+      "status": "PASS",
+      "seconds": 20.1,
+      "log": "ceiling-reference-snapping.log"
+    },
+    {
+      "name": "ceiling-edges",
+      "status": "PASS",
+      "seconds": 19.4,
+      "log": "ceiling-edges.log"
+    },
+    {
+      "name": "ceiling-boundaries",
+      "status": "PASS",
+      "seconds": 21.2,
+      "log": "ceiling-boundaries.log"
+    }
+  ],
+  "notRun": []
+}
