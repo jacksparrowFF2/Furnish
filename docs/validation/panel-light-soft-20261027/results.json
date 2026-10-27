@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "panel-light"
+  ],
+  "results": [
+    {
+      "name": "panel-light",
+      "status": "PASS",
+      "seconds": 22.8,
+      "log": "panel-light.log"
+    }
+  ],
+  "notRun": []
+}
