@@ -1,5 +1,8 @@
 # 模块与加载约定
 
+2026-10-27（2+0 同向联动门）：product-rules 的 allMoving 能力派生两活动扇、洞口旁延伸轨道和叠合位置；现有 sliding-opening-model／SVG 共用。可选 slidingStackSide／slidingOpen 沿字段能力、mutate、恢复和项目保存，数值实体缓存／确认读取实际姿态；主场景复用现有对象更新开合目标，无新脚本或存储通道。见 [联动门](TELESCOPIC-OPENINGS.md)。
+
+
 2026-10-27（吊顶显示）：ceiling-model为铝扣板板面与缝底分配不同显示深度优先级，生产几何保持；createDisplay临时管理三维实体／25%透视／隐藏及顶面轮廓。主场景在图层、定位裁切和Blender快照前恢复原材质／可见性；偏好沿huxing-ui保存，不进项目／空间确认／撤销，无新加载脚本。见 [吊顶显示](CEILINGS.md#三维实体透视隐藏与铝扣板条纹2026-10-27)。
 
 2026-10-27（灯带照明）：ceiling-model从生产lightLayout发光面派生长度加权柔光及局部反射近似，不改实体或持久字段；顶灯按钮沿原sync即时重建建筑。实时近似光源不进入Blender快照，灯光阴影随重建释放。见[灯带实时照明](CEILINGS.md#灯带实时照明2026-10-27)。

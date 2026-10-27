@@ -1,0 +1,28 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "dimensions": true,
+    "side": true,
+    "open2D3D": true,
+    "animation": true,
+    "copy": true,
+    "undoRedo": true,
+    "refresh": true,
+    "narrow": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "dimensions": true,
+    "side": true,
+    "open2D3D": true,
+    "animation": true,
+    "copy": true,
+    "undoRedo": true,
+    "refresh": true,
+    "narrow": true,
+    "errors": []
+  }
+]

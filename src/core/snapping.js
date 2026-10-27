@@ -2,7 +2,7 @@
 (function(root){
   'use strict';
   const geometry = typeof module === 'object' && module.exports ? require('./layout-geometry.js') : root.FurnishGeometry;
-  const tolerance=(f,scale)=>['curtain','slidingdoor','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)?Math.min(250,32/scale):10/scale;
+  const tolerance=(f,scale)=>['curtain','slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)?Math.min(250,32/scale):10/scale;
   function spanSupport(rings,lo,hi){
     let max=-Infinity;for(const ring of rings)for(let i=0;i<ring.length;i++){
       const p=ring[i],q=ring[(i+1)%ring.length];if(p.t>=lo-1e-7&&p.t<=hi+1e-7)max=Math.max(max,p.n);

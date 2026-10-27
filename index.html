@@ -615,7 +615,7 @@ function init(){
     const tap = downAt && e.pointerId===downAt[2] && downAt[3]===0 && !tapMoved && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= TAP;downAt=null;
     if (look?.id === e.pointerId){
       look = null;
-      if (tap){ const h = pick(e); if(h?.teaBarDoor&&h.dist<3.5&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5 && (!h.fid||!furnitureLocked(getF(h.fid)))) h.door.open = !h.door.open; }   // 漫游时点门／窗帘开关
+      if (tap){ const h = pick(e); if(h?.teaBarDoor&&h.dist<3.5&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5 && (!h.fid||!furnitureLocked(getF(h.fid)))) toggleSlidingDoor(h); }   // 漫游时点门／窗帘开关
       return;
     }
     if (anim || opt.mode !== 'orbit' || spaceDown || !tap) return;
@@ -623,7 +623,7 @@ function init(){
     if(h?.teaBarDoor&&!e.shiftKey&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;
     if(h?.fid&&!e.shiftKey&&cycleFoldingTable(h.fid))return;
     if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
-    else if (h?.door){ if(!h.fid||!furnitureLocked(getF(h.fid)))h.door.open = !h.door.open; if(h.fid)window.selectIds([h.fid]); }
+    else if (h?.door){ if(!h.fid||!furnitureLocked(getF(h.fid)))toggleSlidingDoor(h); if(h.fid)window.selectIds([h.fid]); }
     else if (h?.fid) e.shiftKey ? window.toggleSel(h.fid) : window.selectIds([h.fid]);
     else if (h?.ceiling) window.FurnishCeilingUI.selectObject(h.ceiling);
     else if (h?.win!==undefined) window.select({kind:'win',id:h.win});
@@ -1074,7 +1074,7 @@ const syncIdentity=FurnishPartIdentity;
       g.add(syncIdentity.produce("index:site-202",()=>blob(r*.42, r*.16, r*.42, glowMat('#fff6dd', '#ffdca0', .9), 0, 2.12, 0, 20)));
       break;
     }
-    case 'slidingdoor': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
+    case 'slidingdoor': case 'telescopicdoor20': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
       const model=slidingModels.build(f,{furniture,...context});g.add(...model.children.slice());g.userData.slidingDoor=model.userData.slidingDoor;break;
     }
     case 'curtain': {
@@ -1283,9 +1283,10 @@ function buildFurn(){
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
     const corner=FurnishProducts.slidingCorner(f,validFurniture,plan);
-    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingTrackOrder, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
+      if(FurnishProducts.supports(f,'slidingOpen')&&o.userData.slidingDoor)o.userData.slidingDoor.open=FurnishProducts.value(f,'slidingOpen');
       o.position.set(wx(f.cx),FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
       continue;
     }
@@ -1684,6 +1685,11 @@ function setMode(m){
   archUp.traverse(o => { if (o.userData.walkOnly) o.visible = m === 'walk'; });
   invalidate(true);
 }
+function toggleSlidingDoor(hit){
+  const f=hit.fid&&getF(hit.fid);
+  if(f&&FurnishProducts.supports(f,'slidingOpen'))mutate(()=>{f.slidingOpen=!hit.door.open;});
+  else hit.door.open=!hit.door.open;
+}
 function blocked(x, z, r = .22){
   for (const [x0, z0, x1, z1] of colliders) if (x > x0 - r && x < x1 + r && z > z0 - r && z < z1 + r) return true;
   for(const d of [...slidingDoors,...(furnG.visible?furnG.children.map(g=>g.userData.slidingDoor).filter(Boolean):[])]){
@@ -1721,7 +1727,7 @@ function stepWalk(dt){
 addEventListener('keydown', e => {
   if (!active || e.target.matches('input,select,textarea')) return;
   keys[e.code] = true;
-  if (opt.mode === 'walk' && e.code === 'KeyE'){ const h = pick(); if (h?.door && h.dist < 2.5) h.door.open = !h.door.open; }
+  if (opt.mode === 'walk' && e.code === 'KeyE'){ const h = pick(); if (h?.door && h.dist < 2.5) toggleSlidingDoor(h); }
 });
 addEventListener('keyup', e => keys[e.code] = false);
 

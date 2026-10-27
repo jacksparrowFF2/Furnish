@@ -4,7 +4,7 @@
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
-const supported=f=>['slidingdoor','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f?.type);
+const supported=f=>['slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f?.type);
 function create(THREE,options={}){
  const products=options.products||root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
  const primitives=options.primitives||(root.FurnishModelPrimitives||(typeof require==='function'?require('./model-primitives.js'):null)).create(THREE);
@@ -19,20 +19,20 @@ function create(THREE,options={}){
  }
 function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
   const group=new THREE.Group(),frame=mat(color,{metalness:.65,roughness:.35});
-  const glass=mat('#d8e5e8',{transparent:true,opacity:.18,depthWrite:false,roughness:.12,side:THREE.DoubleSide});
+  const glass=mat(options.ultraClear?'#f7fcff':'#d8e5e8',{transparent:true,opacity:.18,depthWrite:false,roughness:.12,side:THREE.DoubleSide});
   const slim=options.slim??count===3,bottom=options.floorTrack??!slim,floorTrackMode=options.floorTrackMode??(count>=3?'moving':'all');
-  const layout=products.slidingLayout({w:w*1000,d:d*1000,h:h*1000},options.corner,{panels:count,slim,order:options.trackOrder,stackSide:options.stackSide,floorTrack:bottom,floorTrackMode}),edge=layout.edge/1000,jamb=layout.jamb/1000;
+  const layout=products.slidingLayout({w:w*1000,d:d*1000,h:h*1000},options.corner,{panels:count,slim,order:options.trackOrder,stackSide:options.stackSide,allMoving:options.allMoving,floorTrack:bottom,floorTrackMode}),edge=layout.edge/1000,jamb=layout.jamb/1000;
   const rail=Math.min(slim?.024:edge,h/10);
   const mirrored=options.stackSide==='right',corner=options.corner?{x:options.corner.x*(mirrored?-1:1)/1000,slope:options.corner.slope*(mirrored?-1:1),leafEnd:options.corner.leafEnd*(mirrored?-1:1)/1000}:null;
   const pw=layout.width/1000,leafDepth=layout.leafDepth/1000,floorRail=layout.floorRailHeight/1000,low=layout.bottomClearance/1000,high=h-rail,leafH=high-low;
   const door={kind:'slide',group,leaves:[],open:false,cur:0};
   const limit=z=>corner.x+corner.slope*z;
-  syncIdentity.each("sliding-opening-model.js:generator-1",corner?[-1]:[-1,1],side=>{const o=syncIdentity.produce("sliding-opening-model:site-1",()=>box(jamb,h,d,frame,side*(w-jamb)/2,0,0));o.name='side-jamb';group.add(o);});
-  const top=syncIdentity.produce("sliding-opening-model:site-2",()=>corner?prism([[-w/2,-d/2],[limit(-d/2),-d/2],[limit(d/2),d/2],[-w/2,d/2]],h-rail,rail,frame):box(w,rail,d,frame,0,h-rail,0));top.name='top-track';top.userData.slidingPart='top-track';group.add(top);
+  syncIdentity.each("sliding-opening-model.js:generator-1",layout.allMoving?[1]:corner?[-1]:[-1,1],side=>{const o=syncIdentity.produce("sliding-opening-model:site-1",()=>box(jamb,h,d,frame,side*(w-jamb)/2,0,0));o.name='side-jamb';group.add(o);});
+  const top=syncIdentity.produce("sliding-opening-model:site-2",()=>layout.allMoving?prism(layout.railOutline.map(([x,z])=>[x*(mirrored?-1:1)/1000,z/1000]),h-rail,rail,frame):corner?prism([[-w/2,-d/2],[limit(-d/2),-d/2],[limit(d/2),d/2],[-w/2,d/2]],h-rail,rail,frame):box(w,rail,d,frame,0,h-rail,0));top.name='top-track';top.userData.slidingPart='top-track';group.add(top);
   if(bottom){const railGroup=new THREE.Group();railGroup.name='floor-track';
     const floorMaterial=floorTrackMode==='moving'?mat('#a8aaa6',{metalness:.8,roughness:.3}):frame;
     for(let i of syncIdentity.range("sliding-opening-model.js:generator-2",0,count,1,false)){const lane=layout.floorTracks.find(t=>t.leafIndex===i);if(!lane)continue;
-      const mesh=syncIdentity.produce("sliding-opening-model:site-3",()=>corner?prism(lane.outline.map(([x,z])=>[x*(mirrored?-1:1)/1000,z/1000]),0,floorRail,floorMaterial):box(w,floorRail,.004,floorMaterial,0,0,lane.z/1000));
+      const mesh=syncIdentity.produce("sliding-opening-model:site-3",()=>layout.allMoving||corner?prism(lane.outline.map(([x,z])=>[x*(mirrored?-1:1)/1000,z/1000]),0,floorRail,floorMaterial):box(w,floorRail,.004,floorMaterial,0,0,lane.z/1000));
       mesh.name='floor-rail-'+i;mesh.userData.slidingPart='floor-rail';mesh.userData.slidingLeafIndex=i;railGroup.add(mesh);
     }
     group.add(railGroup);
@@ -54,7 +54,8 @@ function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
  function build(f,context={}){
   if(!supported(f))throw Error('Unsupported sliding opening: '+f?.type);
   const corner=context.corner===undefined?products.slidingCorner(f,context.furniture,context.plan):context.corner;
-  const g=new THREE.Group(),model=syncIdentity.produce("sliding-opening-model.js:generator-call-1",()=>buildSlidingDoor(f.w/1000,f.d/1000,products.height(f)/1000,products.definition(f)?.telescopic?.panels||(f.type==='slidingdoor'?2:3),f.color||'#ddd',{floorTrack:products.value(f,'floorTrack'),floorTrackMode:products.definition(f)?.telescopic?'moving':'all',slim:f.type!=='slidingdoor',trackOrder:products.value(f,'slidingTrackOrder'),corner,stackSide:corner?.side==='left'?'right':'left'}));
+  const g=new THREE.Group(),model=syncIdentity.produce("sliding-opening-model.js:generator-call-1",()=>buildSlidingDoor(f.w/1000,f.d/1000,products.height(f)/1000,products.definition(f)?.telescopic?.panels||(f.type==='slidingdoor'?2:3),f.color||'#ddd',{floorTrack:products.value(f,'floorTrack'),floorTrackMode:products.definition(f)?.telescopic?'moving':'all',slim:f.type!=='slidingdoor',trackOrder:products.value(f,'slidingTrackOrder'),corner,allMoving:products.definition(f)?.telescopic?.allMoving,ultraClear:products.definition(f)?.telescopic?.glass==='ultra-clear',stackSide:products.supports(f,'slidingStackSide')?products.value(f,'slidingStackSide'):corner?.side==='left'?'right':'left'}));
+  if(products.value(f,'slidingOpen')){const door=model.userData.slidingDoor;door.open=true;door.cur=1;door.leaves.forEach(l=>l.node.position.x=l.opened);}
   if(f.type==='tripleslidingwindow')model.position.y=products.value(f,'mountHeight')/1000;g.add(model);g.userData.slidingDoor=model.userData.slidingDoor;
   return g;
  }

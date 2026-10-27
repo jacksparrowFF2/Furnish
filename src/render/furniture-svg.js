@@ -206,7 +206,7 @@ const DASH = 'stroke-dasharray="4 3"';
     }
     case 'treadmill': return rc(x,y,w,d,c,'rx="50"') + rc(x+90,y+320,w-180,d-400,'#1c1c1e','rx="25"') + rc(x,y,w,230,shade(c,1.4),'rx="40"');
     case 'pendant': return `<circle r="${m*.44}" fill="none" ${ST()} stroke-dasharray="5 4"/>` + ec(0,0,m*.3,m*.3,c) + ec(0,0,m*.17,m*.17,shade(c,1.15));
-    case 'slidingdoor': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
+    case 'slidingdoor': case 'telescopicdoor20': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
       const products=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
       if(products?.definition(t)?.telescopic){
         const item=f||{type:t,w,d},corner=products.slidingCorner(item,context.furniture,context.plan),layout=products.slidingLayout(item,corner);
@@ -214,7 +214,7 @@ const DASH = 'stroke-dasharray="4 3"';
         // staggered leaves appear disconnected. Parent applies furniture mirroring.
         const railFill=shade(c,1.15),rail=pa('M'+layout.railOutline.map(p=>p.join(' ')).join('L')+'Z',railFill,`data-sliding-track="top" style="stroke:${railFill}"`);
         const floor=products.value(item,'floorTrack')?layout.floorTracks.map(t=>ln(t.start,t.z,t.end,t.z,`data-sliding-floor-track="${t.leafIndex}" style="stroke:#c5c8c4;stroke-dasharray:6 4"`)).join(''):'';
-        return rail+floor+layout.leaves.map((leaf,i)=>'<g data-sliding-leaf="'+i+'">'+rc(leaf.x-leaf.width/2,leaf.z-layout.leafDepth/2,leaf.width,layout.leafDepth,c)+rc(leaf.x-leaf.width/2+layout.edge,leaf.z-layout.leafDepth/6,leaf.width-2*layout.edge,layout.leafDepth/3,'#dce8ec')+'</g>').join('');
+        return rail+floor+layout.leaves.map((source,i)=>{const leaf={...source,x:products.value(item,'slidingOpen')?source.opened:source.x};return '<g data-sliding-leaf="'+i+'">'+rc(leaf.x-leaf.width/2,leaf.z-layout.leafDepth/2,leaf.width,layout.leafDepth,c)+rc(leaf.x-leaf.width/2+layout.edge,leaf.z-layout.leafDepth/6,leaf.width-2*layout.edge,layout.leafDepth/3,layout.allMoving?'#f3fafc':'#dce8ec')+'</g>';}).join('');
       }
       const n=t==='slidingdoor'?2:3;
       let s=rc(x,y,w,d,c);

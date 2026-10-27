@@ -35,6 +35,8 @@ const fields={
  showerRise:numeric(100,500,'花洒顶部调节段须为 100–500 mm'),
  showerHandAngle:numeric(0,35,'手持花洒角度须为 0–35°'),
  curtainStyle:{values:['single','double'],message:'窗帘样式须为单开或双开'},
+ slidingStackSide:{values:['left','right'],message:'收门方向须为左侧或右侧'},
+ slidingOpen:{boolean:true,message:'门扇开合设置无效'},
  floorTrack:{boolean:true,message:'轨道设置无效'},
  slidingTrackOrder:{values:['leading-front','leading-back'],message:'活动扇所在侧须为靠正面或靠背面'},
  heaterSocket:{point:true,message:'热水器插座须有有效 X、Y 和 0–20000 mm 离地高度'}
@@ -83,6 +85,7 @@ const types={
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
  shower_arrow_cream:{family:'arrow-shower',height:1749,anchor:'mixer',defaults:{showerMixerHeight:1000,showerRise:400,showerHandAngle:180*.20/Math.PI},fields:['mountHeight','showerMixerHeight','showerRise','showerHandAngle'],create:['showerMixerHeight'],identity:{brand:'ARROW/箭牌',model:'AE34129ZMKW-P2'}},
  tripleslidingwindow:{family:'sliding',height:1500,anchor:'bottom',defaults:{mountHeight:900,floorTrack:true},fields:['mountHeight','floorTrack'],create:['mountHeight']},
+ telescopicdoor20:{family:'sliding',telescopic:{panels:2,allMoving:true,glass:'ultra-clear'},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front',slidingStackSide:'left',slidingOpen:false},fields:['floorTrack','slidingTrackOrder','slidingStackSide','slidingOpen']},
  doubleslidingdoor:{family:'sliding',telescopic:{panels:2,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
@@ -383,6 +386,15 @@ function slidingTracks(f,{panels=definition(f)?.telescopic?.panels??3,slim=true,
  return {panels,leafDepth,pitch,direction,leadingOffset:(panels-1)/2*pitch*direction};
 }
 function slidingLayout(f,corner=null,options={}){
+ const allMoving=options.allMoving??definition(f)?.telescopic?.allMoving;
+ if(allMoving){
+  const tracks=slidingTracks(f,options),edge=Math.min(16,f.w/20,height(f)/12),jamb=9,width=(f.w-2*jamb+edge)/2,step=width-edge,side=options.stackSide??value(f,'slidingStackSide'),sign=side==='right'?-1:1;
+  const parked=-f.w/2-width/2,first=-f.w/2+jamb+width/2,railStart=-f.w/2-width-jamb,railEnd=f.w/2;
+  const railOutline=[[railStart*sign,-f.d/2],[railEnd*sign,-f.d/2],[railEnd*sign,f.d/2],[railStart*sign,f.d/2]];
+  const leaves=Array.from({length:2},(_,i)=>({x:(first+step*i)*sign,opened:parked*sign,z:(i-.5)*tracks.pitch*tracks.direction,width}));
+  const half=slidingTrackSpec.floorWidth/2,floorTracks=leaves.map((leaf,i)=>({leafIndex:i,z:leaf.z,start:railStart*sign,end:railEnd*sign,outline:[[railStart*sign,leaf.z-half],[railEnd*sign,leaf.z-half],[railEnd*sign,leaf.z+half],[railStart*sign,leaf.z+half]]}));
+  return {...tracks,allMoving:true,edge,jamb,width,mirrored:sign<0,railOutline,leaves,floorTracks,floorRailHeight:slidingFloorHeight(f),bottomClearance:slidingBottom(f,options.floorTrack??value(f,'floorTrack'))};
+ }
  const tracks=slidingTracks(f,options),slim=options.slim??true,edge=Math.min(slim?16:28,f.w/20,height(f)/12),jamb=slim?9:edge;
  const mirrored=(options.stackSide??(corner?.side==='left'?'right':'left'))==='right',sign=mirrored?-1:1,end=corner?corner.leafEnd*sign:f.w/2-jamb;
  const width=(end+f.w/2-jamb+(tracks.panels-1)*edge)/tracks.panels,step=width-edge,opened=-f.w/2+jamb+width/2;
@@ -395,7 +407,7 @@ function slidingLayout(f,corner=null,options={}){
 // Automatic L joint: only a unique perpendicular end-to-end partner at the
 // same known rail elevation. Mid-span crossings and ambiguous junctions stay intact.
 function slidingCorner(f,furniture=[],plan){
- const eligible=v=>!!definition(v)?.telescopic&&!v.obj&&[v.cx,v.cy,v.w,v.d,height(v)].every(Number.isFinite)&&v.w>v.d*2&&v.d>0&&height(v)>0&&Number.isFinite(v.rot??0)&&!modelError(v);
+ const eligible=v=>!!definition(v)?.telescopic&&!definition(v).telescopic.allMoving&&!v.obj&&[v.cx,v.cy,v.w,v.d,height(v)].every(Number.isFinite)&&v.w>v.d*2&&v.d>0&&height(v)>0&&Number.isFinite(v.rot??0)&&!modelError(v);
  if(!eligible(f))return null;
  const items=[f,...furniture.filter(v=>v.id!==f.id&&eligible(v))];
  const axis=v=>{const a=(v.rot||0)*Math.PI/180;return [Math.cos(a),Math.sin(a)];};

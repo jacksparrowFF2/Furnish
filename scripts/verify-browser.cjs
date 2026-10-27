@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
 const V=require('./lib/browser-verification.cjs');
-const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay','manifold','manifold-kitchen','downlight','manifold-wall-finish','manifold-zero-gap','manifold-floating-distance','telescopic-corners','telescopic-floor-tracks'];
+const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay','manifold','manifold-kitchen','downlight','manifold-wall-finish','manifold-zero-gap','manifold-floating-distance','telescopic-corners','telescopic-floor-tracks','telescopic20'];
 const dependencies={'drawing':['workflow-reimport'],'drawing-readability':['workflow-reimport'],'room-net':['workflow-reimport'],'purchase-orders':['room-net'],'purchase-relink':['purchase-orders'],'furniture-labels':['purchase-orders']};
 // Retired editor CLI names run the current consolidated flows.
 // Obsolete ceiling editor scripts have been removed.
