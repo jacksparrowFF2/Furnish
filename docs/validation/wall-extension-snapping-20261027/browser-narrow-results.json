@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "wall-extension-snapping"
+  ],
+  "results": [
+    {
+      "name": "wall-extension-snapping",
+      "status": "PASS",
+      "seconds": 3.1,
+      "log": "wall-extension-snapping.log"
+    }
+  ],
+  "notRun": []
+}

@@ -1,0 +1,16 @@
+test-snapping.cjs
+PASS grid, rotated bounds, tolerance, nearby guides, exclusions and measurement anchors
+test-wall-extension-snapping.cjs
+PASS remote wall extension move/resize, cardinal rotations/mirrors/axes, capture thresholds, switches, fixed anchors, kitchen outer edge, bounded search and repeated project roundtrip
+test-cabinet-boundary-snapping.cjs
+PASS all 10 legacy cabinet types, 19 templates / 380 rotated/mirrored axis resize cases, finite contacts, thresholds, switches, fixed anchors and repeated project roundtrip
+test-drag-feature-snapping.cjs
+PASS drag corner/midpoint pairs, exact rotated coordinates, thresholds, switches, group member anchors, exclusions, production kitchen outline and project roundtrip
+test-kitchen-edge-snapping.cjs
+PASS outer and short-run furniture magnets, complete finite edge/end contact, exact pixel thresholds, transforms, toggles, linked/self exclusion, invalid candidates, fractional persistence and real rotated guide SVG
+test-drag-axis-lock.cjs
+PASS drag axis constraints with grid/features/Alt, fractional anchors, off-axis targets and production release avoidance
+test-furniture-snapping-audit.cjs
+{"passed":true,"catalogRows":116,"types":89,"rotations":[0,37,90,180,270],"mirrors":true,"moveCount":2320,"resizeCount":2320,"curvedFiniteEdgeCases":10}
+test-finish-miter-snap.cjs
+PASS convex/concave miters, continuous production pattern, four-direction finish magnets, cardinal rotations/mirrors, capture threshold, axis lock, unknown heights and repeated recovery PASS real Three.js miter vertices and exterior rays on both corner faces

@@ -1,0 +1,35 @@
+{
+  "selected": [
+    "wall-extension-snapping",
+    "cabinet-boundary-snapping",
+    "kitchen-edge-snapping",
+    "drag-axis-lock"
+  ],
+  "results": [
+    {
+      "name": "wall-extension-snapping",
+      "status": "PASS",
+      "seconds": 3,
+      "log": "wall-extension-snapping.log"
+    },
+    {
+      "name": "cabinet-boundary-snapping",
+      "status": "PASS",
+      "seconds": 10.9,
+      "log": "cabinet-boundary-snapping.log"
+    },
+    {
+      "name": "kitchen-edge-snapping",
+      "status": "PASS",
+      "seconds": 3.5,
+      "log": "kitchen-edge-snapping.log"
+    },
+    {
+      "name": "drag-axis-lock",
+      "status": "PASS",
+      "seconds": 3.7,
+      "log": "drag-axis-lock.log"
+    }
+  ],
+  "notRun": []
+}

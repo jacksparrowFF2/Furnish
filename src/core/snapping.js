@@ -81,9 +81,12 @@
     if(finish[0])nx=finish[0].value;if(finish[1])ny=finish[1].value;
     if(!finish[0]&&boundaryContact[0])nx=cx+boundaryContact[0].delta;if(!finish[1]&&boundaryContact[1])ny=cy+boundaryContact[1].delta;
     let bx=finish[0]||boundaryContact[0]?0:tol,by=finish[1]||boundaryContact[1]?0:tol,gx=null,gy=null;
+    // With alignment guides enabled, wall edges also supply remote datum
+    // lines. Face contact above still takes precedence over remote alignment.
+    const wallGuides=[];
     if(wallSnap)for(const r of rects){
-      if(axis!=='y'&&!(r[3]<cy-hh-tol||r[1]>cy+hh+tol))for(const ex of [r[0],r[2]])for(const c of [ex-xs[0],ex-xs[2]])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;}
-      if(axis!=='x'&&!(r[2]<nx-hw-tol||r[0]>nx+hw+tol))for(const ey of [r[1],r[3]])for(const c of [ey-ys[0],ey-ys[2]])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;}
+      if(axis!=='y'&&Math.max(r[1]-cy-hh,cy-hh-r[3])<=(guides?6000:tol))for(const ex of [r[0],r[2]])for(const c of [ex-xs[0],ex-xs[2]])if(Math.abs(c-cx)<bx){bx=Math.abs(c-cx);nx=c;wallGuides[0]=r[3]<cy-hh-tol||r[1]>cy+hh+tol?{v:true,x:ex,a:Math.min(cy-hh,r[1])-150,b:Math.max(cy+hh,r[3])+150}:null;}
+      if(axis!=='x'&&Math.max(r[0]-nx-hw,nx-hw-r[2])<=(guides?6000:tol))for(const ey of [r[1],r[3]])for(const c of [ey-ys[0],ey-ys[2]])if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;wallGuides[1]=r[2]<nx-hw-tol||r[0]>nx+hw+tol?{v:false,y:ey,a:Math.min(nx-hw,r[0])-150,b:Math.max(nx+hw,r[2])+150}:null;}
     }
     if(guides)for(const o of furniture){
       if(o.id===f.id||skip?.has(o.id)||Math.abs(o.cx-cx)>6000||Math.abs(o.cy-cy)>6000)continue;
@@ -92,6 +95,7 @@
       if(axis!=='x')for(const v of [bounds[1],o.cy,bounds[3]])for(const m of ys){const c=v-m;if(Math.abs(c-cy)<by){by=Math.abs(c-cy);ny=c;gy={y:v,o,B};}}
     }
     const lines=[...finishGuides];
+    if(guides)wallGuides.forEach((g,n)=>{if(g&&!(n===0?gx:gy))lines.push(g);});
     boundaryContact.forEach((contact,n)=>{if(contact?.kind==='furniture'&&!finish[n])lines.push({line:[contact.edge.a,contact.edge.b]});});
     if(gx)lines.push({v:true,x:gx.x,a:Math.min(ny-hh,gx.o.cy-gx.B.hh)-150,b:Math.max(ny+hh,gx.o.cy+gx.B.hh)+150});
     if(gy)lines.push({v:false,y:gy.y,a:Math.min(nx-hw,gy.o.cx-gy.B.hw)-150,b:Math.max(nx+hw,gy.o.cx+gy.B.hw)+150});
@@ -128,22 +132,29 @@
         const lo=Math.min(dot(e.a,v),dot(e.b,v)),hi=Math.max(dot(e.a,v),dot(e.b,v)),factor=unit?spanSupport(unit,lo,hi):1;
         if(!(factor>1e-7))continue;
         const value=dot(e.a,u)/factor,error=Math.abs(value-raw);
-        if(value<100||Math.min(span,hi)-Math.max(0,lo)<-1e-7||error>tol+1e-7||best&&error>=best.error-1e-7)continue;
-        best={value,error,e};
+        // Contact remains finite. A wall datum may extend across a gap only
+        // when guides are enabled, within the same 6 m alignment search span.
+        const gap=Math.max(lo-span,-hi),extension=gap>1e-7;
+        if(value<100||extension&&!(target.kind==='wall'&&guides&&gap<=6000)||error>tol+1e-7||best&&(Number(extension)>Number(best.extension)||extension===best.extension&&error>=best.error-1e-7))continue;
+        const guide=extension?{line:[
+          {x:anchor.x+u[0]*value+v[0]*Math.min(0,lo),y:anchor.y+u[1]*value+v[1]*Math.min(0,lo)},
+          {x:anchor.x+u[0]*value+v[0]*Math.max(span,hi),y:anchor.y+u[1]*value+v[1]*Math.max(span,hi)}
+        ]}:{line:[e.a,e.b]};
+        best={value,error,e,extension,guide};
       }
-      if(best){next=build({...next,[dim]:Math.round(best.value*1e6)/1e6});hits.push({dim,e:best.e});}
+      if(best){next=build({...next,[dim]:Math.round(best.value*1e6)/1e6});hits.push({dim,e:best.e,extension:best.extension,guide:best.guide});}
     }
     // A corner grip can shorten the other dimension after the first hit.
     // Recheck the final finite span rather than showing a now unreachable edge.
     for(let i=0;i<hits.length;){const {dim,e}=hits[i],v=dim==='w'?[-s,c]:[c,s],dot=q=>(q.x-anchor.x)*v[0]+(q.y-anchor.y)*v[1],lo=Math.min(dot(e.a),dot(e.b)),hi=Math.max(dot(e.a),dot(e.b));
       const u=dim==='w'?[c,s]:[-s,c],normal=q=>(q.x-anchor.x)*u[0]+(q.y-anchor.y)*u[1];
       const curved=geometry.localOutline(f)&&furnitureRings(next).map(r=>r.map(p=>({n:normal({x:p[0],y:p[1]}),t:dot({x:p[0],y:p[1]})})));
-      if(Math.min(next[dim==='w'?'d':'w'],hi)-Math.max(0,lo)<-1e-7||curved&&Math.abs(spanSupport(curved,lo,hi)-normal(e.a))>2e-6){next=build({...next,[dim]:dimensions(p)[dim]});hits.splice(i,1);i=0;}else i++;
+      if(!hits[i].extension&&(Math.min(next[dim==='w'?'d':'w'],hi)-Math.max(0,lo)<-1e-7||curved&&Math.abs(spanSupport(curved,lo,hi)-normal(e.a))>2e-6)){next=build({...next,[dim]:dimensions(p)[dim]});hits.splice(i,1);i=0;}else i++;
     }
-    return {furniture:next,guides:hits.map(hit=>({line:[hit.e.a,hit.e.b]}))};
+    return {furniture:next,guides:hits.map(hit=>hit.guide)};
   }
-  // Snap the entire moving edge to finite parallel boundaries. Keep the old
-  // wall/normal intersection for angled walls; furniture uses actual edge alignment.
+  // Snap the entire moving edge to parallel boundaries; guides also permit
+  // remote wall datum lines. Keep wall/normal intersections for angled walls.
   function kitchenEdgeSnap(f,center,u,segments,raw,{grid,scale,wallSnap,rects,furniture,guides},apply){
     const step=Number.isFinite(grid)&&grid>0?grid:10,delta=Math.round(raw/step)*step;
     if(Math.abs(raw)<1e-8)return {furniture:apply(0),guides:[]};
@@ -159,7 +170,7 @@
       const d={x:e.b.x-e.a.x,y:e.b.y-e.a.y},length=Math.hypot(d.x,d.y);
       if(Math.abs(d.x*u[0]+d.y*u[1])<=length*1e-7){
         const t=dot(e.a,u)-along,lo=Math.min(dot(e.a,v),dot(e.b,v)),hi=Math.max(dot(e.a,v),dot(e.b,v));
-        for(const s of source)if(Math.max(lo-s.hi,s.lo-hi)<=tol+1e-7)add(t,Math.min(lo,s.lo),Math.max(hi,s.hi));
+        for(const s of source)if(Math.max(lo-s.hi,s.lo-hi)<=(target.kind==='wall'&&guides?6000:tol)+1e-7)add(t,Math.min(lo,s.lo),Math.max(hi,s.hi));
       }else if(target.kind==='wall'){
         const motion={x:u[0],y:u[1]},den=cross(motion,d);
         for(const segment of segments){const mid={x:(segment.a.x+segment.b.x)/2,y:(segment.a.y+segment.b.y)/2},offset={x:e.a.x-mid.x,y:e.a.y-mid.y},t=cross(offset,d)/den,at=cross(offset,motion)/den;

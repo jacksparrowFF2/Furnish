@@ -5,7 +5,8 @@ const base={grid:100,scale:1,wallSnap:true,guides:true,rects:[[0,0,0,1000]],furn
 assert.deepEqual(S.move(f,46,530,base),{position:[50,500],guides:[]});
 assert.deepEqual(S.move(f,40,530,base).position,[50,500]); // Face contact includes the exact 10 px capture threshold.
 assert.deepEqual(S.move(f,39.99,530,base).position,[0,500]); // Just outside the face capture radius, retain grid fallback.
-assert.deepEqual(S.move(f,46,3000,base).position,[0,3000]); // No wall alignment outside its span.
+assert.deepEqual(S.move(f,46,3000,base).position,[50,3000]); // Guides allow alignment with a wall edge extension.
+assert.deepEqual(S.move(f,46,3000,{...base,guides:false}).position,[0,3000]); // Contact-only mode keeps finite spans.
 assert.deepEqual(S.move({...f,rot:90},98,500,base).position,[100,500]);
 assert.deepEqual(S.move(f,46,500,{...base,wallSnap:false}).position,[0,500]);
 assert.deepEqual(S.move(f,40,500,{...base,scale:.5}).position,[50,500]);

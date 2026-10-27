@@ -1,0 +1,1 @@
+{"case":"wall-extension-snapping","status":"PASS","result":[{"mode":"http","passed":true,"checks":["remote wall edge resize pointer","extended guide","fixed opposite end","undo/redo","refresh","narrow layout"]},{"mode":"file","passed":true,"checks":["remote wall edge resize pointer","extended guide","fixed opposite end","undo/redo","refresh","narrow layout"]}]}
