@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 16,
+  "version": 25,
   "workspace": {
     "custom": [],
     "customPlans": [
@@ -5148,7 +5148,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 16,
+    "v": 25,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -7292,6 +7292,1625 @@
           "phase": "survey"
         },
         "ceilingHeight": 2700,
+        "ceilings": {
+          "items": [
+            {
+              "height": 2700,
+              "id": "ceiling_area_fmvntr1ym2_part_0",
+              "kind": "profile",
+              "name": "客厅吊顶 · 石膏灯槽",
+              "path": {
+                "closed": true,
+                "join": "miter",
+                "segments": [
+                  {
+                    "a": [
+                      6728,
+                      6486
+                    ],
+                    "b": [
+                      6730,
+                      5420
+                    ],
+                    "id": "edge0",
+                    "normal": [
+                      0.9999982399928191,
+                      0.0018761693058026625
+                    ]
+                  },
+                  {
+                    "a": [
+                      6730,
+                      5420
+                    ],
+                    "b": [
+                      6730,
+                      2434
+                    ],
+                    "id": "edge1",
+                    "normal": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "a": [
+                      6730,
+                      2434
+                    ],
+                    "b": [
+                      9756,
+                      2434
+                    ],
+                    "id": "edge2",
+                    "normal": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "a": [
+                      9756,
+                      2434
+                    ],
+                    "b": [
+                      9756,
+                      6480.740951
+                    ],
+                    "id": "edge3",
+                    "normal": [
+                      -1,
+                      0
+                    ]
+                  },
+                  {
+                    "a": [
+                      9756,
+                      6480.740951
+                    ],
+                    "b": [
+                      6728,
+                      6486
+                    ],
+                    "id": "edge4",
+                    "normal": [
+                      -0.0017368035231404072,
+                      -0.9999984917556236
+                    ]
+                  }
+                ]
+              },
+              "regionId": "ceiling_area_fmvntr1ym2",
+              "section": {
+                "material": "gypsum",
+                "vertices": [
+                  {
+                    "d": 0,
+                    "id": "v0",
+                    "u": 0
+                  },
+                  {
+                    "d": 0,
+                    "id": "v1",
+                    "u": 30
+                  },
+                  {
+                    "d": 270,
+                    "id": "v6",
+                    "u": 30
+                  },
+                  {
+                    "d": 270,
+                    "id": "v_fmvp9risj2",
+                    "u": 15
+                  },
+                  {
+                    "d": 300,
+                    "id": "v_fmvp9rvrc3",
+                    "u": 15
+                  },
+                  {
+                    "d": 300,
+                    "id": "v7",
+                    "u": 0
+                  }
+                ]
+              }
+            },
+            {
+              "height": 2700,
+              "id": "ceiling_area_fmvntr1ym2_part_1",
+              "kind": "profile",
+              "name": "客厅吊顶 · 上发光型材 · 含柔光板",
+              "path": {
+                "closed": true,
+                "join": "miter",
+                "segments": [
+                  {
+                    "a": [
+                      6728,
+                      6486
+                    ],
+                    "b": [
+                      6730,
+                      5420
+                    ],
+                    "id": "edge0",
+                    "normal": [
+                      0.9999982399928191,
+                      0.0018761693058026625
+                    ]
+                  },
+                  {
+                    "a": [
+                      6730,
+                      5420
+                    ],
+                    "b": [
+                      6730,
+                      2434
+                    ],
+                    "id": "edge1",
+                    "normal": [
+                      1,
+                      0
+                    ]
+                  },
+                  {
+                    "a": [
+                      6730,
+                      2434
+                    ],
+                    "b": [
+                      9756,
+                      2434
+                    ],
+                    "id": "edge2",
+                    "normal": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "a": [
+                      9756,
+                      2434
+                    ],
+                    "b": [
+                      9756,
+                      6480.740951
+                    ],
+                    "id": "edge3",
+                    "normal": [
+                      -1,
+                      0
+                    ]
+                  },
+                  {
+                    "a": [
+                      9756,
+                      6480.740951
+                    ],
+                    "b": [
+                      6728,
+                      6486
+                    ],
+                    "id": "edge4",
+                    "normal": [
+                      -0.0017368035231404072,
+                      -0.9999984917556236
+                    ]
+                  }
+                ]
+              },
+              "regionId": "ceiling_area_fmvntr1ym2",
+              "section": {
+                "diffuser": {
+                  "vertices": [
+                    {
+                      "d": 253.4,
+                      "id": "diffuser0",
+                      "u": 51.54999999999999
+                    },
+                    {
+                      "d": 253.4,
+                      "id": "diffuser1",
+                      "u": 37.94999999999999
+                    },
+                    {
+                      "d": 254.4,
+                      "id": "diffuser2",
+                      "u": 37.94999999999999
+                    },
+                    {
+                      "d": 254.4,
+                      "id": "diffuser3",
+                      "u": 51.54999999999999
+                    }
+                  ]
+                },
+                "light": {
+                  "angle": -90,
+                  "d": 270,
+                  "thickness": 2,
+                  "u": 44.74999999999999,
+                  "width": 10
+                },
+                "material": "aluminum",
+                "template": {
+                  "kind": "upChannel",
+                  "values": {
+                    "bodyWidth": 22.5,
+                    "d": 271.5,
+                    "diffuserEnabled": true,
+                    "diffuserInset": 0.5,
+                    "diffuserThickness": 1,
+                    "height": 18.6,
+                    "lightAngle": -90.00000000000001,
+                    "lightEnabled": true,
+                    "lightOffsetD": 0,
+                    "lightOffsetU": 0,
+                    "lightThickness": 2,
+                    "lightWidth": 10,
+                    "mirrorU": true,
+                    "mountBridge": 3.5,
+                    "mountDetail": true,
+                    "mountFootHeight": 4.5,
+                    "mountHeight": 7,
+                    "mountProjection": 4,
+                    "opening": 13.6,
+                    "rail": 2,
+                    "u": 53.99999999999999,
+                    "wall": 1.5,
+                    "width": 39,
+                    "wingThickness": 1.5
+                  }
+                },
+                "vertices": [
+                  {
+                    "d": 252.9,
+                    "id": "channel0",
+                    "u": 53.99999999999999
+                  },
+                  {
+                    "d": 252.9,
+                    "id": "channel1",
+                    "u": 51.54999999999999
+                  },
+                  {
+                    "d": 254.9,
+                    "id": "channel2",
+                    "u": 51.54999999999999
+                  },
+                  {
+                    "d": 254.9,
+                    "id": "channel3",
+                    "u": 52.49999999999999
+                  },
+                  {
+                    "d": 270,
+                    "id": "channel4",
+                    "u": 52.49999999999999
+                  },
+                  {
+                    "d": 270,
+                    "id": "channel5",
+                    "u": 36.999999999999986
+                  },
+                  {
+                    "d": 254.9,
+                    "id": "channel6",
+                    "u": 36.999999999999986
+                  },
+                  {
+                    "d": 254.9,
+                    "id": "channel7",
+                    "u": 37.94999999999999
+                  },
+                  {
+                    "d": 252.9,
+                    "id": "channel8",
+                    "u": 37.94999999999999
+                  },
+                  {
+                    "d": 252.9,
+                    "id": "channel9",
+                    "u": 35.499999999999986
+                  },
+                  {
+                    "d": 255.64999999999998,
+                    "id": "channel10",
+                    "u": 35.499999999999986
+                  },
+                  {
+                    "d": 255.64999999999998,
+                    "id": "channel11",
+                    "u": 32.999999999999986
+                  },
+                  {
+                    "d": 252.9,
+                    "id": "channel12",
+                    "u": 32.999999999999986
+                  },
+                  {
+                    "d": 252.9,
+                    "id": "channel13",
+                    "u": 31.499999999999986
+                  },
+                  {
+                    "d": 259.9,
+                    "id": "channel14",
+                    "u": 31.499999999999986
+                  },
+                  {
+                    "d": 259.9,
+                    "id": "channel15",
+                    "u": 32.999999999999986
+                  },
+                  {
+                    "d": 257.15,
+                    "id": "channel16",
+                    "u": 32.999999999999986
+                  },
+                  {
+                    "d": 257.15,
+                    "id": "channel17",
+                    "u": 35.499999999999986
+                  },
+                  {
+                    "d": 270,
+                    "id": "channel18",
+                    "u": 35.499999999999986
+                  },
+                  {
+                    "d": 270,
+                    "id": "channel19",
+                    "u": 32.999999999999986
+                  },
+                  {
+                    "d": 267,
+                    "id": "channel20",
+                    "u": 32.999999999999986
+                  },
+                  {
+                    "d": 267,
+                    "id": "channel21",
+                    "u": 31.499999999999986
+                  },
+                  {
+                    "d": 270,
+                    "id": "channel22",
+                    "u": 31.499999999999986
+                  },
+                  {
+                    "d": 270,
+                    "id": "channel23",
+                    "u": 14.999999999999986
+                  },
+                  {
+                    "d": 271.5,
+                    "id": "channel24",
+                    "u": 14.999999999999986
+                  },
+                  {
+                    "d": 271.5,
+                    "id": "channel25",
+                    "u": 53.99999999999999
+                  }
+                ]
+              }
+            },
+            {
+              "height": 2400,
+              "id": "ceiling_area_fmvpaql4s1_part_0",
+              "kind": "flat",
+              "name": "柜子边吊 · 平面吊顶",
+              "polygon": [
+                [
+                  9756,
+                  2434
+                ],
+                [
+                  10106,
+                  2434
+                ],
+                [
+                  10106,
+                  10195
+                ],
+                [
+                  9758,
+                  10195
+                ]
+              ],
+              "regionId": "ceiling_area_fmvpaql4s1",
+              "thickness": 12
+            },
+            {
+              "height": 2700,
+              "id": "ceiling_area_fmvpcqco92_part_0",
+              "kind": "profile",
+              "name": "次卧吊顶 · 石膏灯槽",
+              "path": {
+                "closed": true,
+                "join": "miter",
+                "segments": [
+                  {
+                    "a": [
+                      3939,
+                      2529
+                    ],
+                    "b": [
+                      6500,
+                      2529
+                    ],
+                    "id": "edge0",
+                    "normal": [
+                      0,
+                      1
+                    ]
+                  },
+                  {
+                    "a": [
+                      6500,
+                      2529
+                    ],
+                    "b": [
+                      6500,
+                      4660
+                    ],
+                    "id": "edge1",
+                    "normal": [
+                      -1,
+                      0
+                    ]
+                  },
+                  {
+                    "a": [
+                      6500,
+                      4660
+                    ],
+                    "b": [
+                      3939,
+                      4660
+                    ],
+                    "id": "edge2",
+                    "normal": [
+                      0,
+                      -1
+                    ]
+                  },
+                  {
+                    "a": [
+                      3939,
+                      4660
+                    ],
+                    "b": [
+                      3939,
+                      2529
+                    ],
+                    "id": "edge3",
+                    "normal": [
+                      1,
+                      0
+                    ]
+                  }
+                ]
+              },
+              "regionId": "ceiling_area_fmvpcqco92",
+              "section": {
+                "material": "gypsum",
+                "vertices": [
+                  {
+                    "d": 0,
+                    "id": "v0",
+                    "u": 0
+                  },
+                  {
+                    "d": 0,
+                    "id": "v1",
+                    "u": 30
+                  },
+                  {
+                    "d": 270,
+                    "id": "v6",
+                    "u": 30
+                  },
+                  {
+                    "d": 270,
+                    "id": "v_fmvp9risj2",
+                    "u": 15
+                  },
+                  {
+                    "d": 300,
+                    "id": "v_fmvp9rvrc3",
+                    "u": 15
+                  },
+                  {
+                    "d": 300,
+                    "id": "v7",
+                    "u": 0
+                  }
+                ]
+              }
+            },
+            {
+              "height": 2400,
+              "id": "ceiling_area_fmvnstmsv1_part_0",
+              "kind": "flat",
+              "name": "走廊吊顶 · 平面吊顶",
+              "polygon": [
+                [
+                  4122.086737095916,
+                  6487.179418584698
+                ],
+                [
+                  4125.086737095916,
+                  5421.179418584698
+                ],
+                [
+                  6470.974645358867,
+                  5419.514023724876
+                ],
+                [
+                  6468.974645358867,
+                  6485.514023724876
+                ]
+              ],
+              "regionId": "ceiling_area_fmvnstmsv1",
+              "thickness": 12
+            },
+            {
+              "height": 2400,
+              "id": "ceiling_area_fmvqf798i1_part_0",
+              "kind": "flat",
+              "name": "吊顶区域 5 · 平面吊顶",
+              "polygon": [
+                [
+                  3939,
+                  4660
+                ],
+                [
+                  6500,
+                  4660
+                ],
+                [
+                  6500,
+                  5290
+                ],
+                [
+                  3939,
+                  5290
+                ]
+              ],
+              "regionId": "ceiling_area_fmvqf798i1",
+              "thickness": 12
+            }
+          ],
+          "regions": [
+            {
+              "center": true,
+              "centerConnection": {
+                "height": 2400,
+                "inset": 70,
+                "mode": "independent"
+              },
+              "centerId": "ceiling_area_fmvnstmsv1_part_0",
+              "height": 2400,
+              "id": "ceiling_area_fmvnstmsv1",
+              "name": "走廊吊顶",
+              "partIds": [
+                "ceiling_area_fmvnstmsv1_section_0",
+                "ceiling_area_fmvnstmsv1_section_1"
+              ],
+              "polygon": [
+                [
+                  4122.086737095916,
+                  6487.179418584698
+                ],
+                [
+                  4125.086737095916,
+                  5421.179418584698
+                ],
+                [
+                  6470.974645358867,
+                  5419.514023724876
+                ],
+                [
+                  6468.974645358867,
+                  6485.514023724876
+                ]
+              ],
+              "sections": [
+                {
+                  "name": "石膏灯槽",
+                  "section": {
+                    "material": "gypsum",
+                    "template": {
+                      "kind": "lowCove",
+                      "values": {
+                        "back": 20,
+                        "bottom": 10,
+                        "drop": 300,
+                        "front": 10,
+                        "lip": 30,
+                        "projection": 70
+                      }
+                    },
+                    "vertices": [
+                      {
+                        "d": 0,
+                        "id": "v0",
+                        "u": 0
+                      },
+                      {
+                        "d": 0,
+                        "id": "v1",
+                        "u": 20
+                      },
+                      {
+                        "d": 290,
+                        "id": "v2",
+                        "u": 20
+                      },
+                      {
+                        "d": 290,
+                        "id": "v3",
+                        "u": 60
+                      },
+                      {
+                        "d": 270,
+                        "id": "v4",
+                        "u": 60
+                      },
+                      {
+                        "d": 270,
+                        "id": "v5",
+                        "u": 70
+                      },
+                      {
+                        "d": 300,
+                        "id": "v6",
+                        "u": 70
+                      },
+                      {
+                        "d": 300,
+                        "id": "v7",
+                        "u": 0
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "灯槽 · 石膏灯槽",
+                  "section": {
+                    "light": {
+                      "angle": -90,
+                      "d": 288.5,
+                      "thickness": 2,
+                      "u": 40,
+                      "width": 10
+                    },
+                    "material": "aluminum",
+                    "template": {
+                      "kind": "upChannel",
+                      "values": {
+                        "bodyWidth": 22.5,
+                        "d": 290,
+                        "diffuserEnabled": false,
+                        "diffuserInset": 0.5,
+                        "diffuserThickness": 1,
+                        "height": 18.6,
+                        "lightAngle": -90,
+                        "lightEnabled": true,
+                        "lightOffsetD": 0,
+                        "lightOffsetU": 0,
+                        "lightThickness": 2,
+                        "lightWidth": 10,
+                        "opening": 13.6,
+                        "rail": 2,
+                        "u": 28.75,
+                        "wall": 1.5,
+                        "width": 22.6,
+                        "wingThickness": 1.5
+                      }
+                    },
+                    "vertices": [
+                      {
+                        "d": 271.4,
+                        "id": "channel0",
+                        "u": 28.75
+                      },
+                      {
+                        "d": 271.4,
+                        "id": "channel1",
+                        "u": 33.2
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel2",
+                        "u": 33.2
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel3",
+                        "u": 30.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel4",
+                        "u": 30.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel5",
+                        "u": 49.75
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel6",
+                        "u": 49.75
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel7",
+                        "u": 46.8
+                      },
+                      {
+                        "d": 271.4,
+                        "id": "channel8",
+                        "u": 46.8
+                      },
+                      {
+                        "d": 271.4,
+                        "id": "channel9",
+                        "u": 51.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel10",
+                        "u": 51.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel11",
+                        "u": 51.35
+                      },
+                      {
+                        "d": 290,
+                        "id": "channel12",
+                        "u": 51.35
+                      },
+                      {
+                        "d": 290,
+                        "id": "channel13",
+                        "u": 28.75
+                      }
+                    ]
+                  }
+                }
+              ],
+              "style": "flat",
+              "thickness": 12
+            },
+            {
+              "center": false,
+              "height": 2400,
+              "id": "ceiling_area_fmvntr1ym2",
+              "name": "客厅吊顶",
+              "polygon": [
+                [
+                  6728,
+                  6486
+                ],
+                [
+                  6730,
+                  5420
+                ],
+                [
+                  6730,
+                  2434
+                ],
+                [
+                  9756,
+                  2434
+                ],
+                [
+                  9756,
+                  6480.740951
+                ]
+              ],
+              "sections": [
+                {
+                  "name": "石膏灯槽",
+                  "section": {
+                    "material": "gypsum",
+                    "vertices": [
+                      {
+                        "d": 0,
+                        "id": "v0",
+                        "u": 0
+                      },
+                      {
+                        "d": 0,
+                        "id": "v1",
+                        "u": 30
+                      },
+                      {
+                        "d": 270,
+                        "id": "v6",
+                        "u": 30
+                      },
+                      {
+                        "d": 270,
+                        "id": "v_fmvp9risj2",
+                        "u": 15
+                      },
+                      {
+                        "d": 300,
+                        "id": "v_fmvp9rvrc3",
+                        "u": 15
+                      },
+                      {
+                        "d": 300,
+                        "id": "v7",
+                        "u": 0
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "上发光型材 · 含柔光板",
+                  "section": {
+                    "diffuser": {
+                      "vertices": [
+                        {
+                          "d": 253.4,
+                          "id": "diffuser0",
+                          "u": 51.54999999999999
+                        },
+                        {
+                          "d": 253.4,
+                          "id": "diffuser1",
+                          "u": 37.94999999999999
+                        },
+                        {
+                          "d": 254.4,
+                          "id": "diffuser2",
+                          "u": 37.94999999999999
+                        },
+                        {
+                          "d": 254.4,
+                          "id": "diffuser3",
+                          "u": 51.54999999999999
+                        }
+                      ]
+                    },
+                    "light": {
+                      "angle": -90,
+                      "d": 270,
+                      "thickness": 2,
+                      "u": 44.74999999999999,
+                      "width": 10
+                    },
+                    "material": "aluminum",
+                    "template": {
+                      "kind": "upChannel",
+                      "values": {
+                        "bodyWidth": 22.5,
+                        "d": 271.5,
+                        "diffuserEnabled": true,
+                        "diffuserInset": 0.5,
+                        "diffuserThickness": 1,
+                        "height": 18.6,
+                        "lightAngle": -90.00000000000001,
+                        "lightEnabled": true,
+                        "lightOffsetD": 0,
+                        "lightOffsetU": 0,
+                        "lightThickness": 2,
+                        "lightWidth": 10,
+                        "mirrorU": true,
+                        "mountBridge": 3.5,
+                        "mountDetail": true,
+                        "mountFootHeight": 4.5,
+                        "mountHeight": 7,
+                        "mountProjection": 4,
+                        "opening": 13.6,
+                        "rail": 2,
+                        "u": 53.99999999999999,
+                        "wall": 1.5,
+                        "width": 39,
+                        "wingThickness": 1.5
+                      }
+                    },
+                    "vertices": [
+                      {
+                        "d": 252.9,
+                        "id": "channel0",
+                        "u": 53.99999999999999
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel1",
+                        "u": 51.54999999999999
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel2",
+                        "u": 51.54999999999999
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel3",
+                        "u": 52.49999999999999
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel4",
+                        "u": 52.49999999999999
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel5",
+                        "u": 36.999999999999986
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel6",
+                        "u": 36.999999999999986
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel7",
+                        "u": 37.94999999999999
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel8",
+                        "u": 37.94999999999999
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel9",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 255.64999999999998,
+                        "id": "channel10",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 255.64999999999998,
+                        "id": "channel11",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel12",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel13",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 259.9,
+                        "id": "channel14",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 259.9,
+                        "id": "channel15",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 257.15,
+                        "id": "channel16",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 257.15,
+                        "id": "channel17",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel18",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel19",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 267,
+                        "id": "channel20",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 267,
+                        "id": "channel21",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel22",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel23",
+                        "u": 14.999999999999986
+                      },
+                      {
+                        "d": 271.5,
+                        "id": "channel24",
+                        "u": 14.999999999999986
+                      },
+                      {
+                        "d": 271.5,
+                        "id": "channel25",
+                        "u": 53.99999999999999
+                      }
+                    ]
+                  }
+                }
+              ],
+              "style": "ring",
+              "thickness": 12
+            },
+            {
+              "center": false,
+              "centerId": "ceiling_area_fmvpaql4s1_part_0",
+              "height": 2400,
+              "id": "ceiling_area_fmvpaql4s1",
+              "name": "柜子边吊",
+              "partIds": [
+                "ceiling_area_fmvpaql4s1_section_0",
+                "ceiling_area_fmvpaql4s1_section_1"
+              ],
+              "polygon": [
+                [
+                  9756,
+                  2434
+                ],
+                [
+                  10106,
+                  2434
+                ],
+                [
+                  10106,
+                  10195
+                ],
+                [
+                  9758,
+                  10195
+                ]
+              ],
+              "sections": [
+                {
+                  "name": "石膏灯槽",
+                  "section": {
+                    "material": "gypsum",
+                    "template": {
+                      "kind": "lowCove",
+                      "values": {
+                        "back": 20,
+                        "bottom": 10,
+                        "drop": 300,
+                        "front": 10,
+                        "lip": 30,
+                        "projection": 70
+                      }
+                    },
+                    "vertices": [
+                      {
+                        "d": 0,
+                        "id": "v0",
+                        "u": 0
+                      },
+                      {
+                        "d": 0,
+                        "id": "v1",
+                        "u": 20
+                      },
+                      {
+                        "d": 290,
+                        "id": "v2",
+                        "u": 20
+                      },
+                      {
+                        "d": 290,
+                        "id": "v3",
+                        "u": 60
+                      },
+                      {
+                        "d": 270,
+                        "id": "v4",
+                        "u": 60
+                      },
+                      {
+                        "d": 270,
+                        "id": "v5",
+                        "u": 70
+                      },
+                      {
+                        "d": 300,
+                        "id": "v6",
+                        "u": 70
+                      },
+                      {
+                        "d": 300,
+                        "id": "v7",
+                        "u": 0
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "灯槽 · 石膏灯槽",
+                  "section": {
+                    "light": {
+                      "angle": -90,
+                      "d": 288.5,
+                      "thickness": 2,
+                      "u": 40,
+                      "width": 10
+                    },
+                    "material": "aluminum",
+                    "template": {
+                      "kind": "upChannel",
+                      "values": {
+                        "bodyWidth": 22.5,
+                        "d": 290,
+                        "diffuserEnabled": false,
+                        "diffuserInset": 0.5,
+                        "diffuserThickness": 1,
+                        "height": 18.6,
+                        "lightAngle": -90,
+                        "lightEnabled": true,
+                        "lightOffsetD": 0,
+                        "lightOffsetU": 0,
+                        "lightThickness": 2,
+                        "lightWidth": 10,
+                        "opening": 13.6,
+                        "rail": 2,
+                        "u": 28.75,
+                        "wall": 1.5,
+                        "width": 22.6,
+                        "wingThickness": 1.5
+                      }
+                    },
+                    "vertices": [
+                      {
+                        "d": 271.4,
+                        "id": "channel0",
+                        "u": 28.75
+                      },
+                      {
+                        "d": 271.4,
+                        "id": "channel1",
+                        "u": 33.2
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel2",
+                        "u": 33.2
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel3",
+                        "u": 30.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel4",
+                        "u": 30.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel5",
+                        "u": 49.75
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel6",
+                        "u": 49.75
+                      },
+                      {
+                        "d": 273.4,
+                        "id": "channel7",
+                        "u": 46.8
+                      },
+                      {
+                        "d": 271.4,
+                        "id": "channel8",
+                        "u": 46.8
+                      },
+                      {
+                        "d": 271.4,
+                        "id": "channel9",
+                        "u": 51.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel10",
+                        "u": 51.25
+                      },
+                      {
+                        "d": 288.5,
+                        "id": "channel11",
+                        "u": 51.35
+                      },
+                      {
+                        "d": 290,
+                        "id": "channel12",
+                        "u": 51.35
+                      },
+                      {
+                        "d": 290,
+                        "id": "channel13",
+                        "u": 28.75
+                      }
+                    ]
+                  }
+                }
+              ],
+              "style": "flat",
+              "thickness": 12
+            },
+            {
+              "center": false,
+              "centerId": "ceiling_area_fmvpcqco92_part_1",
+              "channelEnabled": false,
+              "height": 2400,
+              "id": "ceiling_area_fmvpcqco92",
+              "name": "次卧吊顶",
+              "partIds": [
+                "ceiling_area_fmvpcqco92_part_0",
+                "ceiling_area_fmvpcqco92_section_0"
+              ],
+              "polygon": [
+                [
+                  3939,
+                  2529
+                ],
+                [
+                  6500,
+                  2529
+                ],
+                [
+                  6500,
+                  4660
+                ],
+                [
+                  3939,
+                  4660
+                ]
+              ],
+              "sections": [
+                {
+                  "name": "石膏灯槽",
+                  "section": {
+                    "material": "gypsum",
+                    "vertices": [
+                      {
+                        "d": 0,
+                        "id": "v0",
+                        "u": 0
+                      },
+                      {
+                        "d": 0,
+                        "id": "v1",
+                        "u": 30
+                      },
+                      {
+                        "d": 270,
+                        "id": "v6",
+                        "u": 30
+                      },
+                      {
+                        "d": 270,
+                        "id": "v_fmvp9risj2",
+                        "u": 15
+                      },
+                      {
+                        "d": 300,
+                        "id": "v_fmvp9rvrc3",
+                        "u": 15
+                      },
+                      {
+                        "d": 300,
+                        "id": "v7",
+                        "u": 0
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "上发光型材 · 含柔光板",
+                  "section": {
+                    "diffuser": {
+                      "vertices": [
+                        {
+                          "d": 253.4,
+                          "id": "diffuser0",
+                          "u": 51.54999999999999
+                        },
+                        {
+                          "d": 253.4,
+                          "id": "diffuser1",
+                          "u": 37.94999999999999
+                        },
+                        {
+                          "d": 254.4,
+                          "id": "diffuser2",
+                          "u": 37.94999999999999
+                        },
+                        {
+                          "d": 254.4,
+                          "id": "diffuser3",
+                          "u": 51.54999999999999
+                        }
+                      ]
+                    },
+                    "light": {
+                      "angle": -90,
+                      "d": 270,
+                      "thickness": 2,
+                      "u": 44.74999999999999,
+                      "width": 10
+                    },
+                    "material": "aluminum",
+                    "template": {
+                      "kind": "upChannel",
+                      "values": {
+                        "bodyWidth": 22.5,
+                        "d": 271.5,
+                        "diffuserEnabled": true,
+                        "diffuserInset": 0.5,
+                        "diffuserThickness": 1,
+                        "height": 18.6,
+                        "lightAngle": -90.00000000000001,
+                        "lightEnabled": true,
+                        "lightOffsetD": 0,
+                        "lightOffsetU": 0,
+                        "lightThickness": 2,
+                        "lightWidth": 10,
+                        "mirrorU": true,
+                        "mountBridge": 3.5,
+                        "mountDetail": true,
+                        "mountFootHeight": 4.5,
+                        "mountHeight": 7,
+                        "mountProjection": 4,
+                        "opening": 13.6,
+                        "rail": 2,
+                        "u": 53.99999999999999,
+                        "wall": 1.5,
+                        "width": 39,
+                        "wingThickness": 1.5
+                      }
+                    },
+                    "vertices": [
+                      {
+                        "d": 252.9,
+                        "id": "channel0",
+                        "u": 53.99999999999999
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel1",
+                        "u": 51.54999999999999
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel2",
+                        "u": 51.54999999999999
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel3",
+                        "u": 52.49999999999999
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel4",
+                        "u": 52.49999999999999
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel5",
+                        "u": 36.999999999999986
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel6",
+                        "u": 36.999999999999986
+                      },
+                      {
+                        "d": 254.9,
+                        "id": "channel7",
+                        "u": 37.94999999999999
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel8",
+                        "u": 37.94999999999999
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel9",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 255.64999999999998,
+                        "id": "channel10",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 255.64999999999998,
+                        "id": "channel11",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel12",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 252.9,
+                        "id": "channel13",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 259.9,
+                        "id": "channel14",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 259.9,
+                        "id": "channel15",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 257.15,
+                        "id": "channel16",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 257.15,
+                        "id": "channel17",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel18",
+                        "u": 35.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel19",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 267,
+                        "id": "channel20",
+                        "u": 32.999999999999986
+                      },
+                      {
+                        "d": 267,
+                        "id": "channel21",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel22",
+                        "u": 31.499999999999986
+                      },
+                      {
+                        "d": 270,
+                        "id": "channel23",
+                        "u": 14.999999999999986
+                      },
+                      {
+                        "d": 271.5,
+                        "id": "channel24",
+                        "u": 14.999999999999986
+                      },
+                      {
+                        "d": 271.5,
+                        "id": "channel25",
+                        "u": 53.99999999999999
+                      }
+                    ]
+                  }
+                }
+              ],
+              "style": "ring",
+              "thickness": 12
+            },
+            {
+              "center": true,
+              "channelEnabled": false,
+              "height": 2400,
+              "id": "ceiling_area_fmvqf798i1",
+              "name": "吊顶区域 5",
+              "polygon": [
+                [
+                  3939,
+                  4660
+                ],
+                [
+                  6500,
+                  4660
+                ],
+                [
+                  6500,
+                  5290
+                ],
+                [
+                  3939,
+                  5290
+                ]
+              ],
+              "sections": [
+                {
+                  "name": "普通边吊 · 无灯槽",
+                  "section": {
+                    "material": "gypsum",
+                    "vertices": [
+                      {
+                        "d": 0,
+                        "id": "v0",
+                        "u": 0
+                      },
+                      {
+                        "d": 0,
+                        "id": "v1",
+                        "u": 12
+                      },
+                      {
+                        "d": 238,
+                        "id": "v2",
+                        "u": 12
+                      },
+                      {
+                        "d": 238,
+                        "id": "v3",
+                        "u": 288
+                      },
+                      {
+                        "d": 0,
+                        "id": "v4",
+                        "u": 288
+                      },
+                      {
+                        "d": 0,
+                        "id": "v5",
+                        "u": 300
+                      },
+                      {
+                        "d": 250,
+                        "id": "v6",
+                        "u": 300
+                      },
+                      {
+                        "d": 250,
+                        "id": "v7",
+                        "u": 0
+                      }
+                    ]
+                  }
+                }
+              ],
+              "style": "flat",
+              "thickness": 12
+            }
+          ],
+          "version": 1
+        },
         "demolished": [],
         "designNote": "",
         "drawing": {
@@ -7729,14 +9348,14 @@
                   "doorOpen": false,
                   "drawers": [
                     {
-                      "height": 160,
+                      "height": 171,
                       "open": false
                     }
                   ],
                   "shelves": [
-                    646,
-                    1132,
-                    1618
+                    692,
+                    1213,
+                    1733
                   ]
                 },
                 {
@@ -7745,14 +9364,14 @@
                   "doorOpen": false,
                   "drawers": [
                     {
-                      "height": 160,
+                      "height": 171,
                       "open": false
                     }
                   ],
                   "shelves": [
-                    646,
-                    1132,
-                    1618
+                    692,
+                    1213,
+                    1733
                   ]
                 },
                 {
@@ -7760,14 +9379,14 @@
                   "doorOpen": false,
                   "drawers": [
                     {
-                      "height": 160,
+                      "height": 171,
                       "open": false
                     }
                   ],
                   "shelves": [
-                    646,
-                    1132,
-                    1618
+                    692,
+                    1213,
+                    1733
                   ]
                 },
                 {
@@ -7775,14 +9394,14 @@
                   "doorOpen": false,
                   "drawers": [
                     {
-                      "height": 160,
+                      "height": 171,
                       "open": false
                     }
                   ],
                   "shelves": [
-                    646,
-                    1132,
-                    1618
+                    692,
+                    1213,
+                    1733
                   ]
                 }
               ],
@@ -7792,10 +9411,10 @@
               "version": 1
             },
             "color": "#efe6d8",
-            "cx": 4759,
+            "cx": 4757.75,
             "cy": 4975,
             "d": 630,
-            "h": 2200,
+            "h": 2350,
             "id": "fmv3wzkb515",
             "name": "衣柜",
             "rot": 180,
@@ -7950,10 +9569,9 @@
           },
           {
             "color": "#f1f0ed",
-            "cx": 7054,
-            "cy": 7980,
+            "cx": 7060.5,
+            "cy": 7860.5,
             "d": 595,
-            "groupId": "fmv8z8x921",
             "h": 1910,
             "id": "fmv5a1yhn1",
             "name": "纯平四门冰箱（双抽屉）",
@@ -8012,8 +9630,8 @@
           },
           {
             "color": "#dfe6ea",
-            "cx": 8646,
-            "cy": 9865,
+            "cx": 9302,
+            "cy": 9820,
             "d": 60,
             "h": 1800,
             "id": "fmv5ayw571",
@@ -8027,7 +9645,7 @@
               "columns": [
                 {
                   "door": "double",
-                  "doorBottom": 2778,
+                  "doorBottom": 2728,
                   "doorOpen": false,
                   "drawers": [
                     {
@@ -8041,8 +9659,34 @@
                   ],
                   "handle": "none",
                   "pegboard": true,
+                  "pegboardHatch": {
+                    "bottom": 490,
+                    "h": 1280,
+                    "hinge": "left",
+                    "left": 125,
+                    "open": false,
+                    "panels": [
+                      {
+                        "bottom": 490,
+                        "h": 350,
+                        "hinge": "left",
+                        "left": 125,
+                        "open": false,
+                        "w": 450
+                      },
+                      {
+                        "bottom": 1490,
+                        "h": 280,
+                        "hinge": "left",
+                        "left": 125,
+                        "open": false,
+                        "w": 500
+                      }
+                    ],
+                    "w": 500
+                  },
                   "shelves": [
-                    2760
+                    2710
                   ],
                   "width": 810
                 }
@@ -8080,17 +9724,27 @@
                   "door": "double",
                   "doorAngle": 90,
                   "doorOpen": false,
+                  "doorSections": {
+                    "lower": {
+                      "angle": 90,
+                      "open": false
+                    },
+                    "upper": {
+                      "angle": 90,
+                      "open": false
+                    }
+                  },
                   "drawerColumns": 2,
                   "drawers": [
                     {
-                      "height": 150,
+                      "height": 147,
                       "open": false
                     }
                   ],
                   "handle": "none",
                   "shelves": [
-                    577,
-                    1862
+                    565,
+                    1823
                   ],
                   "width": 934
                 }
@@ -8098,10 +9752,10 @@
               "doorMaxAngle": 90,
               "entry": {
                 "editable": true,
-                "lowerHeight": 620,
-                "nicheHeight": 379,
+                "lowerHeight": 607,
+                "nicheHeight": 371,
                 "openSide": "right",
-                "shoeHeight": 360
+                "shoeHeight": 353
               },
               "plinth": 0,
               "template": "entry-console",
@@ -8112,7 +9766,7 @@
             "cx": 9931,
             "cy": 8900,
             "d": 350,
-            "h": 2400,
+            "h": 2350,
             "id": "fmv5b78gp2",
             "name": "玄关柜二 · 置物台与鞋柜",
             "rot": 90,
@@ -8129,38 +9783,38 @@
                   "drawerColumns": 2,
                   "drawers": [],
                   "shelves": [
-                    463,
-                    926,
-                    1388,
-                    1851
+                    453,
+                    906,
+                    1358,
+                    1811
                   ],
                   "width": 423
                 },
                 {
                   "door": "double",
                   "doorAngle": 90,
-                  "doorOpen": false,
+                  "doorOpen": true,
                   "drawerColumns": 2,
                   "drawers": [],
                   "shelves": [
-                    463,
-                    926,
-                    1388,
-                    1851
+                    453,
+                    906,
+                    1358,
+                    1811
                   ],
                   "width": 882
                 },
                 {
                   "door": "double",
                   "doorAngle": 90,
-                  "doorOpen": false,
+                  "doorOpen": true,
                   "drawerColumns": 2,
                   "drawers": [],
                   "shelves": [
-                    463,
-                    926,
-                    1388,
-                    1851
+                    453,
+                    906,
+                    1358,
+                    1811
                   ],
                   "topOpen": false,
                   "width": 873
@@ -8175,7 +9829,7 @@
             "cx": 9931,
             "cy": 7290,
             "d": 350,
-            "h": 2400,
+            "h": 2350,
             "id": "fmv5bl44k1",
             "name": "收纳柜",
             "rot": 90,
@@ -8296,7 +9950,7 @@
                   ],
                   "handle": "none",
                   "shelves": [],
-                  "width": 1022.5
+                  "width": 981
                 }
               ],
               "doorMaxAngle": 90,
@@ -8317,15 +9971,14 @@
             },
             "color": "#f3f1ec",
             "cx": 7043,
-            "cy": 7459.75,
+            "cy": 7361,
             "d": 630,
-            "groupId": "fmv8z8x921",
             "h": 2400,
             "id": "fmv62bwbp1",
             "name": "餐边柜 · 冰箱位与玻璃展示柜",
             "rot": 270,
             "type": "cabinet",
-            "w": 1911.5
+            "w": 1870
           },
           {
             "color": "#cfc6b8",
@@ -8405,7 +10058,27 @@
                 {
                   "cornerPartitions": {
                     "left": true,
-                    "right": true
+                    "right": false
+                  },
+                  "doorAngle": 90,
+                  "doorLeaves": [
+                    {
+                      "angle": 90,
+                      "open": true
+                    },
+                    {
+                      "angle": 90,
+                      "open": false
+                    }
+                  ],
+                  "doorOpen": true,
+                  "role": "sink",
+                  "run": 1,
+                  "width": 800
+                },
+                {
+                  "cornerPartitions": {
+                    "left": true
                   },
                   "doorAngle": 90,
                   "doorLeaves": [
@@ -8419,32 +10092,12 @@
                     }
                   ],
                   "doorOpen": true,
-                  "role": "sink",
-                  "run": 1,
-                  "width": 800
-                },
-                {
-                  "cornerPartitions": {
-                    "left": false
-                  },
-                  "doorAngle": 90,
-                  "doorLeaves": [
-                    {
-                      "angle": 90,
-                      "open": false
-                    },
-                    {
-                      "angle": 90,
-                      "open": false
-                    }
-                  ],
-                  "doorOpen": false,
                   "role": "door",
                   "run": 2,
                   "width": 737.5
                 },
                 {
-                  "role": "empty",
+                  "role": "door",
                   "run": 0,
                   "width": 980
                 },
@@ -8475,7 +10128,13 @@
                     ]
                   ]
                 ],
-                "depths": []
+                "depths": [
+                  {
+                    "depth": 450,
+                    "index": 3,
+                    "rearService": true
+                  }
+                ]
               },
               "runDepths": [
                 600,
@@ -8742,8 +10401,8 @@
           },
           {
             "color": "#68432e",
-            "cx": 7130,
-            "cy": 5220,
+            "cx": 3303,
+            "cy": 7287,
             "d": 400,
             "h": 720,
             "id": "fmvg2upqp1",
@@ -9085,7 +10744,7 @@
           },
           {
             "color": "#c6a258",
-            "cx": 7436,
+            "cx": 7456,
             "cy": 10090,
             "d": 180,
             "h": 600,
@@ -9100,6 +10759,57 @@
             "rot": 180,
             "type": "heating_manifold",
             "w": 800
+          },
+          {
+            "color": "#eceeea",
+            "cx": 10166,
+            "cy": 9735,
+            "d": 120,
+            "h": 330,
+            "id": "fmvnobafb1",
+            "mountHeight": 500,
+            "name": "弱电箱（尺寸自定）",
+            "rot": 90,
+            "type": "electrical_box_weak",
+            "w": 430
+          },
+          {
+            "color": "#eceeea",
+            "cx": 10166,
+            "cy": 9760,
+            "d": 120,
+            "h": 260,
+            "id": "fmvnobf1j2",
+            "mountHeight": 1500,
+            "name": "强电箱（尺寸自定）",
+            "rot": 90,
+            "type": "electrical_box_strong",
+            "w": 480
+          },
+          {
+            "color": "#41474b",
+            "cx": 7672,
+            "cy": 8371,
+            "d": 150,
+            "h": 2400,
+            "id": "fmvnq6xbq1",
+            "name": "三联动推拉门",
+            "rot": 0,
+            "slidingTrackOrder": "leading-back",
+            "type": "tripleslidingdoor",
+            "w": 1888
+          },
+          {
+            "color": "#41474b",
+            "cx": 8691,
+            "cy": 9245.5,
+            "d": 150,
+            "h": 2400,
+            "id": "fmvnq87iq2",
+            "name": "三联动推拉门",
+            "rot": 270,
+            "type": "tripleslidingdoor",
+            "w": 1899
           }
         ],
         "furnitureDatum": "finished-floor",
@@ -9204,7 +10914,7 @@
               "id": "layer_fmvg9iz545",
               "locked": false,
               "name": "厨房地柜",
-              "visible": false
+              "visible": true
             },
             {
               "id": "layer_fmvg9jp8o6",
@@ -9394,9 +11104,9 @@
           "clearances": false,
           "cut": 2.8,
           "furn": true,
-          "hour": 14,
+          "hour": 10.75,
           "labels": false,
-          "lamps": false,
+          "lamps": true,
           "night": false,
           "wallNumbers": true
         },
