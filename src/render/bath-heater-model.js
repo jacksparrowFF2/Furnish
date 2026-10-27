@@ -19,10 +19,13 @@ function build(T,f){
   box('light-diffuser',w-2*edge,rim,d-2*edge,0,rim/2,0,glow);
   if(h>rim)box('light-housing',w,h-rim,d,0,rim+(h-rim)/2,0,white);
   // The numeric solid recorder intentionally omits non-geometric lights.
-  if(T.SpotLight&&T.Object3D)for(const side of [-1,1]){
-   const lamp=new T.SpotLight(light.color,light.previewCandela,12,Math.PI/3,.6,2),target=new T.Object3D();
-   lamp.position.set(0,base-.001,side*d/4);target.position.set(0,base-1,side*d/4);lamp.target=target;
-   lamp.userData.ceilingPanelLight=true;g.add(lamp,target);
+  if(T.SpotLight&&T.Object3D)for(let row=0;row<light.rows;row++)for(let col=0;col<light.columns;col++){
+   // Integrate samples over the diffuser. A fully feathered downward hemisphere
+   // avoids the cone edge of a spotlight on nearby walls; no finite range cutoff.
+   const lamp=new T.SpotLight(light.color,light.previewCandela/(light.rows*light.columns),0,Math.PI/2,1,2),target=new T.Object3D();
+   const x=((col+.5)/light.columns-.5)*(w-2*edge),z=((row+.5)/light.rows-.5)*(d-2*edge);
+   lamp.position.set(x,base-.001,z);target.position.set(x,base-1,z);lamp.target=target;
+   lamp.name='Panel diffuser '+row+':'+col;lamp.userData.ceilingPanelLight=true;g.add(lamp,target);
   }
   return g;
  }
