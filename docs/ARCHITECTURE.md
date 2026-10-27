@@ -4,7 +4,7 @@
 
 2026-10-27（灯带照明）：ceiling-model从生产lightLayout发光面派生长度加权柔光及局部反射近似，不改实体或持久字段；顶灯按钮沿原sync即时重建建筑。实时近似光源不进入Blender快照，灯光阴影随重建释放。见[灯带实时照明](CEILINGS.md#灯带实时照明2026-10-27)。
 
-2026-10-27（厨房平板灯）：product-rules登记panelLight与ceilingPanel能力，bath-heater-model复用整板设备入口生成窄框／发光面及2×3采样的向下半球柔光，downlight-model.setLights统一控制。原整板开口、数值实体、缓存／确认和mutate保存链路保持，无新增加载或持久字段。见 [厨房平板灯](KITCHEN-PANEL-LIGHT.md)。
+2026-10-27（厨房平板灯）：product-rules登记panelLight与ceilingPanel能力，bath-heater-model复用整板设备入口生成窄框／发光面及2×3采样的向下半球柔光／两处有阴影的局部向上反射近似，downlight-model.setLights统一控制。原整板开口、数值实体、缓存／确认和mutate保存链路保持，无新增加载或持久字段。见 [厨房平板灯](KITCHEN-PANEL-LIGHT.md)。
 2026-10-27（SE2浴霸）：product-rules以ceilingPanel.profile区分SE2与既有通用占位，bath-heater-model复用加载入口及生产实体记录；目录、二维和属性共享产品能力。无新字段或脚本，整板开口／缓存／确认／mutate保存保持。见[模型契约](BATH-HEATER-AOPU-SE2.md)。
 
 

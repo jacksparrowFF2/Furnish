@@ -17,9 +17,8 @@ function snapshot(T,{groups,camera,sun,material=o=>o.material,includeCeilings=fa
  const partFields=new Set(['cabinetSection','cabinetSide','cabinetShelf','cabinetDivider','cabinetBay','cabinetDrawerBoard','kitchenModule','kitchenSlab','kitchenCornerBoard','kitchenCornerIndex','laundrySidePanel']);
  const identityValue=v=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(k=>[k,identityValue(v[k])])):v;
  function visit(o,owner='',shown=true,part='',layer='',ownerNode=null,roles=[],sources=[]){
-  // Strip wash/bounce lights approximate raster illumination only. Blender uses
-  // the exported emissive strip geometry and its own light transport.
-  if(o.userData.ceilingStripLight)return;
+  // Raster-only strip and panel bounce approximations are not physical lamps.
+  if(o.userData.ceilingStripLight||o.userData.ceilingPanelBounce)return;
   shown=shown&&o.visible;if(!shown&&!includeHidden||o.isCSS2DObject||o.isLine||o.isPoints||o.isHelper||o.userData.modelError||o.userData.wallOriginMarker)return;
   if(o.userData.fid&&o.userData.fid!==owner){owner=o.userData.fid;part='';ownerNode=o;roles=[];sources=[];}
   const architectureRoles={};for(const [field,keys] of Object.entries({wallTiling:['wallId','index','side','roomId','band','bandJoint'],wallFinish:['wallId','index','layer'],floorLayer:['roomId','layer'],ceiling:['id','part']})){if(o.userData[field])architectureRoles[field]=Object.fromEntries(keys.filter(k=>o.userData[field][k]!==undefined).map(k=>[k,o.userData[field][k]]));}
