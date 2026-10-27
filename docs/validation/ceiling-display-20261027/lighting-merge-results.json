@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "ceiling-display",
+    "ceiling-lighting"
+  ],
+  "results": [
+    {
+      "name": "ceiling-display",
+      "status": "PASS",
+      "seconds": 27.8,
+      "log": "ceiling-display.log"
+    },
+    {
+      "name": "ceiling-lighting",
+      "status": "PASS",
+      "seconds": 75.9,
+      "log": "ceiling-lighting.log"
+    }
+  ],
+  "notRun": []
+}
