@@ -27,6 +27,15 @@ function build(T,f){
    lamp.position.set(x,base-.001,z);target.position.set(x,base-1,z);lamp.target=target;
    lamp.name='Panel diffuser '+row+':'+col;lamp.userData.ceilingPanelLight=true;g.add(lamp,target);
   }
+  // Raster-only returned light from lower room surfaces; shadowed to stay local.
+  if(T.SpotLight&&T.Object3D)for(const side of [-1,1]){
+   const lamp=new T.SpotLight(light.color,light.bounceCandela/2,light.bounceReach/1000,Math.PI*.45,1,2),target=new T.Object3D();
+   const y=base-light.bounceDrop/1000,z=side*d/4;
+   lamp.position.set(0,y,z);target.position.set(0,y+1,z);lamp.target=target;
+   lamp.name='Panel reflected light '+side;lamp.userData.ceilingPanelLight=true;lamp.userData.ceilingPanelBounce=true;
+   lamp.castShadow=true;lamp.shadow.mapSize.set(512,512);lamp.shadow.camera.near=.02;lamp.shadow.bias=-.0001;lamp.shadow.normalBias=.015;
+   g.add(lamp,target);
+  }
   return g;
  }
  box('face-back',w,rim,d*.69,0,rim/2,-d*.155,white);
