@@ -1,0 +1,1 @@
+{"case":"fotile-previews","status":"PASS","result":[{"mode":"file","preview":"hob","status":"PASS","appliances":1},{"mode":"file","preview":"hood","status":"PASS","appliances":1},{"mode":"http","preview":"hob","status":"PASS","appliances":1},{"mode":"http","preview":"hood","status":"PASS","appliances":1}]}

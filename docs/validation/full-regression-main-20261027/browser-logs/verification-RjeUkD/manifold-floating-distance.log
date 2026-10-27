@@ -1,0 +1,236 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "planProjection": true,
+    "physicalBandPreserved": true,
+    "topView": true,
+    "drag": true,
+    "canvasOperable": true,
+    "errorRetained": true,
+    "successAutoClose": true,
+    "enterAutoClose": true,
+    "undoRedo": true,
+    "refresh": true,
+    "narrow": true,
+    "production3D": true,
+    "applyMs": 74,
+    "realApplyMs": 1737,
+    "realProfile": {
+      "normalizeObstacles": {
+        "calls": 2,
+        "ms": 357.19999998807907
+      },
+      "effectivePlan": {
+        "calls": 8,
+        "ms": 141.89999997615814
+      },
+      "roomsAtHeight": {
+        "calls": 65,
+        "ms": 147.69999992847443
+      },
+      "placeSelectionAtDirectionalGap": {
+        "calls": 1,
+        "ms": 310.40000000596046
+      },
+      "save": {
+        "calls": 1,
+        "ms": 6.800000011920929
+      },
+      "snapshot": {
+        "calls": 1,
+        "ms": 7
+      },
+      "commit": {
+        "calls": 1,
+        "ms": 269.5
+      },
+      "renderRooms": {
+        "calls": 1,
+        "ms": 20.69999998807907
+      },
+      "renderFurn": {
+        "calls": 1,
+        "ms": 103.19999998807907
+      },
+      "renderWalls": {
+        "calls": 1,
+        "ms": 4.200000017881393
+      },
+      "renderDims": {
+        "calls": 1,
+        "ms": 0.09999999403953552
+      },
+      "directionalMeasurements": {
+        "calls": 2,
+        "ms": 9.799999982118607
+      },
+      "renderMeasure": {
+        "calls": 1,
+        "ms": 9.699999988079071
+      },
+      "renderSelectedGeometry": {
+        "calls": 1,
+        "ms": 3.9000000059604645
+      },
+      "renderSel": {
+        "calls": 1,
+        "ms": 3.9000000059604645
+      },
+      "spaceCheck": {
+        "calls": 1,
+        "ms": 252.89999997615814
+      },
+      "renderPanel": {
+        "calls": 1,
+        "ms": 376.09999999403954
+      },
+      "review": {
+        "calls": 1,
+        "ms": 505.5
+      },
+      "renderAll": {
+        "calls": 1,
+        "ms": 1067.800000011921
+      }
+    },
+    "timing": [
+      {
+        "name": "before",
+        "ms": 474.2999999821186,
+        "roomDerivations": 1,
+        "position": [
+          7436,
+          10090
+        ]
+      },
+      {
+        "name": "after",
+        "ms": 368.5,
+        "roomDerivations": 1,
+        "position": [
+          7436,
+          10090
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "planProjection": true,
+    "physicalBandPreserved": true,
+    "topView": true,
+    "drag": true,
+    "canvasOperable": true,
+    "errorRetained": true,
+    "successAutoClose": true,
+    "enterAutoClose": true,
+    "undoRedo": true,
+    "refresh": true,
+    "narrow": true,
+    "production3D": true,
+    "applyMs": 70,
+    "realApplyMs": 2030,
+    "realProfile": {
+      "normalizeObstacles": {
+        "calls": 2,
+        "ms": 415.90000000596046
+      },
+      "effectivePlan": {
+        "calls": 8,
+        "ms": 150.40000000596046
+      },
+      "roomsAtHeight": {
+        "calls": 65,
+        "ms": 202.40000009536743
+      },
+      "placeSelectionAtDirectionalGap": {
+        "calls": 1,
+        "ms": 355.80000001192093
+      },
+      "save": {
+        "calls": 1,
+        "ms": 7.5999999940395355
+      },
+      "snapshot": {
+        "calls": 1,
+        "ms": 9.200000017881393
+      },
+      "commit": {
+        "calls": 1,
+        "ms": 322.40000000596046
+      },
+      "renderRooms": {
+        "calls": 1,
+        "ms": 19.599999994039536
+      },
+      "renderFurn": {
+        "calls": 1,
+        "ms": 100.19999998807907
+      },
+      "renderWalls": {
+        "calls": 1,
+        "ms": 4.0999999940395355
+      },
+      "renderDims": {
+        "calls": 1,
+        "ms": 0.09999999403953552
+      },
+      "directionalMeasurements": {
+        "calls": 2,
+        "ms": 17.200000017881393
+      },
+      "renderMeasure": {
+        "calls": 1,
+        "ms": 17.200000017881393
+      },
+      "renderSelectedGeometry": {
+        "calls": 1,
+        "ms": 2.0999999940395355
+      },
+      "renderSel": {
+        "calls": 1,
+        "ms": 2.0999999940395355
+      },
+      "spaceCheck": {
+        "calls": 1,
+        "ms": 314.7999999821186
+      },
+      "renderPanel": {
+        "calls": 1,
+        "ms": 448.59999999403954
+      },
+      "review": {
+        "calls": 1,
+        "ms": 611.0999999940395
+      },
+      "renderAll": {
+        "calls": 1,
+        "ms": 1245.0999999940395
+      }
+    },
+    "timing": [
+      {
+        "name": "before",
+        "ms": 373.09999999403954,
+        "roomDerivations": 1,
+        "position": [
+          7436,
+          10090
+        ]
+      },
+      {
+        "name": "after",
+        "ms": 317.5,
+        "roomDerivations": 1,
+        "position": [
+          7436,
+          10090
+        ]
+      }
+    ],
+    "errors": []
+  }
+]

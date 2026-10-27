@@ -1,0 +1,1 @@
+{"case":"group-directional-placement","status":"PASS","result":{"status":"PASS","realGrouping":true,"wholeGroupSelection":true,"fourDirections":true,"allMembersSameTranslation":true,"relativePosePreserved":true,"referenceFixed":true,"cancel":true,"undoRedo":true,"rotatedView":true,"atomicObstacleAndLock":true,"mobile390":true,"saveAndRefresh":true,"errors":[]}}

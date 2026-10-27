@@ -1,0 +1,1443 @@
+{
+  "passed": true,
+  "cases": 193,
+  "retiredCreation": [
+    "ceilings",
+    "ceiling-corners"
+  ],
+  "initialFailures": [
+    {
+      "name": "ceiling-continuous-light",
+      "status": "FAIL",
+      "seconds": 32.4,
+      "log": "ceiling-continuous-light.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "FAIL",
+      "seconds": 2.9,
+      "log": "ceiling-end-caps.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceilings",
+      "status": "FAIL",
+      "seconds": 32.4,
+      "log": "ceilings.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-divider-labels",
+      "status": "FAIL",
+      "seconds": 18.8,
+      "log": "kitchen-divider-labels.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-panel-devices",
+      "status": "FAIL",
+      "seconds": 12.5,
+      "log": "ceiling-panel-devices.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "ceiling-reuse-pick",
+      "status": "FAIL",
+      "seconds": 33.7,
+      "log": "ceiling-reuse-pick.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "ceiling-corners",
+      "status": "FAIL",
+      "seconds": 32.3,
+      "log": "ceiling-corners.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "merged-cache",
+      "status": "FAIL",
+      "seconds": 1.3,
+      "log": "merged-cache.log",
+      "root": "verification-VKm6gH"
+    }
+  ],
+  "results": [
+    {
+      "name": "aircon-midea",
+      "status": "PASS",
+      "seconds": 28.8,
+      "log": "aircon-midea.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "appliance-module-boundaries",
+      "status": "PASS",
+      "seconds": 3.2,
+      "log": "appliance-module-boundaries.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "aquarium",
+      "status": "PASS",
+      "seconds": 40.6,
+      "log": "aquarium.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "bay-assemblies",
+      "status": "PASS",
+      "seconds": 21.2,
+      "log": "bay-assemblies.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "beam-body",
+      "status": "PASS",
+      "seconds": 42.7,
+      "log": "beam-body.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "beam-heights",
+      "status": "PASS",
+      "seconds": 32.7,
+      "log": "beam-heights.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "blender-render",
+      "status": "PASS",
+      "seconds": 44.2,
+      "log": "blender-render.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "block-placeholder",
+      "status": "PASS",
+      "seconds": 43.5,
+      "log": "block-placeholder.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "cabinet-boundary-snapping",
+      "status": "PASS",
+      "seconds": 20.5,
+      "log": "cabinet-boundary-snapping.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "cabinet-catalog",
+      "status": "PASS",
+      "seconds": 16.1,
+      "log": "cabinet-catalog.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "cabinet-custom-fronts",
+      "status": "PASS",
+      "seconds": 107.8,
+      "log": "cabinet-custom-fronts.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "cabinet-dimensions",
+      "status": "PASS",
+      "seconds": 11.8,
+      "log": "cabinet-dimensions.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "cabinet-divider-growth",
+      "status": "PASS",
+      "seconds": 18.5,
+      "log": "cabinet-divider-growth.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "cabinet-door-coverage",
+      "status": "PASS",
+      "seconds": 5.8,
+      "log": "cabinet-door-coverage.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "cabinet-doors",
+      "status": "PASS",
+      "seconds": 28.3,
+      "log": "cabinet-doors.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "cabinet-drawer-dimensions",
+      "status": "PASS",
+      "seconds": 7.1,
+      "log": "cabinet-drawer-dimensions.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "cabinet-edit-operations",
+      "status": "PASS",
+      "seconds": 55.4,
+      "log": "cabinet-edit-operations.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "cabinet-interior",
+      "status": "PASS",
+      "seconds": 16.9,
+      "log": "cabinet-interior.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "cabinet-layout",
+      "status": "PASS",
+      "seconds": 4,
+      "log": "cabinet-layout.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "cabinet-module-widths",
+      "status": "PASS",
+      "seconds": 30.5,
+      "log": "cabinet-module-widths.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 23.3,
+      "log": "cabinet-object-inspector.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "cabinet-opening-3d",
+      "status": "PASS",
+      "seconds": 33.4,
+      "log": "cabinet-opening-3d.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "cabinet-panel",
+      "status": "PASS",
+      "seconds": 13,
+      "log": "cabinet-panel.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "cabinet-setting-inheritance",
+      "status": "PASS",
+      "seconds": 18.3,
+      "log": "cabinet-setting-inheritance.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "cabinet-simple",
+      "status": "PASS",
+      "seconds": 37.5,
+      "log": "cabinet-simple.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "cat-tree",
+      "status": "PASS",
+      "seconds": 29.2,
+      "log": "cat-tree.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "catalog-library",
+      "status": "PASS",
+      "seconds": 18.7,
+      "log": "catalog-library.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 13.8,
+      "log": "ceiling-aluminum.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-assembly",
+      "status": "PASS",
+      "seconds": 26.1,
+      "log": "ceiling-assembly.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "ceiling-beam-reference",
+      "status": "PASS",
+      "seconds": 11.2,
+      "log": "ceiling-beam-reference.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-boundaries",
+      "status": "PASS",
+      "seconds": 21.5,
+      "log": "ceiling-boundaries.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-components",
+      "status": "PASS",
+      "seconds": 22.9,
+      "log": "ceiling-components.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "ceiling-contact",
+      "status": "PASS",
+      "seconds": 25.5,
+      "log": "ceiling-contact.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-continuous-light",
+      "status": "PASS",
+      "seconds": 15.3,
+      "log": "ceiling-continuous-light.log",
+      "root": "verification-zEbnaS"
+    },
+    {
+      "name": "ceiling-coplanar-camera",
+      "status": "PASS",
+      "seconds": 16,
+      "log": "ceiling-coplanar-camera.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "PASS",
+      "seconds": 37.3,
+      "log": "ceiling-end-caps.log",
+      "root": "verification-sISrXe"
+    },
+    {
+      "name": "ceiling-upgrade",
+      "status": "PASS",
+      "seconds": 10.1,
+      "log": "ceiling-upgrade.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 33.3,
+      "log": "ceiling-design.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-edge-distances",
+      "status": "PASS",
+      "seconds": 17.7,
+      "log": "ceiling-edge-distances.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "ceiling-edges",
+      "status": "PASS",
+      "seconds": 21.2,
+      "log": "ceiling-edges.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-live",
+      "status": "PASS",
+      "seconds": 24,
+      "log": "ceiling-live.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "ceiling-optional-cove",
+      "status": "PASS",
+      "seconds": 3.6,
+      "log": "ceiling-optional-cove.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-overall-switch",
+      "status": "PASS",
+      "seconds": 21.6,
+      "log": "ceiling-overall-switch.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-panel-devices",
+      "status": "PASS",
+      "seconds": 24.6,
+      "log": "ceiling-panel-devices.log",
+      "root": "verification-UodroL"
+    },
+    {
+      "name": "ceiling-panel-layout",
+      "status": "PASS",
+      "seconds": 21,
+      "log": "ceiling-panel-layout.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-reference-snapping",
+      "status": "PASS",
+      "seconds": 20.6,
+      "log": "ceiling-reference-snapping.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-reuse-pick",
+      "status": "PASS",
+      "seconds": 27.2,
+      "log": "ceiling-reuse-pick.log",
+      "root": "verification-UodroL"
+    },
+    {
+      "name": "ceiling-section-interaction",
+      "status": "PASS",
+      "seconds": 30.3,
+      "log": "ceiling-section-interaction.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "ceiling-style-flow",
+      "status": "PASS",
+      "seconds": 18.9,
+      "log": "ceiling-style-flow.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "ceiling-uniform-inset",
+      "status": "PASS",
+      "seconds": 17.5,
+      "log": "ceiling-uniform-inset.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "cherry-coffee-table",
+      "status": "PASS",
+      "seconds": 28.5,
+      "log": "cherry-coffee-table.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "current-bays",
+      "status": "PASS",
+      "seconds": 92.5,
+      "log": "current-bays.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "current-furniture",
+      "status": "PASS",
+      "seconds": 25.5,
+      "log": "current-furniture.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "dimension-density",
+      "status": "PASS",
+      "seconds": 7.5,
+      "log": "dimension-density.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "directional-config-order",
+      "status": "PASS",
+      "seconds": 3.2,
+      "log": "directional-config-order.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "directional-distances",
+      "status": "PASS",
+      "seconds": 2.7,
+      "log": "directional-distances.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "directional-heights",
+      "status": "PASS",
+      "seconds": 2.8,
+      "log": "directional-heights.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "directional-kitchen-solids",
+      "status": "PASS",
+      "seconds": 3.9,
+      "log": "directional-kitchen-solids.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "directional-placement",
+      "status": "PASS",
+      "seconds": 3.2,
+      "log": "directional-placement.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "dishwasher-clearances",
+      "status": "PASS",
+      "seconds": 12.6,
+      "log": "dishwasher-clearances.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "dishwasher",
+      "status": "PASS",
+      "seconds": 24.3,
+      "log": "dishwasher.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "double-doors",
+      "status": "PASS",
+      "seconds": 17.2,
+      "log": "double-doors.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "drag-axis-lock",
+      "status": "PASS",
+      "seconds": 5.4,
+      "log": "drag-axis-lock.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "drag-feature-snapping",
+      "status": "PASS",
+      "seconds": 3.1,
+      "log": "drag-feature-snapping.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "drawing-export",
+      "status": "PASS",
+      "seconds": 1.4,
+      "log": "drawing-export.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "workflow-reimport",
+      "status": "PASS",
+      "seconds": 15.8,
+      "log": "workflow-reimport.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "drawing-readability",
+      "status": "PASS",
+      "seconds": 3.5,
+      "log": "drawing-readability.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "drawing",
+      "status": "PASS",
+      "seconds": 13.9,
+      "log": "drawing.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "electrical-boxes",
+      "status": "PASS",
+      "seconds": 23.9,
+      "log": "electrical-boxes.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "enclosed-boundaries",
+      "status": "PASS",
+      "seconds": 3.6,
+      "log": "enclosed-boundaries.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "tile-workspace",
+      "status": "PASS",
+      "seconds": 26.2,
+      "log": "tile-workspace.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "tile-workspace-complete",
+      "status": "PASS",
+      "seconds": 38.1,
+      "log": "tile-workspace-complete.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "tile-library",
+      "status": "PASS",
+      "seconds": 15.5,
+      "log": "tile-library.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "finish-miter-snap",
+      "status": "PASS",
+      "seconds": 14.8,
+      "log": "finish-miter-snap.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "floating-toolbar-proximity",
+      "status": "PASS",
+      "seconds": 4.5,
+      "log": "floating-toolbar-proximity.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "floating-toolbar",
+      "status": "PASS",
+      "seconds": 25.3,
+      "log": "floating-toolbar.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "folding-table-click",
+      "status": "PASS",
+      "seconds": 33.5,
+      "log": "folding-table-click.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "folding-table",
+      "status": "PASS",
+      "seconds": 32.5,
+      "log": "folding-table.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "fotile-previews",
+      "status": "PASS",
+      "seconds": 7.7,
+      "log": "fotile-previews.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "fotile",
+      "status": "PASS",
+      "seconds": 27.5,
+      "log": "fotile.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "full-width-drawers",
+      "status": "PASS",
+      "seconds": 6.6,
+      "log": "full-width-drawers.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "furniture-groups",
+      "status": "PASS",
+      "seconds": 5.4,
+      "log": "furniture-groups.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "room-net",
+      "status": "PASS",
+      "seconds": 7.5,
+      "log": "room-net.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "purchase-orders",
+      "status": "PASS",
+      "seconds": 15.4,
+      "log": "purchase-orders.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "furniture-labels",
+      "status": "PASS",
+      "seconds": 6.5,
+      "log": "furniture-labels.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "furniture-snapping-audit",
+      "status": "PASS",
+      "seconds": 22.5,
+      "log": "furniture-snapping-audit.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "furniture-solids",
+      "status": "PASS",
+      "seconds": 36.6,
+      "log": "furniture-solids.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "group-directional-placement",
+      "status": "PASS",
+      "seconds": 2.8,
+      "log": "group-directional-placement.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "hob-cutout",
+      "status": "PASS",
+      "seconds": 8.8,
+      "log": "hob-cutout.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "hob-link-options",
+      "status": "PASS",
+      "seconds": 23.1,
+      "log": "hob-link-options.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "hob-openings",
+      "status": "PASS",
+      "seconds": 2.4,
+      "log": "hob-openings.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "hood-bay",
+      "status": "PASS",
+      "seconds": 11.8,
+      "log": "hood-bay.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "hood-geometry",
+      "status": "PASS",
+      "seconds": 26.2,
+      "log": "hood-geometry.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-auto-avoid",
+      "status": "PASS",
+      "seconds": 5.5,
+      "log": "kitchen-auto-avoid.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-corner-leaves",
+      "status": "PASS",
+      "seconds": 6.4,
+      "log": "kitchen-corner-leaves.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-dish-basket",
+      "status": "PASS",
+      "seconds": 20.3,
+      "log": "kitchen-dish-basket.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-divider-input",
+      "status": "PASS",
+      "seconds": 4.7,
+      "log": "kitchen-divider-input.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-divider-labels",
+      "status": "PASS",
+      "seconds": 10.4,
+      "log": "kitchen-divider-labels.log",
+      "root": "verification-IJYxqz"
+    },
+    {
+      "name": "kitchen-dividers",
+      "status": "PASS",
+      "seconds": 7.1,
+      "log": "kitchen-dividers.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-door-pairing",
+      "status": "PASS",
+      "seconds": 11.4,
+      "log": "kitchen-door-pairing.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-door-widths",
+      "status": "PASS",
+      "seconds": 16.5,
+      "log": "kitchen-door-widths.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-drawer-boundaries",
+      "status": "PASS",
+      "seconds": 36.7,
+      "log": "kitchen-drawer-boundaries.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-drawer-snapping",
+      "status": "PASS",
+      "seconds": 9.9,
+      "log": "kitchen-drawer-snapping.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-drawer-tiers",
+      "status": "PASS",
+      "seconds": 13.6,
+      "log": "kitchen-drawer-tiers.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-edge-snapping",
+      "status": "PASS",
+      "seconds": 4.2,
+      "log": "kitchen-edge-snapping.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-elevations",
+      "status": "PASS",
+      "seconds": 9.6,
+      "log": "kitchen-elevations.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-gap-model",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "kitchen-gap-model.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-layout",
+      "status": "PASS",
+      "seconds": 39,
+      "log": "kitchen-layout.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-outer-handles",
+      "status": "PASS",
+      "seconds": 5.3,
+      "log": "kitchen-outer-handles.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-plinth",
+      "status": "PASS",
+      "seconds": 12.6,
+      "log": "kitchen-plinth.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-resize",
+      "status": "PASS",
+      "seconds": 3.9,
+      "log": "kitchen-resize.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-run-handles",
+      "status": "PASS",
+      "seconds": 5.3,
+      "log": "kitchen-run-handles.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-shelves",
+      "status": "PASS",
+      "seconds": 11.6,
+      "log": "kitchen-shelves.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-single-hinge",
+      "status": "PASS",
+      "seconds": 12.7,
+      "log": "kitchen-single-hinge.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-thin-end",
+      "status": "PASS",
+      "seconds": 6,
+      "log": "kitchen-thin-end.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-thin-resize",
+      "status": "PASS",
+      "seconds": 7.3,
+      "log": "kitchen-thin-resize.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-u",
+      "status": "PASS",
+      "seconds": 18.7,
+      "log": "kitchen-u.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-wall-adjust",
+      "status": "PASS",
+      "seconds": 17.3,
+      "log": "kitchen-wall-adjust.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-wall-anchor",
+      "status": "PASS",
+      "seconds": 2.5,
+      "log": "kitchen-wall-anchor.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen-wall-canvas",
+      "status": "PASS",
+      "seconds": 16.7,
+      "log": "kitchen-wall-canvas.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "kitchen-wall-drawers",
+      "status": "PASS",
+      "seconds": 12.3,
+      "log": "kitchen-wall-drawers.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "kitchen-wall-shelves",
+      "status": "PASS",
+      "seconds": 3.6,
+      "log": "kitchen-wall-shelves.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "kitchen",
+      "status": "PASS",
+      "seconds": 29,
+      "log": "kitchen.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "laundry-area",
+      "status": "PASS",
+      "seconds": 36.7,
+      "log": "laundry-area.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "laundry-basin-joins",
+      "status": "PASS",
+      "seconds": 6.7,
+      "log": "laundry-basin-joins.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "laundry-cabinet",
+      "status": "PASS",
+      "seconds": 28.4,
+      "log": "laundry-cabinet.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "laundry-catalog",
+      "status": "PASS",
+      "seconds": 18.7,
+      "log": "laundry-catalog.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "laundry-editing",
+      "status": "PASS",
+      "seconds": 13.6,
+      "log": "laundry-editing.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "laundry-resize-vessel",
+      "status": "PASS",
+      "seconds": 26.1,
+      "log": "laundry-resize-vessel.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "layer-location",
+      "status": "PASS",
+      "seconds": 26.6,
+      "log": "layer-location.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "layer-range",
+      "status": "PASS",
+      "seconds": 5.6,
+      "log": "layer-range.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "layer-sidebar",
+      "status": "PASS",
+      "seconds": 40.8,
+      "log": "layer-sidebar.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "legacy-cabinet-upgrade",
+      "status": "PASS",
+      "seconds": 20.7,
+      "log": "legacy-cabinet-upgrade.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "litter-box",
+      "status": "PASS",
+      "seconds": 26.4,
+      "log": "litter-box.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "measure-boundaries",
+      "status": "PASS",
+      "seconds": 5.4,
+      "log": "measure-boundaries.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "merged-cache",
+      "status": "PASS",
+      "seconds": 4.5,
+      "log": "merged-cache.log",
+      "root": "verification-IJYxqz"
+    },
+    {
+      "name": "model-entry",
+      "status": "PASS",
+      "seconds": 24.3,
+      "log": "model-entry.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "observation-layers",
+      "status": "PASS",
+      "seconds": 27.9,
+      "log": "observation-layers.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "pegboard-accessories",
+      "status": "PASS",
+      "seconds": 36.2,
+      "log": "pegboard-accessories.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "pegboard-hatches",
+      "status": "PASS",
+      "seconds": 32,
+      "log": "pegboard-hatches.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "pegboard-height",
+      "status": "PASS",
+      "seconds": 62.9,
+      "log": "pegboard-height.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "pegboard-local-hatches",
+      "status": "PASS",
+      "seconds": 41.5,
+      "log": "pegboard-local-hatches.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "pegboard-parts",
+      "status": "PASS",
+      "seconds": 43.3,
+      "log": "pegboard-parts.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "pet-feeder",
+      "status": "PASS",
+      "seconds": 23.9,
+      "log": "pet-feeder.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "pipebox",
+      "status": "PASS",
+      "seconds": 40.3,
+      "log": "pipebox.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 14.6,
+      "log": "portable-smoke.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "product-plan-outline",
+      "status": "PASS",
+      "seconds": 4.2,
+      "log": "product-plan-outline.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "product-rules",
+      "status": "PASS",
+      "seconds": 28.2,
+      "log": "product-rules.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "property-dedup",
+      "status": "PASS",
+      "seconds": 5.5,
+      "log": "property-dedup.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "property-open",
+      "status": "PASS",
+      "seconds": 9.3,
+      "log": "property-open.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "property-scopes",
+      "status": "PASS",
+      "seconds": 15.6,
+      "log": "property-scopes.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "purchase-relink",
+      "status": "PASS",
+      "seconds": 6.9,
+      "log": "purchase-relink.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "region-areas",
+      "status": "PASS",
+      "seconds": 3.6,
+      "log": "region-areas.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "robot-vacuum",
+      "status": "PASS",
+      "seconds": 11.2,
+      "log": "robot-vacuum.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "scene-clearances",
+      "status": "PASS",
+      "seconds": 29,
+      "log": "scene-clearances.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "scene-observation",
+      "status": "PASS",
+      "seconds": 51.9,
+      "log": "scene-observation.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "shoe-bench",
+      "status": "PASS",
+      "seconds": 25.1,
+      "log": "shoe-bench.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "short-wall-area-3d",
+      "status": "PASS",
+      "seconds": 35,
+      "log": "short-wall-area-3d.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "short-wall-zones",
+      "status": "PASS",
+      "seconds": 13.1,
+      "log": "short-wall-zones.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "short-walls",
+      "status": "PASS",
+      "seconds": 10.2,
+      "log": "short-walls.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "sink-linked-offset",
+      "status": "PASS",
+      "seconds": 26.4,
+      "log": "sink-linked-offset.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "sink-surface",
+      "status": "PASS",
+      "seconds": 5.2,
+      "log": "sink-surface.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "sink",
+      "status": "PASS",
+      "seconds": 27.3,
+      "log": "sink.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "stove-boundaries",
+      "status": "PASS",
+      "seconds": 2.4,
+      "log": "stove-boundaries.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "tank-preview",
+      "status": "PASS",
+      "seconds": 3.4,
+      "log": "tank-preview.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "tea-bar",
+      "status": "PASS",
+      "seconds": 39.8,
+      "log": "tea-bar.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "tea-table",
+      "status": "PASS",
+      "seconds": 24.5,
+      "log": "tea-table.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "tile-coplanar-wall",
+      "status": "PASS",
+      "seconds": 45.5,
+      "log": "tile-coplanar-wall.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "tile-multiselect",
+      "status": "PASS",
+      "seconds": 20,
+      "log": "tile-multiselect.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "tile-selection-outline",
+      "status": "PASS",
+      "seconds": 9.3,
+      "log": "tile-selection-outline.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "tile-shared-origin",
+      "status": "PASS",
+      "seconds": 12.2,
+      "log": "tile-shared-origin.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "tiling-render-alignment",
+      "status": "PASS",
+      "seconds": 19.3,
+      "log": "tiling-render-alignment.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "touchpad",
+      "status": "PASS",
+      "seconds": 34.3,
+      "log": "touchpad.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "tv-views",
+      "status": "PASS",
+      "seconds": 16.8,
+      "log": "tv-views.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "wall-face-snapping",
+      "status": "PASS",
+      "seconds": 26.9,
+      "log": "wall-face-snapping.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "wall-layer-finishes",
+      "status": "PASS",
+      "seconds": 15.7,
+      "log": "wall-layer-finishes.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "water-purifier",
+      "status": "PASS",
+      "seconds": 19.1,
+      "log": "water-purifier.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "beam-roof",
+      "status": "PASS",
+      "seconds": 27.9,
+      "log": "beam-roof.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "cut-board-motion",
+      "status": "PASS",
+      "seconds": 19.2,
+      "log": "cut-board-motion.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "dining-plan-order",
+      "status": "PASS",
+      "seconds": 4.2,
+      "log": "dining-plan-order.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "dxf-supplement",
+      "status": "PASS",
+      "seconds": 17.3,
+      "log": "dxf-supplement.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "furniture-recovery",
+      "status": "PASS",
+      "seconds": 18.1,
+      "log": "furniture-recovery.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "multi-region-merge",
+      "status": "PASS",
+      "seconds": 9.4,
+      "log": "multi-region-merge.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "pipe-collisions",
+      "status": "PASS",
+      "seconds": 19,
+      "log": "pipe-collisions.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "recessed-bay",
+      "status": "PASS",
+      "seconds": 7.6,
+      "log": "recessed-bay.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "manifold",
+      "status": "PASS",
+      "seconds": 19.4,
+      "log": "manifold.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "manifold-kitchen",
+      "status": "PASS",
+      "seconds": 17.2,
+      "log": "manifold-kitchen.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "downlight",
+      "status": "PASS",
+      "seconds": 29.5,
+      "log": "downlight.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "manifold-wall-finish",
+      "status": "PASS",
+      "seconds": 12.4,
+      "log": "manifold-wall-finish.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "manifold-zero-gap",
+      "status": "PASS",
+      "seconds": 15,
+      "log": "manifold-zero-gap.log",
+      "root": "verification-VKm6gH"
+    },
+    {
+      "name": "manifold-floating-distance",
+      "status": "PASS",
+      "seconds": 27.1,
+      "log": "manifold-floating-distance.log",
+      "root": "verification-RjeUkD"
+    },
+    {
+      "name": "telescopic-corners",
+      "status": "PASS",
+      "seconds": 44.9,
+      "log": "telescopic-corners.log",
+      "root": "verification-KNr0Wk"
+    },
+    {
+      "name": "telescopic-floor-tracks",
+      "status": "PASS",
+      "seconds": 42.9,
+      "log": "telescopic-floor-tracks.log",
+      "root": "verification-VKm6gH"
+    }
+  ],
+  "failed": [],
+  "rerunFailures": [
+    {
+      "name": "ceiling-end-caps",
+      "status": "FAIL",
+      "seconds": 35.8,
+      "log": "ceiling-end-caps.log",
+      "root": "verification-UodroL"
+    },
+    {
+      "name": "kitchen-divider-labels",
+      "status": "FAIL",
+      "seconds": 18.8,
+      "log": "kitchen-divider-labels.log",
+      "root": "verification-PH6RTm"
+    },
+    {
+      "name": "merged-cache",
+      "status": "FAIL",
+      "seconds": 2.6,
+      "log": "merged-cache.log",
+      "root": "verification-PH6RTm"
+    }
+  ]
+}

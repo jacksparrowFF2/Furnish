@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "files": [
+    {
+      "file": "D:/1601装修/渲染/1601-BlenderMCP验证-20261021/1601-MCP精修验证.blend",
+      "sha256": "794e29bb9409bda434eca663d0625fab11b618a4762e803b9e02db93f72c0075",
+      "expected": "794e29bb9409bda434eca663d0625fab11b618a4762e803b9e02db93f72c0075"
+    },
+    {
+      "file": "D:/1601装修/渲染/全量回归-20261025/1601-最新方案精修副本-65件.blend",
+      "sha256": "fc5e98a11f786121adf1039f17338d83a014e16b7bfca16c17ae093d32f1daae",
+      "expected": "fc5e98a11f786121adf1039f17338d83a014e16b7bfca16c17ae093d32f1daae"
+    }
+  ]
+}

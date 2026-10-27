@@ -1,0 +1,474 @@
+[
+  {
+    "kind": "floorheight",
+    "id": "fmv3w361v2",
+    "name": "双人床 1.8m",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floorheight",
+    "id": "fmv3wyijp13",
+    "name": "单人床",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floorheight",
+    "id": "fmv5c10yi4",
+    "name": "书桌",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floorheight",
+    "id": "fmv5dvzo81",
+    "name": "办公椅",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floorheight",
+    "id": "fmv6wfmo91",
+    "name": "餐椅",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floorheight",
+    "id": "fmv6wfocm2",
+    "name": "餐椅",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floorheight",
+    "id": "fmv6wfol63",
+    "name": "餐椅",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floorheight",
+    "id": "fmv6wg88q4",
+    "name": "餐椅",
+    "pending": true,
+    "message": "家具或所跨区域高度未知，地面净高待核对"
+  },
+  {
+    "kind": "floor-door",
+    "id": "floor-door-0",
+    "doorIndex": 0,
+    "name": "入户门（断口推导）",
+    "pending": true,
+    "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+  },
+  {
+    "kind": "floor-door",
+    "id": "floor-door-1",
+    "doorIndex": 1,
+    "name": "房门",
+    "pending": true,
+    "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+  },
+  {
+    "kind": "floor-door",
+    "id": "floor-door-2",
+    "doorIndex": 2,
+    "name": "房门",
+    "pending": true,
+    "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+  },
+  {
+    "kind": "ceiling",
+    "id": "ceiling_area_fmvnstmsv1",
+    "ceilingId": "ceiling_area_fmvnstmsv1",
+    "name": "吊顶",
+    "pending": true,
+    "message": "走廊吊顶：吊顶区域超出可用空间或跨越墙体，请核对边界"
+  },
+  {
+    "kind": "ceiling",
+    "id": "fmv62bwbp1",
+    "ceilingId": "ceiling_area_fmvntr1ym2_part_0",
+    "name": "餐边柜 · 冰箱位与玻璃展示柜",
+    "pending": false,
+    "at": [
+      7043,
+      7361
+    ],
+    "message": "餐边柜 · 冰箱位与玻璃展示柜与客厅吊顶 · 石膏灯槽实体相交"
+  },
+  {
+    "kind": "ceiling",
+    "id": "fmv62bwbp1",
+    "ceilingId": "ceiling_area_fmvntr1ym2_part_1",
+    "name": "餐边柜 · 冰箱位与玻璃展示柜",
+    "pending": false,
+    "at": [
+      7043,
+      7361
+    ],
+    "message": "餐边柜 · 冰箱位与玻璃展示柜与客厅吊顶 · 上发光型材 · 含柔光板实体相交"
+  },
+  {
+    "kind": "ceiling",
+    "id": "fmv5b76h91",
+    "ceilingId": "ceiling_area_fmvpaql4s1_part_0",
+    "name": "玄关柜 · 洞洞板换鞋区",
+    "pending": false,
+    "at": [
+      9949,
+      9790
+    ],
+    "message": "玄关柜 · 洞洞板换鞋区与柜子边吊 · 平面吊顶实体相交"
+  },
+  {
+    "kind": "ceiling",
+    "id": "fmv5b78gp2",
+    "ceilingId": "ceiling_area_fmvpaql4s1_part_0",
+    "name": "玄关柜二 · 置物台与鞋柜",
+    "pending": false,
+    "at": [
+      9931,
+      8900
+    ],
+    "message": "玄关柜二 · 置物台与鞋柜与柜子边吊 · 平面吊顶实体相交"
+  },
+  {
+    "kind": "ceiling",
+    "id": "fmv5bl44k1",
+    "ceilingId": "ceiling_area_fmvpaql4s1_part_0",
+    "name": "收纳柜",
+    "pending": false,
+    "at": [
+      9931,
+      7290
+    ],
+    "message": "收纳柜与柜子边吊 · 平面吊顶实体相交"
+  },
+  {
+    "kind": "ceiling",
+    "id": "fmv3wzkb515",
+    "ceilingId": "ceiling_area_fmvqf798i1_part_0",
+    "name": "衣柜",
+    "pending": false,
+    "at": [
+      4757.75,
+      4975
+    ],
+    "message": "衣柜与吊顶区域 5 · 平面吊顶实体相交"
+  },
+  {
+    "kind": "pipe",
+    "id": "fmv9dos7j1",
+    "markerId": "cad_61E4A",
+    "name": "橱柜台面",
+    "pending": false,
+    "cut": true,
+    "at": [
+      6135.835793234891,
+      8538.978344727278
+    ],
+    "message": "柜体与 下水 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+  },
+  {
+    "kind": "pipe",
+    "id": "fmv9dos7j1",
+    "markerId": "cad_61E4B",
+    "name": "橱柜台面",
+    "pending": false,
+    "cut": true,
+    "at": [
+      6135.835793234891,
+      10091.96537013368
+    ],
+    "message": "柜体与 燃气 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+  },
+  {
+    "kind": "pipe",
+    "id": "fmv9mqxz91",
+    "markerId": "cad_61E4B",
+    "name": "厨房吊柜",
+    "pending": false,
+    "cut": true,
+    "at": [
+      6135.835793234891,
+      10091.96537013368
+    ],
+    "message": "柜体与 燃气 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查"
+  },
+  {
+    "kind": "pipe",
+    "id": "fmvdvqyqj1",
+    "markerId": "cad_61E4B",
+    "name": "管道包覆柜",
+    "pending": false,
+    "cut": false,
+    "at": [
+      6135.835793234891,
+      10091.96537013368
+    ],
+    "message": "家具实体与竖管相交：燃气（管径 100 mm）"
+  },
+  {
+    "kind": "cabinetpassage",
+    "id": "fmv3wzkb515",
+    "markerIds": [],
+    "name": "衣柜",
+    "column": 0,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      5576.5,
+      4219
+    ],
+    "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+  },
+  {
+    "kind": "cabinetpassage",
+    "id": "fmv3wzkb515",
+    "markerIds": [],
+    "name": "衣柜",
+    "column": 1,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      5162.625,
+      4219
+    ],
+    "message": "分区 2 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+  },
+  {
+    "kind": "cabinetpassage",
+    "id": "fmv3wzkb515",
+    "markerIds": [],
+    "name": "衣柜",
+    "column": 2,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      4757.75,
+      4219
+    ],
+    "message": "分区 3 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+  },
+  {
+    "kind": "cabinetpassage",
+    "id": "fmv3wzkb515",
+    "markerIds": [],
+    "name": "衣柜",
+    "column": 3,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      4352.875,
+      4219
+    ],
+    "message": "分区 4 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+  },
+  {
+    "kind": "outside",
+    "id": "fmv3xjwfp4",
+    "name": "飘窗垫",
+    "message": "家具占地超出房间范围（含折角／凹口）"
+  },
+  {
+    "kind": "cabinetdoor",
+    "id": "fmv5b78gp2",
+    "markerIds": [],
+    "name": "玄关柜二 · 置物台与鞋柜",
+    "column": 0,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      9765,
+      8415
+    ],
+    "message": "分区 1 柜门三维开启范围被 收纳柜 占用"
+  },
+  {
+    "kind": "cabinetdrawer",
+    "id": "fmv5b78gp2",
+    "markerIds": [],
+    "name": "玄关柜二 · 置物台与鞋柜",
+    "column": 0,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      9756,
+      8415
+    ],
+    "message": "分区 1 抽屉完全拉出范围被 收纳柜 占用"
+  },
+  {
+    "kind": "cabinetpassage",
+    "id": "fmv5b78gp2",
+    "markerIds": [],
+    "name": "玄关柜二 · 置物台与鞋柜",
+    "column": 0,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      9511,
+      8415
+    ],
+    "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 收纳柜、三联动推拉门 占用"
+  },
+  {
+    "kind": "cabinetdoor",
+    "id": "fmv62bwbp1",
+    "markerIds": [],
+    "name": "餐边柜 · 冰箱位与玻璃展示柜",
+    "column": 1,
+    "section": "lower",
+    "pending": false,
+    "at": [
+      7178,
+      7425
+    ],
+    "message": "分区 2 柜门三维开启范围被 餐椅 占用"
+  },
+  {
+    "kind": "cabinetdoor",
+    "id": "fmv62bwbp1",
+    "markerIds": [],
+    "name": "餐边柜 · 冰箱位与玻璃展示柜",
+    "column": 1,
+    "section": "lower",
+    "pending": false,
+    "at": [
+      7178,
+      6444
+    ],
+    "message": "分区 2 柜门三维开启范围被 餐椅 占用"
+  },
+  {
+    "kind": "cabinetdrawer",
+    "id": "fmv62bwbp1",
+    "markerIds": [],
+    "name": "餐边柜 · 冰箱位与玻璃展示柜",
+    "column": 1,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      7178,
+      7425
+    ],
+    "message": "分区 2 抽屉完全拉出范围被 餐椅 占用"
+  },
+  {
+    "kind": "cabinetpassage",
+    "id": "fmv62bwbp1",
+    "markerIds": [],
+    "name": "餐边柜 · 冰箱位与玻璃展示柜",
+    "column": 1,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      7493,
+      7425
+    ],
+    "message": "分区 2 抽屉拉出后前方 800 mm 地面操作空间被 餐椅、餐椅、餐椅、源氏木语折叠餐桌 · 1100款 占用"
+  },
+  {
+    "kind": "wall",
+    "id": "fmv9dos7j1",
+    "name": "橱柜台面",
+    "message": "家具占用墙体空间"
+  },
+  {
+    "kind": "outside",
+    "id": "fmv9dos7j1",
+    "name": "橱柜台面",
+    "message": "家具占地超出房间范围（含折角／凹口）"
+  },
+  {
+    "kind": "wall",
+    "id": "fmvdvn6e11",
+    "name": "管道包覆柜",
+    "message": "家具占用墙体空间"
+  },
+  {
+    "kind": "outside",
+    "id": "fmvdvn6e11",
+    "name": "管道包覆柜",
+    "message": "家具占地超出房间范围（含折角／凹口）"
+  },
+  {
+    "kind": "wall",
+    "id": "fmvdvqyqj1",
+    "name": "管道包覆柜",
+    "message": "家具占用墙体空间"
+  },
+  {
+    "kind": "outside",
+    "id": "fmvdvqyqj1",
+    "name": "管道包覆柜",
+    "message": "家具占地超出房间范围（含折角／凹口）"
+  },
+  {
+    "kind": "front",
+    "id": "fmvg4z7am1",
+    "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+    "message": "正面 600 mm 使用空间不足（柜门／抽屉）"
+  },
+  {
+    "kind": "cabinetdoor",
+    "id": "fmvgnhl7h3",
+    "markerIds": [],
+    "name": "收纳柜",
+    "column": 0,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      9765,
+      5420
+    ],
+    "message": "分区 1 柜门三维开启范围被 米家智能宠物喂食器 2 占用"
+  },
+  {
+    "kind": "cabinetdoor",
+    "id": "fmvgnhl7h3",
+    "markerIds": [],
+    "name": "收纳柜",
+    "column": 0,
+    "section": "storage",
+    "pending": false,
+    "at": [
+      9765,
+      6165
+    ],
+    "message": "分区 1 柜门三维开启范围被 米家智能宠物喂食器 2 占用"
+  },
+  {
+    "kind": "passage",
+    "id": "room1",
+    "name": "房间 1",
+    "message": "候选狭窄间隙约 100 mm，低于自设 800 mm 阈值",
+    "at": [
+      9639.5,
+      920
+    ]
+  },
+  {
+    "kind": "passage",
+    "id": "room2",
+    "name": "房间 2",
+    "message": "候选狭窄间隙约 208 mm，低于自设 800 mm 阈值",
+    "at": [
+      4139,
+      2433
+    ]
+  },
+  {
+    "kind": "passage",
+    "id": "room3",
+    "name": "房间 3",
+    "message": "候选狭窄间隙约 243 mm，低于自设 800 mm 阈值",
+    "at": [
+      5541.5,
+      7651
+    ]
+  }
+]

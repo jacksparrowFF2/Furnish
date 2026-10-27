@@ -1,0 +1,39 @@
+C:\Users\SPH\Documents\GitHub\Furnish\output\playwright\verification-VKm6gH\workspace 迁移 #\output\telescopic\preview.html
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "hangingDefault": true,
+    "groundCounts": {
+      "twoPanel": 1,
+      "threePanel": 2
+    },
+    "reversedLanes": true,
+    "openStateRails": true,
+    "propertyControl": true,
+    "planMarks": true,
+    "undoRedo": true,
+    "refresh": true,
+    "productionScene": true,
+    "narrow": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "hangingDefault": true,
+    "groundCounts": {
+      "twoPanel": 1,
+      "threePanel": 2
+    },
+    "reversedLanes": true,
+    "openStateRails": true,
+    "propertyControl": true,
+    "planMarks": true,
+    "undoRedo": true,
+    "refresh": true,
+    "productionScene": true,
+    "narrow": true,
+    "errors": []
+  }
+]

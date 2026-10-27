@@ -1,0 +1,160 @@
+{
+  "beforeVersion": 16,
+  "afterVersion": 25,
+  "beforeFurniture": 61,
+  "afterFurniture": 65,
+  "added": [
+    {
+      "id": "fmvnobafb1",
+      "type": "electrical_box_weak",
+      "name": "弱电箱（尺寸自定）"
+    },
+    {
+      "id": "fmvnobf1j2",
+      "type": "electrical_box_strong",
+      "name": "强电箱（尺寸自定）"
+    },
+    {
+      "id": "fmvnq6xbq1",
+      "type": "tripleslidingdoor",
+      "name": "三联动推拉门"
+    },
+    {
+      "id": "fmvnq87iq2",
+      "type": "tripleslidingdoor",
+      "name": "三联动推拉门"
+    }
+  ],
+  "removed": [],
+  "changed": [
+    {
+      "id": "fmv3wzkb515",
+      "type": "wardrobe",
+      "name": "衣柜",
+      "fields": [
+        "cabinet",
+        "cx",
+        "h"
+      ]
+    },
+    {
+      "id": "fmv5a1yhn1",
+      "type": "fridge_french_drawer",
+      "name": "纯平四门冰箱（双抽屉）",
+      "fields": [
+        "cx",
+        "cy",
+        "groupId"
+      ]
+    },
+    {
+      "id": "fmv5ayw571",
+      "type": "mirror",
+      "name": "穿衣镜",
+      "fields": [
+        "cx",
+        "cy"
+      ]
+    },
+    {
+      "id": "fmv5b76h91",
+      "type": "cabinet",
+      "name": "玄关柜 · 洞洞板换鞋区",
+      "fields": [
+        "cabinet"
+      ]
+    },
+    {
+      "id": "fmv5b78gp2",
+      "type": "cabinet",
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "fields": [
+        "cabinet",
+        "h"
+      ]
+    },
+    {
+      "id": "fmv5bl44k1",
+      "type": "cabinet",
+      "name": "收纳柜",
+      "fields": [
+        "cabinet",
+        "h"
+      ]
+    },
+    {
+      "id": "fmv62bwbp1",
+      "type": "cabinet",
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "fields": [
+        "cabinet",
+        "cy",
+        "w",
+        "groupId"
+      ]
+    },
+    {
+      "id": "fmv9dos7j1",
+      "type": "counter",
+      "name": "橱柜台面",
+      "fields": [
+        "kitchen"
+      ]
+    },
+    {
+      "id": "fmvg2upqp1",
+      "type": "tea_table_800",
+      "name": "藤编移动茶台 · 80cm",
+      "fields": [
+        "cx",
+        "cy"
+      ]
+    },
+    {
+      "id": "fmvnc6z9f1",
+      "type": "heating_manifold",
+      "name": "地暖分水器（路数可调）",
+      "fields": [
+        "cx"
+      ]
+    }
+  ],
+  "ceilingRegions": [
+    {
+      "id": "ceiling_area_fmvnstmsv1",
+      "name": "走廊吊顶",
+      "style": "flat",
+      "parts": 2
+    },
+    {
+      "id": "ceiling_area_fmvntr1ym2",
+      "name": "客厅吊顶",
+      "style": "ring",
+      "parts": 2
+    },
+    {
+      "id": "ceiling_area_fmvpaql4s1",
+      "name": "柜子边吊",
+      "style": "flat",
+      "parts": 2
+    },
+    {
+      "id": "ceiling_area_fmvpcqco92",
+      "name": "次卧吊顶",
+      "style": "ring",
+      "parts": 2
+    },
+    {
+      "id": "ceiling_area_fmvqf798i1",
+      "name": "吊顶区域 5",
+      "style": "flat",
+      "parts": 1
+    }
+  ],
+  "changedWorkFields": [
+    "furniture",
+    "objectLayers",
+    "scene3d",
+    "ceilings"
+  ]
+}

@@ -1,0 +1,35 @@
+C:\Users\SPH\Documents\GitHub\Furnish\output\playwright\verification-RjeUkD\workspace 迁移 #\output\downlight\preview.html
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "productionPreview": true,
+    "spotToggle": true,
+    "measuredFloorIllumination": true,
+    "catalogAdd": true,
+    "fitUndoRedo": true,
+    "sixVariants": true,
+    "variantUndoRedo": true,
+    "productionVariantRebuild": true,
+    "refresh": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "productionPreview": true,
+    "spotToggle": true,
+    "measuredFloorIllumination": true,
+    "catalogAdd": true,
+    "fitUndoRedo": true,
+    "sixVariants": true,
+    "variantUndoRedo": true,
+    "productionVariantRebuild": true,
+    "refresh": true,
+    "production3D": true,
+    "narrow": true,
+    "errors": []
+  }
+]

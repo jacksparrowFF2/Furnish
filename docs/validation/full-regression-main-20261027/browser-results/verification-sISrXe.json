@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-end-caps"
+  ],
+  "results": [
+    {
+      "name": "ceiling-end-caps",
+      "status": "PASS",
+      "seconds": 37.3,
+      "log": "ceiling-end-caps.log"
+    }
+  ],
+  "notRun": []
+}

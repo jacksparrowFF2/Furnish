@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "job": {
+    "id": "3b1a343f-b117-4bbc-ae01-ff6cc8767675",
+    "state": "done",
+    "message": "渲染完成 · OPTIX",
+    "width": 960,
+    "height": 720,
+    "quality": "preview",
+    "device": "auto",
+    "source": "refined",
+    "camera": "active",
+    "renderInfo": {
+      "source": "refined",
+      "cameraMode": "active",
+      "camera": "1601固定机位 | 01-客厅",
+      "world": "Study | daylight sky",
+      "existingMaterialBindingsPreserved": 4525,
+      "existingManagedMeshes": 4525,
+      "matchedManagedMeshes": 4525,
+      "removedManagedMeshes": 0,
+      "lightsPreserved": 8,
+      "sync": {
+        "added": 3,
+        "updated": 4525,
+        "deleted": 0,
+        "adopted": 0,
+        "matchedByPartKey": 4525,
+        "migratedPartKeys": 0,
+        "revision": "d67546b6c82ea09f11431d8030ef2e6f0d46fdcb7fc0c0fe029fb5bb215f6293",
+        "cleanupWarnings": []
+      },
+      "samples": 32,
+      "exposure": -0.75,
+      "viewTransform": "AgX",
+      "resolution": [
+        960,
+        720
+      ]
+    },
+    "renderDevice": {
+      "requested": "auto",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "created": "2026-10-27T08:55:02.863Z",
+    "image": "/api/furnish/blender/jobs/3b1a343f-b117-4bbc-ae01-ff6cc8767675/image",
+    "blend": "/api/furnish/blender/jobs/3b1a343f-b117-4bbc-ae01-ff6cc8767675/blend",
+    "scene": "/api/furnish/blender/jobs/3b1a343f-b117-4bbc-ae01-ff6cc8767675/scene"
+  },
+  "workspaceSource": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\.local\\full-regression-main-20261027\\workspace-original.json",
+  "workspaceSha256": "4d51d54afde47e4449c1fbea9ce7d83cbd5c3f49b93d7b350d6a4f3912cfa2e4",
+  "templateSource": "D:\\1601装修\\渲染\\全量回归-20261025\\1601-最新方案精修副本-65件.blend",
+  "templateSha256": "fc5e98a11f786121adf1039f17338d83a014e16b7bfca16c17ae093d32f1daae",
+  "templateUnchanged": true,
+  "workspaceUnchanged": true,
+  "reopen": true,
+  "narrowScreen": true,
+  "errors": []
+}

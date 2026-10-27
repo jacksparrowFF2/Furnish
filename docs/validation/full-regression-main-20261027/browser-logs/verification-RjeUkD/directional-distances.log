@@ -1,0 +1,1 @@
+{"case":"directional-distances","status":"PASS","result":{"status":"PASS","fourDirections":true,"offCenterTarget":true,"atomicSave":true,"singleSave":true,"undoRedo":true,"rotation":true,"movement":true,"hiddenFurniture":true,"mobile390":true,"export":true,"refresh":true,"errors":[]}}

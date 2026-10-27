@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "file": "D:\\1601装修\\渲染\\全量回归-20261027\\1601-当前方案精修副本.blend",
+  "planId": "custom_mv37igji",
+  "name": "1601-当前方案精修副本.blend",
+  "sha256": "02e992a5bcbe3a2ce7ad8c4b5fde12740994c69a8ecd49ba563835568f968812",
+  "previous": {
+    "version": 1,
+    "file": "D:\\1601装修\\渲染\\1601-BlenderMCP验证-20261021\\1601-MCP精修验证.blend",
+    "planId": "custom_mv37igji",
+    "name": "1601-MCP精修验证.blend"
+  },
+  "sourceCopySha256": "02e992a5bcbe3a2ce7ad8c4b5fde12740994c69a8ecd49ba563835568f968812"
+}

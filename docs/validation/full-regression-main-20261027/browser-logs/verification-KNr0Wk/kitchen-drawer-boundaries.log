@@ -1,0 +1,1 @@
+{"case":"kitchen-drawer-boundaries","status":"PASS","result":{"status":"PASS","checks":"live drag, adjacent-only compensation, cancel, keyboard, decimal inputs, minimum, blocked invalid save, save/undo/redo/refresh, fixed dimensions, perspective, elevations, narrow input","errors":[]}}

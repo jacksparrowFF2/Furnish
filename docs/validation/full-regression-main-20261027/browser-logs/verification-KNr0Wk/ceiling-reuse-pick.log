@@ -1,0 +1,23 @@
+locator.fill: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-assembly-family="gypsum"][data-assembly-key="projection"]')[22m
+[2m    - locator resolved to <input step="0.1" value="300" type="number" data-assembly-family="gypsum" data-assembly-key="projection"/>[22m
+[2m    - fill("320")[22m
+[2m  - attempting fill action[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m      - waiting 100ms[22m
+[2m    58 × waiting for element to be visible, enabled and editable[22m
+[2m       - element is not visible[22m
+[2m     - retrying fill action[22m
+[2m       - waiting 500ms[22m
+[2m    - waiting for element to be visible, enabled and editable[22m
+
+    at eval (<anonymous>:5:1973)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)

@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-27",
+  "passed": true,
+  "base": "2fe9bd0362bb4c838440363734874a4ce8cbe219",
+  "workspace": {
+    "version": 25,
+    "furniture": 65,
+    "sha256": "4d51d54afde47e4449c1fbea9ce7d83cbd5c3f49b93d7b350d6a4f3912cfa2e4",
+    "unchanged": true,
+    "separateCommit": true
+  },
+  "node": {
+    "suites": 320,
+    "builtInPlans": 12,
+    "previews": 69,
+    "passed": true
+  },
+  "browser": {
+    "cases": 193,
+    "failed": [],
+    "passed": true,
+    "initialFailures": 8,
+    "obsoleteCreationCases": 2,
+    "failedActiveCasesRepaired": 6
+  },
+  "desktop": {
+    "passed": true,
+    "realPackagedExe": true,
+    "checks": 12
+  },
+  "blender": {
+    "passed": true,
+    "protocol": 3,
+    "addon": "0.1.4",
+    "rollbackStages": 8,
+    "expandedMeshes": 4528,
+    "commonMaterialsPreserved": 4525,
+    "newMeshes": 3,
+    "sourceCameraAllBindingsPreserved": 4528,
+    "originalEngineeringUnchanged": true,
+    "localBindingUpdatedToVerifiedCopy": true
+  },
+  "spatial": {
+    "total": 46,
+    "pending": 12,
+    "notAutomaticallyRepositioned": true
+  },
+  "performance": {
+    "completed": 4,
+    "stable60Hz": false
+  },
+  "unexecuted": [
+    "Other operating systems / Blender versions",
+    "Physical touchscreen and printer",
+    "Forced process crash, power loss or OOM",
+    "Four-region final-quality render",
+    "Signed installer and auto-update"
+  ]
+}

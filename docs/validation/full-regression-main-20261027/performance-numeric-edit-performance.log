@@ -1,0 +1,8 @@
+after-http [
+  { field: 'w', mean: 881.125 },
+  { field: 'cx', mean: 974.1750000044703 }
+]
+after-file [
+  { field: 'w', mean: 725.4249999970198 },
+  { field: 'cx', mean: 798.4250000044703 }
+]

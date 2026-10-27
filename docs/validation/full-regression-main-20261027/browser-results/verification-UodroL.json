@@ -1,0 +1,28 @@
+{
+  "selected": [
+    "ceiling-panel-devices",
+    "ceiling-reuse-pick",
+    "ceiling-end-caps"
+  ],
+  "results": [
+    {
+      "name": "ceiling-panel-devices",
+      "status": "PASS",
+      "seconds": 24.6,
+      "log": "ceiling-panel-devices.log"
+    },
+    {
+      "name": "ceiling-reuse-pick",
+      "status": "PASS",
+      "seconds": 27.2,
+      "log": "ceiling-reuse-pick.log"
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "FAIL",
+      "seconds": 35.8,
+      "log": "ceiling-end-caps.log"
+    }
+  ],
+  "notRun": []
+}

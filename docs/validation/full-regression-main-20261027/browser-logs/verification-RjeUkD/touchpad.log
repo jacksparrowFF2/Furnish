@@ -1,0 +1,1 @@
+{"case":"touchpad","status":"PASS","result":[{"protocol":"http","pan":true,"pinch":true,"scene":true,"spacePan":true,"preferenceReload":true,"narrow":true,"designUnchanged":true},{"protocol":"file","pan":true,"pinch":true,"scene":true,"spacePan":true,"preferenceReload":true,"narrow":true,"designUnchanged":true}]}

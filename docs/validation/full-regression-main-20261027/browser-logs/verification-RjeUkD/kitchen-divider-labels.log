@@ -1,0 +1,21 @@
+Error: locator.click: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-kitchen-divider-key="4:0"][data-kitchen-divider-width="left"]')[22m
+[2m    - locator resolved to <g tabindex="0" role="button" data-kitchen-module="4" data-kitchen-divider-key="4:0" data-kitchen-divider-width="left" data-edit-overlay="kitchen-divider-width" aria-label="点击修改末端薄柜柜宽 801.84 mm，另一柜自动补差" transform="translate(-1038.86 -852.8) rotate(-180)">…</g>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is not visible[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is not visible[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    29 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is not visible[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+; page errors 
+    at eval (eval at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:22:16), <anonymous>:19:100)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)

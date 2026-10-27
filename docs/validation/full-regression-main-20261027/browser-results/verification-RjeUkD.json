@@ -1,0 +1,476 @@
+{
+  "selected": [
+    "aircon-midea",
+    "bay-assemblies",
+    "blender-render",
+    "cabinet-catalog",
+    "cabinet-divider-growth",
+    "cabinet-drawer-dimensions",
+    "cabinet-layout",
+    "cabinet-opening-3d",
+    "cabinet-simple",
+    "ceiling-aluminum",
+    "ceiling-boundaries",
+    "ceiling-continuous-light",
+    "ceiling-design",
+    "ceiling-end-caps",
+    "ceiling-overall-switch",
+    "ceiling-reference-snapping",
+    "ceiling-style-flow",
+    "ceilings",
+    "current-furniture",
+    "directional-distances",
+    "directional-placement",
+    "double-doors",
+    "drawing-export",
+    "workflow-reimport",
+    "drawing",
+    "tile-workspace",
+    "finish-miter-snap",
+    "folding-table-click",
+    "fotile",
+    "room-net",
+    "furniture-snapping-audit",
+    "hob-cutout",
+    "hood-bay",
+    "kitchen-corner-leaves",
+    "kitchen-divider-labels",
+    "kitchen-door-widths",
+    "kitchen-drawer-tiers",
+    "kitchen-gap-model",
+    "kitchen-plinth",
+    "kitchen-shelves",
+    "kitchen-thin-resize",
+    "kitchen-wall-anchor",
+    "kitchen-wall-shelves",
+    "laundry-basin-joins",
+    "laundry-editing",
+    "layer-range",
+    "litter-box",
+    "model-entry",
+    "pegboard-hatches",
+    "pegboard-parts",
+    "portable-smoke",
+    "property-dedup",
+    "purchase-orders",
+    "purchase-relink",
+    "scene-clearances",
+    "short-wall-area-3d",
+    "sink-linked-offset",
+    "stove-boundaries",
+    "tea-table",
+    "tile-selection-outline",
+    "touchpad",
+    "wall-layer-finishes",
+    "cut-board-motion",
+    "furniture-recovery",
+    "recessed-bay",
+    "downlight",
+    "manifold-floating-distance"
+  ],
+  "results": [
+    {
+      "name": "aircon-midea",
+      "status": "PASS",
+      "seconds": 28.8,
+      "log": "aircon-midea.log"
+    },
+    {
+      "name": "bay-assemblies",
+      "status": "PASS",
+      "seconds": 21.2,
+      "log": "bay-assemblies.log"
+    },
+    {
+      "name": "blender-render",
+      "status": "PASS",
+      "seconds": 44.2,
+      "log": "blender-render.log"
+    },
+    {
+      "name": "cabinet-catalog",
+      "status": "PASS",
+      "seconds": 16.1,
+      "log": "cabinet-catalog.log"
+    },
+    {
+      "name": "cabinet-divider-growth",
+      "status": "PASS",
+      "seconds": 18.5,
+      "log": "cabinet-divider-growth.log"
+    },
+    {
+      "name": "cabinet-drawer-dimensions",
+      "status": "PASS",
+      "seconds": 7.1,
+      "log": "cabinet-drawer-dimensions.log"
+    },
+    {
+      "name": "cabinet-layout",
+      "status": "PASS",
+      "seconds": 4,
+      "log": "cabinet-layout.log"
+    },
+    {
+      "name": "cabinet-opening-3d",
+      "status": "PASS",
+      "seconds": 33.4,
+      "log": "cabinet-opening-3d.log"
+    },
+    {
+      "name": "cabinet-simple",
+      "status": "PASS",
+      "seconds": 37.5,
+      "log": "cabinet-simple.log"
+    },
+    {
+      "name": "ceiling-aluminum",
+      "status": "PASS",
+      "seconds": 13.8,
+      "log": "ceiling-aluminum.log"
+    },
+    {
+      "name": "ceiling-boundaries",
+      "status": "PASS",
+      "seconds": 21.5,
+      "log": "ceiling-boundaries.log"
+    },
+    {
+      "name": "ceiling-continuous-light",
+      "status": "FAIL",
+      "seconds": 32.4,
+      "log": "ceiling-continuous-light.log"
+    },
+    {
+      "name": "ceiling-design",
+      "status": "PASS",
+      "seconds": 33.3,
+      "log": "ceiling-design.log"
+    },
+    {
+      "name": "ceiling-end-caps",
+      "status": "FAIL",
+      "seconds": 2.9,
+      "log": "ceiling-end-caps.log"
+    },
+    {
+      "name": "ceiling-overall-switch",
+      "status": "PASS",
+      "seconds": 21.6,
+      "log": "ceiling-overall-switch.log"
+    },
+    {
+      "name": "ceiling-reference-snapping",
+      "status": "PASS",
+      "seconds": 20.6,
+      "log": "ceiling-reference-snapping.log"
+    },
+    {
+      "name": "ceiling-style-flow",
+      "status": "PASS",
+      "seconds": 18.9,
+      "log": "ceiling-style-flow.log"
+    },
+    {
+      "name": "ceilings",
+      "status": "FAIL",
+      "seconds": 32.4,
+      "log": "ceilings.log"
+    },
+    {
+      "name": "current-furniture",
+      "status": "PASS",
+      "seconds": 25.5,
+      "log": "current-furniture.log"
+    },
+    {
+      "name": "directional-distances",
+      "status": "PASS",
+      "seconds": 2.7,
+      "log": "directional-distances.log"
+    },
+    {
+      "name": "directional-placement",
+      "status": "PASS",
+      "seconds": 3.2,
+      "log": "directional-placement.log"
+    },
+    {
+      "name": "double-doors",
+      "status": "PASS",
+      "seconds": 17.2,
+      "log": "double-doors.log"
+    },
+    {
+      "name": "drawing-export",
+      "status": "PASS",
+      "seconds": 1.4,
+      "log": "drawing-export.log"
+    },
+    {
+      "name": "workflow-reimport",
+      "status": "PASS",
+      "seconds": 14.5,
+      "log": "workflow-reimport.log"
+    },
+    {
+      "name": "drawing",
+      "status": "PASS",
+      "seconds": 13.9,
+      "log": "drawing.log"
+    },
+    {
+      "name": "tile-workspace",
+      "status": "PASS",
+      "seconds": 26.2,
+      "log": "tile-workspace.log"
+    },
+    {
+      "name": "finish-miter-snap",
+      "status": "PASS",
+      "seconds": 14.8,
+      "log": "finish-miter-snap.log"
+    },
+    {
+      "name": "folding-table-click",
+      "status": "PASS",
+      "seconds": 33.5,
+      "log": "folding-table-click.log"
+    },
+    {
+      "name": "fotile",
+      "status": "PASS",
+      "seconds": 27.5,
+      "log": "fotile.log"
+    },
+    {
+      "name": "room-net",
+      "status": "PASS",
+      "seconds": 5.5,
+      "log": "room-net.log"
+    },
+    {
+      "name": "furniture-snapping-audit",
+      "status": "PASS",
+      "seconds": 22.5,
+      "log": "furniture-snapping-audit.log"
+    },
+    {
+      "name": "hob-cutout",
+      "status": "PASS",
+      "seconds": 8.8,
+      "log": "hob-cutout.log"
+    },
+    {
+      "name": "hood-bay",
+      "status": "PASS",
+      "seconds": 11.8,
+      "log": "hood-bay.log"
+    },
+    {
+      "name": "kitchen-corner-leaves",
+      "status": "PASS",
+      "seconds": 6.4,
+      "log": "kitchen-corner-leaves.log"
+    },
+    {
+      "name": "kitchen-divider-labels",
+      "status": "FAIL",
+      "seconds": 18.8,
+      "log": "kitchen-divider-labels.log"
+    },
+    {
+      "name": "kitchen-door-widths",
+      "status": "PASS",
+      "seconds": 16.5,
+      "log": "kitchen-door-widths.log"
+    },
+    {
+      "name": "kitchen-drawer-tiers",
+      "status": "PASS",
+      "seconds": 13.6,
+      "log": "kitchen-drawer-tiers.log"
+    },
+    {
+      "name": "kitchen-gap-model",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "kitchen-gap-model.log"
+    },
+    {
+      "name": "kitchen-plinth",
+      "status": "PASS",
+      "seconds": 12.6,
+      "log": "kitchen-plinth.log"
+    },
+    {
+      "name": "kitchen-shelves",
+      "status": "PASS",
+      "seconds": 11.6,
+      "log": "kitchen-shelves.log"
+    },
+    {
+      "name": "kitchen-thin-resize",
+      "status": "PASS",
+      "seconds": 7.3,
+      "log": "kitchen-thin-resize.log"
+    },
+    {
+      "name": "kitchen-wall-anchor",
+      "status": "PASS",
+      "seconds": 2.5,
+      "log": "kitchen-wall-anchor.log"
+    },
+    {
+      "name": "kitchen-wall-shelves",
+      "status": "PASS",
+      "seconds": 3.6,
+      "log": "kitchen-wall-shelves.log"
+    },
+    {
+      "name": "laundry-basin-joins",
+      "status": "PASS",
+      "seconds": 6.7,
+      "log": "laundry-basin-joins.log"
+    },
+    {
+      "name": "laundry-editing",
+      "status": "PASS",
+      "seconds": 13.6,
+      "log": "laundry-editing.log"
+    },
+    {
+      "name": "layer-range",
+      "status": "PASS",
+      "seconds": 5.6,
+      "log": "layer-range.log"
+    },
+    {
+      "name": "litter-box",
+      "status": "PASS",
+      "seconds": 26.4,
+      "log": "litter-box.log"
+    },
+    {
+      "name": "model-entry",
+      "status": "PASS",
+      "seconds": 24.3,
+      "log": "model-entry.log"
+    },
+    {
+      "name": "pegboard-hatches",
+      "status": "PASS",
+      "seconds": 32,
+      "log": "pegboard-hatches.log"
+    },
+    {
+      "name": "pegboard-parts",
+      "status": "PASS",
+      "seconds": 43.3,
+      "log": "pegboard-parts.log"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 14.6,
+      "log": "portable-smoke.log"
+    },
+    {
+      "name": "property-dedup",
+      "status": "PASS",
+      "seconds": 5.5,
+      "log": "property-dedup.log"
+    },
+    {
+      "name": "purchase-orders",
+      "status": "PASS",
+      "seconds": 11.4,
+      "log": "purchase-orders.log"
+    },
+    {
+      "name": "purchase-relink",
+      "status": "PASS",
+      "seconds": 6.9,
+      "log": "purchase-relink.log"
+    },
+    {
+      "name": "scene-clearances",
+      "status": "PASS",
+      "seconds": 29,
+      "log": "scene-clearances.log"
+    },
+    {
+      "name": "short-wall-area-3d",
+      "status": "PASS",
+      "seconds": 35,
+      "log": "short-wall-area-3d.log"
+    },
+    {
+      "name": "sink-linked-offset",
+      "status": "PASS",
+      "seconds": 26.4,
+      "log": "sink-linked-offset.log"
+    },
+    {
+      "name": "stove-boundaries",
+      "status": "PASS",
+      "seconds": 2.4,
+      "log": "stove-boundaries.log"
+    },
+    {
+      "name": "tea-table",
+      "status": "PASS",
+      "seconds": 24.5,
+      "log": "tea-table.log"
+    },
+    {
+      "name": "tile-selection-outline",
+      "status": "PASS",
+      "seconds": 9.3,
+      "log": "tile-selection-outline.log"
+    },
+    {
+      "name": "touchpad",
+      "status": "PASS",
+      "seconds": 34.3,
+      "log": "touchpad.log"
+    },
+    {
+      "name": "wall-layer-finishes",
+      "status": "PASS",
+      "seconds": 15.7,
+      "log": "wall-layer-finishes.log"
+    },
+    {
+      "name": "cut-board-motion",
+      "status": "PASS",
+      "seconds": 19.2,
+      "log": "cut-board-motion.log"
+    },
+    {
+      "name": "furniture-recovery",
+      "status": "PASS",
+      "seconds": 18.1,
+      "log": "furniture-recovery.log"
+    },
+    {
+      "name": "recessed-bay",
+      "status": "PASS",
+      "seconds": 7.6,
+      "log": "recessed-bay.log"
+    },
+    {
+      "name": "downlight",
+      "status": "PASS",
+      "seconds": 29.5,
+      "log": "downlight.log"
+    },
+    {
+      "name": "manifold-floating-distance",
+      "status": "PASS",
+      "seconds": 27.1,
+      "log": "manifold-floating-distance.log"
+    }
+  ],
+  "notRun": []
+}

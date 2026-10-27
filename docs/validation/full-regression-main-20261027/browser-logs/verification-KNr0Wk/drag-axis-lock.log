@@ -1,0 +1,1 @@
+{"case":"drag-axis-lock","status":"PASS","result":{"status":"PASS","checks":"stationary Shift/Alt changes, latched axes, on-axis magnets, Shift-before-drag and click compatibility, groups, four rotations, narrow screen, undo/redo and reload","errors":[]}}

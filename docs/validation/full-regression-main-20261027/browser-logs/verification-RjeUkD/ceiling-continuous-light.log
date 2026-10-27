@@ -1,0 +1,21 @@
+locator.selectOption: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-ceiling="light-corner-mode"]')[22m
+[2m    - locator resolved to <select data-ceiling="light-corner-mode">…</select>[22m
+[2m  - attempting select option action[22m
+[2m    2 × waiting for element to be visible and enabled[22m
+[2m      - element is not visible[22m
+[2m    - retrying select option action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible and enabled[22m
+[2m      - element is not visible[22m
+[2m    - retrying select option action[22m
+[2m      - waiting 100ms[22m
+[2m    59 × waiting for element to be visible and enabled[22m
+[2m       - element is not visible[22m
+[2m     - retrying select option action[22m
+[2m       - waiting 500ms[22m
+
+    at eval (<anonymous>:12:277)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:23:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:35:50)

@@ -1,0 +1,5 @@
+Error: real edit uses required format and matching cache key
+    at check (eval at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:24:16), <anonymous>:4:160)
+    at eval (eval at worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:24:16), <anonymous>:29:4)
+    at async worker (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:25:16)
+    at async main (C:\Users\SPH\Documents\GitHub\Furnish\scripts\verify-browser.cjs:37:50)

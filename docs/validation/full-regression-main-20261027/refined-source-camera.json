@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "job": {
+    "id": "801ca30f-b211-4bb0-a364-233f2b05defb",
+    "state": "done",
+    "message": "渲染完成 · OPTIX",
+    "width": 951,
+    "height": 960,
+    "quality": "preview",
+    "device": "auto",
+    "source": "refined",
+    "camera": "source",
+    "renderInfo": {
+      "source": "refined",
+      "cameraMode": "source",
+      "camera": "FurnishCamera.001",
+      "world": "Study | daylight sky",
+      "existingMaterialBindingsPreserved": 4528,
+      "existingManagedMeshes": 4528,
+      "matchedManagedMeshes": 4528,
+      "removedManagedMeshes": 0,
+      "lightsPreserved": 8,
+      "sync": {
+        "added": 0,
+        "updated": 4528,
+        "deleted": 0,
+        "adopted": 0,
+        "matchedByPartKey": 4528,
+        "migratedPartKeys": 0,
+        "revision": "ffdbeaef69fb7f530060327c1b0953e37bd74fa0994e7ad75f0d6649e2a1b2c6",
+        "cleanupWarnings": [],
+        "renderCamera": "FurnishCamera.001"
+      },
+      "samples": 32,
+      "exposure": -0.75,
+      "viewTransform": "AgX",
+      "resolution": [
+        951,
+        960
+      ]
+    },
+    "renderDevice": {
+      "requested": "auto",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "created": "2026-10-27T09:03:35.286Z",
+    "image": "/api/furnish/blender/jobs/801ca30f-b211-4bb0-a364-233f2b05defb/image",
+    "blend": "/api/furnish/blender/jobs/801ca30f-b211-4bb0-a364-233f2b05defb/blend",
+    "scene": "/api/furnish/blender/jobs/801ca30f-b211-4bb0-a364-233f2b05defb/scene"
+  },
+  "workspaceSource": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\.local\\full-regression-main-20261027\\workspace-original.json",
+  "workspaceSha256": "4d51d54afde47e4449c1fbea9ce7d83cbd5c3f49b93d7b350d6a4f3912cfa2e4",
+  "templateSource": "D:\\1601装修\\渲染\\全量回归-20261027\\1601-当前方案精修副本.blend",
+  "templateSha256": "02e992a5bcbe3a2ce7ad8c4b5fde12740994c69a8ecd49ba563835568f968812",
+  "templateUnchanged": true,
+  "workspaceUnchanged": true,
+  "reopen": true,
+  "narrowScreen": true,
+  "errors": []
+}

@@ -1,0 +1,1 @@
+{"case":"dishwasher","status":"PASS","result":[{"mode":"file","passed":true,"errors":[],"externalRequests":0},{"mode":"http","passed":true,"errors":[],"externalRequests":0}]}

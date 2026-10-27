@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "kitchen-divider-labels",
+    "merged-cache"
+  ],
+  "results": [
+    {
+      "name": "kitchen-divider-labels",
+      "status": "FAIL",
+      "seconds": 18.8,
+      "log": "kitchen-divider-labels.log"
+    },
+    {
+      "name": "merged-cache",
+      "status": "FAIL",
+      "seconds": 2.6,
+      "log": "merged-cache.log"
+    }
+  ],
+  "notRun": []
+}

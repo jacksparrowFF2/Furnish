@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "ceiling-continuous-light"
+  ],
+  "results": [
+    {
+      "name": "ceiling-continuous-light",
+      "status": "PASS",
+      "seconds": 15.3,
+      "log": "ceiling-continuous-light.log"
+    }
+  ],
+  "notRun": []
+}

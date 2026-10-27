@@ -1,0 +1,19 @@
+{
+  "executable": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop\\Furnish-win32-x64\\Furnish.exe",
+  "checks": [
+    "existing workspace loaded with original plan, work slots and furniture",
+    "sandboxed renderer without Node integration",
+    "production mutate, undo/redo, file save and refresh",
+    "native download exports existing editable project",
+    "file input reimports exported plan with edited furniture intact",
+    "390px desktop viewport without document overflow",
+    "production WebGL 3D and original Blender status interface",
+    "Chromium print-to-PDF renders existing page",
+    "HTTP browser shares desktop workspace",
+    "direct file:// 2D and offline Three.js 3D",
+    "window exit stops owned backend; restart restores saved edit",
+    "original user workspace unchanged; no renderer exceptions"
+  ],
+  "errors": [],
+  "originalWorkspaceUnchanged": true
+}
