@@ -3,9 +3,13 @@
   "private": true,
   "scripts": {
     "check": "node scripts/check.cjs",
-    "verify:browser": "node scripts/verify-browser.cjs"
+    "verify:browser": "node scripts/verify-browser.cjs",
+    "desktop": "electron desktop/main.cjs",
+    "desktop:package": "node scripts/package-desktop.cjs",
+    "verify:desktop": "node scripts/verify-desktop.cjs"
   },
   "devDependencies": {
+    "electron": "45.0.0",
     "playwright": "1.64.1"
   }
 }

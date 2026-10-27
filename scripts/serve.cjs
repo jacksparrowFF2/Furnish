@@ -50,3 +50,9 @@ function listen(){server.listen(port,'127.0.0.1');}
 listen();
 process.on('SIGINT',()=>server.close(()=>process.exit(0)));
 process.on('SIGTERM',()=>server.close(()=>process.exit(0)));
+// Only a real IPC parent (the desktop host) can request this graceful shutdown.
+if(process.send){
+ const shutdown=()=>server.close(()=>process.exit(0));
+ process.on('message',message=>{if(message?.type==='furnish-shutdown')shutdown();});
+ process.on('disconnect',shutdown);
+}

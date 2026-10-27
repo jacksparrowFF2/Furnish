@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-27（可选 Windows 桌面壳）：`desktop/main.cjs` 用沙箱 Electron 窗口加载原本地 HTTP 页面，`backend.cjs` 启动／复用正式 serve、同源保存与 Blender 接口。自启服务通过进程 IPC 关闭，借用的原服务保留；网页加载顺序、持久格式、mutate 和直接 file:// 路径不变。`package-desktop.cjs` 仅复制运行时与原资源，本机包链接源码工作目录，便携包无个人数据且以程序目录保存。详见 [桌面版](DESKTOP.md)。
+
 2026-10-27（恢复副本版本统一）：repository-core.workspaceVersions集中工作区版本目录；核心校验、文件解析与repository-server恢复接口共用，避免新格式能读写却不能备份，导致启动保存中止。恢复副本仍原样保留，仲裁、冲突保护和原保存通道不变。真实HTTP覆盖全部已支持版本的备份及后续写回。
 
 2026-10-27（总体截面与灯槽启停）：section-editor默认总体组合，部件页仍只画当前截面；ceiling-core以sectionActive统一过滤停用灯槽实体，setChannelEnabled保留完整配方和稳定身份，其他板件继续使用完整配方定位。可选channelEnabled进入v25项目／工作区／缓存、复制与复用，沿原mutate及升级通道。移除重复节点按钮及普通区域中新建直线／L形入口，已有独立构件按需显示。见[总体与启停](CEILINGS.md#总体效果与灯槽启停2026-10-27)。

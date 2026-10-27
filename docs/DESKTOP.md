@@ -1,0 +1,60 @@
+# Furnish Windows 桌面版
+
+桌面版提供独立窗口和自带的 Electron 45.0.0 运行环境。解包后双击 `Furnish.exe`，无需另装 Node.js 或浏览器，运行不需要联网。当前打包入口支持 Windows x64；这仍是使用 Chromium 内核的桌面程序。
+
+## 本机使用
+
+已打包的本机入口是 `output/desktop/Furnish-win32-x64/Furnish.exe`。也可双击仓库根目录的 `start-furnish-desktop.cmd`。必须保留整个程序文件夹，不能只移动 EXE。
+
+默认打包生成旁边的 `furnish-desktop.json`，其中 `root` 指向本次打包的源码目录。桌面版直接加载该目录中的正式网页和 `scripts/serve.cjs`，所以本机继续更新源码即可使用新功能。窗口标题以 Furnish 开头；菜单可以打开工作目录、在浏览器打开同一服务、刷新和全屏。
+
+桌面版与原浏览器版共用该目录的 `projects/workspace.furnish.json` 和 `.local` 恢复副本、Blender 配置及输出。保留原项目格式、原子保存、文件锁、版本冲突保护和 `mutate()` 撤销链路，不复制或覆盖已有工作区。
+
+Chrome／Edge 的缓存不由桌面版直接读取。如果尚有仅存在浏览器缓存的编辑，先用原来的 `start-furnish.cmd` 在原浏览器保存到文件，或导出项目后在桌面版导入。桌面版缓存独立存放在 `%APPDATA%/Furnish/desktop/<工作目录哈希>`；不同目录互不混用。首次打开没有桌面缓存时仍使用原来的文件优先和恢复副本规则。
+
+同一工作目录重复启动会激活已有窗口。同目录本地服务已经运行且代码相同时直接复用；后端代码变化沿原启动脚本的指纹协议重启。其他目录或其他程序占用端口时明确报错，不连接错误的设计文件。默认端口仍为 8765，`FURNISH_PORT` 可指定其他固定端口。
+
+窗口关闭时沿现有 `beforeunload` 发起保存；有未写入内容则提示继续编辑或保留缓存后关闭。桌面版自己启动的服务随应用退出关闭，已有且被借用的浏览器服务保留。从桌面菜单打开的浏览器若依赖桌面托管服务，退出桌面版后需使用原启动脚本重新启动服务。两个窗口同时编辑仍会触发原有修订冲突保护，不自动合并修改。
+
+## 浏览器入口保留
+
+- 原 `start-furnish.cmd` 和 `node scripts/serve.cjs` 保持可用。
+- 直接打开 `index.html` 保留离线二维／三维、本地缓存和手动导入导出；原来需 HTTP 的 PDF 导入及仓库保存仍需本地服务。
+- 导出 JSON、项目、CSV、SVG／PNG 继续使用原网页逻辑，桌面版使用原生保存对话框。打印仍由 Chromium 提供。
+- Blender 接口沿用正式服务，仍需要用户另行安装 Blender；桌面运行时不包含 Blender。
+
+## 重新打包与迁移
+
+首次准备开发依赖需要联网，已有完整依赖后打包仅复制本机文件，不改写网页源码，不引入网页构建过程：
+
+```powershell
+npm ci
+node node_modules/electron/install.js
+npm run desktop:package
+```
+
+`npm run desktop` 使用已安装的 Electron 从源码启动。本机生成物被现有 `output/` 忽略规则排除，不提交大体积运行时。
+
+打包拒绝覆盖已有目录，防止覆盖其中的用户设计。重打包时选择新路径：
+
+```powershell
+node scripts/package-desktop.cjs --out output/desktop/Furnish-next
+```
+
+发布或复制到其他电脑时生成独立便携目录：
+
+```powershell
+node scripts/package-desktop.cjs --portable --out output/desktop/Furnish-portable
+```
+
+便携包不带机器绝对路径，也不包含任何个人设计、恢复副本或缓存；程序文件夹本身就是工作目录。需要继续原设计时，在未运行程序时手动复制原 `projects/` 到便携目录，必要时另带 `.local/`；或在窗口中导入已导出的项目。精修 Blender 工程配置中的绝对路径仍需在新电脑重新登记。若 Windows 保护目录不可写，将整个文件夹放到用户有写权限的位置。
+
+普通本机包含 `root` 路径，移动到其他电脑后不会静默回退到空设计；路径不可用时明确报错。使用便携打包方式或明确修改 `furnish-desktop.json` 的 `root`。
+
+## 验证与边界
+
+`node tests/test-desktop.cjs` 检查目录解析、导航限制、服务复用／关闭、端口冲突及拒绝覆盖打包。`npm run verify:desktop` 启动真实打包 EXE，在 `output/desktop-verification/` 创建独立源码／设计／缓存副本，验收恢复、编辑、键盘撤销重做、保存、导出、WebGL、打印、HTTP 浏览器共享、直接 file:// 与退出重启。可通过 `node scripts/verify-desktop.cjs <EXE路径>` 指定其他包。脚本检查源设计哈希，绝不把验收编辑写回原工作区。
+
+页面使用隔离上下文和渲染器沙箱，不启用 Node；网页继续通过原同源 HTTP 接口读写。外链交给系统浏览器，阻止 file/javascript 等外部导航。本机页面请求直连，不依赖系统代理。桌面壳不暴露任意文件读写或执行命令的桥接接口。依据 [Electron 安全说明](https://www.electronjs.org/docs/latest/tutorial/security) 和[手动分发方式](https://www.electronjs.org/docs/latest/tutorial/application-distribution)。
+
+当前交付为未签名的便携文件夹，未提供安装器、自动更新或文件关联。不能保证系统不会对未签名程序显示来源提示。只验证实际执行的流程；物理打印机、完整 Blender 渲染、所有模型编辑器和其他 Windows 架构不属于本次桌面专项的全量验证。

@@ -28,6 +28,8 @@
 
 ### 装修设计主流程
 
+Windows 独立桌面版：打包后双击 `output/desktop/Furnish-win32-x64/Furnish.exe`，或使用 `start-furnish-desktop.cmd`。自带运行环境，与原浏览器版共用设计文件；浏览器入口继续保留。构建、便携迁移和缓存说明见 [桌面版](docs/DESKTOP.md)。
+
 双击 `start-furnish.cmd` 启动本地服务并打开浏览器（需要已安装 Node.js）；关闭服务窗口自动释放端口。
 
 开发验收额外运行 `npm ci`、`npx playwright install chromium`，再执行 `node scripts/verify-browser.cjs`。统一入口会准备独立副本、预览和临时服务；换电脑不需要修改脚本中的路径或端口。详细用例与配置见 [浏览器验收](docs/BROWSER-VERIFICATION.md)，脚本分工见 [维护脚本入口](scripts/README.md)。

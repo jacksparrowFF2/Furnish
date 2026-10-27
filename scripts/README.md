@@ -6,6 +6,7 @@
 | --- | --- |
 | `check.cjs` | 生产语法、共享声明、资源、Node 回归与内置户型校验 |
 | `serve.cjs`、`repository-server.cjs` | 正式本地服务与仓库设计保存接口 |
+| `package-desktop.cjs`、`verify-desktop.cjs` | 可选 Electron Windows 便携包与隔离真实桌面／浏览器验收；不构建网页源码 |
 | `verify-browser.cjs` | 浏览器验收调度、隔离副本、临时服务、依赖排序和结果 |
 | `verify/` | 浏览器函数与 8 个独立 Node 验收实现，当前名称以 `--list` 为准 |
 | `lib/` | 浏览器环境配置、预览模板装配等共用代码 |
