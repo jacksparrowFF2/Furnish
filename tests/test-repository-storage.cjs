@@ -26,6 +26,17 @@ const fingerprint=async w=>S.digest(C.text(w));
  const server=http.createServer((req,res)=>api.handle(req,res));await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const url='http://127.0.0.1:'+server.address().port;
  try{
   assert.equal((await fetch(url+'/api/furnish/workspace')).status,200);
+  // Exercise real recovery HTTP, not a mock: initialization archives every
+  // divergent cache before choosing the file or resuming pending changes.
+  for(const v of C.workspaceVersions){
+   const cached={...clone(a),v,updatedAt:1000+v};cached._repository={revision:first.revision,clean:await fingerprint(cached)};
+   const request=async(route,method='GET',body)=>{const response=await fetch(url+'/api/furnish'+route,{method,headers:body?{'Content-Type':'application/json','X-Furnish-Request':'workspace-v1'}:{},...(body?{body:JSON.stringify(body)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error),{status:response.status});return value;};
+   const real=Client.create({request,fingerprint,onChange(){},delay:100000});
+   const loaded=await real.initialize([cached]);assert.equal(real.status.mode,'saved',`v${v} recovery must not disable file saving`);assert.deepEqual(C.portable(loaded),C.portable(b));assert.equal(api.read().revision,second.revision);assert(api.recoveries().some(entry=>JSON.stringify(entry.workspace)===JSON.stringify(cached)),`v${v} recovery retains exact raw cache`);
+   const edited={...clone(b),v};edited.work[plan.id].furniture[0].cy+=v;real.schedule(edited);await real.flush();assert.equal(real.status.mode,'saved');assert.equal(api.read().workspace.work[plan.id].furniture[0].cy,edited.work[plan.id].furniture[0].cy);const revision=api.read().revision;api.write(b,revision);real.stop();
+  }
+  assert.throws(()=>api.recover({...a,v:999}),/恢复副本无效/);
+
   assert.equal((await fetch(url+'/api/furnish/workspace',{method:'PUT',headers:{Origin:'https://evil.example','Content-Type':'application/json','X-Furnish-Request':'workspace-v1'},body:JSON.stringify({workspace:a,baseRevision:second.revision})})).status,403);
   assert.equal((await fetch(url+'/api/furnish/workspace',{method:'PUT',headers:{'Content-Type':'text/plain'},body:'{}'})).status,403);
  }finally{await new Promise(resolve=>server.close(resolve));}

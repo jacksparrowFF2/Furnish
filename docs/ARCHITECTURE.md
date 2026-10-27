@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-27（恢复副本版本统一）：repository-core.workspaceVersions集中工作区版本目录；核心校验、文件解析与repository-server恢复接口共用，避免新格式能读写却不能备份，导致启动保存中止。恢复副本仍原样保留，仲裁、冲突保护和原保存通道不变。真实HTTP覆盖全部已支持版本的备份及后续写回。
+
 2026-10-27（总体截面与灯槽启停）：section-editor默认总体组合，部件页仍只画当前截面；ceiling-core以sectionActive统一过滤停用灯槽实体，setChannelEnabled保留完整配方和稳定身份，其他板件继续使用完整配方定位。可选channelEnabled进入v25项目／工作区／缓存、复制与复用，沿原mutate及升级通道。移除重复节点按钮及普通区域中新建直线／L形入口，已有独立构件按需显示。见[总体与启停](CEILINGS.md#总体效果与灯槽启停2026-10-27)。
 
 2026-10-27（吊顶部件统一编辑）：ceiling-core集中componentPreset／replaceAssemblyPart／removeAssemblyPart、稳定partIds／centerId及excludedPresets校验；upgradeWork由恢复与项目导入调用，拆分石膏光源并继承图层。section-editor按材质归属组织部件预设、单独轮廓与生产预览，组合视图显式选择；设计页仅保留整套构造复用。新字段和空区域使用v24项目／工作区／独立缓存，原mutate及旧缓存恢复保持，无新加载脚本。详见[部件与升级](CEILINGS.md#按部件编辑删除预设与旧设计升级2026-10-27)。
