@@ -165,14 +165,15 @@ function pushOut(f,axis){
   const ox = f.cx, oy = f.cy, home = roomAt(ox, oy);
   const okAt = (x, y) => home ? inPoly(x, y, home.poly) : !!roomAt(x, y);
   for (let n = 0; n < 6; n++){
-    const {hw, hh} = aabb(f);
+    const {hw, hh} = aabb(f),actual=FurnishProducts.definition(f)?.telescopic?.allMoving?FurnishGeometry.bbox(FurnishGeometry.footprints(f).flat()):[f.cx-hw,f.cy-hh,f.cx+hw,f.cy+hh];
+    const left=actual[0]-f.cx,top=actual[1]-f.cy,right=actual[2]-f.cx,bottom=actual[3]-f.cy;
     let worst = null, wa = 1;
     for (const r of snapRects(f)){
-      const ix = Math.min(f.cx+hw, r[2]) - Math.max(f.cx-hw, r[0]), iy = Math.min(f.cy+hh, r[3]) - Math.max(f.cy-hh, r[1]);
+      const ix = Math.min(f.cx+right, r[2]) - Math.max(f.cx+left, r[0]), iy = Math.min(f.cy+bottom, r[3]) - Math.max(f.cy+top, r[1]);
       if (ix > 1 && iy > 1 && ix*iy > wa){ wa = ix*iy; worst = r; }
     }
     if (!worst) return true;
-    const r = worst, best = [[r[0]-hw, f.cy], [r[2]+hw, f.cy], [f.cx, r[1]-hh], [f.cx, r[3]+hh]]
+    const r = worst, best = [[r[0]-right, f.cy], [r[2]-left, f.cy], [f.cx, r[1]-bottom], [f.cx, r[3]-top]]
       .filter(([x, y]) => (axis!=='x'||y===oy)&&(axis!=='y'||x===ox)&&okAt(x, y))
       .sort((p, q) => Math.hypot(p[0]-f.cx, p[1]-f.cy) - Math.hypot(q[0]-f.cx, q[1]-f.cy))[0];
     if (!best) break;

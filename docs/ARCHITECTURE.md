@@ -1,5 +1,8 @@
 # 模块与加载约定
 
+2026-10-27（2+0定位修正）：产品核心slidingResizeFrame／resizeSliding统一完整轨道、固定收门端基点和编辑矩形；design数值尺寸、snapping拖动与画布手柄共用。planOutline返回生产轨道，选择／吸附读取真实非对称边界，移动释放避墙同步；无新持久字段或加载。见 [联动门](TELESCOPIC-OPENINGS.md)。
+
+
 2026-10-27（2+0 同向联动门）：product-rules 的 allMoving 能力派生两活动扇、洞口旁延伸轨道和叠合位置；现有 sliding-opening-model／SVG 共用。可选 slidingStackSide／slidingOpen 沿字段能力、mutate、恢复和项目保存，数值实体缓存／确认读取实际姿态；主场景复用现有对象更新开合目标，无新脚本或存储通道。见 [联动门](TELESCOPIC-OPENINGS.md)。
 
 

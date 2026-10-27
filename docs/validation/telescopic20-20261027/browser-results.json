@@ -10,6 +10,8 @@
     "undoRedo": true,
     "refresh": true,
     "narrow": true,
+    "fixedNumericDatum": true,
+    "fixedPointerDatum": true,
     "errors": []
   },
   {
@@ -23,6 +25,8 @@
     "undoRedo": true,
     "refresh": true,
     "narrow": true,
+    "fixedNumericDatum": true,
+    "fixedPointerDatum": true,
     "errors": []
   }
 ]

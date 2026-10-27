@@ -112,6 +112,14 @@
   }
   // Resize from the original opposite corner, so snapping never moves that anchor.
   function resize(f,p,{scale,wallSnap,rects,furniture=[],guides=false,axis='both'}){
+    const products=root.FurnishProducts||require('./product-rules.js'),frame=products.slidingResizeFrame(f);
+    if(frame){
+      const result=resize(frame.proxy,p,{scale,wallSnap,rects,furniture,guides,axis});let lo=50,hi=20000;
+      for(let i=0;i<48;i++){const mid=(lo+hi)/2;if(products.slidingResizeFrame({...f,w:mid}).proxy.w<result.furniture.w)lo=mid;else hi=mid;}
+      let w=axis==='d'?f.w:(lo+hi)/2;if(axis!=='d'&&!result.guides.length)w=Math.max(100,Math.round(w/10)*10);
+      return {furniture:products.resizeSliding(f,{w,d:axis==='w'?f.d:result.furniture.d}),guides:result.guides};
+    }
+
     const a=f.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
     const anchor={x:f.cx-f.w/2*c+f.d/2*s,y:f.cy-f.w/2*s-f.d/2*c};
     const dimensions=q=>({w:axis==='d'?f.w:Math.max(100,Math.round(((q.x-anchor.x)*c+(q.y-anchor.y)*s)/10)*10),d:axis==='w'?f.d:Math.max(100,Math.round((-(q.x-anchor.x)*s+(q.y-anchor.y)*c)/10)*10)});
@@ -261,7 +269,7 @@
   }
   const furnitureEntityCache=new WeakMap();
   function orientEntity(e){const ring=e.rings[0]||[],signed=ring.reduce((sum,p,i)=>{const q=ring[(i+1)%ring.length];return sum+p[0]*q[1]-q[0]*p[1];},0),boundary=edges(e.rings);return {...e,edges:signed<0?boundary.map(edge=>({a:edge.b,b:edge.a})):boundary};}
-  function furnitureEntity(f){const key=JSON.stringify(f),old=furnitureEntityCache.get(f);if(old?.key===key)return old.entity;const entity=orientEntity({kind:'furniture',id:f.id,name:f.name,smooth:!!geometry.localOutline(f),rings:furnitureRings(f)});furnitureEntityCache.set(f,{key,entity});return entity;}
+  function furnitureEntity(f){const key=JSON.stringify(f),old=furnitureEntityCache.get(f);if(old?.key===key)return old.entity;const entity=orientEntity({kind:'furniture',id:f.id,name:f.name,smooth:!!geometry.localOutline(f)&&!(root.FurnishProducts||require('./product-rules.js')).definition(f)?.telescopic?.allMoving,rings:furnitureRings(f)});furnitureEntityCache.set(f,{key,entity});return entity;}
   function entities({rects=[],furniture=[]}){
     const out=rects.map((r,i)=>({kind:'wall',id:i,name:'',rings:[[[r[0],r[1]],[r[2],r[1]],[r[2],r[3]],[r[0],r[3]]]]}));
     const walls=out.map(e=>{

@@ -20,3 +20,11 @@
 未运行全量 `node scripts/check.cjs`；本轮影响限于新门产品、共用滑门布局／构造／字段与其调用方，采用上述增量检查。未做实机触屏、真实 Blender 渲染或厂家施工核验；玻璃为实时透明外观近似，五金尺寸为布局估算。碰撞读取当前保存姿态的生产实体，未计算连续运动扫掠，也不自动切墙或建口袋。
 
 浏览器初次运行发现沙箱内无 Chromium，Edge 在沙箱中启动即退出；使用已安装 Edge 在允许的隔离验收进程中完成。首轮浏览器脚本错误地寻找已移入浮动编辑器的 #fW，改用项目既有 editFurnitureField 后，HTTP／file 两种模式均通过。未改动真实 `projects/workspace.furnish.json`；其工作前已有的用户修改继续保留，未计入功能提交。
+
+## 尺寸基点与吸附追加复验
+
+追加 `tests/test-telescopic-20-placement.cjs`：40组旋转／镜像／收门侧／姿态下，数值改宽深及拖动改宽深保持实际收门端基点；完整轨道边界准确贴墙、临时绕过生效；真实UI放手避墙函数不会将正确贴边推离。相关 `test-snapping`、`test-drag-feature-snapping`、`test-product-plan-outline`、`test-enclosed-boundary-distances`、`test-telescopic-20`、`test-telescopic-corners` 通过。共享声明与改动脚本语法检查通过。
+
+隔离HTTP／断网file浏览器增加基点坐标前后对比，真实鼠标拖动90°门的左右收门与镜像手柄，验证宽度改变而固定基点不动，并撤销恢复；数值编辑基点、复制、刷新、3D动画及窄屏再次通过。首次真实鼠标验收揭示放手推墙仍会移动基点，现已修正并通过复验。完整轨道外包参与吸附，不表示柜内空腔或连续运动扫掠；斜向自动避墙保留原轴对齐保守包络边界。本轮仍是增量检查，未执行全量检查或实机触屏。
+
+![修正后的完整轨道选择、固定基点与尺寸手柄](http-resize-datum.png)

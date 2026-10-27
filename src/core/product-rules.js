@@ -145,6 +145,7 @@ function planBodyOutline(f,segments){
  return Array.from({length:count},(_,i)=>{const t=i*2*Math.PI/count;return [f.w/2*signed(Math.sin(t)),f.d/2*signed(Math.cos(t))];});
 }
 function planOutline(f,segments){
+ if(!f.obj&&definition(f)?.telescopic?.allMoving)return slidingLayout(f).railOutline;
  const points=planBodyOutline(f,segments);if(!points)return null;
  const rear=definition(f)?.planShape?.rear;if(!rear)return points;
  const x=rear.width/2*f.w/rear.referenceWidth,z=rear.z*f.d/rear.referenceDepth;
@@ -404,6 +405,17 @@ function slidingLayout(f,corner=null,options={}){
  const floorTracks=leaves.flatMap((leaf,i)=>movingOnly&&Math.abs(leaf.x-leaf.opened)<=1e-6?[]:[{leafIndex:i,z:leaf.z,start:sign*-f.w/2,end:cut(leaf.z),outline:[[sign*-f.w/2,leaf.z-half],[cut(leaf.z-half),leaf.z-half],[cut(leaf.z+half),leaf.z+half],[sign*-f.w/2,leaf.z+half]]}]);
  return {...tracks,edge,jamb,width,mirrored,railOutline,leaves,floorTracks,floorRailHeight:slidingFloorHeight(f),bottomClearance:corner?.floorClearance??slidingBottom(f,options.floorTrack??value(f,'floorTrack'))};
 }
+// Resizing uses the far stacking end of the complete rail as its fixed datum.
+function slidingResizeFrame(f){
+ if(f.obj||!definition(f)?.telescopic?.allMoving)return null;
+ const layout=slidingLayout(f),xs=layout.railOutline.map(p=>p[0]),lo=Math.min(...xs),hi=Math.max(...xs),flip=f.flip?-1:1,sign=(value(f,'slidingStackSide')==='right'?-1:1)*flip;
+ const x=value(f,'slidingStackSide')==='right'?hi:lo,y=-f.d/2*sign,a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a),point=(x,y)=>[f.cx+x*flip*c-y*s,f.cy+x*flip*s+y*c],center=point((lo+hi)/2,0);
+ return {local:[x*flip,y],anchor:point(x,y),proxy:{...f,type:'custom',w:hi-lo,d:f.d,cx:center[0],cy:center[1],rot:(f.rot||0)+(sign<0?180:0),flip:false}};
+}
+function resizeSliding(f,values){
+ const next={...f,...values},before=slidingResizeFrame(f),after=slidingResizeFrame(next);
+ if(before&&after){next.cx+=before.anchor[0]-after.anchor[0];next.cy+=before.anchor[1]-after.anchor[1];}return next;
+}
 // Automatic L joint: only a unique perpendicular end-to-end partner at the
 // same known rail elevation. Mid-span crossings and ambiguous junctions stay intact.
 function slidingCorner(f,furniture=[],plan){
@@ -450,6 +462,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

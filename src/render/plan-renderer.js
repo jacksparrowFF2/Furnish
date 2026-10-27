@@ -437,6 +437,7 @@ function renderSelectedGeometry(){
       // 触屏上手柄更大、离家具更远，并各带一圈透明的大热区；锁定的家具不显示手柄
       const p = 5*k, hs = COARSE ? 1.7 : 1, ro = (COARSE ? 40 : 26)*k, hit = (COARSE ? 24 : 11)*k;
       const sx = f.w/2+p, sy = f.d/2+p, outline=FurnishGeometry.localOutline(f);
+      const slidingFrame=FurnishProducts.slidingResizeFrame(f),slidingSign=slidingFrame?Math.sign(Math.cos((slidingFrame.proxy.rot-f.rot)*Math.PI/180)):1,slidingFree=slidingFrame?(slidingFrame.local[0]+slidingSign*slidingFrame.proxy.w):null;
       const resizeCursor=angle=>['ew-resize','nwse-resize','ns-resize','nesw-resize'][((Math.round(angle/45)%4)+4)%4];
       const outer=!!globalThis.FurnishKitchen?.outerResizable(f),drawing=typeof drawingRotation==='function'?drawingRotation():0;
       const edgeHandle=(axis,x,y,angle,label)=>`<g data-handle="size" data-axis="${axis}" ${outer?`data-edit-overlay="kitchen-outer-edge" data-kitchen-edge="${axis==='w'?'right':'bottom'}"`:''} style="cursor:${resizeCursor(angle+drawing)}"><title>${label}</title>${outer?`<path d="${axis==='w'?`M${sx} ${-sy}L${sx} ${sy}`:`M${-sx} ${sy}L${sx} ${sy}`}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/>`:''}<circle cx="${x}" cy="${y}" r="${hit}" fill="transparent"/><rect x="${x-5*hs*k}" y="${y-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A} stroke-width="1.5"/></g>`;
@@ -451,11 +452,12 @@ function renderSelectedGeometry(){
         <line x1="0" y1="${-f.d/2-p}" x2="0" y2="${-f.d/2-ro}" ${A} stroke-width="1" pointer-events="none"/>
         <circle data-handle="rot" cx="0" cy="${-f.d/2-ro}" r="${hit}" fill="transparent"/>
         <circle data-handle="rot" cx="0" cy="${-f.d/2-ro}" r="${6*hs*k}" fill="#fff" ${A} stroke-width="1.5"><title>${tr('拖动旋转（Shift 自由角度）','Drag to rotate (Shift for free angle)')}</title></circle>
+        ${slidingFrame?`<circle data-resize-datum="sliding" cx="${slidingFrame.local[0]}" cy="${slidingFrame.local[1]}" r="${4*k}" fill="${ACC}" pointer-events="none"><title>${tr('尺寸固定基点：收门端','Fixed resize datum: stacking end')}</title></circle>`:''}
         ${runGrips??''}
-        ${edgeHandle('w',sx,0,f.rot,outer?tr('调整这条外边，固定对侧和内侧；保留薄柜尺寸','Resize this outer edge; keep opposite edge fixed'):tr('只调整宽度（固定对侧边）','Resize width only (opposite edge stays fixed)'))}
-        ${edgeHandle('d',0,sy,f.rot+90,outer?tr('调整这条外边柜深，固定对侧和内侧；保留薄柜尺寸','Resize this row depth; keep opposite and inner edges fixed'):tr('只调整深度（固定对侧边）','Resize depth only (opposite edge stays fixed)'))}
-        <g data-handle="size" ${outer?'data-kitchen-edge="corner"':''} style="cursor:${resizeCursor(f.rot+drawing+45)}"><title>${tr('同时调整宽度和深度','Resize width and depth together')}</title><circle cx="${sx}" cy="${sy}" r="${hit}" fill="transparent"/>
-        <rect x="${sx-5*hs*k}" y="${sy-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" fill="${ACC}"/></g>`;}
+        ${edgeHandle('w',slidingFrame?slidingFree+slidingSign*p:sx,0,f.rot,outer?tr('调整这条外边，固定对侧和内侧；保留薄柜尺寸','Resize this outer edge; keep opposite edge fixed'):tr('只调整宽度（固定对侧边）','Resize width only (opposite edge stays fixed)'))}
+        ${edgeHandle('d',slidingFrame?(slidingFrame.local[0]+slidingFree)/2:0,slidingFrame?slidingSign*sy:sy,f.rot+90,outer?tr('调整这条外边柜深，固定对侧和内侧；保留薄柜尺寸','Resize this row depth; keep opposite and inner edges fixed'):tr('只调整深度（固定对侧边）','Resize depth only (opposite edge stays fixed)'))}
+        <g data-handle="size" ${outer?'data-kitchen-edge="corner"':''} style="cursor:${resizeCursor(f.rot+drawing+45)}"><title>${tr('同时调整宽度和深度','Resize width and depth together')}</title><circle cx="${slidingFrame?slidingFree+slidingSign*p:sx}" cy="${slidingFrame?slidingSign*sy:sy}" r="${hit}" fill="transparent"/>
+        <rect x="${(slidingFrame?slidingFree+slidingSign*p:sx)-5*hs*k}" y="${(slidingFrame?slidingSign*sy:sy)-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" fill="${ACC}"/></g>`;}
       if(!furnitureLocked(f))s+=kitchenExtensionHandleSVG(f,k,hs,A,resizeCursor)+kitchenDividerHandleSVG(f,k,hs,A,resizeCursor);
       if(!furnitureLocked(f)&&outer)s+=kitchenGapSVG(f,k);
       s += `</g>`;

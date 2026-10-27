@@ -28,6 +28,7 @@
  function resizeFurniture(f,values,anchor=f.resizeAnchor||'center'){
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:products().footprintMinimum(f,key))||value>20000)throw Error('宽深须在当前最小尺寸至 20000 mm 内，高须为 10–20000 mm');next[key]=value;}
+  if(!f.resizeAnchor&&anchor==='center'&&products().slidingResizeFrame(f))return products().resizeSliding(f,{w:next.w,d:next.d,h:next.h});
   products().resizeHoodGeometry(f,next);products().resizeManifold(f,next);
   if(products().definition(next)?.manifold||products().family(next,'pipe-box')||products().vesselSink(next))products().validate(next);
   if(next.sinkNotch!==undefined)products().validateField(next,'sinkNotch',next.sinkNotch);
