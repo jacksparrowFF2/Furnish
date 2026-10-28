@@ -140,6 +140,11 @@
   const v=relativeFurnitureVerticalBounds(f);if(!v||!plan)return v;
   const base=products().floorBase(plan,f,furniture);return base.known?{...v,bottom:v.bottom+base.z,top:v.top+base.z}:null;
  }
+ // Display heights against the finished floor without changing legacy input data.
+ function furnitureHeightMeasurements(f,plan,furniture=plan?.furniture||[]){
+  const vertical=furnitureVerticalBounds(f,plan,furniture),floor=products().floorBase({...plan,furnitureDatum:products().furnitureDatum.default},f,furniture),roof=(root.FurnishProject||require('./project-core.js')).ceilingAt(plan,f.cx,f.cy);
+  return {vertical,bottom:vertical&&floor.known?vertical.bottom-floor.z:null,top:vertical&&floor.known?vertical.top-floor.z:null,roofGap:vertical&&Number.isFinite(roof.height)?roof.height-vertical.top:null};
+ }
  function relativeFurnitureVerticalBounds(f){
   const vertical=products().vertical(f);if(vertical)return vertical;
   if(f.type==='sofa_yeswood_cherry')return {bottom:0,top:products().height(f),source:f.h===undefined?'model':'recorded'};
@@ -335,7 +340,7 @@
   else Object.assign(current,{name:title,ts:now,work:next});
   return copy;
  }
- root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign};
+ root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign};
  root.FurnishDesign.applyCabinetTemplate=applyCabinetTemplate;
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

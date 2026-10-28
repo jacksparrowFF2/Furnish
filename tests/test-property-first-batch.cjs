@@ -2,7 +2,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),C=require('../src/core/cabinet-core.js');
 const source=fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8');
 const priceOf=f=>f.price??f.referencePrice??0;
-const ctx=require('./helpers/layer-context.cjs').createContext({state:{},FurnishDesign:D,FurnishProject:P,FurnishCabinet:C,priceOf,tr:a=>a,esc:a=>String(a),yen:n=>'¥'+n,window:{}});
+const ctx=require('./helpers/layer-context.cjs').createContext({state:{},canvasEffectivePlan:()=>({rooms:[{id:'room',poly:[[0,0],[5000,0],[5000,5000],[0,5000]]}]}),FurnishDesign:D,FurnishProject:P,FurnishCabinet:C,priceOf,tr:a=>a,esc:a=>String(a),yen:n=>'¥'+n,window:{}});
 vm.runInContext(source,ctx);
 const base={id:'item',name:'测试',w:800,d:350,cx:1500,cy:1500,rot:0};
 for(const [item,bottom,top] of [
