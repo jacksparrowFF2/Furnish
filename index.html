@@ -1608,7 +1608,14 @@ function fitSceneAnnotationLabels(){
   el.style.marginLeft=shift+'px';el.style.marginTop=dy+'px';});
 }
 function buildSelectionElevation(ids){
- clearAnnotations(elevationG);if(ids.length!==1)return;const f=getF(ids[0]);if(!f)return;
+ clearAnnotations(elevationG);
+ if(ui.sel?.kind==='ceiling'){
+  const plan=FurnishProject.effectivePlan(PLAN,state),first=plan.ceilings?.items.find(c=>c.id===ui.sel.id);if(!first)return;
+  const items=plan.ceilings.items.filter(c=>first.regionId?c.regionId===first.regionId:c.id===first.id),region=plan.ceilings.regions?.find(r=>r.id===first.regionId),poly=region?.polygon||(first.kind==='flat'?first.polygon:FurnishCeiling.footprint(first)),bottoms=items.map(c=>c.kind==='flat'?c.height:c.height-Math.max(...FurnishCeiling.sectionPoints(c.section).map(v=>v.d))),m=FurnishCeiling.heightMeasurements(plan,poly,bottoms),at=poly.reduce((a,p)=>a.map((v,i)=>v+p[i]/poly.length),[0,0]),format=r=>r?Number(r.min.toFixed(1))+(r.max-r.min>.1?'～'+Number(r.max.toFixed(1)):'')+' mm':tr('待核对','Unknown');
+  const label=annotationLabel(elevationG,'',wx(at[0]),M(Math.min(...bottoms)),wz(at[1]),'scene-elevation scene-height-card scene-ceiling-height'),el=label.element,heading=document.createElement('small');heading.textContent=tr('吊顶 · 地砖完成面基准','Ceiling · finished floor datum');el.append(heading);
+  for(const [name,value] of [[tr('底部距地砖','Above finished floor'),m.aboveFloor],[tr('底部距房顶','Underside to roof'),m.roofGap]]){const row=document.createElement('div'),text=document.createElement('span'),number=document.createElement('b');row.className='scene-height-row';text.textContent=name;number.textContent=format(value);row.append(text,number);el.append(row);}return;
+ }
+ if(ids.length!==1)return;const f=getF(ids[0]);if(!f)return;
  let heights;try{heights=FurnishDesign.furnitureHeightMeasurements(f,FurnishProject.effectivePlan(PLAN,state),state.furniture);}catch{heights=null;}const v=heights?.vertical,x=wx(f.cx),z=wz(f.cy),mm=n=>Number(n.toFixed(2)),value=n=>Number.isFinite(n)?`${mm(n)} mm`:tr('待核对','Unknown');
  if(!v){annotationLabel(elevationG,tr('高度未知 · 标高待核对','Unknown height · verify elevations'),x,.25,z,'scene-elevation');return;}
  const bottom=M(v.bottom),top=M(v.top),V=(xx,y)=>new THREE.Vector3(xx,y,z);

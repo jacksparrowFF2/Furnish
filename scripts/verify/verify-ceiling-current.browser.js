@@ -14,7 +14,7 @@ async(page,V)=>{
     await q('region').selectOption('current_'+style);check(await p.locator(`[name="ceiling-design-style"][value="${style}"]`).isChecked(),'current style '+style);
     await p.locator('[data-design-stage="style"]').click();
     check(await p.locator('[data-design-stage="section"]').isVisible()===(style==='ring'),'appropriate component steps '+style);
-    if(style!=='none'){await q('height').fill('2390');await p.waitForFunction(()=>!document.querySelector('[data-design-action="save"]').disabled);}
+    if(style!=='none'){await p.locator('[data-design-stage="area"]').click();await q('height').fill('2390');await p.waitForFunction(()=>!document.querySelector('[data-design-action="save"]').disabled);await p.locator('[data-design-stage="style"]').click();}
    }
    await p.locator('[data-design-stage="section"]').click();await p.locator('[data-assembly-part="gypsum"]').click();await p.locator('[data-design-part="0"]').click();await p.locator('[data-section-node]').first().waitFor();
    check(await p.locator('[data-ceiling="existing"],[data-ceiling="flat"],[data-ceiling="room"],[data-ceiling-action="attach"]').count()===0,'section editor has no standalone model controls');

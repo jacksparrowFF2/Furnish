@@ -1,0 +1,1 @@
+{"case":"ceiling-current","status":"PASS","result":[{"mode":"http","passed":true,"allFourStyles":true,"noLegacyControls":true,"productionSectionPreview":true,"saveUndoRedoRefresh":true,"mobile390":true},{"mode":"file","passed":true,"allFourStyles":true,"noLegacyControls":true,"productionSectionPreview":true,"saveUndoRedoRefresh":true,"mobile390":true}]}

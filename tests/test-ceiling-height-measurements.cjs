@@ -1,0 +1,13 @@
+'use strict';
+const assert=require('node:assert/strict'),C=require('../src/core/ceiling-core.js');
+const polygon=[[100,100],[900,100],[900,900],[100,900]],plan={rooms:[{id:'a',poly:[[0,0],[1000,0],[1000,1000],[0,1000]],ceilingHeight:2700}],floorFinish:{areas:{a:{finishedZ:60}}}};
+const before=JSON.stringify(plan);let m=C.heightMeasurements(plan,polygon,2400);
+assert.deepEqual(m.aboveFloor,{min:2340,max:2340});assert.deepEqual(m.roofGap,{min:300,max:300});assert.equal(JSON.stringify(plan),before);
+for(const [bottom,gap] of [[2700,0],[2701,-1]])assert.equal(C.heightMeasurements(plan,polygon,bottom).roofGap.min,gap);
+m=C.heightMeasurements(plan,polygon,[2400,2500]);assert.deepEqual(m.aboveFloor,{min:2340,max:2440});assert.deepEqual(m.roofGap,{min:200,max:300});
+plan.rooms.push({id:'b',poly:[[1000,0],[2000,0],[2000,1000],[1000,1000]],ceilingHeight:2800});plan.floorFinish.areas.b={finishedZ:55};
+m=C.heightMeasurements(plan,[[100,100],[1900,100],[1900,900],[100,900]],2400);assert.deepEqual(m.floor,{min:55,max:60});assert.deepEqual(m.aboveFloor,{min:2340,max:2345});assert.deepEqual(m.roofGap,{min:300,max:400});
+delete plan.floorFinish.areas.a.finishedZ;m=C.heightMeasurements(plan,polygon,2400);assert.equal(m.aboveFloor,null);assert.equal(m.floor,null);assert.equal(m.roofGap.min,300);
+delete plan.floorFinish;m=C.heightMeasurements(plan,polygon,2400);assert.equal(m.aboveFloor.min,2400);
+assert.equal(C.heightMeasurements(plan,polygon.map(p=>p.map(v=>v+5000)),2400).aboveFloor,null);
+console.log('PASS ceiling finished-floor heights, multiple levels, contact/overrun, unknown floor and unchanged data');

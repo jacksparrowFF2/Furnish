@@ -137,7 +137,7 @@ function selectionChanged(){
 function applyMode(){
  const ceiling=planMode()==='ceiling';
  document.querySelectorAll('[data-plan-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.planMode===planMode())));
- const note=document.querySelector('#plan-display-note');if(note)note.textContent=ceiling?tr('吊顶底标高与地面完成面均以测量地面为零点','Ceiling and floor levels use the surveyed floor datum'):tr('虚线为头顶吊顶投影 · 标高以测量地面为零点','Dashed lines: overhead ceiling · levels use the surveyed floor datum');
+ const note=document.querySelector('#plan-display-note');if(note)note.textContent=ceiling?tr('吊顶高度从地砖完成面计；另列底部到房顶的距离','Ceiling heights use finished floors; underside-to-roof distance is listed separately'):tr('虚线为头顶吊顶投影 · 高度从地砖完成面计','Dashed lines: overhead ceiling · heights use finished floors');
  // Explicit SVG attributes survive PNG/SVG export without external CSS.
  for(const node of document.querySelectorAll('#gFurn > [data-fid]')){
   const f=getF(node.dataset.fid),spec=FurnishProducts.definition(f);
@@ -151,13 +151,13 @@ function levelLabels(items,visibleOnly=true,scale=view.s){
  const groups=new Map();for(const c of items){if(visibleOnly&&!FurnishLayers.visible(state,'ceiling:'+c.id))continue;const key=c.regionId||c.id;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(c);}
  return [...groups.values()].map(list=>{
   const first=list[0],region=state.ceilings?.regions?.find(r=>r.id===first.regionId),poly=region?.polygon||(first.kind==='flat'?first.polygon:C.footprint(first)),display=poly.map(p=>drawingPoint(p)),xs=display.map(p=>p[0]),ys=display.map(p=>p[1]),left=Math.min(...xs),right=Math.max(...xs),top=Math.min(...ys),bottom=Math.max(...ys);
-  const levels=list.map(c=>c.kind==='flat'?c.height:c.height-Math.max(...C.sectionPoints(c.section).map(v=>v.d))),lo=Math.min(...levels),hi=Math.max(...levels),mm=v=>(v>=0?'+':'')+Number(v.toFixed(1)),text=tr('底标高 ','Underside ')+mm(lo)+(hi-lo>.1?'～'+mm(hi):'')+' mm',name=region?.name||first.name;
-  const font=Math.min(Math.max(120,10/Math.max(scale,.001)),Math.max(100,(right-left-100)/Math.max(name.length,text.length)/.65)),margin=font*1.5;
+  const levels=list.map(c=>c.kind==='flat'?c.height:c.height-Math.max(...C.sectionPoints(c.section).map(v=>v.d))),heights=C.heightMeasurements(FurnishProject.effectivePlan(PLAN,state),poly,levels),format=r=>r?Number(r.min.toFixed(1))+(r.max-r.min>.1?'～'+Number(r.max.toFixed(1)):'')+' mm':tr('待核对','Unknown'),text=tr('底部距地砖 ','Above finished floor ')+format(heights.aboveFloor),roofText=tr('底部距房顶 ','Underside to roof ')+format(heights.roofGap),name=region?.name||first.name;
+  const font=Math.min(Math.max(120,10/Math.max(scale,.001)),Math.max(100,(right-left-100)/Math.max(name.length,text.length,roofText.length)/.65)),margin=font*1.5;
   // Place labels inside the projected region, with readable horizontal text even
   // after drawing rotation. Concave regions use an interior candidate search.
   const candidates=[[(left+right)/2,top+margin],...[[.25,.2],[.75,.2],[.5,.35],[.5,.65],[.25,.75],[.75,.75]].map(([x,y])=>[left+(right-left)*x,top+(bottom-top)*y])];
-  const at=candidates.find(p=>C.inside(p,display)&&C.inside([p[0],p[1]+font*1.25],display))||display[0],world=drawingPoint(at,true);
-  return `<g data-ceiling-level="${esc(first.regionId||first.id)}" pointer-events="none" transform="translate(${world.join(' ')}) rotate(${-drawingRotation()})"><title>${esc(name)} · ${tr('吊顶','Ceiling ')}${esc(text)} · ${tr('以测量地面为零点，非距完成地面净高','Surveyed floor datum, not finished-floor clearance')}</title><text text-anchor="middle" font-size="${font}" fill="#317580" stroke="${PAL.halo}" stroke-width="${font*.3}" paint-order="stroke">${esc(name)}</text><text y="${font*1.25}" text-anchor="middle" font-size="${font}" fill="#317580" stroke="${PAL.halo}" stroke-width="${font*.3}" paint-order="stroke">${esc(text)}</text></g>`;
+  const at=candidates.find(p=>C.inside(p,display)&&C.inside([p[0],p[1]+font*2.5],display))||display[0],world=drawingPoint(at,true);
+  return `<g data-ceiling-level="${esc(first.regionId||first.id)}" pointer-events="none" transform="translate(${world.join(' ')}) rotate(${-drawingRotation()})"><title>${esc(name)} · ${tr('吊顶','Ceiling ')}${esc(text)} · ${esc(roofText)}</title><text text-anchor="middle" font-size="${font}" fill="#317580" stroke="${PAL.halo}" stroke-width="${font*.3}" paint-order="stroke">${esc(name)}</text><text y="${font*1.25}" text-anchor="middle" font-size="${font}" fill="#317580" stroke="${PAL.halo}" stroke-width="${font*.3}" paint-order="stroke">${esc(text)}</text><text y="${font*2.5}" text-anchor="middle" font-size="${font}" fill="#317580" stroke="${PAL.halo}" stroke-width="${font*.3}" paint-order="stroke">${esc(roofText)}</text></g>`;
  }).join('');
 }
 let labelViewKey='';

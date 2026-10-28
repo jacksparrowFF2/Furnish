@@ -32,7 +32,7 @@ async function main(){
    });
    assert.equal(await p.locator('#gFurn [data-fid="display_bed"]').getAttribute('opacity'),'.25');
    assert.equal(await p.locator('#gFurn [data-fid="display_light"]').getAttribute('opacity'),null);
-   assert.match(await p.locator('[data-ceiling-level]').textContent(),/底标高 \+2400 mm/);
+   assert.match(await p.locator('[data-ceiling-level]').textContent(),/底部距地砖 2400 mm/);
    assert.equal(await p.evaluate(()=>document.querySelector('#gCeilings').nextElementSibling.id),'gLabels','ceiling drawn above furniture and walls');
    const hit=await p.evaluate(()=>{const c=state.ceilings.items.find(c=>c.regionId==='display_area'&&c.kind==='profile'),points=FurnishCeiling.footprint(c),a=points[0],b=points[1],pt=new DOMPoint((a[0]+b[0])/2,(a[1]+b[1])/2).matrixTransform(document.querySelector('#gCeilings').getScreenCTM());return {x:pt.x,y:pt.y};});await p.mouse.click(hit.x,hit.y);assert.equal(await p.evaluate(()=>ui.sel?.kind),'ceiling','real contour click selects ceiling');
    assert.equal(await p.locator('[data-ceiling-highlight]').count(),2,'complete region highlighted');
