@@ -1,0 +1,152 @@
+{
+  "case": "layered-cabinet-top",
+  "status": "PASS",
+  "result": [
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "current entry has editable 50mm closure",
+        "entry open/save preserves current data",
+        "entry gap changes without rewriting functions",
+        "entry undo",
+        "entry v29 refresh restoration",
+        "entry real upper doors and closure use the same heights",
+        "current sideboard has editable 50mm closure",
+        "sideboard open/save preserves current data",
+        "sideboard gap changes without rewriting functions",
+        "sideboard undo",
+        "sideboard v29 refresh restoration",
+        "sideboard real upper doors and closure use the same heights",
+        "stepped fridge closure retains appliance height",
+        "laundry child exposes the same closure controls",
+        "child save stays in enclosing draft",
+        "laundry parent save retains installation height",
+        "laundry parent undo",
+        "nested closure restores after refresh",
+        "390px has no page overflow",
+        "no browser exceptions"
+      ],
+      "production": [
+        {
+          "id": "fmv5b78gp2",
+          "total": 2350,
+          "body": 2300,
+          "caps": [
+            {
+              "kind": "front",
+              "bottom": 2300,
+              "top": 2349.9999999999995
+            }
+          ],
+          "tops": [
+            2335,
+            2335
+          ]
+        },
+        {
+          "id": "fmv62bwbp1",
+          "total": 2420,
+          "body": 2370,
+          "caps": [
+            {
+              "kind": "front",
+              "bottom": 2370,
+              "top": 2420
+            },
+            {
+              "kind": "front",
+              "bottom": 2370,
+              "top": 2420
+            },
+            {
+              "kind": "return",
+              "bottom": 2370,
+              "top": 2420
+            }
+          ],
+          "tops": [
+            2405.0000000000005,
+            2405.0000000000005,
+            2405,
+            2405
+          ],
+          "fridge": 1920
+        }
+      ]
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "current entry has editable 50mm closure",
+        "entry open/save preserves current data",
+        "entry gap changes without rewriting functions",
+        "entry undo",
+        "entry v29 refresh restoration",
+        "entry real upper doors and closure use the same heights",
+        "current sideboard has editable 50mm closure",
+        "sideboard open/save preserves current data",
+        "sideboard gap changes without rewriting functions",
+        "sideboard undo",
+        "sideboard v29 refresh restoration",
+        "sideboard real upper doors and closure use the same heights",
+        "stepped fridge closure retains appliance height",
+        "laundry child exposes the same closure controls",
+        "child save stays in enclosing draft",
+        "laundry parent save retains installation height",
+        "laundry parent undo",
+        "nested closure restores after refresh",
+        "390px has no page overflow",
+        "no browser exceptions"
+      ],
+      "production": [
+        {
+          "id": "fmv5b78gp2",
+          "total": 2350,
+          "body": 2300,
+          "caps": [
+            {
+              "kind": "front",
+              "bottom": 2300,
+              "top": 2349.9999999999995
+            }
+          ],
+          "tops": [
+            2335,
+            2335
+          ]
+        },
+        {
+          "id": "fmv62bwbp1",
+          "total": 2420,
+          "body": 2370,
+          "caps": [
+            {
+              "kind": "front",
+              "bottom": 2370,
+              "top": 2420
+            },
+            {
+              "kind": "front",
+              "bottom": 2370,
+              "top": 2420
+            },
+            {
+              "kind": "return",
+              "bottom": 2370,
+              "top": 2420
+            }
+          ],
+          "tops": [
+            2405.0000000000005,
+            2405.0000000000005,
+            2405,
+            2405
+          ],
+          "fridge": 1920
+        }
+      ]
+    }
+  ]
+}

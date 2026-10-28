@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 28,
+  "version": 29,
   "workspace": {
     "custom": [],
     "customPlans": [
@@ -14291,7 +14291,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 28,
+    "v": 29,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -19225,15 +19225,15 @@
                   "width": 1152.4004660452729
                 }
               ],
+              "doorOverlay": "full",
               "plinth": 60,
               "template": "wardrobe",
               "thickness": 18,
-              "version": 1,
               "topClosure": {
-                "height": 50,
-                "doorGap": 10
+                "doorGap": 10,
+                "height": 50
               },
-              "doorOverlay": "full"
+              "version": 1
             },
             "color": "#efe6d8",
             "cx": 1154.5,
@@ -19368,6 +19368,11 @@
           {
             "cabinet": {
               "boxConstruction": "independent",
+              "boxJoints": [
+                "shared",
+                "separate",
+                "shared"
+              ],
               "columns": [
                 {
                   "door": "left",
@@ -19435,20 +19440,15 @@
                   "width": 386.875
                 }
               ],
+              "doorOverlay": "full",
               "plinth": 60,
               "template": "wardrobe",
               "thickness": 18,
-              "version": 1,
               "topClosure": {
-                "height": 50,
-                "doorGap": 10
+                "doorGap": 10,
+                "height": 50
               },
-              "doorOverlay": "full",
-              "boxJoints": [
-                "shared",
-                "separate",
-                "shared"
-              ]
+              "version": 1
             },
             "color": "#efe6d8",
             "cx": 4757.75,
@@ -19518,6 +19518,7 @@
                 {
                   "cableGap": 0,
                   "door": "none",
+                  "doorColor": "#f3f1ec",
                   "doorOpen": false,
                   "drawers": [
                     {
@@ -19529,12 +19530,12 @@
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false,
-                  "doorColor": "#f3f1ec"
+                  "topOpen": false
                 },
                 {
                   "cableGap": 0,
                   "door": "none",
+                  "doorColor": "#f3f1ec",
                   "doorOpen": false,
                   "drawers": [
                     {
@@ -19546,24 +19547,24 @@
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false,
-                  "doorColor": "#f3f1ec"
+                  "topOpen": false
                 },
                 {
                   "cableGap": 30,
                   "door": "none",
+                  "doorColor": "#f3f1ec",
                   "doorOpen": false,
                   "drawers": [],
                   "finish": "solid",
                   "handle": "none",
                   "shelves": [],
                   "top": "drawer",
-                  "topOpen": false,
-                  "doorColor": "#f3f1ec"
+                  "topOpen": false
                 },
                 {
                   "cableGap": 0,
                   "door": "none",
+                  "doorColor": "#f3f1ec",
                   "doorOpen": false,
                   "drawers": [
                     {
@@ -19575,12 +19576,12 @@
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false,
-                  "doorColor": "#f3f1ec"
+                  "topOpen": false
                 },
                 {
                   "cableGap": 0,
                   "door": "none",
+                  "doorColor": "#f3f1ec",
                   "doorOpen": false,
                   "drawers": [
                     {
@@ -19592,15 +19593,14 @@
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false,
-                  "doorColor": "#f3f1ec"
+                  "topOpen": false
                 }
               ],
+              "doorOverlay": "full",
               "plinth": 0,
               "template": "tv-floor",
               "thickness": 18,
-              "version": 1,
-              "doorOverlay": "full"
+              "version": 1
             },
             "color": "#f3f1ec",
             "cx": 9931,
@@ -19785,6 +19785,7 @@
                 }
               ],
               "doorMaxAngle": 90,
+              "doorOverlay": "full",
               "entry": {
                 "editable": true,
                 "lowerHeight": 607,
@@ -19795,6 +19796,10 @@
               "plinth": 0,
               "template": "entry-console",
               "thickness": 18,
+              "topClosure": {
+                "doorGap": 10,
+                "height": 50
+              },
               "version": 1
             },
             "color": "#f3f1ec",
@@ -19856,15 +19861,15 @@
                   "width": 864
                 }
               ],
+              "doorOverlay": "full",
               "plinth": 50,
               "template": "storage",
               "thickness": 18,
-              "version": 1,
               "topClosure": {
-                "height": 50,
-                "doorGap": 10
+                "doorGap": 10,
+                "height": 50
               },
-              "doorOverlay": "full"
+              "version": 1
             },
             "color": "#f3f1ec",
             "cx": 9931,
@@ -19996,6 +20001,7 @@
                 }
               ],
               "doorMaxAngle": 90,
+              "doorOverlay": "full",
               "plinth": 50,
               "sideboard": {
                 "baseHeight": 958,
@@ -20009,6 +20015,10 @@
               },
               "template": "sideboard-fridge",
               "thickness": 18,
+              "topClosure": {
+                "doorGap": 10,
+                "height": 50
+              },
               "version": 1
             },
             "color": "#f3f1ec",
@@ -20693,6 +20703,10 @@
                       "plinth": 0,
                       "template": "wall",
                       "thickness": 18,
+                      "topClosure": {
+                        "doorGap": 10,
+                        "height": 50
+                      },
                       "version": 1
                     },
                     "color": "#f3f1ec",

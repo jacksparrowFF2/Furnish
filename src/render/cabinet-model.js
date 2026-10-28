@@ -11,12 +11,11 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=syncIdentity.produce("cabinet-model:site-1",()=>box(W,H,D,shade,x,y,z));parent.add(mesh);return mesh;};
   const closure=C.topClosure(c),panels=C.endPanels(c);
   if(closure.height&&!options.skipTopClosure){
-   const spans=c.boxConstruction==='independent'?C.boxParts(f):[{column:0,left:-f.w/2+panels.left,width:f.w-panels.left-panels.right}];
-   for(const span of spans){
-    const column=span.column;
+   for(const part of C.topClosureParts(f,c)){
+    const column=part.column;
     const face=c.columns[column],shade=face.doorColor||(face.finish==='wood'?wood:color);
-    const strip=syncIdentity.produce('cabinet-top-closure:front:'+column,()=>add(g,span.width/1000,closure.height/1000,t,(span.left+span.width/2)/1000,h,d/2-1.5*t,shade));
-    strip.userData.cabinetTopClosure=true;strip.userData.cabinetBay={column};
+    const strip=syncIdentity.produce('cabinet-top-closure:'+part.kind+':'+column,()=>add(g,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000,shade));
+    strip.userData.cabinetTopClosure=true;strip.userData.cabinetClosureKind=part.kind;strip.userData.cabinetBay={column};
    }
   }
   if(c.boxConstruction==='independent'){
@@ -56,6 +55,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    }
    const door=(col,i,bottom,top,D,section,glass=false,span)=>{
     const kind=glass?C.displayDoor(col):col.door;if(kind==='none'||options.doors==='hidden')return;
+    if(!glass&&c.topClosure&&Math.abs(top-h)<1e-8)top=C.topDoorLimit(f,c)/1000+faceInset;
     const nominal=span||bays[i],adjusted=!glass&&c.doorOverlay!==undefined?C.frontSpan(f,i,c):null,bay=adjusted?{left:adjusted.left,width:adjusted.right-adjusted.left}:nominal,count=kind==='double'?2:1,cw=bay.width/1000,leaf=cw/count;
     if(!glass&&c.doorOverlay!==undefined){bottom+=faceInset;top-=faceInset;}
     for(let j of syncIdentity.range("cabinet-model.js:generator-3",0,count,1,false)){
@@ -148,7 +148,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      syncIdentity.produce("cabinet-model:site-40",()=>add(node,cw-2*t,.012,d-3*t,x,y+.012,t/2));for(const sign of syncIdentity.items("cabinet-model.js:generator-26",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-41",()=>add(node,t,bodyH-.03,d-3*t,x+sign*(cw/2-t),y+.024,t/2));syncIdentity.produce("cabinet-model:site-42",()=>add(node,cw-2*t,bodyH-.03,t,x,y+.024,-d/2+1.5*t));
      node.userData.motion={kind:'cabinetdrawer',column:i,section:'storage',axis:'z',travel:d*.7,closedZ:0};syncIdentity.produce("cabinet-model.js:generator-call-6",()=>handle(node,faceX,y+bodyH*.7,d/2+.012));node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j,lane});g.add(node);}y+=dh;},(item,slot)=>item?.partId||"drawer:"+slot);
     if(col.door==='none'||options.doors==='hidden')return;
-    for(const [bottom,top,section] of syncIdentity.items("cabinet-model.js:generator-27",[["item-a",[shoe-t+faceInset,(col.drawers.length?drawerY:lower-t)-faceInset,'lower']],["item-b",[upper+faceInset,h-faceInset,'upper']]])){
+    for(const [bottom,top,section] of syncIdentity.items("cabinet-model.js:generator-27",[["item-a",[shoe-t+faceInset,(col.drawers.length?drawerY:lower-t)-faceInset,'lower']],["item-b",[upper+faceInset,C.topDoorLimit(f,c)/1000,'upper']]])){
      const count=col.door==='double'?2:1,leaf=faceW/count;
      for(let j of syncIdentity.range("cabinet-model.js:generator-28",0,count,1,false)){const pose=C.doorPose(col.door,span.left*1000,span.right*1000,bottom*1000,top*1000,(d/2-t/2)*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,col.door),col.doorLayout),pivot=new THREE.Group();pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorAngle(c,col,section));
       const face=syncIdentity.produce("cabinet-model:site-43",()=>add(pivot,pose.width/1000,pose.height/1000,t,pose.localX/1000,pose.localBottom/1000,0,faceColor));face.userData.cabinetSection=section;face.userData.cabinetDoorSize={width:pose.width,height:pose.height,leaf:j,section};

@@ -1,0 +1,63 @@
+{
+  "changes": [
+    {
+      "id": "fmv5b78gp2",
+      "type": "entry",
+      "totalHeight": 2350,
+      "mountHeight": 0,
+      "bodyHeight": 2300,
+      "doorTop": 2340,
+      "caps": [
+        {
+          "kind": "front",
+          "bottom": 2300,
+          "top": 2349.9999999999995
+        }
+      ]
+    },
+    {
+      "id": "fmv62bwbp1",
+      "type": "sideboard",
+      "totalHeight": 2420,
+      "mountHeight": 0,
+      "bodyHeight": 2370,
+      "doorTop": 2410,
+      "caps": [
+        {
+          "kind": "front",
+          "bottom": 2370,
+          "top": 2420
+        },
+        {
+          "kind": "front",
+          "bottom": 2370,
+          "top": 2420
+        },
+        {
+          "kind": "return",
+          "bottom": 2370,
+          "top": 2420
+        }
+      ]
+    },
+    {
+      "id": "fmvgvzisd1",
+      "type": "laundry-upper",
+      "totalHeight": 600,
+      "mountHeight": 1800,
+      "bodyHeight": 550,
+      "doorTop": 2390,
+      "caps": [
+        {
+          "kind": "front",
+          "bottom": 550,
+          "top": 600.0000000000001
+        }
+      ]
+    }
+  ],
+  "targetCabinetsMatchIntendedEdits": true,
+  "namedDesignsUnchanged": true,
+  "repeatRestoreNoDrift": true,
+  "otherUserEdits": "Concurrent kitchen layout and layer visibility edits observed after our initial write; retained in working copy and excluded from this task commit."
+}
