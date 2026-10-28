@@ -39,7 +39,8 @@ for(const depth of [150,149.999]){const obstacle=manifold(f,{y:-315+(600-depth)/
 assert(!K.adaptObstacles(f,plan,[f,manifold(f,{y:-385})]).furniture.kitchen.obstacleFit,'rear face contact');
 assert(!K.adaptObstacles(f,plan,[f,manifold(f,{mountHeight:900})]).furniture.kitchen.obstacleFit,'height separation');
 const off=K.configure(f,{...config,autoAvoid:false});assert(!K.adaptObstacles(off,plan,[off,m]).furniture.kitchen.obstacleFit,'existing opt-out preserved');
-const device=K.configure(f,{...config,modules:[{run:0,width:600,role:'sink'},{run:0,width:600,role:'hob'}]});assert(K.adaptObstacles(device,plan,[device,m]).notes.length,'device modules stay protected');
+const device=K.configure(f,{...config,modules:[{run:0,width:600,role:'sink'},{run:0,width:600,role:'hob'}]});const unoccupied=K.adaptObstacles(device,plan,[device,m]);assert(unoccupied.furniture.kitchen.obstacleFit.depths.length,'unoccupied functional cabinets also retreat from rear service');
+const sink=K.attach({id:'real-sink',type:'ksink',name:'水槽',cx:0,cy:0,w:500,d:450,rot:0,color:'#ddd'},device,0);assert(K.adaptObstacles(device,plan,[device,m,sink]).notes.length,'installed devices stay protected');
 const front=K.adaptObstacles(f,plan,[f,manifold(f,{y:100})]);assert(front.notes.length,'front obstruction cannot shorten a drawer as a rear service');
 const bad=structuredClone(fit);bad.kitchen.obstacleFit.depths[0].rearService='yes';assert.throws(()=>K.validate(bad));
 const unmarked=structuredClone(fit);delete unmarked.kitchen.obstacleFit.depths[1].rearService;assert.throws(()=>K.validate(unmarked),'ordinary obstacles cannot silently shorten drawers');
