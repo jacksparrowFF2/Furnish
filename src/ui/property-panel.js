@@ -59,10 +59,9 @@ function renderBrokenFurniturePanel(f,p){
 function renderFab(){
   const fab = $('#fab'), ids = selIds(), f = ids.length === 1 && getF(ids[0]), r = ui.sel?.kind === 'room' && selectedRooms().length===1 && ROOMS.find(r => r.id === ui.sel.id);
   closeFabEditor(false);
-  if(!ids.length&&!r)clearFabDock();
   fab.removeAttribute('style');
   fab.setAttribute('role','toolbar');fab.setAttribute('aria-label',tr('选中对象快捷调整','Selection quick adjustments'));
-  if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){fab.innerHTML=`<span class="name">${tr('测量线','Measurement')}</span><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');return;}
+  if(ui.sel?.kind==='measure'&&state.measures[ui.sel.id]){fab.innerHTML=`<span class="name">${tr('测量线','Measurement')}</span><button class="btn danger" data-act="del">${tr('删除测量线','Delete measurement')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');queueFabPosition();return;}
   const ceiling=ui.sel?.kind==='ceiling'&&state.ceilings?.items.find(c=>c.id===ui.sel.id);
   if(ceiling){fab.innerHTML=`<span class="name">${esc(panelSelectionName())}</span><button class="btn primary" data-ceiling-fab aria-haspopup="dialog" ${FurnishLayers.locked(state,'ceiling:'+ceiling.id)?'disabled':''}>${tr('编辑吊顶','Edit ceiling')}</button><button class="btn" data-act="done">${tr('完成','Done')}</button>`;fab.classList.add('show');fab.querySelector('[data-ceiling-fab]').onclick=()=>FurnishCeilingUI.selectObject(ceiling.id,true);queueFabPosition();return;}
   const bay=FurnishBayWindows.selected(PLAN,ui.sel);
@@ -92,7 +91,7 @@ function openSelectionProperties(){
   }
   renderPanel();drawer('panel',true);
 }
-let fabEditor=null,fabPositionFrame=0,fabDockKey='',fabRevealFrame=0,fabRevealPending=false;
+let fabEditor=null,fabPositionFrame=0;
 function closeFabEditor(focus=true){
   if(!fabEditor)return;
   const {kind,dispose}=fabEditor;fabEditor=null;dispose();$('#fab-editor')?.remove();
@@ -105,7 +104,7 @@ function mountFabEditor(kind,title,content,{allowCanvas,dispose}={}){
   const panel=document.createElement('div');
   panel.id='fab-editor';panel.setAttribute('role','dialog');panel.setAttribute('aria-labelledby','fab-editor-title');
   panel.innerHTML=`<div class="fab-editor-head"><b id="fab-editor-title">${esc(title)}</b><button class="btn" data-fab-close aria-label="${tr('关闭快捷调整','Close quick adjustments')}">${ico('x')}</button></div>`+content;
-  ($('#fab-dock')||$('#stage')).append(panel);$('#stage').classList.add('fab-editing');
+  $('#stage').append(panel);$('#stage').classList.add('fab-editing');
   const outside=e=>{if(allowCanvas?.(e)&&e.target.closest('#plan,#view3d'))return;if(!e.target.closest('#fab,#fab-editor'))closeFabEditor(false);};
   document.addEventListener('pointerdown',outside,true);
   const keydown=e=>{if(e.key==='Escape'&&!allowCanvas?.(e)){e.preventDefault();e.stopPropagation();closeFabEditor();}};
@@ -155,119 +154,26 @@ function openFabEditor(kind){
   const first=panel.querySelector(kind==='size'?'input':'[data-distance-edit]:not(:disabled)')||panel.querySelector('button');first.focus({preventScroll:true});if(kind==='size')first.select();
 }
 
-// Score real screen rectangles after the SVG has rendered. No layout state is saved.
+// Keep the bar anchored to the menu, independent of selection and plan framing.
 function queueFabPosition(){
   if(fabPositionFrame)return;
   fabPositionFrame=requestAnimationFrame(()=>{fabPositionFrame=0;positionFab();});
 }
-function clearFabDock(){
-  const stage=$('#stage'),dock=$('#fab-dock');if(!dock)return;
-  const focused=document.activeElement;
-  for(const child of [...dock.children])stage.append(child);dock.remove();fabDockKey='';
-  if(focused?.isConnected&&stage.contains(focused)&&document.activeElement!==focused)focused.focus({preventScroll:true});
-  stage.classList.remove('fab-docked-top','fab-docked-right');
-  for(const key of ['height','width','limit','bar-height'])stage.style.removeProperty('--fab-dock-'+key);
-}
-function dockFab(mode,key){
-  const stage=$('#stage'),fab=$('#fab'),editor=$('#fab-editor');let dock=$('#fab-dock');
-  const focused=document.activeElement;
-  const before=[fabDockKey,stage.style.getPropertyValue('--fab-dock-height'),stage.style.getPropertyValue('--fab-dock-width')].join(';');
-  if(!dock){dock=document.createElement('div');dock.id='fab-dock';stage.append(dock);}
-  stage.classList.toggle('fab-docked-top',mode==='top');stage.classList.toggle('fab-docked-right',mode==='right');
-  stage.style.setProperty('--fab-dock-width',mode==='right'?Math.min(360,stage.clientWidth*.44)+'px':'0px');
-  stage.style.setProperty('--fab-dock-limit',(mode==='top'?(fabEditor?.kind==='floor'?Math.min(480,stage.clientHeight*.65):Math.min(360,stage.clientHeight*.5)):stage.clientHeight)+'px');
-  // Live previews may resize the editor on each input. Do not reparent an
-  // already docked form: moving it again can interrupt typing and lose focus.
-  if(fab.parentNode!==dock)dock.append(fab);if(editor&&editor.parentNode!==dock)dock.append(editor);
-  if(editor?.contains(focused)&&document.activeElement!==focused)focused.focus({preventScroll:true});
-  stage.style.setProperty('--fab-dock-bar-height',fab.offsetHeight+'px');
-  stage.style.setProperty('--fab-dock-height',mode==='top'?Math.ceil(dock.getBoundingClientRect().height)+'px':'0px');
-  fabDockKey=key;
-  const after=[key,stage.style.getPropertyValue('--fab-dock-height'),stage.style.getPropertyValue('--fab-dock-width')].join(';');
-  if(before!==after||fabRevealPending){
-    fabRevealPending=false;
-    if(fabRevealFrame)cancelAnimationFrame(fabRevealFrame);
-    fabRevealFrame=requestAnimationFrame(()=>{fabRevealFrame=requestAnimationFrame(()=>{fabRevealFrame=0;if(fabDockKey===key)revealFabSelection();});});
-  }
-}
-function revealFabSelection(){
-  if(typeof drag!=='undefined'&&drag){fabRevealPending=true;return;}
-  if(is3D()||(!selIds().length&&ui.sel?.kind!=='room'))return;
-  const room=ui.sel?.kind==='room'&&ROOMS.find(r=>r.id===ui.sel.id);
-  const points=room?[drawingPoint(room.at||room.poly[0])]:selItems().flatMap(f=>FurnishGeometry.corners(f).map(p=>drawingPoint(p))),xs=points.map(p=>(p[0]-view.x0)*view.s),ys=points.map(p=>(p[1]-view.y0)*view.s);
-  const shift=(values,size)=>{const a=Math.min(...values),b=Math.max(...values);return b-a>size-32?(a+b-size)/2:a<16?a-16:b>size-16?b-size+16:0;};
-  const dx=shift(xs,svg.clientWidth),dy=shift(ys,svg.clientHeight);
-  if(Math.abs(dx)>.5||Math.abs(dy)>.5){view.x0+=dx/view.s;view.y0+=dy/view.s;applyView();}
-}
 function positionFab(){
-  const fab=$('#fab'),stage=$('#stage');if(!fab?.classList.contains('show')||(!selIds().length&&!['room','ceiling'].includes(ui.sel?.kind)))return;
-  // A new selection may be the start of a drag. Keep its pointer mapping stable.
-  if(typeof drag!=='undefined'&&drag)return;
-  const bounds=stage.getBoundingClientRect(),W=stage.clientWidth,H=stage.clientHeight;
-  const key=[...selIds(),['room','ceiling'].includes(ui.sel?.kind)?ui.sel.id:'',W,H].join('|');
-  if(is3D()){
-    clearFabDock();
-    if(!fabEditor){
-      // The 3D camera owns framing; keep this toolbar beside the scene rail.
-      const rail=$('.canvas-rail')?.getBoundingClientRect(),status=ui.sel?.kind==='ceiling'&&W<=720?$('.space-status')?.getBoundingClientRect():null;
-      fab.style.left='50%';fab.style.top='auto';fab.style.bottom=Math.max(18,rail?bounds.bottom-rail.top+12:0,status?bounds.bottom-status.top+12:0)+'px';fab.style.transform='translateX(-50%)';
-      return;
-    }
-  }
-  else if(W<=720||fabDockKey===key||fabDockKey&&document.activeElement?.closest('#fab-editor')){dockFab(W>=600&&H<450||W>720?'right':'top',key);return;}
-  else if(fabDockKey)clearFabDock();
-  const local=r=>({x:r.left-bounds.left,y:r.top-bounds.top,w:r.width,h:r.height});
-  const visible=r=>r.w>0&&r.h>0&&r.x<W&&r.y<H&&r.x+r.w>0&&r.y+r.h>0;
-  const obstacles=[];
-  if(!is3D()){
-    const selectedIds=new Set(selIds());
-    for(const f of state.furniture){
-      if(!ui.layers.furn)break;
-      const p=FurnishGeometry.corners(f).map(p=>drawingPoint(p));
-      const canvas=svg.getBoundingClientRect(),xs=p.map(p=>canvas.left-bounds.left+(p[0]-view.x0)*view.s),ys=p.map(p=>canvas.top-bounds.top+(p[1]-view.y0)*view.s);
-      const r={x:Math.min(...xs)-12,y:Math.min(...ys)-22,w:Math.max(...xs)-Math.min(...xs)+24,h:Math.max(...ys)-Math.min(...ys)+44,weight:selectedIds.has(f.id)?10:5};
-      if(visible(r))obstacles.push(r);
-    }
-    for(const el of stage.querySelectorAll('#gSel text,#gSel [data-edit-overlay="group-rotation"],#gMeasure text,[data-hob-gap] text,#gDims text')){
-      const r=local(el.getBoundingClientRect());if(visible(r))obstacles.push({...r,weight:35});
-    }
-  }
-  for(const el of stage.querySelectorAll('.canvas-rail,.space-status,.hud,.scalebar,.drawing-rotate,.drawing-compass,#property-peek,.scene-light')){
-    if(getComputedStyle(el).visibility==='hidden'||getComputedStyle(el).display==='none')continue;
-    const r=local(el.getBoundingClientRect());if(visible(r))obstacles.push({...r,weight:25});
-  }
-  const selected=obstacles.filter(r=>r.weight===10&&visible(r));
-  const focus=selected.length?{x:Math.min(...selected.map(r=>r.x)),y:Math.min(...selected.map(r=>r.y)),right:Math.max(...selected.map(r=>r.x+r.w)),bottom:Math.max(...selected.map(r=>r.y+r.h))}:null;
-  const overlap=(a,b)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w+6)-Math.max(a.x,b.x-6))*Math.max(0,Math.min(a.y+a.h,b.y+b.h+6)-Math.max(a.y,b.y-6));
+  const fab=$('#fab'),stage=$('#stage');if(!fab?.classList.contains('show'))return;
+  const bounds=stage.getBoundingClientRect(),rail=$('.canvas-rail');
+  const railTop=rail&&getComputedStyle(rail).display!=='none'?rail.getBoundingClientRect().top:bounds.bottom;
+  const bottom=Math.max(18,bounds.bottom-railTop+12);
+  fab.style.left='50%';fab.style.top='auto';fab.style.bottom=bottom+'px';fab.style.transform='translateX(-50%)';
+  const stackBottom=bottom+fab.offsetHeight+12;
+  stage.style.setProperty('--fab-stack-bottom',stackBottom+'px');
   const editor=$('#fab-editor');
-  const choices=el=>{
-    const w=el.offsetWidth,h=el.offsetHeight,clamp=(n,max)=>Math.max(10,Math.min(n,Math.max(10,max))),candidates=[];
-    const add=(x,y)=>candidates.push({x:clamp(x,W-w-10),y:clamp(y,H-h-10),w,h});
-    if(focus){const cx=(focus.x+focus.right-w)/2;add(cx,focus.bottom+12);add(cx,focus.y-h-12);add(focus.right+12,focus.y);add(focus.x-w-12,focus.y);}
-    add((W-w)/2,H-h-100);add((W-w)/2,12);add(12,12);add(W-w-12,12);add(12,H-h-12);add(W-w-12,H-h-12);
-    // More edge slots help when a measurement occupies a default corner.
-    for(let y=12;y<H-h-10;y+=Math.max(44,h/2)){add(12,y);add(W-w-12,y);}
-    for(const o of obstacles.filter(o=>o.weight!==5).slice(0,80)){add(12,o.y-h-12);add(W-w-12,o.y+o.h+12);}
-    for(const other of [fab,editor].filter(v=>v&&v!==el)){add(12,24+other.offsetHeight);add(W-w-12,H-h-other.offsetHeight-24);}
-    const score=r=>obstacles.reduce((sum,o)=>{const area=overlap(r,o);return sum+(area?(o.weight===10?1e11:o.weight===35?1e10:o.weight===25?1e9:0)+area*o.weight:0);},0)+(focus?Math.hypot(r.x+w/2-(focus.x+focus.right)/2,r.y+h/2-(focus.y+focus.bottom)/2):H-r.y)*.02;
-    return candidates.map(r=>({...r,score:score(r)}));
-  };
-  let bars=choices(fab);
-  // Keep the quick bar beside the visible selection. A distant empty corner
-  // must not win solely because a nearby dimension label needs avoidance.
-  if(focus&&!editor&&!is3D()){
-    const anchor={x:Math.max(0,focus.x),y:Math.max(0,focus.y),right:Math.min(W,focus.right),bottom:Math.min(H,focus.bottom)};
-    const gap=r=>Math.hypot(Math.max(0,anchor.x-r.x-r.w,r.x-anchor.right),Math.max(0,anchor.y-r.y-r.h,r.y-anchor.bottom));
-    const nearby=bars.filter(r=>gap(r)<=96);
-    if(nearby.length)bars=nearby;
-  }
-  let chosen=bars.reduce((a,b)=>a.score<=b.score?a:b),chosenEditor=null;
   if(editor){
-    const panels=choices(editor);let score=Infinity;
-    for(const bar of bars)for(const panel of panels){const area=overlap(bar,panel),value=bar.score+panel.score+(area?1e12+area*50:0);if(value<score){score=value;chosen=bar;chosenEditor=panel;}}
+    const status=stage.clientWidth<=720?$('.space-status'):null;
+    const editorBottom=status?Math.max(stackBottom,bounds.bottom-status.getBoundingClientRect().top+12):stackBottom;
+    editor.style.left='50%';editor.style.top='auto';editor.style.bottom=editorBottom+'px';editor.style.transform='translateX(-50%)';
+    editor.style.maxHeight=Math.max(0,stage.clientHeight-editorBottom-12)+'px';
   }
-  if(!is3D()&&[chosen,chosenEditor].filter(Boolean).some(r=>obstacles.some(o=>(o.weight===10||o.weight===25||editor&&o.weight===35)&&overlap(r,o)>0))){dockFab(W>720?'right':'top',key);return;}
-  for(const [el,r] of [[fab,chosen],[editor,chosenEditor]])if(el&&r){el.style.left=r.x+'px';el.style.top=r.y+'px';el.style.bottom='auto';el.style.transform='none';}
 }
 
 
