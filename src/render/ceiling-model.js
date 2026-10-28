@@ -15,7 +15,7 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
  // to one depth value. Give the panel a distinct raster priority over backing.
  panelSurface.polygonOffsetFactor=-2;panelSurface.polygonOffsetUnits=-4;
  const seamSurface=flatSurface.clone();seamSurface.color.set('#aaa99f');seamSurface.roughness=.85;
- const aluminum=new THREE.MeshStandardMaterial({color:'#a7afb3',metalness:.65,roughness:.35,side:THREE.DoubleSide}),diffuser=new THREE.MeshStandardMaterial({color:'#f6f7ef',emissive:'#fff1d2',emissiveIntensity:lamps ? .22 : 0,roughness:.65,transparent:true,opacity:.8,side:THREE.DoubleSide}),diffuserOff=diffuser.clone();diffuserOff.emissiveIntensity=0;
+ const diffuser=new THREE.MeshStandardMaterial({color:'#f6f7ef',emissive:'#fff1d2',emissiveIntensity:lamps ? .22 : 0,roughness:.65,transparent:true,opacity:.8,side:THREE.DoubleSide}),diffuserOff=diffuser.clone();diffuserOff.emissiveIntensity=0;
  let conflictLight=null;const lightMaterial=layout=>{if(!layout.pending.some(m=>m.includes('相交')))return light;if(!conflictLight){conflictLight=light.clone();conflictLight.color.set('#e96842');conflictLight.emissive.set('#e35030');conflictLight.emissiveIntensity=lamps?1:0;}return conflictLight;};
  const shape=p=>{const s=new THREE.Shape();p.forEach(([x,y],i)=>s[i?'lineTo':'moveTo'](x/1000,y/1000));s.closePath();return s;};
  function mesh(geometry,material,c,part){const m=syncIdentity.produce("ceiling-model:site-1",()=>new THREE.Mesh(geometry,material));m.userData.ceiling={id:c.id,part};m.userData.ceilingOwnMaterial=true;m.castShadow=part!=='light';m.receiveShadow=true;group.add(m);return m;}
@@ -59,7 +59,8 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
  }
  for(const c of syncIdentity.records("ceiling-model.js:generator-1",data?.items||[])){
   if(c.kind==='profile'){
-   const p=c.section.vertices.map(v=>[v.u,v.d]),bodyMaterial=c.section.material==='aluminum'?aluminum:surface;if(c.path.segments)syncIdentity.produce("ceiling-model.js:generator-call-1",()=>ringSweep(c,p,C.offsetStations(c,0).map((_,k)=>p.map(([u])=>C.offsetStations(c,u)[k])),bodyMaterial,'section'));else syncIdentity.produce("ceiling-model.js:generator-call-2",()=>sweep(c,p,bodyMaterial,'section'));
+   // The aluminum substrate is skimmed and painted with the ceiling finish.
+   const p=c.section.vertices.map(v=>[v.u,v.d]),bodyMaterial=surface;if(c.path.segments)syncIdentity.produce("ceiling-model.js:generator-call-1",()=>ringSweep(c,p,C.offsetStations(c,0).map((_,k)=>p.map(([u])=>C.offsetStations(c,u)[k])),bodyMaterial,'section'));else syncIdentity.produce("ceiling-model.js:generator-call-2",()=>sweep(c,p,bodyMaterial,'section'));
    if(c.section.diffuser){const p=c.section.diffuser.vertices.map(v=>[v.u,v.d]),material=c.section.light&&lamps?diffuser:diffuserOff;syncIdentity.produce("ceiling-model.js:generator-call-7",()=>c.path.segments?ringSweep(c,p,C.offsetStations(c,0).map((_,k)=>p.map(([u])=>C.offsetStations(c,u)[k])),material,'diffuser'):sweep(c,p,material,'diffuser'));}
    for(const plate of syncIdentity.records("ceiling-model.js:generator-2",C.endCaps(c).plates)){const m=syncIdentity.produce("ceiling-model.js:generator-call-3",()=>sweep({...c,path:plate.path},plate.section,surface,'end-cap'));if(m)m.userData.ceiling.end=plate.end;}
    if(c.section.light){const layout=C.lightLayout(c);if(layout.continuous){const material=lightMaterial(layout),m=syncIdentity.produce("ceiling-model.js:generator-call-4",()=>ringSweep(c,C.lightPolygon(c.section.light),layout.continuous.rings,material,'light'));if(m)m.userData.ceiling.mode=layout.continuous.closed?'miter-ring':'arc';}else for(const piece of syncIdentity.records("ceiling-model.js:generator-3",layout.pieces)){const before=group.children.length;syncIdentity.produce("ceiling-model.js:generator-call-5",()=>sweep({...c,path:piece.path},C.lightPolygon(c.section.light),light,'light'));if(group.children.length>before)group.children.at(-1).userData.ceiling.legId=piece.legId;}}
@@ -92,7 +93,7 @@ function build(THREE,data,{wx=v=>v/1000,wz=v=>v/1000,top=Infinity,lamps=true,bod
   else{const piece=layout.pieces.find(p=>p.legId===m.userData.ceiling.legId),p=C.lightPolygon(c.section.light);if(piece)illuminate(m,c,[piece.path.a,piece.path.b].map(a=>p.map(([u])=>a.map((v,i)=>v+piece.path.normal[i]*u))));}
  }
  if(wash)applyWash(THREE,group);
- for(const material of [surface,flatSurface,panelSurface,seamSurface,light,aluminum,diffuser,diffuserOff,conflictLight])if(material&&!group.children.some(m=>m.material===material))material.dispose();return group;
+ for(const material of [surface,flatSurface,panelSurface,seamSurface,light,diffuser,diffuserOff,conflictLight])if(material&&!group.children.some(m=>m.material===material))material.dispose();return group;
 }
 // Bake the continuous wash only where a ray from the emitting face reaches
 // a real ceiling. Opaque production meshes, including channel walls/base, block it.
