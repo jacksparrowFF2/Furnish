@@ -240,3 +240,10 @@
 .cab-hatch-input input {display:block;width:100%;margin-top:4px;box-sizing:border-box}
 .cab-hatch-input button {margin-right:8px;cursor:pointer}
 .cab-hatch-input [role=alert] {color:#a13d12;margin-top:6px}
+.cab-shelf-dimension {pointer-events:auto;cursor:pointer;border:1px solid #168de2;background:#f1f8ff;padding:5px 7px;font-weight:600}
+.cab-shelf-dimension:hover,.cab-shelf-dimension:focus-visible {outline:2px solid #168de2;outline-offset:2px}
+.cab-shelf-properties h3 {margin-bottom:12px}
+.cab-shelf-properties small {font-size:11px;font-weight:400;color:var(--muted)}
+.cab-shelf-input {box-sizing:border-box;max-width:calc(100% - 16px)}
+.cab-shelf-input input {padding:7px 8px;border:1px solid var(--line,#ddd);border-radius:6px;font:inherit;color:inherit}
+.cab-shelf-input .btn {font-size:12px;padding:6px 8px}

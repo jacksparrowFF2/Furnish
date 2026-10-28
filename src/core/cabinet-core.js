@@ -555,6 +555,24 @@
   const col=c.columns[column],attached=col.doorBottom!==undefined&&Math.abs(col.shelves[shelf]+c.thickness-col.doorBottom)<.01;
   col.shelves[shelf]=Math.max(limits.min,Math.min(limits.max,Math.round(value)));if(attached)col.doorBottom=col.shelves[shelf]+c.thickness;return validate({...f,cabinet:c});
  }
+ // Clearances use the actual adjacent faces from spaces(), including storage bands.
+ // They are derived values; only the existing shelf elevation is persisted.
+ function shelfClearances(f,column,shelf){
+  const c=config(f),limits=shelfLimits(f,column,shelf),position=c.columns[column].shelves[shelf],gaps=spaces(f,column);
+  const col=c.columns[column];if(col.doorBottom!==undefined&&Math.abs(position+c.thickness-col.doorBottom)<.01){limits.max=Math.min(limits.max,height(f)-c.plinth-3*c.thickness-100);if(col.pegboard)limits.min=Math.max(limits.min,col.drawers.reduce((n,d)=>n+d.height,0)+100);}
+  const lower=gaps.find(g=>Math.abs(g.top-position)<1e-6),upper=gaps.find(g=>Math.abs(g.bottom-position-c.thickness)<1e-6);
+  if(!lower||!upper)throw Error('层板相邻净空不可用');
+  return {position,thickness:c.thickness,lower:{...lower,min:limits.min-lower.bottom,max:limits.max-lower.bottom},upper:{...upper,min:upper.top-c.thickness-limits.max,max:upper.top-c.thickness-limits.min}};
+ }
+ function editShelfClearance(f,column,shelf,side,value){
+  if(!['upper','lower'].includes(side))throw Error('层板净高方向无效');
+  const gap=shelfClearances(f,column,shelf)[side];
+  if(!Number.isFinite(value)||value<gap.min-1e-6||value>gap.max+1e-6)throw Error(`${side==='upper'?'上方':'下方'}净高须为 ${Number(gap.min.toFixed(2))}–${Number(gap.max.toFixed(2))} mm`);
+  const c=config(f),col=c.columns[column],attached=col.doorBottom!==undefined&&Math.abs(col.shelves[shelf]+c.thickness-col.doorBottom)<.01;
+  col.shelves[shelf]=side==='upper'?gap.top-c.thickness-value:gap.bottom+value;
+  if(attached)col.doorBottom=col.shelves[shelf]+c.thickness;
+  return validate({...f,cabinet:c});
+ }
  function moveDivider(f,index,delta){
   const values=widths(f);if(!Number.isInteger(index)||index<0||index>=values.length-1||!Number.isFinite(delta))throw Error('分隔板无效');
   if(Math.abs(delta)<1e-8)return JSON.parse(JSON.stringify(f));
@@ -781,7 +799,7 @@
   let c;try{c=config(f);}catch{c={invalid:f.cabinet===undefined?null:JSON.parse(JSON.stringify(f.cabinet))};}
   const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);return c;
  }
- const api={pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
+ const api={pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,shelfClearances,editShelfClearance,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
  Object.assign(api,{moduleLayout,moduleWidths,moduleWidthLimits,adjustModuleWidth,withDoorSetting,templateGroups,templateType,adjustColumnWidth,repartition,fitDoors,scaleStructure,upgradeDesign});
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

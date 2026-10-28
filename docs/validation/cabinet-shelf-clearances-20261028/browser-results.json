@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "cabinet-shelf-clearances"
+  ],
+  "results": [
+    {
+      "name": "cabinet-shelf-clearances",
+      "status": "PASS",
+      "seconds": 9,
+      "log": "cabinet-shelf-clearances.log"
+    }
+  ],
+  "notRun": []
+}
