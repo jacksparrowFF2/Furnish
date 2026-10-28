@@ -13,6 +13,10 @@
     if(f.cx===undefined||f.cy===undefined)f={...f,cx:f.cx??cx,cy:f.cy??cy};
     if(axis==='x')cy=anchor.y;else if(axis==='y')cx=anchor.x;
     if(disabled)return {position:[cx,cy],guides:[]};
+    const products=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),surfaceDevice=!f.obj&&products.definition(f)?.measureSurfaceBoundary&&(!moving||moving.length===1);
+    if(surfaceDevice&&guides){const hit=surfaceMove(f,cx,cy,{furniture,skip,scale,axis});if(hit)return hit;}
+    // A supported device must not be pulled to exterior contact with its host.
+    if(surfaceDevice){const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);furniture=furniture.filter(o=>o.type!=='counter'||o.obj||!K.onSurface({...f,cx,cy},o));}
     const targetRects=wallSnap?rects:[],targets=guides?furniture.filter(o=>o.id!==f.id&&!skip?.has(o.id)):[];
     const scene=entities({rects:targetRects,furniture:targets}),capture=12/scale;
     const finish=[null,null],finishGuides=[];
@@ -109,6 +113,30 @@
       if(Math.hypot(next[0]-cx,next[1]-cy)<=Math.SQRT2*tol+1e-7){position[0]=next[0];position[1]=next[1];lines.push({line:[sloped.edge.a,sloped.edge.b]});}
     }
     return {position,guides:lines};
+  }
+  function surfaceMove(f,cx,cy,{furniture,skip,scale,axis}){
+    const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),capture=12/scale,placed={...f,cx,cy};
+    for(const host of furniture.filter(o=>o.type==='counter'&&!o.obj&&o.id!==f.id&&!skip?.has(o.id))){
+      try{
+        const surface=K.surfaceGeometry(host),point=K.local(host,cx,cy);
+        if(!surface.polys.some(poly=>K.ringInside(point,poly)))continue;
+        const region=K.measurementSurface(placed,host),corners=geometry.footprints(placed).flat().map(p=>K.local(host,...p)),bounds=[0,1].map(n=>[Math.min(...corners.map(p=>p[n]))-point[n],Math.max(...corners.map(p=>p[n]))-point[n]]),module=host.kitchen&&K.cabinetLayout(host).find(m=>m.index===region.moduleIndex);
+        const choices=[0,1].map(n=>{
+          const values=[...(module?[n===0?module.x:module.y]:[]),...region.rings.flatMap(r=>r.map(p=>p[n])).flatMap(v=>[v-bounds[n][0],v-bounds[n][1]])];
+          return [...new Set(values)].filter(v=>Math.abs(v-point[n])<=capture+1e-7).map(v=>({value:v,snap:true})).concat({value:point[n],snap:false});
+        });
+        const candidates=[];
+        for(const x of choices[0])for(const y of choices[1]){
+          if(!x.snap&&!y.snap)continue;
+          const position=K.world(host,x.value,y.value),delta=[position[0]-cx,position[1]-cy];
+          if(axis==='x'&&Math.abs(delta[1])>1e-6||axis==='y'&&Math.abs(delta[0])>1e-6||!K.onSurface({...placed,cx:position[0],cy:position[1]},host))continue;
+          candidates.push({position,x,y,count:Number(x.snap)+Number(y.snap),distance:Math.hypot(...delta)});
+        }
+        candidates.sort((a,b)=>b.count-a.count||a.distance-b.distance);
+        if(candidates.length){const hit=candidates[0],points=region.rings.flat(),line=(a,b)=>({line:[a,b].map(p=>{const [x,y]=K.world(host,...p);return {x,y};})}),lines=[];if(hit.x.snap)lines.push(line([hit.x.value,Math.min(...points.map(p=>p[1]))],[hit.x.value,Math.max(...points.map(p=>p[1]))]));if(hit.y.snap)lines.push(line([Math.min(...points.map(p=>p[0])),hit.y.value],[Math.max(...points.map(p=>p[0])),hit.y.value]));return {position:hit.position,guides:lines};}
+      }catch{/* Invalid or unsupported tops cannot supply an interior magnet. */}
+    }
+    return null;
   }
   // Resize from the original opposite corner, so snapping never moves that anchor.
   function resize(f,p,{scale,wallSnap,rects,furniture=[],guides=false,axis='both'}){

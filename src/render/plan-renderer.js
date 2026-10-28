@@ -113,6 +113,11 @@ function syncFurnOrder(){
  if(globalThis.FurnishDrawing)refreshFurnitureLabels();
  syncTuckedSeatPreview();
  refreshHobOpenings();
+ refreshKitchenPlanOpenings();
+}
+function refreshKitchenPlanOpenings(){
+ const moving=new Set(typeof drag!=='undefined'&&drag?.kind==='move'&&drag.moved?drag.ids:[]),furniture=state.furniture.map(f=>moving.has(f.id)&&f.counterLink&&!moving.has(f.counterLink.hostId)?{...f,counterLink:undefined}:f);
+ for(const node of $('#gFurn').children){const holes=node.querySelector('[data-kitchen-openings]');if(!holes)continue;const host=getF(node.dataset.fid);if(!host?.kitchen)continue;const openings=FurnishKitchen.deviceOpenings(host,furniture),key=JSON.stringify(openings.map(o=>o.ring));if(holes.furnishOpeningKey===key)continue;holes.furnishOpeningKey=key;holes.innerHTML=FurnishFurnitureSVG.openingPaths(openings);}
 }
 // Call only after applying the new position: no reads span a furniture write.
 function renderFurnitureMovement(){return withCanvasPlan(()=>{syncFurnOrder();renderSel();});}
