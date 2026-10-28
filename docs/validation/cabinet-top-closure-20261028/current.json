@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "actual": [
+    {
+      "id": "fmv3w4m2a4",
+      "width": 4161,
+      "total": 2450,
+      "body": 2400,
+      "doorTop": 2440,
+      "capCount": 4,
+      "doorCount": 7
+    },
+    {
+      "id": "fmv3wzkb515",
+      "width": 1637.5,
+      "total": 2350,
+      "body": 2300,
+      "doorTop": 2340,
+      "capCount": 4,
+      "doorCount": 4
+    },
+    {
+      "id": "fmv5bl44k1",
+      "width": 2250,
+      "total": 2350,
+      "body": 2300,
+      "doorTop": 2340,
+      "capCount": 3,
+      "doorCount": 5
+    }
+  ],
+  "allOtherDataUnchanged": true,
+  "namedDesignsUnchanged": true,
+  "recoveryNoDrift": true
+}

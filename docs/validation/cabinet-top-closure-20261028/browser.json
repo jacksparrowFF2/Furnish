@@ -1,0 +1,88 @@
+{
+  "case": "cabinet-top-closure",
+  "status": "PASS",
+  "result": [
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "old missing closure remains disabled",
+        "open save without editing preserves old data",
+        "user confirmed 50/10 defaults",
+        "valid enabled preview",
+        "session undo removes closure",
+        "session redo restores closure",
+        "cancel preserves old cabinet",
+        "save retains total height and shelf/door configuration",
+        "50mm closure and 10mm door clearance persisted",
+        "application undo restores entire original",
+        "new semantics use protected v27 cache",
+        "v27 cache restores without drift",
+        "browser production has per-box top strips and exact 10mm door gap: {\"strips\":[{\"bottom\":2400,\"top\":2449.9999999999995},{\"bottom\":2400,\"top\":2449.9999999999995}],\"doorTops\":[2440.0000000000005,2440.0000000000005,2440.0000000000005,2440.0000000000005],\"columns\":2,\"version\":27}",
+        "390px has no page overflow",
+        "no browser exceptions"
+      ],
+      "production": {
+        "strips": [
+          {
+            "bottom": 2400,
+            "top": 2449.9999999999995
+          },
+          {
+            "bottom": 2400,
+            "top": 2449.9999999999995
+          }
+        ],
+        "doorTops": [
+          2440.0000000000005,
+          2440.0000000000005,
+          2440.0000000000005,
+          2440.0000000000005
+        ],
+        "columns": 2,
+        "version": 27
+      }
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "old missing closure remains disabled",
+        "open save without editing preserves old data",
+        "user confirmed 50/10 defaults",
+        "valid enabled preview",
+        "session undo removes closure",
+        "session redo restores closure",
+        "cancel preserves old cabinet",
+        "save retains total height and shelf/door configuration",
+        "50mm closure and 10mm door clearance persisted",
+        "application undo restores entire original",
+        "new semantics use protected v27 cache",
+        "v27 cache restores without drift",
+        "browser production has per-box top strips and exact 10mm door gap: {\"strips\":[{\"bottom\":2400,\"top\":2449.9999999999995},{\"bottom\":2400,\"top\":2449.9999999999995}],\"doorTops\":[2440.0000000000005,2440.0000000000005,2440.0000000000005,2440.0000000000005],\"columns\":2,\"version\":27}",
+        "390px has no page overflow",
+        "no browser exceptions"
+      ],
+      "production": {
+        "strips": [
+          {
+            "bottom": 2400,
+            "top": 2449.9999999999995
+          },
+          {
+            "bottom": 2400,
+            "top": 2449.9999999999995
+          }
+        ],
+        "doorTops": [
+          2440.0000000000005,
+          2440.0000000000005,
+          2440.0000000000005,
+          2440.0000000000005
+        ],
+        "columns": 2,
+        "version": 27
+      }
+    }
+  ]
+}

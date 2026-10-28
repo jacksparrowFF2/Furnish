@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 26,
+  "version": 27,
   "workspace": {
     "custom": [],
     "customPlans": [
@@ -14291,7 +14291,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 26,
+    "v": 27,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -19228,7 +19228,12 @@
               "plinth": 60,
               "template": "wardrobe",
               "thickness": 18,
-              "version": 1
+              "version": 1,
+              "topClosure": {
+                "height": 50,
+                "doorGap": 10
+              },
+              "doorOverlay": "full"
             },
             "color": "#efe6d8",
             "cx": 1154.5,
@@ -19433,7 +19438,12 @@
               "plinth": 60,
               "template": "wardrobe",
               "thickness": 18,
-              "version": 1
+              "version": 1,
+              "topClosure": {
+                "height": 50,
+                "doorGap": 10
+              },
+              "doorOverlay": "full"
             },
             "color": "#efe6d8",
             "cx": 4757.75,
@@ -19844,7 +19854,12 @@
               "plinth": 50,
               "template": "storage",
               "thickness": 18,
-              "version": 1
+              "version": 1,
+              "topClosure": {
+                "height": 50,
+                "doorGap": 10
+              },
+              "doorOverlay": "full"
             },
             "color": "#f3f1ec",
             "cx": 9931,

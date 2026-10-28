@@ -5,21 +5,29 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
 
  function buildRaw(THREE,f,box,options={}){
   if(f.laundryFloorOpen)options={...options,floorOpen:true};
-  const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.height(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
+  const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.bodyHeight(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
   const assembly=C.pegboardParts(f,c),hasUpper=assembly?.upper!==false,hasLower=assembly?.lower!==false;
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
   const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=syncIdentity.produce("cabinet-model:site-1",()=>box(W,H,D,shade,x,y,z));parent.add(mesh);return mesh;};
+  const closure=C.topClosure(c),panels=C.endPanels(c);
+  if(closure.height&&!options.skipTopClosure){
+   const spans=c.boxConstruction==='independent'?C.moduleLayout(f):[{left:-f.w/2+panels.left,width:f.w-panels.left-panels.right}];
+   for(const [column,span] of spans.entries()){
+    const face=c.columns[column],shade=face.doorColor||(face.finish==='wood'?wood:color);
+    const strip=syncIdentity.produce('cabinet-top-closure:front:'+column,()=>add(g,span.width/1000,closure.height/1000,t,(span.left+span.width/2)/1000,h,d/2-1.5*t,shade));
+    strip.userData.cabinetTopClosure=true;strip.userData.cabinetBay={column};
+   }
+  }
   if(c.boxConstruction==='independent'){
    for(const part of C.boxParts(f)){
-    const child=syncIdentity.produce('cabinet-independent:box:'+part.column,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[]}));
+    const child=syncIdentity.produce('cabinet-independent:box:'+part.column,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[],skipTopClosure:true}));
     child.position.x=part.center/1000;
     child.traverse(o=>{for(const [key,value] of Object.entries(o.userData))if(value&&typeof value==='object'&&Number.isInteger(value.column))o.userData[key]={...value,column:part.column};if(o.userData.cabinetSide==='left'&&part.column>0)o.userData.cabinetDivider={divider:part.column-1,column:part.column-1};if(o.userData.cabinetSide==='right'&&part.column<c.columns.length-1)o.userData.cabinetDivider={divider:part.column,column:part.column};});
     g.add(child);
    }
-   const panels=C.endPanels(c);
    for(const side of ['left','right'])if(panels[side]){
     const thickness=panels[side]/1000,sign=side==='left'?-1:1;
-    const panel=syncIdentity.produce('cabinet-independent:end-panel:'+side,()=>add(g,thickness,h,d,sign*(w-thickness)/2,0,0));
+    const panel=syncIdentity.produce('cabinet-independent:end-panel:'+side,()=>add(g,thickness,C.height(f)/1000,d,sign*(w-thickness)/2,0,0));
     panel.userData.cabinetEndPanel=side;panel.userData.cabinetBay={column:side==='left'?0:c.columns.length-1};
    }
    return g;
@@ -250,7 +258,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    },(item,slot)=>item?.partId||"drawer:"+slot);
    if(col.doorBottom!==undefined)y=base+col.doorBottom/1000;
    const door=C.frontDoor(f,i,c);if(door==='none'||options.doors==='hidden')return;
-   const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.frontHeight(f,c)/1000-faceInset,count=C.frontLeafCount(f,i,c),dh=doorTop-doorBottom;
+   const span=faceSpan(i),doorBottom=y-t+faceInset,doorTop=C.topDoorLimit(f,c)/1000,count=C.frontLeafCount(f,i,c),dh=doorTop-doorBottom;
    for(let j of syncIdentity.range("cabinet-model.js:generator-45",0,count,1,false)){
     const front=d/2-(entryStyle||c.doorOverlay!==undefined||col.doorBottom!==undefined?t/2:0),pose=C.doorPose(door,span.left*1000,span.right*1000,doorBottom*1000,doorTop*1000,front*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,door),col.doorLayout,col.doorRatios),pivot=new THREE.Group();
     pivot.position.set(...pose.pivot.map(v=>v/1000));pivot.rotation[pose.axis]=rotation(pose,C.doorLeafAngle(c,col,j));
