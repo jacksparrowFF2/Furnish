@@ -1,0 +1,144 @@
+[
+  {
+    "color": "#e9e5de",
+    "cx": 7248.499999666667,
+    "cy": 9297.999999999998,
+    "d": 1704,
+    "id": "fmv9dos7j1",
+    "kitchen": {
+      "autoAvoid": true,
+      "baseHeight": 830,
+      "corner": "right",
+      "counterDepth": 620,
+      "depth": 600,
+      "modules": [
+        {
+          "doorAngle": 90,
+          "doorLeaves": [
+            {
+              "angle": 90,
+              "open": false
+            }
+          ],
+          "doorOpen": false,
+          "role": "hob",
+          "run": 0,
+          "width": 410.9999999999999
+        },
+        {
+          "cornerPartitions": {
+            "left": true,
+            "right": false
+          },
+          "door": "double",
+          "doorAngle": 90,
+          "doorLeaves": [
+            {
+              "angle": 90,
+              "open": false
+            },
+            {
+              "angle": 90,
+              "open": false
+            }
+          ],
+          "doorOpen": false,
+          "role": "sink",
+          "run": 1,
+          "width": 1104
+        },
+        {
+          "doorAngle": 90,
+          "doorLeaves": [
+            {
+              "angle": 90,
+              "open": false
+            },
+            {
+              "angle": 90,
+              "open": false
+            }
+          ],
+          "doorOpen": false,
+          "role": "door",
+          "run": 0,
+          "width": 980
+        },
+        {
+          "role": "empty",
+          "run": 0,
+          "width": 406
+        }
+      ],
+      "obstacleFit": {
+        "cuts": [
+          [
+            [
+              -817.5,
+              -852
+            ],
+            [
+              -817.5,
+              -477
+            ],
+            [
+              -1198.5,
+              -477
+            ],
+            [
+              -1198.5,
+              -852
+            ]
+          ]
+        ],
+        "depths": [
+          {
+            "depth": 450,
+            "index": 2,
+            "rearService": true
+          }
+        ]
+      },
+      "shape": "L",
+      "thickness": 20,
+      "version": 1
+    },
+    "name": "橱柜台面",
+    "rot": 180,
+    "type": "counter",
+    "w": 2397
+  },
+  {
+    "brand": "米家/Mijia",
+    "color": "#f6f6f4",
+    "cx": 6392.5,
+    "cy": 9440.5,
+    "d": 445,
+    "h": 379,
+    "id": "fmvgn7dtt1",
+    "model": "净水器 2 1200G",
+    "mountHeight": 118,
+    "name": "米家净水器 2 · 1200G",
+    "rot": 270,
+    "type": "water_purifier_mijia_1200g",
+    "w": 163
+  },
+  {
+    "brand": "ARROW/箭牌",
+    "color": "#85898a",
+    "counterElevation": 850.8,
+    "cx": 6390,
+    "cy": 9147.000000000002,
+    "d": 450,
+    "flip": false,
+    "h": 240,
+    "id": "fmvgv70l41",
+    "model": "AE5575459G23-YNC",
+    "name": "箭牌日式集渣水槽 · 750",
+    "rot": 270,
+    "sinkInstall": "top",
+    "sourceUrl": "https://item.jd.com/100199201484.html",
+    "type": "sink_arrow_750",
+    "w": 750
+  }
+]

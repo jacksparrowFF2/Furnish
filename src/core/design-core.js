@@ -167,14 +167,17 @@
    // and topological order are still checked after each movement.
    const lineage=[],seen=new Set();for(let host=f;host&&!seen.has(host.id);host=products().floorHost(host,furniture)){seen.add(host.id);lineage.push(host);}
    const key=JSON.stringify(lineage);let bounds=orderBoundsCache.get(f);
-   if(bounds?.key!==key||bounds.floorKey!==floorKey){bounds={key,floorKey,vertical:furnitureVerticalBounds(f,plan,furniture),box:G.aabb({...f,rot:f.rot||0})};orderBoundsCache.set(f,bounds);}
-   return {f,index,layer:layer(f),vertical:bounds.vertical,box:bounds.box,after:[],incoming:0};
+   if(bounds?.key!==key||bounds.floorKey!==floorKey){const countertop=f.type==='counter'&&f.kitchen&&kitchen().hasCountertop(f)?f.kitchen.baseHeight+(plan?products().floorBase(plan,f,furniture).z:0):null;bounds={key,floorKey,vertical:furnitureVerticalBounds(f,plan,furniture),box:G.aabb({...f,rot:f.rot||0}),countertop};orderBoundsCache.set(f,bounds);}
+   return {f,index,layer:layer(f),vertical:bounds.vertical,box:bounds.box,countertop:bounds.countertop,after:[],incoming:0};
   });
   for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
    const a=items[i],b=items[j],A=a.vertical,B=b.vertical;
    if(a.layer!==b.layer)continue;
    const heights=A&&B&&[A.bottom,A.top,B.bottom,B.top].every(Number.isFinite);
-   const low=heights&&A.top<=B.bottom?a:heights&&B.top<=A.bottom?b:G.tuckedSeatUnder(a.f,b.f)?a:G.tuckedSeatUnder(b.f,a.f)?b:null;if(!low)continue;
+   // A kitchen's full envelope includes its cavity. Objects below the actual
+   // slab still draw underneath it even though those envelopes overlap.
+   const linked=a.f.counterLink?.hostId===b.f.id&&b.countertop!==null?b:b.f.counterLink?.hostId===a.f.id&&a.countertop!==null?a:null;
+   const low=linked||(heights&&A.top<=B.bottom?a:heights&&B.top<=A.bottom?b:heights&&b.countertop!==null&&A.top<=b.countertop?a:heights&&a.countertop!==null&&B.top<=a.countertop?b:G.tuckedSeatUnder(a.f,b.f)?a:G.tuckedSeatUnder(b.f,a.f)?b:null);if(!low)continue;
    if(Math.abs(a.f.cx-b.f.cx)>=a.box.hw+b.box.hw||Math.abs(a.f.cy-b.f.cy)>=a.box.hh+b.box.hh||!G.obbOverlap({...a.f,rot:a.f.rot||0},{...b.f,rot:b.f.rot||0}))continue;
    const high=low===a?b:a;low.after.push(high);high.incoming++;
   }
