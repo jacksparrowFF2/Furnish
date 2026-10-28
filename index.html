@@ -1209,7 +1209,7 @@ const syncIdentity=FurnishPartIdentity;
     const vertical=FurnishDraft.beamVertical(beam,roof);if(!vertical)continue;
     const bottom=M(vertical.bottom),height=M(vertical.top-vertical.bottom);
     const geometry=new THREE.ExtrudeGeometry(shapeOf(beam.poly),{depth:height,bevelEnabled:false});geometry.rotateX(-Math.PI/2);
-    const mesh=syncIdentity.produce("index:site-228",()=>new THREE.Mesh(geometry,mat('#b9a8cd',{roughness:1})));mesh.position.y=bottom;mesh.userData.beam=beam.id;mesh.visible=opt.cut===2.8||bottom<top;mesh.castShadow=true;mesh.receiveShadow=true;archUp.add(mesh);
+    const mesh=syncIdentity.produce("index:site-228",()=>new THREE.Mesh(geometry,wallMat));mesh.position.y=bottom;mesh.userData.beam=beam.id;mesh.visible=opt.cut===2.8||bottom<top;mesh.castShadow=true;mesh.receiveShadow=true;archUp.add(mesh);
     if(opt.labels!==undefined&&bottom>0){const x=(Math.min(...beam.poly.map(p=>p[0]))+Math.max(...beam.poly.map(p=>p[0])))/2,z=(Math.min(...beam.poly.map(p=>p[1]))+Math.max(...beam.poly.map(p=>p[1])))/2;
       const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(wx(x),.02,wz(z)),new THREE.Vector3(wx(x),bottom,wz(z))]),new THREE.LineBasicMaterial({color:0x9467bd,transparent:true,opacity:.4}));line.userData.beamDimension=true;line.userData.cutVisible=mesh.visible;line.visible=mesh.visible&&opt.labels;archUp.add(line);
     }

@@ -36,9 +36,9 @@ console.log('PASS beam heights: absolute units, atomic validation, clearing, leg
  const vm=require('node:vm'),html=fs.readFileSync('index.html','utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
  const source=html.slice(html.indexOf('  for(const beam of syncIdentity.records('),html.indexOf('  syncIdentity.each("index.html:generator-45",WALLS,(w, i) => {',html.indexOf('function buildArch(){')));
  const shape=html.match(/function shapeOf\(poly, flip\).*$/m)[0];
- const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishDraft:F,PLAN:F.build(known),M:v=>v/1000,wx:v=>v/1000-5,wz:v=>v/1000-5,mat:()=>new THREE.MeshStandardMaterial(),opt:{cut:2.8},top:2.8,archUp:new THREE.Group()}));
+ const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishDraft:F,PLAN:F.build(known),M:v=>v/1000,wx:v=>v/1000-5,wz:v=>v/1000-5,wallMat:new THREE.MeshStandardMaterial(),opt:{cut:2.8},top:2.8,archUp:new THREE.Group()}));
  vm.runInContext(shape+'\n'+source,context);assert.equal(context.archUp.children.length,1,'unknown beams have no invented 3D solids');
- const mesh=context.archUp.children[0],bounds=new THREE.Box3().setFromObject(mesh);assert(Math.abs(bounds.min.y-1.85)<1e-6);assert(Math.abs(bounds.max.y-2.2)<1e-6);
+ const mesh=context.archUp.children[0],bounds=new THREE.Box3().setFromObject(mesh);assert.equal(mesh.material,context.wallMat,'beam shares the wall material');assert(Math.abs(bounds.min.y-1.85)<1e-6);assert(Math.abs(bounds.max.y-2.2)<1e-6);
  assert(Math.abs(bounds.min.x-(Math.min(...known.beams[0].poly.map(p=>p[0]))*d.scale/1000-5))<1e-6);assert(Math.abs(bounds.min.z-(Math.min(...known.beams[0].poly.map(p=>p[1]))*d.scale/1000-5))<1e-6);
  context.archUp.clear();context.opt.cut=1.2;context.top=1.2;vm.runInContext(source,context);assert.equal(context.archUp.children[0].visible,false);
  const signature=html.match(/const a = (JSON\.stringify\(\[.*?\]\)), f =/);assert(signature,'production architecture cache expression');
