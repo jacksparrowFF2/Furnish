@@ -12,7 +12,7 @@
 
 Chrome／Edge 的缓存不由桌面版直接读取。如果尚有仅存在浏览器缓存的编辑，先用原来的 `start-furnish.cmd` 在原浏览器保存到文件，或导出项目后在桌面版导入。桌面版缓存独立存放在 `%APPDATA%/Furnish/desktop/<工作目录哈希>`；不同目录互不混用。首次打开没有桌面缓存时仍使用原来的文件优先和恢复副本规则。
 
-同一工作目录重复启动会激活已有窗口。同目录本地服务已经运行且代码相同时直接复用；后端代码变化沿原启动脚本的指纹协议重启。其他目录或其他程序占用端口时明确报错，不连接错误的设计文件。默认端口仍为 8765，`FURNISH_PORT` 可指定其他固定端口。
+同一工作目录重复启动会激活仍有效的已有窗口。窗口已关闭且后台正在退出时，新的启动请求会合并为后端清理完成后一次重新启动，不再访问已销毁窗口。同目录本地服务已经运行且代码相同时直接复用；后端代码变化沿原启动脚本的指纹协议重启。其他目录或其他程序占用端口时明确报错，不连接错误的设计文件。默认端口仍为 8765，`FURNISH_PORT` 可指定其他固定端口。
 
 窗口关闭时沿现有 `beforeunload` 发起保存；有未写入内容则提示继续编辑或保留缓存后关闭。桌面版自己启动的服务随应用退出关闭，已有且被借用的浏览器服务保留。从桌面菜单打开的浏览器若依赖桌面托管服务，退出桌面版后需使用原启动脚本重新启动服务。两个窗口同时编辑仍会触发原有修订冲突保护，不自动合并修改。
 
@@ -58,3 +58,5 @@ node scripts/package-desktop.cjs --portable --out output/desktop/Furnish-portabl
 页面使用隔离上下文和渲染器沙箱，不启用 Node；网页继续通过原同源 HTTP 接口读写。外链交给系统浏览器，阻止 file/javascript 等外部导航。本机页面请求直连，不依赖系统代理。桌面壳不暴露任意文件读写或执行命令的桥接接口。依据 [Electron 安全说明](https://www.electronjs.org/docs/latest/tutorial/security) 和[手动分发方式](https://www.electronjs.org/docs/latest/tutorial/application-distribution)。
 
 当前交付为未签名的便携文件夹，未提供安装器、自动更新或文件关联。不能保证系统不会对未签名程序显示来源提示。只验证实际执行的流程；物理打印机、完整 Blender 渲染、所有模型编辑器和其他 Windows 架构不属于本次桌面专项的全量验证。
+
+2026-10-28 窗口生命周期专项：`node tests/test-desktop-lifecycle.cjs` 覆盖生产监听器的销毁／异步加载竞态；`node tests/test-desktop-native.cjs` 使用独立缓存与临时页面，以可控的后端延迟验证真实 Electron 单实例激活、关闭期间重复启动及原生 relaunch。后者需要本机 Electron 和回环连接；结果存于 `output/playwright/desktop-lifecycle-*/`。详见 [验收记录](validation/desktop-lifecycle-20261028/README.md)。

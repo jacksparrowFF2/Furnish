@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {workspaceRoot,localPage,externalPage}=require('./policy.cjs');
 const {connect}=require('./backend.cjs');
 const appRoot=app.isPackaged?path.dirname(process.execPath):path.resolve(__dirname,'..');
-let root,backend,mainWindow,quitting=false;
+let root,backend,mainWindow,quitting=false,reopenRequested=false;
 try{
  const file=path.join(appRoot,'furnish-desktop.json');
  root=workspaceRoot({appRoot,config:fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):null,override:process.env.FURNISH_DESKTOP_ROOT});
@@ -13,7 +13,7 @@ try{
 }catch(e){app.whenReady().then(()=>{dialog.showErrorBox('Furnish 无法启动',e.message);app.exit(1);});}
 const preferences={nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true};
 function attach(win){
- win.on('page-title-updated',(event,title)=>{event.preventDefault();win.setTitle('Furnish · '+title);});
+ win.on('page-title-updated',(event,title)=>{event.preventDefault();if(!win.isDestroyed())win.setTitle('Furnish · '+title);});
  win.webContents.setWindowOpenHandler(({url})=>{
   if(localPage(url,backend.url)||url==='about:blank'||url.startsWith('blob:'+backend.url))return {action:'allow',overrideBrowserWindowOptions:{webPreferences:preferences,autoHideMenuBar:true}};
   if(externalPage(url))shell.openExternal(url).catch(()=>{});
@@ -28,24 +28,30 @@ function attach(win){
  });
 }
 async function createWindow(){
- mainWindow=new BrowserWindow({title:'Furnish',width:1440,height:960,minWidth:360,minHeight:480,show:false,backgroundColor:'#f6f2eb',icon:path.join(root,'assets/icons/icon-512.png'),webPreferences:preferences});
- attach(mainWindow);
+ const win=mainWindow=new BrowserWindow({title:'Furnish',width:1440,height:960,minWidth:360,minHeight:480,show:false,backgroundColor:'#f6f2eb',icon:path.join(root,'assets/icons/icon-512.png'),webPreferences:preferences});
+ win.once('closed',()=>{if(mainWindow===win)mainWindow=null;});
+ attach(win);
  // All application requests are local; do not route them through a system proxy.
- await mainWindow.webContents.session.setProxy({mode:'direct'});
+ await win.webContents.session.setProxy({mode:'direct'});
+ if(win.isDestroyed()||quitting)return;
  const permissionAllowed=(permission,url)=>localPage(url,backend.url)&&['fullscreen','pointerLock','clipboard-sanitized-write','persistent-storage','loopback-network'].includes(permission);
- mainWindow.webContents.session.setPermissionRequestHandler((contents,permission,callback,details)=>callback(permissionAllowed(permission,details.requestingUrl||contents.getURL())));
- mainWindow.webContents.session.setPermissionCheckHandler((_contents,permission,origin)=>permissionAllowed(permission,origin));
- mainWindow.webContents.session.on('will-download',(_event,item)=>{
+ win.webContents.session.setPermissionRequestHandler((contents,permission,callback,details)=>callback(permissionAllowed(permission,details.requestingUrl||contents.getURL())));
+ win.webContents.session.setPermissionCheckHandler((_contents,permission,origin)=>permissionAllowed(permission,origin));
+ win.webContents.session.on('will-download',(_event,item)=>{
   item.setSaveDialogOptions({title:'保存 Furnish 导出文件'});
   item.once('done',(_e,state)=>{if(state==='interrupted')dialog.showErrorBox('文件未保存','导出下载被中断，请重试。');});
  });
- mainWindow.once('ready-to-show',()=>mainWindow.show());
- await mainWindow.loadURL(backend.url);
+ win.once('ready-to-show',()=>{if(!win.isDestroyed()&&!quitting)win.show();});
+ try{await win.loadURL(backend.url);}catch(e){if(!win.isDestroyed()&&!quitting)throw e;}
 }
 if(root){
  if(!app.requestSingleInstanceLock())app.quit();
  else{
-  app.on('second-instance',()=>{if(mainWindow){if(mainWindow.isMinimized())mainWindow.restore();mainWindow.show();mainWindow.focus();}});
+  app.on('second-instance',()=>{
+   if(quitting){reopenRequested=true;return;}
+   const win=mainWindow;if(!win||win.isDestroyed())return;
+   if(win.isMinimized())win.restore();win.show();win.focus();
+  });
   app.whenReady().then(async()=>{
    backend=await connect({root,executable:process.execPath,port:Number(process.env.FURNISH_PORT||8765)});
    Menu.setApplicationMenu(Menu.buildFromTemplate([
@@ -56,6 +62,13 @@ if(root){
    await createWindow();
   }).catch(e=>{console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
   app.on('window-all-closed',()=>app.quit());
-  app.on('will-quit',event=>{if(backend&&!quitting){event.preventDefault();quitting=true;backend.close().finally(()=>app.quit());}});
+  app.on('will-quit',event=>{if(backend&&!quitting){
+   event.preventDefault();quitting=true;
+   // Keep the instance lock until the owned backend stops; queue a quick reopen.
+   Promise.resolve().then(()=>backend.close()).catch(e=>console.error(e.stack||e)).finally(()=>{
+    if(reopenRequested)app.relaunch();
+    app.quit();
+   });
+  }});
  }
 }
