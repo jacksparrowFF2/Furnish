@@ -1,0 +1,1 @@
+{"case":"ceiling-merge","status":"PASS","result":[{"mode":"http","passed":true,"cancel":true,"draftIsolation":true,"singleUndoRedo":true,"refresh":true,"mobile":true},{"mode":"file","passed":true,"cancel":true,"draftIsolation":true,"singleUndoRedo":true,"refresh":true,"mobile":true}]}
