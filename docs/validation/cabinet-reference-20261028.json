@@ -14,7 +14,10 @@
     "endAndIntermediateWidths": [36, 36, 36, 36],
     "total": 2295,
     "tolerance": 0.000001,
-    "boardComposition": "awaiting user clarification"
+    "boardComposition": "user confirmed: three independent boxes, six 18 mm side boards, two exterior 18 mm decorative end panels",
+    "boxOuterWidths": [452.4, 902.8, 903.8],
+    "sideBoardTotal": 108,
+    "decorativeEndPanelTotal": 36
   },
   "checks": {
     "newDocumentRelativeLinks": "passed",
@@ -23,6 +26,6 @@
     "applicationRegression": "not run: no application code changes",
     "browserAndBlender": "not run: no application code changes"
   },
-  "drawingApprovalStatus": "unconfirmed",
+  "drawingContext": "user's previous home; production structure reference only, not the current 1601 design",
   "userWorkspace": "preserved; excluded from this change"
 }
