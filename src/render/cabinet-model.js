@@ -128,12 +128,14 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    const e=c.entry,shoe=p+e.shoeHeight/1000,lower=shoe+e.lowerHeight/1000,upper=lower+e.nicheHeight/1000,bays=C.layout(f);
    for(const joint of shared){const bay=bays[joint.side==='left'?0:bays.length-1];bay.width+=c.thickness;if(joint.side==='left')bay.left-=c.thickness;bay.center=bay.left+bay.width/2;}
    const interiorLeft=-w/2+(shared.some(v=>v.side==='left')?0:t),interiorRight=w/2-(shared.some(v=>v.side==='right')?0:t),interiorWidth=interiorRight-interiorLeft,interiorX=(interiorRight+interiorLeft)/2;
-   if(p)syncIdentity.produce("cabinet-model:site-27",()=>add(g,w,p,d-.04,0,0,-.02,wood));syncIdentity.produce("cabinet-model:site-28",()=>add(g,w,t,bodyDepth,0,p,bodyZ));syncIdentity.produce("cabinet-model:site-29",()=>add(g,w,t,bodyDepth,0,h-t,bodyZ));
-   for(const [side,sign] of syncIdentity.items("cabinet-model.js:generator-17",[["item-a",['left',-1]],["item-b",['right',1]]]))syncIdentity.produce("cabinet-model.js:generator-call-5",()=>sideBoard(side,t,h-p-2*t,bodyDepth,sign*(w/2-t/2),p+t,bodyZ));
+   // Zero-plinth shoe bays open directly onto the finished floor.
+   const shoeBase=p?p+t:0;
+   if(p){syncIdentity.produce("cabinet-model:site-27",()=>add(g,w,p,d-.04,0,0,-.02,wood));syncIdentity.produce("cabinet-model:site-28",()=>add(g,w,t,bodyDepth,0,p,bodyZ));}syncIdentity.produce("cabinet-model:site-29",()=>add(g,w,t,bodyDepth,0,h-t,bodyZ));
+   for(const [side,sign] of syncIdentity.items("cabinet-model.js:generator-17",[["item-a",['left',-1]],["item-b",['right',1]]]))syncIdentity.produce("cabinet-model.js:generator-call-5",()=>sideBoard(side,t,h-t-shoeBase,bodyDepth,sign*(w/2-t/2),shoeBase,bodyZ));
    const extra=side=>Math.max(0,...finishes.filter(v=>v.side===side).map(v=>v.gap))/1000,edge=side=>{const common=shared.some(v=>v.side===side),open=e.openSide===side||e.openSide==='both';return open?t+extra(side)+(common?t:0):common?t:0;},leftEdge=edge('left'),rightEdge=edge('right');
    for(const level of syncIdentity.items("cabinet-model.js:generator-18",[["item-a",p+e.shoeHeight/2000],["item-b",shoe],["item-c",lower],["item-d",upper+t]])){const niche=level===lower||level===upper+t,counter=level===lower;const shelf=syncIdentity.produce("cabinet-model:site-30",()=>add(g,niche?w-2*t+leftEdge+rightEdge:interiorWidth,t,counter?d-t:d-2*t,niche?(rightEdge-leftEdge)/2:interiorX,level-t,counter?t/2:level===upper+t?0:-t/2,wood));if(niche)shelf.userData.cabinetNicheSurface=counter?'counter':'ceiling';}
    syncIdentity.produce("cabinet-model:site-31",()=>add(g,interiorWidth,e.nicheHeight/1000,t,interiorX,lower,-d/2+t/2,wood));
-   syncIdentity.produce("cabinet-model:site-32",()=>add(g,interiorWidth,shoe-p-t,t,interiorX,p+t,-d/2+t/2,wood));
+   syncIdentity.produce("cabinet-model:site-32",()=>add(g,interiorWidth,shoe-shoeBase,t,interiorX,shoeBase,-d/2+t/2,wood));
    const led=syncIdentity.produce("cabinet-model:site-33",()=>add(g,w-2*t,.004,.012,0,upper-.01,d/2-t-.012,'#ffe4ab'));led.material=led.material.clone();led.material.emissive=new THREE.Color('#ffe4ab');led.material.emissiveIntensity=.6;led.userData.cabinetOwnMaterial=true;
    syncIdentity.each("cabinet-model.js:generator-19",c.columns,(col,i)=>{
     const bay=bays[i],cw=bay.width/1000,x=bay.center/1000,drawerY=lower-col.drawers.reduce((n,v)=>n+v.height,0)/1000,faceColor=col.doorColor||(col.finish==='wood'?wood:color==='#d5c4bb'?'#f3f1ec':color),span=faceSpan(i),faceW=span.right-span.left,faceX=(span.left+span.right)/2;

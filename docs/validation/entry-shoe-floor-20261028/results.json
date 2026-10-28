@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "entry-shoe-floor"
+  ],
+  "results": [
+    {
+      "name": "entry-shoe-floor",
+      "status": "PASS",
+      "seconds": 19.2,
+      "log": "entry-shoe-floor.log"
+    }
+  ],
+  "notRun": []
+}
