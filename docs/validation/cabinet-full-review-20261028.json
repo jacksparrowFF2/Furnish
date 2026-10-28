@@ -1,0 +1,1714 @@
+{
+  "date": "2026-10-28",
+  "source": "D:\\1601装修\\图纸\\参考方案\\11.8宏福苑-全屋定制柜体.dxf",
+  "sha256": "e2ded59be242b2fd655958829318d5d21407c16ce9c7b42aa218b9693d8abb93",
+  "units": "mm",
+  "scope": "All 13 model-space frames and 5 embedded OLE images visually reviewed; one IMAGE has no recoverable pixels. This is source review, not manufacturing approval.",
+  "entity_counts": {
+    "Model": {
+      "INSERT": 96,
+      "MTEXT": 98,
+      "LINE": 1817,
+      "MULTILEADER": 21,
+      "DIMENSION": 271,
+      "LWPOLYLINE": 98,
+      "CIRCLE": 2,
+      "HATCH": 7,
+      "LEADER": 7,
+      "OLE2FRAME": 5,
+      "ARC": 6,
+      "IMAGE": 1,
+      "TEXT": 1
+    },
+    "布局1": {},
+    "布局2": {}
+  },
+  "frames": [
+    {
+      "index": 1,
+      "handle": "97F",
+      "subject": "入户第一向",
+      "bounds_xy": [
+        [
+          3158.466625,
+          11083.09942
+        ],
+        [
+          16110.723392,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-97F.png",
+      "visually_reviewed": true,
+      "dimension_count": 37,
+      "dimensions": [
+        {
+          "handle": "A0C",
+          "measurement_mm": 447.5
+        },
+        {
+          "handle": "A0F",
+          "measurement_mm": 345.0
+        },
+        {
+          "handle": "A12",
+          "measurement_mm": 345.0
+        },
+        {
+          "handle": "A15",
+          "measurement_mm": 932.0
+        },
+        {
+          "handle": "A16",
+          "measurement_mm": 400.0
+        },
+        {
+          "handle": "A17",
+          "measurement_mm": 148.0
+        },
+        {
+          "handle": "A18",
+          "measurement_mm": 420.0
+        },
+        {
+          "handle": "A19",
+          "measurement_mm": 160.0
+        },
+        {
+          "handle": "A1A",
+          "measurement_mm": 200.0
+        },
+        {
+          "handle": "A1B",
+          "measurement_mm": 540.0
+        },
+        {
+          "handle": "A1C",
+          "measurement_mm": 164.0
+        },
+        {
+          "handle": "A1D",
+          "measurement_mm": 160.0
+        },
+        {
+          "handle": "A20",
+          "measurement_mm": 160.0
+        },
+        {
+          "handle": "A23",
+          "measurement_mm": 160.0
+        },
+        {
+          "handle": "A26",
+          "measurement_mm": 150.0
+        },
+        {
+          "handle": "A29",
+          "measurement_mm": 190.0
+        },
+        {
+          "handle": "A2C",
+          "measurement_mm": 170.0
+        },
+        {
+          "handle": "A2F",
+          "measurement_mm": 150.0
+        },
+        {
+          "handle": "A32",
+          "measurement_mm": 200.0
+        },
+        {
+          "handle": "A35",
+          "measurement_mm": 1250.0
+        },
+        {
+          "handle": "A36",
+          "measurement_mm": 494.0
+        },
+        {
+          "handle": "A3E",
+          "measurement_mm": 2330.0
+        },
+        {
+          "handle": "A41",
+          "measurement_mm": 1577.0
+        },
+        {
+          "handle": "A63",
+          "measurement_mm": 160.0
+        },
+        {
+          "handle": "A66",
+          "measurement_mm": 962.0
+        },
+        {
+          "handle": "A69",
+          "measurement_mm": 968.0
+        },
+        {
+          "handle": "A6C",
+          "measurement_mm": 500.0
+        },
+        {
+          "handle": "A6F",
+          "measurement_mm": 500.0
+        },
+        {
+          "handle": "A78",
+          "measurement_mm": 1250.0
+        },
+        {
+          "handle": "A98",
+          "measurement_mm": 968.0
+        },
+        {
+          "handle": "ACB",
+          "measurement_mm": 695.0
+        },
+        {
+          "handle": "B0C",
+          "measurement_mm": 2163.0
+        },
+        {
+          "handle": "B0F",
+          "measurement_mm": 1870.0
+        },
+        {
+          "handle": "B13",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "B5A",
+          "measurement_mm": 198.0
+        },
+        {
+          "handle": "B5D",
+          "measurement_mm": 198.0
+        },
+        {
+          "handle": "B6F",
+          "measurement_mm": 530.0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "handle": "9BA",
+      "subject": "入户第二向",
+      "bounds_xy": [
+        [
+          3158.466625,
+          1480.399755
+        ],
+        [
+          16110.723392,
+          11083.09942
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-9BA.png",
+      "visually_reviewed": true,
+      "dimension_count": 18,
+      "dimensions": [
+        {
+          "handle": "A44",
+          "measurement_mm": 605.0
+        },
+        {
+          "handle": "A47",
+          "measurement_mm": 1713.0
+        },
+        {
+          "handle": "A4A",
+          "measurement_mm": 481.3
+        },
+        {
+          "handle": "A4D",
+          "measurement_mm": 2330.0
+        },
+        {
+          "handle": "A50",
+          "measurement_mm": 1870.0
+        },
+        {
+          "handle": "A53",
+          "measurement_mm": 448.3
+        },
+        {
+          "handle": "A56",
+          "measurement_mm": 1350.2
+        },
+        {
+          "handle": "A59",
+          "measurement_mm": 530.0
+        },
+        {
+          "handle": "A5A",
+          "measurement_mm": 380.0
+        },
+        {
+          "handle": "A5B",
+          "measurement_mm": 500.0
+        },
+        {
+          "handle": "A5E",
+          "measurement_mm": 1870.0
+        },
+        {
+          "handle": "A92",
+          "measurement_mm": 380.0
+        },
+        {
+          "handle": "A95",
+          "measurement_mm": 382.0
+        },
+        {
+          "handle": "ABD",
+          "measurement_mm": 2163.0
+        },
+        {
+          "handle": "AC0",
+          "measurement_mm": 1870.0
+        },
+        {
+          "handle": "AC4",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "B76",
+          "measurement_mm": 481.333333
+        },
+        {
+          "handle": "B79",
+          "measurement_mm": 481.333334
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "handle": "1446",
+      "subject": "主卧",
+      "bounds_xy": [
+        [
+          16110.723392,
+          11083.09942
+        ],
+        [
+          29062.980159,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-1446.png",
+      "visually_reviewed": true,
+      "dimension_count": 21,
+      "dimensions": [
+        {
+          "handle": "1541",
+          "measurement_mm": 500.0
+        },
+        {
+          "handle": "1548",
+          "measurement_mm": 230.0
+        },
+        {
+          "handle": "154B",
+          "measurement_mm": 230.0
+        },
+        {
+          "handle": "154E",
+          "measurement_mm": 810.0
+        },
+        {
+          "handle": "1551",
+          "measurement_mm": 416.4
+        },
+        {
+          "handle": "1554",
+          "measurement_mm": 866.8
+        },
+        {
+          "handle": "1557",
+          "measurement_mm": 867.8
+        },
+        {
+          "handle": "155A",
+          "measurement_mm": 2450.0
+        },
+        {
+          "handle": "155D",
+          "measurement_mm": 2295.0
+        },
+        {
+          "handle": "1560",
+          "measurement_mm": 449.4
+        },
+        {
+          "handle": "1563",
+          "measurement_mm": 449.4
+        },
+        {
+          "handle": "1566",
+          "measurement_mm": 449.4
+        },
+        {
+          "handle": "1569",
+          "measurement_mm": 449.4
+        },
+        {
+          "handle": "156C",
+          "measurement_mm": 449.4
+        },
+        {
+          "handle": "156F",
+          "measurement_mm": 225.0
+        },
+        {
+          "handle": "1570",
+          "measurement_mm": 225.0
+        },
+        {
+          "handle": "1571",
+          "measurement_mm": 2295.0
+        },
+        {
+          "handle": "1574",
+          "measurement_mm": 610.0
+        },
+        {
+          "handle": "15B2",
+          "measurement_mm": 230.0
+        },
+        {
+          "handle": "15B5",
+          "measurement_mm": 206.0
+        },
+        {
+          "handle": "16AD",
+          "measurement_mm": 60.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "handle": "1448",
+      "subject": "次卧",
+      "bounds_xy": [
+        [
+          29062.980159,
+          11083.09942
+        ],
+        [
+          42015.236926,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-1448.png",
+      "visually_reviewed": true,
+      "dimension_count": 19,
+      "dimensions": [
+        {
+          "handle": "1577",
+          "measurement_mm": 500.0
+        },
+        {
+          "handle": "157A",
+          "measurement_mm": 1788.0
+        },
+        {
+          "handle": "157D",
+          "measurement_mm": 834.5
+        },
+        {
+          "handle": "1580",
+          "measurement_mm": 834.5
+        },
+        {
+          "handle": "1583",
+          "measurement_mm": 2460.0
+        },
+        {
+          "handle": "1586",
+          "measurement_mm": 1777.0
+        },
+        {
+          "handle": "1589",
+          "measurement_mm": 575.0
+        },
+        {
+          "handle": "158C",
+          "measurement_mm": 1821.0
+        },
+        {
+          "handle": "158F",
+          "measurement_mm": 432.75
+        },
+        {
+          "handle": "1592",
+          "measurement_mm": 432.75
+        },
+        {
+          "handle": "1595",
+          "measurement_mm": 432.75
+        },
+        {
+          "handle": "1598",
+          "measurement_mm": 432.75
+        },
+        {
+          "handle": "159B",
+          "measurement_mm": 2460.0
+        },
+        {
+          "handle": "159E",
+          "measurement_mm": 1777.0
+        },
+        {
+          "handle": "15A1",
+          "measurement_mm": 1777.0
+        },
+        {
+          "handle": "15A4",
+          "measurement_mm": 610.0
+        },
+        {
+          "handle": "1699",
+          "measurement_mm": 207.0
+        },
+        {
+          "handle": "169C",
+          "measurement_mm": 207.0
+        },
+        {
+          "handle": "16B1",
+          "measurement_mm": 60.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "handle": "15D5",
+      "subject": "书房",
+      "bounds_xy": [
+        [
+          42015.236926,
+          11083.09942
+        ],
+        [
+          54967.493693,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-15D5.png",
+      "visually_reviewed": true,
+      "dimension_count": 18,
+      "dimensions": [
+        {
+          "handle": "163C",
+          "measurement_mm": 483.5
+        },
+        {
+          "handle": "163F",
+          "measurement_mm": 483.5
+        },
+        {
+          "handle": "1642",
+          "measurement_mm": 483.5
+        },
+        {
+          "handle": "1645",
+          "measurement_mm": 483.5
+        },
+        {
+          "handle": "1646",
+          "measurement_mm": 2465.0
+        },
+        {
+          "handle": "1649",
+          "measurement_mm": 1980.0
+        },
+        {
+          "handle": "164C",
+          "measurement_mm": 926.0
+        },
+        {
+          "handle": "164F",
+          "measurement_mm": 926.0
+        },
+        {
+          "handle": "1652",
+          "measurement_mm": 500.0
+        },
+        {
+          "handle": "1655",
+          "measurement_mm": 965.0
+        },
+        {
+          "handle": "1658",
+          "measurement_mm": 878.0
+        },
+        {
+          "handle": "1659",
+          "measurement_mm": 2465.0
+        },
+        {
+          "handle": "165C",
+          "measurement_mm": 1960.0
+        },
+        {
+          "handle": "165F",
+          "measurement_mm": 1960.0
+        },
+        {
+          "handle": "1662",
+          "measurement_mm": 620.0
+        },
+        {
+          "handle": "16B4",
+          "measurement_mm": 810.0
+        },
+        {
+          "handle": "16B7",
+          "measurement_mm": 965.0
+        },
+        {
+          "handle": "16BA",
+          "measurement_mm": 60.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "handle": "65DF",
+      "subject": "餐边柜与厨房平面",
+      "bounds_xy": [
+        [
+          54967.493693,
+          11083.09942
+        ],
+        [
+          67919.750461,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-65DF.png",
+      "visually_reviewed": true,
+      "dimension_count": 19,
+      "dimensions": [
+        {
+          "handle": "6786",
+          "measurement_mm": 600.0
+        },
+        {
+          "handle": "6787",
+          "measurement_mm": 605.0
+        },
+        {
+          "handle": "678A",
+          "measurement_mm": 600.0
+        },
+        {
+          "handle": "6794",
+          "measurement_mm": 810.5
+        },
+        {
+          "handle": "6795",
+          "measurement_mm": 810.5
+        },
+        {
+          "handle": "6796",
+          "measurement_mm": 839.0
+        },
+        {
+          "handle": "6797",
+          "measurement_mm": 450.0
+        },
+        {
+          "handle": "6798",
+          "measurement_mm": 448.0
+        },
+        {
+          "handle": "6799",
+          "measurement_mm": 636.0
+        },
+        {
+          "handle": "679A",
+          "measurement_mm": 661.0
+        },
+        {
+          "handle": "679B",
+          "measurement_mm": 489.722003
+        },
+        {
+          "handle": "679E",
+          "measurement_mm": 414.677997
+        },
+        {
+          "handle": "67A1",
+          "measurement_mm": 697.6
+        },
+        {
+          "handle": "67A4",
+          "measurement_mm": 623.0
+        },
+        {
+          "handle": "67A7",
+          "measurement_mm": 582.0
+        },
+        {
+          "handle": "67AA",
+          "measurement_mm": 108.0
+        },
+        {
+          "handle": "67B2",
+          "measurement_mm": 800.0
+        },
+        {
+          "handle": "67E1",
+          "measurement_mm": 424.621063
+        },
+        {
+          "handle": "67E4",
+          "measurement_mm": 88.378937
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "handle": "65E1",
+      "subject": "餐边柜立面及内部",
+      "bounds_xy": [
+        [
+          54967.493693,
+          1480.399755
+        ],
+        [
+          67919.750461,
+          11083.09942
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-65E1.png",
+      "visually_reviewed": true,
+      "dimension_count": 36,
+      "dimensions": [
+        {
+          "handle": "6671",
+          "measurement_mm": 416.25
+        },
+        {
+          "handle": "6674",
+          "measurement_mm": 416.25
+        },
+        {
+          "handle": "6675",
+          "measurement_mm": 416.25
+        },
+        {
+          "handle": "6676",
+          "measurement_mm": 418.25
+        },
+        {
+          "handle": "6677",
+          "measurement_mm": 435.0
+        },
+        {
+          "handle": "667A",
+          "measurement_mm": 435.0
+        },
+        {
+          "handle": "667D",
+          "measurement_mm": 708.0
+        },
+        {
+          "handle": "667E",
+          "measurement_mm": 250.0
+        },
+        {
+          "handle": "667F",
+          "measurement_mm": 500.0
+        },
+        {
+          "handle": "6680",
+          "measurement_mm": 168.0
+        },
+        {
+          "handle": "6683",
+          "measurement_mm": 710.0
+        },
+        {
+          "handle": "6684",
+          "measurement_mm": 416.25
+        },
+        {
+          "handle": "6687",
+          "measurement_mm": 416.109923
+        },
+        {
+          "handle": "6688",
+          "measurement_mm": 417.3
+        },
+        {
+          "handle": "6689",
+          "measurement_mm": 416.25
+        },
+        {
+          "handle": "668C",
+          "measurement_mm": 839.0
+        },
+        {
+          "handle": "668F",
+          "measurement_mm": 2420.0
+        },
+        {
+          "handle": "6692",
+          "measurement_mm": 2568.0
+        },
+        {
+          "handle": "6695",
+          "measurement_mm": 810.5
+        },
+        {
+          "handle": "6698",
+          "measurement_mm": 810.5
+        },
+        {
+          "handle": "669B",
+          "measurement_mm": 839.0
+        },
+        {
+          "handle": "669E",
+          "measurement_mm": 810.5
+        },
+        {
+          "handle": "66A1",
+          "measurement_mm": 810.5
+        },
+        {
+          "handle": "66A4",
+          "measurement_mm": 490.0
+        },
+        {
+          "handle": "66A7",
+          "measurement_mm": 1918.0
+        },
+        {
+          "handle": "66AA",
+          "measurement_mm": 416.0
+        },
+        {
+          "handle": "66AD",
+          "measurement_mm": 1918.0
+        },
+        {
+          "handle": "66D0",
+          "measurement_mm": 950.0
+        },
+        {
+          "handle": "66D3",
+          "measurement_mm": 950.0
+        },
+        {
+          "handle": "66D6",
+          "measurement_mm": 839.0
+        },
+        {
+          "handle": "66DF",
+          "measurement_mm": 689.0
+        },
+        {
+          "handle": "66E2",
+          "measurement_mm": 300.0
+        },
+        {
+          "handle": "66E5",
+          "measurement_mm": 371.0
+        },
+        {
+          "handle": "66EC",
+          "measurement_mm": 217.666667
+        },
+        {
+          "handle": "66EF",
+          "measurement_mm": 217.666667
+        },
+        {
+          "handle": "66F2",
+          "measurement_mm": 217.666667
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "handle": "65EA",
+      "subject": "厨房内部及水槽侧",
+      "bounds_xy": [
+        [
+          54967.493693,
+          -8122.299911
+        ],
+        [
+          67919.750461,
+          1480.399755
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-65EA.png",
+      "visually_reviewed": true,
+      "dimension_count": 50,
+      "dimensions": [
+        {
+          "handle": "66B0",
+          "measurement_mm": 680.330627
+        },
+        {
+          "handle": "66B3",
+          "measurement_mm": 322.4
+        },
+        {
+          "handle": "66B6",
+          "measurement_mm": 697.6
+        },
+        {
+          "handle": "66B9",
+          "measurement_mm": 615.0
+        },
+        {
+          "handle": "66BC",
+          "measurement_mm": 850.0
+        },
+        {
+          "handle": "66BF",
+          "measurement_mm": 2315.0
+        },
+        {
+          "handle": "6838",
+          "measurement_mm": 450.0
+        },
+        {
+          "handle": "6839",
+          "measurement_mm": 448.0
+        },
+        {
+          "handle": "683A",
+          "measurement_mm": 636.0
+        },
+        {
+          "handle": "683B",
+          "measurement_mm": 679.0
+        },
+        {
+          "handle": "683C",
+          "measurement_mm": 355.5
+        },
+        {
+          "handle": "683F",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "6842",
+          "measurement_mm": 382.0
+        },
+        {
+          "handle": "6845",
+          "measurement_mm": 850.0
+        },
+        {
+          "handle": "6846",
+          "measurement_mm": 220.0
+        },
+        {
+          "handle": "6849",
+          "measurement_mm": 359.0
+        },
+        {
+          "handle": "684C",
+          "measurement_mm": 300.0
+        },
+        {
+          "handle": "684F",
+          "measurement_mm": 250.0
+        },
+        {
+          "handle": "6852",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "6856",
+          "measurement_mm": 680.0
+        },
+        {
+          "handle": "6859",
+          "measurement_mm": 300.0
+        },
+        {
+          "handle": "685C",
+          "measurement_mm": 460.0
+        },
+        {
+          "handle": "685D",
+          "measurement_mm": 106.0
+        },
+        {
+          "handle": "6860",
+          "measurement_mm": 290.0
+        },
+        {
+          "handle": "6863",
+          "measurement_mm": 320.0
+        },
+        {
+          "handle": "6866",
+          "measurement_mm": 355.5
+        },
+        {
+          "handle": "6869",
+          "measurement_mm": 355.5
+        },
+        {
+          "handle": "686C",
+          "measurement_mm": 699.0
+        },
+        {
+          "handle": "686F",
+          "measurement_mm": 2335.0
+        },
+        {
+          "handle": "6872",
+          "measurement_mm": 2290.0
+        },
+        {
+          "handle": "6875",
+          "measurement_mm": 128.0
+        },
+        {
+          "handle": "687C",
+          "measurement_mm": 280.0
+        },
+        {
+          "handle": "687F",
+          "measurement_mm": 200.0
+        },
+        {
+          "handle": "688B",
+          "measurement_mm": 850.0
+        },
+        {
+          "handle": "68D2",
+          "measurement_mm": 355.5
+        },
+        {
+          "handle": "68D5",
+          "measurement_mm": 355.5
+        },
+        {
+          "handle": "68D8",
+          "measurement_mm": 930.5
+        },
+        {
+          "handle": "68DB",
+          "measurement_mm": 247.25
+        },
+        {
+          "handle": "68DE",
+          "measurement_mm": 400.0
+        },
+        {
+          "handle": "68E1",
+          "measurement_mm": 252.25
+        },
+        {
+          "handle": "68E4",
+          "measurement_mm": 750.0
+        },
+        {
+          "handle": "68E7",
+          "measurement_mm": 349.5
+        },
+        {
+          "handle": "68E8",
+          "measurement_mm": 349.5
+        },
+        {
+          "handle": "68EB",
+          "measurement_mm": 2415.0
+        },
+        {
+          "handle": "68EE",
+          "measurement_mm": 1943.0
+        },
+        {
+          "handle": "68EF",
+          "measurement_mm": 850.0
+        },
+        {
+          "handle": "68F3",
+          "measurement_mm": 800.0
+        },
+        {
+          "handle": "68FE",
+          "measurement_mm": 100.0
+        },
+        {
+          "handle": "6904",
+          "measurement_mm": 406.621063
+        },
+        {
+          "handle": "690B",
+          "measurement_mm": 88.378937
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "handle": "69F0",
+      "subject": "厨房门板外立面",
+      "bounds_xy": [
+        [
+          54967.493693,
+          -17724.999576
+        ],
+        [
+          67919.750461,
+          -8122.299911
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-69F0.png",
+      "visually_reviewed": true,
+      "dimension_count": 14,
+      "dimensions": [
+        {
+          "handle": "69C6",
+          "measurement_mm": 465.0
+        },
+        {
+          "handle": "69C9",
+          "measurement_mm": 427.0
+        },
+        {
+          "handle": "69CC",
+          "measurement_mm": 315.0
+        },
+        {
+          "handle": "69CF",
+          "measurement_mm": 315.0
+        },
+        {
+          "handle": "69D2",
+          "measurement_mm": 336.5
+        },
+        {
+          "handle": "69D5",
+          "measurement_mm": 336.5
+        },
+        {
+          "handle": "69D8",
+          "measurement_mm": 2325.0
+        },
+        {
+          "handle": "69DB",
+          "measurement_mm": 483.25
+        },
+        {
+          "handle": "69DE",
+          "measurement_mm": 483.25
+        },
+        {
+          "handle": "69E1",
+          "measurement_mm": 483.25
+        },
+        {
+          "handle": "69E4",
+          "measurement_mm": 483.25
+        },
+        {
+          "handle": "69E7",
+          "measurement_mm": 421.621063
+        },
+        {
+          "handle": "69EA",
+          "measurement_mm": 797.0
+        },
+        {
+          "handle": "69ED",
+          "measurement_mm": 88.378937
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "handle": "7CF2",
+      "subject": "阳台洗烘柜",
+      "bounds_xy": [
+        [
+          67919.750461,
+          11083.09942
+        ],
+        [
+          80872.007228,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-7CF2.png",
+      "visually_reviewed": true,
+      "dimension_count": 15,
+      "dimensions": [
+        {
+          "handle": "7D65",
+          "measurement_mm": 327.5
+        },
+        {
+          "handle": "7D68",
+          "measurement_mm": 327.5
+        },
+        {
+          "handle": "7D6B",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "7D6E",
+          "measurement_mm": 702.0
+        },
+        {
+          "handle": "7D6F",
+          "measurement_mm": 1698.342644
+        },
+        {
+          "handle": "7D72",
+          "measurement_mm": 2423.0
+        },
+        {
+          "handle": "7D75",
+          "measurement_mm": 1193.0
+        },
+        {
+          "handle": "7D78",
+          "measurement_mm": 589.0
+        },
+        {
+          "handle": "7D7B",
+          "measurement_mm": 1748.0
+        },
+        {
+          "handle": "7D7E",
+          "measurement_mm": 625.0
+        },
+        {
+          "handle": "7D81",
+          "measurement_mm": 318.0
+        },
+        {
+          "handle": "7D84",
+          "measurement_mm": 589.0
+        },
+        {
+          "handle": "7D85",
+          "measurement_mm": 1730.0
+        },
+        {
+          "handle": "7D86",
+          "measurement_mm": 1193.0
+        },
+        {
+          "handle": "7D89",
+          "measurement_mm": 600.0
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "handle": "7D22",
+      "subject": "电视柜闭合立面",
+      "bounds_xy": [
+        [
+          80872.007228,
+          11083.09942
+        ],
+        [
+          93824.263995,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-7D22.png",
+      "visually_reviewed": true,
+      "dimension_count": 0,
+      "dimensions": []
+    },
+    {
+      "index": 12,
+      "handle": "7FF3",
+      "subject": "电视柜平面及内部",
+      "bounds_xy": [
+        [
+          93636.902753,
+          11083.09942
+        ],
+        [
+          106589.159521,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-7FF3.png",
+      "visually_reviewed": true,
+      "dimension_count": 19,
+      "dimensions": [
+        {
+          "handle": "7E42",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "7E45",
+          "measurement_mm": 6130.0
+        },
+        {
+          "handle": "7E48",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "7E4B",
+          "measurement_mm": 635.5
+        },
+        {
+          "handle": "7E4E",
+          "measurement_mm": 634.5
+        },
+        {
+          "handle": "7E51",
+          "measurement_mm": 634.5
+        },
+        {
+          "handle": "7E54",
+          "measurement_mm": 634.5
+        },
+        {
+          "handle": "7E57",
+          "measurement_mm": 634.5
+        },
+        {
+          "handle": "7E5A",
+          "measurement_mm": 635.5
+        },
+        {
+          "handle": "7E5D",
+          "measurement_mm": 813.4
+        },
+        {
+          "handle": "7E60",
+          "measurement_mm": 812.4
+        },
+        {
+          "handle": "7E63",
+          "measurement_mm": 389.2
+        },
+        {
+          "handle": "7E8F",
+          "measurement_mm": 271.0
+        },
+        {
+          "handle": "7E92",
+          "measurement_mm": 280.0
+        },
+        {
+          "handle": "7E95",
+          "measurement_mm": 280.0
+        },
+        {
+          "handle": "7E98",
+          "measurement_mm": 300.0
+        },
+        {
+          "handle": "7E9B",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "7E9E",
+          "measurement_mm": 350.0
+        },
+        {
+          "handle": "7EA1",
+          "measurement_mm": 350.0
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "handle": "7F81",
+      "subject": "另一个卧室浅储物柜",
+      "bounds_xy": [
+        [
+          107132.955337,
+          11083.09942
+        ],
+        [
+          120085.212104,
+          20685.799085
+        ]
+      ],
+      "render_local": "D:\\1601装修\\.codex-tools\\cabinet-full\\sheet-7F81.png",
+      "visually_reviewed": true,
+      "dimension_count": 5,
+      "dimensions": [
+        {
+          "handle": "7FF4",
+          "measurement_mm": 1800.0
+        },
+        {
+          "handle": "7FF7",
+          "measurement_mm": 438.5
+        },
+        {
+          "handle": "7FFA",
+          "measurement_mm": 438.5
+        },
+        {
+          "handle": "7FFD",
+          "measurement_mm": 438.5
+        },
+        {
+          "handle": "8000",
+          "measurement_mm": 438.5
+        }
+      ]
+    }
+  ],
+  "text_coverage": {
+    "count": 99,
+    "handles": [
+      "980",
+      "9BB",
+      "B60",
+      "B61",
+      "B63",
+      "B64",
+      "B65",
+      "B67",
+      "B68",
+      "B69",
+      "B6B",
+      "B6E",
+      "B75",
+      "B7C",
+      "1447",
+      "1449",
+      "1530",
+      "15D6",
+      "16B0",
+      "16BE",
+      "16C0",
+      "16C1",
+      "16C2",
+      "16C3",
+      "16C4",
+      "16D3",
+      "16D4",
+      "65E0",
+      "65E2",
+      "65EB",
+      "66CF",
+      "66FC",
+      "67B7",
+      "67BC",
+      "67BE",
+      "67C0",
+      "67C1",
+      "67C2",
+      "67D3",
+      "67D4",
+      "67D5",
+      "67D6",
+      "67E0",
+      "67E8",
+      "6837",
+      "6855",
+      "6882",
+      "6883",
+      "6884",
+      "6887",
+      "6888",
+      "6890",
+      "68BC",
+      "68D1",
+      "68F5",
+      "6901",
+      "6902",
+      "6909",
+      "6973",
+      "6996",
+      "69A2",
+      "69A4",
+      "69A5",
+      "69B6",
+      "7CF3",
+      "7D23",
+      "7E3D",
+      "7E3E",
+      "7E3F",
+      "7E40",
+      "7E41",
+      "7EA4",
+      "7EAB",
+      "7EAC",
+      "7ECD",
+      "7ED3",
+      "7ED9",
+      "7EDF",
+      "7EE5",
+      "7EEB",
+      "7EFA",
+      "7F1C",
+      "7F22",
+      "7F28",
+      "7F2E",
+      "7F34",
+      "7F40",
+      "7F46",
+      "7F4C",
+      "7F52",
+      "7F58",
+      "7F5E",
+      "7F6A",
+      "7F80",
+      "7F82",
+      "7F88",
+      "7F8B",
+      "7F8C",
+      "83A3"
+    ],
+    "summary_handle": "83A3",
+    "manual_numeric_labels_in_last_frame": [
+      {
+        "handle": "7ECD",
+        "text": "150"
+      },
+      {
+        "handle": "7ED3",
+        "text": "150"
+      },
+      {
+        "handle": "7ED9",
+        "text": "150"
+      },
+      {
+        "handle": "7EDF",
+        "text": "150"
+      },
+      {
+        "handle": "7EE5",
+        "text": "150"
+      },
+      {
+        "handle": "7EEB",
+        "text": "406"
+      },
+      {
+        "handle": "7EFA",
+        "text": "700"
+      },
+      {
+        "handle": "7F1C",
+        "text": "150"
+      },
+      {
+        "handle": "7F22",
+        "text": "150"
+      },
+      {
+        "handle": "7F28",
+        "text": "150"
+      },
+      {
+        "handle": "7F2E",
+        "text": "150"
+      },
+      {
+        "handle": "7F34",
+        "text": "150"
+      },
+      {
+        "handle": "7F40",
+        "text": "160"
+      },
+      {
+        "handle": "7F46",
+        "text": "160"
+      },
+      {
+        "handle": "7F4C",
+        "text": "160"
+      },
+      {
+        "handle": "7F52",
+        "text": "166"
+      },
+      {
+        "handle": "7F58",
+        "text": "406"
+      },
+      {
+        "handle": "7F5E",
+        "text": "2100"
+      },
+      {
+        "handle": "7F6A",
+        "text": "2100"
+      },
+      {
+        "handle": "7F88",
+        "text": "380"
+      }
+    ]
+  },
+  "multileader_coverage": {
+    "count": 21,
+    "handles": [
+      "9DA",
+      "9FA",
+      "9FD",
+      "9FE",
+      "A08",
+      "A0B",
+      "A99",
+      "ABC",
+      "B0B",
+      "B62",
+      "152D",
+      "15CF",
+      "16BD",
+      "6662",
+      "66DD",
+      "66DE",
+      "678D",
+      "67AF",
+      "67B1",
+      "67BA",
+      "7E6A"
+    ]
+  },
+  "embedded_images": [
+    {
+      "handle": "66CE",
+      "subject": "冰箱广告尺寸",
+      "visually_reviewed": true,
+      "images": [
+        {
+          "stream": [
+            "CONTENTS"
+          ],
+          "size": [
+            1208,
+            1190
+          ],
+          "path": "D:\\1601装修\\.codex-tools\\cabinet-full\\66CE-0.png",
+          "sha256": "f9f600eeeb2e969efaa2025efeb50ec5c212f231289ef8ac568111dc1a330e9c"
+        }
+      ]
+    },
+    {
+      "handle": "8364",
+      "subject": "落地推车无底板踢脚",
+      "visually_reviewed": true,
+      "images": [
+        {
+          "stream": [
+            "CONTENTS"
+          ],
+          "size": [
+            952,
+            1253
+          ],
+          "path": "D:\\1601装修\\.codex-tools\\cabinet-full\\8364-0.png",
+          "sha256": "70e42abdec8f4a5b140e8f2e934b3cbc70aad19dff1e585489a1ba73fc76d8d7"
+        }
+      ]
+    },
+    {
+      "handle": "8365",
+      "subject": "厨房固定承托与可取出板",
+      "visually_reviewed": true,
+      "images": [
+        {
+          "stream": [
+            "CONTENTS"
+          ],
+          "size": [
+            1316,
+            1754
+          ],
+          "path": "D:\\1601装修\\.codex-tools\\cabinet-full\\8365-0.png",
+          "sha256": "a88f8095c7bdb3298c857eeb5c67efff63d283e2f1d658998abdd37bca404518"
+        }
+      ]
+    },
+    {
+      "handle": "8366",
+      "subject": "窄立抽关闭",
+      "visually_reviewed": true,
+      "images": [
+        {
+          "stream": [
+            "CONTENTS"
+          ],
+          "size": [
+            1440,
+            1920
+          ],
+          "path": "D:\\1601装修\\.codex-tools\\cabinet-full\\8366-0.png",
+          "sha256": "c2a023dd16a9677a397306e7a48828e0a4a256b375d5bcadb8fb0e1d9c4a1609"
+        }
+      ]
+    },
+    {
+      "handle": "8367",
+      "subject": "窄立抽拉出框与底轮",
+      "visually_reviewed": true,
+      "images": [
+        {
+          "stream": [
+            "CONTENTS"
+          ],
+          "size": [
+            1440,
+            1920
+          ],
+          "path": "D:\\1601装修\\.codex-tools\\cabinet-full\\8367-0.png",
+          "sha256": "1513685b8e78f0a101d168e10c1992a2e37ddc33c0aef14121d37298fc998d3b"
+        }
+      ]
+    }
+  ],
+  "unavailable_image": {
+    "handle": "67DE",
+    "definition_handle": "65DA",
+    "filename": "",
+    "loaded": 0,
+    "reference_leader": "67E0",
+    "pixels_recoverable": false
+  },
+  "user_confirmations": [
+    {
+      "subject": "主卧",
+      "fact": "三个独立柜箱各两块18mm侧板，两端各另加18mm见光板。"
+    },
+    {
+      "subject": "书房1960/1980",
+      "answer": "应该是改图后未同步",
+      "interpretation": "按内部与平面一致的1960理解，1980保留为未同步标注；非现场复测。"
+    },
+    {
+      "subject": "厨房高柜完成高度",
+      "answer": "厨房高柜完成高度是2335mm",
+      "interpretation": "采用2335mm完成高；外立面2325保留为未同步标注，不推定10mm构造差额。"
+    }
+  ],
+  "unresolved": [
+    "阳台总安装范围1193与主要内部开口625/318非同一边界，不按差额补板",
+    "电视柜第三格用途、具体分箱与节点未完整明确",
+    "缺失错位层板参考IMAGE",
+    "五金、加工孔、承重、设备安装手册及批注未决施工细节"
+  ],
+  "checks": {
+    "all_271_dimensions_assigned_once": true,
+    "all_13_frames_rendered_and_reviewed": true,
+    "all_5_ole_images_extracted_and_reviewed": true,
+    "source_hash_matches_initial_review": true,
+    "application_tests_run": false,
+    "scope": "Documentation and evidence only; user workspace edits preserved."
+  }
+}
