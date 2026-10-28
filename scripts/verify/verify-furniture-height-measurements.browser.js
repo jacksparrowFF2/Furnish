@@ -19,7 +19,18 @@ async(page,verification)=>{
    await verification.waitForCache(p);await p.reload();
    const restored=await p.evaluate(()=>FurnishDesign.furnitureHeightMeasurements(state.furniture.find(f=>f.id==='height-cab'),canvasEffectivePlan(),state.furniture));
    if(restored.top!==2500||restored.roofGap!==240)throw Error('Refresh changed height: '+JSON.stringify(restored));
-   results.push({mode,passed:true,text,undoRedoRefresh:true});
+   await p.setViewportSize({width:1450,height:1000});
+   await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);
+   await p.evaluate(()=>select({kind:'furn',id:'height-cab'}));
+   const label=p.locator('.scene-elevation');await label.waitFor();
+   const checkLabel=async(top,gap)=>{const text=await label.innerText();if(!text.includes('顶部 '+top+' mm')||!text.includes('顶部距房顶 '+gap+' mm')||text.includes('毛坯'))throw Error('Scene elevation mismatch: '+text);};
+   await checkLabel(2500,240);
+   await p.evaluate(()=>mutate(()=>state.furniture[0].h=2350));await checkLabel(2350,390);
+   await p.evaluate(()=>undo());await checkLabel(2500,240);await p.evaluate(()=>redo());await checkLabel(2350,390);
+   await p.waitForTimeout(400);await p.screenshot({path:verification.output('playwright/furniture-height/'+mode+'-scene.png')});
+   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>closeDrawers());await p.waitForTimeout(400);
+   await p.screenshot({path:verification.output('playwright/furniture-height/'+mode+'-scene-mobile.png')});
+   results.push({mode,passed:true,text,undoRedoRefresh:true,scene:await label.innerText()});
   }finally{await context.close();}
  }return results;
 }

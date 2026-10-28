@@ -1609,13 +1609,12 @@ function fitSceneAnnotationLabels(){
 }
 function buildSelectionElevation(ids){
  clearAnnotations(elevationG);if(ids.length!==1)return;const f=getF(ids[0]);if(!f)return;
- let v;try{v=FurnishDesign.furnitureVerticalBounds(f,FurnishProject.effectivePlan(PLAN,state),state.furniture);}catch{v=null;}const x=wx(f.cx),z=wz(f.cy),mm=n=>Number(n.toFixed(2));
+ let heights;try{heights=FurnishDesign.furnitureHeightMeasurements(f,FurnishProject.effectivePlan(PLAN,state),state.furniture);}catch{heights=null;}const v=heights?.vertical,x=wx(f.cx),z=wz(f.cy),mm=n=>Number(n.toFixed(2)),value=n=>Number.isFinite(n)?`${mm(n)} mm`:tr('待核对','Unknown');
  if(!v){annotationLabel(elevationG,tr('高度未知 · 标高待核对','Unknown height · verify elevations'),x,.25,z,'scene-elevation');return;}
  const bottom=M(v.bottom),top=M(v.top),V=(xx,y)=>new THREE.Vector3(xx,y,z);
- annotationLine(elevationG,[V(x,0),V(x,top),V(x-.07,0),V(x+.07,0),V(x-.07,bottom),V(x+.07,bottom),V(x-.07,top),V(x+.07,top)],0x167b9b);
- const floor=typeof state!=='undefined'&&state.floorFinishes?FurnishFloorFinish.at(FurnishProject.effectivePlan(PLAN,state),[f.cx,f.cy]).find(a=>!a.legacy):null;
- if(floor)annotationLabel(elevationG,Number.isFinite(floor.finishedZ)?`距完成地面：底部 ${mm(v.bottom-floor.finishedZ)} · 顶部 ${mm(v.top-floor.finishedZ)} mm`:'完成地面标高待核对',x,Math.max(.12,bottom-.12),z,'scene-floor-elevation');
- annotationLabel(elevationG,tr(`${floor?'毛坯基准：':''}底部 ${mm(v.bottom)} · 顶部 ${mm(v.top)} mm（离地）`,`Bottom ${mm(v.bottom)} · Top ${mm(v.top)} mm above floor`),x,(bottom+top)/2,z,'scene-elevation');
+ const floor=Number.isFinite(heights.bottom)?M(v.bottom-heights.bottom):bottom;
+ annotationLine(elevationG,[V(x,floor),V(x,top),V(x-.07,floor),V(x+.07,floor),V(x-.07,bottom),V(x+.07,bottom),V(x-.07,top),V(x+.07,top)],0x167b9b);
+ annotationLabel(elevationG,tr(`距地砖完成面：底部 ${value(heights.bottom)} · 顶部 ${value(heights.top)}；顶部距房顶 ${value(heights.roofGap)}`,`Above finished floor: bottom ${value(heights.bottom)} · top ${value(heights.top)}; top to room ceiling ${value(heights.roofGap)}`),x,(bottom+top)/2,z,'scene-elevation');
 }
 function clearSceneIssue(){clearTimeout(issueTimer);sceneIssue=null;clearAnnotations(issueG);invalidate();}
 function highlightIssue(item,volumes){
