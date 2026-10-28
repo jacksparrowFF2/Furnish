@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "cabinet-part-inspector",
+    "cabinet-object-inspector"
+  ],
+  "results": [
+    {
+      "name": "cabinet-part-inspector",
+      "status": "PASS",
+      "seconds": 15.1,
+      "log": "cabinet-part-inspector.log"
+    },
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 16.3,
+      "log": "cabinet-object-inspector.log"
+    }
+  ],
+  "notRun": []
+}

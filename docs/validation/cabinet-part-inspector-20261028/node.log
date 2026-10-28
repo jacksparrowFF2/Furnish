@@ -1,0 +1,39 @@
+test-cabinet-part-inspector.cjs
+PASS selected door leaf/drawer lane, section groups, shared controls, boundaries, immutable edits, maximum sweeps, procurement and drift-free recovery
+PASS production hinge rotations and drawer lane travel match selected part edits
+test-cabinet-shelf-clearances.cjs
+PASS 390 shelf clearance edits: actual adjacent faces, both directions, thresholds, fractional mm, unchanged neighbors, special bands, mirror/rotation and project recovery
+PASS production shelf faces match edited clearances
+test-cabinet-edit-operations.cjs
+PASS cabinet explicit edit operations: resize preservation, numeric/drag equivalence, thresholds, special bays, immutable actions and old project round trips
+test-cabinet-preview.cjs
+PASS shelf/divider picking, constrained dragging, growing total width, unchanged neighbors, keyboard edits, cancellation, front view and preview cleanup
+test-cabinet-dimensions.cjs
+PASS all cabinet templates, straight/left/right/mirrored kitchen module numbering, empty/interleaved modules, precise clear/nominal dimensions, production projection, selection refusal, dimension toggle and draft isolation
+test-cabinet-model.cjs
+PASS all cabinet meshes have finite dimensions, correct heights, hinge rotations and drawer travel
+PASS layered sideboard dimensions, open working/fridge cavities, glass, doors, resize, shelf boundaries and project round trip
+test-cabinet-advanced.cjs
+PASS adjacent bay redistribution, shelf/drawer operations, net gaps, snapping, finishes, persistence and cabinet opening-space checks
+test-cabinet-design-upgrade.cjs
+PASS 19 templates and legacy designs upgrade without changing production geometry, openings, named/current project data or repeated restoration
+test-cabinet-module-widths.cjs
+PASS cabinet module outer widths: every template, shared panels/sums, numeric growth and independent divider movement, limits, equal module repartition, special bays, geometry and legacy roundtrip
+test-cabinet-custom-fronts.cjs
+PASS custom adjacent pairs, three independent and middle independent, individual hinges, production motion, invariant interiors, validation, resize, UI edit ordering, project/named restoration and compatibility
+test-cabinet-section-doors.cjs
+PASS independent upper/lower production doors, legacy fallback, actual restore, resize, immutable operations and purchase grouping
+test-cabinet-door-settings.cjs
+PASS shared six door directions on all templates, display/hood/kitchen fronts, production axes/angles/sweeps, max/zero/invalid settings, mounted heights, field cleanup, clone, project/named/restore and vanity body/pipe compatibility
+test-cabinet-overlay.cjs
+PASS cabinet overlay: storage/wardrobe defaults, full/half/inset production fronts and motion, transforms, layered storage, validation, kitchen propagation and drift-free named project restoration
+test-cabinet-setting-inheritance.cjs
+PASS cabinet setting reset, explicit equal values, validation, kitchen inheritance and project round trip
+test-cabinet-full-width-drawers.cjs
+PASS full-width drawer merge, production fronts/partitions, motion, resize and repeated project restoration
+test-cabinet-opening-3d.cjs
+PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations
+test-cabinet-opening-volume-model.cjs
+PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes
+test-cabinet-interior-distances.cjs
+PASS cabinet interiors: six directions, signed penetration, placement, shelves, unknowns, generic devices, mixed-height groups, open doors, straight/L/U transforms, project/restore, 1260 production boards and 960 height-clipped door rays

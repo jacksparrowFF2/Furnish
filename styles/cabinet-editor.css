@@ -247,3 +247,10 @@
 .cab-shelf-input {box-sizing:border-box;max-width:calc(100% - 16px)}
 .cab-shelf-input input {padding:7px 8px;border:1px solid var(--line,#ddd);border-radius:6px;font:inherit;color:inherit}
 .cab-shelf-input .btn {font-size:12px;padding:6px 8px}
+.cab-current-part {display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.cab-current-part h3,.cab-current-part p {margin:0}
+.cab-current-part>label {display:flex;flex-direction:column;gap:6px;width:min(100%,260px)}
+.cab-current-dimensions {font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.cab-group-options {margin-top:20px!important;border-top:1px solid var(--line,#ddd)}
+.cab-group-options>summary {font-weight:600;cursor:pointer}
+.cab-group-options[open]>summary {margin-bottom:14px}

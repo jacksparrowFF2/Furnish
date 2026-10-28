@@ -29,9 +29,9 @@
    if(!part)return {kind:'body'};
    const kind=part.kind??(part.shelf!==undefined?'shelf':part.drawer!==undefined||part.lid?'drawer':o.userData.cabinetPart?'door':'bay');
    const column=elevation&&(o.userData.cabinetPart||o.userData.cabinetInspect)?(part.column>=elevation.indices.length?elevation.endIndex:elevation.indices[part.column]):part.column;
-   return {...part,column,kind,...(o.userData.cabinetDoorSize?{leaf:o.userData.cabinetDoorSize.leaf}: {})};
+   return {...part,column,kind,...(o.userData.cabinetDoorSize?{leaf:o.userData.cabinetDoorSize.leaf,...(!current.kitchen?{section:part.section??o.userData.cabinetDoorSize.section}:{})}: {})};
   }
-  function selectedMesh(){if(selected?.kind==='body')return model;let mesh;model?.traverse(o=>{if(selected?.kind==='door'&&!o.userData.cabinetDoorSize||selected?.kind==='drawer'&&o.userData.cabinetDrawerBoard!=='front')return;const part=selected?.kind?inspectPart(o):tag(o);if(o.isMesh&&part&&(selected?.kind?part.kind===selected.kind&&['column','shelf','drawer','divider','leaf','section','lid','assembly','bay'].every(k=>selected[k]===undefined||part[k]===selected[k]):part.column===selected?.column&&part.shelf===selected?.shelf&&part.divider===selected?.divider))mesh=o;});return mesh;}
+  function selectedMesh(){if(selected?.kind==='body')return model;let mesh;model?.traverse(o=>{if(selected?.kind==='door'&&!o.userData.cabinetDoorSize||selected?.kind==='drawer'&&o.userData.cabinetDrawerBoard!=='front')return;const part=selected?.kind?inspectPart(o):tag(o);if(o.isMesh&&part&&(selected?.kind?part.kind===selected.kind&&['column','shelf','drawer','lane','divider','leaf','section','lid','assembly','bay'].every(k=>selected[k]===undefined||part[k]===selected[k]):part.column===selected?.column&&part.shelf===selected?.shelf&&part.divider===selected?.divider))mesh=o;});return mesh;}
   function highlight(){
    clearHighlight();const mesh=selectedMesh();cv.style.cursor=mesh?'grab':'';readout.hidden=!mesh;if(!mesh){selected=null;return;}
    readout.hidden=selected.shelf===undefined&&selected.divider===undefined;
@@ -313,6 +313,7 @@
   return {
    update:value=>{const dims=v=>[C.assemblyBounds(v),v.w,v.d,v.kitchen?(v.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(v):v.kitchen.baseHeight+v.kitchen.thickness):v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
    selectPart:part=>{const oldShelf=selected?.shelf;selected=part;const old=activeColumn;activeColumn=part?.column??null;highlight();if(old!==activeColumn||oldShelf!==part?.shelf)dimensions();else markActive();},focus:()=>cv.focus({preventScroll:true}),
+   partDimensions:()=>{const mesh=selectedMesh(),size=mesh?.userData.cabinetDoorSize??mesh?.userData.cabinetDrawerSize;return size?{width:size.width,height:size.height}:null;},
    finishShelfInput:()=>finishShelfInput(),
    finishHatchInput:()=>finishHatchInput(),
    finishDrawerInput:()=>finishDrawerInput()&&splitPanels.every(panel=>panel.preview.finishDrawerInput()),
