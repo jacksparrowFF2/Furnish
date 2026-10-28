@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-28",
+  "scope": "Documentation and design conventions only",
+  "sourceFile": "11.8宏福苑-全屋定制柜体.dxf",
+  "sourceBytes": 81073638,
+  "sourceSha256": "e2ded59be242b2fd655958829318d5d21407c16ce9c7b42aa218b9693d8abb93",
+  "sourceSha256Verified": true,
+  "insunits": 4,
+  "units": "mm",
+  "verifiedDimensionCount": 28,
+  "verifiedReferencedHandleCount": 59,
+  "masterBedroomWidthChainMM": {
+    "netWidths": [416.4, 866.8, 867.8],
+    "endAndIntermediateWidths": [36, 36, 36, 36],
+    "total": 2295,
+    "tolerance": 0.000001,
+    "boardComposition": "awaiting user clarification"
+  },
+  "checks": {
+    "newDocumentRelativeLinks": "passed",
+    "localViewsVisuallyInspected": ["shoe", "master-bedroom", "sideboard", "kitchen", "tv"],
+    "embeddedOLEAndImageReferences": "not inspected",
+    "applicationRegression": "not run: no application code changes",
+    "browserAndBlender": "not run: no application code changes"
+  },
+  "drawingApprovalStatus": "unconfirmed",
+  "userWorkspace": "preserved; excluded from this change"
+}
