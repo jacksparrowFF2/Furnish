@@ -1,6 +1,6 @@
 {
   "format": "furnish-workspace",
-  "version": 27,
+  "version": 28,
   "workspace": {
     "custom": [],
     "customPlans": [
@@ -14291,7 +14291,7 @@
       }
     ],
     "planId": "custom_mv37igji",
-    "v": 27,
+    "v": 28,
     "work": {
       "custom_mv37igji": {
         "architecture": {
@@ -19383,7 +19383,7 @@
                     1213,
                     1733
                   ],
-                  "width": 377.875
+                  "width": 386.875
                 },
                 {
                   "door": "right",
@@ -19400,7 +19400,7 @@
                     1213,
                     1733
                   ],
-                  "width": 368.875
+                  "width": 377.875
                 },
                 {
                   "door": "left",
@@ -19416,7 +19416,7 @@
                     1213,
                     1733
                   ],
-                  "width": 368.875
+                  "width": 377.875
                 },
                 {
                   "door": "right",
@@ -19432,7 +19432,7 @@
                     1213,
                     1733
                   ],
-                  "width": 377.875
+                  "width": 386.875
                 }
               ],
               "plinth": 60,
@@ -19443,7 +19443,12 @@
                 "height": 50,
                 "doorGap": 10
               },
-              "doorOverlay": "full"
+              "doorOverlay": "full",
+              "boxJoints": [
+                "shared",
+                "separate",
+                "shared"
+              ]
             },
             "color": "#efe6d8",
             "cx": 4757.75,

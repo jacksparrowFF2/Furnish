@@ -1,0 +1,44 @@
+{
+  "id": "fmv3wzkb515",
+  "plan": "custom_mv37igji",
+  "size": [
+    1637.5,
+    630,
+    2350
+  ],
+  "oldBoxes": 4,
+  "newBoxes": 2,
+  "oldNetWidths": [
+    377.875,
+    368.875,
+    368.875,
+    377.875
+  ],
+  "newNetWidths": [
+    386.875,
+    377.875,
+    377.875,
+    386.875
+  ],
+  "boxWidths": [
+    818.75,
+    818.75
+  ],
+  "netGain": 36,
+  "production": {
+    "sides": 4,
+    "internalDividers": 2,
+    "tops": 2,
+    "bottoms": 2,
+    "caps": 2,
+    "doorColumns": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "otherDataUnchanged": true,
+  "namedDesignsUnchanged": true,
+  "repeatRestoreNoDrift": true
+}

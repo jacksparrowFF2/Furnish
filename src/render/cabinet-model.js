@@ -11,8 +11,9 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=syncIdentity.produce("cabinet-model:site-1",()=>box(W,H,D,shade,x,y,z));parent.add(mesh);return mesh;};
   const closure=C.topClosure(c),panels=C.endPanels(c);
   if(closure.height&&!options.skipTopClosure){
-   const spans=c.boxConstruction==='independent'?C.moduleLayout(f):[{left:-f.w/2+panels.left,width:f.w-panels.left-panels.right}];
-   for(const [column,span] of spans.entries()){
+   const spans=c.boxConstruction==='independent'?C.boxParts(f):[{column:0,left:-f.w/2+panels.left,width:f.w-panels.left-panels.right}];
+   for(const span of spans){
+    const column=span.column;
     const face=c.columns[column],shade=face.doorColor||(face.finish==='wood'?wood:color);
     const strip=syncIdentity.produce('cabinet-top-closure:front:'+column,()=>add(g,span.width/1000,closure.height/1000,t,(span.left+span.width/2)/1000,h,d/2-1.5*t,shade));
     strip.userData.cabinetTopClosure=true;strip.userData.cabinetBay={column};
@@ -22,7 +23,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    for(const part of C.boxParts(f)){
     const child=syncIdentity.produce('cabinet-independent:box:'+part.column,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[],skipTopClosure:true}));
     child.position.x=part.center/1000;
-    child.traverse(o=>{for(const [key,value] of Object.entries(o.userData))if(value&&typeof value==='object'&&Number.isInteger(value.column))o.userData[key]={...value,column:part.column};if(o.userData.cabinetSide==='left'&&part.column>0)o.userData.cabinetDivider={divider:part.column-1,column:part.column-1};if(o.userData.cabinetSide==='right'&&part.column<c.columns.length-1)o.userData.cabinetDivider={divider:part.column,column:part.column};});
+    child.traverse(o=>{for(const [key,value] of Object.entries(o.userData))if(value&&typeof value==='object'&&Number.isInteger(value.column))o.userData[key]={...value,column:part.column+value.column,...(Number.isInteger(value.divider)?{divider:part.column+value.divider}:{})};if(o.userData.cabinetSide==='left'&&part.column>0)o.userData.cabinetDivider={divider:part.column-1,column:part.column-1};if(o.userData.cabinetSide==='right'&&part.column+part.count<c.columns.length)o.userData.cabinetDivider={divider:part.column+part.count-1,column:part.column+part.count-1};});
     g.add(child);
    }
    for(const side of ['left','right'])if(panels[side]){

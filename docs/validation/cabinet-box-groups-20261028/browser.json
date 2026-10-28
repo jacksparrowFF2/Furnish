@@ -1,0 +1,106 @@
+{
+  "case": "cabinet-box-groups",
+  "status": "PASS",
+  "result": [
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "actual current narrow wardrobe restored",
+        "three explicit internal boundary controls",
+        "grouping produces valid preview",
+        "session undo restores previous boundary",
+        "session redo restores grouping",
+        "cancel preserves complete saved wardrobe",
+        "two physical boxes retain four compartments",
+        "envelope and placement preserved",
+        "interior heights, fronts and opening states preserved",
+        "application undo restores all four independent boxes",
+        "v28 cache protects grouped boxes",
+        "v28 refresh restores grouped cabinet without drift",
+        "structure list identifies cabinet membership",
+        "third compartment shelf retains global editing identity",
+        "module preview explains splitting a box around a new independent compartment",
+        "new compartment updates all boundary controls",
+        "session undo restores grouped boxes after module insertion",
+        "actual production uses two shells, two internal dividers and four doors",
+        "390px has no page overflow",
+        "no browser exceptions"
+      ],
+      "production": {
+        "boxes": [
+          {
+            "column": 0,
+            "count": 2,
+            "width": 818.75
+          },
+          {
+            "column": 2,
+            "count": 2,
+            "width": 818.75
+          }
+        ],
+        "sides": 4,
+        "insideDividers": 2,
+        "caps": 2,
+        "doorColumns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "version": 28
+      }
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "actual current narrow wardrobe restored",
+        "three explicit internal boundary controls",
+        "grouping produces valid preview",
+        "session undo restores previous boundary",
+        "session redo restores grouping",
+        "cancel preserves complete saved wardrobe",
+        "two physical boxes retain four compartments",
+        "envelope and placement preserved",
+        "interior heights, fronts and opening states preserved",
+        "application undo restores all four independent boxes",
+        "v28 cache protects grouped boxes",
+        "v28 refresh restores grouped cabinet without drift",
+        "structure list identifies cabinet membership",
+        "third compartment shelf retains global editing identity",
+        "module preview explains splitting a box around a new independent compartment",
+        "new compartment updates all boundary controls",
+        "session undo restores grouped boxes after module insertion",
+        "actual production uses two shells, two internal dividers and four doors",
+        "390px has no page overflow",
+        "no browser exceptions"
+      ],
+      "production": {
+        "boxes": [
+          {
+            "column": 0,
+            "count": 2,
+            "width": 818.75
+          },
+          {
+            "column": 2,
+            "count": 2,
+            "width": 818.75
+          }
+        ],
+        "sides": 4,
+        "insideDividers": 2,
+        "caps": 2,
+        "doorColumns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "version": 28
+      }
+    }
+  ]
+}

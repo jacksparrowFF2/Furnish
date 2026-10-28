@@ -52,6 +52,7 @@ async function main(args=process.argv.slice(2)){
  const fixtureDir=path.join(root,'tests/fixtures/browser');
  if(selected.includes('current-bays'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'current-bay-workspace.json'));
  if(selected.includes('tv-floor-overlay'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'tv-floor-workspace.json'));
+ if(selected.includes('cabinet-box-groups'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'cabinet-box-groups-workspace.json'));
  fs.mkdirSync(path.join(root,'output/playwright/workflow-tools'),{recursive:true});fs.copyFileSync(path.join(fixtureDir,'reimport-input.furnish.json'),path.join(root,'output/playwright/workflow-tools/reimport-input.furnish.json'));
  fs.cpSync(fixtureDir,path.join(root,'output/playwright/real-drawing'),{recursive:true});
  const prepared=await child([path.join(root,'scripts/generate-previews.cjs')]);fs.writeFileSync(path.join(run,'previews.log'),prepared.output);if(prepared.code!==0)throw Error('Preview preparation failed: '+prepared.output);

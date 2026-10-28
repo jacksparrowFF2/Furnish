@@ -17,7 +17,7 @@ const DASH = 'stroke-dasharray="4 3"';
   const x = -w/2, y = -d/2, m = Math.min(w,d);
   if(f?.cabinet?.boxConstruction==='independent'){
     const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,t=f.cabinet.thickness,p=C.endPanels(f.cabinet);
-    return C.moduleLayout(f).map(b=>`<g data-independent-box="true">${rc(b.left,y,b.width,d,c)}${ln(b.left+t,y,b.left+t,y+d)}${ln(b.right-t,y,b.right-t,y+d)}</g>`).join('')+(p.left?rc(x,y,p.left,d,shade(c,.85),'data-end-panel="left"'):'')+(p.right?rc(w/2-p.right,y,p.right,d,shade(c,.85),'data-end-panel="right"'):'');
+    return C.boxParts(f).map(b=>`<g data-independent-box="true">${rc(b.left,y,b.width,d,c)}${ln(b.left+t,y,b.left+t,y+d)}${ln(b.left+b.width-t,y,b.left+b.width-t,y+d)}</g>`).join('')+C.layout(f).slice(0,-1).map((bay,i)=>C.boxJoints(f.cabinet)[i]==='shared'?ln(bay.left+bay.width,y,bay.left+bay.width,y+d,'data-shared-divider="true"')+ln(bay.left+bay.width+t,y,bay.left+bay.width+t,y+d):'').join('')+(p.left?rc(x,y,p.left,d,shade(c,.85),'data-end-panel="left"'):'')+(p.right?rc(w/2-p.right,y,p.right,d,shade(c,.85),'data-end-panel="right"'):'');
   }
   const assembly=(typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts).assemblyBounds(f);if(assembly)return rc(assembly.left,assembly.back,assembly.w,assembly.d,c);
   if(f?.type==='kitchenwall'&&f.cabinet?.hoodBayHeight!==undefined){const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,bay=C.hoodBay(f);return rc(x,y,w,d,c)+rc(bay.left,y,bay.width,bay.depth,'none',DASH)+`<text x="${bay.center}" y="0" text-anchor="middle" dominant-baseline="central" font-size="60" fill="${PAL.ink}">烟机嵌合区</text>`;}
