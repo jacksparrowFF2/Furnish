@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "ceiling-furniture-alignment",
+    "ceiling-reference-snapping"
+  ],
+  "results": [
+    {
+      "name": "ceiling-furniture-alignment",
+      "status": "PASS",
+      "seconds": 12.6,
+      "log": "ceiling-furniture-alignment.log"
+    },
+    {
+      "name": "ceiling-reference-snapping",
+      "status": "PASS",
+      "seconds": 21.4,
+      "log": "ceiling-reference-snapping.log"
+    }
+  ],
+  "notRun": []
+}
