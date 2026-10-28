@@ -85,7 +85,7 @@ const types={
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
  shower_arrow_cream:{family:'arrow-shower',height:1749,anchor:'mixer',defaults:{showerMixerHeight:1000,showerRise:400,showerHandAngle:180*.20/Math.PI},fields:['mountHeight','showerMixerHeight','showerRise','showerHandAngle'],create:['showerMixerHeight'],identity:{brand:'ARROW/箭牌',model:'AE34129ZMKW-P2'}},
  tripleslidingwindow:{family:'sliding',height:1500,anchor:'bottom',defaults:{mountHeight:900,floorTrack:true},fields:['mountHeight','floorTrack'],create:['mountHeight']},
- telescopicdoor20:{family:'sliding',telescopic:{panels:2,allMoving:true,glass:'ultra-clear'},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front',slidingStackSide:'left',slidingOpen:false},fields:['floorTrack','slidingTrackOrder','slidingStackSide','slidingOpen']},
+ telescopicdoor20:{family:'sliding',telescopic:{panels:2,allMoving:true,leafDepth:40,defaultDepth:100,glass:'ultra-clear'},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front',slidingStackSide:'left',slidingOpen:false},fields:['floorTrack','slidingTrackOrder','slidingStackSide','slidingOpen']},
  doubleslidingdoor:{family:'sliding',telescopic:{panels:2,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
@@ -161,7 +161,7 @@ function planOutline(f,segments){
 const supports=(f,key)=>key==='groupId'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 const value=(f,key)=>f[key]??definition(f)?.defaults?.[key];
-const footprintMinimum=(f,key)=>Number.isFinite(f?.[key])&&f[key]>0?Math.min(50,f[key]):50;
+const footprintMinimum=(f,key)=>!f.obj&&key==='d'&&definition(f)?.telescopic?.leafDepth?definition(f).telescopic.panels*definition(f).telescopic.leafDepth:Number.isFinite(f?.[key])&&f[key]>0?Math.min(50,f[key]):50;
 const height=f=>f.h??definition(f)?.height;
 const cabinetSpec=f=>definition(f)?.cabinet;
 const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f)?.bottom??0;
@@ -187,7 +187,7 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 const sinkBodyDepth=f=>f.sinkBowlHeight??definition(f).notch.bodyDepth;
 const vesselSink=f=>f?.type==='ksink'&&!f.obj&&value(f,'sinkStyle')==='vessel';
 // Report broken model records without migrating, deleting or rewriting them.
@@ -379,11 +379,13 @@ function replacement(previous,next,candidate){
  if(definition(next)?.manifold||family(next,'pipe-box'))validate(next);return next;
 }
 // Shared millimetre track geometry. The leading leaf is furthest from the stack.
+const slidingGlass=Object.freeze({color:'#f7fcff',planColor:'#f3fafc',opacity:.18,roughness:.12});
 const slidingTrackSpec=Object.freeze({floorWidth:4,floorHeight:8,hangingClearance:4});
 const slidingFloorHeight=f=>Math.min(slidingTrackSpec.floorHeight,height(f)/20);
 const slidingBottom=(f,enabled=value(f,'floorTrack'))=>enabled?slidingFloorHeight(f):slidingTrackSpec.hangingClearance;
-function slidingTracks(f,{panels=definition(f)?.telescopic?.panels??3,slim=true,order=value(f,'slidingTrackOrder')??'leading-front'}={}){
- const leafDepth=Math.min(slim?18:25,f.d/(panels+1)*.7),pitch=(f.d-leafDepth)/panels,direction=order==='leading-back'?-1:1;
+function slidingTracks(f,{panels=definition(f)?.telescopic?.panels??3,slim=true,order=value(f,'slidingTrackOrder')??'leading-front',leafDepth:fixedDepth=definition(f)?.telescopic?.leafDepth}={}){
+ if(fixedDepth&&Number.isFinite(f.d)&&f.d<panels*fixedDepth)throw Error('整组深度至少 '+(panels*fixedDepth)+' mm，才能容纳 '+panels+' 扇各厚 '+fixedDepth+' mm 的门扇');
+ const leafDepth=fixedDepth??Math.min(slim?18:25,f.d/(panels+1)*.7),pitch=(f.d-leafDepth)/(fixedDepth?panels-1:panels),direction=order==='leading-back'?-1:1;
  return {panels,leafDepth,pitch,direction,leadingOffset:(panels-1)/2*pitch*direction};
 }
 function slidingLayout(f,corner=null,options={}){
@@ -413,7 +415,7 @@ function slidingResizeFrame(f){
  return {local:[x*flip,y],anchor:point(x,y),proxy:{...f,type:'custom',w:hi-lo,d:f.d,cx:center[0],cy:center[1],rot:(f.rot||0)+(sign<0?180:0),flip:false}};
 }
 function resizeSliding(f,values){
- const next={...f,...values},before=slidingResizeFrame(f),after=slidingResizeFrame(next);
+ const next={...f,...values};validate(next);const before=slidingResizeFrame(f),after=slidingResizeFrame(next);
  if(before&&after){next.cx+=before.anchor[0]-after.anchor[0];next.cy+=before.anchor[1]-after.anchor[1];}return next;
 }
 // Automatic L joint: only a unique perpendicular end-to-end partner at the
@@ -462,6 +464,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

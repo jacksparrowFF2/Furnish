@@ -1,5 +1,8 @@
 # 模块与加载约定
 
+2026-10-28（门扇厚度与玻璃）：产品核心telescopic.leafDepth/defaultDepth集中2+0固定40 mm及新建100 mm，slidingTracks统一轨距与几何下限；库／预览读取新建深度，旧显式深度保持。slidingGlass供家具SVG、建筑二维和共用生产模型统一超白玻璃；固定厚度确认增加规则标记。无新字段或加载，见 [联动门](TELESCOPIC-OPENINGS.md)。
+
+
 2026-10-27（2+0定位修正）：产品核心slidingResizeFrame／resizeSliding统一完整轨道、固定收门端基点和编辑矩形；design数值尺寸、snapping拖动与画布手柄共用。planOutline返回生产轨道，选择／吸附读取真实非对称边界，移动释放避墙同步；无新持久字段或加载。见 [联动门](TELESCOPIC-OPENINGS.md)。
 
 

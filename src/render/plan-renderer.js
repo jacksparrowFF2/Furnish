@@ -217,7 +217,7 @@ function renderOpenings(){
   SLIDES.forEach(({rect:[x0,y0,x1,y1],v,panels},index)=>{
     const n=panels===3?3:2,L=v?y1-y0:x1-x0,step=L/n,depth=v?x1-x0:y1-y0;
     for(let i=0;i<n;i++){const along=(v?y0:x0)+i*step,off=(v?x0:y0)+depth*(i+.5)/n-15;
-      s+=`<rect class="pick" data-slide="${index}" x="${v?off:along}" y="${v?along:off}" width="${v?30:step+15}" height="${v?step+15:30}" fill="${PAL.leaf}" ${DS}/>`;
+      s+=`<rect class="pick" data-slide="${index}" x="${v?off:along}" y="${v?along:off}" width="${v?30:step+15}" height="${v?step+15:30}" fill="${FurnishProducts.slidingGlass.planColor}" ${DS}/>`;
     }
   });
   // Entry travel direction is independent of the door leaf's swing direction.

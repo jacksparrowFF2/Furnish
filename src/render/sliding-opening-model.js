@@ -19,9 +19,9 @@ function create(THREE,options={}){
  }
 function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
   const group=new THREE.Group(),frame=mat(color,{metalness:.65,roughness:.35});
-  const glass=mat(options.ultraClear?'#f7fcff':'#d8e5e8',{transparent:true,opacity:.18,depthWrite:false,roughness:.12,side:THREE.DoubleSide});
+  const glass=mat(products.slidingGlass.color,{transparent:true,opacity:products.slidingGlass.opacity,depthWrite:false,roughness:products.slidingGlass.roughness,side:THREE.DoubleSide});
   const slim=options.slim??count===3,bottom=options.floorTrack??!slim,floorTrackMode=options.floorTrackMode??(count>=3?'moving':'all');
-  const layout=products.slidingLayout({w:w*1000,d:d*1000,h:h*1000},options.corner,{panels:count,slim,order:options.trackOrder,stackSide:options.stackSide,allMoving:options.allMoving,floorTrack:bottom,floorTrackMode}),edge=layout.edge/1000,jamb=layout.jamb/1000;
+  const layout=products.slidingLayout({w:w*1000,d:d*1000,h:h*1000},options.corner,{panels:count,slim,order:options.trackOrder,stackSide:options.stackSide,allMoving:options.allMoving,leafDepth:options.leafDepth,floorTrack:bottom,floorTrackMode}),edge=layout.edge/1000,jamb=layout.jamb/1000;
   const rail=Math.min(slim?.024:edge,h/10);
   const mirrored=options.stackSide==='right',corner=options.corner?{x:options.corner.x*(mirrored?-1:1)/1000,slope:options.corner.slope*(mirrored?-1:1),leafEnd:options.corner.leafEnd*(mirrored?-1:1)/1000}:null;
   const pw=layout.width/1000,leafDepth=layout.leafDepth/1000,floorRail=layout.floorRailHeight/1000,low=layout.bottomClearance/1000,high=h-rail,leafH=high-low;
@@ -44,7 +44,7 @@ function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
     syncIdentity.each("sliding-opening-model.js:generator-4",[-1,1],side=>leaf.add(syncIdentity.produce("sliding-opening-model:site-5",()=>box(edge,leafH,leafDepth,frame,side*(pw-edge)/2,0,0))));
     syncIdentity.each("sliding-opening-model.js:generator-5",[0,leafH-edge],y=>leaf.add(syncIdentity.produce("sliding-opening-model:site-6",()=>box(pw-2*edge,edge,leafDepth,frame,0,y,0))));
     // Recessed grip stays clear of the perpendicular leaf's corner contact.
-    if(i===count-1)leaf.add(syncIdentity.produce("sliding-opening-model:site-7",()=>box(Math.min(.006,edge*.4),Math.min(.18,leafH*.2),.004,frame,pw/2-(corner?Math.min(pw/2,Math.max(edge*2,leafDepth*2)):edge*.5),leafH*.45,leafDepth/2)));
+    if(i===count-1)leaf.add(syncIdentity.produce("sliding-opening-model:site-7",()=>box(Math.min(.006,edge*.4),Math.min(.18,leafH*.2),.004,frame,pw/2-(corner?Math.min(pw/2,Math.max(edge*2,leafDepth*2)):edge*.5),leafH*.45,layout.allMoving?leafDepth/2-.002:leafDepth/2)));
     group.add(leaf);door.leaves.push({node:leaf,closed,opened,width:pw});
   }
   if(options.stackSide==='right')group.scale.x=-1;
@@ -54,7 +54,7 @@ function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
  function build(f,context={}){
   if(!supported(f))throw Error('Unsupported sliding opening: '+f?.type);
   const corner=context.corner===undefined?products.slidingCorner(f,context.furniture,context.plan):context.corner;
-  const g=new THREE.Group(),model=syncIdentity.produce("sliding-opening-model.js:generator-call-1",()=>buildSlidingDoor(f.w/1000,f.d/1000,products.height(f)/1000,products.definition(f)?.telescopic?.panels||(f.type==='slidingdoor'?2:3),f.color||'#ddd',{floorTrack:products.value(f,'floorTrack'),floorTrackMode:products.definition(f)?.telescopic?'moving':'all',slim:f.type!=='slidingdoor',trackOrder:products.value(f,'slidingTrackOrder'),corner,allMoving:products.definition(f)?.telescopic?.allMoving,ultraClear:products.definition(f)?.telescopic?.glass==='ultra-clear',stackSide:products.supports(f,'slidingStackSide')?products.value(f,'slidingStackSide'):corner?.side==='left'?'right':'left'}));
+  const g=new THREE.Group(),model=syncIdentity.produce("sliding-opening-model.js:generator-call-1",()=>buildSlidingDoor(f.w/1000,f.d/1000,products.height(f)/1000,products.definition(f)?.telescopic?.panels||(f.type==='slidingdoor'?2:3),f.color||'#ddd',{floorTrack:products.value(f,'floorTrack'),floorTrackMode:products.definition(f)?.telescopic?'moving':'all',slim:f.type!=='slidingdoor',trackOrder:products.value(f,'slidingTrackOrder'),corner,allMoving:products.definition(f)?.telescopic?.allMoving,leafDepth:products.definition(f)?.telescopic?.leafDepth,stackSide:products.supports(f,'slidingStackSide')?products.value(f,'slidingStackSide'):corner?.side==='left'?'right':'left'}));
   if(products.value(f,'slidingOpen')){const door=model.userData.slidingDoor;door.open=true;door.cur=1;door.leaves.forEach(l=>l.node.position.x=l.opened);}
   if(f.type==='tripleslidingwindow')model.position.y=products.value(f,'mountHeight')/1000;g.add(model);g.userData.slidingDoor=model.userData.slidingDoor;
   return g;
