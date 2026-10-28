@@ -19510,11 +19510,12 @@
                       "open": false
                     }
                   ],
-                  "finish": "wood",
+                  "finish": "solid",
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false
+                  "topOpen": false,
+                  "doorColor": "#f3f1ec"
                 },
                 {
                   "cableGap": 0,
@@ -19526,22 +19527,24 @@
                       "open": false
                     }
                   ],
-                  "finish": "wood",
+                  "finish": "solid",
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false
+                  "topOpen": false,
+                  "doorColor": "#f3f1ec"
                 },
                 {
                   "cableGap": 30,
                   "door": "none",
                   "doorOpen": false,
                   "drawers": [],
-                  "finish": "wood",
+                  "finish": "solid",
                   "handle": "none",
                   "shelves": [],
                   "top": "drawer",
-                  "topOpen": false
+                  "topOpen": false,
+                  "doorColor": "#f3f1ec"
                 },
                 {
                   "cableGap": 0,
@@ -19553,11 +19556,12 @@
                       "open": false
                     }
                   ],
-                  "finish": "wood",
+                  "finish": "solid",
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false
+                  "topOpen": false,
+                  "doorColor": "#f3f1ec"
                 },
                 {
                   "cableGap": 0,
@@ -19569,17 +19573,19 @@
                       "open": false
                     }
                   ],
-                  "finish": "wood",
+                  "finish": "solid",
                   "handle": "none",
                   "shelves": [],
                   "top": "fixed",
-                  "topOpen": false
+                  "topOpen": false,
+                  "doorColor": "#f3f1ec"
                 }
               ],
               "plinth": 0,
               "template": "tv-floor",
               "thickness": 18,
-              "version": 1
+              "version": 1,
+              "doorOverlay": "full"
             },
             "color": "#f3f1ec",
             "cx": 9931,

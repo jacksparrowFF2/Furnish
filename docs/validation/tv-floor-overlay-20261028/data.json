@@ -1,0 +1,28 @@
+{
+  "before_sha256": "d06c5dbdce71c9bac1abaeeab827c1cd45ad6bac68c12f429cea3c52e4d22749",
+  "changes": [
+    {
+      "plan": "custom_mv37igji",
+      "id": "fmv3yflqw1",
+      "size": [
+        2505,
+        350,
+        350
+      ],
+      "topOpen": true
+    }
+  ],
+  "named_designs_unchanged": true,
+  "all_other_data_unchanged": true,
+  "check": "Full current workspace equals original snapshot plus only target TV finish/overlay edits; named designs unchanged.",
+  "validation": {
+    "node": 13,
+    "browser": [
+      "http",
+      "offline file://"
+    ],
+    "syntax": 5,
+    "fullCheck": false,
+    "blender": false
+  }
+}

@@ -209,7 +209,8 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      shape.moveTo(-W/2,0);shape.lineTo(W/2,0);shape.lineTo(W/2,rear);shape.lineTo(notch/2+.015,rear);shape.lineTo(notch/2,rear+cut);shape.lineTo(-notch/2,rear+cut);shape.lineTo(-notch/2-.015,rear);shape.lineTo(-W/2,rear);shape.closePath();
      const face=syncIdentity.produce("cabinet-model:site-61",()=>add(lid,W,t,d,0,0,-d/2));face.geometry.dispose();face.geometry=new THREE.ExtrudeGeometry(shape,{depth:t,bevelEnabled:false});face.geometry.rotateX(Math.PI/2);face.position.set(0,t,0);face.userData.cabinetPart={column:i,lid:true};g.add(lid);
      if(col.top==='drawer'){
-      syncIdentity.produce("cabinet-model:site-62",()=>add(lid,cw-.004,inner,t,0,-inner,-t/2,faceColor)).userData.cabinetDrawerBoard='front';
+      const span=faceSpan(i),bottom=p+faceInset,top=h-t;
+      syncIdentity.produce("cabinet-model:site-62",()=>add(lid,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?top-bottom-.002:inner,t,entryStyle?(span.left+span.right)/2-(left+right)/2:0,entryStyle?bottom+.001-(h-t):-inner,-t/2,faceColor)).userData.cabinetDrawerBoard='front';
       // Tray front ends at the front panel's inner face (local Z = -t).
       const depth=d-3*t,center=-d/2+t/2;
       syncIdentity.produce("cabinet-model:site-63",()=>add(lid,cw-2*t,.012,depth,0,-inner+.012,center)).userData.cabinetDrawerBoard='bottom';
@@ -224,7 +225,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    if(hasLower)syncIdentity.each("cabinet-model.js:generator-38",col.drawers,(drawer,j)=>{
     const dh=drawer.height/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-39",0,lanes,1,false)){const cw=(bays[i].width/1000-(lanes-1)*t)/lanes,x=bays[i].center/1000+(lane-(lanes-1)/2)*(cw+t),state=C.drawerState(drawer,lane),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;
     node.userData.motion={kind:'cabinetdrawer',column:i,section:'storage',axis:'z',travel:d*.7,closedZ:0};
-    const fullSpan=faceSpan(i),span={left:fullSpan.left+(fullSpan.right-fullSpan.left)*lane/lanes,right:fullSpan.left+(fullSpan.right-fullSpan.left)*(lane+1)/lanes},frontBottom=entryStyle&&j===0?p:y,bodyDh=dh-(entryStyle&&j===col.drawers.length-1?t:0);
+    const fullSpan=faceSpan(i),span={left:fullSpan.left+(fullSpan.right-fullSpan.left)*lane/lanes,right:fullSpan.left+(fullSpan.right-fullSpan.left)*(lane+1)/lanes},frontBottom=entryStyle&&j===0?p+(c.template==='tv-floor'?faceInset:0):y,bodyDh=dh-(entryStyle&&j===col.drawers.length-1?t:0);
     if(col.drawerStyle==='dish-basket'){
      // Two exterior fronts; the third runner carries a recessed cutlery tray.
      const hidden=j===2,top=j===1?C.frontHeight(f,c)/1000-faceInset:y+dh;
@@ -238,7 +239,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      else {const count=Math.min(20,Math.max(4,Math.round(width/.055)));for(let rack of syncIdentity.range("cabinet-model.js:generator-43",1,count,1,false)){const X=x-width/2+width*rack/count;syncIdentity.produce("cabinet-model.js:generator-call-21",()=>bar(.004,.004,depth,X,y+.018,center,'rack'));if(j===0)syncIdentity.produce("cabinet-model.js:generator-call-22",()=>bar(.004,railH*.65,.004,X,y+.019,rear+.012,'plate-divider'));}}
      node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j,lane});g.add(node);continue;
     }
-    const frontTop=C.kitchenOverlay(f,c)&&col.door==='none'&&j===col.drawers.length-1?C.frontHeight(f,c)/1000-faceInset:y+bodyDh;
+    const frontTop=c.template==='tv-floor'&&j===col.drawers.length-1?h-t:C.kitchenOverlay(f,c)&&col.door==='none'&&j===col.drawers.length-1?C.frontHeight(f,c)/1000-faceInset:y+bodyDh;
     syncIdentity.produce("cabinet-model:site-72",()=>add(node,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?frontTop-frontBottom-.002:dh-.004,t,entryStyle?(span.left+span.right)/2:x,entryStyle?frontBottom+.001:y,d/2-t/2,entryStyle?faceColor:color)).userData.cabinetDrawerBoard='front';
     // Body spans from the rear panel's inner face to the front panel's inner face.
     syncIdentity.produce("cabinet-model:site-73",()=>add(node,cw-.02,.012,d-3*t,x,y+.012,t/2)).userData.cabinetDrawerBoard='bottom';

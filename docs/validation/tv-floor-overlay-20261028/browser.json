@@ -1,0 +1,108 @@
+{
+  "case": "tv-floor-overlay",
+  "status": "PASS",
+  "result": [
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "actual current 1601 TV cabinet restored",
+        "five explicit white overlay fronts in current data",
+        "all five drawers close and save",
+        "undo restores central pullout state",
+        "white finish and overlay survive cache refresh",
+        "browser production geometry: five white fronts cover body edges and align under wood top",
+        "390px viewport has no page overflow",
+        "no browser exceptions"
+      ],
+      "geometry": [
+        {
+          "column": 0,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.5044000148773192
+        },
+        {
+          "column": 1,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.4954000115394593
+        },
+        {
+          "column": 2,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.49540001153945923
+        },
+        {
+          "column": 3,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.4954000115394592
+        },
+        {
+          "column": 4,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.5044000148773193
+        }
+      ]
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "actual current 1601 TV cabinet restored",
+        "five explicit white overlay fronts in current data",
+        "all five drawers close and save",
+        "undo restores central pullout state",
+        "white finish and overlay survive cache refresh",
+        "browser production geometry: five white fronts cover body edges and align under wood top",
+        "390px viewport has no page overflow",
+        "no browser exceptions"
+      ],
+      "geometry": [
+        {
+          "column": 0,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.5044000148773192
+        },
+        {
+          "column": 1,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.4954000115394593
+        },
+        {
+          "column": 2,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.49540001153945923
+        },
+        {
+          "column": 3,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.4954000115394592
+        },
+        {
+          "column": 4,
+          "color": "f3f1ec",
+          "bottom": 0.0009999934434890556,
+          "top": 0.3310000065565109,
+          "width": 0.5044000148773193
+        }
+      ]
+    }
+  ]
+}

@@ -170,7 +170,7 @@
   const result={name,w,d,h,color:palette.front,cabinet:{version:1,template:key,thickness,plinth,columns:Array.from({length:n},(_,i)=>{
    const heights=key==='tv-floor'&&i!==2?[inside]:Array(drawers).fill(Math.min(160,Math.floor(inside/(drawers+2)))),bottom=heights.reduce((a,b)=>a+b,0);
    return {door:door==='mixed'?(i===1?'none':'left'):door,doorOpen:false,shelves:Array.from({length:shelves},(_,j)=>Math.round(bottom+(inside-bottom)*(j+1)/(shelves+1))),drawers:heights.map(height=>({height,open:false})),...(key==='tv-floor'?{top:i===2?'drawer':'fixed',topOpen:false,cableGap:i===2?30:0,finish:'solid',handle:'none'}:{})};
-  })}};return ['left','double'].includes(door)?autoDoors(result):result;
+  })}};if(key==='tv-floor')result.cabinet.doorOverlay='full';return ['left','double'].includes(door)?autoDoors(result):result;
  }
  function preset(key){
   const f=presetRaw(key),c=f.cabinet;delete c.autoDoors;if(c.entry)delete c.entry.autoColumns;
@@ -718,7 +718,7 @@
    }
    if(pegboardParts(f,c)?.lower!==false&&(col.drawers.length||col.top==='drawer')){const travel=(c.sideboard?c.sideboard.lowerDepth:f.d)*.7;
     const bottom=c.sideboard?c.sideboard.baseHeight-total:c.entry?p+c.entry.shoeHeight+c.entry.lowerHeight-total:overlay?p:base;
-    const top=col.top==='drawer'?h:c.sideboard?c.sideboard.baseHeight-t:c.entry?p+c.entry.shoeHeight+c.entry.lowerHeight-t:kitchenOverlay(f,c)?col.door==='none'?frontHeight(f,c)-inset-1:base+total-t-1:base+total-(overlay?t:0);
+    const top=col.top==='drawer'?h:c.template==='tv-floor'&&overlay?h-t-1:c.sideboard?c.sideboard.baseHeight-t:c.entry?p+c.entry.shoeHeight+c.entry.lowerHeight-t:kitchenOverlay(f,c)?col.door==='none'?frontHeight(f,c)-inset-1:base+total-t-1:base+total-(overlay?t:0);
     zones.push({column:i,kind:'cabinetdrawer',poly:transform([[left,front],[right,front],[right,front+travel],[left,front+travel]]),ranges:[[bottom,top]]});
     if(passage>0)zones.push({column:i,kind:'cabinetpassage',poly:transform([[left,front+travel],[right,front+travel],[right,front+travel+passage],[left,front+travel+passage]]),ranges:[[0,2000]]});
    }
