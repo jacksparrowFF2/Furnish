@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-28",
+  "scope": "independent cabinet boxes, decorative end panels, version 26 persistence, three current 1601 cabinets",
+  "node": {
+    "passed": 44,
+    "total": 44,
+    "newStructureCases": 96,
+    "worldInteriorCases": 8
+  },
+  "syntax": {
+    "passed": 14
+  },
+  "browser": [
+    {
+      "name": "cabinet-independent",
+      "status": "PASS",
+      "seconds": 8.4,
+      "log": "cabinet-independent.log"
+    },
+    {
+      "name": "cabinet-workspace",
+      "status": "PASS",
+      "seconds": 13.7,
+      "log": "cabinet-workspace.log"
+    }
+  ],
+  "current": {
+    "planId": "custom_mv37igji",
+    "furniture": 63,
+    "changedFurniture": [
+      {
+        "id": "fmv3w4m2a4",
+        "name": "衣柜",
+        "w": 4161,
+        "d": 630,
+        "h": 2450,
+        "boxes": 4,
+        "beforeNet": [
+          562.4051264980026,
+          1173.5972037283623,
+          1173.5972037283623,
+          1161.4004660452729
+        ],
+        "afterNet": [
+          553.4051264980026,
+          1155.5972037283623,
+          1155.5972037283623,
+          1152.4004660452729
+        ]
+      },
+      {
+        "id": "fmv3wzkb515",
+        "name": "衣柜",
+        "w": 1637.5,
+        "d": 630,
+        "h": 2350,
+        "boxes": 4,
+        "beforeNet": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "afterNet": [
+          377.875,
+          368.875,
+          368.875,
+          377.875
+        ]
+      },
+      {
+        "id": "fmv5bl44k1",
+        "name": "收纳柜",
+        "w": 2250,
+        "d": 350,
+        "h": 2350,
+        "boxes": 3,
+        "beforeNet": [
+          423,
+          882,
+          873
+        ],
+        "afterNet": [
+          414,
+          864,
+          864
+        ]
+      }
+    ],
+    "originalSnapshotSha256": "b87247908ab06cf9b4478702a265085cd3b14d76a6357a326399bddc371371a6",
+    "backupDesign": "20261028 · 独立柜箱调整前",
+    "backupDesignVerified": true,
+    "unrelatedFurnitureUnchanged": true,
+    "otherPlansCatalogAndOriginalSavedDesignPreserved": true,
+    "reloadNoDrift": true,
+    "existingFocusedSpaceIssues": 7,
+    "focusedIssuesUnchanged": true,
+    "productionMeshes": 158,
+    "glbBytes": 420892,
+    "actualRestoreModes": [
+      {
+        "mode": "http",
+        "passed": true,
+        "reloadNoDrift": true,
+        "errors": []
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "reloadNoDrift": true,
+        "errors": []
+      }
+    ]
+  },
+  "knownFailure": {
+    "scope": "whole-scene GLB export",
+    "error": "Duplicate production part: architecture:|explicit:aluminum:backing",
+    "alsoReproducedWithPreConversionWorkspace": true
+  },
+  "notRun": [
+    "full scripts/check.cjs",
+    "physical touch device",
+    "actual Blender"
+  ],
+  "documentLinks": "passed"
+}

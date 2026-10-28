@@ -9,6 +9,21 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   const assembly=C.pegboardParts(f,c),hasUpper=assembly?.upper!==false,hasLower=assembly?.lower!==false;
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
   const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=syncIdentity.produce("cabinet-model:site-1",()=>box(W,H,D,shade,x,y,z));parent.add(mesh);return mesh;};
+  if(c.boxConstruction==='independent'){
+   for(const part of C.boxParts(f)){
+    const child=syncIdentity.produce('cabinet-independent:box:'+part.column,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[]}));
+    child.position.x=part.center/1000;
+    child.traverse(o=>{for(const [key,value] of Object.entries(o.userData))if(value&&typeof value==='object'&&Number.isInteger(value.column))o.userData[key]={...value,column:part.column};if(o.userData.cabinetSide==='left'&&part.column>0)o.userData.cabinetDivider={divider:part.column-1,column:part.column-1};if(o.userData.cabinetSide==='right'&&part.column<c.columns.length-1)o.userData.cabinetDivider={divider:part.column,column:part.column};});
+    g.add(child);
+   }
+   const panels=C.endPanels(c);
+   for(const side of ['left','right'])if(panels[side]){
+    const thickness=panels[side]/1000,sign=side==='left'?-1:1;
+    const panel=syncIdentity.produce('cabinet-independent:end-panel:'+side,()=>add(g,thickness,h,d,sign*(w-thickness)/2,0,0));
+    panel.userData.cabinetEndPanel=side;panel.userData.cabinetBay={column:side==='left'?0:c.columns.length-1};
+   }
+   return g;
+  }
   const nominalBays=C.layout(f),faceSpan=i=>{const span=C.frontSpan(f,i,c);return {left:span.left/1000,right:span.right/1000};};
   const rotation=(pose,angle)=>angle?pose.sign*angle*Math.PI/180:0;
   const cuts=options.sideCuts||C.sideOpenings(f,options.furniture||[]);

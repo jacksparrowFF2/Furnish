@@ -1,5 +1,9 @@
 # 产品能力规则与兼容验收
 
+## 独立柜箱与见光板（2026-10-28）
+
+`cabinetConstruction`集中共享／独立模式、历史缺省shared、见光板0–50mm与最小柜箱外宽150mm的模型能力。可选嵌套`cabinet.boxConstruction/endPanels`由柜体核心校验和换算；特殊组合继续专用结构，旧记录和新模板不自动转换。模式及左右厚度进入完整cabinet、生产实体、缓存和空间确认；配色／采购沿原排除机制。项目／工作区v26和独立v26缓存隔离新语义，旧版本继续可读。见 [当前柜箱契约](CABINET-DESIGN-STANDARD.md#9-已实现的独立柜箱与1601调整2026-10-28)。
+
 ## 厨房平板灯（2026-10-27）
 
 panel_light_300x600：300×600×35 mm、24 W来自用户图片；anchor=bottom，mountHeight新建／缺省2500 mm仅作初值。ceilingPanel共用300×600、2 mm面板贴合基准及0.1 mm数值对齐容差；panelLight集中3 mm边框、展示灯色与强度假设。无新字段，旧数据不补灯具，复制／替换沿原字段能力，实体／缓存／确认共用整板路径。见 [参数与验收](KITCHEN-PANEL-LIGHT.md)。
