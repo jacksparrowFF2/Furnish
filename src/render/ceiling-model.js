@@ -178,7 +178,7 @@ function createDisplay(THREE){
   group.traverse(m=>{
    const part=m.userData.ceiling?.part;if(!m.isMesh||!part)return;
    if(!m.geometry.boundingBox)m.geometry.computeBoundingBox();bounds.copy(m.geometry.boundingBox).applyMatrix4(m.matrixWorld);
-   const luminous=part==='light'||part==='diffuser',above=mode==='ghost'&&position.y>bounds.max.y,hidden=mode==='hidden'&&!luminous||above&&part==='panel-backing',ghost=above&&!luminous&&!hidden,next=hidden?'hidden':ghost?'ghost':'solid';
+   const luminous=part==='light'||part==='diffuser',above=mode==='ghost'&&position.y>bounds.max.y,hidden=mode==='hidden'||above&&part==='panel-backing',ghost=above&&!luminous&&!hidden,next=hidden?'hidden':ghost?'ghost':'solid';
    if(states.get(m)!==next){states.set(m,next);changed=true;}
    if(next==='solid')return;
    overrides.set(m,{material:m.material,visible:m.visible,castShadow:m.castShadow,renderOrder:m.renderOrder});
