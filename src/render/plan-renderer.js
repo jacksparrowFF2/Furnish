@@ -420,7 +420,7 @@ function renderSelectedGeometry(){
   const halo = w => `stroke="${PAL.halo}" stroke-width="${w*k}" paint-order="stroke"`;
   if (ids.length > 1){
     const items = selItems();
-    items.forEach(f => {const outline=FurnishGeometry.localOutline(f);s += `<g transform="${furnT(f)}" pointer-events="none">${outline?`<polygon points="${outline.map(([x,y])=>[x*(f.flip?-1:1),y].join(',')).join(' ')}" fill="rgba(239,90,36,.1)" ${A} stroke-width="1.5"/>`:`<rect x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="rgba(239,90,36,.1)" ${A} stroke-width="1.5"/>`}</g>`;});
+    items.forEach(f => {const outline=FurnishGeometry.localOutline(f,{furniture:state.furniture,plan:canvasEffectivePlan()});s += `<g transform="${furnT(f)}" pointer-events="none">${outline?`<polygon points="${outline.map(([x,y])=>[x*(f.flip?-1:1),y].join(',')).join(' ')}" fill="rgba(239,90,36,.1)" ${A} stroke-width="1.5"/>`:`<rect x="${-f.w/2}" y="${-f.d/2}" width="${f.w}" height="${f.d}" fill="rgba(239,90,36,.1)" ${A} stroke-width="1.5"/>`}</g>`;});
     const [x0,y0,x1,y1] = groupBox(items), p = 8*k;
     s += `<rect x="${x0-p}" y="${y0-p}" width="${x1-x0+2*p}" height="${y1-y0+2*p}" fill="none" ${A} stroke-width="1.2" stroke-dasharray="6 4" pointer-events="none"/>
       <text x="${(x0+x1)/2}" y="${y1+p+18*k}" font-size="${12*k}" text-anchor="middle" fill="${ACC}" font-weight="600" pointer-events="none" ${halo(3)}>${tr(`已选 ${items.length} 件`, `${items.length} selected`)} · ${Math.round(x1-x0)} × ${Math.round(y1-y0)}</text>`;
@@ -436,7 +436,7 @@ function renderSelectedGeometry(){
     if (f){
       // 触屏上手柄更大、离家具更远，并各带一圈透明的大热区；锁定的家具不显示手柄
       const p = 5*k, hs = COARSE ? 1.7 : 1, ro = (COARSE ? 40 : 26)*k, hit = (COARSE ? 24 : 11)*k;
-      const sx = f.w/2+p, sy = f.d/2+p, outline=FurnishGeometry.localOutline(f);
+      const sx = f.w/2+p, sy = f.d/2+p, outline=FurnishGeometry.localOutline(f,{furniture:state.furniture,plan:canvasEffectivePlan()});
       const slidingFrame=FurnishProducts.slidingResizeFrame(f),slidingSign=slidingFrame?Math.sign(Math.cos((slidingFrame.proxy.rot-f.rot)*Math.PI/180)):1,slidingFree=slidingFrame?(slidingFrame.local[0]+slidingSign*slidingFrame.proxy.w):null;
       const resizeCursor=angle=>['ew-resize','nwse-resize','ns-resize','nesw-resize'][((Math.round(angle/45)%4)+4)%4];
       const outer=!!globalThis.FurnishKitchen?.outerResizable(f),drawing=typeof drawingRotation==='function'?drawingRotation():0;

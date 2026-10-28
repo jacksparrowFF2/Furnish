@@ -85,7 +85,7 @@ const types={
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
  shower_arrow_cream:{family:'arrow-shower',height:1749,anchor:'mixer',defaults:{showerMixerHeight:1000,showerRise:400,showerHandAngle:180*.20/Math.PI},fields:['mountHeight','showerMixerHeight','showerRise','showerHandAngle'],create:['showerMixerHeight'],identity:{brand:'ARROW/箭牌',model:'AE34129ZMKW-P2'}},
  tripleslidingwindow:{family:'sliding',height:1500,anchor:'bottom',defaults:{mountHeight:900,floorTrack:true},fields:['mountHeight','floorTrack'],create:['mountHeight']},
- telescopicdoor20:{family:'sliding',telescopic:{panels:2,allMoving:true,leafDepth:40,defaultDepth:100,glass:'ultra-clear'},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front',slidingStackSide:'left',slidingOpen:false},fields:['floorTrack','slidingTrackOrder','slidingStackSide','slidingOpen']},
+ telescopicdoor20:{family:'sliding',telescopic:{panels:2,allMoving:true,cornerTolerance:1,leafDepth:40,defaultDepth:100,glass:'ultra-clear'},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front',slidingStackSide:'left',slidingOpen:false},fields:['floorTrack','slidingTrackOrder','slidingStackSide','slidingOpen']},
  doubleslidingdoor:{family:'sliding',telescopic:{panels:2,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
@@ -144,8 +144,8 @@ function planBodyOutline(f,segments){
  const count=segments||shape.segments,signed=v=>Math.abs(v)<1e-12?0:Math.sign(v)*Math.pow(Math.abs(v),shape.exponent);
  return Array.from({length:count},(_,i)=>{const t=i*2*Math.PI/count;return [f.w/2*signed(Math.sin(t)),f.d/2*signed(Math.cos(t))];});
 }
-function planOutline(f,segments){
- if(!f.obj&&definition(f)?.telescopic?.allMoving)return slidingLayout(f).railOutline;
+function planOutline(f,segments,context){
+ if(!f.obj&&definition(f)?.telescopic?.allMoving)return slidingLayout(f,context?slidingCorner(f,context.furniture,context.plan):null).railOutline;
  const points=planBodyOutline(f,segments);if(!points)return null;
  const rear=definition(f)?.planShape?.rear;if(!rear)return points;
  const x=rear.width/2*f.w/rear.referenceWidth,z=rear.z*f.d/rear.referenceDepth;
@@ -391,12 +391,14 @@ function slidingTracks(f,{panels=definition(f)?.telescopic?.panels??3,slim=true,
 function slidingLayout(f,corner=null,options={}){
  const allMoving=options.allMoving??definition(f)?.telescopic?.allMoving;
  if(allMoving){
-  const tracks=slidingTracks(f,options),edge=Math.min(16,f.w/20,height(f)/12),jamb=9,width=(f.w-2*jamb+edge)/2,step=width-edge,side=options.stackSide??value(f,'slidingStackSide'),sign=side==='right'?-1:1;
-  const parked=-f.w/2-width/2,first=-f.w/2+jamb+width/2,railStart=-f.w/2-width-jamb,railEnd=f.w/2;
-  const railOutline=[[railStart*sign,-f.d/2],[railEnd*sign,-f.d/2],[railEnd*sign,f.d/2],[railStart*sign,f.d/2]];
+  const tracks=slidingTracks(f,options),edge=Math.min(16,f.w/20,height(f)/12),jamb=9,side=options.stackSide??value(f,'slidingStackSide'),sign=side==='right'?-1:1;
+  // The far parking rail stays fixed when a neighbor changes the closing end.
+  const baseWidth=(f.w-2*jamb+edge)/2,end=corner?corner.leafEnd*sign:f.w/2-jamb,width=(end+f.w/2-jamb+edge)/2,step=width-edge;
+  const railStart=-f.w/2-baseWidth-jamb,railEnd=f.w/2,parked=railStart+jamb+width/2,first=-f.w/2+jamb+width/2;
+  const railOutline=corner?[[railStart*sign,-f.d/2],[corner.x-corner.slope*f.d/2,-f.d/2],[corner.x+corner.slope*f.d/2,f.d/2],[railStart*sign,f.d/2]]:[[railStart*sign,-f.d/2],[railEnd*sign,-f.d/2],[railEnd*sign,f.d/2],[railStart*sign,f.d/2]];
   const leaves=Array.from({length:2},(_,i)=>({x:(first+step*i)*sign,opened:parked*sign,z:(i-.5)*tracks.pitch*tracks.direction,width}));
-  const half=slidingTrackSpec.floorWidth/2,floorTracks=leaves.map((leaf,i)=>({leafIndex:i,z:leaf.z,start:railStart*sign,end:railEnd*sign,outline:[[railStart*sign,leaf.z-half],[railEnd*sign,leaf.z-half],[railEnd*sign,leaf.z+half],[railStart*sign,leaf.z+half]]}));
-  return {...tracks,allMoving:true,edge,jamb,width,mirrored:sign<0,railOutline,leaves,floorTracks,floorRailHeight:slidingFloorHeight(f),bottomClearance:slidingBottom(f,options.floorTrack??value(f,'floorTrack'))};
+  const half=slidingTrackSpec.floorWidth/2,cut=z=>corner?corner.x+corner.slope*z:railEnd*sign,floorTracks=leaves.map((leaf,i)=>({leafIndex:i,z:leaf.z,start:railStart*sign,end:cut(leaf.z),outline:[[railStart*sign,leaf.z-half],[cut(leaf.z-half),leaf.z-half],[cut(leaf.z+half),leaf.z+half],[railStart*sign,leaf.z+half]]}));
+  return {...tracks,allMoving:true,edge,jamb,width,mirrored:sign<0,railOutline,leaves,floorTracks,floorRailHeight:slidingFloorHeight(f),bottomClearance:corner?.floorClearance??slidingBottom(f,options.floorTrack??value(f,'floorTrack'))};
  }
  const tracks=slidingTracks(f,options),slim=options.slim??true,edge=Math.min(slim?16:28,f.w/20,height(f)/12),jamb=slim?9:edge;
  const mirrored=(options.stackSide??(corner?.side==='left'?'right':'left'))==='right',sign=mirrored?-1:1,end=corner?corner.leafEnd*sign:f.w/2-jamb;
@@ -421,7 +423,7 @@ function resizeSliding(f,values){
 // Automatic L joint: only a unique perpendicular end-to-end partner at the
 // same known rail elevation. Mid-span crossings and ambiguous junctions stay intact.
 function slidingCorner(f,furniture=[],plan){
- const eligible=v=>!!definition(v)?.telescopic&&!definition(v).telescopic.allMoving&&!v.obj&&[v.cx,v.cy,v.w,v.d,height(v)].every(Number.isFinite)&&v.w>v.d*2&&v.d>0&&height(v)>0&&Number.isFinite(v.rot??0)&&!modelError(v);
+ const eligible=v=>!!definition(v)?.telescopic&&!v.obj&&[v.cx,v.cy,v.w,v.d,height(v)].every(Number.isFinite)&&v.w>v.d*2&&v.d>0&&height(v)>0&&Number.isFinite(v.rot??0)&&!modelError(v);
  if(!eligible(f))return null;
  const items=[f,...furniture.filter(v=>v.id!==f.id&&eligible(v))];
  const axis=v=>{const a=(v.rot||0)*Math.PI/180;return [Math.cos(a),Math.sin(a)];};
@@ -437,6 +439,7 @@ function slidingCorner(f,furniture=[],plan){
    // Native coordinates include furniture mirroring; the builder may mirror
    // again to stack away from this free corner.
    const flip=v.flip?-1:1,x=t*flip,side=x>0?'right':'left',towardOther=[-Math.sign(s)*q[0],-Math.sign(s)*q[1]],normal=[-u[1],u[0]];
+   if(definition(v).telescopic.allMoving&&side===value(v,'slidingStackSide'))continue;
    // Rectangular leaves meet end-to-face, never on the rail's miter plane.
    // One leaf runs through the joint; the other stops at its near surface.
    // Directed corner axes choose complementary roles, independent of IDs.
@@ -444,11 +447,11 @@ function slidingCorner(f,furniture=[],plan){
    const otherNormal=[-q[1],q[0]],leafEnd=(t+dot(otherNormal,u)*otherTracks.leadingOffset+Math.sign(t)*(through?1:-1)*otherTracks.leafDepth/2)*flip;
    const slope=-Math.sign(t)*flip*other.d/(dot(towardOther,normal)*v.d),layout=slidingLayout(v,{side,leafEnd,x,slope});if(layout.width<=2*layout.edge)continue;
    const floorClearance=Math.max(slidingBottom(v),otherBase.z-base.z+slidingBottom(other));
-   out.push({other,side,x,leafEnd,through,floorClearance,slope});
+   out.push({other,side,x,leafEnd,through,floorClearance,slope,partnerLeafDepth:otherTracks.leafDepth});
   }return out;
  };
- const hits=candidates(f);if(hits.length!==1||candidates(hits[0].other).length!==1)return null;
- const {other,side,x,slope,leafEnd,through,floorClearance}=hits[0];return {partnerId:other.id,side,x,slope,leafEnd,through,floorClearance};
+ const hits=candidates(f);if(hits.length!==1)return null;const reciprocal=candidates(hits[0].other);if(reciprocal.length!==1||reciprocal[0].other.id!==f.id)return null;
+ const {other,side,x,slope,leafEnd,through,floorClearance,partnerLeafDepth}=hits[0];return {partnerId:other.id,side,x,slope,leafEnd,through,floorClearance,partnerLeafDepth};
 }
 // Derived geometry capability; no field is added to saved furniture instances.
 function serviceCut(f){const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return !f.obj&&(C.supported(f)||['counter','vanity'].includes(f.type));}

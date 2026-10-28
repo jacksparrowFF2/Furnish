@@ -1,0 +1,42 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "previewCombinations": [
+      "20-20",
+      "20-2",
+      "20-3"
+    ],
+    "actualSavedPlan": true,
+    "snapshotHash": "0bfef78da270d053b6910cabd25f0bec40eff17f3582da5f9896ffab17e25bb4",
+    "noPost": true,
+    "independentOpening": true,
+    "stackSideFallback": true,
+    "neighborRebuild": true,
+    "undo": true,
+    "resizeDatum": true,
+    "refresh": true,
+    "originalFurniturePreserved": true,
+    "errors": []
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "previewCombinations": [
+      "20-20",
+      "20-2",
+      "20-3"
+    ],
+    "actualSavedPlan": true,
+    "snapshotHash": "0bfef78da270d053b6910cabd25f0bec40eff17f3582da5f9896ffab17e25bb4",
+    "noPost": true,
+    "independentOpening": true,
+    "stackSideFallback": true,
+    "neighborRebuild": true,
+    "undo": true,
+    "resizeDatum": true,
+    "refresh": true,
+    "originalFurniturePreserved": true,
+    "errors": []
+  }
+]

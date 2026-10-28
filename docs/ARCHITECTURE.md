@@ -1,5 +1,8 @@
 # 模块与加载约定
 
+2026-10-28（2+0无柱转角）：slidingCorner接入allMoving并要求关闭端／向外收门及互为唯一伙伴；slidingLayout保持收门远端基点，生产构造器取消转角侧框并共用顶／地轨斜接、矩形门扇直边搭接。伙伴实际门厚参与拉手退让，二维选择可传上下文读取拼口；现有缓存与恢复链路复用，仅有效2+0转角确认追加语义标记。无新字段／脚本，见 [转角契约](TELESCOPIC-OPENINGS.md)。
+
+
 2026-10-28（门扇厚度与玻璃）：产品核心telescopic.leafDepth/defaultDepth集中2+0固定40 mm及新建100 mm，slidingTracks统一轨距与几何下限；库／预览读取新建深度，旧显式深度保持。slidingGlass供家具SVG、建筑二维和共用生产模型统一超白玻璃；固定厚度确认增加规则标记。无新字段或加载，见 [联动门](TELESCOPIC-OPENINGS.md)。
 
 
