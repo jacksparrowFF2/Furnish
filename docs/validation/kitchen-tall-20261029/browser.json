@@ -1,0 +1,53 @@
+{
+  "case": "kitchen-tall",
+  "status": "PASS",
+  "result": {
+    "passed": true,
+    "results": [
+      {
+        "mode": "http",
+        "passed": true,
+        "checks": [
+          "selecting tall shows editable 2200 mm default",
+          "preview stays in draft",
+          "cancel retains original",
+          "unchanged save preserves missing default height",
+          "invalid height rejected",
+          "valid height clears error",
+          "tall height saved",
+          "low worktop height retained",
+          "one undo restores old module",
+          "redo and refresh retain tall module",
+          "mobile tall control visible",
+          "mobile no page overflow",
+          "v30 current and named project roundtrip",
+          "switching back removes tall override",
+          "ordinary module survives refresh",
+          "no page errors"
+        ]
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "checks": [
+          "selecting tall shows editable 2200 mm default",
+          "preview stays in draft",
+          "cancel retains original",
+          "unchanged save preserves missing default height",
+          "invalid height rejected",
+          "valid height clears error",
+          "tall height saved",
+          "low worktop height retained",
+          "one undo restores old module",
+          "redo and refresh retain tall module",
+          "mobile tall control visible",
+          "mobile no page overflow",
+          "v30 current and named project roundtrip",
+          "switching back removes tall override",
+          "ordinary module survives refresh",
+          "no page errors"
+        ]
+      }
+    ]
+  }
+}
