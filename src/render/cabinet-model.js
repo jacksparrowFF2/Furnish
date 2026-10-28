@@ -21,7 +21,8 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     // Structural boards stop at the same front plane as the sides. Only the
     // worktop spans the full nominal depth; doors occupy the front panel band.
     const boardDepth=section==='counter'?D:D-t;
-    syncIdentity.produce("cabinet-model:site-2",()=>add(g,W,H,boardDepth,X,y,back+boardDepth/2)).userData.cabinetSection=section;
+    const board=syncIdentity.produce("cabinet-model:site-2",()=>add(g,W,H,boardDepth,X,y,back+boardDepth/2));board.userData.cabinetSection=section;
+    const control=C.structuralBoards(f).find(b=>b.section===section);if(control)board.userData.cabinetInspect={kind:'structure',column:control.column,section};
    }
    if(p)syncIdentity.produce("cabinet-model:site-3",()=>add(g,W,p,ld-.025,X,0,back+(ld-.025)/2));
    const backLeft=left+(c.columns[0].fridgeBay?t:0),backRight=right-(c.columns.at(-1).fridgeBay?t:0);
@@ -50,7 +51,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      const fh=s.fridgeHeight/1000,fd=(s.fridgeDepth??f.d)/1000,fz=back+fd/2;
      // Floor and rear remain clear for a separately placed refrigerator.
      for(const sign of syncIdentity.items("cabinet-model.js:generator-7",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-10",()=>add(g,t,h,fd,x+sign*(cw/2+t/2),0,fz));
-     syncIdentity.produce("cabinet-model:site-11",()=>add(g,cw,t,fd,x,fh,fz)).userData.cabinetSection='fridgeCeiling';syncIdentity.produce("cabinet-model:site-12",()=>add(g,cw,t,fd,x,h-t,fz));
+     const ceiling=syncIdentity.produce("cabinet-model:site-11",()=>add(g,cw,t,fd,x,fh,fz));ceiling.userData.cabinetSection='fridgeCeiling';ceiling.userData.cabinetInspect={kind:'structure',column:i,section:'fridgeCeiling'};syncIdentity.produce("cabinet-model:site-12",()=>add(g,cw,t,fd,x,h-t,fz));
      syncIdentity.produce("cabinet-model:site-13",()=>add(g,cw,h-fh-2*t,t,x,fh+t,back+t/2)).userData.cabinetBay={column:i};syncIdentity.produce("cabinet-model.js:generator-call-1",()=>door(col,i,fh+t,h,fd,'fridgeUpper'));
     }else{
      for(const [bottom,top,D] of syncIdentity.items("cabinet-model.js:generator-8",[["item-a",[p+t,base-t,ld]],["item-b",[display+t,upper,ud]],["item-c",[upper+t,h-t,ud]]])){

@@ -230,6 +230,26 @@ function configure(f,k){
  if(isLaundry(next)&&next.d!==f.d)for(const key of ['upper','open']){const old=f.kitchen?.laundry?.assembly?.[key],part=next.kitchen.laundry.assembly?.[key];if(old&&part&&Math.abs((old.y??0)-(old.d-f.d)/2)<.01&&part.y===old.y)part.y=(part.d-next.d)/2;}
  delete next.kitchen.obstacleFit;
  for(const m of next.kitchen.modules){if(m.role==='custom')for(const key of ['door','doorOpen','doorAngle','doorMaxAngle','doorLeaves','doorPairing','doorSingleHinge','doorLayout','doorRatios','shelves'])delete m[key];if(m.role==='drawer'||m.role==='empty')for(const key of ['door','doorOpen','doorAngle','doorMaxAngle','doorLeaves','doorPairing','doorSingleHinge','doorLayout','doorRatios'])delete m[key];if(moduleDoor(next,m)!=='auto'){delete m.doorPairing;delete m.doorSingleHinge;delete m.doorLayout;}if(moduleDoor(next,m)==='none'||cabinet().verticalDoor(moduleDoor(next,m))||m.doorRatios&&m.doorRatios.length!==moduleLeafCount(next,m))delete m.doorRatios;if(moduleDoor(next,m)==='none'){delete m.doorOpen;delete m.doorAngle;delete m.doorLeaves;}if(m.role!=='custom')delete m.structure;if(!['door','open'].includes(m.role))delete m.shelves;if(m.role!=='drawer'){delete m.drawerOpen;delete m.drawerHeights;delete m.drawerStyle;}else if(Array.isArray(m.drawerOpen))m.drawerOpen=Array.from({length:drawerHeights(next,m).length},(_,i)=>m.drawerOpen[i]??false);}for(const m of [...next.kitchen.modules,...(next.kitchen.endExtensions||[])]){const count=moduleLeafCount(next,m);if(m.doorLayout){cabinet().validateDoorSettings(m);if(count)m.doorLayout=cabinet().fitDoorLayout(m.doorLayout,count);else delete m.doorLayout;}if(!count)delete m.doorLeaves;else if(m.doorLeaves){m.doorLeaves=Array.from({length:count},(_,i)=>m.doorLeaves[i]??{open:false});m.doorOpen=m.doorLeaves.some(s=>s.open);}}if(isWall(next))next.h=next.kitchen.baseHeight;else delete next.h;delete next.cabinet;return validate(next);}
+// Reorder within a run; the returned map keeps linked devices attached to their module.
+function editModules(f,operation,index,{at=index+1,width=600,grow=true,run=f.kitchen.modules[index]?.run??0}={}){
+ const k=clone(f.kitchen),items=k.modules.map((module,old)=>({module,old})),source=items[index];
+ if(!source)throw Error('请选择模块');if(isLaundry(f))throw Error('整体洗衣柜的设备位和水槽位须保留，请使用整柜高级选项调整');
+ let selected=index;
+ if(operation==='move'){
+  if(!Number.isInteger(at)||!items[at]||items[at].module.run!==source.module.run)throw Error('请在同一边内排序模块');items.splice(index,1);items.splice(at,0,source);selected=at;
+ }else if(operation==='delete'){
+  if(items.filter(e=>e.module.run===source.module.run).length===1)throw Error('每条柜边至少保留一个模块');items.splice(index,1);selected=items.findIndex(e=>e.module.run===source.module.run);
+ }else if(['add','copy'].includes(operation)){
+  if(items.length>=48||!Number.isInteger(at)||at<0||at>items.length||!runs(f).includes(run))throw Error('模块数量或插入位置无效');
+  const module=operation==='copy'?clone(source.module):{run,width,role:'door'};run=module.run;items.splice(at,0,{module,old:null});selected=at;
+ }else throw Error('模块操作无效');
+ if(!grow&&operation!=='move'){
+  const affected=operation==='delete'?source.module.run:items[selected].module.run,oldTotal=k.modules.filter(m=>m.run===affected).reduce((s,m)=>s+m.width,0),group=items.filter(e=>e.module.run===affected),sum=group.reduce((s,e)=>s+e.module.width,0);
+  for(const e of group)e.module.width*=oldTotal/sum;
+ }
+ k.modules=items.map(e=>e.module);const furniture=configure(f,k);
+ return {furniture,selected,remap:new Map(items.flatMap((e,i)=>e.old===null?[]:[[e.old,i]]))};
+}
 // Explicit shape edits preserve retained module indices and remap only removed runs.
 function changeShape(f,shape,corner='left'){
  const k=clone(f.kitchen),previous=k.shape;k.shape=shape;k.corner=corner;if(corner==='left')delete k.corner;
@@ -612,5 +632,6 @@ function bodyParts(f){return [...lowerBodyParts(f),...laundrySideBoards(f).map(b
 function openingZones(f,options){return [...lowerOpeningZones(f,options),...laundryParts(f).filter(p=>p.key!=='sink').flatMap(({key,furniture:p})=>cabinet().openingZones(p,options).map(z=>({...z,sourceSection:z.section,section:'laundry:'+key})))];}
 function spatialConfig(f){if(!f.kitchen)return undefined;const k=clone(f.kitchen),scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor'].includes(key))delete v[key];else scrub(v[key]);}};if(k.laundry?.assembly)scrub(k.laundry.assembly);return k;}
 const api={moveLinkedSink,attachment,attachmentTargets,moduleDoorWidths,setModuleDoorWidth,outerResizable,spatialConfig,alignLaundryBack,laundryNotchBoards,laundryParts,laundryHeight,laundrySideBoards,laundryBay,integrateLaundryArea,createLaundryCabinet,isLaundryAreaItem,createLaundryArea,setLaundryDoors,laundrySide,switchLaundrySides,isLaundry,hasCountertop,laundryPreset,catalogSpec,notchedRing,laundryCut,centerLaundryInBay,measurementSurface,drawerStyle,drawerStyleRule,drawerMinimum,drawerLabel,setDrawerStyle,isWall,plinthRules,plinth,baseElevation,bodyHeight,moduleRoles,fromWall,moduleShelfClearances,editModuleShelfClearance,setModuleDoorAngle,snapModuleShelf,moveModuleShelf,moduleShelfLimits,hoodHosts,drawerBoundaryTargets,resizeDrawerBoundary,drawerRules,drawerSpan,drawerHeights,setDrawerCount,setDrawerHeight,slabGeometry,ringArea,ringInside,isSink,arrowSink,sinkMode,openingRing,surfaceGeometry,onSurface,support,deviceOpenings,deviceSignature,normalizeSinks,dividerHandles,resizeDivider,depthRules,endResizeRules,extensionHandles,resizeExtension,partitionRules,cornerPartition,cornerConnections,moduleShelves,cornerShelves,adjacentOpenings,cornerLayout,runDepth,runCounterDepth,outerEdge,resizeOuter,runHandles,resizeRun,changeShape,shapeRules,runs,endRuns,runName,runNormal,runLength,cornerBlocks,adjacentSides,isDevice,cutout,roles,edgeStyles,counterDepth,extension,bodyBounds,cornerPlinth,endLayout,cabinetLayout,cornerBoards,edgeStyle,dropHeight,defaults,cornerSide,cornerBlock,validate,configure,resize,repairDimensions,layout,elevationRuns,slabs,outline,frontEdges,edgeParts,area,topGeometry,avoidanceRules,adaptObstacles,normalizeObstacles,world,local,footprints,bodyParts,validateLink,fit,attach,normalize,validateList,moduleFurniture,kitchenModuleConfig,moduleDoor,moduleLeafCount,moduleLeafState,moduleLeafAngle,moduleMaxAngle,moduleAngle,toggle,specification,openingZones};
+api.editModules=editModules;
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishKitchen=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

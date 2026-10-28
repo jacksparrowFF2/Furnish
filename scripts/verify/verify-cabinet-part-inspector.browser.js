@@ -3,7 +3,7 @@ async(page,V)=>{
  for(const mode of ['http','file']){
   const ctx=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await ctx.newPage(),checks=[],errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
   const check=(v,m)=>{if(!v)throw Error(m);checks.push(m);},pick=part=>V.selectCabinetObject(p,part),read=id=>p.evaluate(id=>structuredClone(getF(id)),id);
-  const open=async id=>{await p.evaluate(id=>FurnishCabinetEditor.open(id),id);await p.locator('#cab-preview canvas').waitFor();},save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click(),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click();
+  const open=async id=>{await p.evaluate(id=>FurnishCabinetEditor.open(id),id);await p.locator('#cab-preview canvas:visible').first().waitFor();},save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click(),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click();
   const range=async(selector,value,commit=true)=>p.locator(selector).evaluate((el,{value,commit})=>{el.value=String(value);el.dispatchEvent(new Event('input',{bubbles:true}));if(commit)el.dispatchEvent(new Event('change',{bubbles:true}));},{value,commit});
   try{
    await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.locator('#lib').waitFor();

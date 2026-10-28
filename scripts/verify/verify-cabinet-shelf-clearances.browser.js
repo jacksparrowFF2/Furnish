@@ -3,7 +3,7 @@ async (page,V)=>{
  for(const mode of ['http','file']){
   const ctx=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await ctx.newPage(),checks=[],errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(12000);
   const check=(v,m)=>{if(!v)throw Error(m);checks.push(m);},input=side=>p.locator('#cab-tools input[data-shelf-clearance="'+side+'"]'),label=side=>p.locator('#cab-preview .cab-shelf-dimension[data-shelf-clearance="'+side+'"]');
-  const read=()=>p.evaluate(()=>structuredClone(getF('clearance-cab'))),open=async()=>{await p.evaluate(()=>FurnishCabinetEditor.open('clearance-cab'));await p.locator('#cab-preview canvas').waitFor();await V.selectCabinetObject(p,{kind:'shelf',column:0,shelf:0});};
+  const read=()=>p.evaluate(()=>structuredClone(getF('clearance-cab'))),open=async()=>{await p.evaluate(()=>FurnishCabinetEditor.open('clearance-cab'));await p.locator('#cab-preview canvas:visible').first().waitFor();await V.selectCabinetObject(p,{kind:'shelf',column:0,shelf:0});};
   try{
    await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.locator('#lib').waitFor();
    await p.evaluate(()=>{const at=ROOMS.find(r=>r.name==='客厅').at;mutate(()=>state.furniture=[{id:'clearance-cab',type:'cabinet',cx:at[0],cy:at[1],rot:0,...FurnishCabinet.preset('sideboard-open')}]);});const original=await read();

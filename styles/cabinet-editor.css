@@ -274,3 +274,74 @@
  .cab-expanded #cab-preview[data-unfolded=true]{height:calc(100dvh - 340px)}
 }
 @media(max-width:999px){.cab-expand{display:none}}
+/* Cabinet workspace: persistent structure / editing canvas / current properties. */
+.dlg-box.wide:has(.cab-workspace){width:calc(100vw - 40px);max-width:1560px}
+.dlg-body:has(.cab-workspace){overflow:hidden}
+.cab-editor.cab-workspace{grid-template-columns:260px minmax(320px,1fr) 340px;gap:0;height:calc(100dvh - 190px);min-height:360px;background:#fffdf9;border:1px solid #e8e2d9;border-radius:12px;overflow:hidden;align-items:stretch}
+.cab-workspace>.cab-structure{overflow:auto;min-width:0;padding:18px 14px;background:#fbf9f5;border-right:1px solid #e8e2d9;overscroll-behavior:contain}
+.cab-structure-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.cab-structure h3{font-size:15px;margin:0}
+.cab-history{display:flex;gap:2px}.cab-history .btn{padding:5px;font-size:11px;min-height:28px;background:transparent;border-color:transparent}
+.cab-add-module{width:100%;margin-bottom:12px;color:#a94410;border:1px solid #dcbda8;background:#fff7ed}
+.cab-whole{width:100%;text-align:left;margin-bottom:10px;background:transparent;border-color:transparent}
+.cab-whole[aria-pressed=true]{background:#f3eade;border-color:#e4d5c4}
+.cab-tree-host>.cab-object-finder{margin:0;border:0;padding:0;background:transparent}
+.cab-tree-host>.cab-object-finder>summary{display:none}
+.cab-tree-host .cab-part-search{font-size:11px;color:#857d72;margin:0 0 16px!important}
+.cab-tree-host .cab-part-tree{max-height:none;overflow:visible}
+.cab-tree-host .cab-part-tree>details{border:0;padding:3px 0}
+.cab-tree-host .cab-part-tree>details>summary{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:12px;line-height:1.6;padding:8px 5px;cursor:grab}
+.cab-module-menu{font-size:10px!important;padding:3px 5px;min-height:24px;color:#81776b;background:transparent;border-color:transparent}
+.cab-tree-host .cab-tree-parts{border-left:1px solid #e2ddd4;margin-left:7px;padding:0 0 8px 9px;gap:2px}
+.cab-tree-host .cab-tree-part{border:0;background:transparent;box-shadow:none;padding:7px 9px;font-size:12px;min-height:32px;color:#5c5449}
+.cab-tree-host .cab-tree-part[aria-pressed=true]{background:#e7f2fc;color:#126da7;box-shadow:inset 3px 0 #168de2;border-radius:5px}
+.cab-tree-host .cab-tree-part:hover{background:#eeeae3}
+.cab-structure-help{font-size:11px;line-height:1.8;color:#958b7e;margin:20px 5px}
+.cab-workspace>.cab-visual{position:relative;display:flex;flex-direction:column;height:100%;overflow:hidden;align-self:stretch;padding:14px 16px 10px;box-sizing:border-box;background:#f5f2ec}
+.cab-workspace .cab-view-controls{flex:none;min-height:36px;justify-content:space-between;margin:0 0 10px;gap:6px}
+.cab-workspace .cab-view-controls>button{font-size:12px;background:#fffdf9;border-color:#ded7cb}
+.cab-view-tabs{display:flex;padding:3px;gap:3px;border:1px solid #e3ddd3;border-radius:8px;background:#eeeae3}
+.cab-view-tabs .btn{padding:6px 16px;border-color:transparent;background:transparent;font-size:12px;min-height:36px!important}
+.cab-view-tabs .btn[aria-pressed=true]{background:#fffdf9;color:#a94413;box-shadow:0 1px 3px #53452e17;border-color:#e3dacf}
+.cab-display-options{font-size:12px;position:relative;z-index:8;color:#6f665a}
+.cab-display-options>summary{cursor:pointer;list-style:none;padding:8px 10px;border:1px solid #ded7cb;border-radius:7px;background:#fffdf9}
+.cab-display-menu{position:absolute;top:100%;right:0;min-width:225px;margin-top:5px;padding:14px;border:1px solid #ded7cb;box-shadow:0 6px 22px #42382720;background:#fffdf9;border-radius:9px;display:flex;flex-direction:column;gap:12px}
+.cab-display-menu label{justify-content:space-between}.cab-display-menu .cab-expand{display:none}
+.cab-stage{position:relative;flex:1;min-height:240px;overflow:hidden;border:1px solid #e6e0d6;border-radius:9px}
+.cab-workspace #cab-preview,.cab-workspace #cab-preview[data-unfolded=true]{height:100%;min-height:240px;width:100%;border-radius:0;background:#f0ede7}
+.cab-overview{position:absolute;right:12px;bottom:12px;width:150px;height:158px;border:1px solid #ded7cb;background:#fffdf9;border-radius:8px;overflow:hidden;box-shadow:0 3px 12px #55482e0a;z-index:2}
+.cab-overview>span{position:absolute;top:8px;left:10px;font-size:10px;color:#8b8073;z-index:1;pointer-events:none}
+.cab-overview-model{width:100%;height:100%;position:relative;display:grid;place-items:center}
+.cab-overview-model canvas{max-width:100%;display:block}
+.cab-overview-model .cab-dimensions,.cab-overview-model .cab-drag-readout,.cab-overview-model .cab-size-summary,.cab-overview-model .cab-door-sizes,.cab-overview-model .cab-drawer-overlay{display:none!important}
+.cab-workspace .cab-visual>p{font-size:11px;line-height:1.6;margin:8px 0 0;flex:none;color:#897e70}
+.cab-workspace .cab-selection{min-height:0}.cab-workspace #cab-error:empty,.cab-workspace #cab-kitchen-error:empty{display:none}
+.cab-workspace .cab-visual>.actions,.cab-workspace .cab-kitchen-opening{margin:8px 0 0;gap:6px;flex:none}
+.cab-workspace .cab-visual>.actions .btn,.cab-workspace .cab-kitchen-opening .btn{font-size:11px;padding:6px 9px;min-height:30px}
+.cab-workspace>.cab-fields{border-left:1px solid #e8e2d9;padding:0 18px 18px;height:100%;box-sizing:border-box;background:#fffdf9}
+.cab-workspace #cab-bay-picker,.cab-workspace #cab-kitchen-picker{background:#fffdf9;border:0;border-bottom:1px solid #e8e2d9;border-radius:0;padding:18px 0 14px;margin:0 0 18px}
+.cab-workspace .cab-object-title{margin:0!important;font-size:16px!important}
+.cab-workspace .cab-object-heading nav{margin-top:10px}.cab-workspace .cab-object-heading nav .btn{font-size:10px;padding:4px 6px;min-height:26px;color:#8b8073;background:transparent;border-color:#e8e2d9}
+.cab-workspace #cab-tools{padding:0;background:transparent;margin-bottom:14px}
+.cab-workspace .cab-fields h3{font-size:14px}.cab-workspace .cab-fields label{font-size:12px}
+.cab-workspace .cab-fields fieldset{border:0;padding:0;margin:0}.cab-workspace .cab-fields legend{display:none}
+.cab-workspace .cab-fields .form{grid-template-columns:1fr;gap:0}
+.cab-workspace .cab-fields .cab-shelf-properties>.form{grid-template-columns:1fr 1fr;gap:10px}
+.cab-workspace #cab-tools label{flex-direction:column;align-items:stretch;gap:6px;margin:0 0 14px}
+.cab-workspace .cab-fields .cab-help{font-size:11px;padding-top:14px;margin-top:14px}
+.cab-module-editor{position:relative;margin-top:16px;padding:12px;border:1px solid #dbc8b5;background:#fffdf9;border-radius:8px;font-size:12px}
+.cab-module-editor header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.cab-module-editor header .btn{padding:4px 6px;font-size:10px}
+.cab-module-editor label{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;font-size:11px}.cab-module-editor input,.cab-module-editor select{width:100%;box-sizing:border-box;padding:7px;border:1px solid #ddd4c8;border-radius:5px;min-width:0;font:inherit}
+.cab-module-impact{font-size:11px;line-height:1.7;color:#7d6148;overflow-wrap:anywhere}.cab-module-editor>.btn{width:100%;font-size:12px}
+.cab-workspace .btn{min-height:36px}
+.cab-workspace .cab-visual>.actions .btn,.cab-workspace .cab-kitchen-opening .btn{min-height:36px}
+.cab-workspace .cab-object-heading{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.cab-workspace .cab-object-heading>.cab-object-title{width:100%}
+.cab-workspace .cab-object-heading nav{margin-top:0}
+.cab-inspector-module{font-size:11px;color:#847769;background:transparent;border-color:#e8e2d9;padding:5px 8px}
+.cab-save-state{margin-right:auto;font-size:12px;color:#918575;align-self:center}
+.cab-save-state[data-changed=true]{color:#b84c12}
+.cab-structural-properties,.cab-structural-properties label{width:100%;box-sizing:border-box}
+@media(max-width:1100px) and (min-width:701px){.cab-editor.cab-workspace{grid-template-columns:190px minmax(250px,1fr) 270px}.cab-workspace>.cab-fields{padding:0 12px 14px}.cab-workspace>.cab-structure{padding:14px 9px}.cab-workspace .cab-overview{width:115px;height:125px}}
+@media(max-width:900px) and (min-width:701px){.dlg-box.wide:has(.cab-workspace){width:calc(100vw - 16px)}.cab-editor.cab-workspace{grid-template-columns:160px minmax(210px,1fr) 240px}.cab-workspace>.cab-visual{padding:10px}.cab-workspace .cab-overview{display:none}}
+@media(max-width:700px){.dlg-body:has(.cab-workspace){overflow:auto}.cab-editor.cab-workspace{display:grid;grid-template-columns:1fr;height:auto;min-height:0;overflow:visible}.cab-workspace>.cab-structure{max-height:270px;overflow:auto;border-right:0;border-bottom:1px solid #e8e2d9}.cab-workspace .cab-structure-help{display:none}.cab-workspace>.cab-visual{height:430px;min-height:0;width:auto}.cab-workspace>.cab-fields{display:block;height:auto;overflow:visible;border-left:0}.cab-workspace .cab-overview{width:100px;height:110px}.cab-workspace .cab-module-editor{max-height:300px;overflow:auto}.cab-workspace .cab-tree-host .cab-part-tree{max-height:150px;overflow:auto}.cab-workspace .cab-structure-heading{margin-bottom:8px}.cab-workspace .cab-add-module{width:auto;margin:0 8px 8px 0}.cab-workspace .cab-whole{width:auto}}

@@ -10,7 +10,7 @@ async function editFurnitureField(page,selector,value){
  const cancel=page.locator('#fab-editor [data-fab-close]').first();if(await cancel.count())await cancel.click();
 }
 async function revealCabinetSettings(page){
- for(let i=0;i<12;i++){
+ for(let i=0;i<48;i++){
   const summary=page.locator('.cab-fields details:not([open]):not(.cab-object-finder)>summary:visible').first();
   if(!await summary.count())break;await summary.click();
  }
@@ -23,7 +23,7 @@ function configuration(env=process.env){
  const output=relative=>{const target=path.resolve(root,'output',relative);if(!target.startsWith(path.join(root,'output')+path.sep))throw Error('Output path escapes output/');fs.mkdirSync(path.dirname(target),{recursive:true});return target.replaceAll('\\','/');};
  const selectCabinetObject=async(page,part={})=>{
   const kitchen=await page.locator('#cab-kitchen-object').count()>0,selector=kitchen?'#cab-kitchen-object':'#cab-object-target',control=page.locator(selector),current=JSON.parse(await control.inputValue()),wanted={...part,kind:part.kind??current.kind};
-  if(wanted.kind==='body'){const button=page.locator(kitchen?'[data-k-object="body"]':'[data-cab-target="body"]');if(await button.count())await button.click();return {kind:'body'};}
+  if(wanted.kind==='body'){const button=page.locator('[data-whole]');if(await button.count())await button.click();else {const legacy=page.locator(kitchen?'[data-k-object="body"]':'[data-cab-target="body"]');if(await legacy.count())await legacy.click();}return {kind:'body'};}
   const finder=page.locator('.cab-object-finder');if(!await finder.evaluate(el=>el.open))await finder.locator('summary').first().click();
   const tree=page.locator('.cab-part-tree');if(await tree.count()){
    if(wanted.column===undefined)wanted.column=current.column??0;

@@ -11,7 +11,7 @@
   const doorSizes=document.createElement('details');doorSizes.className='cab-door-sizes';host.appendChild(doorSizes);
   const drawerLayer=document.createElement('div');drawerLayer.className='cab-drawer-edit';host.appendChild(drawerLayer);
   const rulers=document.createElementNS('http://www.w3.org/2000/svg','svg'),rulerPath=document.createElementNS('http://www.w3.org/2000/svg','path');rulers.setAttribute('class','cab-dimension-lines');rulers.setAttribute('aria-hidden','true');rulers.appendChild(rulerPath);labelLayer.appendChild(rulers);
-  let controls=new OrbitControls(cam,cv),model=null,frame=0,disposed=false,current=f,down=null,selected=null,helper=null,guide=null,drag=null,labels=[];
+  let controls=new OrbitControls(cam,cv),model=null,frame=0,disposed=false,current=f,down=null,selected=null,helper=null,guide=null,tinted=null,drag=null,labels=[];
   let settings={front:false,unfolded:false,doors:'normal',dimensions:true,snap:true,dimensionScope:'all',interaction:'open',focusPart:false},viewHeight=3,activeColumn=null,summary=null,splitRoot=null,splitPanels=[];
   let hatchOutlines=[],hatchEditing=null,shelfEditing=null;
   const hatchBoxPath=document.createElementNS('http://www.w3.org/2000/svg','path'),hatchOpeningPath=document.createElementNS('http://www.w3.org/2000/svg','path');hatchBoxPath.setAttribute('class','cab-hatch-box-outline');hatchOpeningPath.setAttribute('class','cab-hatch-opening-outline');rulers.appendChild(hatchBoxPath);rulers.appendChild(hatchOpeningPath);
@@ -20,7 +20,7 @@
   setupControls();
   const unbindNavigation=root.FurnishNavigation?.bindOrbit(cv,()=>controls)||(()=>{});
   function clearModel(){if(!model)return;model.traverse(o=>{o.geometry?.dispose();if(o.userData.cabinetOwnMaterial)o.material.dispose();});sc.remove(model);}
-  function clearHighlight(){for(const o of [helper,guide])if(o){sc.remove(o);o.geometry.dispose();o.material.dispose();}helper=guide=null;}
+  function clearHighlight(){if(tinted){tinted.mesh.material=tinted.original;tinted.material.dispose();tinted=null;}for(const o of [helper,guide])if(o){sc.remove(o);o.geometry.dispose();o.material.dispose();}helper=guide=null;}
   function tag(o){const part=o.userData.kitchenShelf,K=root.FurnishKitchen;if(part&&current.kitchen&&['door','open'].includes(current.kitchen.modules[part.module]?.role))return {column:elevation?elevation.indices[part.module]:part.module,shelf:part.shelf,kitchenModule:part.module};return o.userData.cabinetShelf||o.userData.cabinetDivider||o.userData.cabinetBay;}
   function inspectPart(o){
    if(!o)return {kind:'body'};
@@ -35,7 +35,7 @@
   function highlight(){
    clearHighlight();const mesh=selectedMesh();cv.style.cursor=mesh?'grab':'';readout.hidden=!mesh;if(!mesh){selected=null;return;}
    readout.hidden=selected.shelf===undefined&&selected.divider===undefined;
-   model.updateMatrixWorld(true);helper=new THREE.BoxHelper(mesh,0x168de2);helper.material.depthTest=false;helper.renderOrder=10;sc.add(helper);
+   if(['shelf','structure'].includes(selected.kind)&&mesh.isMesh&&!Array.isArray(mesh.material)){const material=mesh.material.clone();tinted={mesh,original:mesh.material,material};material.color.set(0x168de2);if(material.emissive){material.emissive.set(0x168de2);material.emissiveIntensity=.2;}mesh.material=material;}model.updateMatrixWorld(true);helper=new THREE.BoxHelper(mesh,0x168de2);helper.material.depthTest=false;helper.renderOrder=10;sc.add(helper);
    if(current.kitchen){if(selected.shelf!==undefined&&(selected.kitchenModule!==undefined||selected.column!==undefined)){const K=root.FurnishKitchen,index=elevation?elevation.indices.indexOf(selected.column):selected.kitchenModule??selected.column,m=K.cabinetLayout(current).find(m=>m.index===index),value=K.moduleShelves(m,current.kitchen.baseHeight,K.isWall(current),K.plinth(current))[selected.shelf];readout.textContent=`模块 ${selected.column+1} · 层板 ${selected.shelf+1} · ${value} mm`;}return;}
    if(selected.kind==='body')return;
    const {column,shelf,divider}=selected,c=C.config(current),bay=C.layout(current)[column],z=current.d/2000+.025,base=(c.plinth+c.thickness)/1000;
@@ -46,7 +46,7 @@
    }else if(divider!==undefined)readout.textContent=`分隔板 ${divider+1} · 左模块 ${Math.round(C.moduleWidths(current)[divider])} / 右模块 ${Math.round(C.moduleWidths(current)[divider+1])} mm`;
    else readout.textContent=`分区 ${column+1} · 模块外宽 ${Math.round(C.moduleWidths(current)[column])} mm`;
   }
-  function shelfGaps(column,shelf){return current.kitchen?root.FurnishKitchen.moduleShelfClearances(current,elevation?elevation.indices.indexOf(column):column,shelf):C.shelfClearances(current,column,shelf);}
+  function shelfGaps(column,shelf){if(typeof shelf==='string'){const board=C.structuralBoards(current).find(b=>b.section===shelf),lower=board.lower,upper=board.upper,down=board.value-board.min,up=board.max-board.value;return {lower:{bottom:board.position-lower,top:board.position,height:lower,min:lower-down,max:lower+up},upper:{bottom:board.position+board.thickness,top:board.position+board.thickness+upper,height:upper,min:upper-up,max:upper+down}};}return current.kitchen?root.FurnishKitchen.moduleShelfClearances(current,elevation?elevation.indices.indexOf(column):column,shelf):C.shelfClearances(current,column,shelf);}
   function dimensions(){
    labelLayer.replaceChildren(rulers);labels=[];hatchOutlines=[];hatchBoxPath.setAttribute('d','');hatchOpeningPath.setAttribute('d','');readout.style.top=settings.dimensions?'42px':'12px';
    doorSizes.replaceChildren();doorSizes.hidden=true;doorSizeCount=0;
@@ -82,7 +82,7 @@
     if(all&&settings.doors==='normal'&&(c.hoodBayHeight!==undefined?!c.columns[0].doorOpen&&!c.columns[2].doorOpen:c.columns[i].door!=='none'&&!c.columns[i].doorOpen&&!(c.columns[i].doorSections&&Object.values(c.columns[i].doorSections).some(s=>s.open))))return;
     if(selected?.column===i&&selected.shelf!==undefined){
      shelfMeasures(i,selected.shelf,C.shelfClearances(current,i,selected.shelf),height=>point(bay.center,base+height,d/2+25));
-    }else C.spaces(current,i).forEach(gap=>measure(`净高 ${fmt(gap.height)}`,point(bay.center,base+gap.bottom,d/2+25),point(bay.center,base+gap.top,d/2+25),12));
+    }else if(selected?.kind==='structure'&&selected.column===i){if(selected.section!=='counter')shelfMeasures(i,selected.section,shelfGaps(i,selected.section),height=>point(bay.center,height,d/2+25));}else C.spaces(current,i).forEach(gap=>measure(`净高 ${fmt(gap.height)}`,point(bay.center,base+gap.bottom,d/2+25),point(bay.center,base+gap.top,d/2+25),12));
    });
    }
    if(settings.dimensions&&!current.kitchen){
@@ -264,12 +264,12 @@
    let ends=[points[0],points[1]],distance=0;for(const a of points)for(const b of points){const span=Math.hypot(a.x-b.x,a.y-b.y);if(span>distance){ends=[a,b];distance=span;}}
    let line=svg.querySelector('.cab-drawer-snap-guide');if(!line){line=document.createElementNS(svg.namespaceURI,'path');line.setAttribute('class','cab-drawer-snap-guide');line.setAttribute('aria-label','相邻抽屉层间已对齐');svg.appendChild(line);}line.dataset.targetColumn=String(elevation?elevation.indices[target.column]:target.column);line.dataset.height=String(target.height);line.setAttribute('d',`M${ends[0].x},${ends[0].y}L${ends[1].x},${ends[1].y}`);
   }
-  function update(value){current=value;clearModel();model=value.kitchen?root.FurnishKitchenModel.build(THREE,value,box,{furniture,plan,doors:settings.doors,outlines:true,previewBlind:elevation?.blind,previewMirror:elevation?.mirror}):root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture,plan});if(value.kitchen?.laundry?.assembly&&buildDevice){const K=root.FurnishKitchen,device=furniture.find(p=>p.laundryHostId===value.id),bay=K.layout(value).find(m=>m.role==='empty');if(device&&bay){const aligned=K.centerLaundryInBay(value,{...device,...value.kitchen.laundry.appliance},bay.index),[x,z]=K.local(value,aligned.cx,aligned.cy),washer=buildDevice({...aligned,rot:0,flip:false});washer.position.set(x/1000,(aligned.mountHeight??0)/1000,z/1000);washer.rotation.set(0,0,0);washer.scale.x=Math.abs(washer.scale.x);washer.traverse(o=>o.userData.cabinetIgnorePick=true);model.add(washer);}}if(value.kitchen)model.scale.x=value.flip?-1:1;
+  function update(value){current=value;clearHighlight();clearModel();model=value.kitchen?root.FurnishKitchenModel.build(THREE,value,box,{furniture,plan,doors:settings.doors,outlines:true,previewBlind:elevation?.blind,previewMirror:elevation?.mirror}):root.FurnishCabinetModel.build(THREE,value,box,{doors:settings.doors,outlines:true,furniture,plan});if(value.kitchen?.laundry?.assembly&&buildDevice){const K=root.FurnishKitchen,device=furniture.find(p=>p.laundryHostId===value.id),bay=K.layout(value).find(m=>m.role==='empty');if(device&&bay){const aligned=K.centerLaundryInBay(value,{...device,...value.kitchen.laundry.appliance},bay.index),[x,z]=K.local(value,aligned.cx,aligned.cy),washer=buildDevice({...aligned,rot:0,flip:false});washer.position.set(x/1000,(aligned.mountHeight??0)/1000,z/1000);washer.rotation.set(0,0,0);washer.scale.x=Math.abs(washer.scale.x);washer.traverse(o=>o.userData.cabinetIgnorePick=true);model.add(washer);}}if(value.kitchen)model.scale.x=value.flip?-1:1;
    sc.add(model);model.updateMatrixWorld(true);highlight();dimensions();syncSplit();}
   function fit(){
    const bounds=C.assemblyBounds(current),actual=bounds??{w:current.w,d:current.d};
    const h=(bounds?bounds.h+(C.movablePegboard(current)?bounds.bottom:0):current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness):C.height(current))/1000,w=actual.w/1000,size=Math.max(w,h,actual.d/1000),center=(C.movablePegboard(current)?0:(bounds?.bottom??0))/1000+h/2,cx=bounds?(bounds.left+bounds.right)/2000:0,cz=bounds?(bounds.back+bounds.front)/2000:0;controls.target.set(cx,center,cz);
-   if(settings.front){viewHeight=Math.max(h+(elevation ? .35 : 0),w/(host.clientWidth/host.clientHeight||1))*(elevation?1.15:1.6);cam.position.set(cx,center,cz+Math.max(4,size*3));cam.zoom=1;resize();}
+   if(settings.front){viewHeight=Math.max(h+(elevation ? .35 : 0),w/(host.clientWidth/host.clientHeight||1))*(elevation?1.15:1.3);cam.position.set(cx,center,cz+Math.max(4,size*3));cam.zoom=1;resize();}
    else if(current.kitchen){const side=(root.FurnishKitchen.cornerSide(current)==='right'?-1:1)*(current.flip?-1:1);if(current.kitchen.shape==='U')cam.position.set(side*size*2,h/2+size*.9,size*.8);else cam.position.set(side*size,h/2+size*.7,size*2);}else cam.position.set(cx+size*1.2,center+size*.6,cz+size*2.4);controls.update();
   }
   function resize(){const width=host.clientWidth||500,height=host.clientHeight||440,aspect=width/height;r.setSize(width,height);if(cam.isOrthographicCamera){if(elevation)viewHeight=Math.max(((current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):current.kitchen.baseHeight+current.kitchen.thickness))/1000+.35,current.w/1000/aspect)*1.15;cam.left=-viewHeight*aspect/2;cam.right=-cam.left;cam.top=viewHeight/2;cam.bottom=-cam.top;}else cam.aspect=aspect;cam.updateProjectionMatrix();if(splitRoot)syncSplit();}
@@ -314,7 +314,7 @@
   function render(){if(disposed)return;if(!splitRoot){if(!drag&&!drawerDrag)controls.update();r.render(sc,cam);projectLabels();projectDrawers();}frame=requestAnimationFrame(render);}render();
   return {
    update:value=>{const dims=v=>[C.assemblyBounds(v),v.w,v.d,v.kitchen?(v.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(v):v.kitchen.baseHeight+v.kitchen.thickness):v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
-   selectPart:part=>{const oldShelf=selected?.shelf;selected=part;const old=activeColumn;activeColumn=part?.column??null;highlight();if(old!==activeColumn||oldShelf!==part?.shelf)dimensions();else markActive();},focus:()=>cv.focus({preventScroll:true}),
+   selectPart:part=>{const oldPart=JSON.stringify(selected);selected=part;const old=activeColumn;activeColumn=part?.column??null;highlight();if(old!==activeColumn||oldPart!==JSON.stringify(part))dimensions();else markActive();},focus:()=>cv.focus({preventScroll:true}),
    partDimensions:()=>{const mesh=selectedMesh(),size=mesh?.userData.cabinetDoorSize??mesh?.userData.cabinetDrawerSize;return size?{width:size.width,height:size.height}:null;},
    finishShelfInput:()=>finishShelfInput()&&splitPanels.every(panel=>panel.preview.finishShelfInput()),
    finishHatchInput:()=>finishHatchInput(),

@@ -5,7 +5,7 @@ async (page,V)=>{
  const check=(ok,message)=>{if(!ok)throw Error(mode+': '+message);checks.push(message);};
  const save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click(),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click();
  const pick=part=>V.selectCabinetObject(p,part);
- const read=id=>p.evaluate(id=>structuredClone(getF(id)),id),open=async id=>{await p.evaluate(id=>{selectIds([id]);FurnishCabinetEditor.open(id);},id);await p.locator('#cab-preview canvas').waitFor();};
+ const read=id=>p.evaluate(id=>structuredClone(getF(id)),id),open=async id=>{await p.evaluate(id=>{selectIds([id]);FurnishCabinetEditor.open(id);},id);await p.locator('#cab-preview canvas:visible').first().waitFor();};
  try{
   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.locator('#lib').waitFor();
   await p.evaluate(()=>{const at=ROOMS.find(r=>r.name==='客厅').at,regular={id:'object-cab',type:'cabinet',cx:at[0],cy:at[1],rot:0,...FurnishCabinet.preset('sideboard-open')},legacy={id:'object-old',type:'wardrobe',name:'旧衣柜',cx:at[0],cy:at[1],rot:0,w:2000,d:600,color:'#f3f1ec'},kitchen=FurnishKitchen.configure({id:'object-kitchen',type:'kitchenwall',cx:at[0],cy:at[1],rot:0,color:'#f3f1ec'},{version:1,shape:'L',depth:350,baseHeight:700,thickness:0,modules:[{run:0,width:1000,role:'door'},{run:1,width:900,role:'drawer'}]});let n=0;const laundry=FurnishKitchen.createLaundryCabinet({id:'object-laundry',cx:at[0],cy:at[1],rot:0,color:'#f3f1ec'},()=>`lo${++n}`,'left');mutate(()=>state.furniture=[regular,legacy,kitchen,...laundry]);});

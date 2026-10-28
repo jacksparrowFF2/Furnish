@@ -1,0 +1,56 @@
+{
+  "scope": "Incremental cabinet workspace verification; every case covers HTTP and offline file://",
+  "results": [
+    {
+      "name": "cabinet-workspace",
+      "status": "PASS",
+      "seconds": 14.8,
+      "log": "cabinet-workspace.log",
+      "sourceRun": "verification-SV6LkB"
+    },
+    {
+      "name": "cabinet-part-inspector",
+      "status": "PASS",
+      "seconds": 16.1,
+      "log": "cabinet-part-inspector.log",
+      "sourceRun": "verification-0bX89l"
+    },
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 21.2,
+      "log": "cabinet-object-inspector.log",
+      "sourceRun": "verification-pWoZ9N"
+    },
+    {
+      "name": "cabinet-setting-inheritance",
+      "status": "PASS",
+      "seconds": 17.5,
+      "log": "cabinet-setting-inheritance.log",
+      "sourceRun": "verification-0bX89l"
+    },
+    {
+      "name": "cabinet-shelf-clearances",
+      "status": "PASS",
+      "seconds": 8,
+      "log": "cabinet-shelf-clearances.log",
+      "sourceRun": "verification-pWoZ9N"
+    },
+    {
+      "name": "cabinet-editor-completion",
+      "status": "PASS",
+      "seconds": 16.7,
+      "log": "cabinet-editor-completion.log",
+      "sourceRun": "verification-pWoZ9N"
+    },
+    {
+      "name": "kitchen-layout",
+      "status": "PASS",
+      "seconds": 42.1,
+      "log": "kitchen-layout.log",
+      "sourceRun": "verification-0bX89l"
+    }
+  ],
+  "finalViewAndLayoutRun": "verification-0bX89l",
+  "finalStructuralBoardRun": "verification-SV6LkB"
+}
