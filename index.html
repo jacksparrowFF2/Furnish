@@ -1614,7 +1614,11 @@ function buildSelectionElevation(ids){
  const bottom=M(v.bottom),top=M(v.top),V=(xx,y)=>new THREE.Vector3(xx,y,z);
  const floor=Number.isFinite(heights.bottom)?M(v.bottom-heights.bottom):bottom;
  annotationLine(elevationG,[V(x,floor),V(x,top),V(x-.07,floor),V(x+.07,floor),V(x-.07,bottom),V(x+.07,bottom),V(x-.07,top),V(x+.07,top)],0x167b9b);
- annotationLabel(elevationG,tr(`距地砖完成面：底部 ${value(heights.bottom)} · 顶部 ${value(heights.top)}；顶部距房顶 ${value(heights.roofGap)}`,`Above finished floor: bottom ${value(heights.bottom)} · top ${value(heights.top)}; top to room ceiling ${value(heights.roofGap)}`),x,(bottom+top)/2,z,'scene-elevation');
+ const label=annotationLabel(elevationG,'',x,(bottom+top)/2,z,'scene-elevation scene-height-card'),el=label.element;
+ const heading=document.createElement('small');heading.textContent=tr('地砖完成面基准','Finished floor datum');el.append(heading);
+ for(const [zh,en,n] of [['顶部距地面','Top above floor',heights.top],['顶部距房顶','Top to ceiling',heights.roofGap],['底部距地面','Bottom above floor',heights.bottom]]){
+  const row=document.createElement('div'),name=document.createElement('span'),number=document.createElement('b');row.className='scene-height-row';name.textContent=tr(zh,en);number.textContent=value(n);row.append(name,number);el.append(row);
+ }
 }
 function clearSceneIssue(){clearTimeout(issueTimer);sceneIssue=null;clearAnnotations(issueG);invalidate();}
 function highlightIssue(item,volumes){
