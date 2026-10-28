@@ -167,7 +167,7 @@ function designRegion(room,{style,height,thickness=rules().flatThickness,section
  return items;
 }
 function sameValue(a,b){if(typeof a==='number'&&typeof b==='number')return Math.abs(a-b)<=eps();if(a===b)return true;if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;const ka=Object.keys(a).sort(),kb=Object.keys(b).sort();return ka.length===kb.length&&ka.every((k,i)=>k===kb[i]&&sameValue(a[k],b[k]));}
-// Merge only coplanar plain boards. Keep one region identity and its saved recipe.
+// Merge plain boards at the highest selected elevation, keeping the source identity and recipe.
 function mergeFlatRegions(work,ids,{sourceId=ids?.[0]}={}){
  validate(work.ceilings);
  if(!Array.isArray(ids)||ids.length<2||new Set(ids).size!==ids.length)fail('请选择至少两个不同的平顶区域');
@@ -175,13 +175,13 @@ function mergeFlatRegions(work,ids,{sourceId=ids?.[0]}={}){
  if(regions.some(r=>!r))fail('要合并的吊顶区域不存在');
  if(regions.some(r=>r.style!=='flat'))fail('只能合并平面吊顶区域，沿边吊顶和铝扣板请分别编辑');
  const source=regions.find(r=>r.id===sourceId);if(!source)fail('请选择所选区域中的名称与构造来源');
- if(regions.some(r=>!sameValue(r.height,source.height)||!sameValue(r.thickness,source.thickness)))fail('平顶底标高和板厚须相同，请先统一后再合并');
+ if(regions.some(r=>!sameValue(r.thickness,source.thickness)))fail('平顶板厚须相同，请先统一后再合并');
  const G=zones(),polys=regions.map(r=>r.polygon),overlap=(a,b)=>G.area(G.decompose([a,b],p=>G.inside(p,a)&&G.inside(p,b)))>.0001;
  const reached=new Set([0]),queue=[0];while(queue.length){const i=queue.shift();polys.forEach((p,j)=>{if(!reached.has(j)&&(G.adjacent([polys[i]],[p])||overlap(polys[i],p))){reached.add(j);queue.push(j);}});}
  if(reached.size!==regions.length)fail('所选平顶须共边相邻或重叠，不能仅顶点接触或分离');
  const pieces=G.decompose(polys,p=>polys.some(poly=>G.inside(p,poly))),outline=G.outline(pieces);
  if(outline.rings.length!==1)fail('合并结果须为单一无孔区域；当前不支持带孔平顶');
- const merged={...clone(source),polygon:outline.rings[0]};polygon(merged.polygon,'合并后的平顶区域');
+ const merged={...clone(source),height:Math.max(...regions.map(r=>r.height)),polygon:outline.rings[0]};polygon(merged.polygon,'合并后的平顶区域');
  const difference=G.area(G.decompose([...polys,merged.polygon],p=>polys.some(poly=>G.inside(p,poly))!==G.inside(p,merged.polygon)));
  if(difference>.1||Math.abs(G.area(pieces)-Math.abs(area(merged.polygon)))>.1)fail('合并覆盖范围校验失败，未应用修改');
  const next=clone(work);next.ceilings.regions=next.ceilings.regions.filter(r=>!ids.includes(r.id)||r.id===sourceId);next.ceilings.items=next.ceilings.items.filter(c=>!ids.includes(c.regionId)||c.regionId===sourceId);
