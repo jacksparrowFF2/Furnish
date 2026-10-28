@@ -1,0 +1,76 @@
+test-kitchen-outer-edges.cjs
+node:assert:152
+  throw new AssertionError(obj);
+  ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+1 !== 0
+
+    at Object.<anonymous> (C:\Users\SPH\Documents\GitHub\Furnish\tests\test-kitchen-outer-edges.cjs:25:97)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object..js (node:internal/modules/cjs/loader:2060:10)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.require (node:internal/modules/cjs/loader:1674:12)
+    at require (node:internal/modules/helpers:157:16)
+    at [eval]:1:427
+    at runScriptInThisContext (node:internal/vm:219:10) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0
+
+test-kitchen-resize.cjs
+evalmachine.<anonymous>:284
+    const o=drag.original,basis=FurnishProducts.slidingResizeFrame(o)?.proxy||o,a=basis.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
+                                ^
+
+ReferenceError: FurnishProducts is not defined
+    at processCanvasPointerMove (evalmachine.<anonymous>:284:33)
+    at flushCanvasPointer (evalmachine.<anonymous>:141:21)
+    at evalmachine.<anonymous>:380:73
+    at Object.pointermove (C:\Users\SPH\Documents\GitHub\Furnish\tests\helpers\pointer-frames.cjs:9:93)
+    at Object.<anonymous> (C:\Users\SPH\Documents\GitHub\Furnish\tests\test-kitchen-resize.cjs:30:101)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object..js (node:internal/modules/cjs/loader:2060:10)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+
+Node.js v24.20.0
+
+test-kitchen-run-handles.cjs
+node:assert:152
+  throw new AssertionError(obj);
+  ^
+
+AssertionError [ERR_ASSERTION]: finite wall spans do not snap to remote extensions
+
+1 !== 0
+
+    at Object.<anonymous> (C:\Users\SPH\Documents\GitHub\Furnish\tests\test-kitchen-run-handles.cjs:23:83)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object..js (node:internal/modules/cjs/loader:2060:10)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.require (node:internal/modules/cjs/loader:1674:12)
+    at require (node:internal/modules/helpers:157:16)
+    at [eval]:1:427
+    at runScriptInThisContext (node:internal/vm:219:10) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

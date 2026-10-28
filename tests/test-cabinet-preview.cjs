@@ -55,13 +55,18 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  preview.setView({dimensionScope:'space'});tick();assert(texts().some(s=>s.startsWith('总高')));assert(!texts().some(s=>/^\d+×\d+/.test(s)));assert.equal(JSON.stringify(draft),saved,'step navigation must not change the saved cabinet');
  preview.dispose();assert(disconnected);assert.equal(canvas.isConnected,false);
  // Real production ray picks now select objects rather than toggling motion.
- const fixture={type:'cabinet',...C.preset('sideboard-open')};fixture.cabinet.columns[1].door='double';let inspected=null;
- const accept=p=>{inspected=p;return true;},inspector=context.FurnishCabinetPreview.create({THREE:{...three,WebGLRenderer:Renderer},OrbitControls:Controls,box,host:new Element(),f:fixture,background:'#eeeae3',actions:{inspect:accept,select:accept,move:()=>null,divider:()=>null}});
- inspector.setView({front:true});tick();
+ const fixture={type:'cabinet',...C.preset('sideboard-open')};fixture.cabinet.columns[1].door='double';let inspected=null,activated=0;
+ const accept=p=>{inspected=p;return true;},inspector=context.FurnishCabinetPreview.create({THREE:{...three,WebGLRenderer:Renderer},OrbitControls:Controls,box,host:new Element(),f:fixture,background:'#eeeae3',actions:{inspect:accept,select:accept,activateDoor:part=>{activated++;return accept(part);},move:()=>null,divider:()=>null}});
+ inspector.setView({front:true,interaction:'edit'});tick();
  for(const [kind,match] of [['door',o=>o.userData.cabinetDoorSize],['drawer',o=>o.userData.cabinetDrawerBoard==='front'&&o.userData.cabinetPart.column===0],['bay',o=>o.userData.cabinetBay?.column===0],['shelf',o=>o.userData.cabinetShelf?.column===0]]){
   let mesh;scene.traverse(o=>{if(o.isMesh&&match(o))mesh=o;});mesh.geometry.computeBoundingBox();const at=mesh.localToWorld(mesh.geometry.boundingBox.getCenter(new three.Vector3()));at.z+=.0001;at.project(camera);const pos={clientX:(at.x+1)*250,clientY:(1-at.y)*220};canvas.fire('pointerdown',pos);canvas.fire('pointerup',pos);
   assert(inspected,kind+' can be selected by a real ray');assert.equal(kind==='shelf'&&inspected.shelf!==undefined?'shelf':inspected.kind,kind);
  }
+ assert.equal(activated,0,'edit mode selects doors without opening');
+ inspector.setView({interaction:'open'});tick();let front;scene.traverse(o=>{if(o.isMesh&&o.userData.cabinetDoorSize)front=o;});front.geometry.computeBoundingBox();const doorAt=front.localToWorld(front.geometry.boundingBox.getCenter(new three.Vector3())).project(camera),doorPoint={clientX:(doorAt.x+1)*250,clientY:(1-doorAt.y)*220};canvas.fire('pointerdown',doorPoint);canvas.fire('pointerup',doorPoint);assert.equal(activated,1,'open preview mode activates a door');
+ let drawerFace;scene.traverse(o=>{if(o.isMesh&&o.userData.cabinetDrawerBoard==='front'&&o.userData.cabinetPart.column===0)drawerFace=o;});drawerFace.geometry.computeBoundingBox();const drawerAt=drawerFace.localToWorld(drawerFace.geometry.boundingBox.getCenter(new three.Vector3())).project(camera),drawerPoint={clientX:(drawerAt.x+1)*250,clientY:(1-drawerAt.y)*220};canvas.fire('pointerdown',drawerPoint);canvas.fire('pointerup',drawerPoint);assert.equal(activated,2,'open preview mode activates the selected drawer');
+ inspector.selectPart({kind:'door',column:1,leaf:0,section:'storage'});inspector.setView({dimensionScope:'front',focusPart:true});tick();// Production face metadata drives the size readout.
+ assert(inspector.partDimensions().width>0);inspector.setView({interaction:'edit'});
  const untouched=JSON.stringify(fixture);canvas.fire('pointerdown',{clientX:5,clientY:5});canvas.fire('pointerup',{clientX:5,clientY:5});assert.equal(inspected.kind,'body');assert.equal(JSON.stringify(fixture),untouched,'selection must not toggle a door or drawer');inspector.dispose();
  console.log('PASS shelf/divider picking, constrained dragging, growing total width, unchanged neighbors, keyboard edits, cancellation, front view and preview cleanup');
 })().catch(e=>{console.error(e);process.exit(1);});

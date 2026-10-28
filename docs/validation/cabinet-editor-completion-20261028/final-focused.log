@@ -1,0 +1,15 @@
+tests/test-cabinet-editor-completion.cjs
+PASS 144 kitchen shelf edits: floor/wall modules, straight/L/U, mirror/rotation, limits, unchanged neighbors, implicit defaults, per-leaf/end doors and project recovery
+PASS edited kitchen shelf elevations match production board faces
+tests/test-cabinet-preview.cjs
+PASS shelf/divider picking, constrained dragging, growing total width, unchanged neighbors, keyboard edits, cancellation, front view and preview cleanup
+tests/test-kitchen-preview.cjs
+PASS kitchen production preview, mirrored camera, picking, draft isolation, disposal and cabinet-only hood cavity previews with fitting room appliances
+tests/test-entry-editor.cjs
+PASS entry editor: restored common controls execute width/count, explicit repartition, glass/handles, shelf tools, plinth, save and import; storage bands prevent shelves crossing the niche
+tests/test-kitchen-form.cjs
+PASS shared kitchen form: unblurred values, precision preservation, draft isolation, right corner control and link remapping
+tests/test-kitchen-elevations.cjs
+PASS left/right/mirrored production elevation rows, real blind geometry, exact source module indices, all width labels, real drawer ray mapping, input isolation, shape/view switching and renderer cleanup
+tests/test-kitchen-wall-adjust.cjs
+PASS kitchen wall assemblies: historical structures/hood bays, independent runs/depths/dividers, drawer totals, shelves, installation heights/volumes, actual no-worktop production, transforms/elevations and restoration

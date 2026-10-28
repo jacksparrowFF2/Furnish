@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "cabinet-object-inspector"
+  ],
+  "results": [
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 18.8,
+      "log": "cabinet-object-inspector.log"
+    }
+  ],
+  "notRun": []
+}

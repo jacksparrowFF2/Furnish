@@ -254,3 +254,23 @@
 .cab-group-options {margin-top:20px!important;border-top:1px solid var(--line,#ddd)}
 .cab-group-options>summary {font-weight:600;cursor:pointer}
 .cab-group-options[open]>summary {margin-bottom:14px}
+.cab-part-search {display:flex!important;flex-direction:column;align-items:stretch!important;gap:5px!important;margin:12px 0!important}
+.cab-part-search input {box-sizing:border-box;width:100%;min-height:36px;border:1px solid var(--line,#ddd);border-radius:6px;padding:7px 9px;font:inherit;background:var(--panel,#fff)}
+.cab-part-tree {max-height:300px;overflow:auto;overscroll-behavior:contain}
+.cab-part-tree>details {padding:5px 0;border-top:1px solid var(--line,#ddd)}
+.cab-part-tree summary {cursor:pointer;font-weight:600;padding:5px 0}
+.cab-tree-parts {display:flex;flex-direction:column;gap:4px;padding:4px 0 5px 14px}
+.cab-tree-parts>.cab-tree-part {text-align:left;justify-content:flex-start;white-space:normal}
+.cab-tree-part[aria-pressed=true] {background:var(--accent,#b84c12);color:white}
+.cab-current-part>.form {width:100%}
+.cab-current-part,.cab-group-options {grid-column:1/-1;box-sizing:border-box;width:100%}
+.cab-tree-part {min-height:36px}
+[data-divider-inspector]>legend {display:none}
+.cab-view-controls {row-gap:8px}
+@media(min-width:1000px){
+ .dlg-box.wide:has(.cab-expanded){width:calc(100vw - 32px);max-width:calc(100vw - 32px)}
+ .cab-editor.cab-expanded{grid-template-columns:minmax(0,3fr) minmax(320px,1fr);height:calc(100dvh - 180px)}
+ .cab-expanded #cab-preview{height:calc(100dvh - 340px);min-height:300px}
+ .cab-expanded #cab-preview[data-unfolded=true]{height:calc(100dvh - 340px)}
+}
+@media(max-width:999px){.cab-expand{display:none}}

@@ -1,0 +1,42 @@
+{
+  "selected": [
+    "cabinet-editor-completion",
+    "cabinet-part-inspector",
+    "cabinet-object-inspector",
+    "cabinet-setting-inheritance",
+    "cabinet-shelf-clearances"
+  ],
+  "results": [
+    {
+      "name": "cabinet-editor-completion",
+      "status": "PASS",
+      "seconds": 15.2,
+      "log": "cabinet-editor-completion.log"
+    },
+    {
+      "name": "cabinet-part-inspector",
+      "status": "PASS",
+      "seconds": 15.9,
+      "log": "cabinet-part-inspector.log"
+    },
+    {
+      "name": "cabinet-object-inspector",
+      "status": "PASS",
+      "seconds": 18.8,
+      "log": "cabinet-object-inspector.log"
+    },
+    {
+      "name": "cabinet-setting-inheritance",
+      "status": "PASS",
+      "seconds": 16.5,
+      "log": "cabinet-setting-inheritance.log"
+    },
+    {
+      "name": "cabinet-shelf-clearances",
+      "status": "PASS",
+      "seconds": 7.5,
+      "log": "cabinet-shelf-clearances.log"
+    }
+  ],
+  "notRun": []
+}

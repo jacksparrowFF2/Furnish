@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "kitchen-layout"
+  ],
+  "results": [
+    {
+      "name": "kitchen-layout",
+      "status": "PASS",
+      "seconds": 36.4,
+      "log": "kitchen-layout.log"
+    }
+  ],
+  "notRun": []
+}

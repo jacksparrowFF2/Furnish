@@ -1,0 +1,278 @@
+[
+  {
+    "file": "tests\\test-cabinet-advanced.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-boundary-snapping.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-catalog.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-custom-fronts.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-design-upgrade.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-dimensions.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-door-settings.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-drawer-joints.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-edit-operations.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-editor-completion.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-full-width-drawers.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-interior-distances.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-model.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-module-widths.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-obstacle-messages.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-opening-3d.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-opening-volume-model.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-overlay.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-palette.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-part-inspector.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-preview.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-section-doors.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-setting-inheritance.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet-shelf-clearances.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-cabinet.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-entry-console.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-entry-editor.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-entry-pegboard.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-entry-shared-board.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-auto-avoid.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-corner-fit.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-corner-leaves.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-dish-basket.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-divider-input.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-dividers.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-door-pairing.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-door-widths.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-drawer-boundaries.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-drawer-snapping.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-drawer-tiers.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-edge-snapping.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-elevations.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-extension-resize.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-form.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-gap-input.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-outer-edges.cjs",
+    "status": "FAIL"
+  },
+  {
+    "file": "tests\\test-kitchen-overlay.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-partitions.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-plinth.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-preview.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-resize.cjs",
+    "status": "FAIL"
+  },
+  {
+    "file": "tests\\test-kitchen-right.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-run-handles.cjs",
+    "status": "FAIL"
+  },
+  {
+    "file": "tests\\test-kitchen-shelves.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-single-hinge.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-thin-end.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-u.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-wall-adjust.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen-worktop.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-kitchen.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-area.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-back-alignment.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-basin-joins.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-cabinet.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-catalog.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-integrated.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-notch-closure.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-resize-vessel.cjs",
+    "status": "PASS"
+  },
+  {
+    "file": "tests\\test-laundry-stack.cjs",
+    "status": "PASS"
+  }
+]

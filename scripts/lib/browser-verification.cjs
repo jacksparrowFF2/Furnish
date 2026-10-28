@@ -24,7 +24,12 @@ function configuration(env=process.env){
  const selectCabinetObject=async(page,part={})=>{
   const kitchen=await page.locator('#cab-kitchen-object').count()>0,selector=kitchen?'#cab-kitchen-object':'#cab-object-target',control=page.locator(selector),current=JSON.parse(await control.inputValue()),wanted={...part,kind:part.kind??current.kind};
   if(wanted.kind==='body'){const button=page.locator(kitchen?'[data-k-object="body"]':'[data-cab-target="body"]');if(await button.count())await button.click();return {kind:'body'};}
-  const finder=page.locator('.cab-object-finder');if(!await finder.evaluate(el=>el.open))await finder.locator('summary').click();
+  const finder=page.locator('.cab-object-finder');if(!await finder.evaluate(el=>el.open))await finder.locator('summary').first().click();
+  const tree=page.locator('.cab-part-tree');if(await tree.count()){
+   if(wanted.column===undefined)wanted.column=current.column??0;
+   const buttons=tree.locator('[data-cab-pick]'),match=await buttons.evaluateAll((buttons,wanted)=>{const items=buttons.map((b,index)=>({index,value:JSON.parse(b.dataset.cabPick)}));return items.find(o=>Object.entries(wanted).every(([k,v])=>v===undefined||o.value[k]===v))??items.find(o=>o.value.kind==='bay'&&(wanted.assembly?o.value.assembly===wanted.assembly:o.value.column===wanted.column));},wanted);
+   if(!match)throw Error('Cabinet object unavailable: '+JSON.stringify(wanted));const button=buttons.nth(match.index),parent=button.locator('xpath=ancestor::details[@data-cab-tree-group]');if(!await parent.evaluate(el=>el.open))await parent.locator('summary').first().click();await button.click();return match.value;
+  }
   const group=String(wanted.assembly??wanted.column??current.column??0),groups=page.locator('[data-cab-find-group]');
   if(await groups.inputValue()!==group){await groups.selectOption(group);if(wanted.assembly)return wanted;}
   if(wanted.column===undefined)wanted.column=current.column??0;

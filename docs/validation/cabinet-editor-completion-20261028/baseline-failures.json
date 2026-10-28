@@ -1,0 +1,17 @@
+[
+  {
+    "file": "test-kitchen-outer-edges.cjs",
+    "status": 1,
+    "baseline": "29d03178bcbef89ef34f0d132c02b2da980fed8d"
+  },
+  {
+    "file": "test-kitchen-resize.cjs",
+    "status": 1,
+    "baseline": "29d03178bcbef89ef34f0d132c02b2da980fed8d"
+  },
+  {
+    "file": "test-kitchen-run-handles.cjs",
+    "status": 1,
+    "baseline": "29d03178bcbef89ef34f0d132c02b2da980fed8d"
+  }
+]
