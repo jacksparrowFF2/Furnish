@@ -296,6 +296,9 @@
 .cab-tree-host .cab-tree-part{border:0;background:transparent;box-shadow:none;padding:7px 9px;font-size:12px;min-height:32px;color:#5c5449}
 .cab-tree-host .cab-tree-part[aria-pressed=true]{background:#e7f2fc;color:#126da7;box-shadow:inset 3px 0 #168de2;border-radius:5px}
 .cab-tree-host .cab-tree-part:hover{background:#eeeae3}
+.cab-parent-tree{display:flex;flex-direction:column;gap:3px;margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid #e2ddd4}
+.cab-parent-tree .cab-tree-part{text-align:left;white-space:normal;font-size:12px;background:transparent;border-color:transparent;color:#5c5449}
+.cab-parent-tree .cab-tree-part[aria-current=true]{background:#f3eade;border-color:#e4d5c4;font-weight:600}
 .cab-structure-help{font-size:11px;line-height:1.8;color:#958b7e;margin:20px 5px}
 .cab-workspace>.cab-visual{position:relative;display:flex;flex-direction:column;height:100%;overflow:hidden;align-self:stretch;padding:14px 16px 10px;box-sizing:border-box;background:#f5f2ec}
 .cab-workspace .cab-view-controls{flex:none;min-height:36px;justify-content:space-between;margin:0 0 10px;gap:6px}

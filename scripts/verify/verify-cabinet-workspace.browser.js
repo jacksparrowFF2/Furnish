@@ -23,6 +23,27 @@ async(page,V)=>{
   await p.locator('[data-module-new]').click();await p.locator('[data-module-width]').fill('400');await p.locator('[data-module-apply]').click();check(await p.locator('[data-cab-tree-group]').count()===4,'kitchen module addition');await p.locator('[data-session-undo]').click();check(await p.locator('[data-cab-tree-group]').count()===3,'kitchen module undo');
   await pick({kind:'door',column:0,leaf:0});check(await p.locator('[data-k-selected-leaf]').isVisible(),'current kitchen door parameters');await p.screenshot({path:V.output('playwright/cabinet-workspace/'+mode+'-kitchen.png'),animations:'disabled'});
   await p.setViewportSize({width:390,height:844});check(await p.evaluate(()=>document.querySelector('.cab-workspace').scrollWidth<=document.querySelector('.cab-workspace').clientWidth+1),'narrow workspace has no horizontal overflow');await p.screenshot({path:V.output('playwright/cabinet-workspace/'+mode+'-mobile.png'),animations:'disabled'});await p.getByRole('button',{name:'取消',exact:true}).click();
+  await p.setViewportSize({width:1619,height:971});
+  await p.evaluate(()=>{let n=0;const at=ROOMS.find(r=>r.name==='客厅').at;mutate(()=>state.furniture=FurnishKitchen.createLaundryCabinet({id:'workspace-laundry',cx:at[0],cy:at[1],rot:0,color:'#f3f1ec'},()=>`nav-${++n}`,'left'));});
+  const laundry=await read('workspace-laundry');await open('workspace-laundry');
+  await pick({kind:'bay',assembly:'upper',column:0});
+  check(await p.locator('.cab-parent-tree [data-cab-parent]').count()===4,'nested laundry editor retains all enclosing cabinet entries');
+  check(await p.locator('.cab-parent-tree').getByRole('button',{name:'模块 1 · 水槽柜',exact:true}).isVisible(),'sink cabinet entry stays visible inside upper cabinet');
+  const width=p.locator('[data-cab-column="0"] [data-bay-width]'),originalWidth=Number(await width.inputValue());await width.fill('1');await p.locator('.cab-parent-tree').getByRole('button',{name:'洗衣柜开放格',exact:true}).click();check(await p.locator('#cab-error').textContent()!==''&&await p.locator('.cab-parent-tree [aria-current=true]').textContent()==='洗衣柜吊柜','invalid child dimensions block navigation without losing the form');await width.fill(String(originalWidth-10));
+  await p.locator('.cab-parent-tree').getByRole('button',{name:'洗衣柜开放格',exact:true}).click();
+  check(await p.locator('.cab-parent-tree [aria-current=true]').textContent()==='洗衣柜开放格','direct sibling assembly navigation');
+  await p.screenshot({path:V.output('playwright/cabinet-workspace/'+mode+'-nested-navigation.png'),animations:'disabled'});
+  await p.locator('.cab-parent-tree').getByRole('button',{name:'洗衣柜吊柜',exact:true}).click();
+  check(Number(await p.locator('[data-cab-column="0"] [data-bay-width]').inputValue())===originalWidth-10,'unblurred child input survives sibling navigation');
+  await p.locator('[data-whole]').click();await save();
+  check((await read('workspace-laundry')).kitchen.laundry.assembly.upper.w===(laundry.kitchen.laundry.assembly.upper.w??laundry.w)-10,'navigated child draft saves through whole cabinet');
+  await p.evaluate(()=>undo());check(JSON.stringify(await read('workspace-laundry'))===JSON.stringify(laundry),'one application undo restores enclosing cabinet');await p.evaluate(()=>redo());await V.waitForCache(p);await p.reload();
+  check((await read('workspace-laundry')).kitchen.laundry.assembly.upper.w===(laundry.kitchen.laundry.assembly.upper.w??laundry.w)-10,'nested edits survive redo and reload');
+  const savedLaundry=await read('workspace-laundry');await open('workspace-laundry');await pick({kind:'bay',assembly:'upper',column:0});
+  await p.setViewportSize({width:390,height:844});check(await p.locator('.cab-parent-tree').getByRole('button',{name:'模块 1 · 水槽柜',exact:true}).isVisible(),'enclosing cabinet entries remain accessible on narrow screens');
+  await p.screenshot({path:V.output('playwright/cabinet-workspace/'+mode+'-nested-mobile.png'),animations:'disabled'});
+  await p.locator('[data-cab-column="0"] [data-bay-width]').fill(String(originalWidth-20));await p.locator('.cab-parent-tree').getByRole('button',{name:'模块 1 · 水槽柜',exact:true}).press('Enter');
+  check(await p.locator('#cab-kitchen-fields').isVisible(),'keyboard navigation returns to the selected enclosing module');await p.getByRole('button',{name:'取消',exact:true}).click();check(JSON.stringify(await read('workspace-laundry'))===JSON.stringify(savedLaundry),'whole cabinet cancel discards navigated child edits');
   check(errors.length===0,'no browser exceptions');results.push({mode,checks});await ctx.close();
  }
  return results;
