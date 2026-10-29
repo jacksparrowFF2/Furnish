@@ -2,6 +2,7 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),port=Number(process.env.FURNISH_PORT||8765);
 const runtime=require('./server-runtime.cjs'),codeFingerprint=runtime.fingerprint(__filename);
+const recovery=require('./server-recovery.cjs');
 const instance={app:'furnish',protocol:1,root:fs.realpathSync(root),fingerprint:codeFingerprint,pid:process.pid,token:require('node:crypto').randomUUID()};
 const repository=require('./repository-server.cjs').create(root);
 const blender=require('./blender-server.cjs').create(root);
@@ -26,22 +27,41 @@ function openPage(){
  browser.on('error',e=>console.error(`Open the URL above in your browser: ${e.message}`));
  browser.unref();
 }
-let restartRetries=0;
+let restartRetries=0,recoveryAttempted=false,stopRecovery;
+function reuse(existing){
+ if(existing?.app!=='furnish'||existing.protocol!==1||existing.root!==instance.root||existing.fingerprint!==codeFingerprint)return false;
+ console.log(`Furnish is already running: ${url}`);openPage();return true;
+}
+async function recoverStalled(){
+ if(recoveryAttempted)return false;recoveryAttempted=true;
+ if(!await recovery.recover(instance.root,port))return false;
+ console.log('Furnish was unresponsive. Recovering the local service on the same port...');
+ restartRetries=50;setTimeout(listen,200);return true;
+}
 server.on('error',async e=>{
  if(e.code==='EADDRINUSE'){
-  if(restartRetries){if(--restartRetries){setTimeout(listen,100);return;}console.error('Furnish restart timed out; the original service has not released the port.');process.exitCode=1;return;}
+  if(restartRetries){
+   if(--restartRetries){setTimeout(listen,100);return;}
+   // A simultaneous launcher may have won the newly released port.
+   if(reuse(await runtime.request(url+'api/furnish/server'))||await recoverStalled())return;
+   console.error('Furnish restart timed out; the original service has not released the port.');process.exitCode=1;return;
+  }
   const existing=await runtime.request(url+'api/furnish/server');
   if(existing?.app==='furnish'&&existing.protocol===1&&existing.root===instance.root&&typeof existing.token==='string'){
-   if(existing.fingerprint===codeFingerprint){console.log(`Furnish is already running: ${url}`);openPage();return;}
+   if(reuse(existing))return;
    console.log('Furnish backend code changed. Restarting the local service...');
    if((await runtime.request(url+'api/furnish/server/restart',{method:'POST',token:existing.token}))?.restarting){restartRetries=50;listen();return;}
+   if(await recoverStalled())return;
    console.error('Furnish could not restart the existing service. Please close its server window and try again.');process.exitCode=1;return;
   }
+  if(!existing&&await recoverStalled())return;
  }
- console.error(e.code==='EADDRINUSE'?`Port ${port} is occupied by another or unrecognized service. Set FURNISH_PORT to another port.`:e.message);
+ console.error(e.code==='EADDRINUSE'?`Port ${port} is occupied by another or unrecognized service. Automatic recovery could not verify an unresponsive Furnish instance for this directory. Close its server window if you recognize it, or set FURNISH_PORT to another port.`:e.message);
  process.exitCode=1;
 });
-server.on('listening',()=>{
+server.on('close',()=>stopRecovery?.());
+server.on('listening',async()=>{
+ try{stopRecovery=await recovery.start(instance,server.address().port);}catch(error){console.error('Furnish recovery control unavailable: '+error.message);}
  console.log(`Furnish: ${url}`);
  console.log('Close this window or press Ctrl+C to stop the server.');
  openPage();

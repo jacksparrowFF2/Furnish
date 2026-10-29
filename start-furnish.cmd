@@ -8,7 +8,7 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
-echo Checking Furnish backend updates, then starting or opening the page...
+echo Checking Furnish backend updates and recovery, then starting or opening the page...
 echo.
 node scripts/serve.cjs --open
 if errorlevel 1 pause

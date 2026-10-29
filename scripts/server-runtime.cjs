@@ -14,7 +14,7 @@ function fingerprint(entry){
  for(const [file,bytes] of [...sources].sort(([a],[b])=>a.localeCompare(b)))hash.update(path.relative(base,file)).update('\0').update(bytes).update('\0');
  return hash.digest('hex');
 }
-function request(url,{method='GET',token}={}){return new Promise(resolve=>{
+function request(url,{method='GET',token,timeoutMs=2500}={}){return new Promise(resolve=>{
  let settled=false;
  const done=value=>{if(!settled){settled=true;clearTimeout(timer);resolve(value);}};
  const req=require('node:http').request(url,{method,headers:token?{'X-Furnish-Restart':token}:{}},res=>{
@@ -24,7 +24,7 @@ function request(url,{method='GET',token}={}){return new Promise(resolve=>{
   res.on('error',()=>done(null));
   res.on('end',()=>{try{done(JSON.parse(Buffer.concat(chunks).toString('utf8')));}catch{done(null);}});
  });
- const timer=setTimeout(()=>{done(null);req.destroy();},2500);
+ const timer=setTimeout(()=>{done(null);req.destroy();},timeoutMs);
  req.on('error',()=>done(null));req.end();
 });}
 module.exports={fingerprint,request};
