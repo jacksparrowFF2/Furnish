@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-29：定制口袋门草模的总宽／墙袋／开口／板件由product-rules.pocketLayout派生，复用已有sliding-opening-model加载入口及开合控制；furniture-solids从该生产模型读取9件实体，SVG同源。可选slidingOpen复用既有能力、mutate、恢复和项目链路，无新脚本或格式版本。见[草模契约](POCKET-DOOR.md)。
+
 2026-10-29：Y52Y09低书柜沿product-rules身份／高度、cabinet-core模板和原cabinet-model实现；圆润外观不超生产板件包络，数值实体仍由cabinet-motion记录。无新持久字段、加载脚本或版本，原命名方案和mutate保存链路保持。见[模型契约](BOOKCASE-YESWOOD-Y52Y09.md)。
 
 2026-10-29（厨房单模块高柜）：product-rules集中高柜能力与初值，kitchen-core按模块高度派生生产门柜、台面断开、完整占地及垂直范围；三栏编辑器仍使用父草稿／一次mutate，主预览与展开沿生产模型。可选模块height及tall角色采用项目／工作区v30和独立缓存，旧缺失保持；无新脚本或加载顺序，见 [高柜契约](KITCHEN-DESIGN.md#单模块高柜2026-10-29)。

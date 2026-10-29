@@ -55,6 +55,7 @@ const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
 const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'folding-table'},family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
 const types={
+ pocketdoor_double:{family:'pocket-door',height:2640,defaults:{slidingOpen:true},fields:['slidingOpen'],create:['slidingOpen'],solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening'},pocket:{minWidth:1600,minDepth:120,minHeight:1800,skin:18,leaf:40,end:30,overlap:20,head:300,bottom:10,reserve:100}},
  bookshelf_yeswood_y52y09:{height:750,bookcase:{template:'book-y52y09-low',width:1115,depth:230,thickness:18,edgeRadius:6},identity:{brand:'源氏木语/YESWOOD',model:'Y52Y09 · 三列两层 · 无底框',sourceUrl:'https://item.jd.com/100266639340.html'}},
  panel_light_300x600:{family:'ceiling-panel-device',clearanceReview:'missing',height:35,anchor:'bottom',defaults:{mountHeight:2500},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishBathHeaterModel',module:'bath-heater'},ceilingPanel:{width:300,length:600,rim:2,alignment:.1},panelLight:{watts:24,frame:3,color:'#fff4e4',previewCandela:60,columns:2,rows:3,bounceCandela:3,bounceDrop:900,bounceReach:4000}},
  bath_heater_aopu_se2:{family:'ceiling-panel-device',clearanceReview:'missing',height:112,anchor:'bottom',defaults:{mountHeight:2500},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'奥普/AUPU',model:'SE2'},solidModel:{global:'FurnishBathHeaterModel',module:'bath-heater'},ceilingPanel:{width:300,length:600,rim:2,alignment:.1,profile:'se2',bodyHeight:110,minCeilingDrop:130}},
@@ -117,6 +118,21 @@ const definition=f=>Object.hasOwn(types,typeof f==='string'?f:f?.type)?types[typ
 // Local mm outline; custom models retain the rectangular fallback.
 // Curvature is a visual estimate, never an installation requirement.
 function assemblyBounds(f){if(f?.cabinet?.template!=='entry-pegboard')return null;const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return C?.assemblyBounds(f)??null;}
+// Concept construction dimensions, not a hardware specification. Total width includes both pockets.
+function pocketLayout(f){
+ const r=definition(f)?.pocket;if(!r||f.obj)return null;
+ const h=height(f);if(!(f.w>=r.minWidth&&f.d>=r.minDepth&&h>=r.minHeight))throw Error('口袋门草模总宽至少1600、墙厚至少120、总高至少1800 mm');
+ const opening=f.w/2-r.reserve,pocket=(f.w-opening)/2,clearHeight=h-r.head,leaf=opening/2+r.overlap,travel=opening/2+r.overlap+2,parts=[];
+ for(const side of [-1,1]){
+  const x=side*(opening/2+pocket/2);
+  for(const face of [-1,1])parts.push({key:'pocket-skin',w:pocket,d:r.skin,h:clearHeight,x,z:face*(f.d-r.skin)/2,bottom:0});
+  parts.push({key:'pocket-end',w:r.end,d:f.d,h:clearHeight,x:side*(f.w-r.end)/2,z:0,bottom:0});
+ }
+ parts.push({key:'pocket-header',w:f.w,d:f.d,h:r.head,x:0,z:0,bottom:clearHeight});
+ const leaves=[-1,1].map(side=>({side,closed:side*(leaf/2+1),opened:side*(leaf/2+1+travel),width:leaf}));
+ for(const l of leaves)parts.push({key:'pocket-leaf',w:leaf,d:r.leaf,h:clearHeight-r.bottom,x:value(f,'slidingOpen')?l.opened:l.closed,z:0,bottom:r.bottom,side:l.side});
+ return {opening,pocket,clearHeight,leaves,parts};
+}
 function dimensions(f){const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
 // Reference geometry only: widths include valves/caps, left length starts at the header inlet.
 function manifoldLayout(f){
@@ -191,7 +207,7 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 const sinkBodyDepth=f=>f.sinkBowlHeight??definition(f).notch.bodyDepth;
 const vesselSink=f=>f?.type==='ksink'&&!f.obj&&value(f,'sinkStyle')==='vessel';
 // Report broken model records without migrating, deleting or rewriting them.
@@ -471,6 +487,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

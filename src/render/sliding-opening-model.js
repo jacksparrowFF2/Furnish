@@ -4,7 +4,7 @@
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
-const supported=f=>['slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f?.type);
+const supported=f=>['pocketdoor_double','slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f?.type);
 function create(THREE,options={}){
  const products=options.products||root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
  const primitives=options.primitives||(root.FurnishModelPrimitives||(typeof require==='function'?require('./model-primitives.js'):null)).create(THREE);
@@ -51,8 +51,19 @@ function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
   group.traverse(o=>{o.userData.door=door;});group.userData.slidingDoor=door;
   return group;
 }
+ function buildPocket(f){
+  const layout=products.pocketLayout(f),g=new THREE.Group(),door={kind:'slide',group:g,leaves:[],open:products.value(f,'slidingOpen'),cur:products.value(f,'slidingOpen')?1:0};
+  for(const p of layout.parts){
+   const leaf=p.key==='pocket-leaf',mesh=syncIdentity.produce('sliding-opening-model:pocket-'+p.key,()=>box(p.w/1000,p.h/1000,p.d/1000,leaf?(f.color||'#c5b59d'):'#e8e3d9',0,p.bottom/1000,p.z/1000));
+   mesh.userData.pocketPart=p.key;
+   if(leaf){const node=new THREE.Group(),source=layout.leaves.find(l=>l.side===p.side);node.position.x=p.x/1000;node.add(mesh);node.traverse(o=>o.userData.door=door);g.add(node);door.leaves.push({node,closed:source.closed/1000,opened:source.opened/1000,width:source.width/1000});}
+   else{mesh.position.x=p.x/1000;g.add(mesh);}
+  }
+  g.userData.slidingDoor=door;const outer=new THREE.Group();outer.add(g);outer.userData.slidingDoor=door;return outer;
+ }
  function build(f,context={}){
   if(!supported(f))throw Error('Unsupported sliding opening: '+f?.type);
+  if(products.definition(f)?.pocket)return buildPocket(f);
   const corner=context.corner===undefined?products.slidingCorner(f,context.furniture,context.plan):context.corner;
   const g=new THREE.Group(),model=syncIdentity.produce("sliding-opening-model.js:generator-call-1",()=>buildSlidingDoor(f.w/1000,f.d/1000,products.height(f)/1000,products.definition(f)?.telescopic?.panels||(f.type==='slidingdoor'?2:3),f.color||'#ddd',{floorTrack:products.value(f,'floorTrack'),floorTrackMode:products.definition(f)?.telescopic?'moving':'all',slim:f.type!=='slidingdoor',trackOrder:products.value(f,'slidingTrackOrder'),corner,allMoving:products.definition(f)?.telescopic?.allMoving,leafDepth:products.definition(f)?.telescopic?.leafDepth,stackSide:products.supports(f,'slidingStackSide')?products.value(f,'slidingStackSide'):corner?.side==='left'?'right':'left'}));
   if(products.value(f,'slidingOpen')){const door=model.userData.slidingDoor;door.open=true;door.cur=1;door.leaves.forEach(l=>l.node.position.x=l.opened);}

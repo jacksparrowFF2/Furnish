@@ -1,0 +1,12 @@
+{
+  "furniture": 69,
+  "unchangedFurniture": 68,
+  "opening": 1331.75,
+  "openIssueCount": 41,
+  "closedIssueCount": 41,
+  "pocketIssues": [],
+  "priorUncommittedCabinetPosePreserved": true,
+  "roundtrip": true,
+  "repeatedRestore": true,
+  "otherNamedDesignsPreserved": true
+}
