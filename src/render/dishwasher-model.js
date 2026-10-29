@@ -6,7 +6,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
 
 const products=()=>root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
 const supported=f=>f.type==='dishwasher_mijia_countertop'&&!f.obj;
-function build(T,f){
+function buildLegacy(T,f){
  const P=products(),result=new T.Group(),body=new T.Group();result.add(body);
  const open=P.value(f,'dishwasherDoorOpen'),spec=P.definition(f).foldDoor,reach=spec.openDepth-spec.nominalDepth;
  const mat=(color,metalness=0,roughness=.4)=>new T.MeshStandardMaterial({color,metalness,roughness});
@@ -86,5 +86,6 @@ function build(T,f){
  body.position.y=P.value(f,'mountHeight')/1000;
  result.userData.countertopDishwasher=true;return result;
 }
-const api={supported,build};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDishwasherModel=api;
+function build(T,f){const asset=root.FurnishDishwasherAssetModel||(typeof require==='function'?require('./dishwasher-asset-model.js'):null);if(!asset)throw Error('Dishwasher Blender asset model not loaded');return asset.build(T,f);}
+const api={supported,build,buildLegacy};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDishwasherModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

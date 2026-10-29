@@ -90,7 +90,7 @@ const types={
  stove:{measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,inset:30},fields:['counterLink','counterElevation','hobCutout']},ksink:{linkedSurfaceOffset,surfaceMeasurement,fields:['counterLink','counterElevation','sinkNotch','sinkStyle','sinkBowlHeight'],defaults:{sinkStyle:'inset',sinkBowlHeight:150},vessel:{minSize:80,defaultDepth:400,rim:15,floor:12,drain:45,faucetRise:300,faucetClearance:100},notch:{min:20,margin:80,bodyDepth:220,rim:20,floor:12,faucetRise:292}},
  washer:laundry,dryer:laundry,
  water_purifier_mijia_1200g:{family:'under-sink-purifier',height:379,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'净水器 2 1200G'}},
- dishwasher_mijia_countertop:{family:'countertop-dishwasher',height:598,anchor:'bottom',defaults:{mountHeight:860,dishwasherDoorOpen:false},fields:['mountHeight','dishwasherDoorOpen'],create:['mountHeight','dishwasherDoorOpen'],identity:{brand:'米家/Mijia',model:'智能洗碗机 台式 5套'},foldDoor:{nominalWidth:550,nominalHeight:598,nominalDepth:350,openDepth:600,openingBottom:52,openingTop:584},installation:{ventSide:'left',sideClearance:200,worktopToCabinet:650,topAccess:50,frontOffset:80}},
+ dishwasher_mijia_countertop:{solidModel:{global:'FurnishDishwasherModel',module:'dishwasher'},foldAsset:true,family:'countertop-dishwasher',height:598,anchor:'bottom',defaults:{mountHeight:860,dishwasherDoorOpen:false},fields:['mountHeight','dishwasherDoorOpen'],create:['mountHeight','dishwasherDoorOpen'],identity:{brand:'米家/Mijia',model:'智能洗碗机 台式 5套'},foldDoor:{nominalWidth:550,nominalHeight:598,nominalDepth:350,openDepth:600,openingBottom:52,openingTop:584},installation:{ventSide:'left',sideClearance:200,worktopToCabinet:650,topAccess:50,frontOffset:80}},
  aquarium_mijia_2pro:{family:'aquarium',height:334,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'智能鱼缸 2 Pro',sourceUrl:'https://item.jd.com/100317574693.html'}},
  waterheater_flat:{family:'flat-heater',height:565,anchor:'bottom',defaults:{mountHeight:1650},fields:['mountHeight','heaterSocket'],create:['mountHeight']},
  shower_arrow_cream:{family:'arrow-shower',height:1749,anchor:'mixer',defaults:{showerMixerHeight:1000,showerRise:400,showerHandAngle:180*.20/Math.PI},fields:['mountHeight','showerMixerHeight','showerRise','showerHandAngle'],create:['showerMixerHeight'],identity:{brand:'ARROW/箭牌',model:'AE34129ZMKW-P2'}},
@@ -172,6 +172,7 @@ function resizeManifold(f,next){
  if(f.manifoldLengths)next.manifoldLengths={upper:old.lengths.upper*ratio,lower:old.lengths.lower*ratio};
 }
 function planBodyOutline(f,segments){
+ if(!f.obj&&definition(f)?.foldAsset)return (root.FurnishDishwasherFold||require('./dishwasher-fold-core.js')).outline(f);
  if(!f.obj&&definition(f)?.fridgeMotion)return (root.FurnishFridge||require('./fridge-core.js')).outline(f);
  const b=assemblyBounds(f);if(b)return [[b.left,b.back],[b.right,b.back],[b.right,b.front],[b.left,b.front]];
  const shape=!f.obj&&definition(f)?.planShape;if(!shape)return null;
@@ -319,10 +320,10 @@ function foldingTableOutline(f,region='visible'){
  for(const t of [...angles].reverse())points.push([-f.w/2*Math.cos(t),s.fullDepth/2*Math.sin(t)+s.offset]);return points;
 }
 // Full opening reservation is independent of the current display pose. Only the
-// layout envelope scales; the reference installation distances remain absolute mm.
+// Reservation covers depth-scaled reference and fitted rigid leaf reach; installation distances stay absolute mm.
 function dishwasherInstallation(f){
- const def=definition(f);if(!def?.foldDoor||f.obj)return null;const spec=def.foldDoor,bottom=value(f,'mountHeight'),h=height(f),extension=f.d*(spec.openDepth-spec.nominalDepth)/spec.nominalDepth;
- return {...def.installation,bottom,top:bottom+h,extension,openDepth:f.d+extension,openingBottom:bottom+h*spec.openingBottom/spec.nominalHeight,openingTop:bottom+h*spec.openingTop/spec.nominalHeight,nominal:Math.abs(f.w-spec.nominalWidth)<1e-6&&Math.abs(f.d-spec.nominalDepth)<1e-6&&Math.abs(h-spec.nominalHeight)<1e-6};
+ const def=definition(f);if(!def?.foldDoor||f.obj)return null;const spec=def.foldDoor,bottom=value(f,'mountHeight'),h=height(f),extension=Math.max(f.d*(spec.openDepth-spec.nominalDepth)/spec.nominalDepth,250*h/spec.nominalHeight);
+ return {...def.installation,bottom,top:bottom+h,extension,openDepth:f.d+extension,openingBottom:bottom+Math.min(h*spec.openingBottom/spec.nominalHeight,70*h/spec.nominalHeight-18*Math.min(h/spec.nominalHeight,f.d/spec.nominalDepth)),openingTop:bottom+h*spec.openingTop/spec.nominalHeight,nominal:Math.abs(f.w-spec.nominalWidth)<1e-6&&Math.abs(f.d-spec.nominalDepth)<1e-6&&Math.abs(h-spec.nominalHeight)<1e-6};
 }
 // Legacy bottom datum is read, never filled into saved records implicitly.
 function showerInstallation(f){const nominal=types.shower_arrow_cream.height,offset=646.889539615265*(f.h??nominal)/nominal,mixer=f.showerMixerHeight??(f.mountHeight!==undefined?f.mountHeight+offset:types.shower_arrow_cream.defaults.showerMixerHeight),bottom=mixer-offset;return {mixer,bottom,top:bottom+(f.h??nominal)*(1+(value(f,'showerRise')-types.shower_arrow_cream.defaults.showerRise)/nominal)};}
@@ -368,6 +369,7 @@ function floorStanding(f,range){
 }
 function validateDatum(work){if(work?.furnitureDatum!==undefined&&!furnitureDatum.values.includes(work.furnitureDatum))throw Error('家具高度基准须为毛坯或完成地面');}
 function vertical(f){
+ if(!f.obj&&definition(f)?.foldAsset){const b=(root.FurnishDishwasherFold||require('./dishwasher-fold-core.js')).bounds(f),z=value(f,'mountHeight');return {bottom:z+b.bottom,top:z+b.top,source:'model'};}
  const b=assemblyBounds(f);if(b)return {bottom:b.bottom,top:b.top,source:'model'};
  if(vesselSink(f)){const base=f.counterElevation??862;return {bottom:base,top:base+Math.max(value(f,'sinkBowlHeight')+definition(f).vessel.faucetClearance,definition(f).vessel.faucetRise),source:'model'};}
  if(f.type==='ksink'&&(f.sinkNotch||f.sinkBowlHeight!==undefined)){const base=f.counterElevation??862,r=definition(f).notch;return {bottom:base-sinkBodyDepth(f),top:base+r.faucetRise,source:'model'};}

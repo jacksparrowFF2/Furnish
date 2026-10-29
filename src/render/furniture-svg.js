@@ -195,7 +195,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       return s;
     }
     case 'dishwasher_mijia_countertop': {
-      const spec=(typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts).definition(t).foldDoor,open=f?.dishwasherDoorOpen,reach=d*(spec.openDepth-spec.nominalDepth)/spec.nominalDepth;
+      const spec=(typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts).definition(t).foldDoor,open=f?.dishwasherDoorOpen,reach=250*(f?.h??spec.nominalHeight)/spec.nominalHeight;
       return rc(x,y,w,d,c,'rx="10"')+ln(x+w*.04,y+d*.94,x+w*.96,y+d*.94)+rc(-w*.035,y+d*.91,w*.07,d*.03,shade(c,.8))+(open?`<g data-dishwasher-fold="open">${rc(x+w*.025,y+d,w*.95,reach,shade(c,.94),'rx="6"')}${ln(x+w*.04,y+d+reach*.93,x+w*.96,y+d+reach*.93)}${ec(0,y+d+reach*.56,w*.042,w*.042,'#303436')}</g>`:'');
     }
     case 'dishwasher': return rc(x,y,w,d,c,'rx="15"') + ln(x,y+d-70,x+w,y+d-70) + rc(x+w*.3,y+d-45,w*.4,25,'#888');

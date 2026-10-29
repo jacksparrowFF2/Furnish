@@ -10,7 +10,7 @@
  const cache=new Map(),worldCache=new Map();
  function parts(f,{furniture=[],plan}={}){
   if(!supported(f))return null;
-  const r=rule(f),products=root.FurnishProducts||require('./product-rules.js'),corner=r.sliding?products.slidingCorner(f,furniture,plan):null,key=JSON.stringify([r,corner,f.slidingStackSide,f.slidingOpen,f.slidingTrackOrder,f.floorTrack,f.type,f.w,f.d,f.h,f.mountHeight,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
+  const r=rule(f),products=root.FurnishProducts||require('./product-rules.js'),corner=r.sliding?products.slidingCorner(f,furniture,plan):null,key=JSON.stringify([r,corner,f.slidingStackSide,f.slidingOpen,f.slidingTrackOrder,f.floorTrack,f.type,f.w,f.d,f.h,f.mountHeight,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.teaBarUpperOpen,f.teaBarLowerOpen,f.dishwasherDoorOpen,f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,...(r.positionSeed?[f.cx,f.cy]:[])]);let records=cache.get(key);
   if(records){cache.delete(key);cache.set(key,records);}
   if(!records){
    const model=root[r.global]||(typeof require==='function'?require('../render/'+r.module+'-model.js'):null);if(!model)throw Error('家具实体模型未加载：'+r.global);

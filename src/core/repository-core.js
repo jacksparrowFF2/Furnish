@@ -4,7 +4,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(root){
  'use strict';
  const clone=v=>JSON.parse(JSON.stringify(v));
- const workspaceVersions=Object.freeze([2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
+ const workspaceVersions=Object.freeze([2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]);
  function canonical(v){return Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;}
  function portable(input){const w=clone(input);delete w._repository;delete w.updatedAt;return canonical(w);}
  const works=input=>[...Object.values(input.work||{}),...(input.designs||[]).map(d=>d.work)];

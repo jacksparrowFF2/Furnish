@@ -40,7 +40,9 @@ Blender 发现复用现有 `blender-server.cjs`，必要时用 `FURNISH_BLENDER`
 
 ## 发布能力边界
 
-2026-10-29第三个配置：`author-fridge`／`publish-fridge`服务现有四门双抽屉冰箱，允许经契约校验的4个运动父节点与30个具名网格，新增Furnish运动装配及完整扫掠。详见[活动部件试点](FRIDGE-BLENDER-MOTION.md)。当前共三个明确产品配置；下文两个静态配置的限制仍适用于各自命令，冰箱也未支持任意glTF动画片段。
+2026-10-29第四个配置：`author-dishwasher`／`publish-dishwasher`服务现有米家台面5套双片折叠门，校验60个具名网格、嵌套水平门轴及下篮滑轨，保留两个可信端态及原安装预留。当前共四个明确产品配置；真实连续连杆轨迹未模拟。见[折叠门契约](DISHWASHER-BLENDER-FOLD.md)。
+
+2026-10-29第三个配置：`author-fridge`／`publish-fridge`服务现有四门双抽屉冰箱，允许经契约校验的4个运动父节点与30个具名网格，新增Furnish运动装配及完整扫掠。详见[活动部件试点](FRIDGE-BLENDER-MOTION.md)。该轮增加到三个明确产品配置；下文两个静态配置的限制仍适用于各自命令，冰箱也未支持任意glTF动画片段。
 
 2026-10-29后续：同一CLI新增 `author-y52y09`／`publish-y52y09`，验证成品六格书柜流程；SE2命令和尺寸契约保持不变。书柜配置按12块具名板件校验，沿柜体生产板件链路接回尺寸编辑和空间能力，详见 [Y52Y09最新接入](BOOKCASE-YESWOOD-Y52Y09.md#2026-10-29blender-成品家具流程)。这些配置仍不接受任意未知型号。
 

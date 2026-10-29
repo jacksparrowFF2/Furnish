@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "name": "dishwasher",
+      "result": [
+        {
+          "mode": "file",
+          "passed": true,
+          "errors": [],
+          "externalRequests": 0
+        },
+        {
+          "mode": "http",
+          "passed": true,
+          "errors": [],
+          "externalRequests": 0
+        }
+      ]
+    },
+    {
+      "name": "dishwasher-clearances",
+      "result": [
+        {
+          "mode": "file",
+          "passed": true,
+          "pageErrors": [],
+          "externalRequests": 0
+        },
+        {
+          "mode": "http",
+          "passed": true,
+          "pageErrors": [],
+          "externalRequests": 0
+        }
+      ]
+    }
+  ]
+}

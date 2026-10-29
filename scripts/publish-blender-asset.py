@@ -13,9 +13,9 @@ import sys
 
 
 def publish(source, target, profile='se2', spec=None):
-    if profile not in ('se2', 'y52y09', 'fridge'):
+    if profile not in ('se2', 'y52y09', 'fridge', 'dishwasher'):
         raise ValueError('Unknown asset profile')
-    prefix = {'se2':'bath-heater-se2:','y52y09':'y52y09:','fridge':'fridge-v1:'}[profile]
+    prefix = {'se2':'bath-heater-se2:','y52y09':'y52y09:','fridge':'fridge-v1:','dishwasher':'dishwasher-v1:'}[profile]
     raw = source.read_bytes()
     if len(raw) < 20 or raw[:4] != b'glTF' or struct.unpack_from('<II', raw, 4) != (2, len(raw)):
         raise ValueError('Invalid GLB header')
@@ -55,7 +55,7 @@ def publish(source, target, profile='se2', spec=None):
         return '#' + ''.join(format(channel(v), '02x') for v in values[:3])
 
     for obj in sorted(bpy.context.scene.objects, key=lambda o: o.name):
-        if profile=='fridge' and obj.type=='EMPTY':
+        if profile in ('fridge','dishwasher') and obj.type=='EMPTY':
             role=obj.get('furnishMotionRole')
             expected=next((m for m in spec['motions'] if m['role']==role),None)
             if not expected or role in hinges or obj.get('furnishHingeAxis')!=expected['axis']:
@@ -63,6 +63,9 @@ def publish(source, target, profile='se2', spec=None):
             location=xyz(obj.matrix_world.translation)
             if any(abs(location[k]-expected['pivot'][k]/1000)>1e-6 for k in range(3)) or any(abs(obj.matrix_world[i][j]-(1 if i==j else 0))>1e-6 for i in range(3) for j in range(3)):
                 raise ValueError('Hinge pivot/closed transform changed: '+role)
+            parent_role=obj.parent.get('furnishMotionRole') if obj.parent else None
+            if parent_role!=expected.get('parent'):
+                raise ValueError('Wrong motion hierarchy: '+role)
             hinges[role]=expected
             continue
         if obj.type != 'MESH':
@@ -93,15 +96,15 @@ def publish(source, target, profile='se2', spec=None):
                 normals.extend(xyz((normal_matrix @ mesh.corner_normals[loop].vector).normalized()))
         if not positions:
             raise ValueError('Empty mesh')
-        if profile == 'fridge':
+        if profile in ('fridge','dishwasher'):
             reference=next((p for p in spec['parts'] if p['name']==obj.name),None)
             role=obj.parent.get('furnishMotionRole') if obj.parent else None
             if not reference or reference['role']!=role:
                 raise ValueError('Moving part attached to wrong hinge: '+obj.name)
             low=[min(positions[k::3]) for k in range(3)];high=[max(positions[k::3]) for k in range(3)]
             if any(abs(high[k]-low[k]-reference['size'][k]/1000)>1e-6 or abs((high[k]+low[k])/2-reference['center'][k]/1000)>1e-6 for k in range(3)):
-                raise ValueError('Fridge part dimensions/closed pose changed: '+obj.name)
-            parts.append({'name':obj.name,'identity':identity,'role':role,'positions':positions,'normals':normals,'material':mat,'recolor':bool(obj.get('furnishRecolor'))})
+                raise ValueError('Articulated part dimensions/closed pose changed: '+obj.name)
+            parts.append({'name':obj.name,'identity':identity,'role':role,'label':reference.get('label',obj.name),'positions':positions,'normals':normals,'material':mat,'recolor':bool(obj.get('furnishRecolor'))})
             continue
         if profile == 'y52y09':
             low = [min(positions[k::3]) for k in range(3)]
@@ -123,7 +126,7 @@ def publish(source, target, profile='se2', spec=None):
                       'material': mat, 'positions': positions, 'normals': normals})
     if not parts:
         raise ValueError('No meshes')
-    if profile == 'fridge':
+    if profile in ('fridge','dishwasher'):
         expected={p['name'] for p in spec['parts']}
         if set(hinges)!={m['role'] for m in spec['motions']}:
             raise ValueError('Missing hinge/slide parents')
@@ -146,17 +149,17 @@ def publish(source, target, profile='se2', spec=None):
         expected.update(prefix+'-'+str(i) for prefix in ('indicator', 'indicator-label', 'brand-mark') for i in range(4))
     if {p['name'] for p in parts} != expected:
         raise ValueError('Asset part set changed; review resize and stable identities before publishing')
-    bounds = {'se2':((-.15,.15),(0,.112),(-.3,.3)),'y52y09':((-.5575,.5575),(0,.75),(-.115,.115)),'fridge':((-.4165,.4165),(0,1.910),(-.2975,.2975))}[profile]
+    bounds = {'se2':((-.15,.15),(0,.112),(-.3,.3)),'y52y09':((-.5575,.5575),(0,.75),(-.115,.115)),'fridge':((-.4165,.4165),(0,1.910),(-.2975,.2975)),'dishwasher':((-.275,.275),(0,.598),(-.175,.175))}[profile]
     for axis, limits in enumerate(bounds):
         values = [v for p in parts for v in p['positions'][axis::3]]
         if max(abs(min(values)-limits[0]), abs(max(values)-limits[1])) > 1e-6:
             raise ValueError('Reference dimensions/origin changed; review product rules first')
     payload = {'format':1,'version':1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
-    payload.update({'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'fridge-french-drawer','sizeMm':spec['size'],'motions':list(hinges.values())})
+    payload.update({'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'fridge-french-drawer' if profile=='fridge' else 'dishwasher-mijia-countertop','sizeMm':spec['size'],'motions':list(hinges.values())})
     # Publish only after successful import and validation; a failed attempt preserves the old asset.
     body = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
     text = '/* Generated from '+source.name+'; scripts/publish-blender-asset.py. Do not hand-edit. */\n'
-    global_name = {'se2':'FurnishSE2BlenderAsset','y52y09':'FurnishY52Y09BlenderAsset','fridge':'FurnishFridgeBlenderAsset'}[profile]
+    global_name = {'se2':'FurnishSE2BlenderAsset','y52y09':'FurnishY52Y09BlenderAsset','fridge':'FurnishFridgeBlenderAsset','dishwasher':'FurnishDishwasherBlenderAsset'}[profile]
     text += '(function(root){const asset=' + body + ';if(typeof module==="object"&&module.exports)module.exports=asset;else root.'+global_name+'=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + '.tmp')
