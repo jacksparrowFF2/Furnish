@@ -4,7 +4,8 @@ const products=()=>root.FurnishProducts||(typeof require==='function'?require('.
 function build(T,f){
  const p=products(),l=p.coveringLayout(f),g=new T.Group();if(!l)return g;
  const primitives=(root.FurnishModelPrimitives||require('./model-primitives.js')).create(T),{box,mat,mesh}=primitives,I=root.FurnishPartIdentity||require('../core/part-identity.js'),w=f.w/1000,h=l.h/1000,d=f.d/1000;
- const state={kind:'covering',open:l.open>0},color=f.color||'#e7dfd2',cloth=mat(color,{roughness:1,side:T.DoubleSide}),sheer=mat(color,{roughness:1,side:T.DoubleSide,transparent:true,opacity:.28,depthWrite:false}),rail=mat('#e6e3dc',{roughness:.45,metalness:.15});
+ // Dense warm-white voile per the user's reference; zebra mesh keeps its lighter weave.
+ const state={kind:'covering',open:l.open>0},color=f.color||'#e7dfd2',cloth=mat(color,{roughness:1,side:T.DoubleSide}),sheer=mat(color,{roughness:1,side:T.DoubleSide,transparent:true,opacity:l.soft ? .84 : .28,depthWrite:false}),rail=mat('#e6e3dc',{roughness:.45,metalness:.15});
  const add=(node,role,key)=>{node.name=role;node.userData.coveringPart=role;node.userData.furnishStablePart='covering:'+key;node.userData.door=state;g.add(node);return node;};
  if(l.soft){
   add(box(w,.016,Math.min(d,.024),rail,0,h-.016,0),'track','track');
