@@ -1,0 +1,71 @@
+{
+  "door": {
+    "name": "主卧入口对开门（开向待核对）",
+    "rect": [
+      3703,
+      5420,
+      3939,
+      6486
+    ],
+    "h": [
+      3703,
+      5420
+    ],
+    "c": [
+      0,
+      1
+    ],
+    "o": [
+      -1,
+      0
+    ],
+    "len": 1066,
+    "entry": false,
+    "doorType": "double"
+  },
+  "fullIssues": 41,
+  "addedIssues": [
+    {
+      "kind": "floor-door",
+      "id": "floor-door-3",
+      "doorIndex": 3,
+      "name": "主卧入口对开门（开向待核对）",
+      "pending": true,
+      "message": "地面标高已设置；门扇底部与门槛实际标高未录入，请核对门底净空及高差"
+    },
+    {
+      "kind": "passage",
+      "id": "room1",
+      "name": "房间 1",
+      "message": "候选狭窄间隙约 100 mm，低于自设 800 mm 阈值",
+      "at": [
+        9739,
+        920
+      ]
+    },
+    {
+      "kind": "passage",
+      "id": "room3",
+      "name": "房间 3",
+      "message": "候选狭窄间隙约 101 mm，低于自设 800 mm 阈值",
+      "at": [
+        1439.75,
+        8617
+      ]
+    },
+    {
+      "kind": "passage",
+      "id": "room4",
+      "name": "房间 4",
+      "message": "候选狭窄间隙约 243 mm，低于自设 800 mm 阈值",
+      "at": [
+        5541.5,
+        7651
+      ]
+    }
+  ],
+  "roundtrip": true,
+  "repeatedRestore": true,
+  "unchangedFurniture": 67,
+  "oldDesignsPreserved": true
+}
