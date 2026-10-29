@@ -363,6 +363,7 @@
 <script src="src/render/fridge-model.js"></script>
 <script src="src/core/washer-motion-core.js"></script>
 <script src="src/data/washer-blender-asset.js"></script>
+<script src="src/data/washer-tg10k60w-blender-asset.js"></script>
 <script src="src/render/washer-model.js"></script>
 <script src="src/render/appliance-model.js"></script>
 <script src="src/render/sliding-opening-model.js"></script>
@@ -913,7 +914,7 @@ const syncIdentity=FurnishPartIdentity;
       g.add(rot(syncIdentity.produce("index:site-67",()=>box(.012, .012, .09, cm, fx + .035, .98, bz + .09)), -.3));
       break;
     }
-    case 'fridge': case 'fridge_french_drawer': case 'waterheater_flat': case 'washer': case 'dryer': {
+    case 'fridge': case 'fridge_french_drawer': case 'waterheater_flat': case 'washer_littleswan_tg10k60w': case 'washer': case 'dryer': {
       const model=applianceModels.build(f,{furniture});g.add(...model.children.slice());g.scale.copy(model.scale);break;
     }
     case 'toilet': {
@@ -1156,7 +1157,7 @@ const syncIdentity=FurnishPartIdentity;
     default: g.add(syncIdentity.produce("index:site-220",()=>box(w, .8, d, c)));
   }
   if(typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f))FurnishCabinetModel.cutServices(THREE,g,f,{plan:FurnishProject.effectivePlan(PLAN,state)});
-  g.position.set(wx(f.cx), FurnishProducts.family(f,'window-covering')?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));
+  g.position.set(wx(f.cx), FurnishProducts.family(f,'window-covering')?M(FurnishProducts.value(f,'mountHeight')):FurnishProducts.family(f,'laundry')?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));
   g.rotation.y = -f.rot * Math.PI/180;       // 平面顺时针旋转 → 绕 Y 轴负向
   g.scale.x = f.flip ? -1 : 1;               // 镜像：沿家具自身宽度方向翻转（three 会自动处理负缩放的正反面）
   g.userData.fid = f.id;
@@ -1307,7 +1308,7 @@ function buildFurn(){
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       if(FurnishProducts.supports(f,'slidingOpen')&&o.userData.slidingDoor)o.userData.slidingDoor.open=FurnishProducts.value(f,'slidingOpen');
-      o.position.set(wx(f.cx),FurnishProducts.family(f,'window-covering')?M(FurnishProducts.value(f,'mountHeight')):FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
+      o.position.set(wx(f.cx),FurnishProducts.family(f,'window-covering')?M(FurnishProducts.value(f,'mountHeight')):FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):FurnishProducts.family(f,'laundry')?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
       continue;
     }
     if (o){ clearGroup(o); furnG.remove(o); }

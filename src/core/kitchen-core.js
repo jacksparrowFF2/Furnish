@@ -51,7 +51,7 @@ function laundryBay(f,m){const boards=laundrySideBoards(f).filter(b=>Math.abs(b.
 function laundryHeight(f){return Math.max(f.kitchen.baseHeight+(hasCountertop(f)?f.kitchen.thickness:0),...laundryParts(f).map(({key,furniture:p})=>key==='sink'?sinkProducts().vertical(p).top:p.mountHeight+p.h));}
 function integrateLaundryArea(list,id){
  const result=clone(list),f=result.find(f=>f.id===id);if(!isLaundry(f))throw Error('请选择洗衣机柜');if(f.kitchen.laundry.assembly)return result;
- const members=result.filter(g=>g.groupId&&g.groupId===f.groupId),sink=members.find(g=>g.counterLink?.hostId===id&&g.type==='ksink'),walls=members.filter(g=>g.type==='kitchenwall'&&g.cabinet),washer=members.find(g=>g.type==='washer');
+ const members=result.filter(g=>g.groupId&&g.groupId===f.groupId),sink=members.find(g=>g.counterLink?.hostId===id&&g.type==='ksink'),walls=members.filter(g=>g.type==='kitchenwall'&&g.cabinet),washer=members.find(g=>sinkProducts().definition(g)?.laundryKind==='washer');
  if(!sink||walls.length!==2||!washer||members.length!==5||members.some(g=>g.locked||Math.abs((g.rot||0)-(f.rot||0))>.001||!!g.flip!==!!f.flip))throw Error('需要未锁定的完整旧洗衣区才能转换');
  const assembly={};for(const [key,p] of [['sink',sink],...walls.map(g=>[g.cabinet.columns.every(c=>c.door==='none')?'open':'upper',g])]){const [x,y]=local(f,p.cx,p.cy),s={d:p.d,x:x||0,y:y||0,color:p.color};if(p.w!==f.w||key==='sink')s.w=p.w;if(key==='sink'){s.module=p.counterLink.module;const slot=layout(f)[s.module];s.x-=slot.x;s.y-=slot.y;if(p.sinkNotch)s.sinkNotch=clone(p.sinkNotch);}else Object.assign(s,{h:p.h,mountHeight:p.mountHeight,cabinet:clone(p.cabinet)});assembly[key]=s;}
  if(!assembly.upper||!assembly.open)throw Error('旧洗衣区的吊柜和开放格结构不完整');
@@ -82,7 +82,7 @@ function switchLaundrySides(list,id){
  const host=list.find(f=>f.id===id);if(!isLaundry(host))throw Error('请选择洗衣机柜');validate(host);
  const bays=layout(host).filter(m=>m.role==='empty'),R=sinkProducts();
  const inBay=f=>{
-  if(!['washer','dryer'].includes(f.type)||f.obj)return false;
+  if(!sinkProducts().family(f,'laundry')||f.obj)return false;
   const bottom=R.value(f,'mountHeight'),h=R.height(f);if(![f.cx,f.cy,f.w,f.d,bottom,h].every(Number.isFinite)||f.w<=0||f.d<=0||h<=0||bottom<0||hasCountertop(host)&&bottom+h>host.kitchen.baseHeight-dropHeight(host)+1e-6)return false;
   const points=[[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]].map(p=>local(host,...world(f,...p)));
   return bays.some(b=>points.every(([x,y])=>x>=b.x-b.width/2-1e-6&&x<=b.x+b.width/2+1e-6&&y>=b.y-runDepth(host,b.run)/2-1e-6&&y<=b.y+runDepth(host,b.run)/2+1e-6));
@@ -96,7 +96,7 @@ function notchedRing(w,d,n){const x=-w/2,y=-d/2;if(!n)return [[x,y],[x+w,y],[x+w
 function laundryCut(f){const n=f.kitchen?.laundry?.notch;if(!n)return [];const x=n.side==='left'?-f.w/2:f.w/2-n.width,y=-f.d/2;return [[x,y],[x+n.width,y],[x+n.width,y+n.depth],[x,y+n.depth]];}
 function centerLaundryInBay(host,device,index){
  if(host.locked||device.locked)throw Error('请先解锁柜体与设备');
- if(!isLaundry(host)||!['washer','dryer'].includes(device.type)||device.obj)throw Error('请选择洗衣机柜和洗烘设备');validate(host);
+ if(!isLaundry(host)||!sinkProducts().family(device,'laundry')||device.obj)throw Error('请选择洗衣机柜和洗烘设备');validate(host);
  const raw=layout(host).find(m=>m.index===index&&m.role==='empty'),m=raw&&laundryBay(host,raw);if(!m)throw Error('请选择设备空位');
  const R=sinkProducts(),h=R.height(device),bottom=R.value(device,'mountHeight');
  if(![device.w,device.d,h,bottom].every(Number.isFinite)||device.w>m.width||device.d>runDepth(host,m.run)||bottom<0||hasCountertop(host)&&bottom+h>host.kitchen.baseHeight-dropHeight(host))throw Error('洗烘设备超出空位净宽、净深或台面下净高');

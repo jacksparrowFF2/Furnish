@@ -4,6 +4,7 @@
 
 | 产品 | 模型说明 | 原始图副本 |
 |---|---|---|
+| 小天鹅 TG10K60W | [型号说明](../WASHER-LITTLESWAN-TG10K60W.md) | [参数](washer-tg10k60w/specifications.png)、[安装](washer-tg10k60w/installation.png)、[尺寸](washer-tg10k60w/dimensions.png)、[外观](washer-tg10k60w/appearance.png) |
 | 玄关柜二 | [玄关柜二](../ENTRY-CONSOLE-CABINET.md) | [产品图](entry-console/reference.png) |
 | 洞洞板玄关柜 | [洞洞板玄关柜](../ENTRY-PEGBOARD-CABINET.md) | [产品图](entry-pegboard/reference.png) |
 | 石头 P20 Max | [扫拖机器人](../ROBOROCK-P20MAX.md) | [尺寸](robot-p20max/reference-dimensions.png)、[产品](robot-p20max/reference-products.png)、[外壳](robot-p20max/reference-dock-shell.png)、[空站](robot-p20max/reference-tank-empty.png)、[侧面](robot-p20max/reference-tank-side.png)、[俯视](robot-p20max/reference-tank-top.png) |

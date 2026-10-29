@@ -1,5 +1,7 @@
 # Blender 家电资产试点：奥普 SE2
 
+2026-10-29最新补充：CLI增加第七个明确配置 `author-washer-tg10k60w`／`publish-washer-tg10k60w`，复用圆门生产装配而保留独立型号尺寸／部件资产及旧通用型。见[TG10K60W](WASHER-LITTLESWAN-TG10K60W.md)。
+
 2026-10-29。固定型号的首个完整试点，仍使用现有 `bath_heater_aopu_se2`，没有新增家具类型、保存字段或应用内任意文件导入界面。
 
 ## 已走通的链路

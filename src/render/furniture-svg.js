@@ -174,7 +174,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
     case 'shower_arrow_cream': return rc(-w*.476,y,w*.952,d*.25,c,'rx="12"') + rc(-w*.381,y+d*.553,w*.762,d*.447,c,`rx="18" ${DASH}`) + rc(-w*.03,y+d*.12,w*.06,d*.657,c,'rx="5"') + ln(-w*.17,y,-w*.17,y+d*.045) + ln(w*.17,y,w*.17,y+d*.045);
     case 'shower': return rc(x,y,w,d,c) + ln(x,y,x+w,y+d,DASH) + ln(x+w,y,x,y+d,DASH) + `<circle r="45" fill="#fff" ${ST()}/>`;
     case 'bathtub': return rc(x,y,w,d,c,'rx="40"') + rc(x+80,y+80,w-160,d-160,'#fff',`rx="${m*.33}"`) + `<circle cx="${x+w-260}" cy="0" r="35" fill="#ccc" ${ST()}/>`;
-    case 'washer': case 'dryer': return rc(x,y,w,d,c,'rx="30"') + rc(x,y,w,d*.14,shade(c,.9)) + `<circle cy="${d*.06}" r="${m*.34}" fill="#fff" ${ST()}/><circle cy="${d*.06}" r="${m*.24}" fill="${t==='dryer'?'#e9dccb':'#cfdde4'}" ${ST()}/>`;
+    case 'washer_littleswan_tg10k60w': case 'washer': case 'dryer': return rc(x,y,w,d,c,'rx="30"') + rc(x,y,w,d*.14,shade(c,.9)) + `<circle cy="${d*.06}" r="${m*.34}" fill="#fff" ${ST()}/><circle cy="${d*.06}" r="${m*.24}" fill="${t==='dryer'?'#e9dccb':'#cfdde4'}" ${ST()}/>`;
     case 'crib': {
       let s = rc(x,y,w,d,c,'rx="20"') + rc(x+45,y+45,w-90,d-90,'#fff','rx="20"');
       for (let sx = x+90; sx < x+w-60; sx += 90) s += ln(sx,y,sx,y+45,'opacity=".5"') + ln(sx,y+d-45,sx,y+d,'opacity=".5"');

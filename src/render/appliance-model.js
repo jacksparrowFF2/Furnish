@@ -4,7 +4,7 @@
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
-const supported=f=>['fridge','fridge_french_drawer','waterheater_flat','washer','dryer'].includes(f?.type);
+const supported=f=>(root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null))?.family(f,'laundry')||['fridge','fridge_french_drawer','waterheater_flat','washer','dryer'].includes(f?.type);
 function create(THREE,RoundedBoxGeometry,options={}){
  const products=options.products||root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
  const design=options.design||root.FurnishDesign||(typeof require==='function'?require('../core/design-core.js'):null);

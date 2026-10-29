@@ -114,7 +114,7 @@
  function laundryStack(f,furniture){
   if(!products().family(f,'laundry'))return null;
   const bottom=products().value(f,'mountHeight'),height=products().value(f,'stackHeight');
-  const lower=(furniture||[]).find(item=>item.id!==f.id&&products().family(item,'laundry')&&item.type!==f.type
+  const lower=(furniture||[]).find(item=>item.id!==f.id&&products().family(item,'laundry')&&products().definition(item)?.laundryKind!==products().definition(f)?.laundryKind
    &&Math.abs(item.cx-f.cx)<=5&&Math.abs(item.cy-f.cy)<=5
    &&Math.abs(Math.sin(((item.rot||0)-(f.rot||0))*Math.PI/180))<1e-6
    &&bottom-(products().value(item,'mountHeight'))-(products().height(item))>=-1e-6
@@ -127,7 +127,7 @@
    const old=before.find(item=>item.id===f.id),previous=old&&laundryStack(old,before),lower=previous&&furniture.find(item=>item.id===previous.lowerId);
    // Keep an existing stack attached when its lower body height changes.
    if(lower&&(products().value(f,'mountHeight'))===(products().value(old,'mountHeight'))&&Math.abs(lower.cx-f.cx)<=5&&Math.abs(lower.cy-f.cy)<=5
-    &&lower.type!==f.type&&products().family(lower,'laundry')&&Math.abs(Math.sin(((lower.rot||0)-(f.rot||0))*Math.PI/180))<1e-6){
+    &&products().definition(lower)?.laundryKind!==products().definition(f)?.laundryKind&&products().family(lower,'laundry')&&Math.abs(Math.sin(((lower.rot||0)-(f.rot||0))*Math.PI/180))<1e-6){
     const next=(products().value(lower,'mountHeight'))+(products().height(lower))+(products().value(f,'stackHeight'));if(next<=20000)f.mountHeight=next;
    }
    const stack=laundryStack(f,furniture);if(stack&&stack.bottom+stack.height<=20000)f.mountHeight=stack.bottom+stack.height;

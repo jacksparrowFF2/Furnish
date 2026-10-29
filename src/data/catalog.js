@@ -31,6 +31,7 @@ const LIB = [
     ["rangehood_fotile_jcd10ta","方太抽油烟机 JCD10TA",900,350,"#111214",0,products.height({type:"rangehood_fotile_jcd10ta"})],
     ["stove","燃气灶",750,450,"#dcdcdc",2500],
     ["fridge","冰箱",700,700,"#dfe4e8",4000],
+    ["washer_littleswan_tg10k60w","小天鹅 TG10K60W · 10kg",595,560,"#f1f0ed",undefined,850],
     ["washer","洗衣机",600,600,"#e6ebee",2800,products.height({type:"washer"})],
     ["waterheater","电热水器",800,450,"#f4f4f2",1800],
     ["waterheater_flat","扁桶电热水器 60L",700,320,"#fafafa",0,products.height({type:"waterheater_flat"})],
@@ -215,7 +216,7 @@ const useTypes={
  dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
  study:['desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','armchair','floorlamp'],
  kitchen:['panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
- laundry:['washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
+ laundry:['washer_littleswan_tg10k60w','washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
  bathroom:['bath_heater_aopu_se2','bath_heater_300x600','vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],
  entry:['electrical_box_strong','electrical_box_weak','shoecab','bench_yeswood_oak','bench','mirror'],pet:[...petTypes]
 };
