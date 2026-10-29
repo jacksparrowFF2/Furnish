@@ -1,0 +1,26 @@
+{
+  "scheme": "1601",
+  "furniture": 70,
+  "unchangedFurniture": 61,
+  "focusedIssues": [
+    {
+      "kind": "floorheight",
+      "id": "fmv5c10yi4",
+      "name": "偶用书桌 · 1.4m",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    },
+    {
+      "kind": "floorheight",
+      "id": "fmv5dvzo81",
+      "name": "活动座椅 · 喝茶与办公共用",
+      "pending": true,
+      "message": "家具或所跨区域高度未知，地面净高待核对"
+    }
+  ],
+  "fullIssues": 39,
+  "roundtrip": true,
+  "repeatedRestore": true,
+  "otherWorkAndDesignsPreserved": true,
+  "catCabinetProductionBoards": 6
+}
