@@ -18,6 +18,10 @@ const fields={
  pipeBoxThickness:numeric(1,100,'包管柜板厚须为 1–100 mm'),
  laundryHostId:{string:true,max:200,message:'洗衣机柜关联编号无效'},
  groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
+ fridgeLeftAngle:numeric(0,100,'冰箱左门角度须为0–100度'),
+ fridgeRightAngle:numeric(0,100,'冰箱右门角度须为0–100度'),
+ fridgeUpperExtension:numeric(0,1,'冰箱上抽屉行程比例须为0–1'),
+ fridgeLowerExtension:numeric(0,1,'冰箱下抽屉行程比例须为0–1'),
  hoodPanelOpen:{boolean:true,message:'烟机面板开合设置无效'},
  dishwasherDoorOpen:{boolean:true,message:'洗碗机折叠门开合设置无效'},
  teaBarUpperOpen:{boolean:true,message:'茶吧机上层柜门开合设置无效'},
@@ -95,7 +99,7 @@ const types={
  tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
  curtain:{height:2400,defaults:{curtainStyle:'double'},fields:['curtainStyle'],create:['curtainStyle']},
- fridge:{height:1800},fridge_french_drawer:{height:1910},sofa_yeswood_cherry:{solidModel:{global:'FurnishYeswoodSofaModel',module:'yeswood-sofa',rounded:true},height:895},mirror:{height:1650},
+ fridge:{height:1800},fridge_french_drawer:{height:1910,solidModel:{global:'FurnishFridgeModel',module:'fridge'},fields:['fridgeLeftAngle','fridgeRightAngle','fridgeUpperExtension','fridgeLowerExtension'],defaults:{fridgeLeftAngle:0,fridgeRightAngle:0,fridgeUpperExtension:0,fridgeLowerExtension:0},fridgeMotion:{size:[833,1910,595],angle:100,travel:350,parts:[{role:'left',key:'fridgeLeftAngle',axis:'y',sign:1,pivot:[-413.5,800,281.5]},{role:'right',key:'fridgeRightAngle',axis:'y',sign:-1,pivot:[413.5,800,281.5]},{role:'upper',key:'fridgeUpperExtension',axis:'z',pivot:[0,0,0]},{role:'lower',key:'fridgeLowerExtension',axis:'z',pivot:[0,0,0]}]}},sofa_yeswood_cherry:{solidModel:{global:'FurnishYeswoodSofaModel',module:'yeswood-sofa',rounded:true},height:895},mirror:{height:1650},
  aircon:{height:1800},dishwasher:{height:840},rug:{height:16},bench:{height:440},beanbag:{height:720},barstool:{height:775},custom:{height:800},customround:{height:800},toilet:{height:796}
 };
 for(const type of ["bed","sofa","armchair","cornersofa","dresser","desk","chair","coffeetable","table","roundtable","island","barstool","officechair","bench"])types[type]={...types[type],solidModel:{global:'FurnishBasicFurnitureModel',module:'basic-furniture',positionSeed:true}};
@@ -159,6 +163,7 @@ function resizeManifold(f,next){
  if(f.manifoldLengths)next.manifoldLengths={upper:old.lengths.upper*ratio,lower:old.lengths.lower*ratio};
 }
 function planBodyOutline(f,segments){
+ if(!f.obj&&definition(f)?.fridgeMotion)return (root.FurnishFridge||require('./fridge-core.js')).outline(f);
  const b=assemblyBounds(f);if(b)return [[b.left,b.back],[b.right,b.back],[b.right,b.front],[b.left,b.front]];
  const shape=!f.obj&&definition(f)?.planShape;if(!shape)return null;
  const count=segments||shape.segments,signed=v=>Math.abs(v)<1e-12?0:Math.sign(v)*Math.pow(Math.abs(v),shape.exponent);

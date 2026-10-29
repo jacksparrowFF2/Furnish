@@ -14,6 +14,7 @@ function signature(group){
  const THREE=await import(imports.three),source=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString().replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
  const browser=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishProducts:products,FurnishDesign:design}));
+ vm.runInContext(fs.readFileSync(require.resolve('../src/core/fridge-core.js'),'utf8'),browser);vm.runInContext(fs.readFileSync(require.resolve('../src/data/fridge-blender-asset.js'),'utf8'),browser);vm.runInContext(fs.readFileSync(require.resolve('../src/render/fridge-model.js'),'utf8'),browser);
  for(const file of ['model-primitives','appliance-model'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),browser);
  const nodeBuilder=models.create(THREE,RoundedBoxGeometry),browserBuilder=browser.FurnishApplianceModel.create(THREE,RoundedBoxGeometry);
  assert.equal(models.supported({type:'bed'}),false);assert.equal(models.supported(null),false);assert.throws(()=>nodeBuilder.build({type:'bed'}),/Unsupported/);

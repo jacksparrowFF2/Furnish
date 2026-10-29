@@ -6,7 +6,7 @@ import sys
 import math
 
 run = pathlib.Path(sys.argv[sys.argv.index('--')+1])
-expected = 12 if '--bookcase' in sys.argv else 29
+expected = 30 if '--fridge' in sys.argv else 12 if '--bookcase' in sys.argv else 29
 results = []
 for mode in ('http', 'file'):
     bpy.ops.object.select_all(action='SELECT')
@@ -19,6 +19,31 @@ for mode in ('http', 'file'):
     assert all(obj.type == 'MESH' and obj.get('furnishPartVersion') == 3 for obj in parts)
     assert all(obj.data.materials for obj in parts)
     details = {'mode': mode, 'parts': len(parts), 'stableKeys': len(set(keys))}
+    if expected == 30:
+        bpy.context.view_layer.update()
+        opened = {obj['furnishPartKey']:obj.matrix_world.copy() for obj in parts}
+        bpy.ops.wm.save_as_mainfile(filepath=str(run/(mode+'-open-roundtrip.blend')))
+        bpy.ops.object.select_all(action='SELECT')
+        bpy.ops.object.delete(use_global=False)
+        bpy.ops.import_scene.gltf(filepath=str(run/(mode+'-closed.glb')))
+        bpy.context.view_layer.update()
+        closed = {obj['furnishPartKey']:obj.matrix_world.copy() for obj in bpy.context.scene.objects if obj.get('furnishId')=='blender-pilot'}
+        assert set(opened)==set(closed)
+        for role,degrees in (('left',90),('right',70)):
+            key='explicit:fridge-v1:door-'+role
+            assert (opened[key].translation-closed[key].translation).length<1e-5,'hinge moved'
+            delta=opened[key].to_3x3() @ closed[key].to_3x3().inverted()
+            quaternion=delta.to_quaternion()
+            actual=min(quaternion.angle,2*math.pi-quaternion.angle)
+            assert abs(math.degrees(actual)-degrees)<.001,(role,actual)
+            assert abs(quaternion.axis.z)>.99999,'door rotated about wrong world axis'
+        travel=[]
+        for role,fraction in (('upper',1),('lower',.4)):
+            key='explicit:fridge-v1:drawer-'+role+'-front'
+            distance=(opened[key].translation-closed[key].translation).length
+            assert abs(distance-.350*(800/595)*fraction)<1e-5,(role,distance)
+            travel.append(round(distance*1000,3))
+        details.update({'hingeAngles':[90,70],'fixedHingeOrigins':True,'drawerTravelMm':travel})
     if expected == 12:
         bpy.context.view_layer.update()
         points = [obj.matrix_world @ v.co for obj in parts for v in obj.data.vertices]

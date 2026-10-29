@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "blender": "4.5.15 LTS",
+  "results": [
+    {
+      "mode": "http",
+      "parts": 30,
+      "stableKeys": 30,
+      "hingeAngles": [
+        90,
+        70
+      ],
+      "fixedHingeOrigins": true,
+      "drawerTravelMm": [
+        470.588,
+        188.235
+      ]
+    },
+    {
+      "mode": "file",
+      "parts": 30,
+      "stableKeys": 30,
+      "hingeAngles": [
+        90,
+        70
+      ],
+      "fixedHingeOrigins": true,
+      "drawerTravelMm": [
+        470.588,
+        188.235
+      ]
+    }
+  ]
+}

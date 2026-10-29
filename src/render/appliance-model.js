@@ -13,6 +13,7 @@ function create(THREE,RoundedBoxGeometry,options={}){
  const M=v=>v/1000,mat=primitives.mat;
  function build(f,context={}){
   if(!supported(f))throw Error('Unsupported appliance model: '+f?.type);
+  if(products.definition(f)?.fridgeMotion){const loader=root.FurnishFridgeModel||(typeof require==='function'?require('./fridge-model.js'):null);if(loader)return loader.build(THREE,f,{mat});}
   const g=new THREE.Group(),w=M(f.w),d=M(f.d),c=f.color||'#ddd';
   switch(f.type){
     case 'washer': case 'dryer': {

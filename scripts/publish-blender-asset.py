@@ -12,10 +12,10 @@ import struct
 import sys
 
 
-def publish(source, target, profile='se2'):
-    if profile not in ('se2', 'y52y09'):
+def publish(source, target, profile='se2', spec=None):
+    if profile not in ('se2', 'y52y09', 'fridge'):
         raise ValueError('Unknown asset profile')
-    prefix = 'bath-heater-se2:' if profile == 'se2' else 'y52y09:'
+    prefix = {'se2':'bath-heater-se2:','y52y09':'y52y09:','fridge':'fridge-v1:'}[profile]
     raw = source.read_bytes()
     if len(raw) < 20 or raw[:4] != b'glTF' or struct.unpack_from('<II', raw, 4) != (2, len(raw)):
         raise ValueError('Invalid GLB header')
@@ -39,6 +39,7 @@ def publish(source, target, profile='se2'):
     bpy.ops.import_scene.gltf(filepath=str(source))
     parts = []
     names = set()
+    hinges = {}
 
     def xyz(v):
         # Remove float32 interchange noise at exact contact planes (0.0001 mm grid).
@@ -54,6 +55,16 @@ def publish(source, target, profile='se2'):
         return '#' + ''.join(format(channel(v), '02x') for v in values[:3])
 
     for obj in sorted(bpy.context.scene.objects, key=lambda o: o.name):
+        if profile=='fridge' and obj.type=='EMPTY':
+            role=obj.get('furnishMotionRole')
+            expected=next((m for m in spec['motions'] if m['role']==role),None)
+            if not expected or role in hinges or obj.get('furnishHingeAxis')!=expected['axis']:
+                raise ValueError('Unknown/duplicate hinge or wrong axis')
+            location=xyz(obj.matrix_world.translation)
+            if any(abs(location[k]-expected['pivot'][k]/1000)>1e-6 for k in range(3)) or any(abs(obj.matrix_world[i][j]-(1 if i==j else 0))>1e-6 for i in range(3) for j in range(3)):
+                raise ValueError('Hinge pivot/closed transform changed: '+role)
+            hinges[role]=expected
+            continue
         if obj.type != 'MESH':
             raise ValueError('Non-mesh object in static asset: ' + obj.name)
         identity = obj.get('furnishStablePart')
@@ -82,6 +93,16 @@ def publish(source, target, profile='se2'):
                 normals.extend(xyz((normal_matrix @ mesh.corner_normals[loop].vector).normalized()))
         if not positions:
             raise ValueError('Empty mesh')
+        if profile == 'fridge':
+            reference=next((p for p in spec['parts'] if p['name']==obj.name),None)
+            role=obj.parent.get('furnishMotionRole') if obj.parent else None
+            if not reference or reference['role']!=role:
+                raise ValueError('Moving part attached to wrong hinge: '+obj.name)
+            low=[min(positions[k::3]) for k in range(3)];high=[max(positions[k::3]) for k in range(3)]
+            if any(abs(high[k]-low[k]-reference['size'][k]/1000)>1e-6 or abs((high[k]+low[k])/2-reference['center'][k]/1000)>1e-6 for k in range(3)):
+                raise ValueError('Fridge part dimensions/closed pose changed: '+obj.name)
+            parts.append({'name':obj.name,'identity':identity,'role':role,'positions':positions,'normals':normals,'material':mat,'recolor':bool(obj.get('furnishRecolor'))})
+            continue
         if profile == 'y52y09':
             low = [min(positions[k::3]) for k in range(3)]
             high = [max(positions[k::3]) for k in range(3)]
@@ -102,7 +123,11 @@ def publish(source, target, profile='se2'):
                       'material': mat, 'positions': positions, 'normals': normals})
     if not parts:
         raise ValueError('No meshes')
-    if profile == 'y52y09':
+    if profile == 'fridge':
+        expected={p['name'] for p in spec['parts']}
+        if set(hinges)!={m['role'] for m in spec['motions']}:
+            raise ValueError('Missing hinge/slide parents')
+    elif profile == 'y52y09':
         sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
         from y52y09_spec import boards
         reference = {name:(size,center) for name,size,center in boards()}
@@ -121,17 +146,17 @@ def publish(source, target, profile='se2'):
         expected.update(prefix+'-'+str(i) for prefix in ('indicator', 'indicator-label', 'brand-mark') for i in range(4))
     if {p['name'] for p in parts} != expected:
         raise ValueError('Asset part set changed; review resize and stable identities before publishing')
-    bounds = ((-.15,.15),(0,.112),(-.3,.3)) if profile == 'se2' else ((-.5575,.5575),(0,.75),(-.115,.115))
+    bounds = {'se2':((-.15,.15),(0,.112),(-.3,.3)),'y52y09':((-.5575,.5575),(0,.75),(-.115,.115)),'fridge':((-.4165,.4165),(0,1.910),(-.2975,.2975))}[profile]
     for axis, limits in enumerate(bounds):
         values = [v for p in parts for v in p['positions'][axis::3]]
         if max(abs(min(values)-limits[0]), abs(max(values)-limits[1])) > 1e-6:
             raise ValueError('Reference dimensions/origin changed; review product rules first')
     payload = {'format':1,'version':1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
-    payload.update({'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6})
+    payload.update({'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'fridge-french-drawer','sizeMm':spec['size'],'motions':list(hinges.values())})
     # Publish only after successful import and validation; a failed attempt preserves the old asset.
     body = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
     text = '/* Generated from '+source.name+'; scripts/publish-blender-asset.py. Do not hand-edit. */\n'
-    global_name = 'FurnishSE2BlenderAsset' if profile=='se2' else 'FurnishY52Y09BlenderAsset'
+    global_name = {'se2':'FurnishSE2BlenderAsset','y52y09':'FurnishY52Y09BlenderAsset','fridge':'FurnishFridgeBlenderAsset'}[profile]
     text += '(function(root){const asset=' + body + ';if(typeof module==="object"&&module.exports)module.exports=asset;else root.'+global_name+'=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + '.tmp')
@@ -145,7 +170,8 @@ if __name__ == '__main__':
     result = pathlib.Path(args[args.index('--result')+1]) if '--result' in args else None
     try:
         profile = args[args.index('--profile')+1] if '--profile' in args else 'se2'
-        publish(pathlib.Path(args[0]).resolve(), pathlib.Path(args[1]).resolve(), profile)
+        spec=json.loads(pathlib.Path(args[args.index('--spec')+1]).read_text(encoding='utf-8')) if '--spec' in args else None
+        publish(pathlib.Path(args[0]).resolve(), pathlib.Path(args[1]).resolve(), profile, spec)
         if result:
             result.write_text(json.dumps({'passed': True, 'blender': bpy.app.version_string}), encoding='utf-8')
     except Exception as error:

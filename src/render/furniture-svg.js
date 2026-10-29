@@ -156,7 +156,10 @@ if(t==='pocketdoor_double'){
     }
     case 'sink_arrow_680': case 'sink_arrow_750': return rc(x,y,w,d,c,'rx="12"')+rc(x+20,y+20,w-40,d-39,'#454d50','rx="20"')+rc(w*.17,y+20,w*.3,d*.22,c,'rx="12"')+rc(x+w*.12,y+d*.42,w*.28,d*.30,'#a3a8a9','rx="12"')+`<circle cx="${w*.32}" cy="${y+d*.10}" r="15" fill="#aeb4b6"/>`+ln(w*.32,y+d*.10,w*.32,y+d*.48);
     case 'ksink': if(f?.sinkStyle==='vessel')return rc(x,y,w,d,c,'rx="20"')+rc(x+15,y+15,w-30,d-30,'#fff','rx="12"')+`<circle cx="0" cy="0" r="20" fill="#aaa"/>`;if(f?.sinkNotch){const K=typeof module==='object'&&module.exports?require('../core/kitchen-core.js'):root.FurnishKitchen;return pa('M'+K.notchedRing(w,d,f.sinkNotch).map(p=>p.join(',')).join('L')+'Z',c)+pa('M'+K.notchedRing(w-40,d-40,f.sinkNotch).map(p=>p.join(',')).join('L')+'Z','#fff');}return rc(x,y,w,d,c,'rx="20"') + rc(x+w*.06,y+d*.18,w*.42,d*.66,'#fff','rx="50"') + rc(x+w*.52,y+d*.18,w*.42,d*.66,'#fff','rx="50"') + `<circle cx="0" cy="${y+d*.09}" r="22" fill="#999"/>`;
-    case 'fridge_french_drawer': return rc(x,y,w,d,c) + rc(x,y+d*.92,w,d*.08,shade(c,.9)) + ln(0,y+d*.92,0,y+d);
+    case 'fridge_french_drawer': {
+      const F=typeof module==='object'&&module.exports?require('../core/fridge-core.js'):root.FurnishFridge;if(!F)return rc(x,y,w,d,c)+ln(0,y+d*.92,0,y+d);
+      const item={...f,type:t,w,d},motions=new Map(F.motions(item).map(m=>[m.role,m]));return rc(x,y,w,d,c)+F.layout(item).filter(p=>p.name.startsWith('door-')||/^drawer-(upper|lower)-front$/.test(p.name)).map(p=>{const v=F.vertices(p,motions.get(p.role)).slice(0,4);return `<polygon points="${v.map(p=>p[0]+','+p[2]).join(' ')}" fill="${c}" stroke="currentColor" stroke-width="3"/>`;}).join('');
+    }
     case 'fridge': return rc(x,y,w,d,c,'rx="30"') + ln(x,y+d*.14,x+w,y+d*.14) + ln(0,y+d*.14,0,y+d) + rc(-70,y+d*.5,40,d*.25,'#aab') + rc(30,y+d*.5,40,d*.25,'#aab');
     case 'toilet': return rc(x+w*.04,y,w*.92,d*.27,c,'rx="30"') + ec(0,y+d*.27+d*.36,w*.47,d*.36,c) + ec(0,y+d*.27+d*.4,w*.3,d*.24,'#eef4f7');
     case 'vanity': return rc(x,y,w,d,c,'rx="20"') + ec(0,y+d*.57,Math.min(w*.32,260),d*.28,'#fff') + `<circle cx="0" cy="${y+d*.17}" r="26" fill="#999"/>`;
