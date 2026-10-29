@@ -7,8 +7,13 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   if(f.laundryFloorOpen)options={...options,floorOpen:true};
   const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.bodyHeight(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
   const assembly=C.pegboardParts(f,c),hasUpper=assembly?.upper!==false,hasLower=assembly?.lower!==false;
-  const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
-  const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=syncIdentity.produce("cabinet-model:site-1",()=>box(W,H,D,shade,x,y,z));parent.add(mesh);return mesh;};
+  const bookcase=(root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null))?.definition('bookshelf_yeswood_y52y09')?.bookcase,roundedBookcase=!!bookcase&&c.template===bookcase.template;
+  const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=roundedBookcase?color:C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
+  const add=(parent,W,H,D,x,y,z,shade=bodyColor)=>{const mesh=syncIdentity.produce("cabinet-model:site-1",()=>box(W,H,D,shade,x,y,z));
+   // Same production board envelope feeds the numeric recorder. The render-only
+   // edge easing remains inside that envelope; radius is a visual estimate.
+   if(roundedBookcase&&mesh.geometry?.attributes){const r=Math.min(bookcase.edgeRadius/1000,W/4,H/4,D/4),s=new THREE.Shape();s.moveTo(-W/2+r,-H/2+r);s.lineTo(W/2-r,-H/2+r);s.lineTo(W/2-r,H/2-r);s.lineTo(-W/2+r,H/2-r);s.closePath();const geometry=new THREE.ExtrudeGeometry(s,{depth:D-2*r,bevelEnabled:true,bevelThickness:r,bevelSize:r,bevelSegments:3,steps:1});geometry.translate(0,0,-D/2+r);mesh.geometry.dispose();mesh.geometry=geometry;}
+   parent.add(mesh);return mesh;};
   const closure=C.topClosure(c),panels=C.endPanels(c);
   if(closure.height&&!options.skipTopClosure){
    for(const part of C.topClosureParts(f,c)){
@@ -231,7 +236,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     }else syncIdentity.produce("cabinet-model:site-66",()=>add(g,W,t,d,(left+right)/2,h-t,0));
    }
    const handleMesh=(parent,X,Y,Z,vertical=false)=>{if(handle==='none')return;const mesh=syncIdentity.produce("cabinet-model:site-67",()=>add(parent,handle==='knob'?.025:vertical?.012:Math.min(.14,cw*.4),handle==='knob'?.025:vertical?.15:.012,.025,X,Y,Z,'#71685d'));if(handle==='knob'){mesh.geometry.dispose();mesh.geometry=new THREE.SphereGeometry(.0125,12,8);}};
-   if(hasUpper)syncIdentity.each("cabinet-model.js:generator-36",col.shelves,(y,j)=>{syncIdentity.produce("cabinet-model:site-68",()=>add(g,cw,t,d-2*t,x,base+y/1000,-t/2)).userData.cabinetShelf={column:i,shelf:j};},(item,slot)=>item?.partId||"shelf:"+slot);
+   if(hasUpper)syncIdentity.each("cabinet-model.js:generator-36",col.shelves,(y,j)=>{syncIdentity.produce("cabinet-model:site-68",()=>add(g,cw,t,roundedBookcase?d-t:d-2*t,x,base+y/1000,roundedBookcase?t/2:-t/2)).userData.cabinetShelf={column:i,shelf:j};},(item,slot)=>item?.partId||"shelf:"+slot);
    let y=base;const lanes=C.drawerCount(col),drawerHeight=col.drawers.reduce((sum,v)=>sum+v.height,0)/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-37",1,lanes,1,false))if(hasLower&&drawerHeight)syncIdentity.produce("cabinet-model:site-69",()=>add(g,t,drawerHeight,d-2*t,x+(lane-lanes/2)*(cw+t)/lanes,base,-t/2)).userData.cabinetDrawerDivider=true;
    if(hasLower)syncIdentity.each("cabinet-model.js:generator-38",col.drawers,(drawer,j)=>{
     const dh=drawer.height/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-39",0,lanes,1,false)){const cw=(bays[i].width/1000-(lanes-1)*t)/lanes,x=bays[i].center/1000+(lane-(lanes-1)/2)*(cw+t),state=C.drawerState(drawer,lane),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;

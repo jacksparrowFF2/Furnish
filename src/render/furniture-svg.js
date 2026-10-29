@@ -118,6 +118,7 @@ const DASH = 'stroke-dasharray="4 3"';
     case 'dresser': return rc(x,y,w,d,c,'rx="20"') + rc(x+w*.2,y,w*.6,55,'#dfe9ee') + ec(0,d/2+180,160,140,shade(c,.9));
     case 'desk': return rc(x,y,w,d,c,'rx="20"') + rc(-w*.18,y+50,w*.36,45,'#555') + rc(-w*.14,y+d*.45,w*.28,d*.28,'#f4f4f4','rx="10"');
     case 'chair': return rc(x+25,y+d*.16,w-50,d*.84-10,c,'rx="60"') + rc(x,y,w,d*.2,shade(c,.78),'rx="40"');
+    case 'bookshelf_yeswood_y52y09': {const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,item=f||{type:t,w,d},thickness=C.config(item).thickness;return rc(x,y,w,d,c)+C.layout(item).slice(1).map(b=>rc(b.left-thickness,y,thickness,d,shade(c,.86))).join('');}
     case 'bookshelf': { let s = rc(x,y,w,d,c); for (let bx = x+400; bx < x+w-50; bx += 400) s += ln(bx,y,bx,y+d); return s; }
     case 'baycushion': return rc(x,y,w,d,c,'rx="60"') + rc(x+60,y+80,w-120,Math.min(300,d*.2),'#fff','rx="60"') + rc(x+60,y+d-80-Math.min(300,d*.2),w-120,Math.min(300,d*.2),'#fff','rx="60"');
     case 'bench_yeswood_oak': return rc(x,y,w,d,c,`rx="${w*.015}"`)+rc(-w*372.5/800,y,w*745/800,d,'#d7d1c5',`rx="${w*.0175}" ry="${d*14/300}"`)+[-1,1].map(s=>ln(s*w*300/800,y+d*.06,s*w*300/800,y+d*.94)).join('');

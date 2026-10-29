@@ -1,0 +1,9 @@
+PASS Y52Y09: production cubbies and bounds, actual solids, scaling, rotation/mirror, contact/overlap/unknown height, defaults, restoration and project roundtrip
+PASS all cabinet meshes have finite dimensions, correct heights, hinge rotations and drawer travel
+PASS layered sideboard dimensions, open working/fridge cavities, glass, doors, resize, shelf boundaries and project round trip
+Cabinet templates, geometry constraints, resize, persistence and immutable opening passed
+PASS automatic paired-door bays, manual overrides, shared widths, immutable merge and import compatibility
+PASS compact cabinet catalog, hidden legacy specs, grouped templates, installation and repeated recovery
+PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API
+PASS cabinet interiors: six directions, signed penetration, placement, shelves, unknowns, generic devices, mixed-height groups, open doors, straight/L/U transforms, project/restore, 1282 production boards and 960 height-clipped door rays
+PASS enclosed boundaries: screenshot fixture, 93 catalog types × 8 transforms, partial overlap/contact, height separation/unknowns, groups, drawing rotation, real panels, preserved collision checks and project roundtrip

@@ -1,7 +1,7 @@
 /* Parametric cabinetry, in millimetres. Shared by editor, scene and imports. */
 (function(root){
  'use strict';
- const types=['cabinet','wardrobe','shoecab','bookshelf','chest','nightstand','tvstand','ovencol','kitchenwall','vanity'];
+ const types=['cabinet','wardrobe','shoecab','bookshelf','bookshelf_yeswood_y52y09','chest','nightstand','tvstand','ovencol','kitchenwall','vanity'];
  const products=()=>root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
  const palette={body:'#bc936b',front:'#f3f1ec'};
  const templates=[
@@ -17,6 +17,7 @@
   ['wardrobe','衣柜 · 分区收纳',2000,600,2200,4,'left',3,1],
   ['shoe','鞋柜 · 双门',1000,350,1100,2,'left',4,0],
   ['book','书柜 · 开放层板',1200,350,2000,3,'none',5,0],
+  ['book-y52y09-low','源氏木语 Y52Y09 · 750高六格书柜',1115,230,750,3,'none',1,0],
   ['chest','斗柜 · 四层抽屉',800,500,1000,1,'none',0,4],
   ['base','厨房地柜',800,600,850,2,'left',1,0],
   ['wall','壁柜',800,350,700,2,'left',1,0],
@@ -29,16 +30,16 @@
   {name:'收纳与衣柜',en:'Storage and wardrobes',ids:['storage','wardrobe','pantry800','pantry500']},
   {name:'餐边柜',en:'Sideboards',ids:['sideboard','sideboard-drawers','sideboard-open','sideboard-mixed','sideboard-wall','sideboard-fridge']},
   {name:'玄关与鞋柜',en:'Entry and shoe cabinets',ids:['shoe','entry-pegboard','entry-console']},
-  {name:'书柜与斗柜',en:'Bookcases and drawer chests',ids:['book','chest']},
+  {name:'书柜与斗柜',en:'Bookcases and drawer chests',ids:['book','book-y52y09-low','chest']},
   {name:'电视柜',en:'TV cabinets',ids:['tv','tv-floor']},
   {name:'厨房与壁柜',en:'Kitchen and wall cabinets',ids:['base','wall']}
  ];
  function templateType(id){
   if(!templates.some(t=>t[0]===id))throw Error('柜体模板无效');
-  return {wardrobe:'wardrobe',shoe:'shoecab',book:'bookshelf',chest:'chest',tv:'tvstand','tv-floor':'tvstand',wall:'kitchenwall'}[id]||'cabinet';
+  return {wardrobe:'wardrobe',shoe:'shoecab',book:'bookshelf','book-y52y09-low':'bookshelf_yeswood_y52y09',chest:'chest',tv:'tvstand','tv-floor':'tvstand',wall:'kitchenwall'}[id]||'cabinet';
  }
  const supported=f=>!!f&&types.includes(f.type)&&!f.obj;
- const defaultId=f=>({wardrobe:'wardrobe',shoecab:'shoe',bookshelf:'book',chest:'chest',tvstand:'tv',nightstand:'chest',ovencol:'pantry500',kitchenwall:'wall',vanity:'base'}[f.type]||(/储物|收纳/.test(f.name||'')?'storage':'sideboard'));
+ const defaultId=f=>({wardrobe:'wardrobe',shoecab:'shoe',bookshelf:'book',bookshelf_yeswood_y52y09:'book-y52y09-low',chest:'chest',tvstand:'tv',nightstand:'chest',ovencol:'pantry500',kitchenwall:'wall',vanity:'base'}[f.type]||(/储物|收纳/.test(f.name||'')?'storage':'sideboard'));
  const doorOptions=[['none','无柜门（开放格）','No door (open)'],['left','左铰链单门','Left hinge'],['right','右铰链单门','Right hinge'],['double','左右对开双门','Paired doors'],['up','上翻门','Lift up'],['down','下翻门','Fold down']];
  const verticalDoor=door=>door==='up'||door==='down';
  const maxDoorAngle=(c,col,section)=>section==='display'?(col?.displayMaxAngle??col?.doorMaxAngle??c.doorMaxAngle??90):(col?.doorMaxAngle??c.doorMaxAngle??90);
@@ -164,7 +165,7 @@
  }
  function presetRaw(id){
   const t=templates.find(t=>t[0]===id);if(!t)throw Error('柜体模板无效');
-  const [key,name,w,d,h,n,door,shelves,drawers]=t,thickness=18,plinth=key==='tv-floor'?0:60,inside=h-plinth-2*thickness;
+  const [key,name,w,d,h,n,door,shelves,drawers]=t,thickness=18,plinth=['tv-floor','book-y52y09-low'].includes(key)?0:60,inside=h-plinth-2*thickness;
   if(key==='sideboard-wall'||key==='sideboard-fridge'){
    const fridge=key==='sideboard-fridge';
    return autoDoors({name,w,d,h,color:palette.front,cabinet:{version:1,template:key,thickness,plinth:60,
@@ -173,9 +174,9 @@
   }
   if(key==='entry-pegboard')return autoDoors({name,w,d,h,color:'#f3f1ec',cabinet:{version:1,template:key,thickness,plinth:0,pegboardParts:{},columns:[{door:'double',doorOpen:false,doorBottom:1796,pegboard:true,handle:'none',shelves:[1778],drawers:[{height:180,open:false},{height:180,open:false}]}]}});
   if(key==='entry-console')return autoDoors({name,w,d,h,color:'#f3f1ec',cabinet:{version:1,template:key,thickness,plinth:0,entry:{shoeHeight:360,lowerHeight:620,nicheHeight:379,openSide:'left',editable:true},columns:Array.from({length:3},()=>({door:'left',doorOpen:false,handle:'none',shelves:[577,1862],drawers:[{height:150,open:false}]}))}});
-  const result={name,w,d,h,color:palette.front,cabinet:{version:1,template:key,thickness,plinth,columns:Array.from({length:n},(_,i)=>{
+  const result={name,w,d,h,color:key==='book-y52y09-low'?'#c49b70':palette.front,cabinet:{version:1,template:key,thickness,plinth,columns:Array.from({length:n},(_,i)=>{
    const heights=key==='tv-floor'&&i!==2?[inside]:Array(drawers).fill(Math.min(160,Math.floor(inside/(drawers+2)))),bottom=heights.reduce((a,b)=>a+b,0);
-   return {door:door==='mixed'?(i===1?'none':'left'):door,doorOpen:false,shelves:Array.from({length:shelves},(_,j)=>Math.round(bottom+(inside-bottom)*(j+1)/(shelves+1))),drawers:heights.map(height=>({height,open:false})),...(key==='tv-floor'?{top:i===2?'drawer':'fixed',topOpen:false,cableGap:i===2?30:0,finish:'solid',handle:'none'}:{})};
+   return {door:door==='mixed'?(i===1?'none':'left'):door,doorOpen:false,shelves:Array.from({length:shelves},(_,j)=>key==='book-y52y09-low'?(inside-thickness)/2:Math.round(bottom+(inside-bottom)*(j+1)/(shelves+1))),drawers:heights.map(height=>({height,open:false})),...(key==='tv-floor'?{top:i===2?'drawer':'fixed',topOpen:false,cableGap:i===2?30:0,finish:'solid',handle:'none'}:{})};
   })}};if(key==='tv-floor')result.cabinet.doorOverlay='full';return ['left','double'].includes(door)?autoDoors(result):result;
  }
  function preset(key){

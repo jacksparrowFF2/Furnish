@@ -7,6 +7,7 @@ const S2T = new Map(('与與两兩个個为為书書于於仅僅从從价價会�
 const s2t = s => S2T_PHRASES.reduce((a, [f, t]) => a.replaceAll(f, t), s).replace(/[\u3400-\u9fff]/g, c => S2T.get(c) || c);
 // 内置的房间 / 材料 / 家具名称存的是中文；英文界面下显示译名，用户自己改过的名称原样显示
 const NAMES_EN = {
+  '源氏木语 Y52Y09 · 750高六格书柜':'YESWOOD Y52Y09 Six-Cubby Bookcase · 750 mm',
   '奥普 SE2 风暖浴霸':'AUPU SE2 Bathroom Heater',
   '完整阳台洗衣柜':'Complete Balcony Laundry Cabinet',
   '基础洗衣机柜':'Basic Washer Cabinet',

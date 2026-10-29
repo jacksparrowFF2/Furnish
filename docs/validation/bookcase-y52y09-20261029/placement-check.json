@@ -1,0 +1,50 @@
+{
+  "furniture": {
+    "brand": "源氏木语/YESWOOD",
+    "cabinet": {
+      "columns": [
+        {
+          "door": "none",
+          "doorOpen": false,
+          "drawers": [],
+          "shelves": [
+            348
+          ]
+        },
+        {
+          "door": "none",
+          "doorOpen": false,
+          "drawers": [],
+          "shelves": [
+            348
+          ]
+        },
+        {
+          "door": "none",
+          "doorOpen": false,
+          "drawers": [],
+          "shelves": [
+            348
+          ]
+        }
+      ],
+      "plinth": 0,
+      "template": "book-y52y09-low",
+      "thickness": 18,
+      "version": 1
+    },
+    "color": "#c49b70",
+    "cx": 954.5,
+    "cy": 9018,
+    "d": 230,
+    "h": 750,
+    "id": "fmvstubuc1",
+    "model": "Y52Y09 · 三列两层 · 无底框",
+    "name": "源氏木语 Y52Y09 · 750高六格书柜",
+    "rot": 270,
+    "sourceUrl": "https://item.jd.com/100266639340.html",
+    "type": "bookshelf_yeswood_y52y09",
+    "w": 1115
+  },
+  "issues": []
+}
