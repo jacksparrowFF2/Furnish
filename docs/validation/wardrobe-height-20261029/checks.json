@@ -1,0 +1,92 @@
+{
+  "geometry": [
+    {
+      "id": "fmv3w4m2a4",
+      "h": 2450,
+      "productionTop": 2449.9999999999995
+    },
+    {
+      "id": "fmv3wzkb515",
+      "h": 2450,
+      "productionTop": 2449.9999999999995
+    }
+  ],
+  "regions": [
+    {
+      "name": "次卧吊顶",
+      "bottomAbsolute": 2510,
+      "bottomFinished": 2450,
+      "profileTop": 2700
+    },
+    {
+      "name": "次卧衣柜平顶",
+      "bottomAbsolute": 2510,
+      "bottomFinished": 2450
+    },
+    {
+      "name": "主卧睡眠区吊顶",
+      "bottomAbsolute": 2510,
+      "bottomFinished": 2450,
+      "profileTop": 2700
+    },
+    {
+      "name": "主卧阅读区吊顶",
+      "bottomAbsolute": 2510,
+      "bottomFinished": 2450,
+      "profileTop": 2700
+    }
+  ],
+  "unchangedFurniture": 68,
+  "oldDesignsRetained": 14,
+  "drawerFaces": [
+    207,
+    207
+  ],
+  "topStorageClearance": 500,
+  "cabinetCeilingConflicts": 0,
+  "roundtrip": true,
+  "remainingRelatedIssues": [
+    {
+      "kind": "cabinetdoor",
+      "id": "fmv3w4m2a4",
+      "markerIds": [],
+      "name": "主卧衣柜 · 活动区东侧",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        3082,
+        6750
+      ],
+      "message": "分区 1 柜门三维开启范围被 主卧口袋门 · 关闭端抵首扇柜门 占用"
+    },
+    {
+      "kind": "cabinetdoor",
+      "id": "fmv3w4m2a4",
+      "markerIds": [],
+      "name": "主卧衣柜 · 活动区东侧",
+      "column": 3,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        3082,
+        9550
+      ],
+      "message": "分区 4 柜门三维开启范围被 主卧北窗斑马帘 · 阅读茶区 占用"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "次卧衣柜 · 双柜挂衣与明抽",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        5576.5,
+        4219
+      ],
+      "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+    }
+  ]
+}
