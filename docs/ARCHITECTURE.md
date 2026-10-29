@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-29（TG正面精修）：v2为47具名网格／5随动件，按实机近照扩大并重做门框、控制区与内筒。发布器只对该款door-glass允许受限Alpha，保留生产／数值实体同源；圆形内件独立拟合，新门径／轴心有专用空间确认失效标记。原型号和v35保存格式保持，见[型号](WASHER-LITTLESWAN-TG10K60W.md)。
+
 2026-10-29（TG10K60W）：washer-motion-core按产品washerProfile选择独立Blender资产与尺寸，旧通用型保持；新型号复用门角、生产实体、完整扫掠及v35链路。洗衣柜按laundry能力，叠放按设备类别识别，防止两台不同型号洗衣机误配成洗烘。新增一个本地资产脚本，见[型号契约](WASHER-LITTLESWAN-TG10K60W.md)。
 
 2026-10-29（Blender洗衣机圆门）：washer-motion-core保持圆环／投入口拟合并派生12个高度片完整扫掠，washer-model读取15个离线网格；appliance正式入口沿原连接层与外层离地，实体入口内部离地。cabinet-core共享开启判定可消费派生高度片，原竖向剖面保持。角度、缓存和空间确认同步，含洗衣机的方案使用v35。见[契约](WASHER-BLENDER-MOTION.md)。

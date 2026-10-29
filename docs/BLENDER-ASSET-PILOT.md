@@ -1,5 +1,7 @@
 # Blender 家电资产试点：奥普 SE2
 
+2026-10-29（TG正面v2）：仅`washer-tg10k60w`的已知door-glass可用0.08–0.4简单Alpha透明，生产使用透明／不写深度；部件范围、轴心、圆孔和尺寸校验仍执行。其它配置保持不透明限制，不支持任意贴图或物理折射。见[TG型号契约](WASHER-LITTLESWAN-TG10K60W.md)。
+
 2026-10-29最新补充：CLI增加第七个明确配置 `author-washer-tg10k60w`／`publish-washer-tg10k60w`，复用圆门生产装配而保留独立型号尺寸／部件资产及旧通用型。见[TG10K60W](WASHER-LITTLESWAN-TG10K60W.md)。
 
 2026-10-29。固定型号的首个完整试点，仍使用现有 `bath_heater_aopu_se2`，没有新增家具类型、保存字段或应用内任意文件导入界面。

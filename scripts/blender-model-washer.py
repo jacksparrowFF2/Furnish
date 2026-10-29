@@ -5,6 +5,8 @@ import bpy
 import json
 import pathlib
 import sys
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from washer_detail import build as detail_mesh
 
 args=sys.argv[sys.argv.index('--')+1:]
 out=pathlib.Path(args[0]).resolve()
@@ -19,11 +21,15 @@ def linear(v):
     v=v/255
     return v/12.92 if v<=.04045 else ((v+.055)/1.055)**2.4
 materials={}
-for name,hexcolor,rough,metal in [('white','f1f0ed',.4,.12),('dark','303234',.55,0),('shelf','d8dce0',.55,0),('screen','292e30',.3,0),('ink','c2d4d4',.5,0),('base','8f969b',.55,0),('steel','c7cfd5',.25,.7),('glass','26343d',.09,.2),('drum','2b3034',.4,.6),('fascia','acb0b3',.3,.6),('blue','386382',.35,.2)]:
+for name,hexcolor,rough,metal in [('white','f1f0ed',.4,.12),('dark','303234',.55,0),('shelf','d8dce0',.55,0),('screen','292e30',.3,0),('ink','c2d4d4',.5,0),('base','8f969b',.55,0),('steel','c7cfd5',.25,.7),('glass','26343d',.09,.2),('drum','2b3034',.4,.6),('fascia','acb0b3',.3,.6),('blue','386382',.35,.2),('chrome','e2e3e3',.14,.85),('print','202225',.65,0),('rubber','555a5d',.75,0),('drum-steel','697582',.19,.82),('clear-glass','71818d',.08,.1),('label-black','202b33',.6,0),('label-green','4b7651',.6,0),('label-white','f3f3e8',.65,0),('label-blue','168ab1',.6,0)]:
     mat=bpy.data.materials.new(name);mat.use_nodes=True
     node=next(n for n in mat.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
     node.inputs['Base Color'].default_value=(*[linear(int(hexcolor[i:i+2],16)) for i in (0,2,4)],1)
     node.inputs['Roughness'].default_value=rough;node.inputs['Metallic'].default_value=metal
+    if name=='clear-glass':
+        node.inputs['Alpha'].default_value=.12;mat.surface_render_method='DITHERED'
+    if name=='drum-steel':
+        node.inputs['Emission Color'].default_value=(.08,.08,.08,1);node.inputs['Emission Strength'].default_value=.12
     materials[name]=mat
 parents={}
 for motion in spec['motions']:
@@ -32,7 +38,9 @@ for motion in spec['motions']:
 for part in spec['parts']:
     a,b,c=part['size'];shape=part.get('shape','box')
     q=spec['profile'];file_id=q['id']
-    if shape=='ring':
+    obj=detail_mesh(part) if q['id']=='washer-tg10k60w' else None
+    if obj is not None:pass
+    elif shape=='ring':
         bpy.ops.mesh.primitive_torus_add(major_radius=(q['radius']+q['inner'])/2000,minor_radius=(q['radius']-q['inner'])/2000,major_segments=64,minor_segments=12);obj=bpy.context.object;obj.rotation_euler[0]=1.5707963267948966;bpy.ops.object.transform_apply(location=False,rotation=True,scale=False);obj.dimensions=(a/1000,c/1000,b/1000);bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
     elif shape in ('lens','side-oval'):
         bpy.ops.mesh.primitive_uv_sphere_add(segments=48,ring_count=24,radius=1);obj=bpy.context.object;obj.dimensions=(a/1000,c/1000,b/1000);bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
@@ -61,6 +69,8 @@ for part in spec['parts']:
     if q['id']=='washer-tg10k60w' and shape in ('ring','lens','side-oval'):
         for polygon in obj.data.polygons:polygon.use_smooth=True
     center=position(part['center']);parent=parents.get(part['role']);obj.parent=parent;obj.location=tuple(center[i]-(parent.location[i] if parent else 0) for i in range(3))
+    if q['id']=='washer-tg10k60w' and part['material']=='fascia':
+        node=next(n for n in materials['fascia'].node_tree.nodes if n.type=='BSDF_PRINCIPLED');node.inputs['Metallic'].default_value=.25;node.inputs['Roughness'].default_value=.42
     obj.data.materials.append(materials[part['material']]);obj['furnishStablePart']=file_id+'-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
 bpy.ops.wm.save_as_mainfile(filepath=str(out/(file_id+'-v1.blend')))
 bpy.ops.export_scene.gltf(filepath=str(out/(file_id+'-v1.glb')),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)

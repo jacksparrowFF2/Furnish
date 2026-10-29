@@ -79,13 +79,16 @@ def publish(source, target, profile='se2', spec=None):
         node = next(n for n in obj.data.materials[0].node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
         if any(s.is_linked for s in node.inputs):
             raise ValueError('Bake node materials before publishing')
-        if node.inputs['Alpha'].default_value != 1:
-            raise ValueError('Pilot supports opaque materials only')
+        alpha=node.inputs['Alpha'].default_value
+        clear_glass=profile=='washer-tg10k60w' and obj.name=='door-glass'
+        if alpha!=1 and not (clear_glass and .08<=alpha<=.4):
+            raise ValueError('Only the reviewed TG10K60W door glass may use simple alpha')
         mat = {'color': srgb_hex(node.inputs['Base Color'].default_value),
                'roughness': node.inputs['Roughness'].default_value,
                'metalness': node.inputs['Metallic'].default_value,
                'emissive': srgb_hex(node.inputs['Emission Color'].default_value),
                'emissiveIntensity': node.inputs['Emission Strength'].default_value}
+        if alpha!=1:mat.update({'transparent':True,'opacity':alpha,'depthWrite':False})
         mesh = obj.data
         mesh.calc_loop_triangles()
         normal_matrix = obj.matrix_world.to_3x3().inverted().transposed()
@@ -115,8 +118,8 @@ def publish(source, target, profile='se2', spec=None):
                     signs=[(tri[(j+1)%3][0]-tri[j][0])*(p[1]-tri[j][1])-(tri[(j+1)%3][1]-tri[j][1])*(p[0]-tri[j][0]) for j in range(3)]
                     return min(signs)>=-1e-12 or max(signs)<=1e-12
                 cy=spec['profile']['cy']/1000
-                samples=[(0,cy)]+[(.168*math.cos(i*math.tau/16),cy+.168*math.sin(i*math.tau/16)) for i in range(16)]
-                aperture=sum(abs(math.hypot(positions[i],positions[i+1]-spec['profile']['cy']/1000)-.170)<1e-6 for i in range(0,len(positions),3))
+                samples=[(0,cy)]+[(((spec['profile']['hole']-2)/1000)*math.cos(i*math.tau/16),cy+((spec['profile']['hole']-2)/1000)*math.sin(i*math.tau/16)) for i in range(16)]
+                aperture=sum(abs(math.hypot(positions[i],positions[i+1]-spec['profile']['cy']/1000)-spec['profile']['hole']/1000)<1e-6 for i in range(0,len(positions),3))
                 if aperture<96 or any(covers(tri,p) for tri in triangles for p in samples):
                     raise ValueError('Circular drum opening is missing or filled')
             parts.append({'name':obj.name,'identity':identity,'role':role,'label':reference.get('label',obj.name),'positions':positions,'normals':normals,'material':mat,'recolor':bool(obj.get('furnishRecolor'))})
@@ -169,7 +172,7 @@ def publish(source, target, profile='se2', spec=None):
         values = [v for p in parts for v in p['positions'][axis::3]]
         if max(abs(min(values)-limits[0]), abs(max(values)-limits[1])) > 1e-6:
             raise ValueError('Reference dimensions/origin changed; review product rules first')
-    payload = {'format':1,'version':1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
+    payload = {'format':1,'version':2 if profile=='washer-tg10k60w' else 1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
     payload.update({'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'fridge-french-drawer' if profile=='fridge' else 'rangehood-fotile-jcd10ta' if profile=='hood' else 'washer-littleswan-tg10k60w' if profile=='washer-tg10k60w' else 'washer-front-load' if profile=='washer' else 'dishwasher-mijia-countertop','sizeMm':spec['size'],'motions':list(hinges.values())})
     # Publish only after successful import and validation; a failed attempt preserves the old asset.
     body = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
