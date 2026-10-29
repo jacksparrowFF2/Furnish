@@ -10,6 +10,8 @@ const cabinetTopClosure={height:{min:0,max:300,default:50},doorGap:{min:0,max:50
 const pegboardAssembly={parts:['upper','left','right','lower','displayShelves','hooks','light'],accessoryParts:['displayShelves','hooks','light'],legacyParts:['accessories'],structureParts:['upper','left','right','lower'],thickness:18,hatch:{modes:['manual','auto'],maxPanels:16,minWeb:20,margin:20,min:50,gap:2,angle:100,defaultWidth:400,defaultHeight:300,fitPadding:10,padding:{sides:['top','bottom','left','right'],min:0,max:100},maxRearGap:500,alignmentDegrees:1},holes:{diameter:9,minDiameter:2,maxDiameter:30,margin:30,pitch:40,maxCount:3000,maxAxis:200,minWeb:2},bottom:{min:0,max:20000}};
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ sideTableUpperOpen:{boolean:true,message:'边几上抽屉开合无效'},
+ sideTableLowerOpen:{boolean:true,message:'边几下抽屉开合无效'},
  downlightWatts:{values:[5,7],message:"筒灯功率须为5W或7W"},
  downlightKelvin:{values:[3000,4000,6500],message:"筒灯色温须为3000K、4000K或6500K"},
  manifoldLengths:{custom:true,message:'上下排主管长度须分别为 55–10000 mm'},
@@ -68,6 +70,7 @@ const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'
 const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering'}};
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
+ sidetable_tmall_635382906309:{defaultFrontClearance:0,family:'side-table',sideTable:{minWidth:500,minDepth:180,minHeight:560,stone:11,post:42.5,upperClearance:185,travel:220},height:612,defaults:{sideTableUpperOpen:false,sideTableLowerOpen:false},fields:['sideTableUpperOpen','sideTableLowerOpen'],create:['sideTableUpperOpen','sideTableLowerOpen'],solidModel:{global:'FurnishSideTableModel',module:'side-table'},identity:{model:'双抽岩板边几 · 680×300×612',sourceUrl:'https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30'}},
  curtain_sheer:{...covering,height:2400,defaults:{mountHeight:0,curtainOpen:0,curtainStyle:'double'},fields:[...covering.fields,'curtainStyle'],create:[...covering.create,'curtainStyle'],solidModel:undefined,covering:{kind:'sheer',soft:true}},
  blind_venetian:{...covering,defaults:{...covering.defaults,blindAngle:85},fields:[...covering.fields,'blindAngle'],create:[...covering.create,'blindAngle'],covering:{kind:'venetian'}},
  blind_honeycomb:{...covering,covering:{kind:'honeycomb'}},
@@ -187,6 +190,7 @@ function resizeManifold(f,next){
  if(f.manifoldLengths)next.manifoldLengths={upper:old.lengths.upper*ratio,lower:old.lengths.lower*ratio};
 }
 function planBodyOutline(f,segments){
+ if(!f.obj&&family(f,'side-table'))return (root.FurnishSideTable||require('./side-table-core.js')).outline(f);
  if(!f.obj&&definition(f)?.washerMotion)return (root.FurnishWasherMotion||require('./washer-motion-core.js')).outline(f);
  if(!f.obj&&definition(f)?.hoodMotion)return (root.FurnishHoodMotion||require('./hood-motion-core.js')).outline(f);
  if(!f.obj&&definition(f)?.foldAsset)return (root.FurnishDishwasherFold||require('./dishwasher-fold-core.js')).outline(f);
@@ -268,7 +272,7 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 const sinkBodyDepth=f=>f.sinkBowlHeight??definition(f).notch.bodyDepth;
 const vesselSink=f=>f?.type==='ksink'&&!f.obj&&value(f,'sinkStyle')==='vessel';
 // Report broken model records without migrating, deleting or rewriting them.

@@ -5,7 +5,7 @@ function spaceIssueVolumes(plan,furniture,item,passage=800){
  for(const id of [item.id,item.otherId]){const body=furniture.find(f=>f.id===id);if(body){try{for(const part of FurnishGeometry.bodyParts(body,plan,furniture))add(part.p,part.vertical);}catch{add(P.polygon(body));}}}
  if(f&&item.kind==='front'){const c=f.frontClearance??600,a=(f.rot||0)*Math.PI/180;add(P.polygon({...f,cx:f.cx-Math.sin(a)*(f.d/2+c/2),cy:f.cy+Math.cos(a)*(f.d/2+c/2),d:c}));}
  if(f&&['cabinetdoor','cabinetdrawer','cabinetpassage'].includes(item.kind)){
-  const zones=FurnishProducts.definition(f)?.washerMotion?FurnishWasherMotion.openingZones(f):FurnishProducts.definition(f)?.hoodMotion?FurnishHoodMotion.openingZones(f):f.kitchen?FurnishKitchen.openingZones(f,{passage}):FurnishProducts.definition(f)?.fridgeMotion?FurnishFridge.openingZones(f):FurnishCabinet.openingZones(f,{passage});
+  const zones=FurnishProducts.family(f,'side-table')?FurnishSideTable.openingZones(f):FurnishProducts.definition(f)?.washerMotion?FurnishWasherMotion.openingZones(f):FurnishProducts.definition(f)?.hoodMotion?FurnishHoodMotion.openingZones(f):f.kitchen?FurnishKitchen.openingZones(f,{passage}):FurnishProducts.definition(f)?.fridgeMotion?FurnishFridge.openingZones(f):FurnishCabinet.openingZones(f,{passage});
   for(const zone of zones)if(zone.kind===item.kind&&zone.column===item.column&&(!item.section||(zone.section||'storage')===item.section))rows.push({poly:zone.poly,ranges:FurnishCabinet.shiftOpening(zone,FurnishProducts.floorBase(plan,f,furniture).z).ranges});
  }
  if(f&&['dishwasher-opening','dishwasher-side'].includes(item.kind)){const result=P.dishwasherChecks(plan,f,{furniture});if(result)add(result.zones[item.kind==='dishwasher-side'?'vent':'opening']);}

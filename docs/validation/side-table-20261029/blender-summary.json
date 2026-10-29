@@ -1,0 +1,1 @@
+{"passed": true, "blender": "4.5.15 LTS", "productionParts": 35, "movingParts": 10, "modes": ["http", "file"], "travelMm": 297.14285714285717, "negativePivotRejected": true}

@@ -91,6 +91,7 @@ const LIB = [
     ["coffeetable","茶几",1300,650,"#e8dccb",1500],
     ["roundtable","圆茶几",800,800,"#e2cfb4",1200],
     ["sidetable","边几",500,500,"#d9c3a3",500],
+    ["sidetable_tmall_635382906309","双抽岩板边几 · 68cm",680,300,"#bd8e5d",undefined,612],
     ["table","餐桌",1400,800,"#e2cfb4",2400],
     ["table_folding_1100","源氏木语折叠餐桌 · 1100款",1100,1100,"#bd925f",0,760],
     ["table_folding_1200","源氏木语折叠餐桌 · 1200款",1200,1200,"#bd925f",0,760],
@@ -211,7 +212,7 @@ function browseLibrary(){
 }
 const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
 const useTypes={
- living:['sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
+ living:['sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
  bedroom:['bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall'],
  dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
  study:['desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','armchair','floorlamp'],
