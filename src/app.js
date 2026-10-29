@@ -57,7 +57,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v36';
+let STORE = 'huxing-design-v37';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);
@@ -155,7 +155,7 @@ function save(){
   if(repositoryBooting)return;
   store.updatedAt=Math.max(Date.now(),(store.updatedAt||0)+1);
   store.work[PLAN.id] = state;
-  const requiredVersion=FurnishProject.formatVersion([...Object.values(store.work),...store.designs.map(d=>d.work)]);
+  const requiredVersion=FurnishProject.formatVersion([...Object.values(store.work),...store.designs.map(d=>d.work)],store.custom);
   store.v=Math.max(store.v>=7?Math.max(9,store.v):store.v,requiredVersion,2);STORE='huxing-design-v'+store.v;
   autosave.save(store);
   repositoryClient?.schedule(store);

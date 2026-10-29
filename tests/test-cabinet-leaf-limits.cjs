@@ -1,0 +1,34 @@
+const assert=require('node:assert/strict'),C=require('../src/core/cabinet-core.js'),M=require('../src/core/cabinet-motion.js'),P=require('../src/core/project-core.js'),K=require('../src/core/kitchen-core.js'),Z=require('../src/core/zone-geometry.js'),R=require('../src/core/repository-core.js');
+const base={id:'limits',type:'wardrobe',cx:3000,cy:3000,rot:0,...C.preset('wardrobe-hanging')};
+function limited(f,section='lower'){f=structuredClone(f);f.cabinet.columns[1]=C.withDoorLimit(C.withDoorLimit(f.cabinet.columns[1],section,0,150),section,1,90);return C.validate(f);}
+function faces(f,section){return M.boards(f,{includeStatic:true}).filter(b=>b.metadata.cabinetDoorSize&&b.metadata.cabinetPart.column===1&&b.metadata.cabinetPart.section===section);}
+function poseDegrees(board){return Math.abs(board.motion.angle*board.phase)*180/Math.PI;}
+for(const rot of [0,37,90,180])for(const flip of [false,true]){
+ let f=limited({...base,rot,flip});f=C.toggle(f,1,undefined,false,undefined,'lower');
+ const lower=faces(f,'lower');assert.equal(lower.length,2);assert(Math.abs(poseDegrees(lower[0])-150)<1e-7);assert(Math.abs(poseDegrees(lower[1])-90)<1e-7);
+ assert.equal(C.doorAngle(f.cabinet,f.cabinet.columns[1],'upper',0),0,'upper doors stay closed');
+ for(const face of lower){const leaf=face.metadata.cabinetPart.leaf,zone=C.openingZones(f,{passage:0}).find(z=>z.column===1&&z.section==='lower'&&z.leaf===leaf),part=M.solidParts(f).find(p=>p.boardKey==='board:'+face.boardIndex);assert(zone);assert(Z.area(Z.decompose([part.p,zone.poly],p=>Z.inside(p,part.p)&&!Z.inside(p,zone.poly)))<.001,'production face contained in its own full sweep');}
+ const closed=C.setPartOpening(f,{column:1,section:'lower'},0);assert.deepEqual(C.openingZones(f),C.openingZones(closed),'closing does not reduce maximum sweep');
+ assert.throws(()=>C.setPartOpening(f,{column:1,section:'lower',leaf:1},91),/0–90/);
+}
+let f=limited(base),col=f.cabinet.columns[1];assert.equal(C.maxDoorAngle(f.cabinet,col,'lower',0),150);assert.equal(C.maxDoorAngle(f.cabinet,col,'lower',1),90);assert.equal(C.maxDoorAngle(f.cabinet,col,'upper',0),90);
+col=C.withDoorLimit(col,'lower',1,180);assert.equal(C.maxDoorAngle(f.cabinet,col,'lower',1),180);col=C.withDoorLimit(col,'lower',0,1);assert.equal(C.maxDoorAngle(f.cabinet,col,'lower',0),1);
+for(const bad of [0,181,NaN,Infinity,'90'])assert.throws(()=>C.withDoorLimit(col,'lower',0,bad));
+for(const bad of [{lower:[]},{lower:{'-1':90}},{lower:{'01':90}},{lower:{12:90}},{bogus:{0:90}}])assert.throws(()=>C.validate({...f,cabinet:{...f.cabinet,columns:[f.cabinet.columns[0],{...col,doorLimits:bad}]}}));
+assert.throws(()=>C.validate({...f,cabinet:{...f.cabinet,columns:[f.cabinet.columns[0],{...col,doorLimits:{lower:{2:90}}}]}}));
+const inherited=C.withDoorLimit(C.withDoorLimit(f.cabinet.columns[1],'lower',0,undefined),'lower',1,undefined);assert(!('doorLimits' in inherited));assert.equal(C.maxDoorAngle(f.cabinet,inherited,'lower',0),90);
+assert.notDeepEqual(C.spatialConfig(f),C.spatialConfig(base));assert.deepEqual(C.spatialConfig(f),C.spatialConfig({...f,color:'#abcdef'}));
+const data={planId:'test',current:{furniture:[f]},designs:[{id:'saved',name:'limits',work:{furniture:[f]}}],catalog:[]},packed=P.pack(data);assert.equal(packed.version,37);let round=P.unpack(packed);for(let i=0;i<3;i++)round=P.unpack(P.pack(round));assert.deepEqual(round.current.furniture[0],f);assert.deepEqual(round.designs[0].work.furniture[0],f);assert(P.pack({...data,current:{furniture:[base]},designs:[]}).version<37);
+assert(R.workspaceVersions.includes(37));assert.deepEqual(C.specification(f).columns[1].doorLimits,f.cabinet.columns[1].doorLimits);
+assert.equal(P.pack({planId:'test',current:{furniture:[]},designs:[],catalog:[f]}).version,37,'library-only hinge limits also protect their format');assert.equal(P.formatVersion([], [f]),37);
+for(const [template,column,section] of [['entry-console',1,'lower'],['sideboard-wall',0,'upper'],['sideboard-fridge',0,'fridgeUpper'],['storage',0,'storage'],['wall',0,'storage']]){
+ let a={id:'variant',type:template==='wall'?'kitchenwall':'cabinet',...C.preset(template)};
+ a.cabinet.columns[column]=C.withDoorLimit(C.withDoorLimit(a.cabinet.columns[column],section,0,150),section,1,90);a=C.validate(a);a=C.toggle(a,column,undefined,false,undefined,['lower','upper'].includes(section)?section:undefined);
+ const boards=M.boards(a,{includeStatic:true}).filter(b=>b.metadata.cabinetDoorSize&&b.metadata.cabinetPart.column===column&&(b.metadata.cabinetPart.section??'storage')===section);assert.equal(boards.length,2,template);assert(Math.abs(poseDegrees(boards[0])-150)<1e-7,template);assert(Math.abs(poseDegrees(boards[1])-90)<1e-7,template);
+}
+let display={id:'display',type:'cabinet',...C.preset('sideboard-wall')};display.cabinet.columns[0]=C.withDoorLimit(display.cabinet.columns[0],'display',0,77);display=C.toggle(display,0,undefined,false,undefined,'display');assert(M.boards(display,{includeStatic:true}).filter(b=>b.metadata.cabinetPart?.section==='display'&&b.metadata.cabinetPart.column===0).every(b=>Math.abs(poseDegrees(b)-77)<1e-7));
+assert.deepEqual(C.resize(f,{...f,w:f.w+100}).cabinet.columns[1].doorLimits,f.cabinet.columns[1].doorLimits,'ordinary resize retains leaf assignments');
+assert(!C.fitDoorLimits({doorLimits:{storage:{0:150,1:90}}},1).doorLimits.storage[1]);
+let ordinary={id:'ordinary',type:'cabinet',...C.preset('storage')};ordinary.cabinet.columns[0]=C.withDoorLimit(C.withDoorLimit(ordinary.cabinet.columns[0],'storage',0,150),'storage',1,90);ordinary=C.toggle(ordinary,0,undefined,false,undefined,undefined,1);assert.equal(C.doorLeafAngle(ordinary.cabinet,ordinary.cabinet.columns[0],1),90);assert.equal(C.doorLeafAngle(ordinary.cabinet,ordinary.cabinet.columns[0],0),0);ordinary=C.toggle(ordinary,0,undefined,false,undefined,undefined,1);assert.equal(C.doorLeafAngle(ordinary.cabinet,ordinary.cabinet.columns[0],1),0);
+let kitchen={id:'k',type:'counter',cx:1000,cy:1000,w:1000,d:600,kitchen:{version:1,shape:'straight',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:1000,role:'door',door:'double'}]}};kitchen=K.configure(kitchen,kitchen.kitchen);kitchen=K.setModuleDoorLimit(kitchen,0,0,150);kitchen=K.setModuleDoorLimit(kitchen,0,1,90);kitchen=K.toggle(kitchen,0,undefined,true);assert.equal(K.moduleLeafAngle(kitchen,kitchen.kitchen.modules[0],0),150);assert.equal(K.moduleLeafAngle(kitchen,kitchen.kitchen.modules[0],1),90);assert.equal(P.pack({planId:'test',current:{furniture:[kitchen]},designs:[],catalog:[]}).version,37);assert.deepEqual(K.moduleFurniture(kitchen,K.cabinetLayout(kitchen)[0]).cabinet.columns[0].doorLimits,kitchen.kitchen.modules[0].doorLimits);
+console.log('PASS leaf hinge limits: 150/90 production poses, upper/lower isolation, rotated/mirrored solids and full sweeps, boundaries/invalid data, inheritance, spatial inputs, kitchen adapters, v37 current/named repeated roundtrip');

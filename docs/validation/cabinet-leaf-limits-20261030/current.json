@@ -1,0 +1,17 @@
+{
+  "version": 37,
+  "wardrobeId": "fmv3wzkb515",
+  "height": 2450,
+  "doorLimits": {
+    "lower": {
+      "0": 150,
+      "1": 90
+    }
+  },
+  "actualAngles": [
+    150.00000000000003,
+    90
+  ],
+  "otherFurnitureUnchanged": true,
+  "namedDesignsUnchanged": true
+}

@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-30（逐扇铰链限位）：product-rules集中cabinetDoorLimits范围，cabinet-core按门段／门扇解析可选doorLimits；生产柜门当前姿态、运动板件最大角度与openingZones同源。柜体及厨房编辑器沿原草稿／mutate保存；包含逐扇限位的数据采用项目／工作区v37和独立恢复缓存，旧缺失不物化，已有脚本加载顺序保持。见[开启规则](CABINET-OPENING-3D.md)及[验收](validation/cabinet-leaf-limits-20261030/README.md)。
+
 2026-10-29（柏林单人沙发）：产品核心armchairProfile选择两款独立离线资产，armchair-model共用构造和程序材质，第一款几何保持；柏林新增28件直扶手／厚垫／腰枕生产网格、目录与SVG。沿现有实体、尺寸编辑、mutate及保存恢复，无新持久字段／格式。经典脚本同时验证服务和file，见[柏林契约](ARMCHAIR-YESWOOD-BERLIN.md)。
 
 2026-10-29（单人沙发椅）：armchair-model通过static-asset-model读取28件离线Blender网格，主场景／生产预览和数值实体同源；产品核心定义905mm高度与身份，目录及SVG新增独立类型。沿原mutate／尺寸编辑及bodyParts／directional，无新持久字段／版本；普通本地脚本随直接打开和服务路径加载。见[模型契约](ARMCHAIR-YESWOOD-TMALL-1013742104698.md)。
