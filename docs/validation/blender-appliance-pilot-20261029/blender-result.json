@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "blender": "4.5.15 LTS",
+  "results": [
+    {
+      "mode": "http",
+      "parts": 29,
+      "stableKeys": 29
+    },
+    {
+      "mode": "file",
+      "parts": 29,
+      "stableKeys": 29
+    }
+  ]
+}

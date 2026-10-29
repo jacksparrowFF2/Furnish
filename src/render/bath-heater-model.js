@@ -4,7 +4,12 @@
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
 const supported=f=>!!products().definition(f)?.ceilingPanel&&!f.obj;
 function build(T,f){
- if(products().definition(f).ceilingPanel.profile==='se2')return buildSE2(T,f);
+ if(products().definition(f).ceilingPanel.profile==='se2'){
+  const asset=root.FurnishSE2BlenderAsset||(typeof require==='function'?require('../data/se2-blender-asset.js'):null);
+  const loader=root.FurnishStaticAssetModel||(typeof require==='function'?require('./static-asset-model.js'):null);
+  if(asset&&loader)return loader.build(T,asset,{...f,h:products().height(f)},products().value(f,'mountHeight'));
+  return buildSE2(T,f);
+ }
  const P=products(),spec=P.definition(f).ceilingPanel,g=new T.Group(),base=P.value(f,'mountHeight')/1000,w=f.w/1000,d=f.d/1000,h=P.height(f)/1000,rim=Math.min(spec.rim/1000,h);
  const white=new T.MeshStandardMaterial({color:f.color||'#f5f5f0',roughness:.48}),dark=new T.MeshStandardMaterial({color:'#454a4c',roughness:.8}),metal=new T.MeshStandardMaterial({color:'#a7acae',metalness:.4,roughness:.65});
  function box(name,width,height,depth,x,y,z,material){const m=new T.Mesh(new T.BoxGeometry(width,height,depth),material);m.position.set(x,base+y,z);m.name=name;m.userData.furnishPartSource='bath-heater:'+name;m.userData.furnishStablePart='bath-heater:'+name;m.userData.ceilingOwnMaterial=true;m.castShadow=m.receiveShadow=true;g.add(m);}
@@ -67,5 +72,5 @@ function buildSE2(T,f){
  if(h>r)box('body',w*.86,h-r,d*.9,0,r+(h-r)/2,0,metal);
  return g;
 }
-const api={supported,build};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishBathHeaterModel=api;
+const api={supported,build,buildLegacySE2:buildSE2};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishBathHeaterModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
