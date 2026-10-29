@@ -1,17 +1,20 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto'),url=require('node:url');
-const A=require('../src/data/armchair-blender-asset.js'),M=require('../src/render/armchair-model.js'),P=require('../src/core/product-rules.js'),G=require('../src/core/layout-geometry.js'),S=require('../src/core/snapping.js'),J=require('../src/core/project-core.js');
-const f={id:'chair',name:'单人沙发',type:'armchair_yeswood_y09hs',w:725,d:900,h:905,cx:0,cy:0,rot:0,color:'#be9465'},near=(a,b)=>assert(Math.abs(a-b)<.003,`${a} != ${b}`);
-assert.equal(A.sourceSha256,crypto.createHash('sha256').update(fs.readFileSync(require.resolve('../assets/models/armchair/v4/armchair-v1.glb'))).digest('hex'));
-assert.equal(A.parts.length,28);assert.equal(new Set(A.parts.map(p=>p.identity)).size,28);assert.equal(P.height({...f,h:undefined}),905);
-const seatY=A.parts.find(p=>p.name==='seat-cushion').positions.filter((_,i)=>i%3===1);near(Math.max(...seatY)*1000,460);near((Math.max(...seatY)-Math.min(...seatY))*1000,120);
+const berlin=process.argv.includes('--berlin');
+const A=require(berlin?'../src/data/armchair-berlin-blender-asset.js':'../src/data/armchair-blender-asset.js'),M=require('../src/render/armchair-model.js'),P=require('../src/core/product-rules.js'),G=require('../src/core/layout-geometry.js'),S=require('../src/core/snapping.js'),J=require('../src/core/project-core.js');
+const f={id:'chair',name:'单人沙发',type:berlin?'armchair_yeswood_berlin':'armchair_yeswood_y09hs',w:berlin?710:725,d:berlin?850:900,h:berlin?845:905,cx:0,cy:0,rot:0,color:'#be9465'},near=(a,b)=>assert(Math.abs(a-b)<.003,`${a} != ${b}`);
+assert.equal(A.sourceSha256,crypto.createHash('sha256').update(fs.readFileSync(require.resolve(berlin?'../assets/models/armchair-berlin/v3/armchair-berlin-v1.glb':'../assets/models/armchair/v4/armchair-v1.glb'))).digest('hex'));
+assert.equal(A.parts.length,28);assert.equal(new Set(A.parts.map(p=>p.identity)).size,28);assert.equal(P.height({...f,h:undefined}),berlin?845:905);
+if(berlin){assert(A.parts.some(p=>p.name==='waist-pillow'));assert.equal(A.parts.filter(p=>p.name.startsWith('straight-arm')).length,2);assert(!A.parts.some(p=>p.name==='back-headrest'));}
+if(berlin){const seat=A.parts.find(p=>p.name==='seat-cushion');for(const [axis,size]of [[0,620],[2,710]]){const v=seat.positions.filter((_,i)=>i%3===axis);near((Math.max(...v)-Math.min(...v))*1000,size);}const rail=A.parts.find(p=>p.name==='seat-front-rail').positions.filter((_,i)=>i%3===1);assert(Math.max(...rail)*1000>=310,'Frame must support the seat cushion');}
+const seatY=A.parts.find(p=>p.name==='seat-cushion').positions.filter((_,i)=>i%3===1);near(Math.max(...seatY)*1000,460);near((Math.max(...seatY)-Math.min(...seatY))*1000,berlin?150:120);
 for(const p of A.parts){assert(p.positions.every(Number.isFinite));assert.equal(p.positions.length,p.normals.length);for(let i=0;i<p.normals.length;i+=3)near(Math.hypot(...p.normals.slice(i,i+3)),1);}
 (async()=>{
 const T=await import(JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports.three);
-for(const dimensions of [{},{w:870,d:1080,h:1086}]){
+for(const dimensions of [{},{w:f.w*1.2,d:f.d*1.2,h:f.h*1.2}]){
  const item={...f,...dimensions},model=M.build(T,item),b=new T.Box3().setFromObject(model);near(b.min.y,0);for(const [axis,size]of [['x',item.w],['y',item.h],['z',item.d]])near((b.max[axis]-b.min[axis])*1000,size);
- assert.equal(model.userData.furnishAsset,'armchair-yeswood-y09hs@1');assert.equal(model.children.length,28);
- for(const mesh of model.children){assert(mesh.geometry.index.count>0);assert.equal(mesh.userData.furnishStablePart,'armchair-v1:'+mesh.name);}
+ assert.equal(model.userData.furnishAsset,berlin?'armchair-yeswood-berlin@1':'armchair-yeswood-y09hs@1');assert.equal(model.children.length,28);
+ for(const mesh of model.children){assert(mesh.geometry.index.count>0);assert.equal(mesh.userData.furnishStablePart,(berlin?'armchair-berlin-v1:':'armchair-v1:')+mesh.name);}
 }
 for(const rot of [0,37,90])for(const flip of [false,true]){
  const item={...f,rot,flip},bounds=G.bbox(G.footprints(item).flat()),wall={id:'wall',type:'block',cx:bounds[2]+150,cy:0,w:100,d:2500,h:1500,rot:0};

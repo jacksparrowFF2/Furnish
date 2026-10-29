@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "undoRedo": true,
+      "refresh": true,
+      "offline": true,
+      "productionParts": 28,
+      "narrow": true
+    },
+    {
+      "mode": "file",
+      "undoRedo": true,
+      "refresh": true,
+      "offline": true,
+      "productionParts": 28,
+      "narrow": true
+    }
+  ]
+}

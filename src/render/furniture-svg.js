@@ -101,6 +101,9 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       s += pa(`M${x+w-15-Math.min(420,w*.3)} ${by}L${x+w-15} ${by}L${x+w-15} ${by+Math.min(420,w*.3)}Z`, shade(c,1.12));
       return s;
     }
+    case 'armchair_yeswood_berlin': {
+      return rc(-w*310/710,y+d*.15,w*620/710,d*.82,'#d3c9b8','rx="40"')+rc(-w*265/710,y+d*.05,w*530/710,d*.31,'#d3c9b8','rx="36"')+rc(-w*200/710,y+d*.35,w*400/710,d*.13,'#c7bdab','rx="24"')+[-1,1].map(side=>rc(side*w*330/710-w*25/710,y+d*.13,w*50/710,d*.77,c,'rx="14"')).join('');
+    }
     case 'armchair_yeswood_y09hs': {
       const a=w*80/725;return rc(x+a,y,w-2*a,d*.36,'#d5cbb9','rx="35"')+rc(x+a,y+d*.36,w-2*a,d*.57,'#d5cbb9','rx="42"')+[-1,1].map(side=>rc(side*w*322.5/725-a/2,y+d*.14,a,d*.76,c,'rx="20"')).join('');
     }

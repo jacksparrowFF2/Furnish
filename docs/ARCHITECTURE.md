@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-29（柏林单人沙发）：产品核心armchairProfile选择两款独立离线资产，armchair-model共用构造和程序材质，第一款几何保持；柏林新增28件直扶手／厚垫／腰枕生产网格、目录与SVG。沿现有实体、尺寸编辑、mutate及保存恢复，无新持久字段／格式。经典脚本同时验证服务和file，见[柏林契约](ARMCHAIR-YESWOOD-BERLIN.md)。
+
 2026-10-29（单人沙发椅）：armchair-model通过static-asset-model读取28件离线Blender网格，主场景／生产预览和数值实体同源；产品核心定义905mm高度与身份，目录及SVG新增独立类型。沿原mutate／尺寸编辑及bodyParts／directional，无新持久字段／版本；普通本地脚本随直接打开和服务路径加载。见[模型契约](ARMCHAIR-YESWOOD-TMALL-1013742104698.md)。
 
 2026-10-29（家具库替换）：catalog-ui以临时会话将原家具库点击／键盘选品路由为候选，plan SVG使用可移除的预览层；design-core.replaceFurniture增加可选定位基准，局部背面中点随旋转固定。原commit中的家具归一化抽为normalizeFurnitureEdit供方案副本预演与正式提交共用，仍一次mutate及原撤销／自动保存。导出排除临时标记，无新持久字段／格式或加载脚本，见[专项验收](validation/furniture-replacement-20261029/README.md)。

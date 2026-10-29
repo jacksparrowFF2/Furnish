@@ -1,11 +1,14 @@
 """Independent Blender roundtrip of source and final Furnish export, plus rejected publication."""
 import bpy, pathlib, sys, json, math, importlib.util, bmesh
 root=pathlib.Path(__file__).resolve().parents[2]
-run=root/'output/armchair-validation'
+berlin='--berlin' in sys.argv
+profile='armchair-berlin' if berlin else 'armchair'
+source_file=root/('assets/models/armchair-berlin/v3/armchair-berlin-v1.glb' if berlin else 'assets/models/armchair/v4/armchair-v1.glb')
+run=root/('output/'+profile+'-validation')
 def clear():
     bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 def bounds(points):return [[min(p[k] for p in points),max(p[k] for p in points)] for k in range(3)]
-clear();bpy.ops.import_scene.gltf(filepath=str(root/'assets/models/armchair/v4/armchair-v1.glb'))
+clear();bpy.ops.import_scene.gltf(filepath=str(source_file))
 source={}
 for o in bpy.context.scene.objects:
     if o.type!='MESH':continue
@@ -23,7 +26,7 @@ clear();bpy.ops.import_scene.gltf(filepath=str(run/'http-production.glb'))
 actual={}
 for o in bpy.context.scene.objects:
     if o.type=='MESH' and o.get('furnishId')=='chair-test':
-        key=o.get('furnishPartKey','').removeprefix('explicit:armchair-v1:')
+        key=o.get('furnishPartKey','').removeprefix('explicit:'+profile+'-v1:')
         actual[key]=bounds([o.matrix_world@v.co for v in o.data.vertices])
 assert set(actual)==set(source),(actual.keys(),source.keys())
 anchor='seat-cushion'
@@ -34,12 +37,12 @@ for name in source:
             assert abs((actual[name][k][end]-actual[anchor][k][0])-(source[name][k][end]-source[anchor][k][0]))<3e-6,(name,k,end)
 
 # Missing-arm GLB must not replace an existing published file.
-clear();bpy.ops.import_scene.gltf(filepath=str(root/'assets/models/armchair/v4/armchair-v1.glb'))
-bpy.data.objects.remove(bpy.data.objects['curved-arm-1'],do_unlink=True)
+clear();bpy.ops.import_scene.gltf(filepath=str(source_file))
+bpy.data.objects.remove(bpy.data.objects['straight-arm-1' if berlin else 'curved-arm-1'],do_unlink=True)
 bad=run/'missing-arm.glb';bpy.ops.export_scene.gltf(filepath=str(bad),export_format='GLB',export_extras=True)
 module=importlib.util.spec_from_file_location('publisher',root/'scripts/publish-blender-asset.py');publisher=importlib.util.module_from_spec(module);module.loader.exec_module(publisher)
 target=run/'preserved-asset.js';target.write_text('previous valid asset',encoding='utf-8')
-try:publisher.publish(bad,target,'armchair')
+try:publisher.publish(bad,target,profile)
 except ValueError as error:assert 'part set changed' in str(error),str(error)
 else:raise AssertionError('Missing arm was accepted')
 assert target.read_text(encoding='utf-8')=='previous valid asset'
