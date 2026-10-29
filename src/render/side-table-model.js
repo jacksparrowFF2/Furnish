@@ -1,0 +1,8 @@
+/* Per-board fitting preserves thickness, followed by rigid drawer translation. */
+(function(root){'use strict';
+function build(T,f,options={}){const C=root.FurnishSideTable||require('../core/side-table-core.js'),A=root.FurnishSideTableBlenderAsset||require('../data/side-table-blender-asset.js'),refs=new Map(C.reference().map(p=>[p.name,p])),targets=new Map(C.reference(f).map(p=>[p.name,p])),g=new T.Group();
+ const groups={};for(const role of ['upper','lower']){const n=new T.Group();n.name='drawer-'+role;n.position.x=-C.travel(f)*C.phase(f,role)/1000;g.add(n);groups[role]=n;}
+ for(const p of A.parts){const r=refs.get(p.name),t=targets.get(p.name),geometry=new T.BufferGeometry(),positions=p.positions.map((v,i)=>{const k=i%3;return (t.center[k]+(v*1000-r.center[k])*t.size[k]/r.size[k])/1000;});geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setIndex(Array.from({length:positions.length/3},(_,i)=>i));geometry.computeVertexNormals();const axis=t.size.indexOf(Math.min(...t.size)),uv=[];for(let i=0;i<positions.length;i+=3){const axes=[0,1,2].filter(k=>k!==axis);uv.push(positions[i+axes[0]]*4,positions[i+axes[1]]*4);}geometry.setAttribute('uv',new T.Float32BufferAttribute(uv,2));const m=new T.Mesh(geometry,p.recolor&&options.wood?options.wood.clone():new T.MeshStandardMaterial({...p.material,...(p.recolor?{color:f.color||'#bd8e5d'}:{})}));m.name=p.name;m.userData.sideTablePart=p.name;m.userData.furnishStablePart=p.identity;m.castShadow=m.receiveShadow=true;(p.role?groups[p.role]:g).add(m);}
+ g.userData.furnishAsset=A.id+'@'+A.version;return g;}
+const api={build};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishSideTableModel=api;
+})(typeof globalThis!=='undefined'?globalThis:this);

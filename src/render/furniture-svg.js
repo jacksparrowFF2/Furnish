@@ -181,6 +181,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       return s;
     }
     case 'beanbag': return ec(0,0,w/2,d/2,c) + ec(-w*.04,-d*.06,w*.3,d*.28,shade(c,1.12),'opacity=".9"');
+    case 'sidetable_tmall_635382906309': {const C=typeof module==='object'&&module.exports?require('../core/side-table-core.js'):root.FurnishSideTable,item=f||{type:t,w,d},travel=C.travel(item),open=item.sideTableUpperOpen||item.sideTableLowerOpen;return (open?rc(x-travel+3,y+28,travel,d-56,shade(c,.92))+rc(x-travel+3,y+28,18,d-56,c):'')+rc(x,y,w,d,c)+rc(x+21,y+12,w-42,d-24,'#eeede1')+rc(x+3,y+28,18,d-56,shade(c,.85));}
     case 'sidetable': return ec(0,0,w/2,d/2,c) + ec(0,0,w*.12,d*.12,'none','opacity=".5"');
     case 'panel_light_300x600': return `<rect x="${-w/2}" y="${-d/2}" width="${w}" height="${d}" fill="${c}" ${ST()}/><rect x="${-w/2+3}" y="${-d/2+3}" width="${Math.max(1,w-6)}" height="${Math.max(1,d-6)}" fill="#fff4e4" ${ST()}/>`;
     case 'bath_heater_aopu_se2': return `<rect x="${-w/2}" y="${-d/2}" width="${w}" height="${d}" rx="${w*.025}" fill="${c}" ${ST()}/><rect x="${-w*.2}" y="${-d*.475}" width="${w*.675}" height="${d*.95}" rx="${w*.018}" fill="#fffef5" ${ST()}/>${Array.from({length:5},(_,i)=>`<path d="M ${w*(-.45+i*.032)} ${-d*.455} V ${d*.455}" stroke="#767c80" stroke-linecap="round" stroke-width="${w*.018}"/>`).join('')}<circle cx="${-w*.235}" cy="${-d*.425}" r="${w*.036}" fill="#343b40"/><path d="M ${-w*.235} ${d*.32} v ${d*.025}" stroke="#f38840" stroke-width="${w*.013}"/>`;
