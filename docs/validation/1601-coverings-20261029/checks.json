@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-29",
+  "sheerColor": "#f4f1e8",
+  "replaced": [
+    "fmv3wt92611",
+    "fmv3xgqxc1",
+    "fmvg9e7763"
+  ],
+  "openedOpaque": [
+    "fmv3wtxgq12",
+    "fmv3xgqxc2"
+  ],
+  "newZebra": {
+    "color": "#e7dcc9",
+    "curtainOpen": 0,
+    "cx": 2275.0000000000005,
+    "cy": 9513.5,
+    "d": 75,
+    "frontClearance": 0,
+    "h": 1452,
+    "id": "f1601_north_zebra",
+    "mountHeight": 845,
+    "name": "主卧北窗斑马帘 · 阅读茶区",
+    "purchaseStatus": "planned",
+    "rot": 180,
+    "shadeMode": "day",
+    "type": "blind_zebra",
+    "w": 1554
+  },
+  "unchangedFurniture": 65,
+  "architectureAndCeilingsUnchanged": true,
+  "previousNamedDesignsPreserved": true,
+  "previousCurrentBackedUp": true,
+  "currentAnd1601Match": true,
+  "repeatedRestore": true,
+  "projectRoundtrip": true,
+  "beforeIssueCount": 43,
+  "afterIssueCount": 44,
+  "newIssues": [
+    {
+      "kind": "cabinetdoor",
+      "id": "fmv3w4m2a4",
+      "markerIds": [],
+      "name": "主卧衣柜 · 活动区东侧",
+      "column": 3,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        3082,
+        9550
+      ],
+      "message": "分区 4 柜门三维开启范围被 主卧北窗斑马帘 · 阅读茶区 占用"
+    }
+  ],
+  "noIssueOnBlindItself": true,
+  "zebraProductionSolids": 20,
+  "ui": {
+    "load": true,
+    "undoRedo": true,
+    "daytimeCurtains": true,
+    "visual3D": true,
+    "refreshRestores": true
+  },
+  "scope": "Saved layout only; no model source or new field changes; no full-suite, file URL or narrow-screen rerun."
+}
