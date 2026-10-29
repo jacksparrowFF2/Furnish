@@ -142,7 +142,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
     case 'table': return rc(x,y,w,d,c,'rx="30"') + rc(x+50,y+50,w-100,d-100,'none','rx="20" opacity=".4"');
     case 'roundtable': return ec(0,0,w/2,d/2,c) + ec(0,0,w/2-50,d/2-50,'none','opacity=".4"');
     case 'counter': return rc(x,y,w,d,c) + ln(x,y+d-40,x+w,y+d-40,DASH);
-    case 'rangehood_fotile_jcd10ta': {const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts,s=P.hoodInstallation(f||{type:t,w,d});return rc(x,y,w,d,'#202225') + rc(-s.coverWidth/2,s.coverOffset-s.coverDepth/2,s.coverWidth,s.coverDepth,'#45474a') + ln(x,y+d*.9,x+w,y+d*.9) + rc(-w*.12,y+d*.7,w*.24,d*.05,'#a87c38');}
+    case 'rangehood_fotile_jcd10ta': {const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts,s=P.hoodInstallation(f||{type:t,w,d});return rc(x,y,w,d,'#202225')+(f?.hoodPanelOpen?pa('M'+(root.FurnishHoodMotion||(typeof require==='function'?require('../core/hood-motion-core.js'):null)).outline(f).map(p=>p.join(',')).join('L')+'Z','#151719','data-hood-panel="open"'):'') + rc(-s.coverWidth/2,s.coverOffset-s.coverDepth/2,s.coverWidth,s.coverDepth,'#45474a') + ln(x,y+d*.9,x+w,y+d*.9) + rc(-w*.12,y+d*.7,w*.24,d*.05,'#a87c38');}
     case 'stove_fotile_th36b': {
       let s=rc(x,y,w,d,'#111214','rx="8"');
       for(const px of [-w*.265,w*.265])s+=rc(px-w*.145,-d*.36,w*.29,d*.58,'#252629','rx="6"')+ec(px,-d*.07,d*.145,d*.145,'#55575a')+ec(px,-d*.07,d*.08,d*.08,'#131416')+ln(px-w*.145,-d*.07,px+w*.145,-d*.07)+ln(px,-d*.36,px,d*.22);

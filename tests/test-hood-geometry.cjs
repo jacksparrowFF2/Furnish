@@ -24,7 +24,7 @@ for(const rot of [0,37,90,180,270])for(const flip of [false,true]){
  assert(C.hoodBayFit(host,aligned).fits);near(aligned.mountHeight,1330);
  for(const [field,value] of [['coverWidth',600.001],['bodyHeight',329.999]])assert(!C.hoodBayFit(host,R.editHoodGeometry(aligned,field,value)).fits);
  const unknown={...aligned,mountHeight:NaN};assert(!C.hoodBayFit(host,unknown).fits);
- const parts=G.bodyParts(aligned);near(parts[0].vertical.top,1660);near(parts[1].vertical.top,1845);
+ const parts=G.bodyParts(aligned);near(Math.max(...parts.filter(p=>p.partRole!=='chimney-cover').map(p=>p.vertical.top)),1660);near(parts.find(p=>p.partRole==='chimney-cover').vertical.top,1845);
 }
 const svg=SVG.render(custom.type,900,350,'#111214',{ink:'#000'},custom);assert(svg.includes('x="-300" y="-175" width="600" height="280"'));
 (async()=>{

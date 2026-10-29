@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "blender": "4.5.15 LTS",
+  "results": [
+    {
+      "mode": "http",
+      "parts": 27,
+      "stableKeys": 27,
+      "fixedHorizontalHinge": true,
+      "panelTravelDegrees": 48.36,
+      "independentCoverAndLowerGlass": true
+    },
+    {
+      "mode": "file",
+      "parts": 27,
+      "stableKeys": 27,
+      "fixedHorizontalHinge": true,
+      "panelTravelDegrees": 48.36,
+      "independentCoverAndLowerGlass": true
+    }
+  ]
+}

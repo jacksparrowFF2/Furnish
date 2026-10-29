@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "name": "hood-geometry",
+      "result": [
+        {
+          "mode": "http",
+          "status": "PASS",
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "status": "PASS",
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "fotile",
+      "result": [
+        {
+          "mode": "file",
+          "status": "PASS",
+          "errors": []
+        },
+        {
+          "mode": "http",
+          "status": "PASS",
+          "errors": []
+        },
+        {
+          "preview": "hob",
+          "status": "PASS",
+          "appliances": 1
+        },
+        {
+          "preview": "hood",
+          "status": "PASS",
+          "appliances": 1
+        }
+      ]
+    },
+    {
+      "name": "fotile-previews",
+      "result": [
+        {
+          "mode": "file",
+          "preview": "hob",
+          "status": "PASS",
+          "appliances": 1
+        },
+        {
+          "mode": "file",
+          "preview": "hood",
+          "status": "PASS",
+          "appliances": 1
+        },
+        {
+          "mode": "http",
+          "preview": "hob",
+          "status": "PASS",
+          "appliances": 1
+        },
+        {
+          "mode": "http",
+          "preview": "hood",
+          "status": "PASS",
+          "appliances": 1
+        }
+      ]
+    },
+    {
+      "name": "hood-bay",
+      "result": {
+        "status": "PASS",
+        "errors": []
+      }
+    }
+  ]
+}

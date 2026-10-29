@@ -40,7 +40,9 @@ Blender 发现复用现有 `blender-server.cjs`，必要时用 `FURNISH_BLENDER`
 
 ## 发布能力边界
 
-2026-10-29第四个配置：`author-dishwasher`／`publish-dishwasher`服务现有米家台面5套双片折叠门，校验60个具名网格、嵌套水平门轴及下篮滑轨，保留两个可信端态及原安装预留。当前共四个明确产品配置；真实连续连杆轨迹未模拟。见[折叠门契约](DISHWASHER-BLENDER-FOLD.md)。
+2026-10-29第五个配置：`author-hood`／`publish-hood`服务JCD10TA，校验27个具名网格和顶部水平轴；保留独立分段，新增完整竖向剖面扫掠。当前共五个明确产品配置，均非通用任意导入器。见[烟机试点](HOOD-BLENDER-MOTION.md)。
+
+2026-10-29第四个配置：`author-dishwasher`／`publish-dishwasher`服务现有米家台面5套双片折叠门，校验60个具名网格、嵌套水平门轴及下篮滑轨，保留两个可信端态及原安装预留。该轮增加到四个明确产品配置；真实连续连杆轨迹未模拟。见[折叠门契约](DISHWASHER-BLENDER-FOLD.md)。
 
 2026-10-29第三个配置：`author-fridge`／`publish-fridge`服务现有四门双抽屉冰箱，允许经契约校验的4个运动父节点与30个具名网格，新增Furnish运动装配及完整扫掠。详见[活动部件试点](FRIDGE-BLENDER-MOTION.md)。该轮增加到三个明确产品配置；下文两个静态配置的限制仍适用于各自命令，冰箱也未支持任意glTF动画片段。
 

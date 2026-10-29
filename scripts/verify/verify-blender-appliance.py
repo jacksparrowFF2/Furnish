@@ -6,7 +6,7 @@ import sys
 import math
 
 run = pathlib.Path(sys.argv[sys.argv.index('--')+1])
-expected = 60 if '--dishwasher' in sys.argv else 30 if '--fridge' in sys.argv else 12 if '--bookcase' in sys.argv else 29
+expected = 27 if '--hood' in sys.argv else 60 if '--dishwasher' in sys.argv else 30 if '--fridge' in sys.argv else 12 if '--bookcase' in sys.argv else 29
 results = []
 for mode in ('http', 'file'):
     bpy.ops.object.select_all(action='SELECT')
@@ -19,6 +19,19 @@ for mode in ('http', 'file'):
     assert all(obj.type == 'MESH' and obj.get('furnishPartVersion') == 3 for obj in parts)
     assert all(obj.data.materials for obj in parts)
     details = {'mode': mode, 'parts': len(parts), 'stableKeys': len(set(keys))}
+    if expected == 27:
+        bpy.context.view_layer.update();opened={obj['furnishPartKey']:obj.matrix_world.copy() for obj in parts}
+        bpy.ops.wm.save_as_mainfile(filepath=str(run/(mode+'-open-roundtrip.blend')))
+        bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
+        bpy.ops.import_scene.gltf(filepath=str(run/(mode+'-closed.glb')));bpy.context.view_layer.update()
+        closed={obj['furnishPartKey']:obj.matrix_world.copy() for obj in bpy.context.scene.objects if obj.get('furnishId')=='blender-pilot'}
+        assert set(opened)==set(closed)
+        key='explicit:hood-v1:sloped-glass';assert (opened[key].translation-closed[key].translation).length<1e-5,'panel hinge drift'
+        q=(opened[key].to_3x3() @ closed[key].to_3x3().inverted()).to_quaternion();expected_angle=math.atan2(270,345)+.18
+        assert abs(q.angle-expected_angle)<1e-5 and abs(q.axis.z)<1e-5,'incorrect horizontal up-flip axis/angle'
+        for name in ('chimney-cover','oil-trough','fixed-lower-glass'):
+            key='explicit:hood-v1:'+name;assert all(abs(opened[key][i][j]-closed[key][i][j])<1e-6 for i in range(4) for j in range(4)),name+' moved with panel'
+        details.update({'fixedHorizontalHinge':True,'panelTravelDegrees':round(math.degrees(expected_angle),3),'independentCoverAndLowerGlass':True})
     if expected == 60:
         bpy.context.view_layer.update()
         opened={obj['furnishPartKey']:obj.matrix_world.copy() for obj in parts}
