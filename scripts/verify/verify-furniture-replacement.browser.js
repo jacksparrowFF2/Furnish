@@ -17,6 +17,9 @@ async (page,V)=>{
   await p.waitForTimeout(400);
   check(await p.evaluate(()=>{const a=document.querySelector('#gReplacement').getBoundingClientRect(),b=document.querySelector('#replacement-panel').getBoundingClientRect();return a.right<=b.left||a.left>=b.right||a.bottom<=b.top||a.top>=b.bottom;}),'preview panel covers candidate');
   await p.screenshot({path:V.output('playwright/furniture-replacement/'+mode+'-preview.png')});
+  check(await p.locator('#lib .replacement-picked').count()===1,'candidate card not marked');
+  await p.evaluate(()=>setTheme('dark'));await p.waitForTimeout(450);await p.screenshot({path:V.output('playwright/furniture-replacement/'+mode+'-dark.png')});await p.evaluate(()=>setTheme('light'));
+  await unchanged();
   await p.locator('#replacement-panel [data-replacement-cancel]').click();await unchanged();
   check(await p.locator('#gReplacement').count()===0,'cancel did not remove preview');
   await p.locator('#fab [data-replace-furniture]').click();await pick();
@@ -39,6 +42,10 @@ async (page,V)=>{
   check(await p.locator('aside.lib').evaluate(el=>!el.classList.contains('open')),'mobile library did not close after candidate choice');
   await p.screenshot({path:V.output('playwright/furniture-replacement/'+mode+'-mobile.png')});
   check(await p.evaluate(()=>{const r=document.querySelector('#replacement-panel').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&document.documentElement.scrollWidth<=innerWidth;}),'narrow preview overflow');
+  await p.setViewportSize({width:1500,height:950});
+  check(await p.locator('.replacement-specs summary').isVisible(),'collapsed specifications inaccessible after widening viewport');
+  await p.locator('.replacement-specs summary').click();
+  check(await p.locator('.replacement-dimensions').isVisible(),'specifications failed to expand');
   await p.locator('#replacement-panel [data-replacement-cancel]').click();
   // Selection/state changes invalidate the candidate rather than committing stale data.
   await p.evaluate(()=>FurnishCatalog.replacement());await p.evaluate(()=>select(null));check(await p.locator('#replacement-panel').count()===0,'selection did not cancel');

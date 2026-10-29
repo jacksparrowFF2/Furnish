@@ -793,16 +793,81 @@ main:not(.is3d) #blender-dock {display:none}
 .dlg.floating .dlg-box[aria-busy="true"] .dlg-actions{cursor:progress}
 @media(max-height:450px){.dlg.floating .dlg-box{top:12px;max-height:calc(100dvh - 24px)}}
 
-/* Replacement is a temporary plan overlay; only confirmation enters history. */
-#replacement-banner{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px;border:1px solid var(--accent);border-radius:8px}
-#replacement-banner b{flex:1;min-width:0;overflow-wrap:anywhere}
-#replacement-panel{position:absolute;z-index:15;right:12px;top:64px;width:min(360px,calc(100% - 24px));max-height:calc(100% - 160px);overflow:auto;padding:14px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);font-size:12px;line-height:1.5}
-#replacement-panel label{display:grid;gap:4px;margin:8px 0}
-#replacement-panel select{width:100%;min-width:0}
-#replacement-panel p{margin:8px 0;overflow-wrap:anywhere}
-#replacement-panel .actions{display:flex;gap:6px;flex-wrap:wrap}
-#replacement-panel .btn{font-size:12px}
+/* Replacement reuses the library and the warm drafting surface palette. */
+#replacement-banner{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--accent-soft);border-radius:var(--r-md);color:var(--accent-ink)}
+#replacement-banner>div{flex:1;min-width:0;display:grid;gap:2px}
+#replacement-banner small{font-size:10px;letter-spacing:.08em}
+#replacement-banner b{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#replacement-banner .btn{border:0;background:transparent;box-shadow:none;padding:5px;color:inherit}
+.replacement-mode-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+#replacement-panel{position:absolute;z-index:15;right:12px;top:64px;width:min(344px,calc(100% - 24px));max-height:calc(100% - 160px);display:flex;flex-direction:column;overflow:hidden;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-md);font-size:12px;line-height:1.5}
+.replacement-head{display:flex;align-items:center;gap:10px;padding:15px 16px;border-bottom:1px solid var(--line-soft);flex:none}
+.replacement-head-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);font-size:22px}
+.replacement-head>div{flex:1}
+.replacement-head h3{margin:0;font-size:14px;letter-spacing:.02em}
+.replacement-head>div>span{color:var(--muted);font-size:11px}
+.replacement-head .btn{border:0;background:transparent;padding:5px;box-shadow:none;color:var(--muted)}
+.replacement-body{min-height:0;overflow:auto;overscroll-behavior:contain;padding:14px 16px}
+.replacement-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.replacement-product{position:relative;min-width:0;padding:10px;background:var(--soft);border:1px solid var(--line-soft);border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.replacement-product-label{align-self:flex-start;color:var(--muted);font-size:10px}
+.replacement-product.candidate{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 5%,var(--panel))}
+.replacement-product.candidate .replacement-product-label{color:var(--teal)}
+.replacement-thumb{height:48px;width:100%}
+.replacement-thumb svg{width:100%;height:100%}
+.replacement-product>b{font-size:11px;font-weight:600;line-height:1.4;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.replacement-empty{border-style:dashed;background:transparent;justify-content:space-between;color:var(--muted)}
+.replacement-empty-icon{font-size:25px;font-weight:300;line-height:48px}
+.replacement-empty-copy{color:var(--muted);font-size:12px;margin:14px 0;line-height:1.7}
+.replacement-dimensions{width:100%;border-collapse:collapse;font-size:12px;margin:14px 0 10px;font-variant-numeric:tabular-nums}
+.replacement-dimensions caption{text-align:left;font-size:11px;font-weight:600;margin-bottom:7px}
+.replacement-dimensions caption span{float:right;font-weight:400;color:var(--muted);font-family:var(--mono)}
+.replacement-dimensions thead{color:var(--muted);font-size:10px}
+.replacement-dimensions th,.replacement-dimensions td{padding:4px 0;border-bottom:1px solid var(--line-soft);text-align:right;font-weight:400}
+.replacement-dimensions th:first-child{text-align:left}
+.replacement-dimensions tbody th{color:var(--muted)}
+.replacement-dimensions .replacement-arrow{color:var(--muted);text-align:center}
+.replacement-dimensions .replacement-changed{color:var(--teal);font-weight:600}
+.replacement-price{display:flex;justify-content:space-between;align-items:center;gap:6px;padding-bottom:12px}
+.replacement-price>span:first-child{font-size:10px;color:var(--muted)}
+.replacement-price strong{display:block;font-size:18px;letter-spacing:-.03em;color:var(--ink);font-weight:650}
+.replacement-price-delta{border-radius:20px;padding:3px 8px;background:var(--soft);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.replacement-check-ok{display:flex;align-items:center;gap:7px;color:var(--ok);font-size:11px}
+.replacement-check-ok>span{display:grid;place-items:center;width:16px;height:16px;background:color-mix(in srgb,var(--ok) 12%,transparent);border-radius:50%}
+.replacement-notice{color:var(--muted);margin:6px 0}
+.replacement-checks details{padding:9px;border-radius:8px;background:var(--warn-bg)}
+.replacement-checks p{overflow-wrap:anywhere}
+#replacement-panel .replacement-anchor-label{display:grid;gap:6px;margin:16px 0 10px;font-size:11px;font-weight:600}
+#replacement-anchor{width:100%;min-width:0;min-height:36px;padding:7px 10px;background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:12px;font-weight:400}
+.replacement-legend{display:flex;gap:16px;font-size:10px;color:var(--muted);margin-bottom:10px}
+.replacement-legend>span{display:flex;align-items:center;gap:5px}
+.replacement-legend i{display:inline-block;width:16px;border-top:2px solid var(--teal)}
+.replacement-legend i.replacement-old-line{border-top:2px dashed #e16b32}
+.replacement-explainer{color:var(--muted);font-size:11px}
+.replacement-explainer summary{cursor:pointer}
+.replacement-explainer p{margin:8px 0 0;line-height:1.7}
+.replacement-footer{flex:none;display:grid;grid-template-columns:1fr 1.25fr;gap:8px;padding:12px 16px 10px;border-top:1px solid var(--line);background:var(--panel)}
+#replacement-panel .replacement-footer .btn{font-size:12px;justify-content:center;min-height:36px}
+.replacement-footer small{grid-column:1/-1;text-align:center;color:var(--muted);font-size:10px}
 #gFurn [data-replacement-original]{opacity:.12}
 .replacing #gSel{display:none}
 #lib .item[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media(max-width:700px){#replacement-panel{top:60px;max-height:45%;padding:10px}}
+#lib .item.replacement-picked{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset;background:color-mix(in srgb,var(--teal) 5%,var(--panel))}
+@media(max-width:700px){#replacement-panel{top:60px;max-height:48%;border-radius:14px}.replacement-head{padding:10px 12px}.replacement-body{padding:10px 12px}.replacement-footer{padding:9px 12px 7px;gap:5px}.replacement-thumb{height:38px}.replacement-product{padding:8px}.replacement-head>div>span{display:none}}
+
+.replacement-specs>summary{display:list-item;cursor:pointer;color:var(--muted);font-size:11px;padding:8px 0;margin-left:12px}
+.replacement-specs[open]>summary{display:none}
+:root[data-theme="dark"] #replacement-panel{--teal:#69c5b7}
+:root[data-theme="dark"] #lib .item.replacement-picked{border-color:#69c5b7;box-shadow:0 0 0 1px #69c5b7 inset}
+@media(max-width:700px){
+ .replacement-product{display:grid;grid-template-columns:24px minmax(0,1fr);padding:6px 8px;gap:3px 6px}
+ .replacement-product-label{grid-column:1/-1}
+ .replacement-thumb{height:24px}
+ .replacement-product>b{font-size:11px}
+ .replacement-empty-icon{font-size:20px;line-height:24px}
+ .replacement-specs>summary{display:list-item;margin-left:12px}
+ #replacement-panel .replacement-anchor-label{margin-top:10px}
+ .replacement-legend{margin-bottom:6px}
+}
+
+@media(max-width:1100px){.replacement-specs[open]>summary{display:list-item}}

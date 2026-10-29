@@ -61,18 +61,24 @@
   g.innerHTML=`<g transform="${furnT(next)}" opacity=".85"><g transform="scale(${next.flip?-1:1} 1)">${body}</g><rect x="${-next.w/2}" y="${-next.d/2}" width="${next.w}" height="${next.d}" fill="none" stroke="#25877b" stroke-width="2" vector-effect="non-scaling-stroke"/></g>${outline(f)}`;
   svg.append(g);document.querySelectorAll('#gFurn [data-fid]').forEach(el=>{if(el.dataset.fid===f.id)el.setAttribute('data-replacement-original','true');});
  }
+ function productCard(f,label,kind){
+  const pad=Math.max(f.w,f.d)*.12;
+  return `<div class="replacement-product ${kind}"><span class="replacement-product-label">${label}</span><div class="replacement-thumb"><svg aria-hidden="true" viewBox="${-f.w/2-pad} ${-f.d/2-pad} ${f.w+pad*2} ${f.d+pad*2}">${furnSVG(f.type,f.w,f.d,f.color,f)}</svg></div><b title="${esc(nm(f.name))}">${esc(nm(f.name))}</b></div>`;
+ }
+ function syncCandidateCards(){document.querySelectorAll('#lib .item').forEach(el=>el.classList.toggle('replacement-picked',!!session?.itemKey&&FurnishCatalogData.itemKey(itemOf(el))===session.itemKey));}
  function preview(){
   if(!session)return;clearOverlay();session.preview=null;
   const info=$('#replacement-info'),apply=$('#replacement-apply');apply.disabled=true;
-  if(!session.candidate){info.textContent='从家具库选择新家具；选择候选和切换定位基准不会修改方案。';return;}
+  if(!session.candidate){info.innerHTML=`<div class="replacement-pair">${productCard(getF(session.id),'原家具','original')}<div class="replacement-product replacement-empty"><span class="replacement-product-label">新家具</span><span class="replacement-empty-icon">＋</span><b>等待选择</b></div></div><p class="replacement-empty-copy">从左侧家具库挑选一款，先看看替换效果。</p>`;return;}
   try{
    const work=prepare(),next=work.furniture.find(f=>f.id===session.id),f=getF(session.id);
    const issues=P.spaceCheck(P.effectivePlan(PLAN,work),work.furniture,{focusId:f.id,scanPassages:false});
-   const size=v=>`${v.w} × ${v.d} × ${FurnishProducts.height(v)??'未知'} mm`;
    const affected=work.furniture.filter(v=>v.id!==f.id&&JSON.stringify(v)!==JSON.stringify(state.furniture.find(o=>o.id===v.id))).length;
    const detached=['counterLink','laundryHostId'].some(k=>f[k]&&!next[k]);
    const oldPrice=priceOf(f),price=session.candidate.price,known=Number.isFinite(price)&&(price>0||session.candidate.id),delta=known&&P.furniturePriceBasis(f,oldPrice)!=='missing'?price-oldPrice:null;
-   info.innerHTML=`<b>${esc(nm(f.name))} → ${esc(nm(next.name))}</b><p>${esc(size(f))} → ${esc(size(next))}</p><p>新参考价：${known?P.purchaseMoney(price):'未录入'}${delta!==null?' · 差额 '+(delta>0?'+':'')+P.purchaseMoney(delta):''}</p><p>虚线：原占地；绿色：新家具。新品规格与配色生效，采购状态重置为计划购买。</p>${affected?`<p>关联规则将同步调整 ${affected} 件家具，一并撤销。</p>`:''}${detached?'<p class="project-note">原安装关联不再适用，将解除；请重新核对安装位置。</p>':''}${issues.map(v=>`<p class="${v.pending?'project-note':'project-error'}">${esc(v.message)}</p>`).join('')||'<p>本次空间检查未发现问题。</p>'}`;
+   const format=v=>Number.isFinite(v)?Number(v.toFixed(2)):'未知';
+   const rows=[['宽',f.w,next.w],['深',f.d,next.d],['高',FurnishProducts.height(f),FurnishProducts.height(next)]];
+   info.innerHTML=`<div class="replacement-pair">${productCard(f,'原家具','original')}${productCard(next,'新家具','candidate')}</div><details class="replacement-specs" ${narrow()?'':'open'}><summary>尺寸与参考价</summary><table class="replacement-dimensions"><caption>尺寸对比 <span>mm</span></caption><thead><tr><th scope="col">尺寸</th><th scope="col">原家具</th><th scope="col"><span aria-hidden="true">→</span></th><th scope="col">新家具</th></tr></thead><tbody>${rows.map(([label,old,value])=>`<tr><th scope="row">${label}</th><td>${format(old)}</td><td class="replacement-arrow">→</td><td class="${old!==value?'replacement-changed':''}">${format(value)}</td></tr>`).join('')}</tbody></table><div class="replacement-price"><span>新参考价<strong>${known?P.purchaseMoney(price):'未录入'}</strong></span>${delta!==null?`<span class="replacement-price-delta">${delta===0?'价格不变':(delta>0?'+':'')+P.purchaseMoney(delta)}</span>`:''}</div></details><div class="replacement-checks">${affected?`<p class="replacement-notice">关联规则将同步调整 ${affected} 件家具，一并撤销。</p>`:''}${detached?'<p class="replacement-notice">原安装关联将解除，请重新核对位置。</p>':''}${issues.length?`<details open><summary>有 ${issues.length} 项需要留意</summary>${issues.map(v=>`<p class="${v.pending?'project-note':'project-error'}">${esc(v.message)}</p>`).join('')}</details>`:'<div class="replacement-check-ok"><span aria-hidden="true">✓</span>本次空间检查未发现问题</div>'}</div>`;
    overlay(next,work);session.preview=next;positionPreview();apply.disabled=false;
   }catch(e){info.textContent=e.message;}
  }
@@ -80,7 +86,7 @@
   if(!session)return;
   if(!valid()){cancel();return toast('方案或选择已改变，请重新开始替换');}
   if(FurnishKitchen.isLaundryAreaItem(it))return toast('组合洗衣区包含多件家具，请选择单件产品替换');
-  session.candidate=source(it);preview();closeDrawers();
+  session.candidate=source(it);session.itemKey=FurnishCatalogData.itemKey(it);syncCandidateCards();preview();closeDrawers();
   if(narrow()&&session?.preview){
    zoomToBox(groupBox([getF(session.id),session.preview]),1000);
    const p=drawingPoint([session.preview.cx,session.preview.cy]);
@@ -104,13 +110,13 @@
   session={id:f.id,planId:PLAN.id,before:snap(),candidate:null,anchor:'current'};$('#stage').classList.add('replacing');
   resetCatalogFilters();libUI.collection='all';
   buildCats();buildLib();
-  $('#libTools').insertAdjacentHTML('afterbegin',`<div id="replacement-banner" role="status"><b>正在替换：${esc(nm(f.name))}</b><button class="btn" data-replacement-cancel>退出替换</button></div>`);
-  $('#stage').insertAdjacentHTML('beforeend',`<section id="replacement-panel" aria-label="家具替换预览"><b>家具替换 · 平面预览</b><label>定位基准<select id="replacement-anchor"><option value="current">沿用原尺寸调整基准</option><option value="center">中心不动</option><option value="back">背面居中不动</option></select></label><small>背面指家具局部后沿，随旋转变化；不自动贴墙或缩放新品。</small><div id="replacement-info" role="status" aria-live="polite"></div><div class="actions"><button class="btn" id="replacement-pick">选择家具</button><button class="btn" data-replacement-cancel>取消</button><button class="btn primary" id="replacement-apply" disabled>确认替换</button></div></section>`);
+  $('#libTools').insertAdjacentHTML('afterbegin',`<div id="replacement-banner" role="status"><span class="replacement-mode-dot" aria-hidden="true"></span><div><small>替换模式</small><b title="${esc(nm(f.name))}">${esc(nm(f.name))}</b></div><button class="btn" data-replacement-cancel aria-label="退出替换" title="退出替换">${ico('x')}</button></div>`);
+  $('#stage').insertAdjacentHTML('beforeend',`<section id="replacement-panel" aria-label="家具替换预览"><div class="replacement-head"><span class="replacement-head-icon" aria-hidden="true">↔</span><div><h3>替换家具</h3><span>先预览，再决定</span></div><button class="btn" data-replacement-cancel aria-label="关闭替换预览" title="关闭替换预览">${ico('x')}</button></div><div class="replacement-body"><div id="replacement-info" role="status" aria-live="polite"></div><label class="replacement-anchor-label" for="replacement-anchor">定位基准<select id="replacement-anchor"><option value="current">沿用原尺寸调整基准</option><option value="center">中心不动</option><option value="back">背面居中不动</option></select></label><div class="replacement-legend"><span><i class="replacement-old-line"></i>原占地</span><span><i class="replacement-new-line"></i>新家具</span></div><details class="replacement-explainer"><summary>替换后会保留什么？</summary><p>保留编号、朝向与分组；使用新品规格、配色和采购资料，采购状态重置为计划购买。背面基准随旋转变化，不自动贴墙或缩放新品。</p></details></div><div class="replacement-footer"><button class="btn" id="replacement-pick">选择家具</button><button class="btn primary" id="replacement-apply" disabled>确认替换<span aria-hidden="true"> →</span></button><small>确认后可一次撤销恢复</small></div></section>`);
   $('#replacement-anchor').onchange=e=>{session.anchor=e.target.value;preview();};
   $('#replacement-pick').onclick=()=>drawer('lib',true);$('#replacement-apply').onclick=apply;
   preview();drawer('lib',true);
  }
- window.FurnishCatalog={matches,replacement,details,active,choose,afterRender,afterView:positionPreview,selectionChanged,cancel,preferredCategory:()=>session?libAll().find(c=>c.items.some(it=>it[0]===getF(session.id)?.type))?.cat:null};
+ window.FurnishCatalog={matches,replacement,details,active,isCandidate:it=>!!session?.itemKey&&FurnishCatalogData.itemKey(it)===session.itemKey,choose,afterRender,afterView:positionPreview,selectionChanged,cancel,preferredCategory:()=>session?libAll().find(c=>c.items.some(it=>it[0]===getF(session.id)?.type))?.cat:null};
  document.addEventListener('click',e=>{if(e.target.closest('#replace-furniture,[data-replace-furniture]'))replacement();if(e.target.closest('[data-replacement-cancel]'))cancel();});
  addEventListener('keydown',e=>{if(session&&e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();cancel();}},true);
 })();

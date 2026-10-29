@@ -610,7 +610,7 @@ function openCustom(){
 /* ======================= 家具库 ======================= */
 const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Math.max(w,d)*.08, source=cid?store.custom.find(c=>c.id===cid):null,spec=FurnishKitchen.catalogSpec(it),preview=spec.sinkStyle?{type:t,w,d,...spec}:undefined;
   const h=FurnishCatalogData.itemHeight(it),favorite=catalogFavorites.has(FurnishCatalogData.itemKey(it));
-  return `<div class="item ${cid ? 'custom' : ''}" data-key="${ci}:${ii}" title="${tr('点击添加，或拖到平面图中的指定位置', 'Click to add, or drag onto the plan')}${price ? ` · ¥${price}` : ''}">
+  return `<div class="item ${cid ? 'custom' : ''}${window.FurnishCatalog?.isCandidate(it)?' replacement-picked':''}" data-key="${ci}:${ii}" title="${tr('点击添加，或拖到平面图中的指定位置', 'Click to add, or drag onto the plan')}${price ? ` · ¥${price}` : ''}">
     <button class="catalog-favorite" data-favorite aria-pressed="${favorite}" aria-label="${esc(tr(favorite?'取消收藏':'收藏到本机',favorite?'Remove favorite':'Save favorite on this device'))}">${ico('heart')}</button>
     ${cid ? `<button class="del" style="z-index:1" data-cdel="${cid}" title="${tr('从「我的家具」删除', 'Remove from My Items')}">${ico('x')}</button>` : ''}
     <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col,preview)}</svg><b>${esc(nm(n))}</b><small>${w}×${d} mm</small><small>${tr('高','H')} ${Number.isFinite(h)?h+' mm':tr('未录入','Unknown')}</small>${source&&(source.brand||source.model)?`<small>${esc([source.brand,source.model].filter(Boolean).join(' · '))}</small>`:''}<button class="catalog-details" data-catalog-details>${tr('查看规格','Details')}</button></div>`; };
