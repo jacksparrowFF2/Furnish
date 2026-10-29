@@ -15,6 +15,8 @@
 
 原始浏览器目录：`output/playwright/blender-washer-tg10k60w-nSZgJr`。仅归档必要证据，不收录隔离工作区和中间草稿。
 
+合并最新边几与柜门主线后：共用发布器保留边几类型与TG专用透明／版本限制，边几实际再次发布和`test-side-table.cjs`通过。`test-washer-project-v35`、`test-side-table-project-v36`、`test-cabinet-adjacent-hinges`、`test-washer-front-confirmation`及103类×8变换的包络测距复验通过。合并边几加载／缓存后重跑HTTP和离线浏览器及真实Blender回读，见`merged-summary.json`与`merged-blender-result.json`，原始目录`output/playwright/blender-washer-tg10k60w-FMlYBD`。生产导出仅本型号门窗使用Alpha0.12，并在Blender中保留。
+
 ## 保留边界
 
 未运行全量检查、厂家铰轴／开角／安装或承托实测、物理折射、精修场景材质迁移。透明使用Alpha近似，标识／认证贴为矢量近似且未生成可扫描二维码。内筒孔点为视觉几何，数值实体仍保守，不代表开放内部容纳能力；12个高度片有保守误报边界。图示安装参考单独展示，不宣称完成施工安装验收。
