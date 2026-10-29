@@ -8,6 +8,8 @@
   const cv=r.domElement;cv.tabIndex=0;cv.setAttribute('aria-label',f.kitchen?'厨房三维预览：拖动旋转，触摸板双指平移／捏合缩放，鼠标滚轮缩放':'柜体三维预览：拖动层板或分隔板；方向键微调');
   const readout=document.createElement('div');readout.className='cab-drag-readout';readout.hidden=true;host.appendChild(readout);
   const labelLayer=document.createElement('div');labelLayer.className='cab-dimensions';host.appendChild(labelLayer);
+  const selectionLayer=document.createElementNS('http://www.w3.org/2000/svg','svg');selectionLayer.setAttribute('class','cab-selection-outline');selectionLayer.setAttribute('aria-hidden','true');
+  const selectionPaths=['halo','edge'].map(role=>{const path=document.createElementNS(selectionLayer.namespaceURI,'path');path.setAttribute('class',`cab-selection-${role}`);selectionLayer.appendChild(path);return path;});host.appendChild(selectionLayer);
   const doorSizes=document.createElement('details');doorSizes.className='cab-door-sizes';host.appendChild(doorSizes);
   const drawerLayer=document.createElement('div');drawerLayer.className='cab-drawer-edit';host.appendChild(drawerLayer);
   const rulers=document.createElementNS('http://www.w3.org/2000/svg','svg'),rulerPath=document.createElementNS('http://www.w3.org/2000/svg','path');rulers.setAttribute('class','cab-dimension-lines');rulers.setAttribute('aria-hidden','true');rulers.appendChild(rulerPath);labelLayer.appendChild(rulers);
@@ -20,7 +22,7 @@
   setupControls();
   const unbindNavigation=root.FurnishNavigation?.bindOrbit(cv,()=>controls)||(()=>{});
   function clearModel(){if(!model)return;model.traverse(o=>{o.geometry?.dispose();if(o.userData.cabinetOwnMaterial)o.material.dispose();});sc.remove(model);}
-  function clearHighlight(){if(tinted){tinted.mesh.material=tinted.original;tinted.material.dispose();tinted=null;}for(const o of [helper,guide])if(o){sc.remove(o);o.geometry.dispose();o.material.dispose();}helper=guide=null;}
+  function clearHighlight(){if(tinted){tinted.mesh.material=tinted.original;tinted.material.dispose();tinted=null;}for(const o of [helper,guide])if(o){sc.remove(o);o.geometry.dispose();o.material.dispose();}helper=guide=null;selectionPaths.forEach(path=>path.setAttribute('d',''));}
   function tag(o){const part=o.userData.kitchenShelf,K=root.FurnishKitchen;if(part&&current.kitchen&&['door','open'].includes(current.kitchen.modules[part.module]?.role))return {column:elevation?elevation.indices[part.module]:part.module,shelf:part.shelf,kitchenModule:part.module};return o.userData.cabinetShelf||o.userData.cabinetDivider||o.userData.cabinetBay;}
   function inspectPart(o){
    if(!o)return {kind:'body'};
@@ -35,7 +37,7 @@
   function highlight(){
    clearHighlight();const mesh=selectedMesh();cv.style.cursor=mesh?'grab':'';readout.hidden=!mesh;if(!mesh){selected=null;return;}
    readout.hidden=selected.shelf===undefined&&selected.divider===undefined;
-   if(['shelf','structure'].includes(selected.kind)&&mesh.isMesh&&!Array.isArray(mesh.material)){const material=mesh.material.clone();tinted={mesh,original:mesh.material,material};material.color.set(0x168de2);if(material.emissive){material.emissive.set(0x168de2);material.emissiveIntensity=.2;}mesh.material=material;}model.updateMatrixWorld(true);helper=new THREE.BoxHelper(mesh,0x168de2);helper.material.depthTest=false;helper.renderOrder=10;sc.add(helper);
+   if(['shelf','structure'].includes(selected.kind)&&mesh.isMesh&&!Array.isArray(mesh.material)){const material=mesh.material.clone();tinted={mesh,original:mesh.material,material};material.color.set(0x168de2);if(material.emissive){material.emissive.set(0x168de2);material.emissiveIntensity=.2;}mesh.material=material;}model.updateMatrixWorld(true);helper=new THREE.BoxHelper(mesh,0x168de2);helper.visible=false;sc.add(helper);
    if(current.kitchen){if(selected.shelf!==undefined&&(selected.kitchenModule!==undefined||selected.column!==undefined)){const K=root.FurnishKitchen,index=elevation?elevation.indices.indexOf(selected.column):selected.kitchenModule??selected.column,m=K.cabinetLayout(current).find(m=>m.index===index),value=K.moduleShelves(m,current.kitchen.baseHeight,K.isWall(current),K.plinth(current))[selected.shelf];readout.textContent=`模块 ${selected.column+1} · 层板 ${selected.shelf+1} · ${value} mm`;}return;}
    if(selected.kind==='body')return;
    const {column,shelf,divider}=selected,c=C.config(current),bay=C.layout(current)[column],z=current.d/2000+.025,base=(c.plinth+c.thickness)/1000;
@@ -45,6 +47,15 @@
     readout.textContent=`分区 ${column+1} · 层板 ${shelf+1} · ${c.columns[column].shelves[shelf]} mm`;
    }else if(divider!==undefined)readout.textContent=`分隔板 ${divider+1} · 左模块 ${Math.round(C.moduleWidths(current)[divider])} / 右模块 ${Math.round(C.moduleWidths(current)[divider+1])} mm`;
    else readout.textContent=`分区 ${column+1} · 模块外宽 ${Math.round(C.moduleWidths(current)[column])} mm`;
+  }
+  // SVG strokes keep their CSS-pixel width; WebGL lines are commonly limited to 1 px.
+  function projectSelection(){
+   if(!helper)return;const rect=cv.getBoundingClientRect(),positions=helper.geometry.attributes.position,index=helper.geometry.index,paths=[];
+   for(let i=0;i<index.count;i+=2){const points=[index.getX(i),index.getX(i+1)].map(j=>new THREE.Vector3().fromBufferAttribute(positions,j).project(cam));
+    if(points.some(p=>p.z< -1||p.z>1))continue;
+    paths.push(`M${(points[0].x+1)*rect.width/2},${(1-points[0].y)*rect.height/2}L${(points[1].x+1)*rect.width/2},${(1-points[1].y)*rect.height/2}`);
+   }
+   selectionPaths.forEach(path=>path.setAttribute('d',paths.join('')));
   }
   function shelfGaps(column,shelf){if(typeof shelf==='string'){const board=C.structuralBoards(current).find(b=>b.section===shelf),lower=board.lower,upper=board.upper,down=board.value-board.min,up=board.max-board.value;return {lower:{bottom:board.position-lower,top:board.position,height:lower,min:lower-down,max:lower+up},upper:{bottom:board.position+board.thickness,top:board.position+board.thickness+upper,height:upper,min:upper-up,max:upper+down}};}return current.kitchen?root.FurnishKitchen.moduleShelfClearances(current,elevation?elevation.indices.indexOf(column):column,shelf):C.shelfClearances(current,column,shelf);}
   function dimensions(){
@@ -311,7 +322,7 @@
    const value=current.kitchen?root.FurnishKitchen.moduleShelves(current.kitchen.modules[selected.kitchenModule??selected.column],current.kitchen.baseHeight,root.FurnishKitchen.isWall(current),root.FurnishKitchen.plinth(current))[selected.shelf]:divider?C.widths(current)[selected.divider]:C.config(current).columns[selected.column].shelves[selected.shelf];apply(selected,value+((e.key==='ArrowUp'||e.key==='ArrowRight')?1:-1)*(e.shiftKey?1:10));
   });
   const observer=new ResizeObserver(resize);observer.observe(host);update(f);fit();resize();
-  function render(){if(disposed)return;if(!splitRoot){if(!drag&&!drawerDrag)controls.update();r.render(sc,cam);projectLabels();projectDrawers();}frame=requestAnimationFrame(render);}render();
+  function render(){if(disposed)return;if(!splitRoot){if(!drag&&!drawerDrag)controls.update();r.render(sc,cam);projectSelection();projectLabels();projectDrawers();}frame=requestAnimationFrame(render);}render();
   return {
    update:value=>{const dims=v=>[C.assemblyBounds(v),v.w,v.d,v.kitchen?(v.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(v):FurnishKitchen.overallHeight(v)):v.h,v.kitchen?.shape,v.kitchen?.corner],changed=JSON.stringify(dims(value))!==JSON.stringify(dims(current));update(value);if(changed)fit();},
    selectPart:part=>{const oldPart=JSON.stringify(selected);selected=part;const old=activeColumn;activeColumn=part?.column??null;highlight();if(old!==activeColumn||oldPart!==JSON.stringify(part))dimensions();else markActive();},focus:()=>cv.focus({preventScroll:true}),
@@ -320,7 +331,7 @@
    finishHatchInput:()=>finishHatchInput(),
    finishDrawerInput:()=>finishDrawerInput()&&splitPanels.every(panel=>panel.preview.finishDrawerInput()),
    setView:options=>{endDrawerDrag(true);endDrag(true);const change=options.front!==undefined&&options.front!==settings.front;settings={...settings,...options};if(change){controls.dispose();cam=settings.front?new THREE.OrthographicCamera(-1,1,1,-1,.01,100):new THREE.PerspectiveCamera(38,1,.01,100);controls=new OrbitControls(cam,cv);setupControls();fit();resize();}update(current);},
-   dispose:()=>{unbindNavigation();disposed=true;finishShelfInput(false);finishHatchInput(false);drag=null;drawerDrag=null;drawerEditing=null;cancelAnimationFrame(frame);clearSplit();observer.disconnect();controls.dispose();clearHighlight();clearModel();r.dispose();r.forceContextLoss();cv.remove();readout.remove();labelLayer.remove();doorSizes.remove();drawerLayer.remove();},
+   dispose:()=>{unbindNavigation();disposed=true;finishShelfInput(false);finishHatchInput(false);drag=null;drawerDrag=null;drawerEditing=null;cancelAnimationFrame(frame);clearSplit();observer.disconnect();controls.dispose();clearHighlight();clearModel();r.dispose();r.forceContextLoss();cv.remove();selectionLayer.remove();readout.remove();labelLayer.remove();doorSizes.remove();drawerLayer.remove();},
   };
  }
  root.FurnishCabinetPreview={create};
