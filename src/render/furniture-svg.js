@@ -13,6 +13,14 @@ const ec = (cx,cy,rx,ry,f,ex='') => `<ellipse cx="${cx}" cy="${cy}" rx="${Math.m
 const ln = (x1,y1,x2,y2,ex='') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" ${ST()} ${ex}/>`;
 const pa = (d,f='none',ex='') => `<path d="${d}" fill="${f}" ${ST()} ${ex}/>`;
 const DASH = 'stroke-dasharray="4 3"';
+const products=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
+if(products.family({type:t},'window-covering')&&(t!=='curtain'||f?.curtainOpen!==undefined)){
+ const item=f||{type:t,w,d},l=products.coveringLayout(item),left=-w/2,back=-d/2;
+ let s=ln(left,back,w/2,back,'data-covering-track="true"');
+ if(l.soft){for(let panel=0;panel<l.count;panel++){const width=w/l.count,packed=width*(1-.84*l.open),closed=-w/2+width*(panel+.5),opened=(panel===0?-1:1)*(w/2-width*.16/2),x=closed+(opened-closed)*l.open-packed/2;s+=rc(x,back,packed,d,c,`opacity="${l.kind==='sheer'?.38:1}" data-covering-panel="true"`);for(let i=1;i<7;i++)s+=ln(x+packed*i/7,back,x+packed*i/7,d/2);}}
+ else{s+=rc(left,back,w,d,c,'data-covering-headrail="true"');const labels={venetian:'百叶',honeycomb:'蜂巢',zebra:'日夜纱',bamboo:'竹帘',roller:'卷帘'};s+=`<text x="0" y="0" text-anchor="middle" dominant-baseline="central" font-size="${Math.min(55,d*.7)}" fill="${PAL.ink}">${labels[l.kind]} · ${Math.round(l.open*100)}%</text>`;}
+ return `<g data-covering="${l.kind}">${s}</g>`;
+}
 if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
  const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts,l=P.pocketLayout(f||{type:t,w,d});
  return l.parts.filter(p=>p.key!=='pocket-header').map(p=>rc(p.x-p.w/2,p.z-p.d/2,p.w,p.d,p.key==='pocket-leaf'?c:'#e8e3d9',`data-pocket-part="${p.key}"`)).join('')+ln(-w/2,-d/2,w/2,-d/2,DASH);

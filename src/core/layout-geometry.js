@@ -84,7 +84,7 @@ function verticalOverlap(a,b,ranges){
   const [A,B]=ranges||[D?.furnitureVerticalBounds(a),D?.furnitureVerticalBounds(b)];
   return !(A&&B&&Math.min(A.top,B.top)-Math.max(A.bottom,B.bottom)<=1e-6);
 }
-const solidForCollision=f=>!NOCOLLIDE.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded;
+const solidForCollision=f=>!NOCOLLIDE.has(f.type)&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.covering?.soft&&!(root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null))?.definition(f)?.embedded;
 function collisions(furniture,plan){
   const L = furniture.filter(solidForCollision), out = [];
   const box = L.map(f=>{if(!(root.FurnishProducts||require('./product-rules.js')).definition(f)?.telescopic)return aabb(f);const [x0,y0,x1,y1]=bbox(footprints(f,{plan,furniture}).flat());return {hw:Math.max(f.cx-x0,x1-f.cx),hh:Math.max(f.cy-y0,y1-f.cy)};});

@@ -138,10 +138,16 @@ const LIB = [
   {cat:'布艺', items:[
     ["baycushion","飘窗垫",520,1800,"#e7dccd",600],
     ["rug","地毯",2400,1700,"#d9cbb8",900],
-    ["curtain","窗帘 2.4m",2400,180,"#c9d3da",1500],
-    ["curtain","窗帘 3m",3000,180,"#b9c4cc",1900],
+    ["curtain","不透光布帘 2.4m",2400,180,"#c9d3da",1500],
+    ["curtain","不透光布帘 3m",3000,180,"#b9c4cc",1900],
     ["curtain","单开窗帘 2.4m",2400,180,"#c9d3da",1500,2400,null,"single"],
-    ["curtain","双开窗帘 2.4m",2400,180,"#c9d3da",1500,2400,null,"double"]
+    ["curtain","双开窗帘 2.4m",2400,180,"#c9d3da",1500,2400,null,"double"],
+    ["curtain_sheer","半透光纱帘 · 双开",2400,120,"#f4f1e8",null,2400],
+    ["blind_venetian","百叶帘 · 可调叶片",1500,65,"#ded6c7",null,1800],
+    ["blind_honeycomb","蜂巢帘 · 折叠升降",1500,60,"#ece3d5",null,1800],
+    ["blind_zebra","日夜柔纱帘 · 斑马帘",1500,75,"#d5c5ab",null,1800],
+    ["blind_bamboo","竹帘 · 卷收",1500,65,"#a88a5d",null,1800],
+    ["blind_roller","卷帘 · 平面布",1500,75,"#d6d2c8",null,1800]
   ]},
   {cat:'装饰', items:[
     ["plant","绿植",500,500,"#a9c39b",200],
@@ -205,7 +211,7 @@ function browseLibrary(){
 const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
 const useTypes={
  living:['sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
- bedroom:['bed','crib','nightstand','wardrobe','chest','dresser','curtain','mirror','acwall'],
+ bedroom:['bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall'],
  dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
  study:['desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','armchair','floorlamp'],
  kitchen:['panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],

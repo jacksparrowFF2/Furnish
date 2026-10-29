@@ -42,6 +42,9 @@ const fields={
  showerRise:numeric(100,500,'花洒顶部调节段须为 100–500 mm'),
  showerHandAngle:numeric(0,35,'手持花洒角度须为 0–35°'),
  curtainStyle:{values:['single','double'],message:'窗帘样式须为单开或双开'},
+ curtainOpen:numeric(0,1,'窗帘收起比例须为 0–1'),
+ blindAngle:numeric(0,85,'百叶角度须为 0–85°'),
+ shadeMode:{values:['day','night'],message:'柔纱帘调光须为日间或夜间'},
  slidingStackSide:{values:['left','right'],message:'收门方向须为左侧或右侧'},
  slidingOpen:{boolean:true,message:'门扇开合设置无效'},
  floorTrack:{boolean:true,message:'轨道设置无效'},
@@ -58,7 +61,16 @@ const doorWidths={minWidth:50,maxLeaves:24,gap:2};
 const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
 const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'folding-table'},family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
+// Generic made-to-measure covering assumptions, not a manufacturer's installation specification.
+const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering'}};
+const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
+ curtain_sheer:{...covering,height:2400,defaults:{mountHeight:0,curtainOpen:0,curtainStyle:'double'},fields:[...covering.fields,'curtainStyle'],create:[...covering.create,'curtainStyle'],solidModel:undefined,covering:{kind:'sheer',soft:true}},
+ blind_venetian:{...covering,defaults:{...covering.defaults,blindAngle:85},fields:[...covering.fields,'blindAngle'],create:[...covering.create,'blindAngle'],covering:{kind:'venetian'}},
+ blind_honeycomb:{...covering,covering:{kind:'honeycomb'}},
+ blind_zebra:{...covering,defaults:{...covering.defaults,shadeMode:'day'},fields:[...covering.fields,'shadeMode'],create:[...covering.create,'shadeMode'],covering:{kind:'zebra'}},
+ blind_bamboo:{...covering,covering:{kind:'bamboo'}},
+ blind_roller:{...covering,covering:{kind:'roller'}},
  pocketdoor_double:{family:'pocket-door',height:2640,defaults:{slidingOpen:true},fields:['slidingOpen'],create:['slidingOpen'],solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening'},pocket:{minWidth:1600,minDepth:120,minHeight:1800,skin:18,leaf:40,end:30,overlap:20,head:300,bottom:10,reserve:100}},
  pocketdoor_triple:{family:'pocket-door',height:2640,defaults:{slidingOpen:true,slidingStackSide:'left'},fields:['slidingOpen','slidingStackSide'],create:['slidingOpen','slidingStackSide'],solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening'},pocket:{panels:3,minWidth:2000,minDepth:200,minHeight:1800,skin:18,leaf:40,end:30,overlap:20,head:300,bottom:10,reserve:120,laneGap:10}},
  bookshelf_yeswood_y52y09:{height:750,bookcase:{template:'book-y52y09-low',width:1115,depth:230,thickness:18,edgeRadius:6},identity:{brand:'源氏木语/YESWOOD',model:'Y52Y09 · 三列两层 · 无底框',sourceUrl:'https://item.jd.com/100266639340.html'}},
@@ -99,7 +111,7 @@ const types={
  doubleslidingdoor:{family:'sliding',telescopic:{panels:2,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  tripleslidingdoor:{family:'sliding',telescopic:{panels:3,cornerTolerance:1},solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening',sliding:true},height:2400,defaults:{floorTrack:false,slidingTrackOrder:'leading-front'},fields:['floorTrack','slidingTrackOrder']},
  slidingdoor:{family:'sliding',height:2100,defaults:{floorTrack:true},fields:['floorTrack']},
- curtain:{height:2400,defaults:{curtainStyle:'double'},fields:['curtainStyle'],create:['curtainStyle']},
+ curtain:{defaultFrontClearance:0,family:'window-covering',height:2400,anchor:'bottom',covering:{kind:'cloth',soft:true},defaults:{curtainStyle:'double',curtainOpen:0,mountHeight:0},fields:['curtainStyle','curtainOpen','mountHeight'],create:['curtainStyle','curtainOpen','mountHeight']},
  fridge:{height:1800},fridge_french_drawer:{height:1910,solidModel:{global:'FurnishFridgeModel',module:'fridge'},fields:['fridgeLeftAngle','fridgeRightAngle','fridgeUpperExtension','fridgeLowerExtension'],defaults:{fridgeLeftAngle:0,fridgeRightAngle:0,fridgeUpperExtension:0,fridgeLowerExtension:0},fridgeMotion:{size:[833,1910,595],angle:100,travel:350,parts:[{role:'left',key:'fridgeLeftAngle',axis:'y',sign:1,pivot:[-413.5,800,281.5]},{role:'right',key:'fridgeRightAngle',axis:'y',sign:-1,pivot:[413.5,800,281.5]},{role:'upper',key:'fridgeUpperExtension',axis:'z',pivot:[0,0,0]},{role:'lower',key:'fridgeLowerExtension',axis:'z',pivot:[0,0,0]}]}},sofa_yeswood_cherry:{solidModel:{global:'FurnishYeswoodSofaModel',module:'yeswood-sofa',rounded:true},height:895},mirror:{height:1650},
  aircon:{height:1800},dishwasher:{height:840},rug:{height:16},bench:{height:440},beanbag:{height:720},barstool:{height:775},custom:{height:800},customround:{height:800},toilet:{height:796}
 };
@@ -193,6 +205,35 @@ function planOutline(f,segments,context){
  return [...half(sorted),...half([...sorted].reverse())];
 }
 
+function coveringLayout(f){
+ const spec=definition(f)?.covering;if(!spec||f.obj)return null;
+ const h=height(f),open=value(f,'curtainOpen'),parts=[],add=(role,w,d,h,x,bottom,z=0,angle=0)=>parts.push({role,w,d,h,x,bottom,z,angle});
+ if(spec.soft)return {...spec,open,h,count:value(f,'curtainStyle')==='single'?1:2,parts};
+ const r=coverSpecs,head=Math.min(r.head,h*.15),hem=Math.min(r.hem,h*.08),available=h-head-hem,stack=spec.kind==='roller'||spec.kind==='zebra'||spec.kind==='bamboo'?Math.min(75,available*.25):Math.min(available*.25,Math.max(40,available*.055)),drop=available*(1-open)+stack*open,bottom=h-head-drop-hem;
+ add('headrail',f.w,f.d,head,0,h-head);add('bottom-rail',f.w,Math.min(f.d,20),hem,0,bottom);
+ if(spec.kind==='roller')add('cloth',f.w,Math.min(r.sheet,f.d),drop,0,bottom+hem);
+ if(spec.kind==='zebra'){
+  const band=Math.min(r.band,available/4),offset=value(f,'shadeMode')==='night'?band:0;
+  for(const [layer,z]of [[0,-f.d*.15],[1,f.d*.15]]){
+   add('sheer',f.w,r.sheet,drop,0,bottom+hem,z);
+   for(let i=-1;i<Math.ceil(drop/(band*2))+1;i++){const start=i*band*2+(layer?offset:0),a=Math.max(0,start),b=Math.min(drop,start+band);if(b>a)add('opaque-band',f.w,r.sheet,b-a,0,bottom+hem+a,z+2);}
+  }
+ }
+ if(spec.kind==='venetian'){
+  const count=Math.min(160,Math.max(2,Math.ceil(available/r.slatPitch))),pitch=drop/count,depth=Math.min(f.d-4,available/count*.98),thickness=Math.min(r.slatThickness,pitch*.25),wanted=value(f,'blindAngle')*Math.PI/180*(1-open);let angle=wanted;for(let i=0;i<24&&Math.sin(angle)*depth+Math.cos(angle)*thickness>pitch*.99;i++)angle*=.9;const span=Math.abs(Math.sin(angle))*depth+Math.abs(Math.cos(angle))*thickness;
+  for(let i=0;i<count;i++){const center=bottom+hem+(drop-span)/Math.max(1,count-1)*i+span/2;add('slat',f.w,depth,thickness,0,center-thickness/2,0,angle);}
+ }
+ if(spec.kind==='bamboo'){
+  const count=Math.min(280,Math.max(2,Math.ceil(drop/r.bambooPitch))),pitch=drop/count;
+  for(let i=0;i<count;i++)add('bamboo-reed',f.w,Math.min(5,f.d*.2),pitch*.86,0,bottom+hem+i*pitch);
+  for(const x of [-.3,.3])add('binding',2,Math.min(2,f.d*.1),drop,f.w*x,bottom+hem,Math.min(4,f.d*.3));
+ }
+ if(spec.kind==='honeycomb'){
+  const count=Math.min(120,Math.max(2,Math.ceil(available/r.cellPitch))),pitch=drop/count,depth=Math.min(f.d-4,35),length=Math.hypot(pitch/2,depth/2),angle=Math.atan2(depth,pitch),thickness=Math.min(1,pitch*.08);
+  for(let i=0;i<count;i++)for(const [side,half]of [[-1,0],[1,0],[-1,1],[1,1]]){const center=bottom+hem+(i+(half?.75:.25))*pitch;add('cell-wall',f.w,thickness,length,0,center-length/2,side*depth/4,(half?-1:1)*side*angle);}
+ }
+ return {...spec,open,h,head,hem,drop,bottom,parts};
+}
 const supports=(f,key)=>key==='groupId'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 const value=(f,key)=>f[key]??definition(f)?.defaults?.[key];
@@ -222,7 +263,7 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 const sinkBodyDepth=f=>f.sinkBowlHeight??definition(f).notch.bodyDepth;
 const vesselSink=f=>f?.type==='ksink'&&!f.obj&&value(f,'sinkStyle')==='vessel';
 // Report broken model records without migrating, deleting or rewriting them.
@@ -247,7 +288,7 @@ function initial(f){
    result[key]={...(f.manifoldLengths??{upper,lower:Math.min(330,upper)})};
   }else result[key]=key==='kitchen'?kitchen().defaults(f):value(f,key);
  }
- return {...result,...definition(f)?.identity};
+ return {...result,...(definition(f)?.defaultFrontClearance!==undefined?{frontClearance:definition(f).defaultFrontClearance}:{}),...definition(f)?.identity};
 }
 // Static vertical boards; top/bottom stay open. Missing shape retains the legacy U. All values are mm.
 // Tea bar door geometry, shared by production, plan symbols and opening checks.
@@ -363,7 +404,7 @@ function floorBase(plan,f,furniture=plan?.furniture||[],trail=new Set()){
 // Floor-use area counts the whole standing envelope, including legs/plinths;
 // textiles and hosted appliances do not reserve a second ground footprint.
 function floorStanding(f,range){
- if(['rug','curtain'].includes(f.type)||definition(f)?.embedded||f.counterLink?.hostId||f.laundryHostId)return false;
+ if(family(f,'window-covering')||['rug','curtain'].includes(f.type)||definition(f)?.embedded||f.counterLink?.hostId||f.laundryHostId)return false;
  if(!range)return null;
  return range.bottom<=1e-6&&range.top>1e-6;
 }
@@ -408,6 +449,8 @@ function replacement(previous,next,candidate){
  if(definition(next)?.ceilingPanel||definition(next)?.downlight||definition(next)?.manifold||family(next,'floor-aircon')||family(next,'tea-bar')||family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
  if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
+ if(family(next,'window-covering'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
+ if(family(next,'window-covering'))for(const key of definition(next).fields)if(candidate[key]!==undefined||next[key]===undefined)next[key]=candidate[key]??value({type:next.type},key);
  if(next.type==='ksink'){customSinkCandidate(next,candidate);validate(next);}
  if(family(next,'arrow-shower')){delete next.mountHeight;next.showerMixerHeight=previous.type===next.type?showerInstallation(previous).mixer:value({type:next.type},'showerMixerHeight');for(const [key,v] of Object.entries(definition(next).identity))next[key]=candidate[key]||v;}
  if(next.type==='tripleslidingwindow')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
@@ -503,6 +546,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

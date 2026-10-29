@@ -355,6 +355,7 @@
 <script src="src/render/bath-heater-model.js"></script>
 <script src="src/render/model-primitives.js"></script>
 <script src="src/render/basic-furniture-model.js"></script>
+<script src="src/render/window-covering-model.js"></script>
 <script src="src/data/fridge-blender-asset.js"></script>
 <script src="src/render/fridge-model.js"></script>
 <script src="src/render/appliance-model.js"></script>
@@ -728,7 +729,7 @@ const slidingModels = FurnishSlidingOpeningModel.create(THREE,{primitives});
 function buildSlidingDoor(...args){return slidingModels.buildOpening(...args);}
 function animateCurtains(dt){
   for(const curtain of furnG.children.map(g=>g.userData.curtain).filter(Boolean)){
-    const target=curtain.open?1:0;if(curtain.cur===target)continue;
+    const target=curtain.target??(curtain.open?1:0);if(curtain.cur===target)continue;
     curtain.cur=Math.abs(target-curtain.cur)<1e-3?target:curtain.cur+(target-curtain.cur)*Math.min(1,dt*6);
     for(const panel of curtain.panels){panel.node.position.x=panel.closed+(panel.opened-panel.closed)*curtain.cur;panel.node.scale.x=1+(panel.packScale-1)*curtain.cur;}
     invalidate(true);
@@ -1087,11 +1088,14 @@ const syncIdentity=FurnishPartIdentity;
     case 'pocketdoor_triple': case 'pocketdoor_double': case 'slidingdoor': case 'telescopicdoor20': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
       const model=slidingModels.build(f,{furniture,...context});g.add(...model.children.slice());g.userData.slidingDoor=model.userData.slidingDoor;break;
     }
+    case 'curtain_sheer': case 'blind_venetian': case 'blind_honeycomb': case 'blind_zebra': case 'blind_bamboo': case 'blind_roller': {
+      const model=FurnishWindowCoveringModel.build(THREE,f);g.add(...model.children.slice());g.userData.covering=model.userData.covering;break;
+    }
     case 'curtain': {
       const height=M(f.h||2400),rodM=woodM('#6b543f'),radius=Math.min(.014,d*.08);
       g.add(syncIdentity.produce("index:site-203",()=>rod([-w/2,height,0],[w/2,height,0],radius,rodM)));
       syncIdentity.each("index.html:generator-34",[-1,1],s=>g.add(syncIdentity.produce("index:site-204",()=>blob(radius*1.5,radius*1.5,radius*1.5,rodM,s*(w/2-radius*1.5),height,0,12))));
-      const count=f.curtainStyle==='single'?1:2,curtain={kind:'curtain',open:false,cur:0,panels:[]};
+      const count=f.curtainStyle==='single'?1:2,curtain={kind:'curtain',open:(f.curtainOpen??0)>0,cur:f.curtainOpen??0,target:f.curtainOpen,panels:[]};
       for(let panel of syncIdentity.range("index.html:generator-35",0,count,1,false)){
         const width=w/count-(count===2?.006:0),folds=Math.max(4,Math.round(width/.12)),cols=folds*12,rows=12,positions=[],indices=[],amplitude=Math.min(d*.4,.065);
         for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){
@@ -1101,7 +1105,7 @@ const syncIdentity=FurnishPartIdentity;
         for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=j*(cols+1)+i,b=a+cols+1;indices.push(a,b,a+1,b,b+1,a+1);}
         const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setIndex(indices);geo.computeVertexNormals();
         const cloth=syncIdentity.produce("index:site-205",()=>mesh(geo,mat(c,{roughness:1,side:THREE.DoubleSide}))),closed=-w/2+w/count*(panel+.5),packScale=.16,opened=(panel===0?-1:1)*(w/2-width*packScale/2);
-        cloth.position.x=closed;cloth.userData.door=curtain;g.add(cloth);curtain.panels.push({node:cloth,closed,opened,packScale});
+        cloth.position.x=closed+(opened-closed)*curtain.cur;cloth.scale.x=1+(packScale-1)*curtain.cur;cloth.userData.door=curtain;g.add(cloth);curtain.panels.push({node:cloth,closed,opened,packScale});
       }
       g.userData.curtain=curtain;
       break;
@@ -1146,7 +1150,7 @@ const syncIdentity=FurnishPartIdentity;
     default: g.add(syncIdentity.produce("index:site-220",()=>box(w, .8, d, c)));
   }
   if(typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f))FurnishCabinetModel.cutServices(THREE,g,f,{plan:FurnishProject.effectivePlan(PLAN,state)});
-  g.position.set(wx(f.cx), ['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));
+  g.position.set(wx(f.cx), FurnishProducts.family(f,'window-covering')?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy));
   g.rotation.y = -f.rot * Math.PI/180;       // 平面顺时针旋转 → 绕 Y 轴负向
   g.scale.x = f.flip ? -1 : 1;               // 镜像：沿家具自身宽度方向翻转（three 会自动处理负缩放的正反面）
   g.userData.fid = f.id;
@@ -1293,11 +1297,11 @@ function buildFurn(){
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
     const corner=FurnishProducts.slidingCorner(f,validFurniture,plan);
-    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainOpen,f.blindAngle,f.shadeMode, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       if(FurnishProducts.supports(f,'slidingOpen')&&o.userData.slidingDoor)o.userData.slidingDoor.open=FurnishProducts.value(f,'slidingOpen');
-      o.position.set(wx(f.cx),FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
+      o.position.set(wx(f.cx),FurnishProducts.family(f,'window-covering')?M(FurnishProducts.value(f,'mountHeight')):FurnishProducts.family(f,'under-sink-purifier')?M(FurnishProducts.value(f,'mountHeight')):f.type==='kitchenwall'?M(FurnishProducts.value(f,'mountHeight')):['washer','dryer'].includes(f.type)?M(f.mountHeight??0):f.counterElevation!==undefined&&f.type!=='stove_fotile_th36b'&&!FurnishProducts.family(f,'arrow-sink')?M(f.counterElevation)-.862:typeof FurnishSinkModel!=='undefined'&&FurnishSinkModel.supported(f)?M(FurnishProducts.value(f,'counterElevation')):0, wz(f.cy)); o.rotation.y = -f.rot * Math.PI/180; o.scale.x = f.flip ? -1 : 1;o.position.y+=M(base.z);
       continue;
     }
     if (o){ clearGroup(o); furnG.remove(o); }
@@ -1707,7 +1711,8 @@ function setMode(m){
 }
 function toggleSlidingDoor(hit){
   const f=hit.fid&&getF(hit.fid);
-  if(f&&FurnishProducts.supports(f,'slidingOpen'))mutate(()=>{f.slidingOpen=!hit.door.open;});
+  if(f&&FurnishProducts.supports(f,'curtainOpen')){if(!furnitureLocked(f))mutate(()=>{f.curtainOpen=FurnishProducts.value(f,'curtainOpen')>0?0:1;});}
+  else if(f&&FurnishProducts.supports(f,'slidingOpen'))mutate(()=>{f.slidingOpen=!hit.door.open;});
   else hit.door.open=!hit.door.open;
 }
 function blocked(x, z, r = .22){

@@ -1,7 +1,7 @@
 /* Search specifications and preview a catalog replacement before committing. */
 (function(){
  const P=FurnishProject,D=FurnishDesign;
- const source=it=>({...FurnishProducts.definition(it[0])?.identity,...((store.custom||[]).find(c=>c.id===it[7])||{}),...FurnishKitchen.catalogSpec(it),type:it[0],name:it[1],w:it[2],d:it[3],color:it[4],price:it[5],h:it[6],...(it[9]?{cabinet:FurnishCabinet.preset(it[9]).cabinet}:{}),...(it[0]==='curtain'?{curtainStyle:it[8]||'double'}:{})});
+ const source=it=>({...FurnishProducts.definition(it[0])?.identity,...((store.custom||[]).find(c=>c.id===it[7])||{}),...FurnishKitchen.catalogSpec(it),type:it[0],name:it[1],w:it[2],d:it[3],color:it[4],price:it[5],h:it[6],...(it[9]?{cabinet:FurnishCabinet.preset(it[9]).cabinet}:{}),...(FurnishProducts.supports({type:it[0]},'curtainStyle')?{curtainStyle:it[8]||'double'}:{})});
  function matches(it,q,w,d){return FurnishCatalogData.matches(it,{query:q,maxWidth:w,maxDepth:d},{...source(it),name:nm(it[1])});}
  for(const id of ['catalog-max-w','catalog-max-d'])$('#'+id).oninput=buildLib;
  $('#catalog-use').onchange=e=>{libUI.use=e.target.value;buildLib();};
