@@ -16,6 +16,7 @@ const fields={
  pipeBoxOpenSide:{values:['back','front','left','right'],message:'包管柜敞开面须为前、后、左或右面'},
  pipeBoxCorner:{values:['front-left','front-right','back-left','back-right'],message:'包管柜须保留两个相邻面'},
  pipeBoxThickness:numeric(1,100,'包管柜板厚须为 1–100 mm'),
+ washerDoorAngle:numeric(0,110,'洗衣机圆门角度须为0–110度'),
  laundryHostId:{string:true,max:200,message:'洗衣机柜关联编号无效'},
  groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
  fridgeLeftAngle:numeric(0,100,'冰箱左门角度须为0–100度'),
@@ -100,7 +101,7 @@ const types={
  stove_fotile_th36b:{embedded:true,measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,widthRatio:660/750,depthRatio:350/440},height:138,defaults:{counterElevation:860},fields:['counterLink','counterElevation','hobCutout'],create:['counterElevation'],identity:{brand:'方太/FOTILE',model:'TH36B-T'}},
  rangehood_fotile_jcd10ta:{hoodMotion:true,solidModel:{global:'FurnishFotileModel',module:'fotile'},height:520,anchor:'bottom',hoodGeometry:{min:10,max:20000},defaults:{mountHeight:1315,hoodPanelOpen:false},fields:['mountHeight','hoodPanelOpen','hoodGeometry'],create:['mountHeight','hoodPanelOpen'],identity:{brand:'方太/FOTILE',model:'JCD10TA'}},
  stove:{measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,inset:30},fields:['counterLink','counterElevation','hobCutout']},ksink:{linkedSurfaceOffset,surfaceMeasurement,fields:['counterLink','counterElevation','sinkNotch','sinkStyle','sinkBowlHeight'],defaults:{sinkStyle:'inset',sinkBowlHeight:150},vessel:{minSize:80,defaultDepth:400,rim:15,floor:12,drain:45,faucetRise:300,faucetClearance:100},notch:{min:20,margin:80,bodyDepth:220,rim:20,floor:12,faucetRise:292}},
- washer:laundry,dryer:laundry,
+ washer:{...laundry,washerMotion:true,solidModel:{global:'FurnishWasherModel',module:'washer'},defaults:{...laundry.defaults,washerDoorAngle:0},fields:[...laundry.fields,'washerDoorAngle'],create:[...laundry.create,'washerDoorAngle']},dryer:laundry,
  water_purifier_mijia_1200g:{family:'under-sink-purifier',height:379,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'净水器 2 1200G'}},
  dishwasher_mijia_countertop:{solidModel:{global:'FurnishDishwasherModel',module:'dishwasher'},foldAsset:true,family:'countertop-dishwasher',height:598,anchor:'bottom',defaults:{mountHeight:860,dishwasherDoorOpen:false},fields:['mountHeight','dishwasherDoorOpen'],create:['mountHeight','dishwasherDoorOpen'],identity:{brand:'米家/Mijia',model:'智能洗碗机 台式 5套'},foldDoor:{nominalWidth:550,nominalHeight:598,nominalDepth:350,openDepth:600,openingBottom:52,openingTop:584},installation:{ventSide:'left',sideClearance:200,worktopToCabinet:650,topAccess:50,frontOffset:80}},
  aquarium_mijia_2pro:{family:'aquarium',height:334,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'智能鱼缸 2 Pro',sourceUrl:'https://item.jd.com/100317574693.html'}},
@@ -184,6 +185,7 @@ function resizeManifold(f,next){
  if(f.manifoldLengths)next.manifoldLengths={upper:old.lengths.upper*ratio,lower:old.lengths.lower*ratio};
 }
 function planBodyOutline(f,segments){
+ if(!f.obj&&definition(f)?.washerMotion)return (root.FurnishWasherMotion||require('./washer-motion-core.js')).outline(f);
  if(!f.obj&&definition(f)?.hoodMotion)return (root.FurnishHoodMotion||require('./hood-motion-core.js')).outline(f);
  if(!f.obj&&definition(f)?.foldAsset)return (root.FurnishDishwasherFold||require('./dishwasher-fold-core.js')).outline(f);
  if(!f.obj&&definition(f)?.fridgeMotion)return (root.FurnishFridge||require('./fridge-core.js')).outline(f);

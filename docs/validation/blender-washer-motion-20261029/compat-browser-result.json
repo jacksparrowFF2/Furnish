@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "name": "laundry-catalog",
+      "result": {
+        "passed": true,
+        "results": [
+          {
+            "mode": "http",
+            "checks": [
+              "exactly two laundry cabinet entries",
+              "one complete entry",
+              "one basic entry",
+              "spec explains 完整阳台洗衣柜",
+              "完整阳台洗衣柜 adds correct members",
+              "starts on left",
+              "correct assembly scope",
+              "single undo removes added entry",
+              "redo restores members",
+              "cancel keeps left and companions",
+              "design saves right position",
+              "real washer follows switched host",
+              "design one undo",
+              "right position survives redo refresh",
+              "reopened design reads right",
+              "design can switch back left",
+              "spec explains 基础洗衣机柜",
+              "基础洗衣机柜 adds correct members",
+              "starts on left",
+              "correct assembly scope",
+              "single undo removes added entry",
+              "redo restores members",
+              "cancel keeps left and companions",
+              "design saves right position",
+              "design one undo",
+              "right position survives redo refresh",
+              "reopened design reads right",
+              "design can switch back left",
+              "sink retained 阳台定制水槽（可设异形缺角）",
+              "sink adds correct model",
+              "sink retained 阳台台上盆 · 圆角单盆",
+              "sink adds correct model",
+              "actual project export/import retains cabinets and sinks",
+              "390px design no horizontal overflow",
+              "no page errors"
+            ],
+            "passed": true
+          },
+          {
+            "mode": "file",
+            "checks": [
+              "exactly two laundry cabinet entries",
+              "one complete entry",
+              "one basic entry",
+              "spec explains 完整阳台洗衣柜",
+              "完整阳台洗衣柜 adds correct members",
+              "starts on left",
+              "correct assembly scope",
+              "single undo removes added entry",
+              "redo restores members",
+              "cancel keeps left and companions",
+              "design saves right position",
+              "real washer follows switched host",
+              "design one undo",
+              "right position survives redo refresh",
+              "reopened design reads right",
+              "design can switch back left",
+              "spec explains 基础洗衣机柜",
+              "基础洗衣机柜 adds correct members",
+              "starts on left",
+              "correct assembly scope",
+              "single undo removes added entry",
+              "redo restores members",
+              "cancel keeps left and companions",
+              "design saves right position",
+              "design one undo",
+              "right position survives redo refresh",
+              "reopened design reads right",
+              "design can switch back left",
+              "sink retained 阳台定制水槽（可设异形缺角）",
+              "sink adds correct model",
+              "sink retained 阳台台上盆 · 圆角单盆",
+              "sink adds correct model",
+              "actual project export/import retains cabinets and sinks",
+              "390px design no horizontal overflow",
+              "no page errors"
+            ],
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "laundry-resize-vessel",
+      "result": [
+        {
+          "mode": "http",
+          "status": "PASS",
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "status": "PASS",
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "laundry-basin-joins",
+      "result": [
+        {
+          "mode": "http",
+          "status": "PASS",
+          "errors": []
+        },
+        {
+          "mode": "file",
+          "status": "PASS",
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

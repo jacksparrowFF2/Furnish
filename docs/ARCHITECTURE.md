@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-29（Blender洗衣机圆门）：washer-motion-core保持圆环／投入口拟合并派生12个高度片完整扫掠，washer-model读取15个离线网格；appliance正式入口沿原连接层与外层离地，实体入口内部离地。cabinet-core共享开启判定可消费派生高度片，原竖向剖面保持。角度、缓存和空间确认同步，含洗衣机的方案使用v35。见[契约](WASHER-BLENDER-MOTION.md)。
+
 2026-10-29（通用窗饰）：product-rules.coveringLayout集中窗饰姿态及帘片，window-covering-model用于新增六类生产模型及五类升降帘的实体记录；原布帘保留构造并保存curtainOpen。二维、属性、实体缓存与空间确认消费同一能力，沿mutate／原保存通道。新语义项目／工作区v34及独立缓存，旧缺失不物化。新增经典脚本在场景前加载，资源保持本地，见[窗饰契约](WINDOW-COVERINGS.md)。
 
 2026-10-29（Blender烟机上翻）：hood-motion-core拟合独立主机／装饰罩和刚性水平轴玻璃，hood-asset-model装配27个离线网格；fotile正式入口仅将JCD10TA转发资产，灶具保持。当前轮廓及生产实体接入共用空间链，完整扫掠复用柜体竖向剖面；定位同源，确认和v33仓库／缓存同步。见[契约](HOOD-BLENDER-MOTION.md)。

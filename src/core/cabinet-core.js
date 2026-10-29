@@ -783,7 +783,7 @@
   }});
   const bottom=f.type==='kitchenwall'||f.type==='vanity'?products().cabinetBase(f):0;if(bottom)for(const zone of zones){zone.ranges=zone.ranges.map(([a,b])=>[a+bottom,b+bottom]);if(zone.sweep)zone.sweep.profile=zone.sweep.profile.map(([z,y])=>[z,y+bottom]);}return zones;
  }
- function shiftOpening(zone,z){return {...zone,ranges:zone.ranges.map(([a,b])=>[a+z,b+z]),...(zone.sweep?{sweep:{...zone.sweep,profile:zone.sweep.profile.map(([d,h])=>[d,h+z])}}:{})};}
+ function shiftOpening(zone,z){return {...zone,...(zone.slices?{slices:zone.slices.map(s=>shiftOpening(s,z))}:{}),ranges:zone.ranges.map(([a,b])=>[a+z,b+z]),...(zone.sweep?{sweep:{...zone.sweep,profile:zone.sweep.profile.map(([d,h])=>[d,h+z])}}:{})};}
  function convexHull(points){
   const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
   const half=list=>{const out=[];for(const p of list){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=0)out.pop();out.push(p);}return out;};
@@ -791,6 +791,7 @@
  }
  function clipOpening(poly,axis,edge,above){const out=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],ai=above?a[axis]>=edge:a[axis]<=edge,bi=above?b[axis]>=edge:b[axis]<=edge;if(ai)out.push(a);if(ai!==bi){const k=(edge-a[axis])/(b[axis]-a[axis]);out.push(a.map((v,j)=>v+k*(b[j]-v)));}}return out;}
  function openingIntersects(zone,poly,vertical,intersects){
+  if(zone.slices)return zone.slices.some(slice=>openingIntersects(slice,poly,vertical,intersects));
   // Disjoint known heights cannot intersect, regardless of the XY sweep.
   // Unknown heights still use the exact planar check and remain pending.
   if(vertical&&!zone.ranges.some(([bottom,top])=>Math.min(top,vertical.top)-Math.max(bottom,vertical.bottom)>1e-6))return false;

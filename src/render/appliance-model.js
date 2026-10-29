@@ -14,6 +14,7 @@ function create(THREE,RoundedBoxGeometry,options={}){
  function build(f,context={}){
   if(!supported(f))throw Error('Unsupported appliance model: '+f?.type);
   if(products.definition(f)?.fridgeMotion){const loader=root.FurnishFridgeModel||(typeof require==='function'?require('./fridge-model.js'):null);if(loader)return loader.build(THREE,f,{mat});}
+  if(products.definition(f)?.washerMotion){const loader=root.FurnishWasherModel||(typeof require==='function'?require('./washer-model.js'):null);if(!loader)throw Error('Washer Blender model not loaded');const g=loader.build(THREE,f,{local:true,mat}),stack=design.laundryStack(f,context.furniture||[]);if(stack&&stack.height>0&&Math.abs((f.mountHeight??0)-stack.bottom-stack.height)<1e-6){const connector=syncIdentity.produce("appliance-model:site-38",()=>box(M(stack.w),M(stack.height),M(stack.d),'#aeb5bb',0,-M(stack.height),0));connector.userData.laundryConnector=true;g.add(connector);}return g;}
   const g=new THREE.Group(),w=M(f.w),d=M(f.d),c=f.color||'#ddd';
   switch(f.type){
     case 'washer': case 'dryer': {

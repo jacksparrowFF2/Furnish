@@ -6,7 +6,7 @@ import sys
 import math
 
 run = pathlib.Path(sys.argv[sys.argv.index('--')+1])
-expected = 27 if '--hood' in sys.argv else 60 if '--dishwasher' in sys.argv else 30 if '--fridge' in sys.argv else 12 if '--bookcase' in sys.argv else 29
+expected = 15 if '--washer' in sys.argv else 27 if '--hood' in sys.argv else 60 if '--dishwasher' in sys.argv else 30 if '--fridge' in sys.argv else 12 if '--bookcase' in sys.argv else 29
 results = []
 for mode in ('http', 'file'):
     bpy.ops.object.select_all(action='SELECT')
@@ -19,6 +19,20 @@ for mode in ('http', 'file'):
     assert all(obj.type == 'MESH' and obj.get('furnishPartVersion') == 3 for obj in parts)
     assert all(obj.data.materials for obj in parts)
     details = {'mode': mode, 'parts': len(parts), 'stableKeys': len(set(keys))}
+    if expected == 15:
+        bpy.context.view_layer.update();opened={obj['furnishPartKey']:obj.matrix_world.copy() for obj in parts}
+        bpy.ops.wm.save_as_mainfile(filepath=str(run/(mode+'-open-roundtrip.blend')))
+        bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
+        bpy.ops.import_scene.gltf(filepath=str(run/(mode+'-closed.glb')));bpy.context.view_layer.update()
+        closed={obj['furnishPartKey']:obj.matrix_world.copy() for obj in bpy.context.scene.objects if obj.get('furnishId')=='blender-pilot'}
+        assert set(opened)==set(closed)
+        for name in ('door-ring','door-glass','door-handle'):
+            key='explicit:washer-v1:'+name;assert (opened[key].translation-closed[key].translation).length<1e-5,'circular door hinge drift'
+            q=(opened[key].to_3x3() @ closed[key].to_3x3().inverted()).to_quaternion();assert abs(math.degrees(q.angle)-110)<.001 and abs(q.axis.z)>.99999,'wrong side-opening axis/angle'
+        expected_bottom=json.loads((run/(mode+'-expected.json')).read_text(encoding='utf-8'));assert expected_bottom['known']
+        closed_parts=[obj for obj in bpy.context.scene.objects if obj.get('furnishId')=='blender-pilot'];actual_bottom=min((obj.matrix_world @ v.co).z for obj in closed_parts for v in obj.data.vertices)*1000
+        assert abs(actual_bottom-expected_bottom['bottomMm'])<.01,('installation applied more than once',actual_bottom,expected_bottom)
+        details.update({'fixedVerticalHinge':True,'doorDegrees':110,'circularDoorParts':3,'bottomMm':round(actual_bottom,3),'doubleInstallationOffset':False})
     if expected == 27:
         bpy.context.view_layer.update();opened={obj['furnishPartKey']:obj.matrix_world.copy() for obj in parts}
         bpy.ops.wm.save_as_mainfile(filepath=str(run/(mode+'-open-roundtrip.blend')))

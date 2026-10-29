@@ -3,7 +3,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const C=require('../src/core/repository-core.js'),S=require('../scripts/repository-server.cjs'),Client=require('../src/io/repository-storage.js');
 const plan=require('../src/data/plans.js')[0],clone=v=>JSON.parse(JSON.stringify(v));
 let uid=0;const W=require('../src/core/work-state.js').create({makeId:()=> 'test'+ ++uid,colorFor:()=> '#aabbcc',materials:require('../src/data/catalog.js').materials});
-const fixture=()=>({v:2,planId:plan.id,work:{[plan.id]:W.fresh(plan)},designs:[],customPlans:[],updatedAt:100});
+// Built-in plans can require newer spatial semantics; storage roundtrips use their actual required version.
+const fixture=()=>{const work=W.fresh(plan);return {v:Math.max(2,require('../src/core/project-core.js').formatVersion([work])),planId:plan.id,work:{[plan.id]:work},designs:[],customPlans:[],updatedAt:100};};
 const fingerprint=async w=>S.digest(C.text(w));
 (async()=>{
  const tempRoot=path.resolve(__dirname,'../output/playwright');fs.mkdirSync(tempRoot,{recursive:true});const dir=fs.mkdtempSync(path.join(tempRoot,'repository-')),api=S.create(dir);

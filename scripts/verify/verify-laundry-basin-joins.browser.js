@@ -2,7 +2,7 @@ async(page,V)=>{
  const results=[];
  for(const [mode,url,offline] of [['http',V.baseURL+'index.html',false],['file',V.fileBase+'index.html',true]]){
   const context=await page.context().browser().newContext({viewport:{width:1480,height:1050},offline}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
-  const check=(ok,m)=>{if(!ok)throw Error(mode+': '+m);},field=k=>p.locator(`[data-laundry-value="assembly.sink.${k}"]`),open=async()=>{await p.evaluate(()=>FurnishCabinetEditor.open('basin-joins'));await p.locator('#cab-preview canvas').waitFor();};
+  const check=(ok,m)=>{if(!ok)throw Error(mode+': '+m);},field=k=>p.locator(`[data-laundry-value="assembly.sink.${k}"]`),open=async()=>{await p.evaluate(()=>FurnishCabinetEditor.open('basin-joins'));await p.locator('#cab-preview canvas').waitFor();await V.revealCabinetSettings(p);};
   try{
    await p.goto(url);await p.locator('#lib').waitFor();
    await p.evaluate(()=>{let i=0;const at=ROOMS.find(r=>r.name==='客厅').at,f=FurnishKitchen.createLaundryCabinet({id:'basin-joins',cx:at[0],cy:at[1],rot:0,color:'#f3f1ec'},()=>`bj${++i}`,'right')[0];Object.assign(f,{w:1204,d:620});Object.assign(f.kitchen,{depth:600,counterDepth:620,baseHeight:870});f.kitchen.modules[0].width=564;Object.assign(f.kitchen.laundry,{notch:{side:'left',width:170,depth:220},assembly:{sink:{w:300,d:300,module:0,x:0,y:50,sinkNotch:{side:'left',width:100,depth:100}}}});mutate(()=>state.furniture=[f]);});

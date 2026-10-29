@@ -40,7 +40,9 @@ Blender 发现复用现有 `blender-server.cjs`，必要时用 `FURNISH_BLENDER`
 
 ## 发布能力边界
 
-2026-10-29第五个配置：`author-hood`／`publish-hood`服务JCD10TA，校验27个具名网格和顶部水平轴；保留独立分段，新增完整竖向剖面扫掠。当前共五个明确产品配置，均非通用任意导入器。见[烟机试点](HOOD-BLENDER-MOTION.md)。
+2026-10-29第六个配置：`author-washer`／`publish-washer`服务现有通用滚筒洗衣机，校验15个具名网格、侧开竖轴、圆环半径及真实通孔；保留叠放并新增按高度片核对完整开启。当前共六个明确产品配置。见[圆门试点](WASHER-BLENDER-MOTION.md)。
+
+2026-10-29第五个配置：`author-hood`／`publish-hood`服务JCD10TA，校验27个具名网格和顶部水平轴；保留独立分段，新增完整竖向剖面扫掠。该轮增加到五个明确产品配置，均非通用任意导入器。见[烟机试点](HOOD-BLENDER-MOTION.md)。
 
 2026-10-29第四个配置：`author-dishwasher`／`publish-dishwasher`服务现有米家台面5套双片折叠门，校验60个具名网格、嵌套水平门轴及下篮滑轨，保留两个可信端态及原安装预留。该轮增加到四个明确产品配置；真实连续连杆轨迹未模拟。见[折叠门契约](DISHWASHER-BLENDER-FOLD.md)。
 

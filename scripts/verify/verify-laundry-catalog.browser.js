@@ -3,7 +3,7 @@ async(page,V)=>{
  for(const mode of ['http','file']){
   const ctx=await page.context().browser().newContext({viewport:{width:1480,height:1000},offline:mode==='file'}),p=await ctx.newPage(),checks=[],errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(15000);
   const check=(v,m)=>{if(!v)throw Error(mode+': '+m);checks.push(m);},read=()=>p.evaluate(()=>structuredClone(state.furniture)),eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b),cancel=()=>p.getByRole('button',{name:'取消',exact:true}).click(),save=()=>p.getByRole('button',{name:'保存柜体设计',exact:true}).click(),shot=n=>p.screenshot({path:V.output('playwright/laundry-catalog/'+mode+'-'+n+'.png')});
-  const open=async id=>{await p.evaluate(id=>FurnishCabinetEditor.open(id),id);await p.locator('#cab-preview canvas').waitFor();};
+  const open=async id=>{await p.evaluate(id=>FurnishCabinetEditor.open(id),id);await p.locator('#cab-preview canvas').waitFor();await V.revealCabinetSettings(p);};
   try{
    await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.locator('#lib').waitFor();await p.evaluate(()=>mutate(()=>state.furniture=[]));
    await p.locator('#catalog-use').selectOption('laundry');await p.locator('#libSearch').fill('柜');check(await p.locator('#lib .item').count()===2,'exactly two laundry cabinet entries');check(await p.locator('#lib .item').filter({hasText:'完整阳台洗衣柜'}).count()===1,'one complete entry');check(await p.locator('#lib .item').filter({hasText:'基础洗衣机柜'}).count()===1,'one basic entry');await shot('catalog');
