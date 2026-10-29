@@ -5,6 +5,7 @@ function download(name, blob){ const a = document.createElement('a'); a.href = U
 function preparePlanSVG({dimensions=true,measurements=true,notes=true,light=false,visibleLayers=true,id='export-plan'}={}){
   const s=svg.cloneNode(true),D=FurnishDesign,palette=light?PAL_LIGHT:PAL;
   s.setAttribute('id',id);s.removeAttribute('style');s.removeAttribute('class');
+  s.querySelectorAll('[data-replacement-original]').forEach(g=>g.removeAttribute('data-replacement-original'));
   s.querySelectorAll('[data-seat-preview]').forEach(g=>g.removeAttribute('data-seat-preview'));
   s.querySelectorAll('#gSel,#gGrid,#gSpaceFocus,#gGuides,#gPlacement,#gWallNet,#gProposal,#gCompass,[data-edit-overlay],script,foreignObject').forEach(g=>g.remove());
   if(!visibleLayers)for(const layer of ['gRooms','gWalls','gOpen','gFurn','gLabels','gDims','gMeasure','gNotes'])s.querySelector('#'+layer)?.removeAttribute('display');

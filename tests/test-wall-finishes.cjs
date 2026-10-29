@@ -79,7 +79,7 @@ const builtin=require('../src/data/plans.js')[0],bf=F.faces(builtin)[0],bw=F.edi
 // Actual commit and restoration must preserve even an existing unsynchronised auto-avoid configuration.
 const kitchen=K.configure({id:'k',type:'counter',name:'厨房',w:1200,d:600,cx:1800,cy:500,rot:0,color:'#ddd'},K.defaults({w:1200,d:600}));kitchen.kitchen.autoAvoid=true;
 const original={...copy(work),furniture:[kitchen]},next=add(plan,original,'north'),app=fs.readFileSync(require.resolve('../src/app.js'),'utf8'),ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishWallFinish:F,FurnishKitchen:K,FurnishDesign:D,FurnishProject:P,PLAN:plan,state:next,undoStack:[],redoStack:[],save(){},snapshot(){},before:JSON.stringify(original)}));
-vm.runInContext(app.match(/function commit\(before\)\{[^\n]+/)[0]+'\ncommit(before);',ctx);assert.deepEqual(next.furniture,original.furniture);assert.equal(ctx.undoStack.length,1);
+vm.runInContext(app.match(/function normalizeFurnitureEdit[^\n]+\nfunction commit\(before\)\{[^\n]+/)[0]+'\ncommit(before);',ctx);assert.deepEqual(next.furniture,original.furniture);assert.equal(ctx.undoStack.length,1);
 const restored=W.create({makeId:()=> 'new',colorFor:()=> '#ddd',materials:{wood:{}}}).restore(copy(next),plan);assert.deepEqual(restored.furniture,next.furniture);
 console.log('PASS finish boundaries, snapping, numeric placement, rooms, thresholds, mirrored/rotated groups, openings, side binding, versions, calibration, copies, repeated recovery and unchanged cabinets');
 (async()=>{

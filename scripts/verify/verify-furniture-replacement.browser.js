@@ -1,0 +1,73 @@
+async (page,V)=>{
+ const check=(ok,message)=>{if(!ok)throw Error(message);},results=[];
+ for(const [mode,url,offline] of [['http',V.baseURL+'index.html',false],['file',V.fileBase+'index.html',true]]){
+  const context=await page.context().browser().newContext({viewport:{width:1500,height:950},offline}),p=await context.newPage(),errors=[];
+  p.on('pageerror',e=>errors.push(e.message));await p.goto(url);await p.waitForFunction(()=>!!window.FurnishCatalog);
+  const original=await p.evaluate(()=>{
+   const b=bbox(ROOMS.find(r=>r.counted!==false).poly);
+   mutate(()=>{state.furniture=[{id:'replace-source',type:'custom',name:'替换测试原家具',cx:(b[0]+b[2])/2,cy:(b[1]+b[3])/2,w:1200,d:400,h:900,rot:37,flip:true,color:'#aaaaaa',resizeAnchor:'left',purchaseStatus:'ordered',purchaseNote:'旧采购备注',price:1000}];delete state.objectLayers;});
+   selectIds(['replace-source']);fitView();return {snapshot:snap(),undo:undoStack.length};
+  });
+  const unchanged=async()=>check(await p.evaluate(v=>snap()===v.snapshot&&undoStack.length===v.undo,original),'preview changed state/history');
+  const pick=async()=>{await p.locator('#libSearch').fill('洗衣机');await p.locator('#lib .item').filter({has:p.getByText('洗衣机',{exact:true})}).first().click();};
+  await p.locator('#fab [data-replace-furniture]').click();await pick();
+  await unchanged();check(await p.locator('#gReplacement').count()===1,'missing preview');
+  await p.locator('#replacement-anchor').selectOption('back');await unchanged();
+  check(await p.evaluate(()=>{const {svg:s}=preparePlanSVG();return !s.querySelector('#gReplacement,[data-replacement-original]')&&s.querySelector('[data-fid="replace-source"]');}),'preview leaked into exported plan');
+  await p.waitForTimeout(400);
+  check(await p.evaluate(()=>{const a=document.querySelector('#gReplacement').getBoundingClientRect(),b=document.querySelector('#replacement-panel').getBoundingClientRect();return a.right<=b.left||a.left>=b.right||a.bottom<=b.top||a.top>=b.bottom;}),'preview panel covers candidate');
+  await p.screenshot({path:V.output('playwright/furniture-replacement/'+mode+'-preview.png')});
+  await p.locator('#replacement-panel [data-replacement-cancel]').click();await unchanged();
+  check(await p.locator('#gReplacement').count()===0,'cancel did not remove preview');
+  await p.locator('#fab [data-replace-furniture]').click();await pick();
+  await p.locator('#replacement-anchor').selectOption('center');await unchanged();
+  await p.locator('#replacement-anchor').selectOption('back');
+  await p.locator('#replacement-apply').click();
+  const applied=await p.evaluate(()=>({snapshot:snap(),undo:undoStack.length,f:getF('replace-source')}));
+  const old=JSON.parse(original.snapshot).furniture[0],f=applied.f,a=old.rot*Math.PI/180;
+  check(f.type==='washer'&&f.rot===37&&f.flip&&f.resizeAnchor==='left','replacement identity/pose');
+  check(Math.abs(f.cx+Math.sin(a)*f.d/2-old.cx-Math.sin(a)*old.d/2)<1e-6&&Math.abs(f.cy-Math.cos(a)*f.d/2-old.cy+Math.cos(a)*old.d/2)<1e-6,'rear datum drift');
+  check(applied.undo===original.undo+1,'replacement must be one history step');
+  await p.getByRole('button',{name:'撤销',exact:true}).first().click();await unchanged();
+  await p.getByRole('button',{name:'重做',exact:true}).first().click();check(await p.evaluate(()=>snap())===applied.snapshot,'redo mismatch');
+  await p.waitForTimeout(2200);await p.reload();check(await p.evaluate(()=>getF('replace-source')?.type)==='washer','refresh lost replacement');
+  check(await p.locator('#replacement-panel').count()===0,'temporary mode persisted');
+  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>selectIds(['replace-source']));
+  await p.locator('#fab [data-replace-furniture]').click();await pick();
+  await p.locator('#replacement-anchor').selectOption('center');
+  await p.waitForTimeout(2200);
+  check(await p.locator('aside.lib').evaluate(el=>!el.classList.contains('open')),'mobile library did not close after candidate choice');
+  await p.screenshot({path:V.output('playwright/furniture-replacement/'+mode+'-mobile.png')});
+  check(await p.evaluate(()=>{const r=document.querySelector('#replacement-panel').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&document.documentElement.scrollWidth<=innerWidth;}),'narrow preview overflow');
+  await p.locator('#replacement-panel [data-replacement-cancel]').click();
+  // Selection/state changes invalidate the candidate rather than committing stale data.
+  await p.evaluate(()=>FurnishCatalog.replacement());await p.evaluate(()=>select(null));check(await p.locator('#replacement-panel').count()===0,'selection did not cancel');
+  await p.evaluate(()=>selectIds(['replace-source']));await p.evaluate(()=>FurnishCatalog.replacement());await p.keyboard.press('Escape');check(await p.locator('#replacement-panel').count()===0,'escape did not cancel');
+  await p.setViewportSize({width:1500,height:950});
+  const linkedBefore=await p.evaluate(()=>{
+   const old=getF('replace-source');mutate(()=>{state.furniture=[{...old,type:'washer',h:800,mountHeight:0,w:600,d:600,rot:90,resizeAnchor:'center'},{...old,id:'replace-upper',type:'dryer',h:850,mountHeight:820,w:600,d:600,rot:90,stackHeight:20,resizeAnchor:'center'}];});
+   selectIds(['replace-source']);return snap();
+  });
+  await p.locator('#fab [data-replace-furniture]').click();await pick();
+  check((await p.locator('#replacement-info').textContent()).includes('同步调整 1 件'),'linked adjustment missing from preview');
+  check(await p.evaluate(()=>getF('replace-upper').mountHeight)===820,'preview mutated linked dryer');
+  await p.locator('#replacement-apply').click();
+  check(await p.evaluate(()=>getF('replace-upper').mountHeight)===870,'commit did not match linked preview');
+  await p.getByRole('button',{name:'撤销',exact:true}).first().click();check(await p.evaluate(()=>snap())===linkedBefore,'one undo failed to restore linked furniture');
+  await p.evaluate(()=>{mutate(()=>state.drawing={...(state.drawing||{}),rotation:90});selectIds(['replace-source']);});
+  await p.locator('#fab [data-replace-furniture]').click();await pick();
+  check(await p.locator('#gReplacement').getAttribute('transform')==='rotate(90)','drawing rotation missing from overlay');
+  await p.evaluate(()=>mutate(()=>getF('replace-source').color='#aabbcc'));
+  check(await p.locator('#replacement-panel').count()===0,'state change did not cancel preview');
+  const detailsBefore=await p.evaluate(()=>snap());
+  await p.locator('#fab [data-replace-furniture]').click();await p.locator('#libSearch').fill('洗衣机');
+  const card=p.locator('#lib .item').filter({has:p.getByText('洗衣机',{exact:true})}).first();
+  await card.focus();await card.press('Enter');check(await p.locator('#gReplacement').count()===1,'keyboard candidate selection');
+  await card.locator('[data-catalog-details]').click();await p.keyboard.press('Escape');
+  await p.getByRole('button',{name:'预览替换',exact:true}).click();
+  check(await p.evaluate(()=>snap())===detailsBefore,'stale details action added furniture after replacement ended');
+  await p.locator('#dlgClose').click();
+  check(errors.length===0,errors.join('\n'));results.push({mode,passed:true,errors});await context.close();
+ }
+ return results;
+}

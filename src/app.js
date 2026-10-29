@@ -172,7 +172,8 @@ function syncSaved(){
     : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
 const snap = () => JSON.stringify(state);
-function commit(before){ const previous=JSON.parse(before);if(!(globalThis.FurnishLayers?.onlyChange(previous,state)||globalThis.FurnishTileEditor?.onlyChange(previous,state)||globalThis.FurnishTilePresets?.onlyChange(previous,state)||globalThis.FurnishTileGrout?.onlyChange(previous,state)||(previous.furnitureDatum!==state.furnitureDatum&&FurnishFloorFinish.onlyChange(previous,state))||((previous.wallFinishes||state.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,state))||((previous.floorFinishes||state.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,state))||((previous.wallTiling||state.wallTiling)&&FurnishWallTiling.onlyChange(previous,state))||((previous.ceilings||state.ceilings)&&FurnishCeiling.onlyChange(previous,state)))){if(state.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(state.furniture,FurnishProject.effectivePlan(PLAN,state)); FurnishKitchen.normalize(state.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(state.furniture,previous.furniture);} if(state.furniture.some(f=>(Array.isArray(f.cabinet?.columns)&&f.cabinet.columns.some(col=>col?.pegboardHatch?.mode==='auto'))))FurnishCabinet.normalizePegboardHatches(state.furniture,FurnishProject.effectivePlan(PLAN,state),{editable:f=>!furnitureLocked(f)}); if(arguments[1]===true){try{FurnishLayers.assertEditable(previous,state);}catch(e){state=previous;renderAll();throw e;}} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
+function normalizeFurnitureEdit(work,previous){if(!(globalThis.FurnishLayers?.onlyChange(previous,work)||globalThis.FurnishTileEditor?.onlyChange(previous,work)||globalThis.FurnishTilePresets?.onlyChange(previous,work)||globalThis.FurnishTileGrout?.onlyChange(previous,work)||(previous.furnitureDatum!==work.furnitureDatum&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallFinishes||work.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,work))||((previous.floorFinishes||work.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallTiling||work.wallTiling)&&FurnishWallTiling.onlyChange(previous,work))||((previous.ceilings||work.ceilings)&&FurnishCeiling.onlyChange(previous,work)))){if(work.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(work.furniture,FurnishProject.effectivePlan(PLAN,work)); FurnishKitchen.normalize(work.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(work.furniture,previous.furniture);} if(work.furniture.some(f=>(Array.isArray(f.cabinet?.columns)&&f.cabinet.columns.some(col=>col?.pegboardHatch?.mode==='auto'))))FurnishCabinet.normalizePegboardHatches(work.furniture,FurnishProject.effectivePlan(PLAN,work),{editable:f=>!furnitureLocked(f)}); }
+function commit(before){ const previous=JSON.parse(before);normalizeFurnitureEdit(state,previous); if(arguments[1]===true){try{FurnishLayers.assertEditable(previous,state);}catch(e){state=previous;renderAll();throw e;}} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
 function mutate(fn){ const b=snap();try{fn();FurnishLayers.assertEditable(JSON.parse(b),state);}catch(e){state=JSON.parse(b);renderAll();throw e;}if(snap()===b)return;commit(b,true);renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
@@ -615,6 +616,8 @@ const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Ma
     <svg viewBox="${-w/2-pad} ${-d/2-pad} ${w+2*pad} ${d+2*pad}">${furnSVG(t,w,d,col,preview)}</svg><b>${esc(nm(n))}</b><small>${w}×${d} mm</small><small>${tr('高','H')} ${Number.isFinite(h)?h+' mm':tr('未录入','Unknown')}</small>${source&&(source.brand||source.model)?`<small>${esc([source.brand,source.model].filter(Boolean).join(' · '))}</small>`:''}<button class="catalog-details" data-catalog-details>${tr('查看规格','Details')}</button></div>`; };
 function syncCatalogControls(){
   const current=libUI.collection==='current';
+  const replacing=!!window.FurnishCatalog?.active();
+  $('#catalog-collections [data-collection="current"]').disabled=replacing;
   $('#catalog-filters').hidden=current;$('#catalog-use').hidden=current;
   document.querySelectorAll('#catalog-collections [data-collection]').forEach(b=>{
     b.setAttribute('aria-pressed',b.dataset.collection===libUI.collection);
@@ -628,7 +631,8 @@ function buildLib(){
   const q = libUI.q.trim().toLowerCase();
   let count=0;
   let html = catalogUnfiltered() ? recentsHTML() : '';
-  libAll().forEach((c, ci) => {
+  const preferred=window.FurnishCatalog?.preferredCategory();
+  libAll().map((c,ci)=>({c,ci})).sort((a,b)=>Number(b.c.cat===preferred)-Number(a.c.cat===preferred)).forEach(({c,ci}) => {
     if (libUI.cat !== 'all' && libUI.cat !== c.cat) return;
     if(libUI.collection==='custom'&&c.cat!==CUSTOM_CAT)return;
     const cards = c.items.map((it, ii) => ({it, ii}))
@@ -641,12 +645,13 @@ function buildLib(){
   $('#catalog-result')?.replaceChildren(document.createTextNode(tr(`${count} 个条目` ,`${count} items`)));
   $('#lib').innerHTML = (html || `<div class="hint catalog-empty"><b>${tr('没有匹配的家具', 'No matching furniture')}</b><p>${tr(libUI.collection==='favorites'?'点击条目上的爱心，收藏常用家具；收藏保存在本机。':libUI.collection==='custom'?'可用右上角“自定义”创建自己的家具，或放宽筛选条件。':'试试其他关键词，或清除分类、用途与尺寸筛选。',libUI.collection==='favorites'?'Use the heart on an item to save it on this device.':libUI.collection==='custom'?'Create an item with Custom, or clear the filters.':'Try other keywords or clear the filters.')}</p><button class="btn outline" data-catalog-reset>${tr('清除筛选','Clear filters')}</button></div>`) +
     `<div class="hint">${tr(
-    `家具按真实尺寸（mm）绘制。${COARSE ? '点一下放到画面中央，或按住向右拖到平面图 / 3D 地面上的指定位置（上下滑动为滚动列表）。' : '点击添加到画面中央，或直接拖到平面图 / 3D 地面上。'}添加后可在右侧修改宽深与颜色。`,
+    window.FurnishCatalog?.active()?'点击家具预览替换；确认前不会修改方案，可切换分类或搜索其他产品。':`家具按真实尺寸（mm）绘制。${COARSE ? '点一下放到画面中央，或按住向右拖到平面图 / 3D 地面上的指定位置（上下滑动为滚动列表）。' : '点击添加到画面中央，或直接拖到平面图 / 3D 地面上。'}添加后可在右侧修改宽深与颜色。`,
     `Furniture is drawn at real size (mm). ${COARSE ? 'Tap to place at the center, or hold and drag right onto the plan / 3D floor (swipe up/down to scroll).' : 'Click to add at the center, or drag onto the plan / 3D floor.'} Edit size and color in the right panel afterwards.`)}</div>`;
   document.querySelectorAll('#lib .item').forEach(el => el.addEventListener('pointerdown', e => {
     if (e.button || e.target.closest('button')) return;
     libDrag = {el, id:e.pointerId, sx:e.clientX, sy:e.clientY, it:itemOf(el), ghost:null};
   }));
+  if(window.FurnishCatalog?.active())document.querySelectorAll('#lib .item').forEach(el=>{el.tabIndex=0;el.setAttribute('role','button');el.title='选择此家具预览替换';el.onkeydown=e=>{if(e.target===el&&['Enter',' '].includes(e.key)){e.preventDefault();window.FurnishCatalog.choose(itemOf(el));}};});
   document.querySelectorAll('#lib [data-favorite]').forEach(b=>b.onclick=()=>toggleCatalogFavorite(itemOf(b.closest('.item'))));
   document.querySelectorAll('#lib [data-catalog-details]').forEach(b=>b.onclick=()=>window.FurnishCatalog?.details(itemOf(b.closest('.item'))));
   $('#lib [data-catalog-reset]')?.addEventListener('click',()=>{resetCatalogFilters();buildCats();buildLib();});
@@ -677,6 +682,7 @@ function dropPoint(x, y){
 }
 addEventListener('pointermove', e => {
   if (!libDrag || e.pointerId !== libDrag.id) return;
+  if(window.FurnishCatalog?.active())return;
   const {it} = libDrag;
   if (!libDrag.ghost){
     if (Math.hypot(e.clientX-libDrag.sx, e.clientY-libDrag.sy) < TAP) return;
@@ -694,6 +700,7 @@ function endLibDrag(e, ok){
   if (!libDrag || e.pointerId !== libDrag.id) return;
   const d = libDrag; libDrag = null;
   d.el.classList.remove('dragging');
+  if(window.FurnishCatalog?.active()){d.ghost?.remove();if(ok&&Math.hypot(e.clientX-d.sx,e.clientY-d.sy)<TAP)window.FurnishCatalog.choose(d.it);return;}
   if (d.ghost){
     d.ghost.remove();
     if (!ok) return;
@@ -870,6 +877,7 @@ const TIPS = () => COARSE
   : {'2d':tr('拖动家具到平面图 · 触摸板双指平移／捏合缩放 · 鼠标滚轮缩放 · ? 操作设置', 'Drag furniture onto the plan · touchpad scroll pans / pinch zooms · mouse wheel zooms · ? controls'),
      '3d':tr('3D 场景与平面方案实时同步 · 右侧面板修改会立即生效 · T 返回 2D', '3D stays in sync with the plan · panel edits apply instantly · T for 2D')};
 async function setView(m){
+  if(m==='3d')window.FurnishCatalog?.cancel();
   if (m === viewMode || switching) return;
   closeFabEditor(false);
   if (!window.View3D) return toast(tr('当前浏览器不支持 3D 场景', '3D is not supported in this browser'));

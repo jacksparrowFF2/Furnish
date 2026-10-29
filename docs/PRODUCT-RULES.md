@@ -352,3 +352,10 @@ DL269 的 clearanceReview=missing 与其余缺资料设备共用待核对入口�
 ## 型材安装卡槽（2026-10-26）
 
 `ceiling.upChannel.mountDetail=false`保留旧模板；新安装卡槽预设显式开启。mountProjection=4、mountHeight=7、mountBridge=3.5、mountFootHeight=4.5 mm为参考图未标的小尺寸示意，可在组合和独立编辑中调整。H形肋、空槽和下挡边进入共用生产轮廓，限制横肋上下实体、下挡边高于翼板和上下卡槽之间的净空；全局39／22.5／13.6／18.6 mm不改。关闭细节不补新字段，细节字段需要v23，旧恢复保留原几何。见 [型材卡槽](CEILINGS.md#组合剖面缩放精确贴合与安装卡槽2026-10-26)。
+
+
+## 家具库替换定位（2026-10-29）
+
+`FurnishDesign.replaceFurniture(previous, candidate, {anchor})` 的第三参数可选：`current` 沿历史尺寸调整语义，`center` 固定原中心，`back` 固定原局部背面中点。显式基准绕过旧产品的隐式尺寸定位，但不改写持久 resizeAnchor；背面点由最终新品深度及原旋转计算，左右镜像不改变此点。产品身份、规格和专用字段仍经原 replacement 能力处理。
+
+UI 在方案副本中沿正式 normalizeFurnitureEdit 预演关联调整，并对整案执行校验与图层保护；确认仍经一次 mutate。单件及关联对象均由同一撤销快照恢复，候选／基准选项不存入项目，现有持久版本不变。详见[替换验收](validation/furniture-replacement-20261029/README.md)。

@@ -29,6 +29,7 @@ function applyCanvasView(){
   renderSel(); renderMeasure();
   window.FurnishRoomMeasure?.afterRender();
   window.FurnishTilePresetUI?.afterView();
+  window.FurnishCatalog?.afterView();
   if(globalThis.FurnishDrawing)renderDims();
   if(globalThis.FurnishDrawing)refreshFurnitureLabels();
   refreshHobOpenings();

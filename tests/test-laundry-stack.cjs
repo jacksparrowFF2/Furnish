@@ -40,7 +40,7 @@ const app=fs.readFileSync(require.resolve('../src/app.js'),'utf8');
 const transaction=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:require('../src/core/kitchen-core.js'),FurnishDesign:D,state:{furniture:[{...washer},{...dryer,mountHeight:0}]},undoStack:[],redoStack:[],save(){this.saved=JSON.stringify(this.state);},snapshot(){}}));
 // Exercise the actual commit hook used by property changes and planar dragging.
 transaction.save=()=>{transaction.saved=JSON.stringify(transaction.state);};
-vm.runInContext(app.match(/function commit\(before\)\{[^\n]+/)[0],transaction);
+vm.runInContext(app.match(/function normalizeFurnitureEdit[^\n]+\nfunction commit\(before\)\{[^\n]+/)[0],transaction);
 const oldWork=JSON.stringify(transaction.state);transaction.state.furniture[1].mountHeight=850;transaction.before=oldWork;
 vm.runInContext('commit(before)',transaction);assert.equal(JSON.parse(transaction.saved).furniture[1].mountHeight,870);assert.equal(JSON.parse(transaction.undoStack[0]).furniture[1].mountHeight,0);
 transaction.before=JSON.stringify(transaction.state);transaction.state.furniture[1].stackHeight=35;
@@ -48,7 +48,7 @@ vm.runInContext('commit(before)',transaction);assert.equal(JSON.parse(transactio
 assert.equal(D.pasteFurniture({cx:0,cy:0,items:[dryer]},{x:1000,y:1000},{x:0,y:0,w:5000,h:5000},()=> 'copy').items[0].mountHeight,850);
 const elements=Object.fromEntries(['#full-product-details','#fName','#fMountHeight','#fStackHeight','#fH','#fC'].map(id=>[id,{}]));
 let current={...dryer},errors=[],history=[];
-const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{window:{},FurnishCabinet:{supported:()=>false},FurnishDesign:D,$:id=>elements[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{const before=JSON.stringify(current);fn();history.push(before);},toast:e=>errors.push(e),renderPanel:()=>{}}));
+const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{window:{},FurnishCabinet:{supported:()=>false},FurnishDesign:D,$:id=>elements[id],document:{querySelectorAll:()=>[],querySelector:()=>null},getF:()=>current,mutate:fn=>{const before=JSON.stringify(current);fn();history.push(before);},toast:e=>errors.push(e),renderPanel:()=>{}}));
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ctx);ctx.renderPanel=()=>{};ctx.f=current;vm.runInContext('bindFurnPanel(f)',ctx);
 elements['#fMountHeight'].onchange({target:{value:'0'}});assert.equal(current.mountHeight,0);
 current=JSON.parse(history.pop());assert.equal(current.mountHeight,850);

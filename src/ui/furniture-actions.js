@@ -6,7 +6,7 @@ const selIds = () => ui.sel?.kind === 'furn' ? (ui.sel.ids || [ui.sel.id]) : [];
 const selItems = () => selIds().map(getF).filter(Boolean);
 const selectedRooms = () => ui.sel?.kind==='room'?ROOMS.filter(r=>(ui.sel.roomIds||[ui.sel.id]).includes(r.id)):[];
 function toggleRoom(id){const ids=selectedRooms().map(r=>r.id),next=ids.includes(id)?ids.filter(v=>v!==id):[...ids,id];select(next.length?{kind:'room',id:next[next.length-1],roomIds:next}:null);}
-function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); refreshHobOpenings(); updateHeader(); globalThis.FurnishCurrentFurniture?.selectionChanged(); }
+function select(sel){ if(sel?.kind==='furn')sel={...sel,ids:FurnishDesign.expandGroups(state.furniture,sel.ids||[sel.id])};ui.panelScope='object';ui.sel = sel; closeCtx(); renderSel(); renderMeasure(); renderPanel(); if(globalThis.FurnishDrawing)refreshFurnitureLabels(); refreshHobOpenings(); updateHeader(); globalThis.FurnishCurrentFurniture?.selectionChanged(); globalThis.FurnishCatalog?.selectionChanged(); }
 function selectIds(ids, primary){
   ids = [...new Set(ids)].filter(id => getF(id));
   select(ids.length ? {kind:'furn', id:ids.includes(primary) ? primary : ids[ids.length-1], ids} : null);
@@ -183,6 +183,7 @@ function pushOut(f,axis){
   return false;
 }
 function addItem(it, x, y){
+  if(window.FurnishCatalog?.active()){window.FurnishCatalog.choose(it);return;}
   if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
   const [type,name,w,d,color,price,h] = it, f = F(type,name,Math.round(x/10)*10,Math.round(y/10)*10,w,d,0,color);
   if(FurnishKitchen.isLaundryAreaItem(it)){

@@ -35,8 +35,8 @@ async (page,verification)=>{
   await p.locator('#fShowerRise').fill('500');await p.locator('#fShowerRise').press('Tab');
   await p.locator('#fShowerHandAngle').fill('0');await p.locator('#fShowerHandAngle').press('Tab');
   await p.getByRole('button',{name:'查找并替换',exact:true}).click();
-  await p.locator('#replace-query').fill('洗衣机');
-  await p.locator('[data-replacement]').first().click();await p.getByRole('button',{name:'应用替换',exact:true}).click();
+  await p.locator('#libSearch').fill('洗衣机');
+  await p.locator('#lib .item').filter({has:p.getByText('洗衣机',{exact:true})}).first().click();await p.getByRole('button',{name:'确认替换',exact:true}).click();
   check(await p.evaluate(()=>{const f=getF('legacy-shower');return f.type==='washer'&&['showerMixerHeight','showerRise','showerHandAngle','heaterSocket','floorTrack'].every(k=>f[k]===undefined);}), 'UI replacement clears foreign fields');
   await p.getByRole('button',{name:'撤销',exact:true}).first().click();
   check(await p.evaluate(()=>getF('legacy-shower').showerMixerHeight)===1100,'replacement undo');

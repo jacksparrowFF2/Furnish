@@ -58,7 +58,10 @@ async (page,V)=>{
   check(await p.locator('[data-collection="current"]').isVisible(),'current-plan navigation remains available in 3D');
   await p.locator('[data-current-locate="manage-a"]').click();check(await p.evaluate(()=>selIds().includes('manage-a')),'3D locate');
   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);
-  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>drawer('lib',true));
+  await p.setViewportSize({width:390,height:844});
+  // The breakpoint handler closes drawers; wait for it before explicitly opening one.
+  await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await p.evaluate(()=>drawer('lib',true));
   await p.locator('#current-room').selectOption(data.otherRoom);await pick('manage-b').check();await action('lock').click();
   check(await p.evaluate(()=>getF('manage-b').locked&&!getF('manage-a').locked),'narrow-screen batch lock');
   await p.locator('#current-target-status').selectOption('received');await action('purchase').click();
