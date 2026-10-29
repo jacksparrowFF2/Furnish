@@ -27,8 +27,8 @@ async (page,V)=>{
   await p.locator('#libSearch').fill('洗衣机');assert(await p.locator('#lib .item').count()===0,'search retains category');
   await p.locator('#catalog-reset').click();await p.locator('#catalog-use').selectOption('laundry');
   await p.locator('#catalog-max-w').fill('600');await p.locator('#catalog-max-d').fill('600');await p.locator('#libSearch').fill('洗衣机');
-  assert(await p.locator('#lib .item').count()===1,'inclusive dimension filters');
-  await p.locator('#catalog-max-w').fill('599');assert(await p.locator('#lib .item').count()===0,'below width threshold');
+  assert(await p.locator('#lib .item').count()===2,'inclusive dimension filters include both washer products');
+  await p.locator('#catalog-max-w').fill('599');assert(await p.locator('#lib .item').count()===1,'below width threshold retains the 595 mm washer');
   await p.locator('#catalog-reset').click();await p.locator('#libCats [data-cat="柜体"]').click();
   await p.locator('#libSearch').fill('衣柜');await p.locator('#lib [data-catalog-details]').click();
   await p.getByRole('button',{name:'添加到方案',exact:true}).click();

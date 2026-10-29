@@ -24,6 +24,7 @@ const NAMES_EN = {
   '米家智能宠物喂食器 2':'Mijia Smart Pet Feeder 2',
   '封闭式猫砂盆':'Covered Litter Box',
   '小天鹅 TG10K60W · 10kg':'LittleSwan TG10K60W · 10kg',
+  '小天鹅洗衣机 TG10K60W · 10kg':'LittleSwan washer TG10K60W · 10kg',
   '米家台面洗碗机 · 5套':'Mijia Countertop Dishwasher · 5 Place Settings',
   '米家智能鱼缸 2 Pro':'Mijia Smart Aquarium 2 Pro',
   '石头 P20 Max 水箱版套装':'Roborock P20 Max with Tank Dock',

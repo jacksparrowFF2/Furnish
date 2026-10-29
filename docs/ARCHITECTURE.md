@@ -486,3 +486,7 @@ SE2 浴霸的 Blender 源工程导出 GLB，经独立后台导入校验后发布
 ## 2026-10-29：Blender 成品书柜资产
 
 Y52Y09源工程／GLB由受限y52y09发布配置校验为12块具名板件，bookcase-asset-model在生产柜体构造完成后按元数据替换板件网格；板件位置、尺寸和保守实体仍沿原柜体核心及solidParts，原六格、结构编辑和v3部件身份保持。主入口和对应预览在cabinet-model前加载资产与适配器，无新持久字段／项目版本；HTTP及断网file已验证。见 [书柜模型与资产验收](BOOKCASE-YESWOOD-Y52Y09.md)。
+
+## 2026-10-29：家具种类、身份与共通动作
+
+product-rules 集中派生 kind，保留 type 为模型／数据兼容 ID；name 作为可编辑显示名称，brand/model 仍沿原资料字段。共享 laundry → washer profile 定义空位对齐与门角，具体型号仅覆盖自身资料；kitchen UI 与核心同读 supportsAction。furniture-upgrade 在既有恢复／项目输入链路精确升级已知旧默认名，catalog 保留旧规格查询；无新脚本、持久字段、格式版本或保存通道。采购与成果显示派生种类。契约见 [产品规则](PRODUCT-RULES.md#家具身份与共通动作2026-10-29)。

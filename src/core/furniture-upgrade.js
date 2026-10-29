@@ -7,7 +7,7 @@
   const list=copy(input),ids=new Set(list.map(f=>f.id)),added=[];
   const allocate=(id,part)=>{const base=id.slice(0,150)+'_upgraded_'+part;let next=base,n=1;while(ids.has(next))next=base+'_'+n++;ids.add(next);return next;};
   for(let i=0;i<list.length;i++){
-   let f=list[i];if(f.obj)continue;
+   let f=list[i];if(f.obj)continue;f=list[i]=P.upgradeIdentity(f);
    const original=copy(f),addedBefore=added.length;
    try{
    if(f.type==='counter'&&!f.kitchen){

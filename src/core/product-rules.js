@@ -56,7 +56,7 @@ const fields={
  slidingTrackOrder:{values:['leading-front','leading-back'],message:'活动扇所在侧须为靠正面或靠背面'},
  heaterSocket:{point:true,message:'热水器插座须有有效 X、Y 和 0–20000 mm 离地高度'}
 };
-const laundry={family:'laundry',height:850,anchor:'bottom',defaults:{mountHeight:0,stackHeight:20},fields:['mountHeight','stackHeight','laundryHostId'],create:['mountHeight']};
+const laundry={family:'laundry',actions:['alignLaundryBay'],height:850,anchor:'bottom',defaults:{mountHeight:0,stackHeight:20},fields:['mountHeight','stackHeight','laundryHostId'],create:['mountHeight']};
 const surfaceMeasurement={wallContactTolerance:5};
 const linkedSurfaceOffset={max:20000}; // Local module axes, mm; missing offsets retain centred placement.
 const arrowSink={embedded:true,measureSurfaceBoundary:true,surfaceMeasurement,linkedSurfaceOffset,family:'arrow-sink',height:240,sink:{rimThickness:.8,nominalDepth:450,faucetRise:360,nominalInnerWidth:640},defaults:{counterElevation:860,sinkInstall:'top'},fields:['counterLink','counterElevation','sinkInstall'],create:['counterElevation','sinkInstall']};
@@ -64,6 +64,7 @@ const doorPairing={values:['end','start'],default:'end',singleHinge:{values:['le
 // Editable leaf widths are model dimensions, not hardware installation limits.
 const doorWidths={minWidth:50,maxLeaves:24,gap:2};
 const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
+const washer={...laundry,kind:'洗衣机',laundryKind:'washer',washerMotion:true,solidModel:{global:'FurnishWasherModel',module:'washer'},defaults:{...laundry.defaults,washerDoorAngle:0},fields:[...laundry.fields,'washerDoorAngle'],create:[...laundry.create,'washerDoorAngle']};
 const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'folding-table'},family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
 // Generic made-to-measure covering assumptions, not a manufacturer's installation specification.
@@ -107,7 +108,7 @@ const types={
  stove_fotile_th36b:{embedded:true,measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,widthRatio:660/750,depthRatio:350/440},height:138,defaults:{counterElevation:860},fields:['counterLink','counterElevation','hobCutout'],create:['counterElevation'],identity:{brand:'方太/FOTILE',model:'TH36B-T'}},
  rangehood_fotile_jcd10ta:{hoodMotion:true,solidModel:{global:'FurnishFotileModel',module:'fotile'},height:520,anchor:'bottom',hoodGeometry:{min:10,max:20000},defaults:{mountHeight:1315,hoodPanelOpen:false},fields:['mountHeight','hoodPanelOpen','hoodGeometry'],create:['mountHeight','hoodPanelOpen'],identity:{brand:'方太/FOTILE',model:'JCD10TA'}},
  stove:{measureSurfaceBoundary:true,surfaceMeasurement,hobCutout:{...hobCutoutLimits,inset:30},fields:['counterLink','counterElevation','hobCutout']},ksink:{linkedSurfaceOffset,surfaceMeasurement,fields:['counterLink','counterElevation','sinkNotch','sinkStyle','sinkBowlHeight'],defaults:{sinkStyle:'inset',sinkBowlHeight:150},vessel:{minSize:80,defaultDepth:400,rim:15,floor:12,drain:45,faucetRise:300,faucetClearance:100},notch:{min:20,margin:80,bodyDepth:220,rim:20,floor:12,faucetRise:292}},
- washer:{...laundry,laundryKind:'washer',washerMotion:true,solidModel:{global:'FurnishWasherModel',module:'washer'},defaults:{...laundry.defaults,washerDoorAngle:0},fields:[...laundry.fields,'washerDoorAngle'],create:[...laundry.create,'washerDoorAngle']},washer_littleswan_tg10k60w:{...laundry,laundryKind:'washer',washerMotion:true,washerProfile:'tg10k60w',washerGeometryVersion:2,solidModel:{global:'FurnishWasherModel',module:'washer'},defaults:{...laundry.defaults,washerDoorAngle:0},fields:[...laundry.fields,'washerDoorAngle'],create:[...laundry.create,'washerDoorAngle'],identity:{brand:'小天鹅/LittleSwan',model:'TG10K60W'},installation:{referenceWidth:625,referenceDepth:600,referenceHeight:865,closedCabinetDepth:605,sideClearance:15,topClearance:15,rearClearance:30,source:'用户提供的TG10K60W安装图（开放不封闭柜）'}},dryer:{...laundry,laundryKind:'dryer'},
+ washer:{...washer},washer_littleswan_tg10k60w:{...washer,washerProfile:'tg10k60w',washerGeometryVersion:2,identity:{brand:'小天鹅/LittleSwan',model:'TG10K60W'},installation:{referenceWidth:625,referenceDepth:600,referenceHeight:865,closedCabinetDepth:605,sideClearance:15,topClearance:15,rearClearance:30,source:'用户提供的TG10K60W安装图（开放不封闭柜）'}},dryer:{...laundry,laundryKind:'dryer'},
  water_purifier_mijia_1200g:{family:'under-sink-purifier',height:379,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'净水器 2 1200G'}},
  dishwasher_mijia_countertop:{solidModel:{global:'FurnishDishwasherModel',module:'dishwasher'},foldAsset:true,family:'countertop-dishwasher',height:598,anchor:'bottom',defaults:{mountHeight:860,dishwasherDoorOpen:false},fields:['mountHeight','dishwasherDoorOpen'],create:['mountHeight','dishwasherDoorOpen'],identity:{brand:'米家/Mijia',model:'智能洗碗机 台式 5套'},foldDoor:{nominalWidth:550,nominalHeight:598,nominalDepth:350,openDepth:600,openingBottom:52,openingTop:584},installation:{ventSide:'left',sideClearance:200,worktopToCabinet:650,topAccess:50,frontOffset:80}},
  aquarium_mijia_2pro:{family:'aquarium',height:334,anchor:'bottom',defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'米家/Mijia',model:'智能鱼缸 2 Pro',sourceUrl:'https://item.jd.com/100317574693.html'}},
@@ -274,6 +275,36 @@ function validateField(f,key,v){
  if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
 function validate(f){const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+// User-facing kinds are independent of renderer IDs, product identities and plan names.
+const kindGroups={
+ '占位体':'block', '平板灯':'panel_light_300x600', '浴霸':'bath_heater_aopu_se2 bath_heater_300x600',
+ '筒灯':'downlight_philips_dl269', '地暖分水器':'heating_manifold', '强电箱':'electrical_box_strong', '弱电箱':'electrical_box_weak',
+ '鱼缸':'aquarium_mijia_2pro', '燃气灶':'stove stove_fotile_th36b', '抽油烟机':'rangehood_fotile_jcd10ta',
+ '冰箱':'fridge fridge_french_drawer', '洗衣机':'washer washer_littleswan_tg10k60w', '烘干机':'dryer',
+ '电热水器':'waterheater waterheater_flat', '电视':'tv', '立式空调':'aircon aircon_midea_ultra_2hp', '壁挂空调':'acwall',
+ '洗碗机':'dishwasher dishwasher_mijia_countertop', '净水器':'water_purifier_mijia_1200g', '茶吧机':'tea_bar_mijia_pro',
+ '空气净化器':'purifier', '扫拖机器人':'robot_p20max', '扫拖机器人套装':'robot_p20max_tank robot_p20max_plumbed',
+ '管道包覆柜':'pipebox', '收纳柜':'cabinet', '床头柜':'nightstand', '衣柜':'wardrobe', '斗柜':'chest',
+ '书柜':'bookshelf bookshelf_yeswood_y52y09', '电视柜':'tvstand', '鞋柜':'shoecab', '床':'bed', '婴儿床':'crib',
+ '单人沙发椅':'armchair armchair_yeswood_y09hs', '沙发':'sofa sofa_yeswood_cherry', '转角沙发':'cornersofa', '懒人沙发':'beanbag',
+ '茶几':'coffeetable coffeetable_yeswood_cherry', '茶台':'tea_table_800', '梳妆台':'dresser', '书桌':'desk',
+ '圆桌':'roundtable', '边几':'sidetable sidetable_tmall_635382906309', '餐桌':'table',
+ '折叠餐桌':'table_folding_1100 table_folding_1200 table_folding_1300', '岛台':'island', '橱柜':'counter',
+ '水槽':'ksink sink_arrow_680 sink_arrow_750', '厨房吊柜':'kitchenwall', '蒸烤箱高柜':'ovencol',
+ '换鞋凳':'bench bench_yeswood_oak', '椅子':'chair', '吧椅':'barstool', '办公椅':'officechair',
+ '浴室柜':'vanity', '马桶':'toilet', '淋浴房':'shower', '花洒':'shower_arrow_cream', '浴缸':'bathtub',
+ '落地灯':'floorlamp', '吊灯':'pendant', '飘窗垫':'baycushion', '地毯':'rug', '布帘':'curtain', '纱帘':'curtain_sheer',
+ '百叶帘':'blind_venetian', '蜂巢帘':'blind_honeycomb', '柔纱帘':'blind_zebra', '竹帘':'blind_bamboo', '卷帘':'blind_roller',
+ '绿植':'plant', '装饰画':'wallart', '镜子':'mirror', '钢琴':'piano', '跑步机':'treadmill',
+ '口袋门':'pocketdoor_double pocketdoor_triple', '推拉门':'slidingdoor', '联动推拉门':'telescopicdoor20 doubleslidingdoor tripleslidingdoor',
+ '联动推拉窗':'tripleslidingwindow', '猫爬架':'cat_tree', '宠物喂食器':'pet_feeder_mijia_2', '猫砂盆':'litter_box', '晾衣架':'dryingrack',
+ '自定义家具':'custom customround'
+};
+const kinds=Object.freeze(Object.fromEntries(Object.entries(kindGroups).flatMap(([kind,ids])=>ids.split(' ').map(id=>[id,kind]))));
+function kind(f){const id=typeof f==='string'?f:f?.type;return definition(f)?.kind||(Object.hasOwn(kinds,id)?kinds[id]:'未分类');}
+function supportsAction(f,action){return !f?.obj&&!!definition(f)?.actions?.includes(action);}
+// Exact historical defaults only: personal plan names are never inferred or overwritten.
+function upgradeIdentity(f){return f.type==='washer_littleswan_tg10k60w'&&f.name==='小天鹅 TG10K60W · 10kg'?{...f,name:'小天鹅洗衣机 TG10K60W · 10kg'}:f;}
 const sinkBodyDepth=f=>f.sinkBowlHeight??definition(f).notch.bodyDepth;
 const vesselSink=f=>f?.type==='ksink'&&!f.obj&&value(f,'sinkStyle')==='vessel';
 // Report broken model records without migrating, deleting or rewriting them.
@@ -557,6 +588,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

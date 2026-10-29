@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "product-naming",
+    "catalog-library"
+  ],
+  "results": [
+    {
+      "name": "product-naming",
+      "status": "PASS",
+      "seconds": 18.7,
+      "log": "product-naming.log"
+    },
+    {
+      "name": "catalog-library",
+      "status": "PASS",
+      "seconds": 16.7,
+      "log": "catalog-library.log"
+    }
+  ],
+  "notRun": []
+}

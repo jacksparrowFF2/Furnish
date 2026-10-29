@@ -31,7 +31,7 @@ const LIB = [
     ["rangehood_fotile_jcd10ta","方太抽油烟机 JCD10TA",900,350,"#111214",0,products.height({type:"rangehood_fotile_jcd10ta"})],
     ["stove","燃气灶",750,450,"#dcdcdc",2500],
     ["fridge","冰箱",700,700,"#dfe4e8",4000],
-    ["washer_littleswan_tg10k60w","小天鹅 TG10K60W · 10kg",595,560,"#f1f0ed",undefined,850],
+    ["washer_littleswan_tg10k60w","小天鹅洗衣机 TG10K60W · 10kg",595,560,"#f1f0ed",undefined,850],
     ["washer","洗衣机",600,600,"#e6ebee",2800,products.height({type:"washer"})],
     ["waterheater","电热水器",800,450,"#f4f4f2",1800],
     ["waterheater_flat","扁桶电热水器 60L",700,320,"#fafafa",0,products.height({type:"waterheater_flat"})],
@@ -185,6 +185,7 @@ LIB.forEach(c=>c.items.forEach(i=>TYPE_PRICE[i[0]]??=i[5]));
 
 // Hidden historical specifications still serve placed items' price and size reset.
 const retiredItems=[
+ ["washer_littleswan_tg10k60w","小天鹅 TG10K60W · 10kg",595,560,"#f1f0ed",undefined,850],
  // Historical names keep their exact specifications and side when old projects look them up.
     ['counter','完整阳台洗衣区 · 左洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-left'],
     ['counter','完整阳台洗衣区 · 右洗衣机',1340,630,'#f3f1ec',undefined,undefined,null,null,null,'laundry-area-right'],
@@ -228,14 +229,14 @@ function itemUses(it){
  if(it[0]==='ksink'&&LIB.find(c=>c.cat==='阳台柜').items.includes(it))result.push('laundry');
  return result;
 }
-const itemKey=it=>JSON.stringify(it[7]?['custom',it[7]]:[it[0],it[1]]);
+const itemKey=it=>JSON.stringify(it[7]?['custom',it[7]]:[it[0],it[0]==='washer_littleswan_tg10k60w'&&it[1]==='小天鹅洗衣机 TG10K60W · 10kg'?'小天鹅 TG10K60W · 10kg':it[1]]);
 function itemHeight(it){
  const f={type:it[0],name:it[1],w:it[2],d:it[3],h:it[6]};
  return products.height(f)??(cabinets.supported(f)?cabinets.height(f):undefined);
 }
 function matches(it,{query='',maxWidth=0,maxDepth=0,use='all'}={},extra={}){
  const identity=products.definition(it[0])?.identity||{};
- const text=[it[1],...itemUses(it).map(id=>uses.find(u=>u[0]===id).slice(1).join(' ')),identity.brand,identity.model,extra.name,extra.brand,extra.model].join(' ').toLowerCase();
+ const text=[products.kind(it[0]),it[1],...itemUses(it).map(id=>uses.find(u=>u[0]===id).slice(1).join(' ')),identity.brand,identity.model,extra.name,extra.brand,extra.model].join(' ').toLowerCase();
  return query.trim().toLowerCase().split(/\s+/).every(word=>text.includes(word))&&(!maxWidth||it[2]<=maxWidth)&&(!maxDepth||it[3]<=maxDepth)&&(use==='all'||itemUses(it).includes(use));
 }
 const api={materials:MATS,library:LIB,typePrices:TYPE_PRICE,findItem,browseLibrary,uses,itemUses,itemKey,itemHeight,matches};

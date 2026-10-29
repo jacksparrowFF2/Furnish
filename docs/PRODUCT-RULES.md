@@ -359,3 +359,17 @@ DL269 的 clearanceReview=missing 与其余缺资料设备共用待核对入口�
 `FurnishDesign.replaceFurniture(previous, candidate, {anchor})` 的第三参数可选：`current` 沿历史尺寸调整语义，`center` 固定原中心，`back` 固定原局部背面中点。显式基准绕过旧产品的隐式尺寸定位，但不改写持久 resizeAnchor；背面点由最终新品深度及原旋转计算，左右镜像不改变此点。产品身份、规格和专用字段仍经原 replacement 能力处理。
 
 UI 在方案副本中沿正式 normalizeFurnitureEdit 预演关联调整，并对整案执行校验与图层保护；确认仍经一次 mutate。单件及关联对象均由同一撤销快照恢复，候选／基准选项不存入项目，现有持久版本不变。详见[替换验收](validation/furniture-replacement-20261029/README.md)。
+
+## 家具身份与共通动作（2026-10-29）
+
+`kind(f)` 是面向用户的种类（洗衣机、书柜等），与生产构造器用的 `type`、产品的 `brand/model` 以及实例 `name` 分开。种类映射集中在产品核心，当前全部在售库条目已覆盖；未知类型显示“未分类”，不按名称猜测能力。分组目录／房间用途仍是检索入口，不是产品种类。
+
+`name` 在界面称“显示名称”，允许用户按位置／用途改名；`brand` 为品牌；`model` 兼容已有商品名，界面称“型号／产品名”。无可靠型号时留空，不将颜色、尺寸或商品 ID 编造成厂家型号；现有描述型 model 保留。库展示名须包含种类，TG10K60W 新名称为“小天鹅洗衣机 TG10K60W · 10kg”。采购清单、CSV 和成果增加种类，仍按已有实际规格分组。
+
+洗烘共用 profile `laundry` 定义安装高度、连接层、关联字段和 `alignLaundryBay` 动作，洗衣机共用 profile `washer` 再增加洗衣机类别、门角及生产模型。通用型与 TG10K60W 都从 washer 继承；型号只定义身份、资产 profile 和自身安装参考。UI 和 kitchen-core 同读 `supportsAction`，不维护型号白名单；OBJ 替代几何不自动获得此动作。烘干机保留原同类空位对齐能力；特定型号安装间距不向通用型传播。
+
+旧项目、命名方案和本机缓存通过原 furniture-upgrade 入口升级：仅将 TG10K60W 的已知旧库默认名“小天鹅 TG10K60W · 10kg”改为新名称，反复恢复不漂移。其它手动名称、品牌、型号、尺寸、离地、门角和采购资料均保留；通用 washer 不猜测升级为 TG10K60W。旧库名称另保留精确原规格查询。种类和动作是定义派生值，无新持久字段／项目版本；旧项目无需批量写入类型标签即可继承能力。
+
+验证：test-product-naming 覆盖全部目录种类、旧／自定义名称、当前及命名方案往返、洗衣机／烘干机共通动作、旋转镜像和净宽边界；原 test-product-rules、test-catalog-browsing、test-procurement、test-laundry-catalog 继续覆盖关联链路。界面验收见后续命名专项记录。
+
+本次增量检查及未执行项见[命名与继承验收](validation/product-naming-20261029/README.md)。
