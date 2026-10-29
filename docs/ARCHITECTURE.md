@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-29（通用窗饰）：product-rules.coveringLayout集中窗饰姿态及帘片，window-covering-model用于新增六类生产模型及五类升降帘的实体记录；原布帘保留构造并保存curtainOpen。二维、属性、实体缓存与空间确认消费同一能力，沿mutate／原保存通道。新语义项目／工作区v34及独立缓存，旧缺失不物化。新增经典脚本在场景前加载，资源保持本地，见[窗饰契约](WINDOW-COVERINGS.md)。
+
 2026-10-29（Blender烟机上翻）：hood-motion-core拟合独立主机／装饰罩和刚性水平轴玻璃，hood-asset-model装配27个离线网格；fotile正式入口仅将JCD10TA转发资产，灶具保持。当前轮廓及生产实体接入共用空间链，完整扫掠复用柜体竖向剖面；定位同源，确认和v33仓库／缓存同步。见[契约](HOOD-BLENDER-MOTION.md)。
 
 2026-10-29（Blender洗碗机折叠端态）：dishwasher-fold-core提供参考部件及嵌套水平轴，dishwasher-asset-model装配60个离线网格，原dishwasher-model正式build转发资产入口。产品能力注册生产实体，当前轮廓、测距及碰撞同源，原安装检查继续独立核对完整预留。含该款方案使用v32，缓存／仓库和确认标记同步。见[流程契约](DISHWASHER-BLENDER-FOLD.md)。

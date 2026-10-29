@@ -1,5 +1,9 @@
 # 产品能力规则与兼容验收
 
+## 通用窗饰（2026-10-29）
+
+window-covering族集中covering.kind／soft、默认高度、展开时安装最低点和新建frontClearance=0。新增curtainOpen为0–1；百叶blindAngle为0–85°，柔纱shadeMode为day/night。旧布帘无字段时读取0／安装0而不补写；已有单／双开结构保持。恢复、复制、替换按fields/create共用能力，UI参数均走mutate。姿态及安装影响生产实体、缓存及确认，配色／价格不影响确认。使用新能力的项目／工作区v34，v33烟机及更早仍可读。所有规格为通用布局假设，见[参数与验收](WINDOW-COVERINGS.md)。
+
 ## 分层柜顶部扩展（2026-10-28）
 
 原 `cabinetTopClosure` 范围和50／10启用初值不变；`topClosureAvailable()`增加置物台玄关及分层餐边，按柜箱顶与上段深度生成独立封板／返板。洗衣上柜使用既有附属柜cabinet字段及安装约束，子柜入口接回原草稿。特殊分层顶封语义使用项目／工作区v29和新缓存保护，旧缺失与普通v27／箱组v28仍可读；替换用目标模板，不继承旧封板。完整cabinet及父组合覆盖缓存／空间确认，单纯配色仍排除。见 [规范第12节](CABINET-DESIGN-STANDARD.md#12-分层柜与洗衣上柜的顶部构造2026-10-28)。

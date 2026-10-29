@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-29",
+  "formatVersion": 34,
+  "incrementalSuites": [
+    {
+      "suite": "window-coverings",
+      "passed": true,
+      "output": "PASS window coverings: six production models, real deployed/half/raised bounds, sheer void, zebra band occlusion, slats, numeric solids, persistence, replacement, invalid values and review invalidation"
+    },
+    {
+      "suite": "curtains-sliding",
+      "passed": true,
+      "output": "PASS move/resize wall snapping with fixed corner, single/double curtain animation and persistence, real 3D cloth bounds, sliding leaf animation, copy and remapping"
+    },
+    {
+      "suite": "product-rules",
+      "passed": true,
+      "output": "PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API"
+    },
+    {
+      "suite": "project-validation",
+      "passed": true,
+      "output": ""
+    },
+    {
+      "suite": "work-state",
+      "passed": true,
+      "output": "PASS work restoration, independent defaults, legacy fields and custom architecture"
+    },
+    {
+      "suite": "workspace-cache",
+      "passed": true,
+      "output": "PASS workspace cache precedence, migration, malformed and restricted storage"
+    },
+    {
+      "suite": "repository-workspace",
+      "passed": true,
+      "output": "PASS file-mode cache recovery without repository requests, stale custom plan removal, unavailable-service IndexedDB fallback and registered custom-plan validation"
+    },
+    {
+      "suite": "repository-storage",
+      "passed": true,
+      "output": "PASS repository migration, two-cache recovery, pull precedence, pending edits, conflict refusal, stable roundtrip and same-origin API"
+    },
+    {
+      "suite": "catalog-browsing",
+      "passed": true,
+      "output": "PASS catalog browsing: complete unique view, unchanged specifications, identity search, combined uses, size boundaries and custom identity"
+    },
+    {
+      "suite": "catalog-links",
+      "passed": true,
+      "output": ""
+    },
+    {
+      "suite": "spatial-review-cache",
+      "passed": true,
+      "output": "PASS spatial review cache source immutability, pricing/north independence, naming/geometry invalidation and issue explanation"
+    },
+    {
+      "suite": "furniture-solids-cache",
+      "passed": true,
+      "output": "PASS production world cache: 332 fresh-builder comparisons, position/rotation/mirror/size/height/install/doors, no mutation and restored objects"
+    },
+    {
+      "suite": "enclosed-boundary-distances",
+      "passed": true,
+      "output": "PASS enclosed boundaries: screenshot fixture, 101 catalog types × 8 transforms, partial overlap/contact, height separation/unknowns, groups, drawing rotation, real panels, preserved collision checks and project roundtrip"
+    },
+    {
+      "suite": "blender-hood-asset",
+      "passed": true,
+      "output": "PASS Blender hood: 27 parts, horizontal hinge, rigid independent body/cover fit, real/numeric geometry, sampled self-clearance, complete conservative profile, current collisions/distances, transforms and stable identity"
+    },
+    {
+      "suite": "hood-project-v33",
+      "passed": true,
+      "output": "PASS v33 hood: feature-gated project/workspace version, named designs, old cache fallback, three restores, browser-client archive and repository save/read"
+    },
+    {
+      "suite": "fridge-project-v31",
+      "passed": true,
+      "output": "PASS v31 fridge: feature-gated project/workspace version, named designs, old cache fallback, three restores, browser-client archive and repository save/read"
+    }
+  ],
+  "syntax": [
+    {
+      "file": "scripts/preview-window-coverings.cjs",
+      "passed": true
+    },
+    {
+      "file": "src/app.js",
+      "passed": true
+    },
+    {
+      "file": "src/core/furniture-solids.js",
+      "passed": true
+    },
+    {
+      "file": "src/core/layout-geometry.js",
+      "passed": true
+    },
+    {
+      "file": "src/core/product-rules.js",
+      "passed": true
+    },
+    {
+      "file": "src/core/project-core.js",
+      "passed": true
+    },
+    {
+      "file": "src/core/repository-core.js",
+      "passed": true
+    },
+    {
+      "file": "src/data/catalog.js",
+      "passed": true
+    },
+    {
+      "file": "src/io/repository-storage.js",
+      "passed": true
+    },
+    {
+      "file": "src/io/workspace-cache.js",
+      "passed": true
+    },
+    {
+      "file": "src/render/furniture-svg.js",
+      "passed": true
+    },
+    {
+      "file": "src/render/window-covering-model.js",
+      "passed": true
+    },
+    {
+      "file": "src/ui/catalog-ui.js",
+      "passed": true
+    },
+    {
+      "file": "src/ui/furniture-actions.js",
+      "passed": true
+    },
+    {
+      "file": "src/ui/property-panel.js",
+      "passed": true
+    },
+    {
+      "file": "tests/test-catalog-browsing.cjs",
+      "passed": true
+    },
+    {
+      "file": "tests/test-window-coverings.cjs",
+      "passed": true
+    }
+  ],
+  "inlineModuleSyntax": true,
+  "httpUI": {
+    "catalogAdd": true,
+    "editHalfRaised": true,
+    "editNight": true,
+    "undoRedo": true,
+    "refreshRestoresHalfRaisedAndNight": true,
+    "planAnd3D": true
+  },
+  "fileURL": {
+    "passed": false,
+    "reason": "Browser URL policy only permits http/https; file:// navigation was rejected and not bypassed"
+  },
+  "narrow": {
+    "passed": false,
+    "reason": "390x844 viewport override was ineffective; actual DOM remained 1280x720; override reset"
+  },
+  "fullCheck": false,
+  "opticalAndInstallationValidation": false
+}

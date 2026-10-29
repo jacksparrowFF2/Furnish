@@ -210,7 +210,7 @@ function coveringLayout(f){
  const spec=definition(f)?.covering;if(!spec||f.obj)return null;
  const h=height(f),open=value(f,'curtainOpen'),parts=[],add=(role,w,d,h,x,bottom,z=0,angle=0)=>parts.push({role,w,d,h,x,bottom,z,angle});
  if(spec.soft)return {...spec,open,h,count:value(f,'curtainStyle')==='single'?1:2,parts};
- const r=coverSpecs,head=Math.min(r.head,h*.15),hem=Math.min(r.hem,h*.08),available=h-head-hem,stack=spec.kind==='roller'||spec.kind==='zebra'||spec.kind==='bamboo'?Math.min(75,available*.25):Math.min(available*.25,Math.max(40,available*.055)),drop=available*(1-open)+stack*open,bottom=h-head-drop-hem;
+ const r=coverSpecs,head=Math.min(r.head,h*.15),hem=Math.min(r.hem,h*.08),available=h-head-hem,stack=spec.kind==='roller'||spec.kind==='zebra'||spec.kind==='bamboo'?Math.min(75,available*.25):Math.min(available*.25,Math.max(40,spec.kind==='venetian'?Math.ceil(available/r.slatPitch)*r.slatThickness*1.8:available*.055)),drop=available*(1-open)+stack*open,bottom=h-head-drop-hem;
  add('headrail',f.w,f.d,head,0,h-head);add('bottom-rail',f.w,Math.min(f.d,20),hem,0,bottom);
  if(spec.kind==='roller')add('cloth',f.w,Math.min(r.sheet,f.d),drop,0,bottom+hem);
  if(spec.kind==='zebra'){
@@ -221,7 +221,7 @@ function coveringLayout(f){
   }
  }
  if(spec.kind==='venetian'){
-  const count=Math.min(160,Math.max(2,Math.ceil(available/r.slatPitch))),pitch=drop/count,depth=Math.min(f.d-4,available/count*.98),thickness=Math.min(r.slatThickness,pitch*.25),wanted=value(f,'blindAngle')*Math.PI/180*(1-open);let angle=wanted;for(let i=0;i<24&&Math.sin(angle)*depth+Math.cos(angle)*thickness>pitch*.99;i++)angle*=.9;const span=Math.abs(Math.sin(angle))*depth+Math.abs(Math.cos(angle))*thickness;
+  const count=Math.min(160,Math.max(2,Math.ceil(available/r.slatPitch))),pitch=drop/count,depth=Math.min(f.d-4,available/count*.98),thickness=r.slatThickness,wanted=value(f,'blindAngle')*Math.PI/180*(1-open);let angle=wanted;for(let i=0;i<24&&Math.sin(angle)*depth+Math.cos(angle)*thickness>pitch*.99;i++)angle*=.9;const span=Math.abs(Math.sin(angle))*depth+Math.abs(Math.cos(angle))*thickness;
   for(let i=0;i<count;i++){const center=bottom+hem+(drop-span)/Math.max(1,count-1)*i+span/2;add('slat',f.w,depth,thickness,0,center-thickness/2,0,angle);}
  }
  if(spec.kind==='bamboo'){
