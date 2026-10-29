@@ -12,7 +12,10 @@ import struct
 import sys
 
 
-def publish(source, target):
+def publish(source, target, profile='se2'):
+    if profile not in ('se2', 'y52y09'):
+        raise ValueError('Unknown asset profile')
+    prefix = 'bath-heater-se2:' if profile == 'se2' else 'y52y09:'
     raw = source.read_bytes()
     if len(raw) < 20 or raw[:4] != b'glTF' or struct.unpack_from('<II', raw, 4) != (2, len(raw)):
         raise ValueError('Invalid GLB header')
@@ -54,7 +57,7 @@ def publish(source, target):
         if obj.type != 'MESH':
             raise ValueError('Non-mesh object in static asset: ' + obj.name)
         identity = obj.get('furnishStablePart')
-        if identity != 'bath-heater-se2:' + obj.name or identity in names:
+        if identity != prefix + obj.name or identity in names:
             raise ValueError('Missing or duplicate stable part: ' + obj.name)
         names.add(identity)
         if len(obj.data.materials) != 1:
@@ -79,6 +82,15 @@ def publish(source, target):
                 normals.extend(xyz((normal_matrix @ mesh.corner_normals[loop].vector).normalized()))
         if not positions:
             raise ValueError('Empty mesh')
+        if profile == 'y52y09':
+            low = [min(positions[k::3]) for k in range(3)]
+            high = [max(positions[k::3]) for k in range(3)]
+            dimensions = [high[k]-low[k] for k in range(3)]
+            parts.append({'name':obj.name,'identity':identity,'material':mat,'recolor':True,
+                          'positions':positions,'normals':normals,'size':dimensions,
+                          'center':[(high[k]+low[k])/2 for k in range(3)],
+                          'radius':min(.006,*(v/4 for v in dimensions))})
+            continue
         # Existing height edits preserve the 2 mm face and resize only the upper box.
         band = 'upper' if obj.name == 'body' else 'base'
         ys = positions[1::3]
@@ -90,23 +102,37 @@ def publish(source, target):
                       'material': mat, 'positions': positions, 'normals': normals})
     if not parts:
         raise ValueError('No meshes')
-    expected = {'face', 'diffuser', 'display', 'brand-accent', 'body'}
-    expected.update('rim-'+axis+'-'+str(side) for axis in ('side', 'end') for side in (-1, 1))
-    expected.update('vent-'+str(i) for i in range(5))
-    expected.update('display-mark-'+str(i) for i in range(3))
-    expected.update(prefix+'-'+str(i) for prefix in ('indicator', 'indicator-label', 'brand-mark') for i in range(4))
+    if profile == 'y52y09':
+        sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+        from y52y09_spec import boards
+        reference = {name:(size,center) for name,size,center in boards()}
+        expected = set(reference)
+        for part in parts:
+            if part['name'] not in reference:
+                raise ValueError('Unknown bookcase board')
+            size,center = reference[part['name']]
+            if any(abs(part['size'][k]-size[k]) > 1e-6 or abs(part['center'][k]-center[k]) > 1e-6 for k in range(3)):
+                raise ValueError('Bookcase board dimensions/origin changed: '+part['name'])
+    else:
+        expected = {'face', 'diffuser', 'display', 'brand-accent', 'body'}
+        expected.update('rim-'+axis+'-'+str(side) for axis in ('side', 'end') for side in (-1, 1))
+        expected.update('vent-'+str(i) for i in range(5))
+        expected.update('display-mark-'+str(i) for i in range(3))
+        expected.update(prefix+'-'+str(i) for prefix in ('indicator', 'indicator-label', 'brand-mark') for i in range(4))
     if {p['name'] for p in parts} != expected:
-        raise ValueError('SE2 part set changed; review resize and stable identities before publishing')
-    for axis, limits in enumerate(((-.15, .15), (0, .112), (-.3, .3))):
+        raise ValueError('Asset part set changed; review resize and stable identities before publishing')
+    bounds = ((-.15,.15),(0,.112),(-.3,.3)) if profile == 'se2' else ((-.5575,.5575),(0,.75),(-.115,.115))
+    for axis, limits in enumerate(bounds):
         values = [v for p in parts for v in p['positions'][axis::3]]
         if max(abs(min(values)-limits[0]), abs(max(values)-limits[1])) > 1e-6:
-            raise ValueError('SE2 reference dimensions/origin changed; review product rules first')
-    payload = {'format': 1, 'id': 'bath-heater-aopu-se2', 'version': 1,
-               'sourceSha256': hashlib.sha256(raw).hexdigest(), 'sizeMm': [300, 112, 600], 'fixedBaseMm': 2, 'parts': parts}
+            raise ValueError('Reference dimensions/origin changed; review product rules first')
+    payload = {'format':1,'version':1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
+    payload.update({'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6})
     # Publish only after successful import and validation; a failed attempt preserves the old asset.
     body = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
-    text = '/* Generated from se2-v1.glb; scripts/publish-blender-asset.py. Do not hand-edit. */\n'
-    text += '(function(root){const asset=' + body + ';if(typeof module==="object"&&module.exports)module.exports=asset;else root.FurnishSE2BlenderAsset=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
+    text = '/* Generated from '+source.name+'; scripts/publish-blender-asset.py. Do not hand-edit. */\n'
+    global_name = 'FurnishSE2BlenderAsset' if profile=='se2' else 'FurnishY52Y09BlenderAsset'
+    text += '(function(root){const asset=' + body + ';if(typeof module==="object"&&module.exports)module.exports=asset;else root.'+global_name+'=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + '.tmp')
     temporary.write_text(text, encoding='utf-8')
@@ -118,7 +144,8 @@ if __name__ == '__main__':
     args = sys.argv[sys.argv.index('--')+1:]
     result = pathlib.Path(args[args.index('--result')+1]) if '--result' in args else None
     try:
-        publish(pathlib.Path(args[0]).resolve(), pathlib.Path(args[1]).resolve())
+        profile = args[args.index('--profile')+1] if '--profile' in args else 'se2'
+        publish(pathlib.Path(args[0]).resolve(), pathlib.Path(args[1]).resolve(), profile)
         if result:
             result.write_text(json.dumps({'passed': True, 'blender': bpy.app.version_string}), encoding='utf-8')
     except Exception as error:

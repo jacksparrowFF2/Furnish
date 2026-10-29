@@ -13,6 +13,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    // Same production board envelope feeds the numeric recorder. The render-only
    // edge easing remains inside that envelope; radius is a visual estimate.
    if(roundedBookcase&&mesh.geometry?.attributes){const r=Math.min(bookcase.edgeRadius/1000,W/4,H/4,D/4),s=new THREE.Shape();s.moveTo(-W/2+r,-H/2+r);s.lineTo(W/2-r,-H/2+r);s.lineTo(W/2-r,H/2-r);s.lineTo(-W/2+r,H/2-r);s.closePath();const geometry=new THREE.ExtrudeGeometry(s,{depth:D-2*r,bevelEnabled:true,bevelThickness:r,bevelSize:r,bevelSegments:3,steps:1});geometry.translate(0,0,-D/2+r);mesh.geometry.dispose();mesh.geometry=geometry;}
+   if(roundedBookcase)mesh.userData.furnishBoardSize=[W,H,D];
    parent.add(mesh);return mesh;};
   const closure=C.topClosure(c),panels=C.endPanels(c);
   if(closure.height&&!options.skipTopClosure){
@@ -280,6 +281,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     pivot.traverse(o=>o.userData.cabinetPart={column:i,leaf:j});g.add(pivot);
    }
   },(item,slot)=>item?.partId||"column:"+slot);
+  if(roundedBookcase&&options.blenderAssets!==false){const loader=root.FurnishBookcaseAssetModel||(typeof require==='function'?require('./bookcase-asset-model.js'):null);if(loader)loader.apply(THREE,g);}
   if(options.outlines)g.traverse(o=>{if(o.isMesh){const edges=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x82776b,transparent:true,opacity:.55}));edges.userData.cabinetOwnMaterial=true;o.add(edges);}});
   const placement=C.pegboardPlacement(f,c);if(placement?.offset)for(const child of g.children)child.position.y+=placement.offset/1000;
   return g;

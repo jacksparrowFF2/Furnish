@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "blender": "4.5.15 LTS",
+  "results": [
+    {
+      "mode": "http",
+      "parts": 12,
+      "stableKeys": 12,
+      "worldSizeMm": [
+        1374.826,
+        1138.641,
+        900.0
+      ]
+    },
+    {
+      "mode": "file",
+      "parts": 12,
+      "stableKeys": 12,
+      "worldSizeMm": [
+        1374.826,
+        1138.641,
+        900.0
+      ]
+    }
+  ]
+}

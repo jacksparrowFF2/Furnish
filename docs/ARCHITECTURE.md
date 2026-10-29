@@ -453,3 +453,8 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 ## 2026-10-29：Blender 静态家电资产试点
 
 SE2 浴霸的 Blender 源工程导出 GLB，经独立后台导入校验后发布为普通脚本资产；static-asset-model 同时供真实 Three 和数值实体记录器读取。主入口在 bath-heater-model 前加载资产和构造器，原产品规则、二维、变换、保存及撤销通道保持，无新持久字段。原29个部件身份及尺寸编辑行为保留，file:// 与 HTTP 均已实测。受限发布能力及版本维护见 [资产试点](BLENDER-ASSET-PILOT.md)。
+
+
+## 2026-10-29：Blender 成品书柜资产
+
+Y52Y09源工程／GLB由受限y52y09发布配置校验为12块具名板件，bookcase-asset-model在生产柜体构造完成后按元数据替换板件网格；板件位置、尺寸和保守实体仍沿原柜体核心及solidParts，原六格、结构编辑和v3部件身份保持。主入口和对应预览在cabinet-model前加载资产与适配器，无新持久字段／项目版本；HTTP及断网file已验证。见 [书柜模型与资产验收](BOOKCASE-YESWOOD-Y52Y09.md)。
