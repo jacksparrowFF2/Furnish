@@ -20,4 +20,6 @@
 
 ## 验证与查看
 
+2026-10-29：本型号成为 Blender 资产试点。主场景与生产预览改由 Blender 源工程导出的 GLB 发布网格构建，数值实体读取同一资产，原29个部件身份、尺寸编辑和安装规则保持。源工程、导入发布命令、兼容性及增量验收见 [资产试点](BLENDER-ASSET-PILOT.md)。下文2026-10-27记录为原始模型验收。
+
 [增量验收记录](validation/bath-heater-se2-20261027/README.md)。生成预览：`node scripts/preview-bath-heater-se2.cjs`，打开`output/bath-heater-se2/preview.html`。预览使用生产构造器并支持拖动环绕、发光面／侧面视角。未验证实物安装或Blender Live Sync实机传输。

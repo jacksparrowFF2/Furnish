@@ -448,3 +448,8 @@ Furnish 使用浏览器原生脚本，无需构建。直接打开 `index.html` �
 2026-10-25（独立截面实时编辑）：ceiling-editor在原会话上自动校验输入、实时更新拖点和生产预览；节点／尺寸注记以像素适配，组合放大图共用注记并响应resize。ceiling-core提供sectionMeasurements及mirrorSection，镜像保留参数模板、同步光源与柔光板；新可选镜像及关闭中央板时未激活的翼边参照使用v20，旧v18／v19不补字段。沿原mutate／缓存／撤销链路，无新加载脚本。见 [实时截面](CEILINGS.md#独立截面自动更新标注与镜像2026-10-25)。
 
 2026-10-26（组合图精调与卡槽）：ceiling-section-editor在原草稿中保存会话级viewBox、共用wheel／pan解释，按源／目标阶段选择顶点或投影点后调用transformSection精确定位；修改参数保留2D视图并复用生产3D。ceiling-core在显式mountDetail模板中生成H形及下挡边，产品规则集中示意尺寸；v23仅用于新字段，旧简化轮廓不迁移。详见 [接缝与卡槽](CEILINGS.md#组合剖面缩放精确贴合与安装卡槽2026-10-26)。
+
+
+## 2026-10-29：Blender 静态家电资产试点
+
+SE2 浴霸的 Blender 源工程导出 GLB，经独立后台导入校验后发布为普通脚本资产；static-asset-model 同时供真实 Three 和数值实体记录器读取。主入口在 bath-heater-model 前加载资产和构造器，原产品规则、二维、变换、保存及撤销通道保持，无新持久字段。原29个部件身份及尺寸编辑行为保留，file:// 与 HTTP 均已实测。受限发布能力及版本维护见 [资产试点](BLENDER-ASSET-PILOT.md)。
