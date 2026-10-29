@@ -1,0 +1,50 @@
+{
+  "opening": 1585.125,
+  "pocket": 648.375,
+  "contactFaceX": 3073,
+  "leadingDoorY": [
+    6930,
+    6970
+  ],
+  "cabinetDoorY": [
+    6751,
+    7150.905904
+  ],
+  "contactHeightFromFinishedFloor": {
+    "bottom": 60.99999999999994,
+    "top": 2290,
+    "source": "production-board"
+  },
+  "contactNoPenetration": true,
+  "positiveHalfMillimetrePenetrates": true,
+  "negativeHalfMillimetreClear": true,
+  "unchangedFurniture": 64,
+  "closedIssueCount": 42,
+  "openIssueCount": 41,
+  "closedCabinetWarning": [
+    {
+      "kind": "cabinetdoor",
+      "id": "fmv3w4m2a4",
+      "markerIds": [],
+      "name": "主卧衣柜 · 活动区东侧",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        3082,
+        6750
+      ],
+      "message": "分区 1 柜门三维开启范围被 主卧口袋门 · 关闭端抵首扇柜门 占用"
+    }
+  ],
+  "roundtrip": true,
+  "repeatedRestore": true,
+  "otherNamedDesignsPreserved": true,
+  "ui": {
+    "load": true,
+    "undoRedo": true,
+    "openClosed": true,
+    "visual3D": true
+  },
+  "scope": "Saved layout and production numeric geometry only; no source changes or full-suite run"
+}
