@@ -1,0 +1,43 @@
+{
+  "furnitureId": "fmv3wzkb515",
+  "h": 2450,
+  "currentCabinetUnchanged": true,
+  "lowerMiddleDoorsIntersect": false,
+  "left": [
+    [
+      4758.75,
+      4252.625
+    ],
+    [
+      4776.75,
+      4252.625
+    ],
+    [
+      4776.75,
+      4660
+    ],
+    [
+      4758.75,
+      4660
+    ]
+  ],
+  "right": [
+    [
+      4738.75,
+      4252.625
+    ],
+    [
+      4756.75,
+      4252.625
+    ],
+    [
+      4756.75,
+      4660
+    ],
+    [
+      4738.75,
+      4660
+    ]
+  ],
+  "poseRule": "finite-thickness-hinges-v1"
+}
