@@ -56,6 +56,7 @@ const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'foldin
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
 const types={
  pocketdoor_double:{family:'pocket-door',height:2640,defaults:{slidingOpen:true},fields:['slidingOpen'],create:['slidingOpen'],solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening'},pocket:{minWidth:1600,minDepth:120,minHeight:1800,skin:18,leaf:40,end:30,overlap:20,head:300,bottom:10,reserve:100}},
+ pocketdoor_triple:{family:'pocket-door',height:2640,defaults:{slidingOpen:true,slidingStackSide:'left'},fields:['slidingOpen','slidingStackSide'],create:['slidingOpen','slidingStackSide'],solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening'},pocket:{panels:3,minWidth:2000,minDepth:200,minHeight:1800,skin:18,leaf:40,end:30,overlap:20,head:300,bottom:10,reserve:120,laneGap:10}},
  bookshelf_yeswood_y52y09:{height:750,bookcase:{template:'book-y52y09-low',width:1115,depth:230,thickness:18,edgeRadius:6},identity:{brand:'源氏木语/YESWOOD',model:'Y52Y09 · 三列两层 · 无底框',sourceUrl:'https://item.jd.com/100266639340.html'}},
  panel_light_300x600:{family:'ceiling-panel-device',clearanceReview:'missing',height:35,anchor:'bottom',defaults:{mountHeight:2500},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishBathHeaterModel',module:'bath-heater'},ceilingPanel:{width:300,length:600,rim:2,alignment:.1},panelLight:{watts:24,frame:3,color:'#fff4e4',previewCandela:60,columns:2,rows:3,bounceCandela:3,bounceDrop:900,bounceReach:4000}},
  bath_heater_aopu_se2:{family:'ceiling-panel-device',clearanceReview:'missing',height:112,anchor:'bottom',defaults:{mountHeight:2500},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'奥普/AUPU',model:'SE2'},solidModel:{global:'FurnishBathHeaterModel',module:'bath-heater'},ceilingPanel:{width:300,length:600,rim:2,alignment:.1,profile:'se2',bodyHeight:110,minCeilingDrop:130}},
@@ -121,7 +122,15 @@ function assemblyBounds(f){if(f?.cabinet?.template!=='entry-pegboard')return nul
 // Concept construction dimensions, not a hardware specification. Total width includes both pockets.
 function pocketLayout(f){
  const r=definition(f)?.pocket;if(!r||f.obj)return null;
- const h=height(f);if(!(f.w>=r.minWidth&&f.d>=r.minDepth&&h>=r.minHeight))throw Error('口袋门草模总宽至少1600、墙厚至少120、总高至少1800 mm');
+ const h=height(f);if(!(f.w>=r.minWidth&&f.d>=r.minDepth&&h>=r.minHeight))throw Error(`口袋门草模总宽至少${r.minWidth}、墙厚至少${r.minDepth}、总高至少${r.minHeight} mm`);
+ if(r.panels===3){
+  const opening=(f.w-r.reserve)*r.panels/(r.panels+1),pocket=f.w-opening,clearHeight=h-r.head,leaf=(opening+(r.panels-1)*r.overlap)/r.panels,sign=value(f,'slidingStackSide')==='right'?-1:1,start=-f.w/2+pocket,parked=-f.w/2+r.end+20+leaf/2,parts=[];
+  for(const face of [-1,1])parts.push({key:'pocket-skin',w:pocket,d:r.skin,h:clearHeight,x:sign*(-f.w/2+pocket/2),z:face*(f.d-r.skin)/2,bottom:0});
+  parts.push({key:'pocket-end',w:r.end,d:f.d,h:clearHeight,x:sign*(-f.w/2+r.end/2),z:0,bottom:0},{key:'pocket-header',w:f.w,d:f.d,h:r.head,x:0,z:0,bottom:clearHeight});
+  const leaves=Array.from({length:r.panels},(_,i)=>({side:i,closed:sign*(start+leaf/2+i*(leaf-r.overlap)),opened:sign*parked,width:leaf,z:(i-(r.panels-1)/2)*(r.leaf+r.laneGap)}));
+  for(const l of leaves)parts.push({key:'pocket-leaf',w:leaf,d:r.leaf,h:clearHeight-r.bottom,x:value(f,'slidingOpen')?l.opened:l.closed,z:l.z,bottom:r.bottom,side:l.side});
+  return {opening,pocket,clearHeight,leaves,parts,panels:r.panels};
+ }
  const opening=f.w/2-r.reserve,pocket=(f.w-opening)/2,clearHeight=h-r.head,leaf=opening/2+r.overlap,travel=opening/2+r.overlap+2,parts=[];
  for(const side of [-1,1]){
   const x=side*(opening/2+pocket/2);

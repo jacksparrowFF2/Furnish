@@ -13,7 +13,7 @@ const ec = (cx,cy,rx,ry,f,ex='') => `<ellipse cx="${cx}" cy="${cy}" rx="${Math.m
 const ln = (x1,y1,x2,y2,ex='') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" ${ST()} ${ex}/>`;
 const pa = (d,f='none',ex='') => `<path d="${d}" fill="${f}" ${ST()} ${ex}/>`;
 const DASH = 'stroke-dasharray="4 3"';
-if(t==='pocketdoor_double'){
+if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
  const P=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts,l=P.pocketLayout(f||{type:t,w,d});
  return l.parts.filter(p=>p.key!=='pocket-header').map(p=>rc(p.x-p.w/2,p.z-p.d/2,p.w,p.d,p.key==='pocket-leaf'?c:'#e8e3d9',`data-pocket-part="${p.key}"`)).join('')+ln(-w/2,-d/2,w/2,-d/2,DASH);
 }

@@ -1,0 +1,14 @@
+{
+  "opening": 2057.625,
+  "priorOpening": 1331.75,
+  "pocket": 805.875,
+  "furniture": 69,
+  "unchangedFurniture": 67,
+  "bookcaseShift": 40,
+  "openIssueCount": 41,
+  "closedIssueCount": 41,
+  "pocketIssues": [],
+  "roundtrip": true,
+  "repeatedRestore": true,
+  "otherNamedDesignsPreserved": true
+}

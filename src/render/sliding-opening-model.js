@@ -4,7 +4,7 @@
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
-const supported=f=>['pocketdoor_double','slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f?.type);
+const supported=f=>['pocketdoor_triple','pocketdoor_double','slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f?.type);
 function create(THREE,options={}){
  const products=options.products||root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null);
  const primitives=options.primitives||(root.FurnishModelPrimitives||(typeof require==='function'?require('./model-primitives.js'):null)).create(THREE);

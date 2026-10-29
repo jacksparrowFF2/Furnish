@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-29（扩大口袋门）：pocketdoor_triple通过原pocketLayout／sliding-opening-model生成三轨单侧入袋，7件实体由原生产记录器读取；旧双侧9件构造保持。沿既有slidingStackSide、slidingOpen与mutate保存，无新字段或加载脚本；checkContext对口袋门族追加构造、姿态和收门侧以使空间确认准确失效。见[当前口袋门](POCKET-DOOR.md)。
+
 2026-10-29：定制口袋门草模的总宽／墙袋／开口／板件由product-rules.pocketLayout派生，复用已有sliding-opening-model加载入口及开合控制；furniture-solids从该生产模型读取9件实体，SVG同源。可选slidingOpen复用既有能力、mutate、恢复和项目链路，无新脚本或格式版本。见[草模契约](POCKET-DOOR.md)。
 
 2026-10-29：Y52Y09低书柜沿product-rules身份／高度、cabinet-core模板和原cabinet-model实现；圆润外观不超生产板件包络，数值实体仍由cabinet-motion记录。无新持久字段、加载脚本或版本，原命名方案和mutate保存链路保持。见[模型契约](BOOKCASE-YESWOOD-Y52Y09.md)。

@@ -1078,7 +1078,7 @@ const syncIdentity=FurnishPartIdentity;
       g.add(syncIdentity.produce("index:site-202",()=>blob(r*.42, r*.16, r*.42, glowMat('#fff6dd', '#ffdca0', .9), 0, 2.12, 0, 20)));
       break;
     }
-    case 'pocketdoor_double': case 'slidingdoor': case 'telescopicdoor20': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
+    case 'pocketdoor_triple': case 'pocketdoor_double': case 'slidingdoor': case 'telescopicdoor20': case 'doubleslidingdoor': case 'tripleslidingdoor': case 'tripleslidingwindow': {
       const model=slidingModels.build(f,{furniture,...context});g.add(...model.children.slice());g.userData.slidingDoor=model.userData.slidingDoor;break;
     }
     case 'curtain': {

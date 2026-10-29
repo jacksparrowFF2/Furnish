@@ -156,6 +156,7 @@ const LIB = [
   ]},
   {cat:'门 · 隔断', items:[
     ["pocketdoor_double","双侧口袋门隔断 · 布局草模",2800,160,"#c5b59d",undefined,2640],
+    ["pocketdoor_triple","单侧三联动口袋门 · 布局草模",2800,220,"#c5b59d",undefined,2640],
     ["slidingdoor","双扇推拉门",1800,120,"#41474b",2800,2100],
     ["telescopicdoor20","2+0 同向联动门 · 超白玻璃",1800,products.definition('telescopicdoor20').telescopic.defaultDepth,"#41474b",0,2400],
     ["doubleslidingdoor","双联动推拉门",1800,90,"#41474b",0,2400],
