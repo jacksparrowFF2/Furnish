@@ -80,7 +80,7 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
   };
   const add=(board,transform=identity,base=0,prefix='')=>{
    if(!(board.top>board.bottom)||board.poly.length<3)return;
-   const data=board.metadata||{},part=data.cabinetTopClosure?'顶部封板':data.cabinetSection==='bottom'?'底板':data.cabinetSection==='plinth'?'踢脚底座':data.cabinetShelf?'层板':data.cabinetDivider?'隔板':data.cabinetSide==='left'?'左侧板':data.cabinetSide==='right'?'右侧板':data.cabinetTop?'顶板':data.cabinetDrawerBoard?'抽屉板':data.cabinetBasketPart?'抽屉篮架':data.cabinetPart?'柜门／抽屉':data.cabinetBay?'背板':'柜体板件';
+   const data=board.metadata||{},part=data.cabinetTopClosure?'顶部封板':data.cabinetSection==='bottom'?'底板':data.cabinetSection==='plinth'?'踢脚底座':data.cabinetHangingRod?'挂衣杆':data.cabinetShelf?'层板':data.cabinetDivider?'隔板':data.cabinetSide==='left'?'左侧板':data.cabinetSide==='right'?'右侧板':data.cabinetTop?'顶板':data.cabinetDrawerBoard?'抽屉板':data.cabinetBasketPart?'抽屉篮架':data.cabinetPart?'柜门／抽屉':data.cabinetBay?'背板':'柜体板件';
    // Decomposition preserves notched lids instead of filling their concavities.
    for(const poly of z.decompose([board.poly],p=>z.inside(p,board.poly))){
     const piece={...board,poly},points=board.motion?B.vertices(piece,board.phase||0):[board.bottom,board.top].flatMap(y=>poly.map(([x,q])=>[x,y,q]));

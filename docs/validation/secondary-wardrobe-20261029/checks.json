@@ -1,0 +1,70 @@
+{
+  "unchangedFurniture": 70,
+  "oldNamedDesignsPreserved": 13,
+  "activeAnd1601Match": true,
+  "backupPreserved": true,
+  "outer": {
+    "w": 1637.5,
+    "d": 630,
+    "h": 2350
+  },
+  "boxOuterWidths": [
+    818.75,
+    818.75
+  ],
+  "netWidths": [
+    782.75,
+    782.75
+  ],
+  "rods": [
+    {
+      "column": 0,
+      "bottom": 1691.5,
+      "top": 1716.5
+    },
+    {
+      "column": 1,
+      "bottom": 839.5,
+      "top": 864.4999999999999
+    },
+    {
+      "column": 1,
+      "bottom": 1691.5,
+      "top": 1716.5
+    }
+  ],
+  "drawerFaces": [
+    207,
+    207.0000000000001
+  ],
+  "doorFaces": 8,
+  "issues": [
+    {
+      "kind": "ceiling",
+      "id": "fmv3wzkb515",
+      "ceilingId": "ceiling_area_fmvqf798i1_part_0",
+      "name": "次卧衣柜 · 双柜挂衣与明抽",
+      "pending": false,
+      "at": [
+        4757.75,
+        4975
+      ],
+      "message": "次卧衣柜 · 双柜挂衣与明抽与次卧衣柜平顶 · 平面吊顶实体相交"
+    },
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "次卧衣柜 · 双柜挂衣与明抽",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        5576.5,
+        4219
+      ],
+      "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用"
+    }
+  ],
+  "roundtrip": true
+}
