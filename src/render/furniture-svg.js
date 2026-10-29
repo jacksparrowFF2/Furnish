@@ -101,6 +101,9 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       s += pa(`M${x+w-15-Math.min(420,w*.3)} ${by}L${x+w-15} ${by}L${x+w-15} ${by+Math.min(420,w*.3)}Z`, shade(c,1.12));
       return s;
     }
+    case 'armchair_yeswood_y09hs': {
+      const a=w*80/725;return rc(x+a,y,w-2*a,d*.36,'#d5cbb9','rx="35"')+rc(x+a,y+d*.36,w-2*a,d*.57,'#d5cbb9','rx="42"')+[-1,1].map(side=>rc(side*w*322.5/725-a/2,y+d*.14,a,d*.76,c,'rx="20"')).join('');
+    }
     case 'sofa_yeswood_cherry': {
       const a=w*.085,b=d*.245,wood='#b77749',cw=(w-2*a)/2;
       let s=rc(x,y,w,d,wood,'rx="16"');

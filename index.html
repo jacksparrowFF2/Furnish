@@ -355,6 +355,8 @@
 <script src="src/render/downlight-model.js"></script>
 <script src="src/data/se2-blender-asset.js"></script>
 <script src="src/render/static-asset-model.js"></script>
+<script src="src/data/armchair-blender-asset.js"></script>
+<script src="src/render/armchair-model.js"></script>
 <script src="src/render/bath-heater-model.js"></script>
 <script src="src/render/model-primitives.js"></script>
 <script src="src/render/basic-furniture-model.js"></script>
@@ -785,6 +787,7 @@ const syncIdentity=FurnishPartIdentity;
     const model=FurnishArrowShowerModel.build(THREE,f,RoundedBoxGeometry);
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
+  if(FurnishArmchairModel.supported(f)){const model=FurnishArmchairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(f.type==='sofa_yeswood_cherry'){
     const model=FurnishYeswoodSofaModel.build(THREE,f,RoundedBoxGeometry,{wood:woodM,fabric});
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;

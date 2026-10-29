@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "blender": "4.5.15 LTS",
+  "closedMeshes": 28,
+  "productionParts": 28,
+  "resizeRotateMirrorRelativeBounds": true,
+  "missingPartRejectedPreservingAsset": true
+}
