@@ -22,6 +22,27 @@
 
 ## 实现及兼容
 
+### 2026-10-29：Blender 成品家具流程
+
+本型号默认生产板件现来自 [Blender 源工程](../assets/models/y52y09/y52y09-v1.blend)导出的 [GLB](../assets/models/y52y09/y52y09-v1.glb)，经独立后台 Blender 重新导入校验后发布为 `src/data/y52y09-blender-asset.js`。固定为 `bookcase-y52y09@1`，12块具名板件组成三列两层。新增 `bookcase-asset-model.js`，主入口与生产预览在柜体构造器前加载资产与适配器；不新增实例字段、家具类型或保存格式。
+
+```powershell
+# 重新建模使用新目录，避免覆盖手工编辑。
+node scripts/blender-asset.cjs author-y52y09 output/y52y09-new-source
+node scripts/blender-asset.cjs publish-y52y09 assets/models/y52y09/y52y09-v1.glb
+node scripts/preview-bookcase-y52y09.cjs
+node tests/test-blender-bookcase-asset.cjs
+node scripts/verify/verify-blender-appliance.cjs --bookcase
+```
+
+外观由Blender板件网格提供，板件尺寸、位置、格宽、层板高度和厚度仍由现有柜体核心派生。适配器按生产元数据映射顶底、侧板、隔板、背板和层板；改尺寸时分别调整每块板件，并保留倒圆范围，不整件拉伸板厚。默认12块全部使用导入网格；新增层板或隔间复用同类导入板件，新增门抽屉等结构仍使用原构造能力。原家具编号、模板、柜体草稿、部件v3身份及编辑入口保持；旧实例无需重放置。原构造器可作回归基线和缺少资产适配器时的兼容回退，正式入口验收明确排除了回退掩盖导入失败。
+
+`FurnishCabinetMotion.solidParts()`仍从生产构造器记录12块实际板件的保守矩形包络，二维占地、吸附、六向净距和碰撞沿原规则；导入板件逐块外包与记录器对照验证。倒圆边角的精细空隙仍按原保守板件判断，不声称逐三角面的精确碰撞；柜格内部不会被整体外包框填实，也没有空腔白名单。单纯木色变化不改变空间规则；结构、尺寸和层板高度继续进入既有缓存与核对上下文。
+
+发布器新增受限 `y52y09` 配置，复用SE2的静态网格读取与失败保留机制。每块板件的身份、尺寸、中心和整体1115×750×230 mm边界都需符合本型号参考配方；错误顶板位置的GLB已实测拒绝。仍非任意成品家具通用导入器，新增产品需定义自己的规则和发布配置。材质仍为无贴图暖木色近似，Blender源工程可继续精修；18 mm板厚、背板和圆角仍非厂家加工数据。
+
+本轮13项增量回归、HTTP和断网`file://`的生产加载／尺寸编辑／撤销重做／刷新／导出、390px预览及真实Blender再导入均通过。六格开口、板内穿入、格内净距、阈值接触、旋转镜像、高度分离、结构编辑与项目往返的证据见 [本轮验收](validation/blender-bookcase-y52y09-20261029/README.md)。以下文字和最后一节的未执行范围为原始模型记录，以本节和本轮验收为最新状态。
+
 产品核心登记默认高度、身份和外观能力；柜体核心提供独立模板，生产柜体构造器共用完整顶底、两侧、两块隔板、三段背板和三块层板。该模板使用同色木柜身和近似圆润板边，层板前沿齐平。18 mm厚下模型内部单格约347.7 × 212 × 348 mm（宽／深／高）；仅为模型净空，不是厂家实测。
 
 `FurnishCabinetMotion.solidParts()`从同一生产构造器记录12块板件，圆边按保守矩形板件包络核对；四向测距继续走`FurnishSnapping.directional()`与`FurnishGeometry.bodyParts()`，不新增空腔豁免或型号测距分支。柜体编辑仍沿草稿与mutate；无新字段、加载脚本或项目版本。可修改结构及宽深高，修改后代表用户方案，不能解释成另一厂家规格。
