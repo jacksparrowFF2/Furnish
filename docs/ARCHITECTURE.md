@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-29（Blender烟机上翻）：hood-motion-core拟合独立主机／装饰罩和刚性水平轴玻璃，hood-asset-model装配27个离线网格；fotile正式入口仅将JCD10TA转发资产，灶具保持。当前轮廓及生产实体接入共用空间链，完整扫掠复用柜体竖向剖面；定位同源，确认和v33仓库／缓存同步。见[契约](HOOD-BLENDER-MOTION.md)。
+
 2026-10-29（Blender洗碗机折叠端态）：dishwasher-fold-core提供参考部件及嵌套水平轴，dishwasher-asset-model装配60个离线网格，原dishwasher-model正式build转发资产入口。产品能力注册生产实体，当前轮廓、测距及碰撞同源，原安装检查继续独立核对完整预留。含该款方案使用v32，缓存／仓库和确认标记同步。见[流程契约](DISHWASHER-BLENDER-FOLD.md)。
 
 2026-10-29（Blender冰箱活动部件）：fridge-core与product-rules派生门轴／行程和完整扫掠，fridge-model装配具名离线网格，显示与数值实体共用生产构造；属性、二维轮廓、核对定位及3D缓存覆盖四个可选运动字段。含该款的方案使用v31，仓库和缓存读写同步支持。见[活动资产契约](FRIDGE-BLENDER-MOTION.md)。

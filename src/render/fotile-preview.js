@@ -20,6 +20,6 @@ const panel=document.querySelector('#panel');if(panel)panel.onclick=()=>{
  f.hoodPanelOpen=!f.hoodPanelOpen;scene.remove(model);model.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});
  model=FurnishFotileModel.build(THREE,f);scene.add(model);panel.textContent=f.hoodPanelOpen?'闭合面板':'打开面板';window.fotilePreview.model=model;
 };
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
-view('angle');renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.zoom=Math.min(1,camera.aspect*1.1);camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+view('angle');camera.zoom=Math.min(1,camera.aspect*1.1);camera.updateProjectionMatrix();renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
 window.fotilePreview={scene,model,f,view};window.previewReady=true;

@@ -5,7 +5,7 @@
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
 const supported=f=>['stove_fotile_th36b','rangehood_fotile_jcd10ta'].includes(f.type);
-function build(THREE,f){
+function buildLegacy(THREE,f){
  const P=root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null),g=new THREE.Group();let cover;
  const material=(color,metalness=0,roughness=.45)=>new THREE.MeshStandardMaterial({color,metalness,roughness});
  const glass=material('#101214',.28,.13),iron=material('#252729',.5,.55),steel=material('#aeb2b5',.8,.27),black=material('#17191b',.25,.4),gold=material('#ba8839',.55,.35);
@@ -71,5 +71,6 @@ function build(THREE,f){
  // Installation translation lives on a wrapper so app transforms can set X/Z safely.
  const result=new THREE.Group();result.add(g);if(cover)result.add(cover);result.userData.fotile=true;return result;
 }
-const api={supported,build};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFotileModel=api;
+function build(THREE,f){if(f.type==='rangehood_fotile_jcd10ta'){const asset=root.FurnishHoodAssetModel||(typeof require==='function'?require('./hood-asset-model.js'):null);if(!asset)throw Error('Hood Blender model not loaded');return asset.build(THREE,f);}return buildLegacy(THREE,f);}
+const api={supported,build,buildLegacy};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishFotileModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

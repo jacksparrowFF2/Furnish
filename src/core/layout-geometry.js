@@ -95,7 +95,7 @@ function collisions(furniture,plan){
     if (tuckedSeatPair(a,b)) continue;
     if(!verticalOverlap(a,b,[vertical[i],vertical[j]]))continue;
     const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);
-    if(C&&((!(root.FurnishProducts||require('./product-rules.js')).definition(a)?.fridgeMotion&&!(root.FurnishProducts||require('./product-rules.js')).definition(b)?.fridgeMotion&&(C.fridgeFitsBay(a,b)||C.fridgeFitsBay(b,a)))||C.hoodBayFit(a,b)?.fits||C.hoodBayFit(b,a)?.fits)&&(!bases||bases[i].known&&bases[j].known&&Math.abs(bases[i].z-bases[j].z)<1e-6))continue;
+    if(C&&![a,b].some(f=>(root.FurnishProducts||require('./product-rules.js')).definition(f)?.hoodMotion&&(root.FurnishProducts||require('./product-rules.js')).value(f,'hoodPanelOpen'))&&((!(root.FurnishProducts||require('./product-rules.js')).definition(a)?.fridgeMotion&&!(root.FurnishProducts||require('./product-rules.js')).definition(b)?.fridgeMotion&&(C.fridgeFitsBay(a,b)||C.fridgeFitsBay(b,a)))||C.hoodBayFit(a,b)?.fits||C.hoodBayFit(b,a)?.fits)&&(!bases||bases[i].known&&bases[j].known&&Math.abs(bases[i].z-bases[j].z)<1e-6))continue;
     const M=root.FurnishCabinetMotion||require('./cabinet-motion.js');
     if (M.supportsSolids(a)||M.supportsSolids(b)||(root.FurnishProducts||require('./product-rules.js')).family(a,'pipe-box')||(root.FurnishProducts||require('./product-rules.js')).family(b,'pipe-box')?volumeOverlap(a,b,plan,furniture):obbOverlap(a,b)) out.push([a.id, b.id]);
   }
