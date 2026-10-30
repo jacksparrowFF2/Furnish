@@ -1,22 +1,52 @@
+// The current work slot remains the active canvas; every save mirrors only its selected design.
+function switchDesign(id){
+  if(repositoryBooting)return;
+  const d=store.designs.find(d=>d.id===id&&d.planId===PLAN.id);
+  if(!d||!d.editable||FurnishDesign.activeDesign(store,PLAN.id)?.id===id)return;
+  if(ui.mA||typeof drag!=='undefined'&&drag)return toast(tr('请先结束当前绘制或拖动','Finish the current drawing or drag first'));
+  try{
+    const next=fixWork(JSON.parse(JSON.stringify(d.work)),PLAN);
+    if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);
+    FurnishProject.validatePlanWork(PLAN,next);
+    FurnishDesign.preserveCurrentDesign(store,PLAN.id,fixWork(JSON.parse(snap()),PLAN));
+    save();snapshot(true,state,'切换方案前');
+    (store.activeDesigns||={})[PLAN.id]=id;state=next;
+    undoStack.length=redoStack.length=0;ui.sel=null;ui.mA=null;ui.mCur=null;hoverRoom='';
+    save();renderAll();renderDesigns();window.View3D?.replan();$('#fileMenu').open=false;
+    toast(tr(`已切换到「${d.name}」`,`Switched to "${d.name}"`));
+  }catch(e){toast(e.message);}
+}
+function renderDesignBar(){
+  const host=$('#designBar');if(!host)return;
+  const active=FurnishDesign.activeDesign(store,PLAN.id),rows=store.designs.filter(d=>d.planId===PLAN.id&&d.editable===true);
+  const key=JSON.stringify([PLAN.id,active?.id,rows.map(d=>[d.id,d.name]),LANG,repositoryBooting]);
+  if(host.dataset.renderKey===key)return;host.dataset.renderKey=key;
+  host.innerHTML=`<span class="design-bar-label">${tr('方案','Design')}</span><div class="design-tabs" role="group" aria-label="${tr('切换方案','Switch design')}">${!active?`<button class="btn on" aria-pressed="true" disabled>${tr('当前布置','Current layout')}</button>`:''}${rows.map(d=>`<button class="btn ${d.id===active?.id?'on':''}" data-switch-design="${esc(d.id)}" aria-pressed="${d.id===active?.id}" title="${esc(d.name)}" ${repositoryBooting?'disabled':''}>${esc(d.name)}</button>`).join('')}</div><button class="btn" id="bar-create-design" ${repositoryBooting?'disabled':''}>${tr('＋ 新方案','＋ New')}</button><button class="btn" id="bar-manage-designs" ${repositoryBooting?'disabled':''}>${tr('管理','Manage')}</button>`;
+  host.querySelectorAll('[data-switch-design]').forEach(b=>b.onclick=()=>switchDesign(b.dataset.switchDesign));
+  $('#bar-create-design').onclick=()=>window.FurnishDesignUI.editDesign('create',undefined,true);
+  $('#bar-manage-designs').onclick=()=>window.FurnishDesignUI.designs();
+  host.querySelector('[aria-pressed="true"]')?.scrollIntoView({block:'nearest',inline:'nearest'});
+}
 /* Classic declarations; initialize storage and browser handlers after app state exists. */
 function renderDesigns(){
+  renderDesignBar();
   const box = $('#designList'); if (!box) return;
-  const list = store.designs.filter(d => d.planId === PLAN.id);
+  const list = store.designs.filter(d => d.planId === PLAN.id && d.editable!==true);
   box.innerHTML = list.length ? list.map(d =>
-    `<div class="dsn"><button class="btn" data-dload="${d.id}" title="${tr('载入此方案', 'Load this design')}">${esc(d.name)}</button>
+    `<div class="dsn"><button class="btn" data-dload="${d.id}" title="${tr('恢复此历史记录', 'Restore this history')}">${esc(d.name)}</button>
      <button class="btn danger" data-ddel="${d.id}" title="${tr('删除方案', 'Delete design')}" aria-label="${tr('删除方案', 'Delete design')}">×</button></div>`).join('')
-    : `<div class="muted empty">${tr('暂无已保存方案', 'No saved designs yet')}</div>`;
+    : `<div class="muted empty">${tr('暂无历史记录', 'No history records yet')}</div>`;
   box.querySelectorAll('[data-dload]').forEach(b => b.onclick = () => {
     const d = store.designs.find(x => x.id === b.dataset.dload); if (!d) return;
-    let next;try{next=fixWork(JSON.parse(JSON.stringify(d.work)),PLAN);if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);}catch(error){return toast(error.message);}
-    snapshot(true,state,'载入命名方案前');const before = snap(); state = next; ui.sel = null;
-    commit(before); renderAll(); $('#fileMenu').open = false;
-    toast(tr(`已载入「${d.name}」`, `Loaded "${d.name}"`));
+    try{const next=fixWork(JSON.parse(JSON.stringify(d.work)),PLAN);if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);
+      snapshot(true,state,'恢复历史记录前');const before=snap();state=next;ui.sel=null;commit(before);renderAll();$('#fileMenu').open=false;
+      toast(tr('已恢复历史记录，可撤销','History restored; undo available'));
+    }catch(e){toast(e.message);}
   });
   box.querySelectorAll('[data-ddel]').forEach(b => b.onclick = () => {
     window.FurnishDesignUI?.editDesign('delete',b.dataset.ddel);
   });
-  box.insertAdjacentHTML('beforeend',`<button class="btn" id="manageDesigns">${tr('管理命名方案','Manage saved designs')}</button>`);
+  box.insertAdjacentHTML('beforeend',`<button class="btn" id="manageDesigns">${tr('管理方案与历史','Manage designs and history')}</button>`);
   $('#manageDesigns').onclick=()=>{window.FurnishDesignUI?.designs();$('#fileMenu').open=false;};
 }
 function snapshot(force,data=state,reason='自动快照',planId=PLAN.id){
@@ -54,6 +84,7 @@ function applySharedWork({plan,work}){
   if(PLAN.id!==plan.id&&store.work[plan.id])snapshot(true,store.work[plan.id],'加载分享前',plan.id);
   registerCustomWork(work);
   PLAN=PLANS.find(p=>p.id===plan.id);applyPlanData();store.planId=plan.id;
+  if(store.activeDesigns)delete store.activeDesigns[plan.id];
   state=work;store.work[plan.id]=state;save();
   if(before)commit(before);else undoStack.length=redoStack.length=0;
   ui.sel=null;

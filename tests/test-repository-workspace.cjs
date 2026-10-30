@@ -25,7 +25,7 @@ async function boot({protocol='file:',disk=null,saved=null,failRequest=false,ini
   localStorage:{setItem(){}},STORE:'test',
   fetch:async()=>{events.push('request');if(failRequest)throw Error('offline');return {ok:true,json:async()=>clone(disk)};},
  };
- for(const name of ['applyPlanData','buildDefs','buildCats','buildLib','renderOpenings','renderDims','renderAll','fitView','renderDesigns','buildPlanList'])scope[name]=()=>{};
+ for(const name of ['applyPlanData','buildDefs','buildCats','buildLib','renderOpenings','renderDims','renderAll','renderDesignBar','fitView','renderDesigns','buildPlanList'])scope[name]=()=>{};
  const context=vm.createContext(scope);vm.runInContext(sources.ui,context);await new Promise(resolve=>setImmediate(resolve));await new Promise(resolve=>setImmediate(resolve));return {scope,events,elements,cacheWrites};
 }
 (async()=>{

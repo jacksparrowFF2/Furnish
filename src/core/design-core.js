@@ -338,7 +338,7 @@
   return moved;
  }
  function sceneSettings(value){const v=value||{};return {cut:[1.2,2.8].includes(v.cut)?v.cut:2.8,furn:typeof v.furn==='boolean'?v.furn:true,labels:typeof v.labels==='boolean'?v.labels:true,wallNumbers:typeof v.wallNumbers==='boolean'?v.wallNumbers:true,clearances:typeof v.clearances==='boolean'?v.clearances:true,lamps:typeof v.lamps==='boolean'?v.lamps:true,night:typeof v.night==='boolean'?v.night:false,hour:Number.isFinite(v.hour)&&v.hour>=7&&v.hour<=18?v.hour:10};}
- function manageDesign(list,planId,action,{id,name,work,note,now=Date.now()}={}){
+ function manageDesign(list,planId,action,{id,name,work,note,editable,now=Date.now()}={}){
   const copy=JSON.parse(JSON.stringify(list)),current=copy.find(d=>d.id===id&&d.planId===planId),local=copy.filter(d=>d.planId===planId);
   if(!['create','rename','update','duplicate','delete'].includes(action))throw Error('未知方案操作');
   if(action!=='create'&&!current)throw Error('方案不存在，请重新打开方案管理');
@@ -347,13 +347,25 @@
   if(local.some(d=>d.name.trim()===title&&(action==='create'||action==='duplicate'||d!==current)))throw Error('已有同名方案，请使用其他名称');
   if(['create','duplicate'].includes(action)&&local.length>=100)throw Error('每个户型最多 100 份命名方案');
   const P=root.FurnishProject||require('./project-core.js');
-  const next=action==='rename'?current.work:P.validateWork(action==='duplicate'?current.work:work);
+  const next=action==='rename'?current.work:P.validateWork(action==='duplicate'&&!(editable===true&&work)?current.work:work);
   if(note!==undefined){if(typeof note!=='string'||note.length>500)throw Error('方案备注最多 500 字');next.designNote=note;}
-  if(['create','duplicate'].includes(action)){let fresh='d'+now.toString(36),i=0;while(copy.some(d=>d.id===fresh))fresh='d'+now.toString(36)+'_'+(++i);copy.push({id:fresh,name:title,planId,ts:now,work:next});}
-  else Object.assign(current,{name:title,ts:now,work:next});
+  if(['create','duplicate'].includes(action)){let fresh='d'+now.toString(36),i=0;while(copy.some(d=>d.id===fresh))fresh='d'+now.toString(36)+'_'+(++i);copy.push({id:fresh,name:title,planId,ts:now,work:next,...(editable===true?{editable:true}:{})});}
+  else Object.assign(current,{name:title,ts:now,work:next,...(editable===true?{editable:true}:{})});
   return copy;
  }
- root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign};
+ // Active selection is workspace metadata; work records and project snapshots stay independent.
+ function activeDesign(workspace,planId){return workspace.designs.find(d=>d.editable===true&&d.planId===planId&&d.id===workspace.activeDesigns?.[planId]);}
+ function saveActiveDesign(workspace,planId,work,now=Date.now()){
+  const d=activeDesign(workspace,planId);if(!d)return;
+  const value=JSON.stringify(work);if(JSON.stringify(d.work)!==value){d.work=JSON.parse(value);d.ts=now;}
+ }
+ function preserveCurrentDesign(workspace,planId,work){
+  if(activeDesign(workspace,planId))return;
+  let name='原当前布置',i=1;while(workspace.designs.some(d=>d.planId===planId&&d.name===name))name='原当前布置 '+(++i);
+  workspace.designs=manageDesign(workspace.designs,planId,'create',{name,work,editable:true});
+  (workspace.activeDesigns||={})[planId]=workspace.designs.at(-1).id;
+ }
+ root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign,activeDesign,saveActiveDesign,preserveCurrentDesign};
  root.FurnishDesign.applyCabinetTemplate=applyCabinetTemplate;
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

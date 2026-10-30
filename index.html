@@ -195,9 +195,9 @@
           <div id="file-storage-actions" class="file-actions"></div>
           <div class="menu-cap" data-en="Keep a copy">保留一份副本</div>
           <div id="file-backup-actions" class="file-actions">
-            <button class="btn" id="saveDesign" data-en="Save layout as…">另存为命名方案…</button>
+            <button class="btn" id="saveDesign" data-en="Save history record…">保留历史记录…</button>
           </div>
-          <p class="file-note" data-en="Named designs stay in this workspace. Export a project backup to keep an independent copy.">命名方案保留在工作区中；导出项目备份可另存一份独立文件。</p>
+          <p class="file-note" data-en="History stays in this workspace. Switch designs above the canvas; each design saves independently.">历史记录保留在工作区中；设计方案在画布顶部切换并独立自动保存。</p>
         </section>
         <section id="file-pane-export" role="tabpanel" aria-labelledby="file-tab-export" hidden>
         <div class="menu-cap" data-en="Deliver & share">成果与分享</div>
@@ -215,7 +215,8 @@
         </section>
         <section id="file-pane-history" role="tabpanel" aria-labelledby="file-tab-history" hidden>
         <div id="file-recovery-actions" class="file-actions"></div>
-        <details class="file-fold" open><summary data-en="Named designs">命名方案</summary>
+        <details class="file-fold" open><summary data-en="Design history">方案历史记录</summary>
+        <p class="file-note" data-en="Restoring history replaces the current design and can be undone.">恢复历史会替换当前方案内容，可撤销。</p>
         <div id="designList"></div>
         </details>
         <details class="file-fold"><summary data-en="Recent snapshots">近期自动快照</summary>
@@ -230,6 +231,7 @@
       </div></details>
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
   </header>
+  <nav id="designBar" class="design-bar" aria-label="方案切换"></nav>
 
   <aside class="lib">
     <div id="lib3d" class="only3d">

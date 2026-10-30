@@ -1,0 +1,34 @@
+const assert=require('node:assert/strict');
+const D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js');
+const work={furniture:[],rooms:{},designNote:'original'};
+let designs=D.manageDesign([],'p','create',{name:'旧历史',work,now:1});
+const w={designs,work:{p:work},activeDesigns:{}};
+D.preserveCurrentDesign(w,'p',work);
+const a=D.activeDesign(w,'p');assert.equal(a.editable,true);assert.equal(w.designs[0].editable,undefined);
+const current=structuredClone(a.work);current.designNote='edited A';D.saveActiveDesign(w,'p',current,2);
+assert.equal(a.work.designNote,'edited A');assert.equal(w.designs[0].work.designNote,'original');
+current.designNote='unsaved';assert.equal(a.work.designNote,'edited A');
+w.designs=D.manageDesign(w.designs,'p','create',{name:'B',work,editable:true,now:3});
+const b=w.designs.at(-1);w.activeDesigns.p=b.id;D.saveActiveDesign(w,'p',{...work,designNote:'edited B'},4);
+assert.equal(w.designs.find(d=>d.id===a.id).work.designNote,'edited A');assert.equal(b.work.designNote,'edited B');
+D.saveActiveDesign(w,'other',{...work,designNote:'other'},5);assert.equal(b.ts,4);
+D.saveActiveDesign(w,'p',b.work,6);assert.equal(b.ts,4);
+const round=P.unpack(P.pack({planId:'p',current:b.work,designs:w.designs,catalog:[]}));
+assert.equal(round.designs.at(-1).editable,true);assert.equal(round.designs[0].editable,undefined);
+assert.throws(()=>P.unpack(P.pack({planId:'p',current:work,designs:[{...b,editable:'yes'}],catalog:[]})),/编辑标记/);
+const legacy=JSON.stringify(w.designs[0]);w.activeDesigns.p=w.designs[0].id;D.saveActiveDesign(w,'p',current);assert.equal(JSON.stringify(w.designs[0]),legacy);
+console.log('PASS independent design autosave, history isolation, no aliasing and project roundtrip');
+
+const C=require('../src/core/repository-core.js'),plan=require('../src/data/plans.js')[0];
+let sequence=0;const W=require('../src/core/work-state.js').create({makeId:()=> 'switch-'+(++sequence),colorFor:()=> '#ddd',materials:require('../src/data/catalog.js').materials});
+const actual=W.fresh(plan),repo={v:Math.max(2,P.formatVersion([actual])),planId:plan.id,work:{[plan.id]:actual},designs:[{id:'live',name:'设计',planId:plan.id,editable:true,work:structuredClone(actual)}],activeDesigns:{[plan.id]:'live'}};
+const restored=C.parse(JSON.parse(C.text(repo)));assert.deepEqual(restored.activeDesigns,repo.activeDesigns);assert.equal(restored.designs[0].editable,true);
+assert.throws(()=>C.validate({...repo,activeDesigns:{[plan.id]:'missing'}}),/引用无效/);
+assert.throws(()=>C.validate({...repo,activeDesigns:[]}),/索引无效/);
+assert.throws(()=>C.validate({...repo,designs:[{...repo.designs[0],editable:false}]}),/引用无效/);
+console.log('PASS active design workspace validation and durable roundtrip');
+
+const copied=D.manageDesign(w.designs,'p','duplicate',{id:w.designs[0].id,name:'从历史复制',editable:true,work:{...work,scene3d:D.sceneSettings()},now:10});
+assert.equal(copied.at(-1).editable,true);assert.deepEqual(copied.at(-1).work.scene3d,D.sceneSettings());assert.equal(JSON.stringify(copied[0]),JSON.stringify(w.designs[0]));
+assert.equal(P.mergeDesigns([w.designs[0]],[{...w.designs[0],id:'role-copy',editable:true}],'p').length,2);
+console.log('PASS history to editable copy preserves original and role-aware import merging');

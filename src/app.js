@@ -155,6 +155,7 @@ function save(){
   if(repositoryBooting)return;
   store.updatedAt=Math.max(Date.now(),(store.updatedAt||0)+1);
   store.work[PLAN.id] = state;
+  FurnishDesign.saveActiveDesign(store,PLAN.id,state);
   const requiredVersion=FurnishProject.formatVersion([...Object.values(store.work),...store.designs.map(d=>d.work)],store.custom);
   store.v=Math.max(store.v>=7?Math.max(9,store.v):store.v,requiredVersion,2);STORE='huxing-design-v'+store.v;
   autosave.save(store);
@@ -732,6 +733,7 @@ function toast(msg, act){
 function setPlan(id){
   const p = PLANS.find(q => q.id === id);
   if (!p || p.id === PLAN.id) return;
+  save();
   PLAN = p; applyPlanData();
   store.planId = p.id;
   state = store.work[p.id] || (store.work[p.id] = freshWork(p));
@@ -795,7 +797,7 @@ function confirmLibraryDelete(id,button){
 function deleteLibraryPlan(id){
  const p=PLANS.find(p=>p.id===id);if(!p||!id.startsWith('custom_'))return;
  if(PLAN.id===id)setPlan(PLANS.find(p=>p.id!==id).id);
- PLANS.splice(PLANS.findIndex(p=>p.id===id),1);store.customPlans=store.customPlans.filter(p=>p.id!==id);delete store.work[id];store.designs=store.designs.filter(d=>d.planId!==id);hist=hist.filter(h=>h.planId!==id);persistHistory();save();buildPlanList();renderDesigns();renderHist();
+ PLANS.splice(PLANS.findIndex(p=>p.id===id),1);store.customPlans=store.customPlans.filter(p=>p.id!==id);delete store.work[id];if(store.activeDesigns)delete store.activeDesigns[id];store.designs=store.designs.filter(d=>d.planId!==id);hist=hist.filter(h=>h.planId!==id);persistHistory();save();buildPlanList();renderDesigns();renderHist();
 }
 $('#planBtn').onclick = () => openPlans();
 

@@ -147,3 +147,16 @@ main.drawer-panel #fab-editor{visibility:hidden}
 
 /* Compact scene IDs share the wall-layout list numbering. */
 .wall-tile-scene-number{pointer-events:auto;cursor:pointer;border:1px solid #087f5b;background:#fffdf4e8;color:#075c43;padding:3px 7px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 1px 4px #0003}
+
+/* Always available in both 2D and 3D; tabs scroll independently on narrow canvases. */
+.app{grid-template-rows:auto auto minmax(0,1fr) 34px}
+.design-bar{grid-column:1/-1;min-width:0;margin-bottom:8px;display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--s-line);border-radius:12px;background:var(--s-overlay);color:var(--s-ink);box-shadow:var(--shadow-md)}
+.design-bar-label{font-size:12px;flex:none;color:var(--s-muted)}
+.design-tabs{display:flex;gap:4px;min-width:0;flex:1;overflow-x:auto;scrollbar-width:thin}
+.design-bar .btn{flex:none;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis;min-height:34px;color:var(--s-ink)}
+.design-bar .btn.on{background:var(--s-accent-soft);color:var(--s-accent-ink);border-color:var(--s-accent-ink);opacity:1}
+@media(max-width:500px){.design-bar{gap:4px;padding:5px}.design-bar-label{display:none}.design-bar .btn{max-width:150px;padding:6px 8px}}
+
+.design-record{padding:12px;margin:10px 0;border:1px solid var(--line);border-radius:10px;overflow-wrap:anywhere}
+@media(max-width:1100px){main,aside.lib,aside.right{grid-row:3}}
+@media print{.design-bar{display:none!important}}

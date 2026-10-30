@@ -24,6 +24,10 @@
    w.work[id]=checked.current;let i=0;w.designs=w.designs.map(d=>d.planId===id?checked.designs[i++]:d);
   }
   if(!Object.hasOwn(w.work,w.planId)||w.designs.some(d=>!d||!Object.hasOwn(w.work,d.planId))||drafts.some(d=>!w.work[d.id]?.architecture))throw Error('工作区引用了缺失的户型');
+  if(w.activeDesigns!==undefined){
+   if(!w.activeDesigns||typeof w.activeDesigns!=='object'||Array.isArray(w.activeDesigns)||Object.keys(w.activeDesigns).length>200)throw Error('当前方案索引无效');
+   for(const [id,designId] of Object.entries(w.activeDesigns))if(typeof designId!=='string'||!w.designs.some(d=>d.planId===id&&d.id===designId&&d.editable===true))throw Error('当前方案引用无效');
+  }
   if(w.customPlans)w.customPlans=drafts.map(d=>P.architecture({draft:d,phase:'survey'}).draft);const required=version(w);if(required>=16)w.v=Math.max(w.v,required);
   return w;
  }
