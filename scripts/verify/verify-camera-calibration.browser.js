@@ -18,15 +18,27 @@ async (page,verification)=>{
   const matches=(value,ratio=.25,distance=600)=>Math.abs(value.fov-2*Math.atan(value.height*value.dpr*ratio/(2*distance))*180/Math.PI)<1e-8;
   try{
    await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();await enter();
-   const orbit=await inspect();await p.locator('#showMenu>summary').click();await p.locator('#cameraCalibration>summary').click();
+   const orbit=await inspect();await p.locator('#showMenu>summary').click();
+   check(await p.locator('#cameraFovLabel').innerText()==='鸟瞰水平视角','orbit FOV has a clear mode-specific label');
+   for(const degrees of [40,90]){
+    await p.locator('#cameraFov').fill(String(degrees));await p.locator('#cameraFov').dispatchEvent('input');
+    const value=await inspect(),expected=Math.min(75,2*Math.atan(Math.tan(degrees*Math.PI/360)/value.aspect)*180/Math.PI);
+    check(Math.abs(value.fov-expected)<1e-8&&value.design===orbit.design,'orbit FOV changes projection without editing project');
+   }
+   await p.locator('#cameraFov').fill('60');await p.locator('#cameraFov').dispatchEvent('input');
+   await p.locator('#cameraCalibration>summary').click();
    await p.locator('[data-camera-screen="24"]').click();check(await p.locator('#cameraEyeDistance').inputValue()==='600','desktop preset uses 60 cm midpoint');
    check(Math.abs(Number(await p.locator('#cameraScreenWidth').inputValue())-531.3)<.1,'24 inch 16:9 width');
    await p.locator('#cameraScreenAspect').selectOption('1.6');check(Math.abs(Number(await p.locator('#cameraScreenWidth').inputValue())-516.9)<.1,'16:10 option changes physical width');
    await p.locator('[data-camera-screen="27"]').click();check(Math.abs(Number(await p.locator('#cameraScreenWidth').inputValue())-581.6)<.1,'27 inch preserves 16:10 selection');
    await p.locator('[data-camera-screen="6.5"]').click();check(await p.locator('#cameraEyeDistance').inputValue()==='200','phone uses 20 cm midpoint');
    await p.locator('[data-camera-distance="150"]').click();check(await p.locator('#cameraEyeDistance').inputValue()==='150','phone range includes 15 cm');
-   check(await p.locator('#cameraScreenPixels').inputValue()==='','presets do not invent screen resolution');
+   const automatic=await p.evaluate(()=>Math.round(screen.width*devicePixelRatio));
+   check(Number(await p.locator('#cameraScreenPixels').inputValue())===automatic,'presets read browser screen pixels automatically');
    await p.locator('[data-camera-screen="27"]').click();await p.locator('#cameraScreenAspect').selectOption('1.7777777777777777');
+   await p.locator('#cameraCalibrationForm [type="submit"]').click();
+   check(await p.evaluate(expected=>Math.abs(FurnishNavigation.cameraCalibration().mmPerPixel-597.7/expected)<1e-9,automatic),'size and distance alone apply automatic calibration');
+   await p.locator('#cameraPixelMode').selectOption('manual');
    await p.locator('#cameraScreenWidth').fill('600');await p.locator('#cameraScreenPixels').fill('2400');await p.locator('#cameraEyeDistance').fill('600');
    await p.locator('#cameraCalibrationForm [type="submit"]').click();
    check((await inspect()).fov===orbit.fov,'calibration keeps orbit manual');check(await p.locator('#cameraCalibrationStatus').innerText(),'status available');await shot('settings');
@@ -58,6 +70,7 @@ async (page,verification)=>{
    check(matches(await inspect(),.25,700),'distance can change after refresh without remeasuring screen');await p.locator('#showMenu>summary').click();
    await p.setViewportSize({width:360,height:800});await p.evaluate(()=>{window.__originalDpr=devicePixelRatio;Object.defineProperty(window,'devicePixelRatio',{configurable:true,value:3});});await p.waitForTimeout(200);
    await p.locator('#showMenu>summary').click();if(!await p.locator('#cameraCalibration').evaluate(el=>el.open))await p.locator('#cameraCalibration>summary').click();await p.locator('[data-camera-screen="6.5"]').click();
+   await p.locator('#cameraPixelMode').selectOption('manual');
    await p.locator('#cameraScreenPixels').fill('1080');await p.locator('#cameraCalibrationForm [type="submit"]').click();
    const phone=await inspect();check(matches(phone,67.8/1080,200),'phone 6.5 inch 20:9, 1080 px, DPR 3 and 20 cm projection');await shot('phone-settings');
    await p.locator('#showMenu>summary').click();await p.locator('#walkOverlay').click();await p.locator('#walkOverlay').waitFor({state:'hidden'});await shot('phone-walk');await p.evaluate(()=>document.exitPointerLock());

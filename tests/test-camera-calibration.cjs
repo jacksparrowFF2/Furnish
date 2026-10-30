@@ -1,5 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const N=require('../src/core/navigation-input.js'),near=(a,b)=>assert.ok(Math.abs(a-b)<1e-9,`${a} != ${b}`);
+assert.equal(N.screenPixels(1920,1),1920);assert.equal(N.screenPixels(1280,1.5),1920);assert.equal(N.screenPixels(360,3),1080);
+for(const [width,dpr] of [[0,1],[1920,NaN],[Infinity,2],[1920,0],[10,1],[40000,1]])assert.equal(N.screenPixels(width,dpr),null);
 const calibration=N.calibrateCamera({widthMm:600,pixels:2400,distanceMm:600});
 const p=N.calibratedProjection(calibration,1200,800,2);
 near(p.widthMm,600);near(p.heightMm,400);near(p.horizontal,2*Math.atan(.5)*180/Math.PI);

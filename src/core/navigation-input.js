@@ -68,6 +68,12 @@
   const next=validCalibration({enabled:true,mmPerPixel:widthMm/pixels,distanceMm});
   if(!next)throw Error('Invalid camera calibration');return next;
  }
+ // Screen.width is CSS pixels; multiplying by current DPR is an estimate of
+ // output pixels at 100% page zoom, not an EDID/native-resolution query.
+ function screenPixels(screenWidth,pixelRatio){
+  if(![screenWidth,pixelRatio].every(n=>Number.isFinite(n)&&n>0))return null;
+  const value=Math.round(screenWidth*pixelRatio);return value>=320&&value<=20000?value:null;
+ }
  function calibratedProjection(value,width,height,pixelRatio=1){
   const c=validCalibration(value);
   if(!c?.enabled||![width,height,pixelRatio].every(n=>Number.isFinite(n)&&n>0))return null;
@@ -77,6 +83,6 @@
   if(Math.min(horizontal,vertical)<1||Math.max(horizontal,vertical)>150)return null;
   return {horizontal,vertical,widthMm,heightMm};
  }
- const api={wheel,panBox,bindOrbit,setMode,getMode:()=>mode,cameraFov,setCameraFov,projection,cameraCalibration,setCameraCalibration,calibrateCamera,calibratedProjection};
+ const api={wheel,panBox,bindOrbit,setMode,getMode:()=>mode,cameraFov,setCameraFov,projection,cameraCalibration,setCameraCalibration,calibrateCamera,calibratedProjection,screenPixels};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishNavigation=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
