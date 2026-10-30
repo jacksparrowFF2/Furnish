@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "mode": "http",
+      "parts": 47,
+      "stableKeys": 47,
+      "doorAlpha": 0.12,
+      "fixedVerticalHinge": true,
+      "doorDegrees": 110,
+      "circularDoorParts": 5,
+      "bottomMm": 200.0,
+      "doubleInstallationOffset": false
+    },
+    {
+      "mode": "file",
+      "parts": 47,
+      "stableKeys": 47,
+      "doorAlpha": 0.12,
+      "fixedVerticalHinge": true,
+      "doorDegrees": 110,
+      "circularDoorParts": 5,
+      "bottomMm": 200.0,
+      "doubleInstallationOffset": false
+    }
+  ]
+}

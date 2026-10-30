@@ -47,3 +47,5 @@ node scripts/verify/verify-model-pipeline.cjs washer-tg10k60w gpu
 ## 扩展边界
 
 新增配置复用隔离、阶段日志、哈希及真实 API 下载机制，显式提供作者／发布命令、专项套件、生产回读和视觉夹具。暂不统一全部产品描述或增加全屋性能基线：前者应依据重复内容逐步收敛，后者须用真实多模型方案测量后再优化。
+
+本次完整运行、故障停止记录及三张对照图见[2026-10-30验收](validation/model-pipeline-20261030/README.md)。

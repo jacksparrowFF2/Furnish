@@ -1,0 +1,171 @@
+{
+  "passed": false,
+  "profile": "washer-tg10k60w",
+  "device": "gpu",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "revision": "637fcf4c4f8ba0be7e690b9548b13b4e61bb7280",
+  "started": "2026-10-30T15:21:43.601Z",
+  "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ",
+  "stages": [
+    {
+      "name": "isolate",
+      "started": "2026-10-30T15:21:43.602Z",
+      "passed": true,
+      "result": {
+        "root": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ\\workspace"
+      },
+      "finished": "2026-10-30T15:21:44.366Z"
+    },
+    {
+      "name": "author-preflight",
+      "started": "2026-10-30T15:21:44.366Z",
+      "passed": true,
+      "result": {
+        "command": "author-washer-tg10k60w",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ\\workspace\\output\\authored",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ\\workspace\\output\\authored",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "parts": 47,
+        "motions": 1,
+        "preflight": {
+          "passed": true,
+          "adapter": "washer-tg10k60w",
+          "parts": 47,
+          "motions": 1
+        }
+      },
+      "finished": "2026-10-30T15:21:50.811Z"
+    },
+    {
+      "name": "preflight-negative",
+      "started": "2026-10-30T15:21:50.812Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material",
+          "wrong-face-index",
+          "duplicate-id",
+          "detached-moving-part",
+          "wrong-pivot",
+          "wrong-units",
+          "unexpected-part"
+        ]
+      },
+      "finished": "2026-10-30T15:21:51.868Z"
+    },
+    {
+      "name": "publish",
+      "started": "2026-10-30T15:21:51.868Z",
+      "passed": true,
+      "result": {
+        "command": "publish-washer-tg10k60w",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ\\workspace\\output\\authored\\washer-tg10k60w-v1.glb",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ\\workspace\\src\\data\\washer-tg10k60w-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "d0a0d7132c1a69f00683081f380e9e174cff5ea0f5d8cbc6c564e9665e916e07",
+        "blendSha256": "ce9a34db4a8c4dcc291ed60146a37468285e12264c94b6dc98dd34c8dd2af0e5",
+        "runtimeSha256": "a3cf753a9760abe7dc9093fd3b4f7b04b248ee47dc7da26906e5663cd885dbe8"
+      },
+      "finished": "2026-10-30T15:21:53.839Z"
+    },
+    {
+      "name": "geometry-state",
+      "started": "2026-10-30T15:21:53.840Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "tests": [
+          "test-blender-washer-materials",
+          "test-blender-washer-tg10k60w",
+          "test-washer-front-confirmation",
+          "test-washer-project-v35"
+        ]
+      },
+      "finished": "2026-10-30T15:24:21.312Z"
+    },
+    {
+      "name": "http-file-production",
+      "started": "2026-10-30T15:24:21.312Z",
+      "passed": true,
+      "result": {
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ\\workspace\\output\\playwright\\blender-washer-tg10k60w-O1Kn21",
+        "passed": true,
+        "results": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "refresh": true,
+            "productionExportParts": 47,
+            "offlineAsset": true,
+            "narrow": true
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "refresh": true,
+            "productionExportParts": 47,
+            "offlineAsset": true,
+            "narrow": true
+          }
+        ]
+      },
+      "finished": "2026-10-30T15:25:18.481Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "started": "2026-10-30T15:25:18.481Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "results": [
+          {
+            "mode": "http",
+            "parts": 47,
+            "stableKeys": 47,
+            "doorAlpha": 0.12,
+            "fixedVerticalHinge": true,
+            "doorDegrees": 110,
+            "circularDoorParts": 5,
+            "bottomMm": 200,
+            "doubleInstallationOffset": false
+          },
+          {
+            "mode": "file",
+            "parts": 47,
+            "stableKeys": 47,
+            "doorAlpha": 0.12,
+            "fixedVerticalHinge": true,
+            "doorDegrees": 110,
+            "circularDoorParts": 5,
+            "bottomMm": 200,
+            "doubleInstallationOffset": false
+          }
+        ]
+      },
+      "finished": "2026-10-30T15:25:21.667Z"
+    },
+    {
+      "name": "studio-production-export",
+      "started": "2026-10-30T15:25:21.667Z",
+      "passed": false,
+      "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-Mk8nKZ\\studio.log",
+      "finished": "2026-10-30T15:25:21.731Z"
+    }
+  ],
+  "sourceHashes": {
+    "src/data/washer-tg10k60w-blender-asset.js": "4c9387a9b08660d42963b76123017f08df5e57ea56c00840f2693109bba6ddc7",
+    "assets/models/washer-tg10k60w/washer-tg10k60w-v1.blend": "a5972ecad9067f733df81a8dc10ebaaeef9adc2829b745fe3cc607fbfffb478e",
+    "assets/models/washer-tg10k60w/washer-tg10k60w-v1.glb": "8f018fdb2fcd1b8f8860315e06c409cae346a51df03ef57a82596bc2300270ee",
+    "projects/workspace.furnish.json": "f214909747d3ca89f9fdbb896171ae9c9ff3330fb1e0c4889beebb27186160f0"
+  },
+  "failedStage": "studio-production-export",
+  "sourceUnchanged": true,
+  "finished": "2026-10-30T15:25:21.747Z"
+}

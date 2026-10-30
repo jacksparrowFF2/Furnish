@@ -1,0 +1,1 @@
+{"passed": true, "blender": "5.2.3 LTS", "rejected": ["empty-material", "wrong-face-index", "duplicate-id", "detached-moving-part", "wrong-pivot", "wrong-units", "unexpected-part"]}

@@ -1,0 +1,370 @@
+{
+  "passed": true,
+  "profile": "washer-tg10k60w",
+  "device": "gpu",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "revision": "ccd2ec7eb33979d37f6baa1aa18d0272a71dc3e3",
+  "started": "2026-10-30T15:32:28.697Z",
+  "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-oDzINn",
+  "stages": [
+    {
+      "name": "isolate",
+      "started": "2026-10-30T15:32:28.698Z",
+      "passed": true,
+      "result": {
+        "root": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-oDzINn\\workspace"
+      },
+      "finished": "2026-10-30T15:32:29.241Z"
+    },
+    {
+      "name": "author-preflight",
+      "started": "2026-10-30T15:32:29.241Z",
+      "passed": true,
+      "result": {
+        "command": "author-washer-tg10k60w",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-oDzINn\\workspace\\output\\authored",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-oDzINn\\workspace\\output\\authored",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "parts": 47,
+        "motions": 1,
+        "preflight": {
+          "passed": true,
+          "adapter": "washer-tg10k60w",
+          "parts": 47,
+          "motions": 1
+        }
+      },
+      "finished": "2026-10-30T15:32:30.902Z"
+    },
+    {
+      "name": "preflight-negative",
+      "started": "2026-10-30T15:32:30.902Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material",
+          "wrong-face-index",
+          "duplicate-id",
+          "detached-moving-part",
+          "wrong-pivot",
+          "wrong-units",
+          "unexpected-part"
+        ]
+      },
+      "finished": "2026-10-30T15:32:31.953Z"
+    },
+    {
+      "name": "publish",
+      "started": "2026-10-30T15:32:31.954Z",
+      "passed": true,
+      "result": {
+        "command": "publish-washer-tg10k60w",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-oDzINn\\workspace\\output\\authored\\washer-tg10k60w-v1.glb",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-oDzINn\\workspace\\src\\data\\washer-tg10k60w-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "d83f8cb85bf75bb0e71569c6e500acdf349c740012f25614111d75de65e10d4f",
+        "blendSha256": "39ba37d99e7f76e474118328f8cdd2312083e4f0b23e38e53723eeaab7b3f4d4",
+        "runtimeSha256": "4bb6844ec991b4942d05c318074f14143768d7da068bcaf2e1ba4fcc04d6551d"
+      },
+      "finished": "2026-10-30T15:32:33.695Z"
+    },
+    {
+      "name": "geometry-state",
+      "started": "2026-10-30T15:32:33.696Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "tests": [
+          "test-blender-washer-materials",
+          "test-blender-washer-tg10k60w",
+          "test-washer-front-confirmation",
+          "test-washer-project-v35"
+        ]
+      },
+      "finished": "2026-10-30T15:35:14.302Z"
+    },
+    {
+      "name": "http-file-production",
+      "started": "2026-10-30T15:35:14.303Z",
+      "passed": true,
+      "result": {
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\washer-tg10k60w-oDzINn\\workspace\\output\\playwright\\blender-washer-tg10k60w-m73FyQ",
+        "passed": true,
+        "results": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "refresh": true,
+            "productionExportParts": 47,
+            "offlineAsset": true,
+            "narrow": true
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "refresh": true,
+            "productionExportParts": 47,
+            "offlineAsset": true,
+            "narrow": true
+          }
+        ]
+      },
+      "finished": "2026-10-30T15:36:10.888Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "started": "2026-10-30T15:36:10.889Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "results": [
+          {
+            "mode": "http",
+            "parts": 47,
+            "stableKeys": 47,
+            "doorAlpha": 0.12,
+            "fixedVerticalHinge": true,
+            "doorDegrees": 110,
+            "circularDoorParts": 5,
+            "bottomMm": 200,
+            "doubleInstallationOffset": false
+          },
+          {
+            "mode": "file",
+            "parts": 47,
+            "stableKeys": 47,
+            "doorAlpha": 0.12,
+            "fixedVerticalHinge": true,
+            "doorDegrees": 110,
+            "circularDoorParts": 5,
+            "bottomMm": 200,
+            "doubleInstallationOffset": false
+          }
+        ]
+      },
+      "finished": "2026-10-30T15:36:13.952Z"
+    },
+    {
+      "name": "studio-production-export",
+      "started": "2026-10-30T15:36:13.952Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "preset": "tg10k60w-studio-v1",
+        "productionExporter": true,
+        "dimensionsMm": [
+          595,
+          560,
+          850
+        ],
+        "camera": {
+          "fov": 36,
+          "aspect": 1
+        },
+        "lighting": {
+          "keyIntensity": 2000,
+          "keyPosition": [
+            -2,
+            4,
+            4
+          ],
+          "world": "production-worker",
+          "exposure": 0,
+          "viewTransform": "AgX"
+        },
+        "views": [
+          {
+            "id": "front",
+            "position": [
+              0,
+              0.43,
+              2.25
+            ],
+            "target": [
+              0,
+              0.43,
+              0
+            ],
+            "angle": 0,
+            "parts": 47,
+            "floorBase": {
+              "z": 0,
+              "known": true,
+              "roomId": "studio"
+            }
+          },
+          {
+            "id": "oblique",
+            "position": [
+              1.45,
+              1.1,
+              2
+            ],
+            "target": [
+              0,
+              0.43,
+              0.08
+            ],
+            "angle": 0,
+            "parts": 47,
+            "floorBase": {
+              "z": 0,
+              "known": true,
+              "roomId": "studio"
+            }
+          },
+          {
+            "id": "open",
+            "position": [
+              1.65,
+              1.2,
+              2.65
+            ],
+            "target": [
+              -0.22,
+              0.43,
+              0.08
+            ],
+            "angle": 110,
+            "parts": 47,
+            "floorBase": {
+              "z": 0,
+              "known": true,
+              "roomId": "studio"
+            }
+          }
+        ]
+      },
+      "finished": "2026-10-30T15:36:41.090Z"
+    },
+    {
+      "name": "render-front",
+      "started": "2026-10-30T15:36:41.092Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-30T15:36:44.245Z"
+    },
+    {
+      "name": "render-oblique",
+      "started": "2026-10-30T15:36:44.245Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-30T15:36:47.364Z"
+    },
+    {
+      "name": "render-open",
+      "started": "2026-10-30T15:36:47.365Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-30T15:36:50.482Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "started": "2026-10-30T15:36:50.482Z",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "results": [
+          {
+            "view": "front",
+            "parts": 47,
+            "sizeMm": [
+              595.0000286102295,
+              560.0000023841858,
+              850.0000238418579
+            ],
+            "alpha": 0.12,
+            "device": "GPU",
+            "samples": 32
+          },
+          {
+            "view": "oblique",
+            "parts": 47,
+            "sizeMm": [
+              595.0000286102295,
+              560.0000023841858,
+              850.0000238418579
+            ],
+            "alpha": 0.12,
+            "device": "GPU",
+            "samples": 32
+          },
+          {
+            "view": "open",
+            "parts": 47,
+            "sizeMm": [
+              731.8114042282104,
+              1031.9110453128815,
+              850.0000238418579
+            ],
+            "alpha": 0.12,
+            "device": "GPU",
+            "samples": 32
+          }
+        ]
+      },
+      "finished": "2026-10-30T15:36:51.518Z"
+    }
+  ],
+  "sourceHashes": {
+    "src/data/washer-tg10k60w-blender-asset.js": "4c9387a9b08660d42963b76123017f08df5e57ea56c00840f2693109bba6ddc7",
+    "assets/models/washer-tg10k60w/washer-tg10k60w-v1.blend": "a5972ecad9067f733df81a8dc10ebaaeef9adc2829b745fe3cc607fbfffb478e",
+    "assets/models/washer-tg10k60w/washer-tg10k60w-v1.glb": "8f018fdb2fcd1b8f8860315e06c409cae346a51df03ef57a82596bc2300270ee",
+    "projects/workspace.furnish.json": "f214909747d3ca89f9fdbb896171ae9c9ff3330fb1e0c4889beebb27186160f0"
+  },
+  "sourceUnchanged": true,
+  "finished": "2026-10-30T15:36:51.533Z"
+}

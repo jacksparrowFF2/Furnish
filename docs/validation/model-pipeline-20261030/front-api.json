@@ -1,0 +1,25 @@
+{
+  "id": "33146a39-c414-4217-9e3c-332a348489c1",
+  "state": "done",
+  "message": "渲染完成 · OPTIX",
+  "width": 512,
+  "height": 512,
+  "quality": "preview",
+  "device": "gpu",
+  "source": "basic",
+  "camera": "source",
+  "renderInfo": null,
+  "renderDevice": {
+    "requested": "gpu",
+    "type": "GPU",
+    "backend": "OPTIX",
+    "devices": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER"
+    ],
+    "fallback": null
+  },
+  "created": "2026-10-30T15:36:41.145Z",
+  "image": "/api/furnish/blender/jobs/33146a39-c414-4217-9e3c-332a348489c1/image",
+  "blend": "/api/furnish/blender/jobs/33146a39-c414-4217-9e3c-332a348489c1/blend",
+  "scene": "/api/furnish/blender/jobs/33146a39-c414-4217-9e3c-332a348489c1/scene"
+}

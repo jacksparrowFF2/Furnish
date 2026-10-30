@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "preset": "tg10k60w-studio-v1",
+  "productionExporter": true,
+  "dimensionsMm": [
+    595,
+    560,
+    850
+  ],
+  "camera": {
+    "fov": 36,
+    "aspect": 1
+  },
+  "lighting": {
+    "keyIntensity": 2000,
+    "keyPosition": [
+      -2,
+      4,
+      4
+    ],
+    "world": "production-worker",
+    "exposure": 0,
+    "viewTransform": "AgX"
+  },
+  "views": [
+    {
+      "id": "front",
+      "position": [
+        0,
+        0.43,
+        2.25
+      ],
+      "target": [
+        0,
+        0.43,
+        0
+      ],
+      "angle": 0,
+      "parts": 47,
+      "floorBase": {
+        "z": 0,
+        "known": true,
+        "roomId": "studio"
+      }
+    },
+    {
+      "id": "oblique",
+      "position": [
+        1.45,
+        1.1,
+        2
+      ],
+      "target": [
+        0,
+        0.43,
+        0.08
+      ],
+      "angle": 0,
+      "parts": 47,
+      "floorBase": {
+        "z": 0,
+        "known": true,
+        "roomId": "studio"
+      }
+    },
+    {
+      "id": "open",
+      "position": [
+        1.65,
+        1.2,
+        2.65
+      ],
+      "target": [
+        -0.22,
+        0.43,
+        0.08
+      ],
+      "angle": 110,
+      "parts": 47,
+      "floorBase": {
+        "z": 0,
+        "known": true,
+        "roomId": "studio"
+      }
+    }
+  ]
+}
