@@ -155,21 +155,21 @@ function pocketLayout(f){
  const h=height(f);if(!(f.w>=r.minWidth&&f.d>=r.minDepth&&h>=r.minHeight))throw Error(`口袋门草模总宽至少${r.minWidth}、墙厚至少${r.minDepth}、总高至少${r.minHeight} mm`);
  if(r.panels===3){
   const opening=(f.w-r.reserve)*r.panels/(r.panels+1),pocket=f.w-opening,clearHeight=h-r.head,leaf=(opening+(r.panels-1)*r.overlap)/r.panels,sign=value(f,'slidingStackSide')==='right'?-1:1,start=-f.w/2+pocket,parked=-f.w/2+r.end+20+leaf/2,parts=[];
-  for(const face of [-1,1])parts.push({key:'pocket-skin',w:pocket,d:r.skin,h:clearHeight,x:sign*(-f.w/2+pocket/2),z:face*(f.d-r.skin)/2,bottom:0});
-  parts.push({key:'pocket-end',w:r.end,d:f.d,h:clearHeight,x:sign*(-f.w/2+r.end/2),z:0,bottom:0},{key:'pocket-header',w:f.w,d:f.d,h:r.head,x:0,z:0,bottom:clearHeight});
+  for(const face of [-1,1])parts.push({key:'pocket-skin',partId:'skin:'+face,w:pocket,d:r.skin,h:clearHeight,x:sign*(-f.w/2+pocket/2),z:face*(f.d-r.skin)/2,bottom:0});
+  parts.push({key:'pocket-end',partId:'end',w:r.end,d:f.d,h:clearHeight,x:sign*(-f.w/2+r.end/2),z:0,bottom:0},{key:'pocket-header',partId:'header',w:f.w,d:f.d,h:r.head,x:0,z:0,bottom:clearHeight});
   const leaves=Array.from({length:r.panels},(_,i)=>({side:i,closed:sign*(start+leaf/2+i*(leaf-r.overlap)),opened:sign*parked,width:leaf,z:(i-(r.panels-1)/2)*(r.leaf+r.laneGap)}));
-  for(const l of leaves)parts.push({key:'pocket-leaf',w:leaf,d:r.leaf,h:clearHeight-r.bottom,x:value(f,'slidingOpen')?l.opened:l.closed,z:l.z,bottom:r.bottom,side:l.side});
+  for(const l of leaves)parts.push({key:'pocket-leaf',partId:'leaf:'+l.side,w:leaf,d:r.leaf,h:clearHeight-r.bottom,x:value(f,'slidingOpen')?l.opened:l.closed,z:l.z,bottom:r.bottom,side:l.side});
   return {opening,pocket,clearHeight,leaves,parts,panels:r.panels};
  }
  const opening=f.w/2-r.reserve,pocket=(f.w-opening)/2,clearHeight=h-r.head,leaf=opening/2+r.overlap,travel=opening/2+r.overlap+2,parts=[];
  for(const side of [-1,1]){
   const x=side*(opening/2+pocket/2);
-  for(const face of [-1,1])parts.push({key:'pocket-skin',w:pocket,d:r.skin,h:clearHeight,x,z:face*(f.d-r.skin)/2,bottom:0});
-  parts.push({key:'pocket-end',w:r.end,d:f.d,h:clearHeight,x:side*(f.w-r.end)/2,z:0,bottom:0});
+  for(const face of [-1,1])parts.push({key:'pocket-skin',partId:'skin:'+side+':'+face,w:pocket,d:r.skin,h:clearHeight,x,z:face*(f.d-r.skin)/2,bottom:0});
+  parts.push({key:'pocket-end',partId:'end:'+side,w:r.end,d:f.d,h:clearHeight,x:side*(f.w-r.end)/2,z:0,bottom:0});
  }
- parts.push({key:'pocket-header',w:f.w,d:f.d,h:r.head,x:0,z:0,bottom:clearHeight});
+ parts.push({key:'pocket-header',partId:'header',w:f.w,d:f.d,h:r.head,x:0,z:0,bottom:clearHeight});
  const leaves=[-1,1].map(side=>({side,closed:side*(leaf/2+1),opened:side*(leaf/2+1+travel),width:leaf}));
- for(const l of leaves)parts.push({key:'pocket-leaf',w:leaf,d:r.leaf,h:clearHeight-r.bottom,x:value(f,'slidingOpen')?l.opened:l.closed,z:0,bottom:r.bottom,side:l.side});
+ for(const l of leaves)parts.push({key:'pocket-leaf',partId:'leaf:'+l.side,w:leaf,d:r.leaf,h:clearHeight-r.bottom,x:value(f,'slidingOpen')?l.opened:l.closed,z:0,bottom:r.bottom,side:l.side});
  return {opening,pocket,clearHeight,leaves,parts};
 }
 function stoolStack(f){if(!family(f,'stack-stool')||f.obj)return null;const count=value(f,'stoolCount'),pitch=value(f,'stoolPitch'),singleHeight=height(f);return {count,pitch,singleHeight,height:singleHeight+(count-1)*pitch};}

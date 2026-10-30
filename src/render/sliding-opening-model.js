@@ -53,7 +53,7 @@ function buildSlidingDoor(w,d,h,count,color='#41474b',options={}){
 }
  function buildPocket(f){
   const layout=products.pocketLayout(f),g=new THREE.Group(),door={kind:'slide',group:g,leaves:[],open:products.value(f,'slidingOpen'),cur:products.value(f,'slidingOpen')?1:0};
-  for(const p of layout.parts){
+  for(const p of syncIdentity.records('sliding-opening-model:pocket-parts',layout.parts,p=>p.partId)){
    const leaf=p.key==='pocket-leaf',mesh=syncIdentity.produce('sliding-opening-model:pocket-'+p.key,()=>box(p.w/1000,p.h/1000,p.d/1000,leaf?(f.color||'#c5b59d'):'#e8e3d9',0,p.bottom/1000,p.z/1000));
    mesh.userData.pocketPart=p.key;
    if(leaf){const node=new THREE.Group(),source=layout.leaves.find(l=>l.side===p.side);node.position.x=p.x/1000;node.add(mesh);node.traverse(o=>o.userData.door=door);g.add(node);door.leaves.push({node,closed:source.closed/1000,opened:source.opened/1000,width:source.width/1000});}

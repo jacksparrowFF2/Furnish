@@ -14,8 +14,9 @@ const copy=o=>JSON.parse(JSON.stringify(o));
 assetTypes['corner-bookcase']='bookshelf_yeswood_y00y06';suites['corner-bookcase']=['corner-bookcase'];
 suites.tripleslidingwindow=['telescopic-floor-tracks'];
 function testsFor(id,type){
- const list=suites[id]||suites[type]||(type.startsWith('table_folding_')?['folding-table']:type.startsWith('sink_arrow_')?['sink','sink-plan-snapping']:P.definition(type)?.covering||type==='curtain'?['window-coverings','window-covering-mount']:type.startsWith('pocketdoor_')?['pocket-door','wide-pocket-door']:P.definition(type)?.telescopic||type==='slidingdoor'?['telescopic-20','telescopic-floor-tracks']:B.supported({type})?['cabinet-model','cabinet-interior-distances']:[]);
+ const list=suites[id]||suites[type]||(type.startsWith('table_folding_')?['folding-table']:type.startsWith('sink_arrow_')?['sink','sink-plan-snapping']:P.definition(type)?.covering||type==='curtain'?['window-coverings','window-covering-mount']:type.startsWith('pocketdoor_')?['pocket-door','wide-pocket-door','pocket-identities']:P.definition(type)?.telescopic||type==='slidingdoor'?['telescopic-20','telescopic-floor-tracks']:B.supported({type})?['cabinet-model','cabinet-interior-distances']:[]);
  if(id==='block')list.splice(0,list.length,'block-placeholder');
+ if(type==='curtain'&&!list.includes('curtain-height'))list.push('curtain-height');
  for(const name of list)if(!fs.existsSync(path.join(root,'tests/test-'+name+'.cjs')))throw Error('Missing model suite: '+id+'/'+name);
  return list;
 }
@@ -34,6 +35,10 @@ function operate(f){
  else if(P.supports(f,'slidingOpen'))f.slidingOpen=!P.value(f,'slidingOpen');
  if(f.cabinet){for(const col of f.cabinet.columns){if(col.door!=='none'){col.doorOpen=true;col.doorAngle=90;}for(const drawer of col.drawers||[])drawer.open=true;if(col.top==='drawer')col.topOpen=true;}}
  if(f.kitchen){for(const m of f.kitchen.modules){m.doorOpen=true;for(const dr of m.drawers||[])if(typeof dr==='object')dr.open=true;}}
+ if(f.kitchen){
+  for(let i=0;i<f.kitchen.modules.length;i++)if(f.kitchen.modules[i].role==='drawer')for(let j=0;j<K.drawerHeights(f,f.kitchen.modules[i]).length;j++)f=K.toggle(f,i,j,true);
+  if(f.kitchen.laundry?.assembly)for(const part of K.laundryParts(f))if(part.key!=='sink'&&part.furniture.cabinet)f.kitchen.laundry.assembly[part.key].cabinet=operate(part.furniture).cabinet;
+ }
  return f;
 }
 function sourceFiles(profile){
@@ -58,11 +63,13 @@ function profiles(){
  }
  for(const side of ['left','right']){
   const f=K.configure({type:'counter',name:'洗衣柜',color:'#f3f1ec'},K.laundryPreset());out.push({id:'laundry--'+side,type:'counter',route:'parametric',fixture:{...f,flip:side==='left'},tests:['laundry-cabinet','laundry-area']});
+  let n=0;const full=K.createLaundryCabinet({id:'model-pilot',type:'counter',cx:0,cy:0,rot:0,color:'#f3f1ec'},()=> 'laundry-member-'+(++n),side);out.push({id:'laundry-area--'+side,type:'counter',route:'parametric',fixture:full[0],companions:full.slice(1),tests:['laundry-cabinet','laundry-area']});
  }
  const kitchen=K.configure({type:'counter',name:'高低柜组合',w:1800,d:600,color:'#f3f1ec'}, {...K.defaults({w:1800,d:600}),modules:[{run:0,width:600,role:'tall',height:2200},{run:0,width:600,role:'door'},{run:0,width:600,role:'drawer'}]});
  out.push({id:'kitchen--tall',type:'counter',route:'parametric',fixture:kitchen,tests:['kitchen-tall','kitchen']});
- const vessel=items.find(i=>i[10]==='vessel-sink');out.push({id:'sink--vessel',type:'ksink',route:'parametric',fixture:{...itemFixture(vessel),...K.catalogSpec(vessel)},tests:['sink','sink-surface']});
- for(const p of out){p.fixture={id:'model-pilot',cx:0,cy:0,rot:0,flip:false,...p.fixture};if(!p.fixture.h)p.fixture.h=P.height(p.fixture);p.fixture=copy(p.fixture);p.resizePolicy=p.type==='tv'?'coupled-screen':'independent';p.alternate=operate(p.fixture);p.alternateKind=p.id==='stack-stool'?'nested-stack':JSON.stringify(p.fixture)!==JSON.stringify(p.alternate)?'operating':'back';for(const name of p.tests)if(!fs.existsSync(path.join(root,'tests/test-'+name+'.cjs')))throw Error('Missing suite '+name);}
+ for(const shape of ['L','U']){const modules=[{run:0,width:900,role:'hob'},{run:0,width:600,role:'drawer'},{run:1,width:700,role:'door'},{run:1,width:500,role:'door'},...(shape==='U'?[{run:2,width:900,role:'sink'}]:[])],f=K.configure({id:'model-pilot',name:shape+'形厨房',type:'counter',cx:0,cy:0,rot:0,color:'#f3f1ec'},{version:1,shape,depth:600,counterDepth:630,baseHeight:820,thickness:20,modules});out.push({id:'kitchen--'+shape,type:'counter',route:'parametric',fixture:f,tests:['kitchen-u','kitchen-resize','kitchen-corner-fit']});}
+ const vessel=items.find(i=>i[10]==='vessel-sink');out.push({id:'sink--vessel',type:'ksink',route:'parametric',fixture:{...itemFixture(vessel),...K.catalogSpec(vessel)},tests:['sink','sink-surface','laundry-resize-vessel']});
+ for(const p of out){p.fixture={id:'model-pilot',cx:0,cy:0,rot:0,flip:false,...p.fixture};if(!p.fixture.h)p.fixture.h=P.height(p.fixture);p.fixture=copy(p.fixture);if(P.definition(p.fixture)?.ceilingPanel||p.type==='downlight_philips_dl269')p.detailView='underside';p.resizePolicy=p.type==='tv'?'coupled-screen':'independent';p.alternate=operate(p.fixture);p.alternateKind=p.id==='stack-stool'?'nested-stack':JSON.stringify(p.fixture)!==JSON.stringify(p.alternate)?'operating':'back';for(const name of p.tests)if(!fs.existsSync(path.join(root,'tests/test-'+name+'.cjs')))throw Error('Missing suite '+name);}
  return out;
 }
 module.exports={profiles,sourceFiles,operate,originalTypes,assetTypes};

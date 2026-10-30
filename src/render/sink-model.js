@@ -94,7 +94,7 @@ function buildVessel(T,f){
  const fx=Math.min(w*.32,w/2-.055),fz=-d/2+t/2,rise=Math.max(r.faucetRise/1000,h+r.faucetClearance/1000);
  syncIdentity.produce("sink-model.js:generator-call-19",()=>cylinder(Math.min(.012,t*.45),rise,fx,rise/2,fz,metal,'vessel-faucet'));
  const spout=syncIdentity.produce("sink-model:site-29",()=>new T.Mesh(new T.BoxGeometry(.024,.022,Math.min(.12,d*.3)),metal));spout.position.set(fx,.862+rise-.025,fz+Math.min(.12,d*.3)/2);spout.userData.sinkPart='vessel-spout';g.add(spout);
- const lever=syncIdentity.produce("sink-model:site-30",()=>new T.Mesh(new T.BoxGeometry(.065,.009,.014),metal));lever.position.set(fx+.02,.862+rise,fz);g.add(lever);return g;
+ const lever=syncIdentity.produce("sink-model:site-30",()=>new T.Mesh(new T.BoxGeometry(.065,.009,.014),metal));lever.position.set(fx+.02,.862+rise-.0045,fz);g.add(lever);return g;
 }
 const api={supported,build,buildNotched,buildVessel};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishSinkModel=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -21,11 +21,14 @@ for case in cases:
     else:
         bpy.ops.wm.read_factory_settings(use_empty=True)
         bpy.ops.import_scene.gltf(filepath=str(run/'browser'/case['file']))
-    actual = {o.get('furnishPartKey'): o for o in bpy.context.scene.objects if o.get('furnishId') == 'model-pilot'}
     expected = case['geometry']['parts']
+    owners = {p['id'] for p in expected}
+    objects = [o for o in bpy.context.scene.objects if o.get('furnishId') in owners]
+    actual = {(o.get('furnishId'), o.get('furnishPartKey')): o for o in objects}
+    assert len(actual) == len(objects), 'Duplicate owner/part identities'
     assert len(actual) == len(expected), (case.get('id'), len(actual), len(expected))
     for part in expected:
-        obj = actual[part['key']]
+        obj = actual[(part['id'], part['key'])]
         assert obj.type == 'MESH' and obj.get('furnishPartVersion') == 3
         points = [obj.matrix_world @ v.co for v in obj.data.vertices]
         xyz = [(p.x, p.z, -p.y) for p in points]

@@ -1201,9 +1201,9 @@ const syncIdentity=FurnishPartIdentity;
       const model=FurnishWindowCoveringModel.build(THREE,f);g.add(...model.children.slice());g.userData.covering=model.userData.covering;break;
     }
     case 'curtain': {
-      const height=M(f.h||2400),rodM=woodM('#6b543f'),radius=Math.min(.014,d*.08);
-      g.add(syncIdentity.produce("index:site-203",()=>rod([-w/2,height,0],[w/2,height,0],radius,rodM)));
-      syncIdentity.each("index.html:generator-34",[-1,1],s=>g.add(syncIdentity.produce("index:site-204",()=>blob(radius*1.5,radius*1.5,radius*1.5,rodM,s*(w/2-radius*1.5),height,0,12))));
+      const height=M(f.h||2400),rodM=woodM('#6b543f'),radius=Math.min(.014,d*.08),rodHeight=height-radius*1.5;
+      g.add(syncIdentity.produce("index:site-203",()=>rod([-w/2,rodHeight,0],[w/2,rodHeight,0],radius,rodM)));
+      syncIdentity.each("index.html:generator-34",[-1,1],s=>g.add(syncIdentity.produce("index:site-204",()=>blob(radius*1.5,radius*1.5,radius*1.5,rodM,s*(w/2-radius*1.5),rodHeight,0,12))));
       const count=f.curtainStyle==='single'?1:2,curtain={kind:'curtain',open:(f.curtainOpen??0)>0,cur:f.curtainOpen??0,target:f.curtainOpen,panels:[]};
       for(let panel of syncIdentity.range("index.html:generator-35",0,count,1,false)){
         const width=w/count-(count===2?.006:0),folds=Math.max(4,Math.round(width/.12)),cols=folds*12,rows=12,positions=[],indices=[],amplitude=Math.min(d*.4,.065);

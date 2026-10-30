@@ -61,7 +61,7 @@ assert.throws(()=>P.validateWork({...settings,open:{w:{0:{sill:.9,head:2.4,panel
  const THREE=await import(imports.three);
  const roundedSource=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString().replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(roundedSource).toString('base64'));
- const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishDesign:design,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,options)=>new THREE.MeshStandardMaterial({color,...options}),slidingDoors:[],furnG:new THREE.Group(),dirty:false,doors:[],colliders:[],clamp01:v=>Math.max(0,Math.min(1,v))}));
+ const ctx=require("./helpers/layer-context.cjs").createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishDesign:design,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,options)=>new THREE.MeshStandardMaterial({color,...options}),slidingDoors:[],furnG:new THREE.Group(),dirty:false,doors:[],colliders:[],clamp01:v=>Math.max(0,Math.min(1,v))}));
  Object.assign(ctx,{RoundedBoxGeometry,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishDownlightModel:require('../src/render/downlight-model.js'),FurnishProducts:design.products(),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  ctx.invalidate=()=>{ctx.dirty=true;};
  ctx.FurnishArmchairModel=require('../src/render/armchair-model.js');
@@ -103,7 +103,7 @@ assert.throws(()=>P.validateWork({...settings,open:{w:{0:{sill:.9,head:2.4,panel
  for(const rot of [0,90])for(const curtainStyle of ['single','double'])for(const flip of [false,true]){
   ctx.f={id:'curtain',type:'curtain',cx:0,cy:0,w:3620,d:440,h:2600,rot,color:'#c9d3da',curtainStyle,flip};
   const model=vm.runInContext('buildFurniture(f)',ctx),bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());
-  near(size.y,2.601);assert.ok((rot?size.z:size.x)<3.63,'rod stays within curtain width');
+  near(bounds.max.y,2.6);near(bounds.min.y,.02);assert.ok((rot?size.z:size.x)<3.63,'rod stays within curtain width');
   assert.ok((rot?size.x:size.z)<.15,'cloth is thin, not separate columns or a giant disc');
   const cloth=model.children.find(o=>o.geometry?.type==='BufferGeometry');assert.ok(cloth.geometry.index.count>1000);
   for(const v of cloth.geometry.attributes.normal.array)assert.ok(Number.isFinite(v));
