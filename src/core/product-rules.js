@@ -86,6 +86,7 @@ const types={
  blind_roller:{...covering,covering:{kind:'roller'}},
  pocketdoor_double:{family:'pocket-door',height:2640,defaults:{slidingOpen:true},fields:['slidingOpen'],create:['slidingOpen'],solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening'},pocket:{minWidth:1600,minDepth:120,minHeight:1800,skin:18,leaf:40,end:30,overlap:20,head:300,bottom:10,reserve:100}},
  pocketdoor_triple:{family:'pocket-door',height:2640,defaults:{slidingOpen:true,slidingStackSide:'left'},fields:['slidingOpen','slidingStackSide'],create:['slidingOpen','slidingStackSide'],solidModel:{global:'FurnishSlidingOpeningModel',module:'sliding-opening'},pocket:{panels:3,minWidth:2000,minDepth:200,minHeight:1800,skin:18,leaf:40,end:30,overlap:20,head:300,bottom:10,reserve:120,laneGap:10}},
+ bookshelf_yeswood_y00y06:{height:1900,defaultFrontClearance:0,family:'corner-bookcase',cornerBookcase:{thickness:20,base:30,levels:5,armRatio:250/450,minWidth:150,minDepth:150,minHeight:300},solidModel:{global:'FurnishCornerBookcaseModel',module:'corner-bookcase'},identity:{brand:'源氏木语/YESWOOD',model:'Y00Y06045 · 五层转角书柜',sourceUrl:'https://item.jd.com/100093046007.html'}},
  bookshelf_yeswood_y52y09:{height:750,bookcase:{template:'book-y52y09-low',width:1115,depth:230,thickness:18,edgeRadius:6},identity:{brand:'源氏木语/YESWOOD',model:'Y52Y09 · 三列两层 · 无底框',sourceUrl:'https://item.jd.com/100266639340.html'}},
  panel_light_300x600:{family:'ceiling-panel-device',clearanceReview:'missing',height:35,anchor:'bottom',defaults:{mountHeight:2500},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishBathHeaterModel',module:'bath-heater'},ceilingPanel:{width:300,length:600,rim:2,alignment:.1},panelLight:{watts:24,frame:3,color:'#fff4e4',previewCandela:60,columns:2,rows:3,bounceCandela:3,bounceDrop:900,bounceReach:4000}},
  bath_heater_aopu_se2:{family:'ceiling-panel-device',clearanceReview:'missing',height:112,anchor:'bottom',defaults:{mountHeight:2500},fields:['mountHeight'],create:['mountHeight'],identity:{brand:'奥普/AUPU',model:'SE2'},solidModel:{global:'FurnishBathHeaterModel',module:'bath-heater'},ceilingPanel:{width:300,length:600,rim:2,alignment:.1,profile:'se2',bodyHeight:110,minCeilingDrop:130}},
@@ -198,6 +199,7 @@ function resizeManifold(f,next){
  if(f.manifoldLengths)next.manifoldLengths={upper:old.lengths.upper*ratio,lower:old.lengths.lower*ratio};
 }
 function planBodyOutline(f,segments){
+ if(!f.obj&&family(f,'corner-bookcase'))return (root.FurnishCornerBookcase||require('./corner-bookcase-core.js')).outline(f);
  if(!f.obj&&family(f,'side-table'))return (root.FurnishSideTable||require('./side-table-core.js')).outline(f);
  if(!f.obj&&definition(f)?.washerMotion)return (root.FurnishWasherMotion||require('./washer-motion-core.js')).outline(f);
  if(!f.obj&&definition(f)?.hoodMotion)return (root.FurnishHoodMotion||require('./hood-motion-core.js')).outline(f);
@@ -280,7 +282,7 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){const cb=definition(f)?.cornerBookcase;if(!f.obj&&cb&&(f.w<cb.minWidth||f.d<cb.minDepth||height(f)<cb.minHeight))throw Error(`转角书柜布局草模宽深至少${cb.minWidth}、高至少${cb.minHeight} mm`);const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 // User-facing kinds are independent of renderer IDs, product identities and plan names.
 const kindGroups={
  '叠放方凳':'stool_citylong_370', '占位体':'block', '平板灯':'panel_light_300x600', '浴霸':'bath_heater_aopu_se2 bath_heater_300x600',
@@ -291,7 +293,7 @@ const kindGroups={
  '洗碗机':'dishwasher dishwasher_mijia_countertop', '净水器':'water_purifier_mijia_1200g', '茶吧机':'tea_bar_mijia_pro',
  '空气净化器':'purifier', '扫拖机器人':'robot_p20max', '扫拖机器人套装':'robot_p20max_tank robot_p20max_plumbed',
  '管道包覆柜':'pipebox', '收纳柜':'cabinet', '床头柜':'nightstand', '衣柜':'wardrobe', '斗柜':'chest',
- '书柜':'bookshelf bookshelf_yeswood_y52y09', '电视柜':'tvstand', '鞋柜':'shoecab', '床':'bed', '婴儿床':'crib',
+ '书柜':'bookshelf bookshelf_yeswood_y52y09 bookshelf_yeswood_y00y06', '电视柜':'tvstand', '鞋柜':'shoecab', '床':'bed', '婴儿床':'crib',
  '单人沙发椅':'armchair armchair_yeswood_y09hs armchair_yeswood_berlin', '沙发':'sofa sofa_yeswood_cherry', '转角沙发':'cornersofa', '懒人沙发':'beanbag',
  '茶几':'coffeetable coffeetable_yeswood_cherry', '茶台':'tea_table_800', '梳妆台':'dresser', '书桌':'desk',
  '圆桌':'roundtable', '边几':'sidetable sidetable_tmall_635382906309', '餐桌':'table',

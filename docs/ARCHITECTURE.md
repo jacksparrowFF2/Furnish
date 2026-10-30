@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（转角书柜）：corner-bookcase-core按产品规则派生五层L形板件，corner-bookcase-model逐板拟合14件Blender离线网格；生产构造器经FurnitureSolids／CabinetMotion提供21个保留缺角的空间片，SVG与平面共用L形轮廓。原mutate与尺寸／项目恢复保持，无新字段或版本；三个经典本地脚本已验HTTP与断网file，见[型号契约](CORNER-BOOKCASE-YESWOOD-Y00Y06.md)。
+
 2026-10-31（叠放方凳）：product-rules.stoolStack派生总高，stack-stool-model按数量／增高重复独立Blender离线网格；主场景与bodyParts／directional／柜内六向净距共用生产构造。属性沿mutate编辑stoolCount／stoolPitch及原mountHeight，缓存和本类型确认覆盖输入。含方凳项目／工作区v39及可读旧版的v39缓存；新增两个经典本地脚本，HTTP及断网file已验证。70mm增高是可调图片估算，见[方凳契约](STACK-STOOL-CITYLONG-370.md)。
 
 2026-10-31（平面重绘性能）：layout-geometry的volumeOverlap每对家具仅解析一次生产板件，并用完整投影包围盒排除分离板件，再沿原高度裁切与多边形精判。app碰撞结果只在withCanvasPlan同步绘制作用域内共享，属性栏／页头与图层共用，异常后释放，不跨编辑或恢复保存缓存。model-solid-recorder按网格预计算仿射变换，furniture-solids保留生产顶点／面结构；无持久字段、格式或加载顺序变化。见[启动验收](validation/startup-performance-20261031/README.md)。

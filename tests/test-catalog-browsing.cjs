@@ -6,7 +6,7 @@ assert.equal(new Set(browse.flatMap(g=>g.items)).size,items.length);
 for(const it of items){assert(browse.some(g=>g.items.includes(it)));assert.equal(C.findItem(it[0],it[1]),it);}
 assert.deepEqual(browse.find(g=>g.cat==='宠物').items.map(it=>it[0]).sort(),['aquarium_mijia_2pro','cat_tree','litter_box','pet_feeder_mijia_2']);
 assert(browse.find(g=>g.cat==='洗衣 · 家政').items.some(it=>it[0]==='dryingrack'));
-assert.equal(browse.find(g=>g.cat==='柜体').items.length,10); // Includes the existing Y52Y09 low bookcase.
+assert.equal(browse.find(g=>g.cat==='柜体').items.length,11); // Includes Y52Y09 and the Y00Y06 corner bookcase.
 for(const type of ['curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller'])assert(browse.find(g=>g.cat==='布艺').items.some(it=>it[0]===type));
 assert.equal(JSON.stringify(C.library),original);
 const item=type=>items.find(it=>it[0]===type),aircon=item('aircon_midea_ultra_2hp'),washer=item('washer');

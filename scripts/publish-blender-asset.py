@@ -13,9 +13,9 @@ import sys
 
 
 def publish(source, target, profile='se2', spec=None):
-    if profile not in ('se2', 'y52y09', 'fridge', 'dishwasher', 'hood', 'washer', 'washer-tg10k60w', 'side-table', 'armchair', 'armchair-berlin', 'stack-stool'):
+    if profile not in ('se2', 'y52y09', 'fridge', 'dishwasher', 'hood', 'washer', 'washer-tg10k60w', 'side-table', 'armchair', 'armchair-berlin', 'stack-stool', 'corner-bookcase'):
         raise ValueError('Unknown asset profile')
-    prefix = {'se2':'bath-heater-se2:','y52y09':'y52y09:','fridge':'fridge-v1:','dishwasher':'dishwasher-v1:','hood':'hood-v1:','washer':'washer-v1:','washer-tg10k60w':'washer-tg10k60w-v1:','side-table':'side-table-v1:','armchair':'armchair-v1:','armchair-berlin':'armchair-berlin-v1:','stack-stool':'stack-stool-v1:'}[profile]
+    prefix = {'se2':'bath-heater-se2:','y52y09':'y52y09:','fridge':'fridge-v1:','dishwasher':'dishwasher-v1:','hood':'hood-v1:','washer':'washer-v1:','washer-tg10k60w':'washer-tg10k60w-v1:','side-table':'side-table-v1:','armchair':'armchair-v1:','armchair-berlin':'armchair-berlin-v1:','corner-bookcase':'corner-bookcase-v1:','stack-stool':'stack-stool-v1:'}[profile]
     raw = source.read_bytes()
     if len(raw) < 20 or raw[:4] != b'glTF' or struct.unpack_from('<II', raw, 4) != (2, len(raw)):
         raise ValueError('Invalid GLB header')
@@ -99,7 +99,7 @@ def publish(source, target, profile='se2', spec=None):
                 normals.extend(xyz((normal_matrix @ mesh.corner_normals[loop].vector).normalized()))
         if not positions:
             raise ValueError('Empty mesh')
-        if profile in ('fridge','dishwasher','hood','washer','washer-tg10k60w', 'side-table'):
+        if profile in ('fridge','dishwasher','hood','washer','washer-tg10k60w', 'side-table', 'corner-bookcase'):
             reference=next((p for p in spec['parts'] if p['name']==obj.name),None)
             role=obj.parent.get('furnishMotionRole') if obj.parent else None
             if not reference or reference['role']!=role:
@@ -107,6 +107,14 @@ def publish(source, target, profile='se2', spec=None):
             low=[min(positions[k::3]) for k in range(3)];high=[max(positions[k::3]) for k in range(3)]
             if any(abs(high[k]-low[k]-reference['size'][k]/1000)>1e-6 or abs((high[k]+low[k])/2-reference['center'][k]/1000)>1e-6 for k in range(3)):
                 raise ValueError('Articulated part dimensions/closed pose changed: '+obj.name)
+            if profile=='corner-bookcase' and reference.get('shape')=='L':
+                # Preserve the 200 x 200 mm open front notch, even with unchanged bounds.
+                def covers_xz(tri, point):
+                    signs=[(tri[(j+1)%3][0]-tri[j][0])*(point[1]-tri[j][1])-(tri[(j+1)%3][1]-tri[j][1])*(point[0]-tri[j][0]) for j in range(3)]
+                    return min(signs)>=-1e-12 or max(signs)<=1e-12
+                faces=[[[positions[i+j],positions[i+j+2]] for j in (0,3,6)] for i in range(0,len(positions),9) if max(positions[i+j+1] for j in (0,3,6))-min(positions[i+j+1] for j in (0,3,6))<1e-6]
+                if any(covers_xz(tri,(x,z)) for tri in faces for x in (.06,.125,.20) for z in (.06,.125,.20)):
+                    raise ValueError('Corner shelf front notch is filled: '+obj.name)
             if profile.startswith('washer') and obj.name=='door-ring':
                 radii=[math.hypot(positions[i],positions[i+1]-spec['profile']['cy']/1000) for i in range(0,len(positions),3)]
                 if abs(min(radii)-spec['profile']['inner']/1000)>1e-6 or abs(max(radii)-spec['profile']['radius']/1000)>1e-6:
@@ -147,7 +155,7 @@ def publish(source, target, profile='se2', spec=None):
                       'material': mat, 'positions': positions, 'normals': normals})
     if not parts:
         raise ValueError('No meshes')
-    if profile in ('fridge','dishwasher','hood','washer','washer-tg10k60w', 'side-table'):
+    if profile in ('fridge','dishwasher','hood','washer','washer-tg10k60w', 'side-table', 'corner-bookcase'):
         expected={p['name'] for p in spec['parts']}
         if set(hinges)!={m['role'] for m in spec['motions']}:
             raise ValueError('Missing hinge/slide parents')
@@ -182,17 +190,17 @@ def publish(source, target, profile='se2', spec=None):
         expected.update(prefix+'-'+str(i) for prefix in ('indicator', 'indicator-label', 'brand-mark') for i in range(4))
     if {p['name'] for p in parts} != expected:
         raise ValueError('Asset part set changed; review resize and stable identities before publishing')
-    bounds = {'stack-stool':((-.185,.185),(0,.467),(-.185,.185)),'armchair-berlin':((-.355,.355),(0,.845),(-.425,.425)),'armchair':((-.3625,.3625),(0,.905),(-.450,.450)),'se2':((-.15,.15),(0,.112),(-.3,.3)),'y52y09':((-.5575,.5575),(0,.75),(-.115,.115)),'fridge':((-.4165,.4165),(0,1.910),(-.2975,.2975)),'dishwasher':((-.275,.275),(0,.598),(-.175,.175)),'hood':((-.450,.450),(0,.520),(-.175,.175)),'washer':((-.300,.300),(0,.850),(-.300,.300)),'side-table':((-.340,.340),(0,.612),(-.150,.150)),'washer-tg10k60w':((-.2975,.2975),(0,.850),(-.280,.280))}[profile]
+    bounds = {'corner-bookcase':((-.225,.225),(0,1.900),(-.225,.225)),'stack-stool':((-.185,.185),(0,.467),(-.185,.185)),'armchair-berlin':((-.355,.355),(0,.845),(-.425,.425)),'armchair':((-.3625,.3625),(0,.905),(-.450,.450)),'se2':((-.15,.15),(0,.112),(-.3,.3)),'y52y09':((-.5575,.5575),(0,.75),(-.115,.115)),'fridge':((-.4165,.4165),(0,1.910),(-.2975,.2975)),'dishwasher':((-.275,.275),(0,.598),(-.175,.175)),'hood':((-.450,.450),(0,.520),(-.175,.175)),'washer':((-.300,.300),(0,.850),(-.300,.300)),'side-table':((-.340,.340),(0,.612),(-.150,.150)),'washer-tg10k60w':((-.2975,.2975),(0,.850),(-.280,.280))}[profile]
     for axis, limits in enumerate(bounds):
         values = [v for p in parts for v in p['positions'][axis::3]]
         if max(abs(min(values)-limits[0]), abs(max(values)-limits[1])) > 1e-6:
             raise ValueError('Reference dimensions/origin changed; review product rules first')
     payload = {'format':1,'version':2 if profile=='washer-tg10k60w' else 1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
-    payload.update({'id':'stool-citylong-370','sizeMm':[370,467,370]} if profile=='stack-stool' else {'id':'armchair-yeswood-berlin','sizeMm':[710,845,850]} if profile=='armchair-berlin' else {'id':'armchair-yeswood-y09hs','sizeMm':[725,905,900]} if profile=='armchair' else {'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'side-table-tmall-635382906309','sizeMm':spec['size'],'motions':list(hinges.values())} if profile=='side-table' else {'id':'fridge-french-drawer' if profile=='fridge' else 'rangehood-fotile-jcd10ta' if profile=='hood' else 'washer-littleswan-tg10k60w' if profile=='washer-tg10k60w' else 'washer-front-load' if profile=='washer' else 'dishwasher-mijia-countertop','sizeMm':spec['size'],'motions':list(hinges.values())})
+    payload.update({'id':'corner-bookcase-y00y06','sizeMm':[450,1900,450]} if profile=='corner-bookcase' else {'id':'stool-citylong-370','sizeMm':[370,467,370]} if profile=='stack-stool' else {'id':'armchair-yeswood-berlin','sizeMm':[710,845,850]} if profile=='armchair-berlin' else {'id':'armchair-yeswood-y09hs','sizeMm':[725,905,900]} if profile=='armchair' else {'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'side-table-tmall-635382906309','sizeMm':spec['size'],'motions':list(hinges.values())} if profile=='side-table' else {'id':'fridge-french-drawer' if profile=='fridge' else 'rangehood-fotile-jcd10ta' if profile=='hood' else 'washer-littleswan-tg10k60w' if profile=='washer-tg10k60w' else 'washer-front-load' if profile=='washer' else 'dishwasher-mijia-countertop','sizeMm':spec['size'],'motions':list(hinges.values())})
     # Publish only after successful import and validation; a failed attempt preserves the old asset.
     body = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
     text = '/* Generated from '+source.name+'; scripts/publish-blender-asset.py. Do not hand-edit. */\n'
-    global_name = {'se2':'FurnishSE2BlenderAsset','y52y09':'FurnishY52Y09BlenderAsset','fridge':'FurnishFridgeBlenderAsset','dishwasher':'FurnishDishwasherBlenderAsset','hood':'FurnishHoodBlenderAsset','washer':'FurnishWasherBlenderAsset','washer-tg10k60w':'FurnishTG10K60WBlenderAsset','side-table':'FurnishSideTableBlenderAsset','armchair':'FurnishArmchairBlenderAsset','armchair-berlin':'FurnishBerlinArmchairBlenderAsset','stack-stool':'FurnishStackStoolBlenderAsset'}[profile]
+    global_name = {'se2':'FurnishSE2BlenderAsset','y52y09':'FurnishY52Y09BlenderAsset','fridge':'FurnishFridgeBlenderAsset','dishwasher':'FurnishDishwasherBlenderAsset','hood':'FurnishHoodBlenderAsset','washer':'FurnishWasherBlenderAsset','washer-tg10k60w':'FurnishTG10K60WBlenderAsset','side-table':'FurnishSideTableBlenderAsset','armchair':'FurnishArmchairBlenderAsset','armchair-berlin':'FurnishBerlinArmchairBlenderAsset','corner-bookcase':'FurnishCornerBookcaseBlenderAsset','stack-stool':'FurnishStackStoolBlenderAsset'}[profile]
     text += '(function(root){const asset=' + body + ';if(typeof module==="object"&&module.exports)module.exports=asset;else root.'+global_name+'=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + '.tmp')

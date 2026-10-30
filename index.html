@@ -415,6 +415,9 @@
 <script src="src/data/armchair-blender-asset.js"></script>
 <script src="src/data/armchair-berlin-blender-asset.js"></script>
 <script src="src/render/armchair-model.js"></script>
+<script src="src/core/corner-bookcase-core.js"></script>
+<script src="src/data/corner-bookcase-blender-asset.js"></script>
+<script src="src/render/corner-bookcase-model.js"></script>
 <script src="src/data/stack-stool-blender-asset.js"></script>
 <script src="src/render/stack-stool-model.js"></script>
 <script src="src/render/bath-heater-model.js"></script>
@@ -877,6 +880,7 @@ const syncIdentity=FurnishPartIdentity;
     const model=FurnishArrowShowerModel.build(THREE,f,RoundedBoxGeometry);
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
+  if(FurnishProducts.family(f,'corner-bookcase')){const model=FurnishCornerBookcaseModel.build(THREE,f,{wood:woodM(f.color)});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishStackStoolModel.supported(f)){const model=FurnishStackStoolModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishArmchairModel.supported(f)){const model=FurnishArmchairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(f.type==='sofa_yeswood_cherry'){
