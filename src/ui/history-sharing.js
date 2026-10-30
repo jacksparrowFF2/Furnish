@@ -28,26 +28,17 @@ function renderDesignBar(){
   host.querySelector('[aria-pressed="true"]')?.scrollIntoView({block:'nearest',inline:'nearest'});
 }
 /* Classic declarations; initialize storage and browser handlers after app state exists. */
-function renderDesigns(){
-  renderDesignBar();
-  const box = $('#designList'); if (!box) return;
-  const list = store.designs.filter(d => d.planId === PLAN.id && d.editable!==true);
-  box.innerHTML = list.length ? list.map(d =>
-    `<div class="dsn"><button class="btn" data-dload="${d.id}" title="${tr('恢复此历史记录', 'Restore this history')}">${esc(d.name)}</button>
-     <button class="btn danger" data-ddel="${d.id}" title="${tr('删除方案', 'Delete design')}" aria-label="${tr('删除方案', 'Delete design')}">×</button></div>`).join('')
-    : `<div class="muted empty">${tr('暂无历史记录', 'No history records yet')}</div>`;
-  box.querySelectorAll('[data-dload]').forEach(b => b.onclick = () => {
-    const d = store.designs.find(x => x.id === b.dataset.dload); if (!d) return;
-    try{const next=fixWork(JSON.parse(JSON.stringify(d.work)),PLAN);if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);
-      snapshot(true,state,'恢复历史记录前');const before=snap();state=next;ui.sel=null;commit(before);renderAll();$('#fileMenu').open=false;
-      toast(tr('已恢复历史记录，可撤销','History restored; undo available'));
-    }catch(e){toast(e.message);}
-  });
-  box.querySelectorAll('[data-ddel]').forEach(b => b.onclick = () => {
-    window.FurnishDesignUI?.editDesign('delete',b.dataset.ddel);
-  });
-  box.insertAdjacentHTML('beforeend',`<button class="btn" id="manageDesigns">${tr('管理方案与历史','Manage designs and history')}</button>`);
-  $('#manageDesigns').onclick=()=>{window.FurnishDesignUI?.designs();$('#fileMenu').open=false;};
+function renderDesigns(){renderDesignBar();renderHist();}
+function restoreDesignHistory(id){
+  const d=store.designs.find(d=>d.id===id&&d.planId===PLAN.id&&d.editable!==true);
+  if(!d)return;
+  try{
+    const next=fixWork(JSON.parse(JSON.stringify(d.work)),PLAN);
+    if(state.architecture)next.architecture=FurnishProject.protectOriginal(state.architecture,next.architecture);
+    FurnishProject.validatePlanWork(PLAN,next);
+    snapshot(true,state,'恢复历史记录前');const before=snap();state=next;ui.sel=null;commit(before);renderAll();
+    toast(tr('已恢复历史记录，可撤销','History restored; undo available'));
+  }catch(e){toast(e.message);}
 }
 function snapshot(force,data=state,reason='自动快照',planId=PLAN.id){
   if(storageWiping)return;
@@ -58,15 +49,9 @@ function snapshot(force,data=state,reason='自动快照',planId=PLAN.id){
   renderHist();
 }
 function renderHist(){
-  const box = $('#histList'); if (!box) return;
-  const list = hist.filter(h => h.planId === PLAN.id);
-  box.innerHTML = list.length ? list.map(h =>
-    `<div class="dsn"><button class="btn" data-hload="${h.ts}" title="${tr('恢复此快照', 'Restore this snapshot')}">${new Date(h.ts).toLocaleString()} · ${h.n}${tr(' 件', ' items')}</button></div>`).join('')
-    : `<div class="muted empty">${tr('暂无历史快照', 'No snapshots yet')}</div>`;
-  box.querySelectorAll('[data-hload]').forEach(b => b.onclick = () => {
-    const h = hist.find(x => x.ts === +b.dataset.hload); if (!h) return;
-    window.FurnishDesignUI?.previewRecovery(h.ts);$('#fileMenu').open=false;
-  });
+  const button=$('#recoveryPoints');if(!button)return;
+  const count=hist.filter(h=>h.planId===PLAN.id).length;
+  button.textContent=tr(`自动快照（${count}）`,`Automatic snapshots (${count})`);
 }
 
 const HIST_KEY='huxing-history';

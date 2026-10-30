@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "design-switching"
+  ],
+  "results": [
+    {
+      "name": "design-switching",
+      "status": "PASS",
+      "seconds": 20.5,
+      "log": "design-switching.log"
+    }
+  ],
+  "notRun": []
+}

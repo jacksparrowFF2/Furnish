@@ -35,14 +35,24 @@ const V=require('../scripts/lib/browser-verification.cjs');
    await page.locator('#recoveryPoints').click();assert(await page.locator('#recovery-create').isVisible());
    await page.locator('#dlg').press('Escape');
    // Populate long names and many snapshots without persisting or mutating project state.
-   await page.evaluate(()=>{store.designs=Array.from({length:18},(_,i)=>({id:'test-'+i,planId:PLAN.id,name:'1601 · 主卧方案与餐边柜调整前的备份 '+i,work:state}));renderDesigns();hist=Array.from({length:8},(_,i)=>({planId:PLAN.id,ts:Date.now()-i*60000,n:69}));renderHist();});
+   await page.evaluate(()=>{store.designs=Array.from({length:18},(_,i)=>({id:'test-'+i,planId:PLAN.id,name:'1601 · 主卧方案与餐边柜调整前的备份 '+i,work:state}));renderDesigns();hist=Array.from({length:8},(_,i)=>({planId:PLAN.id,ts:Date.now()-i*60000,n:state.furniture.length,reason:'入口验收',data:{...JSON.parse(snap()),designNote:'snapshot restored'}}));renderHist();});
+   await page.locator('#fileMenu>summary').click();await page.locator('#file-tab-history').click();
+   await page.locator('#manageDesigns').click();assert.equal(await page.locator('.design-record').count(),18);
+   assert.equal(await page.locator('#fileMenu').getAttribute('open'),null);
+   await page.locator('.design-record').first().getByRole('button',{name:'恢复到当前方案',exact:true}).click();
+   assert.equal(await page.locator('#dlg').isVisible(),false);
+   await page.locator('#bar-manage-designs').click();assert.equal(await page.locator('.design-record').count(),18);await page.locator('#dlgClose').click();
+   const beforeSnapshot=await page.evaluate(()=>state.designNote);
+   await page.locator('#fileMenu>summary').click();await page.locator('#file-tab-history').click();await page.locator('#recoveryPoints').click();
+   await page.locator('[data-recovery-preview]').last().click();await page.locator('#dlgActions').getByRole('button',{name:'恢复到此记录',exact:true}).click();
+   assert.equal(await page.evaluate(()=>state.designNote),'snapshot restored');await page.evaluate(()=>undo());assert.equal(await page.evaluate(()=>state.designNote),beforeSnapshot);
    for(const viewport of [{width:1440,height:1000},{width:932,height:900},{width:390,height:740}]){
     await page.setViewportSize(viewport);await page.waitForTimeout(150);
     if(!await page.locator('#fileMenu').evaluate(el=>el.open))await page.locator('#fileMenu>summary').click();
     for(const tab of ['save','export','history']){
      await page.locator('#file-tab-'+tab).click();
      const box=await page.locator('.file-pop').boundingBox();assert(box.x>=0&&box.x+box.width<=viewport.width+1,JSON.stringify(box));assert(box.y+box.height<=viewport.height+1,JSON.stringify(box));
-     if(tab==='history')await page.locator('#histList').locator('..').evaluate(el=>el.open=true);
+     if(tab==='history'){assert.equal(await page.locator('#designList,#histList,[data-dload],[data-hload]').count(),0);assert(await page.locator('#manageDesigns').isVisible());assert(await page.locator('.file-recovery-region #recoveryPoints').isVisible());assert.equal(await page.locator('.file-recovery-region #repository-recovery').count(),protocol==='http'?1:0);}
      await page.screenshot({path:path.join(output,protocol+'-'+viewport.width+'-'+tab+'.png')});
     }
    }

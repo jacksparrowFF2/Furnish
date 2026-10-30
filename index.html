@@ -214,14 +214,12 @@
         </details>
         </section>
         <section id="file-pane-history" role="tabpanel" aria-labelledby="file-tab-history" hidden>
-        <div id="file-recovery-actions" class="file-actions"></div>
-        <details class="file-fold" open><summary data-en="Design history">方案历史记录</summary>
-        <p class="file-note" data-en="Restoring history replaces the current design and can be undone.">恢复历史会替换当前方案内容，可撤销。</p>
-        <div id="designList"></div>
-        </details>
-        <details class="file-fold"><summary data-en="Recent snapshots">近期自动快照</summary>
-        <div id="histList"></div>
-        </details>
+        <div class="file-actions"><button class="btn" id="manageDesigns" data-en="Designs and history">方案与历史管理</button></div>
+        <section class="file-recovery-region" aria-labelledby="file-recovery-heading">
+          <h3 id="file-recovery-heading" data-en="Data recovery">数据恢复</h3>
+          <p class="file-note" data-en="Find earlier work in automatic snapshots or local recovery copies.">从自动快照或本机恢复副本找回之前的工作内容。</p>
+          <div id="file-recovery-actions" class="file-actions"></div>
+        </section>
         </section>
         <details class="file-fold file-maintenance"><summary data-en="Reset & clear">重置与清理</summary>
         <button class="btn" id="resetMenu" data-en="Reset…">重置…</button>

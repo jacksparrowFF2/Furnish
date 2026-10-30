@@ -21,9 +21,8 @@
 #fileMenu .file-fold>summary{display:flex;align-items:center;justify-content:space-between;padding:10px 3px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;border:0;color:var(--muted);list-style:none}
 .file-fold>summary::after{content:'＋';font-size:15px;font-weight:400}
 .file-fold[open]>summary::after{content:'−'}
-#fileMenu #designList,#fileMenu #histList{max-height:none;overflow:visible}
-#fileMenu .dsn .btn{width:auto;text-align:left}
-#fileMenu .dsn .btn.danger{flex:none;min-width:40px;width:40px}
+.file-recovery-region{border-top:1px solid var(--line);padding-top:14px}
+.file-recovery-region h3{font-size:13px;margin:0 2px 8px;color:var(--muted)}
 .file-maintenance{margin-top:12px}
 .canvas-rail,.scene-light,.space-status,.preview-banner{--ink:var(--s-ink);--muted:var(--s-muted);--line:var(--s-line);--card:var(--s-card);--panel:var(--s-panel);--hover:var(--s-hover);--accent-soft:var(--s-accent-soft);--accent-ink:var(--s-accent-ink);--soft:var(--s-soft);color:var(--ink)}
 #stage{container-type:inline-size}
