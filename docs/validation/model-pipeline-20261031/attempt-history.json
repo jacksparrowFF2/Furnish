@@ -1,0 +1,1193 @@
+{
+  "description": "Original failed attempts retained before resume; passing evidence is recorded separately",
+  "attempts": [
+    {
+      "id": "pocketdoor_double",
+      "type": "pocketdoor_double",
+      "route": "parametric",
+      "fixtureHash": "d2fa0797ba6aeb1d3d2dd82e78dff406697e11ade9d044364ef91434d534bacb",
+      "passed": false,
+      "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL",
+      "failedStage": "http-file-production",
+      "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL\\browser.log",
+      "revision": "ac1cf8730b28224e685aa9660585466c442538da",
+      "sourceFingerprint": "412907784d0cbff90a0aec638167d3f90502a8fb87d4c93dd188939701dec6b3",
+      "reportSha256": "d0676578b9bba9ef98d6658ecd5efe0e0726ce4e7cc64cf60cd264f54831ef45",
+      "report": {
+        "passed": false,
+        "profile": "pocketdoor_double",
+        "route": "parametric",
+        "fixture": {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "pocketdoor_double",
+          "name": "双侧口袋门隔断 · 布局草模",
+          "w": 2800,
+          "d": 160,
+          "color": "#c5b59d",
+          "slidingOpen": true,
+          "h": 2640
+        },
+        "alternateKind": "operating",
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+        "started": "2026-10-30T18:39:30.161Z",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL",
+        "stages": [
+          {
+            "name": "author-preflight",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+          },
+          {
+            "name": "preflight-negative",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "No imported author asset; validate production geometry and its structural suites."
+          },
+          {
+            "name": "publish",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Parametric model has no offline asset publication stage."
+          },
+          {
+            "name": "geometry-state",
+            "passed": true,
+            "started": "2026-10-30T18:39:30.162Z",
+            "result": {
+              "passed": true,
+              "tests": [
+                {
+                  "name": "pocket-door",
+                  "profile": "pocketdoor_double",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL\\pocket-door.log",
+                  "reused": false
+                },
+                {
+                  "name": "wide-pocket-door",
+                  "profile": "pocketdoor_double",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL\\wide-pocket-door.log",
+                  "reused": false
+                }
+              ],
+              "spatial": {
+                "passed": true,
+                "results": [
+                  {
+                    "id": "pocketdoor_double",
+                    "passed": true,
+                    "cases": [
+                      {
+                        "state": "nominal",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 9,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "nominal",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 9,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 9,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 9,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "finished": "2026-10-30T18:39:30.717Z"
+          },
+          {
+            "name": "http-file-production",
+            "passed": false,
+            "started": "2026-10-30T18:39:30.717Z",
+            "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL\\browser.log",
+            "finished": "2026-10-30T18:39:35.321Z"
+          }
+        ],
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL\\browser.log",
+        "finished": "2026-10-30T18:39:35.321Z"
+      }
+    },
+    {
+      "id": "pocketdoor_triple",
+      "type": "pocketdoor_triple",
+      "route": "parametric",
+      "fixtureHash": "4bcc8b1fcf7da9b132e1fb2e594957cff92f4de5ac21a666aae587143d79752c",
+      "passed": false,
+      "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_triple-T91ZCC",
+      "failedStage": "http-file-production",
+      "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_triple-T91ZCC\\browser.log",
+      "revision": "ac1cf8730b28224e685aa9660585466c442538da",
+      "sourceFingerprint": "412907784d0cbff90a0aec638167d3f90502a8fb87d4c93dd188939701dec6b3",
+      "reportSha256": "13f69d66c401eceffa489e47b42fc760622484400ee9944ab3720f84041f534d",
+      "report": {
+        "passed": false,
+        "profile": "pocketdoor_triple",
+        "route": "parametric",
+        "fixture": {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "pocketdoor_triple",
+          "name": "单侧三联动口袋门 · 布局草模",
+          "w": 2800,
+          "d": 220,
+          "color": "#c5b59d",
+          "slidingOpen": true,
+          "slidingStackSide": "left",
+          "h": 2640
+        },
+        "alternateKind": "operating",
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+        "started": "2026-10-30T18:39:35.353Z",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_triple-T91ZCC",
+        "stages": [
+          {
+            "name": "author-preflight",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+          },
+          {
+            "name": "preflight-negative",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "No imported author asset; validate production geometry and its structural suites."
+          },
+          {
+            "name": "publish",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Parametric model has no offline asset publication stage."
+          },
+          {
+            "name": "geometry-state",
+            "passed": true,
+            "started": "2026-10-30T18:39:35.354Z",
+            "result": {
+              "passed": true,
+              "tests": [
+                {
+                  "name": "pocket-door",
+                  "profile": "pocketdoor_double",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL\\pocket-door.log",
+                  "reused": true
+                },
+                {
+                  "name": "wide-pocket-door",
+                  "profile": "pocketdoor_double",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL\\wide-pocket-door.log",
+                  "reused": true
+                }
+              ],
+              "spatial": {
+                "passed": true,
+                "results": [
+                  {
+                    "id": "pocketdoor_triple",
+                    "passed": true,
+                    "cases": [
+                      {
+                        "state": "nominal",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 7,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "nominal",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 7,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 7,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100.00000000000045,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 7,
+                        "bottom": 0,
+                        "top": 2639.9999999999995,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "finished": "2026-10-30T18:39:35.662Z"
+          },
+          {
+            "name": "http-file-production",
+            "passed": false,
+            "started": "2026-10-30T18:39:35.662Z",
+            "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_triple-T91ZCC\\browser.log",
+            "finished": "2026-10-30T18:39:40.299Z"
+          }
+        ],
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_triple-T91ZCC\\browser.log",
+        "finished": "2026-10-30T18:39:40.300Z"
+      }
+    },
+    {
+      "id": "curtain-single",
+      "type": "curtain",
+      "route": "parametric",
+      "fixtureHash": "32703ec987263f8550b7f75f98ca11dcd5f7807d284c88296d3b3af7fcd076e1",
+      "passed": false,
+      "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-single-PbVwVi",
+      "failedStage": "http-file-production",
+      "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-single-PbVwVi\\browser.log",
+      "revision": "ac1cf8730b28224e685aa9660585466c442538da",
+      "sourceFingerprint": "412907784d0cbff90a0aec638167d3f90502a8fb87d4c93dd188939701dec6b3",
+      "reportSha256": "64f72a8ec00d599d4df3a581c009cd24b4dcf672f217c95b927659fd30b21202",
+      "report": {
+        "passed": false,
+        "profile": "curtain-single",
+        "route": "parametric",
+        "fixture": {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "curtain",
+          "name": "单开窗帘 2.4m",
+          "w": 2400,
+          "d": 180,
+          "color": "#c9d3da",
+          "curtainStyle": "single",
+          "curtainOpen": 0,
+          "mountHeight": 0,
+          "frontClearance": 0,
+          "h": 2400
+        },
+        "alternateKind": "operating",
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+        "started": "2026-10-30T18:47:07.331Z",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-single-PbVwVi",
+        "stages": [
+          {
+            "name": "author-preflight",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+          },
+          {
+            "name": "preflight-negative",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "No imported author asset; validate production geometry and its structural suites."
+          },
+          {
+            "name": "publish",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Parametric model has no offline asset publication stage."
+          },
+          {
+            "name": "geometry-state",
+            "passed": true,
+            "started": "2026-10-30T18:47:07.332Z",
+            "result": {
+              "passed": true,
+              "tests": [
+                {
+                  "name": "window-coverings",
+                  "profile": "curtain_sheer",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain_sheer-g2I6a9\\window-coverings.log",
+                  "reused": true
+                },
+                {
+                  "name": "window-covering-mount",
+                  "profile": "curtain_sheer",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain_sheer-g2I6a9\\window-covering-mount.log",
+                  "reused": true
+                }
+              ],
+              "spatial": {
+                "passed": true,
+                "results": [
+                  {
+                    "id": "curtain-single",
+                    "passed": true,
+                    "cases": [
+                      {
+                        "state": "nominal",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "nominal",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "finished": "2026-10-30T18:47:07.632Z"
+          },
+          {
+            "name": "http-file-production",
+            "passed": false,
+            "started": "2026-10-30T18:47:07.633Z",
+            "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-single-PbVwVi\\browser.log",
+            "finished": "2026-10-30T18:47:12.777Z"
+          }
+        ],
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-single-PbVwVi\\browser.log",
+        "finished": "2026-10-30T18:47:12.778Z"
+      }
+    },
+    {
+      "id": "curtain-double",
+      "type": "curtain",
+      "route": "parametric",
+      "fixtureHash": "9b3b16da56cc814de39a9cb606cef9828280c1b3cb679d45bd1ab5aa6f617217",
+      "passed": false,
+      "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-double-c4ovPh",
+      "failedStage": "http-file-production",
+      "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-double-c4ovPh\\browser.log",
+      "revision": "ac1cf8730b28224e685aa9660585466c442538da",
+      "sourceFingerprint": "412907784d0cbff90a0aec638167d3f90502a8fb87d4c93dd188939701dec6b3",
+      "reportSha256": "6c8031d593dc3501904131daca13a4fbd53ca9ca5686da3b8cb5e189c5daa0ea",
+      "report": {
+        "passed": false,
+        "profile": "curtain-double",
+        "route": "parametric",
+        "fixture": {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "curtain",
+          "name": "双开窗帘 2.4m",
+          "w": 2400,
+          "d": 180,
+          "color": "#c9d3da",
+          "curtainStyle": "double",
+          "curtainOpen": 0,
+          "mountHeight": 0,
+          "frontClearance": 0,
+          "h": 2400
+        },
+        "alternateKind": "operating",
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+        "started": "2026-10-30T18:47:12.811Z",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-double-c4ovPh",
+        "stages": [
+          {
+            "name": "author-preflight",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+          },
+          {
+            "name": "preflight-negative",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "No imported author asset; validate production geometry and its structural suites."
+          },
+          {
+            "name": "publish",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Parametric model has no offline asset publication stage."
+          },
+          {
+            "name": "geometry-state",
+            "passed": true,
+            "started": "2026-10-30T18:47:12.812Z",
+            "result": {
+              "passed": true,
+              "tests": [
+                {
+                  "name": "window-coverings",
+                  "profile": "curtain_sheer",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain_sheer-g2I6a9\\window-coverings.log",
+                  "reused": true
+                },
+                {
+                  "name": "window-covering-mount",
+                  "profile": "curtain_sheer",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain_sheer-g2I6a9\\window-covering-mount.log",
+                  "reused": true
+                }
+              ],
+              "spatial": {
+                "passed": true,
+                "results": [
+                  {
+                    "id": "curtain-double",
+                    "passed": true,
+                    "cases": [
+                      {
+                        "state": "nominal",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "nominal",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 1,
+                        "bottom": 0,
+                        "top": 2400,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "finished": "2026-10-30T18:47:13.112Z"
+          },
+          {
+            "name": "http-file-production",
+            "passed": false,
+            "started": "2026-10-30T18:47:13.112Z",
+            "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-double-c4ovPh\\browser.log",
+            "finished": "2026-10-30T18:47:18.188Z"
+          }
+        ],
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-double-c4ovPh\\browser.log",
+        "finished": "2026-10-30T18:47:18.188Z"
+      }
+    },
+    {
+      "id": "sink--vessel",
+      "type": "ksink",
+      "route": "parametric",
+      "fixtureHash": "8a6da439cf60c830a56a538d5db0fc8136e707c8a55756bac208bdb7f8aa72ed",
+      "passed": false,
+      "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink--vessel-cExNER",
+      "failedStage": "http-file-production",
+      "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink--vessel-cExNER\\browser.log",
+      "revision": "ac1cf8730b28224e685aa9660585466c442538da",
+      "sourceFingerprint": "412907784d0cbff90a0aec638167d3f90502a8fb87d4c93dd188939701dec6b3",
+      "reportSha256": "da7bb0c1b7f82653b21f74ebb063331783df7d4a8a40c0a360fb29ec7c3630e2",
+      "report": {
+        "passed": false,
+        "profile": "sink--vessel",
+        "route": "parametric",
+        "fixture": {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "ksink",
+          "name": "阳台台上盆 · 圆角单盆",
+          "w": 560,
+          "d": 400,
+          "color": "#f5f4ef",
+          "sinkStyle": "vessel",
+          "sinkBowlHeight": 150
+        },
+        "alternateKind": "back",
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+        "started": "2026-10-30T18:59:54.400Z",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink--vessel-cExNER",
+        "stages": [
+          {
+            "name": "author-preflight",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+          },
+          {
+            "name": "preflight-negative",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "No imported author asset; validate production geometry and its structural suites."
+          },
+          {
+            "name": "publish",
+            "passed": null,
+            "status": "not-applicable",
+            "reason": "Parametric model has no offline asset publication stage."
+          },
+          {
+            "name": "geometry-state",
+            "passed": true,
+            "started": "2026-10-30T18:59:54.404Z",
+            "result": {
+              "passed": true,
+              "tests": [
+                {
+                  "name": "sink",
+                  "profile": "sink_arrow_680",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink_arrow_680-Q8pzKU\\sink.log",
+                  "reused": true
+                },
+                {
+                  "name": "sink-surface",
+                  "profile": "sink--vessel",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink--vessel-cExNER\\sink-surface.log",
+                  "reused": false
+                }
+              ],
+              "spatial": {
+                "passed": true,
+                "results": [
+                  {
+                    "id": "sink--vessel",
+                    "passed": true,
+                    "cases": [
+                      {
+                        "state": "nominal",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 1,
+                        "bottom": 862,
+                        "top": 1162,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "nominal",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 1,
+                        "bottom": 862,
+                        "top": 1162,
+                        "externalDistance": 100.00000000000006,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 1,
+                        "bottom": 862,
+                        "top": 1162,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 1,
+                        "bottom": 862,
+                        "top": 1162,
+                        "externalDistance": 100.00000000000006,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "finished": "2026-10-30T18:59:54.856Z"
+          },
+          {
+            "name": "http-file-production",
+            "passed": false,
+            "started": "2026-10-30T18:59:54.856Z",
+            "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink--vessel-cExNER\\browser.log",
+            "finished": "2026-10-30T18:59:59.657Z"
+          }
+        ],
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink--vessel-cExNER\\browser.log",
+        "finished": "2026-10-30T18:59:59.658Z"
+      }
+    },
+    {
+      "id": "se2",
+      "type": "bath_heater_aopu_se2",
+      "route": "blender",
+      "fixtureHash": "c19e77765c646c37d240861b334dfdf3fca5703a425cc1ece13e7e4ee0caa97d",
+      "passed": false,
+      "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\se2-7ltUVU",
+      "failedStage": "render-front",
+      "error": "Traceback (most recent call last):\n  File \"C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\workspace\\scripts\\blender-render.py\", line 107, in main\n    progress('rendering', '正在使用 Cycles ' + render_device['backend'] + ' 渲染')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\workspace\\scripts\\blender-render.py\", line 63, in progress\n    temp.replace(target)\n    ~~~~~~~~~~~~^^^^^^^^\n  File \"C:\\Users\\SPH\\scoop\\apps\\blender\\current\\5.2\\python\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'C:\\\\Users\\\\SPH\\\\.codex\\\\worktrees\\\\blender-appliance-pilot\\\\Furnish\\\\output\\\\model-pipeline\\\\selection-ngpY2d\\\\workspace\\\\.local\\\\blender-renders\\\\d18f50a2-31e7-4175-921a-d6d59f4eae1c\\\\progress.tmp' -> 'C:\\\\Users\\\\SPH\\\\.codex\\\\worktrees\\\\blender-appliance-pilot\\\\Furnish\\\\output\\\\model-pipeline\\\\selection-ngpY2d\\\\workspace\\\\.local\\\\blender-renders\\\\d18f50a2-31e7-4175-921a-d6d59f4eae1c\\\\progress.json'\n\n\n'failed' !== 'done'\n",
+      "revision": "893a0f20f4c1c4a87f62970636d19f6c70f36981",
+      "sourceFingerprint": "91bef8319516ed629314f35b8237322237238cd577a64ad3d5f0ff19f04f560a",
+      "reportSha256": "10b3f81940412b2329e3992565ad8b18e7f16327e5613557880d0901ecf7406e",
+      "report": {
+        "passed": false,
+        "profile": "se2",
+        "route": "blender",
+        "fixture": {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "bath_heater_aopu_se2",
+          "name": "奥普 SE2 风暖浴霸",
+          "w": 300,
+          "d": 600,
+          "color": "#f5f5f3",
+          "mountHeight": 2500,
+          "brand": "奥普/AUPU",
+          "model": "SE2",
+          "h": 112
+        },
+        "alternateKind": "back",
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+        "started": "2026-10-30T19:02:46.894Z",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\se2-7ltUVU",
+        "stages": [
+          {
+            "name": "author-preflight",
+            "passed": true,
+            "started": "2026-10-30T19:02:46.894Z",
+            "result": {
+              "command": "author-se2",
+              "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\se2-7ltUVU\\authored",
+              "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\se2-7ltUVU\\authored",
+              "passed": true,
+              "blender": "5.2.3 LTS",
+              "preflight": {
+                "passed": true,
+                "profile": "se2",
+                "parts": 29,
+                "motions": 0
+              }
+            },
+            "finished": "2026-10-30T19:02:48.296Z"
+          },
+          {
+            "name": "preflight-negative",
+            "passed": true,
+            "started": "2026-10-30T19:02:48.297Z",
+            "result": {
+              "passed": true,
+              "profile": "se2",
+              "blender": "5.2.3 LTS",
+              "rejected": [
+                "empty-material-slot",
+                "wrong-face-index",
+                "wrong-stable-identity",
+                "wrong-units",
+                "nonfinite-vertex",
+                "unexpected-part"
+              ],
+              "motionApplicable": false
+            },
+            "finished": "2026-10-30T19:02:49.082Z"
+          },
+          {
+            "name": "publish",
+            "passed": true,
+            "started": "2026-10-30T19:02:49.082Z",
+            "result": {
+              "command": "publish-se2",
+              "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\se2-7ltUVU\\authored\\se2-v1.glb",
+              "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\workspace\\src\\data\\se2-blender-asset.js",
+              "passed": true,
+              "blender": "5.2.3 LTS",
+              "glbSha256": "68ebbb608c3c7c9211973180f0f364457afefef1faf2476a3065a0737b7b2e9b",
+              "runtimeSha256": "5cbec8dc7f76b2dda095fb87aef961bdb06541000cf54204412148326b84aefd"
+            },
+            "finished": "2026-10-30T19:02:49.930Z"
+          },
+          {
+            "name": "geometry-state",
+            "passed": true,
+            "started": "2026-10-30T19:02:49.931Z",
+            "result": {
+              "passed": true,
+              "tests": [
+                {
+                  "name": "blender-appliance-asset",
+                  "profile": "se2",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\se2-7ltUVU\\blender-appliance-asset.log",
+                  "reused": false
+                },
+                {
+                  "name": "bath-heater-se2",
+                  "profile": "se2",
+                  "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\se2-7ltUVU\\bath-heater-se2.log",
+                  "reused": false
+                }
+              ],
+              "spatial": {
+                "passed": true,
+                "results": [
+                  {
+                    "id": "se2",
+                    "passed": true,
+                    "cases": [
+                      {
+                        "state": "nominal",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 29,
+                        "bottom": 2500,
+                        "top": 2612,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "nominal",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 29,
+                        "bottom": 2500,
+                        "top": 2612,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 0,
+                        "flip": false,
+                        "parts": 29,
+                        "bottom": 2500,
+                        "top": 2612,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      },
+                      {
+                        "state": "alternate",
+                        "rot": 37,
+                        "flip": true,
+                        "parts": 29,
+                        "bottom": 2500,
+                        "top": 2612,
+                        "externalDistance": 100,
+                        "penetration": true,
+                        "heightSeparation": true,
+                        "projectRoundtrip": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "finished": "2026-10-30T19:02:51.158Z"
+          },
+          {
+            "name": "http-file-production",
+            "passed": true,
+            "started": "2026-10-30T19:02:51.159Z",
+            "result": {
+              "passed": true,
+              "modes": [
+                {
+                  "mode": "http",
+                  "passed": true,
+                  "undoRedo": true,
+                  "coreResize": true,
+                  "refresh": true,
+                  "narrow": true,
+                  "offline": false
+                },
+                {
+                  "mode": "file",
+                  "passed": true,
+                  "undoRedo": true,
+                  "coreResize": true,
+                  "refresh": true,
+                  "narrow": true,
+                  "offline": true
+                }
+              ],
+              "exports": [
+                {
+                  "mode": "http",
+                  "state": "nominal",
+                  "parts": 29,
+                  "bounds": [
+                    [
+                      -0.15000000596046448,
+                      2.5,
+                      -0.30000001192092896
+                    ],
+                    [
+                      0.15000000596046448,
+                      2.6120000034570694,
+                      0.30000001192092896
+                    ]
+                  ]
+                },
+                {
+                  "mode": "http",
+                  "state": "resized",
+                  "parts": 29,
+                  "bounds": [
+                    [
+                      -0.1679999977350235,
+                      2.5,
+                      -0.3240000009536743
+                    ],
+                    [
+                      0.1679999977350235,
+                      2.620959997177124,
+                      0.3240000009536743
+                    ]
+                  ]
+                },
+                {
+                  "mode": "file",
+                  "state": "nominal",
+                  "parts": 29,
+                  "bounds": [
+                    [
+                      -0.15000000596046448,
+                      2.5,
+                      -0.30000001192092896
+                    ],
+                    [
+                      0.15000000596046448,
+                      2.6120000034570694,
+                      0.30000001192092896
+                    ]
+                  ]
+                }
+              ]
+            },
+            "finished": "2026-10-30T19:03:00.372Z"
+          },
+          {
+            "name": "blender-production-readback",
+            "passed": true,
+            "started": "2026-10-30T19:03:00.373Z",
+            "result": {
+              "passed": true,
+              "profile": "se2",
+              "blender": "5.2.3 LTS",
+              "source": "production-glb",
+              "results": [
+                {
+                  "case": "http-nominal",
+                  "parts": 29,
+                  "boundsAndAlpha": true
+                },
+                {
+                  "case": "http-resized",
+                  "parts": 29,
+                  "boundsAndAlpha": true
+                },
+                {
+                  "case": "file-nominal",
+                  "parts": 29,
+                  "boundsAndAlpha": true
+                }
+              ]
+            },
+            "finished": "2026-10-30T19:03:01.270Z"
+          },
+          {
+            "name": "studio-production-export",
+            "passed": true,
+            "started": "2026-10-30T19:03:01.270Z",
+            "result": {
+              "passed": true,
+              "preset": "model-studio-v2",
+              "views": [
+                {
+                  "id": "front",
+                  "state": "nominal",
+                  "parts": 29,
+                  "position": [
+                    0,
+                    2.5560000017285347,
+                    1.2654996332806978
+                  ],
+                  "target": [
+                    0,
+                    2.5560000017285347,
+                    0
+                  ]
+                },
+                {
+                  "id": "oblique",
+                  "state": "nominal",
+                  "parts": 29,
+                  "position": [
+                    0.7006268286701834,
+                    2.9413447574971356,
+                    0.9808775601382567
+                  ],
+                  "target": [
+                    0,
+                    2.5560000017285347,
+                    0
+                  ]
+                },
+                {
+                  "id": "detail",
+                  "state": "nominal",
+                  "parts": 29,
+                  "position": [
+                    0.7306365539339836,
+                    1.825363447794551,
+                    0.7306365539339836
+                  ],
+                  "target": [
+                    0,
+                    2.5560000017285347,
+                    0
+                  ]
+                }
+              ]
+            },
+            "finished": "2026-10-30T19:03:06.299Z"
+          },
+          {
+            "name": "render-front",
+            "passed": false,
+            "started": "2026-10-30T19:03:06.299Z",
+            "error": "Traceback (most recent call last):\n  File \"C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\workspace\\scripts\\blender-render.py\", line 107, in main\n    progress('rendering', '正在使用 Cycles ' + render_device['backend'] + ' 渲染')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\workspace\\scripts\\blender-render.py\", line 63, in progress\n    temp.replace(target)\n    ~~~~~~~~~~~~^^^^^^^^\n  File \"C:\\Users\\SPH\\scoop\\apps\\blender\\current\\5.2\\python\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'C:\\\\Users\\\\SPH\\\\.codex\\\\worktrees\\\\blender-appliance-pilot\\\\Furnish\\\\output\\\\model-pipeline\\\\selection-ngpY2d\\\\workspace\\\\.local\\\\blender-renders\\\\d18f50a2-31e7-4175-921a-d6d59f4eae1c\\\\progress.tmp' -> 'C:\\\\Users\\\\SPH\\\\.codex\\\\worktrees\\\\blender-appliance-pilot\\\\Furnish\\\\output\\\\model-pipeline\\\\selection-ngpY2d\\\\workspace\\\\.local\\\\blender-renders\\\\d18f50a2-31e7-4175-921a-d6d59f4eae1c\\\\progress.json'\n\n\n'failed' !== 'done'\n",
+            "finished": "2026-10-30T19:03:08.406Z"
+          }
+        ],
+        "failedStage": "render-front",
+        "error": "Traceback (most recent call last):\n  File \"C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\workspace\\scripts\\blender-render.py\", line 107, in main\n    progress('rendering', '正在使用 Cycles ' + render_device['backend'] + ' 渲染')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-ngpY2d\\workspace\\scripts\\blender-render.py\", line 63, in progress\n    temp.replace(target)\n    ~~~~~~~~~~~~^^^^^^^^\n  File \"C:\\Users\\SPH\\scoop\\apps\\blender\\current\\5.2\\python\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'C:\\\\Users\\\\SPH\\\\.codex\\\\worktrees\\\\blender-appliance-pilot\\\\Furnish\\\\output\\\\model-pipeline\\\\selection-ngpY2d\\\\workspace\\\\.local\\\\blender-renders\\\\d18f50a2-31e7-4175-921a-d6d59f4eae1c\\\\progress.tmp' -> 'C:\\\\Users\\\\SPH\\\\.codex\\\\worktrees\\\\blender-appliance-pilot\\\\Furnish\\\\output\\\\model-pipeline\\\\selection-ngpY2d\\\\workspace\\\\.local\\\\blender-renders\\\\d18f50a2-31e7-4175-921a-d6d59f4eae1c\\\\progress.json'\n\n\n'failed' !== 'done'\n",
+        "finished": "2026-10-30T19:03:08.406Z"
+      }
+    }
+  ],
+  "endpointAdapterTrial": {
+    "directory": "output/model-pipeline/selection-Ijhwz4",
+    "revision": "f3caa5d3edb0342451ecd2d3b8a6ec8042302bba",
+    "sourceFingerprint": "94397b5c8466f2e8ed3d52f291e0e68587edc2fea4cf004362eaf70fad9cd220",
+    "passed": false,
+    "reason": "Verifier tried to access private furnG closure; replaced with public exported geometry comparison",
+    "failures": [
+      {
+        "id": "pocketdoor_double",
+        "type": "pocketdoor_double",
+        "route": "parametric",
+        "fixtureHash": "1b5cf93778d9794686c6c121898f29e1e2be5c32bd0756775aeb7884d3b27550",
+        "passed": false,
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\pocketdoor_double-MVDG7c",
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\pocketdoor_double-MVDG7c\\browser.log"
+      },
+      {
+        "id": "pocketdoor_triple",
+        "type": "pocketdoor_triple",
+        "route": "parametric",
+        "fixtureHash": "659219476d969822db2b6fd742b5e32a38189215941501d8fdb4e1fbfca3d32f",
+        "passed": false,
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\pocketdoor_triple-Q1axKs",
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\pocketdoor_triple-Q1axKs\\browser.log"
+      },
+      {
+        "id": "slidingdoor",
+        "type": "slidingdoor",
+        "route": "parametric",
+        "fixtureHash": "04e30def241fb5aeaa3908a6b83c8e728721953ebd8bd536f047f6dddd24b367",
+        "passed": false,
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\slidingdoor-YgaGf4",
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\slidingdoor-YgaGf4\\browser.log"
+      },
+      {
+        "id": "telescopicdoor20",
+        "type": "telescopicdoor20",
+        "route": "parametric",
+        "fixtureHash": "66bf5b3b0521d546aa2b4f220952d26480563371426c97b8236456e9c45c939d",
+        "passed": false,
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\telescopicdoor20-0cEBTV",
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\telescopicdoor20-0cEBTV\\browser.log"
+      },
+      {
+        "id": "doubleslidingdoor",
+        "type": "doubleslidingdoor",
+        "route": "parametric",
+        "fixtureHash": "e77218f14c2d3006f61440c0306a892744f22afceb48b59b7b48602dded10ef1",
+        "passed": false,
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\doubleslidingdoor-PLTVWE",
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\doubleslidingdoor-PLTVWE\\browser.log"
+      },
+      {
+        "id": "tripleslidingdoor",
+        "type": "tripleslidingdoor",
+        "route": "parametric",
+        "fixtureHash": "9a6b9b97bbcc2292b66ace7d10659637cf2949de5a3843c64b41df7aadef3f32",
+        "passed": false,
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\tripleslidingdoor-yoq1j7",
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\tripleslidingdoor-yoq1j7\\browser.log"
+      },
+      {
+        "id": "tripleslidingwindow",
+        "type": "tripleslidingwindow",
+        "route": "parametric",
+        "fixtureHash": "317c757686dc3da8792f1c51b8bb7dfca6eb3825ed250603bf1ac7765007be52",
+        "passed": false,
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\tripleslidingwindow-IZWDmK",
+        "failedStage": "http-file-production",
+        "error": "Exit 1; see C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Ijhwz4\\tripleslidingwindow-IZWDmK\\browser.log"
+      }
+    ]
+  },
+  "visualSuperseded": {
+    "reason": "Initial automatic readback was consistent but pocket-door alternate could still be an animation frame; replaced with per-part target-endpoint export checks",
+    "ids": [
+      "pocketdoor_double",
+      "pocketdoor_triple"
+    ],
+    "batch": "output/model-pipeline/selection-ngpY2d"
+  }
+}

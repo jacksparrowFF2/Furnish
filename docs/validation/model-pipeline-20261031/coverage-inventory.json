@@ -1,0 +1,6313 @@
+{
+  "baseline": "a03d325",
+  "date": "2026-10-31",
+  "total": 90,
+  "blenderAssets": 12,
+  "parametric": 78,
+  "profiles": [
+    {
+      "id": "se2",
+      "type": "bath_heater_aopu_se2",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bath_heater_aopu_se2",
+        "name": "奥普 SE2 风暖浴霸",
+        "w": 300,
+        "d": 600,
+        "color": "#f5f5f3",
+        "mountHeight": 2500,
+        "brand": "奥普/AUPU",
+        "model": "SE2",
+        "h": 112
+      },
+      "asset": {
+        "runtime": "src/data/se2-blender-asset.js",
+        "glb": "assets/models/se2/se2-v1.glb",
+        "blend": "assets/models/se2/se2-v1.blend",
+        "parts": 29,
+        "id": "bath-heater-aopu-se2",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "bath-heater-se2:"
+        ]
+      },
+      "tests": [
+        "blender-appliance-asset",
+        "bath-heater-se2"
+      ],
+      "detailView": "underside",
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bath_heater_aopu_se2",
+        "name": "奥普 SE2 风暖浴霸",
+        "w": 300,
+        "d": 600,
+        "color": "#f5f5f3",
+        "mountHeight": 2500,
+        "brand": "奥普/AUPU",
+        "model": "SE2",
+        "h": 112
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "y52y09",
+      "type": "bookshelf_yeswood_y52y09",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bookshelf_yeswood_y52y09",
+        "name": "源氏木语 Y52Y09 · 750高六格书柜",
+        "w": 1115,
+        "d": 230,
+        "color": "#c49b70",
+        "brand": "源氏木语/YESWOOD",
+        "model": "Y52Y09 · 三列两层 · 无底框",
+        "sourceUrl": "https://item.jd.com/100266639340.html",
+        "h": 750,
+        "cabinet": {
+          "version": 1,
+          "template": "book-y52y09-low",
+          "thickness": 18,
+          "plinth": 0,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                348
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                348
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                348
+              ],
+              "drawers": []
+            }
+          ]
+        }
+      },
+      "asset": {
+        "runtime": "src/data/y52y09-blender-asset.js",
+        "glb": "assets/models/y52y09/y52y09-v1.glb",
+        "blend": "assets/models/y52y09/y52y09-v1.blend",
+        "parts": 12,
+        "id": "bookcase-y52y09",
+        "productionIdentity": "cabinet-boards",
+        "prefixes": [
+          "y52y09:"
+        ]
+      },
+      "tests": [
+        "blender-bookcase-asset",
+        "bookcase-y52y09"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bookshelf_yeswood_y52y09",
+        "name": "源氏木语 Y52Y09 · 750高六格书柜",
+        "w": 1115,
+        "d": 230,
+        "color": "#c49b70",
+        "brand": "源氏木语/YESWOOD",
+        "model": "Y52Y09 · 三列两层 · 无底框",
+        "sourceUrl": "https://item.jd.com/100266639340.html",
+        "h": 750,
+        "cabinet": {
+          "version": 1,
+          "template": "book-y52y09-low",
+          "thickness": 18,
+          "plinth": 0,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                348
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                348
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                348
+              ],
+              "drawers": []
+            }
+          ]
+        }
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "fridge",
+      "type": "fridge_french_drawer",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "fridge_french_drawer",
+        "name": "纯平四门冰箱（双抽屉）",
+        "w": 833,
+        "d": 595,
+        "color": "#f1f0ed",
+        "h": 1910
+      },
+      "asset": {
+        "runtime": "src/data/fridge-blender-asset.js",
+        "glb": "assets/models/fridge/fridge-v1.glb",
+        "blend": "assets/models/fridge/fridge-v1.blend",
+        "parts": 30,
+        "id": "fridge-french-drawer",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "fridge-v1:"
+        ]
+      },
+      "tests": [
+        "blender-fridge-motion",
+        "fridge-project-v31"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "fridge_french_drawer",
+        "name": "纯平四门冰箱（双抽屉）",
+        "w": 833,
+        "d": 595,
+        "color": "#f1f0ed",
+        "h": 1910,
+        "fridgeLeftAngle": 100,
+        "fridgeRightAngle": 100,
+        "fridgeUpperExtension": 1,
+        "fridgeLowerExtension": 1
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "dishwasher",
+      "type": "dishwasher_mijia_countertop",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "dishwasher_mijia_countertop",
+        "name": "米家台面洗碗机 · 5套",
+        "w": 550,
+        "d": 350,
+        "color": "#f4f3ef",
+        "mountHeight": 860,
+        "dishwasherDoorOpen": false,
+        "brand": "米家/Mijia",
+        "model": "智能洗碗机 台式 5套",
+        "h": 598
+      },
+      "asset": {
+        "runtime": "src/data/dishwasher-blender-asset.js",
+        "glb": "assets/models/dishwasher/dishwasher-v1.glb",
+        "blend": "assets/models/dishwasher/dishwasher-v1.blend",
+        "parts": 60,
+        "id": "dishwasher-mijia-countertop",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "dishwasher-v1:"
+        ]
+      },
+      "tests": [
+        "blender-dishwasher-asset",
+        "dishwasher-project-v32",
+        "dishwasher-clearances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "dishwasher_mijia_countertop",
+        "name": "米家台面洗碗机 · 5套",
+        "w": 550,
+        "d": 350,
+        "color": "#f4f3ef",
+        "mountHeight": 860,
+        "dishwasherDoorOpen": true,
+        "brand": "米家/Mijia",
+        "model": "智能洗碗机 台式 5套",
+        "h": 598
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "hood",
+      "type": "rangehood_fotile_jcd10ta",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "rangehood_fotile_jcd10ta",
+        "name": "方太抽油烟机 JCD10TA",
+        "w": 900,
+        "d": 350,
+        "color": "#111214",
+        "mountHeight": 1315,
+        "hoodPanelOpen": false,
+        "brand": "方太/FOTILE",
+        "model": "JCD10TA",
+        "h": 520
+      },
+      "asset": {
+        "runtime": "src/data/hood-blender-asset.js",
+        "glb": "assets/models/hood/hood-v1.glb",
+        "blend": "assets/models/hood/hood-v1.blend",
+        "parts": 27,
+        "id": "rangehood-fotile-jcd10ta",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "hood-v1:"
+        ]
+      },
+      "tests": [
+        "blender-hood-asset",
+        "hood-project-v33"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "rangehood_fotile_jcd10ta",
+        "name": "方太抽油烟机 JCD10TA",
+        "w": 900,
+        "d": 350,
+        "color": "#111214",
+        "mountHeight": 1315,
+        "hoodPanelOpen": true,
+        "brand": "方太/FOTILE",
+        "model": "JCD10TA",
+        "h": 520
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "washer",
+      "type": "washer",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "washer",
+        "name": "洗衣机",
+        "w": 600,
+        "d": 600,
+        "color": "#e6ebee",
+        "mountHeight": 0,
+        "washerDoorAngle": 0,
+        "h": 850
+      },
+      "asset": {
+        "runtime": "src/data/washer-blender-asset.js",
+        "glb": "assets/models/washer/washer-v1.glb",
+        "blend": "assets/models/washer/washer-v1.blend",
+        "parts": 15,
+        "id": "washer-front-load",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "washer-v1:"
+        ]
+      },
+      "tests": [
+        "blender-washer-asset",
+        "washer-project-v35"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "washer",
+        "name": "洗衣机",
+        "w": 600,
+        "d": 600,
+        "color": "#e6ebee",
+        "mountHeight": 0,
+        "washerDoorAngle": 110,
+        "h": 850
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "washer-tg10k60w",
+      "type": "washer_littleswan_tg10k60w",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "washer_littleswan_tg10k60w",
+        "name": "小天鹅洗衣机 TG10K60W · 10kg",
+        "w": 595,
+        "d": 560,
+        "color": "#f1f0ed",
+        "mountHeight": 0,
+        "washerDoorAngle": 0,
+        "brand": "小天鹅/LittleSwan",
+        "model": "TG10K60W",
+        "h": 850
+      },
+      "asset": {
+        "runtime": "src/data/washer-tg10k60w-blender-asset.js",
+        "glb": "assets/models/washer-tg10k60w/washer-tg10k60w-v1.glb",
+        "blend": "assets/models/washer-tg10k60w/washer-tg10k60w-v1.blend",
+        "parts": 47,
+        "id": "washer-littleswan-tg10k60w",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "washer-tg10k60w-v1:"
+        ]
+      },
+      "tests": [
+        "blender-washer-materials",
+        "blender-washer-tg10k60w",
+        "washer-front-confirmation",
+        "washer-project-v35"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "washer_littleswan_tg10k60w",
+        "name": "小天鹅洗衣机 TG10K60W · 10kg",
+        "w": 595,
+        "d": 560,
+        "color": "#f1f0ed",
+        "mountHeight": 0,
+        "washerDoorAngle": 110,
+        "brand": "小天鹅/LittleSwan",
+        "model": "TG10K60W",
+        "h": 850
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "side-table",
+      "type": "sidetable_tmall_635382906309",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sidetable_tmall_635382906309",
+        "name": "双抽岩板边几 · 68cm",
+        "w": 680,
+        "d": 300,
+        "color": "#bd8e5d",
+        "sideTableUpperOpen": false,
+        "sideTableLowerOpen": false,
+        "frontClearance": 0,
+        "model": "双抽岩板边几 · 680×300×612",
+        "sourceUrl": "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30",
+        "h": 612
+      },
+      "asset": {
+        "runtime": "src/data/side-table-blender-asset.js",
+        "glb": "assets/models/side-table/side-table-v1.glb",
+        "blend": "assets/models/side-table/side-table-v1.blend",
+        "parts": 35,
+        "id": "side-table-tmall-635382906309",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "side-table-v1:"
+        ]
+      },
+      "tests": [
+        "side-table",
+        "side-table-project-v36"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sidetable_tmall_635382906309",
+        "name": "双抽岩板边几 · 68cm",
+        "w": 680,
+        "d": 300,
+        "color": "#bd8e5d",
+        "sideTableUpperOpen": true,
+        "sideTableLowerOpen": true,
+        "frontClearance": 0,
+        "model": "双抽岩板边几 · 680×300×612",
+        "sourceUrl": "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30",
+        "h": 612
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "armchair",
+      "type": "armchair_yeswood_y09hs",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "armchair_yeswood_y09hs",
+        "name": "源氏木语 单人沙发椅（亚麻色）",
+        "w": 725,
+        "d": 900,
+        "color": "#be9465",
+        "brand": "源氏木语/YESWOOD",
+        "model": "单人沙发椅 · 亚麻色 · 725×900×905",
+        "sourceUrl": "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx",
+        "h": 905
+      },
+      "asset": {
+        "runtime": "src/data/armchair-blender-asset.js",
+        "glb": "assets/models/armchair/v4/armchair-v1.glb",
+        "blend": "assets/models/armchair/v4/armchair-v1.blend",
+        "parts": 28,
+        "id": "armchair-yeswood-y09hs",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "armchair-v1:"
+        ]
+      },
+      "tests": [
+        "armchair"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "armchair_yeswood_y09hs",
+        "name": "源氏木语 单人沙发椅（亚麻色）",
+        "w": 725,
+        "d": 900,
+        "color": "#be9465",
+        "brand": "源氏木语/YESWOOD",
+        "model": "单人沙发椅 · 亚麻色 · 725×900×905",
+        "sourceUrl": "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx",
+        "h": 905
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "armchair-berlin",
+      "type": "armchair_yeswood_berlin",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "armchair_yeswood_berlin",
+        "name": "源氏木语 柏林单人沙发椅（含腰枕）",
+        "w": 710,
+        "d": 850,
+        "color": "#bd915f",
+        "brand": "源氏木语/YESWOOD",
+        "model": "柏林休闲沙发椅 · 米色 · 710×850×845",
+        "h": 845
+      },
+      "asset": {
+        "runtime": "src/data/armchair-berlin-blender-asset.js",
+        "glb": "assets/models/armchair-berlin/v3/armchair-berlin-v1.glb",
+        "blend": "assets/models/armchair-berlin/v3/armchair-berlin-v1.blend",
+        "parts": 28,
+        "id": "armchair-yeswood-berlin",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "armchair-berlin-v1:"
+        ]
+      },
+      "tests": [
+        "armchair-berlin"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "armchair_yeswood_berlin",
+        "name": "源氏木语 柏林单人沙发椅（含腰枕）",
+        "w": 710,
+        "d": 850,
+        "color": "#bd915f",
+        "brand": "源氏木语/YESWOOD",
+        "model": "柏林休闲沙发椅 · 米色 · 710×850×845",
+        "h": 845
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "stack-stool",
+      "type": "stool_citylong_370",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "stool_citylong_370",
+        "name": "禧天龙 软包叠放方凳 · 37cm",
+        "w": 370,
+        "d": 370,
+        "color": "#eee9dc",
+        "stoolCount": 1,
+        "stoolPitch": 70,
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "禧天龙/CITYLONG",
+        "model": "软包高凳 · 370×370×467 mm（型号未确认）",
+        "h": 467
+      },
+      "asset": {
+        "runtime": "src/data/stack-stool-blender-asset.js",
+        "glb": "assets/models/stack-stool/v4/stack-stool-v1.glb",
+        "blend": "assets/models/stack-stool/v4/stack-stool-v1.blend",
+        "parts": 5,
+        "id": "stool-citylong-370",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "stack-stool-v1:"
+        ]
+      },
+      "tests": [
+        "stack-stool"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "stool_citylong_370",
+        "name": "禧天龙 软包叠放方凳 · 37cm",
+        "w": 370,
+        "d": 370,
+        "color": "#eee9dc",
+        "stoolCount": 4,
+        "stoolPitch": 70,
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "禧天龙/CITYLONG",
+        "model": "软包高凳 · 370×370×467 mm（型号未确认）",
+        "h": 467
+      },
+      "alternateKind": "nested-stack"
+    },
+    {
+      "id": "corner-bookcase",
+      "type": "bookshelf_yeswood_y00y06",
+      "route": "blender",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bookshelf_yeswood_y00y06",
+        "name": "源氏木语 Y00Y06045 · 五层转角书柜",
+        "w": 450,
+        "d": 450,
+        "color": "#c49b70",
+        "frontClearance": 0,
+        "brand": "源氏木语/YESWOOD",
+        "model": "Y00Y06045 · 五层转角书柜",
+        "sourceUrl": "https://item.jd.com/100093046007.html",
+        "h": 1900
+      },
+      "asset": {
+        "runtime": "src/data/corner-bookcase-blender-asset.js",
+        "glb": "assets/models/corner-bookcase/v1/corner-bookcase-v1.glb",
+        "blend": "assets/models/corner-bookcase/v1/corner-bookcase-v1.blend",
+        "parts": 14,
+        "id": "corner-bookcase-y00y06",
+        "productionIdentity": "direct",
+        "prefixes": [
+          "corner-bookcase-v1:"
+        ]
+      },
+      "tests": [
+        "corner-bookcase"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bookshelf_yeswood_y00y06",
+        "name": "源氏木语 Y00Y06045 · 五层转角书柜",
+        "w": 450,
+        "d": 450,
+        "color": "#c49b70",
+        "frontClearance": 0,
+        "brand": "源氏木语/YESWOOD",
+        "model": "Y00Y06045 · 五层转角书柜",
+        "sourceUrl": "https://item.jd.com/100093046007.html",
+        "h": 1900
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "block",
+      "type": "block",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "block",
+        "name": "方块占位体",
+        "w": 1000,
+        "d": 1000,
+        "color": "#a8b6c4",
+        "mountHeight": 0,
+        "h": 1000
+      },
+      "tests": [
+        "block-placeholder"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "block",
+        "name": "方块占位体",
+        "w": 1000,
+        "d": 1000,
+        "color": "#a8b6c4",
+        "mountHeight": 0,
+        "h": 1000
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "panel_light_300x600",
+      "type": "panel_light_300x600",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "panel_light_300x600",
+        "name": "厨房平板灯 · 300×600 · 24W",
+        "w": 300,
+        "d": 600,
+        "color": "#f5f5f2",
+        "mountHeight": 2500,
+        "h": 35
+      },
+      "tests": [
+        "panel-light"
+      ],
+      "detailView": "underside",
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "panel_light_300x600",
+        "name": "厨房平板灯 · 300×600 · 24W",
+        "w": 300,
+        "d": 600,
+        "color": "#f5f5f2",
+        "mountHeight": 2500,
+        "h": 35
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "bath_heater_300x600",
+      "type": "bath_heater_300x600",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bath_heater_300x600",
+        "name": "风暖浴霸 · 300×600通用占位",
+        "w": 300,
+        "d": 600,
+        "color": "#f5f5f0",
+        "mountHeight": 2500,
+        "h": 180
+      },
+      "tests": [
+        "bath-heater-se2"
+      ],
+      "detailView": "underside",
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bath_heater_300x600",
+        "name": "风暖浴霸 · 300×600通用占位",
+        "w": 300,
+        "d": 600,
+        "color": "#f5f5f0",
+        "mountHeight": 2500,
+        "h": 180
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "downlight_philips_dl269",
+      "type": "downlight_philips_dl269",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "downlight_philips_dl269",
+        "name": "飞利浦品焕筒灯 DL269",
+        "w": 85,
+        "d": 85,
+        "color": "#f4f4f0",
+        "mountHeight": 2500,
+        "downlightWatts": 5,
+        "downlightKelvin": 4000,
+        "brand": "飞利浦/PHILIPS",
+        "model": "品焕 DL269",
+        "h": 45
+      },
+      "tests": [
+        "downlight"
+      ],
+      "detailView": "underside",
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "downlight_philips_dl269",
+        "name": "飞利浦品焕筒灯 DL269",
+        "w": 85,
+        "d": 85,
+        "color": "#f4f4f0",
+        "mountHeight": 2500,
+        "downlightWatts": 5,
+        "downlightKelvin": 4000,
+        "brand": "飞利浦/PHILIPS",
+        "model": "品焕 DL269",
+        "h": 45
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "heating_manifold",
+      "type": "heating_manifold",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "heating_manifold",
+        "name": "地暖分水器（路数可调）",
+        "w": 800,
+        "d": 180,
+        "color": "#c6a258",
+        "mountHeight": 0,
+        "manifoldLoops": 5,
+        "manifoldLengths": {
+          "upper": 450,
+          "lower": 330
+        },
+        "h": 600
+      },
+      "tests": [
+        "manifold",
+        "manifold-zero-gap"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "heating_manifold",
+        "name": "地暖分水器（路数可调）",
+        "w": 800,
+        "d": 180,
+        "color": "#c6a258",
+        "mountHeight": 0,
+        "manifoldLoops": 5,
+        "manifoldLengths": {
+          "upper": 450,
+          "lower": 330
+        },
+        "h": 600
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "electrical_box_strong",
+      "type": "electrical_box_strong",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "electrical_box_strong",
+        "name": "强电箱（尺寸自定）",
+        "w": 300,
+        "d": 120,
+        "color": "#eceeea",
+        "mountHeight": 1200,
+        "h": 400
+      },
+      "tests": [
+        "electrical-box"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "electrical_box_strong",
+        "name": "强电箱（尺寸自定）",
+        "w": 300,
+        "d": 120,
+        "color": "#eceeea",
+        "mountHeight": 1200,
+        "h": 400
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "electrical_box_weak",
+      "type": "electrical_box_weak",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "electrical_box_weak",
+        "name": "弱电箱（尺寸自定）",
+        "w": 400,
+        "d": 120,
+        "color": "#eceeea",
+        "mountHeight": 1200,
+        "h": 400
+      },
+      "tests": [
+        "electrical-box"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "electrical_box_weak",
+        "name": "弱电箱（尺寸自定）",
+        "w": 400,
+        "d": 120,
+        "color": "#eceeea",
+        "mountHeight": 1200,
+        "h": 400
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "aquarium_mijia_2pro",
+      "type": "aquarium_mijia_2pro",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "aquarium_mijia_2pro",
+        "name": "米家智能鱼缸 2 Pro",
+        "w": 505,
+        "d": 292,
+        "color": "#191c20",
+        "mountHeight": 0,
+        "brand": "米家/Mijia",
+        "model": "智能鱼缸 2 Pro",
+        "sourceUrl": "https://item.jd.com/100317574693.html",
+        "h": 334
+      },
+      "tests": [
+        "aquarium"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "aquarium_mijia_2pro",
+        "name": "米家智能鱼缸 2 Pro",
+        "w": 505,
+        "d": 292,
+        "color": "#191c20",
+        "mountHeight": 0,
+        "brand": "米家/Mijia",
+        "model": "智能鱼缸 2 Pro",
+        "sourceUrl": "https://item.jd.com/100317574693.html",
+        "h": 334
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "stove_fotile_th36b",
+      "type": "stove_fotile_th36b",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "stove_fotile_th36b",
+        "name": "方太燃气灶 TH36B-T",
+        "w": 750,
+        "d": 440,
+        "color": "#111214",
+        "counterElevation": 860,
+        "brand": "方太/FOTILE",
+        "model": "TH36B-T",
+        "h": 138
+      },
+      "tests": [
+        "fotile"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "stove_fotile_th36b",
+        "name": "方太燃气灶 TH36B-T",
+        "w": 750,
+        "d": 440,
+        "color": "#111214",
+        "counterElevation": 860,
+        "brand": "方太/FOTILE",
+        "model": "TH36B-T",
+        "h": 138
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "waterheater_flat",
+      "type": "waterheater_flat",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "waterheater_flat",
+        "name": "扁桶电热水器 60L",
+        "w": 700,
+        "d": 320,
+        "color": "#fafafa",
+        "mountHeight": 1650,
+        "h": 565
+      },
+      "tests": [
+        "waterheater-flat",
+        "waterheater-furniture-clearances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "waterheater_flat",
+        "name": "扁桶电热水器 60L",
+        "w": 700,
+        "d": 320,
+        "color": "#fafafa",
+        "mountHeight": 1650,
+        "h": 565
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "aircon_midea_ultra_2hp",
+      "type": "aircon_midea_ultra_2hp",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "aircon_midea_ultra_2hp",
+        "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+        "w": 395,
+        "d": 436,
+        "color": "#e5e7e8",
+        "brand": "美的/Midea",
+        "model": "KFR-51LW/N8KS1-1U",
+        "h": 1856
+      },
+      "tests": [
+        "aircon-midea"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "aircon_midea_ultra_2hp",
+        "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+        "w": 395,
+        "d": 436,
+        "color": "#e5e7e8",
+        "brand": "美的/Midea",
+        "model": "KFR-51LW/N8KS1-1U",
+        "h": 1856
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "water_purifier_mijia_1200g",
+      "type": "water_purifier_mijia_1200g",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "water_purifier_mijia_1200g",
+        "name": "米家净水器 2 · 1200G",
+        "w": 163,
+        "d": 445,
+        "color": "#f6f6f4",
+        "mountHeight": 0,
+        "brand": "米家/Mijia",
+        "model": "净水器 2 1200G",
+        "h": 379
+      },
+      "tests": [
+        "water-purifier"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "water_purifier_mijia_1200g",
+        "name": "米家净水器 2 · 1200G",
+        "w": 163,
+        "d": 445,
+        "color": "#f6f6f4",
+        "mountHeight": 0,
+        "brand": "米家/Mijia",
+        "model": "净水器 2 1200G",
+        "h": 379
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "tea_bar_mijia_pro",
+      "type": "tea_bar_mijia_pro",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tea_bar_mijia_pro",
+        "name": "米家智能茶吧机 Pro 立式",
+        "w": 315,
+        "d": 310,
+        "color": "#eeefec",
+        "teaBarUpperOpen": false,
+        "teaBarLowerOpen": false,
+        "brand": "米家/Mijia",
+        "model": "智能茶吧机 Pro 立式",
+        "h": 1155
+      },
+      "tests": [
+        "tea-bar"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tea_bar_mijia_pro",
+        "name": "米家智能茶吧机 Pro 立式",
+        "w": 315,
+        "d": 310,
+        "color": "#eeefec",
+        "teaBarUpperOpen": true,
+        "teaBarLowerOpen": true,
+        "brand": "米家/Mijia",
+        "model": "智能茶吧机 Pro 立式",
+        "h": 1155
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "robot_p20max_tank",
+      "type": "robot_p20max_tank",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "robot_p20max_tank",
+        "name": "石头 P20 Max 水箱版套装",
+        "w": 450,
+        "d": 450,
+        "color": "#f5f6f5",
+        "h": 450
+      },
+      "tests": [
+        "robot-vacuum"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "robot_p20max_tank",
+        "name": "石头 P20 Max 水箱版套装",
+        "w": 450,
+        "d": 450,
+        "color": "#f5f6f5",
+        "h": 450
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "robot_p20max_plumbed",
+      "type": "robot_p20max_plumbed",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "robot_p20max_plumbed",
+        "name": "石头 P20 Max 上下水版套装",
+        "w": 381,
+        "d": 475,
+        "color": "#f5f6f5",
+        "h": 300
+      },
+      "tests": [
+        "robot-vacuum"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "robot_p20max_plumbed",
+        "name": "石头 P20 Max 上下水版套装",
+        "w": 381,
+        "d": 475,
+        "color": "#f5f6f5",
+        "h": 300
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "robot_p20max",
+      "type": "robot_p20max",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "robot_p20max",
+        "name": "石头 P20 Max 扫拖机器人",
+        "w": 350,
+        "d": 352,
+        "color": "#f5f6f5",
+        "h": 79.8
+      },
+      "tests": [
+        "robot-vacuum"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "robot_p20max",
+        "name": "石头 P20 Max 扫拖机器人",
+        "w": 350,
+        "d": 352,
+        "color": "#f5f6f5",
+        "h": 79.8
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "pipebox",
+      "type": "pipebox",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pipebox",
+        "name": "管道包覆柜",
+        "w": 400,
+        "d": 300,
+        "color": "#f3f1ec",
+        "mountHeight": 0,
+        "pipeBoxThickness": 18,
+        "pipeBoxShape": "three",
+        "h": 2400
+      },
+      "tests": [
+        "pipebox"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pipebox",
+        "name": "管道包覆柜",
+        "w": 400,
+        "d": 300,
+        "color": "#f3f1ec",
+        "mountHeight": 0,
+        "pipeBoxThickness": 18,
+        "pipeBoxShape": "three",
+        "h": 2400
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "sofa_yeswood_cherry",
+      "type": "sofa_yeswood_cherry",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sofa_yeswood_cherry",
+        "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+        "w": 2160,
+        "d": 892,
+        "color": "#eee9df",
+        "h": 895
+      },
+      "tests": [
+        "yeswood-sofa"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sofa_yeswood_cherry",
+        "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+        "w": 2160,
+        "d": 892,
+        "color": "#eee9df",
+        "h": 895
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "coffeetable_yeswood_cherry",
+      "type": "coffeetable_yeswood_cherry",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "coffeetable_yeswood_cherry",
+        "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+        "w": 1200,
+        "d": 650,
+        "color": "#bd7846",
+        "brand": "源氏木语/YESWOOD",
+        "model": "樱桃木茶几 · 1.2米白色岩板面",
+        "h": 450
+      },
+      "tests": [
+        "cherry-coffee-table"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "coffeetable_yeswood_cherry",
+        "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+        "w": 1200,
+        "d": 650,
+        "color": "#bd7846",
+        "brand": "源氏木语/YESWOOD",
+        "model": "樱桃木茶几 · 1.2米白色岩板面",
+        "h": 450
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "tea_table_800",
+      "type": "tea_table_800",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tea_table_800",
+        "name": "藤编移动茶台 · 80cm",
+        "w": 800,
+        "d": 400,
+        "color": "#68432e",
+        "h": 720
+      },
+      "tests": [
+        "tea-table"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tea_table_800",
+        "name": "藤编移动茶台 · 80cm",
+        "w": 800,
+        "d": 400,
+        "color": "#68432e",
+        "h": 720
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "table_folding_1100",
+      "type": "table_folding_1100",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "table_folding_1100",
+        "name": "源氏木语折叠餐桌 · 1100款",
+        "w": 1100,
+        "d": 1100,
+        "color": "#bd925f",
+        "foldingTablePose": "round",
+        "brand": "源氏木语/YESWOOD",
+        "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
+        "sourceUrl": "https://item.jd.com/10195288580856.html",
+        "h": 760
+      },
+      "tests": [
+        "folding-table"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": -5.684341886080802e-14,
+        "rot": 0,
+        "flip": false,
+        "type": "table_folding_1100",
+        "name": "源氏木语折叠餐桌 · 1100款",
+        "w": 1100,
+        "d": 740,
+        "color": "#bd925f",
+        "foldingTablePose": "capsule",
+        "brand": "源氏木语/YESWOOD",
+        "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
+        "sourceUrl": "https://item.jd.com/10195288580856.html",
+        "h": 760
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "table_folding_1200",
+      "type": "table_folding_1200",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "table_folding_1200",
+        "name": "源氏木语折叠餐桌 · 1200款",
+        "w": 1200,
+        "d": 1200,
+        "color": "#bd925f",
+        "foldingTablePose": "round",
+        "brand": "源氏木语/YESWOOD",
+        "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
+        "sourceUrl": "https://item.jd.com/10195288580856.html",
+        "h": 760
+      },
+      "tests": [
+        "folding-table"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "table_folding_1200",
+        "name": "源氏木语折叠餐桌 · 1200款",
+        "w": 1200,
+        "d": 793,
+        "color": "#bd925f",
+        "foldingTablePose": "capsule",
+        "brand": "源氏木语/YESWOOD",
+        "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
+        "sourceUrl": "https://item.jd.com/10195288580856.html",
+        "h": 760
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "table_folding_1300",
+      "type": "table_folding_1300",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "table_folding_1300",
+        "name": "源氏木语折叠餐桌 · 1300款",
+        "w": 1305,
+        "d": 1305,
+        "color": "#bd925f",
+        "foldingTablePose": "round",
+        "brand": "源氏木语/YESWOOD",
+        "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
+        "sourceUrl": "https://item.jd.com/10195288580856.html",
+        "h": 760
+      },
+      "tests": [
+        "folding-table"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": -1.5,
+        "rot": 0,
+        "flip": false,
+        "type": "table_folding_1300",
+        "name": "源氏木语折叠餐桌 · 1300款",
+        "w": 1305,
+        "d": 848,
+        "color": "#bd925f",
+        "foldingTablePose": "capsule",
+        "brand": "源氏木语/YESWOOD",
+        "model": "白蜡木原木色 · 象牙白岩板折叠餐桌",
+        "sourceUrl": "https://item.jd.com/10195288580856.html",
+        "h": 760
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "kitchenwall",
+      "type": "kitchenwall",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "kitchenwall",
+        "name": "厨房吊柜",
+        "w": 800,
+        "d": 350,
+        "color": "#e9e5de",
+        "mountHeight": 1480,
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 350,
+          "baseHeight": 700,
+          "thickness": 0,
+          "modules": [
+            {
+              "run": 0,
+              "width": 400,
+              "role": "door"
+            },
+            {
+              "run": 0,
+              "width": 400,
+              "role": "door"
+            }
+          ]
+        },
+        "h": 700
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "kitchenwall",
+        "name": "厨房吊柜",
+        "w": 800,
+        "d": 350,
+        "color": "#e9e5de",
+        "mountHeight": 1480,
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 350,
+          "baseHeight": 700,
+          "thickness": 0,
+          "modules": [
+            {
+              "run": 0,
+              "width": 400,
+              "role": "door",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 400,
+              "role": "door",
+              "doorOpen": true
+            }
+          ]
+        },
+        "h": 700
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "bench_yeswood_oak",
+      "type": "bench_yeswood_oak",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bench_yeswood_oak",
+        "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+        "w": 800,
+        "d": 300,
+        "color": "#bd925f",
+        "brand": "源氏木语/YESWOOD",
+        "model": "橡木软包换鞋凳 · 80cm",
+        "h": 450
+      },
+      "tests": [
+        "shoe-bench"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "bench_yeswood_oak",
+        "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+        "w": 800,
+        "d": 300,
+        "color": "#bd925f",
+        "brand": "源氏木语/YESWOOD",
+        "model": "橡木软包换鞋凳 · 80cm",
+        "h": 450
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "sink_arrow_680",
+      "type": "sink_arrow_680",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sink_arrow_680",
+        "name": "箭牌日式集渣水槽 · 680",
+        "w": 680,
+        "d": 450,
+        "color": "#85898a",
+        "counterElevation": 860,
+        "sinkInstall": "top",
+        "brand": "ARROW/箭牌",
+        "model": "AE5568459G23-YNC",
+        "sourceUrl": "https://item.jd.com/100199201484.html",
+        "h": 240
+      },
+      "tests": [
+        "sink",
+        "sink-plan-snapping"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sink_arrow_680",
+        "name": "箭牌日式集渣水槽 · 680",
+        "w": 680,
+        "d": 450,
+        "color": "#85898a",
+        "counterElevation": 860,
+        "sinkInstall": "top",
+        "brand": "ARROW/箭牌",
+        "model": "AE5568459G23-YNC",
+        "sourceUrl": "https://item.jd.com/100199201484.html",
+        "h": 240
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "sink_arrow_750",
+      "type": "sink_arrow_750",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sink_arrow_750",
+        "name": "箭牌日式集渣水槽 · 750",
+        "w": 750,
+        "d": 450,
+        "color": "#85898a",
+        "counterElevation": 860,
+        "sinkInstall": "top",
+        "brand": "ARROW/箭牌",
+        "model": "AE5575459G23-YNC",
+        "sourceUrl": "https://item.jd.com/100199201484.html",
+        "h": 240
+      },
+      "tests": [
+        "sink",
+        "sink-plan-snapping"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "sink_arrow_750",
+        "name": "箭牌日式集渣水槽 · 750",
+        "w": 750,
+        "d": 450,
+        "color": "#85898a",
+        "counterElevation": 860,
+        "sinkInstall": "top",
+        "brand": "ARROW/箭牌",
+        "model": "AE5575459G23-YNC",
+        "sourceUrl": "https://item.jd.com/100199201484.html",
+        "h": 240
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "shower_arrow_cream",
+      "type": "shower_arrow_cream",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "shower_arrow_cream",
+        "name": "箭牌 奶油白壁挂花洒 AE34129ZMKW-P2",
+        "w": 420,
+        "d": 515,
+        "color": "#eee7d8",
+        "showerMixerHeight": 1000,
+        "brand": "ARROW/箭牌",
+        "model": "AE34129ZMKW-P2",
+        "h": 1749
+      },
+      "tests": [
+        "shower-arrow"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "shower_arrow_cream",
+        "name": "箭牌 奶油白壁挂花洒 AE34129ZMKW-P2",
+        "w": 420,
+        "d": 515,
+        "color": "#eee7d8",
+        "showerMixerHeight": 1000,
+        "brand": "ARROW/箭牌",
+        "model": "AE34129ZMKW-P2",
+        "h": 1749
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "curtain_sheer",
+      "type": "curtain_sheer",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "curtain_sheer",
+        "name": "半透光纱帘 · 双开",
+        "w": 2400,
+        "d": 120,
+        "color": "#f4f1e8",
+        "mountHeight": 0,
+        "curtainOpen": 0,
+        "curtainStyle": "double",
+        "frontClearance": 0,
+        "h": 2400
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "curtain_sheer",
+        "name": "半透光纱帘 · 双开",
+        "w": 2400,
+        "d": 120,
+        "color": "#f4f1e8",
+        "mountHeight": 0,
+        "curtainOpen": 1,
+        "curtainStyle": "double",
+        "frontClearance": 0,
+        "h": 2400
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "blind_venetian",
+      "type": "blind_venetian",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_venetian",
+        "name": "百叶帘 · 可调叶片",
+        "w": 1500,
+        "d": 65,
+        "color": "#ded6c7",
+        "mountHeight": 900,
+        "curtainOpen": 0,
+        "blindAngle": 85,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_venetian",
+        "name": "百叶帘 · 可调叶片",
+        "w": 1500,
+        "d": 65,
+        "color": "#ded6c7",
+        "mountHeight": 900,
+        "curtainOpen": 1,
+        "blindAngle": 85,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "blind_honeycomb",
+      "type": "blind_honeycomb",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_honeycomb",
+        "name": "蜂巢帘 · 折叠升降",
+        "w": 1500,
+        "d": 60,
+        "color": "#ece3d5",
+        "mountHeight": 900,
+        "curtainOpen": 0,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_honeycomb",
+        "name": "蜂巢帘 · 折叠升降",
+        "w": 1500,
+        "d": 60,
+        "color": "#ece3d5",
+        "mountHeight": 900,
+        "curtainOpen": 1,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "blind_zebra",
+      "type": "blind_zebra",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_zebra",
+        "name": "日夜柔纱帘 · 斑马帘",
+        "w": 1500,
+        "d": 75,
+        "color": "#d5c5ab",
+        "mountHeight": 900,
+        "curtainOpen": 0,
+        "shadeMode": "day",
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_zebra",
+        "name": "日夜柔纱帘 · 斑马帘",
+        "w": 1500,
+        "d": 75,
+        "color": "#d5c5ab",
+        "mountHeight": 900,
+        "curtainOpen": 1,
+        "shadeMode": "day",
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "blind_bamboo",
+      "type": "blind_bamboo",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_bamboo",
+        "name": "竹帘 · 卷收",
+        "w": 1500,
+        "d": 65,
+        "color": "#a88a5d",
+        "mountHeight": 900,
+        "curtainOpen": 0,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_bamboo",
+        "name": "竹帘 · 卷收",
+        "w": 1500,
+        "d": 65,
+        "color": "#a88a5d",
+        "mountHeight": 900,
+        "curtainOpen": 1,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "blind_roller",
+      "type": "blind_roller",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_roller",
+        "name": "卷帘 · 平面布",
+        "w": 1500,
+        "d": 75,
+        "color": "#d6d2c8",
+        "mountHeight": 900,
+        "curtainOpen": 0,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "blind_roller",
+        "name": "卷帘 · 平面布",
+        "w": 1500,
+        "d": 75,
+        "color": "#d6d2c8",
+        "mountHeight": 900,
+        "curtainOpen": 1,
+        "frontClearance": 0,
+        "h": 1800
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "pocketdoor_double",
+      "type": "pocketdoor_double",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pocketdoor_double",
+        "name": "双侧口袋门隔断 · 布局草模",
+        "w": 2800,
+        "d": 160,
+        "color": "#c5b59d",
+        "slidingOpen": true,
+        "h": 2640
+      },
+      "tests": [
+        "pocket-door",
+        "wide-pocket-door",
+        "pocket-identities"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pocketdoor_double",
+        "name": "双侧口袋门隔断 · 布局草模",
+        "w": 2800,
+        "d": 160,
+        "color": "#c5b59d",
+        "slidingOpen": false,
+        "h": 2640
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "pocketdoor_triple",
+      "type": "pocketdoor_triple",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pocketdoor_triple",
+        "name": "单侧三联动口袋门 · 布局草模",
+        "w": 2800,
+        "d": 220,
+        "color": "#c5b59d",
+        "slidingOpen": true,
+        "slidingStackSide": "left",
+        "h": 2640
+      },
+      "tests": [
+        "pocket-door",
+        "wide-pocket-door",
+        "pocket-identities"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pocketdoor_triple",
+        "name": "单侧三联动口袋门 · 布局草模",
+        "w": 2800,
+        "d": 220,
+        "color": "#c5b59d",
+        "slidingOpen": false,
+        "slidingStackSide": "left",
+        "h": 2640
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "slidingdoor",
+      "type": "slidingdoor",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "slidingdoor",
+        "name": "双扇推拉门",
+        "w": 1800,
+        "d": 120,
+        "color": "#41474b",
+        "h": 2100
+      },
+      "tests": [
+        "telescopic-20",
+        "telescopic-floor-tracks"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "slidingdoor",
+        "name": "双扇推拉门",
+        "w": 1800,
+        "d": 120,
+        "color": "#41474b",
+        "h": 2100
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "telescopicdoor20",
+      "type": "telescopicdoor20",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "telescopicdoor20",
+        "name": "2+0 同向联动门 · 超白玻璃",
+        "w": 1800,
+        "d": 100,
+        "color": "#41474b",
+        "h": 2400
+      },
+      "tests": [
+        "telescopic-20",
+        "telescopic-floor-tracks"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "telescopicdoor20",
+        "name": "2+0 同向联动门 · 超白玻璃",
+        "w": 1800,
+        "d": 100,
+        "color": "#41474b",
+        "h": 2400,
+        "slidingOpen": true
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "doubleslidingdoor",
+      "type": "doubleslidingdoor",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "doubleslidingdoor",
+        "name": "双联动推拉门",
+        "w": 1800,
+        "d": 90,
+        "color": "#41474b",
+        "h": 2400
+      },
+      "tests": [
+        "telescopic-20",
+        "telescopic-floor-tracks"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "doubleslidingdoor",
+        "name": "双联动推拉门",
+        "w": 1800,
+        "d": 90,
+        "color": "#41474b",
+        "h": 2400
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "tripleslidingdoor",
+      "type": "tripleslidingdoor",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tripleslidingdoor",
+        "name": "三联动推拉门",
+        "w": 2400,
+        "d": 90,
+        "color": "#41474b",
+        "h": 2400
+      },
+      "tests": [
+        "telescopic-20",
+        "telescopic-floor-tracks"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tripleslidingdoor",
+        "name": "三联动推拉门",
+        "w": 2400,
+        "d": 90,
+        "color": "#41474b",
+        "h": 2400
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "tripleslidingwindow",
+      "type": "tripleslidingwindow",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tripleslidingwindow",
+        "name": "三联动推拉窗",
+        "w": 1800,
+        "d": 90,
+        "color": "#41474b",
+        "mountHeight": 900,
+        "h": 1500
+      },
+      "tests": [
+        "telescopic-floor-tracks"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tripleslidingwindow",
+        "name": "三联动推拉窗",
+        "w": 1800,
+        "d": 90,
+        "color": "#41474b",
+        "mountHeight": 900,
+        "h": 1500
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "cat_tree",
+      "type": "cat_tree",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "cat_tree",
+        "name": "猫爬架 · 绿叶成荫围栏款",
+        "w": 500,
+        "d": 500,
+        "color": "#75a533",
+        "h": 1430
+      },
+      "tests": [
+        "cat-tree"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "cat_tree",
+        "name": "猫爬架 · 绿叶成荫围栏款",
+        "w": 500,
+        "d": 500,
+        "color": "#75a533",
+        "h": 1430
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "pet_feeder_mijia_2",
+      "type": "pet_feeder_mijia_2",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pet_feeder_mijia_2",
+        "name": "米家智能宠物喂食器 2",
+        "w": 220,
+        "d": 324,
+        "color": "#efeee8",
+        "brand": "米家/Mijia",
+        "model": "智能宠物喂食器 2",
+        "h": 370
+      },
+      "tests": [
+        "pet-feeder"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "pet_feeder_mijia_2",
+        "name": "米家智能宠物喂食器 2",
+        "w": 220,
+        "d": 324,
+        "color": "#efeee8",
+        "brand": "米家/Mijia",
+        "model": "智能宠物喂食器 2",
+        "h": 370
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "litter_box",
+      "type": "litter_box",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "litter_box",
+        "name": "封闭式猫砂盆",
+        "w": 440,
+        "d": 510,
+        "color": "#eeede5",
+        "h": 400
+      },
+      "tests": [
+        "litter-box"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "litter_box",
+        "name": "封闭式猫砂盆",
+        "w": 440,
+        "d": 510,
+        "color": "#eeede5",
+        "h": 400
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "mirror",
+      "type": "mirror",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "mirror",
+        "name": "穿衣镜",
+        "w": 500,
+        "d": 60,
+        "color": "#dfe6ea",
+        "h": 1650
+      },
+      "tests": [
+        "mirror"
+      ],
+      "origin": "later adaptation of original type",
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "mirror",
+        "name": "穿衣镜",
+        "w": 500,
+        "d": 60,
+        "color": "#dfe6ea",
+        "h": 1650
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "curtain-single",
+      "type": "curtain",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "curtain",
+        "name": "单开窗帘 2.4m",
+        "w": 2400,
+        "d": 180,
+        "color": "#c9d3da",
+        "curtainStyle": "single",
+        "curtainOpen": 0,
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "h": 2400
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount",
+        "curtain-height"
+      ],
+      "origin": "later adaptation of original type",
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "curtain",
+        "name": "单开窗帘 2.4m",
+        "w": 2400,
+        "d": 180,
+        "color": "#c9d3da",
+        "curtainStyle": "single",
+        "curtainOpen": 1,
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "h": 2400
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "curtain-double",
+      "type": "curtain",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "curtain",
+        "name": "双开窗帘 2.4m",
+        "w": 2400,
+        "d": 180,
+        "color": "#c9d3da",
+        "curtainStyle": "double",
+        "curtainOpen": 0,
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "h": 2400
+      },
+      "tests": [
+        "window-coverings",
+        "window-covering-mount",
+        "curtain-height"
+      ],
+      "origin": "later adaptation of original type",
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "curtain",
+        "name": "双开窗帘 2.4m",
+        "w": 2400,
+        "d": 180,
+        "color": "#c9d3da",
+        "curtainStyle": "double",
+        "curtainOpen": 1,
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "h": 2400
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "tv-75",
+      "type": "tv",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tv",
+        "name": "75 寸电视",
+        "w": 1660,
+        "d": 80,
+        "color": "#1d1d1f",
+        "h": 935
+      },
+      "tests": [
+        "tv-view-consistency"
+      ],
+      "origin": "later adaptation of original type",
+      "resizePolicy": "coupled-screen",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tv",
+        "name": "75 寸电视",
+        "w": 1660,
+        "d": 80,
+        "color": "#1d1d1f",
+        "h": 935
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "tv-85",
+      "type": "tv",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tv",
+        "name": "85 寸电视",
+        "w": 1880,
+        "d": 90,
+        "color": "#1d1d1f",
+        "h": 1060
+      },
+      "tests": [
+        "tv-view-consistency"
+      ],
+      "origin": "later adaptation of original type",
+      "resizePolicy": "coupled-screen",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tv",
+        "name": "85 寸电视",
+        "w": 1880,
+        "d": 90,
+        "color": "#1d1d1f",
+        "h": 1060
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "tv-100",
+      "type": "tv",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tv",
+        "name": "100 寸电视",
+        "w": 2210,
+        "d": 100,
+        "color": "#1d1d1f",
+        "h": 1245
+      },
+      "tests": [
+        "tv-view-consistency"
+      ],
+      "origin": "later adaptation of original type",
+      "resizePolicy": "coupled-screen",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "tv",
+        "name": "100 寸电视",
+        "w": 2210,
+        "d": 100,
+        "color": "#1d1d1f",
+        "h": 1245
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "cabinet--storage",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "收纳柜",
+        "w": 1000,
+        "d": 450,
+        "h": 1800,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "storage",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                341,
+                682,
+                1022,
+                1363
+              ],
+              "drawers": [],
+              "width": 964,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "收纳柜",
+        "w": 1000,
+        "d": 450,
+        "h": 1800,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "storage",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                341,
+                682,
+                1022,
+                1363
+              ],
+              "drawers": [],
+              "width": 964,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--pantry800",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "800 库 · 食品高柜",
+        "w": 800,
+        "d": 600,
+        "h": 2200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "pantry800",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                351,
+                701,
+                1052,
+                1403,
+                1753
+              ],
+              "drawers": [],
+              "width": 764,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "800 库 · 食品高柜",
+        "w": 800,
+        "d": 600,
+        "h": 2200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "pantry800",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                351,
+                701,
+                1052,
+                1403,
+                1753
+              ],
+              "drawers": [],
+              "width": 764,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--pantry500",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "500 库 · 窄高柜",
+        "w": 500,
+        "d": 600,
+        "h": 2200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "pantry500",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "left",
+              "doorOpen": false,
+              "shelves": [
+                351,
+                701,
+                1052,
+                1403,
+                1753
+              ],
+              "drawers": [],
+              "width": 464,
+              "drawerColumns": 1
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "500 库 · 窄高柜",
+        "w": 500,
+        "d": 600,
+        "h": 2200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "pantry500",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "left",
+              "doorOpen": true,
+              "shelves": [
+                351,
+                701,
+                1052,
+                1403,
+                1753
+              ],
+              "drawers": [],
+              "width": 464,
+              "drawerColumns": 1,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--sideboard",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 门柜",
+        "w": 1600,
+        "d": 400,
+        "h": 900,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                402
+              ],
+              "drawers": [],
+              "width": 773,
+              "drawerColumns": 2
+            },
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                402
+              ],
+              "drawers": [],
+              "width": 773,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 门柜",
+        "w": 1600,
+        "d": 400,
+        "h": 900,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                402
+              ],
+              "drawers": [],
+              "width": 773,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            },
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                402
+              ],
+              "drawers": [],
+              "width": 773,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--sideboard-drawers",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 抽屉组合",
+        "w": 1600,
+        "d": 450,
+        "h": 900,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-drawers",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                562
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false,
+                  "extension": 1
+                },
+                {
+                  "height": 160,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 773,
+              "drawerColumns": 2
+            },
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                562
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false,
+                  "extension": 1
+                },
+                {
+                  "height": 160,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 773,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 抽屉组合",
+        "w": 1600,
+        "d": 450,
+        "h": 900,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-drawers",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                562
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true,
+                  "extension": 1
+                },
+                {
+                  "height": 160,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 773,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            },
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                562
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true,
+                  "extension": 1
+                },
+                {
+                  "height": 160,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 773,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--sideboard-open",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 开放展示",
+        "w": 1600,
+        "d": 400,
+        "h": 1200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-open",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                475,
+                789
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                475,
+                789
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                475,
+                789
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false
+                }
+              ]
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 开放展示",
+        "w": 1600,
+        "d": 400,
+        "h": 1200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-open",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                475,
+                789
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                475,
+                789
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                475,
+                789
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true
+                }
+              ]
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--sideboard-mixed",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 开放格与门柜",
+        "w": 1800,
+        "d": 450,
+        "h": 1800,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-mixed",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "left",
+              "doorOpen": false,
+              "shelves": [
+                546,
+                932,
+                1318
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                546,
+                932,
+                1318
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "left",
+              "doorOpen": false,
+              "shelves": [
+                546,
+                932,
+                1318
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false
+                }
+              ]
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 开放格与门柜",
+        "w": 1800,
+        "d": 450,
+        "h": 1800,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-mixed",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "left",
+              "doorOpen": true,
+              "shelves": [
+                546,
+                932,
+                1318
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true
+                }
+              ],
+              "doorAngle": 90
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                546,
+                932,
+                1318
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true
+                }
+              ]
+            },
+            {
+              "door": "left",
+              "doorOpen": true,
+              "shelves": [
+                546,
+                932,
+                1318
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true
+                }
+              ],
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--sideboard-wall",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 操作台与玻璃展示柜",
+        "w": 1980,
+        "d": 450,
+        "h": 2430,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-wall",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 963,
+              "drawerColumns": 2
+            },
+            {
+              "door": "double",
+              "doorOpen": false,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 963,
+              "drawerColumns": 2
+            }
+          ],
+          "sideboard": {
+            "baseHeight": 960,
+            "counterThickness": 20,
+            "nicheHeight": 600,
+            "displayHeight": 300,
+            "lowerDepth": 450,
+            "upperDepth": 350,
+            "fridgeHeight": 1830
+          }
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 操作台与玻璃展示柜",
+        "w": 1980,
+        "d": 450,
+        "h": 2430,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-wall",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 963,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            },
+            {
+              "door": "double",
+              "doorOpen": true,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 963,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ],
+          "sideboard": {
+            "baseHeight": 960,
+            "counterThickness": 20,
+            "nicheHeight": 600,
+            "displayHeight": 300,
+            "lowerDepth": 450,
+            "upperDepth": 350,
+            "fridgeHeight": 1830
+          }
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--sideboard-fridge",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 冰箱位与玻璃展示柜",
+        "w": 2156,
+        "d": 600,
+        "h": 2400,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-fridge",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [],
+              "width": 800,
+              "fridgeBay": true
+            },
+            {
+              "door": "left",
+              "doorOpen": false,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 419,
+              "drawerColumns": 1
+            },
+            {
+              "door": "double",
+              "doorOpen": false,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 865,
+              "drawerColumns": 2
+            }
+          ],
+          "sideboard": {
+            "baseHeight": 810,
+            "counterThickness": 20,
+            "nicheHeight": 510,
+            "displayHeight": 300,
+            "lowerDepth": 410,
+            "upperDepth": 350,
+            "fridgeHeight": 1915,
+            "fridgeDepth": 600
+          }
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "餐边柜 · 冰箱位与玻璃展示柜",
+        "w": 2156,
+        "d": 600,
+        "h": 2400,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "sideboard-fridge",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [],
+              "width": 800,
+              "fridgeBay": true,
+              "doorAngle": 90
+            },
+            {
+              "door": "left",
+              "doorOpen": true,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 419,
+              "drawerColumns": 1,
+              "doorAngle": 90
+            },
+            {
+              "door": "double",
+              "doorOpen": true,
+              "handle": "none",
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 140,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 865,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ],
+          "sideboard": {
+            "baseHeight": 810,
+            "counterThickness": 20,
+            "nicheHeight": 510,
+            "displayHeight": 300,
+            "lowerDepth": 410,
+            "upperDepth": 350,
+            "fridgeHeight": 1915,
+            "fridgeDepth": 600
+          }
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--wardrobe",
+      "type": "wardrobe",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "衣柜 · 分区收纳",
+        "w": 2000,
+        "d": 600,
+        "h": 2200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "wardrobe",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                646,
+                1132,
+                1618
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 973,
+              "drawerColumns": 2
+            },
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                646,
+                1132,
+                1618
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 973,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "wardrobe"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "衣柜 · 分区收纳",
+        "w": 2000,
+        "d": 600,
+        "h": 2200,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "wardrobe",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                646,
+                1132,
+                1618
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 973,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            },
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                646,
+                1132,
+                1618
+              ],
+              "drawers": [
+                {
+                  "height": 160,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 973,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "wardrobe"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--wardrobe-hanging",
+      "type": "wardrobe",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "衣柜 · 双柜挂衣与明抽",
+        "w": 1800,
+        "d": 630,
+        "h": 2350,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "wardrobe-hanging",
+          "thickness": 18,
+          "plinth": 60,
+          "doorOverlay": "full",
+          "boxConstruction": "independent",
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "drawerColumns": 1,
+              "shelves": [
+                1736
+              ],
+              "drawers": [
+                {
+                  "height": 191,
+                  "open": false
+                },
+                {
+                  "height": 227,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "double",
+              "doorOpen": false,
+              "drawerColumns": 1,
+              "shelves": [
+                850,
+                1736
+              ],
+              "drawers": []
+            }
+          ]
+        },
+        "type": "wardrobe"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "衣柜 · 双柜挂衣与明抽",
+        "w": 1800,
+        "d": 630,
+        "h": 2350,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "wardrobe-hanging",
+          "thickness": 18,
+          "plinth": 60,
+          "doorOverlay": "full",
+          "boxConstruction": "independent",
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "drawerColumns": 1,
+              "shelves": [
+                1736
+              ],
+              "drawers": [
+                {
+                  "height": 191,
+                  "open": true
+                },
+                {
+                  "height": 227,
+                  "open": true
+                }
+              ],
+              "doorAngle": 90
+            },
+            {
+              "door": "double",
+              "doorOpen": true,
+              "drawerColumns": 1,
+              "shelves": [
+                850,
+                1736
+              ],
+              "drawers": [],
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "wardrobe"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--shoe",
+      "type": "shoecab",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "鞋柜 · 双门",
+        "w": 1000,
+        "d": 350,
+        "h": 1100,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "shoe",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                201,
+                402,
+                602,
+                803
+              ],
+              "drawers": [],
+              "width": 964,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "shoecab"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "鞋柜 · 双门",
+        "w": 1000,
+        "d": 350,
+        "h": 1100,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "shoe",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                201,
+                402,
+                602,
+                803
+              ],
+              "drawers": [],
+              "width": 964,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "shoecab"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--book",
+      "type": "bookshelf",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "书柜 · 开放层板",
+        "w": 1200,
+        "d": 350,
+        "h": 2000,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "book",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                317,
+                635,
+                952,
+                1269,
+                1587
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                317,
+                635,
+                952,
+                1269,
+                1587
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                317,
+                635,
+                952,
+                1269,
+                1587
+              ],
+              "drawers": []
+            }
+          ]
+        },
+        "type": "bookshelf"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "书柜 · 开放层板",
+        "w": 1200,
+        "d": 350,
+        "h": 2000,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "book",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                317,
+                635,
+                952,
+                1269,
+                1587
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                317,
+                635,
+                952,
+                1269,
+                1587
+              ],
+              "drawers": []
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [
+                317,
+                635,
+                952,
+                1269,
+                1587
+              ],
+              "drawers": []
+            }
+          ]
+        },
+        "type": "bookshelf"
+      },
+      "alternateKind": "back"
+    },
+    {
+      "id": "cabinet--chest",
+      "type": "chest",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "斗柜 · 四层抽屉",
+        "w": 800,
+        "d": 500,
+        "h": 1000,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "chest",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 150,
+                  "open": false
+                },
+                {
+                  "height": 150,
+                  "open": false
+                },
+                {
+                  "height": 150,
+                  "open": false
+                },
+                {
+                  "height": 150,
+                  "open": false
+                }
+              ]
+            }
+          ]
+        },
+        "type": "chest"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "斗柜 · 四层抽屉",
+        "w": 800,
+        "d": 500,
+        "h": 1000,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "chest",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 150,
+                  "open": true
+                },
+                {
+                  "height": 150,
+                  "open": true
+                },
+                {
+                  "height": 150,
+                  "open": true
+                },
+                {
+                  "height": 150,
+                  "open": true
+                }
+              ]
+            }
+          ]
+        },
+        "type": "chest"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--base",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "厨房地柜",
+        "w": 800,
+        "d": 600,
+        "h": 850,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "base",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                377
+              ],
+              "drawers": [],
+              "width": 764,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "厨房地柜",
+        "w": 800,
+        "d": 600,
+        "h": 850,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "base",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                377
+              ],
+              "drawers": [],
+              "width": 764,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--wall",
+      "type": "kitchenwall",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "壁柜",
+        "w": 800,
+        "d": 350,
+        "h": 700,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "wall",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "shelves": [
+                302
+              ],
+              "drawers": [],
+              "width": 764,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "kitchenwall"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "壁柜",
+        "w": 800,
+        "d": 350,
+        "h": 700,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "wall",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "shelves": [
+                302
+              ],
+              "drawers": [],
+              "width": 764,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "kitchenwall"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--tv",
+      "type": "tvstand",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "电视柜 · 抽屉与开放格",
+        "w": 2000,
+        "d": 400,
+        "h": 500,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "tv",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": false
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": false
+                }
+              ]
+            }
+          ]
+        },
+        "type": "tvstand"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "电视柜 · 抽屉与开放格",
+        "w": 2000,
+        "d": 400,
+        "h": 500,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "tv",
+          "thickness": 18,
+          "plinth": 60,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": true
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": true
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": true
+                }
+              ]
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 134,
+                  "open": true
+                }
+              ]
+            }
+          ]
+        },
+        "type": "tvstand"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--tv-floor",
+      "type": "tvstand",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "落地电视柜 · 上盖抽屉藏线",
+        "w": 3000,
+        "d": 400,
+        "h": 240,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "tv-floor",
+          "thickness": 18,
+          "plinth": 0,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": false
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": false
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [],
+              "top": "drawer",
+              "topOpen": false,
+              "cableGap": 30,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": false
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": false
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            }
+          ],
+          "doorOverlay": "full"
+        },
+        "type": "tvstand"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances",
+        "tv-floor"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "落地电视柜 · 上盖抽屉藏线",
+        "w": 3000,
+        "d": 400,
+        "h": 240,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "tv-floor",
+          "thickness": 18,
+          "plinth": 0,
+          "columns": [
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": true
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": true
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [],
+              "top": "drawer",
+              "topOpen": true,
+              "cableGap": 30,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": true
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            },
+            {
+              "door": "none",
+              "doorOpen": false,
+              "shelves": [],
+              "drawers": [
+                {
+                  "height": 204,
+                  "open": true
+                }
+              ],
+              "top": "fixed",
+              "topOpen": false,
+              "cableGap": 0,
+              "finish": "solid",
+              "handle": "none"
+            }
+          ],
+          "doorOverlay": "full"
+        },
+        "type": "tvstand"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--entry-pegboard",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "玄关柜 · 洞洞板换鞋区",
+        "w": 674,
+        "d": 350,
+        "h": 2400,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "entry-pegboard",
+          "thickness": 18,
+          "plinth": 0,
+          "pegboardParts": {
+            "upper": true,
+            "left": true,
+            "right": true,
+            "lower": true,
+            "displayShelves": true,
+            "hooks": true,
+            "light": true
+          },
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": false,
+              "doorBottom": 1796,
+              "pegboard": true,
+              "handle": "none",
+              "shelves": [
+                1778
+              ],
+              "drawers": [
+                {
+                  "height": 180,
+                  "open": false,
+                  "extension": 1
+                },
+                {
+                  "height": 180,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 638,
+              "drawerColumns": 1
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances",
+        "entry-pegboard"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "玄关柜 · 洞洞板换鞋区",
+        "w": 674,
+        "d": 350,
+        "h": 2400,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "entry-pegboard",
+          "thickness": 18,
+          "plinth": 0,
+          "pegboardParts": {
+            "upper": true,
+            "left": true,
+            "right": true,
+            "lower": true,
+            "displayShelves": true,
+            "hooks": true,
+            "light": true
+          },
+          "columns": [
+            {
+              "door": "double",
+              "doorOpen": true,
+              "doorBottom": 1796,
+              "pegboard": true,
+              "handle": "none",
+              "shelves": [
+                1778
+              ],
+              "drawers": [
+                {
+                  "height": 180,
+                  "open": true,
+                  "extension": 1
+                },
+                {
+                  "height": 180,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 638,
+              "drawerColumns": 1,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "cabinet--entry-console",
+      "type": "cabinet",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "玄关柜二 · 置物台与鞋柜",
+        "w": 1200,
+        "d": 350,
+        "h": 2400,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "entry-console",
+          "thickness": 18,
+          "plinth": 0,
+          "entry": {
+            "shoeHeight": 360,
+            "lowerHeight": 620,
+            "nicheHeight": 379,
+            "openSide": "left",
+            "editable": true
+          },
+          "columns": [
+            {
+              "door": "left",
+              "doorOpen": false,
+              "handle": "none",
+              "shelves": [
+                577,
+                1862
+              ],
+              "drawers": [
+                {
+                  "height": 150,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 373,
+              "drawerColumns": 1
+            },
+            {
+              "door": "double",
+              "doorOpen": false,
+              "handle": "none",
+              "shelves": [
+                577,
+                1862
+              ],
+              "drawers": [
+                {
+                  "height": 150,
+                  "open": false,
+                  "extension": 1
+                }
+              ],
+              "width": 773,
+              "drawerColumns": 2
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "tests": [
+        "cabinet-model",
+        "cabinet-interior-distances",
+        "entry-console"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "玄关柜二 · 置物台与鞋柜",
+        "w": 1200,
+        "d": 350,
+        "h": 2400,
+        "color": "#f3f1ec",
+        "cabinet": {
+          "version": 1,
+          "template": "entry-console",
+          "thickness": 18,
+          "plinth": 0,
+          "entry": {
+            "shoeHeight": 360,
+            "lowerHeight": 620,
+            "nicheHeight": 379,
+            "openSide": "left",
+            "editable": true
+          },
+          "columns": [
+            {
+              "door": "left",
+              "doorOpen": true,
+              "handle": "none",
+              "shelves": [
+                577,
+                1862
+              ],
+              "drawers": [
+                {
+                  "height": 150,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 373,
+              "drawerColumns": 1,
+              "doorAngle": 90
+            },
+            {
+              "door": "double",
+              "doorOpen": true,
+              "handle": "none",
+              "shelves": [
+                577,
+                1862
+              ],
+              "drawers": [
+                {
+                  "height": 150,
+                  "open": true,
+                  "extension": 1
+                }
+              ],
+              "width": 773,
+              "drawerColumns": 2,
+              "doorAngle": 90
+            }
+          ]
+        },
+        "type": "cabinet"
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "laundry--left",
+      "type": "counter",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": true,
+        "type": "counter",
+        "name": "洗衣柜",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink"
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty"
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "tests": [
+        "laundry-cabinet",
+        "laundry-area"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": true,
+        "type": "counter",
+        "name": "洗衣柜",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty",
+              "doorOpen": true
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "laundry-area--left",
+      "type": "counter",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": true,
+        "type": "counter",
+        "color": "#f3f1ec",
+        "name": "完整阳台洗衣柜",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true,
+            "notch": {
+              "side": "left",
+              "width": 100,
+              "depth": 100
+            },
+            "appliance": {
+              "w": 600,
+              "d": 600,
+              "h": 850,
+              "mountHeight": 0
+            },
+            "assembly": {
+              "sink": {
+                "d": 500,
+                "x": 0,
+                "y": 0,
+                "color": "#ebe9e3",
+                "w": 600,
+                "module": 0,
+                "sinkNotch": {
+                  "side": "left",
+                  "width": 100,
+                  "depth": 100
+                }
+              },
+              "upper": {
+                "d": 350,
+                "x": 0,
+                "y": -140,
+                "color": "#f3f1ec",
+                "h": 600,
+                "mountHeight": 1800,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              },
+              "open": {
+                "d": 320,
+                "x": 0,
+                "y": -155,
+                "color": "#bc936b",
+                "h": 200,
+                "mountHeight": 1600,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              }
+            },
+            "floorOpen": true,
+            "sidePanels": {
+              "left": true,
+              "right": true,
+              "thickness": 18
+            }
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink"
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty"
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "companions": [
+        {
+          "id": "laundry-member-2",
+          "name": "洗衣机",
+          "type": "washer",
+          "cx": -341,
+          "cy": 15,
+          "w": 600,
+          "d": 600,
+          "h": 850,
+          "mountHeight": 0,
+          "washerDoorAngle": 0,
+          "rot": 0,
+          "color": "#f3f4f1",
+          "flip": true,
+          "laundryHostId": "model-pilot"
+        }
+      ],
+      "tests": [
+        "laundry-cabinet",
+        "laundry-area"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": true,
+        "type": "counter",
+        "color": "#f3f1ec",
+        "name": "完整阳台洗衣柜",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true,
+            "notch": {
+              "side": "left",
+              "width": 100,
+              "depth": 100
+            },
+            "appliance": {
+              "w": 600,
+              "d": 600,
+              "h": 850,
+              "mountHeight": 0
+            },
+            "assembly": {
+              "sink": {
+                "d": 500,
+                "x": 0,
+                "y": 0,
+                "color": "#ebe9e3",
+                "w": 600,
+                "module": 0,
+                "sinkNotch": {
+                  "side": "left",
+                  "width": 100,
+                  "depth": 100
+                }
+              },
+              "upper": {
+                "d": 350,
+                "x": 0,
+                "y": -140,
+                "color": "#f3f1ec",
+                "h": 600,
+                "mountHeight": 1800,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              },
+              "open": {
+                "d": 320,
+                "x": 0,
+                "y": -155,
+                "color": "#bc936b",
+                "h": 200,
+                "mountHeight": 1600,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              }
+            },
+            "floorOpen": true,
+            "sidePanels": {
+              "left": true,
+              "right": true,
+              "thickness": 18
+            }
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty",
+              "doorOpen": true
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "laundry--right",
+      "type": "counter",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "counter",
+        "name": "洗衣柜",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink"
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty"
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "tests": [
+        "laundry-cabinet",
+        "laundry-area"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "counter",
+        "name": "洗衣柜",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty",
+              "doorOpen": true
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "laundry-area--right",
+      "type": "counter",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "counter",
+        "color": "#f3f1ec",
+        "name": "完整阳台洗衣柜",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true,
+            "notch": {
+              "side": "left",
+              "width": 100,
+              "depth": 100
+            },
+            "appliance": {
+              "w": 600,
+              "d": 600,
+              "h": 850,
+              "mountHeight": 0
+            },
+            "assembly": {
+              "sink": {
+                "d": 500,
+                "x": 0,
+                "y": 0,
+                "color": "#ebe9e3",
+                "w": 600,
+                "module": 0,
+                "sinkNotch": {
+                  "side": "left",
+                  "width": 100,
+                  "depth": 100
+                }
+              },
+              "upper": {
+                "d": 350,
+                "x": 0,
+                "y": -140,
+                "color": "#f3f1ec",
+                "h": 600,
+                "mountHeight": 1800,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              },
+              "open": {
+                "d": 320,
+                "x": 0,
+                "y": -155,
+                "color": "#bc936b",
+                "h": 200,
+                "mountHeight": 1600,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              }
+            },
+            "floorOpen": true,
+            "sidePanels": {
+              "left": true,
+              "right": true,
+              "thickness": 18
+            }
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink"
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty"
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "companions": [
+        {
+          "id": "laundry-member-2",
+          "name": "洗衣机",
+          "type": "washer",
+          "cx": 341,
+          "cy": 15,
+          "w": 600,
+          "d": 600,
+          "h": 850,
+          "mountHeight": 0,
+          "washerDoorAngle": 0,
+          "rot": 0,
+          "color": "#f3f4f1",
+          "flip": false,
+          "laundryHostId": "model-pilot"
+        }
+      ],
+      "tests": [
+        "laundry-cabinet",
+        "laundry-area"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "counter",
+        "color": "#f3f1ec",
+        "name": "完整阳台洗衣柜",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 630,
+          "baseHeight": 900,
+          "thickness": 20,
+          "laundry": {
+            "countertop": true,
+            "notch": {
+              "side": "left",
+              "width": 100,
+              "depth": 100
+            },
+            "appliance": {
+              "w": 600,
+              "d": 600,
+              "h": 850,
+              "mountHeight": 0
+            },
+            "assembly": {
+              "sink": {
+                "d": 500,
+                "x": 0,
+                "y": 0,
+                "color": "#ebe9e3",
+                "w": 600,
+                "module": 0,
+                "sinkNotch": {
+                  "side": "left",
+                  "width": 100,
+                  "depth": 100
+                }
+              },
+              "upper": {
+                "d": 350,
+                "x": 0,
+                "y": -140,
+                "color": "#f3f1ec",
+                "h": 600,
+                "mountHeight": 1800,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    },
+                    {
+                      "door": "left",
+                      "doorOpen": true,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": [],
+                      "doorAngle": 90
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              },
+              "open": {
+                "d": 320,
+                "x": 0,
+                "y": -155,
+                "color": "#bc936b",
+                "h": 200,
+                "mountHeight": 1600,
+                "cabinet": {
+                  "version": 1,
+                  "template": "wall",
+                  "thickness": 18,
+                  "plinth": 0,
+                  "columns": [
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    },
+                    {
+                      "door": "none",
+                      "doorOpen": false,
+                      "handle": "none",
+                      "shelves": [],
+                      "drawers": []
+                    }
+                  ],
+                  "doorOverlay": "full"
+                }
+              }
+            },
+            "floorOpen": true,
+            "sidePanels": {
+              "left": true,
+              "right": true,
+              "thickness": 18
+            }
+          },
+          "modules": [
+            {
+              "run": 0,
+              "width": 700,
+              "role": "sink",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 640,
+              "role": "empty",
+              "doorOpen": true
+            }
+          ]
+        },
+        "w": 1340,
+        "d": 630
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "kitchen--tall",
+      "type": "counter",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "counter",
+        "name": "高低柜组合",
+        "w": 1800,
+        "d": 600,
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 600,
+          "baseHeight": 820,
+          "thickness": 40,
+          "modules": [
+            {
+              "run": 0,
+              "width": 600,
+              "role": "tall",
+              "height": 2200
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "door"
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "drawer"
+            }
+          ]
+        }
+      },
+      "tests": [
+        "kitchen-tall",
+        "kitchen"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "counter",
+        "name": "高低柜组合",
+        "w": 1800,
+        "d": 600,
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "straight",
+          "depth": 600,
+          "baseHeight": 820,
+          "thickness": 40,
+          "modules": [
+            {
+              "run": 0,
+              "width": 600,
+              "role": "tall",
+              "height": 2200,
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "door",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "drawer",
+              "doorOpen": true,
+              "drawerOpen": [
+                true,
+                true,
+                true
+              ]
+            }
+          ]
+        }
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "kitchen--L",
+      "type": "counter",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "L形厨房",
+        "type": "counter",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "L",
+          "depth": 600,
+          "counterDepth": 630,
+          "baseHeight": 820,
+          "thickness": 20,
+          "modules": [
+            {
+              "run": 0,
+              "width": 900,
+              "role": "hob"
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "drawer"
+            },
+            {
+              "run": 1,
+              "width": 700,
+              "role": "door"
+            },
+            {
+              "run": 1,
+              "width": 500,
+              "role": "door"
+            }
+          ]
+        },
+        "w": 2100,
+        "d": 1800
+      },
+      "tests": [
+        "kitchen-u",
+        "kitchen-resize",
+        "kitchen-corner-fit"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "L形厨房",
+        "type": "counter",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "L",
+          "depth": 600,
+          "counterDepth": 630,
+          "baseHeight": 820,
+          "thickness": 20,
+          "modules": [
+            {
+              "run": 0,
+              "width": 900,
+              "role": "hob",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "drawer",
+              "doorOpen": true,
+              "drawerOpen": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "run": 1,
+              "width": 700,
+              "role": "door",
+              "doorOpen": true
+            },
+            {
+              "run": 1,
+              "width": 500,
+              "role": "door",
+              "doorOpen": true
+            }
+          ]
+        },
+        "w": 2100,
+        "d": 1800
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "kitchen--U",
+      "type": "counter",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "U形厨房",
+        "type": "counter",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "U",
+          "depth": 600,
+          "counterDepth": 630,
+          "baseHeight": 820,
+          "thickness": 20,
+          "modules": [
+            {
+              "run": 0,
+              "width": 900,
+              "role": "hob"
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "drawer"
+            },
+            {
+              "run": 1,
+              "width": 700,
+              "role": "door"
+            },
+            {
+              "run": 1,
+              "width": 500,
+              "role": "door"
+            },
+            {
+              "run": 2,
+              "width": 900,
+              "role": "sink"
+            }
+          ]
+        },
+        "w": 2100,
+        "d": 2400
+      },
+      "tests": [
+        "kitchen-u",
+        "kitchen-resize",
+        "kitchen-corner-fit"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "name": "U形厨房",
+        "type": "counter",
+        "color": "#f3f1ec",
+        "kitchen": {
+          "version": 1,
+          "shape": "U",
+          "depth": 600,
+          "counterDepth": 630,
+          "baseHeight": 820,
+          "thickness": 20,
+          "modules": [
+            {
+              "run": 0,
+              "width": 900,
+              "role": "hob",
+              "doorOpen": true
+            },
+            {
+              "run": 0,
+              "width": 600,
+              "role": "drawer",
+              "doorOpen": true,
+              "drawerOpen": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "run": 1,
+              "width": 700,
+              "role": "door",
+              "doorOpen": true
+            },
+            {
+              "run": 1,
+              "width": 500,
+              "role": "door",
+              "doorOpen": true
+            },
+            {
+              "run": 2,
+              "width": 900,
+              "role": "sink",
+              "doorOpen": true
+            }
+          ]
+        },
+        "w": 2100,
+        "d": 2400
+      },
+      "alternateKind": "operating"
+    },
+    {
+      "id": "sink--vessel",
+      "type": "ksink",
+      "route": "parametric",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "ksink",
+        "name": "阳台台上盆 · 圆角单盆",
+        "w": 560,
+        "d": 400,
+        "color": "#f5f4ef",
+        "sinkStyle": "vessel",
+        "sinkBowlHeight": 150
+      },
+      "tests": [
+        "sink",
+        "sink-surface",
+        "laundry-resize-vessel"
+      ],
+      "resizePolicy": "independent",
+      "alternate": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "ksink",
+        "name": "阳台台上盆 · 圆角单盆",
+        "w": 560,
+        "d": 400,
+        "color": "#f5f4ef",
+        "sinkStyle": "vessel",
+        "sinkBowlHeight": 150
+      },
+      "alternateKind": "back"
+    }
+  ]
+}

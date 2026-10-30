@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（模型整链路覆盖）：model-profiles维护后引入产品／参数化柜体清单，隔离批次按各自路线执行具名资产作者预检／发布、空间与结构专项、双入口生产导出、逐部件Blender回读、实际GPU三机位与下载工程重开。原建模路线／资产／持久结构保留；Y52Y09继续使用柜体板件身份，组合按全部关联成员回读。缓存动画通过公开导出逐片核对保存目标端态，不以传递一致或总包络代替姿态正确。对照发现五类升降帘局部实体漏加安装高，通过solidModel.base声明由共用记录器加一次，缓存读取声明，空间确认只对适用模型追加语义标记。见[流程](BLENDER-MODELING-PIPELINE.md)及[90项验收](validation/model-pipeline-20261031/README.md)。
+
 2026-10-31（转角书柜）：corner-bookcase-core按产品规则派生五层L形板件，corner-bookcase-model逐板拟合14件Blender离线网格；生产构造器经FurnitureSolids／CabinetMotion提供21个保留缺角的空间片，SVG与平面共用L形轮廓。原mutate与尺寸／项目恢复保持，无新字段或版本；三个经典本地脚本已验HTTP与断网file，见[型号契约](CORNER-BOOKCASE-YESWOOD-Y00Y06.md)。
 
 2026-10-31（叠放方凳）：product-rules.stoolStack派生总高，stack-stool-model按数量／增高重复独立Blender离线网格；主场景与bodyParts／directional／柜内六向净距共用生产构造。属性沿mutate编辑stoolCount／stoolPitch及原mountHeight，缓存和本类型确认覆盖输入。含方凳项目／工作区v39及可读旧版的v39缓存；新增两个经典本地脚本，HTTP及断网file已验证。70mm增高是可调图片估算，见[方凳契约](STACK-STOOL-CITYLONG-370.md)。

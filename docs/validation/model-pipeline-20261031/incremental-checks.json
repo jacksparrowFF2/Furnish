@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-31",
+  "scope": "incremental model integration and affected shared cores; not scripts/check.cjs",
+  "passed": [
+    "test-product-rules",
+    "test-pocket-identities",
+    "test-curtain-height",
+    "test-curtains-sliding",
+    "test-furniture-solids-cache (388 fresh-builder comparisons)",
+    "test-furniture-solids-coverage",
+    "test-window-covering-mount",
+    "test-blender-model-identities",
+    "test-laundry-resize-vessel",
+    "test-model-pipeline",
+    "test-model-evidence",
+    "test-model-profile-spatial (new laundry-area left/right and kitchen L/U)",
+    "test-model-endpoints: rejects wrong pose within identical total envelope, duplicate or missing parts and wrong owners"
+  ],
+  "mappedStructureSuites": [
+    "aircon-midea",
+    "aquarium",
+    "armchair",
+    "armchair-berlin",
+    "bath-heater-se2",
+    "blender-appliance-asset",
+    "blender-bookcase-asset",
+    "blender-dishwasher-asset",
+    "blender-fridge-motion",
+    "blender-hood-asset",
+    "blender-washer-asset",
+    "blender-washer-materials",
+    "blender-washer-tg10k60w",
+    "block-placeholder",
+    "bookcase-y52y09",
+    "cabinet-interior-distances",
+    "cabinet-model",
+    "cat-tree",
+    "cherry-coffee-table",
+    "corner-bookcase",
+    "curtain-height",
+    "dishwasher-clearances",
+    "dishwasher-project-v32",
+    "downlight",
+    "electrical-box",
+    "entry-console",
+    "entry-pegboard",
+    "folding-table",
+    "fotile",
+    "fridge-project-v31",
+    "hood-project-v33",
+    "kitchen",
+    "kitchen-corner-fit",
+    "kitchen-resize",
+    "kitchen-tall",
+    "kitchen-u",
+    "laundry-area",
+    "laundry-cabinet",
+    "laundry-resize-vessel",
+    "litter-box",
+    "manifold",
+    "manifold-zero-gap",
+    "mirror",
+    "panel-light",
+    "pet-feeder",
+    "pipebox",
+    "pocket-door",
+    "pocket-identities",
+    "robot-vacuum",
+    "shoe-bench",
+    "shower-arrow",
+    "side-table",
+    "side-table-project-v36",
+    "sink",
+    "sink-plan-snapping",
+    "sink-surface",
+    "stack-stool",
+    "tea-bar",
+    "tea-table",
+    "telescopic-20",
+    "telescopic-floor-tracks",
+    "tv-floor",
+    "tv-view-consistency",
+    "washer-front-confirmation",
+    "washer-project-v35",
+    "water-purifier",
+    "waterheater-flat",
+    "waterheater-furniture-clearances",
+    "wide-pocket-door",
+    "window-covering-mount",
+    "window-coverings",
+    "yeswood-sofa"
+  ],
+  "notRun": [
+    "scripts/check.cjs full repository check",
+    "all GPU/Blender versions",
+    "all continuous motion combinations",
+    "manufacturer engineering certification"
+  ],
+  "initialBatch": {
+    "directory": "output/model-pipeline/all-PLDH00",
+    "revision": "ac1cf8730b28224e685aa9660585466c442538da",
+    "sourceFingerprint": "412907784d0cbff90a0aec638167d3f90502a8fb87d4c93dd188939701dec6b3",
+    "passed": 81,
+    "failed": [
+      {
+        "id": "pocketdoor_double",
+        "stage": "http-file-production",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_double-35GpBL"
+      },
+      {
+        "id": "pocketdoor_triple",
+        "stage": "http-file-production",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\pocketdoor_triple-T91ZCC"
+      },
+      {
+        "id": "curtain-single",
+        "stage": "http-file-production",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-single-PbVwVi"
+      },
+      {
+        "id": "curtain-double",
+        "stage": "http-file-production",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\curtain-double-c4ovPh"
+      },
+      {
+        "id": "sink--vessel",
+        "stage": "http-file-production",
+        "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\sink--vessel-cExNER"
+      }
+    ],
+    "sourceUnchanged": true
+  },
+  "skill": {
+    "validated": true,
+    "files": [
+      {
+        "file": "C:/Users/SPH/.codex/skills/furnish-modeling/SKILL.md",
+        "sha256": "7d14f9bfc4a18ca9991af182b63647e3a5617a731dd112626d40c9f67b4a7658"
+      },
+      {
+        "file": "C:/Users/SPH/.codex/skills/furnish-modeling/references/blender-assets.md",
+        "sha256": "e72383e13923cd29cab3aaa9049151c5685ef94af2d86f0d8870a2717635cef7"
+      }
+    ]
+  },
+  "userPlan": {
+    "file": "C:/Users/SPH/Documents/GitHub/Furnish/projects/workspace.furnish.json",
+    "beforeSha256": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b",
+    "afterSha256": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b",
+    "unchanged": true
+  },
+  "endpointBatch": {
+    "directory": "output/model-pipeline/selection-KzgxCz",
+    "passed": true,
+    "models": 7
+  }
+}
