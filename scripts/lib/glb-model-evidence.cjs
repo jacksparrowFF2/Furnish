@@ -15,7 +15,7 @@ function inspect(buffer,ids=['model-pilot']){
     alphas.push(doc.materials?.[primitive.material]?.pbrMetallicRoughness?.baseColorFactor?.[3]??1);
     materials.push({unlit:!!doc.materials?.[primitive.material]?.extensions?.KHR_materials_unlit});
    }
-   parts.push({key:n.extras.furnishPartKey,id:n.extras.furnishId,version:n.extras.furnishPartVersion,count,bounds:box,alphas,materials});
+   parts.push({key:n.extras.furnishPartKey,id:n.extras.furnishId,version:n.extras.furnishPartVersion,kind:n.extras.furnishPartKind,count,bounds:box,alphas,materials});
   }
   for(const child of n.children||[])visit(child,matrix);
  }

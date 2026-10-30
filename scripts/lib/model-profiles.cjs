@@ -41,7 +41,7 @@ function sourceFiles(profile){
  const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(entry.name===profile+'-v1.glb')files.push(file);}};walk(base);
  const glb=files.find(file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')===asset.sourceSha256);
  if(!glb||!fs.existsSync(glb.replace(/\.glb$/,'.blend')))throw Error('Cannot locate published author source: '+profile);
- return {runtime,glb:path.relative(root,glb).replaceAll('\\','/'),blend:path.relative(root,glb.replace(/\.glb$/,'.blend')).replaceAll('\\','/'),parts:asset.parts.length,id:asset.id,prefixes:[...new Set(asset.parts.map(p=>p.identity.slice(0,p.identity.indexOf(':')+1)))]};
+ return {runtime,glb:path.relative(root,glb).replaceAll('\\','/'),blend:path.relative(root,glb.replace(/\.glb$/,'.blend')).replaceAll('\\','/'),parts:asset.parts.length,id:asset.id,productionIdentity:profile==='y52y09'?'cabinet-boards':'direct',prefixes:[...new Set(asset.parts.map(p=>p.identity.slice(0,p.identity.indexOf(':')+1)))]};
 }
 function profiles(){
  const items=C.library.flatMap(c=>c.items),byType=new Map(items.map(i=>[i[0],i])),out=[];
@@ -62,7 +62,7 @@ function profiles(){
  const kitchen=K.configure({type:'counter',name:'高低柜组合',w:1800,d:600,color:'#f3f1ec'}, {...K.defaults({w:1800,d:600}),modules:[{run:0,width:600,role:'tall',height:2200},{run:0,width:600,role:'door'},{run:0,width:600,role:'drawer'}]});
  out.push({id:'kitchen--tall',type:'counter',route:'parametric',fixture:kitchen,tests:['kitchen-tall','kitchen']});
  const vessel=items.find(i=>i[10]==='vessel-sink');out.push({id:'sink--vessel',type:'ksink',route:'parametric',fixture:{...itemFixture(vessel),...K.catalogSpec(vessel)},tests:['sink','sink-surface']});
- for(const p of out){p.fixture={id:'model-pilot',cx:0,cy:0,rot:0,flip:false,...p.fixture};if(!p.fixture.h)p.fixture.h=P.height(p.fixture);p.fixture=copy(p.fixture);p.alternate=operate(p.fixture);p.alternateKind=p.id==='stack-stool'?'nested-stack':JSON.stringify(p.fixture)!==JSON.stringify(p.alternate)?'operating':'back';for(const name of p.tests)if(!fs.existsSync(path.join(root,'tests/test-'+name+'.cjs')))throw Error('Missing suite '+name);}
+ for(const p of out){p.fixture={id:'model-pilot',cx:0,cy:0,rot:0,flip:false,...p.fixture};if(!p.fixture.h)p.fixture.h=P.height(p.fixture);p.fixture=copy(p.fixture);p.resizePolicy=p.type==='tv'?'coupled-screen':'independent';p.alternate=operate(p.fixture);p.alternateKind=p.id==='stack-stool'?'nested-stack':JSON.stringify(p.fixture)!==JSON.stringify(p.alternate)?'operating':'back';for(const name of p.tests)if(!fs.existsSync(path.join(root,'tests/test-'+name+'.cjs')))throw Error('Missing suite '+name);}
  return out;
 }
 module.exports={profiles,sourceFiles,operate,originalTypes,assetTypes};
