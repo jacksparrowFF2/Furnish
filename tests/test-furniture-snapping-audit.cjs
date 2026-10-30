@@ -1,22 +1,24 @@
-const assert=require('node:assert/strict'),S=require('../src/core/snapping.js'),G=require('../src/core/layout-geometry.js'),K=require('../src/core/kitchen-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),Catalog=require('../src/data/catalog.js');
+const assert=require('node:assert/strict'),S=require('../src/core/snapping.js'),G=require('../src/core/layout-geometry.js'),K=require('../src/core/kitchen-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),Catalog=require('../src/data/catalog.js'),Products=require('../src/core/product-rules.js');
 const near=(a,b,context='')=>assert(Math.abs(a-b)<2e-5,`${context}: ${a} != ${b}`),options={grid:10,scale:.2,wallSnap:true,guides:true,rects:[],furniture:[]};
 const rows=Catalog.library.flatMap(g=>g.items),types=new Set(rows.map(r=>r[0]));let resizeCount=0,moveCount=0;
 const kitchen=K.configure({id:'reference',type:'counter',cx:0,cy:0,w:2400,d:1800,rot:0},{version:1,shape:'L',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:2400,role:'door'},{run:1,width:1200,role:'door'}]});
 for(const row of rows)for(const rot of [0,37,90,180,270])for(const flip of [false,true]){
  const angle=rot*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),world=(x,y)=>({x:5000+x*c-y*s,y:5000+x*s+y*c});
- const point=world(1500+row[2]/2,-650),f={id:'f',type:row[0],name:row[1],cx:point.x,cy:point.y,w:row[2],d:row[3],rot,flip},at=world(1515,-660),tv={id:'tv',type:'tv',cx:at.x,cy:at.y,w:80,d:200,rot};
+ const localBounds=G.bbox(G.footprints({type:row[0],cx:0,cy:0,w:row[2],d:row[3],rot:0,flip}).flat()),point=world(1500-localBounds[0],-650),f={id:'f',type:row[0],name:row[1],cx:point.x,cy:point.y,w:row[2],d:row[3],rot,flip},at=world(1515,-660),tv={id:'tv',type:'tv',cx:at.x,cy:at.y,w:80,d:200,rot};
  const target={...kitchen,cx:5000,cy:5000,rot,flip},before=JSON.stringify([f,target,tv]);
  const result=S.move(f,f.cx,f.cy,{...options,furniture:[f,target,tv]}).position;
  assert(Math.abs((result[0]-f.cx)*c+(result[1]-f.cy)*s)<2e-5,JSON.stringify({type:f.type,rot,flip,f,result}));assert.equal(JSON.stringify([f,target,tv]),before,'proposals are immutable');moveCount++;
  const moving=S.move(f,f.cx+10*c-90*s,f.cy+10*s+90*c,{...options,furniture:[f,target,tv]}).position;
  near((moving[0]-f.cx)*c+(moving[1]-f.cy)*s,0,`${f.type} rot=${rot} flip=${flip} move`);moveCount++;
  for(const axis of ['w','d']){
-  const anchor={x:f.cx-f.w/2*c+f.d/2*s,y:f.cy-f.w/2*s-f.d/2*c},w=f.w+(axis==='w'?150.375:0),d=f.d+(axis==='d'?150.375:0);
+  const shape=Products.slidingResizeFrame(f)?.proxy||f,angle=shape.rot*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
+  const anchor={x:shape.cx-shape.w/2*c+shape.d/2*s,y:shape.cy-shape.w/2*s-shape.d/2*c},w=shape.w+(axis==='w'?150.375:0),d=shape.d+(axis==='d'?150.375:0);
   const p=(x,y)=>({x:anchor.x+x*c-y*s,y:anchor.y+x*s+y*c}),end=axis==='w'?p(w+100,d/2):p(w/2,d+100);
   const reference={id:'end',type:'block',cx:end.x,cy:end.y,w:axis==='w'?200:w,d:axis==='d'?200:d,rot,flip};
   const raw=p(w+(axis==='w'?25:0),d+(axis==='d'?25:0)),hit=S.resize(f,raw,{...options,axis,furniture:[f,reference]});
-  near(hit.furniture[axis],axis==='w'?w:d);near(hit.furniture[axis==='w'?'d':'w'],f[axis==='w'?'d':'w']);
-  near(hit.furniture.cx-hit.furniture.w/2*c+hit.furniture.d/2*s,anchor.x);near(hit.furniture.cy-hit.furniture.w/2*s-hit.furniture.d/2*c,anchor.y);
+  const actual=Products.slidingResizeFrame(hit.furniture)?.proxy||hit.furniture;
+  near(actual[axis],axis==='w'?w:d);near(actual[axis==='w'?'d':'w'],shape[axis==='w'?'d':'w']);
+  near(actual.cx-actual.w/2*c+actual.d/2*s,anchor.x);near(actual.cy-actual.w/2*s-actual.d/2*c,anchor.y);
   assert.equal(hit.guides.length,1);resizeCount++;
  }
 }

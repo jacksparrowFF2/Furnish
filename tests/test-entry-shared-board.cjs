@@ -16,9 +16,10 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  for(const [x,y] of [[-.33,2.2],[.33,2.2],[.34,2.2],[.93,2.2],[.34,.6],[.71,.6],[1.53,.6],[.33,.1],[.34,.9]]){const h=hit(x,y,1,0,0,-1);assert(h);assert.equal(h.object.material.color.getHex(),0xf3f1ec,'full-overlay face covers wood at '+x+','+y);assert(Math.abs(h.point.z-.175)<1e-7);}
  assert(hit(.4,1.1,0,-1,0,0).distance>.6,'shared board notch stays open');
  for(const x of [.32,.328,.336,.34]){const h=hit(x,1.03,.17,0,-1,0);assert(Math.abs(h.point.y-.98)<1e-7,'counter meets shared board');assert.equal(h.object.material.color.getHex(),0xbc936b);}
- const opened=build(C.toggle(first,0));opened.updateMatrixWorld(true);const exposed=new THREE.Raycaster(new THREE.Vector3(.328,2.2,1),new THREE.Vector3(0,0,-1)).intersectObject(opened,true)[0];assert.equal(exposed.object.material.color.getHex(),0xbc936b,'opening a door reveals wood');
+ const opened=build(C.toggle(first,0));opened.updateMatrixWorld(true);const exposed=new THREE.Raycaster(new THREE.Vector3(1,2.2,0),new THREE.Vector3(-1,0,0)).intersectObject(opened,true)[0];assert.equal(exposed.object.material.color.getHex(),0xbc936b,'the wooden side remains behind the open front-edge hinge');
+ assert(Math.abs(new THREE.Box3().setFromObject(opened).max.z-.510)<1e-6,'production leaf actually reaches its 90-degree open pose');
  for(const model of [a,b,opened])model.traverse(o=>{if(o.geometry)assert([...o.geometry.attributes.position.array].every(Number.isFinite));});
  const standalone=build(second);let restored=false;standalone.traverse(o=>{if(o.userData.cabinetSide==='left')restored=true;});assert(restored,'separation restores own side');
- const zone=C.openingZones(first).find(v=>v.kind==='cabinetdoor');assert.equal(zone.poly[0][0],-337,'opening check uses full-overlay leaf width');
+ const zone=C.openingZones(first).find(v=>v.kind==='cabinetdoor');assert(Math.min(...zone.poly.map(p=>p[0]))<=-336,'finite-thickness sweep contains the closed full-overlay left edge');assert(Math.max(...zone.poly.map(p=>p[1]))>=510,'sweep includes the open production leaf reach');
  console.log('PASS shared 18 mm board: no duplicate side/lining, full-overlay white faces, wood behind open doors, notches, counter join, bounds, separation and rotated/mirrored adjacency');
 })().catch(e=>{console.error(e);process.exit(1)});

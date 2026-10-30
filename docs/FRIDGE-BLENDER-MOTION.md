@@ -44,3 +44,9 @@ author使用新目录，拒绝覆盖已有源文件；商店启动器退出不�
 ## 复验
 
 详见 [验收记录](validation/blender-fridge-motion-20261029/README.md)。重点入口：`test-blender-fridge-motion.cjs`、`test-fridge-project-v31.cjs`、`test-fridges.cjs`、`verify-blender-appliance.cjs --fridge`，以及实际Blender执行 `scripts/verify/verify-blender-appliance.py -- <本次结果目录> --fridge`。
+
+## 2026-10-30：名义顶面接触精度
+
+离线资产坐标按米保留七位小数，部分箱板顶点为 1.9100001 m，曾让 1910 mm 冰箱在 1910 mm 净高设备位产生 0.0001 mm 假穿插。生产构造器在缩放和刚性运动前，仅把高于本款名义顶面、且误差不超过 0.00011 mm 的源顶点还原至名义顶面；真实超高仍保留，不改通用碰撞容差或增加设备豁免。源工程／GLB／离线资产原文保留，这不是外观重建。
+
+`test-layout-geometry.cjs` 覆盖 1700／1910／2200 mm 缩放高度、0／37／90／180°和镜像：等高接触通过，低 0.01 mm 的顶板仍检出碰撞。正式 Three 构造器与数值实体仍由 `test-blender-fridge-motion.cjs` 比较。仅含本款的空间核对语义更新为 `blender-fridge-motion-v2-nominal-roof`，旧实例数据／格式不变；完整门扫掠仍可与合适设备位的柜体冲突，不能用机身嵌合通过豁免。见[本轮复验](validation/regression-fixes-20261030/README.md)。

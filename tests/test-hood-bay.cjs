@@ -26,7 +26,7 @@ assert.throws(()=>P.unpack(P.pack({...payload,current:{furniture:[{...host,type:
  const box=(w,h,d,color,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  const model=ctx.FurnishCabinetModel.build(THREE,host,box),appliance=ctx.FurnishFotileModel.build(THREE,{...hood,cx:0,cy:0}),parts=[];model.position.y=host.mountHeight/1000;model.updateMatrixWorld(true);appliance.updateMatrixWorld(true);let cover;
  const doorGroups=model.children.filter(o=>o.userData.motion?.kind==='cabinetdoor');assert.equal(doorGroups.length,2,'one pair of doors covers all three interior zones');
- assert.deepEqual(doorGroups.map(o=>o.userData.motion.column),[0,2]);assert(Math.abs(doorGroups[0].position.x+.8)<1e-6);assert(Math.abs(doorGroups[1].position.x-.8)<1e-6);
+ assert.deepEqual(doorGroups.map(o=>o.userData.motion.column),[0,2]);assert(Math.abs(doorGroups[0].position.x+.799)<1e-6);assert(Math.abs(doorGroups[1].position.x-.799)<1e-6);
  const faces=doorGroups.map(o=>o.children.find(m=>m.isMesh&&m.geometry.parameters?.depth===.018)),bounds=faces.map(o=>new THREE.Box3().setFromObject(o));assert(Math.abs(bounds[0].min.x+.799)<1e-6&&Math.abs(bounds[0].max.x+.001)<1e-6);assert(Math.abs(bounds[1].min.x-.001)<1e-6&&Math.abs(bounds[1].max.x-.799)<1e-6);
  const zones=C.openingZones(host,{passage:0});assert.equal(zones.length,2);assert.deepEqual(zones.map(z=>z.column),[0,2]);
  const opened=C.toggle(C.toggle(host,0),2),openModel=ctx.FurnishCabinetModel.buildRaw(THREE,opened,box),openGroups=openModel.children.filter(o=>o.userData.motion?.kind==='cabinetdoor');assert(Math.abs(openGroups[0].rotation.y+Math.PI/2)<1e-6&&Math.abs(openGroups[1].rotation.y-Math.PI/2)<1e-6);

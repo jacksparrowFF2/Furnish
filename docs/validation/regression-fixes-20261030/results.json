@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-30",
+  "baseline": "4b7206c",
+  "command": "node scripts/check.cjs --keep-going",
+  "full": {
+    "exitCode": 0,
+    "suites": 383,
+    "passed": 383,
+    "failed": 0,
+    "builtInPlans": 12,
+    "previewPages": 99,
+    "syntaxResourcesSharedDeclarationsPassed": true
+  },
+  "supplemental": {
+    "nineRemainingSuites": "PASS",
+    "productionOpenPoseAndBoundedSweepAssertions": "PASS",
+    "browserWidthScriptSyntax": "PASS",
+    "browserKitchenDoorWidths": "PASS",
+    "browserWallExtensionSnapping": "PASS",
+    "httpAndFileSmoke": "PASS",
+    "visualInspection": "PASS"
+  },
+  "dataFiles": [
+    {
+      "path": "projects/workspace.furnish.json",
+      "before": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b",
+      "after": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b",
+      "unchanged": true
+    },
+    {
+      "path": "D:/1601装修/Furnish项目/workspace.furnish.json",
+      "before": "ee9a0815be6d0a6c40d5f48fcf491153d51a4672d6c9e3f75209cb5c703a75c6",
+      "after": "ee9a0815be6d0a6c40d5f48fcf491153d51a4672d6c9e3f75209cb5c703a75c6",
+      "unchanged": true
+    }
+  ],
+  "limits": [
+    "No new Blender asset publication or whole-home render",
+    "No physical touch device or construction acceptance",
+    "Full script does not enumerate every standalone browser flow or every movement combination"
+  ],
+  "logSha256": "39d946207c16d0aded2d5bda0c6da906878c38d7294d0d49778d249edabe0d5b"
+}

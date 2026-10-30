@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "kitchen-door-widths",
+    "wall-extension-snapping"
+  ],
+  "results": [
+    {
+      "name": "kitchen-door-widths",
+      "status": "FAIL",
+      "seconds": 14.9,
+      "log": "kitchen-door-widths.log"
+    },
+    {
+      "name": "wall-extension-snapping",
+      "status": "PASS",
+      "seconds": 3.3,
+      "log": "wall-extension-snapping.log"
+    }
+  ],
+  "notRun": []
+}

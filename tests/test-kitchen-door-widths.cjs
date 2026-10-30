@@ -14,8 +14,17 @@ const make=(type='kitchenwall')=>K.configure({id:'widths',type,name:'门宽测�
    const host=K.configure(f,{...f.kitchen,doorOverlay:overlay}),p=part(host),widths=K.moduleDoorWidths(host,1),model=ctx.FurnishCabinetModel.build(THREE,p,box),faces=[];model.updateMatrixWorld(true);model.traverse(o=>{if(o.userData.cabinetDoorSize){const bounds=new THREE.Box3().setFromObject(o);faces.push({bounds,...o.userData.cabinetDoorSize});}});assert.equal(faces.length,2);
    faces.forEach((face,j)=>{near((face.bounds.max.x-face.bounds.min.x)*1000,widths[j]);near(face.width,widths[j]);});near((faces[1].bounds.min.x-faces[0].bounds.max.x)*1000,2);
    // Production hinge positions and sweep use the same unequal partition.
-   const motion=Motion.boards(p).filter(b=>b.motion.kind==='cabinetdoor'&&b.top-b.bottom>200);
-   for(const rot of [0,37,90,180])for(const flip of [false,true]){const placed={...p,rot,flip},zones=C.openingZones(placed,{passage:0});assert.equal(zones.length,2);zones.forEach((z,j)=>{const [x,,y]=motion[j].motion.pivot,a=rot*Math.PI/180;near(z.poly[0][0],(placed.cx||0)+(flip?-x:x)*Math.cos(a)-y*Math.sin(a));near(z.poly[0][1],(placed.cy||0)+(flip?-x:x)*Math.sin(a)+y*Math.cos(a));near(Math.hypot(z.poly[1][0]-z.poly[0][0],z.poly[1][1]-z.poly[0][1]),widths[j]+2);});}
+   const closedFaces=Motion.boards(p,{includeStatic:true}).filter(b=>b.metadata.cabinetDoorSize);
+   for(const rot of [0,37,90,180])for(const flip of [false,true]){
+    const placed={...p,rot,flip},zones=C.openingZones(placed,{passage:0});assert.equal(zones.length,2);
+    for(const zone of zones){const [x,,y]=closedFaces.find(b=>b.metadata.cabinetDoorSize.leaf===zone.leaf).motion.pivot,a=rot*Math.PI/180,px=placed.cx+(flip?-x:x)*Math.cos(a)-y*Math.sin(a),py=placed.cy+(flip?-x:x)*Math.sin(a)+y*Math.cos(a),radius=Math.hypot(widths[zone.leaf],p.cabinet.thickness);assert(zone.poly.every(v=>Math.hypot(v[0]-px,v[1]-py)<=radius+1e-4),'sweep cannot exceed the actual face diagonal from its production hinge');}
+    // Hull ordering is not a hinge contract. Independently compare production
+    // face vertices at intermediate poses with the full finite-thickness sweep.
+    for(const angle of [0,30,60,90])for(let leaf=0;leaf<2;leaf++){
+     const opened=C.setPartOpening(placed,{column:0,leaf},angle),board=Motion.boards(opened,{includeStatic:true}).find(b=>b.metadata.cabinetDoorSize?.leaf===leaf),face=Motion.solidParts(opened).find(b=>b.boardKey==='board:'+board.boardIndex),zone=zones.find(z=>z.leaf===leaf);assert(face&&zone);
+     for(const point of face.p){const cross=zone.poly.map((a,i)=>{const b=zone.poly[(i+1)%zone.poly.length];return (b[0]-a[0])*(point[1]-a[1])-(b[1]-a[1])*(point[0]-a[0]);});assert(cross.every(v=>v>=-1e-4)||cross.every(v=>v<=1e-4),'production unequal leaf lies inside its full sweep');}
+    }
+   }
   }
   const edge=K.setModuleDoorWidth(two,1,0,952);near(K.moduleDoorWidths(edge,1)[1],50);assert.throws(()=>K.setModuleDoorWidth(two,1,0,952.01),/保留最小/);assert.throws(()=>K.setModuleDoorWidth(two,1,0,49.99),/至少/);for(const v of [NaN,Infinity,-1])assert.throws(()=>K.setModuleDoorWidth(two,1,0,v));
   assert(!K.setModuleDoorWidth(two,1,0,501).kitchen.modules[1].doorRatios,'no-op does not migrate');

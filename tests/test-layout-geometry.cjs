@@ -58,7 +58,8 @@ console.log('PASS metric units, concave rooms, rotated bounds, 5 mm tolerance an
  const bay=C.layout(cabinet)[0],fridge={id:'embedded-fridge',type:'fridge_french_drawer',name:'Fridge',cx:cabinet.cx+bay.center,cy:cabinet.cy-cabinet.d/2+595/2,w:790,d:595,h:1910,rot:0};
  const overlaps=items=>P.spaceCheck(plan,items,{scanPassages:false}).filter(v=>v.kind==='overlap');
  assert(G.obbOverlap(cabinet,fridge));assert(C.fridgeFitsBay(cabinet,fridge));assert.deepEqual(G.collisions([cabinet,fridge]),[]);assert.deepEqual(overlaps([cabinet,fridge]),[]);assert.deepEqual(overlaps([fridge,cabinet]),[]);
- assert.equal(P.spaceCheck(plan,[cabinet,fridge],{scanPassages:false}).filter(v=>v.kind==='cabinetdoor'&&v.column===0).length,0,'upper doors above a fitting fridge are not blocked by its 2D footprint');
+ assert.equal(P.spaceCheck(plan,[cabinet,fridge],{scanPassages:false}).filter(v=>v.id===cabinet.id&&v.kind==='cabinetdoor'&&v.column===0).length,0,'upper doors above a fitting fridge are not blocked by its 2D footprint');
+ assert(P.spaceCheck(plan,[cabinet,fridge],{scanPassages:false}).some(v=>v.id===fridge.id&&v.section==='fridge:left'&&!v.pending),'a fitting body does not exempt the fridge door full sweep against the cabinet');
  for(const rot of [0,90,180,270,37])for(const flip of [false,true]){
   const host={...cabinet,rot,flip},a=rot*Math.PI/180,lx=bay.center*(flip?-1:1),ly=-cabinet.d/2+595/2,guest={...fridge,cx:host.cx+lx*Math.cos(a)-ly*Math.sin(a),cy:host.cy+lx*Math.sin(a)+ly*Math.cos(a),rot};
   assert(C.fridgeFitsBay(host,guest),'rotation/mirroring preserve cavity containment');assert.deepEqual(G.collisions([guest,host]),[]);assert.deepEqual(overlaps([host,guest]),[]);
@@ -89,6 +90,14 @@ console.log('PASS metric units, concave rooms, rotated bounds, 5 mm tolerance an
  let result=C.fridgeBayFit(host,fridge);assert.equal(result.clearances.left,1);assert.equal(result.clearances.right,1);assert.equal(result.clearances.top,-80);assert.equal(result.reasons.length,1);assert.match(result.reasons[0],/高度 1910.*净高 1830.*80/);
  assert(P.spaceCheck({walls:[],doors:[],rooms:[]},[host,fridge],{scanPassages:false}).some(issue=>issue.kind==='overlap'&&issue.message.includes('超出 80 mm')));
  host.cabinet.sideboard.fridgeHeight=1910;assert(C.fridgeFitsBay(host,fridge));assert.deepEqual(G.collisions([host,fridge]),[]);
+ // Published coordinates have seven decimal places in metres. Nominal roof
+ // contact must remain clear at scaled heights; real 0.01 mm intrusion must not.
+ for(const h of [1700,1910,2200])for(const rot of [0,37,90,180])for(const flip of [false,true]){
+  const cabinet={...structuredClone(host),rot,flip},a=rot*Math.PI/180,x=bay.center*(flip?-1:1);cabinet.cabinet.sideboard.fridgeHeight=h;
+  const guest={...fridge,h,rot,flip,cx:cabinet.cx+x*Math.cos(a),cy:cabinet.cy+x*Math.sin(a)};
+  assert(C.fridgeFitsBay(cabinet,guest));assert.deepEqual(G.collisions([cabinet,guest]),[],'nominal roof contact stays clear');
+  cabinet.cabinet.sideboard.fridgeHeight=h-.01;assert.equal(G.collisions([cabinet,guest]).length,1,'actual roof penetration remains blocked');
+ }
  const offset={...fridge,cx:fridge.cx+3};result=C.fridgeBayFit(host,offset);assert.equal(result.reasons.length,1);assert.match(result.reasons[0],/右侧 2 mm/);
  assert(C.fridgeBayFit(host,{...fridge,cy:fridge.cy+10}).reasons.some(reason=>reason.includes('前沿 7.5 mm')));
  console.log('PASS 833 mm fridge in 835 mm bay: width fits; height and positional conflict reasons are explicit');

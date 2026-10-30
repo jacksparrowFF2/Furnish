@@ -288,7 +288,7 @@ const kindGroups={
  '空气净化器':'purifier', '扫拖机器人':'robot_p20max', '扫拖机器人套装':'robot_p20max_tank robot_p20max_plumbed',
  '管道包覆柜':'pipebox', '收纳柜':'cabinet', '床头柜':'nightstand', '衣柜':'wardrobe', '斗柜':'chest',
  '书柜':'bookshelf bookshelf_yeswood_y52y09', '电视柜':'tvstand', '鞋柜':'shoecab', '床':'bed', '婴儿床':'crib',
- '单人沙发椅':'armchair armchair_yeswood_y09hs', '沙发':'sofa sofa_yeswood_cherry', '转角沙发':'cornersofa', '懒人沙发':'beanbag',
+ '单人沙发椅':'armchair armchair_yeswood_y09hs armchair_yeswood_berlin', '沙发':'sofa sofa_yeswood_cherry', '转角沙发':'cornersofa', '懒人沙发':'beanbag',
  '茶几':'coffeetable coffeetable_yeswood_cherry', '茶台':'tea_table_800', '梳妆台':'dresser', '书桌':'desk',
  '圆桌':'roundtable', '边几':'sidetable sidetable_tmall_635382906309', '餐桌':'table',
  '折叠餐桌':'table_folding_1100 table_folding_1200 table_folding_1300', '岛台':'island', '橱柜':'counter',

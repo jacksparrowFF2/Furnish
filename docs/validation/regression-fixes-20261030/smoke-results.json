@@ -1,0 +1,32 @@
+[
+  {
+    "protocol": "http",
+    "status": "PASS",
+    "bounds": {
+      "bottom": 0,
+      "top": 1909.999966621399
+    },
+    "checks": [
+      "app loads",
+      "Berlin category",
+      "production fridge closed/open",
+      "390px",
+      "no page errors"
+    ]
+  },
+  {
+    "protocol": "file",
+    "status": "PASS",
+    "bounds": {
+      "bottom": 0,
+      "top": 1909.999966621399
+    },
+    "checks": [
+      "app loads",
+      "Berlin category",
+      "production fridge closed/open",
+      "390px",
+      "no page errors"
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "kitchen-door-widths"
+  ],
+  "results": [
+    {
+      "name": "kitchen-door-widths",
+      "status": "PASS",
+      "seconds": 14.7,
+      "log": "kitchen-door-widths.log"
+    }
+  ],
+  "notRun": []
+}
