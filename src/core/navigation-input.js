@@ -54,7 +54,8 @@
   if(!value||typeof value!=='object'||typeof value.enabled!=='boolean')return null;
   const {mmPerPixel,distanceMm}=value;
   if(!Number.isFinite(mmPerPixel)||mmPerPixel<.01||mmPerPixel>5||!Number.isFinite(distanceMm)||distanceMm<100||distanceMm>5000)return null;
-  return {enabled:value.enabled,mmPerPixel,distanceMm};
+  if(value.orbitEnabled!==undefined&&typeof value.orbitEnabled!=='boolean')return null;
+  return {enabled:value.enabled,orbitEnabled:value.orbitEnabled===true,mmPerPixel,distanceMm};
  }
  try{calibration=validCalibration(JSON.parse(root.localStorage?.getItem(calibrationKey)||'null'));}catch(e){}
  function cameraCalibration(){return calibration?{...calibration}:null;}
@@ -74,9 +75,9 @@
   if(![screenWidth,pixelRatio].every(n=>Number.isFinite(n)&&n>0))return null;
   const value=Math.round(screenWidth*pixelRatio);return value>=320&&value<=20000?value:null;
  }
- function calibratedProjection(value,width,height,pixelRatio=1){
+ function calibratedProjection(value,width,height,pixelRatio=1,mode='walk'){
   const c=validCalibration(value);
-  if(!c?.enabled||![width,height,pixelRatio].every(n=>Number.isFinite(n)&&n>0))return null;
+  if(!(mode==='orbit'?c?.orbitEnabled:c?.enabled)||![width,height,pixelRatio].every(n=>Number.isFinite(n)&&n>0))return null;
   const widthMm=width*pixelRatio*c.mmPerPixel,heightMm=height*pixelRatio*c.mmPerPixel;
   const horizontal=2*Math.atan(widthMm/(2*c.distanceMm))*180/Math.PI,vertical=2*Math.atan(heightMm/(2*c.distanceMm))*180/Math.PI;
   // Invalid/extreme setups must not silently masquerade as an exact calibration.

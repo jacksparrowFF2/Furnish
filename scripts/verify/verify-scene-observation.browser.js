@@ -45,13 +45,13 @@ async (page,verification)=>{
    const walk=await p.evaluate(()=>{const d=__observation;let clips=0,top=0;d.architecture.updateWorldMatrix(true,true);d.architecture.traverse(o=>{if(!o.isMesh)return;clips+=(Array.isArray(o.material)?o.material:[o.material]).filter(m=>m.clippingPlanes?.length).length;top=Math.max(top,new d.T.Box3().setFromObject(o).max.y);});return {walking:View3D.walking(),clips,top,eye:d.camera.position.y,cut:state.scene3d.cut,fov:d.camera.fov,aspect:d.camera.aspect};});
    check(walk.walking&&walk.clips===0&&walk.top>2.4,'walk restores full-height architecture with no clipping');check(walk.cut===1.2,'walk preserves saved observation preference');check(walk.eye>=1.6&&Math.abs(walk.fov-FurnishLensExpected(walk.aspect))<1e-8,'walk eye height and natural lens');
    const lensBefore=await p.evaluate(()=>({position:__observation.camera.position.toArray(),design:snap()}));
-   await p.locator('#showMenu>summary').click();
+   await p.locator('#vCamera').click();
    await p.locator('#cameraFov').fill('75');await p.locator('#cameraFov').dispatchEvent('input');
    check(await p.evaluate(before=>{const c=__observation.camera,h=2*Math.atan(Math.tan(c.fov*Math.PI/360)*c.aspect)*180/Math.PI;return Math.abs(c.fov-Math.min(75,2*Math.atan(Math.tan(75*Math.PI/360)/c.aspect)*180/Math.PI))<1e-8&&Math.abs(parseFloat(document.querySelector('#cameraFovValue').textContent)-h)<=.5&&JSON.stringify(c.position.toArray())===JSON.stringify(before.position)&&snap()===before.design;},lensBefore),'lens changes projection without moving eye or editing design');
    await p.setViewportSize({width:390,height:844});await p.waitForTimeout(400);
    check(await p.evaluate(()=>__observation.camera.fov<=75&&__observation.camera.position.y>=1.6),'portrait lens capped with physical eye retained');await shot('walk-narrow');
    await p.setViewportSize({width:1480,height:1050});await p.waitForTimeout(400);
-   await p.locator('#cameraFov').fill('60');await p.locator('#cameraFov').dispatchEvent('input');await p.locator('#showMenu>summary').click();
+   await p.locator('#cameraFov').fill('60');await p.locator('#cameraFov').dispatchEvent('input');await p.locator('#vCamera').click();
    await p.locator('#walkOverlay').click();await p.locator('#walkOverlay').waitFor({state:'hidden'});await p.keyboard.down('KeyW');await p.waitForTimeout(250);await p.keyboard.up('KeyW');await shot('walk');await p.evaluate(()=>document.exitPointerLock());await p.waitForTimeout(250);
    await p.locator('#sun').press('ArrowRight');check(await p.evaluate(()=>state.scene3d.cut===1.2),'lighting edit during walk preserves saved low-wall preference');
    await p.locator('[data-mode="orbit"]').click();check(await p.locator('#vRestoreWalls').isHidden(),'leaving walk does not resume old cutaway');
