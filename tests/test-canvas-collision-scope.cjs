@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const app=fs.readFileSync(require.resolve('../src/app.js'),'utf8'),renderer=fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8');
+const body=app.slice(app.indexOf('function collisions(){'),app.indexOf('/* ======================= 颜色',app.indexOf('function collisions(){')));
+let calls=0;const f={id:'a',cx:0},state={furniture:[f],rooms:{}},scope={state,PLAN:{},renderableFurniture:()=>scope.state.furniture.filter(f=>!f.broken),FurnishProject:{effectivePlan:(p,s)=>({...p,datum:s.furnitureDatum})},FurnishGeometry:{collisions:(items,plan)=>{calls++;return items.map(f=>[f.id,f.cx,plan.datum]);}}};
+vm.createContext(scope);vm.runInContext(renderer+'\n'+body,scope);
+const run=code=>JSON.parse(vm.runInContext('JSON.stringify('+code+')',scope));
+run('collisions()');run('collisions()');assert.equal(calls,2,'standalone calls never reuse stale geometry');
+run('withCanvasPlan(()=>[collisions(),collisions(),withCanvasPlan(()=>collisions())])');assert.equal(calls,3,'one computation shared by nested drawing readers');
+state.furniture[0].cx=25;assert.equal(run('collisions()')[0][1],25);assert.equal(calls,4,'in-place edit outside draw recomputes');
+state.furniture=JSON.parse(JSON.stringify([{id:'a',cx:0}]));assert.equal(run('collisions()')[0][1],0,'undo/import replacement returns earlier geometry');
+run('withCanvasPlan(()=>{collisions();state.furniture[0].broken=true;return collisions();})');assert.equal(calls,7,'a newly detected render failure changes the collision input');
+assert.throws(()=>vm.runInContext("withCanvasPlan(()=>{collisions();throw Error('render failed');})",scope),/render failed/);
+const before=calls;run('collisions()');assert.equal(calls,before+1,'failed draw releases the transient cache');
+state.furnitureDatum='finished-floor';assert.deepEqual(run('withCanvasPlan(()=>collisions())'),[]);
+delete state.furniture[0].broken;assert.equal(run('withCanvasPlan(()=>collisions())')[0][2],'finished-floor');
+assert.deepEqual(Object.keys(state).sort(),['furniture','furnitureDatum','rooms'],'no derived cache in persistent work');
+console.log('PASS drawing-scoped collision reuse, changed renderable set, in-place edits, undo/import, datum changes, exception cleanup and no persistent fields');

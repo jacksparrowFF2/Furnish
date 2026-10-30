@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（平面重绘性能）：layout-geometry的volumeOverlap每对家具仅解析一次生产板件，并用完整投影包围盒排除分离板件，再沿原高度裁切与多边形精判。app碰撞结果只在withCanvasPlan同步绘制作用域内共享，属性栏／页头与图层共用，异常后释放，不跨编辑或恢复保存缓存。model-solid-recorder按网格预计算仿射变换，furniture-solids保留生产顶点／面结构；无持久字段、格式或加载顺序变化。见[启动验收](validation/startup-performance-20261031/README.md)。
+
 2026-10-30（建模验收入口）：verify-model-pipeline在私有副本串联TG10K60W作者／发布、几何／状态、HTTP及file生产导出、Blender回读和三机位正式API渲染／下载工程重开。washer作者保存前复用spec预检材质与运动归属，发布限制不变；生产运行、资产与持久字段未改动。见[整链路流程](BLENDER-MODELING-PIPELINE.md)。
 
 2026-10-30（顶部文件操作拆分）：取消三页签文件面板，saved 状态节点移到顶部 saveMenu，点击展示原保存详情与位置／备份设置；fileMenu保留ID但只提供导出，JSON导入随自动快照／本机恢复副本移到更多。方案／历史只从方案栏管理，移除菜单旧绑定及重复重置按钮。workflow-tools统一三入口的定位、互斥和Esc，原保存／导出／恢复处理保持，无新增持久字段或加载脚本。

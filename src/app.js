@@ -207,7 +207,14 @@ function renderableFurniture(){return state.furniture.filter(f=>{
   if(FurnishProducts.modelError(f))return false;
   try{FurnishGeometry.bodyParts(f);renderableFurnitureCache.set(f,key);return true;}catch(e){furnitureRenderErrors.set(f.id,e.message||String(e));return false;}
 });}
-function collisions(){return FurnishGeometry.collisions(renderableFurniture(),canvasEffectivePlan());}
+function collisions(){
+ const furniture=renderableFurniture(),plan=canvasEffectivePlan(),cached=canvasPlanScope?.collisions;
+ // Only share within one synchronous read-only draw. Imports, undo, saves and
+ // in-place edits outside that draw always compute against the current state.
+ if(cached&&cached.furniture.length===furniture.length&&furniture.every((f,i)=>f===cached.furniture[i]))return cached.pairs;
+ const pairs=FurnishGeometry.collisions(furniture,plan);
+ if(canvasPlanScope)canvasPlanScope.collisions={furniture,pairs};return pairs;
+}
 
 /* ======================= 颜色 / 材质图案 ======================= */
 const shade = FurnishFurnitureSVG.shade;

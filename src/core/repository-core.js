@@ -18,8 +18,11 @@
   for(const [id,work] of Object.entries(w.work)){
    if(!/^[a-zA-Z0-9_-]{1,200}$/.test(id))throw Error('工作区户型编号无效');
    const designs=w.designs.filter(d=>d.planId===id),payload={planId:id,current:work,designs,catalog:w.custom||[]};
-   const checked=P.unpack(P.pack(payload));P.previewPlan(checked,plans);P.validatePlanWork(P.previewPlan(checked,plans),checked.current);
-   for(const d of checked.designs)P.validatePlanWork(P.previewPlan({...checked,current:d.work},plans),d.work);
+   const checked=P.unpack(P.pack(payload));
+   // Each preview validates its current work. Passing all named designs again
+   // for every preview made startup validation quadratic in history length.
+   const validate=work=>P.validatePlanWork(P.previewPlan({...checked,current:work,designs:[]},plans),work);
+   validate(checked.current);for(const d of checked.designs)validate(d.work);
    if(work.architecture&&!ids.has(id))throw Error('自定义户型未登记');
    w.work[id]=checked.current;let i=0;w.designs=w.designs.map(d=>d.planId===id?checked.designs[i++]:d);
   }

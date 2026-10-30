@@ -20,7 +20,7 @@ const server=http.createServer(async(req,res)=>{
  const browser=await V.loadPlaywright().chromium.launch(V.configuration().launchOptions),context=await browser.newContext({acceptDownloads:true}),page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  const ready=async()=>{await page.locator('#repository-loading').waitFor({state:'hidden'});await page.waitForFunction(()=>repositoryClient?.status.mode==='saved');};
- const settings=async()=>{if(!await page.locator('#storage-settings').isVisible())await page.locator('#fileMenu summary').click();await page.locator('#storage-settings').click();await page.locator('#storage-directory').waitFor();};
+ const settings=async()=>{if(!await page.locator('#storage-settings').isVisible())await page.locator('#saveMenu summary').click();await page.locator('#storage-settings').click();await page.locator('#storage-directory').waitFor();};
  try{
   await page.goto(base);await ready();const original=await page.evaluate(()=>state.furniture[0].cx);
   dropNextSave=true;await page.evaluate(()=>mutate(()=>state.furniture[0].cx+=25));await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);
@@ -39,14 +39,14 @@ const server=http.createServer(async(req,res)=>{
   assert.equal(await page.evaluate(()=>state.furniture[0].cx),original);assert.ok(api.recoveries().length);
   // An unsaved browser edit based on the restored revision must not resume over
   // the user's explicitly selected history after damaged-primary recovery.
-  await page.evaluate(async()=>{state.furniture[0].cx+=99;store.work[PLAN.id]=state;store.updatedAt=Date.now()+1000;localStorage.setItem(STORE,JSON.stringify(store));await window.FurnishStorage.write(store);});
+  await page.evaluate(async()=>{state.furniture[0].cx+=99;store.work[PLAN.id]=state;store.updatedAt=Date.now()+1000;try{localStorage.setItem(STORE,JSON.stringify(store));}catch{/* Large workspaces use the same IndexedDB fallback as production. */}await window.FurnishStorage.write(store);});
   fs.writeFileSync(api.info().file,'broken primary\n');await page.reload();await page.locator('#repository-loading').waitFor({state:'hidden'});assert.equal(await page.evaluate(()=>repositoryClient.status.mode),'error');
   await settings();await page.evaluate(()=>{Storage.prototype.setItem=()=>{throw Error('localStorage unavailable');};});await page.locator('#storage-backups button').filter({hasText:'恢复此版本'}).last().click();await Promise.all([page.waitForEvent('load'),page.getByRole('button',{name:'确认恢复',exact:true}).click()]);await ready();assert.equal(await page.evaluate(()=>state.furniture[0].cx),original);assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original);assert.ok(fs.readdirSync(path.join(destination,'damaged')).length);
   // Offline file mode: no archive API, retain latest IndexedDB semantics and refresh.
   const offline=await browser.newContext();await offline.setOffline(true);const filePage=await offline.newPage(),requests=[];filePage.on('pageerror',e=>errors.push(e.message));filePage.on('request',req=>{if(req.url().includes('/api/furnish'))requests.push(req.url());});
   await filePage.goto(pathToFileURL(path.join(root,'index.html')).href);await filePage.locator('#repository-loading').waitFor({state:'hidden'});
   const fileX=await filePage.evaluate(()=>state.furniture[0].cx);await filePage.evaluate(()=>mutate(()=>state.furniture[0].cx+=17));await filePage.waitForFunction(()=>!savePending&&!saveErr&&savedAt>0);await filePage.reload();await filePage.locator('#repository-loading').waitFor({state:'hidden'});assert.equal(await filePage.evaluate(()=>state.furniture[0].cx),fileX+17);
-  await filePage.locator('#fileMenu summary').click();await filePage.locator('#storage-settings').click();await filePage.screenshot({path:path.join(output,'file-offline.png')});assert.deepEqual(requests,[]);
+  await filePage.locator('#saveMenu summary').click();await filePage.locator('#storage-settings').click();await filePage.screenshot({path:path.join(output,'file-offline.png')});assert.deepEqual(requests,[]);
   assert.deepEqual(errors,[]);fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'PASS',fixtureBytes:Buffer.byteLength(C.text(seed)),checks:['HTTP autosave despite lost successful response','undo redo','refresh','path migration','history download','full restore','damaged primary restore over divergent browser cache','390px','offline file autosave refresh without API'],errors},null,2));
   console.log('PASS real browser local archive, location settings, downloads, restore, undo/redo/refresh, 390px and offline file://');
  }catch(e){await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});throw e;}

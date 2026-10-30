@@ -539,8 +539,10 @@ function renderAll(){
   syncCustomArchitecture();
   applyOpeningOverrides(); renderOpenings(); ui.guides = null;
   // These layers only read the design; share one derivation within this draw.
-  withCanvasPlan(()=>{renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderDims(); renderMeasure(); renderNotes(); renderSel();});
-  renderPanel(); updateHeader(); renderDesignBar();
+  withCanvasPlan(()=>{
+    renderGrid(); renderRooms(); renderFurn(); renderWalls(); renderLabels(); renderDims(); renderMeasure(); renderNotes(); renderSel();
+    renderPanel(); updateHeader(); renderDesignBar();
+  });
   window.View3D?.sync();
   window.FurnishWorkspace?.afterRender();
   window.FurnishWorkflowTools?.afterRender();

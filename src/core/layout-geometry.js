@@ -70,7 +70,17 @@ function relativeBodyParts(f,furniture,plan){
   }
   return footprints(f).map(p=>({p,vertical:D?.furnitureVerticalBounds(f)}));
 }
-function volumeOverlap(a,b,plan,furniture){const M=root.FurnishCabinetMotion||require('./cabinet-motion.js');return bodyParts(a,plan,furniture).some(A=>bodyParts(b,plan,furniture).some(B=>verticalOverlap(a,b,[A.vertical,B.vertical])&&polygonOverlap(M.section(A,B.vertical),M.section(B,A.vertical),A.actualBoard||B.actualBoard?1e-6:5)));}
+function volumeOverlap(a,b,plan,furniture){
+  const M=root.FurnishCabinetMotion||require('./cabinet-motion.js');
+  // Resolve production/dependency records once per object pair, not once for
+  // every board in the other object. Bounds cover the full uncut projection;
+  // height clipping can only shrink it, so disjoint boards need no sections.
+  const bounds=part=>({part,box:bbox(part.p||M.section(part,null))});
+  const left=bodyParts(a,plan,furniture).map(bounds),right=bodyParts(b,plan,furniture).map(bounds);
+  return left.some(({part:A,box:X})=>right.some(({part:B,box:Y})=>
+    X[2]>Y[0]&&Y[2]>X[0]&&X[3]>Y[1]&&Y[3]>X[1]&&verticalOverlap(a,b,[A.vertical,B.vertical])&&
+    polygonOverlap(M.section(A,B.vertical),M.section(B,A.vertical),A.actualBoard||B.actualBoard?1e-6:5)));
+}
 // 不参与碰撞检查：地毯、墙挂 / 吊装、台面上的设备、绿植（枝叶可伸到家具上方）；椅子推进桌下也属正常
 const NOCOLLIDE = new Set(['rug','pendant','acwall','wallart','curtain','mirror','tv','stove','ksink','plant']);
 const SEATS = new Set(['chair','barstool','officechair','armchair']), TABLES = new Set(['table','roundtable','desk','island']);
