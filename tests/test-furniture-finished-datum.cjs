@@ -9,7 +9,7 @@ const left=make('washer','left',1000,{mountHeight:0}),right=make('washer','right
 next.furniture=[left,right,host,sink];K.normalize(next.furniture);const p=P.effectivePlan(plan,next),before=copy(next);
 assert.equal(R.floorBase(p,left).z,60);assert.equal(R.floorBase(p,right).z,55);assert.equal(R.floorBase(p,{...sink,cx:3000}).z,60,'linked item uses host datum once');
 for(const rot of [0,37,90,180])for(const flip of [false,true]){
- const f={...left,rot,flip};near(D.furnitureVerticalBounds(f,p).bottom,60);near(G.bodyParts(f,p)[0].vertical.bottom,60);
+ const f={...left,rot,flip};near(D.furnitureVerticalBounds(f,p).bottom,60);near(Math.min(...G.bodyParts(f,p).map(part=>part.vertical.bottom)),60);
  assert(!P.spaceCheck(p,[f],{scanPassages:false}).some(v=>v.kind==='floorheight'));
 }
 const legacy=P.effectivePlan(plan,{...next,furnitureDatum:undefined});assert.equal(D.furnitureVerticalBounds(left,legacy).bottom,0);assert(P.spaceCheck(legacy,[left],{scanPassages:false}).some(v=>v.kind==='floorheight'));
@@ -22,7 +22,7 @@ const zones=C.openingZones(cabinet),shifted=zones.map(z=>C.shiftOpening(z,60));a
 const beamPoly=G.corners(left),height=D.furnitureVerticalBounds(left,p).top;
 for(const bottom of [height,height-.001]){const q={...p,beams:[{id:'beam',name:'梁',poly:beamPoly,bottomHeight:bottom,topHeight:bottom+100}]};assert.equal(P.spaceCheck(q,[left],{scanPassages:false}).some(v=>v.kind==='beam'),bottom<height);}
 assert.deepEqual(next,before,'derivation and spatial checks never rewrite recorded heights');
-const payload={planId:plan.id,current:next,designs:[{name:'基准',work:next}],catalog:[]};assert.equal(P.pack(payload).version,10);assert.notEqual(P.checkFingerprint({kind:'beam',id:'left'},p,next.furniture,800),P.checkFingerprint({kind:'beam',id:'left'},legacy,next.furniture,800));
+const payload={planId:plan.id,current:next,designs:[{name:'基准',work:next}],catalog:[]};assert.equal(P.pack({...payload,current:{...next,furniture:[]},designs:[]}).version,10);assert.equal(P.pack(payload).version,35,'production circular washers require the v35 motion contract');assert.notEqual(P.checkFingerprint({kind:'beam',id:'left'},p,next.furniture,800),P.checkFingerprint({kind:'beam',id:'left'},legacy,next.furniture,800));
 const restore=W.create({makeId:()=> 'generated',colorFor:()=> '#ddd',materials:{wood:{},tile800:{}}}).restore;
 for(let i=0;i<4;i++){const loaded=restore(P.unpack(P.pack(payload)).current,plan);assert.equal(loaded.furnitureDatum,'finished-floor');assert.deepEqual(loaded.furniture,next.furniture);near(D.furnitureVerticalBounds(loaded.furniture[0],P.effectivePlan(plan,loaded)).bottom,60);}
 assert.equal(P.copyProject(payload,'custom_floor_base').current.furnitureDatum,'finished-floor');assert.equal(W.create({makeId:()=> 'new',colorFor:()=> '#ddd',materials:{}}).fresh(plan).furnitureDatum,'finished-floor');

@@ -64,6 +64,7 @@ assert.throws(()=>P.validateWork({...settings,open:{w:{0:{sill:.9,head:2.4,panel
  const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishDesign:design,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,options)=>new THREE.MeshStandardMaterial({color,...options}),slidingDoors:[],furnG:new THREE.Group(),dirty:false,doors:[],colliders:[],clamp01:v=>Math.max(0,Math.min(1,v))}));
  Object.assign(ctx,{RoundedBoxGeometry,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishDownlightModel:require('../src/render/downlight-model.js'),FurnishProducts:design.products(),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  ctx.invalidate=()=>{ctx.dirty=true;};
+ ctx.FurnishArmchairModel=require('../src/render/armchair-model.js');
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const loop=html.slice(html.indexOf('  for(const d of [...slidingDoors,...furnG.children'),html.indexOf('  updateSel();\n  if (!dirty)'));
  vm.runInContext(`function tick(dt){${loop}}`,ctx);

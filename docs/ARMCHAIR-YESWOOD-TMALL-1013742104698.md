@@ -24,7 +24,7 @@
 
 正面局部+Z、宽X、高Y，落点为地面中心；Blender `(x,-z,y)` 转换一次。项目/UI使用mm、资产使用m。`product-rules.js`集中905mm默认高度及产品身份。没有新增实例字段、迁移或版本号，旧沙发类型及保存数据保持。
 
-`armchair-model.js`通过`static-asset-model.js`构建实际网格；主场景与[生产预览](../output/armchair/preview.html)共用。木色编辑作用于木框，软包保持亚麻色；离线程序木纹与布面微小凹凸在主场景和预览同时生效，Blender源/原始GLB为纯色PBR，生产导出的木纹随现有导出器内嵌，布面bump不承诺跨格式等效。
+`armchair-model.js`通过`static-asset-model.js`构建实际网格；主场景与[预览生成器](../scripts/preview-armchair.cjs)生成的生产预览共用。木色编辑作用于木框，软包保持亚麻色；离线程序木纹与布面微小凹凸在主场景和预览同时生效，Blender源/原始GLB为纯色PBR，生产导出的木纹随现有导出器内嵌，布面bump不承诺跨格式等效。
 
 沿已有`solidModel`、`FurnishGeometry.bodyParts()`和`FurnishSnapping.directional()`读取28件生产网格，不建立整件空腔豁免。圆角、弧扶手和软包高度截面沿现有算法做保守凸包判断，可能在浅凹处误报，不是布面接触/受压或逐三角面连续求交。非标准w/d/h沿原尺寸编辑整体缩放；板厚、坐高、弧度同时变化，仅用于布局草模，不对应另一个真实商品规格。
 

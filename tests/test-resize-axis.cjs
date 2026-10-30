@@ -48,9 +48,10 @@ for(const axis of ['w','d','both']){
   listeners.pointermove(event);assert.equal(f.w,1320);assert.equal(f.d,610);
 }
 const f={id:'f',type:'custom',cx:0,cy:0,w:1320,d:610.0000000000001,rot:0},node={};
-const renderer=require('./helpers/layer-context.cjs').createContext({window:{},FurnishBayWindows:require('../src/core/bay-window-core.js'),PLAN:{rooms:[]},FurnishGeometry:require('../src/core/layout-geometry.js'),ui:{layers:{furn:false},guides:null},view:{s:.2},COARSE:false,
+const renderer=require('./helpers/layer-context.cjs').createContext({window:{},state:{furniture:[f]},FurnishBayWindows:require('../src/core/bay-window-core.js'),PLAN:{rooms:[],walls:[],wins:[],doors:[],slides:[]},FurnishGeometry:require('../src/core/layout-geometry.js'),ui:{layers:{furn:false},guides:null},view:{s:.2},COARSE:false,
   selIds:()=>['f'],getF:()=>f,tr:zh=>zh,PAL:{halo:'#fff'},furnT:()=>'',aabb:()=>({hh:f.d/2}),$:()=>node});
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),renderer);
+renderer.FurnishProject=require('../src/core/project-core.js');
 renderer.renderSelectedGeometry();assert.match(node.innerHTML,/data-axis="w"/);assert.match(node.innerHTML,/data-axis="d"/);
 assert.match(node.innerHTML,/1320 × 610<\/text>/);
 f.locked=true;renderer.renderSelectedGeometry();assert.doesNotMatch(node.innerHTML,/data-handle=/);

@@ -51,6 +51,7 @@ assert.equal(fingerprint(resized),fingerprint({...resized,color:'#123456',price:
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
  const ctx=vm.createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,FurnishProducts:R,FurnishCabinet:require('../src/core/cabinet-core.js'),FurnishDesign:D,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')}));
  ctx.RoundedBoxGeometry=undefined;ctx.mat=undefined;
+ ctx.FurnishArmchairModel=require('../src/render/armchair-model.js');
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const near=(a,b)=>assert(Math.abs(a-b)<2e-6,`${a} versus ${b}`);
  for(const dims of [[1234,567,890],[50,50,10],[20000,20000,20000]])for(const rot of [0,37,90])for(const flip of [false,true])for(const mountHeight of [0,750,20000]){

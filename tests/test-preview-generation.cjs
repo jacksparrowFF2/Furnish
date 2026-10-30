@@ -31,7 +31,7 @@ try{
  const engine=fs.readFileSync(path.join(temporary,'index.html'),'utf8').match(/<script type="importmap">[\s\S]*?<\/script>/)[0];
  fs.writeFileSync(path.join(temporary,'index.html'),'<!doctype html>'+engine);
  run('generate-previews.cjs');
- for(const [name,module] of [['fridges/preview.html','appliance-model.js'],['waterheater-flat-preview.html','appliance-model.js'],['laundry-stack/preview.html','appliance-model.js'],['telescopic/preview.html','sliding-opening-model.js']]){
+ for(const [name,module] of [['fridges/preview.html','fridge-model.js'],['waterheater-flat-preview.html','appliance-model.js'],['laundry-stack/preview.html','appliance-model.js'],['telescopic/preview.html','sliding-opening-model.js']]){
   const source=fs.readFileSync(path.join(temporary,'output',name),'utf8');
   assert.ok(source.includes(module),name+' missing production module');
   assert.ok(!source.includes('switch (f.type)')&&!source.includes('FURNISH_MODEL'),name+' still contains copied application code');

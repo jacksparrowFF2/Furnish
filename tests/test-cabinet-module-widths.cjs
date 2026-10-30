@@ -3,7 +3,9 @@ const near=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`),make=id=>({id:'modul
 for(const [id]of C.templates){
  const f=make(id),before=JSON.stringify(f),layout=C.moduleLayout(f),net=C.widths(f),t=f.cabinet.thickness;
  near(layout[0].left,-f.w/2);near(layout.at(-1).right,f.w/2);near(C.moduleWidths(f).reduce((a,b)=>a+b),f.w);
- layout.forEach((m,i)=>{near(m.width,net[i]+t*(1+(i===0?.5:0)+(i===layout.length-1?.5:0)));if(i)near(m.left,layout[i-1].right);});
+ // Legacy templates share each internal divider; the hanging wardrobe has
+ // independent boxes with two complete side boards per module by design.
+ layout.forEach((m,i)=>{const boards=f.cabinet.boxConstruction==='independent'?2:1+(i===0?.5:0)+(i===layout.length-1?.5:0);near(m.width,net[i]+t*boards);if(i)near(m.left,layout[i-1].right);});
  assert.equal(JSON.stringify(f),before);assert.equal(JSON.stringify(D.restoreFurniture([f],{makeId:()=>'',colorFor:()=>''})[0]),before);
  const round=P.unpack(P.pack({planId:'p',current:{furniture:[f]},designs:[{name:'外宽',work:{furniture:[f]}}],catalog:[]}));assert.deepEqual(round.current.furniture,[f]);assert.deepEqual(round.designs[0].work.furniture,[f]);
  if(f.cabinet.hoodBayHeight!==undefined)continue;

@@ -21,7 +21,7 @@
 
 独立后台Blender4.5.15 LTS制作，[可编辑源](../assets/models/armchair-berlin/v3/armchair-berlin-v1.blend)与[自包含GLB](../assets/models/armchair-berlin/v3/armchair-berlin-v1.glb)保留28件具名闭合网格，发布为`src/data/armchair-berlin-blender-asset.js`。前两次有效源保留在本机`.local/armchair-berlin-drafts`。
 
-两个产品由`product-rules.js`定义独立`armchairProfile`及高度；`armchair-model.js`按能力选择各自资产，仍共用静态资产构造与程序木纹/布面凹凸。主场景、[生产预览](../output/armchair-berlin/preview.html)和`bodyParts()`/`directional()`读取同一份网格；源GLB为纯色PBR，程序布面bump不承诺跨格式等效。木色编辑作用于木框，软包保持米色。
+两个产品由`product-rules.js`定义独立`armchairProfile`及高度；`armchair-model.js`按能力选择各自资产，仍共用静态资产构造与程序木纹/布面凹凸。主场景、由[预览生成器](../scripts/preview-armchair.cjs)生成的生产预览和`bodyParts()`/`directional()`读取同一份网格；源GLB为纯色PBR，程序布面bump不承诺跨格式等效。木色编辑作用于木框，软包保持米色。
 
 正面+Z，X宽/Y高，地面中心为原点；Blender转换为`(x,-z,y)`，mm在边界转m。原尺寸编辑表示整体缩放的布局草模，软包、板厚与扶手同时缩放，不表示另一真实SKU规格。没有新增持久字段、格式版本或保存通道；沿原mutate/撤销/自动保存/复制/项目与命名方案往返。
 

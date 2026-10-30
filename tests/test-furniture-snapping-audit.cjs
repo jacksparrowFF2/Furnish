@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),S=require('../src/core/snapping.js'),G=require('../src/core/layout-geometry.js'),K=require('../src/core/kitchen-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),Catalog=require('../src/data/catalog.js');
-const near=(a,b)=>assert(Math.abs(a-b)<2e-5,`${a} != ${b}`),options={grid:10,scale:.2,wallSnap:true,guides:true,rects:[],furniture:[]};
+const near=(a,b,context='')=>assert(Math.abs(a-b)<2e-5,`${context}: ${a} != ${b}`),options={grid:10,scale:.2,wallSnap:true,guides:true,rects:[],furniture:[]};
 const rows=Catalog.library.flatMap(g=>g.items),types=new Set(rows.map(r=>r[0]));let resizeCount=0,moveCount=0;
 const kitchen=K.configure({id:'reference',type:'counter',cx:0,cy:0,w:2400,d:1800,rot:0},{version:1,shape:'L',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:2400,role:'door'},{run:1,width:1200,role:'door'}]});
 for(const row of rows)for(const rot of [0,37,90,180,270])for(const flip of [false,true]){
@@ -9,7 +9,7 @@ for(const row of rows)for(const rot of [0,37,90,180,270])for(const flip of [fals
  const result=S.move(f,f.cx,f.cy,{...options,furniture:[f,target,tv]}).position;
  assert(Math.abs((result[0]-f.cx)*c+(result[1]-f.cy)*s)<2e-5,JSON.stringify({type:f.type,rot,flip,f,result}));assert.equal(JSON.stringify([f,target,tv]),before,'proposals are immutable');moveCount++;
  const moving=S.move(f,f.cx+10*c-90*s,f.cy+10*s+90*c,{...options,furniture:[f,target,tv]}).position;
- near((moving[0]-f.cx)*c+(moving[1]-f.cy)*s,0);moveCount++;
+ near((moving[0]-f.cx)*c+(moving[1]-f.cy)*s,0,`${f.type} rot=${rot} flip=${flip} move`);moveCount++;
  for(const axis of ['w','d']){
   const anchor={x:f.cx-f.w/2*c+f.d/2*s,y:f.cy-f.w/2*s-f.d/2*c},w=f.w+(axis==='w'?150.375:0),d=f.d+(axis==='d'?150.375:0);
   const p=(x,y)=>({x:anchor.x+x*c-y*s,y:anchor.y+x*s+y*c}),end=axis==='w'?p(w+100,d/2):p(w/2,d+100);

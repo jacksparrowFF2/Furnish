@@ -1,4 +1,4 @@
-async function(page,verification){
+async (page,verification)=>{
  const shot=name=>verification.output('playwright/sink-plan-snapping/'+name+'.png');await page.setViewportSize({width:1400,height:1000});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(verification.baseURL+'index.html');await page.locator('#drawing-compass').waitFor();
  await page.evaluate(()=>{

@@ -22,6 +22,7 @@ const closed=SVG.render(f.type,f.w,f.d,f.color,{ink:'#333'},f),open=SVG.render(f
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
  const ctx=vm.createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE:T,FurnishDishwasherModel:Model,FurnishCabinet:require('../src/core/cabinet-core.js'),FurnishDesign:D,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5}));
  Object.assign(ctx,{RoundedBoxGeometry:ctx.RoundedBoxGeometry,mat:ctx.mat,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
+ ctx.FurnishProducts=R;
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  const near=(a,b)=>assert(Math.abs(a-b)<2e-6,`${a} versus ${b}`);
  for(const dims of [[550,350,598],[700,420,750],[50,50,50]])for(const rot of [0,37,90,180])for(const flip of [false,true])for(const dishwasherDoorOpen of [false,true]){
