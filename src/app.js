@@ -162,7 +162,7 @@ function save(){
 }
 function syncSaved(){
   const el = $('#saved'); if (!el) return;
-  if(repositoryClient){const s=repositoryClient.status;el.textContent=s.mode==='pending'?'已缓存 · 文件保存中…':s.mode==='saved'?'已保存到仓库文件':s.mode==='ready'?'仓库自动保存已启用':s.mode==='loading'?'正在读取仓库设计…':'仅存浏览器 · 文件未保存';el.title=s.message;el.classList.toggle('err',['conflict','error'].includes(s.mode));const note=$('#file-save-status');if(note)note.textContent=s.message;return;}
+  if(repositoryClient){const s=repositoryClient.status;el.textContent=s.mode==='pending'?'已缓存 · 文件保存中…':s.mode==='saved'?'已保存到本地文件':s.mode==='ready'?'本地自动保存已启用':s.mode==='loading'?'正在读取正式文件…':'仅存浏览器 · 文件未保存';el.title=s.message;el.classList.toggle('err',['conflict','error'].includes(s.mode));const note=$('#file-save-status');if(note){note.textContent=s.message;note.style.cssText='white-space:pre-line;overflow-wrap:anywhere';}return;}
   const status=$('#file-save-status');if(status)status.textContent=savePending?tr('正在保存到本机…','Saving locally…'):saveErr?tr('本机保存失败，请备份项目文件','Local save failed; back up the project'):savedAt?tr('本机已自动保存；项目备份可在其他浏览器继续编辑','Saved locally; a project backup can be edited in another browser'):tr('本机自动保存已启用','Local autosave enabled');
   if(!savedAt&&!savePending&&!saveErr)return;
   el.title=state.architecture?.phase==='survey'?tr('已保存录入数据，原始结构尚未确认锁定。','Survey saved; original structure is not confirmed.'):tr('已保存当前方案；原始基线由结构确认单独保护。','Design saved; original baseline is separately protected.');
@@ -560,7 +560,7 @@ function openReset(){
 }
 function wipeAll(){
   // Erasing browser caches never deletes the Git-managed design file.
-  const wipeNotice=repositoryClient?'仓库中的设计文件和本机恢复副本会保留，刷新后将重新加载仓库设计。':'';
+  const wipeNotice=repositoryClient?'本地正式文件、历史备份和本机恢复副本会保留，刷新后将重新加载正式文件。':'';
   openDialog({title:tr('清除本机全部数据','Erase local data'),body:`<p>${wipeNotice}</p><p>${tr('将清除本浏览器的户型、布置、命名方案、恢复记录和自定义家具，无法撤销。请先导出需要保留的项目。','All locally saved projects, designs, recovery points and custom furniture will be erased. Export any projects you want to keep first.')}</p><p id="wipe-error" class="project-error" role="alert"></p>`,actions:[{label:tr('取消','Cancel')},{label:tr('确认清除全部数据','Erase all data'),cls:'danger',fn:()=>{storageWiping=true;repositoryClient?.stop();autosave.invalidate();historyPersistence.invalidate();$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=true);window.FurnishStorage.clear().then(()=>{['huxing-design-v30','huxing-design-v29','huxing-design-v28','huxing-design-v27','huxing-design-v26','huxing-design-v25','huxing-design-v24','huxing-design-v23','huxing-design-v22','huxing-design-v21','huxing-design-v20','huxing-design-v19','huxing-design-v18','huxing-design-v17','huxing-design-v16','huxing-design-v15','huxing-design-v14','huxing-design-v13','huxing-design-v12','huxing-design-v11','huxing-design-v10','huxing-design-v9','huxing-design-v8','huxing-design-v7','huxing-design-v6','huxing-design-v5','huxing-design-v4','huxing-design-v3','huxing-design-v2','huxing-design-v1','huxing-history','huxing-recent','huxing-panes',UI_KEY].forEach(k=>localStorage.removeItem(k));location.reload();}).catch(e=>{storageWiping=false;save();persistHistory();$('#wipe-error').textContent=tr('清除未完成：','Erase failed: ')+e.message;$('#dlgActions').querySelectorAll('button').forEach(b=>b.disabled=false);});return false;}}]});return false;
 }
 

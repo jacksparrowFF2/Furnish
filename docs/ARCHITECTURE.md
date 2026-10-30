@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-30（本地正式存档）：workspace-files统一本机目录配置、正式文件原子写入、先备份后替换、历史保留与损坏原文恢复；repository-server沿原同源API提供位置／历史／恢复接口。repository-storage仍消费内容修订并拒绝并行覆盖，UI沿原保存链增加位置设置、下载及整工作区恢复；显式恢复重设缓存清洁基准，防止旧缓存续写覆盖所选版本。本机数据外置至D盘，未选位置保留projects兼容；file://不访问文件接口，版本校验共用核心目录。无新加载脚本、项目字段或撤销通道，见[本地保存契约](REPOSITORY-SAVES.md)。
+
 2026-10-30（建筑门角度）：floorplan-core集中建筑门逐扇hingeAngles范围（1–180°，旧缺失90°）；layout-geometry派生每扇角度、二维末端和扫掠，入口生产模型沿原门轴方向旋转。属性沿mutate写open.d，草稿复制／洞口重排与项目恢复保留字段；含字段采用项目／工作区v38及隔离恢复缓存，不新增加载脚本。见[对开门](DOUBLE-DOORS.md)。
 
 2026-10-30（两级目录）：catalog.navigation在既有browseLibrary之上派生产品大类／细类，保留原条目引用、原目录与历史查找／价格优先级。app按导航组展示并映射回原ci/ii选品键，分类只存在于libUI；用途／搜索／尺寸仍沿原matches，不新增持久字段或加载脚本。见[目录验收](validation/catalog-navigation-20261030/README.md)。

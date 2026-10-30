@@ -27,6 +27,10 @@ const fingerprint=async w=>S.digest(C.text(w));
  const server=http.createServer((req,res)=>api.handle(req,res));await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const url='http://127.0.0.1:'+server.address().port;
  try{
   assert.equal((await fetch(url+'/api/furnish/workspace')).status,200);
+  assert.equal((await fetch(url+'/api/furnish/storage')).status,200);
+  assert.ok((await (await fetch(url+'/api/furnish/backups')).json()).length);
+  const history=api.backups()[0];assert.equal((await fetch(url+'/api/furnish/backups/'+history.id)).status,200);
+  assert.equal((await fetch(url+'/api/furnish/storage',{method:'POST',headers:{Origin:'https://evil.example','Content-Type':'application/json','X-Furnish-Request':'workspace-v1'},body:JSON.stringify({directory:dir,baseRevision:second.revision})})).status,403);
   // Exercise real recovery HTTP, not a mock: initialization archives every
   // divergent cache before choosing the file or resuming pending changes.
   for(const v of C.workspaceVersions){
@@ -60,6 +64,9 @@ const fingerprint=async w=>S.digest(C.text(w));
  const two=setup({revision:null,workspace:null});await two.client.initialize([a,{...b,updatedAt:200}]);assert.equal(two.archives.length,2);assert.equal(two.state.revision,revB);
  const edits=setup({revision:revA,workspace:a});await edits.client.initialize([{...a,_repository:{revision:revA}}]);edits.client.schedule(b);await edits.client.flush();assert.equal(edits.state.revision,revB);assert.equal(edits.acks.length,1);
  edits.client.schedule(divergent);edits.state={workspace:a,revision:revA};await assert.rejects(edits.client.flush());assert.equal(edits.client.blocked,true);assert.equal(edits.state.revision,revA);assert.ok(edits.archives.length);edits.client.stop();
+ await assert.rejects(edits.client.retry(),/冲突/);
+ let offline=true;const retry=Client.create({fingerprint,delay:100000,onChange(){},request:async(route,method,body)=>{if(method==='GET')return {workspace:a,revision:revA};if(route==='/recoveries')return {id:'copy'};if(offline)throw Error('offline');return {revision:await fingerprint(body.workspace)};}});
+ await retry.initialize([]);retry.schedule(b);await assert.rejects(retry.flush());retry.schedule(divergent);assert.equal(retry.status.mode,'error');offline=false;await retry.retry();assert.equal(retry.status.mode,'saved');assert.equal(retry.revision,await fingerprint(divergent));retry.stop();
  // Idempotent load, without a timestamp-based choice or migration drift.
  for(let i=0;i<3;i++){const again=setup({revision:revB,workspace:b});const loaded=await again.client.initialize([{...b,_repository:{revision:revB,clean:revB}}]);assert.equal(again.writes.length,0);assert.deepEqual(C.portable(loaded),C.portable(b));}
  // A newer edit during an in-flight save stays pending until its own write is acknowledged.

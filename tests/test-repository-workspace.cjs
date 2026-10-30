@@ -32,6 +32,7 @@ async function boot({protocol='file:',disk=null,saved=null,failRequest=false,ini
  const a=fresh(),newer=clone(a);newer.updatedAt=200;newer.work[newer.planId].furniture[0].cx+=200;
  const file=await boot({initial:a,saved:newer});assert.equal(file.scope.repositoryBooting,false);assert.equal(file.scope.repositoryClient,null);assert.equal(file.scope.state.furniture[0].cx,newer.work[newer.planId].furniture[0].cx);assert.ok(!file.events.includes('request'));assert.ok(file.elements[0].removed);assert.equal(file.scope.PLANS.some(p=>p.id===customPlan.id),false);
  const empty=await boot();assert.ok(!empty.events.includes('request'));assert.equal(empty.scope.repositoryBooting,false);
+ const latest=await boot({initial:a,saved:{...newer,v:38}});assert.equal(latest.scope.state.furniture[0].cx,newer.work[newer.planId].furniture[0].cx);assert.ok(!latest.events.includes('request'));
  const fail=await boot({protocol:'http:',initial:a,saved:newer,failRequest:true});assert.equal(fail.scope.state.furniture[0].cx,newer.work[newer.planId].furniture[0].cx);assert.equal(fail.scope.repositoryClient.status.mode,'error');assert.equal(fail.cacheWrites.length,0);
  console.log('PASS file-mode cache recovery without repository requests, stale custom plan removal, unavailable-service IndexedDB fallback and registered custom-plan validation');
 })().catch(e=>{console.error(e);process.exitCode=1;});

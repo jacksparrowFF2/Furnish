@@ -31,5 +31,5 @@ fs.mkdirSync(projects);const file=path.join(projects,'workspace.furnish.json'),o
 try{
  const loaded=api.read();assert.equal(loaded.workspace.v,16);const written=api.write(loaded.workspace,loaded.revision);assert.notEqual(written.revision,loaded.revision);assert.equal(JSON.parse(fs.readFileSync(file,'utf8')).workspace.v,16);
  const backups=api.recoveries();assert.equal(backups.length,1);assert.deepEqual(backups[0].workspace,ws);assert.equal(api.read().revision,written.revision);api.write(api.read().workspace,written.revision);assert.equal(api.recoveries().length,1);
-}finally{for(const f of fs.readdirSync(path.join(root,'.local','furnish-recovery')))fs.unlinkSync(path.join(root,'.local','furnish-recovery',f));fs.rmdirSync(path.join(root,'.local','furnish-recovery'));fs.rmdirSync(path.join(root,'.local'));fs.unlinkSync(file);fs.rmdirSync(projects);fs.rmdirSync(root);}
+}finally{assert.ok(path.resolve(root).startsWith(path.resolve(os.tmpdir())+path.sep));assert.ok(path.basename(root).startsWith('furnish-bay-upgrade-'));fs.rmSync(root,{recursive:true,force:true});}
 console.log('PASS bay assembly parts, dimensions, boundaries, exact legacy geometry, current/design/baseline/revision/cache normalization, idempotence, v16 and copy roundtrip');

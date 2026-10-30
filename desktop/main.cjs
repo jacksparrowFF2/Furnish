@@ -57,7 +57,7 @@ if(root){
    Menu.setApplicationMenu(Menu.buildFromTemplate([
     {label:'Furnish',submenu:[{label:'打开工作目录',click:()=>shell.openPath(root)},{label:'在浏览器中打开',click:()=>shell.openExternal(backend.url)},{type:'separator'},{role:'quit',label:'退出'}]},
     {label:'视图',submenu:[{role:'reload',label:'刷新'},{role:'togglefullscreen',label:'全屏'},{role:'toggleDevTools',label:'开发者工具'}]},
-    {label:'帮助',submenu:[{label:'关于 Furnish',click:()=>dialog.showMessageBox(mainWindow,{title:'Furnish 桌面版',message:'Furnish 本地装修设计',detail:'工作目录：'+root+'\n设计保存在 projects/workspace.furnish.json\n桌面缓存：'+app.getPath('userData')+'\nElectron '+process.versions.electron+'；离线可用。',buttons:['确定']})}]}
+    {label:'帮助',submenu:[{label:'关于 Furnish',click:()=>dialog.showMessageBox(mainWindow,{title:'Furnish 桌面版',message:'Furnish 本地装修设计',detail:'工作目录：'+root+'\n在“保存／导出 → 保存位置与历史备份”查看或修改正式文件位置。\n桌面缓存：'+app.getPath('userData')+'\nElectron '+process.versions.electron+'；离线可用。',buttons:['确定']})}]}
    ]));
    await createWindow();
   }).catch(e=>{console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
