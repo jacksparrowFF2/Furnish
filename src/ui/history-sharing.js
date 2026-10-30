@@ -90,15 +90,6 @@ function initializeHistorySharing(){
   shareCodec=FurnishShare.create();
   shareLoader=FurnishShare.createLoader({decode:shareCodec.decode,prepare:prepareSharedWork,apply:applySharedWork,
     onError:()=>toast(tr('分享链接无效','Invalid share link'))});
-$('#saveDesign').onclick = () => {
-  const def = tr('方案 ', 'Design ') + new Date().toLocaleDateString();
-  const name = prompt(tr('方案名称：', 'Design name:'), def); if (!name) return;
-  if(name.length>80||store.designs.filter(d=>d.planId===PLAN.id).length>=100)return toast(tr('方案名称最多 80 字，每个户型最多 100 份命名方案。','Names up to 80 characters; up to 100 designs per plan.'));
-  store.designs.push({id:'d'+Date.now().toString(36), name, planId:PLAN.id, ts:Date.now(), work:JSON.parse(JSON.stringify(state))});
-  save(); renderDesigns(); toast(tr('已保存当前布置', 'Design saved'));
-};
-
-
   $('#shareLink').onclick=async()=>{
     if(state.architecture||FurnishWallFinish.has(state)||FurnishFloorFinish.has(state)||FurnishWallTiling.has(state)||state.ceilings)return toast(tr('自定义户型或含墙面饰面、吊顶的方案请导出项目 JSON 分享','Export a project JSON to share custom plans or wall finishes'));
     const id=PLAN.id,json=JSON.stringify(state);

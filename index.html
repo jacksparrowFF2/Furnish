@@ -182,51 +182,43 @@
     </div>
     <button class="btn outline" id="themeQuick" aria-label="切换亮色 / 暗色"><svg class="i"><use href="#i-moon"/></svg></button>
     <button class="btn outline" id="fullscreen" title="全屏 (Shift+F)" aria-label="全屏"><svg class="i"><use href="#i-full"/></svg></button>
-    <details class="menu" id="fileMenu"><summary class="btn"><svg class="i"><use href="#i-file"/></svg><span data-en="File ▾">文件 ▾</span></summary>
-      <div class="menu-pop file-pop">
-        <div class="file-tabs" role="tablist" aria-label="保存与导出">
-          <button type="button" role="tab" id="file-tab-save" aria-controls="file-pane-save" aria-selected="true" data-file-tab="save" data-en="Save">保存</button>
-          <button type="button" role="tab" id="file-tab-export" aria-controls="file-pane-export" aria-selected="false" tabindex="-1" data-file-tab="export" data-en="Export">导出</button>
-          <button type="button" role="tab" id="file-tab-history" aria-controls="file-pane-history" aria-selected="false" tabindex="-1" data-file-tab="history" data-en="Designs & recovery">方案与恢复</button>
-        </div>
-        <div class="file-content">
-        <section id="file-pane-save" role="tabpanel" aria-labelledby="file-tab-save">
-          <div class="file-status"><b id="file-save-summary" role="status"></b><p id="file-save-status"></p></div>
-          <div id="file-storage-actions" class="file-actions"></div>
-          <div class="menu-cap" data-en="Keep a copy">保留一份副本</div>
-          <div id="file-backup-actions" class="file-actions">
-            <button class="btn" id="saveDesign" data-en="Save history record…">保留历史记录…</button>
-          </div>
-          <p class="file-note" data-en="History stays in this workspace. Switch designs above the canvas; each design saves independently.">历史记录保留在工作区中；设计方案在画布顶部切换并独立自动保存。</p>
-        </section>
-        <section id="file-pane-export" role="tabpanel" aria-labelledby="file-tab-export" hidden>
+    <details class="menu" id="saveMenu">
+      <summary class="btn save-indicator" title="保存状态与位置" data-en-title="Save status and location"><span id="saved" class="saved" role="status"></span></summary>
+      <div class="menu-pop utility-pop"><div class="file-content">
+        <div class="file-status"><b id="file-save-summary"></b><p id="file-save-status"></p></div>
+        <div id="file-storage-actions" class="file-actions"></div>
+      </div></div>
+    </details>
+    <details class="menu" id="fileMenu"><summary class="btn"><svg class="i"><use href="#i-file"/></svg><span data-en="Export">导出</span></summary>
+      <div class="menu-pop file-pop"><div class="file-content">
+        <div class="menu-cap" data-en="Editable project">可编辑项目</div>
+        <div id="file-backup-actions" class="file-actions"></div>
         <div class="menu-cap" data-en="Deliver & share">成果与分享</div>
         <div id="file-delivery-actions" class="file-actions"></div>
         <div class="file-actions file-export-grid">
-        <button class="btn" id="shareLink" data-en="Copy share link">复制分享链接</button>
-        <button class="btn" id="exportPng" data-en="Export image">导出图片</button>
-        <button class="btn" id="exportCsv" data-en="Export quote (CSV)">导出报价清单 CSV</button>
-        <button class="btn" id="printPlan" data-en="Print">打印</button>
+          <button class="btn" id="shareLink" data-en="Copy share link">复制分享链接</button>
+          <button class="btn" id="exportPng" data-en="Export image">导出图片</button>
+          <button class="btn" id="exportCsv" data-en="Export quote (CSV)">导出报价清单 CSV</button>
+          <button class="btn" id="printPlan" data-en="Print">打印</button>
         </div>
-        <details class="file-fold"><summary data-en="Data exchange">数据交换</summary>
+        <div class="menu-cap" data-en="Raw data">原始数据</div>
         <button class="btn" id="exportJson" data-en="Export plan JSON">导出方案 JSON</button>
-        <button class="btn" id="importJson" data-en="Import plan">导入方案</button>
-        </details>
-        </section>
-        <section id="file-pane-history" role="tabpanel" aria-labelledby="file-tab-history" hidden>
-        <div class="file-actions"><button class="btn" id="manageDesigns" data-en="Designs and history">方案与历史管理</button></div>
-        <section class="file-recovery-region" aria-labelledby="file-recovery-heading">
-          <h3 id="file-recovery-heading" data-en="Data recovery">数据恢复</h3>
-          <p class="file-note" data-en="Find earlier work in automatic snapshots or local recovery copies.">从自动快照或本机恢复副本找回之前的工作内容。</p>
-          <div id="file-recovery-actions" class="file-actions"></div>
-        </section>
-        </section>
-        <details class="file-fold file-maintenance"><summary data-en="Reset & clear">重置与清理</summary>
+      </div></div>
+    </details>
+    <div id="more-actions" hidden>
+      <section class="file-recovery-region" aria-labelledby="file-recovery-heading">
+        <h3 id="file-recovery-heading" data-en="Data recovery">数据恢复</h3>
+        <div id="file-recovery-actions" class="file-actions"></div>
+      </section>
+      <section class="file-recovery-region" aria-labelledby="more-project-heading">
+        <h3 id="more-project-heading" data-en="Projects and floor plans">项目与户型</h3>
+        <button class="btn" id="importJson" data-en="Import plan JSON">导入方案 JSON</button>
+      </section>
+      <details class="file-fold file-maintenance"><summary data-en="Reset & clear">重置与清理</summary>
         <button class="btn" id="resetMenu" data-en="Reset…">重置…</button>
         <button class="btn danger" id="clearAll" title="清空所有家具家电（可撤销）" data-en-title="Remove all furniture and appliances (undoable)" data-en="Clear layout">清空布置</button>
-        </details>
-        </div>
-      </div></details>
+      </details>
+    </div>
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
   </header>
   <nav id="designBar" class="design-bar" aria-label="方案切换"></nav>
@@ -318,7 +310,7 @@
     <span id="selInfo"></span>
     <span class="spacer"></span>
     <span id="tip"></span>
-    <span id="saved" class="saved"></span>
+
     <button class="flink" id="cmdBtn" title="命令面板：搜索操作、户型、房间与家具 (Ctrl+K)" data-en-title="Command palette: search actions, plans, rooms and furniture (Ctrl+K)"><svg class="i"><use href="#i-search"/></svg><span data-en="Command">命令</span><kbd>Ctrl K</kbd></button>
     <button class="flink" id="helpBtn" title="快捷键与操作说明 (?)" data-en-title="Shortcuts & help (?)"><svg class="i"><use href="#i-kbd"/></svg><span data-en="Shortcuts">快捷键</span></button>
     <span class="flink-sep"></span>

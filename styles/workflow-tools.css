@@ -1,10 +1,11 @@
 /* The existing studio palette, with tools below the drawing and explicit status. */
 /* File tools share one bounded scroll area; lists never create nested scrollers. */
-#fileMenu>.file-pop{width:380px;min-width:0;max-width:calc(100vw - 24px);max-height:calc(100dvh - 100px);padding:0;overflow:hidden}
-.file-tabs{display:flex;flex:none;gap:4px;padding:10px;border-bottom:1px solid var(--line)}
-.file-tabs [role=tab]{flex:1;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;padding:10px 8px;cursor:pointer;white-space:nowrap}
-.file-tabs [aria-selected=true]{background:var(--accent-soft);color:var(--accent-ink)}
-.file-tabs [role=tab]:focus-visible,.file-fold>summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.utility-pop,#fileMenu>.file-pop{width:380px;min-width:0;max-width:calc(100vw - 24px);max-height:calc(100dvh - 100px);padding:0;overflow:hidden}
+.file-fold>summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+#saveMenu .saved{display:block;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+#saveMenu .saved.err{color:var(--danger);font-weight:600}
+#saveMenu .saved .i{color:var(--ok)}
+#saveMenu:has(.saved.err)>summary{border-color:var(--danger)}
 .file-content{padding:14px;overflow:auto;overscroll-behavior:contain;min-height:0}
 .file-content [role=tabpanel][hidden]{display:none}
 .file-status{padding:13px 14px;background:var(--soft);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
@@ -12,13 +13,13 @@
 #file-save-summary.err{color:var(--danger)}
 #file-save-status{font-size:12px;line-height:1.7;color:var(--muted);margin:7px 0 0;overflow-wrap:anywhere}
 .file-actions{display:grid;gap:5px;margin-bottom:14px}
-#fileMenu .file-content .btn{width:100%;min-width:0;min-height:42px;padding:10px 12px;font-size:13px;white-space:normal;overflow-wrap:anywhere}
+:is(#fileMenu,#saveMenu) .file-content .btn{width:100%;min-width:0;min-height:42px;padding:10px 12px;font-size:13px;white-space:normal;overflow-wrap:anywhere}
 #fileMenu #file-backup{background:var(--accent-soft);color:var(--accent-ink);border:1px solid var(--line)}
 .file-export-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .file-content .menu-cap{padding:6px 2px 9px;letter-spacing:.04em;font-size:11px}
 .file-note{font-size:12px;line-height:1.7;color:var(--muted);margin:8px 2px 16px}
 .file-fold{border-top:1px solid var(--line);padding:5px 0}
-#fileMenu .file-fold>summary{display:flex;align-items:center;justify-content:space-between;padding:10px 3px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;border:0;color:var(--muted);list-style:none}
+:is(#fileMenu,#moreMenu) .file-fold>summary{display:flex;align-items:center;justify-content:space-between;padding:10px 3px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;border:0;color:var(--muted);list-style:none}
 .file-fold>summary::after{content:'＋';font-size:15px;font-weight:400}
 .file-fold[open]>summary::after{content:'−'}
 .file-recovery-region{border-top:1px solid var(--line);padding-top:14px}
@@ -52,13 +53,13 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
 .material-estimate{overflow-wrap:anywhere}.material-estimate table{width:100%;font-size:12px}.material-estimate td{padding:6px}
 #material-select{display:block;width:100%;min-height:40px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--card);color:var(--ink);margin:6px 0 12px;font:inherit}
 .sidebar-heading{position:sticky;top:0;z-index:9;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);font-size:12px}
-.sidebar-heading .btn{min-width:36px;min-height:32px;padding:5px}.save-short{display:none}
+.sidebar-heading .btn{min-width:36px;min-height:32px;padding:5px}
 .right .tabs{top:44px}
 .space-status:focus-visible,[data-wall-net]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 [data-wall-net] text{fill:var(--s-ink)}
 @media(max-width:1100px){.brand{display:none}header{gap:5px;padding:5px 0}.canvas-rail .btn{min-width:42px}.scene-light{max-width:calc(100% - 80px);right:8px;flex-wrap:wrap}.scene-light input{width:75px}main.drawer-panel .canvas-rail,main.drawer-panel .space-status{visibility:hidden}.preview-banner{top:auto;bottom:240px;left:12px}.workspace-preferences>.menu-pop{position:fixed;right:10px;top:70px;max-height:65vh;overflow:auto}.hud{bottom:14px}}
-@media(max-width:600px){header .btn,header summary.btn{padding:6px 8px;font-size:12px}#paneBtns span{display:none}#paneBtns .btn{padding:7px;min-width:36px}#viewSeg{--seg-w:76px}#showMenu summary span{display:none}.save-wide{display:none}.save-short{display:inline}.sidebar-heading .btn{min-width:44px;min-height:36px}}
-@media(max-width:600px){header .spacer{display:none}#viewSeg,.workspace-preferences,#fileMenu{order:1}}
+@media(max-width:600px){header .btn,header summary.btn{padding:6px 8px;font-size:12px}#paneBtns span{display:none}#paneBtns .btn{padding:7px;min-width:36px}#viewSeg{--seg-w:76px}#showMenu summary span{display:none}.sidebar-heading .btn{min-width:44px;min-height:36px}}
+@media(max-width:600px){header .spacer{display:none}#viewSeg,.workspace-preferences,#saveMenu,#fileMenu{order:1}}
 @media print{.canvas-rail,.space-status,.scene-light,.preview-banner,#gWallNet,#gProposal{display:none!important}}
 .drawing-compass{position:absolute;right:12px;top:12px;width:76px;height:76px;border:0;background:transparent;cursor:pointer;z-index:4;padding:0;filter:drop-shadow(0 4px 10px #0002)}
 .drawing-compass svg{width:100%;height:100%}.drawing-rotate{position:absolute;bottom:12px;right:205px;display:flex;gap:4px;z-index:4}.drawing-check{display:flex;align-items:center;gap:8px}.drawing-check input{width:auto!important}
@@ -159,3 +160,10 @@ main.drawer-panel #fab-editor{visibility:hidden}
 .design-record{padding:12px;margin:10px 0;border:1px solid var(--line);border-radius:10px;overflow-wrap:anywhere}
 @media(max-width:1100px){main,aside.lib,aside.right{grid-row:3}}
 @media print{.design-bar{display:none!important}}
+
+#moreMenu>.menu-pop{overflow:auto;padding:12px}
+#more-actions .file-actions{margin-bottom:0}
+#more-actions .btn{width:100%;margin:0;white-space:normal}
+#moreMenu #more-actions{margin-top:10px}
+#moreMenu .file-maintenance{margin-top:14px}
+@media(max-width:600px){#saveMenu .saved{max-width:200px}}

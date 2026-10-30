@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "design-switching",
+    "portable-smoke"
+  ],
+  "results": [
+    {
+      "name": "design-switching",
+      "status": "PASS",
+      "seconds": 14.6,
+      "log": "design-switching.log"
+    },
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 10.2,
+      "log": "portable-smoke.log"
+    }
+  ],
+  "notRun": []
+}
