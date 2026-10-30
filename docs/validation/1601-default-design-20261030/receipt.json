@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-30",
+  "file": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "planId": "custom_mv37igji",
+  "defaultDesign": {
+    "id": "dmvv1q0nb",
+    "name": "01",
+    "editable": true,
+    "furniture": 69
+  },
+  "historyCount": 16,
+  "oldHistoryUnchanged": true,
+  "allWorkSlotsUnchanged": true,
+  "currentWorkMatchesDesign": true,
+  "workHash": "37b6ceceb8cce8fd51addc40bc49594f344dbed6cae2a4167ce6ce7f06dbb389",
+  "historyHash": "a6605b0d458451df2308a050b0822d76c2661723bd859eb7a83a1b8a722fc4ce",
+  "beforeRevision": "ee9a0815be6d0a6c40d5f48fcf491153d51a4672d6c9e3f75209cb5c703a75c6",
+  "afterRevision": "ac311b43d7c75ba4ab2343f7335f9082c2b95d0c6d55cbcd6a3f6908e7823b65",
+  "backup": "1793369215774-5a4129de-3735-4d16-9c24-555f9597715a.furnish.json"
+}
