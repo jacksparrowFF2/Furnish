@@ -5,7 +5,7 @@ const V=require('../lib/browser-verification.cjs');
 const views=Object.freeze([
  {id:'front',position:[0,.43,2.25],target:[0,.43,0],angle:0},
  {id:'oblique',position:[1.45,1.1,2],target:[0,.43,.08],angle:0},
- {id:'open',position:[1.45,1.1,2],target:[0,.43,.08],angle:110}
+ {id:'open',position:[1.65,1.2,2.65],target:[-.22,.43,.08],angle:110}
 ]);
 async function main(root,output){
  root=path.resolve(root);output=path.resolve(output);
@@ -30,17 +30,20 @@ async function main(root,output){
     const T=await import('three'),base=FurnishProducts.floorBase(FurnishProject.effectivePlan(PLAN,state),state.furniture[0],state.furniture),y=base.z/1000;
     const camera=new T.PerspectiveCamera(36,1,.01,50);camera.position.set(view.position[0],view.position[1]+y,view.position[2]);camera.lookAt(view.target[0],view.target[1]+y,view.target[2]);camera.updateMatrixWorld(true);
     // Explicit, fixed white key light; worker supplies its standard AgX/world.
-    const sun=new T.DirectionalLight(0xffffff,3);sun.position.set(-2,4+y,4);sun.target.position.set(0,.43+y,0);sun.updateMatrixWorld(true);sun.target.updateMatrixWorld(true);
-    const before=JSON.stringify(state),snapshot=await View3D.blenderScene({camera,sun,includeHidden:true,expandInstances:true});
+    const sun=new T.DirectionalLight(0xffffff,2000);sun.position.set(-2,4+y,4);sun.target.position.set(0,.43+y,0);sun.updateMatrixWorld(true);sun.target.updateMatrixWorld(true);
+    // Keep the product's visible production meshes; omit hidden room ceilings
+    // so a layout-only ceiling does not cast a shadow over the test product.
+    const before=JSON.stringify(state),snapshot=await View3D.blenderScene({camera,sun,includeHidden:false,expandInstances:true});
     if(JSON.stringify(state)!==before)throw Error('Studio export mutated fixture state');
     return {buffer:Array.from(new Uint8Array(snapshot.buffer)),floorBase:base};
    },view);
    const bytes=Buffer.from(out.buffer),doc=JSON.parse(bytes.subarray(20,20+bytes.readUInt32LE(12))),parts=doc.nodes.filter(n=>n.extras?.furnishId==='blender-pilot');
    assert.equal(parts.length,47);assert(parts.every(n=>n.extras.furnishPartKey?.startsWith('explicit:washer-tg10k60w-v1:')));
+   assert(!doc.nodes.some(n=>n.mesh!==undefined&&n.extras?.furnishVisible===false),'Studio exported hidden architecture');
    fs.writeFileSync(path.join(output,view.id+'.glb'),bytes);results.push({...view,parts:parts.length,floorBase:out.floorBase});
   }
   assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
-  const report={passed:true,preset:'tg10k60w-studio-v1',productionExporter:true,dimensionsMm:[595,560,850],camera:{fov:36,aspect:1},lighting:{keyIntensity:3,keyPosition:[-2,4,4],world:'production-worker',exposure:0,viewTransform:'AgX'},views:results};
+  const report={passed:true,preset:'tg10k60w-studio-v1',productionExporter:true,dimensionsMm:[595,560,850],camera:{fov:36,aspect:1},lighting:{keyIntensity:2000,keyPosition:[-2,4,4],world:'production-worker',exposure:0,viewTransform:'AgX'},views:results};
   fs.writeFileSync(path.join(output,'studio.json'),JSON.stringify(report,null,2));return report;
  }finally{if(browser)await browser.close();await server.close();}
 }
