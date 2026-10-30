@@ -7,6 +7,7 @@ import pathlib
 import sys
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
 from washer_detail import build as detail_mesh
+from blender_asset_preflight import check as preflight
 
 args=sys.argv[sys.argv.index('--')+1:]
 out=pathlib.Path(args[0]).resolve()
@@ -76,7 +77,8 @@ for part in spec['parts']:
     obj.data.materials.clear();obj.data.materials.append(materials[part['material']])
     for polygon in obj.data.polygons:polygon.material_index=0
     obj['furnishStablePart']=file_id+'-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
+checks=preflight(bpy.context.scene,spec)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/(file_id+'-v1.blend')))
 bpy.ops.export_scene.gltf(filepath=str(out/(file_id+'-v1.glb')),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in args:
-    pathlib.Path(args[args.index('--result')+1]).write_text(json.dumps({'passed':True,'blender':bpy.app.version_string,'parts':len(spec['parts']),'motions':len(parents)}),encoding='utf-8')
+    pathlib.Path(args[args.index('--result')+1]).write_text(json.dumps({'passed':True,'blender':bpy.app.version_string,'parts':len(spec['parts']),'motions':len(parents),'preflight':checks}),encoding='utf-8')
