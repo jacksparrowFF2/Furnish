@@ -9,6 +9,10 @@ const work=W.fresh(plan),a={v:Math.max(2,require('../src/core/project-core.js').
 const b=JSON.parse(JSON.stringify(a));b.work[plan.id].furniture[0].cx+=111;
 const api=Files.create(repo,{now:()=>time}),first=api.write(a,null),source=api.info().file,original=fs.readFileSync(source,'utf8');
 assert.equal(api.backups().length,0);
+// A caller must not mutate the cached validated snapshot. External replacement
+// must be checked by bytes even when file length and modification time match.
+const detached=api.read();detached.workspace.work[plan.id].furniture[0].w=-1;assert.ok(api.read().workspace.work[plan.id].furniture[0].w>0);
+const originalStat=fs.statSync(source),wrong=original.replace('furnish-workspace','x'.repeat('furnish-workspace'.length));assert.equal(wrong.length,original.length);fs.writeFileSync(source,wrong);fs.utimesSync(source,originalStat.atime,originalStat.mtime);assert.throws(()=>api.read());fs.writeFileSync(source,original);
 const second=api.write(b,first.revision),entries=api.backups();assert.equal(entries.length,1);assert.equal(api.getBackup(entries[0].id).raw,original);
 assert.deepEqual(api.write(b,second.revision),second);assert.equal(api.backups().length,1);
 assert.throws(()=>api.write(a,first.revision),e=>e.status===409);assert.equal(api.backups().length,1);

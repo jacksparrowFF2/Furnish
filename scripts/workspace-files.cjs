@@ -15,7 +15,7 @@ function create(root,{now=Date.now}={}){
  root=fs.realpathSync(root);
  const config=path.join(root,'.local','storage.json'),legacy=path.join(root,'projects'),legacyRecovery=path.join(root,'.local','furnish-recovery');
  function configured(){noLink(config);if(!fs.existsSync(config))return legacy;const value=JSON.parse(fs.readFileSync(config,'utf8'));if(value.version!==1||typeof value.directory!=='string'||!path.isAbsolute(value.directory))throw Error('本机保存位置配置无效');return path.resolve(value.directory);}
- let dir=configured();
+ let dir=configured(),validatedFile=null;
  function check(){if(configured()!==dir)throw conflict('保存位置已被其他服务更改，请重启服务后刷新');}
  function folder(base,child=''){
   fs.mkdirSync(base,{recursive:true});noLink(base);const target=path.join(base,child);fs.mkdirSync(target,{recursive:true});noLink(target);
@@ -24,8 +24,11 @@ function create(root,{now=Date.now}={}){
  const primary=base=>path.join(base,'workspace.furnish.json');
  function readAt(base){
   folder(base);const file=primary(base);noLink(file);if(!fs.existsSync(file))return {revision:null,workspace:null};
-  const raw=fs.readFileSync(file,'utf8'),value=JSON.parse(raw),workspace=C.parse(value);
-  return {revision:digest(C.text(value.workspace)),workspace,raw};
+  const raw=fs.readFileSync(file,'utf8');
+  // Cache only exact, already validated bytes. External changes (even with the
+  // same mtime/size) must still pass the full production recovery validation.
+  if(validatedFile?.file!==file||validatedFile.raw!==raw){const value=JSON.parse(raw),workspace=C.parse(value);validatedFile={file,raw,revision:digest(C.text(value.workspace)),workspace};}
+  return {revision:validatedFile.revision,workspace:JSON.parse(JSON.stringify(validatedFile.workspace)),raw};
  }
  function locked(base,fn){
   folder(base);const lock=path.join(base,'.workspace.lock');let fd;
@@ -35,7 +38,9 @@ function create(root,{now=Date.now}={}){
  }
  function backup(base,raw){
   // Preserve the exact acknowledged bytes, not a reconstructed/migrated copy.
-  C.parse(JSON.parse(raw));const target=folder(base,'backups'),id=String(now()).padStart(13,'0')+'-'+crypto.randomUUID()+'.furnish.json';
+  // Callers supply the immutable raw bytes returned by readAt(), already fully
+  // validated. Do not repeat all model validation just to copy those bytes.
+  const target=folder(base,'backups'),id=String(now()).padStart(13,'0')+'-'+crypto.randomUUID()+'.furnish.json';
   atomic(path.join(target,id),raw);return id;
  }
  function prune(base){
@@ -51,6 +56,7 @@ function create(root,{now=Date.now}={}){
   if(before.raw&&checked.v>=16&&JSON.parse(before.raw).workspace.v<checked.v)recover(JSON.parse(before.raw).workspace);
   if(before.raw)backup(dir,before.raw); // Backup failure prevents replacing the primary.
   atomic(primary(dir),data);
+  validatedFile={file:primary(dir),raw:data,revision,workspace:C.portable(checked)};
   let warning='';try{prune(dir);}catch(e){warning='历史备份清理未完成：'+e.message;}
   return {revision,...(warning?{warning}:{})};
  });}

@@ -2,12 +2,14 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),{pathToFileURL}=require('node:url');
 const root=path.resolve(__dirname,'..'),V=require('../scripts/lib/browser-verification.cjs'),C=require('../src/core/repository-core.js');
-const output=path.join(root,'output/playwright/local-archive');fs.mkdirSync(output,{recursive:true});
-const run=fs.mkdtempSync(path.join(output,'run-')),api=require('../scripts/repository-server.cjs').create(run),plan=require('../src/data/plans.js')[0];
-let uid=0;const W=require('../src/core/work-state.js').create({makeId:()=> 'browser'+ ++uid,colorFor:()=> '#aabbcc',materials:require('../src/data/catalog.js').materials}),work=W.fresh(plan);
-api.write({v:Math.max(2,require('../src/core/project-core.js').formatVersion([work])),planId:plan.id,work:{[plan.id]:work},designs:[],customPlans:[]},null);
+const output=path.join(root,'output/playwright',process.env.FURNISH_STORAGE_FIXTURE?'local-archive-large':'local-archive');fs.mkdirSync(output,{recursive:true});
+const run=fs.mkdtempSync(path.join(output,'run-')),api=require('../scripts/repository-server.cjs').create(run),builtInPlan=require('../src/data/plans.js')[0];
+let uid=0;const W=require('../src/core/work-state.js').create({makeId:()=> 'browser'+ ++uid,colorFor:()=> '#aabbcc',materials:require('../src/data/catalog.js').materials}),work=W.fresh(builtInPlan);
+const seed=process.env.FURNISH_STORAGE_FIXTURE?JSON.parse(fs.readFileSync(process.env.FURNISH_STORAGE_FIXTURE,'utf8')).workspace:{v:Math.max(2,require('../src/core/project-core.js').formatVersion([work])),planId:builtInPlan.id,work:{[builtInPlan.id]:work},designs:[],customPlans:[]},plan={id:seed.planId};
+api.write(seed,null);let dropNextSave=false;
 const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json','.png':'image/png','.wasm':'application/wasm'};
 const server=http.createServer(async(req,res)=>{
+ if(dropNextSave&&req.method==='PUT'&&req.url==='/api/furnish/workspace'){dropNextSave=false;await api.handle(req,{writeHead(){},end(){res.destroy();}});return;}
  if(await api.handle(req,res))return;
  const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname.replace(/^\/$/,'/index.html'));
  if(!file.startsWith(root+path.sep)){res.writeHead(403).end();return;}
@@ -21,7 +23,7 @@ const server=http.createServer(async(req,res)=>{
  const settings=async()=>{if(!await page.locator('#storage-settings').isVisible())await page.locator('#fileMenu summary').click();await page.locator('#storage-settings').click();await page.locator('#storage-directory').waitFor();};
  try{
   await page.goto(base);await ready();const original=await page.evaluate(()=>state.furniture[0].cx);
-  await page.evaluate(()=>mutate(()=>state.furniture[0].cx+=25));await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);
+  dropNextSave=true;await page.evaluate(()=>mutate(()=>state.furniture[0].cx+=25));await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);
   assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original+25);
   await page.evaluate(()=>undo());await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original);
   await page.evaluate(()=>redo());await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original+25);
@@ -45,7 +47,7 @@ const server=http.createServer(async(req,res)=>{
   await filePage.goto(pathToFileURL(path.join(root,'index.html')).href);await filePage.locator('#repository-loading').waitFor({state:'hidden'});
   const fileX=await filePage.evaluate(()=>state.furniture[0].cx);await filePage.evaluate(()=>mutate(()=>state.furniture[0].cx+=17));await filePage.waitForFunction(()=>!savePending&&!saveErr&&savedAt>0);await filePage.reload();await filePage.locator('#repository-loading').waitFor({state:'hidden'});assert.equal(await filePage.evaluate(()=>state.furniture[0].cx),fileX+17);
   await filePage.locator('#fileMenu summary').click();await filePage.locator('#storage-settings').click();await filePage.screenshot({path:path.join(output,'file-offline.png')});assert.deepEqual(requests,[]);
-  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'PASS',checks:['HTTP autosave','undo redo','refresh','path migration','history download','full restore','damaged primary restore over divergent browser cache','390px','offline file autosave refresh without API'],errors},null,2));
+  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'PASS',fixtureBytes:Buffer.byteLength(C.text(seed)),checks:['HTTP autosave despite lost successful response','undo redo','refresh','path migration','history download','full restore','damaged primary restore over divergent browser cache','390px','offline file autosave refresh without API'],errors},null,2));
   console.log('PASS real browser local archive, location settings, downloads, restore, undo/redo/refresh, 390px and offline file://');
  }catch(e){await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});throw e;}
  finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

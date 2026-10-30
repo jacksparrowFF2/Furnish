@@ -3,8 +3,10 @@
  'use strict';
  const C=FurnishRepositoryCore,clone=v=>JSON.parse(JSON.stringify(v));
  async function request(route,method='GET',body){
-  const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),route==='/storage'&&method==='POST'?120000:15000);
+  const timeout=method==='GET'&&route==='/workspace'?60000:['PUT','POST'].includes(method)&&['/workspace','/storage','/restore'].includes(route)?120000:15000;
+  const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),timeout);
   try{const response=await fetch('/api/furnish'+route,{method,cache:'no-store',signal:abort.signal,headers:body?{'Content-Type':'application/json','X-Furnish-Request':'workspace-v1'}:{},...(body?{body:JSON.stringify(body)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error||'仓库服务不可用'),{status:response.status});return value;}
+  catch(e){if(e.name==='AbortError')throw Object.assign(Error('本地文件请求超时（'+timeout/1000+' 秒），请保留浏览器缓存并重试'),{code:'ETIMEDOUT'});throw e;}
   finally{clearTimeout(timer);}
  }
  async function fingerprint(value){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(C.text(value)));return Array.from(new Uint8Array(bytes),v=>v.toString(16).padStart(2,'0')).join('');}
