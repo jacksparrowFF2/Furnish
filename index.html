@@ -167,6 +167,8 @@
             <button class="btn chip on" data-ceiling-display="ghost" aria-pressed="true" title="俯视25%不透明度，仰视保留实体" data-en-title="25% opacity from above; solid from below" data-en="See-through">透视</button>
             <button class="btn chip" data-ceiling-display="hidden" aria-pressed="false" data-en="Hidden">隐藏</button>
           </div>
+          <label class="range"><span data-en="Horizontal FOV">水平视角</span> <input type="range" id="cameraFov" aria-label="水平视角 / Horizontal FOV" min="40" max="90" step="1" value="60"><span id="cameraFovValue">60°</span></label>
+          <p class="hint" data-en="60° natural · 75° wide · 90° extra wide. Walk eye height: 1.6 m. Portrait views limit vertical FOV to 75°. Wider views exaggerate depth.">60° 自然 · 75° 宽角 · 90° 广角。漫游视线高 1.6 m；竖屏垂直视角上限 75°。视角越宽，纵深越夸张。</p>
           <label class="range"><span data-en="Sun">日照</span> <input type="range" id="sun" min="7" max="18" step=".25" value="10"><span id="sunT">10:00</span></label>
         </div>
         <div class="showsec"><b data-en="Appearance">外观</b>
@@ -538,7 +540,15 @@ function computeCenter(){
   OY = Math.round((Math.min(...ys) + Math.max(...ys)) / 2 / 50) * 50;
 }
 computeCenter();
-const FOV = 45;
+let horizontalFov = FurnishNavigation.cameraFov();
+function updateProjection(){
+  camera.aspect = SW()/Math.max(1,SH());
+  const lens=FurnishNavigation.projection(horizontalFov,camera.aspect);
+  camera.fov=lens.vertical; camera.updateProjectionMatrix();
+  $('#cameraFov').value=horizontalFov;
+  $('#cameraFovValue').textContent=`${Math.round(lens.horizontal)}°`;
+}
+const framingScale = () => Math.tan(Math.PI/8)/Math.tan(camera.fov*Math.PI/360);
 const wx = x => (x - OX) / 1000, wz = y => (y - OY) / 1000, M = v => v / 1000;
 const SW = () => stage.clientWidth, SH = () => stage.clientHeight;
 const opt = {...FurnishDesign.sceneSettings(), mode:'orbit'};
@@ -578,7 +588,8 @@ function init(){
   host.appendChild(labelRenderer.domElement);
 
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(FOV, SW()/SH(), .05, 300);
+  camera = new THREE.PerspectiveCamera(45, SW()/SH(), .05, 300);
+  updateProjection();
   orbit = new OrbitControls(camera, renderer.domElement);
   FurnishNavigation.bindOrbit(renderer.domElement,()=>orbit);
   orbit.enableDamping = true; orbit.maxPolarAngle = Math.PI*.995; orbit.minDistance = 1.5; orbit.maxDistance = 45;
@@ -677,7 +688,7 @@ function init(){
   cv.addEventListener('dblclick', e => { clearTimeout(cabinetTap); if(opt.mode!=='orbit'||anim)return;const hit=pick(e);if(hit?.ceiling)return window.FurnishCeilingUI.selectObject(hit.ceiling,true);const id=hit?.fid||(ui.sel?.kind==='furn'?ui.sel.id:null);if(id)window.FurnishCabinetEditor.open(id); });
   new ResizeObserver(() => {
     renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH());
-    camera.aspect = SW()/SH(); camera.updateProjectionMatrix();
+    updateProjection();
     if(observationTarget&&active&&!anim)frameObservation();invalidate();
   }).observe(stage);
   bindUI();
@@ -1450,15 +1461,15 @@ const pose = (t, p) => ({t, p});
 // 与当前 2D 视口完全重合的正俯视位姿：透视相机在该高度下，地面可视高度 = 2D 视口高度
 function planPose(){
   const center=typeof drawingCenter==='function'?drawingCenter():{x:view.x0+SW()/2/view.s,y:view.y0+SH()/2/view.s},cx=center.x,cy=center.y,visH = SH()/view.s/1000;
-  const dist = visH / 2 / Math.tan(FOV/2*Math.PI/180), t = new THREE.Vector3(wx(cx), 0, wz(cy));
+  const dist = visH / 2 / Math.tan(camera.fov*Math.PI/360), t = new THREE.Vector3(wx(cx), 0, wz(cy));
   return pose(t, new THREE.Vector3(t.x, dist, t.z + 1e-4));
 }
 function isoFrom(P){
   const d = THREE.MathUtils.clamp(P.p.y, 5, 30), dir = new THREE.Vector3(.3, .82, .49).normalize();
   return pose(P.t.clone(), P.t.clone().addScaledVector(dir, d));
 }
-const isoWhole = () => pose(new THREE.Vector3(0, 0, 0), new THREE.Vector3(5.5, 15.5, 10));
-const topWhole = () => pose(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 19, 1e-4));
+const isoWhole = () => pose(new THREE.Vector3(0, 0, 0), new THREE.Vector3(5.5, 15.5, 10).multiplyScalar(framingScale()));
+const topWhole = () => pose(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 19, 1e-4).multiplyScalar(framingScale()));
 const curPose = () => pose(orbit.target.clone(), camera.position.clone());
 // 以目标点为中心做球坐标插值：镜头沿弧线倾斜环绕，而不是直线穿越
 function camTween(A, B, e){
@@ -1481,7 +1492,7 @@ function flyToBox(box){
   const t = new THREE.Vector3(wx((Math.min(...xs)+Math.max(...xs))/2), .6, wz((Math.min(...ys)+Math.max(...ys))/2));
   const size = M(Math.max(Math.max(...xs)-Math.min(...xs), Math.max(...ys)-Math.min(...ys)));
   const dir = camera.position.clone().sub(orbit.target).setY(0); if (dir.lengthSq() < .01) dir.set(.6, 0, .8); dir.normalize();
-  const dist = (size*1.3 + 2.2)/Math.min(1,camera.aspect);
+  const dist = (size*1.3 + 2.2)*framingScale()/Math.min(1,camera.aspect);
   flyTo(pose(t, new THREE.Vector3(t.x + dir.x*dist*.7, dist*1.05, t.z + dir.z*dist*.7)));
 }
 function focusSelection(){
@@ -1535,7 +1546,7 @@ function updateObservation(){
 /* ======================= 进入 / 退出 3D ======================= */
 async function enter(){
   init(); active = true;
-  renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH()); camera.aspect = SW()/SH(); camera.updateProjectionMatrix();
+  renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH()); updateProjection();
   sync(true);
   opt.mode = 'orbit'; orbit.enabled = false; showLabels(false);
   const A = planPose(), B = isoFrom(A);
@@ -1731,7 +1742,7 @@ function setMode(m){
     const ed = DOORS.find(d => d.entry), [rx0, ry0, rx1, ry1] = ed.rect;
     const cx = (rx0 + rx1)/2, cy = (ry0 + ry1)/2, [ox, oy] = ed.entryDirection || ed._base?.o || ed.o;
     camera.position.set(wx(cx - ox*500), 1.6+floorEye(wx(cx-ox*500),wz(cy-oy*500)), wz(cy - oy*500));
-    camera.lookAt(wx(cx + ox*2300), 1.5, wz(cy + oy*2300));
+    camera.lookAt(wx(cx + ox*2300), camera.position.y, wz(cy + oy*2300));
     $('#walkOverlay').style.display = 'flex';
     syncHint3d();
   } else {
@@ -1818,6 +1829,12 @@ function bindUI(){
   $('#vTop').onclick = () => { clearObservation();if (opt.mode === 'walk') setMode('orbit'); flyTo(topWhole()); };
   document.querySelectorAll('[data-ceiling-display]').forEach(b=>b.onclick=()=>{ui.ceilingMode=b.dataset.ceilingDisplay;saveUI();syncCeilingModeButtons();applyObservationLayers();invalidate();});
   syncCeilingModeButtons();
+  $('#cameraFov').oninput=e=>{
+    horizontalFov=FurnishNavigation.setCameraFov(+e.target.value);
+    fly=null;updateProjection();
+    if(observationTarget&&!anim)frameObservation();
+    invalidate();
+  };
   const remember=()=>{
     const settings=FurnishDesign.sceneSettings(opt);
     if(opt.mode==='walk')settings.cut=FurnishDesign.sceneSettings(state.scene3d).cut;
