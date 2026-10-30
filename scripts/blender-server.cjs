@@ -5,6 +5,10 @@ const LIMIT=256*1024*1024;
 const refinedProjects=require('./blender-project.cjs');
 function candidates(env=process.env,platform=process.platform){
  const list=[];if(env.FURNISH_BLENDER)list.push(env.FURNISH_BLENDER);
+ if(platform==='win32'){
+  const scoop=env.SCOOP||(env.USERPROFILE&&path.join(env.USERPROFILE,'scoop'));
+  if(scoop)list.push(path.join(scoop,'apps/blender/current/blender.exe'));
+ }
  if(platform==='win32'&&env.LOCALAPPDATA)list.push(path.join(env.LOCALAPPDATA,'Microsoft/WindowsApps/blender-launcher.exe'));
  for(const dir of (env.PATH||env.Path||'').split(path.delimiter).filter(Boolean))list.push(path.join(dir,platform==='win32'?'blender.exe':'blender'));
  if(platform==='win32')for(const base of [env.ProgramFiles&&path.join(env.ProgramFiles,'Blender Foundation'),env.LOCALAPPDATA&&path.join(env.LOCALAPPDATA,'Programs/Blender Foundation')].filter(Boolean)){

@@ -57,7 +57,7 @@ GPU 主要改善速度，不自动提高相同设置的画面质量。室内效�
 
 需要 Blender 4.2+；本次实际验证 Microsoft Store Blender 4.5.14 LTS。无需重装，不修改 WindowsApps 权限。
 
-服务优先读取 `FURNISH_BLENDER`，其次检查商店执行别名 `%LOCALAPPDATA%\Microsoft\WindowsApps\blender-launcher.exe`、PATH 的 `blender.exe` 及 Blender Foundation 常规安装目录。商店别名是系统重解析点，允许通过 `lstat` 识别，不能用 `existsSync/stat` 的失败推定未安装。安装位置随商店更新变化时无需重新填写包路径。
+服务优先读取显式 `FURNISH_BLENDER`，其次检查 Scoop 的实际程序（`%SCOOP%\apps\blender\current\blender.exe`，未配置 `SCOOP` 时使用 `%USERPROFILE%\scoop\apps\blender\current\blender.exe`），然后依次检查商店执行别名 `%LOCALAPPDATA%\Microsoft\WindowsApps\blender-launcher.exe`、PATH 的 `blender.exe` 及 Blender Foundation 常规安装目录。Scoop 缺失时自动回到商店等候选，显式覆盖保留最高优先级。2026-10-30在本机实测Scoop Blender 5.2.3 LTS后台启动和Python建模通过；这不表示所有旧资产／渲染任务均已重新验证新版兼容。商店别名是系统重解析点，允许通过 `lstat` 识别，不能用 `existsSync/stat` 的失败推定未安装。使用稳定的 `current`／执行别名路径，升级后无需硬编码版本目录。修改发现逻辑后需重启旧的本地服务才能加载新代码。
 
 自定义安装可在启动服务的 PowerShell 中设置：
 
