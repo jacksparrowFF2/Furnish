@@ -1,0 +1,23 @@
+[
+  {
+    "name": "front-frame",
+    "materials": [],
+    "indices": [
+      0
+    ]
+  },
+  {
+    "name": "side-1",
+    "materials": [],
+    "indices": [
+      0
+    ]
+  },
+  {
+    "name": "side--1",
+    "materials": [],
+    "indices": [
+      0
+    ]
+  }
+]

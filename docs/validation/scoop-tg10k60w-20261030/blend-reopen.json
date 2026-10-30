@@ -1,0 +1,25 @@
+{
+  "blender": "5.2.3 LTS",
+  "authoredSource": {
+    "parts": 47,
+    "singleMaterialOnEveryFace": true,
+    "motionParents": 1
+  },
+  "downloadedRenderBlend": {
+    "parts": 47,
+    "sizeMm": [
+      595.0,
+      560.0,
+      850.0
+    ],
+    "doorAlpha": 0.12,
+    "engine": "CYCLES",
+    "renderDevice": "GPU",
+    "samples": 32,
+    "resolution": [
+      800,
+      800
+    ]
+  },
+  "passed": true
+}

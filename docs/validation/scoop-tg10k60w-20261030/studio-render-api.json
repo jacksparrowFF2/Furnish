@@ -1,0 +1,29 @@
+{
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\validation\\scoop-tg10k60w-20261030-tiFS81\\studio-production.glb",
+  "job": {
+    "id": "70f4e0de-51dc-4bbd-b7cd-13f7b62fc9fe",
+    "state": "done",
+    "message": "渲染完成 · OPTIX",
+    "width": 800,
+    "height": 800,
+    "quality": "preview",
+    "device": "auto",
+    "source": "basic",
+    "camera": "source",
+    "renderInfo": null,
+    "renderDevice": {
+      "requested": "auto",
+      "type": "GPU",
+      "backend": "OPTIX",
+      "devices": [
+        "NVIDIA GeForce RTX 4070 Ti SUPER"
+      ],
+      "fallback": null
+    },
+    "created": "2026-10-30T01:59:50.281Z",
+    "image": "/api/furnish/blender/jobs/70f4e0de-51dc-4bbd-b7cd-13f7b62fc9fe/image",
+    "blend": "/api/furnish/blender/jobs/70f4e0de-51dc-4bbd-b7cd-13f7b62fc9fe/blend",
+    "scene": "/api/furnish/blender/jobs/70f4e0de-51dc-4bbd-b7cd-13f7b62fc9fe/scene"
+  }
+}

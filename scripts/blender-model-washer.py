@@ -71,7 +71,11 @@ for part in spec['parts']:
     center=position(part['center']);parent=parents.get(part['role']);obj.parent=parent;obj.location=tuple(center[i]-(parent.location[i] if parent else 0) for i in range(3))
     if q['id']=='washer-tg10k60w' and part['material']=='fascia':
         node=next(n for n in materials['fascia'].node_tree.nodes if n.type=='BSDF_PRINCIPLED');node.inputs['Metallic'].default_value=.25;node.inputs['Roughness'].default_value=.42
-    obj.data.materials.append(materials[part['material']]);obj['furnishStablePart']=file_id+'-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
+    # Boolean cutters can leave an empty slot in Blender 5.x. This product's
+    # declared single material must own every face before exporting the GLB.
+    obj.data.materials.clear();obj.data.materials.append(materials[part['material']])
+    for polygon in obj.data.polygons:polygon.material_index=0
+    obj['furnishStablePart']=file_id+'-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
 bpy.ops.wm.save_as_mainfile(filepath=str(out/(file_id+'-v1.blend')))
 bpy.ops.export_scene.gltf(filepath=str(out/(file_id+'-v1.glb')),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in args:

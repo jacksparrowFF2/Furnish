@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-30（Scoop兼容）：洗衣机作者脚本在布尔切割后重建单材质槽并统一面索引，兼容Blender5.2的空槽行为；发布契约保持严格，仅增强错误诊断。运行资产／模型／持久字段未改写，Scoop正式导出与OptiX渲染证据见[验证](validation/scoop-tg10k60w-20261030/README.md)。
+
 2026-10-30（逐扇铰链限位）：product-rules集中cabinetDoorLimits范围，cabinet-core按门段／门扇解析可选doorLimits；生产柜门当前姿态、运动板件最大角度与openingZones同源。柜体及厨房编辑器沿原草稿／mutate保存；包含逐扇限位的数据采用项目／工作区v37和独立恢复缓存，旧缺失不物化，已有脚本加载顺序保持。见[开启规则](CABINET-OPENING-3D.md)及[验收](validation/cabinet-leaf-limits-20261030/README.md)。
 
 2026-10-29（柏林单人沙发）：产品核心armchairProfile选择两款独立离线资产，armchair-model共用构造和程序材质，第一款几何保持；柏林新增28件直扶手／厚垫／腰枕生产网格、目录与SVG。沿现有实体、尺寸编辑、mutate及保存恢复，无新持久字段／格式。经典脚本同时验证服务和file，见[柏林契约](ARMCHAIR-YESWOOD-BERLIN.md)。

@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "parts": 47,
+  "dimensionsMm": [
+    595,
+    560,
+    850
+  ],
+  "floorBase": {
+    "z": 0,
+    "known": true,
+    "roomId": "studio"
+  },
+  "productionExporter": true,
+  "isolatedStudio": true
+}

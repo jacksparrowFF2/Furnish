@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "sourceRevision": "992f6971aca6a98737ea2a13c1b674e74a00e213",
+  "originalProductionAssetsPreserved": true,
+  "sourceAssetSha256": "4c9387a9b08660d42963b76123017f08df5e57ea56c00840f2693109bba6ddc7",
+  "materialRegression": {
+    "badExchangeRejected": true,
+    "missingMaterialDetected": true,
+    "correctedExchangeAccepted": true,
+    "positiveOutput": "PASS TG10K60W exchange materials: 47 named parts, valid assignments on every primitive, declared material and glass-only alpha"
+  },
+  "jobs": [
+    {
+      "job": "washer-tg10k60w-9jKjMD",
+      "parts": 47,
+      "passed": false,
+      "error": "Pilot requires one material per named part"
+    },
+    {
+      "job": "washer-tg10k60w-B5YRQY",
+      "parts": 47,
+      "passed": true,
+      "blender": "5.2.3 LTS",
+      "motions": 1
+    },
+    {
+      "job": "washer-tg10k60w-tLVVUY",
+      "parts": 47,
+      "passed": true,
+      "blender": "5.2.3 LTS",
+      "motions": 1
+    },
+    {
+      "job": "washer-tg10k60w-vnYFrE",
+      "parts": 47,
+      "passed": true,
+      "blender": "5.2.3 LTS"
+    }
+  ]
+}

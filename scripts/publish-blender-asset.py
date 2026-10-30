@@ -75,7 +75,7 @@ def publish(source, target, profile='se2', spec=None):
             raise ValueError('Missing or duplicate stable part: ' + obj.name)
         names.add(identity)
         if len(obj.data.materials) != 1:
-            raise ValueError('Pilot requires one material per named part')
+            raise ValueError('Pilot requires one material per named part: '+obj.name+' (slots: '+str(len(obj.data.materials))+')')
         node = next(n for n in obj.data.materials[0].node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
         if any(s.is_linked for s in node.inputs):
             raise ValueError('Bake node materials before publishing')

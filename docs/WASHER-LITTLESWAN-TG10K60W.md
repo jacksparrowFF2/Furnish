@@ -1,5 +1,7 @@
 # 小天鹅 TG10K60W · 10kg
 
+2026-10-30：Scoop Blender5.2.3LTS复建、导入Furnish、生产回读与正式OptiX渲染已验证，修复作者脚本的布尔空材质槽兼容问题。正式v2资产保持原文件，验证在独立副本进行；见[专项记录](validation/scoop-tg10k60w-20261030/README.md)。
+
 按用户提供的四张图片在 Blender 建模并导入 Furnish，新增独立 `washer_littleswan_tg10k60w`。默认洗衣机预览切换此款；旧通用 `washer` 及原方案保留，不批量改写用户数据。
 
 ## 资料与尺寸
