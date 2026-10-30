@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-30（两级目录）：catalog.navigation在既有browseLibrary之上派生产品大类／细类，保留原条目引用、原目录与历史查找／价格优先级。app按导航组展示并映射回原ci/ii选品键，分类只存在于libUI；用途／搜索／尺寸仍沿原matches，不新增持久字段或加载脚本。见[目录验收](validation/catalog-navigation-20261030/README.md)。
+
 2026-10-30（Scoop兼容）：洗衣机作者脚本在布尔切割后重建单材质槽并统一面索引，兼容Blender5.2的空槽行为；发布契约保持严格，仅增强错误诊断。运行资产／模型／持久字段未改写，Scoop正式导出与OptiX渲染证据见[验证](validation/scoop-tg10k60w-20261030/README.md)。
 
 2026-10-30（逐扇铰链限位）：product-rules集中cabinetDoorLimits范围，cabinet-core按门段／门扇解析可选doorLimits；生产柜门当前姿态、运动板件最大角度与openingZones同源。柜体及厨房编辑器沿原草稿／mutate保存；包含逐扇限位的数据采用项目／工作区v37和独立恢复缓存，旧缺失不物化，已有脚本加载顺序保持。见[开启规则](CABINET-OPENING-3D.md)及[验收](validation/cabinet-leaf-limits-20261030/README.md)。

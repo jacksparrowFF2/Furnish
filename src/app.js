@@ -633,16 +633,11 @@ function buildLib(){
   const q = libUI.q.trim().toLowerCase();
   let count=0;
   let html = catalogUnfiltered() ? recentsHTML() : '';
-  const preferred=window.FurnishCatalog?.preferredCategory();
-  libAll().map((c,ci)=>({c,ci})).sort((a,b)=>Number(b.c.cat===preferred)-Number(a.c.cat===preferred)).forEach(({c,ci}) => {
-    if (libUI.cat !== 'all' && libUI.cat !== c.cat) return;
-    if(libUI.collection==='custom'&&c.cat!==CUSTOM_CAT)return;
-    const cards = c.items.map((it, ii) => ({it, ii}))
-      .filter(({it}) => (libUI.collection!=='favorites'||catalogFavorites.has(FurnishCatalogData.itemKey(it)))&&FurnishCatalogData.matches(it,{query:q,maxWidth:Number($('#catalog-max-w')?.value),maxDepth:Number($('#catalog-max-d')?.value),use:libUI.use},{name:nm(it[1]),...((store.custom||[]).find(s=>s.id===it[7])||{})}))
-      .map(({it, ii}) => {count++;return itemCard(it, ci, ii);}).join('');
-    if (!cards) return;
-    html += `<h4>${nm(c.cat)}</h4><div class="lib-grid">${cards}</div>`;
-    if(c.cat==='柜体')html+=`<p class="hint">${tr('更多柜体款式：添加常用柜体后，打开「柜体详细设计」选择模板；宽深高也可自由调整。','More cabinet styles: add a cabinet, then choose a template in Cabinet designer. Width, depth and height are adjustable.')}</p>`;
+  const library=libAll(),keys=new Map(library.flatMap((c,ci)=>c.items.map((it,ii)=>[it,[ci,ii]]))),preferred=window.FurnishCatalog?.preferredCategory(),preferredItems=new Set(library.find(c=>c.cat===preferred)?.items||[]);
+  const sections=catalogNavigation(library).flatMap(g=>g.children.filter(c=>libUI.cat==='all'||libUI.cat===g.id||libUI.cat===c.id).map(c=>({...c,heading:tr(g.name,g.en)+' · '+tr(c.name,c.en)})));
+  sections.sort((a,b)=>Number(b.items.some(it=>preferredItems.has(it)))-Number(a.items.some(it=>preferredItems.has(it)))).forEach(c=>{
+   const cards=c.items.filter(it=>FurnishCatalogData.matches(it,{query:q,maxWidth:Number($('#catalog-max-w')?.value),maxDepth:Number($('#catalog-max-d')?.value),use:libUI.use},{name:nm(it[1]),...((store.custom||[]).find(s=>s.id===it[7])||{})})).map(it=>{count++;return itemCard(it,...keys.get(it));}).join('');
+   if(cards)html+=`<h4>${esc(c.heading)}</h4><div class="lib-grid">${cards}</div>`;
   });
   $('#catalog-result')?.replaceChildren(document.createTextNode(tr(`${count} 个条目` ,`${count} items`)));
   $('#lib').innerHTML = (html || `<div class="hint catalog-empty"><b>${tr('没有匹配的家具', 'No matching furniture')}</b><p>${tr(libUI.collection==='favorites'?'点击条目上的爱心，收藏常用家具；收藏保存在本机。':libUI.collection==='custom'?'可用右上角“自定义”创建自己的家具，或放宽筛选条件。':'试试其他关键词，或清除分类、用途与尺寸筛选。',libUI.collection==='favorites'?'Use the heart on an item to save it on this device.':libUI.collection==='custom'?'Create an item with Custom, or clear the filters.':'Try other keywords or clear the filters.')}</p><button class="btn outline" data-catalog-reset>${tr('清除筛选','Clear filters')}</button></div>`) +
@@ -657,14 +652,14 @@ function buildLib(){
   document.querySelectorAll('#lib [data-favorite]').forEach(b=>b.onclick=()=>toggleCatalogFavorite(itemOf(b.closest('.item'))));
   document.querySelectorAll('#lib [data-catalog-details]').forEach(b=>b.onclick=()=>window.FurnishCatalog?.details(itemOf(b.closest('.item'))));
   $('#lib [data-catalog-reset]')?.addEventListener('click',()=>{resetCatalogFilters();buildCats();buildLib();});
-  if($('#catalog-filter-label'))$('#catalog-filter-label').textContent=libUI.cat==='all'?tr('分类与尺寸筛选','Category & size filters'):nm(libUI.cat);
+  if($('#catalog-filter-label'))$('#catalog-filter-label').textContent=catalogCategoryLabel();
   if($('#catalog-use')){const value=libUI.use;$('#catalog-use').innerHTML=`<option value="all">${tr('全部用途','All uses')}</option>`+FurnishCatalogData.uses.map(([id,zh,en])=>`<option value="${id}">${tr(zh,en)}</option>`).join('');$('#catalog-use').value=value;}
   document.querySelectorAll('#lib [data-cdel]').forEach(b => b.onclick = e => {
     e.stopPropagation();
     openDialog({title:tr('删除家具库条目','Delete catalog item'),body:'<p>'+tr('已摆放家具会保留。可识别来源的家具也会保留原始规格与参考价格。','Placed furniture and identified original specifications are retained.')+'</p>',actions:[{label:tr('取消','Cancel')},{label:tr('删除库条目','Delete catalog item'),cls:'danger',fn:()=>{
       const c=store.custom.find(c=>c.id===b.dataset.cdel);
       const retain=work=>{for(const f of work?.furniture||[])if(FurnishDesign.catalogSource(f,store.custom)===c){f.catalogId=c.id;f.catalogSnapshot=FurnishDesign.catalogSnapshot(c);}};
-      if(c){[state,...Object.values(store.work||{}),...(store.designs||[]).map(d=>d.work),...hist.map(h=>h.data)].forEach(retain);for(const stack of [undoStack,redoStack])for(let i=0;i<stack.length;i++){const work=JSON.parse(stack[i]);retain(work);stack[i]=JSON.stringify(work);}persistHistory();}store.custom=store.custom.filter(c=>c.id!==b.dataset.cdel);save();if(!store.custom.length&&libUI.cat===CUSTOM_CAT)libUI.cat='all';buildCats();buildLib();return true;
+      if(c){[state,...Object.values(store.work||{}),...(store.designs||[]).map(d=>d.work),...hist.map(h=>h.data)].forEach(retain);for(const stack of [undoStack,redoStack])for(let i=0;i<stack.length;i++){const work=JSON.parse(stack[i]);retain(work);stack[i]=JSON.stringify(work);}persistHistory();}store.custom=store.custom.filter(c=>c.id!==b.dataset.cdel);save();buildCats();buildLib();return true;
     }}]});
   });
 }
@@ -844,7 +839,7 @@ let catalogFavorites=(()=>{try{const rows=JSON.parse(localStorage.getItem(CATALO
 function toggleCatalogFavorite(it){
  const key=FurnishCatalogData.itemKey(it),next=new Set(catalogFavorites);if(next.has(key))next.delete(key);else next.add(key);
  try{localStorage.setItem(CATALOG_FAVORITES_KEY,JSON.stringify([...next]));}catch{toast(tr('收藏保存失败，请检查浏览器存储空间。','Could not save favorites. Check browser storage.'));return;}
- catalogFavorites=next;buildLib();
+ catalogFavorites=next;buildCats();buildLib();
 }
 function catalogUnfiltered(){return libUI.collection==='all'&&libUI.cat==='all'&&libUI.use==='all'&&!libUI.q.trim()&&!$('#catalog-max-w')?.value&&!$('#catalog-max-d')?.value;}
 function resetCatalogFilters(){libUI.cat='all';libUI.use='all';libUI.q='';$('#libSearch').value='';for(const id of ['catalog-max-w','catalog-max-d'])if($('#'+id))$('#'+id).value='';}
@@ -862,11 +857,21 @@ function pushRecent(it){
   try{localStorage.setItem(RECENT_KEY,JSON.stringify(recents));}catch(e){}
   if(catalogUnfiltered())buildLib();
 }
+function catalogNavigation(source=libAll()){
+ const library=source.map(c=>({...c,items:c.items.filter(it=>libUI.collection==='custom'?!!it[7]:libUI.collection==='favorites'?catalogFavorites.has(FurnishCatalogData.itemKey(it)):true)}));
+ return FurnishCatalogData.navigation(library);
+}
+function catalogCategoryLabel(){
+ for(const g of catalogNavigation()){if(g.id===libUI.cat)return tr(g.name,g.en);for(const c of g.children)if(c.id===libUI.cat)return tr(g.name,g.en)+' / '+tr(c.name,c.en);}
+ return tr('分类与尺寸筛选','Category & size filters');
+}
 function buildCats(){
-  const cats = ['all', ...libAll().map(c => c.cat)];
-  if (!cats.includes(libUI.cat)) libUI.cat = 'all';
-  $('#libCats').innerHTML = cats.map(c => `<button class="btn ${libUI.cat === c ? 'on' : ''}" aria-pressed="${libUI.cat===c}" data-cat="${c}">${c === 'all' ? tr('全部', 'All') : nm(c)}</button>`).join('');
-  document.querySelectorAll('#libCats [data-cat]').forEach(b => b.onclick = () => { libUI.cat = b.dataset.cat; buildCats(); buildLib(); });
+ const groups=catalogNavigation(),ids=['all',...groups.flatMap(g=>[g.id,...g.children.map(c=>c.id)])];
+ if(!ids.includes(libUI.cat))libUI.cat='all';
+ const count=g=>g.children.reduce((n,c)=>n+c.items.length,0),owner=groups.find(g=>g.id===libUI.cat||g.children.some(c=>c.id===libUI.cat));
+ const button=(id,label,n,active=libUI.cat===id)=>`<button type="button" class="btn ${active?'on':''}" aria-pressed="${active}" data-cat="${id}"><span>${esc(label)}</span><small>${n}</small></button>`;
+ $('#libCats').innerHTML=button('all',tr('全部产品','All products'),groups.reduce((n,g)=>n+count(g),0))+`<div class="catalog-parent-grid">${groups.map(g=>button(g.id,tr(g.name,g.en),count(g),g===owner)).join('')}</div>`+(owner&&owner.children.length>1?`<div class="catalog-child-group"><div>${esc(tr(owner.name,owner.en))}</div>${button(owner.id,tr('全部','All')+' · '+tr(owner.name,owner.en),count(owner))}<div class="catalog-child-grid">${owner.children.map(c=>button(c.id,tr(c.name,c.en),c.items.length)).join('')}</div></div>`:'');
+ document.querySelectorAll('#libCats [data-cat]').forEach(b=>b.onclick=()=>{libUI.cat=b.dataset.cat;buildCats();buildLib();if(narrow()&&b.dataset.cat.includes('/'))$('#catalog-filters').open=false;});
 }
 
 

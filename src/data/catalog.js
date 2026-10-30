@@ -213,6 +213,39 @@ function browseLibrary(){
  // Keep the familiar category order, even when an early item moved to Pets.
  return [...LIB.map(c=>categoryNames[c.cat]||c.cat)].filter((c,i,a)=>a.indexOf(c)===i&&groups.has(c)).map(cat=>({cat,items:groups.get(cat)}));
 }
+// Navigation is a derived product taxonomy; source groups still serve legacy lookup.
+const navigationGroups=[
+ {id:'furniture',name:'家具',en:'Furniture',children:[['beds','床','Beds'],['sofas','沙发','Sofas'],['tables','桌台','Tables'],['seating','椅凳','Seating']]},
+ {id:'cabinetry',name:'柜体',en:'Cabinetry',children:[['storage','收纳柜','Storage'],['custom','定制柜','Custom cabinets'],['vanity','浴室柜','Vanities'],['enclosures','管道包覆','Pipe enclosures']]},
+ {id:'appliances',name:'家电与设备',en:'Appliances',children:[['cooking','厨房电器','Kitchen appliances'],['laundry','洗烘设备','Washers & dryers'],['climate','空调与温控','Climate'],['living','生活电器','Home appliances'],['services','安装设备','Service equipment']]},
+ {id:'decor',name:'软装与灯饰',en:'Decor & lighting',children:[['lighting','灯具','Lighting'],['textiles','窗饰与布艺','Textiles'],['accessories','绿植与装饰','Accessories']]},
+ {id:'fixtures',name:'门窗与卫浴',en:'Doors & bathroom',children:[['openings','门窗隔断','Doors & windows'],['sanitary','卫浴器具','Bathroom fixtures'],['sinks','水槽与台盆','Sinks']]},
+ {id:'other',name:'其他用品',en:'Other items',children:[['pets','宠物用品','Pets'],['leisure','运动与乐器','Sports & music'],['drying','晾晒用品','Drying racks'],['custom','我的家具','My items'],['general','其他','Other']]},
+ {id:'auxiliary',name:'辅助工具',en:'Layout tools',children:[['blocks','占位体','Placeholders']]}
+];
+const navigationTypeGroups={
+ 'appliances/cooking':['stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g'],
+ 'appliances/laundry':['washer','washer_littleswan_tg10k60w','dryer'],
+ 'appliances/climate':['aircon','aircon_midea_ultra_2hp','acwall','waterheater','waterheater_flat','bath_heater_aopu_se2','bath_heater_300x600'],
+ 'appliances/services':['heating_manifold','electrical_box_strong','electrical_box_weak'],
+ 'decor/lighting':['floorlamp','pendant','panel_light_300x600','downlight_philips_dl269']
+};
+function navigationCategory(it,cat){
+ if(it[7])return 'other/custom';
+ if(it[0]==='block')return 'auxiliary/blocks';
+ if(it[0]==='pipebox')return 'cabinetry/enclosures';
+ if(it[0]==='vanity')return 'cabinetry/vanity';
+ if(['counter','kitchenwall','ovencol'].includes(it[0]))return 'cabinetry/custom';
+ if(['ksink','sink_arrow_680','sink_arrow_750'].includes(it[0]))return 'fixtures/sinks';
+ if(it[0]==='dryingrack')return 'other/drying';
+ for(const [id,types]of Object.entries(navigationTypeGroups))if(types.includes(it[0]))return id;
+ return {'床':'furniture/beds','沙发':'furniture/sofas','桌 · 台':'furniture/tables','椅 · 凳':'furniture/seating','柜体':'cabinetry/storage','电器':'appliances/living','灯具':'decor/lighting','布艺':'decor/textiles','装饰':'decor/accessories','门窗 · 隔断':'fixtures/openings','卫浴 · 水槽':'fixtures/sanitary','宠物':'other/pets','运动 · 乐器':'other/leisure'}[cat]||'other/general';
+}
+function navigation(library=browseLibrary()){
+ const buckets=new Map();
+ for(const c of library)for(const it of c.items){const id=navigationCategory(it,c.cat);if(!buckets.has(id))buckets.set(id,[]);buckets.get(id).push(it);}
+ return navigationGroups.map(g=>({...g,children:g.children.map(([key,name,en])=>({id:g.id+'/'+key,name,en,items:buckets.get(g.id+'/'+key)||[]})).filter(c=>c.items.length)})).filter(g=>g.children.length);
+}
 const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
 const useTypes={
  living:['armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
@@ -240,7 +273,7 @@ function matches(it,{query='',maxWidth=0,maxDepth=0,use='all'}={},extra={}){
  const text=[products.kind(it[0]),it[1],...itemUses(it).map(id=>uses.find(u=>u[0]===id).slice(1).join(' ')),identity.brand,identity.model,extra.name,extra.brand,extra.model].join(' ').toLowerCase();
  return query.trim().toLowerCase().split(/\s+/).every(word=>text.includes(word))&&(!maxWidth||it[2]<=maxWidth)&&(!maxDepth||it[3]<=maxDepth)&&(use==='all'||itemUses(it).includes(use));
 }
-const api={materials:MATS,library:LIB,typePrices:TYPE_PRICE,findItem,browseLibrary,uses,itemUses,itemKey,itemHeight,matches};
+const api={materials:MATS,library:LIB,typePrices:TYPE_PRICE,findItem,browseLibrary,navigation,uses,itemUses,itemKey,itemHeight,matches};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishCatalogData=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

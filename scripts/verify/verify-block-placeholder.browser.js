@@ -5,7 +5,7 @@ async (page,verification)=>{
   p.on('pageerror',e=>errors.push(e.message));const check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib').waitFor();
   await p.locator('#catalog-filters summary').click();
-  await p.locator('#libCats [data-cat="占位体"]').click();
+  await p.locator('#libCats [data-cat="auxiliary"]').click();
   await p.locator('#lib').getByText('方块占位体',{exact:true}).first().click();
   const id=await p.evaluate(()=>selIds()[0]);
   check(await p.evaluate(id=>{const f=getF(id);return f.type==='block'&&f.w===1000&&f.d===1000&&f.h===1000;},id),'create');

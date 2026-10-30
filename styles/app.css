@@ -1003,3 +1003,19 @@ button.replacement-product:focus-visible{outline:2px solid var(--accent);outline
 
 #libTools #libCats .btn{font-size:11px;font-weight:500;padding:5px 9px}
 #libTools #libCats .btn[aria-pressed='true']{background:var(--accent-soft);color:var(--accent-ink);font-weight:650}
+
+/* Two levels keep product kinds distinct from room-use filters. */
+#libTools #libCats{display:grid;gap:9px}
+#libTools #libCats .btn{display:flex;align-items:center;justify-content:space-between;gap:5px;text-align:left;min-width:0;min-height:33px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-size:11px;line-height:1.4}
+#libTools #libCats .btn>span{min-width:0;overflow-wrap:anywhere}
+#libTools #libCats .btn>small{font:10px var(--mono);color:var(--muted);flex:none;font-variant-numeric:tabular-nums}
+#libTools #libCats .btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent-soft);color:var(--accent-ink)}
+#libTools #libCats .btn[aria-pressed="true"]>small{color:var(--accent-ink)}
+.catalog-parent-grid,.catalog-child-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+#libTools #libCats [data-cat="auxiliary"]{grid-column:1/-1;min-height:29px;background:var(--soft);color:var(--muted);font-size:10px}
+#libTools #libCats [data-cat="auxiliary"][aria-pressed="true"]{color:var(--accent-ink);background:var(--accent-soft)}
+.catalog-child-group{display:grid;gap:6px;padding-top:10px;border-top:1px solid var(--line)}
+.catalog-child-group>div:first-child{font-size:10px;color:var(--muted);padding:0 2px 2px;font-weight:600}
+#libTools #libCats .catalog-child-grid .btn{font-size:10px;background:var(--soft);border-color:transparent;min-height:31px}
+#libTools #libCats .catalog-child-grid .btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink);border-color:var(--accent)}
+#libTools #libCats .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
