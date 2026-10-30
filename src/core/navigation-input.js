@@ -47,6 +47,36 @@
   const vertical=Math.min(75,2*Math.atan(Math.tan(lens(horizontal)*Math.PI/360)/a)*180/Math.PI);
   return {vertical,horizontal:2*Math.atan(Math.tan(vertical*Math.PI/360)*a)*180/Math.PI};
  }
- const api={wheel,panBox,bindOrbit,setMode,getMode:()=>mode,cameraFov,setCameraFov,projection};
+ const calibrationKey='furnish-camera-calibration';let calibration=null;
+ // Store millimetres per device pixel: devicePixelRatio then accounts for OS scale
+ // and browser zoom. Never infer a display's physical dimensions from CSS inches.
+ function validCalibration(value){
+  if(!value||typeof value!=='object'||typeof value.enabled!=='boolean')return null;
+  const {mmPerPixel,distanceMm}=value;
+  if(!Number.isFinite(mmPerPixel)||mmPerPixel<.01||mmPerPixel>5||!Number.isFinite(distanceMm)||distanceMm<100||distanceMm>5000)return null;
+  return {enabled:value.enabled,mmPerPixel,distanceMm};
+ }
+ try{calibration=validCalibration(JSON.parse(root.localStorage?.getItem(calibrationKey)||'null'));}catch(e){}
+ function cameraCalibration(){return calibration?{...calibration}:null;}
+ function setCameraCalibration(value){
+  const next=validCalibration(value);if(value!==null&&!next)throw Error('Invalid camera calibration');
+  calibration=next;try{if(next)root.localStorage?.setItem(calibrationKey,JSON.stringify(next));else root.localStorage?.removeItem(calibrationKey);}catch(e){}
+  return cameraCalibration();
+ }
+ function calibrateCamera({widthMm,pixels,distanceMm}){
+  if(!Number.isFinite(widthMm)||widthMm<=0||!Number.isFinite(pixels)||pixels<=0)throw Error('Invalid display dimensions');
+  const next=validCalibration({enabled:true,mmPerPixel:widthMm/pixels,distanceMm});
+  if(!next)throw Error('Invalid camera calibration');return next;
+ }
+ function calibratedProjection(value,width,height,pixelRatio=1){
+  const c=validCalibration(value);
+  if(!c?.enabled||![width,height,pixelRatio].every(n=>Number.isFinite(n)&&n>0))return null;
+  const widthMm=width*pixelRatio*c.mmPerPixel,heightMm=height*pixelRatio*c.mmPerPixel;
+  const horizontal=2*Math.atan(widthMm/(2*c.distanceMm))*180/Math.PI,vertical=2*Math.atan(heightMm/(2*c.distanceMm))*180/Math.PI;
+  // Invalid/extreme setups must not silently masquerade as an exact calibration.
+  if(Math.min(horizontal,vertical)<1||Math.max(horizontal,vertical)>150)return null;
+  return {horizontal,vertical,widthMm,heightMm};
+ }
+ const api={wheel,panBox,bindOrbit,setMode,getMode:()=>mode,cameraFov,setCameraFov,projection,cameraCalibration,setCameraCalibration,calibrateCamera,calibratedProjection};
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishNavigation=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -169,6 +169,35 @@
           </div>
           <label class="range"><span data-en="Horizontal FOV">水平视角</span> <input type="range" id="cameraFov" aria-label="水平视角 / Horizontal FOV" min="40" max="90" step="1" value="60"><span id="cameraFovValue">60°</span></label>
           <p class="hint" data-en="60° natural · 75° wide · 90° extra wide. Walk eye height: 1.6 m. Portrait views limit vertical FOV to 75°. Wider views exaggerate depth.">60° 自然 · 75° 宽角 · 90° 广角。漫游视线高 1.6 m；竖屏垂直视角上限 75°。视角越宽，纵深越夸张。</p>
+          <details id="cameraCalibration"><summary data-en="Calibrate walk FOV">校准漫游视角</summary>
+            <form id="cameraCalibrationForm">
+              <p class="hint" data-en="Sit facing the center of the 3D canvas. Measure eye-to-screen distance. Calibration applies only to walk mode and is saved on this device.">请正对 3D 画布中心坐好，测量眼睛到屏幕的距离。校准仅用于漫游，保存在本机。</p>
+              <div class="chiprow" role="group" aria-label="常用屏幕预设 / Display presets">
+                <button class="btn" type="button" data-camera-screen="24">24″</button>
+                <button class="btn" type="button" data-camera-screen="27">27″</button>
+                <button class="btn" type="button" data-camera-screen="6.5">6.5″</button>
+              </div>
+              <label class="range"><span data-en="Preset aspect ratio">预设长宽比</span><select id="cameraScreenAspect"><option value="1.7777777777777777">16:9</option><option value="1.6">16:10</option><option value="0.45" data-en="Phone 20:9 (example)">手机 20:9（示例）</option><option value="0.46153846153846156" data-en="Phone 19.5:9">手机 19.5:9</option></select></label>
+              <p class="hint" data-en="Presets assume the listed aspect ratio: desktop distance 50–70 cm (starts at 60), phone 15–25 cm (starts at 20). Check your actual aspect ratio and resolution, or measure the ruler.">预设按标注的长宽比计算：显示器眼距 50–70 cm（先填 60），手机 15–25 cm（先填 20）。请核对实际长宽比与分辨率，或改用实测标尺。</p>
+              <label class="range"><span data-en="Method">方式</span><select id="cameraCalibrationMethod"><option value="screen" data-en="Screen dimensions">屏幕参数</option><option value="ruler" data-en="Measure ruler">实测标尺</option><option value="saved" id="cameraSavedScale" disabled data-en="Saved scale; change distance">已有校准，只改眼距</option></select></label>
+              <div id="cameraScreenFields">
+                <label class="range"><span data-en="Visible screen width (mm)">屏幕可视宽度 mm</span><input id="cameraScreenWidth" type="number" min="50" max="5000" step="any" placeholder="597" required></label>
+                <label class="range"><span data-en="Screen horizontal resolution (px)">屏幕横向分辨率 px</span><input id="cameraScreenPixels" type="number" min="320" max="20000" step="1" placeholder="2560" required></label>
+                <p class="hint" data-en="Use the full illuminated screen width, excluding its frame, and horizontal resolution from system display settings. Values shown are examples.">填写整个屏幕发光区域宽度（不含边框），以及系统显示设置中的横向分辨率。框内数字仅为示例。</p>
+              </div>
+              <div id="cameraRulerFields" hidden>
+                <div id="cameraPhysicalRuler" style="width:200px;max-width:100%;height:12px;border:solid currentColor;border-width:0 1px 2px;margin:12px 0" aria-label="校准标尺 / Calibration ruler"></div>
+                <label class="range"><span data-en="Measured ruler length (mm)">标尺实测长度 mm</span><input id="cameraRulerMm" type="number" min="1" max="1000" step="any" disabled></label>
+                <p class="hint" data-en="Measure the line above with a physical ruler, from its left edge to its right edge.">用实体尺测量上方线段从左边到右边的实际长度。</p>
+              </div>
+              <label class="range"><span data-en="Eye-to-screen distance (mm)">眼睛到屏幕 mm</span><input id="cameraEyeDistance" type="number" min="100" max="5000" step="any" placeholder="600" required></label>
+              <div class="chiprow" id="cameraDistancePresets" role="group" aria-label="观看距离 / Viewing distance"></div>
+              <p class="hint" id="cameraCalibrationPreview" aria-live="polite"></p>
+              <div class="chiprow"><button class="btn" type="submit" data-en="Apply calibration">应用校准</button><button class="btn" type="button" id="cameraCalibrationToggle" data-en="Use manual FOV">使用手动视角</button></div>
+            </form>
+            <p class="hint" id="cameraCalibrationStatus" role="status" aria-live="polite"></p>
+            <p class="hint" data-en="A calibrated FOV may be much narrower than a game view. Canvas resize and page zoom are accounted for; do not pinch-magnify the page. Recalibrate after changing displays or display resolution. This matches a fixed central viewpoint, without head tracking or binocular depth.">校准视角可能比游戏视角窄很多。画布大小和页面缩放会自动换算，请勿用手势放大页面；更换显示器或系统分辨率后请重新校准。按正对画布中心的固定视点计算，不含头部跟踪与双眼立体效果。</p>
+          </details>
           <label class="range"><span data-en="Sun">日照</span> <input type="range" id="sun" min="7" max="18" step=".25" value="10"><span id="sunT">10:00</span></label>
         </div>
         <div class="showsec"><b data-en="Appearance">外观</b>
@@ -540,13 +569,20 @@ function computeCenter(){
   OY = Math.round((Math.min(...ys) + Math.max(...ys)) / 2 / 50) * 50;
 }
 computeCenter();
-let horizontalFov = FurnishNavigation.cameraFov();
+let horizontalFov = FurnishNavigation.cameraFov(),projectionPixelRatio=0;
 function updateProjection(){
+  projectionPixelRatio=devicePixelRatio;
   camera.aspect = SW()/Math.max(1,SH());
-  const lens=FurnishNavigation.projection(horizontalFov,camera.aspect);
+  const calibration=FurnishNavigation.cameraCalibration(),physical=opt.mode==='walk'&&calibration?.enabled?FurnishNavigation.calibratedProjection(calibration,SW(),SH(),devicePixelRatio):null;
+  const lens=physical||FurnishNavigation.projection(horizontalFov,camera.aspect);
   camera.fov=lens.vertical; camera.updateProjectionMatrix();
   $('#cameraFov').value=horizontalFov;
-  $('#cameraFovValue').textContent=`${Math.round(lens.horizontal)}°`;
+  $('#cameraFov').disabled=!!physical;
+  $('#cameraFovValue').textContent=`${lens.horizontal.toFixed(1)}°`;
+  $('#cameraCalibrationToggle').textContent=calibration?.enabled?tr('使用手动视角','Use manual FOV'):tr('启用已有校准','Enable saved calibration');
+  $('#cameraCalibrationToggle').disabled=!calibration;
+  $('#cameraSavedScale').disabled=!calibration;
+  $('#cameraCalibrationStatus').textContent=physical?tr(`校准中：眼距 ${calibration.distanceMm} mm；画布 ${physical.widthMm.toFixed(0)} × ${physical.heightMm.toFixed(0)} mm；水平 ${lens.horizontal.toFixed(1)}°，垂直 ${lens.vertical.toFixed(1)}°。`,`Calibrated: distance ${calibration.distanceMm} mm; canvas ${physical.widthMm.toFixed(0)} × ${physical.heightMm.toFixed(0)} mm; H ${lens.horizontal.toFixed(1)}°, V ${lens.vertical.toFixed(1)}°.`):calibration?.enabled?(opt.mode==='walk'?tr('校准范围无效，暂用手动视角；请检查参数。','Calibration out of range; using manual FOV. Check the inputs.'):tr('校准已启用，进入漫游后生效。','Calibration enabled; applies in walk mode.')):tr('当前使用手动视角。','Using manual FOV.');
 }
 const framingScale = () => Math.tan(Math.PI/8)/Math.tan(camera.fov*Math.PI/360);
 const wx = x => (x - OX) / 1000, wz = y => (y - OY) / 1000, M = v => v / 1000;
@@ -1546,6 +1582,7 @@ function updateObservation(){
 /* ======================= 进入 / 退出 3D ======================= */
 async function enter(){
   init(); active = true;
+  opt.mode = 'orbit';
   renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH()); updateProjection();
   sync(true);
   opt.mode = 'orbit'; orbit.enabled = false; showLabels(false);
@@ -1734,6 +1771,7 @@ function setMode(m){
   if (anim) return;
   clearObservation();
   opt.mode = m; syncModeBtns();
+  updateProjection();
   if (m === 'walk'){
     window.select(null);
     sync();syncCutBtns();
@@ -1835,6 +1873,69 @@ function bindUI(){
     if(observationTarget&&!anim)frameObservation();
     invalidate();
   };
+  const calibrationChanged=()=>{fly=null;updateProjection();invalidate();};
+  const readCalibration=()=>{
+    if($('#cameraCalibrationMethod').value==='saved'){
+      const value=FurnishNavigation.cameraCalibration();if(!value)throw Error('No saved calibration');
+      return {...value,enabled:true,distanceMm:Number($('#cameraEyeDistance').value)};
+    }
+    const ruler=$('#cameraCalibrationMethod').value==='ruler',widthMm=Number($(ruler?'#cameraRulerMm':'#cameraScreenWidth').value),pixels=ruler?$('#cameraPhysicalRuler').getBoundingClientRect().width*devicePixelRatio:Number($('#cameraScreenPixels').value),distanceMm=Number($('#cameraEyeDistance').value);
+    return FurnishNavigation.calibrateCamera({widthMm,pixels,distanceMm});
+  };
+  const previewCalibration=()=>{
+    const output=$('#cameraCalibrationPreview');
+    try{
+      const value=readCalibration(),lens=FurnishNavigation.calibratedProjection(value,SW(),SH(),devicePixelRatio);
+      if(!lens)throw Error('Invalid projection');
+      output.textContent=tr(`待应用：当前画布水平 ${lens.horizontal.toFixed(1)}°、垂直 ${lens.vertical.toFixed(1)}°。`,`Preview: current canvas H ${lens.horizontal.toFixed(1)}°, V ${lens.vertical.toFixed(1)}°. Not applied yet.`);
+    }catch(error){output.textContent=tr('请填写观看距离和屏幕分辨率，或实测标尺；预设不会自动应用。','Enter distance and screen resolution, or measure the ruler. Presets are not applied automatically.');}
+  };
+  const distancePresets=phone=>{
+    $('#cameraDistancePresets').replaceChildren(...(phone?[150,200,250]:[500,600,700]).map(mm=>{
+      const button=document.createElement('button');button.className='btn';button.type='button';button.textContent=`${mm/10} cm`;button.dataset.cameraDistance=mm;
+      button.onclick=()=>{$('#cameraEyeDistance').value=mm;previewCalibration();};return button;
+    }));
+  };
+  distancePresets(false);
+  $('#cameraCalibrationMethod').onchange=()=>{
+    const ruler=$('#cameraCalibrationMethod').value==='ruler',screen=$('#cameraCalibrationMethod').value==='screen';
+    $('#cameraScreenFields').hidden=!screen;$('#cameraRulerFields').hidden=!ruler;
+    for(const id of ['cameraScreenWidth','cameraScreenPixels']){$('#'+id).disabled=!screen;$('#'+id).required=screen;}
+    $('#cameraRulerMm').disabled=!ruler;$('#cameraRulerMm').required=ruler;
+    previewCalibration();
+  };
+  let presetDiagonal=null;
+  const applyDisplayPreset=()=>{
+    if(!presetDiagonal)return;
+    const diagonal=presetDiagonal,aspect=+$('#cameraScreenAspect').value,phone=diagonal<10;
+    $('#cameraCalibrationMethod').value='screen';$('#cameraCalibrationMethod').onchange();
+    $('#cameraScreenWidth').value=(diagonal*25.4*aspect/Math.sqrt(1+aspect*aspect)).toFixed(1);
+    $('#cameraScreenPixels').value='';$('#cameraEyeDistance').value=phone?200:600;
+    distancePresets(phone);previewCalibration();
+  };
+  document.querySelectorAll('[data-camera-screen]').forEach(button=>button.onclick=()=>{
+    presetDiagonal=+button.dataset.cameraScreen;
+    const ratio=$('#cameraScreenAspect');
+    if(presetDiagonal<10&&+ratio.value>1)ratio.value='0.45';
+    if(presetDiagonal>=10&&+ratio.value<1)ratio.value='1.7777777777777777';
+    applyDisplayPreset();
+  });
+  $('#cameraScreenAspect').onchange=applyDisplayPreset;
+  $('#cameraCalibrationForm').oninput=previewCalibration;
+  const savedCalibration=FurnishNavigation.cameraCalibration();
+  if(savedCalibration){$('#cameraEyeDistance').value=savedCalibration.distanceMm;distancePresets(savedCalibration.distanceMm<300);$('#cameraCalibrationMethod').value='saved';$('#cameraCalibrationMethod').onchange();}
+  $('#cameraCalibrationForm').onsubmit=e=>{
+    e.preventDefault();
+    try{
+      const value=readCalibration();
+      if(!FurnishNavigation.calibratedProjection(value,SW(),SH(),devicePixelRatio))throw Error('Invalid projection');
+      FurnishNavigation.setCameraCalibration(value);calibrationChanged();$('#cameraCalibrationPreview').textContent='';
+    }catch(error){$('#cameraCalibrationStatus').textContent=tr('参数无效，未应用。请检查宽度、分辨率／标尺长度和观看距离。','Invalid inputs; calibration was not applied. Check dimensions and viewing distance.');}
+  };
+  $('#cameraCalibrationToggle').onclick=()=>{
+    const value=FurnishNavigation.cameraCalibration();if(!value)return;
+    FurnishNavigation.setCameraCalibration({...value,enabled:!value.enabled});calibrationChanged();
+  };
   const remember=()=>{
     const settings=FurnishDesign.sceneSettings(opt);
     if(opt.mode==='walk')settings.cut=FurnishDesign.sceneSettings(state.scene3d).cut;
@@ -1859,6 +1960,7 @@ const clock = new THREE.Clock();
 function startLoop(){ invalidate(); if (!raf){ clock.getDelta(); raf = requestAnimationFrame(loop); } }
 function loop(){
   raf = requestAnimationFrame(loop);
+  if(projectionPixelRatio!==devicePixelRatio){updateProjection();invalidate();}
   const dt = Math.min(clock.getDelta(), .05), now = performance.now();
   if (anim){ const t = clamp01((now - anim.t0)/anim.dur); anim.fn(t); dirty = true; if (t >= 1){ const r = anim.res; anim = null; r(); } }
   else if (fly){ const t = clamp01((now - fly.t0)/fly.dur); camTween(fly.A, fly.B, ease(t)); dirty = true; if (t >= 1) fly = null; }
@@ -1904,7 +2006,7 @@ function blenderSyncSignature(){if(!inited||!active||anim||fly)return null;sync(
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
 function image(){if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
 
-function relang(){ syncWalkTexts(); if (inited){buildLabels();buildHeaterClearances();} }
+function relang(){ syncWalkTexts(); if (inited){updateProjection();buildLabels();buildHeaterClearances();} }
 // 户型切换后：重算中心、清空缓存签名，进入时强制重建
 function replan(){
   clearObservation();

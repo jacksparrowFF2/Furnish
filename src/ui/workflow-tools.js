@@ -85,7 +85,9 @@ function initialize(){
  const light=document.createElement('div');light.className='scene-light only3d';light.setAttribute('aria-label',t('日照与夜景','Sunlight and night'));$('#stage').append(light);light.append($('#sun').closest('label'),document.querySelector('[data-t="night"]'));
  const badge=document.createElement('button');badge.id='space-status';badge.className='btn space-status';badge.onclick=openSpace;$('#stage').append(badge);syncBadge();
  const menus=[pref,$('#saveMenu'),$('#fileMenu')];
- function positionMenus(){for(const menu of menus){if(!menu.open)continue;const anchor=menu.firstElementChild.getBoundingClientRect(),pop=menu.querySelector('.menu-pop'),width=Math.min(menu===pref?280:380,innerWidth-24),top=anchor.bottom+8;Object.assign(pop.style,{position:'fixed',width:width+'px',left:Math.max(12,Math.min(anchor.right-width,innerWidth-width-12))+'px',right:'auto',top:top+'px',maxHeight:Math.max(100,innerHeight-top-12)+'px'});}}
+ const positionedMenus=[...menus,$('#showMenu')];
+ function positionMenus(){for(const menu of positionedMenus){if(!menu.open)continue;const anchor=menu.firstElementChild.getBoundingClientRect(),pop=menu.querySelector('.menu-pop'),width=Math.min(menu===pref?280:menu.id==='showMenu'?360:380,innerWidth-24),top=anchor.bottom+8;Object.assign(pop.style,{position:'fixed',width:width+'px',left:Math.max(12,Math.min(anchor.right-width,innerWidth-width-12))+'px',right:'auto',top:top+'px',maxHeight:Math.max(100,innerHeight-top-12)+'px'});}}
+ $('#showMenu').addEventListener('toggle',positionMenus);
  for(const menu of menus){
   menu.addEventListener('toggle',()=>{if(menu.open)for(const other of menus)if(other!==menu)other.open=false;positionMenus();});
   menu.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();menu.open=false;menu.firstElementChild.focus();}});

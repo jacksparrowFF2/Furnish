@@ -171,6 +171,12 @@ body.m3d .only2d,body:not(.m3d) .only3d{display:none!important}
 .range{display:flex;align-items:center;gap:8px;padding:0 6px;color:var(--muted);font-size:12px}
 .range input{width:120px;accent-color:var(--accent)}
 .range span{font-family:var(--mono);color:var(--ink)}
+#cameraCalibration{margin:12px 0 6px;border-top:1px solid var(--line);padding-top:10px;max-width:360px}
+#cameraCalibration summary{cursor:pointer;font-size:12px;font-weight:600}
+#cameraCalibration .range{justify-content:space-between;margin:10px 0;padding:0;flex-wrap:wrap}
+#cameraCalibration input,#cameraCalibration select{max-width:140px;min-width:0;padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+#cameraCalibration .hint{font-size:12px;line-height:1.6;white-space:normal;overflow-wrap:anywhere}
+#showMenu .showpop{max-height:calc(100dvh - 100px);overflow:auto;min-width:min(340px,calc(100vw - 24px));max-width:calc(100vw - 24px)}
 #designList,#histList{display:flex;flex-direction:column;max-height:220px;overflow:auto}
 .dsn{display:flex;align-items:stretch;gap:4px}
 .dsn .btn{display:block;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
