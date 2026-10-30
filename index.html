@@ -1283,6 +1283,7 @@ const syncIdentity=FurnishPartIdentity;
     pivot.add(leaf, knob);
     const ang = v => Math.atan2(-v[1], v[0]), door = {pivot, length:L, a0:ang(d.c), a1:ang(d.o),get open(){return control.open;},set open(value){control.open=value;}};
     if (door.a1 - door.a0 > Math.PI) door.a1 -= Math.PI*2; if (door.a0 - door.a1 > Math.PI) door.a1 += Math.PI*2;
+    door.a1=door.a0+(door.a1-door.a0)*FurnishGeometry.doorHingeAngle(d)/90;
     door.cur = door.a1; pivot.rotation.y = door.cur; leaf.userData.door = knob.userData.door = door;
     doors.push(door); archUp.add(pivot);
     },(_,leaf)=>leaf===0?"hinge-leaf":"opposite-leaf");

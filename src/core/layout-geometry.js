@@ -106,18 +106,21 @@ const groupBox = items => { let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1
   return [x0, y0, x1, y1]; };
 
 
+const doorHingeAngle=d=>d.hingeAngle??d.hingeAngles?.[0]??(root.FurnishDraft||(typeof require==='function'?require('./floorplan-core.js'):null)).doorHingeRules.default;
+function doorOpenVector(d){const angle=doorHingeAngle(d);if(angle===90)return [...d.o];if(angle===180)return d.c.map(v=>-v);const a=angle*Math.PI/180;return d.c.map((v,i)=>v*Math.cos(a)+d.o[i]*Math.sin(a));}
 function doorLeaves(d){
   if(d.doorType!=='double')return [d];
-  return [{...d,len:d.len/2},{...d,h:d.h.map((v,i)=>v+d.c[i]*d.len),c:d.c.map(v=>-v),len:d.len/2}];
+  return [{...d,len:d.len/2,hingeAngle:d.hingeAngles?.[0]??doorHingeAngle({...d,hingeAngles:undefined})},{...d,h:d.h.map((v,i)=>v+d.c[i]*d.len),c:d.c.map(v=>-v),len:d.len/2,hingeAngle:d.hingeAngles?.[1]??doorHingeAngle({...d,hingeAngles:undefined})}];
 }
 function doorSwingPolygons(d){
-  return doorLeaves(d).map(leaf=>{const points=[leaf.h];for(let i=0;i<=20;i++){const a=i/20*Math.PI/2;points.push(leaf.h.map((v,k)=>v+leaf.len*(leaf.c[k]*Math.cos(a)+leaf.o[k]*Math.sin(a))));}return points;});
+  return doorLeaves(d).map(leaf=>{const points=[leaf.h],angle=doorHingeAngle(leaf),steps=Math.max(1,Math.ceil(angle/4.5));for(let i=0;i<=steps;i++){const a=i/steps*angle*Math.PI/180;points.push(leaf.h.map((v,k)=>v+leaf.len*(leaf.c[k]*Math.cos(a)+leaf.o[k]*Math.sin(a))));}return points;});
 }
 // Use the original wall face for legacy overrides that only reversed o.
 function doorOverride(d,value){
   const base=d._base||d,next={...d,...base,...value};
   // Dimension-only plans also accept rectangular openings without swing vectors.
   for(const key of ['h','c','o'])if(Array.isArray(next[key]))next[key]=[...next[key]];
+  next.hingeAngles=value?.hingeAngles??base.hingeAngles;if(next.hingeAngles)next.hingeAngles=[...next.hingeAngles];else if(!Object.hasOwn(d,'hingeAngles'))delete next.hingeAngles;
   const hasVectors=door=>['h','c','o'].every(key=>Array.isArray(door[key])&&door[key].length===2&&door[key].every(Number.isFinite));
   if(!hasVectors(base)||!hasVectors(next))return next;
   const normal=Math.abs(next.c[0])>.5?1:0,flipped=next.o[0]*base.o[0]+next.o[1]*base.o[1]<0;
@@ -132,7 +135,7 @@ function doorLeafOffset(d, thickness=40){
   const inward=(center[0]-d.h[0])*normal[0]+(center[1]-d.h[1])*normal[1];
   return Math.sign(inward)*thickness/2;
 }
-  const api={localOutline,regionAreas,solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,polygonOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatUnder,tuckedSeatPair,doorLeaves,doorSwingPolygons,doorOverride,doorLeafOffset};
+  const api={localOutline,regionAreas,solidForCollision,area,perim,bbox,aabb,inPoly,corners,footprints,bodyParts,volumeOverlap,polygonOverlap,obbOverlap,groupBox,collisions,verticalOverlap,tuckedSeatUnder,tuckedSeatPair,doorHingeAngle,doorOpenVector,doorLeaves,doorSwingPolygons,doorOverride,doorLeafOffset};
 if(typeof module==='object'&&module.exports)module.exports=api;
 else root.FurnishGeometry=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

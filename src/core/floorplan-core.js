@@ -5,6 +5,11 @@
   const finite = v => typeof v === 'number' && Number.isFinite(v);
   const point = p => Array.isArray(p) && p.length === 2 && p.every(v => finite(v) && v >= 0 && v <= 4096);
   const clone = v => JSON.parse(JSON.stringify(v));
+  const doorHingeRules={min:1,max:180,default:90};
+  function validateDoorHinges(d){
+    if(d.hingeAngles===undefined)return;const n=d.doorType==='double'?2:1,r=doorHingeRules;
+    if(d.kind!==undefined&&d.kind!=='door'||!Array.isArray(d.hingeAngles)||d.hingeAngles.length!==n||Array.from(d.hingeAngles).some(v=>!finite(v)||v<r.min||v>r.max))fail('门扇最大开启角度须逐扇设置，范围为1–180°');
+  }
   const minWallLength = 50;
   // Absolute millimetres above the finished floor; independent of XY calibration.
   const beamDefaults={thickness:300};
@@ -63,6 +68,7 @@
       openingIds.add(o.id);
       if(o.reference!==undefined&&(typeof o.reference!=='string'||o.reference.length>200))fail('Invalid opening reference');
       if(o.review!==undefined&&!['door-gap','window-height'].includes(o.review))fail('Invalid opening review state');
+      validateDoorHinges(o);
       if(o.doorType!==undefined&&(o.kind!=='door'||!['single','double'].includes(o.doorType)))fail('门类型须为单扇平开门或对开门');
       if(o.panels!==undefined&&(!['slide','window'].includes(o.kind)||!(o.kind==='window'?[0,3]:[2,3]).includes(o.panels)))fail('Invalid sliding door panels');
       if(o.floorTrack!==undefined&&(o.kind!=='slide'||typeof o.floorTrack!=='boolean')||o.stackSide!==undefined&&(!['slide','window'].includes(o.kind)||!['left','right'].includes(o.stackSide)))fail('Invalid sliding frame options');
@@ -492,7 +498,7 @@
             side=plus?1:-1;
           }
           const hinge=o.hingeEnd?b:a,sign=o.hingeEnd?-1:1,hingeSide=o.hingeSide??side;
-          doors.push({name:o.name||(o.entry?'入户门':'房门'),rect:opening,h:horizontal?[hinge,hingeSide===1?r[3]:r[1]]:[hingeSide===1?r[2]:r[0],hinge],c:horizontal?[sign,0]:[0,sign],o:horizontal?[0,side]:[side,0],len:o.length,entry:o.entry,...(o.doorType?{doorType:o.doorType}:{}),...(o.entry?{entryDirection:horizontal?[0,side]:[side,0]}:{})});doorRefs.push(o.id);
+          doors.push({name:o.name||(o.entry?'入户门':'房门'),rect:opening,h:horizontal?[hinge,hingeSide===1?r[3]:r[1]]:[hingeSide===1?r[2]:r[0],hinge],c:horizontal?[sign,0]:[0,sign],o:horizontal?[0,side]:[side,0],len:o.length,entry:o.entry,...(o.doorType?{doorType:o.doorType}:{}),...(o.hingeAngles?{hingeAngles:[...o.hingeAngles]}:{}),...(o.entry?{entryDirection:horizontal?[0,side]:[side,0]}:{})});doorRefs.push(o.id);
         }
         pos=b;
       }
@@ -533,7 +539,7 @@
       for(const part of sorted){const last=runs.at(-1);if(last&&part.kind===last.parts[0].kind&&part.lo<=last.hi+1e-6){last.hi=Math.max(last.hi,part.hi);last.parts.push(part);}else runs.push({lo:part.lo,hi:part.hi,parts:[part]});}
       for(const run of runs){const {axis,normal}=group,center=(group.lo+group.hi)/2,a=[0,0],b=[0,0];a[axis]=(run.lo+shift)/scale;b[axis]=(run.hi+shift)/scale;a[normal]=b[normal]=(center+shift)/scale;
         const kind=run.parts[0].kind,wall={id:'preset_w'+d.walls.length,a,b,kind,thickness:group.hi-group.lo,caps:[0,0]};d.walls.push(wall);
-        for(const p of run.parts.filter(p=>p.opening)){const {kind,index,value:v}=p.opening,o={id:'preset_'+kind+index,wall:wall.id,kind,t:((p.lo+p.hi)/2-run.lo)/(run.hi-run.lo),length:p.hi-p.lo,side:kind==='door'?(v.o[normal]<0?-1:1):1,entry:!!v.entry};if(kind==='door'){o.name=v.name||'房门';if(v.doorType)o.doorType=v.doorType;o.hingeEnd=v.c[axis]<0;o.hingeSide=Math.abs(v.h[normal]-group.hi)<Math.abs(v.h[normal]-group.lo)?1:-1;}if(kind==='slide'){o.panels=v.panels===3?3:2;if(v.floorTrack!==undefined)o.floorTrack=v.floorTrack;if(v.stackSide)o.stackSide=v.stackSide;}if(kind==='window'){if(v.panels!==undefined)o.panels=v.panels;if(v.stackSide)o.stackSide=v.stackSide;o.sill=v.sill*1000;o.head=(v.head??2.4)*1000;if(v.bayId)o.bayId=v.bayId;}d.openings.push(o);}
+        for(const p of run.parts.filter(p=>p.opening)){const {kind,index,value:v}=p.opening,o={id:'preset_'+kind+index,wall:wall.id,kind,t:((p.lo+p.hi)/2-run.lo)/(run.hi-run.lo),length:p.hi-p.lo,side:kind==='door'?(v.o[normal]<0?-1:1):1,entry:!!v.entry};if(kind==='door'){o.name=v.name||'房门';if(v.doorType)o.doorType=v.doorType;if(v.hingeAngles)o.hingeAngles=[...v.hingeAngles];o.hingeEnd=v.c[axis]<0;o.hingeSide=Math.abs(v.h[normal]-group.hi)<Math.abs(v.h[normal]-group.lo)?1:-1;}if(kind==='slide'){o.panels=v.panels===3?3:2;if(v.floorTrack!==undefined)o.floorTrack=v.floorTrack;if(v.stackSide)o.stackSide=v.stackSide;}if(kind==='window'){if(v.panels!==undefined)o.panels=v.panels;if(v.stackSide)o.stackSide=v.stackSide;o.sill=v.sill*1000;o.head=(v.head??2.4)*1000;if(v.bayId)o.bayId=v.bayId;}d.openings.push(o);}
       }
     }
     d.width=Math.max(...d.walls.flatMap(w=>[w.a[0],w.b[0]]))+100;d.height=Math.max(...d.walls.flatMap(w=>[w.a[1],w.b[1]]))+100;
@@ -541,7 +547,7 @@
     d.roomLayout={walls:layoutKey(d.walls),scale,rooms};build(d);return {draft:d,shift};
   }
   function editOpening(input,id,values){
-    const d=upgrade(input),o=d.openings.find(v=>v.id===id);if(!o)fail('门窗不存在');Object.assign(o,values);
+    const d=upgrade(input),o=d.openings.find(v=>v.id===id);if(!o)fail('门窗不存在');Object.assign(o,values);if(values.doorType!==undefined&&values.hingeAngles===undefined&&o.hingeAngles)o.hingeAngles=Array.from({length:o.doorType==='double'?2:1},(_,i)=>o.hingeAngles[i]??doorHingeRules.default);
     // Preset-derived faces keep their original geometry, but share one bay height.
     if(o.bayId&&!o.bay){
       for(const sibling of d.openings.filter(v=>v.kind==='window'&&v.bayId===o.bayId))for(const key of ['sill','head'])if(values[key]!==undefined)sibling[key]=values[key];
@@ -581,6 +587,6 @@
       if(openings(before)!==openings(after))fail('Bearing wall openings are locked');
     }
   }
-  root.FurnishDraft={build,validate,upgrade,minWallLength,wallCorners,snapWall,fitZonesToWalls,beamDefaults,editCeilingBeam,serviceDiameter,editService,beamVertical,editBeam,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
+  root.FurnishDraft={doorHingeRules,validateDoorHinges,build,validate,upgrade,minWallLength,wallCorners,snapWall,fitZonesToWalls,beamDefaults,editCeilingBeam,serviceDiameter,editService,beamVertical,editBeam,splitZone,removeZoneSplit,applyZoneSplits,addZone,editZone,editZoneBoundary,insertZoneVertex,deleteZoneVertex,splitRegion,mergeRegions,adjacentRegions,removeZone,setRegionSetting,editableRegion,removeRegion,editZoneSplit,applyZones,roomsFromWalls,wallRect,batchWalls,fromPlan,editOpening,openingReferences,openingPlacement,openingDimension,assertWallEditable,assertBearingUnchanged};
   if(typeof module!=='undefined') module.exports=root.FurnishDraft;
 })(typeof window==='undefined'?globalThis:window);

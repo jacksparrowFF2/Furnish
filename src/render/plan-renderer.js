@@ -211,10 +211,10 @@ function renderOpenings(){
   const DS = `stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"`;
   DOORS.flatMap(d=>FurnishGeometry.doorLeaves(d)).forEach(d => {
     const [hx,hy] = d.h, L = d.len, T = 40;
-    const ox = hx + d.o[0]*L, oy = hy + d.o[1]*L, cx = hx + d.c[0]*L, cy = hy + d.c[1]*L;
+    const open=FurnishGeometry.doorOpenVector(d),ox = hx + open[0]*L, oy = hy + open[1]*L, cx = hx + d.c[0]*L, cy = hy + d.c[1]*L;
     const sweep = d.o[0]*d.c[1] - d.o[1]*d.c[0] > 0 ? 1 : 0;
     const col = d.entry ? '#ef5a24' : PAL.ink;
-    const offset = FurnishGeometry.doorLeafOffset(d,T), normal = [-d.o[1],d.o[0]];
+    const offset = FurnishGeometry.doorLeafOffset(d,T), normal = [-open[1],open[0]];
     const leaf = [[hx,hy,offset-T/2],[ox,oy,offset-T/2],[ox,oy,offset+T/2],[hx,hy,offset+T/2]].map(([x,y,z])=>[x+normal[0]*z,y+normal[1]*z]);
     s += `<polygon points="${leaf.map(p=>p.join(',')).join(' ')}" fill="${PAL.leaf}" stroke="${col}" stroke-width="${d.entry?1.8:1}" vector-effect="non-scaling-stroke"/>`;
     s += `<path d="M${ox} ${oy}A${L} ${L} 0 0 ${sweep} ${cx} ${cy}" fill="none" ${DS} stroke-dasharray="5 3" opacity=".7"/>`;

@@ -19,7 +19,7 @@ const PLANS = FurnishPlans;
 let WALLS, WINS, DOORS, SLIDES, ROOMS, BOUNDS, PLAN;
 function applyPlanData(){
   ({walls:WALLS, wins:WINS, doors:DOORS, slides:SLIDES, rooms:ROOMS, bounds:BOUNDS} = PLAN);
-  DOORS.forEach(d => d._base ??= {h:[...d.h], c:[...d.c], o:[...d.o],...(d.doorType?{doorType:d.doorType}:{})});   // 切换户型时保留原始方向，不能把当前覆盖值当成原值
+  DOORS.forEach(d => d._base ??= {h:[...d.h], c:[...d.c], o:[...d.o],...(d.doorType?{doorType:d.doorType}:{}),...(d.hingeAngles?{hingeAngles:[...d.hingeAngles]}:{})});   // 切换户型时保留原始方向，不能把当前覆盖值当成原值
   DOORS.filter(d => d.entry).forEach(d => d.entryDirection ??= [...d._base.o]);
   SLIDES.forEach(s => {s._panels0 ??= s.panels===3?3:2;s._floorTrack0 ??= s.floorTrack??s.panels!==3;s._stackSide0 ??= s.stackSide||'left';});
   WINS.forEach(w => { w._panels0 ??= w.panels??0;w._stackSide0 ??= w.stackSide||'left';w._sill0 ??= w.sill; w._head0 ??= w.head??2.4; });ROOMS.filter(r=>r.counted===false).forEach(r=>r._height0??=r.height??.45);
@@ -57,7 +57,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v37';
+let STORE = 'huxing-design-v38';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);

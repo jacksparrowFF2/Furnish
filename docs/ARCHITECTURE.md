@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-30（建筑门角度）：floorplan-core集中建筑门逐扇hingeAngles范围（1–180°，旧缺失90°）；layout-geometry派生每扇角度、二维末端和扫掠，入口生产模型沿原门轴方向旋转。属性沿mutate写open.d，草稿复制／洞口重排与项目恢复保留字段；含字段采用项目／工作区v38及隔离恢复缓存，不新增加载脚本。见[对开门](DOUBLE-DOORS.md)。
+
 2026-10-30（两级目录）：catalog.navigation在既有browseLibrary之上派生产品大类／细类，保留原条目引用、原目录与历史查找／价格优先级。app按导航组展示并映射回原ci/ii选品键，分类只存在于libUI；用途／搜索／尺寸仍沿原matches，不新增持久字段或加载脚本。见[目录验收](validation/catalog-navigation-20261030/README.md)。
 
 2026-10-30（Scoop兼容）：洗衣机作者脚本在布尔切割后重建单材质槽并统一面索引，兼容Blender5.2的空槽行为；发布契约保持严格，仅增强错误诊断。运行资产／模型／持久字段未改写，Scoop正式导出与OptiX渲染证据见[验证](validation/scoop-tg10k60w-20261030/README.md)。
