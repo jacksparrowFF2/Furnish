@@ -183,22 +183,50 @@
     <button class="btn outline" id="themeQuick" aria-label="切换亮色 / 暗色"><svg class="i"><use href="#i-moon"/></svg></button>
     <button class="btn outline" id="fullscreen" title="全屏 (Shift+F)" aria-label="全屏"><svg class="i"><use href="#i-full"/></svg></button>
     <details class="menu" id="fileMenu"><summary class="btn"><svg class="i"><use href="#i-file"/></svg><span data-en="File ▾">文件 ▾</span></summary>
-      <div class="menu-pop">
-        <button class="btn" id="shareLink" data-en="🔗 Copy share link">🔗 复制分享链接</button>
+      <div class="menu-pop file-pop">
+        <div class="file-tabs" role="tablist" aria-label="保存与导出">
+          <button type="button" role="tab" id="file-tab-save" aria-controls="file-pane-save" aria-selected="true" data-file-tab="save" data-en="Save">保存</button>
+          <button type="button" role="tab" id="file-tab-export" aria-controls="file-pane-export" aria-selected="false" tabindex="-1" data-file-tab="export" data-en="Export">导出</button>
+          <button type="button" role="tab" id="file-tab-history" aria-controls="file-pane-history" aria-selected="false" tabindex="-1" data-file-tab="history" data-en="Designs & recovery">方案与恢复</button>
+        </div>
+        <div class="file-content">
+        <section id="file-pane-save" role="tabpanel" aria-labelledby="file-tab-save">
+          <div class="file-status"><b id="file-save-summary" role="status"></b><p id="file-save-status"></p></div>
+          <div id="file-storage-actions" class="file-actions"></div>
+          <div class="menu-cap" data-en="Keep a copy">保留一份副本</div>
+          <div id="file-backup-actions" class="file-actions">
+            <button class="btn" id="saveDesign" data-en="Save layout as…">另存为命名方案…</button>
+          </div>
+          <p class="file-note" data-en="Named designs stay in this workspace. Export a project backup to keep an independent copy.">命名方案保留在工作区中；导出项目备份可另存一份独立文件。</p>
+        </section>
+        <section id="file-pane-export" role="tabpanel" aria-labelledby="file-tab-export" hidden>
+        <div class="menu-cap" data-en="Deliver & share">成果与分享</div>
+        <div id="file-delivery-actions" class="file-actions"></div>
+        <div class="file-actions file-export-grid">
+        <button class="btn" id="shareLink" data-en="Copy share link">复制分享链接</button>
         <button class="btn" id="exportPng" data-en="Export image">导出图片</button>
         <button class="btn" id="exportCsv" data-en="Export quote (CSV)">导出报价清单 CSV</button>
         <button class="btn" id="printPlan" data-en="Print">打印</button>
+        </div>
+        <details class="file-fold"><summary data-en="Data exchange">数据交换</summary>
         <button class="btn" id="exportJson" data-en="Export plan JSON">导出方案 JSON</button>
         <button class="btn" id="importJson" data-en="Import plan">导入方案</button>
-        <div class="menu-sep"></div>
-        <button class="btn" id="saveDesign" data-en="💾 Save layout as…">💾 另存为方案…</button>
+        </details>
+        </section>
+        <section id="file-pane-history" role="tabpanel" aria-labelledby="file-tab-history" hidden>
+        <div id="file-recovery-actions" class="file-actions"></div>
+        <details class="file-fold" open><summary data-en="Named designs">命名方案</summary>
         <div id="designList"></div>
-        <div class="menu-sep"></div>
-        <div class="menu-cap" data-en="History snapshots">历史快照</div>
+        </details>
+        <details class="file-fold"><summary data-en="Recent snapshots">近期自动快照</summary>
         <div id="histList"></div>
-        <div class="menu-sep"></div>
+        </details>
+        </section>
+        <details class="file-fold file-maintenance"><summary data-en="Reset & clear">重置与清理</summary>
         <button class="btn" id="resetMenu" data-en="Reset…">重置…</button>
         <button class="btn danger" id="clearAll" title="清空所有家具家电（可撤销）" data-en-title="Remove all furniture and appliances (undoable)" data-en="Clear layout">清空布置</button>
+        </details>
+        </div>
       </div></details>
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
   </header>

@@ -162,8 +162,9 @@ function save(){
 }
 function syncSaved(){
   const el = $('#saved'); if (!el) return;
-  if(repositoryClient){const s=repositoryClient.status;el.textContent=s.mode==='pending'?'已缓存 · 文件保存中…':s.mode==='saved'?'已保存到本地文件':s.mode==='ready'?'本地自动保存已启用':s.mode==='loading'?'正在读取正式文件…':'仅存浏览器 · 文件未保存';el.title=s.message;el.classList.toggle('err',['conflict','error'].includes(s.mode));const note=$('#file-save-status');if(note){note.textContent=s.message;note.style.cssText='white-space:pre-line;overflow-wrap:anywhere';}return;}
+  if(repositoryClient){const s=repositoryClient.status;el.textContent=s.mode==='pending'?'已缓存 · 文件保存中…':s.mode==='saved'?'已保存到本地文件':s.mode==='ready'?'本地自动保存已启用':s.mode==='loading'?'正在读取正式文件…':'仅存浏览器 · 文件未保存';el.title=s.message;el.classList.toggle('err',['conflict','error'].includes(s.mode));const note=$('#file-save-status');if(note){note.textContent=s.message;note.style.cssText='white-space:pre-line;overflow-wrap:anywhere';const heading=$('#file-save-summary');if(heading){heading.textContent=el.textContent;heading.classList.toggle('err',['conflict','error'].includes(s.mode));}}return;}
   const status=$('#file-save-status');if(status)status.textContent=savePending?tr('正在保存到本机…','Saving locally…'):saveErr?tr('本机保存失败，请备份项目文件','Local save failed; back up the project'):savedAt?tr('本机已自动保存；项目备份可在其他浏览器继续编辑','Saved locally; a project backup can be edited in another browser'):tr('本机自动保存已启用','Local autosave enabled');
+  const heading=$('#file-save-summary');if(heading){heading.textContent=savePending?tr('正在保存…','Saving…'):saveErr?tr('本机保存失败','Local save failed'):tr('本机自动保存','Local autosave');heading.classList.toggle('err',!!saveErr);}
   if(!savedAt&&!savePending&&!saveErr)return;
   el.title=state.architecture?.phase==='survey'?tr('已保存录入数据，原始结构尚未确认锁定。','Survey saved; original structure is not confirmed.'):tr('已保存当前方案；原始基线由结构确认单独保护。','Design saved; original baseline is separately protected.');
   if(savePending)el.title=tr('正在写入本地项目存储。','Writing the local project save.');else if(saveErr)el.title=tr('自动保存未完成，请导出项目文件备份。','Autosave failed; export a project backup.');
@@ -905,7 +906,7 @@ async function setView(m){
   } finally { switching = false; document.body.classList.remove('busy');queueFabPosition(); }
 }
 document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => {
-  const menu = b.closest('details');
+  const menu = b.closest('details.menu');
   if (menu) menu.open = false; // Some controls are later moved into the canvas toolbar.
 }));
 document.querySelectorAll('#viewSeg .btn').forEach(b => b.onclick = () => setView(b.dataset.view));

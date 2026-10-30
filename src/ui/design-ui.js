@@ -58,7 +58,7 @@
  window.FurnishDesignUI={workflow,roomUses,placementPanel,groupPlacementPanel,bindPlacement,clearPlacementGuide,delivery,reportHTML,floorplanSVG,designs,editDesign,recovery,previewRecovery};
  $('#saveDesign').onclick=()=>editDesign('create');
  $('#projectWorkspace').onclick=workflow;
- const recoveryButton=document.createElement('button');recoveryButton.className='btn';recoveryButton.id='recoveryPoints';recoveryButton.textContent=tr('恢复记录','Recovery points');$('#saveDesign').after(recoveryButton);recoveryButton.onclick=()=>{recovery();$('#fileMenu').open=false;};
+ const recoveryButton=document.createElement('button');recoveryButton.className='btn';recoveryButton.id='recoveryPoints';recoveryButton.textContent=tr('查看全部恢复记录','View all recovery points');$('#file-recovery-actions').append(recoveryButton);recoveryButton.onclick=()=>{recovery();$('#fileMenu').open=false;};
  const originalOpen=FurnishWorkspace.open;FurnishWorkspace.open=tab=>{originalOpen(tab);if(tab==='compare'){$('#project-content').insertAdjacentHTML('afterbegin',`<p><button class="btn" id="cmp-manage">${tr('管理命名方案','Manage saved designs')}</button></p>`);$('#cmp-manage').onclick=designs;}};
  $('#vSelection').onclick=()=>window.View3D?.focusSelection();
  renderPanel();

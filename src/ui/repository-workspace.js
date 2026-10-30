@@ -68,7 +68,7 @@
    if(C.workspaceVersions.includes(saved?.v)&&(saved.updatedAt||0)>(store.updatedAt||0))try{applyWorkspace(saved);}catch{/* Leave invalid data untouched for manual recovery. */}
    const message='本地正式文件未能加载，已暂停文件保存。可在“保存位置与历史备份”恢复版本，或重启 start-furnish.cmd 后刷新：'+e.message;
    repositoryClient={status:{mode:'error',message},schedule(){},get pending(){return false;},stop(){}};toast(message);
-  }finally{const settings=document.createElement('button');settings.className='btn';settings.id='storage-settings';settings.textContent='保存位置与历史备份';settings.onclick=openStorage;$('#file-save-status').after(settings);if(location.protocol!=='file:'){const button=document.createElement('button');button.className='btn';button.id='repository-recovery';button.textContent='本机恢复副本';button.onclick=openRecoveries;settings.after(button);}repositoryBooting=false;repositoryResume();loading.remove();syncSaved();}
+  }finally{const settings=document.createElement('button');settings.className='btn';settings.id='storage-settings';settings.textContent='保存位置与历史备份';settings.onclick=()=>{$('#fileMenu').open=false;openStorage();};$('#file-storage-actions').append(settings);if(location.protocol!=='file:'){const button=document.createElement('button');button.className='btn';button.id='repository-recovery';button.textContent='本机恢复副本';button.onclick=()=>{$('#fileMenu').open=false;openRecoveries();};$('#file-recovery-actions').append(button);}repositoryBooting=false;repositoryResume();loading.remove();syncSaved();}
  }
  addEventListener('beforeunload',e=>{if(repositoryClient?.pending){repositoryClient.flush?.().catch(()=>{});e.preventDefault();e.returnValue='';}});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)repositoryClient?.flush?.().catch(()=>{});});

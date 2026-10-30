@@ -1,4 +1,30 @@
 /* The existing studio palette, with tools below the drawing and explicit status. */
+/* File tools share one bounded scroll area; lists never create nested scrollers. */
+#fileMenu>.file-pop{width:380px;min-width:0;max-width:calc(100vw - 24px);max-height:calc(100dvh - 100px);padding:0;overflow:hidden}
+.file-tabs{display:flex;flex:none;gap:4px;padding:10px;border-bottom:1px solid var(--line)}
+.file-tabs [role=tab]{flex:1;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;padding:10px 8px;cursor:pointer;white-space:nowrap}
+.file-tabs [aria-selected=true]{background:var(--accent-soft);color:var(--accent-ink)}
+.file-tabs [role=tab]:focus-visible,.file-fold>summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.file-content{padding:14px;overflow:auto;overscroll-behavior:contain;min-height:0}
+.file-content [role=tabpanel][hidden]{display:none}
+.file-status{padding:13px 14px;background:var(--soft);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+#file-save-summary{display:block;font-size:14px;color:var(--accent-ink)}
+#file-save-summary.err{color:var(--danger)}
+#file-save-status{font-size:12px;line-height:1.7;color:var(--muted);margin:7px 0 0;overflow-wrap:anywhere}
+.file-actions{display:grid;gap:5px;margin-bottom:14px}
+#fileMenu .file-content .btn{width:100%;min-width:0;min-height:42px;padding:10px 12px;font-size:13px;white-space:normal;overflow-wrap:anywhere}
+#fileMenu #file-backup{background:var(--accent-soft);color:var(--accent-ink);border:1px solid var(--line)}
+.file-export-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.file-content .menu-cap{padding:6px 2px 9px;letter-spacing:.04em;font-size:11px}
+.file-note{font-size:12px;line-height:1.7;color:var(--muted);margin:8px 2px 16px}
+.file-fold{border-top:1px solid var(--line);padding:5px 0}
+#fileMenu .file-fold>summary{display:flex;align-items:center;justify-content:space-between;padding:10px 3px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;border:0;color:var(--muted);list-style:none}
+.file-fold>summary::after{content:'＋';font-size:15px;font-weight:400}
+.file-fold[open]>summary::after{content:'−'}
+#fileMenu #designList,#fileMenu #histList{max-height:none;overflow:visible}
+#fileMenu .dsn .btn{width:auto;text-align:left}
+#fileMenu .dsn .btn.danger{flex:none;min-width:40px;width:40px}
+.file-maintenance{margin-top:12px}
 .canvas-rail,.scene-light,.space-status,.preview-banner{--ink:var(--s-ink);--muted:var(--s-muted);--line:var(--s-line);--card:var(--s-card);--panel:var(--s-panel);--hover:var(--s-hover);--accent-soft:var(--s-accent-soft);--accent-ink:var(--s-accent-ink);--soft:var(--s-soft);color:var(--ink)}
 #stage{container-type:inline-size}
 .canvas-rail{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:5;display:flex;align-items:stretch;gap:6px;max-width:calc(100% - 24px);overflow-x:auto;padding:7px;background:var(--s-overlay);border:1px solid var(--s-line);border-radius:15px;box-shadow:var(--shadow-md)}
