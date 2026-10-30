@@ -101,6 +101,10 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       s += pa(`M${x+w-15-Math.min(420,w*.3)} ${by}L${x+w-15} ${by}L${x+w-15} ${by+Math.min(420,w*.3)}Z`, shade(c,1.12));
       return s;
     }
+    case 'stool_citylong_370': {
+      const stack=products.stoolStack(f||{type:t,w,d});
+      return `<rect x="${-w/2}" y="${-d/2}" width="${w}" height="${d}" rx="${Math.min(w,d)*.08}" fill="${c}" stroke="${shade(c,.72)}"/><rect x="${-w*.42}" y="${-d*.42}" width="${w*.84}" height="${d*.84}" rx="${Math.min(w,d)*.12}" fill="#e2dfd3" stroke="${shade(c,.8)}"/><text x="0" y="14" text-anchor="middle" font-size="70" fill="#655f51">×${stack.count}</text>`;
+    }
     case 'armchair_yeswood_berlin': {
       return rc(-w*310/710,y+d*.15,w*620/710,d*.82,'#d3c9b8','rx="40"')+rc(-w*265/710,y+d*.05,w*530/710,d*.31,'#d3c9b8','rx="36"')+rc(-w*200/710,y+d*.35,w*400/710,d*.13,'#c7bdab','rx="24"')+[-1,1].map(side=>rc(side*w*330/710-w*25/710,y+d*.13,w*50/710,d*.77,c,'rx="14"')).join('');
     }

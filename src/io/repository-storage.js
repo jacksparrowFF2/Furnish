@@ -22,7 +22,7 @@
   async function archive(workspace){return request('/recoveries','POST',{workspace});}
   async function initialize(caches){
    const disk=await request('/workspace','GET');revision=disk.revision;storage=disk.storage||null;lastSavedAt=storage?.savedAt||null;
-   const candidates=caches.filter(w=>[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38].includes(w?.v)&&Object.keys(w.work||{}).length).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+   const candidates=caches.filter(w=>[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39].includes(w?.v)&&Object.keys(w.work||{}).length).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
    const seen=new Set();for(const c of candidates){const hash=await fingerprint(c);if(hash!==revision&&!seen.has(hash)){await archive(c);seen.add(hash);}}
    const cache=candidates[0];
    if(!disk.workspace){if(!cache){publish('ready','本地正式文件自动保存已启用');return null;}publish('pending','正在迁移浏览器设计到本地正式文件…');const result=await request('/workspace','PUT',{workspace:cache,baseRevision:null});revision=result.revision;lastSavedAt=Date.now();publish('saved','设计已保存到本地正式文件');return {...cache,_repository:{revision}};}

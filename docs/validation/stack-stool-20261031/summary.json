@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "fieldEdits": true,
+      "invalidInput": true,
+      "locked": true,
+      "undoRedo": true,
+      "refresh": true,
+      "offline": true,
+      "productionParts": 20,
+      "narrow": true
+    },
+    {
+      "mode": "file",
+      "fieldEdits": true,
+      "invalidInput": true,
+      "locked": true,
+      "undoRedo": true,
+      "refresh": true,
+      "offline": true,
+      "productionParts": 20,
+      "narrow": true
+    }
+  ]
+}

@@ -11,6 +11,8 @@ const cabinetTopClosure={height:{min:0,max:300,default:50},doorGap:{min:0,max:50
 const pegboardAssembly={parts:['upper','left','right','lower','displayShelves','hooks','light'],accessoryParts:['displayShelves','hooks','light'],legacyParts:['accessories'],structureParts:['upper','left','right','lower'],thickness:18,hatch:{modes:['manual','auto'],maxPanels:16,minWeb:20,margin:20,min:50,gap:2,angle:100,defaultWidth:400,defaultHeight:300,fitPadding:10,padding:{sides:['top','bottom','left','right'],min:0,max:100},maxRearGap:500,alignmentDegrees:1},holes:{diameter:9,minDiameter:2,maxDiameter:30,margin:30,pitch:40,maxCount:3000,maxAxis:200,minWeb:2},bottom:{min:0,max:20000}};
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ stoolCount:{...numeric(1,12,'叠放数量须为 1–12 的整数'),integer:true},
+ stoolPitch:numeric(50,200,'每把叠放增高须为 50–200 mm'),
  sideTableUpperOpen:{boolean:true,message:'边几上抽屉开合无效'},
  sideTableLowerOpen:{boolean:true,message:'边几下抽屉开合无效'},
  downlightWatts:{values:[5,7],message:"筒灯功率须为5W或7W"},
@@ -72,6 +74,7 @@ const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'
 const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering'}};
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
+ stool_citylong_370:{defaultFrontClearance:0,height:467,anchor:'bottom',family:'stack-stool',defaults:{mountHeight:0,stoolCount:1,stoolPitch:70},fields:['stoolCount','stoolPitch','mountHeight'],create:['stoolCount','stoolPitch','mountHeight'],solidModel:{global:'FurnishStackStoolModel',module:'stack-stool'},identity:{brand:'禧天龙/CITYLONG',model:'软包高凳 · 370×370×467 mm（型号未确认）'}},
  armchair_yeswood_berlin:{height:845,family:'lounge-chair',armchairProfile:'berlin',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'柏林休闲沙发椅 · 米色 · 710×850×845'}},
  armchair_yeswood_y09hs:{height:905,armchairProfile:'original',family:'lounge-chair',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'单人沙发椅 · 亚麻色 · 725×900×905',sourceUrl:'https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx'}},
  sidetable_tmall_635382906309:{defaultFrontClearance:0,family:'side-table',sideTable:{minWidth:500,minDepth:180,minHeight:560,stone:11,post:42.5,upperClearance:185,travel:220},height:612,defaults:{sideTableUpperOpen:false,sideTableLowerOpen:false},fields:['sideTableUpperOpen','sideTableLowerOpen'],create:['sideTableUpperOpen','sideTableLowerOpen'],solidModel:{global:'FurnishSideTableModel',module:'side-table'},identity:{model:'双抽岩板边几 · 680×300×612',sourceUrl:'https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30'}},
@@ -168,7 +171,8 @@ function pocketLayout(f){
  for(const l of leaves)parts.push({key:'pocket-leaf',w:leaf,d:r.leaf,h:clearHeight-r.bottom,x:value(f,'slidingOpen')?l.opened:l.closed,z:0,bottom:r.bottom,side:l.side});
  return {opening,pocket,clearHeight,leaves,parts};
 }
-function dimensions(f){const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
+function stoolStack(f){if(!family(f,'stack-stool')||f.obj)return null;const count=value(f,'stoolCount'),pitch=value(f,'stoolPitch'),singleHeight=height(f);return {count,pitch,singleHeight,height:singleHeight+(count-1)*pitch};}
+function dimensions(f){const stack=stoolStack(f);if(stack)return {w:f.w,d:f.d,h:stack.height};const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
 // Reference geometry only: widths include valves/caps, left length starts at the header inlet.
 function manifoldLayout(f){
  const r=definition(f)?.manifold;if(!r||f.obj)return null;
@@ -279,7 +283,7 @@ function validateField(f,key,v){
 function validate(f){const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 // User-facing kinds are independent of renderer IDs, product identities and plan names.
 const kindGroups={
- '占位体':'block', '平板灯':'panel_light_300x600', '浴霸':'bath_heater_aopu_se2 bath_heater_300x600',
+ '叠放方凳':'stool_citylong_370', '占位体':'block', '平板灯':'panel_light_300x600', '浴霸':'bath_heater_aopu_se2 bath_heater_300x600',
  '筒灯':'downlight_philips_dl269', '地暖分水器':'heating_manifold', '强电箱':'electrical_box_strong', '弱电箱':'electrical_box_weak',
  '鱼缸':'aquarium_mijia_2pro', '燃气灶':'stove stove_fotile_th36b', '抽油烟机':'rangehood_fotile_jcd10ta',
  '冰箱':'fridge fridge_french_drawer', '洗衣机':'washer washer_littleswan_tg10k60w', '烘干机':'dryer',
@@ -453,6 +457,7 @@ function floorStanding(f,range){
 }
 function validateDatum(work){if(work?.furnitureDatum!==undefined&&!furnitureDatum.values.includes(work.furnitureDatum))throw Error('家具高度基准须为毛坯或完成地面');}
 function vertical(f){
+ const stack=stoolStack(f);if(stack){const bottom=value(f,'mountHeight');return {bottom,top:bottom+stack.height,source:'model'};}
  if(!f.obj&&definition(f)?.hoodMotion){const b=(root.FurnishHoodMotion||require('./hood-motion-core.js')).bounds(f),z=value(f,'mountHeight');return {bottom:z+b.bottom,top:z+b.top,source:'model'};}
  if(!f.obj&&definition(f)?.foldAsset){const b=(root.FurnishDishwasherFold||require('./dishwasher-fold-core.js')).bounds(f),z=value(f,'mountHeight');return {bottom:z+b.bottom,top:z+b.top,source:'model'};}
  const b=assemblyBounds(f);if(b)return {bottom:b.bottom,top:b.top,source:'model'};
@@ -590,6 +595,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

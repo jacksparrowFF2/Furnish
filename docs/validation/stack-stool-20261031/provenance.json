@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-31",
+  "blender": "5.2.3 LTS",
+  "source": "user attached three product images; no product SKU confirmed",
+  "sizeMm": [
+    370,
+    370,
+    467
+  ],
+  "pitchMm": {
+    "default": 70,
+    "status": "image estimate, adjustable"
+  },
+  "files": [
+    {
+      "file": "assets/models/stack-stool/v4/stack-stool-v1.blend",
+      "sha256": "5dd5bfc894de88198b2642a269895cf6c4115b4882ea50f67f9a5e72426b6c76"
+    },
+    {
+      "file": "assets/models/stack-stool/v4/stack-stool-v1.glb",
+      "sha256": "47537df7c5d4d4ac0195393f93779c0f37f0bd794a93ed2324ce19f0f27175a7"
+    },
+    {
+      "file": "src/data/stack-stool-blender-asset.js",
+      "sha256": "23e0f6c5b04f3f1adcd9b108cad5f506f60c857d1e2b4e53f9bdb06116dec329"
+    },
+    {
+      "file": "scripts/blender-model-stack-stool.py",
+      "sha256": "5101a9df697a05c824a7390e9be50f0847fdd06f3c14c7ce41ac986976a5e742"
+    },
+    {
+      "file": "assets/models/stack-stool/references/stack.png",
+      "sha256": "9df1c4805a4203aa5f03150ce87c205b8ce963d1df35f3fec0cb3e04ca5e5c88"
+    },
+    {
+      "file": "assets/models/stack-stool/references/appearance.png",
+      "sha256": "6f277dbf21aac709da4942cfd989d02f5c2806b2b84feafbc45dd47cbc124601"
+    },
+    {
+      "file": "assets/models/stack-stool/references/dimensions.png",
+      "sha256": "f95627bbb504ea010c073f88b091cbd4d6717f3b9782359ef49ff61fd35ad19f"
+    }
+  ]
+}

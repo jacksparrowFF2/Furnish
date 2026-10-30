@@ -415,6 +415,8 @@
 <script src="src/data/armchair-blender-asset.js"></script>
 <script src="src/data/armchair-berlin-blender-asset.js"></script>
 <script src="src/render/armchair-model.js"></script>
+<script src="src/data/stack-stool-blender-asset.js"></script>
+<script src="src/render/stack-stool-model.js"></script>
 <script src="src/render/bath-heater-model.js"></script>
 <script src="src/render/model-primitives.js"></script>
 <script src="src/render/basic-furniture-model.js"></script>
@@ -875,6 +877,7 @@ const syncIdentity=FurnishPartIdentity;
     const model=FurnishArrowShowerModel.build(THREE,f,RoundedBoxGeometry);
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;
   }
+  if(FurnishStackStoolModel.supported(f)){const model=FurnishStackStoolModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishArmchairModel.supported(f)){const model=FurnishArmchairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(f.type==='sofa_yeswood_cherry'){
     const model=FurnishYeswoodSofaModel.build(THREE,f,RoundedBoxGeometry,{wood:woodM,fabric});
@@ -1400,7 +1403,7 @@ function buildFurn(){
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
     const corner=FurnishProducts.slidingCorner(f,validFurniture,plan);
-    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainOpen,f.blindAngle,f.shadeMode, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainOpen,f.blindAngle,f.shadeMode, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       if(FurnishProducts.supports(f,'slidingOpen')&&o.userData.slidingDoor)o.userData.slidingDoor.open=FurnishProducts.value(f,'slidingOpen');
