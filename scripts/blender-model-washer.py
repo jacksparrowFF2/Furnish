@@ -78,6 +78,9 @@ for part in spec['parts']:
     for polygon in obj.data.polygons:polygon.material_index=0
     obj['furnishStablePart']=file_id+'-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
 checks=preflight(bpy.context.scene,spec)
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/(file_id+'-v1.blend')))
 bpy.ops.export_scene.gltf(filepath=str(out/(file_id+'-v1.glb')),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in args:

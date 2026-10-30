@@ -133,6 +133,9 @@ for o in objects:
     bm=bmesh.new();bm.from_mesh(o.data);bmesh.ops.remove_doubles(bm,verts=bm.verts,dist=1e-7);bmesh.ops.recalc_face_normals(bm,faces=bm.faces)
     if any(not e.is_manifold for e in bm.edges): raise ValueError('Open/non-manifold mesh: '+o.name)
     bm.to_mesh(o.data);bm.free()
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'armchair-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'armchair-v1.glb'),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in sys.argv:

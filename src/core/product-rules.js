@@ -71,7 +71,7 @@ const washer={...laundry,kind:'洗衣机',laundryKind:'washer',washerMotion:true
 const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'folding-table'},family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
 // Generic made-to-measure covering assumptions, not a manufacturer's installation specification.
-const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering'}};
+const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering',base:'mountHeight'}};
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
  stool_citylong_370:{defaultFrontClearance:0,height:467,anchor:'bottom',family:'stack-stool',defaults:{mountHeight:0,stoolCount:1,stoolPitch:70},fields:['stoolCount','stoolPitch','mountHeight'],create:['stoolCount','stoolPitch','mountHeight'],solidModel:{global:'FurnishStackStoolModel',module:'stack-stool'},identity:{brand:'禧天龙/CITYLONG',model:'软包高凳 · 370×370×467 mm（型号未确认）'}},

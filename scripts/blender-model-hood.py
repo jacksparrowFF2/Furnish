@@ -43,6 +43,9 @@ for part in spec['parts']:
     obj.name=part['name'];obj.rotation_euler[0]=part['rotation']
     center=position(part['localCenter']);parent=parents.get(part['role']);obj.parent=parent;obj.location=tuple(center[i]-(parent.location[i] if parent else 0) for i in range(3))
     obj.data.materials.append(materials[part['material']]);obj['furnishStablePart']='hood-v1:'+part['name'];obj['furnishRecolor']=False
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'hood-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'hood-v1.glb'),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in args:

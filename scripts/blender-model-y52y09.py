@@ -34,6 +34,9 @@ for name, size, center in boards():
     obj.data.materials.append(wood)
     obj['furnishStablePart'] = 'y52y09:'+name
     obj['furnishRecolor'] = True
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'y52y09-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'y52y09-v1.glb'), export_format='GLB', export_extras=True, export_cameras=False, export_lights=False)
 if '--result' in sys.argv:

@@ -19,6 +19,9 @@ for p in spec['parts']:
  bevel=o.modifiers.new('softened exposed edges','BEVEL');bevel.width=.004;bevel.segments=3;bpy.ops.object.modifier_apply(modifier=bevel.name)
  for face in o.data.polygons:face.use_smooth=True
  normals=o.modifiers.new('weighted board normals','WEIGHTED_NORMAL');normals.keep_sharp=True;bpy.ops.object.modifier_apply(modifier=normals.name);o.select_set(False)
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'corner-bookcase-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'corner-bookcase-v1.glb'),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 pathlib.Path(args[args.index('--result')+1]).write_text(json.dumps({'passed':True,'blenderVersion':bpy.app.version_string,'parts':len(spec['parts'])}))

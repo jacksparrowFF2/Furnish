@@ -16,14 +16,22 @@ async function main(args=process.argv.slice(2)){
  if(profile.startsWith('washer'))fs.writeFileSync(spec,JSON.stringify(require('../src/core/washer-motion-core.js').spec(profile==='washer'?undefined:{type:'washer_littleswan_tg10k60w'})));
  if(profile==='corner-bookcase')fs.writeFileSync(spec,JSON.stringify(require('../src/core/corner-bookcase-core.js').spec()));
  if(profile==='side-table')fs.writeFileSync(spec,JSON.stringify(require('../src/core/side-table-core.js').spec()));
+ const contract=path.join(job,'preflight-contract.json');
+ if(operation==='author'){
+  const asset=require(path.join(root,'src/data/'+profile+'-blender-asset.js'));
+  fs.writeFileSync(contract,JSON.stringify({profile,materialSlots:1,parts:asset.parts.map(p=>({name:p.name,identity:p.identity,role:p.role||null})),motions:asset.motions||[]}));
+ }
  const script=operation==='author'?'blender-model-'+(profile.startsWith('washer')?'washer':profile)+'.py':'publish-blender-asset.py';
- const child=cp.spawn(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(__dirname,script),'--',source,...(operation==='publish'?[output,'--profile',profile]:[]),...(['fridge','dishwasher','hood','washer','washer-tg10k60w','side-table','corner-bookcase'].includes(profile)?['--spec',spec]:[]),'--result',result],{cwd:root,windowsHide:true,stdio:['ignore','pipe','pipe']});
+ const child=cp.spawn(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(__dirname,script),'--',source,...(operation==='publish'?[output,'--profile',profile]:[]),...(['fridge','dishwasher','hood','washer','washer-tg10k60w','side-table','corner-bookcase'].includes(profile)?['--spec',spec]:[]),...(operation==='author'?['--preflight-contract',contract]:[]),'--result',result],{cwd:root,windowsHide:true,stdio:['ignore','pipe','pipe']});
  let error;child.on('error',e=>error=e);child.on('exit',code=>{if(code)error=Error('Blender exited with '+code+'; inspect '+job);});child.stdout.pipe(log,{end:false});child.stderr.pipe(log,{end:false});
  // Store launchers exit before Blender; only a unique Python result confirms completion.
  try{
   const deadline=Date.now()+120000;
   while(!fs.existsSync(result)){if(error)throw error;if(Date.now()>deadline)throw Error('Blender timed out; inspect '+job);await new Promise(resolve=>setTimeout(resolve,250));}
   const outcome=JSON.parse(fs.readFileSync(result,'utf8'));if(!outcome.passed)throw Error(outcome.error+' (log: '+job+')');
+  if(operation==='author'){
+   outcome.preflight=JSON.parse(fs.readFileSync(path.join(job,'preflight-result.json'),'utf8'));if(!outcome.preflight.passed)throw Error('Author preflight did not complete');
+  }
   if(operation==='publish'){
    delete require.cache[output];const asset=require(output),hash=require('node:crypto').createHash('sha256').update(fs.readFileSync(source)).digest('hex');if(asset.sourceSha256!==hash)throw Error('Published asset does not match input GLB');
   }

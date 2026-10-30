@@ -81,6 +81,9 @@ box('brand-accent', w*.012, r*.1, d*.025, -w*.235, r*.35, d*.325, orange)
 for i in range(4):
     box('brand-mark-'+str(i), w*.02, r*.1, d*.004, -w*.235, r*.35, d*(.37+i*.016), dark)
 box('body', w*.86, h-r, d*.9, 0, r+(h-r)/2, 0, metal)
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'se2-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'se2-v1.glb'), export_format='GLB',
                           export_extras=True, export_cameras=False, export_lights=False)

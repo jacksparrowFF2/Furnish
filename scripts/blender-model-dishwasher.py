@@ -69,6 +69,9 @@ for part in spec['parts']:
     obj.name=part['name']
     center=position(part['center']);parent=parents.get(part['role']);obj.parent=parent;obj.location=tuple(center[i]-(parent.matrix_world.translation[i] if parent else 0) for i in range(3))
     obj.data.materials.append(materials[part['material']]);obj['furnishStablePart']='dishwasher-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'dishwasher-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'dishwasher-v1.glb'),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in args:

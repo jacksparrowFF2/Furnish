@@ -21,6 +21,9 @@ for p in spec['parts']:
     b=o.modifiers.new('Eased reference-photo edges','BEVEL');b.width=min(p['radius']/1000,*[v/4000 for v in s]);b.segments=3;bpy.ops.object.modifier_apply(modifier=b.name)
     o.data.materials.append(mats[p['material']]);o['furnishStablePart']='side-table-v1:'+p['name'];o['furnishRecolor']=p['material']=='wood'
     if p['role']:o.parent=parents[p['role']]
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'side-table-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'side-table-v1.glb'),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 pathlib.Path(args[args.index('--result')+1]).write_text(json.dumps({'passed':True,'parts':len(spec['parts']),'blender':bpy.app.version_string}),encoding='utf-8')

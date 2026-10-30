@@ -71,6 +71,9 @@ for k in range(4):
 fs.append(tuple(reversed(range(N))));fs.append(tuple(range(4*N,5*N)))
 mesh('seat-cushion',vs,fs,cloth)
 # Accurate extrema: rounded contour cardinal points are +/-185 at the feet.
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'stack-stool-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'stack-stool-v1.glb'),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in sys.argv:pathlib.Path(sys.argv[sys.argv.index('--result')+1]).write_text(json.dumps({'passed':True,'blenderVersion':bpy.app.version_string,'parts':5}))

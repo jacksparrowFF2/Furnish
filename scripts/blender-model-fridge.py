@@ -35,6 +35,9 @@ for part in spec['parts']:
     bevel=obj.modifiers.new('Visual eased edges','BEVEL');bevel.width=min(.002,a/8000,b/8000,c/8000);bevel.segments=2;bpy.ops.object.modifier_apply(modifier=bevel.name)
     center=position(part['center']);parent=parents.get(part['role']);obj.parent=parent;obj.location=tuple(center[i]-(parent.location[i] if parent else 0) for i in range(3))
     obj.data.materials.append(materials[part['material']]);obj['furnishStablePart']='fridge-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from blender_asset_preflight import from_args as declared_preflight
+declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'fridge-v1.blend'))
 bpy.ops.export_scene.gltf(filepath=str(out/'fridge-v1.glb'),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
 if '--result' in args:

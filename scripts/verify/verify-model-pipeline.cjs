@@ -1,77 +1,57 @@
-/* Rebuild and validate in a disposable COPY. Never publishes into the caller's repo. */
+/* Model-specific contracts; isolated shared batch workspace, never production publication. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
-const project=path.resolve(__dirname,'../..'),B=require('../blender-server.cjs');
-const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+const project=path.resolve(__dirname,'../..'),B=require('../blender-server.cjs'),registry=require('../lib/model-profiles.cjs');
+const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),digest=value=>crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
 function options(args){
- const profile=args[0],device=args[1]||'auto';
- if(profile!=='washer-tg10k60w'||!['auto','gpu','cpu'].includes(device)||args.length>2)throw Error('Usage: node scripts/verify/verify-model-pipeline.cjs washer-tg10k60w [auto|gpu|cpu] (only this profile is integrated)');
- return {profile,device};
+ const plain=args.filter(a=>!a.startsWith('--resume=')),profile=plain[0],device=plain[1]||'auto',known=registry.profiles().map(p=>p.id);
+ if(plain.length>2||!['auto','gpu','cpu'].includes(device)||!profile||profile!=='all'&&profile!=='--list'&&!profile.split(',').every(id=>known.includes(id))||args.filter(a=>a.startsWith('--resume=')).length>1)throw Error('Usage: node scripts/verify/verify-model-pipeline.cjs <profile|all|id,id> [auto|gpu|cpu] [--resume=<batch-directory>]; use --list for the coverage inventory');
+ return {profile,device,...(args.find(a=>a.startsWith('--resume='))?{resume:args.find(a=>a.startsWith('--resume=')).slice(9)}:{})};
 }
-function execute(exe,args,cwd,log,env=process.env,timeout=10*60*1000){
- return new Promise((resolve,reject)=>{
-  const stream=fs.createWriteStream(log),child=cp.spawn(exe,args,{cwd,env,windowsHide:true,stdio:['ignore','pipe','pipe']});let stdout='',error;
-  const timer=setTimeout(()=>{error=Error('Command timed out; see '+log);child.kill();},timeout);
-  child.stdout.on('data',b=>{stdout+=b;stream.write(b);});child.stderr.pipe(stream,{end:false});
-  child.on('error',e=>{error=e;});child.on('close',code=>{clearTimeout(timer);stream.end();if(error||code!==0)reject(error||Error('Exit '+code+'; see '+log));else resolve(stdout);});
- });
-}
-// Store launcher may return before Python completes. A result file is required.
+function execute(exe,args,cwd,log,env=process.env,timeout=10*60*1000){return new Promise((resolve,reject)=>{
+ const stream=fs.createWriteStream(log),child=cp.spawn(exe,args,{cwd,env,windowsHide:true,stdio:['ignore','pipe','pipe']});let stdout='',error;
+ const timer=setTimeout(()=>{error=Error('Timed out; see '+log);child.kill();},timeout);child.stdout.on('data',b=>{stdout+=b;stream.write(b);});child.stderr.pipe(stream,{end:false});child.on('error',e=>{error=e;});child.on('close',code=>{clearTimeout(timer);stream.end();error||code!==0?reject(error||Error('Exit '+code+'; see '+log)):resolve(stdout);});
+ });}
 async function blenderCheck(blender,script,args,result,cwd,log){
- let failure;const child=execute(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',script,'--',...args],cwd,log).catch(e=>{failure=e;});
- const deadline=Date.now()+120000;
- while(!fs.existsSync(result)){if(failure)throw failure;if(Date.now()>deadline)throw Error('Blender result missing; see '+log);await new Promise(r=>setTimeout(r,250));}
- // File completion is the protocol; consume the child promise even for launchers.
+ let failure;const child=execute(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',script,'--',...args],cwd,log).catch(e=>{failure=e;}),deadline=Date.now()+120000;
+ while(!fs.existsSync(result)){if(failure)throw failure;if(Date.now()>deadline)throw Error('Missing Blender result; see '+log);await new Promise(r=>setTimeout(r,250));}
  await child;if(failure)throw failure;const data=JSON.parse(fs.readFileSync(result));if(!data.passed)throw Error('Blender check failed: '+result);return data;
 }
-async function main(args=process.argv.slice(2)){
- const {profile,device}=options(args),blender=B.findBlender();if(!blender)throw Error('Blender not found');
- const parent=path.join(project,'output/model-pipeline');fs.mkdirSync(parent,{recursive:true});const run=fs.mkdtempSync(path.join(parent,profile+'-')),root=path.join(run,'workspace');
- const protectedFiles=['src/data/'+profile+'-blender-asset.js','assets/models/'+profile+'/'+profile+'-v1.blend','assets/models/'+profile+'/'+profile+'-v1.glb','projects/workspace.furnish.json'];
- const before=Object.fromEntries(protectedFiles.map(p=>[p,hash(path.join(project,p))]));
- const report={passed:false,profile,device,blender,revision:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:project,encoding:'utf8',windowsHide:true}).trim(),started:new Date().toISOString(),run,stages:[],sourceHashes:before};
+function fingerprint(){const h=crypto.createHash('sha256');function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name))){const f=path.join(dir,e.name);if(e.isDirectory())walk(f);else if(e.name!=='model-profiles.cjs'){h.update(path.relative(project,f));h.update(fs.readFileSync(f));}}}for(const dir of ['scripts','src','styles','tests'])walk(path.join(project,dir));h.update(fs.readFileSync(path.join(project,'index.html')));return h.digest('hex');}
+function copyWorkspace(root){fs.mkdirSync(root);for(const name of ['scripts','src','styles','assets','vendor','templates','tests','docs'])if(fs.existsSync(path.join(project,name)))fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});fs.copyFileSync(path.join(project,'index.html'),path.join(root,'index.html'));fs.mkdirSync(path.join(root,'projects'));fs.copyFileSync(path.join(project,'projects/workspace.furnish.json'),path.join(root,'projects/workspace.furnish.json'));}
+async function runProfile(profile,ctx){
+ const {root,batch,blender,device}=ctx,run=fs.mkdtempSync(path.join(batch,profile.id+'-')),report={passed:false,profile:profile.id,route:profile.route,fixture:profile.fixture,alternateKind:profile.alternateKind,blender,started:new Date().toISOString(),run,stages:[]};
  const save=()=>fs.writeFileSync(path.join(run,'report.json'),JSON.stringify(report,null,2));
- async function stage(name,work){const row={name,started:new Date().toISOString(),passed:false};report.stages.push(row);save();console.log(name);try{row.result=await work();row.passed=true;}catch(e){row.error=e.message;report.failedStage=name;throw e;}finally{row.finished=new Date().toISOString();save();}}
- const env={...process.env,FURNISH_BLENDER:blender};
- const node=(name,args)=>execute(process.execPath,args,root,path.join(run,name+'.log'),env);
+ async function stage(name,work){const row={name,passed:false,started:new Date().toISOString()};report.stages.push(row);save();console.log(profile.id+' / '+name);try{row.result=await work();row.passed=true;return row.result;}catch(e){row.error=e.message;report.failedStage=name;throw e;}finally{row.finished=new Date().toISOString();save();}}
+ function skip(name,reason){report.stages.push({name,passed:null,status:'not-applicable',reason});save();}
+ const env={...process.env,FURNISH_BLENDER:blender},node=(name,args,extra={})=>execute(process.execPath,args,root,path.join(run,name+'.log'),{...env,...extra});
  try{
-  await stage('isolate',async()=>{
-   fs.mkdirSync(root);for(const name of ['scripts','src','styles','assets','vendor','templates','tests'])if(fs.existsSync(path.join(project,name)))fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});
-   fs.copyFileSync(path.join(project,'index.html'),path.join(root,'index.html'));fs.mkdirSync(path.join(root,'projects'));fs.copyFileSync(path.join(project,'projects/workspace.furnish.json'),path.join(root,'projects/workspace.furnish.json'));return {root};
-  });
-  const authored=path.join(root,'output/authored'),glb=path.join(authored,profile+'-v1.glb');
-  await stage('author-preflight',async()=>JSON.parse((await node('author',['scripts/blender-asset.cjs','author-'+profile,authored])).trim()));
-  await stage('preflight-negative',async()=>{
-   const spec=path.join(run,'washer-spec.json');fs.writeFileSync(spec,JSON.stringify(require(path.join(root,'src/core/washer-motion-core.js')).spec({type:'washer_littleswan_tg10k60w'})));
-   return blenderCheck(blender,path.join(root,'scripts/verify/verify-model-preflight.py'),[path.join(authored,profile+'-v1.blend'),spec,path.join(run,'preflight-negative.json')],path.join(run,'preflight-negative.json'),root,path.join(run,'preflight-negative.log'));
-  });
-  await stage('publish',async()=>{
-   const result=JSON.parse((await node('publish',['scripts/blender-asset.cjs','publish-'+profile,glb])).trim());
-   for(const ext of ['blend','glb'])fs.copyFileSync(path.join(authored,profile+'-v1.'+ext),path.join(root,'assets/models',profile,profile+'-v1.'+ext));
-   return {...result,glbSha256:hash(glb),blendSha256:hash(path.join(authored,profile+'-v1.blend')),runtimeSha256:hash(path.join(root,'src/data',profile+'-blender-asset.js'))};
-  });
-  await stage('geometry-state',async()=>{
-   const tests=['test-blender-washer-materials','test-blender-washer-tg10k60w','test-washer-front-confirmation','test-washer-project-v35'];
-   for(const test of tests)await node(test,['tests/'+test+'.cjs']);return {passed:true,tests};
-  });
-  let browserRun;
-  await stage('http-file-production',async()=>{
-   const stdout=await node('browser',['scripts/verify/verify-blender-appliance.cjs','--tg10k60w']);
-   browserRun=stdout.match(/PASS pilot browser: (.+)/)?.[1]?.trim();if(!browserRun||!path.resolve(browserRun).startsWith(root+path.sep))throw Error('Browser output escaped isolated workspace');
-   return {run:browserRun,...JSON.parse(fs.readFileSync(path.join(browserRun,'summary.json')))};
-  });
-  await stage('blender-production-readback',()=>blenderCheck(blender,path.join(root,'scripts/verify/verify-blender-appliance.py'),[browserRun,'--tg10k60w'],path.join(browserRun,'blender-result.json'),root,path.join(run,'readback.log')));
-  const studio=path.join(run,'studio');
-  await stage('studio-production-export',async()=>{await node('studio',[path.join(project,'scripts/verify/verify-model-studio.cjs'),root,studio]);return JSON.parse(fs.readFileSync(path.join(studio,'studio.json')));});
-  const {render}=require('./verify-model-render.cjs');
-  for(const view of ['front','oblique','open'])await stage('render-'+view,()=>render(root,path.join(studio,view+'.glb'),path.join(studio,view),device));
-  await stage('downloaded-blend-reopen',()=>blenderCheck(blender,path.join(root,'scripts/verify/verify-model-reopen.py'),[run],path.join(run,'reopen.json'),root,path.join(run,'reopen.log')));
-  report.passed=true;
- }finally{
-  report.sourceUnchanged=protectedFiles.every(p=>hash(path.join(project,p))===before[p]);
-  report.finished=new Date().toISOString();if(!report.sourceUnchanged){report.passed=false;report.sourceWarning='Source changed during the run; no source writes were requested by this runner.';}save();console.log('Report: '+path.join(run,'report.json'));
- }
- if(!report.passed)throw Error('Pipeline did not pass; inspect report');return report;
+  if(profile.route==='blender'){
+   const authored=path.join(run,'authored'),glb=path.join(authored,profile.id+'-v1.glb');
+   await stage('author-preflight',async()=>JSON.parse((await node('author',['scripts/blender-asset.cjs','author-'+profile.id,authored])).trim()));
+   await stage('preflight-negative',async()=>{const asset=require(path.join(root,profile.asset.runtime)),contract=path.join(run,'contract.json');fs.writeFileSync(contract,JSON.stringify({profile:profile.id,materialSlots:1,parts:asset.parts.map(p=>({name:p.name,identity:p.identity,role:p.role||null})),motions:asset.motions||[]}));return blenderCheck(blender,path.join(root,'scripts/verify/verify-asset-contract.py'),[path.join(authored,profile.id+'-v1.blend'),contract,path.join(run,'preflight-negative.json')],path.join(run,'preflight-negative.json'),root,path.join(run,'preflight-negative.log'));});
+   await stage('publish',async()=>{const result=JSON.parse((await node('publish',['scripts/blender-asset.cjs','publish-'+profile.id,glb])).trim());for(const ext of ['blend','glb'])fs.copyFileSync(path.join(authored,profile.id+'-v1.'+ext),path.join(root,profile.asset[ext]));return {...result,glbSha256:hash(glb),runtimeSha256:hash(path.join(root,profile.asset.runtime))};});
+  }else{skip('author-preflight','Retain the existing Furnish parametric constructor; no Blender re-authoring.');skip('preflight-negative','No imported author asset; validate production geometry and its structural suites.');skip('publish','Parametric model has no offline asset publication stage.');}
+  await stage('geometry-state',async()=>{await node('spatial',['tests/test-model-profile-spatial.cjs',profile.id],{FURNISH_MODEL_SPATIAL_REPORT:path.join(run,'spatial.json')});const tests=[],runtimeStamp=Object.keys(registry.assetTypes).map(id=>hash(path.join(root,'src/data/'+id+'-blender-asset.js')));for(const name of profile.tests){const file=path.join(root,'tests/test-'+name+'.cjs'),key=digest([name,hash(file),ctx.sourceFingerprint,runtimeStamp]),cached=ctx.testCache[key];if(!cached){await node(name,[file]);ctx.testCache[key]={profile:profile.id,log:path.join(run,name+'.log')};}tests.push({name,...ctx.testCache[key],reused:!!cached});}return {passed:true,tests,spatial:JSON.parse(fs.readFileSync(path.join(run,'spatial.json')))};});
+  await stage('http-file-production',async()=>{await node('browser',[path.join(project,'scripts/verify/verify-profile-browser.cjs'),root,path.join(run,'browser'),profile.id]);const r=JSON.parse(fs.readFileSync(path.join(run,'browser/production.json')));return {passed:r.passed,modes:r.modes,exports:r.exports.map(e=>({mode:e.mode,state:e.state,parts:e.geometry.parts.length,bounds:e.geometry.bounds}))};});
+  await stage('blender-production-readback',()=>blenderCheck(blender,path.join(root,'scripts/verify/verify-profile-blender.py'),[run],path.join(run,'readback.json'),root,path.join(run,'readback.log')));
+  const studio=await stage('studio-production-export',async()=>{await node('studio',[path.join(project,'scripts/verify/verify-model-studio.cjs'),root,path.join(run,'studio'),profile.id]);const r=JSON.parse(fs.readFileSync(path.join(run,'studio/studio.json')));return {passed:r.passed,preset:r.preset,views:r.views.map(v=>({id:v.id,state:v.state,parts:v.geometry.parts.length,position:v.position,target:v.target}))};});
+  for(const view of studio.views)await stage('render-'+view.id,()=>require('./verify-model-render.cjs').render(root,path.join(run,'studio',view.id+'.glb'),path.join(run,'studio',view.id),device));
+  await stage('downloaded-blend-reopen',()=>blenderCheck(blender,path.join(root,'scripts/verify/verify-profile-blender.py'),[run,'--render'],path.join(run,'reopen.json'),root,path.join(run,'reopen.log')));report.passed=true;
+ }catch(e){report.error=e.message;}finally{report.finished=new Date().toISOString();save();}
+ return report;
+}
+async function main(args=process.argv.slice(2)){
+ const opt=options(args),all=registry.profiles();if(opt.profile==='--list'){console.log(JSON.stringify(all.map(p=>({id:p.id,type:p.type,name:p.fixture.name,route:p.route,tests:p.tests})),null,2));return;}
+ const selected=opt.profile==='all'?all:all.filter(p=>opt.profile.split(',').includes(p.id)),blender=B.findBlender();if(!blender)throw Error('Blender not found');
+ const parent=path.join(project,'output/model-pipeline');fs.mkdirSync(parent,{recursive:true});const sourceFingerprint=fingerprint();let batch,summary,root,blenderIdentity=null;try{if(fs.statSync(blender).size>4096)blenderIdentity=hash(blender);}catch{/* Store aliases may not expose the actual binary; such runs cannot resume. */}
+ if(opt.resume){batch=path.resolve(opt.resume);if(!batch.startsWith(parent+path.sep))throw Error('Resume requires a batch inside this checkout output/model-pipeline');summary=JSON.parse(fs.readFileSync(path.join(batch,'batch.json')));if(summary.sourceFingerprint!==sourceFingerprint||summary.device!==opt.device||!blenderIdentity||summary.blenderIdentity!==blenderIdentity||summary.blender!==blender)throw Error('Verification/app source, Blender binary or device changed; start a new batch');root=path.join(batch,'workspace');fs.copyFileSync(path.join(project,'scripts/lib/model-profiles.cjs'),path.join(root,'scripts/lib/model-profiles.cjs'));}
+ else{batch=fs.mkdtempSync(path.join(parent,(opt.profile==='all'?'all':'selection')+'-')),root=path.join(batch,'workspace');summary={format:2,passed:false,device:opt.device,blender,blenderIdentity,sourceFingerprint,revision:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:project,encoding:'utf8',windowsHide:true}).trim(),started:new Date().toISOString(),results:[],testCache:{},sourceHashes:{}};for(const p of all.filter(p=>p.asset))for(const file of [p.asset.runtime,p.asset.glb,p.asset.blend])summary.sourceHashes[file]=hash(path.join(project,file));summary.sourceHashes['projects/workspace.furnish.json']=hash(path.join(project,'projects/workspace.furnish.json'));copyWorkspace(root);}
+ const save=()=>fs.writeFileSync(path.join(batch,'batch.json'),JSON.stringify(summary,null,2));save();console.log('Batch: '+batch);
+ const ctx={root,batch,blender,device:opt.device,sourceFingerprint,testCache:summary.testCache};
+ for(const profile of selected){const fixtureHash=digest(profile),old=summary.results.find(p=>p.id===profile.id);if(old?.passed&&old.fixtureHash===fixtureHash){console.log('RETAIN passed '+profile.id);continue;}const report=await runProfile(profile,ctx),row={id:profile.id,type:profile.type,route:profile.route,fixtureHash,passed:report.passed,run:report.run,failedStage:report.failedStage,error:report.error};summary.results=summary.results.filter(p=>p.id!==profile.id);summary.results.push(row);summary.expected=selected.map(p=>p.id);summary.sourceUnchanged=Object.entries(summary.sourceHashes).every(([f,h])=>hash(path.join(project,f))===h);save();}
+ summary.expected=selected.map(p=>p.id);summary.passed=selected.every(p=>summary.results.some(r=>r.id===p.id&&r.passed&&r.fixtureHash===digest(p)))&&summary.sourceUnchanged;summary.finished=new Date().toISOString();save();console.log('Report: '+path.join(batch,'batch.json'));
+ if(!summary.passed)throw Error('Some model pipelines failed; inspect batch.json and stage logs');return summary;
 }
 if(require.main===module)main().catch(e=>{console.error(e.stack);process.exitCode=1;});
-module.exports={options,main};
+module.exports={options,main,runProfile};
