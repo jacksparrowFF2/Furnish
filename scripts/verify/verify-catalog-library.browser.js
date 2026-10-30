@@ -67,6 +67,25 @@ async (page,V)=>{
   assert(await p.locator('#lib .item').count()===1,'custom library survives reload');
   await p.locator('#lib .item').hover();await p.locator('#lib [data-cdel]').click();await p.getByRole('button',{name:'删除库条目',exact:true}).click();
   assert(await p.evaluate(()=>state.furniture.some(f=>f.name==='家居库验收柜')),'deleting custom source preserves placed item');
+  await p.setViewportSize({width:1500,height:950});
+  await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await p.locator('[data-collection="all"]').click();
+  await p.evaluate(id=>{drawer('lib',true);drawer('panel',true);selectIds([id]);},added[0].id);
+  const oldName=await p.locator('#fName').inputValue();
+  await p.locator('#fName').fill('侧栏 UI 验收柜');await p.locator('#fName').press('Tab');
+  assert(await p.evaluate(id=>getF(id).name,added[0].id)==='侧栏 UI 验收柜','property name edit');
+  await p.getByRole('button',{name:'撤销',exact:true}).first().click();
+  assert(await p.locator('#fName').inputValue()===oldName,'property name undo');
+  await p.getByRole('button',{name:'重做',exact:true}).first().click();
+  await V.waitForCache(p);await p.reload();
+  await p.evaluate(id=>{drawer('lib',true);drawer('panel',true);selectIds([id]);},added[0].id);
+  assert(await p.locator('#fName').inputValue()==='侧栏 UI 验收柜','property name survives refresh');
+  await p.evaluate(()=>document.querySelector('aside.right').scrollTop=0);
+  await screenshot('unified-sidebars');
+  await p.evaluate(()=>setTheme('dark'));await screenshot('unified-sidebars-dark');await p.evaluate(()=>setTheme('light'));
+  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await p.evaluate(()=>drawer('panel',true));await screenshot('unified-properties-mobile');
+  assert(await p.evaluate(()=>{const r=document.querySelector('aside.right').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&document.documentElement.scrollWidth<=innerWidth;}),'unified properties mobile bounds');
   assert(errors.length===0,'page errors: '+errors.join('; '));results.push({mode,status:'PASS',errors});await context.close();
  }
  return results;

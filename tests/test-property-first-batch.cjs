@@ -27,7 +27,7 @@ assert.equal(ctx.furniturePriceText({...base,referencePrice:23}),'¥23 · 参考
 
 let current={...base,type:'custom'},history=[],errors=[];
 const nodes=Object.fromEntries(['#fName','#fP','#full-product-details'].map(id=>[id,{}]));
-Object.assign(ctx,{$:id=>nodes[id],document:{querySelectorAll:()=>[]},getF:()=>current,mutate:fn=>{history.push({...current});fn();},toast:message=>errors.push(message)});
+Object.assign(ctx,{$:id=>nodes[id],document:{querySelectorAll:()=>[],querySelector:()=>null},getF:()=>current,mutate:fn=>{history.push({...current});fn();},toast:message=>errors.push(message)});
 ctx.renderPanel=()=>{};ctx.bindFurnPanel(current);
 nodes['#fP'].onchange({target:{value:'0'}});assert.equal(current.price,0);
 nodes['#fP'].onchange({target:{value:''}});assert(!Object.hasOwn(current,'price'));
