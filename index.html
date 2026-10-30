@@ -289,22 +289,17 @@
     <button class="badge" id="modelErrors" hidden aria-live="polite"></button>
     <section id="cameraPanel" class="only3d" hidden role="dialog" aria-modal="false" aria-labelledby="cameraPanelTitle">
       <div class="camera-panel-head"><b id="cameraPanelTitle" data-en="Camera view">视角设置</b><button class="btn" id="cameraPanelClose" aria-label="关闭视角设置 / Close camera settings" data-en="Close">关闭</button></div>
-      <div class="camera-panel-body"><p id="cameraModeSummary" class="hint"></p>
-          <label class="range"><span id="cameraFovLabel">鸟瞰水平视角</span> <input type="range" id="cameraFov" aria-label="水平视角 / Horizontal FOV" min="40" max="90" step="1" value="60"><span id="cameraFovValue">60°</span></label>
-          <p class="hint" data-en="Manual: 60° natural, 75° wide, 90° extra wide; portrait vertical limit 75°. Walk eye height 1.6 m.">手动：60° 自然 · 75° 宽角 · 90° 广角；竖屏垂直上限 75°。漫游眼高 1.6 m。</p>
-          <details id="cameraCalibration" open><summary data-en="Screen and viewing distance">屏幕与观看距离</summary>
-            <form id="cameraCalibrationForm">
-              <p class="hint" data-en="Sit facing the center of the 3D canvas. Measure eye-to-screen distance. Applies to the current camera mode and is saved on this device.">请正对 3D 画布中心坐好，测量眼睛到屏幕的距离。校准应用于当前模式，保存在本机。</p>
-              <div class="chiprow" role="group" aria-label="常用屏幕预设 / Display presets">
-                <button class="btn" type="button" data-camera-screen="24">24″</button>
-                <button class="btn" type="button" data-camera-screen="27">27″</button>
-                <button class="btn" type="button" data-camera-screen="6.5">6.5″</button>
-              </div>
-              <label class="range"><span data-en="Preset aspect ratio">预设长宽比</span><select id="cameraScreenAspect"><option value="1.7777777777777777">16:9</option><option value="1.6">16:10</option><option value="0.45" data-en="Phone 20:9 (example)">手机 20:9（示例）</option><option value="0.46153846153846156" data-en="Phone 19.5:9">手机 19.5:9</option></select></label>
-              <p class="hint" data-en="Presets assume the listed aspect ratio: desktop distance 50–70 cm (starts at 60), phone 15–25 cm (starts at 20). Check your actual aspect ratio and resolution, or measure the ruler.">预设按标注的长宽比计算：显示器眼距 50–70 cm（先填 60），手机 15–25 cm（先填 20）。请核对实际长宽比与分辨率，或改用实测标尺。</p>
-              <label class="range"><span data-en="Eye-to-screen distance (mm)">眼睛到屏幕 mm</span><input id="cameraEyeDistance" type="number" min="100" max="5000" step="any" placeholder="600" required></label>
-              <div class="chiprow" id="cameraDistancePresets" role="group" aria-label="观看距离 / Viewing distance"></div>
-              <details id="cameraAdvanced"><summary data-en="Fine calibration and more">精校与更多参数</summary>
+      <div class="camera-panel-body"><div id="cameraCalibration">
+        <form id="cameraCalibrationForm">
+          <div class="camera-quick-row"><span data-en="Screen size">屏幕尺寸</span><div class="chiprow" role="group" aria-label="常用屏幕预设 / Display presets">
+            <button class="btn" type="button" data-camera-screen="24">24″</button><button class="btn" type="button" data-camera-screen="27">27″</button><button class="btn" type="button" data-camera-screen="6.5">6.5″</button>
+          </div></div>
+          <div class="camera-quick-row"><label class="range"><span data-en="Eye distance">观看距离</span><input id="cameraEyeDistance" type="number" min="100" max="5000" step="any" placeholder="600" required><span>mm</span></label><div class="chiprow" id="cameraDistancePresets" role="group" aria-label="观看距离 / Viewing distance"></div></div>
+          <label class="range camera-fov-row"><span id="cameraFovLabel">鸟瞰水平视角</span><input type="range" id="cameraFov" aria-label="水平视角 / Horizontal FOV" min="40" max="90" step="1" value="60"><span id="cameraFovValue">60°</span></label>
+          <div class="camera-mode-actions" role="group" aria-label="视角控制 / FOV control"><button class="btn" id="cameraApplyCalibration" type="submit" data-en="Automatic calibration">自动校准</button><button class="btn" type="button" id="cameraCalibrationToggle" data-en="Manual FOV">手动 FOV</button></div>
+          <details id="cameraAdvanced"><summary data-en="Advanced settings">高级设置</summary>
+            <p id="cameraModeSummary" class="hint"></p>
+            <label class="range"><span data-en="Preset aspect ratio">预设长宽比</span><select id="cameraScreenAspect"><option value="1.7777777777777777">16:9</option><option value="1.6">16:10</option><option value="0.45" data-en="Phone 20:9 (example)">手机 20:9（示例）</option><option value="0.46153846153846156" data-en="Phone 19.5:9">手机 19.5:9</option></select></label>
               <label class="range"><span data-en="Method">方式</span><select id="cameraCalibrationMethod"><option value="screen" data-en="Screen dimensions">屏幕参数</option><option value="ruler" data-en="Measure ruler">实测标尺</option><option value="saved" id="cameraSavedScale" disabled data-en="Saved scale; change distance">已有校准，只改眼距</option></select></label>
               <div id="cameraScreenFields">
                 <label class="range"><span data-en="Visible screen width (mm)">屏幕可视宽度 mm</span><input id="cameraScreenWidth" type="number" min="50" max="5000" step="any" placeholder="597" required></label>
@@ -317,14 +312,16 @@
                 <label class="range"><span data-en="Measured ruler length (mm)">标尺实测长度 mm</span><input id="cameraRulerMm" type="number" min="1" max="1000" step="any" disabled></label>
                 <p class="hint" data-en="Measure the line above with a physical ruler, from its left edge to its right edge.">用实体尺测量上方线段从左边到右边的实际长度。</p>
               </div>
-              </details>
-              <p class="hint" id="cameraCalibrationPreview" aria-live="polite"></p>
-              <div class="chiprow"><button class="btn" type="submit" data-en="Apply calibration">应用校准</button><button class="btn" type="button" id="cameraCalibrationToggle" data-en="Use manual FOV">使用手动视角</button></div>
-            </form>
+
+            <p class="hint" id="cameraCalibrationPreview" aria-live="polite"></p>
             <p class="hint" id="cameraCalibrationStatus" role="status" aria-live="polite"></p>
+            <p class="hint" data-en="Manual: 60° natural, 75° wide, 90° extra wide; portrait vertical limit 75°. Walk eye height 1.6 m.">手动：60° 自然 · 75° 宽角 · 90° 广角；竖屏垂直上限 75°。漫游眼高 1.6 m。</p>
+            <p class="hint" data-en="Sit facing the center of the 3D canvas. Measure eye-to-screen distance. Applies to the current camera mode and is saved on this device.">请正对 3D 画布中心坐好，测量眼睛到屏幕的距离。校准应用于当前模式，保存在本机。</p>
+            <p class="hint" data-en="Presets assume the listed aspect ratio: desktop distance 50–70 cm (starts at 60), phone 15–25 cm (starts at 20). Check your actual aspect ratio and resolution, or measure the ruler.">预设按标注的长宽比计算：显示器眼距 50–70 cm（先填 60），手机 15–25 cm（先填 20）。请核对实际长宽比与分辨率，或改用实测标尺。</p>
             <p class="hint" data-en="A calibrated FOV may be much narrower than a game view. Canvas resize and page zoom are accounted for; do not pinch-magnify the page. Recalibrate after changing displays or display resolution. This matches a fixed central viewpoint, without head tracking or binocular depth.">校准视角可能比游戏视角窄很多。画布大小和页面缩放会自动换算，请勿用手势放大页面；更换显示器或系统分辨率后请重新校准。按正对画布中心的固定视点计算，不含头部跟踪与双眼立体效果。</p>
           </details>
-      </div>
+        </form>
+      </div></div>
     </section>
     <div id="view3d">
       <div id="walkOverlay"><div><h3 data-en="Walk mode">漫游模式</h3>
@@ -589,8 +586,10 @@ function updateProjection(){
   $('#cameraFov').disabled=!!physical;
   $('#cameraFovLabel').textContent=opt.mode==='orbit'?tr('鸟瞰水平视角','Orbit horizontal FOV'):tr('漫游水平视角','Walk horizontal FOV');
   $('#cameraFovValue').textContent=`${lens.horizontal.toFixed(1)}°`;
-  $('#cameraCalibrationToggle').textContent=enabled?tr('当前模式用手动','Use manual in this mode'):tr('当前模式用校准','Calibrate this mode');
-  $('#cameraCalibrationToggle').disabled=!calibration;
+  $('#cameraCalibrationToggle').classList.toggle('on',!physical);
+  $('#cameraCalibrationToggle').setAttribute('aria-pressed',String(!physical));
+  $('#cameraApplyCalibration').classList.toggle('on',!!physical);
+  $('#cameraApplyCalibration').setAttribute('aria-pressed',String(!!physical));
   $('#cameraSavedScale').disabled=!calibration;
   $('#cameraModeSummary').textContent=tr(`鸟瞰：${calibration?.orbitEnabled?'校准':'手动'} · 漫游：${calibration?.enabled?'校准':'手动'}。屏幕与眼距共用，模式开关分别记住。`,`Orbit: ${calibration?.orbitEnabled?'calibrated':'manual'} · Walk: ${calibration?.enabled?'calibrated':'manual'}. Display settings are shared; mode switches are remembered separately.`);
   $('#cameraCalibrationStatus').textContent=physical?tr(`校准中：眼距 ${calibration.distanceMm} mm；画布 ${physical.widthMm.toFixed(0)} × ${physical.heightMm.toFixed(0)} mm；水平 ${lens.horizontal.toFixed(1)}°，垂直 ${lens.vertical.toFixed(1)}°。`,`Calibrated: distance ${calibration.distanceMm} mm; canvas ${physical.widthMm.toFixed(0)} × ${physical.heightMm.toFixed(0)} mm; H ${lens.horizontal.toFixed(1)}°, V ${lens.vertical.toFixed(1)}°.`):enabled?tr('校准范围无效，暂用手动视角；请检查参数。','Calibration out of range; using manual FOV. Check the inputs.'):tr('当前使用手动视角。','Using manual FOV.');
@@ -1885,7 +1884,7 @@ function syncWalkTexts(){
 function bindUI(){
   $('#vCamera').onclick=()=>{
     if(!$('#cameraPanel').hidden){closeCameraPanel(true);return;}
-    walkCtl.unlock();$('#showMenu').open=false;$('#cameraPanel').hidden=false;$('#vCamera').setAttribute('aria-expanded','true');updateProjection();$('#cameraPanelClose').focus({preventScroll:true});
+    walkCtl.unlock();$('#showMenu').open=false;$('#cameraAdvanced').open=false;$('#cameraPanel').hidden=false;$('#cameraPanel .camera-panel-body').scrollTop=0;$('#vCamera').setAttribute('aria-expanded','true');updateProjection();$('#cameraPanelClose').focus({preventScroll:true});
   };
   $('#cameraPanelClose').onclick=()=>closeCameraPanel(true);
   $('#cameraPanel').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape'){e.preventDefault();closeCameraPanel(true);}});
@@ -1955,6 +1954,7 @@ function bindUI(){
   };
   document.querySelectorAll('[data-camera-screen]').forEach(button=>button.onclick=()=>{
     presetDiagonal=+button.dataset.cameraScreen;
+    document.querySelectorAll('[data-camera-screen]').forEach(b=>{b.classList.toggle('on',b===button);b.setAttribute('aria-pressed',String(b===button));});
     const ratio=$('#cameraScreenAspect');
     if(presetDiagonal<10&&+ratio.value>1)ratio.value='0.45';
     if(presetDiagonal>=10&&+ratio.value<1)ratio.value='1.7777777777777777';
@@ -1962,23 +1962,25 @@ function bindUI(){
   });
   $('#cameraScreenAspect').onchange=applyDisplayPreset;
   $('#cameraPixelMode').onchange=()=>{syncScreenPixels();previewCalibration();};
-  $('#cameraCalibration').addEventListener('toggle',()=>{if($('#cameraCalibration').open){syncScreenPixels();previewCalibration();}});
+  $('#cameraAdvanced').addEventListener('toggle',()=>{if($('#cameraAdvanced').open){syncScreenPixels();previewCalibration();}});
   syncScreenPixels();
   $('#cameraCalibrationForm').oninput=previewCalibration;
+  $('#cameraCalibrationForm').addEventListener('invalid',()=>{$('#cameraAdvanced').open=true;},true);
   const savedCalibration=FurnishNavigation.cameraCalibration();
   if(savedCalibration){$('#cameraEyeDistance').value=savedCalibration.distanceMm;distancePresets(savedCalibration.distanceMm<300);$('#cameraCalibrationMethod').value='saved';$('#cameraCalibrationMethod').onchange();}
   $('#cameraCalibrationForm').onsubmit=e=>{
     e.preventDefault();
     try{
+      if($('#cameraCalibrationMethod').value==='ruler')$('#cameraAdvanced').open=true;
       const previous=FurnishNavigation.cameraCalibration(),value={...readCalibration(),enabled:opt.mode==='walk'?true:!!previous?.enabled,orbitEnabled:opt.mode==='orbit'?true:!!previous?.orbitEnabled};
       if(!FurnishNavigation.calibratedProjection(value,SW(),SH(),devicePixelRatio,opt.mode))throw Error('Invalid projection');
       FurnishNavigation.setCameraCalibration(value);calibrationChanged();$('#cameraCalibrationPreview').textContent='';
-    }catch(error){$('#cameraCalibrationStatus').textContent=tr('参数无效，未应用。请检查宽度、分辨率／标尺长度和观看距离。','Invalid inputs; calibration was not applied. Check dimensions and viewing distance.');}
+    }catch(error){$('#cameraAdvanced').open=true;$('#cameraCalibrationStatus').textContent=tr('参数无效，未应用。请检查宽度、分辨率／标尺长度和观看距离。','Invalid inputs; calibration was not applied. Check dimensions and viewing distance.');}
   };
   $('#cameraCalibrationToggle').onclick=()=>{
     const value=FurnishNavigation.cameraCalibration();if(!value)return;
     const key=opt.mode==='orbit'?'orbitEnabled':'enabled';
-    FurnishNavigation.setCameraCalibration({...value,[key]:!value[key]});calibrationChanged();
+    FurnishNavigation.setCameraCalibration({...value,[key]:false});calibrationChanged();
   };
   const remember=()=>{
     const settings=FurnishDesign.sceneSettings(opt);
