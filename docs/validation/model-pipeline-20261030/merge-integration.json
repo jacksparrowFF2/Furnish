@@ -1,0 +1,144 @@
+{
+  "passed": true,
+  "revision": "aac8ff9e7410709f391889aaf26e482b497cfd25",
+  "rebuiltRuntimeSha256": "4bb6844ec991b4942d05c318074f14143768d7da068bcaf2e1ba4fcc04d6551d",
+  "browser": {
+    "passed": true,
+    "results": [
+      {
+        "mode": "http",
+        "passed": true,
+        "undoRedo": true,
+        "refresh": true,
+        "productionExportParts": 47,
+        "offlineAsset": true,
+        "narrow": true
+      },
+      {
+        "mode": "file",
+        "passed": true,
+        "undoRedo": true,
+        "refresh": true,
+        "productionExportParts": 47,
+        "offlineAsset": true,
+        "narrow": true
+      }
+    ]
+  },
+  "readback": {
+    "passed": true,
+    "blender": "5.2.3 LTS",
+    "results": [
+      {
+        "mode": "http",
+        "parts": 47,
+        "stableKeys": 47,
+        "doorAlpha": 0.12,
+        "fixedVerticalHinge": true,
+        "doorDegrees": 110,
+        "circularDoorParts": 5,
+        "bottomMm": 200,
+        "doubleInstallationOffset": false
+      },
+      {
+        "mode": "file",
+        "parts": 47,
+        "stableKeys": 47,
+        "doorAlpha": 0.12,
+        "fixedVerticalHinge": true,
+        "doorDegrees": 110,
+        "circularDoorParts": 5,
+        "bottomMm": 200,
+        "doubleInstallationOffset": false
+      }
+    ]
+  },
+  "studio": {
+    "passed": true,
+    "preset": "tg10k60w-studio-v1",
+    "productionExporter": true,
+    "dimensionsMm": [
+      595,
+      560,
+      850
+    ],
+    "camera": {
+      "fov": 36,
+      "aspect": 1
+    },
+    "lighting": {
+      "keyIntensity": 2000,
+      "keyPosition": [
+        -2,
+        4,
+        4
+      ],
+      "world": "production-worker",
+      "exposure": 0,
+      "viewTransform": "AgX"
+    },
+    "views": [
+      {
+        "id": "front",
+        "position": [
+          0,
+          0.43,
+          2.25
+        ],
+        "target": [
+          0,
+          0.43,
+          0
+        ],
+        "angle": 0,
+        "parts": 47,
+        "floorBase": {
+          "z": 0,
+          "known": true,
+          "roomId": "studio"
+        }
+      },
+      {
+        "id": "oblique",
+        "position": [
+          1.45,
+          1.1,
+          2
+        ],
+        "target": [
+          0,
+          0.43,
+          0.08
+        ],
+        "angle": 0,
+        "parts": 47,
+        "floorBase": {
+          "z": 0,
+          "known": true,
+          "roomId": "studio"
+        }
+      },
+      {
+        "id": "open",
+        "position": [
+          1.65,
+          1.2,
+          2.65
+        ],
+        "target": [
+          -0.22,
+          0.43,
+          0.08
+        ],
+        "angle": 110,
+        "parts": 47,
+        "floorBase": {
+          "z": 0,
+          "known": true,
+          "roomId": "studio"
+        }
+      }
+    ]
+  },
+  "scope": "Merged camera/UI changes: repeat HTTP/file export, Scoop readback and explicit studio cameras; unchanged model geometry and GPU worker reuse prior full pipeline evidence."
+}
