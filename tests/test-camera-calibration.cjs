@@ -3,6 +3,11 @@ const N=require('../src/core/navigation-input.js'),near=(a,b)=>assert.ok(Math.ab
 assert.equal(N.screenPixels(1920,1),1920);assert.equal(N.screenPixels(1280,1.5),1920);assert.equal(N.screenPixels(360,3),1080);
 for(const [width,dpr] of [[0,1],[1920,NaN],[Infinity,2],[1920,0],[10,1],[40000,1]])assert.equal(N.screenPixels(width,dpr),null);
 const calibration=N.calibrateCamera({widthMm:600,pixels:2400,distanceMm:600});
+assert.equal(N.calibratedProjection(calibration,1200,800,2,'orbit'),null,'legacy calibration remains walk-only');
+const both={...calibration,orbitEnabled:true};
+near(N.calibratedProjection(both,1200,800,2,'orbit').vertical,N.calibratedProjection(both,1200,800,2).vertical);
+assert.equal(N.calibratedProjection({...both,enabled:false},1200,800,2),null);
+assert.ok(N.calibratedProjection({...both,enabled:false},1200,800,2,'orbit'),'orbit and walk flags are independent');
 const p=N.calibratedProjection(calibration,1200,800,2);
 near(p.widthMm,600);near(p.heightMm,400);near(p.horizontal,2*Math.atan(.5)*180/Math.PI);
 const narrow=N.calibratedProjection(calibration,400,800,2);
@@ -22,6 +27,8 @@ vm.runInContext(source,context);context.FurnishNavigation.setCameraCalibration(c
 const copy=context.FurnishNavigation.cameraCalibration();copy.distanceMm=999;
 near(context.FurnishNavigation.cameraCalibration().distanceMm,600);
 vm.runInContext(source,context);near(context.FurnishNavigation.cameraCalibration().mmPerPixel,.25);
+assert.equal(context.FurnishNavigation.cameraCalibration().orbitEnabled,false);
+context.FurnishNavigation.setCameraCalibration(both);vm.runInContext(source,context);assert.equal(context.FurnishNavigation.cameraCalibration().orbitEnabled,true);
 context.FurnishNavigation.setCameraCalibration({...calibration,enabled:false});vm.runInContext(source,context);assert.equal(context.FurnishNavigation.cameraCalibration().enabled,false);
 context.FurnishNavigation.setCameraCalibration(null);vm.runInContext(source,context);assert.equal(context.FurnishNavigation.cameraCalibration(),null);
 for(const raw of ['broken','{"enabled":true,"mmPerPixel":-1,"distanceMm":600}']){saved.set('furnish-camera-calibration',raw);vm.runInContext(source,context);assert.equal(context.FurnishNavigation.cameraCalibration(),null);}
