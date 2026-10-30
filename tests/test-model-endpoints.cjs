@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('node:assert/strict'),{endpointEvidence}=require('../scripts/lib/model-browser-fixture.cjs');
+const frame=[[0,0,0],[2,2,.2]],closed=[[.5,0,.02],[1.5,1.8,.06]],open=[[0,0,.02],[1,1.8,.06]],contract=[{id:'door',target:0,bounds:[frame,closed]}],parts=(leaf,id='door')=>[{id,bounds:frame},{id,bounds:leaf}];
+assert(endpointEvidence(parts(closed).reverse(),contract)[0].partBoundsMatched,'part order is irrelevant');
+assert(!endpointEvidence(parts(open),contract)[0].partBoundsMatched,'aggregate frame bounds cannot hide a door at the wrong endpoint');
+assert(!endpointEvidence(parts(closed,'other'),contract)[0].partBoundsMatched,'another owner cannot satisfy an endpoint');
+assert(!endpointEvidence([],contract)[0].partBoundsMatched,'empty exports cannot satisfy the contract');
+assert(!endpointEvidence(parts(closed).concat(parts(closed)),contract)[0].partBoundsMatched,'extra duplicate bodies are rejected');
+assert(endpointEvidence(parts(closed),contract)[0].maxError===0);
+console.log('PASS exported endpoint contract: actual per-part bounds, wrong pose inside unchanged envelope, ownership, order and nonempty exact counts');

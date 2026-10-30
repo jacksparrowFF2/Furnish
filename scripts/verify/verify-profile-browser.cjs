@@ -24,7 +24,7 @@ async function main(root,run,id){
     const fixture=scene[0];await page.evaluate(f=>mutate(()=>{state.furniture=f;}),scene);assert.equal(await page.evaluate(()=>furnitureRenderErrors.size),0);
     const file=path.join(run,mode+'-'+state+'.glb'),geometry=await F.capture(page,file);assert(geometry.parts.length>0);
     const poseRequests=await page.evaluate(()=>state.furniture.filter(f=>FurnishProducts.supports(f,'slidingOpen')).map(f=>({id:f.id,target:FurnishProducts.value(f,'slidingOpen')?1:0})));
-    for(const request of poseRequests){const pose=geometry.settledPoses.find(p=>p.id===request.id);assert(pose&&pose.target===request.target&&pose.cur===request.target,id+' did not export the saved sliding endpoint');assert(pose.leaves.every(l=>Math.abs(l.actual-l.expected)<1e-9),id+' leaf has not reached its saved endpoint');}
+    for(const request of poseRequests){const pose=geometry.settledPoses.find(p=>p.id===request.id);assert(pose&&pose.target===request.target&&pose.partBoundsMatched&&pose.parts>0,id+' did not export the saved sliding endpoint');assert(pose.maxError<2e-5,id+' production parts have not reached saved endpoint bounds');}
     if(profile.asset){const expected=profile.asset.parts*(profile.id==='stack-stool'?(fixture.stoolCount||1):1);assert.equal(geometry.parts.length,expected,id+' production part count');
      if(profile.asset.productionIdentity==='cabinet-boards')assert(geometry.parts.every(p=>p.key.startsWith('named:')&&p.kind==='BufferGeometry'&&p.count>24),id+' lost imported shaped boards or cabinet production identities');
      else assert(geometry.parts.every(p=>profile.asset.prefixes.some(prefix=>p.key.startsWith('explicit:'+prefix))),id+' used a fallback asset');
