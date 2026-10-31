@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'../..'),P=require('../../src/core/product-rul
 const originalTypes=new Set('bed crib nightstand wardrobe dresser desk chest chair bookshelf baycushion sofa cornersofa armchair beanbag coffeetable roundtable sidetable tvstand rug shoecab floorlamp plant dryingrack table island barstool counter stove ksink fridge cabinet toilet vanity shower bathtub washer waterheater tv aircon acwall dishwasher ovencol dryer purifier officechair piano treadmill pendant curtain wallart mirror bench'.split(' '));
 const assetTypes={'sofa-bed':'sofa_bed_yeswood_y107h03',se2:'bath_heater_aopu_se2',y52y09:'bookshelf_yeswood_y52y09',fridge:'fridge_french_drawer',dishwasher:'dishwasher_mijia_countertop',hood:'rangehood_fotile_jcd10ta',washer:'washer','washer-tg10k60w':'washer_littleswan_tg10k60w','side-table':'sidetable_tmall_635382906309',armchair:'armchair_yeswood_y09hs','armchair-berlin':'armchair_yeswood_berlin','stack-stool':'stool_citylong_370'};
 const suites={
- 'sofa-bed':['sofa-bed'],
+ 'sofa-bed':['sofa-bed','sofa-bed-project-v40'],
  se2:['blender-appliance-asset','bath-heater-se2'],y52y09:['blender-bookcase-asset','bookcase-y52y09'],fridge:['blender-fridge-motion','fridge-project-v31'],dishwasher:['blender-dishwasher-asset','dishwasher-project-v32','dishwasher-clearances'],hood:['blender-hood-asset','hood-project-v33'],washer:['blender-washer-asset','washer-project-v35'],'washer-tg10k60w':['blender-washer-materials','blender-washer-tg10k60w','washer-front-confirmation','washer-project-v35'],'side-table':['side-table','side-table-project-v36'],armchair:['armchair'],'armchair-berlin':['armchair-berlin'],'stack-stool':['stack-stool'],
  block:['block'],panel_light_300x600:['panel-light'],bath_heater_300x600:['bath-heater-se2'],downlight_philips_dl269:['downlight'],heating_manifold:['manifold','manifold-zero-gap'],electrical_box_strong:['electrical-box'],electrical_box_weak:['electrical-box'],aquarium_mijia_2pro:['aquarium'],stove_fotile_th36b:['fotile'],waterheater_flat:['waterheater-flat','waterheater-furniture-clearances'],aircon_midea_ultra_2hp:['aircon-midea'],water_purifier_mijia_1200g:['water-purifier'],tea_bar_mijia_pro:['tea-bar'],robot_p20max_tank:['robot-vacuum'],robot_p20max_plumbed:['robot-vacuum'],robot_p20max:['robot-vacuum'],pipebox:['pipebox'],sofa_yeswood_cherry:['yeswood-sofa'],coffeetable_yeswood_cherry:['cherry-coffee-table'],tea_table_800:['tea-table'],bench_yeswood_oak:['shoe-bench'],shower_arrow_cream:['shower-arrow'],cat_tree:['cat-tree'],pet_feeder_mijia_2:['pet-feeder'],litter_box:['litter-box'],mirror:['mirror'],tv:['tv-view-consistency']
 };
@@ -24,7 +24,8 @@ function testsFor(id,type){
 function itemFixture(item){const f={type:item[0],name:item[1],w:item[2],d:item[3],color:item[4],...P.initial({type:item[0],w:item[2],d:item[3]})};if(item[6])f.h=item[6];if(!f.h)f.h=P.height(f);if(item[8])f.curtainStyle=item[8];return f;}
 function operate(f){
  f=copy(f);const d=P.definition(f)||{};
- if(d.fridgeMotion)Object.assign(f,{fridgeLeftAngle:100,fridgeRightAngle:100,fridgeUpperExtension:1,fridgeLowerExtension:1});
+ if(d.sofaBedProfile)f.sofaBedOpen=true;
+ else if(d.fridgeMotion)Object.assign(f,{fridgeLeftAngle:100,fridgeRightAngle:100,fridgeUpperExtension:1,fridgeLowerExtension:1});
  else if(d.washerMotion)f.washerDoorAngle=110;
  else if(f.type==='dishwasher_mijia_countertop')f.dishwasherDoorOpen=true;
  else if(f.type==='rangehood_fotile_jcd10ta')f.hoodPanelOpen=true;

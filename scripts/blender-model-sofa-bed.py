@@ -78,7 +78,8 @@ for side,x in [('left',-.600),('right',.600)]:
     box('back-post-'+side,(.050,.722,.050),(x,.361,-.394),wood,.0249)
     box('side-panel-'+side,(.022,.260,.740),(x,.130,0),wood,.004)
     box('side-inset-'+side,(.004,.180,.620),(x+(-.012 if x<0 else .012),.137,0),wood,.003)
-    box('metal-runner-'+side,(.030,.035,.738),(x*.80,.1025,.005),steel,.003)
+    box('metal-runner-'+side,(.025,.035,.590),(x*.80,.1025,.105),steel,.003)
+    box('middle-runner-'+side,(.025,.035,.590),(x*.75,.1025,.105),steel,.003)
     for label,z in [('front',.315),('back',-.310)]:
         box('wheel-fork-'+label+'-'+side,(.024,.082,.030),(x*.8,.063,z),steel,.002)
         bpy.ops.mesh.primitive_cylinder_add(vertices=24,radius=.022,depth=.018,location=xyz((x*.8,.022,z)),rotation=(0,math.pi/2,0))
@@ -89,11 +90,19 @@ box('front-rail',(1.150,.145,.026),(0,.213,.394),wood,.006)
 box('back-rail',(1.150,.080,.030),(0,.274,-.394),wood,.004)
 box('back-top-rail',(1.150,.040,.028),(0,.692,-.394),wood,.007)
 for i in range(7):box('back-slat-'+str(i),(.038,.390,.022),((i-3)*.158,.497,-.394),wood,.005)
-for i in range(12):box('steel-slat-'+str(i),(1.130,.020,.028),(0,.282,-.330+i*.061),steel,.002)
-fitted_soft('seat-lower',(1.180,.050,.760),(0,.325,.030),r=.022,puff=.002)
-fitted_soft('seat-upper',(1.180,.050,.760),(0,.375,.030),r=.022,puff=.003)
-piping('seat-piping-lower',1.150,.730,0,(0,.336,.030),90,.026)
-piping('seat-piping-upper',1.150,.730,0,(0,.386,.030),90,.026)
+for i in range(12):
+    x=(i-5.5)*.094
+    box('steel-slat-'+str(i),(.028,.020,.738),(x,.240,0),steel,.002)
+    box('middle-steel-'+str(i),(.024,.020,.590),(x+.030,.240,.105),steel,.002)
+    box('front-steel-'+str(i),(.018,.020,.590),(x-.030,.240,.105),steel,.002)
+box('middle-crossbar',(.900,.035,.025),(0,.1025,.315),steel,.003)
+box('front-crossbar',(.960,.035,.025),(0,.1025,.315),steel,.003)
+fitted_soft('seat-lower',(1.180,.050,.760),(0,.275,.030),r=.022,puff=.002)
+fitted_soft('seat-middle',(1.180,.050,.590),(0,.325,.115),r=.022,puff=.002)
+fitted_soft('seat-upper',(1.180,.050,.590),(0,.375,.115),r=.022,puff=.003)
+piping('seat-piping-lower',1.150,.730,0,(0,.286,.030),90,.026)
+piping('seat-piping-middle',1.150,.560,0,(0,.336,.115),90,.026)
+piping('seat-piping-upper',1.150,.560,0,(0,.386,.115),90,.026)
 # Front depth reduces upward, reproducing the gently raked single back cushion.
 o=fitted_soft('back-cushion',(1.180,.560,.160),(0,.490,-.339),r=.035,puff=.004)
 for v in o.data.vertices:
@@ -107,6 +116,18 @@ for o in objects:
     bm=bmesh.new();bm.from_mesh(o.data);bmesh.ops.remove_doubles(bm,verts=bm.verts,dist=1e-7);bmesh.ops.recalc_face_normals(bm,faces=bm.faces)
     if any(not e.is_manifold for e in bm.edges):raise ValueError('Open mesh '+o.name)
     bm.to_mesh(o.data);bm.free()
+spec=json.loads(pathlib.Path(sys.argv[sys.argv.index('--spec')+1]).read_text(encoding='utf-8'))
+parents={}
+for motion in spec['motions']:
+    o=bpy.data.objects.new('motion:'+motion['role'],None);bpy.context.collection.objects.link(o)
+    o['furnishMotionRole']=motion['role'];o['furnishHingeAxis']=motion['axis']
+    world=xyz(tuple(v/1000 for v in motion['pivot']))
+    if motion.get('parent'):o.parent=parents[motion['parent']]
+    o.matrix_world.translation=world;parents[motion['role']]=o;bpy.context.view_layer.update()
+for part in spec['parts']:
+    if part['role']:
+        o=bpy.data.objects[part['name']];matrix=o.matrix_world.copy();o.parent=parents[part['role']];o.matrix_world=matrix
+bpy.context.view_layer.update()
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
 from blender_asset_preflight import from_args as declared_preflight
 declared_preflight(bpy.context.scene)

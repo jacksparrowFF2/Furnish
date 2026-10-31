@@ -77,7 +77,7 @@ const LIB = [
     ["crib","婴儿床",1250,700,"#efe3d0",1200]
   ]},
   {cat:'沙发', items:[
-    ["sofa_bed_yeswood_y107h03","源氏木语 Y107H03 沙发床 1.25米（梨白·收起）",1250,838,"#c89d68",undefined,products.height({type:"sofa_bed_yeswood_y107h03"})],
+    ["sofa_bed_yeswood_y107h03","源氏木语 Y107H03 沙发床 1.25米（梨白）",1250,838,"#c89d68",undefined,products.height({type:"sofa_bed_yeswood_y107h03"})],
     ["armchair_yeswood_berlin","源氏木语 柏林单人沙发椅（含腰枕）",710,850,"#bd915f",undefined,products.height({type:"armchair_yeswood_berlin"})],
     ["armchair_yeswood_y09hs","源氏木语 单人沙发椅（亚麻色）",725,900,"#be9465",undefined,products.height({type:"armchair_yeswood_y09hs"})],
     ["sofa_yeswood_cherry","源氏木语 樱桃木三人沙发 2.16m（梨白）",2160,892,"#eee9df",0,products.height({type:"sofa_yeswood_cherry"})],

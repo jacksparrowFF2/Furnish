@@ -1,0 +1,7 @@
+{
+  "assets/models/sofa-bed/v3/sofa-bed-v1.blend": "944e6664566492829f71d9aed52e81885b4b6dcd62ad68c41c2c6ee5a1e6671f",
+  "assets/models/sofa-bed/v3/sofa-bed-v1.glb": "7cc7426c9caa2dfefd00b6d03cad49947431f7b707693028e52b0d971649e0ea",
+  "src/data/sofa-bed-blender-asset.js": "1902afb5a47f3006477b53ea0b6fe9d7eb413689160392f1e11523df595e7815",
+  "src/core/sofa-bed-core.js": "a58ec3052afaffc5c0227da9c0dbbaaae6388311437b1602091459e9dacf461e",
+  "src/render/sofa-bed-model.js": "203ff96744d09d40c4e0ebe2d1bcedd5a531b7d6d76ea65dc3a946de07c303cb"
+}

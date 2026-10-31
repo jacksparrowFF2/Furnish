@@ -80,3 +80,7 @@ node scripts/verify/verify-model-pipeline.cjs all gpu --resume=output/model-pipe
 ## Y107H03沙发床增量（2026-10-31）
 
 新增sofa-bed静态Blender配置，当前清单92项。只复验该款的49件收起模型及相关目录／SVG／产品规则，完成作者负例、独立发布、生产空间／双入口导出回读、GPU三机位与工程重开；另在同一打包EXE的隔离副本验证目录、保存刷新及三维。未执行其余91项重跑或展开机构验证，见[专项记录](validation/sofa-bed-y107h03-20261031/README.md)。
+
+## Y107H03展开增量（2026-10-31）
+
+sofa-bed配置升级为79件／6个运动父节点，operate取sofaBedOpen展开端态；只运行该配置的作者与9个负例、独立发布、空间与v40往返、两入口逐部件导出回读、GPU三机位与下载工程重开。总清单仍92项，其余91项未重跑。另运行真实切换控件／端态导出比对、窄屏取景与实际EXE隔离保存，见[展开记录](validation/sofa-bed-motion-20261031/README.md)。

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "sourceSha256": "7cc7426c9caa2dfefd00b6d03cad49947431f7b707693028e52b0d971649e0ea",
+  "rebuiltSourceSha256": "f38d3222f62076c5732f4927356895f6571ad4f23aee476c0563bc66bb260694",
+  "compared": "all published fields except sourceSha256, including all positions, normals, materials, roles, identities, dimensions and motions",
+  "parts": 79,
+  "motions": 6
+}
