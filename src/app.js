@@ -163,7 +163,12 @@ function save(){
 }
 function syncSaved(){
   const el = $('#saved'); if (!el) return;
-  if(repositoryClient){const s=repositoryClient.status;el.textContent=s.mode==='pending'?'已缓存 · 文件保存中…':s.mode==='saved'?'已保存到本地文件':s.mode==='ready'?'本地自动保存已启用':s.mode==='loading'?'正在读取正式文件…':'仅存浏览器 · 文件未保存';el.title=s.message;el.classList.toggle('err',['conflict','error'].includes(s.mode));const note=$('#file-save-status');if(note){note.textContent=s.message;note.style.cssText='white-space:pre-line;overflow-wrap:anywhere';const heading=$('#file-save-summary');if(heading){heading.textContent=el.textContent;heading.classList.toggle('err',['conflict','error'].includes(s.mode));}}return;}
+  if(repositoryClient){
+    const s=repositoryClient.status,time=s.lastSavedAt?new Date(s.lastSavedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';
+    el.textContent=s.mode==='dirty'?'未保存 · Ctrl+S':s.mode==='pending'?'正在保存…':s.mode==='saved'?'已保存'+(time?' '+time:' · 本地文件'):s.mode==='ready'?'等待编辑 · Ctrl+S':s.mode==='loading'?'正在读取正式文件…':s.mode==='conflict'?'保存冲突 · 查看详情':'保存失败 · Ctrl+S 重试';
+    el.title=s.message+'\nCtrl+S 立即保存；未保存修改最迟 1 分钟自动保存。';el.dataset.mode=s.mode;el.classList.toggle('dirty',s.mode==='dirty');el.classList.toggle('err',['conflict','error'].includes(s.mode));
+    const note=$('#file-save-status');if(note){note.textContent=el.title;note.style.cssText='white-space:pre-line;overflow-wrap:anywhere';const heading=$('#file-save-summary');if(heading){heading.textContent=el.textContent;heading.classList.toggle('err',['conflict','error'].includes(s.mode));}}return;
+  }
   const status=$('#file-save-status');if(status)status.textContent=savePending?tr('正在保存到本机…','Saving locally…'):saveErr?tr('本机保存失败，请备份项目文件','Local save failed; back up the project'):savedAt?tr('本机已自动保存；项目备份可在其他浏览器继续编辑','Saved locally; a project backup can be edited in another browser'):tr('本机自动保存已启用','Local autosave enabled');
   const heading=$('#file-save-summary');if(heading){heading.textContent=savePending?tr('正在保存…','Saving…'):saveErr?tr('本机保存失败','Local save failed'):tr('本机自动保存','Local autosave');heading.classList.toggle('err',!!saveErr);}
   el.title=state.architecture?.phase==='survey'?tr('已保存录入数据，原始结构尚未确认锁定。','Survey saved; original structure is not confirmed.'):tr('已保存当前方案；原始基线由结构确认单独保护。','Design saved; original baseline is separately protected.');
@@ -172,6 +177,30 @@ function syncSaved(){
   el.innerHTML = savePending ? tr('正在保存…','Saving…') : saveErr ? ico('warn') + tr('未保存', 'Not saved')
     : !savedAt ? tr('自动保存已启用','Autosave enabled') : ico('check') + tr('已自动保存 ', 'Saved ') + new Date(savedAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 }
+let manualSaveTask=null;
+function saveNow(){
+  if(repositoryBooting||storageWiping){toast(tr('保存尚未就绪，请稍候。','Saving is not ready yet.'));return Promise.resolve(false);}
+  if(manualSaveTask)return manualSaveTask;
+  manualSaveTask=(async()=>{
+    try{
+      const draftNotice=!$('#dlg').hidden?'；编辑窗口中的草稿需先应用':'';
+      const cached=await autosave.save(store);
+      if(repositoryClient){
+        if(!repositoryClient.flush)throw Error(repositoryClient.status.message);
+        if(repositoryClient.status.mode==='error'&&repositoryClient.retry)await repositoryClient.retry();else await repositoryClient.flush();
+        if(repositoryClient.blocked||repositoryClient.pending)throw Error(repositoryClient.status.message);
+        syncSaved();toast('已保存到本地文件 '+new Date(repositoryClient.status.lastSavedAt||Date.now()).toLocaleTimeString()+draftNotice);
+      }else{
+        if(!cached.cached&&!cached.durable)throw Error('本机恢复缓存保存失败，请导出项目备份');
+        syncSaved();toast('已保存到本浏览器；直接打开 HTML 请通过导出项目保留文件备份。');
+      }
+      return true;
+    }catch(e){syncSaved();toast('保存未完成：'+e.message);return false;}
+    finally{manualSaveTask=null;}
+  })();
+  return manualSaveTask;
+}
+
 const snap = () => JSON.stringify(state);
 function normalizeFurnitureEdit(work,previous){if(!(globalThis.FurnishLayers?.onlyChange(previous,work)||globalThis.FurnishTileEditor?.onlyChange(previous,work)||globalThis.FurnishTilePresets?.onlyChange(previous,work)||globalThis.FurnishTileGrout?.onlyChange(previous,work)||(previous.furnitureDatum!==work.furnitureDatum&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallFinishes||work.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,work))||((previous.floorFinishes||work.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallTiling||work.wallTiling)&&FurnishWallTiling.onlyChange(previous,work))||((previous.ceilings||work.ceilings)&&FurnishCeiling.onlyChange(previous,work)))){if(work.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(work.furniture,FurnishProject.effectivePlan(PLAN,work)); FurnishKitchen.normalize(work.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(work.furniture,previous.furniture);} if(work.furniture.some(f=>(Array.isArray(f.cabinet?.columns)&&f.cabinet.columns.some(col=>col?.pegboardHatch?.mode==='auto'))))FurnishCabinet.normalizePegboardHatches(work.furniture,FurnishProject.effectivePlan(PLAN,work),{editable:f=>!furnitureLocked(f)}); }
 function commit(before){ const previous=JSON.parse(before);normalizeFurnitureEdit(state,previous); if(arguments[1]===true){try{FurnishLayers.assertEditable(previous,state);}catch(e){state=previous;renderAll();throw e;}} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
@@ -400,6 +429,13 @@ initializeCanvasInteractions();
 
 /* ======================= 键盘 ======================= */
 document.addEventListener('keydown', e => {
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='s'){
+    e.preventDefault();if(e.repeat)return;
+    // Commit an ordinary property input before saving; modal drafts keep their
+    // own Apply/Save action and are not silently applied by a workspace save.
+    if(e.target.matches('input,select,textarea')&&!e.target.closest('#dlg'))e.target.blur();
+    saveNow();return;
+  }
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); $('#cmd').hidden ? openCmd() : closeCmd(); return; }
   if (!$('#cmd').hidden) return;                                                  // 命令面板自己处理按键
   if (!$('#dlg').hidden){ if (e.key === 'Escape'){closeDialog();return;}if(!$('#dlg').classList.contains('floating')||e.target.closest?.('#dlg'))return; }        // 模态窗口拦截快捷键；浮动窗口允许画布操作
@@ -578,7 +614,7 @@ function openHelp(){
     ${g(tr('工具与视图', 'Tools & view'), [['V','选择 / 移动','Select / move'],['Alt','拖动家具时临时关闭吸附','Temporarily disable snapping while moving furniture'],['Shift','拖动家具时锁定水平／垂直方向','Lock horizontal/vertical movement while dragging furniture'],['B','框选','Box select'],['M','测量（Shift 水平/垂直）','Measure (Shift = straight)'],['X','拆改非承重墙','Demolish walls'],['N','文字标注','Text note'],['Ctrl+K','命令面板：搜索一切','Command palette'],
       ['T','切换 2D / 3D','Toggle 2D / 3D'],['F','适应窗口','Fit to window'],['Z','缩放到所选','Zoom to selection'],['+ / −','放大 / 缩小','Zoom in / out'],
       [tr('空格+拖动','Space+drag'),'平移画面（也可用中键）','Pan (or middle mouse)'],['[ / ]','收起 / 展开左右面板','Toggle side panels'],['Shift+F','全屏','Fullscreen'],['Esc','取消选择 / 退出工具','Deselect / exit tool']])}
-    ${g(tr('编辑', 'Editing'), [['Ctrl+Z','撤销','Undo'],['Ctrl+Shift+Z','重做','Redo'],['Ctrl+C / X / V','复制 / 剪切 / 粘贴到指针处','Copy / cut / paste at pointer'],['Ctrl+D','创建副本','Duplicate'],['Ctrl+G / Ctrl+Shift+G','打组 / 解组','Group / ungroup'],
+    ${g(tr('编辑', 'Editing'), [['Ctrl+S','保存当前方案','Save current workspace'],['Ctrl+Z','撤销','Undo'],['Ctrl+Shift+Z','重做','Redo'],['Ctrl+C / X / V','复制 / 剪切 / 粘贴到指针处','Copy / cut / paste at pointer'],['Ctrl+D','创建副本','Duplicate'],['Ctrl+G / Ctrl+Shift+G','打组 / 解组','Group / ungroup'],
       ['Ctrl+A','全选家具','Select all'],['Delete','删除','Delete'],['R / Shift+R','旋转 90°','Rotate 90°'],['H','左右镜像','Mirror'],['L','锁定 / 解锁','Lock / unlock'],
       [tr('方向键','Arrows'),'微调 10mm（Shift 100mm）','Nudge 10mm (Shift 100mm)']])}
     ${g(tr('鼠标 / 触屏', 'Mouse / touch'), [[tr('Shift+点击','Shift+click'),'加入 / 移出选择','Add / remove from selection'],[tr('Shift+拖动','Shift+drag'),'在空白处框选','Box select on empty space'],

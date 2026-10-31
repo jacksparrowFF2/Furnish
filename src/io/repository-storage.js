@@ -1,7 +1,7 @@
 /* Browser file persistence; cache snapshots carry their acknowledged file revision. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishRepositoryStorage=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
  'use strict';
- function create({request,fingerprint,onChange,onAcknowledge=()=>{},delay=650,retryDelays=[1500,5000,15000]}){
+ function create({request,fingerprint,onChange,onAcknowledge=()=>{},delay=650,debounce=true,retryDelays=[1500,5000,15000]}){
   let revision=null,pending=null,timer=null,running=null,blocked=false,retryable=false,storage=null,lastSavedAt=null,retryTimer=null,retryCount=0,uncertain=null,lastFailure='',stopped=false,status={mode:'loading',message:'正在读取本地正式文件…'};
   const publish=(mode,message)=>{status={mode,message:message+(storage?'\n保存位置：'+storage.file:'')+(lastSavedAt?'\n最后成功保存：'+new Date(lastSavedAt).toLocaleString():''),storage,lastSavedAt};onChange(status);};
   const transient=e=>!e.status||e.status>=500||[408,423,429].includes(e.status);
@@ -34,13 +34,15 @@
   function rootDecision(...args){return (typeof module==='object'&&module.exports?require('../core/repository-core.js'):FurnishRepositoryCore).decision(...args);}
   function schedule(value){
    const copy=JSON.parse(JSON.stringify(value));copy._repository={revision};pending=copy;
-   clearTimeout(timer);if(blocked){publish(retryable?'error':'conflict',lastFailure||'文件保存已暂停；编辑保留在浏览器缓存');return;}
-   publish('pending','已缓存到浏览器，正在保存到本地正式文件…');timer=setTimeout(()=>{flush().catch(()=>{});},delay);
+   if(blocked){publish(retryable?'error':'conflict',lastFailure||'文件保存已暂停；编辑保留在浏览器缓存');return;}
+   publish(running?'pending':'dirty',running?'正在保存本地文件；新增修改已排队':'有未保存修改；按 Ctrl+S 立即保存，自动保存等待中（恢复缓存已保留）');
+   if(timer!==null&&!debounce)return;
+   clearTimeout(timer);timer=setTimeout(()=>{timer=null;flush().catch(()=>{});},delay);
   }
   async function flush(){
-   clearTimeout(timer);if(running){await running;if(pending&&!blocked)return flush();return;}
+   clearTimeout(timer);timer=null;if(running){await running;if(pending&&!blocked)return flush();return;}
    if(!pending||blocked)return;
-   const value=pending;pending=null;
+   const value=pending;pending=null;publish('pending','正在保存到本地正式文件…');
    running=(async()=>{try{
     await reconcile();const base=revision;let result;
     try{result=await request('/workspace','PUT',{workspace:value,baseRevision:base});}

@@ -184,9 +184,10 @@
     <button class="btn outline" id="themeQuick" aria-label="切换亮色 / 暗色"><svg class="i"><use href="#i-moon"/></svg></button>
     <button class="btn outline" id="fullscreen" title="全屏 (Shift+F)" aria-label="全屏"><svg class="i"><use href="#i-full"/></svg></button>
     <details class="menu" id="saveMenu">
-      <summary class="btn save-indicator" title="保存状态与位置" data-en-title="Save status and location"><span id="saved" class="saved" role="status"></span></summary>
+      <summary class="btn save-indicator" title="Ctrl+S 保存 · 状态与位置" data-en-title="Ctrl+S save · Status and location"><span id="saved" class="saved" role="status"></span></summary>
       <div class="menu-pop utility-pop"><div class="file-content">
         <div class="file-status"><b id="file-save-summary"></b><p id="file-save-status"></p></div>
+        <button class="btn primary" id="save-now">立即保存 <kbd>Ctrl+S</kbd></button>
         <div id="file-storage-actions" class="file-actions"></div>
       </div></div>
     </details>

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "fixtureBytes": 26274,
+  "checks": [
+    "HTTP Ctrl+S save despite lost successful response",
+    "undo redo",
+    "refresh",
+    "path migration",
+    "history download",
+    "full restore",
+    "damaged primary restore over divergent browser cache",
+    "390px",
+    "offline file autosave refresh without API"
+  ],
+  "errors": []
+}

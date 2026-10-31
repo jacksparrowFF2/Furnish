@@ -23,10 +23,10 @@ const server=http.createServer(async(req,res)=>{
  const settings=async()=>{if(!await page.locator('#storage-settings').isVisible())await page.locator('#saveMenu summary').click();await page.locator('#storage-settings').click();await page.locator('#storage-directory').waitFor();};
  try{
   await page.goto(base);await ready();const original=await page.evaluate(()=>state.furniture[0].cx);
-  dropNextSave=true;await page.evaluate(()=>mutate(()=>state.furniture[0].cx+=25));await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);
+  dropNextSave=true;await page.evaluate(()=>mutate(()=>state.furniture[0].cx+=25));await page.keyboard.press('Control+s');await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);
   assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original+25);
-  await page.evaluate(()=>undo());await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original);
-  await page.evaluate(()=>redo());await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original+25);
+  await page.evaluate(()=>undo());await page.keyboard.press('Control+s');await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original);
+  await page.evaluate(()=>redo());await page.keyboard.press('Control+s');await page.waitForFunction(()=>repositoryClient.status.mode==='saved'&&!repositoryClient.pending);assert.equal(api.read().workspace.work[plan.id].furniture[0].cx,original+25);
   await page.reload();await ready();assert.equal(await page.evaluate(()=>state.furniture[0].cx),original+25);
   await settings();await page.screenshot({path:path.join(output,'desktop.png')});
   const downloadEvent=page.waitForEvent('download');await page.locator('#storage-backups button').filter({hasText:'下载'}).first().click();const downloaded=await downloadEvent;await downloaded.saveAs(path.join(run,'download.furnish.json'));C.parse(JSON.parse(fs.readFileSync(path.join(run,'download.furnish.json'),'utf8')));
@@ -47,7 +47,7 @@ const server=http.createServer(async(req,res)=>{
   await filePage.goto(pathToFileURL(path.join(root,'index.html')).href);await filePage.locator('#repository-loading').waitFor({state:'hidden'});
   const fileX=await filePage.evaluate(()=>state.furniture[0].cx);await filePage.evaluate(()=>mutate(()=>state.furniture[0].cx+=17));await filePage.waitForFunction(()=>!savePending&&!saveErr&&savedAt>0);await filePage.reload();await filePage.locator('#repository-loading').waitFor({state:'hidden'});assert.equal(await filePage.evaluate(()=>state.furniture[0].cx),fileX+17);
   await filePage.locator('#saveMenu summary').click();await filePage.locator('#storage-settings').click();await filePage.screenshot({path:path.join(output,'file-offline.png')});assert.deepEqual(requests,[]);
-  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'PASS',fixtureBytes:Buffer.byteLength(C.text(seed)),checks:['HTTP autosave despite lost successful response','undo redo','refresh','path migration','history download','full restore','damaged primary restore over divergent browser cache','390px','offline file autosave refresh without API'],errors},null,2));
+  assert.deepEqual(errors,[]);fs.writeFileSync(path.join(output,'result.json'),JSON.stringify({status:'PASS',fixtureBytes:Buffer.byteLength(C.text(seed)),checks:['HTTP Ctrl+S save despite lost successful response','undo redo','refresh','path migration','history download','full restore','damaged primary restore over divergent browser cache','390px','offline file autosave refresh without API'],errors},null,2));
   console.log('PASS real browser local archive, location settings, downloads, restore, undo/redo/refresh, 390px and offline file://');
  }catch(e){await page.screenshot({path:path.join(output,'failure.png')}).catch(()=>{});throw e;}
  finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

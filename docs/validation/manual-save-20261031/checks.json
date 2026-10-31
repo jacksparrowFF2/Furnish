@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-31",
+  "baseline": "68b6b22",
+  "scope": "incremental save/cache/recovery/MCP/UI only",
+  "passed": [
+    "test-manual-save.cjs",
+    "test-autosave.cjs",
+    "test-repository-storage.cjs",
+    "test-repository-save-retry.cjs",
+    "test-repository-workspace.cjs",
+    "test-repository-startup-validation.cjs",
+    "test-furnish-mcp.cjs",
+    "test-furnish-mcp-desktop.cjs",
+    "test-file-menu.cjs",
+    "test-local-archive-browser.cjs"
+  ],
+  "syntax": [
+    "src/app.js",
+    "src/io/repository-storage.js",
+    "src/ui/repository-workspace.js",
+    "scripts/verify-manual-save.cjs",
+    "production shared classic declarations"
+  ],
+  "fullCheckRun": false
+}

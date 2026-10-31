@@ -171,3 +171,6 @@ main.drawer-panel #fab-editor{visibility:hidden}
 #moreMenu #more-actions{margin-top:10px}
 #moreMenu .file-maintenance{margin-top:14px}
 @media(max-width:600px){#saveMenu .saved{max-width:200px}}
+
+#saveMenu .saved.dirty{color:var(--accent);font-weight:700}
+#saveMenu:has(.saved.dirty)>summary{border-color:var(--accent);background:var(--accent-soft,#fff0e4)}
