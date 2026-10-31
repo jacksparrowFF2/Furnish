@@ -1,0 +1,35 @@
+{
+  "selected": [
+    "furniture-replacement",
+    "laundry-catalog",
+    "product-naming",
+    "property-dedup"
+  ],
+  "results": [
+    {
+      "name": "furniture-replacement",
+      "status": "PASS",
+      "seconds": 25.5,
+      "log": "furniture-replacement.log"
+    },
+    {
+      "name": "laundry-catalog",
+      "status": "PASS",
+      "seconds": 22.3,
+      "log": "laundry-catalog.log"
+    },
+    {
+      "name": "product-naming",
+      "status": "PASS",
+      "seconds": 12.3,
+      "log": "product-naming.log"
+    },
+    {
+      "name": "property-dedup",
+      "status": "PASS",
+      "seconds": 7.2,
+      "log": "property-dedup.log"
+    }
+  ],
+  "notRun": []
+}

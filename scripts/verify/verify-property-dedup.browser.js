@@ -19,7 +19,7 @@ async(page,V)=>{
    check(await p.locator('#fab [data-tiling-open],#fab [data-act="roomFurn"]').count()===2,'room floating actions retained');
    check(await p.locator('#panel #rName,#panel #rUse,#panel #rCeilingHeight').count()===3,'unique room properties retained');
    await p.screenshot({path:V.output('playwright/property-dedup/'+mode+'-room.png')});
-   await p.locator('#catalog-use').selectOption('laundry');await p.locator('#libSearch').fill('基础洗衣机柜');await p.locator('#lib .item').click();
+   await p.locator('#catalog-filters').evaluate(el=>el.open=true);await p.locator('#catalog-use').selectOption('laundry');await p.locator('#libSearch').fill('基础洗衣机柜');await p.locator('#lib .item').click();
    check(await p.locator('#panel [data-laundry-edit],#panel #laundry-switch-sides,#panel #laundry-doors-open,#panel #laundry-doors-close').count()===0,'single laundry cabinet has no duplicate designer controls');
    await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#cab-preview canvas').waitFor();
    check(await p.locator('[data-laundry-side]').count()===1,'floating size opens laundry design including side setting');await p.getByRole('button',{name:'取消',exact:true}).click();

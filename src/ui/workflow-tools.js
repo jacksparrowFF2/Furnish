@@ -2,6 +2,25 @@
 (function(){
 'use strict';
 const P=FurnishProject,W=FurnishWallDistance,t=(zh,en)=>tr(zh,en);
+function installLibraryResize(){
+ const app=$('.app'),lib=$('aside.lib'),handle=document.createElement('div');
+ handle.id='library-resize';handle.tabIndex=0;handle.setAttribute('role','separator');handle.setAttribute('aria-orientation','vertical');
+ handle.setAttribute('aria-label',t('调整家具库宽度','Resize furniture library'));handle.title=t('拖动调整宽度；方向键微调；双击恢复默认','Drag to resize; arrow keys to adjust; double-click to reset');app.append(handle);
+ let drag=null;
+ const preferred=()=>Number.isFinite(panes.libraryWidth)?panes.libraryWidth:248;
+ const bounds=()=>{const css=getComputedStyle(app),right=app.classList.contains('hide-panel')?0:parseFloat(css.getPropertyValue('--panel-w'))||316;return {min:248,max:Math.max(248,Math.min(640,app.clientWidth-right-(app.classList.contains('layers-open')?260:0)-280))};};
+ const set=value=>{const b=bounds(),width=Math.round(Math.max(b.min,Math.min(b.max,value)));app.style.setProperty('--lib-w',width+'px');handle.setAttribute('aria-valuemin',b.min);handle.setAttribute('aria-valuemax',b.max);handle.setAttribute('aria-valuenow',width);return width;};
+ const remember=()=>{try{localStorage.setItem(PANES,JSON.stringify(panes));}catch{}};
+ const position=()=>{if(narrow())return;set(drag?drag.width:preferred());const r=lib.getBoundingClientRect();handle.style.left=(r.right+parseFloat(getComputedStyle(lib).marginRight)/2-6)+'px';handle.style.top=(r.top+10)+'px';handle.style.height=Math.max(0,r.height-20)+'px';};
+ const finish=commit=>{if(!drag)return;const current=drag;drag=null;app.classList.remove('library-resizing');if(commit){panes.libraryWidth=current.width;remember();}set(preferred());if(handle.hasPointerCapture(current.id))handle.releasePointerCapture(current.id);};
+ handle.onpointerdown=e=>{if(e.button!==0||narrow())return;e.preventDefault();const width=parseFloat(getComputedStyle(app).getPropertyValue('--lib-w'));drag={id:e.pointerId,x:e.clientX,start:width,width};app.classList.add('library-resizing');handle.setPointerCapture(e.pointerId);handle.focus();};
+ handle.onpointermove=e=>{if(drag&&e.pointerId===drag.id)drag.width=set(drag.start+e.clientX-drag.x);};
+ handle.onpointerup=()=>finish(true);handle.onpointercancel=handle.onlostpointercapture=()=>finish(false);
+ handle.onkeydown=e=>{if(e.key==='Escape'&&drag){e.preventDefault();e.stopPropagation();finish(false);return;}if(narrow()||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const b=bounds();panes.libraryWidth=set(e.key==='Home'?b.min:e.key==='End'?b.max:Number(handle.getAttribute('aria-valuenow'))+(e.key==='ArrowRight'?1:-1)*(e.shiftKey?50:10));remember();};
+ handle.ondblclick=()=>{finish(false);delete panes.libraryWidth;set(248);remember();};
+ new ResizeObserver(position).observe(lib);new MutationObserver(position).observe(app,{attributes:true,attributeFilter:['class']});
+ addEventListener('resize',()=>{finish(false);position();});position();
+}
 let stylePreview=null,checkTimer=0,checkKey='',issues=[],checking=false,proposal=null;
 const effective=()=>P.effectivePlan(PLAN,state),kindName={confirmed:['已确认价','Confirmed'],reference:['参考价','Reference'],missing:['未填写','Missing']};
 function basisHTML(){
@@ -103,5 +122,5 @@ function initialize(){
  const distanceAction=e=>{const target=e.target.closest('[data-wall-net]');if(!target||e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();netDistance(target.dataset.wallTarget,target.dataset.wallNet);};svg.addEventListener('pointerdown',distanceAction,true);svg.addEventListener('keydown',distanceAction,true);
  afterPanel();afterRender();syncSaved();
 }
-window.FurnishWorkflowTools={clearDistances:()=>$('#gWallNet')?.remove(),redrawDistances:wallDimensions,afterPanel,afterRender,spacePanel,stylePanel,previewStyle,styleId,disposeDialog,materialSpecs,priceDetails,exportDXF,openSpace};initialize();
+window.FurnishWorkflowTools={clearDistances:()=>$('#gWallNet')?.remove(),redrawDistances:wallDimensions,afterPanel,afterRender,spacePanel,stylePanel,previewStyle,styleId,disposeDialog,materialSpecs,priceDetails,exportDXF,openSpace};initialize();installLibraryResize();
 })();

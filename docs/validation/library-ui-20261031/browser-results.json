@@ -1,0 +1,21 @@
+{
+  "selected": [
+    "catalog-library",
+    "current-furniture"
+  ],
+  "results": [
+    {
+      "name": "catalog-library",
+      "status": "PASS",
+      "seconds": 36.9,
+      "log": "catalog-library.log"
+    },
+    {
+      "name": "current-furniture",
+      "status": "PASS",
+      "seconds": 23.8,
+      "log": "current-furniture.log"
+    }
+  ],
+  "notRun": []
+}

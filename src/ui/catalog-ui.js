@@ -6,7 +6,7 @@
  for(const id of ['catalog-max-w','catalog-max-d'])$('#'+id).oninput=buildLib;
  $('#catalog-use').onchange=e=>{libUI.use=e.target.value;buildLib();};
  $('#catalog-reset').onclick=()=>{resetCatalogFilters();if(libUI.collection==='current')window.FurnishCurrentFurniture?.reset();buildCats();buildLib();};
- document.querySelectorAll('#catalog-collections [data-collection]').forEach(b=>b.onclick=()=>{if(libUI.collection===b.dataset.collection)return;resetCatalogFilters();libUI.collection=b.dataset.collection;if(libUI.collection==='current')window.FurnishCurrentFurniture?.reset();buildCats();buildLib();});
+ $('#catalog-collections').onchange=e=>{if(libUI.collection===e.target.value)return;resetCatalogFilters();libUI.collection=e.target.value;if(libUI.collection==='current')window.FurnishCurrentFurniture?.reset();buildCats();buildLib();};
  function details(it){
   const replacementSession=session,c=source(it),h=FurnishCatalogData.itemHeight(it),uses=FurnishCatalogData.itemUses(it).map(id=>{const u=FurnishCatalogData.uses.find(u=>u[0]===id);return tr(u[1],u[2]);}),isArea=FurnishKitchen.isLaundryAreaItem(it),isLaundry=!!c.kitchen?.laundry;
   const row=(label,value)=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`;
