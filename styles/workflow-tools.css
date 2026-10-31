@@ -150,6 +150,10 @@ main.drawer-panel #fab-editor{visibility:hidden}
 
 /* Always available in both 2D and 3D; tabs scroll independently on narrow canvases. */
 .app{grid-template-rows:auto auto minmax(0,1fr) 34px}
+.app>header{grid-row:1}
+.app>.design-bar{grid-row:2}
+.app>main,.app>aside.lib,.app>aside.right{grid-row:3}
+.app>footer{grid-row:4}
 .design-bar{grid-column:1/-1;min-width:0;margin-bottom:8px;display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--s-line);border-radius:12px;background:var(--s-overlay);color:var(--s-ink);box-shadow:var(--shadow-md)}
 .design-bar-label{font-size:12px;flex:none;color:var(--s-muted)}
 .design-tabs{display:flex;gap:4px;min-width:0;flex:1;overflow-x:auto;scrollbar-width:thin}
