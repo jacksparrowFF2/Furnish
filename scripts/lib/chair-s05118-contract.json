@@ -1,0 +1,75 @@
+{
+  "profile": "chair-s05118",
+  "materialSlots": 1,
+  "parts": [
+    {
+      "name": "seat-front-rail",
+      "identity": "chair-s05118-v1:seat-front-rail"
+    },
+    {
+      "name": "seat-back-rail",
+      "identity": "chair-s05118-v1:seat-back-rail"
+    },
+    {
+      "name": "seat-cushion",
+      "identity": "chair-s05118-v1:seat-cushion"
+    },
+    {
+      "name": "back-cushion",
+      "identity": "chair-s05118-v1:back-cushion"
+    },
+    {
+      "name": "seat-piping",
+      "identity": "chair-s05118-v1:seat-piping"
+    },
+    {
+      "name": "back-piping",
+      "identity": "chair-s05118-v1:back-piping"
+    },
+    {
+      "name": "wraparound-arm",
+      "identity": "chair-s05118-v1:wraparound-arm"
+    },
+    {
+      "name": "seat-side--1",
+      "identity": "chair-s05118-v1:seat-side--1"
+    },
+    {
+      "name": "seat-side-1",
+      "identity": "chair-s05118-v1:seat-side-1"
+    },
+    {
+      "name": "front-leg--1",
+      "identity": "chair-s05118-v1:front-leg--1"
+    },
+    {
+      "name": "front-leg-1",
+      "identity": "chair-s05118-v1:front-leg-1"
+    },
+    {
+      "name": "rear-leg--1",
+      "identity": "chair-s05118-v1:rear-leg--1"
+    },
+    {
+      "name": "rear-leg-1",
+      "identity": "chair-s05118-v1:rear-leg-1"
+    },
+    {
+      "name": "seat-slat-0",
+      "identity": "chair-s05118-v1:seat-slat-0"
+    },
+    {
+      "name": "seat-slat-1",
+      "identity": "chair-s05118-v1:seat-slat-1"
+    },
+    {
+      "name": "seat-slat-2",
+      "identity": "chair-s05118-v1:seat-slat-2"
+    },
+    {
+      "name": "seat-slat-3",
+      "identity": "chair-s05118-v1:seat-slat-3"
+    }
+  ],
+  "motions": []
+}

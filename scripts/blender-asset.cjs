@@ -3,8 +3,8 @@
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 async function main(args=process.argv.slice(2)){
- const [command,input]=args,match=/^(author|publish)-(se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|corner-bookcase-580)$/.exec(command||'');
- if(!match||!input)throw Error('Usage: node scripts/blender-asset.cjs author-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|corner-bookcase-580> <new-directory> | publish-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|corner-bookcase-580> <model.glb>');
+ const [command,input]=args,match=/^(author|publish)-(se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|chair-s05118|corner-bookcase-580)$/.exec(command||'');
+ if(!match||!input)throw Error('Usage: node scripts/blender-asset.cjs author-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|chair-s05118|corner-bookcase-580> <new-directory> | publish-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|chair-s05118|corner-bookcase-580> <model.glb>');
  const [,operation,profile]=match,source=path.resolve(input),output=path.join(root,'src/data/'+profile+'-blender-asset.js');
  if(operation==='author'&&[profile+'-v1.blend',profile+'-v1.glb'].some(name=>fs.existsSync(path.join(source,name))))throw Error('Use a new output directory to preserve existing Blender edits');
  if(operation==='publish'&&(!fs.statSync(source).isFile()||path.extname(source).toLowerCase()!=='.glb'))throw Error('Expected a static '+profile+' GLB');
@@ -19,7 +19,7 @@ async function main(args=process.argv.slice(2)){
  if(profile==='sofa-bed')fs.writeFileSync(spec,JSON.stringify(require('../src/core/sofa-bed-core.js').spec()));
  const contract=path.join(job,'preflight-contract.json');
  if(operation==='author'){
-  const asset=profile==='sofa-bed'?JSON.parse(fs.readFileSync(spec)):profile==='corner-bookcase-580'?(()=>{const s=JSON.parse(fs.readFileSync(spec));return {parts:s.parts.map(p=>({...p,identity:s.prefix+p.name})),motions:[]};})():require(path.join(root,'src/data/'+profile+'-blender-asset.js'));
+  const asset=profile==='chair-s05118'?{parts:require('./lib/chair-s05118-contract.json').parts,motions:[]}:profile==='sofa-bed'?JSON.parse(fs.readFileSync(spec)):profile==='corner-bookcase-580'?(()=>{const s=JSON.parse(fs.readFileSync(spec));return {parts:s.parts.map(p=>({...p,identity:s.prefix+p.name})),motions:[]};})():require(path.join(root,'src/data/'+profile+'-blender-asset.js'));
   fs.writeFileSync(contract,JSON.stringify({profile,materialSlots:1,parts:asset.parts.map(p=>({name:p.name,identity:p.identity,role:p.role||null})),motions:asset.motions||[]}));
  }
  const script=operation==='author'?'blender-model-'+(profile.startsWith('washer')?'washer':profile==='corner-bookcase-580'?'corner-bookcase':profile)+'.py':'publish-blender-asset.py';

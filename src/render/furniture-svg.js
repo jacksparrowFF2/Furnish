@@ -112,6 +112,9 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       else svg+=rc(-w*.472,-180*s[2],w*.944,590*s[2],'#eee8dc','rx="12"');
       return svg+[-1,1].map(side=>rc(side*w*.235-w*.22,-180*s[2],w*.44,(layout.open?260:95)*s[2],'#e2dbcf','rx="9"')).join('');
     }
+    case 'chair_yeswood_s05118': {
+      return rc(-w*.402,-d*.36,w*.804,d*.804,'#d8cdbc','rx="55"')+rc(-w*.364,-d*.47,w*.728,d*.22,'#d8cdbc','rx="38"')+`<path d="M ${-w*.427} ${d*.39} Q ${-w*.53} ${-d*.30} ${-w*.30} ${-d*.37} Q 0 ${-d*.49} ${w*.30} ${-d*.37} Q ${w*.53} ${-d*.30} ${w*.427} ${d*.39}" fill="none" stroke="${c}" stroke-width="${w*.07}" stroke-linecap="round"/>`;
+    }
     case 'armchair_yeswood_berlin': {
       return rc(-w*310/710,y+d*.15,w*620/710,d*.82,'#d3c9b8','rx="40"')+rc(-w*265/710,y+d*.05,w*530/710,d*.31,'#d3c9b8','rx="36"')+rc(-w*200/710,y+d*.35,w*400/710,d*.13,'#c7bdab','rx="24"')+[-1,1].map(side=>rc(side*w*330/710-w*25/710,y+d*.13,w*50/710,d*.77,c,'rx="14"')).join('');
     }

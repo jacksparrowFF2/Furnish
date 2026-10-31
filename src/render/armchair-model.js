@@ -4,7 +4,7 @@
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
 const supported=f=>!!products().definition(f)?.armchairProfile&&!f.obj;
 function build(T,f){
- const P=products(),A=P.definition(f).armchairProfile==='berlin'?(root.FurnishBerlinArmchairBlenderAsset||require('../data/armchair-berlin-blender-asset.js')):(root.FurnishArmchairBlenderAsset||require('../data/armchair-blender-asset.js')),M=root.FurnishStaticAssetModel||require('./static-asset-model.js');
+ const P=products(),A=P.definition(f).armchairProfile==='s05118'?(root.FurnishS05118BlenderAsset||require('../data/chair-s05118-blender-asset.js')):P.definition(f).armchairProfile==='berlin'?(root.FurnishBerlinArmchairBlenderAsset||require('../data/armchair-berlin-blender-asset.js')):(root.FurnishArmchairBlenderAsset||require('../data/armchair-blender-asset.js')),M=root.FurnishStaticAssetModel||require('./static-asset-model.js');
  const g=M.build(T,A,{...f,h:P.height(f)},0);
  // Same small, offline procedural maps in the application and production preview.
  if(T.DataTexture&&g.children[0]?.material){
@@ -15,7 +15,7 @@ function build(T,f){
    const ranges=[0,1,2].map(k=>{const v=Array.from(a).filter((_,i)=>i%3===k);return Math.max(...v)-Math.min(...v);}),long=ranges.indexOf(Math.max(...ranges)),cross=long===0?2:0;
    for(let i=0;i<a.length;i+=3)uv.push(part.recolor?a[i+cross]*4:a[i]*65,part.recolor?a[i+long]*1.5:a[i+(back?1:2)]*65);
    m.geometry.setAttribute('uv',new T.Float32BufferAttribute(uv,2));
-   if(part.recolor)m.material.map=grain;else if(!m.name.includes('seam')){m.material.bumpMap=weave;m.material.bumpScale=.00045;}
+   if(part.recolor)m.material.map=grain;else if(P.definition(f).armchairProfile!=='s05118'&&!m.name.includes('seam')){m.material.bumpMap=weave;m.material.bumpScale=.00045;}
   }
  }
  return g;
