@@ -66,7 +66,23 @@ const woodM = c => mat(c, {roughness:.55});
 const screenMat = (glow = '#1a2636') => mat('#0b0e13', {roughness:.1, metalness:.3, emissive:glow, emissiveIntensity:.35});
 // One offline, deterministic landscape per production primitive set; no project state.
 let televisionMaterial;
-function tvScreenMat(){
+function tvScreenMat(imageData,onUpdate){
+  if(imageData&&root.document&&THREE.CanvasTexture){
+    const canvas=root.document.createElement('canvas');canvas.width=1024;canvas.height=576;
+    const ctx=canvas.getContext('2d');
+    if(ctx){
+      ctx.fillStyle='#000';ctx.fillRect(0,0,1024,576);
+      const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+      // Custom textures belong to their screen, outside the global material cache.
+      const material=createMaterial(THREE,'#ffffff',{map:texture,emissive:'#ffffff',emissiveMap:texture,emissiveIntensity:.65,roughness:.65,metalness:0});
+      material.name='Furnish TV picture';material.userData.tvImageReady=false;
+      const image=new root.Image();let disposed=false;
+      material.addEventListener('dispose',()=>{disposed=true;image.onload=image.onerror=null;texture.dispose();});
+      image.onload=()=>{if(disposed)return;const scale=Math.min(1024/image.naturalWidth,576/image.naturalHeight),w=image.naturalWidth*scale,h=image.naturalHeight*scale;ctx.drawImage(image,(1024-w)/2,(576-h)/2,w,h);texture.needsUpdate=true;material.userData.tvImageReady=true;onUpdate?.();};
+      image.onerror=()=>{if(disposed)return;ctx.drawImage(tvScreenMat().map.image,0,0);texture.needsUpdate=true;material.userData.tvImageError=true;onUpdate?.();};
+      image.src=imageData;return material;
+    }
+  }
   if(televisionMaterial)return televisionMaterial;
   if(!root.document||!THREE.CanvasTexture)return screenMat('#1f2b3a');
   const canvas=root.document.createElement('canvas');canvas.width=1024;canvas.height=576;

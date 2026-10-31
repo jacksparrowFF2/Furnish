@@ -311,6 +311,7 @@ function furnPanel(f){
       ${!cabinetDesign&&(custom || laundry || fridge || robotSpec || pocketSpec || FurnishProducts.family(f,'window-covering') || ['shower_arrow_cream','mirror','sofa_yeswood_cherry','curtain','slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)) ? `<label>${laundry?tr('机身高度','Body height'):tr('高度','Height')} (mm)<input type="number" id="fH" value="${f.h ?? (robotSpec?robotSpec[2]:FurnishDesign.products().height(f))}" min="50" step="${robotSpec?'0.1':'10'}" ${lk}></label>` : ''}
       ${f.type==='sofa_yeswood_cherry'?`<p class="muted" style="grid-column:1/-1;margin:0">${tr('原规格 2160 × 892 × 895 mm，坐深 580 mm；尺寸修改仅作布局缩放。木框与软包为外观近似，价格待填写。','Nominal size 2160 × 892 × 895 mm, seat depth 580 mm; resizing is for layout only. Frame and upholstery are approximate; price needs entry.')}</p>`:''}
       ${robotSpec?`<p class="muted" style="grid-column:1/-1;margin:0">${tr('原规格','Nominal size')} ${robotSpec.join(' × ')} mm${tr('；尺寸修改仅作布局缩放，安装预留待核对，价格待填写。','; resizing is for layout only. Installation clearances and price need confirmation.')}</p>`:''}
+      ${FurnishProducts.supports(f,'tvImage')&&!f.obj?`<div class="full" style="grid-column:1/-1"><strong>${tr('电视画面','TV picture')}</strong>${f.tvImage?`<img src="${esc(f.tvImage)}" alt="${tr('自定义电视画面','Custom TV picture')}" style="display:block;width:100%;max-height:150px;object-fit:contain;background:#000;margin:8px 0">`:''}<div class="actions"><button class="btn" type="button" id="tv-image-choose" ${lk}>${tr(f.tvImage?'更换图片':'选择图片',f.tvImage?'Change picture':'Choose picture')}</button><button class="btn" type="button" id="tv-image-reset" ${lk||!f.tvImage?'disabled':''}>${tr('恢复默认画面','Restore default')}</button></div><input id="tv-image-file" type="file" accept="image/png,image/jpeg,image/webp" hidden ${lk}><p class="muted small">${tr('PNG、JPEG、WebP，最大20 MB；按原比例显示，图片随方案保存。','PNG, JPEG, WebP, up to 20 MB. Keeps its aspect ratio and is saved with the design.')}</p></div>`:''}
       ${!cabinetDesign?`<label class="${custom ? '' : 'full'}">${tr('颜色','Color')}<input type="color" id="fC" value="${f.color}"></label>`:''}
     </div>
     ${!cabinetDesign?`<div class="swatches">${SWATCHES.map(c => `<button data-sw="${c}" class="${c === f.color ? 'on' : ''}" style="background:${c}" title="${c}"></button>`).join('')}</div>`:''}
@@ -352,12 +353,37 @@ function bindDirectionalMeasurementPanel(){
   const distanceSave=$('#directional-measure-save');if(distanceSave)distanceSave.onclick=()=>saveDirectionalMeasurements();
   document.querySelectorAll('#panel [data-distance-save]').forEach(b=>b.onclick=()=>saveDirectionalMeasurements(b.dataset.distanceSave));
 }
+let tvImageRequest=0;
+async function readTVImage(file,limits){
+ if(!file||!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error(tr('请选择 PNG、JPEG 或 WebP 图片','Choose a PNG, JPEG or WebP image'));
+ if(file.size>limits.maxInputBytes)throw Error(tr('图片不能超过20 MB','Image must be under 20 MB'));
+ const url=URL.createObjectURL(file),image=new Image();
+ try{
+  image.src=url;await image.decode();
+  if(!image.naturalWidth||!image.naturalHeight||image.naturalWidth*image.naturalHeight>limits.maxSourcePixels)throw Error(tr('图片像素过大，请先缩小图片','Image dimensions are too large; resize it first'));
+  const scale=Math.min(1,limits.maxWidth/image.naturalWidth,limits.maxHeight/image.naturalHeight),canvas=document.createElement('canvas');
+  canvas.width=Math.max(1,Math.round(image.naturalWidth*scale));canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));
+  const ctx=canvas.getContext('2d');ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);
+  const data=canvas.toDataURL('image/jpeg',.88);if(data.length>limits.maxDataLength)throw Error(tr('图片压缩后仍过大，请选择较小图片','Compressed image is still too large; choose a smaller image'));return data;
+ }finally{URL.revokeObjectURL(url);}
+}
 function bindFurnPanel(f){
   bindDirectionalMeasurementPanel();
   if(typeof bindKitchenPanel==='function')bindKitchenPanel(f);
   if(f.type==='waterheater_flat')$('#heater-ceiling-settings').onclick=()=>{const room=FurnishProject.ceilingAt(FurnishProject.effectivePlan(PLAN,state),f.cx,f.cy).room;if(room){ui.sel={kind:'room',id:room.id};renderPanel();}else FurnishWorkspace.open('settings');};
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
+  {const input=$('#tv-image-file'),choose=$('#tv-image-choose'),reset=$('#tv-image-reset');
+   if(choose)choose.onclick=()=>input.click();
+   if(reset)reset.onclick=()=>{if(furnitureLocked(getF(f.id)))return;tvImageRequest++;upd(g=>delete g.tvImage);};
+   if(input)input.onchange=async()=>{
+    const file=input.files[0],original=getF(f.id),request=++tvImageRequest;if(!file||!original||furnitureLocked(original))return;
+    choose.disabled=true;choose.textContent=tr('正在处理…','Processing…');
+    try{const data=await readTVImage(file,FurnishProducts.definition(original).tvScreen);if(request!==tvImageRequest||getF(f.id)!==original)return;if(furnitureLocked(original))throw Error(tr('家具已锁定，请先解锁','Unlock the furniture first'));FurnishProducts.validateField(original,'tvImage',data);upd(g=>g.tvImage=data);}
+    catch(error){toast(tr('图片未更改：','Picture unchanged: ')+error.message);}
+    finally{if(choose.isConnected){choose.disabled=furnitureLocked(getF(f.id));choose.textContent=tr('选择图片','Choose picture');input.value='';}}
+   };
+  }
   for(const [selector,key] of [['#fPipeBoxShape','pipeBoxShape'],['#fPipeBoxOpenSide','pipeBoxOpenSide'],['#fPipeBoxCorner','pipeBoxCorner']]){const el=$(selector);if(el)el.onchange=e=>{try{const g=getF(f.id);if(furnitureLocked(g))throw Error('家具已锁定，请先解锁');const v=FurnishProducts.validateField(g,key,e.target.value);upd(g=>g[key]=v);}catch(error){toast(error.message);renderPanel();}};}
   const foldingPose=$('#folding-table-pose');if(foldingPose)foldingPose.onchange=e=>{try{const next=FurnishProducts.editFoldingTablePose(getF(f.id),e.target.value);upd(g=>Object.assign(g,next));}catch(error){toast(error.message);renderPanel();}};
   document.querySelectorAll('[data-tea-bar-door]').forEach(el=>el.onchange=e=>{if(furnitureLocked(getF(f.id)))return;upd(g=>g[el.dataset.teaBarDoor]=FurnishProducts.validateField(g,el.dataset.teaBarDoor,e.target.value==='open'));});

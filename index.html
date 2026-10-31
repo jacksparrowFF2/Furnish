@@ -1123,7 +1123,8 @@ const syncIdentity=FurnishPartIdentity;
       const th = w*.5625, yb = 1.2 - th/2, face = d/2, glass = Math.min(.002,d*.04);
       // Match the plan: rear housing at -Z, full-width panel at +Z, all within w × d.
       g.add(syncIdentity.produce("index:site-143",()=>rbox(w*.6, th*.6, d*.6, '#222', 0, yb + th*.2, -d*.2, Math.min(.01,d*.1))));
-      g.add(syncIdentity.produce("index:site-144",()=>rbox(w, th, d*.4-glass, mat(c, {roughness:.4, metalness:.3}), 0, yb, d*.3-glass/2, Math.min(.004,d*.05))), syncIdentity.produce("index:site-145",()=>box(w - .016, th - .022, glass, primitives.tvScreenMat(), 0, yb + .014, face-glass/2)), syncIdentity.produce("index:site-146",()=>box(.04, .006, glass, '#8a8a8e', 0, yb + .004, face-glass/2)));
+      g.add(syncIdentity.produce("index:site-144",()=>rbox(w, th, d*.4-glass, mat(c, {roughness:.4, metalness:.3}), 0, yb, d*.3-glass/2, Math.min(.004,d*.05))), syncIdentity.produce("index:site-145",()=>box(w - .016, th - .022, glass, primitives.tvScreenMat(f.tvImage,()=>invalidate(true)), 0, yb + .014, face-glass/2)), syncIdentity.produce("index:site-146",()=>box(.04, .006, glass, '#8a8a8e', 0, yb + .004, face-glass/2)));
+      if(f.tvImage)g.children[2].userData.tvScreenOwnMaterial=true;
       break;
     }
     case 'aircon': {
@@ -1278,7 +1279,7 @@ const syncIdentity=FurnishPartIdentity;
 }
 
 /* ======================= 建筑 ======================= */
-function clearGroup(g){ g.traverse(o => { if(o.isLight)o.shadow?.dispose(); if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.wallTilingOwnMaterial||o.userData.floorFinishOwnMaterial){o.material.map?.dispose();o.material.dispose();} if(o.userData.wallFinishOwnMaterial||o.userData.cabinetOwnMaterial||o.userData.ceilingOwnMaterial||o.userData.beamDimension)o.material.dispose(); }); g.clear(); }
+function clearGroup(g){ g.traverse(o => { if(o.isLight)o.shadow?.dispose(); if(o.isCSS2DObject)o.element.remove(); if (o.geometry) o.geometry.dispose(); if(o.userData.tvScreenOwnMaterial)o.material.dispose(); if(o.userData.wallTilingOwnMaterial||o.userData.floorFinishOwnMaterial){o.material.map?.dispose();o.material.dispose();} if(o.userData.wallFinishOwnMaterial||o.userData.cabinetOwnMaterial||o.userData.ceilingOwnMaterial||o.userData.beamDimension)o.material.dispose(); }); g.clear(); }
 function wallBox([x0, y0, x1, y1], yb, yt, m){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=FurnishPartIdentity;
@@ -1418,7 +1419,7 @@ function buildFurn(work=state){
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
     const corner=FurnishProducts.slidingCorner(f,validFurniture,plan);
-    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,FurnishProducts.definition(f)?.washerGeometryVersion,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.sofaBedOpen,...(FurnishProducts.definition(f)?.sofaBedProfile?[3]:[]),f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainOpen,f.blindAngle,f.shadeMode, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,work))]:null]);
+    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,FurnishProducts.definition(f)?.washerGeometryVersion,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.sofaBedOpen,f.tvImage,...(FurnishProducts.definition(f)?.sofaBedProfile?[3]:[]),f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainOpen,f.blindAngle,f.shadeMode, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,work))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       if(FurnishProducts.supports(f,'slidingOpen')&&o.userData.slidingDoor)o.userData.slidingDoor.open=FurnishProducts.value(f,'slidingOpen');
@@ -2084,6 +2085,8 @@ function blenderScene(options={}){
  if(!inited||!active||anim||fly)throw Error(tr('请等待三维视角稳定后重试。','Wait for the 3D camera to settle and retry.'));
  sync();
  if(furnitureRenderErrors.size)throw Error(tr('请先修复三维模型错误再导出。','Resolve 3D model errors before exporting.'));
+ let tvPicturePending=false;furnG.traverse(o=>{if(o.userData.tvScreenOwnMaterial&&!o.material.userData.tvImageReady)tvPicturePending=true;});
+ if(tvPicturePending)throw Error(tr('请等待电视图片加载完成；若图片损坏，请重新选择图片。','Wait for the TV picture to load; reselect it if the image is damaged.'));
  ceilingDisplay.restore();
  try{return FurnishBlenderExport.encode(THREE,{groups:[archFloor,archUp,furnG,lampG],camera,sun,material:o=>observation.material(o),...options,meta:{plan:PLAN.name,planId:PLAN.id,originMm:[OX,OY],cut:opt.cut,temporaryFocusClipping:false}});}finally{applyObservationLayers();}
 }

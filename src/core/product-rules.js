@@ -11,6 +11,7 @@ const cabinetTopClosure={height:{min:0,max:300,default:50},doorGap:{min:0,max:50
 const pegboardAssembly={parts:['upper','left','right','lower','displayShelves','hooks','light'],accessoryParts:['displayShelves','hooks','light'],legacyParts:['accessories'],structureParts:['upper','left','right','lower'],thickness:18,hatch:{modes:['manual','auto'],maxPanels:16,minWeb:20,margin:20,min:50,gap:2,angle:100,defaultWidth:400,defaultHeight:300,fitPadding:10,padding:{sides:['top','bottom','left','right'],min:0,max:100},maxRearGap:500,alignmentDegrees:1},holes:{diameter:9,minDiameter:2,maxDiameter:30,margin:30,pitch:40,maxCount:3000,maxAxis:200,minWeb:2},bottom:{min:0,max:20000}};
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ tvImage:{custom:true,message:'电视图片须为不超过 2 MB 的内嵌 PNG/JPEG 图片'},
  sofaBedOpen:{boolean:true,message:"沙发床展开状态无效"},
  stoolCount:{...numeric(1,12,'叠放数量须为 1–12 的整数'),integer:true},
  stoolPitch:numeric(50,200,'每把叠放增高须为 50–200 mm'),
@@ -75,6 +76,7 @@ const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'
 const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering',base:'mountHeight'}};
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
+ tv:{fields:['tvImage'],tvScreen:{maxInputBytes:20*1024*1024,maxDataLength:2*1024*1024,maxWidth:1600,maxHeight:900,maxSourcePixels:40e6}},
  sofa_bed_yeswood_y107h03:{height:770,family:"sofa-bed",sofaBedProfile:"y107h03",defaults:{sofaBedOpen:false},fields:["sofaBedOpen"],create:["sofaBedOpen"],sofaBedMotion:{size:[1250,770,838],foldLength:590,fixedPadDepth:760,padThickness:50,bedBase:250},solidModel:{global:"FurnishSofaBedModel",module:"sofa-bed",version:3},identity:{brand:"源氏木语/YESWOOD",model:"Y107H03 · 1.25米 · 山毛榉原木色 / 梨白",sourceUrl:"https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"}},
  stool_citylong_370:{defaultFrontClearance:0,height:467,anchor:'bottom',family:'stack-stool',defaults:{mountHeight:0,stoolCount:1,stoolPitch:70},fields:['stoolCount','stoolPitch','mountHeight'],create:['stoolCount','stoolPitch','mountHeight'],solidModel:{global:'FurnishStackStoolModel',module:'stack-stool'},identity:{brand:'禧天龙/CITYLONG',model:'软包高凳 · 370×370×467 mm（型号未确认）'}},
  chair_yeswood_s05118:{height:840,family:'lounge-chair',armchairProfile:'s05118',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'S05118 · 白蜡木原木色／奶茶色 · 660×660×840',sourceUrl:'https://item.jd.com/10115482828125.html'}},
@@ -267,6 +269,10 @@ const cabinetSpec=f=>definition(f)?.cabinet;
 const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f)?.bottom??0;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
+ if(key==='tvImage'){
+  if(f.obj||typeof v!=='string'||v.length>definition(f).tvScreen.maxDataLength||!/^data:image\/(?:png;base64,iVBORw0KGgo|jpeg;base64,\/9j\/)[A-Za-z0-9+/]*={0,2}$/.test(v))throw Error(rule.message);
+  return v;
+ }
  if(key==='manifoldLengths'){const r=definition(f).manifold;if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==2||!['upper','lower'].every(k=>Object.hasOwn(v,k)&&typeof v[k]==='number'&&Number.isFinite(v[k])&&v[k]>=r.minRun&&v[k]<=r.maxLeft))throw Error(rule.message);return v;}
  if(key==='sinkNotch'){const r=definition(f).notch;if(f.obj||!v||Object.keys(v).some(k=>!['side','width','depth'].includes(k))||!['left','right'].includes(v.side)||![v.width,v.depth].every(Number.isFinite)||v.width<r.min||v.depth<r.min||v.width>f.w-r.margin||v.depth>f.d-r.margin)throw Error('水槽后角缺口宽深至少 20 mm，剩余宽深至少 80 mm');return v;}
  if(key==='hobCutout'){

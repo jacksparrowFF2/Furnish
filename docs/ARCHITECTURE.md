@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（电视图片）：product-rules注册可选tvImage与图片范围；property-panel本机解码缩小后沿mutate保存内嵌JPEG。model-primitives独立CanvasTexture供原生产电视屏幕使用，图片签名驱动重建，clearGroup沿材质dispose释放纹理；不变几何与空间确认。含图片项目／工作区v41、旧缓存兼容，无新增加载脚本；见[验收](validation/tv-custom-image-20261031/README.md)。
+
 2026-10-31（S05118书椅）：产品规则注册独立chair_yeswood_s05118与840mm高度，armchair-model按s05118配置读取17件Blender离线资产，二维保留环扶手轮廓。仅新增一个经典资产脚本，既有生产实体／测距／碰撞、mutate和恢复链路复用，无新字段／版本；见[型号契约](CHAIR-YESWOOD-S05118.md)。
 
 2026-10-31（物体方向）：drawing-core.furnitureDirections沿产品局部轴派生选中家具四向标注，plan-renderer在gSel编辑覆盖层绘制并反转图纸文字角度。directions开关复用huxing-ui本机偏好，旧偏好缺失默认开启；无项目字段、空间规则、撤销或加载机制变化。见[验收](validation/furniture-directions-20261031/README.md)。
