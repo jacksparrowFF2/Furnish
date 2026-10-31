@@ -33,7 +33,7 @@ function signature(group){
   assert.equal(JSON.stringify(furniture),before);
  }
  // The application can inject its cached/environment-aware material factory.
- const cache=new Map(),mat=(color,o={})=>{const key=color+JSON.stringify(o);if(!cache.has(key))cache.set(key,new THREE.MeshStandardMaterial({color,roughness:.7,...o}));return cache.get(key);};
+ const cache=new Map(),mat=(color,o={})=>{const key=color+JSON.stringify(o);if(!cache.has(key))cache.set(key,primitives.createMaterial(THREE,color,{roughness:.7,...o}));return cache.get(key);};
  const p=primitives.create(THREE,RoundedBoxGeometry,mat),builder=models.create(THREE,RoundedBoxGeometry,{primitives:p,products});
  const f={type:'fridge_french_drawer',w:833,d:595},a=builder.build(f),b=builder.build(f),first=signature(a);assert.deepEqual(first,signature(b));
  const materials=new Set();a.traverse(o=>{if(o.isMesh)materials.add(o.material);});assert.ok([...materials].every(m=>[...cache.values()].includes(m)));

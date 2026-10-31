@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "profile": "washer-tg10k60w",
+      "passed": true,
+      "asset": "washer-littleswan-tg10k60w@4",
+      "physical": true,
+      "coat": 0,
+      "transmission": 1,
+      "opened": true
+    },
+    {
+      "mode": "http",
+      "profile": "fridge",
+      "passed": true,
+      "asset": "fridge-french-drawer@2",
+      "physical": true,
+      "coat": 0.550000011920929,
+      "transmission": 0,
+      "opened": true
+    },
+    {
+      "mode": "http",
+      "profile": "hood",
+      "passed": true,
+      "asset": "rangehood-fotile-jcd10ta@2",
+      "physical": true,
+      "coat": 0.8999999761581421,
+      "transmission": 0,
+      "opened": true
+    },
+    {
+      "mode": "file",
+      "profile": "washer-tg10k60w",
+      "passed": true,
+      "asset": "washer-littleswan-tg10k60w@4",
+      "physical": true,
+      "coat": 0,
+      "transmission": 1,
+      "opened": true
+    },
+    {
+      "mode": "file",
+      "profile": "fridge",
+      "passed": true,
+      "asset": "fridge-french-drawer@2",
+      "physical": true,
+      "coat": 0.550000011920929,
+      "transmission": 0,
+      "opened": true
+    },
+    {
+      "mode": "file",
+      "profile": "hood",
+      "passed": true,
+      "asset": "rangehood-fotile-jcd10ta@2",
+      "physical": true,
+      "coat": 0.8999999761581421,
+      "transmission": 0,
+      "opened": true
+    }
+  ]
+}
