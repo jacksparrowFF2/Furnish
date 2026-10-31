@@ -17,7 +17,7 @@ async function capture(page,file,view){
  for(;;){
  const array=await page.evaluate(async view=>{
   const options={includeHidden:false,expandInstances:true};
-  if(view){const T=await import('three'),camera=new T.PerspectiveCamera(36,1,.01,100);camera.position.fromArray(view.position);camera.lookAt(...view.target);camera.updateMatrixWorld(true);options.camera=camera;const sun=new T.DirectionalLight(0xffffff,2000),direction=view.lightDirection||[-4,8,8];sun.position.fromArray(view.target.map((v,i)=>v+direction[i]));sun.target.position.fromArray(view.target);sun.updateMatrixWorld(true);sun.target.updateMatrixWorld(true);options.sun=sun;}
+  if(view){const T=await import('three'),camera=new T.PerspectiveCamera(view.fov||36,1,.01,100);camera.position.fromArray(view.position);camera.lookAt(...view.target);camera.updateMatrixWorld(true);options.camera=camera;const sun=new T.DirectionalLight(0xffffff,2000),direction=view.lightDirection||[-4,8,8];sun.position.fromArray(view.target.map((v,i)=>v+direction[i]));sun.target.position.fromArray(view.target);sun.updateMatrixWorld(true);sun.target.updateMatrixWorld(true);options.sun=sun;}
   for(let i=0;i<40;i++){try{return Array.from(new Uint8Array((await View3D.blenderScene(options)).buffer));}catch(e){if(!/视角稳定|camera to settle/.test(e.message)||i===39)throw e;await new Promise(r=>setTimeout(r,50));}}
  },view||null);
  const bytes=Buffer.from(array),geometry=inspect(bytes,ids),settledPoses=endpointEvidence(geometry.parts,contracts);

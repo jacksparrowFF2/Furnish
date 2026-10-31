@@ -39,6 +39,19 @@ for case in cases:
             node = next((n for n in material.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
             if node:
                 alphas.append(node.inputs['Alpha'].default_value)
+                for description in part['materials']:
+                    physical = description.get('physical', {})
+                    for extension, field, socket in [
+                        ('KHR_materials_clearcoat', 'clearcoatFactor', 'Coat Weight'),
+                        ('KHR_materials_clearcoat', 'clearcoatRoughnessFactor', 'Coat Roughness'),
+                        ('KHR_materials_transmission', 'transmissionFactor', 'Transmission Weight'),
+                        ('KHR_materials_ior', 'ior', 'IOR')]:
+                        if field in physical.get(extension, {}):
+                            assert abs(node.inputs[socket].default_value-physical[extension][field]) < 1e-5, (part['key'], socket)
+                    volume = physical.get('KHR_materials_volume')
+                    if volume:
+                        thickness = [s.default_value for n in material.node_tree.nodes if n.type == 'GROUP' for s in n.inputs if s.name == 'Thickness']
+                        assert any(abs(v-volume['thicknessFactor']) < 1e-6 for v in thickness), (part['key'], 'optical thickness lost')
             else:
                 assert any(m['unlit'] for m in part['materials']), (part['key'], 'PBR shader missing')
                 alphas.append(material.diffuse_color[3])

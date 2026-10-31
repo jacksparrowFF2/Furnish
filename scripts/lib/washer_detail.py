@@ -97,6 +97,12 @@ def lifters(part):
 
 def build(part):
     shape=part['shape'];a,b,c=part['size']
+    if part['name']=='door-glass':
+        # Shallow, approximately parallel glass skins. The previous solid
+        # ellipsoid acted as a strong lens once physical refraction was enabled.
+        # Preserve the existing declared outer bounds; 1.8mm is a visual estimate.
+        return normalize(lathe([(0,-5),(40,-4.9),(90,-3.8),(140,-.5),(180,5),(188,6),
+                                (188,4.2),(180,3.2),(140,-2.3),(90,-5.6),(40,-6.7),(0,-6.8)]),part['size'])
     if shape=='door-profile':return lathe([(255,-14),(255,-10),(253,-5),(246,-2),(235,-1),(222,0),(207,4),(195,11),(190,14),(190,-14)])
     if shape=='knob-profile':return lathe([(0,6),(12,7),(30,6),(34,4),(36,1),(36,-5),(34,-7),(0,-7)])
     if shape=='annulus':return lathe([(a/2,-c/2),(a/2,c/2),(part['inner'],c/2),(part['inner'],-c/2)])

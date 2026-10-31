@@ -24,7 +24,7 @@ for mode in ('http', 'file'):
             glass=next(obj for obj in parts if obj['furnishPartKey'].endswith(':door-glass'))
             material=glass.data.materials[0]
             node=next(n for n in material.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
-            assert abs(node.inputs['Alpha'].default_value-.12)<1e-5,'door transparency lost during production export'
+            assert abs(node.inputs['Alpha'].default_value-1)<1e-5 and abs(node.inputs['Transmission Weight'].default_value-1)<1e-5,'door physical transmission lost during production export'
             details['doorAlpha']=round(node.inputs['Alpha'].default_value,3)
         bpy.context.view_layer.update();opened={obj['furnishPartKey']:obj.matrix_world.copy() for obj in parts}
         bpy.ops.wm.save_as_mainfile(filepath=str(run/(mode+'-open-roundtrip.blend')))

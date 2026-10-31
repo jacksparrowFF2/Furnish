@@ -13,7 +13,7 @@ function inspect(buffer,ids=['model-pilot']){
    for(const primitive of doc.meshes[n.mesh].primitives){const accessor=doc.accessors[primitive.attributes.POSITION],view=doc.bufferViews[accessor.bufferView];assert.equal(accessor.componentType,5126);const start=binOffset+(view.byteOffset||0)+(accessor.byteOffset||0),stride=view.byteStride||12;
     for(let j=0;j<accessor.count;j++){const offset=start+j*stride,x=buffer.readFloatLE(offset),y=buffer.readFloatLE(offset+4),z=buffer.readFloatLE(offset+8),p=[matrix[0]*x+matrix[4]*y+matrix[8]*z+matrix[12],matrix[1]*x+matrix[5]*y+matrix[9]*z+matrix[13],matrix[2]*x+matrix[6]*y+matrix[10]*z+matrix[14]];add(box,p);add(whole,p);}count+=accessor.count;
     alphas.push(doc.materials?.[primitive.material]?.pbrMetallicRoughness?.baseColorFactor?.[3]??1);
-    materials.push({unlit:!!doc.materials?.[primitive.material]?.extensions?.KHR_materials_unlit});
+    materials.push({unlit:!!doc.materials?.[primitive.material]?.extensions?.KHR_materials_unlit,physical:doc.materials?.[primitive.material]?.extensions||{}});
    }
    parts.push({key:n.extras.furnishPartKey,id:n.extras.furnishId,version:n.extras.furnishPartVersion,kind:n.extras.furnishPartKind,count,bounds:box,alphas,materials});
   }

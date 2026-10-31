@@ -4,7 +4,12 @@
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?require('../core/part-identity.js'):null);
 
-function create(THREE,RoundedBoxGeometry,mat=(color,options={})=>new THREE.MeshStandardMaterial({color,...options})){
+function createMaterial(THREE,color,options={}){
+ const props={color,...options},Physical=props.clearcoat!==undefined||props.transmission!==undefined;
+ if(Array.isArray(props.attenuationColor)){const c=new THREE.Color();props.attenuationColor=c.setRGB?c.setRGB(...props.attenuationColor):c;}
+ return new (Physical?THREE.MeshPhysicalMaterial:THREE.MeshStandardMaterial)(props);
+}
+function create(THREE,RoundedBoxGeometry,mat=(color,options={})=>createMaterial(THREE,color,options)){
 const asMat = m => typeof m === 'string' ? mat(m) : m;
 const sh = o => { o.castShadow = o.receiveShadow = true; return o; };
 const mesh = (geo, m) => sh(syncIdentity.produce("model-primitives:site-1",()=>new THREE.Mesh(geo, asMat(m))));
@@ -102,5 +107,5 @@ function tableLamp(g, x, y, z, s = 1){
 const plate = (g, r, x, y, z) => g.add(syncIdentity.produce("model-primitives:site-33",()=>lathe([[0, 0], [r*.6, 0], [r*.72, .008], [r, .02]], ceramic({side:THREE.DoubleSide}), x, y, z, 32)));
 return {mat,asMat,sh,mesh,rot,box,rbox,cyl,lathe,rod,tube,blob,ring,rrect,shell,darker,lighter,legs,metal,chrome,hwMat,blackMetal,mirror,ceramic,fabric,woodM,screenMat,glowMat,pull,knob,fronts,vasePts,vase,tableLamp,plate};
 }
-const api={create};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishModelPrimitives=api;
+const api={create,createMaterial};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishModelPrimitives=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

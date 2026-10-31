@@ -77,11 +77,17 @@ for part in spec['parts']:
     obj.data.materials.clear();obj.data.materials.append(materials[part['material']])
     for polygon in obj.data.polygons:polygon.material_index=0
     obj['furnishStablePart']=file_id+'-v1:'+part['name'];obj['furnishRecolor']=part['material']=='white'
+if spec['profile']['id']=='washer-tg10k60w':
+    from appliance_materials import configure
+    configure(materials)
 checks=preflight(bpy.context.scene,spec)
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
 from blender_asset_preflight import from_args as declared_preflight
 declared_preflight(bpy.context.scene)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/(file_id+'-v1.blend')))
 bpy.ops.export_scene.gltf(filepath=str(out/(file_id+'-v1.glb')),export_format='GLB',export_extras=True,export_cameras=False,export_lights=False)
+if file_id=='washer-tg10k60w':
+    from appliance_materials import optical_volume
+    optical_volume(out/(file_id+'-v1.glb'))
 if '--result' in args:
     pathlib.Path(args[args.index('--result')+1]).write_text(json.dumps({'passed':True,'blender':bpy.app.version_string,'parts':len(spec['parts']),'motions':len(parents),'preflight':checks}),encoding='utf-8')
