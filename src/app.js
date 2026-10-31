@@ -934,7 +934,6 @@ const TIPS = () => COARSE
   : {'2d':tr('拖动家具到平面图 · 触摸板双指平移／捏合缩放 · 鼠标滚轮缩放 · ? 操作设置', 'Drag furniture onto the plan · touchpad scroll pans / pinch zooms · mouse wheel zooms · ? controls'),
      '3d':tr('3D 场景与平面方案实时同步 · 右侧面板修改会立即生效 · T 返回 2D', '3D stays in sync with the plan · panel edits apply instantly · T for 2D')};
 async function setView(m){
-  if(m==='3d')window.FurnishCatalog?.cancel();
   if (m === viewMode || switching) return;
   closeFabEditor(false);
   if (!window.View3D) return toast(tr('当前浏览器不支持 3D 场景', '3D is not supported in this browser'));
@@ -952,7 +951,7 @@ async function setView(m){
     console.error(e);
     viewMode = '2d'; document.body.classList.remove('m3d');
     toast(tr('3D 引擎加载失败', 'Failed to load the 3D engine'));
-  } finally { switching = false; document.body.classList.remove('busy');queueFabPosition(); }
+  } finally { switching = false; document.body.classList.remove('busy');queueFabPosition();window.FurnishCatalog?.afterRender();window.FurnishCatalog?.afterView(); }
 }
 document.querySelectorAll('.menu-pop .btn').forEach(b => b.addEventListener('click', () => {
   const menu = b.closest('details.menu');
