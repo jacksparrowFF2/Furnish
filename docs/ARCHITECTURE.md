@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（后台自动接替）：server-runtime跟踪后台依赖和延迟加载的core/data/render生产源，检查ctime／mtime／大小与文件集后按内容计算代码指纹；backend-update预检经典／ES模块语法并通过固定本机启动器在同根目录同端口接替。预检代际变化拒绝接替旧服务，渲染busy时延后，新程序继承桌面owner以正确退出。repository-workspace启动／写入前检查并先保全缓存，repository-storage在更新等待后合并最新pending，不刷新state或撤销栈；旧页面写请求仍有503及原重试兜底。读取修订按已记录格式生成storedText，避免新格式推导把未改文件误判成外部修改。见[自动更新契约](REPOSITORY-SAVES.md#2026-10-31后台自动更新与工作区版本)。
+
 2026-10-31（保存版本诊断）：repository-storage恢复候选改读共用repository-core.workspaceVersions，移除第二份硬编码版本表；core区分未知工作区版本与结构错误，服务以422及WORKSPACE_VERSION_UNSUPPORTED返回支持版本，GET工作区附支持清单，UI保留错误元数据。旧后台失败后仍由原pending／retry续写最新快照，不重建状态或绕过版本校验。见[保存契约](REPOSITORY-SAVES.md)。
 
 2026-10-31（家具库面板）：workflow-tools在原网格的--lib-w上增加可捕获指针／键盘的分隔条，panes.libraryWidth沿huxing-panes记忆；按窗口与图层／属性开关限制宽度，窄屏仍用抽屉。catalog-collections改为原四来源的select，catalog-ui沿原libUI切换，分类／用途／尺寸统一折叠并显示有效条件；无项目字段、撤销通道或加载变化。见[验收](validation/library-ui-20261031/README.md)。

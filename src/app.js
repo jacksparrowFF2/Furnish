@@ -165,7 +165,7 @@ function syncSaved(){
   const el = $('#saved'); if (!el) return;
   if(repositoryClient){
     const s=repositoryClient.status,time=s.lastSavedAt?new Date(s.lastSavedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';
-    el.textContent=s.mode==='dirty'?'未保存 · Ctrl+S':s.mode==='pending'?'正在保存…':s.mode==='saved'?'已保存'+(time?' '+time:' · 本地文件'):s.mode==='ready'?'等待编辑 · Ctrl+S':s.mode==='loading'?'正在读取正式文件…':s.mode==='conflict'?'保存冲突 · 查看详情':'保存失败 · Ctrl+S 重试';
+    el.textContent=s.mode==='updating'?'后台更新中 · 编辑已保留':s.mode==='dirty'?'未保存 · Ctrl+S':s.mode==='pending'?'正在保存…':s.mode==='saved'?'已保存'+(time?' '+time:' · 本地文件'):s.mode==='ready'?'等待编辑 · Ctrl+S':s.mode==='loading'?'正在读取正式文件…':s.mode==='conflict'?'保存冲突 · 查看详情':'保存失败 · Ctrl+S 重试';
     el.title=s.message+'\nCtrl+S 立即保存；未保存修改最迟 1 分钟自动保存。';el.dataset.mode=s.mode;el.classList.toggle('dirty',s.mode==='dirty');el.classList.toggle('err',['conflict','error'].includes(s.mode));
     const note=$('#file-save-status');if(note){note.textContent=el.title;note.style.cssText='white-space:pre-line;overflow-wrap:anywhere';const heading=$('#file-save-summary');if(heading){heading.textContent=el.textContent;heading.classList.toggle('err',['conflict','error'].includes(s.mode));}}return;
   }

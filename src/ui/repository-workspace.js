@@ -2,15 +2,42 @@
 (function(){
  'use strict';
  const C=FurnishRepositoryCore,clone=v=>JSON.parse(JSON.stringify(v));
- async function request(route,method='GET',body){
+ async function request(route,method='GET',body,extraHeaders={}){
   const timeout=method==='GET'&&route==='/workspace'?60000:['PUT','POST'].includes(method)&&['/workspace','/storage','/restore'].includes(route)?120000:15000;
   const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),timeout);
-  try{const response=await fetch('/api/furnish'+route,{method,cache:'no-store',signal:abort.signal,headers:body?{'Content-Type':'application/json','X-Furnish-Request':'workspace-v1'}:{},...(body?{body:JSON.stringify(body)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error||'仓库服务不可用'),{status:response.status,...(value.code?{code:value.code}:{}),...(value.supportedWorkspaceVersions?{supportedWorkspaceVersions:value.supportedWorkspaceVersions}:{})});return value;}
+  try{const response=await fetch('/api/furnish'+route,{method,cache:'no-store',signal:abort.signal,headers:{...(body?{'Content-Type':'application/json','X-Furnish-Request':'workspace-v1'}:{}),...extraHeaders},...(body?{body:JSON.stringify(body)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error||'仓库服务不可用'),{status:response.status,...(value.code?{code:value.code}:{}),...(value.supportedWorkspaceVersions?{supportedWorkspaceVersions:value.supportedWorkspaceVersions}:{})});return value;}
   catch(e){if(e.name==='AbortError')throw Object.assign(Error('本地文件请求超时（'+timeout/1000+' 秒），请保留浏览器缓存并重试'),{code:'ETIMEDOUT'});throw e;}
   finally{clearTimeout(timer);}
  }
  async function fingerprint(value){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(C.text(value)));return Array.from(new Uint8Array(bytes),v=>v.toString(16).padStart(2,'0')).join('');}
  async function cache(value){if(value.v>=3)STORE='huxing-design-v'+value.v;let cached=false;try{localStorage.setItem(STORE,JSON.stringify(value));cached=true;}catch{/* IndexedDB remains available. */}try{await window.FurnishStorage.write(value);return true;}catch{return cached;}}
+ let backendCheck=null,backendRoot=null;
+ function ensureBackend(progress=()=>{}){
+  if(backendCheck)return backendCheck;
+  backendCheck=(async()=>{
+   let info;try{info=await request('/server');}catch(e){if([404,405].includes(e.status))return;throw e;}
+   // Static fixtures and older local services retain their existing API path.
+   if(info?.app!=='furnish'||info.protocol!==1)return;
+   if(backendRoot!==null&&info.root!==backendRoot)throw Object.assign(Error('保存端口已被其他工作目录使用，已停止保存'),{status:409});
+   backendRoot??=info.root;
+   if(!Object.hasOwn(info,'updateAvailable'))return;
+   const root=backendRoot,end=Date.now()+120000;let retained=false,requested='';
+   while(true){
+    if(info.app!=='furnish'||info.protocol!==1||info.root!==root)throw Object.assign(Error('保存端口已被其他服务占用，已停止保存'),{status:409});
+    if(info.updateError||info.lastUpdateError&&requested===info.token&&!info.updating)throw Object.assign(Error(info.updateError||info.lastUpdateError),{status:503});
+    if(!info.updateAvailable&&!info.updating)return;
+    progress(info.updateBusy?'正在等待渲染结束后更新后台；编辑已保留':'正在自动更新后台；当前编辑与撤销记录保留');
+    if(!retained){if(!await cache(store))throw Object.assign(Error('恢复缓存不可写，已暂停自动更新；请先导出项目备份'),{status:422,code:'BACKEND_CACHE_UNAVAILABLE'});retained=true;}
+    if(!info.updating&&!info.updateBusy&&requested!==info.token){
+     requested=info.token;try{info=await request('/server/ensure','POST',{}, {'X-Furnish-Restart':info.token});}catch(e){if(![403,503].includes(e.status))throw e;}
+    }
+    if(Date.now()>=end)throw Object.assign(Error('后台更新尚未完成，编辑已保留；任务结束或更新完成后可再按 Ctrl+S'),{status:503});
+    await new Promise(resolve=>setTimeout(resolve,400));
+    try{info=await request('/server');}catch(e){if(e.status===403)throw e;/* A short disconnect is expected while the same port is replacing itself. */}
+   }
+  })().finally(()=>{backendCheck=null;});
+  return backendCheck;
+ }
  function applyWorkspace(input){
   const next=C.validate(input),drafts=(next.customPlans||[]).map(d=>FurnishDraft.build(next.work[d.id].architecture.draft));
   // Drop custom plans registered from a stale cache before applying the file list.
@@ -58,7 +85,7 @@
     if(C.workspaceVersions.includes(saved?.v)&&(saved.updatedAt||0)>(store.updatedAt||0))applyWorkspace(saved);
     return;
    }
-   repositoryClient=FurnishRepositoryStorage.create({request,fingerprint,delay:60000,debounce:false,onChange:()=>syncSaved(),onAcknowledge:({revision})=>{if(storageWiping)return;store._repository={revision,clean:revision};cache(store);}});
+   repositoryClient=FurnishRepositoryStorage.create({request,fingerprint,ensureBackend,delay:60000,debounce:false,onChange:()=>syncSaved(),onAcknowledge:({revision})=>{if(storageWiping)return;store._repository={revision,clean:revision};cache(store);}});
    const next=await repositoryClient.initialize([repositoryInitialCache,saved,...FurnishWorkspaceCache.candidates({read:key=>localStorage.getItem(key),key:STORE})]);
    if(next){applyWorkspace(next);if(store.v>=7)store.v=Math.max(store.v,9);store._repository={revision:repositoryClient.revision,clean:await fingerprint(store)};await cache(store);}
    else{store._repository={revision:null};repositoryClient.schedule(store);}

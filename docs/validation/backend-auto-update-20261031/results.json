@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-31",
+  "baseline": "420114e",
+  "status": "PASS",
+  "scope": "incremental backend update, persistence, lifecycle, HTTP/file and MCP",
+  "desktop": {
+    "status": "PASS",
+    "syntheticFixture": true,
+    "checks": [
+      "model source update -> same-port automatic replacement, continued edits save latest snapshot, same page and undo preserved",
+      "real undo/redo and Ctrl+S survive replacement",
+      "incomplete/broken code never stops old service or writes the file; pending edit retries after correction",
+      "external revision during replacement is never overwritten; current unsaved edit and conflict remain visible",
+      "390px status without document overflow",
+      "no renderer exceptions",
+      "desktop owns replacement lineage and closes updated server"
+    ],
+    "errors": [],
+    "originalProjectUnchanged": true
+  },
+  "liveDeployment": {
+    "bothExistingBackendsEnabled": true,
+    "formalWindowReloaded": false,
+    "formalContentUnchanged": true,
+    "uiRevisionUnchanged": true,
+    "undoPreserved": true,
+    "hostSourceUpdatedWithLocalBackup": true,
+    "privateEvidenceLocalOnly": true,
+    "selfUpdateToFinalCodeVerified": true
+  },
+  "passed": [
+    "test-backend-auto-update.cjs",
+    "test-save-backend-check.cjs",
+    "test-desktop.cjs",
+    "test-server-recovery.cjs",
+    "test-repository-save-retry.cjs",
+    "test-repository-workspace.cjs",
+    "test-manual-save.cjs",
+    "test-repository-storage.cjs",
+    "test-repository-version-compat.cjs",
+    "test-workspace-files.cjs",
+    "test-repository-startup-validation.cjs",
+    "test-local-archive-browser.cjs",
+    "test-file-menu.cjs",
+    "test-furnish-mcp.cjs",
+    "test-desktop-lifecycle.cjs",
+    "test-furnish-mcp-desktop.cjs",
+    "test-autosave.cjs",
+    "test-artifact-layout.cjs"
+  ],
+  "fullCheckRun": false,
+  "limits": [
+    "synthetic busy-task injection; no real long Blender render",
+    "no download or automatic installation of remote software",
+    "new frontend progress UI loads on a normal future page load; existing page has write-time fallback without forced reload"
+  ],
+  "extraCases": [
+    "same page cannot retarget another root on the same port",
+    "format-rule-only upgrade preserves recorded file revision",
+    "stopped owner prevents a late replacement after desktop exit"
+  ]
+}

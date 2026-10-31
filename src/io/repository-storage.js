@@ -1,7 +1,7 @@
 /* Browser file persistence; cache snapshots carry their acknowledged file revision. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishRepositoryStorage=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
  'use strict';
- function create({request,fingerprint,onChange,onAcknowledge=()=>{},delay=650,debounce=true,retryDelays=[1500,5000,15000]}){
+ function create({request,fingerprint,onChange,onAcknowledge=()=>{},ensureBackend=async()=>{},delay=650,debounce=true,retryDelays=[1500,5000,15000]}){
   let revision=null,pending=null,timer=null,running=null,blocked=false,retryable=false,storage=null,lastSavedAt=null,retryTimer=null,retryCount=0,uncertain=null,lastFailure='',stopped=false,status={mode:'loading',message:'正在读取本地正式文件…'};
   const publish=(mode,message)=>{status={mode,message:message+(storage?'\n保存位置：'+storage.file:'')+(lastSavedAt?'\n最后成功保存：'+new Date(lastSavedAt).toLocaleString():''),storage,lastSavedAt};onChange(status);};
   const transient=e=>!e.status||e.status>=500||[408,423,429].includes(e.status);
@@ -21,6 +21,7 @@
   }
   async function archive(workspace){return request('/recoveries','POST',{workspace});}
   async function initialize(caches){
+   await ensureBackend();
    const disk=await request('/workspace','GET');revision=disk.revision;storage=disk.storage||null;lastSavedAt=storage?.savedAt||null;
    const candidates=caches.filter(w=>repositoryCore().workspaceVersions.includes(w?.v)&&Object.keys(w.work||{}).length).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
    const seen=new Set();for(const c of candidates){const hash=await fingerprint(c);if(hash!==revision&&!seen.has(hash)){await archive(c);seen.add(hash);}}
@@ -36,16 +37,23 @@
   function schedule(value){
    const copy=JSON.parse(JSON.stringify(value));copy._repository={revision};pending=copy;
    if(blocked){publish(retryable?'error':'conflict',lastFailure||'文件保存已暂停；编辑保留在浏览器缓存');return;}
-   publish(running?'pending':'dirty',running?'正在保存本地文件；新增修改已排队':'有未保存修改；按 Ctrl+S 立即保存，自动保存等待中（恢复缓存已保留）');
+   const updating=running&&status.mode==='updating';
+   publish(updating?'updating':running?'pending':'dirty',updating?'后台更新中；新增修改已保留':running?'正在保存本地文件；新增修改已排队':'有未保存修改；按 Ctrl+S 立即保存，自动保存等待中（恢复缓存已保留）');
    if(timer!==null&&!debounce)return;
    clearTimeout(timer);timer=setTimeout(()=>{timer=null;flush().catch(()=>{});},delay);
   }
   async function flush(){
    clearTimeout(timer);timer=null;if(running){await running;if(pending&&!blocked)return flush();return;}
    if(!pending||blocked)return;
-   const value=pending;pending=null;publish('pending','正在保存到本地正式文件…');
+   let value=pending;pending=null;publish('pending','正在保存到本地正式文件…');
    running=(async()=>{try{
-    await reconcile();const base=revision;let result;
+    await ensureBackend(message=>publish('updating',message));
+    if(stopped)return;
+    await reconcile();if(stopped)return;
+    // Edits made while the backend was replacing itself supersede the older
+    // queued snapshot. The current UI/history never needs to be reloaded.
+    if(pending){value=pending;pending=null;}
+    publish('pending','正在保存到本地正式文件…');const base=revision;let result;
     try{result=await request('/workspace','PUT',{workspace:value,baseRevision:base});}
     catch(error){
      if(!transient(error)&&error.status!==409)throw error;
@@ -57,7 +65,7 @@
     if(stopped)return {value,revision};
     // Newer cached edits retain this acknowledged version as their base.
     lastSavedAt=Date.now();onAcknowledge({value,revision});publish(pending?'pending':'saved',pending?'已缓存到浏览器，正在保存后续编辑…':'设计已保存到本地正式文件'+(result.warning?'；'+result.warning:''));return {value,revision};
-   }catch(e){if(stopped)throw e;pending=pending||value;blocked=true;retryable=e.status!==409;lastFailure=(e.status===409?'文件保存存在冲突，已停止覆盖：':'本地文件保存失败，编辑仍在浏览器缓存：')+e.message;try{await archive(pending);}catch{/* Browser caches still retain the pending edit. */}publish(e.status===409?'conflict':'error',lastFailure);queueRetry(e);throw e;}
+   }catch(e){if(stopped)throw e;pending=pending||value;blocked=true;retryable=e.status!==409;lastFailure=(e.status===409?'文件保存存在冲突，已停止覆盖：':e.code==='BACKEND_CACHE_UNAVAILABLE'?'尚未保存，当前编辑保留在窗口中：':'本地文件保存失败，编辑仍在浏览器缓存：')+e.message;if(e.code!=='BACKEND_CACHE_UNAVAILABLE')try{await archive(pending);}catch{/* Browser caches still retain the pending edit. */}publish(e.status===409?'conflict':'error',lastFailure);queueRetry(e);throw e;}
    finally{running=null;}})();
    const result=await running;if(pending&&!blocked)await flush();return result;
   }
