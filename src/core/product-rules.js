@@ -11,6 +11,7 @@ const cabinetTopClosure={height:{min:0,max:300,default:50},doorGap:{min:0,max:50
 const pegboardAssembly={parts:['upper','left','right','lower','displayShelves','hooks','light'],accessoryParts:['displayShelves','hooks','light'],legacyParts:['accessories'],structureParts:['upper','left','right','lower'],thickness:18,hatch:{modes:['manual','auto'],maxPanels:16,minWeb:20,margin:20,min:50,gap:2,angle:100,defaultWidth:400,defaultHeight:300,fitPadding:10,padding:{sides:['top','bottom','left','right'],min:0,max:100},maxRearGap:500,alignmentDegrees:1},holes:{diameter:9,minDiameter:2,maxDiameter:30,margin:30,pitch:40,maxCount:3000,maxAxis:200,minWeb:2},bottom:{min:0,max:20000}};
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 const fields={
+ sofaBedOpen:{boolean:true,message:"沙发床展开状态无效"},
  stoolCount:{...numeric(1,12,'叠放数量须为 1–12 的整数'),integer:true},
  stoolPitch:numeric(50,200,'每把叠放增高须为 50–200 mm'),
  sideTableUpperOpen:{boolean:true,message:'边几上抽屉开合无效'},
@@ -74,7 +75,7 @@ const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'
 const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering',base:'mountHeight'}};
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
- sofa_bed_yeswood_y107h03:{height:770,family:"sofa-bed",sofaBedProfile:"y107h03",solidModel:{global:"FurnishSofaBedModel",module:"sofa-bed"},identity:{brand:"源氏木语/YESWOOD",model:"Y107H03 · 1.25米 · 山毛榉原木色 / 梨白 · 收起",sourceUrl:"https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"}},
+ sofa_bed_yeswood_y107h03:{height:770,family:"sofa-bed",sofaBedProfile:"y107h03",defaults:{sofaBedOpen:false},fields:["sofaBedOpen"],create:["sofaBedOpen"],sofaBedMotion:{size:[1250,770,838],foldLength:590,fixedPadDepth:760,padThickness:50,bedBase:250},solidModel:{global:"FurnishSofaBedModel",module:"sofa-bed",version:3},identity:{brand:"源氏木语/YESWOOD",model:"Y107H03 · 1.25米 · 山毛榉原木色 / 梨白",sourceUrl:"https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"}},
  stool_citylong_370:{defaultFrontClearance:0,height:467,anchor:'bottom',family:'stack-stool',defaults:{mountHeight:0,stoolCount:1,stoolPitch:70},fields:['stoolCount','stoolPitch','mountHeight'],create:['stoolCount','stoolPitch','mountHeight'],solidModel:{global:'FurnishStackStoolModel',module:'stack-stool'},identity:{brand:'禧天龙/CITYLONG',model:'软包高凳 · 370×370×467 mm（型号未确认）'}},
  armchair_yeswood_berlin:{height:845,family:'lounge-chair',armchairProfile:'berlin',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'柏林休闲沙发椅 · 米色 · 710×850×845'}},
  armchair_yeswood_y09hs:{height:905,armchairProfile:'original',family:'lounge-chair',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'单人沙发椅 · 亚麻色 · 725×900×905',sourceUrl:'https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx'}},
@@ -175,7 +176,7 @@ function pocketLayout(f){
  return {opening,pocket,clearHeight,leaves,parts};
 }
 function stoolStack(f){if(!family(f,'stack-stool')||f.obj)return null;const count=value(f,'stoolCount'),pitch=value(f,'stoolPitch'),singleHeight=height(f);return {count,pitch,singleHeight,height:singleHeight+(count-1)*pitch};}
-function dimensions(f){const stack=stoolStack(f);if(stack)return {w:f.w,d:f.d,h:stack.height};const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
+function dimensions(f){if(definition(f)?.sofaBedProfile&&!f.obj){const b=(root.FurnishSofaBed||require('./sofa-bed-core.js')).layout(f);return {w:f.w,d:b.depth,h:height(f)};}const stack=stoolStack(f);if(stack)return {w:f.w,d:f.d,h:stack.height};const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
 // Reference geometry only: widths include valves/caps, left length starts at the header inlet.
 function manifoldLayout(f){
  const r=definition(f)?.manifold;if(!r||f.obj)return null;
@@ -201,6 +202,7 @@ function resizeManifold(f,next){
  if(f.manifoldLengths)next.manifoldLengths={upper:old.lengths.upper*ratio,lower:old.lengths.lower*ratio};
 }
 function planBodyOutline(f,segments){
+ if(!f.obj&&definition(f)?.sofaBedProfile)return (root.FurnishSofaBed||require("./sofa-bed-core.js")).outline(f);
  if(!f.obj&&family(f,'corner-bookcase'))return (root.FurnishCornerBookcase||require('./corner-bookcase-core.js')).outline(f);
  if(!f.obj&&family(f,'side-table'))return (root.FurnishSideTable||require('./side-table-core.js')).outline(f);
  if(!f.obj&&definition(f)?.washerMotion)return (root.FurnishWasherMotion||require('./washer-motion-core.js')).outline(f);

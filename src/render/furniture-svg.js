@@ -106,7 +106,11 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       return `<rect x="${-w/2}" y="${-d/2}" width="${w}" height="${d}" rx="${Math.min(w,d)*.08}" fill="${c}" stroke="${shade(c,.72)}"/><rect x="${-w*.42}" y="${-d*.42}" width="${w*.84}" height="${d*.84}" rx="${Math.min(w,d)*.12}" fill="#e2dfd3" stroke="${shade(c,.8)}"/><text x="0" y="14" text-anchor="middle" font-size="70" fill="#655f51">×${stack.count}</text>`;
     }
     case 'sofa_bed_yeswood_y107h03': {
-      return rc(-w/2,-d/2,w,d,c,'rx="14"')+rc(-w*.472,-d*.475,w*.944,d*.23,'#ded8cc','rx="12"')+rc(-w*.472,-d*.23,w*.944,d*.70,'#eee8dc','rx="12"')+[-1,1].map(side=>rc(side*w*.235-w*.22,-d*.20,w*.44,d*.16,'#e2dbcf','rx="9"')).join('');
+      const item=f||{type:t,w,d},layout=(root.FurnishSofaBed||require('../core/sofa-bed-core.js')).layout(item),s=layout.s,back=-d/2,front=layout.front;
+      let svg=rc(-w/2,back,w,front-back,c,'rx="14"')+rc(-w*.472,back+d*.025,w*.944,d*.23,'#ded8cc','rx="12"');
+      if(layout.open){svg+=rc(-w*.472,-350*s[2],w*.944,1940*s[2],'#eee8dc','rx="12"');for(const z of [410,1000])svg+=ln(-w*.472,z*s[2],w*.472,z*s[2]);svg+=rc(-w/2,front-26*s[2],w,26*s[2],c);}
+      else svg+=rc(-w*.472,-180*s[2],w*.944,590*s[2],'#eee8dc','rx="12"');
+      return svg+[-1,1].map(side=>rc(side*w*.235-w*.22,-180*s[2],w*.44,(layout.open?260:95)*s[2],'#e2dbcf','rx="9"')).join('');
     }
     case 'armchair_yeswood_berlin': {
       return rc(-w*310/710,y+d*.15,w*620/710,d*.82,'#d3c9b8','rx="40"')+rc(-w*265/710,y+d*.05,w*530/710,d*.31,'#d3c9b8','rx="36"')+rc(-w*200/710,y+d*.35,w*400/710,d*.13,'#c7bdab','rx="24"')+[-1,1].map(side=>rc(side*w*330/710-w*25/710,y+d*.13,w*50/710,d*.77,c,'rx="14"')).join('');

@@ -1,0 +1,6523 @@
+{
+  "passed": true,
+  "profile": "sofa-bed",
+  "preset": "model-studio-v2",
+  "productionExporter": true,
+  "framing": "union of actual nominal and operating production vertices",
+  "bounds": [
+    [
+      -0.625,
+      0,
+      -0.4189999997615814
+    ],
+    [
+      0.625,
+      0.7699999809265137,
+      1.5989999997615814
+    ]
+  ],
+  "camera": {
+    "fov": 36,
+    "aspect": 1
+  },
+  "lighting": {
+    "keyIntensityLux": 2000,
+    "world": "production-worker",
+    "exposure": 0,
+    "viewTransform": "AgX"
+  },
+  "views": [
+    {
+      "id": "front",
+      "state": "nominal",
+      "target": [
+        0,
+        0.38499999046325684,
+        0.59
+      ],
+      "position": [
+        0,
+        0.38499999046325684,
+        5.233550341323802
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:sofa-bed-v1:middle-crossbar",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.44999998807907104,
+                0.08500000089406967,
+                0.30250000953674316
+              ],
+              [
+                0.44999998807907104,
+                0.11999999731779099,
+                0.32749998569488525
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-runner-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4625000059604645,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                -0.4375,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-runner-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4375,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                0.4625000059604645,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.49900001287460327,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.4749999940395355,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4050000011920929,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.38100001215934753,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4410000145435333,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.4650000035762787,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.5350000262260437,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.5590000152587891,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3109999895095825,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.28700000047683716,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.21699999272823334,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.19300000369548798,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.12300000339746475,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.0989999994635582,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.028999999165534973,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.004999999888241291,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.06499999761581421,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.08900000154972076,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.1589999943971634,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.18299999833106995,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2529999911785126,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.2770000100135803,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.34700000286102295,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.3709999918937683,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-back-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                -0.48899999260902405,
+                0,
+                -0.3319999873638153
+              ],
+              [
+                -0.47099998593330383,
+                0.04399999976158142,
+                -0.2879999876022339
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-back-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                0.47099998593330383,
+                0,
+                -0.3319999873638153
+              ],
+              [
+                0.48899999260902405,
+                0.04399999976158142,
+                -0.2879999876022339
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-back-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.492000013589859,
+                0.02199999988079071,
+                -0.32499998807907104
+              ],
+              [
+                -0.46799999475479126,
+                0.10400000214576721,
+                -0.29499998688697815
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-back-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.46799999475479126,
+                0.02199999988079071,
+                -0.32499998807907104
+              ],
+              [
+                0.492000013589859,
+                0.10400000214576721,
+                -0.29499998688697815
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-crossbar",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.47999998927116394,
+                0.08500000089406967,
+                0.30250000953674316
+              ],
+              [
+                0.47999998927116394,
+                0.11999999731779099,
+                0.32749998569488525
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-post-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                0.36899998784065247
+              ],
+              [
+                -0.574999988079071,
+                0.29499998688697815,
+                0.4189999997615814
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-post-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.574999988079071,
+                0,
+                0.36899998784065247
+              ],
+              [
+                0.625,
+                0.29499998688697815,
+                0.4189999997615814
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.1404999941587448,
+                0.38100001215934753
+              ],
+              [
+                0.574999988079071,
+                0.2854999899864197,
+                0.40700000524520874
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.5559999942779541,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.5379999876022339,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4620000123977661,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.4440000057220459,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.3840000033378601,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.4020000100135803,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4779999852180481,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.4959999918937683,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.36800000071525574,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.3499999940395355,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.27399998903274536,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.25600001215934753,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.18000000715255737,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.16200000047683716,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.0860000029206276,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.06800000369548798,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.00800000037997961,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.026000000536441803,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.10199999809265137,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.11999999731779099,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.19599999487400055,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.21400000154972076,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.28999999165534973,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.30799999833106995,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:metal-runner-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4925000071525574,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                -0.4675000011920929,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:metal-runner-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4675000011920929,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                0.4925000071525574,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-front-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.492000013589859,
+                0.02199999988079071,
+                0.30000001192092896
+              ],
+              [
+                -0.46799999475479126,
+                0.10400000214576721,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-front-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.46799999475479126,
+                0.02199999988079071,
+                0.30000001192092896
+              ],
+              [
+                0.492000013589859,
+                0.10400000214576721,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-front-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                -0.48899999260902405,
+                0,
+                0.2930000126361847
+              ],
+              [
+                -0.47099998593330383,
+                0.04399999976158142,
+                0.3370000123977661
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-front-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                0.47099998593330383,
+                0,
+                0.2930000126361847
+              ],
+              [
+                0.48899999260902405,
+                0.04399999976158142,
+                0.3370000123977661
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-upper",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.38469999879598615,
+                -0.166298399977386
+              ],
+              [
+                0.5762984156608582,
+                0.3873000018298626,
+                0.39629841566085816
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-upper",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.35,
+                -0.18
+              ],
+              [
+                0.5899999737739563,
+                0.40000000074505804,
+                0.4099999737739563
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-middle",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.3,
+                -0.17999997377395632
+              ],
+              [
+                0.5899999737739563,
+                0.35000000074505805,
+                0.41
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-middle",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.33469999879598616,
+                -0.16629841566085818
+              ],
+              [
+                0.5762984156608582,
+                0.3373000018298626,
+                0.396298399977386
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5740000011920929,
+                0.3850000047683716,
+                -0.14249999940395355
+              ],
+              [
+                -0.013999998807907088,
+                0.6449999952316284,
+                -0.04750000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-piping-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5627652111053467,
+                0.4077875980734825,
+                -0.07866899974644184
+              ],
+              [
+                -0.025234788894653304,
+                0.6401709014177323,
+                -0.027288601994514466
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-piping-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                0.025234788894653304,
+                0.40778750121593477,
+                -0.07866899974644184
+              ],
+              [
+                0.5627652111053467,
+                0.6401709014177323,
+                -0.027288601994514466
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                0.013999998807907088,
+                0.3850000047683716,
+                -0.14249999940395355
+              ],
+              [
+                0.5740000011920929,
+                0.6449999952316284,
+                -0.04750000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.20999999344348907,
+                -0.41442421078681946
+              ],
+              [
+                0.5899999737739563,
+                0.7699999809265137,
+                -0.22963909804821014
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-post-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                -0.574999988079071,
+                0.722000002861023,
+                -0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-post-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.574999988079071,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.722000002861023,
+                -0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.23399999737739563,
+                -0.4090000092983246
+              ],
+              [
+                0.574999988079071,
+                0.3140000104904175,
+                -0.3790000081062317
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.49300000071525574,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.45500001311302185,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.33500000834465027,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.296999990940094,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.1770000010728836,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.13899999856948853,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.01899999938905239,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.01899999938905239,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.13899999856948853,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.1770000010728836,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.296999990940094,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.33500000834465027,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.45500001311302185,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.49300000071525574,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-top-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.671999990940094,
+                -0.40799999237060547
+              ],
+              [
+                0.574999988079071,
+                0.7120000123977661,
+                -0.3799999952316284
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-lower",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.25,
+                -0.3499999940395355
+              ],
+              [
+                0.5899999737739563,
+                0.30000001192092896,
+                0.4099999964237213
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-lower",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.2847000062465668,
+                -0.336298406124115
+              ],
+              [
+                0.5762984156608582,
+                0.2872999906539917,
+                0.3962984085083008
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-inset-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 780,
+            "bounds": [
+              [
+                -0.6140000224113464,
+                0.04699999839067459,
+                -0.3100000023841858
+              ],
+              [
+                -0.6100000143051147,
+                0.22699999809265137,
+                0.3100000023841858
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-inset-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 780,
+            "bounds": [
+              [
+                0.6100000143051147,
+                0.04699999839067459,
+                -0.3100000023841858
+              ],
+              [
+                0.6140000224113464,
+                0.22699999809265137,
+                0.3100000023841858
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-panel-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.6110000014305115,
+                0,
+                -0.3700000047683716
+              ],
+              [
+                -0.5889999866485596,
+                0.25999999046325684,
+                0.3700000047683716
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-panel-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.5889999866485596,
+                0,
+                -0.3700000047683716
+              ],
+              [
+                0.6110000014305115,
+                0.25999999046325684,
+                0.3700000047683716
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.531000018119812,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.503000020980835,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.43700000643730164,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.4090000092983246,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4090000092983246,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.43700000643730164,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.503000020980835,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.531000018119812,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.34299999475479126,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.3149999976158142,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.24899999797344208,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.22100000083446503,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.1550000011920929,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.12700000405311584,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.061000000685453415,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.032999999821186066,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.032999999821186066,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.061000000685453415,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.12700000405311584,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.1550000011920929,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.22100000083446503,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.24899999797344208,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.3149999976158142,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.34299999475479126,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.625,
+            0,
+            -0.4189999997615814
+          ],
+          [
+            0.625,
+            0.7699999809265137,
+            0.4189999997615814
+          ]
+        ],
+        "settledPoses": []
+      }
+    },
+    {
+      "id": "oblique",
+      "state": "nominal",
+      "target": [
+        0,
+        0.38499999046325684,
+        0.59
+      ],
+      "position": [
+        2.5708391088015548,
+        1.798961500304112,
+        4.1891747523221765
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:sofa-bed-v1:middle-crossbar",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.44999998807907104,
+                0.08500000089406967,
+                0.30250000953674316
+              ],
+              [
+                0.44999998807907104,
+                0.11999999731779099,
+                0.32749998569488525
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-runner-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4625000059604645,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                -0.4375,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-runner-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4375,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                0.4625000059604645,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.49900001287460327,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.4749999940395355,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4050000011920929,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.38100001215934753,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4410000145435333,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.4650000035762787,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.5350000262260437,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.5590000152587891,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3109999895095825,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.28700000047683716,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.21699999272823334,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.19300000369548798,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.12300000339746475,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.0989999994635582,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.028999999165534973,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.004999999888241291,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.06499999761581421,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.08900000154972076,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.1589999943971634,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.18299999833106995,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2529999911785126,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.2770000100135803,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.34700000286102295,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.3709999918937683,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-back-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                -0.48899999260902405,
+                0,
+                -0.3319999873638153
+              ],
+              [
+                -0.47099998593330383,
+                0.04399999976158142,
+                -0.2879999876022339
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-back-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                0.47099998593330383,
+                0,
+                -0.3319999873638153
+              ],
+              [
+                0.48899999260902405,
+                0.04399999976158142,
+                -0.2879999876022339
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-back-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.492000013589859,
+                0.02199999988079071,
+                -0.32499998807907104
+              ],
+              [
+                -0.46799999475479126,
+                0.10400000214576721,
+                -0.29499998688697815
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-back-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.46799999475479126,
+                0.02199999988079071,
+                -0.32499998807907104
+              ],
+              [
+                0.492000013589859,
+                0.10400000214576721,
+                -0.29499998688697815
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-crossbar",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.47999998927116394,
+                0.08500000089406967,
+                0.30250000953674316
+              ],
+              [
+                0.47999998927116394,
+                0.11999999731779099,
+                0.32749998569488525
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-post-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                0.36899998784065247
+              ],
+              [
+                -0.574999988079071,
+                0.29499998688697815,
+                0.4189999997615814
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-post-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.574999988079071,
+                0,
+                0.36899998784065247
+              ],
+              [
+                0.625,
+                0.29499998688697815,
+                0.4189999997615814
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.1404999941587448,
+                0.38100001215934753
+              ],
+              [
+                0.574999988079071,
+                0.2854999899864197,
+                0.40700000524520874
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.5559999942779541,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.5379999876022339,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4620000123977661,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.4440000057220459,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.3840000033378601,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.4020000100135803,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4779999852180481,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.4959999918937683,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.36800000071525574,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.3499999940395355,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.27399998903274536,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.25600001215934753,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.18000000715255737,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.16200000047683716,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.0860000029206276,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                -0.06800000369548798,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.00800000037997961,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.026000000536441803,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.10199999809265137,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.11999999731779099,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.19599999487400055,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.21400000154972076,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.28999999165534973,
+                0.23000000417232513,
+                -0.1899999976158142
+              ],
+              [
+                0.30799999833106995,
+                0.25,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:metal-runner-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4925000071525574,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                -0.4675000011920929,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:metal-runner-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4675000011920929,
+                0.08500000089406967,
+                -0.1899999976158142
+              ],
+              [
+                0.4925000071525574,
+                0.11999999731779099,
+                0.4000000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-front-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.492000013589859,
+                0.02199999988079071,
+                0.30000001192092896
+              ],
+              [
+                -0.46799999475479126,
+                0.10400000214576721,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-front-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.46799999475479126,
+                0.02199999988079071,
+                0.30000001192092896
+              ],
+              [
+                0.492000013589859,
+                0.10400000214576721,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-front-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                -0.48899999260902405,
+                0,
+                0.2930000126361847
+              ],
+              [
+                -0.47099998593330383,
+                0.04399999976158142,
+                0.3370000123977661
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-front-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                0.47099998593330383,
+                0,
+                0.2930000126361847
+              ],
+              [
+                0.48899999260902405,
+                0.04399999976158142,
+                0.3370000123977661
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-upper",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.38469999879598615,
+                -0.166298399977386
+              ],
+              [
+                0.5762984156608582,
+                0.3873000018298626,
+                0.39629841566085816
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-upper",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.35,
+                -0.18
+              ],
+              [
+                0.5899999737739563,
+                0.40000000074505804,
+                0.4099999737739563
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-middle",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.3,
+                -0.17999997377395632
+              ],
+              [
+                0.5899999737739563,
+                0.35000000074505805,
+                0.41
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-middle",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.33469999879598616,
+                -0.16629841566085818
+              ],
+              [
+                0.5762984156608582,
+                0.3373000018298626,
+                0.396298399977386
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5740000011920929,
+                0.3850000047683716,
+                -0.14249999940395355
+              ],
+              [
+                -0.013999998807907088,
+                0.6449999952316284,
+                -0.04750000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-piping-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5627652111053467,
+                0.4077875980734825,
+                -0.07866899974644184
+              ],
+              [
+                -0.025234788894653304,
+                0.6401709014177323,
+                -0.027288601994514466
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-piping-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                0.025234788894653304,
+                0.40778750121593477,
+                -0.07866899974644184
+              ],
+              [
+                0.5627652111053467,
+                0.6401709014177323,
+                -0.027288601994514466
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                0.013999998807907088,
+                0.3850000047683716,
+                -0.14249999940395355
+              ],
+              [
+                0.5740000011920929,
+                0.6449999952316284,
+                -0.04750000059604645
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.20999999344348907,
+                -0.41442421078681946
+              ],
+              [
+                0.5899999737739563,
+                0.7699999809265137,
+                -0.22963909804821014
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-post-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                -0.574999988079071,
+                0.722000002861023,
+                -0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-post-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.574999988079071,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.722000002861023,
+                -0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.23399999737739563,
+                -0.4090000092983246
+              ],
+              [
+                0.574999988079071,
+                0.3140000104904175,
+                -0.3790000081062317
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.49300000071525574,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.45500001311302185,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.33500000834465027,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.296999990940094,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.1770000010728836,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.13899999856948853,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.01899999938905239,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.01899999938905239,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.13899999856948853,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.1770000010728836,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.296999990940094,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.33500000834465027,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.45500001311302185,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.49300000071525574,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-top-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.671999990940094,
+                -0.40799999237060547
+              ],
+              [
+                0.574999988079071,
+                0.7120000123977661,
+                -0.3799999952316284
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-lower",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.25,
+                -0.3499999940395355
+              ],
+              [
+                0.5899999737739563,
+                0.30000001192092896,
+                0.4099999964237213
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-lower",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.2847000062465668,
+                -0.336298406124115
+              ],
+              [
+                0.5762984156608582,
+                0.2872999906539917,
+                0.3962984085083008
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-inset-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 780,
+            "bounds": [
+              [
+                -0.6140000224113464,
+                0.04699999839067459,
+                -0.3100000023841858
+              ],
+              [
+                -0.6100000143051147,
+                0.22699999809265137,
+                0.3100000023841858
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-inset-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 780,
+            "bounds": [
+              [
+                0.6100000143051147,
+                0.04699999839067459,
+                -0.3100000023841858
+              ],
+              [
+                0.6140000224113464,
+                0.22699999809265137,
+                0.3100000023841858
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-panel-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.6110000014305115,
+                0,
+                -0.3700000047683716
+              ],
+              [
+                -0.5889999866485596,
+                0.25999999046325684,
+                0.3700000047683716
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-panel-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.5889999866485596,
+                0,
+                -0.3700000047683716
+              ],
+              [
+                0.6110000014305115,
+                0.25999999046325684,
+                0.3700000047683716
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.531000018119812,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.503000020980835,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.43700000643730164,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.4090000092983246,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4090000092983246,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.43700000643730164,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.503000020980835,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.531000018119812,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.34299999475479126,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.3149999976158142,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.24899999797344208,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.22100000083446503,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.1550000011920929,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.12700000405311584,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.061000000685453415,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.032999999821186066,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.032999999821186066,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.061000000685453415,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.12700000405311584,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.1550000011920929,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.22100000083446503,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.24899999797344208,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.3149999976158142,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.34299999475479126,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.625,
+            0,
+            -0.4189999997615814
+          ],
+          [
+            0.625,
+            0.7699999809265137,
+            0.4189999997615814
+          ]
+        ],
+        "settledPoses": []
+      }
+    },
+    {
+      "id": "open",
+      "state": "alternate",
+      "target": [
+        0,
+        0.38499999046325684,
+        0.59
+      ],
+      "position": [
+        2.591777062232426,
+        1.6808885215794698,
+        4.218487887125396
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:sofa-bed-v1:middle-crossbar",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.44999998807907104,
+                0.08500000089406967,
+                0.8925000095367431
+              ],
+              [
+                0.44999998807907104,
+                0.11999999731779099,
+                0.9174999856948852
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-runner-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4625000059604645,
+                0.08500000089406967,
+                0.40000000238418576
+              ],
+              [
+                -0.4375,
+                0.11999999731779099,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-runner-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4375,
+                0.08500000089406967,
+                0.40000000238418576
+              ],
+              [
+                0.4625000059604645,
+                0.11999999731779099,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.49900001287460327,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                -0.4749999940395355,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4050000011920929,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                -0.38100001215934753,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4410000145435333,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                0.4650000035762787,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.5350000262260437,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                0.5590000152587891,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3109999895095825,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                -0.28700000047683716,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.21699999272823334,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                -0.19300000369548798,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.12300000339746475,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                -0.0989999994635582,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.028999999165534973,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                -0.004999999888241291,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.06499999761581421,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                0.08900000154972076,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.1589999943971634,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                0.18299999833106995,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2529999911785126,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                0.2770000100135803,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:middle-steel-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.34700000286102295,
+                0.23000000417232513,
+                0.40000000238418576
+              ],
+              [
+                0.3709999918937683,
+                0.25,
+                0.9900000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-back-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                -0.48899999260902405,
+                0,
+                0.25800001263618466
+              ],
+              [
+                -0.47099998593330383,
+                0.04399999976158142,
+                0.3020000123977661
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-back-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                0.47099998593330383,
+                0,
+                0.25800001263618466
+              ],
+              [
+                0.48899999260902405,
+                0.04399999976158142,
+                0.3020000123977661
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-back-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.492000013589859,
+                0.02199999988079071,
+                0.2650000119209289
+              ],
+              [
+                -0.46799999475479126,
+                0.10400000214576721,
+                0.2950000131130218
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-back-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.46799999475479126,
+                0.02199999988079071,
+                0.2650000119209289
+              ],
+              [
+                0.492000013589859,
+                0.10400000214576721,
+                0.2950000131130218
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-crossbar",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.47999998927116394,
+                0.08500000089406967,
+                1.482500009536743
+              ],
+              [
+                0.47999998927116394,
+                0.11999999731779099,
+                1.5074999856948852
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-post-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                1.5489999878406524
+              ],
+              [
+                -0.574999988079071,
+                0.29499998688697815,
+                1.5989999997615814
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-post-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.574999988079071,
+                0,
+                1.5489999878406524
+              ],
+              [
+                0.625,
+                0.29499998688697815,
+                1.5989999997615814
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.1404999941587448,
+                1.5610000121593475
+              ],
+              [
+                0.574999988079071,
+                0.2854999899864197,
+                1.5870000052452087
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.5559999942779541,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                -0.5379999876022339,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4620000123977661,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                -0.4440000057220459,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.3840000033378601,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                0.4020000100135803,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4779999852180481,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                0.4959999918937683,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.36800000071525574,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                -0.3499999940395355,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.27399998903274536,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                -0.25600001215934753,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.18000000715255737,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                -0.16200000047683716,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.0860000029206276,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                -0.06800000369548798,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.00800000037997961,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                0.026000000536441803,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.10199999809265137,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                0.11999999731779099,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.19599999487400055,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                0.21400000154972076,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:front-steel-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.28999999165534973,
+                0.23000000417232513,
+                0.9900000023841857
+              ],
+              [
+                0.30799999833106995,
+                0.25,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:metal-runner-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.4925000071525574,
+                0.08500000089406967,
+                0.9900000023841857
+              ],
+              [
+                -0.4675000011920929,
+                0.11999999731779099,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:metal-runner-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4675000011920929,
+                0.08500000089406967,
+                0.9900000023841857
+              ],
+              [
+                0.4925000071525574,
+                0.11999999731779099,
+                1.5800000059604644
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-front-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.492000013589859,
+                0.02199999988079071,
+                1.480000011920929
+              ],
+              [
+                -0.46799999475479126,
+                0.10400000214576721,
+                1.5100000131130218
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-fork-front-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.46799999475479126,
+                0.02199999988079071,
+                1.480000011920929
+              ],
+              [
+                0.492000013589859,
+                0.10400000214576721,
+                1.5100000131130218
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-front-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                -0.48899999260902405,
+                0,
+                1.4730000126361846
+              ],
+              [
+                -0.47099998593330383,
+                0.04399999976158142,
+                1.517000012397766
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:wheel-front-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 276,
+            "bounds": [
+              [
+                0.47099998593330383,
+                0,
+                1.4730000126361846
+              ],
+              [
+                0.48899999260902405,
+                0.04399999976158142,
+                1.517000012397766
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-upper",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.28469999879598623,
+                1.013701600022614
+              ],
+              [
+                0.5762984156608582,
+                0.2873000018298628,
+                1.5762984156608582
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-upper",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.2500000000000001,
+                1
+              ],
+              [
+                0.5899999737739563,
+                0.30000000074505817,
+                1.5899999737739563
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-middle",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.24999999925494196,
+                0.41
+              ],
+              [
+                0.5899999737739563,
+                0.30000000000000004,
+                0.9999999737739562
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-middle",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.2626999981701374,
+                0.423701600022614
+              ],
+              [
+                0.5762984156608582,
+                0.26530000120401387,
+                0.9862984156608581
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5740000011920929,
+                0.3000000005960464,
+                -0.1799999952316284
+              ],
+              [
+                -0.013999998807907088,
+                0.39499999940395353,
+                0.07999999523162842
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-piping-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5627652111053467,
+                0.2797886019945144,
+                -0.15721240192651748
+              ],
+              [
+                -0.025234788894653304,
+                0.33116899974644187,
+                0.07517090141773224
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-piping-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                0.025234788894653304,
+                0.2797886019945144,
+                -0.15721249878406524
+              ],
+              [
+                0.5627652111053467,
+                0.33116899974644187,
+                0.07517090141773224
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:lumbar-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                0.013999998807907088,
+                0.3000000005960464,
+                -0.1799999952316284
+              ],
+              [
+                0.5740000011920929,
+                0.39499999940395353,
+                0.07999999523162842
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.20999999344348907,
+                -0.41442421078681946
+              ],
+              [
+                0.5899999737739563,
+                0.7699999809265137,
+                -0.22963909804821014
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-post-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                -0.574999988079071,
+                0.722000002861023,
+                -0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-post-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.574999988079071,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.722000002861023,
+                -0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.23399999737739563,
+                -0.4090000092983246
+              ],
+              [
+                0.574999988079071,
+                0.3140000104904175,
+                -0.3790000081062317
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.49300000071525574,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.45500001311302185,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.33500000834465027,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.296999990940094,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.1770000010728836,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                -0.13899999856948853,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.01899999938905239,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.01899999938905239,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.13899999856948853,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.1770000010728836,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.296999990940094,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.33500000834465027,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-slat-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.45500001311302185,
+                0.3019999861717224,
+                -0.4050000011920929
+              ],
+              [
+                0.49300000071525574,
+                0.6919999718666077,
+                -0.382999986410141
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:back-top-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.574999988079071,
+                0.671999990940094,
+                -0.40799999237060547
+              ],
+              [
+                0.574999988079071,
+                0.7120000123977661,
+                -0.3799999952316284
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-lower",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 5376,
+            "bounds": [
+              [
+                -0.5899999737739563,
+                0.25,
+                -0.3499999940395355
+              ],
+              [
+                0.5899999737739563,
+                0.30000001192092896,
+                0.4099999964237213
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:seat-piping-lower",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1728,
+            "bounds": [
+              [
+                -0.5762984156608582,
+                0.2847000062465668,
+                -0.336298406124115
+              ],
+              [
+                0.5762984156608582,
+                0.2872999906539917,
+                0.3962984085083008
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-inset-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 780,
+            "bounds": [
+              [
+                -0.6140000224113464,
+                0.04699999839067459,
+                -0.3100000023841858
+              ],
+              [
+                -0.6100000143051147,
+                0.22699999809265137,
+                0.3100000023841858
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-inset-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 780,
+            "bounds": [
+              [
+                0.6100000143051147,
+                0.04699999839067459,
+                -0.3100000023841858
+              ],
+              [
+                0.6140000224113464,
+                0.22699999809265137,
+                0.3100000023841858
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-panel-left",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.6110000014305115,
+                0,
+                -0.3700000047683716
+              ],
+              [
+                -0.5889999866485596,
+                0.25999999046325684,
+                0.3700000047683716
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:side-panel-right",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.5889999866485596,
+                0,
+                -0.3700000047683716
+              ],
+              [
+                0.6110000014305115,
+                0.25999999046325684,
+                0.3700000047683716
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.531000018119812,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.503000020980835,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.43700000643730164,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.4090000092983246,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-10",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.4090000092983246,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.43700000643730164,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-11",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.503000020980835,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.531000018119812,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.34299999475479126,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.3149999976158142,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.24899999797344208,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.22100000083446503,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-4",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.1550000011920929,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.12700000405311584,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-5",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.061000000685453415,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                -0.032999999821186066,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-6",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.032999999821186066,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.061000000685453415,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-7",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.12700000405311584,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.1550000011920929,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-8",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.22100000083446503,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.24899999797344208,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          },
+          {
+            "key": "explicit:sofa-bed-v1:steel-slat-9",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.3149999976158142,
+                0.23000000417232513,
+                -0.36899998784065247
+              ],
+              [
+                0.34299999475479126,
+                0.25,
+                0.36899998784065247
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.625,
+            0,
+            -0.4189999997615814
+          ],
+          [
+            0.625,
+            0.7699999809265137,
+            1.5989999997615814
+          ]
+        ],
+        "settledPoses": []
+      }
+    }
+  ]
+}

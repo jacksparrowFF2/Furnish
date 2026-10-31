@@ -1,0 +1,476 @@
+{
+  "passed": true,
+  "profile": "sofa-bed",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "sofa_bed_yeswood_y107h03",
+    "name": "源氏木语 Y107H03 沙发床 1.25米（梨白）",
+    "w": 1250,
+    "d": 838,
+    "color": "#c89d68",
+    "sofaBedOpen": false,
+    "brand": "源氏木语/YESWOOD",
+    "model": "Y107H03 · 1.25米 · 山毛榉原木色 / 梨白",
+    "sourceUrl": "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT",
+    "h": 770
+  },
+  "alternateKind": "operating",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-10-31T04:11:30.854Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yLmq2e\\sofa-bed-9K1xhZ",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-10-31T04:11:30.855Z",
+      "result": {
+        "command": "author-sofa-bed",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yLmq2e\\sofa-bed-9K1xhZ\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yLmq2e\\sofa-bed-9K1xhZ\\authored",
+        "passed": true,
+        "parts": 103,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "sofa-bed",
+          "parts": 103,
+          "motions": 6
+        }
+      },
+      "finished": "2026-10-31T04:11:33.008Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-10-31T04:11:33.009Z",
+      "result": {
+        "passed": true,
+        "profile": "sofa-bed",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part",
+          "wrong-axis",
+          "wrong-pivot",
+          "detached-moving-part"
+        ],
+        "motionApplicable": true
+      },
+      "finished": "2026-10-31T04:11:34.434Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-10-31T04:11:34.435Z",
+      "result": {
+        "command": "publish-sofa-bed",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yLmq2e\\sofa-bed-9K1xhZ\\authored\\sofa-bed-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yLmq2e\\workspace\\src\\data\\sofa-bed-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "516896f1d0831e60952665f27ddd32cdc73d8f6875cb7a6958ac0332200e2130",
+        "runtimeSha256": "33b4197c554c14fd2ab56a28a90ae519bdf3a962a8796be97d41761e5655b38a"
+      },
+      "finished": "2026-10-31T04:11:36.139Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-10-31T04:11:36.139Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "sofa-bed",
+            "profile": "sofa-bed",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yLmq2e\\sofa-bed-9K1xhZ\\sofa-bed.log",
+            "reused": false
+          },
+          {
+            "name": "sofa-bed-project-v40",
+            "profile": "sofa-bed",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yLmq2e\\sofa-bed-9K1xhZ\\sofa-bed-project-v40.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "sofa-bed",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 103,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 103,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 89.78651426137708,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 103,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 103,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 89.78651426137708,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-10-31T04:11:38.841Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-10-31T04:11:38.842Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 103,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.7699999809265137,
+                0.4189999997615814
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "alternate",
+            "parts": 103,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.7699999809265137,
+                1.5989999997615814
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 103,
+            "bounds": [
+              [
+                -0.699999988079071,
+                0,
+                -0.4525200128555298
+              ],
+              [
+                0.699999988079071,
+                0.83160001039505,
+                0.4525200128555298
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 103,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.7699999809265137,
+                0.4189999997615814
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "alternate",
+            "parts": 103,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.7699999809265137,
+                1.5989999997615814
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T04:12:33.062Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-10-31T04:12:33.063Z",
+      "result": {
+        "passed": true,
+        "profile": "sofa-bed",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 103,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-alternate",
+            "parts": 103,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 103,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 103,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-alternate",
+            "parts": 103,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T04:12:36.124Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-10-31T04:12:36.125Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 103,
+            "position": [
+              0,
+              0.38499999046325684,
+              5.233550341323802
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0.59
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 103,
+            "position": [
+              2.5708391088015548,
+              1.798961500304112,
+              4.1891747523221765
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0.59
+            ]
+          },
+          {
+            "id": "open",
+            "state": "alternate",
+            "parts": 103,
+            "position": [
+              2.591777062232426,
+              1.6808885215794698,
+              4.218487887125396
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0.59
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T04:13:02.181Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-10-31T04:13:02.181Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T04:13:05.378Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-10-31T04:13:05.378Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T04:13:08.518Z"
+    },
+    {
+      "name": "render-open",
+      "passed": true,
+      "started": "2026-10-31T04:13:08.519Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T04:13:11.667Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-10-31T04:13:11.668Z",
+      "result": {
+        "passed": true,
+        "profile": "sofa-bed",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 103,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 103,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "open",
+            "parts": 103,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T04:13:12.704Z"
+    }
+  ],
+  "finished": "2026-10-31T04:13:12.705Z"
+}

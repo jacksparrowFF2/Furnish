@@ -6,7 +6,7 @@ async(page,V)=>{
   try{
    await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
    await p.evaluate(()=>localStorage.setItem('huxing-catalog-favorites',JSON.stringify([JSON.stringify(['washer_littleswan_tg10k60w','小天鹅 TG10K60W · 10kg'])])));await p.reload();
-   await p.locator('[data-collection="favorites"]').click();check(await p.locator('#lib .item').count()===1,'old catalog favorite retained');await p.locator('[data-collection="all"]').click();
+   await p.locator('#catalog-collections').selectOption('favorites');check(await p.locator('#lib .item').count()===1,'old catalog favorite retained');await p.locator('#catalog-collections').selectOption('all');
    await p.evaluate(()=>{const host=FurnishKitchen.configure({id:'name-host',type:'counter',name:'验收洗衣柜',cx:3000,cy:3000,rot:37,flip:true,w:1340,d:630,color:'#fff'},FurnishKitchen.laundryPreset());
     const device={id:'name-washer',type:'washer',name:'洗衣机',cx:2000,cy:2000,w:600,d:600,h:850,rot:0,color:'#fff',mountHeight:0};mutate(()=>state.furniture=[host,device]);selectIds([device.id]);});
    for(const type of ['washer','washer_littleswan_tg10k60w']){

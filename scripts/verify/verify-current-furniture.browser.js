@@ -16,7 +16,7 @@ async (page,V)=>{
   });
   const screenshot=async name=>{await p.waitForTimeout(450);await p.screenshot({path:V.output('playwright/current-furniture/'+mode+'-'+name+'.png')});};
   const pick=id=>p.locator(`[data-current-check="${id}"]`),action=id=>p.locator(`[data-current-action="${id}"]`);
-  await p.locator('[data-collection="current"]').click();
+  await p.locator('#catalog-collections').selectOption('current');
   check(await p.locator('[data-current-row]').count()===4,'all placed furniture including hidden and outside');
   await p.locator('#current-room').selectOption(data.room);check(await p.locator('[data-current-row]').count()===2,'room filter');
   const beforeLocate=await p.evaluate(()=>JSON.stringify(state));await p.locator('[data-current-locate="manage-a"]').click();
@@ -49,13 +49,13 @@ async (page,V)=>{
   await p.locator('#current-bulk summary').click();await p.locator('#current-open-layers').click();await p.locator('#layer-name').fill('管理中新建层');await p.locator('#layer-create').click();await p.locator('#layer-sidebar-close').click();
   check((await p.locator('#current-target-layer option').allTextContents()).includes('管理中新建层'),'layer manager changes refresh assignment options');
   await p.locator('#catalog-reset').click();await p.locator('#current-bulk').evaluate(e=>e.open=false);await screenshot('desktop');
-  await V.waitForCache(p);await p.reload();await p.locator('[data-collection="current"]').click();
+  await V.waitForCache(p);await p.reload();await p.locator('#catalog-collections').selectOption('current');
   check(await p.evaluate(()=>getF('manage-a').purchaseStatus==='ordered'&&FurnishLayers.layerId(state,'furniture:manage-a')==='manage-layer'),'refresh persists metadata');
   await pick('manage-a').check();await p.evaluate(id=>setPlan(id),data.otherPlan);
   check(await p.locator('[data-current-check]:checked').count()===0,'plan switching clears stale checks');
   await p.evaluate(id=>setPlan(id),data.planId);check(await p.locator('[data-current-row]').count()===4,'return to original plan');
   await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);
-  check(await p.locator('[data-collection="current"]').isVisible(),'current-plan navigation remains available in 3D');
+  check(await p.locator('#catalog-collections').isVisible(),'current-plan navigation remains available in 3D');
   await p.locator('[data-current-locate="manage-a"]').click();check(await p.evaluate(()=>selIds().includes('manage-a')),'3D locate');
   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);
   await p.setViewportSize({width:390,height:844});

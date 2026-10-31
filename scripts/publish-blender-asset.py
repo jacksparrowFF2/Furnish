@@ -55,7 +55,7 @@ def publish(source, target, profile='se2', spec=None):
         return '#' + ''.join(format(channel(v), '02x') for v in values[:3])
 
     for obj in sorted(bpy.context.scene.objects, key=lambda o: o.name):
-        if profile in ('fridge','dishwasher','hood','washer','washer-tg10k60w','side-table') and obj.type=='EMPTY':
+        if profile in ('sofa-bed','fridge','dishwasher','hood','washer','washer-tg10k60w','side-table') and obj.type=='EMPTY':
             role=obj.get('furnishMotionRole')
             expected=next((m for m in spec['motions'] if m['role']==role),None)
             if not expected or role in hinges or obj.get('furnishHingeAxis')!=expected['axis']:
@@ -100,6 +100,13 @@ def publish(source, target, profile='se2', spec=None):
                 normals.extend(xyz((normal_matrix @ mesh.corner_normals[loop].vector).normalized()))
         if not positions:
             raise ValueError('Empty mesh')
+        if profile=='sofa-bed':
+            reference=next((p for p in spec['parts'] if p['name']==obj.name),None)
+            role=obj.parent.get('furnishMotionRole') if obj.parent else None
+            if not reference or role!=reference['role']:
+                raise ValueError('Sofa bed part attached to wrong motion parent: '+obj.name)
+            parts.append({'name':obj.name,'identity':identity,'role':role,'material':mat,'positions':positions,'normals':normals,'recolor':bool(obj.get('furnishRecolor'))})
+            continue
         if profile in ('fridge','dishwasher','hood','washer','washer-tg10k60w', 'side-table', 'corner-bookcase', 'corner-bookcase-580'):
             reference=next((p for p in spec['parts'] if p['name']==obj.name),None)
             role=obj.parent.get('furnishMotionRole') if obj.parent else None
@@ -162,6 +169,7 @@ def publish(source, target, profile='se2', spec=None):
             raise ValueError('Missing hinge/slide parents')
     elif profile == 'sofa-bed':
         expected={p['name'] for p in spec['parts']}
+        if set(hinges)!={m['role'] for m in spec['motions']}:raise ValueError('Missing sofa bed motion parents')
     elif profile == 'stack-stool':
         expected={'corner-shell-'+str(i) for i in range(4)} | {'seat-cushion'}
     elif profile == 'armchair-berlin':
@@ -198,8 +206,8 @@ def publish(source, target, profile='se2', spec=None):
         values = [v for p in parts for v in p['positions'][axis::3]]
         if max(abs(min(values)-limits[0]), abs(max(values)-limits[1])) > 1e-6:
             raise ValueError('Reference dimensions/origin changed; review product rules first')
-    payload = {'format':1,'version':(3 if physical else 2) if profile=='washer-tg10k60w' else 1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
-    payload.update({'id':spec['assetId'],'sizeMm':spec['size']} if profile=='sofa-bed' else {'id':spec['assetId'],'sizeMm':spec['size']} if profile=='corner-bookcase-580' else {'id':'corner-bookcase-y00y06','sizeMm':[450,1900,450]} if profile=='corner-bookcase' else {'id':'stool-citylong-370','sizeMm':[370,467,370]} if profile=='stack-stool' else {'id':'armchair-yeswood-berlin','sizeMm':[710,845,850]} if profile=='armchair-berlin' else {'id':'armchair-yeswood-y09hs','sizeMm':[725,905,900]} if profile=='armchair' else {'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'side-table-tmall-635382906309','sizeMm':spec['size'],'motions':list(hinges.values())} if profile=='side-table' else {'id':'fridge-french-drawer' if profile=='fridge' else 'rangehood-fotile-jcd10ta' if profile=='hood' else 'washer-littleswan-tg10k60w' if profile=='washer-tg10k60w' else 'washer-front-load' if profile=='washer' else 'dishwasher-mijia-countertop','sizeMm':spec['size'],'motions':list(hinges.values())})
+    payload = {'format':1,'version':3 if profile=='sofa-bed' else (3 if physical else 2) if profile=='washer-tg10k60w' else 1,'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts}
+    payload.update({'id':spec['assetId'],'sizeMm':spec['size'],'motions':list(hinges.values())} if profile=='sofa-bed' else {'id':spec['assetId'],'sizeMm':spec['size']} if profile=='corner-bookcase-580' else {'id':'corner-bookcase-y00y06','sizeMm':[450,1900,450]} if profile=='corner-bookcase' else {'id':'stool-citylong-370','sizeMm':[370,467,370]} if profile=='stack-stool' else {'id':'armchair-yeswood-berlin','sizeMm':[710,845,850]} if profile=='armchair-berlin' else {'id':'armchair-yeswood-y09hs','sizeMm':[725,905,900]} if profile=='armchair' else {'id':'bath-heater-aopu-se2','sizeMm':[300,112,600],'fixedBaseMm':2} if profile=='se2' else {'id':'bookcase-y52y09','sizeMm':[1115,750,230],'edgeRadiusMm':6} if profile=='y52y09' else {'id':'side-table-tmall-635382906309','sizeMm':spec['size'],'motions':list(hinges.values())} if profile=='side-table' else {'id':'fridge-french-drawer' if profile=='fridge' else 'rangehood-fotile-jcd10ta' if profile=='hood' else 'washer-littleswan-tg10k60w' if profile=='washer-tg10k60w' else 'washer-front-load' if profile=='washer' else 'dishwasher-mijia-countertop','sizeMm':spec['size'],'motions':list(hinges.values())})
     # Publish only after successful import and validation; a failed attempt preserves the old asset.
     body = json.dumps(payload, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
     text = '/* Generated from '+source.name+'; scripts/publish-blender-asset.py. Do not hand-edit. */\n'

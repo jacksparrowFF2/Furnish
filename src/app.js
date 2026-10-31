@@ -57,7 +57,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v39';
+let STORE = 'huxing-design-v40';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);
@@ -663,11 +663,12 @@ const itemCard = (it, ci, ii) => { const [t,n,w,d,col,price,,cid] = it, pad = Ma
 function syncCatalogControls(){
   const current=libUI.collection==='current';
   const replacing=!!window.FurnishCatalog?.active();
+  $('#catalog-collections').setAttribute('aria-label',tr('浏览范围','Browse collection'));
   $('#catalog-collections [data-collection="current"]').disabled=replacing;
   $('#catalog-filters').hidden=current;$('#catalog-use').hidden=current;
   document.querySelectorAll('#catalog-collections [data-collection]').forEach(b=>{
-    b.setAttribute('aria-pressed',b.dataset.collection===libUI.collection);
-    b.textContent=tr(...({all:['全部产品','All items'],favorites:['本机收藏','Favorites'],custom:['我的家具','My items'],current:['当前方案','Current plan']}[b.dataset.collection]));
+    b.selected=b.dataset.collection===libUI.collection;
+    b.textContent=tr(...({all:['产品库','Product library'],favorites:['本机收藏','Favorites'],custom:['我的家具','My items'],current:['当前方案','Current plan']}[b.dataset.collection]));
   });
   $('#catalog-reset').textContent=tr('清除筛选','Clear filters');
 }
@@ -907,15 +908,19 @@ function catalogNavigation(source=libAll()){
  return FurnishCatalogData.navigation(library);
 }
 function catalogCategoryLabel(){
- for(const g of catalogNavigation()){if(g.id===libUI.cat)return tr(g.name,g.en);for(const c of g.children)if(c.id===libUI.cat)return tr(g.name,g.en)+' / '+tr(c.name,c.en);}
- return tr('分类与尺寸筛选','Category & size filters');
+ const labels=[];
+ for(const g of catalogNavigation()){if(g.id===libUI.cat)labels.push(tr(g.name,g.en));else for(const c of g.children)if(c.id===libUI.cat)labels.push(tr(g.name,g.en)+' / '+tr(c.name,c.en));}
+ if(libUI.use!=='all'){const use=FurnishCatalogData.uses.find(u=>u[0]===libUI.use);if(use)labels.push(tr(use[1],use[2]));}
+ const w=$('#catalog-max-w')?.value,d=$('#catalog-max-d')?.value;
+ if(w)labels.push(tr('宽 ≤ ','W ≤ ')+w+' mm');if(d)labels.push(tr('深 ≤ ','D ≤ ')+d+' mm');
+ return labels.length?tr('筛选 · ','Filter · ')+labels.join(' · '):tr('筛选 · 分类 / 用途 / 尺寸','Filter · category / use / size');
 }
 function buildCats(){
  const groups=catalogNavigation(),ids=['all',...groups.flatMap(g=>[g.id,...g.children.map(c=>c.id)])];
  if(!ids.includes(libUI.cat))libUI.cat='all';
  const count=g=>g.children.reduce((n,c)=>n+c.items.length,0),owner=groups.find(g=>g.id===libUI.cat||g.children.some(c=>c.id===libUI.cat));
  const button=(id,label,n,active=libUI.cat===id)=>`<button type="button" class="btn ${active?'on':''}" aria-pressed="${active}" data-cat="${id}"><span>${esc(label)}</span><small>${n}</small></button>`;
- $('#libCats').innerHTML=button('all',tr('全部产品','All products'),groups.reduce((n,g)=>n+count(g),0))+`<div class="catalog-parent-grid">${groups.map(g=>button(g.id,tr(g.name,g.en),count(g),g===owner)).join('')}</div>`+(owner&&owner.children.length>1?`<div class="catalog-child-group"><div>${esc(tr(owner.name,owner.en))}</div>${button(owner.id,tr('全部','All')+' · '+tr(owner.name,owner.en),count(owner))}<div class="catalog-child-grid">${owner.children.map(c=>button(c.id,tr(c.name,c.en),c.items.length)).join('')}</div></div>`:'');
+ $('#libCats').innerHTML=button('all',tr('全部分类','All categories'),groups.reduce((n,g)=>n+count(g),0))+`<div class="catalog-parent-grid">${groups.map(g=>button(g.id,tr(g.name,g.en),count(g),g===owner)).join('')}</div>`+(owner&&owner.children.length>1?`<div class="catalog-child-group"><div>${esc(tr(owner.name,owner.en))}</div>${button(owner.id,tr('全部','All')+' · '+tr(owner.name,owner.en),count(owner))}<div class="catalog-child-grid">${owner.children.map(c=>button(c.id,tr(c.name,c.en),c.items.length)).join('')}</div></div>`:'');
  document.querySelectorAll('#libCats [data-cat]').forEach(b=>b.onclick=()=>{libUI.cat=b.dataset.cat;buildCats();buildLib();if(narrow()&&b.dataset.cat.includes('/'))$('#catalog-filters').open=false;});
 }
 

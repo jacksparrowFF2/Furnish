@@ -1,5 +1,9 @@
 # 模块与加载约定
 
+2026-10-31（家具库面板）：workflow-tools在原网格的--lib-w上增加可捕获指针／键盘的分隔条，panes.libraryWidth沿huxing-panes记忆；按窗口与图层／属性开关限制宽度，窄屏仍用抽屉。catalog-collections改为原四来源的select，catalog-ui沿原libUI切换，分类／用途／尺寸统一折叠并显示有效条件；无项目字段、撤销通道或加载变化。见[验收](validation/library-ui-20261031/README.md)。
+
+2026-10-31（沙发床端态）：sofa-bed-core派生6个运动父节点和占地，103件Blender生产模型（细节资产v3）在拟合后作刚性端态变换；sofaBedOpen沿mutate、v40项目／工作区／缓存恢复，定向确认与实体缓存同步。新增一个经典核心脚本，HTTP／file及实际EXE隔离验证，见[契约](SOFA-BED-YESWOOD-Y107H03.md)。
+
 2026-10-31（Y107H03沙发床）：独立sofa-bed静态Blender资产由产品规则注册，生产构造／SVG／目录与数值实体同步；新增两个经典本地脚本，无新字段／版本。49件收起模型、HTTP／断网file、实际EXE隔离保存和GPU三机位见[型号契约](SOFA-BED-YESWOOD-Y107H03.md)。
 
 2026-10-31（手动优先保存）：编辑仍沿 save／autosave 即时写恢复缓存，repository-storage 通过 debounce:false 将首个未保存修改的60秒作为固定兜底期限，后续编辑只替换待写快照；dirty与pending区分待保存／写入中。全局Ctrl+S先提交普通属性输入，再沿原flush／retry确认正式文件；无变化不新增文件修订。顶部显示状态及成功时间，离页切后台不再立即写文件，关闭时原flush和未保存提示保留；MCP仍显式flush。无新项目字段或加载脚本，见[保存契约](REPOSITORY-SAVES.md)。

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "source": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "sourceUnchanged": true,
+  "root": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\sofa-bed-desktop-esrGp9\\workspace",
+  "executable": "output/desktop/Furnish-win32-x64/Furnish.exe",
+  "catalog": true,
+  "toggle": true,
+  "toggleUndoRedo": true,
+  "openSaveRefresh": true,
+  "undoRedo": true,
+  "saveRefresh": true,
+  "production3D": true,
+  "errors": []
+}

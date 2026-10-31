@@ -235,17 +235,17 @@
         <input id="libSearch" type="search" placeholder="名称、品牌、型号…" data-en-placeholder="Name, brand, model…" aria-label="搜索家具">
         <button class="btn outline" id="addCustom" title="新建自定义家具（任意尺寸 / 颜色 / 单价）" data-en-title="Create a custom item (any size / color / price)"><svg class="i"><use href="#i-plus"/></svg><span data-en="Custom">自定义</span></button>
       </div>
-      <div id="catalog-collections" aria-label="家居库入口">
-        <button class="btn" data-collection="all" aria-pressed="true">全部产品</button>
-        <button class="btn" data-collection="favorites" aria-pressed="false" title="收藏保存在本机浏览器，不随项目导出" data-en-title="Favorites stay in this browser and are not exported with projects">本机收藏</button>
-        <button class="btn" data-collection="custom" aria-pressed="false">我的家具</button>
-        <button class="btn" data-collection="current" aria-pressed="false">当前方案</button>
-      </div>
-      <select id="catalog-use" aria-label="按用途筛选"></select>
+      <label class="catalog-source"><span data-en="Browse">浏览范围</span><select id="catalog-collections" aria-label="浏览范围">
+        <option value="all" data-collection="all">产品库</option>
+        <option value="favorites" data-collection="favorites">本机收藏</option>
+        <option value="custom" data-collection="custom">我的家具</option>
+        <option value="current" data-collection="current">当前方案</option>
+      </select></label>
       <details id="catalog-filters">
-        <summary id="catalog-filter-label">分类与尺寸筛选</summary>
+        <summary id="catalog-filter-label">筛选 · 分类 / 用途 / 尺寸</summary>
         <div class="catalog-filter-body">
           <div id="libCats"></div>
+          <label class="catalog-use-label"><span data-en="Use">用途</span><select id="catalog-use" aria-label="按用途筛选"></select></label>
           <div class="catalog-sizes">
             <label><span data-en="Max width · mm">最大宽 · mm</span><input id="catalog-max-w" type="number" min="50" max="20000" placeholder="不限" data-en-placeholder="Any"></label>
             <label><span data-en="Max depth · mm">最大深 · mm</span><input id="catalog-max-d" type="number" min="50" max="20000" placeholder="不限" data-en-placeholder="Any"></label>
@@ -416,6 +416,7 @@
 <script src="src/data/armchair-blender-asset.js"></script>
 <script src="src/data/armchair-berlin-blender-asset.js"></script>
 <script src="src/render/armchair-model.js"></script>
+<script src="src/core/sofa-bed-core.js"></script>
 <script src="src/data/sofa-bed-blender-asset.js"></script>
 <script src="src/render/sofa-bed-model.js"></script>
 <script src="src/core/corner-bookcase-core.js"></script>
@@ -1414,7 +1415,7 @@ function buildFurn(){
     const error=furnitureError(f);if(error)throw Error(error);
     const base=FurnishProducts.floorBase(plan,f,validFurniture);
     const corner=FurnishProducts.slidingCorner(f,validFurniture,plan);
-    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,FurnishProducts.definition(f)?.washerGeometryVersion,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainOpen,f.blindAngle,f.shadeMode, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
+    const sig = JSON.stringify([corner,base.z,base.known,f.kitchen,f.counterLink,f.counterElevation,f.sinkInstall,f.sinkNotch,f.sinkStyle,f.sinkBowlHeight,f.type==='counter'&&typeof FurnishKitchen!=='undefined'?FurnishKitchen.deviceSignature(f,validFurniture):null,f.type, f.w, f.d, f.color, f.h, f.mountHeight,f.downlightWatts,f.downlightKelvin, f.pipeBoxThickness,f.manifoldLoops,f.manifoldLengths,typeof FurnishProducts!=='undefined'?FurnishProducts.pipeBoxSignature(f):null, f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,FurnishProducts.definition(f)?.washerGeometryVersion,f.dishwasherDoorOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.sofaBedOpen,...(FurnishProducts.definition(f)?.sofaBedProfile?[3]:[]),f.hoodGeometry, f.showerMixerHeight, f.showerRise, f.showerHandAngle, f.slidingStackSide,f.slidingTrackOrder, f.floorTrack, f.curtainOpen,f.blindAngle,f.shadeMode, f.curtainStyle, f.cabinet, f.obj?.positions,typeof FurnishDesign!=='undefined'?FurnishDesign.laundryStack(f,validFurniture):null,FurnishCabinet.sideOpenings(f,validFurniture),FurnishCabinet.joinedSideFinishes(f,validFurniture),FurnishCabinet.sharedSides(f,validFurniture),typeof FurnishServices!=='undefined'&&typeof FurnishProducts!=='undefined'&&FurnishProducts.serviceCut(f)?[f.cx,f.cy,f.rot,f.flip,FurnishServices.pipes(FurnishProject.effectivePlan(PLAN,state))]:null]);
     const o = byId.get(f.id);
     if (o && o.userData.sig === sig){
       if(FurnishProducts.supports(f,'slidingOpen')&&o.userData.slidingDoor)o.userData.slidingDoor.open=FurnishProducts.value(f,'slidingOpen');
