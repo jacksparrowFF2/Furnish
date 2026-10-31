@@ -1,0 +1,19 @@
+{
+  "format": 1,
+  "id": "fridge",
+  "name": "纯平四门冰箱（双抽屉）",
+  "types": [
+    "fridge_french_drawer"
+  ],
+  "route": "blender",
+  "document": "docs/FRIDGE-BLENDER-MOTION.md",
+  "sourceLinks": [],
+  "references": [],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/appliance-materials-stage2-20261031/README.md",
+    "docs/validation/blender-fridge-motion-20261029/README.md",
+    "docs/validation/regression-fixes-20261030/README.md"
+  ]
+}

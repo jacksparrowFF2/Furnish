@@ -24,7 +24,7 @@
 - 目录/语言/平面：`src/data/catalog.js`、`src/data/i18n.js`、`src/render/furniture-svg.js`。
 - 属性：`src/ui/property-panel.js`，尺寸编辑走现有撤销和自动保存流程。
 - 交互预览：`output/robot-p20max/preview.html`；重新生成：`node scripts/preview-robot-vacuum.cjs`。预览引用仓库内生产模块，需保留相对目录；通过现有本地服务访问 `http://127.0.0.1:8765/output/robot-p20max/preview.html`。
-- 参考图存档：`docs/references/robot-p20max/reference-dimensions.png`、`reference-products.png`。
+- 参考图存档：`assets/models/robot-p20max/references/user/reference-dimensions.png`、`reference-products.png`。
 - 截图：同目录 `front.png`、`angled.png`、`app-2d.png`、`app-3d.png`。
 
 ## 验收
@@ -52,7 +52,7 @@
 
 ## 侧面过渡修正（2026-10-11）
 
-依据补充侧面实拍 `docs/references/robot-p20max/reference-tank-side.png`，消除白色外壳与灰色底座交界的内凹和台阶。两段改用同一条连续截面曲线，在 153 mm 色彩分界处共享半径、切线和外表面法线；该分界高度为外观估算。保留灰色底座、真实进站口和 450 × 450 × 450 mm 外包尺寸。
+依据补充侧面实拍 `assets/models/robot-p20max/references/user/reference-tank-side.png`，消除白色外壳与灰色底座交界的内凹和台阶。两段改用同一条连续截面曲线，在 153 mm 色彩分界处共享半径、切线和外表面法线；该分界高度为外观估算。保留灰色底座、真实进站口和 450 × 450 × 450 mm 外包尺寸。
 
 交界上下的多位置射线检查通过，确认轮廓没有错位且切线连续；全部回归通过。正面、斜视、俯视、空站和新增侧面按钮的浏览器验收通过。侧面截图：`output/robot-p20max/tank-smooth-side.png`，其余新版截图同步更新。
 

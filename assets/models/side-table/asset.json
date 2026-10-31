@@ -1,0 +1,80 @@
+{
+  "format": 1,
+  "id": "side-table",
+  "name": "双抽岩板边几-680×300×612",
+  "types": [
+    "sidetable_tmall_635382906309"
+  ],
+  "route": "blender",
+  "document": "docs/SIDE-TABLE-TMALL-635382906309.md",
+  "sourceLinks": [
+    "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30"
+  ],
+  "references": [
+    {
+      "path": "references/user/reference-1.png",
+      "kind": "user",
+      "sha256": "48ef1e9ff71536d635e15f3f7edc34ffde7b9c197f28dec99187814cea0d9769",
+      "bytes": 713974,
+      "legacyPaths": [
+        "docs/references/side-table-tmall/reference-1.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-2.png",
+      "kind": "user",
+      "sha256": "20cc7386c41f6faec10eeaba3821242c521f0aaa1025a4cf88383b051dc44ed5",
+      "bytes": 1753546,
+      "legacyPaths": [
+        "docs/references/side-table-tmall/reference-2.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-3.png",
+      "kind": "user",
+      "sha256": "a7850551ab17ef9254ed76fb504037369fcde4b53d4d02819a6c530db79a6cf8",
+      "bytes": 1184571,
+      "legacyPaths": [
+        "docs/references/side-table-tmall/reference-3.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-4.png",
+      "kind": "user",
+      "sha256": "99e9c1c7a7778f2a0a90d7db4ef863df84fbcebb653aa104afadfb3062ee8c26",
+      "bytes": 1721711,
+      "legacyPaths": [
+        "docs/references/side-table-tmall/reference-4.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-5.png",
+      "kind": "user",
+      "sha256": "f10b70345c7a4702a1a6a3811683415432757bc99dac1effa96cd02943fcb380",
+      "bytes": 1103880,
+      "legacyPaths": [
+        "docs/references/side-table-tmall/reference-5.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-6.png",
+      "kind": "user",
+      "sha256": "f49b50d249b3abc739845ac0571aded64342e8fa86340857e6a910d58eab379c",
+      "bytes": 2150532,
+      "legacyPaths": [
+        "docs/references/side-table-tmall/reference-6.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/side-table-20261029/README.md"
+  ]
+}

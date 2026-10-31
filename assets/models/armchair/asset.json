@@ -1,0 +1,118 @@
+{
+  "format": 1,
+  "id": "armchair",
+  "name": "源氏木语-Y09HS-亚麻色单人沙发椅",
+  "types": [
+    "armchair_yeswood_y09hs"
+  ],
+  "route": "blender",
+  "document": "docs/ARMCHAIR-YESWOOD-TMALL-1013742104698.md",
+  "sourceLinks": [
+    "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx"
+  ],
+  "references": [
+    {
+      "path": "references/user/arm-detail.png",
+      "kind": "user",
+      "sha256": "a87e66c0a67527788e07086665719bc765307fc984eca51623e4b887ef376da6",
+      "bytes": 2628050,
+      "legacyPaths": [
+        "assets/models/armchair/references/arm-detail.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-e1587055-e04b-4a4e-ba51-cb5fec4ecda8.png"
+      ]
+    },
+    {
+      "path": "references/user/dimensions.png",
+      "kind": "user",
+      "sha256": "712d8905c05cc5eda49c5a7e3da5c767d974eab1b0b0bafab0fc3c328420bf00",
+      "bytes": 567060,
+      "legacyPaths": [
+        "assets/models/armchair/references/dimensions.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-bc4d4031-9b74-4073-9e3a-74fcab066035.png"
+      ]
+    },
+    {
+      "path": "references/user/overview.png",
+      "kind": "user",
+      "sha256": "a2eb8fbacc1f787eb6bee88403871aaad86337711b48514a49c0b931408d7fe7",
+      "bytes": 606227,
+      "legacyPaths": [
+        "assets/models/armchair/references/overview.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-b22a2441-aa82-4be0-9251-a0268cd89f21.png"
+      ]
+    },
+    {
+      "path": "references/user/underside.png",
+      "kind": "user",
+      "sha256": "4b6eeb4b798b2b1c7dd9194a212de8bcac98ed03a10fa83fb191083ac969e487",
+      "bytes": 2057146,
+      "legacyPaths": [
+        "assets/models/armchair/references/underside.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-2b339d47-ccc6-45ac-a0cd-c2a65e504123.png"
+      ]
+    },
+    {
+      "path": "references/user/补充上传-03.png",
+      "kind": "user",
+      "sha256": "a3f94c75790963a629aa0ee4371669e2575d087048f002323513f7d646cf4c6d",
+      "bytes": 1188623,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-51372f79-ac68-4a98-9fbf-4ec1a6bf5568.png"
+      ]
+    },
+    {
+      "path": "references/user/补充上传-05.png",
+      "kind": "user",
+      "sha256": "6e47d2900e3d8cafadfd11d775290969666cd873d5af240876dbcb3143735139",
+      "bytes": 2123030,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-10aa87e4-4278-410f-b699-ba2cd1f4fb04.png"
+      ]
+    },
+    {
+      "path": "references/user/补充上传-06.png",
+      "kind": "user",
+      "sha256": "8dedcfc65c4f44e4c9441c016246bc1fc77527643029b8fa57cd5608de621d8a",
+      "bytes": 2183447,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-2c4e7958-45d4-47fd-88be-a8c56aa0e221.png"
+      ]
+    },
+    {
+      "path": "references/user/补充上传-07.png",
+      "kind": "user",
+      "sha256": "31f60a43501f72f345f7000585853344146ad6e588c7f4d392b841bdcacde9fb",
+      "bytes": 2768270,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-a694a7b9-1b42-43c7-8ee2-ff346e1cacbd.png"
+      ]
+    },
+    {
+      "path": "references/user/补充上传-08.png",
+      "kind": "user",
+      "sha256": "82dfefb26ee7ef5e3112da17935c7a0ff9ac581e7d0977e91a7f75e4e8eb1943",
+      "bytes": 2798472,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-3ff5c370-19ad-4e03-97e1-2fbeec51cfba.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/armchair-yeswood-20261029/README.md"
+  ]
+}

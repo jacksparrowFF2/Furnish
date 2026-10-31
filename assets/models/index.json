@@ -1,12 +1,15 @@
 {
-  "format": 1,
+  "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
     "blenderModels": 15,
     "parametricVerificationConfigurations": 78,
     "verificationConfigurations": 93,
     "catalogEntries": 137,
-    "catalogTypes": 110
+    "catalogTypes": 110,
+    "productDossiers": 39,
+    "referenceImages": 130,
+    "missingReferences": 12
   },
   "models": [
     {
@@ -22,7 +25,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/chair-s05118-blender-asset.js",
-        "sha256": "5bb97fae26a19df41c0528030dc589b7c2bbdfdb500286f98800b2524c5338fb"
+        "sha256": "1e51774454f4cfbea571c76780db9d423a5fb4652d8cdc58c82ee2feeef4780a",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01",
       "current": {
@@ -57,6 +61,15 @@
           "sha256": "d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01",
           "bytes": 366272
         }
+      ],
+      "dossier": "assets/models/chair-s05118/asset.json",
+      "references": [
+        "assets/models/chair-s05118/references/user/arm.png",
+        "assets/models/chair-s05118/references/user/back.png",
+        "assets/models/chair-s05118/references/user/dimensions.png",
+        "assets/models/chair-s05118/references/user/leg.png",
+        "assets/models/chair-s05118/references/user/product.png",
+        "assets/models/chair-s05118/references/user/seat.png"
       ]
     },
     {
@@ -72,7 +85,8 @@
       "runtimeVersion": 3,
       "runtime": {
         "path": "src/data/sofa-bed-blender-asset.js",
-        "sha256": "7ab345b237ad9a927a43ad520a0dad427915e3f602157b6eb870895528b656ef"
+        "sha256": "98def4a434450ee26712c3864c5941aa8df29cc3351fe44e7558737a67b5d6cf",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "988b4973133f4bab3bd5597c0777b59f37a847cfce327980d8f4b91c559dcceb",
       "current": {
@@ -119,6 +133,36 @@
           "sha256": "988b4973133f4bab3bd5597c0777b59f37a847cfce327980d8f4b91c559dcceb",
           "bytes": 1549216
         }
+      ],
+      "dossier": "assets/models/sofa-bed/asset.json",
+      "references": [
+        "assets/models/sofa-bed/references/annotations/1.png",
+        "assets/models/sofa-bed/references/annotations/2.png",
+        "assets/models/sofa-bed/references/annotations/3.png",
+        "assets/models/sofa-bed/references/annotations/4.png",
+        "assets/models/sofa-bed/references/annotations/5.png",
+        "assets/models/sofa-bed/references/product-page-original/06.avif",
+        "assets/models/sofa-bed/references/product-page-original/07.avif",
+        "assets/models/sofa-bed/references/product-page-original/08.avif",
+        "assets/models/sofa-bed/references/product-page-original/09.avif",
+        "assets/models/sofa-bed/references/product-page-original/15.avif",
+        "assets/models/sofa-bed/references/product-page-original/16.avif",
+        "assets/models/sofa-bed/references/product-page-original/28.avif",
+        "assets/models/sofa-bed/references/product-page-original/29.avif",
+        "assets/models/sofa-bed/references/product-page-original/30.avif",
+        "assets/models/sofa-bed/references/product-page/04.jpg",
+        "assets/models/sofa-bed/references/product-page/06.jpg",
+        "assets/models/sofa-bed/references/product-page/07.jpg",
+        "assets/models/sofa-bed/references/product-page/08.jpg",
+        "assets/models/sofa-bed/references/product-page/09.jpg",
+        "assets/models/sofa-bed/references/product-page/13.jpg",
+        "assets/models/sofa-bed/references/product-page/14.jpg",
+        "assets/models/sofa-bed/references/product-page/15.jpg",
+        "assets/models/sofa-bed/references/product-page/16.jpg",
+        "assets/models/sofa-bed/references/product-page/28.jpg",
+        "assets/models/sofa-bed/references/product-page/29.jpg",
+        "assets/models/sofa-bed/references/product-page/30.jpg",
+        "assets/models/sofa-bed/references/user/user-dimensions.png"
       ]
     },
     {
@@ -134,7 +178,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/se2-blender-asset.js",
-        "sha256": "2925c4a8660b7df7b1adb8be4c4054a9af40fbfe17e826f76f9d7b1340b9d4a0"
+        "sha256": "af05c33f6519e632b25203eb4cd5b6da29e81ff26feca93b58a843aa43de1dec",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "68e7a68f1e786684c7a2926e2108f3fec2bb3216d80c063ab545dfe17344cee7",
       "current": {
@@ -157,6 +202,12 @@
           "sha256": "68e7a68f1e786684c7a2926e2108f3fec2bb3216d80c063ab545dfe17344cee7",
           "bytes": 54796
         }
+      ],
+      "dossier": "assets/models/se2/asset.json",
+      "references": [
+        "assets/models/se2/references/user/reference-front.png",
+        "assets/models/se2/references/user/reference-installed.png",
+        "assets/models/se2/references/user/reference-spec.png"
       ]
     },
     {
@@ -172,7 +223,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/y52y09-blender-asset.js",
-        "sha256": "18005b06c30f46efb5553ca4aa8d91795d86f2b0587c08f27a3ab84c7fbf0a63"
+        "sha256": "6160556a5aba9c5cf0e774d5aa8f6c66a6c86cb043db4e13a5e190ac50f990b4",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "8187998811e8d7fe543122acca7f07ce8fe6382b21464e5603b165616460611f",
       "current": {
@@ -195,6 +247,10 @@
           "sha256": "8187998811e8d7fe543122acca7f07ce8fe6382b21464e5603b165616460611f",
           "bytes": 160012
         }
+      ],
+      "dossier": "assets/models/y52y09/asset.json",
+      "references": [
+        "assets/models/y52y09/references/product-page/dimensions-reference.jpg"
       ]
     },
     {
@@ -210,7 +266,8 @@
       "runtimeVersion": 2,
       "runtime": {
         "path": "src/data/fridge-blender-asset.js",
-        "sha256": "66e67376c59a82c02d3828e5fdfdc9db444662ff49fa0f17477cb6ed23af32a7"
+        "sha256": "0dc8556a749d6384936dc4f60c938333667c2fd1246234707a668a6ec3244b6d",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "0fa22e2d2b1db9f9cb6932005b121760944fb05a1761a8f02bf6985124dd9bbb",
       "current": {
@@ -251,7 +308,9 @@
           "sha256": "5c789a3bec9202ce703c9cc047b4efde2adc00e7e1a1665725a7efee6b29e8c2",
           "bytes": 238072
         }
-      ]
+      ],
+      "dossier": "assets/models/fridge/asset.json",
+      "references": []
     },
     {
       "profile": "dishwasher",
@@ -266,7 +325,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/dishwasher-blender-asset.js",
-        "sha256": "03e656858961e2bf13901ec353fe789054ff101b5db4c536b8bba8596b59f0de"
+        "sha256": "71a6e2a48250ed468a7ea198fe9b30cf0c7640830d2986386558c30c3dbd8bff",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "4a1d77ebf9f9501c3253da6cb407fcbbd0300c254a15f3f021e310cec23e73b2",
       "current": {
@@ -289,7 +349,9 @@
           "sha256": "4a1d77ebf9f9501c3253da6cb407fcbbd0300c254a15f3f021e310cec23e73b2",
           "bytes": 595524
         }
-      ]
+      ],
+      "dossier": "assets/models/dishwasher/asset.json",
+      "references": []
     },
     {
       "profile": "hood",
@@ -304,7 +366,8 @@
       "runtimeVersion": 2,
       "runtime": {
         "path": "src/data/hood-blender-asset.js",
-        "sha256": "b51eb97a6d844c7f1e1968dfbb8ec9e420112e31eb14d0297d36d996460ba6ce"
+        "sha256": "d5c74bf14f43981251f91afc3b4c0be7ccbf8ea66994ab4250debbb8ab582d4d",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "08b630b4d107e3b806cf9134171d22c3d1e63e7dbd914287bfea44e9ffa91fa4",
       "current": {
@@ -345,7 +408,9 @@
           "sha256": "4575b37204031f576358e1b5634a53597dd2dd65773f3b025db5bd2f7208226e",
           "bytes": 233114
         }
-      ]
+      ],
+      "dossier": "assets/models/hood/asset.json",
+      "references": []
     },
     {
       "profile": "washer",
@@ -360,7 +425,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/washer-blender-asset.js",
-        "sha256": "355c1f3995c9898aea3a72636e808dfd79180fcdbd4bf9096dfaa713f35db13e"
+        "sha256": "7f8378340fdf2db7b1a28ed2f0a7858c253ffca8225db4e904dc6ef42f3ab0dc",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "35400b56f1a25381a82185fd1d7fde81b5eaacbc363b3db298b04d8beb53785f",
       "current": {
@@ -383,7 +449,9 @@
           "sha256": "35400b56f1a25381a82185fd1d7fde81b5eaacbc363b3db298b04d8beb53785f",
           "bytes": 398220
         }
-      ]
+      ],
+      "dossier": "assets/models/washer/asset.json",
+      "references": []
     },
     {
       "profile": "washer-tg10k60w",
@@ -398,7 +466,8 @@
       "runtimeVersion": 4,
       "runtime": {
         "path": "src/data/washer-tg10k60w-blender-asset.js",
-        "sha256": "ac73db1e12633392446d17ac9fb779009836035b2cc4b8a5c5d9850e6a9cd35b"
+        "sha256": "78c914fb41bcbf767f29742b38dbb8e37620b33a11736425c789e65221d5d3c8",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "3e26e9ad46e50281da5253280f5bab88373c9633d0fe14df2ba2e5c38b4e3b83",
       "current": {
@@ -457,6 +526,15 @@
           "sha256": "8f018fdb2fcd1b8f8860315e06c409cae346a51df03ef57a82596bc2300270ee",
           "bytes": 1527280
         }
+      ],
+      "dossier": "assets/models/washer-tg10k60w/asset.json",
+      "references": [
+        "assets/models/washer-tg10k60w/references/user/appearance.png",
+        "assets/models/washer-tg10k60w/references/user/dimensions.png",
+        "assets/models/washer-tg10k60w/references/user/drum-close-up.png",
+        "assets/models/washer-tg10k60w/references/user/front-close-up.png",
+        "assets/models/washer-tg10k60w/references/user/installation.png",
+        "assets/models/washer-tg10k60w/references/user/specifications.png"
       ]
     },
     {
@@ -472,7 +550,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/side-table-blender-asset.js",
-        "sha256": "3eba342a6779b48a6b3e7494a22fef62f6e52624dbcab82309a053e05e69a4b7"
+        "sha256": "2155d3369fb204ad0cc13f943dd4469f2f5b91e01e5f85fe405ddbde75033f34",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "d65cb2ab75ec124d5c6174fceeb0185358cd655f4e89ac78fb38d46f1238d339",
       "current": {
@@ -495,6 +574,15 @@
           "sha256": "d65cb2ab75ec124d5c6174fceeb0185358cd655f4e89ac78fb38d46f1238d339",
           "bytes": 508360
         }
+      ],
+      "dossier": "assets/models/side-table/asset.json",
+      "references": [
+        "assets/models/side-table/references/user/reference-1.png",
+        "assets/models/side-table/references/user/reference-2.png",
+        "assets/models/side-table/references/user/reference-3.png",
+        "assets/models/side-table/references/user/reference-4.png",
+        "assets/models/side-table/references/user/reference-5.png",
+        "assets/models/side-table/references/user/reference-6.png"
       ]
     },
     {
@@ -510,7 +598,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/armchair-blender-asset.js",
-        "sha256": "87e6f99d5836863b4f6f8558735d4d1b80c026571b39fb3618d768131c849c29"
+        "sha256": "49637442f9996713f0e089666b2818a090209f0efa020ffc80b4463efb2dd9b5",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "461a10d4fca7c88c9356dc73c26254d6b4b4b3e4f335493b14a993fb310267f5",
       "current": {
@@ -533,6 +622,18 @@
           "sha256": "461a10d4fca7c88c9356dc73c26254d6b4b4b3e4f335493b14a993fb310267f5",
           "bytes": 631548
         }
+      ],
+      "dossier": "assets/models/armchair/asset.json",
+      "references": [
+        "assets/models/armchair/references/user/arm-detail.png",
+        "assets/models/armchair/references/user/dimensions.png",
+        "assets/models/armchair/references/user/overview.png",
+        "assets/models/armchair/references/user/underside.png",
+        "assets/models/armchair/references/user/补充上传-03.png",
+        "assets/models/armchair/references/user/补充上传-05.png",
+        "assets/models/armchair/references/user/补充上传-06.png",
+        "assets/models/armchair/references/user/补充上传-07.png",
+        "assets/models/armchair/references/user/补充上传-08.png"
       ]
     },
     {
@@ -548,7 +649,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/armchair-berlin-blender-asset.js",
-        "sha256": "234bca6d2946423daee24064400fb1ce51ab6e0a2471f44f83f2b28206cc7ce4"
+        "sha256": "56a7db24a32f1feb898c7a390f54a3331996162af76870498ee188033390b314",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "447e6044f3527e5efaaf2180c501f6ed047687d54b5ca3eea6509db42bc789e5",
       "current": {
@@ -571,6 +673,11 @@
           "sha256": "447e6044f3527e5efaaf2180c501f6ed047687d54b5ca3eea6509db42bc789e5",
           "bytes": 535140
         }
+      ],
+      "dossier": "assets/models/armchair-berlin/asset.json",
+      "references": [
+        "assets/models/armchair-berlin/references/user/appearance.png",
+        "assets/models/armchair-berlin/references/user/dimensions.png"
       ]
     },
     {
@@ -586,7 +693,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/stack-stool-blender-asset.js",
-        "sha256": "23e0f6c5b04f3f1adcd9b108cad5f506f60c857d1e2b4e53f9bdb06116dec329"
+        "sha256": "97da108975a734947a5cc031f797f6b0642c3a72a48efa0d2cf37047f470d6f7",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "47537df7c5d4d4ac0195393f93779c0f37f0bd794a93ed2324ce19f0f27175a7",
       "current": {
@@ -609,6 +717,12 @@
           "sha256": "47537df7c5d4d4ac0195393f93779c0f37f0bd794a93ed2324ce19f0f27175a7",
           "bytes": 70872
         }
+      ],
+      "dossier": "assets/models/stack-stool/asset.json",
+      "references": [
+        "assets/models/stack-stool/references/user/appearance.png",
+        "assets/models/stack-stool/references/user/dimensions.png",
+        "assets/models/stack-stool/references/user/stack.png"
       ]
     },
     {
@@ -624,7 +738,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/corner-bookcase-blender-asset.js",
-        "sha256": "e99e4d617289b1d2cf9a953ab83d6117a28c1955ddb6ef8e0f73ec279e474d6c"
+        "sha256": "358d9c2631945146630d92309900396f15f42dcc2e5c60e2e4259cc8f07f5b57",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "db6b97c28155981bf6f92781c643dc9f4233e27526657bf4556199b3148ab931",
       "current": {
@@ -647,6 +762,10 @@
           "sha256": "db6b97c28155981bf6f92781c643dc9f4233e27526657bf4556199b3148ab931",
           "bytes": 52320
         }
+      ],
+      "dossier": "assets/models/corner-bookcase/asset.json",
+      "references": [
+        "assets/models/corner-bookcase/references/user/dimensions-reference.png"
       ]
     },
     {
@@ -662,7 +781,8 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/corner-bookcase-580-blender-asset.js",
-        "sha256": "5c5b8ee8b6685f850bb7713ec6d13205c9cb51b942da26f64bf4c327b9c51e04"
+        "sha256": "fa1d458e839b13163b688e47623ec8fe49f38830b77c1de2e0b63fed838ddbda",
+        "normalization": "utf8-lf"
       },
       "sourceSha256": "ff0b7a94c7767f9c1c834f4c73d46934489dc58a0dec2132243cd40bf76dcec3",
       "current": {
@@ -685,7 +805,2345 @@
           "sha256": "ff0b7a94c7767f9c1c834f4c73d46934489dc58a0dec2132243cd40bf76dcec3",
           "bytes": 52376
         }
+      ],
+      "dossier": "assets/models/corner-bookcase-580/asset.json",
+      "references": [
+        "assets/models/corner-bookcase-580/references/product-page/dimensions-reference.avif"
       ]
+    }
+  ],
+  "products": [
+    {
+      "format": 1,
+      "id": "aluminum-light-channel",
+      "name": "嵌入式铝型材灯槽",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/CEILINGS.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/发光朝上款截面.png",
+          "kind": "user",
+          "sha256": "fb8cfd21580d1a0db55102842a5049f3c82889a31785f000be40e5bab28346cf",
+          "bytes": 387236,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-d3b57a7d-6502-4ce9-892e-8e7861d3130a.png"
+          ]
+        },
+        {
+          "path": "references/user/平装款安装截面.png",
+          "kind": "user",
+          "sha256": "57313a4734ee0d756435e61cd696a9469e9ce4d49bc1bfebddee02db43a282c3",
+          "bytes": 326701,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-e6651fa0-7d73-4ce6-949e-2b13d252e16d.png"
+          ]
+        },
+        {
+          "path": "references/user/灯带位置批注.png",
+          "kind": "user",
+          "sha256": "85179ac348e274247ef11c91c0c8eae7999883a79c9b6facd9c3a652a5cb5919",
+          "bytes": 158496,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-cc482597-3d69-47b8-b60c-3115a68976b8.png"
+          ]
+        },
+        {
+          "path": "references/user/铝材尺寸原图.png",
+          "kind": "user",
+          "sha256": "23ba09ddbbf2d3017b9be04943907c15e9935c6b8d7849b4f38f62d9b6d25ca2",
+          "bytes": 75287,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-a5dc6d2d-4f8e-4b3e-8ddf-079879539907.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/ceiling-multiselect-20261028/README.md",
+        "docs/validation/ceiling-merge-20261028/README.md",
+        "docs/validation/ceiling-height-20261028/README.md",
+        "docs/validation/ceiling-display-20261027/README.md",
+        "docs/validation/ceiling-hidden-faces-20261028/README.md",
+        "docs/validation/ceiling-lighting-20261027/README.md",
+        "docs/validation/ceiling-edge-gap-20261027/README.md",
+        "docs/validation/ceiling-current-snapping-20261027/README.md",
+        "docs/validation/ceiling-plan-display-20261027/README.md",
+        "docs/validation/ceiling-reference-snapping-20261027/README.md",
+        "docs/validation/ceiling-overall-switch-20261027/README.md",
+        "docs/validation/ceiling-components-20261027/README.md",
+        "docs/validation/ceiling-optional-cove-20261026/README.md",
+        "docs/validation/ceiling-reuse-pick-20261026/README.md",
+        "docs/validation/ceiling-flat-flow-20261026/README.md",
+        "docs/validation/ceiling-contact-mount-20261026/README.md",
+        "docs/validation/ceiling-panel-layout-20261026/README.md",
+        "docs/validation/ceiling-panel-devices-20261026/README.md",
+        "docs/validation/ceiling-aluminum-20261026/README.md",
+        "docs/validation/ceiling-live-mirror-20261025/README.md",
+        "docs/validation/ceiling-section-interaction-20261025/README.md",
+        "docs/validation/ceiling-regions-20261025/README.md",
+        "docs/validation/ceiling-design-20261025/README.md",
+        "docs/validation/ceiling-edges-20261025/README.md",
+        "docs/validation/ceiling-boundaries-20261025/README.md",
+        "docs/validation/ceiling-edge-distances-20261025/README.md",
+        "docs/validation/ceiling-uniform-inset-20261025/README.md",
+        "docs/validation/ceiling-coplanar-camera-20261025/README.md",
+        "docs/validation/ceiling-corners-20261016.json",
+        "docs/validation/ceiling-continuous-light-20261017.json",
+        "docs/validation/ceiling-end-caps-20261017.json",
+        "docs/validation/ceiling-furniture-alignment-20261028/README.md"
+      ],
+      "manifest": "assets/models/aluminum-light-channel/asset.json",
+      "readme": "assets/models/aluminum-light-channel/README.md"
+    },
+    {
+      "format": 1,
+      "id": "aquarium-mijia-2pro",
+      "name": "米家-智能鱼缸2Pro",
+      "types": [
+        "aquarium_mijia_2pro"
+      ],
+      "route": "parametric",
+      "document": "docs/AQUARIUM-MIJIA-2PRO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100317574693.html"
+      ],
+      "references": [],
+      "missingReferences": [
+        {
+          "uploadName": "codex-clipboard-dcf3517c-7213-4278-90f0-a556a4ee4c94.png",
+          "document": "docs/AQUARIUM-MIJIA-2PRO.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-1bcdcce8-5cff-48eb-b443-baab8b0b6e3c.png",
+          "document": "docs/AQUARIUM-MIJIA-2PRO.md",
+          "status": "not-found-locally"
+        }
+      ],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/blender-part-identities-20261024/summary.json",
+        "docs/validation/aquarium-test-context-20261018/summary.json",
+        "docs/validation/generator-part-identities-20261025/summary.json"
+      ],
+      "manifest": "assets/models/aquarium-mijia-2pro/asset.json",
+      "readme": "assets/models/aquarium-mijia-2pro/README.md"
+    },
+    {
+      "format": 1,
+      "id": "armchair",
+      "name": "源氏木语-Y09HS-亚麻色单人沙发椅",
+      "types": [
+        "armchair_yeswood_y09hs"
+      ],
+      "route": "blender",
+      "document": "docs/ARMCHAIR-YESWOOD-TMALL-1013742104698.md",
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx"
+      ],
+      "references": [
+        {
+          "path": "references/user/arm-detail.png",
+          "kind": "user",
+          "sha256": "a87e66c0a67527788e07086665719bc765307fc984eca51623e4b887ef376da6",
+          "bytes": 2628050,
+          "legacyPaths": [
+            "assets/models/armchair/references/arm-detail.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-e1587055-e04b-4a4e-ba51-cb5fec4ecda8.png"
+          ]
+        },
+        {
+          "path": "references/user/dimensions.png",
+          "kind": "user",
+          "sha256": "712d8905c05cc5eda49c5a7e3da5c767d974eab1b0b0bafab0fc3c328420bf00",
+          "bytes": 567060,
+          "legacyPaths": [
+            "assets/models/armchair/references/dimensions.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-bc4d4031-9b74-4073-9e3a-74fcab066035.png"
+          ]
+        },
+        {
+          "path": "references/user/overview.png",
+          "kind": "user",
+          "sha256": "a2eb8fbacc1f787eb6bee88403871aaad86337711b48514a49c0b931408d7fe7",
+          "bytes": 606227,
+          "legacyPaths": [
+            "assets/models/armchair/references/overview.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-b22a2441-aa82-4be0-9251-a0268cd89f21.png"
+          ]
+        },
+        {
+          "path": "references/user/underside.png",
+          "kind": "user",
+          "sha256": "4b6eeb4b798b2b1c7dd9194a212de8bcac98ed03a10fa83fb191083ac969e487",
+          "bytes": 2057146,
+          "legacyPaths": [
+            "assets/models/armchair/references/underside.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-2b339d47-ccc6-45ac-a0cd-c2a65e504123.png"
+          ]
+        },
+        {
+          "path": "references/user/补充上传-03.png",
+          "kind": "user",
+          "sha256": "a3f94c75790963a629aa0ee4371669e2575d087048f002323513f7d646cf4c6d",
+          "bytes": 1188623,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-51372f79-ac68-4a98-9fbf-4ec1a6bf5568.png"
+          ]
+        },
+        {
+          "path": "references/user/补充上传-05.png",
+          "kind": "user",
+          "sha256": "6e47d2900e3d8cafadfd11d775290969666cd873d5af240876dbcb3143735139",
+          "bytes": 2123030,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-10aa87e4-4278-410f-b699-ba2cd1f4fb04.png"
+          ]
+        },
+        {
+          "path": "references/user/补充上传-06.png",
+          "kind": "user",
+          "sha256": "8dedcfc65c4f44e4c9441c016246bc1fc77527643029b8fa57cd5608de621d8a",
+          "bytes": 2183447,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-2c4e7958-45d4-47fd-88be-a8c56aa0e221.png"
+          ]
+        },
+        {
+          "path": "references/user/补充上传-07.png",
+          "kind": "user",
+          "sha256": "31f60a43501f72f345f7000585853344146ad6e588c7f4d392b841bdcacde9fb",
+          "bytes": 2768270,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-a694a7b9-1b42-43c7-8ee2-ff346e1cacbd.png"
+          ]
+        },
+        {
+          "path": "references/user/补充上传-08.png",
+          "kind": "user",
+          "sha256": "82dfefb26ee7ef5e3112da17935c7a0ff9ac581e7d0977e91a7f75e4e8eb1943",
+          "bytes": 2798472,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-3ff5c370-19ad-4e03-97e1-2fbeec51cfba.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/armchair-yeswood-20261029/README.md"
+      ],
+      "manifest": "assets/models/armchair/asset.json",
+      "readme": "assets/models/armchair/README.md"
+    },
+    {
+      "format": 1,
+      "id": "armchair-berlin",
+      "name": "源氏木语-柏林单人沙发椅",
+      "types": [
+        "armchair_yeswood_berlin"
+      ],
+      "route": "blender",
+      "document": "docs/ARMCHAIR-YESWOOD-BERLIN.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/appearance.png",
+          "kind": "user",
+          "sha256": "a9bc3f556cea50cb9828d9cfd8e0698a88671b187afa6a92198db24e2b30c0c1",
+          "bytes": 745152,
+          "legacyPaths": [
+            "assets/models/armchair-berlin/references/appearance.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-4f577b15-1287-4caf-ac80-4d67a17415a5.png"
+          ]
+        },
+        {
+          "path": "references/user/dimensions.png",
+          "kind": "user",
+          "sha256": "965c90c1dd2266b1af317334c8b0cc84214796d364c6e4e929f1397275cd05ae",
+          "bytes": 642396,
+          "legacyPaths": [
+            "assets/models/armchair-berlin/references/dimensions.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-b9467e28-9974-4950-8f3e-5bb9855ca250.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/armchair-berlin-20261029/README.md"
+      ],
+      "manifest": "assets/models/armchair-berlin/asset.json",
+      "readme": "assets/models/armchair-berlin/README.md"
+    },
+    {
+      "format": 1,
+      "id": "cabinet-design-references",
+      "name": "定制柜体设计图",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/CABINET-DESIGN.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/柜体CAD设计图-01.png",
+          "kind": "user",
+          "sha256": "5480bdde1867228c62a469119a9c8f6c253095b67c65bfae8a5aedecf9dfeb4d",
+          "bytes": 147400,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-00e324a0-e0a1-4fad-8641-c73d1d70735b.png"
+          ]
+        },
+        {
+          "path": "references/user/柜体CAD设计图-02.png",
+          "kind": "user",
+          "sha256": "d70166514998706882b6d02ec1be8f9f0dd5ba44403ade51f2b76bc5dd380e8b",
+          "bytes": 118810,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-14e12f97-bf9a-4846-bb06-0e1aefe480fb.png"
+          ]
+        },
+        {
+          "path": "references/user/洗衣柜CAD局部批注.png",
+          "kind": "user",
+          "sha256": "155035f0bdd8fc7ee2869c7b84db5e0333abda6aa35358d3318fa92f6b8beaf6",
+          "bytes": 188247,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-1ffea19a-3904-4a03-8de7-2234e5f8365c.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/cabinet-independent-20261028/README.md",
+        "docs/validation/wall-extension-snapping-20261027/README.md",
+        "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+        "docs/validation/cabinet-simple-20261020/summary.json",
+        "docs/validation/cabinet-interior-20261020/summary.json",
+        "docs/validation/cabinet-setting-inheritance-20261020/summary.json",
+        "docs/validation/cabinet-object-inspector-20261020/summary.json",
+        "docs/validation/cabinet-edit-operations-20261020/summary.json",
+        "docs/validation/cabinet-module-widths-20261020/cabinet-module-widths.json",
+        "docs/validation/cabinet-module-growth-20261020/node.json",
+        "docs/validation/cabinet-module-growth-20261020/cabinet-module-widths.json",
+        "docs/validation/cabinet-divider-growth-20261020/node.json",
+        "docs/validation/cabinet-divider-growth-20261020/cabinet-divider-growth.json",
+        "docs/validation/cabinet-shelf-clearances-20261028/README.md",
+        "docs/validation/cabinet-part-inspector-20261028/README.md",
+        "docs/validation/cabinet-editor-completion-20261028/README.md",
+        "docs/validation/cabinet-workspace-20261028/README.md",
+        "docs/validation/cabinet-keyboard-20261031/README.md"
+      ],
+      "manifest": "assets/models/cabinet-design-references/asset.json",
+      "readme": "assets/models/cabinet-design-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "cat-tree",
+      "name": "猫爬架-绿叶成荫围栏款",
+      "types": [
+        "cat_tree"
+      ],
+      "route": "parametric",
+      "document": "docs/CAT-TREE.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference.png",
+          "kind": "user",
+          "sha256": "f6a0b6e5263f1f7cecf0b9cb7c6256c30299f2d7bc2a1785ffec047d974e9f7e",
+          "bytes": 589668,
+          "legacyPaths": [
+            "docs/validation/cat-tree-20261019/reference.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/cat-tree-20261019/browser-results.json"
+      ],
+      "manifest": "assets/models/cat-tree/asset.json",
+      "readme": "assets/models/cat-tree/README.md"
+    },
+    {
+      "format": 1,
+      "id": "ceiling-lighting",
+      "name": "石膏板吊顶与灯带",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/CEILINGS.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/吊顶整体另一视角.png",
+          "kind": "user",
+          "sha256": "f5869891e980c6a42cbf50fb51be525b2bd29720b2f671dcdc2be96ab3f1ca68",
+          "bytes": 567798,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-7c76ce86-90f2-4a06-817e-7f1ad538d727.png"
+          ]
+        },
+        {
+          "path": "references/user/客厅吊顶整体.png",
+          "kind": "user",
+          "sha256": "c2bc6f77d145e119a70f5f549cd9b7af8766423705cb6dce22be03924f6b32da",
+          "bytes": 701017,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-50a5ebb9-bc57-4bbd-832a-7ba59e1041cc.png"
+          ]
+        },
+        {
+          "path": "references/user/灯带近景.png",
+          "kind": "user",
+          "sha256": "e7a34f9d24a2cef9472b8c64321a5a644d400ce92bcb0fe6ffb5e99a84222301",
+          "bytes": 740506,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-ad8ad3bb-96fc-44d6-9696-e0023905ad87.png"
+          ]
+        },
+        {
+          "path": "references/user/灯槽尺寸标注.png",
+          "kind": "user",
+          "sha256": "169c5f2fe53ab84341d1895fec763c0fea1ced7e7fc7777590c8d14140d7b95a",
+          "bytes": 333878,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-25326eb2-3ede-4df6-b220-1f9b898fdad8.png"
+          ]
+        },
+        {
+          "path": "references/user/铝扣板安装实景.png",
+          "kind": "user",
+          "sha256": "59777ce483aec3d5974bfe7e926650996746aa14412ca77ff131550376d9533a",
+          "bytes": 627320,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-fde72617-b680-46fd-96bd-e06613c5a329.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/ceiling-multiselect-20261028/README.md",
+        "docs/validation/ceiling-merge-20261028/README.md",
+        "docs/validation/ceiling-height-20261028/README.md",
+        "docs/validation/ceiling-display-20261027/README.md",
+        "docs/validation/ceiling-hidden-faces-20261028/README.md",
+        "docs/validation/ceiling-lighting-20261027/README.md",
+        "docs/validation/ceiling-edge-gap-20261027/README.md",
+        "docs/validation/ceiling-current-snapping-20261027/README.md",
+        "docs/validation/ceiling-plan-display-20261027/README.md",
+        "docs/validation/ceiling-reference-snapping-20261027/README.md",
+        "docs/validation/ceiling-overall-switch-20261027/README.md",
+        "docs/validation/ceiling-components-20261027/README.md",
+        "docs/validation/ceiling-optional-cove-20261026/README.md",
+        "docs/validation/ceiling-reuse-pick-20261026/README.md",
+        "docs/validation/ceiling-flat-flow-20261026/README.md",
+        "docs/validation/ceiling-contact-mount-20261026/README.md",
+        "docs/validation/ceiling-panel-layout-20261026/README.md",
+        "docs/validation/ceiling-panel-devices-20261026/README.md",
+        "docs/validation/ceiling-aluminum-20261026/README.md",
+        "docs/validation/ceiling-live-mirror-20261025/README.md",
+        "docs/validation/ceiling-section-interaction-20261025/README.md",
+        "docs/validation/ceiling-regions-20261025/README.md",
+        "docs/validation/ceiling-design-20261025/README.md",
+        "docs/validation/ceiling-edges-20261025/README.md",
+        "docs/validation/ceiling-boundaries-20261025/README.md",
+        "docs/validation/ceiling-edge-distances-20261025/README.md",
+        "docs/validation/ceiling-uniform-inset-20261025/README.md",
+        "docs/validation/ceiling-coplanar-camera-20261025/README.md",
+        "docs/validation/ceiling-corners-20261016.json",
+        "docs/validation/ceiling-continuous-light-20261017.json",
+        "docs/validation/ceiling-end-caps-20261017.json",
+        "docs/validation/ceiling-furniture-alignment-20261028/README.md"
+      ],
+      "manifest": "assets/models/ceiling-lighting/asset.json",
+      "readme": "assets/models/ceiling-lighting/README.md"
+    },
+    {
+      "format": 1,
+      "id": "chair-s05118",
+      "name": "源氏木语-S05118-书椅",
+      "types": [
+        "chair_yeswood_s05118"
+      ],
+      "route": "blender",
+      "document": "docs/CHAIR-YESWOOD-S05118.md",
+      "sourceLinks": [
+        "https://item.jd.com/10115482828125.html"
+      ],
+      "references": [
+        {
+          "path": "references/user/arm.png",
+          "kind": "user",
+          "sha256": "2cb2927786421ea3fceac4eb997f99a4cc492b44d880385a353ad1a9869058de",
+          "bytes": 1481210,
+          "legacyPaths": [
+            "assets/models/chair-s05118/references/arm.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-a4005d61-db81-4679-95c7-c53bfaa13eed.png"
+          ]
+        },
+        {
+          "path": "references/user/back.png",
+          "kind": "user",
+          "sha256": "362713dcf15b0ae14a4e0991ef5da598c80ac4367a9e6d8b40cbf513b76fb7cb",
+          "bytes": 1648056,
+          "legacyPaths": [
+            "assets/models/chair-s05118/references/back.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-1c79c42c-e7ac-4bcb-8caa-c9ae1b32e69c.png"
+          ]
+        },
+        {
+          "path": "references/user/dimensions.png",
+          "kind": "user",
+          "sha256": "d7a119af13ee1db2e5a007e1f4570846de9940f56247c22dc50a2bdc8869fac7",
+          "bytes": 649459,
+          "legacyPaths": [
+            "assets/models/chair-s05118/references/dimensions.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-c729804a-be0a-499b-b17e-afe13a33a131.png"
+          ]
+        },
+        {
+          "path": "references/user/leg.png",
+          "kind": "user",
+          "sha256": "5d4fa47db82960b7255ce99b9c39a48fc224aa63f95a260f16eb3239416f7da7",
+          "bytes": 1492887,
+          "legacyPaths": [
+            "assets/models/chair-s05118/references/leg.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-4c8c0a47-b317-4cb4-b063-942718027ce5.png"
+          ]
+        },
+        {
+          "path": "references/user/product.png",
+          "kind": "user",
+          "sha256": "67db112b2edc3661c0ba0d5a8b0318f24040a8a91d7bec34c92c62b7bec17304",
+          "bytes": 255727,
+          "legacyPaths": [
+            "assets/models/chair-s05118/references/product.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-2af4bfcf-cd45-43bf-9a04-4b9183f9f917.png"
+          ]
+        },
+        {
+          "path": "references/user/seat.png",
+          "kind": "user",
+          "sha256": "a1b1deaf85b5307034c4d78ef7babb036ba712b0937a0736519eb8b477431ad3",
+          "bytes": 1418611,
+          "legacyPaths": [
+            "assets/models/chair-s05118/references/seat.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-2e4a14fd-1d06-4131-9faa-d23c0a0fd5c2.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/chair-s05118-20261031/README.md"
+      ],
+      "manifest": "assets/models/chair-s05118/asset.json",
+      "readme": "assets/models/chair-s05118/README.md"
+    },
+    {
+      "format": 1,
+      "id": "cherry-coffee-table",
+      "name": "樱桃木白色岩板茶几-1.2米",
+      "types": [
+        "coffeetable_yeswood_cherry"
+      ],
+      "route": "parametric",
+      "document": "docs/CHERRY-COFFEE-TABLE.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/bent-leg-reference.png",
+          "kind": "user",
+          "sha256": "92c7dbd90bb99610a6abd862c182efe2aa91e8a264b513c2b6e80cfe28ed10e2",
+          "bytes": 366805,
+          "legacyPaths": [
+            "docs/references/cherry-coffee-table/bent-leg-reference.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/dimensions.png",
+          "kind": "user",
+          "sha256": "a44811281179f23ed3c010ab95c986b0bbce0d682a371ff189b4ed635b08e161",
+          "bytes": 329092,
+          "legacyPaths": [
+            "docs/references/cherry-coffee-table/dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/leg-reference.png",
+          "kind": "user",
+          "sha256": "ecf2f3642aaeda55a6417fb14d977f04632c5bf69630dbf9f9256072f569d5a2",
+          "bytes": 661525,
+          "legacyPaths": [
+            "docs/references/cherry-coffee-table/leg-reference.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/white-top.png",
+          "kind": "user",
+          "sha256": "5e55db1e7c66885704f61cb98f0d5f8fb690b83bdd1591e20135d48a91082a3c",
+          "bytes": 162979,
+          "legacyPaths": [
+            "docs/references/cherry-coffee-table/white-top.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/blender-part-identities-20261024/summary.json",
+        "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+        "docs/validation/cherry-coffee-table-20261020/refined-bend/results.json",
+        "docs/validation/cherry-coffee-table-20261020/bent-board/results.json",
+        "docs/validation/cherry-coffee-table-20261020/legs/results.json",
+        "docs/validation/cherry-coffee-table-20261020/results.json",
+        "docs/validation/cherry-coffee-table-20261020/rounded/results.json",
+        "docs/validation/generator-part-identities-20261025/summary.json"
+      ],
+      "manifest": "assets/models/cherry-coffee-table/asset.json",
+      "readme": "assets/models/cherry-coffee-table/README.md"
+    },
+    {
+      "format": 1,
+      "id": "circulation-fan-references",
+      "name": "空气循环扇（前期参数与后补收纳图）",
+      "types": [],
+      "route": "reference-only",
+      "document": null,
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/后补风扇尺寸图-760高.png",
+          "kind": "user",
+          "sha256": "fc1b769d75d4d6ccab6ffed7923695879b234434ca36ef1136ed483d3d9712dc",
+          "bytes": 383295,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-d886e0af-6829-4f35-be97-18431795c42c.png"
+          ]
+        },
+        {
+          "path": "references/user/艾美特FA23-RD69前期参数-560高.png",
+          "kind": "user",
+          "sha256": "022e54ad49cf73d09a1fcb68e923188fd938d7dd189922171afd81285af47776",
+          "bytes": 93547,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-8f9e6106-2a61-481f-b9d2-0a79f377d3b9.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [],
+      "notes": [
+        "前期参数图560mm与后补尺寸图760mm不一致，用户后续说明折叠可收纳到600mm；不能据此认定同一型号。"
+      ],
+      "manifest": "assets/models/circulation-fan-references/asset.json",
+      "readme": "assets/models/circulation-fan-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "corner-bookcase",
+      "name": "源氏木语-Y00Y06-0.45米转角书柜",
+      "types": [
+        "bookshelf_yeswood_y00y06"
+      ],
+      "route": "blender",
+      "document": "docs/CORNER-BOOKCASE-YESWOOD-Y00Y06.md",
+      "sourceLinks": [
+        "https://item.jd.com/100093046007.html"
+      ],
+      "references": [
+        {
+          "path": "references/user/dimensions-reference.png",
+          "kind": "user",
+          "sha256": "f09adc51e95102bbb9c445f258abfbc3b339b76eb1b7a8d6315d9eacd833c052",
+          "bytes": 1062706,
+          "legacyPaths": [
+            "docs/validation/corner-bookcase-y00y06-20261031/dimensions-reference.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-a0540856-beb1-4672-8643-c06446cb65db.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/corner-bookcase-y00y06-20261031/README.md"
+      ],
+      "manifest": "assets/models/corner-bookcase/asset.json",
+      "readme": "assets/models/corner-bookcase/README.md"
+    },
+    {
+      "format": 1,
+      "id": "corner-bookcase-580",
+      "name": "源氏木语-Y00Y06058-0.58米转角书柜",
+      "types": [
+        "bookshelf_yeswood_y00y06058"
+      ],
+      "route": "blender",
+      "document": "docs/CORNER-BOOKCASE-YESWOOD-Y00Y06058.md",
+      "sourceLinks": [
+        "https://item.jd.com/100093046007.html",
+        "https://item.jd.com/100093046001.html"
+      ],
+      "references": [
+        {
+          "path": "references/product-page/dimensions-reference.avif",
+          "kind": "product-page",
+          "sha256": "33980ed3a20b39ffa6d409ea56ca2afe50e7011b28685a6a9e34a8320c309653",
+          "bytes": 73041,
+          "legacyPaths": [
+            "docs/validation/corner-bookcase-y00y06058-20261031/dimensions-reference.avif"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/corner-bookcase-y00y06058-20261031/source.json",
+        "docs/validation/corner-bookcase-y00y06058-20261031/README.md"
+      ],
+      "manifest": "assets/models/corner-bookcase-580/asset.json",
+      "readme": "assets/models/corner-bookcase-580/README.md"
+    },
+    {
+      "format": 1,
+      "id": "curtain-references",
+      "name": "窗帘与窗饰",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/WINDOW-COVERINGS.md",
+      "sourceLinks": [
+        "https://www.hunterdouglas.com/window-treatments/shades"
+      ],
+      "references": [
+        {
+          "path": "references/user/落地窗帘参考.png",
+          "kind": "user",
+          "sha256": "329e3dc27082aa30dd521754517aff2a85b5f09c962635dbd801d42b4ae256c9",
+          "bytes": 508917,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-4d8e8ce8-038b-4113-b95e-71d967518fe3.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/window-coverings-20261029/checks.json"
+      ],
+      "manifest": "assets/models/curtain-references/asset.json",
+      "readme": "assets/models/curtain-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "dishwasher",
+      "name": "米家-台式5套洗碗机",
+      "types": [
+        "dishwasher_mijia_countertop"
+      ],
+      "route": "blender",
+      "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+      "sourceLinks": [],
+      "references": [],
+      "missingReferences": [
+        {
+          "uploadName": "codex-clipboard-f81b2a64-8bd3-494d-8671-ad4508fe76e2.png",
+          "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-f040c66d-1cef-4ccf-ad89-d983bbdb76d0.png",
+          "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-9f439b7c-9946-47f8-979b-f2ef8598b50b.png",
+          "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+          "status": "not-found-locally"
+        }
+      ],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/blender-dishwasher-fold-20261029/README.md"
+      ],
+      "manifest": "assets/models/dishwasher/asset.json",
+      "readme": "assets/models/dishwasher/README.md"
+    },
+    {
+      "format": 1,
+      "id": "downlight-dl269",
+      "name": "飞利浦-DL269-筒灯",
+      "types": [
+        "downlight_philips_dl269"
+      ],
+      "route": "parametric",
+      "document": "docs/DOWNLIGHT-PHILIPS-DL269.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/appearance.png",
+          "kind": "user",
+          "sha256": "68370c6cf6e41fad63003c1a3e1a87f6cbfb5f5d21c88d046294f93a308ce234",
+          "bytes": 464871,
+          "legacyPaths": [
+            "docs/references/downlight-dl269/appearance.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/height.png",
+          "kind": "user",
+          "sha256": "3a1d46e912668f1ef065880c21259140c6baa6e208e45576f42f9ddf8604e178",
+          "bytes": 200205,
+          "legacyPaths": [
+            "docs/references/downlight-dl269/height.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/product-details.png",
+          "kind": "user",
+          "sha256": "47c1971cf5420b3b8223ff27a02bc11c3070174838fd872ef965a27c58d090db",
+          "bytes": 39589,
+          "legacyPaths": [
+            "docs/references/downlight-dl269/product-details.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/recess.png",
+          "kind": "user",
+          "sha256": "86e4cf4474face6eee126ef364546224e9fdb37ccece5594c10d99c850014cb7",
+          "bytes": 327914,
+          "legacyPaths": [
+            "docs/references/downlight-dl269/recess.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/specifications.png",
+          "kind": "user",
+          "sha256": "920c40a58069d6c34cecb947fa5571e5153846df7eb7bcdb93c33d60877d0cec",
+          "bytes": 204798,
+          "legacyPaths": [
+            "docs/references/downlight-dl269/specifications.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/产品宣传图.png",
+          "kind": "user",
+          "sha256": "69b9ed67ca44e5da99b6fd228b4510c06bcb467cf92efad81629c237bbb9d152",
+          "bytes": 885665,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-936880a3-5729-4f22-9f26-20b56cd3f269.png"
+          ]
+        },
+        {
+          "path": "references/user/光源内嵌防眩.png",
+          "kind": "user",
+          "sha256": "cd81359e0840565ab4924d4dc1f11e32575409ecdd66cc88090db66a32e68616",
+          "bytes": 387163,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-dc0c4f95-f1de-4f1e-8744-a5084256ea92.png"
+          ]
+        },
+        {
+          "path": "references/user/规格补充.png",
+          "kind": "user",
+          "sha256": "2a2694bcaba05b3decfdc91ca6e5355da3faf4b456ec8d28d35187eb7f229ad7",
+          "bytes": 19126,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-b9fe3baa-d905-481b-ac4f-360e889c4942.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/downlight-20261024/results.json",
+        "docs/validation/downlight-20261024/six-variants-settings.json",
+        "docs/validation/downlight-20261024/section-geometry.json",
+        "docs/validation/full-regression-main-20261025/README.md"
+      ],
+      "manifest": "assets/models/downlight-dl269/asset.json",
+      "readme": "assets/models/downlight-dl269/README.md"
+    },
+    {
+      "format": 1,
+      "id": "entry-console",
+      "name": "定制玄关置物台柜",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/ENTRY-CONSOLE-CABINET.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference.png",
+          "kind": "user",
+          "sha256": "964a140b30647579a82d5d90e7e6f59882b848ae38e6092f901c2c869457673b",
+          "bytes": 1261383,
+          "legacyPaths": [
+            "docs/references/entry-console/reference.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [],
+      "manifest": "assets/models/entry-console/asset.json",
+      "readme": "assets/models/entry-console/README.md"
+    },
+    {
+      "format": 1,
+      "id": "entry-pegboard",
+      "name": "定制玄关洞洞板柜",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/ENTRY-PEGBOARD-CABINET.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference.png",
+          "kind": "user",
+          "sha256": "795e4148716fe2f564ba34908fc40f4371b8f9a53796950c44d644c23a82042b",
+          "bytes": 907082,
+          "legacyPaths": [
+            "docs/references/entry-pegboard/reference.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/full-regression-20261024/summary.json",
+        "docs/validation/pegboard-margin-edit-20261023/summary.json",
+        "docs/validation/pegboard-alignment-20261023/summary.json",
+        "docs/validation/pegboard-padding-20261023/summary.json",
+        "docs/validation/pegboard-auto-20261023/summary.json",
+        "docs/validation/pegboard-fit-grid-20261023/summary.json",
+        "docs/validation/pegboard-hatch-20261023/summary.json",
+        "docs/validation/pegboard-accessories-20261020/node.json",
+        "docs/validation/pegboard-accessories-20261020/pegboard-accessories.json",
+        "docs/validation/pegboard-accessory-height-20261020/node.json",
+        "docs/validation/pegboard-accessory-height-20261020/pegboard-height.json",
+        "docs/validation/pegboard-height-20261020/node.json",
+        "docs/validation/pegboard-height-20261020/pegboard-height.json",
+        "docs/validation/pegboard-height-20261020/pegboard-parts.json",
+        "docs/validation/pegboard-envelope-20261020/node.json",
+        "docs/validation/pegboard-envelope-20261020/browser.json",
+        "docs/validation/pegboard-parts-20261020/node.json",
+        "docs/validation/pegboard-parts-20261020/browser.json"
+      ],
+      "manifest": "assets/models/entry-pegboard/asset.json",
+      "readme": "assets/models/entry-pegboard/README.md"
+    },
+    {
+      "format": 1,
+      "id": "fridge",
+      "name": "纯平四门冰箱（双抽屉）",
+      "types": [
+        "fridge_french_drawer"
+      ],
+      "route": "blender",
+      "document": "docs/FRIDGE-BLENDER-MOTION.md",
+      "sourceLinks": [],
+      "references": [],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/appliance-materials-stage2-20261031/README.md",
+        "docs/validation/blender-fridge-motion-20261029/README.md",
+        "docs/validation/regression-fixes-20261030/README.md"
+      ],
+      "manifest": "assets/models/fridge/asset.json",
+      "readme": "assets/models/fridge/README.md"
+    },
+    {
+      "format": 1,
+      "id": "hood",
+      "name": "方太抽油烟机 JCD10TA",
+      "types": [
+        "rangehood_fotile_jcd10ta"
+      ],
+      "route": "blender",
+      "document": "docs/HOOD-BLENDER-MOTION.md",
+      "sourceLinks": [],
+      "references": [],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/appliance-materials-stage2-20261031/README.md",
+        "docs/validation/blender-hood-motion-20261029/README.md"
+      ],
+      "manifest": "assets/models/hood/asset.json",
+      "readme": "assets/models/hood/README.md"
+    },
+    {
+      "format": 1,
+      "id": "litter-box",
+      "name": "猫砂盆（型号未确认）",
+      "types": [
+        "litter_box"
+      ],
+      "route": "parametric",
+      "document": "docs/LITTER-BOX.md",
+      "sourceLinks": [],
+      "references": [],
+      "missingReferences": [
+        {
+          "uploadName": "codex-clipboard-42189e27-4f7a-46e2-af85-2410da557372.png",
+          "document": "docs/LITTER-BOX.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-69bb6ffc-74fe-40eb-a760-ac7c21d964eb.png",
+          "document": "docs/LITTER-BOX.md",
+          "status": "not-found-locally"
+        }
+      ],
+      "supportingFiles": [],
+      "validation": [],
+      "manifest": "assets/models/litter-box/asset.json",
+      "readme": "assets/models/litter-box/README.md"
+    },
+    {
+      "format": 1,
+      "id": "panel-light",
+      "name": "厨房平板灯-300×600-24W",
+      "types": [
+        "panel_light_300x600"
+      ],
+      "route": "parametric",
+      "document": "docs/KITCHEN-PANEL-LIGHT.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference.png",
+          "kind": "user",
+          "sha256": "1390d6d1f1d6ab331becda8e0b4102ba2bf4b5dbbcdf45d9340edd0461f2a49f",
+          "bytes": 390067,
+          "legacyPaths": [
+            "docs/validation/panel-light-20261027/reference.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-9887814b-5b96-4327-93e8-1c84820572e5.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/panel-light-bounce-20261027/README.md",
+        "docs/validation/panel-light-soft-20261027/README.md",
+        "docs/validation/panel-light-20261027/README.md"
+      ],
+      "manifest": "assets/models/panel-light/asset.json",
+      "readme": "assets/models/panel-light/README.md"
+    },
+    {
+      "format": 1,
+      "id": "pet-feeder-mijia-2",
+      "name": "米家-智能宠物喂食器2",
+      "types": [
+        "pet_feeder_mijia_2"
+      ],
+      "route": "parametric",
+      "document": "docs/PET-FEEDER-MIJIA-2.md",
+      "sourceLinks": [],
+      "references": [],
+      "missingReferences": [
+        {
+          "uploadName": "codex-clipboard-e333deb9-922e-403d-8b58-496789373ac0.png",
+          "document": "docs/PET-FEEDER-MIJIA-2.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-b24d11dc-8972-4325-bc62-8058e74ab2f3.png",
+          "document": "docs/PET-FEEDER-MIJIA-2.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-6cd1ffc1-b33e-401b-9e06-b937195b9fed.png",
+          "document": "docs/PET-FEEDER-MIJIA-2.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-d1c316a7-33ee-4506-ac29-2dd2827eddff.png",
+          "document": "docs/PET-FEEDER-MIJIA-2.md",
+          "status": "not-found-locally"
+        },
+        {
+          "uploadName": "codex-clipboard-d2522c31-d13a-41a6-adc4-b85f09b4f0a6.png",
+          "document": "docs/PET-FEEDER-MIJIA-2.md",
+          "status": "not-found-locally"
+        }
+      ],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/pet-feeder-20261019.json"
+      ],
+      "manifest": "assets/models/pet-feeder-mijia-2/asset.json",
+      "readme": "assets/models/pet-feeder-mijia-2/README.md"
+    },
+    {
+      "format": 1,
+      "id": "robot-p20max",
+      "name": "石头-P20Max-扫拖机器人",
+      "types": [
+        "robot_p20max",
+        "robot_p20max_tank",
+        "robot_p20max_plumbed"
+      ],
+      "route": "parametric",
+      "document": "docs/ROBOROCK-P20MAX.md",
+      "sourceLinks": [
+        "http://127.0.0.1:8765/output/robot-p20max/preview.html"
+      ],
+      "references": [
+        {
+          "path": "references/user/reference-dimensions.png",
+          "kind": "user",
+          "sha256": "b6d8396eaae0b32f865e6c15dac165af5887a0350705a3a6d2bf86feee7d9a61",
+          "bytes": 877256,
+          "legacyPaths": [
+            "docs/references/robot-p20max/reference-dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-dock-shell.png",
+          "kind": "user",
+          "sha256": "cbbf517a26e8f760f11f8b40b74fafe2ec1ca29707f97a57120f847de4971d1a",
+          "bytes": 206906,
+          "legacyPaths": [
+            "docs/references/robot-p20max/reference-dock-shell.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-products.png",
+          "kind": "user",
+          "sha256": "29fb100b1a66819d5d3a5da1c8695fc9084fa6fa561b74b44b5e3d732a88bf00",
+          "bytes": 623879,
+          "legacyPaths": [
+            "docs/references/robot-p20max/reference-products.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-tank-empty.png",
+          "kind": "user",
+          "sha256": "8017e803f5deefdd3ff92fe7d50db550cb9344c3a5b8b219f43ace7886741b8d",
+          "bytes": 988811,
+          "legacyPaths": [
+            "docs/references/robot-p20max/reference-tank-empty.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-tank-side.png",
+          "kind": "user",
+          "sha256": "8493a041726b5016cdf74af4eadd3b0cfccef9d2e900b4cae60d6fddbbb1459c",
+          "bytes": 442800,
+          "legacyPaths": [
+            "docs/references/robot-p20max/reference-tank-side.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-tank-top.png",
+          "kind": "user",
+          "sha256": "169b360e4378bdb15128cabe9bc15075387546f7c6950c2f2218b1634facd3de",
+          "bytes": 630757,
+          "legacyPaths": [
+            "docs/references/robot-p20max/reference-tank-top.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [],
+      "manifest": "assets/models/robot-p20max/asset.json",
+      "readme": "assets/models/robot-p20max/README.md"
+    },
+    {
+      "format": 1,
+      "id": "se2",
+      "name": "奥普-SE2-风暖浴霸",
+      "types": [
+        "bath_heater_aopu_se2"
+      ],
+      "route": "blender",
+      "document": "docs/BATH-HEATER-AOPU-SE2.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference-front.png",
+          "kind": "user",
+          "sha256": "4b8e9fe3296da0c319f53fb25ecd460e1b467f445dd05ea34e18581fd473d5ab",
+          "bytes": 476263,
+          "legacyPaths": [
+            "docs/validation/bath-heater-se2-20261027/reference-front.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-3a8a1f59-e0c4-4450-b6a5-42280f6a1cbb.png"
+          ]
+        },
+        {
+          "path": "references/user/reference-installed.png",
+          "kind": "user",
+          "sha256": "8ee9ded13d2357fb46c328e7097a13a421de1c02ac59752ab57c876b10aee75b",
+          "bytes": 765261,
+          "legacyPaths": [
+            "docs/validation/bath-heater-se2-20261027/reference-installed.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-27090e4f-e59a-4b48-9d37-215954a52e10.png"
+          ]
+        },
+        {
+          "path": "references/user/reference-spec.png",
+          "kind": "user",
+          "sha256": "8492c173c5f84b9f60724c408a9fdbe0e60827dd2abe6bd65187c494f6582311",
+          "bytes": 258467,
+          "legacyPaths": [
+            "docs/validation/bath-heater-se2-20261027/reference-spec.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-0bcba51a-86ca-42d7-9d90-b0afd7c763c6.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/bath-heater-se2-20261027/README.md"
+      ],
+      "manifest": "assets/models/se2/asset.json",
+      "readme": "assets/models/se2/README.md"
+    },
+    {
+      "format": 1,
+      "id": "secondary-wardrobe",
+      "name": "定制次卧挂衣柜",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/SECONDARY-WARDROBE.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/内部挂杆实物参考.png",
+          "kind": "user",
+          "sha256": "3a50c509d99f5fc740bc5e66c976c8195a4cebd0886beab00e6d939c2f9eee25",
+          "bytes": 544744,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-cf95f2e6-9387-43b2-bc52-2782904ca093.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/wardrobe-height-20261029/README.md",
+        "docs/validation/secondary-wardrobe-20261029/checks.json"
+      ],
+      "manifest": "assets/models/secondary-wardrobe/asset.json",
+      "readme": "assets/models/secondary-wardrobe/README.md"
+    },
+    {
+      "format": 1,
+      "id": "shoe-bench",
+      "name": "源氏木语-橡木软包换鞋凳-80厘米",
+      "types": [
+        "bench_yeswood_oak"
+      ],
+      "route": "parametric",
+      "document": "docs/SHOE-BENCH.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/dimensions.png",
+          "kind": "user",
+          "sha256": "557f93628b2290cac24f6aa41d6fcf6bbd3cd97d4d069e4941ea730f2405b268",
+          "bytes": 631313,
+          "legacyPaths": [
+            "docs/references/shoe-bench/dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/floor-gap.png",
+          "kind": "user",
+          "sha256": "91fb06fed9a269e2970d55ee4882aed0faeec4e3d26e0c575d3f72e28863fef0",
+          "bytes": 407003,
+          "legacyPaths": [
+            "docs/references/shoe-bench/floor-gap.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/oak-front.png",
+          "kind": "user",
+          "sha256": "739e942be24f09af15140cdedff924a81c609a1b040cf28278f06c7139d7c284",
+          "bytes": 1163439,
+          "legacyPaths": [
+            "docs/references/shoe-bench/oak-front.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/walnut-overall.png",
+          "kind": "user",
+          "sha256": "7c4943fcbbf562ee541104fa9cec29b5da70755e08b1d815db96c0ab216b93e5",
+          "bytes": 386333,
+          "legacyPaths": [
+            "docs/references/shoe-bench/walnut-overall.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+        "docs/validation/shoe-bench-20261020/results.json"
+      ],
+      "manifest": "assets/models/shoe-bench/asset.json",
+      "readme": "assets/models/shoe-bench/README.md"
+    },
+    {
+      "format": 1,
+      "id": "shower-arrow",
+      "name": "箭牌-奶油白花洒",
+      "types": [
+        "shower_arrow_cream"
+      ],
+      "route": "parametric",
+      "document": "docs/SHOWER-ARROW-CREAM.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference-adjustment.png",
+          "kind": "user",
+          "sha256": "f02756bb0b2a494d3c2ba93eedb1a053b8c4b1c4acc5b3187b6691d39f7aebba",
+          "bytes": 185656,
+          "legacyPaths": [
+            "docs/references/shower-arrow/reference-adjustment.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-dimensions.png",
+          "kind": "user",
+          "sha256": "3739511c39817597b84bdb7e0e26684ced3f1da6d015346560dd393eb97b8402",
+          "bytes": 325316,
+          "legacyPaths": [
+            "docs/references/shower-arrow/reference-dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-height.png",
+          "kind": "user",
+          "sha256": "a0562918ad08669acbf700467914159282ed0e3e0c6571603ec1e5cda9c07cef",
+          "bytes": 199399,
+          "legacyPaths": [
+            "docs/references/shower-arrow/reference-height.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-product.png",
+          "kind": "user",
+          "sha256": "40d3744f11b2b42c04618f30e05ea7febf061ce4ceceeaf30aef02e5011c4c07",
+          "bytes": 1635493,
+          "legacyPaths": [
+            "docs/references/shower-arrow/reference-product.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [],
+      "manifest": "assets/models/shower-arrow/asset.json",
+      "readme": "assets/models/shower-arrow/README.md"
+    },
+    {
+      "format": 1,
+      "id": "side-table",
+      "name": "双抽岩板边几-680×300×612",
+      "types": [
+        "sidetable_tmall_635382906309"
+      ],
+      "route": "blender",
+      "document": "docs/SIDE-TABLE-TMALL-635382906309.md",
+      "sourceLinks": [
+        "https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30"
+      ],
+      "references": [
+        {
+          "path": "references/user/reference-1.png",
+          "kind": "user",
+          "sha256": "48ef1e9ff71536d635e15f3f7edc34ffde7b9c197f28dec99187814cea0d9769",
+          "bytes": 713974,
+          "legacyPaths": [
+            "docs/references/side-table-tmall/reference-1.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-2.png",
+          "kind": "user",
+          "sha256": "20cc7386c41f6faec10eeaba3821242c521f0aaa1025a4cf88383b051dc44ed5",
+          "bytes": 1753546,
+          "legacyPaths": [
+            "docs/references/side-table-tmall/reference-2.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-3.png",
+          "kind": "user",
+          "sha256": "a7850551ab17ef9254ed76fb504037369fcde4b53d4d02819a6c530db79a6cf8",
+          "bytes": 1184571,
+          "legacyPaths": [
+            "docs/references/side-table-tmall/reference-3.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-4.png",
+          "kind": "user",
+          "sha256": "99e9c1c7a7778f2a0a90d7db4ef863df84fbcebb653aa104afadfb3062ee8c26",
+          "bytes": 1721711,
+          "legacyPaths": [
+            "docs/references/side-table-tmall/reference-4.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-5.png",
+          "kind": "user",
+          "sha256": "f10b70345c7a4702a1a6a3811683415432757bc99dac1effa96cd02943fcb380",
+          "bytes": 1103880,
+          "legacyPaths": [
+            "docs/references/side-table-tmall/reference-5.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-6.png",
+          "kind": "user",
+          "sha256": "f49b50d249b3abc739845ac0571aded64342e8fa86340857e6a910d58eab379c",
+          "bytes": 2150532,
+          "legacyPaths": [
+            "docs/references/side-table-tmall/reference-6.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/side-table-20261029/README.md"
+      ],
+      "manifest": "assets/models/side-table/asset.json",
+      "readme": "assets/models/side-table/README.md"
+    },
+    {
+      "format": 1,
+      "id": "sliding-door-references",
+      "name": "吊轨推拉门与厨房折叠移门",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/TELESCOPIC-OPENINGS.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/吊轨及地轨对照.png",
+          "kind": "user",
+          "sha256": "9945cfcee3f1ee7dbb64d513cec90806e21980dd9f0716d427ec65509342e889",
+          "bytes": 1117000,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-33a15d1f-9618-4fb4-86f1-a08c94ba77c0.png"
+          ]
+        },
+        {
+          "path": "references/user/开启状态参考.png",
+          "kind": "user",
+          "sha256": "e2b387673f234bdd1bc80a15cfbcece714666e33702f1afbb02555f726b1f74f",
+          "bytes": 788628,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-052ae3da-0c22-4131-8444-61e8965374e8.png",
+            "codex-clipboard-d0d8cd2c-6dfc-489f-812e-76fff214af71.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/telescopic20-corners-20261028/README.md",
+        "docs/validation/sliding-glass-20261028/README.md",
+        "docs/validation/telescopic20-20261027/README.md",
+        "docs/validation/telescopic-floor-tracks-20261025/summary.json",
+        "docs/validation/telescopic-plan-20261025/summary.json",
+        "docs/validation/telescopic-straight-20261025/summary.json",
+        "docs/validation/telescopic-corners-20261025/summary.json",
+        "docs/validation/telescopic-corners-20261025/browser-results.json",
+        "docs/validation/model-entry-batch2-20261016.json"
+      ],
+      "manifest": "assets/models/sliding-door-references/asset.json",
+      "readme": "assets/models/sliding-door-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "sofa-bed",
+      "name": "源氏木语-Y107H03-1.25米沙发床",
+      "types": [
+        "sofa_bed_yeswood_y107h03"
+      ],
+      "route": "blender",
+      "document": "docs/SOFA-BED-YESWOOD-Y107H03.md",
+      "sourceLinks": [
+        "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"
+      ],
+      "references": [
+        {
+          "path": "references/annotations/1.png",
+          "kind": "annotations",
+          "sha256": "b37190bccc14e2986a3e5281f407b30496ed13ab4c43424ebf9c3a983f173311",
+          "bytes": 2271538,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/detail-review/1.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/annotations/2.png",
+          "kind": "annotations",
+          "sha256": "59ae1f859770b865a6f79ae44b1b4f2fa494a294e2a91b4b5acbcf079f6b5d74",
+          "bytes": 394010,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/detail-review/2.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/annotations/3.png",
+          "kind": "annotations",
+          "sha256": "76d92b4e706ae50478acd3b6bbc2108f705e3389e01c98563f9ea8e8a9a77a19",
+          "bytes": 589475,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/detail-review/3.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/annotations/4.png",
+          "kind": "annotations",
+          "sha256": "93c2339825b7b6a470fbc2003f271093796f8a3196c15c74d6530322a3c4a346",
+          "bytes": 284431,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/detail-review/4.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/annotations/5.png",
+          "kind": "annotations",
+          "sha256": "dda9e433f520a2aee6fc4f833537b05b829aca5923e37137284fbe6b2df757ba",
+          "bytes": 1418393,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/detail-review/5.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/06.avif",
+          "kind": "product-page-original",
+          "sha256": "6acb4b119fffc99484c84d1f046cfc10a5c9066a456685f08ac1e65296d62f08",
+          "bytes": 93629,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/06.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/07.avif",
+          "kind": "product-page-original",
+          "sha256": "13ca1df8759d3bf4f491c79ea7cb6b2a333d53dfcd6ade3166711d7dd965caa7",
+          "bytes": 120102,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/07.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/08.avif",
+          "kind": "product-page-original",
+          "sha256": "b257a008c9b4d64f9c29f74fba51ae921565863c027320437784e184e4201ea8",
+          "bytes": 51609,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/08.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/09.avif",
+          "kind": "product-page-original",
+          "sha256": "6aee084b03a6d407d58dc4a7d66a987f43f11e9db98bc33b8c092c9588c7d098",
+          "bytes": 61468,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/09.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/15.avif",
+          "kind": "product-page-original",
+          "sha256": "14e136a4e9e174ec8d3d03e69698bafcb666805cabf18d63efe66a51c2279ed5",
+          "bytes": 208450,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/15.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/16.avif",
+          "kind": "product-page-original",
+          "sha256": "c233b9b622ddb35925026a1b48dfc72b9b624a4a84f93bf07da74fdb3dc50463",
+          "bytes": 126036,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/16.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/28.avif",
+          "kind": "product-page-original",
+          "sha256": "c646fc67d6c2b784f085cab07b24731d94d6f94daf78c734d61d398ec014879f",
+          "bytes": 186291,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/28.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/29.avif",
+          "kind": "product-page-original",
+          "sha256": "1d2f7ca42717e397d3238c30cc9ec8dec70bcb2c04aabfaee545e4ed47149f5d",
+          "bytes": 229239,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/29.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page-original/30.avif",
+          "kind": "product-page-original",
+          "sha256": "498d001ea4b66b398f51019fbb17406f52c0ce1721da46c7712c62ab451383d0",
+          "bytes": 174821,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/30.avif"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/04.jpg",
+          "kind": "product-page",
+          "sha256": "67c51ac5063339f2b8e979e1919a65ea0f997ce75133e1a829fefcca09483cd9",
+          "bytes": 161257,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/04.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/06.jpg",
+          "kind": "product-page",
+          "sha256": "cad08f50510d8440a3ed650a0fb791c23741dbb267e8410ec13954766600dddc",
+          "bytes": 98317,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/06.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/07.jpg",
+          "kind": "product-page",
+          "sha256": "58f6d1e10a9c9f025e9ad7e8d1545aa1d864c563dbb566cb09fe2876b3ebf0c2",
+          "bytes": 116229,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/07.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/08.jpg",
+          "kind": "product-page",
+          "sha256": "2a15f7e7cbd1c39ee20dc9b35f690bafbfced5f18e4f262202eaf830073d7abc",
+          "bytes": 74740,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/08.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/09.jpg",
+          "kind": "product-page",
+          "sha256": "e2ea629cdf7c51030135cee3c3f1463787b2fd5309d7b00576b7866d9f39bab5",
+          "bytes": 76652,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/09.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/13.jpg",
+          "kind": "product-page",
+          "sha256": "fbad71db70ca0686963994f87e8b23f7a91873d11ea3aea851aa49e1eb7ec923",
+          "bytes": 169553,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/13.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/14.jpg",
+          "kind": "product-page",
+          "sha256": "a4f73be8022443fca58058ce556ab34d1614be28376a13be00ef138f6d15e2fb",
+          "bytes": 198438,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/14.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/15.jpg",
+          "kind": "product-page",
+          "sha256": "67291959b83b31266c8dc4bd928ba35f246fb8e0cbb578d2ba0e274c294752f1",
+          "bytes": 184127,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/15.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/16.jpg",
+          "kind": "product-page",
+          "sha256": "5963584764d40e2953be8e0e3a53c871e6ad6dcd72d663d0acc9015d13d853ff",
+          "bytes": 131103,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/16.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/28.jpg",
+          "kind": "product-page",
+          "sha256": "a5cfe5db60167597a18ecfd164d422e4ac0102612bfff2158bbf9d5a36273a42",
+          "bytes": 166021,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/28.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/29.jpg",
+          "kind": "product-page",
+          "sha256": "63033a640783294f167350024dece6a2f6da7f7e2df0db1d05951eff33e9d42e",
+          "bytes": 198818,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/29.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/product-page/30.jpg",
+          "kind": "product-page",
+          "sha256": "09b7abbf9b51253c065dbeb63f6980f247bc123581c6778e379ae5a05f9188a5",
+          "bytes": 159737,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/30.jpg"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/user-dimensions.png",
+          "kind": "user",
+          "sha256": "2e39501e7f768392136b3878e8603c1ff74d75559dd08d620d340e9e528e2e6b",
+          "bytes": 712749,
+          "legacyPaths": [
+            "assets/models/sofa-bed/references/user-dimensions.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [
+        {
+          "path": "references/sources/sources-2.json",
+          "sha256": "d780271f787545f6fe442144f4f74edc0a63ff6d67877844ce1d66be26b6c683",
+          "bytes": 1648,
+          "normalization": "utf8-lf"
+        },
+        {
+          "path": "references/sources/sources.json",
+          "sha256": "a4efc22cc02c24f90b6f24279583db10649098e11df4e8ea83549deadaa52036",
+          "bytes": 1647,
+          "normalization": "utf8-lf"
+        }
+      ],
+      "validation": [
+        "docs/validation/sofa-bed-details-20261031/README.md",
+        "docs/validation/sofa-bed-motion-20261031/README.md",
+        "docs/validation/sofa-bed-y107h03-20261031/README.md"
+      ],
+      "manifest": "assets/models/sofa-bed/asset.json",
+      "readme": "assets/models/sofa-bed/README.md"
+    },
+    {
+      "format": 1,
+      "id": "stack-stool",
+      "name": "禧天龙-软包叠放方凳-370",
+      "types": [
+        "stool_citylong_370"
+      ],
+      "route": "blender",
+      "document": "docs/STACK-STOOL-CITYLONG-370.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/appearance.png",
+          "kind": "user",
+          "sha256": "6f277dbf21aac709da4942cfd989d02f5c2806b2b84feafbc45dd47cbc124601",
+          "bytes": 609159,
+          "legacyPaths": [
+            "assets/models/stack-stool/references/appearance.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-f20d5e13-1f83-41ec-89f1-d48f2c275d83.png"
+          ]
+        },
+        {
+          "path": "references/user/dimensions.png",
+          "kind": "user",
+          "sha256": "f95627bbb504ea010c073f88b091cbd4d6717f3b9782359ef49ff61fd35ad19f",
+          "bytes": 660916,
+          "legacyPaths": [
+            "assets/models/stack-stool/references/dimensions.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-3af90788-3655-43c6-b1e7-df904cf34f79.png"
+          ]
+        },
+        {
+          "path": "references/user/stack.png",
+          "kind": "user",
+          "sha256": "9df1c4805a4203aa5f03150ce87c205b8ce963d1df35f3fec0cb3e04ca5e5c88",
+          "bytes": 746419,
+          "legacyPaths": [
+            "assets/models/stack-stool/references/stack.png"
+          ],
+          "uploadNames": [
+            "codex-clipboard-c6fff617-baaf-4a52-be0a-0cac8f12407e.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/stack-stool-20261031/README.md"
+      ],
+      "manifest": "assets/models/stack-stool/asset.json",
+      "readme": "assets/models/stack-stool/README.md"
+    },
+    {
+      "format": 1,
+      "id": "tea-bar",
+      "name": "米家-茶吧机Pro",
+      "types": [
+        "tea_bar_mijia_pro"
+      ],
+      "route": "parametric",
+      "document": "docs/TEA-BAR-MIJIA-PRO.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference-bottle-dimensions.png",
+          "kind": "user",
+          "sha256": "f04958227f557aa5cb4f178f3bdedf657b0af723934730fe2c34510175cf5542",
+          "bytes": 419017,
+          "legacyPaths": [
+            "docs/validation/tea-bar-opening-20261020/reference-bottle-dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-dimensions.png",
+          "kind": "user",
+          "sha256": "8fa8fac043e18f21cfcf31c45540150452596bec92be434d7cee0dde643fd2ef",
+          "bytes": 167866,
+          "legacyPaths": [
+            "docs/validation/tea-bar-20261020/reference-dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-product.png",
+          "kind": "user",
+          "sha256": "ed3fbaff3696d53ea8d1acb657c3dbd240a0629edf51e1c69c7fe991d695d4ac",
+          "bytes": 1030678,
+          "legacyPaths": [
+            "docs/validation/tea-bar-20261020/reference-product.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-serving.png",
+          "kind": "user",
+          "sha256": "fade010f99e355ea4d5cf176780c84b15638025eacd65106458d5c755cc702fb",
+          "bytes": 723608,
+          "legacyPaths": [
+            "docs/validation/tea-bar-20261020/reference-serving.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-sterilizer.png",
+          "kind": "user",
+          "sha256": "43926f477846b205d069288bf536c9d05194c15b51d4b40218bf4fa16c31f69c",
+          "bytes": 289626,
+          "legacyPaths": [
+            "docs/validation/tea-bar-opening-20261020/reference-sterilizer.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-storage.png",
+          "kind": "user",
+          "sha256": "c46052768a0c4f37bffcd1b5dd35e513da0d4f6a51b2a47afbb6205111ac51ef",
+          "bytes": 749019,
+          "legacyPaths": [
+            "docs/validation/tea-bar-20261020/reference-storage.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/tea-bar-20261020.json",
+        "docs/validation/tea-bar-opening-20261020.json"
+      ],
+      "manifest": "assets/models/tea-bar/asset.json",
+      "readme": "assets/models/tea-bar/README.md"
+    },
+    {
+      "format": 1,
+      "id": "tv-cabinet-references",
+      "name": "定制电视柜",
+      "types": [],
+      "route": "reference-only",
+      "document": "docs/CABINET-DESIGN.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/抽拉电视柜外观参考.png",
+          "kind": "user",
+          "sha256": "a91c99992f6dfabd0f0d9fd8d3af09e02f50520e136fb822cd5d4911e7f17510",
+          "bytes": 519929,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-62ab7e59-66af-4491-94f7-5ccd746cfcf8.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/cabinet-independent-20261028/README.md",
+        "docs/validation/wall-extension-snapping-20261027/README.md",
+        "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+        "docs/validation/cabinet-simple-20261020/summary.json",
+        "docs/validation/cabinet-interior-20261020/summary.json",
+        "docs/validation/cabinet-setting-inheritance-20261020/summary.json",
+        "docs/validation/cabinet-object-inspector-20261020/summary.json",
+        "docs/validation/cabinet-edit-operations-20261020/summary.json",
+        "docs/validation/cabinet-module-widths-20261020/cabinet-module-widths.json",
+        "docs/validation/cabinet-module-growth-20261020/node.json",
+        "docs/validation/cabinet-module-growth-20261020/cabinet-module-widths.json",
+        "docs/validation/cabinet-divider-growth-20261020/node.json",
+        "docs/validation/cabinet-divider-growth-20261020/cabinet-divider-growth.json",
+        "docs/validation/cabinet-shelf-clearances-20261028/README.md",
+        "docs/validation/cabinet-part-inspector-20261028/README.md",
+        "docs/validation/cabinet-editor-completion-20261028/README.md",
+        "docs/validation/cabinet-workspace-20261028/README.md",
+        "docs/validation/cabinet-keyboard-20261031/README.md"
+      ],
+      "manifest": "assets/models/tv-cabinet-references/asset.json",
+      "readme": "assets/models/tv-cabinet-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "wardrobe-desk-references",
+      "name": "次卧衣柜与窗下书桌组合",
+      "types": [],
+      "route": "reference-only",
+      "document": null,
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/窗下书桌实景.png",
+          "kind": "user",
+          "sha256": "8d92d444c0763f3a36b6bfe93f9ddad48a2c5e1748d8c10194272fe198a08cfa",
+          "bytes": 1298030,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-f42d8e28-a8f6-4bec-b378-34b3aad14c24.png"
+          ]
+        },
+        {
+          "path": "references/user/衣柜与书桌实景.png",
+          "kind": "user",
+          "sha256": "9ddb469139b282829c33942f4ee7780e3b4ece7129fd8f3482b96979fdf2be94",
+          "bytes": 1503147,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-643b7c60-f6a8-4ccb-ba58-76475d7546f4.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [],
+      "manifest": "assets/models/wardrobe-desk-references/asset.json",
+      "readme": "assets/models/wardrobe-desk-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "washer",
+      "name": "洗衣机",
+      "types": [
+        "washer"
+      ],
+      "route": "blender",
+      "document": "docs/WASHER-BLENDER-MOTION.md",
+      "sourceLinks": [],
+      "references": [],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/blender-washer-motion-20261029/README.md"
+      ],
+      "manifest": "assets/models/washer/asset.json",
+      "readme": "assets/models/washer/README.md"
+    },
+    {
+      "format": 1,
+      "id": "washer-tg10k60w",
+      "name": "小天鹅-TG10K60W-洗衣机",
+      "types": [
+        "washer_littleswan_tg10k60w"
+      ],
+      "route": "blender",
+      "document": "docs/WASHER-LITTLESWAN-TG10K60W.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/appearance.png",
+          "kind": "user",
+          "sha256": "09a31aeaf9c90829eb861ea159a03dc45c5745d515eec74bd5f2c83a30d92184",
+          "bytes": 392232,
+          "legacyPaths": [
+            "docs/references/washer-tg10k60w/appearance.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/dimensions.png",
+          "kind": "user",
+          "sha256": "4f8677953e136fec3a193b64da476146481339d291f2d319f0deffeb0a5853ac",
+          "bytes": 467079,
+          "legacyPaths": [
+            "docs/references/washer-tg10k60w/dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/drum-close-up.png",
+          "kind": "user",
+          "sha256": "e021bcb3cb381b95bd932ae6fd9f1d775ddf50ba8c02841a2ca15f5dccd69a67",
+          "bytes": 1240280,
+          "legacyPaths": [
+            "docs/references/washer-tg10k60w/drum-close-up.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/front-close-up.png",
+          "kind": "user",
+          "sha256": "a494a5456ea42f2d725d536159443ce793f06d52351adcc66f57bf232ba59ef6",
+          "bytes": 2880248,
+          "legacyPaths": [
+            "docs/references/washer-tg10k60w/front-close-up.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/installation.png",
+          "kind": "user",
+          "sha256": "9dfef4c11d12207aad500fb6b849a562a267ecabc370c6a3de25742b0c0fe66a",
+          "bytes": 593182,
+          "legacyPaths": [
+            "docs/references/washer-tg10k60w/installation.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/specifications.png",
+          "kind": "user",
+          "sha256": "043ee67ab4d1b680c21eae47c4f0ce6a7f419d587e3d997a09e2527938b1fe71",
+          "bytes": 82837,
+          "legacyPaths": [
+            "docs/references/washer-tg10k60w/specifications.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/appliance-materials-stage2-20261031/README.md",
+        "docs/validation/appliance-materials-20261031/README.md",
+        "docs/validation/model-pipeline-20261030/README.md",
+        "docs/validation/scoop-tg10k60w-20261030/README.md",
+        "docs/validation/washer-tg10k60w-20261029/README.md",
+        "docs/validation/washer-tg10k60w-front-20261029/README.md"
+      ],
+      "manifest": "assets/models/washer-tg10k60w/asset.json",
+      "readme": "assets/models/washer-tg10k60w/README.md"
+    },
+    {
+      "format": 1,
+      "id": "window-bench-references",
+      "name": "定制窗下矮柜与侧边书柜",
+      "types": [],
+      "route": "reference-only",
+      "document": null,
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/侧柜与窗台衔接.png",
+          "kind": "user",
+          "sha256": "470ebc4b80100a72e47fe398015981464b8dfb6809b1089cc97911ce3478b9c6",
+          "bytes": 915659,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-b317b117-b81a-4387-b304-d9c97cd64aec.png"
+          ]
+        },
+        {
+          "path": "references/user/侧柜内部与摆放.png",
+          "kind": "user",
+          "sha256": "e23c8c600790ff69ba5beab54b80232d1dc29810fb0881f0244875661c8aebeb",
+          "bytes": 859112,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-a17fd120-6e58-4417-97e8-fdd95ac45e83.png"
+          ]
+        },
+        {
+          "path": "references/user/窗下抽屉结构.png",
+          "kind": "user",
+          "sha256": "4b86ed79eb189d7f0baba138a2ae109fc3456a0fbed2d06bdc439477e522f3da",
+          "bytes": 1132337,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-2a5ca2fc-a8cc-4064-b60b-d62a6aa50db3.png"
+          ]
+        },
+        {
+          "path": "references/user/窗下矮柜与侧柜整体.png",
+          "kind": "user",
+          "sha256": "6a29030916fb0d6e00a2eed7e72dbb2b7194c8bac690cce4694f5ee7a99a1c39",
+          "bytes": 945414,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-d502ecde-434d-481e-b5f2-5fe9f5bc663f.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [],
+      "manifest": "assets/models/window-bench-references/asset.json",
+      "readme": "assets/models/window-bench-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "y52y09",
+      "name": "源氏木语-Y52Y09-六格书柜",
+      "types": [
+        "bookshelf_yeswood_y52y09"
+      ],
+      "route": "blender",
+      "document": "docs/BOOKCASE-YESWOOD-Y52Y09.md",
+      "sourceLinks": [
+        "https://item.jd.com/100201541761.html",
+        "https://item.jd.com/100266639340.html",
+        "https://img11.360buyimg.com/img/jfs/t1/444552/35/20066/77834/6a2a7e28Fea957844/00834b04b00c315d.jpg"
+      ],
+      "references": [
+        {
+          "path": "references/product-page/dimensions-reference.jpg",
+          "kind": "product-page",
+          "sha256": "98c7c5413fd9e481e3ec514b38458b2239025a8d30f64604ae7d07544a8040ab",
+          "bytes": 159309,
+          "legacyPaths": [
+            "docs/validation/bookcase-y52y09-20261029/dimensions-reference.jpg"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/blender-bookcase-y52y09-20261029/README.md",
+        "docs/validation/bookcase-y52y09-20261029/placement-check.json"
+      ],
+      "manifest": "assets/models/y52y09/asset.json",
+      "readme": "assets/models/y52y09/README.md"
+    },
+    {
+      "format": 1,
+      "id": "yeswood-sofa",
+      "name": "源氏木语-樱桃木三人沙发-2.16米",
+      "types": [
+        "sofa_yeswood_cherry"
+      ],
+      "route": "parametric",
+      "document": "docs/YESWOOD-CHERRY-SOFA.md",
+      "sourceLinks": [
+        "https://item.jd.com/10096040538224.html",
+        "https://www.ruten.com.tw/item/22629124214162/"
+      ],
+      "references": [
+        {
+          "path": "references/user/reference-dimensions.png",
+          "kind": "user",
+          "sha256": "c6c93a6111d41e99f0e163608995b899031f9845d00cca70e1a157a587f57018",
+          "bytes": 509781,
+          "legacyPaths": [
+            "docs/references/yeswood-sofa/reference-dimensions.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-fabric.png",
+          "kind": "user",
+          "sha256": "cb2855d2130db2ad2b958eeb2062792e3ef6bb4a7eff66fd6c7a9414b405aa28",
+          "bytes": 973180,
+          "legacyPaths": [
+            "docs/references/yeswood-sofa/reference-fabric.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-seat-depth.png",
+          "kind": "user",
+          "sha256": "b06b303adbbe4856cacc5e26f67f923be72738028ba17c14cc0172d9f29c1856",
+          "bytes": 1872677,
+          "legacyPaths": [
+            "docs/references/yeswood-sofa/reference-seat-depth.png"
+          ],
+          "uploadNames": []
+        },
+        {
+          "path": "references/user/reference-side.png",
+          "kind": "user",
+          "sha256": "af2a955b6df659f79cf9f090043ba9ee97c692ef0adb4f05709360e9f5830522",
+          "bytes": 2229060,
+          "legacyPaths": [
+            "docs/references/yeswood-sofa/reference-side.png"
+          ],
+          "uploadNames": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [],
+      "manifest": "assets/models/yeswood-sofa/asset.json",
+      "readme": "assets/models/yeswood-sofa/README.md"
     }
   ],
   "parametric": [

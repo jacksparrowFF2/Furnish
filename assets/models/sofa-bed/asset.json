@@ -1,0 +1,305 @@
+{
+  "format": 1,
+  "id": "sofa-bed",
+  "name": "源氏木语-Y107H03-1.25米沙发床",
+  "types": [
+    "sofa_bed_yeswood_y107h03"
+  ],
+  "route": "blender",
+  "document": "docs/SOFA-BED-YESWOOD-Y107H03.md",
+  "sourceLinks": [
+    "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"
+  ],
+  "references": [
+    {
+      "path": "references/annotations/1.png",
+      "kind": "annotations",
+      "sha256": "b37190bccc14e2986a3e5281f407b30496ed13ab4c43424ebf9c3a983f173311",
+      "bytes": 2271538,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/detail-review/1.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/annotations/2.png",
+      "kind": "annotations",
+      "sha256": "59ae1f859770b865a6f79ae44b1b4f2fa494a294e2a91b4b5acbcf079f6b5d74",
+      "bytes": 394010,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/detail-review/2.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/annotations/3.png",
+      "kind": "annotations",
+      "sha256": "76d92b4e706ae50478acd3b6bbc2108f705e3389e01c98563f9ea8e8a9a77a19",
+      "bytes": 589475,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/detail-review/3.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/annotations/4.png",
+      "kind": "annotations",
+      "sha256": "93c2339825b7b6a470fbc2003f271093796f8a3196c15c74d6530322a3c4a346",
+      "bytes": 284431,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/detail-review/4.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/annotations/5.png",
+      "kind": "annotations",
+      "sha256": "dda9e433f520a2aee6fc4f833537b05b829aca5923e37137284fbe6b2df757ba",
+      "bytes": 1418393,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/detail-review/5.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/06.avif",
+      "kind": "product-page-original",
+      "sha256": "6acb4b119fffc99484c84d1f046cfc10a5c9066a456685f08ac1e65296d62f08",
+      "bytes": 93629,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/06.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/07.avif",
+      "kind": "product-page-original",
+      "sha256": "13ca1df8759d3bf4f491c79ea7cb6b2a333d53dfcd6ade3166711d7dd965caa7",
+      "bytes": 120102,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/07.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/08.avif",
+      "kind": "product-page-original",
+      "sha256": "b257a008c9b4d64f9c29f74fba51ae921565863c027320437784e184e4201ea8",
+      "bytes": 51609,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/08.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/09.avif",
+      "kind": "product-page-original",
+      "sha256": "6aee084b03a6d407d58dc4a7d66a987f43f11e9db98bc33b8c092c9588c7d098",
+      "bytes": 61468,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/09.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/15.avif",
+      "kind": "product-page-original",
+      "sha256": "14e136a4e9e174ec8d3d03e69698bafcb666805cabf18d63efe66a51c2279ed5",
+      "bytes": 208450,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/15.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/16.avif",
+      "kind": "product-page-original",
+      "sha256": "c233b9b622ddb35925026a1b48dfc72b9b624a4a84f93bf07da74fdb3dc50463",
+      "bytes": 126036,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/16.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/28.avif",
+      "kind": "product-page-original",
+      "sha256": "c646fc67d6c2b784f085cab07b24731d94d6f94daf78c734d61d398ec014879f",
+      "bytes": 186291,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/28.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/29.avif",
+      "kind": "product-page-original",
+      "sha256": "1d2f7ca42717e397d3238c30cc9ec8dec70bcb2c04aabfaee545e4ed47149f5d",
+      "bytes": 229239,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/29.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page-original/30.avif",
+      "kind": "product-page-original",
+      "sha256": "498d001ea4b66b398f51019fbb17406f52c0ce1721da46c7712c62ab451383d0",
+      "bytes": 174821,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/30.avif"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/04.jpg",
+      "kind": "product-page",
+      "sha256": "67c51ac5063339f2b8e979e1919a65ea0f997ce75133e1a829fefcca09483cd9",
+      "bytes": 161257,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/04.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/06.jpg",
+      "kind": "product-page",
+      "sha256": "cad08f50510d8440a3ed650a0fb791c23741dbb267e8410ec13954766600dddc",
+      "bytes": 98317,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/06.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/07.jpg",
+      "kind": "product-page",
+      "sha256": "58f6d1e10a9c9f025e9ad7e8d1545aa1d864c563dbb566cb09fe2876b3ebf0c2",
+      "bytes": 116229,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/07.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/08.jpg",
+      "kind": "product-page",
+      "sha256": "2a15f7e7cbd1c39ee20dc9b35f690bafbfced5f18e4f262202eaf830073d7abc",
+      "bytes": 74740,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/08.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/09.jpg",
+      "kind": "product-page",
+      "sha256": "e2ea629cdf7c51030135cee3c3f1463787b2fd5309d7b00576b7866d9f39bab5",
+      "bytes": 76652,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/09.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/13.jpg",
+      "kind": "product-page",
+      "sha256": "fbad71db70ca0686963994f87e8b23f7a91873d11ea3aea851aa49e1eb7ec923",
+      "bytes": 169553,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/13.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/14.jpg",
+      "kind": "product-page",
+      "sha256": "a4f73be8022443fca58058ce556ab34d1614be28376a13be00ef138f6d15e2fb",
+      "bytes": 198438,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/14.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/15.jpg",
+      "kind": "product-page",
+      "sha256": "67291959b83b31266c8dc4bd928ba35f246fb8e0cbb578d2ba0e274c294752f1",
+      "bytes": 184127,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/15.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/16.jpg",
+      "kind": "product-page",
+      "sha256": "5963584764d40e2953be8e0e3a53c871e6ad6dcd72d663d0acc9015d13d853ff",
+      "bytes": 131103,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/16.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/28.jpg",
+      "kind": "product-page",
+      "sha256": "a5cfe5db60167597a18ecfd164d422e4ac0102612bfff2158bbf9d5a36273a42",
+      "bytes": 166021,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/28.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/29.jpg",
+      "kind": "product-page",
+      "sha256": "63033a640783294f167350024dece6a2f6da7f7e2df0db1d05951eff33e9d42e",
+      "bytes": 198818,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/29.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/product-page/30.jpg",
+      "kind": "product-page",
+      "sha256": "09b7abbf9b51253c065dbeb63f6980f247bc123581c6778e379ae5a05f9188a5",
+      "bytes": 159737,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/30.jpg"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/user-dimensions.png",
+      "kind": "user",
+      "sha256": "2e39501e7f768392136b3878e8603c1ff74d75559dd08d620d340e9e528e2e6b",
+      "bytes": 712749,
+      "legacyPaths": [
+        "assets/models/sofa-bed/references/user-dimensions.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [
+    {
+      "path": "references/sources/sources-2.json",
+      "sha256": "d780271f787545f6fe442144f4f74edc0a63ff6d67877844ce1d66be26b6c683",
+      "bytes": 1648,
+      "normalization": "utf8-lf"
+    },
+    {
+      "path": "references/sources/sources.json",
+      "sha256": "a4efc22cc02c24f90b6f24279583db10649098e11df4e8ea83549deadaa52036",
+      "bytes": 1647,
+      "normalization": "utf8-lf"
+    }
+  ],
+  "validation": [
+    "docs/validation/sofa-bed-details-20261031/README.md",
+    "docs/validation/sofa-bed-motion-20261031/README.md",
+    "docs/validation/sofa-bed-y107h03-20261031/README.md"
+  ]
+}

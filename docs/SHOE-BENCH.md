@@ -11,7 +11,7 @@
 
 ## 资料与尺寸
 
-2026-10-20 用户提供的四张图片已归档：[尺寸图](references/shoe-bench/dimensions.png)、[浅木正面](references/shoe-bench/oak-front.png)、[离地说明](references/shoe-bench/floor-gap.png)、[深木全貌](references/shoe-bench/walnut-overall.png)。图片文字仅作为产品资料。
+2026-10-20 用户提供的四张图片已归档：[尺寸图](../assets/models/shoe-bench/references/user/dimensions.png)、[浅木正面](../assets/models/shoe-bench/references/user/oak-front.png)、[离地说明](../assets/models/shoe-bench/references/user/floor-gap.png)、[深木全貌](../assets/models/shoe-bench/references/user/walnut-overall.png)。图片文字仅作为产品资料。
 
 | 参数 | mm | 依据／表达 |
 |---|---:|---|

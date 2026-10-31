@@ -1,6 +1,6 @@
 # 0.58米转角书柜专项验收
 
-型号与估算边界见[产品契约](../../CORNER-BOOKCASE-YESWOOD-Y00Y06058.md)。[网页规格图](dimensions-reference.avif)明确58×58×190 cm，参数表45 cm视为与该SKU不一致。只归档商品图片，不保存包含账户／地址信息的整页截图。
+型号与估算边界见[产品契约](../../CORNER-BOOKCASE-YESWOOD-Y00Y06058.md)。[网页规格图](../../../assets/models/corner-bookcase-580/references/product-page/dimensions-reference.avif)明确58×58×190 cm，参数表45 cm视为与该SKU不一致。只归档商品图片，不保存包含账户／地址信息的整页截图。
 
 [生产预览斜视](http-angle.png) · [正面](http-front.png) · [390px断网预览](file-narrow.png)；标题与模型无覆盖、五层交替结构已目视。图内陈设未制作，20mm板厚、背板、底座、臂宽及木纹为估算。
 

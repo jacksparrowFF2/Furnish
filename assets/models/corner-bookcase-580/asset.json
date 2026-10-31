@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "corner-bookcase-580",
+  "name": "源氏木语-Y00Y06058-0.58米转角书柜",
+  "types": [
+    "bookshelf_yeswood_y00y06058"
+  ],
+  "route": "blender",
+  "document": "docs/CORNER-BOOKCASE-YESWOOD-Y00Y06058.md",
+  "sourceLinks": [
+    "https://item.jd.com/100093046007.html",
+    "https://item.jd.com/100093046001.html"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/dimensions-reference.avif",
+      "kind": "product-page",
+      "sha256": "33980ed3a20b39ffa6d409ea56ca2afe50e7011b28685a6a9e34a8320c309653",
+      "bytes": 73041,
+      "legacyPaths": [
+        "docs/validation/corner-bookcase-y00y06058-20261031/dimensions-reference.avif"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/corner-bookcase-y00y06058-20261031/source.json",
+    "docs/validation/corner-bookcase-y00y06058-20261031/README.md"
+  ]
+}

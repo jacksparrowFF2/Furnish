@@ -1,0 +1,56 @@
+{
+  "format": 1,
+  "id": "shower-arrow",
+  "name": "箭牌-奶油白花洒",
+  "types": [
+    "shower_arrow_cream"
+  ],
+  "route": "parametric",
+  "document": "docs/SHOWER-ARROW-CREAM.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference-adjustment.png",
+      "kind": "user",
+      "sha256": "f02756bb0b2a494d3c2ba93eedb1a053b8c4b1c4acc5b3187b6691d39f7aebba",
+      "bytes": 185656,
+      "legacyPaths": [
+        "docs/references/shower-arrow/reference-adjustment.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-dimensions.png",
+      "kind": "user",
+      "sha256": "3739511c39817597b84bdb7e0e26684ced3f1da6d015346560dd393eb97b8402",
+      "bytes": 325316,
+      "legacyPaths": [
+        "docs/references/shower-arrow/reference-dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-height.png",
+      "kind": "user",
+      "sha256": "a0562918ad08669acbf700467914159282ed0e3e0c6571603ec1e5cda9c07cef",
+      "bytes": 199399,
+      "legacyPaths": [
+        "docs/references/shower-arrow/reference-height.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-product.png",
+      "kind": "user",
+      "sha256": "40d3744f11b2b42c04618f30e05ea7febf061ce4ceceeaf30aef02e5011c4c07",
+      "bytes": 1635493,
+      "legacyPaths": [
+        "docs/references/shower-arrow/reference-product.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": []
+}

@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "corner-bookcase",
+  "name": "源氏木语-Y00Y06-0.45米转角书柜",
+  "types": [
+    "bookshelf_yeswood_y00y06"
+  ],
+  "route": "blender",
+  "document": "docs/CORNER-BOOKCASE-YESWOOD-Y00Y06.md",
+  "sourceLinks": [
+    "https://item.jd.com/100093046007.html"
+  ],
+  "references": [
+    {
+      "path": "references/user/dimensions-reference.png",
+      "kind": "user",
+      "sha256": "f09adc51e95102bbb9c445f258abfbc3b339b76eb1b7a8d6315d9eacd833c052",
+      "bytes": 1062706,
+      "legacyPaths": [
+        "docs/validation/corner-bookcase-y00y06-20261031/dimensions-reference.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-a0540856-beb1-4672-8643-c06446cb65db.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/corner-bookcase-y00y06-20261031/README.md"
+  ]
+}

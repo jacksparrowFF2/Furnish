@@ -1,0 +1,17 @@
+{
+  "format": 1,
+  "id": "washer",
+  "name": "洗衣机",
+  "types": [
+    "washer"
+  ],
+  "route": "blender",
+  "document": "docs/WASHER-BLENDER-MOTION.md",
+  "sourceLinks": [],
+  "references": [],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/blender-washer-motion-20261029/README.md"
+  ]
+}

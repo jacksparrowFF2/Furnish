@@ -1,0 +1,97 @@
+{
+  "format": 1,
+  "id": "ceiling-lighting",
+  "name": "石膏板吊顶与灯带",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/CEILINGS.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/吊顶整体另一视角.png",
+      "kind": "user",
+      "sha256": "f5869891e980c6a42cbf50fb51be525b2bd29720b2f671dcdc2be96ab3f1ca68",
+      "bytes": 567798,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-7c76ce86-90f2-4a06-817e-7f1ad538d727.png"
+      ]
+    },
+    {
+      "path": "references/user/客厅吊顶整体.png",
+      "kind": "user",
+      "sha256": "c2bc6f77d145e119a70f5f549cd9b7af8766423705cb6dce22be03924f6b32da",
+      "bytes": 701017,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-50a5ebb9-bc57-4bbd-832a-7ba59e1041cc.png"
+      ]
+    },
+    {
+      "path": "references/user/灯带近景.png",
+      "kind": "user",
+      "sha256": "e7a34f9d24a2cef9472b8c64321a5a644d400ce92bcb0fe6ffb5e99a84222301",
+      "bytes": 740506,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-ad8ad3bb-96fc-44d6-9696-e0023905ad87.png"
+      ]
+    },
+    {
+      "path": "references/user/灯槽尺寸标注.png",
+      "kind": "user",
+      "sha256": "169c5f2fe53ab84341d1895fec763c0fea1ced7e7fc7777590c8d14140d7b95a",
+      "bytes": 333878,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-25326eb2-3ede-4df6-b220-1f9b898fdad8.png"
+      ]
+    },
+    {
+      "path": "references/user/铝扣板安装实景.png",
+      "kind": "user",
+      "sha256": "59777ce483aec3d5974bfe7e926650996746aa14412ca77ff131550376d9533a",
+      "bytes": 627320,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-fde72617-b680-46fd-96bd-e06613c5a329.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/ceiling-multiselect-20261028/README.md",
+    "docs/validation/ceiling-merge-20261028/README.md",
+    "docs/validation/ceiling-height-20261028/README.md",
+    "docs/validation/ceiling-display-20261027/README.md",
+    "docs/validation/ceiling-hidden-faces-20261028/README.md",
+    "docs/validation/ceiling-lighting-20261027/README.md",
+    "docs/validation/ceiling-edge-gap-20261027/README.md",
+    "docs/validation/ceiling-current-snapping-20261027/README.md",
+    "docs/validation/ceiling-plan-display-20261027/README.md",
+    "docs/validation/ceiling-reference-snapping-20261027/README.md",
+    "docs/validation/ceiling-overall-switch-20261027/README.md",
+    "docs/validation/ceiling-components-20261027/README.md",
+    "docs/validation/ceiling-optional-cove-20261026/README.md",
+    "docs/validation/ceiling-reuse-pick-20261026/README.md",
+    "docs/validation/ceiling-flat-flow-20261026/README.md",
+    "docs/validation/ceiling-contact-mount-20261026/README.md",
+    "docs/validation/ceiling-panel-layout-20261026/README.md",
+    "docs/validation/ceiling-panel-devices-20261026/README.md",
+    "docs/validation/ceiling-aluminum-20261026/README.md",
+    "docs/validation/ceiling-live-mirror-20261025/README.md",
+    "docs/validation/ceiling-section-interaction-20261025/README.md",
+    "docs/validation/ceiling-regions-20261025/README.md",
+    "docs/validation/ceiling-design-20261025/README.md",
+    "docs/validation/ceiling-edges-20261025/README.md",
+    "docs/validation/ceiling-boundaries-20261025/README.md",
+    "docs/validation/ceiling-edge-distances-20261025/README.md",
+    "docs/validation/ceiling-uniform-inset-20261025/README.md",
+    "docs/validation/ceiling-coplanar-camera-20261025/README.md",
+    "docs/validation/ceiling-corners-20261016.json",
+    "docs/validation/ceiling-continuous-light-20261017.json",
+    "docs/validation/ceiling-end-caps-20261017.json",
+    "docs/validation/ceiling-furniture-alignment-20261028/README.md"
+  ]
+}

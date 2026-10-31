@@ -1,0 +1,87 @@
+{
+  "format": 1,
+  "id": "aluminum-light-channel",
+  "name": "嵌入式铝型材灯槽",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/CEILINGS.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/发光朝上款截面.png",
+      "kind": "user",
+      "sha256": "fb8cfd21580d1a0db55102842a5049f3c82889a31785f000be40e5bab28346cf",
+      "bytes": 387236,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-d3b57a7d-6502-4ce9-892e-8e7861d3130a.png"
+      ]
+    },
+    {
+      "path": "references/user/平装款安装截面.png",
+      "kind": "user",
+      "sha256": "57313a4734ee0d756435e61cd696a9469e9ce4d49bc1bfebddee02db43a282c3",
+      "bytes": 326701,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-e6651fa0-7d73-4ce6-949e-2b13d252e16d.png"
+      ]
+    },
+    {
+      "path": "references/user/灯带位置批注.png",
+      "kind": "user",
+      "sha256": "85179ac348e274247ef11c91c0c8eae7999883a79c9b6facd9c3a652a5cb5919",
+      "bytes": 158496,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-cc482597-3d69-47b8-b60c-3115a68976b8.png"
+      ]
+    },
+    {
+      "path": "references/user/铝材尺寸原图.png",
+      "kind": "user",
+      "sha256": "23ba09ddbbf2d3017b9be04943907c15e9935c6b8d7849b4f38f62d9b6d25ca2",
+      "bytes": 75287,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-a5dc6d2d-4f8e-4b3e-8ddf-079879539907.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/ceiling-multiselect-20261028/README.md",
+    "docs/validation/ceiling-merge-20261028/README.md",
+    "docs/validation/ceiling-height-20261028/README.md",
+    "docs/validation/ceiling-display-20261027/README.md",
+    "docs/validation/ceiling-hidden-faces-20261028/README.md",
+    "docs/validation/ceiling-lighting-20261027/README.md",
+    "docs/validation/ceiling-edge-gap-20261027/README.md",
+    "docs/validation/ceiling-current-snapping-20261027/README.md",
+    "docs/validation/ceiling-plan-display-20261027/README.md",
+    "docs/validation/ceiling-reference-snapping-20261027/README.md",
+    "docs/validation/ceiling-overall-switch-20261027/README.md",
+    "docs/validation/ceiling-components-20261027/README.md",
+    "docs/validation/ceiling-optional-cove-20261026/README.md",
+    "docs/validation/ceiling-reuse-pick-20261026/README.md",
+    "docs/validation/ceiling-flat-flow-20261026/README.md",
+    "docs/validation/ceiling-contact-mount-20261026/README.md",
+    "docs/validation/ceiling-panel-layout-20261026/README.md",
+    "docs/validation/ceiling-panel-devices-20261026/README.md",
+    "docs/validation/ceiling-aluminum-20261026/README.md",
+    "docs/validation/ceiling-live-mirror-20261025/README.md",
+    "docs/validation/ceiling-section-interaction-20261025/README.md",
+    "docs/validation/ceiling-regions-20261025/README.md",
+    "docs/validation/ceiling-design-20261025/README.md",
+    "docs/validation/ceiling-edges-20261025/README.md",
+    "docs/validation/ceiling-boundaries-20261025/README.md",
+    "docs/validation/ceiling-edge-distances-20261025/README.md",
+    "docs/validation/ceiling-uniform-inset-20261025/README.md",
+    "docs/validation/ceiling-coplanar-camera-20261025/README.md",
+    "docs/validation/ceiling-corners-20261016.json",
+    "docs/validation/ceiling-continuous-light-20261017.json",
+    "docs/validation/ceiling-end-caps-20261017.json",
+    "docs/validation/ceiling-furniture-alignment-20261028/README.md"
+  ]
+}

@@ -4,7 +4,7 @@
 
 ## 依据与方向
 
-[用户商品链接](https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30)。本次淘宝商品接口返回平台错误，网页读取失败；未取得标题、SKU、价格、正文及材质说明，不能声称已核验网页。使用用户提供的六张截图，[尺寸图](references/side-table-tmall/reference-1.png)、[短边正视](references/side-table-tmall/reference-3.png)、[开启照片](references/side-table-tmall/reference-6.png)。图2、5为相反方向观察，和尺寸图的同一结构兼容，不新增镜像型号。
+[用户商品链接](https://detail.tmall.com/item.htm?abbucket=0&id=635382906309&mi_id=0000n64ioooJG8d3oTuI_3sSR6yl6NubVt7Jui-6QXW-OA4&rn=1d72a6e371179b1c55984da266deb1b9&skuId=5776584417656&spm=a1z10.3-b-s.w4011-14781637738.244.629a5884FD6Y30)。本次淘宝商品接口返回平台错误，网页读取失败；未取得标题、SKU、价格、正文及材质说明，不能声称已核验网页。使用用户提供的六张截图，[尺寸图](../assets/models/side-table/references/user/reference-1.png)、[短边正视](../assets/models/side-table/references/user/reference-3.png)、[开启照片](../assets/models/side-table/references/user/reference-6.png)。图2、5为相反方向观察，和尺寸图的同一结构兼容，不新增镜像型号。
 
 | 参数 | 模型采用值 | 依据 |
 |---|---|---|

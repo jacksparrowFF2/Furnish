@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "id": "stack-stool",
+  "name": "禧天龙-软包叠放方凳-370",
+  "types": [
+    "stool_citylong_370"
+  ],
+  "route": "blender",
+  "document": "docs/STACK-STOOL-CITYLONG-370.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/appearance.png",
+      "kind": "user",
+      "sha256": "6f277dbf21aac709da4942cfd989d02f5c2806b2b84feafbc45dd47cbc124601",
+      "bytes": 609159,
+      "legacyPaths": [
+        "assets/models/stack-stool/references/appearance.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-f20d5e13-1f83-41ec-89f1-d48f2c275d83.png"
+      ]
+    },
+    {
+      "path": "references/user/dimensions.png",
+      "kind": "user",
+      "sha256": "f95627bbb504ea010c073f88b091cbd4d6717f3b9782359ef49ff61fd35ad19f",
+      "bytes": 660916,
+      "legacyPaths": [
+        "assets/models/stack-stool/references/dimensions.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-3af90788-3655-43c6-b1e7-df904cf34f79.png"
+      ]
+    },
+    {
+      "path": "references/user/stack.png",
+      "kind": "user",
+      "sha256": "9df1c4805a4203aa5f03150ce87c205b8ce963d1df35f3fec0cb3e04ca5e5c88",
+      "bytes": 746419,
+      "legacyPaths": [
+        "assets/models/stack-stool/references/stack.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-c6fff617-baaf-4a52-be0a-0cac8f12407e.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/stack-stool-20261031/README.md"
+  ]
+}

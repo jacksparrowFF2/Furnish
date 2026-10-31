@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "y52y09",
+  "name": "源氏木语-Y52Y09-六格书柜",
+  "types": [
+    "bookshelf_yeswood_y52y09"
+  ],
+  "route": "blender",
+  "document": "docs/BOOKCASE-YESWOOD-Y52Y09.md",
+  "sourceLinks": [
+    "https://item.jd.com/100201541761.html",
+    "https://item.jd.com/100266639340.html",
+    "https://img11.360buyimg.com/img/jfs/t1/444552/35/20066/77834/6a2a7e28Fea957844/00834b04b00c315d.jpg"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/dimensions-reference.jpg",
+      "kind": "product-page",
+      "sha256": "98c7c5413fd9e481e3ec514b38458b2239025a8d30f64604ae7d07544a8040ab",
+      "bytes": 159309,
+      "legacyPaths": [
+        "docs/validation/bookcase-y52y09-20261029/dimensions-reference.jpg"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/blender-bookcase-y52y09-20261029/README.md",
+    "docs/validation/bookcase-y52y09-20261029/placement-check.json"
+  ]
+}

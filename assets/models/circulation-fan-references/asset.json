@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "id": "circulation-fan-references",
+  "name": "空气循环扇（前期参数与后补收纳图）",
+  "types": [],
+  "route": "reference-only",
+  "document": null,
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/后补风扇尺寸图-760高.png",
+      "kind": "user",
+      "sha256": "fc1b769d75d4d6ccab6ffed7923695879b234434ca36ef1136ed483d3d9712dc",
+      "bytes": 383295,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-d886e0af-6829-4f35-be97-18431795c42c.png"
+      ]
+    },
+    {
+      "path": "references/user/艾美特FA23-RD69前期参数-560高.png",
+      "kind": "user",
+      "sha256": "022e54ad49cf73d09a1fcb68e923188fd938d7dd189922171afd81285af47776",
+      "bytes": 93547,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-8f9e6106-2a61-481f-b9d2-0a79f377d3b9.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [],
+  "notes": [
+    "前期参数图560mm与后补尺寸图760mm不一致，用户后续说明折叠可收纳到600mm；不能据此认定同一型号。"
+  ]
+}

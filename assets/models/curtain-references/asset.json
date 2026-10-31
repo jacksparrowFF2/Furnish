@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "curtain-references",
+  "name": "窗帘与窗饰",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/WINDOW-COVERINGS.md",
+  "sourceLinks": [
+    "https://www.hunterdouglas.com/window-treatments/shades"
+  ],
+  "references": [
+    {
+      "path": "references/user/落地窗帘参考.png",
+      "kind": "user",
+      "sha256": "329e3dc27082aa30dd521754517aff2a85b5f09c962635dbd801d42b4ae256c9",
+      "bytes": 508917,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-4d8e8ce8-038b-4113-b95e-71d967518fe3.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/window-coverings-20261029/checks.json"
+  ]
+}

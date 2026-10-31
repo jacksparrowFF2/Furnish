@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（产品资料目录）：参考原图统一到assets/models/<id>/references，asset.json维护来源类别／哈希／历史路径／缺失记录，生成每产品README及可离线搜索总览。model-asset-index校验39份档案并关联15组生产模型及参数化目录；import-model-reference本机导入去重且同名不覆盖。旧资料文档链接更新，历史验收记录保留，模型与运行文件路径／哈希不变；见[资料结构](MODEL-ASSET-STORAGE.md#产品目录输入到输出)。
+
 2026-10-31（资产索引）：model-asset-index沿product-rules／model-profiles生成assets/models的相对路径README／JSON，来源哈希识别当前GLB，保留其它版本／材质工程并列出参数化及目录条目；不参与应用加载。index-model-assets更新／核对，organize-model-assets仅导出可选本机副本，全屋绑定留在.local。见[存放说明](MODEL-ASSET-STORAGE.md)。
 
 2026-10-31（电视图片）：product-rules注册可选tvImage与图片范围；property-panel本机解码缩小后沿mutate保存内嵌JPEG。model-primitives独立CanvasTexture供原生产电视屏幕使用，图片签名驱动重建，clearGroup沿材质dispose释放纹理；不变几何与空间确认。含图片项目／工作区v41、旧缓存兼容，无新增加载脚本；见[验收](validation/tv-custom-image-20261031/README.md)。

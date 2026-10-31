@@ -1,6 +1,6 @@
 # 转角书柜专项验收 · 2026-10-31
 
-[产品与边界](../../CORNER-BOOKCASE-YESWOOD-Y00Y06.md) · [用户标注图](dimensions-reference.png) · [网页型号与源哈希](source.json)
+[产品与边界](../../CORNER-BOOKCASE-YESWOOD-Y00Y06.md) · [用户标注图](../../../assets/models/corner-bookcase/references/user/dimensions-reference.png) · [网页型号与源哈希](source.json)
 
 [斜视](http-angle.png) · [正面](http-front.png) · [侧面](http-end.png) · [背侧](http-rear.png) · [390px断网预览](file-narrow.png)。上述截图已目视对照：五层、L形凹口、左右交错端挡与两面背板一致；木色、木纹、4mm边缘与隐藏结构仍为模型近似。窄屏标题／视角按钮与模型保持间隔。
 

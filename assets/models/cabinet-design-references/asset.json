@@ -1,0 +1,63 @@
+{
+  "format": 1,
+  "id": "cabinet-design-references",
+  "name": "定制柜体设计图",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/CABINET-DESIGN.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/柜体CAD设计图-01.png",
+      "kind": "user",
+      "sha256": "5480bdde1867228c62a469119a9c8f6c253095b67c65bfae8a5aedecf9dfeb4d",
+      "bytes": 147400,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-00e324a0-e0a1-4fad-8641-c73d1d70735b.png"
+      ]
+    },
+    {
+      "path": "references/user/柜体CAD设计图-02.png",
+      "kind": "user",
+      "sha256": "d70166514998706882b6d02ec1be8f9f0dd5ba44403ade51f2b76bc5dd380e8b",
+      "bytes": 118810,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-14e12f97-bf9a-4846-bb06-0e1aefe480fb.png"
+      ]
+    },
+    {
+      "path": "references/user/洗衣柜CAD局部批注.png",
+      "kind": "user",
+      "sha256": "155035f0bdd8fc7ee2869c7b84db5e0333abda6aa35358d3318fa92f6b8beaf6",
+      "bytes": 188247,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-1ffea19a-3904-4a03-8de7-2234e5f8365c.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/cabinet-independent-20261028/README.md",
+    "docs/validation/wall-extension-snapping-20261027/README.md",
+    "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+    "docs/validation/cabinet-simple-20261020/summary.json",
+    "docs/validation/cabinet-interior-20261020/summary.json",
+    "docs/validation/cabinet-setting-inheritance-20261020/summary.json",
+    "docs/validation/cabinet-object-inspector-20261020/summary.json",
+    "docs/validation/cabinet-edit-operations-20261020/summary.json",
+    "docs/validation/cabinet-module-widths-20261020/cabinet-module-widths.json",
+    "docs/validation/cabinet-module-growth-20261020/node.json",
+    "docs/validation/cabinet-module-growth-20261020/cabinet-module-widths.json",
+    "docs/validation/cabinet-divider-growth-20261020/node.json",
+    "docs/validation/cabinet-divider-growth-20261020/cabinet-divider-growth.json",
+    "docs/validation/cabinet-shelf-clearances-20261028/README.md",
+    "docs/validation/cabinet-part-inspector-20261028/README.md",
+    "docs/validation/cabinet-editor-completion-20261028/README.md",
+    "docs/validation/cabinet-workspace-20261028/README.md",
+    "docs/validation/cabinet-keyboard-20261031/README.md"
+  ]
+}

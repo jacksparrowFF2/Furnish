@@ -1,0 +1,101 @@
+{
+  "format": 1,
+  "id": "downlight-dl269",
+  "name": "飞利浦-DL269-筒灯",
+  "types": [
+    "downlight_philips_dl269"
+  ],
+  "route": "parametric",
+  "document": "docs/DOWNLIGHT-PHILIPS-DL269.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/appearance.png",
+      "kind": "user",
+      "sha256": "68370c6cf6e41fad63003c1a3e1a87f6cbfb5f5d21c88d046294f93a308ce234",
+      "bytes": 464871,
+      "legacyPaths": [
+        "docs/references/downlight-dl269/appearance.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/height.png",
+      "kind": "user",
+      "sha256": "3a1d46e912668f1ef065880c21259140c6baa6e208e45576f42f9ddf8604e178",
+      "bytes": 200205,
+      "legacyPaths": [
+        "docs/references/downlight-dl269/height.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/product-details.png",
+      "kind": "user",
+      "sha256": "47c1971cf5420b3b8223ff27a02bc11c3070174838fd872ef965a27c58d090db",
+      "bytes": 39589,
+      "legacyPaths": [
+        "docs/references/downlight-dl269/product-details.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/recess.png",
+      "kind": "user",
+      "sha256": "86e4cf4474face6eee126ef364546224e9fdb37ccece5594c10d99c850014cb7",
+      "bytes": 327914,
+      "legacyPaths": [
+        "docs/references/downlight-dl269/recess.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/specifications.png",
+      "kind": "user",
+      "sha256": "920c40a58069d6c34cecb947fa5571e5153846df7eb7bcdb93c33d60877d0cec",
+      "bytes": 204798,
+      "legacyPaths": [
+        "docs/references/downlight-dl269/specifications.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/产品宣传图.png",
+      "kind": "user",
+      "sha256": "69b9ed67ca44e5da99b6fd228b4510c06bcb467cf92efad81629c237bbb9d152",
+      "bytes": 885665,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-936880a3-5729-4f22-9f26-20b56cd3f269.png"
+      ]
+    },
+    {
+      "path": "references/user/光源内嵌防眩.png",
+      "kind": "user",
+      "sha256": "cd81359e0840565ab4924d4dc1f11e32575409ecdd66cc88090db66a32e68616",
+      "bytes": 387163,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-dc0c4f95-f1de-4f1e-8744-a5084256ea92.png"
+      ]
+    },
+    {
+      "path": "references/user/规格补充.png",
+      "kind": "user",
+      "sha256": "2a2694bcaba05b3decfdc91ca6e5355da3faf4b456ec8d28d35187eb7f229ad7",
+      "bytes": 19126,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-b9fe3baa-d905-481b-ac4f-360e889c4942.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/downlight-20261024/results.json",
+    "docs/validation/downlight-20261024/six-variants-settings.json",
+    "docs/validation/downlight-20261024/section-geometry.json",
+    "docs/validation/full-regression-main-20261025/README.md"
+  ]
+}

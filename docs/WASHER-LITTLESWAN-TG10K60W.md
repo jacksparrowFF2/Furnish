@@ -14,8 +14,8 @@
 
 | 项目 | mm／说明 | 依据 |
 |---|---|---|
-| 机身宽×深×高 | 595×560×850 | [参数](references/washer-tg10k60w/specifications.png)、[尺寸图](references/washer-tg10k60w/dimensions.png) |
-| 开放不封闭柜参考空位 | 625×600×865 | [安装图](references/washer-tg10k60w/installation.png) |
+| 机身宽×深×高 | 595×560×850 | [参数](../assets/models/washer-tg10k60w/references/user/specifications.png)、[尺寸图](../assets/models/washer-tg10k60w/references/user/dimensions.png) |
+| 开放不封闭柜参考空位 | 625×600×865 | [安装图](../assets/models/washer-tg10k60w/references/user/installation.png) |
 | 左右／顶部／背部预留 | 左右各15、顶部15、背部30 | 同安装图，独立于实体尺寸 |
 | 带柜门参考深度 | 建议605 | 同安装图；仅深度不能证明柜门开启 |
 | 水电 | 三孔10A接地插座、4分专用水龙头、自带1.5m电源线 | 同安装图，接口位置／标高未知 |
@@ -27,7 +27,7 @@
 
 源工程／GLB：`assets/models/washer-tg10k60w/washer-tg10k60w-v1.*`；离线发布模块：`src/data/washer-tg10k60w-blender-asset.js`。资产 `washer-littleswan-tg10k60w@2`，47个具名网格、1个竖轴父节点、5个随动门件。v1记录保留在原验收目录／Git历史。
 
-v2优先依据用户新补的[实机正面近照](references/washer-tg10k60w/front-close-up.png)和[内筒近照](references/washer-tg10k60w/drum-close-up.png)：取消旧营销图推测的蓝色显示块，改为通宽银灰面板、左抽屉分缝、偏中金属旋钮、LittleSwan近似鸟标／文字、电源符号和细字；圆门使用宽幅凹面截面，加入玻璃压圈、门控标记、胶圈、独立滚筒／三瓣压型／提升筋／孔点，调整右下检修盖。认证／能效贴为矢量近似，未制造可扫描二维码；包装胶带和运输袋不建模。字体在Blender转换成网格，运行时不依赖系统字体或外部图片。玻璃限定为简单Alpha透明（0.12，关闭深度写入／实体投影），未模拟真实折射；其它资产配置的透明限制不放宽。
+v2优先依据用户新补的[实机正面近照](../assets/models/washer-tg10k60w/references/user/front-close-up.png)和[内筒近照](../assets/models/washer-tg10k60w/references/user/drum-close-up.png)：取消旧营销图推测的蓝色显示块，改为通宽银灰面板、左抽屉分缝、偏中金属旋钮、LittleSwan近似鸟标／文字、电源符号和细字；圆门使用宽幅凹面截面，加入玻璃压圈、门控标记、胶圈、独立滚筒／三瓣压型／提升筋／孔点，调整右下检修盖。认证／能效贴为矢量近似，未制造可扫描二维码；包装胶带和运输袋不建模。字体在Blender转换成网格，运行时不依赖系统字体或外部图片。玻璃限定为简单Alpha透明（0.12，关闭深度写入／实体投影），未模拟真实折射；其它资产配置的透明限制不放宽。
 
 v2门外径510、面框孔径405、胶圈净口365、中心离地430、左轴X=-257／Z=266、0–110°均为本例建模假设，不是厂家参数。正面局部+Z，安装底部为最低脚底。机身尺寸包含已建模门体，未给定的后管尺寸不推测。
 

@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "id": "secondary-wardrobe",
+  "name": "定制次卧挂衣柜",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/SECONDARY-WARDROBE.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/内部挂杆实物参考.png",
+      "kind": "user",
+      "sha256": "3a50c509d99f5fc740bc5e66c976c8195a4cebd0886beab00e6d939c2f9eee25",
+      "bytes": 544744,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-cf95f2e6-9387-43b2-bc52-2782904ca093.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/wardrobe-height-20261029/README.md",
+    "docs/validation/secondary-wardrobe-20261029/checks.json"
+  ]
+}

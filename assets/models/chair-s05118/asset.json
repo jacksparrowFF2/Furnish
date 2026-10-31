@@ -1,0 +1,92 @@
+{
+  "format": 1,
+  "id": "chair-s05118",
+  "name": "源氏木语-S05118-书椅",
+  "types": [
+    "chair_yeswood_s05118"
+  ],
+  "route": "blender",
+  "document": "docs/CHAIR-YESWOOD-S05118.md",
+  "sourceLinks": [
+    "https://item.jd.com/10115482828125.html"
+  ],
+  "references": [
+    {
+      "path": "references/user/arm.png",
+      "kind": "user",
+      "sha256": "2cb2927786421ea3fceac4eb997f99a4cc492b44d880385a353ad1a9869058de",
+      "bytes": 1481210,
+      "legacyPaths": [
+        "assets/models/chair-s05118/references/arm.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-a4005d61-db81-4679-95c7-c53bfaa13eed.png"
+      ]
+    },
+    {
+      "path": "references/user/back.png",
+      "kind": "user",
+      "sha256": "362713dcf15b0ae14a4e0991ef5da598c80ac4367a9e6d8b40cbf513b76fb7cb",
+      "bytes": 1648056,
+      "legacyPaths": [
+        "assets/models/chair-s05118/references/back.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-1c79c42c-e7ac-4bcb-8caa-c9ae1b32e69c.png"
+      ]
+    },
+    {
+      "path": "references/user/dimensions.png",
+      "kind": "user",
+      "sha256": "d7a119af13ee1db2e5a007e1f4570846de9940f56247c22dc50a2bdc8869fac7",
+      "bytes": 649459,
+      "legacyPaths": [
+        "assets/models/chair-s05118/references/dimensions.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-c729804a-be0a-499b-b17e-afe13a33a131.png"
+      ]
+    },
+    {
+      "path": "references/user/leg.png",
+      "kind": "user",
+      "sha256": "5d4fa47db82960b7255ce99b9c39a48fc224aa63f95a260f16eb3239416f7da7",
+      "bytes": 1492887,
+      "legacyPaths": [
+        "assets/models/chair-s05118/references/leg.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-4c8c0a47-b317-4cb4-b063-942718027ce5.png"
+      ]
+    },
+    {
+      "path": "references/user/product.png",
+      "kind": "user",
+      "sha256": "67db112b2edc3661c0ba0d5a8b0318f24040a8a91d7bec34c92c62b7bec17304",
+      "bytes": 255727,
+      "legacyPaths": [
+        "assets/models/chair-s05118/references/product.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-2af4bfcf-cd45-43bf-9a04-4b9183f9f917.png"
+      ]
+    },
+    {
+      "path": "references/user/seat.png",
+      "kind": "user",
+      "sha256": "a1b1deaf85b5307034c4d78ef7babb036ba712b0937a0736519eb8b477431ad3",
+      "bytes": 1418611,
+      "legacyPaths": [
+        "assets/models/chair-s05118/references/seat.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-2e4a14fd-1d06-4131-9faa-d23c0a0fd5c2.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/chair-s05118-20261031/README.md"
+  ]
+}

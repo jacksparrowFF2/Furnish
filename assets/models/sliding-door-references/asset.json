@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "id": "sliding-door-references",
+  "name": "吊轨推拉门与厨房折叠移门",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/TELESCOPIC-OPENINGS.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/吊轨及地轨对照.png",
+      "kind": "user",
+      "sha256": "9945cfcee3f1ee7dbb64d513cec90806e21980dd9f0716d427ec65509342e889",
+      "bytes": 1117000,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-33a15d1f-9618-4fb4-86f1-a08c94ba77c0.png"
+      ]
+    },
+    {
+      "path": "references/user/开启状态参考.png",
+      "kind": "user",
+      "sha256": "e2b387673f234bdd1bc80a15cfbcece714666e33702f1afbb02555f726b1f74f",
+      "bytes": 788628,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-052ae3da-0c22-4131-8444-61e8965374e8.png",
+        "codex-clipboard-d0d8cd2c-6dfc-489f-812e-76fff214af71.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/telescopic20-corners-20261028/README.md",
+    "docs/validation/sliding-glass-20261028/README.md",
+    "docs/validation/telescopic20-20261027/README.md",
+    "docs/validation/telescopic-floor-tracks-20261025/summary.json",
+    "docs/validation/telescopic-plan-20261025/summary.json",
+    "docs/validation/telescopic-straight-20261025/summary.json",
+    "docs/validation/telescopic-corners-20261025/summary.json",
+    "docs/validation/telescopic-corners-20261025/browser-results.json",
+    "docs/validation/model-entry-batch2-20261016.json"
+  ]
+}

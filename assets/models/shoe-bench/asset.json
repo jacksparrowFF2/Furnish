@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "id": "shoe-bench",
+  "name": "源氏木语-橡木软包换鞋凳-80厘米",
+  "types": [
+    "bench_yeswood_oak"
+  ],
+  "route": "parametric",
+  "document": "docs/SHOE-BENCH.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/dimensions.png",
+      "kind": "user",
+      "sha256": "557f93628b2290cac24f6aa41d6fcf6bbd3cd97d4d069e4941ea730f2405b268",
+      "bytes": 631313,
+      "legacyPaths": [
+        "docs/references/shoe-bench/dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/floor-gap.png",
+      "kind": "user",
+      "sha256": "91fb06fed9a269e2970d55ee4882aed0faeec4e3d26e0c575d3f72e28863fef0",
+      "bytes": 407003,
+      "legacyPaths": [
+        "docs/references/shoe-bench/floor-gap.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/oak-front.png",
+      "kind": "user",
+      "sha256": "739e942be24f09af15140cdedff924a81c609a1b040cf28278f06c7139d7c284",
+      "bytes": 1163439,
+      "legacyPaths": [
+        "docs/references/shoe-bench/oak-front.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/walnut-overall.png",
+      "kind": "user",
+      "sha256": "7c4943fcbbf562ee541104fa9cec29b5da70755e08b1d815db96c0ab216b93e5",
+      "bytes": 386333,
+      "legacyPaths": [
+        "docs/references/shoe-bench/walnut-overall.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+    "docs/validation/shoe-bench-20261020/results.json"
+  ]
+}

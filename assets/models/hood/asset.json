@@ -1,0 +1,18 @@
+{
+  "format": 1,
+  "id": "hood",
+  "name": "方太抽油烟机 JCD10TA",
+  "types": [
+    "rangehood_fotile_jcd10ta"
+  ],
+  "route": "blender",
+  "document": "docs/HOOD-BLENDER-MOTION.md",
+  "sourceLinks": [],
+  "references": [],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/appliance-materials-stage2-20261031/README.md",
+    "docs/validation/blender-hood-motion-20261029/README.md"
+  ]
+}

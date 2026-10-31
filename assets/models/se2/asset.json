@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "id": "se2",
+  "name": "奥普-SE2-风暖浴霸",
+  "types": [
+    "bath_heater_aopu_se2"
+  ],
+  "route": "blender",
+  "document": "docs/BATH-HEATER-AOPU-SE2.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference-front.png",
+      "kind": "user",
+      "sha256": "4b8e9fe3296da0c319f53fb25ecd460e1b467f445dd05ea34e18581fd473d5ab",
+      "bytes": 476263,
+      "legacyPaths": [
+        "docs/validation/bath-heater-se2-20261027/reference-front.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-3a8a1f59-e0c4-4450-b6a5-42280f6a1cbb.png"
+      ]
+    },
+    {
+      "path": "references/user/reference-installed.png",
+      "kind": "user",
+      "sha256": "8ee9ded13d2357fb46c328e7097a13a421de1c02ac59752ab57c876b10aee75b",
+      "bytes": 765261,
+      "legacyPaths": [
+        "docs/validation/bath-heater-se2-20261027/reference-installed.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-27090e4f-e59a-4b48-9d37-215954a52e10.png"
+      ]
+    },
+    {
+      "path": "references/user/reference-spec.png",
+      "kind": "user",
+      "sha256": "8492c173c5f84b9f60724c408a9fdbe0e60827dd2abe6bd65187c494f6582311",
+      "bytes": 258467,
+      "legacyPaths": [
+        "docs/validation/bath-heater-se2-20261027/reference-spec.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-0bcba51a-86ca-42d7-9d90-b0afd7c763c6.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/bath-heater-se2-20261027/README.md"
+  ]
+}

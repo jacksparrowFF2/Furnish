@@ -4,7 +4,7 @@
 
 ## 资料与尺寸
 
-依据用户本轮提供的五张产品图，副本保存在 [参考资料](references/downlight-dl269/specifications.png)，未查阅额外厂家资料。
+依据用户本轮提供的五张产品图，副本保存在 [参考资料](../assets/models/downlight-dl269/references/user/specifications.png)，未查阅额外厂家资料。
 
 | 参数 | 采用值 | 依据／状态 |
 |---|---|---|

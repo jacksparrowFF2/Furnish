@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "pet-feeder-mijia-2",
+  "name": "米家-智能宠物喂食器2",
+  "types": [
+    "pet_feeder_mijia_2"
+  ],
+  "route": "parametric",
+  "document": "docs/PET-FEEDER-MIJIA-2.md",
+  "sourceLinks": [],
+  "references": [],
+  "missingReferences": [
+    {
+      "uploadName": "codex-clipboard-e333deb9-922e-403d-8b58-496789373ac0.png",
+      "document": "docs/PET-FEEDER-MIJIA-2.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-b24d11dc-8972-4325-bc62-8058e74ab2f3.png",
+      "document": "docs/PET-FEEDER-MIJIA-2.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-6cd1ffc1-b33e-401b-9e06-b937195b9fed.png",
+      "document": "docs/PET-FEEDER-MIJIA-2.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-d1c316a7-33ee-4506-ac29-2dd2827eddff.png",
+      "document": "docs/PET-FEEDER-MIJIA-2.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-d2522c31-d13a-41a6-adc4-b85f09b4f0a6.png",
+      "document": "docs/PET-FEEDER-MIJIA-2.md",
+      "status": "not-found-locally"
+    }
+  ],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/pet-feeder-20261019.json"
+  ]
+}

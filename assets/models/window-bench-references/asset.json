@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "id": "window-bench-references",
+  "name": "定制窗下矮柜与侧边书柜",
+  "types": [],
+  "route": "reference-only",
+  "document": null,
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/侧柜与窗台衔接.png",
+      "kind": "user",
+      "sha256": "470ebc4b80100a72e47fe398015981464b8dfb6809b1089cc97911ce3478b9c6",
+      "bytes": 915659,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-b317b117-b81a-4387-b304-d9c97cd64aec.png"
+      ]
+    },
+    {
+      "path": "references/user/侧柜内部与摆放.png",
+      "kind": "user",
+      "sha256": "e23c8c600790ff69ba5beab54b80232d1dc29810fb0881f0244875661c8aebeb",
+      "bytes": 859112,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-a17fd120-6e58-4417-97e8-fdd95ac45e83.png"
+      ]
+    },
+    {
+      "path": "references/user/窗下抽屉结构.png",
+      "kind": "user",
+      "sha256": "4b86ed79eb189d7f0baba138a2ae109fc3456a0fbed2d06bdc439477e522f3da",
+      "bytes": 1132337,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-2a5ca2fc-a8cc-4064-b60b-d62a6aa50db3.png"
+      ]
+    },
+    {
+      "path": "references/user/窗下矮柜与侧柜整体.png",
+      "kind": "user",
+      "sha256": "6a29030916fb0d6e00a2eed7e72dbb2b7194c8bac690cce4694f5ee7a99a1c39",
+      "bytes": 945414,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-d502ecde-434d-481e-b5f2-5fe9f5bc663f.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": []
+}

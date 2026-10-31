@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "id": "cat-tree",
+  "name": "猫爬架-绿叶成荫围栏款",
+  "types": [
+    "cat_tree"
+  ],
+  "route": "parametric",
+  "document": "docs/CAT-TREE.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference.png",
+      "kind": "user",
+      "sha256": "f6a0b6e5263f1f7cecf0b9cb7c6256c30299f2d7bc2a1785ffec047d974e9f7e",
+      "bytes": 589668,
+      "legacyPaths": [
+        "docs/validation/cat-tree-20261019/reference.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/cat-tree-20261019/browser-results.json"
+  ]
+}

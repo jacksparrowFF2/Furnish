@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "aquarium-mijia-2pro",
+  "name": "米家-智能鱼缸2Pro",
+  "types": [
+    "aquarium_mijia_2pro"
+  ],
+  "route": "parametric",
+  "document": "docs/AQUARIUM-MIJIA-2PRO.md",
+  "sourceLinks": [
+    "https://item.jd.com/100317574693.html"
+  ],
+  "references": [],
+  "missingReferences": [
+    {
+      "uploadName": "codex-clipboard-dcf3517c-7213-4278-90f0-a556a4ee4c94.png",
+      "document": "docs/AQUARIUM-MIJIA-2PRO.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-1bcdcce8-5cff-48eb-b443-baab8b0b6e3c.png",
+      "document": "docs/AQUARIUM-MIJIA-2PRO.md",
+      "status": "not-found-locally"
+    }
+  ],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/blender-part-identities-20261024/summary.json",
+    "docs/validation/aquarium-test-context-20261018/summary.json",
+    "docs/validation/generator-part-identities-20261025/summary.json"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "tv-cabinet-references",
+  "name": "定制电视柜",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/CABINET-DESIGN.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/抽拉电视柜外观参考.png",
+      "kind": "user",
+      "sha256": "a91c99992f6dfabd0f0d9fd8d3af09e02f50520e136fb822cd5d4911e7f17510",
+      "bytes": 519929,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-62ab7e59-66af-4491-94f7-5ccd746cfcf8.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/cabinet-independent-20261028/README.md",
+    "docs/validation/wall-extension-snapping-20261027/README.md",
+    "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+    "docs/validation/cabinet-simple-20261020/summary.json",
+    "docs/validation/cabinet-interior-20261020/summary.json",
+    "docs/validation/cabinet-setting-inheritance-20261020/summary.json",
+    "docs/validation/cabinet-object-inspector-20261020/summary.json",
+    "docs/validation/cabinet-edit-operations-20261020/summary.json",
+    "docs/validation/cabinet-module-widths-20261020/cabinet-module-widths.json",
+    "docs/validation/cabinet-module-growth-20261020/node.json",
+    "docs/validation/cabinet-module-growth-20261020/cabinet-module-widths.json",
+    "docs/validation/cabinet-divider-growth-20261020/node.json",
+    "docs/validation/cabinet-divider-growth-20261020/cabinet-divider-growth.json",
+    "docs/validation/cabinet-shelf-clearances-20261028/README.md",
+    "docs/validation/cabinet-part-inspector-20261028/README.md",
+    "docs/validation/cabinet-editor-completion-20261028/README.md",
+    "docs/validation/cabinet-workspace-20261028/README.md",
+    "docs/validation/cabinet-keyboard-20261031/README.md"
+  ]
+}

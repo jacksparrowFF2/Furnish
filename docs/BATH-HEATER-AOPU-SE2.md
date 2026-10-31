@@ -4,7 +4,7 @@
 
 ## 资料及尺寸
 
-依据用户提供的[外观](validation/bath-heater-se2-20261027/reference-front.png)、[安装效果](validation/bath-heater-se2-20261027/reference-installed.png)及[参数图](validation/bath-heater-se2-20261027/reference-spec.png)，未联网核验：奥普/AUPU、型号SE2，面罩600×300 mm，箱体110 mm（含垫高块），集成吊顶安装高度≥130 mm，适配300×300、300×600扣板。参数图标注暖风2800 W、吹风／换气49 W、照明24 W及米家智控等；这些仅为图片记录，不模拟热工、风量、智能控制、光谱或实际照度。价格、色温、光通量、风管／电源／支撑位置未知。
+依据用户提供的[外观](../assets/models/se2/references/user/reference-front.png)、[安装效果](../assets/models/se2/references/user/reference-installed.png)及[参数图](../assets/models/se2/references/user/reference-spec.png)，未联网核验：奥普/AUPU、型号SE2，面罩600×300 mm，箱体110 mm（含垫高块），集成吊顶安装高度≥130 mm，适配300×300、300×600扣板。参数图标注暖风2800 W、吹风／换气49 W、照明24 W及米家智控等；这些仅为图片记录，不模拟热工、风量、智能控制、光谱或实际照度。价格、色温、光通量、风管／电源／支撑位置未知。
 
 局部X宽300、Z深600 mm；发光面向下，格栅沿长边，位于局部−X侧，显示区靠−Z端，旋转镜像沿原家具变换。面罩主要特征为白色窄框、大面积柔光板、五道长条格栅、圆形显示区及简化指示／标识。显示内容和标识为几何示意，不伪造温度读数。
 

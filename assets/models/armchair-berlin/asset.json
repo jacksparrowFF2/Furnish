@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "id": "armchair-berlin",
+  "name": "源氏木语-柏林单人沙发椅",
+  "types": [
+    "armchair_yeswood_berlin"
+  ],
+  "route": "blender",
+  "document": "docs/ARMCHAIR-YESWOOD-BERLIN.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/appearance.png",
+      "kind": "user",
+      "sha256": "a9bc3f556cea50cb9828d9cfd8e0698a88671b187afa6a92198db24e2b30c0c1",
+      "bytes": 745152,
+      "legacyPaths": [
+        "assets/models/armchair-berlin/references/appearance.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-4f577b15-1287-4caf-ac80-4d67a17415a5.png"
+      ]
+    },
+    {
+      "path": "references/user/dimensions.png",
+      "kind": "user",
+      "sha256": "965c90c1dd2266b1af317334c8b0cc84214796d364c6e4e929f1397275cd05ae",
+      "bytes": 642396,
+      "legacyPaths": [
+        "assets/models/armchair-berlin/references/dimensions.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-b9467e28-9974-4950-8f3e-5bb9855ca250.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/armchair-berlin-20261029/README.md"
+  ]
+}

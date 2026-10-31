@@ -4,7 +4,7 @@
 
 ## 商品资料与尺寸
 
-用户提供的[京东商品](https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT)对应「【15】1.25米山毛榉原木色（梨白）」；页面规格货号Y107H03、实木框架、布艺海绵、坐垫翻折、可拆洗。依据为实际读取的详情图与用户补发的[完整尺寸图](../assets/models/sofa-bed/references/user-dimensions.png)，不套用检索中出现的Y98H01／Y107H08等其它型号尺寸。
+用户提供的[京东商品](https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT)对应「【15】1.25米山毛榉原木色（梨白）」；页面规格货号Y107H03、实木框架、布艺海绵、坐垫翻折、可拆洗。依据为实际读取的详情图与用户补发的[完整尺寸图](../assets/models/sofa-bed/references/user/user-dimensions.png)，不套用检索中出现的Y98H01／Y107H08等其它型号尺寸。
 
 | 标注 | 数值 | 模型使用 |
 |---|---|---|
@@ -23,7 +23,7 @@
 
 ## 展开结构与推算边界（2026-10-31）
 
-依据[三种形态图](../assets/models/sofa-bed/references/04.jpg)、[两档展开图](../assets/models/sofa-bed/references/13.jpg)、[一抽二铺图](../assets/models/sofa-bed/references/14.jpg)、翻垫15、滑轮16和裸架28–30：后靠背和两侧箱板留在原位，前栏／前柱随抽拉底架前移，中级支撑另移动，两片折垫展开为三段平整垫面；腰枕在床态下移至床面，继续斜靠。
+依据[三种形态图](../assets/models/sofa-bed/references/product-page/04.jpg)、[两档展开图](../assets/models/sofa-bed/references/product-page/13.jpg)、[一抽二铺图](../assets/models/sofa-bed/references/product-page/14.jpg)、翻垫15、滑轮16和裸架28–30：后靠背和两侧箱板留在原位，前栏／前柱随抽拉底架前移，中级支撑另移动，两片折垫展开为三段平整垫面；腰枕在床态下移至床面，继续斜靠。
 
 图片没有给出可直接套用的本型号展开总长。**模型占深2018 mm是布局推算值，不是厂家标注**：以图上590 mm坐深作为两片翻垫的参考段长，两级590／1180 mm行程，收起838 mm加1180 mm得到2018 mm。固定垫深760 mm、两片590 mm，垫面总长1940 mm；展开床面高300 mm、垫厚50 mm和底架细节为结合三段铺平图的建模值。仅保留收起／展开两个端态，不把图片推算升级为真实五金行程或连续机构轨迹。
 
@@ -47,7 +47,7 @@ Scoop实际Blender5.2.3 LTS制作103件具名网格和6个运动父节点，保�
 
 ## 用户细节校正（2026-10-31）
 
-依据用户补发的[五张批注与裸架参考](../assets/models/sofa-bed/references/detail-review/1.png)：固定底垫裁出前栏、圆柱与侧板避让，消除前栏白色突出条；靠垫后缘从后木框外移至顶横木内侧（参考模型2 mm间隙）；两侧增加固定／中级／前级三层中空导轨，展开搭接约119／150 mm；中级脚轮随中架移至支撑位置，立撑接至铺板下方；两只腰枕与滚边共同保留12°倾角，展开时下移100 mm、底边落在300 mm床面。新增24件导轨壁面，总103件，保留6个运动父节点。间隙、搭接、倾角与五金截面为建模值。
+依据用户补发的[五张批注与裸架参考](../assets/models/sofa-bed/references/annotations/1.png)：固定底垫裁出前栏、圆柱与侧板避让，消除前栏白色突出条；靠垫后缘从后木框外移至顶横木内侧（参考模型2 mm间隙）；两侧增加固定／中级／前级三层中空导轨，展开搭接约119／150 mm；中级脚轮随中架移至支撑位置，立撑接至铺板下方；两只腰枕与滚边共同保留12°倾角，展开时下移100 mm、底边落在300 mm床面。新增24件导轨壁面，总103件，保留6个运动父节点。间隙、搭接、倾角与五金截面为建模值。
 
 资产、数值实体、3D缓存及本型号空间确认统一升级至细节版本3，无新持久字段、项目版本或其它型号确认变化。详见[本轮增量验收](validation/sofa-bed-details-20261031/README.md)。
 

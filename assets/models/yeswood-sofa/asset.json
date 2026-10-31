@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "id": "yeswood-sofa",
+  "name": "源氏木语-樱桃木三人沙发-2.16米",
+  "types": [
+    "sofa_yeswood_cherry"
+  ],
+  "route": "parametric",
+  "document": "docs/YESWOOD-CHERRY-SOFA.md",
+  "sourceLinks": [
+    "https://item.jd.com/10096040538224.html",
+    "https://www.ruten.com.tw/item/22629124214162/"
+  ],
+  "references": [
+    {
+      "path": "references/user/reference-dimensions.png",
+      "kind": "user",
+      "sha256": "c6c93a6111d41e99f0e163608995b899031f9845d00cca70e1a157a587f57018",
+      "bytes": 509781,
+      "legacyPaths": [
+        "docs/references/yeswood-sofa/reference-dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-fabric.png",
+      "kind": "user",
+      "sha256": "cb2855d2130db2ad2b958eeb2062792e3ef6bb4a7eff66fd6c7a9414b405aa28",
+      "bytes": 973180,
+      "legacyPaths": [
+        "docs/references/yeswood-sofa/reference-fabric.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-seat-depth.png",
+      "kind": "user",
+      "sha256": "b06b303adbbe4856cacc5e26f67f923be72738028ba17c14cc0172d9f29c1856",
+      "bytes": 1872677,
+      "legacyPaths": [
+        "docs/references/yeswood-sofa/reference-seat-depth.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-side.png",
+      "kind": "user",
+      "sha256": "af2a955b6df659f79cf9f090043ba9ee97c692ef0adb4f05709360e9f5830522",
+      "bytes": 2229060,
+      "legacyPaths": [
+        "docs/references/yeswood-sofa/reference-side.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": []
+}

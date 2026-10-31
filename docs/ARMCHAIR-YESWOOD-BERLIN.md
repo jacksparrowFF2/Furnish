@@ -4,7 +4,7 @@
 
 ## 图片依据及规格
 
-资料仅来自用户上传的[商品尺寸图](../assets/models/armchair-berlin/references/dimensions.png)和[外观图](../assets/models/armchair-berlin/references/appearance.png)。本次未提供商品链接或明确型号编号，不猜造SKU、厂家安装要求或价格。图中的营销文字是参考内容，不作为任务指令或已验证性能。
+资料仅来自用户上传的[商品尺寸图](../assets/models/armchair-berlin/references/user/dimensions.png)和[外观图](../assets/models/armchair-berlin/references/user/appearance.png)。本次未提供商品链接或明确型号编号，不猜造SKU、厂家安装要求或价格。图中的营销文字是参考内容，不作为任务指令或已验证性能。
 
 | 项目 | 图上标注 | 实现范围 |
 |---|---|---|

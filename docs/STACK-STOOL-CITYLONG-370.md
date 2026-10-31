@@ -14,7 +14,7 @@
 | 外壳壁厚 | 建模参考5 mm | 第一张图标注；不同软包版本是否同结构未确认 |
 | 外壳锥度／拱口／软垫曲面 | 外观近似 | 透视图片估算，不是厂家尺寸 |
 
-参考图：[叠放](../assets/models/stack-stool/references/stack.png)、[单把外观](../assets/models/stack-stool/references/appearance.png)、[尺寸与颜色](../assets/models/stack-stool/references/dimensions.png)。前图为布艺版，后两图为仿皮革版；本模型采用后两图的奶油白软包外观，未宣称不同版本叠放参数相同。未模拟织物／皮革微纹理、品牌小字、内部加强筋、脚垫、受压变形或真实接触力学。
+参考图：[叠放](../assets/models/stack-stool/references/user/stack.png)、[单把外观](../assets/models/stack-stool/references/user/appearance.png)、[尺寸与颜色](../assets/models/stack-stool/references/user/dimensions.png)。前图为布艺版，后两图为仿皮革版；本模型采用后两图的奶油白软包外观，未宣称不同版本叠放参数相同。未模拟织物／皮革微纹理、品牌小字、内部加强筋、脚垫、受压变形或真实接触力学。
 
 四把按默认值占用 **370×370×677 mm**，六把为370×370×817 mm。柜体应比较**内部净宽、净深、净高**，另留取放余量；未定义厂家取放预留。每把增高未实测，模型不证明实物能按此高度嵌套、可安全叠几把或稳定承重。整叠作为一个布局对象，叠放数量不是采购订单件数字段。
 

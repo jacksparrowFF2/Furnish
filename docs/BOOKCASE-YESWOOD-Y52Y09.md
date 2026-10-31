@@ -6,7 +6,7 @@
 
 用户选择750 mm高款。原分享链接落到[三列两层带底框商品](https://item.jd.com/100201541761.html)，该页规格图实际标注1115 × 230 × **850** mm；同页列出的[无底框三列两层款](https://item.jd.com/100266639340.html)图片明确标注1115 × 230 × **750** mm，因此采用后者。产品图标识型号 Y52Y09、山毛榉；页面的「1.11米」是名义宽度，不是高度。另有750宽四格款，本次未采用。
 
-已查看的[无底框尺寸图](validation/bookcase-y52y09-20261029/dimensions-reference.jpg)来自原页 `newColorSize` 中对应SKU图片：
+已查看的[无底框尺寸图](../assets/models/y52y09/references/product-page/dimensions-reference.jpg)来自原页 `newColorSize` 中对应SKU图片：
 [规格图原链接](https://img11.360buyimg.com/img/jfs/t1/444552/35/20066/77834/6a2a7e28Fea957844/00834b04b00c315d.jpg)。
 
 | 参数 | 数值 | 依据 |

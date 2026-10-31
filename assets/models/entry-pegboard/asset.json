@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "entry-pegboard",
+  "name": "定制玄关洞洞板柜",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/ENTRY-PEGBOARD-CABINET.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference.png",
+      "kind": "user",
+      "sha256": "795e4148716fe2f564ba34908fc40f4371b8f9a53796950c44d644c23a82042b",
+      "bytes": 907082,
+      "legacyPaths": [
+        "docs/references/entry-pegboard/reference.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/full-regression-20261024/summary.json",
+    "docs/validation/pegboard-margin-edit-20261023/summary.json",
+    "docs/validation/pegboard-alignment-20261023/summary.json",
+    "docs/validation/pegboard-padding-20261023/summary.json",
+    "docs/validation/pegboard-auto-20261023/summary.json",
+    "docs/validation/pegboard-fit-grid-20261023/summary.json",
+    "docs/validation/pegboard-hatch-20261023/summary.json",
+    "docs/validation/pegboard-accessories-20261020/node.json",
+    "docs/validation/pegboard-accessories-20261020/pegboard-accessories.json",
+    "docs/validation/pegboard-accessory-height-20261020/node.json",
+    "docs/validation/pegboard-accessory-height-20261020/pegboard-height.json",
+    "docs/validation/pegboard-height-20261020/node.json",
+    "docs/validation/pegboard-height-20261020/pegboard-height.json",
+    "docs/validation/pegboard-height-20261020/pegboard-parts.json",
+    "docs/validation/pegboard-envelope-20261020/node.json",
+    "docs/validation/pegboard-envelope-20261020/browser.json",
+    "docs/validation/pegboard-parts-20261020/node.json",
+    "docs/validation/pegboard-parts-20261020/browser.json"
+  ]
+}

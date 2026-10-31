@@ -1,0 +1,83 @@
+{
+  "format": 1,
+  "id": "washer-tg10k60w",
+  "name": "小天鹅-TG10K60W-洗衣机",
+  "types": [
+    "washer_littleswan_tg10k60w"
+  ],
+  "route": "blender",
+  "document": "docs/WASHER-LITTLESWAN-TG10K60W.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/appearance.png",
+      "kind": "user",
+      "sha256": "09a31aeaf9c90829eb861ea159a03dc45c5745d515eec74bd5f2c83a30d92184",
+      "bytes": 392232,
+      "legacyPaths": [
+        "docs/references/washer-tg10k60w/appearance.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/dimensions.png",
+      "kind": "user",
+      "sha256": "4f8677953e136fec3a193b64da476146481339d291f2d319f0deffeb0a5853ac",
+      "bytes": 467079,
+      "legacyPaths": [
+        "docs/references/washer-tg10k60w/dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/drum-close-up.png",
+      "kind": "user",
+      "sha256": "e021bcb3cb381b95bd932ae6fd9f1d775ddf50ba8c02841a2ca15f5dccd69a67",
+      "bytes": 1240280,
+      "legacyPaths": [
+        "docs/references/washer-tg10k60w/drum-close-up.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/front-close-up.png",
+      "kind": "user",
+      "sha256": "a494a5456ea42f2d725d536159443ce793f06d52351adcc66f57bf232ba59ef6",
+      "bytes": 2880248,
+      "legacyPaths": [
+        "docs/references/washer-tg10k60w/front-close-up.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/installation.png",
+      "kind": "user",
+      "sha256": "9dfef4c11d12207aad500fb6b849a562a267ecabc370c6a3de25742b0c0fe66a",
+      "bytes": 593182,
+      "legacyPaths": [
+        "docs/references/washer-tg10k60w/installation.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/specifications.png",
+      "kind": "user",
+      "sha256": "043ee67ab4d1b680c21eae47c4f0ce6a7f419d587e3d997a09e2527938b1fe71",
+      "bytes": 82837,
+      "legacyPaths": [
+        "docs/references/washer-tg10k60w/specifications.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/appliance-materials-stage2-20261031/README.md",
+    "docs/validation/appliance-materials-20261031/README.md",
+    "docs/validation/model-pipeline-20261030/README.md",
+    "docs/validation/scoop-tg10k60w-20261030/README.md",
+    "docs/validation/washer-tg10k60w-20261029/README.md",
+    "docs/validation/washer-tg10k60w-front-20261029/README.md"
+  ]
+}

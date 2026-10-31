@@ -1,0 +1,24 @@
+{
+  "format": 1,
+  "id": "entry-console",
+  "name": "定制玄关置物台柜",
+  "types": [],
+  "route": "reference-only",
+  "document": "docs/ENTRY-CONSOLE-CABINET.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference.png",
+      "kind": "user",
+      "sha256": "964a140b30647579a82d5d90e7e6f59882b848ae38e6092f901c2c869457673b",
+      "bytes": 1261383,
+      "legacyPaths": [
+        "docs/references/entry-console/reference.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": []
+}

@@ -1,0 +1,65 @@
+{
+  "format": 1,
+  "id": "cherry-coffee-table",
+  "name": "樱桃木白色岩板茶几-1.2米",
+  "types": [
+    "coffeetable_yeswood_cherry"
+  ],
+  "route": "parametric",
+  "document": "docs/CHERRY-COFFEE-TABLE.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/bent-leg-reference.png",
+      "kind": "user",
+      "sha256": "92c7dbd90bb99610a6abd862c182efe2aa91e8a264b513c2b6e80cfe28ed10e2",
+      "bytes": 366805,
+      "legacyPaths": [
+        "docs/references/cherry-coffee-table/bent-leg-reference.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/dimensions.png",
+      "kind": "user",
+      "sha256": "a44811281179f23ed3c010ab95c986b0bbce0d682a371ff189b4ed635b08e161",
+      "bytes": 329092,
+      "legacyPaths": [
+        "docs/references/cherry-coffee-table/dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/leg-reference.png",
+      "kind": "user",
+      "sha256": "ecf2f3642aaeda55a6417fb14d977f04632c5bf69630dbf9f9256072f569d5a2",
+      "bytes": 661525,
+      "legacyPaths": [
+        "docs/references/cherry-coffee-table/leg-reference.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/white-top.png",
+      "kind": "user",
+      "sha256": "5e55db1e7c66885704f61cb98f0d5f8fb690b83bdd1591e20135d48a91082a3c",
+      "bytes": 162979,
+      "legacyPaths": [
+        "docs/references/cherry-coffee-table/white-top.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/blender-part-identities-20261024/summary.json",
+    "docs/validation/furniture-solids-upgrade-20261021/summary.json",
+    "docs/validation/cherry-coffee-table-20261020/refined-bend/results.json",
+    "docs/validation/cherry-coffee-table-20261020/bent-board/results.json",
+    "docs/validation/cherry-coffee-table-20261020/legs/results.json",
+    "docs/validation/cherry-coffee-table-20261020/results.json",
+    "docs/validation/cherry-coffee-table-20261020/rounded/results.json",
+    "docs/validation/generator-part-identities-20261025/summary.json"
+  ]
+}

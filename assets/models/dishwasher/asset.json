@@ -1,0 +1,33 @@
+{
+  "format": 1,
+  "id": "dishwasher",
+  "name": "米家-台式5套洗碗机",
+  "types": [
+    "dishwasher_mijia_countertop"
+  ],
+  "route": "blender",
+  "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+  "sourceLinks": [],
+  "references": [],
+  "missingReferences": [
+    {
+      "uploadName": "codex-clipboard-f81b2a64-8bd3-494d-8671-ad4508fe76e2.png",
+      "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-f040c66d-1cef-4ccf-ad89-d983bbdb76d0.png",
+      "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-9f439b7c-9946-47f8-979b-f2ef8598b50b.png",
+      "document": "docs/DISHWASHER-MIJIA-COUNTERTOP.md",
+      "status": "not-found-locally"
+    }
+  ],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/blender-dishwasher-fold-20261029/README.md"
+  ]
+}

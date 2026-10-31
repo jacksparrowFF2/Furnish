@@ -1,0 +1,80 @@
+{
+  "format": 1,
+  "id": "robot-p20max",
+  "name": "石头-P20Max-扫拖机器人",
+  "types": [
+    "robot_p20max",
+    "robot_p20max_tank",
+    "robot_p20max_plumbed"
+  ],
+  "route": "parametric",
+  "document": "docs/ROBOROCK-P20MAX.md",
+  "sourceLinks": [
+    "http://127.0.0.1:8765/output/robot-p20max/preview.html"
+  ],
+  "references": [
+    {
+      "path": "references/user/reference-dimensions.png",
+      "kind": "user",
+      "sha256": "b6d8396eaae0b32f865e6c15dac165af5887a0350705a3a6d2bf86feee7d9a61",
+      "bytes": 877256,
+      "legacyPaths": [
+        "docs/references/robot-p20max/reference-dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-dock-shell.png",
+      "kind": "user",
+      "sha256": "cbbf517a26e8f760f11f8b40b74fafe2ec1ca29707f97a57120f847de4971d1a",
+      "bytes": 206906,
+      "legacyPaths": [
+        "docs/references/robot-p20max/reference-dock-shell.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-products.png",
+      "kind": "user",
+      "sha256": "29fb100b1a66819d5d3a5da1c8695fc9084fa6fa561b74b44b5e3d732a88bf00",
+      "bytes": 623879,
+      "legacyPaths": [
+        "docs/references/robot-p20max/reference-products.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-tank-empty.png",
+      "kind": "user",
+      "sha256": "8017e803f5deefdd3ff92fe7d50db550cb9344c3a5b8b219f43ace7886741b8d",
+      "bytes": 988811,
+      "legacyPaths": [
+        "docs/references/robot-p20max/reference-tank-empty.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-tank-side.png",
+      "kind": "user",
+      "sha256": "8493a041726b5016cdf74af4eadd3b0cfccef9d2e900b4cae60d6fddbbb1459c",
+      "bytes": 442800,
+      "legacyPaths": [
+        "docs/references/robot-p20max/reference-tank-side.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-tank-top.png",
+      "kind": "user",
+      "sha256": "169b360e4378bdb15128cabe9bc15075387546f7c6950c2f2218b1634facd3de",
+      "bytes": 630757,
+      "legacyPaths": [
+        "docs/references/robot-p20max/reference-tank-top.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": []
+}

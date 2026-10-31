@@ -4,7 +4,7 @@
 
 ## 资料与尺寸
 
-依据用户提供的[产品参考图](validation/cat-tree-20261019/reference.png)。图中文字作为产品证据读取。
+依据用户提供的[产品参考图](../assets/models/cat-tree/references/user/reference.png)。图中文字作为产品证据读取。
 
 | 参数 | 数值 | 依据 |
 | --- | --- | --- |

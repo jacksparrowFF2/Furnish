@@ -15,7 +15,7 @@
 
 实际几何回归覆盖较长平直中段、末端渐进回弯、四片板的恒定法向厚度、最小内距及旋转／镜像。模型专项、改动脚本语法、HTTP／断网 file 的原编辑与保存恢复、主场景和窄屏专项通过；未运行全量检查。见 [本轮结果](validation/cherry-coffee-table-20261020/refined-bend/results.json)、[装回后的斜视](validation/cherry-coffee-table-20261020/refined-bend/file-angle.png)、[后斜视](validation/cherry-coffee-table-20261020/refined-bend/file-rear.png)、[侧面](validation/cherry-coffee-table-20261020/refined-bend/file-side.png)。
 
-用户依据 [内侧照片](references/cherry-coffee-table/bent-leg-reference.png) 明确指出两端是向桌体内侧弯曲，前版将外表面削薄的理解错误。现由同一中性圆弧的两条法向偏移生成木板内／外表面，平直区与弯曲区都保持 28 mm 法向板厚，仅边缘保留小圆角。左右腿镜像，前后端均向两腿之间回弯。图片未标弯曲角／半径；当前末端转角约 33.2°、中性半径约 196 mm，为外观估算，不能作为加工数据。
+用户依据 [内侧照片](../assets/models/cherry-coffee-table/references/user/bent-leg-reference.png) 明确指出两端是向桌体内侧弯曲，前版将外表面削薄的理解错误。现由同一中性圆弧的两条法向偏移生成木板内／外表面，平直区与弯曲区都保持 28 mm 法向板厚，仅边缘保留小圆角。左右腿镜像，前后端均向两腿之间回弯。图片未标弯曲角／半径；当前末端转角约 33.2°、中性半径约 196 mm，为外观估算，不能作为加工数据。
 
 弯板的整体横向包络自然大于 28 mm。两腿按内弯尖端的实际最小内侧间距 880 mm 放置，中段内侧间距因此更宽；不再将“28 mm 板厚”等同腿板横向包络，也不再把内面强制保持平面。桌体整体仍为 1200 × 650 × 450 mm。内侧连接条与固定块随腿板基准移动，空间检查仍保守使用整件包络，无新持久字段或空间算法变化。
 
@@ -23,7 +23,7 @@
 
 ## 当前桌腿结构（2026-10-20 参考图纠正）
 
-用户进一步确认 [桌腿图片](references/cherry-coffee-table/leg-reference.png) 是同一整块桌腿的外／内侧。生产模型已用两片曲面木翼替代首版单平板：中间 36 mm 宽的黑色连接脊内嵌，两侧木翼在距中线约 155–270 mm 的宽范围连续回收；最大木板厚仍为 28 mm，边端回收到约 16 mm，底部角半径约 24 mm、顶部约 4 mm，并带细圆边。内面补两根横向木连接条、两块固定木块及可见螺栓。该段以本轮生产结构为准，取代下文早期“平板外贴黑条／隐藏连接件不模拟”与侧板统一 11 mm 滚圆的记录；滑轨、承重和不可见连接方式仍未模拟。
+用户进一步确认 [桌腿图片](../assets/models/cherry-coffee-table/references/user/leg-reference.png) 是同一整块桌腿的外／内侧。生产模型已用两片曲面木翼替代首版单平板：中间 36 mm 宽的黑色连接脊内嵌，两侧木翼在距中线约 155–270 mm 的宽范围连续回收；最大木板厚仍为 28 mm，边端回收到约 16 mm，底部角半径约 24 mm、顶部约 4 mm，并带细圆边。内面补两根横向木连接条、两块固定木块及可见螺栓。该段以本轮生产结构为准，取代下文早期“平板外贴黑条／隐藏连接件不模拟”与侧板统一 11 mm 滚圆的记录；滑轨、承重和不可见连接方式仍未模拟。
 
 除图示总高／深／28 mm 板厚／880 mm 腿间净距外，宽幅肩部截面、中心脊宽厚、连接条、固定块和螺栓的全部尺寸及位置均为照片外观估算，不能作为加工或五金安装依据。实际侧板高 419、深 540，木翼内侧基准 ±440、外侧最大 ±468 mm；原家具外包与持久字段保持。空间算法继续使用整体保守包络，没有把新增桌腿内侧结构解释为可用空腔。
 
@@ -33,7 +33,7 @@
 
 ## 尺寸依据
 
-参考图归档：[白色款](references/cherry-coffee-table/white-top.png)、[尺寸图](references/cherry-coffee-table/dimensions.png)。原图说明实物测量可能有约 ±10 mm 误差；模型没有将此数值用作碰撞容差。
+参考图归档：[白色款](../assets/models/cherry-coffee-table/references/user/white-top.png)、[尺寸图](../assets/models/cherry-coffee-table/references/user/dimensions.png)。原图说明实物测量可能有约 ±10 mm 误差；模型没有将此数值用作碰撞容差。
 
 | 参数 | 默认值／依据 |
 |---|---|

@@ -1,0 +1,79 @@
+{
+  "format": 1,
+  "id": "tea-bar",
+  "name": "米家-茶吧机Pro",
+  "types": [
+    "tea_bar_mijia_pro"
+  ],
+  "route": "parametric",
+  "document": "docs/TEA-BAR-MIJIA-PRO.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference-bottle-dimensions.png",
+      "kind": "user",
+      "sha256": "f04958227f557aa5cb4f178f3bdedf657b0af723934730fe2c34510175cf5542",
+      "bytes": 419017,
+      "legacyPaths": [
+        "docs/validation/tea-bar-opening-20261020/reference-bottle-dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-dimensions.png",
+      "kind": "user",
+      "sha256": "8fa8fac043e18f21cfcf31c45540150452596bec92be434d7cee0dde643fd2ef",
+      "bytes": 167866,
+      "legacyPaths": [
+        "docs/validation/tea-bar-20261020/reference-dimensions.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-product.png",
+      "kind": "user",
+      "sha256": "ed3fbaff3696d53ea8d1acb657c3dbd240a0629edf51e1c69c7fe991d695d4ac",
+      "bytes": 1030678,
+      "legacyPaths": [
+        "docs/validation/tea-bar-20261020/reference-product.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-serving.png",
+      "kind": "user",
+      "sha256": "fade010f99e355ea4d5cf176780c84b15638025eacd65106458d5c755cc702fb",
+      "bytes": 723608,
+      "legacyPaths": [
+        "docs/validation/tea-bar-20261020/reference-serving.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-sterilizer.png",
+      "kind": "user",
+      "sha256": "43926f477846b205d069288bf536c9d05194c15b51d4b40218bf4fa16c31f69c",
+      "bytes": 289626,
+      "legacyPaths": [
+        "docs/validation/tea-bar-opening-20261020/reference-sterilizer.png"
+      ],
+      "uploadNames": []
+    },
+    {
+      "path": "references/user/reference-storage.png",
+      "kind": "user",
+      "sha256": "c46052768a0c4f37bffcd1b5dd35e513da0d4f6a51b2a47afbb6205111ac51ef",
+      "bytes": 749019,
+      "legacyPaths": [
+        "docs/validation/tea-bar-20261020/reference-storage.png"
+      ],
+      "uploadNames": []
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/tea-bar-20261020.json",
+    "docs/validation/tea-bar-opening-20261020.json"
+  ]
+}

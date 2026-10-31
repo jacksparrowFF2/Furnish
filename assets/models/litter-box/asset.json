@@ -1,0 +1,26 @@
+{
+  "format": 1,
+  "id": "litter-box",
+  "name": "猫砂盆（型号未确认）",
+  "types": [
+    "litter_box"
+  ],
+  "route": "parametric",
+  "document": "docs/LITTER-BOX.md",
+  "sourceLinks": [],
+  "references": [],
+  "missingReferences": [
+    {
+      "uploadName": "codex-clipboard-42189e27-4f7a-46e2-af85-2410da557372.png",
+      "document": "docs/LITTER-BOX.md",
+      "status": "not-found-locally"
+    },
+    {
+      "uploadName": "codex-clipboard-69bb6ffc-74fe-40eb-a760-ac7c21d964eb.png",
+      "document": "docs/LITTER-BOX.md",
+      "status": "not-found-locally"
+    }
+  ],
+  "supportingFiles": [],
+  "validation": []
+}

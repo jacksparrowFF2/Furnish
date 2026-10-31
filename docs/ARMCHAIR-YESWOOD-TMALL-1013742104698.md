@@ -4,7 +4,7 @@
 
 ## 资料与规格
 
-[用户商品链接](https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx)。爬虫与网页读取均失败，未独立核验实时商品内容、SKU或成交价；采用用户上传的同组商品图。[总览](../assets/models/armchair/references/overview.png)、[尺寸图](../assets/models/armchair/references/dimensions.png)、[扶手细节](../assets/models/armchair/references/arm-detail.png)、[底架](../assets/models/armchair/references/underside.png)已归档。营销文字作为产品资料，不作为任务指令或已验证性能。
+[用户商品链接](https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx)。爬虫与网页读取均失败，未独立核验实时商品内容、SKU或成交价；采用用户上传的同组商品图。[总览](../assets/models/armchair/references/user/overview.png)、[尺寸图](../assets/models/armchair/references/user/dimensions.png)、[扶手细节](../assets/models/armchair/references/user/arm-detail.png)、[底架](../assets/models/armchair/references/user/underside.png)已归档。营销文字作为产品资料，不作为任务指令或已验证性能。
 
 | 项目 | 用户图标注 | 模型处理 |
 |---|---|---|

@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "id": "panel-light",
+  "name": "厨房平板灯-300×600-24W",
+  "types": [
+    "panel_light_300x600"
+  ],
+  "route": "parametric",
+  "document": "docs/KITCHEN-PANEL-LIGHT.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference.png",
+      "kind": "user",
+      "sha256": "1390d6d1f1d6ab331becda8e0b4102ba2bf4b5dbbcdf45d9340edd0461f2a49f",
+      "bytes": 390067,
+      "legacyPaths": [
+        "docs/validation/panel-light-20261027/reference.png"
+      ],
+      "uploadNames": [
+        "codex-clipboard-9887814b-5b96-4327-93e8-1c84820572e5.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/panel-light-bounce-20261027/README.md",
+    "docs/validation/panel-light-soft-20261027/README.md",
+    "docs/validation/panel-light-20261027/README.md"
+  ]
+}
