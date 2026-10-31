@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const runtimeFiles=['serve.cjs','server-runtime.cjs','server-recovery.cjs','backend-update.cjs','repository-server.cjs','workspace-files.cjs','blender-server.cjs','blender-render.py','blender-sync-server.cjs','blender-sync-addon.py','blender-project.cjs','blender-refined.py','desktop-mcp.cjs','furnish-mcp.cjs'];
+const runtimeFiles=['serve.cjs','server-runtime.cjs','server-recovery.cjs','backend-update.cjs','repository-server.cjs','workspace-files.cjs','blender-server.cjs','blender-render.py','blender-sync-server.cjs','blender-sync-addon.py','blender-project.cjs','blender-refined.py','desktop-mcp.cjs','furnish-mcp.cjs','register-codex-mcp.cjs'];
 function build({out=path.join(root,'output/desktop/Furnish-win32-x64'),portable=false}={}){
  out=path.resolve(out);
  if(fs.existsSync(out))throw Error('输出目录已存在，可能包含用户设计；请用 --out 指定新的空目录：'+out);
@@ -11,7 +11,7 @@ function build({out=path.join(root,'output/desktop/Furnish-win32-x64'),portable=
  fs.mkdirSync(out,{recursive:true});fs.cpSync(electron,out,{recursive:true});
  fs.renameSync(path.join(out,'electron.exe'),path.join(out,'Furnish.exe'));
  fs.renameSync(path.join(out,'LICENSE'),path.join(out,'LICENSE.electron'));
- for(const name of ['index.html','manifest.webmanifest','LICENSE','start-furnish.cmd','src','styles','vendor','assets','templates','examples'])fs.cpSync(path.join(root,name),path.join(out,name),{recursive:true});
+ for(const name of ['index.html','manifest.webmanifest','LICENSE','start-furnish.cmd','connect-codex.cmd','src','styles','vendor','assets','templates','examples'])fs.cpSync(path.join(root,name),path.join(out,name),{recursive:true});
  fs.mkdirSync(path.join(out,'scripts'));
  for(const name of runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(out,'scripts',name));
  const appDir=path.join(out,'resources/app');fs.mkdirSync(appDir,{recursive:true});

@@ -49,6 +49,26 @@ MCP 连接正在运行的 Furnish 桌面主窗口。它读取的是当前画布�
 
 截图等相机过渡和生产门扇／推拉门／窗帘端态稳定后捕获真实画布；捕获前后再核对方案、视角、视口，变化则拒绝并提示重试。拖动、绘制、模态编辑及临时替换／风格预览时拒绝截图。浏览器和 `file://` 不创建桌面捕获端点；断网直接打开原应用仍保持可用。
 
+## 注册与启动入口
+
+桌面按 `Alt` 显示菜单，再选择 **MCP → 注册并连接 Codex（MCP）** 会启动／复用当前桌面本机端点，使用官方 Codex CLI 注册 `furnish`，再启动一个短期 stdio 连接验证全部工具。成功后启用“启动时检查 Codex 注册”；该开关只存在本机 `.local/codex-mcp-registration.json`，不进入装修方案。首次使用仍须点击连接入口；Furnish 不会在未启用该开关时静默改写 Codex 配置。
+
+也可双击根目录的 **connect-codex.cmd**，或运行：
+
+```powershell
+npm run mcp:connect
+# 只读检查注册状态与新连接工具清单
+node scripts/register-codex-mcp.cjs --status
+# 关闭启动时检查
+node scripts/register-codex-mcp.cjs --no-automatic
+```
+
+本机包入口与桌面快捷方式同读 `furnish-desktop.json`，保持原工作目录；一键入口同时启动／复用 Furnish 桌面并等鉴权读取就绪；不关闭已有窗口、不改变布置。桌面包使用自带 Electron 的 Node 模式作为 stdio 运行时，无需另装 Node；源码目录的 cmd/npm 入口仍需 Node。**Codex 负责启动其 stdio 子进程，Furnish 负责启动桌面连接端点**，不用另开终端挂着 MCP 服务。此功能不会给 Codex 增加“自动打开 Furnish 窗口”的行为；需要窗口时运行一键入口或桌面快捷方式。
+
+工具会从 PATH 和本机 Codex 安装目录发现 CLI；特殊位置可用 `FURNISH_CODEX_CLI` 或 `--codex` 指定实际程序，桌面程序可用 `--desktop` 指定，工作目录可用 `--root` 指定。已有同目录注册直接保留命令、超时、工具限制和禁用设置，不重复注册；同名 `furnish` 指向其它目录时拒绝覆盖。首次写入前备份现有 Codex 配置到被 Git 忽略的 `.local/codex-mcp-backups`，实际写入交给 `codex mcp add`，不自行重写 TOML，也不把全局配置纳入仓库。
+
+菜单“检查 Codex 注册与工具”及 CLI `--status` 为只读注册检查，验证的是**新 stdio 连接**。注册／启动不等于刷新当前 Codex 聊天：已经加载的旧进程仍可能只显示4工具，需由 Codex 重载 MCP。新服务应返回11工具；若已有 `enabled_tools/disabled_tools` 限制，另报有效数量并保留原限制。自动检查失败只记录诊断，不妨碍 Furnish 编辑；可随时再次点击连接入口。`FURNISH_MCP_DISABLE=1` 继续禁止桌面端点和一键启动。
+
 ## 连接与本机配置
 
 入口为 `node scripts/furnish-mcp.cjs`，或 `npm run mcp`。它使用 MCP 2025-11-25 的 stdio 生命周期和换行 JSON-RPC，协商兼容 2025-06-18、2025-03-26、2024-11-05；宣告上述 11 个工具，不提供脚本执行、任意文件或远程网络访问工具。无新增 npm 依赖。

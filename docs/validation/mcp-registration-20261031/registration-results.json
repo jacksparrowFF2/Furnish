@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checks": [
+    "real Codex CLI registration and read-only status",
+    "config backup and unrelated server preserved",
+    "repeat registration changes no existing settings",
+    "manual command, timeout, tool policy and disabled status preserved",
+    "other-root collision and invalid config refused",
+    "missing CLI and explicit invalid override",
+    "automatic registration preference",
+    "bundled Electron Node stdio discovers 11 tools without external Node"
+  ]
+}

@@ -1,6 +1,6 @@
 'use strict';
 // Real packaged EXE + real stdio MCP. All edits stay in a private project/profile.
-const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),http=require('node:http'),{spawn}=require('node:child_process'),readline=require('node:readline'),{pathToFileURL}=require('node:url');
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),http=require('node:http'),{spawn,execFileSync}=require('node:child_process'),readline=require('node:readline'),{pathToFileURL}=require('node:url');
 const {_electron,chromium}=require('playwright'),root=path.resolve(__dirname,'..'),C=require('../src/core/repository-core.js'),Files=require('../scripts/workspace-files.cjs');
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const freePort=async()=>{const s=http.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const port=s.address().port;await new Promise(r=>s.close(r));return port;};
@@ -15,13 +15,26 @@ const freePort=async()=>{const s=http.createServer();await new Promise(r=>s.list
  for(const entry of fs.readdirSync(packaged,{withFileTypes:true}))if(entry.isFile()||entry.name==='locales')fs.cpSync(path.join(packaged,entry.name),path.join(shell,entry.name),{recursive:true});
  const appDir=path.join(shell,'resources/app');fs.mkdirSync(appDir,{recursive:true});for(const name of ['main.cjs','policy.cjs','backend.cjs'])fs.copyFileSync(path.join(root,'desktop',name),path.join(appDir,name));fs.writeFileSync(path.join(appDir,'package.json'),JSON.stringify({name:'furnish-desktop',main:'main.cjs'}));
  const executable=path.join(shell,'Furnish.exe');assert.equal(hash(executable),hash(path.join(packaged,'Furnish.exe')));
- const port=await freePort(),env={...process.env,FURNISH_DESKTOP_ROOT:workspace,FURNISH_DESKTOP_PROFILE:path.join(run,'profile'),FURNISH_PORT:String(port)};delete env.ELECTRON_RUN_AS_NODE;delete env.FURNISH_MCP_DISABLE;
+ const codexHome=path.join(run,'codex-home');fs.mkdirSync(codexHome);
+ const port=await freePort(),env={...process.env,CODEX_HOME:codexHome,FURNISH_CODEX_CLI:require('../scripts/register-codex-mcp.cjs').findCodex(),FURNISH_DESKTOP_ROOT:workspace,FURNISH_DESKTOP_PROFILE:path.join(run,'profile'),FURNISH_PORT:String(port)};delete env.ELECTRON_RUN_AS_NODE;delete env.FURNISH_MCP_DISABLE;
  let app,child,browser;const checks=[],errors=[];
  fs.writeFileSync(path.join(run,'source-snapshot.json'),C.text(initial));
  try{
+  const setup=require('../scripts/register-codex-mcp.cjs'),boot=await setup.startDesktop({root:workspace,executable,env});assert(boot.started&&boot.running);assert.equal((await setup.startDesktop({root:workspace,executable,env})).started,false);
+  const runtime=JSON.parse(fs.readFileSync(path.join(workspace,'.local/desktop-mcp/runtime.json')));assert.equal(runtime.root,fs.realpathSync(workspace));assert(Number.isInteger(runtime.pid));
+  const closed=execFileSync('powershell.exe',['-NoProfile','-Command','$fixtureDesktop=Get-Process -Id '+runtime.pid+'; for($attempt=0;$attempt -lt 50;$attempt++){ $fixtureDesktop.Refresh(); if($fixtureDesktop.CloseMainWindow()){Write-Output closed;exit 0};Start-Sleep -Milliseconds 200 };exit 1'],{windowsHide:true,encoding:'utf8'});assert.match(closed,/closed/);
+  for(let i=0;fs.existsSync(path.join(workspace,'.local/desktop-mcp/runtime.json'));i++){assert(i<200,'one-click startup fixture must close cleanly');await new Promise(r=>setTimeout(r,100));}
+  const alive=()=>{try{process.kill(runtime.pid,0);return true;}catch{return false;}};for(let i=0;alive();i++){assert(i<300,'wait for native cleanup and instance lock release');await new Promise(r=>setTimeout(r,100));}
+  checks.push('one-click launches real isolated desktop and authenticated MCP; repeated start reuses endpoint; graceful native close');
   app=await _electron.launch({executablePath:executable,env,timeout:60000});const page=await app.firstWindow();page.on('pageerror',e=>errors.push(e.message));
   await page.waitForFunction(()=>typeof repositoryBooting!=='undefined'&&!repositoryBooting&&!!window.FurnishMcp,null,{timeout:120000});
   await new Promise((resolve,reject)=>{let n=0;const t=setInterval(()=>{if(fs.existsSync(path.join(workspace,'.local/desktop-mcp/runtime.json'))){clearInterval(t);resolve();}else if(++n>100){clearInterval(t);reject(Error('No desktop runtime'));}},50);});
+  const menuAction=async label=>{
+   await app.evaluate(({Menu,dialog},label)=>{globalThis.__mcpSetupMessage=null;globalThis.__mcpSetupFailure=null;dialog.showMessageBox=async(...args)=>{globalThis.__mcpSetupMessage=args.at(-1);return {response:0};};dialog.showErrorBox=(title,message)=>{globalThis.__mcpSetupFailure={title,message};};const menu=Menu.getApplicationMenu().items.find(i=>i.label==='MCP');if(!menu)throw Error('Missing MCP menu');menu.submenu.items.find(i=>i.label===label).click();},label);
+   for(let i=0;i<200;i++){const result=await app.evaluate(()=>({message:globalThis.__mcpSetupMessage,failure:globalThis.__mcpSetupFailure}));if(result.failure)throw Error(JSON.stringify(result.failure));if(result.message)return result.message;await new Promise(r=>setTimeout(r,100));}throw Error('MCP menu action timeout');
+  };
+  const menuResult=await menuAction('注册并连接 Codex（MCP）');assert.match(menuResult.message,/11/);assert(menuResult.detail.includes('take_screenshot'));assert(require('../scripts/register-codex-mcp.cjs').preference(workspace));
+  const menuChecked=await app.evaluate(({Menu})=>Menu.getApplicationMenu().getMenuItemById('mcp-auto-register').checked);assert(menuChecked);const codexConfig=fs.readFileSync(path.join(codexHome,'config.toml'));const recheck=await menuAction('检查 Codex 注册与工具');assert.match(recheck.message,/11/);assert.deepEqual(fs.readFileSync(path.join(codexHome,'config.toml')),codexConfig);checks.push('real desktop menu registers bundled runtime in isolated Codex home, finds 11 tools, enables future checks, repeated read leaves config unchanged');
   child=spawn(process.execPath,[path.join(root,'scripts/furnish-mcp.cjs'),'--root',workspace],{windowsHide:true,stdio:['pipe','pipe','pipe']});
   const pending=new Map();let seq=0;readline.createInterface({input:child.stdout}).on('line',line=>{const m=JSON.parse(line);pending.get(m.id)?.(m);pending.delete(m.id);});
   const rpc=(method,params={})=>new Promise((resolve,reject)=>{const id=++seq,t=setTimeout(()=>{pending.delete(id);reject(Error('MCP test timeout '+method));},150000);pending.set(id,value=>{clearTimeout(t);resolve(value);});child.stdin.write(JSON.stringify({jsonrpc:'2.0',id,method,params})+'\n');});

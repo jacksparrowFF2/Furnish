@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checks": [
+    "one-click launches real isolated desktop and authenticated MCP; repeated start reuses endpoint; graceful native close",
+    "real desktop menu registers bundled runtime in isolated Codex home, finds 11 tools, enables future checks, repeated read leaves config unchanged",
+    "real packaged desktop and stdio read isolated formal project",
+    "copy enters independent design, preserves original and retry never duplicates",
+    "catalog addition with exact mm and idempotency; rule-derived parameters, atomic failures, native undo/redo; actual 3D camera, native PNG MCP image blocks in 2D/3D, no camera undo or project edits",
+    "complete laundry assembly links, atomic undo/redo, full cabinet structure edit, optional parameter deletion with original default",
+    "mm position/width/depth/height/rotation uses one existing undo; idempotent retry",
+    "stale revision refused without edits",
+    "native UI undo and redo reverse MCP furniture edits",
+    "locked furniture and invalid batch are atomic failures",
+    "space check equals production rules and saved threshold",
+    "formal save, original design preservation and page reload roundtrip with new session revision",
+    "external write conflict preserves disk, returns applied but unsaved and blocks further edits",
+    "direct offline file:// startup and production 3D camera preserved",
+    "desktop quit removes runtime endpoint"
+  ],
+  "errors": [],
+  "originalProjectUnchanged": true,
+  "originalRepositoryUnchanged": true,
+  "isolatedRootVerified": true
+}

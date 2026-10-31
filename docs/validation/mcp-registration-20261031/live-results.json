@@ -1,0 +1,35 @@
+{
+  "planSame": true,
+  "designSame": true,
+  "furnitureSame": true,
+  "formalFileUnchanged": true,
+  "codexConfigUnchanged": true,
+  "autoRegister": true,
+  "toolNames": [
+    "get_current_plan",
+    "copy_design",
+    "update_furniture",
+    "check_space",
+    "list_catalog",
+    "add_furniture",
+    "get_furniture_parameters",
+    "configure_furniture",
+    "get_camera",
+    "set_camera",
+    "take_screenshot"
+  ],
+  "exposedToolNames": [
+    "get_current_plan",
+    "copy_design",
+    "update_furniture",
+    "check_space",
+    "list_catalog",
+    "add_furniture",
+    "get_furniture_parameters",
+    "configure_furniture",
+    "get_camera",
+    "set_camera",
+    "take_screenshot"
+  ],
+  "save": "saved"
+}

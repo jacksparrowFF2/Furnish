@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const Core=require('../src/core/mcp-core.js');
-function callDesktop(root,name,args){
+function callDesktop(root,name,args,{timeout=180000}={}){
  Core.validate(name,args);
  const file=path.join(root,'.local/desktop-mcp/runtime.json');let info;
  try{info=JSON.parse(fs.readFileSync(file,'utf8'));}catch{throw Error('请先启动此工作目录的 Furnish 桌面快捷方式（需支持 MCP 的桌面壳）');}
@@ -12,7 +12,7 @@ function callDesktop(root,name,args){
   const req=http.request({hostname:'127.0.0.1',port:info.port,path:'/command',method:'POST',headers:{Authorization:'Bearer '+info.token,'Content-Type':'application/json','Content-Length':Buffer.byteLength(body)}},res=>{
    let data='',size=0;res.setEncoding('utf8');res.on('data',c=>{size+=Buffer.byteLength(c);if(size>64e6){res.destroy();reject(Error('MCP response exceeds 64 MB'));}else data+=c;});res.on('error',reject);res.on('end',()=>{try{const value=JSON.parse(data);if(res.statusCode!==200)throw Error(value.error||'Furnish command failed');resolve(value.result);}catch(e){reject(e);}});
   });
-  req.setTimeout(180000,()=>req.destroy(Error('Furnish 响应超时；修改可能已应用，重新读取状态，勿更换 requestId 重试')));req.on('error',reject);req.end(body);
+  req.setTimeout(timeout,()=>req.destroy(Error('Furnish 响应超时；修改可能已应用，重新读取状态，勿更换 requestId 重试')));req.on('error',reject);req.end(body);
  });
 }
 function serve({input=process.stdin,output=process.stdout,root=path.resolve(__dirname,'..')}={}){

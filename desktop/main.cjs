@@ -44,6 +44,42 @@ async function createWindow(){
  win.once('ready-to-show',()=>{if(!win.isDestroyed()&&!quitting)win.show();});
  try{await win.loadURL(backend.url);}catch(e){if(!win.isDestroyed()&&!quitting)throw e;}
 }
+function ensureMcp(){
+ if(process.env.FURNISH_MCP_DISABLE==='1')return Promise.reject(Error('MCP 已被 FURNISH_MCP_DISABLE 禁用，请移除该设置后重新启动 Furnish。'));
+ if(mcpStarting)return mcpStarting;
+ mcpStarting=require(path.join(root,'scripts/desktop-mcp.cjs')).start({root,dispatch:async(name,args)=>{
+    const win=mainWindow;if(quitting||!win||win.isDestroyed())throw Error('Furnish 主窗口尚未就绪');
+    const page=new URL(win.webContents.getURL());if(page.origin!==new URL(backend.url).origin||!['/','/index.html'].includes(page.pathname))throw Error('Furnish 主窗口未处于正式项目页面');
+    const result=await win.webContents.executeJavaScript(`(async()=>{if(!window.FurnishMcp)throw Error('Furnish 页面尚未加载 MCP 接口，请刷新');return window.FurnishMcp.execute(${JSON.stringify(name)},${JSON.stringify(args)});})()`);
+    if(name==='take_screenshot'){
+     const picture=await win.webContents.capturePage(result.screenshotTarget==='window'?undefined:result.viewport);
+     if(picture.isEmpty())throw Error('桌面截图为空，请恢复窗口后重试');
+     const after=await win.webContents.executeJavaScript("window.FurnishMcp.execute('get_camera',{})");
+     if(after.revision!==result.revision||after.view!==result.view||JSON.stringify(after.camera)!==JSON.stringify(result.camera)||JSON.stringify(after.planView)!==JSON.stringify(result.planView)||JSON.stringify(after.viewport)!==JSON.stringify(result.viewport))throw Error('截图期间方案或视角变化，请重试');
+     return {...result,image:{mimeType:'image/png',data:picture.toPNG().toString('base64'),...picture.getSize()}};
+    }
+    return result;
+   }}).catch(error=>{mcpStarting=null;throw error;});return mcpStarting;
+}
+const codexSetup=()=>require(path.join(root,'scripts/register-codex-mcp.cjs'));
+let setupBusy=false;
+async function configureCodex({register=true,automatic=false,show=true}={}){
+ if(setupBusy)return;setupBusy=true;
+ try{
+  await ensureMcp();
+  const result=await codexSetup().connect({root,executable:process.execPath,electron:true,register,automatic});
+  const menu=Menu.getApplicationMenu?.()?.getMenuItemById('mcp-auto-register');if(menu)menu.checked=codexSetup().preference(root);
+  if(show){const options={type:result.enabled===false?'warning':'info',title:'Furnish MCP 与 Codex',message:result.message,detail:'本机 MCP 端点：已启动\n'+(result.toolNames.length?'新连接工具：'+result.toolNames.join('、'):'')+'\n当前 Codex 聊天的工具清单由 Codex 管理；若仍显示旧工具，请在 Codex 设置中重载 MCP。',buttons:['确定']};if(mainWindow&&!mainWindow.isDestroyed())await dialog.showMessageBox(mainWindow,options);else await dialog.showMessageBox(options);}
+  return result;
+ }catch(e){if(show)dialog.showErrorBox('Codex MCP 连接未完成',e.message);else console.error('Codex MCP: '+e.message);}
+ finally{setupBusy=false;}
+}
+function codexMenu(){return {label:'MCP',submenu:[
+ {label:'注册并连接 Codex（MCP）',click:()=>configureCodex({automatic:true})},
+ {label:'检查 Codex 注册与工具',click:()=>configureCodex({register:false})},
+ {id:'mcp-auto-register',label:'启动时检查 Codex 注册',type:'checkbox',checked:codexSetup().preference(root),click:item=>{try{codexSetup().setAutomatic(root,item.checked);if(item.checked)configureCodex();}catch(e){item.checked=!item.checked;dialog.showErrorBox('MCP 设置未保存',e.message);}}}
+]};}
+
 if(root){
  if(!app.requestSingleInstanceLock())app.quit();
  else{
@@ -56,24 +92,13 @@ if(root){
    backend=await connect({root,executable:process.execPath,port:Number(process.env.FURNISH_PORT||8765)});
    Menu.setApplicationMenu(Menu.buildFromTemplate([
     {label:'Furnish',submenu:[{label:'打开工作目录',click:()=>shell.openPath(root)},{label:'在浏览器中打开',click:()=>shell.openExternal(backend.url)},{type:'separator'},{role:'quit',label:'退出'}]},
+    codexMenu(),
     {label:'视图',submenu:[{role:'reload',label:'刷新'},{role:'togglefullscreen',label:'全屏'},{role:'toggleDevTools',label:'开发者工具'}]},
     {label:'帮助',submenu:[{label:'关于 Furnish',click:()=>dialog.showMessageBox(mainWindow,{title:'Furnish 桌面版',message:'Furnish 本地装修设计',detail:'工作目录：'+root+'\n在“保存／导出 → 保存位置与历史备份”查看或修改正式文件位置。\n桌面缓存：'+app.getPath('userData')+'\nElectron '+process.versions.electron+'；离线可用。',buttons:['确定']})}]}
    ]));
    await createWindow();
    if(quitting||!mainWindow||mainWindow.isDestroyed())return;
-   if(process.env.FURNISH_MCP_DISABLE!=='1'){mcpStarting=require(path.join(root,'scripts/desktop-mcp.cjs')).start({root,dispatch:async(name,args)=>{
-    const win=mainWindow;if(quitting||!win||win.isDestroyed())throw Error('Furnish 主窗口尚未就绪');
-    const page=new URL(win.webContents.getURL());if(page.origin!==new URL(backend.url).origin||!['/','/index.html'].includes(page.pathname))throw Error('Furnish 主窗口未处于正式项目页面');
-    const result=await win.webContents.executeJavaScript(`(async()=>{if(!window.FurnishMcp)throw Error('Furnish 页面尚未加载 MCP 接口，请刷新');return window.FurnishMcp.execute(${JSON.stringify(name)},${JSON.stringify(args)});})()`);
-    if(name==='take_screenshot'){
-     const picture=await win.webContents.capturePage(result.screenshotTarget==='window'?undefined:result.viewport);
-     if(picture.isEmpty())throw Error('桌面截图为空，请恢复窗口后重试');
-     const after=await win.webContents.executeJavaScript("window.FurnishMcp.execute('get_camera',{})");
-     if(after.revision!==result.revision||after.view!==result.view||JSON.stringify(after.camera)!==JSON.stringify(result.camera)||JSON.stringify(after.planView)!==JSON.stringify(result.planView)||JSON.stringify(after.viewport)!==JSON.stringify(result.viewport))throw Error('截图期间方案或视角变化，请重试');
-     return {...result,image:{mimeType:'image/png',data:picture.toPNG().toString('base64'),...picture.getSize()}};
-    }
-    return result;
-   }});await mcpStarting;}
+   if(process.env.FURNISH_MCP_DISABLE!=='1'){await ensureMcp();if(codexSetup().preference(root))configureCodex({show:false});}
   }).catch(e=>{console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
   app.on('window-all-closed',()=>app.quit());
   app.on('will-quit',event=>{if(backend&&!quitting){

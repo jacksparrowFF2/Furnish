@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（MCP注册启动）：register-codex-mcp沿官方CLI仅创建缺失的furnish注册并探测新stdio连接，保留已有超时／工具限制／禁用与异目录绑定；桌面MCP菜单共用ensureMcp，首次连接后可选本机启动检查。一键cmd／npm入口启动或复用桌面并等鉴权就绪，打包运行时可自带Node模式。无装修字段／网页加载／保存变化，见[MCP注册与启动](MCP.md#注册与启动入口)。
+
 2026-10-31（MCP设计与视觉）：mcp-core扩展家具库／新增／产品配置与相机／截图固定命令。UI与MCP共用createCatalogFurniture，配置沿产品能力、完整工作区预演及原mutate／flush；主场景公开受限相机与端态等待接口，桌面capturePage输出原生PNG，stdio返回image块。无新项目字段／加载脚本／保存通道，桌面壳需更新，见[MCP契约](MCP.md)。
 
 2026-10-31（飘窗窗上墙体）：bay-window-core.upperWalls按凹入式飘窗实际轮廓、窗顶和邻室房顶派生实体；bay-window-model用于正式三维／GLB，wall-finish-core.spatial以同源有限高度墙体供实体、开启与量距复用。新增一个经典本地脚本，无新持久字段／格式变化；适用确认纳入派生上下文，见[验收](validation/bay-upper-walls-20261031/README.md)。
