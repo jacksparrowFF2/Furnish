@@ -12,7 +12,7 @@ function build(T,f,options={}){
  }),normals=[];
   for(let i=0;i<part.normals.length;i+=3){const n=part.normals.slice(i,i+3).map((v,k)=>v/scale[k]),length=Math.hypot(...n);normals.push(...n.map(v=>v/length));}
   const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('normal',new T.Float32BufferAttribute(normals,3));geometry.setIndex(Array.from({length:positions.length/3},(_,i)=>i));
-  const props={...part.material,...(part.recolor?{color:f.color||'#f1f0ed'}:{})},material=options.mat?options.mat(props.color,props):new T.MeshStandardMaterial(props),mesh=new T.Mesh(geometry,material);mesh.name=part.name;mesh.userData.furnishStablePart=part.identity;mesh.userData.furnishPartSource=part.identity;mesh.castShadow=mesh.receiveShadow=true;(frame?.pivot||group).add(mesh);
+  const props={...part.material,...(part.recolor?{color:f.color||'#f1f0ed'}:{})},material=options.mat?options.mat(props.color,props):(root.FurnishModelPrimitives||require('./model-primitives.js')).createMaterial(T,props.color,props),mesh=new T.Mesh(geometry,material);mesh.name=part.name;mesh.userData.furnishStablePart=part.identity;mesh.userData.furnishPartSource=part.identity;mesh.castShadow=mesh.receiveShadow=true;(frame?.pivot||group).add(mesh);
  }
  group.userData.furnishAsset=asset.id+'@'+asset.version;return group;
 }

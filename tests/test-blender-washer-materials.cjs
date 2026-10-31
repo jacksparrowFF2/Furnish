@@ -2,7 +2,7 @@
 // Inspect the actual exchange file: a runtime material cannot reveal a missing
 // GLB assignment caused by empty Boolean material slots in a newer Blender.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),C=require('../src/core/washer-motion-core.js');
-const file=path.resolve(process.argv[2]||path.join(__dirname,'../assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.glb')),buffer=fs.readFileSync(file),doc=JSON.parse(buffer.subarray(20,20+buffer.readUInt32LE(12))),parts=C.reference({type:'washer_littleswan_tg10k60w'}),nodes=doc.nodes.filter(n=>n.extras?.furnishStablePart?.startsWith('washer-tg10k60w-v1:'));
+const file=path.resolve(process.argv[2]||path.join(__dirname,'../assets/models/washer-tg10k60w/v4/washer-tg10k60w-v1.glb')),buffer=fs.readFileSync(file),doc=JSON.parse(buffer.subarray(20,20+buffer.readUInt32LE(12))),parts=C.reference({type:'washer_littleswan_tg10k60w'}),nodes=doc.nodes.filter(n=>n.extras?.furnishStablePart?.startsWith('washer-tg10k60w-v1:'));
 assert.equal(nodes.length,47);
 for(const part of parts){
  const node=nodes.find(n=>n.name===part.name);assert(node,part.name+' missing');const mesh=doc.meshes[node.mesh],materials=new Set();

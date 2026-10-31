@@ -1,0 +1,480 @@
+{
+  "passed": true,
+  "profile": "hood",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "rangehood_fotile_jcd10ta",
+    "name": "方太抽油烟机 JCD10TA",
+    "w": 900,
+    "d": 350,
+    "color": "#111214",
+    "mountHeight": 1315,
+    "hoodPanelOpen": false,
+    "brand": "方太/FOTILE",
+    "model": "JCD10TA",
+    "h": 520
+  },
+  "alternateKind": "operating",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-10-31T05:30:44.837Z",
+  "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\hood-os8e7N",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-10-31T05:30:44.838Z",
+      "result": {
+        "command": "author-hood",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\hood-os8e7N\\authored",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\hood-os8e7N\\authored",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "parts": 27,
+        "motions": 1,
+        "preflight": {
+          "passed": true,
+          "profile": "hood",
+          "parts": 27,
+          "motions": 1
+        }
+      },
+      "finished": "2026-10-31T05:30:45.772Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-10-31T05:30:45.773Z",
+      "result": {
+        "passed": true,
+        "profile": "hood",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part",
+          "wrong-axis",
+          "wrong-pivot",
+          "detached-moving-part"
+        ],
+        "motionApplicable": true
+      },
+      "finished": "2026-10-31T05:30:46.562Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-10-31T05:30:46.563Z",
+      "result": {
+        "command": "publish-hood",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\hood-os8e7N\\authored\\hood-v1.glb",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\workspace\\src\\data\\hood-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "08b630b4d107e3b806cf9134171d22c3d1e63e7dbd914287bfea44e9ffa91fa4",
+        "runtimeSha256": "b51eb97a6d844c7f1e1968dfbb8ec9e420112e31eb14d0297d36d996460ba6ce"
+      },
+      "finished": "2026-10-31T05:30:47.425Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-10-31T05:30:47.426Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "blender-hood-asset",
+            "profile": "hood",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\hood-os8e7N\\blender-hood-asset.log",
+            "reused": false
+          },
+          {
+            "name": "hood-project-v33",
+            "profile": "hood",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\hood-os8e7N\\hood-project-v33.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "hood",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 27,
+                  "bottom": 1315,
+                  "top": 1835,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 27,
+                  "bottom": 1315,
+                  "top": 1835,
+                  "externalDistance": 100.00000000000006,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 27,
+                  "bottom": 1315,
+                  "top": 1835,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 27,
+                  "bottom": 1315,
+                  "top": 1835,
+                  "externalDistance": 100.00000000000006,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-10-31T05:30:48.929Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-10-31T05:30:48.930Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.44999998807907104,
+                1.315,
+                -0.17499999701976776
+              ],
+              [
+                0.44999998807907104,
+                1.8349999809265136,
+                0.17499999701976776
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "alternate",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.44999998807907104,
+                1.315,
+                -0.17499999701976776
+              ],
+              [
+                0.44999998807907104,
+                1.8349999809265136,
+                0.23402163340732837
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.5040000081062317,
+                1.315,
+                -0.1889999955892563
+              ],
+              [
+                0.5040000081062317,
+                1.8766000294685363,
+                0.1889999955892563
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.44999998807907104,
+                1.315,
+                -0.17499999701976776
+              ],
+              [
+                0.44999998807907104,
+                1.8349999809265136,
+                0.17499999701976776
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "alternate",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.44999998807907104,
+                1.315,
+                -0.17499999701976776
+              ],
+              [
+                0.44999998807907104,
+                1.8349999809265136,
+                0.23402163340732837
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:31:02.342Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-10-31T05:31:02.343Z",
+      "result": {
+        "passed": true,
+        "profile": "hood",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-alternate",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-alternate",
+            "parts": 27,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:31:03.404Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-10-31T05:31:03.405Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 27,
+            "position": [
+              0,
+              1.5749999904632568,
+              2.1079644005991445
+            ],
+            "target": [
+              0,
+              1.5749999904632568,
+              0.029510818193780305
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 27,
+            "position": [
+              1.1507078340305221,
+              2.207889299180044,
+              1.6405017858365112
+            ],
+            "target": [
+              0,
+              1.5749999904632568,
+              0.029510818193780305
+            ]
+          },
+          {
+            "id": "open",
+            "state": "alternate",
+            "parts": 27,
+            "position": [
+              1.1600796640135747,
+              2.155039822470044,
+              1.6536223478127845
+            ],
+            "target": [
+              0,
+              1.5749999904632568,
+              0.029510818193780305
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:31:09.965Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-10-31T05:31:09.965Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:31:13.099Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-10-31T05:31:13.099Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:31:16.210Z"
+    },
+    {
+      "name": "render-open",
+      "passed": true,
+      "started": "2026-10-31T05:31:16.210Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:31:19.297Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-10-31T05:31:19.297Z",
+      "result": {
+        "passed": true,
+        "profile": "hood",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "open",
+            "parts": 27,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:31:20.085Z"
+    }
+  ],
+  "finished": "2026-10-31T05:31:20.086Z"
+}

@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "case": "washer-final/before-glass",
+      "profile": "washer-tg10k60w",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    },
+    {
+      "case": "washer-final/after-glass",
+      "profile": "washer-tg10k60w",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 22,
+      "glassVerified": true
+    },
+    {
+      "case": "washer-final/before-oblique",
+      "profile": "washer-tg10k60w",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    },
+    {
+      "case": "washer-final/after-oblique",
+      "profile": "washer-tg10k60w",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 22,
+      "glassVerified": true
+    },
+    {
+      "case": "washer-final/after-open",
+      "profile": "washer-tg10k60w",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 22,
+      "glassVerified": true
+    },
+    {
+      "case": "fridge/before-oblique",
+      "profile": "fridge",
+      "parts": 30,
+      "geometryPreserved": true,
+      "microfinishParts": 0,
+      "glassVerified": true
+    },
+    {
+      "case": "fridge/after-oblique",
+      "profile": "fridge",
+      "parts": 30,
+      "geometryPreserved": true,
+      "microfinishParts": 10,
+      "glassVerified": true
+    },
+    {
+      "case": "fridge/after-open",
+      "profile": "fridge",
+      "parts": 30,
+      "geometryPreserved": true,
+      "microfinishParts": 10,
+      "glassVerified": true
+    },
+    {
+      "case": "hood-final/before-oblique",
+      "profile": "hood",
+      "parts": 27,
+      "geometryPreserved": true,
+      "microfinishParts": 0,
+      "glassVerified": true
+    },
+    {
+      "case": "hood-final/after-oblique",
+      "profile": "hood",
+      "parts": 27,
+      "geometryPreserved": true,
+      "microfinishParts": 23,
+      "glassVerified": true
+    },
+    {
+      "case": "hood-final/after-open",
+      "profile": "hood",
+      "parts": 27,
+      "geometryPreserved": true,
+      "microfinishParts": 23,
+      "glassVerified": true
+    }
+  ]
+}

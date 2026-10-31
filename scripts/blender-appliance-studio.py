@@ -20,6 +20,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('input');parser.add_argument('spec');parser.add_argument('output')
 parser.add_argument('--baseline', action='store_true')
 parser.add_argument('--context', action='store_true')
+parser.add_argument('--profile', choices=['washer-tg10k60w', 'fridge', 'hood'], default='washer-tg10k60w')
+parser.add_argument('--materials-from', help='Copy only compatible named part materials from a previous saved benchmark')
 args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
 data = Path(args.input).read_bytes();doc = json.loads(data[20:20+int.from_bytes(data[12:16], 'little')])
 meta = doc['scenes'][0]['extras']['furnish']
@@ -33,8 +35,24 @@ for obj in list(scene.objects):
     if obj.type == 'LIGHT':
         bpy.data.objects.remove(obj, do_unlink=True)
 parts = json.loads(Path(args.spec).read_text(encoding='utf-8'))['parts']
-refined = [] if args.baseline else refine_scene(scene, parts)
-meshes = [o for o in scene.objects if o.type == 'MESH' and o.get('furnishPartKey', '').startswith('explicit:washer-tg10k60w-v1:')]
+refined = [] if args.baseline else refine_scene(scene, parts, args.profile)
+prefix = {'washer-tg10k60w':'washer-tg10k60w-v1:', 'fridge':'fridge-v1:', 'hood':'hood-v1:'}[args.profile]
+meshes = [o for o in scene.objects if o.type == 'MESH' and o.get('furnishPartKey', '').startswith('explicit:'+prefix)]
+if args.materials_from:
+    if not args.baseline:
+        raise ValueError('Previous materials are only valid for a baseline comparison')
+    with bpy.data.libraries.load(str(Path(args.materials_from).resolve()), link=False) as (source, dest):
+        dest.objects = source.objects
+    old = {o.get('furnishPartKey'): o for o in dest.objects if o and o.type == 'MESH' and o.get('furnishPartKey', '').startswith('explicit:'+prefix)}
+    if len(old) != len(parts):
+        raise ValueError('Incomplete previous named-part material set')
+    for obj in meshes:
+        previous = old[obj.get('furnishPartKey')]
+        if len(obj.material_slots) != len(previous.material_slots):
+            raise ValueError('Incompatible previous material slots')
+        for slot, prior in zip(obj.material_slots, previous.material_slots):
+            slot.link = 'OBJECT';slot.material = prior.material
+        obj.visible_shadow = previous.visible_shadow
 points = [o.matrix_world @ Vector(c) for o in meshes for c in o.bound_box]
 center = Vector([(min(p[i] for p in points)+max(p[i] for p in points))/2 for i in range(3)])
 
@@ -50,9 +68,10 @@ if args.context:
     area('Laundry window softbox', (1.1, .65, 1), 220, 1.3, 1.8)
     area('Laundry front fill', (1.3, -.3, .35), 80, .5, 1.4)
 else:
-    area('Studio tall key', (-.85, -1.15, .8), 180, 1.25, 1.8)
-    area('Studio strip reflection', (.85, -.45, .35), 95, .36, 1.6)
-    area('Studio top rim', (.15, .6, 1.1), 160, 1.0, .75)
+    s = max(1, max(p.z for p in points)-min(p.z for p in points))
+    area('Studio tall key', (-1.1*s, -1.5*s, .85*s), 140*s*s, 1.15*s, 1.8*s)
+    area('Studio strip reflection', (1.15*s, -1.25*s, .25*s), 65*s*s, .22*s, 1.6*s)
+    area('Studio top rim', (.2*s, .65*s, 1.15*s), 100*s*s, .9*s, .65*s)
     # Photographic negative fill: give polished metal a dark region to reflect.
     card_mat = bpy.data.materials.new('Studio negative reflection card');card_mat.diffuse_color = (.008, .008, .008, 1)
     bpy.ops.mesh.primitive_plane_add(size=1, location=center+Vector((-.3, -.95, .35)), rotation=(1.5707963268, 0, 0))
@@ -61,7 +80,7 @@ else:
     ground = bpy.data.materials.new('Studio neutral floor');ground.use_nodes = True
     shader = ground.node_tree.nodes.get('Principled BSDF');shader.inputs['Base Color'].default_value = (.22, .23, .24, 1);shader.inputs['Roughness'].default_value = .72
     for obj in scene.objects:
-        if obj.type == 'MESH' and not obj.get('furnishId'):
+        if obj.type == 'MESH' and not obj.get('furnishId') and obj != card:
             for slot in obj.material_slots:slot.material = ground
 world = bpy.data.worlds.new('Appliance studio environment');world.use_nodes = True;scene.world = world
 background = world.node_tree.nodes.get('Background');background.inputs['Color'].default_value = (.18, .19, .21, 1);background.inputs['Strength'].default_value = .32

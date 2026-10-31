@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "id": "fridge",
+      "passed": true,
+      "cases": [
+        {
+          "state": "nominal",
+          "rot": 0,
+          "flip": false,
+          "parts": 30,
+          "bottom": 0,
+          "top": 1910,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "nominal",
+          "rot": 37,
+          "flip": true,
+          "parts": 30,
+          "bottom": 0,
+          "top": 1910,
+          "externalDistance": 99.17961607765176,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 0,
+          "flip": false,
+          "parts": 30,
+          "bottom": 0,
+          "top": 1910,
+          "externalDistance": 99.65270364466608,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 37,
+          "flip": true,
+          "parts": 30,
+          "bottom": 0,
+          "top": 1910,
+          "externalDistance": 99.17961607765176,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        }
+      ]
+    }
+  ]
+}

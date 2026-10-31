@@ -1,0 +1,476 @@
+{
+  "passed": true,
+  "profile": "fridge",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "fridge_french_drawer",
+    "name": "纯平四门冰箱（双抽屉）",
+    "w": 833,
+    "d": 595,
+    "color": "#f1f0ed",
+    "h": 1910
+  },
+  "alternateKind": "operating",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-10-31T05:30:02.018Z",
+  "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\fridge-dYOYk5",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-10-31T05:30:02.018Z",
+      "result": {
+        "command": "author-fridge",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\fridge-dYOYk5\\authored",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\fridge-dYOYk5\\authored",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "parts": 30,
+        "motions": 4,
+        "preflight": {
+          "passed": true,
+          "profile": "fridge",
+          "parts": 30,
+          "motions": 4
+        }
+      },
+      "finished": "2026-10-31T05:30:03.193Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-10-31T05:30:03.193Z",
+      "result": {
+        "passed": true,
+        "profile": "fridge",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part",
+          "wrong-axis",
+          "wrong-pivot",
+          "detached-moving-part"
+        ],
+        "motionApplicable": true
+      },
+      "finished": "2026-10-31T05:30:04.006Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-10-31T05:30:04.007Z",
+      "result": {
+        "command": "publish-fridge",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\fridge-dYOYk5\\authored\\fridge-v1.glb",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\workspace\\src\\data\\fridge-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "f51a3cae04252acf65a52082b4426f896221639ebdcf31077779ee9d77287fa5",
+        "runtimeSha256": "18700eba15c757e69e6247f5759b94f0184786877eec1b638a862a42d9265245"
+      },
+      "finished": "2026-10-31T05:30:04.922Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-10-31T05:30:04.922Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "blender-fridge-motion",
+            "profile": "fridge",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\fridge-dYOYk5\\blender-fridge-motion.log",
+            "reused": false
+          },
+          {
+            "name": "fridge-project-v31",
+            "profile": "fridge",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-QfJQot\\fridge-dYOYk5\\fridge-project-v31.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "fridge",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 30,
+                  "bottom": 0,
+                  "top": 1910,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 30,
+                  "bottom": 0,
+                  "top": 1910,
+                  "externalDistance": 99.17961607765176,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 30,
+                  "bottom": 0,
+                  "top": 1910,
+                  "externalDistance": 99.65270364466608,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 30,
+                  "bottom": 0,
+                  "top": 1910,
+                  "externalDistance": 99.17961607765176,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-10-31T05:30:07.488Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-10-31T05:30:07.489Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 30,
+            "bounds": [
+              [
+                -0.4165000021457672,
+                0,
+                -0.29750001430511475
+              ],
+              [
+                0.4165000021457672,
+                1.909999966621399,
+                0.29750001430511475
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "alternate",
+            "parts": 30,
+            "bounds": [
+              [
+                -0.49969979805650283,
+                0,
+                -0.29750001430511475
+              ],
+              [
+                0.49969979805650283,
+                1.909999966621399,
+                0.6881078232093711
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 30,
+            "bounds": [
+              [
+                -0.46647998690605164,
+                0,
+                -0.3212999999523163
+              ],
+              [
+                0.46647998690605164,
+                2.0627999305725098,
+                0.3212999999523163
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 30,
+            "bounds": [
+              [
+                -0.4165000021457672,
+                0,
+                -0.29750001430511475
+              ],
+              [
+                0.4165000021457672,
+                1.909999966621399,
+                0.29750001430511475
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "alternate",
+            "parts": 30,
+            "bounds": [
+              [
+                -0.49969979805650283,
+                0,
+                -0.29750001430511475
+              ],
+              [
+                0.49969979805650283,
+                1.909999966621399,
+                0.6881078232093711
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:30:24.469Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-10-31T05:30:24.470Z",
+      "result": {
+        "passed": true,
+        "profile": "fridge",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 30,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-alternate",
+            "parts": 30,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 30,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 30,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-alternate",
+            "parts": 30,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:30:25.759Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-10-31T05:30:25.759Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 30,
+            "position": [
+              0,
+              0.9549999833106995,
+              4.605813819263236
+            ],
+            "target": [
+              0,
+              0.9549999833106995,
+              0.1953039044521282
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 30,
+            "position": [
+              2.441819415167775,
+              2.298000661652976,
+              3.613851085687013
+            ],
+            "target": [
+              0,
+              0.9549999833106995,
+              0.1953039044521282
+            ]
+          },
+          {
+            "id": "open",
+            "state": "alternate",
+            "parts": 30,
+            "position": [
+              2.461706580034041,
+              2.1858532733277203,
+              3.6416931164997854
+            ],
+            "target": [
+              0,
+              0.9549999833106995,
+              0.1953039044521282
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:30:34.574Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-10-31T05:30:34.575Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:30:37.773Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-10-31T05:30:37.773Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:30:40.888Z"
+    },
+    {
+      "name": "render-open",
+      "passed": true,
+      "started": "2026-10-31T05:30:40.888Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:30:43.996Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-10-31T05:30:43.997Z",
+      "result": {
+        "passed": true,
+        "profile": "fridge",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 30,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 30,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "open",
+            "parts": 30,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:30:44.789Z"
+    }
+  ],
+  "finished": "2026-10-31T05:30:44.790Z"
+}

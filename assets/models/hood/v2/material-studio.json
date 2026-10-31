@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "baseline": false,
+  "context": false,
+  "parts": 27,
+  "refined": [
+    "intake-filter",
+    "filter-slat-0",
+    "filter-slat-2",
+    "filter-slat-4",
+    "filter-slat-5",
+    "filter-slat-7",
+    "lamp--401",
+    "left-side",
+    "rear-housing",
+    "filter-slat-1",
+    "filter-slat-3",
+    "filter-slat-8",
+    "intake-slot",
+    "lamp-401",
+    "oil-trough",
+    "right-side",
+    "control-mark-40",
+    "control-mark--64",
+    "filter-slat-6",
+    "chimney-cover",
+    "housing-top",
+    "brand-mark",
+    "control-mark--40",
+    "control-mark-64",
+    "control-ring",
+    "sloped-glass",
+    "fixed-lower-glass"
+  ],
+  "planId": "model-pipeline-studio",
+  "originMm": [
+    0,
+    0
+  ],
+  "sourceSha256": "28c5da934d109a068c29d70ca0582881194adeb7bd9b0261335cd3959530adb6",
+  "lights": [
+    "Studio tall key",
+    "Studio strip reflection",
+    "Studio top rim"
+  ]
+}

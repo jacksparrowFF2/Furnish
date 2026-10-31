@@ -9,11 +9,23 @@ def mesh_object(vertices,faces):
     mesh=bpy.data.meshes.new('washer-detail');mesh.from_pydata(vertices,[],faces);mesh.update()
     obj=bpy.data.objects.new('washer-detail',mesh);bpy.context.collection.objects.link(obj);return obj
 
-def lathe(profile,segments=96):
+def lathe(profile,segments=96,clean_poles=False):
     vertices=[(r*math.cos(i*math.tau/segments)/1000,-z/1000,r*math.sin(i*math.tau/segments)/1000) for r,z in profile for i in range(segments)]
     faces=[(j*segments+i,j*segments+(i+1)%segments,((j+1)%len(profile))*segments+(i+1)%segments,((j+1)%len(profile))*segments+i) for j in range(len(profile)) for i in range(segments)]
     # Reverse the profile winding if necessary through Blender's consistent normal operation.
     obj=mesh_object(vertices,faces)
+    if clean_poles:
+        # A ring of coincident axis vertices produces degenerate quads and
+        # 45-degree shading normals at an otherwise nearly flat optical pole.
+        # Weld only exact duplicates, retaining the complete declared surface.
+        import bmesh
+        bm=bmesh.new();bm.from_mesh(obj.data)
+        bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=1e-9)
+        bmesh.ops.dissolve_degenerate(bm,edges=list(bm.edges),dist=1e-9)
+        bmesh.ops.delete(bm,geom=[e for e in bm.edges if not e.link_faces],context='EDGES')
+        bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
+        assert all(len(e.link_faces)==2 for e in bm.edges), 'Optical shell must be closed and manifold'
+        bm.to_mesh(obj.data);bm.free();obj.data.update()
     bpy.context.view_layer.objects.active=obj;obj.select_set(True);bpy.ops.object.mode_set(mode='EDIT');bpy.ops.mesh.select_all(action='SELECT');bpy.ops.mesh.normals_make_consistent(inside=False);bpy.ops.object.mode_set(mode='OBJECT')
     for polygon in obj.data.polygons:polygon.use_smooth=True
     return obj
@@ -102,7 +114,7 @@ def build(part):
         # ellipsoid acted as a strong lens once physical refraction was enabled.
         # Preserve the existing declared outer bounds; 1.8mm is a visual estimate.
         return normalize(lathe([(0,-5),(40,-4.9),(90,-3.8),(140,-.5),(180,5),(188,6),
-                                (188,4.2),(180,3.2),(140,-2.3),(90,-5.6),(40,-6.7),(0,-6.8)]),part['size'])
+                                (188,4.2),(180,3.2),(140,-2.3),(90,-5.6),(40,-6.7),(0,-6.8)],clean_poles=True),part['size'])
     if shape=='door-profile':return lathe([(255,-14),(255,-10),(253,-5),(246,-2),(235,-1),(222,0),(207,4),(195,11),(190,14),(190,-14)])
     if shape=='knob-profile':return lathe([(0,6),(12,7),(30,6),(34,4),(36,1),(36,-5),(34,-7),(0,-7)])
     if shape=='annulus':return lathe([(a/2,-c/2),(a/2,c/2),(part['inner'],c/2),(part['inner'],-c/2)])

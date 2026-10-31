@@ -35,6 +35,8 @@
 
 ## 固定产品建模与外观精修
 
+- 光学薄壳先检查轴心重合顶点、退化面、闭合性及中心法线，避免把拓扑伪影当作材质／灯光问题。以旧源真实负例与正式生产导出／下载工程回读验证修复。几何确认应读取规则实际版本，不能用只匹配某一历史版本的条件；纯材质改动不无故升级空间语义。三款材质白名单与验证见 `docs/validation/appliance-materials-stage2-20261031/README.md`。
+
 - 家电质感精修先分清喷涂、金属、橡胶与玻璃，用同一几何／机位／环境／曝光做材质前后对照，再看实际区域。兼容PBR与Blender程序微表面分别交付，未烘焙节点不宣称随GLB完整传播。按型号／部件白名单扩展物理材质，覆盖全局材质缓存、生产GLB和下载工程对象材质槽回读；不能只检查独立构造器或DATA槽。透射玻璃先检查是否误建为实心透镜，壁厚与光学参数标明依据；关闭玻璃阴影等近似须记录，不能推广为全局默认。见 `docs/validation/appliance-materials-20261031/README.md`。
 
 - 本机 Blender 优先使用 Scoop 实际程序 `%USERPROFILE%/scoop/apps/blender/current/blender.exe`（配置了 `SCOOP` 时使用该根目录），商店版 `%LOCALAPPDATA%/Microsoft/WindowsApps/blender-launcher.exe` 作为备选；复用项目发现逻辑，显式 `FURNISH_BLENDER` 设置仍优先。不要硬编码随升级变化的版本目录。

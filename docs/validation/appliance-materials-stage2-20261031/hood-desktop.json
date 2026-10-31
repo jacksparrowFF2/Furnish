@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "profile": "hood",
+  "executable": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop\\Furnish-win32-x64\\Furnish.exe",
+  "isolatedRoot": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\appliance-desktop-Jw5DeH\\workspace",
+  "actualRoot": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\appliance-desktop-Jw5DeH\\workspace",
+  "productionMaterial": true,
+  "parts": 27,
+  "errors": []
+}

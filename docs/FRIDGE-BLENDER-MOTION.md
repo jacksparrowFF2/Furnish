@@ -1,14 +1,16 @@
 # 四门双抽屉冰箱：Blender 活动部件试点
 
+2026-10-31（材质v2）：当前源／GLB位于 assets/models/fridge/v2，离线资产2。喷涂与显示面板限定清漆，内衬／层板分开；几何、4运动父节点及833×595×1910保持，无新字段或安装要求。含独立可编辑材质棚拍模板，见[三款验证](validation/appliance-materials-stage2-20261031/README.md)。
+
 2026-10-29。复用 `fridge_french_drawer`，闭合外包833×595×1910mm；图片、尺寸来源及未知型号见 [冰箱资料](FRIDGES.md)。普通冰箱／普通对开门冰箱仍用原静态流程。本次没有修改真实装修方案。
 
 ## 源工程与发布
 
-独立后台 Blender 建模，保存 [可编辑工程](../assets/models/fridge/fridge-v1.blend) 和 [GLB](../assets/models/fridge/fridge-v1.glb)。发布器再用独立 Blender 重新导入，验证30个具名网格、4个运动父节点、部件身份／角色、闭合尺寸／中心、轴声明、父节点枢轴位置与静止变换，生成离线脚本 `src/data/fridge-blender-asset.js`。源GLB哈希随运行资产记录。失败保留上一有效资产。
+独立后台 Blender 建模，保存 [可编辑工程](../assets/models/fridge/v2/fridge-v1.blend) 和 [GLB](../assets/models/fridge/v2/fridge-v1.glb)。发布器再用独立 Blender 重新导入，验证30个具名网格、4个运动父节点、部件身份／角色、闭合尺寸／中心、轴声明、父节点枢轴位置与静止变换，生成离线脚本 `src/data/fridge-blender-asset.js`。源GLB哈希随运行资产记录。失败保留上一有效资产。
 
 ```powershell
 node scripts/blender-asset.cjs author-fridge output/fridge-new-source
-node scripts/blender-asset.cjs publish-fridge assets/models/fridge/fridge-v1.glb
+node scripts/blender-asset.cjs publish-fridge assets/models/fridge/v2/fridge-v1.glb
 node scripts/preview-fridges.cjs
 ```
 

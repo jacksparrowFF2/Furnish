@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "profile": "hood",
+  "blender": "5.2.3 LTS",
+  "source": "production-glb",
+  "results": [
+    {
+      "case": "http-nominal",
+      "parts": 27,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "http-alternate",
+      "parts": 27,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "http-resized",
+      "parts": 27,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "file-nominal",
+      "parts": 27,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "file-alternate",
+      "parts": 27,
+      "boundsAndAlpha": true
+    }
+  ]
+}

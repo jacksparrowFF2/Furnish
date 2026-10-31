@@ -1,4 +1,4 @@
-"""Narrow, constant glTF physical-material contract for the TG10K60W pilot."""
+"""Reviewed constant glTF contracts: optical TG, coated fridge and opaque hood."""
 import math
 
 PHYSICAL = {'KHR_materials_clearcoat', 'KHR_materials_transmission', 'KHR_materials_ior', 'KHR_materials_volume'}
@@ -6,7 +6,8 @@ PHYSICAL = {'KHR_materials_clearcoat', 'KHR_materials_transmission', 'KHR_materi
 
 def physical_materials(doc, profile, spec):
     used = set(doc.get('extensionsUsed', []))
-    allowed = {'KHR_materials_emissive_strength'} | (PHYSICAL if profile == 'washer-tg10k60w' else set())
+    coats = {'washer-tg10k60w': {'white', 'fascia'}, 'fridge': {'white', 'screen'}, 'hood': {'black', 'glass'}}
+    allowed = {'KHR_materials_emissive_strength'} | (PHYSICAL if profile == 'washer-tg10k60w' else {'KHR_materials_clearcoat'} if profile in coats else set())
     if used - allowed:
         raise ValueError('Unsupported glTF extension')
     reference = {p['name']: p for p in (spec or {}).get('parts', [])}
@@ -31,7 +32,7 @@ def physical_materials(doc, profile, spec):
                 if kind not in PHYSICAL:
                     continue
                 if kind == 'KHR_materials_clearcoat':
-                    if profile != 'washer-tg10k60w' or reference.get(name, {}).get('material') not in {'white', 'fascia'}:
+                    if reference.get(name, {}).get('material') not in coats.get(profile, set()):
                         raise ValueError('Clearcoat on an unreviewed part: '+name)
                     if set(values) - {'clearcoatFactor', 'clearcoatRoughnessFactor'}:
                         raise ValueError('Unbaked clearcoat texture is unsupported')

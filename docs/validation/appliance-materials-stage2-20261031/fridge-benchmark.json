@@ -1,0 +1,146 @@
+{
+  "passed": true,
+  "profile": "fridge",
+  "previousMaterialSource": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\all-PLDH00\\fridge-dZRbRM\\studio\\front\\scene.blend",
+  "sourceWorkspace": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-Y1GKb5\\workspace",
+  "cases": [
+    {
+      "id": "before-oblique",
+      "passed": true,
+      "renderDevice": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "renderInfo": {
+        "source": "refined",
+        "cameraMode": "source",
+        "camera": "FurnishCamera.001",
+        "world": "Appliance studio environment",
+        "existingMaterialBindingsPreserved": 33,
+        "existingManagedMeshes": 33,
+        "matchedManagedMeshes": 33,
+        "removedManagedMeshes": 0,
+        "lightsPreserved": 3,
+        "sync": {
+          "added": 0,
+          "updated": 33,
+          "deleted": 0,
+          "adopted": 0,
+          "matchedByPartKey": 33,
+          "migratedPartKeys": 0,
+          "revision": "45548152e965d5f580f9dbde6a2f97a181d0fb71e45719cf96f98350be3ad143",
+          "cleanupWarnings": [],
+          "renderCamera": "FurnishCamera.001"
+        },
+        "samples": 128,
+        "exposure": -0.699999988079071,
+        "viewTransform": "AgX",
+        "resolution": [
+          1024,
+          1024
+        ]
+      },
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "after-oblique",
+      "passed": true,
+      "renderDevice": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "renderInfo": {
+        "source": "refined",
+        "cameraMode": "source",
+        "camera": "FurnishCamera.001",
+        "world": "Appliance studio environment",
+        "existingMaterialBindingsPreserved": 33,
+        "existingManagedMeshes": 33,
+        "matchedManagedMeshes": 33,
+        "removedManagedMeshes": 0,
+        "lightsPreserved": 3,
+        "sync": {
+          "added": 0,
+          "updated": 33,
+          "deleted": 0,
+          "adopted": 0,
+          "matchedByPartKey": 33,
+          "migratedPartKeys": 0,
+          "revision": "45548152e965d5f580f9dbde6a2f97a181d0fb71e45719cf96f98350be3ad143",
+          "cleanupWarnings": [],
+          "renderCamera": "FurnishCamera.001"
+        },
+        "samples": 128,
+        "exposure": -0.699999988079071,
+        "viewTransform": "AgX",
+        "resolution": [
+          1024,
+          1024
+        ]
+      },
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": "after-open",
+      "passed": true,
+      "renderDevice": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "renderInfo": {
+        "source": "refined",
+        "cameraMode": "source",
+        "camera": "FurnishCamera.001",
+        "world": "Appliance studio environment",
+        "existingMaterialBindingsPreserved": 33,
+        "existingManagedMeshes": 33,
+        "matchedManagedMeshes": 33,
+        "removedManagedMeshes": 0,
+        "lightsPreserved": 3,
+        "sync": {
+          "added": 0,
+          "updated": 33,
+          "deleted": 0,
+          "adopted": 0,
+          "matchedByPartKey": 33,
+          "migratedPartKeys": 0,
+          "revision": "9e470aa04f889686bb40fb7e8d8c6403f867237e0f3e9d7ddc894f15c6c5d9cd",
+          "cleanupWarnings": [],
+          "renderCamera": "FurnishCamera.001"
+        },
+        "samples": 128,
+        "exposure": -0.699999988079071,
+        "viewTransform": "AgX",
+        "resolution": [
+          1024,
+          1024
+        ]
+      },
+      "size": [
+        1024,
+        1024
+      ]
+    }
+  ]
+}

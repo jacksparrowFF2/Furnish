@@ -1,4 +1,4 @@
-"""Reviewed TG10K60W appearance presets. Optical values are visual estimates.
+"""Reviewed appliance appearance presets. Optical values are visual estimates.
 
 Flat PBR travels through GLB; procedural microfinish belongs to saved Blender
 refinement files. This module never modifies geometry, labels, rigs or dimensional contracts.
@@ -13,13 +13,30 @@ PRESETS = {
     'chrome': dict(roughness=.115, metallic=1),
     'rubber': dict(roughness=.73, metallic=0),
     'dark': dict(roughness=.53, metallic=0),
-    'drum-steel': dict(roughness=.18, metallic=.95),
-    'clear-glass': dict(roughness=.045, metallic=0, transmission=1, ior=1.47),
+    'drum-steel': dict(roughness=.28, metallic=.95),
+    'clear-glass': dict(roughness=.025, metallic=0, transmission=1, ior=1.47),
+}
+
+PROFILES = {
+    'washer-tg10k60w': ('washer-tg10k60w-v1:', PRESETS),
+    'fridge': ('fridge-v1:', {
+        'white': dict(roughness=.29, metallic=0, coat=.55, coat_roughness=.18),
+        'dark': dict(roughness=.64, metallic=0),
+        'shelf': dict(roughness=.32, metallic=0),
+        'screen': dict(roughness=.12, metallic=0, coat=.8, coat_roughness=.07),
+    }),
+    'hood': ('hood-v1:', {
+        'black': dict(roughness=.36, metallic=0, coat=.3, coat_roughness=.22),
+        'glass': dict(roughness=.075, metallic=0, coat=.9, coat_roughness=.045),
+        'iron': dict(roughness=.48, metallic=.85),
+        'steel': dict(roughness=.29, metallic=1),
+        'gold': dict(roughness=.23, metallic=1),
+    }),
 }
 
 
-def configure(materials):
-    for name, values in PRESETS.items():
+def configure(materials, profile='washer-tg10k60w'):
+    for name, values in PROFILES[profile][1].items():
         mat = materials[name]
         node = next(n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
         for key, socket in [('roughness', 'Roughness'), ('metallic', 'Metallic'),
@@ -73,7 +90,7 @@ def optical_volume(path):
 
 def microfinish(material, family):
     """Subtle physical-scale finish; never transported as unbaked node graphs."""
-    if family not in {'white', 'fascia', 'chrome', 'rubber', 'drum-steel'}:
+    if family not in {'white', 'fascia', 'chrome', 'rubber', 'drum-steel', 'black', 'steel', 'iron', 'gold'}:
         return
     nodes, links = material.node_tree.nodes, material.node_tree.links
     if nodes.get('Furnish microfinish'):
@@ -81,30 +98,36 @@ def microfinish(material, family):
     p = next(n for n in nodes if n.type == 'BSDF_PRINCIPLED')
     coord = nodes.new('ShaderNodeTexCoord')
     mapping = nodes.new('ShaderNodeVectorMath');mapping.operation = 'MULTIPLY'
-    mapping.inputs[1].default_value = (450, 450, 450) if family == 'white' else (80, 3500, 80) if family in {'fascia', 'drum-steel'} else (1800, 1800, 1800)
+    mapping.inputs[1].default_value = (450, 450, 450) if family == 'white' else (80, 3500, 80) if family in {'fascia', 'drum-steel', 'steel'} else (1800, 1800, 1800)
+    if family == 'steel':
+        mapping.inputs[1].default_value = (12000, 12000, 1500)
     noise = nodes.new('ShaderNodeTexNoise');noise.name = 'Furnish microfinish'
     noise.inputs['Scale'].default_value = 1;noise.inputs['Detail'].default_value = 2
     # Object coordinates retain metre-scale grains rather than one texture per part.
     links.new(coord.outputs['Object'], mapping.inputs[0]);links.new(mapping.outputs[0], noise.inputs['Vector'])
     ramp = nodes.new('ShaderNodeMapRange')
     base = p.inputs['Roughness'].default_value
-    ramp.inputs['To Min'].default_value = max(.02, base-.035)
-    ramp.inputs['To Max'].default_value = min(1, base+.035)
+    variation = .008 if family == 'steel' else .035
+    ramp.inputs['To Min'].default_value = max(.02, base-variation)
+    ramp.inputs['To Max'].default_value = min(1, base+variation)
     links.new(noise.outputs['Fac'], ramp.inputs['Value']);links.new(ramp.outputs['Result'], p.inputs['Roughness'])
     bump = nodes.new('ShaderNodeBump');bump.inputs['Strength'].default_value = .12
     bump.inputs['Distance'].default_value = .000018 if family == 'white' else .000006
+    if family == 'steel':
+        bump.inputs['Distance'].default_value = .000001;bump.inputs['Strength'].default_value = .06
     links.new(noise.outputs['Fac'], bump.inputs['Height']);links.new(bump.outputs['Normal'], p.inputs['Normal'])
-    if family in {'fascia', 'drum-steel'}:
+    if family in {'fascia', 'drum-steel', 'steel'}:
         p.inputs['Anisotropic'].default_value = .25
 
 
-def refine_scene(scene, parts):
-    """Apply only explicitly identified TG10K60W parts, preserving all geometry."""
+def refine_scene(scene, parts, profile='washer-tg10k60w'):
+    """Apply only complete reviewed profile parts, preserving all geometry."""
+    prefix = PROFILES[profile][0]
     families = {p['name']: p['material'] for p in parts}
     changed = []
     for obj in scene.objects:
         key = obj.get('furnishPartKey', '').removeprefix('explicit:') or obj.get('furnishStablePart', '')
-        if not key.startswith('washer-tg10k60w-v1:') or obj.type != 'MESH':
+        if not key.startswith(prefix) or obj.type != 'MESH':
             continue
         name = key.split(':', 1)[1]
         if name not in families:
@@ -113,11 +136,11 @@ def refine_scene(scene, parts):
         for slot in obj.material_slots:
             slot.material = slot.material.copy()
             microfinish(slot.material, families[name])
-        if name == 'door-glass':
+        if profile == 'washer-tg10k60w' and name == 'door-glass':
             # Shadow-ray approximation lights the enclosed drum without requiring
             # refractive caustics. Camera transmission/refraction remains active.
             obj.visible_shadow = False
         changed.append(name)
     if set(changed) != set(families):
-        raise ValueError('Refinement needs the complete named TG10K60W model')
+        raise ValueError('Refinement needs the complete named '+profile+' model')
     return changed

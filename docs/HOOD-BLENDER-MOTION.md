@@ -1,16 +1,18 @@
 # JCD10TA：Blender上翻面板试点
 
+2026-10-31（材质v2）：当前源／GLB位于 assets/models/hood/v2，离线资产2。黑玻璃采用不透明介电反射，机壳涂层、裸金属罩及滤网分区；27件及水平轴、尺寸和独立拟合保持。细微程序纹理只在保存的精修模板，见[三款验证](validation/appliance-materials-stage2-20261031/README.md)。
+
 2026-10-29。现有 `rangehood_fotile_jcd10ta` 保留900×350×520mm闭合尺寸、底部离地默认1315mm和独立主机／装饰罩尺寸。型号、图片和安装资料见[方太资料](FOTILE-APPLIANCES.md)。本次未修改真实装修方案。
 
 ## 源资产与接入
 
-[可编辑Blender工程](../assets/models/hood/hood-v1.blend)及[GLB](../assets/models/hood/hood-v1.glb)包含27个具名网格、1个水平X轴父节点。上部玻璃等7个随动网格（玻璃、控制环、4个控制标记、品牌标记）共用该轴；下部玻璃、接油槽、楔形箱体和装饰罩固定。侧壁、顶板前沿及格栅按布局结构重做，不是厂家板厚／内部结构。
+[可编辑Blender工程](../assets/models/hood/v2/hood-v1.blend)及[GLB](../assets/models/hood/v2/hood-v1.glb)包含27个具名网格、1个水平X轴父节点。上部玻璃等7个随动网格（玻璃、控制环、4个控制标记、品牌标记）共用该轴；下部玻璃、接油槽、楔形箱体和装饰罩固定。侧壁、顶板前沿及格栅按布局结构重做，不是厂家板厚／内部结构。
 
 独立后台Blender根据参数制作几何，再以另一后台Blender重新导入，校验部件身份、闭合尺寸／中心、轴心与轴向、父子归属、静止变换及来源哈希，发布为离线普通脚本。控制环按实际环面采样校验尺寸，不能将旋转后的盒角当环面边界。失败保留上一有效资产；未操作用户活动Blender或旧精修工程。
 
 ```powershell
 node scripts/blender-asset.cjs author-hood output/hood-new-source
-node scripts/blender-asset.cjs publish-hood assets/models/hood/hood-v1.glb
+node scripts/blender-asset.cjs publish-hood assets/models/hood/v2/hood-v1.glb
 node scripts/create-fotile-previews.cjs
 ```
 

@@ -1,5 +1,7 @@
 # 小天鹅 TG10K60W · 10kg
 
+2026-10-31（玻璃v4）：当前源／GLB为 assets/models/washer-tg10k60w/v4/washer-tg10k60w-v1.*，离线资产4。修复光学轴心重合顶点、退化面与45°错误法线，消除圆形伪反射；外包和其他46件保持。几何版本与空间确认升4并改为读取实际版本，见[第二阶段验证](validation/appliance-materials-stage2-20261031/README.md)。下文v2／v3为历史记录。
+
 2026-10-31（材质v3）：正式源改为 assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.*，离线资产版本3；清玻璃采用薄壳与限定物理透射／IOR／体积参数，替代下文历史v2的Alpha近似。47件、尺寸与门轴保留，适用型号几何缓存／确认版本升3。微表面与摄影模板另存 material-studio.blend，见[验证与边界](validation/appliance-materials-20261031/README.md)。
 
 2026-10-30（流程工具）：该款已有[隔离整链路命令及固定三机位](BLENDER-MODELING-PIPELINE.md)，将重建／发布、空间与状态专项、HTTP／file生产导出、回读、实际渲染和下载工程重开串联；见[工具验收](validation/model-pipeline-20261030/README.md)。作者导出前新增spec预检，正式v2资产与产品参数保持原样。

@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（家电材质扩展）：受限物理常量覆盖TG透射玻璃、冰箱涂层与烟机不透明黑玻璃；后两构造器共用createMaterial。TG清理光学轴心退化几何并升几何版本4，空间确认改读实际版本，缓存沿已有版本键失效；无新持久字段。三款作者／发布、双入口导出、空间、GPU与精修下载回读见[第二阶段](validation/appliance-materials-stage2-20261031/README.md)。
+
 2026-10-31（家电材质）：model-primitives.createMaterial统一标准／物理材质选择，全局缓存与洗衣机共用；仅TG白名单常量扩展经asset_pbr→离线模块→生产GLB→Blender。程序微表面保留在独立精修模板，未烘焙至GLB；TG玻璃薄壳引入仅本型号几何版本3，无新字段。见[第一阶段验收](validation/appliance-materials-20261031/README.md)。
 
 2026-10-31（保存版本诊断）：repository-storage恢复候选改读共用repository-core.workspaceVersions，移除第二份硬编码版本表；core区分未知工作区版本与结构错误，服务以422及WORKSPACE_VERSION_UNSUPPORTED返回支持版本，GET工作区附支持清单，UI保留错误元数据。旧后台失败后仍由原pending／retry续写最新快照，不重建状态或绕过版本校验。见[保存契约](REPOSITORY-SAVES.md)。

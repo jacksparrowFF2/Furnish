@@ -1,0 +1,492 @@
+{
+  "passed": true,
+  "profile": "washer-tg10k60w",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "washer_littleswan_tg10k60w",
+    "name": "小天鹅洗衣机 TG10K60W · 10kg",
+    "w": 595,
+    "d": 560,
+    "color": "#f1f0ed",
+    "mountHeight": 0,
+    "washerDoorAngle": 0,
+    "brand": "小天鹅/LittleSwan",
+    "model": "TG10K60W",
+    "h": 850
+  },
+  "alternateKind": "operating",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-10-31T05:33:17.880Z",
+  "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-10-31T05:33:17.881Z",
+      "result": {
+        "command": "author-washer-tg10k60w",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ\\authored",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ\\authored",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "parts": 47,
+        "motions": 1,
+        "preflight": {
+          "passed": true,
+          "profile": "washer-tg10k60w",
+          "parts": 47,
+          "motions": 1
+        }
+      },
+      "finished": "2026-10-31T05:33:19.961Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-10-31T05:33:19.962Z",
+      "result": {
+        "passed": true,
+        "profile": "washer-tg10k60w",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part",
+          "wrong-axis",
+          "wrong-pivot",
+          "detached-moving-part"
+        ],
+        "motionApplicable": true
+      },
+      "finished": "2026-10-31T05:33:21.398Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-10-31T05:33:21.399Z",
+      "result": {
+        "command": "publish-washer-tg10k60w",
+        "input": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ\\authored\\washer-tg10k60w-v1.glb",
+        "output": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\workspace\\src\\data\\washer-tg10k60w-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "8c661e32a871660f7fe4f0d2a138f520c18f60bdc5a498bf2976170c39e7d6ea",
+        "runtimeSha256": "cbce0d3b064c0766eb4e1b640bdffce48524ace29bf6b064f8c925471e30627f"
+      },
+      "finished": "2026-10-31T05:33:24.031Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-10-31T05:33:24.032Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "blender-washer-materials",
+            "profile": "washer-tg10k60w",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ\\blender-washer-materials.log",
+            "reused": false
+          },
+          {
+            "name": "blender-washer-tg10k60w",
+            "profile": "washer-tg10k60w",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ\\blender-washer-tg10k60w.log",
+            "reused": false
+          },
+          {
+            "name": "washer-front-confirmation",
+            "profile": "washer-tg10k60w",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ\\washer-front-confirmation.log",
+            "reused": false
+          },
+          {
+            "name": "washer-project-v35",
+            "profile": "washer-tg10k60w",
+            "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-4HdZg8\\washer-tg10k60w-HP2RuQ\\washer-project-v35.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "washer-tg10k60w",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 47,
+                  "bottom": 0,
+                  "top": 850,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 47,
+                  "bottom": 0,
+                  "top": 850,
+                  "externalDistance": 99.17961607765187,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 47,
+                  "bottom": 0,
+                  "top": 850,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 47,
+                  "bottom": 0,
+                  "top": 850,
+                  "externalDistance": 99.17961607765187,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-10-31T05:35:45.703Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-10-31T05:35:45.704Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 47,
+            "bounds": [
+              [
+                -0.29750001430511475,
+                0,
+                -0.2800000011920929
+              ],
+              [
+                0.29750001430511475,
+                0.8500000238418579,
+                0.2800000004321337
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "alternate",
+            "parts": 47,
+            "bounds": [
+              [
+                -0.4343111953812385,
+                0,
+                -0.2800000011920929
+              ],
+              [
+                0.29750001430511475,
+                0.8500000238418579,
+                0.7519109268488413
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 47,
+            "bounds": [
+              [
+                -0.33320000767707825,
+                0,
+                -0.30239999294281006
+              ],
+              [
+                0.33320000767707825,
+                0.9179999828338623,
+                0.30239999964714054
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 47,
+            "bounds": [
+              [
+                -0.29750001430511475,
+                0,
+                -0.2800000011920929
+              ],
+              [
+                0.29750001430511475,
+                0.8500000238418579,
+                0.2800000004321337
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "alternate",
+            "parts": 47,
+            "bounds": [
+              [
+                -0.4343111953812385,
+                0,
+                -0.2800000011920929
+              ],
+              [
+                0.29750001430511475,
+                0.8500000238418579,
+                0.7519109268488413
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:37:09.295Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-10-31T05:37:09.296Z",
+      "result": {
+        "passed": true,
+        "profile": "washer-tg10k60w",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 47,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-alternate",
+            "parts": 47,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 47,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 47,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-alternate",
+            "parts": 47,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:37:11.956Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-10-31T05:37:11.957Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 47,
+            "position": [
+              -0.06840559053806189,
+              0.42500001192092896,
+              3.0719122032492985
+            ],
+            "target": [
+              -0.06840559053806189,
+              0.42500001192092896,
+              0.2359554628283742
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 47,
+            "position": [
+              1.5016836651466312,
+              1.2885491025475102,
+              2.4340804207869446
+            ],
+            "target": [
+              -0.06840559053806189,
+              0.42500001192092896,
+              0.2359554628283742
+            ]
+          },
+          {
+            "id": "open",
+            "state": "alternate",
+            "parts": 47,
+            "position": [
+              1.51447110703877,
+              1.2164383607093447,
+              2.4519828394359386
+            ],
+            "target": [
+              -0.06840559053806189,
+              0.42500001192092896,
+              0.2359554628283742
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:37:59.704Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-10-31T05:37:59.705Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:38:02.955Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-10-31T05:38:02.955Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:38:06.117Z"
+    },
+    {
+      "name": "render-open",
+      "passed": true,
+      "started": "2026-10-31T05:38:06.118Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T05:38:09.266Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-10-31T05:38:09.267Z",
+      "result": {
+        "passed": true,
+        "profile": "washer-tg10k60w",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 47,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 47,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "open",
+            "parts": 47,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T05:38:10.324Z"
+    }
+  ],
+  "finished": "2026-10-31T05:38:10.325Z"
+}

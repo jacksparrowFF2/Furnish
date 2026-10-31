@@ -1,5 +1,7 @@
 # 模型整链路验收
 
+2026-10-31（材质第二阶段）：verify-material-benchmark支持三款受控同光材质A/B；verify-washer-optical-normals用真实旧源负例检查光学轴心，verify-appliance-refinement逐款回读11份下载工程。功能批次与摄影验收分别记录指纹；不同增量阶段不冒充最终提交全量复跑，见[证据](validation/appliance-materials-stage2-20261031/README.md)。
+
 2026-10-31：材质精修增加同光同机位A/B、实际区域、正式refined API下载工程回读，几何与视觉验收分开。工具 verify-appliance-look／render-appliance-look／verify-appliance-refinement 面向TG基准，不扩大所有profile支持范围；见[证据](validation/appliance-materials-20261031/README.md)。
 
 2026-10-31。在TG10K60W试点基础上覆盖后引入的家具、家电、安装设备、窗饰／隔断和定制柜体配置。默认路线保持：固定产品使用Blender资产，既有参数化模型保留其构造；本工具不把柜体或早期已交付的参数化产品强制改为静态网格。

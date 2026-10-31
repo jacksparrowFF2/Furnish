@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "file": "assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.blend",
+      "expectedValid": false,
+      "poles": 192,
+      "axisNormals": false,
+      "closedManifold": true
+    },
+    {
+      "file": "assets/models/washer-tg10k60w/v4/washer-tg10k60w-v1.blend",
+      "expectedValid": true,
+      "poles": 2,
+      "axisNormals": true,
+      "closedManifold": true
+    }
+  ]
+}

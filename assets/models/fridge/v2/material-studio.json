@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "baseline": false,
+  "context": false,
+  "parts": 30,
+  "refined": [
+    "drawer-upper-side-1",
+    "drawer-upper-back",
+    "drawer-upper-grip",
+    "display",
+    "display-mark-0",
+    "shelf-1120",
+    "shell-bottom",
+    "display-mark-2",
+    "shell-top",
+    "shell-divider",
+    "shell-left",
+    "shell-right",
+    "shelf-1480",
+    "drawer-upper-floor",
+    "drawer-upper-front",
+    "drawer-lower-floor",
+    "drawer-lower-front",
+    "drawer-lower-grip",
+    "foot--1-1",
+    "foot--1--1",
+    "drawer-lower-side-1",
+    "drawer-lower-side--1",
+    "foot-1--1",
+    "shell-back",
+    "drawer-lower-back",
+    "door-left",
+    "display-mark-1",
+    "door-right",
+    "drawer-upper-side--1",
+    "foot-1-1"
+  ],
+  "planId": "model-pipeline-studio",
+  "originMm": [
+    0,
+    0
+  ],
+  "sourceSha256": "b7da153ccd285bb51eb06fdb0ff4cf1e6b72fae266030b18a312e7a2a8c97ef8",
+  "lights": [
+    "Studio tall key",
+    "Studio strip reflection",
+    "Studio top rim"
+  ]
+}

@@ -1,5 +1,7 @@
 # Blender 家电资产试点：奥普 SE2
 
+2026-10-31（第二阶段支持）：当前TG允许受限透射／IOR／体积与涂层，冰箱仅white／screen、烟机仅black／glass允许常量clearcoat。后两者不允许透射与体积；任意纹理／节点仍拒绝。按具名部件核对，见[能力边界与负例](validation/appliance-materials-stage2-20261031/README.md)。下文仅TG支持物理扩展的描述属于第一阶段。
+
 2026-10-31：TG10K60W新增限定常量物理材质扩展，不能沿用下文历史Alpha限制描述当前TG。其他profile继续旧限制；纹理、动画与任意节点不在支持范围。Blender5.2光学厚度需正式作者脚本限定补写，详见[验收](validation/appliance-materials-20261031/README.md)。
 
 2026-10-30：新增[TG10K60W隔离整链路命令与固定视觉场景](BLENDER-MODELING-PIPELINE.md)，作者预检目前接入两款洗衣机；SE2等其它配置仍按各自专项验收。
