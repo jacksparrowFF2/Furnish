@@ -64,6 +64,30 @@ const ceramic = (o = {}) => mat('#fbfbf9', {roughness:.12, ...o});
 const fabric = c => mat(c, {roughness:.96});
 const woodM = c => mat(c, {roughness:.55});
 const screenMat = (glow = '#1a2636') => mat('#0b0e13', {roughness:.1, metalness:.3, emissive:glow, emissiveIntensity:.35});
+// One offline, deterministic landscape per production primitive set; no project state.
+let televisionMaterial;
+function tvScreenMat(){
+  if(televisionMaterial)return televisionMaterial;
+  if(!root.document||!THREE.CanvasTexture)return screenMat('#1f2b3a');
+  const canvas=root.document.createElement('canvas');canvas.width=1024;canvas.height=576;
+  const ctx=canvas.getContext('2d');if(!ctx)return screenMat('#1f2b3a');
+  const sky=ctx.createLinearGradient(0,0,0,390);
+  sky.addColorStop(0,'#548caa');sky.addColorStop(.65,'#b4cdd0');sky.addColorStop(1,'#f2d7ab');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,1024,576);
+  ctx.fillStyle='#ffe7b7';ctx.beginPath();ctx.arc(740,175,39,0,Math.PI*2);ctx.fill();
+  function ridge(points,color){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,576);for(const [x,y] of points)ctx.lineTo(x,y);ctx.lineTo(1024,576);ctx.closePath();ctx.fill();}
+  ridge([[0,310],[100,260],[210,305],[350,180],[470,290],[580,240],[720,320],[860,230],[1024,300]],'#829fa5');
+  ridge([[0,365],[160,290],[285,355],[440,300],[570,370],[760,310],[900,350],[1024,320]],'#527f86');
+  const lake=ctx.createLinearGradient(0,370,0,576);lake.addColorStop(0,'#acc5c4');lake.addColorStop(1,'#497e87');
+  ctx.fillStyle=lake;ctx.fillRect(0,378,1024,198);
+  ctx.strokeStyle='#dfd7b4';ctx.lineWidth=2;
+  for(let i=0;i<19;i++){const y=391+i*8,x=740-Math.sin(i*2.3)*18-i*3;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+20+i*6,y);ctx.stroke();}
+  ridge([[0,420],[90,432],[180,470],[280,492],[400,576]],'#284e57');
+  ridge([[740,576],[820,506],[930,456],[1024,441]],'#355f64');
+  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+  televisionMaterial=mat('#ffffff',{map:texture,emissive:'#ffffff',emissiveMap:texture,emissiveIntensity:.65,roughness:.65,metalness:0});
+  return televisionMaterial;
+}
 const glowMat = (c = '#fff4dc', e = '#ffdca0', k = .5) => mat(c, {emissive:e, emissiveIntensity:k, roughness:.9, side:THREE.DoubleSide});
 
 // 拉手：y 为拉手中心，z 为门板正面
@@ -105,7 +129,7 @@ function tableLamp(g, x, y, z, s = 1){
   g.add(syncIdentity.produce("model-primitives:site-31",()=>lathe([[.13*s, 0], [.1*s, .18*s]], glowMat('#f6ecd9', '#ffdca0', .35), x, y + .26*s, z, 40)), syncIdentity.produce("model-primitives:site-32",()=>blob(.03*s, .03*s, .03*s, glowMat('#fff', '#ffe2b0', 1), x, y + .31*s, z, 12)));
 }
 const plate = (g, r, x, y, z) => g.add(syncIdentity.produce("model-primitives:site-33",()=>lathe([[0, 0], [r*.6, 0], [r*.72, .008], [r, .02]], ceramic({side:THREE.DoubleSide}), x, y, z, 32)));
-return {mat,asMat,sh,mesh,rot,box,rbox,cyl,lathe,rod,tube,blob,ring,rrect,shell,darker,lighter,legs,metal,chrome,hwMat,blackMetal,mirror,ceramic,fabric,woodM,screenMat,glowMat,pull,knob,fronts,vasePts,vase,tableLamp,plate};
+return {mat,asMat,sh,mesh,rot,box,rbox,cyl,lathe,rod,tube,blob,ring,rrect,shell,darker,lighter,legs,metal,chrome,hwMat,blackMetal,mirror,ceramic,fabric,woodM,screenMat,tvScreenMat,glowMat,pull,knob,fronts,vasePts,vase,tableLamp,plate};
 }
 const api={create,createMaterial};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishModelPrimitives=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

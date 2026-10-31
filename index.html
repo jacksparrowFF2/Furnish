@@ -1122,7 +1122,7 @@ const syncIdentity=FurnishPartIdentity;
       const th = w*.5625, yb = 1.2 - th/2, face = d/2, glass = Math.min(.002,d*.04);
       // Match the plan: rear housing at -Z, full-width panel at +Z, all within w × d.
       g.add(syncIdentity.produce("index:site-143",()=>rbox(w*.6, th*.6, d*.6, '#222', 0, yb + th*.2, -d*.2, Math.min(.01,d*.1))));
-      g.add(syncIdentity.produce("index:site-144",()=>rbox(w, th, d*.4-glass, mat(c, {roughness:.4, metalness:.3}), 0, yb, d*.3-glass/2, Math.min(.004,d*.05))), syncIdentity.produce("index:site-145",()=>box(w - .016, th - .022, glass, screenMat('#1f2b3a'), 0, yb + .014, face-glass/2)), syncIdentity.produce("index:site-146",()=>box(.04, .006, glass, '#8a8a8e', 0, yb + .004, face-glass/2)));
+      g.add(syncIdentity.produce("index:site-144",()=>rbox(w, th, d*.4-glass, mat(c, {roughness:.4, metalness:.3}), 0, yb, d*.3-glass/2, Math.min(.004,d*.05))), syncIdentity.produce("index:site-145",()=>box(w - .016, th - .022, glass, primitives.tvScreenMat(), 0, yb + .014, face-glass/2)), syncIdentity.produce("index:site-146",()=>box(.04, .006, glass, '#8a8a8e', 0, yb + .004, face-glass/2)));
       break;
     }
     case 'aircon': {
