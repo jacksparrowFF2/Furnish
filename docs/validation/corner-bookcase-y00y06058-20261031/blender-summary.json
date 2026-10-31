@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "closedMeshes": 14,
+  "productionParts": 14,
+  "httpAndFileResizedBoardThickness": true,
+  "missingPartRejectedPreservingAsset": true,
+  "filledNotchRejectedPreservingAsset": true,
+  "editableBlendReopened": true
+}

@@ -1,0 +1,20 @@
+{
+  "sku": "100093046001",
+  "model": "Y00Y06058",
+  "sourceUrl": "https://item.jd.com/100093046001.html",
+  "referenceUrl": "https://img13.360buyimg.com/pcpubliccms/jfs/t1/195357/25/43023/73041/65fe7871F33dbe9ed/466fedbbcbd05a14.jpg.avif",
+  "sizeMm": [
+    580,
+    580,
+    1900
+  ],
+  "conflict": "Parameter table says 45 cm; selected SKU image clearly labels 58 cm on both axes, height 190 cm.",
+  "sourceSha256": "ff0b7a94c7767f9c1c834f4c73d46934489dc58a0dec2132243cd40bf76dcec3",
+  "blenderVersion": "5.2.3 LTS",
+  "assumptions": {
+    "thicknessMm": 20,
+    "baseMm": 30,
+    "edgeRadiusMm": 4,
+    "armRatio": 0.5555555555555556
+  }
+}

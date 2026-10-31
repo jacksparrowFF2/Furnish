@@ -30,3 +30,6 @@ Blender 5.2.3 LTS后台建模，保留[可编辑源工程](../assets/models/corn
 [验收记录](validation/corner-bookcase-y00y06-20261031/README.md)。未运行全量check.cjs、实机触屏、厂家加工／承重或安装验证；不包含真实木纹扫描、五金孔位与书籍陈设。
 
 复验：`node tests/test-corner-bookcase.cjs`；`node scripts/verify/verify-corner-bookcase.cjs`（本机Chrome可设FURNISH_BROWSER_CHANNEL=chrome）；`node scripts/verify/verify-corner-bookcase-blender.cjs`。重新建模使用新目录：`node scripts/blender-asset.cjs author-corner-bookcase <new-directory>`，再用publish-corner-bookcase独立发布。
+
+
+2026-10-31补充：[0.58米Y00Y06058](CORNER-BOOKCASE-YESWOOD-Y00Y06058.md)已作为独立类型／资产加入，共用板件核心；本款原资产未改写。两款均已增量通过重建发布、双入口生产回读及GPU三机位整链路。

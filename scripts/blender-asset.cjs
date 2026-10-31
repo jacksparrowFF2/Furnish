@@ -3,8 +3,8 @@
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 async function main(args=process.argv.slice(2)){
- const [command,input]=args,match=/^(author|publish)-(se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase)$/.exec(command||'');
- if(!match||!input)throw Error('Usage: node scripts/blender-asset.cjs author-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase> <new-directory> | publish-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase> <model.glb>');
+ const [command,input]=args,match=/^(author|publish)-(se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|corner-bookcase-580)$/.exec(command||'');
+ if(!match||!input)throw Error('Usage: node scripts/blender-asset.cjs author-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|corner-bookcase-580> <new-directory> | publish-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|corner-bookcase-580> <model.glb>');
  const [,operation,profile]=match,source=path.resolve(input),output=path.join(root,'src/data/'+profile+'-blender-asset.js');
  if(operation==='author'&&[profile+'-v1.blend',profile+'-v1.glb'].some(name=>fs.existsSync(path.join(source,name))))throw Error('Use a new output directory to preserve existing Blender edits');
  if(operation==='publish'&&(!fs.statSync(source).isFile()||path.extname(source).toLowerCase()!=='.glb'))throw Error('Expected a static '+profile+' GLB');
@@ -14,15 +14,15 @@ async function main(args=process.argv.slice(2)){
  if(profile==='dishwasher')fs.writeFileSync(spec,JSON.stringify(require('../src/core/dishwasher-fold-core.js').spec()));
  if(profile==='hood')fs.writeFileSync(spec,JSON.stringify(require('../src/core/hood-motion-core.js').spec()));
  if(profile.startsWith('washer'))fs.writeFileSync(spec,JSON.stringify(require('../src/core/washer-motion-core.js').spec(profile==='washer'?undefined:{type:'washer_littleswan_tg10k60w'})));
- if(profile==='corner-bookcase')fs.writeFileSync(spec,JSON.stringify(require('../src/core/corner-bookcase-core.js').spec()));
+ if(profile==='corner-bookcase'||profile==='corner-bookcase-580')fs.writeFileSync(spec,JSON.stringify(require('../src/core/corner-bookcase-core.js').spec(profile==='corner-bookcase-580'?'580':undefined)));
  if(profile==='side-table')fs.writeFileSync(spec,JSON.stringify(require('../src/core/side-table-core.js').spec()));
  const contract=path.join(job,'preflight-contract.json');
  if(operation==='author'){
-  const asset=require(path.join(root,'src/data/'+profile+'-blender-asset.js'));
+  const asset=profile==='corner-bookcase-580'?(()=>{const s=JSON.parse(fs.readFileSync(spec));return {parts:s.parts.map(p=>({...p,identity:s.prefix+p.name})),motions:[]};})():require(path.join(root,'src/data/'+profile+'-blender-asset.js'));
   fs.writeFileSync(contract,JSON.stringify({profile,materialSlots:1,parts:asset.parts.map(p=>({name:p.name,identity:p.identity,role:p.role||null})),motions:asset.motions||[]}));
  }
- const script=operation==='author'?'blender-model-'+(profile.startsWith('washer')?'washer':profile)+'.py':'publish-blender-asset.py';
- const child=cp.spawn(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(__dirname,script),'--',source,...(operation==='publish'?[output,'--profile',profile]:[]),...(['fridge','dishwasher','hood','washer','washer-tg10k60w','side-table','corner-bookcase'].includes(profile)?['--spec',spec]:[]),...(operation==='author'?['--preflight-contract',contract]:[]),'--result',result],{cwd:root,windowsHide:true,stdio:['ignore','pipe','pipe']});
+ const script=operation==='author'?'blender-model-'+(profile.startsWith('washer')?'washer':profile==='corner-bookcase-580'?'corner-bookcase':profile)+'.py':'publish-blender-asset.py';
+ const child=cp.spawn(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(__dirname,script),'--',source,...(operation==='publish'?[output,'--profile',profile]:[]),...(['fridge','dishwasher','hood','washer','washer-tg10k60w','side-table','corner-bookcase','corner-bookcase-580'].includes(profile)?['--spec',spec]:[]),...(operation==='author'?['--preflight-contract',contract]:[]),'--result',result],{cwd:root,windowsHide:true,stdio:['ignore','pipe','pipe']});
  let error;child.on('error',e=>error=e);child.on('exit',code=>{if(code)error=Error('Blender exited with '+code+'; inspect '+job);});child.stdout.pipe(log,{end:false});child.stderr.pipe(log,{end:false});
  // Store launchers exit before Blender; only a unique Python result confirms completion.
  try{

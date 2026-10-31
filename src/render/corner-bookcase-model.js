@@ -1,6 +1,6 @@
 /* Individually fitted Blender boards; fixed thickness, five equal clear bays. */
 (function(root){'use strict';
-function build(T,f,options={}){const C=root.FurnishCornerBookcase||require('../core/corner-bookcase-core.js'),A=root.FurnishCornerBookcaseBlenderAsset||require('../data/corner-bookcase-blender-asset.js'),refs=new Map(C.reference().map(p=>[p.name,p])),targets=new Map(C.reference(f).map(p=>[p.name,p])),g=new T.Group();
+function build(T,f,options={}){const C=root.FurnishCornerBookcase||require('../core/corner-bookcase-core.js'),A=C.rules(f).profile==='580'?(root.FurnishCornerBookcase580BlenderAsset||require('../data/corner-bookcase-580-blender-asset.js')):(root.FurnishCornerBookcaseBlenderAsset||require('../data/corner-bookcase-blender-asset.js')),refs=new Map(C.reference(C.nominal(f)).map(p=>[p.name,p])),targets=new Map(C.reference(f).map(p=>[p.name,p])),g=new T.Group();
  for(const p of A.parts){const r=refs.get(p.name),t=targets.get(p.name),positions=p.positions.map((v,i)=>{const k=i%3;return (t.center[k]+(v*1000-r.center[k])*t.size[k]/r.size[k])/1000;}),normals=[];
  for(let i=0;i<p.normals.length;i+=3){const n=p.normals.slice(i,i+3).map((v,k)=>v*r.size[k]/t.size[k]),l=Math.hypot(...n);normals.push(...n.map(v=>v/l));}
  const geometry=new T.BufferGeometry(),index=Array.from({length:positions.length/3},(_,i)=>i);

@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "libraryAdd": true,
+      "resizeUndoRedoRefresh": true,
+      "productionMeshes": 14,
+      "offline": true,
+      "narrow": true
+    },
+    {
+      "mode": "file",
+      "libraryAdd": true,
+      "resizeUndoRedoRefresh": true,
+      "productionMeshes": 14,
+      "offline": true,
+      "narrow": true
+    }
+  ]
+}

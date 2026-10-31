@@ -1,0 +1,423 @@
+{
+  "passed": true,
+  "profile": "corner-bookcase",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "bookshelf_yeswood_y00y06",
+    "name": "源氏木语 Y00Y06045 · 五层转角书柜",
+    "w": 450,
+    "d": 450,
+    "color": "#c49b70",
+    "frontClearance": 0,
+    "brand": "源氏木语/YESWOOD",
+    "model": "Y00Y06045 · 五层转角书柜",
+    "sourceUrl": "https://item.jd.com/100093046007.html",
+    "h": 1900
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-10-31T01:47:17.877Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-ClsHKF\\corner-bookcase-VsCr4o",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-10-31T01:47:17.878Z",
+      "result": {
+        "command": "author-corner-bookcase",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-ClsHKF\\corner-bookcase-VsCr4o\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-ClsHKF\\corner-bookcase-VsCr4o\\authored",
+        "passed": true,
+        "blenderVersion": "5.2.3 LTS",
+        "parts": 14,
+        "preflight": {
+          "passed": true,
+          "profile": "corner-bookcase",
+          "parts": 14,
+          "motions": 0
+        }
+      },
+      "finished": "2026-10-31T01:47:19.046Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-10-31T01:47:19.047Z",
+      "result": {
+        "passed": true,
+        "profile": "corner-bookcase",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-10-31T01:47:19.846Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-10-31T01:47:19.846Z",
+      "result": {
+        "command": "publish-corner-bookcase",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-ClsHKF\\corner-bookcase-VsCr4o\\authored\\corner-bookcase-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-ClsHKF\\workspace\\src\\data\\corner-bookcase-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "db6b97c28155981bf6f92781c643dc9f4233e27526657bf4556199b3148ab931",
+        "runtimeSha256": "e99e4d617289b1d2cf9a953ab83d6117a28c1955ddb6ef8e0f73ec279e474d6c"
+      },
+      "finished": "2026-10-31T01:47:20.767Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-10-31T01:47:20.767Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "corner-bookcase",
+            "profile": "corner-bookcase",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-ClsHKF\\corner-bookcase-VsCr4o\\corner-bookcase.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "corner-bookcase",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 21,
+                  "bottom": 0,
+                  "top": 1900,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 21,
+                  "bottom": 0,
+                  "top": 1900,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 21,
+                  "bottom": 0,
+                  "top": 1900,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 21,
+                  "bottom": 0,
+                  "top": 1900,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-10-31T01:47:21.967Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-10-31T01:47:21.967Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 14,
+            "bounds": [
+              [
+                -0.22499999403953552,
+                0,
+                -0.22499999403953552
+              ],
+              [
+                0.22499999403953552,
+                1.899999976158142,
+                0.22499999403953552
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 14,
+            "bounds": [
+              [
+                -0.25200000405311584,
+                0,
+                -0.24300000071525574
+              ],
+              [
+                0.25200000405311584,
+                2.052000045776367,
+                0.24300000071525574
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 14,
+            "bounds": [
+              [
+                -0.22499999403953552,
+                0,
+                -0.22499999403953552
+              ],
+              [
+                0.22499999403953552,
+                1.899999976158142,
+                0.22499999403953552
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T01:47:33.869Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-10-31T01:47:33.869Z",
+      "result": {
+        "passed": true,
+        "profile": "corner-bookcase",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 14,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 14,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 14,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T01:47:34.902Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-10-31T01:47:34.902Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 14,
+            "position": [
+              0,
+              0.949999988079071,
+              3.7284493642477106
+            ],
+            "target": [
+              0,
+              0.949999988079071,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 14,
+            "position": [
+              2.0642057770954856,
+              2.085313165481588,
+              2.88988808793368
+            ],
+            "target": [
+              0,
+              0.949999988079071,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 14,
+            "position": [
+              -2.110818794054351,
+              1.7943275057008115,
+              -2.9551463116760908
+            ],
+            "target": [
+              0,
+              0.949999988079071,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T01:47:41.734Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-10-31T01:47:41.734Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T01:47:44.874Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-10-31T01:47:44.874Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T01:47:47.979Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-10-31T01:47:47.979Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T01:47:51.095Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-10-31T01:47:51.096Z",
+      "result": {
+        "passed": true,
+        "profile": "corner-bookcase",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 14,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 14,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 14,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T01:47:51.875Z"
+    }
+  ],
+  "finished": "2026-10-31T01:47:51.875Z"
+}
