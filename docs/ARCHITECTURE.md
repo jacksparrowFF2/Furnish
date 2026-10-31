@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（MCP设计与视觉）：mcp-core扩展家具库／新增／产品配置与相机／截图固定命令。UI与MCP共用createCatalogFurniture，配置沿产品能力、完整工作区预演及原mutate／flush；主场景公开受限相机与端态等待接口，桌面capturePage输出原生PNG，stdio返回image块。无新项目字段／加载脚本／保存通道，桌面壳需更新，见[MCP契约](MCP.md)。
+
 2026-10-31（飘窗窗上墙体）：bay-window-core.upperWalls按凹入式飘窗实际轮廓、窗顶和邻室房顶派生实体；bay-window-model用于正式三维／GLB，wall-finish-core.spatial以同源有限高度墙体供实体、开启与量距复用。新增一个经典本地脚本，无新持久字段／格式变化；适用确认纳入派生上下文，见[验收](validation/bay-upper-walls-20261031/README.md)。
 
 2026-10-31（S05118视觉精修）：保留17件身份，v8软包圆肩／连续鼓度／贴面滚边与环扶手过渡由Blender作者源发布；armchair-model仅对S05118环扶手按路径生成木纹UV。型号solidModel.geometryVersion进入已有实体规则缓存、3D实例缓存和空间确认上下文，定向失效旧几何确认，无新持久字段／加载脚本；见[分阶段视觉与生产复核](validation/chair-s05118-visual-20261031/README.md)。

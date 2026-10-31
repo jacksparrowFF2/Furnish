@@ -64,7 +64,15 @@ if(root){
    if(process.env.FURNISH_MCP_DISABLE!=='1'){mcpStarting=require(path.join(root,'scripts/desktop-mcp.cjs')).start({root,dispatch:async(name,args)=>{
     const win=mainWindow;if(quitting||!win||win.isDestroyed())throw Error('Furnish 主窗口尚未就绪');
     const page=new URL(win.webContents.getURL());if(page.origin!==new URL(backend.url).origin||!['/','/index.html'].includes(page.pathname))throw Error('Furnish 主窗口未处于正式项目页面');
-    return win.webContents.executeJavaScript(`(async()=>{if(!window.FurnishMcp)throw Error('Furnish 页面尚未加载 MCP 接口，请刷新');return window.FurnishMcp.execute(${JSON.stringify(name)},${JSON.stringify(args)});})()`);
+    const result=await win.webContents.executeJavaScript(`(async()=>{if(!window.FurnishMcp)throw Error('Furnish 页面尚未加载 MCP 接口，请刷新');return window.FurnishMcp.execute(${JSON.stringify(name)},${JSON.stringify(args)});})()`);
+    if(name==='take_screenshot'){
+     const picture=await win.webContents.capturePage(result.screenshotTarget==='window'?undefined:result.viewport);
+     if(picture.isEmpty())throw Error('桌面截图为空，请恢复窗口后重试');
+     const after=await win.webContents.executeJavaScript("window.FurnishMcp.execute('get_camera',{})");
+     if(after.revision!==result.revision||after.view!==result.view||JSON.stringify(after.camera)!==JSON.stringify(result.camera)||JSON.stringify(after.planView)!==JSON.stringify(result.planView)||JSON.stringify(after.viewport)!==JSON.stringify(result.viewport))throw Error('截图期间方案或视角变化，请重试');
+     return {...result,image:{mimeType:'image/png',data:picture.toPNG().toString('base64'),...picture.getSize()}};
+    }
+    return result;
    }});await mcpStarting;}
   }).catch(e=>{console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
   app.on('window-all-closed',()=>app.quit());

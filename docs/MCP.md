@@ -9,11 +9,18 @@ MCP 连接正在运行的 Furnish 桌面主窗口。它读取的是当前画布�
 | `get_current_plan` | 返回当前户型、方案列表、家具完整记录、模型坐标说明、保存状态、撤销计数及 `revision`。`includeDetails:true` 另返回当前完整 `work`。 |
 | `copy_design` | 以当前布置创建并进入具名可编辑副本，原方案保留。调用现有 `FurnishDesignUI.createDesign`，不另建复制／保存机制。 |
 | `update_furniture` | 按家具 ID 一次批量修改 `cx/cy/w/d/h/rot`，先完整预演与校验，再通过一次原 `mutate()` 应用，整批可从界面撤销／重做。 |
+| `list_catalog` | 查询内置及“我的家具”，可按 `query` 过滤；返回唯一 `catalogKey`、初始尺寸及组合标记。 |
+| `add_furniture` | 用 `catalogKey/cx/cy` 在精确模型中心新增。与界面共用 `createCatalogFurniture`，完整洗衣区连同关联成员一起新增；返回全部 `addedIds`。不吸附、取整或自动避让。 |
+| `get_furniture_parameters` | 按 `id` 返回当前家具、通用参数与产品能力、范围、默认值；普通柜另提供完整 `cabinet`。 |
+| `configure_furniture` | `updates:[{id,parameters:{...}}]` 批量配置名称、颜色、镜像、前方预留及产品支持的安装、开合、照明、柜体／厨房等参数。完整预演后一次 `mutate`、撤销和保存。 |
+| `get_camera` | 返回二维／三维模式、当前视口、二维视图及三维生产相机的实际位姿、FOV和临时聚焦裁切标记。 |
+| `set_camera` | 切换 `view:2d/3d`；三维支持鸟瞰／漫游、预设、家具／房间聚焦、显式位置与目标及水平 FOV。相机调整不写项目、不进撤销栈。 |
+| `take_screenshot` | `target:viewport/window`，默认画布。桌面原生 PNG 以 MCP `image` 内容块返回，并附 revision、相机、保存状态及图片宽高；没有任意路径写入或自动下载。 |
 | `check_space` | 使用当前方案保存的 `spaceThreshold` 和生产 `spaceCheck`；支持 `focusIds`，输出未知信息和既有确认状态，不改变家具或确认记录。 |
 
-输入使用 mm，`cx/cy` 是户型模型坐标中的家具中心，`w/d` 是家具局部宽深，`h` 是机身高度，`rot` 是角度。屏幕旋转、缩放、镜像不改变这些输入的解释。尺寸调整复用 `resizeFurniture` 及原尺寸基准；尺寸可能联动中心或关联家具，调用者应读取返回的实际结果。省略字段保持原值，不把缺失高度补成厂家尺寸。第一版不编辑安装高度、柜体分区、墙体或材质。
+输入使用 mm，`cx/cy` 是户型模型坐标中的家具中心，`w/d` 是家具局部宽深，`h` 是机身高度，`rot` 是角度。屏幕旋转、缩放、镜像不改变这些输入的解释。尺寸调整复用 `resizeFurniture` 及原尺寸基准；尺寸可能联动中心或关联家具，调用者应读取返回的实际结果。省略字段保持原值，不把缺失高度补成厂家尺寸。安装高度、开合、灯光和柜体／厨房结构由参数接口按原产品能力编辑；墙体编辑和新材质节点仍不在此接口范围。
 
-修改请求需要 `planId`、读取时的 `revision` 和唯一 `requestId`。先读取，再复制方案，使用复制结果的新 revision 调整家具。方案被手工修改、撤销／重做或页面重载后，旧 revision 失效；不会自动重读后强行套用旧请求。完全相同的 requestId 重试返回原回执，同一 ID 携带不同参数则拒绝；回执缓存仅限本次页面会话最近 200 次修改，重载后须重新读取，不盲目重放。
+新增、配置、尺寸编辑、复制和相机控制请求需要 `planId`、读取时的 `revision` 和唯一 `requestId`。先读取，再复制方案，使用复制结果的新 revision 调整家具。方案被手工修改、撤销／重做或页面重载后，旧 revision 失效；不会自动重读后强行套用旧请求。完全相同的 requestId 重试返回原回执，同一 ID 携带不同参数则拒绝；回执缓存仅限本次页面会话最近 200 次修改，重载后须重新读取，不盲目重放。
 
 ```json
 {
@@ -28,9 +35,23 @@ MCP 连接正在运行的 Furnish 桌面主窗口。它读取的是当前画布�
 
 修改后等待原 `repositoryClient.flush()`，返回 `applied` 和 `persisted`。保存期间出现外部修订冲突时可能 `applied:true,persisted:false`：画布编辑和原恢复缓存保留，正式文件不会被覆盖；MCP 工具以错误回执提示，不能将其表述为保存成功。读取仍可用，后续写入停止，沿界面原恢复流程处理。请求超时也不能证明未执行，先重新读取；不要换 requestId 盲目重试。
 
+## 新增、参数与视觉核对
+
+建议流程：`get_current_plan` → `copy_design` → `list_catalog` → `add_furniture` → `get_furniture_parameters` → `configure_furniture`／`update_furniture` → `check_space` → `set_camera` → `take_screenshot`。每次方案修改使用最新回执的 revision。
+
+参数字段从当前产品规则派生，不能用此接口改 `id/type/obj` 或注入任意状态。普通柜 `cabinet`、厨房 `kitchen` 等嵌套对象**整体替换**，先读取完整配置再修改；板厚、分区和尺寸链仍须符合原核心规则。非法字段、越界数值或受锁定成员导致整批拒绝。`null` 删除可选覆盖，恢复原缺省读取语义，不把缺失值写成新默认；名称和颜色须显式填写。仅支持所选产品实际具备的参数，不把通用布局初值当作厂家安装要求。请求上限统一为 3 MiB，以容纳原有内嵌电视图片能力，不放宽产品本身的限制。
+
+相机 `position/target` 均为 `{x,y,z}`：x/y 与家具 cx/cy 同属户型模型坐标，z 为绝对离地毫米；内部只在三维边界换算米并减户型原点。`mode` 为 `orbit/walk`，`preset` 为 `whole/top`；或指定 `focusIds` 家具、`roomId` 房间，四种取景互斥，聚焦／预设采用鸟瞰。家具聚焦复用界面定位与临时遮挡裁切，读回 `focusIds/temporaryFocusClipping`，显式位姿或整屋预设恢复墙体。鸟瞰沿原控制器约束，距离至少 1500 mm，最终位姿以读回结果为准；漫游目标读回沿镜头方向的一米参考点，表示同一视线。设置 `horizontalFov:40–90` 沿原本机镜头偏好并关闭当前模式的物理校准；实际垂直上限仍沿原规则。相机回执为 `viewChanged:true/undoable:false`，不宣称项目保存。
+
+```json
+{"planId":"读取值","revision":"最新值","requestId":"camera-review-1","view":"3d","mode":"walk","position":{"x":4000,"y":5000,"z":1600},"target":{"x":4000,"y":7000,"z":1600},"horizontalFov":60}
+```
+
+截图等相机过渡和生产门扇／推拉门／窗帘端态稳定后捕获真实画布；捕获前后再核对方案、视角、视口，变化则拒绝并提示重试。拖动、绘制、模态编辑及临时替换／风格预览时拒绝截图。浏览器和 `file://` 不创建桌面捕获端点；断网直接打开原应用仍保持可用。
+
 ## 连接与本机配置
 
-入口为 `node scripts/furnish-mcp.cjs`，或 `npm run mcp`。它使用 MCP 2025-11-25 的 stdio 生命周期和换行 JSON-RPC，协商兼容 2025-06-18、2025-03-26、2024-11-05；仅宣告四个工具，不提供脚本执行、任意文件或远程网络访问工具。无新增 npm 依赖。
+入口为 `node scripts/furnish-mcp.cjs`，或 `npm run mcp`。它使用 MCP 2025-11-25 的 stdio 生命周期和换行 JSON-RPC，协商兼容 2025-06-18、2025-03-26、2024-11-05；宣告上述 11 个工具，不提供脚本执行、任意文件或远程网络访问工具。无新增 npm 依赖。
 
 在 Codex 配置中添加 stdio 服务，例如从本仓库运行：
 
@@ -40,12 +61,12 @@ codex mcp add furnish -- node C:/Users/SPH/Documents/GitHub/Furnish/scripts/furn
 
 建议在 `[mcp_servers.furnish]` 设置 `tool_timeout_sec = 180`，与本地保存等待匹配。配置由 Codex 管理，不把用户全局配置纳入 Git。已有聊天可能需要在 MCP 设置中重新加载服务或打开新聊天，才能发现新增工具。[Codex 官方配置说明](https://learn.chatgpt.com/docs/extend/mcp)。协议依据 [MCP stdio](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports) 与 [Tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)。
 
-桌面主进程创建 `127.0.0.1` 随机端口、随机会话令牌和 `.local/desktop-mcp/runtime.json` 发现记录。stdio 客户端只读取该工作目录的记录；HTTP 连接验证令牌、Host，拒绝带 Origin／Sec-Fetch-Site 的浏览器请求，没有 CORS。端点只转发已校验的四种命令到主窗口，不接受调用者脚本；网页沙箱、无 Node 集成保持。令牌不出现在工具回执或日志中，退出时关闭端点并移除本实例记录。`FURNISH_MCP_DISABLE=1` 可在启动前禁用；浏览器和 file:// 页面不会创建监听端点。
+桌面主进程创建 `127.0.0.1` 随机端口、随机会话令牌和 `.local/desktop-mcp/runtime.json` 发现记录。stdio 客户端只读取该工作目录的记录；HTTP 连接验证令牌、Host，拒绝带 Origin／Sec-Fetch-Site 的浏览器请求，没有 CORS。端点只转发已校验的固定命令到主窗口，不接受调用者脚本；网页沙箱、无 Node 集成保持。令牌不出现在工具回执或日志中，退出时关闭端点并移除本实例记录。`FURNISH_MCP_DISABLE=1` 可在启动前禁用；浏览器和 file:// 页面不会创建监听端点。
 
-本机包网页沿源码刷新；接入 MCP 改动了 `desktop/main.cjs`，因此旧包须备份并更新 `resources/app/main.cjs` 后重启，或在新目录重打包。便携包通过原复制式打包携带两个 MCP 运行脚本及共用核心。
+本机包网页沿源码刷新；接入 MCP 改动了 `desktop/main.cjs`，原生截图同样需要本次新桌面壳，因此旧包须备份并更新 `resources/app/main.cjs` 后重启，或在新目录重打包。便携包通过原复制式打包携带两个 MCP 运行脚本及共用核心。
 
 ## 验证
 
-`tests/test-furnish-mcp.cjs` 验证真实 stdio 初始化／工具发现／调用、错误参数、未启动桌面、HTTP 鉴权和来源拒绝、退出清理。`tests/test-furnish-mcp-desktop.cjs` 用真实打包 EXE、独立项目／缓存／端口及真实 stdio 客户端验证复制、批量尺寸／位置、撤销／重做、锁定、旧版本、生产核对、保存、刷新和断网 file://。测试从正式文件只读取快照，核对端点与保存路径属于隔离根目录；记录正式文件与仓库文件前后哈希，如用户并行编辑导致变化如实报告，不覆盖或回滚用户编辑。
+`tests/test-furnish-mcp.cjs` 验证真实 stdio 初始化／工具发现／调用、错误参数、未启动桌面、HTTP 鉴权和来源拒绝、退出清理。`tests/test-furnish-mcp-desktop.cjs` 用真实打包 EXE、独立项目／缓存／端口及真实 stdio 客户端验证复制、按库新增及完整洗衣区、参数／柜门配置与删除覆盖、批量尺寸／位置、相机预设／显式位姿／聚焦／漫游、原生二维与三维图片、撤销／重做、锁定、旧版本、生产核对、保存、刷新和断网 file://。测试从正式文件只读取快照，核对端点与保存路径属于隔离根目录；记录正式文件与仓库文件前后哈希，如用户并行编辑导致变化如实报告，不覆盖或回滚用户编辑。
 
-此接口继承现有空间算法边界；未知高度、资料缺失和路径可达性不因使用 MCP 而变为已通过。最终布置仍需桌面目视核对。
+此接口继承现有空间算法边界；未知高度、资料缺失和路径可达性不因使用 MCP 而变为已通过。截图可以直接用于目视核对；工具成功回执及算法结果不能替代看图，截图包括当前可见界面、标签与选中叠层，并非离线渲染。

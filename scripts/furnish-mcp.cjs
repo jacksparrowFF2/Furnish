@@ -28,15 +28,15 @@ function serve({input=process.stdin,output=process.stdout,root=path.resolve(__di
    else if(!initialized)throw Object.assign(Error('Initialize MCP first'),{rpcCode:-32002});
    else if(message.method==='tools/list')result={tools:Core.tools.map(t=>({...t,annotations:{...t.annotations,openWorldHint:false}}))};
    else if(message.method==='tools/call'){
-    try{const value=await callDesktop(root,message.params?.name,message.params?.arguments||{});result={content:[{type:'text',text:JSON.stringify(value)}],structuredContent:value,...(value.applied&&!value.persisted?{isError:true}:{})};}
+    try{const value=await callDesktop(root,message.params?.name,message.params?.arguments||{}),{image,...metadata}=value;result={content:[{type:'text',text:JSON.stringify(metadata)},...(image?[{type:'image',mimeType:image.mimeType,data:image.data}]:[])],structuredContent:{...metadata,...(image?{image:{mimeType:image.mimeType,width:image.width,height:image.height}}:{})},...(value.applied&&!value.persisted?{isError:true}:{})};}
     catch(e){result={isError:true,content:[{type:'text',text:e.message}]};}
    }else throw Object.assign(Error('Method not found'),{rpcCode:-32601});
    send({jsonrpc:'2.0',id,result});
   }catch(e){send({jsonrpc:'2.0',id,error:{code:e.rpcCode||-32602,message:e.message}});}
  }
  input.setEncoding('utf8');input.on('data',chunk=>{
-  buffer+=chunk;if(Buffer.byteLength(buffer)>256000&&!buffer.includes('\n')){buffer='';send({jsonrpc:'2.0',id:null,error:{code:-32600,message:'Request too large'}});return;}
-  let end;while((end=buffer.indexOf('\n'))>=0){const line=buffer.slice(0,end);buffer=buffer.slice(end+1);if(!line.trim())continue;queue=queue.catch(()=>{}).then(()=>{if(Buffer.byteLength(line)>256000){send({jsonrpc:'2.0',id:null,error:{code:-32600,message:'Request too large'}});return;}try{return handle(JSON.parse(line));}catch{send({jsonrpc:'2.0',id:null,error:{code:-32700,message:'Parse error'}});}});}
+  buffer+=chunk;if(Buffer.byteLength(buffer)>Core.maxRequestBytes&&!buffer.includes('\n')){buffer='';send({jsonrpc:'2.0',id:null,error:{code:-32600,message:'Request too large'}});return;}
+  let end;while((end=buffer.indexOf('\n'))>=0){const line=buffer.slice(0,end);buffer=buffer.slice(end+1);if(!line.trim())continue;queue=queue.catch(()=>{}).then(()=>{if(Buffer.byteLength(line)>Core.maxRequestBytes){send({jsonrpc:'2.0',id:null,error:{code:-32600,message:'Request too large'}});return;}try{return handle(JSON.parse(line));}catch{send({jsonrpc:'2.0',id:null,error:{code:-32700,message:'Parse error'}});}});}
  });
  return {idle:()=>queue};
 }

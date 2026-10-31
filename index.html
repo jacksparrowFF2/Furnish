@@ -578,6 +578,8 @@ window.View3D = {
   walking:() => !!impl?.walking(),
   blenderScene:options => load().then(() => impl.blenderScene(options)),
   blenderSyncSignature:() => impl?.blenderSyncSignature(),
+  automationCamera:options => impl?.automationCamera(options),
+  automationReady:() => impl?.automationReady(),
 };
 
 // 以下函数体即原 3D 模块（未重新缩进）
@@ -2093,6 +2095,39 @@ function blenderScene(options={}){
  try{return FurnishBlenderExport.encode(THREE,{groups:[archFloor,archUp,furnG,lampG],camera,sun,material:o=>observation.material(o),...options,meta:{plan:PLAN.name,planId:PLAN.id,originMm:[OX,OY],cut:opt.cut,temporaryFocusClipping:false}});}finally{applyObservationLayers();}
 }
 function blenderSyncSignature(){if(globalThis.FurnishCatalog?.active())return null;if(!inited||!active||anim||fly)return null;sync();return JSON.stringify([PLAN.id,sigArch,sigFurn,state.objectLayers?.assignments,state.objectLayers?.layers?.map(l=>[l.id,l.visible]),opt.furn,opt.lamps]);}
+async function automationReady(){
+ const until=performance.now()+15000;
+ while(anim||fly||stage.classList.contains('animating')){if(performance.now()>until)throw Error('三维视角尚未稳定');await new Promise(r=>setTimeout(r,30));}
+ if(!active)throw Error('三维画布未激活');
+ sync();
+ // Saved furniture states must reach their production motion endpoints before capture.
+ const moving=()=>doors.some(d=>d.cur!==(d.open?d.a1:d.a0))||[...slidingDoors,...furnG.children.map(g=>g.userData.slidingDoor).filter(Boolean)].some(d=>d.cur!==(d.open?1:0))||furnG.children.map(g=>g.userData.curtain).filter(Boolean).some(d=>d.cur!==(d.target??(d.open?1:0)));
+ while(moving()){if(performance.now()>until)throw Error('活动部件尚未稳定');await new Promise(r=>setTimeout(r,30));}
+ renderer.render(scene,camera);labelRenderer.render(scene,camera);
+}
+async function automationCamera(options){
+ if(!inited||!active)return null;
+ if(options){
+  await automationReady();
+  const mode=options.mode||((options.preset||options.focusIds||options.roomId)?'orbit':opt.mode);
+  if(options.preset&&mode!=='orbit')throw Error('预设取景需要 orbit 模式');
+  if(options.position&&mode==='orbit'&&Math.hypot(options.position.x-options.target.x,options.position.y-options.target.y,options.position.z-options.target.z)<1500)throw Error('鸟瞰相机距离至少1500mm');
+  if(mode!==opt.mode)setMode(mode);
+  if(options.horizontalFov!==undefined){const calibration=FurnishNavigation.cameraCalibration();if(calibration)FurnishNavigation.setCameraCalibration({...calibration,[mode==='orbit'?'orbitEnabled':'enabled']:false});horizontalFov=FurnishNavigation.setCameraFov(options.horizontalFov);updateProjection();}
+  if(options.position||options.preset){
+   fly=null;clearObservation();
+   const damping=orbit.enableDamping;orbit.enableDamping=false;orbit.update();
+   const point=p=>new THREE.Vector3(wx(p.x),M(p.z),wz(p.y));
+   setPose(options.position?pose(point(options.target),point(options.position)):options.preset==='top'?topWhole():isoWhole());
+   if(mode==='orbit')orbit.update();orbit.enableDamping=damping;invalidate(true);
+  }
+  if(options.focusIds){selectIds(options.focusIds);focusSelection();}
+  if(options.roomId)flyToRoom(options.roomId);
+  await automationReady();
+ }
+ const point=p=>({x:p.x*1000+OX,y:p.z*1000+OY,z:p.y*1000}),target=opt.mode==='orbit'?orbit.target:camera.position.clone().add(camera.getWorldDirection(new THREE.Vector3()));
+ return {mode:opt.mode,position:point(camera.position),target:point(target),horizontalFov:2*Math.atan(Math.tan(camera.fov*Math.PI/360)*camera.aspect)*180/Math.PI,verticalFov:camera.fov,aspect:camera.aspect,unit:'mm',coordinateSystem:'x/y 为户型模型坐标，z 为绝对离地高度',cut:opt.cut,focusIds:observationTarget?[...observationTarget]:[],temporaryFocusClipping:!!observationTarget};
+}
 function shot(){ const a = document.createElement('a'); a.download = tr('户型装修方案', 'floor-plan-design') + '-3D.png'; a.href = renderer.domElement.toDataURL('image/png'); a.click(); }
 function image(){if(globalThis.FurnishCatalog?.active())return null;if(globalThis.FurnishWorkflowTools?.styleId()||!inited||anim||stage.classList.contains('animating'))return null;if(!active)return capturedState===JSON.stringify(state)?capturedImage:null;renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png');}
 
@@ -2120,7 +2155,7 @@ function cabinetPreview(host,f,actions){
 
 function ceilingPreview(host,data,options){return FurnishCeilingModel.preview({THREE,OrbitControls,host,data,...options});}
 function tileLayoutPreview(host,options){return FurnishTileLayoutPreview.create({THREE,OrbitControls,host,...options});}
-return {furnitureScreenPoint,blenderScene,blenderSyncSignature,refreshObservationLayers,tileLayoutPreview,tileRoomAt,refreshTileInspection,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
+return {automationCamera,automationReady,furnitureScreenPoint,blenderScene,blenderSyncSignature,refreshObservationLayers,tileLayoutPreview,tileRoomAt,refreshTileInspection,ceilingPreview,cabinetPreview, enter, exit, relang, sync:() => sync(), shot, image, focusSelection, highlightIssue, groundAt, flyToRoom:id => active && !anim && flyToRoom(id), walking:() => active && opt.mode === 'walk', replan, retheme};
 }
 </script>
 </body>

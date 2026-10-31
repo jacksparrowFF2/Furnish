@@ -11,7 +11,7 @@ async function start({root,dispatch}){
   if(closing||req.headers.origin||req.headers['sec-fetch-site']||req.headers.host!==`127.0.0.1:${server.address().port}`||actual.length!==expected.length||!crypto.timingSafeEqual(Buffer.from(actual),Buffer.from(expected)))return reply(403,{error:'Authenticated local MCP client required'});
   if(req.method!=='POST'||req.url!=='/command'||req.headers['content-type']!=='application/json')return reply(404,{error:'Unknown request'});
   try{
-   const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>128000)throw Error('MCP request exceeds 128 KB');chunks.push(chunk);}
+   const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>Core.maxRequestBytes)throw Error('MCP request exceeds 3 MB');chunks.push(chunk);}
    const command=JSON.parse(Buffer.concat(chunks).toString('utf8'));
    if(!command||Object.keys(command).some(k=>!['name','arguments'].includes(k)))throw Error('Invalid command envelope');Core.validate(command.name,command.arguments||{});
    const task=queue.catch(()=>{}).then(()=>{if(closing||req.destroyed&&res.destroyed)throw Error('Desktop connection closed');return dispatch(command.name,command.arguments||{});});queue=task;
