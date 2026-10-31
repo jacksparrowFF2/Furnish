@@ -17,7 +17,7 @@
 | [定制柜体设计图](cabinet-design-references/README.md) | 3 | 参考资料 | 0 |
 | [猫爬架-绿叶成荫围栏款](cat-tree/README.md) | 1 | 参数化 | 0 |
 | [石膏板吊顶与灯带](ceiling-lighting/README.md) | 5 | 参考资料 | 0 |
-| [源氏木语-S05118-书椅](chair-s05118/README.md) | 6 | [BLEND](chair-s05118/v2/chair-s05118-v1.blend) · [GLB](chair-s05118/v2/chair-s05118-v1.glb) | 0 |
+| [源氏木语-S05118-书椅](chair-s05118/README.md) | 6 | [BLEND](chair-s05118/v8/chair-s05118-v1.blend) · [GLB](chair-s05118/v8/chair-s05118-v1.glb) | 0 |
 | [樱桃木白色岩板茶几-1.2米](cherry-coffee-table/README.md) | 4 | 参数化 | 0 |
 | [空气循环扇（前期参数与后补收纳图）](circulation-fan-references/README.md) | 2 | 参考资料 | 0 |
 | [源氏木语-Y00Y06-0.45米转角书柜](corner-bookcase/README.md) | 1 | [BLEND](corner-bookcase/v1/corner-bookcase-v1.blend) · [GLB](corner-bookcase/v1/corner-bookcase-v1.glb) | 0 |

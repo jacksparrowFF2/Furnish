@@ -1,0 +1,1839 @@
+{
+  "passed": true,
+  "profile": "chair-s05118",
+  "route": "blender",
+  "modes": [
+    {
+      "mode": "http",
+      "passed": true,
+      "undoRedo": true,
+      "coreResize": true,
+      "refresh": true,
+      "narrow": true,
+      "offline": false
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "undoRedo": true,
+      "coreResize": true,
+      "refresh": true,
+      "narrow": true,
+      "offline": true
+    }
+  ],
+  "exports": [
+    {
+      "mode": "http",
+      "state": "nominal",
+      "file": "http-nominal.glb",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "chair_yeswood_s05118",
+        "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+        "w": 660,
+        "d": 660,
+        "color": "#be9568",
+        "brand": "源氏木语/YESWOOD",
+        "model": "S05118 · 白蜡木原木色／奶茶色 · 660×660×840",
+        "sourceUrl": "https://item.jd.com/10115482828125.html",
+        "h": 840
+      },
+      "scene": [
+        {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "chair_yeswood_s05118",
+          "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+          "w": 660,
+          "d": 660,
+          "color": "#be9568",
+          "brand": "源氏木语/YESWOOD",
+          "model": "S05118 · 白蜡木原木色／奶茶色 · 660×660×840",
+          "sourceUrl": "https://item.jd.com/10115482828125.html",
+          "h": 840
+        }
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:chair-s05118-v1:back-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 25920,
+            "bounds": [
+              [
+                -0.23996619880199432,
+                0.3799999952316284,
+                -0.30626869201660156
+              ],
+              [
+                0.23996609449386597,
+                0.8399999737739563,
+                -0.140127494931221
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:back-piping",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 9600,
+            "bounds": [
+              [
+                -0.23771649599075317,
+                0.37983718514442444,
+                -0.29991909861564636
+              ],
+              [
+                0.23771649599075317,
+                0.833330512046814,
+                -0.18094080686569214
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:front-leg--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3033440113067627,
+                0,
+                0.22949360311031342
+              ],
+              [
+                -0.25749459862709045,
+                0.5824999809265137,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:front-leg-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.25749459862709045,
+                0,
+                0.22949360311031342
+              ],
+              [
+                0.30334389209747314,
+                0.5824999809265137,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:rear-leg--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.2922939956188202,
+                0,
+                -0.33000001311302185
+              ],
+              [
+                -0.23371410369873047,
+                0.5824999809265137,
+                -0.15059520304203033
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:rear-leg-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2337139993906021,
+                0,
+                -0.33000001311302185
+              ],
+              [
+                0.2922939956188202,
+                0.5824999809265137,
+                -0.15059520304203033
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-back-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.2599633038043976,
+                0.32499998807907104,
+                -0.2605840861797333
+              ],
+              [
+                0.2599633038043976,
+                0.3799999952316284,
+                -0.22548410296440125
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 25920,
+            "bounds": [
+              [
+                -0.2649626135826111,
+                0.3799999952316284,
+                -0.24102839827537537
+              ],
+              [
+                0.2649626135826111,
+                0.44999998807907104,
+                0.2904869019985199
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-front-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.2749612033367157,
+                0.32499998807907104,
+                0.2568911015987396
+              ],
+              [
+                0.2749612033367157,
+                0.3799999952316284,
+                0.2919912040233612
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-piping",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 9600,
+            "bounds": [
+              [
+                -0.2653326094150543,
+                0.39623919129371643,
+                -0.24139949679374695
+              ],
+              [
+                0.2653326094150543,
+                0.39776089787483215,
+                0.2908580005168915
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-side--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.28096041083335876,
+                0.32499998807907104,
+                -0.24804839491844177
+              ],
+              [
+                -0.24896490573883057,
+                0.3799999952316284,
+                0.2834669053554535
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-side-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2489648014307022,
+                0.32499998807907104,
+                -0.24804839491844177
+              ],
+              [
+                0.28096041083335876,
+                0.3799999952316284,
+                0.2834669053554535
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.22646810114383698,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                -0.1514786034822464,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.10048580169677734,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                -0.025496400892734528,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.025496400892734528,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                0.10048580169677734,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.1514786034822464,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                0.22646799683570862,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:wraparound-arm",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 16932,
+            "bounds": [
+              [
+                -0.33000001311302185,
+                0.5699999928474426,
+                -0.3212571144104004
+              ],
+              [
+                0.33000001311302185,
+                0.5950000286102295,
+                0.26897260546684265
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.33000001311302185,
+            0,
+            -0.33000001311302185
+          ],
+          [
+            0.33000001311302185,
+            0.8399999737739563,
+            0.33000001311302185
+          ]
+        ],
+        "settledPoses": []
+      },
+      "spatial": {
+        "bottom": 0,
+        "top": 0.84
+      }
+    },
+    {
+      "mode": "http",
+      "state": "resized",
+      "file": "http-resized.glb",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "chair_yeswood_s05118",
+        "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+        "w": 739.2,
+        "d": 712.8000000000001,
+        "color": "#be9568",
+        "brand": "源氏木语/YESWOOD",
+        "model": "S05118 · 白蜡木原木色／奶茶色 · 660×660×840",
+        "sourceUrl": "https://item.jd.com/10115482828125.html",
+        "h": 907.2
+      },
+      "scene": [
+        {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "chair_yeswood_s05118",
+          "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+          "w": 739.2,
+          "d": 712.8000000000001,
+          "color": "#be9568",
+          "brand": "源氏木语/YESWOOD",
+          "model": "S05118 · 白蜡木原木色／奶茶色 · 660×660×840",
+          "sourceUrl": "https://item.jd.com/10115482828125.html",
+          "h": 907.2
+        }
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:chair-s05118-v1:back-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 25920,
+            "bounds": [
+              [
+                -0.26876214146614075,
+                0.41040000319480896,
+                -0.33077019453048706
+              ],
+              [
+                0.2687620222568512,
+                0.9071999788284302,
+                -0.15133769810199738
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:back-piping",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 9600,
+            "bounds": [
+              [
+                -0.26624247431755066,
+                0.41022416949272156,
+                -0.3239126205444336
+              ],
+              [
+                0.26624247431755066,
+                0.8999969363212585,
+                -0.19541606307029724
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:front-leg--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.33974528312683105,
+                0,
+                0.247853085398674
+              ],
+              [
+                -0.28839394450187683,
+                0.6291000247001648,
+                0.3564000129699707
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:front-leg-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.28839394450187683,
+                0,
+                0.247853085398674
+              ],
+              [
+                0.3397451639175415,
+                0.6291000247001648,
+                0.3564000129699707
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:rear-leg--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3273692727088928,
+                0,
+                -0.3564000129699707
+              ],
+              [
+                -0.26175978779792786,
+                0.6291000247001648,
+                -0.16264282166957855
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:rear-leg-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2617596685886383,
+                0,
+                -0.3564000129699707
+              ],
+              [
+                0.3273692727088928,
+                0.6291000247001648,
+                -0.16264282166957855
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-back-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.29115888476371765,
+                0.35100001096725464,
+                -0.28143084049224854
+              ],
+              [
+                0.29115888476371765,
+                0.41040000319480896,
+                -0.24352282285690308
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 25920,
+            "bounds": [
+              [
+                -0.29675811529159546,
+                0.41040000319480896,
+                -0.26031067967414856
+              ],
+              [
+                0.29675811529159546,
+                0.4860000014305115,
+                0.31372585892677307
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-front-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3079565465450287,
+                0.35100001096725464,
+                0.27744239568710327
+              ],
+              [
+                0.3079565465450287,
+                0.41040000319480896,
+                0.3153505027294159
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-piping",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 9600,
+            "bounds": [
+              [
+                -0.29717251658439636,
+                0.4279383420944214,
+                -0.2607114613056183
+              ],
+              [
+                0.29717251658439636,
+                0.42958176136016846,
+                0.3141266405582428
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-side--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3146756589412689,
+                0.35100001096725464,
+                -0.2678922712802887
+              ],
+              [
+                -0.27884069085121155,
+                0.41040000319480896,
+                0.30614423751831055
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-side-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.278840571641922,
+                0.35100001096725464,
+                -0.2678922712802887
+              ],
+              [
+                0.3146756589412689,
+                0.41040000319480896,
+                0.30614423751831055
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.25364425778388977,
+                0.3931199908256531,
+                -0.24623049795627594
+              ],
+              [
+                -0.16965603828430176,
+                0.41040000319480896,
+                0.284482479095459
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.11254409700632095,
+                0.3931199908256531,
+                -0.24623049795627594
+              ],
+              [
+                -0.028555968776345253,
+                0.41040000319480896,
+                0.284482479095459
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.028555968776345253,
+                0.3931199908256531,
+                -0.24623049795627594
+              ],
+              [
+                0.11254409700632095,
+                0.41040000319480896,
+                0.284482479095459
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.16965603828430176,
+                0.3931199908256531,
+                -0.24623049795627594
+              ],
+              [
+                0.2536441683769226,
+                0.41040000319480896,
+                0.284482479095459
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:wraparound-arm",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 16932,
+            "bounds": [
+              [
+                -0.36959999799728394,
+                0.6155999898910522,
+                -0.34695765376091003
+              ],
+              [
+                0.36959999799728394,
+                0.6425999999046326,
+                0.29049041867256165
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.36959999799728394,
+            0,
+            -0.3564000129699707
+          ],
+          [
+            0.36959999799728394,
+            0.9071999788284302,
+            0.3564000129699707
+          ]
+        ],
+        "settledPoses": []
+      },
+      "spatial": {
+        "bottom": 0,
+        "top": 0.9072
+      }
+    },
+    {
+      "mode": "file",
+      "state": "nominal",
+      "file": "file-nominal.glb",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "chair_yeswood_s05118",
+        "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+        "w": 660,
+        "d": 660,
+        "color": "#be9568",
+        "brand": "源氏木语/YESWOOD",
+        "model": "S05118 · 白蜡木原木色／奶茶色 · 660×660×840",
+        "sourceUrl": "https://item.jd.com/10115482828125.html",
+        "h": 840
+      },
+      "scene": [
+        {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "chair_yeswood_s05118",
+          "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+          "w": 660,
+          "d": 660,
+          "color": "#be9568",
+          "brand": "源氏木语/YESWOOD",
+          "model": "S05118 · 白蜡木原木色／奶茶色 · 660×660×840",
+          "sourceUrl": "https://item.jd.com/10115482828125.html",
+          "h": 840
+        }
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:chair-s05118-v1:back-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 25920,
+            "bounds": [
+              [
+                -0.23996619880199432,
+                0.3799999952316284,
+                -0.30626869201660156
+              ],
+              [
+                0.23996609449386597,
+                0.8399999737739563,
+                -0.140127494931221
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:back-piping",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 9600,
+            "bounds": [
+              [
+                -0.23771649599075317,
+                0.37983718514442444,
+                -0.29991909861564636
+              ],
+              [
+                0.23771649599075317,
+                0.833330512046814,
+                -0.18094080686569214
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:front-leg--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.3033440113067627,
+                0,
+                0.22949360311031342
+              ],
+              [
+                -0.25749459862709045,
+                0.5824999809265137,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:front-leg-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.25749459862709045,
+                0,
+                0.22949360311031342
+              ],
+              [
+                0.30334389209747314,
+                0.5824999809265137,
+                0.33000001311302185
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:rear-leg--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.2922939956188202,
+                0,
+                -0.33000001311302185
+              ],
+              [
+                -0.23371410369873047,
+                0.5824999809265137,
+                -0.15059520304203033
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:rear-leg-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2337139993906021,
+                0,
+                -0.33000001311302185
+              ],
+              [
+                0.2922939956188202,
+                0.5824999809265137,
+                -0.15059520304203033
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-back-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.2599633038043976,
+                0.32499998807907104,
+                -0.2605840861797333
+              ],
+              [
+                0.2599633038043976,
+                0.3799999952316284,
+                -0.22548410296440125
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-cushion",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 25920,
+            "bounds": [
+              [
+                -0.2649626135826111,
+                0.3799999952316284,
+                -0.24102839827537537
+              ],
+              [
+                0.2649626135826111,
+                0.44999998807907104,
+                0.2904869019985199
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-front-rail",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.2749612033367157,
+                0.32499998807907104,
+                0.2568911015987396
+              ],
+              [
+                0.2749612033367157,
+                0.3799999952316284,
+                0.2919912040233612
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-piping",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 9600,
+            "bounds": [
+              [
+                -0.2653326094150543,
+                0.39623919129371643,
+                -0.24139949679374695
+              ],
+              [
+                0.2653326094150543,
+                0.39776089787483215,
+                0.2908580005168915
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-side--1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.28096041083335876,
+                0.32499998807907104,
+                -0.24804839491844177
+              ],
+              [
+                -0.24896490573883057,
+                0.3799999952316284,
+                0.2834669053554535
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-side-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.2489648014307022,
+                0.32499998807907104,
+                -0.24804839491844177
+              ],
+              [
+                0.28096041083335876,
+                0.3799999952316284,
+                0.2834669053554535
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-0",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.22646810114383698,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                -0.1514786034822464,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-1",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                -0.10048580169677734,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                -0.025496400892734528,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-2",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.025496400892734528,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                0.10048580169677734,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:seat-slat-3",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 900,
+            "bounds": [
+              [
+                0.1514786034822464,
+                0.36399999260902405,
+                -0.22799119353294373
+              ],
+              [
+                0.22646799683570862,
+                0.3799999952316284,
+                0.26340970396995544
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "key": "explicit:chair-s05118-v1:wraparound-arm",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 16932,
+            "bounds": [
+              [
+                -0.33000001311302185,
+                0.5699999928474426,
+                -0.3212571144104004
+              ],
+              [
+                0.33000001311302185,
+                0.5950000286102295,
+                0.26897260546684265
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {
+                  "KHR_materials_emissive_strength": {
+                    "emissiveStrength": 0
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.33000001311302185,
+            0,
+            -0.33000001311302185
+          ],
+          [
+            0.33000001311302185,
+            0.8399999737739563,
+            0.33000001311302185
+          ]
+        ],
+        "settledPoses": []
+      },
+      "spatial": {
+        "bottom": 0,
+        "top": 0.84
+      }
+    }
+  ]
+}

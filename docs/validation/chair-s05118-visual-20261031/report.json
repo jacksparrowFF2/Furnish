@@ -1,0 +1,316 @@
+{
+  "passed": true,
+  "profile": "chair-s05118",
+  "baseline": "c7e5bc12",
+  "sharedChangesIntegrated": "b71f55c3",
+  "finalVersion": "v8",
+  "geometryVersion": 2,
+  "parts": 17,
+  "triangles": 32924,
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "blenderSha256": "e546b2a0d81ae19bd5b306b668733102d91d23db2e2be02d68b7ecbe548af0a1",
+  "version": "5.2.3 LTS",
+  "pipeline": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-0Pc0om\\chair-s05118-6ZvUhK",
+  "pipelinePassed": true,
+  "sourceUnchanged": true,
+  "renderDevice": {
+    "requested": "gpu",
+    "type": "GPU",
+    "backend": "OPTIX",
+    "devices": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER"
+    ],
+    "fallback": null
+  },
+  "materialABControlled": true,
+  "sourceFiles": [
+    {
+      "path": "assets/models/chair-s05118/v2/chair-s05118-v1.blend",
+      "sha256": "32b0ff917149b1d08bc56b200947d13dc29f32ad0fe6068641c8c12e3b5e3c67"
+    },
+    {
+      "path": "assets/models/chair-s05118/v2/chair-s05118-v1.glb",
+      "sha256": "d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01"
+    },
+    {
+      "path": "assets/models/chair-s05118/v8/chair-s05118-v1.blend",
+      "sha256": "4993a0249879ac5f229749785a6b002e5e533b64c258f692172fdaa0293e20d1"
+    },
+    {
+      "path": "assets/models/chair-s05118/v8/chair-s05118-v1.glb",
+      "sha256": "39dd6d2261e49fa73b4a68c605d3dec91da9cafae58c2649ab97cafbbfe259e3"
+    },
+    {
+      "path": "src/data/chair-s05118-blender-asset.js",
+      "sha256": "62d683f5ffbf3548e208855d1849c90a5836e2674737c2826b0e565cb5ae2904"
+    },
+    {
+      "path": "scripts/blender-model-chair-s05118.py",
+      "sha256": "19335cb46fde2c70e7d43ac70d5b7e95735e35c13cd8c4f4beeedc4c83a92c69"
+    },
+    {
+      "path": "scripts/verify/render-chair-s05118-review.py",
+      "sha256": "b0a64ff71823ed46909eeda97fed9e68e4beac5e48426ce9a57cb4f5b105f79e"
+    },
+    {
+      "path": "src/render/armchair-model.js",
+      "sha256": "c6103a2af98278b323b62a9f3113221ddd99644826c4a44aacbe843d948291c4"
+    }
+  ],
+  "references": [
+    {
+      "path": "assets/models/chair-s05118/references/user/arm.png",
+      "sha256": "2cb2927786421ea3fceac4eb997f99a4cc492b44d880385a353ad1a9869058de",
+      "uploadNames": [
+        "codex-clipboard-a4005d61-db81-4679-95c7-c53bfaa13eed.png"
+      ]
+    },
+    {
+      "path": "assets/models/chair-s05118/references/user/back.png",
+      "sha256": "362713dcf15b0ae14a4e0991ef5da598c80ac4367a9e6d8b40cbf513b76fb7cb",
+      "uploadNames": [
+        "codex-clipboard-1c79c42c-e7ac-4bcb-8caa-c9ae1b32e69c.png"
+      ]
+    },
+    {
+      "path": "assets/models/chair-s05118/references/user/dimensions.png",
+      "sha256": "d7a119af13ee1db2e5a007e1f4570846de9940f56247c22dc50a2bdc8869fac7",
+      "uploadNames": [
+        "codex-clipboard-c729804a-be0a-499b-b17e-afe13a33a131.png"
+      ]
+    },
+    {
+      "path": "assets/models/chair-s05118/references/user/leg.png",
+      "sha256": "5d4fa47db82960b7255ce99b9c39a48fc224aa63f95a260f16eb3239416f7da7",
+      "uploadNames": [
+        "codex-clipboard-4c8c0a47-b317-4cb4-b063-942718027ce5.png"
+      ]
+    },
+    {
+      "path": "assets/models/chair-s05118/references/user/product.png",
+      "sha256": "67db112b2edc3661c0ba0d5a8b0318f24040a8a91d7bec34c92c62b7bec17304",
+      "uploadNames": [
+        "codex-clipboard-2af4bfcf-cd45-43bf-9a04-4b9183f9f917.png"
+      ]
+    },
+    {
+      "path": "assets/models/chair-s05118/references/user/seat.png",
+      "sha256": "a1b1deaf85b5307034c4d78ef7babb036ba712b0937a0736519eb8b477431ad3",
+      "uploadNames": [
+        "codex-clipboard-2e4a14fd-1d06-4131-9faa-d23c0a0fd5c2.png"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "path": "comparison.png",
+      "sha256": "ea62655f4ce3c9fefa85b14842d3b25d7864e229ce1f9ccd852dbe90c8b115bd"
+    },
+    {
+      "path": "desktop-final.png",
+      "sha256": "2aa16c06ecff12ce8e2ac528386e06b4f2b1152ff7b8f176bea4e868a43aad5e"
+    },
+    {
+      "path": "production-back.png",
+      "sha256": "ed0a1b16c28458f2ec39af13cf60b1382abd9aa6937f5d59272eeef86c79b8a0"
+    },
+    {
+      "path": "production-front.png",
+      "sha256": "183cb38c032fb6f72fbe21a7eee693e033266eeccd465444ce08f2f9bbcde82a"
+    },
+    {
+      "path": "production-matched/back-detail.png",
+      "sha256": "9fdb9933118e99ae2899430fd07f85990fe55353b839a194636565f985cb6148"
+    },
+    {
+      "path": "production-matched/back.png",
+      "sha256": "438ffac26342d12fe3eb4f36180fc444576eae0ad70df945bcdcc59525a6b0fc"
+    },
+    {
+      "path": "production-matched/matched-detail.png",
+      "sha256": "121c5233bb7341db5d3f707b44912a81faca4b2eb7528f49dfcd4c75fdf37a5e"
+    },
+    {
+      "path": "production-matched/matched.png",
+      "sha256": "8875abb4f7ab4bdab6cc2006c2787a756008d726e0d821ccd7c2116c67706396"
+    },
+    {
+      "path": "production-matched/side.png",
+      "sha256": "245d11da34bbcb34a355389cee490600d207775be97cf972336c5c41ad0ed55b"
+    },
+    {
+      "path": "production-oblique.png",
+      "sha256": "059d9dfd2f4d709ac77c0659b8287e1e4d44de878c08de9d27b18c74a73c8f0f"
+    },
+    {
+      "path": "production-v6-artifact.png",
+      "sha256": "16a907e812d43ed286ffe31d26efaab4a68399bd1c7bd8fca08c5fe2c17f1608"
+    },
+    {
+      "path": "reference-crops/back-shoulder.png",
+      "sha256": "9f5f051796ee49555e129392c884500d8f14a74925df38208fe7d0adc2280f49"
+    },
+    {
+      "path": "reference-crops/front-joint.png",
+      "sha256": "ed32063bf883155d3dee1286734256a3cad6cd49d5dbe420492414e69b56a62a"
+    },
+    {
+      "path": "reference-crops/rear-hoop.png",
+      "sha256": "eaa4dc954c9af942dcd3c1e05ca4f1ee280eaf4b6b182043ceaa37b0276ff1aa"
+    },
+    {
+      "path": "reference-crops/seat-rail.png",
+      "sha256": "70d658e9d5d234848e6c16f6607b809a56814d134e5b14554c6d953cd76d2924"
+    },
+    {
+      "path": "round-01-after/back-detail.png",
+      "sha256": "390b29f2b17a6f4d3f6dc32f5bcc6b0d41a2a6dc6c6aab711c7cdb6065d92bfc"
+    },
+    {
+      "path": "round-01-after/back.png",
+      "sha256": "fed13446f6a86eb3d0747715cbf688ca98ab3a2c894f218380bb872c1bb35048"
+    },
+    {
+      "path": "round-01-after/matched-detail.png",
+      "sha256": "0b1e91df8663590de02701ea06126e480a9c8344cd495385da4559f4d21633b8"
+    },
+    {
+      "path": "round-01-after/matched.png",
+      "sha256": "4c897a96cc1636fa47f437211c62323ee4b4188fcbb1e1ccc916bb1c09164c11"
+    },
+    {
+      "path": "round-01-after/side.png",
+      "sha256": "dc90382fef58a538699cc4163b68d2aeea1eacbdf5a8337ffc56f8c6e4d749a5"
+    },
+    {
+      "path": "round-01-before/back-detail.png",
+      "sha256": "95709beb120529328a042ff24b269e1baf07b7679391bd4eaed28dc1ba9d728f"
+    },
+    {
+      "path": "round-01-before/back.png",
+      "sha256": "2d92f9823e0028e69844fefa5caccfe998cee65131b3cab0caea49f70ab52641"
+    },
+    {
+      "path": "round-01-before/matched-detail.png",
+      "sha256": "f1718582a03c75dc9f1726ccf8e74819d0bf4bd1df5257b4103e7472558b6464"
+    },
+    {
+      "path": "round-01-before/matched.png",
+      "sha256": "1f18df70812c37f2ea97a7f1caf3caf5052e3798de80e298b25a946a65198688"
+    },
+    {
+      "path": "round-01-before/side.png",
+      "sha256": "6ee39336c8c64ce2732e51d73cb6a9c0475c24ec164528f3e7edcae85cd991bd"
+    },
+    {
+      "path": "round-02-after/back-detail.png",
+      "sha256": "2e91448e7c67fe3258339ab9b87ccfa3acdc1fffd7d2d033e7e46fd381b75086"
+    },
+    {
+      "path": "round-02-after/back.png",
+      "sha256": "759305617da0a188f44626707263deaa17775353fefdbb730d3945ca6dea4323"
+    },
+    {
+      "path": "round-02-after/matched-detail.png",
+      "sha256": "5fba8dee937f09401d9bc89088c37a421a827454940cb1d506787d261753b481"
+    },
+    {
+      "path": "round-02-after/matched.png",
+      "sha256": "96c9806c933eabda4da35a6bd8b4fc087c0e169b5b3df209a007f5b7cb65ac32"
+    },
+    {
+      "path": "round-02-after/side.png",
+      "sha256": "8c5b4c25b12e55779f266c9883b4a126bcb6593b3d0be7b525d8530c77cfc44b"
+    },
+    {
+      "path": "round-02-final/back-detail.png",
+      "sha256": "38c18a464557bde4d36842fa35e2b67fbc542d708f6cfc5ba2e597224bcadeca"
+    },
+    {
+      "path": "round-02-final/back.png",
+      "sha256": "3c743ece4da7dc4d0b7b50df3564231e9a23abde3023d60adc34f2db2021a447"
+    },
+    {
+      "path": "round-02-final/matched-detail.png",
+      "sha256": "3d8a57677fcf23a1575a8d6e497598094817f6ed67c22d56ed01dab9bc4ec275"
+    },
+    {
+      "path": "round-02-final/matched.png",
+      "sha256": "eacec3915e0a240cd130da3c19c72b7c1648bbfa4caab67391cffe21f3be4e14"
+    },
+    {
+      "path": "round-02-final/side.png",
+      "sha256": "61660e393605b95bf015fb68d2e1127699d42d87e3a88a03b921107cef0edfb0"
+    },
+    {
+      "path": "round-03-material-after/back-detail.png",
+      "sha256": "bd6917672f4f111a916573eb379d23685463ca5a3f0830b0e6430510f1845a80"
+    },
+    {
+      "path": "round-03-material-after/back.png",
+      "sha256": "85edd47492ddad28fae3acbf68ff842b12f495249eeae37493af923b6606d572"
+    },
+    {
+      "path": "round-03-material-after/matched-detail.png",
+      "sha256": "0c202fc632f50d88c8e3c5357fab629ef94e7e2d574c8e222780ca3b8713bea8"
+    },
+    {
+      "path": "round-03-material-after/matched.png",
+      "sha256": "1fc7f924f1e807ecc4f1680e97af1d38c37420bc81f6dc1b85ad8bbd656a34aa"
+    },
+    {
+      "path": "round-03-material-after/side.png",
+      "sha256": "9f474edb6fd4e15043c09fbd90542448f3649e9a22b71ade1b41e5653eeec6b2"
+    },
+    {
+      "path": "round-03-material-before/back-detail.png",
+      "sha256": "a3320c3ffea0b96d999366f716b066eba80f7fc6170fb7bdd8dc86d4fb3a4226"
+    },
+    {
+      "path": "round-03-material-before/back.png",
+      "sha256": "2a8768ada8432c5a8a36b1f4dac9aba45c503abbd4501fb6dbda1b9c5f6786b5"
+    },
+    {
+      "path": "round-03-material-before/matched-detail.png",
+      "sha256": "f9083d4de7105355598bcc53d63163f0585df9bb785ee843db9a54e7326ce935"
+    },
+    {
+      "path": "round-03-material-before/matched.png",
+      "sha256": "ffc4520506821d73f92dc464fb7e8d0bdcaba400adf16007d71dd8e42db8db65"
+    },
+    {
+      "path": "round-03-material-before/side.png",
+      "sha256": "763cba12cf1b92f2c6dea30b424c2349c44f7a7a902d70aea3ab6da9d748d9fc"
+    }
+  ],
+  "workspaceUnchanged": true,
+  "workspaceSha256": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b",
+  "desktop": {
+    "passed": true,
+    "source": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+    "sourceUnchanged": true,
+    "root": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\chair-s05118-desktop-m451Co\\workspace",
+    "executable": "output/desktop/Furnish-win32-x64/Furnish.exe",
+    "catalog": true,
+    "undoRedo": true,
+    "saveRefresh": true,
+    "production3D": true,
+    "errors": []
+  },
+  "visualReview": {
+    "silhouette": "executor-passed",
+    "structure": "executor-passed",
+    "material": "executor-passed",
+    "userApproved": false
+  },
+  "notRun": [
+    "full regression check",
+    "other model GPU pipelines",
+    "physical load or construction verification"
+  ],
+  "limitations": [
+    "photo-estimated shoulder/hoop/joinery",
+    "procedural grain, no scanned leather texture or individual stitches",
+    "different lighting from reference photos"
+  ]
+}

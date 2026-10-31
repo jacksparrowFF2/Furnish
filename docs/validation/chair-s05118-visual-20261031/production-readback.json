@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "profile": "chair-s05118",
+  "blender": "5.2.3 LTS",
+  "source": "production-glb",
+  "results": [
+    {
+      "case": "http-nominal",
+      "parts": 17,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "http-resized",
+      "parts": 17,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "file-nominal",
+      "parts": 17,
+      "boundsAndAlpha": true
+    }
+  ]
+}

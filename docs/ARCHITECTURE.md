@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（S05118视觉精修）：保留17件身份，v8软包圆肩／连续鼓度／贴面滚边与环扶手过渡由Blender作者源发布；armchair-model仅对S05118环扶手按路径生成木纹UV。型号solidModel.geometryVersion进入已有实体规则缓存、3D实例缓存和空间确认上下文，定向失效旧几何确认，无新持久字段／加载脚本；见[分阶段视觉与生产复核](validation/chair-s05118-visual-20261031/README.md)。
+
 2026-10-31（飘窗板材）：product-rules.windowLining统一石英石板与三／四面木套的尺寸链、安装和板件；window-lining-model参数化生产构造供主场景／GLB／FurnitureSolids记录器复用，沿CabinetMotion进入实际空洞与净距。属性仍走mutate；两专用字段参与缓存及定向空间确认，含新类型采用v42项目／工作区／缓存。新增一个经典脚本，见[窗台板与包套](WINDOW-LINING.md)。
 
 2026-10-31（全量回归基座）：tests/helpers/production-source按函数名提取当前生产区段并拒绝缺失，旧场景fixture不再绑定空参数签名；layer-context补真实沙发床／单人椅生产模块，归档测试沿产品legacyPaths核对迁移后原图。仅测试维护，无生产加载／模型／保存变更；415套件及浏览器／桌面结果见[全量验收](validation/full-check-20261031/README.md)。

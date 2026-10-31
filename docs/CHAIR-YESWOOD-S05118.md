@@ -21,20 +21,29 @@
 
 ## 生产与兼容
 
-独立后台 Scoop Blender 5.2.3 LTS 建模，17件闭合具名网格（7个主体／滚边／环扶手、6个左右木支撑、4根座底条）。源 [BLEND](../assets/models/chair-s05118/v2/chair-s05118-v1.blend)、[GLB](../assets/models/chair-s05118/v2/chair-s05118-v1.glb) 与离线模块 `src/data/chair-s05118-blender-asset.js` 配套；上一有效版本保留于v1。部件合同位于 `scripts/lib/chair-s05118-contract.json`，作者预检及独立发布分别读取，不以仅作者成功替代发布校验。
+独立后台 Scoop Blender 5.2.3 LTS 建模，17件闭合具名网格（7个主体／滚边／环扶手、6个左右木支撑、4根座底条）。当前精修源 [BLEND](../assets/models/chair-s05118/v8/chair-s05118-v1.blend)、[GLB](../assets/models/chair-s05118/v8/chair-s05118-v1.glb) 与离线模块 `src/data/chair-s05118-blender-asset.js` 配套；上一有效版本v2及v1保留。部件合同位于 `scripts/lib/chair-s05118-contract.json`，作者预检及独立发布分别读取，不以仅作者成功替代发布校验。
 
 Furnish X宽／Y高／正面+Z，地面中心为原点；Blender使用 `(x,-z,y)`，持久数据为mm、网格为m。`product-rules`定义高度／型号及生产能力；复用 `armchair-model`、`static-asset-model`，由实际网格供显示、`bodyParts()`及`directional()`共用。木色编辑仅改木框，软包保持奶茶色；复用原木纹映射，未套用沙发织物bump，无外部贴图。基础GLB为兼容PBR，运行时程序木纹不承诺随GLB传播。
 
 没有新持久字段、格式版本、保存通道或虚构开合。宽深高编辑沿原整体缩放，表示非标布局草模，不代表新厂家规格。复制／替换／撤销、自动保存及项目／命名方案沿既有链路。空间检查读取17件真实生产网格，曲面截面仍是既有保守算法；不代表软包变形或逐三角面精确求交。
 
+## 参考图视觉精修（2026-10-31）
+
+v8将靠背圆肩与厚度圆角分开建形；座垫保持530×530起形、380–450高，底面平承托；细滚边沿相同变形曲面贴合。扶手端部渐变收窄并圆边，奶茶软包PBR粗糙度0.48，均为照片外观近似。最终实际座垫宽529.93、深531.52；靠背宽479.93，垂直380–840。旧表中的靠背约488宽属于v2，不是新厂家尺寸。
+
+实际WebGL发现的枕面X形分块通过直边加密和连续二次鼓度修复，未用材质遮盖；源／发布／生产仍共用17件，约32924三角面。S05118环扶手按中心路径映射顺纹，普通腿／横档沿原机制，其它椅型不改；木纹是程序近似，源GLB仅基础PBR，应用生产导出的GLB含本地生成木纹图。未还原逐针针脚或扫描皮纹。
+
+本型号`solidModel.geometryVersion:2`同时进入生产3D缓存、实体规则缓存及空间确认上下文，旧几何确认定向失效；其它产品及价格／配色保持。没有新增用户字段或强改旧实例尺寸。按[视觉复核记录](validation/chair-s05118-visual-20261031/README.md)分别给出尺寸、视觉及生产传递结论，不将执行者复核表述为用户确认。
+
 ## 验证入口
 
 ```powershell
 node scripts/blender-asset.cjs author-chair-s05118 <new-directory>
-node scripts/blender-asset.cjs publish-chair-s05118 assets/models/chair-s05118/v2/chair-s05118-v1.glb
+node scripts/blender-asset.cjs publish-chair-s05118 assets/models/chair-s05118/v8/chair-s05118-v1.glb
 node tests/test-chair-s05118.cjs
 node scripts/verify/verify-model-pipeline.cjs chair-s05118 gpu
 node scripts/verify/verify-chair-s05118-desktop.cjs <正式文件路径>
 ```
 
 最终结果、三机位与边界见 [验收记录](validation/chair-s05118-20261031/README.md)。
+本次精修另见[分阶段视觉与生产验收](validation/chair-s05118-visual-20261031/README.md)，历史记录不改写为本次版本。

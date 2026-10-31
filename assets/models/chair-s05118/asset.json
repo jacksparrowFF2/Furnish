@@ -87,6 +87,7 @@
   "missingReferences": [],
   "supportingFiles": [],
   "validation": [
-    "docs/validation/chair-s05118-20261031/README.md"
+    "docs/validation/chair-s05118-20261031/README.md",
+    "docs/validation/chair-s05118-visual-20261031/README.md"
   ]
 }

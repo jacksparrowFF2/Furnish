@@ -1,0 +1,52 @@
+[
+  {
+    "original": "assets/models/chair-s05118/v3/chair-s05118-v1.blend",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v3/chair-s05118-v1.blend",
+    "sha256": "178deb93cdd93c7973a0ef58d163321f4b6375b1c2ced35e05374457f1cb300a"
+  },
+  {
+    "original": "assets/models/chair-s05118/v3/chair-s05118-v1.glb",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v3/chair-s05118-v1.glb",
+    "sha256": "886b14cb37e4f328612f87a2f2addfab622f3e4b8f0318b93decea8609a3b5cb"
+  },
+  {
+    "original": "assets/models/chair-s05118/v4/chair-s05118-v1.blend",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v4/chair-s05118-v1.blend",
+    "sha256": "d7f61224ec29f52a027c17c6e17d12cfbe8ab6bcb706d55b8d6748f1c4da20d4"
+  },
+  {
+    "original": "assets/models/chair-s05118/v4/chair-s05118-v1.glb",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v4/chair-s05118-v1.glb",
+    "sha256": "735e92185bc099d8a0c88f6a3051f91bc428c02c14734b30491cbeb0f91df574"
+  },
+  {
+    "original": "assets/models/chair-s05118/v5/chair-s05118-v1.blend",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v5/chair-s05118-v1.blend",
+    "sha256": "21e40fd3106c00520ce4bf3eb1868202541e7041b9607521a31161b8aab7c37c"
+  },
+  {
+    "original": "assets/models/chair-s05118/v5/chair-s05118-v1.glb",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v5/chair-s05118-v1.glb",
+    "sha256": "ef5739a1cb8edae951ff8c1daa0c6ee408898d59fc428632a7c59e8c08335038"
+  },
+  {
+    "original": "assets/models/chair-s05118/v6/chair-s05118-v1.blend",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v6/chair-s05118-v1.blend",
+    "sha256": "306c43561a0d468fc728d947eba8536bce9c287a3aac595ab4550137eb6b6dc1"
+  },
+  {
+    "original": "assets/models/chair-s05118/v6/chair-s05118-v1.glb",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v6/chair-s05118-v1.glb",
+    "sha256": "ac4a0d12cde4a9e878dbf3ba56e84fd3075cb85b9bc63cb41632746e8d4acf6b"
+  },
+  {
+    "original": "assets/models/chair-s05118/v7/chair-s05118-v1.blend",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v7/chair-s05118-v1.blend",
+    "sha256": "a554a85e324e044ce26866f1d48bebb6f97aefa381f039172efc817eb0fc316d"
+  },
+  {
+    "original": "assets/models/chair-s05118/v7/chair-s05118-v1.glb",
+    "retained": "output/chair-s05118-visual/intermediate-sources/v7/chair-s05118-v1.glb",
+    "sha256": "f74b1845c9d91a30265691a3dc0e79766e1fc68ab2a8730dd2c39da259d467c7"
+  }
+]

@@ -8,11 +8,11 @@
 
 | 内容 | 文件 |
 |---|---|
-| 可编辑源 | [BLEND](v2/chair-s05118-v1.blend) |
-| 交换模型 | [GLB](v2/chair-s05118-v1.glb) |
+| 可编辑源 | [BLEND](v8/chair-s05118-v1.blend) |
+| 交换模型 | [GLB](v8/chair-s05118-v1.glb) |
 | 离线运行资产 | [JS](../../../src/data/chair-s05118-blender-asset.js) |
 | 生产构造器 | [代码](../../../src/render/armchair-model.js) |
-当前源GLB SHA256：d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
+当前源GLB SHA256：39dd6d2261e49fa73b4a68c605d3dec91da9cafae58c2649ab97cafbbfe259e3。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
 
 ## 输入参考资料
 
@@ -32,3 +32,4 @@
 ## 验收入口
 
 - [验收资料](../../../docs/validation/chair-s05118-20261031/README.md)
+- [验收资料](../../../docs/validation/chair-s05118-visual-20261031/README.md)

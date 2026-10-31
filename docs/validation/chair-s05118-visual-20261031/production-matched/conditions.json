@@ -1,0 +1,80 @@
+{
+  "source": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-0Pc0om\\chair-s05118-6ZvUhK\\browser\\http-nominal.glb",
+  "sourceSha256": "217e77919c0062587a2dbc427e1c4061dbcfec2c0af7efd70cd2508d95fb4344",
+  "mode": "material",
+  "blender": "5.2.3 LTS",
+  "device": "GPU",
+  "devices": [
+    "NVIDIA GeForce RTX 4070 Ti SUPER"
+  ],
+  "views": {
+    "matched": {
+      "location": [
+        -1.35,
+        -3.4,
+        1.25
+      ],
+      "target": [
+        0,
+        0,
+        0.43
+      ],
+      "lens": 78,
+      "rotationRadians": [
+        1.3502880334854126,
+        3.9968114151633927e-08,
+        -0.37796828150749207
+      ],
+      "sensorWidth": 36
+    },
+    "back": {
+      "location": [
+        -1.65,
+        3.2,
+        1.65
+      ],
+      "target": [
+        0,
+        0,
+        0.43
+      ],
+      "lens": 78,
+      "rotationRadians": [
+        1.2440835237503052,
+        -8.854001265490297e-08,
+        -2.6655232906341553
+      ],
+      "sensorWidth": 36
+    },
+    "side": {
+      "location": [
+        3.7,
+        0,
+        0.75
+      ],
+      "target": [
+        0,
+        0,
+        0.43
+      ],
+      "lens": 78,
+      "rotationRadians": [
+        1.4845246076583862,
+        2.5919142387920147e-08,
+        1.5707963705062866
+      ],
+      "sensorWidth": 36
+    }
+  },
+  "render": {
+    "resolution": [
+      768,
+      800
+    ],
+    "samples": 48,
+    "engine": "CYCLES",
+    "exposure": 0,
+    "view": "AgX",
+    "look": "AgX - Medium High Contrast"
+  }
+}

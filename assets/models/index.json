@@ -25,13 +25,13 @@
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/chair-s05118-blender-asset.js",
-        "sha256": "1e51774454f4cfbea571c76780db9d423a5fb4652d8cdc58c82ee2feeef4780a",
+        "sha256": "2c99584e6dc32c64ec5f8d4c81369a40f7cb30a7b9c71798800477c482caa127",
         "normalization": "utf8-lf"
       },
-      "sourceSha256": "d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01",
+      "sourceSha256": "39dd6d2261e49fa73b4a68c605d3dec91da9cafae58c2649ab97cafbbfe259e3",
       "current": {
-        "blend": "assets/models/chair-s05118/v2/chair-s05118-v1.blend",
-        "glb": "assets/models/chair-s05118/v2/chair-s05118-v1.glb"
+        "blend": "assets/models/chair-s05118/v8/chair-s05118-v1.blend",
+        "glb": "assets/models/chair-s05118/v8/chair-s05118-v1.glb"
       },
       "document": "docs/CHAIR-YESWOOD-S05118.md",
       "constructor": "src/render/armchair-model.js",
@@ -51,15 +51,27 @@
         },
         {
           "path": "assets/models/chair-s05118/v2/chair-s05118-v1.blend",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "32b0ff917149b1d08bc56b200947d13dc29f32ad0fe6068641c8c12e3b5e3c67",
           "bytes": 208948
         },
         {
           "path": "assets/models/chair-s05118/v2/chair-s05118-v1.glb",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01",
           "bytes": 366272
+        },
+        {
+          "path": "assets/models/chair-s05118/v8/chair-s05118-v1.blend",
+          "role": "published-source",
+          "sha256": "4993a0249879ac5f229749785a6b002e5e533b64c258f692172fdaa0293e20d1",
+          "bytes": 465380
+        },
+        {
+          "path": "assets/models/chair-s05118/v8/chair-s05118-v1.glb",
+          "role": "published-source",
+          "sha256": "39dd6d2261e49fa73b4a68c605d3dec91da9cafae58c2649ab97cafbbfe259e3",
+          "bytes": 783032
         }
       ],
       "dossier": "assets/models/chair-s05118/asset.json",
@@ -1383,7 +1395,8 @@
       "missingReferences": [],
       "supportingFiles": [],
       "validation": [
-        "docs/validation/chair-s05118-20261031/README.md"
+        "docs/validation/chair-s05118-20261031/README.md",
+        "docs/validation/chair-s05118-visual-20261031/README.md"
       ],
       "manifest": "assets/models/chair-s05118/asset.json",
       "readme": "assets/models/chair-s05118/README.md"
