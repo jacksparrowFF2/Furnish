@@ -16,6 +16,7 @@ const NAMES_EN = {
   '米家智能茶吧机 Pro 立式':'Mijia Smart Tea Bar Pro · Floor-standing',
   '占位体':'Placeholders', '方块占位体':'Block Placeholder',
   '管道包覆柜':'Pipe Enclosure',
+  '石英石窗台板':'Quartz Window Sill', '木制窗套':'Wood Window Surround',
   '源氏木语折叠餐桌 · 1100款':'YESWOOD Folding Dining Table · 1100',
   '源氏木语折叠餐桌 · 1200款':'YESWOOD Folding Dining Table · 1200',
   '源氏木语折叠餐桌 · 1300款':'YESWOOD Folding Dining Table · 1300',

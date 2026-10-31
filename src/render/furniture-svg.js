@@ -57,6 +57,11 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       return `<g data-manifold-plan="top">${svg}</g>`;
     }
     case 'electrical_box_strong': case 'electrical_box_weak': return rc(x,y,w,d,c)+rc(x+w*.06,y+d*.72,w*.88,d*.22,'#697681');
+    case 'quartz_sill': return rc(x,y,w,d,c)+ln(x,y+d,w/2,y+d,'data-window-lining="stone"');
+    case 'window_surround': {
+      const l=products.windowLining({...f,type:t,w,d}),thickness=l.thickness;
+      return `<g data-window-lining="${l.sides}">${rc(x,y,w,d,c)}${ln(x+thickness,y,x+thickness,d/2)}${ln(w/2-thickness,y,w/2-thickness,d/2)}${ln(x+thickness,0,w/2-thickness,0,'stroke-dasharray="4 3"')}</g>`;
+    }
     case 'block': return rc(x,y,w,d,c);
     case 'cat_tree': return rc(x,y,w,d,'#dfbd7d','rx="12"')+rc(-w*.19,-d*.4,w*.66,d*.64,c)+rc(-w*.02,d*.23,w*.34,d*.24,'#dfbd7d')+ec(-w*.21,-d*.27,w*.21,d*.21,'#eee7d2')+ec(w*.13,-d*.26,w*.21,d*.21,'#d7e2df')+ec(-w*.314,d*.19,w*.186,d*.186,'#dfbd7d')+ln(w*.01,d*.34,w*.29,d*.34)+ln(w*.01,d*.43,w*.29,d*.43);
     case 'pet_feeder_mijia_2': return rc(-w*.45,-d*.07,w*.9,d*.57,c,`rx="${w*.11}"`)+rc(-w*.42,d*.03,w*.84,d*.44,'#b6b9b7',`rx="${w*.08}"`)+rc(x,y,w,d*220/324,c,`rx="${w*37/220}"`)+rc(-w*.27,-d*.30,w*.15,d*.07,shade(c,.9),'rx="4"')+ln(-w*.31,d*58/324,w*.31,d*58/324);

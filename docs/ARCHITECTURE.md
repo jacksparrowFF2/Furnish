@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（飘窗板材）：product-rules.windowLining统一石英石板与三／四面木套的尺寸链、安装和板件；window-lining-model参数化生产构造供主场景／GLB／FurnitureSolids记录器复用，沿CabinetMotion进入实际空洞与净距。属性仍走mutate；两专用字段参与缓存及定向空间确认，含新类型采用v42项目／工作区／缓存。新增一个经典脚本，见[窗台板与包套](WINDOW-LINING.md)。
+
 2026-10-31（全量回归基座）：tests/helpers/production-source按函数名提取当前生产区段并拒绝缺失，旧场景fixture不再绑定空参数签名；layer-context补真实沙发床／单人椅生产模块，归档测试沿产品legacyPaths核对迁移后原图。仅测试维护，无生产加载／模型／保存变更；415套件及浏览器／桌面结果见[全量验收](validation/full-check-20261031/README.md)。
 
 2026-10-31（产品资料目录）：参考原图统一到assets/models/<id>/references，asset.json维护来源类别／哈希／历史路径／缺失记录，生成每产品README及可离线搜索总览。model-asset-index校验39份档案并关联15组生产模型及参数化目录；import-model-reference本机导入去重且同名不覆盖。旧资料文档链接更新，历史验收记录保留，模型与运行文件路径／哈希不变；见[资料结构](MODEL-ASSET-STORAGE.md#产品目录输入到输出)。

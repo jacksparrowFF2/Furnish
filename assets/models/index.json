@@ -3,12 +3,12 @@
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
     "blenderModels": 15,
-    "parametricVerificationConfigurations": 78,
-    "verificationConfigurations": 93,
-    "catalogEntries": 137,
-    "catalogTypes": 110,
-    "productDossiers": 39,
-    "referenceImages": 130,
+    "parametricVerificationConfigurations": 80,
+    "verificationConfigurations": 95,
+    "catalogEntries": 139,
+    "catalogTypes": 112,
+    "productDossiers": 40,
+    "referenceImages": 133,
     "missingReferences": 12
   },
   "models": [
@@ -3051,6 +3051,57 @@
     },
     {
       "format": 1,
+      "id": "window-lining",
+      "name": "飘窗石英石窗台板与木制包套",
+      "types": [
+        "quartz_sill",
+        "window_surround"
+      ],
+      "route": "parametric",
+      "document": "docs/WINDOW-LINING.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/user/reference-1.png",
+          "kind": "user",
+          "sha256": "6f64336d5c258f13e4b8270fd64173ce9382509f3f6b5fb5cdc81645a7025134",
+          "bytes": 577520,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-985385dd-2456-4543-86bf-911ce1d5cf47.png"
+          ]
+        },
+        {
+          "path": "references/user/reference-2.png",
+          "kind": "user",
+          "sha256": "e2410ea03d29751bd9c94829b8df81fabe08576add2fdb15d4df0db57695dbcc",
+          "bytes": 650437,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-3dd50067-4f0a-4b31-a9fe-e966e5353ead.png"
+          ]
+        },
+        {
+          "path": "references/user/reference-3.png",
+          "kind": "user",
+          "sha256": "126cbe59eb98e42d288ca4164272bb81355bde9922d2288eb1c5f42b3fa9adde",
+          "bytes": 955467,
+          "legacyPaths": [],
+          "uploadNames": [
+            "codex-clipboard-e17b4b4f-0dab-439f-bb2e-68ed3b2c834a.png"
+          ]
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/window-lining-20261031/README.md"
+      ],
+      "manifest": "assets/models/window-lining/asset.json",
+      "readme": "assets/models/window-lining/README.md"
+    },
+    {
+      "format": 1,
       "id": "y52y09",
       "name": "源氏木语-Y52Y09-六格书柜",
       "types": [
@@ -3242,6 +3293,18 @@
       "type": "robot_p20max",
       "name": "石头 P20 Max 扫拖机器人",
       "module": "index-inline"
+    },
+    {
+      "id": "quartz_sill",
+      "type": "quartz_sill",
+      "name": "石英石窗台板",
+      "module": "window-lining"
+    },
+    {
+      "id": "window_surround",
+      "type": "window_surround",
+      "name": "木制窗套",
+      "module": "window-lining"
     },
     {
       "id": "pipebox",
@@ -3934,6 +3997,24 @@
       "d": 352,
       "h": 79.8,
       "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "quartz_sill",
+      "name": "石英石窗台板",
+      "w": 1800,
+      "d": 600,
+      "h": 20,
+      "module": "window-lining"
+    },
+    {
+      "category": "柜体",
+      "type": "window_surround",
+      "name": "木制窗套",
+      "w": 1800,
+      "d": 600,
+      "h": 1600,
+      "module": "window-lining"
     },
     {
       "category": "柜体",

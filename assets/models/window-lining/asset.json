@@ -1,0 +1,49 @@
+{
+  "format": 1,
+  "id": "window-lining",
+  "name": "飘窗石英石窗台板与木制包套",
+  "types": [
+    "quartz_sill",
+    "window_surround"
+  ],
+  "route": "parametric",
+  "document": "docs/WINDOW-LINING.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/user/reference-1.png",
+      "kind": "user",
+      "sha256": "6f64336d5c258f13e4b8270fd64173ce9382509f3f6b5fb5cdc81645a7025134",
+      "bytes": 577520,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-985385dd-2456-4543-86bf-911ce1d5cf47.png"
+      ]
+    },
+    {
+      "path": "references/user/reference-2.png",
+      "kind": "user",
+      "sha256": "e2410ea03d29751bd9c94829b8df81fabe08576add2fdb15d4df0db57695dbcc",
+      "bytes": 650437,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-3dd50067-4f0a-4b31-a9fe-e966e5353ead.png"
+      ]
+    },
+    {
+      "path": "references/user/reference-3.png",
+      "kind": "user",
+      "sha256": "126cbe59eb98e42d288ca4164272bb81355bde9922d2288eb1c5f42b3fa9adde",
+      "bytes": 955467,
+      "legacyPaths": [],
+      "uploadNames": [
+        "codex-clipboard-e17b4b4f-0dab-439f-bb2e-68ed3b2c834a.png"
+      ]
+    }
+  ],
+  "missingReferences": [],
+  "supportingFiles": [],
+  "validation": [
+    "docs/validation/window-lining-20261031/README.md"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "index.html": "fdd379165f9272a14ec7bafb41b2569fda34dc8f9ae03e2defbdc5bb745175e1",
+  "src/core/product-rules.js": "3d1fdeb5728cc9c91e57e1bbb8a6f1a7bac114147f5abd8878d7cccac75853b3",
+  "src/render/window-lining-model.js": "0397f28b95f068035ebf90b88f20b443ef637e42ea105352b38c5c75f9f341ea",
+  "src/render/furniture-svg.js": "e7294269f940bfba973d126abd9c2b95e2313ce5114e238265b6727827de7cf3",
+  "src/ui/property-panel.js": "ca123c8afcdd362110f2ae8a708e310617cc4c10f9f560043a9c1b9fa4d398de",
+  "output/window-lining-verification/desktop.glb": "955ff2aaf1ab8eb62648f871644a962b8444ba5e5b46da7a65dfe216075fec98",
+  "output/window-lining-verification/file.glb": "95adf8f2b8e48eee9393474ac79fc224a95b423cc7d1074f2249a7174790d739"
+}

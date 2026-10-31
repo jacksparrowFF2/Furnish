@@ -56,6 +56,8 @@ const LIB = [
     ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
+    ["quartz_sill","石英石窗台板",1800,600,"#eeeae2",undefined,products.height({type:"quartz_sill"})],
+    ["window_surround","木制窗套",1800,600,"#c49b70",undefined,products.height({type:"window_surround"})],
     ["pipebox","管道包覆柜",400,300,"#f3f1ec",0,products.height({type:"pipebox"})],
     ["cabinet","收纳柜",1000,450,"#f3f1ec",1800,1800,null,null,"storage"],
     ["nightstand","床头柜",450,400,"#e8dccb",600],
@@ -221,7 +223,7 @@ function browseLibrary(){
 // Navigation is a derived product taxonomy; source groups still serve legacy lookup.
 const navigationGroups=[
  {id:'furniture',name:'家具',en:'Furniture',children:[['beds','床','Beds'],['sofas','沙发','Sofas'],['tables','桌台','Tables'],['seating','椅凳','Seating']]},
- {id:'cabinetry',name:'柜体',en:'Cabinetry',children:[['storage','收纳柜','Storage'],['custom','定制柜','Custom cabinets'],['vanity','浴室柜','Vanities'],['enclosures','管道包覆','Pipe enclosures']]},
+ {id:'cabinetry',name:'柜体',en:'Cabinetry',children:[['storage','收纳柜','Storage'],['custom','定制柜','Custom cabinets'],['vanity','浴室柜','Vanities'],['enclosures','窗套与包覆','Window lining & enclosures']]},
  {id:'appliances',name:'家电与设备',en:'Appliances',children:[['cooking','厨房电器','Kitchen appliances'],['laundry','洗烘设备','Washers & dryers'],['climate','空调与温控','Climate'],['living','生活电器','Home appliances'],['services','安装设备','Service equipment']]},
  {id:'decor',name:'软装与灯饰',en:'Decor & lighting',children:[['lighting','灯具','Lighting'],['textiles','窗饰与布艺','Textiles'],['accessories','绿植与装饰','Accessories']]},
  {id:'fixtures',name:'门窗与卫浴',en:'Doors & bathroom',children:[['openings','门窗隔断','Doors & windows'],['sanitary','卫浴器具','Bathroom fixtures'],['sinks','水槽与台盆','Sinks']]},
@@ -238,7 +240,7 @@ const navigationTypeGroups={
 function navigationCategory(it,cat){
  if(it[7])return 'other/custom';
  if(it[0]==='block')return 'auxiliary/blocks';
- if(it[0]==='pipebox')return 'cabinetry/enclosures';
+ if(['pipebox','quartz_sill','window_surround'].includes(it[0]))return 'cabinetry/enclosures';
  if(it[0]==='vanity')return 'cabinetry/vanity';
  if(['counter','kitchenwall','ovencol'].includes(it[0]))return 'cabinetry/custom';
  if(['ksink','sink_arrow_680','sink_arrow_750'].includes(it[0]))return 'fixtures/sinks';
@@ -253,10 +255,10 @@ function navigation(library=browseLibrary()){
 }
 const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
 const useTypes={
- living:['sofa_bed_yeswood_y107h03','armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
- bedroom:['bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall'],
+ living:['quartz_sill','window_surround','sofa_bed_yeswood_y107h03','armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
+ bedroom:['quartz_sill','window_surround','bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall'],
  dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
- study:['chair_yeswood_s05118','stool_citylong_370','desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','armchair','floorlamp'],
+ study:['quartz_sill','window_surround','chair_yeswood_s05118','stool_citylong_370','desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','armchair','floorlamp'],
  kitchen:['panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
  laundry:['washer_littleswan_tg10k60w','washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
  bathroom:['bath_heater_aopu_se2','bath_heater_300x600','vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],

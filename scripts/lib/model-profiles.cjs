@@ -7,6 +7,7 @@ const root=path.resolve(__dirname,'../..'),P=require('../../src/core/product-rul
 const originalTypes=new Set('bed crib nightstand wardrobe dresser desk chest chair bookshelf baycushion sofa cornersofa armchair beanbag coffeetable roundtable sidetable tvstand rug shoecab floorlamp plant dryingrack table island barstool counter stove ksink fridge cabinet toilet vanity shower bathtub washer waterheater tv aircon acwall dishwasher ovencol dryer purifier officechair piano treadmill pendant curtain wallart mirror bench'.split(' '));
 const assetTypes={'chair-s05118':'chair_yeswood_s05118','sofa-bed':'sofa_bed_yeswood_y107h03',se2:'bath_heater_aopu_se2',y52y09:'bookshelf_yeswood_y52y09',fridge:'fridge_french_drawer',dishwasher:'dishwasher_mijia_countertop',hood:'rangehood_fotile_jcd10ta',washer:'washer','washer-tg10k60w':'washer_littleswan_tg10k60w','side-table':'sidetable_tmall_635382906309',armchair:'armchair_yeswood_y09hs','armchair-berlin':'armchair_yeswood_berlin','stack-stool':'stool_citylong_370'};
 const suites={
+ quartz_sill:['window-lining'],window_surround:['window-lining'],
  'chair-s05118':['chair-s05118'],
  'sofa-bed':['sofa-bed','sofa-bed-project-v40'],
  se2:['blender-appliance-asset','bath-heater-se2'],y52y09:['blender-bookcase-asset','bookcase-y52y09'],fridge:['blender-fridge-motion','fridge-project-v31'],dishwasher:['blender-dishwasher-asset','dishwasher-project-v32','dishwasher-clearances'],hood:['blender-hood-asset','hood-project-v33'],washer:['blender-washer-asset','washer-project-v35'],'washer-tg10k60w':['blender-washer-materials','blender-washer-tg10k60w','washer-front-confirmation','washer-project-v35'],'side-table':['side-table','side-table-project-v36'],armchair:['armchair'],'armchair-berlin':['armchair-berlin'],'stack-stool':['stack-stool'],
@@ -26,6 +27,7 @@ function itemFixture(item){const f={type:item[0],name:item[1],w:item[2],d:item[3
 function operate(f){
  f=copy(f);const d=P.definition(f)||{};
  if(d.sofaBedProfile)f.sofaBedOpen=true;
+ else if(f.type==='window_surround')f.windowSurroundSides='three';
  else if(d.fridgeMotion)Object.assign(f,{fridgeLeftAngle:100,fridgeRightAngle:100,fridgeUpperExtension:1,fridgeLowerExtension:1});
  else if(d.washerMotion)f.washerDoorAngle=110;
  else if(f.type==='dishwasher_mijia_countertop')f.dishwasherDoorOpen=true;

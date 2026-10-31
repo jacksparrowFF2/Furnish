@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-39份产品／设计档案，130张参考图，12张历史原图待补；15组Blender模型。参数化验证配置78组，全部家具库137条目／110种类型。
+40份产品／设计档案，133张参考图，12张历史原图待补；15组Blender模型。参数化验证配置80组，全部家具库139条目／112种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -47,6 +47,7 @@
 | [洗衣机](washer/README.md) | 0 | [BLEND](washer/washer-v1.blend) · [GLB](washer/washer-v1.glb) | 0 |
 | [小天鹅-TG10K60W-洗衣机](washer-tg10k60w/README.md) | 6 | [BLEND](washer-tg10k60w/v4/washer-tg10k60w-v1.blend) · [GLB](washer-tg10k60w/v4/washer-tg10k60w-v1.glb) | 0 |
 | [定制窗下矮柜与侧边书柜](window-bench-references/README.md) | 4 | 参考资料 | 0 |
+| [飘窗石英石窗台板与木制包套](window-lining/README.md) | 3 | 参数化 | 0 |
 | [源氏木语-Y52Y09-六格书柜](y52y09/README.md) | 1 | [BLEND](y52y09/y52y09-v1.blend) · [GLB](y52y09/y52y09-v1.glb) | 0 |
 | [源氏木语-樱桃木三人沙发-2.16米](yeswood-sofa/README.md) | 4 | 参数化 | 0 |
 

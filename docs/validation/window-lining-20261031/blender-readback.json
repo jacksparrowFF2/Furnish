@@ -1,0 +1,145 @@
+{
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "entry": "desktop",
+      "parts": [
+        {
+          "fid": "fmvwd8ub447",
+          "key": "explicit:quartz_sill:slab",
+          "dimensionsMm": [
+            2000.0,
+            500.0,
+            29.999971389770508
+          ],
+          "elevationsMm": [
+            620.0000047683716,
+            649.9999761581421
+          ],
+          "materials": [
+            "Material_107"
+          ]
+        },
+        {
+          "fid": "fmvwd8uh348",
+          "key": "explicit:window_surround:left",
+          "dimensionsMm": [
+            25.00009536743164,
+            500.0,
+            1474.9999642372131
+          ],
+          "elevationsMm": [
+            650.0000357627869,
+            2125.0
+          ],
+          "materials": [
+            "Material_108"
+          ]
+        },
+        {
+          "fid": "fmvwd8uh348",
+          "key": "explicit:window_surround:right",
+          "dimensionsMm": [
+            25.00009536743164,
+            500.0,
+            1474.9999642372131
+          ],
+          "elevationsMm": [
+            650.0000357627869,
+            2125.0
+          ],
+          "materials": [
+            "Material_108"
+          ]
+        },
+        {
+          "fid": "fmvwd8uh348",
+          "key": "explicit:window_surround:top",
+          "dimensionsMm": [
+            2000.0,
+            500.0,
+            25.00009536743164
+          ],
+          "elevationsMm": [
+            2125.0,
+            2150.0000953674316
+          ],
+          "materials": [
+            "Material_108"
+          ]
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "entry": "file",
+      "parts": [
+        {
+          "fid": "fmvwd9f7r47",
+          "key": "explicit:window_surround:left",
+          "dimensionsMm": [
+            18.000125885009766,
+            599.9999046325684,
+            1563.9999508857727
+          ],
+          "elevationsMm": [
+            637.999951839447,
+            2201.9999027252197
+          ],
+          "materials": [
+            "Material_17"
+          ]
+        },
+        {
+          "fid": "fmvwd9f7r47",
+          "key": "explicit:window_surround:right",
+          "dimensionsMm": [
+            18.000125885009766,
+            599.9999046325684,
+            1563.9999508857727
+          ],
+          "elevationsMm": [
+            637.999951839447,
+            2201.9999027252197
+          ],
+          "materials": [
+            "Material_17"
+          ]
+        },
+        {
+          "fid": "fmvwd9f7r47",
+          "key": "explicit:window_surround:top",
+          "dimensionsMm": [
+            1799.999713897705,
+            599.9999046325684,
+            18.000125885009766
+          ],
+          "elevationsMm": [
+            2201.9999027252197,
+            2220.0000286102295
+          ],
+          "materials": [
+            "Material_17"
+          ]
+        },
+        {
+          "fid": "fmvwd9f7r47",
+          "key": "explicit:window_surround:bottom",
+          "dimensionsMm": [
+            1799.999713897705,
+            599.9999046325684,
+            18.000006675720215
+          ],
+          "elevationsMm": [
+            620.0000047683716,
+            638.0000114440918
+          ],
+          "materials": [
+            "Material_17"
+          ]
+        }
+      ],
+      "status": "passed"
+    }
+  ]
+}

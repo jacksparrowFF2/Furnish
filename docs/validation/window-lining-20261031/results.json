@@ -1,0 +1,15 @@
+{
+  "source": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "sourceSha256": "07551bc7d643752d08a78e1775f3d1734c2cd8fcfc820de1bb188a170bdddced",
+  "checks": [
+    "production catalog addItem creates separate quartz and surround",
+    "actual property controls, dimensions/thickness/elevation/color, undo/redo, invalid input and lock",
+    "v42 desktop save and refresh preserve both separately edited items",
+    "390px narrow desktop properties",
+    "actual production WebGL scene and exported GLB",
+    "HTTP browser reloads desktop v42 workspace",
+    "offline file:// classic loading, WebGL model and production GLB",
+    "original external user workspace hash unchanged"
+  ],
+  "errors": []
+}
