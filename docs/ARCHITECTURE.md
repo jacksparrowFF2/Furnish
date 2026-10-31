@@ -1,5 +1,9 @@
 # 模块与加载约定
 
+## 2026-10-31：洗衣机门向
+
+product-rules集中washerDoorSide能力／默认left；washer-motion-core统一门组反射、轴心、姿态、当前轮廓和12片扫掠，washer-model复用原资产，仅门组变换。属性沿mutate，实体／3D缓存及洗衣机确认读取方向；显式字段采用v43项目／工作区／恢复缓存并读取旧版本，无新脚本。见[洗衣机方向](WASHER-LITTLESWAN-TG10K60W.md)。
+
 2026-10-31（MCP注册启动）：register-codex-mcp沿官方CLI仅创建缺失的furnish注册并探测新stdio连接，保留已有超时／工具限制／禁用与异目录绑定；桌面MCP菜单共用ensureMcp，首次连接后可选本机启动检查。一键cmd／npm入口启动或复用桌面并等鉴权就绪，打包运行时可自带Node模式。无装修字段／网页加载／保存变化，见[MCP注册与启动](MCP.md#注册与启动入口)。
 
 2026-10-31（MCP设计与视觉）：mcp-core扩展家具库／新增／产品配置与相机／截图固定命令。UI与MCP共用createCatalogFurniture，配置沿产品能力、完整工作区预演及原mutate／flush；主场景公开受限相机与端态等待接口，桌面capturePage输出原生PNG，stdio返回image块。无新项目字段／加载脚本／保存通道，桌面壳需更新，见[MCP契约](MCP.md)。

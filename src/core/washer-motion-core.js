@@ -1,4 +1,4 @@
-/* Generic 600x600x850 washer; circular left-hinged layout door, not manufacturer kinematics. */
+/* Circular layout door: default left hinge, optional right; not manufacturer kinematics. */
 (function(root){'use strict';
 const P=()=>root.FurnishProducts||require('./product-rules.js');
 function profile(f){return P().definition(f)?.washerProfile==='tg10k60w'?{id:'washer-tg10k60w',w:595,h:850,d:560,radius:255,inner:190,cy:430,pivot:-257,hole:202.5}: {id:'washer',w:600,h:850,d:600,radius:192,inner:164,cy:400,pivot:-194,hole:170};}
@@ -36,20 +36,21 @@ function tgReference(){const p=[],add=(name,size,center,material='white',role=nu
  return p;}
 function spec(f){const q=profile(f);return {size:[q.w,q.h,q.d],profile:q,parts:reference(f),motions:[{role:'door',axis:'y',pivot:[q.pivot,q.cy,q.d/2-14],parent:null}]};}
 function asset(f){return profile(f).id==='washer-tg10k60w'?(root.FurnishTG10K60WBlenderAsset||require('../data/washer-tg10k60w-blender-asset.js')):(root.FurnishWasherBlenderAsset||require('../data/washer-blender-asset.js'));}
-function pose(f,phase=P().value(f,'washerDoorAngle')/110){const q=profile(f),h=P().height(f),r=Math.min(f.w/q.w,h/q.h,f.d/q.d);return {ratio:r,radius:q.radius*r,centerY:q.cy*h/q.h,pivot:[q.pivot*r,q.cy*h/q.h,f.d/2-14*r],angle:-phase*110*Math.PI/180};}
+function pose(f,phase=P().value(f,'washerDoorAngle')/110){const q=profile(f),h=P().height(f),r=Math.min(f.w/q.w,h/q.h,f.d/q.d),side=P().value(f,'washerDoorSide')==='right'?-1:1;return {side,ratio:r,radius:q.radius*r,centerY:q.cy*h/q.h,pivot:[side*q.pivot*r,q.cy*h/q.h,f.d/2-14*r],angle:-side*phase*110*Math.PI/180};}
 function fit(f,part,v){const q=profile(f),p=pose(f),h=P().height(f),wx=f.w/q.w,hy=h/q.h,front=q.d/2-30,z=n=>n<=front?-f.d/2+(n+q.d/2)/(q.d-30)*(f.d-30*p.ratio):f.d/2-30*p.ratio+(n-front)*p.ratio;
- if(part.role)return [v[0]*p.ratio-p.pivot[0],(v[1]-q.cy)*p.ratio,(v[2]-(q.d/2-14))*p.ratio];
+ // Fit against the authored left hinge; pose reflects only the moving group.
+ if(part.role)return [v[0]*p.ratio-q.pivot*p.ratio,(v[1]-q.cy)*p.ratio,(v[2]-(q.d/2-14))*p.ratio];
  if(part.shape==='frame'){const x=Math.abs(v[0]),dy=v[1]-q.cy,b=dy<0?q.cy-40:720-q.cy,target=b*hy,edge=(q.w-44)/2;return [Math.sign(v[0])*(x<=q.hole?x*p.ratio:q.hole*p.ratio+(x-q.hole)/(edge-q.hole)*(edge*wx-q.hole*p.ratio)),p.centerY+Math.sign(dy)*(Math.abs(dy)<=q.hole?Math.abs(dy)*p.ratio:q.hole*p.ratio+(Math.abs(dy)-q.hole)/(b-q.hole)*(target-q.hole*p.ratio)),z(v[2])];}
  if(part.circular||part.shape==='disc'&&part.name==='drum')return [v[0]*p.ratio,p.centerY+(v[1]-q.cy)*p.ratio,z(v[2])];
  return [v[0]*wx,v[1]*hy,z(v[2])];
 }
-function transform(f,v,phase){const p=pose(f,phase),c=Math.cos(p.angle),s=Math.sin(p.angle);return [v[0]*c+v[2]*s+p.pivot[0],v[1]+p.pivot[1],-v[0]*s+v[2]*c+p.pivot[2]];}
+function transform(f,v,phase){const p=pose(f,phase),c=Math.cos(p.angle),s=Math.sin(p.angle);v=[v[0]*p.side,v[1],v[2]];return [v[0]*c+v[2]*s+p.pivot[0],v[1]+p.pivot[1],-v[0]*s+v[2]*c+p.pivot[2]];}
 function hull(points){const ps=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=arr=>{const out=[];for(const p of arr){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=1e-8)out.pop();out.push(p);}return out;};return half(ps).slice(0,-1).concat(half(ps.reverse()).slice(0,-1));}
 const outlines=new Map();
-function outline(f){const q=profile(f),key=JSON.stringify([q.id,f.w,f.d,P().height(f),P().value(f,'washerDoorAngle')]);if(outlines.has(key))return outlines.get(key).map(p=>p.slice());const ps=[[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]],refs=new Map(reference(f).map(p=>[p.name,p]));for(const part of asset(f).parts.filter(v=>v.role))for(let i=0;i<part.positions.length;i+=3){const v=transform(f,fit(f,refs.get(part.name),part.positions.slice(i,i+3).map(v=>v*1000)));ps.push([v[0],v[2]]);}const result=hull(ps);outlines.set(key,result);if(outlines.size>64)outlines.delete(outlines.keys().next().value);return result.map(p=>p.slice());}
+function outline(f){const q=profile(f),key=JSON.stringify([q.id,f.w,f.d,P().height(f),P().value(f,'washerDoorAngle'),P().value(f,'washerDoorSide')]);if(outlines.has(key))return outlines.get(key).map(p=>p.slice());const ps=[[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,f.d/2],[-f.w/2,f.d/2]],refs=new Map(reference(f).map(p=>[p.name,p]));for(const part of asset(f).parts.filter(v=>v.role))for(let i=0;i<part.positions.length;i+=3){const v=transform(f,fit(f,refs.get(part.name),part.positions.slice(i,i+3).map(v=>v*1000)));ps.push([v[0],v[2]]);}const result=hull(ps);outlines.set(key,result);if(outlines.size>64)outlines.delete(outlines.keys().next().value);return result.map(p=>p.slice());}
 function openingZones(f){const p=pose(f),a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a),world=([x,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,(f.cy||0)+x*s+z*c];},slices=[];
- for(let i=0;i<12;i++){const lo=-p.radius+i*p.radius/6,hi=lo+p.radius/6,near=lo<=0&&hi>=0?0:Math.min(Math.abs(lo),Math.abs(hi)),r=Math.sqrt(Math.max(0,p.radius*p.radius-near*near)),points=[],radius=Math.hypot(r-p.pivot[0],14*p.ratio),pad=radius*(1/Math.cos(Math.PI/180)-1)+1e-6;
-  for(let j=0;j<=55;j++)for(const x of [-r,r])for(const z of [-14,14]){const v=transform(f,[x-p.pivot[0],0,z*p.ratio],j/55);for(const [dx,dz]of [[-pad,-pad],[-pad,pad],[pad,-pad],[pad,pad]])points.push([v[0]+dx,v[2]+dz]);}
+ for(let i=0;i<12;i++){const lo=-p.radius+i*p.radius/6,hi=lo+p.radius/6,near=lo<=0&&hi>=0?0:Math.min(Math.abs(lo),Math.abs(hi)),r=Math.sqrt(Math.max(0,p.radius*p.radius-near*near)),points=[],radius=Math.hypot(r+Math.abs(p.pivot[0]),14*p.ratio),pad=radius*(1/Math.cos(Math.PI/180)-1)+1e-6;
+  for(let j=0;j<=55;j++)for(const x of [-r,r])for(const z of [-14,14]){const v=transform(f,[x-p.pivot[0]*p.side,0,z*p.ratio],j/55);for(const [dx,dz]of [[-pad,-pad],[-pad,pad],[pad,-pad],[pad,pad]])points.push([v[0]+dx,v[2]+dz]);}
   slices.push({poly:hull(points).map(world),ranges:[[P().value(f,'mountHeight')+p.centerY+lo,P().value(f,'mountHeight')+p.centerY+hi]]});
  }return [{kind:'cabinetdoor',column:0,section:'washer:door',poly:hull(slices.flatMap(v=>v.poly)),ranges:[[slices[0].ranges[0][0],slices.at(-1).ranges[0][1]]],slices}];}
 const api={profile,asset,reference,spec,pose,fit,transform,hull,outline,openingZones};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishWasherMotion=api;

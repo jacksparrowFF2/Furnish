@@ -1,0 +1,26 @@
+[
+  {
+    "file": "washer-left.glb",
+    "parts": 15,
+    "maxErrorM": 2.0730339689301047e-07,
+    "passed": true
+  },
+  {
+    "file": "washer-right.glb",
+    "parts": 15,
+    "maxErrorM": 2.0730339689301047e-07,
+    "passed": true
+  },
+  {
+    "file": "washer_littleswan_tg10k60w-left.glb",
+    "parts": 47,
+    "maxErrorM": 2.6476979675393864e-07,
+    "passed": true
+  },
+  {
+    "file": "washer_littleswan_tg10k60w-right.glb",
+    "parts": 47,
+    "maxErrorM": 2.6476979675393864e-07,
+    "passed": true
+  }
+]

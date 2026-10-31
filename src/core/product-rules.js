@@ -27,6 +27,7 @@ const fields={
  pipeBoxOpenSide:{values:['back','front','left','right'],message:'包管柜敞开面须为前、后、左或右面'},
  pipeBoxCorner:{values:['front-left','front-right','back-left','back-right'],message:'包管柜须保留两个相邻面'},
  pipeBoxThickness:numeric(1,100,'包管柜板厚须为 1–100 mm'),
+ washerDoorSide:{values:['left','right'],message:'洗衣机开门方向须为向左或向右'},
  washerDoorAngle:numeric(0,110,'洗衣机圆门角度须为0–110度'),
  laundryHostId:{string:true,max:200,message:'洗衣机柜关联编号无效'},
  groupId:{string:true,max:200,message:'家具组编号须为 1–200 字的非空字符串'},
@@ -71,7 +72,7 @@ const doorPairing={values:['end','start'],default:'end',singleHinge:{values:['le
 // Editable leaf widths are model dimensions, not hardware installation limits.
 const doorWidths={minWidth:50,maxLeaves:24,gap:2};
 const hobCutoutLimits={min:1,max:20000,moduleMargin:20};
-const washer={...laundry,kind:'洗衣机',laundryKind:'washer',washerMotion:true,solidModel:{global:'FurnishWasherModel',module:'washer'},defaults:{...laundry.defaults,washerDoorAngle:0},fields:[...laundry.fields,'washerDoorAngle'],create:[...laundry.create,'washerDoorAngle']};
+const washer={...laundry,kind:'洗衣机',laundryKind:'washer',washerMotion:true,solidModel:{global:'FurnishWasherModel',module:'washer'},defaults:{...laundry.defaults,washerDoorAngle:0,washerDoorSide:'left'},fields:[...laundry.fields,'washerDoorAngle','washerDoorSide'],create:[...laundry.create,'washerDoorAngle','washerDoorSide']};
 const foldingTable={solidModel:{global:'FurnishFoldingTableModel',module:'folding-table'},family:'folding-table',height:760,defaults:{foldingTablePose:'round'},fields:['foldingTablePose'],create:['foldingTablePose'],identity:{brand:'源氏木语/YESWOOD',model:'白蜡木原木色 · 象牙白岩板折叠餐桌',sourceUrl:'https://item.jd.com/10195288580856.html'}};
 const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'bottom',defaults:{mountHeight:1200},fields:['mountHeight'],create:['mountHeight']};
 // Generic made-to-measure covering assumptions, not a manufacturer's installation specification.
