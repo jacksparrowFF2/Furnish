@@ -111,6 +111,6 @@ function create(root,{discover=findBlender,spawn=cp.spawn,kill=pid=>process.kill
    }else reply(405,{error:'不支持的请求'});
   }catch(e){reply(e.status||400,{error:e.message});}return true;
  }
- return {handle,start,jobs,close(){for(const j of jobs.values())if(j.timer){j.cancelRequested=true;fs.writeFileSync(path.join(j.dir,'cancel'),'');const p=readProgress(j);if(p)j.pid=p.pid;if(p?.state==='done'||p?.state==='failed'||p?.state==='cancelled'){finish(j,p.state,p.message);continue;}if(j.pid)stop(j,'cancelled','服务已关闭');}}};
+ return {handle,start,jobs,get busy(){return accepting||[...jobs.values()].some(j=>['starting','importing','rendering','cancelling'].includes(j.state));},close(){for(const j of jobs.values())if(j.timer){j.cancelRequested=true;fs.writeFileSync(path.join(j.dir,'cancel'),'');const p=readProgress(j);if(p)j.pid=p.pid;if(p?.state==='done'||p?.state==='failed'||p?.state==='cancelled'){finish(j,p.state,p.message);continue;}if(j.pid)stop(j,'cancelled','服务已关闭');}}};
 }
 module.exports={create,findBlender,candidates,validateGLB};

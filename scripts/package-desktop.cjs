@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const runtimeFiles=['serve.cjs','server-runtime.cjs','server-recovery.cjs','repository-server.cjs','workspace-files.cjs','blender-server.cjs','blender-render.py','blender-sync-server.cjs','blender-sync-addon.py','blender-project.cjs','blender-refined.py','desktop-mcp.cjs','furnish-mcp.cjs'];
+const runtimeFiles=['serve.cjs','server-runtime.cjs','server-recovery.cjs','backend-update.cjs','repository-server.cjs','workspace-files.cjs','blender-server.cjs','blender-render.py','blender-sync-server.cjs','blender-sync-addon.py','blender-project.cjs','blender-refined.py','desktop-mcp.cjs','furnish-mcp.cjs'];
 function build({out=path.join(root,'output/desktop/Furnish-win32-x64'),portable=false}={}){
  out=path.resolve(out);
  if(fs.existsSync(out))throw Error('输出目录已存在，可能包含用户设计；请用 --out 指定新的空目录：'+out);

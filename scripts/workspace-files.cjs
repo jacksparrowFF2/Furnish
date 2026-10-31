@@ -27,7 +27,7 @@ function create(root,{now=Date.now}={}){
   const raw=fs.readFileSync(file,'utf8');
   // Cache only exact, already validated bytes. External changes (even with the
   // same mtime/size) must still pass the full production recovery validation.
-  if(validatedFile?.file!==file||validatedFile.raw!==raw){const value=JSON.parse(raw),workspace=C.parse(value);validatedFile={file,raw,revision:digest(C.text(value.workspace)),workspace};}
+  if(validatedFile?.file!==file||validatedFile.raw!==raw){const value=JSON.parse(raw),workspace=C.parse(value);validatedFile={file,raw,revision:digest(C.storedText(value)),workspace};}
   return {revision:validatedFile.revision,workspace:JSON.parse(JSON.stringify(validatedFile.workspace)),raw};
  }
  function locked(base,fn){
