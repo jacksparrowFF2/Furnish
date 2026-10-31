@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（保存版本诊断）：repository-storage恢复候选改读共用repository-core.workspaceVersions，移除第二份硬编码版本表；core区分未知工作区版本与结构错误，服务以422及WORKSPACE_VERSION_UNSUPPORTED返回支持版本，GET工作区附支持清单，UI保留错误元数据。旧后台失败后仍由原pending／retry续写最新快照，不重建状态或绕过版本校验。见[保存契约](REPOSITORY-SAVES.md)。
+
 2026-10-31（家具库面板）：workflow-tools在原网格的--lib-w上增加可捕获指针／键盘的分隔条，panes.libraryWidth沿huxing-panes记忆；按窗口与图层／属性开关限制宽度，窄屏仍用抽屉。catalog-collections改为原四来源的select，catalog-ui沿原libUI切换，分类／用途／尺寸统一折叠并显示有效条件；无项目字段、撤销通道或加载变化。见[验收](validation/library-ui-20261031/README.md)。
 
 2026-10-31（沙发床端态）：sofa-bed-core派生6个运动父节点和占地，103件Blender生产模型（细节资产v3）在拟合后作刚性端态变换；sofaBedOpen沿mutate、v40项目／工作区／缓存恢复，定向确认与实体缓存同步。新增一个经典核心脚本，HTTP／file及实际EXE隔离验证，见[契约](SOFA-BED-YESWOOD-Y107H03.md)。
