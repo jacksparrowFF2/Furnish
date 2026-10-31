@@ -40,5 +40,29 @@ const model=require('../src/render/robot-vacuum-model.js'),catalog=require('../s
   assert.ok(Math.abs(above.point.z-below.point.z)<.0001,'base and hood share their contour');
   assert.ok(above.face.normal.dot(below.face.normal)>.995,'join tangents remain smooth');
  }
+ // The lid seam shares the hood's axis instead of stepping backwards by 4 mm.
+ for(const zSign of [-1,1]){
+  const direction=new THREE.Vector3(0,0,-zSign),origin=y=>new THREE.Vector3(0,y,zSign*.6);
+  const hit=y=>new THREE.Raycaster(origin(y),direction).intersectObjects(visible,false)[0];
+  assert.ok(Math.abs(hit(.40199).point.z-hit(.40201).point.z)<.0001,'hood and lid seam meet on both front and rear');
+ }
+ // Each suite contains the same sensor and control geometry. A top-down ray
+ // must meet one exposed cap, with positive separation from the white cover.
+ for(const type of Object.keys(model.specs)){
+  const dims=model.specs[type],object=model.build(THREE,{type,w:dims[0],d:dims[1],h:dims[2]},RoundedBoxGeometry),parts={};
+  object.updateMatrixWorld(true);object.traverse(o=>{if(o.userData.part?.startsWith('robot-'))(parts[o.userData.part]??=[]).push(o);});
+  assert.equal(parts['robot-control-key'].length,2,type+' has exactly two keys');
+  const cover=parts['robot-top-cover'][0],sensor=parts['robot-flush-sensor'][0],coverTop=new THREE.Box3().setFromObject(cover).max.y;
+  for(const o of [sensor,...parts['robot-control-key']]){
+   const bounds=new THREE.Box3().setFromObject(o),center=bounds.getCenter(new THREE.Vector3());
+   assert.ok(bounds.max.y-coverTop>.0007,'sensor/key surface is separated from the cover');
+   const hits=new THREE.Raycaster(new THREE.Vector3(center.x,bounds.max.y+.01,center.z),new THREE.Vector3(0,-1,0)).intersectObjects([cover,o],false);
+   assert.equal(hits[0].object,o,'top detail is visible above the opaque cover');
+   const meshes=[];object.traverse(m=>{if(m.isMesh)meshes.push(m);});
+   const coincident=new THREE.Raycaster(new THREE.Vector3(center.x,bounds.max.y+.001,center.z),new THREE.Vector3(0,-1,0)).intersectObjects(meshes,false).filter(h=>Math.abs(h.point.y-bounds.max.y)<1e-6);
+   assert.deepEqual([...new Set(coincident.map(h=>h.object))],[o],'no other mesh shares the sensor/key top plane');
+   assert.ok(Math.abs(bounds.max.y-(type==='robot_p20max_tank'?.040:type==='robot_p20max_plumbed'?.014:0)-.0798)<2e-6,'detail retains the 79.8 mm robot envelope');
+  }
+ }
  console.log('PASS P20 Max catalog, project round trip, production dimensions, rotation/mirror/resize, cached scale and finite geometry');
 })().catch(e=>{console.error(e);process.exitCode=1;});

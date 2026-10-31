@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: hood and lid seam meet on both front and rear
+    at C:\Users\SPH\Documents\GitHub\Furnish\tests\test-robot-vacuum.cjs:47:10
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

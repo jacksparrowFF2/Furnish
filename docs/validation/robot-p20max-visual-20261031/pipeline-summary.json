@@ -1,0 +1,1112 @@
+{
+  "passed": true,
+  "sourceUnchanged": true,
+  "batch": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-q8Nmiz",
+  "sourceFingerprint": "6bfdbfb86ddf799be9b5dbf9807ff02009e82f21dfd3b8c43327092112a258e5",
+  "revision": "5940a7a9ea96a15c2cfa5c3f1188ca1c78e54ff0",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "device": "gpu",
+  "results": [
+    {
+      "id": "robot_p20max_tank",
+      "passed": true,
+      "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-q8Nmiz\\robot_p20max_tank-tYvJbW",
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+        },
+        {
+          "name": "preflight-negative",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "No imported author asset; validate production geometry and its structural suites."
+        },
+        {
+          "name": "publish",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "Parametric model has no offline asset publication stage."
+        },
+        {
+          "name": "geometry-state",
+          "passed": true,
+          "started": "2026-10-31T14:48:42.119Z",
+          "result": {
+            "passed": true,
+            "tests": [
+              {
+                "name": "robot-vacuum",
+                "profile": "robot_p20max_tank",
+                "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-q8Nmiz\\robot_p20max_tank-tYvJbW\\robot-vacuum.log",
+                "reused": false
+              }
+            ],
+            "spatial": {
+              "passed": true,
+              "results": [
+                {
+                  "id": "robot_p20max_tank",
+                  "passed": true,
+                  "cases": [
+                    {
+                      "state": "nominal",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 450,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "nominal",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 450,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 450,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 450,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "finished": "2026-10-31T14:48:45.179Z"
+        },
+        {
+          "name": "http-file-production",
+          "passed": true,
+          "started": "2026-10-31T14:48:45.179Z",
+          "result": {
+            "passed": true,
+            "modes": [
+              {
+                "mode": "http",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": false
+              },
+              {
+                "mode": "file",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": true
+              }
+            ],
+            "exports": [
+              {
+                "mode": "http",
+                "state": "nominal",
+                "parts": 175,
+                "bounds": [
+                  [
+                    -0.22499999403953552,
+                    0,
+                    -0.22499999403953552
+                  ],
+                  [
+                    0.22499999403953552,
+                    0.44999998807907104,
+                    0.22499999403953552
+                  ]
+                ]
+              },
+              {
+                "mode": "http",
+                "state": "resized",
+                "parts": 175,
+                "bounds": [
+                  [
+                    -0.2519999933242798,
+                    0,
+                    -0.24299999356269839
+                  ],
+                  [
+                    0.2519999933242798,
+                    0.48599998712539677,
+                    0.24299999356269839
+                  ]
+                ]
+              },
+              {
+                "mode": "file",
+                "state": "nominal",
+                "parts": 175,
+                "bounds": [
+                  [
+                    -0.22499999403953552,
+                    0,
+                    -0.22499999403953552
+                  ],
+                  [
+                    0.22499999403953552,
+                    0.44999998807907104,
+                    0.22499999403953552
+                  ]
+                ]
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:50:23.208Z"
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true,
+          "started": "2026-10-31T14:50:23.209Z",
+          "result": {
+            "passed": true,
+            "profile": "robot_p20max_tank",
+            "blender": "5.2.3 LTS",
+            "source": "production-glb",
+            "results": [
+              {
+                "case": "http-nominal",
+                "parts": 175,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "http-resized",
+                "parts": 175,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "file-nominal",
+                "parts": 175,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:50:31.239Z"
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true,
+          "started": "2026-10-31T14:50:31.240Z",
+          "result": {
+            "passed": true,
+            "preset": "model-studio-v2",
+            "views": [
+              {
+                "id": "front",
+                "state": "nominal",
+                "parts": 175,
+                "position": [
+                  0,
+                  0.22499999403953552,
+                  1.4503025488697179
+                ],
+                "target": [
+                  0,
+                  0.22499999403953552,
+                  0
+                ]
+              },
+              {
+                "id": "oblique",
+                "state": "nominal",
+                "parts": 175,
+                "position": [
+                  0.8029404740265859,
+                  0.6666172547541578,
+                  1.1241166636372202
+                ],
+                "target": [
+                  0,
+                  0.22499999403953552,
+                  0
+                ]
+              },
+              {
+                "id": "back",
+                "state": "nominal",
+                "parts": 175,
+                "position": [
+                  -0.8210721343232759,
+                  0.5534288477688459,
+                  -1.1495009880525862
+                ],
+                "target": [
+                  0,
+                  0.22499999403953552,
+                  0
+                ]
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:52:04.102Z"
+        },
+        {
+          "name": "render-front",
+          "passed": true,
+          "started": "2026-10-31T14:52:04.103Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:52:08.405Z"
+        },
+        {
+          "name": "render-oblique",
+          "passed": true,
+          "started": "2026-10-31T14:52:08.405Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:52:11.631Z"
+        },
+        {
+          "name": "render-back",
+          "passed": true,
+          "started": "2026-10-31T14:52:11.632Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:52:14.878Z"
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true,
+          "started": "2026-10-31T14:52:14.878Z",
+          "result": {
+            "passed": true,
+            "profile": "robot_p20max_tank",
+            "blender": "5.2.3 LTS",
+            "source": "downloaded-render-blend",
+            "results": [
+              {
+                "case": "front",
+                "parts": 175,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "oblique",
+                "parts": 175,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "back",
+                "parts": 175,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:52:16.831Z"
+        }
+      ]
+    },
+    {
+      "id": "robot_p20max_plumbed",
+      "passed": true,
+      "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-q8Nmiz\\robot_p20max_plumbed-paKES1",
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+        },
+        {
+          "name": "preflight-negative",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "No imported author asset; validate production geometry and its structural suites."
+        },
+        {
+          "name": "publish",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "Parametric model has no offline asset publication stage."
+        },
+        {
+          "name": "geometry-state",
+          "passed": true,
+          "started": "2026-10-31T14:52:16.879Z",
+          "result": {
+            "passed": true,
+            "tests": [
+              {
+                "name": "robot-vacuum",
+                "profile": "robot_p20max_tank",
+                "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-q8Nmiz\\robot_p20max_tank-tYvJbW\\robot-vacuum.log",
+                "reused": true
+              }
+            ],
+            "spatial": {
+              "passed": true,
+              "results": [
+                {
+                  "id": "robot_p20max_plumbed",
+                  "passed": true,
+                  "cases": [
+                    {
+                      "state": "nominal",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 300,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "nominal",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 300,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 300,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 300,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "finished": "2026-10-31T14:52:17.371Z"
+        },
+        {
+          "name": "http-file-production",
+          "passed": true,
+          "started": "2026-10-31T14:52:17.372Z",
+          "result": {
+            "passed": true,
+            "modes": [
+              {
+                "mode": "http",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": false
+              },
+              {
+                "mode": "file",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": true
+              }
+            ],
+            "exports": [
+              {
+                "mode": "http",
+                "state": "nominal",
+                "parts": 31,
+                "bounds": [
+                  [
+                    -0.19050000607967377,
+                    -5.2154064053566707e-11,
+                    -0.23749999836087227
+                  ],
+                  [
+                    0.19050000607967377,
+                    0.30000000089406964,
+                    0.23749999701976776
+                  ]
+                ]
+              },
+              {
+                "mode": "http",
+                "state": "resized",
+                "parts": 31,
+                "bounds": [
+                  [
+                    -0.21336000680923464,
+                    -5.632638886560182e-11,
+                    -0.25649999822974207
+                  ],
+                  [
+                    0.21336000680923464,
+                    0.3240000009655953,
+                    0.2564999967813492
+                  ]
+                ]
+              },
+              {
+                "mode": "file",
+                "state": "nominal",
+                "parts": 31,
+                "bounds": [
+                  [
+                    -0.19050000607967377,
+                    -5.2154064053566707e-11,
+                    -0.23749999836087227
+                  ],
+                  [
+                    0.19050000607967377,
+                    0.30000000089406964,
+                    0.23749999701976776
+                  ]
+                ]
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:52:42.081Z"
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true,
+          "started": "2026-10-31T14:52:42.081Z",
+          "result": {
+            "passed": true,
+            "profile": "robot_p20max_plumbed",
+            "blender": "5.2.3 LTS",
+            "source": "production-glb",
+            "results": [
+              {
+                "case": "http-nominal",
+                "parts": 31,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "http-resized",
+                "parts": 31,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "file-nominal",
+                "parts": 31,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:52:43.485Z"
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true,
+          "started": "2026-10-31T14:52:43.486Z",
+          "result": {
+            "passed": true,
+            "preset": "model-studio-v2",
+            "views": [
+              {
+                "id": "front",
+                "state": "nominal",
+                "parts": 31,
+                "position": [
+                  0,
+                  0.1500000004209578,
+                  1.2630923961747762
+                ],
+                "target": [
+                  0,
+                  0.1500000004209578,
+                  -6.705522526129215e-10
+                ]
+              },
+              {
+                "id": "oblique",
+                "state": "nominal",
+                "parts": 31,
+                "position": [
+                  0.699294094637539,
+                  0.5346117524716043,
+                  0.9790117318220024
+                ],
+                "target": [
+                  0,
+                  0.1500000004209578,
+                  -6.705522526129215e-10
+                ]
+              },
+              {
+                "id": "back",
+                "state": "nominal",
+                "parts": 31,
+                "position": [
+                  -0.7150852564753086,
+                  0.4360341030110813,
+                  -1.0011193597359844
+                ],
+                "target": [
+                  0,
+                  0.1500000004209578,
+                  -6.705522526129215e-10
+                ]
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:53:02.701Z"
+        },
+        {
+          "name": "render-front",
+          "passed": true,
+          "started": "2026-10-31T14:53:02.702Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:53:05.844Z"
+        },
+        {
+          "name": "render-oblique",
+          "passed": true,
+          "started": "2026-10-31T14:53:05.844Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:53:08.977Z"
+        },
+        {
+          "name": "render-back",
+          "passed": true,
+          "started": "2026-10-31T14:53:08.978Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:53:12.104Z"
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true,
+          "started": "2026-10-31T14:53:12.104Z",
+          "result": {
+            "passed": true,
+            "profile": "robot_p20max_plumbed",
+            "blender": "5.2.3 LTS",
+            "source": "downloaded-render-blend",
+            "results": [
+              {
+                "case": "front",
+                "parts": 31,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "oblique",
+                "parts": 31,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "back",
+                "parts": 31,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:53:12.916Z"
+        }
+      ]
+    },
+    {
+      "id": "robot_p20max",
+      "passed": true,
+      "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-q8Nmiz\\robot_p20max-0cBZ0Q",
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "Retain the existing Furnish parametric constructor; no Blender re-authoring."
+        },
+        {
+          "name": "preflight-negative",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "No imported author asset; validate production geometry and its structural suites."
+        },
+        {
+          "name": "publish",
+          "passed": null,
+          "status": "not-applicable",
+          "reason": "Parametric model has no offline asset publication stage."
+        },
+        {
+          "name": "geometry-state",
+          "passed": true,
+          "started": "2026-10-31T14:53:12.966Z",
+          "result": {
+            "passed": true,
+            "tests": [
+              {
+                "name": "robot-vacuum",
+                "profile": "robot_p20max_tank",
+                "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-q8Nmiz\\robot_p20max_tank-tYvJbW\\robot-vacuum.log",
+                "reused": true
+              }
+            ],
+            "spatial": {
+              "passed": true,
+              "results": [
+                {
+                  "id": "robot_p20max",
+                  "passed": true,
+                  "cases": [
+                    {
+                      "state": "nominal",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 79.8,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "nominal",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 79.8,
+                      "externalDistance": 99.99999999999997,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 79.8,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 1,
+                      "bottom": 0,
+                      "top": 79.8,
+                      "externalDistance": 99.99999999999997,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "finished": "2026-10-31T14:53:13.432Z"
+        },
+        {
+          "name": "http-file-production",
+          "passed": true,
+          "started": "2026-10-31T14:53:13.433Z",
+          "result": {
+            "passed": true,
+            "modes": [
+              {
+                "mode": "http",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": false
+              },
+              {
+                "mode": "file",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": true
+              }
+            ],
+            "exports": [
+              {
+                "mode": "http",
+                "state": "nominal",
+                "parts": 15,
+                "bounds": [
+                  [
+                    -0.175,
+                    1.1175870905794083e-10,
+                    -0.176
+                  ],
+                  [
+                    0.175,
+                    0.07979999999494758,
+                    0.17600000002374871
+                  ]
+                ]
+              },
+              {
+                "mode": "http",
+                "state": "resized",
+                "parts": 15,
+                "bounds": [
+                  [
+                    -0.196,
+                    1.20699405331548e-10,
+                    -0.19008
+                  ],
+                  [
+                    0.196,
+                    0.0861839999945434,
+                    0.19008000002564865
+                  ]
+                ]
+              },
+              {
+                "mode": "file",
+                "state": "nominal",
+                "parts": 15,
+                "bounds": [
+                  [
+                    -0.175,
+                    1.1175870905794083e-10,
+                    -0.176
+                  ],
+                  [
+                    0.175,
+                    0.07979999999494758,
+                    0.17600000002374871
+                  ]
+                ]
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:53:27.679Z"
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true,
+          "started": "2026-10-31T14:53:27.679Z",
+          "result": {
+            "passed": true,
+            "profile": "robot_p20max",
+            "blender": "5.2.3 LTS",
+            "source": "production-glb",
+            "results": [
+              {
+                "case": "http-nominal",
+                "parts": 15,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "http-resized",
+                "parts": 15,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "file-nominal",
+                "parts": 15,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:53:28.729Z"
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true,
+          "started": "2026-10-31T14:53:28.729Z",
+          "result": {
+            "passed": true,
+            "preset": "model-studio-v2",
+            "views": [
+              {
+                "id": "front",
+                "state": "nominal",
+                "parts": 15,
+                "position": [
+                  0,
+                  0.039900000053353146,
+                  0.935513367142194
+                ],
+                "target": [
+                  0,
+                  0.039900000053353146,
+                  1.1874362604302746e-11
+                ]
+              },
+              {
+                "id": "oblique",
+                "state": "nominal",
+                "parts": 15,
+                "position": [
+                  0.517934376552836,
+                  0.32476390715741293,
+                  0.7251081271858447
+                ],
+                "target": [
+                  0,
+                  0.039900000053353146,
+                  1.1874362604302746e-11
+                ]
+              },
+              {
+                "id": "back",
+                "state": "nominal",
+                "parts": 15,
+                "position": [
+                  -0.5296301503684713,
+                  0.2517520602007417,
+                  -0.7414822105039853
+                ],
+                "target": [
+                  0,
+                  0.039900000053353146,
+                  1.1874362604302746e-11
+                ]
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:53:38.327Z"
+        },
+        {
+          "name": "render-front",
+          "passed": true,
+          "started": "2026-10-31T14:53:38.327Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:53:41.436Z"
+        },
+        {
+          "name": "render-oblique",
+          "passed": true,
+          "started": "2026-10-31T14:53:41.436Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:53:44.541Z"
+        },
+        {
+          "name": "render-back",
+          "passed": true,
+          "started": "2026-10-31T14:53:44.541Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-10-31T14:53:47.709Z"
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true,
+          "started": "2026-10-31T14:53:47.709Z",
+          "result": {
+            "passed": true,
+            "profile": "robot_p20max",
+            "blender": "5.2.3 LTS",
+            "source": "downloaded-render-blend",
+            "results": [
+              {
+                "case": "front",
+                "parts": 15,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "oblique",
+                "parts": 15,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "back",
+                "parts": 15,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-10-31T14:53:48.491Z"
+        }
+      ]
+    }
+  ]
+}

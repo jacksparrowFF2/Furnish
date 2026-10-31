@@ -1,0 +1,10 @@
+{
+  "src/render/robot-vacuum-model.js": "6c1c15b3ac68d6ecc70baf75d14691bbe1ac08b3131f3f390b9b32107a780352",
+  "tests/test-robot-vacuum.cjs": "0e5f68baa4bcd0f3936c0b4f110109a16db76071f265e66504ef921690b6139b",
+  "output/playwright/robot-refinement/robot-vacuum-model-before.js": "fe6c4c77454139d2920b717720aef7adf3a9745aaa18c83481a4854d7290e824",
+  "assets/models/robot-p20max/references/user/reference-dimensions.png": "b6d8396eaae0b32f865e6c15dac165af5887a0350705a3a6d2bf86feee7d9a61",
+  "assets/models/robot-p20max/references/user/reference-products.png": "29fb100b1a66819d5d3a5da1c8695fc9084fa6fa561b74b44b5e3d732a88bf00",
+  "assets/models/robot-p20max/references/user/reference-tank-top.png": "169b360e4378bdb15128cabe9bc15075387546f7c6950c2f2218b1634facd3de",
+  "assets/models/robot-p20max/references/user/reference-tank-side.png": "8493a041726b5016cdf74af4eadd3b0cfccef9d2e900b4cae60d6fddbbb1459c",
+  "assets/models/robot-p20max/references/user/reference-tank-empty.png": "8017e803f5deefdd3ff92fe7d50db550cb9344c3a5b8b219f43ace7886741b8d"
+}

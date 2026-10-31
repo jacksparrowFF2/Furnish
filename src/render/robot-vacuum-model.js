@@ -94,8 +94,9 @@ function build(THREE,f,RoundedBoxGeometry){
   for(let j=0;j<256;j++){const normal=joinNormal(j/256*Math.PI*2);body.geometry.attributes.normal.setXYZ(j,normal.x,normal.y,normal.z);}
   body.userData.part='tank-curved-hood';
   // Dark lid perimeter separates a broad, softly domed cover from the shell.
-  syncIdentity.produce("robot-vacuum-model.js:generator-call-3",()=>loft([[.402,.191,.184],[.404,.191,.184]],trim)).userData.part='tank-lid-seam';
-  syncIdentity.produce("robot-vacuum-model.js:generator-call-4",()=>loft([[.404,.191,.184],[.418,.181,.175],[.434,.153,.150],[.445,.103,.103],[.449,.047,.047],[.450,.0001,.0001]],shell)).userData.part='tank-lid';
+  const lidRx=radius(.402,1),lidRz=radius(.402,2);
+  syncIdentity.produce("robot-vacuum-model.js:generator-call-3",()=>loft([[.402,lidRx,lidRz],[.404,lidRx,lidRz]],trim,-.006)).userData.part='tank-lid-seam';
+  syncIdentity.produce("robot-vacuum-model.js:generator-call-4",()=>loft([[.404,lidRx,lidRz],[.418,.181,.175],[.434,.153,.150],[.445,.103,.103],[.449,.047,.047],[.450,.0001,.0001]],shell,-.006)).userData.part='tank-lid';
   const led=new THREE.MeshStandardMaterial({color:'#dbf4ff',emissive:'#a7dfff',emissiveIntensity:.7,roughness:.25});
   syncIdentity.produce("robot-vacuum-model:site-9",()=>box(.070,.003,.001,led,0,.395,.183,.001)).userData.part='tank-status-light';
   // Two shallow inclined wheel tracks, with actual transverse ribs.
@@ -111,8 +112,6 @@ function build(THREE,f,RoundedBoxGeometry){
   const first=g.children.length;syncIdentity.produce("robot-vacuum-model.js:generator-call-5",()=>robot(.040,.027));
   const parked=new THREE.Group();parked.userData.part='tank-parked-robot';
   g.children.slice(first).forEach(o=>parked.add(o));g.add(parked);
-  const panel=syncIdentity.produce("robot-vacuum-model:site-14",()=>box(.036,.0007,.014,grey,0,.120,.090,.002));parked.add(panel);
-  for(const x of syncIdentity.items("robot-vacuum-model.js:generator-9",[["item-a",-.009],["item-b",.009]])){const key=syncIdentity.produce("robot-vacuum-model:site-15",()=>disc(.003,.003,.0004,led,x,.1207,.090));parked.add(key);}
  }
  // Low-profile P20 Max: flush top sensor, bumper seam and front camera window.
  function robot(y,z){
@@ -121,9 +120,12 @@ function build(THREE,f,RoundedBoxGeometry){
   syncIdentity.produce("robot-vacuum-model:site-17",()=>disc(.169,.170,.010,dark,0,y,z));
   syncIdentity.produce("robot-vacuum-model.js:generator-call-6",()=>bumper(.059,white,y+.010));
   syncIdentity.produce("robot-vacuum-model.js:generator-call-7",()=>bumper(.0015,grey,y+.0675));
-  syncIdentity.produce("robot-vacuum-model:site-18",()=>disc(.172,.173,.0108,white,0,y+.069,z));
-  syncIdentity.produce("robot-vacuum-model:site-19",()=>disc(.025,.024,.0008,grey,0,y+.079,z-.040));
-  syncIdentity.produce("robot-vacuum-model:site-20",()=>box(.029,.0006,.003,grey,0,y+.0792,z+.062,.001));
+  // Keep the shallow sensor and controls within 79.8 mm, above the opaque lid.
+  // The former 79.8 mm lid and sensor caps coincided, causing radial z-fighting.
+  syncIdentity.produce("robot-vacuum-model:site-18",()=>disc(.172,.173,.010,white,0,y+.069,z)).userData.part='robot-top-cover';
+  syncIdentity.produce("robot-vacuum-model:site-19",()=>disc(.025,.024,.0008,grey,0,y+.079,z-.040)).userData.part='robot-flush-sensor';
+  syncIdentity.produce("robot-vacuum-model:site-14",()=>box(.036,.0003,.014,grey,0,y+.0791,z+.063,.002)).userData.part='robot-control-panel';
+  for(const x of syncIdentity.items("robot-vacuum-model.js:generator-9",[["item-a",-.009],["item-b",.009]]))syncIdentity.produce("robot-vacuum-model:site-15",()=>disc(.003,.003,.0004,white,x,y+.0794,z+.063)).userData.part='robot-control-key';
   syncIdentity.produce("robot-vacuum-model:site-21",()=>box(.067,.032,.002,grey,0,y+.023,z+.174,.006));
   syncIdentity.produce("robot-vacuum-model:site-22",()=>box(.054,.024,.001,lens,0,y+.027,z+.1752,.004));
   for(const x of syncIdentity.items("robot-vacuum-model.js:generator-10",[["item-a",-.015],["item-b",.015]])){const o=syncIdentity.produce("robot-vacuum-model:site-23",()=>disc(.004,.004,.001,grey,x,0,0));o.rotation.x=Math.PI/2;o.position.set(x,y+.039,z+.1755);}
