@@ -1,0 +1,27 @@
+{
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\wall-seams\\verified-1793454211509",
+  "checks": [
+    {
+      "mode": "desktop",
+      "light": {
+        "bias": -0.00001,
+        "normalBias": 0.001,
+        "shadowEnabled": true,
+        "objects": 38168
+      },
+      "spatialAndFurnitureUnchanged": true
+    },
+    {
+      "mode": "file",
+      "light": {
+        "bias": -0.00001,
+        "normalBias": 0.001,
+        "shadowEnabled": true,
+        "objects": 38168
+      },
+      "spatialAndFurnitureUnchanged": true
+    }
+  ],
+  "errors": [],
+  "sourceUnchanged": true
+}

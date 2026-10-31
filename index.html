@@ -678,7 +678,9 @@ function init(){
   sun = new THREE.DirectionalLight(0xfff1dd, 2.6);
   sun.castShadow = true; sun.shadow.mapSize.setScalar(COARSE ? 2048 : 4096);   // 平板 GPU 用小一点的阴影贴图
   Object.assign(sun.shadow.camera, {left:-11, right:11, top:11, bottom:-11, near:1, far:60});
-  sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
+  // Keep contact shadows attached: a 20 mm normal offset exposed bright strips
+  // at beam/wall and bay/wall junctions. Depth bias is in shadow-camera units.
+  sun.shadow.bias = -0.00001; sun.shadow.normalBias = 0.001;
   ground = new THREE.Mesh(new THREE.PlaneGeometry(160, 160), new THREE.MeshStandardMaterial({color:0xf2eee7, roughness:1}));
   ground.rotation.x = -Math.PI/2; ground.position.y = -0.015; ground.receiveShadow = true;
   scene.add(hemi, sun, sun.target, ground);
