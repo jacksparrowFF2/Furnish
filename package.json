@@ -6,7 +6,8 @@
     "verify:browser": "node scripts/verify-browser.cjs",
     "desktop": "electron desktop/main.cjs",
     "desktop:package": "node scripts/package-desktop.cjs",
-    "verify:desktop": "node scripts/verify-desktop.cjs"
+    "verify:desktop": "node scripts/verify-desktop.cjs",
+    "mcp": "node scripts/furnish-mcp.cjs"
   },
   "devDependencies": {
     "electron": "45.0.0",

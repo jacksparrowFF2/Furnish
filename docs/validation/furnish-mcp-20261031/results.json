@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checks": [
+    "real packaged desktop and stdio read isolated formal project",
+    "copy enters independent design, preserves original and retry never duplicates",
+    "mm position/width/depth/height/rotation uses one existing undo; idempotent retry",
+    "stale revision refused without edits",
+    "native UI undo and redo reverse MCP furniture edits",
+    "locked furniture and invalid batch are atomic failures",
+    "space check equals production rules and saved threshold",
+    "formal save, original design preservation and page reload roundtrip with new session revision",
+    "external write conflict preserves disk, returns applied but unsaved and blocks further edits",
+    "direct offline file:// startup preserved",
+    "desktop quit removes runtime endpoint"
+  ],
+  "errors": [],
+  "originalProjectUnchanged": true,
+  "originalRepositoryUnchanged": true,
+  "isolatedRootVerified": true
+}

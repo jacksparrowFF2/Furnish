@@ -30,7 +30,7 @@ async function main(){
  });
  require(${JSON.stringify(path.join(root,'desktop/main.cjs'))});
  `);
- const env={...process.env,FURNISH_DESKTOP_ROOT:root,FURNISH_DESKTOP_PROFILE:path.join(run,'profile')};delete env.ELECTRON_RUN_AS_NODE;
+ const env={...process.env,FURNISH_DESKTOP_ROOT:root,FURNISH_DESKTOP_PROFILE:path.join(run,'profile'),FURNISH_MCP_DISABLE:'1'};delete env.ELECTRON_RUN_AS_NODE;
  const events=()=>fs.existsSync(log)?fs.readFileSync(log,'utf8').trim().split('\n').filter(Boolean).map(JSON.parse):[];
  async function until(test){const end=Date.now()+20000;while(Date.now()<end){const es=events();assert.ok(!es.some(e=>e.type==='error'),JSON.stringify(es));if(test(es))return es;await new Promise(r=>setTimeout(r,50));}throw Error('Native lifecycle timeout: '+JSON.stringify(events()));}
  const children=[];const launch=()=>{const child=spawn(require('electron'),[entry],{env,windowsHide:true,stdio:'ignore'});children.push(child);return child;};

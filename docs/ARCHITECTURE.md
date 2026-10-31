@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（Furnish MCP）：stdio入口 furnish-mcp通过 desktop-mcp 的鉴权本机端点连接主桌面窗口；mcp-core共用工具清单与参数校验，mcp-bridge以当前画布为准，沿 createDesign／resizeFurniture／mutate／repositoryClient.flush 和生产spaceCheck执行四种固定命令。revision覆盖页面会话、保存时间、当前状态及方案绑定，requestId去重；无独立项目写入、撤销或持久字段。两个经典本地脚本末尾加载，HTTP／file保持；桌面壳需更新并重启。见 [MCP 契约](MCP.md)。
+
 2026-10-31（0.58米转角柜）：Y00Y06058以独立type／Blender源与离线资产加入目录，产品规则选择标称580×580×1900及模型比例；共用corner-bookcase核心／生产适配器按各自源逐板拟合。旧450款资产／数据保持，无新持久字段；两款重建发布、空间、HTTP／断网file逐部件导出回读及GPU三机位／工程重开通过。见[580款契约](CORNER-BOOKCASE-YESWOOD-Y00Y06058.md)。
 
 2026-10-31（模型整链路覆盖）：model-profiles维护后引入产品／参数化柜体清单，隔离批次按各自路线执行具名资产作者预检／发布、空间与结构专项、双入口生产导出、逐部件Blender回读、实际GPU三机位与下载工程重开。原建模路线／资产／持久结构保留；Y52Y09继续使用柜体板件身份，组合按全部关联成员回读。缓存动画通过公开导出逐片核对保存目标端态，不以传递一致或总包络代替姿态正确。对照发现五类升降帘局部实体漏加安装高，通过solidModel.base声明由共用记录器加一次，缓存读取声明，空间确认只对适用模型追加语义标记。见[流程](BLENDER-MODELING-PIPELINE.md)及[90项验收](validation/model-pipeline-20261031/README.md)。

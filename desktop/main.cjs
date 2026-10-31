@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {workspaceRoot,localPage,externalPage}=require('./policy.cjs');
 const {connect}=require('./backend.cjs');
 const appRoot=app.isPackaged?path.dirname(process.execPath):path.resolve(__dirname,'..');
-let root,backend,mainWindow,quitting=false,reopenRequested=false;
+let root,backend,mcpStarting,mainWindow,quitting=false,reopenRequested=false;
 try{
  const file=path.join(appRoot,'furnish-desktop.json');
  root=workspaceRoot({appRoot,config:fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):null,override:process.env.FURNISH_DESKTOP_ROOT});
@@ -60,12 +60,18 @@ if(root){
     {label:'帮助',submenu:[{label:'关于 Furnish',click:()=>dialog.showMessageBox(mainWindow,{title:'Furnish 桌面版',message:'Furnish 本地装修设计',detail:'工作目录：'+root+'\n在“保存／导出 → 保存位置与历史备份”查看或修改正式文件位置。\n桌面缓存：'+app.getPath('userData')+'\nElectron '+process.versions.electron+'；离线可用。',buttons:['确定']})}]}
    ]));
    await createWindow();
+   if(quitting||!mainWindow||mainWindow.isDestroyed())return;
+   if(process.env.FURNISH_MCP_DISABLE!=='1'){mcpStarting=require(path.join(root,'scripts/desktop-mcp.cjs')).start({root,dispatch:async(name,args)=>{
+    const win=mainWindow;if(quitting||!win||win.isDestroyed())throw Error('Furnish 主窗口尚未就绪');
+    const page=new URL(win.webContents.getURL());if(page.origin!==new URL(backend.url).origin||!['/','/index.html'].includes(page.pathname))throw Error('Furnish 主窗口未处于正式项目页面');
+    return win.webContents.executeJavaScript(`(async()=>{if(!window.FurnishMcp)throw Error('Furnish 页面尚未加载 MCP 接口，请刷新');return window.FurnishMcp.execute(${JSON.stringify(name)},${JSON.stringify(args)});})()`);
+   }});await mcpStarting;}
   }).catch(e=>{console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
   app.on('window-all-closed',()=>app.quit());
   app.on('will-quit',event=>{if(backend&&!quitting){
    event.preventDefault();quitting=true;
    // Keep the instance lock until the owned backend stops; queue a quick reopen.
-   Promise.resolve().then(()=>backend.close()).catch(e=>console.error(e.stack||e)).finally(()=>{
+   Promise.resolve(mcpStarting).then(mcp=>mcp?.close()).catch(e=>console.error(e.stack||e)).then(()=>backend.close()).catch(e=>console.error(e.stack||e)).finally(()=>{
     if(reopenRequested)app.relaunch();
     app.quit();
    });
