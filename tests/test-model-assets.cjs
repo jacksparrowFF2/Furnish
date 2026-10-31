@@ -3,7 +3,13 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),crypto=require('node:crypto');
 const M=require('../scripts/lib/model-asset-index.cjs'),I=require('../scripts/index-model-assets.cjs');
 const root=path.resolve(__dirname,'..'),index=M.build();
-assert.equal(index.counts.blenderModels,15);assert.equal(index.counts.productDossiers,39);assert.equal(index.counts.referenceImages,130);assert.equal(index.counts.missingReferences,12);
+const historicalIds='aluminum-light-channel aquarium-mijia-2pro armchair armchair-berlin cabinet-design-references cat-tree ceiling-lighting chair-s05118 cherry-coffee-table circulation-fan-references corner-bookcase corner-bookcase-580 curtain-references dishwasher downlight-dl269 entry-console entry-pegboard fridge hood litter-box panel-light pet-feeder-mijia-2 robot-p20max se2 secondary-wardrobe shoe-bench shower-arrow side-table sliding-door-references sofa-bed stack-stool tea-bar tv-cabinet-references wardrobe-desk-references washer washer-tg10k60w window-bench-references y52y09 yeswood-sofa'.split(' ');
+assert.equal(historicalIds.length,39);assert(historicalIds.every(id=>index.products.some(p=>p.id===id)),'all original dossiers remain present');
+const manifests=fs.readdirSync(path.join(root,'assets/models'),{withFileTypes:true}).filter(e=>e.isDirectory()&&fs.existsSync(path.join(root,'assets/models',e.name,'asset.json')));
+assert.equal(index.counts.productDossiers,manifests.length);assert.equal(index.counts.blenderModels,index.models.length);assert(index.models.length>=15);
+assert.equal(index.counts.referenceImages,index.products.reduce((n,p)=>n+p.references.length,0));assert.equal(index.counts.missingReferences,index.products.reduce((n,p)=>n+p.missingReferences.length,0));
+const lining=index.products.find(p=>p.id==='window-lining');assert.deepEqual(lining.types,['quartz_sill','window_surround']);assert.equal(lining.references.length,3);
+assert(index.products.filter(p=>historicalIds.includes(p.id)).reduce((n,p)=>n+p.references.length,0)>=130,'historical input coverage retained');
 assert.equal(new Set(index.products.map(p=>p.id)).size,index.products.length);
 for(const p of index.products){
  assert(!JSON.stringify(p).includes('Users/SPH'));assert(!/"[A-Za-z]:[\\/]/.test(JSON.stringify(p)));
@@ -39,4 +45,4 @@ try{
  for(const p of [first.path,second.path])fs.unlinkSync(path.join(productDir,p));
 }finally{fs.unlinkSync(manifest);fs.unlinkSync(source);for(const p of ['references/user','references','', '..','../..','../../..'])fs.rmdirSync(path.resolve(productDir,p));}
 assert.deepEqual(I.outputs(),I.outputs());I.main('--check');
-console.log('PASS product dossiers, 130 input hashes, 15 model source identities, missing records, portable paths, deterministic navigation and rejection cases');
+console.log('PASS original 39 dossiers plus window lining, '+index.counts.referenceImages+' input hashes, '+index.models.length+' model source identities, dynamic counts, missing records, portable paths, deterministic navigation and rejection cases');

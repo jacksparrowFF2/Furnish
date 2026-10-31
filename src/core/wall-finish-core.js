@@ -180,9 +180,10 @@ function derive(plan,work){
  return {...plan,wallFinish:data};
 }
 function spatial(plan){
- if(!plan.wallFinish||plan.finishSpatial)return plan;
- const data=plan.wallFinish;
- return {...plan,finishSpatial:true,finishSurveyRooms:plan.rooms,walls:[...plan.walls,...data.solids.map(s=>[...s.rect,'finish',{vertical:{bottom:s.bottom,top:s.top},index:s.index,normal:s.normal,side:s.side}])],rooms:data.rooms,physicalRooms:data.physicalRooms};
+ if(plan.finishSpatial)return plan;
+ const headers=(root.FurnishBayWindows||require('./bay-window-core.js')).upperWalls(plan),data=plan.wallFinish;
+ if(!data&&!headers.length)return plan;
+ return {...plan,finishSpatial:true,finishSurveyRooms:plan.rooms,walls:[...plan.walls,...headers.map(s=>[...s.rect,'bay-header',{vertical:{bottom:s.bottom,top:s.top},bayHeader:s.id}]),...(data?.solids||[]).map(s=>[...s.rect,'finish',{vertical:{bottom:s.bottom,top:s.top},index:s.index,normal:s.normal,side:s.side}])],rooms:data?.rooms||plan.rooms,physicalRooms:data?.physicalRooms||plan.physicalRooms};
 }
 // Rear-mounted service equipment uses the structural face as its zero datum,
 // including before it reaches the wall and creates the actual finish opening.

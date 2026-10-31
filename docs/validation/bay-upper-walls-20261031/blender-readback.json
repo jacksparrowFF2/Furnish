@@ -1,0 +1,86 @@
+{
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "entry": "desktop",
+      "parts": [
+        {
+          "key": "explicit:bay-upper-wall:cad_window_10_4:0",
+          "dimensionsMm": [
+            395.9999084472656,
+            717.9999351501465,
+            1470.9999561309814
+          ],
+          "bottom": 2304,
+          "top": 2700,
+          "materialSlots": 2
+        },
+        {
+          "key": "explicit:bay-upper-wall:cad_window_11_5:0",
+          "dimensionsMm": [
+            405.0002098083496,
+            711.9998931884766,
+            1971.0001945495605
+          ],
+          "bottom": 2295,
+          "top": 2700,
+          "materialSlots": 2
+        }
+      ]
+    },
+    {
+      "entry": "http",
+      "parts": [
+        {
+          "key": "explicit:bay-upper-wall:cad_window_10_4:0",
+          "dimensionsMm": [
+            395.9999084472656,
+            717.9999351501465,
+            1470.9999561309814
+          ],
+          "bottom": 2304,
+          "top": 2700,
+          "materialSlots": 2
+        },
+        {
+          "key": "explicit:bay-upper-wall:cad_window_11_5:0",
+          "dimensionsMm": [
+            405.0002098083496,
+            711.9998931884766,
+            1971.0001945495605
+          ],
+          "bottom": 2295,
+          "top": 2700,
+          "materialSlots": 2
+        }
+      ]
+    },
+    {
+      "entry": "file",
+      "parts": [
+        {
+          "key": "explicit:bay-upper-wall:cad_window_10_4:0",
+          "dimensionsMm": [
+            395.9999084472656,
+            717.9999351501465,
+            1470.9999561309814
+          ],
+          "bottom": 2304,
+          "top": 2700,
+          "materialSlots": 2
+        },
+        {
+          "key": "explicit:bay-upper-wall:cad_window_11_5:0",
+          "dimensionsMm": [
+            405.0002098083496,
+            711.9998931884766,
+            1971.0001945495605
+          ],
+          "bottom": 2295,
+          "top": 2700,
+          "materialSlots": 2
+        }
+      ]
+    }
+  ]
+}

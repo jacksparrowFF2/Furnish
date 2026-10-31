@@ -1,0 +1,224 @@
+{
+  "source": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "sourceUnchanged": true,
+  "sourceSha256": "4f25dd6539965aa56888404bb3153e7cbd8d0abe192c79ec33e9f48578e47a7e",
+  "results": [
+    {
+      "entry": "desktop",
+      "headers": [
+        {
+          "id": "bay-upper-wall:cad_window_10_4:0",
+          "bayId": "cad_window_10_4",
+          "windowIndex": 4,
+          "rect": [
+            4894,
+            1611,
+            6365,
+            2329
+          ],
+          "poly": [
+            [
+              4894,
+              1611
+            ],
+            [
+              6365,
+              1611
+            ],
+            [
+              6365,
+              2329
+            ],
+            [
+              4894,
+              2329
+            ]
+          ],
+          "bottom": 2304,
+          "top": 2700
+        },
+        {
+          "id": "bay-upper-wall:cad_window_11_5:0",
+          "bayId": "cad_window_11_5",
+          "windowIndex": 5,
+          "rect": [
+            1228,
+            1617,
+            3199,
+            2329
+          ],
+          "poly": [
+            [
+              1228,
+              1617
+            ],
+            [
+              3199,
+              1617
+            ],
+            [
+              3199,
+              2329
+            ],
+            [
+              1228,
+              2329
+            ]
+          ],
+          "bottom": 2295,
+          "top": 2700
+        }
+      ],
+      "exportParts": [
+        "explicit:bay-upper-wall:cad_window_10_4:0",
+        "explicit:bay-upper-wall:cad_window_11_5:0"
+      ],
+      "glbSha256": "d6dfbe689040b0bff17b2f30599716d18665991dd41f570f91f889d87a347c8d"
+    },
+    {
+      "entry": "http",
+      "headers": [
+        {
+          "id": "bay-upper-wall:cad_window_10_4:0",
+          "bayId": "cad_window_10_4",
+          "windowIndex": 4,
+          "rect": [
+            4894,
+            1611,
+            6365,
+            2329
+          ],
+          "poly": [
+            [
+              4894,
+              1611
+            ],
+            [
+              6365,
+              1611
+            ],
+            [
+              6365,
+              2329
+            ],
+            [
+              4894,
+              2329
+            ]
+          ],
+          "bottom": 2304,
+          "top": 2700
+        },
+        {
+          "id": "bay-upper-wall:cad_window_11_5:0",
+          "bayId": "cad_window_11_5",
+          "windowIndex": 5,
+          "rect": [
+            1228,
+            1617,
+            3199,
+            2329
+          ],
+          "poly": [
+            [
+              1228,
+              1617
+            ],
+            [
+              3199,
+              1617
+            ],
+            [
+              3199,
+              2329
+            ],
+            [
+              1228,
+              2329
+            ]
+          ],
+          "bottom": 2295,
+          "top": 2700
+        }
+      ],
+      "exportParts": [
+        "explicit:bay-upper-wall:cad_window_10_4:0",
+        "explicit:bay-upper-wall:cad_window_11_5:0"
+      ],
+      "glbSha256": "cbeb63941ee9d77a886bc7c21a4c80be2bddc125fad5f6a5a8e675163c2b3dac"
+    },
+    {
+      "entry": "file",
+      "headers": [
+        {
+          "id": "bay-upper-wall:cad_window_10_4:0",
+          "bayId": "cad_window_10_4",
+          "windowIndex": 4,
+          "rect": [
+            4894,
+            1611,
+            6365,
+            2329
+          ],
+          "poly": [
+            [
+              4894,
+              1611
+            ],
+            [
+              6365,
+              1611
+            ],
+            [
+              6365,
+              2329
+            ],
+            [
+              4894,
+              2329
+            ]
+          ],
+          "bottom": 2304,
+          "top": 2700
+        },
+        {
+          "id": "bay-upper-wall:cad_window_11_5:0",
+          "bayId": "cad_window_11_5",
+          "windowIndex": 5,
+          "rect": [
+            1228,
+            1617,
+            3199,
+            2329
+          ],
+          "poly": [
+            [
+              1228,
+              1617
+            ],
+            [
+              3199,
+              1617
+            ],
+            [
+              3199,
+              2329
+            ],
+            [
+              1228,
+              2329
+            ]
+          ],
+          "bottom": 2295,
+          "top": 2700
+        }
+      ],
+      "exportParts": [
+        "explicit:bay-upper-wall:cad_window_10_4:0",
+        "explicit:bay-upper-wall:cad_window_11_5:0"
+      ],
+      "glbSha256": "7298b91ee31ddb4bc40464232846f7e7e7d9c2ad1418816c2a27f5738350e586"
+    }
+  ],
+  "errors": []
+}

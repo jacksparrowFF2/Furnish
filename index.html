@@ -396,6 +396,7 @@
 <script src="src/core/purchasing-core.js"></script>
 <script src="src/core/service-core.js"></script>
 <script src="src/core/bay-window-core.js"></script>
+<script src="src/render/bay-window-model.js"></script>
 <script src="src/core/project-core.js"></script>
 <script src="src/core/cabinet-core.js"></script>
 <script src="src/core/kitchen-core.js"></script>
@@ -1356,6 +1357,7 @@ const syncIdentity=FurnishPartIdentity;
     syncIdentity.produce("index.html:generator-call-14",()=>wallBox(w, 0, w[4] === 'low' ? Math.min(1, top) : top));
     colliders.push([wx(w[0]), wz(w[1]), wx(w[2]), wz(w[3])]);
   },(item,slot)=>item.id||"plan-slot:"+slot);
+  if(typeof FurnishBayWindowModel!=='undefined')archUp.add(FurnishBayWindowModel.buildHeaders(THREE,finishPlan,{wx,wz,top:opt.cut===2.8?Infinity:top*1000,material:[wallMat,wallMat,capMat,wallMat,wallMat,wallMat]}));
   archUp.add(FurnishWallFinishModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
   if(finishPlan.wallTiling)archUp.add(FurnishWallTilingModel.build(THREE,finishPlan,{wx,wz,top:top*1000}));
   if(finishPlan.ceilings)archUp.add(FurnishCeilingModel.build(THREE,finishPlan.ceilings,{wx,wz,top:opt.cut===2.8?Infinity:top*1000,lamps:opt.lamps,wash:false,bodies:state.furniture.filter(f=>!furnitureError(f)).map(f=>({f,vertical:FurnishDesign.furnitureVerticalBounds(f,finishPlan,state.furniture)}))}));

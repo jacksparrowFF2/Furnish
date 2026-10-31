@@ -595,7 +595,7 @@ function adaptObstacles(f,plan,list=[]){
  const next=clone(f),k=next.kitchen,notes=[];if(!k||f.locked)return {furniture:next,notes};delete k.obstacleFit;validate(next);if(!k.autoAvoid)return {furniture:next,notes};
  const Z=zones(),G=root.FurnishGeometry||(typeof require==='function'?require('./layout-geometry.js'):null),R=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),Draft=root.FurnishDraft||(typeof require==='function'?require('./floorplan-core.js'):null),obstacles=[];
  const add=(p,vertical,name,flags={})=>{if(!p?.length)return;obstacles.push({...flags,p:p.map(([x,y])=>local(next,x,y)),vertical:vertical?{...vertical,bottom:vertical.bottom-baseElevation(next),top:vertical.top-baseElevation(next)}:null,name});};
- for(const w of plan.walls||[])add([[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]],{bottom:0,top:w[4]==='low'?Math.min(1000,plan.ceilingHeight??2800):plan.ceilingHeight??2800},'墙体');
+ for(const w of plan.walls||[])add([[w[0],w[1]],[w[2],w[1]],[w[2],w[3]],[w[0],w[3]]],w[5]?.vertical||{bottom:0,top:w[4]==='low'?Math.min(1000,plan.ceilingHeight??2800):plan.ceilingHeight??2800},'墙体');
  for(const b of plan.beams||[]){const v=Draft.beamVertical(b,plan.ceilingHeight??2800);add(b.poly,v?.assumed?null:v,b.name||'房梁');}
  // Automatic trimming must not nest a kitchen into another cabinet's cavity.
  // Keep that operation's placement envelope; deliberate internal measurements

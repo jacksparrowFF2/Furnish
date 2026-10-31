@@ -9,6 +9,20 @@
   }).filter(b=>b.windows.length);
  }
  function selected(plan,selection){return list(plan).find(b=>selection?.kind==='room'?b.platform.id===selection.id:selection?.kind==='win'&&b.windows.some(w=>w.index===selection.id));}
+ // Recessed bays retain the facade but also need the full reveal above the opening.
+ // These are derived architectural walls, never saved as furniture or assumed beams.
+ function upperWalls(plan){
+  const G=root.FurnishZoneGeometry||require('./zone-geometry.js'),out=[];
+  for(const b of list(plan).filter(b=>b.type==='recessed')){
+   const bottom=Math.max(...b.windows.map(v=>v.window.head*1000));if(!Number.isFinite(bottom))continue;
+   const adjacent=[];for(let i=0;i<b.platform.poly.length;i++){const a=b.platform.poly[i],c=b.platform.poly[(i+1)%b.platform.poly.length],mid=a.map((v,k)=>(v+c[k])/2);for(const delta of [[.1,0],[-.1,0],[0,.1],[0,-.1]])for(const r of plan.rooms||[])if(r.counted!==false&&(r.polys||[r.poly]).some(poly=>G.inside(mid.map((v,k)=>v+delta[k]),poly)))adjacent.push(r);}
+   const roofs=adjacent.map(r=>r.ceilingHeight??plan.ceilingHeight).filter(Number.isFinite),top=roofs.length?Math.min(...roofs):b.platform.ceilingHeight??plan.ceilingHeight;
+   if(!Number.isFinite(top)||top<=bottom)continue;
+   const rings=b.platform.rings||[b.platform.poly],pieces=G.decompose(rings,p=>G.inside(p,b.platform.poly)&&!rings.slice(1).some(h=>G.inside(p,h)));
+   pieces.forEach((poly,i)=>{const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);out.push({id:'bay-upper-wall:'+b.id+':'+i,bayId:b.id,windowIndex:b.windows[0].index,rect:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)],poly,bottom,top});});
+  }
+  return out;
+ }
  // Both the live canvas and independent project plans read the same overrides.
  // Generated bays take their vertical geometry from the architectural opening;
  // per-face overrides may change style but cannot split the shared sill height.
@@ -43,5 +57,5 @@
   }
   work.open??={};work.open.w??={};for(const {window,index} of b.windows)work.open.w[index]={sill:sill/1000,head:head/1000,panels:window.panels??0,stackSide:window.stackSide||'left'};
  }
- const api={list,selected,applyWindows,geometryLocked,setHeights};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishBayWindows=api;
+ const api={upperWalls,list,selected,applyWindows,geometryLocked,setHeights};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishBayWindows=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
