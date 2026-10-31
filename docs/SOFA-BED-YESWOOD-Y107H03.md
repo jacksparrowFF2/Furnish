@@ -23,27 +23,33 @@
 
 ## 展开结构与推算边界（2026-10-31）
 
-依据[三种形态图](../assets/models/sofa-bed/references/04.jpg)、[两档展开图](../assets/models/sofa-bed/references/13.jpg)、[一抽二铺图](../assets/models/sofa-bed/references/14.jpg)、翻垫15、滑轮16和裸架28–30：后靠背和两侧箱板留在原位，前栏／前柱随抽拉底架前移，中级支撑另移动，两片折垫展开为三段平整垫面；腰枕在床态平放。
+依据[三种形态图](../assets/models/sofa-bed/references/04.jpg)、[两档展开图](../assets/models/sofa-bed/references/13.jpg)、[一抽二铺图](../assets/models/sofa-bed/references/14.jpg)、翻垫15、滑轮16和裸架28–30：后靠背和两侧箱板留在原位，前栏／前柱随抽拉底架前移，中级支撑另移动，两片折垫展开为三段平整垫面；腰枕在床态下移至床面，继续斜靠。
 
 图片没有给出可直接套用的本型号展开总长。**模型占深2018 mm是布局推算值，不是厂家标注**：以图上590 mm坐深作为两片翻垫的参考段长，两级590／1180 mm行程，收起838 mm加1180 mm得到2018 mm。固定垫深760 mm、两片590 mm，垫面总长1940 mm；展开床面高300 mm、垫厚50 mm和底架细节为结合三段铺平图的建模值。仅保留收起／展开两个端态，不把图片推算升级为真实五金行程或连续机构轨迹。
 
 ## 几何、资产与应用
 
-Scoop实际Blender5.2.3 LTS制作79件具名网格和6个运动父节点，保留[当前可编辑工程](../assets/models/sofa-bed/v3/sofa-bed-v1.blend)、[自包含GLB](../assets/models/sofa-bed/v3/sofa-bed-v1.glb)，独立回读发布离线普通脚本。资产版本为 `sofa-bed-yeswood-y107h03@2`；首版49件收起源保留在v2目录，早期制作副本仍在本机 `.local/sofa-bed-drafts/`。
+Scoop实际Blender5.2.3 LTS制作103件具名网格和6个运动父节点，保留[当前可编辑工程](../assets/models/sofa-bed/v5/sofa-bed-v1.blend)、[自包含GLB](../assets/models/sofa-bed/v5/sofa-bed-v1.glb)，独立回读发布离线普通脚本。资产版本为 `sofa-bed-yeswood-y107h03@3`；上一版79件展开源保留在v3目录，首版49件收起源保留在v2目录，早期制作副本仍在本机 `.local/sofa-bed-drafts/`。
 
-`sofa-bed-core.js`定义角色、两级抽拉、嵌套X轴翻垫、平放腰枕和端态包络；`sofa-bed-model.js`先拟合参考顶点再作刚性变换，显示、生产预览和数值实体同源。静态后框／侧板／靠垫不随展开移动；不把整件沙发拉长模拟展开。地面中心为原点，正面+Z，旧实例cx/cy仍指收起基体中心，展开只向前延伸；宽深高改动表示非标布局缩放。
+`sofa-bed-core.js`定义角色、两级抽拉、嵌套X轴翻垫、斜靠腰枕和端态包络；`sofa-bed-model.js`先拟合参考顶点再作刚性变换，显示、生产预览和数值实体同源。静态后框／侧板／靠垫不随展开移动；不把整件沙发拉长模拟展开。地面中心为原点，正面+Z，旧实例cx/cy仍指收起基体中心，展开只向前延伸；宽深高改动表示非标布局缩放。
 
-属性「沙发床形态」选择收起／展开，沿原update／mutate、撤销和保存。输入w/d仍为收起基体尺寸，当前总占深、二维选择／占地及3D当前实体读取派生包络。79件生产网格沿 `bodyParts()`／`directional()`提供测距与碰撞，不按型号放行。前方另给出保守展开操作区，高度覆盖人工翻垫可能占用空间；它不是经验证的精确连杆扫掠，可能在空角或实际不经过的位置报占用。
+属性「沙发床形态」选择收起／展开，沿原update／mutate、撤销和保存。输入w/d仍为收起基体尺寸，当前总占深、二维选择／占地及3D当前实体读取派生包络。103件生产网格沿 `bodyParts()`／`directional()`提供测距与碰撞，不按型号放行。前方另给出保守展开操作区，高度覆盖人工翻垫可能占用空间；它不是经验证的精确连杆扫掠，可能在空角或实际不经过的位置报占用。
 
 ### 新字段和恢复
 
 - `sofaBedOpen`：可选布尔值，仅本型号支持；新建false，旧缺失只读取false、不补写。复制保留，跨类型替换由共用产品字段能力清理；非法值拒绝。
 - 当前／命名方案／自定义目录含本型号时使用项目与工作区v40，缓存读写支持v40及历史版本；原其它型号版本判定保留。三次恢复无漂移，不强制修改旧实例宽深高与位置。
-- 3D与数值实体缓存纳入字段，空间确认对本型号追加 `sofa-bed-endpoints-v2` 与状态。旧49件几何的确认重新核对；价格、配色及采购等非空间编辑不清确认。
+- 3D与数值实体缓存纳入字段，空间确认对本型号追加 `sofa-bed-detail-v3` 与状态。旧版本几何的确认重新核对；价格、配色及采购等非空间编辑不清确认。
 
 ### 外观与算法边界
 
 木框厚度、伸缩架槽位、轮子／连接件和软包鼓度仍是照片近似；保留具名嵌套翻轴用于端态装配，不提供连续动画或声称实物机构已求解。软垫与框体的隐蔽交接没有制作工艺级剖面，未验证软包压缩、内部泡棉、承重或施工安装。曲面实体使用现有保守高度截面，不是连续逐三角面碰撞。木色可编辑，梨白软包／黑色金属独立材质，价格待填写。
+
+## 用户细节校正（2026-10-31）
+
+依据用户补发的[五张批注与裸架参考](../assets/models/sofa-bed/references/detail-review/1.png)：固定底垫裁出前栏、圆柱与侧板避让，消除前栏白色突出条；靠垫后缘从后木框外移至顶横木内侧（参考模型2 mm间隙）；两侧增加固定／中级／前级三层中空导轨，展开搭接约119／150 mm；中级脚轮随中架移至支撑位置，立撑接至铺板下方；两只腰枕与滚边共同保留12°倾角，展开时下移100 mm、底边落在300 mm床面。新增24件导轨壁面，总103件，保留6个运动父节点。间隙、搭接、倾角与五金截面为建模值。
+
+资产、数值实体、3D缓存及本型号空间确认统一升级至细节版本3，无新持久字段、项目版本或其它型号确认变化。详见[本轮增量验收](validation/sofa-bed-details-20261031/README.md)。
 
 ## 验证和复验
 
@@ -51,7 +57,7 @@ Scoop实际Blender5.2.3 LTS制作79件具名网格和6个运动父节点，保�
 
 ```powershell
 node scripts/blender-asset.cjs author-sofa-bed output/sofa-bed-new-source
-node scripts/blender-asset.cjs publish-sofa-bed assets/models/sofa-bed/v3/sofa-bed-v1.glb
+node scripts/blender-asset.cjs publish-sofa-bed assets/models/sofa-bed/v5/sofa-bed-v1.glb
 node tests/test-sofa-bed.cjs
 node tests/test-sofa-bed-project-v40.cjs
 node scripts/preview-sofa-bed.cjs
@@ -62,4 +68,4 @@ node scripts/verify/verify-sofa-bed-desktop.cjs 'D:/1601装修/Furnish项目/wor
 
 桌面验收读取正式文件的副本，用同一打包EXE和独立目录／端口／缓存，不改变真实方案。正式窗口需刷新才能读取新增目录；独立预览在 `output/sofa-bed/preview.html`，其构造器与正式应用相同。
 
-首版静态模型的历史验收保留在[49件收起记录](validation/sofa-bed-y107h03-20261031/README.md)，不将其旧结论作为当前79件展开模型的验收。
+首版静态模型的历史验收保留在[49件收起记录](validation/sofa-bed-y107h03-20261031/README.md)，不将其旧结论作为当前103件展开模型的验收。

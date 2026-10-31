@@ -1,6 +1,6 @@
 # 模块与加载约定
 
-2026-10-31（沙发床端态）：sofa-bed-core派生6个运动父节点和占地，79件Blender生产模型在拟合后作刚性端态变换；sofaBedOpen沿mutate、v40项目／工作区／缓存恢复，定向确认与实体缓存同步。新增一个经典核心脚本，HTTP／file及实际EXE隔离验证，见[契约](SOFA-BED-YESWOOD-Y107H03.md)。
+2026-10-31（沙发床端态）：sofa-bed-core派生6个运动父节点和占地，103件Blender生产模型（细节资产v3）在拟合后作刚性端态变换；sofaBedOpen沿mutate、v40项目／工作区／缓存恢复，定向确认与实体缓存同步。新增一个经典核心脚本，HTTP／file及实际EXE隔离验证，见[契约](SOFA-BED-YESWOOD-Y107H03.md)。
 
 2026-10-31（Y107H03沙发床）：独立sofa-bed静态Blender资产由产品规则注册，生产构造／SVG／目录与数值实体同步；新增两个经典本地脚本，无新字段／版本。49件收起模型、HTTP／断网file、实际EXE隔离保存和GPU三机位见[型号契约](SOFA-BED-YESWOOD-Y107H03.md)。
 

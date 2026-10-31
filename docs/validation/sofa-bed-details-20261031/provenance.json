@@ -1,0 +1,12 @@
+{
+  "equivalentPublishedGeometry": true,
+  "rootGlb": "988b4973133f4bab3bd5597c0777b59f37a847cfce327980d8f4b91c559dcceb",
+  "isolatedRebuildGlb": "516896f1d0831e60952665f27ddd32cdc73d8f6875cb7a6958ac0332200e2130",
+  "hashes": {
+    "assets/models/sofa-bed/v5/sofa-bed-v1.blend": "e99e5af871e6ed7f45fed2e2804c3e808f24b4a0f5a231f5906c19b68af11ad9",
+    "assets/models/sofa-bed/v5/sofa-bed-v1.glb": "988b4973133f4bab3bd5597c0777b59f37a847cfce327980d8f4b91c559dcceb",
+    "src/data/sofa-bed-blender-asset.js": "7ab345b237ad9a927a43ad520a0dad427915e3f602157b6eb870895528b656ef",
+    "src/core/sofa-bed-core.js": "3c669f8346211b921dcdec03eee34b6f88701ef86fa1f3e28e4a8d8293e0e5d0",
+    "scripts/blender-model-sofa-bed.py": "c42330ab211fc1408b5211bef8c73db6e388b2549aeebe923f20dcf2162d7d57"
+  }
+}

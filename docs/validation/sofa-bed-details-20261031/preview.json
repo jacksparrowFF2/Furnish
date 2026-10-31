@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "passed": true,
+      "preview": true,
+      "framing": true
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "preview": true,
+      "framing": true
+    }
+  ]
+}

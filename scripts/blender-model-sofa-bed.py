@@ -80,12 +80,21 @@ for side,x in [('left',-.600),('right',.600)]:
     box('side-inset-'+side,(.004,.180,.620),(x+(-.012 if x<0 else .012),.137,0),wood,.003)
     box('metal-runner-'+side,(.025,.035,.590),(x*.80,.1025,.105),steel,.003)
     box('middle-runner-'+side,(.025,.035,.590),(x*.75,.1025,.105),steel,.003)
-    for label,z in [('front',.315),('back',-.310)]:
-        box('wheel-fork-'+label+'-'+side,(.024,.082,.030),(x*.8,.063,z),steel,.002)
-        bpy.ops.mesh.primitive_cylinder_add(vertices=24,radius=.022,depth=.018,location=xyz((x*.8,.022,z)),rotation=(0,math.pi/2,0))
+    for label,z in [('front',.315),('back',.315)]:
+        box('wheel-fork-'+label+'-'+side,(.025,.218,.030),(x*(.8 if label=='front' else .75),.131,z),steel,.002)
+        bpy.ops.mesh.primitive_cylinder_add(vertices=24,radius=.022,depth=.018,location=xyz((x*(.8 if label=='front' else .75),.022,z)),rotation=(0,math.pi/2,0))
         finish(bpy.context.object,'wheel-'+label+'-'+side,rubber)
-    fitted_soft('lumbar-'+side,(.560,.260,.095),(x*.49,.515,-.095),12,.027,.008)
-    piping('lumbar-piping-'+side,.535,.235,.043,(x*.49,.515,-.095),12,.020)
+    fitted_soft('lumbar-'+side,(.560,.260,.095),(x*.49,.530,-.190),0,.027,.008)
+    piping('lumbar-piping-'+side,.535,.235,.043,(x*.49,.530,-.190),0,.020)
+    cushions=[bpy.data.objects['lumbar-'+side],bpy.data.objects['lumbar-piping-'+side]]
+    for o in cushions:
+        for v in o.data.vertices:
+            q=o.matrix_world@v.co;dy=q.z-.530;dz=-q.y+.190;a=math.radians(12)
+            q.z=.530+dy*math.cos(a)+dz*math.sin(a);q.y=-(-.190-dy*math.sin(a)+dz*math.cos(a));v.co=o.matrix_world.inverted()@q
+    bottom=min((o.matrix_world@v.co).z for o in cushions for v in o.data.vertices)
+    for o in cushions:
+        for v in o.data.vertices:v.co.z+=.400-bottom
+
 box('front-rail',(1.150,.145,.026),(0,.213,.394),wood,.006)
 box('back-rail',(1.150,.080,.030),(0,.274,-.394),wood,.004)
 box('back-top-rail',(1.150,.040,.028),(0,.692,-.394),wood,.007)
@@ -107,9 +116,32 @@ piping('seat-piping-upper',1.150,.560,0,(0,.386,.115),90,.026)
 o=fitted_soft('back-cushion',(1.180,.560,.160),(0,.490,-.339),r=.035,puff=.004)
 for v in o.data.vertices:
     y=v.co.z;t=(y-.210)/.560
-    front=-.220-.099*t;rear=-.380-.039*t
+    front=-.195-.083*t;rear=-.355-.023*t
     z=-v.co.y;tdepth=(z-(-.419))/.160
     v.co.y=-(rear+tdepth*(front-rear))
+# Nested hollow guides keep an overlap at both fully extended joints.
+for side,x in [('left',-.556),('right',.556)]:
+    for stage,outer,wall,length,z in [('fixed',.032,.0025,.738,0),('middle',.024,.0025,.740,.030),('front',.016,.002,.740,.030)]:
+        for face in ['top','bottom','inner','outer']:
+            if face in ['top','bottom']:
+                box(stage+'-guide-'+side+'-'+face,(outer,wall,length),(x,.234+(1 if face=='top' else -1)*(outer-wall)/2,z),steel,.0005)
+            else:
+                box(stage+'-guide-'+side+'-'+face,(wall,outer-2*wall,length),(x+(1 if face=='outer' else -1)*(outer-wall)/2,.234,z),steel,.0005)
+# Keep the lower pad within the front timber lip, instead of allowing hidden overlaps.
+pad=bpy.data.objects['seat-lower']
+bm=bmesh.new();bm.from_mesh(pad.data);bmesh.ops.remove_doubles(bm,verts=bm.verts,dist=1e-7);bmesh.ops.recalc_face_normals(bm,faces=bm.faces);bm.to_mesh(pad.data);bm.free()
+for part_name in ['front-rail','front-post-left','front-post-right','side-panel-left','side-panel-right']:
+    original=bpy.data.objects[part_name]
+    if part_name=='front-rail':
+        bpy.ops.mesh.primitive_cube_add(size=1,location=xyz((0,.143,.581)));cutter=bpy.context.object;cutter.dimensions=(1.150,.400,.286);bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
+    else:
+        cutter=original.copy();cutter.data=original.data.copy();bpy.context.collection.objects.link(cutter)
+    cutter.name='temporary-pad-clearance'
+    bpy.context.view_layer.objects.active=pad
+    modifier=pad.modifiers.new('timber clearance','BOOLEAN');modifier.operation='DIFFERENCE';modifier.solver='EXACT';modifier.object=cutter
+    bpy.ops.object.modifier_apply(modifier=modifier.name);bpy.data.objects.remove(cutter,do_unlink=True)
+pad.data.materials.clear();pad.data.materials.append(cloth)
+for polygon in pad.data.polygons:polygon.material_index=0
 # Back cushion's lowest area sits behind the folded seat; exact hidden joinery unknown.
 bpy.context.view_layer.update();objects=[o for o in bpy.context.scene.objects if o.type=='MESH']
 for o in objects:
