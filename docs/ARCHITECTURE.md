@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（Y107H03沙发床）：独立sofa-bed静态Blender资产由产品规则注册，生产构造／SVG／目录与数值实体同步；新增两个经典本地脚本，无新字段／版本。49件收起模型、HTTP／断网file、实际EXE隔离保存和GPU三机位见[型号契约](SOFA-BED-YESWOOD-Y107H03.md)。
+
 2026-10-31（手动优先保存）：编辑仍沿 save／autosave 即时写恢复缓存，repository-storage 通过 debounce:false 将首个未保存修改的60秒作为固定兜底期限，后续编辑只替换待写快照；dirty与pending区分待保存／写入中。全局Ctrl+S先提交普通属性输入，再沿原flush／retry确认正式文件；无变化不新增文件修订。顶部显示状态及成功时间，离页切后台不再立即写文件，关闭时原flush和未保存提示保留；MCP仍显式flush。无新项目字段或加载脚本，见[保存契约](REPOSITORY-SAVES.md)。
 
 2026-10-31（Furnish MCP）：stdio入口 furnish-mcp通过 desktop-mcp 的鉴权本机端点连接主桌面窗口；mcp-core共用工具清单与参数校验，mcp-bridge以当前画布为准，沿 createDesign／resizeFurniture／mutate／repositoryClient.flush 和生产spaceCheck执行四种固定命令。revision覆盖页面会话、保存时间、当前状态及方案绑定，requestId去重；无独立项目写入、撤销或持久字段。两个经典本地脚本末尾加载，HTTP／file保持；桌面壳需更新并重启。见 [MCP 契约](MCP.md)。

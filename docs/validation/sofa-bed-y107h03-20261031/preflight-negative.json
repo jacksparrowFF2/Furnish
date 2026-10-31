@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "profile": "sofa-bed",
+  "blender": "5.2.3 LTS",
+  "rejected": [
+    "empty-material-slot",
+    "wrong-face-index",
+    "wrong-stable-identity",
+    "wrong-units",
+    "nonfinite-vertex",
+    "unexpected-part"
+  ],
+  "motionApplicable": false
+}

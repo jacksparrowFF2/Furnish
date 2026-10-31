@@ -1,0 +1,422 @@
+{
+  "passed": true,
+  "profile": "sofa-bed",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "sofa_bed_yeswood_y107h03",
+    "name": "源氏木语 Y107H03 沙发床 1.25米（梨白·收起）",
+    "w": 1250,
+    "d": 838,
+    "color": "#c89d68",
+    "brand": "源氏木语/YESWOOD",
+    "model": "Y107H03 · 1.25米 · 山毛榉原木色 / 梨白 · 收起",
+    "sourceUrl": "https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT",
+    "h": 770
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-10-31T03:31:50.384Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-wlDInC\\sofa-bed-gfg8lH",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-10-31T03:31:50.384Z",
+      "result": {
+        "command": "author-sofa-bed",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-wlDInC\\sofa-bed-gfg8lH\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-wlDInC\\sofa-bed-gfg8lH\\authored",
+        "passed": true,
+        "parts": 49,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "sofa-bed",
+          "parts": 49,
+          "motions": 0
+        }
+      },
+      "finished": "2026-10-31T03:31:51.758Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-10-31T03:31:51.759Z",
+      "result": {
+        "passed": true,
+        "profile": "sofa-bed",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-10-31T03:31:52.827Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-10-31T03:31:52.828Z",
+      "result": {
+        "command": "publish-sofa-bed",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-wlDInC\\sofa-bed-gfg8lH\\authored\\sofa-bed-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-wlDInC\\workspace\\src\\data\\sofa-bed-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "0c63b18825e67ca2a786c5a5a6a137731f329c762a18eddfcc301b32bba3ba49",
+        "runtimeSha256": "7a2425fc497765ac0e68f5cf07f43bef0cdb966d751ff612a0dc841132ce6578"
+      },
+      "finished": "2026-10-31T03:31:54.287Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-10-31T03:31:54.287Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "sofa-bed",
+            "profile": "sofa-bed",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-wlDInC\\sofa-bed-gfg8lH\\sofa-bed.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "sofa-bed",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 49,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 49,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 89.78651426137708,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 49,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 49,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 89.78651426137708,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-10-31T03:31:55.970Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-10-31T03:31:55.971Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 49,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.7699999809265137,
+                0.4189999997615814
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 49,
+            "bounds": [
+              [
+                -0.699999988079071,
+                0,
+                -0.4525200128555298
+              ],
+              [
+                0.699999988079071,
+                0.83160001039505,
+                0.4525200128555298
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 49,
+            "bounds": [
+              [
+                -0.625,
+                0,
+                -0.4189999997615814
+              ],
+              [
+                0.625,
+                0.7699999809265137,
+                0.4189999997615814
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T03:32:24.512Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-10-31T03:32:24.513Z",
+      "result": {
+        "passed": true,
+        "profile": "sofa-bed",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 49,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 49,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 49,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T03:32:26.043Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-10-31T03:32:26.044Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 49,
+            "position": [
+              0,
+              0.38499999046325684,
+              3.1454989201076597
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 49,
+            "position": [
+              1.7414631146650765,
+              1.342804703529049,
+              2.4380483605311074
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 49,
+            "position": [
+              -1.780788094082265,
+              1.0973152280961629,
+              -2.493103331715171
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-10-31T03:32:42.984Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-10-31T03:32:42.984Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T03:32:46.153Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-10-31T03:32:46.153Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T03:32:49.240Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-10-31T03:32:49.240Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-10-31T03:32:52.369Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-10-31T03:32:52.370Z",
+      "result": {
+        "passed": true,
+        "profile": "sofa-bed",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 49,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 49,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 49,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-10-31T03:32:53.248Z"
+    }
+  ],
+  "finished": "2026-10-31T03:32:53.249Z"
+}

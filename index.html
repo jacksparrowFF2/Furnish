@@ -416,6 +416,8 @@
 <script src="src/data/armchair-blender-asset.js"></script>
 <script src="src/data/armchair-berlin-blender-asset.js"></script>
 <script src="src/render/armchair-model.js"></script>
+<script src="src/data/sofa-bed-blender-asset.js"></script>
+<script src="src/render/sofa-bed-model.js"></script>
 <script src="src/core/corner-bookcase-core.js"></script>
 <script src="src/data/corner-bookcase-blender-asset.js"></script>
 <script src="src/data/corner-bookcase-580-blender-asset.js"></script>
@@ -887,6 +889,7 @@ const syncIdentity=FurnishPartIdentity;
   if(FurnishProducts.family(f,'corner-bookcase')){const model=FurnishCornerBookcaseModel.build(THREE,f,{wood:woodM(f.color)});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishStackStoolModel.supported(f)){const model=FurnishStackStoolModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishArmchairModel.supported(f)){const model=FurnishArmchairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(FurnishSofaBedModel.supported(f)){const model=FurnishSofaBedModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(f.type==='sofa_yeswood_cherry'){
     const model=FurnishYeswoodSofaModel.build(THREE,f,RoundedBoxGeometry,{wood:woodM,fabric});
     model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;

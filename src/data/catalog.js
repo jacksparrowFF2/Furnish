@@ -77,6 +77,7 @@ const LIB = [
     ["crib","婴儿床",1250,700,"#efe3d0",1200]
   ]},
   {cat:'沙发', items:[
+    ["sofa_bed_yeswood_y107h03","源氏木语 Y107H03 沙发床 1.25米（梨白·收起）",1250,838,"#c89d68",undefined,products.height({type:"sofa_bed_yeswood_y107h03"})],
     ["armchair_yeswood_berlin","源氏木语 柏林单人沙发椅（含腰枕）",710,850,"#bd915f",undefined,products.height({type:"armchair_yeswood_berlin"})],
     ["armchair_yeswood_y09hs","源氏木语 单人沙发椅（亚麻色）",725,900,"#be9465",undefined,products.height({type:"armchair_yeswood_y09hs"})],
     ["sofa_yeswood_cherry","源氏木语 樱桃木三人沙发 2.16m（梨白）",2160,892,"#eee9df",0,products.height({type:"sofa_yeswood_cherry"})],
@@ -251,7 +252,7 @@ function navigation(library=browseLibrary()){
 }
 const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining','餐厅','Dining'],['study','书房','Study'],['kitchen','厨房','Kitchen'],['laundry','洗衣家政','Laundry'],['bathroom','卫浴','Bathroom'],['entry','玄关','Entry'],['pet','宠物','Pets']];
 const useTypes={
- living:['armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
+ living:['sofa_bed_yeswood_y107h03','armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
  bedroom:['bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall'],
  dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
  study:['stool_citylong_370','desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','armchair','floorlamp'],

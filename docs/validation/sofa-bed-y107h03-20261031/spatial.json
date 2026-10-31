@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "id": "sofa-bed",
+      "passed": true,
+      "cases": [
+        {
+          "state": "nominal",
+          "rot": 0,
+          "flip": false,
+          "parts": 49,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "nominal",
+          "rot": 37,
+          "flip": true,
+          "parts": 49,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 89.78651426137708,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 0,
+          "flip": false,
+          "parts": 49,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 37,
+          "flip": true,
+          "parts": 49,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 89.78651426137708,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        }
+      ]
+    }
+  ]
+}

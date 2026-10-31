@@ -74,6 +74,7 @@ const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'
 const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering',base:'mountHeight'}};
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
+ sofa_bed_yeswood_y107h03:{height:770,family:"sofa-bed",sofaBedProfile:"y107h03",solidModel:{global:"FurnishSofaBedModel",module:"sofa-bed"},identity:{brand:"源氏木语/YESWOOD",model:"Y107H03 · 1.25米 · 山毛榉原木色 / 梨白 · 收起",sourceUrl:"https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"}},
  stool_citylong_370:{defaultFrontClearance:0,height:467,anchor:'bottom',family:'stack-stool',defaults:{mountHeight:0,stoolCount:1,stoolPitch:70},fields:['stoolCount','stoolPitch','mountHeight'],create:['stoolCount','stoolPitch','mountHeight'],solidModel:{global:'FurnishStackStoolModel',module:'stack-stool'},identity:{brand:'禧天龙/CITYLONG',model:'软包高凳 · 370×370×467 mm（型号未确认）'}},
  armchair_yeswood_berlin:{height:845,family:'lounge-chair',armchairProfile:'berlin',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'柏林休闲沙发椅 · 米色 · 710×850×845'}},
  armchair_yeswood_y09hs:{height:905,armchairProfile:'original',family:'lounge-chair',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'单人沙发椅 · 亚麻色 · 725×900×905',sourceUrl:'https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx'}},
@@ -295,7 +296,7 @@ const kindGroups={
  '空气净化器':'purifier', '扫拖机器人':'robot_p20max', '扫拖机器人套装':'robot_p20max_tank robot_p20max_plumbed',
  '管道包覆柜':'pipebox', '收纳柜':'cabinet', '床头柜':'nightstand', '衣柜':'wardrobe', '斗柜':'chest',
  '书柜':'bookshelf bookshelf_yeswood_y52y09 bookshelf_yeswood_y00y06 bookshelf_yeswood_y00y06058', '电视柜':'tvstand', '鞋柜':'shoecab', '床':'bed', '婴儿床':'crib',
- '单人沙发椅':'armchair armchair_yeswood_y09hs armchair_yeswood_berlin', '沙发':'sofa sofa_yeswood_cherry', '转角沙发':'cornersofa', '懒人沙发':'beanbag',
+ '单人沙发椅':'armchair armchair_yeswood_y09hs armchair_yeswood_berlin', '沙发':'sofa sofa_yeswood_cherry sofa_bed_yeswood_y107h03', '转角沙发':'cornersofa', '懒人沙发':'beanbag',
  '茶几':'coffeetable coffeetable_yeswood_cherry', '茶台':'tea_table_800', '梳妆台':'dresser', '书桌':'desk',
  '圆桌':'roundtable', '边几':'sidetable sidetable_tmall_635382906309', '餐桌':'table',
  '折叠餐桌':'table_folding_1100 table_folding_1200 table_folding_1300', '岛台':'island', '橱柜':'counter',
