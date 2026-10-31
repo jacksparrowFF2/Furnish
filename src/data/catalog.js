@@ -56,6 +56,7 @@ const LIB = [
     ["robot_p20max","石头 P20 Max 扫拖机器人",350,352,"#f5f6f5",0,79.8]
   ]},
   {cat:'柜体', items:[
+    ["balcony_plant_rack","阳台开放花架 · 下部猫砂位",1880,500,"#5b615a",undefined,1600],
     ["quartz_sill","石英石窗台板",1800,600,"#eeeae2",undefined,products.height({type:"quartz_sill"})],
     ["window_surround","木制窗套",1800,600,"#c49b70",undefined,products.height({type:"window_surround"})],
     ["pipebox","管道包覆柜",400,300,"#f3f1ec",0,products.height({type:"pipebox"})],
@@ -161,6 +162,9 @@ const LIB = [
     ["blind_roller","卷帘 · 平面布",1500,75,"#d6d2c8",null,1800]
   ]},
   {cat:'装饰', items:[
+    ["plant_clivia","君子兰 · 开花盆栽（布局估算）",600,450,"#264d25",undefined,650],
+    ["plant_spider","金边吊兰 · 盆栽（布局估算）",450,450,"#477643",undefined,450],
+    ["plant_peperomia","豆瓣绿 · 盆栽（布局估算）",400,400,"#477643",undefined,500],
     ["plant","绿植",500,500,"#a9c39b",200],
     ["plant","大绿植",700,700,"#9dbb8c",450],
     ["wallart","装饰画 横",1500,60,"#8a7a5e",800],
@@ -266,6 +270,7 @@ const useTypes={
 };
 function itemUses(it){
  const result=uses.filter(([id])=>useTypes[id].includes(it[0])).map(([id])=>id);
+ if(products.definition(it[0])?.garden){if(!result.includes('living'))result.push('living');if(!result.includes('laundry'))result.push('laundry');}
  if(it[0]==='counter')result.push(String(it[10]||'').startsWith('laundry')?'laundry':'kitchen');
  if(it[0]==='ksink'&&LIB.find(c=>c.cat==='阳台柜').items.includes(it))result.push('laundry');
  return result;

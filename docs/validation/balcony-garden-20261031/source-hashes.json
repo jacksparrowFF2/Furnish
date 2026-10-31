@@ -1,0 +1,7 @@
+{
+  "src/render/balcony-garden-model.js": "0a7d37031d61907f5dcfdf9cfc605fa9a785a181af2139f0128a939c97dae313",
+  "src/core/product-rules.js": "522dffc5bf9faa49e7cb8d5047951dd18a7dd5b4e10542915301fd30b2f427c4",
+  "assets/models/balcony-garden/references/user/clivia.png": "43b2e2a7f4df66a724677b34fe3f065743b2518aa2749ebd92ad96f0518303a8",
+  "assets/models/balcony-garden/references/user/pot-sizes.png": "9dc003e3837de7a6ad86c57a95c9dbd1dde6442159ec0bd5eccc435c69f65009",
+  "assets/models/balcony-garden/references/user/rack-reference.png": "06e4d7ffcccf622fd105187aea21db0180937da6678570e8a59076958b162118"
+}

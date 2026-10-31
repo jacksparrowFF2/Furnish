@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（阳台分层花架）：balcony-garden-model提供通用参数化开放架及三种盆栽，product-rules声明类型／高度／已有安装能力；实际结构沿FurnitureSolids→CabinetMotion提供柜内实体，冠幅与薄叶共用生产几何。新增一个经典脚本，无新字段／保存通道／格式版本；旧plant模型保持，见[BALCONY-GARDEN.md](BALCONY-GARDEN.md)。
+
 ## 2026-10-31：洗衣机门向
 
 product-rules集中washerDoorSide能力／默认left；washer-motion-core统一门组反射、轴心、姿态、当前轮廓和12片扫掠，washer-model复用原资产，仅门组变换。属性沿mutate，实体／3D缓存及洗衣机确认读取方向；显式字段采用v43项目／工作区／恢复缓存并读取旧版本，无新脚本。见[洗衣机方向](WASHER-LITTLESWAN-TG10K60W.md)。

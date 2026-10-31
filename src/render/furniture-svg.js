@@ -165,6 +165,8 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
     case 'coffeetable': return rc(x,y,w,d,c,'rx="80"') + rc(x+60,y+60,w-120,d-120,shade(c,1.06),'rx="50"');
     case 'tvstand': return rc(x,y,w,d,c) + rc(x+w*.15,y+30,w*.7,55,'#3a3a3a');
     case 'rug': return rc(x,y,w,d,c,'rx="40" fill-opacity=".6"') + rc(x+90,y+90,w-180,d-180,'none','rx="30" stroke-dasharray="3 3" opacity=".6"');
+    case 'balcony_plant_rack': return rc(x,y,w,d,c,'fill-opacity=".18"')+[-w/2+15,0,w/2-15].map(px=>[-d/2+15,d/2-15].map(py=>rc(px-15,py-15,30,30,c)).join('')).join('');
+    case 'plant_clivia': case 'plant_spider': case 'plant_peperomia': {const products=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts,r=Math.min(products.definition(t).garden.potDiameter,Math.min(w,d)*.8)/2;return ec(0,0,w/2,d/2,c,'fill-opacity=".3"')+Array.from({length:t==='plant_clivia'?10:16},(_,i)=>`<ellipse cx="0" cy="${-m*.23}" rx="${m*(t==='plant_spider'?.025:.075)}" ry="${m*.23}" transform="scale(${w/m},${d/m}) rotate(${i*(t==='plant_clivia'?36:22.5)})" fill="${shade(c,.8)}" ${ST()}/>`).join('')+ec(0,0,r,r,'#d9d2c5');}
     case 'plant': {
       let s = `<circle r="${m/2}" fill="${c}" fill-opacity=".85" ${ST()}/>`;
       for (let k=0;k<8;k++) s += `<ellipse cx="0" cy="${-m*.27}" rx="${m*.1}" ry="${m*.21}" transform="rotate(${k*45})" fill="${shade(c,.8)}" ${ST()}/>`;

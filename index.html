@@ -467,6 +467,7 @@
 <script src="src/data/y52y09-blender-asset.js"></script>
 <script src="src/render/bookcase-asset-model.js"></script>
 <script src="src/render/cabinet-model.js"></script>
+<script src="src/render/balcony-garden-model.js"></script>
 <script src="src/core/model-solid-recorder.js"></script>
 <script src="src/core/furniture-solids.js"></script>
 <script src="src/core/cabinet-motion.js"></script>
@@ -859,6 +860,7 @@ function buildFurniture(f,context={}){
 // Stable authoring-site labels: keep existing labels when moving code; allocate new labels for new sites.
 const syncIdentity=FurnishPartIdentity;
 
+  if(FurnishBalconyGardenModel.supported(f)){const model=FurnishBalconyGardenModel.build(THREE,f);model.position.set(wx(f.cx),model.position.y,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishProducts.family(f,'side-table')){const model=FurnishSideTableModel.build(THREE,f,{wood:woodM(f.color)});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishManifoldModel.supported(f)){const model=FurnishManifoldModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishBathHeaterModel!=='undefined'&&FurnishBathHeaterModel.supported(f)){const model=FurnishBathHeaterModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
