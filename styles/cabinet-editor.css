@@ -354,3 +354,16 @@
 .cab-selection-outline path {fill:none;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
 .cab-selection-halo {stroke:#fff;stroke-width:6}
 .cab-selection-edge {stroke:#d94b0a;stroke-width:3}
+
+/* Bay controls: common door action first, independent interior groups below. */
+#cab-form .cab-bay-inspector:not([data-divider-inspector]) {border:0;padding:0;min-width:0}
+.cab-bay-inspector:not([data-divider-inspector]) > div > .cab-part-section {border:0;margin:0;padding:0}
+.cab-bay-inspector .cab-bay-door {border-top:1px solid var(--line,#ddd);margin-top:14px;padding-top:16px}
+.cab-bay-door h4 {font-size:13px;margin:0 0 12px}
+.cab-fields .cab-bay-door > .btn {width:100%;margin:0;background:#f8f2e9;color:#80552f;border-color:#ddc9b0}
+.cab-fields .cab-bay-inspector .cab-help {margin-top:0;padding:10px 0}
+.cab-bay-inspector .cab-help > summary {min-height:28px;line-height:28px}
+.cab-bay-inspector .cab-help[open] > summary {margin-bottom:12px}
+.cab-bay-inspector .cab-hint {font-size:11px;line-height:1.6;margin:8px 0 12px}
+.cab-bay-inspector label {margin-bottom:12px}
+.cab-bay-inspector input[type=number],.cab-bay-inspector select {box-sizing:border-box;max-width:100%}

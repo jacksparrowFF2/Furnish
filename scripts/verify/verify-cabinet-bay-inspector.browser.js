@@ -1,0 +1,33 @@
+async(page,V)=>{
+ const checks=[],check=(ok,message)=>{if(!ok)throw Error(message);checks.push(message);if(V.desktop)console.log('PASS '+message);};
+ if(!V.desktop)await page.goto(V.baseURL+'index.html');
+ await page.locator('#lib').waitFor({state:'attached'});
+ await page.evaluate(()=>{const at=ROOMS[0].at;mutate(()=>state.furniture=[{id:'bay-ui',type:'cabinet',name:'窄柜',cx:at[0],cy:at[1],rot:0,w:260,d:280,h:890,color:'#f3f1ec',cabinet:{version:1,template:'storage',thickness:18,plinth:50,columns:[{door:'none',doorOpen:false,drawers:[],shelves:[350,579]}]}}]);});
+ const open=async()=>{await page.evaluate(()=>FurnishCabinetEditor.open('bay-ui'));await page.locator('#cab-preview canvas:visible').first().waitFor();await V.selectCabinetObject(page,{kind:'bay',column:0});};
+ const save=()=>page.getByRole('button',{name:'保存柜体设计',exact:true}).click();
+ await open();
+ check(await page.locator('select[data-door]').isVisible(),'door direction visible without expanding settings');
+ check(await page.locator('[data-fit-doors]').isVisible(),'automatic door action visible');
+ check(!await page.locator('[data-shelves]').isVisible()&&!await page.locator('[data-drawer-columns]').isVisible(),'interior controls independently folded');
+ await page.locator('[data-fit-doors]').click();
+ check((await page.locator('select[data-door]').inputValue())!=='none','auto-fit adds a door');
+ await page.locator('select[data-door]').selectOption('right');
+ await page.locator('[data-cab-details="bay-door-details-0"]>summary').click();
+ await page.locator('[data-cab-details="appearance-0"]>summary').click();
+ await page.locator('[data-handle]').selectOption('knob');
+ check(await page.locator('[data-handle]').isVisible(),'detail expansion survives editing');
+ await save();
+ check(await page.evaluate(()=>getF('bay-ui').cabinet.columns[0].door==='right'&&getF('bay-ui').cabinet.columns[0].handle==='knob'&&getF('bay-ui').cabinet.columns[0].shelves.join(',')==='350,579'),'save retains door, handle and original shelves');
+ await page.evaluate(()=>undo());check(await page.evaluate(()=>getF('bay-ui').cabinet.columns[0].door==='none'),'undo restores open bay');
+ await page.evaluate(()=>redo());await V.waitForCache(page);if(V.desktop)await page.evaluate(()=>repositoryClient.flush());await page.reload();await page.locator('#lib').waitFor({state:'attached'});check(await page.evaluate(()=>getF('bay-ui').cabinet.columns[0].door==='right'),'redo and refresh retain door');
+ await open();await page.locator('select[data-door]').selectOption('left');await page.getByRole('button',{name:'取消',exact:true}).click();check(await page.evaluate(()=>getF('bay-ui').cabinet.columns[0].door==='right'),'cancel discards draft');
+ await open();
+ await page.screenshot({path:V.output('playwright/cabinet-bay-inspector/desktop-width.png')});
+ await page.locator('[data-cab-details="shelves-0"]>summary').click();check(await page.locator('[data-shelves]').count()===1,'shelf controls retained');
+ await page.locator('[data-cab-details="drawer-group-0"]>summary').click();check(await page.locator('[data-drawer-columns]').isVisible(),'empty drawer group still offers configuration');
+ await page.setViewportSize({width:390,height:844});
+ check(await page.locator('.dlg-box').evaluate(el=>el.scrollWidth<=el.clientWidth+2),'narrow dialog has no horizontal overflow');
+ await page.screenshot({path:V.output('playwright/cabinet-bay-inspector/mobile-width.png')});
+ await page.getByRole('button',{name:'取消',exact:true}).click();
+ return {checks};
+}
