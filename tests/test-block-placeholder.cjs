@@ -61,7 +61,7 @@ assert.equal(fingerprint(resized),fingerprint({...resized,color:'#123456',price:
   assert.equal(model.children.length,1);for(const k of ['position','normal'])assert(model.children[0].geometry.attributes[k].array.every(Number.isFinite));
  }
  Object.assign(ctx,{state:{furniture:[{...suspended}]},furnG:new THREE.Group(),clearGroup:g=>g.clear(),opt:{furn:true},applyGrow:()=>{},furnitureError:R.modelError,furnitureRenderErrors:new Map(),syncModelErrors:()=>{},FurnishProject:{effectivePlan:()=>({})},PLAN:{}});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildHeaterClearances'),ctx);
  vm.runInContext('buildFurn()',ctx);const first=ctx.furnG.children[0];near(new THREE.Box3().setFromObject(first).min.y,.75);
  vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],first);near(new THREE.Box3().setFromObject(first).min.y,.75);
  ctx.state.furniture[0].mountHeight=1200;vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],first);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).min.y,1.2);

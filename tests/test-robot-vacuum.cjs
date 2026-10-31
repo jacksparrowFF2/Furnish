@@ -9,7 +9,7 @@ const model=require('../src/render/robot-vacuum-model.js'),catalog=require('../s
  Object.assign(ctx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js')});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildHeaterClearances'),ctx);
  for(const [type,dims] of Object.entries(model.specs)){
   const item=catalog.library.flatMap(c=>c.items).find(i=>i[0]===type);assert.deepEqual([item[2],item[3],item[6]],dims);
   const f={id:type,type,name:item[1],w:item[2],d:item[3],h:item[6],color:item[4],cx:700,cy:900,rot:0};

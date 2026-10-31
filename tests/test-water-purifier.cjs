@@ -29,7 +29,7 @@ assert(!/NaN|undefined/.test(SVG.render(f.type,f.w,f.d,f.color,{ink:'#333'},f)))
  const o=Model.build(T,{...f,mountHeight:0},RoundedBoxGeometry);o.updateMatrixWorld(true);
  const hits=new T.Raycaster(new T.Vector3(-.004,.111,1),new T.Vector3(0,0,-1)).intersectObject(o,true);assert.equal(hits[0].object.userData.waterPurifierPart,'logo');
  ctx.state={furniture:[installed]};ctx.furnG=new T.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=R.modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};ctx.FurnishProject={effectivePlan:()=>({})};ctx.PLAN={};
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],before);near(new T.Box3().setFromObject(before).min.y,.12);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildHeaterClearances'),ctx);vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],before);near(new T.Box3().setFromObject(before).min.y,.12);
  ctx.state.furniture=[{...installed,mountHeight:0}];vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],before);near(new T.Box3().setFromObject(ctx.furnG.children[0]).min.y,0);
  console.log('PASS water purifier: defaults, validation, copy, replacement, repeated restore, named project roundtrip, production bounds, transforms, normals and cache');
 })().catch(e=>{console.error(e);process.exitCode=1;});

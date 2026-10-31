@@ -39,7 +39,7 @@ assert.equal(history.length,4);assert.equal(errors.length,3);assert(!Object.hasO
 const plan={id:'p',rooms:[{id:'r',name:'厨房',poly:[[0,0],[5000,0],[5000,5000],[0,5000]]}],walls:[],doors:[],wins:[]};
 const appliance={...base,type:'dishwasher_mijia_countertop',w:550,d:350},installation=P.dishwasherChecks(plan,appliance,{furniture:[appliance]});
 const installationIssues=installation.checks.filter(v=>v.ok!==true),other={kind:'wall',id:appliance.id,message:'实体进入墙体'},related={...installationIssues[0],id:'other',otherId:appliance.id};
-const ui=require('./helpers/layer-context.cjs').createContext({window:{},FurnishDesign:D,FurnishProject:{...P,effectivePlan:()=>plan,spaceCheck:()=>[...installationIssues,other,related]},PLAN:plan,state:{furniture:[appliance]},tr:a=>a,esc:a=>String(a),$:()=>({after(){}}),document:{createElement:()=>({})},FurnishWorkspace:{open(){}},renderPanel(){}});
+const ui=require('./helpers/layer-context.cjs').createContext({window:{},FurnishDesign:D,FurnishProject:{...P,effectivePlan:()=>plan,spaceCheck:()=>[...installationIssues,other,related]},PLAN:plan,state:{furniture:[appliance]},tr:a=>a,esc:a=>String(a),$:()=>({after(){},append(){}}),document:{createElement:()=>({})},FurnishWorkspace:{open(){}},renderHist(){},renderPanel(){}});
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/design-ui.js'),'utf8'),ui);
 const html=ui.window.FurnishDesignUI.placementPanel(appliance,{shownIssues:installation.checks});
 assert(html.includes(other.message),'unrelated spatial risks stay visible');

@@ -127,7 +127,7 @@ assert.doesNotThrow(()=>P.review(plan,{furniture:[{...f,pipeBoxOpenSide:'invalid
  }
  ctx.state={furniture:[{...f,mountHeight:750}]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=R.modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
  Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildHeaterClearances'),ctx);
  vm.runInContext('buildFurn()',ctx);const original=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],original);
  ctx.state.furniture[0].pipeBoxThickness=30;vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],original);
  for(const shape of ['four','two','three']){const previous=ctx.furnG.children[0];ctx.state.furniture[0].pipeBoxShape=shape;vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],previous);assert.equal(ctx.furnG.children[0].children.filter(m=>m.isMesh).length,{four:4,three:3,two:2}[shape]);}

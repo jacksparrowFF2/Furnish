@@ -16,7 +16,7 @@ assert.equal(restored.current.ceilingHeight,3000);assert.equal(restored.designs[
 const html=fs.readFileSync(require.resolve('../index.html'),'utf8');
 let rebuilds=0;
 const ctx=vm.createContext({PLAN:plan,inited:true,active:true,H:2.8,FurnishProject:P,FurnishDesign:D,state:{...work,rooms:{},demolished:[],open:{}},opt:D.sceneSettings(),sigArch:'',sigFurn:'',sigLabels:'',sigNorth:'null',buildArch:()=>rebuilds++,buildFurn:()=>{},buildLabels:()=>{},buildHeaterClearances:()=>{},invalidate:()=>{}});
-ctx.clearSceneIssue=()=>{};ctx.applyObservationLayers=()=>{};
+ctx.clearSceneIssue=()=>{};ctx.applyObservationLayers=()=>{};ctx.syncReplacementFootprint=()=>{};
 vm.runInContext(html.slice(html.indexOf('function sync(force){'),html.indexOf('// CSS2DRenderer')),ctx);
 vm.runInContext('sync(false)',ctx);assert.equal(ctx.H,3);assert.equal(rebuilds,1);
 ctx.state={...ctx.state,ceilingHeight:3400};vm.runInContext('sync(false)',ctx);assert.equal(ctx.H,3.4);assert.equal(rebuilds,2);

@@ -1,0 +1,35 @@
+{
+  "selected": [
+    "cabinet-workspace",
+    "design-switching",
+    "furniture-replacement-3d",
+    "tv-image"
+  ],
+  "results": [
+    {
+      "name": "cabinet-workspace",
+      "status": "PASS",
+      "seconds": 17.2,
+      "log": "cabinet-workspace.log"
+    },
+    {
+      "name": "design-switching",
+      "status": "PASS",
+      "seconds": 15.4,
+      "log": "design-switching.log"
+    },
+    {
+      "name": "furniture-replacement-3d",
+      "status": "PASS",
+      "seconds": 21,
+      "log": "furniture-replacement-3d.log"
+    },
+    {
+      "name": "tv-image",
+      "status": "PASS",
+      "seconds": 16,
+      "log": "tv-image.log"
+    }
+  ],
+  "notRun": []
+}

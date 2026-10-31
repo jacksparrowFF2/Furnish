@@ -38,7 +38,7 @@ const svg=require('../src/render/furniture-svg.js').render(f.type,f.w,f.d,f.colo
  // buildFurn now derives the furniture datum from the effective plan. Supply the
  // production project/product cores so this test exercises the same scene path.
  Object.assign(ctx,{FurnishProject:P,FurnishProducts:R,PLAN:{id:'aquarium_scene',walls:[],rooms:[{id:'aquarium_room',name:'鱼缸房间',poly:[[-1000,-1000],[1000,-1000],[1000,1000],[-1000,1000]],at:[0,0],mat:'wood'}]}});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildHeaterClearances'),ctx);
  vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];vm.runInContext('buildFurn()',ctx);assert.equal(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(before).min.y,.75);
  ctx.state.furniture=[{...installed,mountHeight:900}];vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).min.y,.9);
  const floors=require('../src/core/floor-finish-core.js');ctx.state=floors.setLayers(ctx.state,ctx.PLAN,['aquarium_room'],{rawZ:0,tileThickness:10,baseThickness:50});ctx.state.furnitureDatum='finished-floor';

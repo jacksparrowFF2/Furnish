@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "baselineCommit": "86115fa1",
+  "initialFailures": [
+    "test-aquarium.cjs",
+    "test-artifact-layout.cjs",
+    "test-block-placeholder.cjs",
+    "test-cabinet-catalog.cjs",
+    "test-ceiling-height.cjs",
+    "test-curtain-height.cjs",
+    "test-curtains-sliding.cjs",
+    "test-door-2d-refresh.cjs",
+    "test-entry-editor.cjs",
+    "test-fridges.cjs",
+    "test-hood-bay-modules.cjs",
+    "test-hood-bay.cjs",
+    "test-laundry-stack.cjs",
+    "test-manifold-wall-finish.cjs",
+    "test-merged-format.cjs",
+    "test-property-first-batch.cjs",
+    "test-scene-shadow-cache.cjs",
+    "test-wall-tiling.cjs",
+    "test-waterheater-clearance-3d.cjs"
+  ],
+  "initialFailureCount": 19,
+  "fullCheck": {
+    "command": "node scripts/check.cjs --keep-going",
+    "regressionSuites": 415,
+    "builtInPlans": 12,
+    "previewPages": 105,
+    "allProductionSyntax": true,
+    "localAssets": true,
+    "sharedDeclarations": true
+  },
+  "browserCases": [
+    "portable-smoke",
+    "cabinet-workspace",
+    "design-switching",
+    "furniture-replacement-3d",
+    "tv-image"
+  ],
+  "desktopChecks": 12,
+  "workspaceUnchanged": true,
+  "workspaceSha256": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b",
+  "productionBehaviorChanged": false,
+  "notRun": [
+    "all browser cases",
+    "93-profile Blender author/publish/GPU pipeline",
+    "physical printer"
+  ]
+}

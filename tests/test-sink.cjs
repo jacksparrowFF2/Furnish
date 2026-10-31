@@ -53,7 +53,7 @@ const plan={rooms:[],walls:[],doors:[],beams:[]},issue={kind:'test'};assert.notE
  Object.assign(ctx,{RoundedBoxGeometry:ctx.RoundedBoxGeometry,mat:ctx.mat,FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  Object.assign(ctx,{state:{furniture:K.normalize([structuredClone(host),structuredClone(sink)])},furnG:new T.Group(),clearGroup:g=>g.clear(),opt:{furn:true},applyGrow:()=>{},furnitureError:R.modelError,furnitureRenderErrors:new Map(),syncModelErrors:()=>{}});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildHeaterClearances(){')),ctx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildHeaterClearances'),ctx);
  const refresh=()=>vm.runInContext('buildFurn()',ctx),mesh=id=>ctx.furnG.children.find(o=>o.userData.fid===id);
  refresh();const firstHost=mesh(host.id),firstSink=mesh(sink.id);refresh();assert.equal(mesh(host.id),firstHost);assert.equal(mesh(sink.id),firstSink);near(firstSink.position.y,.8608);
  ctx.state.furniture[1].sinkInstall='under';K.normalize(ctx.state.furniture);refresh();assert.notEqual(mesh(host.id),firstHost);assert.notEqual(mesh(sink.id),firstSink);near(mesh(sink.id).position.y,.82);

@@ -1,0 +1,1 @@
+{"case":"design-switching","status":"PASS","result":[{"mode":"http","passed":true,"independentAutosave":true,"historyPreserved":true,"refresh":true,"undoRedo":true,"threeD":true,"narrow":true},{"mode":"file","passed":true,"independentAutosave":true,"historyPreserved":true,"refresh":true,"undoRedo":true,"threeD":true,"narrow":true}]}

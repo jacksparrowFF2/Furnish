@@ -49,7 +49,7 @@ const previous=JSON.stringify(current);elements['#heaterSocketZ'].onchange({targ
  // A changed installation height must invalidate the cached 3D mesh.
  ctx.state={furniture:[f]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=require('../src/core/product-rules.js').modelError;ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
  Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js')});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildLabels(')),ctx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildLabels'),ctx);
  vm.runInContext('buildFurn()',ctx);const before=ctx.furnG.children[0];
  ctx.state.furniture=[{...f,mountHeight:1900}];vm.runInContext('buildFurn()',ctx);
  assert.notEqual(ctx.furnG.children[0],before);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).min.y,1.9);

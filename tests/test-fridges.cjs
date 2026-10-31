@@ -20,7 +20,7 @@ for(const type of ['fridge','fridge_french_drawer']){
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,THREE=await import(imports.three);
  const roundedSource=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString('utf8').replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(roundedSource).toString('base64'));
- const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishDesign:D,FurnishCabinet:C,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})}));
+ const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishDesign:D,FurnishCabinet:C,M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>require('../src/render/model-primitives.js').createMaterial(THREE,color,o)}));
  Object.assign(ctx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  ctx.FurnishArmchairModel=require('../src/render/armchair-model.js');
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
@@ -32,7 +32,7 @@ for(const type of ['fridge','fridge_french_drawer']){
  }
  ctx.state={furniture:[{...base}]};ctx.furnG=new THREE.Group();ctx.clearGroup=g=>g.clear();ctx.opt={furn:true};ctx.applyGrow=()=>{};ctx.furnitureError=f=>D.products().modelError(f);ctx.furnitureRenderErrors=new Map();ctx.syncModelErrors=()=>{};
  Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildLabels(')),ctx);vm.runInContext('buildFurn()',ctx);const old=ctx.furnG.children[0];
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildLabels'),ctx);vm.runInContext('buildFurn()',ctx);const old=ctx.furnG.children[0];
  ctx.state.furniture[0].h=2100;vm.runInContext('buildFurn()',ctx);assert.notEqual(ctx.furnG.children[0],old);near(new THREE.Box3().setFromObject(ctx.furnG.children[0]).max.y,2.1);
  console.log('PASS fridge editing, lock, persistence, copy, default heights, 3D envelopes, rotation/mirroring and cache');
 })().catch(e=>{console.error(e);process.exitCode=1;});

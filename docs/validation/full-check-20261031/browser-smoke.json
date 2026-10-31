@@ -1,0 +1,14 @@
+{
+  "selected": [
+    "portable-smoke"
+  ],
+  "results": [
+    {
+      "name": "portable-smoke",
+      "status": "PASS",
+      "seconds": 10.1,
+      "log": "portable-smoke.log"
+    }
+  ],
+  "notRun": []
+}

@@ -1,8 +1,9 @@
 const assert=require('node:assert/strict');
 const C=require('../src/core/cabinet-core.js'),D=require('../src/core/design-core.js'),P=require('../src/core/project-core.js'),catalog=require('../src/data/catalog.js');
 const rows=catalog.library.find(c=>c.cat==='柜体').items;
-assert.equal(rows.length,10);
-assert.equal(new Set(rows.map(it=>it[1])).size,10);
+const cabinetTypes=['pipebox','cabinet','nightstand','wardrobe','chest','bookshelf','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','bookshelf_yeswood_y52y09','tvstand','shoecab'];
+for(const type of cabinetTypes)assert(rows.some(it=>it[0]===type),'Missing cabinet product: '+type);
+assert.equal(new Set(rows.map(it=>it[1])).size,rows.length);
 assert(catalog.library.find(c=>c.cat==='厨房').items.some(it=>it[0]==='kitchenwall'));
 assert(catalog.library.find(c=>c.cat==='卫浴 · 水槽').items.some(it=>it[0]==='vanity'));
 assert.deepEqual(C.templateGroups.flatMap(g=>g.ids).sort(),C.templates.map(t=>t[0]).sort());

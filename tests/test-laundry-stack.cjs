@@ -73,7 +73,7 @@ elements['#fStackHeight'].onchange({target:{value:'0'}});assert.equal(current.st
  }
  modelCtx.state={furniture:[dryer]};modelCtx.furnG=new THREE.Group();modelCtx.clearGroup=g=>g.clear();modelCtx.opt={furn:true};modelCtx.applyGrow=()=>{};modelCtx.furnitureError=require('../src/core/product-rules.js').modelError;modelCtx.furnitureRenderErrors=new Map();modelCtx.syncModelErrors=()=>{};
  Object.assign(modelCtx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js'),M:v=>v/1000});
- vm.runInContext(html.slice(html.indexOf('function buildFurn(){'),html.indexOf('function buildLabels(')),modelCtx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildFurn','buildLabels'),modelCtx);
  vm.runInContext('buildFurn()',modelCtx);const before=modelCtx.furnG.children[0];
  modelCtx.state.furniture=[{...dryer,cx:500}];vm.runInContext('buildFurn()',modelCtx);assert.equal(modelCtx.furnG.children[0],before);near(before.position.y,.85);
  modelCtx.state.furniture=[{...dryer,h:1000,mountHeight:950}];vm.runInContext('buildFurn()',modelCtx);assert.notEqual(modelCtx.furnG.children[0],before);near(new THREE.Box3().setFromObject(modelCtx.furnG.children[0]).max.y,1.95);

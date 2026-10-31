@@ -5,7 +5,7 @@ const ctx=vm.createContext({$,window:{},ui:{guides:null},state:{open:{d:{}},room
 ctx.FurnishGeometry=require('../src/core/layout-geometry.js');
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),ctx);
 // Preserve the real renderAll/renderOpenings and opening button handlers.
-for(const name of ['syncCustomArchitecture','renderGrid','renderRooms','renderFurn','renderWalls','renderLabels','renderDims','renderMeasure','renderNotes','renderSel','renderPanel','updateHeader'])ctx[name]=()=>{};
+for(const name of ['syncCustomArchitecture','renderGrid','renderRooms','renderFurn','renderWalls','renderLabels','renderDims','renderMeasure','renderNotes','renderSel','renderPanel','renderDesignBar','updateHeader'])ctx[name]=()=>{};
 ctx.applyOpeningOverrides=()=>{const value=ctx.state.open.d[0]||base;ctx.DOORS[0]={...base,...value,h:[...value.h],c:[...value.c],o:[...value.o]};};
 ctx.mutate=fn=>{fn();ctx.renderAll();};ctx.tr=s=>s;ctx.esc=s=>s;ctx.ico=()=>'';ctx.select=()=>{};
 vm.runInContext(fs.readFileSync(require.resolve('../src/ui/property-panel.js'),'utf8'),ctx);

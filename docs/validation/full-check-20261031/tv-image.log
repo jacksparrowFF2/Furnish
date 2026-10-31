@@ -1,0 +1,1 @@
+{"case":"tv-image","status":"PASS","result":[{"mode":"http","passed":true,"pixels":{"left":[0,0,0,255],"top":[32,103,207,255],"bottom":[239,138,34,255]},"glb":{"images":7,"tvEmbedded":true}},{"mode":"file","passed":true,"pixels":{"left":[0,0,0,255],"top":[32,103,207,255],"bottom":[239,138,34,255]},"glb":{"images":7,"tvEmbedded":true}}]}

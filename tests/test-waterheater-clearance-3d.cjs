@@ -6,7 +6,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  const heater={id:'heater',type:'waterheater_flat',cx:2000,cy:1500,w:700,d:320,h:565,mountHeight:1650,rot:0};
  const ctx=vm.createContext({THREE,CSS2DObject,document,tr:zh=>zh,FurnishProject:P,FurnishDesign:D,FurnishHeaterClearanceModel:model,PLAN:{rooms:[],walls:[[2400,0,2500,4000]],wins:[],doors:[]},state:{furniture:[heater],rooms:{},ceilingHeight:2800},opt:{furn:true,clearances:true},furnGrow:1,clearanceG:new THREE.Group(),wx:x=>(x-1000)/1000,wz:y=>(y-1000)/1000});
  vm.runInContext(html.slice(html.indexOf('function clearGroup(g){'),html.indexOf('\n',html.indexOf('function clearGroup(g){'))),ctx);
- vm.runInContext(html.slice(html.indexOf('function buildHeaterClearances(){'),html.indexOf('function buildLabels(){')),ctx);
+ vm.runInContext(require('./helpers/production-source.cjs').betweenFunctions(html,'buildHeaterClearances','buildLabels'),ctx);
  const build=()=>vm.runInContext('buildHeaterClearances()',ctx),children=()=>ctx.clearanceG.children[0].children,labels=()=>children().filter(o=>o.isCSS2DObject),lines=o=>o.element.children.map(el=>el.textContent),near=(a,b)=>assert.ok(Math.abs(a-b)<1e-6);
  build();let top=children().find(o=>o.isMesh);near(top.geometry.parameters.height,.04);near(top.position.y,2.235);assert.equal(children().filter(o=>o.isMesh).length,1,'no fixed right-side volume');
  assert.deepEqual(lines(labels()[1]),['机身到插座 300 mm','实际净距：无数据','待核对']);assert.equal(labels()[1].element.style.color,'#946008');
