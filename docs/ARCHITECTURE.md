@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（资产索引）：model-asset-index沿product-rules／model-profiles生成assets/models的相对路径README／JSON，来源哈希识别当前GLB，保留其它版本／材质工程并列出参数化及目录条目；不参与应用加载。index-model-assets更新／核对，organize-model-assets仅导出可选本机副本，全屋绑定留在.local。见[存放说明](MODEL-ASSET-STORAGE.md)。
+
 2026-10-31（电视图片）：product-rules注册可选tvImage与图片范围；property-panel本机解码缩小后沿mutate保存内嵌JPEG。model-primitives独立CanvasTexture供原生产电视屏幕使用，图片签名驱动重建，clearGroup沿材质dispose释放纹理；不变几何与空间确认。含图片项目／工作区v41、旧缓存兼容，无新增加载脚本；见[验收](validation/tv-custom-image-20261031/README.md)。
 
 2026-10-31（S05118书椅）：产品规则注册独立chair_yeswood_s05118与840mm高度，armchair-model按s05118配置读取17件Blender离线资产，二维保留环扶手轮廓。仅新增一个经典资产脚本，既有生产实体／测距／碰撞、mutate和恢复链路复用，无新字段／版本；见[型号契约](CHAIR-YESWOOD-S05118.md)。

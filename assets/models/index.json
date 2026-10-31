@@ -1,0 +1,2337 @@
+{
+  "format": 1,
+  "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
+  "counts": {
+    "blenderModels": 15,
+    "parametricVerificationConfigurations": 78,
+    "verificationConfigurations": 93,
+    "catalogEntries": 137,
+    "catalogTypes": 110
+  },
+  "models": [
+    {
+      "profile": "chair-s05118",
+      "type": "chair_yeswood_s05118",
+      "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+      "sizeMm": [
+        660,
+        660,
+        840
+      ],
+      "parts": 17,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/chair-s05118-blender-asset.js",
+        "sha256": "5bb97fae26a19df41c0528030dc589b7c2bbdfdb500286f98800b2524c5338fb"
+      },
+      "sourceSha256": "d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01",
+      "current": {
+        "blend": "assets/models/chair-s05118/v2/chair-s05118-v1.blend",
+        "glb": "assets/models/chair-s05118/v2/chair-s05118-v1.glb"
+      },
+      "document": "docs/CHAIR-YESWOOD-S05118.md",
+      "constructor": "src/render/armchair-model.js",
+      "author": "scripts/blender-model-chair-s05118.py",
+      "files": [
+        {
+          "path": "assets/models/chair-s05118/v1/chair-s05118-v1.blend",
+          "role": "retained-other",
+          "sha256": "b071b08ede737e42f671e5c22430b4b0b60ca13be9def324130f67d603416bc9",
+          "bytes": 194087
+        },
+        {
+          "path": "assets/models/chair-s05118/v1/chair-s05118-v1.glb",
+          "role": "retained-other",
+          "sha256": "a35c68cc6b015b6ccfcd5c4c55322a4c1d75a970e749ac2f8423e724f2d6764a",
+          "bytes": 355456
+        },
+        {
+          "path": "assets/models/chair-s05118/v2/chair-s05118-v1.blend",
+          "role": "published-source",
+          "sha256": "32b0ff917149b1d08bc56b200947d13dc29f32ad0fe6068641c8c12e3b5e3c67",
+          "bytes": 208948
+        },
+        {
+          "path": "assets/models/chair-s05118/v2/chair-s05118-v1.glb",
+          "role": "published-source",
+          "sha256": "d7206818f7821a05c3df4e264022709a9664bad8629b3f72499e9daccf913e01",
+          "bytes": 366272
+        }
+      ]
+    },
+    {
+      "profile": "sofa-bed",
+      "type": "sofa_bed_yeswood_y107h03",
+      "name": "源氏木语 Y107H03 沙发床 1.25米（梨白）",
+      "sizeMm": [
+        1250,
+        838,
+        770
+      ],
+      "parts": 103,
+      "runtimeVersion": 3,
+      "runtime": {
+        "path": "src/data/sofa-bed-blender-asset.js",
+        "sha256": "7ab345b237ad9a927a43ad520a0dad427915e3f602157b6eb870895528b656ef"
+      },
+      "sourceSha256": "988b4973133f4bab3bd5597c0777b59f37a847cfce327980d8f4b91c559dcceb",
+      "current": {
+        "blend": "assets/models/sofa-bed/v5/sofa-bed-v1.blend",
+        "glb": "assets/models/sofa-bed/v5/sofa-bed-v1.glb"
+      },
+      "document": "docs/SOFA-BED-YESWOOD-Y107H03.md",
+      "constructor": "src/render/sofa-bed-model.js",
+      "author": "scripts/blender-model-sofa-bed.py",
+      "files": [
+        {
+          "path": "assets/models/sofa-bed/v2/sofa-bed-v1.blend",
+          "role": "retained-other",
+          "sha256": "de3856303251a63fa50aa97937d2fd8068e886767d05991a51aeb47dccdc4c2d",
+          "bytes": 213936
+        },
+        {
+          "path": "assets/models/sofa-bed/v2/sofa-bed-v1.glb",
+          "role": "retained-other",
+          "sha256": "85848b9e201540e36852c77a6142512f91f52197b40c1f33eb75b507ea0386eb",
+          "bytes": 731580
+        },
+        {
+          "path": "assets/models/sofa-bed/v3/sofa-bed-v1.blend",
+          "role": "retained-other",
+          "sha256": "944e6664566492829f71d9aed52e81885b4b6dcd62ad68c41c2c6ee5a1e6671f",
+          "bytes": 263740
+        },
+        {
+          "path": "assets/models/sofa-bed/v3/sofa-bed-v1.glb",
+          "role": "retained-other",
+          "sha256": "7cc7426c9caa2dfefd00b6d03cad49947431f7b707693028e52b0d971649e0ea",
+          "bytes": 1164264
+        },
+        {
+          "path": "assets/models/sofa-bed/v5/sofa-bed-v1.blend",
+          "role": "published-source",
+          "sha256": "e99e5af871e6ed7f45fed2e2804c3e808f24b4a0f5a231f5906c19b68af11ad9",
+          "bytes": 322725
+        },
+        {
+          "path": "assets/models/sofa-bed/v5/sofa-bed-v1.glb",
+          "role": "published-source",
+          "sha256": "988b4973133f4bab3bd5597c0777b59f37a847cfce327980d8f4b91c559dcceb",
+          "bytes": 1549216
+        }
+      ]
+    },
+    {
+      "profile": "se2",
+      "type": "bath_heater_aopu_se2",
+      "name": "奥普 SE2 风暖浴霸",
+      "sizeMm": [
+        300,
+        600,
+        112
+      ],
+      "parts": 29,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/se2-blender-asset.js",
+        "sha256": "2925c4a8660b7df7b1adb8be4c4054a9af40fbfe17e826f76f9d7b1340b9d4a0"
+      },
+      "sourceSha256": "68e7a68f1e786684c7a2926e2108f3fec2bb3216d80c063ab545dfe17344cee7",
+      "current": {
+        "blend": "assets/models/se2/se2-v1.blend",
+        "glb": "assets/models/se2/se2-v1.glb"
+      },
+      "document": "docs/BATH-HEATER-AOPU-SE2.md",
+      "constructor": "src/render/bath-heater-model.js",
+      "author": "scripts/blender-model-se2.py",
+      "files": [
+        {
+          "path": "assets/models/se2/se2-v1.blend",
+          "role": "published-source",
+          "sha256": "580d16756369ab149e228f6f45cb0a93f06364ca8f779f3e7dc1b9b5441324d5",
+          "bytes": 756215
+        },
+        {
+          "path": "assets/models/se2/se2-v1.glb",
+          "role": "published-source",
+          "sha256": "68e7a68f1e786684c7a2926e2108f3fec2bb3216d80c063ab545dfe17344cee7",
+          "bytes": 54796
+        }
+      ]
+    },
+    {
+      "profile": "y52y09",
+      "type": "bookshelf_yeswood_y52y09",
+      "name": "源氏木语 Y52Y09 · 750高六格书柜",
+      "sizeMm": [
+        1115,
+        230,
+        750
+      ],
+      "parts": 12,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/y52y09-blender-asset.js",
+        "sha256": "18005b06c30f46efb5553ca4aa8d91795d86f2b0587c08f27a3ab84c7fbf0a63"
+      },
+      "sourceSha256": "8187998811e8d7fe543122acca7f07ce8fe6382b21464e5603b165616460611f",
+      "current": {
+        "blend": "assets/models/y52y09/y52y09-v1.blend",
+        "glb": "assets/models/y52y09/y52y09-v1.glb"
+      },
+      "document": "docs/BOOKCASE-YESWOOD-Y52Y09.md",
+      "constructor": null,
+      "author": "scripts/blender-model-y52y09.py",
+      "files": [
+        {
+          "path": "assets/models/y52y09/y52y09-v1.blend",
+          "role": "published-source",
+          "sha256": "92916262a8a5eb2d92dc54247032009720d0b2e72f3e99a3db864f52ba48f1d5",
+          "bytes": 612995
+        },
+        {
+          "path": "assets/models/y52y09/y52y09-v1.glb",
+          "role": "published-source",
+          "sha256": "8187998811e8d7fe543122acca7f07ce8fe6382b21464e5603b165616460611f",
+          "bytes": 160012
+        }
+      ]
+    },
+    {
+      "profile": "fridge",
+      "type": "fridge_french_drawer",
+      "name": "纯平四门冰箱（双抽屉）",
+      "sizeMm": [
+        833,
+        595,
+        1910
+      ],
+      "parts": 30,
+      "runtimeVersion": 2,
+      "runtime": {
+        "path": "src/data/fridge-blender-asset.js",
+        "sha256": "66e67376c59a82c02d3828e5fdfdc9db444662ff49fa0f17477cb6ed23af32a7"
+      },
+      "sourceSha256": "0fa22e2d2b1db9f9cb6932005b121760944fb05a1761a8f02bf6985124dd9bbb",
+      "current": {
+        "blend": "assets/models/fridge/v2/fridge-v1.blend",
+        "glb": "assets/models/fridge/v2/fridge-v1.glb"
+      },
+      "document": "docs/FRIDGE-BLENDER-MOTION.md",
+      "constructor": "src/render/fridge-model.js",
+      "author": "scripts/blender-model-fridge.py",
+      "files": [
+        {
+          "path": "assets/models/fridge/fridge-v1.blend",
+          "role": "retained-other",
+          "sha256": "75b4b7f7ea660f1cdf50255bdf0d0a45f1423e517ac5245511750eba7520e435",
+          "bytes": 844436
+        },
+        {
+          "path": "assets/models/fridge/fridge-v1.glb",
+          "role": "retained-other",
+          "sha256": "21efdafb254836cb66aa14a5edf796f88883f58508bb3f18d92d34a4e50f7e5f",
+          "bytes": 237300
+        },
+        {
+          "path": "assets/models/fridge/v2/fridge-v1.blend",
+          "role": "published-source",
+          "sha256": "1579a479fd3abd1b3a05a61b96c5d9bf5fcd283419934179bebb202eef21f2fe",
+          "bytes": 126065
+        },
+        {
+          "path": "assets/models/fridge/v2/fridge-v1.glb",
+          "role": "published-source",
+          "sha256": "0fa22e2d2b1db9f9cb6932005b121760944fb05a1761a8f02bf6985124dd9bbb",
+          "bytes": 237584
+        },
+        {
+          "path": "assets/models/fridge/v2/material-studio.blend",
+          "role": "material-studio",
+          "sha256": "5c789a3bec9202ce703c9cc047b4efde2adc00e7e1a1665725a7efee6b29e8c2",
+          "bytes": 238072
+        }
+      ]
+    },
+    {
+      "profile": "dishwasher",
+      "type": "dishwasher_mijia_countertop",
+      "name": "米家台面洗碗机 · 5套",
+      "sizeMm": [
+        550,
+        350,
+        598
+      ],
+      "parts": 60,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/dishwasher-blender-asset.js",
+        "sha256": "03e656858961e2bf13901ec353fe789054ff101b5db4c536b8bba8596b59f0de"
+      },
+      "sourceSha256": "4a1d77ebf9f9501c3253da6cb407fcbbd0300c254a15f3f021e310cec23e73b2",
+      "current": {
+        "blend": "assets/models/dishwasher/dishwasher-v1.blend",
+        "glb": "assets/models/dishwasher/dishwasher-v1.glb"
+      },
+      "document": "docs/DISHWASHER-BLENDER-FOLD.md",
+      "constructor": "src/render/dishwasher-model.js",
+      "author": "scripts/blender-model-dishwasher.py",
+      "files": [
+        {
+          "path": "assets/models/dishwasher/dishwasher-v1.blend",
+          "role": "published-source",
+          "sha256": "aec6fac5ac3ea9340ff29ac3c3de3c2f77e948babdd8359d6de757d193d38e12",
+          "bytes": 1328650
+        },
+        {
+          "path": "assets/models/dishwasher/dishwasher-v1.glb",
+          "role": "published-source",
+          "sha256": "4a1d77ebf9f9501c3253da6cb407fcbbd0300c254a15f3f021e310cec23e73b2",
+          "bytes": 595524
+        }
+      ]
+    },
+    {
+      "profile": "hood",
+      "type": "rangehood_fotile_jcd10ta",
+      "name": "方太抽油烟机 JCD10TA",
+      "sizeMm": [
+        900,
+        350,
+        520
+      ],
+      "parts": 27,
+      "runtimeVersion": 2,
+      "runtime": {
+        "path": "src/data/hood-blender-asset.js",
+        "sha256": "b51eb97a6d844c7f1e1968dfbb8ec9e420112e31eb14d0297d36d996460ba6ce"
+      },
+      "sourceSha256": "08b630b4d107e3b806cf9134171d22c3d1e63e7dbd914287bfea44e9ffa91fa4",
+      "current": {
+        "blend": "assets/models/hood/v2/hood-v1.blend",
+        "glb": "assets/models/hood/v2/hood-v1.glb"
+      },
+      "document": "docs/HOOD-BLENDER-MOTION.md",
+      "constructor": "src/render/fotile-model.js",
+      "author": "scripts/blender-model-hood.py",
+      "files": [
+        {
+          "path": "assets/models/hood/hood-v1.blend",
+          "role": "retained-other",
+          "sha256": "43bb431eff386ae1a905c95c2f392cb9eb80fa6a52202731bbf88d4d3a2bcf6c",
+          "bytes": 749764
+        },
+        {
+          "path": "assets/models/hood/hood-v1.glb",
+          "role": "retained-other",
+          "sha256": "d7e12f4c83dd5592a5547b5b4c975943e820f1248c3c34c0eb0335a430b11f1b",
+          "bytes": 89508
+        },
+        {
+          "path": "assets/models/hood/v2/hood-v1.blend",
+          "role": "published-source",
+          "sha256": "4172ffa56f4736218420b1f89835f9653ef7b1d207e64b3e739beff2f9db5fee",
+          "bytes": 124293
+        },
+        {
+          "path": "assets/models/hood/v2/hood-v1.glb",
+          "role": "published-source",
+          "sha256": "08b630b4d107e3b806cf9134171d22c3d1e63e7dbd914287bfea44e9ffa91fa4",
+          "bytes": 89716
+        },
+        {
+          "path": "assets/models/hood/v2/material-studio.blend",
+          "role": "material-studio",
+          "sha256": "4575b37204031f576358e1b5634a53597dd2dd65773f3b025db5bd2f7208226e",
+          "bytes": 233114
+        }
+      ]
+    },
+    {
+      "profile": "washer",
+      "type": "washer",
+      "name": "洗衣机",
+      "sizeMm": [
+        600,
+        600,
+        850
+      ],
+      "parts": 15,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/washer-blender-asset.js",
+        "sha256": "355c1f3995c9898aea3a72636e808dfd79180fcdbd4bf9096dfaa713f35db13e"
+      },
+      "sourceSha256": "35400b56f1a25381a82185fd1d7fde81b5eaacbc363b3db298b04d8beb53785f",
+      "current": {
+        "blend": "assets/models/washer/washer-v1.blend",
+        "glb": "assets/models/washer/washer-v1.glb"
+      },
+      "document": "docs/WASHER-BLENDER-MOTION.md",
+      "constructor": "src/render/washer-model.js",
+      "author": "scripts/blender-model-washer.py",
+      "files": [
+        {
+          "path": "assets/models/washer/washer-v1.blend",
+          "role": "published-source",
+          "sha256": "7883dbb3d91a307d25be5cca2f9bc9c40ae19d5c77a725240b06a36198a9e092",
+          "bytes": 938905
+        },
+        {
+          "path": "assets/models/washer/washer-v1.glb",
+          "role": "published-source",
+          "sha256": "35400b56f1a25381a82185fd1d7fde81b5eaacbc363b3db298b04d8beb53785f",
+          "bytes": 398220
+        }
+      ]
+    },
+    {
+      "profile": "washer-tg10k60w",
+      "type": "washer_littleswan_tg10k60w",
+      "name": "小天鹅洗衣机 TG10K60W · 10kg",
+      "sizeMm": [
+        595,
+        560,
+        850
+      ],
+      "parts": 47,
+      "runtimeVersion": 4,
+      "runtime": {
+        "path": "src/data/washer-tg10k60w-blender-asset.js",
+        "sha256": "ac73db1e12633392446d17ac9fb779009836035b2cc4b8a5c5d9850e6a9cd35b"
+      },
+      "sourceSha256": "3e26e9ad46e50281da5253280f5bab88373c9633d0fe14df2ba2e5c38b4e3b83",
+      "current": {
+        "blend": "assets/models/washer-tg10k60w/v4/washer-tg10k60w-v1.blend",
+        "glb": "assets/models/washer-tg10k60w/v4/washer-tg10k60w-v1.glb"
+      },
+      "document": "docs/WASHER-LITTLESWAN-TG10K60W.md",
+      "constructor": "src/render/washer-model.js",
+      "author": "scripts/blender-model-washer.py",
+      "files": [
+        {
+          "path": "assets/models/washer-tg10k60w/v3/material-studio.blend",
+          "role": "material-studio",
+          "sha256": "9207691ef6ccac417ea55b748362d7b26e8b638aef9e56c538e1543442725809",
+          "bytes": 1076936
+        },
+        {
+          "path": "assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.blend",
+          "role": "retained-other",
+          "sha256": "e0c92654f73451f55065b0fc109800a37e9fb4555058bf02c06fab16406841ac",
+          "bytes": 666009
+        },
+        {
+          "path": "assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.glb",
+          "role": "retained-other",
+          "sha256": "08e598e1d3e2db14be32234cb20c420ade42d2d6ee44ef975bb980a8c5780e31",
+          "bytes": 1505144
+        },
+        {
+          "path": "assets/models/washer-tg10k60w/v4/material-studio.blend",
+          "role": "material-studio",
+          "sha256": "d17033d87fa98b75146f28cef9064b2e1bdd738c1bbac68d375782e7e83b8ab5",
+          "bytes": 1078482
+        },
+        {
+          "path": "assets/models/washer-tg10k60w/v4/washer-tg10k60w-v1.blend",
+          "role": "published-source",
+          "sha256": "bcffeb7fe3c8aabe413ff67d3a7f6914e848d7ea460768fe91dd291a6dd61a2a",
+          "bytes": 665593
+        },
+        {
+          "path": "assets/models/washer-tg10k60w/v4/washer-tg10k60w-v1.glb",
+          "role": "published-source",
+          "sha256": "3e26e9ad46e50281da5253280f5bab88373c9633d0fe14df2ba2e5c38b4e3b83",
+          "bytes": 1498276
+        },
+        {
+          "path": "assets/models/washer-tg10k60w/washer-tg10k60w-v1.blend",
+          "role": "retained-other",
+          "sha256": "a5972ecad9067f733df81a8dc10ebaaeef9adc2829b745fe3cc607fbfffb478e",
+          "bytes": 3434164
+        },
+        {
+          "path": "assets/models/washer-tg10k60w/washer-tg10k60w-v1.glb",
+          "role": "retained-other",
+          "sha256": "8f018fdb2fcd1b8f8860315e06c409cae346a51df03ef57a82596bc2300270ee",
+          "bytes": 1527280
+        }
+      ]
+    },
+    {
+      "profile": "side-table",
+      "type": "sidetable_tmall_635382906309",
+      "name": "双抽岩板边几 · 68cm",
+      "sizeMm": [
+        680,
+        300,
+        612
+      ],
+      "parts": 35,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/side-table-blender-asset.js",
+        "sha256": "3eba342a6779b48a6b3e7494a22fef62f6e52624dbcab82309a053e05e69a4b7"
+      },
+      "sourceSha256": "d65cb2ab75ec124d5c6174fceeb0185358cd655f4e89ac78fb38d46f1238d339",
+      "current": {
+        "blend": "assets/models/side-table/side-table-v1.blend",
+        "glb": "assets/models/side-table/side-table-v1.glb"
+      },
+      "document": "docs/SIDE-TABLE-TMALL-635382906309.md",
+      "constructor": "src/render/side-table-model.js",
+      "author": "scripts/blender-model-side-table.py",
+      "files": [
+        {
+          "path": "assets/models/side-table/side-table-v1.blend",
+          "role": "published-source",
+          "sha256": "b512adac81d1d9589f95a1f20d0e8d32c37bfff920c6583b469589f9d73d9ab8",
+          "bytes": 1019222
+        },
+        {
+          "path": "assets/models/side-table/side-table-v1.glb",
+          "role": "published-source",
+          "sha256": "d65cb2ab75ec124d5c6174fceeb0185358cd655f4e89ac78fb38d46f1238d339",
+          "bytes": 508360
+        }
+      ]
+    },
+    {
+      "profile": "armchair",
+      "type": "armchair_yeswood_y09hs",
+      "name": "源氏木语 单人沙发椅（亚麻色）",
+      "sizeMm": [
+        725,
+        900,
+        905
+      ],
+      "parts": 28,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/armchair-blender-asset.js",
+        "sha256": "87e6f99d5836863b4f6f8558735d4d1b80c026571b39fb3618d768131c849c29"
+      },
+      "sourceSha256": "461a10d4fca7c88c9356dc73c26254d6b4b4b3e4f335493b14a993fb310267f5",
+      "current": {
+        "blend": "assets/models/armchair/v4/armchair-v1.blend",
+        "glb": "assets/models/armchair/v4/armchair-v1.glb"
+      },
+      "document": "docs/ARMCHAIR-YESWOOD-TMALL-1013742104698.md",
+      "constructor": "src/render/armchair-model.js",
+      "author": "scripts/blender-model-armchair.py",
+      "files": [
+        {
+          "path": "assets/models/armchair/v4/armchair-v1.blend",
+          "role": "published-source",
+          "sha256": "e31a62dc52b88c053f170b80c672e51427b2aa7edf04dd5c3a880bdee4c405ea",
+          "bytes": 1240020
+        },
+        {
+          "path": "assets/models/armchair/v4/armchair-v1.glb",
+          "role": "published-source",
+          "sha256": "461a10d4fca7c88c9356dc73c26254d6b4b4b3e4f335493b14a993fb310267f5",
+          "bytes": 631548
+        }
+      ]
+    },
+    {
+      "profile": "armchair-berlin",
+      "type": "armchair_yeswood_berlin",
+      "name": "源氏木语 柏林单人沙发椅（含腰枕）",
+      "sizeMm": [
+        710,
+        850,
+        845
+      ],
+      "parts": 28,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/armchair-berlin-blender-asset.js",
+        "sha256": "234bca6d2946423daee24064400fb1ce51ab6e0a2471f44f83f2b28206cc7ce4"
+      },
+      "sourceSha256": "447e6044f3527e5efaaf2180c501f6ed047687d54b5ca3eea6509db42bc789e5",
+      "current": {
+        "blend": "assets/models/armchair-berlin/v3/armchair-berlin-v1.blend",
+        "glb": "assets/models/armchair-berlin/v3/armchair-berlin-v1.glb"
+      },
+      "document": "docs/ARMCHAIR-YESWOOD-BERLIN.md",
+      "constructor": "src/render/armchair-model.js",
+      "author": "scripts/blender-model-armchair-berlin.py",
+      "files": [
+        {
+          "path": "assets/models/armchair-berlin/v3/armchair-berlin-v1.blend",
+          "role": "published-source",
+          "sha256": "cf9c9f199d7df5c545371549ed63509c88d6651e8130432a3196dd781a6d611f",
+          "bytes": 1210956
+        },
+        {
+          "path": "assets/models/armchair-berlin/v3/armchair-berlin-v1.glb",
+          "role": "published-source",
+          "sha256": "447e6044f3527e5efaaf2180c501f6ed047687d54b5ca3eea6509db42bc789e5",
+          "bytes": 535140
+        }
+      ]
+    },
+    {
+      "profile": "stack-stool",
+      "type": "stool_citylong_370",
+      "name": "禧天龙 软包叠放方凳 · 37cm",
+      "sizeMm": [
+        370,
+        370,
+        467
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/stack-stool-blender-asset.js",
+        "sha256": "23e0f6c5b04f3f1adcd9b108cad5f506f60c857d1e2b4e53f9bdb06116dec329"
+      },
+      "sourceSha256": "47537df7c5d4d4ac0195393f93779c0f37f0bd794a93ed2324ce19f0f27175a7",
+      "current": {
+        "blend": "assets/models/stack-stool/v4/stack-stool-v1.blend",
+        "glb": "assets/models/stack-stool/v4/stack-stool-v1.glb"
+      },
+      "document": "docs/STACK-STOOL-CITYLONG-370.md",
+      "constructor": "src/render/stack-stool-model.js",
+      "author": "scripts/blender-model-stack-stool.py",
+      "files": [
+        {
+          "path": "assets/models/stack-stool/v4/stack-stool-v1.blend",
+          "role": "published-source",
+          "sha256": "5dd5bfc894de88198b2642a269895cf6c4115b4882ea50f67f9a5e72426b6c76",
+          "bytes": 115022
+        },
+        {
+          "path": "assets/models/stack-stool/v4/stack-stool-v1.glb",
+          "role": "published-source",
+          "sha256": "47537df7c5d4d4ac0195393f93779c0f37f0bd794a93ed2324ce19f0f27175a7",
+          "bytes": 70872
+        }
+      ]
+    },
+    {
+      "profile": "corner-bookcase",
+      "type": "bookshelf_yeswood_y00y06",
+      "name": "源氏木语 Y00Y06045 · 五层转角书柜",
+      "sizeMm": [
+        450,
+        450,
+        1900
+      ],
+      "parts": 14,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/corner-bookcase-blender-asset.js",
+        "sha256": "e99e4d617289b1d2cf9a953ab83d6117a28c1955ddb6ef8e0f73ec279e474d6c"
+      },
+      "sourceSha256": "db6b97c28155981bf6f92781c643dc9f4233e27526657bf4556199b3148ab931",
+      "current": {
+        "blend": "assets/models/corner-bookcase/v1/corner-bookcase-v1.blend",
+        "glb": "assets/models/corner-bookcase/v1/corner-bookcase-v1.glb"
+      },
+      "document": "docs/CORNER-BOOKCASE-YESWOOD-Y00Y06.md",
+      "constructor": "src/render/corner-bookcase-model.js",
+      "author": "scripts/blender-model-corner-bookcase.py",
+      "files": [
+        {
+          "path": "assets/models/corner-bookcase/v1/corner-bookcase-v1.blend",
+          "role": "published-source",
+          "sha256": "3b51e93256a49983c216fa9b9ae81a48320dec62eeb13c83eb61108619986eac",
+          "bytes": 116688
+        },
+        {
+          "path": "assets/models/corner-bookcase/v1/corner-bookcase-v1.glb",
+          "role": "published-source",
+          "sha256": "db6b97c28155981bf6f92781c643dc9f4233e27526657bf4556199b3148ab931",
+          "bytes": 52320
+        }
+      ]
+    },
+    {
+      "profile": "corner-bookcase-580",
+      "type": "bookshelf_yeswood_y00y06058",
+      "name": "源氏木语 Y00Y06058 · 0.58m · 五层转角书柜",
+      "sizeMm": [
+        580,
+        580,
+        1900
+      ],
+      "parts": 14,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/corner-bookcase-580-blender-asset.js",
+        "sha256": "5c5b8ee8b6685f850bb7713ec6d13205c9cb51b942da26f64bf4c327b9c51e04"
+      },
+      "sourceSha256": "ff0b7a94c7767f9c1c834f4c73d46934489dc58a0dec2132243cd40bf76dcec3",
+      "current": {
+        "blend": "assets/models/corner-bookcase-580/v1/corner-bookcase-580-v1.blend",
+        "glb": "assets/models/corner-bookcase-580/v1/corner-bookcase-580-v1.glb"
+      },
+      "document": "docs/CORNER-BOOKCASE-YESWOOD-Y00Y06058.md",
+      "constructor": "src/render/corner-bookcase-model.js",
+      "author": "scripts/blender-model-corner-bookcase.py",
+      "files": [
+        {
+          "path": "assets/models/corner-bookcase-580/v1/corner-bookcase-580-v1.blend",
+          "role": "published-source",
+          "sha256": "1b9c02463958952de07839d74112b6b672cfea191100a68ccc7f63406e0debd3",
+          "bytes": 116605
+        },
+        {
+          "path": "assets/models/corner-bookcase-580/v1/corner-bookcase-580-v1.glb",
+          "role": "published-source",
+          "sha256": "ff0b7a94c7767f9c1c834f4c73d46934489dc58a0dec2132243cd40bf76dcec3",
+          "bytes": 52376
+        }
+      ]
+    }
+  ],
+  "parametric": [
+    {
+      "id": "block",
+      "type": "block",
+      "name": "方块占位体",
+      "module": "index-inline"
+    },
+    {
+      "id": "panel_light_300x600",
+      "type": "panel_light_300x600",
+      "name": "厨房平板灯 · 300×600 · 24W",
+      "module": "bath-heater"
+    },
+    {
+      "id": "bath_heater_300x600",
+      "type": "bath_heater_300x600",
+      "name": "风暖浴霸 · 300×600通用占位",
+      "module": "bath-heater"
+    },
+    {
+      "id": "downlight_philips_dl269",
+      "type": "downlight_philips_dl269",
+      "name": "飞利浦品焕筒灯 DL269",
+      "module": "index-inline"
+    },
+    {
+      "id": "heating_manifold",
+      "type": "heating_manifold",
+      "name": "地暖分水器（路数可调）",
+      "module": "manifold"
+    },
+    {
+      "id": "electrical_box_strong",
+      "type": "electrical_box_strong",
+      "name": "强电箱（尺寸自定）",
+      "module": "index-inline"
+    },
+    {
+      "id": "electrical_box_weak",
+      "type": "electrical_box_weak",
+      "name": "弱电箱（尺寸自定）",
+      "module": "index-inline"
+    },
+    {
+      "id": "aquarium_mijia_2pro",
+      "type": "aquarium_mijia_2pro",
+      "name": "米家智能鱼缸 2 Pro",
+      "module": "index-inline"
+    },
+    {
+      "id": "stove_fotile_th36b",
+      "type": "stove_fotile_th36b",
+      "name": "方太燃气灶 TH36B-T",
+      "module": "index-inline"
+    },
+    {
+      "id": "waterheater_flat",
+      "type": "waterheater_flat",
+      "name": "扁桶电热水器 60L",
+      "module": "index-inline"
+    },
+    {
+      "id": "aircon_midea_ultra_2hp",
+      "type": "aircon_midea_ultra_2hp",
+      "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+      "module": "index-inline"
+    },
+    {
+      "id": "water_purifier_mijia_1200g",
+      "type": "water_purifier_mijia_1200g",
+      "name": "米家净水器 2 · 1200G",
+      "module": "index-inline"
+    },
+    {
+      "id": "tea_bar_mijia_pro",
+      "type": "tea_bar_mijia_pro",
+      "name": "米家智能茶吧机 Pro 立式",
+      "module": "tea-bar"
+    },
+    {
+      "id": "robot_p20max_tank",
+      "type": "robot_p20max_tank",
+      "name": "石头 P20 Max 水箱版套装",
+      "module": "index-inline"
+    },
+    {
+      "id": "robot_p20max_plumbed",
+      "type": "robot_p20max_plumbed",
+      "name": "石头 P20 Max 上下水版套装",
+      "module": "index-inline"
+    },
+    {
+      "id": "robot_p20max",
+      "type": "robot_p20max",
+      "name": "石头 P20 Max 扫拖机器人",
+      "module": "index-inline"
+    },
+    {
+      "id": "pipebox",
+      "type": "pipebox",
+      "name": "管道包覆柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "sofa_yeswood_cherry",
+      "type": "sofa_yeswood_cherry",
+      "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+      "module": "yeswood-sofa"
+    },
+    {
+      "id": "coffeetable_yeswood_cherry",
+      "type": "coffeetable_yeswood_cherry",
+      "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+      "module": "cherry-coffee-table"
+    },
+    {
+      "id": "tea_table_800",
+      "type": "tea_table_800",
+      "name": "藤编移动茶台 · 80cm",
+      "module": "tea-table"
+    },
+    {
+      "id": "table_folding_1100",
+      "type": "table_folding_1100",
+      "name": "源氏木语折叠餐桌 · 1100款",
+      "module": "folding-table"
+    },
+    {
+      "id": "table_folding_1200",
+      "type": "table_folding_1200",
+      "name": "源氏木语折叠餐桌 · 1200款",
+      "module": "folding-table"
+    },
+    {
+      "id": "table_folding_1300",
+      "type": "table_folding_1300",
+      "name": "源氏木语折叠餐桌 · 1300款",
+      "module": "folding-table"
+    },
+    {
+      "id": "kitchenwall",
+      "type": "kitchenwall",
+      "name": "厨房吊柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "bench_yeswood_oak",
+      "type": "bench_yeswood_oak",
+      "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+      "module": "shoe-bench"
+    },
+    {
+      "id": "sink_arrow_680",
+      "type": "sink_arrow_680",
+      "name": "箭牌日式集渣水槽 · 680",
+      "module": "index-inline"
+    },
+    {
+      "id": "sink_arrow_750",
+      "type": "sink_arrow_750",
+      "name": "箭牌日式集渣水槽 · 750",
+      "module": "index-inline"
+    },
+    {
+      "id": "shower_arrow_cream",
+      "type": "shower_arrow_cream",
+      "name": "箭牌 奶油白壁挂花洒 AE34129ZMKW-P2",
+      "module": "index-inline"
+    },
+    {
+      "id": "curtain_sheer",
+      "type": "curtain_sheer",
+      "name": "半透光纱帘 · 双开",
+      "module": "index-inline"
+    },
+    {
+      "id": "blind_venetian",
+      "type": "blind_venetian",
+      "name": "百叶帘 · 可调叶片",
+      "module": "window-covering"
+    },
+    {
+      "id": "blind_honeycomb",
+      "type": "blind_honeycomb",
+      "name": "蜂巢帘 · 折叠升降",
+      "module": "window-covering"
+    },
+    {
+      "id": "blind_zebra",
+      "type": "blind_zebra",
+      "name": "日夜柔纱帘 · 斑马帘",
+      "module": "window-covering"
+    },
+    {
+      "id": "blind_bamboo",
+      "type": "blind_bamboo",
+      "name": "竹帘 · 卷收",
+      "module": "window-covering"
+    },
+    {
+      "id": "blind_roller",
+      "type": "blind_roller",
+      "name": "卷帘 · 平面布",
+      "module": "window-covering"
+    },
+    {
+      "id": "pocketdoor_double",
+      "type": "pocketdoor_double",
+      "name": "双侧口袋门隔断 · 布局草模",
+      "module": "sliding-opening"
+    },
+    {
+      "id": "pocketdoor_triple",
+      "type": "pocketdoor_triple",
+      "name": "单侧三联动口袋门 · 布局草模",
+      "module": "sliding-opening"
+    },
+    {
+      "id": "slidingdoor",
+      "type": "slidingdoor",
+      "name": "双扇推拉门",
+      "module": "index-inline"
+    },
+    {
+      "id": "telescopicdoor20",
+      "type": "telescopicdoor20",
+      "name": "2+0 同向联动门 · 超白玻璃",
+      "module": "sliding-opening"
+    },
+    {
+      "id": "doubleslidingdoor",
+      "type": "doubleslidingdoor",
+      "name": "双联动推拉门",
+      "module": "sliding-opening"
+    },
+    {
+      "id": "tripleslidingdoor",
+      "type": "tripleslidingdoor",
+      "name": "三联动推拉门",
+      "module": "sliding-opening"
+    },
+    {
+      "id": "tripleslidingwindow",
+      "type": "tripleslidingwindow",
+      "name": "三联动推拉窗",
+      "module": "index-inline"
+    },
+    {
+      "id": "cat_tree",
+      "type": "cat_tree",
+      "name": "猫爬架 · 绿叶成荫围栏款",
+      "module": "cat-tree"
+    },
+    {
+      "id": "pet_feeder_mijia_2",
+      "type": "pet_feeder_mijia_2",
+      "name": "米家智能宠物喂食器 2",
+      "module": "pet-feeder"
+    },
+    {
+      "id": "litter_box",
+      "type": "litter_box",
+      "name": "封闭式猫砂盆",
+      "module": "index-inline"
+    },
+    {
+      "id": "mirror",
+      "type": "mirror",
+      "name": "穿衣镜",
+      "module": "index-inline"
+    },
+    {
+      "id": "curtain-single",
+      "type": "curtain",
+      "name": "单开窗帘 2.4m",
+      "module": "index-inline"
+    },
+    {
+      "id": "curtain-double",
+      "type": "curtain",
+      "name": "双开窗帘 2.4m",
+      "module": "index-inline"
+    },
+    {
+      "id": "tv-75",
+      "type": "tv",
+      "name": "75 寸电视",
+      "module": "index-inline"
+    },
+    {
+      "id": "tv-85",
+      "type": "tv",
+      "name": "85 寸电视",
+      "module": "index-inline"
+    },
+    {
+      "id": "tv-100",
+      "type": "tv",
+      "name": "100 寸电视",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--storage",
+      "type": "cabinet",
+      "name": "收纳柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--pantry800",
+      "type": "cabinet",
+      "name": "800 库 · 食品高柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--pantry500",
+      "type": "cabinet",
+      "name": "500 库 · 窄高柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--sideboard",
+      "type": "cabinet",
+      "name": "餐边柜 · 门柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--sideboard-drawers",
+      "type": "cabinet",
+      "name": "餐边柜 · 抽屉组合",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--sideboard-open",
+      "type": "cabinet",
+      "name": "餐边柜 · 开放展示",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--sideboard-mixed",
+      "type": "cabinet",
+      "name": "餐边柜 · 开放格与门柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--sideboard-wall",
+      "type": "cabinet",
+      "name": "餐边柜 · 操作台与玻璃展示柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--sideboard-fridge",
+      "type": "cabinet",
+      "name": "餐边柜 · 冰箱位与玻璃展示柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--wardrobe",
+      "type": "wardrobe",
+      "name": "衣柜 · 分区收纳",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--wardrobe-hanging",
+      "type": "wardrobe",
+      "name": "衣柜 · 双柜挂衣与明抽",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--shoe",
+      "type": "shoecab",
+      "name": "鞋柜 · 双门",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--book",
+      "type": "bookshelf",
+      "name": "书柜 · 开放层板",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--chest",
+      "type": "chest",
+      "name": "斗柜 · 四层抽屉",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--base",
+      "type": "cabinet",
+      "name": "厨房地柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--wall",
+      "type": "kitchenwall",
+      "name": "壁柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--tv",
+      "type": "tvstand",
+      "name": "电视柜 · 抽屉与开放格",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--tv-floor",
+      "type": "tvstand",
+      "name": "落地电视柜 · 上盖抽屉藏线",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--entry-pegboard",
+      "type": "cabinet",
+      "name": "玄关柜 · 洞洞板换鞋区",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--entry-console",
+      "type": "cabinet",
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "laundry--left",
+      "type": "counter",
+      "name": "洗衣柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "laundry-area--left",
+      "type": "counter",
+      "name": "完整阳台洗衣柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "laundry--right",
+      "type": "counter",
+      "name": "洗衣柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "laundry-area--right",
+      "type": "counter",
+      "name": "完整阳台洗衣柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "kitchen--tall",
+      "type": "counter",
+      "name": "高低柜组合",
+      "module": "index-inline"
+    },
+    {
+      "id": "kitchen--L",
+      "type": "counter",
+      "name": "L形厨房",
+      "module": "index-inline"
+    },
+    {
+      "id": "kitchen--U",
+      "type": "counter",
+      "name": "U形厨房",
+      "module": "index-inline"
+    },
+    {
+      "id": "sink--vessel",
+      "type": "ksink",
+      "name": "阳台台上盆 · 圆角单盆",
+      "module": "index-inline"
+    }
+  ],
+  "catalog": [
+    {
+      "category": "占位体",
+      "type": "block",
+      "name": "方块占位体",
+      "w": 1000,
+      "d": 1000,
+      "h": 1000,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "panel_light_300x600",
+      "name": "厨房平板灯 · 300×600 · 24W",
+      "w": 300,
+      "d": 600,
+      "h": 35,
+      "module": "bath-heater"
+    },
+    {
+      "category": "电器",
+      "type": "bath_heater_aopu_se2",
+      "name": "奥普 SE2 风暖浴霸",
+      "w": 300,
+      "d": 600,
+      "h": 112,
+      "module": "bath-heater"
+    },
+    {
+      "category": "电器",
+      "type": "bath_heater_300x600",
+      "name": "风暖浴霸 · 300×600通用占位",
+      "w": 300,
+      "d": 600,
+      "h": 180,
+      "module": "bath-heater"
+    },
+    {
+      "category": "电器",
+      "type": "downlight_philips_dl269",
+      "name": "飞利浦品焕筒灯 DL269",
+      "w": 85,
+      "d": 85,
+      "h": 45,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "heating_manifold",
+      "name": "地暖分水器（路数可调）",
+      "w": 800,
+      "d": 180,
+      "h": 600,
+      "module": "manifold"
+    },
+    {
+      "category": "电器",
+      "type": "electrical_box_strong",
+      "name": "强电箱（尺寸自定）",
+      "w": 300,
+      "d": 120,
+      "h": 400,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "electrical_box_weak",
+      "name": "弱电箱（尺寸自定）",
+      "w": 400,
+      "d": 120,
+      "h": 400,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "aquarium_mijia_2pro",
+      "name": "米家智能鱼缸 2 Pro",
+      "w": 505,
+      "d": 292,
+      "h": 334,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "stove_fotile_th36b",
+      "name": "方太燃气灶 TH36B-T",
+      "w": 750,
+      "d": 440,
+      "h": 138,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "rangehood_fotile_jcd10ta",
+      "name": "方太抽油烟机 JCD10TA",
+      "w": 900,
+      "d": 350,
+      "h": 520,
+      "module": "fotile"
+    },
+    {
+      "category": "电器",
+      "type": "stove",
+      "name": "燃气灶",
+      "w": 750,
+      "d": 450,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "fridge",
+      "name": "冰箱",
+      "w": 700,
+      "d": 700,
+      "h": 1800,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "washer_littleswan_tg10k60w",
+      "name": "小天鹅洗衣机 TG10K60W · 10kg",
+      "w": 595,
+      "d": 560,
+      "h": 850,
+      "module": "washer"
+    },
+    {
+      "category": "电器",
+      "type": "washer",
+      "name": "洗衣机",
+      "w": 600,
+      "d": 600,
+      "h": 850,
+      "module": "washer"
+    },
+    {
+      "category": "电器",
+      "type": "waterheater",
+      "name": "电热水器",
+      "w": 800,
+      "d": 450,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "waterheater_flat",
+      "name": "扁桶电热水器 60L",
+      "w": 700,
+      "d": 320,
+      "h": 565,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "tv",
+      "name": "65 寸电视",
+      "w": 1450,
+      "d": 80,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "tv",
+      "name": "55 寸电视",
+      "w": 1230,
+      "d": 80,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "fridge",
+      "name": "对开门冰箱",
+      "w": 910,
+      "d": 700,
+      "h": 1800,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "fridge_french_drawer",
+      "name": "纯平四门冰箱（双抽屉）",
+      "w": 833,
+      "d": 595,
+      "h": 1910,
+      "module": "fridge"
+    },
+    {
+      "category": "电器",
+      "type": "tv",
+      "name": "75 寸电视",
+      "w": 1660,
+      "d": 80,
+      "h": 935,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "tv",
+      "name": "85 寸电视",
+      "w": 1880,
+      "d": 90,
+      "h": 1060,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "tv",
+      "name": "100 寸电视",
+      "w": 2210,
+      "d": 100,
+      "h": 1245,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "aircon",
+      "name": "柜机空调",
+      "w": 500,
+      "d": 380,
+      "h": 1800,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "aircon_midea_ultra_2hp",
+      "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+      "w": 395,
+      "d": 436,
+      "h": 1856,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "acwall",
+      "name": "挂机空调",
+      "w": 900,
+      "d": 250,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "dishwasher",
+      "name": "洗碗机",
+      "w": 600,
+      "d": 600,
+      "h": 840,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "dishwasher_mijia_countertop",
+      "name": "米家台面洗碗机 · 5套",
+      "w": 550,
+      "d": 350,
+      "h": 598,
+      "module": "dishwasher"
+    },
+    {
+      "category": "电器",
+      "type": "dryer",
+      "name": "烘干机",
+      "w": 600,
+      "d": 600,
+      "h": 850,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "water_purifier_mijia_1200g",
+      "name": "米家净水器 2 · 1200G",
+      "w": 163,
+      "d": 445,
+      "h": 379,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "tea_bar_mijia_pro",
+      "name": "米家智能茶吧机 Pro 立式",
+      "w": 315,
+      "d": 310,
+      "h": 1155,
+      "module": "tea-bar"
+    },
+    {
+      "category": "电器",
+      "type": "purifier",
+      "name": "空气净化器",
+      "w": 400,
+      "d": 300,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "robot_p20max_tank",
+      "name": "石头 P20 Max 水箱版套装",
+      "w": 450,
+      "d": 450,
+      "h": 450,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "robot_p20max_plumbed",
+      "name": "石头 P20 Max 上下水版套装",
+      "w": 381,
+      "d": 475,
+      "h": 300,
+      "module": "index-inline"
+    },
+    {
+      "category": "电器",
+      "type": "robot_p20max",
+      "name": "石头 P20 Max 扫拖机器人",
+      "w": 350,
+      "d": 352,
+      "h": 79.8,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "pipebox",
+      "name": "管道包覆柜",
+      "w": 400,
+      "d": 300,
+      "h": 2400,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "cabinet",
+      "name": "收纳柜",
+      "w": 1000,
+      "d": 450,
+      "h": 1800,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "nightstand",
+      "name": "床头柜",
+      "w": 450,
+      "d": 400,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "wardrobe",
+      "name": "衣柜",
+      "w": 2000,
+      "d": 600,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "chest",
+      "name": "六斗柜",
+      "w": 1200,
+      "d": 500,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "bookshelf",
+      "name": "书架",
+      "w": 800,
+      "d": 300,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "bookshelf_yeswood_y00y06",
+      "name": "源氏木语 Y00Y06045 · 五层转角书柜",
+      "w": 450,
+      "d": 450,
+      "h": 1900,
+      "module": "corner-bookcase"
+    },
+    {
+      "category": "柜体",
+      "type": "bookshelf_yeswood_y00y06058",
+      "name": "源氏木语 Y00Y06058 · 0.58m · 五层转角书柜",
+      "w": 580,
+      "d": 580,
+      "h": 1900,
+      "module": "corner-bookcase"
+    },
+    {
+      "category": "柜体",
+      "type": "bookshelf_yeswood_y52y09",
+      "name": "源氏木语 Y52Y09 · 750高六格书柜",
+      "w": 1115,
+      "d": 230,
+      "h": 750,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "tvstand",
+      "name": "电视柜",
+      "w": 2400,
+      "d": 400,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "shoecab",
+      "name": "鞋柜",
+      "w": 1000,
+      "d": 350,
+      "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "cabinet",
+      "name": "餐边柜",
+      "w": 1600,
+      "d": 400,
+      "module": "index-inline"
+    },
+    {
+      "category": "床",
+      "type": "bed",
+      "name": "双人床 2.0m",
+      "w": 2000,
+      "d": 2200,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "床",
+      "type": "bed",
+      "name": "双人床 1.8m",
+      "w": 1800,
+      "d": 2000,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "床",
+      "type": "bed",
+      "name": "双人床 1.5m",
+      "w": 1500,
+      "d": 2000,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "床",
+      "type": "bed",
+      "name": "单人床",
+      "w": 1200,
+      "d": 2000,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "床",
+      "type": "crib",
+      "name": "婴儿床",
+      "w": 1250,
+      "d": 700,
+      "module": "index-inline"
+    },
+    {
+      "category": "沙发",
+      "type": "sofa_bed_yeswood_y107h03",
+      "name": "源氏木语 Y107H03 沙发床 1.25米（梨白）",
+      "w": 1250,
+      "d": 838,
+      "h": 770,
+      "module": "sofa-bed"
+    },
+    {
+      "category": "沙发",
+      "type": "armchair_yeswood_berlin",
+      "name": "源氏木语 柏林单人沙发椅（含腰枕）",
+      "w": 710,
+      "d": 850,
+      "h": 845,
+      "module": "armchair"
+    },
+    {
+      "category": "沙发",
+      "type": "armchair_yeswood_y09hs",
+      "name": "源氏木语 单人沙发椅（亚麻色）",
+      "w": 725,
+      "d": 900,
+      "h": 905,
+      "module": "armchair"
+    },
+    {
+      "category": "沙发",
+      "type": "sofa_yeswood_cherry",
+      "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+      "w": 2160,
+      "d": 892,
+      "h": 895,
+      "module": "yeswood-sofa"
+    },
+    {
+      "category": "沙发",
+      "type": "sofa",
+      "name": "三人沙发",
+      "w": 2400,
+      "d": 900,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "沙发",
+      "type": "sofa",
+      "name": "双人沙发",
+      "w": 1700,
+      "d": 880,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "沙发",
+      "type": "cornersofa",
+      "name": "转角沙发",
+      "w": 2800,
+      "d": 1700,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "沙发",
+      "type": "armchair",
+      "name": "单人沙发",
+      "w": 850,
+      "d": 850,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "沙发",
+      "type": "beanbag",
+      "name": "懒人沙发",
+      "w": 800,
+      "d": 800,
+      "h": 720,
+      "module": "index-inline"
+    },
+    {
+      "category": "沙发",
+      "type": "armchair",
+      "name": "阅读椅",
+      "w": 750,
+      "d": 800,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "coffeetable_yeswood_cherry",
+      "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+      "w": 1200,
+      "d": 650,
+      "h": 450,
+      "module": "cherry-coffee-table"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "tea_table_800",
+      "name": "藤编移动茶台 · 80cm",
+      "w": 800,
+      "d": 400,
+      "h": 720,
+      "module": "tea-table"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "dresser",
+      "name": "梳妆台",
+      "w": 1000,
+      "d": 450,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "desk",
+      "name": "书桌",
+      "w": 1200,
+      "d": 600,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "coffeetable",
+      "name": "茶几",
+      "w": 1300,
+      "d": 650,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "roundtable",
+      "name": "圆茶几",
+      "w": 800,
+      "d": 800,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "sidetable",
+      "name": "边几",
+      "w": 500,
+      "d": 500,
+      "module": "index-inline"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "sidetable_tmall_635382906309",
+      "name": "双抽岩板边几 · 68cm",
+      "w": 680,
+      "d": 300,
+      "h": 612,
+      "module": "side-table"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "table",
+      "name": "餐桌",
+      "w": 1400,
+      "d": 800,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "table_folding_1100",
+      "name": "源氏木语折叠餐桌 · 1100款",
+      "w": 1100,
+      "d": 1100,
+      "h": 760,
+      "module": "folding-table"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "table_folding_1200",
+      "name": "源氏木语折叠餐桌 · 1200款",
+      "w": 1200,
+      "d": 1200,
+      "h": 760,
+      "module": "folding-table"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "table_folding_1300",
+      "name": "源氏木语折叠餐桌 · 1300款",
+      "w": 1305,
+      "d": 1305,
+      "h": 760,
+      "module": "folding-table"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "table",
+      "name": "六人餐桌",
+      "w": 1800,
+      "d": 900,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "roundtable",
+      "name": "圆桌",
+      "w": 1000,
+      "d": 1000,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "island",
+      "name": "岛台",
+      "w": 1800,
+      "d": 900,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "island",
+      "name": "大岛台",
+      "w": 2400,
+      "d": 1000,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "桌 · 台",
+      "type": "desk",
+      "name": "长书桌",
+      "w": 1600,
+      "d": 700,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "阳台柜",
+      "type": "counter",
+      "name": "完整阳台洗衣柜",
+      "w": 1340,
+      "d": 630,
+      "module": "index-inline"
+    },
+    {
+      "category": "阳台柜",
+      "type": "counter",
+      "name": "基础洗衣机柜",
+      "w": 1340,
+      "d": 630,
+      "module": "index-inline"
+    },
+    {
+      "category": "阳台柜",
+      "type": "ksink",
+      "name": "阳台定制水槽（可设异形缺角）",
+      "w": 600,
+      "d": 500,
+      "module": "index-inline"
+    },
+    {
+      "category": "阳台柜",
+      "type": "ksink",
+      "name": "阳台台上盆 · 圆角单盆",
+      "w": 560,
+      "d": 400,
+      "module": "index-inline"
+    },
+    {
+      "category": "厨房",
+      "type": "counter",
+      "name": "橱柜台面",
+      "w": 1600,
+      "d": 600,
+      "module": "index-inline"
+    },
+    {
+      "category": "厨房",
+      "type": "kitchenwall",
+      "name": "厨房吊柜",
+      "w": 800,
+      "d": 350,
+      "h": 700,
+      "module": "index-inline"
+    },
+    {
+      "category": "厨房",
+      "type": "ovencol",
+      "name": "蒸烤箱高柜",
+      "w": 600,
+      "d": 600,
+      "module": "index-inline"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "stool_citylong_370",
+      "name": "禧天龙 软包叠放方凳 · 37cm",
+      "w": 370,
+      "d": 370,
+      "h": 467,
+      "module": "stack-stool"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "bench_yeswood_oak",
+      "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+      "w": 800,
+      "d": 300,
+      "h": 450,
+      "module": "shoe-bench"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "chair_yeswood_s05118",
+      "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+      "w": 660,
+      "d": 660,
+      "h": 840,
+      "module": "armchair"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "chair",
+      "name": "椅子",
+      "w": 450,
+      "d": 480,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "chair",
+      "name": "餐椅",
+      "w": 450,
+      "d": 480,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "barstool",
+      "name": "吧椅",
+      "w": 420,
+      "d": 420,
+      "h": 775,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "officechair",
+      "name": "办公椅",
+      "w": 620,
+      "d": 620,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "椅 · 凳",
+      "type": "bench",
+      "name": "换鞋凳",
+      "w": 800,
+      "d": 350,
+      "h": 440,
+      "module": "basic-furniture"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "vanity",
+      "name": "浴室柜",
+      "w": 800,
+      "d": 500,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "vanity",
+      "name": "双盆浴室柜",
+      "w": 1200,
+      "d": 500,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "ksink",
+      "name": "水槽",
+      "w": 800,
+      "d": 450,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "sink_arrow_680",
+      "name": "箭牌日式集渣水槽 · 680",
+      "w": 680,
+      "d": 450,
+      "h": 240,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "sink_arrow_750",
+      "name": "箭牌日式集渣水槽 · 750",
+      "w": 750,
+      "d": 450,
+      "h": 240,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "toilet",
+      "name": "马桶",
+      "w": 400,
+      "d": 700,
+      "h": 796,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "shower",
+      "name": "淋浴房",
+      "w": 900,
+      "d": 900,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "shower_arrow_cream",
+      "name": "箭牌 奶油白壁挂花洒 AE34129ZMKW-P2",
+      "w": 420,
+      "d": 515,
+      "h": 1749,
+      "module": "index-inline"
+    },
+    {
+      "category": "卫浴 · 水槽",
+      "type": "bathtub",
+      "name": "浴缸",
+      "w": 1600,
+      "d": 750,
+      "module": "index-inline"
+    },
+    {
+      "category": "灯具",
+      "type": "floorlamp",
+      "name": "落地灯",
+      "w": 450,
+      "d": 450,
+      "module": "index-inline"
+    },
+    {
+      "category": "灯具",
+      "type": "pendant",
+      "name": "吊灯",
+      "w": 700,
+      "d": 700,
+      "module": "index-inline"
+    },
+    {
+      "category": "灯具",
+      "type": "pendant",
+      "name": "餐厅吊灯",
+      "w": 900,
+      "d": 900,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "baycushion",
+      "name": "飘窗垫",
+      "w": 520,
+      "d": 1800,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "rug",
+      "name": "地毯",
+      "w": 2400,
+      "d": 1700,
+      "h": 16,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "curtain",
+      "name": "不透光布帘 2.4m",
+      "w": 2400,
+      "d": 180,
+      "h": 2400,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "curtain",
+      "name": "不透光布帘 3m",
+      "w": 3000,
+      "d": 180,
+      "h": 2400,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "curtain",
+      "name": "单开窗帘 2.4m",
+      "w": 2400,
+      "d": 180,
+      "h": 2400,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "curtain",
+      "name": "双开窗帘 2.4m",
+      "w": 2400,
+      "d": 180,
+      "h": 2400,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "curtain_sheer",
+      "name": "半透光纱帘 · 双开",
+      "w": 2400,
+      "d": 120,
+      "h": 2400,
+      "module": "index-inline"
+    },
+    {
+      "category": "布艺",
+      "type": "blind_venetian",
+      "name": "百叶帘 · 可调叶片",
+      "w": 1500,
+      "d": 65,
+      "h": 1800,
+      "module": "window-covering"
+    },
+    {
+      "category": "布艺",
+      "type": "blind_honeycomb",
+      "name": "蜂巢帘 · 折叠升降",
+      "w": 1500,
+      "d": 60,
+      "h": 1800,
+      "module": "window-covering"
+    },
+    {
+      "category": "布艺",
+      "type": "blind_zebra",
+      "name": "日夜柔纱帘 · 斑马帘",
+      "w": 1500,
+      "d": 75,
+      "h": 1800,
+      "module": "window-covering"
+    },
+    {
+      "category": "布艺",
+      "type": "blind_bamboo",
+      "name": "竹帘 · 卷收",
+      "w": 1500,
+      "d": 65,
+      "h": 1800,
+      "module": "window-covering"
+    },
+    {
+      "category": "布艺",
+      "type": "blind_roller",
+      "name": "卷帘 · 平面布",
+      "w": 1500,
+      "d": 75,
+      "h": 1800,
+      "module": "window-covering"
+    },
+    {
+      "category": "装饰",
+      "type": "plant",
+      "name": "绿植",
+      "w": 500,
+      "d": 500,
+      "module": "index-inline"
+    },
+    {
+      "category": "装饰",
+      "type": "plant",
+      "name": "大绿植",
+      "w": 700,
+      "d": 700,
+      "module": "index-inline"
+    },
+    {
+      "category": "装饰",
+      "type": "wallart",
+      "name": "装饰画 横",
+      "w": 1500,
+      "d": 60,
+      "module": "index-inline"
+    },
+    {
+      "category": "装饰",
+      "type": "wallart",
+      "name": "装饰画 小",
+      "w": 900,
+      "d": 60,
+      "module": "index-inline"
+    },
+    {
+      "category": "装饰",
+      "type": "mirror",
+      "name": "穿衣镜",
+      "w": 500,
+      "d": 60,
+      "h": 1650,
+      "module": "index-inline"
+    },
+    {
+      "category": "运动 · 乐器",
+      "type": "piano",
+      "name": "立式钢琴",
+      "w": 1500,
+      "d": 600,
+      "module": "index-inline"
+    },
+    {
+      "category": "运动 · 乐器",
+      "type": "treadmill",
+      "name": "跑步机",
+      "w": 800,
+      "d": 1800,
+      "module": "index-inline"
+    },
+    {
+      "category": "门 · 隔断",
+      "type": "pocketdoor_double",
+      "name": "双侧口袋门隔断 · 布局草模",
+      "w": 2800,
+      "d": 160,
+      "h": 2640,
+      "module": "sliding-opening"
+    },
+    {
+      "category": "门 · 隔断",
+      "type": "pocketdoor_triple",
+      "name": "单侧三联动口袋门 · 布局草模",
+      "w": 2800,
+      "d": 220,
+      "h": 2640,
+      "module": "sliding-opening"
+    },
+    {
+      "category": "门 · 隔断",
+      "type": "slidingdoor",
+      "name": "双扇推拉门",
+      "w": 1800,
+      "d": 120,
+      "h": 2100,
+      "module": "index-inline"
+    },
+    {
+      "category": "门 · 隔断",
+      "type": "telescopicdoor20",
+      "name": "2+0 同向联动门 · 超白玻璃",
+      "w": 1800,
+      "d": 100,
+      "h": 2400,
+      "module": "sliding-opening"
+    },
+    {
+      "category": "门 · 隔断",
+      "type": "doubleslidingdoor",
+      "name": "双联动推拉门",
+      "w": 1800,
+      "d": 90,
+      "h": 2400,
+      "module": "sliding-opening"
+    },
+    {
+      "category": "门 · 隔断",
+      "type": "tripleslidingdoor",
+      "name": "三联动推拉门",
+      "w": 2400,
+      "d": 90,
+      "h": 2400,
+      "module": "sliding-opening"
+    },
+    {
+      "category": "门 · 隔断",
+      "type": "tripleslidingwindow",
+      "name": "三联动推拉窗",
+      "w": 1800,
+      "d": 90,
+      "h": 1500,
+      "module": "index-inline"
+    },
+    {
+      "category": "生活用品",
+      "type": "cat_tree",
+      "name": "猫爬架 · 绿叶成荫围栏款",
+      "w": 500,
+      "d": 500,
+      "h": 1430,
+      "module": "cat-tree"
+    },
+    {
+      "category": "生活用品",
+      "type": "pet_feeder_mijia_2",
+      "name": "米家智能宠物喂食器 2",
+      "w": 220,
+      "d": 324,
+      "h": 370,
+      "module": "pet-feeder"
+    },
+    {
+      "category": "生活用品",
+      "type": "litter_box",
+      "name": "封闭式猫砂盆",
+      "w": 440,
+      "d": 510,
+      "h": 400,
+      "module": "index-inline"
+    },
+    {
+      "category": "生活用品",
+      "type": "dryingrack",
+      "name": "晾衣架",
+      "w": 1400,
+      "d": 550,
+      "module": "index-inline"
+    }
+  ]
+}
