@@ -5,7 +5,7 @@
  async function request(route,method='GET',body){
   const timeout=method==='GET'&&route==='/workspace'?60000:['PUT','POST'].includes(method)&&['/workspace','/storage','/restore'].includes(route)?120000:15000;
   const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),timeout);
-  try{const response=await fetch('/api/furnish'+route,{method,cache:'no-store',signal:abort.signal,headers:body?{'Content-Type':'application/json','X-Furnish-Request':'workspace-v1'}:{},...(body?{body:JSON.stringify(body)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error||'仓库服务不可用'),{status:response.status});return value;}
+  try{const response=await fetch('/api/furnish'+route,{method,cache:'no-store',signal:abort.signal,headers:body?{'Content-Type':'application/json','X-Furnish-Request':'workspace-v1'}:{},...(body?{body:JSON.stringify(body)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error||'仓库服务不可用'),{status:response.status,...(value.code?{code:value.code}:{}),...(value.supportedWorkspaceVersions?{supportedWorkspaceVersions:value.supportedWorkspaceVersions}:{})});return value;}
   catch(e){if(e.name==='AbortError')throw Object.assign(Error('本地文件请求超时（'+timeout/1000+' 秒），请保留浏览器缓存并重试'),{code:'ETIMEDOUT'});throw e;}
   finally{clearTimeout(timer);}
  }

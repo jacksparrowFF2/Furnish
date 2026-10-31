@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-31",
+  "baseline": "d88bbbe",
+  "status": "PASS",
+  "scope": "incremental persistence/version/recovery and desktop UI",
+  "liveRecovery": {
+    "cause": "new v40 workspace rejected by older running backend",
+    "nativeCtrlS": true,
+    "windowReloaded": false,
+    "directJsonWrites": false,
+    "formalVersion": 40,
+    "currentAndNamedFurnitureMatchLive": true,
+    "activeBindingPreserved": true,
+    "bothExistingBackendsUpdated": true,
+    "privateEvidenceLocalOnly": true
+  },
+  "passed": [
+    "test-repository-version-compat.cjs",
+    "test-repository-storage.cjs",
+    "test-repository-save-retry.cjs",
+    "test-repository-workspace.cjs",
+    "test-repository-startup-validation.cjs",
+    "test-workspace-files.cjs",
+    "test-manual-save.cjs",
+    "test-server-recovery.cjs",
+    "test-local-archive-browser.cjs",
+    "test-file-menu.cjs"
+  ],
+  "desktop": {
+    "executable": "same installed packaged EXE",
+    "isolated": true,
+    "fixtureVersion": 40,
+    "checks": [
+      "same packaged EXE, private workspace/cache/port and copied current file",
+      "visible unsaved state, no 650ms file write, real Ctrl+S, writing state and acknowledged save time",
+      "Ctrl+S without edits does not create a redundant file revision",
+      "Ctrl+S commits an ordinary focused property input before saving",
+      "Ctrl+S in a modal preserves unapplied draft and explains saved scope",
+      "one-minute fallback saves latest edit even during continuous editing (browser clock advanced)",
+      "manual save cancels the old fallback deadline",
+      "failed write stays unsaved with reason; Ctrl+S retries the preserved latest edit",
+      "390px desktop status and refresh roundtrip",
+      "HTTP browser Ctrl+S uses the same file protocol",
+      "offline file:// Ctrl+S saves recovery cache and explains project export",
+      "no renderer exceptions"
+    ],
+    "errors": [],
+    "originalFilesUnchangedDuringIsolatedTest": true,
+    "timing": "Playwright clock advances one-minute deadline"
+  },
+  "fullCheckRun": false
+}

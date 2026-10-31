@@ -12,6 +12,7 @@
  const text=input=>JSON.stringify({format:'furnish-workspace',version:version(input),workspace:portable(input)},null,2)+'\n';
  function validate(input){
   const w=clone(input),P=root.FurnishProject||require('./project-core.js'),plans=root.FurnishPlans||require('../data/plans.js');
+  if(w&&Number.isInteger(w.v)&&!workspaceVersions.includes(w.v))throw Object.assign(Error('当前保存核心不支持工作区 v'+w.v+'（最高支持 v'+Math.max(...workspaceVersions)+'）；请更新并重新启动本地保存服务，保留当前窗口和恢复缓存，不要清除数据'),{code:'WORKSPACE_VERSION_UNSUPPORTED',status:422,supportedWorkspaceVersions:[...workspaceVersions]});
   if(!w||!workspaceVersions.includes(w.v)||!w.work||typeof w.work!=='object'||Array.isArray(w.work)||typeof w.planId!=='string'||!Array.isArray(w.designs)||Object.keys(w.work).length>200||w.designs.length>20000)throw Error('工作区结构无效');
   const drafts=w.customPlans||[],ids=new Set();if(!Array.isArray(drafts)||drafts.length>200)throw Error('自定义户型列表无效');
   for(const d of drafts){if(!d||typeof d.id!=='string'||ids.has(d.id)||plans.some(p=>p.id===d.id&&!p.customDraft))throw Error('自定义户型编号无效或重复');ids.add(d.id);}
