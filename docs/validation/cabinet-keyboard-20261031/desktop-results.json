@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "desktop": true,
+  "sourceUnchanged": true,
+  "checks": [
+    "up moves selected shelf 1 mm",
+    "shift down moves 10 mm",
+    "keyboard undo restores draft",
+    "keyboard redo restores movement",
+    "input copy does not duplicate shelf",
+    "Delete edits input text",
+    "Ctrl+C directly duplicates selected shelf",
+    "Delete removes copied shelf",
+    "undo restores deleted copy",
+    "undo removes duplication",
+    "keyboard keeps selected original after undo",
+    "save applies keyboard draft",
+    "application undo restores entire design",
+    "saved keyboard edits survive reload",
+    "cancel preserves saved furniture",
+    "right moves divider 1 mm",
+    "shift left moves divider 10 mm",
+    "undo restores divider",
+    "narrow workspace fits viewport"
+  ],
+  "errors": []
+}
