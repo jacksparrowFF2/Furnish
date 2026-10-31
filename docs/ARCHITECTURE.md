@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-01（拖动缓存）：FurnitureSolids在局部几何读取／重建前命中世界实体LRU，避免形状工作集超过32项时反复构造静止家具；键、容量、生产几何和空间语义不变。主三维的盆栽增量位姿沿产品安装能力恢复mountHeight。无新字段或加载资源，见[性能验收](validation/balcony-drag-performance-20261101/README.md)。
+
 2026-10-31（阳台分层花架）：balcony-garden-model提供通用参数化开放架及三种盆栽，product-rules声明类型／高度／已有安装能力；实际结构沿FurnitureSolids→CabinetMotion提供柜内实体，冠幅与薄叶共用生产几何。新增一个经典脚本，无新字段／保存通道／格式版本；旧plant模型保持，见[BALCONY-GARDEN.md](BALCONY-GARDEN.md)。
 
 ## 2026-10-31：洗衣机门向

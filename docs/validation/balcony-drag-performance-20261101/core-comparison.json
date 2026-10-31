@@ -1,0 +1,45 @@
+{
+  "samples": 27,
+  "exactResultParity": true,
+  "fixtureSha256": "bb3fc19c9db692d0eb5eff711d16aa3d10add69236ea15f272e0533ca9e8806e",
+  "before": {
+    "rack": {
+      "collision": 24.20569999999998,
+      "directional": 733.8676,
+      "interior": 5.263299999999617,
+      "total": 763.3365999999996
+    },
+    "plant": {
+      "collision": 63.4479999999985,
+      "directional": 661.6061000000009,
+      "interior": 4.291200000001481,
+      "total": 727.0267000000003
+    },
+    "robot": {
+      "collision": 20.361699999997654,
+      "directional": 677.0102000000006,
+      "interior": 4.031999999999243,
+      "total": 701.276600000001
+    }
+  },
+  "after": {
+    "rack": {
+      "collision": 17.590700000000197,
+      "directional": 45.3759,
+      "interior": 5.12720000000013,
+      "total": 67.60419999999999
+    },
+    "plant": {
+      "collision": 16.97920000000022,
+      "directional": 13.719800000000305,
+      "interior": 3.9697000000001026,
+      "total": 34.6875
+    },
+    "robot": {
+      "collision": 14.001600000000053,
+      "directional": 11.663700000000063,
+      "interior": 3.119299999999839,
+      "total": 28.20769999999993
+    }
+  }
+}

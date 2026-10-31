@@ -15,3 +15,22 @@ for(const [type,rule]of Object.entries(P.types).filter(([,r])=>r.solidModel)){
  assert.deepEqual(json(cached.parts(json(original))),base,type+' restored object');
 }
 console.log('PASS production world cache: '+count+' fresh-builder comparisons, position/rotation/mirror/size/height/install/doors, no mutation and restored objects');
+// More unique shapes than the local LRU must still hit unchanged world meshes.
+// Instrument the real production builder: a vertex comparison alone misses rebuilds.
+{
+ const model=require('../src/render/balcony-garden-model.js');let builds=0;
+ const context={module:{exports:{}},require:createRequire(file),FurnishBalconyGardenModel:{...model,build(...args){builds++;return model.build(...args);}}};
+ vm.createContext(context);vm.runInContext(source,context);const solids=context.module.exports;
+ const rack={type:'balcony_plant_rack',w:1160,d:550,h:1600,cx:9785,cy:1480,rot:90};
+ const first=solids.parts(rack);
+ for(let i=1;i<=40;i++)solids.parts({...rack,w:rack.w+i});
+ assert.equal(builds,41);assert.strictEqual(solids.parts({...rack}),first,'world hit survives local shape eviction');
+ assert.equal(builds,41,'unchanged world hit must not reconstruct evicted local geometry');
+ const moved={...rack,cx:rack.cx+20,rot:37,flip:true};
+ assert.deepEqual(json(solids.parts(moved)),fresh(moved),'world miss rebuilds evicted shape with current pose');
+ const plant={...rack,type:'plant_spider',w:450,d:450,h:450,mountHeight:800};
+ const lower=json(solids.parts(plant));plant.mountHeight=1500;
+ assert.deepEqual(json(solids.parts(plant)),fresh(plant),'installation height invalidates');
+ assert.notDeepEqual(json(solids.parts(plant)),lower);plant.mountHeight=800;assert.deepEqual(json(solids.parts(plant)),lower);
+ console.log('PASS world-first cache under 41 unique production shapes: no rebuild on hit; pose/installation changes and restore');
+}

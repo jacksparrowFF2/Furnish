@@ -16,6 +16,10 @@ async function exercise(page,mode){console.log('START '+mode);const errors=[];pa
  await page.screenshot({path:path.join(run,mode+'-app.png')});
  const bytes=await page.evaluate(async()=>Array.from(new Uint8Array((await View3D.blenderScene({includeHidden:false,expandInstances:true})).buffer)));fs.writeFileSync(path.join(run,mode+'-production.glb'),Buffer.from(bytes));assert(bytes.length>10000);
  const parsed=Buffer.from(bytes),length=parsed.readUInt32LE(12),json=JSON.parse(parsed.subarray(20,20+length).toString()),names=json.nodes.map(n=>n.extras?.furnishPartKey||'');assert(names.some(n=>n.includes('flower-')));assert(names.some(n=>n.includes('post-left-front')));
+ const potHeights=j=>Object.fromEntries(j.nodes.filter(n=>n.extras?.furnishPartKey?.endsWith(':pot')).map(n=>[n.extras.furnishId,n.matrix?.[13]??n.translation?.[1]??0]));
+ await page.evaluate(id=>mutate(()=>{state.furniture.find(f=>f.id===id).cx+=10;}),ids.rack);
+ const poseBytes=await page.evaluate(async()=>Array.from(new Uint8Array((await View3D.blenderScene({includeHidden:false,expandInstances:true})).buffer))),pose=Buffer.from(poseBytes),poseJson=JSON.parse(pose.subarray(20,20+pose.readUInt32LE(12)));
+ assert.deepEqual(potHeights(poseJson),potHeights(json),'moving the rack must retain all six production plant heights');
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(run,mode+'-narrow.png')});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual(errors,[]);return {mode,undoRedo:true,refresh:true,geometry,productionBytes:bytes.length,narrow:true,errors};}
 (async()=>{let browser,desktop,server,page;const results=[];try{
  if(!process.argv.includes('--browser-only')){const port=await freePort(),env={...process.env,FURNISH_DESKTOP_ROOT:root,FURNISH_DESKTOP_PROFILE:path.join(run,'desktop-profile'),FURNISH_PORT:String(port)};delete env.ELECTRON_RUN_AS_NODE;

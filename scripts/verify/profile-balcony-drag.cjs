@@ -1,0 +1,8 @@
+/* Read-only fixture benchmark: collision + directional + interior work per drag. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),{performance}=require('node:perf_hooks'),G=require('../../src/core/layout-geometry.js'),S=require('../../src/core/snapping.js'),J=require('../../src/core/project-core.js');
+const source=process.argv[2],output=process.argv[3];if(!source||!output)throw Error('Usage: node profile-balcony-drag.cjs <fixture-workspace.json> <results.json>');
+const j=JSON.parse(fs.readFileSync(source,'utf8')).workspace,w=j.work[j.planId],plan=J.effectivePlan(j.customPlans.find(p=>p.id===j.planId),w),a=w.furniture,rows=[];
+for(const [name,id]of [['rack','fmvwksrbq1'],['plant','fmvwkt9fr2'],['robot','fmv3wcfw38']]){const f=a.find(f=>f.id===id),x=f.cx;for(let i=0;i<9;i++){f.cx=x+i*2;const t=performance.now(),collisions=G.collisions(a,plan),c=performance.now(),distances=S.directional(f,{furniture:a,plan,rects:[]}),d=performance.now(),interior=S.cabinetInterior(f,{furniture:a,plan}),end=performance.now();rows.push({name,step:i,ms:{collision:c-t,directional:d-c,interior:end-d,total:end-t},result:{collisions,distances,interior}});}f.cx=x;}
+const median=a=>a.sort((a,b)=>a-b)[Math.floor(a.length/2)],summary=Object.fromEntries(['rack','plant','robot'].map(name=>[name,Object.fromEntries(['collision','directional','interior','total'].map(k=>[k,median(rows.filter(r=>r.name===name&&r.step>0).map(r=>r.ms[k]))]))]));
+fs.mkdirSync(path.dirname(output),{recursive:true});fs.writeFileSync(output,JSON.stringify({fixture:source,summary,rows},null,2));console.log(JSON.stringify(summary));
