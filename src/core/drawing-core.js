@@ -9,6 +9,16 @@ function settings(input={}){
  return {rotation,northAngle,dimensions,openings};
 }
 function rotate(p,angle){const a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [p[0]*c-p[1]*s,p[0]*s+p[1]*c];}
+// Product axes: front is local +Y in plan (+Z in 3D). Left/right are
+// viewed facing the front. Mirror positions, never the readable text.
+function furnitureDirections(f,{scale=1,rotation=0}={}){
+ if(!f||![f.w,f.d,f.cx,f.cy].every(finite)||f.w<=0||f.d<=0||!finite(scale)||scale<=0)return [];
+ const angle=(f.rot||0)+rotation,sign=f.flip?-1:1,k=1/scale;
+ return [['front',0,1,f.d/2],['back',0,-1,f.d/2],['left',-1,0,f.w/2],['right',1,0,f.w/2]].map(([key,x,y,half])=>{
+  const normal=rotate([x*sign,y],angle),edge=rotate([x*sign*half,y*half],f.rot||0),inset=Math.min(22*k,half*.55),offset=rotate([-normal[0]*inset,-normal[1]*inset],-rotation);
+  return {key,edge:[f.cx+edge[0],f.cy+edge[1]],at:[f.cx+edge[0]+offset[0],f.cy+edge[1]+offset[1]],normal};
+ });
+}
 function bounds(box,angle=0){const corners=[[box.x,box.y],[box.x+box.w,box.y],[box.x+box.w,box.y+box.h],[box.x,box.y+box.h]].map(p=>rotate(p,angle)),xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]);return {x:Math.min(...xs),y:Math.min(...ys),w:Math.max(...xs)-Math.min(...xs),h:Math.max(...ys)-Math.min(...ys)};}
 function outlineCuts(rects,h,unique){
  if(!rects.length)return [];
@@ -102,5 +112,5 @@ function netSpans(room,point){
  const span=axis=>{const cross=1-axis,values=[];for(const ring of rings)for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length],delta=b[cross]-a[cross];if(Math.abs(delta)<eps){if(Math.abs(point[cross]-a[cross])<eps)values.push(a[axis],b[axis]);continue;}const t=(point[cross]-a[cross])/delta;if(t>=-eps&&t<=1+eps)values.push(a[axis]+t*(b[axis]-a[axis]));}const left=values.filter(v=>v<point[axis]-eps),right=values.filter(v=>v>point[axis]+eps);if(!left.length||!right.length)return null;const a=[...point],b=[...point];a[axis]=Math.max(...left);b[axis]=Math.min(...right);return {a,b,value:b[axis]-a[axis],h:axis===0};};
  const horizontal=span(0),vertical=span(1);return horizontal&&vertical?{at:[...point],horizontal,vertical}:null;
 }
-const api={settings,rotate,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,furnitureLabels,textWidth,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
+const api={settings,rotate,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,furnitureLabels,furnitureDirections,textWidth,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

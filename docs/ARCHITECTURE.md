@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（物体方向）：drawing-core.furnitureDirections沿产品局部轴派生选中家具四向标注，plan-renderer在gSel编辑覆盖层绘制并反转图纸文字角度。directions开关复用huxing-ui本机偏好，旧偏好缺失默认开启；无项目字段、空间规则、撤销或加载机制变化。见[验收](validation/furniture-directions-20261031/README.md)。
+
 2026-10-31（家电材质扩展）：受限物理常量覆盖TG透射玻璃、冰箱涂层与烟机不透明黑玻璃；后两构造器共用createMaterial。TG清理光学轴心退化几何并升几何版本4，空间确认改读实际版本，缓存沿已有版本键失效；无新持久字段。三款作者／发布、双入口导出、空间、GPU与精修下载回读见[第二阶段](validation/appliance-materials-stage2-20261031/README.md)。
 
 2026-10-31（家电材质）：model-primitives.createMaterial统一标准／物理材质选择，全局缓存与洗衣机共用；仅TG白名单常量扩展经asset_pbr→离线模块→生产GLB→Blender。程序微表面保留在独立精修模板，未烘焙至GLB；TG玻璃薄壳引入仅本型号几何版本3，无新字段。见[第一阶段验收](validation/appliance-materials-20261031/README.md)。

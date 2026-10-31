@@ -344,6 +344,14 @@ function renderMeasure(){
 }
 
 const ACC = '#ef5a24', TEAL = '#0e8f83';
+function furnitureDirectionsSVG(){
+ if(!ui.layers.furn||!ui.layers.directions)return '';
+ const rotation=drawingRotation(),k=1/view.s,names={front:tr('前','Front'),back:tr('后','Back'),left:tr('左','Left'),right:tr('右','Right')};
+ return selItems().filter(f=>!furnitureError(f)&&(!globalThis.FurnishObservationLayers||FurnishObservationLayers.visible(f))).map(f=>`<g data-edit-overlay="furniture-directions" data-direction-id="${esc(f.id)}" pointer-events="none"><title>${esc(tr('物体方向 · 左右按面对产品正面理解','Product axes · left/right as seen facing the front'))}</title>${FurnishDrawing.furnitureDirections(f,{scale:view.s,rotation}).map(v=>{
+  const [x,y]=v.at,color=v.key==='front'?TEAL:PAL.text,width=(LANG==='en'?38:22)*k;
+  return `<g data-product-direction="${v.key}"><path d="M${v.edge.join(' ')}L${x} ${y}" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"/><g transform="translate(${x} ${y}) rotate(${-rotation})"><rect x="${-width/2}" y="${-9*k}" width="${width}" height="${18*k}" rx="${5*k}" fill="${PAL.halo}" stroke="${color}" stroke-width="1" vector-effect="non-scaling-stroke"/><text text-anchor="middle" dominant-baseline="central" font-size="${11*k}" font-weight="${v.key==='front'?700:500}" fill="${color}">${names[v.key]}</text></g></g>`;
+ }).join('')}</g>`).join('');
+}
 function renderSel(){
   window.FurnishCeilingUI?.selectionChanged();
   if(globalThis.FurnishObservationLayers&&selIds().some(id=>!FurnishObservationLayers.visible(getF(id))))ui.sel=null;
@@ -496,7 +504,7 @@ function renderSelectedGeometry(){
     const [a, b] = ui.marq;
     s += `<rect x="${Math.min(a.x,b.x)}" y="${Math.min(a.y,b.y)}" width="${Math.abs(b.x-a.x)}" height="${Math.abs(b.y-a.y)}" fill="rgba(47,93,98,.08)" stroke="${TEAL}" stroke-width="1" stroke-dasharray="5 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
   }
-  $('#gSel').innerHTML = waterheaterClearanceSVG()+dishwasherClearanceSVG()+s;
+  $('#gSel').innerHTML = waterheaterClearanceSVG()+dishwasherClearanceSVG()+s+furnitureDirectionsSVG();
   if(typeof queueFabPosition==='function')queueFabPosition();
 }
 // Four independent clearances along the current drawing's screen axes.
