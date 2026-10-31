@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "case": "after-front",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    },
+    {
+      "case": "after-glass",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    },
+    {
+      "case": "after-oblique",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    },
+    {
+      "case": "after-open",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    },
+    {
+      "case": "after-panel",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    },
+    {
+      "case": "before-front",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 0,
+      "glassVerified": true
+    },
+    {
+      "case": "before-oblique",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 0,
+      "glassVerified": true
+    },
+    {
+      "case": "laundry",
+      "parts": 47,
+      "geometryPreserved": true,
+      "microfinishParts": 18,
+      "glassVerified": true
+    }
+  ]
+}

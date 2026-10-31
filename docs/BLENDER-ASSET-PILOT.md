@@ -1,5 +1,7 @@
 # Blender 家电资产试点：奥普 SE2
 
+2026-10-31：TG10K60W新增限定常量物理材质扩展，不能沿用下文历史Alpha限制描述当前TG。其他profile继续旧限制；纹理、动画与任意节点不在支持范围。Blender5.2光学厚度需正式作者脚本限定补写，详见[验收](validation/appliance-materials-20261031/README.md)。
+
 2026-10-30：新增[TG10K60W隔离整链路命令与固定视觉场景](BLENDER-MODELING-PIPELINE.md)，作者预检目前接入两款洗衣机；SE2等其它配置仍按各自专项验收。
 
 2026-10-29（TG正面v2）：仅`washer-tg10k60w`的已知door-glass可用0.08–0.4简单Alpha透明，生产使用透明／不写深度；部件范围、轴心、圆孔和尺寸校验仍执行。其它配置保持不透明限制，不支持任意贴图或物理折射。见[TG型号契约](WASHER-LITTLESWAN-TG10K60W.md)。

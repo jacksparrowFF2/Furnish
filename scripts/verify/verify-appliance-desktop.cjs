@@ -10,7 +10,9 @@ async function main(executable){
   const page=await desktop.firstWindow();page.setDefaultTimeout(60000);page.on('pageerror',e=>errors.push(e.message));await page.waitForFunction(()=>typeof repositoryBooting!=='undefined'&&!repositoryBooting&&!!window.FurnishRepository);
   const profile=require('../lib/model-profiles.cjs').profiles().find(p=>p.id==='washer-tg10k60w');await F.install(page,profile);await page.evaluate(()=>{selectIds(['model-pilot']);View3D.focusSelection();});await page.waitForTimeout(1000);await page.evaluate(()=>selectIds([]));
   const geometry=await F.capture(page,path.join(run,'desktop.glb')),glass=geometry.parts.find(p=>p.key.endsWith(':door-glass'));assert.equal(glass.materials[0].physical.KHR_materials_transmission.transmissionFactor,1);assert(Math.abs(glass.materials[0].physical.KHR_materials_volume.thicknessFactor-.0018)<1e-6);await page.screenshot({path:path.join(run,'desktop-closed.png')});
-  await page.evaluate(f=>mutate(()=>{state.furniture=[f];}),profile.alternate);await F.capture(page,path.join(run,'desktop-open.glb'));await page.waitForTimeout(200);await page.screenshot({path:path.join(run,'desktop-open.png')});assert.deepEqual(errors,[]);await page.evaluate(()=>FurnishRepository.flush());
+  await page.evaluate(f=>mutate(()=>{state.furniture=[f];}),profile.alternate);await F.capture(page,path.join(run,'desktop-open.glb'));await page.waitForTimeout(200);await page.screenshot({path:path.join(run,'desktop-open.png')});assert.deepEqual(errors,[]);
+  // This synthetic studio is deliberately not a persisted floorplan. Exercise
+  // the packaged renderer/export here; project persistence has separate suites.
   const actualRoot=await desktop.evaluate(()=>process.env.FURNISH_DESKTOP_ROOT);assert.equal(actualRoot,isolated);fs.writeFileSync(path.join(run,'desktop.json'),JSON.stringify({passed:true,executable:path.resolve(executable),isolatedRoot:isolated,actualRoot,productionMaterial:true,parts:geometry.parts.length,errors},null,2));console.log(run);
  }finally{await desktop.evaluate(({BrowserWindow})=>{for(const window of BrowserWindow.getAllWindows())window.destroy();});await desktop.close();}
 }

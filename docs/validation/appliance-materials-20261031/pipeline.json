@@ -1,0 +1,88 @@
+{
+  "format": 2,
+  "passed": true,
+  "device": "gpu",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "blenderIdentity": "e546b2a0d81ae19bd5b306b668733102d91d23db2e2be02d68b7ecbe548af0a1",
+  "sourceFingerprint": "b4e387dafc8034c0a1459ee590fdfcbc137255039af7ae97bf6a38e89fe9e953",
+  "revision": "fe012d153b8e92422a038c0f8fb6b503acc57f24",
+  "started": "2026-10-31T04:15:41.557Z",
+  "results": [
+    {
+      "id": "washer-tg10k60w",
+      "type": "washer_littleswan_tg10k60w",
+      "route": "blender",
+      "fixtureHash": "1a07bdcd21398cd39cb47afea34b45fd95276427e13878a12ce67facbb7910d4",
+      "passed": true,
+      "run": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-A79cli\\washer-tg10k60w-zIwqMk"
+    }
+  ],
+  "testCache": {
+    "cd96f62a64dc6d1fcf64990030a759a15dda8ac63484c01ddc873b9bc592886b": {
+      "profile": "washer-tg10k60w",
+      "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-A79cli\\washer-tg10k60w-zIwqMk\\blender-washer-materials.log"
+    },
+    "6915ffb52c149d336201c5a05037dc380ac81410cb5b5906ec711d4a31e877f8": {
+      "profile": "washer-tg10k60w",
+      "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-A79cli\\washer-tg10k60w-zIwqMk\\blender-washer-tg10k60w.log"
+    },
+    "ebc343df831f1f2dc33bf3b79b07a37dc717923c6ceae25d390c17ac11d12ee5": {
+      "profile": "washer-tg10k60w",
+      "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-A79cli\\washer-tg10k60w-zIwqMk\\washer-front-confirmation.log"
+    },
+    "910abf49ac70142d8de01662df0ad86a3dc43464dcb38b88f8b5e4b2a9eebf7b": {
+      "profile": "washer-tg10k60w",
+      "log": "C:\\Users\\SPH\\.codex\\worktrees\\blender-appliance-pilot\\Furnish\\output\\model-pipeline\\selection-A79cli\\washer-tg10k60w-zIwqMk\\washer-project-v35.log"
+    }
+  },
+  "sourceHashes": {
+    "src/data/sofa-bed-blender-asset.js": "85c975c1a0e5fbc32d3766eb8743b6ae0be60ff1af37dc6d2e3e5753980c6d5e",
+    "assets/models/sofa-bed/v2/sofa-bed-v1.glb": "85848b9e201540e36852c77a6142512f91f52197b40c1f33eb75b507ea0386eb",
+    "assets/models/sofa-bed/v2/sofa-bed-v1.blend": "de3856303251a63fa50aa97937d2fd8068e886767d05991a51aeb47dccdc4c2d",
+    "src/data/se2-blender-asset.js": "2925c4a8660b7df7b1adb8be4c4054a9af40fbfe17e826f76f9d7b1340b9d4a0",
+    "assets/models/se2/se2-v1.glb": "68e7a68f1e786684c7a2926e2108f3fec2bb3216d80c063ab545dfe17344cee7",
+    "assets/models/se2/se2-v1.blend": "580d16756369ab149e228f6f45cb0a93f06364ca8f779f3e7dc1b9b5441324d5",
+    "src/data/y52y09-blender-asset.js": "18005b06c30f46efb5553ca4aa8d91795d86f2b0587c08f27a3ab84c7fbf0a63",
+    "assets/models/y52y09/y52y09-v1.glb": "8187998811e8d7fe543122acca7f07ce8fe6382b21464e5603b165616460611f",
+    "assets/models/y52y09/y52y09-v1.blend": "92916262a8a5eb2d92dc54247032009720d0b2e72f3e99a3db864f52ba48f1d5",
+    "src/data/fridge-blender-asset.js": "023caa3fefa5b8d4bd0e15678e76d7b83629996040828b7c0d9a9f0bb90dd9ba",
+    "assets/models/fridge/fridge-v1.glb": "21efdafb254836cb66aa14a5edf796f88883f58508bb3f18d92d34a4e50f7e5f",
+    "assets/models/fridge/fridge-v1.blend": "75b4b7f7ea660f1cdf50255bdf0d0a45f1423e517ac5245511750eba7520e435",
+    "src/data/dishwasher-blender-asset.js": "03e656858961e2bf13901ec353fe789054ff101b5db4c536b8bba8596b59f0de",
+    "assets/models/dishwasher/dishwasher-v1.glb": "4a1d77ebf9f9501c3253da6cb407fcbbd0300c254a15f3f021e310cec23e73b2",
+    "assets/models/dishwasher/dishwasher-v1.blend": "aec6fac5ac3ea9340ff29ac3c3de3c2f77e948babdd8359d6de757d193d38e12",
+    "src/data/hood-blender-asset.js": "3bd275a0f8dcc94f793d61e75f721c0a55d4dd42ad87742150dc01b5f9054276",
+    "assets/models/hood/hood-v1.glb": "d7e12f4c83dd5592a5547b5b4c975943e820f1248c3c34c0eb0335a430b11f1b",
+    "assets/models/hood/hood-v1.blend": "43bb431eff386ae1a905c95c2f392cb9eb80fa6a52202731bbf88d4d3a2bcf6c",
+    "src/data/washer-blender-asset.js": "355c1f3995c9898aea3a72636e808dfd79180fcdbd4bf9096dfaa713f35db13e",
+    "assets/models/washer/washer-v1.glb": "35400b56f1a25381a82185fd1d7fde81b5eaacbc363b3db298b04d8beb53785f",
+    "assets/models/washer/washer-v1.blend": "7883dbb3d91a307d25be5cca2f9bc9c40ae19d5c77a725240b06a36198a9e092",
+    "src/data/washer-tg10k60w-blender-asset.js": "be89c99828fbd645060270a706c1f89b6b217e337b12d98f1dbfc02b5271e58f",
+    "assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.glb": "08e598e1d3e2db14be32234cb20c420ade42d2d6ee44ef975bb980a8c5780e31",
+    "assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.blend": "e0c92654f73451f55065b0fc109800a37e9fb4555058bf02c06fab16406841ac",
+    "src/data/side-table-blender-asset.js": "3eba342a6779b48a6b3e7494a22fef62f6e52624dbcab82309a053e05e69a4b7",
+    "assets/models/side-table/side-table-v1.glb": "d65cb2ab75ec124d5c6174fceeb0185358cd655f4e89ac78fb38d46f1238d339",
+    "assets/models/side-table/side-table-v1.blend": "b512adac81d1d9589f95a1f20d0e8d32c37bfff920c6583b469589f9d73d9ab8",
+    "src/data/armchair-blender-asset.js": "87e6f99d5836863b4f6f8558735d4d1b80c026571b39fb3618d768131c849c29",
+    "assets/models/armchair/v4/armchair-v1.glb": "461a10d4fca7c88c9356dc73c26254d6b4b4b3e4f335493b14a993fb310267f5",
+    "assets/models/armchair/v4/armchair-v1.blend": "e31a62dc52b88c053f170b80c672e51427b2aa7edf04dd5c3a880bdee4c405ea",
+    "src/data/armchair-berlin-blender-asset.js": "234bca6d2946423daee24064400fb1ce51ab6e0a2471f44f83f2b28206cc7ce4",
+    "assets/models/armchair-berlin/v3/armchair-berlin-v1.glb": "447e6044f3527e5efaaf2180c501f6ed047687d54b5ca3eea6509db42bc789e5",
+    "assets/models/armchair-berlin/v3/armchair-berlin-v1.blend": "cf9c9f199d7df5c545371549ed63509c88d6651e8130432a3196dd781a6d611f",
+    "src/data/stack-stool-blender-asset.js": "23e0f6c5b04f3f1adcd9b108cad5f506f60c857d1e2b4e53f9bdb06116dec329",
+    "assets/models/stack-stool/v4/stack-stool-v1.glb": "47537df7c5d4d4ac0195393f93779c0f37f0bd794a93ed2324ce19f0f27175a7",
+    "assets/models/stack-stool/v4/stack-stool-v1.blend": "5dd5bfc894de88198b2642a269895cf6c4115b4882ea50f67f9a5e72426b6c76",
+    "src/data/corner-bookcase-blender-asset.js": "e99e4d617289b1d2cf9a953ab83d6117a28c1955ddb6ef8e0f73ec279e474d6c",
+    "assets/models/corner-bookcase/v1/corner-bookcase-v1.glb": "db6b97c28155981bf6f92781c643dc9f4233e27526657bf4556199b3148ab931",
+    "assets/models/corner-bookcase/v1/corner-bookcase-v1.blend": "3b51e93256a49983c216fa9b9ae81a48320dec62eeb13c83eb61108619986eac",
+    "src/data/corner-bookcase-580-blender-asset.js": "5c5b8ee8b6685f850bb7713ec6d13205c9cb51b942da26f64bf4c327b9c51e04",
+    "assets/models/corner-bookcase-580/v1/corner-bookcase-580-v1.glb": "ff0b7a94c7767f9c1c834f4c73d46934489dc58a0dec2132243cd40bf76dcec3",
+    "assets/models/corner-bookcase-580/v1/corner-bookcase-580-v1.blend": "1b9c02463958952de07839d74112b6b672cfea191100a68ccc7f63406e0debd3",
+    "projects/workspace.furnish.json": "f214909747d3ca89f9fdbb896171ae9c9ff3330fb1e0c4889beebb27186160f0"
+  },
+  "expected": [
+    "washer-tg10k60w"
+  ],
+  "sourceUnchanged": true,
+  "finished": "2026-10-31T04:19:15.498Z"
+}

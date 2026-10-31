@@ -1,5 +1,7 @@
 # 小天鹅 TG10K60W · 10kg
 
+2026-10-31（材质v3）：正式源改为 assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.*，离线资产版本3；清玻璃采用薄壳与限定物理透射／IOR／体积参数，替代下文历史v2的Alpha近似。47件、尺寸与门轴保留，适用型号几何缓存／确认版本升3。微表面与摄影模板另存 material-studio.blend，见[验证与边界](validation/appliance-materials-20261031/README.md)。
+
 2026-10-30（流程工具）：该款已有[隔离整链路命令及固定三机位](BLENDER-MODELING-PIPELINE.md)，将重建／发布、空间与状态专项、HTTP／file生产导出、回读、实际渲染和下载工程重开串联；见[工具验收](validation/model-pipeline-20261030/README.md)。作者导出前新增spec预检，正式v2资产与产品参数保持原样。
 
 2026-10-30：Scoop Blender5.2.3LTS复建、导入Furnish、生产回读与正式OptiX渲染已验证，修复作者脚本的布尔空材质槽兼容问题。正式v2资产保持原文件，验证在独立副本进行；见[专项记录](validation/scoop-tg10k60w-20261030/README.md)。

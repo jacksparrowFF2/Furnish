@@ -1,0 +1,471 @@
+{
+  "passed": true,
+  "renders": [
+    {
+      "name": "before-front",
+      "result": {
+        "id": "830c4baf-f353-4f05-8362-26e979e67d63",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 50,
+          "existingManagedMeshes": 50,
+          "matchedManagedMeshes": 50,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 3,
+          "sync": {
+            "added": 0,
+            "updated": 50,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 50,
+            "migratedPartKeys": 0,
+            "revision": "abde2e4389046ffe0103c0ba3946dd82a2592cbbbde22752a03c4491ff04ee8b",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:23:55.780Z",
+        "image": "/api/furnish/blender/jobs/830c4baf-f353-4f05-8362-26e979e67d63/image",
+        "blend": "/api/furnish/blender/jobs/830c4baf-f353-4f05-8362-26e979e67d63/blend",
+        "scene": "/api/furnish/blender/jobs/830c4baf-f353-4f05-8362-26e979e67d63/scene"
+      }
+    },
+    {
+      "name": "after-front",
+      "result": {
+        "id": "ab4de5c8-b3b3-494e-b2ce-e173efd86121",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 50,
+          "existingManagedMeshes": 50,
+          "matchedManagedMeshes": 50,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 3,
+          "sync": {
+            "added": 0,
+            "updated": 50,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 50,
+            "migratedPartKeys": 0,
+            "revision": "abde2e4389046ffe0103c0ba3946dd82a2592cbbbde22752a03c4491ff04ee8b",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:24:01.000Z",
+        "image": "/api/furnish/blender/jobs/ab4de5c8-b3b3-494e-b2ce-e173efd86121/image",
+        "blend": "/api/furnish/blender/jobs/ab4de5c8-b3b3-494e-b2ce-e173efd86121/blend",
+        "scene": "/api/furnish/blender/jobs/ab4de5c8-b3b3-494e-b2ce-e173efd86121/scene"
+      }
+    },
+    {
+      "name": "before-oblique",
+      "result": {
+        "id": "f836bfc1-7a00-4a0d-863c-d6512c9bd498",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 50,
+          "existingManagedMeshes": 50,
+          "matchedManagedMeshes": 50,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 3,
+          "sync": {
+            "added": 0,
+            "updated": 50,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 50,
+            "migratedPartKeys": 0,
+            "revision": "fb144ec90c712e9c2e797ce4eb2014e42d7f587f153a5ddaaa8d910b60fb5927",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:20:19.148Z",
+        "image": "/api/furnish/blender/jobs/f836bfc1-7a00-4a0d-863c-d6512c9bd498/image",
+        "blend": "/api/furnish/blender/jobs/f836bfc1-7a00-4a0d-863c-d6512c9bd498/blend",
+        "scene": "/api/furnish/blender/jobs/f836bfc1-7a00-4a0d-863c-d6512c9bd498/scene"
+      }
+    },
+    {
+      "name": "after-oblique",
+      "result": {
+        "id": "e8e695e8-221a-4376-9125-64a9e6ac7573",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 50,
+          "existingManagedMeshes": 50,
+          "matchedManagedMeshes": 50,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 3,
+          "sync": {
+            "added": 0,
+            "updated": 50,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 50,
+            "migratedPartKeys": 0,
+            "revision": "fb144ec90c712e9c2e797ce4eb2014e42d7f587f153a5ddaaa8d910b60fb5927",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:20:24.330Z",
+        "image": "/api/furnish/blender/jobs/e8e695e8-221a-4376-9125-64a9e6ac7573/image",
+        "blend": "/api/furnish/blender/jobs/e8e695e8-221a-4376-9125-64a9e6ac7573/blend",
+        "scene": "/api/furnish/blender/jobs/e8e695e8-221a-4376-9125-64a9e6ac7573/scene"
+      }
+    },
+    {
+      "name": "after-panel",
+      "result": {
+        "id": "918e5f3b-6f73-42bd-9b12-9a5ba7a0c975",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 50,
+          "existingManagedMeshes": 50,
+          "matchedManagedMeshes": 50,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 3,
+          "sync": {
+            "added": 0,
+            "updated": 50,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 50,
+            "migratedPartKeys": 0,
+            "revision": "10255a84353830f1977ad1391f10f9a0317f69ab95539b35ffa812b9783527c3",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:24:06.221Z",
+        "image": "/api/furnish/blender/jobs/918e5f3b-6f73-42bd-9b12-9a5ba7a0c975/image",
+        "blend": "/api/furnish/blender/jobs/918e5f3b-6f73-42bd-9b12-9a5ba7a0c975/blend",
+        "scene": "/api/furnish/blender/jobs/918e5f3b-6f73-42bd-9b12-9a5ba7a0c975/scene"
+      }
+    },
+    {
+      "name": "after-glass",
+      "result": {
+        "id": "81b98124-cf6d-4e53-be6b-783ac128b838",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 50,
+          "existingManagedMeshes": 50,
+          "matchedManagedMeshes": 50,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 3,
+          "sync": {
+            "added": 0,
+            "updated": 50,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 50,
+            "migratedPartKeys": 0,
+            "revision": "6c7a2722ee0ea4e9ed16c4ea99c96b094f5f613e52c6e10e3394edcec58113df",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:24:11.422Z",
+        "image": "/api/furnish/blender/jobs/81b98124-cf6d-4e53-be6b-783ac128b838/image",
+        "blend": "/api/furnish/blender/jobs/81b98124-cf6d-4e53-be6b-783ac128b838/blend",
+        "scene": "/api/furnish/blender/jobs/81b98124-cf6d-4e53-be6b-783ac128b838/scene"
+      }
+    },
+    {
+      "name": "after-open",
+      "result": {
+        "id": "487fa64d-8249-4b35-9476-789ac8b02252",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 50,
+          "existingManagedMeshes": 50,
+          "matchedManagedMeshes": 50,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 3,
+          "sync": {
+            "added": 0,
+            "updated": 50,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 50,
+            "migratedPartKeys": 0,
+            "revision": "a88678f2620d6d4977a2ea6e9240c8abaee45e6c46cf6ac64c3a09316b9b0210",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:40:39.840Z",
+        "image": "/api/furnish/blender/jobs/487fa64d-8249-4b35-9476-789ac8b02252/image",
+        "blend": "/api/furnish/blender/jobs/487fa64d-8249-4b35-9476-789ac8b02252/blend",
+        "scene": "/api/furnish/blender/jobs/487fa64d-8249-4b35-9476-789ac8b02252/scene"
+      }
+    },
+    {
+      "name": "laundry",
+      "result": {
+        "id": "4b358b7b-4888-48a4-9c90-4679b5c923bf",
+        "state": "done",
+        "message": "渲染完成 · OPTIX",
+        "width": 1024,
+        "height": 1024,
+        "quality": "final",
+        "device": "gpu",
+        "source": "refined",
+        "camera": "source",
+        "renderInfo": {
+          "source": "refined",
+          "cameraMode": "source",
+          "camera": "FurnishCamera.001",
+          "world": "Appliance studio environment",
+          "existingMaterialBindingsPreserved": 414,
+          "existingManagedMeshes": 414,
+          "matchedManagedMeshes": 414,
+          "removedManagedMeshes": 0,
+          "lightsPreserved": 2,
+          "sync": {
+            "added": 0,
+            "updated": 414,
+            "deleted": 0,
+            "adopted": 0,
+            "matchedByPartKey": 414,
+            "migratedPartKeys": 0,
+            "revision": "27b365b361edfa11c2885e0d40d5e8a225d2fe37502bfcd98ee5af38485e4b7e",
+            "cleanupWarnings": [],
+            "renderCamera": "FurnishCamera.001"
+          },
+          "samples": 128,
+          "exposure": -0.699999988079071,
+          "viewTransform": "AgX",
+          "resolution": [
+            1024,
+            1024
+          ]
+        },
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "created": "2026-10-31T04:40:48.273Z",
+        "image": "/api/furnish/blender/jobs/4b358b7b-4888-48a4-9c90-4679b5c923bf/image",
+        "blend": "/api/furnish/blender/jobs/4b358b7b-4888-48a4-9c90-4679b5c923bf/blend",
+        "scene": "/api/furnish/blender/jobs/4b358b7b-4888-48a4-9c90-4679b5c923bf/scene"
+      }
+    }
+  ],
+  "files": [
+    {
+      "file": "assets/models/washer-tg10k60w/v3/material-studio.blend",
+      "sha256": "9207691ef6ccac417ea55b748362d7b26e8b638aef9e56c538e1543442725809"
+    },
+    {
+      "file": "assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.blend",
+      "sha256": "e0c92654f73451f55065b0fc109800a37e9fb4555058bf02c06fab16406841ac"
+    },
+    {
+      "file": "assets/models/washer-tg10k60w/v3/washer-tg10k60w-v1.glb",
+      "sha256": "08e598e1d3e2db14be32234cb20c420ade42d2d6ee44ef975bb980a8c5780e31"
+    },
+    {
+      "file": "src/data/washer-tg10k60w-blender-asset.js",
+      "sha256": "be89c99828fbd645060270a706c1f89b6b217e337b12d98f1dbfc02b5271e58f"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-10-31（家电材质）：model-primitives.createMaterial统一标准／物理材质选择，全局缓存与洗衣机共用；仅TG白名单常量扩展经asset_pbr→离线模块→生产GLB→Blender。程序微表面保留在独立精修模板，未烘焙至GLB；TG玻璃薄壳引入仅本型号几何版本3，无新字段。见[第一阶段验收](validation/appliance-materials-20261031/README.md)。
+
 2026-10-31（家具库面板）：workflow-tools在原网格的--lib-w上增加可捕获指针／键盘的分隔条，panes.libraryWidth沿huxing-panes记忆；按窗口与图层／属性开关限制宽度，窄屏仍用抽屉。catalog-collections改为原四来源的select，catalog-ui沿原libUI切换，分类／用途／尺寸统一折叠并显示有效条件；无项目字段、撤销通道或加载变化。见[验收](validation/library-ui-20261031/README.md)。
 
 2026-10-31（沙发床端态）：sofa-bed-core派生6个运动父节点和占地，103件Blender生产模型（细节资产v3）在拟合后作刚性端态变换；sofaBedOpen沿mutate、v40项目／工作区／缓存恢复，定向确认与实体缓存同步。新增一个经典核心脚本，HTTP／file及实际EXE隔离验证，见[契约](SOFA-BED-YESWOOD-Y107H03.md)。

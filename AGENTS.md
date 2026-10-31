@@ -35,6 +35,8 @@
 
 ## 固定产品建模与外观精修
 
+- 家电质感精修先分清喷涂、金属、橡胶与玻璃，用同一几何／机位／环境／曝光做材质前后对照，再看实际区域。兼容PBR与Blender程序微表面分别交付，未烘焙节点不宣称随GLB完整传播。按型号／部件白名单扩展物理材质，覆盖全局材质缓存、生产GLB和下载工程对象材质槽回读；不能只检查独立构造器或DATA槽。透射玻璃先检查是否误建为实心透镜，壁厚与光学参数标明依据；关闭玻璃阴影等近似须记录，不能推广为全局默认。见 `docs/validation/appliance-materials-20261031/README.md`。
+
 - 本机 Blender 优先使用 Scoop 实际程序 `%USERPROFILE%/scoop/apps/blender/current/blender.exe`（配置了 `SCOOP` 时使用该根目录），商店版 `%LOCALAPPDATA%/Microsoft/WindowsApps/blender-launcher.exe` 作为备选；复用项目发现逻辑，显式 `FURNISH_BLENDER` 设置仍优先。不要硬编码随升级变化的版本目录。
 - 固定型号家电和成品家具默认先在 Blender 建模，保留可编辑源工程、GLB及离线发布资产，再接入 Furnish；定制柜体继续使用参数化流程。预览与正式应用共用生产构造器，尺寸、吸附、测距和碰撞随资产一起交付。
 - 适用型号优先复用 `docs/BLENDER-MODELING-PIPELINE.md` 的隔离整链路入口，通过 `--list` 核对 `scripts/lib/model-profiles.cjs` 覆盖清单。Blender资产走重建／发布，既有参数化模型保留原构造并验证生产导出／回读；不为验收强制迁移路线。归档实际程序／版本、来源哈希、阶段结果和三机位图；板件沿用柜体生产身份，叠放验证数量与总高，活动部件按自己的机构与状态检查。作者预检不能替代独立发布校验，自动通过与目视还原度分别报告。
