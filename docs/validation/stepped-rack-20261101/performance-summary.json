@@ -1,0 +1,24 @@
+{
+  "fixture": "D:/1601装修/Furnish项目/workspace.furnish.json",
+  "summary": {
+    "rack": {
+      "collision": 16.37019999999984,
+      "directional": 44.658400000000256,
+      "interior": 4.390999999999622,
+      "total": 67.13580000000002
+    },
+    "plant": {
+      "collision": 16.294600000000173,
+      "directional": 13.449099999999817,
+      "interior": 4.000700000000052,
+      "total": 34.43209999999999
+    },
+    "robot": {
+      "collision": 13.726400000000012,
+      "directional": 12.719700000000103,
+      "interior": 3.2022000000001754,
+      "total": 30.460000000000036
+    }
+  },
+  "samples": 27
+}

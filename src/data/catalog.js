@@ -57,6 +57,7 @@ const LIB = [
   ]},
   {cat:'柜体', items:[
     ["balcony_plant_rack","阳台开放花架 · 下部猫砂位",1880,500,"#5b615a",undefined,1600],
+    ["balcony_plant_rack_step","两层阶梯花架 · 后排浅台／下部开放",1160,550,"#b89b74",undefined,1300],
     ["quartz_sill","石英石窗台板",1800,600,"#eeeae2",undefined,products.height({type:"quartz_sill"})],
     ["window_surround","木制窗套",1800,600,"#c49b70",undefined,products.height({type:"window_surround"})],
     ["pipebox","管道包覆柜",400,300,"#f3f1ec",0,products.height({type:"pipebox"})],

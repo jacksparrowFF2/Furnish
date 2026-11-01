@@ -1,0 +1,107 @@
+{
+  "passed": true,
+  "design": "dmvx5rvbx",
+  "workspaceVersion": 44,
+  "rack": {
+    "brand": "",
+    "color": "#b89b74",
+    "cx": 9785,
+    "cy": 1480,
+    "d": 550,
+    "frontClearance": 0,
+    "h": 1300,
+    "id": "fmvwksrbq1",
+    "model": "",
+    "name": "两层阶梯花架 · 下550／上360",
+    "priceDate": "",
+    "purchaseNote": "",
+    "purchaseStatus": "planned",
+    "rackBoard": 20,
+    "rackLowerHeight": 800,
+    "rackPost": 30,
+    "rackSlatGap": 8,
+    "rackUpperDepth": 360,
+    "rot": 90,
+    "sourceUrl": "",
+    "type": "balcony_plant_rack_step",
+    "w": 1160
+  },
+  "focusedIds": [
+    "fmv3wd35z9",
+    "fmvffjihp4",
+    "fmvwksrbq1",
+    "fmvwkt9fr2",
+    "fmvwktby03",
+    "fmvwktegs4",
+    "fmvwkth4i5",
+    "fmvwktjre6",
+    "fmvwktmbn7"
+  ],
+  "issues": [],
+  "robot": [
+    {
+      "from": [
+        9290,
+        1220
+      ],
+      "to": [
+        8750,
+        1220
+      ],
+      "footprint": [
+        352,
+        352
+      ],
+      "height": 80,
+      "collisionIds": []
+    },
+    {
+      "from": [
+        8750,
+        1220
+      ],
+      "to": [
+        8750,
+        2200
+      ],
+      "footprint": [
+        352,
+        352
+      ],
+      "height": 80,
+      "collisionIds": []
+    },
+    {
+      "from": [
+        8750,
+        2200
+      ],
+      "to": [
+        8780,
+        3000
+      ],
+      "footprint": [
+        352,
+        352
+      ],
+      "height": 80,
+      "collisionIds": []
+    }
+  ],
+  "litter": {
+    "from": [
+      9771,
+      1775
+    ],
+    "to": [
+      8750,
+      1775
+    ],
+    "footprint": [
+      510,
+      440
+    ],
+    "height": 400,
+    "collisionIds": []
+  }
+}

@@ -21,7 +21,7 @@ for fid,objects in groups.items():
     pts=[obj.matrix_world@Vector(corner) for obj in objects for corner in obj.bound_box]
     size=[(max(p[k] for p in pts)-min(p[k] for p in pts))*1000 for k in range(3)]
     kind=keys[0].split(':')[2]
-    expected={'balcony_plant_rack':[1880,550,1600],'plant_clivia':[600,450,650],'plant_spider':[450,450,450],'plant_peperomia':[400,400,500]}[kind]
+    expected={'balcony_plant_rack_step':[1160,550,1300],'balcony_plant_rack':[1880,550,1600],'plant_clivia':[600,450,650],'plant_spider':[450,450,450],'plant_peperomia':[400,400,500]}[kind]
     if fid in expected_items:
         f=expected_items[fid];expected=[f['d'],f['w'],f['h']] if f.get('rot',0)%180==90 else [f['w'],f['d'],f['h']]
     # Blender bound_box after rotation is conservative for tiny tilted stems.
@@ -34,6 +34,10 @@ for fid,objects in groups.items():
         assert len(objects)==12
         assert sum('post-' in key for key in keys)==6
         assert sum('shelf-' in key for key in keys)==2
+    if kind=='balcony_plant_rack_step':
+        assert sum('post-' in key for key in keys)==9
+        assert sum('slat-lower-' in key for key in keys)>1
+        assert sum('slat-upper-' in key for key in keys)>1
     results.append({'id':fid,'type':kind,'meshCount':len(objects),'sizeMm':size,'materialSlots':sum(len(o.material_slots) for o in objects)})
 with open(report,'w',encoding='utf-8') as out:
     json.dump({'passed':True,'blenderVersion':bpy.app.version_string,'source':os.path.abspath(source),'groups':results},out,ensure_ascii=False,indent=2)

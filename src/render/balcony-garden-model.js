@@ -4,8 +4,22 @@
 const P=()=>root.FurnishProducts||require('../core/product-rules.js');
 const supported=f=>!!P().definition(f)?.garden&&!f.obj;
 function rackParts(f){
- const {post:t,board:b}=P().definition(f).garden,w=f.w,d=f.d,h=P().height(f),parts=[];
+ const rule=P().definition(f).garden,layout=P().gardenLayout(f),t=layout?.post??rule.post,b=layout?.board??rule.board,w=f.w,d=f.d,h=P().height(f),parts=[];
  const add=(name,size,center,material)=>parts.push({name,size,center,material});
+ if(rule.stepped){
+  const low=layout.lower,upperDepth=layout.upperDepth,upperFront=-d/2+upperDepth,span=w-t*2;
+  for(const [side,x]of [['left',-w/2+t/2],['middle',0],['right',w/2-t/2]]){
+   add('post-'+side+'-back',[t,h,t],[x,h/2,-d/2+t/2],'wood');
+   add('post-'+side+'-front',[t,low,t],[x,low/2,d/2-t/2],'wood');
+   add('post-'+side+'-upper-front',[t,h-low,t],[x,(h+low)/2,upperFront-t/2],'wood');
+  }
+  for(const [level,y,depth]of [['lower',low,d],['upper',h,upperDepth]]){
+   const count=Math.max(2,Math.round((depth-t*2)/55)),gap=layout.gap,slat=(depth-t*2-gap*(count-1))/count;
+   for(let i=0;i<count;i++)add('slat-'+level+'-'+i,[span,b,slat],[0,y-b/2,-d/2+t+slat/2+i*(slat+gap)],'wood');
+   for(const [face,z]of [['back',-d/2+t/2],['front',-d/2+depth-t/2]])add('rail-'+level+'-'+face,[span,t,t],[0,y-b-t/2,z],'wood');
+  }
+  return parts;
+ }
  for(const [side,x]of [['left',-w/2+t/2],['middle',0],['right',w/2-t/2]])for(const [face,z]of [['back',-d/2+t/2],['front',d/2-t/2]])add('post-'+side+'-'+face,[t,h,t],[x,h/2,z],'frame');
  for(const [level,y]of [['lower',h/2],['upper',h-100]]){
   add('shelf-'+level,[w-t*2,b,d-t*2],[0,y-b/2,0],'shelf');
@@ -15,11 +29,11 @@ function rackParts(f){
 }
 function build(T,f){
  const rule=P().definition(f).garden,g=new T.Group(),I=root.FurnishPartIdentity||require('../core/part-identity.js');
- const materials={frame:new T.MeshStandardMaterial({color:f.color||'#5b615a',roughness:.65,metalness:.4}),shelf:new T.MeshStandardMaterial({color:'#b89b74',roughness:.65}),pot:new T.MeshStandardMaterial({color:'#e6ddcd',roughness:.5}),soil:new T.MeshStandardMaterial({color:'#49382b',roughness:1}),leaf:new T.MeshStandardMaterial({color:'#264d25',roughness:.38}),lightLeaf:new T.MeshStandardMaterial({color:'#477643',roughness:.45}),stripe:new T.MeshStandardMaterial({color:'#d2ddb0',roughness:.6}),stem:new T.MeshStandardMaterial({color:'#53702f',roughness:.6}),petal:new T.MeshStandardMaterial({color:'#ef6516',roughness:.42}),throat:new T.MeshStandardMaterial({color:'#ffc02f',roughness:.5})};
+ const materials={wood:new T.MeshStandardMaterial({color:f.color||'#b89b74',roughness:.7}),frame:new T.MeshStandardMaterial({color:f.color||'#5b615a',roughness:.65,metalness:.4}),shelf:new T.MeshStandardMaterial({color:'#b89b74',roughness:.65}),pot:new T.MeshStandardMaterial({color:'#e6ddcd',roughness:.5}),soil:new T.MeshStandardMaterial({color:'#49382b',roughness:1}),leaf:new T.MeshStandardMaterial({color:'#264d25',roughness:.38}),lightLeaf:new T.MeshStandardMaterial({color:'#477643',roughness:.45}),stripe:new T.MeshStandardMaterial({color:'#d2ddb0',roughness:.6}),stem:new T.MeshStandardMaterial({color:'#53702f',roughness:.6}),petal:new T.MeshStandardMaterial({color:'#ef6516',roughness:.42}),throat:new T.MeshStandardMaterial({color:'#ffc02f',roughness:.5})};
  function add(name,geometry,material){const m=I.produce('balcony-garden:'+f.type+':'+name,()=>new T.Mesh(geometry,materials[material]));m.name=name;m.userData.gardenPart=name;m.userData.furnishStablePart='garden-v1:'+f.type+':'+name;m.castShadow=m.receiveShadow=true;g.add(m);return m;}
  if(rule.kind==='rack'){
   for(const p of rackParts(f)){const m=add(p.name,new T.BoxGeometry(...p.size.map(v=>v/1000)),p.material);m.position.set(...p.center.map(v=>v/1000));}
-  g.userData.furnishAsset='balcony-open-rack-parametric@1';return g;
+  g.userData.furnishAsset=rule.stepped?'balcony-stepped-rack-parametric@1':'balcony-open-rack-parametric@1';return g;
  }
  // Every leaf is a closed thin ribbon, including a curved midrib and a real edge.
  function ribbon(name,center,width,material,sideAt){const N=20,vertices=[],faces=[];

@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "mode": "http",
+      "undoRedo": true,
+      "refresh": true,
+      "geometry": {
+        "parts": [
+          63,
+          33,
+          63,
+          88,
+          33,
+          63
+        ],
+        "asset": []
+      },
+      "productionBytes": 10603812,
+      "narrow": true,
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "undoRedo": true,
+      "refresh": true,
+      "geometry": {
+        "parts": [
+          63,
+          33,
+          63,
+          88,
+          33,
+          63
+        ],
+        "asset": []
+      },
+      "productionBytes": 10603812,
+      "narrow": true,
+      "errors": []
+    }
+  ],
+  "sourceUnchanged": true
+}

@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "blenderVersion": "5.2.3 LTS",
+  "source": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\playwright\\stepped-rack-acceptance-G3UrOT\\desktop-production.glb",
+  "groups": [
+    {
+      "id": "fmvwksrbq1",
+      "type": "balcony_plant_rack_step",
+      "meshCount": 27,
+      "sizeMm": [
+        549.9997138977051,
+        1160.0000858306885,
+        1300.000011920929
+      ],
+      "materialSlots": 27
+    },
+    {
+      "id": "fmvwkt9fr2",
+      "type": "plant_spider",
+      "meshCount": 63,
+      "sizeMm": [
+        449.9998092651367,
+        449.9998092651367,
+        449.99992847442627
+      ],
+      "materialSlots": 63
+    },
+    {
+      "id": "fmvwktby03",
+      "type": "plant_peperomia",
+      "meshCount": 33,
+      "sizeMm": [
+        260.00022888183594,
+        260.00022888183594,
+        350.0000238418579
+      ],
+      "materialSlots": 33
+    },
+    {
+      "id": "fmvwktegs4",
+      "type": "plant_spider",
+      "meshCount": 63,
+      "sizeMm": [
+        260.00022888183594,
+        260.00022888183594,
+        330.00004291534424
+      ],
+      "materialSlots": 63
+    },
+    {
+      "id": "fmvwkth4i5",
+      "type": "plant_clivia",
+      "meshCount": 88,
+      "sizeMm": [
+        340.0001525878906,
+        600.0001430511475,
+        649.9999761581421
+      ],
+      "materialSlots": 88
+    },
+    {
+      "id": "fmvwktjre6",
+      "type": "plant_peperomia",
+      "meshCount": 33,
+      "sizeMm": [
+        260.00022888183594,
+        260.00022888183594,
+        350.0000238418579
+      ],
+      "materialSlots": 33
+    },
+    {
+      "id": "fmvwktmbn7",
+      "type": "plant_spider",
+      "meshCount": 63,
+      "sizeMm": [
+        260.00022888183594,
+        260.00022888183594,
+        330.00004291534424
+      ],
+      "materialSlots": 63
+    }
+  ]
+}

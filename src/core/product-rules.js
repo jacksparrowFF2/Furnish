@@ -13,6 +13,11 @@ const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./k
 const fields={
  windowSurroundSides:{values:['three','four'],message:'木制窗套须为三面或四面'},
  windowSurroundThickness:numeric(1,100,'木制窗套板厚须为 1–100 mm'),
+ rackLowerHeight:numeric(200,19000,'下层台面高度须为 200–19000 mm'),
+ rackUpperDepth:numeric(100,3000,'上层深度须为 100–3000 mm'),
+ rackPost:numeric(15,80,'立柱粗细须为 15–80 mm'),
+ rackBoard:numeric(10,50,'层板厚度须为 10–50 mm'),
+ rackSlatGap:numeric(0,25,'板条间隙须为 0–25 mm'),
  tvImage:{custom:true,message:'电视图片须为不超过 2 MB 的内嵌 PNG/JPEG 图片'},
  sofaBedOpen:{boolean:true,message:"沙发床展开状态无效"},
  stoolCount:{...numeric(1,12,'叠放数量须为 1–12 的整数'),integer:true},
@@ -80,6 +85,7 @@ const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anc
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
  balcony_plant_rack:{kind:'置物架',height:1600,defaultFrontClearance:0,garden:{kind:'rack',post:30,board:20,minWidth:600,minDepth:200,minHeight:800},solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:1}},
+ balcony_plant_rack_step:{kind:'置物架',height:1300,defaultFrontClearance:0,defaults:{rackLowerHeight:800,rackUpperDepth:300,rackPost:30,rackBoard:20,rackSlatGap:8},fields:['rackLowerHeight','rackUpperDepth','rackPost','rackBoard','rackSlatGap'],create:['rackLowerHeight','rackUpperDepth','rackPost','rackBoard','rackSlatGap'],garden:{kind:'rack',stepped:true,minWidth:600,minDepth:400,minHeight:1000},solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:1}},
  plant_clivia:{kind:'绿植',height:650,anchor:'bottom',defaultFrontClearance:0,garden:{kind:'clivia',potDiameter:260,potHeight:230},defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:2}},
  plant_spider:{kind:'绿植',height:450,anchor:'bottom',defaultFrontClearance:0,garden:{kind:'spider',potDiameter:180,potHeight:170},defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:2}},
  plant_peperomia:{kind:'绿植',height:500,anchor:'bottom',defaultFrontClearance:0,garden:{kind:'peperomia',potDiameter:160,potHeight:150},defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:2}},
@@ -272,6 +278,15 @@ function coveringLayout(f){
 const supports=(f,key)=>key==='groupId'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 const value=(f,key)=>f[key]??definition(f)?.defaults?.[key];
+function gardenLayout(f){
+ const rule=definition(f)?.garden;if(!rule?.stepped||f.obj)return null;
+ const lower=value(f,'rackLowerHeight'),upperDepth=value(f,'rackUpperDepth'),post=value(f,'rackPost'),board=value(f,'rackBoard'),gap=value(f,'rackSlatGap'),h=height(f);
+ for(const key of ['rackLowerHeight','rackUpperDepth','rackPost','rackBoard','rackSlatGap']){const v=value(f,key),r=fields[key];if(!Number.isFinite(v)||v<r.min||v>r.max)throw Error(r.message);}
+ if(lower>h-100)throw Error('上层台面须比下层至少高100mm');
+ if(upperDepth>f.d-50||upperDepth<post*2+50)throw Error('上层深度须保留至少50mm阶梯退台及有效板面');
+ if(post*4>=f.w||board+post>=lower)throw Error('立柱／板厚与架体尺寸冲突');
+ return {lower,upperDepth,post,board,gap};
+}
 const footprintMinimum=(f,key)=>!f.obj&&definition(f)?.windowLining?(key==='w'?definition(f).windowLining.minWidth:definition(f).windowLining.minDepth):!f.obj&&key==='d'&&definition(f)?.telescopic?.leafDepth?definition(f).telescopic.panels*definition(f).telescopic.leafDepth:Number.isFinite(f?.[key])&&f[key]>0?Math.min(50,f[key]):50;
 const height=f=>f.h??definition(f)?.height;
 const cabinetSpec=f=>definition(f)?.cabinet;
@@ -302,7 +317,7 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(['windowSurroundThickness','windowSurroundSides'].includes(key))windowLining({...f,[key]:v});if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){const garden=definition(f)?.garden;if(!f.obj&&garden?.kind==='rack'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<garden.minWidth||f.d<garden.minDepth||height(f)<garden.minHeight))throw Error('开放花架宽至少600、深至少200、高至少800mm');windowLining(f);const cb=definition(f)?.cornerBookcase;if(!f.obj&&cb&&(f.w<cb.minWidth||f.d<cb.minDepth||height(f)<cb.minHeight))throw Error(`转角书柜布局草模宽深至少${cb.minWidth}、高至少${cb.minHeight} mm`);const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){gardenLayout(f);const garden=definition(f)?.garden;if(!f.obj&&garden?.kind==='rack'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<garden.minWidth||f.d<garden.minDepth||height(f)<garden.minHeight))throw Error(`开放花架宽至少${garden.minWidth}、深至少${garden.minDepth}、高至少${garden.minHeight}mm`);windowLining(f);const cb=definition(f)?.cornerBookcase;if(!f.obj&&cb&&(f.w<cb.minWidth||f.d<cb.minDepth||height(f)<cb.minHeight))throw Error(`转角书柜布局草模宽深至少${cb.minWidth}、高至少${cb.minHeight} mm`);const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 // User-facing kinds are independent of renderer IDs, product identities and plan names.
 const kindGroups={
  '石英石窗台板':'quartz_sill', '木制窗套':'window_surround',
@@ -324,7 +339,7 @@ const kindGroups={
  '浴室柜':'vanity', '马桶':'toilet', '淋浴房':'shower', '花洒':'shower_arrow_cream', '浴缸':'bathtub',
  '落地灯':'floorlamp', '吊灯':'pendant', '飘窗垫':'baycushion', '地毯':'rug', '布帘':'curtain', '纱帘':'curtain_sheer',
  '百叶帘':'blind_venetian', '蜂巢帘':'blind_honeycomb', '柔纱帘':'blind_zebra', '竹帘':'blind_bamboo', '卷帘':'blind_roller',
- '置物架':'balcony_plant_rack', '绿植':'plant plant_clivia plant_spider plant_peperomia', '装饰画':'wallart', '镜子':'mirror', '钢琴':'piano', '跑步机':'treadmill',
+ '置物架':'balcony_plant_rack balcony_plant_rack_step', '绿植':'plant plant_clivia plant_spider plant_peperomia', '装饰画':'wallart', '镜子':'mirror', '钢琴':'piano', '跑步机':'treadmill',
  '口袋门':'pocketdoor_double pocketdoor_triple', '推拉门':'slidingdoor', '联动推拉门':'telescopicdoor20 doubleslidingdoor tripleslidingdoor',
  '联动推拉窗':'tripleslidingwindow', '猫爬架':'cat_tree', '宠物喂食器':'pet_feeder_mijia_2', '猫砂盆':'litter_box', '晾衣架':'dryingrack',
  '自定义家具':'custom customround'
@@ -637,6 +652,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

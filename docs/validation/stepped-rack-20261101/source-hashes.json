@@ -1,0 +1,8 @@
+{
+  "assets/models/balcony-garden/references/user/stepped-rack-photo.png": "840da794e95ea63d1227c8b90f93eda3cb9873d9d4282ddfc052054ed64cbd1e",
+  "assets/models/balcony-garden/references/user/stepped-rack-dimensions.png": "719dbd52acb4190ecb0c65506198870587c7dbe4db223e01f2c73c63c5bedebe",
+  "src/render/balcony-garden-model.js": "b72fbd02938f09792038c8872924a79162c14bf80e6b4740fc2cc3a4168a8f07",
+  "src/core/product-rules.js": "189f78f2c8270e1f0a4a788781483bbcf43c0fad7e65fbd6ade4114e542e2a79",
+  "scripts/verify/preview-stepped-rack.cjs": "a51ad35f43d2ed412c8b89ef9b1b5275a1271a814c0ff4a79939084b61cc4c4a",
+  "previousProductionSourceSha256": "0a7d37031d61907f5dcfdf9cfc605fa9a785a181af2139f0128a939c97dae313"
+}
