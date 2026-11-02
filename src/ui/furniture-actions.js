@@ -222,7 +222,7 @@ function toggleWall(id){
 function setTool(t){
   ui.tool = t; ui.mA = null; ui.mCur = null; ui.mSnap=null;
   svg.setAttribute('class', 'tool-' + t);
-  document.querySelectorAll('#tools .btn').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
+  document.querySelectorAll('#tools .btn,.rail-tool-pop [data-tool]').forEach(b => b.classList.toggle('on', b.dataset.tool === t));
   syncModeHint();
   renderMeasure();
   renderSel();

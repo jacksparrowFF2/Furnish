@@ -144,6 +144,6 @@ function afterRender(){
  if(snap()!==session.source){if(dirty()){error('项目已变化，当前草稿不能应用；请取消后重新打开铺砖');return;}session.base=copy(state);session.work=copy(state);session.source=snap();session.targets=C.groups(state,plan());selection();renderTargets();}
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tiling-open]');if(b)open({roomId:b.dataset.tilingRoom,kind:b.dataset.tilingKind});});
-window.addEventListener('load',()=>{const rail=document.querySelector('.canvas-rail .rail-finishes');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='tiling-open';b.dataset.tilingOpen='';b.innerHTML=ico('floor-tile')+'<span>铺砖</span>';b.title='选择墙面与地面，统一设置铺砖';rail.prepend(b);});
+window.addEventListener('load',()=>{const rail=document.querySelector('.rail-tool-pop .rail-finishes');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='tiling-open';b.dataset.tilingOpen='';b.innerHTML=ico('floor-tile')+'<span>铺砖</span>';b.title='选择墙面与地面，统一设置铺砖';rail.prepend(b);});
 window.FurnishTileWorkspace={open,close,afterRender};
 })();

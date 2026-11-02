@@ -76,7 +76,7 @@ function review(preset,roomId){if(!preset)return;close();FurnishTileWorkspace.op
 
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tile-presets]');if(b)open(b.dataset.tilePresets);if(e.target.closest('[data-tile-inspection]'))setInspection(!inspection);});
 window.addEventListener('load',()=>{
- const stage=document.querySelector('#stage'),outside=e=>panel&&!e.target.closest('#tile-preset-panel,.canvas-rail,#fab,.scene-light,#property-peek');
+ const stage=document.querySelector('#stage'),outside=e=>panel&&!e.target.closest('#tile-preset-panel,.canvas-rail,.rail-tool-pop,#fab,.scene-light,#property-peek');
  stage.addEventListener('dragover',e=>{if(!outside(e)||!e.dataTransfer.types.includes('application/x-furnish-tile-preset'))return;const p=find(selected);if(!p)return;hover=targetAt(e.clientX,e.clientY,p);e.preventDefault();e.dataTransfer.dropEffect=hover?'copy':'none';drawTarget();panel.querySelector('[data-preset-hint]').textContent=hover?`松开后设置「${roomName(hover)}」的应用范围`:'请拖到对应的房间地面';});
  stage.addEventListener('drop',e=>{if(!outside(e))return;const id=e.dataTransfer.getData('application/x-furnish-tile-preset'),p=find(id);if(!p)return;e.preventDefault();const room=targetAt(e.clientX,e.clientY,p);hover=null;drawTarget();if(room)review(p,room);else toast('请拖到对应的瓷砖房间，或点选预设库中的房间按钮');});
  stage.addEventListener('pointerdown',e=>{if(outside(e)&&selected&&e.button===0)down=[e.clientX,e.clientY];else down=null;},true);

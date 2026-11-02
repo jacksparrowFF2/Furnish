@@ -1,0 +1,16 @@
+{
+  "checks": [
+    "scheme selector switches both ways through the original save path",
+    "1280px: layers float instead of compressing the drawing",
+    "arrange shortcut and compact catalog persist without changing the design",
+    "review categories share the badge counts; purchasing is folded in overview",
+    "layer expansion, conditional assignment and production undo",
+    "secondary tools include tiling, ceilings and working annotation selection",
+    "furniture edits retain undo/redo, formal save and reload",
+    "1920/1101/390 layouts and 3D tools",
+    "3D camera panel opens and returns keyboard focus on Escape",
+    "offline file:// entry retains the workspace controls"
+  ],
+  "errors": [],
+  "sourceUnchanged": true
+}

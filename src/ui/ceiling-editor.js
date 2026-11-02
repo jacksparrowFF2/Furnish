@@ -183,6 +183,6 @@ function afterRender(){
 
 }
 function design(previous,selectionId){return FurnishCeilingDesign.open({selectionId:selectionId||(ui.sel?.kind==='ceiling'?ui.sel.regionId:undefined)});}
-window.addEventListener('load',()=>{document.querySelectorAll('[data-plan-mode]').forEach(b=>b.onclick=()=>{ui.planMode=b.dataset.planMode;saveUI();afterRender();});afterRender();const rail=document.querySelector('.canvas-rail .rail-finishes');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='ceiling-open';b.innerHTML=ico('ceiling')+`<span data-zh="吊顶" data-en="Ceiling">${tr('吊顶','Ceiling')}</span>`;b.onclick=()=>design();rail.append(b);});
+window.addEventListener('load',()=>{document.querySelectorAll('[data-plan-mode]').forEach(b=>b.onclick=()=>{ui.planMode=b.dataset.planMode;saveUI();afterRender();});afterRender();const rail=document.querySelector('.rail-tool-pop .rail-finishes');if(!rail)return;const b=document.createElement('button');b.className='btn';b.id='ceiling-open';b.innerHTML=ico('ceiling')+`<span data-zh="吊顶" data-en="Ceiling">${tr('吊顶','Ceiling')}</span>`;b.onclick=()=>design();rail.append(b);});
 window.FurnishCeilingUI={selectObject,annotateSection,open,design,afterRender,selectionChanged,prepareExport,pointerMenu,closePointerMenu};
 })();

@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-02（工作区层级）：workflow-tools沿drawer／panes提供任务快捷切换与紧凑工具菜单，observation-layers沿原mutate提供分组展开及按可用画布宽度浮动；菜单中的铺砖／吊顶入口与工具选中态同步调整调用方。核对概览与画布入口共用review计数，预算只移动原有DOM到折叠容器，不另建保存通道。history-sharing的方案选择器仍调用switchDesign；catalog-compact仅使用huxing-panes本机偏好。无新加载脚本或项目字段，见[工作区验收](validation/workspace-ui-20261102/README.md)。
+
 2026-11-01（阶梯花架）：product-rules.gardenLayout集中派生及校验五项独立结构输入，balcony-garden-model生成上下错位的板条与真实立柱。实体／三维缓存及核对上下文只为阶梯款追加结构值；属性沿mutate、MCP沿产品能力配置，采用v44项目／工作区／恢复缓存，无新脚本加载。原花架和其它型号的核对上下文保持，见[阶梯款](validation/stepped-rack-20261101/README.md)。
 
 2026-11-01（拖动缓存）：FurnitureSolids在局部几何读取／重建前命中世界实体LRU，避免形状工作集超过32项时反复构造静止家具；键、容量、生产几何和空间语义不变。主三维的盆栽增量位姿沿产品安装能力恢复mountHeight。无新字段或加载资源，见[性能验收](validation/balcony-drag-performance-20261101/README.md)。

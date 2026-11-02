@@ -21,11 +21,10 @@ function renderDesignBar(){
   const active=FurnishDesign.activeDesign(store,PLAN.id),rows=store.designs.filter(d=>d.planId===PLAN.id&&d.editable===true);
   const key=JSON.stringify([PLAN.id,active?.id,rows.map(d=>[d.id,d.name]),LANG,repositoryBooting]);
   if(host.dataset.renderKey===key)return;host.dataset.renderKey=key;
-  host.innerHTML=`<span class="design-bar-label">${tr('方案','Design')}</span><div class="design-tabs" role="group" aria-label="${tr('切换方案','Switch design')}">${!active?`<button class="btn on" aria-pressed="true" disabled>${tr('当前布置','Current layout')}</button>`:''}${rows.map(d=>`<button class="btn ${d.id===active?.id?'on':''}" data-switch-design="${esc(d.id)}" aria-pressed="${d.id===active?.id}" title="${esc(d.name)}" ${repositoryBooting?'disabled':''}>${esc(d.name)}</button>`).join('')}</div><button class="btn" id="bar-create-design" ${repositoryBooting?'disabled':''}>${tr('＋ 新方案','＋ New')}</button><button class="btn" id="bar-manage-designs" ${repositoryBooting?'disabled':''}>${tr('管理','Manage')}</button>`;
-  host.querySelectorAll('[data-switch-design]').forEach(b=>b.onclick=()=>switchDesign(b.dataset.switchDesign));
+  host.innerHTML=`<label class="design-picker"><span>${tr('方案','Design')} · ${rows.length}</span><select id="design-select" aria-label="${tr('切换方案','Switch design')}" ${repositoryBooting?'disabled':''}>${!active?`<option value="">${tr('当前布置','Current layout')}</option>`:''}${rows.map(d=>`<option value="${esc(d.id)}" ${d.id===active?.id?'selected':''}>${esc(d.name)}</option>`).join('')}</select></label><button class="btn" id="bar-create-design" ${repositoryBooting?'disabled':''}>${tr('＋ 新方案','＋ New')}</button><button class="btn" id="bar-manage-designs" ${repositoryBooting?'disabled':''}>${tr('管理','Manage')}</button>`;
+  $('#design-select').onchange=e=>{const id=e.target.value;e.target.value=active?.id||'';if(id)switchDesign(id);};
   $('#bar-create-design').onclick=()=>window.FurnishDesignUI.editDesign('create',undefined,true);
   $('#bar-manage-designs').onclick=()=>window.FurnishDesignUI.designs();
-  host.querySelector('[aria-pressed="true"]')?.scrollIntoView({block:'nearest',inline:'nearest'});
 }
 /* Classic declarations; initialize storage and browser handlers after app state exists. */
 function renderDesigns(){renderDesignBar();renderHist();}
