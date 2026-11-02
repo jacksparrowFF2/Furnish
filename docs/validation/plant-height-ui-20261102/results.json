@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "sourceUnchanged": true,
+  "results": [
+    {
+      "mode": "desktop",
+      "plants": [
+        {
+          "type": "plant_clivia",
+          "id": "fmvwkth4i5",
+          "restoredHeight": 1300
+        },
+        {
+          "type": "plant_spider",
+          "id": "fmvwkt9fr2",
+          "restoredHeight": 800
+        },
+        {
+          "type": "plant_peperomia",
+          "id": "fmvwktby03",
+          "restoredHeight": 800
+        }
+      ],
+      "undoRedo": true,
+      "zero": true,
+      "invalidRejected": true,
+      "dimensionsUnchanged": true,
+      "refresh": true,
+      "locked": true,
+      "errors": []
+    },
+    {
+      "mode": "http",
+      "plants": [
+        {
+          "type": "plant_clivia",
+          "id": "fmvwkth4i5",
+          "restoredHeight": 1300
+        },
+        {
+          "type": "plant_spider",
+          "id": "fmvwkt9fr2",
+          "restoredHeight": 800
+        },
+        {
+          "type": "plant_peperomia",
+          "id": "fmvwktby03",
+          "restoredHeight": 800
+        }
+      ],
+      "undoRedo": true,
+      "zero": true,
+      "invalidRejected": true,
+      "dimensionsUnchanged": true,
+      "refresh": true,
+      "locked": true,
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "plants": [
+        {
+          "type": "plant_clivia",
+          "id": "fmvwkth4i5",
+          "restoredHeight": 1300
+        },
+        {
+          "type": "plant_spider",
+          "id": "fmvwkt9fr2",
+          "restoredHeight": 800
+        },
+        {
+          "type": "plant_peperomia",
+          "id": "fmvwktby03",
+          "restoredHeight": 800
+        }
+      ],
+      "undoRedo": true,
+      "zero": true,
+      "invalidRejected": true,
+      "dimensionsUnchanged": true,
+      "refresh": true,
+      "locked": true,
+      "errors": []
+    }
+  ]
+}
