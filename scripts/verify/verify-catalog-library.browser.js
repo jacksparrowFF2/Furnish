@@ -10,14 +10,18 @@ async (page,V)=>{
   assert(await p.locator('#lib .item').count()===await p.evaluate(()=>FurnishCatalogData.browseLibrary().reduce((n,c)=>n+c.items.length,0)),'complete initial catalog');
   await screenshot('initial');
   const handle=p.locator('#library-resize'),initial=Number(await handle.getAttribute('aria-valuenow')),beforeResize=await p.evaluate(()=>JSON.stringify(state));
+  const columns=()=>p.locator('#lib .lib-grid').first().evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length);
+  const initialColumns=await columns();
   let hb=await handle.boundingBox();await p.mouse.move(hb.x+6,hb.y+30);await p.mouse.down();await p.mouse.move(hb.x+126,hb.y+30,{steps:8});await p.mouse.up();
   assert(Number(await handle.getAttribute('aria-valuenow'))===initial+120,'library drag changes grid width');
+  assert(await columns()>initialColumns,'wider library adds card columns without resizing the viewport');
   await handle.focus();await p.keyboard.press('ArrowRight');assert(Number(await handle.getAttribute('aria-valuenow'))===initial+130,'keyboard resize');
   hb=await handle.boundingBox();await p.mouse.move(hb.x+6,hb.y+30);await p.mouse.down();await p.mouse.move(hb.x+66,hb.y+30);await p.keyboard.press('Escape');await p.mouse.up();
   assert(Number(await handle.getAttribute('aria-valuenow'))===initial+130,'escape restores committed width');
   assert(await p.evaluate(()=>JSON.stringify(state))===beforeResize,'pane width never edits project');
   await p.reload();await p.waitForFunction(()=>!!window.FurnishCatalog);assert(Number(await handle.getAttribute('aria-valuenow'))===initial+130,'width survives reload');
   await screenshot('resized');await handle.dblclick();assert(Number(await handle.getAttribute('aria-valuenow'))===248,'double click default');
+  assert(await columns()===initialColumns,'narrowing library restores card columns');
 
   await p.locator('#catalog-filters').evaluate(el=>el.open=true);await p.locator('#catalog-use').selectOption('pet');
   assert(await p.locator('#lib .item').count()===4,'four pet items');
