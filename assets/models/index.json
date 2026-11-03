@@ -3,12 +3,12 @@
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
     "blenderModels": 15,
-    "parametricVerificationConfigurations": 80,
-    "verificationConfigurations": 95,
-    "catalogEntries": 139,
-    "catalogTypes": 112,
-    "productDossiers": 40,
-    "referenceImages": 133,
+    "parametricVerificationConfigurations": 86,
+    "verificationConfigurations": 101,
+    "catalogEntries": 145,
+    "catalogTypes": 118,
+    "productDossiers": 41,
+    "referenceImages": 136,
     "missingReferences": 12
   },
   "models": [
@@ -1111,6 +1111,59 @@
       ],
       "manifest": "assets/models/armchair-berlin/asset.json",
       "readme": "assets/models/armchair-berlin/README.md"
+    },
+    {
+      "format": 1,
+      "id": "art-glass",
+      "name": "九款艺术玻璃隔断",
+      "types": [
+        "art_glass_partition"
+      ],
+      "route": "parametric",
+      "document": "docs/ART-GLASS.md",
+      "sourceLinks": [
+        "https://xhslink.cn/o/8pkJUxn0bfx",
+        "https://www.xiaohongshu.com/search_result/6a0a75240000000008003b41?xsec_token=ABk2N8K5G1XSn3yWUlOcbKoY8qy4xbrBuocfw6f8STYKA=&xsec_source="
+      ],
+      "references": [
+        {
+          "path": "references/samples-1.png",
+          "kind": "user",
+          "sha256": "4eea2c29afcd03c4a5f981ff1ee05af2569482f76875084f7ea62efd003d01df",
+          "bytes": 3112552,
+          "uploadNames": [
+            "codex-clipboard-eeeb74c0-9f73-4114-b23d-a324edb8ef77.png"
+          ],
+          "legacyPaths": []
+        },
+        {
+          "path": "references/samples-2.png",
+          "kind": "user",
+          "sha256": "7c98648ae93d0b69bdd1b31b6a73c53b516b2fe1f96974850226a50ce8885c34",
+          "bytes": 3288263,
+          "uploadNames": [
+            "codex-clipboard-bca2dade-ee35-44d2-ba8b-7e35dc380380.png"
+          ],
+          "legacyPaths": []
+        },
+        {
+          "path": "references/samples-3.png",
+          "kind": "user",
+          "sha256": "12faf718df197526cc143c2974e39f5b63a9a1f5b397dfc0709cb40b71df08c5",
+          "bytes": 2575471,
+          "uploadNames": [
+            "codex-clipboard-5c1d5ca6-72e5-4131-812c-93b885cce341.png"
+          ],
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "supportingFiles": [],
+      "validation": [
+        "docs/validation/art-glass-20261103/README.md"
+      ],
+      "manifest": "assets/models/art-glass/asset.json",
+      "readme": "assets/models/art-glass/README.md"
     },
     {
       "format": 1,
@@ -3308,6 +3361,24 @@
       "module": "index-inline"
     },
     {
+      "id": "balcony_plant_rack",
+      "type": "balcony_plant_rack",
+      "name": "阳台开放花架 · 下部猫砂位",
+      "module": "balcony-garden"
+    },
+    {
+      "id": "balcony_plant_rack_step",
+      "type": "balcony_plant_rack_step",
+      "name": "两层阶梯花架 · 后排浅台／下部开放",
+      "module": "balcony-garden"
+    },
+    {
+      "id": "art_glass_partition",
+      "type": "art_glass_partition",
+      "name": "艺术玻璃隔断",
+      "module": "art-glass"
+    },
+    {
       "id": "quartz_sill",
       "type": "quartz_sill",
       "name": "石英石窗台板",
@@ -3426,6 +3497,24 @@
       "type": "blind_roller",
       "name": "卷帘 · 平面布",
       "module": "window-covering"
+    },
+    {
+      "id": "plant_clivia",
+      "type": "plant_clivia",
+      "name": "君子兰 · 开花盆栽（布局估算）",
+      "module": "balcony-garden"
+    },
+    {
+      "id": "plant_spider",
+      "type": "plant_spider",
+      "name": "金边吊兰 · 盆栽（布局估算）",
+      "module": "balcony-garden"
+    },
+    {
+      "id": "plant_peperomia",
+      "type": "plant_peperomia",
+      "name": "豆瓣绿 · 盆栽（布局估算）",
+      "module": "balcony-garden"
     },
     {
       "id": "pocketdoor_double",
@@ -4010,6 +4099,33 @@
       "d": 352,
       "h": 79.8,
       "module": "index-inline"
+    },
+    {
+      "category": "柜体",
+      "type": "balcony_plant_rack",
+      "name": "阳台开放花架 · 下部猫砂位",
+      "w": 1880,
+      "d": 500,
+      "h": 1600,
+      "module": "balcony-garden"
+    },
+    {
+      "category": "柜体",
+      "type": "balcony_plant_rack_step",
+      "name": "两层阶梯花架 · 后排浅台／下部开放",
+      "w": 1160,
+      "d": 550,
+      "h": 1300,
+      "module": "balcony-garden"
+    },
+    {
+      "category": "柜体",
+      "type": "art_glass_partition",
+      "name": "艺术玻璃隔断",
+      "w": 900,
+      "d": 8,
+      "h": 2400,
+      "module": "art-glass"
     },
     {
       "category": "柜体",
@@ -4729,6 +4845,33 @@
       "d": 75,
       "h": 1800,
       "module": "window-covering"
+    },
+    {
+      "category": "装饰",
+      "type": "plant_clivia",
+      "name": "君子兰 · 开花盆栽（布局估算）",
+      "w": 600,
+      "d": 450,
+      "h": 650,
+      "module": "balcony-garden"
+    },
+    {
+      "category": "装饰",
+      "type": "plant_spider",
+      "name": "金边吊兰 · 盆栽（布局估算）",
+      "w": 450,
+      "d": 450,
+      "h": 450,
+      "module": "balcony-garden"
+    },
+    {
+      "category": "装饰",
+      "type": "plant_peperomia",
+      "name": "豆瓣绿 · 盆栽（布局估算）",
+      "w": 400,
+      "d": 400,
+      "h": 500,
+      "module": "balcony-garden"
     },
     {
       "category": "装饰",

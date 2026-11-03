@@ -57,6 +57,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       return `<g data-manifold-plan="top">${svg}</g>`;
     }
     case 'electrical_box_strong': case 'electrical_box_weak': return rc(x,y,w,d,c)+rc(x+w*.06,y+d*.72,w*.88,d*.22,'#697681');
+    case 'art_glass_partition': return `<g data-art-glass="${(root.FurnishProducts||require('../core/product-rules.js')).value(f||{type:t},'artGlassPattern')}">${rc(x,y,w,d,'#c5e4e9')}${ln(x,y,w/2,y,'stroke-dasharray="6 3"')}${ln(x,y+d,w/2,y+d)}</g>`;
     case 'quartz_sill': return rc(x,y,w,d,c)+ln(x,y+d,w/2,y+d,'data-window-lining="stone"');
     case 'window_surround': {
       const l=products.windowLining({...f,type:t,w,d}),thickness=l.thickness;

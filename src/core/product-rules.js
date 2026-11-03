@@ -10,7 +10,21 @@ const cabinetDoorLimits={min:1,max:180,sections:['storage','lower','upper','disp
 const cabinetTopClosure={height:{min:0,max:300,default:50},doorGap:{min:0,max:50,default:10}};
 const pegboardAssembly={parts:['upper','left','right','lower','displayShelves','hooks','light'],accessoryParts:['displayShelves','hooks','light'],legacyParts:['accessories'],structureParts:['upper','left','right','lower'],thickness:18,hatch:{modes:['manual','auto'],maxPanels:16,minWeb:20,margin:20,min:50,gap:2,angle:100,defaultWidth:400,defaultHeight:300,fitPadding:10,padding:{sides:['top','bottom','left','right'],min:0,max:100},maxRearGap:500,alignmentDegrees:1},holes:{diameter:9,minDiameter:2,maxDiameter:30,margin:30,pitch:40,maxCount:3000,maxAxis:200,minWeb:2},bottom:{min:0,max:20000}};
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
+// Sample names follow the user's photos. Pitch/relief are visual estimates (mm),
+// not supplier specifications; IOR 1.5 is a rendering approximation.
+const artGlassPatterns={
+ cube:{label:'水立方',pitch:120,relief:9,roughness:.035},
+ reeded:{label:'大灯芯',pitch:8,relief:.7,roughness:.04},
+ fluted:{label:'长虹',pitch:24,relief:2.0,roughness:.025},
+ 'silver-wave':{label:'银波纹',pitch:100,relief:5,roughness:.05},
+ 'water-wave':{label:'水波纹',pitch:130,relief:5,roughness:.09},
+ ingot:{label:'金元宝',pitch:35,relief:2.5,roughness:.035},
+ pear:{label:'香梨',pitch:48,relief:.28,roughness:.15},
+ mist:{label:'银霞',pitch:75,relief:.7,roughness:.12},
+ diamond:{label:'钻石',pitch:80,relief:1.15,roughness:.075}
+};
 const fields={
+ artGlassPattern:{values:Object.keys(artGlassPatterns),message:'请选择有效的艺术玻璃花纹'},
  windowSurroundSides:{values:['three','four'],message:'木制窗套须为三面或四面'},
  windowSurroundThickness:numeric(1,100,'木制窗套板厚须为 1–100 mm'),
  rackLowerHeight:numeric(200,19000,'下层台面高度须为 200–19000 mm'),
@@ -84,6 +98,7 @@ const electricalBox={family:'electrical-box',wallRecess:true,height:400,anchor:'
 const covering={defaultFrontClearance:0,family:'window-covering',height:1800,anchor:'bottom',defaults:{mountHeight:900,curtainOpen:0},fields:['mountHeight','curtainOpen'],create:['mountHeight','curtainOpen'],solidModel:{global:'FurnishWindowCoveringModel',module:'window-covering',base:'mountHeight'}};
 const coverSpecs={head:50,hem:14,cellPitch:30,slatPitch:38,slatThickness:1.5,band:90,bambooPitch:10,sheet:1};
 const types={
+ art_glass_partition:{kind:'玻璃隔断',family:'art-glass',height:2400,anchor:'bottom',defaultFrontClearance:0,defaults:{mountHeight:0,artGlassPattern:'fluted'},fields:['mountHeight','artGlassPattern'],create:['mountHeight','artGlassPattern'],glass:{minWidth:100,minDepth:3,maxDepth:30,minHeight:100,maxSize:6000},solidModel:{global:'FurnishArtGlassModel',module:'art-glass',geometryVersion:1}},
  balcony_plant_rack:{kind:'置物架',height:1600,defaultFrontClearance:0,garden:{kind:'rack',post:30,board:20,minWidth:600,minDepth:200,minHeight:800},solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:1}},
  balcony_plant_rack_step:{kind:'置物架',height:1300,defaultFrontClearance:0,defaults:{rackLowerHeight:800,rackUpperDepth:300,rackPost:30,rackBoard:20,rackSlatGap:8},fields:['rackLowerHeight','rackUpperDepth','rackPost','rackBoard','rackSlatGap'],create:['rackLowerHeight','rackUpperDepth','rackPost','rackBoard','rackSlatGap'],garden:{kind:'rack',stepped:true,minWidth:600,minDepth:400,minHeight:1000},solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:1}},
  plant_clivia:{kind:'绿植',height:650,anchor:'bottom',defaultFrontClearance:0,garden:{kind:'clivia',potDiameter:260,potHeight:230},defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishBalconyGardenModel',module:'balcony-garden',geometryVersion:2}},
@@ -165,7 +180,7 @@ for(const [type,envelope] of Object.entries(envelopes))types[type]={...types[typ
 // Historical vanity body/installation, separate from its basin, faucet and mirror envelope.
 types.vanity.cabinet={bodyHeight:450,bottom:330,aboveBody:1180,min:200,max:3200};
 function freeze(v){if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.values(v).forEach(freeze);Object.freeze(v);}return v;}
-freeze(fields);freeze(types);
+freeze(fields);freeze(types);freeze(artGlassPatterns);
 const definition=f=>Object.hasOwn(types,typeof f==='string'?f:f?.type)?types[typeof f==='string'?f:f.type]:null;
 // Local mm outline; custom models retain the rectangular fallback.
 // Curvature is a visual estimate, never an installation requirement.
@@ -287,10 +302,11 @@ function gardenLayout(f){
  if(post*4>=f.w||board+post>=lower)throw Error('立柱／板厚与架体尺寸冲突');
  return {lower,upperDepth,post,board,gap};
 }
-const footprintMinimum=(f,key)=>!f.obj&&definition(f)?.windowLining?(key==='w'?definition(f).windowLining.minWidth:definition(f).windowLining.minDepth):!f.obj&&key==='d'&&definition(f)?.telescopic?.leafDepth?definition(f).telescopic.panels*definition(f).telescopic.leafDepth:Number.isFinite(f?.[key])&&f[key]>0?Math.min(50,f[key]):50;
+const footprintMinimum=(f,key)=>!f.obj&&definition(f)?.glass?(key==='w'?definition(f).glass.minWidth:definition(f).glass.minDepth):!f.obj&&definition(f)?.windowLining?(key==='w'?definition(f).windowLining.minWidth:definition(f).windowLining.minDepth):!f.obj&&key==='d'&&definition(f)?.telescopic?.leafDepth?definition(f).telescopic.panels*definition(f).telescopic.leafDepth:Number.isFinite(f?.[key])&&f[key]>0?Math.min(50,f[key]):50;
 const height=f=>f.h??definition(f)?.height;
 const cabinetSpec=f=>definition(f)?.cabinet;
 const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f)?.bottom??0;
+const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
  if(key==='tvImage'){
@@ -317,10 +333,10 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(['windowSurroundThickness','windowSurroundSides'].includes(key))windowLining({...f,[key]:v});if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){gardenLayout(f);const garden=definition(f)?.garden;if(!f.obj&&garden?.kind==='rack'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<garden.minWidth||f.d<garden.minDepth||height(f)<garden.minHeight))throw Error(`开放花架宽至少${garden.minWidth}、深至少${garden.minDepth}、高至少${garden.minHeight}mm`);windowLining(f);const cb=definition(f)?.cornerBookcase;if(!f.obj&&cb&&(f.w<cb.minWidth||f.d<cb.minDepth||height(f)<cb.minHeight))throw Error(`转角书柜布局草模宽深至少${cb.minWidth}、高至少${cb.minHeight} mm`);const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){artGlass(f);gardenLayout(f);const garden=definition(f)?.garden;if(!f.obj&&garden?.kind==='rack'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<garden.minWidth||f.d<garden.minDepth||height(f)<garden.minHeight))throw Error(`开放花架宽至少${garden.minWidth}、深至少${garden.minDepth}、高至少${garden.minHeight}mm`);windowLining(f);const cb=definition(f)?.cornerBookcase;if(!f.obj&&cb&&(f.w<cb.minWidth||f.d<cb.minDepth||height(f)<cb.minHeight))throw Error(`转角书柜布局草模宽深至少${cb.minWidth}、高至少${cb.minHeight} mm`);const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 // User-facing kinds are independent of renderer IDs, product identities and plan names.
 const kindGroups={
- '石英石窗台板':'quartz_sill', '木制窗套':'window_surround',
+ '艺术玻璃隔断':'art_glass_partition', '石英石窗台板':'quartz_sill', '木制窗套':'window_surround',
  '叠放方凳':'stool_citylong_370', '占位体':'block', '平板灯':'panel_light_300x600', '浴霸':'bath_heater_aopu_se2 bath_heater_300x600',
  '筒灯':'downlight_philips_dl269', '地暖分水器':'heating_manifold', '强电箱':'electrical_box_strong', '弱电箱':'electrical_box_weak',
  '鱼缸':'aquarium_mijia_2pro', '燃气灶':'stove stove_fotile_th36b', '抽油烟机':'rangehood_fotile_jcd10ta',
@@ -392,6 +408,13 @@ function teaBarOpeningZones(f){
  return teaBarDoors(f).map((d,column)=>({kind:'cabinetdoor',column,section:d.section,poly:hull(Array.from({length:51},(_,i)=>d.polygon(r.angle*i/50)).flat()).map(transform),ranges:[[d.bottom,d.top]]}));
 }
 // Full-width horizontal boards cap the two side boards. No back or face trim.
+function artGlass(f){
+ const r=definition(f)?.glass;if(!r||f.obj)return null;
+ const h=height(f),bottom=value(f,'mountHeight'),pattern=value(f,'artGlassPattern');
+ if(![f.w,f.d,h,bottom].every(Number.isFinite)||f.w<r.minWidth||f.w>r.maxSize||h<r.minHeight||h>r.maxSize||f.d<r.minDepth||f.d>r.maxDepth||bottom<0||bottom>fields.mountHeight.max)throw Error('艺术玻璃宽高须为100–6000、厚度3–30、底部离地0–20000 mm（软件范围，非安装要求）');
+ if(!Object.hasOwn(artGlassPatterns,pattern))throw Error(fields.artGlassPattern.message);
+ return {w:f.w,d:f.d,h,bottom,pattern};
+}
 function windowLining(f){
  const rule=definition(f)?.windowLining;if(!rule||f.obj)return null;
  const w=f.w,d=f.d,h=height(f),bottom=value(f,'mountHeight');
@@ -539,7 +562,8 @@ function replacementResizeSource(previous,candidate){
  const next={...previous};for(const key of Object.keys(fields))if(!retainReplacementField(previous,candidate,key))delete next[key];
  if(previous.type===candidate.type)customSinkCandidate(next,candidate);
  // Cross-product resizing keeps placement without imposing source construction limits.
- else if(definition(previous)?.manifold||family(previous,'window-lining'))next.type='custom';
+ else if(family(candidate,'art-glass'))next.type=candidate.type;
+ else if(definition(previous)?.manifold||family(previous,'window-lining')||family(previous,'art-glass'))next.type='custom';
  return next;
 }
 function replacement(previous,next,candidate){
@@ -551,17 +575,17 @@ function replacement(previous,next,candidate){
   const retain=retainReplacementField(previous,next,key);
   if(!retain)delete next[key];
  }
- if(definition(next)?.washerProfile||definition(next)?.ceilingPanel||definition(next)?.downlight||definition(next)?.manifold||family(next,'floor-aircon')||family(next,'tea-bar')||family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'window-lining')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
+ if(definition(next)?.washerProfile||definition(next)?.ceilingPanel||definition(next)?.downlight||definition(next)?.manifold||family(next,'floor-aircon')||family(next,'tea-bar')||family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'art-glass')||family(next,'window-lining')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
  if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
  if(family(next,'window-covering'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
- if(family(next,'window-lining'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
+ if(family(next,'window-lining')||family(next,'art-glass'))next.frontClearance=candidate.frontClearance??definition(next).defaultFrontClearance;
  if(family(next,'window-covering'))for(const key of definition(next).fields)if(candidate[key]!==undefined||next[key]===undefined)next[key]=candidate[key]??value({type:next.type},key);
  if(next.type==='ksink'){customSinkCandidate(next,candidate);validate(next);}
  if(family(next,'arrow-shower')){delete next.mountHeight;next.showerMixerHeight=previous.type===next.type?showerInstallation(previous).mixer:value({type:next.type},'showerMixerHeight');for(const [key,v] of Object.entries(definition(next).identity))next[key]=candidate[key]||v;}
  if(next.type==='tripleslidingwindow')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
  if(next.type==='kitchenwall')next.mountHeight=previous.type===next.type?value(previous,'mountHeight'):value({type:next.type},'mountHeight');
- if(definition(next)?.manifold||family(next,'pipe-box')||family(next,'window-lining'))validate(next);return next;
+ if(definition(next)?.manifold||family(next,'pipe-box')||family(next,'art-glass')||family(next,'window-lining'))validate(next);return next;
 }
 // Shared millimetre track geometry. The leading leaf is furthest from the stack.
 const slidingGlass=Object.freeze({color:'#f7fcff',planColor:'#f3fafc',opacity:.18,roughness:.12});
@@ -652,6 +676,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

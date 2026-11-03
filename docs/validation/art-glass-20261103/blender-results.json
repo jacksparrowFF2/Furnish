@@ -1,0 +1,172 @@
+{
+  "blender": "5.2.3 LTS",
+  "executable": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "device": {
+    "requested": "auto",
+    "type": "GPU",
+    "backend": "OPTIX",
+    "devices": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER"
+    ],
+    "fallback": null
+  },
+  "transfers": [
+    {
+      "file": "desktop.glb",
+      "dimensions": [
+        1.100000023841858,
+        0.006500000134110451,
+        2.200000047683716
+      ],
+      "id": "fmw0vb8c347"
+    },
+    {
+      "file": "file.glb",
+      "dimensions": [
+        0.8999999761581421,
+        0.00800000037997961,
+        2.4000000953674316
+      ],
+      "id": "fmw0vbpdx47"
+    }
+  ],
+  "apiDownloadReopened": true,
+  "panes": [
+    {
+      "name": "Furniture_sample-cube_1",
+      "dimensions": [
+        0.24000000953674316,
+        0.00800000037997961,
+        0.3600000739097595
+      ],
+      "pattern": "art-glass-cube",
+      "slots": [
+        "art-glass-polished-edge",
+        "art-glass-cube"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-reeded_10",
+      "dimensions": [
+        0.23999999463558197,
+        0.00800000037997961,
+        0.3600000739097595
+      ],
+      "pattern": "art-glass-reeded",
+      "slots": [
+        "art-glass-polished-edge.001",
+        "art-glass-reeded"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-fluted_19",
+      "dimensions": [
+        0.24000000953674316,
+        0.00800000037997961,
+        0.3600000739097595
+      ],
+      "pattern": "art-glass-fluted",
+      "slots": [
+        "art-glass-polished-edge.002",
+        "art-glass-fluted"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-silver-wave_28",
+      "dimensions": [
+        0.24000000953674316,
+        0.00800000037997961,
+        0.36000001430511475
+      ],
+      "pattern": "art-glass-silver-wave",
+      "slots": [
+        "art-glass-polished-edge.003",
+        "art-glass-silver-wave"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-water-wave_37",
+      "dimensions": [
+        0.23999999463558197,
+        0.00800000037997961,
+        0.36000001430511475
+      ],
+      "pattern": "art-glass-water-wave",
+      "slots": [
+        "art-glass-polished-edge.004",
+        "art-glass-water-wave"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-ingot_46",
+      "dimensions": [
+        0.24000000953674316,
+        0.00800000037997961,
+        0.36000001430511475
+      ],
+      "pattern": "art-glass-ingot",
+      "slots": [
+        "art-glass-polished-edge.005",
+        "art-glass-ingot"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-pear_55",
+      "dimensions": [
+        0.24000000953674316,
+        0.00800000037997961,
+        0.36000001430511475
+      ],
+      "pattern": "art-glass-pear",
+      "slots": [
+        "art-glass-polished-edge.006",
+        "art-glass-pear"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-mist_64",
+      "dimensions": [
+        0.23999999463558197,
+        0.00800000037997961,
+        0.36000001430511475
+      ],
+      "pattern": "art-glass-mist",
+      "slots": [
+        "art-glass-polished-edge.007",
+        "art-glass-mist"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    },
+    {
+      "name": "Furniture_sample-diamond_73",
+      "dimensions": [
+        0.24000000953674316,
+        0.00800000037997961,
+        0.36000001430511475
+      ],
+      "pattern": "art-glass-diamond",
+      "slots": [
+        "art-glass-polished-edge.008",
+        "art-glass-diamond"
+      ],
+      "normalsEmbedded": true,
+      "transmission": 1.0
+    }
+  ],
+  "reopened": true
+}

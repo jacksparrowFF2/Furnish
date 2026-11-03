@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-40份产品／设计档案，133张参考图，12张历史原图待补；15组Blender模型。参数化验证配置80组，全部家具库139条目／112种类型。
+41份产品／设计档案，136张参考图，12张历史原图待补；15组Blender模型。参数化验证配置86组，全部家具库145条目／118种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -14,6 +14,7 @@
 | [米家-智能鱼缸2Pro](aquarium-mijia-2pro/README.md) | 0 | 参数化 | 2 |
 | [源氏木语-Y09HS-亚麻色单人沙发椅](armchair/README.md) | 9 | [BLEND](armchair/v4/armchair-v1.blend) · [GLB](armchair/v4/armchair-v1.glb) | 0 |
 | [源氏木语-柏林单人沙发椅](armchair-berlin/README.md) | 2 | [BLEND](armchair-berlin/v3/armchair-berlin-v1.blend) · [GLB](armchair-berlin/v3/armchair-berlin-v1.glb) | 0 |
+| [九款艺术玻璃隔断](art-glass/README.md) | 3 | 参数化 | 0 |
 | [定制柜体设计图](cabinet-design-references/README.md) | 3 | 参考资料 | 0 |
 | [猫爬架-绿叶成荫围栏款](cat-tree/README.md) | 1 | 参数化 | 0 |
 | [石膏板吊顶与灯带](ceiling-lighting/README.md) | 5 | 参考资料 | 0 |
