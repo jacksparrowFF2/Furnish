@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-03（侧收口）：product-rules集中侧枚举与50mm初值／范围，cabinet-core派生外侧正面薄板、配色及占地；cabinet-model供预览、数字板件与GLB共用，SVG和厨房父组合显示同源投影。可选cabinet.sideClosures使用v45项目／工作区／恢复缓存，旧缺失不开启；完整配置覆盖实体与三维缓存／空间确认，颜色仍排除。原草稿、mutate、保存与经典脚本加载保持，见[收口验收](validation/cabinet-side-closure-20261103/README.md)。
+
 2026-11-02（工作区层级）：workflow-tools沿drawer／panes提供任务快捷切换与紧凑工具菜单，observation-layers沿原mutate提供分组展开及按可用画布宽度浮动；菜单中的铺砖／吊顶入口与工具选中态同步调整调用方。核对概览与画布入口共用review计数，预算只移动原有DOM到折叠容器，不另建保存通道。history-sharing的方案选择器仍调用switchDesign；catalog-compact仅使用huxing-panes本机偏好。无新加载脚本或项目字段，见[工作区验收](validation/workspace-ui-20261102/README.md)。
 
 2026-11-01（阶梯花架）：product-rules.gardenLayout集中派生及校验五项独立结构输入，balcony-garden-model生成上下错位的板条与真实立柱。实体／三维缓存及核对上下文只为阶梯款追加结构值；属性沿mutate、MCP沿产品能力配置，采用v44项目／工作区／恢复缓存，无新脚本加载。原花架和其它型号的核对上下文保持，见[阶梯款](validation/stepped-rack-20261101/README.md)。
