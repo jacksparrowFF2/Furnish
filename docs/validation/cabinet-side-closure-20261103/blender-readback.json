@@ -1,0 +1,25 @@
+{
+  "blender": "5.2.3 LTS",
+  "strips": [
+    {
+      "side": "left",
+      "dimensionsM": [
+        0.05000000074505806,
+        0.017999999225139618,
+        2.200000047683716
+      ],
+      "partKey": "named:[\"call:cabinet-model.js:generator-call-25\",\"call:cabinet-side-closure:left:0\",\"call:cabinet-model:site-1\",\"call:model-primitives:site-2\",\"call:model-primitives:site-1\"]",
+      "material": "Material_107"
+    },
+    {
+      "side": "right",
+      "dimensionsM": [
+        0.07999999821186066,
+        0.017999999225139618,
+        2.200000047683716
+      ],
+      "partKey": "named:[\"call:cabinet-model.js:generator-call-25\",\"call:cabinet-side-closure:right:0\",\"call:cabinet-model:site-1\",\"call:model-primitives:site-2\",\"call:model-primitives:site-1\"]",
+      "material": "Material_107"
+    }
+  ]
+}

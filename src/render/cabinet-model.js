@@ -16,6 +16,11 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    if(roundedBookcase)mesh.userData.furnishBoardSize=[W,H,D];
    parent.add(mesh);return mesh;};
   const closure=C.topClosure(c),panels=C.endPanels(c);
+  if(!options.skipSideClosures)for(const part of C.sideClosureParts(f,c)){
+   const shade=C.sideClosureColor(f,part.column,c);
+   const strip=syncIdentity.produce('cabinet-side-closure:'+part.side+':'+part.index,()=>add(g,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000,shade));
+   strip.userData.cabinetSideClosure=part.side;strip.userData.cabinetBay={column:part.column};
+  }
   if(closure.height&&!options.skipTopClosure){
    for(const part of C.topClosureParts(f,c)){
     const column=part.column;
@@ -26,7 +31,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   }
   if(c.boxConstruction==='independent'){
    for(const part of C.boxParts(f)){
-    const child=syncIdentity.produce('cabinet-independent:box:'+part.column,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[],skipTopClosure:true}));
+    const child=syncIdentity.produce('cabinet-independent:box:'+part.column,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[],skipTopClosure:true,skipSideClosures:true}));
     child.position.x=part.center/1000;
     child.traverse(o=>{for(const [key,value] of Object.entries(o.userData))if(value&&typeof value==='object'&&Number.isInteger(value.column))o.userData[key]={...value,column:part.column+value.column,...(Number.isInteger(value.divider)?{divider:part.column+value.divider}:{})};if(o.userData.cabinetSide==='left'&&part.column>0)o.userData.cabinetDivider={divider:part.column-1,column:part.column-1};if(o.userData.cabinetSide==='right'&&part.column+part.count<c.columns.length)o.userData.cabinetDivider={divider:part.column+part.count-1,column:part.column+part.count-1};});
     g.add(child);

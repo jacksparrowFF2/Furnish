@@ -60,6 +60,7 @@
 .cab-fields label:has(>input[type=checkbox]) {flex-direction:row!important;align-items:flex-start;gap:8px!important;line-height:1.5}
 .hood-bay-check {grid-column:1/-1}
 .hood-bay-check input[type=checkbox] {width:18px;height:18px;min-width:18px;flex:none;accent-color:var(--accent)}
+#cab-form input[data-side-closure-enable] {width:18px;height:18px;min-width:18px;min-height:18px;margin:0;padding:0;flex:none;accent-color:var(--accent)}
 #cab-tools {padding:12px;background:var(--soft,#8881);border-radius:10px;margin-bottom:16px}
 #cab-tools label {display:flex;gap:8px;align-items:center;margin:8px 0;font-size:13px}
 .cab-drawer-row {padding:10px;background:var(--soft,#8881);border-radius:8px;margin:8px 0}

@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "left/right default 50, independent width 80, body width unchanged, editor save and 2D, undo/redo",
+    "formal isolated file save and refresh",
+    "cancel discards edits",
+    "production GLB retains both strip meshes",
+    "actual packaged EXE WebGL, cabinet preview and 390px input access",
+    "HTTP shares saved v45; offline file:// production 2D/3D and project restore"
+  ],
+  "errors": [],
+  "source": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "sourceUnchanged": true,
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\cabinet-side-closure\\2026-11-03T15-37-55-985Z"
+}

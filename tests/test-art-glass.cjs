@@ -30,6 +30,7 @@ assert.notEqual(J.checkFingerprint({kind:'overlap',id:base.id},{rooms:[],walls:[
   assert(S.directional(f,{furniture:[{...other,cx:0,w:5000}]}).r.containedBoundary);
  }
  const plan=require('../src/data/plans.js')[0],W=require('../src/core/work-state.js').create({makeId:()=> 'fixture',colorFor:()=> '#fff',materials:require('../src/data/catalog.js').materials}),work={...W.fresh(plan),furniture:[base]};
+ const C=require('../src/core/cabinet-core.js'),cab=C.setSideClosures({id:'cab',type:'wardrobe',cx:3000,cy:3000,rot:0,color:'#ad9678',...C.preset('wardrobe')},{left:50,right:0});assert.equal(J.formatVersion([{furniture:[cab]}]),45);assert.equal(J.formatVersion([{furniture:[cab,base]}]),46);
  const payload={planId:plan.id,current:work,designs:[{name:'玻璃',work:structuredClone(work)}],catalog:[{...base,id:'my-pane',price:0}]};assert.equal(J.pack(payload).version,46);assert.deepEqual(J.unpack(J.pack(payload)),payload);
  const workspace={v:46,planId:plan.id,work:{[plan.id]:work},designs:[],customPlans:[],custom:[],updatedAt:100};assert.deepEqual(R.parse(JSON.parse(R.text(workspace))).work[plan.id].furniture,[base]);
  assert.deepEqual(Cache.load({read:key=>key==='huxing-design-v46'?JSON.stringify(workspace):null,key:'huxing-design-v46',firstPlan:plan,restore:W.restore}).work[plan.id].furniture,[base]);
@@ -43,5 +44,3 @@ assert.notEqual(J.checkFingerprint({kind:'overlap',id:base.id},{rooms:[],walls:[
  const procure=J.procurement({rooms:[]},{furniture:[base,{...base,id:'pear',artGlassPattern:'pear'}]});assert.equal(procure.items.length,2);assert(procure.items[1].model.includes('香梨'));
  console.log('PASS art glass: nine optical maps, actual production bounds/normals/materials, thin dimensions, validation/resize/locks, rotated/mirrored spatial contact/overlap/unknown height/directional containment, v46 project/workspace/cache and legacy repeat restore, copy/replace and spatial review');
 })().catch(e=>{console.error(e);process.exitCode=1;});
-
-

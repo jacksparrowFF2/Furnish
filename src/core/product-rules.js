@@ -8,6 +8,8 @@ const cabinetConstruction={modes:['shared','independent'],default:'shared',joint
 const wardrobeHanging={template:'wardrobe-hanging',profile:25,endGap:2,topOffset:60,minGap:600};
 const cabinetDoorLimits={min:1,max:180,sections:['storage','lower','upper','display','fridgeUpper'],maxLeaves:12};
 const cabinetTopClosure={height:{min:0,max:300,default:50},doorGap:{min:0,max:50,default:10}};
+// Software design range; width is the visible front strip, not board thickness.
+const cabinetSideClosure={width:{min:1,max:300,default:50},sides:['left','right']};
 const pegboardAssembly={parts:['upper','left','right','lower','displayShelves','hooks','light'],accessoryParts:['displayShelves','hooks','light'],legacyParts:['accessories'],structureParts:['upper','left','right','lower'],thickness:18,hatch:{modes:['manual','auto'],maxPanels:16,minWeb:20,margin:20,min:50,gap:2,angle:100,defaultWidth:400,defaultHeight:300,fitPadding:10,padding:{sides:['top','bottom','left','right'],min:0,max:100},maxRearGap:500,alignmentDegrees:1},holes:{diameter:9,minDiameter:2,maxDiameter:30,margin:30,pitch:40,maxCount:3000,maxAxis:200,minWeb:2},bottom:{min:0,max:20000}};
 const kitchen=()=>root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
 // Sample names follow the user's photos. Pitch/relief are visual estimates (mm),
@@ -209,7 +211,7 @@ function pocketLayout(f){
  return {opening,pocket,clearHeight,leaves,parts};
 }
 function stoolStack(f){if(!family(f,'stack-stool')||f.obj)return null;const count=value(f,'stoolCount'),pitch=value(f,'stoolPitch'),singleHeight=height(f);return {count,pitch,singleHeight,height:singleHeight+(count-1)*pitch};}
-function dimensions(f){if(definition(f)?.sofaBedProfile&&!f.obj){const b=(root.FurnishSofaBed||require('./sofa-bed-core.js')).layout(f);return {w:f.w,d:b.depth,h:height(f)};}const stack=stoolStack(f);if(stack)return {w:f.w,d:f.d,h:stack.height};const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
+function dimensions(f){if(definition(f)?.sofaBedProfile&&!f.obj){const b=(root.FurnishSofaBed||require('./sofa-bed-core.js')).layout(f);return {w:f.w,d:b.depth,h:height(f)};}const stack=stoolStack(f);if(stack)return {w:f.w,d:f.d,h:stack.height};const p=f.cabinet?.sideClosures;if(p&&!f.obj)return {w:f.w+(p.left||0)+(p.right||0),d:f.d,h:f.h??height(f)};const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
 // Reference geometry only: widths include valves/caps, left length starts at the header inlet.
 function manifoldLayout(f){
  const r=definition(f)?.manifold;if(!r||f.obj)return null;
@@ -242,6 +244,7 @@ function planBodyOutline(f,segments){
  if(!f.obj&&definition(f)?.hoodMotion)return (root.FurnishHoodMotion||require('./hood-motion-core.js')).outline(f);
  if(!f.obj&&definition(f)?.foldAsset)return (root.FurnishDishwasherFold||require('./dishwasher-fold-core.js')).outline(f);
  if(!f.obj&&definition(f)?.fridgeMotion)return (root.FurnishFridge||require('./fridge-core.js')).outline(f);
+ if(!f.obj&&f.cabinet?.sideClosures)return (root.FurnishCabinet||require('./cabinet-core.js')).sideClosureOutline(f);
  const b=assemblyBounds(f);if(b)return [[b.left,b.back],[b.right,b.back],[b.right,b.front],[b.left,b.front]];
  const shape=!f.obj&&definition(f)?.planShape;if(!shape)return null;
  const count=segments||shape.segments,signed=v=>Math.abs(v)<1e-12?0:Math.sign(v)*Math.pow(Math.abs(v),shape.exponent);
@@ -676,6 +679,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  washChannel:{width:43.5,height:18.5,clearWidth:12.5,wall:2,gap:8},
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
-const api={catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
