@@ -788,7 +788,9 @@ function mat(color, o = {}){
 // 按当前主题（重）建墙体材质；skirtMat 只改颜色
 function themeMats(){
   wallMat = mat(DK() ? '#37332b' : '#f4f1eb', {roughness:.92});
-  capMat = mat(DK() ? '#141210' : '#34312d', {roughness:.9});
+  // Coplanar beam tops overlap wall caps at roof height. Give only the cap
+  // a small raster depth priority; keep architectural geometry/heights intact.
+  capMat = mat(DK() ? '#141210' : '#34312d', {roughness:.9, polygonOffset:true, polygonOffsetFactor:0, polygonOffsetUnits:-4});
   frameMat = mat('#5d6166', {roughness:.5, metalness:.4});
   skirtMat.color.set(DK() ? '#4a443b' : '#8b7f6e');
 }
