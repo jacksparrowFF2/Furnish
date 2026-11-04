@@ -80,10 +80,11 @@
     }
   ],
   "validation": [
-    "docs/validation/chair-vihals-20261104/README.md"
+    "docs/validation/chair-vihals-20261104/README.md",
+    "docs/validation/chair-vihals-folding-20261104/README.md"
   ],
   "notes": [
-    "官方原模保留；适配布局外包430×470×800mm。原模宽约443mm，尺寸口径差异见型号文档。",
-    "仅展开静态，不带已验证折叠机构；源贴图1024²，离线贴图512²。"
+    "v2支持展开／折叠端态、承托高度及预览配色；v1展开源和官方原件保留。",
+    "官方折叠标注高880／深90mm，当前官方网格刚性折起约895.648高／89.081深，按较大生产包络核对。连续连杆与完整折叠扫掠未验证。"
   ]
 }

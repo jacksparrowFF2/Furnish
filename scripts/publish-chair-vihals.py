@@ -3,7 +3,8 @@ import bpy,json,pathlib,sys,hashlib,base64,math
 args=sys.argv[sys.argv.index('--')+1:];source=pathlib.Path(args[0]);target=pathlib.Path(args[1]);result=pathlib.Path(args[args.index('--result')+1])
 try:
  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);bpy.ops.import_scene.gltf(filepath=str(source))
- contract=json.loads((pathlib.Path(__file__).parent/'lib/chair-vihals-contract.json').read_text())
+ spec=json.loads(pathlib.Path(args[args.index('--spec')+1]).read_text(encoding='utf-8'))
+ contract={'profile':'chair-vihals','materialSlots':1,'parts':spec['parts'],'motions':spec['motions']}
  sys.path.insert(0,str(pathlib.Path(__file__).parent/'lib'))
  from blender_asset_preflight import check_contract
  check_contract(bpy.context.scene,contract)
@@ -20,7 +21,8 @@ try:
   index=len(textures);textures.append({'width':w,'height':h,'rgba':base64.b64encode(rgba).decode()});image_indices[image.name]=index;return index
  parts=[]
  for o in sorted(bpy.context.scene.objects,key=lambda o:o.name):
-  if o.type!='MESH':raise ValueError('Official adapter supports deployed static meshes only')
+  if o.type=='EMPTY':continue
+  if o.type!='MESH':raise ValueError('Unexpected official object')
   mesh=o.data;mesh.calc_loop_triangles();uv=mesh.uv_layers.active
   if not uv:raise ValueError('Missing UV '+o.name)
   positions=[];normals=[];uvs=[];normal_matrix=o.matrix_world.to_3x3().inverted().transposed()
@@ -37,11 +39,11 @@ try:
    if n.type=='SEPARATE_COLOR':n=n.inputs[0].links[0].from_node
    if n.type!='TEX_IMAGE':raise ValueError('Unexpected texture graph')
    return image_index(n.image)
-  parts.append({'name':o.name,'identity':o['furnishStablePart'],'recolor':False,'positions':positions,'normals':normals,'uvs':uvs,'texture':texture_at('Base Color'),'ormTexture':texture_at('Roughness'),'material':{'color':'#ffffff','roughness':1,'metalness':1}})
+  parts.append({'name':o.name,'identity':o['furnishStablePart'],'role':o.parent.get('furnishMotionRole') if o.parent else None,'recolor':False,'positions':positions,'normals':normals,'uvs':uvs,'texture':texture_at('Base Color'),'ormTexture':texture_at('Roughness'),'material':{'color':'#ffffff','roughness':1,'metalness':1}})
  for k,(low,high) in enumerate([(-.215,.215),(0,.8),(-.235,.235)]):
   values=[v for p in parts for v in p['positions'][k::3]]
   if max(abs(min(values)-low),abs(max(values)-high))>1e-6:raise ValueError('Reference envelope changed')
- payload={'format':1,'version':1,'id':'chair-ikea-vihals','sizeMm':[430,800,470],'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'parts':parts,'textures':textures}
+ payload={'format':1,'version':2,'motions':spec['motions'],'id':'chair-ikea-vihals','sizeMm':[430,800,470],'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'parts':parts,'textures':textures}
  body=json.dumps(payload,separators=(',',':'),allow_nan=False)
  text='/* Official VIHALS derived asset; see assets/models/chair-vihals/README.md. */\n(function(root){const asset='+body+';if(typeof module==="object"&&module.exports)module.exports=asset;else root.FurnishVihalsBlenderAsset=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
  target.parent.mkdir(parents=True,exist_ok=True);temp=target.with_suffix('.tmp');temp.write_text(text,encoding='utf-8');temp.replace(target)

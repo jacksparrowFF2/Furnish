@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-04（折叠椅端态与配色）：folding-chair-core统一三组刚性端态与实际顶点包络；product-rules声明foldingChairFolded／既有mountHeight和geometryVersion2。生产、二维、实体、缓存／空间确认同源；主体配色沿color，销钉不染色。显式配置采用项目／工作区／恢复缓存v47，旧缺失展开且不补写。新增一个经典核心脚本，无独立保存通道；见[端态与收纳](CHAIR-IKEA-VIHALS.md)。
+
 2026-11-04（VIHALS折叠椅）：product-rules声明独立chair_ikea_vihals身份、800mm高度和落地包络；folding-chair-model复用static-asset构造及官方15件网格，专用受限发布器内嵌UV／512²颜色与ORM贴图。新增两个本地经典资产／模型脚本，测距与碰撞沿原生产记录器，无新字段／格式或保存通道；展开静态及来源外包差异见[VIHALS](CHAIR-IKEA-VIHALS.md)。
 
 2026-11-03（艺术玻璃）：product-rules统一九款花纹、尺寸和离地；art-glass-model生产参数化闭合板及单面内嵌法线供主场景／GLB／数值实体共用。新经典脚本支持HTTP及离线file，artGlassPattern参与3D缓存而不影响空间确认；含新类型采用v46并保留历史工作区读取。见[玻璃隔断](ART-GLASS.md)。

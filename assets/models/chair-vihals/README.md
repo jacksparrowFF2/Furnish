@@ -8,11 +8,11 @@
 
 | 内容 | 文件 |
 |---|---|
-| 可编辑源 | [BLEND](v1/chair-vihals-v1.blend) |
-| 交换模型 | [GLB](v1/chair-vihals-v1.glb) |
+| 可编辑源 | [BLEND](v2/chair-vihals-v1.blend) |
+| 交换模型 | [GLB](v2/chair-vihals-v1.glb) |
 | 离线运行资产 | [JS](../../../src/data/chair-vihals-blender-asset.js) |
 | 生产构造器 | [代码](../../../src/render/folding-chair-model.js) |
-当前源GLB SHA256：fadc8815a79df00075a378a263bd13618f9ff52b34c98b0d5b65cdecdff8131d。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
+当前源GLB SHA256：554636046693de5339b36e96fe2551baaa159125eb773e6d8225d63b41e99569。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
 
 ## 输入参考资料
 
@@ -45,8 +45,9 @@
 ## 验收入口
 
 - [验收资料](../../../docs/validation/chair-vihals-20261104/README.md)
+- [验收资料](../../../docs/validation/chair-vihals-folding-20261104/README.md)
 
 ## 资料差异
 
-- 官方原模保留；适配布局外包430×470×800mm。原模宽约443mm，尺寸口径差异见型号文档。
-- 仅展开静态，不带已验证折叠机构；源贴图1024²，离线贴图512²。
+- v2支持展开／折叠端态、承托高度及预览配色；v1展开源和官方原件保留。
+- 官方折叠标注高880／深90mm，当前官方网格刚性折起约895.648高／89.081深，按较大生产包络核对。连续连杆与完整折叠扫掠未验证。

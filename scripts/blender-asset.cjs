@@ -17,13 +17,14 @@ async function main(args=process.argv.slice(2)){
  if(profile==='corner-bookcase'||profile==='corner-bookcase-580')fs.writeFileSync(spec,JSON.stringify(require('../src/core/corner-bookcase-core.js').spec(profile==='corner-bookcase-580'?'580':undefined)));
  if(profile==='side-table')fs.writeFileSync(spec,JSON.stringify(require('../src/core/side-table-core.js').spec()));
  if(profile==='sofa-bed')fs.writeFileSync(spec,JSON.stringify(require('../src/core/sofa-bed-core.js').spec()));
+ if(profile==='chair-vihals')fs.writeFileSync(spec,JSON.stringify(require('../src/core/folding-chair-core.js').spec()));
  const contract=path.join(job,'preflight-contract.json');
  if(operation==='author'){
-  const asset=['chair-s05118','chair-vihals'].includes(profile)?{parts:require('./lib/'+profile+'-contract.json').parts,motions:[]}:profile==='sofa-bed'?JSON.parse(fs.readFileSync(spec)):profile==='corner-bookcase-580'?(()=>{const s=JSON.parse(fs.readFileSync(spec));return {parts:s.parts.map(p=>({...p,identity:s.prefix+p.name})),motions:[]};})():require(path.join(root,'src/data/'+profile+'-blender-asset.js'));
+  const asset=profile==='chair-vihals'?JSON.parse(fs.readFileSync(spec)):['chair-s05118'].includes(profile)?{parts:require('./lib/'+profile+'-contract.json').parts,motions:[]}:profile==='sofa-bed'?JSON.parse(fs.readFileSync(spec)):profile==='corner-bookcase-580'?(()=>{const s=JSON.parse(fs.readFileSync(spec));return {parts:s.parts.map(p=>({...p,identity:s.prefix+p.name})),motions:[]};})():require(path.join(root,'src/data/'+profile+'-blender-asset.js'));
   fs.writeFileSync(contract,JSON.stringify({profile,materialSlots:1,parts:asset.parts.map(p=>({name:p.name,identity:p.identity,role:p.role||null})),motions:asset.motions||[]}));
  }
  const script=operation==='author'?'blender-model-'+(profile.startsWith('washer')?'washer':profile==='corner-bookcase-580'?'corner-bookcase':profile)+'.py':profile==='chair-vihals'?'publish-chair-vihals.py':'publish-blender-asset.py';
- const child=cp.spawn(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(__dirname,script),'--',source,...(operation==='publish'?[output,'--profile',profile]:[]),...(['sofa-bed','fridge','dishwasher','hood','washer','washer-tg10k60w','side-table','corner-bookcase','corner-bookcase-580'].includes(profile)?['--spec',spec]:[]),...(operation==='author'?['--preflight-contract',contract]:[]),'--result',result],{cwd:root,windowsHide:true,stdio:['ignore','pipe','pipe']});
+ const child=cp.spawn(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(__dirname,script),'--',source,...(operation==='publish'?[output,'--profile',profile]:[]),...(['chair-vihals','sofa-bed','fridge','dishwasher','hood','washer','washer-tg10k60w','side-table','corner-bookcase','corner-bookcase-580'].includes(profile)?['--spec',spec]:[]),...(operation==='author'?['--preflight-contract',contract]:[]),'--result',result],{cwd:root,windowsHide:true,stdio:['ignore','pipe','pipe']});
  let error;child.on('error',e=>error=e);child.on('exit',code=>{if(code)error=Error('Blender exited with '+code+'; inspect '+job);});child.stdout.pipe(log,{end:false});child.stderr.pipe(log,{end:false});
  // Store launchers exit before Blender; only a unique Python result confirms completion.
  try{

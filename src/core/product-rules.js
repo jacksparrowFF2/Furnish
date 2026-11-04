@@ -26,6 +26,7 @@ const artGlassPatterns={
  diamond:{label:'钻石',pitch:80,relief:1.15,roughness:.075}
 };
 const fields={
+ foldingChairFolded:{boolean:true,message:'折叠椅状态须为展开或折叠'},
  artGlassPattern:{values:Object.keys(artGlassPatterns),message:'请选择有效的艺术玻璃花纹'},
  windowSurroundSides:{values:['three','four'],message:'木制窗套须为三面或四面'},
  windowSurroundThickness:numeric(1,100,'木制窗套板厚须为 1–100 mm'),
@@ -109,7 +110,7 @@ const types={
  tv:{fields:['tvImage'],tvScreen:{maxInputBytes:20*1024*1024,maxDataLength:2*1024*1024,maxWidth:1600,maxHeight:900,maxSourcePixels:40e6}},
  sofa_bed_yeswood_y107h03:{height:770,family:"sofa-bed",sofaBedProfile:"y107h03",defaults:{sofaBedOpen:false},fields:["sofaBedOpen"],create:["sofaBedOpen"],sofaBedMotion:{size:[1250,770,838],foldLength:590,fixedPadDepth:760,padThickness:50,bedBase:250},solidModel:{global:"FurnishSofaBedModel",module:"sofa-bed",version:3},identity:{brand:"源氏木语/YESWOOD",model:"Y107H03 · 1.25米 · 山毛榉原木色 / 梨白",sourceUrl:"https://item.jd.com/10222453768218.html?pcdk=tYm4zPuxlfwfMDJGKB3FpmsLp6UaRNDrZfrEncvYAtvwb3VqGIj8y7DNuXVth1_2.rQ4a.tlbT"}},
  stool_citylong_370:{defaultFrontClearance:0,height:467,anchor:'bottom',family:'stack-stool',defaults:{mountHeight:0,stoolCount:1,stoolPitch:70},fields:['stoolCount','stoolPitch','mountHeight'],create:['stoolCount','stoolPitch','mountHeight'],solidModel:{global:'FurnishStackStoolModel',module:'stack-stool'},identity:{brand:'禧天龙/CITYLONG',model:'软包高凳 · 370×370×467 mm（型号未确认）'}},
- chair_ikea_vihals:{kind:'椅子',height:800,envelope:f=>[0,height(f)],defaultFrontClearance:0,family:'folding-chair',foldingChairProfile:'vihals',solidModel:{global:'FurnishFoldingChairModel',module:'folding-chair',geometryVersion:1},identity:{brand:'宜家/IKEA',model:'VIHALS 维哈斯 · 905.927.38 · 白色',sourceUrl:'https://item.jd.com/10167132712534.html'}},
+ chair_ikea_vihals:{kind:'椅子',height:800,envelope:f=>{const l=(root.FurnishFoldingChair||require('./folding-chair-core.js')).layout(f),bottom=value(f,'mountHeight');return [bottom,bottom+l.height];},defaultFrontClearance:0,family:'folding-chair',foldingChairProfile:'vihals',defaults:{foldingChairFolded:false,mountHeight:0},fields:['foldingChairFolded','mountHeight'],create:['foldingChairFolded','mountHeight'],foldingChairMotion:{mainPivot:[0,0,180],rearPivot:[0,548.5,-68.5],seatPivot:[0,430,-115],mainAngle:27,rearAngle:-16,seatAngle:-90,seatDrop:80,foldedNominal:[430,880,90]},solidModel:{global:'FurnishFoldingChairModel',module:'folding-chair',geometryVersion:2},identity:{brand:'宜家/IKEA',model:'VIHALS 维哈斯 · 905.927.38 · 白色',sourceUrl:'https://item.jd.com/10167132712534.html'}},
  chair_yeswood_s05118:{height:840,family:'lounge-chair',armchairProfile:'s05118',solidModel:{global:'FurnishArmchairModel',module:'armchair',geometryVersion:2},identity:{brand:'源氏木语/YESWOOD',model:'S05118 · 白蜡木原木色／奶茶色 · 660×660×840',sourceUrl:'https://item.jd.com/10115482828125.html'}},
  armchair_yeswood_berlin:{height:845,family:'lounge-chair',armchairProfile:'berlin',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'柏林休闲沙发椅 · 米色 · 710×850×845'}},
  armchair_yeswood_y09hs:{height:905,armchairProfile:'original',family:'lounge-chair',solidModel:{global:'FurnishArmchairModel',module:'armchair'},identity:{brand:'源氏木语/YESWOOD',model:'单人沙发椅 · 亚麻色 · 725×900×905',sourceUrl:'https://detail.tmall.com/item.htm?id=1013742104698&mi_id=0000YOu__P7FO1Od4DVMBOKIdVmXewhzkN4eAYmXTAOn9nU&skuId=6131810120970&spm=tbpc.boughtlist.suborder_itemtitle.1.24b02e8dUKATHx'}},
@@ -212,7 +213,7 @@ function pocketLayout(f){
  return {opening,pocket,clearHeight,leaves,parts};
 }
 function stoolStack(f){if(!family(f,'stack-stool')||f.obj)return null;const count=value(f,'stoolCount'),pitch=value(f,'stoolPitch'),singleHeight=height(f);return {count,pitch,singleHeight,height:singleHeight+(count-1)*pitch};}
-function dimensions(f){if(definition(f)?.sofaBedProfile&&!f.obj){const b=(root.FurnishSofaBed||require('./sofa-bed-core.js')).layout(f);return {w:f.w,d:b.depth,h:height(f)};}const stack=stoolStack(f);if(stack)return {w:f.w,d:f.d,h:stack.height};const p=f.cabinet?.sideClosures;if(p&&!f.obj)return {w:f.w+(p.left||0)+(p.right||0),d:f.d,h:f.h??height(f)};const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
+function dimensions(f){if(definition(f)?.foldingChairProfile&&!f.obj){const l=(root.FurnishFoldingChair||require('./folding-chair-core.js')).layout(f);return {w:l.size[0],d:l.size[2],h:l.height};}if(definition(f)?.sofaBedProfile&&!f.obj){const b=(root.FurnishSofaBed||require('./sofa-bed-core.js')).layout(f);return {w:f.w,d:b.depth,h:height(f)};}const stack=stoolStack(f);if(stack)return {w:f.w,d:f.d,h:stack.height};const p=f.cabinet?.sideClosures;if(p&&!f.obj)return {w:f.w+(p.left||0)+(p.right||0),d:f.d,h:f.h??height(f)};const b=assemblyBounds(f);return b?{w:b.w,d:b.d,h:b.h}:{w:f.w,d:f.d,h:f.h??height(f)};}
 // Reference geometry only: widths include valves/caps, left length starts at the header inlet.
 function manifoldLayout(f){
  const r=definition(f)?.manifold;if(!r||f.obj)return null;
@@ -238,6 +239,7 @@ function resizeManifold(f,next){
  if(f.manifoldLengths)next.manifoldLengths={upper:old.lengths.upper*ratio,lower:old.lengths.lower*ratio};
 }
 function planBodyOutline(f,segments){
+ if(!f.obj&&definition(f)?.foldingChairProfile)return (root.FurnishFoldingChair||require('./folding-chair-core.js')).outline(f);
  if(!f.obj&&definition(f)?.sofaBedProfile)return (root.FurnishSofaBed||require("./sofa-bed-core.js")).outline(f);
  if(!f.obj&&family(f,'corner-bookcase'))return (root.FurnishCornerBookcase||require('./corner-bookcase-core.js')).outline(f);
  if(!f.obj&&family(f,'side-table'))return (root.FurnishSideTable||require('./side-table-core.js')).outline(f);
@@ -551,7 +553,7 @@ function vertical(f){
  if(f.type==='vanity'&&f.cabinet){const spec=cabinetSpec(f);return {bottom:spec.bottom,top:spec.bottom+(f.cabinet.bodyHeight??spec.bodyHeight)+spec.aboveBody,source:'recorded'};}
  if(f.type==='stove_fotile_th36b'){const h=height(f),base=value(f,'counterElevation');return {bottom:base-80*h/138,top:base+58*h/138,source:'model'};}
  if(['stove','ksink'].includes(f.type)&&f.counterElevation!==undefined)return {bottom:f.counterElevation-(f.type==='ksink'?200:0),top:f.counterElevation+(f.type==='ksink'?320:40),source:'model'};
- const def=definition(f);if(def?.teaTable&&!f.obj)return {bottom:0,top:height(f)*def.teaTable.accessoryTop/def.teaTable.cabinetHeight,source:'model'};if(def?.envelope){const [bottom,top]=def.envelope(f);return {bottom,top:f.h===undefined?top:bottom+f.h,source:f.h===undefined?'model':'recorded'};}
+ const def=definition(f);if(def?.teaTable&&!f.obj)return {bottom:0,top:height(f)*def.teaTable.accessoryTop/def.teaTable.cabinetHeight,source:'model'};if(def?.envelope){const [bottom,top]=def.envelope(f);return {bottom,top:def.foldingChairProfile?top:f.h===undefined?top:bottom+f.h,source:f.h===undefined?'model':'recorded'};}
  if(!def?.anchor)return null;if(def.anchor==='mixer'){const {bottom,top}=showerInstallation(f);return {bottom,top,source:'model'};}
  const bottom=value(f,'mountHeight');return {bottom,top:bottom+height(f),source:f.h===undefined||f.type==='tripleslidingwindow'?'model':'recorded'};
 }

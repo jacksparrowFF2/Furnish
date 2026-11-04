@@ -1,5 +1,5 @@
 """Import the archived official VIHALS GLB, retain texture/UV, fit layout envelope.
-No reconstructed furniture geometry or guessed folding rig.
+Endpoint roles retain official geometry. Folding axes are layout estimates.
 """
 import bpy,bmesh,pathlib,sys,json,hashlib
 out=pathlib.Path(sys.argv[sys.argv.index('--')+1]).resolve();out.mkdir(parents=True,exist_ok=True)
@@ -25,6 +25,13 @@ for o in meshes:
   p=matrix@v.co;v.co=((p.x-(lo[0]+hi[0])/2)*.430/(hi[0]-lo[0]),(p.y-(lo[1]+hi[1])/2)*.470/(hi[1]-lo[1]),(p.z-lo[2])*.800/(hi[2]-lo[2]))
  o.matrix_world.identity();o.name=name;o['furnishStablePart']='chair-vihals-v1:'+name
  o['furnishRecolor']=False
+spec=json.loads(pathlib.Path(sys.argv[sys.argv.index('--spec')+1]).read_text(encoding='utf-8'))
+parents={}
+for m in spec['motions']:
+ parent=bpy.data.objects.new('motion:'+m['role'],None);bpy.context.collection.objects.link(parent);parent.location=(m['pivot'][0]/1000,-m['pivot'][2]/1000,m['pivot'][1]/1000);parent['furnishMotionRole']=m['role'];parent['furnishHingeAxis']=m['axis'];parents[m['role']]=parent
+bpy.context.view_layer.update()
+for o in meshes:
+ part=next(p for p in spec['parts'] if p['name']==o.name);matrix=o.matrix_world.copy();o.parent=parents[part['role']];o.matrix_world=matrix
 for image in bpy.data.images:
  if image.source=='FILE':image.pack()
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))

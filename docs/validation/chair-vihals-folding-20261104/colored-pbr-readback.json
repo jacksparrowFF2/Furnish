@@ -1,0 +1,102 @@
+{
+  "passed": true,
+  "source": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\chair-vihals-folding-desktop-UdJLXy\\colored-folded.glb",
+  "blender": "5.2.3 LTS",
+  "objects": 15,
+  "actualObjectMaterialSlots": true,
+  "uvAnd512Textures": true,
+  "coloredPbrFactorsReadback": true,
+  "unchangedPinAndAxleFactors": true,
+  "factors": {
+    "explicit:chair-vihals-v1:back-pin-left": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "explicit:chair-vihals-v1:back-pin-right": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "explicit:chair-vihals-v1:backrest": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:hinge-left": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:hinge-right": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:latch-right": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:main-frame": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:rear-frame": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:seat-axle-left": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "explicit:chair-vihals-v1:seat-axle-right": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "explicit:chair-vihals-v1:seat-pin-left": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "explicit:chair-vihals-v1:seat-top": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:seat-underside": [
+      0.5471202811104466,
+      0.2276251614136969,
+      0.12212115225140548,
+      1
+    ],
+    "explicit:chair-vihals-v1:upper-pin-left": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "explicit:chair-vihals-v1:upper-pin-right": [
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+}

@@ -124,6 +124,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       return svg+[-1,1].map(side=>rc(side*w*.235-w*.22,-180*s[2],w*.44,(layout.open?260:95)*s[2],'#e2dbcf','rx="9"')).join('');
     }
     case 'chair_ikea_vihals': {
+      if(products.value(f||{type:t},'foldingChairFolded')){const l=(root.FurnishFoldingChair||require('../core/folding-chair-core.js')).layout(f),depth=l.size[2];return rc(-w/2,-depth/2,w,depth,c,'rx="12"')+rc(-w*.43,-depth*.25,w*.86,depth*.5,c,'rx="10"');}
       return [-1,1].map(side=>rc(side*w*.47-w*.018,-d*.46,w*.036,d*.92,c,'rx="7"')).join('')+rc(-w*.453,-d*.40,w*.906,d*.87,c,'rx="36"')+rc(-w/2,-d*.5,w,d*.17,c,'rx="24"');
     }
     case 'chair_yeswood_s05118': {

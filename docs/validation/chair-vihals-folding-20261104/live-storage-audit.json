@@ -1,0 +1,26 @@
+{
+  "originalDesignId": "dmw0s0tm6",
+  "originalDesignUnchanged": true,
+  "activeDesignId": "dmw27gsnk",
+  "activeDesignName": "VIHALS折叠椅 · 柜内收纳展示",
+  "version": 47,
+  "chair": {
+    "brand": "宜家/IKEA",
+    "color": "#74856b",
+    "cx": 9931,
+    "cy": 7965,
+    "d": 470,
+    "foldingChairFolded": true,
+    "frontClearance": 0,
+    "h": 800,
+    "id": "fmw27h4d51",
+    "model": "VIHALS 维哈斯 · 905.927.38 · 白色",
+    "mountHeight": 68,
+    "name": "VIHALS折叠椅 · 柜内收纳",
+    "rot": 90,
+    "sourceUrl": "https://item.jd.com/10167132712534.html",
+    "type": "chair_ikea_vihals",
+    "w": 430
+  },
+  "savePath": "D:/1601装修/Furnish项目/workspace.furnish.json"
+}

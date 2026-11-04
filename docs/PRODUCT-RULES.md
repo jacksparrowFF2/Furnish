@@ -1,5 +1,11 @@
 # 产品能力规则与兼容验收
 
+## 2026-11-04：VIHALS折叠状态
+
+foldingChairFolded仅chair_ikea_vihals支持布尔值，新建false；旧缺失只读false而不物化。复用mountHeight，新建／缺失0，表示当前端态底部的承托高度。w/d/h继续为展开基体，folding-chair-core由实际生产顶点派生当前宽深高和平面；折叠部件先按基体尺寸拟合再刚性旋转／平移，不压缩座背。折叠图高880mm与官方网格约895.648mm有差异，界面如实显示模型包络，连续机构未知。
+
+复制、同型号保留；跨型号沿fields清理。显式状态或本型号mountHeight采用v47项目／工作区／缓存，旧版本可读并重复恢复无漂移。状态／承托／geometryVersion2覆盖实体、三维及空间确认，color／价格／采购仍排除。没有新保存通道。两端态HTTP／file、柜内实际板件、原始数据恢复和桌面控件见[验收](validation/chair-vihals-folding-20261104/README.md)。
+
 ## 2026-11-03：柜体侧面收口
 
 `cabinetSideClosure`集中左右侧及宽度1–300mm、启用初值50mm。可选`cabinet.sideClosures={left,right}`，0关闭；缺失保持无收口，不补写旧实例。板厚沿柜板厚，位于原柜体外侧的门板正面，原柜宽／中心和内部结构不变；完成宽另加两侧。颜色沿同侧门板规则，分层餐边柜按边缘分区深度分段；通用项不用于洞洞板换鞋区。复制保留、模板替换清理，完整配置覆盖空间／实体／3D缓存，配色不清确认。当前、命名方案、目录、厨房保留结构及洗衣附属柜检测新字段采用v45，缓存读取旧版本；见[构造与增量验收](validation/cabinet-side-closure-20261103/README.md)。

@@ -1,6 +1,20 @@
 # 宜家 VIHALS 维哈斯白色折叠椅
 
-2026-11-04。独立类型 `chair_ikea_vihals`，家具库搜索“VIHALS／维哈斯”，椅子分类及餐厅／书房用途可见。只提供展开使用状态；未向用户正式方案添加家具。
+2026-11-04。独立类型 `chair_ikea_vihals`，家具库搜索“VIHALS／维哈斯”，椅子分类及餐厅／书房用途可见。属性中的“折叠椅状态”切换展开／折叠，“颜色”调整预览配色，“底部离地／承托面”设置柜底板或层板高度。当前生产源为v2；v1展开静态资产保留。
+
+## 折叠与收纳增量
+
+复用官方15件网格，Blender中按main／rear／seat三组具名父节点保留部件、轴向及闭合枢轴；独立发布校验角色、轴心和静止变换。尺寸先拟合，再对每组施加刚性旋转／平移，切换不压扁或拉长座背。只提供两个布局端态，不以插值模拟未经验证的连续连杆。
+
+主框27°、后框−16°、座面−90°，座组另下移80 mm；轴心／位移是对照官方折叠图和照片的布局估计，不是厂家机构图。第一轮座面过高并与靠背交叠，已保留同机位前后图、将折叠座面移到靠背下方并复核。
+
+标称展开430×470×800 mm；官方尺寸图折叠高880、深90 mm。现有官方展开网格刚性折起的实际外包为 **430×89.081×895.648 mm**。保留约16 mm的高度差异，界面显示当前派生尺寸，柜内按较大的生产几何核对，不以强制压缩网格凑到880。非标宽深高仍表达展开基体；折叠尺寸从实际部件派生。两个端态均以地面中心为基准，mountHeight独立叠加一次。柜内可收纳不表示可在柜内展开，应取出再展开。
+
+`foldingChairFolded`为本型号布尔能力，新建false，旧缺失只读false；复用既有mountHeight，新建／缺失0。复制与同型号保留，跨型号按共用字段能力清理。显式新配置使用项目／工作区／缓存v47，旧版本仍可读，三次恢复无漂移。实体、平面、三维缓存和空间确认同步状态／安装及geometryVersion=2；配色、价格和采购不清除空间确认。
+
+颜色使用原有color字段，保留纹理和粗糙度；对涂层／塑料乘色，金属销钉／轴不染色。以已有目录白色归一化，使旧白色外观保持；高亮颜色因兼容PBR乘色上限可能略暗，不作为厂家配色或实物色卡。
+
+用户方案已通过MCP复制为“VIHALS折叠椅 · 柜内收纳展示”，原“主卧调整2”内容校验未变。副本在整墙A右侧900柜格新增一把绿色折叠椅，底部承托68 mm，原900净高层板上移至1050；生产板件回读左右各217、顶部154.352 mm，底部接触底板，椅子当前实体核对无问题。展示柜门打开时会占用相邻玄关柜二的部分门抽操作区，保留真实核对提示，不将其描述成全案无冲突。实际保存到D盘正式文件，未直接改JSON。
 
 ## 来源与尺寸
 
@@ -11,7 +25,7 @@
 | 展开宽×深×高430×470×800 mm | 宜家单品页及3D元数据标注；布局模型闭合到此包络 |
 | 座宽390、座深410、座高450 mm | 宜家单品页标注；保留官方座面几何比例，不另重建座面 |
 | 原官方GLB外包约443.048×471.456×796.932 mm | Blender读取生产顶点；宽度与产品标注不一致，原件保留，适配件中心对齐、落地及三轴拟合至标称外包 |
-| 折叠高880、深90 mm | 官方尺寸插图；没有官方折叠姿态或连杆轨迹，未实现折叠状态 |
+| 折叠高880、深90 mm | 官方尺寸插图；已实现估计端态，当前官方网格高度约896，连续机构轨迹仍未知 |
 | 材质 | 官方说明：粉末涂层钢架与PP座／背／脚；材质外观沿官方两张贴图 |
 | 价格 | 当日商品接口参考99.99元，易变，未写默认采购价 |
 
@@ -21,20 +35,22 @@
 
 优先复用官方资产，未继续进行照片手工重建。[IKEA Browser扩展](https://extensions.blender.org/add-ons/ikea-browser/)可以在Blender中直接导入官网模型；本次只读其公开接口方式，不安装或修改用户扩展。来源内容归原权利人，当前文件保留官方出处。
 
-Scoop Blender 5.2.3 LTS后台导入官方Draco／WebP资产。0.01 mm内重合点合并后按物理连通部分分出15件，UV仍按面角保留，源哈希固定后映射具名稳定身份；不根据运行时遍历顺序命名。原始官方文件、[可编辑BLEND](../assets/models/chair-vihals/v1/chair-vihals-v1.blend)、[适配GLB](../assets/models/chair-vihals/v1/chair-vihals-v1.glb)及[离线资产](../src/data/chair-vihals-blender-asset.js)分别保留。正式源工程的官方贴图1024²，离线发布限定512²并内嵌RGBA，供生产、file及离线导出使用，不依赖远程下载。贴图负责固定白色外观，未实现重配色或程序微表面。
+Scoop Blender 5.2.3 LTS后台导入官方Draco／WebP资产。0.01 mm内重合点合并后按物理连通部分分出15件，UV仍按面角保留，源哈希固定后映射具名稳定身份；不根据运行时遍历顺序命名。原始官方文件、[可编辑BLEND](../assets/models/chair-vihals/v2/chair-vihals-v1.blend)、[折叠端态BLEND](../assets/models/chair-vihals/v2/chair-vihals-folded.blend)、[适配GLB](../assets/models/chair-vihals/v2/chair-vihals-v1.glb)及[离线资产](../src/data/chair-vihals-blender-asset.js)分别保留。正式源工程的官方贴图1024²，离线发布限定512²并内嵌RGBA，供生产、file及离线导出使用，不依赖远程下载。没有程序微表面。发布使用展开作者源；折叠BLEND是方便查看的端态副本。
 
 `product-rules`集中默认高度、落地包络与模型身份；`folding-chair-model`调用共享static-asset生产构造，再恢复UV及颜色／粗糙度／金属度／AO贴图。Furnish X宽、Y高、正面+Z，地面中心原点；Blender对应(x,-z,y)。`bodyParts()`、`directional()`及碰撞读取同源官方网格。没有椅型空腔豁免；U形框架等非凸件仍受已有截面凸包保守算法影响，不宣称逐三角面精确碰撞或内部净空。
 
-无新持久字段、项目格式或独立保存机制。宽深高编辑沿整体缩放，为非标布局草模；复制／替换、撤销、自动保存及命名方案往返沿既有链路。旧类型、用户方案及默认尺寸不批量修改。
+原v1无新字段；本次v2字段／格式见上述增量。复制／替换、撤销、自动保存及命名方案往返沿既有链路，没有独立保存机制。旧类型、原方案及默认尺寸不批量修改。
 
 ## 验证
 
 ```powershell
 node scripts/blender-asset.cjs author-chair-vihals <新目录>
-node scripts/blender-asset.cjs publish-chair-vihals assets/models/chair-vihals/v1/chair-vihals-v1.glb
+node scripts/blender-asset.cjs publish-chair-vihals assets/models/chair-vihals/v2/chair-vihals-v1.glb
 node tests/test-chair-vihals.cjs
+node tests/test-folding-chair-state.cjs
+node tests/test-folding-chair-desktop.cjs <只读正式文件路径>
 $env:FURNISH_BROWSER_CHANNEL='msedge'
 node scripts/verify/verify-model-pipeline.cjs chair-vihals gpu
 ```
 
-本型号作者预检／负例、独立发布、空间与状态、HTTP／断网file、生产GLB逐部件回读、实际OptiX三视角及下载工程重开通过；额外检查对象实际material_slots的贴图和UV保留。桌面快捷方式同一EXE在独立方案副本、缓存及端口中验收目录、撤销重做、保存刷新及三维，正式方案文件哈希不变。产品规则和模型资产索引另作增量检查。未运行全量检查、其它型号GPU复验或折叠机构验证；[证据与目视结论](validation/chair-vihals-20261104/README.md)。
+v2两种实际生产端态、角色／轴心负例、尺寸／空间及v47恢复、HTTP／断网file、生产GLB逐部件回读、OptiX三机位和下载工程重开通过。同一正式EXE的独立副本实际操作折叠／配色／承托控件、锁定、撤销重做、保存刷新及三维；原正式文件在自动化测试中哈希不变。产品规则、工作区恢复、缓存、版本服务兼容、柜内实际板件及旧艺术玻璃v46作增量回归。未跑项目全量、其它型号GPU、真实机构连续运动／完整扫掠或承重验证。[本次证据与局部对照](validation/chair-vihals-folding-20261104/README.md)；[v1历史验收](validation/chair-vihals-20261104/README.md)。
