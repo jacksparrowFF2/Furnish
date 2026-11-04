@@ -419,6 +419,7 @@
       const moduleTarget=host&&entity.kind==='furniture'&&entity.id===host.id;
       if(entity.kind==='furniture'&&ids.has(entity.id))continue;
       const targetFurniture=entity.kind==='furniture'?furnitureById.get(entity.id):null;
+      let enclosingStructure;
       if(targetFurniture&&products.modelError(targetFurniture))continue;
       // The top projection includes appliance bays and overhead slabs. Only
       // actual kitchen solids sharing the source height can obstruct a gap.
@@ -477,6 +478,7 @@
               const best=!out[dir]||gap<out[dir].distance-1e-7,preferred=wallPriority&&(!preferredWalls[dir]||gap<preferredWalls[dir].distance-1e-7);
               if(!best&&!preferred)continue;
               const result={a:unrotate({[key]:start,[cross]:value}),b:unrotate({[key]:start+sign*gap,[cross]:value}),distance:gap,entity:{kind:target.kind,id:target.id,name:target.name,...(wall?{wallDatum:wall[4]==='finish'?'finished':'survey'}:{}),...(target.actualBoard?{boardKey:target.boardKey,boardName:target.boardName}:{}),...(surfaceBoundary&&region.moduleKey?{moduleKey:region.moduleKey,moduleIndex:region.moduleIndex}:{})},...(target.actualBoard?{cabinetInterior:true}:{}),...(surfaceBoundary?{surfaceBoundary:true,...(region.moduleKey?{moduleBoundary:true}:{})}:{}),...(containedBoundary?{containedBoundary:true}:{}),...(wallPriority?{wallPriority:true}:{})};
+              if(target.actualBoard)result.enclosingStructure=enclosingStructure??(enclosingStructure=encloses(entity,sources));
               if(best)out[dir]=result;
               if(preferred)preferredWalls[dir]=result;
             }

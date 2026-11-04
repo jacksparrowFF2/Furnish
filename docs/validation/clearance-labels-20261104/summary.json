@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "source": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "sourceUnchanged": true,
+  "axisChecks": 40,
+  "numericPlacement": true,
+  "undoRedo": true,
+  "saveRefresh": true,
+  "narrow": true,
+  "labels": [
+    "左 410 mm · 整墙A · 工具450＋风扇900＋叠凳900 · 深350 · 实际板件：隔板 · 点击输入目标净距并移动物体左 · 隔板 410 mm",
+    "右 24 mm · 整墙A · 工具450＋风扇900＋叠凳900 · 深350 · 实际板件：右侧板 · 点击输入目标净距并移动物体右 · 右侧板 24 mm",
+    "后 39 mm · 整墙A · 工具450＋风扇900＋叠凳900 · 深350 · 实际板件：背板 · 点击输入目标净距并移动物体后 · 背板 39 mm",
+    "前 3232 mm · 外部墙面／窗边 · 毛坯墙面 · 点击输入目标净距并移动物体前 · 外部墙面 3232 mm"
+  ],
+  "errors": []
+}

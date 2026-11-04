@@ -9,6 +9,11 @@ function settings(input={}){
  return {rotation,northAngle,dimensions,openings};
 }
 function rotate(p,angle){const a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [p[0]*c-p[1]*s,p[0]*s+p[1]*c];}
+// Query keys remain geometric; mirror only the product names, never movement.
+function clearanceFrame(items,rotation=0){
+ const members=Array.isArray(items)?items:items?[items]:[],f=members.length===1?members[0]:null;
+ return f?{rotation:-(f.rot||0),product:true,directions:{l:f.flip?'right':'left',r:f.flip?'left':'right',t:'back',b:'front'}}:{rotation,product:false,directions:{l:'drawingLeft',r:'drawingRight',t:'drawingUp',b:'drawingDown'}};
+}
 // Product axes: front is local +Y in plan (+Z in 3D). Left/right are
 // viewed facing the front. Mirror positions, never the readable text.
 function furnitureDirections(f,{scale=1,rotation=0}={}){
@@ -112,5 +117,5 @@ function netSpans(room,point){
  const span=axis=>{const cross=1-axis,values=[];for(const ring of rings)for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length],delta=b[cross]-a[cross];if(Math.abs(delta)<eps){if(Math.abs(point[cross]-a[cross])<eps)values.push(a[axis],b[axis]);continue;}const t=(point[cross]-a[cross])/delta;if(t>=-eps&&t<=1+eps)values.push(a[axis]+t*(b[axis]-a[axis]));}const left=values.filter(v=>v<point[axis]-eps),right=values.filter(v=>v>point[axis]+eps);if(!left.length||!right.length)return null;const a=[...point],b=[...point];a[axis]=Math.max(...left);b[axis]=Math.min(...right);return {a,b,value:b[axis]-a[axis],h:axis===0};};
  const horizontal=span(0),vertical=span(1);return horizontal&&vertical?{at:[...point],horizontal,vertical}:null;
 }
-const api={settings,rotate,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,furnitureLabels,furnitureDirections,textWidth,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
+const api={settings,rotate,clearanceFrame,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,furnitureLabels,furnitureDirections,textWidth,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

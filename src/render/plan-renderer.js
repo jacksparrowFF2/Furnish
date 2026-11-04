@@ -1,12 +1,23 @@
 function measurementReferenceName(m){
  if(!m)return tr('该方向无实体','No entity in this direction');
- const name=m.entity.kind==='wall'?(m.wallPriority?tr('紧邻实体墙','Adjoining solid wall'):tr('墙面／窗边','Wall / window')):m.entity.kind==='window'?tr('窗边','Window edge'):(typeof nm==='function'?nm(m.entity.name):m.entity.name);
+ const external=m.entity.kind==='furniture'&&(!m.cabinetInterior||m.enclosingStructure===false)&&!m.containedBoundary&&!m.surfaceBoundary;
+ const name=m.entity.kind==='wall'?(m.wallPriority?tr('紧邻实体墙','Adjoining solid wall'):tr('外部墙面／窗边','External wall / window')):m.entity.kind==='window'?tr('窗边','Window edge'):(external?tr('外部障碍 · ','External obstacle · '):'')+(typeof nm==='function'?nm(m.entity.name):m.entity.name);
  const pendingThickness=state.wallFinishes?.surfaces.some(s=>s.tileThickness===undefined||s.bondThickness===undefined);
  return name+(state.wallFinishes&&m.entity.kind==='wall'?(m.entity.wallDatum==='survey'?tr(' · 毛坯墙面',' · Structural wall face'):pendingThickness?tr(' · 完成面厚度待定',' · Finish thickness pending'):tr(' · 完成面',' · Finished face')):'')+(m.cabinetInterior?tr(' · 实际板件：',' · Board: ')+tr(m.entity.boardName,m.entity.boardName):m.containedBoundary?tr(' · 包络内边距',' · Enclosing boundary'):m.moduleBoundary?tr(' · 模块边界',' · Module edge'):m.surfaceBoundary?tr(' · 台面边界',' · Worktop edge'):'');
 }
-function measurementDirectionLabel(dir,m){
- const labels={l:tr('左','Left'),r:tr('右','Right'),t:tr('上','Up'),b:tr('下','Down')};
- return m?`${labels[dir]} ${Math.round(m.distance)} mm · ${measurementReferenceName(m)}`:'';
+function measurementDirectionNames(items){
+ const names={left:tr('左','Left'),right:tr('右','Right'),front:tr('前','Front'),back:tr('后','Back'),drawingLeft:tr('图纸左','Drawing left'),drawingRight:tr('图纸右','Drawing right'),drawingUp:tr('图纸上','Drawing up'),drawingDown:tr('图纸下','Drawing down')};
+ return Object.fromEntries(Object.entries(FurnishDrawing.clearanceFrame(items).directions).map(([dir,key])=>[dir,names[key]]));
+}
+function measurementReferenceShort(m){
+ if(m.cabinetInterior)return (m.enclosingStructure===false?tr('外部障碍·','External · '):'')+(m.entity.boardName||tr('实际板件','Board'));
+ if(m.moduleBoundary)return tr('模块边界','Module edge');
+ if(m.surfaceBoundary)return tr('台面边界','Worktop edge');
+ if(m.containedBoundary)return tr('包络边界','Envelope edge');
+ return m.entity.kind==='wall'?tr('外部墙面','External wall'):m.entity.kind==='window'?tr('窗边','Window edge'):tr('外部障碍','External obstacle');
+}
+function measurementDirectionLabel(dir,m,items){
+ return m?`${measurementDirectionNames(items)[dir]} ${Math.round(m.distance)} mm · ${measurementReferenceName(m)}`:'';
 }
 /* Classic script: SVG layer adapters read live application state on each call.
  * Declarations only; load before app.js. Selection, history and persistence
@@ -328,8 +339,8 @@ function renderMeasure(){
     const col = tmp ? '#0e8f83' : '#ef5a24', S = `stroke="${col}" stroke-width="1.5" vector-effect="non-scaling-stroke"`;
     return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" ${S}/>
       <line x1="${a.x-nx}" y1="${a.y-ny}" x2="${a.x+nx}" y2="${a.y+ny}" ${S}/><line x1="${b.x-nx}" y1="${b.y-ny}" x2="${b.x+nx}" y2="${b.y+ny}" ${S}/>
-      <text ${directionalEditAttributes(dir,f,measurementDirectionLabel(dir,directions[dir]))} x="${mx}" y="${my-5*k}" font-size="${fs}" text-anchor="middle" fill="${col}" font-weight="600" transform="rotate(${ang} ${mx} ${my})"
-        stroke="${PAL.halo}" stroke-width="${3.5*k}" paint-order="stroke">${Math.round(L)} mm</text>`;
+      <text ${directionalEditAttributes(dir,f,measurementDirectionLabel(dir,directions[dir],f))} x="${mx}" y="${my-5*k}" font-size="${fs}" text-anchor="middle" fill="${col}" font-weight="600" transform="rotate(${ang} ${mx} ${my})"
+        stroke="${PAL.halo}" stroke-width="${3.5*k}" paint-order="stroke">${dir?esc(measurementDirectionNames(f)[dir]+' · '+measurementReferenceShort(directions[dir]))+' ':''}${Math.round(L)} mm</text>`;
   };
   let s = state.measures.map((m,i) => {
     const selected=ui.sel?.kind==='measure'&&ui.sel.id===i;
@@ -507,12 +518,19 @@ function renderSelectedGeometry(){
   $('#gSel').innerHTML = waterheaterClearanceSVG()+dishwasherClearanceSVG()+s+furnitureDirectionsSVG();
   if(typeof queueFabPosition==='function')queueFabPosition();
 }
-// Four independent clearances along the current drawing's screen axes.
+// Single products use their own axes; groups use explicitly named drawing axes.
 function clearanceSVG(f, k){
-  const labels={l:tr('左','Left'),r:tr('右','Right'),t:tr('上','Up'),b:tr('下','Down')};
+  const labels=measurementDirectionNames(f);
   return Object.entries(directionalMeasurements(f)).filter(([,m])=>m&&!state.measures.some(saved=>sameMeasurement(saved.a,saved.b,m))).map(([dir,m])=>{
-    const {a,b}=m,mx=(a.x+b.x)/2,my=(a.y+b.y)/2,angle=FurnishDrawing.textAngle(Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI,drawingRotation()),v=Math.max(m.distance,1),nx=-(b.y-a.y)/v*4*k,ny=(b.x-a.x)/v*4*k;
-    return `<g data-edit-overlay="directional-distance" data-distance-dir="${dir}" pointer-events="none"><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" stroke="${TEAL}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><text ${directionalEditAttributes(dir,f,measurementDirectionLabel(dir,m))} x="${mx}" y="${my-8*k}" text-anchor="middle" font-size="${12*k}" fill="${TEAL}" transform="rotate(${angle} ${mx} ${my})" stroke="${PAL.halo}" stroke-width="${3*k}" paint-order="stroke"><title>${tr('点击输入目标净距并移动物体','Click to enter target clearance and move this item')}</title>${labels[dir]} ${Math.round(m.distance)} mm</text></g>`;
+    const {a,b}=m,mx=(a.x+b.x)/2,my=(a.y+b.y)/2,v=Math.max(m.distance,1),nx=-(b.y-a.y)/v*4*k,ny=(b.x-a.x)/v*4*k;
+    let angle=FurnishDrawing.textAngle(Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI,drawingRotation()),tx=mx,ty=my-8*k,anchor='middle';
+    // Short gaps cannot contain a board name. Keep that label horizontal and
+    // beside the line, away from the product's own direction badge.
+    if(m.distance/k<120){
+      const p=FurnishDrawing.rotate([mx,my],drawingRotation()),d=FurnishDrawing.rotate([b.x-a.x,b.y-a.y],drawingRotation()),vertical=Math.abs(d[1])>Math.abs(d[0]);
+      [tx,ty]=FurnishDrawing.rotate([p[0]+(vertical?16*k:0),p[1]-(vertical?0:16*k)],-drawingRotation());angle=-drawingRotation();anchor=vertical?'start':'middle';
+    }
+    return `<g data-edit-overlay="directional-distance" data-distance-dir="${dir}" pointer-events="none"><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" stroke="${TEAL}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><text ${directionalEditAttributes(dir,f,measurementDirectionLabel(dir,m,f))} x="${tx}" y="${ty}" text-anchor="${anchor}" font-size="${12*k}" fill="${TEAL}" transform="rotate(${angle} ${tx} ${ty})" stroke="${PAL.halo}" stroke-width="${3*k}" paint-order="stroke"><title>${esc(measurementDirectionLabel(dir,m,f))} · ${tr('点击输入目标净距并移动物体','Click to enter target clearance and move this item')}</title>${esc(labels[dir])} · ${esc(measurementReferenceShort(m))} ${Math.round(m.distance)} mm</text></g>`;
   }).join('');
 }
 

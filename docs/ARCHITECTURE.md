@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-04（净距标注）：drawing-core.clearanceFrame统一单件产品轴与多选图纸轴，canvas-interactions测距／数字定位共用旋转；plan-renderer与property-panel共用方向及生产参照名称。snapping只在派生结果补充enclosingStructure，沿原包含查询区分内板件和外部结构，未改实际距离／碰撞／项目字段。加载与保存通道保持，见[验收与底层评估](validation/clearance-labels-20261104/README.md)。
+
 2026-11-04（折叠椅端态与配色）：folding-chair-core统一三组刚性端态与实际顶点包络；product-rules声明foldingChairFolded／既有mountHeight和geometryVersion2。生产、二维、实体、缓存／空间确认同源；主体配色沿color，销钉不染色。显式配置采用项目／工作区／恢复缓存v47，旧缺失展开且不补写。新增一个经典核心脚本，无独立保存通道；见[端态与收纳](CHAIR-IKEA-VIHALS.md)。
 
 2026-11-04（VIHALS折叠椅）：product-rules声明独立chair_ikea_vihals身份、800mm高度和落地包络；folding-chair-model复用static-asset构造及官方15件网格，专用受限发布器内嵌UV／512²颜色与ORM贴图。新增两个本地经典资产／模型脚本，测距与碰撞沿原生产记录器，无新字段／格式或保存通道；展开静态及来源外包差异见[VIHALS](CHAIR-IKEA-VIHALS.md)。

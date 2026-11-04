@@ -4,6 +4,9 @@ const host={id:'host',type:'cabinet',...C.preset('base'),cx:2000,cy:2000,rot:0};
 const device={id:'device',type:'water_purifier_mijia_1200g',name:'净水器',color:'#fff',cx:2000,cy:2000,w:163,d:445,h:379,mountHeight:98,rot:0};
 const options={furniture:[host,device]},before=JSON.stringify(options),gaps=S.directional(device,options),expected={l:300.5,r:300.5,t:59.5,b:59.5};
 for(const [dir,n]of Object.entries(expected)){near(gaps[dir].distance,n);assert(gaps[dir].cabinetInterior);assert(gaps[dir].entity.boardKey);assert(!gaps[dir].containedBoundary);}
+assert(Object.values(gaps).every(m=>m.enclosingStructure===true),'internal boards retain the enclosing host reference');
+const external=S.directional({...device,cx:1000},{furniture:[host]}).r;
+assert(external.cabinetInterior&&external.enclosingStructure===false,'external actual boards must not be labelled as the source interior');
 let interior=S.cabinetInterior(device,options);near(interior.bottom.distance,0);near(interior.top.distance,355);assert.equal(interior.collisions.length,0);assert(!G.volumeOverlap(host,device));assert.deepEqual(G.collisions(options.furniture),[]);
 near(S.cabinetInterior({...device,mountHeight:0},options).bottom.distance,-98); // Device is below the actual inner floor, rather than "no bottom board".
 const plan={walls:[],wins:[],doors:[],rooms:[{id:'room',name:'厨房',poly:[[0,0],[8000,0],[8000,8000],[0,8000]]}]};

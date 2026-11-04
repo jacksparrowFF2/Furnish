@@ -78,7 +78,7 @@ function directionalMeasurements(f=selItems()){
   // Include the full work, selected values and temporary opening geometry:
   // moving a neighbour, opening a door or restoring data must never reuse gaps.
   // View translation/scale do not change millimetre distances.
-  const members=Array.isArray(f)?f:[f],rotation=drawingRotation(),plan=canvasEffectivePlan(),key=JSON.stringify([WALLS,WINS,members,ui.layers.furn,rotation]);
+  const members=Array.isArray(f)?f:[f],rotation=FurnishDrawing.clearanceFrame(members,drawingRotation()).rotation,plan=canvasEffectivePlan(),key=JSON.stringify([WALLS,WINS,members,ui.layers.furn,rotation]);
   if(directionalMeasurementCache?.key!==key||directionalMeasurementCache.plan!==plan)directionalMeasurementCache={key,plan,value:FurnishSnapping.directional(members,{...measurementScene(),rotation})};
   return directionalMeasurementCache.value;
 }
@@ -100,11 +100,11 @@ function editKitchenGap(key){
 }
 function editDirectionalDistance(direction){
   const items=selItems(),ids=items.map(f=>f.id),current=items.length&&directionalMeasurements(items)[direction];if(!current)return;
-  const plan=FurnishProject.effectivePlan(PLAN,state),options={rotation:drawingRotation(),visibleFurniture:ui.layers.furn};
+  const plan=FurnishProject.effectivePlan(PLAN,state),drawing=drawingRotation(),options={rotation:FurnishDrawing.clearanceFrame(items,drawing).rotation,visibleFurniture:ui.layers.furn};
   try{FurnishDesign.placeSelectionAtDirectionalGap(plan,state,ids,direction,current.distance,options);}catch(e){toast(e.message);return;}
-  const before=snap(),planId=PLAN.id,labels={l:tr('左侧','Left'),r:tr('右侧','Right'),t:tr('上方','Up'),b:tr('下方','Down')},target=measurementReferenceName(current);
+  const before=snap(),planId=PLAN.id,labels=measurementDirectionNames(items),target=measurementReferenceName(current);
   const apply=()=>{try{
-    if(PLAN.id!==planId||snap()!==before||drawingRotation()!==options.rotation||ui.layers.furn!==options.visibleFurniture)throw Error(tr('方案已变化，请关闭后重新选择距离','The design changed; close and select the distance again'));
+    if(PLAN.id!==planId||snap()!==before||drawingRotation()!==drawing||ui.layers.furn!==options.visibleFurniture)throw Error(tr('方案已变化，请关闭后重新选择距离','The design changed; close and select the distance again'));
     const input=$('#directional-gap-input');if(!input.value.trim())throw Error(tr('请输入目标净距','Enter a target clearance'));
     const moved=FurnishDesign.placeSelectionAtDirectionalGap(plan,state,ids,direction,Number(input.value),options);
     if(moved.some(next=>Math.hypot(next.cx-getF(next.id).cx,next.cy-getF(next.id).cy)>1e-7))mutate(()=>moved.forEach(next=>Object.assign(getF(next.id),{cx:next.cx,cy:next.cy,...(next.counterLink?{counterLink:next.counterLink}:{})})));
