@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "checks": [
+    "actual packaged EXE",
+    "120 horizontal projection",
+    "walk eye unchanged",
+    "portrait cap and actual readout",
+    "refresh restores 120",
+    "project and source unchanged"
+  ],
+  "narrow": {
+    "vertical": 120,
+    "horizontal": 95.217992592302,
+    "position": [
+      3.802,
+      1.6,
+      5.315
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      "XYZ"
+    ]
+  },
+  "errors": []
+}

@@ -37,14 +37,14 @@
   return ()=>element.removeEventListener('wheel',handler,true);
  }
  // A horizontal lens preference avoids ultrawide windows silently widening a room.
- // Portrait views cap vertical coverage at 75 degrees to avoid extreme stretching.
+ // Cap both axes at 120 degrees; portrait views report the reduced horizontal coverage.
  const fovKey='furnish-camera-horizontal-fov';
- function lens(value){const n=Number(value);return Number.isFinite(n)&&n>=40&&n<=90?n:60;}
+ function lens(value){const n=Number(value);return Number.isFinite(n)&&n>=40&&n<=120?n:60;}
  function cameraFov(){try{return lens(root.localStorage?.getItem(fovKey));}catch(e){return 60;}}
  function setCameraFov(value){const n=lens(value);try{root.localStorage?.setItem(fovKey,String(n));}catch(e){}return n;}
  function projection(horizontal,aspect){
   const a=Number.isFinite(aspect)&&aspect>0?aspect:1;
-  const vertical=Math.min(75,2*Math.atan(Math.tan(lens(horizontal)*Math.PI/360)/a)*180/Math.PI);
+  const vertical=Math.min(120,2*Math.atan(Math.tan(lens(horizontal)*Math.PI/360)/a)*180/Math.PI);
   return {vertical,horizontal:2*Math.atan(Math.tan(vertical*Math.PI/360)*a)*180/Math.PI};
  }
  const calibrationKey='furnish-camera-calibration';let calibration=null;

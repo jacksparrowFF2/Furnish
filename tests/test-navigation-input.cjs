@@ -1,9 +1,15 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const N=require('../src/core/navigation-input.js');
 for(const aspect of [.45,1,16/9,32/9]){
- const lens=N.projection(60,aspect);assert.ok(lens.vertical<=75);
+ const lens=N.projection(60,aspect);assert.ok(lens.vertical<=120);
  if(aspect>=1)assert.ok(Math.abs(lens.horizontal-60)<1e-10);
 }
+for(const degrees of [40,90,119,120])for(const aspect of [.45,1,16/9,32/9]){
+ const lens=N.projection(degrees,aspect);assert.ok(lens.vertical<=120&&lens.horizontal<=120+1e-10);
+ if(aspect>=1)assert.ok(Math.abs(lens.horizontal-degrees)<1e-10);
+ assert.ok(Math.abs(Math.tan(lens.horizontal*Math.PI/360)/Math.tan(lens.vertical*Math.PI/360)-aspect)<1e-10);
+}
+for(const invalid of [39,120.01,Infinity])assert.equal(N.setCameraFov(invalid),60);
 assert.equal(N.cameraFov(),60);assert.equal(N.setCameraFov(NaN),60);
 assert.ok(Math.abs(N.projection(999,1).horizontal-60)<1e-10);
 const event=(x,y,extra={})=>({deltaX:x,deltaY:y,deltaMode:0,...extra});
@@ -25,14 +31,16 @@ assert.deepEqual(N.panBox([10,20,300,400],el,5,-8),[20,4,300,400]);
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
  // A 1 m object at 2 m projects to the pinhole-model size with the actual lens.
  for(const aspect of [.45,16/9,32/9]){
-  const lens=N.projection(60,aspect),c=new T.PerspectiveCamera(lens.vertical,aspect,.05,300);
+  const lens=N.projection(120,aspect),c=new T.PerspectiveCamera(lens.vertical,aspect,.05,300);
   const left=new T.Vector3(-.5,0,-2).project(c),right=new T.Vector3(.5,0,-2).project(c);
   assert.ok(Math.abs((right.x-left.x)-1/(2*Math.tan(lens.horizontal*Math.PI/360)))<1e-10);
  }
  const saved=new Map(),stored=vm.createContext({localStorage:{getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v)}});
  vm.runInContext(fs.readFileSync(require.resolve('../src/core/navigation-input.js'),'utf8'),stored);
- stored.FurnishNavigation.setCameraFov(75);assert.equal(stored.FurnishNavigation.cameraFov(),75);
- vm.runInContext(fs.readFileSync(require.resolve('../src/core/navigation-input.js'),'utf8'),stored);assert.equal(stored.FurnishNavigation.cameraFov(),75);
+ for(const degrees of [75,120]){
+  stored.FurnishNavigation.setCameraFov(degrees);assert.equal(stored.FurnishNavigation.cameraFov(),degrees);
+  vm.runInContext(fs.readFileSync(require.resolve('../src/core/navigation-input.js'),'utf8'),stored);assert.equal(stored.FurnishNavigation.cameraFov(),degrees);
+ }
  const handlers={},element={clientHeight:500,addEventListener:(n,fn)=>handlers[n]=fn,removeEventListener:n=>delete handlers[n]};
  const camera=new T.PerspectiveCamera(60,1,.1,100);camera.position.set(0,0,10);camera.lookAt(0,0,0);
  const controls={object:camera,target:new T.Vector3(),enabled:true,enablePan:true,enableZoom:true,minDistance:2,maxDistance:20,minZoom:.5,maxZoom:2,update(){},dispatchEvent(){}};
