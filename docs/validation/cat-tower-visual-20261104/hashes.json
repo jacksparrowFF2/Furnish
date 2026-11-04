@@ -1,0 +1,8 @@
+{
+  "assets/models/cat-tower/references/jd-package-two.avif": "0c2027c486b353b7571e6009094a85ce672c506e325831e3dd8fbff34ccbb88b",
+  "assets/models/cat-tower/v2/cat-tower-v1.blend": "9f308827e616d5d2350d7a027a9454a9c5b631c5951aee24a73984c85364b8d1",
+  "assets/models/cat-tower/v2/cat-tower-v1.glb": "0537decf6f15f1c88ea41fd07dbdfb0b6160b0bcb1a70496ec330d29b8af9bc7",
+  "src/data/cat-tower-blender-asset.js": "a2383adfb6f7249c9d42a74f9676e6867f0a2fde994611760251e98a25ab2c9e",
+  "scripts/blender-model-cat-tower.py": "b9bbf10f6d4e39e550e8ffa1610248f2bfaf949a648aff070b79b81a4b3dd793",
+  "src/render/cat-tower-model.js": "e0ed4d020024f924517960bec2750f728ac650eaacc6a407377afa3941b96b46"
+}

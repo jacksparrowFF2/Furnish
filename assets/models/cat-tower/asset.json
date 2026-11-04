@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "id": "cat-tower",
+  "name": "通天柱猫爬架 · 套餐二（京东10141711472484）",
+  "types": [
+    "cat_tower_jd_10141711472484"
+  ],
+  "route": "blender",
+  "document": "docs/CAT-TOWER-JD-10141711472484.md",
+  "sourceLinks": [
+    "https://item.jd.com/10141711472484.html"
+  ],
+  "references": [
+    {
+      "path": "references/jd-package-two.avif",
+      "kind": "product-page-original",
+      "sha256": "0c2027c486b353b7571e6009094a85ce672c506e325831e3dd8fbff34ccbb88b",
+      "bytes": 137207,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/cat-tower-visual-20261104/README.md"
+  ],
+  "notes": [
+    "标注底座400×400mm；不等于全架占地。",
+    "全架800×470×2400mm及各层高度为外观估算；h仅调顶撑。",
+    "原cat_tree绿叶成荫款及正式用户方案保留。"
+  ]
+}

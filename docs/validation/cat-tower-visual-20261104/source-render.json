@@ -1,0 +1,1 @@
+{"blender": "5.2.3 LTS", "engine": "CYCLES", "samples": 24, "projection": "ORTHO", "exposure": "None", "resolution": [720, 1000], "camera": "same fixed overall/detail positions for clay and material", "referenceCamera": "approximate; JD image focal length and lighting unknown"}

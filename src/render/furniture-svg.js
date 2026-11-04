@@ -32,6 +32,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
 }
 
 
+  if(t==='cat_tower_jd_10141711472484')return `<g data-cat-tower="package-two">`+rc(-w*.25,-d*.4255,w*.5,d*.851,c)+rc(-w*.375,-d*.319,w*.75,d*.638,c)+rc(-w*.5,-d*.5,w*.6125,d*.83,c)+rc(-w*.0875,-d*.351,w*.5875,d*.851,c)+ec(-w*.26875,-d*.085,w*.224,d*.381,'#dce8eb')+ec(w*.26875,d*.074,w*.224,d*.381,'#dce8eb')+ec(w*.29375,0,w*.20,d*.34,'#ba8852')+ec(0,0,w*.065,d*.111,'#b99560')+'</g>';
   if(t==='fan_airmate_fa18_x231')return ec(0,0,w/2,d/2,c)+rc(-w*.45,-d*.31,w*.9,d*.6,c)+ln(-w*.42,d*.29,w*.42,d*.29)+ec(0,0,w*.06,d*.06,shade(c,.75));
   const x = -w/2, y = -d/2, m = Math.min(w,d);
   if(f?.cabinet?.boxConstruction==='independent'){

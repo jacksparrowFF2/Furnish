@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "closedNondegenerateBowls": true,
+  "wrongBaseAlphaRejected": "Only reviewed glass/acrylic parts may use simple alpha",
+  "filledApertureRejected": "Cat tower bowl aperture filled: left-bowl-board",
+  "previousPublicationPreserved": true,
+  "blender": "5.2.3 LTS"
+}

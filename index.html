@@ -464,6 +464,8 @@
 <script src="src/render/manifold-model.js"></script>
 <script src="src/render/shoe-bench-model.js"></script>
 <script src="src/render/cherry-coffee-table-model.js"></script>
+<script src="src/data/cat-tower-blender-asset.js"></script>
+<script src="src/render/cat-tower-model.js"></script>
 <script src="src/render/cat-tree-model.js"></script>
 <script src="src/render/folding-table-model.js"></script>
 <script src="src/render/sink-model.js"></script>
@@ -885,6 +887,7 @@ const syncIdentity=FurnishPartIdentity;
   }
   if(typeof FurnishFoldingTableModel!=='undefined'&&FurnishFoldingTableModel.supported(f)){const model=FurnishFoldingTableModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x*=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishWaterPurifierModel!=='undefined'&&FurnishWaterPurifierModel.supported(f)){const model=FurnishWaterPurifierModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),model.position.y,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(typeof FurnishCatTowerModel!=='undefined'&&FurnishCatTowerModel.supported(f)){const model=FurnishCatTowerModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishCatTreeModel!=='undefined'&&FurnishCatTreeModel.supported(f)){const model=FurnishCatTreeModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishAirconMideaModel!=='undefined'&&FurnishAirconMideaModel.supported(f)){const model=FurnishAirconMideaModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(typeof FurnishShoeBenchModel!=='undefined'&&FurnishShoeBenchModel.supported(f)){const model=FurnishShoeBenchModel.build(THREE,f,RoundedBoxGeometry);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}

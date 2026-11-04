@@ -1,0 +1,244 @@
+{
+  "parts": [
+    {
+      "name": "base",
+      "identity": "cat-tower-v1:base"
+    },
+    {
+      "name": "sisal-column",
+      "identity": "cat-tower-v1:sisal-column"
+    },
+    {
+      "name": "column-top-collar",
+      "identity": "cat-tower-v1:column-top-collar"
+    },
+    {
+      "name": "lower-platform",
+      "identity": "cat-tower-v1:lower-platform"
+    },
+    {
+      "name": "upper-platform",
+      "identity": "cat-tower-v1:upper-platform"
+    },
+    {
+      "name": "lower-side-rail--1",
+      "identity": "cat-tower-v1:lower-side-rail--1"
+    },
+    {
+      "name": "lower-side-spindle--1-0",
+      "identity": "cat-tower-v1:lower-side-spindle--1-0"
+    },
+    {
+      "name": "lower-side-spindle--1-1",
+      "identity": "cat-tower-v1:lower-side-spindle--1-1"
+    },
+    {
+      "name": "lower-side-spindle--1-2",
+      "identity": "cat-tower-v1:lower-side-spindle--1-2"
+    },
+    {
+      "name": "lower-side-spindle--1-3",
+      "identity": "cat-tower-v1:lower-side-spindle--1-3"
+    },
+    {
+      "name": "lower-side-rail-1",
+      "identity": "cat-tower-v1:lower-side-rail-1"
+    },
+    {
+      "name": "lower-side-spindle-1-0",
+      "identity": "cat-tower-v1:lower-side-spindle-1-0"
+    },
+    {
+      "name": "lower-side-spindle-1-1",
+      "identity": "cat-tower-v1:lower-side-spindle-1-1"
+    },
+    {
+      "name": "lower-side-spindle-1-2",
+      "identity": "cat-tower-v1:lower-side-spindle-1-2"
+    },
+    {
+      "name": "lower-side-spindle-1-3",
+      "identity": "cat-tower-v1:lower-side-spindle-1-3"
+    },
+    {
+      "name": "lower-rear-rail",
+      "identity": "cat-tower-v1:lower-rear-rail"
+    },
+    {
+      "name": "lower-rear-spindle-1",
+      "identity": "cat-tower-v1:lower-rear-spindle-1"
+    },
+    {
+      "name": "lower-rear-spindle-2",
+      "identity": "cat-tower-v1:lower-rear-spindle-2"
+    },
+    {
+      "name": "lower-rear-spindle-3",
+      "identity": "cat-tower-v1:lower-rear-spindle-3"
+    },
+    {
+      "name": "lower-rear-spindle-4",
+      "identity": "cat-tower-v1:lower-rear-spindle-4"
+    },
+    {
+      "name": "lower-rear-spindle-5",
+      "identity": "cat-tower-v1:lower-rear-spindle-5"
+    },
+    {
+      "name": "upper-side-rail--1",
+      "identity": "cat-tower-v1:upper-side-rail--1"
+    },
+    {
+      "name": "upper-side-spindle--1-0",
+      "identity": "cat-tower-v1:upper-side-spindle--1-0"
+    },
+    {
+      "name": "upper-side-spindle--1-1",
+      "identity": "cat-tower-v1:upper-side-spindle--1-1"
+    },
+    {
+      "name": "upper-side-spindle--1-2",
+      "identity": "cat-tower-v1:upper-side-spindle--1-2"
+    },
+    {
+      "name": "upper-side-spindle--1-3",
+      "identity": "cat-tower-v1:upper-side-spindle--1-3"
+    },
+    {
+      "name": "upper-side-rail-1",
+      "identity": "cat-tower-v1:upper-side-rail-1"
+    },
+    {
+      "name": "upper-side-spindle-1-0",
+      "identity": "cat-tower-v1:upper-side-spindle-1-0"
+    },
+    {
+      "name": "upper-side-spindle-1-1",
+      "identity": "cat-tower-v1:upper-side-spindle-1-1"
+    },
+    {
+      "name": "upper-side-spindle-1-2",
+      "identity": "cat-tower-v1:upper-side-spindle-1-2"
+    },
+    {
+      "name": "upper-side-spindle-1-3",
+      "identity": "cat-tower-v1:upper-side-spindle-1-3"
+    },
+    {
+      "name": "upper-rear-rail",
+      "identity": "cat-tower-v1:upper-rear-rail"
+    },
+    {
+      "name": "upper-rear-spindle-1",
+      "identity": "cat-tower-v1:upper-rear-spindle-1"
+    },
+    {
+      "name": "upper-rear-spindle-2",
+      "identity": "cat-tower-v1:upper-rear-spindle-2"
+    },
+    {
+      "name": "upper-rear-spindle-3",
+      "identity": "cat-tower-v1:upper-rear-spindle-3"
+    },
+    {
+      "name": "upper-rear-spindle-4",
+      "identity": "cat-tower-v1:upper-rear-spindle-4"
+    },
+    {
+      "name": "upper-rear-spindle-5",
+      "identity": "cat-tower-v1:upper-rear-spindle-5"
+    },
+    {
+      "name": "right-bowl-board",
+      "identity": "cat-tower-v1:right-bowl-board"
+    },
+    {
+      "name": "left-bowl-board",
+      "identity": "cat-tower-v1:left-bowl-board"
+    },
+    {
+      "name": "right-acrylic-bowl",
+      "identity": "cat-tower-v1:right-acrylic-bowl"
+    },
+    {
+      "name": "right-bowl-rim",
+      "identity": "cat-tower-v1:right-bowl-rim"
+    },
+    {
+      "name": "left-acrylic-bowl",
+      "identity": "cat-tower-v1:left-acrylic-bowl"
+    },
+    {
+      "name": "left-bowl-rim",
+      "identity": "cat-tower-v1:left-bowl-rim"
+    },
+    {
+      "name": "basket-platform",
+      "identity": "cat-tower-v1:basket-platform"
+    },
+    {
+      "name": "basket-weave",
+      "identity": "cat-tower-v1:basket-weave"
+    },
+    {
+      "name": "basket-bottom",
+      "identity": "cat-tower-v1:basket-bottom"
+    },
+    {
+      "name": "basket-rim",
+      "identity": "cat-tower-v1:basket-rim"
+    },
+    {
+      "name": "adjuster-rod",
+      "identity": "cat-tower-v1:adjuster-rod"
+    },
+    {
+      "name": "spring-washer",
+      "identity": "cat-tower-v1:spring-washer"
+    },
+    {
+      "name": "pressure-spring",
+      "identity": "cat-tower-v1:pressure-spring"
+    },
+    {
+      "name": "top-disc-lower",
+      "identity": "cat-tower-v1:top-disc-lower"
+    },
+    {
+      "name": "top-disc-middle",
+      "identity": "cat-tower-v1:top-disc-middle"
+    },
+    {
+      "name": "top-disc",
+      "identity": "cat-tower-v1:top-disc"
+    },
+    {
+      "name": "ceiling-pad",
+      "identity": "cat-tower-v1:ceiling-pad"
+    },
+    {
+      "name": "sisal-coils-0",
+      "identity": "cat-tower-v1:sisal-coils-0"
+    },
+    {
+      "name": "sisal-coils-1",
+      "identity": "cat-tower-v1:sisal-coils-1"
+    },
+    {
+      "name": "sisal-coils-2",
+      "identity": "cat-tower-v1:sisal-coils-2"
+    },
+    {
+      "name": "sisal-coils-3",
+      "identity": "cat-tower-v1:sisal-coils-3"
+    },
+    {
+      "name": "sisal-coils-4",
+      "identity": "cat-tower-v1:sisal-coils-4"
+    },
+    {
+      "name": "sisal-coils-5",
+      "identity": "cat-tower-v1:sisal-coils-5"
+    }
+  ]
+}

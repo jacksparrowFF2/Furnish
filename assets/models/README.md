@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-43份产品／设计档案，144张参考图，12张历史原图待补；17组Blender模型。参数化验证配置86组，全部家具库147条目／120种类型。
+44份产品／设计档案，145张参考图，12张历史原图待补；18组Blender模型。参数化验证配置86组，全部家具库148条目／121种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -16,6 +16,7 @@
 | [源氏木语-柏林单人沙发椅](armchair-berlin/README.md) | 2 | [BLEND](armchair-berlin/v3/armchair-berlin-v1.blend) · [GLB](armchair-berlin/v3/armchair-berlin-v1.glb) | 0 |
 | [九款艺术玻璃隔断](art-glass/README.md) | 3 | 参数化 | 0 |
 | [定制柜体设计图](cabinet-design-references/README.md) | 3 | 参考资料 | 0 |
+| [通天柱猫爬架 · 套餐二（京东10141711472484）](cat-tower/README.md) | 1 | [BLEND](cat-tower/v2/cat-tower-v1.blend) · [GLB](cat-tower/v2/cat-tower-v1.glb) | 0 |
 | [猫爬架-绿叶成荫围栏款](cat-tree/README.md) | 1 | 参数化 | 0 |
 | [石膏板吊顶与灯带](ceiling-lighting/README.md) | 5 | 参考资料 | 0 |
 | [源氏木语-S05118-书椅](chair-s05118/README.md) | 6 | [BLEND](chair-s05118/v8/chair-s05118-v1.blend) · [GLB](chair-s05118/v8/chair-s05118-v1.glb) | 0 |

@@ -1,0 +1,418 @@
+{
+  "passed": true,
+  "profile": "cat-tower",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "cat_tower_jd_10141711472484",
+    "name": "猫爬架 · 通天柱套餐二",
+    "w": 800,
+    "d": 470,
+    "color": "#dfc79d",
+    "model": "通天柱·套餐二",
+    "sourceUrl": "https://item.jd.com/10141711472484.html",
+    "h": 2400
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-04T15:57:43.541Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-fUS3Nr\\cat-tower-kDokCP",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-04T15:57:43.541Z",
+      "result": {
+        "command": "author-cat-tower",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-fUS3Nr\\cat-tower-kDokCP\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-fUS3Nr\\cat-tower-kDokCP\\authored",
+        "passed": true,
+        "parts": 60,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "cat-tower",
+          "parts": 60,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-04T15:57:45.470Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-04T15:57:45.471Z",
+      "result": {
+        "passed": true,
+        "profile": "cat-tower",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-04T15:57:47.071Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-04T15:57:47.072Z",
+      "result": {
+        "command": "publish-cat-tower",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-fUS3Nr\\cat-tower-kDokCP\\authored\\cat-tower-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-fUS3Nr\\workspace\\src\\data\\cat-tower-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "460feef67fef8bffe12794fa3d97f585383134f1899b8843d4b7d9c71d3aa8ed",
+        "runtimeSha256": "305e7e06302bf897355ea1a37bb9fe8640130efbd67b4fc0803c8497780700bb"
+      },
+      "finished": "2026-11-04T15:57:50.728Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-04T15:57:50.728Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "cat-tower",
+            "profile": "cat-tower",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-fUS3Nr\\cat-tower-kDokCP\\cat-tower.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "cat-tower",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 60,
+                  "bottom": 0,
+                  "top": 2399.9999000000003,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 60,
+                  "bottom": 0,
+                  "top": 2399.9999000000003,
+                  "externalDistance": 98.77598072279864,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 60,
+                  "bottom": 0,
+                  "top": 2399.9999000000003,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 60,
+                  "bottom": 0,
+                  "top": 2399.9999000000003,
+                  "externalDistance": 98.77598072279864,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-04T15:57:55.013Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-04T15:57:55.013Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 60,
+            "bounds": [
+              [
+                -0.4000000059604645,
+                0,
+                -0.23499999940395355
+              ],
+              [
+                0.4000000059604645,
+                2.3999998569488525,
+                0.23499999940395355
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 60,
+            "bounds": [
+              [
+                -0.4480000138282776,
+                0,
+                -0.25380000472068787
+              ],
+              [
+                0.4480000138282776,
+                2.5920000076293945,
+                0.25380000472068787
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 60,
+            "bounds": [
+              [
+                -0.4000000059604645,
+                0,
+                -0.23499999940395355
+              ],
+              [
+                0.4000000059604645,
+                2.3999998569488525,
+                0.23499999940395355
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-04T15:59:18.438Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-04T15:59:18.439Z",
+      "result": {
+        "passed": true,
+        "profile": "cat-tower",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 60,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 60,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 60,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-04T15:59:22.060Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-04T15:59:22.061Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 60,
+            "position": [
+              0,
+              1.1999999284744263,
+              4.787887892329281
+            ],
+            "target": [
+              0,
+              1.1999999284744263,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 60,
+            "position": [
+              2.6507496500293124,
+              2.657912235990548,
+              3.711049510041037
+            ],
+            "target": [
+              0,
+              1.1999999284744263,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 60,
+            "position": [
+              -2.710607751271709,
+              2.28424302898311,
+              -3.7948508517803927
+            ],
+            "target": [
+              0,
+              1.1999999284744263,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-04T16:00:37.978Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-04T16:00:37.979Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "cpu",
+          "type": "CPU",
+          "backend": "CPU",
+          "devices": [],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T16:00:41.190Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-04T16:00:41.190Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "cpu",
+          "type": "CPU",
+          "backend": "CPU",
+          "devices": [],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T16:00:44.386Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-04T16:00:44.387Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "cpu",
+          "type": "CPU",
+          "backend": "CPU",
+          "devices": [],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T16:00:47.578Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-04T16:00:47.578Z",
+      "result": {
+        "passed": true,
+        "profile": "cat-tower",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 60,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 60,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 60,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-04T16:00:49.240Z"
+    }
+  ],
+  "finished": "2026-11-04T16:00:49.241Z"
+}

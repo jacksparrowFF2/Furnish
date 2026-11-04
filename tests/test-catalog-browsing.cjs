@@ -4,7 +4,7 @@ const original=JSON.stringify(C.library),browse=C.browseLibrary(),items=C.librar
 assert.equal(browse.flatMap(g=>g.items).length,items.length);
 assert.equal(new Set(browse.flatMap(g=>g.items)).size,items.length);
 for(const it of items){assert(browse.some(g=>g.items.includes(it)));assert.equal(C.findItem(it[0],it[1]),it);}
-assert.deepEqual(browse.find(g=>g.cat==='宠物').items.map(it=>it[0]).sort(),['aquarium_mijia_2pro','cat_tree','litter_box','pet_feeder_mijia_2']);
+assert.deepEqual(browse.find(g=>g.cat==='宠物').items.map(it=>it[0]).sort(),['aquarium_mijia_2pro','cat_tower_jd_10141711472484','cat_tree','litter_box','pet_feeder_mijia_2']);
 assert(browse.find(g=>g.cat==='洗衣 · 家政').items.some(it=>it[0]==='dryingrack'));
 assert.deepEqual(browse.find(g=>g.cat==='柜体').items,C.library.find(g=>g.cat==='柜体').items); // Follow the live catalog as new products are registered.
 for(const type of ['curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller'])assert(browse.find(g=>g.cat==='布艺').items.some(it=>it[0]===type));
