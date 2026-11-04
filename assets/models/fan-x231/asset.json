@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "id": "fan-x231",
+  "name": "艾美特 小暴风 PRO FA18-X231 空气循环扇",
+  "types": [
+    "fan_airmate_fa18_x231"
+  ],
+  "route": "blender",
+  "document": "docs/FAN-AIRMATE-FA18-X231.md",
+  "sourceLinks": [
+    "https://item.jd.com/100324618104.html",
+    "https://news.mydrivers.com/1/1111/1111755.htm"
+  ],
+  "references": [
+    {
+      "path": "references/product-promotion.jpg",
+      "kind": "product-page",
+      "sha256": "2f86b9658a5ee47e82f5e71e4fecb293da259569bc776867ad5de0aafd1d7554",
+      "bytes": 657991,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/fan-x231-visual-20261104/README.md"
+  ],
+  "notes": [
+    "标称300×300×1100mm来自京东规格；细部尺寸来自同型号营销图估算。",
+    "静态加高姿态；未实现摇头、俯仰及拆杆。三叶180mm来自京东规格，宣传图9寸为风筒文案，不混作叶径。"
+  ]
+}

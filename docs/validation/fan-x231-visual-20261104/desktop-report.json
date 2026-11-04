@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exe": "output/desktop/Furnish-win32-x64/Furnish.exe",
+  "isolated": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\fan-x231-desktop-retry\\workspace",
+  "sourceUnchanged": true,
+  "catalog": true,
+  "undoRedo": true,
+  "saveReload": true,
+  "narrow": true
+}

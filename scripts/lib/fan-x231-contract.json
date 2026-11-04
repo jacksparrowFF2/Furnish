@@ -1,0 +1,116 @@
+{
+  "parts": [
+    {
+      "name": "rubber-base",
+      "identity": "fan-x231-v1:rubber-base"
+    },
+    {
+      "name": "round-base",
+      "identity": "fan-x231-v1:round-base"
+    },
+    {
+      "name": "base-collar",
+      "identity": "fan-x231-v1:base-collar"
+    },
+    {
+      "name": "upright",
+      "identity": "fan-x231-v1:upright"
+    },
+    {
+      "name": "collar-trim",
+      "identity": "fan-x231-v1:collar-trim"
+    },
+    {
+      "name": "control-column",
+      "identity": "fan-x231-v1:control-column"
+    },
+    {
+      "name": "oscillation-neck",
+      "identity": "fan-x231-v1:oscillation-neck"
+    },
+    {
+      "name": "dial-bezel",
+      "identity": "fan-x231-v1:dial-bezel"
+    },
+    {
+      "name": "speed-dial",
+      "identity": "fan-x231-v1:speed-dial"
+    },
+    {
+      "name": "dial-pointer",
+      "identity": "fan-x231-v1:dial-pointer"
+    },
+    {
+      "name": "dial-mark-0",
+      "identity": "fan-x231-v1:dial-mark-0"
+    },
+    {
+      "name": "dial-mark-1",
+      "identity": "fan-x231-v1:dial-mark-1"
+    },
+    {
+      "name": "dial-mark-2",
+      "identity": "fan-x231-v1:dial-mark-2"
+    },
+    {
+      "name": "dial-mark-3",
+      "identity": "fan-x231-v1:dial-mark-3"
+    },
+    {
+      "name": "u-cradle",
+      "identity": "fan-x231-v1:u-cradle"
+    },
+    {
+      "name": "tilt-pivot--1",
+      "identity": "fan-x231-v1:tilt-pivot--1"
+    },
+    {
+      "name": "tilt-pivot-1",
+      "identity": "fan-x231-v1:tilt-pivot-1"
+    },
+    {
+      "name": "barrel-shell",
+      "identity": "fan-x231-v1:barrel-shell"
+    },
+    {
+      "name": "front-rim",
+      "identity": "fan-x231-v1:front-rim"
+    },
+    {
+      "name": "rear-rim",
+      "identity": "fan-x231-v1:rear-rim"
+    },
+    {
+      "name": "front-swirl-grille",
+      "identity": "fan-x231-v1:front-swirl-grille"
+    },
+    {
+      "name": "rear-grille",
+      "identity": "fan-x231-v1:rear-grille"
+    },
+    {
+      "name": "motor-body",
+      "identity": "fan-x231-v1:motor-body"
+    },
+    {
+      "name": "blade-hub",
+      "identity": "fan-x231-v1:blade-hub"
+    },
+    {
+      "name": "blade-0",
+      "identity": "fan-x231-v1:blade-0"
+    },
+    {
+      "name": "blade-1",
+      "identity": "fan-x231-v1:blade-1"
+    },
+    {
+      "name": "blade-2",
+      "identity": "fan-x231-v1:blade-2"
+    },
+    {
+      "name": "centre-badge",
+      "identity": "fan-x231-v1:centre-badge"
+    }
+  ]
+}

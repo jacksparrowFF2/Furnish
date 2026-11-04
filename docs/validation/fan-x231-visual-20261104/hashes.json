@@ -1,0 +1,18 @@
+{
+  "assets/models/fan-x231/v1/fan-x231-v1.blend": "93b1e650cf52137bbaf5a6139c42f4c63ce63a4c07560c56b20c6070298813d3",
+  "assets/models/fan-x231/v1/fan-x231-v1.glb": "54ae8f870cf86eedd4cba65a711e6a8fbf7385d99bd71fccd622be21f2a7cd50",
+  "src/data/fan-x231-blender-asset.js": "63120a490868fa06a74d317a7156e3108a263ed006c6d567071fdb5c1a8e8788",
+  "scripts/blender-model-fan-x231.py": "1f375a7f93df1a4d32740f728733f6f061821f02ec34cf71592745c1af22142b",
+  "assets/models/fan-x231/references/product-promotion.jpg": "2f86b9658a5ee47e82f5e71e4fecb293da259569bc776867ad5de0aafd1d7554",
+  "docs/validation/fan-x231-visual-20261104/01-silhouette-grey.png": "48d66bcb0f9070d6b1557c81e269ce11de6b778eaaac5a845eb418658deda65d",
+  "docs/validation/fan-x231-visual-20261104/02-structure-grey.png": "1d3ae6414c8057f1db0e077fefc7d92850858afeceadb5033b52010a8dd6a9d1",
+  "docs/validation/fan-x231-visual-20261104/03-material-detail.png": "4abb2f3a6fe248df6569c04797e7161813d20d2c33f175f04f86f480296f9b84",
+  "docs/validation/fan-x231-visual-20261104/04-material-full.png": "9db9c02bd5323c0ee4d9d47ff0a0d554bf7bd340e52b824ab34770eb03ec6a76",
+  "docs/validation/fan-x231-visual-20261104/desktop-3d.png": "6735b182d50bb5a323509123e81546423fc3fc3fa3c34211e9e0c0609f1c4156",
+  "docs/validation/fan-x231-visual-20261104/desktop-narrow.png": "63431d5050dffd052a58d191f1716081fdcfe82aa1dc6ee0eca4e1f6df9ad900",
+  "docs/validation/fan-x231-visual-20261104/production-back.png": "954df38ee8e7c9727fe85ea24b41a1f294eddc29f939d848376a9ce87430b8a2",
+  "docs/validation/fan-x231-visual-20261104/production-front.png": "73686c75a051cf1353ae95a013fd1538b4f2c2290888ce5884d1084f1ea6123d",
+  "docs/validation/fan-x231-visual-20261104/production-oblique.png": "4d278623674db6d455c586c091fbd81005808132c1028aba908ef9054631b93f",
+  "docs/validation/fan-x231-visual-20261104/reference-head-controls.png": "b3d3661b4df0167a7594569e5b39a1ed8d36a178480aa81a682696e030004ef1",
+  "docs/validation/fan-x231-visual-20261104/render-review.py": "e810518dd786861e144b1d09930d5f96c7c20af8b7967127129cb4cfae5998d7"
+}

@@ -32,6 +32,7 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
 }
 
 
+  if(t==='fan_airmate_fa18_x231')return ec(0,0,w/2,d/2,c)+rc(-w*.45,-d*.31,w*.9,d*.6,c)+ln(-w*.42,d*.29,w*.42,d*.29)+ec(0,0,w*.06,d*.06,shade(c,.75));
   const x = -w/2, y = -d/2, m = Math.min(w,d);
   if(f?.cabinet?.boxConstruction==='independent'){
     const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,t=f.cabinet.thickness,p=C.endPanels(f.cabinet);

@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-04（FA18-X231循环扇）：product-rules注册1100mm静态落地产品，circulator-model复用static-asset读取28件Blender离线网格，显示／实体／导出同源；新增资产和经典模型脚本，无新字段／格式／保存通道。见[FAN-AIRMATE-FA18-X231](FAN-AIRMATE-FA18-X231.md)。
+
 2026-11-04（净距标注）：drawing-core.clearanceFrame统一单件产品轴与多选图纸轴，canvas-interactions测距／数字定位共用旋转；plan-renderer与property-panel共用方向及生产参照名称。snapping只在派生结果补充enclosingStructure，沿原包含查询区分内板件和外部结构，未改实际距离／碰撞／项目字段。加载与保存通道保持，见[验收与底层评估](validation/clearance-labels-20261104/README.md)。
 
 2026-11-04（折叠椅端态与配色）：folding-chair-core统一三组刚性端态与实际顶点包络；product-rules声明foldingChairFolded／既有mountHeight和geometryVersion2。生产、二维、实体、缓存／空间确认同源；主体配色沿color，销钉不染色。显式配置采用项目／工作区／恢复缓存v47，旧缺失展开且不补写。新增一个经典核心脚本，无独立保存通道；见[端态与收纳](CHAIR-IKEA-VIHALS.md)。

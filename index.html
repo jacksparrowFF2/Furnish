@@ -419,6 +419,8 @@
 <script src="src/data/armchair-berlin-blender-asset.js"></script>
 <script src="src/data/chair-s05118-blender-asset.js"></script>
 <script src="src/render/armchair-model.js"></script>
+<script src="src/data/fan-x231-blender-asset.js"></script>
+<script src="src/render/circulator-model.js"></script>
 <script src="src/data/chair-vihals-blender-asset.js"></script>
 <script src="src/core/folding-chair-core.js"></script>
 <script src="src/render/folding-chair-model.js"></script>
@@ -908,6 +910,7 @@ const syncIdentity=FurnishPartIdentity;
   if(typeof FurnishWindowLiningModel!=='undefined'&&FurnishWindowLiningModel.supported(f)){const model=FurnishWindowLiningModel.build(THREE,f,{wood:woodM(f.color)});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishStackStoolModel.supported(f)){const model=FurnishStackStoolModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishFoldingChairModel.supported(f)){const model=FurnishFoldingChairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(FurnishCirculatorModel.supported(f)){const model=FurnishCirculatorModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishArmchairModel.supported(f)){const model=FurnishArmchairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishSofaBedModel.supported(f)){const model=FurnishSofaBedModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(f.type==='sofa_yeswood_cherry'){

@@ -20,6 +20,7 @@ const LIB = [
   ]},
   {cat:'电器', items:[
     ['panel_light_300x600','厨房平板灯 · 300×600 · 24W',300,600,'#f5f5f2',undefined,products.height({type:'panel_light_300x600'})],
+    ['fan_airmate_fa18_x231','艾美特 小暴风 PRO FA18-X231 空气循环扇',300,300,'#eeeee9',undefined,products.height({type:'fan_airmate_fa18_x231'})],
     ['bath_heater_aopu_se2','奥普 SE2 风暖浴霸',300,600,'#f5f5f3',undefined,products.height({type:'bath_heater_aopu_se2'})],
     ['bath_heater_300x600','风暖浴霸 · 300×600通用占位',300,600,'#f5f5f0',undefined,products.height({type:'bath_heater_300x600'})],
     ["downlight_philips_dl269","飞利浦品焕筒灯 DL269",85,85,"#f4f4f0",undefined,45],
@@ -240,7 +241,7 @@ const navigationGroups=[
 const navigationTypeGroups={
  'appliances/cooking':['stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g'],
  'appliances/laundry':['washer','washer_littleswan_tg10k60w','dryer'],
- 'appliances/climate':['aircon','aircon_midea_ultra_2hp','acwall','waterheater','waterheater_flat','bath_heater_aopu_se2','bath_heater_300x600'],
+ 'appliances/climate':['fan_airmate_fa18_x231','aircon','aircon_midea_ultra_2hp','acwall','waterheater','waterheater_flat','bath_heater_aopu_se2','bath_heater_300x600'],
  'appliances/services':['heating_manifold','electrical_box_strong','electrical_box_weak'],
  'decor/lighting':['floorlamp','pendant','panel_light_300x600','downlight_philips_dl269']
 };
