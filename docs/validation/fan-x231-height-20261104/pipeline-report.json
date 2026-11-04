@@ -1,0 +1,477 @@
+{
+  "passed": true,
+  "profile": "fan-x231",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "fan_airmate_fa18_x231",
+    "name": "艾美特 小暴风 PRO FA18-X231 空气循环扇",
+    "w": 300,
+    "d": 300,
+    "color": "#eeeee9",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "艾美特/AIRMATE",
+    "model": "小暴风 PRO FA18-X231",
+    "sourceUrl": "https://item.jd.com/100324618104.html",
+    "h": 1100
+  },
+  "alternateKind": "operating",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-04T16:01:31.124Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-MFOHAs\\fan-x231-jprHVt",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-04T16:01:31.124Z",
+      "result": {
+        "command": "author-fan-x231",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-MFOHAs\\fan-x231-jprHVt\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-MFOHAs\\fan-x231-jprHVt\\authored",
+        "passed": true,
+        "parts": 29,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "fan-x231",
+          "parts": 29,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-04T16:01:32.411Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-04T16:01:32.412Z",
+      "result": {
+        "passed": true,
+        "profile": "fan-x231",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-04T16:01:33.544Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-04T16:01:33.544Z",
+      "result": {
+        "command": "publish-fan-x231",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-MFOHAs\\fan-x231-jprHVt\\authored\\fan-x231-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-MFOHAs\\workspace\\src\\data\\fan-x231-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "d8f5424aedc0b333f1f9b9a15b0b7a957950798e7ebf5dd53e75dd061ec320ac",
+        "runtimeSha256": "340b498913e22aa876134159a4d8dfb4a6c8169b1ac49e7a4821e703af68701d"
+      },
+      "finished": "2026-11-04T16:01:35.238Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-04T16:01:35.238Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "fan-x231",
+            "profile": "fan-x231",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-MFOHAs\\fan-x231-jprHVt\\fan-x231.log",
+            "reused": false
+          },
+          {
+            "name": "fan-height",
+            "profile": "fan-x231",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-MFOHAs\\fan-x231-jprHVt\\fan-height.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "fan-x231",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 29,
+                  "bottom": 0,
+                  "top": 1100,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 29,
+                  "bottom": 0,
+                  "top": 1100,
+                  "externalDistance": 39.8036010150243,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 27,
+                  "bottom": 760,
+                  "top": 1312,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 27,
+                  "bottom": 760,
+                  "top": 1312,
+                  "externalDistance": 39.8036010150243,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-04T16:01:39.490Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-04T16:01:39.491Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 29,
+            "bounds": [
+              [
+                -0.15000000596046448,
+                0,
+                -0.15000000596046448
+              ],
+              [
+                0.15000000596046448,
+                1.100000023841858,
+                0.15000000596046448
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "alternate",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.15000000596046448,
+                0.76,
+                -0.15000000596046448
+              ],
+              [
+                0.15000000596046448,
+                1.3119999861717224,
+                0.15000000596046448
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 29,
+            "bounds": [
+              [
+                -0.1679999977350235,
+                0,
+                -0.16200000047683716
+              ],
+              [
+                0.1679999977350235,
+                1.187999963760376,
+                0.16200000047683716
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 29,
+            "bounds": [
+              [
+                -0.15000000596046448,
+                0,
+                -0.15000000596046448
+              ],
+              [
+                0.15000000596046448,
+                1.100000023841858,
+                0.15000000596046448
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "alternate",
+            "parts": 27,
+            "bounds": [
+              [
+                -0.15000000596046448,
+                0.76,
+                -0.15000000596046448
+              ],
+              [
+                0.15000000596046448,
+                1.3119999861717224,
+                0.15000000596046448
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-04T16:02:27.893Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-04T16:02:27.893Z",
+      "result": {
+        "passed": true,
+        "profile": "fan-x231",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 29,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-alternate",
+            "parts": 27,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 29,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 29,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-alternate",
+            "parts": 27,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-04T16:02:30.461Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-04T16:02:30.461Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 29,
+            "position": [
+              0,
+              0.6559999930858612,
+              2.5657588014972927
+            ],
+            "target": [
+              0,
+              0.6559999930858612,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 29,
+            "position": [
+              1.4204978057286628,
+              1.4372737862366258,
+              1.9886969280201279
+            ],
+            "target": [
+              0,
+              0.6559999930858612,
+              0
+            ]
+          },
+          {
+            "id": "open",
+            "state": "alternate",
+            "parts": 27,
+            "position": [
+              1.4320669143528377,
+              1.37203345026228,
+              2.0048936800939727
+            ],
+            "target": [
+              0,
+              0.6559999930858612,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-04T16:02:58.211Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-04T16:02:58.212Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T16:03:01.385Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-04T16:03:01.385Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T16:03:04.517Z"
+    },
+    {
+      "name": "render-open",
+      "passed": true,
+      "started": "2026-11-04T16:03:04.517Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T16:03:07.699Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-04T16:03:07.699Z",
+      "result": {
+        "passed": true,
+        "profile": "fan-x231",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 29,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 29,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "open",
+            "parts": 27,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-04T16:03:08.807Z"
+    }
+  ],
+  "finished": "2026-11-04T16:03:08.807Z"
+}

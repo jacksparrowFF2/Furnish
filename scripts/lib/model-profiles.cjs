@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'../..'),P=require('../../src/core/product-rul
 const originalTypes=new Set('bed crib nightstand wardrobe dresser desk chest chair bookshelf baycushion sofa cornersofa armchair beanbag coffeetable roundtable sidetable tvstand rug shoecab floorlamp plant dryingrack table island barstool counter stove ksink fridge cabinet toilet vanity shower bathtub washer waterheater tv aircon acwall dishwasher ovencol dryer purifier officechair piano treadmill pendant curtain wallart mirror bench'.split(' '));
 const assetTypes={'fan-x231':'fan_airmate_fa18_x231','chair-vihals':'chair_ikea_vihals','chair-s05118':'chair_yeswood_s05118','sofa-bed':'sofa_bed_yeswood_y107h03',se2:'bath_heater_aopu_se2',y52y09:'bookshelf_yeswood_y52y09',fridge:'fridge_french_drawer',dishwasher:'dishwasher_mijia_countertop',hood:'rangehood_fotile_jcd10ta',washer:'washer','washer-tg10k60w':'washer_littleswan_tg10k60w','side-table':'sidetable_tmall_635382906309',armchair:'armchair_yeswood_y09hs','armchair-berlin':'armchair_yeswood_berlin','stack-stool':'stool_citylong_370'};
 const suites={
- 'fan-x231':['fan-x231'],
+ 'fan-x231':['fan-x231','fan-height'],
  'chair-vihals':['chair-vihals','folding-chair-state'],
  art_glass_partition:['art-glass'],quartz_sill:['window-lining'],window_surround:['window-lining'],
  'chair-s05118':['chair-s05118'],
@@ -28,7 +28,8 @@ function testsFor(id,type){
 function itemFixture(item){const f={type:item[0],name:item[1],w:item[2],d:item[3],color:item[4],...P.initial({type:item[0],w:item[2],d:item[3]})};if(item[6])f.h=item[6];if(!f.h)f.h=P.height(f);if(item[8])f.curtainStyle=item[8];return f;}
 function operate(f){
  f=copy(f);const d=P.definition(f)||{};
- if(d.foldingChairProfile)f.foldingChairFolded=true;
+ if(d.circulator)Object.assign(f,{h:d.circulator.presets[0],mountHeight:760});
+ else if(d.foldingChairProfile)f.foldingChairFolded=true;
  else if(d.sofaBedProfile)f.sofaBedOpen=true;
  else if(f.type==='window_surround')f.windowSurroundSides='three';
  else if(d.fridgeMotion)Object.assign(f,{fridgeLeftAngle:100,fridgeRightAngle:100,fridgeUpperExtension:1,fridgeLowerExtension:1});

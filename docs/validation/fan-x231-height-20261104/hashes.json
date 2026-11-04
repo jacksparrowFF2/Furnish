@@ -1,0 +1,16 @@
+{
+  "assets/models/fan-x231/v2/fan-x231-v1.blend": "39055ce30f9e3fc1d22b7d698ed5b610f7980b9154a0e9fa9851fae15c57d9be",
+  "assets/models/fan-x231/v2/fan-x231-v1.glb": "2fd57fc3bc1bb43f89672fbb54864d63cceab20e9e2a155bcbbee1e59bd8b863",
+  "assets/models/fan-x231/references/user-dimensions.png": "de1cac45e823c8c3dbf4ac5913e3c14584d1f32f3a64e0b7b67c3dd4ee9719ce",
+  "assets/models/fan-x231/references/user-pole-joint.png": "89a8f1defb555565be289c9e5d0622f7d3877a5c320705c43cbcf93fd6ff0936",
+  "src/data/fan-x231-blender-asset.js": "0180dfd3802ad68c040a2ae35c71f532e267b6eae5471d56c04889a40a0f0360",
+  "src/render/circulator-model.js": "91528755933f947d3ceb5d528bff7e932b2f306818c8a07e3232050d7e1d5230",
+  "scripts/blender-model-fan-x231.py": "a12d4c7883bae3a33e0663a9b2fa629463c3eb7eba9b6ca4a839793ac30ccbc4",
+  "docs/validation/fan-x231-height-20261104/desktop-narrow.png": "91ef694b030304cbb313501605f4842324a4e4df6d3a6d25ad101f07e2b27a58",
+  "docs/validation/fan-x231-height-20261104/desktop-poles-0.png": "33b9a756210ea638886109aac1ab418484cb2283c81ac6e8a228813b0f1d459c",
+  "docs/validation/fan-x231-height-20261104/desktop-poles-1.png": "bca1b8e603d3e478cfd70f61080842ca64f2c095e5bde0e3748c1c779c066000",
+  "docs/validation/fan-x231-height-20261104/desktop-poles-2.png": "55af95eb5ad3a4a90db24c388ce2ec85776b2fb7b40e0ea8a2658d07d2b43973",
+  "docs/validation/fan-x231-height-20261104/production-full-front.png": "215e8338beb79a82e81ff524ee3e5e21221a66af7c7cdeee07ff2d3e8da22b03",
+  "docs/validation/fan-x231-height-20261104/production-full-oblique.png": "cbec71aab0654103cc8d014c9af2e15bdb7bf206378c30f241b17672a279726e",
+  "docs/validation/fan-x231-height-20261104/production-short-elevated.png": "3211a56d32ce59fdff077ca9413d5bacdd709254bf0783f27a418831c5c95b9b"
+}

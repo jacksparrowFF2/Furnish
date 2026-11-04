@@ -8,17 +8,19 @@
 
 | 内容 | 文件 |
 |---|---|
-| 可编辑源 | [BLEND](v1/fan-x231-v1.blend) |
-| 交换模型 | [GLB](v1/fan-x231-v1.glb) |
+| 可编辑源 | [BLEND](v2/fan-x231-v1.blend) |
+| 交换模型 | [GLB](v2/fan-x231-v1.glb) |
 | 离线运行资产 | [JS](../../../src/data/fan-x231-blender-asset.js) |
 | 生产构造器 | [代码](../../../src/render/circulator-model.js) |
-当前源GLB SHA256：54ae8f870cf86eedd4cba65a711e6a8fbf7385d99bd71fccd622be21f2a7cd50。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
+当前源GLB SHA256：2fd57fc3bc1bb43f89672fbb54864d63cceab20e9e2a155bcbbee1e59bd8b863。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
 
 ## 输入参考资料
 
 | 参考图 | 来源类别 |
 |---|---|
 | [product-promotion.jpg](references/product-promotion.jpg) | 商品页资料 |
+| [user-dimensions.png](references/user-dimensions.png) | 用户上传 |
+| [user-pole-joint.png](references/user-pole-joint.png) | 用户上传 |
 
 ## 来源链接
 
@@ -28,8 +30,10 @@
 ## 验收入口
 
 - [验收资料](../../../docs/validation/fan-x231-visual-20261104/README.md)
+- [验收资料](../../../docs/validation/fan-x231-height-20261104/README.md)
 
 ## 资料差异
 
 - 标称300×300×1100mm来自京东规格；细部尺寸来自同型号营销图估算。
-- 静态加高姿态；未实现摇头、俯仰及拆杆。三叶180mm来自京东规格，宣传图9寸为风筒文案，不混作叶径。
+- v1历史：静态加高姿态；未实现摇头、俯仰及拆杆。三叶180mm来自京东规格，宣传图9寸为风筒文案，不混作叶径。
+- v2下方两段立柱可通过高度档增减；552／826mm短档由既有548mm立柱均分估算，不是厂家标注。支持独立底部离地，旧h不改写。

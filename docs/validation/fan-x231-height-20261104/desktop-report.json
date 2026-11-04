@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "exe": "output/desktop/Furnish-win32-x64/Furnish.exe",
+  "isolated": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\fan-height-desktop-focus\\workspace",
+  "sourceUnchanged": true,
+  "catalog": true,
+  "polePresets": [
+    552,
+    826,
+    1100
+  ],
+  "mountHeight": 760,
+  "undoRedo": true,
+  "saveReload": true,
+  "narrow": true
+}

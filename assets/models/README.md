@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-43份产品／设计档案，142张参考图，12张历史原图待补；17组Blender模型。参数化验证配置86组，全部家具库147条目／120种类型。
+43份产品／设计档案，144张参考图，12张历史原图待补；17组Blender模型。参数化验证配置86组，全部家具库147条目／120种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -29,7 +29,7 @@
 | [飞利浦-DL269-筒灯](downlight-dl269/README.md) | 8 | 参数化 | 0 |
 | [定制玄关置物台柜](entry-console/README.md) | 1 | 参考资料 | 0 |
 | [定制玄关洞洞板柜](entry-pegboard/README.md) | 1 | 参考资料 | 0 |
-| [艾美特 小暴风 PRO FA18-X231 空气循环扇](fan-x231/README.md) | 1 | [BLEND](fan-x231/v1/fan-x231-v1.blend) · [GLB](fan-x231/v1/fan-x231-v1.glb) | 0 |
+| [艾美特 小暴风 PRO FA18-X231 空气循环扇](fan-x231/README.md) | 3 | [BLEND](fan-x231/v2/fan-x231-v1.blend) · [GLB](fan-x231/v2/fan-x231-v1.glb) | 0 |
 | [纯平四门冰箱（双抽屉）](fridge/README.md) | 0 | [BLEND](fridge/v2/fridge-v1.blend) · [GLB](fridge/v2/fridge-v1.glb) | 0 |
 | [方太抽油烟机 JCD10TA](hood/README.md) | 0 | [BLEND](hood/v2/hood-v1.blend) · [GLB](hood/v2/hood-v1.glb) | 0 |
 | [猫砂盆（型号未确认）](litter-box/README.md) | 0 | 参数化 | 2 |

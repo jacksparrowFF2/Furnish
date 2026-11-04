@@ -8,7 +8,7 @@
     "catalogEntries": 147,
     "catalogTypes": 120,
     "productDossiers": 43,
-    "referenceImages": 142,
+    "referenceImages": 144,
     "missingReferences": 12
   },
   "models": [
@@ -21,17 +21,17 @@
         300,
         1100
       ],
-      "parts": 28,
+      "parts": 29,
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/fan-x231-blender-asset.js",
-        "sha256": "43efb1919761016b95c79fd63abc10ccaaeb092d930997fd6de4e589f210bbd8",
+        "sha256": "2324116fa874ca6640bd915871fa87515752f703b5de7e402e5fb89526ec4502",
         "normalization": "utf8-lf"
       },
-      "sourceSha256": "54ae8f870cf86eedd4cba65a711e6a8fbf7385d99bd71fccd622be21f2a7cd50",
+      "sourceSha256": "2fd57fc3bc1bb43f89672fbb54864d63cceab20e9e2a155bcbbee1e59bd8b863",
       "current": {
-        "blend": "assets/models/fan-x231/v1/fan-x231-v1.blend",
-        "glb": "assets/models/fan-x231/v1/fan-x231-v1.glb"
+        "blend": "assets/models/fan-x231/v2/fan-x231-v1.blend",
+        "glb": "assets/models/fan-x231/v2/fan-x231-v1.glb"
       },
       "document": "docs/FAN-AIRMATE-FA18-X231.md",
       "constructor": "src/render/circulator-model.js",
@@ -39,20 +39,34 @@
       "files": [
         {
           "path": "assets/models/fan-x231/v1/fan-x231-v1.blend",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "93b1e650cf52137bbaf5a6139c42f4c63ce63a4c07560c56b20c6070298813d3",
           "bytes": 613660
         },
         {
           "path": "assets/models/fan-x231/v1/fan-x231-v1.glb",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "54ae8f870cf86eedd4cba65a711e6a8fbf7385d99bd71fccd622be21f2a7cd50",
           "bytes": 1051660
+        },
+        {
+          "path": "assets/models/fan-x231/v2/fan-x231-v1.blend",
+          "role": "published-source",
+          "sha256": "39055ce30f9e3fc1d22b7d698ed5b610f7980b9154a0e9fa9851fae15c57d9be",
+          "bytes": 614316
+        },
+        {
+          "path": "assets/models/fan-x231/v2/fan-x231-v1.glb",
+          "role": "published-source",
+          "sha256": "2fd57fc3bc1bb43f89672fbb54864d63cceab20e9e2a155bcbbee1e59bd8b863",
+          "bytes": 1073100
         }
       ],
       "dossier": "assets/models/fan-x231/asset.json",
       "references": [
-        "assets/models/fan-x231/references/product-promotion.jpg"
+        "assets/models/fan-x231/references/product-promotion.jpg",
+        "assets/models/fan-x231/references/user-dimensions.png",
+        "assets/models/fan-x231/references/user-pole-joint.png"
       ]
     },
     {
@@ -2093,15 +2107,31 @@
           "sha256": "2f86b9658a5ee47e82f5e71e4fecb293da259569bc776867ad5de0aafd1d7554",
           "bytes": 657991,
           "legacyPaths": []
+        },
+        {
+          "path": "references/user-dimensions.png",
+          "kind": "user",
+          "sha256": "de1cac45e823c8c3dbf4ac5913e3c14584d1f32f3a64e0b7b67c3dd4ee9719ce",
+          "bytes": 315759,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-pole-joint.png",
+          "kind": "user",
+          "sha256": "89a8f1defb555565be289c9e5d0622f7d3877a5c320705c43cbcf93fd6ff0936",
+          "bytes": 240028,
+          "legacyPaths": []
         }
       ],
       "missingReferences": [],
       "validation": [
-        "docs/validation/fan-x231-visual-20261104/README.md"
+        "docs/validation/fan-x231-visual-20261104/README.md",
+        "docs/validation/fan-x231-height-20261104/README.md"
       ],
       "notes": [
         "标称300×300×1100mm来自京东规格；细部尺寸来自同型号营销图估算。",
-        "静态加高姿态；未实现摇头、俯仰及拆杆。三叶180mm来自京东规格，宣传图9寸为风筒文案，不混作叶径。"
+        "v1历史：静态加高姿态；未实现摇头、俯仰及拆杆。三叶180mm来自京东规格，宣传图9寸为风筒文案，不混作叶径。",
+        "v2下方两段立柱可通过高度档增减；552／826mm短档由既有548mm立柱均分估算，不是厂家标注。支持独立底部离地，旧h不改写。"
       ],
       "manifest": "assets/models/fan-x231/asset.json",
       "readme": "assets/models/fan-x231/README.md"

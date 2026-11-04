@@ -13,10 +13,6 @@
       "identity": "fan-x231-v1:base-collar"
     },
     {
-      "name": "upright",
-      "identity": "fan-x231-v1:upright"
-    },
-    {
       "name": "collar-trim",
       "identity": "fan-x231-v1:collar-trim"
     },
@@ -111,6 +107,14 @@
     {
       "name": "centre-badge",
       "identity": "fan-x231-v1:centre-badge"
+    },
+    {
+      "name": "upright-lower",
+      "identity": "fan-x231-v1:upright-lower"
+    },
+    {
+      "name": "upright-upper",
+      "identity": "fan-x231-v1:upright-upper"
     }
   ]
 }

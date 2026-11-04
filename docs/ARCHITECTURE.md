@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-05（循环扇拆杆／离地）：product-rules.circulatorLayout集中档位及尺寸链；circulator-model对29件Blender资产仅变换两段立柱与上部平移，复用h和mountHeight。属性沿mutate，原h／离地及geometryVersion2覆盖三维／实体／确认；本型号新保存v48并读取旧项目和缓存，无新专用字段或加载脚本。见[拆杆验收](validation/fan-x231-height-20261104/README.md)。
+
 2026-11-04（FA18-X231循环扇）：product-rules注册1100mm静态落地产品，circulator-model复用static-asset读取28件Blender离线网格，显示／实体／导出同源；新增资产和经典模型脚本，无新字段／格式／保存通道。见[FAN-AIRMATE-FA18-X231](FAN-AIRMATE-FA18-X231.md)。
 
 2026-11-04（净距标注）：drawing-core.clearanceFrame统一单件产品轴与多选图纸轴，canvas-interactions测距／数字定位共用旋转；plan-renderer与property-panel共用方向及生产参照名称。snapping只在派生结果补充enclosingStructure，沿原包含查询区分内板件和外部结构，未改实际距离／碰撞／项目字段。加载与保存通道保持，见[验收与底层评估](validation/clearance-labels-20261104/README.md)。
