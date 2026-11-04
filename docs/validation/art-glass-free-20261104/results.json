@@ -1,0 +1,82 @@
+{
+  "assets": {
+    "fluted": {
+      "name": "Fluted Glass",
+      "author": "Jonathan Ramos",
+      "assetBaseId": "a4306eee-0f2a-4ea6-ba79-2d0c77274aef",
+      "assetId": "e51b79df-8922-4955-83c0-c274089b726e",
+      "license": "royalty_free",
+      "isFree": true,
+      "source": "https://www.blendkit.com/asset-gallery-detail/a4306eee-0f2a-4ea6-ba79-2d0c77274aef/",
+      "sha256": "f6d514fbd7d04a83c1ac839f3dfdbca1b70436189be53700f7676cd89f94066c",
+      "bytes": 253799,
+      "downloadMethod": "Installed official Blendkit Client v1.13.4"
+    },
+    "wavy": {
+      "name": "Wavy Glass",
+      "author": "Dai Kaku",
+      "assetBaseId": "f8fcc2d2-135c-4494-97a4-2a0ec975c34b",
+      "assetId": "5035c5ca-7c49-4cc4-af92-ce7df188ad92",
+      "license": "royalty_free",
+      "isFree": true,
+      "source": "https://www.blendkit.com/asset-gallery-detail/f8fcc2d2-135c-4494-97a4-2a0ec975c34b/",
+      "sha256": "aee41e4f258dff13afe05f298e57e2c7a1453e8ecc0e281f22fa66629e3aae59",
+      "bytes": 29168175,
+      "downloadMethod": "Installed official Blendkit Client v1.13.4"
+    }
+  },
+  "paneDimensions": [
+    0.24,
+    0.008,
+    0.36
+  ],
+  "surface": "patterned front only, original polished back and edge retained",
+  "images": [
+    "01-native-settings.png",
+    "02-adapted.png",
+    "03-distance-reference.png"
+  ],
+  "device": {
+    "requested": "auto",
+    "type": "GPU",
+    "backend": "OPTIX",
+    "devices": [
+      "NVIDIA GeForce RTX 4070 Ti SUPER"
+    ],
+    "fallback": null
+  },
+  "blender": "5.2.3 LTS",
+  "adaptations": [
+    {
+      "material": "fluted",
+      "setting": "UV and tangent-normal rotation",
+      "degrees": 90,
+      "scale": [
+        1.25,
+        1.875,
+        1
+      ],
+      "estimatedPitchMm": 24
+    },
+    {
+      "material": "wavy",
+      "setting": "virtual bump height scale m; BUMP mode retained",
+      "before": 0.05000000074505806,
+      "after": 0.0006
+    },
+    {
+      "material": "wavy",
+      "setting": "UV uses source 1m square physical tile",
+      "scale": [
+        0.24,
+        0.36,
+        1
+      ]
+    }
+  ],
+  "backgroundDistanceTestMm": {
+    "firstPair": 80,
+    "secondPair": 330
+  },
+  "reopened": true
+}
