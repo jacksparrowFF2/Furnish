@@ -123,6 +123,9 @@ if(t==='pocketdoor_double'||t==='pocketdoor_triple'){
       else svg+=rc(-w*.472,-180*s[2],w*.944,590*s[2],'#eee8dc','rx="12"');
       return svg+[-1,1].map(side=>rc(side*w*.235-w*.22,-180*s[2],w*.44,(layout.open?260:95)*s[2],'#e2dbcf','rx="9"')).join('');
     }
+    case 'chair_ikea_vihals': {
+      return [-1,1].map(side=>rc(side*w*.47-w*.018,-d*.46,w*.036,d*.92,c,'rx="7"')).join('')+rc(-w*.453,-d*.40,w*.906,d*.87,c,'rx="36"')+rc(-w/2,-d*.5,w,d*.17,c,'rx="24"');
+    }
     case 'chair_yeswood_s05118': {
       return rc(-w*.402,-d*.36,w*.804,d*.804,'#d8cdbc','rx="55"')+rc(-w*.364,-d*.47,w*.728,d*.22,'#d8cdbc','rx="38"')+`<path d="M ${-w*.427} ${d*.39} Q ${-w*.53} ${-d*.30} ${-w*.30} ${-d*.37} Q 0 ${-d*.49} ${w*.30} ${-d*.37} Q ${w*.53} ${-d*.30} ${w*.427} ${d*.39}" fill="none" stroke="${c}" stroke-width="${w*.07}" stroke-linecap="round"/>`;
     }

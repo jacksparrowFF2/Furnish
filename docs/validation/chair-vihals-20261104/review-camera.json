@@ -1,0 +1,1 @@
+{"projection": "perspective", "lensMm": 65, "positionBlender": [1.15, -1.95, 1.2], "targetBlender": [0, 0, 0.4], "resolution": [640, 640], "engine": "Cycles", "samples": 24, "device": "OptiX", "viewTransform": "AgX", "exposure": 0, "reference": "official-open.jpg", "match": "approximate; original photo camera/light unknown"}

@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-41份产品／设计档案，136张参考图，12张历史原图待补；15组Blender模型。参数化验证配置86组，全部家具库145条目／118种类型。
+42份产品／设计档案，141张参考图，12张历史原图待补；16组Blender模型。参数化验证配置86组，全部家具库146条目／119种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -19,6 +19,7 @@
 | [猫爬架-绿叶成荫围栏款](cat-tree/README.md) | 1 | 参数化 | 0 |
 | [石膏板吊顶与灯带](ceiling-lighting/README.md) | 5 | 参考资料 | 0 |
 | [源氏木语-S05118-书椅](chair-s05118/README.md) | 6 | [BLEND](chair-s05118/v8/chair-s05118-v1.blend) · [GLB](chair-s05118/v8/chair-s05118-v1.glb) | 0 |
+| [宜家-VIHALS-维哈斯-白色折叠椅](chair-vihals/README.md) | 5 | [BLEND](chair-vihals/v1/chair-vihals-v1.blend) · [GLB](chair-vihals/v1/chair-vihals-v1.glb) | 0 |
 | [樱桃木白色岩板茶几-1.2米](cherry-coffee-table/README.md) | 4 | 参数化 | 0 |
 | [空气循环扇（前期参数与后补收纳图）](circulation-fan-references/README.md) | 2 | 参考资料 | 0 |
 | [源氏木语-Y00Y06-0.45米转角书柜](corner-bookcase/README.md) | 1 | [BLEND](corner-bookcase/v1/corner-bookcase-v1.blend) · [GLB](corner-bookcase/v1/corner-bookcase-v1.glb) | 0 |

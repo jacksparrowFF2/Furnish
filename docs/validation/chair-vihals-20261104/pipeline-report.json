@@ -1,0 +1,440 @@
+{
+  "passed": true,
+  "profile": "chair-vihals",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "chair_ikea_vihals",
+    "name": "宜家 VIHALS 维哈斯折叠椅（白色／展开）",
+    "w": 430,
+    "d": 470,
+    "color": "#eeeee7",
+    "frontClearance": 0,
+    "brand": "宜家/IKEA",
+    "model": "VIHALS 维哈斯 · 905.927.38 · 白色",
+    "sourceUrl": "https://item.jd.com/10167132712534.html",
+    "h": 800
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-04T14:00:23.333Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-OyRtKD\\chair-vihals-E1nd7g",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-04T14:00:23.333Z",
+      "result": {
+        "command": "author-chair-vihals",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-OyRtKD\\chair-vihals-E1nd7g\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-OyRtKD\\chair-vihals-E1nd7g\\authored",
+        "passed": true,
+        "parts": 15,
+        "blender": "5.2.3 LTS",
+        "officialBoundsMetres": [
+          [
+            -0.22155657410621643,
+            -0.2357107400894165,
+            -0.00018115089915227145
+          ],
+          [
+            0.2214912325143814,
+            0.23574504256248474,
+            0.7967503666877747
+          ]
+        ],
+        "preflight": {
+          "passed": true,
+          "profile": "chair-vihals",
+          "parts": 15,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-04T14:00:24.440Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-04T14:00:24.440Z",
+      "result": {
+        "passed": true,
+        "profile": "chair-vihals",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-04T14:00:25.268Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-04T14:00:25.269Z",
+      "result": {
+        "command": "publish-chair-vihals",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-OyRtKD\\chair-vihals-E1nd7g\\authored\\chair-vihals-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-OyRtKD\\workspace\\src\\data\\chair-vihals-blender-asset.js",
+        "passed": true,
+        "parts": 15,
+        "textures": 2,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "fadc8815a79df00075a378a263bd13618f9ff52b34c98b0d5b65cdecdff8131d",
+        "runtimeSha256": "535f20fad166bcca70d8a02c3102c71220aaaced2317d031a40f2a507de39de8"
+      },
+      "finished": "2026-11-04T14:00:26.714Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-04T14:00:26.715Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "chair-vihals",
+            "profile": "chair-vihals",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-OyRtKD\\chair-vihals-E1nd7g\\chair-vihals.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "chair-vihals",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 15,
+                  "bottom": 0,
+                  "top": 800,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 15,
+                  "bottom": 0,
+                  "top": 800,
+                  "externalDistance": 74.23792591477184,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 15,
+                  "bottom": 0,
+                  "top": 800,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 15,
+                  "bottom": 0,
+                  "top": 800,
+                  "externalDistance": 74.23792591477184,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-04T14:00:28.585Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-04T14:00:28.585Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 15,
+            "bounds": [
+              [
+                -0.2150000035762787,
+                0,
+                -0.23499999940395355
+              ],
+              [
+                0.2150000035762787,
+                0.800000011920929,
+                0.23499999940395355
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 15,
+            "bounds": [
+              [
+                -0.24079999327659607,
+                0,
+                -0.25380000472068787
+              ],
+              [
+                0.24079999327659607,
+                0.8640000224113464,
+                0.25380000472068787
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 15,
+            "bounds": [
+              [
+                -0.2150000035762787,
+                0,
+                -0.23499999940395355
+              ],
+              [
+                0.2150000035762787,
+                0.800000011920929,
+                0.23499999940395355
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-04T14:00:55.602Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-04T14:00:55.602Z",
+      "result": {
+        "passed": true,
+        "profile": "chair-vihals",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 15,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 15,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 15,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-04T14:00:56.689Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-04T14:00:56.690Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 15,
+            "position": [
+              0,
+              0.4000000059604645,
+              1.9028730018827333
+            ],
+            "target": [
+              0,
+              0.4000000059604645,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 15,
+            "position": [
+              1.0535000102805214,
+              0.9794250116147514,
+              1.47490001439273
+            ],
+            "target": [
+              0,
+              0.4000000059604645,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 15,
+            "position": [
+              -1.0772896994628025,
+              0.8309158857455855,
+              -1.5082055792479234
+            ],
+            "target": [
+              0,
+              0.4000000059604645,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-04T14:01:11.059Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-04T14:01:11.060Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T14:01:14.209Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-04T14:01:14.209Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T14:01:17.324Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-04T14:01:17.325Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-04T14:01:20.535Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-04T14:01:20.536Z",
+      "result": {
+        "passed": true,
+        "profile": "chair-vihals",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 15,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 15,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 15,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-04T14:01:21.474Z"
+    }
+  ],
+  "finished": "2026-11-04T14:01:21.475Z"
+}

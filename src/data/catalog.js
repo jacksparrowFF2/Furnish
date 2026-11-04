@@ -126,6 +126,7 @@ const LIB = [
   {cat:'椅 · 凳', items:[
     ['stool_citylong_370','禧天龙 软包叠放方凳 · 37cm',370,370,'#eee9dc',undefined,467],
     ["bench_yeswood_oak","源氏木语 橡木软包换鞋凳 · 80cm",800,300,"#bd925f",0,products.height({type:"bench_yeswood_oak"})],
+    ['chair_ikea_vihals','宜家 VIHALS 维哈斯折叠椅（白色／展开）',430,470,'#eeeee7',undefined,products.height({type:'chair_ikea_vihals'})],
     ['chair_yeswood_s05118','源氏木语 S05118 书椅（原木／奶茶色）',660,660,'#be9568',undefined,products.height({type:'chair_yeswood_s05118'})],
     ["chair","椅子",450,480,"#cfc6b8",400],
     ["chair","餐椅",450,480,"#cfc6b8",450],
@@ -263,8 +264,8 @@ const uses=[['living','客厅','Living'],['bedroom','卧室','Bedroom'],['dining
 const useTypes={
  living:['art_glass_partition','quartz_sill','window_surround','sofa_bed_yeswood_y107h03','armchair_yeswood_berlin','armchair_yeswood_y09hs','sofa','sofa_yeswood_cherry','cornersofa','armchair','beanbag','coffeetable','coffeetable_yeswood_cherry','roundtable','sidetable','sidetable_tmall_635382906309','tea_table_800','tea_bar_mijia_pro','tv','tvstand','aircon','aircon_midea_ultra_2hp','acwall','purifier','plant','rug','floorlamp'],
  bedroom:['quartz_sill','window_surround','bed','crib','nightstand','wardrobe','chest','dresser','curtain','curtain_sheer','blind_venetian','blind_honeycomb','blind_zebra','blind_bamboo','blind_roller','mirror','acwall'],
- dining:['table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
- study:['quartz_sill','window_surround','chair_yeswood_s05118','stool_citylong_370','desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','armchair','floorlamp'],
+ dining:['chair_ikea_vihals','table','table_folding_1100','table_folding_1200','table_folding_1300','roundtable','chair','barstool','island','cabinet','pendant'],
+ study:['chair_ikea_vihals','quartz_sill','window_surround','chair_yeswood_s05118','stool_citylong_370','desk','chair','officechair','bookshelf','bookshelf_yeswood_y52y09','bookshelf_yeswood_y00y06','bookshelf_yeswood_y00y06058','armchair','floorlamp'],
  kitchen:['panel_light_300x600','stove','stove_fotile_th36b','rangehood_fotile_jcd10ta','fridge','fridge_french_drawer','dishwasher','dishwasher_mijia_countertop','water_purifier_mijia_1200g','ksink','sink_arrow_680','sink_arrow_750','ovencol','kitchenwall','island'],
  laundry:['washer_littleswan_tg10k60w','washer','dryer','dryingrack','robot_p20max','robot_p20max_tank','robot_p20max_plumbed'],
  bathroom:['bath_heater_aopu_se2','bath_heater_300x600','vanity','toilet','shower','shower_arrow_cream','bathtub','waterheater','waterheater_flat'],

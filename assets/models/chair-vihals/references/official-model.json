@@ -1,0 +1,39 @@
+{
+  "productType": "ART",
+  "productName": "VIHALS",
+  "measurements": [
+    {
+      "measurementType": "seat depth",
+      "value": 410
+    },
+    {
+      "measurementType": "seat width",
+      "value": 390
+    },
+    {
+      "measurementType": "seat height",
+      "value": 450
+    },
+    {
+      "measurementType": "height",
+      "value": 800
+    },
+    {
+      "measurementType": "depth",
+      "value": 470
+    },
+    {
+      "measurementType": "width",
+      "value": 430
+    },
+    {
+      "measurementType": "tested for",
+      "value": 110000000
+    }
+  ],
+  "modelUrl": "https://web-api.ikea.com/sg/en/rotera/static/models/90592738-mini.glb",
+  "planeClassification": [
+    "floor"
+  ],
+  "productId": "90592738"
+}

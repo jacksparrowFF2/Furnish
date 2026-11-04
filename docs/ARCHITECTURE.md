@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-04（VIHALS折叠椅）：product-rules声明独立chair_ikea_vihals身份、800mm高度和落地包络；folding-chair-model复用static-asset构造及官方15件网格，专用受限发布器内嵌UV／512²颜色与ORM贴图。新增两个本地经典资产／模型脚本，测距与碰撞沿原生产记录器，无新字段／格式或保存通道；展开静态及来源外包差异见[VIHALS](CHAIR-IKEA-VIHALS.md)。
+
 2026-11-03（艺术玻璃）：product-rules统一九款花纹、尺寸和离地；art-glass-model生产参数化闭合板及单面内嵌法线供主场景／GLB／数值实体共用。新经典脚本支持HTTP及离线file，artGlassPattern参与3D缓存而不影响空间确认；含新类型采用v46并保留历史工作区读取。见[玻璃隔断](ART-GLASS.md)。
 
 2026-11-03（侧收口）：product-rules集中侧枚举与50mm初值／范围，cabinet-core派生外侧正面薄板、配色及占地；cabinet-model供预览、数字板件与GLB共用，SVG和厨房父组合显示同源投影。可选cabinet.sideClosures使用v45项目／工作区／恢复缓存，旧缺失不开启；完整配置覆盖实体与三维缓存／空间确认，颜色仍排除。原草稿、mutate、保存与经典脚本加载保持，见[收口验收](validation/cabinet-side-closure-20261103/README.md)。

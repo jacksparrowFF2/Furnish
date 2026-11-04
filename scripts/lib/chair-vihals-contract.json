@@ -1,0 +1,67 @@
+{
+  "profile": "chair-vihals",
+  "materialSlots": 1,
+  "parts": [
+    {
+      "name": "rear-frame",
+      "identity": "chair-vihals-v1:rear-frame"
+    },
+    {
+      "name": "seat-pin-left",
+      "identity": "chair-vihals-v1:seat-pin-left"
+    },
+    {
+      "name": "seat-underside",
+      "identity": "chair-vihals-v1:seat-underside"
+    },
+    {
+      "name": "upper-pin-right",
+      "identity": "chair-vihals-v1:upper-pin-right"
+    },
+    {
+      "name": "upper-pin-left",
+      "identity": "chair-vihals-v1:upper-pin-left"
+    },
+    {
+      "name": "back-pin-right",
+      "identity": "chair-vihals-v1:back-pin-right"
+    },
+    {
+      "name": "back-pin-left",
+      "identity": "chair-vihals-v1:back-pin-left"
+    },
+    {
+      "name": "main-frame",
+      "identity": "chair-vihals-v1:main-frame"
+    },
+    {
+      "name": "seat-axle-left",
+      "identity": "chair-vihals-v1:seat-axle-left"
+    },
+    {
+      "name": "seat-axle-right",
+      "identity": "chair-vihals-v1:seat-axle-right"
+    },
+    {
+      "name": "latch-right",
+      "identity": "chair-vihals-v1:latch-right"
+    },
+    {
+      "name": "hinge-right",
+      "identity": "chair-vihals-v1:hinge-right"
+    },
+    {
+      "name": "hinge-left",
+      "identity": "chair-vihals-v1:hinge-left"
+    },
+    {
+      "name": "backrest",
+      "identity": "chair-vihals-v1:backrest"
+    },
+    {
+      "name": "seat-top",
+      "identity": "chair-vihals-v1:seat-top"
+    }
+  ],
+  "motions": []
+}

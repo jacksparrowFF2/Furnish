@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "source": "output\\model-pipeline\\selection-OyRtKD\\chair-vihals-E1nd7g\\browser\\http-nominal.glb",
+      "parts": 15,
+      "uvAndObjectMaterialSlots": true,
+      "baseColorRoughnessMetalnessTextures": true,
+      "textureSize": [
+        512,
+        512
+      ]
+    },
+    {
+      "source": "output\\model-pipeline\\selection-OyRtKD\\chair-vihals-E1nd7g\\studio\\oblique\\scene.blend",
+      "parts": 15,
+      "uvAndObjectMaterialSlots": true,
+      "baseColorRoughnessMetalnessTextures": true,
+      "textureSize": [
+        512,
+        512
+      ]
+    }
+  ],
+  "blender": "5.2.3 LTS"
+}
