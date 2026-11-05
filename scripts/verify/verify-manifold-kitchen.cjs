@@ -1,10 +1,8 @@
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url'),V=require('../lib/browser-verification.cjs');
 (async()=>{
+ const root=V.isolatedRoot(),out=path.join(root,'docs/validation/manifold-kitchen-20261023');fs.mkdirSync(out,{recursive:true});
  require('../preview-manifold-kitchen.cjs');
- const root=V.configuration().root,out=path.join(root,'docs/validation/manifold-kitchen-20261023');fs.mkdirSync(out,{recursive:true});
- const run=fs.mkdtempSync(path.join(root,'output/playwright/manifold-kitchen-')),workspace=path.join(run,'workspace');fs.mkdirSync(workspace);
- for(const name of ['src','styles','assets','vendor'])if(fs.existsSync(path.join(root,name)))fs.cpSync(path.join(root,name),path.join(workspace,name),{recursive:true});
- fs.copyFileSync(path.join(root,'index.html'),path.join(workspace,'index.html'));fs.mkdirSync(path.join(workspace,'output/manifold-kitchen'),{recursive:true});fs.copyFileSync(path.join(root,'output/manifold-kitchen/preview.html'),path.join(workspace,'output/manifold-kitchen/preview.html'));
+ const workspace=root; // Reuse the coordinator workspace; each mode has a fresh browser context.
  const server=await V.staticServer(workspace),browser=await V.loadPlaywright().chromium.launch(V.configuration().launchOptions).catch(async e=>{await server.close();throw e;}),results=[];
  try{for(const mode of ['http','file']){
   const context=await browser.newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));const base=mode==='http'?server.baseURL:pathToFileURL(workspace+path.sep).href,check=(v,label)=>{if(!v)throw Error(mode+': '+label);};

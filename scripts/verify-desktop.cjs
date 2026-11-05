@@ -3,16 +3,16 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),http=require('node:http'),crypto=require('node:crypto');
 const {pathToFileURL}=require('node:url');
 const {_electron,chromium}=require('playwright');
-const root=path.resolve(__dirname,'..'),{runtimeFiles}=require('./package-desktop.cjs');
+const root=path.resolve(__dirname,'..'),{runtimeFiles}=require('./package-desktop.cjs'),Artifacts=require('./lib/test-artifacts.cjs');
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 async function freePort(){const s=http.createServer();await new Promise(r=>s.listen(0,'127.0.0.1',r));const p=s.address().port;await new Promise(r=>s.close(r));return p;}
 async function main(){
  const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source);
- const run=path.join(root,'output/desktop-verification',new Date().toISOString().replace(/[:.]/g,'-'));
- const isolated=path.join(run,'workspace');fs.mkdirSync(isolated,{recursive:true});
- for(const name of ['index.html','manifest.webmanifest','src','styles','vendor','assets'])fs.cpSync(path.join(root,name),path.join(isolated,name),{recursive:true});
- fs.mkdirSync(path.join(isolated,'scripts'));for(const name of runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(isolated,'scripts',name));
- fs.mkdirSync(path.join(isolated,'projects'));fs.copyFileSync(source,path.join(isolated,'projects/workspace.furnish.json'));
+ const job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'verification-'}),run=job.dir;let passed=false;
+ try{
+ const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor','assets'],files:['index.html','manifest.webmanifest']});
+ for(const name of runtimeFiles)job.copy(path.join(root,'scripts',name),path.join('workspace/scripts',name));
+ job.discard('profile');
  const executable=path.resolve(process.argv[2]||path.join(root,'output/desktop/Furnish-win32-x64/Furnish.exe'));
  const port=await freePort(),env={...process.env,FURNISH_DESKTOP_ROOT:isolated,FURNISH_DESKTOP_PROFILE:path.join(run,'profile'),FURNISH_PORT:String(port)};
  delete env.ELECTRON_RUN_AS_NODE;
@@ -100,5 +100,7 @@ async function main(){
   if(browser)await browser.close();if(desktop)await desktop.close();
   assert.equal(hash(source),before,'Verification must never write original user data');
  }
+ passed=true;
+ }catch(e){fs.writeFileSync(path.join(run,'failure.json'),JSON.stringify({error:e.message,stack:e.stack},null,2));throw e;}finally{job.finish(passed);}
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

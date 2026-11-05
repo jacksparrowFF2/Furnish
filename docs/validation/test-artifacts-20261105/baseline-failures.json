@@ -1,0 +1,17 @@
+{
+  "baselineRevision": "2c0ed74da934c52038f3c64b8fb66f3aff1902e8",
+  "existingFailures": [
+    {
+      "test": "tests/test-model-pipeline.cjs",
+      "error": "Missing structure suite: balcony_plant_rack",
+      "baselineSameFailure": true,
+      "method": "Run the unchanged inventory test with the pre-change pipeline module loaded from Git."
+    },
+    {
+      "test": "scripts/verify/verify-manifold-floating-distance.cjs",
+      "error": "Timeout waiting for the dialog to close after applying the real current project distance, line 28",
+      "baselineSameFailure": true,
+      "method": "Run the pre-change script from Git inside the same preserved isolated workspace, using its original nested copy logic."
+    }
+  ]
+}

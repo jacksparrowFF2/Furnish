@@ -1,0 +1,103 @@
+{
+  "passed": true,
+  "tests": [
+    {
+      "name": "test-test-artifacts",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.835
+    },
+    {
+      "name": "test-verification-cleanup",
+      "passed": true,
+      "status": 0,
+      "seconds": 1.416
+    },
+    {
+      "name": "test-ceiling-storage",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.619
+    },
+    {
+      "name": "test-wall-tiling-storage",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.236
+    },
+    {
+      "name": "test-ceiling-panel-layout",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.528
+    },
+    {
+      "name": "test-ceiling-aluminum",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.332
+    },
+    {
+      "name": "test-ceiling-regions",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.491
+    },
+    {
+      "name": "test-merged-format",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.206
+    },
+    {
+      "name": "test-repository-storage",
+      "passed": true,
+      "status": 0,
+      "seconds": 5.314
+    },
+    {
+      "name": "test-dishwasher-project-v32",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.173
+    },
+    {
+      "name": "test-fridge-project-v31",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.163
+    },
+    {
+      "name": "test-hood-project-v33",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.162
+    },
+    {
+      "name": "test-side-table-project-v36",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.166
+    },
+    {
+      "name": "test-sofa-bed-project-v40",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.174
+    },
+    {
+      "name": "test-washer-project-v35",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.188
+    },
+    {
+      "name": "test-browser-verification",
+      "passed": true,
+      "status": 0,
+      "seconds": 0.972
+    }
+  ],
+  "originalWorkspaceUnchanged": true,
+  "remainingNewDirectories": []
+}

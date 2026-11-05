@@ -2,10 +2,9 @@
 const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url'),V=require('../lib/browser-verification.cjs');
 const {fixture}=require('../../tests/helpers/wall-finish-fixture.cjs'),P=require('../../src/core/project-core.js'),F=require('../../src/core/wall-finish-core.js'),T=require('../../src/core/wall-tiling-core.js');
 (async()=>{
- const root=V.configuration().root,out=path.join(root,'docs/validation/manifold-wall-finish-20261024');fs.mkdirSync(out,{recursive:true});const sample=fixture(),room=sample.plan.rooms[0].id;sample.work.rooms[room].use='kitchen';sample.work.furniture=[];
+ const root=V.isolatedRoot(),out=path.join(root,'docs/validation/manifold-wall-finish-20261024');fs.mkdirSync(out,{recursive:true});const sample=fixture(),room=sample.plan.rooms[0].id;sample.work.rooms[room].use='kitchen';sample.work.furniture=[];
  sample.work=F.edit(sample.work,F.faces(sample.plan).find(v=>v.wallId==='north'),{tileThickness:10,bondThickness:20});sample.work=T.setEnabled(sample.work,P.effectivePlan(sample.plan,sample.work),[room],true);
- const run=fs.mkdtempSync(path.join(root,'output/playwright/manifold-wall-finish-')),workspace=path.join(run,'workspace');fs.mkdirSync(workspace);
- for(const name of ['src','styles','assets','vendor'])if(fs.existsSync(path.join(root,name)))fs.cpSync(path.join(root,name),path.join(workspace,name),{recursive:true});fs.copyFileSync(path.join(root,'index.html'),path.join(workspace,'index.html'));
+ const workspace=root; // Reuse the coordinator workspace; each mode has a fresh browser context.
  const server=await V.staticServer(workspace),browser=await V.loadPlaywright().chromium.launch(V.configuration().launchOptions).catch(async e=>{await server.close();throw e;}),results=[];
  try{for(const mode of ['http','file']){
   const context=await browser.newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));const check=(v,m)=>{if(!v)throw Error(mode+': '+m);};

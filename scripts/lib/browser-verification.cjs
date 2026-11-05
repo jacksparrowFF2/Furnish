@@ -58,7 +58,8 @@ function instrument(browser){
  browser.newPage=async options=>{const context=await browser.newContext(options);return context.newPage();};
  return browser;
 }
-async function launch(){if(!process.env.FURNISH_VERIFY_ROOT||path.resolve(process.env.FURNISH_VERIFY_ROOT)===projectRoot)throw Error('Use scripts/verify-browser.cjs to prepare an isolated browser workspace.');return instrument(await loadPlaywright().chromium.launch(configuration().launchOptions));}
+function isolatedRoot(){if(!process.env.FURNISH_VERIFY_ROOT||path.resolve(process.env.FURNISH_VERIFY_ROOT)===projectRoot)throw Error('Use scripts/verify-browser.cjs to prepare an isolated browser workspace.');return path.resolve(process.env.FURNISH_VERIFY_ROOT);}
+async function launch(){isolatedRoot();return instrument(await loadPlaywright().chromium.launch(configuration().launchOptions));}
 async function staticServer(root,requestedURL){
  const mime={'.html':'text/html;charset=utf-8','.js':'text/javascript;charset=utf-8','.mjs':'text/javascript;charset=utf-8','.css':'text/css','.svg':'image/svg+xml','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.wasm':'application/wasm','.pdf':'application/pdf'};
  const server=http.createServer((req,res)=>{
@@ -70,4 +71,4 @@ async function staticServer(root,requestedURL){
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(url?Number(url.port||80):0,url?url.hostname.replace(/^\[|\]$/g,''):'127.0.0.1',resolve);});
  return {baseURL:url?url.href:`http://127.0.0.1:${server.address().port}/`,close:()=>new Promise((resolve,reject)=>{server.close(e=>e?reject(e):resolve());server.closeAllConnections();})};
 }
-module.exports={projectRoot,configuration,loadPlaywright,launch,staticServer};
+module.exports={projectRoot,configuration,isolatedRoot,loadPlaywright,launch,staticServer};

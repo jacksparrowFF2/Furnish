@@ -13,6 +13,8 @@ const V=require('../scripts/lib/browser-verification.cjs'),R=require('../scripts
   assert.deepEqual(R.plan(['floor-origin','wall-origin-3d','tile-presets','tile-workspace']),['tile-workspace','tile-workspace-complete','tile-library'],'retired editors resolve visibly to one set of current acceptance cases');
   assert.deepEqual(R.plan(['ceilings','ceiling-corners']),['ceiling-section-interaction','ceiling-components','ceiling-current','ceiling-boundaries'],'retired standalone commands resolve to current regions and components without old migration or editor scripts');
   await assert.rejects(R.main(['--worker','portable-smoke']),/isolated copy/);
+  assert.throws(()=>V.isolatedRoot(),/isolated browser workspace/);
+  const priorRoot=process.env.FURNISH_VERIFY_ROOT;try{process.env.FURNISH_VERIFY_ROOT=root;assert.equal(V.isolatedRoot(),path.resolve(root));process.env.FURNISH_VERIFY_ROOT=V.projectRoot;assert.throws(()=>V.isolatedRoot(),/isolated browser workspace/);}finally{if(priorRoot===undefined)delete process.env.FURNISH_VERIFY_ROOT;else process.env.FURNISH_VERIFY_ROOT=priorRoot;}
   for(const file of R.cases().values()){
    assert(file.startsWith('verify/'),'Acceptance implementation belongs in scripts/verify: '+file);
    const source=fs.readFileSync(path.join(V.projectRoot,'scripts',file),'utf8');assert(!/[CD]:[\\/]|http:\/\/(?:127\.0\.0\.1|localhost):\d+|npm-cache|Program Files/.test(source),file+' contains machine-specific configuration');

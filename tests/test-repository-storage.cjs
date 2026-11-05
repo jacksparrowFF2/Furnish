@@ -7,7 +7,7 @@ let uid=0;const W=require('../src/core/work-state.js').create({makeId:()=> 'test
 const fixture=()=>{const work=W.fresh(plan);return {v:Math.max(2,require('../src/core/project-core.js').formatVersion([work])),planId:plan.id,work:{[plan.id]:work},designs:[],customPlans:[],updatedAt:100};};
 const fingerprint=async w=>S.digest(C.text(w));
 (async()=>{
- const tempRoot=path.resolve(__dirname,'../output/playwright');fs.mkdirSync(tempRoot,{recursive:true});const dir=fs.mkdtempSync(path.join(tempRoot,'repository-')),api=S.create(dir);
+ const tempRoot=path.resolve(__dirname,'../output/playwright');fs.mkdirSync(tempRoot,{recursive:true});const dir=require('../scripts/lib/test-artifacts.cjs').temporaryDirectory(path.join(tempRoot,'repository-')),api=S.create(dir);
  const a=fixture();C.validate(a);assert.equal(C.text(a),C.text({...a,updatedAt:200,_repository:{revision:'ignored'}}));
  const originalDesign={id:'named',name:'原方案',planId:plan.id,work:a.work[plan.id]},reorderedDesign={...originalDesign,work:C.portable(a).work[plan.id]};assert.equal(require('../src/core/project-core.js').mergeDesigns([originalDesign],[reorderedDesign],plan.id).length,1);
  assert.throws(()=>C.parse({format:'furnish-workspace',version:999,workspace:a}));

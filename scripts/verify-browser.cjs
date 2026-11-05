@@ -1,7 +1,7 @@
 /* Portable entry point for the existing browser acceptance cases. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
-const V=require('./lib/browser-verification.cjs');
+const V=require('./lib/browser-verification.cjs'),Artifacts=require('./lib/test-artifacts.cjs');
 const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay','manifold','manifold-kitchen','downlight','manifold-wall-finish','manifold-zero-gap','manifold-floating-distance','telescopic-corners','telescopic-floor-tracks','telescopic20','telescopic20-corners'];
 const dependencies={'drawing':['workflow-reimport'],'drawing-readability':['workflow-reimport'],'room-net':['workflow-reimport'],'purchase-orders':['room-net'],'purchase-relink':['purchase-orders'],'furniture-labels':['purchase-orders']};
 // Retired editor CLI names run the current consolidated flows.
@@ -43,12 +43,11 @@ async function main(args=process.argv.slice(2)){
  // Validate dependency installation and URL before copying or starting work.
  const engine=V.loadPlaywright(),config=V.configuration();if(!config.launchOptions.channel){const executable=config.launchOptions.executablePath||engine.chromium.executablePath();if(!fs.existsSync(executable))throw Error('Browser executable missing: '+executable+'. Install the matching Playwright browser or configure PLAYWRIGHT_BROWSERS_PATH / FURNISH_BROWSER_PATH before running acceptance.');}
  const output=path.join(V.projectRoot,'output/playwright');fs.mkdirSync(output,{recursive:true});
- const run=fs.mkdtempSync(path.join(output,'verification-'));
- const root=path.join(run,'workspace 迁移 #');fs.mkdirSync(root);
- for(const name of ['src','styles','assets','vendor','templates','scripts'])if(fs.existsSync(path.join(V.projectRoot,name)))fs.cpSync(path.join(V.projectRoot,name),path.join(root,name),{recursive:true});
- fs.copyFileSync(path.join(V.projectRoot,'index.html'),path.join(root,'index.html'));
- fs.cpSync(path.join(V.projectRoot,'tests/fixtures'),path.join(root,'tests/fixtures'),{recursive:true});
- fs.mkdirSync(path.join(root,'projects'),{recursive:true});fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(root,'projects/workspace.furnish.json'));
+ const job=Artifacts.createRun({parent:output,prefix:'verification-'}),run=job.dir;
+ let server,passed=false;const results=[];
+ try{
+ const root=job.workspace('workspace 迁移 #',V.projectRoot);
+ job.copy(path.join(V.projectRoot,'tests/fixtures'),'workspace 迁移 #/tests/fixtures');
  const fixtureDir=path.join(root,'tests/fixtures/browser');
  if(selected.includes('current-bays'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'current-bay-workspace.json'));
  if(selected.includes('tv-floor-overlay'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'tv-floor-workspace.json'));
@@ -57,11 +56,14 @@ async function main(args=process.argv.slice(2)){
  fs.mkdirSync(path.join(root,'output/playwright/workflow-tools'),{recursive:true});fs.copyFileSync(path.join(fixtureDir,'reimport-input.furnish.json'),path.join(root,'output/playwright/workflow-tools/reimport-input.furnish.json'));
  fs.cpSync(fixtureDir,path.join(root,'output/playwright/real-drawing'),{recursive:true});
  const prepared=await child([path.join(root,'scripts/generate-previews.cjs')]);fs.writeFileSync(path.join(run,'previews.log'),prepared.output);if(prepared.code!==0)throw Error('Preview preparation failed: '+prepared.output);
- const server=await V.staticServer(root,process.env.FURNISH_VERIFY_URL),env={...process.env,FURNISH_VERIFY_ROOT:root,FURNISH_VERIFY_URL:server.baseURL},results=[];
+ job.generated(path.join(root,'output'));
+ server=await V.staticServer(root,process.env.FURNISH_VERIFY_URL);const env={...process.env,FURNISH_VERIFY_ROOT:root,FURNISH_VERIFY_URL:server.baseURL};
  console.log('Isolated browser verification: '+run+'\nStatic service: '+server.baseURL);
  try{for(const name of selected){console.log('RUN '+name);const started=Date.now(),result=await child([__filename,'--worker',name],{env});fs.writeFileSync(path.join(run,name+'.log'),result.output);results.push({name,status:result.code===0?'PASS':'FAIL',seconds:Math.round((Date.now()-started)/100)/10,log:name+'.log'});fs.writeFileSync(path.join(run,'results.json'),JSON.stringify({selected,results,notRun:selected.slice(results.length)},null,2));console.log(results.at(-1).status+' '+name);if(result.code!==0){console.error(result.output.slice(-6000));if(!keepGoing)break;}}}
  finally{await server.close();fs.writeFileSync(path.join(run,'results.json'),JSON.stringify({selected,results,notRun:selected.slice(results.length)},null,2));console.log('Results: '+path.join(run,'results.json'));}
- if(results.some(r=>r.status==='FAIL'))throw Error('Browser verification failed; inspect the case log.');
+ if(results.length!==selected.length||results.some(r=>r.status==='FAIL'))throw Error('Browser verification failed; inspect the case log.');
+ passed=true;
+ }catch(e){fs.writeFileSync(path.join(run,'failure.json'),JSON.stringify({error:e.message,stack:e.stack,selected,results},null,2));throw e;}finally{job.finish(passed);}
 }
 if(require.main===module)main().catch(e=>{console.error(e.stack||e);process.exitCode=1;});
 module.exports={main,cases,plan,failed};
