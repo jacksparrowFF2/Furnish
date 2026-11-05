@@ -20,7 +20,8 @@ const copy=o=>JSON.parse(JSON.stringify(o));
 assetTypes['corner-bookcase']='bookshelf_yeswood_y00y06';assetTypes['corner-bookcase-580']='bookshelf_yeswood_y00y06058';suites['corner-bookcase-580']=['corner-bookcase-580'];suites['corner-bookcase']=['corner-bookcase'];
 suites.tripleslidingwindow=['telescopic-floor-tracks'];
 function testsFor(id,type){
- const list=suites[id]||suites[type]||(type.startsWith('table_folding_')?['folding-table']:type.startsWith('sink_arrow_')?['sink','sink-plan-snapping']:P.definition(type)?.covering||type==='curtain'?['window-coverings','window-covering-mount']:type.startsWith('pocketdoor_')?['pocket-door','wide-pocket-door','pocket-identities']:P.definition(type)?.telescopic||type==='slidingdoor'?['telescopic-20','telescopic-floor-tracks']:B.supported({type})?['cabinet-model','cabinet-interior-distances']:[]);
+ const garden=P.definition(type)?.garden;
+ const list=suites[id]||suites[type]||(type.startsWith('table_folding_')?['folding-table']:type.startsWith('sink_arrow_')?['sink','sink-plan-snapping']:garden?['balcony-garden',...(garden.stepped?['stepped-plant-rack']:[])]:P.definition(type)?.covering||type==='curtain'?['window-coverings','window-covering-mount']:type.startsWith('pocketdoor_')?['pocket-door','wide-pocket-door','pocket-identities']:P.definition(type)?.telescopic||type==='slidingdoor'?['telescopic-20','telescopic-floor-tracks']:B.supported({type})?['cabinet-model','cabinet-interior-distances']:[]);
  if(id==='block')list.splice(0,list.length,'block-placeholder');
  if(type==='curtain'&&!list.includes('curtain-height'))list.push('curtain-height');
  for(const name of list)if(!fs.existsSync(path.join(root,'tests/test-'+name+'.cjs')))throw Error('Missing model suite: '+id+'/'+name);

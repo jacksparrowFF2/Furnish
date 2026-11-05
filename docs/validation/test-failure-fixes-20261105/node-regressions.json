@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "command": "tests/test-model-pipeline.cjs",
+      "passed": true,
+      "seconds": 1.336
+    },
+    {
+      "command": "tests/test-balcony-garden.cjs",
+      "passed": true,
+      "seconds": 0.336
+    },
+    {
+      "command": "tests/test-stepped-plant-rack.cjs",
+      "passed": true,
+      "seconds": 0.11
+    },
+    {
+      "command": "tests/test-model-profile-spatial.cjs balcony_plant_rack",
+      "passed": true,
+      "seconds": 0.783
+    },
+    {
+      "command": "tests/test-model-profile-spatial.cjs balcony_plant_rack_step",
+      "passed": true,
+      "seconds": 0.788
+    },
+    {
+      "command": "tests/test-model-profile-spatial.cjs plant_clivia",
+      "passed": true,
+      "seconds": 0.859
+    },
+    {
+      "command": "tests/test-model-profile-spatial.cjs plant_spider",
+      "passed": true,
+      "seconds": 0.86
+    },
+    {
+      "command": "tests/test-model-profile-spatial.cjs plant_peperomia",
+      "passed": true,
+      "seconds": 0.82
+    },
+    {
+      "command": "tests/test-manifold-zero-gap.cjs",
+      "passed": true,
+      "seconds": 0.44
+    },
+    {
+      "command": "tests/test-directional-placement.cjs",
+      "passed": true,
+      "seconds": 0.122
+    },
+    {
+      "command": "tests/test-directional-heights.cjs",
+      "passed": true,
+      "seconds": 0.372
+    },
+    {
+      "command": "tests/test-directional-kitchen-solids.cjs",
+      "passed": true,
+      "seconds": 0.127
+    },
+    {
+      "command": "tests/test-group-directional-placement.cjs",
+      "passed": true,
+      "seconds": 0.233
+    },
+    {
+      "command": "tests/test-model-assets.cjs",
+      "passed": true,
+      "seconds": 2.644
+    },
+    {
+      "command": "scripts/index-model-assets.cjs --check",
+      "passed": true,
+      "seconds": 1.17
+    }
+  ],
+  "originalWorkspaceUnchanged": true
+}

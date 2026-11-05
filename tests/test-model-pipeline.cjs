@@ -10,5 +10,7 @@ const registry=require('../scripts/lib/model-profiles.cjs'),profiles=registry.pr
 assert.equal(new Set(profiles.map(p=>p.id)).size,profiles.length);
 for(const type of new Set(catalog.library.flatMap(c=>c.items.map(i=>i[0]))))if(!registry.originalTypes.has(type))assert(profiles.some(p=>p.type===type),'Missing later catalog model: '+type);
 for(const p of profiles){assert(p.tests.length,'Missing structure suite: '+p.id);assert(p.fixture.w>0&&p.fixture.d>0);}
+const products=require('../src/core/product-rules.js');
+for(const p of profiles){const garden=products.definition(p.type)?.garden;if(garden){assert(p.tests.includes('balcony-garden'),'Garden model must reuse the production garden suite: '+p.id);if(garden.stepped)assert(p.tests.includes('stepped-plant-rack'),'Stepped rack must retain its structure suite');}}
 const fs=require('node:fs');for(const f of fs.readdirSync(require('node:path').join(__dirname,'../src/data')).filter(f=>f.endsWith('-blender-asset.js')))assert(profiles.some(p=>p.asset?.runtime==='src/data/'+f),'Unregistered imported asset: '+f);
 console.log('PASS pipeline CLI, original-type exclusions, all added catalog types and all imported asset coverage');

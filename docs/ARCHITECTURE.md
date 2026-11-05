@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-05（测试清单与净距复验）：model-profiles按garden能力选择既有共用测试；浮动净距复用wall-finish-fixture的四壁用例并沿clearanceFrame验证产品局部动作／拒绝。仅验证清单、夹具和导航索引维护，无新增生产脚本、项目字段或应用状态通道，见[复验](validation/test-failure-fixes-20261105/README.md)。
+
 2026-11-05（测试目录收尾）：scripts/lib/test-artifacts统一批次身份／排他锁、共用工作副本与成功清理；浏览器、模型、桌面入口及13个合成缓存／项目测试接入，六个专项浏览器用例复用调度器工作区。报告与新增成果保留，失败／中断／未知旧目录不扫除；无生产加载、项目格式或保存通道变化。见[生成物约定](OUTPUT-ARTIFACTS.md#测试目录自动收尾2026-11-05)。
 
 2026-11-05（存量离地补齐）：product-rules集中bottomElevation及底部／原安装基准转换；共用生产边界平移显示、数值实体及开启空间。十类旧内联构造移入legacy-furniture-model，仍为原几何；新增经典脚本。v49支持通用offset与帘布bottomPhysical，原生字段、旧缺失和原保存通道保留。参照[产品契约](PRODUCT-RULES.md#2026-11-05存量类型的离地补齐)及[验收](validation/bottom-elevation-20261105/README.md)。

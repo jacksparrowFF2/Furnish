@@ -1,0 +1,140 @@
+{
+  "passed": true,
+  "run": "output/playwright/verification-p7bZ3Q",
+  "modes": [
+    {
+      "mode": "http",
+      "passed": true,
+      "planProjection": true,
+      "physicalBandPreserved": true,
+      "topView": true,
+      "drag": true,
+      "canvasOperable": true,
+      "errorRetained": true,
+      "successAutoClose": true,
+      "enterAutoClose": true,
+      "undoRedo": true,
+      "refresh": true,
+      "narrow": true,
+      "production3D": true,
+      "localMoves": [
+        {
+          "rot": 0,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 0,
+          "flip": true,
+          "passed": true
+        },
+        {
+          "rot": 90,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 90,
+          "flip": true,
+          "passed": true
+        },
+        {
+          "rot": 180,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 180,
+          "flip": true,
+          "passed": true
+        },
+        {
+          "rot": 270,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 270,
+          "flip": true,
+          "passed": true
+        }
+      ],
+      "actualOutcome": {
+        "status": "rejected",
+        "error": "移动后最近参考发生变化或存在重叠，无法达到目标净距",
+        "unchanged": true,
+        "blockingFurniture": 1
+      },
+      "errors": []
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "planProjection": true,
+      "physicalBandPreserved": true,
+      "topView": true,
+      "drag": true,
+      "canvasOperable": true,
+      "errorRetained": true,
+      "successAutoClose": true,
+      "enterAutoClose": true,
+      "undoRedo": true,
+      "refresh": true,
+      "narrow": true,
+      "production3D": true,
+      "localMoves": [
+        {
+          "rot": 0,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 0,
+          "flip": true,
+          "passed": true
+        },
+        {
+          "rot": 90,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 90,
+          "flip": true,
+          "passed": true
+        },
+        {
+          "rot": 180,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 180,
+          "flip": true,
+          "passed": true
+        },
+        {
+          "rot": 270,
+          "flip": false,
+          "passed": true
+        },
+        {
+          "rot": 270,
+          "flip": true,
+          "passed": true
+        }
+      ],
+      "actualOutcome": {
+        "status": "rejected",
+        "error": "移动后最近参考发生变化或存在重叠，无法达到目标净距",
+        "unchanged": true,
+        "blockingFurniture": 1
+      },
+      "errors": []
+    }
+  ],
+  "successfulWorkspaceCleaned": true,
+  "sourceCopyRemoved": true,
+  "originalWorkspaceUnchanged": true,
+  "originalWorkspaceSha256": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b"
+}

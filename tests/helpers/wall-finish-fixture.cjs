@@ -23,4 +23,6 @@ function fixture({openings=false,openingHosts=false,partition=false,reverse=fals
  work.furniture=[{id:'item',type:'custom',name:'验收柜',cx:500,cy:500,w:500,d:500,h:800,rot:0,color:'#bb9977'}];
  work.measures=[{a:{x:200,y:400},b:{x:4000,y:400}}];return {draft:d,plan,work};
 }
-module.exports={fixture};
+// Existing four-wall manifold fixture: rotation, plan direction, centre, normal axis, raw face, inward sign.
+const manifoldWallCases=[[0,'t',2000,400,1,200,1],[90,'r',3800,1500,0,4000,-1],[180,'b',2000,2800,1,3000,-1],[270,'l',400,1500,0,200,1]];
+module.exports={fixture,manifoldWallCases};

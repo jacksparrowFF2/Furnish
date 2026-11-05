@@ -1,0 +1,71 @@
+{
+  "entries": 11,
+  "changes": [
+    {
+      "type": "purifier",
+      "name": "空气净化器",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "crib",
+      "name": "婴儿床",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "sidetable",
+      "name": "边几",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "shower",
+      "name": "淋浴房",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "bathtub",
+      "name": "浴缸",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "floorlamp",
+      "name": "落地灯",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "plant",
+      "name": "绿植",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "plant",
+      "name": "大绿植",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "piano",
+      "name": "立式钢琴",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "treadmill",
+      "name": "跑步机",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    },
+    {
+      "type": "dryingrack",
+      "name": "晾衣架",
+      "from": "index-inline",
+      "to": "legacy-furniture"
+    }
+  ]
+}

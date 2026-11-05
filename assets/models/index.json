@@ -4437,7 +4437,7 @@
       "name": "空气净化器",
       "w": 400,
       "d": 300,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "电器",
@@ -4650,7 +4650,7 @@
       "name": "婴儿床",
       "w": 1250,
       "d": 700,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "沙发",
@@ -4793,7 +4793,7 @@
       "name": "边几",
       "w": 500,
       "d": 500,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "桌 · 台",
@@ -5071,7 +5071,7 @@
       "name": "淋浴房",
       "w": 900,
       "d": 900,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "卫浴 · 水槽",
@@ -5088,7 +5088,7 @@
       "name": "浴缸",
       "w": 1600,
       "d": 750,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "灯具",
@@ -5096,7 +5096,7 @@
       "name": "落地灯",
       "w": 450,
       "d": 450,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "灯具",
@@ -5254,7 +5254,7 @@
       "name": "绿植",
       "w": 500,
       "d": 500,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "装饰",
@@ -5262,7 +5262,7 @@
       "name": "大绿植",
       "w": 700,
       "d": 700,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "装饰",
@@ -5295,7 +5295,7 @@
       "name": "立式钢琴",
       "w": 1500,
       "d": 600,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "运动 · 乐器",
@@ -5303,7 +5303,7 @@
       "name": "跑步机",
       "w": 800,
       "d": 1800,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     },
     {
       "category": "门 · 隔断",
@@ -5410,7 +5410,7 @@
       "name": "晾衣架",
       "w": 1400,
       "d": 550,
-      "module": "index-inline"
+      "module": "legacy-furniture"
     }
   ]
 }
