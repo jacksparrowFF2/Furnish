@@ -1,3 +1,5 @@
+2026-11-06：pet_feeding_insert 为参数化落地金属架组合，集中 feedingFrame 尺寸／范围，petTrayOpen 缺失收起、mountHeight 新建0；嵌入喂食器刚性随托板，不拉伸。含类型采用v54，原替换清理、缓存及确认覆盖状态，参见 [设计契约](PET-FEEDING-INSERT.md)。
+
 # 产品能力规则与兼容验收
 
 2026-11-06：pet_bowl_petstar_180（180×180×65）与cat_litter_yanxuan_25kg（平放250×220×80用户尺寸）使用独立petSupply能力、mountHeight新建0、静态资产及geometryVersion1；新品字段沿共用替换清理，旧实例不迁移。新类型v53当前／命名项目、工作区和缓存保持。见[模型依据](PET-SUPPLIES.md)。

@@ -16,6 +16,7 @@ const DASH = 'stroke-dasharray="4 3"';
 if(t==='pet_bowl_petstar_180')return ec(0,0,w/2,d/2,c)+ec(0,0,w*.44,d*.44,'#8db4c2');
 if(t==='cat_litter_yanxuan_25kg')return rc(-w/2,-d/2,w,d,c,'rx="12"')+ln(-w/2,-d*.46,w/2,-d*.46)+ln(-w/2,d*.46,w/2,d*.46)+`<text x="0" y="0" text-anchor="middle" fill="#0874a6" font-size="${w*.18}">Mix</text>`;
 const products=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
+if(products.definition(t)?.feedingFrame){const l=(root.FurnishPetFeedingCore||(typeof require==='function'?require('../core/pet-feeding-core.js'):null)).layout(f||{type:t,w,d});return rc(-w/2,-d/2,w,d,c,'opacity=".4"')+rc(l.tray.x-l.tray.w/2,-d/2+l.shift,l.tray.w,d,'#c0c5c8')+rc(l.feeder.x-l.feeder.w/2,l.feeder.z-l.feeder.d/2,l.feeder.w,l.feeder.d,'#efeee8','rx="25"')+ln(l.tray.x-l.tray.w/2,d/2+l.shift,l.tray.x+l.tray.w/2,d/2+l.shift);}
 if(f?.cabinet?.sideClosures){
  const C=typeof module==='object'&&module.exports?require('../core/cabinet-core.js'):root.FurnishCabinet,cabinet={...f.cabinet};delete cabinet.sideClosures;
  const base=render(t,w,d,c,PAL,{...f,cabinet},context);

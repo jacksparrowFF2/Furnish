@@ -1,0 +1,13 @@
+module.exports=async(p,V)=>{
+ const pageErrors=[];p.on('pageerror',e=>pageErrors.push(e.message));const checks=[],ok=(v,m)=>{if(!v)throw Error(m);checks.push(m);};
+ await p.evaluate(()=>mutate(()=>{state.furniture=[{id:'rack',type:'pet_feeder_mijia_2',name:'old feeder',cx:5000,cy:4500,w:220,d:324,h:370,rot:0,color:'#eee'}];}));
+ await p.evaluate(async()=>{const a=await FurnishMcp.execute('get_current_plan',{}),cat=await FurnishMcp.execute('list_catalog',{query:'定制喂食金属架'});return FurnishMcp.execute('configure_furniture',{planId:a.plan.id,revision:a.revision,requestId:crypto.randomUUID(),updates:[{id:'rack',parameters:{replacementCatalogKey:cat.items[0].catalogKey}}]});});
+ ok(await p.evaluate(()=>getF('rack').type==='pet_feeding_insert'&&getF('rack').w===550&&FurnishProducts.value(getF('rack'),'petTrayOpen')===false),'bounded replacement uses complete insert and keeps one feeder');
+ await p.evaluate(()=>selectIds(['rack']));await p.locator('#pet-tray-state').selectOption('open');ok(await p.evaluate(()=>getF('rack').petTrayOpen===true),'UI opens tray');await p.evaluate(()=>undo());ok(await p.evaluate(()=>!getF('rack').petTrayOpen),'single undo closes tray');await p.evaluate(()=>redo());
+ await p.locator('#fMountHeight').fill('100');await p.locator('#fMountHeight').press('Tab');ok(await p.evaluate(()=>FurnishProducts.bottomHeight(getF('rack'))===100),'independent bottom elevation UI');
+ await p.evaluate(()=>FurnishRepository.flush());await p.reload();await p.waitForFunction(()=>typeof FurnishMcp!=='undefined'&&!repositoryBooting);ok(await p.evaluate(()=>getF('rack').petTrayOpen&&getF('rack').mountHeight===100),'saved refresh preserves state and elevation');
+ await p.evaluate(()=>selectIds(['rack']));await p.locator('#pet-tray-state').selectOption('closed');await p.evaluate(async()=>{const a=await FurnishMcp.execute('get_current_plan',{});return FurnishMcp.execute('set_camera',{planId:a.plan.id,revision:a.revision,requestId:crypto.randomUUID(),view:'3d',focusIds:['rack'],horizontalFov:50});});
+ await V.screenshot?.();await p.locator('#pet-tray-state').selectOption('open');await p.waitForFunction(()=>FurnishProducts.dimensions(getF('rack')).d===680);ok(pageErrors.length===0,'3D opens without page errors');
+ await p.setViewportSize({width:390,height:844});await p.evaluate(()=>selectIds(['rack']));ok(await p.locator('#pet-tray-state').count()===1,'narrow inspector keeps a single tray control');ok(await p.locator('#fMountHeight').count()===1,'narrow inspector keeps independent bottom control');
+ await p.evaluate(()=>FurnishRepository.flush());return {passed:true,checks};
+};

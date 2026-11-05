@@ -1,3 +1,5 @@
+2026-11-06：pet-feeding-core 统一定制架构造与线性扫掠，pet-feeding-frame-model 内嵌原喂食器生产构造器；新经典脚本，petTrayOpen 进入原 UI／mutate、实体／3D 缓存及项目核对。含类型采用 v54，见 [金属架契约](PET-FEEDING-INSERT.md)。
+
 # 模块与加载约定
 
 2026-11-06（宠物用品）：两款独立类型复用pet-supply-model→static-asset-model，Blender源／离线脚本供显示、实体与导出共用；新增经典脚本并实测HTTP／断网file。含新类型采用v53，MCP配置增加受限库替换动作，沿原replaceFurniture与mutate／flush，不存动作键。见[模型及调研](PET-SUPPLIES.md)。

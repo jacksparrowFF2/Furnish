@@ -3,10 +3,10 @@
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
     "blenderModels": 20,
-    "parametricVerificationConfigurations": 86,
-    "verificationConfigurations": 106,
-    "catalogEntries": 150,
-    "catalogTypes": 123,
+    "parametricVerificationConfigurations": 87,
+    "verificationConfigurations": 107,
+    "catalogEntries": 151,
+    "catalogTypes": 124,
     "productDossiers": 46,
     "referenceImages": 147,
     "missingReferences": 12
@@ -4115,6 +4115,12 @@
       "module": "cat-tree"
     },
     {
+      "id": "pet_feeding_insert",
+      "type": "pet_feeding_insert",
+      "name": "定制喂食金属架＋米家2 · 抽拉补粮",
+      "module": "pet-feeding-frame"
+    },
+    {
       "id": "pet_feeder_mijia_2",
       "type": "pet_feeder_mijia_2",
       "name": "米家智能宠物喂食器 2",
@@ -5578,6 +5584,15 @@
       "d": 500,
       "h": 1430,
       "module": "cat-tree"
+    },
+    {
+      "category": "生活用品",
+      "type": "pet_feeding_insert",
+      "name": "定制喂食金属架＋米家2 · 抽拉补粮",
+      "w": 550,
+      "d": 330,
+      "h": 470,
+      "module": "pet-feeding-frame"
     },
     {
       "category": "生活用品",
