@@ -1,7 +1,7 @@
 /* Incremental real EXE + HTTP + offline-file acceptance. All mutations isolated. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),http=require('node:http'),{pathToFileURL}=require('node:url'),{chromium,_electron}=require('playwright'),V=require('../lib/browser-verification.cjs');
-const project=path.resolve(__dirname,'../..'),run=fs.mkdtempSync(path.join(project,'output/playwright/stepped-rack-acceptance-')),root=path.join(run,'workspace'),source='D:/1601装修/Furnish项目/workspace.furnish.json',hash=()=>crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex'),before=hash();fs.mkdirSync(root);
+const project=path.resolve(__dirname,'../..'),run=fs.mkdtempSync(path.join(project,'output/playwright/stepped-rack-acceptance-')),root=path.join(run,'workspace'),source=path.resolve(process.argv[2]||require('../workspace-files.cjs').create(project).info({inspect:false}).file),hash=()=>crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex'),before=hash();fs.mkdirSync(root);
 for(const name of ['index.html','manifest.webmanifest','src','styles','vendor','assets'])fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});
 fs.mkdirSync(path.join(root,'scripts'));for(const name of require('../package-desktop.cjs').runtimeFiles)fs.copyFileSync(path.join(project,'scripts',name),path.join(root,'scripts',name));
 fs.mkdirSync(path.join(root,'projects'));fs.copyFileSync(source,path.join(root,'projects/workspace.furnish.json'));

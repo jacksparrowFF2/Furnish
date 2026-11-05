@@ -1,7 +1,7 @@
 /* Real desktop pointer profiling; copies the workspace and never edits the source. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{execFileSync}=require('node:child_process'),{_electron}=require('playwright');
-const project=path.resolve(__dirname,'../..'),source=path.resolve(process.argv[2]||'D:/1601装修/Furnish项目/workspace.furnish.json'),baseline=process.argv[3]||'f927c4a8',run=fs.mkdtempSync(path.join(project,'output/playwright/balcony-drag-')),root=path.join(run,'workspace'),hash=()=>crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex'),originalHash=hash();
+const project=path.resolve(__dirname,'../..'),source=path.resolve(process.argv[2]||require('../workspace-files.cjs').create(project).info({inspect:false}).file),baseline=process.argv[3]||'f927c4a8',run=fs.mkdtempSync(path.join(project,'output/playwright/balcony-drag-')),root=path.join(run,'workspace'),hash=()=>crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex'),originalHash=hash();
 fs.mkdirSync(root);for(const name of ['index.html','manifest.webmanifest','src','styles','vendor','assets'])fs.cpSync(path.join(project,name),path.join(root,name),{recursive:true});
 fs.mkdirSync(path.join(root,'scripts'));for(const name of require('../package-desktop.cjs').runtimeFiles)fs.copyFileSync(path.join(project,'scripts',name),path.join(root,'scripts',name));fs.mkdirSync(path.join(root,'projects'));
 const median=values=>values.sort((a,b)=>a-b)[Math.floor(values.length/2)];

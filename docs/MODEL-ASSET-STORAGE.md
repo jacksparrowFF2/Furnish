@@ -47,7 +47,7 @@ node scripts/index-model-assets.cjs --check
 
 模型源、运行资产、规则、资料按职责留在现有目录，通过产品索引关联，而不是把它们强行搬到同一个文件夹。D盘副本用于人工查看、精修或交付，修改副本后仍须经原发布流程回到项目。
 
-全屋精修工程体积较大且存在本机绑定，保留在原`D:/1601装修/渲染`；当前绑定继续由未入Git的`.local/blender-project.json`维护。本次建立16份本机BLEND的只读入口，未复制这些大工程。用户项目与本机路径不进入公共资产索引。
+2026-11-05：当前全屋精修工作工程已按原字节复制至仓库忽略目录`.local/blender-projects/1601/`，当前绑定由`.local/blender-project.json`维护；D盘原工程和其它历史渲染成果保留为数据存档。材质库、采集及CAD工具分别归`.local/blender-libraries/1601/`、`.local/research-tools/`和`.local/tools/cad/`，旧升级实现归`.local/history/furnish-upgrade/`。本机导航为`.local/workspace-index.html`；私人全屋工程不进入公共资产索引或Git。正式方案、备份和恢复副本仍由原保存配置读取D盘`Furnish项目`。归位验证与边界见[记录](validation/local-workspace-relocation-20261105/README.md)。
 
 ## 正式来源与用途
 
