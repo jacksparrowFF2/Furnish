@@ -7,3 +7,7 @@
 通过：两份UI脚本语法；test-cabinet-workspace、test-cabinet-preview、test-cabinet-editor-completion增量回归。现有正式打包EXE隔离源码/项目/缓存/端口验收，验证三栏实际坐标顺序、搜索、模块管理、问号、草稿/应用撤销重做、保存刷新、全屏切换、窄屏无横向溢出，以及HTTP/file://恢复和第二隔间共用板件选择，无页面错误且源项目哈希不变，见[results.json](results.json)。已实际检查[全屏](fullscreen.png)及选中部件截图；窄屏保留[截图](narrow.png)。成功临时副本由既有test-artifacts回收。
 
 未运行全量检查或单独执行完整厨房浏览器专项；厨房复用同一结构布局，相关模块操作Node回归通过。用户现有方案文件修改、历史工作树与原有生成物保留，本次没有创建临时分支。
+
+## 分栏直角补充
+
+按用户局部截图，取消工作区外框12px圆角与结构aside继承的圆角/浮岛阴影，分栏在底部平直相接。按钮、输入框和内部卡片沿用原样式。仅CSS两处修改，无数据或模型变化。使用同一隔离EXE入口完成桌面、窄屏、HTTP/file验收，无页面异常且源项目不变；已实际查看[直角截图](square-panels.png)，[结果](square-panels-results.json)。未运行全量检查、未新增低影响样式专项测试。

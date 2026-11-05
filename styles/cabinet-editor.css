@@ -278,8 +278,8 @@
 /* Cabinet workspace: persistent structure / editing canvas / current properties. */
 .dlg-box.wide:has(.cab-workspace){width:calc(100vw - 40px);max-width:1560px}
 .dlg-body:has(.cab-workspace){overflow:hidden}
-.cab-editor.cab-workspace{grid-template-columns:minmax(320px,1fr) 260px 340px;gap:0;height:calc(100dvh - 190px);min-height:360px;background:#fffdf9;border:1px solid #e8e2d9;border-radius:12px;overflow:hidden;align-items:stretch}
-.cab-workspace>.cab-structure{overflow:auto;min-width:0;padding:18px 14px;background:#fbf9f5;border-left:1px solid #e8e2d9;overscroll-behavior:contain}
+.cab-editor.cab-workspace{grid-template-columns:minmax(320px,1fr) 260px 340px;gap:0;height:calc(100dvh - 190px);min-height:360px;background:#fffdf9;border:1px solid #e8e2d9;border-radius:0;overflow:hidden;align-items:stretch}
+.cab-workspace>.cab-structure{border-radius:0;box-shadow:none;overflow:auto;min-width:0;padding:18px 14px;background:#fbf9f5;border-left:1px solid #e8e2d9;overscroll-behavior:contain}
 .cab-structure-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
 .cab-structure h3{font-size:15px;margin:0}
 .cab-history{display:flex;gap:2px}.cab-history .btn{padding:5px;font-size:11px;min-height:28px;background:transparent;border-color:transparent}
