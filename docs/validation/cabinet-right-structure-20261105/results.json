@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "checks": [
+    "one fullscreen toggle",
+    "designer fills viewport",
+    "preview left, structure beside right-side properties",
+    "structure search remains usable",
+    "module manager opens beside properties",
+    "property help opens on click",
+    "Escape closes help and preserves editor",
+    "stacked checkbox applies valid draft",
+    "draft undo restores one shell",
+    "draft redo restores stacked shells",
+    "help beside checkbox preserves its value",
+    "save retains split and continuous end panels",
+    "application undo",
+    "desktop save and refresh",
+    "exit fullscreen",
+    "narrow desktop has no horizontal overflow",
+    "close removes fullscreen chrome",
+    "HTTP reads saved stacked configuration",
+    "offline file production double boards",
+    "shared joint shelf is selectable from second compartment",
+    "original workspace unchanged"
+  ],
+  "errors": []
+}
