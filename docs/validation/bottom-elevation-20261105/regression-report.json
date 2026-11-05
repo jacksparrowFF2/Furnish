@@ -1,0 +1,498 @@
+{
+  "passed": true,
+  "scope": "registered model structural suites plus height/spatial/data/cache dependencies; not full check",
+  "results": [
+    {
+      "name": "fan-x231",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "cat-tower",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "fan-height",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "chair-vihals",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "chair-s05118",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "sofa-bed",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "sofa-bed-project-v40",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-appliance-asset",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "bath-heater-se2",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "folding-chair-state",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-bookcase-asset",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "bookcase-y52y09",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "fridge-project-v31",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-dishwasher-asset",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "dishwasher-project-v32",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-fridge-motion",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "dishwasher-clearances",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "hood-project-v33",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-hood-asset",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "washer-project-v35",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-washer-materials",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-washer-asset",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "washer-front-confirmation",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "side-table",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "side-table-project-v36",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "armchair",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "armchair-berlin",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "stack-stool",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "corner-bookcase",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "corner-bookcase-580",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "block-placeholder",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "panel-light",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "downlight",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "manifold",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "manifold-zero-gap",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "electrical-box",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "aquarium",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "fotile",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "waterheater-flat",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "waterheater-furniture-clearances",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "aircon-midea",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "water-purifier",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "tea-bar",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "robot-vacuum",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "art-glass",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "window-lining",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "pipebox",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "yeswood-sofa",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "cherry-coffee-table",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "tea-table",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "folding-table",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "cabinet-model",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "cabinet-interior-distances",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "shoe-bench",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "sink",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "sink-plan-snapping",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "shower-arrow",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "window-coverings",
+      "passed": true,
+      "code": 0,
+      "retry": true
+    },
+    {
+      "name": "window-covering-mount",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "pocket-door",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "wide-pocket-door",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "pocket-identities",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "telescopic-20",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "telescopic-floor-tracks",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "cat-tree",
+      "passed": true,
+      "code": 0,
+      "retry": true
+    },
+    {
+      "name": "pet-feeder",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "litter-box",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "mirror",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "curtain-height",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "tv-view-consistency",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "tv-floor",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "entry-pegboard",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "entry-console",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "laundry-cabinet",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "laundry-area",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "kitchen-tall",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "kitchen",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "kitchen-u",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "kitchen-resize",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "kitchen-corner-fit",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "sink-surface",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "laundry-resize-vessel",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "bottom-elevation",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "product-rules",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "work-state",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "workspace-cache",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "project",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "project-validation",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "project-recovery",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "repository-version-compat",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "repository-workspace",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "repository-storage",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "blender-washer-tg10k60w",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "spatial-review-cache",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "enclosed-boundary-distances",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "cabinet-opening-3d",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "beam-heights",
+      "passed": true,
+      "code": 0
+    },
+    {
+      "name": "furniture-solids-cache",
+      "passed": true,
+      "code": 0
+    }
+  ]
+}

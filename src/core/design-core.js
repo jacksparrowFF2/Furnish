@@ -155,8 +155,8 @@
   const vertical=furnitureVerticalBounds(f,plan,furniture),floor=products().floorBase({...plan,furnitureDatum:products().furnitureDatum.default},f,furniture),roof=(root.FurnishProject||require('./project-core.js')).ceilingAt(plan,f.cx,f.cy);
   return {vertical,bottom:vertical&&floor.known?vertical.bottom-floor.z:null,top:vertical&&floor.known?vertical.top-floor.z:null,roofGap:vertical&&Number.isFinite(roof.height)?roof.height-vertical.top:null};
  }
- function relativeFurnitureVerticalBounds(f){
-  const vertical=products().vertical(f);if(vertical)return vertical;
+ function relativeFurnitureVerticalBounds(f){const vertical=products().vertical(f);return vertical||products().elevatedRange(f,fallbackFurnitureVerticalBounds(f));}
+ function fallbackFurnitureVerticalBounds(f){
   if(f.type==='sofa_yeswood_cherry')return {bottom:0,top:products().height(f),source:f.h===undefined?'model':'recorded'};
   if(cabinet().supported(f))return {bottom:0,top:cabinet().height(f),source:f.h===undefined?'model':'recorded'};
   if(Number.isFinite(f.h)&&f.h>0)return {bottom:0,top:f.h,source:'recorded'};
@@ -177,7 +177,7 @@
    // and topological order are still checked after each movement.
    const lineage=[],seen=new Set();for(let host=f;host&&!seen.has(host.id);host=products().floorHost(host,furniture)){seen.add(host.id);lineage.push(host);}
    const key=JSON.stringify(lineage);let bounds=orderBoundsCache.get(f);
-   if(bounds?.key!==key||bounds.floorKey!==floorKey){const countertop=f.type==='counter'&&f.kitchen&&kitchen().hasCountertop(f)?f.kitchen.baseHeight+(plan?products().floorBase(plan,f,furniture).z:0):null;bounds={key,floorKey,vertical:furnitureVerticalBounds(f,plan,furniture),box:G.aabb({...f,rot:f.rot||0}),countertop};orderBoundsCache.set(f,bounds);}
+   if(bounds?.key!==key||bounds.floorKey!==floorKey){const countertop=f.type==='counter'&&f.kitchen&&kitchen().hasCountertop(f)?kitchen().baseElevation(f)+f.kitchen.baseHeight+(plan?products().floorBase(plan,f,furniture).z:0):null;bounds={key,floorKey,vertical:furnitureVerticalBounds(f,plan,furniture),box:G.aabb({...f,rot:f.rot||0}),countertop};orderBoundsCache.set(f,bounds);}
    return {f,index,layer:layer(f),vertical:bounds.vertical,box:bounds.box,countertop:bounds.countertop,after:[],incoming:0};
   });
   for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){

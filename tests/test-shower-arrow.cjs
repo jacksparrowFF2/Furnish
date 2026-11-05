@@ -5,7 +5,7 @@ const model=require('../src/render/shower-arrow-model.js'),catalog=require('../s
  const THREE=await import(imports.three),source=Buffer.from(imports['three/addons/geometries/RoundedBoxGeometry.js'].split(',')[1],'base64').toString().replace("from 'three'",`from '${imports.three}'`);
  const {RoundedBoxGeometry}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
  const near=(a,b)=>assert.ok(Math.abs(a-b)<2e-6,`${a} != ${b}`);
- const ctx=vm.createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishYeswoodSofaModel:require('../src/render/yeswood-sofa-model.js'),FurnishArrowShowerModel:model,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})}));
+ const ctx=require('./helpers/layer-context.cjs').createContext(Object.assign({FurnishDownlightModel:require("../src/render/downlight-model.js"),FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{THREE,RoundedBoxGeometry,FurnishYeswoodSofaModel:require('../src/render/yeswood-sofa-model.js'),FurnishArrowShowerModel:model,FurnishCabinet:require('../src/core/cabinet-core.js'),M:v=>v/1000,wx:v=>v/1000,wz:v=>v/1000,rng:()=>()=>.5,mat:(color,o)=>new THREE.MeshStandardMaterial({color,...o})}));
  Object.assign(ctx,{FurnishSlidingOpeningModel:require('../src/render/sliding-opening-model.js'),FurnishManifoldModel:require('../src/render/manifold-model.js'),FurnishBasicFurnitureModel:require('../src/render/basic-furniture-model.js'),FurnishModelPrimitives:require('../src/render/model-primitives.js'),FurnishApplianceModel:require('../src/render/appliance-model.js')});
  vm.runInContext(html.slice(html.indexOf('const primitives ='),html.indexOf('/* ======================= 建筑')),ctx);
  Object.assign(ctx,{FurnishProject:{effectivePlan:()=>({})},PLAN:{},FurnishProducts:require('../src/core/product-rules.js')});
@@ -14,7 +14,7 @@ const model=require('../src/render/shower-arrow-model.js'),catalog=require('../s
  const f={id:'shower',mountHeight:350,type:model.type,name:item[1],w:item[2],d:item[3],h:item[6],color:item[4],cx:700,cy:900,rot:0};
  assert.deepEqual(P.unpack(P.pack({planId:'p1',current:{furniture:[f]},designs:[],catalog:[]})).current.furniture[0],f);
  for(const mountHeight of [-1,20001,'350'])assert.throws(()=>P.validateWork({furniture:[{...f,mountHeight}]}),/离地高度/);
- assert.equal(D.replaceFurniture(f,{type:'toilet',name:'马桶',w:400,d:700,color:'#fff',price:0}).mountHeight,undefined);
+ assert.equal(D.replaceFurniture(f,{type:'toilet',name:'马桶',w:400,d:700,color:'#fff',price:0}).mountHeight,0);
  assert.ok(!/NaN|undefined/.test(svg.render(f.type,f.w,f.d,f.color,{ink:'#333'})));
  assert.equal(D.furnitureVerticalBounds({...f,h:undefined}).top,2099);
  for(const dims of [[420,515,1749],[500,600,1850],[100,50,50]])for(const rot of [0,90,180])for(const flip of [false,true]){

@@ -10,7 +10,7 @@
  const cache=new Map(),worldCache=new Map();
  function parts(f,{furniture=[],plan}={}){
   if(!supported(f))return null;
-  const r=rule(f),products=root.FurnishProducts||require('./product-rules.js'),corner=r.sliding?products.slidingCorner(f,furniture,plan):null,key=JSON.stringify([r,products.definition(f)?.washerGeometryVersion,corner,f.slidingStackSide,f.slidingOpen,f.slidingTrackOrder,f.floorTrack,f.type,f.w,f.d,f.h,f.mountHeight,...(products.definition(f)?.garden?.stepped?[products.gardenLayout(f)]:[]),f.windowSurroundSides,f.windowSurroundThickness,f.curtainOpen,f.blindAngle,f.shadeMode,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.foldingChairFolded,f.sofaBedOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.dishwasherDoorOpen,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,f.washerDoorSide,f.hoodGeometry,f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,...(r.positionSeed?[f.cx,f.cy]:[])]);
+  const r=rule(f),products=root.FurnishProducts||require('./product-rules.js'),corner=r.sliding?products.slidingCorner(f,furniture,plan):null,key=JSON.stringify([r,products.definition(f)?.washerGeometryVersion,corner,f.slidingStackSide,f.slidingOpen,f.slidingTrackOrder,f.floorTrack,f.type,f.w,f.d,f.h,f.mountHeight,f.bottomPhysical,...(products.definition(f)?.garden?.stepped?[products.gardenLayout(f)]:[]),f.windowSurroundSides,f.windowSurroundThickness,f.curtainOpen,f.blindAngle,f.shadeMode,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.foldingChairFolded,f.sofaBedOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.dishwasherDoorOpen,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,f.washerDoorSide,f.hoodGeometry,f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,...(r.positionSeed?[f.cx,f.cy]:[])]);
   // A world hit already contains the production vertices. Consult it before
   // rebuilding a local record evicted from the smaller geometry LRU.
   const worldKey=JSON.stringify([key,f.cx,f.cy,f.rot,f.flip]);
@@ -19,7 +19,7 @@
   if(records){cache.delete(key);cache.set(key,records);}
   if(!records){
    const model=root[r.global]||(typeof require==='function'?require('../render/'+r.module+'-model.js'):null);if(!model)throw Error('家具实体模型未加载：'+r.global);
-   const {T,Box,Rounded,transform}=adapter(),built=model.build(T,f,r.sliding?{corner}:r.rounded?Rounded:Box);records=[];
+   const {T,Box,Rounded,transform}=adapter(),built=model.build(T,products.elevationSource(f),r.sliding?{corner}:r.rounded?Rounded:Box);records=[];
    built.traverse(node=>{
     const g=node.geometry;if(!g)return;const data=g.attributes.position.array;if([0,1,2].some(axis=>Math.max(...data.filter((_,i)=>i%3===axis))-Math.min(...data.filter((_,i)=>i%3===axis))<1e-10))return;const a=data,toWorld=transform(node),vertices=Array.from({length:a.length/3},(_,i)=>toWorld(a.slice(i*3,i*3+3)).map(v=>v*1000)),name=Object.entries(node.userData).find(([key,v])=>key.endsWith('Part')&&typeof v==='string')?.[1]||'结构';
     const add=(vs,faces)=>records.push({vertices:vs,faces,boardName:labels[name]||'结构件',partRole:name,actualBoard:true});
@@ -36,7 +36,7 @@
   // Repeated plan labels, clearances and collisions share immutable world
   // records. Use the production key plus every world transform input.
   const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),angle=(f.rot||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
-  const base=r.base==='mountHeight'?products.value(f,'mountHeight'):0;
+  const base=(r.base==='mountHeight'?products.value(f,'mountHeight'):0)+products.elevationDelta(f);
   const result=records.map((r,i)=>{const vertices=r.vertices.map(([x,y,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,y+base,(f.cy||0)+x*s+z*c];});return {...r,vertices,boardKey:'furniture:'+i,p:M.section({vertices,faces:r.faces},null),vertical:{bottom:Math.min(...vertices.map(v=>v[1])),top:Math.max(...vertices.map(v=>v[1])),source:'production-mesh'}};});
   worldCache.set(worldKey,result);if(worldCache.size>128)worldCache.delete(worldCache.keys().next().value);return result;
  }

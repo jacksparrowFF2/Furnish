@@ -35,7 +35,8 @@ function vertices(part,motion,maximum=false,phase=1){
 }
 function hull(points){const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]),half=ps=>{const out=[];for(const p of ps){while(out.length>1&&cross(out.at(-2),out.at(-1),p)<=1e-9)out.pop();out.push(p);}return out;};return half(sorted).slice(0,-1).concat(half(sorted.reverse()).slice(0,-1));}
 function outline(f){const map=new Map(motions(f).map(m=>[m.role,m]));return hull(layout(f).flatMap(p=>vertices(p,map.get(p.role)).map(v=>[v[0],v[2]])));}
-function openingZones(f){
+function openingZones(f,options){const P=products();return P.elevatedZones(f,nativeOpeningZones(P.elevationSource(f),options));}
+function nativeOpeningZones(f){
  const parts=layout(f),angle=(f.rot||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle),world=([x,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,(f.cy||0)+x*s+z*c];};
  return motions(f).map((m,column)=>{const moving=parts.filter(p=>p.role===m.role),steps=m.axis==='y'?Math.ceil(products().definition(f).fridgeMotion.angle/2):1,points=[];
   for(let i=0;i<=steps;i++)for(const p of moving)points.push(...vertices(p,m,true,i/steps));

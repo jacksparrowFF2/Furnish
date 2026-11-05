@@ -31,7 +31,7 @@ assert.equal(copy.mountHeight,750);
 const fromPipe=D.replaceFurniture({...f,type:'pipebox',mountHeight:750,pipeBoxThickness:18,pipeBoxShape:'three'},{...resized});
 assert.equal(fromPipe.type,'block');assert.equal(fromPipe.mountHeight,0);for(const key of ['pipeBoxThickness','pipeBoxShape'])assert.equal(fromPipe[key],undefined);
 assert.equal(D.replaceFurniture(suspended,resized).mountHeight,750);
-assert.equal(D.replaceFurniture(suspended,{...resized,type:'chair'}).mountHeight,undefined);
+assert.equal(D.replaceFurniture(suspended,{...resized,type:'chair'}).mountHeight,0);
 const svg=require('../src/render/furniture-svg.js').render('block',1234,567,f.color,{ink:'#333'},resized);
 assert.equal((svg.match(/<rect/g)||[]).length,1);assert(svg.includes('width="1234"'));assert(svg.includes('height="567"'));
 const obstacle={...f,id:'obstacle',type:'washer',w:100,d:100,h:100,mountHeight:890};

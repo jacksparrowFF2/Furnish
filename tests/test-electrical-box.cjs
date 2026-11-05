@@ -9,7 +9,7 @@ assert.throws(()=>E.embed({...f,d:201},plan));assert.throws(()=>R.validate({...f
 for(const [at,rot] of [[[1400,-10],180],[[-10,100],90],[[3010,100],270]]){const v=E.embed({...f,w:50,cx:at[0],cy:at[1]},plan);assert.equal(v.rot,rot);assert(E.contained(v,plan));}
 const round=P.unpack(P.pack({planId:'test',current:{furniture:[embedded]},designs:[{id:'named',name:'箱体',work:{furniture:[embedded]}}],catalog:[]}));assert.deepEqual(round.current.furniture,[embedded]);assert.deepEqual(round.designs[0].work.furniture,[embedded]);
 let restored=[embedded];for(let i=0;i<3;i++)restored=D.restoreFurniture(restored,{makeId:()=> 'x',colorFor:()=> '#eee'});assert.deepEqual(restored,[embedded]);
-assert.equal(D.replaceFurniture(embedded,{type:'chair',name:'chair',w:400,d:400}).mountHeight,undefined);
+assert.equal(D.replaceFurniture(embedded,{type:'chair',name:'chair',w:400,d:400}).mountHeight,0);
 const copied=D.pasteFurniture({items:[embedded],cx:embedded.cx,cy:embedded.cy},{x:1800,y:140},{x:0,y:0,w:3000,h:3000},()=> 'copy').items[0];assert.equal(copied.mountHeight,1200);assert.equal(copied.id,'copy');
 for(const key of ['w','d','h'])assert.throws(()=>D.resizeFurniture(f,{[key]:0}));
 const finished={...plan,wallFinish:{solids:[{rect:[0,200,3000,225],normal:1,side:1,bottom:0,top:2800}]}};

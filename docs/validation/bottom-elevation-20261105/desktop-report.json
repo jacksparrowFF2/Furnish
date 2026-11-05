@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "rows": [
+    {
+      "type": "chair",
+      "edit700": true,
+      "undoRedo": true,
+      "zero": true
+    },
+    {
+      "type": "wardrobe",
+      "edit700": true,
+      "undoRedo": true,
+      "zero": true
+    },
+    {
+      "type": "wallart",
+      "edit700": true,
+      "undoRedo": true,
+      "zero": true
+    },
+    {
+      "type": "curtain",
+      "edit700": true,
+      "undoRedo": true,
+      "zero": true
+    },
+    {
+      "type": "sink_arrow_680",
+      "edit700": true,
+      "undoRedo": true,
+      "zero": true
+    },
+    {
+      "type": "shower_arrow_cream",
+      "edit700": true,
+      "undoRedo": true,
+      "zero": true
+    },
+    {
+      "type": "plant",
+      "edit700": true,
+      "undoRedo": true,
+      "zero": true
+    }
+  ],
+  "errors": [],
+  "sourceUnchanged": true,
+  "saveReload": true,
+  "narrow": true
+}

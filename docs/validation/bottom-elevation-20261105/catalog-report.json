@@ -1,0 +1,8268 @@
+{
+  "passed": true,
+  "protocol": "http",
+  "generatedAt": "2026-11-05T00:55:38.051Z",
+  "rows": [
+    {
+      "type": "block",
+      "name": "方块占位体",
+      "index": 0,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1000,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1400,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1400
+        }
+      },
+      "baseline": [
+        [
+          -0.5,
+          0,
+          -0.5
+        ],
+        [
+          0.5,
+          1,
+          0.5
+        ]
+      ],
+      "raised": [
+        [
+          -0.5,
+          0.4,
+          -0.5
+        ],
+        [
+          0.5,
+          1.4,
+          0.5
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "panel_light_300x600",
+      "name": "厨房平板灯 · 300×600 · 24W",
+      "index": 1,
+      "controls": {
+        "found": true,
+        "bottom": 2500,
+        "range": {
+          "bottom": 2500,
+          "top": 2535,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 2900,
+        "range": {
+          "bottom": 2900,
+          "top": 2935,
+          "source": "recorded"
+        },
+        "actualBottom": 2900,
+        "solids": {
+          "bottom": 2900,
+          "top": 2935
+        }
+      },
+      "baseline": [
+        [
+          -0.15000000596046448,
+          2.4999999999525024,
+          -0.30000001192092896
+        ],
+        [
+          0.15000000596046448,
+          2.534999999910593,
+          0.30000001192092896
+        ]
+      ],
+      "raised": [
+        [
+          -0.15000000596046448,
+          2.8999999999525023,
+          -0.30000001192092896
+        ],
+        [
+          0.15000000596046448,
+          2.934999999910593,
+          0.30000001192092896
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -4.7497451305389404e-8,
+      "topErrorMm": -8.940696716308594e-8,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "fan_airmate_fa18_x231",
+      "name": "艾美特 小暴风 PRO FA18-X231 空气循环扇",
+      "index": 2,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1100,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1500,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1500
+        }
+      },
+      "baseline": [
+        [
+          -0.15000000596046448,
+          0,
+          -0.15000000596046448
+        ],
+        [
+          0.15000000596046448,
+          1.100000023841858,
+          0.15000000596046448
+        ]
+      ],
+      "raised": [
+        [
+          -0.15000000596046448,
+          0.4,
+          -0.15000000596046448
+        ],
+        [
+          0.15000000596046448,
+          1.5000000238418578,
+          0.15000000596046448
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0.00002384185791015625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bath_heater_aopu_se2",
+      "name": "奥普 SE2 风暖浴霸",
+      "index": 3,
+      "controls": {
+        "found": true,
+        "bottom": 2500,
+        "range": {
+          "bottom": 2500,
+          "top": 2612,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 2900,
+        "range": {
+          "bottom": 2900,
+          "top": 3012,
+          "source": "recorded"
+        },
+        "actualBottom": 2900,
+        "solids": {
+          "bottom": 2900,
+          "top": 3012
+        }
+      },
+      "baseline": [
+        [
+          -0.15000000596046448,
+          2.5,
+          -0.30000001192092896
+        ],
+        [
+          0.15000000596046448,
+          2.6120000034570694,
+          0.30000001192092896
+        ]
+      ],
+      "raised": [
+        [
+          -0.15000000596046448,
+          2.9,
+          -0.30000001192092896
+        ],
+        [
+          0.15000000596046448,
+          3.0120000034570693,
+          0.30000001192092896
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0.0000034570693969726562,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bath_heater_300x600",
+      "name": "风暖浴霸 · 300×600通用占位",
+      "index": 4,
+      "controls": {
+        "found": true,
+        "bottom": 2500,
+        "range": {
+          "bottom": 2500,
+          "top": 2680,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 2900,
+        "range": {
+          "bottom": 2900,
+          "top": 3080,
+          "source": "recorded"
+        },
+        "actualBottom": 2900,
+        "solids": {
+          "bottom": 2900,
+          "top": 3080
+        }
+      },
+      "baseline": [
+        [
+          -0.15000000596046448,
+          2.4999999999525024,
+          -0.3000000022649765
+        ],
+        [
+          0.15000000596046448,
+          2.680000001549721,
+          0.3000000007003546
+        ]
+      ],
+      "raised": [
+        [
+          -0.15000000596046448,
+          2.8999999999525023,
+          -0.3000000022649765
+        ],
+        [
+          0.15000000596046448,
+          3.080000001549721,
+          0.3000000007003546
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -4.7497451305389404e-8,
+      "topErrorMm": 0.0000015497207641601562,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "downlight_philips_dl269",
+      "name": "飞利浦品焕筒灯 DL269",
+      "index": 5,
+      "controls": {
+        "found": true,
+        "bottom": 2500,
+        "range": {
+          "bottom": 2500,
+          "top": 2545,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 2900,
+        "range": {
+          "bottom": 2900,
+          "top": 2945,
+          "source": "recorded"
+        },
+        "actualBottom": 2900,
+        "solids": {
+          "bottom": 2900,
+          "top": 2945
+        }
+      },
+      "baseline": [
+        [
+          -0.0425,
+          2.5,
+          -0.0425
+        ],
+        [
+          0.0425,
+          2.5450000000000004,
+          0.0425
+        ]
+      ],
+      "raised": [
+        [
+          -0.0425,
+          2.9,
+          -0.0425
+        ],
+        [
+          0.0425,
+          2.9450000000000003,
+          0.0425
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0,
+      "topErrorMm": 4.547473508864641e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "heating_manifold",
+      "name": "地暖分水器（路数可调）",
+      "index": 6,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 600,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1000,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1000
+        }
+      },
+      "baseline": [
+        [
+          -0.4,
+          -2.7755575615628914e-17,
+          -0.09000000000000001
+        ],
+        [
+          0.4,
+          0.6000000006357828,
+          0.09
+        ]
+      ],
+      "raised": [
+        [
+          -0.4,
+          0.4,
+          -0.09000000000000001
+        ],
+        [
+          0.4,
+          1.000000000635783,
+          0.09
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 6.357829533953918e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "electrical_box_strong",
+      "name": "强电箱（尺寸自定）",
+      "index": 7,
+      "controls": {
+        "found": true,
+        "bottom": 1200,
+        "range": {
+          "bottom": 1200,
+          "top": 1600,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1600,
+        "range": {
+          "bottom": 1600,
+          "top": 2000,
+          "source": "recorded"
+        },
+        "actualBottom": 1600,
+        "solids": {
+          "bottom": 1600,
+          "top": 2000
+        }
+      },
+      "baseline": [
+        [
+          -0.15000000596046448,
+          1.1999999970197677,
+          -0.06000000001303851
+        ],
+        [
+          0.15000000596046448,
+          1.6000000029802321,
+          0.06000000001424923
+        ]
+      ],
+      "raised": [
+        [
+          -0.15000000596046448,
+          1.5999999970197678,
+          -0.06000000001303851
+        ],
+        [
+          0.15000000596046448,
+          2.000000002980232,
+          0.06000000001424923
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.0000029802322387695312,
+      "topErrorMm": 0.000002980232011395856,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "electrical_box_weak",
+      "name": "弱电箱（尺寸自定）",
+      "index": 8,
+      "controls": {
+        "found": true,
+        "bottom": 1200,
+        "range": {
+          "bottom": 1200,
+          "top": 1600,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1600,
+        "range": {
+          "bottom": 1600,
+          "top": 2000,
+          "source": "recorded"
+        },
+        "actualBottom": 1600,
+        "solids": {
+          "bottom": 1600,
+          "top": 2000
+        }
+      },
+      "baseline": [
+        [
+          -0.20000000298023224,
+          1.1999999970197677,
+          -0.06000000001303851
+        ],
+        [
+          0.20000000298023224,
+          1.6000000029802321,
+          0.06000000001424923
+        ]
+      ],
+      "raised": [
+        [
+          -0.20000000298023224,
+          1.5999999970197678,
+          -0.06000000001303851
+        ],
+        [
+          0.20000000298023224,
+          2.000000002980232,
+          0.06000000001424923
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.0000029802322387695312,
+      "topErrorMm": 0.000002980232011395856,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "aquarium_mijia_2pro",
+      "name": "米家智能鱼缸 2 Pro",
+      "index": 9,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 334,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 734,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 734
+        }
+      },
+      "baseline": [
+        [
+          -0.2525000000949949,
+          2.980232206850619e-11,
+          -0.14600000002607702
+        ],
+        [
+          0.2525000000949949,
+          0.33400000004749747,
+          0.1460000000949949
+        ]
+      ],
+      "raised": [
+        [
+          -0.2525000000949949,
+          0.40000000002980235,
+          -0.14600000002607702
+        ],
+        [
+          0.2525000000949949,
+          0.7340000000474975,
+          0.1460000000949949
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 2.9802322387695312e-8,
+      "topErrorMm": 4.7497564992227126e-8,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "rangehood_fotile_jcd10ta",
+      "name": "方太抽油烟机 JCD10TA",
+      "index": 11,
+      "controls": {
+        "found": true,
+        "bottom": 1315,
+        "range": {
+          "bottom": 1315,
+          "top": 1835,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1715,
+        "range": {
+          "bottom": 1715,
+          "top": 2235,
+          "source": "model"
+        },
+        "actualBottom": 1715,
+        "solids": {
+          "bottom": 1715,
+          "top": 2235.0000000000005
+        }
+      },
+      "baseline": [
+        [
+          -0.44999998807907104,
+          1.315,
+          -0.17499999701976776
+        ],
+        [
+          0.44999998807907104,
+          1.8349999809265136,
+          0.17499999701976776
+        ]
+      ],
+      "raised": [
+        [
+          -0.44999998807907104,
+          1.715,
+          -0.17499999701976776
+        ],
+        [
+          0.44999998807907104,
+          2.2349999809265135,
+          0.17499999701976776
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.00001907348678287235,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "stove",
+      "name": "燃气灶",
+      "index": 12,
+      "controls": {
+        "found": true,
+        "bottom": 862,
+        "range": {
+          "bottom": 862,
+          "top": 2330,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1262,
+        "range": {
+          "bottom": 1262,
+          "top": 2730,
+          "source": "model"
+        },
+        "actualBottom": 1262,
+        "solids": {
+          "bottom": 1262,
+          "top": 2730
+        }
+      },
+      "baseline": [
+        [
+          -0.375,
+          0.8619999999478459,
+          -0.225
+        ],
+        [
+          0.375,
+          2.330000014305115,
+          0.27850000001303854
+        ]
+      ],
+      "raised": [
+        [
+          -0.375,
+          1.261999999947846,
+          -0.225
+        ],
+        [
+          0.375,
+          2.730000014305115,
+          0.27850000001303854
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -5.21540641784668e-8,
+      "topErrorMm": 0.00001430511474609375,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "fridge",
+      "name": "冰箱",
+      "index": 13,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1800,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2200,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2200
+        }
+      },
+      "baseline": [
+        [
+          -0.35000000000000003,
+          -3.469446951953614e-18,
+          -0.35
+        ],
+        [
+          0.35000000000000003,
+          1.7999999999999998,
+          0.34999999999999987
+        ]
+      ],
+      "raised": [
+        [
+          -0.35000000000000003,
+          0.4,
+          -0.35
+        ],
+        [
+          0.35000000000000003,
+          2.2,
+          0.34999999999999987
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "washer_littleswan_tg10k60w",
+      "name": "小天鹅洗衣机 TG10K60W · 10kg",
+      "index": 14,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 850,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1250,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1250
+        }
+      },
+      "baseline": [
+        [
+          -0.29750001430511475,
+          0,
+          -0.2800000011920929
+        ],
+        [
+          0.29750001430511475,
+          0.8500000238418579,
+          0.2800000004321337
+        ]
+      ],
+      "raised": [
+        [
+          -0.29750001430511475,
+          0.4,
+          -0.2800000011920929
+        ],
+        [
+          0.29750001430511475,
+          1.2500000238418578,
+          0.2800000004321337
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0.00002384185791015625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "washer",
+      "name": "洗衣机",
+      "index": 15,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 850,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1250,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1250
+        }
+      },
+      "baseline": [
+        [
+          -0.30000001192092896,
+          0,
+          -0.30000001192092896
+        ],
+        [
+          0.30000001192092896,
+          0.8500000238418579,
+          0.30000000043213365
+        ]
+      ],
+      "raised": [
+        [
+          -0.30000001192092896,
+          0.4,
+          -0.30000001192092896
+        ],
+        [
+          0.30000001192092896,
+          1.2500000238418578,
+          0.30000000043213365
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0.00002384185791015625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "waterheater",
+      "name": "电热水器",
+      "index": 16,
+      "controls": {
+        "found": true,
+        "bottom": 1300,
+        "range": {
+          "bottom": 1300,
+          "top": 2175,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1700,
+        "range": {
+          "bottom": 1700,
+          "top": 2575,
+          "source": "model"
+        },
+        "actualBottom": 1700,
+        "solids": {
+          "bottom": 1700,
+          "top": 2575
+        }
+      },
+      "baseline": [
+        [
+          -0.405,
+          1.3000000005960466,
+          -0.22499999977648258
+        ],
+        [
+          0.405,
+          2.1749999940395357,
+          0.2449999940395355
+        ]
+      ],
+      "raised": [
+        [
+          -0.405,
+          1.7000000005960465,
+          -0.22499999977648258
+        ],
+        [
+          0.405,
+          2.5749999940395356,
+          0.2449999940395355
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 5.960464477539062e-7,
+      "topErrorMm": -0.0000059604644775390625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "waterheater_flat",
+      "name": "扁桶电热水器 60L",
+      "index": 17,
+      "controls": {
+        "found": true,
+        "bottom": 1650,
+        "range": {
+          "bottom": 1650,
+          "top": 2215,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 2050,
+        "range": {
+          "bottom": 2050,
+          "top": 2615,
+          "source": "recorded"
+        },
+        "actualBottom": 2050,
+        "solids": {
+          "bottom": 2050,
+          "top": 2615
+        }
+      },
+      "baseline": [
+        [
+          -0.35,
+          1.6500000000621378,
+          -0.1599999964237213
+        ],
+        [
+          0.3499999999839961,
+          2.2149999902534483,
+          0.1599999964237213
+        ]
+      ],
+      "raised": [
+        [
+          -0.35,
+          2.0500000000621377,
+          -0.1599999964237213
+        ],
+        [
+          0.3499999999839961,
+          2.614999990253448,
+          0.1599999964237213
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 6.213758751982823e-8,
+      "topErrorMm": -0.000009746551768330391,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tv",
+      "name": "65 寸电视",
+      "index": 18,
+      "controls": {
+        "found": true,
+        "bottom": 792.1875,
+        "range": {
+          "bottom": 792.1875,
+          "top": 1607.8125,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1192.1875,
+        "range": {
+          "bottom": 1192.1875,
+          "top": 2007.8125,
+          "source": "model"
+        },
+        "actualBottom": 1192.1875,
+        "solids": {
+          "bottom": 1192.1875,
+          "top": 2007.8125
+        }
+      },
+      "baseline": [
+        [
+          -0.7250000238418579,
+          0.7921874940395355,
+          -0.04000000020861626
+        ],
+        [
+          0.7250000238418579,
+          1.6078125059604644,
+          0.04000000004749745
+        ]
+      ],
+      "raised": [
+        [
+          -0.7250000238418579,
+          1.1921874940395356,
+          -0.04000000020861626
+        ],
+        [
+          0.7250000238418579,
+          2.0078125059604646,
+          0.04000000004749745
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.0000059604644775390625,
+      "topErrorMm": 0.0000059604644775390625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tv",
+      "name": "55 寸电视",
+      "index": 19,
+      "controls": {
+        "found": true,
+        "bottom": 854.0625,
+        "range": {
+          "bottom": 854.0625,
+          "top": 1545.9375,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1254.0625,
+        "range": {
+          "bottom": 1254.0625,
+          "top": 1945.9375,
+          "source": "model"
+        },
+        "actualBottom": 1254.0625,
+        "solids": {
+          "bottom": 1254.0625,
+          "top": 1945.9375
+        }
+      },
+      "baseline": [
+        [
+          -0.6150000095367432,
+          0.8540625095367431,
+          -0.04000000020861626
+        ],
+        [
+          0.6150000095367432,
+          1.5459374904632568,
+          0.04000000004749745
+        ]
+      ],
+      "raised": [
+        [
+          -0.6150000095367432,
+          1.2540625095367433,
+          -0.04000000020861626
+        ],
+        [
+          0.6150000095367432,
+          1.945937490463257,
+          0.04000000004749745
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": 0.0000095367431640625,
+      "topErrorMm": -0.0000095367431640625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "fridge",
+      "name": "对开门冰箱",
+      "index": 20,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1800,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2200,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2200
+        }
+      },
+      "baseline": [
+        [
+          -0.455,
+          -3.469446951953614e-18,
+          -0.35
+        ],
+        [
+          0.455,
+          1.7999999999999998,
+          0.34999999999999987
+        ]
+      ],
+      "raised": [
+        [
+          -0.455,
+          0.4,
+          -0.35
+        ],
+        [
+          0.455,
+          2.2,
+          0.34999999999999987
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "fridge_french_drawer",
+      "name": "纯平四门冰箱（双抽屉）",
+      "index": 21,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1910,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2310,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2310
+        }
+      },
+      "baseline": [
+        [
+          -0.4165000021457672,
+          0,
+          -0.29750001430511475
+        ],
+        [
+          0.4165000021457672,
+          1.909999966621399,
+          0.29750001430511475
+        ]
+      ],
+      "raised": [
+        [
+          -0.4165000021457672,
+          0.4,
+          -0.29750001430511475
+        ],
+        [
+          0.4165000021457672,
+          2.309999966621399,
+          0.29750001430511475
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.00003337860107421875,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tv",
+      "name": "75 寸电视",
+      "index": 22,
+      "controls": {
+        "found": true,
+        "bottom": 733.125,
+        "range": {
+          "bottom": 733.125,
+          "top": 1668.125,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1133.125,
+        "range": {
+          "bottom": 1133.125,
+          "top": 2068.125,
+          "source": "recorded"
+        },
+        "actualBottom": 1133.125,
+        "solids": {
+          "bottom": 1133.125,
+          "top": 2068.125
+        }
+      },
+      "baseline": [
+        [
+          -0.8299999833106995,
+          0.7331250131130218,
+          -0.04000000020861626
+        ],
+        [
+          0.8299999833106995,
+          1.666874986886978,
+          0.04000000004749745
+        ]
+      ],
+      "raised": [
+        [
+          -0.8299999833106995,
+          1.133125013113022,
+          -0.04000000020861626
+        ],
+        [
+          0.8299999833106995,
+          2.0668749868869782,
+          0.04000000004749745
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": 0.000013113021850585938,
+      "topErrorMm": -1.2500131130218506,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tv",
+      "name": "85 寸电视",
+      "index": 23,
+      "controls": {
+        "found": true,
+        "bottom": 671.25,
+        "range": {
+          "bottom": 671.25,
+          "top": 1731.25,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1071.25,
+        "range": {
+          "bottom": 1071.25,
+          "top": 2131.25,
+          "source": "recorded"
+        },
+        "actualBottom": 1071.25,
+        "solids": {
+          "bottom": 1071.25,
+          "top": 2131.25
+        }
+      },
+      "baseline": [
+        [
+          -0.9399999976158142,
+          0.6712499976158142,
+          -0.04500000070035458
+        ],
+        [
+          0.9399999976158142,
+          1.7287500023841857,
+          0.04500000004749745
+        ]
+      ],
+      "raised": [
+        [
+          -0.9399999976158142,
+          1.0712499976158143,
+          -0.04500000070035458
+        ],
+        [
+          0.9399999976158142,
+          2.128750002384186,
+          0.04500000004749745
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.000002384185791015625,
+      "topErrorMm": -2.499997615814209,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tv",
+      "name": "100 寸电视",
+      "index": 24,
+      "controls": {
+        "found": true,
+        "bottom": 578.4375,
+        "range": {
+          "bottom": 578.4375,
+          "top": 1823.4375,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 978.4375,
+        "range": {
+          "bottom": 978.4375,
+          "top": 2223.4375,
+          "source": "recorded"
+        },
+        "actualBottom": 978.4375,
+        "solids": {
+          "bottom": 978.4375,
+          "top": 2223.4375
+        }
+      },
+      "baseline": [
+        [
+          -1.1050000190734863,
+          0.5784375190734863,
+          -0.04999999932944775
+        ],
+        [
+          1.1050000190734863,
+          1.8215624809265136,
+          0.05000000004749745
+        ]
+      ],
+      "raised": [
+        [
+          -1.1050000190734863,
+          0.9784375190734864,
+          -0.04999999932944775
+        ],
+        [
+          1.1050000190734863,
+          2.2215624809265138,
+          0.05000000004749745
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": 0.000019073486441811838,
+      "topErrorMm": -1.8750190734863281,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "aircon",
+      "name": "柜机空调",
+      "index": 25,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1800,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2200,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2200
+        }
+      },
+      "baseline": [
+        [
+          -0.25,
+          6.705522526129215e-10,
+          -0.1899999976158142
+        ],
+        [
+          0.25,
+          1.8000000047683715,
+          0.20914797724037767
+        ]
+      ],
+      "raised": [
+        [
+          -0.25,
+          0.4000000006705523,
+          -0.1899999976158142
+        ],
+        [
+          0.25,
+          2.2000000047683717,
+          0.20914797724037767
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": 0.00000476837158203125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "aircon_midea_ultra_2hp",
+      "name": "美的酷省电 Ultra 立式空调 · 2匹室内机",
+      "index": 26,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1856,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2256,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2256
+        }
+      },
+      "baseline": [
+        [
+          -0.1975,
+          -4.8405723873656825e-17,
+          -0.218
+        ],
+        [
+          0.1975,
+          1.856,
+          0.218
+        ]
+      ],
+      "raised": [
+        [
+          -0.1975,
+          0.39999999999999997,
+          -0.218
+        ],
+        [
+          0.1975,
+          2.2560000000000002,
+          0.218
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -5.684341886080802e-14,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "acwall",
+      "name": "挂机空调",
+      "index": 27,
+      "controls": {
+        "found": true,
+        "bottom": 2170,
+        "range": {
+          "bottom": 2170,
+          "top": 2510,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 2570,
+        "range": {
+          "bottom": 2570,
+          "top": 2910,
+          "source": "model"
+        },
+        "actualBottom": 2570,
+        "solids": {
+          "bottom": 2570,
+          "top": 2910
+        }
+      },
+      "baseline": [
+        [
+          -0.44999998807907104,
+          2.169955574976407,
+          -0.13099999725818634
+        ],
+        [
+          0.44999998807907104,
+          2.5090000000130384,
+          0.13300000004749746
+        ]
+      ],
+      "raised": [
+        [
+          -0.44999998807907104,
+          2.5699555749764067,
+          -0.13099999725818634
+        ],
+        [
+          0.44999998807907104,
+          2.9090000000130383,
+          0.13300000004749746
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -0.044425023593248625,
+      "topErrorMm": -0.9999999869619387,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "dishwasher",
+      "name": "洗碗机",
+      "index": 28,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 840,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1240,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1240
+        }
+      },
+      "baseline": [
+        [
+          -0.29750001430511475,
+          8.940696724635266e-10,
+          -0.2999999964237213
+        ],
+        [
+          0.29750001430511475,
+          0.8399999998509884,
+          0.3229999998882413
+        ]
+      ],
+      "raised": [
+        [
+          -0.29750001430511475,
+          0.4000000008940697,
+          -0.2999999964237213
+        ],
+        [
+          0.29750001430511475,
+          1.2399999998509883,
+          0.3229999998882413
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 8.940696716308594e-7,
+      "topErrorMm": -1.4901161193847656e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "dishwasher_mijia_countertop",
+      "name": "米家台面洗碗机 · 5套",
+      "index": 29,
+      "controls": {
+        "found": true,
+        "bottom": 860,
+        "range": {
+          "bottom": 860,
+          "top": 1458,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1260,
+        "range": {
+          "bottom": 1260,
+          "top": 1858,
+          "source": "model"
+        },
+        "actualBottom": 1260,
+        "solids": {
+          "bottom": 1260,
+          "top": 1858
+        }
+      },
+      "baseline": [
+        [
+          -0.2750000059604645,
+          0.86,
+          -0.17499999701976776
+        ],
+        [
+          0.2750000059604645,
+          1.4579999899864196,
+          0.17499999701976776
+        ]
+      ],
+      "raised": [
+        [
+          -0.2750000059604645,
+          1.26,
+          -0.17499999701976776
+        ],
+        [
+          0.2750000059604645,
+          1.8579999899864197,
+          0.17499999701976776
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000010013580322265625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "dryer",
+      "name": "烘干机",
+      "index": 30,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 850,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1250,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1250
+        }
+      },
+      "baseline": [
+        [
+          -0.30000001192092896,
+          4.470348362317633e-10,
+          -0.3000000011920929
+        ],
+        [
+          0.30000001192092896,
+          0.850000001192093,
+          0.35357541592654773
+        ]
+      ],
+      "raised": [
+        [
+          -0.30000001192092896,
+          0.4000000004470349,
+          -0.3000000011920929
+        ],
+        [
+          0.30000001192092896,
+          1.2500000011920929,
+          0.35357541592654773
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 4.4703489265884855e-7,
+      "topErrorMm": 0.0000011920928955078125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "water_purifier_mijia_1200g",
+      "name": "米家净水器 2 · 1200G",
+      "index": 31,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 379,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 779,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 779
+        }
+      },
+      "baseline": [
+        [
+          -0.08150000125169754,
+          -2.6077032026783353e-11,
+          -0.2225000059604645
+        ],
+        [
+          0.08150000125169754,
+          0.379000013589859,
+          0.2224999964237213
+        ]
+      ],
+      "raised": [
+        [
+          -0.08150000125169754,
+          0.399999999973923,
+          -0.2225000059604645
+        ],
+        [
+          0.08150000125169754,
+          0.779000013589859,
+          0.2224999964237213
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -2.60770320892334e-8,
+      "topErrorMm": 0.000013589859008789062,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tea_bar_mijia_pro",
+      "name": "米家智能茶吧机 Pro 立式",
+      "index": 32,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1155,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1555,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1555
+        }
+      },
+      "baseline": [
+        [
+          -0.1575,
+          -3.469446951953614e-17,
+          -0.155
+        ],
+        [
+          0.1575,
+          1.155,
+          0.15500000000000005
+        ]
+      ],
+      "raised": [
+        [
+          -0.1575,
+          0.4,
+          -0.155
+        ],
+        [
+          0.1575,
+          1.5550000000000002,
+          0.15500000000000005
+        ]
+      ],
+      "shiftMm": 400.00000000000006,
+      "bottomErrorMm": 0,
+      "topErrorMm": 2.2737367544323206e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "purifier",
+      "name": "空气净化器",
+      "index": 33,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 726,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1126,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1126
+        }
+      },
+      "baseline": [
+        [
+          -0.20000000298023224,
+          -1.4305114759416426e-8,
+          -0.15000000596046448
+        ],
+        [
+          0.20000000298023224,
+          0.7260000000949949,
+          0.1560000001899898
+        ]
+      ],
+      "raised": [
+        [
+          -0.20000000298023224,
+          0.39999998569488526,
+          -0.15000000596046448
+        ],
+        [
+          0.20000000298023224,
+          1.126000000094995,
+          0.1560000001899898
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.00001430511474609375,
+      "topErrorMm": 9.499490261077881e-8,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "robot_p20max_tank",
+      "name": "石头 P20 Max 水箱版套装",
+      "index": 34,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 450,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 850,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 850
+        }
+      },
+      "baseline": [
+        [
+          -0.22499999403953552,
+          0,
+          -0.22499999403953552
+        ],
+        [
+          0.22499999403953552,
+          0.44999998807907104,
+          0.22499999403953552
+        ]
+      ],
+      "raised": [
+        [
+          -0.22499999403953552,
+          0.4,
+          -0.22499999403953552
+        ],
+        [
+          0.22499999403953552,
+          0.8499999880790711,
+          0.22499999403953552
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000011920928955078125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "robot_p20max_plumbed",
+      "name": "石头 P20 Max 上下水版套装",
+      "index": 35,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 300,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 700,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 700
+        }
+      },
+      "baseline": [
+        [
+          -0.19050000607967377,
+          -5.2154064053566707e-11,
+          -0.23749999836087227
+        ],
+        [
+          0.19050000607967377,
+          0.30000000089406964,
+          0.23749999701976776
+        ]
+      ],
+      "raised": [
+        [
+          -0.19050000607967377,
+          0.39999999994784596,
+          -0.23749999836087227
+        ],
+        [
+          0.19050000607967377,
+          0.7000000008940697,
+          0.23749999701976776
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -5.21540641784668e-8,
+      "topErrorMm": 8.940696716308594e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "robot_p20max",
+      "name": "石头 P20 Max 扫拖机器人",
+      "index": 36,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 79.8,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 479.8,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 479.8
+        }
+      },
+      "baseline": [
+        [
+          -0.175,
+          1.1175870905794083e-10,
+          -0.176
+        ],
+        [
+          0.175,
+          0.07979999999494758,
+          0.17600000002374871
+        ]
+      ],
+      "raised": [
+        [
+          -0.175,
+          0.40000000011175874,
+          -0.176
+        ],
+        [
+          0.175,
+          0.4797999999949476,
+          0.17600000002374871
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 1.1175870895385742e-7,
+      "topErrorMm": -5.052413598605199e-9,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "balcony_plant_rack",
+      "name": "阳台开放花架 · 下部猫砂位",
+      "index": 37,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1600,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2000,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2000
+        }
+      },
+      "baseline": [
+        [
+          -0.9399999996647239,
+          -1.1920928910669204e-8,
+          -0.24999999966472386
+        ],
+        [
+          0.9399999996647239,
+          1.600000011920929,
+          0.24999999966472386
+        ]
+      ],
+      "raised": [
+        [
+          -0.9399999996647239,
+          0.3999999880790712,
+          -0.24999999966472386
+        ],
+        [
+          0.9399999996647239,
+          2.000000011920929,
+          0.24999999966472386
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.000011920928784547868,
+      "topErrorMm": 0.0000119209291824518,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "balcony_plant_rack_step",
+      "name": "两层阶梯花架 · 后排浅台／下部开放",
+      "index": 38,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1300,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1700,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1700
+        }
+      },
+      "baseline": [
+        [
+          -0.5799999996647238,
+          -5.960464455334602e-9,
+          -0.2749999996647239
+        ],
+        [
+          0.5799999996647238,
+          1.3,
+          0.2749999996647239
+        ]
+      ],
+      "raised": [
+        [
+          -0.5799999996647238,
+          0.39999999403953557,
+          -0.2749999996647239
+        ],
+        [
+          0.5799999996647238,
+          1.7000000000000002,
+          0.2749999996647239
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.000005960464420695644,
+      "topErrorMm": 2.2737367544323206e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "art_glass_partition",
+      "name": "艺术玻璃隔断",
+      "index": 39,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2400,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400.0000000000001,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -0.44999998807907104,
+          -4.768371586472142e-8,
+          -0.004000000189989805
+        ],
+        [
+          0.44999998807907104,
+          2.400000047683716,
+          0.004000000189989805
+        ]
+      ],
+      "raised": [
+        [
+          -0.44999998807907104,
+          0.39999995231628427,
+          -0.004000000189989805
+        ],
+        [
+          0.44999998807907104,
+          2.800000047683716,
+          0.004000000189989805
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.00004768371570662566,
+      "topErrorMm": 0.0000476837158203125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "quartz_sill",
+      "name": "石英石窗台板",
+      "index": 40,
+      "controls": {
+        "found": true,
+        "bottom": 600,
+        "range": {
+          "bottom": 600,
+          "top": 620,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1000,
+        "range": {
+          "bottom": 1000,
+          "top": 1020,
+          "source": "recorded"
+        },
+        "actualBottom": 1000,
+        "solids": {
+          "bottom": 1000,
+          "top": 1020
+        }
+      },
+      "baseline": [
+        [
+          -0.8999999761581421,
+          0.6000000002235174,
+          -0.30000001192092896
+        ],
+        [
+          0.8999999761581421,
+          0.6199999997764826,
+          0.30000001192092896
+        ]
+      ],
+      "raised": [
+        [
+          -0.8999999761581421,
+          1.0000000002235174,
+          -0.30000001192092896
+        ],
+        [
+          0.8999999761581421,
+          1.0199999997764826,
+          0.30000001192092896
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 2.2351741790771484e-7,
+      "topErrorMm": -2.2351741790771484e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "window_surround",
+      "name": "木制窗套",
+      "index": 41,
+      "controls": {
+        "found": true,
+        "bottom": 620,
+        "range": {
+          "bottom": 620,
+          "top": 2220,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1020,
+        "range": {
+          "bottom": 1020,
+          "top": 2620,
+          "source": "recorded"
+        },
+        "actualBottom": 1020,
+        "solids": {
+          "bottom": 1020,
+          "top": 2620
+        }
+      },
+      "baseline": [
+        [
+          -0.8999999996125698,
+          0.6200000003874302,
+          -0.30000001192092896
+        ],
+        [
+          0.8999999996125698,
+          2.2199999996125697,
+          0.30000001192092896
+        ]
+      ],
+      "raised": [
+        [
+          -0.8999999996125698,
+          1.02000000038743,
+          -0.30000001192092896
+        ],
+        [
+          0.8999999996125698,
+          2.61999999961257,
+          0.30000001192092896
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 3.8743007735320134e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pipebox",
+      "name": "管道包覆柜",
+      "index": 42,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2400,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -0.20000000298023224,
+          -4.768371586472142e-8,
+          -0.15000000262260438
+        ],
+        [
+          0.20000000298023224,
+          2.400000047683716,
+          0.1499999996125698
+        ]
+      ],
+      "raised": [
+        [
+          -0.20000000298023224,
+          0.39999995231628427,
+          -0.15000000262260438
+        ],
+        [
+          0.20000000298023224,
+          2.800000047683716,
+          0.1499999996125698
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.00004768371570662566,
+      "topErrorMm": 0.0000476837158203125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "cabinet",
+      "name": "收纳柜",
+      "index": 43,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1800,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2200,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2200
+        }
+      },
+      "baseline": [
+        [
+          -0.5,
+          6.705522526129215e-10,
+          -0.22500000560283662
+        ],
+        [
+          0.5,
+          1.7999999996125697,
+          0.2535000001862645
+        ]
+      ],
+      "raised": [
+        [
+          -0.5,
+          0.4000000006705523,
+          -0.22500000560283662
+        ],
+        [
+          0.5,
+          2.1999999996125696,
+          0.2535000001862645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "nightstand",
+      "name": "床头柜",
+      "index": 44,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 500,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 900,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 900
+        }
+      },
+      "baseline": [
+        [
+          -0.2249999996125698,
+          6.705522526129215e-10,
+          -0.20000000715255736
+        ],
+        [
+          0.2249999996125698,
+          0.4999999996125698,
+          0.22450000018626454
+        ]
+      ],
+      "raised": [
+        [
+          -0.2249999996125698,
+          0.4000000006705523,
+          -0.20000000715255736
+        ],
+        [
+          0.2249999996125698,
+          0.8999999996125698,
+          0.22450000018626454
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "wardrobe",
+      "name": "衣柜",
+      "index": 45,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2200,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2600,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2600
+        }
+      },
+      "baseline": [
+        [
+          -1,
+          6.705522526129215e-10,
+          -0.30000000858306886
+        ],
+        [
+          1,
+          2.19999999961257,
+          0.3285000001862645
+        ]
+      ],
+      "raised": [
+        [
+          -1,
+          0.4000000006705523,
+          -0.30000000858306886
+        ],
+        [
+          1,
+          2.59999999961257,
+          0.3285000001862645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "chest",
+      "name": "六斗柜",
+      "index": 46,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 850,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1250,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1250
+        }
+      },
+      "baseline": [
+        [
+          -0.6000000238418579,
+          6.705522526129215e-10,
+          -0.25000000417232515
+        ],
+        [
+          0.6000000238418579,
+          0.8499999996125698,
+          0.2745000001862645
+        ]
+      ],
+      "raised": [
+        [
+          -0.6000000238418579,
+          0.4000000006705523,
+          -0.25000000417232515
+        ],
+        [
+          0.6000000238418579,
+          1.24999999961257,
+          0.2745000001862645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bookshelf",
+      "name": "书架",
+      "index": 47,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1800,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2200,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2200
+        }
+      },
+      "baseline": [
+        [
+          -0.4000000059604645,
+          6.705522526129215e-10,
+          -0.15000000596046448
+        ],
+        [
+          0.4000000059604645,
+          1.7999999996125697,
+          0.15000000596046448
+        ]
+      ],
+      "raised": [
+        [
+          -0.4000000059604645,
+          0.4000000006705523,
+          -0.15000000596046448
+        ],
+        [
+          0.4000000059604645,
+          2.1999999996125696,
+          0.15000000596046448
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bookshelf_yeswood_y00y06",
+      "name": "源氏木语 Y00Y06045 · 五层转角书柜",
+      "index": 48,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1900,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2300,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2300
+        }
+      },
+      "baseline": [
+        [
+          -0.22499999403953552,
+          0,
+          -0.22499999403953552
+        ],
+        [
+          0.22499999403953552,
+          1.899999976158142,
+          0.22499999403953552
+        ]
+      ],
+      "raised": [
+        [
+          -0.22499999403953552,
+          0.4,
+          -0.22499999403953552
+        ],
+        [
+          0.22499999403953552,
+          2.299999976158142,
+          0.22499999403953552
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.00002384185791015625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bookshelf_yeswood_y00y06058",
+      "name": "源氏木语 Y00Y06058 · 0.58m · 五层转角书柜",
+      "index": 49,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1900,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2300,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2300
+        }
+      },
+      "baseline": [
+        [
+          -0.28999999165534973,
+          0,
+          -0.28999999165534973
+        ],
+        [
+          0.28999999165534973,
+          1.899999976158142,
+          0.28999999165534973
+        ]
+      ],
+      "raised": [
+        [
+          -0.28999999165534973,
+          0.4,
+          -0.28999999165534973
+        ],
+        [
+          0.28999999165534973,
+          2.299999976158142,
+          0.28999999165534973
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.00002384185791015625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bookshelf_yeswood_y52y09",
+      "name": "源氏木语 Y52Y09 · 750高六格书柜",
+      "index": 50,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 750,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1150,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1150
+        }
+      },
+      "baseline": [
+        [
+          -0.5575000047683716,
+          3.8743019036002746e-10,
+          -0.11500000208616257
+        ],
+        [
+          0.5575000047683716,
+          0.7499999996125698,
+          0.11500000208616257
+        ]
+      ],
+      "raised": [
+        [
+          -0.5575000047683716,
+          0.4000000003874302,
+          -0.11500000208616257
+        ],
+        [
+          0.5575000047683716,
+          1.1499999996125698,
+          0.11500000208616257
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 3.874302478834579e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tvstand",
+      "name": "电视柜",
+      "index": 51,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 450,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 850,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 850
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          6.705522526129215e-10,
+          -0.20000000715255736
+        ],
+        [
+          1.2000000476837158,
+          0.4499999996125698,
+          0.22450000018626454
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.4000000006705523,
+          -0.20000000715255736
+        ],
+        [
+          1.2000000476837158,
+          0.8499999996125698,
+          0.22450000018626454
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "shoecab",
+      "name": "鞋柜",
+      "index": 52,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1000,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1400,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1400
+        }
+      },
+      "baseline": [
+        [
+          -0.5,
+          6.705522526129215e-10,
+          -0.17500000119209289
+        ],
+        [
+          0.5,
+          0.9999999996125698,
+          0.21250000018626453
+        ]
+      ],
+      "raised": [
+        [
+          -0.5,
+          0.4000000006705523,
+          -0.17500000119209289
+        ],
+        [
+          0.5,
+          1.3999999996125698,
+          0.21250000018626453
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "cabinet",
+      "name": "餐边柜",
+      "index": 53,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 900,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1300,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1300
+        }
+      },
+      "baseline": [
+        [
+          -0.800000011920929,
+          6.705522526129215e-10,
+          -0.20000000715255736
+        ],
+        [
+          0.800000011920929,
+          0.8999999996125698,
+          0.2375000001862645
+        ]
+      ],
+      "raised": [
+        [
+          -0.800000011920929,
+          0.4000000006705523,
+          -0.20000000715255736
+        ],
+        [
+          0.800000011920929,
+          1.2999999996125697,
+          0.2375000001862645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bed",
+      "name": "双人床 2.0m",
+      "index": 54,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1480
+        }
+      },
+      "baseline": [
+        [
+          -1.024999976158142,
+          -2.1457672083613488e-8,
+          -1.0999999993294478
+        ],
+        [
+          1.024999976158142,
+          1.0800000214576722,
+          1.099999942779541
+        ]
+      ],
+      "raised": [
+        [
+          -1.024999976158142,
+          0.39999997854232794,
+          -1.0999999993294478
+        ],
+        [
+          1.024999976158142,
+          1.480000021457672,
+          1.099999942779541
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.000021457672062297206,
+      "topErrorMm": 0.000021457672119140625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bed",
+      "name": "双人床 1.8m",
+      "index": 55,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1480
+        }
+      },
+      "baseline": [
+        [
+          -0.925000011920929,
+          -2.1457672083613488e-8,
+          -0.9999999993294477
+        ],
+        [
+          0.925000011920929,
+          1.0800000214576722,
+          0.9999999785423279
+        ]
+      ],
+      "raised": [
+        [
+          -0.925000011920929,
+          0.39999997854232794,
+          -0.9999999993294477
+        ],
+        [
+          0.925000011920929,
+          1.480000021457672,
+          0.9999999785423279
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.000021457672062297206,
+      "topErrorMm": 0.000021457672119140625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bed",
+      "name": "双人床 1.5m",
+      "index": 56,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1480
+        }
+      },
+      "baseline": [
+        [
+          -0.7749999761581421,
+          -2.1457672083613488e-8,
+          -0.9999999993294477
+        ],
+        [
+          0.7749999761581421,
+          1.0800000214576722,
+          0.9999999785423279
+        ]
+      ],
+      "raised": [
+        [
+          -0.7749999761581421,
+          0.39999997854232794,
+          -0.9999999993294477
+        ],
+        [
+          0.7749999761581421,
+          1.480000021457672,
+          0.9999999785423279
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.000021457672062297206,
+      "topErrorMm": 0.000021457672119140625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bed",
+      "name": "单人床",
+      "index": 57,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1480
+        }
+      },
+      "baseline": [
+        [
+          -0.625,
+          -2.1457672083613488e-8,
+          -0.9999999993294477
+        ],
+        [
+          0.625,
+          1.0800000214576722,
+          0.9999999785423279
+        ]
+      ],
+      "raised": [
+        [
+          -0.625,
+          0.39999997854232794,
+          -0.9999999993294477
+        ],
+        [
+          0.625,
+          1.480000021457672,
+          0.9999999785423279
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.000021457672062297206,
+      "topErrorMm": 0.000021457672119140625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "crib",
+      "name": "婴儿床",
+      "index": 58,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 998,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1398,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1398
+        }
+      },
+      "baseline": [
+        [
+          -0.631,
+          5.960464455334602e-9,
+          -0.355297981262207
+        ],
+        [
+          0.631,
+          0.998,
+          0.355297981262207
+        ]
+      ],
+      "raised": [
+        [
+          -0.631,
+          0.4000000059604645,
+          -0.355297981262207
+        ],
+        [
+          0.631,
+          1.3980000000000001,
+          0.355297981262207
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0.0000059604644775390625,
+      "topErrorMm": 2.2737367544323206e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sofa_bed_yeswood_y107h03",
+      "name": "源氏木语 Y107H03 沙发床 1.25米（梨白）",
+      "index": 59,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 770,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1170,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1170
+        }
+      },
+      "baseline": [
+        [
+          -0.625,
+          0,
+          -0.4189999997615814
+        ],
+        [
+          0.625,
+          0.7699999809265137,
+          0.4189999997615814
+        ]
+      ],
+      "raised": [
+        [
+          -0.625,
+          0.4,
+          -0.4189999997615814
+        ],
+        [
+          0.625,
+          1.1699999809265136,
+          0.4189999997615814
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000019073486328125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "armchair_yeswood_berlin",
+      "name": "源氏木语 柏林单人沙发椅（含腰枕）",
+      "index": 60,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 845,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1245,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1245
+        }
+      },
+      "baseline": [
+        [
+          -0.35499998927116394,
+          0,
+          -0.42500001192092896
+        ],
+        [
+          0.35499998927116394,
+          0.8450000286102295,
+          0.42500001192092896
+        ]
+      ],
+      "raised": [
+        [
+          -0.35499998927116394,
+          0.4,
+          -0.42500001192092896
+        ],
+        [
+          0.35499998927116394,
+          1.2450000286102294,
+          0.42500001192092896
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0.0000286102294921875,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "armchair_yeswood_y09hs",
+      "name": "源氏木语 单人沙发椅（亚麻色）",
+      "index": 61,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 905,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1305,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1305
+        }
+      },
+      "baseline": [
+        [
+          -0.36250001192092896,
+          0,
+          -0.44999998807907104
+        ],
+        [
+          0.36250001192092896,
+          0.9049999713897705,
+          0.44999998807907104
+        ]
+      ],
+      "raised": [
+        [
+          -0.36250001192092896,
+          0.4,
+          -0.44999998807907104
+        ],
+        [
+          0.36250001192092896,
+          1.3049999713897704,
+          0.44999998807907104
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000286102294921875,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sofa_yeswood_cherry",
+      "name": "源氏木语 樱桃木三人沙发 2.16m（梨白）",
+      "index": 62,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 895,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1295,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1295
+        }
+      },
+      "baseline": [
+        [
+          -1.080000000427277,
+          0.0003076906510810773,
+          -0.44600000000000006
+        ],
+        [
+          1.080000000427277,
+          0.8875317185561266,
+          0.44600000000000006
+        ]
+      ],
+      "raised": [
+        [
+          -1.080000000427277,
+          0.4003076906510812,
+          -0.44600000000000006
+        ],
+        [
+          1.080000000427277,
+          1.2875317185561266,
+          0.44600000000000006
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": 0.3076906510812023,
+      "topErrorMm": -7.468281443873366,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sofa",
+      "name": "三人沙发",
+      "index": 63,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1283.154357187641
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          1.341104505225843e-9,
+          -0.4500000014901161
+        ],
+        [
+          1.2000000476837158,
+          0.8643968256505153,
+          0.44999998807907104
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.4000000013411045,
+          -0.4500000014901161
+        ],
+        [
+          1.2000000476837158,
+          1.2643968256505154,
+          0.44999998807907104
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0.000001341104507446289,
+      "topErrorMm": -18.757531537125487,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sofa",
+      "name": "双人沙发",
+      "index": 64,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1283.154357187641
+        }
+      },
+      "baseline": [
+        [
+          -0.8500000238418579,
+          1.341104505225843e-9,
+          -0.4400000014901161
+        ],
+        [
+          0.8500000238418579,
+          0.8643968256505153,
+          0.4399999976158142
+        ]
+      ],
+      "raised": [
+        [
+          -0.8500000238418579,
+          0.4000000013411045,
+          -0.4400000014901161
+        ],
+        [
+          0.8500000238418579,
+          1.2643968256505154,
+          0.4399999976158142
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0.000001341104507446289,
+      "topErrorMm": -18.757531537125487,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "cornersofa",
+      "name": "转角沙发",
+      "index": 65,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1304.9076959499048
+        }
+      },
+      "baseline": [
+        [
+          -1.400000001490116,
+          -7.450580569168253e-10,
+          -0.8500000238418579
+        ],
+        [
+          1.400000001490116,
+          0.8799747573506149,
+          0.8500000238418579
+        ]
+      ],
+      "raised": [
+        [
+          -1.400000001490116,
+          0.39999999925494195,
+          -0.8500000238418579
+        ],
+        [
+          1.400000001490116,
+          1.279974757350615,
+          0.8500000238418579
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -7.450580596923828e-7,
+      "topErrorMm": -24.932938599289628,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "armchair",
+      "name": "单人沙发",
+      "index": 66,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1269.9354588717777
+        }
+      },
+      "baseline": [
+        [
+          -0.42500001192092896,
+          1.341104505225843e-9,
+          -0.42500001192092896
+        ],
+        [
+          0.42500001192092896,
+          0.8587831833446801,
+          0.42500001192092896
+        ]
+      ],
+      "raised": [
+        [
+          -0.42500001192092896,
+          0.4000000013411045,
+          -0.42500001192092896
+        ],
+        [
+          0.42500001192092896,
+          1.25878318334468,
+          0.42500001192092896
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0.000001341104507446289,
+      "topErrorMm": -11.152275527097572,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "beanbag",
+      "name": "懒人沙发",
+      "index": 67,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 720,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1120,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1120
+        }
+      },
+      "baseline": [
+        [
+          -0.4,
+          0,
+          -0.4
+        ],
+        [
+          0.4,
+          0.72,
+          0.4
+        ]
+      ],
+      "raised": [
+        [
+          -0.4,
+          0.39999999999999997,
+          -0.4
+        ],
+        [
+          0.4,
+          1.12,
+          0.4
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -5.684341886080802e-14,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "armchair",
+      "name": "阅读椅",
+      "index": 68,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1269.9354588717777
+        }
+      },
+      "baseline": [
+        [
+          -0.375,
+          1.341104505225843e-9,
+          -0.4000000059604645
+        ],
+        [
+          0.375,
+          0.8587831833446801,
+          0.4000000059604645
+        ]
+      ],
+      "raised": [
+        [
+          -0.375,
+          0.4000000013411045,
+          -0.4000000059604645
+        ],
+        [
+          0.375,
+          1.25878318334468,
+          0.4000000059604645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0.000001341104507446289,
+      "topErrorMm": -11.152275527097572,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "coffeetable_yeswood_cherry",
+      "name": "源氏木语 樱桃木茶几 · 1.2m（白色岩板）",
+      "index": 69,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 450,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 850,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 850
+        }
+      },
+      "baseline": [
+        [
+          -0.6,
+          0,
+          -0.325
+        ],
+        [
+          0.6,
+          0.45,
+          0.325
+        ]
+      ],
+      "raised": [
+        [
+          -0.6,
+          0.4,
+          -0.325
+        ],
+        [
+          0.6,
+          0.85,
+          0.325
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tea_table_800",
+      "name": "藤编移动茶台 · 80cm",
+      "index": 70,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 897,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1297,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1297
+        }
+      },
+      "baseline": [
+        [
+          -0.4,
+          -1.734723475976807e-18,
+          -0.2
+        ],
+        [
+          0.4,
+          0.897,
+          0.2
+        ]
+      ],
+      "raised": [
+        [
+          -0.4,
+          0.4,
+          -0.2
+        ],
+        [
+          0.4,
+          1.297,
+          0.2
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "dresser",
+      "name": "梳妆台",
+      "index": 71,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 399.65870689063007,
+          "top": 1788.0000000000002
+        }
+      },
+      "baseline": [
+        [
+          -0.5,
+          -0.0003412962614860182,
+          -0.22499999403953552
+        ],
+        [
+          0.5,
+          1.3879999887943268,
+          0.6450000017881393
+        ]
+      ],
+      "raised": [
+        [
+          -0.5,
+          0.3996587037385141,
+          -0.22499999403953552
+        ],
+        [
+          0.5,
+          1.787999988794327,
+          0.6450000017881393
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.3412962614859225,
+      "topErrorMm": -0.000011205673217773438,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "desk",
+      "name": "书桌",
+      "index": 72,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1635
+        }
+      },
+      "baseline": [
+        [
+          -0.6000000238418579,
+          -1.4305114759416426e-8,
+          -0.30000001192092896
+        ],
+        [
+          0.6000000238418579,
+          1.2350000023841858,
+          0.30000001192092896
+        ]
+      ],
+      "raised": [
+        [
+          -0.6000000238418579,
+          0.39999998569488526,
+          -0.30000001192092896
+        ],
+        [
+          0.6000000238418579,
+          1.635000002384186,
+          0.30000001192092896
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.00001430511474609375,
+      "topErrorMm": 0.0000023841860183893004,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "coffeetable",
+      "name": "茶几",
+      "index": 73,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 399.1044762468538,
+          "top": 1181.4472167911008
+        }
+      },
+      "baseline": [
+        [
+          -0.6499999761581421,
+          -0.0008955293449259272,
+          -0.32499998807907104
+        ],
+        [
+          0.6499999761581421,
+          0.7814472167911009,
+          0.32499998807907104
+        ]
+      ],
+      "raised": [
+        [
+          -0.6499999761581421,
+          0.3991044706550741,
+          -0.32499998807907104
+        ],
+        [
+          0.6499999761581421,
+          1.1814472167911008,
+          0.32499998807907104
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.895529344925933,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "roundtable",
+      "name": "圆茶几",
+      "index": 74,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1605.8221825324
+        }
+      },
+      "baseline": [
+        [
+          -0.4000000059604645,
+          0,
+          -0.4000000059604645
+        ],
+        [
+          0.4000000059604645,
+          1.2058221825323998,
+          0.4000000059604645
+        ]
+      ],
+      "raised": [
+        [
+          -0.4000000059604645,
+          0.4,
+          -0.4000000059604645
+        ],
+        [
+          0.4000000059604645,
+          1.6058221825324,
+          0.4000000059604645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sidetable",
+      "name": "边几",
+      "index": 75,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 665,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1065,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1065
+        }
+      },
+      "baseline": [
+        [
+          -0.25,
+          0,
+          -0.25
+        ],
+        [
+          0.25,
+          0.664999997317791,
+          0.25
+        ]
+      ],
+      "raised": [
+        [
+          -0.25,
+          0.4,
+          -0.25
+        ],
+        [
+          0.25,
+          1.064999997317791,
+          0.25
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000002682209014892578,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sidetable_tmall_635382906309",
+      "name": "双抽岩板边几 · 68cm",
+      "index": 76,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 612,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1012,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1012
+        }
+      },
+      "baseline": [
+        [
+          -0.3400000035762787,
+          0,
+          -0.15000000596046448
+        ],
+        [
+          0.3400000035762787,
+          0.6119999885559082,
+          0.15000000596046448
+        ]
+      ],
+      "raised": [
+        [
+          -0.3400000035762787,
+          0.4,
+          -0.15000000596046448
+        ],
+        [
+          0.3400000035762787,
+          1.0119999885559081,
+          0.15000000596046448
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000011444091910561838,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "table",
+      "name": "餐桌",
+      "index": 77,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 399.38910978175915,
+          "top": 1627.7685054335743
+        }
+      },
+      "baseline": [
+        [
+          -0.699999988079071,
+          -0.0006109013603844415,
+          -0.4000000059604645
+        ],
+        [
+          0.699999988079071,
+          1.2277685054335743,
+          0.4000000059604645
+        ]
+      ],
+      "raised": [
+        [
+          -0.699999988079071,
+          0.39938909863961564,
+          -0.4000000059604645
+        ],
+        [
+          0.699999988079071,
+          1.6277685054335744,
+          0.4000000059604645
+        ]
+      ],
+      "shiftMm": 400.00000000000006,
+      "bottomErrorMm": -0.6109013603843891,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "table_folding_1100",
+      "name": "源氏木语折叠餐桌 · 1100款",
+      "index": 78,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 760,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1160,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1160
+        }
+      },
+      "baseline": [
+        [
+          -0.550000011920929,
+          -2.2962126418020366e-18,
+          -0.550000011920929
+        ],
+        [
+          0.550000011920929,
+          0.7599999904632568,
+          0.550000011920929
+        ]
+      ],
+      "raised": [
+        [
+          -0.550000011920929,
+          0.4,
+          -0.550000011920929
+        ],
+        [
+          0.550000011920929,
+          1.1599999904632567,
+          0.550000011920929
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000095367431640625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "table_folding_1200",
+      "name": "源氏木语折叠餐桌 · 1200款",
+      "index": 79,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 760,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1160,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1160
+        }
+      },
+      "baseline": [
+        [
+          -0.6000000238418579,
+          -2.2962126418020366e-18,
+          -0.6000000238418579
+        ],
+        [
+          0.6000000238418579,
+          0.7599999904632568,
+          0.6000000238418579
+        ]
+      ],
+      "raised": [
+        [
+          -0.6000000238418579,
+          0.4,
+          -0.6000000238418579
+        ],
+        [
+          0.6000000238418579,
+          1.1599999904632567,
+          0.6000000238418579
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000095367431640625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "table_folding_1300",
+      "name": "源氏木语折叠餐桌 · 1300款",
+      "index": 80,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 760,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1160,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1160
+        }
+      },
+      "baseline": [
+        [
+          -0.6524999737739563,
+          -2.2962126418020366e-18,
+          -0.6524999737739563
+        ],
+        [
+          0.6524999737739563,
+          0.7599999904632568,
+          0.6524999737739563
+        ]
+      ],
+      "raised": [
+        [
+          -0.6524999737739563,
+          0.4,
+          -0.6524999737739563
+        ],
+        [
+          0.6524999737739563,
+          1.1599999904632567,
+          0.6524999737739563
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000095367431640625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "table",
+      "name": "六人餐桌",
+      "index": 81,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 399.38910978175915,
+          "top": 1599.6777363438157
+        }
+      },
+      "baseline": [
+        [
+          -0.8999999761581421,
+          -0.0006109013603844415,
+          -0.44999998807907104
+        ],
+        [
+          0.8999999761581421,
+          1.1996777363438158,
+          0.44999998807907104
+        ]
+      ],
+      "raised": [
+        [
+          -0.8999999761581421,
+          0.39938909863961564,
+          -0.44999998807907104
+        ],
+        [
+          0.8999999761581421,
+          1.5996777363438157,
+          0.44999998807907104
+        ]
+      ],
+      "shiftMm": 400.00000000000006,
+      "bottomErrorMm": -0.6109013603843891,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "roundtable",
+      "name": "圆桌",
+      "index": 82,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1590.1654108166692
+        }
+      },
+      "baseline": [
+        [
+          -0.5,
+          0,
+          -0.5
+        ],
+        [
+          0.5,
+          1.1901654108166693,
+          0.5
+        ]
+      ],
+      "raised": [
+        [
+          -0.5,
+          0.4,
+          -0.5
+        ],
+        [
+          0.5,
+          1.5901654108166692,
+          0.5
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "island",
+      "name": "岛台",
+      "index": 83,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1756.677736343816
+        }
+      },
+      "baseline": [
+        [
+          -0.8999999995529652,
+          -7.450580569168253e-10,
+          -0.4709999998882414
+        ],
+        [
+          0.8999999995529652,
+          1.3566777363438158,
+          0.44999998807907104
+        ]
+      ],
+      "raised": [
+        [
+          -0.8999999995529652,
+          0.39999999925494195,
+          -0.4709999998882414
+        ],
+        [
+          0.8999999995529652,
+          1.7566777363438157,
+          0.44999998807907104
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -7.450580596923828e-7,
+      "topErrorMm": -2.2737367544323206e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "island",
+      "name": "大岛台",
+      "index": 84,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1754.159770428203
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          -7.450580569168253e-10,
+          -0.5209999998882414
+        ],
+        [
+          1.2000000476837158,
+          1.3541597704282031,
+          0.5
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.39999999925494195,
+          -0.5209999998882414
+        ],
+        [
+          1.2000000476837158,
+          1.7541597704282033,
+          0.5
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -7.450580596923828e-7,
+      "topErrorMm": 2.2737367544323206e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "desk",
+      "name": "长书桌",
+      "index": 85,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1635
+        }
+      },
+      "baseline": [
+        [
+          -0.800000011920929,
+          -1.4305114759416426e-8,
+          -0.3499999940395355
+        ],
+        [
+          0.800000011920929,
+          1.2350000023841858,
+          0.3499999940395355
+        ]
+      ],
+      "raised": [
+        [
+          -0.800000011920929,
+          0.39999998569488526,
+          -0.3499999940395355
+        ],
+        [
+          0.800000011920929,
+          1.635000002384186,
+          0.3499999940395355
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.00001430511474609375,
+      "topErrorMm": 0.0000023841860183893004,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "counter",
+      "name": "完整阳台洗衣柜",
+      "index": 86,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2400,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -0.6700000166893005,
+          -1.4543533322086688e-8,
+          -0.3150000003576279
+        ],
+        [
+          0.670000023841858,
+          2.39999999961257,
+          0.34350000018626453
+        ]
+      ],
+      "raised": [
+        [
+          -0.6700000166893005,
+          0.39999998545646664,
+          -0.3150000003576279
+        ],
+        [
+          0.670000023841858,
+          2.79999999961257,
+          0.34350000018626453
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -0.000014543533382038731,
+      "topErrorMm": -3.874297362926882e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "counter",
+      "name": "基础洗衣机柜",
+      "index": 87,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 920,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1320,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1320
+        }
+      },
+      "baseline": [
+        [
+          -0.6700000166893005,
+          -7.450580569168253e-10,
+          -0.3149999996125698
+        ],
+        [
+          0.6700000166893005,
+          0.9200000166893005,
+          0.34350000018626453
+        ]
+      ],
+      "raised": [
+        [
+          -0.6700000166893005,
+          0.39999999925494195,
+          -0.3149999996125698
+        ],
+        [
+          0.6700000166893005,
+          1.3200000166893004,
+          0.34350000018626453
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -7.450580596923828e-7,
+      "topErrorMm": 0.000016689300537109375,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "ksink",
+      "name": "阳台定制水槽（可设异形缺角）",
+      "index": 88,
+      "controls": {
+        "found": true,
+        "bottom": 862,
+        "range": {
+          "bottom": 862,
+          "top": 1182,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1262,
+        "range": {
+          "bottom": 1262,
+          "top": 1582,
+          "source": "model"
+        },
+        "actualBottom": 1262,
+        "solids": {
+          "bottom": 1262,
+          "top": 1582
+        }
+      },
+      "baseline": [
+        [
+          -0.30000001192092896,
+          0.8619999998100102,
+          -0.25
+        ],
+        [
+          0.30000001192092896,
+          1.1824533939361572,
+          0.25
+        ]
+      ],
+      "raised": [
+        [
+          -0.30000001192092896,
+          1.2619999998100102,
+          -0.25
+        ],
+        [
+          0.30000001192092896,
+          1.5824533939361571,
+          0.25
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -1.8998980522155762e-7,
+      "topErrorMm": 0.45339393615722656,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "ksink",
+      "name": "阳台台上盆 · 圆角单盆",
+      "index": 89,
+      "controls": {
+        "found": true,
+        "bottom": 862,
+        "range": {
+          "bottom": 862,
+          "top": 1162,
+          "source": "model"
+        },
+        "mode": "surface"
+      },
+      "changed": {
+        "bottom": 1262,
+        "range": {
+          "bottom": 1262,
+          "top": 1562,
+          "source": "model"
+        },
+        "actualBottom": 1262,
+        "solids": {
+          "bottom": 1262,
+          "top": 1562
+        }
+      },
+      "baseline": [
+        [
+          -0.2800000011920929,
+          0.8619999885559082,
+          -0.20000000298023224
+        ],
+        [
+          0.2800000011920929,
+          1.1620000059604645,
+          0.20000000298023224
+        ]
+      ],
+      "raised": [
+        [
+          -0.2800000011920929,
+          1.2619999885559081,
+          -0.20000000298023224
+        ],
+        [
+          0.2800000011920929,
+          1.5620000059604644,
+          0.20000000298023224
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -0.000011444091796875,
+      "topErrorMm": 0.0000059604644775390625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "counter",
+      "name": "橱柜台面",
+      "index": 90,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 860,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1260,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1260
+        }
+      },
+      "baseline": [
+        [
+          -0.8000000139077503,
+          -7.450580569168253e-10,
+          -0.30000001192092896
+        ],
+        [
+          0.8000000139077506,
+          0.8600000143051147,
+          0.3285000001862645
+        ]
+      ],
+      "raised": [
+        [
+          -0.8000000139077503,
+          0.39999999925494195,
+          -0.30000001192092896
+        ],
+        [
+          0.8000000139077506,
+          1.2600000143051147,
+          0.3285000001862645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -7.450580596923828e-7,
+      "topErrorMm": 0.00001430511474609375,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "kitchenwall",
+      "name": "厨房吊柜",
+      "index": 91,
+      "controls": {
+        "found": true,
+        "bottom": 1480,
+        "range": {
+          "bottom": 1480,
+          "top": 2180,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1880,
+        "range": {
+          "bottom": 1880,
+          "top": 2580,
+          "source": "recorded"
+        },
+        "actualBottom": 1880,
+        "solids": {
+          "bottom": 1880,
+          "top": 2580
+        }
+      },
+      "baseline": [
+        [
+          -0.40000000298023225,
+          1.48000000038743,
+          -0.1749999996125698
+        ],
+        [
+          0.40000000298023225,
+          2.1799999996125696,
+          0.20350000018626446
+        ]
+      ],
+      "raised": [
+        [
+          -0.40000000298023225,
+          1.88000000038743,
+          -0.1749999996125698
+        ],
+        [
+          0.40000000298023225,
+          2.5799999996125695,
+          0.20350000018626446
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 3.874299636663636e-7,
+      "topErrorMm": -3.8743064578738995e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "ovencol",
+      "name": "蒸烤箱高柜",
+      "index": 92,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2200,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2600,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2600
+        }
+      },
+      "baseline": [
+        [
+          -0.30000001192092896,
+          6.705522526129215e-10,
+          -0.30000001192092896
+        ],
+        [
+          0.30000001192092896,
+          2.19999999961257,
+          0.3375000001862645
+        ]
+      ],
+      "raised": [
+        [
+          -0.30000001192092896,
+          0.4000000006705523,
+          -0.30000001192092896
+        ],
+        [
+          0.30000001192092896,
+          2.59999999961257,
+          0.3375000001862645
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 6.705523105665634e-7,
+      "topErrorMm": -3.8743019104003906e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "stool_citylong_370",
+      "name": "禧天龙 软包叠放方凳 · 37cm",
+      "index": 93,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 467,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 867,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 867
+        }
+      },
+      "baseline": [
+        [
+          -0.1850000023841858,
+          0,
+          -0.1850000023841858
+        ],
+        [
+          0.1850000023841858,
+          0.46700000762939453,
+          0.1850000023841858
+        ]
+      ],
+      "raised": [
+        [
+          -0.1850000023841858,
+          0.4,
+          -0.1850000023841858
+        ],
+        [
+          0.1850000023841858,
+          0.8670000076293946,
+          0.1850000023841858
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0.00000762939453125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bench_yeswood_oak",
+      "name": "源氏木语 橡木软包换鞋凳 · 80cm",
+      "index": 94,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 450,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 850,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 850
+        }
+      },
+      "baseline": [
+        [
+          -0.4,
+          0,
+          -0.15
+        ],
+        [
+          0.4,
+          0.45,
+          0.15
+        ]
+      ],
+      "raised": [
+        [
+          -0.4,
+          0.39999999999999997,
+          -0.15
+        ],
+        [
+          0.4,
+          0.8500000000000001,
+          0.15
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -5.684341886080802e-14,
+      "topErrorMm": 1.1368683772161603e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "chair_ikea_vihals",
+      "name": "宜家 VIHALS 维哈斯折叠椅（白色／展开）",
+      "index": 95,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 800,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1200,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1200.0000000000002
+        }
+      },
+      "baseline": [
+        [
+          -0.2150000035762787,
+          0,
+          -0.23499999940395355
+        ],
+        [
+          0.2150000035762787,
+          0.800000011920929,
+          0.23499999940395355
+        ]
+      ],
+      "raised": [
+        [
+          -0.2150000035762787,
+          0.4,
+          -0.23499999940395355
+        ],
+        [
+          0.2150000035762787,
+          1.2000000119209289,
+          0.23499999940395355
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0.00001192092872770445,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "chair_yeswood_s05118",
+      "name": "源氏木语 S05118 书椅（原木／奶茶色）",
+      "index": 96,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 840,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1240,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1240
+        }
+      },
+      "baseline": [
+        [
+          -0.33000001311302185,
+          0,
+          -0.33000001311302185
+        ],
+        [
+          0.33000001311302185,
+          0.8399999737739563,
+          0.33000001311302185
+        ]
+      ],
+      "raised": [
+        [
+          -0.33000001311302185,
+          0.4,
+          -0.33000001311302185
+        ],
+        [
+          0.33000001311302185,
+          1.2399999737739562,
+          0.33000001311302185
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000026226043701171875,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "chair",
+      "name": "椅子",
+      "index": 97,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 399.3920434323106,
+          "top": 1260.8362487784298
+        }
+      },
+      "baseline": [
+        [
+          -0.20499999821186066,
+          -0.0006079594629135043,
+          -0.22198704193018365
+        ],
+        [
+          0.20499999821186066,
+          0.8608362375985563,
+          0.20500000298023224
+        ]
+      ],
+      "raised": [
+        [
+          -0.20499999821186066,
+          0.3993920405370865,
+          -0.22198704193018365
+        ],
+        [
+          0.20499999821186066,
+          1.2608362375985562,
+          0.20500000298023224
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.6079594629135272,
+      "topErrorMm": -0.000011179873581568245,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "chair",
+      "name": "餐椅",
+      "index": 98,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 399.3920434323106,
+          "top": 1260.8362487784298
+        }
+      },
+      "baseline": [
+        [
+          -0.20499999821186066,
+          -0.0006079594629135043,
+          -0.22198704193018365
+        ],
+        [
+          0.20499999821186066,
+          0.8608362375985563,
+          0.20500000298023224
+        ]
+      ],
+      "raised": [
+        [
+          -0.20499999821186066,
+          0.3993920405370865,
+          -0.22198704193018365
+        ],
+        [
+          0.20499999821186066,
+          1.2608362375985562,
+          0.20500000298023224
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.6079594629135272,
+      "topErrorMm": -0.000011179873581568245,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "barstool",
+      "name": "吧椅",
+      "index": 99,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 775,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1175,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 398.57059046178216,
+          "top": 1175
+        }
+      },
+      "baseline": [
+        [
+          -0.2037000060081482,
+          -0.0014294042057608758,
+          -0.2037000060081482
+        ],
+        [
+          0.2037000060081482,
+          0.7750000029802322,
+          0.2037000060081482
+        ]
+      ],
+      "raised": [
+        [
+          -0.2037000060081482,
+          0.39857059579423915,
+          -0.2037000060081482
+        ],
+        [
+          0.2037000060081482,
+          1.1750000029802323,
+          0.2037000060081482
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -1.429404205760875,
+      "topErrorMm": 0.0000029802322387695312,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "officechair",
+      "name": "办公椅",
+      "index": 100,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": null,
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": null,
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1720
+        }
+      },
+      "baseline": [
+        [
+          -0.28704197727088754,
+          -5.364418076414523e-10,
+          -0.315000000372529
+        ],
+        [
+          0.28704197727088754,
+          1.3199999986588955,
+          0.2969400005364418
+        ]
+      ],
+      "raised": [
+        [
+          -0.28704197727088754,
+          0.39999999946355824,
+          -0.315000000372529
+        ],
+        [
+          0.28704197727088754,
+          1.7199999986588956,
+          0.2969400005364418
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -5.364417461350968e-7,
+      "topErrorMm": -0.0000013411042800726136,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bench",
+      "name": "换鞋凳",
+      "index": 101,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 440,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 840,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 840
+        }
+      },
+      "baseline": [
+        [
+          -0.4000000059604645,
+          -5.960464483090178e-9,
+          -0.17499999701976776
+        ],
+        [
+          0.4000000059604645,
+          0.4399999995529652,
+          0.17499999701976776
+        ]
+      ],
+      "raised": [
+        [
+          -0.4000000059604645,
+          0.39999999403953557,
+          -0.17499999701976776
+        ],
+        [
+          0.4000000059604645,
+          0.8399999995529652,
+          0.17499999701976776
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.000005960464420695644,
+      "topErrorMm": -4.4703472212859197e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "vanity",
+      "name": "浴室柜",
+      "index": 102,
+      "controls": {
+        "found": true,
+        "bottom": 330,
+        "range": {
+          "bottom": 330,
+          "top": 1960,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 730,
+        "range": {
+          "bottom": 730,
+          "top": 2360,
+          "source": "recorded"
+        },
+        "actualBottom": 730,
+        "solids": {
+          "bottom": 730,
+          "top": 2360
+        }
+      },
+      "baseline": [
+        [
+          -0.4000000059604645,
+          0.3300000003874302,
+          -0.25
+        ],
+        [
+          0.4000000059604645,
+          1.9599999964237211,
+          0.27850000018626453
+        ]
+      ],
+      "raised": [
+        [
+          -0.4000000059604645,
+          0.7300000003874302,
+          -0.25
+        ],
+        [
+          0.4000000059604645,
+          2.359999996423721,
+          0.27850000018626453
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": 3.8743019104003906e-7,
+      "topErrorMm": -0.0000035762791412707884,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "vanity",
+      "name": "双盆浴室柜",
+      "index": 103,
+      "controls": {
+        "found": true,
+        "bottom": 330,
+        "range": {
+          "bottom": 330,
+          "top": 1960,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 730,
+        "range": {
+          "bottom": 730,
+          "top": 2360,
+          "source": "recorded"
+        },
+        "actualBottom": 730,
+        "solids": {
+          "bottom": 730,
+          "top": 2360
+        }
+      },
+      "baseline": [
+        [
+          -0.6000000238418579,
+          0.3300000003874302,
+          -0.25
+        ],
+        [
+          0.6000000238418579,
+          1.9599999964237211,
+          0.27850000018626453
+        ]
+      ],
+      "raised": [
+        [
+          -0.6000000238418579,
+          0.7300000003874302,
+          -0.25
+        ],
+        [
+          0.6000000238418579,
+          2.359999996423721,
+          0.27850000018626453
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": 3.8743019104003906e-7,
+      "topErrorMm": -0.0000035762791412707884,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "ksink",
+      "name": "水槽",
+      "index": 104,
+      "controls": {
+        "found": true,
+        "bottom": 862,
+        "range": {
+          "bottom": 862,
+          "top": 1182,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1262,
+        "range": {
+          "bottom": 1262,
+          "top": 1582,
+          "source": "model"
+        },
+        "actualBottom": 1262,
+        "solids": {
+          "bottom": 1262,
+          "top": 1582
+        }
+      },
+      "baseline": [
+        [
+          -0.4000000059604645,
+          0.8619999998100102,
+          -0.22499999403953552
+        ],
+        [
+          0.4000000059604645,
+          1.1824533939361572,
+          0.22499999403953552
+        ]
+      ],
+      "raised": [
+        [
+          -0.4000000059604645,
+          1.2619999998100102,
+          -0.22499999403953552
+        ],
+        [
+          0.4000000059604645,
+          1.5824533939361571,
+          0.22499999403953552
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -1.8998980522155762e-7,
+      "topErrorMm": 0.45339393615722656,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "toilet",
+      "name": "马桶",
+      "index": 107,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 796,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1196,
+          "source": "model"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1196
+        }
+      },
+      "baseline": [
+        [
+          -0.18400000035762787,
+          0,
+          -0.34999999886751176
+        ],
+        [
+          0.18400000035762787,
+          0.7960000000260771,
+          0.345589989811182
+        ]
+      ],
+      "raised": [
+        [
+          -0.18400000035762787,
+          0.4,
+          -0.34999999886751176
+        ],
+        [
+          0.18400000035762787,
+          1.196000000026077,
+          0.345589989811182
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 2.60770320892334e-8,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "shower",
+      "name": "淋浴房",
+      "index": 108,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2041.8782404586645,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2441.8782404586645,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2441.8782404586645
+        }
+      },
+      "baseline": [
+        [
+          -0.4499999997764826,
+          -3.725290284584126e-10,
+          -0.4500000007450581
+        ],
+        [
+          0.4599999996647239,
+          2.0413818359375,
+          0.4599999996647239
+        ]
+      ],
+      "raised": [
+        [
+          -0.4499999997764826,
+          0.399999999627471,
+          -0.4500000007450581
+        ],
+        [
+          0.4599999996647239,
+          2.4413818359375,
+          0.4599999996647239
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -3.7252897300277255e-7,
+      "topErrorMm": -0.4964045211645498,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "shower_arrow_cream",
+      "name": "箭牌 奶油白壁挂花洒 AE34129ZMKW-P2",
+      "index": 109,
+      "controls": {
+        "found": true,
+        "bottom": 353.110460384735,
+        "range": {
+          "bottom": 353.110460384735,
+          "top": 2102.1104603847352,
+          "source": "model"
+        },
+        "mode": "mixer"
+      },
+      "changed": {
+        "bottom": 753.110460384735,
+        "range": {
+          "bottom": 753.110460384735,
+          "top": 2502.1104603847352,
+          "source": "model"
+        },
+        "actualBottom": 753.110460384735,
+        "solids": {
+          "bottom": 753.110460384735,
+          "top": 2502.1104603847352
+        }
+      },
+      "baseline": [
+        [
+          -0.21000000000000002,
+          0.35311046038473504,
+          -0.25749999999999995
+        ],
+        [
+          0.21,
+          2.102110460384735,
+          0.2575
+        ]
+      ],
+      "raised": [
+        [
+          -0.21000000000000002,
+          0.753110460384735,
+          -0.25749999999999995
+        ],
+        [
+          0.21,
+          2.502110460384735,
+          0.2575
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -1.1368683772161603e-13,
+      "topErrorMm": -4.547473508864641e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "floorlamp",
+      "name": "落地灯",
+      "index": 111,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1583.8042260651807,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1983.8042260651807,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1983.8042260651807
+        }
+      },
+      "baseline": [
+        [
+          -0.195250004529953,
+          0,
+          -0.195250004529953
+        ],
+        [
+          0.195250004529953,
+          1.583804226173088,
+          0.195250004529953
+        ]
+      ],
+      "raised": [
+        [
+          -0.195250004529953,
+          0.4,
+          -0.195250004529953
+        ],
+        [
+          0.195250004529953,
+          1.983804226173088,
+          0.195250004529953
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 1.0790722626552451e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pendant",
+      "name": "吊灯",
+      "index": 112,
+      "controls": {
+        "found": true,
+        "bottom": 2064,
+        "range": {
+          "bottom": 2064,
+          "top": 2620,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 2464,
+        "range": {
+          "bottom": 2464,
+          "top": 3020,
+          "source": "model"
+        },
+        "actualBottom": 2464,
+        "solids": {
+          "bottom": 2464,
+          "top": 3020
+        }
+      },
+      "baseline": [
+        [
+          -0.33250001072883606,
+          2.064,
+          -0.33250001072883606
+        ],
+        [
+          0.33250001072883606,
+          2.6199999988079075,
+          0.33250001072883606
+        ]
+      ],
+      "raised": [
+        [
+          -0.33250001072883606,
+          2.464,
+          -0.33250001072883606
+        ],
+        [
+          0.33250001072883606,
+          3.0199999988079074,
+          0.33250001072883606
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000011920924407604616,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pendant",
+      "name": "餐厅吊灯",
+      "index": 113,
+      "controls": {
+        "found": true,
+        "bottom": 2048,
+        "range": {
+          "bottom": 2048,
+          "top": 2620,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 2448,
+        "range": {
+          "bottom": 2448,
+          "top": 3020,
+          "source": "model"
+        },
+        "actualBottom": 2448,
+        "solids": {
+          "bottom": 2448,
+          "top": 3020
+        }
+      },
+      "baseline": [
+        [
+          -0.42750000953674316,
+          2.048,
+          -0.42750000953674316
+        ],
+        [
+          0.42750000953674316,
+          2.6199999988079075,
+          0.42750000953674316
+        ]
+      ],
+      "raised": [
+        [
+          -0.42750000953674316,
+          2.448,
+          -0.42750000953674316
+        ],
+        [
+          0.42750000953674316,
+          3.0199999988079074,
+          0.42750000953674316
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000011920924407604616,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "baycushion",
+      "name": "飘窗垫",
+      "index": 114,
+      "controls": {
+        "found": true,
+        "bottom": 450,
+        "range": {
+          "bottom": 450,
+          "top": 900,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 850,
+        "range": {
+          "bottom": 850,
+          "top": 1300,
+          "source": "model"
+        },
+        "actualBottom": 850,
+        "solids": {
+          "bottom": 850,
+          "top": 1300
+        }
+      },
+      "baseline": [
+        [
+          -0.25999999046325684,
+          0.45000000089406966,
+          -0.8999999761581421
+        ],
+        [
+          0.25999999046325684,
+          0.858900034770504,
+          0.8999999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -0.25999999046325684,
+          0.8500000008940697,
+          -0.8999999761581421
+        ],
+        [
+          0.25999999046325684,
+          1.258900034770504,
+          0.8999999761581421
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 8.940696716308594e-7,
+      "topErrorMm": -41.09996522949609,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "rug",
+      "name": "地毯",
+      "index": 115,
+      "controls": {
+        "found": true,
+        "bottom": 2,
+        "range": {
+          "bottom": 2,
+          "top": 15.5,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 402,
+        "range": {
+          "bottom": 402,
+          "top": 415.5,
+          "source": "model"
+        },
+        "actualBottom": 402,
+        "solids": {
+          "bottom": 402,
+          "top": 415.5
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          0.002000000111758709,
+          -0.8500000238418579
+        ],
+        [
+          1.2000000476837158,
+          0.01550000004749745,
+          0.8500000238418579
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.40200000011175874,
+          -0.8500000238418579
+        ],
+        [
+          1.2000000476837158,
+          0.4155000000474975,
+          0.8500000238418579
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 1.1175870895385742e-7,
+      "topErrorMm": 4.7497508148808265e-8,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "不透光布帘 2.4m",
+      "index": 116,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837156,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837156,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "不透光布帘 3m",
+      "index": 117,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.5,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.5,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.5,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.5,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "单开窗帘 2.4m",
+      "index": 118,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837158,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837158,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "双开窗帘 2.4m",
+      "index": 119,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837156,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837156,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "blind_venetian",
+      "name": "百叶帘 · 可调叶片",
+      "index": 121,
+      "controls": {
+        "found": true,
+        "bottom": 900,
+        "range": {
+          "bottom": 900,
+          "top": 2700,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1300,
+        "range": {
+          "bottom": 1300,
+          "top": 3100,
+          "source": "recorded"
+        },
+        "actualBottom": 1300,
+        "solids": {
+          "bottom": 1300,
+          "top": 3100
+        }
+      },
+      "baseline": [
+        [
+          -0.75,
+          0.8999999997839332,
+          -0.032499998807907104
+        ],
+        [
+          0.75,
+          2.700000000372529,
+          0.032499998807907104
+        ]
+      ],
+      "raised": [
+        [
+          -0.75,
+          1.299999999783933,
+          -0.032499998807907104
+        ],
+        [
+          0.75,
+          3.100000000372529,
+          0.032499998807907104
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -2.1606683731079102e-7,
+      "topErrorMm": 3.725290298461914e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "blind_honeycomb",
+      "name": "蜂巢帘 · 折叠升降",
+      "index": 122,
+      "controls": {
+        "found": true,
+        "bottom": 900,
+        "range": {
+          "bottom": 900,
+          "top": 2700,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1300,
+        "range": {
+          "bottom": 1300,
+          "top": 3100,
+          "source": "recorded"
+        },
+        "actualBottom": 1300,
+        "solids": {
+          "bottom": 1300,
+          "top": 3100
+        }
+      },
+      "baseline": [
+        [
+          -0.75,
+          0.8999999997839332,
+          -0.029999999329447746
+        ],
+        [
+          0.75,
+          2.700000000372529,
+          0.029999999329447746
+        ]
+      ],
+      "raised": [
+        [
+          -0.75,
+          1.299999999783933,
+          -0.029999999329447746
+        ],
+        [
+          0.75,
+          3.100000000372529,
+          0.029999999329447746
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -2.1606683731079102e-7,
+      "topErrorMm": 3.725290298461914e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "blind_zebra",
+      "name": "日夜柔纱帘 · 斑马帘",
+      "index": 123,
+      "controls": {
+        "found": true,
+        "bottom": 900,
+        "range": {
+          "bottom": 900,
+          "top": 2700,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1300,
+        "range": {
+          "bottom": 1300,
+          "top": 3100,
+          "source": "recorded"
+        },
+        "actualBottom": 1300,
+        "solids": {
+          "bottom": 1300,
+          "top": 3100
+        }
+      },
+      "baseline": [
+        [
+          -0.75,
+          0.8999999997839332,
+          -0.03750000149011612
+        ],
+        [
+          0.75,
+          2.700000000372529,
+          0.03750000149011612
+        ]
+      ],
+      "raised": [
+        [
+          -0.75,
+          1.299999999783933,
+          -0.03750000149011612
+        ],
+        [
+          0.75,
+          3.100000000372529,
+          0.03750000149011612
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -2.1606683731079102e-7,
+      "topErrorMm": 3.725290298461914e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "blind_bamboo",
+      "name": "竹帘 · 卷收",
+      "index": 124,
+      "controls": {
+        "found": true,
+        "bottom": 900,
+        "range": {
+          "bottom": 900,
+          "top": 2700,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1300,
+        "range": {
+          "bottom": 1300,
+          "top": 3100,
+          "source": "recorded"
+        },
+        "actualBottom": 1300,
+        "solids": {
+          "bottom": 1300,
+          "top": 3100
+        }
+      },
+      "baseline": [
+        [
+          -0.75,
+          0.8999999997839332,
+          -0.032499998807907104
+        ],
+        [
+          0.75,
+          2.700000000372529,
+          0.032499998807907104
+        ]
+      ],
+      "raised": [
+        [
+          -0.75,
+          1.299999999783933,
+          -0.032499998807907104
+        ],
+        [
+          0.75,
+          3.100000000372529,
+          0.032499998807907104
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -2.1606683731079102e-7,
+      "topErrorMm": 3.725290298461914e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "blind_roller",
+      "name": "卷帘 · 平面布",
+      "index": 125,
+      "controls": {
+        "found": true,
+        "bottom": 900,
+        "range": {
+          "bottom": 900,
+          "top": 2700,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1300,
+        "range": {
+          "bottom": 1300,
+          "top": 3100,
+          "source": "recorded"
+        },
+        "actualBottom": 1300,
+        "solids": {
+          "bottom": 1300,
+          "top": 3100
+        }
+      },
+      "baseline": [
+        [
+          -0.75,
+          0.8999999997839332,
+          -0.03750000149011612
+        ],
+        [
+          0.75,
+          2.700000000372529,
+          0.03750000149011612
+        ]
+      ],
+      "raised": [
+        [
+          -0.75,
+          1.299999999783933,
+          -0.03750000149011612
+        ],
+        [
+          0.75,
+          3.100000000372529,
+          0.03750000149011612
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": -2.1606683731079102e-7,
+      "topErrorMm": 3.725290298461914e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "plant_clivia",
+      "name": "君子兰 · 开花盆栽（布局估算）",
+      "index": 126,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 650,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1050,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1049.9999999999998
+        }
+      },
+      "baseline": [
+        [
+          -0.30000001192092896,
+          0,
+          -0.22499999403953552
+        ],
+        [
+          0.30000001192092896,
+          0.6499999761581421,
+          0.22499999403953552
+        ]
+      ],
+      "raised": [
+        [
+          -0.30000001192092896,
+          0.4,
+          -0.22499999403953552
+        ],
+        [
+          0.30000001192092896,
+          1.049999976158142,
+          0.22499999403953552
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000023841857682782575,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "plant_spider",
+      "name": "金边吊兰 · 盆栽（布局估算）",
+      "index": 127,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 450,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 850,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 850.0000000000001
+        }
+      },
+      "baseline": [
+        [
+          -0.22499999403953552,
+          0,
+          -0.22499999403953552
+        ],
+        [
+          0.22499999403953552,
+          0.44999998807907104,
+          0.22499999403953552
+        ]
+      ],
+      "raised": [
+        [
+          -0.22499999403953552,
+          0.4,
+          -0.22499999403953552
+        ],
+        [
+          0.22499999403953552,
+          0.8499999880790711,
+          0.22499999403953552
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000011920929068764963,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "plant_peperomia",
+      "name": "豆瓣绿 · 盆栽（布局估算）",
+      "index": 128,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 500,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 900,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 900
+        }
+      },
+      "baseline": [
+        [
+          -0.20000000298023224,
+          0,
+          -0.20000000298023224
+        ],
+        [
+          0.20000000298023224,
+          0.5,
+          0.20000000298023224
+        ]
+      ],
+      "raised": [
+        [
+          -0.20000000298023224,
+          0.4,
+          -0.20000000298023224
+        ],
+        [
+          0.20000000298023224,
+          0.9,
+          0.20000000298023224
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "plant",
+      "name": "绿植",
+      "index": 129,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1375.2466894233846,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1775.2466894233846,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1775.2466894233846
+        }
+      },
+      "baseline": [
+        [
+          -0.2538267368262892,
+          0,
+          -0.24827387494579023
+        ],
+        [
+          0.25201625856752224,
+          1.3752466891658108,
+          0.20150669778282798
+        ]
+      ],
+      "raised": [
+        [
+          -0.2538267368262892,
+          0.4,
+          -0.24827387494579023
+        ],
+        [
+          0.25201625856752224,
+          1.7752466891658107,
+          0.20150669778282798
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -2.5757390176295303e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "plant",
+      "name": "大绿植",
+      "index": 130,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1563.6007116002243,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1963.6007116002243,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1963.6007116002243
+        }
+      },
+      "baseline": [
+        [
+          -0.3616549778558905,
+          0,
+          -0.2985846239856927
+        ],
+        [
+          0.30447190285091974,
+          1.5636007114115884,
+          0.2493624555814306
+        ]
+      ],
+      "raised": [
+        [
+          -0.3616549778558905,
+          0.4,
+          -0.2985846239856927
+        ],
+        [
+          0.30447190285091974,
+          1.9636007114115885,
+          0.2493624555814306
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -1.8863579498429317e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "wallart",
+      "name": "装饰画 横",
+      "index": 131,
+      "controls": {
+        "found": true,
+        "bottom": 1367.75,
+        "range": {
+          "bottom": 1367.75,
+          "top": 2292.5,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1767.75,
+        "range": {
+          "bottom": 1767.75,
+          "top": 2692.5,
+          "source": "model"
+        },
+        "actualBottom": 1767.75,
+        "solids": {
+          "bottom": 1767.75,
+          "top": 2692.5
+        }
+      },
+      "baseline": [
+        [
+          -0.75,
+          1.3677500000000002,
+          -0.029999999552965163
+        ],
+        [
+          0.75,
+          2.2925000059604645,
+          0.02692478370666504
+        ]
+      ],
+      "raised": [
+        [
+          -0.75,
+          1.7677500000000002,
+          -0.029999999552965163
+        ],
+        [
+          0.75,
+          2.6925000059604645,
+          0.02692478370666504
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 2.2737367544323206e-13,
+      "topErrorMm": 0.0000059604644775390625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "wallart",
+      "name": "装饰画 小",
+      "index": 132,
+      "controls": {
+        "found": true,
+        "bottom": 1345,
+        "range": {
+          "bottom": 1345,
+          "top": 2030,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1745,
+        "range": {
+          "bottom": 1745,
+          "top": 2430,
+          "source": "model"
+        },
+        "actualBottom": 1745,
+        "solids": {
+          "bottom": 1745,
+          "top": 2430
+        }
+      },
+      "baseline": [
+        [
+          -0.44999998807907104,
+          1.3450000000000002,
+          -0.029999999552965163
+        ],
+        [
+          0.44999998807907104,
+          2.0300000000000002,
+          0.02692478370666504
+        ]
+      ],
+      "raised": [
+        [
+          -0.44999998807907104,
+          1.7450000000000003,
+          -0.029999999552965163
+        ],
+        [
+          0.44999998807907104,
+          2.43,
+          0.02692478370666504
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": 2.2737367544323206e-13,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "mirror",
+      "name": "穿衣镜",
+      "index": 133,
+      "controls": {
+        "found": true,
+        "bottom": 50,
+        "range": {
+          "bottom": 50,
+          "top": 1700,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 450,
+        "range": {
+          "bottom": 450,
+          "top": 2100,
+          "source": "recorded"
+        },
+        "actualBottom": 450,
+        "solids": {
+          "bottom": 450,
+          "top": 2100
+        }
+      },
+      "baseline": [
+        [
+          -0.25,
+          0.050000011920928955,
+          -0.02500000037252903
+        ],
+        [
+          0.25,
+          1.699999988079071,
+          0.028000000000000004
+        ]
+      ],
+      "raised": [
+        [
+          -0.25,
+          0.45000001192092887,
+          -0.02500000037252903
+        ],
+        [
+          0.25,
+          2.099999988079071,
+          0.028000000000000004
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0.000011920928841391287,
+      "topErrorMm": -0.000011920928955078125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "piano",
+      "name": "立式钢琴",
+      "index": 134,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1480.0000000000002,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1880.0000000000002,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1880.0000000000002
+        }
+      },
+      "baseline": [
+        [
+          -0.7599999904632568,
+          -1.1920928966180355e-8,
+          -0.30500000655651094
+        ],
+        [
+          0.7599999904632568,
+          1.4800000014901162,
+          0.3000000059604645
+        ]
+      ],
+      "raised": [
+        [
+          -0.7599999904632568,
+          0.399999988079071,
+          -0.30500000655651094
+        ],
+        [
+          0.7599999904632568,
+          1.8800000014901164,
+          0.3000000059604645
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -0.000011920929011921544,
+      "topErrorMm": 0.0000014901161193847656,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "treadmill",
+      "name": "跑步机",
+      "index": 135,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1299.7177211086296,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1699.7177211086296,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1699.7177211086296
+        }
+      },
+      "baseline": [
+        [
+          -0.4000000059604645,
+          3.3527612630646075e-10,
+          -0.8999999964237213
+        ],
+        [
+          0.4000000059604645,
+          1.299717719309414,
+          0.8999999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -0.4000000059604645,
+          0.40000000033527616,
+          -0.8999999964237213
+        ],
+        [
+          0.4000000059604645,
+          1.6997177193094142,
+          0.8999999761581421
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 3.352761837049911e-7,
+      "topErrorMm": -0.000001799215397113585,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pocketdoor_double",
+      "name": "双侧口袋门隔断 · 布局草模",
+      "index": 136,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2640,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 3040,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 3039.9999999999995
+        }
+      },
+      "baseline": [
+        [
+          -1.4,
+          4.2915344167226976e-8,
+          -0.0799999996125698
+        ],
+        [
+          1.4,
+          2.6400000059604642,
+          0.0799999996125698
+        ]
+      ],
+      "raised": [
+        [
+          -1.4,
+          0.4000000429153441,
+          -0.0799999996125698
+        ],
+        [
+          1.4,
+          3.040000005960464,
+          0.0799999996125698
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0.000042915344067750993,
+      "topErrorMm": 0.0000059604644775390625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pocketdoor_triple",
+      "name": "单侧三联动口袋门 · 布局草模",
+      "index": 137,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2640,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 3040,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 3039.9999999999995
+        }
+      },
+      "baseline": [
+        [
+          -1.400000010728836,
+          4.2915344167226976e-8,
+          -0.10999999961256982
+        ],
+        [
+          1.399999976158142,
+          2.6400000059604642,
+          0.10999999961256982
+        ]
+      ],
+      "raised": [
+        [
+          -1.400000010728836,
+          0.4000000429153441,
+          -0.10999999961256982
+        ],
+        [
+          1.399999976158142,
+          3.040000005960464,
+          0.10999999961256982
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0.000042915344067750993,
+      "topErrorMm": 0.0000059604644775390625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "slidingdoor",
+      "name": "双扇推拉门",
+      "index": 138,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2100,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2500,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2500
+        }
+      },
+      "baseline": [
+        [
+          -0.9000000004321337,
+          -1.899898051382909e-10,
+          -0.05999999865889549
+        ],
+        [
+          0.9000000004321337,
+          2.1000000004321335,
+          0.05999999865889549
+        ]
+      ],
+      "raised": [
+        [
+          -0.9000000004321337,
+          0.3999999998100102,
+          -0.05999999865889549
+        ],
+        [
+          0.9000000004321337,
+          2.5000000004321334,
+          0.05999999865889549
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -1.8998980522155762e-7,
+      "topErrorMm": 4.3213321987423114e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "telescopicdoor20",
+      "name": "2+0 同向联动门 · 超白玻璃",
+      "index": 139,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2400,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.8079999685287476,
+          -4.768371586472142e-8,
+          -0.05000000074505806
+        ],
+        [
+          0.899999999806285,
+          2.4000000953674316,
+          0.05000000074505806
+        ]
+      ],
+      "raised": [
+        [
+          -1.8079999685287476,
+          0.39999995231628427,
+          -0.05000000074505806
+        ],
+        [
+          0.899999999806285,
+          2.8000000953674316,
+          0.05000000074505806
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.00004768371570662566,
+      "topErrorMm": 0.000095367431640625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "doubleslidingdoor",
+      "name": "双联动推拉门",
+      "index": 140,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2400,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -0.899999999806285,
+          -4.768371586472142e-8,
+          -0.04500000178813934
+        ],
+        [
+          0.899999999806285,
+          2.400000047683716,
+          0.04500000178813934
+        ]
+      ],
+      "raised": [
+        [
+          -0.899999999806285,
+          0.39999995231628427,
+          -0.04500000178813934
+        ],
+        [
+          0.899999999806285,
+          2.800000047683716,
+          0.04500000178813934
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.00004768371570662566,
+      "topErrorMm": 0.0000476837158203125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tripleslidingdoor",
+      "name": "三联动推拉门",
+      "index": 141,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2400,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          -4.768371586472142e-8,
+          -0.04500000178813934
+        ],
+        [
+          1.2000000476837158,
+          2.400000047683716,
+          0.04500000178813934
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.39999995231628427,
+          -0.04500000178813934
+        ],
+        [
+          1.2000000476837158,
+          2.800000047683716,
+          0.04500000178813934
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": -0.00004768371570662566,
+      "topErrorMm": 0.0000476837158203125,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "tripleslidingwindow",
+      "name": "三联动推拉窗",
+      "index": 142,
+      "controls": {
+        "found": true,
+        "bottom": 900,
+        "range": {
+          "bottom": 900,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 1300,
+        "range": {
+          "bottom": 1300,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 1300,
+        "solids": {
+          "bottom": 1300,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -0.899999999806285,
+          0.8999999998100102,
+          -0.04500000178813934
+        ],
+        [
+          0.899999999806285,
+          2.400000000104308,
+          0.04500000178813934
+        ]
+      ],
+      "raised": [
+        [
+          -0.899999999806285,
+          1.2999999998100102,
+          -0.04500000178813934
+        ],
+        [
+          0.899999999806285,
+          2.8000000001043084,
+          0.04500000178813934
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -1.8998980522155762e-7,
+      "topErrorMm": 1.0430858310428448e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "cat_tower_jd_10141711472484",
+      "name": "猫爬架 · 通天柱套餐二",
+      "index": 143,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2400,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2799.9999000000003
+        }
+      },
+      "baseline": [
+        [
+          -0.4000000059604645,
+          0,
+          -0.23499999940395355
+        ],
+        [
+          0.4000000059604645,
+          2.3999998569488525,
+          0.23499999940395355
+        ]
+      ],
+      "raised": [
+        [
+          -0.4000000059604645,
+          0.4,
+          -0.23499999940395355
+        ],
+        [
+          0.4000000059604645,
+          2.7999998569488525,
+          0.23499999940395355
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.00004305114771341323,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "cat_tree",
+      "name": "猫爬架 · 绿叶成荫围栏款",
+      "index": 144,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1430,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1830,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1830.0000000000002
+        }
+      },
+      "baseline": [
+        [
+          -0.25,
+          0,
+          -0.25
+        ],
+        [
+          0.25,
+          1.4300000000000002,
+          0.25
+        ]
+      ],
+      "raised": [
+        [
+          -0.25,
+          0.4,
+          -0.25
+        ],
+        [
+          0.25,
+          1.8300000000000003,
+          0.25
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pet_feeder_mijia_2",
+      "name": "米家智能宠物喂食器 2",
+      "index": 145,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 370,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 770,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 770
+        }
+      },
+      "baseline": [
+        [
+          -0.11,
+          -2.42861286636753e-17,
+          -0.162
+        ],
+        [
+          0.11,
+          0.37,
+          0.16200000000000003
+        ]
+      ],
+      "raised": [
+        [
+          -0.11,
+          0.4,
+          -0.162
+        ],
+        [
+          0.11,
+          0.77,
+          0.16200000000000003
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "litter_box",
+      "name": "封闭式猫砂盆",
+      "index": 146,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 400,
+          "source": "recorded"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 800,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 800
+        }
+      },
+      "baseline": [
+        [
+          -0.22,
+          -5.724587470723463e-17,
+          -0.255
+        ],
+        [
+          0.22,
+          0.4000000000000001,
+          0.255
+        ]
+      ],
+      "raised": [
+        [
+          -0.22,
+          0.39999999999999997,
+          -0.255
+        ],
+        [
+          0.22,
+          0.8,
+          0.255
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -5.684341886080802e-14,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "dryingrack",
+      "name": "晾衣架",
+      "index": 147,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1353.0000000000002,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1753.0000000000002,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1753.0000000000002
+        }
+      },
+      "baseline": [
+        [
+          -0.6700000166893004,
+          -1.6689300497141346e-8,
+          -0.24100000075995925
+        ],
+        [
+          0.6700000166893004,
+          1.3530000002682212,
+          0.24100000075995925
+        ]
+      ],
+      "raised": [
+        [
+          -0.6700000166893004,
+          0.3999999833106995,
+          -0.24100000075995925
+        ],
+        [
+          0.6700000166893004,
+          1.7530000002682213,
+          0.24100000075995925
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.000016689300480265956,
+      "topErrorMm": 2.6822112886293326e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "stove_fotile_th36b",
+      "name": "方太燃气灶 TH36B-T",
+      "index": 10,
+      "controls": {
+        "found": true,
+        "bottom": 780,
+        "range": {
+          "bottom": 780,
+          "top": 918,
+          "source": "model"
+        },
+        "mode": "surface"
+      },
+      "changed": {
+        "bottom": 1180,
+        "range": {
+          "bottom": 1180,
+          "top": 1318,
+          "source": "model"
+        },
+        "actualBottom": 1180,
+        "solids": {
+          "bottom": 1180,
+          "top": 1318
+        }
+      },
+      "baseline": [
+        [
+          -0.375,
+          0.7800000008940696,
+          -0.2199999988079071
+        ],
+        [
+          0.375,
+          0.9180000002160669,
+          0.2199999988079071
+        ]
+      ],
+      "raised": [
+        [
+          -0.375,
+          1.1800000008940696,
+          -0.2199999988079071
+        ],
+        [
+          0.375,
+          1.3180000002160668,
+          0.2199999988079071
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 8.940696716308594e-7,
+      "topErrorMm": 2.1606683731079102e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sink_arrow_680",
+      "name": "箭牌日式集渣水槽 · 680",
+      "index": 105,
+      "controls": {
+        "found": true,
+        "bottom": 620,
+        "range": {
+          "bottom": 620,
+          "top": 1220,
+          "source": "model"
+        },
+        "mode": "surface"
+      },
+      "changed": {
+        "bottom": 1020,
+        "range": {
+          "bottom": 1020,
+          "top": 1620,
+          "source": "model"
+        },
+        "actualBottom": 1020,
+        "solids": {
+          "bottom": 1020,
+          "top": 1620
+        }
+      },
+      "baseline": [
+        [
+          -0.3400000035762787,
+          0.6200000004470348,
+          -0.22499999403953552
+        ],
+        [
+          0.3400000035762787,
+          1.2159867739677428,
+          0.22499999403953552
+        ]
+      ],
+      "raised": [
+        [
+          -0.3400000035762787,
+          1.0200000004470349,
+          -0.22499999403953552
+        ],
+        [
+          0.3400000035762787,
+          1.615986773967743,
+          0.22499999403953552
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 4.470348358154297e-7,
+      "topErrorMm": -4.01322603225708,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sink_arrow_750",
+      "name": "箭牌日式集渣水槽 · 750",
+      "index": 106,
+      "controls": {
+        "found": true,
+        "bottom": 620,
+        "range": {
+          "bottom": 620,
+          "top": 1220,
+          "source": "model"
+        },
+        "mode": "surface"
+      },
+      "changed": {
+        "bottom": 1020,
+        "range": {
+          "bottom": 1020,
+          "top": 1620,
+          "source": "model"
+        },
+        "actualBottom": 1020,
+        "solids": {
+          "bottom": 1020,
+          "top": 1620
+        }
+      },
+      "baseline": [
+        [
+          -0.375,
+          0.6200000004470348,
+          -0.22499999403953552
+        ],
+        [
+          0.375,
+          1.2159867739677428,
+          0.22499999403953552
+        ]
+      ],
+      "raised": [
+        [
+          -0.375,
+          1.0200000004470349,
+          -0.22499999403953552
+        ],
+        [
+          0.375,
+          1.615986773967743,
+          0.22499999403953552
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 4.470348358154297e-7,
+      "topErrorMm": -4.01322603225708,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bathtub",
+      "name": "浴缸",
+      "index": 110,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 703.9918812858715,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1103.9918812858714,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1103.9918812858714
+        }
+      },
+      "baseline": [
+        [
+          -0.800000011920929,
+          -2.2962126831610672e-17,
+          -0.375
+        ],
+        [
+          0.8249999994039535,
+          0.703317403793335,
+          0.375
+        ]
+      ],
+      "raised": [
+        [
+          -0.800000011920929,
+          0.4,
+          -0.375
+        ],
+        [
+          0.8249999994039535,
+          1.1033174037933349,
+          0.375
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.6744774925364254,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain_sheer",
+      "name": "半透光纱帘 · 双开",
+      "index": 120,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          0.019999999552965164,
+          -0.04800000041723251
+        ],
+        [
+          1.2000000476837158,
+          2.4000000003799795,
+          0.04800000041723251
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.41999999955296513,
+          -0.04800000041723251
+        ],
+        [
+          1.2000000476837158,
+          2.8000000003799794,
+          0.04800000041723251
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 3.7997961044311523e-7,
+      "unknownRange": false,
+      "passed": true
+    }
+  ],
+  "errors": []
+}

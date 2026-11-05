@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "rows": [
+    {
+      "case": "raised-counter-and-linked-sink",
+      "parts": 165,
+      "perPartTranslation": true
+    },
+    {
+      "case": "laundry-assembly-with-floor-washer",
+      "parts": 53,
+      "perPartTranslation": true
+    },
+    {
+      "case": "two-raised-shared-board-cabinets",
+      "parts": 80,
+      "perPartTranslation": true
+    },
+    {
+      "case": "typed-obj-independent-bottom",
+      "parts": 1,
+      "cachedMove": true,
+      "perPartTranslation": true
+    }
+  ],
+  "errors": []
+}

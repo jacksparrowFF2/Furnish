@@ -9,7 +9,7 @@ const plan=require('../src/data/plans.js')[0],W=require('../src/core/work-state.
 assert.equal(JSON.parse(R.text(store)).version,47);assert.deepEqual(R.parse(JSON.parse(R.text(store))).work[plan.id].furniture,[f]);assert.deepEqual(Cache.load({read:key=>key==='huxing-design-v47'?JSON.stringify(store):null,key:'huxing-design-v47',firstPlan:plan,restore:W.restore}),store);
 const legacy={...store,v:46,work:{[plan.id]:{...work,furniture:[old]}}};assert.equal(Cache.load({read:key=>key==='huxing-design-v46'?JSON.stringify(legacy):null,key:'huxing-design-v47',firstPlan:plan,restore:W.restore}).v,46);
 let restored=work;for(let i=0;i<3;i++)restored=W.restore(restored,plan);assert.deepEqual(restored.furniture,[f]);
-const next={...f,type:'chair'};P.replacement(f,next,{type:'chair'});assert(!('foldingChairFolded'in next));assert(!('mountHeight'in next));
+const next={...f,type:'chair'};P.replacement(f,next,{type:'chair'});assert(!('foldingChairFolded'in next));assert.equal(next.mountHeight,0);
 const room={id:'review',walls:[],wins:[],doors:[],beams:[],rooms:[{id:'room',poly:[[-3000,-3000],[3000,-3000],[3000,3000],[-3000,3000]]}],ceilingHeight:3000},fingerprint=item=>J.checkFingerprint({kind:'overlap',id:item.id},room,[item],800);
 assert.notEqual(fingerprint(f),fingerprint({...f,foldingChairFolded:false}));assert.equal(fingerprint(f),fingerprint({...f,color:'#74856b',price:99,purchaseStatus:'ordered'}));
 // Actual cabinet boards, contact at support and the first shelf threshold.

@@ -64,12 +64,13 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
   if(!supportsSolids(f))return null;
   if(furnitureSolids()?.supported(f))return furnitureSolids().parts(f,{furniture,plan});
   const products=root.FurnishProducts||require('./product-rules.js');furniture=furniture.filter(v=>validModel(v,products));
+  const originalFurniture=f;f=products.elevationSource(f);
   const kitchen=root.FurnishKitchen||require('./kitchen-core.js');
   // Record the actual scene inputs read by buildRaw/slabGeometry, rather than
   // invalidating every cabinet when any unrelated cabinet moves. Full device
   // records include notch/installation changes as well as their opening rings.
   const dependencies=f.kitchen?kitchen.deviceOpenings(f,furniture).map(({device,ring})=>[device,ring]):[C().sharedSides(f,furniture),C().sideOpenings(f,furniture),C().joinedSideFinishes(f,furniture)];
-  const key=JSON.stringify([f,dependencies]);
+  const key=JSON.stringify([originalFurniture,dependencies]);
   if(solidCache.has(key)){const hit=solidCache.get(key);solidCache.delete(key);solidCache.set(key,hit);return hit;}
   const K=root.FurnishKitchen||require('./kitchen-core.js'),P=root.FurnishProducts||require('./product-rules.js'),B=root.FurnishBoardCollision||require('./board-motion-collision.js'),z=Z(),records=[];
   const identity=p=>p;
@@ -116,7 +117,7 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
   }
   const angle=(f.rot||0)*Math.PI/180;
   const result=records.map(record=>{const vertices=record.vertices.map(([x,y,q])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*Math.cos(angle)-q*Math.sin(angle),y,(f.cy||0)+x*Math.sin(angle)+q*Math.cos(angle)];});return {...record,vertices,p:hull(vertices.map(v=>[v[0],v[2]])),vertical:{bottom:Math.min(...vertices.map(v=>v[1])),top:Math.max(...vertices.map(v=>v[1])),source:'production-board'}};}).filter(p=>p.p.length>2);
-  solidCache.set(key,result);if(solidCache.size>64)solidCache.delete(solidCache.keys().next().value);return result;
+  const elevated=P.elevatedParts(originalFurniture,result);solidCache.set(key,elevated);if(solidCache.size>64)solidCache.delete(solidCache.keys().next().value);return elevated;
  }
  function hull(points){const sorted=points.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]),cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);const half=p=>{const out=[];for(const v of p){while(out.length>1&&cross(out.at(-2),out.at(-1),v)<=1e-9)out.pop();out.push(v);}return out;};return half(sorted).slice(0,-1).concat(half(sorted.slice().reverse()).slice(0,-1));}
  // Clip a convex production prism to the device's height interval before 2D

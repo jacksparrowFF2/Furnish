@@ -28,6 +28,7 @@ function frames(f,phase){const l=layout(f),open=phase??(l.open?1:0);if(open!==0&
  return {role:m.role,parent:m.parent||null,position,angle,axis:m.axis};});
 }
 function outline(f){const l=layout(f);return [[-f.w/2,-f.d/2],[f.w/2,-f.d/2],[f.w/2,l.front],[-f.w/2,l.front]];}
-function openingZones(f){const l=layout(f),a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a),world=([x,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,(f.cy||0)+x*s+z*c];};return [{kind:'cabinetdrawer',column:0,section:'sofa-bed:operation',poly:[[-f.w/2,f.d/2],[f.w/2,f.d/2],[f.w/2,f.d/2+l.travel],[-f.w/2,f.d/2+l.travel]].map(world),ranges:[[0,Math.max(products().height(f),350*l.s[1]+l.travel)]]}];}
+function openingZones(f,options){const P=products();return P.elevatedZones(f,nativeOpeningZones(P.elevationSource(f),options));}
+function nativeOpeningZones(f){const l=layout(f),a=(f.rot||0)*Math.PI/180,c=Math.cos(a),s=Math.sin(a),world=([x,z])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*c-z*s,(f.cy||0)+x*s+z*c];};return [{kind:'cabinetdrawer',column:0,section:'sofa-bed:operation',poly:[[-f.w/2,f.d/2],[f.w/2,f.d/2],[f.w/2,f.d/2+l.travel],[-f.w/2,f.d/2+l.travel]].map(world),ranges:[[0,Math.max(products().height(f),350*l.s[1]+l.travel)]]}];}
 const api={spec,role,layout,frames,outline,openingZones};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishSofaBed=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

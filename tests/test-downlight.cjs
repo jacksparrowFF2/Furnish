@@ -16,7 +16,7 @@ assert.throws(()=>C.fitDownlight({...plan,ceilings:undefined},f));
 const work={furniture:[f],ceilings:plan.ceilings};const round=P.unpack(P.pack({planId:'test',current:work,designs:[{name:'筒灯',work}],catalog:[]}));assert.deepEqual(round.current.furniture,[f]);assert.deepEqual(round.designs[0].work.ceilings,work.ceilings);
 let restored=[f];for(let i=0;i<3;i++)restored=D.restoreFurniture(restored,{makeId:()=> 'x',colorFor:()=> '#fff'});assert.deepEqual(restored,[f]);
 assert.equal(D.pasteFurniture({items:[f],cx:500,cy:500},{x:700,y:700},{x:0,y:0,w:5000,h:5000},()=> 'copy').items[0].mountHeight,2498);
-assert.equal(R.initial({type:f.type}).mountHeight,2500);assert.equal(R.vertical({...f,mountHeight:0}).bottom,0);assert.equal(D.replaceFurniture(f,{type:'chair',name:'椅子',w:500,d:500,color:'#fff'}).mountHeight,undefined);
+assert.equal(R.initial({type:f.type}).mountHeight,2500);assert.equal(R.vertical({...f,mountHeight:0}).bottom,0);assert.equal(D.replaceFurniture(f,{type:'chair',name:'椅子',w:500,d:500,color:'#fff'}).mountHeight,0);
 {
  const {fixture}=require('./helpers/wall-finish-fixture.cjs'),F=require('../src/core/floor-finish-core.js');const source=fixture({partition:true}),roomId=source.plan.rooms[0].id;
  let w=F.setLayers(source.work,source.plan,[roomId],{rawZ:0,tileThickness:10,baseThickness:50});w.furnitureDatum='finished-floor';

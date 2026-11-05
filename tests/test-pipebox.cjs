@@ -25,7 +25,7 @@ const copied=D.pasteFurniture({items:[thick],cx:0,cy:0},{x:1000,y:1000},{x:-3000
 const candidate={type:'pipebox',name:f.name,w:400,d:300,h:2400,color:f.color,price:0};
 const fromChair=D.replaceFurniture({...f,type:'chair',pipeBoxThickness:undefined,mountHeight:undefined},candidate);assert.equal(fromChair.mountHeight,0);assert.equal(fromChair.pipeBoxThickness,18);
 assert.equal(D.replaceFurniture(thick,candidate).pipeBoxThickness,40);assert.equal(D.replaceFurniture(thick,candidate).mountHeight,750);
-const chair=D.replaceFurniture(thick,{...candidate,type:'chair'});assert.equal(chair.pipeBoxThickness,undefined);assert.equal(chair.mountHeight,undefined);
+const chair=D.replaceFurniture(thick,{...candidate,type:'chair'});assert.equal(chair.pipeBoxThickness,undefined);assert.equal(chair.mountHeight,0);
 const obstacle={...f,id:'inside',type:'custom',w:100,d:100,h:200,pipeBoxShape:undefined,pipeBoxThickness:undefined,mountHeight:undefined};
 const plan={rooms:[],walls:[],doors:[],wins:[],slides:[],markers:[],beams:[],bounds:{x:-3000,y:-3000,w:6000,h:6000}};
 for(const rot of [0,37,90,180])for(const flip of [false,true]){

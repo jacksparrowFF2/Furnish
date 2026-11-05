@@ -809,7 +809,8 @@
   }else throw Error('柜体操作无效');return validate({...f,cabinet:c});
  }
  // Local plan coordinates: front is +Y, and mirroring reverses the hinge side.
- function openingZones(f,{passage=800}={}){
+ function openingZones(f,options){const P=products();return P.elevatedZones(f,nativeOpeningZones(P.elevationSource(f),options));}
+function nativeOpeningZones(f,{passage=800}={}){
   if(f.type==='vanity'&&!f.cabinet)return [];
   const c=config(f),bays=layout(f),zones=[],transform=points=>{const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a);return points.map(([x,y])=>{x*=f.flip?-1:1;return [(f.cx||0)+x*co-y*si,(f.cy||0)+x*si+y*co];});};
   const verticalZone=(column,section,door,left,right,bottom,top,front,angle,half=c.thickness/2)=>{
@@ -997,6 +998,7 @@
  function specification(f){const c=config(f);delete c.autoDoors;if(c.entry){delete c.entry.autoColumns;delete c.entry.editable;}return {...c,columns:c.columns.map(col=>{const {doorAngle,doorLeaves,doorSections,topOpen,displayOpen,displayAngle,...rest}=col;return {...rest,...(col.pegboardHatch?{pegboardHatch:{...col.pegboardHatch,open:false,...(col.pegboardHatch.panels?{panels:col.pegboardHatch.panels.map(p=>({...p,open:false}))}:{})}}:{}),doorOpen:false,drawers:col.drawers.map(d=>{const {extension,lanes,...rest}=d;return {...rest,open:false};})};})};}
  // Derived side openings: only matching, parallel entry cabinets within 20 mm.
  // Plan-local X reverses under mirroring; height remains floor-based.
+ function installationBase(f){const P=products();return P.elevationDelta(P.elevationOriginal(f));}
  function sideOpenings(f,items=[]){
   if(!supported(f))return [];const c=config(f),cuts=[],e=c.entry;
   if(e){const bottom=c.plinth+e.shoeHeight+e.lowerHeight;for(const side of ['left','right'])if(e.openSide===side||e.openSide==='both')cuts.push({side,bottom,top:bottom+e.nicheHeight,back:-f.d/2,front:f.d/2});return cuts;}
@@ -1007,7 +1009,7 @@
    if(Math.abs(Math.abs(dx)-(f.w+other.w)/2)>20)continue;
    const otherSide=dx*(other.flip?-1:1)>0?'left':'right';if(oe.openSide!==otherSide&&oe.openSide!=='both')continue;
    const side=dx*(f.flip?-1:1)>0?'right':'left',col=c.columns[side==='left'?0:c.columns.length-1];if(!col.pegboard)continue;
-   const base=c.plinth+c.thickness,bottom=Math.max(oc.plinth+oe.shoeHeight+oe.lowerHeight,base+col.drawers.reduce((n,v)=>n+v.height,0)),top=Math.min(oc.plinth+oe.shoeHeight+oe.lowerHeight+oe.nicheHeight,base+col.doorBottom-c.thickness),back=Math.max(-f.d/2,dy-other.d/2),front=Math.min(f.d/2,dy+other.d/2);
+   const dyBase=installationBase(other)-installationBase(f),base=c.plinth+c.thickness,bottom=Math.max(dyBase+oc.plinth+oe.shoeHeight+oe.lowerHeight,base+col.drawers.reduce((n,v)=>n+v.height,0)),top=Math.min(dyBase+oc.plinth+oe.shoeHeight+oe.lowerHeight+oe.nicheHeight,base+col.doorBottom-c.thickness),back=Math.max(-f.d/2,dy-other.d/2),front=Math.min(f.d/2,dy+other.d/2);
    if(top>bottom&&front-back>=50)cuts.push({side,bottom,top,back,front});
   }return cuts;
  }
@@ -1017,7 +1019,7 @@
   if(!c.entry){for(const cut of sideOpenings(f,items)){const col=c.columns[cut.side==='left'?0:c.columns.length-1],base=c.plinth+c.thickness;result.push({side:cut.side,bottom:base+col.drawers.reduce((n,v)=>n+v.height,0),top:base+col.doorBottom-c.thickness,gap:0});}return result;}
   const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a);
   for(const other of items){if(other===f||f.id&&other.id===f.id||!supported(other))continue;const oc=config(other);if(oc.entry)continue;const openings=sideOpenings(other,[f]);if(!openings.length)continue;const dx=((other.cx||0)-(f.cx||0))*co+((other.cy||0)-(f.cy||0))*si,side=dx*(f.flip?-1:1)>0?'right':'left';
-   const col=oc.columns[openings[0].side==='left'?0:oc.columns.length-1],base=oc.plinth+oc.thickness;result.push({side,bottom:base+col.drawers.reduce((n,v)=>n+v.height,0),top:base+col.doorBottom-oc.thickness,gap:Math.max(0,Math.abs(dx)-(f.w+other.w)/2)});
+   const col=oc.columns[openings[0].side==='left'?0:oc.columns.length-1],base=oc.plinth+oc.thickness+installationBase(other)-installationBase(f);result.push({side,bottom:base+col.drawers.reduce((n,v)=>n+v.height,0),top:base+col.doorBottom-oc.thickness,gap:Math.max(0,Math.abs(dx)-(f.w+other.w)/2)});
   }return result;
  }
  // Share the pegboard cabinet's side, removing the console's duplicate side.
@@ -1027,7 +1029,7 @@
   const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a),result=[];
   for(const other of items){if(other===f||f.id&&other.id===f.id||!supported(other)||!other.cabinet)continue;const oc=config(other);if(oc.thickness!==18||(entry?(!!oc.entry||oc.template!=='entry-pegboard'):!oc.entry))continue;
    const angle=((other.rot||0)-(f.rot||0)+540)%360-180,dx=((other.cx||0)-(f.cx||0))*co+((other.cy||0)-(f.cy||0))*si,dy=-((other.cx||0)-(f.cx||0))*si+((other.cy||0)-(f.cy||0))*co;
-   if(Math.abs(angle)>.1||Math.abs(dy)>1||Math.abs(f.d-other.d)>1||Math.abs(bodyHeight(f)-bodyHeight(other))>1||c.plinth!==oc.plinth||Math.abs(Math.abs(dx)-(f.w+other.w)/2)>1)continue;
+   if(Math.abs(angle)>.1||Math.abs(dy)>1||Math.abs(f.d-other.d)>1||Math.abs(bodyHeight(f)-bodyHeight(other))>1||Math.abs(installationBase(f)-installationBase(other))>1||c.plinth!==oc.plinth||Math.abs(Math.abs(dx)-(f.w+other.w)/2)>1)continue;
    const side=dx*(f.flip?-1:1)>0?'right':'left',peerSide=dx*(other.flip?-1:1)>0?'left':'right';if(pegboardParts(f,c)?.[side]===false||pegboardParts(other,oc)?.[peerSide]===false)continue;if(!result.some(v=>v.side===side))result.push({side,owner:!entry});
   }return result;
  }

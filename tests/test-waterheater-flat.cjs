@@ -16,7 +16,7 @@ const backup=P.unpack(P.pack({planId:'p1',current:{furniture:[installed]},design
 assert.equal(backup.current.furniture[0].mountHeight,1850);assert.equal(backup.designs[0].work.furniture[0].mountHeight,1900);
 for(const value of [-1,20001,NaN,Infinity,'1800',null])assert.throws(()=>P.validateWork({furniture:[{...f,mountHeight:value}]}),/离地高度/);
 for(const value of [0,1650,20000])P.validateWork({furniture:[{...f,mountHeight:value}]});
-assert.equal(design.replaceFurniture(installed,{...f,type:'waterheater'}).mountHeight,undefined);
+assert.equal(design.replaceFurniture(installed,{...f,type:'waterheater'}).mountHeight,1300);
 assert.equal(design.replaceFurniture(installed,f).mountHeight,1850);
 assert.equal(design.resizeFurniture(installed,{w:800}).mountHeight,1850);
 // Exercise the actual panel change handler, including rejection and lock rules.

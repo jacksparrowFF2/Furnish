@@ -13,7 +13,7 @@ assert.equal(D.showerInstallation(restored[0]).bottom,350);assert.deepEqual(agai
 for(const [type,key,low,high] of [['washer','mountHeight',0,20000],['dryer','stackHeight',0,1000],['shower_arrow_cream','showerRise',100,500],['shower_arrow_cream','showerMixerHeight',0,40000],['shower_arrow_cream','showerHandAngle',0,35]]){
  for(const v of [low,high])P.validateWork({furniture:[{...base,type,[key]:v}]});
  for(const v of [low-1,high+1,NaN,Infinity,String(low),null])assert.throws(()=>P.validateWork({furniture:[{...base,type,[key]:v}]}));
- assert.throws(()=>P.validateWork({furniture:[{...base,type:'chair',[key]:low}]}));
+ if(key!=='mountHeight')assert.throws(()=>P.validateWork({furniture:[{...base,type:'chair',[key]:low}]}));else P.validateWork({furniture:[{...base,type:'chair',mountHeight:low}]});
 }
 const candidate=type=>({...base,id:undefined,type,price:0});
 const laundry={...base,type:'washer',mountHeight:870,stackHeight:0};
@@ -21,7 +21,7 @@ const dry=D.replaceFurniture(laundry,candidate('dryer'));assert.equal(dry.mountH
 const heater={...base,type:'waterheater_flat',mountHeight:0,heaterSocket:{x:0,y:0,z:0}};
 assert.deepEqual(D.replaceFurniture(heater,candidate(heater.type)).heaterSocket,heater.heaterSocket);
 for(const f of [laundry,heater,{...oldShower,showerRise:500,showerHandAngle:0},{...base,type:'tripleslidingwindow',mountHeight:0,floorTrack:false},{...base,type:'curtain',curtainStyle:'single'}]){
- const next=D.replaceFurniture(f,candidate('chair'));for(const key of Object.keys(R.fields))assert.equal(next[key],undefined,'foreign field '+key);P.validateWork({furniture:[next]});
+ const next=D.replaceFurniture(f,candidate('chair'));for(const key of Object.keys(R.fields))assert.equal(next[key],key==='mountHeight'?0:undefined,'foreign field '+key);P.validateWork({furniture:[next]});
 }
 assert.equal(D.replaceFurniture({...base,type:'tripleslidingdoor',floorTrack:false},candidate('slidingdoor')).floorTrack,false);
 assert.equal(D.replaceFurniture({...base,type:'chair'},candidate('tripleslidingwindow')).mountHeight,900);

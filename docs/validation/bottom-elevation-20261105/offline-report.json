@@ -1,0 +1,977 @@
+{
+  "passed": true,
+  "protocol": "file",
+  "generatedAt": "2026-11-05T00:49:46.289Z",
+  "rows": [
+    {
+      "type": "block",
+      "name": "方块占位体",
+      "index": 0,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1000,
+          "source": "recorded"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1400,
+          "source": "recorded"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1400
+        }
+      },
+      "baseline": [
+        [
+          -0.5,
+          0,
+          -0.5
+        ],
+        [
+          0.5,
+          1,
+          0.5
+        ]
+      ],
+      "raised": [
+        [
+          -0.5,
+          0.4,
+          -0.5
+        ],
+        [
+          0.5,
+          1.4,
+          0.5
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "purifier",
+      "name": "空气净化器",
+      "index": 33,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 726,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1126,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1126
+        }
+      },
+      "baseline": [
+        [
+          -0.20000000298023224,
+          -1.4305114759416426e-8,
+          -0.15000000596046448
+        ],
+        [
+          0.20000000298023224,
+          0.7260000000949949,
+          0.1560000001899898
+        ]
+      ],
+      "raised": [
+        [
+          -0.20000000298023224,
+          0.39999998569488526,
+          -0.15000000596046448
+        ],
+        [
+          0.20000000298023224,
+          1.126000000094995,
+          0.1560000001899898
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -0.00001430511474609375,
+      "topErrorMm": 9.499490261077881e-8,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "crib",
+      "name": "婴儿床",
+      "index": 58,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 998,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1398,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1398
+        }
+      },
+      "baseline": [
+        [
+          -0.631,
+          5.960464455334602e-9,
+          -0.355297981262207
+        ],
+        [
+          0.631,
+          0.998,
+          0.355297981262207
+        ]
+      ],
+      "raised": [
+        [
+          -0.631,
+          0.4000000059604645,
+          -0.355297981262207
+        ],
+        [
+          0.631,
+          1.3980000000000001,
+          0.355297981262207
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0.0000059604644775390625,
+      "topErrorMm": 2.2737367544323206e-13,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "sidetable",
+      "name": "边几",
+      "index": 75,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 665,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1065,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1065
+        }
+      },
+      "baseline": [
+        [
+          -0.25,
+          0,
+          -0.25
+        ],
+        [
+          0.25,
+          0.664999997317791,
+          0.25
+        ]
+      ],
+      "raised": [
+        [
+          -0.25,
+          0.4,
+          -0.25
+        ],
+        [
+          0.25,
+          1.064999997317791,
+          0.25
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.000002682209014892578,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "shower",
+      "name": "淋浴房",
+      "index": 108,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 2041.8782404586645,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 2441.8782404586645,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 2441.8782404586645
+        }
+      },
+      "baseline": [
+        [
+          -0.4499999997764826,
+          -3.725290284584126e-10,
+          -0.4500000007450581
+        ],
+        [
+          0.4599999996647239,
+          2.0413818359375,
+          0.4599999996647239
+        ]
+      ],
+      "raised": [
+        [
+          -0.4499999997764826,
+          0.399999999627471,
+          -0.4500000007450581
+        ],
+        [
+          0.4599999996647239,
+          2.4413818359375,
+          0.4599999996647239
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": -3.7252897300277255e-7,
+      "topErrorMm": -0.4964045211645498,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pendant",
+      "name": "吊灯",
+      "index": 112,
+      "controls": {
+        "found": true,
+        "bottom": 2064,
+        "range": {
+          "bottom": 2064,
+          "top": 2620,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 2464,
+        "range": {
+          "bottom": 2464,
+          "top": 3020,
+          "source": "model"
+        },
+        "actualBottom": 2464,
+        "solids": {
+          "bottom": 2464,
+          "top": 3020
+        }
+      },
+      "baseline": [
+        [
+          -0.33250001072883606,
+          2.064,
+          -0.33250001072883606
+        ],
+        [
+          0.33250001072883606,
+          2.6199999988079075,
+          0.33250001072883606
+        ]
+      ],
+      "raised": [
+        [
+          -0.33250001072883606,
+          2.464,
+          -0.33250001072883606
+        ],
+        [
+          0.33250001072883606,
+          3.0199999988079074,
+          0.33250001072883606
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000011920924407604616,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "pendant",
+      "name": "餐厅吊灯",
+      "index": 113,
+      "controls": {
+        "found": true,
+        "bottom": 2048,
+        "range": {
+          "bottom": 2048,
+          "top": 2620,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 2448,
+        "range": {
+          "bottom": 2448,
+          "top": 3020,
+          "source": "model"
+        },
+        "actualBottom": 2448,
+        "solids": {
+          "bottom": 2448,
+          "top": 3020
+        }
+      },
+      "baseline": [
+        [
+          -0.42750000953674316,
+          2.048,
+          -0.42750000953674316
+        ],
+        [
+          0.42750000953674316,
+          2.6199999988079075,
+          0.42750000953674316
+        ]
+      ],
+      "raised": [
+        [
+          -0.42750000953674316,
+          2.448,
+          -0.42750000953674316
+        ],
+        [
+          0.42750000953674316,
+          3.0199999988079074,
+          0.42750000953674316
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.0000011920924407604616,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "rug",
+      "name": "地毯",
+      "index": 115,
+      "controls": {
+        "found": true,
+        "bottom": 2,
+        "range": {
+          "bottom": 2,
+          "top": 15.5,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 402,
+        "range": {
+          "bottom": 402,
+          "top": 415.5,
+          "source": "model"
+        },
+        "actualBottom": 402,
+        "solids": {
+          "bottom": 402,
+          "top": 415.5
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          0.002000000111758709,
+          -0.8500000238418579
+        ],
+        [
+          1.2000000476837158,
+          0.01550000004749745,
+          0.8500000238418579
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.40200000011175874,
+          -0.8500000238418579
+        ],
+        [
+          1.2000000476837158,
+          0.4155000000474975,
+          0.8500000238418579
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 1.1175870895385742e-7,
+      "topErrorMm": 4.7497508148808265e-8,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "不透光布帘 2.4m",
+      "index": 116,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837156,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837156,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "不透光布帘 3m",
+      "index": 117,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.5,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.5,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.5,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.5,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "单开窗帘 2.4m",
+      "index": 118,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837158,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837158,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "plant",
+      "name": "大绿植",
+      "index": 130,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 1563.6007116002243,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1963.6007116002243,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1963.6007116002243
+        }
+      },
+      "baseline": [
+        [
+          -0.3616549778558905,
+          0,
+          -0.2985846239856927
+        ],
+        [
+          0.30447190285091974,
+          1.5636007114115884,
+          0.2493624555814306
+        ]
+      ],
+      "raised": [
+        [
+          -0.3616549778558905,
+          0.4,
+          -0.2985846239856927
+        ],
+        [
+          0.30447190285091974,
+          1.9636007114115885,
+          0.2493624555814306
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -1.8863579498429317e-7,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "wallart",
+      "name": "装饰画 横",
+      "index": 131,
+      "controls": {
+        "found": true,
+        "bottom": 1367.75,
+        "range": {
+          "bottom": 1367.75,
+          "top": 2292.5,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1767.75,
+        "range": {
+          "bottom": 1767.75,
+          "top": 2692.5,
+          "source": "model"
+        },
+        "actualBottom": 1767.75,
+        "solids": {
+          "bottom": 1767.75,
+          "top": 2692.5
+        }
+      },
+      "baseline": [
+        [
+          -0.75,
+          1.3677500000000002,
+          -0.029999999552965163
+        ],
+        [
+          0.75,
+          2.2925000059604645,
+          0.02692478370666504
+        ]
+      ],
+      "raised": [
+        [
+          -0.75,
+          1.7677500000000002,
+          -0.029999999552965163
+        ],
+        [
+          0.75,
+          2.6925000059604645,
+          0.02692478370666504
+        ]
+      ],
+      "shiftMm": 399.9999999999999,
+      "bottomErrorMm": 2.2737367544323206e-13,
+      "topErrorMm": 0.0000059604644775390625,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "wallart",
+      "name": "装饰画 小",
+      "index": 132,
+      "controls": {
+        "found": true,
+        "bottom": 1345,
+        "range": {
+          "bottom": 1345,
+          "top": 2030,
+          "source": "model"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 1745,
+        "range": {
+          "bottom": 1745,
+          "top": 2430,
+          "source": "model"
+        },
+        "actualBottom": 1745,
+        "solids": {
+          "bottom": 1745,
+          "top": 2430
+        }
+      },
+      "baseline": [
+        [
+          -0.44999998807907104,
+          1.3450000000000002,
+          -0.029999999552965163
+        ],
+        [
+          0.44999998807907104,
+          2.0300000000000002,
+          0.02692478370666504
+        ]
+      ],
+      "raised": [
+        [
+          -0.44999998807907104,
+          1.7450000000000003,
+          -0.029999999552965163
+        ],
+        [
+          0.44999998807907104,
+          2.43,
+          0.02692478370666504
+        ]
+      ],
+      "shiftMm": 400.0000000000001,
+      "bottomErrorMm": 2.2737367544323206e-13,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "bathtub",
+      "name": "浴缸",
+      "index": 110,
+      "controls": {
+        "found": true,
+        "bottom": 0,
+        "range": {
+          "bottom": 0,
+          "top": 703.9918812858715,
+          "source": "production-mesh"
+        },
+        "mode": "offset"
+      },
+      "changed": {
+        "bottom": 400,
+        "range": {
+          "bottom": 400,
+          "top": 1103.9918812858714,
+          "source": "production-mesh"
+        },
+        "actualBottom": 400,
+        "solids": {
+          "bottom": 400,
+          "top": 1103.9918812858714
+        }
+      },
+      "baseline": [
+        [
+          -0.800000011920929,
+          -2.2962126831610672e-17,
+          -0.375
+        ],
+        [
+          0.8249999994039535,
+          0.703317403793335,
+          0.375
+        ]
+      ],
+      "raised": [
+        [
+          -0.800000011920929,
+          0.4,
+          -0.375
+        ],
+        [
+          0.8249999994039535,
+          1.1033174037933349,
+          0.375
+        ]
+      ],
+      "shiftMm": 400,
+      "bottomErrorMm": 0,
+      "topErrorMm": -0.6744774925364254,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain",
+      "name": "双开窗帘 2.4m",
+      "index": 119,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837156,
+          0.019999999552965164,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.4,
+          0.06499999761581421
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837156,
+          0.41999999955296513,
+          -0.06499999761581421
+        ],
+        [
+          1.2000000476837156,
+          2.8,
+          0.06499999761581421
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 0,
+      "unknownRange": false,
+      "passed": true
+    },
+    {
+      "type": "curtain_sheer",
+      "name": "半透光纱帘 · 双开",
+      "index": 120,
+      "controls": {
+        "found": true,
+        "bottom": 20,
+        "range": {
+          "bottom": 20,
+          "top": 2400,
+          "source": "model"
+        },
+        "mode": "native"
+      },
+      "changed": {
+        "bottom": 420,
+        "range": {
+          "bottom": 420,
+          "top": 2800,
+          "source": "model"
+        },
+        "actualBottom": 420,
+        "solids": {
+          "bottom": 420,
+          "top": 2800
+        }
+      },
+      "baseline": [
+        [
+          -1.2000000476837158,
+          0.019999999552965164,
+          -0.04800000041723251
+        ],
+        [
+          1.2000000476837158,
+          2.4000000003799795,
+          0.04800000041723251
+        ]
+      ],
+      "raised": [
+        [
+          -1.2000000476837158,
+          0.41999999955296513,
+          -0.04800000041723251
+        ],
+        [
+          1.2000000476837158,
+          2.8000000003799794,
+          0.04800000041723251
+        ]
+      ],
+      "shiftMm": 399.99999999999994,
+      "bottomErrorMm": -4.4703489265884855e-7,
+      "topErrorMm": 3.7997961044311523e-7,
+      "unknownRange": false,
+      "passed": true
+    }
+  ],
+  "errors": []
+}

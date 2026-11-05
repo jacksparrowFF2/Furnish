@@ -379,6 +379,12 @@ function bindFurnPanel(f){
   if(f.type==='waterheater_flat')$('#heater-ceiling-settings').onclick=()=>{const room=FurnishProject.ceilingAt(FurnishProject.effectivePlan(PLAN,state),f.cx,f.cy).room;if(room){ui.sel={kind:'room',id:room.id};renderPanel();}else FurnishWorkspace.open('settings');};
   window.FurnishDesignUI?.bindPlacement(f);$('#full-product-details').onclick=()=>FurnishWorkspace.open('products');
   const upd = (fn) => mutate(() => { const g = getF(f.id); if (g) fn(g); });
+  if(!document.querySelector('#fMountHeight,#stool-bottom,#covering-bottom')){
+   const heading=document.querySelector('.furniture-property-card h3');
+   heading?.insertAdjacentHTML('afterend',`<div class="form" data-bottom-elevation><label class="full">${tr('底部离地高度','Bottom above floor')} (mm)<input id="fBottomElevation" type="number" min="0" max="20000" step="1" value="${FurnishProducts.bottomHeight(f)}" ${furnitureLocked(f)?'disabled':''}></label>${FurnishProducts.bottomMode(f)==='surface'&&f.counterLink?`<p class="muted full">${tr('修改后解除台面跟随，保留设备并单独调整安装高度。','Changing this detaches countertop following and adjusts the device height independently.')}</p>`:''}</div>`);
+  }
+  {const input=$('#fBottomElevation');if(input)input.onchange=()=>{try{const g=getF(f.id);if(furnitureLocked(g))throw Error(tr('家具已锁定','Furniture is locked'));if(!input.value.trim())throw Error(tr('请输入有效高度','Enter a valid height'));const next=FurnishProducts.editBottomHeight(g,Number(input.value));upd(item=>{for(const key of Object.keys(item))if(!(key in next))delete item[key];Object.assign(item,next);});}catch(error){toast(error.message);renderPanel();}};}
+
   {const input=$('#tv-image-file'),choose=$('#tv-image-choose'),reset=$('#tv-image-reset');
    if(choose)choose.onclick=()=>input.click();
    if(reset)reset.onclick=()=>{if(furnitureLocked(getF(f.id)))return;tvImageRequest++;upd(g=>delete g.tvImage);};
@@ -433,6 +439,10 @@ function bindFurnPanel(f){
   num('#fStackHeight',(g,v)=>{FurnishDesign.products().validateField(g,'stackHeight',v);g.stackHeight=Math.round(v);});
   const color=$('#fC');if(color)color.onchange = e => upd(g => g.color = e.target.value);
   document.querySelectorAll('#panel [data-sw]').forEach(b => b.onclick = () => upd(g => g.color = b.dataset.sw));
+  if(FurnishProducts.definition(f)?.bottomElevation.datumGap){
+   const input=$('#covering-bottom')||$('#fMountHeight');if(input){input.value=FurnishProducts.bottomHeight(f);input.onchange=()=>{try{if(furnitureLocked(getF(f.id)))throw Error(tr('家具已锁定','Furniture is locked'));if(!input.value.trim())throw Error(tr('请输入有效高度','Enter a valid height'));const next=FurnishProducts.editBottomHeight(getF(f.id),Number(input.value));upd(g=>Object.assign(g,next));}catch(error){toast(error.message);renderPanel();}};}
+  }
+
 }
 function multiPanel(items){
   const [x0,y0,x1,y1] = groupBox(items), btn = (act, icon, label) => `<button class="btn" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;

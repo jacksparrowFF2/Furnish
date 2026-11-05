@@ -25,7 +25,7 @@ assert.equal(JSON.parse(R.text(store)).version,48);assert.deepEqual(R.parse(JSON
 assert.deepEqual(Cache.load({read:key=>key==='huxing-design-v48'?JSON.stringify(store):null,key:'huxing-design-v48',firstPlan:plan,restore:W.restore}),store);
 const oldCache={...store,v:47,work:{[plan.id]:{...work,furniture:[f]}}};assert.equal(Cache.load({read:key=>key==='huxing-design-v47'?JSON.stringify(oldCache):null,key:'huxing-design-v48',firstPlan:plan,restore:W.restore}).v,47);
 let restored=work;for(let i=0;i<3;i++)restored=W.restore(restored,plan);assert.deepEqual(restored.furniture,work.furniture);const legacy=W.restore({...work,furniture:[f]},plan);assert(!('mountHeight' in legacy.furniture[0]));
-const next={...f,type:'chair',mountHeight:760};P.replacement({...f,mountHeight:760},next,{type:'chair'});assert(!('mountHeight'in next));
+const next={...f,type:'chair',mountHeight:760};P.replacement({...f,mountHeight:760},next,{type:'chair'});assert.equal(next.mountHeight,0);
 const confirmation=item=>J.checkFingerprint({kind:'cabinetdoor',id:item.id},{...plan,walls:[],wins:[],doors:[],beams:[],rooms:[]},[item],800);
 assert.notEqual(confirmation(f),confirmation({...f,h:552}));assert.notEqual(confirmation(f),confirmation({...f,mountHeight:760}));assert.equal(confirmation(f),confirmation({...f,color:'#123456',price:199}));
 console.log('PASS pole removal/rigid head and base, three presets, support elevation, legacy custom heights, shared solids/collision, v48 project/workspace roundtrip, no-drift restore/replacement and spatial confirmation');

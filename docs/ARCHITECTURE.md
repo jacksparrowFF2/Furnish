@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-05（存量离地补齐）：product-rules集中bottomElevation及底部／原安装基准转换；共用生产边界平移显示、数值实体及开启空间。十类旧内联构造移入legacy-furniture-model，仍为原几何；新增经典脚本。v49支持通用offset与帘布bottomPhysical，原生字段、旧缺失和原保存通道保留。参照[产品契约](PRODUCT-RULES.md#2026-11-05存量类型的离地补齐)及[验收](validation/bottom-elevation-20261105/README.md)。
+
 2026-11-05（通天柱猫爬架）：product-rules声明独立身份、2100–2750mm高度范围及顶部拟合规则；cat-tower-model沿static-asset消费60件离线Blender网格，h仅改变杆和顶撑，显示／实体／GLB同源。新增资产与经典模型脚本，无新持久字段、格式或保存通道；保留旧cat_tree，见[型号契约](CAT-TOWER-JD-10141711472484.md)。
 
 2026-11-05（循环扇拆杆／离地）：product-rules.circulatorLayout集中档位及尺寸链；circulator-model对29件Blender资产仅变换两段立柱与上部平移，复用h和mountHeight。属性沿mutate，原h／离地及geometryVersion2覆盖三维／实体／确认；本型号新保存v48并读取旧项目和缓存，无新专用字段或加载脚本。见[拆杆验收](validation/fan-x231-height-20261104/README.md)。
