@@ -44,7 +44,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    }
    for(const side of ['left','right'])if(panels[side]){
     const thickness=panels[side]/1000,sign=side==='left'?-1:1;
-    const panel=syncIdentity.produce('cabinet-independent:end-panel:'+side,()=>add(g,thickness,C.height(f)/1000,d,sign*(w-thickness)/2,0,0));
+    const panel=syncIdentity.produce('cabinet-independent:end-panel:'+side,()=>add(g,thickness,C.height(f)/1000,d,sign*(w-thickness)/2,0,0,C.frontColor(f,side==='left'?0:c.columns.length-1,c)));
     panel.userData.cabinetEndPanel=side;panel.userData.cabinetBay={column:side==='left'?0:c.columns.length-1};
    }
    return g;
@@ -228,7 +228,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   syncIdentity.produce("cabinet-model.js:generator-call-13",()=>sideBoard('right',t,h-p-(options.floorOpen?t:2*t),bodyDepth,w/2-t/2,p+(options.floorOpen?0:t),bodyZ));
   syncIdentity.each("cabinet-model.js:generator-34",c.columns,(col,i)=>{
    const cw=bays[i].width/1000,x=bays[i].center/1000,base=p+t;
-   const handle=col.handle||'bar',faceColor=col.doorColor||(col.finish==='wood'?wood:entryStyle&&color==='#d5c4bb'?'#f3f1ec':color);
+   const handle=col.handle||'bar',faceColor=C.frontColor(f,i,c);
    if(c.columns.some(movable)){
     const left=(i===0?-w/2:(bays[i].left-c.thickness/2)/1000),right=(i===bays.length-1?w/2:(bays[i].left+bays[i].width+c.thickness/2)/1000),W=right-left-.002;
     if(movable(col)){
