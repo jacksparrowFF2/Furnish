@@ -14,7 +14,7 @@ const hole=[box(0,0,4000,1000),box(0,2000,4000,3000),box(0,0,1000,3000),box(3000
 assert.equal(P.fitsInRooms(hole,P.polygon({...f,cy:1500,d:2400})),false);
 assert.equal(P.fitsInRooms([box(0,0,2500,3000),box(1500,0,4000,3000)],P.polygon(f)),true);
 const edges={left:0,right:2,top:1,bottom:3};
-for(const rot of [0,30,90])for(const anchor of Object.keys(D.resizeAnchors)){
+for(const rot of [0,30,90])for(const anchor of Object.keys(D.resizeAnchors).filter(k=>!k.startsWith('local-'))){
  const original={...f,w:600,d:400,rot,resizeAnchor:anchor},before=D.bounds(original);
  const next=D.resizeFurniture(original,{w:1000,d:750,h:900}),after=D.bounds(next);
  if(anchor==='center'){assert.equal(next.cx,original.cx);assert.equal(next.cy,original.cy);}

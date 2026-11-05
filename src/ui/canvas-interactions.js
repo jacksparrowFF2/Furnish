@@ -175,7 +175,7 @@ function endDrag(cancel){
   if(d.kind==='kitchen-divider'&&!d.moved){ui.guides=null;editKitchenDivider(d.divider);return;}
   if((['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)||d.kind==='size'&&(d.edge||d.resizeError))&&snap()===d.before){ui.guides=null;renderAll();if(d.resizeError)toast(d.resizeError);return;}
   if (d.moved){
-    if (!['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&!d.edge&&!(d.kind==='size'&&FurnishProducts.slidingResizeFrame(getF(d.id)))&&(!d.ids || d.ids.length === 1)){   // 整组变换保留相对位置；普通单件拖完继续推离墙体
+    if (!['kitchen-run','kitchen-extension','kitchen-divider'].includes(d.kind)&&!d.edge&&!(d.kind==='size'&&(FurnishProducts.slidingResizeFrame(getF(d.id))||globalThis.FurnishCabinet?.supported(getF(d.id))))&&(!d.ids || d.ids.length === 1)){   // 整组变换保留相对位置；普通单件拖完继续推离墙体
       const f = getF(d.id);
       if (f){ const ox = f.cx, oy = f.cy; pushOut(f,d.kind==='move'?d.axis:undefined); if (Math.hypot(f.cx-ox, f.cy-oy) > 60) toast(tr('已自动避开墙体', 'Moved off the wall automatically')); }
     }
@@ -285,8 +285,8 @@ function processCanvasPointerMove(e){
     const o=drag.original,basis=FurnishProducts.slidingResizeFrame(o)?.proxy||o,a=basis.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
     const dx=p.x-drag.startPoint.x,dy=p.y-drag.startPoint.y;
     const dw=drag.axis==='d'?0:dx*c+dy*s,dd=drag.axis==='w'?0:-dx*s+dy*c;
-    const corner={x:basis.cx+basis.w/2*c-basis.d/2*s+dw*c-dd*s,y:basis.cy+basis.w/2*s+basis.d/2*c+dw*s+dd*c};
-    const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[],guides:!!ui.layers.guides,furniture:ui.layers.furn?state.furniture:[]});
+    const sideX=drag.sideX||1,sideY=drag.sideY||1,corner={x:basis.cx+sideX*basis.w/2*c-sideY*basis.d/2*s+dw*c-dd*s,y:basis.cy+sideX*basis.w/2*s+sideY*basis.d/2*c+dw*s+dd*c};
+    const result=FurnishSnapping.resize(o,corner,{axis:drag.axis,sideX,sideY,scale:view.s,wallSnap:ui.layers.wallSnap,rects:ui.layers.wallSnap?snapRects():[],guides:!!ui.layers.guides,furniture:ui.layers.furn?state.furniture:[]});
     try{const next=FurnishDesign.resizeFurniture(drag.original,{w:result.furniture.w,d:result.furniture.d},'center');Object.assign(f,next,{cx:result.furniture.cx,cy:result.furniture.cy});ui.guides=result.guides;delete drag.resizeError;}catch(e){drag.resizeError=e.message;ui.guides=null;return;}
     renderFurn();                              // 尺寸变了，图例需要重画
   }
@@ -342,7 +342,7 @@ svg.addEventListener('pointerdown', e => {
   } else if (h && selIds().length === 1){
     if(h.dataset.handle==='kitchen-divider')h.focus?.({preventScroll:true});
     const f=getF(selIds()[0]);
-    drag = {kind:furnitureLocked(f)?'locked':h.dataset.handle, axis:h.dataset.axis||'both', edge:h.dataset.kitchenEdge, run:Number(h.dataset.kitchenRun), field:h.dataset.kitchenExtension, divider:h.dataset.kitchenDivider, startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
+    drag = {kind:furnitureLocked(f)?'locked':h.dataset.handle, axis:h.dataset.axis||'both', sideX:Number(h.dataset.resizeX)||1,sideY:Number(h.dataset.resizeY)||1, edge:h.dataset.kitchenEdge, run:Number(h.dataset.kitchenRun), field:h.dataset.kitchenExtension, divider:h.dataset.kitchenDivider, startPoint:{x:p.x,y:p.y}, id:f.id, original:{...f}, ...base, before:snap()};
   } else if (ui.tool === 'demolish' && t.closest('[data-wall]')){
     toggleWall(t.closest('[data-wall]').dataset.wall); return;
   } else if (picking && nEl){

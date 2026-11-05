@@ -1,5 +1,8 @@
 # 模块与加载约定
 
+2026-11-05（柜体调整方向）：design-core统一resizeAnchorPosition与local-left/right；snapping.resize扩展有符号移动侧，canvas/selection沿原生产尺寸和拖动链路。柜体草稿尺寸/模块编辑复用端点换算，旧世界基准不迁移；新枚举项目/工作区/缓存v51，无新经典模块或保存通道。见[验证与边界](validation/cabinet-resize-direction-20261105/README.md)。
+
+
 2026-11-05（柜体上下分箱）：cabinet-core统一stackedBoxes、双板净高与门段；cabinet-model以原生产构造派生双板及分段侧/背板，整高endPanels保持。cabinet-preview可从同箱任一隔间选择共用分界；UI沿原草稿/mutate，首开视口全屏、属性问号与宽度适配。含字段的项目/工作区/恢复缓存v50，旧缺失不补写，无新加载脚本。见[验收](validation/cabinet-design-20261105/README.md)。
 
 

@@ -1,0 +1,52 @@
+{
+  "id": "resize-ui",
+  "type": "wardrobe",
+  "cx": 4979.5,
+  "cy": 5853,
+  "rot": 90,
+  "flip": true,
+  "resizeAnchor": "local-left",
+  "name": "衣柜 · 双柜挂衣与明抽",
+  "w": 2000,
+  "d": 630,
+  "h": 2350,
+  "color": "#f3f1ec",
+  "cabinet": {
+    "version": 1,
+    "template": "wardrobe-hanging",
+    "thickness": 18,
+    "plinth": 60,
+    "doorOverlay": "full",
+    "boxConstruction": "independent",
+    "columns": [
+      {
+        "door": "double",
+        "doorOpen": false,
+        "drawerColumns": 1,
+        "shelves": [
+          1736
+        ],
+        "drawers": [
+          {
+            "height": 191,
+            "open": false
+          },
+          {
+            "height": 227,
+            "open": false
+          }
+        ]
+      },
+      {
+        "door": "double",
+        "doorOpen": false,
+        "drawerColumns": 1,
+        "shelves": [
+          850,
+          1736
+        ],
+        "drawers": []
+      }
+    ]
+  }
+}

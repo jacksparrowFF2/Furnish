@@ -24,7 +24,20 @@
  function bounds(f){const a=f.rot*Math.PI/180,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a)),hw=f.w/2*c+f.d/2*s,hh=f.w/2*s+f.d/2*c;return [f.cx-hw,f.cy-hh,f.cx+hw,f.cy+hh];}
  // Calibrated nominal mixer offset; geometry tests guard it against drift.
  function showerInstallation(f){return products().showerInstallation(f);}
- const resizeAnchors={center:['中心','Center'],left:['左边','Left edge'],right:['右边','Right edge'],top:['上边','Top edge'],bottom:['下边','Bottom edge']};
+ const resizeAnchors={center:['中心','Center'],left:['左边','Left edge'],right:['右边','Right edge'],top:['上边','Top edge'],bottom:['下边','Bottom edge'],'local-left':['柜体左端','Cabinet left end'],'local-right':['柜体右端','Cabinet right end']};
+ function resizeAnchorPosition(f,value,anchor=f.resizeAnchor||'center'){
+  if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
+  const next={...value};
+  if(anchor==='local-left'||anchor==='local-right'){
+   const a=(f.rot||0)*Math.PI/180,shift=(next.w-f.w)/2*(anchor==='local-left'?1:-1)*(f.flip?-1:1);
+   next.cx+=shift*Math.cos(a);next.cy+=shift*Math.sin(a);
+  }else{
+   const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}
+  }
+  return next;
+ }
+ function cabinetResizeAnchors(f){return Object.fromEntries(['center','local-left','local-right',...(!['center','local-left','local-right'].includes(f.resizeAnchor||'center')?[f.resizeAnchor]:[])].map(key=>[key,resizeAnchors[key]]));}
+ function resizeAnchorChoices(f){return cabinet().supported(f)&&!f.kitchen?cabinetResizeAnchors(f):Object.fromEntries(Object.entries(resizeAnchors).filter(([key])=>!key.startsWith('local-')||key===f.resizeAnchor));}
  function resizeFurniture(f,values,anchor=f.resizeAnchor||'center'){
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:products().footprintMinimum(f,key))||value>20000)throw Error('宽深须在当前最小尺寸至 20000 mm 内，高须为 10–20000 mm');next[key]=value;}
@@ -33,7 +46,7 @@
   if(products().definition(next)?.manifold||products().family(next,'pipe-box')||products().family(next,'window-lining')||products().family(next,'art-glass')||products().vesselSink(next))products().validate(next);
   if(next.sinkNotch!==undefined)products().validateField(next,'sinkNotch',next.sinkNotch);
   if(next.hobCutout!==undefined)products().validateField(next,'hobCutout',next.hobCutout);
-  const before=bounds(f),after=bounds(next),edges={left:[0,0],right:[0,2],top:[1,1],bottom:[1,3]};if(edges[anchor]){const [axis,edge]=edges[anchor];next[axis?'cy':'cx']+=before[edge]-after[edge];}return f.kitchen?kitchen().resize(f,next):cabinet().resize(f,next);
+  const placed=resizeAnchorPosition(f,next,anchor);return f.kitchen?kitchen().resize(f,placed):cabinet().resize(f,placed);
  }
  function expandGroups(furniture,ids){
   const chosen=new Set(ids),groups=new Set(furniture.filter(f=>chosen.has(f.id)&&f.groupId).map(f=>f.groupId));
@@ -365,7 +378,7 @@
   workspace.designs=manageDesign(workspace.designs,planId,'create',{name,work,editable:true});
   (workspace.activeDesigns||={})[planId]=workspace.designs.at(-1).id;
  }
- root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign,activeDesign,saveActiveDesign,preserveCurrentDesign};
+ root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeAnchorPosition,cabinetResizeAnchors,resizeAnchorChoices,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign,activeDesign,saveActiveDesign,preserveCurrentDesign};
  root.FurnishDesign.applyCabinetTemplate=applyCabinetTemplate;
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

@@ -398,3 +398,5 @@
 
 .cab-view-tabs .btn{white-space:nowrap}
 @media(max-width:700px){.cab-workspace .cab-overview{display:none}.cab-view-tabs .btn{padding:6px 10px}}
+
+.cab-workspace .cab-current-part>.cab-resize-anchor{grid-column:1/-1}.cab-resize-anchor small{font-size:11px;line-height:1.6;color:var(--muted)}

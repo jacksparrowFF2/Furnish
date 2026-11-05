@@ -438,3 +438,7 @@ UI 在方案副本中沿正式 normalizeFurnitureEdit 预演关联调整，并�
 验证：test-product-naming 覆盖全部目录种类、旧／自定义名称、当前及命名方案往返、洗衣机／烘干机共通动作、旋转镜像和净宽边界；原 test-product-rules、test-catalog-browsing、test-procurement、test-laundry-catalog 继续覆盖关联链路。界面验收见后续命名专项记录。
 
 本次增量检查及未执行项见[命名与继承验收](validation/product-naming-20261029/README.md)。
+
+## 柜体尺寸固定端（2026-11-05）
+
+既有resizeAnchor的center/left/right/top/bottom沿原世界占地外包语义保留。新增local-left/local-right复用该字段，由design-core计算产品局部左右端，沿旋转和镜像转换；默认缺失仍中心，新枚举使用项目/工作区/恢复缓存v51保护。拖动手柄显式方向优先且不改保存偏好，仅更换偏好不清空间确认。未新增家具安装或尺寸字段，柜体/厨房原结构尺寸限制不放宽。使用与验证见[固定端记录](validation/cabinet-resize-direction-20261105/README.md)。

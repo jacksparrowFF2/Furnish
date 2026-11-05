@@ -139,7 +139,7 @@
     return null;
   }
   // Resize from the original opposite corner, so snapping never moves that anchor.
-  function resize(f,p,{scale,wallSnap,rects,furniture=[],guides=false,axis='both'}){
+  function resize(f,p,{scale,wallSnap,rects,furniture=[],guides=false,axis='both',sideX=1,sideY=1}){
     const products=root.FurnishProducts||require('./product-rules.js'),frame=products.slidingResizeFrame(f);
     if(frame){
       const result=resize(frame.proxy,p,{scale,wallSnap,rects,furniture,guides,axis});let lo=50,hi=20000;
@@ -149,15 +149,16 @@
     }
 
     const a=f.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);
-    const anchor={x:f.cx-f.w/2*c+f.d/2*s,y:f.cy-f.w/2*s-f.d/2*c};
-    const dimensions=q=>({w:axis==='d'?f.w:Math.max(100,Math.round(((q.x-anchor.x)*c+(q.y-anchor.y)*s)/10)*10),d:axis==='w'?f.d:Math.max(100,Math.round((-(q.x-anchor.x)*s+(q.y-anchor.y)*c)/10)*10)});
-    const build=({w,d})=>({...f,w,d,cx:anchor.x+w/2*c-d/2*s,cy:anchor.y+w/2*s+d/2*c});
+    if(![-1,1].includes(sideX)||![-1,1].includes(sideY))throw Error('拉伸方向无效');
+    const anchor={x:f.cx-sideX*f.w/2*c+sideY*f.d/2*s,y:f.cy-sideX*f.w/2*s-sideY*f.d/2*c};
+    const dimensions=q=>({w:axis==='d'?f.w:Math.max(100,Math.round(sideX*((q.x-anchor.x)*c+(q.y-anchor.y)*s)/10)*10),d:axis==='w'?f.d:Math.max(100,Math.round(sideY*(-(q.x-anchor.x)*s+(q.y-anchor.y)*c)/10)*10)});
+    const build=({w,d})=>({...f,w,d,cx:anchor.x+sideX*w/2*c-sideY*d/2*s,cy:anchor.y+sideX*w/2*s+sideY*d/2*c});
     let next=build(dimensions(p));
     const hits=[];
     const targets=entities({rects:wallSnap?rects:[],furniture:guides?furniture.filter(o=>o.id!==f.id):[]}),tol=tolerance(f,scale);
     for(const dim of ['w','d']){
       if(axis===(dim==='w'?'d':'w'))continue;
-      const u=dim==='w'?[c,s]:[-s,c],v=dim==='w'?[-s,c]:[c,s],span=next[dim==='w'?'d':'w'];
+      const u=dim==='w'?[sideX*c,sideX*s]:[-sideY*s,sideY*c],v=dim==='w'?[-sideY*s,sideY*c]:[sideX*c,sideX*s],span=next[dim==='w'?'d':'w'];
       const dot=(q,b)=>(q.x-anchor.x)*b[0]+(q.y-anchor.y)*b[1],raw=dot(p,u);let best=null;
       // A curved silhouette does not fill its nominal side. Clip its unit
       // outline to the finite target span before solving the scaled support.
@@ -182,8 +183,8 @@
     }
     // A corner grip can shorten the other dimension after the first hit.
     // Recheck the final finite span rather than showing a now unreachable edge.
-    for(let i=0;i<hits.length;){const {dim,e}=hits[i],v=dim==='w'?[-s,c]:[c,s],dot=q=>(q.x-anchor.x)*v[0]+(q.y-anchor.y)*v[1],lo=Math.min(dot(e.a),dot(e.b)),hi=Math.max(dot(e.a),dot(e.b));
-      const u=dim==='w'?[c,s]:[-s,c],normal=q=>(q.x-anchor.x)*u[0]+(q.y-anchor.y)*u[1];
+    for(let i=0;i<hits.length;){const {dim,e}=hits[i],v=dim==='w'?[-sideY*s,sideY*c]:[sideX*c,sideX*s],dot=q=>(q.x-anchor.x)*v[0]+(q.y-anchor.y)*v[1],lo=Math.min(dot(e.a),dot(e.b)),hi=Math.max(dot(e.a),dot(e.b));
+      const u=dim==='w'?[sideX*c,sideX*s]:[-sideY*s,sideY*c],normal=q=>(q.x-anchor.x)*u[0]+(q.y-anchor.y)*u[1];
       const curved=geometry.localOutline(f)&&furnitureRings(next).map(r=>r.map(p=>({n:normal({x:p[0],y:p[1]}),t:dot({x:p[0],y:p[1]})})));
       if(!hits[i].extension&&(Math.min(next[dim==='w'?'d':'w'],hi)-Math.max(0,lo)<-1e-7||curved&&Math.abs(spanSupport(curved,lo,hi)-normal(e.a))>2e-6)){next=build({...next,[dim]:dimensions(p)[dim]});hits.splice(i,1);i=0;}else i++;
     }
