@@ -368,3 +368,33 @@
 .cab-bay-inspector .cab-hint {font-size:11px;line-height:1.6;margin:8px 0 12px}
 .cab-bay-inspector label {margin-bottom:12px}
 .cab-bay-inspector input[type=number],.cab-bay-inspector select {box-sizing:border-box;max-width:100%}
+/* Full viewport workspace, with a useful inspector width and paired dimensions. */
+.dlg-box.wide.cab-fullscreen:has(.cab-workspace){width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0;display:flex;flex-direction:column;box-sizing:border-box}
+.cab-fullscreen>.dlg-head{flex:none;padding:12px 20px;gap:12px}
+.cab-fullscreen>.dlg-head h3{margin-right:auto}
+.cab-fullscreen>.dlg-body{flex:1;min-height:0;overflow:hidden;padding:0 14px}
+.cab-fullscreen>.dlg-actions{flex:none;padding:12px 20px}
+.cab-fullscreen .cab-editor.cab-workspace{height:100%;min-height:0;grid-template-columns:220px minmax(280px,1fr) clamp(340px,27vw,460px)}
+.cab-fullscreen-toggle{font-size:12px;padding:6px 12px;white-space:nowrap}
+.cab-workspace>.cab-fields{overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.cab-workspace .cab-fields .form{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.cab-workspace .cab-fields .form label{min-width:0}
+.cab-workspace .cab-fields input:not([type=checkbox]):not([type=color]),.cab-workspace .cab-fields select{width:100%;min-width:0;box-sizing:border-box}
+.cab-workspace .cab-object-heading{position:relative}
+.cab-workspace #cab-bay-picker,.cab-workspace #cab-kitchen-picker{position:sticky;top:0;z-index:4}
+.cab-property-help{display:inline-grid;place-items:center;vertical-align:middle;flex:none;width:19px;height:19px;min-height:19px;margin:0 0 0 6px;padding:0;border:1px solid #8c8172;border-radius:50%;background:#fffdf9;color:#63513d;font:600 12px/1 system-ui;cursor:pointer}
+.cab-property-help:hover,.cab-property-help[aria-expanded=true]{background:#285168;border-color:#285168;color:#fff}
+.cab-property-help:focus-visible{outline:2px solid #168de2;outline-offset:2px}
+.cab-property-explanation[popover]{position:fixed;margin:0;padding:14px 16px;box-sizing:border-box;max-height:min(240px,70dvh);overflow:auto;border:1px solid #cbbca8;border-radius:9px;background:#fffdf9;color:#514536;box-shadow:0 8px 30px #35251333;font:13px/1.8 system-ui}
+.cab-property-explanation::backdrop{background:transparent}
+.cab-fullscreen .cab-fields h4:has(.cab-property-help){display:flex;align-items:center;gap:3px}
+@media(max-width:1100px) and (min-width:701px){.cab-fullscreen .cab-editor.cab-workspace{grid-template-columns:170px minmax(210px,1fr) 320px}}
+@media(max-width:850px) and (min-width:701px){.cab-fullscreen .cab-editor.cab-workspace{grid-template-columns:140px minmax(190px,1fr) 280px}.cab-workspace .cab-fields .form{grid-template-columns:1fr}}
+@media(max-width:700px){.cab-fullscreen>.dlg-body{overflow:auto;padding:0 8px}.cab-fullscreen .cab-editor.cab-workspace{grid-template-columns:1fr;height:auto;overflow:visible}.cab-workspace>.cab-fields{overflow:visible}.cab-workspace #cab-bay-picker,.cab-workspace #cab-kitchen-picker{position:static}.cab-fullscreen>.dlg-head{padding:10px}.cab-fullscreen>.dlg-actions{padding:8px}.cab-save-state{max-width:35%}}
+.cab-workspace [data-cab-scope=body]>.cab-current-part{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.cab-workspace [data-cab-scope=body]>.cab-current-part>h3{grid-column:1/-1}
+.cab-workspace [data-cab-scope=body]>.cab-current-part>label{min-width:0}
+.dlg:has(>.cab-fullscreen){padding:0}
+
+.cab-view-tabs .btn{white-space:nowrap}
+@media(max-width:700px){.cab-workspace .cab-overview{display:none}.cab-view-tabs .btn{padding:6px 10px}}
