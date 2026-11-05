@@ -90,3 +90,8 @@ codex mcp add furnish -- node C:/Users/SPH/Documents/GitHub/Furnish/scripts/furn
 `tests/test-furnish-mcp.cjs` 验证真实 stdio 初始化／工具发现／调用、错误参数、未启动桌面、HTTP 鉴权和来源拒绝、退出清理。`tests/test-furnish-mcp-desktop.cjs` 用真实打包 EXE、独立项目／缓存／端口及真实 stdio 客户端验证复制、按库新增及完整洗衣区、参数／柜门配置与删除覆盖、批量尺寸／位置、相机预设／显式位姿／聚焦／漫游、原生二维与三维图片、撤销／重做、锁定、旧版本、生产核对、保存、刷新和断网 file://。测试从正式文件只读取快照，核对端点与保存路径属于隔离根目录；记录正式文件与仓库文件前后哈希，如用户并行编辑导致变化如实报告，不覆盖或回滚用户编辑。
 
 此接口继承现有空间算法边界；未知高度、资料缺失和路径可达性不因使用 MCP 而变为已通过。截图可以直接用于目视核对；工具成功回执及算法结果不能替代看图，截图包括当前可见界面、标签与选中叠层，并非离线渲染。
+
+
+## 受限家具库替换（2026-11-06）
+
+get_furniture_parameters返回只写动作replacementCatalogKey。configure_furniture中使用list_catalog返回的完整catalogKey，可将占位体替换为单件库模型，保持ID／中心／朝向，采用新品规格，并按产品规则清理不兼容字段；可同时给新型号设置其支持的参数（如mountHeight）。动作键不写入项目。无效条目、锁定对象和关联洗衣组合拒绝，整批原子预演、一次撤销与原flush保持；组合模型仍走组合入口。

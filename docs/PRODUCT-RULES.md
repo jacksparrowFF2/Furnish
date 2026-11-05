@@ -1,5 +1,7 @@
 # 产品能力规则与兼容验收
 
+2026-11-06：pet_bowl_petstar_180（180×180×65）与cat_litter_yanxuan_25kg（平放250×220×80用户尺寸）使用独立petSupply能力、mountHeight新建0、静态资产及geometryVersion1；新品字段沿共用替换清理，旧实例不迁移。新类型v53当前／命名项目、工作区和缓存保持。见[模型依据](PET-SUPPLIES.md)。
+
 2026-11-06：`cabinetEntry.shoeShelfDefault=true`定义置物台柜底部自动中层板的历史默认；`cabinet.entry.shoeShelf=false`显式取消，旧缺失不补写。完整结构替换与复制保留，跨产品替换沿既有cabinet清理，字段非法值由柜体核心拒绝。v52项目、命名方案、家具库、工作区及恢复缓存往返见[宠物柜验收](validation/pet-station-20261106/README.md)。
 
 2026-11-05（通天柱套餐二）：cat_tower_jd_10141711472484默认h=2400mm，catTower集中2100–2750范围、固定柱／伸缩杆及顶撑部件；旧cat_tree仍1430mm。沿h编辑只调顶部，w/d是非标草模缩放；无新增字段、缺失读取默认不改旧实例。二维、实体／缓存与空间沿solidModel版本1、h及共同变换，配色仍排除。见[参数依据](CAT-TOWER-JD-10141711472484.md)。

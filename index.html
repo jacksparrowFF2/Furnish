@@ -415,6 +415,9 @@
 <script src="src/render/downlight-model.js"></script>
 <script src="src/data/se2-blender-asset.js"></script>
 <script src="src/render/static-asset-model.js"></script>
+<script src="src/data/pet-bowl-blender-asset.js"></script>
+<script src="src/data/litter-bag-blender-asset.js"></script>
+<script src="src/render/pet-supply-model.js"></script>
 <script src="src/data/armchair-blender-asset.js"></script>
 <script src="src/data/armchair-berlin-blender-asset.js"></script>
 <script src="src/data/chair-s05118-blender-asset.js"></script>
@@ -916,6 +919,7 @@ const syncIdentity=FurnishPartIdentity;
   if(typeof FurnishWindowLiningModel!=='undefined'&&FurnishWindowLiningModel.supported(f)){const model=FurnishWindowLiningModel.build(THREE,f,{wood:woodM(f.color)});model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishStackStoolModel.supported(f)){const model=FurnishStackStoolModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishFoldingChairModel.supported(f)){const model=FurnishFoldingChairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
+  if(FurnishPetSupplyModel.supported(f)){const model=FurnishPetSupplyModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishCirculatorModel.supported(f)){const model=FurnishCirculatorModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishArmchairModel.supported(f)){const model=FurnishArmchairModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}
   if(FurnishSofaBedModel.supported(f)){const model=FurnishSofaBedModel.build(THREE,f);model.position.set(wx(f.cx),0,wz(f.cy));model.rotation.y=-f.rot*Math.PI/180;model.scale.x=f.flip?-1:1;model.userData.fid=f.id;return model;}

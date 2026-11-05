@@ -1,0 +1,20 @@
+{
+  "parts": [
+    {
+      "name": "outer-shell",
+      "identity": "pet-bowl-v1:outer-shell"
+    },
+    {
+      "name": "steel-liner",
+      "identity": "pet-bowl-v1:steel-liner"
+    },
+    {
+      "name": "anti-slip-base",
+      "identity": "pet-bowl-v1:anti-slip-base"
+    },
+    {
+      "name": "water-surface",
+      "identity": "pet-bowl-v1:water-surface"
+    }
+  ]
+}

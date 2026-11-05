@@ -191,6 +191,8 @@ const LIB = [
   {cat:'生活用品', items:[
     ["cat_tower_jd_10141711472484","猫爬架 · 通天柱套餐二",800,470,"#dfc79d",0,products.height({type:"cat_tower_jd_10141711472484"})],
     ["cat_tree","猫爬架 · 绿叶成荫围栏款",500,500,"#75a533",0,products.height({type:"cat_tree"})],
+    ['pet_bowl_petstar_180','PETSTAR 猫水碗 · 180×65',180,180,'#f0dfb7',undefined,65],
+    ['cat_litter_yanxuan_25kg','网易严选 猫砂2.5kg袋 · 250×220×80',250,220,'#eeede8',undefined,80],
     ["pet_feeder_mijia_2","米家智能宠物喂食器 2",220,324,"#efeee8",0,products.height({type:"pet_feeder_mijia_2"})],
     ["litter_box","封闭式猫砂盆",440,510,"#eeede5",0,products.height({type:"litter_box"})],
     ["dryingrack","晾衣架",1400,550,"#cfd6d9",500]
@@ -219,7 +221,7 @@ const retiredItems=[
 const findItem=(type,name)=>LIB.flatMap(c=>c.items).find(i=>i[0]===type&&i[1]===name)||retiredItems.find(i=>i[0]===type&&i[1]===name)||null;
 // Browsing is a derived view: historical specifications and price precedence stay unchanged.
 const categoryNames={'阳台柜':'洗衣 · 家政','厨房':'厨房橱柜','门 · 隔断':'门窗 · 隔断','生活用品':'宠物'};
-const petTypes=new Set(['aquarium_mijia_2pro','cat_tower_jd_10141711472484','cat_tree','pet_feeder_mijia_2','litter_box']);
+const petTypes=new Set(['pet_bowl_petstar_180','cat_litter_yanxuan_25kg','aquarium_mijia_2pro','cat_tower_jd_10141711472484','cat_tree','pet_feeder_mijia_2','litter_box']);
 function browseLibrary(){
  const groups=new Map();
  for(const c of LIB)for(const it of c.items){

@@ -1,0 +1,24 @@
+{
+  "parts": [
+    {
+      "name": "soft-package",
+      "identity": "litter-bag-v1:soft-package"
+    },
+    {
+      "name": "seal-back",
+      "identity": "litter-bag-v1:seal-back"
+    },
+    {
+      "name": "seal-front",
+      "identity": "litter-bag-v1:seal-front"
+    },
+    {
+      "name": "mix-print",
+      "identity": "litter-bag-v1:mix-print"
+    },
+    {
+      "name": "weight-print",
+      "identity": "litter-bag-v1:weight-print"
+    }
+  ]
+}

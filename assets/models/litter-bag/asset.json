@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "id": "litter-bag",
+  "name": "网易严选2.5kg猫砂袋 · 包装示意",
+  "types": [
+    "cat_litter_yanxuan_25kg"
+  ],
+  "route": "blender",
+  "document": "docs/PET-SUPPLIES.md",
+  "sourceLinks": [
+    "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg"
+  ],
+  "references": [
+    {
+      "path": "references/mix-packaging-family.jpg",
+      "kind": "product-page",
+      "sha256": "ca7a4dd92f18283e3dc5d64c68ffd057d7a4899b3ccc5e7edba63350f73dd6bf",
+      "bytes": 238164,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/pet-supplies-20261106/README.md"
+  ],
+  "notes": [
+    "外包250×220×80mm来自用户提供；白蓝Mix软包装细节为同系列示意，水分／压缩和堆放稳定性未实测。"
+  ],
+  "supportingFiles": [
+    {
+      "path": "references/user-dimensions.txt",
+      "kind": "user",
+      "sha256": "fe7cee47d2e7885295c6a5e297df3642a293f5634fefc6a69fcfa04c72a0315b",
+      "bytes": 191,
+      "legacyPaths": []
+    }
+  ]
+}

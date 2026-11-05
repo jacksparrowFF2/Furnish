@@ -1,0 +1,16 @@
+module.exports=async(page,V)=>{
+ const verify=async(p,shot)=>{
+  const checks=[],ok=(v,m)=>{if(!v)throw Error(m);checks.push(m);};
+  await p.waitForFunction(()=>typeof FurnishMcp!=='undefined'&&!repositoryBooting);
+  await p.evaluate(()=>mutate(()=>{state.furniture=[{id:'water',type:'block',name:'water placeholder',cx:4000,cy:4000,w:180,d:180,h:65,rot:37,mountHeight:10,color:'#eee'},{id:'bag',type:'block',name:'storage placeholder',cx:4400,cy:4000,w:600,d:450,h:1000,rot:90,mountHeight:18,color:'#eee'}];}));
+  const replace=async(id,query,extra={})=>p.evaluate(async({id,query,extra})=>{const before=await FurnishMcp.execute('get_current_plan',{}),items=await FurnishMcp.execute('list_catalog',{query}),key=items.items[0].catalogKey;return FurnishMcp.execute('configure_furniture',{planId:before.plan.id,revision:before.revision,requestId:crypto.randomUUID(),updates:[{id,parameters:{replacementCatalogKey:key,...extra}}]});},{id,query,extra});
+  await replace('water','PETSTAR',{mountHeight:10});await replace('bag','猫砂2.5kg',{mountHeight:18});
+  let f=await p.evaluate(()=>state.furniture);ok(f[0].type==='pet_bowl_petstar_180'&&f[0].cx===4000&&f[0].rot===37&&f[0].mountHeight===10,'bounded replacement retains ID/centre/rotation and applies new product installation');ok(f[1].w===250&&f[1].h===80&&f[1].d===220,'bag replacement clears the old reserve dimensions');ok(f.every(f=>!Object.hasOwn(f,'replacementCatalogKey')),'action key is never persisted');ok(f.every(f=>f.catalogId===undefined),'built-in replacement does not invent a personal catalog identity');
+  await p.evaluate(()=>undo());ok(await p.evaluate(()=>getF('bag').type==='block'),'one undo restores the original placeholder');await p.evaluate(()=>redo());
+  const stable=await p.evaluate(()=>JSON.stringify(state.furniture));const invalid=await p.evaluate(async()=>{const before=await FurnishMcp.execute('get_current_plan',{});try{await FurnishMcp.execute('configure_furniture',{planId:before.plan.id,revision:before.revision,requestId:'invalid-key',updates:[{id:'water',parameters:{name:'must roll back'}},{id:'bag',parameters:{replacementCatalogKey:'not-a-catalog-entry'}}]});return false;}catch{return true;}});ok(invalid&&stable===await p.evaluate(()=>JSON.stringify(state.furniture)),'invalid batch replacement leaves every item unchanged');
+  await p.evaluate(()=>mutate(()=>getF('water').locked=true));let locked=false;try{await replace('water','猫砂2.5kg');}catch{locked=true;}ok(locked,'locked replacement is rejected');await p.evaluate(()=>mutate(()=>delete getF('water').locked));
+  if(await p.evaluate(()=>!!window.FurnishRepository))await p.evaluate(()=>FurnishRepository.flush());await p.reload();await p.waitForFunction(()=>typeof state!=='undefined'&&!repositoryBooting&&state.furniture.some(f=>f.id==='water'));ok(await p.evaluate(()=>getF('water').type==='pet_bowl_petstar_180'&&getF('bag').type==='cat_litter_yanxuan_25kg'),'models survive saved reload');
+  await p.evaluate(async()=>{const a=await FurnishMcp.execute('get_current_plan',{});await FurnishMcp.execute('set_camera',{planId:a.plan.id,revision:a.revision,requestId:'supply-view',view:'3d',focusIds:['water','bag'],horizontalFov:50});});await shot?.();return checks;
+ };
+ return {passed:true,checks:await verify(page,V.screenshot)};
+};

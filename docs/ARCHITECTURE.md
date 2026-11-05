@@ -1,5 +1,7 @@
 # 模块与加载约定
 
+2026-11-06（宠物用品）：两款独立类型复用pet-supply-model→static-asset-model，Blender源／离线脚本供显示、实体与导出共用；新增经典脚本并实测HTTP／断网file。含新类型采用v53，MCP配置增加受限库替换动作，沿原replaceFurniture与mutate／flush，不存动作键。见[模型及调研](PET-SUPPLIES.md)。
+
 2026-11-06（底部开放区）：product-rules集中entry底部中层板默认，cabinet-core读取可选entry.shoeShelf，生产模型按稳定身份取消一块板；UI沿草稿／mutate，CabinetMotion、缓存及空间确认读取原完整配置。含字段采用v52项目／工作区／缓存，无新加载脚本；见[验收](validation/pet-station-20261106/README.md)。
 
 2026-11-05（柜体调整方向）：design-core统一resizeAnchorPosition与local-left/right；snapping.resize扩展有符号移动侧，canvas/selection沿原生产尺寸和拖动链路。柜体草稿尺寸/模块编辑复用端点换算，旧世界基准不迁移；新枚举项目/工作区/缓存v51，无新经典模块或保存通道。见[验证与边界](validation/cabinet-resize-direction-20261105/README.md)。

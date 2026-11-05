@@ -2,7 +2,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),P=require('../../src/core/product-rules.js'),C=require('../../src/data/catalog.js');
-const docs={
+const docs={'pet-bowl':'PET-SUPPLIES.md','litter-bag':'PET-SUPPLIES.md',
  'cat-tower':'CAT-TOWER-JD-10141711472484.md',
  'fan-x231':'FAN-AIRMATE-FA18-X231.md',
  'chair-vihals':'CHAIR-IKEA-VIHALS.md',
@@ -46,7 +46,7 @@ function build(){
   function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,e.name);if(e.isDirectory())walk(file);else if(/\.(blend|glb)$/i.test(e.name)){const filePath=rel(file);files.push({path:filePath,role:current.has(filePath)?'published-source':e.name==='material-studio.blend'?'material-studio':'retained-other',sha256:hash(filePath),bytes:fs.statSync(file).size});}}}
   walk(path.join(root,'assets/models',p.id));
   const modelModule=P.definition(p.fixture)?.solidModel?.module,constructor=modelModule?'src/render/'+modelModule+'-model.js':null;
-  const author='scripts/blender-model-'+(p.id.startsWith('washer')?'washer':p.id==='corner-bookcase-580'?'corner-bookcase':p.id)+'.py';
+  const author=['pet-bowl','litter-bag'].includes(p.id)?'scripts/blender-model-pet-supplies.py':'scripts/blender-model-'+(p.id.startsWith('washer')?'washer':p.id==='corner-bookcase-580'?'corner-bookcase':p.id)+'.py';
   models.push({profile:p.id,type:p.type,name:p.fixture.name,sizeMm:[p.fixture.w,p.fixture.d,p.fixture.h],parts:p.asset.parts,runtimeVersion:runtime.version,runtime:{path:p.asset.runtime,sha256:textHash(p.asset.runtime),normalization:'utf8-lf'},sourceSha256:runtime.sourceSha256,current:{blend:p.asset.blend,glb:p.asset.glb},document:'docs/'+docs[p.id],constructor:constructor&&fs.existsSync(path.join(root,constructor))?constructor:null,author:fs.existsSync(path.join(root,author))?author:null,files:files.sort((a,b)=>a.path.localeCompare(b.path))});
  }
  const catalog=C.library.flatMap(c=>c.items.map(i=>({category:c.cat,type:i[0],name:i[1],w:i[2],d:i[3],h:i[6]??P.height({type:i[0]}),module:P.definition(i[0])?.solidModel?.module||'index-inline'})));

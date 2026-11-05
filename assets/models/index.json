@@ -2,16 +2,138 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 18,
+    "blenderModels": 20,
     "parametricVerificationConfigurations": 86,
-    "verificationConfigurations": 104,
-    "catalogEntries": 148,
-    "catalogTypes": 121,
-    "productDossiers": 44,
-    "referenceImages": 145,
+    "verificationConfigurations": 106,
+    "catalogEntries": 150,
+    "catalogTypes": 123,
+    "productDossiers": 46,
+    "referenceImages": 147,
     "missingReferences": 12
   },
   "models": [
+    {
+      "profile": "pet-bowl",
+      "type": "pet_bowl_petstar_180",
+      "name": "PETSTAR 猫水碗 · 180×65",
+      "sizeMm": [
+        180,
+        180,
+        65
+      ],
+      "parts": 4,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/pet-bowl-blender-asset.js",
+        "sha256": "7513b10b5cb996ada99c36e8b17de471ae1fcb61dc5399614286daeb254dfe56",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "f0773ae181ff7980c8a6ceedbc4bc6e796f0d9d48e5a9d1474f8cb18a074f7c2",
+      "current": {
+        "blend": "assets/models/pet-bowl/v1/pet-bowl-v1.blend",
+        "glb": "assets/models/pet-bowl/v1/pet-bowl-v1.glb"
+      },
+      "document": "docs/PET-SUPPLIES.md",
+      "constructor": "src/render/pet-supply-model.js",
+      "author": "scripts/blender-model-pet-supplies.py",
+      "files": [
+        {
+          "path": "assets/models/pet-bowl/v1/pet-bowl-v1.blend",
+          "role": "published-source",
+          "sha256": "f2e6ff009b9ac4ff018850aa61dad923c503cb81f70f4157eedeec722943932d",
+          "bytes": 130576
+        },
+        {
+          "path": "assets/models/pet-bowl/v1/pet-bowl-v1.glb",
+          "role": "published-source",
+          "sha256": "f0773ae181ff7980c8a6ceedbc4bc6e796f0d9d48e5a9d1474f8cb18a074f7c2",
+          "bytes": 70864
+        }
+      ],
+      "dossier": "assets/models/pet-bowl/asset.json",
+      "references": [
+        "assets/models/pet-bowl/references/user-dimensions.png"
+      ]
+    },
+    {
+      "profile": "litter-bag",
+      "type": "cat_litter_yanxuan_25kg",
+      "name": "网易严选 猫砂2.5kg袋 · 250×220×80",
+      "sizeMm": [
+        250,
+        220,
+        80
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/litter-bag-blender-asset.js",
+        "sha256": "0bdd5869aab7e86b1a9c3134aa641d7b5a83e1927693b9d18546e0615d256bff",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "02aff52745bd21c7d3e9c50f8c3309ca54a6d228dfcd1e10feadbe534c5f616c",
+      "current": {
+        "blend": "assets/models/litter-bag/v4/litter-bag-v1.blend",
+        "glb": "assets/models/litter-bag/v4/litter-bag-v1.glb"
+      },
+      "document": "docs/PET-SUPPLIES.md",
+      "constructor": "src/render/pet-supply-model.js",
+      "author": "scripts/blender-model-pet-supplies.py",
+      "files": [
+        {
+          "path": "assets/models/litter-bag/v1/litter-bag-v1.blend",
+          "role": "retained-other",
+          "sha256": "6b72e6fe4d5f97fcf2d8bf7b17e00b4214a75f61747e136a5f6b89f405df4747",
+          "bytes": 204213
+        },
+        {
+          "path": "assets/models/litter-bag/v1/litter-bag-v1.glb",
+          "role": "retained-other",
+          "sha256": "f01e5d121c4958f3dd8d424d742f7cd4bfbc74317934d12e3c4e19d3d32b6a68",
+          "bytes": 245752
+        },
+        {
+          "path": "assets/models/litter-bag/v2/litter-bag-v1.blend",
+          "role": "retained-other",
+          "sha256": "27c954d38f9cd2ff79831a72c5beda47cefd2fc3262466470dd3f5d039e5dcec",
+          "bytes": 1052916
+        },
+        {
+          "path": "assets/models/litter-bag/v2/litter-bag-v1.glb",
+          "role": "retained-other",
+          "sha256": "45e0d9c189bd1183e45d39ed62ebec3712531211b4ea25327de1c8a315cd53a7",
+          "bytes": 2280292
+        },
+        {
+          "path": "assets/models/litter-bag/v3/litter-bag-v1.blend",
+          "role": "retained-other",
+          "sha256": "183d34b09835a6003eca2ac46acc3c349aec6b41e603d5f54b2719c1a35c6059",
+          "bytes": 202847
+        },
+        {
+          "path": "assets/models/litter-bag/v3/litter-bag-v1.glb",
+          "role": "retained-other",
+          "sha256": "1026b92a083d77ca8f7de7616a43109b41488f8c1e104887f77cb0e16b4091cf",
+          "bytes": 236712
+        },
+        {
+          "path": "assets/models/litter-bag/v4/litter-bag-v1.blend",
+          "role": "published-source",
+          "sha256": "51bed6ef6c500f28ff1d65c12b6f2f75931883bd7202f80cb4dc3b2efda99f34",
+          "bytes": 202750
+        },
+        {
+          "path": "assets/models/litter-bag/v4/litter-bag-v1.glb",
+          "role": "published-source",
+          "sha256": "02aff52745bd21c7d3e9c50f8c3309ca54a6d228dfcd1e10feadbe534c5f616c",
+          "bytes": 236572
+        }
+      ],
+      "dossier": "assets/models/litter-bag/asset.json",
+      "references": [
+        "assets/models/litter-bag/references/mix-packaging-family.jpg"
+      ]
+    },
     {
       "profile": "cat-tower",
       "type": "cat_tower_jd_10141711472484",
@@ -2267,6 +2389,46 @@
     },
     {
       "format": 1,
+      "id": "litter-bag",
+      "name": "网易严选2.5kg猫砂袋 · 包装示意",
+      "types": [
+        "cat_litter_yanxuan_25kg"
+      ],
+      "route": "blender",
+      "document": "docs/PET-SUPPLIES.md",
+      "sourceLinks": [
+        "https://img14.360buyimg.com/pop/jfs/t1/248679/35/10461/184255/665e7a83F62fa7c19/a98f8fdffe9d954a.jpg"
+      ],
+      "references": [
+        {
+          "path": "references/mix-packaging-family.jpg",
+          "kind": "product-page",
+          "sha256": "ca7a4dd92f18283e3dc5d64c68ffd057d7a4899b3ccc5e7edba63350f73dd6bf",
+          "bytes": 238164,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/pet-supplies-20261106/README.md"
+      ],
+      "notes": [
+        "外包250×220×80mm来自用户提供；白蓝Mix软包装细节为同系列示意，水分／压缩和堆放稳定性未实测。"
+      ],
+      "supportingFiles": [
+        {
+          "path": "references/user-dimensions.txt",
+          "kind": "user",
+          "sha256": "fe7cee47d2e7885295c6a5e297df3642a293f5634fefc6a69fcfa04c72a0315b",
+          "bytes": 191,
+          "legacyPaths": []
+        }
+      ],
+      "manifest": "assets/models/litter-bag/asset.json",
+      "readme": "assets/models/litter-bag/README.md"
+    },
+    {
+      "format": 1,
       "id": "litter-box",
       "name": "猫砂盆（型号未确认）",
       "types": [
@@ -2326,6 +2488,37 @@
       ],
       "manifest": "assets/models/panel-light/asset.json",
       "readme": "assets/models/panel-light/README.md"
+    },
+    {
+      "format": 1,
+      "id": "pet-bowl",
+      "name": "PETSTAR猫水碗 · 图示180×65",
+      "types": [
+        "pet_bowl_petstar_180"
+      ],
+      "route": "blender",
+      "document": "docs/PET-SUPPLIES.md",
+      "sourceLinks": [
+        "https://item.jd.com/100173178564.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-dimensions.png",
+          "kind": "user",
+          "sha256": "5dca3da951277bf526c4e60944552650bca8b198ae352b76f210a1f828243a44",
+          "bytes": 990177,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/pet-supplies-20261106/README.md"
+      ],
+      "notes": [
+        "尺寸／版本依据与简化见型号文档；不把包装估算和示意水面当作厂家规格。"
+      ],
+      "manifest": "assets/models/pet-bowl/asset.json",
+      "readme": "assets/models/pet-bowl/README.md"
     },
     {
       "format": 1,
@@ -5385,6 +5578,24 @@
       "d": 500,
       "h": 1430,
       "module": "cat-tree"
+    },
+    {
+      "category": "生活用品",
+      "type": "pet_bowl_petstar_180",
+      "name": "PETSTAR 猫水碗 · 180×65",
+      "w": 180,
+      "d": 180,
+      "h": 65,
+      "module": "pet-supply"
+    },
+    {
+      "category": "生活用品",
+      "type": "cat_litter_yanxuan_25kg",
+      "name": "网易严选 猫砂2.5kg袋 · 250×220×80",
+      "w": 250,
+      "d": 220,
+      "h": 80,
+      "module": "pet-supply"
     },
     {
       "category": "生活用品",

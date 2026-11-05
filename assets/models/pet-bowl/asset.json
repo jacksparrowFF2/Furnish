@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "id": "pet-bowl",
+  "name": "PETSTAR猫水碗 · 图示180×65",
+  "types": [
+    "pet_bowl_petstar_180"
+  ],
+  "route": "blender",
+  "document": "docs/PET-SUPPLIES.md",
+  "sourceLinks": [
+    "https://item.jd.com/100173178564.html"
+  ],
+  "references": [
+    {
+      "path": "references/user-dimensions.png",
+      "kind": "user",
+      "sha256": "5dca3da951277bf526c4e60944552650bca8b198ae352b76f210a1f828243a44",
+      "bytes": 990177,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/pet-supplies-20261106/README.md"
+  ],
+  "notes": [
+    "尺寸／版本依据与简化见型号文档；不把包装估算和示意水面当作厂家规格。"
+  ]
+}
