@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "heartlink-roll-layer",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "toilet_roll_heartlink_layer9",
+    "name": "心相印卷纸 · 9卷层（3层27卷）",
+    "w": 300,
+    "d": 300,
+    "color": "#f2f0e8",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "心相印",
+    "model": "用户确认单卷Ø100×140；9卷层／三层27卷，不含外箱",
+    "sourceUrl": "",
+    "h": 140
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-06T17:29:31.793Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-21prl7\\heartlink-roll-layer-HZk7bc",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-06T17:29:31.794Z",
+      "result": {
+        "command": "author-heartlink-roll-layer",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-21prl7\\heartlink-roll-layer-HZk7bc\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-21prl7\\heartlink-roll-layer-HZk7bc\\authored",
+        "passed": true,
+        "profile": "heartlink-roll-layer",
+        "parts": 9,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "heartlink-roll-layer",
+          "parts": 9,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-06T17:29:33.972Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-06T17:29:33.973Z",
+      "result": {
+        "passed": true,
+        "profile": "heartlink-roll-layer",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-06T17:29:34.801Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-06T17:29:34.801Z",
+      "result": {
+        "command": "publish-heartlink-roll-layer",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-21prl7\\heartlink-roll-layer-HZk7bc\\authored\\heartlink-roll-layer-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-21prl7\\workspace\\src\\data\\heartlink-roll-layer-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "2c6f1a0f24949207c94bca08f12f585b138357ae9d620b7e4ed74b16df859e1a",
+        "runtimeSha256": "1e92e2838b711d141dea53f69cb5bb7199450cebb58a2ee7eb736e2cf8bbdbfd"
+      },
+      "finished": "2026-11-06T17:29:35.749Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-06T17:29:35.750Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "heartlink-roll-layer",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-21prl7\\heartlink-roll-layer-HZk7bc\\storage-supplies.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "heartlink-roll-layer",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 9,
+                  "bottom": 0,
+                  "top": 140,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 9,
+                  "bottom": 0,
+                  "top": 140,
+                  "externalDistance": 79.97561301814034,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 9,
+                  "bottom": 0,
+                  "top": 140,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 9,
+                  "bottom": 0,
+                  "top": 140,
+                  "externalDistance": 79.97561301814034,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-06T17:29:38.323Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-06T17:29:38.324Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 9,
+            "bounds": [
+              [
+                -0.15000000596046448,
+                0,
+                -0.15000000596046448
+              ],
+              [
+                0.15000000596046448,
+                0.14000000059604645,
+                0.15000000596046448
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 9,
+            "bounds": [
+              [
+                -0.1679999977350235,
+                0,
+                -0.16200000047683716
+              ],
+              [
+                0.1679999977350235,
+                0.15119999647140503,
+                0.16200000047683716
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 9,
+            "bounds": [
+              [
+                -0.15000000596046448,
+                0,
+                -0.15000000596046448
+              ],
+              [
+                0.15000000596046448,
+                0.14000000059604645,
+                0.15000000596046448
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:29:55.102Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-06T17:29:55.102Z",
+      "result": {
+        "passed": true,
+        "profile": "heartlink-roll-layer",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 9,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 9,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 9,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:29:56.145Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-06T17:29:56.146Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 9,
+            "position": [
+              0,
+              0.07000000029802322,
+              0.8313152832418365
+            ],
+            "target": [
+              0,
+              0.07000000029802322,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 9,
+            "position": [
+              0.4602465107104404,
+              0.32313558118876545,
+              0.6443451149946166
+            ],
+            "target": [
+              0,
+              0.07000000029802322,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 9,
+            "position": [
+              -0.4706396016740706,
+              0.2582558409676514,
+              -0.6588954423436988
+            ],
+            "target": [
+              0,
+              0.07000000029802322,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:30:06.656Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-06T17:30:06.657Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T17:30:09.851Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-06T17:30:09.852Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T17:30:12.969Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-06T17:30:12.969Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T17:30:16.103Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-06T17:30:16.104Z",
+      "result": {
+        "passed": true,
+        "profile": "heartlink-roll-layer",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 9,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 9,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 9,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:30:16.888Z"
+    }
+  ],
+  "finished": "2026-11-06T17:30:16.888Z"
+}

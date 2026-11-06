@@ -103,6 +103,66 @@
           "sha256": "00c8d0ae826648bc2602a3ee1b0812087ff10d1769a206bbe5b96f30bb03e602"
         }
       }
+    },
+    {
+      "profile": "heartlink-roll-layer",
+      "type": "toilet_roll_heartlink_layer9",
+      "sizeMm": [
+        300,
+        140,
+        300
+      ],
+      "source": "user-confirmed",
+      "files": {
+        "blend": {
+          "path": "heartlink-roll-layer/v2/heartlink-roll-layer-v1.blend",
+          "sha256": "beee3db8fb91418ba19bd09341bc1b330a8fc921346453fe51a2985bb4ce7ec0"
+        },
+        "glb": {
+          "path": "heartlink-roll-layer/v2/heartlink-roll-layer-v1.glb",
+          "sha256": "2c6f1a0f24949207c94bca08f12f585b138357ae9d620b7e4ed74b16df859e1a"
+        }
+      }
+    },
+    {
+      "profile": "heartlink-tissue-layer",
+      "type": "tissue_heartlink_layer6",
+      "sizeMm": [
+        420,
+        50,
+        200
+      ],
+      "source": "user-confirmed",
+      "files": {
+        "blend": {
+          "path": "heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.blend",
+          "sha256": "84e562aca8d36d5de8a3611bd88256a216502825d4af5c461efe741fa362f195"
+        },
+        "glb": {
+          "path": "heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.glb",
+          "sha256": "0151b65d39d94f4cd91777a7e3d5cbf6c59b94b7d9548efacc6cda84c669b34e"
+        }
+      }
+    },
+    {
+      "profile": "wet-wipes-pack",
+      "type": "wet_wipes_pack_170",
+      "sizeMm": [
+        170,
+        70,
+        110
+      ],
+      "source": "user-confirmed",
+      "files": {
+        "blend": {
+          "path": "wet-wipes-pack/v1/wet-wipes-pack-v1.blend",
+          "sha256": "380e698cbf118ad83fd9079e6ba0553d18f443967fb5139bc87359ade7ee14d3"
+        },
+        "glb": {
+          "path": "wet-wipes-pack/v1/wet-wipes-pack-v1.glb",
+          "sha256": "bfcc6fccca0cd2db65a9275ee864f08e665d33246b2c8b5a375c0ff507190f80"
+        }
+      }
     }
   ]
 }

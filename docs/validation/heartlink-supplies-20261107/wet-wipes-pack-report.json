@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "wet-wipes-pack",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "wet_wipes_pack_170",
+    "name": "湿巾 · 170×110×70用户尺寸",
+    "w": 170,
+    "d": 110,
+    "color": "#8aafb6",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "",
+    "model": "用户确认170×110×70；闭盖包装示意，品牌型号未知",
+    "sourceUrl": "",
+    "h": 70
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-06T17:24:13.127Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-IaAiC7\\wet-wipes-pack-okmJgG",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-06T17:24:13.129Z",
+      "result": {
+        "command": "author-wet-wipes-pack",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-IaAiC7\\wet-wipes-pack-okmJgG\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-IaAiC7\\wet-wipes-pack-okmJgG\\authored",
+        "passed": true,
+        "profile": "wet-wipes-pack",
+        "parts": 4,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "wet-wipes-pack",
+          "parts": 4,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-06T17:24:15.056Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-06T17:24:15.056Z",
+      "result": {
+        "passed": true,
+        "profile": "wet-wipes-pack",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-06T17:24:15.839Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-06T17:24:15.840Z",
+      "result": {
+        "command": "publish-wet-wipes-pack",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-IaAiC7\\wet-wipes-pack-okmJgG\\authored\\wet-wipes-pack-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-IaAiC7\\workspace\\src\\data\\wet-wipes-pack-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "bfcc6fccca0cd2db65a9275ee864f08e665d33246b2c8b5a375c0ff507190f80",
+        "runtimeSha256": "54805d6f54137ce526e47a89a4fe831bfaf33bebac11ab8f9e5361cef4f76464"
+      },
+      "finished": "2026-11-06T17:24:16.694Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-06T17:24:16.695Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "heartlink-tissue-layer",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-IaAiC7\\heartlink-tissue-layer-hFAHyR\\storage-supplies.log",
+            "reused": true
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "wet-wipes-pack",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 4,
+                  "bottom": 0,
+                  "top": 70,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 4,
+                  "bottom": 0,
+                  "top": 70,
+                  "externalDistance": 97.53884823295549,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 4,
+                  "bottom": 0,
+                  "top": 70,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 4,
+                  "bottom": 0,
+                  "top": 70,
+                  "externalDistance": 97.53884823295549,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-06T17:24:17.582Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-06T17:24:17.582Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 4,
+            "bounds": [
+              [
+                -0.08500000089406967,
+                0,
+                -0.054999999701976776
+              ],
+              [
+                0.08500000089406967,
+                0.07000000029802322,
+                0.054999999701976776
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 4,
+            "bounds": [
+              [
+                -0.09520000219345093,
+                0,
+                -0.05939999967813492
+              ],
+              [
+                0.09520000219345093,
+                0.07559999823570251,
+                0.05939999967813492
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 4,
+            "bounds": [
+              [
+                -0.08500000089406967,
+                0,
+                -0.054999999701976776
+              ],
+              [
+                0.08500000089406967,
+                0.07000000029802322,
+                0.054999999701976776
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:24:29.389Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-06T17:24:29.389Z",
+      "result": {
+        "passed": true,
+        "profile": "wet-wipes-pack",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 4,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 4,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 4,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:24:30.253Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-06T17:24:30.253Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 4,
+            "position": [
+              0,
+              0.03500000014901161,
+              0.39865005268534115
+            ],
+            "target": [
+              0,
+              0.03500000014901161,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 4,
+            "position": [
+              0.2207072327931525,
+              0.1563889781852455,
+              0.30899012591041347
+            ],
+            "target": [
+              0,
+              0.03500000014901161,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 4,
+            "position": [
+              -0.22569114965807247,
+              0.1252764600122406,
+              -0.3159676095213014
+            ],
+            "target": [
+              0,
+              0.03500000014901161,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:24:36.111Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-06T17:24:36.111Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T17:24:39.228Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-06T17:24:39.228Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T17:24:42.345Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-06T17:24:42.346Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T17:24:45.469Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-06T17:24:45.470Z",
+      "result": {
+        "passed": true,
+        "profile": "wet-wipes-pack",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 4,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 4,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 4,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T17:24:46.261Z"
+    }
+  ],
+  "finished": "2026-11-06T17:24:46.261Z"
+}

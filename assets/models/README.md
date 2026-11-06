@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-50份产品／设计档案，152张参考图，12张历史原图待补；24组Blender模型。参数化验证配置89组，全部家具库155条目／128种类型。
+53份产品／设计档案，152张参考图，12张历史原图待补；27组Blender模型。参数化验证配置89组，全部家具库158条目／131种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -32,6 +32,8 @@
 | [定制玄关洞洞板柜](entry-pegboard/README.md) | 1 | 参考资料 | 0 |
 | [艾美特 小暴风 PRO FA18-X231 空气循环扇](fan-x231/README.md) | 3 | [BLEND](fan-x231/v2/fan-x231-v1.blend) · [GLB](fan-x231/v2/fan-x231-v1.glb) | 0 |
 | [纯平四门冰箱（双抽屉）](fridge/README.md) | 0 | [BLEND](fridge/v2/fridge-v1.blend) · [GLB](fridge/v2/fridge-v1.glb) | 0 |
+| [心相印卷纸 · 9卷层（3层27卷）](heartlink-roll-layer/README.md) | 0 | [BLEND](storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.blend) · [GLB](storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.glb) | 0 |
+| [心相印抽纸 · 6包层（4层24包）](heartlink-tissue-layer/README.md) | 0 | [BLEND](storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.blend) · [GLB](storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.glb) | 0 |
 | [方太抽油烟机 JCD10TA](hood/README.md) | 0 | [BLEND](hood/v2/hood-v1.blend) · [GLB](hood/v2/hood-v1.glb) | 0 |
 | [网易严选2.5kg猫砂袋 · 包装示意](litter-bag/README.md) | 2 | [BLEND](litter-bag/v7/litter-bag-v1.blend) · [GLB](litter-bag/v7/litter-bag-v1.glb) | 0 |
 | [猫砂盆（型号未确认）](litter-box/README.md) | 0 | 参数化 | 2 |
@@ -56,6 +58,7 @@
 | [次卧衣柜与窗下书桌组合](wardrobe-desk-references/README.md) | 2 | 参考资料 | 0 |
 | [洗衣机](washer/README.md) | 0 | [BLEND](washer/washer-v1.blend) · [GLB](washer/washer-v1.glb) | 0 |
 | [小天鹅-TG10K60W-洗衣机](washer-tg10k60w/README.md) | 6 | [BLEND](washer-tg10k60w/v4/washer-tg10k60w-v1.blend) · [GLB](washer-tg10k60w/v4/washer-tg10k60w-v1.glb) | 0 |
+| [湿巾 · 170×110×70用户尺寸](wet-wipes-pack/README.md) | 0 | [BLEND](storage-supplies/wet-wipes-pack/v1/wet-wipes-pack-v1.blend) · [GLB](storage-supplies/wet-wipes-pack/v1/wet-wipes-pack-v1.glb) | 0 |
 | [定制窗下矮柜与侧边书柜](window-bench-references/README.md) | 4 | 参考资料 | 0 |
 | [飘窗石英石窗台板与木制包套](window-lining/README.md) | 3 | 参数化 | 0 |
 | [源氏木语-Y52Y09-六格书柜](y52y09/README.md) | 1 | [BLEND](y52y09/y52y09-v1.blend) · [GLB](y52y09/y52y09-v1.glb) | 0 |

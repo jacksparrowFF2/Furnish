@@ -189,6 +189,9 @@ const LIB = [
     ["tripleslidingwindow","三联动推拉窗",1800,90,"#41474b",0,1500]
   ]},
   {cat:'囤货用品', items:[
+    ["toilet_roll_heartlink_layer9", "心相印卷纸 · 9卷层（3层27卷）", 300, 300, "#f2f0e8",undefined,140],
+    ["tissue_heartlink_layer6", "心相印抽纸 · 6包层（4层24包）", 420, 200, "#70a88f",undefined,50],
+    ["wet_wipes_pack_170", "湿巾 · 170×110×70用户尺寸", 170, 110, "#8aafb6",undefined,70],
     ["toolbox_sata_95101", "世达95101工具箱 · 收起参考", 360, 150, "#205843",undefined,115],
     ["medicine_box_reference", "家用双层药箱 · 340×250×200参考", 340, 250, "#e7e4dc",undefined,200],
     ["toilet_paper_pack_reference", "整提卷纸 · 220×220×340估算", 220, 220, "#664895",undefined,340],

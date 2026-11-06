@@ -1,3 +1,5 @@
+新增用户尺寸修订：heartlink-roll-layer的v2（1mm外缘倒边，保留v1源）、heartlink-tissue-layer／wet-wipes-pack的v1，分别为9卷层、6包层、单包湿巾；三层27卷／四层24包，单件尺寸由用户确认，不含纸箱。详见docs/STORAGE-CABINET-2400.md修订节。旧四款资产保持。
+
 # 客厅储物用品参考资产
 
 四款静态模型由独立后台Blender 5.2.3 LTS创建，源工程、GLB、灰模与材质检查图保留在各版本目录。当前版本：工具箱toolbox/v3，药箱medicine/v2，卷纸rolls/v2，抽纸tissues/v2。`manifest.json`记录原图／源工程／交换文件哈希和来源；四个profile另有标准产品档案，`scripts/lib/storage-supply-specs.json`是本批作者／发布契约。

@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "id": "wet-wipes-pack",
+  "name": "湿巾 · 170×110×70用户尺寸",
+  "types": [
+    "wet_wipes_pack_170"
+  ],
+  "route": "blender",
+  "document": "docs/STORAGE-CABINET-2400.md",
+  "sourceLinks": [],
+  "references": [],
+  "supportingFiles": [
+    {
+      "path": "references/user-dimensions.txt",
+      "kind": "user",
+      "sha256": "eaf97033ff5f62a3c7613abfd7c9162fd9f95c4a608e99c8ace4326161d31cd2",
+      "bytes": 443,
+      "legacyPaths": [],
+      "normalization": "utf8-lf"
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/heartlink-supplies-20261107/README.md"
+  ],
+  "notes": [
+    "单件外包与数量按用户确认；装箱排列／纸箱外包未知，采用不含纸箱的层叠示意；没有厂家SKU和同款外观图。"
+  ]
+}

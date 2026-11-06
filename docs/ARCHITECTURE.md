@@ -1,3 +1,5 @@
+2026-11-07（用户纸品尺寸）：新增心相印9卷层／6包层与湿巾三款Blender资产，storageSupplyRevision=2仅为新类型选择v57；仍复用storage-supply-model、安装离地与原MCP／mutate保存，无新持久字段。单件尺寸与27／24数量见[囤货柜修订](STORAGE-CABINET-2400.md)。
+
 2026-11-07：storageSupply族与四款静态Blender离线资产共用storage-supply-model→static-asset，新增经典脚本供正式显示／数值实体；仅含本族数据采用v56，沿原mutate／MCP保存。三等宽柜副本与尺寸依据见[囤货柜](STORAGE-CABINET-2400.md)。
 
 2026-11-06：windows-integrity Node／PowerShell只读标签查询共用于启动与打包，检查实际EXE的SACL强制完整性而不读写审计策略；源码和MCP拒绝Low运行时，打包明确提示不可启动产物。两脚本进入runtimeFiles，无网页或持久数据变化，见[根因验证](validation/desktop-integrity-20261106/README.md)。

@@ -38,7 +38,35 @@ def front_text(text,x,height,size):
  o=bpy.context.object;o.data.body=text;o.data.size=size;o.data.align_x='CENTER';o.data.resolution_u=3;o.data.extrude=.0004
  bpy.ops.object.convert(target='MESH');return identity(bpy.context.object,'quantity-mark',white)
 W,H,D=[v/1000 for v in spec['size']]
-if profile in ('storage-toolbox','medicine-box'):
+if spec.get('shape')=='roll-layer':
+ # Measured outer dimensions; centre hole diameter is an explicit visual estimate.
+ # Separate stable roll objects preserve quantity and measurable unit geometry.
+ uw,uh,ud=[v/1000 for v in spec['unitSize']]
+ for z in range(3):
+  for x in range(3):
+   verts=[];faces=[];N=48
+   section=[(0,uw/2-.001),(.001,uw/2),(uh-.001,uw/2),(uh,uw/2-.001),(uh,.012),(0,.012)]
+   for y,r in section:
+    for j in range(N):
+     a=j*math.tau/N;verts.append(((x-1)*uw+r*math.cos(a),-((z-1)*ud+r*math.sin(a)),y))
+   for band in range(len(section)):
+    for j in range(N):faces.append((band*N+j,band*N+(j+1)%N,((band+1)%len(section))*N+(j+1)%N,((band+1)%len(section))*N+j))
+   data=bpy.data.meshes.new('roll');data.from_pydata(verts,[],faces);data.update();o=bpy.data.objects.new('roll',data);bpy.context.collection.objects.link(o)
+   identity(o,'roll-'+str(z*3+x+1).zfill(2),white)
+elif spec.get('shape')=='tissue-layer':
+ uw,uh,ud=[v/1000 for v in spec['unitSize']]
+ for z in range(2):
+  for x in range(3):
+   number=z*3+x+1;px=(x-1)*uw;pz=(z-.5)*ud
+   box(f'pack-{number:02}-body',(uw,uh-.001,ud),(px,(uh-.001)/2,pz),main,.004)
+   box(f'pack-{number:02}-seal',(uw-.012,.001,ud-.008),(px,uh-.0005,pz),white,.0002)
+   box(f'pack-{number:02}-slot',(.065,.0003,.009),(px,uh-.00015,pz),dark,.0001)
+elif spec.get('shape')=='wet-wipes':
+ box('soft-body',(W,H-.009,D),(0,(H-.009)/2,0),main,.006)
+ box('top-seal',(W-.012,.001,D-.012),(0,H-.0085,0),white,.0002)
+ box('lid-frame',(.085,.004,.055),(0,H-.006,0),dark,.001)
+ box('lid',(.080,.004,.050),(0,H-.002,0),white,.001)
+elif profile in ('storage-toolbox','medicine-box'):
  med=profile=='medicine-box';bodytop=H-(.048 if med else .026)
  box('body',(W,bodytop,D),(0,bodytop/2,0),main,.004 if med else .001)
  if med:box('upper-band',(W,.018,D),(0,bodytop+.009,0),dark,.003)

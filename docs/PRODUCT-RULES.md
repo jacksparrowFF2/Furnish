@@ -1,3 +1,5 @@
+2026-11-07：三款用户确认日用品以storageSupplyRevision=2选择v57，单卷Ø100×140、单包抽纸140×100×50、湿巾170×110×70；卷纸9件／层、抽纸6件／层固定几何，三层27／四层24数量由实际构造验证。mountHeight默认0、旧四款v56保留；无新实例字段。见[尺寸与边界](STORAGE-CABINET-2400.md)。
+
 2026-11-06：cabinetEntry声明lowerDoorDropDefault=0／min=0；entry.lowerDoorDrop为可选独立mm量，几何上限沿柜体基准推导。缺失不补写、恢复0删除，含字段采用v55，不改变其它模板默认。见 [参数契约](ENTRY-DOOR-DROP.md)。
 
 2026-11-06：cat_litter_yanxuan_25kg geometryVersion2用于方块主体＋折放提手，尺寸与类型保持；无新增持久字段／格式版本，不改变水碗规则。见[修正依据](validation/litter-bag-brick-20261106/README.md)。
