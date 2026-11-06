@@ -1,3 +1,5 @@
+2026-11-06：cabinetEntry声明lowerDoorDropDefault=0／min=0；entry.lowerDoorDrop为可选独立mm量，几何上限沿柜体基准推导。缺失不补写、恢复0删除，含字段采用v55，不改变其它模板默认。见 [参数契约](ENTRY-DOOR-DROP.md)。
+
 2026-11-06：cat_litter_yanxuan_25kg geometryVersion2用于方块主体＋折放提手，尺寸与类型保持；无新增持久字段／格式版本，不改变水碗规则。见[修正依据](validation/litter-bag-brick-20261106/README.md)。
 
 2026-11-06：pet_feeding_insert 为参数化落地金属架组合，集中 feedingFrame 尺寸／范围，petTrayOpen 缺失收起、mountHeight 新建0；嵌入喂食器刚性随托板，不拉伸。含类型采用v54，原替换清理、缓存及确认覆盖状态，参见 [设计契约](PET-FEEDING-INSERT.md)。

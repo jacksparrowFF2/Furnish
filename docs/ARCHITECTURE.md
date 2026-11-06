@@ -1,3 +1,5 @@
+2026-11-06：cabinet-core 集中 entry 下门下延边界，cabinet-model 与预览／数值板件／GLB共用原生产构造；UI沿草稿／mutate。完整cabinet缓存和确认覆盖lowerDoorDrop，含字段采用v55；无新脚本或保存通道。见 [门板下延](ENTRY-DOOR-DROP.md)。
+
 2026-11-06：pet-feeding-core 统一定制架构造与线性扫掠，pet-feeding-frame-model 内嵌原喂食器生产构造器；新经典脚本，petTrayOpen 进入原 UI／mutate、实体／3D 缓存及项目核对。含类型采用 v54，见 [金属架契约](PET-FEEDING-INSERT.md)。
 
 # 模块与加载约定
