@@ -3,8 +3,8 @@
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
     "blenderModels": 20,
-    "parametricVerificationConfigurations": 88,
-    "verificationConfigurations": 108,
+    "parametricVerificationConfigurations": 89,
+    "verificationConfigurations": 109,
     "catalogEntries": 151,
     "catalogTypes": 124,
     "productDossiers": 46,
@@ -4312,6 +4312,12 @@
     },
     {
       "id": "cabinet--entry-console-drop",
+      "type": "cabinet",
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "module": "index-inline"
+    },
+    {
+      "id": "cabinet--entry-console-structure",
       "type": "cabinet",
       "name": "玄关柜二 · 置物台与鞋柜",
       "module": "index-inline"

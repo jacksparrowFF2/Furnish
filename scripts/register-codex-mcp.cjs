@@ -91,7 +91,7 @@ async function startDesktop({root=defaultRoot(),executable,env=process.env,timeo
  root=fs.realpathSync(root);const {callDesktop}=require('./furnish-mcp.cjs');
  const read=()=>callDesktop(root,'get_current_plan',{}, {timeout:1000});
  try{await read();return {started:false,running:true};}catch{}
- const chosen=executable||[path.join(root,'Furnish.exe'),path.join(root,'output/desktop/Furnish-win32-x64/Furnish.exe')].find(p=>fs.statSync(p,{throwIfNoEntry:false})?.isFile());
+ const chosen=require('./launch-desktop.cjs').desktopExecutable(root,{executable,env});
  if(!chosen||!fs.statSync(chosen,{throwIfNoEntry:false})?.isFile())throw Error('未找到 Furnish 桌面程序。请先打开桌面快捷方式，或用 --desktop 指定 Furnish.exe。');
  const desktopEnv={...env,FURNISH_DESKTOP_ROOT:root};delete desktopEnv.ELECTRON_RUN_AS_NODE;
  const child=spawn(chosen,[],{cwd:root,env:desktopEnv,detached:true,windowsHide:false,stdio:'ignore'});let failure=null;child.on('error',e=>{failure=e;});child.unref();

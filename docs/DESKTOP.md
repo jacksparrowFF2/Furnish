@@ -38,6 +38,16 @@ Chrome／Edge 的缓存不由桌面版直接读取。如果尚有仅存在浏览
 
 桌面优先不取代按改动范围执行的 HTTP／断网 file:// 兼容验收。尤其修改加载机制时仍须实际验证两个入口。
 
+## 2026-11-06：启动目录故障恢复
+
+本机原桌面目录在加载应用代码前以`0x80000003`退出，重启Windows无效；原始Electron的`--version`同样失败，而Node模式正常。独立官方45.2.3在项目目录仍失败；复制到D盘正常继承权限的独立目录即可正常查询版本。随后将原45.0.0桌面整包复制到`D:\1601装修\Furnish程序\Furnish-win32-x64`，相同EXE哈希`8E84549B05D27D444DA2957653200D1E0AC287EFF0FC5722B92835B9E0821A59`的打包应用通过隔离真实桌面检查。证据指向原启动目录／权限环境；未进一步确定具体ACE，因此不将虚拟显卡或应用层代码认定为根因。
+
+恢复保留原包、桌面缓存、源码工作目录及D盘正式保存路径，不关闭沙箱、不修改驱动、不重置项目ACL。快捷方式原件及旧目标保存在`.local/desktop-recovery-20261106`，桌面快捷方式改指向D盘整包。正式MCP读取和截图已确认原方案恢复、保存状态为saved。用户最新缓存沿原恢复链保存，不用旧仓库示例文件覆盖。
+
+源码启动脚本与MCP启动探针共用`scripts/launch-desktop.cjs`的路径选择：显式路径优先，其次`FURNISH_DESKTOP_EXE`，其次本机`.local/desktop-executable.json`的绝对`executable`，再使用原标准打包位置。损坏或不存在的本机配置明确失败，不静默启动另一个包。配置只在本机保存，不进入项目JSON；源码cmd入口使用本机Node，整包EXE仍不需要Node。打包文件清单包含新脚本。可移动程序目录，但必须保留整个运行时并确认`furnish-desktop.json`仍指向正确源码；不把本机D盘路径提交为其它电脑默认值。
+
+增量检查：`test-desktop-executable`、`test-codex-mcp-registration`通过；`test-entry-structural-drag-desktop`使用迁移后的原45.0.0包、隔离源码／缓存／项目通过，确认sandbox=true、contextIsolation=true、nodeIntegration=false及真实鼠标／保存／刷新。报告`output/desktop-verification/entry-structure-mXxHRO/result.json`。未运行全量桌面验收或系统权限修复。
+
 ## 浏览器入口保留
 
 - 原 `start-furnish.cmd` 和 `node scripts/serve.cjs` 保持可用。

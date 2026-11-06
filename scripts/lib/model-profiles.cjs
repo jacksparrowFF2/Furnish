@@ -76,6 +76,7 @@ function profiles(){
   out.push({id:'cabinet--'+template,type,route:'parametric',fixture:{...f,type},tests:['cabinet-model','cabinet-interior-distances',...(template==='entry-pegboard'?['entry-pegboard']:template==='entry-console'?['entry-console']:template==='tv-floor'?['tv-floor']:[])]});
  }
  const dropped=B.preset('entry-console');dropped.cabinet.entry.lowerDoorDrop=100;out.push({id:'cabinet--entry-console-drop',type:'cabinet',route:'parametric',fixture:{...dropped,type:'cabinet'},tests:['entry-door-drop','entry-console']});
+ const entryBase={...B.preset('entry-console'),type:'cabinet'},entryRow=B.structuralBoards(entryBase)[0],entryMoved=B.editStructuralBoard(entryBase,entryRow.section,'position',entryRow.position+10);out.push({id:'cabinet--entry-console-structure',type:'cabinet',route:'parametric',fixture:entryMoved,tests:['entry-structural-drag','entry-console']});
  for(const side of ['left','right']){
   const f=K.configure({type:'counter',name:'洗衣柜',color:'#f3f1ec'},K.laundryPreset());out.push({id:'laundry--'+side,type:'counter',route:'parametric',fixture:{...f,flip:side==='left'},tests:['laundry-cabinet','laundry-area']});
   let n=0;const full=K.createLaundryCabinet({id:'model-pilot',type:'counter',cx:0,cy:0,rot:0,color:'#f3f1ec'},()=> 'laundry-member-'+(++n),side);out.push({id:'laundry-area--'+side,type:'counter',route:'parametric',fixture:full[0],companions:full.slice(1),tests:['laundry-cabinet','laundry-area']});

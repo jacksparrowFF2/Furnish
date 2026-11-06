@@ -630,7 +630,14 @@
   return {furniture:validate({...f,w:total,cabinet:c}),selected,remap:new Map(entries.flatMap((e,i)=>e.old===null?[]:[[e.old,i]]))};
  }
  function structuralBoards(f){
-  const c=config(f),s=c.sideboard;if(!s)return [];
+  const c=config(f),s=c.sideboard;
+  if(c.entry){
+   const e=c.entry,t=c.thickness,p=c.plinth,S=e.shoeHeight,L=e.lowerHeight,N=e.nicheHeight,h=bodyHeight(f),lowerShelves=c.columns.flatMap(col=>col.shelves.filter(y=>y<S+L)),upperShelves=c.columns.flatMap(col=>col.shelves.filter(y=>y>=S+L+N)),drawers=Math.max(0,...c.columns.map(col=>col.drawers.reduce((n,d)=>n+d.height,0))),minLower=Math.max(300,drawers+120),base=p+S-t,counter=p+S+L-t,ceiling=p+S+L+N;
+   return [{section:'entryLowerBase',column:0,label:'下柜底层板（联动开放区）',position:base,thickness:t,key:'shoeHeight',value:S,min:Math.max(180,entryLowerDoorDrop(c)+t-p-frontInset(f,c)),max:Math.min(S+L-minLower,...lowerShelves.map(y=>y+t-40)),lower:base-(entryShoeShelf(c)?p+S/2:p?p+t:0),upper:Math.min(counter,...lowerShelves.map(y=>p+t+y))-(base+t),lowerScale:entryShoeShelf(c)?.5:1},
+    {section:'entryCounter',column:0,label:'置物台板（联动下柜高度）',position:counter,thickness:t,key:'lowerHeight',value:L,min:Math.max(minLower,...lowerShelves.map(y=>y+40+drawers+2*t-S)),max:L+N-100,lower:counter-Math.max(p+S,...lowerShelves.map(y=>p+2*t+y)),upper:N},
+    {section:'entryUpperBase',column:0,label:'上柜底层板（联动置物区）',position:ceiling,thickness:t,key:'nicheHeight',value:N,min:100,max:Math.min(h-200-p-S-L,...upperShelves.map(y=>y-40-S-L)),lower:N,upper:Math.min(h-t,...upperShelves.map(y=>p+t+y))-(ceiling+t)}];
+  }
+  if(!s)return [];
   const storage=c.columns.findIndex(col=>!col.fridgeBay),fridge=c.columns.findIndex(col=>col.fridgeBay),t=c.thickness,h=bodyHeight(f),display=s.baseHeight+s.counterThickness+s.nicheHeight,upper=display+s.displayHeight;
   const rows=[{section:'counter',column:storage,label:'操作台面',position:s.baseHeight,thickness:s.counterThickness,key:'baseHeight',min:c.plinth+160,max:h-160-s.counterThickness-s.nicheHeight-s.displayHeight,lower:s.baseHeight,upper:s.nicheHeight},
    {section:'displayBottom',column:storage,label:'展示区下层板',position:display,thickness:t,key:'nicheHeight',min:200,max:s.nicheHeight+s.displayHeight-120,lower:s.nicheHeight,upper:s.displayHeight-t},
@@ -643,9 +650,11 @@
   const row=structuralBoards(f).find(b=>b.section===section);if(!row||!['upper','lower','position'].includes(side)||!Number.isFinite(value))throw Error('请输入有效的板件位置');
   // The worktop moves the storage band; display bands use their own height.
   if(section==='counter'&&side==='upper')throw Error('台面上方净高请调整展示区下层板');
-  const delta=side==='position'?value-row.position:side==='lower'?value-row.lower:row.upper-value,nextValue=row.value+delta;
+  const delta=side==='position'?value-row.position:side==='lower'?(value-row.lower)/(row.lowerScale??1):(row.upper-value)/(row.upperScale??1),nextValue=row.value+delta;
   if(nextValue<row.min||nextValue>row.max)throw Error(`此板件的结构参数须为 ${row.min}–${row.max} mm`);
-  const next={...f,cabinet:config(f)};next.cabinet.sideboard[row.key]=nextValue;
+  const next={...f,cabinet:config(f)};
+  if(next.cabinet.entry){const e=next.cabinet.entry;e[row.key]=nextValue;if(section==='entryLowerBase')e.lowerHeight-=delta;if(section==='entryCounter')e.nicheHeight-=delta;return validate(next);}
+  next.cabinet.sideboard[row.key]=nextValue;
   if(section==='displayBottom')next.cabinet.sideboard.displayHeight-=delta;
   return validate(next);
  }

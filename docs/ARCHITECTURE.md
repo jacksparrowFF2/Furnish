@@ -1,3 +1,7 @@
+2026-11-06：launch-desktop供源码cmd和MCP启动共用本机运行时位置，优先显式／环境／.local覆盖后再查标准目录；随runtimeFiles打包。仅桌面Node脚本，无网页加载、装修数据或保存语义变更。见[启动恢复](DESKTOP.md#2026-11-06启动目录故障恢复)。
+
+2026-11-06：cabinet-core 为entry派生结构板及净高系数；生产板件补充cabinetInspect，cabinet-preview／editor共用结构板拖动、快照取消和原草稿保存。无新网页脚本、字段或格式版本，见 [结构板链路](ENTRY-STRUCTURAL-BOARDS.md)。
+
 2026-11-06：cabinet-core 集中 entry 下门下延边界，cabinet-model 与预览／数值板件／GLB共用原生产构造；UI沿草稿／mutate。完整cabinet缓存和确认覆盖lowerDoorDrop，含字段采用v55；无新脚本或保存通道。见 [门板下延](ENTRY-DOOR-DROP.md)。
 
 2026-11-06：pet-feeding-core 统一定制架构造与线性扫掠，pet-feeding-frame-model 内嵌原喂食器生产构造器；新经典脚本，petTrayOpen 进入原 UI／mutate、实体／3D 缓存及项目核对。含类型采用 v54，见 [金属架契约](PET-FEEDING-INSERT.md)。
