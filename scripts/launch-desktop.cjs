@@ -8,5 +8,5 @@ function desktopExecutable(root,{executable,env=process.env}={}){
  const chosen=[path.join(root,'Furnish.exe'),path.join(root,'output/desktop/Furnish-win32-x64/Furnish.exe')].find(p=>fs.statSync(p,{throwIfNoEntry:false})?.isFile());
  if(!chosen)throw Error('未找到 Furnish 桌面程序，请先打包或配置本机程序路径。');return chosen;
 }
-if(require.main===module){try{const root=path.resolve(__dirname,'..'),env={...process.env,FURNISH_DESKTOP_ROOT:root};delete env.ELECTRON_RUN_AS_NODE;const child=spawn(desktopExecutable(root),[],{cwd:root,env,detached:true,windowsHide:true,stdio:'ignore'});child.on('error',e=>{console.error(e.message);process.exitCode=1;});child.unref();}catch(e){console.error(e.message);process.exitCode=1;}}
+if(require.main===module){try{const root=path.resolve(__dirname,'..'),env={...process.env,FURNISH_DESKTOP_ROOT:root},executable=desktopExecutable(root);require('./windows-integrity.cjs').assertDesktopIntegrity(executable);delete env.ELECTRON_RUN_AS_NODE;const child=spawn(executable,[],{cwd:root,env,detached:true,windowsHide:true,stdio:'ignore'});child.on('error',e=>{console.error(e.message);process.exitCode=1;});child.unref();}catch(e){console.error(e.message);process.exitCode=1;}}
 module.exports={desktopExecutable};

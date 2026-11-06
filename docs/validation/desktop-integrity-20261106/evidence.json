@@ -1,0 +1,126 @@
+{
+  "labels": {
+    "workspace": {
+      "path": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish",
+      "supported": true,
+      "inherited": false,
+      "rid": 4096,
+      "labelPresent": true
+    },
+    "parent": {
+      "path": "C:\\Users\\SPH\\Documents\\GitHub",
+      "supported": true,
+      "inherited": false,
+      "rid": 8192,
+      "labelPresent": false
+    },
+    "original": {
+      "path": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop\\Furnish-win32-x64\\Furnish.exe",
+      "supported": true,
+      "inherited": true,
+      "rid": 4096,
+      "labelPresent": true
+    },
+    "working": {
+      "path": "D:/1601装修/Furnish程序/Furnish-win32-x64/Furnish.exe",
+      "supported": true,
+      "inherited": false,
+      "rid": 8192,
+      "labelPresent": false
+    },
+    "playwrightChromium": {
+      "path": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\.local\\playwright-browsers\\chromium-1248\\chrome-win64\\chrome.exe",
+      "supported": true,
+      "inherited": true,
+      "rid": 4096,
+      "labelPresent": true
+    }
+  },
+  "winstation": [
+    {
+      "executable": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\.local\\winstation-python\\python.exe",
+      "station": "WinSta0",
+      "integritySid": "S-1-16-4096",
+      "isSandboxed": 1,
+      "jobUiFlags": "0x0",
+      "results": [
+        {
+          "copyCurrentDacl": false,
+          "access": "0x80000008",
+          "success": false,
+          "error": 5
+        },
+        {
+          "copyCurrentDacl": false,
+          "access": "0xa",
+          "success": false,
+          "error": 5
+        },
+        {
+          "copyCurrentDacl": true,
+          "access": "0x80000008",
+          "success": false,
+          "error": 5
+        },
+        {
+          "copyCurrentDacl": true,
+          "access": "0xa",
+          "success": false,
+          "error": 5
+        }
+      ]
+    },
+    {
+      "executable": "D:\\1601装修\\Furnish诊断\\winstation-python\\python.exe",
+      "station": "WinSta0",
+      "integritySid": "S-1-16-8192",
+      "isSandboxed": 0,
+      "jobUiFlags": "0x0",
+      "results": [
+        {
+          "copyCurrentDacl": false,
+          "access": "0x80000008",
+          "success": true,
+          "error": 0
+        },
+        {
+          "copyCurrentDacl": false,
+          "access": "0xa",
+          "success": true,
+          "error": 0
+        },
+        {
+          "copyCurrentDacl": true,
+          "access": "0x80000008",
+          "success": true,
+          "error": 0
+        },
+        {
+          "copyCurrentDacl": true,
+          "access": "0xa",
+          "success": true,
+          "error": 0
+        }
+      ]
+    }
+  ],
+  "audit4670": "No matching events from 2026-11-06 20:00; writer and exact change time not established",
+  "aba": {
+    "version": "45.2.3",
+    "executableSha256": "15E815A2D04AED1A01787354B93CD2CAB425F339B3BEAEF4F9E4193647F5399B",
+    "phases": [
+      {
+        "label": "Medium",
+        "status": 0
+      },
+      {
+        "label": "Low",
+        "status": 2147483651
+      },
+      {
+        "label": "Medium restored",
+        "status": 0
+      }
+    ]
+  }
+}

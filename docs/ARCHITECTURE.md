@@ -1,3 +1,5 @@
+2026-11-06：windows-integrity Node／PowerShell只读标签查询共用于启动与打包，检查实际EXE的SACL强制完整性而不读写审计策略；源码和MCP拒绝Low运行时，打包明确提示不可启动产物。两脚本进入runtimeFiles，无网页或持久数据变化，见[根因验证](validation/desktop-integrity-20261106/README.md)。
+
 2026-11-06：launch-desktop供源码cmd和MCP启动共用本机运行时位置，优先显式／环境／.local覆盖后再查标准目录；随runtimeFiles打包。仅桌面Node脚本，无网页加载、装修数据或保存语义变更。见[启动恢复](DESKTOP.md#2026-11-06启动目录故障恢复)。
 
 2026-11-06：cabinet-core 为entry派生结构板及净高系数；生产板件补充cabinetInspect，cabinet-preview／editor共用结构板拖动、快照取消和原草稿保存。无新网页脚本、字段或格式版本，见 [结构板链路](ENTRY-STRUCTURAL-BOARDS.md)。
