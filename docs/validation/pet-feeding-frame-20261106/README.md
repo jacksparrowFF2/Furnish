@@ -10,3 +10,5 @@
 - `test-workspace-cache`、`test-project-validation`、`test-repository-version-compat`及`test-furnish-mcp`通过。后二者初次受沙箱回环网络限制，改为授权的主机执行后通过。
 
 首次整链路尝试`selection-OyQZGx`因未配置已安装浏览器路径，HTTP验证启动前失败；改用本机Chrome重新运行，保留失败记录。不下载浏览器或修改系统配置。
+
+用户刷新后已通过专用MCP复制并实际保存“客厅宠物柜 · 金属架与抽拉补粮”（dmw50fhba），原方案保留；产品替换、尺寸／位置和架顶两袋离地470均persisted:true。后续猫砂方块及独立折放提手修正见[视觉复核](../litter-bag-brick-20261106/README.md)，新模型刷新后宠物区核对0问题／0未知，未宣称全屋通过。

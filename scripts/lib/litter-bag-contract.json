@@ -1,6 +1,10 @@
 {
   "parts": [
     {
+      "name": "folded-handle",
+      "identity": "litter-bag-v1:folded-handle"
+    },
+    {
       "name": "soft-package",
       "identity": "litter-bag-v1:soft-package"
     },

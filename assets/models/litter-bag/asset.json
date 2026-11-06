@@ -17,21 +17,30 @@
       "sha256": "ca7a4dd92f18283e3dc5d64c68ffd057d7a4899b3ccc5e7edba63350f73dd6bf",
       "bytes": 238164,
       "legacyPaths": []
+    },
+    {
+      "path": "references/user-body-handle-annotation.png",
+      "kind": "annotations",
+      "sha256": "50168a9a6a3ac5eca2534bc791598ff4fdfe47bfc5a42dff6bbdc4d5b1d154e1",
+      "bytes": 2097200,
+      "legacyPaths": []
     }
   ],
   "missingReferences": [],
   "validation": [
-    "docs/validation/pet-supplies-20261106/README.md"
+    "docs/validation/pet-supplies-20261106/README.md",
+    "docs/validation/litter-bag-brick-20261106/README.md"
   ],
   "notes": [
-    "外包250×220×80mm来自用户提供；白蓝Mix软包装细节为同系列示意，水分／压缩和堆放稳定性未实测。"
+    "用户确认250×220×80mm仅为方块状填充主体，提手另计；当前以提手折放的收纳姿态显示。膜厚／圆角／提手孔尺寸为外观估算，不宣称厂家展开外包。",
+    "v4鼓包轮廓被用户否定，当前v7替换为平面主体与独立开孔提手；白蓝Mix印字仍为同系列简化。"
   ],
   "supportingFiles": [
     {
       "path": "references/user-dimensions.txt",
       "kind": "user",
-      "sha256": "fe7cee47d2e7885295c6a5e297df3642a293f5634fefc6a69fcfa04c72a0315b",
-      "bytes": 191,
+      "sha256": "7fb84967a03a0e3ed113e0ef5459635273220c44309e87c9472231b774f31290",
+      "bytes": 382,
       "legacyPaths": []
     }
   ]

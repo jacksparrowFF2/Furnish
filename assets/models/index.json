@@ -8,7 +8,7 @@
     "catalogEntries": 151,
     "catalogTypes": 124,
     "productDossiers": 46,
-    "referenceImages": 147,
+    "referenceImages": 148,
     "missingReferences": 12
   },
   "models": [
@@ -64,17 +64,17 @@
         220,
         80
       ],
-      "parts": 5,
+      "parts": 6,
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/litter-bag-blender-asset.js",
-        "sha256": "0bdd5869aab7e86b1a9c3134aa641d7b5a83e1927693b9d18546e0615d256bff",
+        "sha256": "b0a9a01d2b774857e7212a6cc08000c3cd2ca82d20ad39d3acdc72a4dbfe655e",
         "normalization": "utf8-lf"
       },
-      "sourceSha256": "02aff52745bd21c7d3e9c50f8c3309ca54a6d228dfcd1e10feadbe534c5f616c",
+      "sourceSha256": "1693d8f1dd37ac127ad87b6b9b7e4b7077a34ae880410a9b5da77023f1ee3137",
       "current": {
-        "blend": "assets/models/litter-bag/v4/litter-bag-v1.blend",
-        "glb": "assets/models/litter-bag/v4/litter-bag-v1.glb"
+        "blend": "assets/models/litter-bag/v7/litter-bag-v1.blend",
+        "glb": "assets/models/litter-bag/v7/litter-bag-v1.glb"
       },
       "document": "docs/PET-SUPPLIES.md",
       "constructor": "src/render/pet-supply-model.js",
@@ -118,20 +118,33 @@
         },
         {
           "path": "assets/models/litter-bag/v4/litter-bag-v1.blend",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "51bed6ef6c500f28ff1d65c12b6f2f75931883bd7202f80cb4dc3b2efda99f34",
           "bytes": 202750
         },
         {
           "path": "assets/models/litter-bag/v4/litter-bag-v1.glb",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "02aff52745bd21c7d3e9c50f8c3309ca54a6d228dfcd1e10feadbe534c5f616c",
           "bytes": 236572
+        },
+        {
+          "path": "assets/models/litter-bag/v7/litter-bag-v1.blend",
+          "role": "published-source",
+          "sha256": "b3f1b56c7109dbbc44bcd01120012b6d1973596de073d3af784954e573520afc",
+          "bytes": 173249
+        },
+        {
+          "path": "assets/models/litter-bag/v7/litter-bag-v1.glb",
+          "role": "published-source",
+          "sha256": "1693d8f1dd37ac127ad87b6b9b7e4b7077a34ae880410a9b5da77023f1ee3137",
+          "bytes": 118236
         }
       ],
       "dossier": "assets/models/litter-bag/asset.json",
       "references": [
-        "assets/models/litter-bag/references/mix-packaging-family.jpg"
+        "assets/models/litter-bag/references/mix-packaging-family.jpg",
+        "assets/models/litter-bag/references/user-body-handle-annotation.png"
       ]
     },
     {
@@ -2406,21 +2419,30 @@
           "sha256": "ca7a4dd92f18283e3dc5d64c68ffd057d7a4899b3ccc5e7edba63350f73dd6bf",
           "bytes": 238164,
           "legacyPaths": []
+        },
+        {
+          "path": "references/user-body-handle-annotation.png",
+          "kind": "annotations",
+          "sha256": "50168a9a6a3ac5eca2534bc791598ff4fdfe47bfc5a42dff6bbdc4d5b1d154e1",
+          "bytes": 2097200,
+          "legacyPaths": []
         }
       ],
       "missingReferences": [],
       "validation": [
-        "docs/validation/pet-supplies-20261106/README.md"
+        "docs/validation/pet-supplies-20261106/README.md",
+        "docs/validation/litter-bag-brick-20261106/README.md"
       ],
       "notes": [
-        "外包250×220×80mm来自用户提供；白蓝Mix软包装细节为同系列示意，水分／压缩和堆放稳定性未实测。"
+        "用户确认250×220×80mm仅为方块状填充主体，提手另计；当前以提手折放的收纳姿态显示。膜厚／圆角／提手孔尺寸为外观估算，不宣称厂家展开外包。",
+        "v4鼓包轮廓被用户否定，当前v7替换为平面主体与独立开孔提手；白蓝Mix印字仍为同系列简化。"
       ],
       "supportingFiles": [
         {
           "path": "references/user-dimensions.txt",
           "kind": "user",
-          "sha256": "fe7cee47d2e7885295c6a5e297df3642a293f5634fefc6a69fcfa04c72a0315b",
-          "bytes": 191,
+          "sha256": "7fb84967a03a0e3ed113e0ef5459635273220c44309e87c9472231b774f31290",
+          "bytes": 382,
           "legacyPaths": []
         }
       ],

@@ -1,4 +1,4 @@
-"""Two static pet supplies. Bowl: user image; bag dimensions/printing: declared estimates."""
+"""Two static pet supplies. Bowl: user image; bag: user-confirmed rectangular brick."""
 import bpy, bmesh, math, pathlib, sys, json
 from mathutils import Vector
 out=pathlib.Path(sys.argv[sys.argv.index('--')+1]);out.mkdir(parents=True,exist_ok=True)
@@ -12,7 +12,7 @@ def material(name,color,rough,metal=0):
  values=[int(color[i:i+2],16)/255 for i in (0,2,4)];n.inputs['Base Color'].default_value=(*[v/12.92 if v<=.04045 else ((v+.055)/1.055)**2.4 for v in values],1)
  n.inputs['Roughness'].default_value=rough;n.inputs['Metallic'].default_value=metal;return m
 cream=material('cream-shell','f0dfb7',.38);steel=material('steel-liner','a9acaa',.24,1);rubber=material('anti-slip','484842',.78);water=material('opaque-water-indication','76abbc',.19,.15)
-white=material('white-flexible-package','eeede8',.68);blue=material('blue-print','0068aa',.5);seal=material('crimped-seal','d8dad4',.68)
+white=material('white-flexible-package','eeede8',.68);blue=material('blue-print','0068aa',.5);seal=material('crimped-seal','d8dad4',.68);handle=material('handle-film','d8dcd6',.55)
 def mesh(name,verts,faces,mat,smooth=True):
  data=bpy.data.meshes.new(name);data.from_pydata([xyz(v) for v in verts],[],faces);data.update();o=bpy.data.objects.new(name,data);bpy.context.collection.objects.link(o);o.data.materials.append(mat);o['furnishStablePart']=profile+'-v1:'+name;o['furnishRecolor']=mat in (cream,white)
  for p in data.polygons:p.use_smooth=smooth
@@ -38,42 +38,38 @@ if profile=='pet-bowl':
  lathe('anti-slip-base',[(0,0),(.080,0),(.080,.002),(0,.002)],rubber)
  lathe('water-surface',[(0,.048),(.080,.048),(.080,.049),(0,.049)],water)
 else:
- # Flat bag, W300/D400/H100. Soft pillow with sealed ends, not a rigid carton.
- N=24;verts=[];faces=[]
- def top(x,z):return .015+.085*(1-(x/.15)**4)*(1-(z/.185)**4)
- for side in (1,-1):
-  for j in range(N+1):
-   z=-.185+.37*j/N
-   for i in range(N+1):
-    x=-.15+.30*i/N;y=top(x,z) if side==1 else .005-.005*(1-(x/.15)**4)*(1-(z/.185)**4)
-    verts.append((x,y,z))
- count=(N+1)**2
- for s in (0,1):
-  for j in range(N):
-   for i in range(N):
-    a=s*count+j*(N+1)+i;f=(a,a+1,a+N+2,a+N+1);faces.append(f if s==0 else tuple(reversed(f)))
- edges=list(range(N+1))+[j*(N+1)+N for j in range(1,N+1)]+[N*(N+1)+i for i in range(N-1,-1,-1)]+[j*(N+1) for j in range(N-1,0,-1)]
- for a,b in zip(edges,edges[1:]+edges[:1]):faces.append((a,b,b+count,a+count))
- mesh('soft-package',verts,faces,white)
- for side,name in [(-1,'seal-back'),(1,'seal-front')]:
-  v=[];f=[]
-  for z in [side*.185,side*.2]:
-   for y in [.005,.015]:
-    for i in range(33):x=-.15+.30*i/32;v.append((x,y+.0006*math.cos(i*math.pi),z))
-  for layer in [0,1]:
-   a=layer*33
-   for i in range(32):f.append((a+i,a+i+1,a+i+67,a+i+66))
-  for z in [0,1]:
-   a=z*66
-   for i in range(32):f.append((a+i,a+i+33,a+i+34,a+i+1))
-  f.extend([(0,66,99,33),(32,65,131,98)])
-  mesh(name,v,f,seal)
- for text,name,sz,z in [('Mix','mix-print',.065,-.130),('2.5 kg','weight-print',.023,.075)]:
+ # User correction: a compact rectangular block with flat top/bottom and vertical
+ # sides, not an inflated pillow. Work in the previous author axes, then retain
+ # the existing final 250 x 220 x 80 conversion. Small edge radius is estimated.
+ def brick(name,w,d,h,y,z,mat,bevel=0):
+  v=[(x,yy,zz) for yy in (y,y+h) for zz in (z-d/2,z+d/2) for x in (-w/2,w/2)]
+  o=mesh(name,v,[(0,1,3,2),(4,6,7,5),(0,4,5,1),(2,3,7,6),(0,2,6,4),(1,5,7,3)],mat,False)
+  if bevel:
+   bpy.context.view_layer.objects.active=o;o.select_set(True)
+   m=o.modifiers.new('small-package-edge','BEVEL');m.width=bevel;m.segments=2
+   bpy.ops.object.modifier_apply(modifier=m.name);o.select_set(False)
+  return o
+ def top(x,z):return .0997
+ brick('soft-package',.300,.400,.0997,0,0,white,.002)
+ for side,name in [(-1,'seal-back'),(1,'seal-front')]:brick(name,.296,.006,.0015,.0985,side*.197,seal)
+ # Separate thin handle flap, shown folded back for storage. Outer rectangle and
+ # inner capsule share no faces across the hole. Flap length/hole are estimates
+ # from the user's annotation, not part of the measured filled-body dimensions.
+ N=64;outer=[];inner=[];zc=-.100
+ for i in range(N):
+  a=i*math.tau/N;cx,sz=math.cos(a),math.sin(a);k=1/max(abs(cx)/.144,abs(sz)/.090)
+  outer.append((cx*k,zc+sz*k));inner.append(((.030 if cx>=0 else -.030)+.018*cx,zc+.018*sz))
+ v=[(x,y,z) for y in (.09975,.100) for loop in (outer,inner) for x,z in loop];f=[]
+ for i in range(N):
+  j=(i+1)%N
+  f.extend([(i,j,N+j,N+i),(2*N+i,3*N+i,3*N+j,2*N+j),(i,2*N+i,2*N+j,j),(N+i,N+j,3*N+j,3*N+i)])
+ mesh('folded-handle',v,f,handle,False)
+ for text,name,sz,z in [('Mix','mix-print',.065,-.130),('2.5 kg','weight-print',.023,-.030)]:
   bpy.ops.object.text_add();o=bpy.context.object;o.data.body=text;o.data.size=sz;o.data.align_x='CENTER';o.data.resolution_u=3;o.data.extrude=.00015;o.data.bevel_depth=0
   bpy.ops.object.convert(target='MESH');o=bpy.context.object;o.name=name
   bm=bmesh.new();bm.from_mesh(o.data);bmesh.ops.triangulate(bm,faces=list(bm.faces));bmesh.ops.subdivide_edges(bm,edges=list(bm.edges),cuts=1,use_grid_fill=True);bm.to_mesh(o.data);bm.free()
   for v in o.data.vertices:
-   x=v.co.x;d=-(v.co.y+z);v.co=Vector(xyz((x,top(x,d)+.001+v.co.z,d)))
+   x=v.co.x;d=-(v.co.y+z);v.co=Vector(xyz((x,top(x,d)+.0001+v.co.z,d)))
   o.data.materials.append(blue);o['furnishStablePart']=profile+'-v1:'+name
 objects=[o for o in bpy.context.scene.objects if o.type=='MESH']
 for o in objects:

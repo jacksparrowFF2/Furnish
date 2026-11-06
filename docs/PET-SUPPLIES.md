@@ -7,8 +7,8 @@
 | type／发布配置 | pet_bowl_petstar_180／pet-bowl | cat_litter_yanxuan_25kg／litter-bag |
 | 初始宽×深×高 mm | 180×180×65 | 平放250×220×80（用户提供） |
 | 依据 | 用户图跨碗口箭头180、高65；图中R写法有歧义，暂按直径 | 商品2.5kg单袋；用户提供25×22×8，按厘米换算 |
-| 识别部件 | 奶油色外壳、独立金属内胆、圆唇、底部防滑件、水面示意 | 软袋鼓度、前后压封边、蓝色Mix和2.5kg字样 |
-| 运行部件数 | 4 | 5 |
+| 识别部件 | 奶油色外壳、独立金属内胆、圆唇、底部防滑件、水面示意 | 平直方块主体、独立折放提手／真实开孔、前后封边、蓝色Mix和2.5kg字样 |
+| 运行部件数 | 4 | 6 |
 
 [PETSTAR商品](https://item.jd.com/100173178564.html)和[网易严选商品](https://item.jd.com/100015934864.html)沿用户指定。包装参考是检索到的同系列白蓝Mix 3.0营销图，未证实用户所选SKU批次完全相同，故称「包装示意」，不复制不可辨认的小字、广告效果或声称精确复刻。
 
@@ -19,13 +19,15 @@
 ## 源与发布
 
 - 作者脚本：[blender-model-pet-supplies.py](../scripts/blender-model-pet-supplies.py)，独立后台Blender，不清空活动工程。
-- 当前源：`assets/models/pet-bowl/v1/pet-bowl-v1.blend`／`.glb`；`assets/models/litter-bag/v4/litter-bag-v1.blend`／`.glb`。猫砂v1/v2/v3保留，记录印字曲面遮挡修正和网格精简。
+- 当前源：`assets/models/pet-bowl/v1/pet-bowl-v1.blend`／`.glb`；`assets/models/litter-bag/v7/litter-bag-v1.blend`／`.glb`。猫砂v1–v4保留；v4鼓包被用户否定，v7按用户批注改为平直主体与独立折放提手。未发布迭代v5/v6留在output/litter-bag-iterations-20261106。
 - 入口：`node scripts/blender-asset.cjs author-pet-bowl <新目录>`、`author-litter-bag <新目录>`；对应publish命令沿严格静态发布器重新导入，核对部件集合、身份、尺寸、PBR和来源哈希；不支持纹理／骨骼／动画。
 - 生产：[pet-supply-model.js](../src/render/pet-supply-model.js)复用static-asset-model；实体沿FurnitureSolids／bodyParts，测距沿directional。网格分部的数值凸包为保守表示，不能把碗腔认定为通用设备嵌入豁免或真实容积。
 - 整链路登记：`node scripts/verify/verify-model-pipeline.cjs --list`；专项：`pet-bowl,litter-bag gpu`。
 
 ## 当前方案
 
-饮水位在面对柜墙的喂食器右侧、同一底部开放区。新水碗在原180mm占位中心替换后稍前移，单独托盘继续保留。原储砂大包络替换为第一袋，再增加九袋；按两个平放袋堆、各五袋演示，25kg为单袋2.5kg×10，不是柜体额定承载。包装外包尺寸采用用户提供值；封边鼓包、压缩形变和堆放稳定性未进行现场验证。十袋按两摞各五袋，占位510×220×400mm；储砂柜恢复深350齐平、底部净高500。
+饮水位在面对柜墙的喂食器右侧、同一底部开放区。新水碗在原180mm占位中心替换后稍前移，单独托盘继续保留。原储砂大包络替换为第一袋，再增加九袋；按两个平放袋堆、各五袋演示，25kg为单袋2.5kg×10，不是柜体额定承载。用户明确250×220×80为填充主体，不含上方薄膜提手。模型按提手折放展示，外包仍250×220×80；薄膜和主体约0.24mm的层次为视觉估算，不代表精确分层尺寸或提手展开净空。原两摞各五袋方案保留。当前“金属架与抽拉补粮”方案改为架上单层两袋5kg、库存柜两摞各四袋20kg；结构与承重边界见[金属架](PET-FEEDING-INSERT.md)。
 
 小红书调研区分「库存低位原包装」「日用小桶」「利用架下空间」；这些是个人经验，不是承重认证。当前采用柜底库存与日常使用分开、原包装密封、饮水独立托盘的设计判断；不据笔记把重囤货放上方或推定某种金属框架额定载荷。完整访问参数和文字证据见[视觉与调研记录](validation/pet-supplies-20261106/README.md)。
+
+2026-11-06用户轮廓修正见[方块主体与提手复核](validation/litter-bag-brick-20261106/README.md)。猫砂geometryVersion升为2，原类型及保存尺寸保持，无新增字段或项目版本。

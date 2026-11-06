@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-46份产品／设计档案，147张参考图，12张历史原图待补；20组Blender模型。参数化验证配置87组，全部家具库151条目／124种类型。
+46份产品／设计档案，148张参考图，12张历史原图待补；20组Blender模型。参数化验证配置87组，全部家具库151条目／124种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -33,7 +33,7 @@
 | [艾美特 小暴风 PRO FA18-X231 空气循环扇](fan-x231/README.md) | 3 | [BLEND](fan-x231/v2/fan-x231-v1.blend) · [GLB](fan-x231/v2/fan-x231-v1.glb) | 0 |
 | [纯平四门冰箱（双抽屉）](fridge/README.md) | 0 | [BLEND](fridge/v2/fridge-v1.blend) · [GLB](fridge/v2/fridge-v1.glb) | 0 |
 | [方太抽油烟机 JCD10TA](hood/README.md) | 0 | [BLEND](hood/v2/hood-v1.blend) · [GLB](hood/v2/hood-v1.glb) | 0 |
-| [网易严选2.5kg猫砂袋 · 包装示意](litter-bag/README.md) | 1 | [BLEND](litter-bag/v4/litter-bag-v1.blend) · [GLB](litter-bag/v4/litter-bag-v1.glb) | 0 |
+| [网易严选2.5kg猫砂袋 · 包装示意](litter-bag/README.md) | 2 | [BLEND](litter-bag/v7/litter-bag-v1.blend) · [GLB](litter-bag/v7/litter-bag-v1.glb) | 0 |
 | [猫砂盆（型号未确认）](litter-box/README.md) | 0 | 参数化 | 2 |
 | [厨房平板灯-300×600-24W](panel-light/README.md) | 1 | 参数化 | 0 |
 | [PETSTAR猫水碗 · 图示180×65](pet-bowl/README.md) | 1 | [BLEND](pet-bowl/v1/pet-bowl-v1.blend) · [GLB](pet-bowl/v1/pet-bowl-v1.glb) | 0 |

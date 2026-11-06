@@ -14,7 +14,7 @@ const ln = (x1,y1,x2,y2,ex='') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${
 const pa = (d,f='none',ex='') => `<path d="${d}" fill="${f}" ${ST()} ${ex}/>`;
 const DASH = 'stroke-dasharray="4 3"';
 if(t==='pet_bowl_petstar_180')return ec(0,0,w/2,d/2,c)+ec(0,0,w*.44,d*.44,'#8db4c2');
-if(t==='cat_litter_yanxuan_25kg')return rc(-w/2,-d/2,w,d,c,'rx="12"')+ln(-w/2,-d*.46,w/2,-d*.46)+ln(-w/2,d*.46,w/2,d*.46)+`<text x="0" y="0" text-anchor="middle" fill="#0874a6" font-size="${w*.18}">Mix</text>`;
+if(t==='cat_litter_yanxuan_25kg')return rc(-w/2,-d/2,w,d,c,'rx="2"')+rc(-w*.48,-d*.475,w*.96,d*.45,'#d8dcd6','data-folded-handle="true"')+rc(-w*.16,-d*.295,w*.32,d*.09,c,`rx="${d*.045}"`)+ln(-w/2,d*.46,w/2,d*.46)+`<text x="0" y="${d*.22}" text-anchor="middle" fill="#0874a6" font-size="${w*.18}">Mix</text>`;
 const products=typeof module==='object'&&module.exports?require('../core/product-rules.js'):root.FurnishProducts;
 if(products.definition(t)?.feedingFrame){const l=(root.FurnishPetFeedingCore||(typeof require==='function'?require('../core/pet-feeding-core.js'):null)).layout(f||{type:t,w,d});return rc(-w/2,-d/2,w,d,c,'opacity=".4"')+rc(l.tray.x-l.tray.w/2,-d/2+l.shift,l.tray.w,d,'#c0c5c8')+rc(l.feeder.x-l.feeder.w/2,l.feeder.z-l.feeder.d/2,l.feeder.w,l.feeder.d,'#efeee8','rx="25"')+ln(l.tray.x-l.tray.w/2,d/2+l.shift,l.tray.x+l.tray.w/2,d/2+l.shift);}
 if(f?.cabinet?.sideClosures){
