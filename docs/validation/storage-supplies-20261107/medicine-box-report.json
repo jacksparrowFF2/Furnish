@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "medicine-box",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "medicine_box_reference",
+    "name": "家用双层药箱 · 340×250×200参考",
+    "w": 340,
+    "d": 250,
+    "color": "#e7e4dc",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "",
+    "model": "双层大号340×250×200 · 不透明结构示意",
+    "sourceUrl": "https://item.jd.com/10234345780237.html",
+    "h": 200
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-06T16:38:49.652Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\medicine-box-cNzaMj",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-06T16:38:49.653Z",
+      "result": {
+        "command": "author-medicine-box",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\medicine-box-cNzaMj\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\medicine-box-cNzaMj\\authored",
+        "passed": true,
+        "profile": "medicine-box",
+        "parts": 10,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "medicine-box",
+          "parts": 10,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-06T16:38:51.872Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-06T16:38:51.873Z",
+      "result": {
+        "passed": true,
+        "profile": "medicine-box",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-06T16:38:52.637Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-06T16:38:52.637Z",
+      "result": {
+        "command": "publish-medicine-box",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\medicine-box-cNzaMj\\authored\\medicine-box-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\workspace\\src\\data\\medicine-box-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "d139ccfa202bb55b8199a77cf9ace54fab947f371011b121f1e1f410a39bd4f7",
+        "runtimeSha256": "6be1936d37192b34243cd2695f9bd4fa7fb5906d5a277d57c76bb3cdb00ccbaf"
+      },
+      "finished": "2026-11-06T16:38:53.565Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-06T16:38:53.565Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "medicine-box",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\medicine-box-cNzaMj\\storage-supplies.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "medicine-box",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 200,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 200,
+                  "externalDistance": 98.7694241164777,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 200,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 200,
+                  "externalDistance": 98.7694241164777,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-06T16:38:54.772Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-06T16:38:54.773Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 10,
+            "bounds": [
+              [
+                -0.17000000178813934,
+                0,
+                -0.125
+              ],
+              [
+                0.17000000178813934,
+                0.20000000298023224,
+                0.125
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 10,
+            "bounds": [
+              [
+                -0.19040000438690186,
+                0,
+                -0.13500000536441803
+              ],
+              [
+                0.19040000438690186,
+                0.2160000056028366,
+                0.13500000536441803
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 10,
+            "bounds": [
+              [
+                -0.17000000178813934,
+                0,
+                -0.125
+              ],
+              [
+                0.17000000178813934,
+                0.20000000298023224,
+                0.125
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:06.536Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-06T16:39:06.537Z",
+      "result": {
+        "passed": true,
+        "profile": "medicine-box",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 10,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:07.547Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-06T16:39:07.547Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 10,
+            "position": [
+              0,
+              0.10000000149011612,
+              0.8689870750874127
+            ],
+            "target": [
+              0,
+              0.10000000149011612,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 10,
+            "position": [
+              0.4811029909155477,
+              0.36460664649366736,
+              0.6735441872817667
+            ],
+            "target": [
+              0,
+              0.10000000149011612,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 10,
+            "position": [
+              -0.49196705404498137,
+              0.29678682310810867,
+              -0.6887538756629739
+            ],
+            "target": [
+              0,
+              0.10000000149011612,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:13.441Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-06T16:39:13.441Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:39:16.483Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-06T16:39:16.484Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:39:19.519Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-06T16:39:19.520Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:39:22.565Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-06T16:39:22.565Z",
+      "result": {
+        "passed": true,
+        "profile": "medicine-box",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 10,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:23.325Z"
+    }
+  ],
+  "finished": "2026-11-06T16:39:23.325Z"
+}

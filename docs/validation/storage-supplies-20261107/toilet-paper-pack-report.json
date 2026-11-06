@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "toilet-paper-pack",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "toilet_paper_pack_reference",
+    "name": "整提卷纸 · 220×220×340估算",
+    "w": 220,
+    "d": 220,
+    "color": "#664895",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "",
+    "model": "12卷排列示意 · 高340参考、宽深估算",
+    "sourceUrl": "https://www.xiaohongshu.com/search_result/67076b09000000001902ecbb?xsec_token=AB9V66ek8x0EioYIN56MWrDw7q5aMQhYQIvIqEGotPigc=&xsec_source=",
+    "h": 340
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-06T16:39:23.413Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\toilet-paper-pack-TqWCwN",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-06T16:39:23.413Z",
+      "result": {
+        "command": "author-toilet-paper-pack",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\toilet-paper-pack-TqWCwN\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\toilet-paper-pack-TqWCwN\\authored",
+        "passed": true,
+        "profile": "toilet-paper-pack",
+        "parts": 7,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "toilet-paper-pack",
+          "parts": 7,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-06T16:39:25.575Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-06T16:39:25.575Z",
+      "result": {
+        "passed": true,
+        "profile": "toilet-paper-pack",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-06T16:39:26.341Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-06T16:39:26.341Z",
+      "result": {
+        "command": "publish-toilet-paper-pack",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\toilet-paper-pack-TqWCwN\\authored\\toilet-paper-pack-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\workspace\\src\\data\\toilet-paper-pack-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "ecd28481220720c989472691b2965a6cfe4a9aa14dc459d194280843e2195a71",
+        "runtimeSha256": "18ec9e179202b3e40327e4488a2d0c9efdf1e5d553f80ac51825af0d5b1329d2"
+      },
+      "finished": "2026-11-06T16:39:27.183Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-06T16:39:27.183Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "medicine-box",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\medicine-box-cNzaMj\\storage-supplies.log",
+            "reused": true
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "toilet-paper-pack",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 340,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 340,
+                  "externalDistance": 99.79497404193961,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 340,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 340,
+                  "externalDistance": 99.79497404193961,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-06T16:39:28.078Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-06T16:39:28.079Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.10999999940395355,
+                0,
+                -0.10999999940395355
+              ],
+              [
+                0.10999999940395355,
+                0.3400000035762787,
+                0.10999999940395355
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.12319999933242798,
+                0,
+                -0.11879999935626984
+              ],
+              [
+                0.12319999933242798,
+                0.36719998717308044,
+                0.11879999935626984
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.10999999940395355,
+                0,
+                -0.10999999940395355
+              ],
+              [
+                0.10999999940395355,
+                0.3400000035762787,
+                0.10999999940395355
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:40.308Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-06T16:39:40.308Z",
+      "result": {
+        "passed": true,
+        "profile": "toilet-paper-pack",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:41.322Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-06T16:39:41.323Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0,
+              0.17000000178813934,
+              0.8575564903804824
+            ],
+            "target": [
+              0,
+              0.17000000178813934,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0.4747746016355754,
+              0.43112603268770583,
+              0.6646844422898055
+            ],
+            "target": [
+              0,
+              0.17000000178813934,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              -0.4854957597697306,
+              0.3641983056960316,
+              -0.6796940636776228
+            ],
+            "target": [
+              0,
+              0.17000000178813934,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:48.074Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-06T16:39:48.075Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:39:51.115Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-06T16:39:51.115Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:39:54.157Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-06T16:39:54.157Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:39:57.198Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-06T16:39:57.199Z",
+      "result": {
+        "passed": true,
+        "profile": "toilet-paper-pack",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:39:57.963Z"
+    }
+  ],
+  "finished": "2026-11-06T16:39:57.963Z"
+}

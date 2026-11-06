@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-46份产品／设计档案，148张参考图，12张历史原图待补；20组Blender模型。参数化验证配置89组，全部家具库151条目／124种类型。
+50份产品／设计档案，152张参考图，12张历史原图待补；24组Blender模型。参数化验证配置89组，全部家具库155条目／128种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -35,6 +35,7 @@
 | [方太抽油烟机 JCD10TA](hood/README.md) | 0 | [BLEND](hood/v2/hood-v1.blend) · [GLB](hood/v2/hood-v1.glb) | 0 |
 | [网易严选2.5kg猫砂袋 · 包装示意](litter-bag/README.md) | 2 | [BLEND](litter-bag/v7/litter-bag-v1.blend) · [GLB](litter-bag/v7/litter-bag-v1.glb) | 0 |
 | [猫砂盆（型号未确认）](litter-box/README.md) | 0 | 参数化 | 2 |
+| [家用双层药箱 · 340×250×200参考](medicine-box/README.md) | 1 | [BLEND](storage-supplies/medicine/v2/medicine-box-v1.blend) · [GLB](storage-supplies/medicine/v2/medicine-box-v1.glb) | 0 |
 | [厨房平板灯-300×600-24W](panel-light/README.md) | 1 | 参数化 | 0 |
 | [PETSTAR猫水碗 · 图示180×65](pet-bowl/README.md) | 1 | [BLEND](pet-bowl/v1/pet-bowl-v1.blend) · [GLB](pet-bowl/v1/pet-bowl-v1.glb) | 0 |
 | [米家-智能宠物喂食器2](pet-feeder-mijia-2/README.md) | 0 | 参数化 | 5 |
@@ -47,7 +48,10 @@
 | [吊轨推拉门与厨房折叠移门](sliding-door-references/README.md) | 2 | 参考资料 | 0 |
 | [源氏木语-Y107H03-1.25米沙发床](sofa-bed/README.md) | 27 | [BLEND](sofa-bed/v5/sofa-bed-v1.blend) · [GLB](sofa-bed/v5/sofa-bed-v1.glb) | 0 |
 | [禧天龙-软包叠放方凳-370](stack-stool/README.md) | 3 | [BLEND](stack-stool/v4/stack-stool-v1.blend) · [GLB](stack-stool/v4/stack-stool-v1.glb) | 0 |
+| [世达95101工具箱 · 收起参考](storage-toolbox/README.md) | 1 | [BLEND](storage-supplies/toolbox/v3/storage-toolbox-v1.blend) · [GLB](storage-supplies/toolbox/v3/storage-toolbox-v1.glb) | 0 |
 | [米家-茶吧机Pro](tea-bar/README.md) | 6 | 参数化 | 0 |
+| [整提抽纸 · 330×120×200估算](tissue-pack/README.md) | 1 | [BLEND](storage-supplies/tissues/v2/tissue-pack-v1.blend) · [GLB](storage-supplies/tissues/v2/tissue-pack-v1.glb) | 0 |
+| [整提卷纸 · 220×220×340估算](toilet-paper-pack/README.md) | 1 | [BLEND](storage-supplies/rolls/v2/toilet-paper-pack-v1.blend) · [GLB](storage-supplies/rolls/v2/toilet-paper-pack-v1.glb) | 0 |
 | [定制电视柜](tv-cabinet-references/README.md) | 1 | 参考资料 | 0 |
 | [次卧衣柜与窗下书桌组合](wardrobe-desk-references/README.md) | 2 | 参考资料 | 0 |
 | [洗衣机](washer/README.md) | 0 | [BLEND](washer/washer-v1.blend) · [GLB](washer/washer-v1.glb) | 0 |

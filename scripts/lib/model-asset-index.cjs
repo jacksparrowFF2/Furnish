@@ -8,6 +8,7 @@ const docs={'pet-bowl':'PET-SUPPLIES.md','litter-bag':'PET-SUPPLIES.md',
  'chair-vihals':'CHAIR-IKEA-VIHALS.md',
  'chair-s05118':'CHAIR-YESWOOD-S05118.md','sofa-bed':'SOFA-BED-YESWOOD-Y107H03.md',se2:'BATH-HEATER-AOPU-SE2.md',y52y09:'BOOKCASE-YESWOOD-Y52Y09.md',fridge:'FRIDGE-BLENDER-MOTION.md',dishwasher:'DISHWASHER-BLENDER-FOLD.md',hood:'HOOD-BLENDER-MOTION.md',washer:'WASHER-BLENDER-MOTION.md','washer-tg10k60w':'WASHER-LITTLESWAN-TG10K60W.md','side-table':'SIDE-TABLE-TMALL-635382906309.md',armchair:'ARMCHAIR-YESWOOD-TMALL-1013742104698.md','armchair-berlin':'ARMCHAIR-YESWOOD-BERLIN.md','stack-stool':'STACK-STOOL-CITYLONG-370.md','corner-bookcase':'CORNER-BOOKCASE-YESWOOD-Y00Y06.md','corner-bookcase-580':'CORNER-BOOKCASE-YESWOOD-Y00Y06058.md'
 };
+const supplies=require('./storage-supply-specs.json');for(const id of Object.keys(supplies))docs[id]='STORAGE-CABINET-2400.md';
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex');
 const textHash=f=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f),'utf8').replace(/\r\n/g,'\n')).digest('hex');
 const rel=f=>path.relative(root,f).split(path.sep).join('/');
@@ -44,9 +45,9 @@ function build(){
   const runtime=require(path.join(root,p.asset.runtime));if(hash(p.asset.glb)!==runtime.sourceSha256)throw Error('Source mismatch: '+p.id);
   const current=new Set([p.asset.blend,p.asset.glb]),files=[];
   function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,e.name);if(e.isDirectory())walk(file);else if(/\.(blend|glb)$/i.test(e.name)){const filePath=rel(file);files.push({path:filePath,role:current.has(filePath)?'published-source':e.name==='material-studio.blend'?'material-studio':'retained-other',sha256:hash(filePath),bytes:fs.statSync(file).size});}}}
-  walk(path.join(root,'assets/models',p.id));
+  walk(supplies[p.id]?path.dirname(path.dirname(path.join(root,p.asset.glb))):path.join(root,'assets/models',p.id));
   const modelModule=P.definition(p.fixture)?.solidModel?.module,constructor=modelModule?'src/render/'+modelModule+'-model.js':null;
-  const author=['pet-bowl','litter-bag'].includes(p.id)?'scripts/blender-model-pet-supplies.py':'scripts/blender-model-'+(p.id.startsWith('washer')?'washer':p.id==='corner-bookcase-580'?'corner-bookcase':p.id)+'.py';
+  const author=supplies[p.id]?'scripts/blender-model-storage-supply.py':['pet-bowl','litter-bag'].includes(p.id)?'scripts/blender-model-pet-supplies.py':'scripts/blender-model-'+(p.id.startsWith('washer')?'washer':p.id==='corner-bookcase-580'?'corner-bookcase':p.id)+'.py';
   models.push({profile:p.id,type:p.type,name:p.fixture.name,sizeMm:[p.fixture.w,p.fixture.d,p.fixture.h],parts:p.asset.parts,runtimeVersion:runtime.version,runtime:{path:p.asset.runtime,sha256:textHash(p.asset.runtime),normalization:'utf8-lf'},sourceSha256:runtime.sourceSha256,current:{blend:p.asset.blend,glb:p.asset.glb},document:'docs/'+docs[p.id],constructor:constructor&&fs.existsSync(path.join(root,constructor))?constructor:null,author:fs.existsSync(path.join(root,author))?author:null,files:files.sort((a,b)=>a.path.localeCompare(b.path))});
  }
  const catalog=C.library.flatMap(c=>c.items.map(i=>({category:c.cat,type:i[0],name:i[1],w:i[2],d:i[3],h:i[6]??P.height({type:i[0]}),module:P.definition(i[0])?.solidModel?.module||'index-inline'})));

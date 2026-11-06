@@ -1,3 +1,5 @@
+2026-11-07：storageSupply族与四款静态Blender离线资产共用storage-supply-model→static-asset，新增经典脚本供正式显示／数值实体；仅含本族数据采用v56，沿原mutate／MCP保存。三等宽柜副本与尺寸依据见[囤货柜](STORAGE-CABINET-2400.md)。
+
 2026-11-06：windows-integrity Node／PowerShell只读标签查询共用于启动与打包，检查实际EXE的SACL强制完整性而不读写审计策略；源码和MCP拒绝Low运行时，打包明确提示不可启动产物。两脚本进入runtimeFiles，无网页或持久数据变化，见[根因验证](validation/desktop-integrity-20261106/README.md)。
 
 2026-11-06：launch-desktop供源码cmd和MCP启动共用本机运行时位置，优先显式／环境／.local覆盖后再查标准目录；随runtimeFiles打包。仅桌面Node脚本，无网页加载、装修数据或保存语义变更。见[启动恢复](DESKTOP.md#2026-11-06启动目录故障恢复)。

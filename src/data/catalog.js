@@ -188,6 +188,12 @@ const LIB = [
     ["tripleslidingdoor","三联动推拉门",2400,90,"#41474b",4800,2400],
     ["tripleslidingwindow","三联动推拉窗",1800,90,"#41474b",0,1500]
   ]},
+  {cat:'囤货用品', items:[
+    ["toolbox_sata_95101", "世达95101工具箱 · 收起参考", 360, 150, "#205843",undefined,115],
+    ["medicine_box_reference", "家用双层药箱 · 340×250×200参考", 340, 250, "#e7e4dc",undefined,200],
+    ["toilet_paper_pack_reference", "整提卷纸 · 220×220×340估算", 220, 220, "#664895",undefined,340],
+    ["tissue_pack_reference", "整提抽纸 · 330×120×200估算", 330, 120, "#2b9bb9",undefined,200],
+  ]},
   {cat:'生活用品', items:[
     ["cat_tower_jd_10141711472484","猫爬架 · 通天柱套餐二",800,470,"#dfc79d",0,products.height({type:"cat_tower_jd_10141711472484"})],
     ["cat_tree","猫爬架 · 绿叶成荫围栏款",500,500,"#75a533",0,products.height({type:"cat_tree"})],

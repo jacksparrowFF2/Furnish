@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "id": "tissue-pack",
+  "name": "整提抽纸 · 330×120×200估算",
+  "types": [
+    "tissue_pack_reference"
+  ],
+  "route": "blender",
+  "document": "docs/STORAGE-CABINET-2400.md",
+  "sourceLinks": [
+    "https://www.xiaohongshu.com/search_result/67076b09000000001902ecbb?xsec_token=AB9V66ek8x0EioYIN56MWrDw7q5aMQhYQIvIqEGotPigc=&xsec_source="
+  ],
+  "references": [
+    {
+      "path": "references/tissue-pack.jpg",
+      "kind": "product-page",
+      "sha256": "42f26de9cee904272ffc433dd7b589923c9426d88c0170ddc952d1f0664aad03",
+      "bytes": 80275,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/storage-supplies-20261107/README.md"
+  ],
+  "notes": [
+    "外观及尺寸依据分类见型号说明；纸品宽深估算、药箱不透明结构示意，不认证同批次实物复刻。"
+  ]
+}

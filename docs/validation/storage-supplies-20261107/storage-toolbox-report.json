@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "storage-toolbox",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "toolbox_sata_95101",
+    "name": "世达95101工具箱 · 收起参考",
+    "w": 360,
+    "d": 150,
+    "color": "#205843",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "世达/SATA",
+    "model": "95101 · 360×150×115 · 静态收起参考",
+    "sourceUrl": "https://item.jd.com/100024900561.html",
+    "h": 115
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-06T16:38:14.143Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\storage-toolbox-7SHgxS",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-06T16:38:14.143Z",
+      "result": {
+        "command": "author-storage-toolbox",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\storage-toolbox-7SHgxS\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\storage-toolbox-7SHgxS\\authored",
+        "passed": true,
+        "profile": "storage-toolbox",
+        "parts": 8,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "storage-toolbox",
+          "parts": 8,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-06T16:38:16.336Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-06T16:38:16.336Z",
+      "result": {
+        "passed": true,
+        "profile": "storage-toolbox",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-06T16:38:17.107Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-06T16:38:17.107Z",
+      "result": {
+        "command": "publish-storage-toolbox",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\storage-toolbox-7SHgxS\\authored\\storage-toolbox-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\workspace\\src\\data\\storage-toolbox-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "fc738002da85f665ed8dc285fdfac47615ff3f2492e6f4f269bbe1f1b5787ef9",
+        "runtimeSha256": "ded2b5ad378cbdeb70fe8b9c55c2f182f018159b1c990e482a6accbd83f49439"
+      },
+      "finished": "2026-11-06T16:38:17.938Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-06T16:38:17.938Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "storage-toolbox",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JGluhI\\storage-toolbox-7SHgxS\\storage-supplies.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "storage-toolbox",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 8,
+                  "bottom": 0,
+                  "top": 115,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 8,
+                  "bottom": 0,
+                  "top": 115,
+                  "externalDistance": 99.58980803882591,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 8,
+                  "bottom": 0,
+                  "top": 115,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 8,
+                  "bottom": 0,
+                  "top": 115,
+                  "externalDistance": 99.58980803882591,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-06T16:38:20.178Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-06T16:38:20.178Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 8,
+            "bounds": [
+              [
+                -0.18000000715255737,
+                0,
+                -0.07500000298023224
+              ],
+              [
+                0.18000000715255737,
+                0.11500000208616257,
+                0.07500000298023224
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 8,
+            "bounds": [
+              [
+                -0.20160000026226044,
+                0,
+                -0.08100000023841858
+              ],
+              [
+                0.20160000026226044,
+                0.1242000013589859,
+                0.08100000023841858
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 8,
+            "bounds": [
+              [
+                -0.18000000715255737,
+                0,
+                -0.07500000298023224
+              ],
+              [
+                0.18000000715255737,
+                0.11500000208616257,
+                0.07500000298023224
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:38:32.660Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-06T16:38:32.660Z",
+      "result": {
+        "passed": true,
+        "profile": "storage-toolbox",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 8,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:38:33.669Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-06T16:38:33.669Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 8,
+            "position": [
+              0,
+              0.057500001043081284,
+              0.7565798365126065
+            ],
+            "target": [
+              0,
+              0.057500001043081284,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 8,
+            "position": [
+              0.4188702371390236,
+              0.2878786314695443,
+              0.586418331994633
+            ],
+            "target": [
+              0,
+              0.057500001043081284,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 8,
+            "position": [
+              -0.4283289866900486,
+              0.22883159571910075,
+              -0.599660581366068
+            ],
+            "target": [
+              0,
+              0.057500001043081284,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:38:39.607Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-06T16:38:39.607Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:38:42.709Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-06T16:38:42.710Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:38:45.759Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-06T16:38:45.760Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-06T16:38:48.802Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-06T16:38:48.802Z",
+      "result": {
+        "passed": true,
+        "profile": "storage-toolbox",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 8,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 8,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-06T16:38:49.563Z"
+    }
+  ],
+  "finished": "2026-11-06T16:38:49.564Z"
+}

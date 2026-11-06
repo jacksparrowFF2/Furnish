@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "id": "medicine-box",
+  "name": "家用双层药箱 · 340×250×200参考",
+  "types": [
+    "medicine_box_reference"
+  ],
+  "route": "blender",
+  "document": "docs/STORAGE-CABINET-2400.md",
+  "sourceLinks": [
+    "https://item.jd.com/10234345780237.html"
+  ],
+  "references": [
+    {
+      "path": "references/medicine-example.jpg",
+      "kind": "product-page",
+      "sha256": "6cceb58e113949650ab89bdb2a919e2aad35073fcf592573d7c6834df240fef4",
+      "bytes": 165355,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/storage-supplies-20261107/README.md"
+  ],
+  "notes": [
+    "外观及尺寸依据分类见型号说明；纸品宽深估算、药箱不透明结构示意，不认证同批次实物复刻。"
+  ]
+}

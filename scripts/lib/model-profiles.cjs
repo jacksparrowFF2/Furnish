@@ -21,6 +21,7 @@ const suites={
 const copy=o=>JSON.parse(JSON.stringify(o));
 assetTypes['corner-bookcase']='bookshelf_yeswood_y00y06';assetTypes['corner-bookcase-580']='bookshelf_yeswood_y00y06058';suites['corner-bookcase-580']=['corner-bookcase-580'];suites['corner-bookcase']=['corner-bookcase'];
 suites.tripleslidingwindow=['telescopic-floor-tracks'];
+const supplySpecs=require('./storage-supply-specs.json');for(const [id,s] of Object.entries(supplySpecs)){assetTypes[id]=s.type;suites[id]=['storage-supplies'];}
 function testsFor(id,type){
  const garden=P.definition(type)?.garden;
  const list=suites[id]||suites[type]||(type.startsWith('table_folding_')?['folding-table']:type.startsWith('sink_arrow_')?['sink','sink-plan-snapping']:garden?['balcony-garden',...(garden.stepped?['stepped-plant-rack']:[])]:P.definition(type)?.covering||type==='curtain'?['window-coverings','window-covering-mount']:type.startsWith('pocketdoor_')?['pocket-door','wide-pocket-door','pocket-identities']:P.definition(type)?.telescopic||type==='slidingdoor'?['telescopic-20','telescopic-floor-tracks']:B.supported({type})?['cabinet-model','cabinet-interior-distances']:[]);
@@ -56,7 +57,7 @@ function operate(f){
  return f;
 }
 function sourceFiles(profile){
- const runtime='src/data/'+profile+'-blender-asset.js',asset=require(path.join(root,runtime)),base=path.join(root,'assets/models',profile),files=[];
+ const runtime='src/data/'+profile+'-blender-asset.js',asset=require(path.join(root,runtime)),base=path.join(root,'assets/models',supplySpecs[profile]?'storage-supplies':profile),files=[];
  const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(entry.name===profile+'-v1.glb')files.push(file);}};walk(base);
  const glb=files.find(file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')===asset.sourceSha256);
  if(!glb||!fs.existsSync(glb.replace(/\.glb$/,'.blend')))throw Error('Cannot locate published author source: '+profile);

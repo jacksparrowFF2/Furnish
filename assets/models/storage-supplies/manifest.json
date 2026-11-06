@@ -1,0 +1,108 @@
+{
+  "format": 1,
+  "scope": "closed storage reference inventories; no lid motion or internal capacity",
+  "references": [
+    {
+      "path": "references/toolbox.jpg",
+      "url": "https://www.scr.com.cn/UpFile/Stock/pic_16/AE7119.jpg",
+      "sha256": "a2c3f50990783c2c804f582579d24ec5dfde335cb7714923ab27a7613ff34302"
+    },
+    {
+      "path": "references/medicine-example.jpg",
+      "url": "https://img10.360buyimg.com/n1/s720x720_jfs/t1/225677/10/38292/317161/6870b025F73dec9cc/75637a3e60d5b905.jpg",
+      "sha256": "6cceb58e113949650ab89bdb2a919e2aad35073fcf592573d7c6834df240fef4"
+    },
+    {
+      "path": "references/roll-pack.jpg",
+      "url": "https://img13.360buyimg.com/n1/s720x720_jfs/t1/403480/15/5077/117869/69b3c8fdF8ffae50d/00833203207d816c.jpg",
+      "sha256": "06e3d43d65c5d6624d3d7b630344616103e92cf97bda34fc69306f2edbfc3f51"
+    },
+    {
+      "path": "references/tissue-pack.jpg",
+      "url": "https://img.comix.com.cn/product/3049618/img800/1.jpg",
+      "sha256": "42f26de9cee904272ffc433dd7b589923c9426d88c0170ddc952d1f0664aad03"
+    }
+  ],
+  "models": [
+    {
+      "profile": "storage-toolbox",
+      "type": "toolbox_sata_95101",
+      "sizeMm": [
+        360,
+        115,
+        150
+      ],
+      "sourceUrl": "https://item.jd.com/100024900561.html",
+      "files": {
+        "blend": {
+          "path": "toolbox/v3/storage-toolbox-v1.blend",
+          "sha256": "e4843f1e7d9d5d7d263346faf4f508a4293b4ae4ca0ad78297ed424ed847025c"
+        },
+        "glb": {
+          "path": "toolbox/v3/storage-toolbox-v1.glb",
+          "sha256": "7bb41901df16d9807f6d4bafa81bf50d45fc7b2d8652ef6114a6edb674e74e42"
+        }
+      }
+    },
+    {
+      "profile": "medicine-box",
+      "type": "medicine_box_reference",
+      "sizeMm": [
+        340,
+        200,
+        250
+      ],
+      "sourceUrl": "https://item.jd.com/10234345780237.html",
+      "files": {
+        "blend": {
+          "path": "medicine/v2/medicine-box-v1.blend",
+          "sha256": "9e0add5906f8fbbf136c1beaabec9b24f22900f306b6e8863b631d6eb11c8b3e"
+        },
+        "glb": {
+          "path": "medicine/v2/medicine-box-v1.glb",
+          "sha256": "e8b8a1fda5114689bb5ed7dbd6791400a3abf9e48b1e2f755ea915831cce94ab"
+        }
+      }
+    },
+    {
+      "profile": "toilet-paper-pack",
+      "type": "toilet_paper_pack_reference",
+      "sizeMm": [
+        220,
+        340,
+        220
+      ],
+      "sourceUrl": "https://www.xiaohongshu.com/search_result/67076b09000000001902ecbb?xsec_token=AB9V66ek8x0EioYIN56MWrDw7q5aMQhYQIvIqEGotPigc=&xsec_source=",
+      "files": {
+        "blend": {
+          "path": "rolls/v2/toilet-paper-pack-v1.blend",
+          "sha256": "39de180229992ff60ecd4847bb08335783060c4d778fa1be01adb474eb8ff005"
+        },
+        "glb": {
+          "path": "rolls/v2/toilet-paper-pack-v1.glb",
+          "sha256": "ecd28481220720c989472691b2965a6cfe4a9aa14dc459d194280843e2195a71"
+        }
+      }
+    },
+    {
+      "profile": "tissue-pack",
+      "type": "tissue_pack_reference",
+      "sizeMm": [
+        330,
+        200,
+        120
+      ],
+      "sourceUrl": "https://www.xiaohongshu.com/search_result/67076b09000000001902ecbb?xsec_token=AB9V66ek8x0EioYIN56MWrDw7q5aMQhYQIvIqEGotPigc=&xsec_source=",
+      "files": {
+        "blend": {
+          "path": "tissues/v2/tissue-pack-v1.blend",
+          "sha256": "c2dcffbf941862ddcf4e436c186fc40dc341ecb819d041c028e72dc07e2f65a0"
+        },
+        "glb": {
+          "path": "tissues/v2/tissue-pack-v1.glb",
+          "sha256": "00c8d0ae826648bc2602a3ee1b0812087ff10d1769a206bbe5b96f30bb03e602"
+        }
+      }
+    }
+  ]
+}

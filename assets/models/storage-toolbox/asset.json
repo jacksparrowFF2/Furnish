@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "id": "storage-toolbox",
+  "name": "世达95101工具箱 · 收起参考",
+  "types": [
+    "toolbox_sata_95101"
+  ],
+  "route": "blender",
+  "document": "docs/STORAGE-CABINET-2400.md",
+  "sourceLinks": [
+    "https://item.jd.com/100024900561.html"
+  ],
+  "references": [
+    {
+      "path": "references/toolbox.jpg",
+      "kind": "product-page",
+      "sha256": "a2c3f50990783c2c804f582579d24ec5dfde335cb7714923ab27a7613ff34302",
+      "bytes": 100394,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/storage-supplies-20261107/README.md"
+  ],
+  "notes": [
+    "外观及尺寸依据分类见型号说明；纸品宽深估算、药箱不透明结构示意，不认证同批次实物复刻。"
+  ]
+}
