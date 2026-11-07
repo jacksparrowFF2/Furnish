@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "file": "output\\playwright\\beverage-cans-ui-bL1oF5\\desktop-330-array.glb",
+      "canBodies": 24,
+      "parts": 168,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\playwright\\beverage-cans-ui-bL1oF5\\desktop-500-array.glb",
+      "canBodies": 24,
+      "parts": 168,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\playwright\\beverage-cans-ui-bL1oF5\\file-330-array.glb",
+      "canBodies": 24,
+      "parts": 168,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\playwright\\beverage-cans-ui-bL1oF5\\file-500-array.glb",
+      "canBodies": 24,
+      "parts": 168,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\playwright\\beverage-cans-ui-bL1oF5\\http-330-array.glb",
+      "canBodies": 24,
+      "parts": 168,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\playwright\\beverage-cans-ui-bL1oF5\\http-500-array.glb",
+      "canBodies": 24,
+      "parts": 168,
+      "images": 1,
+      "pixelsAndUV": true
+    }
+  ]
+}

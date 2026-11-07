@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "profile": "beverage-can-500",
+  "rejected": [
+    {
+      "case": "changed-geometry",
+      "error": "Can physical geometry changed: body",
+      "previousPreserved": true
+    },
+    {
+      "case": "missing-uv",
+      "error": "Expected image only on can body",
+      "previousPreserved": true
+    },
+    {
+      "case": "label-on-metal",
+      "error": "Expected one embedded PNG label",
+      "previousPreserved": true
+    },
+    {
+      "case": "wrong-image-size",
+      "error": "Unexpected can label dimensions or tint",
+      "previousPreserved": true
+    },
+    {
+      "case": "transparent-body",
+      "error": "Expected image only on can body",
+      "previousPreserved": true
+    }
+  ],
+  "blender": "5.2.3 LTS"
+}

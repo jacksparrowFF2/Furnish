@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\browser\\file-nominal.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\browser\\http-nominal.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\browser\\http-resized.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\back\\scene.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\back.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\front\\scene.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\front.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\oblique\\scene.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\oblique.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\back\\scene.blend",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\front\\scene.blend",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\studio\\oblique\\scene.blend",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    }
+  ]
+}

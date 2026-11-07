@@ -4,6 +4,8 @@
 const products=()=>root.FurnishProducts||require('../core/product-rules.js');
 const supported=f=>!!products().definition(f).storageSupply&&!f.obj;
 const singles=new Map();
+// Can labels are embedded and shared by every unit in an inventory array.
+const canLabelMaps=new WeakMap();
 function arrayModel(T,asset,f){
  const l=products().paperArrayLayout(f),a=l.config;
  let single=singles.get(asset);
@@ -33,6 +35,11 @@ function build(T,f){
  if(!asset)throw Error('Storage inventory asset missing: '+profile);
  if(f.paperArray&&products().supports(f,'paperArray'))return arrayModel(T,asset,f);
  const group=(root.FurnishStaticAssetModel||require('./static-asset-model.js')).build(T,asset,{...f,h:products().height(f)},products().value(f,'mountHeight'));
+ if(['beverage-can-330','beverage-can-500'].includes(profile)&&asset.textures&&T.DataTexture&&group.children[0]?.material){
+  let maps=canLabelMaps.get(asset);
+  if(!maps){maps=asset.textures.map(t=>{const map=new T.DataTexture(Uint8Array.from(atob(t.rgba),c=>c.charCodeAt(0)),t.width,t.height);map.colorSpace=T.SRGBColorSpace;map.flipY=false;map.wrapS=T.RepeatWrapping;map.needsUpdate=true;return map;});canLabelMaps.set(asset,maps);}
+  group.children.forEach((mesh,i)=>{const p=asset.parts[i];if(p.texture===undefined)return;mesh.geometry.setAttribute('uv',new T.Float32BufferAttribute(p.uvs,2));mesh.material.map=maps[p.texture];mesh.material.needsUpdate=true;});
+ }
  // Bounded, offline RGBA label, only published by the pouch's scoped publisher.
  if(profile==='cat-food-2kg'&&T.DataTexture&&group.children[0]?.material){
   const maps=asset.textures.map(t=>{const map=new T.DataTexture(Uint8Array.from(atob(t.rgba),c=>c.charCodeAt(0)),t.width,t.height);map.colorSpace=T.SRGBColorSpace;map.flipY=false;map.needsUpdate=true;return map;});

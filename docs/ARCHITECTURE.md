@@ -1,3 +1,5 @@
+2026-11-07（罐身包装）：两款标准罐独立作者／发布器在原七件几何上加入受限body UV／内嵌图案，storage-supply-model为各规格阵列共享DataTexture；数值记录器不消费材质。GLB／离线file共用同源图，无新加载脚本／实例字段／空间版本，原v66阵列保持。见[包装与传递](BEVERAGE-CANS.md#雪花清爽包装2026-11-07)。
+
 2026-11-07（佳帮手工具箱）：新增storageSupply类型及一个本地经典资产脚本，沿storage-supply-model→static-asset-model共用生产显示/实体/导出。mountHeight与pose3D复用v57/v58，无新持久字段或保存通道；透明白名单按型号/部件限制，见[工具箱](TOOLBOX-JIABANGSHOU-390.md)。
 
 2026-11-07（柜体组合核心）：cabinet-core.boxTopology定义横向柜箱与隔间归属，assemblyLayout统一mm净宽／模块外宽／柜箱边界；旧查询只投影该布局。生产模型、二维、顶封板、门板范围、编辑树及模块操作共用，自动配门按现有柜箱执行。无新脚本、项目字段／格式或保存通道，见[组合契约](CABINET-COMPONENTS.md)。

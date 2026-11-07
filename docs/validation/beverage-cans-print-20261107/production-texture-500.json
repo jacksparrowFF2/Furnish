@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\browser\\file-nominal.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\browser\\http-nominal.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\browser\\http-resized.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\back\\scene.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\back.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\front\\scene.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\front.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\oblique\\scene.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\oblique.glb",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\back\\scene.blend",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\front\\scene.blend",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    },
+    {
+      "file": "output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\studio\\oblique\\scene.blend",
+      "canBodies": 1,
+      "parts": 7,
+      "images": 1,
+      "pixelsAndUV": true
+    }
+  ]
+}

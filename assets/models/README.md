@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-58份产品／设计档案，168张参考图，12张历史原图待补；31组Blender模型。参数化验证配置89组，全部家具库162条目／135种类型。
+59份产品／设计档案，169张参考图，12张历史原图待补；32组Blender模型。参数化验证配置89组，全部家具库163条目／136种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -15,8 +15,8 @@
 | [源氏木语-Y09HS-亚麻色单人沙发椅](armchair/README.md) | 9 | [BLEND](armchair/v4/armchair-v1.blend) · [GLB](armchair/v4/armchair-v1.glb) | 0 |
 | [源氏木语-柏林单人沙发椅](armchair-berlin/README.md) | 2 | [BLEND](armchair-berlin/v3/armchair-berlin-v1.blend) · [GLB](armchair-berlin/v3/armchair-berlin-v1.glb) | 0 |
 | [九款艺术玻璃隔断](art-glass/README.md) | 3 | 参数化 | 0 |
-| [330ml标准易拉罐](beverage-can-330/README.md) | 4 | [BLEND](storage-supplies/beverage-can-330/v1/beverage-can-330-v1.blend) · [GLB](storage-supplies/beverage-can-330/v1/beverage-can-330-v1.glb) | 0 |
-| [500ml标准易拉罐](beverage-can-500/README.md) | 4 | [BLEND](storage-supplies/beverage-can-500/v1/beverage-can-500-v1.blend) · [GLB](storage-supplies/beverage-can-500/v1/beverage-can-500-v1.glb) | 0 |
+| [330ml标准易拉罐](beverage-can-330/README.md) | 4 | [BLEND](storage-supplies/beverage-can-330/v6/beverage-can-330-v1.blend) · [GLB](storage-supplies/beverage-can-330/v6/beverage-can-330-v1.glb) | 0 |
+| [500ml标准易拉罐](beverage-can-500/README.md) | 4 | [BLEND](storage-supplies/beverage-can-500/v6/beverage-can-500-v1.blend) · [GLB](storage-supplies/beverage-can-500/v6/beverage-can-500-v1.glb) | 0 |
 | [易拉罐共用参考资料](beverage-cans/README.md) | 4 | 参考资料 | 0 |
 | [定制柜体设计图](cabinet-design-references/README.md) | 3 | 参考资料 | 0 |
 | [猫粮袋 · 2kg紫白参考](cat-food-2kg/README.md) | 2 | [BLEND](storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend) · [GLB](storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb) | 0 |
@@ -59,6 +59,7 @@
 | [米家-茶吧机Pro](tea-bar/README.md) | 6 | 参数化 | 0 |
 | [整提抽纸 · 330×120×200估算](tissue-pack/README.md) | 1 | [BLEND](storage-supplies/tissues/v2/tissue-pack-v1.blend) · [GLB](storage-supplies/tissues/v2/tissue-pack-v1.glb) | 0 |
 | [整提卷纸 · 220×220×340估算](toilet-paper-pack/README.md) | 1 | [BLEND](storage-supplies/rolls/v2/toilet-paper-pack-v1.blend) · [GLB](storage-supplies/rolls/v2/toilet-paper-pack-v1.glb) | 0 |
+| [透明工具箱 · 佳帮手大号](toolbox-jiabangshou-390/README.md) | 1 | [BLEND](storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.blend) · [GLB](storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.glb) | 0 |
 | [定制电视柜](tv-cabinet-references/README.md) | 1 | 参考资料 | 0 |
 | [次卧衣柜与窗下书桌组合](wardrobe-desk-references/README.md) | 2 | 参考资料 | 0 |
 | [洗衣机](washer/README.md) | 0 | [BLEND](washer/washer-v1.blend) · [GLB](washer/washer-v1.glb) | 0 |

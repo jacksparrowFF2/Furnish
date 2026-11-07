@@ -45,10 +45,11 @@
   ],
   "missingReferences": [],
   "validation": [
-    "docs/validation/beverage-cans-20261107/README.md"
+    "docs/validation/beverage-cans-20261107/README.md",
+    "docs/validation/beverage-cans-print-20261107/README.md"
   ],
   "notes": [
-    "330ml采用用户标注Ø66.2×115.2；500ml采用制罐厂Ø66×168。均为通用闭罐，不宣称雪花品牌包装还原；500ml=73mm的汇总图不作为本款依据。",
-    "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。"
+    "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。",
+    "2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。"
   ]
 }

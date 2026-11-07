@@ -1,0 +1,16 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict'),M=require('../src/render/storage-supply-model.js'),P=require('../src/core/product-rules.js');
+const hash=v=>crypto.createHash('sha256').update(v).digest('hex');
+const triangles=positions=>hash(JSON.stringify(Array.from({length:positions.length/9},(_,i)=>Array.from({length:3},(_,j)=>positions.slice(i*9+j*3,i*9+j*3+3).map(x=>Number(x.toFixed(7)))).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)))));
+(async()=>{
+ const T=await import(JSON.parse(fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports.three),baseline=require('./fixtures/beverage-cans/white-v1-geometry-hashes.json'),labels=[];
+ for(const volume of [330,500]){
+  const asset=require('../src/data/beverage-can-'+volume+'-blender-asset.js'),f={type:'beverage_can_'+volume+'ml',w:asset.sizeMm[0],d:asset.sizeMm[2],h:asset.sizeMm[1],mountHeight:900,color:'#ee0000'};
+  assert.equal(asset.version,2);assert.equal(asset.textures.length,1);const image=asset.textures[0];assert.equal(image.width,768);assert.equal(image.height,1024);const rgba=Buffer.from(image.rgba,'base64');assert.equal(rgba.length,768*1024*4);labels.push(hash(rgba));
+  for(const p of asset.parts){assert.equal(triangles(p.positions),baseline[volume][p.name],volume+'/'+p.name+' spatial geometry changed');if(p.name==='body'){assert.equal(p.texture,0);assert.equal(p.uvs.length,p.positions.length/3*2);assert.equal(p.recolor,false);}else assert.equal(p.texture,undefined,'label must not cover '+p.name);}
+  const g=M.build(T,f),g2=M.build(T,{...f,mountHeight:1200}),body=g.children.find(p=>p.name==='body'),body2=g2.children.find(p=>p.name==='body');assert.equal(body.material.map,body2.material.map,'array units share one texture');assert.equal(body.material.map.colorSpace,T.SRGBColorSpace);assert.equal(body.material.map.flipY,false);assert.equal(body.material.color.getHexString(),'ffffff','legacy can color must not tint the package');assert.equal(body.geometry.attributes.uv.count,body.geometry.attributes.position.count);assert(P.supports(f,'inventoryArray'));assert.equal(P.definition(f).solidModel.geometryVersion,1,'material-only change must not revise space');
+  const pixels=body.material.map.image.data;assert.deepEqual(Buffer.from(pixels),rgba);const colors=new Set();let green=0,white=0;for(let y=50;y<970;y+=3)for(let x=240;x<530;x+=3){const i=(y*768+x)*4;colors.add(pixels.slice(i,i+3).join(','));if(pixels[i+1]>pixels[i]*1.2&&pixels[i+1]>pixels[i+2]*1.2)green++;if(Math.min(...pixels.slice(i,i+3))>180)white++;}assert(colors.size>1000&&green>100&&white>100,'printed front must retain actual multicolor artwork');
+  const b=new T.Box3().setFromObject(g);assert(Math.abs(b.min.y-.9)<1e-6);assert(Math.abs(b.max.y-(.9+f.h/1000))<1e-6);
+ }
+ assert.notEqual(...labels,'the two capacity layouts must use their respective user photos');console.log('PASS printed cans: unchanged v1 triangles, two reference labels, bounded offline RGBA/UV/sRGB, metal-part exclusion, shared array texture, elevation and unchanged space semantics');
+})().catch(e=>{console.error(e);process.exitCode=1;});

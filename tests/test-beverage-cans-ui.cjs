@@ -6,7 +6,13 @@ async function capture(p,file){
  // Exporting 168 static parts as a base64 string avoids expanding every GLB
  // byte into a JSON array in the browser automation transport.
  const result=await p.evaluate(async()=>{for(let attempt=0;attempt<40;attempt++){try{const bytes=new Uint8Array((await View3D.blenderScene({includeHidden:false,expandInstances:true})).buffer);let text='';for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));return {data:btoa(text),ids:state.furniture.map(f=>f.id)};}catch(e){if(!/视角稳定|camera to settle/.test(e.message)||attempt===39)throw e;await new Promise(r=>setTimeout(r,50));}}});
- const data=Buffer.from(result.data,'base64');fs.writeFileSync(file,data);return require('../scripts/lib/glb-model-evidence.cjs').inspect(data,result.ids);
+ const data=Buffer.from(result.data,'base64');fs.writeFileSync(file,data);
+ const doc=JSON.parse(data.subarray(20,20+data.readUInt32LE(12)));let bodies=0;
+ for(const node of doc.nodes||[])if(result.ids.includes(node.extras?.furnishId)&&node.mesh!==undefined){
+  const body=node.extras.furnishPartKey?.endsWith(':body');
+  for(const primitive of doc.meshes[node.mesh].primitives){const texture=doc.materials[primitive.material]?.pbrMetallicRoughness?.baseColorTexture;if(body){assert(texture,'every array can body must export its label');assert(primitive.attributes.TEXCOORD_0!==undefined);const image=doc.images[doc.textures[texture.index].source];assert(image.bufferView!==undefined&&!image.uri,'can label must remain embedded');bodies++;}else assert(!texture,'label leaked onto a metal can part');}
+ }
+ assert.equal(bodies,result.ids.length);return require('../scripts/lib/glb-model-evidence.cjs').inspect(data,result.ids);
 }
 async function edit(p,key,value){const el=p.locator('[data-inventory-array="'+key+'"]');if(await el.evaluate(e=>e.tagName)==='SELECT')await el.selectOption(String(value));else{await el.fill(String(value));await el.dispatchEvent('change');}}
 async function verify(p,run,mode){
@@ -23,10 +29,10 @@ async function verify(p,run,mode){
   const saved=await p.evaluate(()=>structuredClone(state.furniture));if(mode==='desktop')await p.evaluate(()=>repositoryClient.flush());else await V.configuration().waitForCache(p);await p.reload();await p.locator('#repository-loading').waitFor({state:'hidden'});assert.deepEqual(await p.evaluate(()=>structuredClone(state.furniture)),saved);
   await p.evaluate(id=>selectIds([id]),id);await p.setViewportSize({width:420,height:900});await p.evaluate(()=>openSelectionProperties());await p.locator('[data-inventory-array="count"]').scrollIntoViewIfNeeded();assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await p.screenshot({path:path.join(run.dir,mode+'-'+volume+'-narrow.png')});await p.setViewportSize({width:1200,height:950});
   if(!await p.evaluate(()=>is3D())){await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);}
-  await p.evaluate(async()=>{select(null);await View3D.automationCamera({mode:'walk',position:{x:9000,y:4650,z:1300},target:{x:8570,y:4100,z:1040},horizontalFov:40});});const image=await p.evaluate(()=>View3D.image());fs.writeFileSync(path.join(run.dir,mode+'-'+volume+'-array.png'),Buffer.from(image.split(',')[1],'base64'));
+  await p.evaluate(async()=>{select(null);await View3D.automationCamera({mode:'walk',position:{x:7900,y:4350,z:1350},target:{x:8570,y:4100,z:1040},horizontalFov:40});});const image=await p.evaluate(()=>View3D.image());fs.writeFileSync(path.join(run.dir,mode+'-'+volume+'-array.png'),Buffer.from(image.split(',')[1],'base64'));
   await p.evaluate(id=>selectIds([id]),id);await p.locator('[data-inventory-detach]').click();assert(await p.evaluate(()=>state.furniture.length===24&&state.furniture.every(f=>!f.inventoryArray)));await p.evaluate(()=>undo());
  }
- assert.deepEqual(errors,[]);return {mode,passed:true,checks:['catalog creation','single-to-24 array UI','atomic undo/redo','columns/rows/gaps/stagger/yaw','negative-gap rejection','elevation','168 production parts / 24 unique units','actual two-layer height','save/reload','420px layout','detach']};
+ assert.deepEqual(errors,[]);return {mode,passed:true,checks:['catalog creation','single-to-24 array UI','atomic undo/redo','columns/rows/gaps/stagger/yaw','negative-gap rejection','elevation','168 production parts / 24 unique units','24 embedded labels with UV; no label on metal parts','actual two-layer height','save/reload','420px layout','detach']};
 }
 (async()=>{const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),run=A.createRun({prefix:'beverage-cans-ui-'}),work=run.workspace('workspace',root,{directories:['src','styles','vendor','scripts'],files:['index.html','manifest.webmanifest']}),report={passed:false,modes:[]};let app,browser,server;
  try{

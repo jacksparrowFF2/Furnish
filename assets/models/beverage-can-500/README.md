@@ -8,11 +8,11 @@
 
 | 内容 | 文件 |
 |---|---|
-| 可编辑源 | [BLEND](../storage-supplies/beverage-can-500/v1/beverage-can-500-v1.blend) |
-| 交换模型 | [GLB](../storage-supplies/beverage-can-500/v1/beverage-can-500-v1.glb) |
+| 可编辑源 | [BLEND](../storage-supplies/beverage-can-500/v6/beverage-can-500-v1.blend) |
+| 交换模型 | [GLB](../storage-supplies/beverage-can-500/v6/beverage-can-500-v1.glb) |
 | 离线运行资产 | [JS](../../../src/data/beverage-can-500-blender-asset.js) |
 | 生产构造器 | [代码](../../../src/render/storage-supply-model.js) |
-当前源GLB SHA256：656267550ed0dd7ce9f911da06335188572dad04a3bba0b21d65b879d12baa20。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
+当前源GLB SHA256：2d32005b33e4f2787ae608d6b54a91911273f40fc371f7ddfa943a3a42b22488。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
 
 ## 输入参考资料
 
@@ -33,8 +33,9 @@
 ## 验收入口
 
 - [验收资料](../../../docs/validation/beverage-cans-20261107/README.md)
+- [验收资料](../../../docs/validation/beverage-cans-print-20261107/README.md)
 
 ## 资料差异
 
-- 330ml采用用户标注Ø66.2×115.2；500ml采用制罐厂Ø66×168。均为通用闭罐，不宣称雪花品牌包装还原；500ml=73mm的汇总图不作为本款依据。
 - 查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。
+- 2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。

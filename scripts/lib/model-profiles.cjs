@@ -22,7 +22,7 @@ const copy=o=>JSON.parse(JSON.stringify(o));
 assetTypes['corner-bookcase']='bookshelf_yeswood_y00y06';assetTypes['corner-bookcase-580']='bookshelf_yeswood_y00y06058';suites['corner-bookcase-580']=['corner-bookcase-580'];suites['corner-bookcase']=['corner-bookcase'];
 suites.tripleslidingwindow=['telescopic-floor-tracks'];
 const supplySpecs=require('./storage-supply-specs.json');for(const [id,s] of Object.entries(supplySpecs)){assetTypes[id]=s.type;suites[id]=['storage-supplies'];}
-for(const [id,s] of Object.entries(supplySpecs))if(s.shape==='beverage-can')suites[id].push('beverage-cans');
+for(const [id,s] of Object.entries(supplySpecs))if(s.shape==='beverage-can')suites[id].push('beverage-cans','beverage-can-print');
 suites['cat-food-2kg']=['storage-supplies','cat-food-2kg'];
 function testsFor(id,type){
  const garden=P.definition(type)?.garden;

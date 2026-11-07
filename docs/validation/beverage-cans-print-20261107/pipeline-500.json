@@ -1,0 +1,450 @@
+{
+  "passed": true,
+  "profile": "beverage-can-500",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "beverage_can_500ml",
+    "name": "易拉罐 · 500ml标准罐",
+    "w": 66,
+    "d": 66,
+    "color": "#f1f2ed",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "",
+    "model": "500ml标准罐 · Ø66×168 · 闭罐通用外观",
+    "sourceUrl": "https://www.hanacans.com/aluminum-can-body",
+    "h": 168
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-07T14:07:38.153Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-07T14:07:38.155Z",
+      "result": {
+        "command": "author-beverage-can-500",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\authored",
+        "passed": true,
+        "profile": "beverage-can-500",
+        "parts": 7,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "referenceSha256": "90208ef75bbbf964d57a5d8daed731359fa1e03d1947b2f85ce66ff8e164545c",
+        "baselineSha256": "3fc843995a9664d5eb29b8251bc2fddf097a4f688f95badf16e47a2795d842c2",
+        "texture": [
+          768,
+          1024
+        ],
+        "preflight": {
+          "passed": true,
+          "profile": "beverage-can-500",
+          "parts": 7,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-07T14:07:43.993Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-07T14:07:43.993Z",
+      "result": {
+        "passed": true,
+        "profile": "beverage-can-500",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-07T14:07:44.795Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-07T14:07:44.795Z",
+      "result": {
+        "command": "publish-beverage-can-500",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\beverage-can-500-sum9nN\\authored\\beverage-can-500-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\workspace\\src\\data\\beverage-can-500-blender-asset.js",
+        "passed": true,
+        "parts": 7,
+        "textures": 1,
+        "geometryUnchanged": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "2d32005b33e4f2787ae608d6b54a91911273f40fc371f7ddfa943a3a42b22488",
+        "runtimeSha256": "df3bc71716df702f314d6543798028763fe9eb46182be02ba960f5f77e3d743c"
+      },
+      "finished": "2026-11-07T14:07:46.472Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-07T14:07:46.472Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "beverage-can-330",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\storage-supplies.log",
+            "reused": true
+          },
+          {
+            "name": "beverage-cans",
+            "profile": "beverage-can-330",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\beverage-cans.log",
+            "reused": true
+          },
+          {
+            "name": "beverage-can-print",
+            "profile": "beverage-can-330",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-JqJ5wr\\beverage-can-330-SQ2hp6\\beverage-can-print.log",
+            "reused": true
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "beverage-can-500",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 168,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 168,
+                  "externalDistance": 86.75676273055927,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 168,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 168,
+                  "externalDistance": 86.75676273055927,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-07T14:07:47.529Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-07T14:07:47.529Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.032999999821186066,
+                0,
+                -0.032999999821186066
+              ],
+              [
+                0.032999999821186066,
+                0.1679999977350235,
+                0.032999999821186066
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.036959998309612274,
+                0,
+                -0.03564000129699707
+              ],
+              [
+                0.036959998309612274,
+                0.18143999576568604,
+                0.03564000129699707
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.032999999821186066,
+                0,
+                -0.032999999821186066
+              ],
+              [
+                0.032999999821186066,
+                0.1679999977350235,
+                0.032999999821186066
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:08:08.642Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-07T14:08:08.642Z",
+      "result": {
+        "passed": true,
+        "profile": "beverage-can-500",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:08:09.695Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-07T14:08:09.695Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0,
+              0.08399999886751175,
+              0.35761061896403956
+            ],
+            "target": [
+              0,
+              0.08399999886751175,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0.1979863030177442,
+              0.19289246552727107,
+              0.27718082422484186
+            ],
+            "target": [
+              0,
+              0.08399999886751175,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              -0.20245714550960792,
+              0.1649828570713549,
+              -0.2834400037134511
+            ],
+            "target": [
+              0,
+              0.08399999886751175,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:08:28.949Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-07T14:08:28.950Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T14:08:32.084Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-07T14:08:32.085Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T14:08:35.227Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-07T14:08:35.228Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T14:08:38.349Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-07T14:08:38.350Z",
+      "result": {
+        "passed": true,
+        "profile": "beverage-can-500",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:08:39.120Z"
+    }
+  ],
+  "finished": "2026-11-07T14:08:39.121Z"
+}
