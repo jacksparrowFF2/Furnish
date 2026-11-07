@@ -2,7 +2,7 @@
 
 ## 能力与数据
 
-猫砂 `cat_litter_yanxuan_25kg`、猫粮 `cat_food_myfoodie_2kg`、VIHALS 折叠椅 `chair_ikea_vihals` 与湿巾 `wet_wipes_pack_170` 支持关联阵列。纸品继续使用 [paperArray](PAPER-ARRAY.md) 的生产模型内部阵列。没有扩大到普通餐椅、换鞋凳或其它类型。
+猫砂 `cat_litter_yanxuan_25kg`、猫粮 `cat_food_myfoodie_2kg`、VIHALS 折叠椅 `chair_ikea_vihals` 、湿巾 `wet_wipes_pack_170` 与方块 `block` 支持关联阵列。纸品继续使用 [paperArray](PAPER-ARRAY.md) 的生产模型内部阵列。没有扩大到普通餐椅、换鞋凳或其它类型。
 
 关联阵列复用原家具记录：每件保留独立ID、型号、原生产构造器、姿态、材质、价格及采购资料；不是将整组缩放为一个实体。数量变化才新增或删除末尾成员，新增件复制首件单品并使用新ID、计划采购状态，已有件的采购信息保留。测距、碰撞、预算与生产GLB继续消费普通家具记录，不重复统计。
 
@@ -74,3 +74,7 @@ MCP 沿现有 `get_furniture_parameters` / `configure_furniture`，没有增加�
 ## 懒角落收纳盒（2026-11-07）
 
 七款固定规格沿原记录关联阵列，支持总数/层/排/列、三向非负间距、错位和单件转向。显式阵列采用v68，普通单件仍v57；组合装不重复建SKU，不推定套叠/堆码稳定性。外包与前低口近似及证据见[收纳盒](STORAGE-BINS-LANJIAOLUO.md)。
+
+## 方块（2026-11-07）
+
+方块复用同一关联阵列能力及非负间距范围，显式字段最低v69；旧实例不自动转换。尺寸/离地、保存和验证见[方块占位体](BLOCK-PLACEHOLDER.md#关联阵列2026-11-07)。

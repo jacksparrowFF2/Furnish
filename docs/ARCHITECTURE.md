@@ -1,3 +1,5 @@
+2026-11-07（方块阵列）：block复用inventoryArray普通家具记录及原属性/MCP/mutate，显式字段最低v69并兼容旧工作区/缓存；无新模型或保存通道。见[方块](BLOCK-PLACEHOLDER.md)。
+
 2026-11-07（上下柜独立布局）：cabinet.tiers以根配置为下柜、独立upper配置为上柜，tierParts统一后沿对齐、深度／高度及局部偏移；两柜继续调用同一生产构造、板件记录器和组合核心。选择临时tier键路由门抽，父草稿统一mutate；v67项目识别复用已协调的67／68版本基础，无新加载脚本。见[分层契约](CABINET-TIERS.md)。
 
 2026-11-07（懒角落收纳盒）：七款150mm高固定规格复用storageSupply与inventoryArray，五件Blender薄壁/前U口资产供生产显示、实体和导出同源；新增七个本地经典资产脚本。底部mountHeight默认0，显式阵列v68并保留历史缓存/项目读取，无新实例字段或保存通道。见[型号及边界](STORAGE-BINS-LANJIAOLUO.md)。

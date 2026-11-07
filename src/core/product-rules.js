@@ -231,7 +231,7 @@ for(const [type,kind,count,columns,rows] of [['toilet_roll_heartlink_layer9','ro
 }
 // Linked arrays generate ordinary production furniture records, retaining unit IDs.
 const inventoryArrayDefaults=Object.freeze({columns:1,rows:1,gapX:0,gapZ:0,gapY:0,pattern:'grid',angle:0});
-for(const type of [...Object.keys(types).filter(t=>types[t].storageBin),'beverage_can_330ml','beverage_can_500ml','cat_litter_yanxuan_25kg','cat_food_myfoodie_2kg','chair_ikea_vihals','wet_wipes_pack_170']){
+for(const type of [...Object.keys(types).filter(t=>types[t].storageBin),'block','beverage_can_330ml','beverage_can_500ml','cat_litter_yanxuan_25kg','cat_food_myfoodie_2kg','chair_ikea_vihals','wet_wipes_pack_170']){
  const r=types[type];r.inventoryArray={maxCount:200,maxAxis:50,minGap:type==='chair_ikea_vihals'?-1000:0,maxGap:1000,patterns:['grid','stagger'],angles:[0,90,180,270]};r.fields=[...(r.fields||[]),'inventoryArray'];
 }
 // Bounds derived from the existing production shapes, not supplier dimensions.
