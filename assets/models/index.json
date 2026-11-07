@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 27,
+    "blenderModels": 28,
     "parametricVerificationConfigurations": 89,
-    "verificationConfigurations": 116,
-    "catalogEntries": 158,
-    "catalogTypes": 131,
-    "productDossiers": 53,
-    "referenceImages": 152,
+    "verificationConfigurations": 117,
+    "catalogEntries": 159,
+    "catalogTypes": 132,
+    "productDossiers": 54,
+    "referenceImages": 154,
     "missingReferences": 12
   },
   "models": [
@@ -1579,6 +1579,320 @@
       ],
       "dossier": "assets/models/wet-wipes-pack/asset.json",
       "references": []
+    },
+    {
+      "profile": "cat-food-2kg",
+      "type": "cat_food_myfoodie_2kg",
+      "name": "猫粮袋 · 2kg紫白参考",
+      "sizeMm": [
+        260,
+        120,
+        400
+      ],
+      "parts": 3,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/cat-food-2kg-blender-asset.js",
+        "sha256": "4e73a46db0835952f72874ff2f0aad5247b9305f017ccaa0bdeb9786ac336405",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "0f06b5149bbf2479deebaf63343ac1953abde77aa2e6cb62e2c5335cd8434b34",
+      "current": {
+        "blend": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend",
+        "glb": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.glb"
+      },
+      "document": "docs/CAT-FOOD-2KG.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-cat-food-2kg.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend",
+          "role": "published-source",
+          "sha256": "6157469c778a5b27055de200531f40221746743c23842734fa7da672cee18a95",
+          "bytes": 759701
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.glb",
+          "role": "published-source",
+          "sha256": "0f06b5149bbf2479deebaf63343ac1953abde77aa2e6cb62e2c5335cd8434b34",
+          "bytes": 798084
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-final/review.blend",
+          "role": "retained-other",
+          "sha256": "a50376db584cf22657f12c69a55ac9e3e570501acb6af37af2ab0a507fb532a9",
+          "bytes": 762968
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-r2/cat-food-2kg-v1.blend",
+          "role": "retained-other",
+          "sha256": "72c787452a4d4261e733c997435d621046ef07d968e24b73d1b98b608a399a4e",
+          "bytes": 758227
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-r2/cat-food-2kg-v1.glb",
+          "role": "retained-other",
+          "sha256": "4830e191827a5111ef5269e3cabd515a93bb895f4f7086c02bf90b030dfdc2d8",
+          "bytes": 790116
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-r2/review.blend",
+          "role": "retained-other",
+          "sha256": "755e582271b9d7e9d1a8c245bdbab05a622cc145dd5badf5f6046f1d948ebfa7",
+          "bytes": 761930
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg/cat-food-2kg-v1.blend",
+          "role": "retained-other",
+          "sha256": "41b756d587cd77a459337ea493ece98a0ee51aaef3fb48ec0c882938c4b85075",
+          "bytes": 761421
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg/cat-food-2kg-v1.glb",
+          "role": "retained-other",
+          "sha256": "a1c3787242dcd9f0e1e2c140cbf4fa39de169ab193e046f2700b2cf300695c96",
+          "bytes": 775364
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg/review.blend",
+          "role": "retained-other",
+          "sha256": "8a5f91b8992add98c7f43c37b7c52ce81e7932ff8c44b6819e8daa159b46cdee",
+          "bytes": 764437
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v1/heartlink-roll-layer-v1.blend",
+          "role": "retained-other",
+          "sha256": "2e07bae5f4a64bf7bf6625fd6e88e3fc51178762f02863286c71c17a110eae52",
+          "bytes": 106369
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v1/heartlink-roll-layer-v1.glb",
+          "role": "retained-other",
+          "sha256": "39e19bc73ff5f8d994150bc99bc1277b726c8513fee14b558191d13c87d32b85",
+          "bytes": 132688
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "bb040f9d347436c6ee0215e222f59410e7bbe2e7405edc85775bd1c265839669",
+          "bytes": 107911
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.blend",
+          "role": "retained-other",
+          "sha256": "beee3db8fb91418ba19bd09341bc1b330a8fc921346453fe51a2985bb4ce7ec0",
+          "bytes": 110968
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.glb",
+          "role": "retained-other",
+          "sha256": "2c6f1a0f24949207c94bca08f12f585b138357ae9d620b7e4ed74b16df859e1a",
+          "bytes": 223992
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "73b22473cdc6c0098b0251b7e0f2e862ea41bbfbdbe05341f1ea8db61781af19",
+          "bytes": 112331
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.blend",
+          "role": "retained-other",
+          "sha256": "84e562aca8d36d5de8a3611bd88256a216502825d4af5c461efe741fa362f195",
+          "bytes": 108911
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.glb",
+          "role": "retained-other",
+          "sha256": "0151b65d39d94f4cd91777a7e3d5cbf6c59b94b7d9548efacc6cda84c669b34e",
+          "bytes": 142180
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-tissue-layer/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "7806311dc7d1ed35374519fb4f6dc2e2cdb8d8fd4787000ad08efedaed9fd680",
+          "bytes": 109989
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v1/medicine-box-v1.blend",
+          "role": "retained-other",
+          "sha256": "c4e59b4a39e154cfb35955c4ecbcd80ea615df9190d7d489c8a218e9b4b1ab57",
+          "bytes": 109674
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v1/medicine-box-v1.glb",
+          "role": "retained-other",
+          "sha256": "749805307d1550a857d4b47439052b6af14a3c40aeea11178904e113ff0ead74",
+          "bytes": 78892
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "51cf4bd6131b46e0bb3b07f34116ceaa7fcec9618b0d6949d1597a9fbf6ea141",
+          "bytes": 111181
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v2/medicine-box-v1.blend",
+          "role": "retained-other",
+          "sha256": "9e0add5906f8fbbf136c1beaabec9b24f22900f306b6e8863b631d6eb11c8b3e",
+          "bytes": 109661
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v2/medicine-box-v1.glb",
+          "role": "retained-other",
+          "sha256": "e8b8a1fda5114689bb5ed7dbd6791400a3abf9e48b1e2f755ea915831cce94ab",
+          "bytes": 78892
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "578d6e58059bd54a0f27dd225cd019ea6d7289ba26778a46cebf69e4966d57c9",
+          "bytes": 111170
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "0631b3b7d8683d85433d1389fb0a369689f33063916806206d47be03872dbef8",
+          "bytes": 118189
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v1/toilet-paper-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "f419fa0580fce0617fc487897ba35c1d9f2079eec92c8cd075013dfc9615cff1",
+          "bytes": 116741
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v1/toilet-paper-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "7b8d363c21cd70139da07c3062ecd186e248d84dfbda46a34d13c88d9a1f84e3",
+          "bytes": 132232
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "8c28fcbac9f24cfc190d98f0b0e07f1ade376d4afccc8520e922f0a9e4b2034f",
+          "bytes": 119820
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v2/toilet-paper-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "39de180229992ff60ecd4847bb08335783060c4d778fa1be01adb474eb8ff005",
+          "bytes": 118267
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v2/toilet-paper-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "ecd28481220720c989472691b2965a6cfe4a9aa14dc459d194280843e2195a71",
+          "bytes": 130112
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "8b3b3adc77588c0e93d7e0366d744f1e6ec020a36c8dcf22e1f43e7ff20edc09",
+          "bytes": 113772
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v1/tissue-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "dd485d760df9c2aa07e8b0f6cdd1ecf4ca1654495320a3fc2b88ecbc85eb5624",
+          "bytes": 112414
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v1/tissue-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "7a618465856a24f2e9ba4e5c9e0c05c2a2d082ad1ffe17473ceb70c23130cf47",
+          "bytes": 94316
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "d5e2badc6b4aa8ca9d14c1375040fb648461d7bbfa20a3632c5fb385ad4d1d48",
+          "bytes": 115685
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v2/tissue-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "c2dcffbf941862ddcf4e436c186fc40dc341ecb819d041c028e72dc07e2f65a0",
+          "bytes": 114311
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v2/tissue-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "00c8d0ae826648bc2602a3ee1b0812087ff10d1769a206bbe5b96f30bb03e602",
+          "bytes": 92436
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v1/storage-toolbox-v1.blend",
+          "role": "retained-other",
+          "sha256": "50df10c66b1970e2c16fd711709360dff747daf2af76e12d9723bad2d67238d7",
+          "bytes": 107181
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v1/storage-toolbox-v1.glb",
+          "role": "retained-other",
+          "sha256": "fc738002da85f665ed8dc285fdfac47615ff3f2492e6f4f269bbe1f1b5787ef9",
+          "bytes": 63540
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "b646e6c4f7c9cc9ef843357a0d329d2417c6102a29467ec34e32cb73bb310690",
+          "bytes": 108589
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v2/storage-toolbox-v1.blend",
+          "role": "retained-other",
+          "sha256": "e53b6eed2698c13e79f1b6f8b7e64a37aea081caf3c7fc1b5b6572f55e480acd",
+          "bytes": 107182
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v2/storage-toolbox-v1.glb",
+          "role": "retained-other",
+          "sha256": "a08a6b7cf79ca0b2b44042c191b69f5583ceb1e2d6cc73344d8ee0599fb41960",
+          "bytes": 63540
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v3/review.blend",
+          "role": "retained-other",
+          "sha256": "a6e5b6dc9bf0d9a160f71e7a7648a1ec21f247663dda55e8821bceeffc1d267d",
+          "bytes": 108577
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v3/storage-toolbox-v1.blend",
+          "role": "retained-other",
+          "sha256": "e4843f1e7d9d5d7d263346faf4f508a4293b4ae4ca0ad78297ed424ed847025c",
+          "bytes": 107166
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v3/storage-toolbox-v1.glb",
+          "role": "retained-other",
+          "sha256": "7bb41901df16d9807f6d4bafa81bf50d45fc7b2d8652ef6114a6edb674e74e42",
+          "bytes": 63540
+        },
+        {
+          "path": "assets/models/storage-supplies/wet-wipes-pack/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "844ff5e70950a402cd90f81560fa2a73ad2060df1b6c109aefc9832773299071",
+          "bytes": 105378
+        },
+        {
+          "path": "assets/models/storage-supplies/wet-wipes-pack/v1/wet-wipes-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "380e698cbf118ad83fd9079e6ba0553d18f443967fb5139bc87359ade7ee14d3",
+          "bytes": 104048
+        },
+        {
+          "path": "assets/models/storage-supplies/wet-wipes-pack/v1/wet-wipes-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "bfcc6fccca0cd2db65a9275ee864f08e665d33246b2c8b5a375c0ff507190f80",
+          "bytes": 33248
+        }
+      ],
+      "dossier": "assets/models/cat-food-2kg/asset.json",
+      "references": [
+        "assets/models/cat-food-2kg/references/dimensions.png",
+        "assets/models/cat-food-2kg/references/style.png"
+      ]
     }
   ],
   "products": [
@@ -1986,6 +2300,42 @@
       ],
       "manifest": "assets/models/cabinet-design-references/asset.json",
       "readme": "assets/models/cabinet-design-references/README.md"
+    },
+    {
+      "format": 1,
+      "id": "cat-food-2kg",
+      "name": "猫粮袋 · 2kg紫白参考",
+      "types": [
+        "cat_food_myfoodie_2kg"
+      ],
+      "route": "blender",
+      "document": "docs/CAT-FOOD-2KG.md",
+      "sourceLinks": [],
+      "references": [
+        {
+          "path": "references/dimensions.png",
+          "kind": "user",
+          "sha256": "d57bc5b1e360e718a856b778fb7a3fcf8362b2ee43cde0c7877619dd2507695b",
+          "bytes": 995327,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/style.png",
+          "kind": "user",
+          "sha256": "ec1f55c08c30727b0b256a79f2a13cf61db16d5a2cc9b2e92aedfa4cf2fe5c99",
+          "bytes": 696628,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/cat-food-2kg-visual-20261107/README.md"
+      ],
+      "notes": [
+        "图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，侧背简化。"
+      ],
+      "manifest": "assets/models/cat-food-2kg/asset.json",
+      "readme": "assets/models/cat-food-2kg/README.md"
     },
     {
       "format": 1,
@@ -6273,6 +6623,15 @@
       "w": 420,
       "d": 200,
       "h": 50,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "cat_food_myfoodie_2kg",
+      "name": "猫粮袋 · 2kg紫白参考",
+      "w": 260,
+      "d": 120,
+      "h": 400,
       "module": "storage-supply"
     },
     {

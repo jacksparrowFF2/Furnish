@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "id": "cat-food-2kg",
+  "name": "猫粮袋 · 2kg紫白参考",
+  "types": [
+    "cat_food_myfoodie_2kg"
+  ],
+  "route": "blender",
+  "document": "docs/CAT-FOOD-2KG.md",
+  "sourceLinks": [],
+  "references": [
+    {
+      "path": "references/dimensions.png",
+      "kind": "user",
+      "sha256": "d57bc5b1e360e718a856b778fb7a3fcf8362b2ee43cde0c7877619dd2507695b",
+      "bytes": 995327,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/style.png",
+      "kind": "user",
+      "sha256": "ec1f55c08c30727b0b256a79f2a13cf61db16d5a2cc9b2e92aedfa4cf2fe5c99",
+      "bytes": 696628,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/cat-food-2kg-visual-20261107/README.md"
+  ],
+  "notes": [
+    "图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，侧背简化。"
+  ]
+}

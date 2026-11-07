@@ -203,5 +203,25 @@
       "lid"
     ],
     "shape": "wet-wipes"
+  },
+  "cat-food-2kg": {
+    "type": "cat_food_myfoodie_2kg",
+    "name": "猫粮袋 · 2kg紫白参考",
+    "global": "FurnishCatFood2kgAsset",
+    "size": [
+      260,
+      400,
+      120
+    ],
+    "color": "#863478",
+    "sourceUrl": "",
+    "brand": "麦富迪（外观参考）",
+    "model": "2kg紫白夹心粮参考；通用袋尺寸260×400+120",
+    "parts": [
+      "pouch-body",
+      "zipper-1",
+      "zipper-2"
+    ],
+    "shape": "cat-food"
   }
 }

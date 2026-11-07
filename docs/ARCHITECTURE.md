@@ -1,3 +1,5 @@
+2026-11-07（2kg猫粮袋）：独立storageSupply条目沿既有生产构造／实体／保存链；本型号受限RGBA与UV标签供HTTP及离线file同源使用，独立Blender发布器保留通用无贴图发布范围，无新实例字段。见[模型契约](CAT-FOOD-2KG.md)。
+
 2026-11-07（柜型参数复核）：cabinetFrontAppearance统一门／抽面及厨房模块外观；kitchenModuleConfig把可选模块外观和drawerExtensions传入共享构造，v61贯穿项目／仓库／缓存。净深仍只派生实体；原结构配方保留，见[参数矩阵](CABINET-PARAMETER-PARITY.md)。
 
 2026-11-07（柜体组件化）：cabinet-core.carcassFrame提供mm柜箱基准，cabinet-model.createComponents统一生产板件、门扇、抽盒、把手与随动身份；柜型配方保留分段和设备约束。无新字段、脚本或保存通道；定向修复餐边圆钮和上下分柜重复身份，见[共享组件](CABINET-COMPONENTS.md)。
