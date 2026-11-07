@@ -1,3 +1,5 @@
+2026-11-07（独立背板）：product-rules集中背板范围／默认，cabinet-core按独立backThickness推导普通柜内表面；生产背板、层板及抽盒同源。新字段采用v59项目／工作区／缓存，旧缺失保留原厚度；沿原草稿／mutate／保存，详见[净深契约](CABINET-NET-DEPTH.md)。
+
 2026-11-07（用户纸品尺寸）：新增心相印9卷层／6包层与湿巾三款Blender资产，storageSupplyRevision=2仅为新类型选择v57；仍复用storage-supply-model、安装离地与原MCP／mutate保存，无新持久字段。单件尺寸与27／24数量见[囤货柜修订](STORAGE-CABINET-2400.md)。
 
 2026-11-07：storageSupply族与四款静态Blender离线资产共用storage-supply-model→static-asset，新增经典脚本供正式显示／数值实体；仅含本族数据采用v56，沿原mutate／MCP保存。三等宽柜副本与尺寸依据见[囤货柜](STORAGE-CABINET-2400.md)。

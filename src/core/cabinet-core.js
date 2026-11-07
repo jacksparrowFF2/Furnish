@@ -725,7 +725,7 @@
   // starting one board thickness higher, plus the actual top and centre shelves.
   const c=config(host),coverTop=bottom+P.height(hood)-base,limits=[{height:height(host)-c.thickness,label:'吊柜顶板'}];
   if(hoodBayCeiling(host,c))limits.push({height:bay.height,label:'空腔上方横板'});
-  else if(c.backPanel!==false&&Math.min(...ys)<-host.d/2+c.thickness-1e-6)limits.push({height:bay.height+c.thickness,label:'中部背板'});
+  else if(backThickness(c)>0&&Math.min(...ys)<-host.d/2+backThickness(c)-1e-6)limits.push({height:bay.height+c.thickness,label:'中部背板'});
   if(Math.min(...ys)<host.d/2-1.5*c.thickness-1e-6&&Math.max(...ys)>-host.d/2+c.thickness/2+1e-6)for(const shelf of c.columns[1].shelves)limits.push({height:c.plinth+c.thickness+shelf,label:'中部层板'});
   const limit=limits.sort((a,b)=>a.height-b.height)[0];
   if(coverTop>limit.height+1e-6)reasons.push(`烟机装饰罩超出嵌合净高（进入${limit.label}，高出 ${mm(coverTop-limit.height)} mm）`);
@@ -805,6 +805,18 @@
   const values=widths(f);if(!Number.isInteger(index)||index<0||index>=values.length-1||!Number.isFinite(delta))throw Error('分隔板无效');
   if(Math.abs(delta)<1e-8)return JSON.parse(JSON.stringify(f));
   return adjustModuleWidth(f,index,moduleWidths(f)[index]+delta,{clamp:true});
+ }
+ // Ordinary bays: measure between solid faces, not the outer envelope.
+ // Layered cabinets, pegboards and moving trays have section-specific boundaries.
+ function backThicknessAvailable(c){return Array.isArray(c?.columns)&&!c.entry&&!c.sideboard&&!c.columns.some(col=>col.pegboard)&&c.template!==products().definition('bookshelf_yeswood_y52y09')?.bookcase?.template;}
+ function backThickness(c){return c.backPanel===false?0:(c.backThickness??c.thickness);}
+ function depthLayout(f,column=0,c=config(f)){
+  const col=c.columns[column];
+  if(!col||c.entry||c.sideboard||col.pegboard||col.top==='drawer'||c.template===products().definition('bookshelf_yeswood_y52y09')?.bookcase?.template)return null;
+  const rearThickness=backThickness(c),doorThickness=col.door==='none'?0:c.thickness;
+  const rear=-f.d/2+rearThickness,front=f.d/2-doorThickness;
+  const shelfFront=Math.min(front,f.d/2-(doorOverlay(f,c)==='inset'?0:c.thickness));
+  return {total:f.d,backThickness:rearThickness,doorThickness,rear,front,clearDepth:front-rear,shelfDepth:shelfFront-rear,shelfCenter:(rear+shelfFront)/2};
  }
  function spaces(f,column){
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
@@ -929,6 +941,7 @@ function nativeOpeningZones(f,{passage=800}={}){
  function validate(f){
   if(!supported(f))throw Error('此家具不支持柜体设计');
   const c=f.cabinet,h=bodyHeight(f),finite=v=>typeof v==='number'&&Number.isFinite(v);
+  if(c?.backThickness!==undefined&&(!backThicknessAvailable(c)||!Number.isFinite(c.backThickness)||c.backThickness<products().cabinetBackPanel.min||c.backThickness>products().cabinetBackPanel.max))throw Error('此柜型的背板厚度须为 0–50 mm，0表示无背板');
   if(c?.backPanel!==undefined&&typeof c.backPanel!=='boolean')throw Error('柜体背板开关须为布尔值');
   if(c?.hoodBayCeiling!==undefined&&(typeof c.hoodBayCeiling!=='boolean'||c.hoodBayHeight===undefined))throw Error('烟机空腔横板开关须为布尔值且仅用于烟机嵌合柜');
   if(c?.autoDoors!==undefined&&typeof c.autoDoors!=='boolean')throw Error('自动配门设置无效');
@@ -968,7 +981,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   if(explicit&&explicit!==c.columns.length)throw Error('须为所有分区指定净宽');
   const values=widths(f);
   const minBoardDepth=(c.template==='kitchen-base'||f.type==='kitchenwall')&&!c.columns.some(col=>col.drawers?.length)?2*c.thickness+1:4*c.thickness;
-  if(inner<100||values.some(v=>!finite(v)||v<100)||f.d<minBoardDepth)throw Error('内部净高、分区净宽须至少 100 mm，柜深须容纳板件');
+  if(inner<100||values.some(v=>!finite(v)||v<100)||f.d<minBoardDepth||c.backThickness!==undefined&&f.d<backThickness(c)+(c.columns.some(col=>col.drawers?.length)?3*c.thickness:c.thickness+1))throw Error('内部净高、分区净宽须至少 100 mm，柜深须容纳板件');
   if(Math.abs(values.reduce((a,b)=>a+b,0)+structureWidth(c)-f.w)>.01)throw Error('分区净宽加结构板及见光板须等于柜体总宽');
   for(const col of c.columns){
    if(hangingWardrobe(c)&&(col.shelves.length<1||col.doorBottom!==undefined||col.top==='drawer'))throw Error('挂衣柜须有顶部储物层板，不能同时使用上盖抽屉或开放区门底设置');
@@ -999,6 +1012,7 @@ function nativeOpeningZones(f,{passage=800}={}){
  // interior overrides in the same atomic operation. All dimensions are mm.
  function scaleStructure(f,next){
   const c=next.cabinet,old=config(f),ratio=(bodyHeight(next)-c.plinth-2*c.thickness)/(bodyHeight(f)-old.plinth-2*old.thickness);
+  if(backThicknessAvailable(c)&&c.backThickness===undefined&&c.thickness!==old.thickness)c.backThickness=backThickness(old);
   if(c.sideboard){const scale=bodyHeight(next)/bodyHeight(f);if(bodyHeight(next)!==bodyHeight(f))for(const key of ['baseHeight','nicheHeight','displayHeight','fridgeHeight'])c.sideboard[key]=Math.round(c.sideboard[key]*scale);if(next.d!==f.d){if(c.columns.some(col=>col.fridgeBay))c.sideboard.fridgeDepth=(c.sideboard.fridgeDepth??f.d)*next.d/f.d;c.sideboard.lowerDepth*=next.d/f.d;c.sideboard.upperDepth*=next.d/f.d;}}
   if(c.entry){const scale=(bodyHeight(next)-c.plinth)/(bodyHeight(f)-old.plinth);if(Math.abs(scale-1)>1e-12)for(const key of ['shoeHeight','lowerHeight','nicheHeight'])c.entry[key]=Math.round(c.entry[key]*scale);}
   for(const col of c.columns){const divider=col.doorBottom===undefined?-1:col.shelves.findIndex(v=>Math.abs(v+old.thickness-col.doorBottom)<.01);if(Math.abs(ratio-1)>1e-12){col.shelves=col.shelves.map(v=>Math.round(v*ratio));col.drawers=col.drawers.map(v=>({...v,height:Math.round(v.height*ratio)}));}if(col.doorBottom!==undefined)col.doorBottom=divider<0?col.doorBottom*ratio:col.shelves[divider]+c.thickness;}
@@ -1079,9 +1093,9 @@ function nativeOpeningZones(f,{passage=800}={}){
  function spatialConfig(f){
   if(!supported(f)||f.kitchen)return undefined;
   let c;try{c=config(f);}catch{c={invalid:f.cabinet===undefined?null:JSON.parse(JSON.stringify(f.cabinet))};}
-  const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);c.doorPoseRule='finite-thickness-hinges-v1';if(hangingWardrobe(c))c.hangingRule={...products().wardrobeHanging};return c;
+  const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);if(c.columns?.some((col,i)=>col.shelves?.length&&depthLayout(f,i,c)))c.shelfDepthRule='solid-rear-face-v1';c.doorPoseRule='finite-thickness-hinges-v1';if(hangingWardrobe(c))c.hangingRule={...products().wardrobeHanging};return c;
  }
- const api={entryLowerDoorDrop,entryLowerDoorDropLimit,entryLowerDoorBounds,entryShoeShelf,frontColor,stackedBoxesAvailable,setStackedBoxes,shelfThickness,sideClosureColor,sideClosureAvailable,sideClosures,setSideClosures,sideClosureParts,sideClosureOutline,hangingWardrobe,hangingLayout,topClosureAvailable,topClosureParts,boxJoints,boxRanges,setBoxJoints,topClosure,bodyHeight,topDoorLimit,setTopClosure,constructionAvailable,setConstruction,boxParts,endPanels,structureWidth,pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,fitDoorLimits,doorLimitCount,inheritedDoorLimit,withDoorLimit,validateDoorLimits,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,shelfClearances,editShelfClearance,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,setPartOpening,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
+ const api={backThicknessAvailable,backThickness,depthLayout,entryLowerDoorDrop,entryLowerDoorDropLimit,entryLowerDoorBounds,entryShoeShelf,frontColor,stackedBoxesAvailable,setStackedBoxes,shelfThickness,sideClosureColor,sideClosureAvailable,sideClosures,setSideClosures,sideClosureParts,sideClosureOutline,hangingWardrobe,hangingLayout,topClosureAvailable,topClosureParts,boxJoints,boxRanges,setBoxJoints,topClosure,bodyHeight,topDoorLimit,setTopClosure,constructionAvailable,setConstruction,boxParts,endPanels,structureWidth,pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,fitDoorLimits,doorLimitCount,inheritedDoorLimit,withDoorLimit,validateDoorLimits,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,shelfClearances,editShelfClearance,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,setPartOpening,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
  Object.assign(api,{editModules,structuralBoards,editStructuralBoard,moduleLayout,moduleWidths,moduleWidthLimits,adjustModuleWidth,withDoorSetting,templateGroups,templateType,adjustColumnWidth,repartition,fitDoors,scaleStructure,upgradeDesign});
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

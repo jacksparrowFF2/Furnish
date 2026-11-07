@@ -1,3 +1,5 @@
+2026-11-07：cabinetBackPanel声明普通柜独立背板厚度范围0–50mm／默认18mm，0不构造背板。旧缺失保持原厚度，调整侧板时固定旧背厚；显式backThickness采用v59，详细能力与恢复验收见[背板与净深](CABINET-NET-DEPTH.md)。
+
 2026-11-07：三款用户确认日用品以storageSupplyRevision=2选择v57，单卷Ø100×140、单包抽纸140×100×50、湿巾170×110×70；卷纸9件／层、抽纸6件／层固定几何，三层27／四层24数量由实际构造验证。mountHeight默认0、旧四款v56保留；无新实例字段。见[尺寸与边界](STORAGE-CABINET-2400.md)。
 
 2026-11-06：cabinetEntry声明lowerDoorDropDefault=0／min=0；entry.lowerDoorDrop为可选独立mm量，几何上限沿柜体基准推导。缺失不补写、恢复0删除，含字段采用v55，不改变其它模板默认。见 [参数契约](ENTRY-DOOR-DROP.md)。
