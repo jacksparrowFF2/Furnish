@@ -5,11 +5,13 @@ const {workspaceRoot,localPage,externalPage}=require('./policy.cjs');
 const {connect}=require('./backend.cjs');
 const appRoot=app.isPackaged?path.dirname(process.execPath):path.resolve(__dirname,'..');
 let root,backend,mcpStarting,mainWindow,quitting=false,reopenRequested=false;
+let diagnostics={record(){},window(){}};
 try{
  const file=path.join(appRoot,'furnish-desktop.json');
  root=workspaceRoot({appRoot,config:fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):null,override:process.env.FURNISH_DESKTOP_ROOT});
  const id=crypto.createHash('sha256').update(root.toLowerCase()).digest('hex').slice(0,16);
  app.setPath('userData',process.env.FURNISH_DESKTOP_PROFILE||path.join(app.getPath('appData'),'Furnish','desktop',id));
+ diagnostics=require('./diagnostics.cjs').start({root,app});
 }catch(e){app.whenReady().then(()=>{dialog.showErrorBox('Furnish 无法启动',e.message);app.exit(1);});}
 const preferences={nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true};
 function attach(win){
@@ -29,6 +31,7 @@ function attach(win){
 }
 async function createWindow(){
  const win=mainWindow=new BrowserWindow({title:'Furnish',width:1440,height:960,minWidth:360,minHeight:480,show:false,backgroundColor:'#f6f2eb',icon:path.join(root,'assets/icons/icon-512.png'),webPreferences:preferences});
+ diagnostics.window(win);
  win.once('closed',()=>{if(mainWindow===win)mainWindow=null;});
  attach(win);
  // All application requests are local; do not route them through a system proxy.
@@ -98,8 +101,11 @@ if(root){
    ]));
    await createWindow();
    if(quitting||!mainWindow||mainWindow.isDestroyed())return;
-   if(process.env.FURNISH_MCP_DISABLE!=='1'){await ensureMcp();if(codexSetup().preference(root))configureCodex({show:false});}
-  }).catch(e=>{console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
+   if(process.env.FURNISH_MCP_DISABLE!=='1'){
+    try{await ensureMcp();if(codexSetup().preference(root))configureCodex({show:false});}
+    catch(e){diagnostics.record('mcp-start-error',{message:e.message});console.error('Furnish MCP 未启动，桌面继续运行，可从 MCP 菜单重试：'+e.message);}
+   }
+  }).catch(e=>{diagnostics.record('startup-error',{message:e.message});console.error(e.stack||e);dialog.showErrorBox('Furnish 无法启动',e.message);app.quit();});
   app.on('window-all-closed',()=>app.quit());
   app.on('will-quit',event=>{if(backend&&!quitting){
    event.preventDefault();quitting=true;

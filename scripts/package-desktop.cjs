@@ -15,7 +15,7 @@ function build({out=path.join(root,'output/desktop/Furnish-win32-x64'),portable=
  fs.mkdirSync(path.join(out,'scripts'));
  for(const name of runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(out,'scripts',name));
  const appDir=path.join(out,'resources/app');fs.mkdirSync(appDir,{recursive:true});
- for(const name of ['main.cjs','policy.cjs','backend.cjs'])fs.copyFileSync(path.join(root,'desktop',name),path.join(appDir,name));
+ for(const name of ['main.cjs','policy.cjs','backend.cjs','diagnostics.cjs'])fs.copyFileSync(path.join(root,'desktop',name),path.join(appDir,name));
  fs.writeFileSync(path.join(appDir,'package.json'),JSON.stringify({name:'furnish-desktop',version:'1.0.0',main:'main.cjs'},null,2)+'\n');
  if(!portable)fs.writeFileSync(path.join(out,'furnish-desktop.json'),JSON.stringify({root},null,2)+'\n');
  fs.writeFileSync(path.join(out,'桌面版使用说明.txt'),'双击 Furnish.exe 启动。整个文件夹需要一起保留，不能单独移动 EXE。\r\n'+(portable?'本目录为独立工作目录；设计保存在 projects/workspace.furnish.json。\r\n':'本机版本连接源码工作目录：'+root+'\r\n')+'浏览器版仍可用 start-furnish.cmd（需 Node.js），或直接打开 index.html。\r\n迁移其他电脑：使用 --portable 打包后，另行复制 projects 目录；恢复副本在 .local。\r\n缓存不读取其他浏览器；只存在浏览器缓存的编辑请先用原启动脚本保存，或导出项目再导入。\r\n');
