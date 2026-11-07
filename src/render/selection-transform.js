@@ -71,7 +71,7 @@
   function cancel(){gesture?.finish(false);}
   function setSelection(next){cancel();const changed=JSON.stringify(ids)!==JSON.stringify(next);ids=[...next];if(changed){axis='z';details.hidden=true;more.setAttribute('aria-expanded','false');}refresh();A.invalidate();}
   function update(visible){
-   const list=items(),models=A.models(ids);shown=visible&&ready(list)&&models.length===list.length&&list.every(A.visible);overlay.hidden=!shown;if(!shown){cancel();return;}
+   const list=items(),models=A.models(ids);shown=visible&&stage.classList.contains('is3d')&&!stage.classList.contains('animating')&&ready(list)&&models.length===list.length&&list.every(A.visible);overlay.hidden=!shown;if(!shown){cancel();return;}
    const box=new T.Box3();models.forEach(model=>box.union(new T.Box3().setFromObject(model)));if(box.isEmpty()){overlay.hidden=true;return;}
    if(!gesture){const pivot=groupPivot(list);origin=new T.Vector3(A.wx(pivot[0]),(box.min.y+box.max.y)/2,A.wz(pivot[1]));}
    screen=project(origin);if(screen.z< -1||screen.z>1){overlay.hidden=true;cancel();return;}

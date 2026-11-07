@@ -1599,6 +1599,7 @@ async function enter(){
 }
 async function exit(){
   cancelElevationGesture();
+  selectionTransform?.update(false);
   closeCameraPanel();
   capturedImage=image();capturedState=JSON.stringify(state);
   clearObservation();

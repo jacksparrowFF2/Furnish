@@ -98,7 +98,7 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
 @media(max-width:600px){.scene-height-card:has(.scene-height-controls) .scene-height-row{display:none}.scene-height-card:has(.scene-height-controls) .scene-height-controls{margin-top:0;padding-top:0;border-top:0}}
 .scene-height-row:nth-child(4){margin-top:7px;padding-top:6px;border-top:1px solid #dce7ea;color:#5c737b}
 .scene-transform{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.scene-transform[hidden]{display:none}
+.scene-transform[hidden],#stage:not(.is3d) .scene-transform,#stage.animating .scene-transform{display:none}
 .scene-transform-gizmo{position:absolute;width:220px;height:220px;overflow:visible;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 1px 1px #fff9)}
 .scene-transform-gizmo [data-transform-axis]{cursor:grab;outline:none;touch-action:none}
 .scene-transform-gizmo .transform-hit{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke}
