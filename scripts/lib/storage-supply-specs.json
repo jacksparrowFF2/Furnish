@@ -250,5 +250,53 @@
       "brand-mark"
     ],
     "shape": "freeze-dry-bucket"
+  },
+  "beverage-can-330": {
+    "type": "beverage_can_330ml",
+    "name": "易拉罐 · 330ml标准罐",
+    "size": [
+      66.2,
+      115.2,
+      66.2
+    ],
+    "color": "#f1f2ed",
+    "sourceUrl": "https://www.hanacans.com/aluminum-can-body",
+    "brand": "",
+    "model": "330ml标准罐 · Ø66.2×115.2 · 闭罐通用外观",
+    "parts": [
+      "body",
+      "bottom-rim",
+      "top-rim",
+      "lid",
+      "score-line",
+      "pull-tab",
+      "tab-rivet"
+    ],
+    "shape": "beverage-can",
+    "global": "FurnishBeverageCan330Asset"
+  },
+  "beverage-can-500": {
+    "type": "beverage_can_500ml",
+    "name": "易拉罐 · 500ml标准罐",
+    "size": [
+      66,
+      168,
+      66
+    ],
+    "color": "#f1f2ed",
+    "sourceUrl": "https://www.hanacans.com/aluminum-can-body",
+    "brand": "",
+    "model": "500ml标准罐 · Ø66×168 · 闭罐通用外观",
+    "parts": [
+      "body",
+      "bottom-rim",
+      "top-rim",
+      "lid",
+      "score-line",
+      "pull-tab",
+      "tab-rivet"
+    ],
+    "shape": "beverage-can",
+    "global": "FurnishBeverageCan500Asset"
   }
 }

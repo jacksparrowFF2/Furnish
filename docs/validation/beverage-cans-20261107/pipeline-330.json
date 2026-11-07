@@ -1,0 +1,435 @@
+{
+  "passed": true,
+  "profile": "beverage-can-330",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "beverage_can_330ml",
+    "name": "易拉罐 · 330ml标准罐",
+    "w": 66.2,
+    "d": 66.2,
+    "color": "#f1f2ed",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "",
+    "model": "330ml标准罐 · Ø66.2×115.2 · 闭罐通用外观",
+    "sourceUrl": "https://www.hanacans.com/aluminum-can-body",
+    "h": 115.2
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-07T13:36:57.177Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cDRQwd\\beverage-can-330-45i0rV",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-07T13:36:57.178Z",
+      "result": {
+        "command": "author-beverage-can-330",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cDRQwd\\beverage-can-330-45i0rV\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cDRQwd\\beverage-can-330-45i0rV\\authored",
+        "passed": true,
+        "profile": "beverage-can-330",
+        "parts": 7,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "beverage-can-330",
+          "parts": 7,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-07T13:36:59.767Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-07T13:36:59.767Z",
+      "result": {
+        "passed": true,
+        "profile": "beverage-can-330",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-07T13:37:00.555Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-07T13:37:00.555Z",
+      "result": {
+        "command": "publish-beverage-can-330",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cDRQwd\\beverage-can-330-45i0rV\\authored\\beverage-can-330-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cDRQwd\\workspace\\src\\data\\beverage-can-330-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "68f60b4db85e5428932acd1479912de7ee75e0a12fa748f38aa0baf1621c257a",
+        "runtimeSha256": "a7ce2ba0583127efa49317e6afb8d9747f6223274976a85e58395d2e96dde5a8"
+      },
+      "finished": "2026-11-07T13:37:01.456Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-07T13:37:01.457Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "beverage-can-330",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cDRQwd\\beverage-can-330-45i0rV\\storage-supplies.log",
+            "reused": false
+          },
+          {
+            "name": "beverage-cans",
+            "profile": "beverage-can-330",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cDRQwd\\beverage-can-330-45i0rV\\beverage-cans.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "beverage-can-330",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 115.2,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 115.2,
+                  "externalDistance": 86.71660727463383,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 115.2,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 115.2,
+                  "externalDistance": 86.71660727463383,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-07T13:37:06.223Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-07T13:37:06.223Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.03310000151395798,
+                0,
+                -0.03310000151395798
+              ],
+              [
+                0.03310000151395798,
+                0.1151999980211258,
+                0.03310000151395798
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.03707199916243553,
+                0,
+                -0.03574800118803978
+              ],
+              [
+                0.03707199916243553,
+                0.12441600114107132,
+                0.03574800118803978
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.03310000151395798,
+                0,
+                -0.03310000151395798
+              ],
+              [
+                0.03310000151395798,
+                0.1151999980211258,
+                0.03310000151395798
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T13:37:20.355Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-07T13:37:20.355Z",
+      "result": {
+        "passed": true,
+        "profile": "beverage-can-330",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T13:37:21.396Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-07T13:37:21.397Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0,
+              0.0575999990105629,
+              0.2762174283248132
+            ],
+            "target": [
+              0,
+              0.0575999990105629,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0.1529240591946676,
+              0.14170823156763007,
+              0.2140936828725346
+            ],
+            "target": [
+              0,
+              0.0575999990105629,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              -0.1563773252613335,
+              0.1201509291150963,
+              -0.21892825536586685
+            ],
+            "target": [
+              0,
+              0.0575999990105629,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T13:37:29.480Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-07T13:37:29.480Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T13:37:32.625Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-07T13:37:32.625Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T13:37:35.738Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-07T13:37:35.739Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T13:37:38.855Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-07T13:37:38.855Z",
+      "result": {
+        "passed": true,
+        "profile": "beverage-can-330",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T13:37:39.627Z"
+    }
+  ],
+  "finished": "2026-11-07T13:37:39.627Z"
+}

@@ -470,3 +470,7 @@ UI 在方案副本中沿正式 normalizeFurnitureEdit 预演关联调整，并�
 ## 柜体尺寸固定端（2026-11-05）
 
 既有resizeAnchor的center/left/right/top/bottom沿原世界占地外包语义保留。新增local-left/local-right复用该字段，由design-core计算产品局部左右端，沿旋转和镜像转换；默认缺失仍中心，新枚举使用项目/工作区/恢复缓存v51保护。拖动手柄显式方向优先且不改保存偏好，仅更换偏好不清空间确认。未新增家具安装或尺寸字段，柜体/厨房原结构尺寸限制不放宽。使用与验证见[固定端记录](validation/cabinet-resize-direction-20261105/README.md)。
+
+## 标准易拉罐与阵列（2026-11-07）
+
+`beverage_can_330ml`／`beverage_can_500ml`注册为storage-supply，默认Ø66.2×115.2／Ø66×168mm；mountHeight新建0、底部基准、pose3D与现有静态生产构造共用，价格未知。支持inventoryArray原记录关联阵列，无新字段；缺失保持单件，复制重分身份，跨类型替换按原能力清理。单件v57、倾斜v58，显式罐阵列v66；项目／工作区及缓存接受历史版本。几何／位置／离地变化沿原缓存和确认链；建立关联或单纯配色不额外失效。尺寸资料差异、空间边界及验收见[易拉罐](BEVERAGE-CANS.md)。

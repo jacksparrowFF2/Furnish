@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 29,
+    "blenderModels": 31,
     "parametricVerificationConfigurations": 89,
-    "verificationConfigurations": 118,
-    "catalogEntries": 160,
-    "catalogTypes": 133,
-    "productDossiers": 55,
-    "referenceImages": 156,
+    "verificationConfigurations": 120,
+    "catalogEntries": 162,
+    "catalogTypes": 135,
+    "productDossiers": 58,
+    "referenceImages": 168,
     "missingReferences": 12
   },
   "models": [
@@ -1606,6 +1606,42 @@
       "author": "scripts/blender-model-cat-food-2kg.py",
       "files": [
         {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.blend",
+          "role": "retained-other",
+          "sha256": "9b6e5b1eb67a1ed30e231278323fa84532968a159eccbfa618e49a36469ccd2f",
+          "bytes": 142610
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.glb",
+          "role": "retained-other",
+          "sha256": "68f60b4db85e5428932acd1479912de7ee75e0a12fa748f38aa0baf1621c257a",
+          "bytes": 127856
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "1245d175b0cd6ef88c198353deab326be9025ab595cd2a47bbc3277b058fab51",
+          "bytes": 143639
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.blend",
+          "role": "retained-other",
+          "sha256": "3fc843995a9664d5eb29b8251bc2fddf097a4f688f95badf16e47a2795d842c2",
+          "bytes": 142966
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.glb",
+          "role": "retained-other",
+          "sha256": "656267550ed0dd7ce9f911da06335188572dad04a3bba0b21d65b879d12baa20",
+          "bytes": 127856
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "92f06777c2e5ae891848a7cb8d6417f553d58d520b7dd9bb35cab0b4fb35457d",
+          "bytes": 143702
+        },
+        {
           "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend",
           "role": "retained-other",
           "sha256": "6157469c778a5b27055de200531f40221746743c23842734fa7da672cee18a95",
@@ -2051,6 +2087,110 @@
         "assets/models/freeze-dry-bucket-6l/references/dimensions.png",
         "assets/models/freeze-dry-bucket-6l/references/range.png"
       ]
+    },
+    {
+      "profile": "beverage-can-330",
+      "type": "beverage_can_330ml",
+      "name": "易拉罐 · 330ml标准罐",
+      "sizeMm": [
+        66.2,
+        66.2,
+        115.2
+      ],
+      "parts": 7,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/beverage-can-330-blender-asset.js",
+        "sha256": "eef1acd26aa1e11d768c3a3a2f9232d0a6e6ac0d9bcd84e51cb94336f05536a0",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "68f60b4db85e5428932acd1479912de7ee75e0a12fa748f38aa0baf1621c257a",
+      "current": {
+        "blend": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.blend",
+        "glb": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.glb"
+      },
+      "document": "docs/BEVERAGE-CANS.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.blend",
+          "role": "published-source",
+          "sha256": "9b6e5b1eb67a1ed30e231278323fa84532968a159eccbfa618e49a36469ccd2f",
+          "bytes": 142610
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.glb",
+          "role": "published-source",
+          "sha256": "68f60b4db85e5428932acd1479912de7ee75e0a12fa748f38aa0baf1621c257a",
+          "bytes": 127856
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "1245d175b0cd6ef88c198353deab326be9025ab595cd2a47bbc3277b058fab51",
+          "bytes": 143639
+        }
+      ],
+      "dossier": "assets/models/beverage-can-330/asset.json",
+      "references": [
+        "assets/models/beverage-can-330/references/user-1.png",
+        "assets/models/beverage-can-330/references/user-2.png",
+        "assets/models/beverage-can-330/references/user-3.png",
+        "assets/models/beverage-can-330/references/user-4.png"
+      ]
+    },
+    {
+      "profile": "beverage-can-500",
+      "type": "beverage_can_500ml",
+      "name": "易拉罐 · 500ml标准罐",
+      "sizeMm": [
+        66,
+        66,
+        168
+      ],
+      "parts": 7,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/beverage-can-500-blender-asset.js",
+        "sha256": "1e0cdd3a914c678e8c5b4e4206c81bff878db388b458b70502d1c62ce065bd77",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "656267550ed0dd7ce9f911da06335188572dad04a3bba0b21d65b879d12baa20",
+      "current": {
+        "blend": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.blend",
+        "glb": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.glb"
+      },
+      "document": "docs/BEVERAGE-CANS.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.blend",
+          "role": "published-source",
+          "sha256": "3fc843995a9664d5eb29b8251bc2fddf097a4f688f95badf16e47a2795d842c2",
+          "bytes": 142966
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.glb",
+          "role": "published-source",
+          "sha256": "656267550ed0dd7ce9f911da06335188572dad04a3bba0b21d65b879d12baa20",
+          "bytes": 127856
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "92f06777c2e5ae891848a7cb8d6417f553d58d520b7dd9bb35cab0b4fb35457d",
+          "bytes": 143702
+        }
+      ],
+      "dossier": "assets/models/beverage-can-500/asset.json",
+      "references": [
+        "assets/models/beverage-can-500/references/user-1.png",
+        "assets/models/beverage-can-500/references/user-2.png",
+        "assets/models/beverage-can-500/references/user-3.png",
+        "assets/models/beverage-can-500/references/user-4.png"
+      ]
     }
   ],
   "products": [
@@ -2393,6 +2533,175 @@
       ],
       "manifest": "assets/models/art-glass/asset.json",
       "readme": "assets/models/art-glass/README.md"
+    },
+    {
+      "format": 1,
+      "id": "beverage-can-330",
+      "name": "330ml标准易拉罐",
+      "types": [
+        "beverage_can_330ml"
+      ],
+      "route": "blender",
+      "document": "docs/BEVERAGE-CANS.md",
+      "sourceLinks": [
+        "https://www.hanacans.com/aluminum-can-body",
+        "https://www.webpackaging.com/en/portals/ballcorporation/assets/11059496/330ml-standard/",
+        "https://help.nomoq.com/where-can-i-find-technical-specifications",
+        "https://xemstudio.com/objects/beverage-cans/"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "de7c2e126c4839567c65c69a8265a333a2bb7a303bd2727be96331a93dffc4f2",
+          "bytes": 68663,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "04273a3a0e6d88260f274a39be053edddb708e9d5b6a010bd6d3010e7ba48c08",
+          "bytes": 233278,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "90208ef75bbbf964d57a5d8daed731359fa1e03d1947b2f85ce66ff8e164545c",
+          "bytes": 728906,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-4.png",
+          "kind": "user",
+          "sha256": "37688d6464a1c26cdde75e4fe19cf5601f22380c24bcda62ddf601ccfef0d078",
+          "bytes": 653407,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/beverage-cans-20261107/README.md"
+      ],
+      "notes": [
+        "330ml采用用户标注Ø66.2×115.2；500ml采用制罐厂Ø66×168。均为通用闭罐，不宣称雪花品牌包装还原；500ml=73mm的汇总图不作为本款依据。",
+        "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。"
+      ],
+      "manifest": "assets/models/beverage-can-330/asset.json",
+      "readme": "assets/models/beverage-can-330/README.md"
+    },
+    {
+      "format": 1,
+      "id": "beverage-can-500",
+      "name": "500ml标准易拉罐",
+      "types": [
+        "beverage_can_500ml"
+      ],
+      "route": "blender",
+      "document": "docs/BEVERAGE-CANS.md",
+      "sourceLinks": [
+        "https://www.hanacans.com/aluminum-can-body",
+        "https://www.webpackaging.com/en/portals/ballcorporation/assets/11059496/330ml-standard/",
+        "https://help.nomoq.com/where-can-i-find-technical-specifications",
+        "https://xemstudio.com/objects/beverage-cans/"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "de7c2e126c4839567c65c69a8265a333a2bb7a303bd2727be96331a93dffc4f2",
+          "bytes": 68663,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "04273a3a0e6d88260f274a39be053edddb708e9d5b6a010bd6d3010e7ba48c08",
+          "bytes": 233278,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "90208ef75bbbf964d57a5d8daed731359fa1e03d1947b2f85ce66ff8e164545c",
+          "bytes": 728906,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-4.png",
+          "kind": "user",
+          "sha256": "37688d6464a1c26cdde75e4fe19cf5601f22380c24bcda62ddf601ccfef0d078",
+          "bytes": 653407,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/beverage-cans-20261107/README.md"
+      ],
+      "notes": [
+        "330ml采用用户标注Ø66.2×115.2；500ml采用制罐厂Ø66×168。均为通用闭罐，不宣称雪花品牌包装还原；500ml=73mm的汇总图不作为本款依据。",
+        "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。"
+      ],
+      "manifest": "assets/models/beverage-can-500/asset.json",
+      "readme": "assets/models/beverage-can-500/README.md"
+    },
+    {
+      "format": 1,
+      "id": "beverage-cans",
+      "name": "易拉罐共用参考资料",
+      "types": [
+        "beverage_can_330ml",
+        "beverage_can_500ml"
+      ],
+      "route": "reference",
+      "document": "docs/BEVERAGE-CANS.md",
+      "sourceLinks": [
+        "https://www.hanacans.com/aluminum-can-body",
+        "https://www.webpackaging.com/en/portals/ballcorporation/assets/11059496/330ml-standard/",
+        "https://help.nomoq.com/where-can-i-find-technical-specifications",
+        "https://xemstudio.com/objects/beverage-cans/"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "de7c2e126c4839567c65c69a8265a333a2bb7a303bd2727be96331a93dffc4f2",
+          "bytes": 68663,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "04273a3a0e6d88260f274a39be053edddb708e9d5b6a010bd6d3010e7ba48c08",
+          "bytes": 233278,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "90208ef75bbbf964d57a5d8daed731359fa1e03d1947b2f85ce66ff8e164545c",
+          "bytes": 728906,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-4.png",
+          "kind": "user",
+          "sha256": "37688d6464a1c26cdde75e4fe19cf5601f22380c24bcda62ddf601ccfef0d078",
+          "bytes": 653407,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/beverage-cans-20261107/README.md"
+      ],
+      "notes": [
+        "330ml采用用户标注Ø66.2×115.2；500ml采用制罐厂Ø66×168。均为通用闭罐，不宣称雪花品牌包装还原；500ml=73mm的汇总图不作为本款依据。",
+        "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。"
+      ],
+      "manifest": "assets/models/beverage-cans/asset.json",
+      "readme": "assets/models/beverage-cans/README.md"
     },
     {
       "format": 1,
@@ -6820,6 +7129,24 @@
       "w": 420,
       "d": 200,
       "h": 50,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "beverage_can_330ml",
+      "name": "易拉罐 · 330ml标准罐",
+      "w": 66.2,
+      "d": 66.2,
+      "h": 115.2,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "beverage_can_500ml",
+      "name": "易拉罐 · 500ml标准罐",
+      "w": 66,
+      "d": 66,
+      "h": 168,
       "module": "storage-supply"
     },
     {

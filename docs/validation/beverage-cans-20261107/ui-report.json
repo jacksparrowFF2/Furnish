@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "modes": [
+    {
+      "mode": "desktop",
+      "passed": true,
+      "checks": [
+        "catalog creation",
+        "single-to-24 array UI",
+        "atomic undo/redo",
+        "columns/rows/gaps/stagger/yaw",
+        "negative-gap rejection",
+        "elevation",
+        "168 production parts / 24 unique units",
+        "actual two-layer height",
+        "save/reload",
+        "420px layout",
+        "detach"
+      ]
+    },
+    {
+      "mode": "http",
+      "passed": true,
+      "checks": [
+        "catalog creation",
+        "single-to-24 array UI",
+        "atomic undo/redo",
+        "columns/rows/gaps/stagger/yaw",
+        "negative-gap rejection",
+        "elevation",
+        "168 production parts / 24 unique units",
+        "actual two-layer height",
+        "save/reload",
+        "420px layout",
+        "detach"
+      ]
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "checks": [
+        "catalog creation",
+        "single-to-24 array UI",
+        "atomic undo/redo",
+        "columns/rows/gaps/stagger/yaw",
+        "negative-gap rejection",
+        "elevation",
+        "168 production parts / 24 unique units",
+        "actual two-layer height",
+        "save/reload",
+        "420px layout",
+        "detach"
+      ]
+    }
+  ],
+  "executable": "D:\\1601装修\\Furnish程序\\Furnish-win32-x64\\Furnish.exe",
+  "sourceUnchanged": true
+}

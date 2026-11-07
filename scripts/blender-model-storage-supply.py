@@ -38,7 +38,44 @@ def front_text(text,x,height,size):
  o=bpy.context.object;o.data.body=text;o.data.size=size;o.data.align_x='CENTER';o.data.resolution_u=3;o.data.extrude=.0004
  bpy.ops.object.convert(target='MESH');return identity(bpy.context.object,'quantity-mark',white)
 W,H,D=[v/1000 for v in spec['size']]
-if spec.get('shape')=='roll-layer':
+if spec.get('shape')=='beverage-can':
+ # Closed generic 202-end can. Outer envelope is sourced; local profiles are
+ # visual estimates. One centre vertex per cap avoids degenerate axis rings.
+ main.node_tree.nodes.get('Principled BSDF').inputs['Roughness'].default_value=.3
+ def lathe(name,section,m):
+  verts=[];rings=[];faces=[];N=64
+  for y,r in section:
+   ring=[]
+   for j in range(1 if r==0 else N):
+    a=j*math.tau/N;ring.append(len(verts));verts.append((r*math.cos(a),-r*math.sin(a),y))
+   rings.append(ring)
+  for first,second in zip(rings,rings[1:]):
+   for j in range(N):
+    if len(first)==1:faces.append((first[0],second[j],second[(j+1)%N]))
+    elif len(second)==1:faces.append((first[j],second[0],first[(j+1)%N]))
+    else:faces.append((first[j],second[j],second[(j+1)%N],first[(j+1)%N]))
+  mesh=bpy.data.meshes.new(name);mesh.from_pydata(verts,[],faces);mesh.update();o=bpy.data.objects.new(name,mesh);bpy.context.collection.objects.link(o);identity(o,name,m)
+  for p in mesh.polygons:p.use_smooth=True
+  return o
+ R=W/2
+ lathe('body',[(.006,0),(.006,.017),(.004,.022),(.001,.025),(.0007,.026),(.002,.028),(.005,.0305),(.009,R-.0005),(.012,R),(H-.020,R),(H-.016,R-.0003),(H-.012,.030),(H-.008,.027),(H-.004,.0265),(H-.0035,0)],main)
+ lathe('bottom-rim',[(.0007,.0255),(0,.026),(0,.027),(.0007,.028),(.002,.028),(.0025,.027),(.002,.026),(.0007,.0255)],silver)
+ lathe('top-rim',[(H-.004,.0265),(H-.0025,.0274),(H-.001,.0277),(H,.0272),(H,.0265),(H-.001,.0258),(H-.003,.0258),(H-.004,.0265)],silver)
+ lathe('lid',[(H-.0037,0),(H-.0037,.022),(H-.0028,.024),(H-.0018,.0258),(H-.0013,.026),(H-.002,.025),(H-.0032,.023),(H-.0032,0)],silver)
+ # Closed scored tear panel; the tab opening itself is a real through-hole.
+ curve=bpy.data.curves.new('score','CURVE');curve.dimensions='3D';curve.bevel_depth=.00013;curve.bevel_resolution=2;spline=curve.splines.new('POLY');spline.points.add(63)
+ for j,p in enumerate(spline.points):
+  a=j*math.tau/64;p.co=(.009*math.cos(a),-(.010+.008*math.sin(a)),H-.00305,1)
+ spline.use_cyclic_u=True;o=bpy.data.objects.new('score-line',curve);bpy.context.collection.objects.link(o);bpy.context.view_layer.objects.active=o;o.select_set(True);bpy.ops.object.convert(target='MESH');identity(bpy.context.object,'score-line',dark)
+ verts=[];faces=[];N=48
+ for y,rx,rz,cz in [(H-.0025,.007,.012,-.003),(H-.0017,.007,.012,-.003),(H-.0017,.0042,.006,-.006),(H-.0025,.0042,.006,-.006)]:
+  for j in range(N):
+   a=j*math.tau/N;verts.append((rx*math.cos(a),-(cz+rz*math.sin(a)),y))
+ for k in range(4):
+  for j in range(N):faces.append((k*N+j,k*N+(j+1)%N,((k+1)%4)*N+(j+1)%N,((k+1)%4)*N+j))
+ mesh=bpy.data.meshes.new('tab');mesh.from_pydata(verts,[],faces);mesh.update();o=bpy.data.objects.new('pull-tab',mesh);bpy.context.collection.objects.link(o);identity(o,'pull-tab',silver)
+ lathe('tab-rivet',[(H-.0032,0),(H-.0032,.0018),(H-.0011,.0018),(H-.0009,.0012),(H-.0009,0)],silver)
+elif spec.get('shape')=='roll-layer':
  # Measured outer dimensions; centre hole diameter is an explicit visual estimate.
  # Separate stable roll objects preserve quantity and measurable unit geometry.
  uw,uh,ud=[v/1000 for v in spec['unitSize']]
@@ -180,8 +217,9 @@ for pos,power in [((-.8,-.8,1),90),((.7,.2,.8),70)]:
  bpy.ops.object.light_add(type='AREA',location=pos);o=bpy.context.object;o.data.energy=power;o.data.size=.8;o.rotation_euler=(center-o.location).to_track_quat('-Z','Y').to_euler()
 clay=mat('review-clay','b5b1a8',.7);saved=[(o,o.data.materials[0]) for o in objects]
 for o,_ in saved:o.data.materials[0]=clay
-if spec.get('shape')=='freeze-dry-bucket':
- for o in objects:o.hide_render=o.name not in ('body','lid','lid-seam','lid-recess')
+if spec.get('shape') in ('freeze-dry-bucket','beverage-can'):
+ silhouette_parts=('body','top-rim','bottom-rim') if spec.get('shape')=='beverage-can' else ('body','lid','lid-seam','lid-recess')
+ for o in objects:o.hide_render=o.name not in silhouette_parts
  scene.render.filepath=str(out/'silhouette.png');bpy.ops.render.render(write_still=True)
  for o in objects:o.hide_render=False
 scene.render.filepath=str(out/'clay.png');bpy.ops.render.render(write_still=True)

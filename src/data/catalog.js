@@ -191,6 +191,8 @@ const LIB = [
   {cat:'囤货用品', items:[
     ["toilet_roll_heartlink_layer9", "心相印卷纸 · 9卷层（3层27卷）", 300, 300, "#f2f0e8",undefined,140],
     ["tissue_heartlink_layer6", "心相印抽纸 · 6包层（4层24包）", 420, 200, "#70a88f",undefined,50],
+    ["beverage_can_330ml", "易拉罐 · 330ml标准罐", 66.2, 66.2, "#f1f2ed", undefined, 115.2],
+    ["beverage_can_500ml", "易拉罐 · 500ml标准罐", 66, 66, "#f1f2ed", undefined, 168],
     ["freeze_dry_bucket_meoof_6l", "冻干桶 · meoof 6L", 316, 309, "#e8e2d7",undefined,187],
     ["cat_food_myfoodie_2kg", "猫粮袋 · 2kg紫白参考", 260, 120, "#863478",undefined,400],
     ["wet_wipes_pack_170", "湿巾 · 170×110×70用户尺寸", 170, 110, "#8aafb6",undefined,70],

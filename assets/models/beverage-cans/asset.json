@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "id": "beverage-cans",
+  "name": "易拉罐共用参考资料",
+  "types": [
+    "beverage_can_330ml",
+    "beverage_can_500ml"
+  ],
+  "route": "reference",
+  "document": "docs/BEVERAGE-CANS.md",
+  "sourceLinks": [
+    "https://www.hanacans.com/aluminum-can-body",
+    "https://www.webpackaging.com/en/portals/ballcorporation/assets/11059496/330ml-standard/",
+    "https://help.nomoq.com/where-can-i-find-technical-specifications",
+    "https://xemstudio.com/objects/beverage-cans/"
+  ],
+  "references": [
+    {
+      "path": "references/user-1.png",
+      "kind": "user",
+      "sha256": "de7c2e126c4839567c65c69a8265a333a2bb7a303bd2727be96331a93dffc4f2",
+      "bytes": 68663,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/user-2.png",
+      "kind": "user",
+      "sha256": "04273a3a0e6d88260f274a39be053edddb708e9d5b6a010bd6d3010e7ba48c08",
+      "bytes": 233278,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/user-3.png",
+      "kind": "user",
+      "sha256": "90208ef75bbbf964d57a5d8daed731359fa1e03d1947b2f85ce66ff8e164545c",
+      "bytes": 728906,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/user-4.png",
+      "kind": "user",
+      "sha256": "37688d6464a1c26cdde75e4fe19cf5601f22380c24bcda62ddf601ccfef0d078",
+      "bytes": 653407,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/beverage-cans-20261107/README.md"
+  ],
+  "notes": [
+    "330ml采用用户标注Ø66.2×115.2；500ml采用制罐厂Ø66×168。均为通用闭罐，不宣称雪花品牌包装还原；500ml=73mm的汇总图不作为本款依据。",
+    "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。"
+  ]
+}

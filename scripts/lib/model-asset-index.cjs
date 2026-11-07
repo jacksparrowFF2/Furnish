@@ -10,6 +10,7 @@ const docs={'pet-bowl':'PET-SUPPLIES.md','litter-bag':'PET-SUPPLIES.md',
 };
 const supplies=require('./storage-supply-specs.json');for(const id of Object.keys(supplies))docs[id]='STORAGE-CABINET-2400.md';
 docs['cat-food-2kg']='CAT-FOOD-2KG.md';
+docs['beverage-can-330']=docs['beverage-can-500']='BEVERAGE-CANS.md';
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex');
 const textHash=f=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f),'utf8').replace(/\r\n/g,'\n')).digest('hex');
 const rel=f=>path.relative(root,f).split(path.sep).join('/');
