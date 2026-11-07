@@ -2,14 +2,18 @@
  * existing mutate path; previews never write furniture or persistence state. */
 (function(root){
  'use strict';
- function inlinePosition(view,origin,anchor,size,onRing=false){return {left:Math.max(view.left+6,Math.min(view.right-size.width-6,origin.x+anchor[0]+(onRing?-size.width/2:10))),top:Math.max(view.top+6,Math.min(view.bottom-size.height-6,origin.y+anchor[1]-(onRing?size.height/2:size.height+7)))};}
+ function toolbarPosition(view,bounds,size,previous){
+  const gap=14,pad=6,cx=(bounds.left+bounds.right)/2,cy=(bounds.top+bounds.bottom)/2,clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),positions={top:{left:cx-size.width/2,top:bounds.top-gap-size.height},bottom:{left:cx-size.width/2,top:bounds.bottom+gap},left:{left:bounds.left-gap-size.width,top:cy-size.height/2},right:{left:bounds.right+gap,top:cy-size.height/2}},order=[...new Set([previous,'top','bottom','right','left'].filter(Boolean))];
+  for(const side of order){const at=positions[side],left=clamp(at.left,view.left+pad,view.right-size.width-pad),top=clamp(at.top,view.top+pad,view.bottom-size.height-pad);if(left+size.width<=bounds.left-gap||left>=bounds.right+gap||top+size.height<=bounds.top-gap||top>=bounds.bottom+gap)return {left,top,side};}
+  return {left:clamp(cx-size.width/2,view.left+pad,view.right-size.width-pad),top:view.top+pad,side:previous||'top'};
+ }
  const ringFacing=(previous,cosine)=>previous===undefined?cosine<.18:previous?cosine<.24:cosine<.12;
  function create(A){
   const {THREE:T,stage,host,camera}=A,P=root.FurnishProducts,D=root.FurnishDesign,S=root.FurnishSnapping,R=root.FurnishProductPose,t=A.tr,svgNS='http://www.w3.org/2000/svg';
   const overlay=document.createElement('div');overlay.className='scene-transform';overlay.hidden=true;host.append(overlay);
   const svg=document.createElementNS(svgNS,'svg');svg.classList.add('scene-transform-gizmo');svg.setAttribute('viewBox','-110 -110 220 220');svg.setAttribute('aria-label',t('家具移动与旋转手柄','Furniture move and rotate handles'));overlay.append(svg);
   const make=(name,attrs={},parent=svg)=>{const node=document.createElementNS(svgNS,name);for(const [key,value]of Object.entries(attrs))node.setAttribute(key,value);parent.append(node);return node;};
-  let ids=[],axis='z',gesture=null,origin=null,screen=null,worldPerPixel=0,shown=false,editing=false;
+  let ids=[],axis='z',gesture=null,origin=null,screen=null,worldPerPixel=0,shown=false,editing=false,dockSide=null;
   const isRotation=key=>key.startsWith('rotate'),rotationAxis=key=>key==='rotate'?'z':key.slice(-1),rings={rotate:{axis:'z',a:new T.Vector3(1,0,0),b:new T.Vector3(0,0,1),radius:56},'rotate-x':{axis:'x',a:new T.Vector3(0,0,1),b:new T.Vector3(0,1,0),radius:56},'rotate-y':{axis:'y',a:new T.Vector3(0,1,0),b:new T.Vector3(1,0,0),radius:56}};
   const axes={x:new T.Vector3(1,0,0),y:new T.Vector3(0,0,1),z:new T.Vector3(0,1,0)},colors={x:'#dc5149',y:'#219869',z:'#368edb',rotate:'#d58c23'},handles={};
   for(const [key,rule]of Object.entries(rings)){const g=make('g',{'data-transform-axis':key,role:'button',tabindex:'0','aria-label':key==='rotate'?t('拖动绕竖轴旋转','Drag to rotate upright'):t('绕 '+rule.axis.toUpperCase()+' 轴旋转','Rotate about '+rule.axis.toUpperCase())});const title=make('title',{},g);title.textContent=key==='rotate'?t('绕 Z 轴旋转','Rotate about Z'):t('绕 '+rule.axis.toUpperCase()+' 轴旋转 · 安装设备受限','Rotate about '+rule.axis.toUpperCase()+' · installation restrictions apply');handles[key]={group:g,hit:make('path',{class:'transform-hit'},g),line:make('path',{class:'transform-ring',stroke:colors[rule.axis]},g),shine:make('path',{class:'transform-shine'},g),anchor:[0,0]};}
@@ -70,7 +74,7 @@
   }
   for(const [key,h]of Object.entries(handles)){h.group.onpointerdown=e=>start(key,e);h.group.onclick=e=>{e.stopPropagation();setAxis(key);};h.group.onkeydown=e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();setAxis(key);input.focus();}else if(['ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();setAxis(key);const d=(e.key==='ArrowUp'?1:-1)*(isRotation(key)?15:10);apply(key,key==='z'?lowest(items())+d:d);}e.stopPropagation();};}
   function cancel(){gesture?.finish(false);}
-  function setSelection(next){cancel();const changed=JSON.stringify(ids)!==JSON.stringify(next);ids=[...next];if(changed){axis='z';editing=false;dock.hidden=true;details.hidden=true;more.setAttribute('aria-expanded','false');}refresh();A.invalidate();}
+  function setSelection(next){cancel();const changed=JSON.stringify(ids)!==JSON.stringify(next);ids=[...next];if(changed){axis='z';editing=false;dockSide=null;dock.hidden=true;details.hidden=true;more.setAttribute('aria-expanded','false');}refresh();A.invalidate();}
   function update(visible){
    const list=items(),models=A.models(ids);shown=visible&&stage.classList.contains('is3d')&&!stage.classList.contains('animating')&&ready(list)&&models.length===list.length&&list.every(A.visible);overlay.hidden=!shown;if(!shown){cancel();return;}
    const box=new T.Box3();models.forEach(model=>box.union(new T.Box3().setFromObject(model)));if(box.isEmpty()){overlay.hidden=true;return;}
@@ -90,12 +94,12 @@
    const cameraDirection=camera.getWorldDirection(new T.Vector3());
    for(const [key,ring]of Object.entries(rings)){const h=handles[key];h.flat=ringFacing(h.flat,Math.abs(cameraDirection.dot(axes[ring.axis])));const points=Array.from({length:33},(_,i)=>{const a=i/32*Math.PI/2;return local(origin.clone().addScaledVector(ring.a,Math.cos(a)*worldPerPixel*ring.radius).addScaledVector(ring.b,Math.sin(a)*worldPerPixel*ring.radius));}),path=points.map((p,i)=>(i?'L':'M')+p.map(n).join(' ')).join(' ');h.hit.setAttribute('d',path);h.line.setAttribute('d',path);h.shine.setAttribute('d',path);h.anchor=points[16];h.points=points;h.group.dataset.arcDegrees='90';}
    const corners=[];for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])corners.push(project(new T.Vector3(x,y,z)));const object={left:Math.min(...corners.map(p=>p.x)),right:Math.max(...corners.map(p=>p.x)),top:Math.min(...corners.map(p=>p.y)),bottom:Math.max(...corners.map(p=>p.y))};overlay.dataset.selectionBounds=JSON.stringify(object);
-   // Deterministic handle-relative anchoring. Never score several docking
-   // locations, change density, or measure a freshly toggled class each frame.
-   if(!editing)return;const h=handles[axis],at=h.anchor,size=dock.getBoundingClientRect(),position=inlinePosition(r,screen,at,size,isRotation(axis));dock.style.left=(position.left-r.left)+'px';dock.style.top=(position.top-r.top)+'px';
+   // Pin a clear side of the whole tripod, including arrow labels and hit
+   // margins. Keep that side until it cannot fit; changing axes never flips it.
+   if(!editing)return;const box2=svg.getBBox(),bounds={left:screen.x+box2.x-10,right:screen.x+box2.x+box2.width+10,top:screen.y+box2.y-10,bottom:screen.y+box2.y+box2.height+10},size=dock.getBoundingClientRect(),position=toolbarPosition(r,bounds,size,dockSide);dockSide=position.side;dock.dataset.side=dockSide;dock.style.left=(position.left-r.left)+'px';dock.style.top=(position.top-r.top)+'px';
 
   }
   return {setSelection,cancel,update,dispose(){cancel();overlay.remove();}};
  }
- root.FurnishSceneTransform={create,inlinePosition,ringFacing};if(typeof module!=='undefined')module.exports=root.FurnishSceneTransform;
+ root.FurnishSceneTransform={create,toolbarPosition,ringFacing};if(typeof module!=='undefined')module.exports=root.FurnishSceneTransform;
 })(typeof globalThis==='undefined'?this:globalThis);
