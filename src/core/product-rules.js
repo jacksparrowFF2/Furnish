@@ -27,6 +27,7 @@ const artGlassPatterns={
  diamond:{label:'钻石',pitch:80,relief:1.15,roughness:.075}
 };
 const fields={
+ paperArray:{message:'纸品阵列参数无效'},
  pose3D:{message:'三维姿态须为当前物品支持的单位四元数'},
  bottomPhysical:{boolean:true,message:'窗帘底部基准标记须为布尔值'},
  petTrayOpen:{boolean:true,message:'喂食器抽拉状态须为布尔值'},
@@ -209,6 +210,10 @@ for(const [type,rule] of Object.entries(types)){
 }
 // Free tilt is a rigid-inventory capability, not an installation override.
 for(const rule of Object.values(types))if(rule.storageSupply||rule.petSupply||rule.family==='placeholder'){rule.fields=[...rule.fields,'pose3D'];rule.freeRotation=true;}
+// Historical layers remain untouched until the user edits their array.
+for(const [type,kind,count,columns,rows] of [['toilet_roll_heartlink_layer9','roll',9,3,3],['tissue_heartlink_layer6','tissue',6,3,2]]){
+ const r=types[type];r.paperArray={kind,count,columns,rows,maxCount:200,maxAxis:50,maxGap:1000,minUnit:10,maxUnit:20000,orientations:kind==='roll'?['upright','side-x','side-z']:['upright','turn','edge-x','edge-z'],patterns:['grid','stagger']};r.fields.push('paperArray');
+}
 // Bounds derived from the existing production shapes, not supplier dimensions.
 // They correct nominal envelope errors while preserving omitted legacy poses.
  types.pendant.physicalEnvelope=f=>[2120-Math.min(f.w,f.d)*.08,2620];
@@ -336,9 +341,40 @@ function coveringLayout(f){
  }
  return {...spec,open,h,head,hem,drop,bottom,parts};
 }
-const supports=(f,key)=>key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
+const supports=(f,key)=>key==='paperArray'?!!definition(f)?.paperArray&&!f.obj:key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 const value=(f,key)=>f[key]??(key==='mountHeight'&&bottomMode(f)==='offset'?legacyBottom(f):definition(f)?.defaults?.[key]);
+function paperArrayConfig(f){
+ const r=definition(f)?.paperArray;if(!r||f.obj)return null;
+ return f.paperArray??{count:r.count,columns:r.columns,rows:r.rows,unitW:f.w/r.columns,unitD:f.d/r.rows,unitH:height(f),gapX:0,gapZ:0,gapY:0,orientation:'upright',pattern:'grid'};
+}
+function paperArrayLayout(f){
+ const r=definition(f)?.paperArray,a=paperArrayConfig(f);if(!a)return null;
+ const keys=['count','columns','rows','unitW','unitD','unitH','gapX','gapZ','gapY','orientation','pattern'];
+ if(typeof a!=='object'||Array.isArray(a)||Object.keys(a).length!==keys.length||Object.keys(a).some(k=>!keys.includes(k)))throw Error(fields.paperArray.message);
+ for(const key of ['count','columns','rows'])if(!Number.isInteger(a[key])||a[key]<1||a[key]>(key==='count'?r.maxCount:r.maxAxis))throw Error('数量须为1–'+r.maxCount+'整数，每排数量／每层排数须为1–'+r.maxAxis+'整数');
+ for(const key of ['unitW','unitD','unitH'])if(!Number.isFinite(a[key])||a[key]<r.minUnit||a[key]>r.maxUnit)throw Error('单件尺寸须为'+r.minUnit+'–'+r.maxUnit+' mm');
+ for(const key of ['gapX','gapZ','gapY'])if(!Number.isFinite(a[key])||a[key]<0||a[key]>r.maxGap)throw Error('纸品间距须为0–'+r.maxGap+' mm');
+ if(!r.orientations.includes(a.orientation)||!r.patterns.includes(a.pattern))throw Error('纸品朝向或排列无效');
+ // Permutations are rigid rotations, applied identically to the source meshes.
+ const size=a.orientation==='turn'?[a.unitD,a.unitH,a.unitW]:['side-x','edge-x'].includes(a.orientation)?[a.unitH,a.unitW,a.unitD]:['side-z','edge-z'].includes(a.orientation)?[a.unitW,a.unitD,a.unitH]:[a.unitW,a.unitH,a.unitD];
+ const pitch=[size[0]+a.gapX,size[1]+a.gapY,size[2]+a.gapZ],cells=[];
+ for(let i=0;i<a.count;i++){const layer=Math.floor(i/(a.columns*a.rows)),row=Math.floor(i/a.columns)%a.rows,col=i%a.columns;cells.push({index:i,layer,row,col,center:[col*pitch[0]+(a.pattern==='stagger'&&row%2?pitch[0]/2:0),layer*pitch[1]+size[1]/2,row*pitch[2]]});}
+ const min=[Math.min(...cells.map(c=>c.center[0]))-size[0]/2,0,Math.min(...cells.map(c=>c.center[2]))-size[2]/2],max=[Math.max(...cells.map(c=>c.center[0]))+size[0]/2,Math.max(...cells.map(c=>c.center[1]))+size[1]/2,Math.max(...cells.map(c=>c.center[2]))+size[2]/2];
+ const w=max[0]-min[0],h=max[1],d=max[2]-min[2];if(Math.max(w,h,d)>20000)throw Error('纸品阵列整体尺寸不能超过20000 mm');
+ for(const c of cells){c.center[0]-=(min[0]+max[0])/2;c.center[2]-=(min[2]+max[2])/2;}
+ return {config:a,size,cells,w,h,d,layers:cells.at(-1).layer+1};
+}
+function editPaperArray(f,patch){
+ if(!supports(f,'paperArray')||f.obj)throw Error('此物品不支持纸品阵列');
+ if(!patch||typeof patch!=='object'||Array.isArray(patch))throw Error(fields.paperArray.message);
+ const paperArray={...paperArrayConfig(f),...patch},l=paperArrayLayout({...f,paperArray});
+ return {...f,paperArray,w:l.w,d:l.d,h:l.h};
+}
+function clearPaperArray(f){
+ const a=paperArrayConfig(f),r=definition(f)?.paperArray;if(!a||!f.paperArray)return {...f};
+ const next={...f,w:a.unitW*r.columns,d:a.unitD*r.rows,h:a.unitH};delete next.paperArray;paperArrayLayout(next);return next;
+}
 function gardenLayout(f){
  const rule=definition(f)?.garden;if(!rule?.stepped||f.obj)return null;
  const lower=value(f,'rackLowerHeight'),upperDepth=value(f,'rackUpperDepth'),post=value(f,'rackPost'),board=value(f,'rackBoard'),gap=value(f,'rackSlatGap'),h=height(f);
@@ -376,6 +412,7 @@ const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f
 const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
+ if(key==='paperArray'){if(!v||typeof v!=='object')throw Error(rule.message);paperArrayLayout({...f,paperArray:v});return {...v};}
  if(key==='pose3D'){if(!Array.isArray(v)||v.length!==4||!v.every(Number.isFinite)||Math.abs(Math.hypot(...v)-1)>1e-7)throw Error(rule.message);return v.slice();}
  if(key==='tvImage'){
   if(f.obj||typeof v!=='string'||v.length>definition(f).tvScreen.maxDataLength||!/^data:image\/(?:png;base64,iVBORw0KGgo|jpeg;base64,\/9j\/)[A-Za-z0-9+/]*={0,2}$/.test(v))throw Error(rule.message);
@@ -401,7 +438,7 @@ function validateField(f,key,v){
   :rule.string?typeof v==='string'&&!!v.trim()&&v.length<=rule.max:rule.boolean?typeof v==='boolean':rule.values?rule.values.includes(v):finite(v)&&v>=rule.min&&v<=rule.max;
  if(['windowSurroundThickness','windowSurroundSides'].includes(key))windowLining({...f,[key]:v});if(!valid||rule.integer&&!Number.isInteger(v))throw Error(rule.message);if(['pipeBoxThickness','pipeBoxShape','pipeBoxOpenSide','pipeBoxCorner'].includes(key))pipeBoxPanels({...f,[key]:v});return v;
 }
-function validate(f){if(definition(f)?.feedingFrame&&!f.obj)(root.FurnishPetFeedingCore||require('./pet-feeding-core.js')).layout(f);const tower=!f.obj&&definition(f)?.catTower;if(tower&&(!Number.isFinite(height(f))||height(f)<tower.minHeight||height(f)>tower.maxHeight))throw Error(`通天柱模型高度须为${tower.minHeight}–${tower.maxHeight}mm`);artGlass(f);gardenLayout(f);const garden=definition(f)?.garden;if(!f.obj&&garden?.kind==='rack'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<garden.minWidth||f.d<garden.minDepth||height(f)<garden.minHeight))throw Error(`开放花架宽至少${garden.minWidth}、深至少${garden.minDepth}、高至少${garden.minHeight}mm`);windowLining(f);const cb=definition(f)?.cornerBookcase;if(!f.obj&&cb&&(f.w<cb.minWidth||f.d<cb.minDepth||height(f)<cb.minHeight))throw Error(`转角书柜布局草模宽深至少${cb.minWidth}、高至少${cb.minHeight} mm`);const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
+function validate(f){if(f.paperArray!==undefined){validateField(f,'paperArray',f.paperArray);const l=paperArrayLayout(f);if(['w','d','h'].some(k=>!Number.isFinite(f[k])||Math.abs(f[k]-l[k])>.001))throw Error('纸品阵列整体尺寸须与单件和排列一致');}if(definition(f)?.feedingFrame&&!f.obj)(root.FurnishPetFeedingCore||require('./pet-feeding-core.js')).layout(f);const tower=!f.obj&&definition(f)?.catTower;if(tower&&(!Number.isFinite(height(f))||height(f)<tower.minHeight||height(f)>tower.maxHeight))throw Error(`通天柱模型高度须为${tower.minHeight}–${tower.maxHeight}mm`);artGlass(f);gardenLayout(f);const garden=definition(f)?.garden;if(!f.obj&&garden?.kind==='rack'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<garden.minWidth||f.d<garden.minDepth||height(f)<garden.minHeight))throw Error(`开放花架宽至少${garden.minWidth}、深至少${garden.minDepth}、高至少${garden.minHeight}mm`);windowLining(f);const cb=definition(f)?.cornerBookcase;if(!f.obj&&cb&&(f.w<cb.minWidth||f.d<cb.minDepth||height(f)<cb.minHeight))throw Error(`转角书柜布局草模宽深至少${cb.minWidth}、高至少${cb.minHeight} mm`);const st=definition(f)?.sideTable;if(!f.obj&&st&&(f.w<st.minWidth||f.d<st.minDepth||height(f)<st.minHeight))throw Error(`边几布局草模宽至少${st.minWidth}、深至少${st.minDepth}、高至少${st.minHeight} mm`);if(definition(f)?.covering&&f.type!=='curtain'&&(![f.w,f.d,height(f)].every(Number.isFinite)||f.w<100||f.d<20||height(f)<100))throw Error('通用窗饰模型宽至少100、深至少20、高至少100mm');pocketLayout(f);if(!f.obj&&definition(f)?.telescopic?.leafDepth)slidingTracks(f);for(const key of Object.keys(fields))if(f[key]!==undefined)validateField(f,key,f[key]);manifoldLayout(f);if(family(f,'pipe-box')&&!f.obj)pipeBoxPanels(f);if(vesselSink(f)&&(![f.w,f.d].every(v=>Number.isFinite(v)&&v>=definition(f).vessel.minSize)))throw Error('台上盆宽深至少 80 mm');return f;}
 // User-facing kinds are independent of renderer IDs, product identities and plan names.
 const kindGroups={
  '艺术玻璃隔断':'art_glass_partition', '石英石窗台板':'quartz_sill', '木制窗套':'window_surround',
@@ -635,7 +672,7 @@ function customSinkCandidate(next,candidate){
  if(vesselSink(next))delete next.sinkNotch;
 }
 function replacementResizeSource(previous,candidate){
- const next={...previous};for(const key of Object.keys(fields))if(!retainReplacementField(previous,candidate,key))delete next[key];
+ const next={...previous};delete next.paperArray;for(const key of Object.keys(fields))if(!retainReplacementField(previous,candidate,key))delete next[key];
  if(previous.type===candidate.type)customSinkCandidate(next,candidate);
  // Cross-product resizing keeps placement without imposing source construction limits.
  else if(family(candidate,'art-glass'))next.type=candidate.type;
@@ -651,6 +688,7 @@ function replacement(previous,next,candidate){
   const retain=retainReplacementField(previous,next,key);
   if(!retain)delete next[key];
  }
+ if(supports(next,'paperArray')&&(candidate.paperArray||previous.type===next.type&&previous.paperArray))Object.assign(next,editPaperArray(next,candidate.paperArray||previous.paperArray));
  if(definition(next)?.washerProfile||definition(next)?.ceilingPanel||definition(next)?.downlight||definition(next)?.manifold||family(next,'floor-aircon')||family(next,'tea-bar')||family(next,'placeholder')||family(next,'under-sink-purifier')||family(next,'pipe-box')||family(next,'art-glass')||family(next,'window-lining')||family(next,'folding-table')||family(next,'arrow-sink')||['stove_fotile_th36b','rangehood_fotile_jcd10ta','aquarium_mijia_2pro','dishwasher_mijia_countertop'].includes(next.type)){for(const [key,v] of Object.entries(initial(next)))if(next[key]===undefined||key==='brand'||key==='model'||key==='sourceUrl'&&!next[key])next[key]=v;}
  if(family(next,'folding-table')&&previous.type===next.type){const full=foldingTableGeometry({...candidate,foldingTablePose:candidate.foldingTablePose??'round'}).fullDepth;next.d=full*foldingTableGeometry(next).ratio;}
  if(supports(next,'curtainStyle'))next.curtainStyle=candidate.curtainStyle??value({type:next.type},'curtainStyle');
@@ -754,6 +792,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
 const cabinetEntry=Object.freeze({shoeShelfDefault:true,lowerDoorDropDefault:0,lowerDoorDropMin:0});
-const api={cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

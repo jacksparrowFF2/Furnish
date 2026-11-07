@@ -56,6 +56,7 @@
  function resizeAnchorChoices(f){return cabinet().supported(f)&&!f.kitchen?cabinetResizeAnchors(f):Object.fromEntries(Object.entries(resizeAnchors).filter(([key])=>!key.startsWith('local-')||key===f.resizeAnchor));}
  function resizeFurniture(f,values,anchor=f.resizeAnchor||'center'){
   if(f.locked)throw Error('家具已锁定，请先解锁');if(!Object.hasOwn(resizeAnchors,anchor))throw Error('尺寸调整基准无效');
+  if(f.paperArray&&['w','d','h'].some(k=>values[k]!==undefined&&Math.abs(values[k]-f[k])>.001))throw Error('请通过纸品阵列的单件尺寸、数量和间距调整整体尺寸');
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:products().footprintMinimum(f,key))||value>20000)throw Error('宽深须在当前最小尺寸至 20000 mm 内，高须为 10–20000 mm');next[key]=value;}
   if(!f.resizeAnchor&&anchor==='center'&&products().slidingResizeFrame(f))return products().resizeSliding(f,{w:next.w,d:next.d,h:next.h});
   products().resizeHoodGeometry(f,next);products().resizeManifold(f,next);

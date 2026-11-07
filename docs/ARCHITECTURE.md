@@ -1,3 +1,5 @@
+2026-11-07（纸品阵列）：product-rules统一卷纸／抽纸的可选paperArray、排布及派生外包；storage-supply-model复用原Blender单件，旧缺失继续原层。沿属性／MCP／mutate及v62项目／工作区／缓存，三维、姿态与实体缓存覆盖参数，无新加载脚本或保存通道。见[纸品阵列](PAPER-ARRAY.md)。
+
 2026-11-07（2kg猫粮袋）：独立storageSupply条目沿既有生产构造／实体／保存链；本型号受限RGBA与UV标签供HTTP及离线file同源使用，独立Blender发布器保留通用无贴图发布范围，无新实例字段。见[模型契约](CAT-FOOD-2KG.md)。
 
 2026-11-07（柜型参数复核）：cabinetFrontAppearance统一门／抽面及厨房模块外观；kitchenModuleConfig把可选模块外观和drawerExtensions传入共享构造，v61贯穿项目／仓库／缓存。净深仍只派生实体；原结构配方保留，见[参数矩阵](CABINET-PARAMETER-PARITY.md)。

@@ -1,3 +1,5 @@
+2026-11-07：两款心相印纸品支持可选paperArray完整对象，数量1–200、网格／隔排错位、三向净间距与单件朝向／尺寸；w/d/h由实际单件派生，旧缺失不补写且继续原排布。显式参数采用v62，同型号／库候选替换保留、跨型号清理，空间确认与各层缓存覆盖完整对象。见[参数契约与验证](PAPER-ARRAY.md)。
+
 2026-11-07：厨房模块可选finish／handle／doorColor复用cabinet-core.withDoorSetting的既有枚举和缺省语义；drawerExtensions按层保存0–1，界面0–100%。仅抽屉角色适用，改样式／角色按核心清理，设备位与保留结构不保存模块外观。新字段v61，缺失保持旧全行程；验证与入口见[CABINET-PARAMETER-PARITY](CABINET-PARAMETER-PARITY.md)。
 
 2026-11-07：cabinetBackPanel集中范围／校验和组件几何版本；背板能力按实际结构共享，取消entry／sideboard／pegboard界面白名单。扩展配置位置采用v60，旧缺失保留原厚度、只读固定产品保留资产结构，见[背板共享组件](CABINET-NET-DEPTH.md)。

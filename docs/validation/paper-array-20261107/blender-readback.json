@@ -1,0 +1,306 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "executable": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "sourceSha256": "5f2f54e8fc9c90189423db25a681a297bc3a57bb1c3f2531fdfe32e446eb583a",
+  "parts": 59,
+  "maxErrorMm": 0.0002411007882230365,
+  "savedAndReopened": true,
+  "rows": [
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-001:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-002:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-003:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-004:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-005:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-006:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-007:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-008:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-009:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-010:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-011:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-012:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-013:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-014:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-015:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-016:roll-01",
+      "errorMm": 0.00016668438895806048
+    },
+    {
+      "id": "array-0",
+      "key": "explicit:heartlink-roll-layer:single:unit-017:roll-01",
+      "errorMm": 0.0001571476460071608
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-001:pack-01-body",
+      "errorMm": 8.612871171820302e-05
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-001:pack-01-seal",
+      "errorMm": 0.00014573335649359365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-001:pack-01-slot",
+      "errorMm": 0.00011615455131064323
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-002:pack-01-body",
+      "errorMm": 0.0001533329485603474
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-002:pack-01-seal",
+      "errorMm": 0.00014573335649359365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-002:pack-01-slot",
+      "errorMm": 0.0001924484966941975
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-003:pack-01-body",
+      "errorMm": 0.00018149614344764586
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-003:pack-01-seal",
+      "errorMm": 0.0002411007882230365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-003:pack-01-slot",
+      "errorMm": 0.00014424324046302672
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-004:pack-01-body",
+      "errorMm": 0.00018149614344764586
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-004:pack-01-seal",
+      "errorMm": 0.0002411007882230365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-004:pack-01-slot",
+      "errorMm": 0.0001924484966941975
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-005:pack-01-body",
+      "errorMm": 7.703900317679313e-05
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-005:pack-01-seal",
+      "errorMm": 0.00013619661354269397
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-005:pack-01-slot",
+      "errorMm": 0.00011615455131064323
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-006:pack-01-body",
+      "errorMm": 0.0001533329485603474
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-006:pack-01-seal",
+      "errorMm": 0.00013619661354269397
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-006:pack-01-slot",
+      "errorMm": 0.0001924484966941975
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-007:pack-01-body",
+      "errorMm": 8.612871171820302e-05
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-007:pack-01-seal",
+      "errorMm": 0.00014573335649359365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-007:pack-01-slot",
+      "errorMm": 0.00011615455131064323
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-008:pack-01-body",
+      "errorMm": 0.0001533329485603474
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-008:pack-01-seal",
+      "errorMm": 0.00014573335649359365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-008:pack-01-slot",
+      "errorMm": 0.0001924484966941975
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-009:pack-01-body",
+      "errorMm": 0.00018149614344764586
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-009:pack-01-seal",
+      "errorMm": 0.0002411007882230365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-009:pack-01-slot",
+      "errorMm": 0.00014424324046302672
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-010:pack-01-body",
+      "errorMm": 0.00018149614344764586
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-010:pack-01-seal",
+      "errorMm": 0.0002411007882230365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-010:pack-01-slot",
+      "errorMm": 0.0001924484966941975
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-011:pack-01-body",
+      "errorMm": 7.703900317679313e-05
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-011:pack-01-seal",
+      "errorMm": 0.00013619661354269397
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-011:pack-01-slot",
+      "errorMm": 0.00011615455131064323
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-012:pack-01-body",
+      "errorMm": 0.0001533329485603474
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-012:pack-01-seal",
+      "errorMm": 0.00013619661354269397
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-012:pack-01-slot",
+      "errorMm": 0.0001924484966941975
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-013:pack-01-body",
+      "errorMm": 8.612871171820302e-05
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-013:pack-01-seal",
+      "errorMm": 0.00014573335649359365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-013:pack-01-slot",
+      "errorMm": 0.00011615455131064323
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-014:pack-01-body",
+      "errorMm": 0.0001533329485603474
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-014:pack-01-seal",
+      "errorMm": 0.00014573335649359365
+    },
+    {
+      "id": "array-1",
+      "key": "explicit:heartlink-tissue-layer:single:unit-014:pack-01-slot",
+      "errorMm": 0.0001924484966941975
+    }
+  ]
+}
