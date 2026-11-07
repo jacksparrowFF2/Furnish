@@ -1,0 +1,28 @@
+module.exports=async(p,V)=>{
+ const checks=[],errors=[];p.on('pageerror',e=>errors.push(e.message));const ok=(v,label)=>{if(!v)throw Error(label);checks.push(label);};
+ const expand=async locator=>{await locator.evaluate(el=>{for(let n=el.parentElement;n;n=n.parentElement)if(n.tagName==='DETAILS')n.open=true;});await locator.scrollIntoViewIfNeeded();};
+ const open=async()=>{await p.evaluate(()=>FurnishCabinetEditor.open('composition'));await p.locator('#cab-preview canvas:visible').first().waitFor();};
+ const save=async()=>{await p.getByRole('button',{name:'保存柜体设计',exact:true}).click();await p.locator('#cab-preview').waitFor({state:'detached'});};
+ const fill=async(locator,value)=>{await expand(locator);await locator.fill(String(value));await locator.press('Tab');};
+ await p.evaluate(()=>mutate(()=>{const C=FurnishCabinet;state.furniture=[C.repartition({...C.preset('wardrobe'),id:'composition',type:'wardrobe',cx:5000,cy:4500,rot:37,flip:true,mountHeight:120},3)];}));
+ const initial=await p.evaluate(()=>JSON.stringify(getF('composition')));await open();
+ ok((await p.locator('[data-cab-tree-group="1"]>summary').textContent()).includes('柜箱 1 · 隔间 2'),'shared cabinet labels real box and compartment');
+ const construction=p.locator('#cab-construction');await expand(construction);await construction.selectOption('independent');
+ await fill(p.locator('input[data-end-panel="left"]'),18);await fill(p.locator('input[data-end-panel="right"]'),12);
+ const joint=p.locator('[data-box-joint="0"]');await expand(joint);await joint.selectOption('shared');
+ ok((await p.locator('[data-cab-tree-group="2"]>summary').textContent()).includes('柜箱 2 · 隔间 3'),'mixed grouping labels second box');
+ ok(await p.locator('[data-cab-module-menu="0"]').evaluate(el=>el.scrollWidth<=el.clientWidth&&getComputedStyle(el).whiteSpace==='nowrap'),'long box labels keep management button readable');await V.screenshot?.('grouped-boxes');await save();
+ ok(await p.evaluate(()=>{const f=getF('composition'),a=FurnishCabinet.assemblyLayout(f);return a.boxes.length===2&&a.compartments[1].box===0&&a.compartments[2].box===1&&Math.abs(a.boxes.reduce((n,b)=>n+b.width,0)+30-f.w)<.001;}),'saved composition closes box and finish widths');
+ const saved=await p.evaluate(()=>JSON.stringify(getF('composition')));await p.evaluate(()=>undo());ok(await p.evaluate(()=>JSON.stringify(getF('composition')))===initial,'one application undo restores pre-conversion structure');await p.evaluate(()=>redo());ok(await p.evaluate(()=>JSON.stringify(getF('composition')))===saved,'redo restores grouping and finishes');
+ await open();await fill(p.locator('input[data-end-panel="left"]'),25);await p.getByRole('button',{name:'取消',exact:true}).click();ok(await p.evaluate(()=>JSON.stringify(getF('composition')))===saved,'cancel does not write edited box assembly');
+ await open();const menu=p.locator('[data-cab-module-menu="0"]');await expand(menu);await menu.click();
+ await p.locator('[data-module-operation]').selectOption('copy');await p.locator('[data-module-position]').selectOption('1');
+ ok((await p.locator('.cab-module-impact').textContent()).includes('柜箱 2 → 4 个'),'copy preview exposes split physical boxes');await p.locator('[data-module-apply]').click();
+ await p.locator('[data-session-undo]').click();ok(await p.locator('[data-cab-tree-group]').count()===3,'draft undo restores compartment count');await p.locator('[data-session-redo]').click();ok(await p.locator('[data-cab-tree-group]').count()===4,'draft redo restores copied compartment');
+ await p.setViewportSize({width:390,height:844});await expand(p.locator('[data-cab-tree-group="2"]>summary'));await V.screenshot?.('narrow-box-tree');await save();
+ ok(await p.evaluate(()=>FurnishCabinet.assemblyLayout(getF('composition')).boxes.length===4),'copy produces separate box and splits interrupted source box');
+ await p.waitForFunction(()=>!savePending);await p.evaluate(async()=>{if(repositoryClient?.flush&&repositoryClient.status.mode!=='error')await repositoryClient.flush();});await p.reload({waitUntil:'domcontentloaded',timeout:60000});await p.locator('#repository-loading').waitFor({state:'hidden'});await p.waitForFunction(()=>!repositoryBooting&&!!getF('composition'));
+ ok(await p.evaluate(()=>{const f=getF('composition');return f.cabinet.columns.length===4&&FurnishCabinet.assemblyLayout(f).boxes.length===4&&f.mountHeight===120&&f.rot===37&&f.flip;}),'saved refresh preserves grouping, orientation and installation height');
+ ok(await p.evaluate(()=>{const f=getF('composition'),a=FurnishCabinet.assemblyLayout(f),boards=FurnishCabinetMotion.boards(f,{includeStatic:true});return boards.filter(b=>b.metadata?.cabinetSide).length===a.boxes.length*2;}),'restored production has two actual side panels per box');
+ ok(errors.length===0,'composition editing has no page errors');return {passed:true,checks};
+};

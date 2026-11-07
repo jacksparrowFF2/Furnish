@@ -64,7 +64,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   const bookcase=(root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null))?.definition('bookshelf_yeswood_y52y09')?.bookcase,roundedBookcase=!!bookcase&&c.template===bookcase.template;
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=roundedBookcase?color:C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=frame.bodyDepth/1000,bodyZ=frame.bodyCenter/1000;
   const components=createComponents({THREE,C,f,c,box,options,bodyColor,roundedBookcase,bookcase,frame}),{board:add,rearPanel,shelfFrame,drawerFrame}=components;
-  const closure=C.topClosure(c),panels=C.endPanels(c);
+  const closure=C.topClosure(c),panels=C.endPanels(c),composition=C.assemblyLayout(f,c);
   if(!options.skipSideClosures)for(const part of C.sideClosureParts(f,c)){
    const shade=C.sideClosureColor(f,part.column,c);
    const strip=syncIdentity.produce('cabinet-side-closure:'+part.side+':'+part.index,()=>add(g,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000,shade));
@@ -79,7 +79,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    }
   }
   if(c.boxConstruction==='independent'){
-   for(const part of C.boxParts(f)){
+   for(const part of C.boxParts(f,composition)){
     const child=syncIdentity.produce('cabinet-independent:box:'+part.column,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[],skipTopClosure:true,skipSideClosures:true}));
     child.position.x=part.center/1000;
     child.traverse(o=>{for(const [key,value] of Object.entries(o.userData))if(value&&typeof value==='object'&&Number.isInteger(value.column))o.userData[key]={...value,column:part.column+value.column,...(Number.isInteger(value.divider)?{divider:part.column+value.divider}:{})};if(o.userData.cabinetSide==='left'&&part.column>0)o.userData.cabinetDivider={divider:part.column-1,column:part.column-1};if(o.userData.cabinetSide==='right'&&part.column+part.count<c.columns.length)o.userData.cabinetDivider={divider:part.column+part.count-1,column:part.column+part.count-1};});
@@ -92,7 +92,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    }
    return g;
   }
-  const nominalBays=C.layout(f),faceSpan=i=>{const span=C.frontSpan(f,i,c);return {left:span.left/1000,right:span.right/1000};};
+  const nominalBays=composition.compartments.map(part=>part.clear),faceSpan=i=>{const span=C.frontSpan(f,i,c);return {left:span.left/1000,right:span.right/1000};};
   const cuts=options.sideCuts||C.sideOpenings(f,options.furniture||[]);
   const finishes=C.joinedSideFinishes(f,options.furniture||[]);
   if(c.sideboard){

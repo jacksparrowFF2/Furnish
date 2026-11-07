@@ -31,7 +31,7 @@ assert.equal(D.furnitureVerticalBounds(wall).bottom,1480);
 assert.equal(D.furnitureVerticalBounds(wall).top,2180);
 assert.equal(D.applyCabinetTemplate({...wall,mountHeight:1700},'wall').mountHeight,1700);
 const floor=D.applyCabinetTemplate({...wall,mountHeight:1700},'storage');
-assert(!Object.hasOwn(floor,'mountHeight'));
+assert.equal(floor.mountHeight,0,'new floor cabinet uses the shared explicit bottom-elevation default');
 assert.equal(D.furnitureVerticalBounds(floor).bottom,0);
 assert.throws(()=>D.applyCabinetTemplate({...original,locked:true},'wall'),/锁定/);
 assert.throws(()=>D.applyCabinetTemplate(original,'invalid'),/模板无效/);
