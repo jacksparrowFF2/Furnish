@@ -416,3 +416,7 @@
 @media(max-width:700px){.cab-workspace .cab-overview{display:none}.cab-view-tabs .btn{padding:6px 10px}}
 
 .cab-workspace .cab-current-part>.cab-resize-anchor{grid-column:1/-1}.cab-resize-anchor small{font-size:11px;line-height:1.6;color:var(--muted)}
+
+.cab-tier-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:20px}.cab-tier-controls{min-width:0}.cab-tier-controls .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.cab-tier-controls input{width:100%;min-width:0;box-sizing:border-box}@media(max-width:700px){.cab-tier-layout{grid-template-columns:minmax(0,1fr)}#cab-tier-preview{height:300px!important}.cab-tier-controls .form{grid-template-columns:minmax(0,1fr)}}
+
+#cab-tier-preview{position:relative;overflow:hidden;border-radius:12px;background:#eeeae3}#cab-tier-preview canvas{display:block;max-width:100%;touch-action:none}#cab-tier-preview .cab-dimensions{display:none}

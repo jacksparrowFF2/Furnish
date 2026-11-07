@@ -60,6 +60,15 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
  function buildRaw(THREE,f,box,options={}){
   if(f.laundryFloorOpen)options={...options,floorOpen:true};
   const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),frame=C.carcassFrame(f,c),h=frame.height/1000,w=frame.width/1000,d=frame.depth/1000,t=frame.thickness/1000,p=frame.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
+  if(c.tiers){
+   for(const part of C.tierParts(f)){
+    const child=syncIdentity.produce('cabinet-tier:'+part.key,()=>buildRaw(THREE,part.furniture,box,{...options,furniture:[],sideCuts:[]}));child.position.set(part.x/1000,part.bottom/1000,part.z/1000);
+    child.traverse(o=>{if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,tier:part.key};o.userData.cabinetTier=part.key;});g.add(child);
+   }
+   const panels=C.endPanels(c);for(const side of ['left','right'])if(panels[side]){const size=panels[side]/1000,node=syncIdentity.produce('cabinet-tier:end-panel:'+side,()=>box(size,h,d,color,(side==='left'?-1:1)*(w-size)/2,0,0));node.userData.cabinetEndPanel=side;g.add(node);}
+   for(const part of C.sideClosureParts(f,c)){const node=syncIdentity.produce('cabinet-tier:closure:'+part.tier+':'+part.side,()=>box(part.w/1000,part.h/1000,part.d/1000,color,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetSideClosure=part.side;g.add(node);}
+   return g;
+  }
   const assembly=C.pegboardParts(f,c),hasUpper=assembly?.upper!==false,hasLower=assembly?.lower!==false;
   const bookcase=(root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null))?.definition('bookshelf_yeswood_y52y09')?.bookcase,roundedBookcase=!!bookcase&&c.template===bookcase.template;
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=roundedBookcase?color:C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=frame.bodyDepth/1000,bodyZ=frame.bodyCenter/1000;

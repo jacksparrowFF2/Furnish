@@ -1,3 +1,5 @@
+2026-11-07：cabinetTiers声明两子柜最小高200、各深150–1200mm及组件版本1（软件能力，不是安装要求）；cabinet.tiers记录下柜顶高／两柜深度／上柜配置，根配置即下柜，不重复保存。顶封板归上柜、整高饰面归整组；最低v67当前／命名／库／工作区与缓存，完整结构沿原复制替换和确认。见[上下柜](CABINET-TIERS.md)。
+
 2026-11-07（透明工具箱）：toolbox_jiabangshou_390声明storageSupplyRevision=2、高210、bottom基准与mountHeight新建0；宽390深270来自用户标注。闭盖空箱，无开盖字段或箱内空腔豁免，尺寸缩放仅用于布局。见[型号契约](TOOLBOX-JIABANGSHOU-390.md)。
 
 2026-11-07（6L冻干桶）：freeze_dry_bucket_meoof_6l注册storageSupplyRevision=2、高187、底部mountHeight新建／缺省0，外包316×309来自用户标注；闭盖静态、完整提手随外包，外观细部为估算。复用现有字段、复制替换／pose能力及v57／v58保存，无新动作字段；见[型号契约](FREEZE-DRY-BUCKET-6L.md)。
