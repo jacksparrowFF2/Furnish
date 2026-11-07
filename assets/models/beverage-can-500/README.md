@@ -8,11 +8,11 @@
 
 | 内容 | 文件 |
 |---|---|
-| 可编辑源 | [BLEND](../storage-supplies/beverage-can-500/v6/beverage-can-500-v1.blend) |
-| 交换模型 | [GLB](../storage-supplies/beverage-can-500/v6/beverage-can-500-v1.glb) |
+| 可编辑源 | [BLEND](../storage-supplies/beverage-can-500/v7/beverage-can-500-v1.blend) |
+| 交换模型 | [GLB](../storage-supplies/beverage-can-500/v7/beverage-can-500-v1.glb) |
 | 离线运行资产 | [JS](../../../src/data/beverage-can-500-blender-asset.js) |
 | 生产构造器 | [代码](../../../src/render/storage-supply-model.js) |
-当前源GLB SHA256：2d32005b33e4f2787ae608d6b54a91911273f40fc371f7ddfa943a3a42b22488。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
+当前源GLB SHA256：7556296a5397c81c5f847e64d51cb253eb30b84e9721bef5dd3b46a282c7651d。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
 
 ## 输入参考资料
 
@@ -34,8 +34,10 @@
 
 - [验收资料](../../../docs/validation/beverage-cans-20261107/README.md)
 - [验收资料](../../../docs/validation/beverage-cans-print-20261107/README.md)
+- [验收资料](../../../docs/validation/beverage-can-back-green-20261107/README.md)
 
 ## 资料差异
 
 - 查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。
 - 2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。
+- 背面修订v7：用户要求同色纯绿，统一使用从330ml正面绿色区域选取的sRGB #007746，正面非过渡区域字节不变，保持原几何和阵列。

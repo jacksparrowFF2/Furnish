@@ -15,8 +15,8 @@
 | [源氏木语-Y09HS-亚麻色单人沙发椅](armchair/README.md) | 9 | [BLEND](armchair/v4/armchair-v1.blend) · [GLB](armchair/v4/armchair-v1.glb) | 0 |
 | [源氏木语-柏林单人沙发椅](armchair-berlin/README.md) | 2 | [BLEND](armchair-berlin/v3/armchair-berlin-v1.blend) · [GLB](armchair-berlin/v3/armchair-berlin-v1.glb) | 0 |
 | [九款艺术玻璃隔断](art-glass/README.md) | 3 | 参数化 | 0 |
-| [330ml标准易拉罐](beverage-can-330/README.md) | 4 | [BLEND](storage-supplies/beverage-can-330/v6/beverage-can-330-v1.blend) · [GLB](storage-supplies/beverage-can-330/v6/beverage-can-330-v1.glb) | 0 |
-| [500ml标准易拉罐](beverage-can-500/README.md) | 4 | [BLEND](storage-supplies/beverage-can-500/v6/beverage-can-500-v1.blend) · [GLB](storage-supplies/beverage-can-500/v6/beverage-can-500-v1.glb) | 0 |
+| [330ml标准易拉罐](beverage-can-330/README.md) | 4 | [BLEND](storage-supplies/beverage-can-330/v7/beverage-can-330-v1.blend) · [GLB](storage-supplies/beverage-can-330/v7/beverage-can-330-v1.glb) | 0 |
+| [500ml标准易拉罐](beverage-can-500/README.md) | 4 | [BLEND](storage-supplies/beverage-can-500/v7/beverage-can-500-v1.blend) · [GLB](storage-supplies/beverage-can-500/v7/beverage-can-500-v1.glb) | 0 |
 | [易拉罐共用参考资料](beverage-cans/README.md) | 4 | 参考资料 | 0 |
 | [定制柜体设计图](cabinet-design-references/README.md) | 3 | 参考资料 | 0 |
 | [猫粮袋 · 2kg紫白参考](cat-food-2kg/README.md) | 2 | [BLEND](storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend) · [GLB](storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb) | 0 |

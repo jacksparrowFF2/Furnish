@@ -30,8 +30,10 @@
 
 - [验收资料](../../../docs/validation/beverage-cans-20261107/README.md)
 - [验收资料](../../../docs/validation/beverage-cans-print-20261107/README.md)
+- [验收资料](../../../docs/validation/beverage-can-back-green-20261107/README.md)
 
 ## 资料差异
 
 - 查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。
 - 2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。
+- 背面修订v7：用户要求同色纯绿，统一使用从330ml正面绿色区域选取的sRGB #007746，正面非过渡区域字节不变，保持原几何和阵列。

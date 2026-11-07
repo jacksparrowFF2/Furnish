@@ -26,7 +26,8 @@ def row(v):
 def sample(x,y):
  x=max(0,min(sw-1,x));y=max(0,min(sh-1,sh-1-y));ix=int(x);iy=int(y);fx=x-ix;fy=y-iy
  return [sum(pixels[(min(sh-1,iy+dy)*sw+min(sw-1,ix+dx))*4+k]*(fx if dx else 1-fx)*(fy if dy else 1-fy) for dx in range(2) for dy in range(2)) for k in range(3)]
-W=768;T=1024;rgba=[];green=(.015,.30,.14)
+# Match the unlettered emerald area of the supplied front; explicit sRGB.
+W=768;T=1024;rgba=[];green=(0,119/255,70/255) # #007746
 for y in range(T):
  v=y/(T-1);py,left,right=row(v);cx=(left+right)/2;radius=(right-left)/2
  for x in range(W):

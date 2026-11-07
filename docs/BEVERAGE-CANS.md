@@ -15,7 +15,7 @@
 
 两款均支持现有[inventoryArray](INVENTORY-ARRAY.md)：总数1–200、层／排／列、左右／前后／上下0–1000mm间距、整齐／隔排错位、单件0／90／180／270°转向。每罐保留独立ID、实际实体和采购资料；复制重新分配阵列身份，解除保留物品位置，修改沿一次mutate进入保存和撤销。旧单件缺失阵列字段不补写。普通单件最低v57，倾斜时v58；显式易拉罐阵列最低v66，保留旧版本读取，未改变其它阵列的最低版本。
 
-当前源工程／GLB：`assets/models/storage-supplies/beverage-can-{330,500}/v6/`；原白罐v1保留。离线资产：`src/data/beverage-can-{330,500}-blender-asset.js`。作者命令`node scripts/blender-asset.cjs author-beverage-can-330 <新目录>`（500同理）；独立发布`publish-beverage-can-330 <GLB>`；整链路`node scripts/verify/verify-model-pipeline.cjs beverage-can-330,beverage-can-500 gpu`。新增配置自动出现在`--list`。
+当前源工程／GLB：`assets/models/storage-supplies/beverage-can-{330,500}/v7/`；原白罐v1保留。离线资产：`src/data/beverage-can-{330,500}-blender-asset.js`。作者命令`node scripts/blender-asset.cjs author-beverage-can-330 <新目录>`（500同理）；独立发布`publish-beverage-can-330 <GLB>`；整链路`node scripts/verify/verify-model-pipeline.cjs beverage-can-330,beverage-can-500 gpu`。新增配置自动出现在`--list`。
 
 参考原图、来源与哈希见[产品档案](../assets/models/beverage-cans/asset.json)，分阶段渲染、生产传递、实际阵列UI与验证边界见[验收记录](validation/beverage-cans-20261107/README.md)。
 
@@ -25,4 +25,10 @@
 
 受限作者`blender-model-beverage-can-printed.py`加载各自v1源，受限发布器`publish-beverage-can-printed.py`独立比较每个三角形，拒绝几何变化、缺UV、金属误贴、错误图像尺寸及透明罐身。仅body接图，拉环／盖／卷边保持金属；GLB和离线脚本都嵌入图案。每种罐的所有阵列成员共用一张运行贴图，普通猫粮／其它静态产品原范围保持。印刷body不再用通用color字段染色，旧color数据保留。
 
-没有新实例字段或空间语义版本：runtime资产版本2，物理geometryVersion仍1，阵列v66／离地／复制／保存保持。最终源、同机位前后图、正式生产纹理逐像素和配对UV回读、10个发布负例及24罐三入口界面见[包装验收](validation/beverage-cans-print-20261107/README.md)。
+没有新实例字段或空间语义版本：runtime资产版本3，物理geometryVersion仍1，阵列v66／离地／复制／保存保持。最终源、同机位前后图、正式生产纹理逐像素和配对UV回读、10个发布负例及24罐三入口界面见[包装验收](validation/beverage-cans-print-20261107/README.md)。
+
+## 同色纯绿背面（2026-11-07）
+
+按用户要求，两规格未印字背面统一使用sRGB **#007746**，取自330ml v6正面未印字绿色区域（运行RGBA图的x307、y818，y从底部计）。原背面约#044d24停用，76–90°侧面过渡改为衔接新色；76°以内的正面图案保持逐字节相同，材质粗糙度／金属度、UV和全部物理几何不变。照片自身有反光和色差，此色为图示取色，不宣称厂家印刷色卡。柜内仍受真实光照／阴影影响，未改全局照明或加自发光。
+
+v7源保留v6上版，运行资产版本3，不变更geometryVersion或阵列字段。对应色值、正面哈希、固定条件背面对照和实际桌面／导出验证见[背面修订验收](validation/beverage-can-back-green-20261107/README.md)。

@@ -56,7 +56,7 @@ try:
    textures.append({'width':w,'height':h,'rgba':base64.b64encode(bytes(max(0,min(255,round(v*255))) for v in image.pixels[:])).decode()});part.update(uvs=uvs,texture=0)
   elif linked:raise ValueError('Label is not allowed on can metal parts: '+name)
   parts.append(part)
- payload={'format':1,'version':2,'id':profile,'sizeMm':spec['size'],'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts,'textures':textures}
+ payload={'format':1,'version':3,'id':profile,'sizeMm':spec['size'],'sourceSha256':hashlib.sha256(raw).hexdigest(),'parts':parts,'textures':textures}
  text='/* Reviewed Snow Refreshing reference print; unchanged can geometry. */\n(function(root){const asset='+json.dumps(payload,separators=(',',':'),allow_nan=False)+';if(typeof module==="object"&&module.exports)module.exports=asset;else root.'+spec['global']+'=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
  temp=target.with_suffix('.tmp');temp.write_text(text,encoding='utf-8');temp.replace(target);result.write_text(json.dumps({'passed':True,'parts':len(parts),'textures':len(textures),'geometryUnchanged':True,'blender':bpy.app.version_string}),encoding='utf-8')
 except Exception as e:

@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "views": [
+    {
+      "volume": 330,
+      "revision": 6,
+      "view": "back with mesh rotated 180 degrees, fixed front camera and lighting",
+      "camera": [
+        0.0,
+        -0.32256001234054565,
+        0.1013759970664978
+      ],
+      "ortho": 0.14745600521564484,
+      "exposure": 0.0
+    },
+    {
+      "volume": 330,
+      "revision": 7,
+      "view": "back with mesh rotated 180 degrees, fixed front camera and lighting",
+      "camera": [
+        0.0,
+        -0.32256001234054565,
+        0.1013759970664978
+      ],
+      "ortho": 0.14745600521564484,
+      "exposure": 0.0
+    },
+    {
+      "volume": 500,
+      "revision": 6,
+      "view": "back with mesh rotated 180 degrees, fixed front camera and lighting",
+      "camera": [
+        0.0,
+        -0.47040000557899475,
+        0.1478399932384491
+      ],
+      "ortho": 0.21503999829292297,
+      "exposure": 0.0
+    },
+    {
+      "volume": 500,
+      "revision": 7,
+      "view": "back with mesh rotated 180 degrees, fixed front camera and lighting",
+      "camera": [
+        0.0,
+        -0.47040000557899475,
+        0.1478399932384491
+      ],
+      "ortho": 0.21503999829292297,
+      "exposure": 0.0
+    }
+  ]
+}

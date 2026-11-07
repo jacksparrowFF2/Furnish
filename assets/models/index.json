@@ -1648,6 +1648,24 @@
           "bytes": 570169
         },
         {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.blend",
+          "role": "retained-other",
+          "sha256": "6f9cf219c9821b3389f9854da04cbf5d9f190f224f9ac8ac256a93ce18c4e780",
+          "bytes": 571855
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.glb",
+          "role": "retained-other",
+          "sha256": "8310d2fb2cae72d9c5b8cd892cb74c230a5c01691a1488cea16f011bc2adddfa",
+          "bytes": 567280
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/review.blend",
+          "role": "retained-other",
+          "sha256": "2688eb2e6d51157c19fcd1737b12d5cfd589082ab0b6f04784e4b56a1f60a251",
+          "bytes": 572629
+        },
+        {
           "path": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.blend",
           "role": "retained-other",
           "sha256": "3fc843995a9664d5eb29b8251bc2fddf097a4f688f95badf16e47a2795d842c2",
@@ -1682,6 +1700,24 @@
           "role": "retained-other",
           "sha256": "efe86cfed485f368d2e134ee453dd4f6093efc5895b2cfc30bf588823fc40d6d",
           "bytes": 597124
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.blend",
+          "role": "retained-other",
+          "sha256": "be0dbfadf9c22d736dbbc500fca2e6bb0a3a29b7d945e4a0d9bc57f99c8b174e",
+          "bytes": 598971
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.glb",
+          "role": "retained-other",
+          "sha256": "7556296a5397c81c5f847e64d51cb253eb30b84e9721bef5dd3b46a282c7651d",
+          "bytes": 594988
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/review.blend",
+          "role": "retained-other",
+          "sha256": "7270b6b0e22403078d8bb01e648a45dae990a64acdfb51af2e0b29e10957efe7",
+          "bytes": 599897
         },
         {
           "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend",
@@ -2302,16 +2338,16 @@
         115.2
       ],
       "parts": 7,
-      "runtimeVersion": 2,
+      "runtimeVersion": 3,
       "runtime": {
         "path": "src/data/beverage-can-330-blender-asset.js",
-        "sha256": "ee4009800d6cf4adbbddc5b296f2d20c6d02df2ff2a73beced138e2972a5170f",
+        "sha256": "9057a96c5a68b02632f61cdb20081ed0d19226777fbc4c1440cdea1568592b06",
         "normalization": "utf8-lf"
       },
-      "sourceSha256": "22970b9178054c6bce05abe79c6eb08a9a9dd9af2f8a58334a5ad667df7c8e01",
+      "sourceSha256": "8310d2fb2cae72d9c5b8cd892cb74c230a5c01691a1488cea16f011bc2adddfa",
       "current": {
-        "blend": "assets/models/storage-supplies/beverage-can-330/v6/beverage-can-330-v1.blend",
-        "glb": "assets/models/storage-supplies/beverage-can-330/v6/beverage-can-330-v1.glb"
+        "blend": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.blend",
+        "glb": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.glb"
       },
       "document": "docs/BEVERAGE-CANS.md",
       "constructor": "src/render/storage-supply-model.js",
@@ -2337,13 +2373,13 @@
         },
         {
           "path": "assets/models/storage-supplies/beverage-can-330/v6/beverage-can-330-v1.blend",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "3423f36e89846e2c742b067f966d64d85db81b49adf5c92a6f8588edaf9ca595",
           "bytes": 569581
         },
         {
           "path": "assets/models/storage-supplies/beverage-can-330/v6/beverage-can-330-v1.glb",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "22970b9178054c6bce05abe79c6eb08a9a9dd9af2f8a58334a5ad667df7c8e01",
           "bytes": 565212
         },
@@ -2358,6 +2394,24 @@
           "role": "retained-other",
           "sha256": "330c17976a3bbaeec057e73acad323ea37b9b5c8ca3ee96c80d2bc7506e2544c",
           "bytes": 570169
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.blend",
+          "role": "published-source",
+          "sha256": "6f9cf219c9821b3389f9854da04cbf5d9f190f224f9ac8ac256a93ce18c4e780",
+          "bytes": 571855
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.glb",
+          "role": "published-source",
+          "sha256": "8310d2fb2cae72d9c5b8cd892cb74c230a5c01691a1488cea16f011bc2adddfa",
+          "bytes": 567280
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/review.blend",
+          "role": "retained-other",
+          "sha256": "2688eb2e6d51157c19fcd1737b12d5cfd589082ab0b6f04784e4b56a1f60a251",
+          "bytes": 572629
         }
       ],
       "dossier": "assets/models/beverage-can-330/asset.json",
@@ -2378,16 +2432,16 @@
         168
       ],
       "parts": 7,
-      "runtimeVersion": 2,
+      "runtimeVersion": 3,
       "runtime": {
         "path": "src/data/beverage-can-500-blender-asset.js",
-        "sha256": "c07e929018b5409f497f2d0d684552fa973ad2d1e25c627f64ec8a3bd1215409",
+        "sha256": "06965e974f35abba5e5b448b8388ad656f1d367db8886bd08102f7d5568862a2",
         "normalization": "utf8-lf"
       },
-      "sourceSha256": "2d32005b33e4f2787ae608d6b54a91911273f40fc371f7ddfa943a3a42b22488",
+      "sourceSha256": "7556296a5397c81c5f847e64d51cb253eb30b84e9721bef5dd3b46a282c7651d",
       "current": {
-        "blend": "assets/models/storage-supplies/beverage-can-500/v6/beverage-can-500-v1.blend",
-        "glb": "assets/models/storage-supplies/beverage-can-500/v6/beverage-can-500-v1.glb"
+        "blend": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.blend",
+        "glb": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.glb"
       },
       "document": "docs/BEVERAGE-CANS.md",
       "constructor": "src/render/storage-supply-model.js",
@@ -2413,13 +2467,13 @@
         },
         {
           "path": "assets/models/storage-supplies/beverage-can-500/v6/beverage-can-500-v1.blend",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "82085f88dbd9a77d9ceda936f64c0577e2ab9424a91a74e82c529b138ca41035",
           "bytes": 596211
         },
         {
           "path": "assets/models/storage-supplies/beverage-can-500/v6/beverage-can-500-v1.glb",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "2d32005b33e4f2787ae608d6b54a91911273f40fc371f7ddfa943a3a42b22488",
           "bytes": 592200
         },
@@ -2428,6 +2482,24 @@
           "role": "retained-other",
           "sha256": "efe86cfed485f368d2e134ee453dd4f6093efc5895b2cfc30bf588823fc40d6d",
           "bytes": 597124
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.blend",
+          "role": "published-source",
+          "sha256": "be0dbfadf9c22d736dbbc500fca2e6bb0a3a29b7d945e4a0d9bc57f99c8b174e",
+          "bytes": 598971
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.glb",
+          "role": "published-source",
+          "sha256": "7556296a5397c81c5f847e64d51cb253eb30b84e9721bef5dd3b46a282c7651d",
+          "bytes": 594988
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/review.blend",
+          "role": "retained-other",
+          "sha256": "7270b6b0e22403078d8bb01e648a45dae990a64acdfb51af2e0b29e10957efe7",
+          "bytes": 599897
         }
       ],
       "dossier": "assets/models/beverage-can-500/asset.json",
@@ -3252,11 +3324,13 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/beverage-cans-20261107/README.md",
-        "docs/validation/beverage-cans-print-20261107/README.md"
+        "docs/validation/beverage-cans-print-20261107/README.md",
+        "docs/validation/beverage-can-back-green-20261107/README.md"
       ],
       "notes": [
         "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。",
-        "2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。"
+        "2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。",
+        "背面修订v7：用户要求同色纯绿，统一使用从330ml正面绿色区域选取的sRGB #007746，正面非过渡区域字节不变，保持原几何和阵列。"
       ],
       "manifest": "assets/models/beverage-can-330/asset.json",
       "readme": "assets/models/beverage-can-330/README.md"
@@ -3309,11 +3383,13 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/beverage-cans-20261107/README.md",
-        "docs/validation/beverage-cans-print-20261107/README.md"
+        "docs/validation/beverage-cans-print-20261107/README.md",
+        "docs/validation/beverage-can-back-green-20261107/README.md"
       ],
       "notes": [
         "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。",
-        "2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。"
+        "2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。",
+        "背面修订v7：用户要求同色纯绿，统一使用从330ml正面绿色区域选取的sRGB #007746，正面非过渡区域字节不变，保持原几何和阵列。"
       ],
       "manifest": "assets/models/beverage-can-500/asset.json",
       "readme": "assets/models/beverage-can-500/README.md"
@@ -3367,11 +3443,13 @@
       "missingReferences": [],
       "validation": [
         "docs/validation/beverage-cans-20261107/README.md",
-        "docs/validation/beverage-cans-print-20261107/README.md"
+        "docs/validation/beverage-cans-print-20261107/README.md",
+        "docs/validation/beverage-can-back-green-20261107/README.md"
       ],
       "notes": [
         "查询到可下载STEP/STL，但本次使用自建可编辑Blender工程，未引入第三方网格。局部拉环、凹底与材质为外观估算。",
-        "2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。"
+        "2026-11-07：罐身新增用户对应容量雪花清爽包装，照片圆柱反投影；330ml原图较小，未展示的背面为无文字绿色简化。七件物理几何与v1一致，源／GLB／离线资产完整嵌入图案，阵列能力保持。",
+        "背面修订v7：用户要求同色纯绿，统一使用从330ml正面绿色区域选取的sRGB #007746，正面非过渡区域字节不变，保持原几何和阵列。"
       ],
       "manifest": "assets/models/beverage-cans/asset.json",
       "readme": "assets/models/beverage-cans/README.md"
