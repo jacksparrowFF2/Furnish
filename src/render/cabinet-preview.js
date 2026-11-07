@@ -87,6 +87,12 @@
    }
    const depthMeasures=(part,column,at)=>{
     const c=C.config(part),bay=C.layout(part)[column],sections=C.depthSections(part,column,c).filter(v=>v.storage!==false&&v.top>v.bottom&&v.clearDepth>0);
+    if(sections.length&&bay.width>0){
+     const section=sections[0],y=section.bottom+Math.min(50,(section.top-section.bottom)/4),z=section.front+25,a=at(bay.left,y,z),b=at(bay.left+bay.width,y,z);
+     const el=add(`净宽 ${fmt(bay.width)}`,a.clone().add(b).multiplyScalar(.5),{a,b,offset:12,netWidth:true});el.className+=' cab-width-dimension';
+     el.setAttribute('data-net-width',String(bay.width));el.setAttribute('data-width-column',String(column));
+     el.title=`隔间 ${column+1}净宽 ${fmt(bay.width)} mm：左右侧板／分隔板内表面之间的距离，不含板厚；模块外宽另行标注。`;
+    }
     for(const depth of sections){
      const x=bay.left+bay.width*.82,y=depth.bottom+Math.min(100,(depth.top-depth.bottom)*.22),a=at(x,y,depth.rear),b=at(x,y,depth.front),caption=sections.length>1?depth.label+'净深':'净深';
      const el=add(`${caption} ${fmt(depth.clearDepth)}`,a.clone().add(b).multiplyScalar(.5),{a,b,offset:12,netDepth:true});el.className+=' cab-depth-dimension';
@@ -189,7 +195,7 @@
    const center=project(new THREE.Vector3(0,(current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):FurnishKitchen.overallHeight(current)):C.height(current))/2000,0));
    const line=(a,b)=>`M${a.x.toFixed(1)},${a.y.toFixed(1)}L${b.x.toFixed(1)},${b.y.toFixed(1)}`;
    // Numbers take priority. Move crowded labels with leaders; omit unreadable dimensions.
-   const priority=item=>item.pegPadding?-1:item.column!==undefined?0:item.boardElevation?0.5:item.netDepth||item.offset>=26?1:item.doorSize?2:3;
+   const priority=item=>item.pegPadding?-1:item.column!==undefined?0:item.boardElevation?0.5:item.netDepth||item.netWidth||item.offset>=26?1:item.doorSize?2:3;
    for(const item of [...labels].sort((a,b)=>priority(a)-priority(b))){const {el,point,a,b,offset}=item,p=project(point);let x=p.x,y=p.y,draw='',anchor={x,y};el.hidden=!p.visible;if(el.hidden)continue;
     if(a){const start=project(a),end=project(b),dx=end.x-start.x,dy=end.y-start.y,length=Math.hypot(dx,dy);if(!start.visible||!end.visible||length<14&&!item.pegPadding&&!item.netDepth&&!item.boardElevation){el.hidden=true;continue;}
      if(!(item.netDepth||item.boardElevation)||length>=14){
@@ -202,7 +208,7 @@
     if(item.pegPadding){const shifts={left:[-135,0],right:[135,0],top:[0,-48],bottom:[0,48]},shift=shifts[item.pegPadding];x=p.x+shift[0];y=p.y+shift[1];anchor={x:p.x,y:p.y};draw=line(project(a),project(b));}
     const ew=el.offsetWidth||Math.max(24,el.textContent.length*7+8),eh=el.offsetHeight||22;
     x=Math.max(ew/2+5,Math.min(width-ew/2-5,x));y=Math.max(eh/2+5,Math.min(height-eh/2-5,y));
-    let placed=false;placement:for(const xx of (item.netDepth||item.boardElevation?[x,x-100,x+100,x-180,x+180]:[x]))for(const shift of [0,24,-24,48,-48,72,-72]){const yy=y+shift,box={left:xx-ew/2-3,right:xx+ew/2+3,top:yy-eh/2-3,bottom:yy+eh/2+3};if(box.left<2||box.right>width-2||box.top<2||box.bottom>height-2||occupied.some(o=>box.left<o.right&&box.right>o.left&&box.top<o.bottom&&box.bottom>o.top))continue;occupied.push(box);x=xx;y=yy;placed=true;break placement;}
+    let placed=false;placement:for(const xx of (item.netDepth||item.netWidth||item.boardElevation?[x,x-100,x+100,x-180,x+180]:[x]))for(const shift of [0,24,-24,48,-48,72,-72]){const yy=y+shift,box={left:xx-ew/2-3,right:xx+ew/2+3,top:yy-eh/2-3,bottom:yy+eh/2+3};if(box.left<2||box.right>width-2||box.top<2||box.bottom>height-2||occupied.some(o=>box.left<o.right&&box.right>o.left&&box.top<o.bottom&&box.bottom>o.top))continue;occupied.push(box);x=xx;y=yy;placed=true;break placement;}
     if(!placed&&item.column===undefined){el.hidden=true;continue;}
     if(Math.hypot(x-anchor.x,y-anchor.y)>8)draw+=line(anchor,{x,y});
     el.style.left=`${x}px`;el.style.top=`${y}px`;paths.push(draw);
