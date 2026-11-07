@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "errors": [],
+  "checks": [
+    "desktop: original layer, quantity/layout/gaps/orientation, one undo, redo, rejected input, lock, 3D and per-part production GLB",
+    "desktop: save/reload, narrow width, MCP parameter edit and reset",
+    "http: loaded, edited, 3D rendered",
+    "file: loaded, edited, 3D rendered with HTTP blocked"
+  ],
+  "sourceUnchanged": true
+}

@@ -4,6 +4,7 @@ const P=require('../src/core/product-rules.js'),D=require('../src/core/design-co
 const near=(a,b)=>assert(Math.abs(a-b)<.025,`${a} != ${b}`),copy=v=>JSON.parse(JSON.stringify(v));
 const base=type=>({id:'paper',type,name:'纸品',w:type.startsWith('toilet')?300:420,d:type.startsWith('toilet')?300:200,h:type.startsWith('toilet')?140:50,cx:1000,cy:1000,rot:0,mountHeight:68,color:'#46745a'});
 (async()=>{
+ const limits={maxCount:200,maxAxis:50},q={rows:2,columns:3};assert.deepEqual(P.arrayQuantityEdit(7,q,'layers',2,limits),{});assert.deepEqual(P.arrayQuantityEdit(7,q,'layers',3,limits),{count:18});assert.deepEqual(P.arrayQuantityEdit(7,q,'rows',4,limits),{rows:4});for(const [key,v]of [['layers',0],['layers',34],['rows',51],['count',201],['columns',1.5]])assert.throws(()=>P.arrayQuantityEdit(7,q,key,v,limits));
  const T=await import(JSON.parse(fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports.three);
  for(const type of ['toilet_roll_heartlink_layer9','tissue_heartlink_layer6']){
   const old=base(type),snapshot=copy(old),rule=P.definition(old).paperArray;
