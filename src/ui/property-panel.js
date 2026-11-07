@@ -470,9 +470,11 @@ function bindFurnPanel(f){
 }
 function multiPanel(items){
   const [x0,y0,x1,y1] = groupBox(items), btn = (act, icon, label) => `<button class="btn" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
+  const plan=canvasEffectivePlan(),vertical=items.map(f=>FurnishDesign.furnitureVerticalBounds(f,plan,state.furniture));
+  const height=vertical.every(v=>v&&Number.isFinite(v.bottom)&&Number.isFinite(v.top))?Math.round(Math.max(...vertical.map(v=>v.top))-Math.min(...vertical.map(v=>v.bottom))):tr('待核对','Unknown');
   const cost = items.reduce((a, f) => a + priceOf(f), 0);
   return `${inventoryArrayPanel(items)}${laundryGroupHost(items)?laundryControls(laundryGroupHost(items)):''}<section><h3>${tr(`已选 ${items.length} 件家具`, `${items.length} items selected`)}</h3>
-    <div class="stats"><div><small>${tr('整体尺寸','Group size')}</small><span class="big mid">${Math.round(x1-x0)} × ${Math.round(y1-y0)}</span></div>
+    <div class="stats"><div><small>${tr('整体尺寸 · 宽×深×高（mm）','Group size · W×D×H (mm)')}</small><span class="big mid group-dimensions">${Math.round(x1-x0)} × ${Math.round(y1-y0)} × ${height}</span></div>
       <div><small>${tr('参考价合计','Reference total')}</small><span class="big mid">${yen(cost)}</span></div></div>
     ${window.FurnishDesignUI?.groupPlacementPanel(items)||''}
     <div class="lbl">${tr('对齐','Align')}</div>
