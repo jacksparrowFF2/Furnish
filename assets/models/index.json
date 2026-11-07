@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 32,
+    "blenderModels": 39,
     "parametricVerificationConfigurations": 89,
-    "verificationConfigurations": 121,
-    "catalogEntries": 163,
-    "catalogTypes": 136,
-    "productDossiers": 59,
-    "referenceImages": 169,
+    "verificationConfigurations": 128,
+    "catalogEntries": 170,
+    "catalogTypes": 143,
+    "productDossiers": 66,
+    "referenceImages": 190,
     "missingReferences": 12
   },
   "models": [
@@ -1936,6 +1936,132 @@
           "bytes": 130112
         },
         {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "bda2b69c7b00b734f772e8fcb4bc6899639a91dd65c8ff8664430b3c7cf47907",
+          "bytes": 109272
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "cf46f5b2b8b1da528c541304f3a37617f30cf2b2336eb3b83e1009eb43874605",
+          "bytes": 107849
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "2f11235057e58e8eeaf7dbb7dcfb0d9420054d02bc6beb8680990e15da1ba4fb",
+          "bytes": 63964
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "6e9648a720297997b6a615ee337d68d75532a3d802ffef432ce07469739b6ba8",
+          "bytes": 109228
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.blend",
+          "role": "retained-other",
+          "sha256": "1625eb968ec6b8a909199224071cc280772a7a52a8016c9e7670b79e754df093",
+          "bytes": 107811
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.glb",
+          "role": "retained-other",
+          "sha256": "b31eb6ba0e4529d934d41ab0a3d7bde56f315aa1a01e353bd10be11271f8a4da",
+          "bytes": 63968
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "fcf1f5be4f150f6ce5b2d3f582f40c6e7129b16f9aa9337b3c943cc0531928a1",
+          "bytes": 109249
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "3de5341a04e694bca8b3040a7a51a0fa85bedb448be66908a1ba63a7e0cafa03",
+          "bytes": 107865
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "223c6b4cb54890de3b24f2255ce31a5a3a4afb5c505b5b37cc2a2b3fc65ba4f9",
+          "bytes": 63972
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "5143fd9e5eb6ee80ab5e13da8b6c68a6be7693a4d400841db21d76dc1eda1b5e",
+          "bytes": 109197
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.blend",
+          "role": "retained-other",
+          "sha256": "6385599c2896c52caa4e66db41d9dcc0d5e4cf379825c302f5caa9d6bef2424e",
+          "bytes": 107802
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.glb",
+          "role": "retained-other",
+          "sha256": "20ea079b671a38c9822c30e33f00b90ec6b79837b2737d961a11fa4a1306f5f5",
+          "bytes": 63980
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "4feb2bed3be5c3be91475f6f90494e0d5c516801b5a47cdae8d71e0e4b6267e4",
+          "bytes": 109337
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "a1be961ef06f973b12cc4cbdfc7842901b7123f4435728b8f6437361338d8c54",
+          "bytes": 107924
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "2e73d4facf3dfa79ab8983ff21fc14858183e8ca0cb52e092452e1d1dfbc119b",
+          "bytes": 63196
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "521e11f9cd531c3a0663ea3a0f4692dc2c6b74a9703c1b6fad556e0ef650aa12",
+          "bytes": 109254
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "b7b848fac14c1ae7839a97bc6c9990a03f02e28a8e517311791ad55d300c3810",
+          "bytes": 107867
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "a911097274d250079760d7180d229b0e03f44699a2c55bb975ef3f042d6b4647",
+          "bytes": 63988
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "c3c2cc84cf9dd9ca360cdde505524c10edaa000846795db12e27bcd60519fa65",
+          "bytes": 109221
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.blend",
+          "role": "retained-other",
+          "sha256": "cddc21ae8f4dc12a27365d3a96c20401242284223456c7ac77b3c18d36d33e8e",
+          "bytes": 107807
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.glb",
+          "role": "retained-other",
+          "sha256": "e066de1ccf7e896a8c6b9fa95f09463fdc21218ed17f4bb6dc6714cfc9df33a5",
+          "bytes": 63992
+        },
+        {
           "path": "assets/models/storage-supplies/tissues/v1/review.blend",
           "role": "retained-other",
           "sha256": "8b3b3adc77588c0e93d7e0366d744f1e6ec020a36c8dcf22e1f43e7ff20edc09",
@@ -2377,6 +2503,363 @@
       "dossier": "assets/models/toolbox-jiabangshou-390/asset.json",
       "references": [
         "assets/models/toolbox-jiabangshou-390/references/user-dimensions.png"
+      ]
+    },
+    {
+      "profile": "storage-bin-shallow-large",
+      "type": "storage_bin_shallow_large",
+      "name": "收纳盒 · 懒角落浅柜 · 大号",
+      "sizeMm": [
+        200,
+        210,
+        150
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/storage-bin-shallow-large-blender-asset.js",
+        "sha256": "c144e96cda691af9ecb57468738c079639b076c43ce0c290e0a043f4f70f392c",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "2e73d4facf3dfa79ab8983ff21fc14858183e8ca0cb52e092452e1d1dfbc119b",
+      "current": {
+        "blend": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.blend",
+        "glb": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.glb"
+      },
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "4feb2bed3be5c3be91475f6f90494e0d5c516801b5a47cdae8d71e0e4b6267e4",
+          "bytes": 109337
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.blend",
+          "role": "published-source",
+          "sha256": "a1be961ef06f973b12cc4cbdfc7842901b7123f4435728b8f6437361338d8c54",
+          "bytes": 107924
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.glb",
+          "role": "published-source",
+          "sha256": "2e73d4facf3dfa79ab8983ff21fc14858183e8ca0cb52e092452e1d1dfbc119b",
+          "bytes": 63196
+        }
+      ],
+      "dossier": "assets/models/storage-bin-shallow-large/asset.json",
+      "references": [
+        "assets/models/storage-bin-shallow-large/references/user-1.png",
+        "assets/models/storage-bin-shallow-large/references/user-2.png",
+        "assets/models/storage-bin-shallow-large/references/user-3.png"
+      ]
+    },
+    {
+      "profile": "storage-bin-deep-medium",
+      "type": "storage_bin_deep_medium",
+      "name": "收纳盒 · 懒角落深柜 · 中号",
+      "sizeMm": [
+        150,
+        280,
+        150
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/storage-bin-deep-medium-blender-asset.js",
+        "sha256": "3a790b2ff8d42a82453688a05cc768ecbe7e9d4774daf7cd4cca3798f629614e",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "b31eb6ba0e4529d934d41ab0a3d7bde56f315aa1a01e353bd10be11271f8a4da",
+      "current": {
+        "blend": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.blend",
+        "glb": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.glb"
+      },
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "6e9648a720297997b6a615ee337d68d75532a3d802ffef432ce07469739b6ba8",
+          "bytes": 109228
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.blend",
+          "role": "published-source",
+          "sha256": "1625eb968ec6b8a909199224071cc280772a7a52a8016c9e7670b79e754df093",
+          "bytes": 107811
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.glb",
+          "role": "published-source",
+          "sha256": "b31eb6ba0e4529d934d41ab0a3d7bde56f315aa1a01e353bd10be11271f8a4da",
+          "bytes": 63968
+        }
+      ],
+      "dossier": "assets/models/storage-bin-deep-medium/asset.json",
+      "references": [
+        "assets/models/storage-bin-deep-medium/references/user-1.png",
+        "assets/models/storage-bin-deep-medium/references/user-2.png",
+        "assets/models/storage-bin-deep-medium/references/user-3.png"
+      ]
+    },
+    {
+      "profile": "storage-bin-deep-large",
+      "type": "storage_bin_deep_large",
+      "name": "收纳盒 · 懒角落深柜 · 大号",
+      "sizeMm": [
+        200,
+        280,
+        150
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/storage-bin-deep-large-blender-asset.js",
+        "sha256": "f8fb293549a4cf50b0b9d4484000a20251349bbf61c3397a7471b9cb1a24ea0a",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "2f11235057e58e8eeaf7dbb7dcfb0d9420054d02bc6beb8680990e15da1ba4fb",
+      "current": {
+        "blend": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.blend",
+        "glb": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.glb"
+      },
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "bda2b69c7b00b734f772e8fcb4bc6899639a91dd65c8ff8664430b3c7cf47907",
+          "bytes": 109272
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.blend",
+          "role": "published-source",
+          "sha256": "cf46f5b2b8b1da528c541304f3a37617f30cf2b2336eb3b83e1009eb43874605",
+          "bytes": 107849
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.glb",
+          "role": "published-source",
+          "sha256": "2f11235057e58e8eeaf7dbb7dcfb0d9420054d02bc6beb8680990e15da1ba4fb",
+          "bytes": 63964
+        }
+      ],
+      "dossier": "assets/models/storage-bin-deep-large/asset.json",
+      "references": [
+        "assets/models/storage-bin-deep-large/references/user-1.png",
+        "assets/models/storage-bin-deep-large/references/user-2.png",
+        "assets/models/storage-bin-deep-large/references/user-3.png"
+      ]
+    },
+    {
+      "profile": "storage-bin-deeper-medium",
+      "type": "storage_bin_deeper_medium",
+      "name": "收纳盒 · 懒角落加深 · 中号",
+      "sizeMm": [
+        150,
+        350,
+        150
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/storage-bin-deeper-medium-blender-asset.js",
+        "sha256": "9debabb5f1620bc5ed6ea98a4884f50a05d2632fd52e3a3698c8e1361e18f65c",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "20ea079b671a38c9822c30e33f00b90ec6b79837b2737d961a11fa4a1306f5f5",
+      "current": {
+        "blend": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.blend",
+        "glb": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.glb"
+      },
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "5143fd9e5eb6ee80ab5e13da8b6c68a6be7693a4d400841db21d76dc1eda1b5e",
+          "bytes": 109197
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.blend",
+          "role": "published-source",
+          "sha256": "6385599c2896c52caa4e66db41d9dcc0d5e4cf379825c302f5caa9d6bef2424e",
+          "bytes": 107802
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.glb",
+          "role": "published-source",
+          "sha256": "20ea079b671a38c9822c30e33f00b90ec6b79837b2737d961a11fa4a1306f5f5",
+          "bytes": 63980
+        }
+      ],
+      "dossier": "assets/models/storage-bin-deeper-medium/asset.json",
+      "references": [
+        "assets/models/storage-bin-deeper-medium/references/user-1.png",
+        "assets/models/storage-bin-deeper-medium/references/user-2.png",
+        "assets/models/storage-bin-deeper-medium/references/user-3.png"
+      ]
+    },
+    {
+      "profile": "storage-bin-deeper-large",
+      "type": "storage_bin_deeper_large",
+      "name": "收纳盒 · 懒角落加深 · 大号",
+      "sizeMm": [
+        200,
+        350,
+        150
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/storage-bin-deeper-large-blender-asset.js",
+        "sha256": "e589b56e22360dd868fb947b8bbc1f2f5160fb9f4e36ebdfde15717062213b10",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "223c6b4cb54890de3b24f2255ce31a5a3a4afb5c505b5b37cc2a2b3fc65ba4f9",
+      "current": {
+        "blend": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.blend",
+        "glb": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.glb"
+      },
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "fcf1f5be4f150f6ce5b2d3f582f40c6e7129b16f9aa9337b3c943cc0531928a1",
+          "bytes": 109249
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.blend",
+          "role": "published-source",
+          "sha256": "3de5341a04e694bca8b3040a7a51a0fa85bedb448be66908a1ba63a7e0cafa03",
+          "bytes": 107865
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.glb",
+          "role": "published-source",
+          "sha256": "223c6b4cb54890de3b24f2255ce31a5a3a4afb5c505b5b37cc2a2b3fc65ba4f9",
+          "bytes": 63972
+        }
+      ],
+      "dossier": "assets/models/storage-bin-deeper-large/asset.json",
+      "references": [
+        "assets/models/storage-bin-deeper-large/references/user-1.png",
+        "assets/models/storage-bin-deeper-large/references/user-2.png",
+        "assets/models/storage-bin-deeper-large/references/user-3.png"
+      ]
+    },
+    {
+      "profile": "storage-bin-ultradeep-medium",
+      "type": "storage_bin_ultradeep_medium",
+      "name": "收纳盒 · 懒角落超深 · 中号",
+      "sizeMm": [
+        150,
+        450,
+        150
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/storage-bin-ultradeep-medium-blender-asset.js",
+        "sha256": "56f8f0b6fa09d5832cd73348f3e3df7b31979f7e59529f7f0030ec90f6f13ff9",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "e066de1ccf7e896a8c6b9fa95f09463fdc21218ed17f4bb6dc6714cfc9df33a5",
+      "current": {
+        "blend": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.blend",
+        "glb": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.glb"
+      },
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "c3c2cc84cf9dd9ca360cdde505524c10edaa000846795db12e27bcd60519fa65",
+          "bytes": 109221
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.blend",
+          "role": "published-source",
+          "sha256": "cddc21ae8f4dc12a27365d3a96c20401242284223456c7ac77b3c18d36d33e8e",
+          "bytes": 107807
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.glb",
+          "role": "published-source",
+          "sha256": "e066de1ccf7e896a8c6b9fa95f09463fdc21218ed17f4bb6dc6714cfc9df33a5",
+          "bytes": 63992
+        }
+      ],
+      "dossier": "assets/models/storage-bin-ultradeep-medium/asset.json",
+      "references": [
+        "assets/models/storage-bin-ultradeep-medium/references/user-1.png",
+        "assets/models/storage-bin-ultradeep-medium/references/user-2.png",
+        "assets/models/storage-bin-ultradeep-medium/references/user-3.png"
+      ]
+    },
+    {
+      "profile": "storage-bin-ultradeep-large",
+      "type": "storage_bin_ultradeep_large",
+      "name": "收纳盒 · 懒角落超深 · 大号",
+      "sizeMm": [
+        200,
+        450,
+        150
+      ],
+      "parts": 5,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/storage-bin-ultradeep-large-blender-asset.js",
+        "sha256": "fca03e2ae60b7a8f32e37a6732d1906ed0d6822325d0cd5d7ada02bcb25ab533",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "a911097274d250079760d7180d229b0e03f44699a2c55bb975ef3f042d6b4647",
+      "current": {
+        "blend": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.blend",
+        "glb": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.glb"
+      },
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "521e11f9cd531c3a0663ea3a0f4692dc2c6b74a9703c1b6fad556e0ef650aa12",
+          "bytes": 109254
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.blend",
+          "role": "published-source",
+          "sha256": "b7b848fac14c1ae7839a97bc6c9990a03f02e28a8e517311791ad55d300c3810",
+          "bytes": 107867
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.glb",
+          "role": "published-source",
+          "sha256": "a911097274d250079760d7180d229b0e03f44699a2c55bb975ef3f042d6b4647",
+          "bytes": 63988
+        }
+      ],
+      "dossier": "assets/models/storage-bin-ultradeep-large/asset.json",
+      "references": [
+        "assets/models/storage-bin-ultradeep-large/references/user-1.png",
+        "assets/models/storage-bin-ultradeep-large/references/user-2.png",
+        "assets/models/storage-bin-ultradeep-large/references/user-3.png"
       ]
     }
   ],
@@ -4945,6 +5428,321 @@
     },
     {
       "format": 1,
+      "id": "storage-bin-deep-large",
+      "name": "收纳盒 · 懒角落深柜 · 大号",
+      "types": [
+        "storage_bin_deep_large"
+      ],
+      "route": "blender",
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100259402044.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+          "bytes": 442591,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+          "bytes": 1579252,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+          "bytes": 742363,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/storage-bins-20261107/README.md"
+      ],
+      "notes": [
+        "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "manifest": "assets/models/storage-bin-deep-large/asset.json",
+      "readme": "assets/models/storage-bin-deep-large/README.md"
+    },
+    {
+      "format": 1,
+      "id": "storage-bin-deep-medium",
+      "name": "收纳盒 · 懒角落深柜 · 中号",
+      "types": [
+        "storage_bin_deep_medium"
+      ],
+      "route": "blender",
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100259402044.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+          "bytes": 442591,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+          "bytes": 1579252,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+          "bytes": 742363,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/storage-bins-20261107/README.md"
+      ],
+      "notes": [
+        "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "manifest": "assets/models/storage-bin-deep-medium/asset.json",
+      "readme": "assets/models/storage-bin-deep-medium/README.md"
+    },
+    {
+      "format": 1,
+      "id": "storage-bin-deeper-large",
+      "name": "收纳盒 · 懒角落加深 · 大号",
+      "types": [
+        "storage_bin_deeper_large"
+      ],
+      "route": "blender",
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100259402044.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+          "bytes": 442591,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+          "bytes": 1579252,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+          "bytes": 742363,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/storage-bins-20261107/README.md"
+      ],
+      "notes": [
+        "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "manifest": "assets/models/storage-bin-deeper-large/asset.json",
+      "readme": "assets/models/storage-bin-deeper-large/README.md"
+    },
+    {
+      "format": 1,
+      "id": "storage-bin-deeper-medium",
+      "name": "收纳盒 · 懒角落加深 · 中号",
+      "types": [
+        "storage_bin_deeper_medium"
+      ],
+      "route": "blender",
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100259402044.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+          "bytes": 442591,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+          "bytes": 1579252,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+          "bytes": 742363,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/storage-bins-20261107/README.md"
+      ],
+      "notes": [
+        "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "manifest": "assets/models/storage-bin-deeper-medium/asset.json",
+      "readme": "assets/models/storage-bin-deeper-medium/README.md"
+    },
+    {
+      "format": 1,
+      "id": "storage-bin-shallow-large",
+      "name": "收纳盒 · 懒角落浅柜 · 大号",
+      "types": [
+        "storage_bin_shallow_large"
+      ],
+      "route": "blender",
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100259402044.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+          "bytes": 442591,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+          "bytes": 1579252,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+          "bytes": 742363,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/storage-bins-20261107/README.md"
+      ],
+      "notes": [
+        "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "manifest": "assets/models/storage-bin-shallow-large/asset.json",
+      "readme": "assets/models/storage-bin-shallow-large/README.md"
+    },
+    {
+      "format": 1,
+      "id": "storage-bin-ultradeep-large",
+      "name": "收纳盒 · 懒角落超深 · 大号",
+      "types": [
+        "storage_bin_ultradeep_large"
+      ],
+      "route": "blender",
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100259402044.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+          "bytes": 442591,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+          "bytes": 1579252,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+          "bytes": 742363,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/storage-bins-20261107/README.md"
+      ],
+      "notes": [
+        "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "manifest": "assets/models/storage-bin-ultradeep-large/asset.json",
+      "readme": "assets/models/storage-bin-ultradeep-large/README.md"
+    },
+    {
+      "format": 1,
+      "id": "storage-bin-ultradeep-medium",
+      "name": "收纳盒 · 懒角落超深 · 中号",
+      "types": [
+        "storage_bin_ultradeep_medium"
+      ],
+      "route": "blender",
+      "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+      "sourceLinks": [
+        "https://item.jd.com/100259402044.html"
+      ],
+      "references": [
+        {
+          "path": "references/user-1.png",
+          "kind": "user",
+          "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+          "bytes": 442591,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-2.png",
+          "kind": "user",
+          "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+          "bytes": 1579252,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/user-3.png",
+          "kind": "user",
+          "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+          "bytes": 742363,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/storage-bins-20261107/README.md"
+      ],
+      "notes": [
+        "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+      ],
+      "manifest": "assets/models/storage-bin-ultradeep-medium/asset.json",
+      "readme": "assets/models/storage-bin-ultradeep-medium/README.md"
+    },
+    {
+      "format": 1,
       "id": "storage-toolbox",
       "name": "世达95101工具箱 · 收起参考",
       "types": [
@@ -7368,6 +8166,69 @@
       "w": 66,
       "d": 66,
       "h": 168,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "storage_bin_shallow_large",
+      "name": "收纳盒 · 懒角落浅柜 · 大号",
+      "w": 200,
+      "d": 210,
+      "h": 150,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "storage_bin_deep_medium",
+      "name": "收纳盒 · 懒角落深柜 · 中号",
+      "w": 150,
+      "d": 280,
+      "h": 150,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "storage_bin_deep_large",
+      "name": "收纳盒 · 懒角落深柜 · 大号",
+      "w": 200,
+      "d": 280,
+      "h": 150,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "storage_bin_deeper_medium",
+      "name": "收纳盒 · 懒角落加深 · 中号",
+      "w": 150,
+      "d": 350,
+      "h": 150,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "storage_bin_deeper_large",
+      "name": "收纳盒 · 懒角落加深 · 大号",
+      "w": 200,
+      "d": 350,
+      "h": 150,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "storage_bin_ultradeep_medium",
+      "name": "收纳盒 · 懒角落超深 · 中号",
+      "w": 150,
+      "d": 450,
+      "h": 150,
+      "module": "storage-supply"
+    },
+    {
+      "category": "囤货用品",
+      "type": "storage_bin_ultradeep_large",
+      "name": "收纳盒 · 懒角落超深 · 大号",
+      "w": 200,
+      "d": 450,
+      "h": 150,
       "module": "storage-supply"
     },
     {

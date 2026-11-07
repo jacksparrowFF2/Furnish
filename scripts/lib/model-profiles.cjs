@@ -23,6 +23,7 @@ assetTypes['corner-bookcase']='bookshelf_yeswood_y00y06';assetTypes['corner-book
 suites.tripleslidingwindow=['telescopic-floor-tracks'];
 const supplySpecs=require('./storage-supply-specs.json');for(const [id,s] of Object.entries(supplySpecs)){assetTypes[id]=s.type;suites[id]=['storage-supplies'];}
 for(const [id,s] of Object.entries(supplySpecs))if(s.shape==='beverage-can')suites[id].push('beverage-cans','beverage-can-print');
+for(const [id,s] of Object.entries(supplySpecs))if(s.shape==='open-storage-bin')suites[id].push('storage-bins');
 suites['cat-food-2kg']=['storage-supplies','cat-food-2kg'];
 function testsFor(id,type){
  const garden=P.definition(type)?.garden;

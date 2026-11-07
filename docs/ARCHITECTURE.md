@@ -1,3 +1,5 @@
+2026-11-07（懒角落收纳盒）：七款150mm高固定规格复用storageSupply与inventoryArray，五件Blender薄壁/前U口资产供生产显示、实体和导出同源；新增七个本地经典资产脚本。底部mountHeight默认0，显式阵列v68并保留历史缓存/项目读取，无新实例字段或保存通道。见[型号及边界](STORAGE-BINS-LANJIAOLUO.md)。
+
 2026-11-07（预览净深）：cabinet-core.depthSections派生临时高度区段，cabinet-preview在模型标注中显示净深，厨房沿生产组矩阵投影；正视保留数值，避让小窗／选中轮廓。无新字段、几何或保存变化，见[验收](validation/cabinet-depth-label-20261107/README.md)。
 
 2026-11-07（罐身包装）：两款标准罐独立作者／发布器在原七件几何上加入受限body UV／内嵌图案，storage-supply-model为各规格阵列共享DataTexture；数值记录器不消费材质。GLB／离线file共用同源图，无新加载脚本／实例字段／空间版本，原v66阵列保持。见[包装与传递](BEVERAGE-CANS.md#雪花清爽包装2026-11-07)。

@@ -1,0 +1,548 @@
+{
+  "passed": true,
+  "sourceUnchanged": true,
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "device": "gpu",
+  "sourceFingerprint": "d29b066c841c18ea225ff1fc84a193ac8ef7792e01114a3dbd87fdc4735b11e8",
+  "results": [
+    {
+      "id": "storage-bin-shallow-large",
+      "passed": true,
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true
+        },
+        {
+          "name": "publish",
+          "passed": true
+        },
+        {
+          "name": "geometry-state",
+          "passed": true
+        },
+        {
+          "name": "http-file-production",
+          "passed": true
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true
+        },
+        {
+          "name": "render-front",
+          "passed": true
+        },
+        {
+          "name": "render-oblique",
+          "passed": true
+        },
+        {
+          "name": "render-back",
+          "passed": true
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true
+        }
+      ],
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "storage_bin_shallow_large",
+        "name": "收纳盒 · 懒角落浅柜 · 大号",
+        "w": 200,
+        "d": 210,
+        "color": "#eeefeb",
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "懒角落",
+        "model": "浅柜-大号",
+        "sourceUrl": "https://item.jd.com/100259402044.html",
+        "h": 150
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "id": "storage-bin-deep-medium",
+      "passed": true,
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true
+        },
+        {
+          "name": "publish",
+          "passed": true
+        },
+        {
+          "name": "geometry-state",
+          "passed": true
+        },
+        {
+          "name": "http-file-production",
+          "passed": true
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true
+        },
+        {
+          "name": "render-front",
+          "passed": true
+        },
+        {
+          "name": "render-oblique",
+          "passed": true
+        },
+        {
+          "name": "render-back",
+          "passed": true
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true
+        }
+      ],
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "storage_bin_deep_medium",
+        "name": "收纳盒 · 懒角落深柜 · 中号",
+        "w": 150,
+        "d": 280,
+        "color": "#eeefeb",
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "懒角落",
+        "model": "深柜-中号",
+        "sourceUrl": "https://item.jd.com/100259402044.html",
+        "h": 150
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "id": "storage-bin-deep-large",
+      "passed": true,
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true
+        },
+        {
+          "name": "publish",
+          "passed": true
+        },
+        {
+          "name": "geometry-state",
+          "passed": true
+        },
+        {
+          "name": "http-file-production",
+          "passed": true
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true
+        },
+        {
+          "name": "render-front",
+          "passed": true
+        },
+        {
+          "name": "render-oblique",
+          "passed": true
+        },
+        {
+          "name": "render-back",
+          "passed": true
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true
+        }
+      ],
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "storage_bin_deep_large",
+        "name": "收纳盒 · 懒角落深柜 · 大号",
+        "w": 200,
+        "d": 280,
+        "color": "#eeefeb",
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "懒角落",
+        "model": "深柜-大号",
+        "sourceUrl": "https://item.jd.com/100259402044.html",
+        "h": 150
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "id": "storage-bin-deeper-medium",
+      "passed": true,
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true
+        },
+        {
+          "name": "publish",
+          "passed": true
+        },
+        {
+          "name": "geometry-state",
+          "passed": true
+        },
+        {
+          "name": "http-file-production",
+          "passed": true
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true
+        },
+        {
+          "name": "render-front",
+          "passed": true
+        },
+        {
+          "name": "render-oblique",
+          "passed": true
+        },
+        {
+          "name": "render-back",
+          "passed": true
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true
+        }
+      ],
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "storage_bin_deeper_medium",
+        "name": "收纳盒 · 懒角落加深 · 中号",
+        "w": 150,
+        "d": 350,
+        "color": "#eeefeb",
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "懒角落",
+        "model": "加深-中号",
+        "sourceUrl": "https://item.jd.com/100259402044.html",
+        "h": 150
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "id": "storage-bin-deeper-large",
+      "passed": true,
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true
+        },
+        {
+          "name": "publish",
+          "passed": true
+        },
+        {
+          "name": "geometry-state",
+          "passed": true
+        },
+        {
+          "name": "http-file-production",
+          "passed": true
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true
+        },
+        {
+          "name": "render-front",
+          "passed": true
+        },
+        {
+          "name": "render-oblique",
+          "passed": true
+        },
+        {
+          "name": "render-back",
+          "passed": true
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true
+        }
+      ],
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "storage_bin_deeper_large",
+        "name": "收纳盒 · 懒角落加深 · 大号",
+        "w": 200,
+        "d": 350,
+        "color": "#eeefeb",
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "懒角落",
+        "model": "加深-大号",
+        "sourceUrl": "https://item.jd.com/100259402044.html",
+        "h": 150
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "id": "storage-bin-ultradeep-medium",
+      "passed": true,
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true
+        },
+        {
+          "name": "publish",
+          "passed": true
+        },
+        {
+          "name": "geometry-state",
+          "passed": true
+        },
+        {
+          "name": "http-file-production",
+          "passed": true
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true
+        },
+        {
+          "name": "render-front",
+          "passed": true
+        },
+        {
+          "name": "render-oblique",
+          "passed": true
+        },
+        {
+          "name": "render-back",
+          "passed": true
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true
+        }
+      ],
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "storage_bin_ultradeep_medium",
+        "name": "收纳盒 · 懒角落超深 · 中号",
+        "w": 150,
+        "d": 450,
+        "color": "#eeefeb",
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "懒角落",
+        "model": "超深-中号",
+        "sourceUrl": "https://item.jd.com/100259402044.html",
+        "h": 150
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    },
+    {
+      "id": "storage-bin-ultradeep-large",
+      "passed": true,
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true
+        },
+        {
+          "name": "publish",
+          "passed": true
+        },
+        {
+          "name": "geometry-state",
+          "passed": true
+        },
+        {
+          "name": "http-file-production",
+          "passed": true
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true
+        },
+        {
+          "name": "render-front",
+          "passed": true
+        },
+        {
+          "name": "render-oblique",
+          "passed": true
+        },
+        {
+          "name": "render-back",
+          "passed": true
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true
+        }
+      ],
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "storage_bin_ultradeep_large",
+        "name": "收纳盒 · 懒角落超深 · 大号",
+        "w": 200,
+        "d": 450,
+        "color": "#eeefeb",
+        "mountHeight": 0,
+        "frontClearance": 0,
+        "brand": "懒角落",
+        "model": "超深-大号",
+        "sourceUrl": "https://item.jd.com/100259402044.html",
+        "h": 150
+      },
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      }
+    }
+  ]
+}

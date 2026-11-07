@@ -38,7 +38,32 @@ def front_text(text,x,height,size):
  o=bpy.context.object;o.data.body=text;o.data.size=size;o.data.align_x='CENTER';o.data.resolution_u=3;o.data.extrude=.0004
  bpy.ops.object.convert(target='MESH');return identity(bpy.context.object,'quantity-mark',white)
 W,H,D=[v/1000 for v in spec['size']]
-if spec.get('shape')=='transparent-toolbox':
+if spec.get('shape')=='open-storage-bin':
+ # Moulded ABS tray: a real open top and a rounded U cutout, without contents.
+ # Wall/floor/radius are visual estimates, not manufacturer usable dimensions.
+ t=.0025; floor=.003; r=.004
+ box('base',(W,floor,D),(0,floor/2,0),main,.0012)
+ for side,name in [(-1,'left-wall'),(1,'right-wall')]:
+  box(name,(t,H-floor,D-t),(side*(W/2-t/2),(H+floor)/2,-t/2),main,.0008)
+ box('back-wall',(W-2*t,H-floor,t),(0,(H+floor)/2,-D/2+t/2),main,.0008)
+ # Front X/Y outline, walking around a genuine open U; vertical front rails
+ # are about 14mm wide. Lower opening corners use an 8mm radius sample.
+ a=W/2-.014; low=.060; rad=.008
+ pts=[(-W/2,floor),(W/2,floor),(W/2,H),(a,H),(a,low+rad)]
+ for j in range(1,9):
+  angle=-j*math.pi/16;pts.append((a-rad+rad*math.cos(angle),low+rad+rad*math.sin(angle)))
+ pts.append((-a+rad,low))
+ for j in range(1,9):
+  angle=-math.pi/2-j*math.pi/16;pts.append((-a+rad+rad*math.cos(angle),low+rad+rad*math.sin(angle)))
+ pts.extend([(-a,H),(-W/2,H)])
+ n=len(pts);verts=[(x,-z,y) for z in [D/2-t,D/2] for x,y in pts]
+ faces=[tuple(reversed(range(n))),tuple(range(n,2*n))]
+ faces.extend((i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n))
+ mesh=bpy.data.meshes.new('front-u-wall');mesh.from_pydata(verts,[],faces);mesh.update()
+ o=bpy.data.objects.new('front-u-wall',mesh);bpy.context.collection.objects.link(o);identity(o,'front-u-wall',main)
+ bevel=o.modifiers.new('soft-moulded-edge','BEVEL');bevel.width=.0007;bevel.segments=3
+ bpy.context.view_layer.objects.active=o;bpy.ops.object.modifier_apply(modifier=bevel.name)
+elif spec.get('shape')=='transparent-toolbox':
  # Closed empty organizer. Labelled outside envelope; wall, taper, tray and
  # catch dimensions are visual estimates, not a measured usable cavity.
  clear=mat('translucent-PP','e2e6e4',.31)
@@ -261,7 +286,7 @@ scene.render.engine='BLENDER_EEVEE_NEXT' if 'BLENDER_EEVEE_NEXT' in engines else
 scene.world.color=(.35,.35,.35);scene.view_settings.view_transform='AgX'
 center=Vector((0,0,H/2));span=max(W,H,D)
 bpy.ops.object.camera_add(location=(span*1.2,-span*2.1,H*.5+span*1.3));camera=bpy.context.object
-if spec.get('shape')=='freeze-dry-bucket':camera.location=(span*1.15,-span*2.5,H*.5+span*.65)
+if spec.get('shape') in ('freeze-dry-bucket','open-storage-bin'):camera.location=(span*1.15,-span*2.5,H*.5+span*.65)
 camera.rotation_euler=(center-camera.location).to_track_quat('-Z','Y').to_euler();camera.data.type='ORTHO';camera.data.ortho_scale=span*1.65;scene.camera=camera
 for pos,power in [((-.8,-.8,1),90),((.7,.2,.8),70)]:
  bpy.ops.object.light_add(type='AREA',location=pos);o=bpy.context.object;o.data.energy=power;o.data.size=.8;o.rotation_euler=(center-o.location).to_track_quat('-Z','Y').to_euler()

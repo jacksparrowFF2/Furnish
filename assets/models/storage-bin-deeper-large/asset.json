@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "id": "storage-bin-deeper-large",
+  "name": "收纳盒 · 懒角落加深 · 大号",
+  "types": [
+    "storage_bin_deeper_large"
+  ],
+  "route": "blender",
+  "document": "docs/STORAGE-BINS-LANJIAOLUO.md",
+  "sourceLinks": [
+    "https://item.jd.com/100259402044.html"
+  ],
+  "references": [
+    {
+      "path": "references/user-1.png",
+      "kind": "user",
+      "sha256": "b2b515cc2fe9181a7debc29ba7d38547626fbbbed09c8b79c8e274a7232422fe",
+      "bytes": 442591,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/user-2.png",
+      "kind": "user",
+      "sha256": "3dc7a8460f3a9ef8ff2c2c9623d7961972471bf00072fed5ee4513e742acb657",
+      "bytes": 1579252,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/user-3.png",
+      "kind": "user",
+      "sha256": "961ff852db5d6b9f98ff459db88e9e87b6421e54a2b433cb03b7700c5f00c3f0",
+      "bytes": 742363,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/storage-bins-20261107/README.md"
+  ],
+  "notes": [
+    "用户确认仅先做7款固定尺寸。尺寸顺序：宽×高×深；前U口、壁厚和圆角为外观估算，非厂家净空或容积。"
+  ]
+}

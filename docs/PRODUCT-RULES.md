@@ -476,3 +476,7 @@ UI 在方案副本中沿正式 normalizeFurnitureEdit 预演关联调整，并�
 ## 标准易拉罐与阵列（2026-11-07）
 
 `beverage_can_330ml`／`beverage_can_500ml`注册为storage-supply，默认Ø66.2×115.2／Ø66×168mm；mountHeight新建0、底部基准、pose3D与现有静态生产构造共用，价格未知。支持inventoryArray原记录关联阵列，无新字段；缺失保持单件，复制重分身份，跨类型替换按原能力清理。单件v57、倾斜v58，显式罐阵列v66；项目／工作区及缓存接受历史版本。几何／位置／离地变化沿原缓存和确认链；建立关联或单纯配色不额外失效。尺寸资料差异、空间边界及验收见[易拉罐](BEVERAGE-CANS.md)。
+
+## 懒角落收纳盒（2026-11-07）
+
+storage_bin_族七款注册storageSupply和storageBin能力，mountHeight新建0、底部原点、pose3D与inventoryArray复用原规则；未知价格不填。尺寸/型号/几何语义见[收纳盒](STORAGE-BINS-LANJIAOLUO.md)。单件v57、姿态v58、显式阵列v68；缺失不补写，复制/替换/缓存/空间确认沿既有机制。

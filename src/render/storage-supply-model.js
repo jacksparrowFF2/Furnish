@@ -31,6 +31,13 @@ function build(T,f){
  globals['beverage-can-330']='FurnishBeverageCan330Asset';globals['beverage-can-500']='FurnishBeverageCan500Asset';
  globals['toolbox-jiabangshou-390']='FurnishJiabangshouToolboxAsset';
  globals['freeze-dry-bucket-6l']='FurnishFreezeDryBucket6lAsset';
+ globals['storage-bin-shallow-large']='FurnishStorageBinShallowLargeAsset';
+ globals['storage-bin-deep-medium']='FurnishStorageBinDeepMediumAsset';
+ globals['storage-bin-deep-large']='FurnishStorageBinDeepLargeAsset';
+ globals['storage-bin-deeper-medium']='FurnishStorageBinDeeperMediumAsset';
+ globals['storage-bin-deeper-large']='FurnishStorageBinDeeperLargeAsset';
+ globals['storage-bin-ultradeep-medium']='FurnishStorageBinUltradeepMediumAsset';
+ globals['storage-bin-ultradeep-large']='FurnishStorageBinUltradeepLargeAsset';
  const asset=root[globals[profile]]||(typeof require==='function'?require('../data/'+profile+'-blender-asset.js'):null);
  if(!asset)throw Error('Storage inventory asset missing: '+profile);
  if(f.paperArray&&products().supports(f,'paperArray'))return arrayModel(T,asset,f);

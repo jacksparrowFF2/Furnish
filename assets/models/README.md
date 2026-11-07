@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-59份产品／设计档案，169张参考图，12张历史原图待补；32组Blender模型。参数化验证配置89组，全部家具库163条目／136种类型。
+66份产品／设计档案，190张参考图，12张历史原图待补；39组Blender模型。参数化验证配置89组，全部家具库170条目／143种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -55,6 +55,13 @@
 | [吊轨推拉门与厨房折叠移门](sliding-door-references/README.md) | 2 | 参考资料 | 0 |
 | [源氏木语-Y107H03-1.25米沙发床](sofa-bed/README.md) | 27 | [BLEND](sofa-bed/v5/sofa-bed-v1.blend) · [GLB](sofa-bed/v5/sofa-bed-v1.glb) | 0 |
 | [禧天龙-软包叠放方凳-370](stack-stool/README.md) | 3 | [BLEND](stack-stool/v4/stack-stool-v1.blend) · [GLB](stack-stool/v4/stack-stool-v1.glb) | 0 |
+| [收纳盒 · 懒角落深柜 · 大号](storage-bin-deep-large/README.md) | 3 | [BLEND](storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.blend) · [GLB](storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.glb) | 0 |
+| [收纳盒 · 懒角落深柜 · 中号](storage-bin-deep-medium/README.md) | 3 | [BLEND](storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.blend) · [GLB](storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.glb) | 0 |
+| [收纳盒 · 懒角落加深 · 大号](storage-bin-deeper-large/README.md) | 3 | [BLEND](storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.blend) · [GLB](storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.glb) | 0 |
+| [收纳盒 · 懒角落加深 · 中号](storage-bin-deeper-medium/README.md) | 3 | [BLEND](storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.blend) · [GLB](storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.glb) | 0 |
+| [收纳盒 · 懒角落浅柜 · 大号](storage-bin-shallow-large/README.md) | 3 | [BLEND](storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.blend) · [GLB](storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.glb) | 0 |
+| [收纳盒 · 懒角落超深 · 大号](storage-bin-ultradeep-large/README.md) | 3 | [BLEND](storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.blend) · [GLB](storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.glb) | 0 |
+| [收纳盒 · 懒角落超深 · 中号](storage-bin-ultradeep-medium/README.md) | 3 | [BLEND](storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.blend) · [GLB](storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.glb) | 0 |
 | [世达95101工具箱 · 收起参考](storage-toolbox/README.md) | 1 | [BLEND](storage-supplies/toolbox/v3/storage-toolbox-v1.blend) · [GLB](storage-supplies/toolbox/v3/storage-toolbox-v1.glb) | 0 |
 | [米家-茶吧机Pro](tea-bar/README.md) | 6 | 参数化 | 0 |
 | [整提抽纸 · 330×120×200估算](tissue-pack/README.md) | 1 | [BLEND](storage-supplies/tissues/v2/tissue-pack-v1.blend) · [GLB](storage-supplies/tissues/v2/tissue-pack-v1.glb) | 0 |

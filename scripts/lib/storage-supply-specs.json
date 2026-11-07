@@ -331,5 +331,159 @@
       "lid-stiffeners"
     ],
     "shape": "transparent-toolbox"
+  },
+  "storage-bin-shallow-large": {
+    "type": "storage_bin_shallow_large",
+    "name": "收纳盒 · 懒角落浅柜 · 大号",
+    "global": "FurnishStorageBinShallowLargeAsset",
+    "size": [
+      200,
+      150,
+      210
+    ],
+    "color": "#eeefeb",
+    "sourceUrl": "https://item.jd.com/100259402044.html",
+    "brand": "懒角落",
+    "model": "浅柜-大号",
+    "parts": [
+      "base",
+      "left-wall",
+      "right-wall",
+      "back-wall",
+      "front-u-wall"
+    ],
+    "shape": "open-storage-bin"
+  },
+  "storage-bin-deep-medium": {
+    "type": "storage_bin_deep_medium",
+    "name": "收纳盒 · 懒角落深柜 · 中号",
+    "global": "FurnishStorageBinDeepMediumAsset",
+    "size": [
+      150,
+      150,
+      280
+    ],
+    "color": "#eeefeb",
+    "sourceUrl": "https://item.jd.com/100259402044.html",
+    "brand": "懒角落",
+    "model": "深柜-中号",
+    "parts": [
+      "base",
+      "left-wall",
+      "right-wall",
+      "back-wall",
+      "front-u-wall"
+    ],
+    "shape": "open-storage-bin"
+  },
+  "storage-bin-deep-large": {
+    "type": "storage_bin_deep_large",
+    "name": "收纳盒 · 懒角落深柜 · 大号",
+    "global": "FurnishStorageBinDeepLargeAsset",
+    "size": [
+      200,
+      150,
+      280
+    ],
+    "color": "#eeefeb",
+    "sourceUrl": "https://item.jd.com/100259402044.html",
+    "brand": "懒角落",
+    "model": "深柜-大号",
+    "parts": [
+      "base",
+      "left-wall",
+      "right-wall",
+      "back-wall",
+      "front-u-wall"
+    ],
+    "shape": "open-storage-bin"
+  },
+  "storage-bin-deeper-medium": {
+    "type": "storage_bin_deeper_medium",
+    "name": "收纳盒 · 懒角落加深 · 中号",
+    "global": "FurnishStorageBinDeeperMediumAsset",
+    "size": [
+      150,
+      150,
+      350
+    ],
+    "color": "#eeefeb",
+    "sourceUrl": "https://item.jd.com/100259402044.html",
+    "brand": "懒角落",
+    "model": "加深-中号",
+    "parts": [
+      "base",
+      "left-wall",
+      "right-wall",
+      "back-wall",
+      "front-u-wall"
+    ],
+    "shape": "open-storage-bin"
+  },
+  "storage-bin-deeper-large": {
+    "type": "storage_bin_deeper_large",
+    "name": "收纳盒 · 懒角落加深 · 大号",
+    "global": "FurnishStorageBinDeeperLargeAsset",
+    "size": [
+      200,
+      150,
+      350
+    ],
+    "color": "#eeefeb",
+    "sourceUrl": "https://item.jd.com/100259402044.html",
+    "brand": "懒角落",
+    "model": "加深-大号",
+    "parts": [
+      "base",
+      "left-wall",
+      "right-wall",
+      "back-wall",
+      "front-u-wall"
+    ],
+    "shape": "open-storage-bin"
+  },
+  "storage-bin-ultradeep-medium": {
+    "type": "storage_bin_ultradeep_medium",
+    "name": "收纳盒 · 懒角落超深 · 中号",
+    "global": "FurnishStorageBinUltradeepMediumAsset",
+    "size": [
+      150,
+      150,
+      450
+    ],
+    "color": "#eeefeb",
+    "sourceUrl": "https://item.jd.com/100259402044.html",
+    "brand": "懒角落",
+    "model": "超深-中号",
+    "parts": [
+      "base",
+      "left-wall",
+      "right-wall",
+      "back-wall",
+      "front-u-wall"
+    ],
+    "shape": "open-storage-bin"
+  },
+  "storage-bin-ultradeep-large": {
+    "type": "storage_bin_ultradeep_large",
+    "name": "收纳盒 · 懒角落超深 · 大号",
+    "global": "FurnishStorageBinUltradeepLargeAsset",
+    "size": [
+      200,
+      150,
+      450
+    ],
+    "color": "#eeefeb",
+    "sourceUrl": "https://item.jd.com/100259402044.html",
+    "brand": "懒角落",
+    "model": "超深-大号",
+    "parts": [
+      "base",
+      "left-wall",
+      "right-wall",
+      "back-wall",
+      "front-u-wall"
+    ],
+    "shape": "open-storage-bin"
   }
 }
