@@ -11,7 +11,7 @@ function settings(input={}){
 function rotate(p,angle){const a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [p[0]*c-p[1]*s,p[0]*s+p[1]*c];}
 // Query keys remain geometric; mirror only the product names, never movement.
 function clearanceFrame(items,rotation=0){
- const members=Array.isArray(items)?items:items?[items]:[],f=members.length===1?members[0]:null;
+ const members=Array.isArray(items)?items:items?[items]:[],f=members.length===1&&!members[0].pose3D?members[0]:null;
  return f?{rotation:-(f.rot||0),product:true,directions:{l:f.flip?'right':'left',r:f.flip?'left':'right',t:'back',b:'front'}}:{rotation,product:false,directions:{l:'drawingLeft',r:'drawingRight',t:'drawingUp',b:'drawingDown'}};
 }
 // Product axes: front is local +Y in plan (+Z in 3D). Left/right are

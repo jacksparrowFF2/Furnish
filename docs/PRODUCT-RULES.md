@@ -10,6 +10,8 @@
 
 # 产品能力规则与兼容验收
 
+2026-11-07：freeRotation仅对独立storageSupply／petSupply／placeholder开放，OBJ除外。可选pose3D为单位四元数，旧缺失不补写；原w/d/h和rot语义保持，mountHeight读取实际最低底部。product-pose统一生产顶点姿态，替换沿能力清理，姿态进入缓存及空间确认；含字段最低v58，当前／命名／库／恢复同链路，见[三维能力与验收](3D-ELEVATION-CONTROLS.md)。
+
 2026-11-06：pet_bowl_petstar_180（180×180×65）与cat_litter_yanxuan_25kg（平放250×220×80用户尺寸）使用独立petSupply能力、mountHeight新建0、静态资产及geometryVersion1；新品字段沿共用替换清理，旧实例不迁移。新类型v53当前／命名项目、工作区和缓存保持。见[模型依据](PET-SUPPLIES.md)。
 
 2026-11-06：`cabinetEntry.shoeShelfDefault=true`定义置物台柜底部自动中层板的历史默认；`cabinet.entry.shoeShelf=false`显式取消，旧缺失不补写。完整结构替换与复制保留，跨产品替换沿既有cabinet清理，字段非法值由柜体核心拒绝。v52项目、命名方案、家具库、工作区及恢复缓存往返见[宠物柜验收](validation/pet-station-20261106/README.md)。

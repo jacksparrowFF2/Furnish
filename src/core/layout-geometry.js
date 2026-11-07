@@ -55,6 +55,7 @@ function bodyParts(f,plan,furniture){
   groundedPartsCache.set(parts,{known:base.known,z:base.z,parts:shifted});return shifted;
 }
 function relativeBodyParts(f,furniture,plan){
+  if(f.pose3D){const R=root.FurnishProductPose||require('./product-pose.js');return R.parts(f,relativeBodyParts(R.source(f),furniture,plan));}
   const D=root.FurnishDesign||(typeof require==='function'?require('./design-core.js'):null),K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null),P=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
   const M=root.FurnishCabinetMotion||(typeof require==='function'?require('./cabinet-motion.js'):null);
   if(M.supportsSolids(f))return M.solidParts(f,{furniture:furniture||[],plan});

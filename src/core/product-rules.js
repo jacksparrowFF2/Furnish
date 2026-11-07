@@ -27,6 +27,7 @@ const artGlassPatterns={
  diamond:{label:'钻石',pitch:80,relief:1.15,roughness:.075}
 };
 const fields={
+ pose3D:{message:'三维姿态须为当前物品支持的单位四元数'},
  bottomPhysical:{boolean:true,message:'窗帘底部基准标记须为布尔值'},
  petTrayOpen:{boolean:true,message:'喂食器抽拉状态须为布尔值'},
  foldingChairFolded:{boolean:true,message:'折叠椅状态须为展开或折叠'},
@@ -205,6 +206,8 @@ for(const [type,rule] of Object.entries(types)){
  const cloth=rule.covering?.kind==='cloth'||rule.covering?.kind==='sheer';
  types[type]={...rule,...(cloth?{fields:[...(rule.fields||[]),'bottomPhysical'],create:[...(rule.create||[]),'bottomPhysical'],defaults:{...rule.defaults,bottomPhysical:false}}:{}),bottomElevation:{mode:rule.anchor==='mixer'?'mixer':rule.fields?.includes('counterElevation')?'surface':rule.fields?.includes('mountHeight')?'native':'offset',...(cloth?{datumGap:20}:{})}};
 }
+// Free tilt is a rigid-inventory capability, not an installation override.
+for(const rule of Object.values(types))if(rule.storageSupply||rule.petSupply||rule.family==='placeholder'){rule.fields=[...rule.fields,'pose3D'];rule.freeRotation=true;}
 // Bounds derived from the existing production shapes, not supplier dimensions.
 // They correct nominal envelope errors while preserving omitted legacy poses.
  types.pendant.physicalEnvelope=f=>[2120-Math.min(f.w,f.d)*.08,2620];
@@ -289,6 +292,7 @@ function planBodyOutline(f,segments){
  return Array.from({length:count},(_,i)=>{const t=i*2*Math.PI/count;return [f.w/2*signed(Math.sin(t)),f.d/2*signed(Math.cos(t))];});
 }
 function planOutline(f,segments,context){
+ if(f?.pose3D)return (root.FurnishProductPose||require('./product-pose.js')).outline(f);
  if(!f.obj&&definition(f)?.telescopic?.allMoving)return slidingLayout(f,context?slidingCorner(f,context.furniture,context.plan):null).railOutline;
  const points=planBodyOutline(f,segments);if(!points)return null;
  const rear=definition(f)?.planShape?.rear;if(!rear)return points;
@@ -331,7 +335,7 @@ function coveringLayout(f){
  }
  return {...spec,open,h,head,hem,drop,bottom,parts};
 }
-const supports=(f,key)=>key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
+const supports=(f,key)=>key==='pose3D'?!!definition(f)?.freeRotation&&!f.obj:key==='groupId'||key==='mountHeight'&&bottomMode(f)==='offset'||definition(f)?.fields?.includes(key)||false;
 const family=(f,name)=>definition(f)?.family===name;
 const value=(f,key)=>f[key]??(key==='mountHeight'&&bottomMode(f)==='offset'?legacyBottom(f):definition(f)?.defaults?.[key]);
 function gardenLayout(f){
@@ -371,6 +375,7 @@ const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f
 const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
+ if(key==='pose3D'){if(!Array.isArray(v)||v.length!==4||!v.every(Number.isFinite)||Math.abs(Math.hypot(...v)-1)>1e-7)throw Error(rule.message);return v.slice();}
  if(key==='tvImage'){
   if(f.obj||typeof v!=='string'||v.length>definition(f).tvScreen.maxDataLength||!/^data:image\/(?:png;base64,iVBORw0KGgo|jpeg;base64,\/9j\/)[A-Za-z0-9+/]*={0,2}$/.test(v))throw Error(rule.message);
   return v;
@@ -600,7 +605,7 @@ function floorStanding(f,range){
  return range.bottom<=1e-6&&range.top>1e-6;
 }
 function validateDatum(work){if(work?.furnitureDatum!==undefined&&!furnitureDatum.values.includes(work.furnitureDatum))throw Error('家具高度基准须为毛坯或完成地面');}
-function vertical(f){return elevatedRange(f,nativeVertical(elevationSource(f)));}
+function vertical(f){if(f.pose3D){const info=(root.FurnishProductPose||require('./product-pose.js')).frame(f);return {bottom:info.bottom,top:info.top,source:'production-pose'};}return elevatedRange(f,nativeVertical(elevationSource(f)));}
 function nativeVertical(f){
  if(f.obj)return {bottom:0,top:f.h||800,source:f.h===undefined?'model':'recorded'};
  if(definition(f)?.productionEnvelope){if(![f.w,f.d].every(Number.isFinite))return null;const S=root.FurnishFurnitureSolids||(typeof require==='function'?require('./furniture-solids.js'):null),parts=S?.parts(elevationSource(f));if(parts?.length)return {bottom:Math.abs(Math.min(...parts.map(p=>p.vertical.bottom)))<1e-7?0:Math.min(...parts.map(p=>p.vertical.bottom)),top:Math.max(...parts.map(p=>p.vertical.top)),source:'production-mesh'};}

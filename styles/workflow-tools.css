@@ -108,15 +108,19 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
 .scene-transform-gizmo [data-transform-axis]:is(.active,:hover,:focus-visible) .transform-axis{stroke-width:4}
 .scene-transform-gizmo [data-transform-axis]:is(.active,:hover,:focus-visible) .transform-ring{stroke-width:3;opacity:1}
 .scene-transform.dragging [data-transform-axis]{cursor:grabbing}
-.scene-transform-dock{position:absolute;width:202px;box-sizing:border-box;background:#fffffff2;border:1px solid #cad6dc;border-radius:8px;padding:7px 8px;color:#284551;box-shadow:0 2px 7px #0002;pointer-events:auto;font:11px/1.4 system-ui}
-.scene-transform-title{display:block;font-size:10px;color:#60747d;margin-bottom:4px}
-.scene-transform-dock .scene-height-controls{grid-template-columns:minmax(68px,1fr) 32px 32px 24px;margin:0;padding:0;border:0;gap:3px}
-.scene-transform-dock .scene-height-controls label{display:flex;flex-direction:column;gap:2px}
-.scene-transform-dock .scene-height-controls input{width:100%;min-height:28px}
-.scene-transform-dock .scene-height-controls button{font-size:10px;padding:2px;min-width:0;min-height:28px}
-.scene-transform-dock .scene-height-status{display:block;margin-top:5px;font-size:9px}
-.scene-transform-dock.compact .scene-transform-title,.scene-transform-dock.compact .scene-height-status{display:none}
-.scene-transform-details:not([hidden]){padding-top:7px;margin-top:6px;border-top:1px solid #dce7ea;font-size:10px}
+.scene-transform-dock{position:absolute;width:174px;height:28px;box-sizing:border-box;background:#fffffff5;border:1px solid #bfcdd3;border-radius:4px;padding:1px 2px;color:#284551;pointer-events:auto;font:11px/1.4 system-ui}
+.scene-transform-title{display:none}
+.scene-transform-dock .scene-height-controls{grid-template-columns:minmax(86px,1fr) 23px 23px 20px;margin:0;padding:0;border:0;gap:2px}
+.scene-transform-dock .scene-height-controls label{display:flex;flex-direction:row;align-items:center;gap:2px;white-space:nowrap}
+.scene-transform-dock .scene-height-controls label>span:first-child{font-size:10px;font-weight:700;color:#287caf}
+.scene-transform-dock[data-axis="x"] .scene-height-controls label>span:first-child{color:#c74a42}
+.scene-transform-dock[data-axis="y"] .scene-height-controls label>span:first-child{color:#168555}
+.scene-transform-dock .scene-height-controls input{width:50px;min-width:0;min-height:24px;height:24px;padding:1px 2px;border:0;background:transparent;font-size:11px}
+.scene-transform-dock .scene-height-controls button{font-size:11px;padding:0;min-width:0;min-height:24px;height:24px;border:0;background:transparent}
+.scene-transform-dock .scene-height-status{display:none;position:absolute;left:0;bottom:calc(100% + 3px);padding:2px 4px;white-space:nowrap;font-size:10px;background:#ffffffe8;border-radius:3px}
+.scene-transform.dragging .scene-height-status{display:block}
+.scene-transform-gizmo .restricted{opacity:.25;cursor:not-allowed}
+.scene-transform-details:not([hidden]){position:absolute;left:0;top:calc(100% + 5px);width:210px;padding:8px;border:1px solid #cad6dc;border-radius:6px;background:#fff;box-shadow:0 2px 5px #0002;font-size:10px}
 .scene-transform-details .scene-height-row{gap:8px}
 @media(max-width:1100px){#stage.is3d:has(.scene-transform:not([hidden])) #property-peek{display:none}#stage.is3d:has(.scene-transform:not([hidden])) .scene-light{top:12px}}
 .ceiling-height-summary>div{display:flex;justify-content:space-between;gap:16px;margin:9px 0;font-size:12px}

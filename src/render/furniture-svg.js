@@ -6,6 +6,7 @@ function shade(h,k){ const f = v => Math.max(0,Math.min(255,Math.round(k>1 ? v+(
 
 function openingPaths(openings){return openings.map(({ring})=>`<path data-kitchen-opening="true" d="M${ring.map(p=>p.join(',')).join('L')}Z" fill="black"/>`).join('');}
 function render(t,w,d,c,PAL,f,context={}){
+  if(f?.pose3D){const R=root.FurnishProductPose||require('../core/product-pose.js'),poly=R.outline(f);return `<path d="M${poly.map(p=>p.join(',')).join('L')}Z" fill="${c}" stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"/>`;}
   // Bind helpers to this call's palette so switching themes cannot retain ink.
   const ST = () => `stroke="${PAL.ink}" stroke-width="1" vector-effect="non-scaling-stroke"`;
 const rc = (x,y,w,h,f,ex='') => `<rect x="${x}" y="${y}" width="${Math.max(0,w)}" height="${Math.max(0,h)}" fill="${f}" ${ST()} ${ex}/>`;

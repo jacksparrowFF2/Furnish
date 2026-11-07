@@ -10,6 +10,7 @@
  const cache=new Map(),worldCache=new Map();
  function parts(f,{furniture=[],plan}={}){
   if(!supported(f))return null;
+  if(f.pose3D){const R=root.FurnishProductPose||require('./product-pose.js');return R.parts(f,parts(R.source(f),{furniture,plan}));}
   const r=rule(f),products=root.FurnishProducts||require('./product-rules.js'),corner=r.sliding?products.slidingCorner(f,furniture,plan):null,key=JSON.stringify([r,products.definition(f)?.washerGeometryVersion,corner,f.slidingStackSide,f.slidingOpen,f.slidingTrackOrder,f.floorTrack,f.type,f.w,f.d,f.h,f.mountHeight,f.bottomPhysical,...(products.definition(f)?.garden?.stepped?[products.gardenLayout(f)]:[]),f.windowSurroundSides,f.windowSurroundThickness,f.curtainOpen,f.blindAngle,f.shadeMode,f.manifoldLoops,f.manifoldLengths,f.foldingTablePose,f.stoolCount,f.stoolPitch,f.foldingChairFolded,f.petTrayOpen,f.sofaBedOpen,f.teaBarUpperOpen,f.teaBarLowerOpen,f.dishwasherDoorOpen,f.hoodPanelOpen,f.sideTableUpperOpen,f.sideTableLowerOpen,f.washerDoorAngle,f.washerDoorSide,f.hoodGeometry,f.fridgeLeftAngle,f.fridgeRightAngle,f.fridgeUpperExtension,f.fridgeLowerExtension,...(r.positionSeed?[f.cx,f.cy]:[])]);
   // A world hit already contains the production vertices. Consult it before
   // rebuilding a local record evicted from the smaller geometry LRU.

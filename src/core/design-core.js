@@ -6,17 +6,18 @@
  const kitchen=()=>root.FurnishKitchen||require('./kitchen-core.js');
  const finished=plan=>(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan);
  // Rigid selection transforms: millimetres in the plan XY plane, Z up.
- // Rotation only changes yaw; installation fields keep their native semantics.
- function transformFurniture(items,{dx=0,dy=0,dz=0,angle=0,pivot,roundPosition=false}={}){
+ // Free inventory tilt is capability-gated; installation semantics stay native.
+ function transformFurniture(items,{dx=0,dy=0,dz=0,angle=0,pivot,roundPosition=false,rotationAxis='z',plan,furniture=items}={}){
   if(![dx,dy,dz,angle].every(Number.isFinite))throw Error('请输入有效的位移或角度');
   if(!items.length)return [];
+  if(rotationAxis!=='z')return (root.FurnishProductPose||require('./product-pose.js')).transform(items,{axis:rotationAxis,angle,pivot,plan,furniture});
   if(!pivot){const G=root.FurnishGeometry||require('./layout-geometry.js'),b=G.groupBox(items);pivot=[(b[0]+b[2])/2,(b[1]+b[3])/2];}
   if(!Array.isArray(pivot)||!pivot.every(Number.isFinite))throw Error('旋转中心无效');
   const a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a),round=n=>roundPosition?Math.round(n):n;
   return items.map(f=>{const next=dz?products().editBottomHeight(f,products().bottomHeight(f)+dz):{...f},x=f.cx-pivot[0],y=f.cy-pivot[1];
    if(dx||dy||angle){next.cx=round(pivot[0]+x*c-y*s+dx);next.cy=round(pivot[1]+x*s+y*c+dy);}
    if(![next.cx,next.cy].every(v=>Number.isFinite(v)&&Math.abs(v)<=1000000))throw Error('移动位置超出有效范围');
-   if(angle)next.rot=(((f.rot||0)+angle)%360+360)%360;
+   if(angle){next.rot=(((f.rot||0)+angle)%360+360)%360;if(f.pose3D)next.pose3D=(root.FurnishProductPose||require('./product-pose.js')).conjugateYaw(f,angle).pose3D;}
    return next;
   });
  }
