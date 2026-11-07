@@ -1,0 +1,455 @@
+{
+  "passed": true,
+  "executable": "D:\\1601装修\\Furnish程序\\Furnish-win32-x64\\Furnish.exe",
+  "work": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop-verification\\toolbox-weO4Ng\\workspace",
+  "port": 50970,
+  "sourceUnchanged": true,
+  "preferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false
+  },
+  "checks": [
+    "production geometry 340x220x240",
+    "editable mountHeight through actual property input",
+    "raised 900..1120mm above finished floor exactly once",
+    "undo/redo",
+    "repository save and reload",
+    "390px narrow layout",
+    "13 imported parts, no fallback",
+    "actual packaged desktop screenshot"
+  ],
+  "raised": {
+    "parts": [
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:back-ribs",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 972,
+        "bounds": [
+          [
+            2.9545000001788138,
+            0.9665484000369906,
+            -1.6071901991963387
+          ],
+          [
+            3.145499999821186,
+            1.0234516030550003,
+            -1.6008097976446152
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:body",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 3108,
+        "bounds": [
+          [
+            2.8869999974966047,
+            0.96,
+            -1.6129999980330467
+          ],
+          [
+            3.213000002503395,
+            1.1049999958276748,
+            -1.3870000019669533
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:front-ribs",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 972,
+        "bounds": [
+          [
+            2.9545000001788138,
+            0.9665484000369906,
+            -1.3991902023553848
+          ],
+          [
+            3.145499999821186,
+            1.0234516030550003,
+            -1.3928098008036613
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:handle",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 2292,
+        "bounds": [
+          [
+            2.995500001311302,
+            1.1370000010728836,
+            -1.5065000001341105
+          ],
+          [
+            3.1044999986886976,
+            1.179999998807907,
+            -1.4934999998658895
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:handle-pivots",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 648,
+        "bounds": [
+          [
+            2.990499998629093,
+            1.1370000010728836,
+            -1.5115000000223517
+          ],
+          [
+            3.1095000013709067,
+            1.141999996304512,
+            -1.4884999999776483
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:left-catch",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 972,
+        "bounds": [
+          [
+            2.8799999982118605,
+            1.0820000013709068,
+            -1.5445000007748604
+          ],
+          [
+            2.891999992728233,
+            1.111999995112419,
+            -1.4554999992251396
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:lid",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 2724,
+        "bounds": [
+          [
+            2.8799999982118605,
+            1.1049999958276748,
+            -1.619999997317791
+          ],
+          [
+            3.220000001788139,
+            1.1400000071525573,
+            -1.380000002682209
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:lid-inset",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 852,
+        "bounds": [
+          [
+            2.9134999990463255,
+            1.1320000058412552,
+            -1.586499996483326
+          ],
+          [
+            3.186500000953674,
+            1.13739999294281,
+            -1.413500003516674
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:lid-seam",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 612,
+        "bounds": [
+          [
+            2.884999993443489,
+            1.1030000066757202,
+            -1.6150000020861626
+          ],
+          [
+            3.2150000065565107,
+            1.1059999978542328,
+            -1.3849999979138374
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:right-catch",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 972,
+        "bounds": [
+          [
+            3.2080000072717665,
+            1.0820000013709068,
+            -1.5445000007748604
+          ],
+          [
+            3.220000001788139,
+            1.111999995112419,
+            -1.4554999992251396
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:tray",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 1548,
+        "bounds": [
+          [
+            2.9424999982118605,
+            1.061000003516674,
+            -1.6075000017881393
+          ],
+          [
+            3.157500001788139,
+            1.1010000026226043,
+            -1.3924999982118607
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:tray-dividers",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 648,
+        "bounds": [
+          [
+            2.9459999978542326,
+            1.0649999967217445,
+            -1.5010000000474975
+          ],
+          [
+            3.154000002145767,
+            1.1010000026226043,
+            -1.3969999998807907
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-shimoyama-9l-v1:wrench-mark",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 156,
+        "bounds": [
+          [
+            3.015999998152256,
+            1.038990302979946,
+            -1.3926929980516434
+          ],
+          [
+            3.078000000864267,
+            1.0830000033974647,
+            -1.388988196849823
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "bounds": [
+      [
+        2.8799999982118605,
+        0.96,
+        -1.619999997317791
+      ],
+      [
+        3.220000001788139,
+        1.179999998807907,
+        -1.380000002682209
+      ]
+    ],
+    "settledPoses": []
+  }
+}

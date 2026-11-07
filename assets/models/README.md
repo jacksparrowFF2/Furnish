@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-66份产品／设计档案，190张参考图，12张历史原图待补；39组Blender模型。参数化验证配置89组，全部家具库170条目／143种类型。
+67份产品／设计档案，192张参考图，12张历史原图待补；40组Blender模型。参数化验证配置89组，全部家具库171条目／144种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -67,6 +67,7 @@
 | [整提抽纸 · 330×120×200估算](tissue-pack/README.md) | 1 | [BLEND](storage-supplies/tissues/v2/tissue-pack-v1.blend) · [GLB](storage-supplies/tissues/v2/tissue-pack-v1.glb) | 0 |
 | [整提卷纸 · 220×220×340估算](toilet-paper-pack/README.md) | 1 | [BLEND](storage-supplies/rolls/v2/toilet-paper-pack-v1.blend) · [GLB](storage-supplies/rolls/v2/toilet-paper-pack-v1.glb) | 0 |
 | [透明工具箱 · 佳帮手大号](toolbox-jiabangshou-390/README.md) | 1 | [BLEND](storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.blend) · [GLB](storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.glb) | 0 |
+| [工具收纳箱 · 霜山9L](toolbox-shimoyama-9l/README.md) | 2 | [BLEND](storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.blend) · [GLB](storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.glb) | 0 |
 | [定制电视柜](tv-cabinet-references/README.md) | 1 | 参考资料 | 0 |
 | [次卧衣柜与窗下书桌组合](wardrobe-desk-references/README.md) | 2 | 参考资料 | 0 |
 | [洗衣机](washer/README.md) | 0 | [BLEND](washer/washer-v1.blend) · [GLB](washer/washer-v1.glb) | 0 |

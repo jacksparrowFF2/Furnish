@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "toolbox-shimoyama-9l",
+  "name": "工具收纳箱 · 霜山9L",
+  "types": [
+    "toolbox_shimoyama_9l"
+  ],
+  "route": "blender",
+  "document": "docs/TOOLBOX-SHIMOYAMA-9L.md",
+  "sourceLinks": [
+    "https://item.jd.com/10192952050315.html?pcdk=yzUFzt4sJJtnvJXckvDqccqYxXjS3dy1qK_N85l4bbBpNEKQ5hBA8SeEqDyw2SBz.3z6a.aI3x&spmTag=YTAyNDAuYjAwMjQ5My5jMDAwMDQwMjcuOSUyM3NrdV9jYXJkJTQwMTc5NDA3MDk2NDAzNiUyMzE3NzkyMDA4OTY4NDQxOTUyNjQwNjE2JTIzMTc0NTk0NjcwMw"
+  ],
+  "references": [
+    {
+      "path": "references/appearance.png",
+      "kind": "user",
+      "sha256": "c5f488f053b1592a8b4f7ebcddd1c5bc14189c79a95d75724baafbbda6ed770f",
+      "bytes": 1182983,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/dimensions.png",
+      "kind": "user",
+      "sha256": "12ebebfeeade2a20bf565d1120de050f8249bd8cc3ea844a87c0c49fbde82708",
+      "bytes": 432513,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/toolbox-shimoyama-9l-20261108/README.md"
+  ],
+  "notes": [
+    "用户尺寸图340×240×180mm，含提手220mm。京东SKU/品牌/尺寸已读取；价格保留未知。静态闭盖，卡扣、壁厚、圆角及隐藏托盘为外观估算，无开盖轨迹或容量认证。"
+  ]
+}

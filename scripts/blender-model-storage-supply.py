@@ -38,7 +38,9 @@ def front_text(text,x,height,size):
  o=bpy.context.object;o.data.body=text;o.data.size=size;o.data.align_x='CENTER';o.data.resolution_u=3;o.data.extrude=.0004
  bpy.ops.object.convert(target='MESH');return identity(bpy.context.object,'quantity-mark',white)
 W,H,D=[v/1000 for v in spec['size']]
-if spec.get('shape')=='open-storage-bin':
+if spec.get('shape')=='shimoyama-toolbox':
+ exec(compile((pathlib.Path(__file__).parent/'blender-model-shimoyama-toolbox.py').read_text(encoding='utf-8'), 'blender-model-shimoyama-toolbox.py', 'exec'))
+elif spec.get('shape')=='open-storage-bin':
  # Moulded ABS tray: a real open top and a rounded U cutout, without contents.
  # Wall/floor/radius are visual estimates, not manufacturer usable dimensions.
  t=.0025; floor=.003; r=.004
@@ -286,7 +288,7 @@ scene.render.engine='BLENDER_EEVEE_NEXT' if 'BLENDER_EEVEE_NEXT' in engines else
 scene.world.color=(.35,.35,.35);scene.view_settings.view_transform='AgX'
 center=Vector((0,0,H/2));span=max(W,H,D)
 bpy.ops.object.camera_add(location=(span*1.2,-span*2.1,H*.5+span*1.3));camera=bpy.context.object
-if spec.get('shape') in ('freeze-dry-bucket','open-storage-bin'):camera.location=(span*1.15,-span*2.5,H*.5+span*.65)
+if spec.get('shape') in ('freeze-dry-bucket','open-storage-bin','shimoyama-toolbox'):camera.location=(span*1.15,-span*2.5,H*.5+span*.65)
 camera.rotation_euler=(center-camera.location).to_track_quat('-Z','Y').to_euler();camera.data.type='ORTHO';camera.data.ortho_scale=span*1.65;scene.camera=camera
 for pos,power in [((-.8,-.8,1),90),((.7,.2,.8),70)]:
  bpy.ops.object.light_add(type='AREA',location=pos);o=bpy.context.object;o.data.energy=power;o.data.size=.8;o.rotation_euler=(center-o.location).to_track_quat('-Z','Y').to_euler()

@@ -1,3 +1,5 @@
+2026-11-08（霜山9L工具箱）：新增storageSupply独立类型及经典离线资产脚本，Blender 13件沿storage-supply→static-asset生产显示／实体／导出；mountHeight及pose3D沿v57/v58，无新字段或保存通道。见[型号](TOOLBOX-SHIMOYAMA-9L.md)。
+
 2026-11-08（工具箱阵列）：toolbox_jiabangshou_390复用inventoryArray普通家具记录及原属性/MCP/mutate，显式阵列最低v71，项目/工作区/离线缓存保留历史版本读取；生产资产/实体/安装基准沿原单件，无新字段或保存通道。见[工具箱](TOOLBOX-JIABANGSHOU-390.md#关联阵列2026-11-08)。
 
 2026-11-08（柜体局部结构）：cabinet-core统一活动层板／底板／分柜踢脚mm实体及柜箱高度，cabinet-model共用生产组件；旧编辑开关在读取边界集中消费，空间确认与缓存沿完整cabinet。显式局部字段及上柜嵌套字段最低v70，沿原mutate／项目／工作区／离线缓存，无新增脚本或保存通道。见[契约](CABINET-LOCAL-STRUCTURE.md)。

@@ -485,5 +485,35 @@
       "front-u-wall"
     ],
     "shape": "open-storage-bin"
+  },
+  "toolbox-shimoyama-9l": {
+    "type": "toolbox_shimoyama_9l",
+    "name": "工具收纳箱 · 霜山9L",
+    "global": "FurnishShimoyamaToolbox9lAsset",
+    "size": [
+      340,
+      220,
+      240
+    ],
+    "color": "#e5e3db",
+    "sourceUrl": "https://item.jd.com/10192952050315.html",
+    "brand": "霜山/SHIMOYAMA",
+    "model": "9L · 箱高180／含竖起提手220 · 闭盖参考",
+    "parts": [
+      "body",
+      "lid-seam",
+      "lid",
+      "lid-inset",
+      "handle",
+      "handle-pivots",
+      "left-catch",
+      "right-catch",
+      "front-ribs",
+      "back-ribs",
+      "tray",
+      "tray-dividers",
+      "wrench-mark"
+    ],
+    "shape": "shimoyama-toolbox"
   }
 }

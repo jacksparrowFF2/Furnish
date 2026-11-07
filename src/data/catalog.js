@@ -200,6 +200,7 @@ const LIB = [
     ["storage_bin_deeper_large","收纳盒 · 懒角落加深 · 大号",200,350,"#eeefeb",undefined,150],
     ["storage_bin_ultradeep_medium","收纳盒 · 懒角落超深 · 中号",150,450,"#eeefeb",undefined,150],
     ["storage_bin_ultradeep_large","收纳盒 · 懒角落超深 · 大号",200,450,"#eeefeb",undefined,150],
+    ["toolbox_shimoyama_9l", "工具收纳箱 · 霜山9L", 340, 240, "#e5e3db",undefined,220],
     ["toolbox_jiabangshou_390", "透明工具箱 · 佳帮手大号", 390, 270, "#e2e6e4",undefined,210],
     ["freeze_dry_bucket_meoof_6l", "冻干桶 · meoof 6L", 316, 309, "#e8e2d7",undefined,187],
     ["cat_food_myfoodie_2kg", "猫粮袋 · 2kg紫白参考", 260, 120, "#863478",undefined,400],
