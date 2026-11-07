@@ -41,13 +41,12 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    node.userData.motion={kind:'cabinetdrawer',column,section:'storage',axis:'z',travel,closedZ:0};return node;
   };
   const mountDrawer=(parent,node,part)=>{node.traverse(o=>o.userData.cabinetPart={...part});parent.add(node);return node;};
-  // Box widths are a recipe profile: preserve legacy ordinary-box allowance
-  // and the sectioned cabinets' two-board deduction, not an implicit migration.
-  const drawerBox=(node,{width,bodyWidth=width-2*t,x,bottom,height,depth,sites,sideScope})=>{
-   const geometry=drawerFrame(depth);
-   syncIdentity.produce(sites.bottom,()=>add(node,bodyWidth,.012,geometry.depth,x,bottom+.012,geometry.center)).userData.cabinetDrawerBoard='bottom';
-   for(const side of syncIdentity.items(sideScope,[['item-a',-1],['item-b',1]]))syncIdentity.produce(sites.side,()=>add(node,t,height-.03,geometry.depth,x+side*(width/2-t),bottom+.024,geometry.center)).userData.cabinetDrawerBoard='side';
-   syncIdentity.produce(sites.back,()=>add(node,bodyWidth,height-.03,t,x,bottom+.024,geometry.rearCenter)).userData.cabinetDrawerBoard='back';
+  const drawerBox=(node,{width,x,bottom,height,depth,sites,sideScope})=>{
+   const parts=C.drawerBoxParts(f,{width:width*1000,x:x*1000,bottom:bottom*1000,height:height*1000,depth:depth*1000},c);
+   const emit=part=>syncIdentity.produce(sites[part.role],()=>add(node,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000)).userData.cabinetDrawerBoard=part.role;
+   emit(parts[0]);
+   for(const side of syncIdentity.items(sideScope,[['item-a',-1],['item-b',1]]))emit(parts.find(part=>part.role==='side'&&part.side===side));
+   emit(parts.at(-1));
   };
   const handle=(parent,{kind='bar',site,x,y,z,vertical=false,width,barHeight=.15,depth=.025})=>{
    if(kind==='none')return;const knob=kind==='knob';
@@ -311,7 +310,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     }
     const frontTop=c.template==='tv-floor'&&j===col.drawers.length-1?h-t:C.kitchenOverlay(f,c)&&col.door==='none'&&j===col.drawers.length-1?C.frontHeight(f,c)/1000-faceInset:y+bodyDh;
     syncIdentity.produce("cabinet-model:site-72",()=>add(node,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?frontTop-frontBottom-.002:dh-.004,t,entryStyle?(span.left+span.right)/2:x,entryStyle?frontBottom+.001:y,d/2-t/2,faceColor)).userData.cabinetDrawerBoard='front';
-    components.drawerBox(node,{width:cw,bodyWidth:cw-.02,x,bottom:y,height:bodyDh,depth:d,sites:{bottom:'cabinet-model:site-73',side:'cabinet-model:site-74',back:'cabinet-model:site-75'},sideScope:'cabinet-model.js:generator-44'});
+    components.drawerBox(node,{width:cw,x,bottom:y,height:bodyDh,depth:d,sites:{bottom:'cabinet-model:site-73',side:'cabinet-model:site-74',back:'cabinet-model:site-75'},sideScope:'cabinet-model.js:generator-44'});
     syncIdentity.produce("cabinet-model.js:generator-call-23",()=>handleMesh(node,x,y+dh*.7,d/2+.012));
     components.mountDrawer(g,node,{column:i,drawer:j,lane});}y+=dh;
    },(item,slot)=>item?.partId||"drawer:"+slot);

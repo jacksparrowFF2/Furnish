@@ -847,10 +847,21 @@
  }
  function hardwareComponentVersion(c){if(!c.sideboard)return undefined;return [c.columns?.some(col=>col.handle==='knob')?'round-knob-v1':'',c.columns?.some(col=>col.handle===undefined)?'default-bar-v1':''].filter(Boolean).join(',')||undefined;}
  function drawerDepthLayout(f,depth=f.d,c=config(f)){
-  // Preserve old no-back drawer boxes until the explicit thickness is edited.
-  const t=c.thickness,rear=c.backThickness===undefined?t:backThickness(c);
+  const t=c.thickness,rear=backThickness(c);
   return {depth:depth-2*t-rear,center:-f.d/2+(depth+rear)/2,rearCenter:-f.d/2+rear+t/2};
  }
+ // Shared mm assembly for every linear wooden drawer. The front and
+ // motion belong to the recipe; the box joins and side clearance do not.
+ function drawerBoxParts(f,{width,x=0,bottom=0,height,depth=f.d},c=config(f)){
+  const r=products().cabinetDrawerBox,t=c.thickness,v=drawerDepthLayout(f,depth,c),outer=width-2*r.sideClearance,inner=outer-2*t,low=bottom+r.bottomLift,sideBottom=low+r.bottomThickness,sideHeight=height-r.bottomLift-r.bottomThickness-r.topGap;
+  if(![width,x,bottom,height,depth].every(Number.isFinite)||inner<=0||v.depth<=0||sideHeight<=0)throw Error('抽盒净宽、净深和侧板高度须大于0');
+  return [
+   {role:'bottom',w:inner,h:r.bottomThickness,d:v.depth,x,bottom:low,z:v.center},
+   ...[-1,1].map(side=>({role:'side',side,w:t,h:sideHeight,d:v.depth,x:x+side*(outer-t)/2,bottom:sideBottom,z:v.center})),
+   {role:'back',w:inner,h:sideHeight,d:t,x,bottom:sideBottom,z:v.rearCenter}
+  ];
+ }
+ function drawerComponentVersion(c){return c.columns?.some(col=>col.drawers?.length&&col.top!=='drawer')?products().cabinetDrawerBox.componentVersion:undefined;}
  function spaces(f,column){
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
   let bottom=c.hoodBayHeight!==undefined&&column===1?c.hoodBayHeight:col.drawers.reduce((n,d)=>n+d.height,0);const result=[];
@@ -1034,6 +1045,10 @@ function nativeOpeningZones(f,{passage=800}={}){
    validatePegboardHoles(f,c.columns.indexOf(col));validatePegboardHatch(f,c.columns.indexOf(col));validateDoorSettings(col);validateDoorLayout(col,pegboardParts(f,c)?.upper===false?(col.door==='none'?0:col.door==='double'?2:1):frontLeafCount(f,c.columns.indexOf(col),c));validateDoorWidths(f,c.columns.indexOf(col),c);
    let bottom=0;for(const drawer of col.drawers){if(!drawer||!finite(drawer.height)||drawer.height<60||typeof drawer.open!=='boolean'||drawer.extension!==undefined&&(!finite(drawer.extension)||drawer.extension<0||drawer.extension>1))throw Error('抽屉高度至少 60 mm，拉出程度须为 0–100%');bottom+=drawer.height;}
    if(bottom>inner)throw Error('抽屉总高度超出柜内净高');
+   if(col.top!=='drawer'&&col.drawerStyle!=='dish-basket'&&col.drawers.length){
+    const lanes=drawerCount(col),width=(values[c.columns.indexOf(col)]-(lanes-1)*c.thickness)/lanes,depth=c.sideboard?c.sideboard.lowerDepth:f.d;
+    col.drawers.forEach((drawer,j)=>drawerBoxParts(f,{width,depth,height:drawer.height-((c.entry||c.sideboard||doorOverlay(f,c)!=='inset')&&j===col.drawers.length-1?c.thickness:0)},c));
+   }
    if(!c.entry&&!c.sideboard&&col.door!=='none'&&topDoorLimit(f,c)+frontInset(f,c)-c.plinth-(col.doorBottom??bottom)-2*frontInset(f,c)<=2)throw Error('抽屉或分界层板占满柜门高度，请先调整内部结构');
    if(col.doorBottom!==undefined&&(col.doorBottom<bottom||!col.shelves.some(v=>Math.abs(v+c.thickness-col.doorBottom)<.01)))throw Error('上柜门底部须对齐一块层板上表面，并高于抽屉');
    if(col.pegboard&&(col.doorBottom===undefined||col.doorBottom-c.thickness-bottom<100||col.top==='drawer'))throw Error('洞洞板需要至少 100 mm 高的开放区及固定顶板');
@@ -1126,9 +1141,9 @@ function nativeOpeningZones(f,{passage=800}={}){
  function spatialConfig(f){
   if(!supported(f)||f.kitchen)return undefined;
   let c;try{c=config(f);}catch{c={invalid:f.cabinet===undefined?null:JSON.parse(JSON.stringify(f.cabinet))};}
-  const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);if(backComponentVersion(c))c.backComponentRule=backComponentVersion(c);if(hardwareComponentVersion(c))c.hardwareComponentRule=hardwareComponentVersion(c);if(c.columns?.some((col,i)=>col.shelves?.length&&depthLayout(f,i,c)))c.shelfDepthRule='solid-rear-face-v1';c.doorPoseRule='finite-thickness-hinges-v1';if(hangingWardrobe(c))c.hangingRule={...products().wardrobeHanging};return c;
+  const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);if(drawerComponentVersion(c))c.drawerComponentRule=drawerComponentVersion(c);if(backComponentVersion(c))c.backComponentRule=backComponentVersion(c);if(hardwareComponentVersion(c))c.hardwareComponentRule=hardwareComponentVersion(c);if(c.columns?.some((col,i)=>col.shelves?.length&&depthLayout(f,i,c)))c.shelfDepthRule='solid-rear-face-v1';c.doorPoseRule='finite-thickness-hinges-v1';if(hangingWardrobe(c))c.hangingRule={...products().wardrobeHanging};return c;
  }
  const api={backComponentVersion,backPanelPart,depthSections,drawerDepthLayout,backThicknessAvailable,backThickness,depthLayout,entryLowerDoorDrop,entryLowerDoorDropLimit,entryLowerDoorBounds,entryShoeShelf,frontColor,stackedBoxesAvailable,setStackedBoxes,shelfThickness,sideClosureColor,sideClosureAvailable,sideClosures,setSideClosures,sideClosureParts,sideClosureOutline,hangingWardrobe,hangingLayout,topClosureAvailable,topClosureParts,boxJoints,boxRanges,setBoxJoints,topClosure,bodyHeight,topDoorLimit,setTopClosure,constructionAvailable,setConstruction,boxParts,endPanels,structureWidth,pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,fitDoorLimits,doorLimitCount,inheritedDoorLimit,withDoorLimit,validateDoorLimits,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,shelfClearances,editShelfClearance,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,setPartOpening,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
- Object.assign(api,{carcassFrame,hardwareComponentVersion,editModules,structuralBoards,editStructuralBoard,moduleLayout,moduleWidths,moduleWidthLimits,adjustModuleWidth,withDoorSetting,templateGroups,templateType,adjustColumnWidth,repartition,fitDoors,scaleStructure,upgradeDesign});
+ Object.assign(api,{drawerBoxParts,drawerComponentVersion,carcassFrame,hardwareComponentVersion,editModules,structuralBoards,editStructuralBoard,moduleLayout,moduleWidths,moduleWidthLimits,adjustModuleWidth,withDoorSetting,templateGroups,templateType,adjustColumnWidth,repartition,fitDoors,scaleStructure,upgradeDesign});
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
