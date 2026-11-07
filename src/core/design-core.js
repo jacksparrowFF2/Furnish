@@ -66,8 +66,59 @@
   const placed=resizeAnchorPosition(f,next,anchor);return f.kitchen?kitchen().resize(f,placed):cabinet().resize(f,placed);
  }
  function expandGroups(furniture,ids){
-  const chosen=new Set(ids),groups=new Set(furniture.filter(f=>chosen.has(f.id)&&f.groupId).map(f=>f.groupId));
-  return furniture.filter(f=>chosen.has(f.id)||f.groupId&&groups.has(f.groupId)).map(f=>f.id);
+  const chosen=new Set(ids);let changed=true;
+  while(changed){const groups=new Set(furniture.filter(f=>chosen.has(f.id)&&f.groupId).map(f=>f.groupId)),arrays=new Set(furniture.filter(f=>chosen.has(f.id)&&f.inventoryArray).map(f=>f.inventoryArray.id));changed=false;for(const f of furniture)if(!chosen.has(f.id)&&(f.groupId&&groups.has(f.groupId)||f.inventoryArray&&arrays.has(f.inventoryArray.id))){chosen.add(f.id);changed=true;}}
+  return furniture.filter(f=>chosen.has(f.id)).map(f=>f.id);
+ }
+ function inventoryMembers(furniture,id){return furniture.filter(f=>f.inventoryArray?.id===id).sort((a,b)=>a.inventoryArray.index-b.inventoryArray.index);}
+ function inventoryUnitSignature(f){return JSON.stringify([f.type,f.w,f.d,f.h,f.rot,!!f.flip,f.pose3D,f.foldingChairFolded,f.stoolCount,f.stoolPitch]);}
+ function validateInventoryArrays(furniture){
+  const ids=new Set(furniture.filter(f=>f.inventoryArray).map(f=>f.inventoryArray.id));
+  for(const id of ids){const members=inventoryMembers(furniture,id),first=members[0],r=products().definition(first)?.inventoryArray;if(!r||members.length>r.maxCount)throw Error('物品阵列数量无效');const signature=a=>JSON.stringify(Object.keys(a).filter(k=>k!=='index').sort().map(k=>[k,a[k]])),config=signature(first.inventoryArray);for(let i=0;i<members.length;i++){const f=members[i];products().validateField(f,'inventoryArray',f.inventoryArray);if(f.type!==first.type||f.inventoryArray.index!==i||signature(f.inventoryArray)!==config)throw Error('物品阵列成员或参数不一致');}}
+ }
+ function inventoryPositions(first,config,count){
+  const old=first.inventoryArray,turn=config.angle*Math.PI/180,basis=((first.rot||0)-(old?.angle||0))*Math.PI/180,size=products().dimensions(first),swap=config.angle%180!==0;
+  // Existing w/d are local product dimensions; only the unit's array yaw permutes them.
+  const w=(swap?size.d:size.w),d=(swap?size.w:size.d),px=w+config.gapX,pz=d+config.gapZ,py=size.h+config.gapY,c=Math.cos(basis),s=Math.sin(basis),sign=first.flip?-1:1,bottom=products().bottomHeight(first);
+  const points=[];for(let i=0;i<count;i++){const row=Math.floor(i/config.columns)%config.rows,col=i%config.columns,layer=Math.floor(i/(config.columns*config.rows)),x=(col+(config.pattern==='stagger'&&row%2?.5:0))*px*sign,z=row*pz;points.push({cx:first.cx+x*c-z*s,cy:first.cy+x*s+z*c,bottom:bottom+layer*py,rot:((basis+turn)*180/Math.PI%360+360)%360});}return points;
+ }
+ function attachInventoryArray(furniture,memberIds,config){
+  if(!Array.isArray(memberIds)||!memberIds.length||new Set(memberIds).size!==memberIds.length)throw Error('请选择有效的阵列成员');
+  const members=memberIds.map(id=>furniture.find(f=>f.id===id));if(members.some(f=>!f||f.locked||f.inventoryArray||f.obj))throw Error('阵列成员不存在、已锁定或已属于阵列');
+  const first=members[0],rule=products().definition(first)?.inventoryArray;if(!rule||members.length>rule.maxCount||members.some(f=>inventoryUnitSignature(f)!==inventoryUnitSignature(first)))throw Error('阵列须使用相同型号、尺寸和姿态的物品');
+  const recipe={id:config.id,index:0,columns:1,rows:1,gapX:0,gapZ:0,gapY:0,pattern:'grid',angle:0,...config};products().validateField(first,'inventoryArray',recipe);
+  if(furniture.some(f=>f.inventoryArray?.id===recipe.id))throw Error('阵列编号已存在');
+  const points=inventoryPositions(first,recipe,members.length);for(let i=0;i<members.length;i++){const f=members[i],p=points[i];if(Math.hypot(f.cx-p.cx,f.cy-p.cy,products().bottomHeight(f)-p.bottom)>.001||Math.abs(((f.rot-p.rot+540)%360)-180)>.001)throw Error('阵列参数与现有排布不一致，未移动物品');}
+  const index=new Map(memberIds.map((id,i)=>[id,i]));return furniture.map(f=>index.has(f.id)?{...f,inventoryArray:{...recipe,index:index.get(f.id)}}:f);
+ }
+ function editInventoryArray(furniture,id,patch,makeId){
+  const members=inventoryMembers(furniture,id),first=members[0];if(!first)throw Error('物品阵列不存在');const rule=products().definition(first).inventoryArray,count=patch.count??members.length;
+  if(!Number.isInteger(count)||count<1||count>rule.maxCount||members.some(f=>f.locked)||members.some(f=>inventoryUnitSignature(f)!==inventoryUnitSignature(first)))throw Error('阵列成员已锁定、单件规格不一致或数量无效');
+  if(Object.keys(patch).some(k=>!['count','columns','rows','gapX','gapZ','gapY','pattern','angle'].includes(k)))throw Error('物品阵列编辑参数无效');
+  const recipe={...first.inventoryArray,...patch,index:0};delete recipe.count;products().validateField(first,'inventoryArray',recipe);
+  if(furniture.length-members.length+count>2000)throw Error('每个方案最多2000件家具');const points=inventoryPositions(first,recipe,count),used=new Set(furniture.map(f=>f.id)),next=[];
+  for(let i=0;i<count;i++){let f=members[i]?JSON.parse(JSON.stringify(members[i])):JSON.parse(JSON.stringify(first));if(!members[i]){let fresh;do{fresh=makeId();}while(used.has(fresh));used.add(fresh);f.id=fresh;f.purchaseStatus='planned';}
+   const p=points[i];f=products().editBottomHeight(f,p.bottom);Object.assign(f,{cx:p.cx,cy:p.cy,rot:p.rot,inventoryArray:{...recipe,index:i}});products().validate(f);if(Math.abs(f.cx)>1e6||Math.abs(f.cy)>1e6)throw Error('阵列超出坐标范围');next.push(f);
+  }
+  const replacements=new Map(next.map(f=>[f.id,f])),kept=furniture.filter(f=>f.inventoryArray?.id!==id||replacements.has(f.id)).map(f=>replacements.get(f.id)||f);kept.push(...next.slice(members.length));validateInventoryArrays(kept);return kept;
+ }
+ function normalizeInventoryArrays(furniture){
+  const ids=new Set(furniture.filter(f=>f.inventoryArray).map(f=>f.inventoryArray.id));for(const id of ids){const members=inventoryMembers(furniture,id);members.forEach((f,index)=>{f.inventoryArray={...f.inventoryArray,index};});}return furniture;
+ }
+ function applyInventoryArray(work,anchorId,action,makeId){
+  if(!action||typeof action!=='object'||Array.isArray(action)||Object.keys(action).some(k=>!['memberIds','arrayId','count','columns','rows','gapX','gapZ','gapY','pattern','angle','detach'].includes(k)))throw Error('物品阵列操作无效');
+  const source=work.furniture.find(f=>f.id===anchorId);if(!source||!products().definition(source)?.inventoryArray||source.obj)throw Error('此物品不支持阵列');
+  const members=action.memberIds?work.furniture.filter(f=>action.memberIds.includes(f.id)):source.inventoryArray?inventoryMembers(work.furniture,source.inventoryArray.id):[source],L=root.FurnishLayers||require('./layers-core.js');
+  if(members.some(f=>f.locked||L.locked(work,'furniture:'+f.id)))throw Error('阵列成员或所在图层已锁定');
+  let next=JSON.parse(JSON.stringify(work));
+  if(action.memberIds){if(action.detach!==undefined||action.count!==undefined||!action.memberIds.includes(anchorId))throw Error('新阵列须包含当前物品，数量由成员决定');const {memberIds,arrayId,...recipe}=action;next.furniture=attachInventoryArray(next.furniture,memberIds,{...recipe,id:arrayId});}
+  else if(action.detach===true){if(Object.keys(action).length!==1)throw Error('解除阵列不能附带重排参数');next.furniture=next.furniture.map(f=>{if(f.inventoryArray?.id!==source.inventoryArray?.id)return f;const n={...f};delete n.inventoryArray;return n;});}
+  else {if(action.arrayId!==undefined||action.detach!==undefined)throw Error('阵列编辑参数无效');next.furniture=editInventoryArray(next.furniture,source.inventoryArray?.id,action,makeId);}
+  const oldIds=new Set(work.furniture.map(f=>f.id)),newIds=new Set(next.furniture.map(f=>f.id)),added=next.furniture.filter(f=>!oldIds.has(f.id));
+  const unitSource=source.inventoryArray?inventoryMembers(work.furniture,source.inventoryArray.id)[0]:source;
+  next=L.copyAssignments(next,added.map(()=> 'furniture:'+unitSource.id),added.map(f=>'furniture:'+f.id));
+  if(next.objectLayers)for(const f of work.furniture)if(!newIds.has(f.id))delete next.objectLayers.assignments['furniture:'+f.id];
+  validateInventoryArrays(next.furniture);L.assertEditable(work,next);return next;
  }
  function groupFurniture(furniture,ids,groupId){
   products().validateField({},'groupId',groupId);
@@ -88,8 +139,9 @@
   const wanted=[target.x-clipboard.cx,target.y-clipboard.cy],delta=[shift(wanted[0],box[0],box[2],planBounds.x,planBounds.w),shift(wanted[1],box[1],box[3],planBounds.y,planBounds.h)];
   const used=new Set(existingIds),sourceIds=clipboard.items.map(f=>f.id),reserved=new Set(sourceIds),moved=clipboard.cut===true&&!clipboard.cutMoved&&!clipboard.items.some(f=>f.locked)&&sourceIds.every(id=>typeof id==='string'&&id&&!used.has(id))&&reserved.size===sourceIds.length;
   const items=JSON.parse(JSON.stringify(clipboard.items));items.forEach(f=>{if(!moved){let id;do{id=makeId();}while(used.has(id)||reserved.has(id));f.id=id;f.purchaseStatus='planned';delete f.locked;}used.add(f.id);f.cx+=delta[0];f.cy+=delta[1];});
-  const groups=new Map(),usedGroups=new Set([...existingGroupIds,...items.map(f=>f.groupId).filter(Boolean)]);
+  const groups=new Map(),usedGroups=new Set([...existingGroupIds,...items.map(f=>f.groupId).filter(Boolean),...items.map(f=>f.inventoryArray?.id).filter(Boolean)]);
   for(const f of items)if(f.groupId){if(!groups.has(f.groupId)){let id=f.groupId;if(!moved||existingGroupIds.includes(id)){do{id=makeId();}while(usedGroups.has(id));}usedGroups.add(id);groups.set(f.groupId,id);}f.groupId=groups.get(f.groupId);}
+  const arrayIds=new Map();for(const f of items)if(f.inventoryArray){const original=f.inventoryArray.id;if(!arrayIds.has(original)){let id=original;if(!moved){do{id=makeId();}while(usedGroups.has(id)||used.has(id));}usedGroups.add(id);arrayIds.set(original,id);}f.inventoryArray={...f.inventoryArray,id:arrayIds.get(original)};}normalizeInventoryArrays(items);
   const mapping=new Map(sourceIds.map((id,i)=>[id,items[i].id]));for(const f of items)if(f.counterLink){if(mapping.has(f.counterLink.hostId))f.counterLink.hostId=mapping.get(f.counterLink.hostId);else delete f.counterLink;}for(const f of items)if(f.laundryHostId){if(mapping.has(f.laundryHostId))f.laundryHostId=mapping.get(f.laundryHostId);else delete f.laundryHostId;}kitchen().normalize(items);
   return {items,moved,adjusted:delta.some((v,i)=>Math.abs(v-wanted[i])>.01),oversized:box[2]-box[0]>planBounds.w||box[3]-box[1]>planBounds.h};
  }
@@ -395,7 +447,7 @@
   workspace.designs=manageDesign(workspace.designs,planId,'create',{name,work,editable:true});
   (workspace.activeDesigns||={})[planId]=workspace.designs.at(-1).id;
  }
- root.FurnishDesign={transformFurniture,products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeAnchorPosition,cabinetResizeAnchors,resizeAnchorChoices,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign,activeDesign,saveActiveDesign,preserveCurrentDesign};
+ root.FurnishDesign={applyInventoryArray,inventoryMembers,attachInventoryArray,editInventoryArray,validateInventoryArrays,normalizeInventoryArrays,transformFurniture,products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeAnchorPosition,cabinetResizeAnchors,resizeAnchorChoices,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign,activeDesign,saveActiveDesign,preserveCurrentDesign};
  root.FurnishDesign.applyCabinetTemplate=applyCabinetTemplate;
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

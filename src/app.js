@@ -57,7 +57,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v62';
+let STORE = 'huxing-design-v63';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);
@@ -202,12 +202,12 @@ function saveNow(){
 }
 
 const snap = () => JSON.stringify(state);
-function normalizeFurnitureEdit(work,previous){if(!(globalThis.FurnishLayers?.onlyChange(previous,work)||globalThis.FurnishTileEditor?.onlyChange(previous,work)||globalThis.FurnishTilePresets?.onlyChange(previous,work)||globalThis.FurnishTileGrout?.onlyChange(previous,work)||(previous.furnitureDatum!==work.furnitureDatum&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallFinishes||work.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,work))||((previous.floorFinishes||work.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallTiling||work.wallTiling)&&FurnishWallTiling.onlyChange(previous,work))||((previous.ceilings||work.ceilings)&&FurnishCeiling.onlyChange(previous,work)))){if(work.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(work.furniture,FurnishProject.effectivePlan(PLAN,work)); FurnishKitchen.normalize(work.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(work.furniture,previous.furniture);} if(work.furniture.some(f=>(Array.isArray(f.cabinet?.columns)&&f.cabinet.columns.some(col=>col?.pegboardHatch?.mode==='auto'))))FurnishCabinet.normalizePegboardHatches(work.furniture,FurnishProject.effectivePlan(PLAN,work),{editable:f=>!furnitureLocked(f)}); }
+function normalizeFurnitureEdit(work,previous){FurnishDesign.normalizeInventoryArrays(work.furniture);if(!(globalThis.FurnishLayers?.onlyChange(previous,work)||globalThis.FurnishTileEditor?.onlyChange(previous,work)||globalThis.FurnishTilePresets?.onlyChange(previous,work)||globalThis.FurnishTileGrout?.onlyChange(previous,work)||(previous.furnitureDatum!==work.furnitureDatum&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallFinishes||work.wallFinishes)&&FurnishWallFinish.onlyFinishChange(previous,work))||((previous.floorFinishes||work.floorFinishes)&&FurnishFloorFinish.onlyChange(previous,work))||((previous.wallTiling||work.wallTiling)&&FurnishWallTiling.onlyChange(previous,work))||((previous.ceilings||work.ceilings)&&FurnishCeiling.onlyChange(previous,work)))){if(work.furniture.some(f=>f.kitchen?.autoAvoid))FurnishKitchen.normalizeObstacles(work.furniture,FurnishProject.effectivePlan(PLAN,work)); FurnishKitchen.normalize(work.furniture,previous.furniture); FurnishDesign.normalizeLaundryStacks(work.furniture,previous.furniture);} if(work.furniture.some(f=>(Array.isArray(f.cabinet?.columns)&&f.cabinet.columns.some(col=>col?.pegboardHatch?.mode==='auto'))))FurnishCabinet.normalizePegboardHatches(work.furniture,FurnishProject.effectivePlan(PLAN,work),{editable:f=>!furnitureLocked(f)}); }
 function commit(before){ const previous=JSON.parse(before);normalizeFurnitureEdit(state,previous); if(arguments[1]===true){try{FurnishLayers.assertEditable(previous,state);}catch(e){state=previous;renderAll();throw e;}} undoStack.push(before); if (undoStack.length > 150) undoStack.shift(); redoStack.length = 0; save(); snapshot(false,previous,'编辑前'); }
 function mutate(fn){ const b=snap();try{fn();FurnishLayers.assertEditable(JSON.parse(b),state);}catch(e){state=JSON.parse(b);renderAll();throw e;}if(snap()===b)return;commit(b,true);renderAll(); }
 function undo(){ if (!undoStack.length) return toast(tr('没有可撤销的操作', 'Nothing to undo')); redoStack.push(snap()); state = JSON.parse(undoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
 function redo(){ if (!redoStack.length) return; undoStack.push(snap()); state = JSON.parse(redoStack.pop()); syncCutClipboard();validateSel(); save(); renderAll(); }
-function validateSel(){ if (ui.sel?.kind==='furn' && !getF(ui.sel.id)||ui.sel?.kind==='measure'&&!state.measures[ui.sel.id]) ui.sel = null; }
+function validateSel(){ if(ui.sel?.kind==='furn'){const ids=FurnishDesign.expandGroups(state.furniture,selIds().filter(id=>getF(id)));ui.sel=ids.length?{...ui.sel,id:ids.includes(ui.sel.id)?ui.sel.id:ids[0],ids}:null;}else if(ui.sel?.kind==='measure'&&!state.measures[ui.sel.id])ui.sel=null; }
 const getF = id => state.furniture.find(f => f.id === id);
 
 /* ======================= 几何工具 ======================= */

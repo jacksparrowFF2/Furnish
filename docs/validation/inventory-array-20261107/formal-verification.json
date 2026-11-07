@@ -1,0 +1,161 @@
+{
+  "passed": true,
+  "applied": true,
+  "persisted": true,
+  "design": {
+    "id": "dmw56lad4",
+    "name": "客厅囤货柜 · 三等宽柜与高件分区"
+  },
+  "furnitureBefore": 109,
+  "furnitureAfter": 109,
+  "convertedRecords": 23,
+  "productionParts": 219,
+  "maxVertexErrorMm": 0.00010000000111176632,
+  "quantities": {
+    "rolls": 27,
+    "tissues": 24,
+    "litterBags": 12,
+    "foodBags": 1,
+    "foldedChairs": 3
+  },
+  "rows": [
+    {
+      "id": "fmw27h4d51",
+      "type": "chair_ikea_vihals",
+      "parts": 15,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw291w0v1",
+      "type": "chair_ikea_vihals",
+      "parts": 15,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw2924th2",
+      "type": "chair_ikea_vihals",
+      "parts": 15,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3re6uz4",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3t09zv3",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3t0g834",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3t0mio5",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3t0suv6",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3t0z927",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3t15s88",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw3t1cge9",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw579mrv3",
+      "type": "toilet_roll_heartlink_layer9",
+      "parts": 9,
+      "maxVertexErrorMm": 0.00010000000111176632
+    },
+    {
+      "id": "fmw579qb34",
+      "type": "toilet_roll_heartlink_layer9",
+      "parts": 9,
+      "maxVertexErrorMm": 0.00010000000111176632
+    },
+    {
+      "id": "fmw579tkp5",
+      "type": "toilet_roll_heartlink_layer9",
+      "parts": 9,
+      "maxVertexErrorMm": 0.00010000000111176632
+    },
+    {
+      "id": "fmw579wss6",
+      "type": "tissue_heartlink_layer6",
+      "parts": 18,
+      "maxVertexErrorMm": 9.094947017729282e-13
+    },
+    {
+      "id": "fmw579zva7",
+      "type": "tissue_heartlink_layer6",
+      "parts": 18,
+      "maxVertexErrorMm": 9.094947017729282e-13
+    },
+    {
+      "id": "fmw57a2ts8",
+      "type": "tissue_heartlink_layer6",
+      "parts": 18,
+      "maxVertexErrorMm": 9.094947017729282e-13
+    },
+    {
+      "id": "fmw57a64m9",
+      "type": "tissue_heartlink_layer6",
+      "parts": 18,
+      "maxVertexErrorMm": 9.094947017729282e-13
+    },
+    {
+      "id": "fmw61s2rc6",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw61s2rc7",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw61s2rc8",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw61s2rc9",
+      "type": "cat_litter_yanxuan_25kg",
+      "parts": 6,
+      "maxVertexErrorMm": 0
+    },
+    {
+      "id": "fmw64lbpf1",
+      "type": "cat_food_myfoodie_2kg",
+      "parts": 3,
+      "maxVertexErrorMm": 0
+    }
+  ]
+}

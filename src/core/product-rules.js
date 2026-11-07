@@ -27,6 +27,7 @@ const artGlassPatterns={
  diamond:{label:'钻石',pitch:80,relief:1.15,roughness:.075}
 };
 const fields={
+ inventoryArray:{message:'物品阵列参数无效'},
  paperArray:{message:'纸品阵列参数无效'},
  pose3D:{message:'三维姿态须为当前物品支持的单位四元数'},
  bottomPhysical:{boolean:true,message:'窗帘底部基准标记须为布尔值'},
@@ -213,6 +214,10 @@ for(const rule of Object.values(types))if(rule.storageSupply||rule.petSupply||ru
 // Historical layers remain untouched until the user edits their array.
 for(const [type,kind,count,columns,rows] of [['toilet_roll_heartlink_layer9','roll',9,3,3],['tissue_heartlink_layer6','tissue',6,3,2]]){
  const r=types[type];r.paperArray={kind,count,columns,rows,maxCount:200,maxAxis:50,maxGap:1000,minUnit:10,maxUnit:20000,orientations:kind==='roll'?['upright','side-x','side-z']:['upright','turn','edge-x','edge-z'],patterns:['grid','stagger']};r.fields.push('paperArray');
+}
+// Linked arrays generate ordinary production furniture records, retaining unit IDs.
+for(const type of ['cat_litter_yanxuan_25kg','cat_food_myfoodie_2kg','chair_ikea_vihals']){
+ const r=types[type];r.inventoryArray={maxCount:200,maxAxis:50,maxGap:1000,patterns:['grid','stagger'],angles:[0,90,180,270]};r.fields=[...(r.fields||[]),'inventoryArray'];
 }
 // Bounds derived from the existing production shapes, not supplier dimensions.
 // They correct nominal envelope errors while preserving omitted legacy poses.
@@ -412,6 +417,11 @@ const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f
 const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
+ if(key==='inventoryArray'){
+  const r=definition(f).inventoryArray,keys=['id','index','columns','rows','gapX','gapZ','gapY','pattern','angle'];
+  if(f.obj||!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==keys.length||Object.keys(v).some(k=>!keys.includes(k))||typeof v.id!=='string'||!v.id||v.id.length>200||!Number.isInteger(v.index)||v.index<0||v.index>=r.maxCount||!['columns','rows'].every(k=>Number.isInteger(v[k])&&v[k]>=1&&v[k]<=r.maxAxis)||!['gapX','gapZ','gapY'].every(k=>Number.isFinite(v[k])&&v[k]>=0&&v[k]<=r.maxGap)||!r.patterns.includes(v.pattern)||!r.angles.includes(v.angle))throw Error(rule.message);
+  return {...v};
+ }
  if(key==='paperArray'){if(!v||typeof v!=='object')throw Error(rule.message);paperArrayLayout({...f,paperArray:v});return {...v};}
  if(key==='pose3D'){if(!Array.isArray(v)||v.length!==4||!v.every(Number.isFinite)||Math.abs(Math.hypot(...v)-1)>1e-7)throw Error(rule.message);return v.slice();}
  if(key==='tvImage'){

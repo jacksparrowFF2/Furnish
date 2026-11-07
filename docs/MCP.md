@@ -95,3 +95,7 @@ codex mcp add furnish -- node C:/Users/SPH/Documents/GitHub/Furnish/scripts/furn
 ## 受限家具库替换（2026-11-06）
 
 get_furniture_parameters返回只写动作replacementCatalogKey。configure_furniture中使用list_catalog返回的完整catalogKey，可将占位体替换为单件库模型，保持ID／中心／朝向，采用新品规格，并按产品规则清理不兼容字段；可同时给新型号设置其支持的参数（如mountHeight）。动作键不写入项目。无效条目、锁定对象和关联洗衣组合拒绝，整批原子预演、一次撤销与原flush保持；组合模型仍走组合入口。
+
+## 2026-11-07：保留现有成员的物品阵列
+
+三类产品参数增加只读inventoryArray及受限arrayEdit动作；新建指定已有memberIds与唯一arrayId，须匹配当前位置／姿态才关联，既有关联可编辑数量／行列／间距／排列／转向或解除。整批预演、revision／requestId、一次mutate和保存回执保持，动作键不持久化。参数与示例见[物品阵列](INVENTORY-ARRAY.md)。

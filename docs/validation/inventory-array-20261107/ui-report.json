@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "desktop exact no-move conversion and per-part GLB, original folded endpoints, parameter controls/count/gaps/yaw, atomic undo/redo, invalid values, lock, save/reload, narrow UI and detach",
+    "http loaded and editable",
+    "file loaded and editable offline"
+  ],
+  "errors": []
+}

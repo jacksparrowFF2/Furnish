@@ -1,3 +1,5 @@
+2026-11-07（原位物品阵列）：product-rules声明猫砂／猫粮／VIHALS的inventoryArray，design-core沿现有家具记录生成、复制和解除；保留单品ID及生产构造，不另建模型／保存通道。UI和MCP受限arrayEdit共用预演／mutate，v63往返；原位关联不改变空间输入，数量编辑读取真实折叠包络，见[物品阵列](INVENTORY-ARRAY.md)。
+
 2026-11-07（纸品阵列）：product-rules统一卷纸／抽纸的可选paperArray、排布及派生外包；storage-supply-model复用原Blender单件，旧缺失继续原层。沿属性／MCP／mutate及v62项目／工作区／缓存，三维、姿态与实体缓存覆盖参数，无新加载脚本或保存通道。见[纸品阵列](PAPER-ARRAY.md)。
 
 2026-11-07（2kg猫粮袋）：独立storageSupply条目沿既有生产构造／实体／保存链；本型号受限RGBA与UV标签供HTTP及离线file同源使用，独立Blender发布器保留通用无贴图发布范围，无新实例字段。见[模型契约](CAT-FOOD-2KG.md)。
