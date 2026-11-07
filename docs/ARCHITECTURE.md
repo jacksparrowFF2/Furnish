@@ -1,3 +1,5 @@
+2026-11-07（6L冻干桶）：独立storageSupply类型复用现有static-asset与生产实体／二维矩形占地，新增一个本地经典资产脚本；尺寸316×309×187、mountHeight新建0，现有v57／pose v58能力与保存链保持，无新字段。Blender源／10件部件及验证见[6L冻干桶](FREEZE-DRY-BUCKET-6L.md)。
+
 2026-11-07（原位物品阵列）：product-rules声明猫砂／猫粮／VIHALS的inventoryArray，design-core沿现有家具记录生成、复制和解除；保留单品ID及生产构造，不另建模型／保存通道。UI和MCP受限arrayEdit共用预演／mutate，v63往返；原位关联不改变空间输入，数量编辑读取真实折叠包络，见[物品阵列](INVENTORY-ARRAY.md)。
 
 2026-11-07（纸品阵列）：product-rules统一卷纸／抽纸的可选paperArray、排布及派生外包；storage-supply-model复用原Blender单件，旧缺失继续原层。沿属性／MCP／mutate及v62项目／工作区／缓存，三维、姿态与实体缓存覆盖参数，无新加载脚本或保存通道。见[纸品阵列](PAPER-ARRAY.md)。

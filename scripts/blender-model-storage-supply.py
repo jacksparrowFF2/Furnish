@@ -2,7 +2,7 @@
 No operating lids, internal capacity or packaging-batch fidelity is claimed.
 """
 import bpy, bmesh, json, pathlib, sys, math
-from mathutils import Vector
+from mathutils import Vector, Matrix
 args=sys.argv[sys.argv.index('--')+1:]
 out=pathlib.Path(args[0]); profile=args[args.index('--profile')+1]
 spec=json.loads((pathlib.Path(__file__).parent/'lib/storage-supply-specs.json').read_text(encoding='utf-8'))[profile]
@@ -61,6 +61,58 @@ elif spec.get('shape')=='tissue-layer':
    box(f'pack-{number:02}-body',(uw,uh-.001,ud),(px,(uh-.001)/2,pz),main,.004)
    box(f'pack-{number:02}-seal',(uw-.012,.001,ud-.008),(px,uh-.0005,pz),white,.0002)
    box(f'pack-{number:02}-slot',(.065,.0003,.009),(px,uh-.00015,pz),dark,.0001)
+elif spec.get('shape')=='freeze-dry-bucket':
+ # Rounded-rectangle rings, sampled per physical corner. All values below are
+ # visual estimates within the user's labelled 316 x 309 x 187 mm envelope.
+ def outline(w,d,r):
+  points=[]
+  for cx,cz,a in [(w/2-r,d/2-r,0),(-w/2+r,d/2-r,90),(-w/2+r,-d/2+r,180),(w/2-r,-d/2+r,270)]:
+   for j in range(17):
+    t=math.radians(a+j*90/16);points.append((cx+r*math.cos(t),cz+r*math.sin(t)))
+  return points
+ def loft(name,rings,m):
+  verts=[];faces=[];n=68
+  for y,w,d,r in rings:verts.extend((x,-z,y) for x,z in outline(w,d,r))
+  for k in range(len(rings)-1):
+   for j in range(n):faces.append((k*n+j,k*n+(j+1)%n,(k+1)*n+(j+1)%n,(k+1)*n+j))
+  faces.extend([tuple(reversed(range(n))),tuple((len(rings)-1)*n+j for j in range(n))])
+  mesh=bpy.data.meshes.new(name);mesh.from_pydata(verts,[],faces);mesh.update();o=bpy.data.objects.new(name,mesh);bpy.context.collection.objects.link(o);identity(o,name,m)
+  for f in mesh.polygons:f.use_smooth=len(f.vertices)==4
+  mod=o.modifiers.new('weighted-surface-normals','WEIGHTED_NORMAL');mod.keep_sharp=True;bpy.context.view_layer.objects.active=o;bpy.ops.object.modifier_apply(modifier=mod.name)
+  return o
+ seam=mat('warm-shadow','b7ab98',.65);ink=mat('pale-brand','c1b6a3',.65)
+ loft('body',[(0,.246,.239,.044),(.002,.259,.252,.049),(.008,.270,.263,.052),(.019,.279,.272,.055),(.045,.285,.278,.055),(.157,.294,.287,.056),(.171,.301,.294,.058),(.174,.301,.294,.058)],main)
+ loft('lid-seam',[(.173,.305,.298,.060),(.1785,.308,.301,.061)],seam)
+ loft('lid',[(.178,.313,.306,.062),(.180,.316,.309,.063),(.185,.316,.309,.063),(.187,.312,.305,.061),(.187,.298,.291,.056),(.1855,.294,.287,.054)],main)
+ loft('lid-recess',[(.1856,.291,.284,.053),(.1858,.290,.283,.053)],main)
+ box('front-release',(.044,.006,.012),(-.080,.1725,.145),main,.002)
+ # A folded strap on each side, with an open centre and separate pivot disks.
+ for side,labelside in [(-1,'left'),(1,'right')]:
+  verts=[];faces=[];steps=48
+  for j in range(steps+1):
+   t=math.pi*j/steps;z=.079*math.cos(t);y=.160-.109*math.sin(t);x=side*(.149+.006*math.sin(t))
+   # ribbon width follows tangent in depth/height plane; thickness along X.
+   dz=-.079*math.sin(t);dy=-.109*math.cos(t);length=math.hypot(dz,dy);nz=-dy/length*.006;ny=dz/length*.006
+   for thick,width in [(-1,-1),(-1,1),(1,1),(1,-1)]:verts.append((x+thick*.0015,-(z+width*nz),y+width*ny))
+  for j in range(steps):
+   for k in range(4):faces.append((j*4+k,j*4+(k+1)%4,(j+1)*4+(k+1)%4,(j+1)*4+k))
+  faces.extend([(3,2,1,0),tuple(steps*4+k for k in range(4))])
+  mesh=bpy.data.meshes.new('strap');mesh.from_pydata(verts,[],faces);mesh.update();o=bpy.data.objects.new(labelside+'-handle',mesh);bpy.context.collection.objects.link(o);identity(o,labelside+'-handle',main)
+  bevel=o.modifiers.new('strap-edge','BEVEL');bevel.width=.0007;bevel.segments=2;bpy.context.view_layer.objects.active=o;bpy.ops.object.modifier_apply(modifier=bevel.name)
+  for f in o.data.polygons:f.use_smooth=True
+  pivots=[]
+  for z in [-.079,.079]:
+   bpy.ops.mesh.primitive_cylinder_add(vertices=40,radius=.0105,depth=.004,location=(side*.149,-z,.160),rotation=(0,math.pi/2,0));o=bpy.context.object;identity(o,'pivot-temp',main);pivots.append(o)
+  merge(labelside+'-pivots',pivots,main)
+ # Readable brand only; unreadable small print is intentionally omitted.
+ bpy.ops.object.text_add(location=(-.025,-.143,.135));o=bpy.context.object;o.rotation_euler=(Matrix.Rotation(math.pi/2,4,'X') @ Matrix.Rotation(-math.pi/2,4,'Z')).to_euler();o.data.body='meoof.';o.data.size=.029;o.data.extrude=.00012;o.data.resolution_u=5
+ bpy.ops.object.convert(target='MESH');o=bpy.context.object
+ # Wrap the vertical imprint onto the shallow taper instead of floating it.
+ bpy.ops.object.transform_apply(location=False,rotation=True,scale=True)
+ for v in o.data.vertices:
+  h=v.co.z+o.location.z;depth=.278+(.287-.278)*(h-.045)/(.157-.045)
+  v.co.y=-(depth/2+.00018)-o.location.y+v.co.y
+ identity(o,'brand-mark',ink)
 elif spec.get('shape')=='wet-wipes':
  box('soft-body',(W,H-.009,D),(0,(H-.009)/2,0),main,.006)
  box('top-seal',(W-.012,.001,D-.012),(0,H-.0085,0),white,.0002)
@@ -121,11 +173,17 @@ engines=scene.render.bl_rna.properties['engine'].enum_items.keys()
 scene.render.engine='BLENDER_EEVEE_NEXT' if 'BLENDER_EEVEE_NEXT' in engines else 'BLENDER_EEVEE';scene.render.resolution_x=640;scene.render.resolution_y=640;scene.render.resolution_percentage=100
 scene.world.color=(.35,.35,.35);scene.view_settings.view_transform='AgX'
 center=Vector((0,0,H/2));span=max(W,H,D)
-bpy.ops.object.camera_add(location=(span*1.2,-span*2.1,H*.5+span*1.3));camera=bpy.context.object;camera.rotation_euler=(center-camera.location).to_track_quat('-Z','Y').to_euler();camera.data.type='ORTHO';camera.data.ortho_scale=span*1.65;scene.camera=camera
+bpy.ops.object.camera_add(location=(span*1.2,-span*2.1,H*.5+span*1.3));camera=bpy.context.object
+if spec.get('shape')=='freeze-dry-bucket':camera.location=(span*1.15,-span*2.5,H*.5+span*.65)
+camera.rotation_euler=(center-camera.location).to_track_quat('-Z','Y').to_euler();camera.data.type='ORTHO';camera.data.ortho_scale=span*1.65;scene.camera=camera
 for pos,power in [((-.8,-.8,1),90),((.7,.2,.8),70)]:
  bpy.ops.object.light_add(type='AREA',location=pos);o=bpy.context.object;o.data.energy=power;o.data.size=.8;o.rotation_euler=(center-o.location).to_track_quat('-Z','Y').to_euler()
 clay=mat('review-clay','b5b1a8',.7);saved=[(o,o.data.materials[0]) for o in objects]
 for o,_ in saved:o.data.materials[0]=clay
+if spec.get('shape')=='freeze-dry-bucket':
+ for o in objects:o.hide_render=o.name not in ('body','lid','lid-seam','lid-recess')
+ scene.render.filepath=str(out/'silhouette.png');bpy.ops.render.render(write_still=True)
+ for o in objects:o.hide_render=False
 scene.render.filepath=str(out/'clay.png');bpy.ops.render.render(write_still=True)
 for o,m in saved:o.data.materials[0]=m
 scene.render.filepath=str(out/'material.png');bpy.ops.render.render(write_still=True)

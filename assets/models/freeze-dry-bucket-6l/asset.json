@@ -1,0 +1,36 @@
+{
+  "format": 1,
+  "id": "freeze-dry-bucket-6l",
+  "name": "冻干桶 · meoof 6L",
+  "types": [
+    "freeze_dry_bucket_meoof_6l"
+  ],
+  "route": "blender",
+  "document": "docs/FREEZE-DRY-BUCKET-6L.md",
+  "sourceLinks": [
+    "https://item.jd.com/100200386205.html?pcdk=wsD_2RJ9KkDtVYDqtKdQn8HQycFAINoaypt35WlH7RxtriB1DNEezTSqAsqI-vY3.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy4zJTIzc2t1X2NhcmQlNDAxNzk0MDUxOTQ5NjgyJTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMxOTY0MDQ1OTkz"
+  ],
+  "references": [
+    {
+      "path": "references/dimensions.png",
+      "kind": "user",
+      "sha256": "55074a90ddaa4009f348fa566d5567fa67614149815b574a14e4e4263ff36cd1",
+      "bytes": 83086,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/range.png",
+      "kind": "user",
+      "sha256": "13f21af505639925643eba1e3f44fdc912b53213e0cfba75e9cf929fa0274314",
+      "bytes": 598975,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/freeze-dry-bucket-6l-20261107/README.md"
+  ],
+  "notes": [
+    "两张用户图为本次依据，未读取商品页。316×309×187mm按尺寸图；提手机构、盖面浅槽、材质与字形为外观估算，闭盖静态。"
+  ]
+}

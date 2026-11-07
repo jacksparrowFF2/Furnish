@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "freeze-dry-bucket-6l",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "freeze_dry_bucket_meoof_6l",
+    "name": "冻干桶 · meoof 6L",
+    "w": 316,
+    "d": 309,
+    "color": "#e8e2d7",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "meoof（图示）",
+    "model": "6L升级款 · 316×309×187 · 闭盖参考",
+    "sourceUrl": "https://item.jd.com/100200386205.html",
+    "h": 187
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-07T11:54:00.329Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yInubL\\freeze-dry-bucket-6l-Uz56tH",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-07T11:54:00.330Z",
+      "result": {
+        "command": "author-freeze-dry-bucket-6l",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yInubL\\freeze-dry-bucket-6l-Uz56tH\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yInubL\\freeze-dry-bucket-6l-Uz56tH\\authored",
+        "passed": true,
+        "profile": "freeze-dry-bucket-6l",
+        "parts": 10,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "freeze-dry-bucket-6l",
+          "parts": 10,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-07T11:54:03.153Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-07T11:54:03.154Z",
+      "result": {
+        "passed": true,
+        "profile": "freeze-dry-bucket-6l",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-07T11:54:03.972Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-07T11:54:03.972Z",
+      "result": {
+        "command": "publish-freeze-dry-bucket-6l",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yInubL\\freeze-dry-bucket-6l-Uz56tH\\authored\\freeze-dry-bucket-6l-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yInubL\\workspace\\src\\data\\freeze-dry-bucket-6l-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "694037f45885d7a146aa42cefe372ef77cc0d34dc444638e90b4dc995dfdaa2a",
+        "runtimeSha256": "2812fa50ee4f8a8f579f84bfc0c4dbf6856b54fee174d9290027c9c4e89a4af5"
+      },
+      "finished": "2026-11-07T11:54:04.965Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-07T11:54:04.966Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "freeze-dry-bucket-6l",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-yInubL\\freeze-dry-bucket-6l-Uz56tH\\storage-supplies.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "freeze-dry-bucket-6l",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 187,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 187,
+                  "externalDistance": 74.7175468244049,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 187,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 10,
+                  "bottom": 0,
+                  "top": 187,
+                  "externalDistance": 74.7175468244049,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-07T11:54:09.173Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-07T11:54:09.173Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 10,
+            "bounds": [
+              [
+                -0.15800000727176666,
+                0,
+                -0.15449999272823334
+              ],
+              [
+                0.15800000727176666,
+                0.18700000643730164,
+                0.15449999272823334
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 10,
+            "bounds": [
+              [
+                -0.17696000635623932,
+                0,
+                -0.16685999929904938
+              ],
+              [
+                0.17696000635623932,
+                0.2019599974155426,
+                0.16685999929904938
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 10,
+            "bounds": [
+              [
+                -0.15800000727176666,
+                0,
+                -0.15449999272823334
+              ],
+              [
+                0.15800000727176666,
+                0.18700000643730164,
+                0.15449999272823334
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T11:54:28.756Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-07T11:54:28.756Z",
+      "result": {
+        "passed": true,
+        "profile": "freeze-dry-bucket-6l",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 10,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T11:54:29.843Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-07T11:54:29.844Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 10,
+            "position": [
+              0,
+              0.09350000321865082,
+              0.8929725508958766
+            ],
+            "target": [
+              0,
+              0.09350000321865082,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 10,
+            "position": [
+              0.4943822265691087,
+              0.36541022783166066,
+              0.6921351171967521
+            ],
+            "target": [
+              0,
+              0.09350000321865082,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 10,
+            "position": [
+              -0.5055461557504586,
+              0.2957184655188343,
+              -0.707764618050642
+            ],
+            "target": [
+              0,
+              0.09350000321865082,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T11:54:41.399Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-07T11:54:41.399Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T11:54:44.588Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-07T11:54:44.588Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T11:54:47.720Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-07T11:54:47.721Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T11:54:50.847Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-07T11:54:50.848Z",
+      "result": {
+        "passed": true,
+        "profile": "freeze-dry-bucket-6l",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 10,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 10,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T11:54:51.634Z"
+    }
+  ],
+  "finished": "2026-11-07T11:54:51.634Z"
+}

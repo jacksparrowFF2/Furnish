@@ -1,0 +1,359 @@
+{
+  "passed": true,
+  "executable": "D:\\1601装修\\Furnish程序\\Furnish-win32-x64\\Furnish.exe",
+  "work": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop-verification\\freeze-bucket-H6nG8S\\workspace",
+  "port": 51883,
+  "sourceUnchanged": true,
+  "preferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false
+  },
+  "checks": [
+    "production geometry 316x309x187",
+    "editable mountHeight through actual property input",
+    "raised 900..1087mm above finished floor exactly once",
+    "undo/redo",
+    "repository save and reload",
+    "390px narrow layout",
+    "10 imported parts, no fallback",
+    "actual packaged desktop screenshot"
+  ],
+  "raised": {
+    "parts": [
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:body",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 3252,
+        "bounds": [
+          [
+            2.899500000476837,
+            0.96,
+            -1.6469999998807907
+          ],
+          [
+            3.2004999995231627,
+            1.1339999949932098,
+            -1.3530000001192093
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:brand-mark",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 2676,
+        "bounds": [
+          [
+            3.024739000201225,
+            1.0145829981565475,
+            -1.3605549931526184
+          ],
+          [
+            3.0450262000784276,
+            1.0932889944314956,
+            -1.3571527004241943
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:front-release",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            2.9480000019073485,
+            1.1294999933242797,
+            -1.3610000014305115
+          ],
+          [
+            2.99200000166893,
+            1.1355000054836273,
+            -1.3490000069141388
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:left-handle",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 3708,
+        "bounds": [
+          [
+            2.8935000032186506,
+            1.0050000017881393,
+            -1.5849834010004997
+          ],
+          [
+            2.9024630069732664,
+            1.1199999964237213,
+            -1.4150165989995003
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:left-pivots",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 936,
+        "bounds": [
+          [
+            2.8990000069141386,
+            1.1094999974966049,
+            -1.5895000025629997
+          ],
+          [
+            2.903000000119209,
+            1.1304999953508377,
+            -1.4104999974370003
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:lid",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 2436,
+        "bounds": [
+          [
+            2.891999992728233,
+            1.1380000030994415,
+            -1.6544999927282333
+          ],
+          [
+            3.2080000072717665,
+            1.1470000064373016,
+            -1.3455000072717667
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:lid-recess",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 804,
+        "bounds": [
+          [
+            2.9044999957084654,
+            1.145599997639656,
+            -1.6420000046491623
+          ],
+          [
+            3.1955000042915342,
+            1.1458000010251999,
+            -1.3579999953508377
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:lid-seam",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 804,
+        "bounds": [
+          [
+            2.896000000834465,
+            1.1329999929666519,
+            -1.6504999995231628
+          ],
+          [
+            3.203999999165535,
+            1.1384999966621399,
+            -1.3495000004768372
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:right-handle",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 3708,
+        "bounds": [
+          [
+            3.197536993026733,
+            1.0050000017881393,
+            -1.5849834010004997
+          ],
+          [
+            3.206499996781349,
+            1.1199999964237213,
+            -1.4150165989995003
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:freeze-dry-bucket-6l-v1:right-pivots",
+        "id": "bucket-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 936,
+        "bounds": [
+          [
+            3.1969999998807905,
+            1.1094999974966049,
+            -1.5895000025629997
+          ],
+          [
+            3.200999993085861,
+            1.1304999953508377,
+            -1.4104999974370003
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "bounds": [
+      [
+        2.891999992728233,
+        0.96,
+        -1.6544999927282333
+      ],
+      [
+        3.2080000072717665,
+        1.1470000064373016,
+        -1.3455000072717667
+      ]
+    ],
+    "settledPoses": []
+  }
+}

@@ -223,5 +223,32 @@
       "zipper-2"
     ],
     "shape": "cat-food"
+  },
+  "freeze-dry-bucket-6l": {
+    "type": "freeze_dry_bucket_meoof_6l",
+    "name": "冻干桶 · meoof 6L",
+    "global": "FurnishFreezeDryBucket6lAsset",
+    "size": [
+      316,
+      187,
+      309
+    ],
+    "color": "#e8e2d7",
+    "sourceUrl": "https://item.jd.com/100200386205.html",
+    "brand": "meoof（图示）",
+    "model": "6L升级款 · 316×309×187 · 闭盖参考",
+    "parts": [
+      "body",
+      "lid-seam",
+      "lid",
+      "lid-recess",
+      "front-release",
+      "left-handle",
+      "right-handle",
+      "left-pivots",
+      "right-pivots",
+      "brand-mark"
+    ],
+    "shape": "freeze-dry-bucket"
   }
 }

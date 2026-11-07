@@ -26,6 +26,7 @@ function arrayModel(T,asset,f){
 function build(T,f){
  const profile=products().definition(f).storageSupply;
  const globals={'cat-food-2kg':'FurnishCatFood2kgAsset','storage-toolbox':'FurnishStorageToolboxAsset','medicine-box':'FurnishMedicineBoxAsset','toilet-paper-pack':'FurnishToiletPaperPackAsset','tissue-pack':'FurnishTissuePackAsset',"heartlink-roll-layer":"FurnishHeartlinkRollLayerAsset","heartlink-tissue-layer":"FurnishHeartlinkTissueLayerAsset","wet-wipes-pack":"FurnishWetWipesPackAsset"};
+ globals['freeze-dry-bucket-6l']='FurnishFreezeDryBucket6lAsset';
  const asset=root[globals[profile]]||(typeof require==='function'?require('../data/'+profile+'-blender-asset.js'):null);
  if(!asset)throw Error('Storage inventory asset missing: '+profile);
  if(f.paperArray&&products().supports(f,'paperArray'))return arrayModel(T,asset,f);

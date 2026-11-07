@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "id": "freeze-dry-bucket-6l",
+      "passed": true,
+      "cases": [
+        {
+          "state": "nominal",
+          "rot": 0,
+          "flip": false,
+          "parts": 10,
+          "bottom": 0,
+          "top": 187,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "nominal",
+          "rot": 37,
+          "flip": true,
+          "parts": 10,
+          "bottom": 0,
+          "top": 187,
+          "externalDistance": 74.7175468244049,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 0,
+          "flip": false,
+          "parts": 10,
+          "bottom": 0,
+          "top": 187,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 37,
+          "flip": true,
+          "parts": 10,
+          "bottom": 0,
+          "top": 187,
+          "externalDistance": 74.7175468244049,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        }
+      ]
+    }
+  ]
+}
