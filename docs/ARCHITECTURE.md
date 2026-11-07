@@ -1,3 +1,5 @@
+2026-11-07（预览净深）：cabinet-core.depthSections派生临时高度区段，cabinet-preview在模型标注中显示净深，厨房沿生产组矩阵投影；正视保留数值，避让小窗／选中轮廓。无新字段、几何或保存变化，见[验收](validation/cabinet-depth-label-20261107/README.md)。
+
 2026-11-07（罐身包装）：两款标准罐独立作者／发布器在原七件几何上加入受限body UV／内嵌图案，storage-supply-model为各规格阵列共享DataTexture；数值记录器不消费材质。GLB／离线file共用同源图，无新加载脚本／实例字段／空间版本，原v66阵列保持。见[包装与传递](BEVERAGE-CANS.md#雪花清爽包装2026-11-07)。
 
 2026-11-07（佳帮手工具箱）：新增storageSupply类型及一个本地经典资产脚本，沿storage-supply-model→static-asset-model共用生产显示/实体/导出。mountHeight与pose3D复用v57/v58，无新持久字段或保存通道；透明白名单按型号/部件限制，见[工具箱](TOOLBOX-JIABANGSHOU-390.md)。

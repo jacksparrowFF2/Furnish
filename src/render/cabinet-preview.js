@@ -72,6 +72,15 @@
     if(actions.shelfClearance){el.className+=' cab-shelf-dimension';el.setAttribute('data-shelf-clearance',side);el.setAttribute('role','button');el.tabIndex=0;el.title=`${caption} ${fmt(gap.height)} mm，点击编辑`;const edit=e=>{e.preventDefault();e.stopPropagation();openShelfInput(column,shelf,side,el);};el.onclick=edit;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')edit(e);};}
    }};
    const measure=(text,a,b,offset=20)=>{if(settings.dimensions)add(text,a.clone().add(b).multiplyScalar(.5),{a,b,offset});};
+   const depthMeasures=(part,column,at)=>{
+    const c=C.config(part),bay=C.layout(part)[column],sections=C.depthSections(part,column,c).filter(v=>v.storage!==false&&v.top>v.bottom&&v.clearDepth>0);
+    for(const depth of sections){
+     const x=bay.left+bay.width*.82,y=depth.bottom+Math.min(100,(depth.top-depth.bottom)*.22),a=at(x,y,depth.rear),b=at(x,y,depth.front),caption=sections.length>1?depth.label+'净深':'净深';
+     const el=add(`${caption} ${fmt(depth.clearDepth)}`,a.clone().add(b).multiplyScalar(.5),{a,b,offset:12,netDepth:true});el.className+=' cab-depth-dimension';
+     el.setAttribute('data-net-depth',String(depth.clearDepth));el.setAttribute('data-depth-section',depth.section);el.setAttribute('data-depth-back',String(depth.backThickness));el.setAttribute('data-depth-door',String(depth.doorThickness));
+     el.title=`隔间 ${column+1} · ${depth.label}净深 ${fmt(depth.clearDepth)} mm：总深 ${fmt(depth.total)} − 后侧退距 ${fmt(depth.rearInset)} − 背板 ${fmt(depth.backThickness)} − 闭合面板 ${fmt(depth.doorThickness)}。正视图保留数值，不绘制重合的深度尺线。`;
+    }
+   };
    const bounds=C.assemblyBounds(current),actual=bounds??{w:current.w,d:current.d};
    const h=bounds?bounds.h:current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):FurnishKitchen.overallHeight(current)):C.height(current),w=actual.w,d=actual.d;
    const isL=current.kitchen?.shape==='L',isU=current.kitchen?.shape==='U',runName=elevation?.title?.replace(/正视$/,'')??(elevation?.run===1?'转角边':'主边');
@@ -84,10 +93,12 @@
     if(interior&&chosen(index)&&current.kitchen.obstacleFit?.depths.some(row=>row.index===m.index))add(`柜深 ${fmt(m.depth)}`,point(x,K.moduleHeight(current,m)*.3,z));
     if(settings.dimensions&&interior&&index===selected?.column&&selected.shelf!==undefined&&!end){const part=K.moduleFurniture(current,m),base=part.cabinet.plinth+part.cabinet.thickness;shelfMeasures(index,selected.shelf,K.moduleShelfClearances(current,m.index,selected.shelf),height=>point(x,base+height,z));}
     if(interior&&chosen(index))measure(`${end?'薄柜宽':index===null?'盲角':'模块外宽'} ${fmt(m.width)}`,point(x-(m.run!==1?m.width/2:0),0,z-(m.run===1?m.width/2:0)),point(x+(m.run!==1?m.width/2:0),0,z+(m.run===1?m.width/2:0)));
+    if(settings.dimensions&&interior&&chosen(index)&&scope!=='divider'&&m.role!=='empty'&&index!==null){let group;model.traverse(o=>{if(o.isGroup&&o.userData.kitchenModule===m.index)group=o;});if(group){const part=K.moduleFurniture(current,m);C.layout(part).forEach((_,column)=>depthMeasures(part,column,(x,y,z)=>new THREE.Vector3(x/1000,y/1000,z/1000).applyMatrix4(group.matrixWorld)));}}
    }}else{
    const c=C.config(current),base=c.plinth+c.thickness,modules=C.moduleLayout(current);
    C.layout(current).forEach((bay,i)=>{
     add(String(i+1),point(bay.center,(bounds?.bottom??0)+h*.65,(bounds?.front??d/2)+25),{column:i,title:`模块 ${i+1} · 外宽 ${fmt(modules[i].width)} mm`});
+    if(settings.dimensions&&interior&&chosen(i)&&scope!=='divider')depthMeasures(current,i,point);
     if(bounds&&c.columns.length===1){if(interior&&chosen(i))measure(`实体宽 ${fmt(w)}`,point(bounds.left,bounds.bottom,bounds.front),point(bounds.right,bounds.bottom,bounds.front));return;}
     if(interior&&chosen(i))measure(`模块外宽 ${fmt(modules[i].width)}`,point(modules[i].left,0,d/2),point(modules[i].right,0,d/2));
     if(!settings.dimensions||!interior||!chosen(i)||scope==='divider')return;
@@ -160,22 +171,25 @@
   function projectLabels(){
    const rect=cv.getBoundingClientRect(),width=rect.width,height=rect.height,occupied=[],paths=[];
    if(summary)occupied.push({left:8,top:8,right:8+(summary.offsetWidth||width-16),bottom:8+(summary.offsetHeight||24)});
+   const overview=host.parentElement?.querySelector?.('.cab-overview');if(overview&&!overview.hidden){const box=overview.getBoundingClientRect();if(box.width&&box.height)occupied.push({left:box.left-rect.left,top:box.top-rect.top,right:box.right-rect.left,bottom:box.bottom-rect.top});}
    const project=p=>{const v=p.clone().project(cam);return {x:(v.x+1)*width/2,y:(1-v.y)*height/2,visible:v.z>=-1&&v.z<=1&&Math.abs(v.x)<=1&&Math.abs(v.y)<=1};};
    const center=project(new THREE.Vector3(0,(current.kitchen?(current.kitchen.laundry?.assembly?FurnishKitchen.laundryHeight(current):FurnishKitchen.overallHeight(current)):C.height(current))/2000,0));
    const line=(a,b)=>`M${a.x.toFixed(1)},${a.y.toFixed(1)}L${b.x.toFixed(1)},${b.y.toFixed(1)}`;
    // Numbers take priority. Move crowded labels with leaders; omit unreadable dimensions.
-   const priority=item=>item.pegPadding?-1:item.column!==undefined?0:item.offset>=26?1:item.doorSize?2:3;
+   const priority=item=>item.pegPadding?-1:item.column!==undefined?0:item.netDepth||item.offset>=26?1:item.doorSize?2:3;
    for(const item of [...labels].sort((a,b)=>priority(a)-priority(b))){const {el,point,a,b,offset}=item,p=project(point);let x=p.x,y=p.y,draw='',anchor={x,y};el.hidden=!p.visible;if(el.hidden)continue;
-    if(a){const start=project(a),end=project(b),dx=end.x-start.x,dy=end.y-start.y,length=Math.hypot(dx,dy);if(!start.visible||!end.visible||length<14&&!item.pegPadding){el.hidden=true;continue;}
+    if(a){const start=project(a),end=project(b),dx=end.x-start.x,dy=end.y-start.y,length=Math.hypot(dx,dy);if(!start.visible||!end.visible||length<14&&!item.pegPadding&&!item.netDepth){el.hidden=true;continue;}
+     if(!item.netDepth||length>=14){
      const divisor=length||1;let nx=-dy/divisor,ny=dx/divisor;if(nx*(p.x-center.x)+ny*(p.y-center.y)<0){nx=-nx;ny=-ny;}
      const u={x:start.x+nx*offset,y:start.y+ny*offset},v={x:end.x+nx*offset,y:end.y+ny*offset};x=(u.x+v.x)/2;y=(u.y+v.y)/2;anchor={x,y};
      draw=line(start,{x:u.x+nx*4,y:u.y+ny*4})+line(end,{x:v.x+nx*4,y:v.y+ny*4})+line(u,v);
      for(const q of [u,v])draw+=line({x:q.x-dx/divisor*3-nx*3,y:q.y-dy/divisor*3-ny*3},{x:q.x+dx/divisor*3+nx*3,y:q.y+dy/divisor*3+ny*3});
+     }
     }
     if(item.pegPadding){const shifts={left:[-135,0],right:[135,0],top:[0,-48],bottom:[0,48]},shift=shifts[item.pegPadding];x=p.x+shift[0];y=p.y+shift[1];anchor={x:p.x,y:p.y};draw=line(project(a),project(b));}
     const ew=el.offsetWidth||Math.max(24,el.textContent.length*7+8),eh=el.offsetHeight||22;
     x=Math.max(ew/2+5,Math.min(width-ew/2-5,x));y=Math.max(eh/2+5,Math.min(height-eh/2-5,y));
-    let placed=false;for(const shift of [0,24,-24,48,-48,72,-72]){const yy=y+shift,box={left:x-ew/2-3,right:x+ew/2+3,top:yy-eh/2-3,bottom:yy+eh/2+3};if(box.top<2||box.bottom>height-2||occupied.some(o=>box.left<o.right&&box.right>o.left&&box.top<o.bottom&&box.bottom>o.top))continue;occupied.push(box);y=yy;placed=true;break;}
+    let placed=false;placement:for(const xx of (item.netDepth?[x,x-100,x+100,x-180,x+180]:[x]))for(const shift of [0,24,-24,48,-48,72,-72]){const yy=y+shift,box={left:xx-ew/2-3,right:xx+ew/2+3,top:yy-eh/2-3,bottom:yy+eh/2+3};if(box.left<2||box.right>width-2||box.top<2||box.bottom>height-2||occupied.some(o=>box.left<o.right&&box.right>o.left&&box.top<o.bottom&&box.bottom>o.top))continue;occupied.push(box);x=xx;y=yy;placed=true;break placement;}
     if(!placed&&item.column===undefined){el.hidden=true;continue;}
     if(Math.hypot(x-anchor.x,y-anchor.y)>8)draw+=line(anchor,{x,y});
     el.style.left=`${x}px`;el.style.top=`${y}px`;paths.push(draw);

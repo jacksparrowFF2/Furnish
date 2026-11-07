@@ -860,7 +860,12 @@
  function depthSections(f,column=0,c=config(f)){
   const col=c.columns[column];if(!col)return [];
   const sections=c.entry?['shoe','lower','niche','upper']:c.sideboard?(col.fridgeBay?['storage','fridgeUpper']:['lower','niche','display','upper']):col.pegboard?[...(pegboardParts(f,c)?.lower!==false?['lower']:[]),'storage',...(pegboardParts(f,c)?.upper!==false?['upper']:[])]:col.drawers.length?['drawers','storage']:['storage'];
-  return sections.map(section=>({...depthLayout(f,column,c,section),...(purePegboard(f,c)?{storage:false}:{})}));
+  const base=c.plinth+c.thickness,top=bodyHeight(f)-c.thickness,drawerTop=base+col.drawers.reduce((sum,v)=>sum+v.height,0);
+  let ranges={drawers:[base,drawerTop],storage:[drawerTop,top]};
+  if(c.entry){const e=c.entry,shoe=c.plinth+e.shoeHeight,lower=shoe+e.lowerHeight,upper=lower+e.nicheHeight;ranges={shoe:[c.plinth?base:0,shoe-c.thickness],lower:[shoe,lower-col.drawers.reduce((sum,v)=>sum+v.height,0)],niche:[lower,upper],upper:[upper+c.thickness,top]};}
+  else if(c.sideboard){const s=c.sideboard,niche=s.baseHeight+s.counterThickness,display=niche+s.nicheHeight,upper=display+s.displayHeight;ranges=col.fridgeBay?{storage:[0,s.fridgeHeight],fridgeUpper:[s.fridgeHeight+c.thickness,top]}:{lower:[base,s.baseHeight-c.thickness],niche:[niche,display],display:[display+c.thickness,upper],upper:[upper+c.thickness,top]};}
+  else if(col.pegboard){const region=pegboardRegion(f,column,c),offset=region?.offset??0;ranges={lower:[base+offset,drawerTop+offset],storage:[(region?.bottom??drawerTop)+offset,(region?.top??top)+offset],upper:[base+col.doorBottom+offset,top+offset]};}
+  return sections.map(section=>{const [bottom,end]=ranges[section]??[base,top];return {...depthLayout(f,column,c,section),bottom,top:end,...(purePegboard(f,c)?{storage:false}:{})};});
  }
  // Transient cabinet-box frame, in mm. Recipes retain their own section heights,
  // open sides and shared/independent-box constraints; no new persisted schema.

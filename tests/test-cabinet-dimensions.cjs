@@ -68,5 +68,31 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  margins().find(e=>e.attrs['data-hatch-margin']==='left').onclick({stopPropagation(){}});marginForm=surface.children.filter(e=>e.className==='cab-hatch-input').at(-1);marginInput=marginForm.children[0].children[0];marginInput.value='-1';assert.equal(pegPreview.finishHatchInput(),false);assert.equal(marginInput.attrs['aria-invalid'],'true');marginInput.onkeydown({key:'Escape',preventDefault(){},stopPropagation(){}});assert(pegPreview.finishHatchInput());
  const changed=structuredClone(fitted);changed.cabinet.columns[0].pegboardHatch.padding={top:0,bottom:10,left:10,right:10};pegPreview.update(C.fitPegboardHatch(changed,0,{plan:pegPlan,furniture:[electrical]}));tick();assert.equal(margins().find(e=>e.attrs['data-hatch-margin']==='top').attrs['data-hatch-actual'],'0');assert(margins().every(e=>!e.hidden));
  pegPreview.setView({dimensions:false});tick();assert.equal(margins().length,0);assert(outlines().every(e=>e.attrs.d===''));pegPreview.setView({dimensions:true,front:true});tick();assert.equal(margins().length,4);assert(margins().every(e=>!e.hidden));pegPreview.dispose();
- console.log('PASS all cabinet templates, straight/left/right/mirrored kitchen module numbering, empty/interleaved modules, precise clear/nominal dimensions, production projection, selection refusal, dimension toggle and draft isolation');
+ // Net depth is a visible preview value, including a collapsed front projection.
+ function depthPreview(f,column=0){
+  const host=new Element(),preview=ctx.FurnishCabinetPreview.create({THREE:{...T,WebGLRenderer:Renderer},OrbitControls:Controls,box,host,f,background:'#eee',actions:{select:()=>true}});
+  preview.selectPart({kind:'bay',column});preview.setView({dimensionScope:'bays',doors:'hidden'});
+  const layer=host.children.find(e=>e.className==='cab-dimensions'),depths=()=>layer.children.filter(e=>e.attrs['data-net-depth']!==undefined);
+  return {preview,depths,host};
+ }
+ for(const back of [18,6,0])for(const door of ['double','none']){
+  const f={...C.preset('storage'),id:'depth',type:'cabinet',w:2395,d:350,h:2350};f.cabinet.columns=Array.from({length:3},()=>({door,doorOpen:false,handle:'none',drawers:[],shelves:[1100,1450,1850]}));f.cabinet.backThickness=back;C.validate(f);
+  const saved=JSON.stringify(f),{preview,depths}=depthPreview(f,2),expected=350-back-(door==='none'?0:18);
+  for(const front of [false,true]){preview.setView({front});tick();assert.equal(depths().length,1);assert.equal(Number(depths()[0].attrs['data-net-depth']),expected);assert.equal(depths()[0].textContent,'净深 '+expected);assert.equal(depths()[0].hidden,false,'selected bay depth remains visible even when its ruler projects to a point');assert(Number.isFinite(parseFloat(depths()[0].style.left)));}
+  preview.setView({doors:'normal'});tick();assert.equal(Number(depths()[0].attrs['data-net-depth']),expected,'closed capacity is independent of preview door visibility');
+  preview.setView({dimensions:false});tick();assert.equal(depths().length,0);preview.setView({dimensions:true});tick();assert.equal(depths().length,1);assert.equal(JSON.stringify(f),saved);preview.dispose();
+ }
+ for(const template of ['entry-console','sideboard-wall','sideboard-fridge','entry-pegboard']){
+  const f={...C.preset(template),type:'cabinet'};f.cabinet.backThickness=6;const {preview,depths}=depthPreview(f),expected=C.depthSections(f).filter(v=>v.storage!==false&&v.top>v.bottom);
+  assert.equal(depths().length,expected.length);for(const section of expected){const label=depths().find(e=>e.attrs['data-depth-section']===section.section);assert(label);assert.equal(Number(label.attrs['data-net-depth']),section.clearDepth);assert(section.bottom>=0&&section.top<=C.bodyHeight(f),'depth ruler height belongs to its physical section');}
+  if(template==='entry-console')assert.equal(Number(depths().find(e=>e.attrs['data-depth-section']==='niche').attrs['data-net-depth']),f.d-6);
+  if(template==='sideboard-fridge')assert.equal(Number(depths().find(e=>e.attrs['data-depth-section']==='storage').attrs['data-net-depth']),f.cabinet.sideboard.fridgeDepth??f.d,'fridge bay stays open');preview.dispose();
+ }
+ for(const shape of ['straight','L','U'])for(const corner of ['left','right'])for(const flip of [false,true]){
+  const k={version:1,shape,corner,depth:600,baseHeight:820,thickness:40,backThickness:6,modules:[{run:0,width:800,role:'door'},{run:0,width:450,role:'empty'},...(shape==='straight'?[]:[{run:1,width:1200,role:'door'}]),...(shape==='U'?[{run:2,width:900,role:'door'}]:[])]},f=K.configure({type:'counter',cx:0,cy:0,rot:37,flip,color:'#eee'},k),{preview,depths}=depthPreview(f);
+  for(const front of [false,true]){preview.setView({front});tick();assert(depths().some(e=>Number(e.attrs['data-net-depth'])===576),'kitchen module reads the shared closed depth');assert(depths().every(e=>!e.hidden),'module transformation/mirror keeps depth value visible');}
+  preview.selectPart({kind:'bay',column:1});tick();assert.equal(depths().length,0,'empty equipment module has no invented cabinet cavity');preview.dispose();
+ }
+ const pure={...peg,cabinet:structuredClone(peg.cabinet)};const pureDepth=depthPreview(pure);assert.equal(pureDepth.depths().length,0,'independent pegboard has no cabinet net depth');pureDepth.preview.dispose();
+ console.log('PASS cabinet dimensions and visible net-depth rulers: 350mm chains, zero/no-door, section heights, front/perspective projection, kitchen transforms/mirrors, empty/pure-board exclusions, dimension toggle and immutable inputs');
 })().catch(e=>{console.error(e);process.exitCode=1;});
