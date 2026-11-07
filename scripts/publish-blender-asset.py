@@ -82,6 +82,7 @@ def publish(source, target, profile='se2', spec=None):
             raise ValueError('Bake node materials before publishing')
         alpha=node.inputs['Alpha'].default_value
         clear_glass=(profile=='washer-tg10k60w' and obj.name=='door-glass') or (profile=='cat-tower' and obj.name in ('left-acrylic-bowl','right-acrylic-bowl','left-bowl-rim','right-bowl-rim'))
+        clear_glass=clear_glass or (profile=='toolbox-jiabangshou-390' and obj.name in ('body','upper-rim','lid','lid-panel','tray','tray-back-wall','tray-back-left-divider','tray-back-right-divider','tray-front-wall','tray-front-left-divider','tray-front-right-divider','front-ribs','back-ribs','lid-stiffeners'))
         if alpha!=1 and not (clear_glass and .08<=alpha<=.4):
             raise ValueError('Only reviewed glass/acrylic parts may use simple alpha')
         mat = {'color': srgb_hex(node.inputs['Base Color'].default_value),

@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "id": "toolbox-jiabangshou-390",
+  "name": "透明工具箱 · 佳帮手大号",
+  "types": [
+    "toolbox_jiabangshou_390"
+  ],
+  "route": "blender",
+  "document": "docs/TOOLBOX-JIABANGSHOU-390.md",
+  "sourceLinks": [
+    "https://item.jd.com/100359220602.html?pcdk=RJa6PDO-Zo0FpVTOHjGIKpw-upu2XtqCI2HoepGgMAPLz682W0ZkBDAqvF97TX4s.3z6a.aI3x&spmTag=YTAyMTkuYjAwMjM1Ni5jMDAwMDcyMTAua2V5d29yZF9lbnRlciU0MDE3OTM5ODQ1ODk5MzUlMjMxNzc5MjAwODk2ODQ0MTk1MjY0MDYxNiUyMzE5NDcyODI0MzklMkNhMDI0MC5iMDAyNDkzLmMwMDAwNDAyNy40JTIzc2t1X2NhcmQlNDAxNzk0MDU5OTQzOTQ1JTIzMTc3OTIwMDg5Njg0NDE5NTI2NDA2MTYlMjMzNTc1NDI5OTc"
+  ],
+  "references": [
+    {
+      "path": "references/user-dimensions.png",
+      "kind": "user",
+      "sha256": "3e4d618aaa46b5a9cf2467e0af3b3f6f0632d0e9fb95a8b4bee2169866353b24",
+      "bytes": 936863,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/toolbox-jiabangshou-390-20261107/README.md"
+  ],
+  "notes": [
+    "已读取京东SKU100359220602，品牌/商品名与附件一致；标注390×270×210mm，图注手量误差1–2cm。PP、外观依据用户营销图，未取得实测壁厚和开盖机构。"
+  ]
+}

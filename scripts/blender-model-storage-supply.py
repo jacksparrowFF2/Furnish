@@ -38,7 +38,57 @@ def front_text(text,x,height,size):
  o=bpy.context.object;o.data.body=text;o.data.size=size;o.data.align_x='CENTER';o.data.resolution_u=3;o.data.extrude=.0004
  bpy.ops.object.convert(target='MESH');return identity(bpy.context.object,'quantity-mark',white)
 W,H,D=[v/1000 for v in spec['size']]
-if spec.get('shape')=='beverage-can':
+if spec.get('shape')=='transparent-toolbox':
+ # Closed empty organizer. Labelled outside envelope; wall, taper, tray and
+ # catch dimensions are visual estimates, not a measured usable cavity.
+ clear=mat('translucent-PP','e2e6e4',.31)
+ clear.node_tree.nodes.get('Principled BSDF').inputs['Alpha'].default_value=.14
+ clear.surface_render_method='DITHERED'
+ rim=mat('frosted-PP','e3e5e2',.38)
+ rim.node_tree.nodes.get('Principled BSDF').inputs['Alpha'].default_value=.30
+ rim.surface_render_method='DITHERED'
+ catch=mat('grey-PP-catches','565956',.48)
+ def outline(w,d,r):
+  pts=[]
+  for cx,cz,a in [(w/2-r,d/2-r,0),(-w/2+r,d/2-r,90),(-w/2+r,-d/2+r,180),(w/2-r,-d/2+r,270)]:
+   for j in range(9):
+    t=math.radians(a+j*90/8);pts.append((cx+r*math.cos(t),cz+r*math.sin(t)))
+  return pts
+ def shell(name,rings,m,closed=False):
+  verts=[];faces=[];n=36
+  for y,w,d,r in rings:verts.extend((x,-z,y) for x,z in outline(w,d,r))
+  for k in range(len(rings) if closed else len(rings)-1):
+   k2=(k+1)%len(rings)
+   for j in range(n):faces.append((k*n+j,k*n+(j+1)%n,k2*n+(j+1)%n,k2*n+j))
+  if not closed:faces.extend([tuple(reversed(range(n))),tuple((len(rings)-1)*n+j for j in range(n))])
+  mesh=bpy.data.meshes.new(name);mesh.from_pydata(verts,[],faces);mesh.update()
+  o=bpy.data.objects.new(name,mesh);bpy.context.collection.objects.link(o);return identity(o,name,m)
+ # Outer bottom -> outer lip -> inner lip -> inner bottom, with a real hollow.
+ shell('body',[(0,.346,.226,.014),(.006,.350,.230,.014),(.181,.374,.254,.018),(.188,.374,.254,.018),(.188,.369,.249,.016),(.006,.345,.225,.012)],clear)
+ shell('upper-rim',[(.181,.380,.260,.020),(.193,.384,.264,.021),(.193,.367,.247,.014),(.181,.367,.247,.014)],rim,True)
+ shell('lid',[(.192,.386,.266,.020),(.197,.390,.270,.022),(.210,.390,.270,.022),(.210,.381,.261,.018),(.204,.374,.254,.016),(.201,.374,.254,.016),(.201,.382,.262,.019),(.192,.382,.262,.019)],rim,True)
+ box('lid-panel',(.374,.002,.254),(0,.203,0),clear,.001)
+ merge('lid-stiffeners',[box('lid-rib-temp',(.344,.003,.003),(0,.207,z),rim,.0007) for z in [-.068,.068]],rim)
+ shell('tray',[(.151,.345,.225,.012),(.191,.365,.245,.016),(.191,.361,.241,.014),(.154,.341,.221,.010)],clear)
+ # Broad central tool compartment, narrow front/back rows split into three.
+ for z,tag in [(-.066,'back'),(.066,'front')]:
+  box('tray-'+tag+'-wall',(.351,.035,.002),(0,.173,z),rim,.0003)
+  for x,s in [(-.064,'left'),(.064,'right')]:box('tray-'+tag+'-'+s+'-divider',(.002,.034,.050),(x,.173,z+(-.026 if z<0 else .026)),rim,.0003)
+ for side,tag in [(-1,'left'),(1,'right')]:
+  # Three-sided down-folded catches; open middle, attached at both ends.
+  objects=[box('catch-temp',(.007,.011,.156),(side*.190,.175,0),catch,.002)]
+  for z in [-.075,.075]:
+   objects.append(box('catch-temp',(.007,.027,.010),(side*.190,.162,z),catch,.002))
+   objects.append(box('catch-temp',(.012,.009,.010),(side*.1875,.150,z),catch,.002))
+  merge(tag+'-catch',objects,catch)
+ # Molded stiffeners follow the body taper; count is an observational sample.
+ for z,tag in [(-1,'back'),(1,'front')]:
+  ribs=[]
+  for x in [-.098,.098]:
+   o=box('rib-temp',(.0025,.177,.0025),(x,.092,z*.120),rim,.0003)
+   o.rotation_euler.x=z*math.atan(.012/.177);ribs.append(o)
+  merge(tag+'-ribs',ribs,rim)
+elif spec.get('shape')=='beverage-can':
  # Closed generic 202-end can. Outer envelope is sourced; local profiles are
  # visual estimates. One centre vertex per cap avoids degenerate axis rings.
  main.node_tree.nodes.get('Principled BSDF').inputs['Roughness'].default_value=.3
@@ -217,8 +267,8 @@ for pos,power in [((-.8,-.8,1),90),((.7,.2,.8),70)]:
  bpy.ops.object.light_add(type='AREA',location=pos);o=bpy.context.object;o.data.energy=power;o.data.size=.8;o.rotation_euler=(center-o.location).to_track_quat('-Z','Y').to_euler()
 clay=mat('review-clay','b5b1a8',.7);saved=[(o,o.data.materials[0]) for o in objects]
 for o,_ in saved:o.data.materials[0]=clay
-if spec.get('shape') in ('freeze-dry-bucket','beverage-can'):
- silhouette_parts=('body','top-rim','bottom-rim') if spec.get('shape')=='beverage-can' else ('body','lid','lid-seam','lid-recess')
+if spec.get('shape') in ('freeze-dry-bucket','beverage-can','transparent-toolbox'):
+ silhouette_parts=('body','top-rim','bottom-rim') if spec.get('shape')=='beverage-can' else ('body','upper-rim','lid') if spec.get('shape')=='transparent-toolbox' else ('body','lid','lid-seam','lid-recess')
  for o in objects:o.hide_render=o.name not in silhouette_parts
  scene.render.filepath=str(out/'silhouette.png');bpy.ops.render.render(write_still=True)
  for o in objects:o.hide_render=False

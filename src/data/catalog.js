@@ -193,6 +193,7 @@ const LIB = [
     ["tissue_heartlink_layer6", "心相印抽纸 · 6包层（4层24包）", 420, 200, "#70a88f",undefined,50],
     ["beverage_can_330ml", "易拉罐 · 330ml标准罐", 66.2, 66.2, "#f1f2ed", undefined, 115.2],
     ["beverage_can_500ml", "易拉罐 · 500ml标准罐", 66, 66, "#f1f2ed", undefined, 168],
+    ["toolbox_jiabangshou_390", "透明工具箱 · 佳帮手大号", 390, 270, "#e2e6e4",undefined,210],
     ["freeze_dry_bucket_meoof_6l", "冻干桶 · meoof 6L", 316, 309, "#e8e2d7",undefined,187],
     ["cat_food_myfoodie_2kg", "猫粮袋 · 2kg紫白参考", 260, 120, "#863478",undefined,400],
     ["wet_wipes_pack_170", "湿巾 · 170×110×70用户尺寸", 170, 110, "#8aafb6",undefined,70],

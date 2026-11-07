@@ -298,5 +298,38 @@
     ],
     "shape": "beverage-can",
     "global": "FurnishBeverageCan500Asset"
+  },
+  "toolbox-jiabangshou-390": {
+    "type": "toolbox_jiabangshou_390",
+    "name": "透明工具箱 · 佳帮手大号",
+    "global": "FurnishJiabangshouToolboxAsset",
+    "size": [
+      390,
+      210,
+      270
+    ],
+    "color": "#e2e6e4",
+    "sourceUrl": "https://item.jd.com/100359220602.html",
+    "brand": "佳帮手",
+    "model": "大号390×270×210 · 空箱闭盖参考",
+    "parts": [
+      "body",
+      "upper-rim",
+      "lid",
+      "lid-panel",
+      "tray",
+      "tray-back-wall",
+      "tray-back-left-divider",
+      "tray-back-right-divider",
+      "tray-front-wall",
+      "tray-front-left-divider",
+      "tray-front-right-divider",
+      "left-catch",
+      "right-catch",
+      "front-ribs",
+      "back-ribs",
+      "lid-stiffeners"
+    ],
+    "shape": "transparent-toolbox"
   }
 }

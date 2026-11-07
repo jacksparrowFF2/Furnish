@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "toolbox-jiabangshou-390",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "toolbox_jiabangshou_390",
+    "name": "透明工具箱 · 佳帮手大号",
+    "w": 390,
+    "d": 270,
+    "color": "#e2e6e4",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "佳帮手",
+    "model": "大号390×270×210 · 空箱闭盖参考",
+    "sourceUrl": "https://item.jd.com/100359220602.html",
+    "h": 210
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-07T14:06:40.432Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-HRObTg\\toolbox-jiabangshou-390-UCmsJb",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-07T14:06:40.432Z",
+      "result": {
+        "command": "author-toolbox-jiabangshou-390",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-HRObTg\\toolbox-jiabangshou-390-UCmsJb\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-HRObTg\\toolbox-jiabangshou-390-UCmsJb\\authored",
+        "passed": true,
+        "profile": "toolbox-jiabangshou-390",
+        "parts": 16,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "toolbox-jiabangshou-390",
+          "parts": 16,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-07T14:06:43.383Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-07T14:06:43.384Z",
+      "result": {
+        "passed": true,
+        "profile": "toolbox-jiabangshou-390",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-07T14:06:44.536Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-07T14:06:44.538Z",
+      "result": {
+        "command": "publish-toolbox-jiabangshou-390",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-HRObTg\\toolbox-jiabangshou-390-UCmsJb\\authored\\toolbox-jiabangshou-390-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-HRObTg\\workspace\\src\\data\\toolbox-jiabangshou-390-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "299d4e4039ba51f2444f0e38e7a9405f0836bd75b91b86d2570f020ac352c319",
+        "runtimeSha256": "96ae80460c6e4e5ccc407ac0dfd11e3f6ddc602efafd4cba29bac2b41403b11a"
+      },
+      "finished": "2026-11-07T14:06:45.922Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-07T14:06:45.924Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "toolbox-jiabangshou-390",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-HRObTg\\toolbox-jiabangshou-390-UCmsJb\\storage-supplies.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "toolbox-jiabangshou-390",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 16,
+                  "bottom": 0,
+                  "top": 210,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 16,
+                  "bottom": 0,
+                  "top": 210,
+                  "externalDistance": 91.15465273052851,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 16,
+                  "bottom": 0,
+                  "top": 210,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 16,
+                  "bottom": 0,
+                  "top": 210,
+                  "externalDistance": 91.15465273052851,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-07T14:06:51.649Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-07T14:06:51.650Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 16,
+            "bounds": [
+              [
+                -0.19499999284744263,
+                0,
+                -0.13500000536441803
+              ],
+              [
+                0.19499999284744263,
+                0.20999999344348907,
+                0.13500000536441803
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 16,
+            "bounds": [
+              [
+                -0.2184000015258789,
+                0,
+                -0.14579999446868896
+              ],
+              [
+                0.2184000015258789,
+                0.22679999470710754,
+                0.14579999446868896
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 16,
+            "bounds": [
+              [
+                -0.19499999284744263,
+                0,
+                -0.13500000536441803
+              ],
+              [
+                0.19499999284744263,
+                0.20999999344348907,
+                0.13500000536441803
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:07:12.988Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-07T14:07:12.989Z",
+      "result": {
+        "passed": true,
+        "profile": "toolbox-jiabangshou-390",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 16,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 16,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 16,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:07:14.161Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-07T14:07:14.162Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 16,
+            "position": [
+              0,
+              0.10499999672174454,
+              0.9652555845318249
+            ],
+            "target": [
+              0,
+              0.10499999672174454,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 16,
+            "position": [
+              0.5344007546596511,
+              0.3989204117845527,
+              0.7481610565235114
+            ],
+            "target": [
+              0,
+              0.10499999672174454,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 16,
+            "position": [
+              -0.5464683652226014,
+              0.32358734281078516,
+              -0.7650557113116419
+            ],
+            "target": [
+              0,
+              0.10499999672174454,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:07:23.965Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-07T14:07:23.965Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T14:07:27.139Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-07T14:07:27.139Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T14:07:30.249Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-07T14:07:30.249Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T14:07:33.368Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-07T14:07:33.368Z",
+      "result": {
+        "passed": true,
+        "profile": "toolbox-jiabangshou-390",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 16,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 16,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 16,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T14:07:34.139Z"
+    }
+  ],
+  "finished": "2026-11-07T14:07:34.139Z"
+}

@@ -9,6 +9,7 @@ const docs={'pet-bowl':'PET-SUPPLIES.md','litter-bag':'PET-SUPPLIES.md',
  'chair-s05118':'CHAIR-YESWOOD-S05118.md','sofa-bed':'SOFA-BED-YESWOOD-Y107H03.md',se2:'BATH-HEATER-AOPU-SE2.md',y52y09:'BOOKCASE-YESWOOD-Y52Y09.md',fridge:'FRIDGE-BLENDER-MOTION.md',dishwasher:'DISHWASHER-BLENDER-FOLD.md',hood:'HOOD-BLENDER-MOTION.md',washer:'WASHER-BLENDER-MOTION.md','washer-tg10k60w':'WASHER-LITTLESWAN-TG10K60W.md','side-table':'SIDE-TABLE-TMALL-635382906309.md',armchair:'ARMCHAIR-YESWOOD-TMALL-1013742104698.md','armchair-berlin':'ARMCHAIR-YESWOOD-BERLIN.md','stack-stool':'STACK-STOOL-CITYLONG-370.md','corner-bookcase':'CORNER-BOOKCASE-YESWOOD-Y00Y06.md','corner-bookcase-580':'CORNER-BOOKCASE-YESWOOD-Y00Y06058.md'
 };
 const supplies=require('./storage-supply-specs.json');for(const id of Object.keys(supplies))docs[id]='STORAGE-CABINET-2400.md';
+docs['toolbox-jiabangshou-390']='TOOLBOX-JIABANGSHOU-390.md';
 docs['cat-food-2kg']='CAT-FOOD-2KG.md';
 docs['beverage-can-330']=docs['beverage-can-500']='BEVERAGE-CANS.md';
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex');

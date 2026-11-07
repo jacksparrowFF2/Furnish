@@ -1,3 +1,5 @@
+2026-11-07（佳帮手工具箱）：新增storageSupply类型及一个本地经典资产脚本，沿storage-supply-model→static-asset-model共用生产显示/实体/导出。mountHeight与pose3D复用v57/v58，无新持久字段或保存通道；透明白名单按型号/部件限制，见[工具箱](TOOLBOX-JIABANGSHOU-390.md)。
+
 2026-11-07（柜体组合核心）：cabinet-core.boxTopology定义横向柜箱与隔间归属，assemblyLayout统一mm净宽／模块外宽／柜箱边界；旧查询只投影该布局。生产模型、二维、顶封板、门板范围、编辑树及模块操作共用，自动配门按现有柜箱执行。无新脚本、项目字段／格式或保存通道，见[组合契约](CABINET-COMPONENTS.md)。
 
 2026-11-07（标准罐）：两款beverage_can复用storageSupply生产构造与既有inventoryArray普通家具记录；新增两个本地经典资产脚本，仍沿static-asset、产品离地及mutate保存，无新持久字段。显式罐阵列最低v66，项目／工作区／缓存保留历史读取；单件v57及pose3D v58保持。见[易拉罐](BEVERAGE-CANS.md)。

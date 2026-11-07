@@ -1,0 +1,101 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "sourceSha256": "28a5dbc6a07fd96e19125fdc0f1913c44119e865762dcb43ee7ffeede9aae1b6",
+  "topology": [
+    {
+      "name": "back-ribs",
+      "closed": true,
+      "faces": 216
+    },
+    {
+      "name": "body",
+      "closed": true,
+      "faces": 428
+    },
+    {
+      "name": "front-ribs",
+      "closed": true,
+      "faces": 216
+    },
+    {
+      "name": "left-catch",
+      "closed": true,
+      "faces": 540
+    },
+    {
+      "name": "lid",
+      "closed": true,
+      "faces": 576
+    },
+    {
+      "name": "lid-panel",
+      "closed": true,
+      "faces": 108
+    },
+    {
+      "name": "lid-stiffeners",
+      "closed": true,
+      "faces": 216
+    },
+    {
+      "name": "right-catch",
+      "closed": true,
+      "faces": 540
+    },
+    {
+      "name": "tray",
+      "closed": true,
+      "faces": 284
+    },
+    {
+      "name": "tray-back-left-divider",
+      "closed": true,
+      "faces": 108
+    },
+    {
+      "name": "tray-back-right-divider",
+      "closed": true,
+      "faces": 108
+    },
+    {
+      "name": "tray-back-wall",
+      "closed": true,
+      "faces": 108
+    },
+    {
+      "name": "tray-front-left-divider",
+      "closed": true,
+      "faces": 108
+    },
+    {
+      "name": "tray-front-right-divider",
+      "closed": true,
+      "faces": 108
+    },
+    {
+      "name": "tray-front-wall",
+      "closed": true,
+      "faces": 108
+    },
+    {
+      "name": "upper-rim",
+      "closed": true,
+      "faces": 288
+    }
+  ],
+  "negatives": [
+    {
+      "name": "left-catch",
+      "alpha": 0.2,
+      "rejected": true,
+      "error": "Only reviewed glass/acrylic parts may use simple alpha"
+    },
+    {
+      "name": "body",
+      "alpha": 0.7,
+      "rejected": true,
+      "error": "Only reviewed glass/acrylic parts may use simple alpha"
+    }
+  ]
+}

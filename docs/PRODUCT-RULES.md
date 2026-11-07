@@ -1,3 +1,5 @@
+2026-11-07（透明工具箱）：toolbox_jiabangshou_390声明storageSupplyRevision=2、高210、bottom基准与mountHeight新建0；宽390深270来自用户标注。闭盖空箱，无开盖字段或箱内空腔豁免，尺寸缩放仅用于布局。见[型号契约](TOOLBOX-JIABANGSHOU-390.md)。
+
 2026-11-07（6L冻干桶）：freeze_dry_bucket_meoof_6l注册storageSupplyRevision=2、高187、底部mountHeight新建／缺省0，外包316×309来自用户标注；闭盖静态、完整提手随外包，外观细部为估算。复用现有字段、复制替换／pose能力及v57／v58保存，无新动作字段；见[型号契约](FREEZE-DRY-BUCKET-6L.md)。
 
 2026-11-07：inventoryArray.minGap对VIHALS为−1000mm，其余猫砂／猫粮为0，maxGap仍1000；inventoryArraySpacing共用真实当前单件包络和转向后的正中心节距约束，不把负间距当作实体碰撞豁免。含负值采用v64项目／工作区／恢复，旧非负保留v63；原缺失字段与摆放不改。见[折叠椅负间距](CHAIR-IKEA-VIHALS.md#阵列负间距2026-11-07)。

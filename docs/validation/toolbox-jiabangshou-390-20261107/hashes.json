@@ -1,0 +1,9 @@
+{
+  "scripts/blender-model-storage-supply.py": "5103bd2869248a1f050cf5e20be5f284aba64ac43b34381b9c55befb568f3ed3",
+  "scripts/publish-blender-asset.py": "2eeda4a552380a47e207747003fe1d68b76574c2bf8a25d06b54a7f0b4f91302",
+  "src/data/toolbox-jiabangshou-390-blender-asset.js": "3cc00750aaf0cb1cc3c66f2b6d6da99984b7185ef1301c59cced30539d140c70",
+  "assets/models/storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.blend": "609f806c8c64210cbdde75594872dc7da75de5ce77a8c34e2096620d3d3d364a",
+  "assets/models/storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.glb": "28a5dbc6a07fd96e19125fdc0f1913c44119e865762dcb43ee7ffeede9aae1b6",
+  "assets/models/storage-supplies/toolbox-jiabangshou-390/v2/review.blend": "1dd5849897204fb37238f140d3a552d7917cf5890a4d0938424c709fa8b17791",
+  "assets/models/toolbox-jiabangshou-390/references/user-dimensions.png": "3e4d618aaa46b5a9cf2467e0af3b3f6f0632d0e9fb95a8b4bee2169866353b24"
+}

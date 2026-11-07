@@ -1,0 +1,551 @@
+{
+  "passed": true,
+  "executable": "D:\\1601装修\\Furnish程序\\Furnish-win32-x64\\Furnish.exe",
+  "work": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop-verification\\toolbox-AWvSiq\\workspace",
+  "port": 49788,
+  "sourceUnchanged": true,
+  "preferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false
+  },
+  "checks": [
+    "production geometry 390x270x210",
+    "editable mountHeight through actual property input",
+    "raised 900..1110mm above finished floor exactly once",
+    "undo/redo",
+    "repository save and reload",
+    "390px narrow layout",
+    "16 imported parts, no fallback",
+    "actual packaged desktop screenshot"
+  ],
+  "raised": {
+    "parts": [
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 648,
+        "bounds": [
+          [
+            2.950749996304512,
+            0.963638399997726,
+            -1.627213105559349
+          ],
+          [
+            3.149250003695488,
+            1.1403615987300872,
+            -1.6127868965268135
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:body",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 1284,
+        "bounds": [
+          [
+            2.862999993562698,
+            0.96,
+            -1.6270000040531158
+          ],
+          [
+            3.2370000064373015,
+            1.1479999935626983,
+            -1.3729999959468842
+          ]
+        ],
+        "alphas": [
+          0.14000000059604645
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 648,
+        "bounds": [
+          [
+            2.950749996304512,
+            0.963638399997726,
+            -1.3872131034731865
+          ],
+          [
+            3.149250003695488,
+            1.1403615987300872,
+            -1.372786894440651
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 1620,
+        "bounds": [
+          [
+            2.8565000027418135,
+            1.1055000042915344,
+            -1.5799999982118607
+          ],
+          [
+            2.868499997258186,
+            1.1405000007152557,
+            -1.4200000017881393
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 1728,
+        "bounds": [
+          [
+            2.855000007152557,
+            1.15200000166893,
+            -1.635000005364418
+          ],
+          [
+            3.2449999928474424,
+            1.169999993443489,
+            -1.364999994635582
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            2.862999993562698,
+            1.162000007033348,
+            -1.6270000040531158
+          ],
+          [
+            3.2370000064373015,
+            1.1639999961853027,
+            -1.3729999959468842
+          ]
+        ],
+        "alphas": [
+          0.14000000059604645
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 648,
+        "bounds": [
+          [
+            2.8779999941587446,
+            1.1655000066757202,
+            -1.5694999992847443
+          ],
+          [
+            3.222000005841255,
+            1.1684999978542328,
+            -1.4305000007152557
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 1620,
+        "bounds": [
+          [
+            3.2315000027418135,
+            1.1055000042915344,
+            -1.5799999982118607
+          ],
+          [
+            3.243499997258186,
+            1.1405000007152557,
+            -1.4200000017881393
+          ]
+        ],
+        "alphas": [
+          1
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 852,
+        "bounds": [
+          [
+            2.8674999952316282,
+            1.1109999930858612,
+            -1.6225000023841858
+          ],
+          [
+            3.2325000047683714,
+            1.150999999642372,
+            -1.3774999976158142
+          ]
+        ],
+        "alphas": [
+          0.14000000059604645
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            2.9850000023841856,
+            1.1160000032186508,
+            -1.6169999986886978
+          ],
+          [
+            2.986999998986721,
+            1.1499999976158142,
+            -1.56700000166893
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            3.113000001013279,
+            1.1160000032186508,
+            -1.6169999986886978
+          ],
+          [
+            3.114999997615814,
+            1.1499999976158142,
+            -1.56700000166893
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            2.8744999945163725,
+            1.1154999947547912,
+            -1.56700000166893
+          ],
+          [
+            3.225500005483627,
+            1.1505000060796737,
+            -1.5649999976158142
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            2.9850000023841856,
+            1.1160000032186508,
+            -1.43299999833107
+          ],
+          [
+            2.986999998986721,
+            1.1499999976158142,
+            -1.3830000013113022
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            3.113000001013279,
+            1.1160000032186508,
+            -1.43299999833107
+          ],
+          [
+            3.114999997615814,
+            1.1499999976158142,
+            -1.3830000013113022
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 324,
+        "bounds": [
+          [
+            2.8744999945163725,
+            1.1154999947547912,
+            -1.4350000023841858
+          ],
+          [
+            3.225500005483627,
+            1.1505000060796737,
+            -1.43299999833107
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+        "id": "toolbox-desktop",
+        "version": 3,
+        "kind": "BufferGeometry",
+        "count": 864,
+        "bounds": [
+          [
+            2.8579999983310698,
+            1.140999994277954,
+            -1.6319999992847443
+          ],
+          [
+            3.24200000166893,
+            1.153000003695488,
+            -1.3680000007152557
+          ]
+        ],
+        "alphas": [
+          0.30000001192092896
+        ],
+        "materials": [
+          {
+            "unlit": false,
+            "physical": {
+              "KHR_materials_emissive_strength": {
+                "emissiveStrength": 0
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "bounds": [
+      [
+        2.855000007152557,
+        0.96,
+        -1.635000005364418
+      ],
+      [
+        3.2449999928474424,
+        1.169999993443489,
+        -1.364999994635582
+      ]
+    ],
+    "settledPoses": []
+  }
+}
