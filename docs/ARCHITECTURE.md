@@ -1,3 +1,5 @@
+2026-11-07（三维测量）：scene-measure经典脚本保存临时两点与屏幕标注，主三维注入生产网格射线、可见性与观察裁切；底部工具栏常驻入口及M共用，沿原OrbitControls导航并隔开家具／柜门交互。世界m转显示mm，几何变化清除，无新项目字段／格式／保存通道，见[测量说明](MEASUREMENTS.md)。
+
 2026-11-07（6L冻干桶）：独立storageSupply类型复用现有static-asset与生产实体／二维矩形占地，新增一个本地经典资产脚本；尺寸316×309×187、mountHeight新建0，现有v57／pose v58能力与保存链保持，无新字段。Blender源／10件部件及验证见[6L冻干桶](FREEZE-DRY-BUCKET-6L.md)。
 
 2026-11-07（原位物品阵列）：product-rules声明猫砂／猫粮／VIHALS的inventoryArray，design-core沿现有家具记录生成、复制和解除；保留单品ID及生产构造，不另建模型／保存通道。UI和MCP受限arrayEdit共用预演／mutate，v63往返；原位关联不改变空间输入，数量编辑读取真实折叠包络，见[物品阵列](INVENTORY-ARRAY.md)。

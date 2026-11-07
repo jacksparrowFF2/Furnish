@@ -136,7 +136,7 @@ function initialize(){
  const toolMenu=document.createElement('details');toolMenu.className='rail-tool-menu';toolMenu.innerHTML=`<summary class="btn" aria-controls="canvas-tool-pop" aria-expanded="false">${ico('grid')}<span>${t('工具','Tools')}</span></summary><div id="canvas-tool-pop" class="rail-tool-pop" role="group" aria-label="${t('其他画布工具','Additional canvas tools')}" hidden></div>`;
  const toolPop=toolMenu.lastElementChild;
  [...$('#tools').children].slice(3).forEach(b=>{b.classList.add('only2d');toolPop.append(b);});
- const cameraButton=$('#vCamera');cameraButton.classList.add('only3d');toolPop.append(extra,finishes,$('#vIso').parentElement);rail.append($('#modes3d'),cameraButton,toolMenu);
+ const cameraButton=$('#vCamera'),measureButton=$('#vMeasure');cameraButton.classList.add('only3d');measureButton.classList.add('only3d');toolPop.append(extra,finishes,$('#vIso').parentElement);rail.append($('#modes3d'),measureButton,cameraButton,toolMenu);
  document.body.append(toolPop);
  const placeTools=()=>{toolPop.hidden=!toolMenu.open;toolMenu.firstElementChild.setAttribute('aria-expanded',String(toolMenu.open));if(!toolMenu.open){if(toolPop.contains(document.activeElement))toolMenu.firstElementChild.focus({preventScroll:true});return;}const r=toolMenu.firstElementChild.getBoundingClientRect();Object.assign(toolPop.style,{left:Math.max(12,Math.min(r.right-300,innerWidth-312))+'px',bottom:Math.max(12,innerHeight-r.top+8)+'px',maxHeight:Math.max(100,r.top-20)+'px'});[...toolPop.querySelectorAll('button')].find(b=>b.getClientRects().length&&!b.disabled)?.focus({preventScroll:true});};
  toolMenu.addEventListener('toggle',placeTools);addEventListener('resize',()=>{toolMenu.open=false;});
