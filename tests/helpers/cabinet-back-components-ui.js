@@ -31,5 +31,6 @@ module.exports=async(p,V)=>{
   for(const kind of ['door','drawer']){const picks=await p.locator('[data-cab-pick]').evaluateAll(nodes=>nodes.map(n=>JSON.parse(n.dataset.cabPick))),index=picks.findIndex(part=>part.kind===kind);ok(index>=0,template+' lists '+kind+' components');const pick=p.locator('[data-cab-pick]').nth(index);await expand(pick);await pick.click();ok(await p.locator('.cab-current-dimensions:visible').count()>0,template+' selects '+kind+' production dimensions');}
   await V.screenshot?.('shared-'+template);await p.getByRole('button',{name:'取消',exact:true}).click();
  }
+ checks.push(...await require('./cabinet-parameter-parity-ui.js')(p,V));
  ok(errors.length===0,'all rear-panel editors and shared production components have no page errors');return {passed:true,checks};
 };

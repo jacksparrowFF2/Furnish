@@ -122,7 +122,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      const pose=C.doorPose(kind,bay.left,bay.left+bay.width,bottom*1000,top*1000,(back+D-t/2)*1000,j,count,C.doorPairing(col),C.doorSingleHinge(col,kind),glass?undefined:col.doorLayout,undefined,c.thickness),local=pose.localX/1000,localBottom=pose.localBottom/1000;
      const pivot=components.door({pose,column:i,section,leaf:j,angle:glass?C.displayAngle(c,col,j):C.doorAngle(c,col,section,j),site:'cabinet-model:site-6',color:glass?'#b3c5c8':col.doorColor||(col.finish==='wood'?wood:color),glass:glass||col.finish==='glass',opacity:.28,roughness:.12,faceSection:true});
      if(glass){for(const y of syncIdentity.items("cabinet-model.js:generator-4",[["item-a",localBottom],["item-b",localBottom+pose.height/1000-.018]]))syncIdentity.produce("cabinet-model:site-7",()=>add(pivot,leaf-.002,.018,t+.002,local,y,0,'#333738'));for(const sign of syncIdentity.items("cabinet-model.js:generator-5",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-8",()=>add(pivot,.018,pose.height/1000,t+.002,local+sign*(leaf/2-.01),localBottom,0,'#333738'));}
-     else if(col.handle&&col.handle!=='none'){const vertical=!C.verticalDoor(kind);components.handle(pivot,{kind:col.handle,site:'cabinet-model:site-9',vertical,width:.12,barHeight:.12,depth:.018,x:vertical?local+(pose.right?-1:1)*(leaf/2-.04):local,y:localBottom+(vertical?(top-bottom)/2:kind==='up'?.04:pose.height/1000-.04),z:.012});}
+     else if(col.handle!=='none'){const vertical=!C.verticalDoor(kind);components.handle(pivot,{kind:col.handle,site:'cabinet-model:site-9',vertical,width:.12,barHeight:.12,depth:.018,x:vertical?local+(pose.right?-1:1)*(leaf/2-.04):local,y:localBottom+(vertical?(top-bottom)/2:kind==='up'?.04:pose.height/1000-.04),z:.012});}
      components.mountDoor(g,pivot,pose,{column:i,section,leaf:j});
     }
    };
@@ -153,7 +153,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
        const laneW=(cw-(lanes-1)*t)/lanes,laneX=x+(lane-(lanes-1)/2)*(laneW+t),faceW=(span.right-span.left)/lanes,faceX=span.left+faceW*(lane+.5),state=C.drawerState(col.drawers[0],lane),node=components.drawer({column:i,depth:ld,state}),faceColor=col.doorColor||(col.finish==='wood'?wood:color),bodyH=dh-t;
        syncIdentity.produce("cabinet-model:site-19",()=>add(node,faceW-.002,bodyH-.002,t,faceX,drawerY+.001,back+ld-t/2,faceColor)).userData.cabinetDrawerBoard='front';
        components.drawerBox(node,{width:laneW,x:laneX,bottom:drawerY,height:bodyH,depth:ld,sites:{bottom:'cabinet-model:site-20',side:'cabinet-model:site-21',back:'cabinet-model:site-22'},sideScope:'cabinet-model.js:generator-12'});
-       if(col.handle&&col.handle!=='none')components.handle(node,{kind:col.handle,site:'cabinet-model:site-23',width:Math.min(.14,faceW*.4),depth:.018,x:faceX,y:drawerY+bodyH*.7,z:back+ld-.009});
+       if(col.handle!=='none')components.handle(node,{kind:col.handle,site:'cabinet-model:site-23',width:Math.min(.14,faceW*.4),depth:.018,x:faceX,y:drawerY+bodyH*.7,z:back+ld-.009});
        components.mountDrawer(g,node,{column:i,drawer:0,lane});
       }
      }
@@ -310,7 +310,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      components.mountDrawer(g,node,{column:i,drawer:j,lane});continue;
     }
     const frontTop=c.template==='tv-floor'&&j===col.drawers.length-1?h-t:C.kitchenOverlay(f,c)&&col.door==='none'&&j===col.drawers.length-1?C.frontHeight(f,c)/1000-faceInset:y+bodyDh;
-    syncIdentity.produce("cabinet-model:site-72",()=>add(node,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?frontTop-frontBottom-.002:dh-.004,t,entryStyle?(span.left+span.right)/2:x,entryStyle?frontBottom+.001:y,d/2-t/2,entryStyle?faceColor:color)).userData.cabinetDrawerBoard='front';
+    syncIdentity.produce("cabinet-model:site-72",()=>add(node,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?frontTop-frontBottom-.002:dh-.004,t,entryStyle?(span.left+span.right)/2:x,entryStyle?frontBottom+.001:y,d/2-t/2,faceColor)).userData.cabinetDrawerBoard='front';
     components.drawerBox(node,{width:cw,bodyWidth:cw-.02,x,bottom:y,height:bodyDh,depth:d,sites:{bottom:'cabinet-model:site-73',side:'cabinet-model:site-74',back:'cabinet-model:site-75'},sideScope:'cabinet-model.js:generator-44'});
     syncIdentity.produce("cabinet-model.js:generator-call-23",()=>handleMesh(node,x,y+dh*.7,d/2+.012));
     components.mountDrawer(g,node,{column:i,drawer:j,lane});}y+=dh;

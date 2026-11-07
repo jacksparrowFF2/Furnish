@@ -1,3 +1,5 @@
+2026-11-07：厨房模块可选finish／handle／doorColor复用cabinet-core.withDoorSetting的既有枚举和缺省语义；drawerExtensions按层保存0–1，界面0–100%。仅抽屉角色适用，改样式／角色按核心清理，设备位与保留结构不保存模块外观。新字段v61，缺失保持旧全行程；验证与入口见[CABINET-PARAMETER-PARITY](CABINET-PARAMETER-PARITY.md)。
+
 2026-11-07：cabinetBackPanel集中范围／校验和组件几何版本；背板能力按实际结构共享，取消entry／sideboard／pegboard界面白名单。扩展配置位置采用v60，旧缺失保留原厚度、只读固定产品保留资产结构，见[背板共享组件](CABINET-NET-DEPTH.md)。
 
 2026-11-07：cabinetBackPanel声明普通柜独立背板厚度范围0–50mm／默认18mm，0不构造背板。旧缺失保持原厚度，调整侧板时固定旧背厚；显式backThickness采用v59，详细能力与恢复验收见[背板与净深](CABINET-NET-DEPTH.md)。

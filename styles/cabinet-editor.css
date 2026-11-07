@@ -115,6 +115,9 @@
 }
 
 .cab-setting{min-width:0;margin-bottom:10px}.cab-setting-source{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}.cab-setting-source .btn{font-size:12px;padding:4px 8px}.cab-setting-source span{overflow-wrap:anywhere}
+.cab-front-appearance{grid-column:1/-1;min-width:0;width:100%}
+.cab-front-appearance .cab-setting-source{flex-wrap:wrap}
+.cab-front-appearance .cab-setting-source span{min-width:4em}
 
 /* Cabinet workspace rhythm: one control scale and one desktop parameter scroller. */
 .dlg-box:has(.cab-editor){--cab-control:40px;--cab-button:36px}

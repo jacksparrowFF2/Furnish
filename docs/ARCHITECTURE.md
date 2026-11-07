@@ -1,3 +1,5 @@
+2026-11-07（柜型参数复核）：cabinetFrontAppearance统一门／抽面及厨房模块外观；kitchenModuleConfig把可选模块外观和drawerExtensions传入共享构造，v61贯穿项目／仓库／缓存。净深仍只派生实体；原结构配方保留，见[参数矩阵](CABINET-PARAMETER-PARITY.md)。
+
 2026-11-07（柜体组件化）：cabinet-core.carcassFrame提供mm柜箱基准，cabinet-model.createComponents统一生产板件、门扇、抽盒、把手与随动身份；柜型配方保留分段和设备约束。无新字段、脚本或保存通道；定向修复餐边圆钮和上下分柜重复身份，见[共享组件](CABINET-COMPONENTS.md)。
 
 2026-11-07（共享背板）：cabinet-core.backPanelPart／depthSections统一参数化柜的实体与分段净深，cabinet-model沿原身份构造；柜体／厨房／附属柜共用数字输入。厨房默认、模块、末端与扩展柜型背板采用v60，普通v59及旧缺失保持；无新脚本或保存通道，见[组件契约](CABINET-NET-DEPTH.md)。

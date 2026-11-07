@@ -845,7 +845,7 @@
    bodyDepth:overlay?f.d-t:f.d,bodyCenter:overlay?-t/2:0,
    split:c.stackedBoxes&&c.boxConstruction!=='independent'?c.plinth+2*t+c.columns[0].shelves.at(-1):null};
  }
- function hardwareComponentVersion(c){return c.sideboard&&c.columns?.some(col=>col.handle==='knob')?'round-knob-v1':undefined;}
+ function hardwareComponentVersion(c){if(!c.sideboard)return undefined;return [c.columns?.some(col=>col.handle==='knob')?'round-knob-v1':'',c.columns?.some(col=>col.handle===undefined)?'default-bar-v1':''].filter(Boolean).join(',')||undefined;}
  function drawerDepthLayout(f,depth=f.d,c=config(f)){
   // Preserve old no-back drawer boxes until the explicit thickness is edited.
   const t=c.thickness,rear=c.backThickness===undefined?t:backThickness(c);
