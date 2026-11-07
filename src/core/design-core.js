@@ -86,7 +86,7 @@
   if(!Array.isArray(memberIds)||!memberIds.length||new Set(memberIds).size!==memberIds.length)throw Error('请选择有效的阵列成员');
   const members=memberIds.map(id=>furniture.find(f=>f.id===id));if(members.some(f=>!f||f.locked||f.inventoryArray||f.obj))throw Error('阵列成员不存在、已锁定或已属于阵列');
   const first=members[0],rule=products().definition(first)?.inventoryArray;if(!rule||members.length>rule.maxCount||members.some(f=>inventoryUnitSignature(f)!==inventoryUnitSignature(first)))throw Error('阵列须使用相同型号、尺寸和姿态的物品');
-  const recipe={id:config.id,index:0,columns:1,rows:1,gapX:0,gapZ:0,gapY:0,pattern:'grid',angle:0,...config};products().validateField(first,'inventoryArray',recipe);
+  const recipe={...products().inventoryArrayDefaults,id:config.id,index:0,...config};products().validateField(first,'inventoryArray',recipe);
   if(furniture.some(f=>f.inventoryArray?.id===recipe.id))throw Error('阵列编号已存在');
   const points=inventoryPositions(first,recipe,members.length);for(let i=0;i<members.length;i++){const f=members[i],p=points[i];if(Math.hypot(f.cx-p.cx,f.cy-p.cy,products().bottomHeight(f)-p.bottom)>.001||Math.abs(((f.rot-p.rot+540)%360)-180)>.001)throw Error('阵列参数与现有排布不一致，未移动物品');}
   const index=new Map(memberIds.map((id,i)=>[id,i]));return furniture.map(f=>index.has(f.id)?{...f,inventoryArray:{...recipe,index:index.get(f.id)}}:f);

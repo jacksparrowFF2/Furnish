@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "wet wipes: untouched single-item default controls, first-edit activation with one undo, row/column/layer/count/gap/yaw editing, rejected negative gaps, MCP, v65 and 28-part production GLB",
+    "desktop exact no-move conversion and per-part GLB, original folded endpoints, parameter controls/count/gaps/yaw, atomic undo/redo, invalid values, lock, save/reload, narrow UI and detach",
+    "http loaded and editable",
+    "file loaded and editable offline"
+  ],
+  "errors": []
+}
