@@ -159,9 +159,9 @@ function cabinetWorkspace(prefix,{get,read,apply,select,snapshot,restore,refresh
      const door=root.querySelector('[data-inspect-group="door"]'),primary=document.createElement('section'),details=document.createElement('details'),title=document.createElement('summary');
      primary.className='cab-bay-door';primary.innerHTML='<h4>柜门</h4>';
      const direction=door.querySelector('[data-door]').closest('label'),fit=door.querySelector('[data-fit-doors]');
-     primary.append(direction,fit);fit.textContent='按宽度自动配门';fit.title='根据隔间宽度建议单门或对开，保留现有层板和抽屉';
+     const controls=document.createElement('div');controls.className='cab-door-controls';controls.append(direction,fit);primary.appendChild(controls);fit.textContent='按宽度自动配门';fit.title='根据隔间宽度建议单门或对开，保留现有层板和抽屉';
      door.querySelectorAll(':scope > .cab-hint:not([data-door-note])').forEach(el=>el.remove());
-     details.className='cab-help';details.dataset.cabDetails=`bay-door-details-${column}`;title.textContent='门板详细设置';details.appendChild(title);for(const node of [...door.childNodes])details.appendChild(node);door.append(primary,details);
+     details.className='cab-help cab-door-details';details.dataset.cabDetails=`bay-door-details-${column}`;title.textContent='门板详细设置';details.appendChild(title);for(const node of [...door.childNodes])details.appendChild(node);door.append(primary,details);
      const shelf=root.querySelector('[data-inspect-group="shelf"]'),shelfGroup=shelf.querySelector('[data-cab-details]');shelfGroup.querySelector('summary').textContent=`层板 · ${col.shelves.length} 块`;
      const drawer=root.querySelector('[data-inspect-group="drawer"]'),drawerGroup=drawer.querySelector('[data-cab-details]');drawer.querySelector('h4').remove();drawerGroup.querySelector('summary').textContent=`抽屉 · ${col.drawers.length} 层`;
      for(const node of [...drawer.childNodes])if(node!==drawerGroup)drawerGroup.appendChild(node);

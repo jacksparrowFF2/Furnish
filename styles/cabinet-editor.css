@@ -364,13 +364,24 @@
 .cab-bay-inspector:not([data-divider-inspector]) > div > .cab-part-section {border:0;margin:0;padding:0}
 .cab-bay-inspector .cab-bay-door {border-top:1px solid var(--line,#ddd);margin-top:14px;padding-top:16px}
 .cab-bay-door h4 {font-size:13px;margin:0 0 12px}
-.cab-fields .cab-bay-door > .btn {width:100%;margin:0;background:#f8f2e9;color:#80552f;border-color:#ddc9b0}
+.cab-door-controls {display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;margin-bottom:12px}
+#cab-form .cab-door-controls > label {flex:1 1 160px;min-width:0;margin:0}
+.cab-fields .cab-door-controls > .btn {flex:0 0 auto;min-height:40px;margin:0;padding:6px 10px;background:#f8f2e9;color:#80552f;border-color:#ddc9b0}
 .cab-fields .cab-bay-inspector .cab-help {margin-top:0;padding:10px 0}
 .cab-bay-inspector .cab-help > summary {min-height:28px;line-height:28px}
 .cab-bay-inspector .cab-help[open] > summary {margin-bottom:12px}
 .cab-bay-inspector .cab-hint {font-size:11px;line-height:1.6;margin:8px 0 12px}
 .cab-bay-inspector label {margin-bottom:12px}
 .cab-bay-inspector input[type=number],.cab-bay-inspector select {box-sizing:border-box;max-width:100%}
+/* Parent groups frame their children; nested disclosures keep a quieter indented rail. */
+.cab-workspace .cab-fields .cab-help.cab-door-details {border:1px solid var(--line,#ddd);border-radius:8px;background:var(--soft,#f8f5ef);padding:8px 12px;margin-bottom:12px}
+.cab-door-details > summary {color:var(--ink);font-size:13px}
+.cab-workspace .cab-fields .cab-door-details > .cab-help {margin:8px 0 12px 8px;padding:4px 0 4px 12px;border-top:0;border-left:2px solid var(--line,#ddd)}
+.cab-door-details > .cab-help > summary {font-size:12px;color:var(--muted)}
+.cab-workspace .cab-fields .cab-front-appearance .form {grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:8px 12px}
+.cab-workspace .cab-fields .cab-setting {margin-bottom:8px}
+.cab-workspace .cab-fields .cab-setting-source {min-height:28px;gap:6px}
+.cab-workspace .cab-fields .cab-setting-source .btn {min-height:28px;min-width:0;padding:3px 8px;font-size:11px;line-height:20px}
 /* Full viewport workspace, with a useful inspector width and paired dimensions. */
 .dlg-box.wide.cab-fullscreen:has(.cab-workspace){width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0;display:flex;flex-direction:column;box-sizing:border-box}
 .cab-fullscreen>.dlg-head{flex:none;padding:12px 20px;gap:12px}
