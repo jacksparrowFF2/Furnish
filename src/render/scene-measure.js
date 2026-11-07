@@ -6,18 +6,21 @@ function create({THREE,stage,canvas,camera,hitAt,available,navigationHeld,invali
  const ns='http://www.w3.org/2000/svg',button=document.getElementById('vMeasure');
  const overlay=document.createElementNS(ns,'svg');overlay.classList.add('scene-measure-overlay');overlay.setAttribute('aria-hidden','true');stage.append(overlay);
  const panel=document.createElement('section');panel.className='scene-measure-panel';panel.hidden=true;
- panel.innerHTML=`<b>${tr('3D 测量','3D measurement')}</b><output aria-live="polite"></output><small></small><div class="actions"><button class="btn" data-back>${tr('重选终点','Reselect end')}</button><button class="btn" data-clear>${tr('清除','Clear')}</button><button class="btn" data-close>${tr('退出 (Esc)','Exit (Esc)')}</button></div>`;stage.append(panel);
- let enabled=false,a=null,b=null,hover=null,down=null;
+ panel.innerHTML=`<b>${tr('3D 测量','3D measurement')}</b><div class="actions"><button class="btn" data-vertical aria-pressed="false">${tr('垂直锁定','Lock vertical')}</button></div><output aria-live="polite"></output><small></small><div class="actions"><button class="btn" data-back>${tr('重选终点','Reselect end')}</button><button class="btn" data-clear>${tr('清除','Clear')}</button><button class="btn" data-close>${tr('退出 (Esc)','Exit (Esc)')}</button></div>`;stage.append(panel);
+ let enabled=false,a=null,b=null,hover=null,down=null,vertical=false,shift=false,lockedEnd=false;
  const fmt=v=>String(Math.round(v*1000));
+ const locked=()=>b?lockedEnd:vertical||shift;
+ const endpoint=p=>p&&a&&locked()?new THREE.Vector3(a.x,p.y,a.z):p;
  function status(){
-  panel.querySelector('output').textContent=b?`${tr('直线','Distance')} ${fmt(a.distanceTo(b))} mm · ${tr('水平','Horizontal')} ${fmt(Math.hypot(b.x-a.x,b.z-a.z))} mm · ${tr('高差','Height difference')} ${fmt(Math.abs(b.y-a.y))} mm`:a?tr('请选择终点','Choose the end point'):tr('请选择起点','Choose the start point');
-  panel.querySelector('small').textContent=tr('点实体表面，靠近顶点自动吸附。拖动旋转／滚轮缩放。结果临时显示，不保存；再次点选开始新测量。','Click surfaces; nearby vertices snap. Drag to orbit / scroll to zoom. Temporary result, not saved; click again for a new measurement.');
+  const end=endpoint(b),on=locked(),toggle=panel.querySelector('[data-vertical]');toggle.classList.toggle('on',on);toggle.setAttribute('aria-pressed',String(on));
+  panel.querySelector('output').textContent=b?`${on?tr('垂直','Vertical'):tr('直线','Distance')} ${fmt(a.distanceTo(end))} mm · ${tr('水平','Horizontal')} ${fmt(Math.hypot(end.x-a.x,end.z-a.z))} mm · ${tr('高差','Height difference')} ${fmt(Math.abs(end.y-a.y))} mm`:a?on?tr('垂直锁定 · 请选择目标表面高度','Vertical locked · choose a target surface height'):tr('请选择终点','Choose the end point'):tr('请选择起点','Choose the start point');
+  panel.querySelector('small').textContent=on?tr('终点取目标表面高度，投影至起点正上／下方；虚线连接实际取点，不代表该竖线上存在实体。结果临时显示，不保存。','Uses the target surface height, projected above/below the start. Dashed line leads to the picked surface; the projected end may be in empty space. Not saved.'):tr('点表面，靠近顶点吸附。按住 Shift 临时垂直锁定。拖动旋转／滚轮缩放。结果临时显示，不保存；再次点选开始新测量。','Click surfaces; nearby vertices snap. Hold Shift to lock vertically. Drag to orbit / scroll to zoom. Not saved; click again for a new measurement.');
   panel.querySelector('[data-back]').disabled=!b;panel.querySelector('[data-clear]').disabled=!a;
  }
  function clear(){a=b=hover=null;down=null;status();update();}
  function set(value){
   if(value&&!available())return;
-  enabled=!!value;if(enabled)onStart();else clear();panel.hidden=!enabled;
+  enabled=!!value;if(enabled)onStart();else {shift=false;clear();}panel.hidden=!enabled;
   button.classList.toggle('on',enabled);button.setAttribute('aria-pressed',String(enabled));canvas.style.cursor=enabled?'crosshair':'';status();update();invalidate();
  }
  function project(p){const v=p.clone().project(camera);return {x:(v.x+1)*stage.clientWidth/2,y:(1-v.y)*stage.clientHeight/2,shown:v.z>=-1&&v.z<=1};}
@@ -43,19 +46,20 @@ function create({THREE,stage,canvas,camera,hitAt,available,navigationHeld,invali
   if(enabled&&!available()){set(false);return;}
   overlay.replaceChildren();if(!enabled)return;
   const add=(tag,attrs,text)=>{const el=document.createElementNS(ns,tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,v);if(text)el.textContent=text;overlay.append(el);};
-  const end=b||hover?.p,pa=a&&project(a),pb=end&&project(end);
-  if(pa?.shown&&pb?.shown){add('line',{x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y});const x=Math.max(60,Math.min(stage.clientWidth-60,(pa.x+pb.x)/2)),y=Math.max(22,Math.min(stage.clientHeight-12,(pa.y+pb.y)/2-12));add('text',{x,y,'text-anchor':'middle'},`${fmt(a.distanceTo(end))} mm`);}
+  const raw=b||hover?.p,end=endpoint(raw),pa=a&&project(a),pb=end&&project(end),reference=raw&&project(raw);
+  if(pa?.shown&&pb?.shown){add('line',{'data-measure-main':'',x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y});const x=Math.max(60,Math.min(stage.clientWidth-60,(pa.x+pb.x)/2)),y=Math.max(22,Math.min(stage.clientHeight-12,(pa.y+pb.y)/2-12));add('text',{x,y,'text-anchor':'middle'},`${locked()?tr('垂直 ','Vertical '):''}${fmt(a.distanceTo(end))} mm`);}
+  if(locked()&&pb?.shown&&reference?.shown&&raw.distanceTo(end)>.0001){add('line',{'data-measure-reference':'',x1:pb.x,y1:pb.y,x2:reference.x,y2:reference.y,'stroke-dasharray':'4 4',opacity:.65});add('circle',{cx:reference.x,cy:reference.y,r:3,opacity:.65});}
   for(const p of [pa,pb])if(p?.shown)add('circle',{cx:p.x,cy:p.y,r:5});
-  if(!b&&hover?.snapped&&pb?.shown)add('rect',{x:pb.x-7,y:pb.y-7,width:14,height:14});
+  if(!b&&hover?.snapped&&reference?.shown)add('rect',{x:reference.x-7,y:reference.y-7,width:14,height:14});
  }
- stage.addEventListener('pointerdown',e=>{if(enabled&&e.target===canvas){down=null;if(e.isPrimary!==false&&e.button===0&&!navigationHeld()&&!e.shiftKey&&!e.altKey&&!e.ctrlKey&&!e.metaKey)down={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};}},true);
- stage.addEventListener('pointermove',e=>{if(!enabled||e.target!==canvas)return;if(down&&down.id===e.pointerId&&Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)down.moved=true;hover=point(e);update();},true);
+ stage.addEventListener('pointerdown',e=>{if(enabled&&e.target===canvas){shift=e.shiftKey;down=null;if(e.isPrimary!==false&&e.button===0&&!navigationHeld()&&!e.altKey&&!e.ctrlKey&&!e.metaKey)down={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};}},true);
+ stage.addEventListener('pointermove',e=>{if(!enabled||e.target!==canvas)return;shift=e.shiftKey;if(down&&down.id===e.pointerId&&Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)down.moved=true;hover=point(e);status();update();},true);
  stage.addEventListener('pointerup',e=>{
   if(!enabled||e.target!==canvas||e.button!==0)return;
   const d=down;down=null;
   // Block selection, doors and furniture movement, while OrbitControls can
   // still finish its pointer gesture on the canvas.
-  if(d&&d.id===e.pointerId&&!d.moved&&Math.hypot(e.clientX-d.x,e.clientY-d.y)<=5){const next=point(e);if(next){if(!a||b){a=next.p;b=null;}else if(a.distanceTo(next.p)>.0001)b=next.p;hover=next;status();update();}}
+  if(d&&d.id===e.pointerId&&!d.moved&&Math.hypot(e.clientX-d.x,e.clientY-d.y)<=5){shift=e.shiftKey;const next=point(e);if(next){if(!a||b){a=next.p;b=null;}else if(a.distanceTo(endpoint(next.p))>.0001){lockedEnd=vertical||shift;b=next.p;}hover=next;status();update();}}
  },true);
  // OrbitControls installs pointerup dynamically on pointerdown; let it finish
  // normally. The production tap handler checks active() before editing items.
@@ -65,12 +69,16 @@ function create({THREE,stage,canvas,camera,hitAt,available,navigationHeld,invali
  button.onclick=()=>set(!enabled);
  panel.querySelector('[data-close]').onclick=()=>set(false);panel.querySelector('[data-clear]').onclick=clear;
  panel.querySelector('[data-back]').onclick=()=>{b=null;hover=null;status();update();};
+ panel.querySelector('[data-vertical]').onclick=()=>{vertical=!locked();lockedEnd=vertical;status();update();};
  for(const name of ['pointerdown','pointerup','dblclick','wheel'])panel.addEventListener(name,e=>e.stopPropagation());
  window.addEventListener('keydown',e=>{
   if(!available()||!document.getElementById('dlg').hidden||e.target.closest('input,select,textarea,[contenteditable="true"]')||e.ctrlKey||e.metaKey||e.altKey)return;
-  const key=e.key.toLowerCase();if(key==='m'){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)set(!enabled);}
+  const key=e.key.toLowerCase();if(enabled&&key==='shift'){shift=true;status();update();}
+  else if(key==='m'){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)set(!enabled);}
   else if(enabled&&['escape','v','delete','backspace'].includes(key)){e.preventDefault();e.stopImmediatePropagation();if(key==='delete'||key==='backspace')clear();else set(false);}
  },true);
+ window.addEventListener('keyup',e=>{if(e.key==='Shift'){shift=false;if(enabled){status();update();}}},true);
+ window.addEventListener('blur',()=>{shift=false;down=null;if(enabled){status();update();}});
  return {active:()=>enabled,set,clear,update};
 }
 root.FurnishSceneMeasure={create};
