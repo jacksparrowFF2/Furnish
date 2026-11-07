@@ -1,0 +1,7 @@
+{
+  "scripts/blender-model-cat-food-2kg.py": "b2ac23d7feb3f13157a0cf2a408d1de37e56e87d62d9b15a6891ce68adc9c4ab",
+  "scripts/publish-cat-food-2kg.py": "9db6b51bf563817129ca2ee0f7abeaca62a8dcd60386f13072692f31783d6603",
+  "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend": "9f25376fe1866b848b29a06fa3a54f84bc85ce630218ce06e0ce5dc8bf49e6c7",
+  "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb": "2cc125892a535e00e2af6fede387177291cd1c185070f0c511416a9b8ba3345b",
+  "src/data/cat-food-2kg-blender-asset.js": "ee207b110583620d183072b16260b44c2f895d01dede10a715ae51d050cf8d2d"
+}

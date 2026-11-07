@@ -8,11 +8,11 @@
 
 | 内容 | 文件 |
 |---|---|
-| 可编辑源 | [BLEND](../storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend) |
-| 交换模型 | [GLB](../storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.glb) |
+| 可编辑源 | [BLEND](../storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend) |
+| 交换模型 | [GLB](../storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb) |
 | 离线运行资产 | [JS](../../../src/data/cat-food-2kg-blender-asset.js) |
 | 生产构造器 | [代码](../../../src/render/storage-supply-model.js) |
-当前源GLB SHA256：0f06b5149bbf2479deebaf63343ac1953abde77aa2e6cb62e2c5335cd8434b34。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
+当前源GLB SHA256：2cc125892a535e00e2af6fede387177291cd1c185070f0c511416a9b8ba3345b。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
 
 ## 输入参考资料
 
@@ -24,7 +24,8 @@
 ## 验收入口
 
 - [验收资料](../../../docs/validation/cat-food-2kg-visual-20261107/README.md)
+- [验收资料](../../../docs/validation/cat-food-2kg-side-20261107/README.md)
 
 ## 资料差异
 
-- 图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，侧背简化。
+- 图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，右侧按可见品牌／浅色区／营养表／图标映射；左侧与背面简化。

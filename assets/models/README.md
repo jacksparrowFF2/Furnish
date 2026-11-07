@@ -16,7 +16,7 @@
 | [源氏木语-柏林单人沙发椅](armchair-berlin/README.md) | 2 | [BLEND](armchair-berlin/v3/armchair-berlin-v1.blend) · [GLB](armchair-berlin/v3/armchair-berlin-v1.glb) | 0 |
 | [九款艺术玻璃隔断](art-glass/README.md) | 3 | 参数化 | 0 |
 | [定制柜体设计图](cabinet-design-references/README.md) | 3 | 参考资料 | 0 |
-| [猫粮袋 · 2kg紫白参考](cat-food-2kg/README.md) | 2 | [BLEND](storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend) · [GLB](storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.glb) | 0 |
+| [猫粮袋 · 2kg紫白参考](cat-food-2kg/README.md) | 2 | [BLEND](storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend) · [GLB](storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb) | 0 |
 | [通天柱猫爬架 · 套餐二（京东10141711472484）](cat-tower/README.md) | 1 | [BLEND](cat-tower/v2/cat-tower-v1.blend) · [GLB](cat-tower/v2/cat-tower-v1.glb) | 0 |
 | [猫爬架-绿叶成荫围栏款](cat-tree/README.md) | 1 | 参数化 | 0 |
 | [石膏板吊顶与灯带](ceiling-lighting/README.md) | 5 | 参考资料 | 0 |

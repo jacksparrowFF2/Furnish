@@ -12,6 +12,10 @@ pixels=list(source.pixels[:]);sw,sh=source.size
 # An atlas: front half, explicitly simplified reverse/side half. Four-corner
 # rectification removes the photographed bag's perspective, not its lighting.
 tw,th=768,768;data=[]
+def edge_at_y(points,y):
+ for a,b in zip(points,points[1:]):
+  if y<=b[0]:return a[1]+(b[1]-a[1])*(y-a[0])/(b[0]-a[0])
+ return points[-1][1]
 for y in range(th):
  v=y/(th-1);t=1-v
  for x in range(tw):
@@ -24,8 +28,21 @@ for y in range(th):
    left=edge_at([(0,208),(.20,199),(.55,151),(1,146)]);right=edge_at([(0,711),(.25,699),(.55,672),(1,657)])-12*min(1,t/.18)
    px=left+(right-left)*u;py=(885+(928-885)*u)*t+(100+(76-100)*u)*v
    ix=max(0,min(sw-1,round(px)));iy=max(0,min(sh-1,sh-1-round(py)));i=(iy*sw+ix)*4;data.extend(pixels[i:i+4])
+  elif x>=tw*.89:
+   # Only the visible physical right side is photographed. Preserve its logo,
+   # pale panel, nutrition lines and handling pictograms without inventing text.
+   side_u=(x-tw*.89)/(tw-1-tw*.89);py=76+(852-23*side_u)*t
+   if py<250:
+    # The photographed apex is nearly black purple; extend its measured centre
+    # pixel into the occluded folded header instead of adding a pale triangle.
+    i=((sh-1-270)*sw+713)*4;data.extend(pixels[i:i+4])
+   else:
+    left=edge_at_y([(250,712),(270,708),(300,701),(350,689),(400,678),(450,671),(500,667),(600,660),(750,658),(928,657)],py)
+    right=edge_at_y([(250,713),(270,716),(300,723),(350,734),(400,745),(450,752),(500,756),(600,760),(800,760),(928,760)],py)
+    inset=min(1,(right-left)*.2);left+=inset;right-=inset
+    px=left+(right-left)*side_u;ix=max(0,min(sw-1,round(px)));iy=max(0,min(sh-1,sh-1-round(py)));i=(iy*sw+ix)*4;data.extend(pixels[i:i+4])
   else:
-   c=(.37,.045,.34,1) if v<.11 or x>tw*.89 else (.77,.74,.81,1)
+   c=(.37,.045,.34,1) if v<.11 or x<tw*.54 or x>tw*.81 else (.77,.74,.81,1)
    data.extend(c)
 image=bpy.data.images.new('supplied-front-rectified-and-unprinted-reverse',width=tw,height=th);image.colorspace_settings.name='sRGB';image.pixels[:]=data;image.filepath_raw=str(out/'label-atlas.png');image.file_format='PNG';image.save();image.pack()
 def material(name,color):
@@ -46,7 +63,7 @@ verts=[];uvs=[];faces=[];nx,ny=48,80
 for side in [1,-1]:
  for j in range(ny+1):
   for i in range(nx+1):
-   u=i/nx;v=j/ny;verts.append(point(u,v,side));uvs.append((u*.499 if side==1 else .501+(1-u)*.498,v))
+   u=i/nx;v=j/ny;verts.append(point(u,v,side));uvs.append((u*.499 if side==1 else .501+(1-u)*.348,v))
 stride=nx+1;layer=stride*(ny+1)
 for side in range(2):
  off=side*layer
@@ -62,7 +79,11 @@ uv=mesh.uv_layers.new(name='label')
 for pi,p in enumerate(mesh.polygons):
  p.use_smooth=True
  for li in p.loop_indices:
-  vi=mesh.loops[li].vertex_index;uv.data[li].uv=uvs[vi] if pi<2*nx*ny else (.95,verts[vi][2]/.4)
+  vi=mesh.loops[li].vertex_index
+  if pi<2*nx*ny:coord=uvs[vi]
+  elif pi<2*nx*ny+2*ny and (pi-2*nx*ny)%2==1:coord=(.89+(.109 if vi>=layer else 0),verts[vi][2]/.4)
+  else:coord=(.87,verts[vi][2]/.4)
+  uv.data[li].uv=coord
 o=bpy.data.objects.new('pouch-body',mesh);bpy.context.collection.objects.link(o);o.data.materials.append(printed)
 objects=[o]
 for index,h in enumerate([.348,.357]):
@@ -95,6 +116,7 @@ for o,_ in saved:o.data.materials[0]=clay
 scene.render.filepath=str(out/'clay.png');bpy.ops.render.render(write_still=True)
 for o,m in saved:o.data.materials[0]=m
 scene.render.filepath=str(out/'material.png');bpy.ops.render.render(write_still=True)
+camera.data.ortho_scale=.47;center=Vector((.06,0,.20));camera.location=Vector((1,-.6,.38));camera.rotation_euler=(center-camera.location).to_track_quat('-Z','Y').to_euler();scene.render.filepath=str(out/'right-side.png');bpy.ops.render.render(write_still=True)
 camera.data.ortho_scale=.13;center=Vector((-.02,-.02,.35));camera.location=center+Vector((.15,-.6,.15));camera.rotation_euler=(center-camera.location).to_track_quat('-Z','Y').to_euler();scene.render.filepath=str(out/'seal-detail.png');bpy.ops.render.render(write_still=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'review.blend'))
 pathlib.Path(args[args.index('--result')+1]).write_text(json.dumps(dict(result,blender=bpy.app.version_string)))

@@ -26,9 +26,10 @@
   ],
   "missingReferences": [],
   "validation": [
-    "docs/validation/cat-food-2kg-visual-20261107/README.md"
+    "docs/validation/cat-food-2kg-visual-20261107/README.md",
+    "docs/validation/cat-food-2kg-side-20261107/README.md"
   ],
   "notes": [
-    "图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，侧背简化。"
+    "图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，右侧按可见品牌／浅色区／营养表／图标映射；左侧与背面简化。"
   ]
 }

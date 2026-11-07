@@ -1590,16 +1590,16 @@
         400
       ],
       "parts": 3,
-      "runtimeVersion": 1,
+      "runtimeVersion": 2,
       "runtime": {
         "path": "src/data/cat-food-2kg-blender-asset.js",
-        "sha256": "4e73a46db0835952f72874ff2f0aad5247b9305f017ccaa0bdeb9786ac336405",
+        "sha256": "bd5a9d295dd66504584b1dc9fbd5ab6176c377b9a6de2d5f6708b204dd463703",
         "normalization": "utf8-lf"
       },
-      "sourceSha256": "0f06b5149bbf2479deebaf63343ac1953abde77aa2e6cb62e2c5335cd8434b34",
+      "sourceSha256": "2cc125892a535e00e2af6fede387177291cd1c185070f0c511416a9b8ba3345b",
       "current": {
-        "blend": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend",
-        "glb": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.glb"
+        "blend": "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend",
+        "glb": "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb"
       },
       "document": "docs/CAT-FOOD-2KG.md",
       "constructor": "src/render/storage-supply-model.js",
@@ -1607,13 +1607,13 @@
       "files": [
         {
           "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "6157469c778a5b27055de200531f40221746743c23842734fa7da672cee18a95",
           "bytes": 759701
         },
         {
           "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.glb",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "0f06b5149bbf2479deebaf63343ac1953abde77aa2e6cb62e2c5335cd8434b34",
           "bytes": 798084
         },
@@ -1640,6 +1640,24 @@
           "role": "retained-other",
           "sha256": "755e582271b9d7e9d1a8c245bdbab05a622cc145dd5badf5f6046f1d948ebfa7",
           "bytes": 761930
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend",
+          "role": "published-source",
+          "sha256": "9f25376fe1866b848b29a06fa3a54f84bc85ce630218ce06e0ce5dc8bf49e6c7",
+          "bytes": 828719
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb",
+          "role": "published-source",
+          "sha256": "2cc125892a535e00e2af6fede387177291cd1c185070f0c511416a9b8ba3345b",
+          "bytes": 871572
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-side-final/review.blend",
+          "role": "retained-other",
+          "sha256": "35450e83149385c0523c9020e80ee0ca39aea1cce6fd17724afa18a6b7789ac8",
+          "bytes": 831358
         },
         {
           "path": "assets/models/storage-supplies/cat-food-2kg/cat-food-2kg-v1.blend",
@@ -2329,10 +2347,11 @@
       ],
       "missingReferences": [],
       "validation": [
-        "docs/validation/cat-food-2kg-visual-20261107/README.md"
+        "docs/validation/cat-food-2kg-visual-20261107/README.md",
+        "docs/validation/cat-food-2kg-side-20261107/README.md"
       ],
       "notes": [
-        "图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，侧背简化。"
+        "图1通用自立袋260×400+120；图2外观参考，不作为商品实测规格。正面照片印刷，右侧按可见品牌／浅色区／营养表／图标映射；左侧与背面简化。"
       ],
       "manifest": "assets/models/cat-food-2kg/asset.json",
       "readme": "assets/models/cat-food-2kg/README.md"

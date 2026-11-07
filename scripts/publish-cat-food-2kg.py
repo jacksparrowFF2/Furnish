@@ -26,7 +26,7 @@ try:
  for k,(low,high) in enumerate([(-.13,.13),(0,.4),(-.06,.06)]):
   vals=[v for p in parts for v in p['positions'][k::3]]
   if max(abs(min(vals)-low),abs(max(vals)-high))>1e-6:raise ValueError('Pouch envelope differs from reference')
- payload={'format':1,'version':1,'id':'cat-food-2kg','sizeMm':[260,400,120],'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'parts':parts,'textures':textures}
+ payload={'format':1,'version':2,'id':'cat-food-2kg','sizeMm':[260,400,120],'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'parts':parts,'textures':textures}
  text='/* User reference printed pouch, scoped texture asset. */\n(function(root){const asset='+json.dumps(payload,separators=(',',':'),allow_nan=False)+';if(typeof module==="object"&&module.exports)module.exports=asset;else root.FurnishCatFood2kgAsset=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
  temp=target.with_suffix('.tmp');temp.write_text(text,encoding='utf-8');temp.replace(target);result.write_text(json.dumps({'passed':True,'parts':len(parts),'textures':len(textures),'blender':bpy.app.version_string}))
 except Exception as e:

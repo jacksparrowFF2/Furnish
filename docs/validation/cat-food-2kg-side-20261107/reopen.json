@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "profile": "cat-food-2kg",
+  "blender": "5.2.3 LTS",
+  "source": "downloaded-render-blend",
+  "results": [
+    {
+      "case": "front",
+      "parts": 3,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "oblique",
+      "parts": 3,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "back",
+      "parts": 3,
+      "boundsAndAlpha": true
+    }
+  ]
+}

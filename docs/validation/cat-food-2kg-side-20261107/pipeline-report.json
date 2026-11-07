@@ -1,0 +1,437 @@
+{
+  "passed": true,
+  "profile": "cat-food-2kg",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "cat_food_myfoodie_2kg",
+    "name": "猫粮袋 · 2kg紫白参考",
+    "w": 260,
+    "d": 120,
+    "color": "#863478",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "麦富迪（外观参考）",
+    "model": "2kg紫白夹心粮参考；通用袋尺寸260×400+120",
+    "sourceUrl": "",
+    "h": 400
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-07T07:53:06.188Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-P9e7Nd\\cat-food-2kg-HJ92za",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-07T07:53:06.188Z",
+      "result": {
+        "command": "author-cat-food-2kg",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-P9e7Nd\\cat-food-2kg-HJ92za\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-P9e7Nd\\cat-food-2kg-HJ92za\\authored",
+        "passed": true,
+        "profile": "cat-food-2kg",
+        "parts": 3,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "cat-food-2kg",
+          "parts": 3,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-07T07:53:24.105Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-07T07:53:24.106Z",
+      "result": {
+        "passed": true,
+        "profile": "cat-food-2kg",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-07T07:53:24.979Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-07T07:53:24.979Z",
+      "result": {
+        "command": "publish-cat-food-2kg",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-P9e7Nd\\cat-food-2kg-HJ92za\\authored\\cat-food-2kg-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-P9e7Nd\\workspace\\src\\data\\cat-food-2kg-blender-asset.js",
+        "passed": true,
+        "parts": 3,
+        "textures": 1,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "2cc125892a535e00e2af6fede387177291cd1c185070f0c511416a9b8ba3345b",
+        "runtimeSha256": "ee207b110583620d183072b16260b44c2f895d01dede10a715ae51d050cf8d2d"
+      },
+      "finished": "2026-11-07T07:53:26.677Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-07T07:53:26.678Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "cat-food-2kg",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-P9e7Nd\\cat-food-2kg-HJ92za\\storage-supplies.log",
+            "reused": false
+          },
+          {
+            "name": "cat-food-2kg",
+            "profile": "cat-food-2kg",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-P9e7Nd\\cat-food-2kg-HJ92za\\cat-food-2kg.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "cat-food-2kg",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 3,
+                  "bottom": 0,
+                  "top": 400,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 3,
+                  "bottom": 0,
+                  "top": 400,
+                  "externalDistance": 89.76577969948025,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 3,
+                  "bottom": 0,
+                  "top": 400,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 3,
+                  "bottom": 0,
+                  "top": 400,
+                  "externalDistance": 89.76577969948025,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-07T07:53:30.767Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-07T07:53:30.767Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 3,
+            "bounds": [
+              [
+                -0.12999999523162842,
+                0,
+                -0.05999999865889549
+              ],
+              [
+                0.12999999523162842,
+                0.4000000059604645,
+                0.05999999865889549
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 3,
+            "bounds": [
+              [
+                -0.14560000598430634,
+                0,
+                -0.06480000168085098
+              ],
+              [
+                0.14560000598430634,
+                0.4320000112056732,
+                0.06480000168085098
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 3,
+            "bounds": [
+              [
+                -0.12999999523162842,
+                0,
+                -0.05999999865889549
+              ],
+              [
+                0.12999999523162842,
+                0.4000000059604645,
+                0.05999999865889549
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T07:53:56.111Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-07T07:53:56.111Z",
+      "result": {
+        "passed": true,
+        "profile": "cat-food-2kg",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 3,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 3,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 3,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T07:53:57.405Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-07T07:53:57.406Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 3,
+            "position": [
+              0,
+              0.20000000298023224,
+              0.9153625975755458
+            ],
+            "target": [
+              0,
+              0.20000000298023224,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 3,
+            "position": [
+              0.5067781743721805,
+              0.47872799888493156,
+              0.7094894441210526
+            ],
+            "target": [
+              0,
+              0.20000000298023224,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 3,
+            "position": [
+              -0.5182220235748661,
+              0.40728881241017867,
+              -0.7255108330048124
+            ],
+            "target": [
+              0,
+              0.20000000298023224,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-07T07:54:17.007Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-07T07:54:17.008Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T07:54:20.164Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-07T07:54:20.165Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T07:54:23.272Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-07T07:54:23.272Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-07T07:54:26.409Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-07T07:54:26.409Z",
+      "result": {
+        "passed": true,
+        "profile": "cat-food-2kg",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 3,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 3,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 3,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-07T07:54:27.206Z"
+    }
+  ],
+  "finished": "2026-11-07T07:54:27.206Z"
+}
