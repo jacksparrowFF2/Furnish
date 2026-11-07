@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "desktop: controls, atomic activation/undo/redo, grid/stagger/yaw/gaps/layers, invalid values, lock/detach, v71 project, production GLB, save/reload, narrow",
+    "http same controls and production geometry",
+    "file same controls and production geometry offline"
+  ],
+  "errors": []
+}

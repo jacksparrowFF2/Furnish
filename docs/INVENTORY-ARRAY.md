@@ -2,7 +2,7 @@
 
 ## 能力与数据
 
-猫砂 `cat_litter_yanxuan_25kg`、猫粮 `cat_food_myfoodie_2kg`、VIHALS 折叠椅 `chair_ikea_vihals` 、湿巾 `wet_wipes_pack_170` 与方块 `block` 支持关联阵列。纸品继续使用 [paperArray](PAPER-ARRAY.md) 的生产模型内部阵列。没有扩大到普通餐椅、换鞋凳或其它类型。
+猫砂 `cat_litter_yanxuan_25kg`、猫粮 `cat_food_myfoodie_2kg`、VIHALS 折叠椅 `chair_ikea_vihals` 、湿巾 `wet_wipes_pack_170` 、佳帮手工具箱 `toolbox_jiabangshou_390` 与方块 `block` 支持关联阵列。纸品继续使用 [paperArray](PAPER-ARRAY.md) 的生产模型内部阵列。没有扩大到普通餐椅、换鞋凳或其它类型。
 
 关联阵列复用原家具记录：每件保留独立ID、型号、原生产构造器、姿态、材质、价格及采购资料；不是将整组缩放为一个实体。数量变化才新增或删除末尾成员，新增件复制首件单品并使用新ID、计划采购状态，已有件的采购信息保留。测距、碰撞、预算与生产GLB继续消费普通家具记录，不重复统计。
 
@@ -13,7 +13,7 @@
 | id | 当前方案内的阵列身份，1–200字符 |
 | index | 成员序号，0–199；全组唯一、连续 |
 | columns / rows | 每排数量／每层排数，各1–50整数 |
-| gapX / gapZ / gapY | 左右／前后／层间距；猫砂／猫粮／湿巾0–1000mm，VIHALS为−1000–1000mm并要求各向中心节距大于0 |
+| gapX / gapZ / gapY | 左右／前后／层间距；除VIHALS外均0–1000mm，VIHALS为−1000–1000mm并要求各向中心节距大于0 |
 | pattern | grid 或隔排错位半格的 stagger |
 | angle | 单件相对阵列平面轴的0／90／180／270度转向 |
 
@@ -78,3 +78,7 @@ MCP 沿现有 `get_furniture_parameters` / `configure_furniture`，没有增加�
 ## 方块（2026-11-07）
 
 方块复用同一关联阵列能力及非负间距范围，显式字段最低v69；旧实例不自动转换。尺寸/离地、保存和验证见[方块占位体](BLOCK-PLACEHOLDER.md#关联阵列2026-11-07)。
+
+## 佳帮手工具箱（2026-11-08）
+
+大号390×270×210mm工具箱复用相同关联阵列，支持总数/层/排/列、三向非负间距、错位排列和单件转向；每件仍为16部件闭盖空箱，独立ID、安装离地、采购和实际空间实体保持。显式阵列采用v71，旧单件仍最低v57（姿态v58），缺失字段不自动补写或移动。仅新增软件阵列能力，不推定实物堆放稳定性或箱内空腔，也未修改当前正式方案。见[定向验收](validation/toolbox-array-20261108/README.md)。

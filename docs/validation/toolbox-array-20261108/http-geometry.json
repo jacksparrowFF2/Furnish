@@ -1,0 +1,3601 @@
+{
+  "parts": [
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -0.9195315809629682,
+          0.6036383999977261,
+          -0.31126474731095355
+        ],
+        [
+          -0.7887959009098963,
+          0.7803615987300873,
+          -0.14429965036094217
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:body",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1284,
+      "bounds": [
+        [
+          -1.1567291206704913,
+          0.6,
+          -0.5185383503534626
+        ],
+        [
+          -0.7432708793295086,
+          0.7879999935626983,
+          -0.08146164964653735
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.1112040990901038,
+          0.6036383999977261,
+          -0.4557003496390578
+        ],
+        [
+          -0.9804684190370317,
+          0.7803615987300873,
+          -0.28873525268904643
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.1296241738391797,
+          0.7455000042915344,
+          -0.20237247288062926
+        ],
+        [
+          -0.9961589710749885,
+          0.7805000007152557,
+          -0.09803670108591278
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1728,
+      "bounds": [
+        [
+          -1.1663244325848032,
+          0.79200000166893,
+          -0.5281336084613184
+        ],
+        [
+          -0.7336755674151967,
+          0.809999993443489,
+          -0.07186639153868152
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.1637610947844235,
+          0.8020000070333481,
+          -0.5255703244673948
+        ],
+        [
+          -0.7362389052155764,
+          0.8039999961853027,
+          -0.07442967553260516
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.1087302542149866,
+          0.8055000066757202,
+          -0.4789043539457779
+        ],
+        [
+          -0.7912697457850133,
+          0.8084999978542328,
+          -0.12109564605422207
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -0.9038410289250114,
+          0.7455000042915344,
+          -0.5019632989140872
+        ],
+        [
+          -0.7703758261608203,
+          0.7805000007152557,
+          -0.3976275271193707
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 852,
+      "bounds": [
+        [
+          -1.1512311248028408,
+          0.7509999930858612,
+          -0.5130403589696836
+        ],
+        [
+          -0.748768875197159,
+          0.7909999996423721,
+          -0.08695964103031639
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -0.9354862967152979,
+          0.7560000032186508,
+          -0.20924125216962333
+        ],
+        [
+          -0.894597095772687,
+          0.7899999976158142,
+          -0.17779943321367705
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -0.8584539700929967,
+          0.7560000032186508,
+          -0.31146660231112017
+        ],
+        [
+          -0.8175647691503858,
+          0.7899999976158142,
+          -0.2800247833551739
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.003584131281753,
+          0.7554999947547912,
+          -0.40091945899009285
+        ],
+        [
+          -0.790995981963233,
+          0.7905000060796737,
+          -0.1196409583842884
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.0824352308496141,
+          0.7560000032186508,
+          -0.3199752166448261
+        ],
+        [
+          -1.0415460299070032,
+          0.7899999976158142,
+          -0.2885333976888798
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.005402904227313,
+          0.7560000032186508,
+          -0.4222005667863229
+        ],
+        [
+          -0.964513703284702,
+          0.7899999976158142,
+          -0.3907587478303767
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.1090040180367668,
+          0.7554999947547912,
+          -0.4803590416157116
+        ],
+        [
+          -0.896415868718247,
+          0.7905000060796737,
+          -0.19908054100990713
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+      "id": "toolbox",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 864,
+      "bounds": [
+        [
+          -1.1625251816773412,
+          0.7809999942779541,
+          -0.5243344113603123
+        ],
+        [
+          -0.7374748183226588,
+          0.793000003695488,
+          -0.07566558863968761
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.14314952377621,
+          0.6036383999977261,
+          -0.4797729537935273
+        ],
+        [
+          -1.012413843723138,
+          0.7803615987300873,
+          -0.3128078568435159
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:body",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1284,
+      "bounds": [
+        [
+          -1.3803470634837331,
+          0.6,
+          -0.6870465568360364
+        ],
+        [
+          -0.9668888221427505,
+          0.7879999935626983,
+          -0.2499698561291111
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.3348220419033456,
+          0.6036383999977261,
+          -0.6242085561216315
+        ],
+        [
+          -1.2040863618502737,
+          0.7803615987300873,
+          -0.4572434591716202
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.3532421166524213,
+          0.7455000042915344,
+          -0.370880679363203
+        ],
+        [
+          -1.2197769138882304,
+          0.7805000007152557,
+          -0.26654490756848653
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1728,
+      "bounds": [
+        [
+          -1.389942375398045,
+          0.79200000166893,
+          -0.6966418149438922
+        ],
+        [
+          -0.9572935102284386,
+          0.809999993443489,
+          -0.24037459802125527
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.3873790375976653,
+          0.8020000070333481,
+          -0.6940785309499686
+        ],
+        [
+          -0.9598568480288183,
+          0.8039999961853027,
+          -0.2429378820151789
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.3323481970282285,
+          0.8055000066757202,
+          -0.6474125604283516
+        ],
+        [
+          -1.0148876885982552,
+          0.8084999978542328,
+          -0.2896038525367958
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.1274589717382533,
+          0.7455000042915344,
+          -0.670471505396661
+        ],
+        [
+          -0.9939937689740622,
+          0.7805000007152557,
+          -0.5661357336019445
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 852,
+      "bounds": [
+        [
+          -1.3748490676160827,
+          0.7509999930858612,
+          -0.6815485654522573
+        ],
+        [
+          -0.9723868180104008,
+          0.7909999996423721,
+          -0.25546784751289014
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.1591042395285398,
+          0.7560000032186508,
+          -0.3777494586521971
+        ],
+        [
+          -1.1182150385859289,
+          0.7899999976158142,
+          -0.3463076396962508
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.0820719129062386,
+          0.7560000032186508,
+          -0.4799748087936939
+        ],
+        [
+          -1.0411827119636277,
+          0.7899999976158142,
+          -0.44853298983774764
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.227202074094995,
+          0.7554999947547912,
+          -0.5694276654726665
+        ],
+        [
+          -1.0146139247764747,
+          0.7905000060796737,
+          -0.28814916486686215
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.306053173662856,
+          0.7560000032186508,
+          -0.48848342312739984
+        ],
+        [
+          -1.265163972720245,
+          0.7899999976158142,
+          -0.45704160417145356
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.2290208470405548,
+          0.7560000032186508,
+          -0.5907087732688967
+        ],
+        [
+          -1.1881316460979439,
+          0.7899999976158142,
+          -0.5592669543129504
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.332621960850009,
+          0.7554999947547912,
+          -0.6488672480982853
+        ],
+        [
+          -1.1200338115314887,
+          0.7905000060796737,
+          -0.3675887474924809
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+      "id": "fmw6nlklo49",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 864,
+      "bounds": [
+        [
+          -1.3861431244905829,
+          0.7809999942779541,
+          -0.6928426178428861
+        ],
+        [
+          -0.9610927611359007,
+          0.793000003695488,
+          -0.24417379512226137
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.2780847118619283,
+          0.6036383999977261,
+          -0.06807829143285005
+        ],
+        [
+          -1.1473490318088564,
+          0.7803615987300873,
+          0.09888680551716134
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:body",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1284,
+      "bounds": [
+        [
+          -1.5152822515694515,
+          0.6,
+          -0.2753518944753591
+        ],
+        [
+          -1.1018240102284689,
+          0.7879999935626983,
+          0.16172480623156615
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.469757229989064,
+          0.6036383999977261,
+          -0.2125138937609543
+        ],
+        [
+          -1.339021549935992,
+          0.7803615987300873,
+          -0.045548796810942926
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.48817730473814,
+          0.7455000042915344,
+          0.04081398299747423
+        ],
+        [
+          -1.3547121019739488,
+          0.7805000007152557,
+          0.14514975479219072
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1728,
+      "bounds": [
+        [
+          -1.5248775634837635,
+          0.79200000166893,
+          -0.28494715258321496
+        ],
+        [
+          -1.092228698314157,
+          0.809999993443489,
+          0.17132006433942198
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.5223142256833837,
+          0.8020000070333481,
+          -0.2823838685892913
+        ],
+        [
+          -1.0947920361145367,
+          0.8039999961853027,
+          0.16875678034549835
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.4672833851139468,
+          0.8055000066757202,
+          -0.2357178980676744
+        ],
+        [
+          -1.1498228766839735,
+          0.8084999978542328,
+          0.12209080982388143
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.2623941598239716,
+          0.7455000042915344,
+          -0.2587768430359837
+        ],
+        [
+          -1.1289289570597805,
+          0.7805000007152557,
+          -0.1544410712412672
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 852,
+      "bounds": [
+        [
+          -1.509784255701801,
+          0.7509999930858612,
+          -0.2698539030915801
+        ],
+        [
+          -1.1073220060961193,
+          0.7909999996423721,
+          0.1562268148477871
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.2940394276142582,
+          0.7560000032186508,
+          0.03394520370848017
+        ],
+        [
+          -1.2531502266716472,
+          0.7899999976158142,
+          0.06538702266442645
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.217007100991957,
+          0.7560000032186508,
+          -0.06828014643301666
+        ],
+        [
+          -1.176117900049346,
+          0.7899999976158142,
+          -0.03683832747707039
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.3621372621807133,
+          0.7554999947547912,
+          -0.15773300311198934
+        ],
+        [
+          -1.1495491128621933,
+          0.7905000060796737,
+          0.1235454974938151
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.4409883617485744,
+          0.7560000032186508,
+          -0.07678876076672259
+        ],
+        [
+          -1.4000991608059634,
+          0.7899999976158142,
+          -0.04534694181077631
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.3639560351262732,
+          0.7560000032186508,
+          -0.17901411090821942
+        ],
+        [
+          -1.3230668341836622,
+          0.7899999976158142,
+          -0.14757229195227314
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.467557148935727,
+          0.7554999947547912,
+          -0.23717258573760808
+        ],
+        [
+          -1.254968999617207,
+          0.7905000060796737,
+          0.04410591486819636
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+      "id": "fmw6nlklo50",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 864,
+      "bounds": [
+        [
+          -1.5210783125763014,
+          0.7809999942779541,
+          -0.28114795548220883
+        ],
+        [
+          -1.096027949221619,
+          0.793000003695488,
+          0.1675208672384159
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.5017026546751702,
+          0.6036383999977261,
+          -0.23658649791542383
+        ],
+        [
+          -1.3709669746220983,
+          0.7803615987300873,
+          -0.06962140096541244
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:body",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1284,
+      "bounds": [
+        [
+          -1.7389001943826934,
+          0.6,
+          -0.44386010095793293
+        ],
+        [
+          -1.3254419530417108,
+          0.7879999935626983,
+          -0.006783400251007626
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.6933751728023059,
+          0.6036383999977261,
+          -0.3810221002435281
+        ],
+        [
+          -1.562639492749234,
+          0.7803615987300873,
+          -0.2140570032935167
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.7117952475513816,
+          0.7455000042915344,
+          -0.12769422348509957
+        ],
+        [
+          -1.5783300447871906,
+          0.7805000007152557,
+          -0.02335845169038306
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1728,
+      "bounds": [
+        [
+          -1.7484955062970053,
+          0.79200000166893,
+          -0.4534553590657887
+        ],
+        [
+          -1.3158466411273988,
+          0.809999993443489,
+          0.0028118578568482044
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.7459321684966256,
+          0.8020000070333481,
+          -0.45089207507186513
+        ],
+        [
+          -1.3184099789277786,
+          0.8039999961853027,
+          0.00024857386292456707
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.6909013279271887,
+          0.8055000066757202,
+          -0.4042261045502482
+        ],
+        [
+          -1.3734408194972154,
+          0.8084999978542328,
+          -0.04641739665869235
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.4860121026372135,
+          0.7455000042915344,
+          -0.4272850495185575
+        ],
+        [
+          -1.3525468998730226,
+          0.7805000007152557,
+          -0.32294927772384097
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 852,
+      "bounds": [
+        [
+          -1.733402198515043,
+          0.7509999930858612,
+          -0.4383621095741539
+        ],
+        [
+          -1.3309399489093612,
+          0.7909999996423721,
+          -0.01228139163478667
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.5176573704275,
+          0.7560000032186508,
+          -0.1345630027740936
+        ],
+        [
+          -1.476768169484889,
+          0.7899999976158142,
+          -0.10312118381814733
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.4406250438051988,
+          0.7560000032186508,
+          -0.23678835291559044
+        ],
+        [
+          -1.399735842862588,
+          0.7899999976158142,
+          -0.20534653395964417
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.5857552049939552,
+          0.7554999947547912,
+          -0.3262412095945631
+        ],
+        [
+          -1.373167055675435,
+          0.7905000060796737,
+          -0.044962708988758676
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.6646063045618162,
+          0.7560000032186508,
+          -0.24529696724929637
+        ],
+        [
+          -1.6237171036192053,
+          0.7899999976158142,
+          -0.2138551482933501
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.587573977939515,
+          0.7560000032186508,
+          -0.3475223173907932
+        ],
+        [
+          -1.546684776996904,
+          0.7899999976158142,
+          -0.3160804984348469
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.6911750917489692,
+          0.7554999947547912,
+          -0.40568079222018183
+        ],
+        [
+          -1.478586942430449,
+          0.7905000060796737,
+          -0.12440229161437742
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+      "id": "fmw6nlklo51",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 864,
+      "bounds": [
+        [
+          -1.744696255389543,
+          0.7809999942779541,
+          -0.44965616196478264
+        ],
+        [
+          -1.319645892034861,
+          0.793000003695488,
+          -0.000987339244157892
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -0.9195315809629682,
+          0.843638399997726,
+          -0.31126474731095355
+        ],
+        [
+          -0.7887959009098963,
+          1.0203615987300871,
+          -0.14429965036094217
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:body",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1284,
+      "bounds": [
+        [
+          -1.1567291206704913,
+          0.84,
+          -0.5185383503534626
+        ],
+        [
+          -0.7432708793295086,
+          1.0279999935626982,
+          -0.08146164964653735
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.1112040990901038,
+          0.843638399997726,
+          -0.4557003496390578
+        ],
+        [
+          -0.9804684190370317,
+          1.0203615987300871,
+          -0.28873525268904643
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.1296241738391797,
+          0.9855000042915344,
+          -0.20237247288062926
+        ],
+        [
+          -0.9961589710749885,
+          1.0205000007152556,
+          -0.09803670108591278
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1728,
+      "bounds": [
+        [
+          -1.1663244325848032,
+          1.03200000166893,
+          -0.5281336084613184
+        ],
+        [
+          -0.7336755674151967,
+          1.049999993443489,
+          -0.07186639153868152
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.1637610947844235,
+          1.042000007033348,
+          -0.5255703244673948
+        ],
+        [
+          -0.7362389052155764,
+          1.0439999961853026,
+          -0.07442967553260516
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.1087302542149866,
+          1.04550000667572,
+          -0.4789043539457779
+        ],
+        [
+          -0.7912697457850133,
+          1.0484999978542326,
+          -0.12109564605422207
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -0.9038410289250114,
+          0.9855000042915344,
+          -0.5019632989140872
+        ],
+        [
+          -0.7703758261608203,
+          1.0205000007152556,
+          -0.3976275271193707
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 852,
+      "bounds": [
+        [
+          -1.1512311248028408,
+          0.9909999930858612,
+          -0.5130403589696836
+        ],
+        [
+          -0.748768875197159,
+          1.030999999642372,
+          -0.08695964103031639
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -0.9354862967152979,
+          0.9960000032186508,
+          -0.20924125216962333
+        ],
+        [
+          -0.894597095772687,
+          1.029999997615814,
+          -0.17779943321367705
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -0.8584539700929967,
+          0.9960000032186508,
+          -0.31146660231112017
+        ],
+        [
+          -0.8175647691503858,
+          1.029999997615814,
+          -0.2800247833551739
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.003584131281753,
+          0.9954999947547912,
+          -0.40091945899009285
+        ],
+        [
+          -0.790995981963233,
+          1.0305000060796736,
+          -0.1196409583842884
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.0824352308496141,
+          0.9960000032186508,
+          -0.3199752166448261
+        ],
+        [
+          -1.0415460299070032,
+          1.029999997615814,
+          -0.2885333976888798
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.005402904227313,
+          0.9960000032186508,
+          -0.4222005667863229
+        ],
+        [
+          -0.964513703284702,
+          1.029999997615814,
+          -0.3907587478303767
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.1090040180367668,
+          0.9954999947547912,
+          -0.4803590416157116
+        ],
+        [
+          -0.896415868718247,
+          1.0305000060796736,
+          -0.19908054100990713
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+      "id": "fmw6nlklo52",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 864,
+      "bounds": [
+        [
+          -1.1625251816773412,
+          1.020999994277954,
+          -0.5243344113603123
+        ],
+        [
+          -0.7374748183226588,
+          1.0330000036954878,
+          -0.07566558863968761
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.14314952377621,
+          0.843638399997726,
+          -0.4797729537935273
+        ],
+        [
+          -1.012413843723138,
+          1.0203615987300871,
+          -0.3128078568435159
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:body",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1284,
+      "bounds": [
+        [
+          -1.3803470634837331,
+          0.84,
+          -0.6870465568360364
+        ],
+        [
+          -0.9668888221427505,
+          1.0279999935626982,
+          -0.2499698561291111
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.3348220419033456,
+          0.843638399997726,
+          -0.6242085561216315
+        ],
+        [
+          -1.2040863618502737,
+          1.0203615987300871,
+          -0.4572434591716202
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.3532421166524213,
+          0.9855000042915344,
+          -0.370880679363203
+        ],
+        [
+          -1.2197769138882304,
+          1.0205000007152556,
+          -0.26654490756848653
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1728,
+      "bounds": [
+        [
+          -1.389942375398045,
+          1.03200000166893,
+          -0.6966418149438922
+        ],
+        [
+          -0.9572935102284386,
+          1.049999993443489,
+          -0.24037459802125527
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.3873790375976653,
+          1.042000007033348,
+          -0.6940785309499686
+        ],
+        [
+          -0.9598568480288183,
+          1.0439999961853026,
+          -0.2429378820151789
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.3323481970282285,
+          1.04550000667572,
+          -0.6474125604283516
+        ],
+        [
+          -1.0148876885982552,
+          1.0484999978542326,
+          -0.2896038525367958
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.1274589717382533,
+          0.9855000042915344,
+          -0.670471505396661
+        ],
+        [
+          -0.9939937689740622,
+          1.0205000007152556,
+          -0.5661357336019445
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 852,
+      "bounds": [
+        [
+          -1.3748490676160827,
+          0.9909999930858612,
+          -0.6815485654522573
+        ],
+        [
+          -0.9723868180104008,
+          1.030999999642372,
+          -0.25546784751289014
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.1591042395285398,
+          0.9960000032186508,
+          -0.3777494586521971
+        ],
+        [
+          -1.1182150385859289,
+          1.029999997615814,
+          -0.3463076396962508
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.0820719129062386,
+          0.9960000032186508,
+          -0.4799748087936939
+        ],
+        [
+          -1.0411827119636277,
+          1.029999997615814,
+          -0.44853298983774764
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.227202074094995,
+          0.9954999947547912,
+          -0.5694276654726665
+        ],
+        [
+          -1.0146139247764747,
+          1.0305000060796736,
+          -0.28814916486686215
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.306053173662856,
+          0.9960000032186508,
+          -0.48848342312739984
+        ],
+        [
+          -1.265163972720245,
+          1.029999997615814,
+          -0.45704160417145356
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.2290208470405548,
+          0.9960000032186508,
+          -0.5907087732688967
+        ],
+        [
+          -1.1881316460979439,
+          1.029999997615814,
+          -0.5592669543129504
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.332621960850009,
+          0.9954999947547912,
+          -0.6488672480982853
+        ],
+        [
+          -1.1200338115314887,
+          1.0305000060796736,
+          -0.3675887474924809
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+      "id": "fmw6nlklo53",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 864,
+      "bounds": [
+        [
+          -1.3861431244905829,
+          1.020999994277954,
+          -0.6928426178428861
+        ],
+        [
+          -0.9610927611359007,
+          1.0330000036954878,
+          -0.24417379512226137
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:back-ribs",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.2780847118619283,
+          0.843638399997726,
+          -0.06807829143285005
+        ],
+        [
+          -1.1473490318088564,
+          1.0203615987300871,
+          0.09888680551716134
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:body",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1284,
+      "bounds": [
+        [
+          -1.5152822515694515,
+          0.84,
+          -0.2753518944753591
+        ],
+        [
+          -1.1018240102284689,
+          1.0279999935626982,
+          0.16172480623156615
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:front-ribs",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.469757229989064,
+          0.843638399997726,
+          -0.2125138937609543
+        ],
+        [
+          -1.339021549935992,
+          1.0203615987300871,
+          -0.045548796810942926
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:left-catch",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.48817730473814,
+          0.9855000042915344,
+          0.04081398299747423
+        ],
+        [
+          -1.3547121019739488,
+          1.0205000007152556,
+          0.14514975479219072
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1728,
+      "bounds": [
+        [
+          -1.5248775634837635,
+          1.03200000166893,
+          -0.28494715258321496
+        ],
+        [
+          -1.092228698314157,
+          1.049999993443489,
+          0.17132006433942198
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-panel",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.5223142256833837,
+          1.042000007033348,
+          -0.2823838685892913
+        ],
+        [
+          -1.0947920361145367,
+          1.0439999961853026,
+          0.16875678034549835
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:lid-stiffeners",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 648,
+      "bounds": [
+        [
+          -1.4672833851139468,
+          1.04550000667572,
+          -0.2357178980676744
+        ],
+        [
+          -1.1498228766839735,
+          1.0484999978542326,
+          0.12209080982388143
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:right-catch",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 1620,
+      "bounds": [
+        [
+          -1.2623941598239716,
+          0.9855000042915344,
+          -0.2587768430359837
+        ],
+        [
+          -1.1289289570597805,
+          1.0205000007152556,
+          -0.1544410712412672
+        ]
+      ],
+      "alphas": [
+        1
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 852,
+      "bounds": [
+        [
+          -1.509784255701801,
+          0.9909999930858612,
+          -0.2698539030915801
+        ],
+        [
+          -1.1073220060961193,
+          1.030999999642372,
+          0.1562268148477871
+        ]
+      ],
+      "alphas": [
+        0.14000000059604645
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-left-divider",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.2940394276142582,
+          0.9960000032186508,
+          0.03394520370848017
+        ],
+        [
+          -1.2531502266716472,
+          1.029999997615814,
+          0.06538702266442645
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-right-divider",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.217007100991957,
+          0.9960000032186508,
+          -0.06828014643301666
+        ],
+        [
+          -1.176117900049346,
+          1.029999997615814,
+          -0.03683832747707039
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-back-wall",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.3621372621807133,
+          0.9954999947547912,
+          -0.15773300311198934
+        ],
+        [
+          -1.1495491128621933,
+          1.0305000060796736,
+          0.1235454974938151
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-left-divider",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.4409883617485744,
+          0.9960000032186508,
+          -0.07678876076672259
+        ],
+        [
+          -1.4000991608059634,
+          1.029999997615814,
+          -0.04534694181077631
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-right-divider",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.3639560351262732,
+          0.9960000032186508,
+          -0.17901411090821942
+        ],
+        [
+          -1.3230668341836622,
+          1.029999997615814,
+          -0.14757229195227314
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:tray-front-wall",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 324,
+      "bounds": [
+        [
+          -1.467557148935727,
+          0.9954999947547912,
+          -0.23717258573760808
+        ],
+        [
+          -1.254968999617207,
+          1.0305000060796736,
+          0.04410591486819636
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "key": "explicit:toolbox-jiabangshou-390-v1:upper-rim",
+      "id": "fmw6nlklo54",
+      "version": 3,
+      "kind": "BufferGeometry",
+      "count": 864,
+      "bounds": [
+        [
+          -1.5210783125763014,
+          1.020999994277954,
+          -0.28114795548220883
+        ],
+        [
+          -1.096027949221619,
+          1.0330000036954878,
+          0.1675208672384159
+        ]
+      ],
+      "alphas": [
+        0.30000001192092896
+      ],
+      "materials": [
+        {
+          "unlit": false,
+          "physical": {
+            "KHR_materials_emissive_strength": {
+              "emissiveStrength": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "bounds": [
+    [
+      -1.7484955062970053,
+      0.6,
+      -0.6966418149438922
+    ],
+    [
+      -0.7336755674151967,
+      1.049999993443489,
+      0.17132006433942198
+    ]
+  ],
+  "settledPoses": []
+}

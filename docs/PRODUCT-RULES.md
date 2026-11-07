@@ -1,3 +1,5 @@
+2026-11-08（工具箱阵列）：toolbox_jiabangshou_390声明inventoryArray，1–200件、行列1–50、三向间距0–1000mm、grid/stagger及0/90/180/270度平面转向；单件缺失不补写，首次有效数量编辑一次mutate，显式字段最低v71。见[型号契约](TOOLBOX-JIABANGSHOU-390.md#关联阵列2026-11-08)。
+
 2026-11-07（方块阵列）：block声明inventoryArray，1–200件、行列1–50、三向间距0–1000mm、grid/stagger与四种平面转向；旧缺失不补写，显式字段v69。见[方块](BLOCK-PLACEHOLDER.md)。
 
 2026-11-07：cabinetTiers声明两子柜最小高200、各深150–1200mm及组件版本1（软件能力，不是安装要求）；cabinet.tiers记录下柜顶高／两柜深度／上柜配置，根配置即下柜，不重复保存。顶封板归上柜、整高饰面归整组；最低v67当前／命名／库／工作区与缓存，完整结构沿原复制替换和确认。见[上下柜](CABINET-TIERS.md)。
