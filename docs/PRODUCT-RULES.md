@@ -1,3 +1,5 @@
+2026-11-07：cabinetBackPanel集中范围／校验和组件几何版本；背板能力按实际结构共享，取消entry／sideboard／pegboard界面白名单。扩展配置位置采用v60，旧缺失保留原厚度、只读固定产品保留资产结构，见[背板共享组件](CABINET-NET-DEPTH.md)。
+
 2026-11-07：cabinetBackPanel声明普通柜独立背板厚度范围0–50mm／默认18mm，0不构造背板。旧缺失保持原厚度，调整侧板时固定旧背厚；显式backThickness采用v59，详细能力与恢复验收见[背板与净深](CABINET-NET-DEPTH.md)。
 
 2026-11-07：三款用户确认日用品以storageSupplyRevision=2选择v57，单卷Ø100×140、单包抽纸140×100×50、湿巾170×110×70；卷纸9件／层、抽纸6件／层固定几何，三层27／四层24数量由实际构造验证。mountHeight默认0、旧四款v56保留；无新实例字段。见[尺寸与边界](STORAGE-CABINET-2400.md)。

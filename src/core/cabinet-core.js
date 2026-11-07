@@ -348,7 +348,7 @@
  function pegboardRegion(f,column,c=config(f)){
   const col=c.columns[column];if(c.template!=='entry-pegboard'||!col?.pegboard)return null;
   const bay=layout(f)[column],bottom=col.drawers.reduce((n,d)=>n+d.height,0),base=c.plinth+c.thickness;
-  return {left:bay.left,width:bay.width,bottom:base+bottom,top:base+col.doorBottom-c.thickness,depth:-f.d/2+c.thickness,thickness:products().pegboardAssembly.thickness,offset:pegboardPlacement(f,c)?.offset??0};
+  return {left:bay.left,width:bay.width,bottom:base+bottom,top:base+col.doorBottom-c.thickness,depth:-f.d/2+c.thickness,thickness:backThickness(c,'pegboard'),offset:pegboardPlacement(f,c)?.offset??0};
  }
  // One lattice for the fixed board and its leaf; missing settings stay derived.
  function pegboardHoles(f,column,c=config(f)){
@@ -397,7 +397,7 @@
   return {...h,left,bottom,w:Math.max(...h.panels.map(p=>p.left+p.w))-left,h:Math.max(...h.panels.map(p=>p.bottom+p.h))-bottom};
  }
  function pegboardHatches(f,column,c=config(f)){
-  const r=pegboardRegion(f,column,c),h=c.columns[column]?.pegboardHatch;if(!r||!h)return [];
+  const r=pegboardRegion(f,column,c),h=c.columns[column]?.pegboardHatch;if(!r||!h||r.thickness<=0)return [];
   const rule=products().pegboardAssembly.hatch;
   return (h.panels??[h]).map((p,leaf)=>({...p,leaf,left:r.left+p.left,bottom:r.bottom+p.bottom,top:r.bottom+p.bottom+p.h,depth:r.depth,thickness:r.thickness,offset:r.offset,gap:rule.gap,angle:rule.angle}));
  }
@@ -475,7 +475,7 @@
  }
  function defaultPegboardHatch(f,column){const r=pegboardRegion(f,column),rule=products().pegboardAssembly.hatch;if(!r)throw Error('该分区没有洞洞板');const w=Math.min(rule.defaultWidth,r.width-2*rule.margin),h=Math.min(rule.defaultHeight,r.top-r.bottom-2*rule.margin);return {left:(r.width-w)/2,bottom:(r.top-r.bottom-h)/2,w,h,hinge:'left',open:false};}
  function pegboardHatch(f,column,c=config(f)){
-  const region=pegboardRegion(f,column,c),h=c.columns[column]?.pegboardHatch;if(!region||!h)return null;
+  const region=pegboardRegion(f,column,c),h=c.columns[column]?.pegboardHatch;if(!region||!h||region.thickness<=0)return null;
   const rule=products().pegboardAssembly.hatch;
   return {...h,left:region.left+h.left,bottom:region.bottom+h.bottom,top:region.bottom+h.bottom+h.h,depth:region.depth,thickness:region.thickness,offset:region.offset,gap:rule.gap,angle:rule.angle};
  }
@@ -806,17 +806,41 @@
   if(Math.abs(delta)<1e-8)return JSON.parse(JSON.stringify(f));
   return adjustModuleWidth(f,index,moduleWidths(f)[index]+delta,{clamp:true});
  }
- // Ordinary bays: measure between solid faces, not the outer envelope.
- // Layered cabinets, pegboards and moving trays have section-specific boundaries.
- function backThicknessAvailable(c){return Array.isArray(c?.columns)&&!c.entry&&!c.sideboard&&!c.columns.some(col=>col.pegboard)&&c.template!==products().definition('bookshelf_yeswood_y52y09')?.bookcase?.template;}
- function backThickness(c){return c.backPanel===false?0:(c.backThickness??c.thickness);}
- function depthLayout(f,column=0,c=config(f)){
-  const col=c.columns[column];
-  if(!col||c.entry||c.sideboard||col.pegboard||col.top==='drawer'||c.template===products().definition('bookshelf_yeswood_y52y09')?.bookcase?.template)return null;
-  const rearThickness=backThickness(c),doorThickness=col.door==='none'?0:c.thickness;
-  const rear=-f.d/2+rearThickness,front=f.d/2-doorThickness;
-  const shelfFront=Math.min(front,f.d/2-(doorOverlay(f,c)==='inset'?0:c.thickness));
-  return {total:f.d,backThickness:rearThickness,doorThickness,rear,front,clearDepth:front-rear,shelfDepth:shelfFront-rear,shelfCenter:(rear+shelfFront)/2};
+ // Shared rear-panel component. Sections choose their envelope, not a new thickness rule.
+ function backThicknessAvailable(c){return Array.isArray(c?.columns)&&c.template!==products().definition('bookshelf_yeswood_y52y09')?.bookcase?.template;}
+ function backComponentVersion(c){return c.entry||c.sideboard||c.columns?.some(col=>col.pegboard||col.drawers?.length&&drawerCount(col)>1)?products().cabinetBackPanel.componentVersion:undefined;}
+ function backThickness(c,kind='solid'){
+  const legacySwitch=!c.entry&&!c.sideboard&&kind==='solid';
+  if(legacySwitch&&c.backPanel===false)return 0;
+  return c.backThickness??(kind==='pegboard'?products().pegboardAssembly.thickness:c.thickness);
+ }
+ function backPanelPart(f,{w,h,x=0,bottom=0,kind='solid',rear},c=config(f)){
+  const d=backThickness(c,kind);if(!(d>0&&w>0&&h>0))return null;
+  const back=rear??(-f.d/2+(kind==='pegboard'?c.thickness:0));
+  return {w,h,d,x,bottom,z:back+d/2,rear:back,front:back+d,kind};
+ }
+ function depthLayout(f,column=0,c=config(f),section='storage'){
+  const col=c.columns[column];if(!col)return null;
+  let total=f.d,door=col.door,kind='solid',inset=0,hasBack=col.top!=='drawer',shelfAtFront=false,label='柜箱';
+  if(c.entry){label={storage:'下柜',lower:'下柜',shoe:'底部开放区',niche:'置物区',upper:'上柜'}[section]??section;if(['shoe','niche'].includes(section)){door='none';shelfAtFront=section==='niche';}}
+  else if(c.sideboard){const v=c.sideboard,fridge=col.fridgeBay;total=fridge?(v.fridgeDepth??f.d):['upper','display'].includes(section)?v.upperDepth:v.lowerDepth;label=fridge?(section==='fridgeUpper'?'冰箱位顶柜':'冰箱设备位'):{storage:'下柜',lower:'下柜',niche:'操作区',display:'展示柜',upper:'上柜'}[section];if(fridge&&section!=='fridgeUpper'){hasBack=false;door='none';shelfAtFront=true;}else if(section==='niche'){door='none';shelfAtFront=true;}else if(section==='display')door=displayDoor(col);}
+  else if(col.pegboard&&['lower','upper'].includes(section)){hasBack=pegboardParts(f,c)?.[section]!==false;kind='surround';label=section==='lower'?'洞洞板下部背板':'洞洞板上部背板';}
+  else if(col.pegboard&&section!=='lower'&&section!=='upper'){kind='pegboard';inset=c.thickness;door='none';label='洞洞板区';}
+  else if(col.top==='drawer')label='抽拉顶柜（无固定背板）';
+  if(section==='drawers'){door='panel';label='抽屉区（量至抽面内侧）';}
+  const thickness=hasBack?backThickness(c,kind):0,rearInset=thickness>0?inset:0,doorThickness=door==='none'?0:c.thickness,rear=-f.d/2+rearInset+thickness,front=-f.d/2+total-doorThickness;
+  const shelfFront=shelfAtFront?front:Math.min(front,-f.d/2+total-(doorOverlay(f,c)==='inset'?0:c.thickness));
+  return {section,label,total,backThickness:thickness,rearInset,doorThickness,rear,front,clearDepth:front-rear,shelfDepth:shelfFront-rear,shelfCenter:(rear+shelfFront)/2};
+ }
+ function depthSections(f,column=0,c=config(f)){
+  const col=c.columns[column];if(!col)return [];
+  const sections=c.entry?['shoe','lower','niche','upper']:c.sideboard?(col.fridgeBay?['storage','fridgeUpper']:['lower','niche','display','upper']):col.pegboard?[...(pegboardParts(f,c)?.lower!==false?['lower']:[]),'storage',...(pegboardParts(f,c)?.upper!==false?['upper']:[])]:col.drawers.length?['drawers','storage']:['storage'];
+  return sections.map(section=>({...depthLayout(f,column,c,section),...(purePegboard(f,c)?{storage:false}:{})}));
+ }
+ function drawerDepthLayout(f,depth=f.d,c=config(f)){
+  // Preserve old no-back drawer boxes until the explicit thickness is edited.
+  const t=c.thickness,rear=c.backThickness===undefined?t:backThickness(c);
+  return {depth:depth-2*t-rear,center:-f.d/2+(depth+rear)/2,rearCenter:-f.d/2+rear+t/2};
  }
  function spaces(f,column){
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
@@ -941,7 +965,7 @@ function nativeOpeningZones(f,{passage=800}={}){
  function validate(f){
   if(!supported(f))throw Error('此家具不支持柜体设计');
   const c=f.cabinet,h=bodyHeight(f),finite=v=>typeof v==='number'&&Number.isFinite(v);
-  if(c?.backThickness!==undefined&&(!backThicknessAvailable(c)||!Number.isFinite(c.backThickness)||c.backThickness<products().cabinetBackPanel.min||c.backThickness>products().cabinetBackPanel.max))throw Error('此柜型的背板厚度须为 0–50 mm，0表示无背板');
+  if(c?.backThickness!==undefined){if(!backThicknessAvailable(c))throw Error('固定成品模型的背板厚度不能独立修改');products().cabinetBackPanel.validate(c.backThickness);}
   if(c?.backPanel!==undefined&&typeof c.backPanel!=='boolean')throw Error('柜体背板开关须为布尔值');
   if(c?.hoodBayCeiling!==undefined&&(typeof c.hoodBayCeiling!=='boolean'||c.hoodBayHeight===undefined))throw Error('烟机空腔横板开关须为布尔值且仅用于烟机嵌合柜');
   if(c?.autoDoors!==undefined&&typeof c.autoDoors!=='boolean')throw Error('自动配门设置无效');
@@ -1093,9 +1117,9 @@ function nativeOpeningZones(f,{passage=800}={}){
  function spatialConfig(f){
   if(!supported(f)||f.kitchen)return undefined;
   let c;try{c=config(f);}catch{c={invalid:f.cabinet===undefined?null:JSON.parse(JSON.stringify(f.cabinet))};}
-  const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);if(c.columns?.some((col,i)=>col.shelves?.length&&depthLayout(f,i,c)))c.shelfDepthRule='solid-rear-face-v1';c.doorPoseRule='finite-thickness-hinges-v1';if(hangingWardrobe(c))c.hangingRule={...products().wardrobeHanging};return c;
+  const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);if(backComponentVersion(c))c.backComponentRule=backComponentVersion(c);if(c.columns?.some((col,i)=>col.shelves?.length&&depthLayout(f,i,c)))c.shelfDepthRule='solid-rear-face-v1';c.doorPoseRule='finite-thickness-hinges-v1';if(hangingWardrobe(c))c.hangingRule={...products().wardrobeHanging};return c;
  }
- const api={backThicknessAvailable,backThickness,depthLayout,entryLowerDoorDrop,entryLowerDoorDropLimit,entryLowerDoorBounds,entryShoeShelf,frontColor,stackedBoxesAvailable,setStackedBoxes,shelfThickness,sideClosureColor,sideClosureAvailable,sideClosures,setSideClosures,sideClosureParts,sideClosureOutline,hangingWardrobe,hangingLayout,topClosureAvailable,topClosureParts,boxJoints,boxRanges,setBoxJoints,topClosure,bodyHeight,topDoorLimit,setTopClosure,constructionAvailable,setConstruction,boxParts,endPanels,structureWidth,pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,fitDoorLimits,doorLimitCount,inheritedDoorLimit,withDoorLimit,validateDoorLimits,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,shelfClearances,editShelfClearance,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,setPartOpening,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
+ const api={backComponentVersion,backPanelPart,depthSections,drawerDepthLayout,backThicknessAvailable,backThickness,depthLayout,entryLowerDoorDrop,entryLowerDoorDropLimit,entryLowerDoorBounds,entryShoeShelf,frontColor,stackedBoxesAvailable,setStackedBoxes,shelfThickness,sideClosureColor,sideClosureAvailable,sideClosures,setSideClosures,sideClosureParts,sideClosureOutline,hangingWardrobe,hangingLayout,topClosureAvailable,topClosureParts,boxJoints,boxRanges,setBoxJoints,topClosure,bodyHeight,topDoorLimit,setTopClosure,constructionAvailable,setConstruction,boxParts,endPanels,structureWidth,pegboardHatchEnvelope,pegboardHatches,pegboardHatchAlignments,editPegboardHatchMargin,pegboardHatchAlignment,pegboardHatchPadding,setPegboardHatchMode,normalizePegboardHatches,pegboardAutoChecks,pegboardHoles,pegboardBoxCandidates,fitPegboardHatch,defaultPegboardHatch,pegboardRegion,pegboardHatch,movablePegboard,purePegboard,pegboardPlacement,assemblyBounds,resizeAssembly,pegboardParts,spatialConfig,palette,types,templates,supported,defaultId,preset,config,height,frontHeight,kitchenOverlay,doorOverlay,fullOverlay,frontSpan,frontInset,doorWidthRules,doorLeafSpan,frontWidths,validateDoorWidths,setDoorWidth,frontDoor,autoDoorCount,frontLeafCount,rightDoorHinge,doorPairing,doorPairingOptions,doorLayout,fitDoorLayout,validateDoorLayout,editDoorLayout,configureDoorLayout,doorLayoutModes,singleDoorLeaf,doorSingleHinge,widths,layout,scaleWidths,setColumnWidth,autoDoors,mergeDoors,fitDoorLimits,doorLimitCount,inheritedDoorLimit,withDoorLimit,validateDoorLimits,maxDoorAngle,doorAngle,doorState,doorLeafState,doorLeafAngle,splitDoors,drawerCount,drawerState,withDrawerColumns,entryBands,sideboardBands,sideboardDisplayGroups,configureHoodBay,hoodBayCeiling,setHoodSideGap,hoodBay,hoodBayFit,centerHoodInBay,setSideboardDrawerHeight,setSideboardFridgeDepth,fridgeFitsBay,fridgeBayFit,centerFridgeInBay,shelfLimits,moveShelf,shelfClearances,editShelfClearance,moveDivider,spaces,snapShelf,editStructure,openingZones,shiftOpening,openingIntersects,validate,resize,setPartOpening,toggle,specification,sideOpenings,joinedSideFinishes,sharedSides,doorOptions,verticalDoor,doorPose,validateDoorSettings,displayDoor,displayAngle};
  Object.assign(api,{editModules,structuralBoards,editStructuralBoard,moduleLayout,moduleWidths,moduleWidthLimits,adjustModuleWidth,withDoorSetting,templateGroups,templateType,adjustColumnWidth,repartition,fitDoors,scaleStructure,upgradeDesign});
  if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishCabinet=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

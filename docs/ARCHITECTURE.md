@@ -1,3 +1,5 @@
+2026-11-07（共享背板）：cabinet-core.backPanelPart／depthSections统一参数化柜的实体与分段净深，cabinet-model沿原身份构造；柜体／厨房／附属柜共用数字输入。厨房默认、模块、末端与扩展柜型背板采用v60，普通v59及旧缺失保持；无新脚本或保存通道，见[组件契约](CABINET-NET-DEPTH.md)。
+
 2026-11-07（独立背板）：product-rules集中背板范围／默认，cabinet-core按独立backThickness推导普通柜内表面；生产背板、层板及抽盒同源。新字段采用v59项目／工作区／缓存，旧缺失保留原厚度；沿原草稿／mutate／保存，详见[净深契约](CABINET-NET-DEPTH.md)。
 
 2026-11-07（用户纸品尺寸）：新增心相印9卷层／6包层与湿巾三款Blender资产，storageSupplyRevision=2仅为新类型选择v57；仍复用storage-supply-model、安装离地与原MCP／mutate保存，无新持久字段。单件尺寸与27／24数量见[囤货柜修订](STORAGE-CABINET-2400.md)。

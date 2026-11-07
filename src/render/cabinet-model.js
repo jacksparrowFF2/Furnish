@@ -5,7 +5,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
 
  function buildRaw(THREE,f,box,options={}){
   if(f.laundryFloorOpen)options={...options,floorOpen:true};
-  const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.bodyHeight(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,bt=C.backThickness(c)/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
+  const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),h=C.bodyHeight(f)/1000,w=f.w/1000,d=f.d/1000,t=c.thickness/1000,p=c.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
   const assembly=C.pegboardParts(f,c),hasUpper=assembly?.upper!==false,hasLower=assembly?.lower!==false;
   const bookcase=(root.FurnishProducts||(typeof require==='function'?require('../core/product-rules.js'):null))?.definition('bookshelf_yeswood_y52y09')?.bookcase,roundedBookcase=!!bookcase&&c.template===bookcase.template;
   const entryStyle=C.doorOverlay(f,c)!=='inset',faceInset=C.frontInset(f,c)/1000,wood=roundedBookcase?color:C.palette.body,bodyColor=wood,shared=C.sharedSides(f,options.furniture||[]),bodyDepth=entryStyle?d-t:d,bodyZ=entryStyle?-t/2:0;
@@ -21,6 +21,12 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    if(roundedBookcase&&mesh.geometry?.attributes){const r=Math.min(bookcase.edgeRadius/1000,W/4,H/4,D/4),s=new THREE.Shape();s.moveTo(-W/2+r,-H/2+r);s.lineTo(W/2-r,-H/2+r);s.lineTo(W/2-r,H/2-r);s.lineTo(-W/2+r,H/2-r);s.closePath();const geometry=new THREE.ExtrudeGeometry(s,{depth:D-2*r,bevelEnabled:true,bevelThickness:r,bevelSize:r,bevelSegments:3,steps:1});geometry.translate(0,0,-D/2+r);mesh.geometry.dispose();mesh.geometry=geometry;}
    if(roundedBookcase)mesh.userData.furnishBoardSize=[W,H,D];
    parent.add(mesh);return mesh;};
+  const rearPanel=(parent,W,H,X,Y,site,metadata={},shade=bodyColor,kind='solid')=>{
+   const part=C.backPanelPart(f,{w:W*1000,h:H*1000,x:X*1000,bottom:Y*1000,kind},c);if(!part)return;
+   const mesh=syncIdentity.produce(site,()=>add(parent,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000,shade));Object.assign(mesh.userData,metadata,{cabinetBack:{kind,thickness:part.d}});return mesh;
+  };
+  const shelfFrame=(column,section='storage')=>C.depthLayout(f,column,c,section);
+  const drawerFrame=depth=>{const v=C.drawerDepthLayout(f,depth*1000,c);return {depth:v.depth/1000,center:v.center/1000,rearCenter:v.rearCenter/1000};};
   const closure=C.topClosure(c),panels=C.endPanels(c);
   if(!options.skipSideClosures)for(const part of C.sideClosureParts(f,c)){
    const shade=C.sideClosureColor(f,part.column,c);
@@ -66,7 +72,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    }
    if(p)syncIdentity.produce("cabinet-model:site-3",()=>add(g,W,p,ld-.025,X,0,back+(ld-.025)/2));
    const backLeft=left+(c.columns[0].fridgeBay?t:0),backRight=right-(c.columns.at(-1).fridgeBay?t:0);
-   syncIdentity.produce("cabinet-model:site-4",()=>add(g,backRight-backLeft,s.nicheHeight/1000,t,(backLeft+backRight)/2,niche,back+t/2)).userData.cabinetSection='operationBack';
+   rearPanel(g,backRight-backLeft,s.nicheHeight/1000,(backLeft+backRight)/2,niche,'cabinet-model:site-4',{cabinetSection:'operationBack'});
    for(const [y,D] of syncIdentity.items("cabinet-model.js:generator-2",[["item-a",[display,ud]],["item-b",[upper,ud]]])){
     const led=syncIdentity.produce("cabinet-model:site-5",()=>add(g,W-2*t,.004,.012,X,y+.008,back+D-t-.014,'#ffe4ab'));led.material=led.material.clone();led.material.emissive=new THREE.Color('#ffe4ab');led.material.emissiveIntensity=.7;led.userData.cabinetOwnMaterial=true;led.userData.cabinetSection='led';
    }
@@ -94,10 +100,10 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      // Floor and rear remain clear for a separately placed refrigerator.
      for(const sign of syncIdentity.items("cabinet-model.js:generator-7",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-10",()=>add(g,t,h,fd,x+sign*(cw/2+t/2),0,fz));
      const ceiling=syncIdentity.produce("cabinet-model:site-11",()=>add(g,cw,t,fd,x,fh,fz));ceiling.userData.cabinetSection='fridgeCeiling';ceiling.userData.cabinetInspect={kind:'structure',column:i,section:'fridgeCeiling'};syncIdentity.produce("cabinet-model:site-12",()=>add(g,cw,t,fd,x,h-t,fz));
-     syncIdentity.produce("cabinet-model:site-13",()=>add(g,cw,h-fh-2*t,t,x,fh+t,back+t/2)).userData.cabinetBay={column:i};syncIdentity.produce("cabinet-model.js:generator-call-1",()=>door(col,i,fh+t,h,fd,'fridgeUpper'));
+     rearPanel(g,cw,h-fh-2*t,x,fh+t,'cabinet-model:site-13',{cabinetBay:{column:i}});syncIdentity.produce("cabinet-model.js:generator-call-1",()=>door(col,i,fh+t,h,fd,'fridgeUpper'));
     }else{
      for(const [bottom,top,D] of syncIdentity.items("cabinet-model.js:generator-8",[["item-a",[p+t,base-t,ld]],["item-b",[display+t,upper,ud]],["item-c",[upper+t,h-t,ud]]])){
-      if(bottom!==display+t)syncIdentity.produce("cabinet-model:site-14",()=>add(g,cw,top-bottom,t,x,bottom,back+t/2)).userData.cabinetBay={column:i};
+      if(bottom!==display+t)rearPanel(g,cw,top-bottom,x,bottom,'cabinet-model:site-14',{cabinetBay:{column:i}});
       for(const sign of syncIdentity.items("cabinet-model.js:generator-9",[["item-a",-1],["item-b",1]])){
        const neighbor=i+(sign<0?-1:1);if(sign>0&&neighbor<bays.length&&!c.columns[neighbor].fridgeBay)continue;
        if(neighbor>=0&&neighbor<bays.length&&c.columns[neighbor].fridgeBay)continue;
@@ -106,27 +112,27 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
       }
      }
      if(col.drawers.length){
-      syncIdentity.produce("cabinet-model:site-16",()=>add(g,cw,t,ld-2*t,x,drawerY-t,back+ld/2)).userData.cabinetSection='drawerSeparator';
+      syncIdentity.produce("cabinet-model:site-16",()=>add(g,cw,t,shelfFrame(i,'lower').shelfDepth/1000,x,drawerY-t,shelfFrame(i,'lower').shelfCenter/1000)).userData.cabinetSection='drawerSeparator';
       syncIdentity.produce("cabinet-model:site-17",()=>add(g,cw,.012,.008,x,drawerY-.012,back+ld-t+.004,'#71685d')).userData.cabinetSection='drawerGrip';
       const dh=col.drawers[0].height/1000,lanes=C.drawerCount(col),span=faceSpan(i);
-      for(let lane of syncIdentity.range("cabinet-model.js:generator-10",1,lanes,1,false))syncIdentity.produce("cabinet-model:site-18",()=>add(g,t,dh-t,ld-2*t,x+(lane-lanes/2)*(cw+t)/lanes,drawerY,back+ld/2)).userData.cabinetDrawerDivider=true;
+      for(let lane of syncIdentity.range("cabinet-model.js:generator-10",1,lanes,1,false))syncIdentity.produce("cabinet-model:site-18",()=>add(g,t,dh-t,shelfFrame(i,'lower').shelfDepth/1000,x+(lane-lanes/2)*(cw+t)/lanes,drawerY,shelfFrame(i,'lower').shelfCenter/1000)).userData.cabinetDrawerDivider=true;
       for(let lane of syncIdentity.range("cabinet-model.js:generator-11",0,lanes,1,false)){
        const laneW=(cw-(lanes-1)*t)/lanes,laneX=x+(lane-(lanes-1)/2)*(laneW+t),faceW=(span.right-span.left)/lanes,faceX=span.left+faceW*(lane+.5),state=C.drawerState(col.drawers[0],lane),node=new THREE.Group(),faceColor=col.doorColor||(col.finish==='wood'?wood:color),bodyH=dh-t;
        node.position.z=state.open?ld*.7*(state.extension??1):0;
        node.userData.motion={kind:'cabinetdrawer',column:i,section:'storage',axis:'z',travel:ld*.7,closedZ:0};
        syncIdentity.produce("cabinet-model:site-19",()=>add(node,faceW-.002,bodyH-.002,t,faceX,drawerY+.001,back+ld-t/2,faceColor)).userData.cabinetDrawerBoard='front';
-       syncIdentity.produce("cabinet-model:site-20",()=>add(node,laneW-2*t,.012,ld-3*t,laneX,drawerY+.012,back+ld/2+t/2)).userData.cabinetDrawerBoard='bottom';
-       for(const sign of syncIdentity.items("cabinet-model.js:generator-12",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-21",()=>add(node,t,bodyH-.03,ld-3*t,laneX+sign*(laneW/2-t),drawerY+.024,back+ld/2+t/2)).userData.cabinetDrawerBoard='side';
-       syncIdentity.produce("cabinet-model:site-22",()=>add(node,laneW-2*t,bodyH-.03,t,laneX,drawerY+.024,back+1.5*t)).userData.cabinetDrawerBoard='back';
+       syncIdentity.produce("cabinet-model:site-20",()=>add(node,laneW-2*t,.012,drawerFrame(ld).depth,laneX,drawerY+.012,drawerFrame(ld).center)).userData.cabinetDrawerBoard='bottom';
+       for(const sign of syncIdentity.items("cabinet-model.js:generator-12",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-21",()=>add(node,t,bodyH-.03,drawerFrame(ld).depth,laneX+sign*(laneW/2-t),drawerY+.024,drawerFrame(ld).center)).userData.cabinetDrawerBoard='side';
+       syncIdentity.produce("cabinet-model:site-22",()=>add(node,laneW-2*t,bodyH-.03,t,laneX,drawerY+.024,drawerFrame(ld).rearCenter)).userData.cabinetDrawerBoard='back';
        if(col.handle&&col.handle!=='none')syncIdentity.produce("cabinet-model:site-23",()=>add(node,Math.min(.14,faceW*.4),.012,.018,faceX,drawerY+bodyH*.7,back+ld-.009,'#71685d'));
        node.traverse(o=>o.userData.cabinetPart={column:i,drawer:0,lane});g.add(node);
       }
      }
      syncIdentity.produce("cabinet-model.js:generator-call-2",()=>door(col,i,p,drawerY-(col.drawers.length?.012:0),ld,'lower'));syncIdentity.produce("cabinet-model.js:generator-call-3",()=>door(col,i,upper,h,ud,'upper'));
     }
-    syncIdentity.each("cabinet-model.js:generator-13",col.shelves,(y,j)=>{const level=p+t+y/1000,D=col.fridgeBay?(s.fridgeDepth??f.d)/1000:level<base?ld:ud;syncIdentity.produce("cabinet-model:site-24",()=>add(g,cw,t,D-2*t,x,level,back+D/2)).userData.cabinetShelf={column:i,shelf:j};},(item,slot)=>item?.partId||"shelf:"+slot);
+    syncIdentity.each("cabinet-model.js:generator-13",col.shelves,(y,j)=>{const level=p+t+y/1000;syncIdentity.produce("cabinet-model:site-24",()=>{const v=shelfFrame(i,col.fridgeBay?'fridgeUpper':level<base?'lower':level<upper?'display':'upper');return add(g,cw,t,v.shelfDepth/1000,x,level,v.shelfCenter/1000);}).userData.cabinetShelf={column:i,shelf:j};},(item,slot)=>item?.partId||"shelf:"+slot);
    },(_,column)=>"column:"+column);
-   for(const group of syncIdentity.records("cabinet-model.js:generator-14",C.sideboardDisplayGroups(f))){syncIdentity.produce("cabinet-model:site-25",()=>add(g,group.width/1000,upper-display-t,t,(group.left+group.width/2)/1000,display+t,back+t/2)).userData.cabinetBay={column:group.column};syncIdentity.produce("cabinet-model.js:generator-call-4",()=>door(c.columns[group.column],group.column,display,upper,ud,'display',true,group));}
+   for(const group of syncIdentity.records("cabinet-model.js:generator-14",C.sideboardDisplayGroups(f))){rearPanel(g,group.width/1000,upper-display-t,(group.left+group.width/2)/1000,display+t,'cabinet-model:site-25',{cabinetBay:{column:group.column}});syncIdentity.produce("cabinet-model.js:generator-call-4",()=>door(c.columns[group.column],group.column,display,upper,ud,'display',true,group));}
    if(options.outlines)g.traverse(o=>{if(o.isMesh){const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x493b2d,transparent:true,opacity:.9}));edge.userData.cabinetOwnMaterial=true;o.add(edge);}});
    return g;
   }
@@ -151,19 +157,19 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    if(p){syncIdentity.produce("cabinet-model:site-27",()=>add(g,w,p,d-.04,0,0,-.02,wood));syncIdentity.produce("cabinet-model:site-28",()=>add(g,w,t,bodyDepth,0,p,bodyZ));}syncIdentity.produce("cabinet-model:site-29",()=>add(g,w,t,bodyDepth,0,h-t,bodyZ));
    for(const [side,sign] of syncIdentity.items("cabinet-model.js:generator-17",[["item-a",['left',-1]],["item-b",['right',1]]]))syncIdentity.produce("cabinet-model.js:generator-call-5",()=>sideBoard(side,t,h-t-shoeBase,bodyDepth,sign*(w/2-t/2),shoeBase,bodyZ));
    const extra=side=>Math.max(0,...finishes.filter(v=>v.side===side).map(v=>v.gap))/1000,edge=side=>{const common=shared.some(v=>v.side===side),open=e.openSide===side||e.openSide==='both';return open?t+extra(side)+(common?t:0):common?t:0;},leftEdge=edge('left'),rightEdge=edge('right');
-   for(const level of syncIdentity.items("cabinet-model.js:generator-18",[["item-a",p+e.shoeHeight/2000],["item-b",shoe],["item-c",lower],["item-d",upper+t]].filter(([key])=>key!=="item-a"||C.entryShoeShelf(c)))){const niche=level===lower||level===upper+t,counter=level===lower;const shelf=syncIdentity.produce("cabinet-model:site-30",()=>add(g,niche?w-2*t+leftEdge+rightEdge:interiorWidth,t,counter?d-t:d-2*t,niche?(rightEdge-leftEdge)/2:interiorX,level-t,counter?t/2:level===upper+t?0:-t/2,wood));if(niche)shelf.userData.cabinetNicheSurface=counter?'counter':'ceiling';const section=level===shoe?'entryLowerBase':counter?'entryCounter':level===upper+t?'entryUpperBase':null;if(section)shelf.userData.cabinetInspect={kind:'structure',column:0,section};}
-   syncIdentity.produce("cabinet-model:site-31",()=>add(g,interiorWidth,e.nicheHeight/1000,t,interiorX,lower,-d/2+t/2,wood));
-   syncIdentity.produce("cabinet-model:site-32",()=>add(g,interiorWidth,shoe-shoeBase,t,interiorX,shoeBase,-d/2+t/2,wood));
+   for(const level of syncIdentity.items("cabinet-model.js:generator-18",[["item-a",p+e.shoeHeight/2000],["item-b",shoe],["item-c",lower],["item-d",upper+t]].filter(([key])=>key!=="item-a"||C.entryShoeShelf(c)))){const niche=level===lower||level===upper+t,counter=level===lower;const shelf=syncIdentity.produce("cabinet-model:site-30",()=>add(g,niche?w-2*t+leftEdge+rightEdge:interiorWidth,t,shelfFrame(0,counter?'niche':level===upper+t?'upper':'lower').shelfDepth/1000,niche?(rightEdge-leftEdge)/2:interiorX,level-t,shelfFrame(0,counter?'niche':level===upper+t?'upper':'lower').shelfCenter/1000,wood));if(niche)shelf.userData.cabinetNicheSurface=counter?'counter':'ceiling';const section=level===shoe?'entryLowerBase':counter?'entryCounter':level===upper+t?'entryUpperBase':null;if(section)shelf.userData.cabinetInspect={kind:'structure',column:0,section};}
+   rearPanel(g,interiorWidth,e.nicheHeight/1000,interiorX,lower,'cabinet-model:site-31',{},wood);
+   rearPanel(g,interiorWidth,shoe-shoeBase,interiorX,shoeBase,'cabinet-model:site-32',{},wood);
    const led=syncIdentity.produce("cabinet-model:site-33",()=>add(g,w-2*t,.004,.012,0,upper-.01,d/2-t-.012,'#ffe4ab'));led.material=led.material.clone();led.material.emissive=new THREE.Color('#ffe4ab');led.material.emissiveIntensity=.6;led.userData.cabinetOwnMaterial=true;
    syncIdentity.each("cabinet-model.js:generator-19",c.columns,(col,i)=>{
     const bay=bays[i],cw=bay.width/1000,x=bay.center/1000,drawerY=lower-col.drawers.reduce((n,v)=>n+v.height,0)/1000,faceColor=col.doorColor||(col.finish==='wood'?wood:color==='#d5c4bb'?'#f3f1ec':color),span=faceSpan(i),faceW=span.right-span.left,faceX=(span.left+span.right)/2;
     const handle=(parent,X,Y,Z,vertical=false)=>{const kind=col.handle||'bar';if(kind==='none')return;const m=syncIdentity.produce("cabinet-model:site-34",()=>add(parent,kind==='knob'?.025:vertical?.012:Math.min(.14,faceW*.4),kind==='knob'?.025:vertical?.15:.012,.025,X,Y,Z,'#71685d'));if(kind==='knob'){m.geometry.dispose();m.geometry=new THREE.SphereGeometry(.0125,12,8);}};
-    for(const [bottom,top] of syncIdentity.items("cabinet-model.js:generator-20",[["item-a",[shoe,lower-t]],["item-b",[upper+t,h-t]]]))syncIdentity.produce("cabinet-model:site-35",()=>add(g,cw,top-bottom,t,x,bottom,-d/2+t/2)).userData.cabinetBay={column:i};
-    if(i)for(const [bottom,top] of syncIdentity.items("cabinet-model.js:generator-21",[["item-a",[shoe,lower-t]],["item-b",[upper+t,h-t]]]))syncIdentity.produce("cabinet-model:site-36",()=>add(g,t,top-bottom,d-2*t,bay.left/1000-t/2,bottom,-t/2)).userData.cabinetDivider={divider:i-1,column:i-1};
-    syncIdentity.each("cabinet-model.js:generator-22",col.shelves,(y,j)=>syncIdentity.produce("cabinet-model:site-37",()=>add(g,cw,t,d-2*t,x,p+t+y/1000,-t/2)).userData.cabinetShelf={column:i,shelf:j},(item,slot)=>item?.partId||"shelf:"+slot);
-    let y=drawerY;const lanes=C.drawerCount(col);for(let lane of syncIdentity.range("cabinet-model.js:generator-23",1,lanes,1,false))if(col.drawers.length)syncIdentity.produce("cabinet-model:site-38",()=>add(g,t,lower-drawerY-t,d-2*t,x+(lane-lanes/2)*(cw+t)/lanes,drawerY,-t/2)).userData.cabinetDrawerDivider=true;syncIdentity.each("cabinet-model.js:generator-24",col.drawers,(drawer,j)=>{const dh=drawer.height/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-25",0,lanes,1,false)){const cw=(bay.width/1000-(lanes-1)*t)/lanes,x=bay.center/1000+(lane-(lanes-1)/2)*(cw+t),faceW=(span.right-span.left)/lanes,faceX=span.left+faceW*(lane+.5),state=C.drawerState(drawer,lane),bodyH=dh-(j===col.drawers.length-1?t:0),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;
+    for(const [bottom,top] of syncIdentity.items("cabinet-model.js:generator-20",[["item-a",[shoe,lower-t]],["item-b",[upper+t,h-t]]]))rearPanel(g,cw,top-bottom,x,bottom,'cabinet-model:site-35',{cabinetBay:{column:i}});
+    if(i)for(const [bottom,top] of syncIdentity.items("cabinet-model.js:generator-21",[["item-a",[shoe,lower-t]],["item-b",[upper+t,h-t]]]))syncIdentity.produce("cabinet-model:site-36",()=>add(g,t,top-bottom,shelfFrame(i,'lower').shelfDepth/1000,bay.left/1000-t/2,bottom,shelfFrame(i,'lower').shelfCenter/1000)).userData.cabinetDivider={divider:i-1,column:i-1};
+    syncIdentity.each("cabinet-model.js:generator-22",col.shelves,(y,j)=>syncIdentity.produce("cabinet-model:site-37",()=>add(g,cw,t,shelfFrame(i,'lower').shelfDepth/1000,x,p+t+y/1000,shelfFrame(i,'lower').shelfCenter/1000)).userData.cabinetShelf={column:i,shelf:j},(item,slot)=>item?.partId||"shelf:"+slot);
+    let y=drawerY;const lanes=C.drawerCount(col);for(let lane of syncIdentity.range("cabinet-model.js:generator-23",1,lanes,1,false))if(col.drawers.length)syncIdentity.produce("cabinet-model:site-38",()=>add(g,t,lower-drawerY-t,shelfFrame(i,'lower').shelfDepth/1000,x+(lane-lanes/2)*(cw+t)/lanes,drawerY,shelfFrame(i,'lower').shelfCenter/1000)).userData.cabinetDrawerDivider=true;syncIdentity.each("cabinet-model.js:generator-24",col.drawers,(drawer,j)=>{const dh=drawer.height/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-25",0,lanes,1,false)){const cw=(bay.width/1000-(lanes-1)*t)/lanes,x=bay.center/1000+(lane-(lanes-1)/2)*(cw+t),faceW=(span.right-span.left)/lanes,faceX=span.left+faceW*(lane+.5),state=C.drawerState(drawer,lane),bodyH=dh-(j===col.drawers.length-1?t:0),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;
      syncIdentity.produce("cabinet-model:site-39",()=>add(node,faceW-.002,bodyH-.002,t,faceX,y+.001,d/2-t/2,faceColor)).userData.cabinetDrawerBoard='front';
-     syncIdentity.produce("cabinet-model:site-40",()=>add(node,cw-2*t,.012,d-3*t,x,y+.012,t/2));for(const sign of syncIdentity.items("cabinet-model.js:generator-26",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-41",()=>add(node,t,bodyH-.03,d-3*t,x+sign*(cw/2-t),y+.024,t/2));syncIdentity.produce("cabinet-model:site-42",()=>add(node,cw-2*t,bodyH-.03,t,x,y+.024,-d/2+1.5*t));
+     syncIdentity.produce("cabinet-model:site-40",()=>add(node,cw-2*t,.012,drawerFrame(d).depth,x,y+.012,drawerFrame(d).center));for(const sign of syncIdentity.items("cabinet-model.js:generator-26",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-41",()=>add(node,t,bodyH-.03,drawerFrame(d).depth,x+sign*(cw/2-t),y+.024,drawerFrame(d).center));syncIdentity.produce("cabinet-model:site-42",()=>add(node,cw-2*t,bodyH-.03,t,x,y+.024,drawerFrame(d).rearCenter));
      node.userData.motion={kind:'cabinetdrawer',column:i,section:'storage',axis:'z',travel:d*.7,closedZ:0};syncIdentity.produce("cabinet-model.js:generator-call-6",()=>handle(node,faceX,y+bodyH*.7,d/2+.012));node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j,lane});g.add(node);}y+=dh;},(item,slot)=>item?.partId||"drawer:"+slot);
     if(col.door==='none'||options.doors==='hidden')return;
     for(const [bottom,top,section] of syncIdentity.items("cabinet-model.js:generator-27",[["item-a",[C.entryLowerDoorBounds(f,i,c).bottom/1000,C.entryLowerDoorBounds(f,i,c).top/1000,'lower']],["item-b",[upper+faceInset,C.topDoorLimit(f,c)/1000,'upper']]])){
@@ -188,19 +194,19 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   syncIdentity.each("cabinet-model.js:generator-30",bays,(bay,i)=>{
    if(!movable(c.columns[i])){
     const col=c.columns[i],cw=bay.width/1000,x=bay.center/1000,base=p+t;
-    if(!col.pegboard){const start=c.hoodBayHeight!==undefined&&i===1?c.hoodBayHeight/1000+t:base;if(C.backThickness(c)>0)syncIdentity.produce("cabinet-model:site-49",()=>add(g,cw,h-t-start,bt,x,start,-d/2+bt/2)).userData.cabinetBay={column:i};}
+    if(!col.pegboard){const start=c.hoodBayHeight!==undefined&&i===1?c.hoodBayHeight/1000+t:base;rearPanel(g,cw,h-t-start,x,start,'cabinet-model:site-49',{cabinetBay:{column:i}});}
     else{
      const bottom=col.drawers.reduce((n,v)=>n+v.height,0)/1000,top=col.doorBottom/1000-t,H=top-bottom,wood='#bc936b';
-     if(hasLower&&bottom>0)syncIdentity.produce("cabinet-model:site-50",()=>add(g,cw,bottom,t,x,base,-d/2+t/2));
-     if(hasUpper)syncIdentity.produce("cabinet-model:site-51",()=>add(g,cw,inner-top,t,x,base+top,-d/2+t/2));
-     const grid=C.pegboardHoles(f,i,c),radius=grid.diameter/2000,panelThickness=(assembly?.thickness??12)/1000,hatches=C.pegboardHatches(f,i,c);
+     if(hasLower&&bottom>0)rearPanel(g,cw,bottom,x,base,'cabinet-model:site-50',{},wood,'surround');
+     if(hasUpper)rearPanel(g,cw,inner-top,x,base+top,'cabinet-model:site-51',{},wood,'surround');
+     const grid=C.pegboardHoles(f,i,c),radius=grid.diameter/2000,panelThickness=C.backThickness(c,'pegboard')/1000,hatches=C.pegboardHatches(f,i,c);
      const holes=[];for(let a=0;a<grid.columns;a++)for(let b=0;b<grid.rows;b++)holes.push([-cw/2+(grid.marginX+grid.pitchX*a)/1000,(grid.marginY+grid.pitchY*b)/1000]);
      function panel(parent,rect,originX=0,originY=0,moving=false,openings=[]){
-      const [left,right,bottom,top]=rect;if(right-left<1e-8||top-bottom<1e-8)return;
+      const [left,right,bottom,top]=rect;if(right-left<1e-8||top-bottom<1e-8||panelThickness<=0)return;
       const shape=new THREE.Shape();shape.moveTo(left-originX,bottom-originY);shape.lineTo(right-originX,bottom-originY);shape.lineTo(right-originX,top-originY);shape.lineTo(left-originX,top-originY);shape.closePath();
       for(const opening of openings){const [l,r,b,t]=opening,hole=new THREE.Path();hole.moveTo(l,b);hole.lineTo(l,t);hole.lineTo(r,t);hole.lineTo(r,b);hole.closePath();shape.holes.push(hole);}
       for(const [hx,hy] of holes)if(hx-radius>left&&hx+radius<right&&hy-radius>bottom&&hy+radius<top&&openings.every(opening=>hx+radius<opening[0]||hx-radius>opening[1]||hy+radius<opening[2]||hy-radius>opening[3])){const hole=new THREE.Path();hole.absarc(hx-originX,hy-originY,radius,0,Math.PI*2,true);shape.holes.push(hole);}
-      const mesh=syncIdentity.produce("cabinet-model:site-52",()=>add(parent,right-left,top-bottom,panelThickness,0,0,0,wood));mesh.geometry.dispose();mesh.geometry=new THREE.ExtrudeGeometry(shape,{depth:panelThickness,bevelEnabled:false,curveSegments:8});mesh.position.set(moving?0:x,moving?0:base+col.drawers.reduce((n,v)=>n+v.height,0)/1000,moving?-panelThickness:-d/2+t);mesh.userData.cabinetBay={column:i};mesh.userData.cabinetPegboard=true;
+      const mesh=syncIdentity.produce("cabinet-model:site-52",()=>add(parent,right-left,top-bottom,panelThickness,0,0,0,wood));mesh.geometry.dispose();mesh.geometry=new THREE.ExtrudeGeometry(shape,{depth:panelThickness,bevelEnabled:false,curveSegments:8});mesh.position.set(moving?0:x,moving?0:base+col.drawers.reduce((n,v)=>n+v.height,0)/1000,moving?-panelThickness:-d/2+t);mesh.userData.cabinetBay={column:i};mesh.userData.cabinetPegboard=true;mesh.userData.cabinetBack={kind:'pegboard',thickness:panelThickness*1000};
       if(moving){mesh.userData.cabinetPart={column:i,section:'pegboardHatch'};if(options.doors==='ghost'){mesh.material=mesh.material.clone();mesh.material.transparent=true;mesh.material.opacity=.15;mesh.userData.cabinetOwnMaterial=true;}}
      }
      if(!hatches.length)syncIdentity.produce("cabinet-model.js:generator-call-8",()=>panel(g,[-cw/2,cw/2,0,H]));
@@ -216,7 +222,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      }
      if(!entryStyle)for(const side of syncIdentity.items("cabinet-model.js:generator-31",[["item-a",-1],["item-b",1]])){const outer=side<0&&i===0||side>0&&i===bays.length-1;if(outer)syncIdentity.produce("cabinet-model.js:generator-call-11",()=>sideBoard(side<0?'left':'right',.006,H,d-t,x+side*(cw/2-.003),base+bottom,t/2,wood));else syncIdentity.produce("cabinet-model:site-53",()=>add(g,.006,H,d-t,x+side*(cw/2-.003),base+bottom,t/2,wood));}
      if(hasLower)syncIdentity.produce("cabinet-model:site-54",()=>add(g,cw,t,d-t,x,base+bottom-(entryStyle?t:0),t/2,wood));
-     if(hasUpper)syncIdentity.produce("cabinet-model:site-55",()=>add(g,cw,.006,d-2*t,x,base+top-.006,-t/2,wood));
+     if(hasUpper)syncIdentity.produce("cabinet-model:site-55",()=>add(g,cw,.006,shelfFrame(i,'upper').shelfDepth/1000,x,base+top-.006,shelfFrame(i,'upper').shelfCenter/1000,wood));
      if(assembly?.displayShelves!==false)for(const level of syncIdentity.items("cabinet-model.js:generator-32",[["item-a",.68],["item-b",.8]]))syncIdentity.produce("cabinet-model:site-56",()=>add(g,cw*.72,.015,Math.min(.12,d-3*t),x-cw*.1,base+bottom+H*level,-d/2+t+.06,wood)).userData.cabinetAccessory='displayShelf';
      if(assembly?.hooks!==false)for(const offset of syncIdentity.items("cabinet-model.js:generator-33",[["item-a",-.28],["item-b",0],["item-c",.28]])){syncIdentity.produce("cabinet-model:site-57",()=>add(g,.012,.06,.012,x+cw*offset,base+bottom+H*.48,-d/2+t+.018,'#806647')).userData.cabinetAccessory='hook';syncIdentity.produce("cabinet-model:site-58",()=>add(g,.012,.012,.045,x+cw*offset,base+bottom+H*.48,-d/2+t+.035,'#806647')).userData.cabinetAccessory='hook';}
      if(assembly?.light!==false){const led=syncIdentity.produce("cabinet-model:site-59",()=>add(g,cw-.025,.004,.012,x,base+top-.01,d/2-t-.012,'#ffe4ab'));led.userData.cabinetAccessory='light';led.material=led.material.clone();led.material.emissive=new THREE.Color('#ffe4ab');led.material.emissiveIntensity=.6;led.userData.cabinetOwnMaterial=true;
@@ -261,7 +267,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     const rod=syncIdentity.produce('wardrobe-hanging:rod',()=>add(g,r.w/1000,r.size/1000,r.size/1000,r.x/1000,(r.y-r.size/2)/1000,r.z/1000,'#b9bec1'));
     rod.userData.cabinetHangingRod={column:i,rod:j};rod.userData.cabinetBay={column:i};
    },(_,slot)=>'rod:'+slot);
-   let y=base;const drawerBt=c.backThickness===undefined?t:bt,lanes=C.drawerCount(col),drawerHeight=col.drawers.reduce((sum,v)=>sum+v.height,0)/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-37",1,lanes,1,false))if(hasLower&&drawerHeight)syncIdentity.produce("cabinet-model:site-69",()=>add(g,t,drawerHeight,d-2*t,x+(lane-lanes/2)*(cw+t)/lanes,base,-t/2)).userData.cabinetDrawerDivider=true;
+   let y=base;const drawerGeometry=drawerFrame(d),lanes=C.drawerCount(col),drawerHeight=col.drawers.reduce((sum,v)=>sum+v.height,0)/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-37",1,lanes,1,false))if(hasLower&&drawerHeight)syncIdentity.produce("cabinet-model:site-69",()=>add(g,t,drawerHeight,shelfFrame(i,'drawers').shelfDepth/1000,x+(lane-lanes/2)*(cw+t)/lanes,base,shelfFrame(i,'drawers').shelfCenter/1000)).userData.cabinetDrawerDivider=true;
    if(hasLower)syncIdentity.each("cabinet-model.js:generator-38",col.drawers,(drawer,j)=>{
     const dh=drawer.height/1000;for(let lane of syncIdentity.range("cabinet-model.js:generator-39",0,lanes,1,false)){const cw=(bays[i].width/1000-(lanes-1)*t)/lanes,x=bays[i].center/1000+(lane-(lanes-1)/2)*(cw+t),state=C.drawerState(drawer,lane),node=new THREE.Group();node.position.z=state.open?d*.7*(state.extension??1):0;
     node.userData.motion={kind:'cabinetdrawer',column:i,section:'storage',axis:'z',travel:d*.7,closedZ:0};
@@ -270,7 +276,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      // Two exterior fronts; the third runner carries a recessed cutlery tray.
      const hidden=j===2,top=j===1?C.frontHeight(f,c)/1000-faceInset:y+dh;
      if(!hidden){syncIdentity.produce("cabinet-model:site-70",()=>add(node,span.right-span.left-.002,top-frontBottom-.002,t,(span.left+span.right)/2,frontBottom+.001,d/2-t/2,faceColor)).userData.cabinetDrawerBoard='front';syncIdentity.produce("cabinet-model.js:generator-call-14",()=>handleMesh(node,x,frontBottom+(top-frontBottom)*.7,d/2+.012));}
-     const width=cw-.024,inset=Math.min(.016,(d-2*t-drawerBt)*.3),depth=d-2*t-drawerBt-inset,center=drawerBt/2-inset/2,rear=center-depth/2,front=center+depth/2,railH=Math.min(dh-.03,hidden?.055:.15),metal='#b8bdc1';
+     const width=cw-.024,inset=Math.min(.016,(drawerGeometry.depth)*.3),depth=drawerGeometry.depth-inset,center=drawerGeometry.center-inset/2,rear=center-depth/2,front=center+depth/2,railH=Math.min(dh-.03,hidden?.055:.15),metal='#b8bdc1';
      const bar=(W,H,D,X,Y,Z,part)=>{const mesh=syncIdentity.produce("cabinet-model:site-71",()=>add(node,W,H,D,X,Y,Z,metal));mesh.userData.cabinetBasketPart=part;mesh.material=mesh.material.clone();mesh.material.metalness=.65;mesh.material.roughness=.28;mesh.userData.cabinetOwnMaterial=true;return mesh;};
      syncIdentity.produce("cabinet-model.js:generator-call-15",()=>bar(width,.005,depth,x,y+.012,center,'tray'));
      for(const side of syncIdentity.items("cabinet-model.js:generator-40",[["item-a",-1],["item-b",1]])){syncIdentity.produce("cabinet-model.js:generator-call-16",()=>bar(.006,railH,depth,x+side*width/2,y+.017,center,'side'));syncIdentity.produce("cabinet-model.js:generator-call-17",()=>bar(.009,.012,depth,x+side*(width/2+.004),y+.023,center,'runner'));}
@@ -282,9 +288,9 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     const frontTop=c.template==='tv-floor'&&j===col.drawers.length-1?h-t:C.kitchenOverlay(f,c)&&col.door==='none'&&j===col.drawers.length-1?C.frontHeight(f,c)/1000-faceInset:y+bodyDh;
     syncIdentity.produce("cabinet-model:site-72",()=>add(node,entryStyle?span.right-span.left-.002:cw-.004,entryStyle?frontTop-frontBottom-.002:dh-.004,t,entryStyle?(span.left+span.right)/2:x,entryStyle?frontBottom+.001:y,d/2-t/2,entryStyle?faceColor:color)).userData.cabinetDrawerBoard='front';
     // Body spans from the rear panel's inner face to the front panel's inner face.
-    syncIdentity.produce("cabinet-model:site-73",()=>add(node,cw-.02,.012,d-2*t-drawerBt,x,y+.012,drawerBt/2)).userData.cabinetDrawerBoard='bottom';
-    for(const side of syncIdentity.items("cabinet-model.js:generator-44",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-74",()=>add(node,t,bodyDh-.03,d-2*t-drawerBt,x+side*(cw/2-t),y+.024,drawerBt/2)).userData.cabinetDrawerBoard='side';
-    syncIdentity.produce("cabinet-model:site-75",()=>add(node,cw-.02,bodyDh-.03,t,x,y+.024,-d/2+drawerBt+t/2)).userData.cabinetDrawerBoard='back';
+    syncIdentity.produce("cabinet-model:site-73",()=>add(node,cw-.02,.012,drawerGeometry.depth,x,y+.012,drawerGeometry.center)).userData.cabinetDrawerBoard='bottom';
+    for(const side of syncIdentity.items("cabinet-model.js:generator-44",[["item-a",-1],["item-b",1]]))syncIdentity.produce("cabinet-model:site-74",()=>add(node,t,bodyDh-.03,drawerGeometry.depth,x+side*(cw/2-t),y+.024,drawerGeometry.center)).userData.cabinetDrawerBoard='side';
+    syncIdentity.produce("cabinet-model:site-75",()=>add(node,cw-.02,bodyDh-.03,t,x,y+.024,drawerGeometry.rearCenter)).userData.cabinetDrawerBoard='back';
     syncIdentity.produce("cabinet-model.js:generator-call-23",()=>handleMesh(node,x,y+dh*.7,d/2+.012));
     node.traverse(o=>o.userData.cabinetPart={column:i,drawer:j,lane});g.add(node);}y+=dh;
    },(item,slot)=>item?.partId||"drawer:"+slot);

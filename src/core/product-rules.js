@@ -3,7 +3,7 @@
 'use strict';
 const numeric=(min,max,message)=>({min,max,message});
 // Model capability limits; decorative panel thickness is not a fabrication requirement.
-const cabinetBackPanel=Object.freeze({min:0,max:50,default:18});
+const cabinetBackPanel=Object.freeze({min:0,max:50,default:18,componentVersion:1,validate(value){if(!Number.isFinite(value)||value<this.min||value>this.max)throw Error('背板厚度须为 '+this.min+'–'+this.max+' mm，0表示无背板');return value;}});
 const cabinetConstruction={modes:['shared','independent'],default:'shared',joints:['separate','shared'],endPanel:{min:0,max:50},minBoxWidth:150,stackedMinClearance:40};
 // Layout profile, not a hardware specification. Rod axis is below its upper board.
 const wardrobeHanging={template:'wardrobe-hanging',profile:25,endGap:2,topOffset:60,minGap:600};
