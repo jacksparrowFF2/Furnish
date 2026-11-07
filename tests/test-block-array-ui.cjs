@@ -6,6 +6,7 @@ async function edit(p,key,value){const input=p.locator('[data-inventory-array="'
 async function check(p,run,label){
  p.setDefaultTimeout(20000);p.setDefaultNavigationTimeout(30000);console.log(label+': init');await p.locator('#repository-loading').waitFor({state:'hidden'});await p.waitForFunction(()=>typeof repositoryBooting!=='undefined'&&!repositoryBooting,null,{timeout:30000});
  await p.evaluate(()=>{setPlan(PLANS[0].id);const it=FurnishCatalogData.library.flatMap(c=>c.items).find(it=>it[0]==='block'),f=createCatalogFurniture(it,5000,5000)[0];Object.assign(f,{id:'block',w:300,d:200,h:100,mountHeight:600,rot:37,flip:true});mutate(()=>state.furniture=[f]);selectIds(['block']);});
+ await require('./helpers/dimension-panel-ui.cjs')(p,run,label);
  const before=await p.evaluate(()=>structuredClone(getF('block')));assert(!before.inventoryArray);assert.equal(await p.locator('[data-inventory-array="count"]').inputValue(),'1');
  await edit(p,'count',7);assert.equal(await p.evaluate(()=>state.furniture.length),7);await p.evaluate(()=>undo());assert.deepEqual(await p.evaluate(()=>structuredClone(getF('block'))),before);await p.evaluate(()=>redo());assert.equal(await p.evaluate(()=>state.furniture.length),7);
  for(const [k,v] of Object.entries({columns:2,rows:2,gapX:10,gapZ:20,gapY:30,pattern:'stagger',angle:90}))await edit(p,k,v);

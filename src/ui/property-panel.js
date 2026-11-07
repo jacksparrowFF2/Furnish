@@ -70,7 +70,7 @@ function renderFab(){
   const b = (act, icon, label, cls = '') => `<button class="btn ${cls}" data-act="${act}" title="${label}" aria-label="${label}">${ico(icon)}</button>`;
   fab.innerHTML = ids.length
     ? `<div class="fab-primary"><span class="name">${f ? esc(nm(f.name)) : tr(`已选 ${ids.length} 件`, `${ids.length} selected`)}</span>`
-      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):FurnishProducts.definition(f)?.wallRecess?tr('调整箱体宽、深、高','Edit box width, depth and height'):tr('调整占地宽度与深度','Edit footprint width and depth')}"><b>${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))}${FurnishProducts.definition(f)?.wallRecess?' × '+Number(FurnishProducts.height(f).toFixed(2)):''}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
+      + (f?`<button class="btn fab-size" data-fab-edit="size" aria-haspopup="dialog" aria-expanded="false" ${furnitureLocked(f)||furnitureError(f)?'disabled':''} title="${furnitureUsesDetailedDesign(f)?tr('打开柜体详细设计','Open cabinet designer'):tr('调整尺寸与离地高度','Edit dimensions and elevation')}"><b>${Number(FurnishProducts.dimensions(f).w.toFixed(2))} × ${Number(FurnishProducts.dimensions(f).d.toFixed(2))}${FurnishProducts.definition(f)?.wallRecess?' × '+Number(FurnishProducts.height(f).toFixed(2)):''}</b><small>mm · ${furnitureUsesDetailedDesign(f)?tr('详细设计','Design'):tr('尺寸','Size')}</small></button>`:'')
       + `<button class="btn" data-fab-edit="distance" aria-haspopup="dialog" aria-expanded="false" ${selItems().some(v=>furnitureError(v))?'disabled':''}>${tr('四向净距','Clearances')}</button></div><div class="fab-actions">`
       + b('rotL', 'rotL', tr('逆时针 90°', 'Rotate left')) + b('rotR', 'rotR', tr('顺时针 90°', 'Rotate right')) + b('flip', 'flip', tr('镜像', 'Mirror'))
       + (ids.length>1?`<button class="btn" data-act="${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?'ungroup':'group'}">${selItems().every(f=>f.groupId&&f.groupId===selItems()[0].groupId)?tr('解组','Ungroup'):tr('打组','Group')}</button>`:'')
@@ -83,6 +83,19 @@ function renderFab(){
   queueFabPosition();
 }
 
+// Reuse existing model-specific height/elevation controls and their bindings.
+function groupFurnitureDimensions(f){
+ if(furnitureUsesDetailedDesign(f))return;
+ const card=document.querySelector('.furniture-property-card'),heading=card?.querySelector('h3');if(!heading)return;
+ const group=document.createElement('section');group.dataset.furnitureSizeFields='';
+ group.innerHTML=`<h3>${tr('尺寸与离地高度','Dimensions and elevation')}</h3><div class="form"><label>${f.type==='block'?tr('长','Length'):tr('宽','Width')} (mm)<input id="fW" type="number" min="${FurnishProducts.footprintMinimum(f,'w')}" max="20000" step="1" value="${f.w}" ${furnitureLocked(f)?'disabled':''}></label><label>${f.type==='block'?tr('宽','Width'):tr('深','Depth')} (mm)<input id="fD" type="number" min="${FurnishProducts.footprintMinimum(f,'d')}" max="20000" step="1" value="${f.d}" ${furnitureLocked(f)?'disabled':''}></label></div>`;
+ const form=group.querySelector('.form'),height=card.querySelector('#fH');
+ if(height){const label=height.closest('label');label.classList.remove('full');form.append(label);}
+ else form.insertAdjacentHTML('beforeend',`<label>${tr('本体高度（只读）','Body height (read only)')} (mm)<input data-size-height readonly value="${FurnishProducts.height(f)??''}" placeholder="${tr('未知','Unknown')}"></label>`);
+ const bottom=card.querySelector('#fMountHeight,#stool-bottom,#covering-bottom,#fBottomElevation');
+ if(bottom){const label=bottom.closest('label');label.classList.remove('full');form.append(label);}
+ heading.before(group);
+}
 function furnitureUsesDetailedDesign(f){return FurnishCabinet.supported(f)||!!f.kitchen;}
 function openSelectionProperties(){
   const items=selItems(),f=items.length===1&&items[0];
@@ -127,8 +140,11 @@ function openFabEditor(kind){
   }
   const before=snap(),planId=PLAN.id,ids=selIds().join('\n');
   const boxSize=kind==='size'&&FurnishProducts.definition(f)?.wallRecess;
-  const title=kind==='size'?(boxSize?tr('调整箱体尺寸','Edit box dimensions'):tr('调整占地尺寸','Edit footprint size')):tr('四向净距定位','Position by clearance');
-  const panel=mountFabEditor(kind,title,(kind==='size'?`<form id="fab-size-form"><div class="form"><label>${tr('宽','Width')} (mm)<input id="fab-width" type="number" min="${FurnishProducts.footprintMinimum(f,'w')}" max="20000" step="any" value="${f.w}" required></label><label>${tr('深','Depth')} (mm)<input id="fab-depth" type="number" min="${FurnishProducts.footprintMinimum(f,'d')}" max="20000" step="any" value="${f.d}" required></label>${boxSize?`<label>${tr('高','Height')} (mm)<input id="fab-height" type="number" min="10" max="20000" step="any" value="${FurnishProducts.height(f)}" required></label>`:''}</div><p class="muted small">${boxSize?tr('箱体宽 × 深 × 高（含面板）；深为入墙方向，箱底离地单独设置。','Box width × depth × height, including panel; depth goes into the wall. Set bottom height separately.'):tr('占地宽 × 深；尺寸修改用于布局缩放。','Footprint width × depth; resizing is for layout.')} ${tr('固定基准','Fixed anchor')}：${!f.resizeAnchor&&FurnishProducts.slidingResizeFrame(f)?tr('收门端定位角','Stacking-end datum'):tr(...FurnishDesign.resizeAnchors[f.resizeAnchor||'center'])}</p><p id="fab-size-error" class="project-error" role="alert"></p><div class="actions"><button class="btn" type="button" data-fab-close>${tr('取消','Cancel')}</button><button class="btn primary" type="submit">${tr('应用尺寸','Apply size')}</button></div></form>`
+  const sizeGroup=document.querySelector('[data-furniture-size-fields]');
+  const sizeBottomBefore=Number(sizeGroup?.querySelector('#fMountHeight,#stool-bottom,#covering-bottom,#fBottomElevation')?.value);
+  const sizeFields=kind==='size'&&sizeGroup?Array.from(sizeGroup.querySelectorAll('.form label')).map(label=>{const copy=label.cloneNode(true),input=copy.querySelector('input');input.id=({fW:'fab-width',fD:'fab-depth',fH:'fab-height'})[input.id]|| (input.readOnly?'fab-model-height':'fab-bottom');input.setAttribute('value',label.querySelector('input').value);input.required=!input.readOnly;if(!input.readOnly)input.step='any';return copy.outerHTML;}).join(''):null;
+  const title=kind==='size'?(sizeFields?tr('调整尺寸与离地高度','Edit dimensions and elevation'):boxSize?tr('调整箱体尺寸','Edit box dimensions'):tr('调整占地尺寸','Edit footprint size')):tr('四向净距定位','Position by clearance');
+  const panel=mountFabEditor(kind,title,(kind==='size'?`<form id="fab-size-form"><div class="form">${sizeFields??`<label>${tr('宽','Width')} (mm)<input id="fab-width" type="number" min="${FurnishProducts.footprintMinimum(f,'w')}" max="20000" step="any" value="${f.w}" required></label><label>${tr('深','Depth')} (mm)<input id="fab-depth" type="number" min="${FurnishProducts.footprintMinimum(f,'d')}" max="20000" step="any" value="${f.d}" required></label>${boxSize?`<label>${tr('高','Height')} (mm)<input id="fab-height" type="number" min="10" max="20000" step="any" value="${FurnishProducts.height(f)}" required></label>`:''}`}</div><p class="muted small">${sizeFields?tr('尺寸与安装高度沿用属性设置；离地高度独立于自身尺寸。','Dimensions and installation height follow the property controls; elevation is independent of body size.'):boxSize?tr('箱体宽 × 深 × 高（含面板）；深为入墙方向，箱底离地单独设置。','Box width × depth × height, including panel; depth goes into the wall. Set bottom height separately.'):tr('占地宽 × 深；尺寸修改用于布局缩放。','Footprint width × depth; resizing is for layout.')} ${tr('固定基准','Fixed anchor')}：${!f.resizeAnchor&&FurnishProducts.slidingResizeFrame(f)?tr('收门端定位角','Stacking-end datum'):tr(...FurnishDesign.resizeAnchors[f.resizeAnchor||'center'])}</p><p id="fab-size-error" class="project-error" role="alert"></p><div class="actions"><button class="btn" type="button" data-fab-close>${tr('取消','Cancel')}</button><button class="btn primary" type="submit">${tr('应用尺寸','Apply size')}</button></div></form>`
     :directionalMeasurementPanel(items,'fab-distance-save',true)));
   panel.querySelectorAll('[data-fab-close]').forEach(b=>b.onclick=()=>closeFabEditor());
   // Keep the app's canvas shortcuts from firing while using this small editor.
@@ -140,8 +156,11 @@ function openFabEditor(kind){
       if(!w.value.trim()||!d.value.trim())throw Error(tr('请输入有效宽度和深度','Enter a valid width and depth'));
       const h=panel.querySelector('#fab-height');
       if(h&&!h.value.trim())throw Error(tr('请输入有效高度','Enter a valid height'));
-      const next=FurnishDesign.resizeFurniture(getF(f.id),{w:Number(w.value),d:Number(d.value),...(h?{h:Number(h.value)}:{})});
-      closeFabEditor(false);if(next.w!==f.w||next.d!==f.d||h&&next.h!==f.h)mutate(()=>Object.assign(getF(f.id),next));
+      const bottom=panel.querySelector('#fab-bottom');if(bottom&&!bottom.value.trim())throw Error(tr('请输入有效离地高度','Enter a valid elevation'));
+      const sizeChanged=Number(w.value)!==f.w||Number(d.value)!==f.d||h&&Number(h.value)!==FurnishProducts.height(f);
+      let next=sizeChanged?FurnishDesign.resizeFurniture(getF(f.id),{w:Number(w.value),d:Number(d.value),...(h&&Number(h.value)!==FurnishProducts.height(f)?{h:Number(h.value)}:{})}):{...f};
+      if(bottom&&Number(bottom.value)!==sizeBottomBefore)next=FurnishProducts.editBottomHeight(next,Number(bottom.value));
+      closeFabEditor(false);if(JSON.stringify(next)!==JSON.stringify(f))mutate(()=>{const target=getF(f.id);for(const key of Object.keys(target))if(!(key in next))delete target[key];Object.assign(target,next);});
       $('#fab [data-fab-edit="size"]')?.focus({preventScroll:true});
     }catch(error){panel.querySelector('#fab-size-error').textContent=error.message;}
   };
@@ -403,6 +422,7 @@ function bindFurnPanel(f){
    const heading=document.querySelector('.furniture-property-card h3');
    heading?.insertAdjacentHTML('afterend',`<div class="form" data-bottom-elevation><label class="full">${tr('底部离地高度','Bottom above floor')} (mm)<input id="fBottomElevation" type="number" min="0" max="20000" step="1" value="${FurnishProducts.bottomHeight(f)}" ${furnitureLocked(f)?'disabled':''}></label>${FurnishProducts.bottomMode(f)==='surface'&&f.counterLink?`<p class="muted full">${tr('修改后解除台面跟随，保留设备并单独调整安装高度。','Changing this detaches countertop following and adjusts the device height independently.')}</p>`:''}</div>`);
   }
+  groupFurnitureDimensions(f);
   document.querySelectorAll('[data-paper-array]').forEach(el=>el.onchange=()=>{try{const current=getF(f.id);if(furnitureLocked(current))throw Error('家具已锁定，请先解锁');if(!el.value.trim())throw Error('请输入有效参数');const key=el.dataset.paperArray,value=el.tagName==='SELECT'?el.value:Number(el.value),patch=['count','layers','rows','columns'].includes(key)?FurnishProducts.arrayQuantityEdit(FurnishProducts.paperArrayConfig(current).count,FurnishProducts.paperArrayConfig(current),key,value,FurnishProducts.definition(current).paperArray):{[key]:value};if(!Object.keys(patch).length)return;const next=FurnishProducts.editPaperArray(current,patch);upd(g=>Object.assign(g,next));}catch(error){toast(error.message);renderPanel();}});
   if(f.paperArray)for(const el of document.querySelectorAll('#fW,#fD,#fH')){el.disabled=true;el.title='通过纸品阵列参数调整整体尺寸';}
   if(f.pose3D)for(const input of document.querySelectorAll('#fMountHeight,#fBottomElevation'))input.value=Number(FurnishProducts.bottomHeight(f).toFixed(2));

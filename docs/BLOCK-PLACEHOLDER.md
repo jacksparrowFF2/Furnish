@@ -37,3 +37,5 @@
 显式方块阵列最低v69，当前/命名方案/家具库、工作区及恢复缓存共用历史兼容链；普通旧方块保留原所需版本。复制重映射阵列身份，跨类型替换清理，解除保留位置。阵列不代表空腔、承托或实体碰撞豁免。
 
 增量验证：`node tests/test-inventory-array.cjs`、`node tests/test-block-array-ui.cjs`；[验收记录](validation/block-array-20261107/README.md)。
+
+2026-11-07：属性栏及快捷尺寸浮窗将长、宽、高与底部离地放在同一组，浮窗四项一次应用、一次撤销；其它普通家具按既有字段能力同步集中显示，见[增量验收](validation/dimension-controls-20261107/README.md)。
