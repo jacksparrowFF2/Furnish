@@ -94,5 +94,17 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   preview.selectPart({kind:'bay',column:1});tick();assert.equal(depths().length,0,'empty equipment module has no invented cabinet cavity');preview.dispose();
  }
  const pure={...peg,cabinet:structuredClone(peg.cabinet)};const pureDepth=depthPreview(pure);assert.equal(pureDepth.depths().length,0,'independent pegboard has no cabinet net depth');pureDepth.preview.dispose();
- console.log('PASS cabinet dimensions and visible net-depth rulers: 350mm chains, zero/no-door, section heights, front/perspective projection, kitchen transforms/mirrors, empty/pure-board exclusions, dimension toggle and immutable inputs');
+ // Board elevations use actual production geometry and the whole-cabinet datum.
+ for(const template of ['storage','entry-console','sideboard-wall']){
+  const f={...C.preset(template),type:'cabinet',mountHeight:400},before=JSON.stringify(f),{preview,host}=depthPreview(f),layer=host.children.find(e=>e.className==='cab-dimensions');
+  const parts=[...C.config(f).columns.flatMap((col,column)=>col.shelves.map((_,shelf)=>({kind:'shelf',column,shelf}))),...C.structuralBoards(f).map(b=>({kind:'structure',column:b.column,section:b.section}))];
+  const product=ctx.FurnishCabinetModel.build(T,f,box);product.updateMatrixWorld(true);
+  for(const part of parts){
+   let mesh;product.traverse(o=>{const p=o.userData.cabinetInspect||o.userData.cabinetShelf;if(o.isMesh&&p&&Object.keys(part).every(k=>k==='kind'||p[k]===part[k]))mesh=o;});assert(mesh,'production board exists');
+   const expected=new T.Box3().setFromObject(mesh).min.y*1000;preview.selectPart(part);
+   for(const front of [true,false]){preview.setView({front});tick();const el=layer.children.find(e=>e.attrs['data-board-elevation']!==undefined);assert(el,'selected board has its bottom elevation');assert(Math.abs(Number(el.attrs['data-board-elevation'])-expected)<1e-6);assert.equal(el.hidden,false,'height remains visible in front and perspective');}
+  }
+  preview.setView({dimensions:false});tick();assert(!layer.children.some(e=>e.attrs['data-board-elevation']!==undefined));assert.equal(JSON.stringify(f),before);preview.dispose();
+ }
+ console.log('PASS cabinet dimensions, net-depth rulers and production board-bottom elevations');
 })().catch(e=>{console.error(e);process.exitCode=1;});
