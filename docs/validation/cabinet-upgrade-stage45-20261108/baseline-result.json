@@ -1,0 +1,5 @@
+{
+  "status": 0,
+  "stdout": "PASS cabinet composition: 378 topologies/production models, 378 baseline comparisons, 796 retained configurations; box-aware front pairing, editing, identities and project restore\n",
+  "stderr": ""
+}

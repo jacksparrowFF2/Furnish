@@ -1,3 +1,5 @@
+2026-11-08（柜体局部结构）：cabinet-core统一活动层板／底板／分柜踢脚mm实体及柜箱高度，cabinet-model共用生产组件；旧编辑开关在读取边界集中消费，空间确认与缓存沿完整cabinet。显式局部字段及上柜嵌套字段最低v70，沿原mutate／项目／工作区／离线缓存，无新增脚本或保存通道。见[契约](CABINET-LOCAL-STRUCTURE.md)。
+
 2026-11-07（方块阵列）：block复用inventoryArray普通家具记录及原属性/MCP/mutate，显式字段最低v69并兼容旧工作区/缓存；无新模型或保存通道。见[方块](BLOCK-PLACEHOLDER.md)。
 
 2026-11-07（上下柜独立布局）：cabinet.tiers以根配置为下柜、独立upper配置为上柜，tierParts统一后沿对齐、深度／高度及局部偏移；两柜继续调用同一生产构造、板件记录器和组合核心。选择临时tier键路由门抽，父草稿统一mutate；v67项目识别复用已协调的67／68版本基础，无新加载脚本。见[分层契约](CABINET-TIERS.md)。

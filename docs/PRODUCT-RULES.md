@@ -484,3 +484,8 @@ UI 在方案副本中沿正式 normalizeFurnitureEdit 预演关联调整，并�
 ## 懒角落收纳盒（2026-11-07）
 
 storage_bin_族七款注册storageSupply和storageBin能力，mountHeight新建0、底部原点、pose3D与inventoryArray复用原规则；未知价格不填。尺寸/型号/几何语义见[收纳盒](STORAGE-BINS-LANJIAOLUO.md)。单件v57、姿态v58、显式阵列v68；缺失不补写，复制/替换/缓存/空间确认沿既有机制。
+
+
+## 柜体局部板件（2026-11-08）
+
+`cabinetDetail`声明底座高0–250mm、踢脚和活动层板前后内退0–300mm、层板最小实体深1mm，踢脚默认前沿退40mm。这些是软件设计范围，非厂家五金／加工要求。缺失底板字段仍有底板，缺失局部踢脚继承整柜高与默认内退，缺失逐层退让为0；不批量写入默认字段。适用类型、模块操作、模板替换、上下柜、确认及v70往返见[局部结构契约](CABINET-LOCAL-STRUCTURE.md)。

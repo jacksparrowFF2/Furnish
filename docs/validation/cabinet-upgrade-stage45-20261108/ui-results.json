@@ -1,0 +1,53 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "selected shelf shows actual retreated depth",
+      "saved only selected box base and shelf retreats",
+      "application undo restores original boards",
+      "redo restores board details",
+      "cancel keeps saved base details",
+      "draft undo restores independent base",
+      "draft redo restores inherited base",
+      "narrow shelf fields fit",
+      "refresh keeps v70 details and orientation",
+      "restored production omits selected bottom and plinth",
+      "detail editing has no page errors"
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "selected shelf shows actual retreated depth",
+      "saved only selected box base and shelf retreats",
+      "application undo restores original boards",
+      "redo restores board details",
+      "cancel keeps saved base details",
+      "draft undo restores independent base",
+      "draft redo restores inherited base",
+      "narrow shelf fields fit",
+      "refresh keeps v70 details and orientation",
+      "restored production omits selected bottom and plinth",
+      "detail editing has no page errors"
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "selected shelf shows actual retreated depth",
+      "saved only selected box base and shelf retreats",
+      "application undo restores original boards",
+      "redo restores board details",
+      "cancel keeps saved base details",
+      "draft undo restores independent base",
+      "draft redo restores inherited base",
+      "narrow shelf fields fit",
+      "refresh keeps v70 details and orientation",
+      "restored production omits selected bottom and plinth",
+      "detail editing has no page errors"
+    ]
+  }
+]

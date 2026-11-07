@@ -1,0 +1,10 @@
+{
+  "src/core/cabinet-core.js": "99ba09561428390e4b67a8b06f64dfcf0037a04851994b60c601ea42651fe098",
+  "src/render/cabinet-model.js": "9e7d8b92bae90f36bb3b21b6bf351f0c8ec68671e025276338f783c04c7d131d",
+  "src/ui/cabinet-editor.js": "dcd3dd9e196090e9d5d27058498bff3d04f5718287bfdaea8abd60e23ca5db50",
+  "src/core/product-rules.js": "7e299c6409e0e1e65622b002e28c63dbebf1a53e50a2b4ac21b1f521ed0dc3d9",
+  "src/core/project-core.js": "31c08575c66c987652bdc4bea88e0438ba36c1f07a6ce84fa292e49312df01fd",
+  "src/core/repository-core.js": "36229274e137e83067f8372095485882e88904ce88aa4a7c535c08d3733c0821",
+  "src/io/workspace-cache.js": "57425f49191d200f4d8311110a0497d11726e538d84e0669eca51b02b209e13c",
+  "src/app.js": "7e1683e53aca10a570bd0c32c308e0f44d93a361ab855c69a0a9c719f5542e0a"
+}
