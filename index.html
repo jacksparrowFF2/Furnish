@@ -496,6 +496,7 @@
 <script src="src/core/board-motion-collision.js"></script>
 <script src="src/render/solid-cut.js"></script>
 <script src="src/render/scene-observation.js"></script>
+<script src="src/render/selection-transform.js"></script>
 <script src="src/render/robot-vacuum-model.js"></script>
 <script src="src/render/yeswood-sofa-model.js"></script>
 <script src="src/render/shower-arrow-model.js"></script>
@@ -655,7 +656,7 @@ let inited = false, active = false, raf = 0, anim = null, fly = null;
 let capturedImage=null,capturedState='';
 let renderer, labelRenderer, scene, camera, orbit, walkCtl, hemi, sun, ground, glassMat, wallMat, capMat, frameMat;
 let archFloor, archUp, furnG, clearanceG, labelG, wallLabelG, lampG, colliders = [], selKey = null, selHelper = null;
-let elevationG,issueG,sceneIssue=null,issueTimer=0;
+let elevationG,issueG,sceneIssue=null,issueTimer=0,selectionTransform=null;
 const observation=FurnishSceneObservation.create(THREE);
 const ceilingDisplay=FurnishCeilingModel.createDisplay(THREE);
 let observationTarget=null,observationSelection='',observationRevision='';
@@ -1430,6 +1431,7 @@ function syncReplacementFootprint(work){
 // 只重建变化的部分
 function sync(force){
   if (!inited || (!active && !force)) return;
+  cancelElevationGesture();
   H=FurnishProject.ceilingHeight(state)/1000;
   const settings=FurnishDesign.sceneSettings(state.scene3d),changed=Object.keys(settings).some(k=>opt[k]!==settings[k]);
   Object.assign(opt,settings);
@@ -1594,6 +1596,7 @@ async function enter(){
   stage.classList.remove('animating');
 }
 async function exit(){
+  cancelElevationGesture();
   closeCameraPanel();
   capturedImage=image();capturedState=JSON.stringify(state);
   clearObservation();
@@ -1703,7 +1706,20 @@ function fitSceneAnnotationLabels(){
   for(const offset of offsets){const box={left:rect.left+shift,right:rect.right+shift,top:rect.top+offset,bottom:rect.bottom+offset};if(box.top<bounds.top+8||box.bottom>bounds.bottom-8||occupied.some(b=>box.left<b.right+5&&box.right>b.left-5&&box.top<b.bottom+5&&box.bottom>b.top-5))continue;dy=offset;occupied.push(box);break;}
   el.style.marginLeft=shift+'px';el.style.marginTop=dy+'px';});
 }
+function cancelElevationGesture(){selectionTransform?.cancel();}
+function getSelectionTransform(){
+ return selectionTransform ||= FurnishSceneTransform.create({THREE,stage,host:stage,camera,tr,wx,wz,
+  getItem:getF,models:ids=>ids.map(id=>furnG.children.find(g=>g.userData.fid===id)).filter(Boolean),
+  furniture:()=>state.furniture,plan:()=>FurnishProject.effectivePlan(PLAN,state),planId:()=>PLAN.id,
+  locked:furnitureLocked,invalid:furnitureError,visible:f=>FurnishObservationLayers.visible(f),
+  orbitEnabled:()=>orbit.enabled,setOrbit:value=>{orbit.enabled=value;if(!value)fly=null;},
+  rect:()=>renderer.domElement.getBoundingClientRect(),invalidate:()=>invalidate(true),error:toast,
+  commit:items=>{const replacements=new Map(items.map(f=>[f.id,f]));mutate(()=>state.furniture=state.furniture.map(f=>replacements.get(f.id)||f));}
+ });
+}
 function buildSelectionElevation(ids){
+ cancelElevationGesture();
+ if(!ids.length)selectionTransform?.setSelection([]);
  clearAnnotations(elevationG);
  if(ui.sel?.kind==='ceiling'){
   const plan=FurnishProject.effectivePlan(PLAN,state),first=plan.ceilings?.items.find(c=>c.id===ui.sel.id);if(!first)return;
@@ -1711,18 +1727,9 @@ function buildSelectionElevation(ids){
   const label=annotationLabel(elevationG,'',wx(at[0]),M(Math.min(...bottoms)),wz(at[1]),'scene-elevation scene-height-card scene-ceiling-height'),el=label.element,heading=document.createElement('small');heading.textContent=tr('吊顶 · 地砖完成面基准','Ceiling · finished floor datum');el.append(heading);
   for(const [name,value] of [[tr('底部距地砖','Above finished floor'),m.aboveFloor],[tr('底部距房顶','Underside to roof'),m.roofGap]]){const row=document.createElement('div'),text=document.createElement('span'),number=document.createElement('b');row.className='scene-height-row';text.textContent=name;number.textContent=format(value);row.append(text,number);el.append(row);}return;
  }
- if(ids.length!==1)return;const f=getF(ids[0]);if(!f)return;
- let heights;try{heights=FurnishDesign.furnitureHeightMeasurements(f,FurnishProject.effectivePlan(PLAN,state),state.furniture);}catch{heights=null;}const v=heights?.vertical,x=wx(f.cx),z=wz(f.cy),mm=n=>Number(n.toFixed(2)),value=n=>Number.isFinite(n)?`${mm(n)} mm`:tr('待核对','Unknown');
- if(!v){annotationLabel(elevationG,tr('高度未知 · 标高待核对','Unknown height · verify elevations'),x,.25,z,'scene-elevation');return;}
- const bottom=M(v.bottom),top=M(v.top),V=(xx,y)=>new THREE.Vector3(xx,y,z);
- const floor=Number.isFinite(heights.bottom)?M(v.bottom-heights.bottom):bottom;
- annotationLine(elevationG,[V(x,floor),V(x,top),V(x-.07,floor),V(x+.07,floor),V(x-.07,bottom),V(x+.07,bottom),V(x-.07,top),V(x+.07,top)],0x167b9b);
- const label=annotationLabel(elevationG,'',x,(bottom+top)/2,z,'scene-elevation scene-height-card'),el=label.element;
- const heading=document.createElement('small');heading.textContent=tr('地砖完成面基准','Finished floor datum');el.append(heading);
- for(const [zh,en,n] of [['顶部距地面','Top above floor',heights.top],['顶部距房顶','Top to ceiling',heights.roofGap],['底部距地面','Bottom above floor',heights.bottom]]){
-  const row=document.createElement('div'),name=document.createElement('span'),number=document.createElement('b');row.className='scene-height-row';name.textContent=tr(zh,en);number.textContent=value(n);row.append(name,number);el.append(row);
- }
+ if(ids.length)getSelectionTransform().setSelection(ids);
 }
+
 function clearSceneIssue(){clearTimeout(issueTimer);sceneIssue=null;clearAnnotations(issueG);invalidate();}
 function highlightIssue(item,volumes){
  if(!active||getF(item.id)&&!FurnishObservationLayers.visible(getF(item.id)))return;clearSceneIssue();sceneIssue={selection:JSON.stringify(ui.sel)};const color=item.pending?0xb38118:0xe45e2b;
@@ -1766,6 +1773,7 @@ function bindJoystick(){
   el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
 }
 function setMode(m){
+  cancelElevationGesture();
   if (anim) return;
   clearObservation();
   opt.mode = m; syncModeBtns();
@@ -2009,6 +2017,7 @@ function loop(){
   applyObservationLayers();
   labelRenderer.render(scene, camera);
   fitSceneAnnotationLabels();
+  selectionTransform?.update(active&&opt.furn&&!globalThis.FurnishTilePresetUI?.inspecting()&&opt.mode==='orbit'&&!anim);
 }
 
 function syncCeilingModeButtons(){document.querySelectorAll('[data-ceiling-display]').forEach(b=>{const on=b.dataset.ceilingDisplay===ui.ceilingMode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});}

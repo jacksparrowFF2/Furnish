@@ -5,6 +5,21 @@
  const products=()=>root.FurnishProducts||require('./product-rules.js');
  const kitchen=()=>root.FurnishKitchen||require('./kitchen-core.js');
  const finished=plan=>(root.FurnishWallFinish||require('./wall-finish-core.js')).spatial(plan);
+ // Rigid selection transforms: millimetres in the plan XY plane, Z up.
+ // Rotation only changes yaw; installation fields keep their native semantics.
+ function transformFurniture(items,{dx=0,dy=0,dz=0,angle=0,pivot,roundPosition=false}={}){
+  if(![dx,dy,dz,angle].every(Number.isFinite))throw Error('请输入有效的位移或角度');
+  if(!items.length)return [];
+  if(!pivot){const G=root.FurnishGeometry||require('./layout-geometry.js'),b=G.groupBox(items);pivot=[(b[0]+b[2])/2,(b[1]+b[3])/2];}
+  if(!Array.isArray(pivot)||!pivot.every(Number.isFinite))throw Error('旋转中心无效');
+  const a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a),round=n=>roundPosition?Math.round(n):n;
+  return items.map(f=>{const next=dz?products().editBottomHeight(f,products().bottomHeight(f)+dz):{...f},x=f.cx-pivot[0],y=f.cy-pivot[1];
+   if(dx||dy||angle){next.cx=round(pivot[0]+x*c-y*s+dx);next.cy=round(pivot[1]+x*s+y*c+dy);}
+   if(![next.cx,next.cy].every(v=>Number.isFinite(v)&&Math.abs(v)<=1000000))throw Error('移动位置超出有效范围');
+   if(angle)next.rot=(((f.rot||0)+angle)%360+360)%360;
+   return next;
+  });
+ }
  const uses={unassigned:['未分类','Unassigned'],living:['客厅','Living room'],dining:['餐厅','Dining room'],bedroom:['卧室','Bedroom'],study:['书房','Study'],kitchen:['厨房','Kitchen'],bathroom:['卫生间','Bathroom'],balcony:['阳台','Balcony'],hall:['玄关／走廊','Hall'],storage:['储物／衣帽间','Storage'],other:['其他','Other'],bay:['飘窗台','Bay platform']};
  function inferUse(room,setting){
   if(room.counted===false)return 'bay';
@@ -378,7 +393,7 @@
   workspace.designs=manageDesign(workspace.designs,planId,'create',{name,work,editable:true});
   (workspace.activeDesigns||={})[planId]=workspace.designs.at(-1).id;
  }
- root.FurnishDesign={products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeAnchorPosition,cabinetResizeAnchors,resizeAnchorChoices,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign,activeDesign,saveActiveDesign,preserveCurrentDesign};
+ root.FurnishDesign={transformFurniture,products,showerInstallation,laundryStack,normalizeLaundryStacks,uses,inferUse,styleFloor,bounds,resizeAnchors,resizeAnchorPosition,cabinetResizeAnchors,resizeAnchorChoices,resizeFurniture,replaceFurniture,expandGroups,groupFurniture,ungroupFurniture,pasteFurniture,catalogSnapshot,catalogSource,restoreNotes,restoreFurniture,deliveryBounds,measurementGeometry,wallGaps,furnitureVerticalBounds,furnitureHeightMeasurements,planFurnitureOrder,waterheaterClearances,placeAtGap,placeAtDirectionalGap,placeSelectionAtDirectionalGap,sceneSettings,manageDesign,activeDesign,saveActiveDesign,preserveCurrentDesign};
  root.FurnishDesign.applyCabinetTemplate=applyCabinetTemplate;
  if(typeof module!=='undefined')module.exports=root.FurnishDesign;
 })(typeof window==='undefined'?globalThis:window);

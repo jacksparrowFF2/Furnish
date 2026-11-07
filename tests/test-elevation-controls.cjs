@@ -1,0 +1,19 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url'),{chromium,_electron}=require('playwright');
+const root=path.resolve(__dirname,'..'),A=require('../scripts/lib/test-artifacts.cjs'),V=require('../scripts/lib/browser-verification.cjs'),verify=require('./helpers/elevation-controls.js'),{runtimeFiles}=require('../scripts/package-desktop.cjs'),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+(async()=>{const source=path.join(root,'projects/workspace.furnish.json'),before=hash(source),job=A.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'elevation-'});let browser,app,server,passed=false;const reports=[];const closeTestApp=async()=>{if(!app)return;const current=app;app=null;await current.evaluate(({BrowserWindow})=>{for(const window of BrowserWindow.getAllWindows())window.destroy();}).catch(()=>{});await current.close().catch(()=>{});};
+ try{
+  const work=job.workspace('workspace',root,{directories:['src','styles','vendor','assets'],files:['index.html','manifest.webmanifest']});fs.mkdirSync(path.join(work,'projects'),{recursive:true});fs.copyFileSync(source,path.join(work,'projects/workspace.furnish.json'));for(const name of runtimeFiles)job.copy(path.join(root,'scripts',name),path.join('workspace/scripts',name));job.discard('profile');server=await V.staticServer(work);
+  browser=await chromium.launch({headless:true,channel:'chrome'});
+  for(const mode of ['http','file','desktop']){
+   let p,context;
+   if(mode==='desktop'){
+    const probe=http.createServer();await new Promise(r=>probe.listen(0,'127.0.0.1',r));const port=probe.address().port;await new Promise(r=>probe.close(r));const executable=require('../scripts/launch-desktop.cjs').desktopExecutable(root),env={...process.env,FURNISH_DESKTOP_ROOT:work,FURNISH_DESKTOP_PROFILE:path.join(job.dir,'profile'),FURNISH_PORT:String(port)};delete env.ELECTRON_RUN_AS_NODE;
+    app=await _electron.launch({executablePath:typeof executable==='string'?executable:executable.executable,env,timeout:60000});p=await app.firstWindow();await p.waitForFunction(()=>typeof FurnishMcp!=='undefined'&&!repositoryBooting);const preferences=await app.evaluate(({BrowserWindow})=>BrowserWindow.getAllWindows()[0].webContents.getLastWebPreferences());assert.equal(preferences.sandbox,true);assert.equal(preferences.contextIsolation,true);assert.equal(preferences.nodeIntegration,false);
+   }else{context=await browser.newContext({viewport:{width:1450,height:1000},offline:mode==='file'});p=await context.newPage();await p.goto(mode==='file'?pathToFileURL(path.join(work,'index.html')).href:server.baseURL+'index.html');await p.locator('#repository-loading').waitFor({state:'hidden'});}
+   p.setDefaultTimeout(30000);await p.setViewportSize({width:1450,height:1000});const report=await verify(p,{screenshot:name=>p.screenshot({path:path.join(job.dir,mode+'-'+name+'.png')})});reports.push({mode,...report});console.log('PASS '+mode+' elevation controls');if(context)await context.close();if(app)await closeTestApp();
+  }
+  fs.writeFileSync(path.join(job.dir,'result.json'),JSON.stringify(reports,null,2));passed=true;console.log('Evidence: '+job.dir);
+ }catch(e){fs.writeFileSync(path.join(job.dir,'failure.json'),JSON.stringify({error:e.message,stack:e.stack,reports},null,2));if(app){const p=await app.firstWindow();await p.screenshot({path:path.join(job.dir,'failure.png')}).catch(()=>{});}else if(browser){for(const c of browser.contexts())for(const p of c.pages())await p.screenshot({path:path.join(job.dir,'failure.png')}).catch(()=>{});}console.error('Evidence: '+job.dir);throw e;
+ }finally{if(app)await closeTestApp();if(browser)await browser.close();if(server)await server.close();assert.equal(hash(source),before);job.finish(passed);}
+})().catch(e=>{console.error(e);process.exitCode=1;});

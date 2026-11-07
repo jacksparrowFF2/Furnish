@@ -33,10 +33,8 @@ function movable(items){
 function rotateSel(d){
   const items = movable(selItems()); if (!items.length) return;
   mutate(() => {
-    if (items.length === 1){ items[0].rot = norm(items[0].rot + d); return; }
-    // 多选：整组绕外包盒中心旋转
-    const [x0,y0,x1,y1] = groupBox(items), cx = (x0+x1)/2, cy = (y0+y1)/2, a = d*Math.PI/180, c = Math.cos(a), s = Math.sin(a);
-    items.forEach(f => { const dx = f.cx-cx, dy = f.cy-cy; f.cx = Math.round(cx + dx*c - dy*s); f.cy = Math.round(cy + dx*s + dy*c); f.rot = norm(f.rot + d); });
+    const pivot=items.length===1?[items[0].cx,items[0].cy]:undefined;
+    FurnishDesign.transformFurniture(items,{angle:d,pivot,roundPosition:items.length>1}).forEach((next,i)=>Object.assign(items[i],next));
   });
 }
 function deleteSel(){

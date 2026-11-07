@@ -1,0 +1,97 @@
+/* CAD-style selection controls. The scene supplies production models and the
+ * existing mutate path; previews never write furniture or persistence state. */
+(function(root){
+ 'use strict';
+ const overlap=(a,b)=>Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top));
+ function dockPosition(view,object,size,obstacles=[]){
+  const pad=10,w=size.width,h=size.height,x0=view.left+pad,x1=Math.max(x0,view.right-w-pad),y0=view.top+pad,y1=Math.max(y0,view.bottom-h-pad),cx=(object.left+object.right)/2,cy=(object.top+object.bottom)/2;
+  const points=[[object.right+16,cy-h/2],[object.left-w-16,cy-h/2],[cx-w/2,object.top-h-16],[cx-w/2,object.bottom+16],[x1,y0],[x0,y0],[x1,y1],[x0,y1]];
+  for(let y=y0;y<=y1;y+=24)for(const x of [x0,x1])points.push([x,y]);
+  let best;for(const [px,py]of points){const x=Math.max(x0,Math.min(x1,px)),y=Math.max(y0,Math.min(y1,py)),rect={left:x,top:y,right:x+w,bottom:y+h},blocked=obstacles.reduce((n,r)=>n+overlap(rect,r),0),covered=overlap(rect,object),beside=rect.right<=object.left||rect.left>=object.right,score=covered*100+blocked*1000+Math.hypot(x+w/2-cx,y+h/2-cy)+(beside?0:220);
+   if(!best||score<best.score)best={...rect,score,covered,blocked};
+  }return best;
+ }
+ function create(A){
+  const {THREE:T,stage,host,camera}=A,P=root.FurnishProducts,D=root.FurnishDesign,S=root.FurnishSnapping,t=A.tr,svgNS='http://www.w3.org/2000/svg';
+  const overlay=document.createElement('div');overlay.className='scene-transform';overlay.hidden=true;host.append(overlay);
+  const svg=document.createElementNS(svgNS,'svg');svg.classList.add('scene-transform-gizmo');svg.setAttribute('viewBox','-110 -110 220 220');svg.setAttribute('aria-label',t('家具移动与旋转手柄','Furniture move and rotate handles'));overlay.append(svg);
+  const make=(name,attrs={},parent=svg)=>{const node=document.createElementNS(svgNS,name);for(const [key,value]of Object.entries(attrs))node.setAttribute(key,value);parent.append(node);return node;};
+  let ids=[],axis='z',gesture=null,origin=null,screen=null,worldPerPixel=0,shown=false,ringFlat=false;
+  const axes={x:new T.Vector3(1,0,0),y:new T.Vector3(0,0,1),z:new T.Vector3(0,1,0)},colors={x:'#dc5149',y:'#219869',z:'#368edb',rotate:'#d58c23'},handles={};
+  const ring=make('g',{'data-transform-axis':'rotate',role:'button',tabindex:'0','aria-label':t('拖动绕竖轴旋转','Drag to rotate upright')});
+  handles.rotate={group:ring,hit:make('path',{class:'transform-hit'},ring),line:make('path',{class:'transform-ring',stroke:colors.rotate},ring)};
+  for(const key of ['x','y','z']){
+   const label=key==='z'?t('拖动调整离地高度','Drag to adjust elevation'):t(`沿 ${key.toUpperCase()} 轴移动`,`Move along ${key.toUpperCase()}`),g=make('g',{'data-transform-axis':key,role:'button',tabindex:'0','aria-label':label});
+   handles[key]={group:g,hit:make('path',{class:'transform-hit'},g),line:make('path',{class:'transform-axis',stroke:colors[key]},g),tip:make('path',{fill:colors[key]},g),text:make('text',{fill:colors[key]},g)};handles[key].text.textContent=key.toUpperCase();
+  }
+  make('circle',{r:4,fill:'#fff',stroke:'#566876','stroke-width':1.5});
+  const dock=document.createElement('div');dock.className='scene-transform-dock';dock.setAttribute('role','toolbar');dock.setAttribute('aria-label',t('三维物品调整','3D item adjustments'));overlay.append(dock);
+  const title=document.createElement('span');title.className='scene-transform-title';
+  const controls=document.createElement('div');controls.className='scene-height-controls';
+  const field=document.createElement('label'),caption=document.createElement('span'),input=document.createElement('input');input.type='number';input.step='1';field.append(caption,input);
+  const minus=document.createElement('button'),plus=document.createElement('button');minus.type=plus.type='button';
+  const more=document.createElement('button');more.type='button';more.textContent='···';more.setAttribute('aria-label',t('显示高度详情','Show height details'));more.setAttribute('aria-expanded','false');
+  controls.append(field,minus,plus,more);const status=document.createElement('small');status.className='scene-height-status';status.setAttribute('aria-live','polite');const details=document.createElement('div');details.className='scene-transform-details';details.hidden=true;dock.append(title,controls,status,details);
+  const items=()=>ids.map(A.getItem).filter(Boolean),lowest=list=>Math.min(...list.map(f=>P.bottomHeight(f))),groupPivot=list=>{if(list.length===1)return [list[0].cx,list[0].cy];const b=root.FurnishGeometry.groupBox(list);return [(b[0]+b[2])/2,(b[1]+b[3])/2];};
+  const ready=list=>list.length===ids.length&&list.length>0&&!list.some(f=>A.locked(f)||A.invalid(f));
+  function setAxis(next){if(gesture)return;axis=next;refresh();A.invalidate();}
+  function refresh(force=false){
+   const list=items();if(!list.length)return;const z=axis==='z',rotate=axis==='rotate';title.textContent=list.length>1?t(`${list.length} 件整体调整`,`${list.length} items`):t('移动 / 旋转','Move / rotate');caption.textContent=z?t('离地 mm','Bottom mm'):rotate?t('旋转 °','Rotate °'):axis.toUpperCase()+' '+t('位移 mm','offset mm');input.setAttribute('aria-label',z?t('底部离地高度 mm','Bottom elevation mm'):rotate?t('绕竖轴旋转角度','Upright rotation angle'):t(`${axis.toUpperCase()} 轴位移 mm`,`${axis.toUpperCase()} offset mm`));
+   if((force||document.activeElement!==input)&&!gesture)input.value=z?Number(lowest(list).toFixed(2)):0;
+   if(z){input.min='0';input.max=String(P.fields.mountHeight.max);}else{input.removeAttribute('min');input.removeAttribute('max');}
+   const step=rotate?15:10;minus.textContent='−'+step;plus.textContent='+'+step;minus.setAttribute('aria-label',z?t('降低 10 mm','Lower 10 mm'):t(`沿当前轴减少 ${step}`,`Decrease by ${step}`));plus.setAttribute('aria-label',z?t('升高 10 mm','Raise 10 mm'):t(`沿当前轴增加 ${step}`,`Increase by ${step}`));
+   if(!gesture)status.textContent=t('拖动轴箭头 · 环旋转 · Esc 取消','Drag an axis · ring rotates · Esc cancels');
+   for(const [key,h]of Object.entries(handles))h.group.classList.toggle('active',axis===key);
+   details.replaceChildren();if(list.length===1){const m=D.furnitureHeightMeasurements(list[0],A.plan(),A.furniture());for(const [name,value]of [[t('顶部距地面','Top above floor'),m.top],[t('顶部距房顶','Top to ceiling'),m.roofGap],[t('底部距地面','Bottom above floor'),m.bottom]]){const row=document.createElement('div');row.className='scene-height-row';const label=document.createElement('span'),n=document.createElement('b');label.textContent=name;n.textContent=Number.isFinite(value)?Number(value.toFixed(2))+' mm':t('待核对','Unknown');row.append(label,n);details.append(row);}}
+   else details.textContent=t('整体移动保持成员间距，旋转保持家具直立。','Group spacing and upright orientation are preserved.');
+  }
+  const patch=(key,value,list)=>key==='z'?{dz:value-lowest(list)}:key==='rotate'?{angle:value}:{[key==='x'?'dx':'dy']:value};
+  function apply(key,value){try{const list=items();if(!ready(list))throw Error(t('请先解锁全部物品','Unlock all selected items'));if(!Number.isFinite(value))throw Error(t('请输入有效数值','Enter a valid value'));const options=patch(key,value,list);if(Object.values(options).every(v=>Math.abs(v)<1e-8))return;const next=D.transformFurniture(list,{...options,pivot:groupPivot(list)});A.commit(next);refresh(true);}catch(error){A.error(error.message);refresh(true);}}
+  input.onchange=()=>{if(!input.value.trim())return refresh(true);apply(axis,Number(input.value));};input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();input.blur();}if(e.key==='Escape'){e.preventDefault();input.value=axis==='z'?lowest(items()):0;input.blur();}};
+  minus.onclick=()=>apply(axis,axis==='z'?Math.max(0,lowest(items())-10):axis==='rotate'?-15:-10);plus.onclick=()=>apply(axis,axis==='z'?Math.min(P.fields.mountHeight.max,lowest(items())+10):axis==='rotate'?15:10);
+  more.onclick=()=>{details.hidden=!details.hidden;more.setAttribute('aria-expanded',String(!details.hidden));A.invalidate();};
+  for(const event of ['pointerdown','click','dblclick','wheel','keydown'])dock.addEventListener(event,e=>e.stopPropagation());
+  const project=p=>{const v=p.clone().project(camera),r=A.rect();return {x:r.left+(v.x+1)*r.width/2,y:r.top+(1-v.y)*r.height/2,z:v.z};};
+  function start(key,e){
+   if(e.button!==0||gesture||!shown)return;e.preventDefault();e.stopPropagation();setAxis(key);
+   const list=items();if(!ready(list)||!origin)return;
+   const original=JSON.stringify(list),planId=A.planId(),pivot=groupPivot(list),startBottom=lowest(list),models=A.models(ids).map(model=>({model,position:model.position.clone(),rotation:model.rotation.y})),startOrigin=origin.clone(),startScreen={...screen},rect=A.rect(),oldEnabled=A.orbitEnabled(),node=handles[key].group;
+   const direction=key==='rotate'?null:axes[key],end=direction&&project(startOrigin.clone().addScaledVector(direction,.001)),dx=end?(end.x-startScreen.x)*1000:0,dy=end?(end.y-startScreen.y)*1000:0,len=Math.hypot(dx,dy),fallback=len*worldPerPixel*82<12,fallbackVector=key==='x'?[70,45]:key==='y'?[-60,45]:[0,-82],fallbackLength=Math.hypot(...fallbackVector),vx=fallback?fallbackVector[0]/fallbackLength*100:dx,vy=fallback?fallbackVector[1]/fallbackLength*100:dy,norm=vx*vx+vy*vy;
+   const targets=key==='z'?S.elevationTargets(list.length===1?list[0]:list,{plan:A.plan(),furniture:A.furniture()}):[],minDelta=-startBottom,maxDelta=Math.min(...list.map(f=>P.fields.mountHeight.max-P.bottomHeight(f))),caster=new T.Raycaster(),plane=new T.Plane(new T.Vector3(0,1,0),-startOrigin.y);
+   const pointerAngle=ev=>{if(ringFlat)return Math.atan2(ev.clientY-startScreen.y,ev.clientX-startScreen.x);caster.setFromCamera(new T.Vector2((ev.clientX-rect.left)/rect.width*2-1,-(ev.clientY-rect.top)/rect.height*2+1),camera);const hit=caster.ray.intersectPlane(plane,new T.Vector3());return hit?Math.atan2(hit.z-startOrigin.z,hit.x-startOrigin.x):null;};
+   let lastAngle=key==='rotate'?pointerAngle(e):null,turn=0,delta=0,moved=false;A.setOrbit(false);node.setPointerCapture(e.pointerId);overlay.classList.add('dragging');
+   const move=ev=>{if(ev.pointerId!==e.pointerId)return;if(!moved&&Math.hypot(ev.clientX-e.clientX,ev.clientY-e.clientY)<3)return;moved=true;
+    let hit=null;if(key==='rotate'){const a=pointerAngle(ev);if(a===null||lastAngle===null)return;let step=a-lastAngle;while(step>Math.PI)step-=Math.PI*2;while(step<-Math.PI)step+=Math.PI*2;turn+=step;lastAngle=a;const raw=turn*180/Math.PI;delta=ev.shiftKey?Math.round(raw*10)/10:Math.round(raw/15)*15;}
+    else{delta=Math.round(((ev.clientX-e.clientX)*vx+(ev.clientY-e.clientY)*vy)/norm*1000);if(key==='z'){delta=Math.max(minDelta,Math.min(maxDelta,delta));if(!ev.shiftKey){const result=S.elevation(startBottom+delta,targets,Math.min(50,12000/Math.max(1,len)));delta=result.bottom-startBottom;hit=result.hit;}}else if(!ev.shiftKey)delta=Math.round(delta/10)*10;}
+    try{D.transformFurniture(list,key==='z'?{dz:delta}:key==='rotate'?{angle:delta,pivot}:{[key==='x'?'dx':'dy']:delta});}catch{return;}
+    const options=key==='z'?{dz:delta}:key==='rotate'?{angle:delta,pivot}:{[key==='x'?'dx':'dy']:delta},next=D.transformFurniture(list,options),byId=new Map(next.map(f=>[f.id,f]));
+    for(const row of models){const after=byId.get(row.model.userData.fid),before=list.find(f=>f.id===after.id);row.model.position.copy(row.position).add(new T.Vector3((after.cx-before.cx)/1000,key==='z'?delta/1000:0,(after.cy-before.cy)/1000));row.model.rotation.y=row.rotation-(key==='rotate'?delta*Math.PI/180:0);}
+    origin.copy(startOrigin);if(key!=='rotate')origin.addScaledVector(direction,delta/1000);input.value=key==='z'?Number((startBottom+delta).toFixed(2)):delta;status.textContent=hit?t('底部贴合 ','Bottom aligned: ')+hit.name:(delta>0?'+':'')+Number(delta.toFixed(2))+(key==='rotate'?'°':' mm')+' · '+t('松手应用','Release to apply');A.invalidate();
+   };
+   const finish=ok=>{if(!gesture)return;gesture=null;window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',cancel);window.removeEventListener('blur',cancel);node.removeEventListener('lostpointercapture',cancel);document.removeEventListener('keydown',escape,true);if(node.hasPointerCapture(e.pointerId))node.releasePointerCapture(e.pointerId);models.forEach(row=>{row.model.position.copy(row.position);row.model.rotation.y=row.rotation;});origin.copy(startOrigin);A.setOrbit(oldEnabled);overlay.classList.remove('dragging');
+    if(ok&&moved&&Math.abs(delta)>1e-8){if(A.planId()!==planId||JSON.stringify(items())!==original)A.error(t('物品已变化，请重新操作','Selection changed; try again'));else apply(key,key==='z'?startBottom+delta:delta);}refresh();A.invalidate();
+   },up=ev=>{if(ev.pointerId===e.pointerId){move(ev);finish(true);}},cancel=()=>finish(false),escape=ev=>{if(ev.key==='Escape'){ev.preventDefault();ev.stopImmediatePropagation();finish(false);}};
+   gesture={finish};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',cancel);window.addEventListener('blur',cancel);node.addEventListener('lostpointercapture',cancel);document.addEventListener('keydown',escape,true);
+  }
+  for(const [key,h]of Object.entries(handles)){h.group.onpointerdown=e=>start(key,e);h.group.onclick=e=>{e.stopPropagation();setAxis(key);};h.group.onkeydown=e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();setAxis(key);input.focus();}else if(['ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();setAxis(key);const d=(e.key==='ArrowUp'?1:-1)*(key==='rotate'?15:10);apply(key,key==='z'?lowest(items())+d:d);}e.stopPropagation();};}
+  function cancel(){gesture?.finish(false);}
+  function setSelection(next){cancel();const changed=JSON.stringify(ids)!==JSON.stringify(next);ids=[...next];if(changed){axis='z';details.hidden=true;more.setAttribute('aria-expanded','false');}refresh();A.invalidate();}
+  function update(visible){
+   const list=items(),models=A.models(ids);shown=visible&&ready(list)&&models.length===list.length&&list.every(A.visible);overlay.hidden=!shown;if(!shown){cancel();return;}
+   const box=new T.Box3();models.forEach(model=>box.union(new T.Box3().setFromObject(model)));if(box.isEmpty()){overlay.hidden=true;return;}
+   if(!gesture){const pivot=groupPivot(list);origin=new T.Vector3(A.wx(pivot[0]),(box.min.y+box.max.y)/2,A.wz(pivot[1]));}
+   screen=project(origin);if(screen.z< -1||screen.z>1){overlay.hidden=true;cancel();return;}
+   const r=stage.getBoundingClientRect();svg.style.left=screen.x-r.left+'px';svg.style.top=screen.y-r.top+'px';
+   const distance=origin.distanceTo(camera.position);worldPerPixel=2*distance*Math.tan(camera.fov*Math.PI/360)/A.rect().height;
+   const local=p=>{const v=project(p);return [v.x-screen.x,v.y-screen.y];},n=v=>Number(v.toFixed(2));
+   for(const key of ['x','y','z']){const h=handles[key],p=local(origin.clone().addScaledVector(axes[key],worldPerPixel*82)),length=Math.hypot(...p);let [x,y]=p;if(length<12){x=key==='x'?70:key==='y'?-60:0;y=key==='z'?-82:45;}else{x=x/length*82;y=y/length*82;}const len=Math.hypot(x,y),ux=x/len,uy=y/len,sx=ux*20,sy=uy*20,ex=x-ux*9,ey=y-uy*9,path=`M${n(sx)} ${n(sy)} L${n(x)} ${n(y)}`;h.hit.setAttribute('d',path);h.line.setAttribute('d',path);h.tip.setAttribute('d',`M${n(x)} ${n(y)} L${n(ex-uy*4)} ${n(ey+ux*4)} L${n(ex+uy*4)} ${n(ey-ux*4)} Z`);h.text.setAttribute('x',n(x+ux*13));h.text.setAttribute('y',n(y+uy*13+4));}
+   const cameraDirection=camera.getWorldDirection(new T.Vector3());ringFlat=Math.abs(cameraDirection.y)<.35;const points=Array.from({length:65},(_,i)=>{const a=i/64*Math.PI*2;return ringFlat?[Math.cos(a)*48,Math.sin(a)*48]:local(origin.clone().add(new T.Vector3(Math.cos(a)*worldPerPixel*54,0,Math.sin(a)*worldPerPixel*54)));}),path=points.map((p,i)=>(i?'L':'M')+p.map(n).join(' ')).join(' ')+' Z';handles.rotate.hit.setAttribute('d',path);handles.rotate.line.setAttribute('d',path);
+   const corners=[];for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])corners.push(project(new T.Vector3(x,y,z)));const object={left:Math.min(...corners.map(p=>p.x)),right:Math.max(...corners.map(p=>p.x)),top:Math.min(...corners.map(p=>p.y)),bottom:Math.max(...corners.map(p=>p.y))};overlay.dataset.selectionBounds=JSON.stringify(object);
+   const obstacles=[...stage.querySelectorAll('#fab,#property-peek,.scene-light,.canvas-rail,#space-status,#fab-editor')].filter(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden').map(el=>el.getBoundingClientRect()).filter(b=>b.width&&b.height);
+   const reserved={left:Math.min(object.left,screen.x-106),right:Math.max(object.right,screen.x+106),top:Math.min(object.top,screen.y-106),bottom:Math.max(object.bottom,screen.y+106)};
+   dock.classList.remove('compact');let size=dock.getBoundingClientRect(),at=dockPosition(r,reserved,size,obstacles);if(at.covered||at.blocked){dock.classList.add('compact');size=dock.getBoundingClientRect();at=dockPosition(r,reserved,size,obstacles);}dock.style.left=at.left-r.left+'px';dock.style.top=at.top-r.top+'px';
+  }
+  return {setSelection,cancel,update,dispose(){cancel();overlay.remove();}};
+ }
+ root.FurnishSceneTransform={create,dockPosition};if(typeof module!=='undefined')module.exports=root.FurnishSceneTransform;
+})(typeof globalThis==='undefined'?this:globalThis);

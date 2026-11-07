@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('node:assert/strict'),D=require('../src/core/design-core.js'),P=require('../src/core/product-rules.js'),J=require('../src/core/project-core.js'),{dockPosition}=require('../src/render/selection-transform.js');
+const near=(a,b)=>assert(Math.abs(a-b)<1e-6,`${a} != ${b}`),a={id:'a',type:'block',cx:100,cy:200,w:100,d:80,h:100,mountHeight:20,rot:37,flip:true},b={...a,id:'b',cx:400,cy:200,mountHeight:120},original=JSON.stringify([a,b]);
+for(const angle of [-90,15,360,735]){const next=D.transformFurniture([a,b],{dx:10,dy:-30,dz:40,angle,pivot:[250,200]});near(Math.hypot(next[1].cx-next[0].cx,next[1].cy-next[0].cy),300);near(next[1].mountHeight-next[0].mountHeight,100);for(let i=0;i<2;i++){near(next[i].h,100);near(next[i].w,100);assert.equal(next[i].flip,true);near(P.bottomHeight(next[i]),[a,b][i].mountHeight+40);near(next[i].rot,((37+angle)%360+360)%360);}
+ const back=D.transformFurniture(next,{dx:-10,dy:30});const restored=D.transformFurniture(back,{angle:-angle,dz:-40,pivot:[250,200]});for(let i=0;i<2;i++){near(restored[i].cx,[a,b][i].cx);near(restored[i].cy,[a,b][i].cy);}
+ J.validateWork({furniture:next});const round=J.unpack(J.pack({planId:'transform',current:{furniture:next},designs:[],catalog:[]}));near(round.current.furniture[0].rot,next[0].rot);
+}
+assert.equal(JSON.stringify([a,b]),original);assert.throws(()=>D.transformFurniture([a,b],{dz:-21}));assert.throws(()=>D.transformFurniture([a],{dx:NaN}));assert(!('mountHeight'in D.transformFurniture([{...a,mountHeight:undefined}],{dx:100})[0])||D.transformFurniture([{...a,mountHeight:undefined}],{dx:100})[0].mountHeight===undefined);
+for(const width of [390,900]){const view={left:0,top:0,right:width,bottom:750},object={left:width/2-85,right:width/2+85,top:200,bottom:450},obstacles=[{left:0,top:650,right:width,bottom:750}],at=dockPosition(view,object,{width:202,height:80},obstacles);assert.equal(at.covered,0);assert.equal(at.blocked,0);assert(at.left>=0&&at.right<=width&&at.top>=0&&at.bottom<=750);}
+console.log('PASS rigid XYZ/yaw transforms, mirrored group spacing, native height, atomic bounds, project roundtrip and dock outside selected object');

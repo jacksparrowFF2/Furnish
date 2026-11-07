@@ -14,6 +14,8 @@
 
 # 模块与加载约定
 
+2026-11-07（三维直接操纵）：selection-transform经典脚本通过主场景适配器消费生产根组、相机和选择，提供透明XYZ手柄／竖轴旋转环及避开物体的数值栏，移除居中高度卡片。松手经design-core.transformFurniture、原产品安装换算及一次mutate提交；原90°按钮同读核心。snapping.elevationTargets消费真实板件与已知地面，按共同位移吸附。HTTP／断网file加载已验证，无新字段／版本／保存通道，见[直接操纵](3D-ELEVATION-CONTROLS.md)。
+
 2026-11-06（宠物用品）：两款独立类型复用pet-supply-model→static-asset-model，Blender源／离线脚本供显示、实体与导出共用；新增经典脚本并实测HTTP／断网file。含新类型采用v53，MCP配置增加受限库替换动作，沿原replaceFurniture与mutate／flush，不存动作键。见[模型及调研](PET-SUPPLIES.md)。
 
 2026-11-06（底部开放区）：product-rules集中entry底部中层板默认，cabinet-core读取可选entry.shoeShelf，生产模型按稳定身份取消一块板；UI沿草稿／mutate，CabinetMotion、缓存及空间确认读取原完整配置。含字段采用v52项目／工作区／缓存，无新加载脚本；见[验收](validation/pet-station-20261106/README.md)。

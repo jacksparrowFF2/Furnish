@@ -1,6 +1,39 @@
 /* Snapping calculations use explicit inputs and return guides without UI writes. */
 (function(root){
   'use strict';
+  // Only actual, horizontal production boards offer shelf snap targets. A
+  // cabinet's outer bounding box is never evidence of a supporting surface.
+  function elevationTargets(f,{plan,furniture=[]}={}){
+    const P=root.FurnishProducts||require('./product-rules.js');
+    if(Array.isArray(f)){
+      if(!f.length)return [];
+      const bottom=Math.min(...f.map(v=>P.bottomHeight(v))),ids=new Set(f.map(v=>v.id));
+      return f.flatMap(item=>elevationTargets(item,{plan,furniture:furniture.filter(v=>v.id===item.id||!ids.has(v.id))}).map(t=>({...t,bottom:bottom+t.bottom-P.bottomHeight(item)}))).filter(t=>f.every(item=>{
+        try{const next=P.editBottomHeight(item,P.bottomHeight(item)+t.bottom-bottom),host=furniture.find(v=>v.id===t.hostId);return !geometry.volumeOverlap(next,host,plan,furniture);}catch{return false;}
+      }));
+    }
+    const base=P.floorBase(plan,f,furniture),out=[];if(!base.known)return out;
+    const footprint=geometry.footprints(f);
+    for(const host of furniture){
+      if(host.id===f.id||!P.floorBase(plan,host,furniture).known)continue;
+      for(const part of geometry.bodyParts(host,plan,furniture)){
+        if(!part.actualBoard||!part.vertices?.length||!part.vertical)continue;
+        const top=part.vertical.top,points=part.vertices.filter(v=>Math.abs(v[1]-top)<1e-5).map(v=>[v[0],v[2]]),b=geometry.bbox(part.p);
+        if(points.length<3||part.vertices.some(v=>Math.abs(v[1]-top)>1e-5&&Math.abs(v[1]-part.vertical.bottom)>1e-5)||part.vertical.top-part.vertical.bottom>=Math.min(b[2]-b[0],b[3]-b[1])/2)continue;
+        if(!footprint.some(poly=>geometry.polygonOverlap(poly,part.p,1e-6)))continue;
+        const bottom=top-base.z;
+        if(bottom<0||bottom>P.fields.mountHeight.max)continue;
+        let next;try{next=P.editBottomHeight(f,bottom);}catch{continue;}
+        if(geometry.volumeOverlap(next,host,plan,furniture))continue;
+        out.push({bottom,hostId:host.id,boardKey:part.boardKey,name:part.boardName||'层板'});
+      }
+    }
+    return out;
+  }
+  function elevation(bottom,targets,tolerance){
+    let hit=null;for(const target of targets){const distance=Math.abs(target.bottom-bottom);if(distance<=tolerance&&(!hit||distance<hit.distance))hit={...target,distance};}
+    return hit?{bottom:hit.bottom,hit}:{bottom,hit:null};
+  }
   const geometry = typeof module === 'object' && module.exports ? require('./layout-geometry.js') : root.FurnishGeometry;
   const tolerance=(f,scale)=>['curtain','slidingdoor','telescopicdoor20','doubleslidingdoor','tripleslidingdoor','tripleslidingwindow'].includes(f.type)?Math.min(250,32/scale):10/scale;
   function spanSupport(rings,lo,hi){
@@ -523,7 +556,7 @@
     }
     return out;
   }
-  const api={cabinetInterior,surfaceOpening,hobOpening:surfaceOpening,kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
+  const api={elevationTargets,elevation,cabinetInterior,surfaceOpening,hobOpening:surfaceOpening,kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
   if(typeof module === 'object' && module.exports)module.exports=api;
   else root.FurnishSnapping=api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
