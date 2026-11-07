@@ -1,4 +1,4 @@
-/* Copy-only Windows distribution. No bundling or changes to browser sources. */
+/* Offline runtime copy plus Furnish icon resources. No browser-source bundling. */
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
@@ -10,6 +10,7 @@ function build({out=path.join(root,'output/desktop/Furnish-win32-x64'),portable=
  const electron=path.dirname(require('electron'));
  fs.mkdirSync(out,{recursive:true});fs.cpSync(electron,out,{recursive:true});
  fs.renameSync(path.join(out,'electron.exe'),path.join(out,'Furnish.exe'));
+ require('./windows-app-icon.cjs').apply(path.join(out,'Furnish.exe'),path.join(root,'assets/icons/furnish.ico'));
  fs.renameSync(path.join(out,'LICENSE'),path.join(out,'LICENSE.electron'));
  for(const name of ['index.html','manifest.webmanifest','LICENSE','start-furnish.cmd','connect-codex.cmd','src','styles','vendor','assets','templates','examples'])fs.cpSync(path.join(root,name),path.join(out,name),{recursive:true});
  fs.mkdirSync(path.join(out,'scripts'));

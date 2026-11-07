@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Furnish — 空间与家具布局</title>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="#ad603d"/>
+  <path d="M120 231 256 119 392 231v157H120Z" fill="#fff5e9" fill-opacity=".08"/>
+  <g fill="none" stroke="#fff5e9" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m112 231 144-118 144 118v161H288m-64 0H112V231"/>
+    <path d="M112 286h144v106m0-106v-62h80"/>
+  </g>
+</svg>

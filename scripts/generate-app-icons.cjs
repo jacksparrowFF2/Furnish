@@ -1,0 +1,7 @@
+/* Editable SVG is the source; Windows ICO frames are PNG-compressed. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),{chromium}=require('playwright');
+(async()=>{const directory=path.resolve(__dirname,'../assets/icons'),svg=fs.readFileSync(path.join(directory,'furnish.svg'),'utf8'),browser=await chromium.launch({channel:'chrome',headless:true});
+ try{const page=await browser.newPage({deviceScaleFactor:1});const frames=[];for(const size of [16,24,32,48,64,128,192,256,512]){await page.setViewportSize({width:size,height:size});await page.setContent('<style>html,body{margin:0;background:transparent}svg{width:100vw;height:100vh;display:block}</style>'+svg);const png=await page.screenshot({omitBackground:true});if(size===192||size===512)fs.writeFileSync(path.join(directory,'icon-'+size+'.png'),png);if(size<=256)frames.push({size,png});}
+ const header=Buffer.alloc(6+16*frames.length);header.writeUInt16LE(1,2);header.writeUInt16LE(frames.length,4);let offset=header.length;frames.forEach(({size,png},i)=>{const at=6+i*16;header[at]=header[at+1]=size===256?0:size;header.writeUInt16LE(1,at+4);header.writeUInt16LE(32,at+6);header.writeUInt32LE(png.length,at+8);header.writeUInt32LE(offset,at+12);offset+=png.length;});fs.writeFileSync(path.join(directory,'furnish.ico'),Buffer.concat([header,...frames.map(f=>f.png)]));console.log('Generated PNG icons and eight-frame Windows ICO from furnish.svg');
+ }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
