@@ -60,7 +60,7 @@
   const next=products().migrate(f);for(const key of ['w','d','h'])if(values[key]!==undefined){const value=values[key];if(!Number.isFinite(value)||value<(key==='h'?10:products().footprintMinimum(f,key))||value>20000)throw Error('宽深须在当前最小尺寸至 20000 mm 内，高须为 10–20000 mm');next[key]=value;}
   if(!f.resizeAnchor&&anchor==='center'&&products().slidingResizeFrame(f))return products().resizeSliding(f,{w:next.w,d:next.d,h:next.h});
   products().resizeHoodGeometry(f,next);products().resizeManifold(f,next);
-  if(products().definition(next)?.manifold||products().family(next,'pipe-box')||products().family(next,'window-lining')||products().family(next,'art-glass')||products().vesselSink(next))products().validate(next);
+  if(next.inventoryArray||products().definition(next)?.manifold||products().family(next,'pipe-box')||products().family(next,'window-lining')||products().family(next,'art-glass')||products().vesselSink(next))products().validate(next);
   if(next.sinkNotch!==undefined)products().validateField(next,'sinkNotch',next.sinkNotch);
   if(next.hobCutout!==undefined)products().validateField(next,'hobCutout',next.hobCutout);
   const placed=resizeAnchorPosition(f,next,anchor);return f.kitchen?kitchen().resize(f,placed):cabinet().resize(f,placed);
@@ -77,9 +77,9 @@
   for(const id of ids){const members=inventoryMembers(furniture,id),first=members[0],r=products().definition(first)?.inventoryArray;if(!r||members.length>r.maxCount)throw Error('物品阵列数量无效');const signature=a=>JSON.stringify(Object.keys(a).filter(k=>k!=='index').sort().map(k=>[k,a[k]])),config=signature(first.inventoryArray);for(let i=0;i<members.length;i++){const f=members[i];products().validateField(f,'inventoryArray',f.inventoryArray);if(f.type!==first.type||f.inventoryArray.index!==i||signature(f.inventoryArray)!==config)throw Error('物品阵列成员或参数不一致');}}
  }
  function inventoryPositions(first,config,count){
-  const old=first.inventoryArray,turn=config.angle*Math.PI/180,basis=((first.rot||0)-(old?.angle||0))*Math.PI/180,size=products().dimensions(first),swap=config.angle%180!==0;
+  const old=first.inventoryArray,turn=config.angle*Math.PI/180,basis=((first.rot||0)-(old?.angle||0))*Math.PI/180;
   // Existing w/d are local product dimensions; only the unit's array yaw permutes them.
-  const w=(swap?size.d:size.w),d=(swap?size.w:size.d),px=w+config.gapX,pz=d+config.gapZ,py=size.h+config.gapY,c=Math.cos(basis),s=Math.sin(basis),sign=first.flip?-1:1,bottom=products().bottomHeight(first);
+  const {stepX:px,stepZ:pz,stepY:py}=products().inventoryArraySpacing(first,config),c=Math.cos(basis),s=Math.sin(basis),sign=first.flip?-1:1,bottom=products().bottomHeight(first);
   const points=[];for(let i=0;i<count;i++){const row=Math.floor(i/config.columns)%config.rows,col=i%config.columns,layer=Math.floor(i/(config.columns*config.rows)),x=(col+(config.pattern==='stagger'&&row%2?.5:0))*px*sign,z=row*pz;points.push({cx:first.cx+x*c-z*s,cy:first.cy+x*s+z*c,bottom:bottom+layer*py,rot:((basis+turn)*180/Math.PI%360+360)%360});}return points;
  }
  function attachInventoryArray(furniture,memberIds,config){
