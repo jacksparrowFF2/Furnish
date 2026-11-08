@@ -1223,7 +1223,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   return next.w===f.w&&c.thickness===old.thickness?next:scaleWidths(f,next);
  }
  function resize(f,next){
-  if(componentCabinet(f)){if(['w','d','h'].some(k=>next[k]!==f[k]))throw Error('请在组件搭建器中调整柜箱尺寸');return builder().validate({...next,cabinet:config(f)});}
+  if(componentCabinet(f))return builder().resize(f,next);
   if(f.cabinet?.tiers)return configureTiers({...f,...Object.fromEntries(['cx','cy','rot','flip','resizeAnchor'].filter(k=>Object.hasOwn(next,k)).map(k=>[k,next[k]]))},{w:next.w,h:next.h??height(f),mountHeight:next.mountHeight,...(next.d!==f.d?{lowerDepth:f.cabinet.tiers.lowerDepth*next.d/f.d,upperDepth:f.cabinet.tiers.upperDepth*next.d/f.d}:{})});
   if(f.type==='vanity'&&next.h!==f.h&&next.h!==undefined){next={...next,cabinet:{...config(f),bodyHeight:next.h}};if(f.h===undefined)delete next.h;else next.h=f.h;}
   if(!f.cabinet){if(supported(next))validate({...next,cabinet:config(next)});return next;}
