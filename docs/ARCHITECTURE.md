@@ -1,3 +1,5 @@
+2026-11-08（霜山提手默认）：按用户确认改为放平静态资产，catalog／product-rules新建高180mm；本型号geometryVersion2覆盖几何缓存与确认，无新字段／格式。旧保存高度不改写。见[局部复验](validation/toolbox-shimoyama-folded-20261108/README.md)。
+
 2026-11-08（组件柜搭建）：新增cabinet-builder-core与cabinet-builder经典脚本，v2组件树以稳定ID／连接／相对安装位置持久，核心派生mm板件调用共用生产构造；正视拖放、三维、数字实体、场景门抽和GLB同源。库沿store.custom／原mutate保存，含新树最低v72，保留toolbox v71及其余格式。见[乐高式搭建](CABINET-BUILDER.md)。
 
 2026-11-08（霜山9L工具箱）：新增storageSupply独立类型及经典离线资产脚本，Blender 13件沿storage-supply→static-asset生产显示／实体／导出；mountHeight及pose3D沿v57/v58，无新字段或保存通道。见[型号](TOOLBOX-SHIMOYAMA-9L.md)。

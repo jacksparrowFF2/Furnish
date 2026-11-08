@@ -5,7 +5,7 @@
     "blenderModels": 40,
     "parametricVerificationConfigurations": 89,
     "verificationConfigurations": 129,
-    "catalogEntries": 171,
+    "catalogEntries": 172,
     "catalogTypes": 144,
     "productDossiers": 67,
     "referenceImages": 192,
@@ -2296,6 +2296,24 @@
           "bytes": 252172
         },
         {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/review.blend",
+          "role": "retained-other",
+          "sha256": "7451b71f151f32eec6a925fc3d11c526305a95ef05d40005fdc608df01e15293",
+          "bytes": 150764
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "3b80b9ff9b29f3630d135365a8da861bff6c4af3f2cc39fb449c1cd1cf4c6cd9",
+          "bytes": 148447
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "8ead47048a218e2d922240463e1af11a1d69f123334a9616391fef15d2976a2b",
+          "bytes": 249780
+        },
+        {
           "path": "assets/models/storage-supplies/toolbox/v1/storage-toolbox-v1.blend",
           "role": "retained-other",
           "sha256": "50df10c66b1970e2c16fd711709360dff747daf2af76e12d9723bad2d67238d7",
@@ -3067,19 +3085,19 @@
       "sizeMm": [
         340,
         240,
-        220
+        180
       ],
       "parts": 13,
       "runtimeVersion": 1,
       "runtime": {
         "path": "src/data/toolbox-shimoyama-9l-blender-asset.js",
-        "sha256": "3018bfe49369edd5a86a2529d7f12cbd6d3879a08ce8119d3f382c84a6fea030",
+        "sha256": "fdb96df41b34796b67115ea5f19fd5207750edc8cdafb5b1ef3f22b814cd1c64",
         "normalization": "utf8-lf"
       },
-      "sourceSha256": "10a874e6acaaaec9908472703954a8036a142b13835a1f0a2a0ca2d8d9845708",
+      "sourceSha256": "8ead47048a218e2d922240463e1af11a1d69f123334a9616391fef15d2976a2b",
       "current": {
-        "blend": "assets/models/storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.blend",
-        "glb": "assets/models/storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.glb"
+        "blend": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.blend",
+        "glb": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.glb"
       },
       "document": "docs/STORAGE-CABINET-2400.md",
       "constructor": "src/render/storage-supply-model.js",
@@ -3201,15 +3219,33 @@
         },
         {
           "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.blend",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "2d780840a0b022118323da133114911a23b587511b0b17dab7ba888507744edf",
           "bytes": 148472
         },
         {
           "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.glb",
-          "role": "published-source",
+          "role": "retained-other",
           "sha256": "10a874e6acaaaec9908472703954a8036a142b13835a1f0a2a0ca2d8d9845708",
           "bytes": 252172
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/review.blend",
+          "role": "retained-other",
+          "sha256": "7451b71f151f32eec6a925fc3d11c526305a95ef05d40005fdc608df01e15293",
+          "bytes": 150764
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.blend",
+          "role": "published-source",
+          "sha256": "3b80b9ff9b29f3630d135365a8da861bff6c4af3f2cc39fb449c1cd1cf4c6cd9",
+          "bytes": 148447
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.glb",
+          "role": "published-source",
+          "sha256": "8ead47048a218e2d922240463e1af11a1d69f123334a9616391fef15d2976a2b",
+          "bytes": 249780
         }
       ],
       "dossier": "assets/models/toolbox-shimoyama-9l/asset.json",
@@ -6338,10 +6374,12 @@
       ],
       "missingReferences": [],
       "validation": [
-        "docs/validation/toolbox-shimoyama-9l-20261108/README.md"
+        "docs/validation/toolbox-shimoyama-9l-20261108/README.md",
+        "docs/validation/toolbox-shimoyama-folded-20261108/README.md"
       ],
       "notes": [
-        "用户尺寸图340×240×180mm，含提手220mm。京东SKU/品牌/尺寸已读取；价格保留未知。静态闭盖，卡扣、壁厚、圆角及隐藏托盘为外观估算，无开盖轨迹或容量认证。"
+        "用户尺寸图340×240×180mm，含提手220mm。京东SKU/品牌/尺寸已读取；价格保留未知。静态闭盖，卡扣、壁厚、圆角及隐藏托盘为外观估算，无开盖轨迹或容量认证。",
+        "2026-11-08用户确认默认提手放平；v8静态闭盖默认高180mm，旧保存高度不批量改写，几何版本2。"
       ],
       "manifest": "assets/models/toolbox-shimoyama-9l/asset.json",
       "readme": "assets/models/toolbox-shimoyama-9l/README.md"
@@ -8637,7 +8675,7 @@
       "name": "工具收纳箱 · 霜山9L",
       "w": 340,
       "d": 240,
-      "h": 220,
+      "h": 180,
       "module": "storage-supply"
     },
     {
@@ -8782,6 +8820,15 @@
       "w": 1400,
       "d": 550,
       "module": "legacy-furniture"
+    },
+    {
+      "category": "柜体搭建",
+      "type": "cabinet",
+      "name": "乐高式柜体 · 拖入组件搭建",
+      "w": 600,
+      "d": 450,
+      "h": 720,
+      "module": "index-inline"
     }
   ]
 }

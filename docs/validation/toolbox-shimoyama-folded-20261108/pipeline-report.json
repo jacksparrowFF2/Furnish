@@ -1,0 +1,429 @@
+{
+  "passed": true,
+  "profile": "toolbox-shimoyama-9l",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "toolbox_shimoyama_9l",
+    "name": "工具收纳箱 · 霜山9L",
+    "w": 340,
+    "d": 240,
+    "color": "#e5e3db",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "霜山/SHIMOYAMA",
+    "model": "9L · 340×240×180 · 闭盖提手放平",
+    "sourceUrl": "https://item.jd.com/10192952050315.html",
+    "h": 180
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-08T02:33:47.272Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pyEclV\\toolbox-shimoyama-9l-oX1TQW",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-08T02:33:47.273Z",
+      "result": {
+        "command": "author-toolbox-shimoyama-9l",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pyEclV\\toolbox-shimoyama-9l-oX1TQW\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pyEclV\\toolbox-shimoyama-9l-oX1TQW\\authored",
+        "passed": true,
+        "profile": "toolbox-shimoyama-9l",
+        "parts": 13,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "toolbox-shimoyama-9l",
+          "parts": 13,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-08T02:33:50.088Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-08T02:33:50.088Z",
+      "result": {
+        "passed": true,
+        "profile": "toolbox-shimoyama-9l",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-08T02:33:50.891Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-08T02:33:50.892Z",
+      "result": {
+        "command": "publish-toolbox-shimoyama-9l",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pyEclV\\toolbox-shimoyama-9l-oX1TQW\\authored\\toolbox-shimoyama-9l-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pyEclV\\workspace\\src\\data\\toolbox-shimoyama-9l-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "aada03646fd12ca4852f62f9485c0dc10dd86a9b6e8adc0c719f805fe48769d2",
+        "runtimeSha256": "4f20e70213811f5c7b1950b6ee6a8e26e1d8d294d7e8d6e3559eb2163df88598"
+      },
+      "finished": "2026-11-08T02:33:51.795Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-08T02:33:51.795Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "toolbox-shimoyama-9l",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pyEclV\\toolbox-shimoyama-9l-oX1TQW\\storage-supplies.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "toolbox-shimoyama-9l",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 13,
+                  "bottom": 0,
+                  "top": 180,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 13,
+                  "bottom": 0,
+                  "top": 180,
+                  "externalDistance": 89.18680035612681,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 13,
+                  "bottom": 0,
+                  "top": 180,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 13,
+                  "bottom": 0,
+                  "top": 180,
+                  "externalDistance": 89.18680035612681,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-08T02:33:57.312Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-08T02:33:57.312Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 13,
+            "bounds": [
+              [
+                -0.17000000178813934,
+                0,
+                -0.11999999731779099
+              ],
+              [
+                0.17000000178813934,
+                0.18000000715255737,
+                0.11999999731779099
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 13,
+            "bounds": [
+              [
+                -0.19040000438690186,
+                0,
+                -0.12960000336170197
+              ],
+              [
+                0.19040000438690186,
+                0.19439999759197235,
+                0.12960000336170197
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 13,
+            "bounds": [
+              [
+                -0.17000000178813934,
+                0,
+                -0.11999999731779099
+              ],
+              [
+                0.17000000178813934,
+                0.18000000715255737,
+                0.11999999731779099
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-08T02:34:11.241Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-08T02:34:11.241Z",
+      "result": {
+        "passed": true,
+        "profile": "toolbox-shimoyama-9l",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 13,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 13,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 13,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-08T02:34:12.279Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-08T02:34:12.280Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 13,
+            "position": [
+              0,
+              0.09000000357627869,
+              0.8437174634704514
+            ],
+            "target": [
+              0,
+              0.09000000357627869,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 13,
+            "position": [
+              0.46711281076589306,
+              0.3469120494975199,
+              0.6539579350722503
+            ],
+            "target": [
+              0,
+              0.09000000357627869,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 13,
+            "position": [
+              -0.477660953597162,
+              0.2810643850151435,
+              -0.6687253350360268
+            ],
+            "target": [
+              0,
+              0.09000000357627869,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-08T02:34:20.566Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-08T02:34:20.567Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-08T02:34:23.704Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-08T02:34:23.704Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-08T02:34:26.819Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-08T02:34:26.820Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-08T02:34:29.945Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-08T02:34:29.945Z",
+      "result": {
+        "passed": true,
+        "profile": "toolbox-shimoyama-9l",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 13,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 13,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 13,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-08T02:34:30.717Z"
+    }
+  ],
+  "finished": "2026-11-08T02:34:30.718Z"
+}

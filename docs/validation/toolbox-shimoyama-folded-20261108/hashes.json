@@ -1,0 +1,6 @@
+{
+  "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.blend": "3b80b9ff9b29f3630d135365a8da861bff6c4af3f2cc39fb449c1cd1cf4c6cd9",
+  "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.glb": "8ead47048a218e2d922240463e1af11a1d69f123334a9616391fef15d2976a2b",
+  "src/data/toolbox-shimoyama-9l-blender-asset.js": "d8799d62855945634e6a561325fdd44d539970ce2e350381808f2f2fff07d48c",
+  "scripts/blender-model-shimoyama-toolbox.py": "8c7d221825737bac4d5ba2eb2693acfbfe344760ffb0769435ba0621862e7ace"
+}

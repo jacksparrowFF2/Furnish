@@ -28,9 +28,11 @@
   ],
   "missingReferences": [],
   "validation": [
-    "docs/validation/toolbox-shimoyama-9l-20261108/README.md"
+    "docs/validation/toolbox-shimoyama-9l-20261108/README.md",
+    "docs/validation/toolbox-shimoyama-folded-20261108/README.md"
   ],
   "notes": [
-    "用户尺寸图340×240×180mm，含提手220mm。京东SKU/品牌/尺寸已读取；价格保留未知。静态闭盖，卡扣、壁厚、圆角及隐藏托盘为外观估算，无开盖轨迹或容量认证。"
+    "用户尺寸图340×240×180mm，含提手220mm。京东SKU/品牌/尺寸已读取；价格保留未知。静态闭盖，卡扣、壁厚、圆角及隐藏托盘为外观估算，无开盖轨迹或容量认证。",
+    "2026-11-08用户确认默认提手放平；v8静态闭盖默认高180mm，旧保存高度不批量改写，几何版本2。"
   ]
 }

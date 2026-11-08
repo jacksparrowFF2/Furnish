@@ -1,5 +1,5 @@
 """Scoped author recipe, executed by storage-supply author with its shared helpers.
-Labelled envelope 340x240x180mm, 220mm with upright handle. Detail sizes estimated.
+Labelled envelope 340x240x180mm, 180mm with handle folded flat (user correction). Detail sizes estimated.
 """
 def outline(w,d,r):
  pts=[]
@@ -28,13 +28,13 @@ loft('body',[(0,.296,.196,.020),(.004,.302,.202,.022),(.061,.3113,.2113,.023),(.
 loft('lid-seam',[(.143,.329,.229,.025),(.146,.330,.230,.025)],seam)
 loft('lid',[(.145,.334,.234,.026),(.148,.340,.240,.027),(.154,.340,.240,.027),(.157,.332,.232,.026),(.173,.316,.216,.024),(.180,.302,.202,.021),(.180,.278,.178,.016),(.177,.274,.174,.014)],main)
 panel=loft('lid-inset',[(.172,.273,.173,.014),(.1774,.272,.172,.014)],main)
-# Real recessed locating well: its bottom is independent of the upright handle.
-cutter=box('well-cutter',(.120,.009,.030),(0,.179,0),main,.004)
+# Recessed locating well sized for the folded rigid U handle.
+cutter=box('well-cutter',(.120,.020,.068),(0,.176,-.022),main,.004)
 for target in [panel,bpy.data.objects['lid']]:
  mod=target.modifiers.new('handle-locating-well','BOOLEAN');mod.operation='DIFFERENCE';mod.object=cutter
  bpy.context.view_layer.objects.active=target;bpy.ops.object.modifier_apply(modifier=mod.name)
 bpy.data.objects.remove(cutter,do_unlink=True)
-# Upright U handle, true opening; shallow feet straddle its locating recess.
+# Author the U upright, then rigidly fold it; preserve its true opening.
 # One planar U contour with curved corners, extruded across the depth.
 pts=[(-.0545,.177)]
 for cx,cy,a in [(-.0445,.210,180),(.0445,.210,90)]:
@@ -49,7 +49,12 @@ n=len(pts);verts=[(x,-z,y) for z in [-.0065,.0065] for x,y in pts]
 faces=[tuple(reversed(range(n))),tuple(range(n,2*n))]+[(j,(j+1)%n,(j+1)%n+n,j+n) for j in range(n)]
 mesh=bpy.data.meshes.new('handle');mesh.from_pydata(verts,[],faces);mesh.update();o=bpy.data.objects.new('handle',mesh);bpy.context.collection.objects.link(o);identity(o,'handle',main)
 mod=o.modifiers.new('soft-handle-edges','BEVEL');mod.width=.0007;mod.segments=3;bpy.context.view_layer.objects.active=o;bpy.ops.object.modifier_apply(modifier=mod.name)
-merge('handle-pivots',[box('tmp',(.019,.005,.023),(x,.1795,0),main,.002) for x in [-.050,.050]],main)
+# Rigidly fold the U into its well; no whole-product height compression.
+for v in o.data.vertices:
+ old_y,old_z=v.co.y,v.co.z
+ v.co.y=old_z-.177
+ v.co.z=.1735-old_y
+merge('handle-pivots',[box('tmp',(.019,.005,.023),(x,.1775,0),main,.002) for x in [-.050,.050]],main)
 for sign,tag in [(-1,'left'),(1,'right')]:
  pieces=[box('tmp',(.006,.024,.085),(sign*.167,.140,0),main,.002)]
  for z in [-.040,.040]:pieces.append(box('tmp',(.010,.010,.009),(sign*.163,.127,z),main,.0015))

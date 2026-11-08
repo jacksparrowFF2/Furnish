@@ -1,0 +1,67 @@
+{
+  "body": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "lid-seam": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "lid": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "lid-inset": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "handle": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "handle-pivots": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "left-catch": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "right-catch": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "back-ribs": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "front-ribs": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "tray": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "tray-dividers": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  },
+  "wrench-mark": {
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "degenerateFaces": 0
+  }
+}
