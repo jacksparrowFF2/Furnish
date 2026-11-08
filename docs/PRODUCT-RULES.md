@@ -1,3 +1,5 @@
+2026-11-08（原洗衣柜真实组件化）：原地柜保存m.structure的v2组件树，原吊柜／开放柜转换为同一组件树；编辑前在可取消草稿转换并逐板／枢轴／开合核对，直接编辑层板、隔板、门、抽屉，不再回退旧模板参数。frontBand／backBottom保留原前面板空间及无底背板标高，显式新语义最低v80；当前阳台36块生产实体一致。见[验收](validation/laundry-existing-lego-20261108/README.md)。
+
 2026-11-08（组合模块／异形台面）：cabinetBuilder.placement集中前后对齐枚举及偏移范围，worktop声明32点／6000mm直角轮廓范围；旧缺失保持原背沿／整深，不自动升级。新独立柜箱保留自身板厚与底部相对整组底标高，生产派生时加整组偏移一次。显式对齐、地柜独立深度、内嵌组件柜或worktop最低v79；名称与颜色不清空间确认，组件柜空间规则传到父组合。见[数据契约](CABINET-ASSEMBLY-EDITOR.md)。
 
 2026-11-08（组件抽屉独立状态）：cabinetBuilder.drawers集中声明原60–500mm层高、1–10层、最多8列及缺省伸出比例1；可选states由组件核心严格校验，逐层／逐列生产使用同一状态，缺省仍沿原整组open／extension，不自动写新默认。显式字段最低v78；替换沿原cabinet整体清理，安装基准和离地语义保持，见[编辑复核](validation/cabinet-editing-audit-20261108/README.md)。

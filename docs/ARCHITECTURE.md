@@ -1,3 +1,5 @@
+2026-11-08（原洗衣柜真实组件化）：原地柜保存m.structure的v2组件树，原吊柜／开放柜转换为同一组件树；编辑前在可取消草稿转换并逐板／枢轴／开合核对，直接编辑层板、隔板、门、抽屉，不再回退旧模板参数。frontBand／backBottom保留原前面板空间及无底背板标高，显式新语义最低v80；当前阳台36块生产实体一致。见[验收](validation/laundry-existing-lego-20261108/README.md)。
+
 2026-11-08（唯一乐高编辑器）：按用户明确要求取消独立组合编辑界面，所有柜体／厨房入口统一为FurnishCabinetBuilderUI.open；原生结构以cabinet-builder-native-adapter在同一mountShell、组件库、结构树、属性栏与生产预览内编辑，无二级柜体编辑跳转。移除旧普通柜／厨房弹窗实现，保留原数据及专用构造。无新持久字段，见[统一契约](CABINET-ASSEMBLY-EDITOR.md)。
 
 2026-11-08（洗衣区／餐边柜模块设计）：cabinet-assembly-core与assembly-editor经典脚本在保留专用配方的前提下统一新界面入口；独立柜箱复用v2生产树，原地柜／餐边柜共享模块支持前后基准与偏移；laundry.worktop直角轮廓沿topGeometry/slabGeometry进入二维、生产实体、碰撞和GLB。显式新语义最低v79，沿原草稿／mutate／项目／仓库／缓存，见[组合编辑契约](CABINET-ASSEMBLY-EDITOR.md)。
