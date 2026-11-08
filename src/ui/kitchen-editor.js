@@ -208,6 +208,7 @@ function bindKitchenPanel(f){
  let preview=null,workspace=null,generation=0;
  function dispose(){generation++;preview?.dispose();preview=null;workspace?.dispose();workspace=null;}
  function open(id,options={}){
+  if(FurnishCabinetAssembly.supported(options.draft??getF(id)))return window.FurnishCabinetAssemblyUI.open(id,options);
   const original=getF(id);if(!original?.kitchen&&!options.draft?.kitchen)return;if(furnitureLocked(original))return toast('柜体已锁定，请先解锁');
   window.FurnishCabinetEditor.dispose();const token=generation,planId=PLAN.id,before=JSON.stringify(original),K=FurnishKitchen;
   let draft=structuredClone(options.draft??original),linkMap=new Map(options.linkMap??draft.kitchen.modules.map((m,i)=>[i,i]));const previewFurniture=[];

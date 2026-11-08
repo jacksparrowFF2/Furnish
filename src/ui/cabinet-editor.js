@@ -133,6 +133,7 @@ function cabinetWorkspace(prefix,{get,read,apply,select,snapshot,restore,refresh
   }});
  }
  function open(id,options={}){
+  if(FurnishCabinetAssembly.supported(options.original??getF(id)))return window.FurnishCabinetAssemblyUI.open(id,options);
   if((options.original??getF(id))?.cabinet?.version===2)return window.FurnishCabinetBuilderUI.open(id,options);
   if(!options.original&&getF(id)?.kitchen)return window.FurnishKitchenEditor.open(id);
   const original=options.original??getF(id);if(!options.original&&original?.type==='kitchenwall'&&!furnitureLocked(original))return window.FurnishKitchenEditor.open(id,{draft:FurnishKitchen.fromWall(original)});if(!FurnishCabinet.supported(original))return;
@@ -447,6 +448,6 @@ ${cabinetBaseControls(draft,i,{plinth:options.tierChild!=='upper'})}</section><s
    View3D.cabinetPreview(host,draft,{select:selectPart,inspect,activateDoor,shelfClearance:editShelfClearance,hatchMargin:editHatchMargin,move:moveShelf,divider:moveDivider}).then(p=>{if(token!==generation||!host.isConnected)p.dispose();else{preview=p;p.update(draft);p.setView(view);p.selectPart(selected);updatePartSize();}}).catch(e=>{if(token===generation&&host.isConnected)host.textContent=tr('三维预览加载失败，可继续编辑：','Preview unavailable; editing remains available: ')+e.message;});
   }});
  }
- function toggleScene(id,part){const f=getF(id);if(!f||furnitureLocked(f))return;try{const next=f.kitchen?FurnishKitchen.toggle(f,part.column,part.drawer,undefined,part.leaf,part.bay,part.lid,part.lane,part.section):FurnishCabinet.toggle(f,part.column,part.drawer,part.lid,part.lane,part.section,part.leaf,part.tier,part.componentId);mutate(()=>Object.assign(f,next));}catch(e){toast(e.message);}}
+ function toggleScene(id,part){const f=getF(id);if(!f||furnitureLocked(f))return;try{const next=f.kitchen?FurnishKitchen.toggle(f,part.column,part.drawer,undefined,part.leaf,part.bay,part.lid,part.lane,part.section,part.componentId,part.sourceSection):FurnishCabinet.toggle(f,part.column,part.drawer,part.lid,part.lane,part.section,part.leaf,part.tier,part.componentId);mutate(()=>Object.assign(f,next));}catch(e){toast(e.message);}}
  window.FurnishCabinetEditor={open,dispose,toggleScene};
 })();

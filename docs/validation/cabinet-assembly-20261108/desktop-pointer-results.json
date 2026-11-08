@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "sideboard routes directly to modern assembly editor",
+      "native upper front alignment is accepted",
+      "native upper keeps independent depth and numeric offset",
+      "native sideboard recipe and placements save",
+      "sideboard saves in one application undo",
+      "laundry enters modern editor",
+      "laundry cabinet depth changes independently under continuous top",
+      "second adjacent equipment bay is available",
+      "new open box exposes shared component builder",
+      "independent raised tall box edits without changing worktop",
+      "nested independent box uses production component builder",
+      "nested builder returns to parent draft",
+      "left countertop extension joins original top",
+      "continuous stepped countertop exposes editable corners",
+      "worktop extension supports draft undo",
+      "worktop extension supports draft redo",
+      "numeric vertex edit preserves orthogonal joined contour",
+      "real pointer drag updates joined worktop corners as one draft edit",
+      "assembly and worktop controls fit narrow screen",
+      "shaped worktop saves exact vertices",
+      "independent nested board thickness saves",
+      "base module placement survives nested editing",
+      "all module additions and shaped top restore after refresh",
+      "restored countertop remains editable",
+      "cancel leaves saved combination untouched",
+      "production quartz geometry and raycast cover real side extension at the exact top height",
+      "component builder saves independent depth/thickness and front-aligned physical planes with offset",
+      "reference capability composes two placed devices, tall/open/upper cabinets and a quartz extension over a real side cabinet",
+      "production GLB preserves shaped quartz, side boxes, native placements and aligned independent boards: {\"count\":111,\"max\":0}",
+      "no runtime errors: "
+    ]
+  }
+]
