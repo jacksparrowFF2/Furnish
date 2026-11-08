@@ -117,6 +117,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     }
     front.traverse(o=>{const data=o.userData;if(!data)return;data.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind,...(data.cabinetPart?.leafId?{leafId:data.cabinetPart.leafId,segmentId:part.section}:{})};if(data.cabinetPart)data.cabinetPart={...data.cabinetPart,column:part.column,section:part.section,componentId:part.componentId};if(data.motion)data.motion={...data.motion,column:part.column,section:part.section};if(data.cabinetDoorSize)data.cabinetDoorSize={...data.cabinetDoorSize,section:part.section};if(o.isMesh&&data.furnishPartToken)data.furnishPartToken=JSON.stringify(['builder:'+part.boxId,'component:'+part.componentId,'section:'+part.section,...JSON.parse(data.furnishPartToken)]);});g.add(front);
    }
+   g.traverse(o=>{const pick=o.userData?.cabinetBuilder;if(!o.isMesh||!B.shelfRemovable(f,pick))return;o.userData.cabinetRemovable=true;o.userData.cabinetIgnoreCollision=B.shelfCollisionIgnored(f,pick);o.material=o.material.clone();Object.assign(o.material,{transparent:true,opacity:(root.FurnishProducts||require('../core/product-rules.js')).cabinetBuilder.horizontal.ghostOpacity,depthWrite:false});o.userData.cabinetOwnMaterial=true;o.castShadow=false;});
    // Finish once after every component has been assembled. Otherwise only the
    // native carcass shelves get contours and the other boards blend into their
    // neighbours. Keep the same structural contours in preview and normal scenes;
@@ -126,7 +127,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     if(!o.isMesh)return;
     const data=o.userData,accessory=data.cabinetPart&&!data.cabinetDoorSize&&!data.cabinetDrawerBoard&&!data.cabinetPart.lid;
     if(accessory||data.cabinetSection==='light')return;
-    const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x493b2d,transparent:true,opacity:data.cabinetIgnorePick ? .15 : .65}));
+    const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x493b2d,transparent:true,opacity:data.cabinetRemovable ? .2 : data.cabinetIgnorePick ? .15 : .65}));
     edge.userData.cabinetOwnMaterial=true;edge.userData.cabinetOutline=true;edge.raycast=()=>{};o.add(edge);
    });
    return g;

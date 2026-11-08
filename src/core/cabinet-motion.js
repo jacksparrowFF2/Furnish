@@ -80,7 +80,7 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
    for(let i=1;i<levels.length;i++){const bottom=levels[i-1],top=levels[i],active=cutters.filter(c=>c.top>bottom&&c.bottom<top);if(top-bottom<1e-7)continue;const polys=active.length?z.decompose([board.poly,...active.map(c=>c.poly)],p=>z.inside(p,board.poly)&&!active.some(c=>z.inside(p,c.poly))):[board.poly];for(const poly of polys)out.push({...board,poly,bottom,top});}return out;
   };
   const add=(board,transform=identity,base=0,prefix='')=>{
-   if(!(board.top>board.bottom)||board.poly.length<3)return;
+   if(board.metadata?.cabinetIgnoreCollision||!(board.top>board.bottom)||board.poly.length<3)return;
    const data=board.metadata||{},part=data.cabinetSideClosure?(data.cabinetSideClosure==='left'?'左侧收口封板':'右侧收口封板'):data.cabinetTopClosure?'顶部封板':data.cabinetSection==='bottom'?'底板':data.cabinetSection==='plinth'?'踢脚底座':data.cabinetHangingRod?'挂衣杆':data.cabinetShelf?'层板':data.cabinetDivider?'隔板':data.cabinetSide==='left'?'左侧板':data.cabinetSide==='right'?'右侧板':data.cabinetTop?'顶板':data.cabinetDrawerBoard?'抽屉板':data.cabinetBasketPart?'抽屉篮架':data.cabinetPart?'柜门／抽屉':data.cabinetBack?'背板':data.cabinetBay?'背板':'柜体板件';
    // Decomposition preserves notched lids instead of filling their concavities.
    for(const poly of z.decompose([board.poly],p=>z.inside(p,board.poly))){

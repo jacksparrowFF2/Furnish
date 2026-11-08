@@ -1,0 +1,31 @@
+'use strict';
+const assert=require('node:assert/strict'),B=require('../src/core/cabinet-builder-core.js'),M=require('../src/core/cabinet-motion.js'),P=require('../src/core/project-core.js'),R=require('../src/core/repository-core.js'),fs=require('node:fs'),vm=require('node:vm');
+const boardGeometry=f=>M.boards(f,{includeStatic:true}).map(({metadata,...v})=>({...v,identity:metadata.furnishPartToken}));
+const source=require('./fixtures/cabinet-builder-open-zones.json').find(v=>v.id==='fmv5b78gp2'),planId=require('../src/data/plans.js')[0].id;
+for(const rot of [0,37,90])for(const flip of [false,true]){
+ const f={...B.upgrade(source),rot,flip,mountHeight:120},snapshot=JSON.stringify(f);
+ for(const pick of B.horizontalPicks(f)){
+  assert.equal(B.shelfRemovable(f,pick),false);
+  const marked=B.markShelfRemovable(f,pick,true),off=B.markShelfRemovable(marked,pick,false);
+  assert.equal(B.shelfRemovable(marked,pick),true);assert.equal(B.shelfRemovable(off,pick),false);
+  assert.deepEqual(boardGeometry(marked),boardGeometry(f),'mark keeps actual production boards/identities');
+  assert.deepEqual(M.solidParts(marked),M.solidParts(f),'mark keeps transformed collision solids');
+  assert.deepEqual(B.measurements(marked),B.measurements(f),'mark does not create empty space');
+  assert.deepEqual(B.spatial(marked),B.spatial(f),'mark does not clear spatial confirmation');
+  const ignored=B.setShelfCollisionIgnored(marked,pick,true);assert.equal(B.shelfCollisionIgnored(ignored,pick),true);assert.equal(M.solidParts(ignored).length,M.solidParts(marked).length-1,'only selected board removed from collision solids');assert.notDeepEqual(B.spatial(ignored),B.spatial(marked));assert.deepEqual(B.spatial(B.setShelfCollisionIgnored(ignored,pick,false)),B.spatial(marked));assert.equal(B.shelfCollisionIgnored(B.markShelfRemovable(ignored,pick,false),pick),false);assert.throws(()=>B.setShelfCollisionIgnored(f,pick,true),/仅可拆卸/);assert.deepEqual(boardGeometry(ignored),boardGeometry(marked));
+  const preset=B.preset(ignored,pick,'removable board');B.validate(preset);assert.equal(preset.cabinet.reusable.params.removable,true);assert.equal(preset.cabinet.reusable.params.ignoreCollision,true);
+  const work={furniture:[ignored]},asset={...preset,id:'removable-preset'},data={v:77,planId,work:{[planId]:work},designs:[{id:'named',name:'named',planId,work}],custom:[asset]};
+  const restored=R.parse(JSON.parse(R.text(data)));assert.deepEqual(restored.work[planId].furniture[0].cabinet,ignored.cabinet);assert.deepEqual(restored.designs[0].work.furniture[0].cabinet,ignored.cabinet);assert.deepEqual(restored.custom[0].cabinet,preset.cabinet);assert.deepEqual(R.parse(JSON.parse(R.text(restored))),restored);
+  const packed=P.pack({planId,current:work,designs:[],catalog:[asset]});assert.equal(packed.version,77);assert.deepEqual(P.unpack(packed).current.furniture[0].cabinet,ignored.cabinet);assert.equal(P.formatVersion([],[asset]),77);
+  for(const bad of [null,1,'true',{},[]])assert.throws(()=>B.markShelfRemovable(f,pick,bad),/布尔/);
+  const bad=structuredClone(marked),p=B.selection(bad,pick).component;p[pick.board?pick.board+'Removable':'removable']='yes';assert.throws(()=>B.validate(bad),/布尔/);
+  const removed=B.remove(marked,pick);assert.equal(M.boards(removed,{includeStatic:true}).length,M.boards(f,{includeStatic:true}).length-1);assert.notDeepEqual(B.spatial(removed),B.spatial(f));
+ }
+ assert.equal(JSON.stringify(f),snapshot,'input and old defaults remain unchanged');
+}
+const G=require('../src/core/layout-geometry.js');
+for(const rot of [0,37,90])for(const flip of [false,true]){let f=B.create({id:'collision',cx:2000,cy:2000,rot,flip,mountHeight:120});const added=B.add(f,'shelf',{boxId:'box1'});f=added.furniture;const pick=B.horizontalPicks(f)[0],v=B.shelfInfo(f,pick),a=rot*Math.PI/180,x=v.x*(flip?-1:1),z=(v.front+v.back)/2,obstacle={id:'obstacle',type:'block',cx:f.cx+x*Math.cos(a)-z*Math.sin(a),cy:f.cy+x*Math.sin(a)+z*Math.cos(a),rot,w:30,d:30,h:20,mountHeight:120+v.bottom-1};const marked=B.markShelfRemovable(f,pick,true),ignored=B.setShelfCollisionIgnored(marked,pick,true);assert.throws(()=>B.add(marked,'rail',{boxId:'box1'}),/相交/);const withRail=B.add(ignored,'rail',{boxId:'box1'}).furniture;B.validate(withRail);assert.throws(()=>B.setShelfCollisionIgnored(withRail,pick,false),/相交/);assert(G.volumeOverlap(marked,obstacle),'in-place ghost still collides');assert(!G.volumeOverlap(ignored,obstacle),'collision off ignores only ghost board');assert(G.volumeOverlap(B.setShelfCollisionIgnored(ignored,pick,false),obstacle),'restoring collision works');}
+const ctx=vm.createContext({});vm.runInContext(fs.readFileSync(require.resolve('../src/io/workspace-cache.js'),'utf8'),ctx);for(const version of [72,73,74,75,76,77])assert(ctx.FurnishWorkspaceCache.candidates({read:k=>k==='huxing-design-v'+version?JSON.stringify({v:version,work:{},designs:[],custom:[]}):null}).length);
+console.log('PASS removable board metadata: all horizontal roles, strict validation, production solids/net spaces unchanged, rotation/mirror/height, reuse, current/named/catalog/project/cache v77 recovery, actual removal');
+
+(async()=>{const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three),Model=require('../src/render/cabinet-model.js');let f=B.upgrade(source);const pick=B.horizontalPicks(f)[0];f=B.markShelfRemovable(f,pick,true);const shared=new T.MeshStandardMaterial({color:'#aa8866'}),model=Model.build(T,f,(w,h,d,c,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),shared);m.position.set(x,y+h/2,z);return m;});let ghosts=0;model.traverse(o=>{if(!o.isMesh)return;if(o.userData.cabinetRemovable){ghosts++;assert.equal(o.material.opacity,.25);assert(o.material.transparent);assert.equal(o.material.depthWrite,false);assert.notEqual(o.material,shared);}else assert.equal(o.material.opacity,1);});assert.equal(ghosts,1);assert.equal(shared.opacity,1);console.log('PASS production ghost material is isolated to selected removable board');})().catch(e=>{console.error(e);process.exitCode=1;});

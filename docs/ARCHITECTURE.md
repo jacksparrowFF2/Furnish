@@ -1,3 +1,5 @@
+2026-11-08（可拆卸层板标记）：组件柜沿共享水平板选择保存可选removable／lowerRemovable／upperRemovable；生产几何以独立透明材质保留，spatial排除能力标记但包含独立ignoreCollision开关；solidParts按板件元数据排除关闭碰撞的板件，实际删除继续原结构链。UI沿原草稿历史与mutate保存，显式标记最低v77并保留旧项目／仓库／缓存读取。见[CABINET-BUILDER.md](CABINET-BUILDER.md#可拆卸层板标记2026-11-08)。
+
 2026-11-08（衣物厚片）：三款garmentPhoto复用storage-supply/static-asset与原底部离地和姿态边界；三个经典离线资产脚本含照片UV／RGBA，BG0衍生alpha只用于作者轮廓。新模板storageSupplyRevision2沿v57／pose v58，无新实例字段或保存通道，见[衣物契约](GARMENT-PHOTO-CARDS.md)。
 
 2026-11-08（统一层板编辑）：cabinet-builder-core用稳定组件／边界身份统一活动、固定及开放区边界层板，生产矩形形状与原shelf构造参数共用，UI共用拖动／属性／历史。可选形状与边界后退最低v76，原缺省不补写，沿当前／命名／组件库／项目／仓库／file缓存；无新脚本加载或保存通道。见[层板契约](CABINET-BUILDER.md#层板编辑与结构用途统一2026-11-08)。
