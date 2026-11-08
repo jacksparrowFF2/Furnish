@@ -1,0 +1,68 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "upgrade exposes real open-zone components 落地电视柜 · 上盖抽屉藏线",
+      "pilot saved 落地电视柜 · 上盖抽屉藏线",
+      "upgrade exposes real open-zone components 玄关柜二 · 置物台与鞋柜",
+      "pilot saved 玄关柜二 · 置物台与鞋柜",
+      "upgrade exposes real open-zone components 宠物餐饮柜 · 无中层板582净高＋绿植台900",
+      "pet lower door preserves 100mm drop",
+      "door drop undo restores physical parameter",
+      "pilot saved 宠物餐饮柜 · 无中层板582净高＋绿植台900",
+      "three upgraded pilots restore after refresh",
+      "drag/edit/save generic open zone",
+      "new open-zone editor fits narrow viewport",
+      "dragging lid creates working shell aperture",
+      "autonomous lid component saves with aperture",
+      "new lid cabinet uses application undo/redo",
+      "reused lid installs with edited cable gap",
+      "formal GLB exports all pilot and lid parts with unique identities"
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "upgrade exposes real open-zone components 落地电视柜 · 上盖抽屉藏线",
+      "pilot saved 落地电视柜 · 上盖抽屉藏线",
+      "upgrade exposes real open-zone components 玄关柜二 · 置物台与鞋柜",
+      "pilot saved 玄关柜二 · 置物台与鞋柜",
+      "upgrade exposes real open-zone components 宠物餐饮柜 · 无中层板582净高＋绿植台900",
+      "pet lower door preserves 100mm drop",
+      "door drop undo restores physical parameter",
+      "pilot saved 宠物餐饮柜 · 无中层板582净高＋绿植台900",
+      "three upgraded pilots restore after refresh",
+      "drag/edit/save generic open zone",
+      "new open-zone editor fits narrow viewport",
+      "dragging lid creates working shell aperture",
+      "autonomous lid component saves with aperture",
+      "new lid cabinet uses application undo/redo",
+      "reused lid installs with edited cable gap",
+      "formal GLB exports all pilot and lid parts with unique identities"
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "upgrade exposes real open-zone components 落地电视柜 · 上盖抽屉藏线",
+      "pilot saved 落地电视柜 · 上盖抽屉藏线",
+      "upgrade exposes real open-zone components 玄关柜二 · 置物台与鞋柜",
+      "pilot saved 玄关柜二 · 置物台与鞋柜",
+      "upgrade exposes real open-zone components 宠物餐饮柜 · 无中层板582净高＋绿植台900",
+      "pet lower door preserves 100mm drop",
+      "door drop undo restores physical parameter",
+      "pilot saved 宠物餐饮柜 · 无中层板582净高＋绿植台900",
+      "three upgraded pilots restore after refresh",
+      "drag/edit/save generic open zone",
+      "new open-zone editor fits narrow viewport",
+      "dragging lid creates working shell aperture",
+      "autonomous lid component saves with aperture",
+      "new lid cabinet uses application undo/redo",
+      "reused lid installs with edited cable gap",
+      "formal GLB exports all pilot and lid parts with unique identities"
+    ]
+  }
+]

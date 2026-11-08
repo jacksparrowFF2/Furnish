@@ -1,0 +1,415 @@
+{
+  "passed": true,
+  "sourceDesign": {
+    "id": "dmw7b9vxu",
+    "name": "组件柜试点 · 次卧衣柜多段与逐扇开合"
+  },
+  "pilotDesign": {
+    "id": "dmw7dk6f0",
+    "name": "组件柜试点 · 开放区、门板下延与藏线上盖"
+  },
+  "sourceHash": "8de5107abcc101de4cdf92a5cf0d36c99dfc94e51abb44bc2b9d5c0762280b7d",
+  "workspaceVersion": 75,
+  "unrelatedFurniture": 163,
+  "issues": [
+    {
+      "kind": "cabinetdoor",
+      "message": "分区 1 柜门三维开启范围被 储物柜 占用",
+      "pending": false
+    },
+    {
+      "kind": "cabinetpassage",
+      "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 储物柜 占用",
+      "pending": false
+    },
+    {
+      "kind": "cabinetpassage",
+      "message": "分区 4 抽屉拉出后前方 800 mm 地面操作空间被 工具箱 · 中柜底层 占用",
+      "pending": false
+    },
+    {
+      "kind": "cabinetpassage",
+      "message": "分区 5 抽屉拉出后前方 800 mm 地面操作空间被 工具箱 · 中柜底层 占用",
+      "pending": false
+    },
+    {
+      "kind": "overlap",
+      "message": "家具占地范围重叠，请核对实际摆放",
+      "pending": false
+    },
+    {
+      "kind": "overlap",
+      "message": "家具占地范围重叠，请核对实际摆放",
+      "pending": false
+    },
+    {
+      "kind": "overlap",
+      "message": "家具占地范围重叠，请核对实际摆放",
+      "pending": false
+    },
+    {
+      "kind": "overlap",
+      "message": "家具占地范围重叠，请核对实际摆放",
+      "pending": false
+    }
+  ],
+  "pilots": [
+    {
+      "id": "fmv3yflqw1",
+      "name": "落地电视柜 · 上盖抽屉藏线",
+      "dimensions": [
+        2505,
+        350,
+        350
+      ],
+      "parts": 40,
+      "sourceSceneParts": 40,
+      "probes": [
+        {
+          "bottom": 100,
+          "interior": {
+            "bottom": 58,
+            "top": 192,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 172.7,
+            "r": 172.7,
+            "t": null,
+            "b": 117
+          }
+        }
+      ],
+      "devices": []
+    },
+    {
+      "id": "fmv5b78gp2",
+      "name": "玄关柜二 · 置物台与鞋柜",
+      "dimensions": [
+        970,
+        350,
+        2350
+      ],
+      "parts": 37,
+      "sourceSceneParts": 39,
+      "probes": [
+        {
+          "bottom": 50,
+          "interior": {
+            "bottom": null,
+            "top": 60,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 427,
+            "r": 427,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 350,
+          "interior": {
+            "bottom": 14,
+            "top": 96,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 427,
+            "r": 427,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 1000,
+          "interior": {
+            "bottom": 40,
+            "top": 291,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 427,
+            "r": null,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 1400,
+          "interior": {
+            "bottom": 51,
+            "top": 59,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 427,
+            "r": 427,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 1520,
+          "interior": {
+            "bottom": 3,
+            "top": 107,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 427,
+            "r": 427,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 1709,
+          "interior": {
+            "bottom": 24,
+            "top": 86,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 427,
+            "r": 427,
+            "t": 117,
+            "b": null
+          }
+        }
+      ],
+      "devices": [
+        {
+          "id": "fmw6k26ds1",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 0,
+            "top": 20,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw6mw3hy4",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 0,
+            "top": 20,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw6mw3hy5",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 0,
+            "top": 20,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw6mw3hy6",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 0,
+            "top": 20,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw6mw8ee7",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 24,
+            "top": -4,
+            "pending": false,
+            "collisions": [
+              "fmv5b78gp2"
+            ]
+          }
+        },
+        {
+          "id": "fmw6mw8ee8",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 24,
+            "top": -4,
+            "pending": false,
+            "collisions": [
+              "fmv5b78gp2"
+            ]
+          }
+        },
+        {
+          "id": "fmw6mw8ee9",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 24,
+            "top": -4,
+            "pending": false,
+            "collisions": [
+              "fmv5b78gp2"
+            ]
+          }
+        },
+        {
+          "id": "fmw6mw8ee10",
+          "name": "方块占位体",
+          "clearance": {
+            "bottom": 24,
+            "top": -4,
+            "pending": false,
+            "collisions": [
+              "fmv5b78gp2"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "fmw3qae6f1",
+      "name": "宠物餐饮柜 · 无中层板582净高＋绿植台900",
+      "dimensions": [
+        600,
+        350,
+        2350
+      ],
+      "parts": 22,
+      "sourceSceneParts": 22,
+      "probes": [
+        {
+          "bottom": 0,
+          "interior": {
+            "bottom": null,
+            "top": 390,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 242,
+            "r": 242,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 450,
+          "interior": {
+            "bottom": 2,
+            "top": 392,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 242,
+            "r": 242,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 950,
+          "interior": {
+            "bottom": 50,
+            "top": 360,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": null,
+            "r": 242,
+            "t": 117,
+            "b": null
+          }
+        },
+        {
+          "bottom": 1400,
+          "interior": {
+            "bottom": 32,
+            "top": 221,
+            "pending": false,
+            "collisions": []
+          },
+          "directions": {
+            "l": 242,
+            "r": 242,
+            "t": 117,
+            "b": null
+          }
+        }
+      ],
+      "devices": [
+        {
+          "id": "fmw3qbuyl2",
+          "name": "绿植展示格 · 小盆栽示意260×260×350",
+          "clearance": {
+            "bottom": 0,
+            "top": 100,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw3rdujg2",
+          "name": "PETSTAR饮水碗 · Ø180×65 · 奶油白／金属内胆",
+          "clearance": {
+            "bottom": null,
+            "top": 365,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw50y2hw1",
+          "name": "米家智能宠物喂食器 2",
+          "clearance": {
+            "bottom": null,
+            "top": 63,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw64lbpf1",
+          "name": "猫粮袋 · 2kg紫白参考",
+          "clearance": {
+            "bottom": 2,
+            "top": 32,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw6a18083",
+          "name": "猫粮袋 · 2kg紫白参考",
+          "clearance": {
+            "bottom": 2,
+            "top": 32,
+            "pending": false,
+            "collisions": []
+          }
+        },
+        {
+          "id": "fmw6d3pw81",
+          "name": "冻干桶 · meoof 6L",
+          "clearance": {
+            "bottom": 4,
+            "top": 243,
+            "pending": false,
+            "collisions": []
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,636 @@
+[
+  {
+    "action": "zones_copy_receipt",
+    "applied": true,
+    "persisted": true,
+    "revision": "e01c2e72b99b9f3c7b2d0a28d522d48e9c2fa29d95a1147c03564be93485fa78",
+    "activeDesign": {
+      "id": "dmw7dk6f0",
+      "name": "组件柜试点 · 开放区、门板下延与藏线上盖"
+    },
+    "save": {
+      "mode": "saved",
+      "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 13:11:28",
+      "pending": false
+    },
+    "motion": [
+      {
+        "id": "fmv3yflqw1"
+      },
+      {
+        "id": "fmv5b78gp2"
+      },
+      {
+        "id": "fmw3qae6f1"
+      }
+    ]
+  },
+  {
+    "action": "zones_upgrade_receipt",
+    "applied": true,
+    "persisted": true,
+    "revision": "3ae64d8eaa76be624c4ea63701b6f64983fc2aa2c245e0ecd746accb59e0e2aa",
+    "activeDesign": {
+      "id": "dmw7dk6f0",
+      "name": "组件柜试点 · 开放区、门板下延与藏线上盖"
+    },
+    "save": {
+      "mode": "saved",
+      "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 13:11:39",
+      "pending": false
+    },
+    "motion": [
+      {
+        "id": "fmv3yflqw1",
+        "components": [
+          {
+            "id": "part2",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part5",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part8",
+            "kind": "slidingTop",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part11",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part14",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          }
+        ]
+      },
+      {
+        "id": "fmv5b78gp2",
+        "components": [
+          {
+            "id": "part10",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part11",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part12",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          }
+        ]
+      },
+      {
+        "id": "fmw3qae6f1",
+        "components": [
+          {
+            "id": "part6",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part7",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "action": "zones_partial_receipt",
+    "applied": true,
+    "persisted": true,
+    "revision": "801c936ad4ad4b117f97349841e6b0e355d81669ff6e6ef69d54cfb8c1eba96a",
+    "activeDesign": {
+      "id": "dmw7dk6f0",
+      "name": "组件柜试点 · 开放区、门板下延与藏线上盖"
+    },
+    "save": {
+      "mode": "saved",
+      "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 13:18:56",
+      "pending": false
+    },
+    "motion": [
+      {
+        "id": "fmv3yflqw1",
+        "components": [
+          {
+            "id": "part2",
+            "kind": "drawerModule",
+            "open": true,
+            "extension": 0.5
+          },
+          {
+            "id": "part5",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part8",
+            "kind": "slidingTop",
+            "open": true,
+            "extension": 0.5
+          },
+          {
+            "id": "part11",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part14",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          }
+        ]
+      },
+      {
+        "id": "fmv5b78gp2",
+        "components": [
+          {
+            "id": "part10",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part11",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part12",
+            "kind": "drawerModule",
+            "open": true,
+            "extension": 0.5
+          }
+        ]
+      },
+      {
+        "id": "fmw3qae6f1",
+        "components": [
+          {
+            "id": "part6",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part7",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "action": "zones_full_receipt",
+    "applied": true,
+    "persisted": true,
+    "revision": "3c80ef0ad7fbdddba9a1055e63a6df444096092adfbddcd6b6f5f7bce55d7060",
+    "activeDesign": {
+      "id": "dmw7dk6f0",
+      "name": "组件柜试点 · 开放区、门板下延与藏线上盖"
+    },
+    "save": {
+      "mode": "saved",
+      "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 13:21:31",
+      "pending": false
+    },
+    "motion": [
+      {
+        "id": "fmv3yflqw1",
+        "components": [
+          {
+            "id": "part2",
+            "kind": "drawerModule",
+            "open": true,
+            "extension": 1
+          },
+          {
+            "id": "part5",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part8",
+            "kind": "slidingTop",
+            "open": true,
+            "extension": 1
+          },
+          {
+            "id": "part11",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part14",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          }
+        ]
+      },
+      {
+        "id": "fmv5b78gp2",
+        "components": [
+          {
+            "id": "part10",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part11",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part12",
+            "kind": "drawerModule",
+            "open": true,
+            "extension": 1
+          }
+        ]
+      },
+      {
+        "id": "fmw3qae6f1",
+        "components": [
+          {
+            "id": "part6",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 45
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part7",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "action": "zones_restore_receipt",
+    "applied": true,
+    "persisted": true,
+    "revision": "b8e14bfcbc4e6266e7a57c921b081322391452b8a831b0ace7fc299b8d0a8d7f",
+    "activeDesign": {
+      "id": "dmw7dk6f0",
+      "name": "组件柜试点 · 开放区、门板下延与藏线上盖"
+    },
+    "save": {
+      "mode": "saved",
+      "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 13:23:01",
+      "pending": false
+    },
+    "motion": [
+      {
+        "id": "fmv3yflqw1",
+        "components": [
+          {
+            "id": "part2",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part5",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part8",
+            "kind": "slidingTop",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part11",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          },
+          {
+            "id": "part14",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          }
+        ]
+      },
+      {
+        "id": "fmv5b78gp2",
+        "components": [
+          {
+            "id": "part10",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part11",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part12",
+            "kind": "drawerModule",
+            "open": false,
+            "extension": 1
+          }
+        ]
+      },
+      {
+        "id": "fmw3qae6f1",
+        "components": [
+          {
+            "id": "part6",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment1",
+                "leaves": [
+                  {
+                    "id": "leaf1",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf2",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "part7",
+            "kind": "multiDoor",
+            "segments": [
+              {
+                "id": "segment2",
+                "leaves": [
+                  {
+                    "id": "leaf3",
+                    "open": true,
+                    "angle": 90
+                  },
+                  {
+                    "id": "leaf4",
+                    "open": true,
+                    "angle": 90
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

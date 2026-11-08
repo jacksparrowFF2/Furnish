@@ -1,0 +1,42 @@
+{
+  "revision": "3c80ef0ad7fbdddba9a1055e63a6df444096092adfbddcd6b6f5f7bce55d7060",
+  "view": "3d",
+  "camera": {
+    "mode": "orbit",
+    "position": {
+      "x": 7800,
+      "y": 5100,
+      "z": 1450.0000000000002
+    },
+    "target": {
+      "x": 9931,
+      "y": 5720,
+      "z": 1175
+    },
+    "horizontalFov": 59.99999999999999,
+    "verticalFov": 68.42590316934294,
+    "aspect": 0.8491321762349799,
+    "unit": "mm",
+    "coordinateSystem": "x/y 为户型模型坐标，z 为绝对离地高度",
+    "cut": 2.8,
+    "focusIds": [],
+    "temporaryFocusClipping": false
+  },
+  "planView": {
+    "x0": 3384.869970379804,
+    "y0": 1219.775745416715,
+    "s": 0.07770646619498546
+  },
+  "viewport": {
+    "x": 464,
+    "y": 115,
+    "width": 636,
+    "height": 749
+  },
+  "save": {
+    "mode": "saved",
+    "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 13:21:31",
+    "pending": false
+  },
+  "screenshotTarget": "viewport"
+}

@@ -1,0 +1,223 @@
+[
+  {
+    "cabinet": {
+      "columns": [
+        {
+          "cableGap": 0,
+          "door": "none",
+          "doorColor": "#f3f1ec",
+          "doorOpen": false,
+          "drawers": [
+            {
+              "height": 314,
+              "open": false
+            }
+          ],
+          "finish": "solid",
+          "handle": "none",
+          "shelves": [],
+          "top": "fixed",
+          "topOpen": false
+        },
+        {
+          "cableGap": 0,
+          "door": "none",
+          "doorColor": "#f3f1ec",
+          "doorOpen": false,
+          "drawers": [
+            {
+              "height": 314,
+              "open": false
+            }
+          ],
+          "finish": "solid",
+          "handle": "none",
+          "shelves": [],
+          "top": "fixed",
+          "topOpen": false
+        },
+        {
+          "cableGap": 30,
+          "door": "none",
+          "doorColor": "#f3f1ec",
+          "doorOpen": false,
+          "drawers": [],
+          "finish": "solid",
+          "handle": "none",
+          "shelves": [],
+          "top": "drawer",
+          "topOpen": false
+        },
+        {
+          "cableGap": 0,
+          "door": "none",
+          "doorColor": "#f3f1ec",
+          "doorOpen": false,
+          "drawers": [
+            {
+              "height": 314,
+              "open": false
+            }
+          ],
+          "finish": "solid",
+          "handle": "none",
+          "shelves": [],
+          "top": "fixed",
+          "topOpen": false
+        },
+        {
+          "cableGap": 0,
+          "door": "none",
+          "doorColor": "#f3f1ec",
+          "doorOpen": false,
+          "drawers": [
+            {
+              "height": 314,
+              "open": false
+            }
+          ],
+          "finish": "solid",
+          "handle": "none",
+          "shelves": [],
+          "top": "fixed",
+          "topOpen": false
+        }
+      ],
+      "doorOverlay": "full",
+      "plinth": 0,
+      "template": "tv-floor",
+      "thickness": 18,
+      "version": 1
+    },
+    "color": "#f3f1ec",
+    "cx": 9931,
+    "cy": 4167.5,
+    "d": 350,
+    "h": 350,
+    "id": "fmv3yflqw1",
+    "name": "落地电视柜 · 上盖抽屉藏线",
+    "rot": 90,
+    "type": "cabinet",
+    "w": 2505
+  },
+  {
+    "cabinet": {
+      "columns": [
+        {
+          "door": "double",
+          "doorAngle": 90,
+          "doorOpen": false,
+          "doorSections": {
+            "lower": {
+              "angle": 90,
+              "open": true
+            },
+            "upper": {
+              "angle": 90,
+              "open": true
+            }
+          },
+          "drawerColumns": 2,
+          "drawers": [
+            {
+              "height": 180,
+              "open": false
+            }
+          ],
+          "handle": "none",
+          "shelves": [
+            468,
+            1481,
+            1649,
+            1817,
+            1985
+          ],
+          "width": 934
+        }
+      ],
+      "doorMaxAngle": 90,
+      "doorOverlay": "full",
+      "entry": {
+        "lowerHeight": 624,
+        "nicheHeight": 371,
+        "openSide": "right",
+        "shoeHeight": 336
+      },
+      "plinth": 0,
+      "template": "entry-console",
+      "thickness": 18,
+      "topClosure": {
+        "doorGap": 10,
+        "height": 50
+      },
+      "version": 1
+    },
+    "color": "#f3f1ec",
+    "cx": 9931,
+    "cy": 8900,
+    "d": 350,
+    "h": 2350,
+    "id": "fmv5b78gp2",
+    "name": "玄关柜二 · 置物台与鞋柜",
+    "rot": 90,
+    "type": "cabinet",
+    "w": 970
+  },
+  {
+    "cabinet": {
+      "columns": [
+        {
+          "door": "double",
+          "doorAngle": 90,
+          "doorOpen": false,
+          "doorSections": {
+            "lower": {
+              "angle": 90,
+              "open": true
+            },
+            "upper": {
+              "angle": 90,
+              "open": true
+            }
+          },
+          "drawerColumns": 1,
+          "drawers": [],
+          "handle": "none",
+          "shelves": [
+            1643,
+            1953
+          ],
+          "width": 564
+        }
+      ],
+      "doorOverlay": "full",
+      "entry": {
+        "lowerDoorDrop": 100,
+        "lowerHeight": 452,
+        "nicheHeight": 450,
+        "openSide": "left",
+        "shoeHeight": 448,
+        "shoeShelf": false
+      },
+      "plinth": 0,
+      "template": "entry-console",
+      "thickness": 18,
+      "topClosure": {
+        "doorGap": 10,
+        "height": 50
+      },
+      "version": 1
+    },
+    "color": "#f3f1ec",
+    "cx": 9931,
+    "cy": 5720,
+    "d": 350,
+    "h": 2350,
+    "id": "fmw3qae6f1",
+    "mountHeight": 0,
+    "name": "宠物餐饮柜 · 无中层板582净高＋绿植台900",
+    "rot": 90,
+    "type": "cabinet",
+    "w": 600
+  }
+]
