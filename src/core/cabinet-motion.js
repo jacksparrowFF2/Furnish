@@ -107,7 +107,7 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
    for(const [i,b]of [...K.cornerBoards(f),...K.cornerPlinth(f),...K.edgeParts(f),...K.laundrySideBoards(f),...K.laundryNotchBoards(f)].entries())primitive([[b.x-b.w/2,b.y-b.d/2],[b.x+b.w/2,b.y-b.d/2],[b.x+b.w/2,b.y+b.d/2],[b.x-b.w/2,b.y+b.d/2]],b.bottom+base,b.top+base,'结构板',i);
    if(K.hasCountertop(f)){const rings=K.slabGeometry(f,furniture).rings;for(const [i,poly]of z.decompose(rings,p=>rings.reduce((inside,r)=>inside!==z.inside(p,r),false)).entries())primitive(poly,k.baseHeight+base,k.baseHeight+k.thickness+base,'台面',i);}
    for(const {key:section,furniture:part} of K.laundryParts(f).filter(p=>p.key!=='sink')){
-    const [x,q]=K.local(f,part.cx,part.cy);for(const b of boards({...part,cx:0,cy:0,rot:0,flip:false},{includeStatic:true}))add(b,([a,b])=>[a+x,b+q],part.mountHeight,'laundry:'+section+'/');
+    const [x,q]=K.local(f,part.cx,part.cy),a=(f.flip?-1:1)*((part.rot||0)-(f.rot||0))*Math.PI/180;for(const b of boards({...part,cx:0,cy:0,rot:0,flip:false},{includeStatic:true}))add(b,([u,v])=>[x+u*Math.cos(a)-v*Math.sin(a),q+u*Math.sin(a)+v*Math.cos(a)],part.mountHeight,'laundry:'+section+'/');
    }
   }else{
    const base=f.type==='kitchenwall'?P.value(f,'mountHeight'):f.type==='vanity'?P.cabinetBase(f):0;

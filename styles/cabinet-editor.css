@@ -460,3 +460,5 @@
 :is(#cab-builder,#cab-assembly) [data-builder-equal-box]{width:auto}
 
 .cabinet-design [data-builder-placing=true] .cab-dimensions *{pointer-events:none!important}
+
+:is(#cab-builder,#cab-assembly) [data-builder-preview] canvas[hidden]{display:none}

@@ -6,7 +6,7 @@ const numeric=(min,max,message)=>({min,max,message});
 // Linear wooden drawer layout profile; clearances are model allowances, not runner specifications.
 const cabinetDrawerBox=Object.freeze({sideClearance:10,bottomThickness:12,bottomLift:12,topGap:6,componentVersion:1});
 const cabinetBackPanel=Object.freeze({min:0,max:50,default:18,componentVersion:1,validate(value){if(!Number.isFinite(value)||value<this.min||value>this.max)throw Error('背板厚度须为 '+this.min+'–'+this.max+' mm，0表示无背板');return value;}});
-const cabinetBuilder=Object.freeze({maxBoxes:24,maxComponents:100,snap:10,version:2,nativeLaundry:{version:1,formatVersion:80},worktop:{maxVertices:32,maxSpan:6000},placement:{alignments:['back','front','center','custom'],maxOffset:1200},editing:{minGap:40,minBay:100,minInnerHeight:100},drawers:{minHeight:60,maxHeight:500,maxLayers:10,maxLanes:8,defaultExtension:1},trim:{size:{min:1,max:100}},horizontal:{removableDefault:false,ghostOpacity:.25,removableKinds:['shelf','panel'],maxEdgeGap:20,shapeKeys:['extendLeft','extendRight','face','edgeGap']},openZone:{version:1,minHeight:40,doorDropMargin:1,light:{h:4,d:12,offset:10}},linear:{travel:.7,trayThickness:12,trayLift:12,sideLift:24,sideTop:40},splitDoor:{minHeight:60},multiDoor:{version:1,minSegments:1,maxSegments:12,minHeight:60},rail:{size:{min:16,max:40,default:25},endGap:{min:0,max:50,default:2}}});
+const cabinetBuilder=Object.freeze({maxBoxes:24,maxComponents:100,snap:10,version:2,nativeLaundry:{version:1,formatVersion:80},profiles:{version:1,formatVersion:81,maxParts:2000},worktop:{maxVertices:32,maxSpan:6000},placement:{alignments:['back','front','center','custom'],maxOffset:1200},editing:{minGap:40,minBay:100,minInnerHeight:100},drawers:{minHeight:60,maxHeight:500,maxLayers:10,maxLanes:8,defaultExtension:1},trim:{size:{min:1,max:100}},horizontal:{removableDefault:false,ghostOpacity:.25,removableKinds:['shelf','panel'],maxEdgeGap:20,shapeKeys:['extendLeft','extendRight','face','edgeGap']},openZone:{version:1,minHeight:40,doorDropMargin:1,light:{h:4,d:12,offset:10}},linear:{travel:.7,trayThickness:12,trayLift:12,sideLift:24,sideTop:40},splitDoor:{minHeight:60},multiDoor:{version:1,minSegments:1,maxSegments:12,minHeight:60},rail:{size:{min:16,max:40,default:25},endGap:{min:0,max:50,default:2}}});
 const cabinetDetail=Object.freeze({plinthHeight:{min:0,max:250},inset:{min:0,max:300},shelfMinDepth:1,plinthInset:40});
 const cabinetTiers=Object.freeze({minHeight:200,minDepth:150,maxDepth:1200,version:1});
 const cabinetConstruction={modes:['shared','independent'],default:'shared',joints:['separate','shared'],endPanel:{min:0,max:50},minBoxWidth:150,stackedMinClearance:40};
@@ -255,7 +255,7 @@ freeze(fields);freeze(types);freeze(artGlassPatterns);
 const definition=f=>Object.hasOwn(types,typeof f==='string'?f:f?.type)?types[typeof f==='string'?f:f.type]:null;
 // Local mm outline; custom models retain the rectangular fallback.
 // Curvature is a visual estimate, never an installation requirement.
-function assemblyBounds(f){if(f?.cabinet?.template!=='entry-pegboard')return null;const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return C?.assemblyBounds(f)??null;}
+function assemblyBounds(f){if(f?.cabinet?.template!=='entry-pegboard'&&f?.cabinet?.version!==2&&!f?.kitchen?.assembly)return null;const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return C?.assemblyBounds(f)??null;}
 // Concept construction dimensions, not a hardware specification. Total width includes both pockets.
 function pocketLayout(f){
  const r=definition(f)?.pocket;if(!r||f.obj)return null;
@@ -704,8 +704,8 @@ function nativeVertical(f){
  if(vesselSink(f)){const base=f.counterElevation??862;return {bottom:base,top:base+Math.max(value(f,'sinkBowlHeight')+definition(f).vessel.faucetClearance,definition(f).vessel.faucetRise),source:'model'};}
  if(f.type==='ksink'&&(f.sinkNotch||f.sinkBowlHeight!==undefined)){const base=f.counterElevation??862,r=definition(f).notch;return {bottom:base-sinkBodyDepth(f),top:base+r.faucetRise,source:'model'};}
  if(family(f,'arrow-sink')){const {bottom,top}=sinkInstallation(f);return {bottom,top,source:'model'};}
- if(f.kitchen){const bottom=f.type==='kitchenwall'?value(f,'mountHeight'):0;return {bottom,top:f.kitchen.laundry?.assembly?kitchen().laundryHeight(f):bottom+kitchen().overallHeight(f),source:'recorded'};}
- if(f.type==='vanity'&&f.cabinet){const spec=cabinetSpec(f);return {bottom:spec.bottom,top:spec.bottom+(f.cabinet.bodyHeight??spec.bodyHeight)+spec.aboveBody,source:'recorded'};}
+ if(f.kitchen){const bottom=f.type==='kitchenwall'?value(f,'mountHeight'):0;return {bottom,top:(f.kitchen.laundry?.assembly||f.kitchen.assembly)?kitchen().laundryHeight(f):bottom+kitchen().overallHeight(f),source:'recorded'};}
+ if(f.type==='vanity'&&f.cabinet){const spec=cabinetSpec(f);return {bottom:spec.bottom,top:spec.bottom+(f.cabinet.version===2?(root.FurnishCabinet||require('./cabinet-core.js')).height(f):f.cabinet.bodyHeight??spec.bodyHeight)+spec.aboveBody,source:'recorded'};}
  if(f.type==='stove_fotile_th36b'){const h=height(f),base=value(f,'counterElevation');return {bottom:base-80*h/138,top:base+58*h/138,source:'model'};}
  if(['stove','ksink'].includes(f.type)&&f.counterElevation!==undefined)return {bottom:f.counterElevation,top:f.counterElevation+(f.type==='ksink'?320:40),source:'model'};
  const def=definition(f);if(def?.teaTable&&!f.obj)return {bottom:0,top:height(f)*def.teaTable.accessoryTop/def.teaTable.cabinetHeight,source:'model'};if(def?.envelope){const [bottom,top]=def.envelope(f);return {bottom,top:def.foldingChairProfile?top:f.h===undefined?top:bottom+f.h,source:f.h===undefined?'model':'recorded'};}

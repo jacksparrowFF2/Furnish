@@ -281,7 +281,7 @@ function furnPanel(f){
   const cabinetDesign=furnitureUsesDetailedDesign(f);
   const installation=FurnishProject.dishwasherChecks(FurnishProject.effectivePlan(PLAN,state),f,{furniture:state.furniture});
   const fridge=['fridge','fridge_french_drawer'].includes(f.type);
-  const fridgeCabinets=fridge?state.furniture.filter(g=>!furnitureError(g)&&FurnishCabinet.supported(g)&&g.cabinet?.sideboard&&g.cabinet.columns.some(col=>col.fridgeBay)).sort((a,b)=>Math.hypot(a.cx-f.cx,a.cy-f.cy)-Math.hypot(b.cx-f.cx,b.cy-f.cy)):[];
+  const fridgeCabinets=fridge?state.furniture.filter(g=>!furnitureError(g)&&FurnishCabinet.supported(g)&&FurnishCabinet.fridgeBay(g)).sort((a,b)=>Math.hypot(a.cx-f.cx,a.cy-f.cy)-Math.hypot(b.cx-f.cx,b.cy-f.cy)):[];
   const laundry=FurnishDesign.products().family(f,'laundry');
   const robotSpec=typeof FurnishRobotVacuumModel!=='undefined'?FurnishRobotVacuumModel.specs[f.type]:null;
   const r = isOutside(f) ? null : roomAt(f.cx, f.cy), custom = f.type === 'custom' || f.type === 'customround', lk = furnitureLocked(f) ? 'disabled' : '';

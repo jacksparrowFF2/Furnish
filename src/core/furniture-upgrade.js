@@ -25,8 +25,8 @@
     list[i]=host;added.push({sourceId:f.id,items:[upper,back]});f=host;
    }
    if(f.kitchen){
-    for(const m of f.kitchen.modules)if(m.structure)m.structure.cabinet=C.upgradeDesign({type:m.structure.cabinet?.version===2?'cabinet':'kitchenwall',...m.structure}).cabinet;
-    for(const part of K.laundryParts(f).filter(p=>p.key!=='sink'))f.kitchen.laundry.assembly[part.key].cabinet=C.upgradeDesign(part.furniture).cabinet;
+    for(const m of [...f.kitchen.modules,...(f.kitchen.endExtensions||[])])if(m.structure)m.structure.cabinet=C.upgradeDesign({type:m.structure.cabinet?.version===2?'cabinet':'kitchenwall',...m.structure}).cabinet;
+    for(const part of K.laundryParts(f).filter(p=>p.key!=='sink'))K.assemblyConfig(f,true)[part.key].cabinet=C.upgradeDesign(part.furniture).cabinet;
    }else if(C.supported(f))list[i]=C.upgradeDesign(f);
    }catch(error){
     // Invalid saved structures belong to the existing recovery UI. Upgrade

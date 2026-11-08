@@ -6,7 +6,7 @@ const area = poly => Math.abs(poly.reduce((a,p,i) => { const q = poly[(i+1)%poly
 const perim = poly => poly.reduce((a,p,i) => { const q = poly[(i+1)%poly.length]; return a + Math.hypot(q[0]-p[0], q[1]-p[1]); }, 0) / 1000;
 const bbox = poly => { const xs = poly.map(p=>p[0]), ys = poly.map(p=>p[1]); return [Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]; };
 function localOutline(f,context){return (root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null)).planOutline(f,undefined,context);}
-function aabb(f){ if(f.kitchen&&(f.kitchen.laundry?.worktop||Object.keys(f.kitchen.laundry?.assembly||{}).some(k=>/^cabinet[0-9]+$/.test(k))||(root.FurnishKitchen||require('./kitchen-core.js')).hasSideClosures(f))||localOutline(f)){const [x0,y0,x1,y1]=bbox(footprints(f).flat());return {hw:Math.max(f.cx-x0,x1-f.cx),hh:Math.max(f.cy-y0,y1-f.cy)};}const a = f.rot*Math.PI/180, c = Math.abs(Math.cos(a)), s = Math.abs(Math.sin(a)); return {hw:f.w/2*c + f.d/2*s, hh:f.w/2*s + f.d/2*c}; }
+function aabb(f){ if(f.kitchen&&(f.kitchen.laundry?.worktop||Object.keys(f.kitchen.laundry?.assembly||f.kitchen.assembly||{}).some(k=>/^cabinet[0-9]+$/.test(k))||(root.FurnishKitchen||require('./kitchen-core.js')).hasSideClosures(f))||localOutline(f)){const [x0,y0,x1,y1]=bbox(footprints(f).flat());return {hw:Math.max(f.cx-x0,x1-f.cx),hh:Math.max(f.cy-y0,y1-f.cy)};}const a = f.rot*Math.PI/180, c = Math.abs(Math.cos(a)), s = Math.abs(Math.sin(a)); return {hw:f.w/2*c + f.d/2*s, hh:f.w/2*s + f.d/2*c}; }
 const inPoly = (x, y, poly) => { let c = false;
   for (let i = 0, j = poly.length-1; i < poly.length; j = i++){ const [xi,yi] = poly[i], [xj,yj] = poly[j];
     if ((yi > y) !== (yj > y) && x < (xj-xi)*(y-yi)/(yj-yi) + xi) c = !c; }

@@ -78,7 +78,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   if(f.cabinet?.version===2){
    const B=root.FurnishCabinetBuilder||require('../core/cabinet-builder-core.js'),g=new THREE.Group();
    for(const p of B.derived(f)){
-    const child=buildRaw(THREE,p.furniture,box,{...options,outlines:false,furniture:[],...B.shellOptions(p),shelfShape:(i,j)=>B.shelfShape(p.box,p.maps[i].shelves[j])});child.position.set(p.x/1000,p.y/1000,p.z/1000);
+    const child=buildRaw(THREE,p.furniture,box,{...options,outlines:false,furniture:[],...B.shellOptions(p),sideCuts:[...(options.sideCuts??[]),...B.shellOptions(p).sideCuts],shelfShape:(i,j)=>B.shelfShape(p.box,p.maps[i].shelves[j])});child.position.set(p.x/1000,p.y/1000,p.z/1000);
     const ds=p.box.components.filter(v=>v.kind==='divider').sort((a,b)=>a.at-b.at);
     child.traverse(o=>{const data=o.userData;if(!data)return;const part=data.cabinetPart,shelf=data.cabinetShelf,divider=data.cabinetDivider,local=part?.column??shelf?.column??divider?.column??data.cabinetBay?.column??0,map=p.maps[local];
      const component=shelf?map?.shelves[shelf.shelf]:part?part.drawer!==undefined?map?.drawers:map?.door:divider?ds[divider.divider]:data.cabinetTopClosure?p.box.components.find(v=>v.kind==='topClosure'):data.cabinetSection==='plinth'?p.box.components.find(v=>v.kind==='plinth'):null;
@@ -86,9 +86,11 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      if(o.isMesh&&data.furnishPartToken){const scopes=JSON.parse(data.furnishPartToken).map(v=>v.replace(/column:(\d+)/g,(_,i)=>'bay:'+p.maps[Number(i)]?.bay).replace(/shelf:(\d+)/g,(_,i)=>'shelf:'+map?.shelves[Number(i)]?.id));data.furnishPartToken=JSON.stringify(['builder:'+p.box.id,'component:'+(component?.id??'shell'),...scopes]);}
      for(const [key,value]of Object.entries(data))if(value&&typeof value==='object'&&Number.isInteger(value.column))data[key]={...value,column:value.column+p.column};
     });
+    if(p.box.carcass===false||p.box.components.some(c=>c.profile)){const prune=n=>{n.children=n.children.filter(o=>{const id=o.userData?.cabinetBuilder?.componentId;return !o.isMesh||!(p.box.carcass===false&&!id||p.box.components.some(c=>c.id===id&&c.profile));});n.children.forEach(prune);};prune(child);}
     g.add(child);
     for(const part of B.trimParts(f).filter(v=>v.boxId===p.box.id)){const node=syncIdentity.produce('cabinet-builder:trim:'+part.boxId+':'+part.componentId,()=>box(part.w/1000,part.h/1000,part.d/1000,f.color,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:'trim'};node.userData.cabinetSideClosure=part.side;g.add(node);}
    }
+   for(const row of B.layout(f))for(const p of row.box.components.filter(p=>p.kind==='board'&&!p.profile)){const n=syncIdentity.produce('board:'+row.box.id+':'+p.id,()=>box(p.w/1000,p.h/1000,p.d/1000,f.color,(row.x+p.x)/1000,(row.y+p.y-p.h/2)/1000,(row.z+p.z)/1000));n.userData.cabinetBuilder={boxId:row.box.id,componentId:p.id,kind:p.kind};g.add(n);}
    for(const part of B.railParts(f)){const node=syncIdentity.produce('cabinet-builder:rail:'+part.boxId+':'+part.componentId,()=>box(part.w/1000,part.h/1000,part.d/1000,'#b9bec1',part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:'rail'};node.userData.cabinetHangingRod={componentId:part.componentId};g.add(node);}
    for(const part of B.zoneParts(f)){const node=syncIdentity.produce('cabinet-builder:zone:'+part.boxId+':'+part.componentId+':'+part.role,()=>box(part.w/1000,part.h/1000,part.d/1000,part.role==='light'?'#ffe4ab':(root.FurnishCabinet||require('../core/cabinet-core.js')).palette.body,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind,...(['lower','upper'].includes(part.role)?{board:part.role}:{})};node.userData.cabinetSection=part.role;if(part.role==='light'){node.material=node.material.clone();node.material.emissive=new THREE.Color('#ffe4ab');node.material.emissiveIntensity=.6;node.userData.cabinetOwnMaterial=true;}g.add(node);}
    for(const v of B.linearParts(f))syncIdentity.produce('cabinet-builder:linear:'+v.b.id+':'+v.p.id,()=>{
@@ -105,7 +107,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     }
     group.traverse(o=>{o.userData.cabinetBuilder={boxId:b.id,componentId:p.id,kind:p.kind};if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,componentId:p.id};if(o.userData.motion)o.userData.motion={...o.userData.motion,componentId:p.id};});g.add(group);return group;
    });
-   for(const part of B.fronts(f)){
+   for(const part of B.fronts(f).filter(part=>!B.selection(f,{boxId:part.boxId,componentId:part.componentId}).component?.profile)){
     const front=new THREE.Group();front.position.set(part.x/1000,part.y/1000,part.z/1000);
     if(options.doors!=='hidden'){
      const C=root.FurnishCabinet||require('../core/cabinet-core.js'),f=part.furniture,c=f.cabinet,col=c.columns[0],span=C.frontSpan(f,0,c),count=C.frontLeafCount(f,0,c),components=createComponents({THREE,C,f,c,box,options,bodyColor:f.color}),vertical=!C.verticalDoor(col.door);
@@ -117,6 +119,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     }
     front.traverse(o=>{const data=o.userData;if(!data)return;data.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind,...(data.cabinetPart?.leafId?{leafId:data.cabinetPart.leafId,segmentId:part.section}:{})};if(data.cabinetPart)data.cabinetPart={...data.cabinetPart,column:part.column,section:part.section,componentId:part.componentId};if(data.motion)data.motion={...data.motion,column:part.column,section:part.section};if(data.cabinetDoorSize)data.cabinetDoorSize={...data.cabinetDoorSize,section:part.section};if(o.isMesh&&data.furnishPartToken)data.furnishPartToken=JSON.stringify(['builder:'+part.boxId,'component:'+part.componentId,'section:'+part.section,...JSON.parse(data.furnishPartToken)]);});g.add(front);
    }
+   const ProfileModel=root.FurnishCabinetProfileModel||(typeof require==='function'?require('./cabinet-profile-model.js'):null);if(f.cabinet.boxes.some(b=>b.components.some(p=>p.profile)))g.add(ProfileModel.build(THREE,f,box,{options}));
    g.traverse(o=>{const pick=o.userData?.cabinetBuilder;if(!o.isMesh||!B.shelfRemovable(f,pick))return;o.userData.cabinetRemovable=true;o.userData.cabinetIgnoreCollision=B.shelfCollisionIgnored(f,pick);o.material=o.material.clone();Object.assign(o.material,{transparent:true,opacity:(root.FurnishProducts||require('../core/product-rules.js')).cabinetBuilder.horizontal.ghostOpacity,depthWrite:false});if(options.removableHints)o.material.color.set('#7c3aed');o.userData.cabinetOwnMaterial=true;o.castShadow=false;});
    // Finish once after every component has been assembled. Otherwise only the
    // native carcass shelves get contours and the other boards blend into their
