@@ -118,10 +118,17 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     front.traverse(o=>{const data=o.userData;if(!data)return;data.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind,...(data.cabinetPart?.leafId?{leafId:data.cabinetPart.leafId,segmentId:part.section}:{})};if(data.cabinetPart)data.cabinetPart={...data.cabinetPart,column:part.column,section:part.section,componentId:part.componentId};if(data.motion)data.motion={...data.motion,column:part.column,section:part.section};if(data.cabinetDoorSize)data.cabinetDoorSize={...data.cabinetDoorSize,section:part.section};if(o.isMesh&&data.furnishPartToken)data.furnishPartToken=JSON.stringify(['builder:'+part.boxId,'component:'+part.componentId,'section:'+part.section,...JSON.parse(data.furnishPartToken)]);});g.add(front);
    }
    // Finish once after every component has been assembled. Otherwise only the
-   // native carcass shelves get preview contours and zone/fixed boards blend
-   // into the back panel in a straight-on view. Normal scenes keep subtle
-   // horizontal-board edges; explicit false still requests plain geometry.
-   if(options.outlines!==false)g.traverse(o=>{if(o.isMesh&&(options.outlines||B.horizontalSelection(f,o.userData.cabinetBuilder))){const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x493b2d,transparent:true,opacity:options.outlines ? .9 : .65}));edge.userData.cabinetOwnMaterial=true;edge.userData.cabinetOutline=true;edge.raycast=()=>{};o.add(edge);}});
+   // native carcass shelves get contours and the other boards blend into their
+   // neighbours. Keep the same structural contours in preview and normal scenes;
+   // handles and light strips retain their own appearance. Explicit false is
+   // used by the numeric board recorder and requests plain geometry.
+   if(options.outlines!==false)g.traverse(o=>{
+    if(!o.isMesh)return;
+    const data=o.userData,accessory=data.cabinetPart&&!data.cabinetDoorSize&&!data.cabinetDrawerBoard&&!data.cabinetPart.lid;
+    if(accessory||data.cabinetSection==='light')return;
+    const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x493b2d,transparent:true,opacity:data.cabinetIgnorePick ? .15 : .65}));
+    edge.userData.cabinetOwnMaterial=true;edge.userData.cabinetOutline=true;edge.raycast=()=>{};o.add(edge);
+   });
    return g;
   }
 
@@ -408,7 +415,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   if(!pipes.length)return g;
   // Cut in the closed pose once. The resulting holes travel with moving parts.
   const transforms=[];
-  g.traverse(o=>{if(o.isGroup&&o.userData.cabinetPart){transforms.push([o,o.position.clone(),o.rotation.clone()]);o.rotation.set(0,0,0);if(o.userData.cabinetPart.lid)o.position.z=f.d/2000;else if(o.userData.cabinetPart.drawer!==undefined)o.position.z=0;}});
+  g.traverse(o=>{if(o.isGroup&&o.userData.cabinetPart){transforms.push([o,o.position.clone(),o.rotation.clone()]);o.rotation.set(0,0,0);if(o.userData.motion?.axis==='z')o.position.z=o.userData.motion.closedZ;}});
   g.updateMatrixWorld(true);
   for(const pipe of pipes){
    const local=services.local(f,pipe,{cabinetOnly:!!options.cabinetOnly}),height=(local.vertical.top-local.vertical.bottom)/1000;
