@@ -23,3 +23,11 @@
 ## 未执行及边界
 
 未运行全量检查、Blender回读及施工拆装验证。透明是布局显示效果，不表达真实板材透光。正式用户方案未作标记或开关修改。初次沙箱测试因本机网络权限受限未启动；放行隔离验收后通过。早期桌面脚本等待load超时，改用项目既有flush与DOMContentLoaded等待后通过。保留失败记录，不将其计作通过。
+
+## 醒目颜色提示补充
+
+用户截图显示木色半透明板在棕色背板上难辨认。本轮只增强编辑器显示：紫色轮廓／透明填充、关闭碰撞时虚线，结构树状态徽标、所选板宽标注及复选框使用紫色。保持选中蓝色提示。生产构造器由编辑器传入removableHints；默认主场景／GLB仍使用原饰面颜色，无新保存字段／缓存空间版本。
+
+- `test-cabinet-removable`通过：同一生产构造器在编辑提示模式下生成紫色板及带lineDistance的虚线轮廓；共享材质和默认构造不着紫色，原实体与碰撞回归通过。
+- `test-cabinet-back-components-ui --removable-only`三入口隔离验收包含紫色徽标／尺寸标注、两开关、撤销重做、保存刷新和正常正式GLB透明材质。证据目录：`output/desktop-verification/cabinet-removable-JXIqhA`。实际检查桌面[正视](desktop-removable-color-front.png)和[三维](desktop-removable-color-3d.png)截图；700px窄屏保持可操作。
+- 未运行全量检查；没有变更正式方案。另一会话正在修改柜体缩放核心，已协调文件归属与提交顺序，该会话改动保留、未纳入本提交。

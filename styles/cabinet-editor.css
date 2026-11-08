@@ -445,3 +445,11 @@
 @media(max-width:760px){.dlg-box.builder-dialog #dlgBody{overflow:auto;padding:8px}#cab-builder{display:flex;flex-direction:column;height:auto;min-height:100%}#cab-builder .builder-library{max-height:230px;flex:none}#cab-builder .builder-library [data-builder-library]{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}#cab-builder .builder-card{margin:0}#cab-builder .builder-workspace{flex:none}#cab-builder [data-builder-preview]{flex:none;height:380px;min-height:280px}#cab-builder .builder-details{flex:none;overflow:visible}#cab-builder .builder-structure{flex:none;min-height:0;max-height:230px}#cab-builder .builder-properties{flex:none;overflow:visible}.builder-dialog>.dlg-head{padding:10px;gap:8px}.builder-dialog>.dlg-actions{padding:8px}}
 
 #cab-builder .builder-tree-board{padding-left:22px!important;font-size:12px;border-left:2px solid #ded5c7!important}
+
+/* Editing hints describe removable capability, never the saved finish. */
+#cab-builder .builder-removable-badge{display:inline-block;margin:4px 0 0 6px;padding:2px 6px;border:1px solid #a78bfa;border-radius:5px;background:#f0e7ff;color:#5b21b6;font-size:11px;font-weight:700;line-height:1.5}
+#cab-builder .builder-removable-legend{color:#5b21b6;background:#f0e7ff;border-left:3px solid #7c3aed;padding:7px 9px;border-radius:4px}
+#cab-builder label:has([data-builder-value=removable]),#cab-builder label:has([data-builder-value=ignoreCollision]){color:#5b21b6;font-weight:600}
+#cab-builder [data-builder-value=removable],#cab-builder [data-builder-value=ignoreCollision]{accent-color:#7c3aed}
+#cab-builder .cab-removable-dimension{color:#5b21b6;background:#f4edff;border-color:#7c3aed;box-shadow:0 0 0 1px #7c3aed;font-weight:700}
+#cab-builder .cab-removable-dimension[data-collision-ignored=true]{border-style:dashed}
