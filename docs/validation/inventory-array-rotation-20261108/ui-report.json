@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "desktop: real Y handle rotation, count/spacing/unit-yaw edits, atomic undo/redo, production GLB versus actual posed solids, save/reload and continued editing",
+    "http rotated array editing",
+    "file rotated array editing offline"
+  ],
+  "errors": []
+}

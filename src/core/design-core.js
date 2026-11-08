@@ -80,7 +80,14 @@
   const old=first.inventoryArray,turn=config.angle*Math.PI/180,basis=((first.rot||0)-(old?.angle||0))*Math.PI/180;
   // Existing w/d are local product dimensions; only the unit's array yaw permutes them.
   const {stepX:px,stepZ:pz,stepY:py}=products().inventoryArraySpacing(first,config),c=Math.cos(basis),s=Math.sin(basis),sign=first.flip?-1:1,bottom=products().bottomHeight(first);
-  const points=[];for(let i=0;i<count;i++){const row=Math.floor(i/config.columns)%config.rows,col=i%config.columns,layer=Math.floor(i/(config.columns*config.rows)),x=(col+(config.pattern==='stagger'&&row%2?.5:0))*px*sign,z=row*pz;points.push({cx:first.cx+x*c-z*s,cy:first.cy+x*s+z*c,bottom:bottom+layer*py,rot:((basis+turn)*180/Math.PI%360+360)%360});}return points;
+  const rot=((basis+turn)*180/Math.PI%360+360)%360,pose=first.pose3D&&(root.FurnishProductPose||require('./product-pose.js'));
+  // The lattice follows the same rigid pose as its units. Anchor the first unit's
+  // production centre when a unit yaw changes its tilted envelope/bottom offset.
+  const before=pose&&pose.frame(first),after=pose&&pose.frame({...first,rot});
+  const points=[];for(let i=0;i<count;i++){const row=Math.floor(i/config.columns)%config.rows,col=i%config.columns,layer=Math.floor(i/(config.columns*config.rows)),x=(col+(config.pattern==='stagger'&&row%2?.5:0))*px*sign,z=row*pz,offset=[x*c-z*s,x*s+z*c,layer*py],v=pose?pose.rotate(first.pose3D,offset):offset;points.push({cx:first.cx+v[0]+(pose?before.center[0]-after.center[0]:0),cy:first.cy+v[1]+(pose?before.center[1]-after.center[1]:0),bottom:bottom+v[2]+(pose?before.center[2]-after.center[2]:0),rot});}
+  // As with rigid selection rotation, keep all members above the floor together.
+  if(pose){const lift=Math.max(0,-Math.min(...points.map(p=>p.bottom)));for(const p of points)p.bottom=Math.abs(p.bottom+lift)<1e-8?0:p.bottom+lift;}
+  return points;
  }
  function attachInventoryArray(furniture,memberIds,config){
   if(!Array.isArray(memberIds)||!memberIds.length||new Set(memberIds).size!==memberIds.length)throw Error('请选择有效的阵列成员');
