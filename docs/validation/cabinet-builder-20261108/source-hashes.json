@@ -1,0 +1,18 @@
+{
+  "index.html": "f8577a8653a4ffb26408ca81938a06d23cd9cbc1e2c48aae266128b8696b8c25",
+  "src/core/cabinet-builder-core.js": "c216d0e42451c13836b2c8cbfbad6c67b1c8e770e8db745a78d5baf580037cd8",
+  "src/ui/cabinet-builder.js": "4160a0a4d6ea4fe0e41716f74823857067ea7545b89fdff1c99f75f43dc1ba19",
+  "src/app.js": "01650f67a568582469cff6aba1eb2a81bf74b9fcc28d1f4ba302bd3fe3d4cc5f",
+  "src/core/cabinet-core.js": "36925a3826f12afde2b0fa852a26ec73156830030f04fef710a844a2a4706cae",
+  "src/core/product-rules.js": "e89f49592cafc4c8f4b259e07610e1a5d438276a7507e676c717985a27611862",
+  "src/core/project-core.js": "2eb97268131805f994ddd9b6952cff009e6754971d6a9ec0cae32f05d993cf1b",
+  "src/core/repository-core.js": "0d358fbe5992afc8b16afc87c083e39d894ad45b74189f266802fa7012e31bf2",
+  "src/io/workspace-cache.js": "65abb7c740dcd2619faff41a892f67421fa687103896c00f4af70986fd4b5c59",
+  "src/data/catalog.js": "33a5d46889def679c5db45e02f3459981f488cf1e80316c2a58a3efdb2f715d7",
+  "src/render/cabinet-model.js": "a3bbb1fc3b120ba9dd8f6cd4ad79b4d06ff5ba0b68ec79c26d29a543cb6fe5d4",
+  "src/render/cabinet-preview.js": "975d243690e342d9d6ea719fb945671abf3a057d0f87bc4b384b8b40308aff2c",
+  "src/render/furniture-svg.js": "2e6dcd4159c53da030a902866305fcaab6bb69026f3510bad12266c4124e0c61",
+  "src/ui/cabinet-editor.js": "06cc7bb7c039a8667aa9c74a77c0d5704d818ab6413b3337749e903047dcbb0d",
+  "src/ui/furniture-actions.js": "d00b3906422b7f691c9a3d0f83ddc335d0fa135134b157470e6466e34cf46ad8",
+  "styles/cabinet-editor.css": "feb1ef32fc701aace940bb735ddb0cf7bd014675ca5369e2cae2d67a726d1b95"
+}

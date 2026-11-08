@@ -1,0 +1,8 @@
+{
+  "status": 0,
+  "source": "D:/1601装修/Furnish项目/workspace.furnish.json",
+  "snapshotHash": "23c9c7fea527fe728ce816b99ab844cefd8a9d31b91573f51dd302b9b31956e3",
+  "sourceHashAfter": "23c9c7fea527fe728ce816b99ab844cefd8a9d31b91573f51dd302b9b31956e3",
+  "stdout": "PASS http rear-panel components\nPASS file rear-panel components\nPASS desktop rear-panel components\nEvidence: C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop-verification\\cabinet-builder-2e1PON\n",
+  "stderr": ""
+}

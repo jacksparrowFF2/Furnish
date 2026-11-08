@@ -220,6 +220,7 @@ const LIB = [
     ["litter_box","封闭式猫砂盆",440,510,"#eeede5",0,products.height({type:"litter_box"})],
     ["dryingrack","晾衣架",1400,550,"#cfd6d9",500]
   ]},
+  {cat:'柜体搭建',items:[['cabinet','乐高式柜体 · 拖入组件搭建',600,450,'#f3f1ec',undefined,720,null,null,'builder']]},
 ];
 
 const TYPE_PRICE = {};
@@ -280,7 +281,7 @@ function navigationCategory(it,cat){
  if(['ksink','sink_arrow_680','sink_arrow_750'].includes(it[0]))return 'fixtures/sinks';
  if(it[0]==='dryingrack')return 'other/drying';
  for(const [id,types]of Object.entries(navigationTypeGroups))if(types.includes(it[0]))return id;
- return {'床':'furniture/beds','沙发':'furniture/sofas','桌 · 台':'furniture/tables','椅 · 凳':'furniture/seating','柜体':'cabinetry/storage','电器':'appliances/living','灯具':'decor/lighting','布艺':'decor/textiles','装饰':'decor/accessories','门窗 · 隔断':'fixtures/openings','卫浴 · 水槽':'fixtures/sanitary','宠物':'other/pets','运动 · 乐器':'other/leisure'}[cat]||'other/general';
+ return {'床':'furniture/beds','沙发':'furniture/sofas','桌 · 台':'furniture/tables','椅 · 凳':'furniture/seating','柜体':'cabinetry/storage','柜体搭建':'cabinetry/storage','电器':'appliances/living','灯具':'decor/lighting','布艺':'decor/textiles','装饰':'decor/accessories','门窗 · 隔断':'fixtures/openings','卫浴 · 水槽':'fixtures/sanitary','宠物':'other/pets','运动 · 乐器':'other/leisure'}[cat]||'other/general';
 }
 function navigation(library=browseLibrary()){
  const buckets=new Map();

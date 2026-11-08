@@ -1,0 +1,80 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "real native drag creates first empty box",
+      "shelf details edit after drop",
+      "invalid duplicate drop leaves tree unchanged",
+      "box snaps beside existing cabinet",
+      "draft undo restores prior box height",
+      "draft redo reapplies size",
+      "real component drag preserves component identity",
+      "component appears in draft reuse library",
+      "saved component tree and installation elevation",
+      "components and group use existing persistent catalog",
+      "saved group creates a real component cabinet from the main furniture catalog",
+      "application undo removes new group atomically",
+      "redo restores group",
+      "cancel leaves saved component tree unchanged",
+      "refresh restores v72 component cabinet",
+      "formal production scene GLB contains unique component cabinet parts",
+      "saved shelf can be dragged into another new cabinet with details",
+      "saved multi-box group can be dragged in with its connections",
+      "builder has no narrow-screen horizontal overflow",
+      "component builder has no page errors: "
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "real native drag creates first empty box",
+      "shelf details edit after drop",
+      "invalid duplicate drop leaves tree unchanged",
+      "box snaps beside existing cabinet",
+      "draft undo restores prior box height",
+      "draft redo reapplies size",
+      "real component drag preserves component identity",
+      "component appears in draft reuse library",
+      "saved component tree and installation elevation",
+      "components and group use existing persistent catalog",
+      "saved group creates a real component cabinet from the main furniture catalog",
+      "application undo removes new group atomically",
+      "redo restores group",
+      "cancel leaves saved component tree unchanged",
+      "refresh restores v72 component cabinet",
+      "formal production scene GLB contains unique component cabinet parts",
+      "saved shelf can be dragged into another new cabinet with details",
+      "saved multi-box group can be dragged in with its connections",
+      "builder has no narrow-screen horizontal overflow",
+      "component builder has no page errors: "
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "real native drag creates first empty box",
+      "shelf details edit after drop",
+      "invalid duplicate drop leaves tree unchanged",
+      "box snaps beside existing cabinet",
+      "draft undo restores prior box height",
+      "draft redo reapplies size",
+      "real component drag preserves component identity",
+      "component appears in draft reuse library",
+      "saved component tree and installation elevation",
+      "components and group use existing persistent catalog",
+      "saved group creates a real component cabinet from the main furniture catalog",
+      "application undo removes new group atomically",
+      "redo restores group",
+      "cancel leaves saved component tree unchanged",
+      "refresh restores v72 component cabinet",
+      "formal production scene GLB contains unique component cabinet parts",
+      "saved shelf can be dragged into another new cabinet with details",
+      "saved multi-box group can be dragged in with its connections",
+      "builder has no narrow-screen horizontal overflow",
+      "component builder has no page errors: "
+    ]
+  }
+]

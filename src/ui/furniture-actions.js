@@ -190,10 +190,12 @@ function createCatalogFurniture(it,x,y){
   Object.assign(f,FurnishKitchen.catalogSpec(it));
   if(FurnishProducts.supports(f,'curtainStyle'))f.curtainStyle=it[8]||'double';
   if(type==='custom'||type==='customround'){f.price=price;f.h=h;}
-  if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
+  if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c?.cabinet?.version===2){Object.assign(f,{type:'cabinet',w:c.w,d:c.d,h:c.h,cabinet:JSON.parse(JSON.stringify(c.cabinet))});}if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
   return [f];
 }
 function addItem(it, x, y){
+  if(it[9]==='builder'){window.FurnishCabinetBuilderUI.open(null,{position:{x,y}});return;}
+  if(it[7]&&store.custom?.find(c=>c.id===it[7])?.cabinet?.reusable){window.FurnishCabinetBuilderUI.open();toast('请先放入柜箱，再从组件库拖入已保存组件');return;}
   if(window.FurnishCatalog?.active()){window.FurnishCatalog.choose(it);return;}
   if(state.furniture.length>=2000)return toast(tr('每个方案最多 2000 件家具。','Up to 2000 furniture items per design.'));
   const [type,name,w,d] = it, items=createCatalogFurniture(it,Math.round(x/10)*10,Math.round(y/10)*10),f=items[0];

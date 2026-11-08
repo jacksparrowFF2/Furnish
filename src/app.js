@@ -39,7 +39,7 @@ const {materials:MATS,library:LIB,typePrices:TYPE_PRICE} = FurnishCatalogData;
 const CUSTOM_CAT = '我的家具';
 const browseLIB = FurnishCatalogData.browseLibrary();
 const libAll = () => store.custom?.length
-  ? [...browseLIB, {cat:CUSTOM_CAT, items:store.custom.map(c => [c.shape === 'round' ? 'customround' : 'custom', c.name, c.w, c.d, c.color, c.price, c.h, c.id])}]
+  ? [...browseLIB, {cat:CUSTOM_CAT, items:store.custom.map(c => [c.cabinet?.version===2?'cabinet':c.shape === 'round' ? 'customround' : 'custom', c.name, c.w, c.d, c.color, c.price, c.h, c.id])}]
   : browseLIB;
 const typeColor = t => { for (const c of LIB) for (const i of c.items) if (i[0]===t) return i[4]; return '#d9d2c5'; };
 const libItem = f => { if(['custom','customround'].includes(f.type)){const c=FurnishDesign.catalogSource(f,store.custom||[]);return c?[c.shape==='round'?'customround':'custom',c.name,c.w,c.d,c.color,c.price,c.h,c.id]:null;} return FurnishCatalogData.findItem(f.type,f.name); };
@@ -57,7 +57,7 @@ const workRules = FurnishWork.create({
   makeId:uid, colorFor:typeColor, materials:MATS,
 });
 const {fresh:freshWork,restore:fixWork,restoreFurniture:sanitizeFurn}=workRules;
-let STORE = 'huxing-design-v71';
+let STORE = 'huxing-design-v72';
 let store = FurnishWorkspaceCache.load({read:key=>localStorage.getItem(key), firstPlan:PLANS[0], restore:fixWork, key:STORE});
 // Preserve the actual cache before startup normalization adds defaults.
 STORE='huxing-design-v'+(store.v>=3?store.v:2);

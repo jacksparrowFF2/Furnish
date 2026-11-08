@@ -1,0 +1,104 @@
+[
+  {
+    "test": "test-cabinet-builder",
+    "status": 0,
+    "stdout": "PASS component builder: 144 production compositions, 20 placed door sweeps, all attachment sides, identities, motion/solids/export, real holes, atomic edits and v72 current/named/catalog/workspace/cache\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-components",
+    "status": 0,
+    "stdout": "PASS shared components: 105 template/state cases, drawer roles, door modes, knob styles, immutable project/restore chains; 0 pre-refactor geometry/export identity comparisons; 0 retained workspace cabinet configurations\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-tiers",
+    "status": 0,
+    "stdout": "PASS independent upper/lower cabinets: 108 production configurations, depths/groupings, continuous finishes, motion, solids, v67 and repeat restore\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-details",
+    "status": 0,
+    "stdout": "PASS cabinet details: 216 actual production configurations, 204 recipe shelves, independent floor/plinth, per-shelf geometry, motion/export identities, collision thresholds, edits and v70 restore\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-model",
+    "status": 0,
+    "stdout": "PASS all cabinet meshes have finite dimensions, correct heights, hinge rotations and drawer travel\nPASS layered sideboard dimensions, open working/fridge cavities, glass, doors, resize, shelf boundaries and project round trip\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-dimensions",
+    "status": 0,
+    "stdout": "PASS cabinet dimensions, net-depth/width rulers and production board-bottom elevations\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-opening-3d",
+    "status": 0,
+    "stdout": "PASS 3D doors/drawers, split storage bands, upward sweep vs empty AABB corners, ceilings/low walls/mounted objects, unknown heights, rotation/mirror, operations, legacy roundtrip and v3 confirmations\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-opening-volume-model",
+    "status": 0,
+    "stdout": "PASS 1680 actual production glass/frame vertices across 0–180°, plus entry/sideboard/TV door and drawer height envelopes\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-catalog-navigation",
+    "status": 0,
+    "stdout": "PASS complete unique taxonomy, source identity/specs unchanged, lighting/cabinets/sinks by kind, room uses retained, custom/unknown fallbacks\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-cabinet-catalog",
+    "status": 0,
+    "stdout": "PASS compact cabinet catalog, hidden legacy specs, grouped templates, installation and repeated recovery\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-project",
+    "status": 0,
+    "stdout": "PASS Survey preserves existing openings before structure confirmation\nPASS Old projects migrate to locked structures\nPASS Design rejects changes to the confirmed original bearing structure\nPASS Exterior walls are locked after confirmation\nPASS Real partition demolition merges rooms and updates area\nPASS Moving a partition changes both room areas while preserving bearing walls\nPASS Room materials follow spatial overlap after demolition\nPASS Automatic construction quantities update without overwriting manual values\nPASS Paint deductions use door height rather than wall thickness\nPASS Project backup roundtrip preserves baseline, designs, costs and catalog\nPASS Corrupt and future backups fail before import\nPASS Legacy plan JSON migrates to the portable project format\nPASS Spatial checks detect a blocked door swing\nPASS Cabinet front clearance rotates with the furniture\nPASS OBJ supports triangulation and negative indices\nPASS Overlapping door swings and swing-wall collisions are reported\nPASS Flat, non-finite and empty imported meshes are rejected before restoration\nPASS Backup preserves raw attachments and rejects malformed attachment data\nPASS Interior door deducts both painted wall faces\nPASS Retained openings keep sill heights and swing overrides after IDs reindex\n20 product roadmap regression checks passed\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-project-validation",
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "test": "test-project-recovery",
+    "status": 0,
+    "stdout": "Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-repository-workspace",
+    "status": 0,
+    "stdout": "PASS file-mode cache recovery without repository requests, stale custom plan removal, unavailable-service IndexedDB fallback and registered custom-plan validation\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-workspace-cache",
+    "status": 0,
+    "stdout": "PASS workspace cache precedence, migration, malformed and restricted storage\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-kitchen",
+    "status": 0,
+    "stdout": "PASS kitchen legacy and named-project roundtrip, no drift, functional modules, attachment transforms, copy/removal/replacement, L void and actual countertop holes\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-kitchen-u",
+    "status": 0,
+    "stdout": "PASS U three-run geometry, real continuous stone and void, two hollow corners, narrow ends, reverse arm holes, transforms, opening, obstacle thresholds, shape conversion, copy and project/work restoration\n",
+    "stderr": ""
+  }
+]

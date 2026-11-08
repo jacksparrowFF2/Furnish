@@ -62,6 +62,23 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
  }
 
  function buildRaw(THREE,f,box,options={}){
+  if(f.cabinet?.version===2){
+   const B=root.FurnishCabinetBuilder||require('../core/cabinet-builder-core.js'),g=new THREE.Group();
+   for(const p of B.derived(f)){
+    const child=buildRaw(THREE,p.furniture,box,{...options,furniture:[],sideCuts:[]});child.position.set(p.x/1000,p.y/1000,p.z/1000);
+    const ds=p.box.components.filter(v=>v.kind==='divider').sort((a,b)=>a.at-b.at);
+    child.traverse(o=>{const data=o.userData;if(!data)return;const part=data.cabinetPart,shelf=data.cabinetShelf,divider=data.cabinetDivider,local=part?.column??shelf?.column??divider?.column??data.cabinetBay?.column??0,map=p.maps[local];
+     const component=shelf?map?.shelves[shelf.shelf]:part?part.drawer!==undefined?map?.drawers:map?.door:divider?ds[divider.divider]:data.cabinetSection==='plinth'?p.box.components.find(v=>v.kind==='plinth'):null;
+     data.cabinetBuilder={boxId:p.box.id,...(component?{componentId:component.id,kind:component.kind}:{kind:'box'})};
+     if(o.isMesh&&data.furnishPartToken){const scopes=JSON.parse(data.furnishPartToken).map(v=>v.replace(/column:(\d+)/g,(_,i)=>'bay:'+p.maps[Number(i)]?.bay).replace(/shelf:(\d+)/g,(_,i)=>'shelf:'+map?.shelves[Number(i)]?.id));data.furnishPartToken=JSON.stringify(['builder:'+p.box.id,'component:'+(component?.id??'shell'),...scopes]);}
+     for(const [key,value]of Object.entries(data))if(value&&typeof value==='object'&&Number.isInteger(value.column))data[key]={...value,column:value.column+p.column};
+    });
+    g.add(child);
+    for(const part of B.trimParts(f).filter(v=>v.boxId===p.box.id)){const node=syncIdentity.produce('cabinet-builder:trim:'+part.boxId+':'+part.componentId,()=>box(part.w/1000,part.h/1000,part.d/1000,f.color,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:'trim'};node.userData.cabinetSideClosure=part.side;g.add(node);}
+   }
+   return g;
+  }
+
   if(f.laundryFloorOpen)options={...options,floorOpen:true};
   const C=root.FurnishCabinet||(typeof require==='function'?require('../core/cabinet-core.js'):null),c=C.config(f),frame=C.carcassFrame(f,c),h=frame.height/1000,w=frame.width/1000,d=frame.depth/1000,t=frame.thickness/1000,p=frame.plinth/1000,g=new THREE.Group(),color=f.color||C.palette.front;
   if(c.tiers){

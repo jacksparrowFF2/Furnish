@@ -2,6 +2,8 @@
 (function(root){
  'use strict';
  const types=['cabinet','wardrobe','shoecab','bookshelf','bookshelf_yeswood_y52y09','chest','nightstand','tvstand','ovencol','kitchenwall','vanity'];
+ const builder=()=>root.FurnishCabinetBuilder||(typeof require==='function'?require('./cabinet-builder-core.js'):null);
+ const componentCabinet=f=>f?.cabinet?.version===2;
  const products=()=>root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null);
  const palette={body:'#bc936b',front:'#f3f1ec'};
  const templates=[
@@ -212,6 +214,7 @@
   })}};if(key==='tv-floor')result.cabinet.doorOverlay='full';return ['left','double'].includes(door)?autoDoors(result):result;
  }
  function preset(key){
+  if(key==='builder')return builder().create();
   const f=presetRaw(key),c=f.cabinet;
   if(c.template==='entry-pegboard')c.pegboardParts=Object.fromEntries(products().pegboardAssembly.parts.map(k=>[k,true]));
   return f;
@@ -378,6 +381,7 @@
  // Keep optional structural defaults intact; door edits protect the effective
  // drawer count without needlessly changing existing procurement signatures.
  function upgradeDesign(f){
+  if(componentCabinet(f))return builder().validate(JSON.parse(JSON.stringify(f)));
   const next=JSON.parse(JSON.stringify(f)),c=config(f);
   if(c.template==='entry-pegboard'){
    const rule=products().pegboardAssembly,old=c.pegboardParts||{};
@@ -623,7 +627,7 @@
   return {...topology,boxes,compartments};
  }
  function widths(f){return assemblyLayout(f).compartments.map(part=>part.clear.width);}
- function layout(f){return assemblyLayout(f).compartments.map(part=>part.clear);}
+ function layout(f){if(componentCabinet(f))return builder().derived(f).flatMap(p=>layout(p.furniture).map(v=>({...v,left:v.left+p.x,center:v.center+p.x})));return assemblyLayout(f).compartments.map(part=>part.clear);}
  function moduleLayout(f){return assemblyLayout(f).compartments.map(part=>part.module);}
  // Explicit conversion preserves the outer envelope and column order; panels take width from end boxes.
  function setConstruction(f,mode,panels=mode==='independent'?endPanels(config(f)):{left:0,right:0}){
@@ -967,6 +971,7 @@
   return {section,label,total,backThickness:thickness,rearInset,doorThickness,rear,front,clearDepth:front-rear,shelfDepth:shelfFront-rear,shelfCenter:(rear+shelfFront)/2};
  }
  function depthSections(f,column=0,c=config(f)){
+  if(componentCabinet(f)){const p=builder().derived(f).find(p=>column>=p.column&&column<p.column+p.maps.length);return p?depthSections(p.furniture,column-p.column).map(v=>({...v,bottom:v.bottom+p.y,top:v.top+p.y})):[];}
   if(hasLocalPlinth(c)&&!c.tiers){const p=columnPart(f,column);return depthSections(p.furniture,column-p.column,p.furniture.cabinet);}
   if(c.tiers)return tierParts(f).flatMap(part=>depthSections(part.furniture,column,part.furniture.cabinet).map(v=>({...v,tier:part.key,bottom:v.bottom+part.bottom,top:v.top+part.bottom})));
   const col=c.columns[column];if(!col)return [];
@@ -1043,6 +1048,7 @@
  function openingZones(f,options){const P=products();return P.elevatedZones(f,nativeOpeningZones(P.elevationSource(f),options));}
 function placeOpening(zone,f,x=0,y=0,z=0){const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a),v=shiftOpening(zone,y);return {...v,poly:v.poly.map(([px,pz])=>{px=(px+x)*(f.flip?-1:1);pz+=z;return [(f.cx||0)+px*co-pz*si,(f.cy||0)+px*si+pz*co];}),...(v.sweep?{sweep:{...v.sweep,left:v.sweep.left+x,right:v.sweep.right+x,profile:v.sweep.profile.map(([d,h])=>[d+z,h]),cx:f.cx||0,cy:f.cy||0,rot:f.rot||0,flip:!!f.flip}}:{}),...(v.slices?{slices:v.slices.map(p=>placeOpening(p,f,x,0,z))}:{})};}
 function nativeOpeningZones(f,{passage=800}={}){
+  if(componentCabinet(f))return builder().derived(f).flatMap(p=>nativeOpeningZones(p.furniture,{passage}).map(zone=>({...placeOpening(zone,f,p.x,p.y,p.z),column:zone.column+p.column,boxId:p.box.id})));
   if(f.cabinet?.tiers)return tierParts(f).flatMap(part=>nativeOpeningZones(part.furniture,{passage}).map(zone=>({...placeOpening(zone,f,part.x,part.bottom,part.z),tier:part.key})));
   if(hasLocalPlinth(config(f)))return boxParts(f).flatMap(part=>nativeOpeningZones({...part.furniture,cx:0,cy:0,rot:0,flip:false},{passage}).map(zone=>({...placeOpening(zone,f,part.center,0,0),column:zone.column+part.column})));
   if(f.type==='vanity'&&!f.cabinet)return [];
@@ -1128,6 +1134,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   return area>1e-6;
  }
  function validate(f){
+  if(componentCabinet(f))return builder().validate(f);
   if(f.cabinet?.tiers!==undefined)return validateTiers(f);
   if(!supported(f))throw Error('此家具不支持柜体设计');
   const c=f.cabinet?canonicalConfig(f.cabinet):f.cabinet,h=bodyHeight(f),finite=v=>typeof v==='number'&&Number.isFinite(v);
@@ -1216,6 +1223,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   return next.w===f.w&&c.thickness===old.thickness?next:scaleWidths(f,next);
  }
  function resize(f,next){
+  if(componentCabinet(f)){if(['w','d','h'].some(k=>next[k]!==f[k]))throw Error('请在组件搭建器中调整柜箱尺寸');return builder().validate({...next,cabinet:config(f)});}
   if(f.cabinet?.tiers)return configureTiers({...f,...Object.fromEntries(['cx','cy','rot','flip','resizeAnchor'].filter(k=>Object.hasOwn(next,k)).map(k=>[k,next[k]]))},{w:next.w,h:next.h??height(f),mountHeight:next.mountHeight,...(next.d!==f.d?{lowerDepth:f.cabinet.tiers.lowerDepth*next.d/f.d,upperDepth:f.cabinet.tiers.upperDepth*next.d/f.d}:{})});
   if(f.type==='vanity'&&next.h!==f.h&&next.h!==undefined){next={...next,cabinet:{...config(f),bodyHeight:next.h}};if(f.h===undefined)delete next.h;else next.h=f.h;}
   if(!f.cabinet){if(supported(next))validate({...next,cabinet:config(next)});return next;}
@@ -1223,6 +1231,7 @@ function nativeOpeningZones(f,{passage=800}={}){
  }
  // Reuse existing per-leaf/per-lane state; sectioned fronts retain their shared controls.
  function setPartOpening(f,part,value){
+  if(componentCabinet(f))return builder().motion(f,part,value);
   if(f.cabinet?.tiers){const p=tierParts(f).find(p=>p.key===part.tier);if(!p)throw Error('请选择上柜或下柜部件');return withTier(f,p.key,setPartOpening(p.furniture,{...part,tier:undefined},value));}
   const c=config(f),col=c.columns[part.column];if(!col||!Number.isFinite(value))throw Error('开启参数无效');
   if(part.drawer!==undefined){
@@ -1242,6 +1251,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   return validate({...f,cabinet:c});
  }
  function toggle(f,column,drawer,lid=false,lane,section,leaf,tier){
+  if(componentCabinet(f)){const p=builder().derived(f).find(p=>column>=p.column&&column<p.column+p.maps.length),m=p?.maps[column-p.column],part=drawer===undefined?m?.door:m?.drawers;if(!part)throw Error('活动组件不存在');return builder().motion(f,{column,drawer},part.open?0:drawer===undefined?part.maxAngle:100);}
   if(f.cabinet?.tiers){const p=tierParts(f).find(p=>p.key===tier);if(!p)throw Error('请选择上柜或下柜');return withTier(f,tier,toggle(p.furniture,column,drawer,lid,lane,section,leaf));}
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
   if(section==='pegboardHatch'){if(!pegboardHatch(f,column,c))throw Error('检修盖板不存在');const h=col.pegboardHatch;if(h.panels&&leaf!==undefined){if(!Number.isInteger(leaf)||!h.panels[leaf])throw Error('检修盖板分块不存在');h.panels[leaf].open=!h.panels[leaf].open;}else{h.open=!h.open;h.panels?.forEach(p=>p.open=h.open);}}
@@ -1252,11 +1262,12 @@ function nativeOpeningZones(f,{passage=800}={}){
   else if(drawer===undefined){if(frontDoor(f,column,c)==='none')throw Error('该分区没有柜门');col.doorOpen=!col.doorOpen;if(col.doorOpen)col.doorAngle=maxDoorAngle(c,col);col.doorLeaves?.forEach(state=>{state.open=col.doorOpen;if(state.open)state.angle=maxDoorAngle(c,col);});if(col.doorSections)for(const state of Object.values(col.doorSections)){state.open=col.doorOpen;state.angle=maxDoorAngle(c,col);}}else{const d=col.drawers[drawer];if(!d)throw Error('抽屉不存在');if(lane!==undefined){if(!Number.isInteger(lane)||lane<0||lane>=drawerCount(col))throw Error('抽屉列不存在');if(!d.lanes)d.lanes=Array.from({length:drawerCount(col)},()=>({open:d.open,extension:d.extension??1}));const state=d.lanes[lane];state.open=!state.open;if(state.open&&state.extension===0)state.extension=1;}else{d.open=!d.open;if(d.open&&d.extension===0)d.extension=1;d.lanes?.forEach(v=>{v.open=d.open;if(v.open&&v.extension===0)v.extension=1;});}}
   return validate(f.type==='vanity'?{...f,cabinet:c}:{...f,h:height(f),cabinet:c});
  }
- function specification(f){const c=config(f);if(c.tiers){const parts=tierParts(f);return {...c,tiers:{...c.tiers,upper:specification(parts[1].furniture)},columns:specification(parts[0].furniture).columns};}return {...c,columns:c.columns.map(col=>{const {doorAngle,doorLeaves,doorSections,topOpen,displayOpen,displayAngle,...rest}=col;return {...rest,...(col.pegboardHatch?{pegboardHatch:{...col.pegboardHatch,open:false,...(col.pegboardHatch.panels?{panels:col.pegboardHatch.panels.map(p=>({...p,open:false}))}:{})}}:{}),doorOpen:false,drawers:col.drawers.map(d=>{const {extension,lanes,...rest}=d;return {...rest,open:false};})};})};}
+ function specification(f){if(componentCabinet(f))return builder().specification(f);const c=config(f);if(c.tiers){const parts=tierParts(f);return {...c,tiers:{...c.tiers,upper:specification(parts[1].furniture)},columns:specification(parts[0].furniture).columns};}return {...c,columns:c.columns.map(col=>{const {doorAngle,doorLeaves,doorSections,topOpen,displayOpen,displayAngle,...rest}=col;return {...rest,...(col.pegboardHatch?{pegboardHatch:{...col.pegboardHatch,open:false,...(col.pegboardHatch.panels?{panels:col.pegboardHatch.panels.map(p=>({...p,open:false}))}:{})}}:{}),doorOpen:false,drawers:col.drawers.map(d=>{const {extension,lanes,...rest}=d;return {...rest,open:false};})};})};}
  // Derived side openings: only matching, parallel entry cabinets within 20 mm.
  // Plan-local X reverses under mirroring; height remains floor-based.
  function installationBase(f){const P=products();return P.elevationDelta(P.elevationOriginal(f));}
  function sideOpenings(f,items=[]){
+  if(componentCabinet(f))return [];
   if(!supported(f))return [];const c=config(f),cuts=[],e=c.entry;
   if(e){const bottom=c.plinth+e.shoeHeight+e.lowerHeight;for(const side of ['left','right'])if(e.openSide===side||e.openSide==='both')cuts.push({side,bottom,top:bottom+e.nicheHeight,back:-f.d/2,front:f.d/2});return cuts;}
   const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a);
@@ -1272,6 +1283,7 @@ function nativeOpeningZones(f,{passage=800}={}){
  }
  // Exposed connecting side boards belong to the wooden niche, not the doors.
  function joinedSideFinishes(f,items=[]){
+  if(componentCabinet(f))return [];
   if(!supported(f))return [];const c=config(f),result=[];
   if(!c.entry){for(const cut of sideOpenings(f,items)){const col=c.columns[cut.side==='left'?0:c.columns.length-1],base=c.plinth+c.thickness;result.push({side:cut.side,bottom:base+col.drawers.reduce((n,v)=>n+v.height,0),top:base+col.doorBottom-c.thickness,gap:0});}return result;}
   const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a);
@@ -1282,6 +1294,7 @@ function nativeOpeningZones(f,{passage=800}={}){
  // Share the pegboard cabinet's side, removing the console's duplicate side.
  // Each module keeps its plan width; the console gains the removed 18 mm inside.
  function sharedSides(f,items=[]){
+  if(componentCabinet(f))return [];
   if(!supported(f)||!f.cabinet)return [];const c=config(f),entry=!!c.entry;if(!entry&&c.template!=='entry-pegboard'||c.thickness!==18)return [];
   const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a),result=[];
   for(const other of items){if(other===f||f.id&&other.id===f.id||!supported(other)||!other.cabinet)continue;const oc=config(other);if(oc.thickness!==18||(entry?(!!oc.entry||oc.template!=='entry-pegboard'):!oc.entry))continue;
@@ -1291,6 +1304,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   }return result;
  }
  function spatialConfig(f){
+  if(componentCabinet(f)){try{return builder().spatial(f);}catch{return {invalid:JSON.parse(JSON.stringify(f.cabinet))};}}
   if(!supported(f)||f.kitchen)return undefined;
   let c;try{c=config(f);}catch{c={invalid:f.cabinet===undefined?null:JSON.parse(JSON.stringify(f.cabinet))};}
   const scrub=v=>{if(!v||typeof v!=='object')return;for(const key of Object.keys(v)){if(['color','doorColor','finish','pegboardHoles'].includes(key))delete v[key];else scrub(v[key]);}};scrub(c);if(c.tiers){const parts=tierParts(f);return {tierComponentRule:products().cabinetTiers.version,endPanels:c.endPanels,sideClosures:c.sideClosures,tiers:{height:c.tiers.height,lowerDepth:c.tiers.lowerDepth,upperDepth:c.tiers.upperDepth,lower:spatialConfig(parts[0].furniture),upper:spatialConfig(parts[1].furniture)}};}if(drawerComponentVersion(c))c.drawerComponentRule=drawerComponentVersion(c);if(backComponentVersion(c))c.backComponentRule=backComponentVersion(c);if(hardwareComponentVersion(c))c.hardwareComponentRule=hardwareComponentVersion(c);if(c.columns?.some((col,i)=>col.shelves?.length&&depthLayout(f,i,c)))c.shelfDepthRule='solid-rear-face-v1';c.doorPoseRule='finite-thickness-hinges-v1';if(hangingWardrobe(c))c.hangingRule={...products().wardrobeHanging};return c;
