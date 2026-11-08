@@ -1251,7 +1251,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   return validate({...f,cabinet:c});
  }
  function toggle(f,column,drawer,lid=false,lane,section,leaf,tier,componentId){
-  if(componentCabinet(f)){const B=builder(),part={column,drawer,lid,section,leaf,componentId},{state,limit}=B.motionState(f,part);return B.motion(f,part,state.open?0:limit);}
+  if(componentCabinet(f)){const B=builder(),part={column,drawer,lid,lane,section,leaf,componentId},{state,limit}=B.motionState(f,part);return B.motion(f,part,state.open?0:limit);}
   if(f.cabinet?.tiers){const p=tierParts(f).find(p=>p.key===tier);if(!p)throw Error('请选择上柜或下柜');return withTier(f,tier,toggle(p.furniture,column,drawer,lid,lane,section,leaf));}
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
   if(section==='pegboardHatch'){if(!pegboardHatch(f,column,c))throw Error('检修盖板不存在');const h=col.pegboardHatch;if(h.panels&&leaf!==undefined){if(!Number.isInteger(leaf)||!h.panels[leaf])throw Error('检修盖板分块不存在');h.panels[leaf].open=!h.panels[leaf].open;}else{h.open=!h.open;h.panels?.forEach(p=>p.open=h.open);}}

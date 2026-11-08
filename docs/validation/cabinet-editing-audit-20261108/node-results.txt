@@ -1,0 +1,59 @@
+test-cabinet-editing-audit.cjs
+PASS editing audit: 24 real independent drawer poses, unchanged closed net spaces, layer edits and strict atomic failures, v78 current/named/repository/cache recovery, closed reuse and real reset action preserving modular structure
+test-cabinet-builder.cjs
+PASS component builder: 144 production compositions, 20 placed door sweeps, all attachment sides, identities, motion/solids/export, real holes, atomic edits and v72 current/named/catalog/workspace/cache
+test-cabinet-builder-open-zones.cjs
+PASS open zones: 36 rotated/mirrored/elevated pilot equivalences, actual Three vertices, sweeps, autonomous motion, real interior boards, reuse and v75 round trips
+test-cabinet-builder-upgrade.cjs
+PASS cabinet upgrade: reconnect/dependency reuse, two real pilot board+opening equivalence, 72 segment production sweeps, cap/plinth/rail solids and strict v73 persistence
+test-cabinet-builder-multidoor.cjs
+PASS multi-door: 324 independent production leaf poses/sweeps, stable nested identities, partial state/limits, split/merge/reuse/move, actual 48-part wardrobe equivalence and strict v74 persistence
+test-cabinet-component-edit.cjs
+PASS component editing: 120 rotated/mirrored/elevated cases, 144 rigid meshes, linked openings/lights, independent door seams/poses, anchored sizes, limits, editable lengths and repeated current/named/reuse/project restoration
+test-cabinet-component-parity.cjs
+PASS component parity: 29 fixtures, 3 poses, 1170 production meshes, 999 structural contours, 294 cut meshes; materials, ghost mode, physical records and mixed-depth lid cuts
+test-cabinet-drawer-position.cjs
+PASS drawer positioning: 468 rigid production mesh poses; 36 rotated/mirrored/elevated/partial-open cases, real-board limits, snap/alignment, unchanged geometry/pose fields, sweeps and repeated save restoration
+test-cabinet-builder-resize.cjs
+PASS 132 component cabinet resize cases: real connection envelope, rigid metadata, rotation/mirror, opposite handle anchors, actual pointer handler, roundtrip, atomic rejection
+test-cabinet-equalize.cjs
+PASS equalization: 60 rotated/mirrored/elevated layouts, 120 real horizontal boards, actual carcass/divider/gap dimensions, scoped width conservation, rods/thresholds, atomic failures, unchanged openings and repeated project/reuse recovery
+test-cabinet-selected-widths.cjs
+PASS selected cabinet widths: 18 rotated/mirrored layouts, preserved untargeted widths/components, total width, roundtrip and invalid selection
+test-project.cjs
+PASS Survey preserves existing openings before structure confirmation
+PASS Old projects migrate to locked structures
+PASS Design rejects changes to the confirmed original bearing structure
+PASS Exterior walls are locked after confirmation
+PASS Real partition demolition merges rooms and updates area
+PASS Moving a partition changes both room areas while preserving bearing walls
+PASS Room materials follow spatial overlap after demolition
+PASS Automatic construction quantities update without overwriting manual values
+PASS Paint deductions use door height rather than wall thickness
+PASS Project backup roundtrip preserves baseline, designs, costs and catalog
+PASS Corrupt and future backups fail before import
+PASS Legacy plan JSON migrates to the portable project format
+PASS Spatial checks detect a blocked door swing
+PASS Cabinet front clearance rotates with the furniture
+PASS OBJ supports triangulation and negative indices
+PASS Overlapping door swings and swing-wall collisions are reported
+PASS Flat, non-finite and empty imported meshes are rejected before restoration
+PASS Backup preserves raw attachments and rejects malformed attachment data
+PASS Interior door deducts both painted wall faces
+PASS Retained openings keep sill heights and swing overrides after IDs reindex
+20 product roadmap regression checks passed
+test-project-validation.cjs
+test-project-recovery.cjs
+Recovery deep copies, per-plan retention, invalid entry filtering and atomic design merge checks passed
+test-repository-workspace.cjs
+PASS file-mode cache recovery without repository requests, stale custom plan removal, unavailable-service IndexedDB fallback and registered custom-plan validation
+test-repository-version-compat.cjs
+PASS canonical recovery versions, strict future-version refusal, explicit API diagnostics, stale service failure then same-window retry, latest v40 sofa/current/named data and history preservation
+test-repository-startup-validation.cjs
+PASS linear startup preview validation, all named works checked, no mutation and repeat restore without drift
+test-workspace-cache.cjs
+PASS workspace cache precedence, migration, malformed and restricted storage
+test-work-state.cjs
+PASS work restoration, independent defaults, legacy fields and custom architecture
+test-product-rules.cjs
+PASS legacy omission/roundtrip, no-drift shower migration, field boundaries, cross-family replacement, zero values and offline classic-script API

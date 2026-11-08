@@ -1,0 +1,35 @@
+[
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "whole assembly size and fixed end entry is discoverable",
+      "invalid overall dimensions reject without draft history",
+      "accepted numeric edit w",
+      "accepted numeric edit d",
+      "accepted numeric edit h",
+      "whole width/depth/height support draft undo/redo",
+      "numeric fixed end edits match shared core, preserving rigid metadata",
+      "whole assembly changes save as one application history entry",
+      "reset restores saved component tree rather than substituting an empty built-in",
+      "component default reset participates in undo/redo",
+      "each drawer layer exposes height, extension and toggle controls",
+      "accepted numeric edit 0",
+      "real face click moves only the selected production drawer",
+      "accepted numeric edit drawer state",
+      "partial drawer extension changes actual geometry",
+      "independent partial pose saves without changing siblings",
+      "selected door button reopens after all-close in actual preview",
+      "selected drawerModule button reopens after all-close in actual preview",
+      "accepted numeric edit drawer state",
+      "parallel drawer lanes edit independent actual poses",
+      "selected slidingTop button reopens after all-close in actual preview",
+      "all size, component source, net-space inputs and independent poses restore after refresh",
+      "explicit drawer states save and reload with workspace v78",
+      "independent controls show the restored partial pose",
+      "whole size and per-layer controls fit narrow screen",
+      "production GLB preserves every resized board and independent pose: {\"count\":103,\"max\":0}",
+      "no runtime errors: "
+    ]
+  }
+]

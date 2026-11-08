@@ -1,3 +1,5 @@
+2026-11-08（组件抽屉独立状态）：cabinetBuilder.drawers集中声明原60–500mm层高、1–10层、最多8列及缺省伸出比例1；可选states由组件核心严格校验，逐层／逐列生产使用同一状态，缺省仍沿原整组open／extension，不自动写新默认。显式字段最低v78；替换沿原cabinet整体清理，安装基准和离地语义保持，见[编辑复核](validation/cabinet-editing-audit-20261108/README.md)。
+
 2026-11-08（衣物）：garmentPhoto声明三款照片厚片、底部mountHeight新建0、自由姿态与geometryVersion1；宽至少100／厚至少10mm通过footprintMin供库、调整和替换共用，三款默认包络与厚度均明确估算。storageSupplyRevision2沿v57，未增加字段。详见[衣物契约](GARMENT-PHOTO-CARDS.md)。
 
 2026-11-08（多段门）：cabinetBuilder.multiDoor声明1–12段、面板净高至少60mm及独立规则版本1；各段1/2扇、最大角1–180沿共用铰链规则。含新kind最低v74，逐扇实际角与限位进入原生产/核对，饰面和颜色排除。新建1/2/3段均用同一结构，旧实例不批量改写；见[组件柜](CABINET-BUILDER.md)。
