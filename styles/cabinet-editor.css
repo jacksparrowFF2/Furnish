@@ -424,6 +424,11 @@
 
 /* Component-first cabinet workspace. */
 #cab-builder .builder-display{flex:none;padding:6px 10px;background:#f8f5ee;border-top:1px solid #e5dfd5;font-size:12px}#cab-builder .builder-display summary{cursor:pointer}#cab-builder .builder-display-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}#cab-builder .builder-display-controls label{display:flex;gap:5px;align-items:center;margin:5px 0}#cab-builder .builder-display-controls select{width:auto;max-width:150px;padding:5px}#cab-builder [data-builder-space-result]:empty{display:none}#cab-builder .builder-clearances{margin-top:14px;padding-top:5px;border-top:1px solid #ded5c7}#cab-builder .builder-clearances section{margin:10px 0;font-size:12px;line-height:1.8}#cab-builder .builder-clearances small{display:block;color:var(--muted)}#cab-builder canvas:focus-visible{outline:3px solid #168de2;outline-offset:-3px}
+#cab-builder .builder-equalize{flex:none;padding:8px 10px;background:#fff8ec;border-top:1px solid #e5dfd5}
+#cab-builder .builder-equalize-actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+#cab-builder .builder-equalize label{display:flex;gap:5px;align-items:center;margin:0;font-size:12px}
+#cab-builder .builder-equalize select{width:auto;max-width:150px;padding:5px;font-size:12px}
+#cab-builder [data-builder-equal-context]{height:36px;overflow:auto;white-space:pre-line;margin:4px 0 0;font-size:11px;line-height:18px;color:var(--muted)}
 #cab-builder{display:grid;grid-template-columns:220px minmax(260px,1fr) clamp(500px,34vw,650px);gap:12px;height:100%;min-height:0}
 #cab-builder aside{min-width:0;min-height:0;overflow:auto;padding:12px;border:1px solid var(--line,#e5dfd5);border-radius:12px;background:var(--paper,#fffdf8)}
 #cab-builder .builder-card{display:grid;grid-template-columns:26px 1fr;gap:3px 8px;width:100%;padding:10px;margin:6px 0;text-align:left;border:1px solid #ded5c7;border-radius:9px;background:#fffaf2;cursor:grab;color:inherit}
