@@ -1048,7 +1048,7 @@
  function openingZones(f,options){const P=products();return P.elevatedZones(f,nativeOpeningZones(P.elevationSource(f),options));}
 function placeOpening(zone,f,x=0,y=0,z=0){const a=(f.rot||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a),v=shiftOpening(zone,y);return {...v,poly:v.poly.map(([px,pz])=>{px=(px+x)*(f.flip?-1:1);pz+=z;return [(f.cx||0)+px*co-pz*si,(f.cy||0)+px*si+pz*co];}),...(v.sweep?{sweep:{...v.sweep,left:v.sweep.left+x,right:v.sweep.right+x,profile:v.sweep.profile.map(([d,h])=>[d+z,h]),cx:f.cx||0,cy:f.cy||0,rot:f.rot||0,flip:!!f.flip}}:{}),...(v.slices?{slices:v.slices.map(p=>placeOpening(p,f,x,0,z))}:{})};}
 function nativeOpeningZones(f,{passage=800}={}){
-  if(componentCabinet(f)){const B=builder();return [...B.derived(f).flatMap(p=>nativeOpeningZones(p.furniture,{passage}).map(zone=>({...placeOpening(zone,f,p.x,p.y,p.z),column:zone.column+p.column,boxId:p.box.id}))),...B.fronts(f).flatMap(p=>nativeOpeningZones(p.furniture,{passage}).filter(z=>z.kind==='cabinetdoor').map(zone=>({...placeOpening(zone,f,p.x,p.y,p.z),column:p.column,section:p.section,boxId:p.boxId,componentId:p.componentId})))];}
+  if(componentCabinet(f)){const B=builder();return [...B.derived(f).flatMap(p=>nativeOpeningZones(p.furniture,{passage}).map(zone=>({...placeOpening(zone,f,p.x,p.y,p.z),column:zone.column+p.column,boxId:p.box.id}))),...B.fronts(f).flatMap(p=>nativeOpeningZones(p.furniture,{passage}).filter(z=>z.kind==='cabinetdoor').map(zone=>({...placeOpening(zone,f,p.x,p.y,p.z),column:p.column,section:p.section,boxId:p.boxId,componentId:p.componentId,...(p.leaves[zone.leaf??0]?.id?{leafId:p.leaves[zone.leaf??0].id,leaf:zone.leaf??0}:{})})))];}
   if(f.cabinet?.tiers)return tierParts(f).flatMap(part=>nativeOpeningZones(part.furniture,{passage}).map(zone=>({...placeOpening(zone,f,part.x,part.bottom,part.z),tier:part.key})));
   if(hasLocalPlinth(config(f)))return boxParts(f).flatMap(part=>nativeOpeningZones({...part.furniture,cx:0,cy:0,rot:0,flip:false},{passage}).map(zone=>({...placeOpening(zone,f,part.center,0,0),column:zone.column+part.column})));
   if(f.type==='vanity'&&!f.cabinet)return [];
@@ -1251,7 +1251,7 @@ function nativeOpeningZones(f,{passage=800}={}){
   return validate({...f,cabinet:c});
  }
  function toggle(f,column,drawer,lid=false,lane,section,leaf,tier){
-  if(componentCabinet(f)){const B=builder(),part={column,drawer,section,leaf},{p,state}=B.motionState(f,part);return B.motion(f,part,state.open?0:drawer===undefined?p.maxAngle:100);}
+  if(componentCabinet(f)){const B=builder(),part={column,drawer,section,leaf},{state,limit}=B.motionState(f,part);return B.motion(f,part,state.open?0:limit);}
   if(f.cabinet?.tiers){const p=tierParts(f).find(p=>p.key===tier);if(!p)throw Error('请选择上柜或下柜');return withTier(f,tier,toggle(p.furniture,column,drawer,lid,lane,section,leaf));}
   const c=config(f),col=c.columns[column];if(!col)throw Error('柜体分区不存在');
   if(section==='pegboardHatch'){if(!pegboardHatch(f,column,c))throw Error('检修盖板不存在');const h=col.pegboardHatch;if(h.panels&&leaf!==undefined){if(!Number.isInteger(leaf)||!h.panels[leaf])throw Error('检修盖板分块不存在');h.panels[leaf].open=!h.panels[leaf].open;}else{h.open=!h.open;h.panels?.forEach(p=>p.open=h.open);}}

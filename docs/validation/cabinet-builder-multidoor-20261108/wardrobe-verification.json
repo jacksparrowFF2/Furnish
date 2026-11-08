@@ -1,0 +1,226 @@
+{
+  "passed": true,
+  "sourceDesign": {
+    "id": "dmw796ybo",
+    "name": "组件柜试点 · 猫窝床头柜与囤货柜"
+  },
+  "pilotDesign": {
+    "id": "dmw7b9vxu",
+    "name": "组件柜试点 · 次卧衣柜多段与逐扇开合"
+  },
+  "sourceHash": "a39674bb108e0c80fd733df17d63f4962a83a932b389e380498d65177c33b5df",
+  "workspaceVersion": 74,
+  "unrelatedFurniture": 165,
+  "dimensions": [
+    1637.5,
+    630,
+    2450
+  ],
+  "boxes": [
+    {
+      "w": 818.75,
+      "d": 630,
+      "h": 2450,
+      "bodyHeight": 2400,
+      "clearWidths": [
+        782.75
+      ],
+      "shelves": [
+        [
+          1786
+        ]
+      ]
+    },
+    {
+      "w": 818.75,
+      "d": 630,
+      "h": 2450,
+      "bodyHeight": 2400,
+      "clearWidths": [
+        782.75
+      ],
+      "shelves": [
+        [
+          884,
+          1786
+        ]
+      ]
+    }
+  ],
+  "productionParts": 48,
+  "normalizedSweepRanges": 10,
+  "rails": [
+    {
+      "x": -409.375,
+      "y": 1804,
+      "z": 0,
+      "w": 778.75,
+      "size": 25
+    },
+    {
+      "x": 409.375,
+      "y": 902,
+      "z": 0,
+      "w": 778.75,
+      "size": 25
+    },
+    {
+      "x": 409.375,
+      "y": 1804,
+      "z": 0,
+      "w": 778.75,
+      "size": 25
+    }
+  ],
+  "doors": [
+    {
+      "boxId": "box1",
+      "componentId": "part4",
+      "segments": [
+        {
+          "finish": "solid",
+          "handle": "bar",
+          "id": "segment1",
+          "leaves": [
+            {
+              "angle": 90,
+              "id": "leaf1",
+              "open": true
+            },
+            {
+              "angle": 90,
+              "id": "leaf2",
+              "open": true
+            }
+          ],
+          "maxAngle": 90,
+          "mode": "double",
+          "top": 0.7106469689251146
+        },
+        {
+          "finish": "solid",
+          "handle": "bar",
+          "id": "segment2",
+          "leaves": [
+            {
+              "angle": 90,
+              "id": "leaf3",
+              "open": false
+            },
+            {
+              "angle": 90,
+              "id": "leaf4",
+              "open": false
+            }
+          ],
+          "maxAngle": 90,
+          "mode": "double",
+          "top": 1
+        }
+      ]
+    },
+    {
+      "boxId": "box2",
+      "componentId": "part11",
+      "segments": [
+        {
+          "finish": "solid",
+          "handle": "bar",
+          "id": "segment3",
+          "leaves": [
+            {
+              "angle": 150,
+              "id": "leaf5",
+              "maxAngle": 150,
+              "open": false
+            },
+            {
+              "angle": 90,
+              "id": "leaf6",
+              "maxAngle": 90,
+              "open": false
+            }
+          ],
+          "maxAngle": 90,
+          "mode": "double",
+          "top": 0.7614447711045779
+        },
+        {
+          "finish": "solid",
+          "handle": "bar",
+          "id": "segment4",
+          "leaves": [
+            {
+              "angle": 150,
+              "id": "leaf7",
+              "maxAngle": 150,
+              "open": false
+            },
+            {
+              "angle": 90,
+              "id": "leaf8",
+              "open": false
+            }
+          ],
+          "maxAngle": 90,
+          "mode": "double",
+          "top": 1
+        }
+      ]
+    }
+  ],
+  "probes": [
+    {
+      "box": 1,
+      "bottom": 600,
+      "height": 100,
+      "vertical": {
+        "top": 1091.5,
+        "bottom": 307,
+        "pending": false,
+        "collisions": []
+      },
+      "directions": {
+        "l": 341.375,
+        "r": 341.375,
+        "t": 247,
+        "b": null
+      }
+    },
+    {
+      "box": 2,
+      "bottom": 300,
+      "height": 100,
+      "vertical": {
+        "top": 489.5,
+        "bottom": 222,
+        "pending": false,
+        "collisions": []
+      },
+      "directions": {
+        "l": 341.375,
+        "r": 341.375,
+        "t": 247,
+        "b": 247
+      }
+    },
+    {
+      "box": 2,
+      "bottom": 1200,
+      "height": 100,
+      "vertical": {
+        "top": 491.5,
+        "bottom": 220,
+        "pending": false,
+        "collisions": []
+      },
+      "directions": {
+        "l": 341.375,
+        "r": 341.375,
+        "t": 247,
+        "b": 247
+      }
+    }
+  ],
+  "limits": "Probes are synthetic 100mm cubes at cabinet-bottom-relative heights; no clothing, hardware or load certification."
+}

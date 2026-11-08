@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-08",
+  "sourceDesign": {
+    "id": "dmw796ybo",
+    "name": "组件柜试点 · 猫窝床头柜与囤货柜"
+  },
+  "copy": {
+    "requestId": "multidoor-copy-wardrobe-20261108-a",
+    "applied": true,
+    "persisted": true,
+    "activeDesign": {
+      "id": "dmw7b9vxu",
+      "name": "组件柜试点 · 次卧衣柜多段与逐扇开合"
+    }
+  },
+  "upgrade": {
+    "requestId": "multidoor-upgrade-wardrobe-20261108-a",
+    "applied": true,
+    "persisted": true,
+    "activeDesign": {
+      "id": "dmw7b9vxu",
+      "name": "组件柜试点 · 次卧衣柜多段与逐扇开合"
+    }
+  },
+  "trial": {
+    "requestId": "multidoor-open-leaves-trial-20261108-a",
+    "applied": true,
+    "persisted": true,
+    "poses": [
+      [
+        37.5,
+        0
+      ],
+      [
+        120,
+        60
+      ]
+    ],
+    "note": "Left lower pair, right lower pair; other leaves unchanged."
+  },
+  "restore": {
+    "requestId": "multidoor-restore-original-poses-20261108-a",
+    "applied": true,
+    "persisted": true,
+    "save": {
+      "mode": "saved",
+      "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 12:15:24",
+      "pending": false
+    }
+  },
+  "spaceBefore": [
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "次卧衣柜 · 双柜挂衣与明抽",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        5576.5,
+        4219
+      ],
+      "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用",
+      "confirmed": false
+    }
+  ],
+  "spaceAfter": [
+    {
+      "kind": "cabinetpassage",
+      "id": "fmv3wzkb515",
+      "markerIds": [],
+      "name": "次卧衣柜 · 双柜挂衣与明抽",
+      "column": 0,
+      "section": "storage",
+      "pending": false,
+      "at": [
+        5576.5,
+        4219
+      ],
+      "message": "分区 1 抽屉拉出后前方 800 mm 地面操作空间被 单人床 占用",
+      "confirmed": false
+    }
+  ]
+}

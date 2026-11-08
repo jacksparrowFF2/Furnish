@@ -1,0 +1,22 @@
+{
+  "checkedJavaScript": 16,
+  "sha256": {
+    "src/app.js": "aee6ce6beea7d17a3608755c63f90253231145d0d833abe81ea4c4efc1b71c66",
+    "src/core/cabinet-builder-core.js": "4e1af2772eac71902058e1e630b501c26bd5884c1a4935f527ebbde17b3a4f5a",
+    "src/core/cabinet-core.js": "b4469d802b60789fa34adacd8b360809bc68ecc9b5be2e3bfc045dd5be0e35d3",
+    "src/core/product-rules.js": "cd8efb8c408a93b25fb8d7a0083fcab80d0f1fde0b4aa2e141ef131911cf07ed",
+    "src/core/project-core.js": "c54f1ece65b1861100849c1897aba346ce7dd1bb282892f6e73bdcf806a50e8a",
+    "src/core/repository-core.js": "3893b07037b021142862a1d7cd964692e4c2b39c115511d83ea2adb33f1fd109",
+    "src/io/workspace-cache.js": "a1542ffda5f67e58777680f7e1a8095cf94d1f8881fb9ef328a6e35e4e7061b5",
+    "src/render/cabinet-model.js": "63db065014b53d00aebbb74a4d0c3ceb6e1c59a709a8356fb5e57d33074ba217",
+    "src/render/cabinet-preview.js": "804d6e83936ab2c7ec78d31f64f568eff8d5adf08c0ddb68f189f33fc8415dff",
+    "src/ui/cabinet-builder.js": "0b544e28cbcd53141058420fd9d79bfc7659a45abd4cf5784073199cf3b22b9a",
+    "tests/helpers/cabinet-builder-ui.js": "4aa19bd4306ac3ff5b2c5126e6863069fbdeaa27dd90a17a78518e59c93a04e6",
+    "tests/helpers/cabinet-builder-upgrade-ui.js": "cf4fdffb4c89504bfa1c844d41d524f818e3a5d811a5d43799ab0abde2e29f26",
+    "tests/test-cabinet-builder-upgrade.cjs": "88b547b29f5968c1ca94e6ca61fb13d0c99cc332a8a8017bbe85216c16292082",
+    "tests/test-cabinet-builder-multidoor.cjs": "8dce3ca1ac8e3062c744a5d64d76c3f8579aae772505983a318b85f538d4b7b7",
+    "tests/helpers/cabinet-builder-multidoor-ui.js": "eec06cafaf2483078793316b0aec897c944c3af58e145e8d3972e96cbf571bed",
+    "scripts/verify/verify-cabinet-builder-wardrobe.cjs": "edf273b02ead270202270d5fe3a18d7e4f9c1e87fb89595e9725979377051253",
+    "tests/fixtures/cabinet-builder-wardrobe.json": "ffdb6b89af54dbb02798e60f266ec22779881bff86bd459037e87e4e5e2279d0"
+  }
+}

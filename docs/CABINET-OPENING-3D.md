@@ -1,3 +1,5 @@
+2026-11-08（组件柜多段门）：v2 multiDoor支持1–12段、各段1或2扇，逐扇当前姿态与最大角独立。临时门框沿共享doorPose/生产构造/nativeOpeningZones，每扇扫掠带稳定segment/leaf身份，翻门同样标记唯一leaf；关闭不缩小完整核对。新结构最低v74，不改变旧配方doorSections语义。次卧试点逐板及完整扫掠归一后等价，见[验证](validation/cabinet-builder-multidoor-20261108/README.md)。
+
 # 柜门与抽屉的三维开启检查
 
 ## 逐扇铰链最大角度（2026-10-30）

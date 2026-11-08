@@ -1,0 +1,95 @@
+{
+  "cabinet": {
+    "boxConstruction": "independent",
+    "columns": [
+      {
+        "door": "double",
+        "doorAngle": 90,
+        "doorOpen": false,
+        "doorSections": {
+          "lower": {
+            "angle": 90,
+            "open": true
+          },
+          "upper": {
+            "angle": 90,
+            "open": false
+          }
+        },
+        "drawerColumns": 1,
+        "drawers": [
+          {
+            "height": 191,
+            "open": false
+          },
+          {
+            "height": 227,
+            "lanes": [
+              {
+                "extension": 1,
+                "open": false
+              }
+            ],
+            "open": false
+          }
+        ],
+        "handle": "bar",
+        "shelves": [
+          1786
+        ],
+        "width": 782.75
+      },
+      {
+        "door": "double",
+        "doorAngle": 90,
+        "doorLimits": {
+          "lower": {
+            "0": 150,
+            "1": 90
+          },
+          "upper": {
+            "0": 150
+          }
+        },
+        "doorOpen": false,
+        "doorSections": {
+          "lower": {
+            "angle": 150,
+            "open": false
+          },
+          "upper": {
+            "angle": 150,
+            "open": false
+          }
+        },
+        "drawerColumns": 1,
+        "drawers": [],
+        "handle": "bar",
+        "shelves": [
+          884,
+          1786
+        ],
+        "width": 782.75
+      }
+    ],
+    "doorOverlay": "full",
+    "plinth": 60,
+    "template": "wardrobe-hanging",
+    "thickness": 18,
+    "topClosure": {
+      "doorGap": 10,
+      "height": 50
+    },
+    "version": 1
+  },
+  "color": "#e8e0d2",
+  "cx": 4757.75,
+  "cy": 4975,
+  "d": 630,
+  "h": 2450,
+  "id": "fmv3wzkb515",
+  "name": "次卧衣柜 · 双柜挂衣与明抽",
+  "rot": 180,
+  "type": "wardrobe",
+  "w": 1637.5
+}
