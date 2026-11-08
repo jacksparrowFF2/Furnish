@@ -28,7 +28,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   };
   const shelfFrame=(column,section='storage',shelf)=>shelf===undefined?C.depthLayout(f,column,c,section):C.shelfDepthLayout(f,column,shelf,c,section);
   const shelf=(parent,column,index,site,{width,x}={})=>{
-   const part=C.shelfPart(f,column,index,c);if(width!==undefined)part.w=width*1000;if(x!==undefined)part.x=x*1000;
+   const part=C.shelfPart(f,column,index,c);if(width!==undefined)part.w=width*1000;if(x!==undefined)part.x=x*1000;if(options.shelfShape)Object.assign(part,options.shelfShape(column,index));
    const mesh=syncIdentity.produce(site,()=>add(parent,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000));mesh.userData.cabinetShelf={column,shelf:index};return mesh;
   };
   const drawerFrame=depth=>{const v=C.drawerDepthLayout(f,depth*1000,c);return {depth:v.depth/1000,center:v.center/1000,rearCenter:v.rearCenter/1000};};
@@ -78,7 +78,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   if(f.cabinet?.version===2){
    const B=root.FurnishCabinetBuilder||require('../core/cabinet-builder-core.js'),g=new THREE.Group();
    for(const p of B.derived(f)){
-    const child=buildRaw(THREE,p.furniture,box,{...options,furniture:[],...B.shellOptions(p)});child.position.set(p.x/1000,p.y/1000,p.z/1000);
+    const child=buildRaw(THREE,p.furniture,box,{...options,furniture:[],...B.shellOptions(p),shelfShape:(i,j)=>B.shelfShape(p.box,p.maps[i].shelves[j])});child.position.set(p.x/1000,p.y/1000,p.z/1000);
     const ds=p.box.components.filter(v=>v.kind==='divider').sort((a,b)=>a.at-b.at);
     child.traverse(o=>{const data=o.userData;if(!data)return;const part=data.cabinetPart,shelf=data.cabinetShelf,divider=data.cabinetDivider,local=part?.column??shelf?.column??divider?.column??data.cabinetBay?.column??0,map=p.maps[local];
      const component=shelf?map?.shelves[shelf.shelf]:part?part.drawer!==undefined?map?.drawers:map?.door:divider?ds[divider.divider]:data.cabinetTopClosure?p.box.components.find(v=>v.kind==='topClosure'):data.cabinetSection==='plinth'?p.box.components.find(v=>v.kind==='plinth'):null;
@@ -90,7 +90,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     for(const part of B.trimParts(f).filter(v=>v.boxId===p.box.id)){const node=syncIdentity.produce('cabinet-builder:trim:'+part.boxId+':'+part.componentId,()=>box(part.w/1000,part.h/1000,part.d/1000,f.color,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:'trim'};node.userData.cabinetSideClosure=part.side;g.add(node);}
    }
    for(const part of B.railParts(f)){const node=syncIdentity.produce('cabinet-builder:rail:'+part.boxId+':'+part.componentId,()=>box(part.w/1000,part.h/1000,part.d/1000,'#b9bec1',part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:'rail'};node.userData.cabinetHangingRod={componentId:part.componentId};g.add(node);}
-   for(const part of B.zoneParts(f)){const node=syncIdentity.produce('cabinet-builder:zone:'+part.boxId+':'+part.componentId+':'+part.role,()=>box(part.w/1000,part.h/1000,part.d/1000,part.role==='light'?'#ffe4ab':(root.FurnishCabinet||require('../core/cabinet-core.js')).palette.body,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind};node.userData.cabinetSection=part.role;if(part.role==='light'){node.material=node.material.clone();node.material.emissive=new THREE.Color('#ffe4ab');node.material.emissiveIntensity=.6;node.userData.cabinetOwnMaterial=true;}g.add(node);}
+   for(const part of B.zoneParts(f)){const node=syncIdentity.produce('cabinet-builder:zone:'+part.boxId+':'+part.componentId+':'+part.role,()=>box(part.w/1000,part.h/1000,part.d/1000,part.role==='light'?'#ffe4ab':(root.FurnishCabinet||require('../core/cabinet-core.js')).palette.body,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind,...(['lower','upper'].includes(part.role)?{board:part.role}:{})};node.userData.cabinetSection=part.role;if(part.role==='light'){node.material=node.material.clone();node.material.emissive=new THREE.Color('#ffe4ab');node.material.emissiveIntensity=.6;node.userData.cabinetOwnMaterial=true;}g.add(node);}
    for(const v of B.linearParts(f))syncIdentity.produce('cabinet-builder:linear:'+v.b.id+':'+v.p.id,()=>{
     const {row,p,b,bay,span,column,bottom}=v,group=new THREE.Group(),C=root.FurnishCabinet||require('../core/cabinet-core.js'),components=createComponents({THREE,C,f:row.furniture,c:row.furniture.cabinet,box,options,bodyColor:C.palette.body}),t=b.thickness/1000;
     group.position.set(row.x/1000,row.y/1000,row.z/1000);
