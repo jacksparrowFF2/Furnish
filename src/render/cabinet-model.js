@@ -78,7 +78,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   if(f.cabinet?.version===2){
    const B=root.FurnishCabinetBuilder||require('../core/cabinet-builder-core.js'),g=new THREE.Group();
    for(const p of B.derived(f)){
-    const child=buildRaw(THREE,p.furniture,box,{...options,furniture:[],...B.shellOptions(p),shelfShape:(i,j)=>B.shelfShape(p.box,p.maps[i].shelves[j])});child.position.set(p.x/1000,p.y/1000,p.z/1000);
+    const child=buildRaw(THREE,p.furniture,box,{...options,outlines:false,furniture:[],...B.shellOptions(p),shelfShape:(i,j)=>B.shelfShape(p.box,p.maps[i].shelves[j])});child.position.set(p.x/1000,p.y/1000,p.z/1000);
     const ds=p.box.components.filter(v=>v.kind==='divider').sort((a,b)=>a.at-b.at);
     child.traverse(o=>{const data=o.userData;if(!data)return;const part=data.cabinetPart,shelf=data.cabinetShelf,divider=data.cabinetDivider,local=part?.column??shelf?.column??divider?.column??data.cabinetBay?.column??0,map=p.maps[local];
      const component=shelf?map?.shelves[shelf.shelf]:part?part.drawer!==undefined?map?.drawers:map?.door:divider?ds[divider.divider]:data.cabinetTopClosure?p.box.components.find(v=>v.kind==='topClosure'):data.cabinetSection==='plinth'?p.box.components.find(v=>v.kind==='plinth'):null;
@@ -117,6 +117,11 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     }
     front.traverse(o=>{const data=o.userData;if(!data)return;data.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind,...(data.cabinetPart?.leafId?{leafId:data.cabinetPart.leafId,segmentId:part.section}:{})};if(data.cabinetPart)data.cabinetPart={...data.cabinetPart,column:part.column,section:part.section,componentId:part.componentId};if(data.motion)data.motion={...data.motion,column:part.column,section:part.section};if(data.cabinetDoorSize)data.cabinetDoorSize={...data.cabinetDoorSize,section:part.section};if(o.isMesh&&data.furnishPartToken)data.furnishPartToken=JSON.stringify(['builder:'+part.boxId,'component:'+part.componentId,'section:'+part.section,...JSON.parse(data.furnishPartToken)]);});g.add(front);
    }
+   // Finish once after every component has been assembled. Otherwise only the
+   // native carcass shelves get preview contours and zone/fixed boards blend
+   // into the back panel in a straight-on view. Normal scenes keep subtle
+   // horizontal-board edges; explicit false still requests plain geometry.
+   if(options.outlines!==false)g.traverse(o=>{if(o.isMesh&&(options.outlines||B.horizontalSelection(f,o.userData.cabinetBuilder))){const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x493b2d,transparent:true,opacity:options.outlines ? .9 : .65}));edge.userData.cabinetOwnMaterial=true;edge.userData.cabinetOutline=true;edge.raycast=()=>{};o.add(edge);}});
    return g;
   }
 

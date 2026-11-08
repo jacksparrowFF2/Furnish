@@ -11,7 +11,7 @@
  function boards(f,{includeStatic=false,...options}={}){
   C();const Model=root.FurnishCabinetModel||require('../render/cabinet-model.js');
   const box=(w,h,d,color,x,y,z)=>{const geometry=new Geometry();geometry.box=[w,h,d];const n=new Node(geometry);n.position.set(x,y+h/2,z);return n;};
-  const model=Model.buildRaw(recorder,f,box,options),result=[];
+  const model=Model.buildRaw(recorder,f,box,{...options,outlines:false}),result=[];
   model.traverse(node=>{
    if(!node.isMesh)return;
    let moving=null,offset=[0,0,0];
