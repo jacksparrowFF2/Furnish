@@ -1,3 +1,13 @@
+## 后续纠正：只保留唯一乐高编辑器
+
+用户明确指出此前两套界面不符合要求。本阶段移除独立组合编辑API及旧普通柜／厨房弹窗实现，两个历史入口仅转发到 `FurnishCabinetBuilderUI.open`。所有类型共用 `mountShell` 和 `libraryItems`；原生配方在内部适配，左组件库、中生产预览、右结构树／属性、全屏／默认正视／显示选项与保存统一。独立柜箱直接安装部件、修改板厚与逐扇门角，不跳转第二个编辑器。台面、水槽、设备位和原结构数据保留。没有新增持久字段，格式仍为v79。
+
+最终三入口专项：HTTP 37项、断网file 37项、同EXE隔离桌面38项，包含旧储物柜、洞洞板柜与L厨房的唯一入口／取消不改数据、内联组件安装、逐门扇编辑、台面拖点及保存恢复；桌面111个生产GLB网格一致。原乐高编辑器41项交互回归通过；共享核心相关增量及语法检查通过，未运行全量检查。已实际查看最终桌面图，核对为同一组件库／预览／结构树／属性布局。
+
+[三入口结果](one-editor-results.json) · [原乐高交互回归](one-editor-builder-regression.json) · [统一后的阳台界面](unified-lego.png)
+
+运行目录：`output/desktop-verification/cabinet-assembly-Sjq02E`、`output/desktop-verification/cabinet-builder-interaction-DEz0zi`。以下保留此前阶段的历史验收记录，其独立组合界面及嵌套跳转流程已取消。
+
 # 洗衣区／餐边柜新编辑器及异形石英石台面验收
 
 2026-11-08。功能与数据范围见 [组合编辑契约](../../CABINET-ASSEMBLY-EDITOR.md)。正式方案未用于测试编辑；测试从 `D:\1601装修\Furnish项目\workspace.furnish.json` 复制到独立源码／工作文件／缓存／端口，桌面沿 `scripts/launch-desktop.cjs` 发现的同一打包 EXE。未改 Electron 安全设置。
