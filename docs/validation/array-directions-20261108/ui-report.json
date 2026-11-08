@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "desktop: one outer set, two arrays plus ordinary unit, drawing rotation, display toggle, count edit/undo, detach/undo, unchanged measurement geometry, persistence and narrow view",
+    "http direction grouping",
+    "file direction grouping offline"
+  ],
+  "errors": []
+}

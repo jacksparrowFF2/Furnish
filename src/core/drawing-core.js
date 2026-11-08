@@ -24,6 +24,20 @@ function furnitureDirections(f,{scale=1,rotation=0}={}){
   return {key,edge:[f.cx+edge[0],f.cy+edge[1]],at:[f.cx+edge[0]+offset[0],f.cy+edge[1]+offset[1]],normal};
  });
 }
+// Linked arrays get one set of axes on the visible selection's outer footprint.
+// This is a drawing-only envelope, never a replacement furniture/clearance body.
+function selectionFurnitureDirections(items,options={}){
+ const groups=[],arrays=new Map();
+ for(const f of items){const id=f.inventoryArray?.id;let group=id&&arrays.get(id);if(!group){group={id:f.id,arrayId:id,members:[]};groups.push(group);if(id)arrays.set(id,group);}group.members.push(f);}
+ return groups.map(group=>{if(group.arrayId)group.members.sort((a,b)=>a.inventoryArray.index-b.inventoryArray.index);const first=group.members[0];let frame=first;
+  if(group.members.length>1){
+   const G=root.FurnishGeometry||(typeof require==='function'?require('./layout-geometry.js'):null),angle=first.rot||0;
+   const points=group.members.flatMap(f=>G?G.footprints(f).flat():[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,y])=>rotate([x*f.w/2,y*f.d/2],f.rot||0).map((v,i)=>v+[f.cx,f.cy][i]))).map(p=>rotate([p[0]-first.cx,p[1]-first.cy],-angle));
+   if(points.length){const lo=[0,1].map(i=>Math.min(...points.map(p=>p[i]))),hi=[0,1].map(i=>Math.max(...points.map(p=>p[i]))),center=rotate(lo.map((v,i)=>(v+hi[i])/2),angle);frame={...first,cx:first.cx+center[0],cy:first.cy+center[1],w:hi[0]-lo[0],d:hi[1]-lo[1]};}
+  }
+  return {id:first.id,arrayId:group.arrayId,directions:furnitureDirections(frame,options)};
+ });
+}
 function bounds(box,angle=0){const corners=[[box.x,box.y],[box.x+box.w,box.y],[box.x+box.w,box.y+box.h],[box.x,box.y+box.h]].map(p=>rotate(p,angle)),xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]);return {x:Math.min(...xs),y:Math.min(...ys),w:Math.max(...xs)-Math.min(...xs),h:Math.max(...ys)-Math.min(...ys)};}
 function outlineCuts(rects,h,unique){
  if(!rects.length)return [];
@@ -117,5 +131,5 @@ function netSpans(room,point){
  const span=axis=>{const cross=1-axis,values=[];for(const ring of rings)for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length],delta=b[cross]-a[cross];if(Math.abs(delta)<eps){if(Math.abs(point[cross]-a[cross])<eps)values.push(a[axis],b[axis]);continue;}const t=(point[cross]-a[cross])/delta;if(t>=-eps&&t<=1+eps)values.push(a[axis]+t*(b[axis]-a[axis]));}const left=values.filter(v=>v<point[axis]-eps),right=values.filter(v=>v>point[axis]+eps);if(!left.length||!right.length)return null;const a=[...point],b=[...point];a[axis]=Math.max(...left);b[axis]=Math.min(...right);return {a,b,value:b[axis]-a[axis],h:axis===0};};
  const horizontal=span(0),vertical=span(1);return horizontal&&vertical?{at:[...point],horizontal,vertical}:null;
 }
-const api={settings,rotate,clearanceFrame,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,furnitureLabels,furnitureDirections,textWidth,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
+const api={settings,rotate,clearanceFrame,bounds,dimensions,drawingBounds,sun,rasterSize,dimensionLayout,roomLabels,furnitureLabels,furnitureDirections,selectionFurnitureDirections,textWidth,netSpans,textAngle};if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishDrawing=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
