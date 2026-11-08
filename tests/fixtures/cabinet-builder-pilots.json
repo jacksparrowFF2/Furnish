@@ -1,0 +1,133 @@
+[
+  {
+    "cabinet": {
+      "columns": [
+        {
+          "door": "none",
+          "doorOpen": false,
+          "drawers": [],
+          "shelves": [
+            350
+          ]
+        }
+      ],
+      "plinth": 0,
+      "template": "book",
+      "thickness": 18,
+      "version": 1
+    },
+    "color": "#c1a17c",
+    "cx": 1039.5,
+    "cy": 5000,
+    "d": 400,
+    "h": 500,
+    "id": "fmv3w3eqf3",
+    "name": "猫窝床头柜 · 开放格草案",
+    "purchaseStatus": "planned",
+    "rot": 270,
+    "type": "nightstand",
+    "w": 500
+  },
+  {
+    "cabinet": {
+      "backThickness": 18,
+      "boxConstruction": "independent",
+      "columns": [
+        {
+          "door": "double",
+          "doorAngle": 90,
+          "doorLeaves": [
+            {
+              "angle": 90,
+              "open": true
+            },
+            {
+              "angle": 90,
+              "open": true
+            }
+          ],
+          "doorOpen": true,
+          "drawerColumns": 1,
+          "drawers": [],
+          "finish": "solid",
+          "handle": "bar",
+          "shelves": [
+            350,
+            813,
+            1181,
+            1549,
+            1882
+          ],
+          "width": 762.3333333333334
+        },
+        {
+          "door": "double",
+          "doorAngle": 90,
+          "doorLeaves": [
+            {
+              "angle": 90,
+              "open": true
+            },
+            {
+              "angle": 90,
+              "open": true
+            }
+          ],
+          "doorOpen": true,
+          "drawerColumns": 2,
+          "drawers": [],
+          "shelves": [
+            1181,
+            1549,
+            1882
+          ],
+          "topOpen": false,
+          "width": 762.3333333333334
+        },
+        {
+          "door": "double",
+          "doorAngle": 90,
+          "doorLeaves": [
+            {
+              "angle": 90,
+              "open": true
+            },
+            {
+              "angle": 90,
+              "open": true
+            }
+          ],
+          "doorOpen": true,
+          "drawerColumns": 2,
+          "drawers": [],
+          "shelves": [
+            1100,
+            1468,
+            1836
+          ],
+          "topOpen": false,
+          "width": 762.3333333333334
+        }
+      ],
+      "doorOverlay": "full",
+      "plinth": 50,
+      "template": "storage",
+      "thickness": 18,
+      "topClosure": {
+        "doorGap": 10,
+        "height": 50
+      },
+      "version": 1
+    },
+    "color": "#f3f1ec",
+    "cx": 9931,
+    "cy": 7217.5,
+    "d": 350,
+    "h": 2350,
+    "id": "fmv5bl44k1",
+    "name": "储物柜",
+    "rot": 90,
+    "type": "cabinet",
+    "w": 2395
+  }
+]

@@ -1,3 +1,5 @@
+2026-11-08（组件柜扩展）：cabinetBuilder规则版本2，分段门实体最小高60，挂衣方杆截面16–40初值25/端隙0–50初值2；顶封板沿cabinetTopClosure规则。v73仅用于新组件，转换保留原离地与有效参考价，结构/杆/封板/门段状态进入空间确认，颜色与采购仍排除。见[组件柜](CABINET-BUILDER.md)。
+
 2026-11-08（工具箱阵列）：toolbox_jiabangshou_390声明inventoryArray，1–200件、行列1–50、三向间距0–1000mm、grid/stagger及0/90/180/270度平面转向；单件缺失不补写，首次有效数量编辑一次mutate，显式字段最低v71。见[型号契约](TOOLBOX-JIABANGSHOU-390.md#关联阵列2026-11-08)。
 
 2026-11-07（方块阵列）：block声明inventoryArray，1–200件、行列1–50、三向间距0–1000mm、grid/stagger与四种平面转向；旧缺失不补写，显式字段v69。见[方块](BLOCK-PLACEHOLDER.md)。

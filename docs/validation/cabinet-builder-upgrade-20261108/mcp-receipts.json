@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-08",
+  "copy": {
+    "requestId": "builder-pilot-copy-20261108-a",
+    "applied": true,
+    "persisted": true,
+    "activeDesign": {
+      "id": "dmw796ybo",
+      "name": "组件柜试点 · 猫窝床头柜与囤货柜"
+    }
+  },
+  "upgrade": {
+    "requestId": "builder-pilot-upgrade-two-20261108-a",
+    "applied": true,
+    "persisted": true,
+    "activeDesign": {
+      "id": "dmw796ybo",
+      "name": "组件柜试点 · 猫窝床头柜与囤货柜"
+    },
+    "save": {
+      "mode": "saved",
+      "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/8 11:11:59",
+      "pending": false
+    }
+  },
+  "unchangedOtherFurniture": 164,
+  "spaceBefore": [
+    {
+      "kind": "overlap",
+      "id": "fmv5bl44k1",
+      "otherId": "fmw579qb34",
+      "name": "储物柜 / 心相印卷纸 · 第2层9卷（合计27卷）",
+      "message": "家具占地范围重叠，请核对实际摆放",
+      "confirmed": false
+    }
+  ],
+  "spaceAfter": [
+    {
+      "kind": "overlap",
+      "id": "fmv5bl44k1",
+      "otherId": "fmw579qb34",
+      "name": "储物柜 / 心相印卷纸 · 第2层9卷（合计27卷）",
+      "message": "家具占地范围重叠，请核对实际摆放",
+      "confirmed": false
+    }
+  ]
+}

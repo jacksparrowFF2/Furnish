@@ -1,3 +1,5 @@
+2026-11-08（组件柜升级）：普通柜参数查询可返回cabinetUpgrade动作，configure_furniture以true显式转换；整批预演、保持家具ID/原物理尺寸/参考价，一次mutate和正式保存，可撤销；动作不持久化，不与cabinet/replacementCatalogKey混用。未支持结构明确拒绝，先copy_design试点。见[组件柜契约](CABINET-BUILDER.md)。
+
 # Furnish 专用 MCP
 
 MCP 连接正在运行的 Furnish 桌面主窗口。它读取的是当前画布和保存状态，包括尚在保存中的编辑，不是重新解析一份磁盘项目来代替桌面状态。默认连接本仓库；桌面快捷方式的 `furnish-desktop.json` 须指向相同工作目录。

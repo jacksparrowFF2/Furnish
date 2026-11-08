@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "sourceDesign": {
+    "id": "dmw56lad4",
+    "name": "客厅囤货柜 · 三等宽柜与高件分区"
+  },
+  "pilotDesign": {
+    "id": "dmw796ybo",
+    "name": "组件柜试点 · 猫窝床头柜与囤货柜"
+  },
+  "workspaceVersion": 73,
+  "sourceHash": "c055fc9516ebc4695b84f14d6ac73082da833d25600eaeecb65f196768e286c0",
+  "unrelatedFurniture": 164,
+  "pilots": [
+    {
+      "id": "fmv3w3eqf3",
+      "name": "猫窝床头柜 · 开放格草案",
+      "dimensions": [
+        500,
+        400,
+        500
+      ],
+      "boxes": 1,
+      "productionBoards": 6,
+      "openingZones": 0,
+      "unchangedContainedItemClearances": 0,
+      "clearWidths": [
+        464
+      ],
+      "shelves": [
+        [
+          350
+        ]
+      ]
+    },
+    {
+      "id": "fmv5bl44k1",
+      "name": "储物柜",
+      "dimensions": [
+        2395,
+        350,
+        2350
+      ],
+      "boxes": 3,
+      "productionBoards": 44,
+      "openingZones": 6,
+      "unchangedContainedItemClearances": 24,
+      "clearWidths": [
+        762.333,
+        762.333,
+        762.333
+      ],
+      "shelves": [
+        [
+          350,
+          813,
+          1181,
+          1549,
+          1882
+        ],
+        [
+          1181,
+          1549,
+          1882
+        ],
+        [
+          1100,
+          1468,
+          1836
+        ]
+      ]
+    }
+  ],
+  "limits": "Uses actual production solids and complete opening sweeps; no fabrication, load or unmodelled installation validation."
+}

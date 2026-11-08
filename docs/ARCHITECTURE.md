@@ -1,3 +1,5 @@
+2026-11-08（组件柜扩展）：柜箱重接复用按依赖分配稳定身份；v2新增顶封板、上下分段门及挂衣杆，共用生产门构造/扫掠/板件实体。显式升级仅在输入边界一次转换，不保存旧配置；MCP cabinetUpgrade沿原批量预演/mutate/保存。新组件最低v73，基本v2仍v72。见[搭建契约](CABINET-BUILDER.md#重接复用三类组件与试点升级2026-11-08)。
+
 2026-11-08（霜山提手默认）：按用户确认改为放平静态资产，catalog／product-rules新建高180mm；本型号geometryVersion2覆盖几何缓存与确认，无新字段／格式。旧保存高度不改写。见[局部复验](validation/toolbox-shimoyama-folded-20261108/README.md)。
 
 2026-11-08（组件柜搭建）：新增cabinet-builder-core与cabinet-builder经典脚本，v2组件树以稳定ID／连接／相对安装位置持久，核心派生mm板件调用共用生产构造；正视拖放、三维、数字实体、场景门抽和GLB同源。库沿store.custom／原mutate保存，含新树最低v72，保留toolbox v71及其余格式。见[乐高式搭建](CABINET-BUILDER.md)。
