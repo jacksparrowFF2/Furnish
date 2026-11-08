@@ -1,0 +1,27 @@
+'use strict';
+const assert=require('node:assert/strict'),B=require('../src/core/cabinet-builder-core.js'),M=require('../src/core/cabinet-motion.js'),R=require('../src/core/repository-core.js'),D=require('../src/core/design-core.js');
+const near=(a,b)=>assert(Math.abs(a-b)<.002,`${a} != ${b}`),box={boxId:'box1'};
+let f=B.update(B.create({id:'editing',cx:2000,cy:2000,rot:37,flip:true,mountHeight:120}),box,{w:900,h:1200,d:600,backThickness:6});
+let r=B.add(f,'shelf',{...box,at:.3});f=r.furniture;const lower=r.selected;
+r=B.add(f,'shelf',{...box,at:.7});f=r.furniture;const upper=r.selected,original=JSON.stringify(f);
+let m=B.measurements(f)[0];near(m.width,864);assert.equal(m.spaces.length,3);near(m.spaces.reduce((n,g)=>n+g.height,0)+36,1164);assert(m.spaces.every(g=>g.depths.every(d=>d.depth===594)));
+const info=B.shelfInfo(f,lower),board=M.boards(f,{includeStatic:true}).find(v=>v.metadata.cabinetBuilder?.componentId===lower.componentId);near(info.position,board.bottom);near(info.depth,594);near(info.lower.height,board.bottom-18);
+for(const side of ['lower','upper']){const edit=B.editShelfClearance(f,lower,side,100);near(B.shelfInfo(edit,lower)[side].height,100);assert.deepEqual(B.selection(edit,upper).component,B.selection(f,upper).component);}
+near(B.shelfInfo(B.editShelfClearance(f,lower,'lower',40),lower).lower.height,40);assert.throws(()=>B.editShelfClearance(f,lower,'lower',39.99),/范围/);assert.throws(()=>B.moveShelf(f,lower,NaN),/无效/);
+near(B.shelfInfo(B.moveShelf(f,lower,-100,{clamp:true}),lower).position,info.min);near(B.shelfInfo(B.moveShelf(f,lower,info.position+13,{snap:true}),lower).position%10,8);
+const equal=B.equalShelves(f,lower),spaces=B.measurements(equal)[0].spaces;for(const s of spaces)near(s.height,spaces[0].height);assert.equal(JSON.stringify(f),original,'all edits are immutable');
+r=B.add(f,'divider',{...box,at:.5});f=r.furniture;const divider=r.selected,total=f.w,v=B.dividerInfo(f,divider);near(v.left,423);near(v.right,423);
+f=B.moveDivider(f,divider,v.position+50);near(B.dividerInfo(f,divider).left,473);near(B.dividerInfo(f,divider).right,373);assert.equal(f.w,total);
+f=B.resizeBay(f,box,'left',400);near(B.measurements(f)[0].width,400);assert.equal(f.w,total);f=B.moveDivider(f,divider,B.dividerInfo(f,divider).min);near(B.dividerInfo(f,divider).left,100);assert.throws(()=>B.moveDivider(f,divider,B.dividerInfo(f,divider).min-.01),/100mm/);
+let closed=B.add(B.create(), 'multiDoor',{...box,params:B.doorComponent(3)}).furniture;near(B.measurements(closed)[0].spaces[0].depths[0].depth,414);assert.equal(B.measurements(closed)[0].spaces[0].depths.length,1,'door seams are not usable full-depth slots');
+assert.deepEqual(B.measurements(B.setOpening(closed,true)),B.measurements(closed),'storage dimensions use the closed production geometry');
+let zones=B.update(B.create(),box,{h:1200});zones=B.add(zones,'openZone',{...box,params:{...B.defaultPart('openZone',B.box()),from:.35,to:.6,back:false,side:'both',lower:true,upper:true}}).furniture;const zm=B.measurements(zones)[0];assert(zm.sideOpen);assert(zm.spaces.some(g=>g.depths.some(d=>d.openBack&&d.depth===450)));assert(zm.spaces.some(g=>g.depths.some(d=>!d.openBack&&d.depth===432)));
+let open=B.update(B.create(),box,{bottom:false,top:false,backThickness:0});m=B.measurements(open)[0];assert(m.bottomOpen&&m.topOpen);near(m.spaces[0].height,720);near(m.spaces[0].depths[0].depth,450);
+let assembly=B.addBox(f,{target:'box1',side:'top',params:{...B.box(),w:800,h:500,d:350}}).furniture;const second=B.measurements(assembly).find(v=>v.boxId!=='box1');near(second.spaces[0].depths[0].depth,332);assert(second.y>0);
+let fixed=B.add(B.update(B.create(),box,{h:1200}),'panel',{...box,at:.5}).furniture;fixed=B.add(fixed,'shelf',{...box,at:.2}).furniture;fixed=B.add(fixed,'shelf',{...box,at:.75}).furniture;const e=B.equalShelves(fixed,box),gaps=B.measurements(e)[0].spaces;near(gaps[0].height,gaps[1].height);near(gaps[2].height,gaps[3].height);
+let drawer=B.add(B.create(),'drawers',box).furniture;drawer=B.add(drawer,'shelf',{...box,at:.8}).furniture;const di=B.shelfInfo(drawer,{...box,componentId:drawer.cabinet.boxes[0].components.at(-1).id});assert(di.lower.bottom>=300,'drawer body constrains shelf movement');
+const all=B.setOpening(B.add(closed,'drawers',box).furniture,true);assert(all.cabinet.boxes[0].components.filter(p=>p.kind==='multiDoor').every(p=>p.segments.every(s=>s.leaves.every(l=>l.open))));assert(all.cabinet.boxes[0].components.find(p=>p.kind==='drawers').open);
+const id=require('../src/data/plans.js')[0].id,asset={...B.preset(assembly,null,'editing-kit'),id:'kit'},workspace={v:72,planId:id,work:{[id]:{furniture:[assembly]}},designs:[{id:'copy',name:'copy',planId:id,work:{furniture:[assembly]}}],custom:[asset]};
+const restored=R.parse(JSON.parse(R.text(workspace)));assert.deepEqual(restored.work[id].furniture[0].cabinet,assembly.cabinet);assert.deepEqual(restored.custom[0].cabinet,asset.cabinet);assert.deepEqual(B.measurements(restored.work[id].furniture[0]),B.measurements(assembly));
+const pasted=D.pasteFurniture({cx:assembly.cx,cy:assembly.cy,items:[assembly]},{x:4000,y:4000},{x:0,y:0,w:10000,h:10000},()=> 'copy').items[0];assert.deepEqual(pasted.cabinet,assembly.cabinet);
+console.log('PASS builder editing: physical net dimensions, shelf gaps/limits/snap/equal spacing, divider widths, open boundaries, closed faces, different depths, immutable edits and repository/catalog/copy round trips');

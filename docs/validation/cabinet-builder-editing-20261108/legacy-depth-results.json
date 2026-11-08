@@ -1,0 +1,80 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "selected bay is reachable",
+      "model visibly annotates net depth 314",
+      "model visibly annotates net depth 314",
+      "model visibly annotates net depth 314",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 332",
+      "cancel preserves saved back setting",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 344",
+      "model visibly annotates net depth 326",
+      "model visibly annotates net depth 344",
+      "model visibly annotates net depth 326",
+      "depth overlays have no page errors"
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "selected bay is reachable",
+      "model visibly annotates net depth 314",
+      "model visibly annotates net depth 314",
+      "model visibly annotates net depth 314",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 332",
+      "cancel preserves saved back setting",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 344",
+      "model visibly annotates net depth 326",
+      "model visibly annotates net depth 344",
+      "model visibly annotates net depth 326",
+      "depth overlays have no page errors"
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "selected bay is reachable",
+      "model visibly annotates net depth 314",
+      "model visibly annotates net depth 314",
+      "model visibly annotates net depth 314",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 332",
+      "cancel preserves saved back setting",
+      "selected bay is reachable",
+      "model visibly annotates net depth 326",
+      "model visibly annotates net depth 326",
+      "selected bay is reachable",
+      "model visibly annotates net depth 344",
+      "model visibly annotates net depth 326",
+      "model visibly annotates net depth 344",
+      "model visibly annotates net depth 326",
+      "depth overlays have no page errors"
+    ]
+  }
+]

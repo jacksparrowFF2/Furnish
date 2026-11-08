@@ -49,7 +49,7 @@ function cabinetPropertyHelp(root){
   note.addEventListener('toggle',()=>help.setAttribute('aria-expanded',String(note.matches(':popover-open'))));anchor.append(help);
  }
 }
-function cabinetViewTools(prefix){return `<label>操作<select id="${prefix}-interaction"><option value="edit">选择编辑</option><option value="open">开合预览</option></select></label><label>标注范围<select id="${prefix}-dimension-mode"><option value="current">当前部件</option><option value="all">全部尺寸</option></select></label><button type="button" class="btn cab-expand" id="${prefix}-expand">放大画布</button>`;}
+function cabinetViewTools(prefix,{expand=true}={}){return `<label>操作<select id="${prefix}-interaction"><option value="edit">选择编辑</option><option value="open">开合预览</option></select></label><label>标注范围<select id="${prefix}-dimension-mode"><option value="current">当前部件</option><option value="all">全部尺寸</option></select></label>${expand?`<button type="button" class="btn cab-expand" id="${prefix}-expand">放大画布</button>`:''}`;}
 function cabinetExpandCanvas(button){const editor=button.closest('.cab-editor'),expanded=editor.classList.toggle('cab-expanded');button.textContent=expanded?'还原布局':'放大画布';button.setAttribute('aria-pressed',String(expanded));}
 function cabinetViewButton(prefix,front){const button=document.getElementById(prefix+'-front'),three=document.getElementById(prefix+'-3d');button.textContent='正视编辑';button.setAttribute('aria-pressed',String(front));three?.setAttribute('aria-pressed',String(!front));}
 function cabinetAdvancedGroup(root,title,key,kind='cab'){
