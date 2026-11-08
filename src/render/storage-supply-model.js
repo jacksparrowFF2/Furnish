@@ -52,7 +52,7 @@ function build(T,f){
  if(products().definition(f).garmentPhoto&&T.DataTexture&&group.children[0]?.material){
   let maps=garmentMaps.get(asset);
   if(!maps){maps=asset.textures.map(t=>{const map=new T.DataTexture(Uint8Array.from(atob(t.rgba),c=>c.charCodeAt(0)),t.width,t.height);map.colorSpace=T.SRGBColorSpace;map.flipY=false;map.needsUpdate=true;return map;});garmentMaps.set(asset,maps);}
-  group.children.forEach((mesh,i)=>{const p=asset.parts[i];if(p.texture===undefined)return;mesh.geometry.setAttribute('uv',new T.Float32BufferAttribute(p.uvs,2));mesh.material.map=maps[p.texture];mesh.material.needsUpdate=true;});
+  group.children.forEach((mesh,i)=>{const p=asset.parts[i];if(p.texture===undefined)return;mesh.geometry.setAttribute('uv',new T.Float32BufferAttribute(p.uvs,2));mesh.material.map=maps[p.texture];if(p.material.emissiveIntensity)mesh.material.emissiveMap=maps[p.texture];mesh.material.needsUpdate=true;});
  }
  if(['beverage-can-330','beverage-can-500'].includes(profile)&&asset.textures&&T.DataTexture&&group.children[0]?.material){
   let maps=canLabelMaps.get(asset);

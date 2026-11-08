@@ -29,12 +29,15 @@ for o in objects:
   rgba=bytes(max(0,min(255,round(v*255))) for v in im.pixels[:]);key=hashlib.sha256(rgba).hexdigest()
   if key not in images:images[key]=len(textures);textures.append({'width':w,'height':h,'rgba':base64.b64encode(rgba).decode()})
   part.update(uvs=uv,texture=images[key])
+  emission=bs.inputs['Emission Color'].links
+  if len(emission)!=1 or emission[0].from_node.image!=im or abs(bs.inputs['Emission Strength'].default_value-1)>1e-6:raise ValueError('Missing scoped photo readability material')
+  part['material'].update(emissive='#ffffff',emissiveIntensity=1)
  elif links:raise ValueError('Photo leaked to hook')
  parts.append(part)
 for k,(lo,hi) in enumerate([(-s['size'][0]/2000,s['size'][0]/2000),(0,s['size'][1]/1000),(-s['size'][2]/2000,s['size'][2]/2000)]):
  vals=[v for p in parts for v in p['positions'][k::3]]
  if max(abs(min(vals)-lo),abs(max(vals)-hi))>1e-6:raise ValueError('Garment dimensions differ')
 asset={'format':1,'id':profile,'version':1,'sizeMm':s['size'],'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'parts':parts,'textures':textures}
-script='/* Photo garment: closed silhouette, original photo UV, simplified reverse. */\n(function(root){const asset='+json.dumps(asset,separators=(',',':'))+';if(typeof module==="object"&&module.exports)module.exports=asset;else root.'+s['global']+'=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
+script='/* Photo garment: closed silhouette, two reference-photo faces, scoped photo readability. */\n(function(root){const asset='+json.dumps(asset,separators=(',',':'))+';if(typeof module==="object"&&module.exports)module.exports=asset;else root.'+s['global']+'=asset;})(typeof globalThis!=="undefined"?globalThis:this);\n'
 target.parent.mkdir(parents=True,exist_ok=True);target.write_text(script,encoding='utf8')
 (source.parent/'publish.json').write_text(json.dumps({'passed':True,'profile':profile,'parts':len(parts),'textures':len(textures),'blender':bpy.app.version_string,'sourceSha256':asset['sourceSha256']},indent=2),encoding='utf8')

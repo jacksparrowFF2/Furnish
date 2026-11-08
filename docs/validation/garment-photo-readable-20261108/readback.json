@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "file": "assets\\models\\garment-autumn-jacket\\v5\\garment-autumn-jacket-v1.glb",
+      "photoMaterials": 1,
+      "baseAndEmissionTextureMatched": true,
+      "strength": 1
+    },
+    {
+      "file": "assets\\models\\garment-long-down\\v5\\garment-long-down-v1.glb",
+      "photoMaterials": 1,
+      "baseAndEmissionTextureMatched": true,
+      "strength": 1
+    },
+    {
+      "file": "assets\\models\\garment-short-down\\v5\\garment-short-down-v1.glb",
+      "photoMaterials": 1,
+      "baseAndEmissionTextureMatched": true,
+      "strength": 1
+    },
+    {
+      "file": "output\\desktop-verification\\garment-K1KjfZ\\desktop.glb",
+      "photoMaterials": 3,
+      "baseAndEmissionTextureMatched": true,
+      "strength": 1
+    }
+  ]
+}

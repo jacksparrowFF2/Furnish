@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "executable": "D:\\1601装修\\Furnish程序\\Furnish-win32-x64\\Furnish.exe",
+  "source": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\garment-photo-readable-20261108\\workspace-snapshot.furnish.json",
+  "sourceSha256": "d826d01ba9f11440837927622c4f54cd25fd304ef06998c1ebb2cc139ad9924c",
+  "formalFileUnchanged": true,
+  "isolatedRoot": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop-verification\\garment-2Jxsfx\\workspace",
+  "parts": 6,
+  "undoRedo": true,
+  "thicknessAndElevation": true,
+  "saveRefresh": true,
+  "narrow": true,
+  "errors": []
+}

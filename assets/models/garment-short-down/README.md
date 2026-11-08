@@ -8,11 +8,11 @@
 
 | 内容 | 文件 |
 |---|---|
-| 可编辑源 | [BLEND](v4/garment-short-down-v1.blend) |
-| 交换模型 | [GLB](v4/garment-short-down-v1.glb) |
+| 可编辑源 | [BLEND](v5/garment-short-down-v1.blend) |
+| 交换模型 | [GLB](v5/garment-short-down-v1.glb) |
 | 离线运行资产 | [JS](../../../src/data/garment-short-down-blender-asset.js) |
 | 生产构造器 | [代码](../../../src/render/storage-supply-model.js) |
-当前源GLB SHA256：229dd0488fb55132b76ce1323458ad03ec63b8d6efecf119f1d272ccbdf28703。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
+当前源GLB SHA256：0a26978ea3116ada882c4219d52ff0e717606ed8e927ef209f6c5aa449074251。历史版本及材质工程见[总索引](../index.json)，保留原版本目录。
 
 ## 输入参考资料
 
@@ -32,9 +32,10 @@
 ## 验收入口
 
 - [验收资料](../../../docs/validation/garment-photo-20261108/README.md)
+- [验收资料](../../../docs/validation/garment-photo-readable-20261108/README.md)
 
 ## 资料差异
 
 - 日本M尺码表衣身长680mm、肩宽460mm、身宽605mm；照片含帽及衣架后外包720×110×960mm为布局估算，厚度110mm为用户授权模拟值。
-- 正面使用商品原图UV；背面与侧边为衣物中部素色采样，不虚构背面照片。
+- 正反两面复用正面参考照片，侧边保留素色采样；背面为布局示意，非实物背照。衣片单独补偿照片亮度。
 - BG0网页Full/WASM抠图，透明PNG为衍生资料；原图保留，作者读取alpha生成实体轮廓，照片纹理仍来自原图。

@@ -1,5 +1,6 @@
 """Photo UVs on a closed garment silhouette and independent reference hook.
-Reference pixels remain untouched. Rear and edges use a constant fabric sample.
+Reference pixels remain untouched. Both faces show the reference photo;
+the reverse is a layout illustration, not a real rear photograph.
 """
 import bpy, bmesh, sys, json, pathlib, math
 from mathutils import Vector
@@ -71,6 +72,9 @@ s['parts']={'body':[(x*s['imageSize'][0]/iw,y*s['imageSize'][1]/ih) for x,y in p
 mat=bpy.data.materials.new('photo-fabric');mat.use_nodes=True
 bs=next(n for n in mat.node_tree.nodes if n.type=='BSDF_PRINCIPLED');bs.inputs['Roughness'].default_value=.95
 tex=mat.node_tree.nodes.new('ShaderNodeTexImage');tex.image=im;mat.node_tree.links.new(tex.outputs['Color'],bs.inputs['Base Color'])
+# Photo cards retain photographed shading under dim indoor lighting. This is
+# scoped to the fabric, not a light source or a global exposure adjustment.
+mat.node_tree.links.new(tex.outputs['Color'],bs.inputs['Emission Color']);bs.inputs['Emission Strength'].default_value=1
 w,h,d=[v/1000 for v in s['size']];points=[p for pp in s['parts'].values() for p in pp];minx=min(p[0] for p in points);maxx=max(p[0] for p in points);miny=min(p[1] for p in points);maxy=max(p[1] for p in points)
 cloth_h=h-.09;sw,sh=s['imageSize'];objects=[]
 for name,poly in s['parts'].items():
@@ -87,7 +91,7 @@ for name,poly in s['parts'].items():
  for pi,p in enumerate(mesh.polygons):
   for li in p.loop_indices:
    vi=mesh.loops[li].vertex_index%n;x,y=poly[vi]
-   uv.data[li].uv=(x/sw,1-y/sh) if front[pi] else (.50,.47)
+   uv.data[li].uv=(x/sw,1-y/sh) if pi<2*len(tris) else (.50,.47)
  o=bpy.data.objects.new(name,mesh);bpy.context.collection.objects.link(o);o.data.materials.append(mat);objects.append(o)
  bm=bmesh.new();bm.from_mesh(mesh);bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces));bm.to_mesh(mesh);bm.free()
 # A visible hook above the hood/collar, behind the printed front. Layout reference,
