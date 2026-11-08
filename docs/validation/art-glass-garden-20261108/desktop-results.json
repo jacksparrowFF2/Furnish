@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "catalog; nine choices; actual property edits; thin decimal depth; invalid input; lock; undo/redo",
+    "v46 save and refresh",
+    "390px desktop property layout",
+    "packaged EXE production WebGL and GLB",
+    "nine production sample panes export with embedded optical textures",
+    "HTTP browser saved-file read",
+    "offline file:// production loading and GLB"
+  ],
+  "errors": [],
+  "sourceSha256": "9265a499a4389241b6594ce4cbac3563cc7237b52f0edd69e1102eaa3292ca6b"
+}

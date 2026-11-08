@@ -1,0 +1,103 @@
+{
+  "blender": "5.2.3 LTS",
+  "executable": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "transfers": [
+    {
+      "file": "desktop.glb",
+      "panes": 1,
+      "grainMaterialSlots": 0
+    },
+    {
+      "file": "file.glb",
+      "panes": 1,
+      "grainMaterialSlots": 0
+    },
+    {
+      "file": "api-download.blend",
+      "panes": 9,
+      "grainMaterialSlots": 2
+    },
+    {
+      "file": "after-front.glb",
+      "panes": 9,
+      "grainMaterialSlots": 2
+    },
+    {
+      "file": "after-front.blend",
+      "panes": 9,
+      "grainMaterialSlots": 2
+    },
+    {
+      "file": "after-oblique.glb",
+      "panes": 9,
+      "grainMaterialSlots": 2
+    },
+    {
+      "file": "after-oblique.blend",
+      "panes": 9,
+      "grainMaterialSlots": 2
+    }
+  ],
+  "views": [
+    {
+      "version": "before",
+      "view": "front",
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "sourceSha256": "c678272ca8fd657690ddb1c0c1f282c3a7915b7b1e11285137f7590a56c263df",
+      "reopened": true
+    },
+    {
+      "version": "before",
+      "view": "oblique",
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "sourceSha256": "7ccb7aac892be10e5e5c0b47b70964c721a40fd4743b957bd1eb157d510ac43f",
+      "reopened": true
+    },
+    {
+      "version": "after",
+      "view": "front",
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "sourceSha256": "d72ccc8c4de4f13a13eb4b0f732092ef2d7b42794d6f36dafe8b010f7a2b1ae8",
+      "reopened": true
+    },
+    {
+      "version": "after",
+      "view": "oblique",
+      "device": {
+        "requested": "gpu",
+        "type": "GPU",
+        "backend": "OPTIX",
+        "devices": [
+          "NVIDIA GeForce RTX 4070 Ti SUPER"
+        ],
+        "fallback": null
+      },
+      "sourceSha256": "daf85cf31c94a0b039a667edda075bf5c1d48dd4ffabc9983d04ab91979a7767",
+      "reopened": true
+    }
+  ]
+}

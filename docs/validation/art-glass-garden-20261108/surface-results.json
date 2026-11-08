@@ -1,0 +1,29 @@
+{
+  "sources": {
+    "before": "859f8f3514059beff14b5d3ba0e477684cdf4a502e3f5b42aa3f5ba75f43842c",
+    "after": "38de042b5d737df322d6c8df3bac09439293859267f1135dccfcae8a2b69345d"
+  },
+  "views": [
+    {
+      "version": "before",
+      "view": "front",
+      "triangles": 1836
+    },
+    {
+      "version": "before",
+      "view": "oblique",
+      "triangles": 1836
+    },
+    {
+      "version": "after",
+      "view": "front",
+      "triangles": 1836
+    },
+    {
+      "version": "after",
+      "view": "oblique",
+      "triangles": 1836
+    }
+  ],
+  "errors": []
+}
