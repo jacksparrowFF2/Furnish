@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-67份产品／设计档案，192张参考图，12张历史原图待补；40组Blender模型。参数化验证配置89组，全部家具库172条目／144种类型。
+70份产品／设计档案，201张参考图，12张历史原图待补；43组Blender模型。参数化验证配置89组，全部家具库175条目／147种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -37,6 +37,9 @@
 | [艾美特 小暴风 PRO FA18-X231 空气循环扇](fan-x231/README.md) | 3 | [BLEND](fan-x231/v2/fan-x231-v1.blend) · [GLB](fan-x231/v2/fan-x231-v1.glb) | 0 |
 | [冻干桶 · meoof 6L](freeze-dry-bucket-6l/README.md) | 2 | [BLEND](storage-supplies/freeze-dry-bucket-6l/v3/freeze-dry-bucket-6l-v1.blend) · [GLB](storage-supplies/freeze-dry-bucket-6l/v3/freeze-dry-bucket-6l-v1.glb) | 0 |
 | [纯平四门冰箱（双抽屉）](fridge/README.md) | 0 | [BLEND](fridge/v2/fridge-v1.blend) · [GLB](fridge/v2/fridge-v1.glb) | 0 |
+| [秋季夹克 · 优衣库照片厚片](garment-autumn-jacket/README.md) | 3 | [BLEND](garment-autumn-jacket/v4/garment-autumn-jacket-v1.blend) · [GLB](garment-autumn-jacket/v4/garment-autumn-jacket-v1.glb) | 0 |
+| [长款羽绒服 · 优衣库照片厚片](garment-long-down/README.md) | 3 | [BLEND](garment-long-down/v4/garment-long-down-v1.blend) · [GLB](garment-long-down/v4/garment-long-down-v1.glb) | 0 |
+| [短款羽绒服 · 优衣库照片厚片](garment-short-down/README.md) | 3 | [BLEND](garment-short-down/v4/garment-short-down-v1.blend) · [GLB](garment-short-down/v4/garment-short-down-v1.glb) | 0 |
 | [心相印卷纸 · 9卷层（3层27卷）](heartlink-roll-layer/README.md) | 0 | [BLEND](storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.blend) · [GLB](storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.glb) | 0 |
 | [心相印抽纸 · 6包层（4层24包）](heartlink-tissue-layer/README.md) | 0 | [BLEND](storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.blend) · [GLB](storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.glb) | 0 |
 | [方太抽油烟机 JCD10TA](hood/README.md) | 0 | [BLEND](hood/v2/hood-v1.blend) · [GLB](hood/v2/hood-v1.glb) | 0 |

@@ -210,6 +210,11 @@ const LIB = [
     ["toilet_paper_pack_reference", "整提卷纸 · 220×220×340估算", 220, 220, "#664895",undefined,340],
     ["tissue_pack_reference", "整提抽纸 · 330×120×200估算", 330, 120, "#2b9bb9",undefined,200],
   ]},
+  {cat:'衣物', items:[
+    ['garment_down_short_photo','短款羽绒服 · 优衣库照片厚片（尺寸估算）',720,110,'#202126',undefined,960],
+    ['garment_down_long_photo','长款羽绒服 · 优衣库照片厚片（尺寸估算）',650,130,'#23252e',undefined,1260],
+    ['garment_jacket_photo','秋季夹克 · 优衣库照片厚片（尺寸估算）',730,45,'#5d4b34',undefined,800],
+  ]},
   {cat:'生活用品', items:[
     ["cat_tower_jd_10141711472484","猫爬架 · 通天柱套餐二",800,470,"#dfc79d",0,products.height({type:"cat_tower_jd_10141711472484"})],
     ["cat_tree","猫爬架 · 绿叶成荫围栏款",500,500,"#75a533",0,products.height({type:"cat_tree"})],
@@ -301,6 +306,7 @@ const useTypes={
 };
 function itemUses(it){
  const result=uses.filter(([id])=>useTypes[id].includes(it[0])).map(([id])=>id);
+ if(products.definition(it[0])?.garmentPhoto)result.push('bedroom','entry');
  if(products.definition(it[0])?.garden){if(!result.includes('living'))result.push('living');if(!result.includes('laundry'))result.push('laundry');}
  if(it[0]==='counter')result.push(String(it[10]||'').startsWith('laundry')?'laundry':'kitchen');
  if(it[0]==='ksink'&&LIB.find(c=>c.cat==='阳台柜').items.includes(it))result.push('laundry');

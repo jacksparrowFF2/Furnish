@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "executable": "D:\\1601装修\\Furnish程序\\Furnish-win32-x64\\Furnish.exe",
+  "source": "D:\\1601装修\\Furnish项目\\workspace.furnish.json",
+  "sourceSha256": "ad8e2334cdf7666ee2459b014208fb1b1f7f161c0d8d32b2a6477fcfc24e6fed",
+  "formalFileUnchanged": true,
+  "isolatedRoot": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\desktop-verification\\garment-ktvFGu\\workspace",
+  "parts": 6,
+  "undoRedo": true,
+  "thicknessAndElevation": true,
+  "saveRefresh": true,
+  "narrow": true,
+  "errors": []
+}

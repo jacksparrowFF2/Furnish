@@ -3,6 +3,17 @@
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'..'),supplies=require('./lib/storage-supply-specs.json');
 async function main(args=process.argv.slice(2)){
+ const garment=/^(author|publish)-(garment-short-down|garment-long-down|garment-autumn-jacket)$/.exec(args[0]||'');
+ if(garment){
+  const [,operation,profile]=garment,input=path.resolve(args[1]||''),blender=require('./blender-server.cjs').findBlender();
+  if(!args[1]||!blender)throw Error('Garment input and installed Blender required');
+  const script=operation==='author'?'blender-model-garment-photos.py':'publish-garment-photos.py';
+  const argv=operation==='author'?[profile,input]:[profile,input,path.join(root,'src/data/'+profile+'-blender-asset.js')];
+  const child=cp.spawnSync(blender,['--background','--factory-startup','--disable-autoexec','--python-exit-code','1','--python',path.join(__dirname,script),'--',...argv],{cwd:root,windowsHide:true,encoding:'utf8',timeout:180000,maxBuffer:5*1024*1024});
+  if(child.error||child.status!==0)throw child.error||Error('Garment '+operation+' failed: '+child.stdout+'\n'+child.stderr);
+  const result=path.join(operation==='author'?input:path.dirname(input),operation+'.json');
+  console.log(JSON.stringify(JSON.parse(fs.readFileSync(result,'utf8'))));return;
+ }
  const [command,input]=args,match=/^(author|publish)-(se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|chair-s05118|chair-vihals|pet-bowl|litter-bag|fan-x231|cat-tower|corner-bookcase-580|storage-toolbox|medicine-box|toilet-paper-pack|tissue-pack|heartlink-roll-layer|heartlink-tissue-layer|wet-wipes-pack|cat-food-2kg|freeze-dry-bucket-6l|beverage-can-330|beverage-can-500|toolbox-shimoyama-9l|toolbox-jiabangshou-390|storage-bin-shallow-large|storage-bin-deep-medium|storage-bin-deep-large|storage-bin-deeper-medium|storage-bin-deeper-large|storage-bin-ultradeep-medium|storage-bin-ultradeep-large)$/.exec(command||'');
  if(!match||!input)throw Error('Usage: node scripts/blender-asset.cjs author-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|chair-s05118|chair-vihals|pet-bowl|litter-bag|fan-x231|cat-tower|corner-bookcase-580> <new-directory> | publish-<se2|y52y09|fridge|dishwasher|hood|washer|washer-tg10k60w|side-table|armchair|armchair-berlin|stack-stool|corner-bookcase|sofa-bed|chair-s05118|chair-vihals|pet-bowl|litter-bag|fan-x231|cat-tower|corner-bookcase-580> <model.glb>');
  const [,operation,profile]=match,source=path.resolve(input),output=path.join(root,'src/data/'+profile+'-blender-asset.js');

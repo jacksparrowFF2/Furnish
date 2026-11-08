@@ -1,0 +1,21 @@
+/* Packaged EXE; isolated source/cache/port and a copy of the current formal file. */
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto'),{_electron}=require('playwright');
+const root=path.resolve(__dirname,'..'),F=require('../scripts/lib/model-browser-fixture.cjs'),Artifacts=require('../scripts/lib/test-artifacts.cjs');
+const sha=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+(async()=>{
+const executable=require('../scripts/launch-desktop.cjs').desktopExecutable(root);
+const source=process.env.FURNISH_GARMENT_VERIFY_WORKSPACE||path.join(root,'projects/workspace.furnish.json'),before=sha(source),job=Artifacts.createRun({parent:path.join(root,'output/desktop-verification'),prefix:'garment-'}),run=job.dir;
+let desktop,passed=false;try{
+ const isolated=job.workspace('workspace',root,{directories:['src','styles','vendor'],files:['index.html','manifest.webmanifest']});fs.mkdirSync(path.join(isolated,'scripts'),{recursive:true});for(const name of require('../scripts/package-desktop.cjs').runtimeFiles)fs.copyFileSync(path.join(root,'scripts',name),path.join(isolated,'scripts',name));fs.mkdirSync(path.join(isolated,'projects'),{recursive:true});fs.copyFileSync(source,path.join(isolated,'projects/workspace.furnish.json'));job.discard('cache');
+ const server=http.createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;await new Promise(r=>server.close(r));
+ const env={...process.env,FURNISH_DESKTOP_ROOT:isolated,FURNISH_DESKTOP_PROFILE:path.join(run,'cache'),FURNISH_PORT:String(port)};delete env.ELECTRON_RUN_AS_NODE;
+ desktop=await _electron.launch({executablePath:executable,env,timeout:60000});const page=await desktop.firstWindow(),errors=[];page.setDefaultTimeout(45000);page.on('pageerror',e=>errors.push(e.message));await page.waitForFunction(()=>typeof repositoryBooting!=='undefined'&&!repositoryBooting);
+ const rows=require('../scripts/lib/model-profiles.cjs').profiles().filter(p=>p.type.startsWith('garment_')),scene=rows.map((p,i)=>({...p.fixture,id:'garment-'+i,cx:8500+(i-1)*950,cy:4200,mountHeight:1700-p.fixture.h}));
+ await page.evaluate(scene=>mutate(()=>{state.furniture=scene;}),scene);await page.getByRole('button',{name:'3D 场景',exact:true}).click();await page.waitForFunction(()=>is3D()&&!switching);await page.evaluate(()=>{selectIds(state.furniture.map(f=>f.id));View3D.focusSelection();});await page.waitForTimeout(700);await page.evaluate(()=>selectIds([]));
+ const geom=await F.capture(page,path.join(run,'desktop.glb'));assert.equal(geom.parts.length,6);await page.screenshot({path:path.join(run,'desktop.png')});
+ const old=await page.evaluate(()=>JSON.stringify(state.furniture));await page.evaluate(()=>mutate(()=>{state.furniture[0]=FurnishDesign.resizeFurniture(state.furniture[0],{d:70});state.furniture[0]=FurnishProducts.editBottomHeight(state.furniture[0],800);}));const changed=await page.evaluate(()=>JSON.stringify(state.furniture));assert.notEqual(old,changed);await page.evaluate(()=>undo());assert.equal(await page.evaluate(()=>JSON.stringify(state.furniture)),old);await page.evaluate(()=>redo());assert.equal(await page.evaluate(()=>JSON.stringify(state.furniture)),changed);await page.evaluate(()=>FurnishRepository.flush());await page.reload();await page.waitForFunction(()=>typeof repositoryBooting!=='undefined'&&!repositoryBooting);assert.deepEqual(await page.evaluate(()=>state.furniture),JSON.parse(changed));
+ await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual(errors,[]);assert.equal(sha(source),before);
+ fs.writeFileSync(path.join(run,'result.json'),JSON.stringify({passed:true,executable,source,sourceSha256:before,formalFileUnchanged:true,isolatedRoot:isolated,parts:geom.parts.length,undoRedo:true,thicknessAndElevation:true,saveRefresh:true,narrow:true,errors},null,2));passed=true;console.log(run);
+}finally{if(desktop){await desktop.evaluate(({BrowserWindow})=>{for(const w of BrowserWindow.getAllWindows())w.destroy();});await desktop.close();}job.finish(passed);}
+})().catch(e=>{console.error(e);process.exitCode=1;});

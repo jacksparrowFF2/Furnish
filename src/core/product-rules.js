@@ -220,6 +220,13 @@ for(const [type,envelope] of Object.entries(envelopes))types[type]={...types[typ
 // Historical vanity body/installation, separate from its basin, faucet and mirror envelope.
 types.vanity.cabinet={bodyHeight:450,bottom:330,aboveBody:1180,min:200,max:3200};
 for(const type of ['purifier','crib','sidetable','shower','bathtub','floorlamp','plant','piano','treadmill','dryingrack'])types[type]={...types[type],solidModel:{global:'FurnishLegacyFurnitureModel',module:'legacy-furniture',positionSeed:true,rounded:true},productionEnvelope:true};
+// Photo clothes use the existing static inventory/elevation/persistence contract.
+// Width/depth/height describe the whole silhouette including its reference hook.
+for(const [type,profile,kind,height,brand,model,sourceUrl] of [
+ ['garment_down_short_photo','garment-short-down','短款羽绒服',960,'优衣库/UNIQLO（外观参考）','449725 · 照片厚片；悬挂尺寸估算','https://www.uniqlo.com/jp/ja/products/E449725-000/00'],
+ ['garment_down_long_photo','garment-long-down','长款羽绒服',1260,'优衣库/UNIQLO（外观参考）','473548 · 照片厚片；悬挂尺寸估算','https://item.jd.com/10177558893420.html'],
+ ['garment_jacket_photo','garment-autumn-jacket','秋季外套',800,'优衣库/UNIQLO（外观参考）','459592 · 照片厚片；悬挂尺寸估算','https://www.uniqlo.com/us/en/products/E459592-000/00?colorDisplayCode=37'],
+])types[type]={kind,family:'storage-supply',storageSupply:profile,storageSupplyRevision:2,garmentPhoto:true,footprintMin:{w:100,d:10},height,anchor:'bottom',defaultFrontClearance:0,defaults:{mountHeight:0},fields:['mountHeight'],create:['mountHeight'],solidModel:{global:'FurnishStorageSupplyModel',module:'storage-supply',geometryVersion:1},identity:{brand,model,sourceUrl}};
 // Preserve each historical installation mechanism. New floor offsets are applied
 // at shared production/spatial boundaries, never inside individual constructors.
 for(const [type,rule] of Object.entries(types)){
@@ -420,7 +427,7 @@ function gardenLayout(f){
  if(post*4>=f.w||board+post>=lower)throw Error('立柱／板厚与架体尺寸冲突');
  return {lower,upperDepth,post,board,gap};
 }
-const footprintMinimum=(f,key)=>!f.obj&&definition(f)?.glass?(key==='w'?definition(f).glass.minWidth:definition(f).glass.minDepth):!f.obj&&definition(f)?.windowLining?(key==='w'?definition(f).windowLining.minWidth:definition(f).windowLining.minDepth):!f.obj&&key==='d'&&definition(f)?.telescopic?.leafDepth?definition(f).telescopic.panels*definition(f).telescopic.leafDepth:Number.isFinite(f?.[key])&&f[key]>0?Math.min(50,f[key]):50;
+const footprintMinimum=(f,key)=>!f.obj&&definition(f)?.footprintMin?.[key]!==undefined?definition(f).footprintMin[key]:!f.obj&&definition(f)?.glass?(key==='w'?definition(f).glass.minWidth:definition(f).glass.minDepth):!f.obj&&definition(f)?.windowLining?(key==='w'?definition(f).windowLining.minWidth:definition(f).windowLining.minDepth):!f.obj&&key==='d'&&definition(f)?.telescopic?.leafDepth?definition(f).telescopic.panels*definition(f).telescopic.leafDepth:Number.isFinite(f?.[key])&&f[key]>0?Math.min(50,f[key]):50;
 const height=f=>f.h??definition(f)?.height;
 function bottomMode(f){if(f?.obj)return 'offset';const r=definition(f),mode=r?.bottomElevation?.mode||'offset';return mode==='surface'&&(f.mountHeight!==undefined||r.standaloneSurface&&(f.counterElevation===undefined&&!f.counterLink&&!f.sinkNotch&&f.sinkBowlHeight===undefined&&!vesselSink(f)))?'offset':mode;}
 const elevationOrigins=new WeakMap();
@@ -445,7 +452,7 @@ function elevatedParts(f,parts){const d=elevationDelta(f);return !d?parts:parts?
 function elevatedZones(f,zones){const d=elevationDelta(f);return !d?zones:zones.map(z=>({...z,...(z.slices?{slices:elevatedZones(f,z.slices)}:{}),...(z.ranges?{ranges:z.ranges.map(([a,b])=>[a+d,b+d])}:{}),...(z.sweep?.profile?{sweep:{...z.sweep,profile:z.sweep.profile.map(([x,y])=>[x,y+d])}}:{})}));}
 const cabinetSpec=f=>definition(f)?.cabinet;
 const cabinetBase=f=>f.type==='kitchenwall'?value(f,'mountHeight'):cabinetSpec(f)?.bottom??0;
-const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
+const catalogMinimum=(f,key)=>!f.obj&&definition(f)?.footprintMin?.[key]!==undefined?definition(f).footprintMin[key]:!f.obj&&definition(f)?.glass?footprintMinimum(f,key):50;
 function validateField(f,key,v){
  const rule=fields[key];if(!rule||!supports(f,key))throw Error(rule?.message||'不支持的产品参数：'+key);
  if(key==='inventoryArray'){
@@ -716,7 +723,7 @@ function replacementResizeSource(previous,candidate){
  const next={...previous};delete next.paperArray;for(const key of Object.keys(fields))if(!retainReplacementField(previous,candidate,key))delete next[key];
  if(previous.type===candidate.type)customSinkCandidate(next,candidate);
  // Cross-product resizing keeps placement without imposing source construction limits.
- else if(family(candidate,'art-glass'))next.type=candidate.type;
+ else if(family(candidate,'art-glass')||definition(candidate)?.footprintMin)next.type=candidate.type;
  else if(definition(previous)?.manifold||family(previous,'window-lining')||family(previous,'art-glass'))next.type='custom';
  return next;
 }

@@ -1,0 +1,1212 @@
+{
+  "passed": true,
+  "sourceUnchanged": true,
+  "profiles": [
+    {
+      "profile": "garment-short-down",
+      "passed": true,
+      "route": "blender",
+      "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true,
+          "started": "2026-11-08T13:00:39.225Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-short-down",
+            "parts": [
+              "body",
+              "hanger-hook"
+            ],
+            "blender": "5.2.3 LTS",
+            "basis": "日本M尺码表衣身长680mm、肩宽460mm、身宽605mm；照片含帽及衣架后外包720×110×960mm为布局估算，厚度110mm为用户授权模拟值。"
+          },
+          "finished": "2026-11-08T13:01:00.337Z"
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true,
+          "started": "2026-11-08T13:01:00.337Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-short-down",
+            "blender": "5.2.3 LTS",
+            "rejected": [
+              "empty-material-slot",
+              "wrong-face-index",
+              "wrong-stable-identity",
+              "wrong-units",
+              "nonfinite-vertex",
+              "unexpected-part"
+            ],
+            "motionApplicable": false
+          },
+          "finished": "2026-11-08T13:01:01.193Z"
+        },
+        {
+          "name": "publish",
+          "passed": true,
+          "started": "2026-11-08T13:01:01.194Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-short-down",
+            "parts": 2,
+            "textures": 1,
+            "blender": "5.2.3 LTS",
+            "sourceSha256": "229dd0488fb55132b76ce1323458ad03ec63b8d6efecf119f1d272ccbdf28703",
+            "glbSha256": "229dd0488fb55132b76ce1323458ad03ec63b8d6efecf119f1d272ccbdf28703",
+            "runtimeSha256": "bb49e28d57337b9a2f853aeac7b9308007789b3a62d39a334b0c228f1b76a25f"
+          },
+          "finished": "2026-11-08T13:01:02.358Z"
+        },
+        {
+          "name": "geometry-state",
+          "passed": true,
+          "started": "2026-11-08T13:01:02.358Z",
+          "result": {
+            "passed": true,
+            "tests": [
+              {
+                "name": "garment-photos",
+                "profile": "garment-short-down",
+                "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cdTDft\\garment-short-down-SHipzS\\garment-photos.log",
+                "reused": false
+              }
+            ],
+            "spatial": {
+              "passed": true,
+              "results": [
+                {
+                  "id": "garment-short-down",
+                  "passed": true,
+                  "cases": [
+                    {
+                      "state": "nominal",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 960,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "nominal",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 960,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 960,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 960,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "finished": "2026-11-08T13:01:05.626Z"
+        },
+        {
+          "name": "http-file-production",
+          "passed": true,
+          "started": "2026-11-08T13:01:05.626Z",
+          "result": {
+            "passed": true,
+            "modes": [
+              {
+                "mode": "http",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": false
+              },
+              {
+                "mode": "file",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": true
+              }
+            ],
+            "exports": [
+              {
+                "mode": "http",
+                "state": "nominal",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.36000001430511475,
+                    0,
+                    -0.054999999701976776
+                  ],
+                  [
+                    0.36000001430511475,
+                    0.9599999785423279,
+                    0.054999999701976776
+                  ]
+                ]
+              },
+              {
+                "mode": "http",
+                "state": "resized",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.4032000005245209,
+                    0,
+                    -0.05939999967813492
+                  ],
+                  [
+                    0.4032000005245209,
+                    1.0368000268936157,
+                    0.05939999967813492
+                  ]
+                ]
+              },
+              {
+                "mode": "file",
+                "state": "nominal",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.36000001430511475,
+                    0,
+                    -0.054999999701976776
+                  ],
+                  [
+                    0.36000001430511475,
+                    0.9599999785423279,
+                    0.054999999701976776
+                  ]
+                ]
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:01:19.687Z"
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true,
+          "started": "2026-11-08T13:01:19.687Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-short-down",
+            "blender": "5.2.3 LTS",
+            "source": "production-glb",
+            "results": [
+              {
+                "case": "http-nominal",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "http-resized",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "file-nominal",
+                "parts": 2,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:01:20.746Z"
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true,
+          "started": "2026-11-08T13:01:20.747Z",
+          "result": {
+            "passed": true,
+            "preset": "model-studio-v2",
+            "views": [
+              {
+                "id": "front",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  0,
+                  0.47999998927116394,
+                  2.2422485058792567
+                ],
+                "target": [
+                  0,
+                  0.47999998927116394,
+                  0
+                ]
+              },
+              {
+                "id": "oblique",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  1.2413906874804956,
+                  1.1627648673854365,
+                  1.737946962472694
+                ],
+                "target": [
+                  0,
+                  0.47999998927116394,
+                  0
+                ]
+              },
+              {
+                "id": "back",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  -1.269423244026058,
+                  0.9877692868815872,
+                  -1.777192541636481
+                ],
+                "target": [
+                  0,
+                  0.47999998927116394,
+                  0
+                ]
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:01:27.758Z"
+        },
+        {
+          "name": "render-front",
+          "passed": true,
+          "started": "2026-11-08T13:01:27.759Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:01:30.925Z"
+        },
+        {
+          "name": "render-oblique",
+          "passed": true,
+          "started": "2026-11-08T13:01:30.925Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:01:34.039Z"
+        },
+        {
+          "name": "render-back",
+          "passed": true,
+          "started": "2026-11-08T13:01:34.040Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:01:37.142Z"
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true,
+          "started": "2026-11-08T13:01:37.142Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-short-down",
+            "blender": "5.2.3 LTS",
+            "source": "downloaded-render-blend",
+            "results": [
+              {
+                "case": "front",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "oblique",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "back",
+                "parts": 2,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:01:37.931Z"
+        }
+      ]
+    },
+    {
+      "profile": "garment-long-down",
+      "passed": true,
+      "route": "blender",
+      "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true,
+          "started": "2026-11-08T13:01:38.150Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-long-down",
+            "parts": [
+              "body",
+              "hanger-hook"
+            ],
+            "blender": "5.2.3 LTS",
+            "basis": "京东款号473548/黑色与官方商品图对应；尚未取得该款成衣尺码表。含帽衣架外包650×130×1260mm和厚度130mm均为可编辑布局估算，非厂家标注。"
+          },
+          "finished": "2026-11-08T13:01:58.418Z"
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true,
+          "started": "2026-11-08T13:01:58.419Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-long-down",
+            "blender": "5.2.3 LTS",
+            "rejected": [
+              "empty-material-slot",
+              "wrong-face-index",
+              "wrong-stable-identity",
+              "wrong-units",
+              "nonfinite-vertex",
+              "unexpected-part"
+            ],
+            "motionApplicable": false
+          },
+          "finished": "2026-11-08T13:01:59.342Z"
+        },
+        {
+          "name": "publish",
+          "passed": true,
+          "started": "2026-11-08T13:01:59.343Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-long-down",
+            "parts": 2,
+            "textures": 1,
+            "blender": "5.2.3 LTS",
+            "sourceSha256": "bedbd2afb9be29b5e8386f8e751420891acd0d1ea386cbefdb05432a8d49bd3a",
+            "glbSha256": "bedbd2afb9be29b5e8386f8e751420891acd0d1ea386cbefdb05432a8d49bd3a",
+            "runtimeSha256": "e7eafdbd42e7bf8d61ce51eefb75c80bff466e106ed84ab84d1428326c5090d7"
+          },
+          "finished": "2026-11-08T13:02:00.411Z"
+        },
+        {
+          "name": "geometry-state",
+          "passed": true,
+          "started": "2026-11-08T13:02:00.412Z",
+          "result": {
+            "passed": true,
+            "tests": [
+              {
+                "name": "garment-photos",
+                "profile": "garment-short-down",
+                "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cdTDft\\garment-short-down-SHipzS\\garment-photos.log",
+                "reused": true
+              }
+            ],
+            "spatial": {
+              "passed": true,
+              "results": [
+                {
+                  "id": "garment-long-down",
+                  "passed": true,
+                  "cases": [
+                    {
+                      "state": "nominal",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 1260,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "nominal",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 1260,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 1260,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 1260,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "finished": "2026-11-08T13:02:01.793Z"
+        },
+        {
+          "name": "http-file-production",
+          "passed": true,
+          "started": "2026-11-08T13:02:01.794Z",
+          "result": {
+            "passed": true,
+            "modes": [
+              {
+                "mode": "http",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": false
+              },
+              {
+                "mode": "file",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": true
+              }
+            ],
+            "exports": [
+              {
+                "mode": "http",
+                "state": "nominal",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.32499998807907104,
+                    0,
+                    -0.06499999761581421
+                  ],
+                  [
+                    0.32499998807907104,
+                    1.2599999904632568,
+                    0.06499999761581421
+                  ]
+                ]
+              },
+              {
+                "mode": "http",
+                "state": "resized",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.36399999260902405,
+                    0,
+                    -0.07020000368356705
+                  ],
+                  [
+                    0.36399999260902405,
+                    1.36080002784729,
+                    0.07020000368356705
+                  ]
+                ]
+              },
+              {
+                "mode": "file",
+                "state": "nominal",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.32499998807907104,
+                    0,
+                    -0.06499999761581421
+                  ],
+                  [
+                    0.32499998807907104,
+                    1.2599999904632568,
+                    0.06499999761581421
+                  ]
+                ]
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:02:17.102Z"
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true,
+          "started": "2026-11-08T13:02:17.103Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-long-down",
+            "blender": "5.2.3 LTS",
+            "source": "production-glb",
+            "results": [
+              {
+                "case": "http-nominal",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "http-resized",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "file-nominal",
+                "parts": 2,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:02:19.073Z"
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true,
+          "started": "2026-11-08T13:02:19.073Z",
+          "result": {
+            "passed": true,
+            "preset": "model-studio-v2",
+            "views": [
+              {
+                "id": "front",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  0,
+                  0.6299999952316284,
+                  2.649185375560091
+                ],
+                "target": [
+                  0,
+                  0.6299999952316284,
+                  0
+                ]
+              },
+              {
+                "id": "oblique",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  1.4666858048993208,
+                  1.436677187926255,
+                  2.0533601268590487
+                ],
+                "target": [
+                  0,
+                  0.6299999952316284,
+                  0
+                ]
+              },
+              {
+                "id": "back",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  -1.4998058799692084,
+                  1.229922347219312,
+                  -2.0997282319568917
+                ],
+                "target": [
+                  0,
+                  0.6299999952316284,
+                  0
+                ]
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:02:26.511Z"
+        },
+        {
+          "name": "render-front",
+          "passed": true,
+          "started": "2026-11-08T13:02:26.511Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:02:29.668Z"
+        },
+        {
+          "name": "render-oblique",
+          "passed": true,
+          "started": "2026-11-08T13:02:29.668Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:02:32.784Z"
+        },
+        {
+          "name": "render-back",
+          "passed": true,
+          "started": "2026-11-08T13:02:32.785Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:02:35.897Z"
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true,
+          "started": "2026-11-08T13:02:35.898Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-long-down",
+            "blender": "5.2.3 LTS",
+            "source": "downloaded-render-blend",
+            "results": [
+              {
+                "case": "front",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "oblique",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "back",
+                "parts": 2,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:02:36.696Z"
+        }
+      ]
+    },
+    {
+      "profile": "garment-autumn-jacket",
+      "passed": true,
+      "route": "blender",
+      "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+      "stages": [
+        {
+          "name": "author-preflight",
+          "passed": true,
+          "started": "2026-11-08T13:02:36.888Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-autumn-jacket",
+            "parts": [
+              "body",
+              "hanger-hook"
+            ],
+            "blender": "5.2.3 LTS",
+            "basis": "官方459592款号及棕色外观对应；成衣尺码未核实。含衣架外包730×45×800mm为可编辑估算，厚度45mm仅模拟挂衣占用。"
+          },
+          "finished": "2026-11-08T13:02:56.827Z"
+        },
+        {
+          "name": "preflight-negative",
+          "passed": true,
+          "started": "2026-11-08T13:02:56.827Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-autumn-jacket",
+            "blender": "5.2.3 LTS",
+            "rejected": [
+              "empty-material-slot",
+              "wrong-face-index",
+              "wrong-stable-identity",
+              "wrong-units",
+              "nonfinite-vertex",
+              "unexpected-part"
+            ],
+            "motionApplicable": false
+          },
+          "finished": "2026-11-08T13:02:57.618Z"
+        },
+        {
+          "name": "publish",
+          "passed": true,
+          "started": "2026-11-08T13:02:57.619Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-autumn-jacket",
+            "parts": 2,
+            "textures": 1,
+            "blender": "5.2.3 LTS",
+            "sourceSha256": "3aead2b6b22330d8ba8210ef64f38420525b7f436cfe2a59abda655efc3dc792",
+            "glbSha256": "3aead2b6b22330d8ba8210ef64f38420525b7f436cfe2a59abda655efc3dc792",
+            "runtimeSha256": "9018a9577cbc79b70b756aa7ff53f74dc31ffabf6e54272dcfa921e1d9028e54"
+          },
+          "finished": "2026-11-08T13:02:58.705Z"
+        },
+        {
+          "name": "geometry-state",
+          "passed": true,
+          "started": "2026-11-08T13:02:58.705Z",
+          "result": {
+            "passed": true,
+            "tests": [
+              {
+                "name": "garment-photos",
+                "profile": "garment-short-down",
+                "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-cdTDft\\garment-short-down-SHipzS\\garment-photos.log",
+                "reused": true
+              }
+            ],
+            "spatial": {
+              "passed": true,
+              "results": [
+                {
+                  "id": "garment-autumn-jacket",
+                  "passed": true,
+                  "cases": [
+                    {
+                      "state": "nominal",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 800,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "nominal",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 800,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 0,
+                      "flip": false,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 800,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    },
+                    {
+                      "state": "alternate",
+                      "rot": 37,
+                      "flip": true,
+                      "parts": 2,
+                      "bottom": 0,
+                      "top": 800,
+                      "externalDistance": 100,
+                      "penetration": true,
+                      "heightSeparation": true,
+                      "projectRoundtrip": true
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "finished": "2026-11-08T13:02:59.910Z"
+        },
+        {
+          "name": "http-file-production",
+          "passed": true,
+          "started": "2026-11-08T13:02:59.911Z",
+          "result": {
+            "passed": true,
+            "modes": [
+              {
+                "mode": "http",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": false
+              },
+              {
+                "mode": "file",
+                "passed": true,
+                "undoRedo": true,
+                "coreResize": true,
+                "refresh": true,
+                "narrow": true,
+                "offline": true
+              }
+            ],
+            "exports": [
+              {
+                "mode": "http",
+                "state": "nominal",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.36500000953674316,
+                    0,
+                    -0.02250000089406967
+                  ],
+                  [
+                    0.36500000953674316,
+                    0.800000011920929,
+                    0.02250000089406967
+                  ]
+                ]
+              },
+              {
+                "mode": "http",
+                "state": "resized",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.40880000591278076,
+                    0,
+                    -0.024299999698996544
+                  ],
+                  [
+                    0.40880000591278076,
+                    0.8640000224113464,
+                    0.024299999698996544
+                  ]
+                ]
+              },
+              {
+                "mode": "file",
+                "state": "nominal",
+                "parts": 2,
+                "bounds": [
+                  [
+                    -0.36500000953674316,
+                    0,
+                    -0.02250000089406967
+                  ],
+                  [
+                    0.36500000953674316,
+                    0.800000011920929,
+                    0.02250000089406967
+                  ]
+                ]
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:03:14.430Z"
+        },
+        {
+          "name": "blender-production-readback",
+          "passed": true,
+          "started": "2026-11-08T13:03:14.431Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-autumn-jacket",
+            "blender": "5.2.3 LTS",
+            "source": "production-glb",
+            "results": [
+              {
+                "case": "http-nominal",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "http-resized",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "file-nominal",
+                "parts": 2,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:03:15.801Z"
+        },
+        {
+          "name": "studio-production-export",
+          "passed": true,
+          "started": "2026-11-08T13:03:15.802Z",
+          "result": {
+            "passed": true,
+            "preset": "model-studio-v2",
+            "views": [
+              {
+                "id": "front",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  0,
+                  0.4000000059604645,
+                  2.0169287736953265
+                ],
+                "target": [
+                  0,
+                  0.4000000059604645,
+                  0
+                ]
+              },
+              {
+                "id": "oblique",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  1.1166454522822913,
+                  1.0141550047157248,
+                  1.5633036331952077
+                ],
+                "target": [
+                  0,
+                  0.4000000059604645,
+                  0
+                ]
+              },
+              {
+                "id": "back",
+                "state": "nominal",
+                "parts": 2,
+                "position": [
+                  -1.1418610649803205,
+                  0.8567444319525928,
+                  -1.5986054909724483
+                ],
+                "target": [
+                  0,
+                  0.4000000059604645,
+                  0
+                ]
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:03:25.237Z"
+        },
+        {
+          "name": "render-front",
+          "passed": true,
+          "started": "2026-11-08T13:03:25.238Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:03:28.356Z"
+        },
+        {
+          "name": "render-oblique",
+          "passed": true,
+          "started": "2026-11-08T13:03:28.357Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:03:31.466Z"
+        },
+        {
+          "name": "render-back",
+          "passed": true,
+          "started": "2026-11-08T13:03:31.466Z",
+          "result": {
+            "passed": true,
+            "renderDevice": {
+              "requested": "gpu",
+              "type": "GPU",
+              "backend": "OPTIX",
+              "devices": [
+                "NVIDIA GeForce RTX 4070 Ti SUPER"
+              ],
+              "fallback": null
+            },
+            "renderInfo": null,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "finished": "2026-11-08T13:03:34.598Z"
+        },
+        {
+          "name": "downloaded-blend-reopen",
+          "passed": true,
+          "started": "2026-11-08T13:03:34.598Z",
+          "result": {
+            "passed": true,
+            "profile": "garment-autumn-jacket",
+            "blender": "5.2.3 LTS",
+            "source": "downloaded-render-blend",
+            "results": [
+              {
+                "case": "front",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "oblique",
+                "parts": 2,
+                "boundsAndAlpha": true
+              },
+              {
+                "case": "back",
+                "parts": 2,
+                "boundsAndAlpha": true
+              }
+            ]
+          },
+          "finished": "2026-11-08T13:03:35.509Z"
+        }
+      ]
+    }
+  ]
+}

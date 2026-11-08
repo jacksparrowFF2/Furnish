@@ -1,3 +1,5 @@
+2026-11-08（衣物）：garmentPhoto声明三款照片厚片、底部mountHeight新建0、自由姿态与geometryVersion1；宽至少100／厚至少10mm通过footprintMin供库、调整和替换共用，三款默认包络与厚度均明确估算。storageSupplyRevision2沿v57，未增加字段。详见[衣物契约](GARMENT-PHOTO-CARDS.md)。
+
 2026-11-08（多段门）：cabinetBuilder.multiDoor声明1–12段、面板净高至少60mm及独立规则版本1；各段1/2扇、最大角1–180沿共用铰链规则。含新kind最低v74，逐扇实际角与限位进入原生产/核对，饰面和颜色排除。新建1/2/3段均用同一结构，旧实例不批量改写；见[组件柜](CABINET-BUILDER.md)。
 
 2026-11-08（组件柜扩展）：cabinetBuilder规则版本2，分段门实体最小高60，挂衣方杆截面16–40初值25/端隙0–50初值2；顶封板沿cabinetTopClosure规则。v73仅用于新组件，转换保留原离地与有效参考价，结构/杆/封板/门段状态进入空间确认，颜色与采购仍排除。见[组件柜](CABINET-BUILDER.md)。

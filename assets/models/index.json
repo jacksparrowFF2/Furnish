@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 40,
+    "blenderModels": 43,
     "parametricVerificationConfigurations": 89,
-    "verificationConfigurations": 129,
-    "catalogEntries": 172,
-    "catalogTypes": 144,
-    "productDossiers": 67,
-    "referenceImages": 192,
+    "verificationConfigurations": 132,
+    "catalogEntries": 175,
+    "catalogTypes": 147,
+    "productDossiers": 70,
+    "referenceImages": 201,
     "missingReferences": 12
   },
   "models": [
@@ -3253,6 +3253,177 @@
         "assets/models/toolbox-shimoyama-9l/references/appearance.png",
         "assets/models/toolbox-shimoyama-9l/references/dimensions.png"
       ]
+    },
+    {
+      "profile": "garment-short-down",
+      "type": "garment_down_short_photo",
+      "name": "短款羽绒服 · 优衣库照片厚片（尺寸估算）",
+      "sizeMm": [
+        720,
+        110,
+        960
+      ],
+      "parts": 2,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/garment-short-down-blender-asset.js",
+        "sha256": "a075427e4b5e4282047053f3a8b0c79eb5bc0bc0e27bf455a1607a6e62effaea",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "229dd0488fb55132b76ce1323458ad03ec63b8d6efecf119f1d272ccbdf28703",
+      "current": {
+        "blend": "assets/models/garment-short-down/v4/garment-short-down-v1.blend",
+        "glb": "assets/models/garment-short-down/v4/garment-short-down-v1.glb"
+      },
+      "document": "docs/GARMENT-PHOTO-CARDS.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-garment-photos.py",
+      "files": [
+        {
+          "path": "assets/models/garment-short-down/v3/garment-short-down-v1.blend",
+          "role": "retained-other",
+          "sha256": "108f22dd15becf5c2ee4ac850885c61ded3081046db7d5763970980c09a7576a",
+          "bytes": 130963
+        },
+        {
+          "path": "assets/models/garment-short-down/v3/garment-short-down-v1.glb",
+          "role": "retained-other",
+          "sha256": "a1a82a8481c82ec0c61608f1d7c88957db6c0d8fdb2d20b9bc4fe0265aeb70f7",
+          "bytes": 46220
+        },
+        {
+          "path": "assets/models/garment-short-down/v4/garment-short-down-v1.blend",
+          "role": "published-source",
+          "sha256": "0dd7eee808b13dae7efdf9efc5f94f63d79eaff4e7bd1f076a1cd4c177da59a3",
+          "bytes": 131500
+        },
+        {
+          "path": "assets/models/garment-short-down/v4/garment-short-down-v1.glb",
+          "role": "published-source",
+          "sha256": "229dd0488fb55132b76ce1323458ad03ec63b8d6efecf119f1d272ccbdf28703",
+          "bytes": 48164
+        }
+      ],
+      "dossier": "assets/models/garment-short-down/asset.json",
+      "references": [
+        "assets/models/garment-short-down/references/front-original.jpg",
+        "assets/models/garment-short-down/references/front.jpg",
+        "assets/models/garment-short-down/references/cutout-bg0.png"
+      ]
+    },
+    {
+      "profile": "garment-long-down",
+      "type": "garment_down_long_photo",
+      "name": "长款羽绒服 · 优衣库照片厚片（尺寸估算）",
+      "sizeMm": [
+        650,
+        130,
+        1260
+      ],
+      "parts": 2,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/garment-long-down-blender-asset.js",
+        "sha256": "1fb4df8d4b15a43c77d2794f00be84012a868ed3419b5e5adabf793a98202fda",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "bedbd2afb9be29b5e8386f8e751420891acd0d1ea386cbefdb05432a8d49bd3a",
+      "current": {
+        "blend": "assets/models/garment-long-down/v4/garment-long-down-v1.blend",
+        "glb": "assets/models/garment-long-down/v4/garment-long-down-v1.glb"
+      },
+      "document": "docs/GARMENT-PHOTO-CARDS.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-garment-photos.py",
+      "files": [
+        {
+          "path": "assets/models/garment-long-down/v3/garment-long-down-v1.blend",
+          "role": "retained-other",
+          "sha256": "4b7643959f330f259bdabede63e62c3ace59d68d8ded1668f8a2179ca28aa3ce",
+          "bytes": 127662
+        },
+        {
+          "path": "assets/models/garment-long-down/v3/garment-long-down-v1.glb",
+          "role": "retained-other",
+          "sha256": "49af69c03f301cb0bf5c217d2da77b47f1e895a102948055568827b6df964345",
+          "bytes": 44256
+        },
+        {
+          "path": "assets/models/garment-long-down/v4/garment-long-down-v1.blend",
+          "role": "published-source",
+          "sha256": "3c8c6d503af26aee2e34049fda1a97400581a3ef6b09546a868f23d1700f818e",
+          "bytes": 128419
+        },
+        {
+          "path": "assets/models/garment-long-down/v4/garment-long-down-v1.glb",
+          "role": "published-source",
+          "sha256": "bedbd2afb9be29b5e8386f8e751420891acd0d1ea386cbefdb05432a8d49bd3a",
+          "bytes": 46200
+        }
+      ],
+      "dossier": "assets/models/garment-long-down/asset.json",
+      "references": [
+        "assets/models/garment-long-down/references/front-original.jpg",
+        "assets/models/garment-long-down/references/front.jpg",
+        "assets/models/garment-long-down/references/cutout-bg0.png"
+      ]
+    },
+    {
+      "profile": "garment-autumn-jacket",
+      "type": "garment_jacket_photo",
+      "name": "秋季夹克 · 优衣库照片厚片（尺寸估算）",
+      "sizeMm": [
+        730,
+        45,
+        800
+      ],
+      "parts": 2,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/garment-autumn-jacket-blender-asset.js",
+        "sha256": "f8bcd8723e2245250631e6d7a3e5c152d5460b2506bc973efeaaa6bdb8a71908",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "3aead2b6b22330d8ba8210ef64f38420525b7f436cfe2a59abda655efc3dc792",
+      "current": {
+        "blend": "assets/models/garment-autumn-jacket/v4/garment-autumn-jacket-v1.blend",
+        "glb": "assets/models/garment-autumn-jacket/v4/garment-autumn-jacket-v1.glb"
+      },
+      "document": "docs/GARMENT-PHOTO-CARDS.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-garment-photos.py",
+      "files": [
+        {
+          "path": "assets/models/garment-autumn-jacket/v3/garment-autumn-jacket-v1.blend",
+          "role": "retained-other",
+          "sha256": "5b79a28621a0c13d7db2c54981ec833827e39958ca411e11a3220d0202c07c04",
+          "bytes": 128983
+        },
+        {
+          "path": "assets/models/garment-autumn-jacket/v3/garment-autumn-jacket-v1.glb",
+          "role": "retained-other",
+          "sha256": "8b55cf182167ae91628698c67cf509d2a222b3bca96b806e847191ae3db0f2bf",
+          "bytes": 42044
+        },
+        {
+          "path": "assets/models/garment-autumn-jacket/v4/garment-autumn-jacket-v1.blend",
+          "role": "published-source",
+          "sha256": "83079bd8f88588266b8471574cb74ad9627444bc5829e84f3c05119a6afec62c",
+          "bytes": 129056
+        },
+        {
+          "path": "assets/models/garment-autumn-jacket/v4/garment-autumn-jacket-v1.glb",
+          "role": "published-source",
+          "sha256": "3aead2b6b22330d8ba8210ef64f38420525b7f436cfe2a59abda655efc3dc792",
+          "bytes": 42476
+        }
+      ],
+      "dossier": "assets/models/garment-autumn-jacket/asset.json",
+      "references": [
+        "assets/models/garment-autumn-jacket/references/front-original.jpg",
+        "assets/models/garment-autumn-jacket/references/front.jpg",
+        "assets/models/garment-autumn-jacket/references/cutout-bg0.png"
+      ]
     }
   ],
   "products": [
@@ -4745,6 +4916,156 @@
       ],
       "manifest": "assets/models/fridge/asset.json",
       "readme": "assets/models/fridge/README.md"
+    },
+    {
+      "format": 1,
+      "id": "garment-autumn-jacket",
+      "name": "秋季夹克 · 优衣库照片厚片",
+      "types": [
+        "garment_jacket_photo"
+      ],
+      "route": "blender",
+      "document": "docs/GARMENT-PHOTO-CARDS.md",
+      "sourceLinks": [
+        "https://www.uniqlo.com/us/en/products/E459592-000/00?colorDisplayCode=37",
+        "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/459592/item/goods_37_459592.jpg?width=512",
+        "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/459592/item/goods_37_459592.jpg?width=512",
+        "https://bg0.dev/"
+      ],
+      "references": [
+        {
+          "path": "references/front-original.jpg",
+          "kind": "product-page",
+          "sha256": "828b02584bb196161f6521830f13da4736c1929eb9db54b611ecd158136dd4ce",
+          "bytes": 62005,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/front.jpg",
+          "kind": "product-page",
+          "sha256": "9ebd6ed4b1365186460cb78e30e99d2749e91cf1b5538a9a57492048be4cae0e",
+          "bytes": 22304,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/cutout-bg0.png",
+          "kind": "annotations",
+          "sha256": "99aed48ac757a98005230d2897c32a08c999fe38d52f72a168c438ab0d0e8c92",
+          "bytes": 523839,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/garment-photo-20261108/README.md"
+      ],
+      "notes": [
+        "官方459592款号及棕色外观对应；成衣尺码未核实。含衣架外包730×45×800mm为可编辑估算，厚度45mm仅模拟挂衣占用。",
+        "正面使用商品原图UV；背面与侧边为衣物中部素色采样，不虚构背面照片。",
+        "BG0网页Full/WASM抠图，透明PNG为衍生资料；原图保留，作者读取alpha生成实体轮廓，照片纹理仍来自原图。"
+      ],
+      "manifest": "assets/models/garment-autumn-jacket/asset.json",
+      "readme": "assets/models/garment-autumn-jacket/README.md"
+    },
+    {
+      "format": 1,
+      "id": "garment-long-down",
+      "name": "长款羽绒服 · 优衣库照片厚片",
+      "types": [
+        "garment_down_long_photo"
+      ],
+      "route": "blender",
+      "document": "docs/GARMENT-PHOTO-CARDS.md",
+      "sourceLinks": [
+        "https://item.jd.com/10177558893420.html",
+        "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/473548/item/goods_09_473548.jpg?width=512",
+        "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/473548/item/goods_09_473548.jpg?width=512",
+        "https://bg0.dev/"
+      ],
+      "references": [
+        {
+          "path": "references/front-original.jpg",
+          "kind": "product-page",
+          "sha256": "8a4a49d282d4148bc408f70ba06da96a94c3e8dd695292d0f475cdf1fc2b967d",
+          "bytes": 48824,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/front.jpg",
+          "kind": "product-page",
+          "sha256": "8298ae1afb2a26fd9123bf9ca7ed2ed18682c4fc2e3fc29ea3235c2df28759b6",
+          "bytes": 19489,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/cutout-bg0.png",
+          "kind": "annotations",
+          "sha256": "55cb5b3d7c2a0d831452e09e9170aff01d1e1327806d2591137fb416a82b65b4",
+          "bytes": 394627,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/garment-photo-20261108/README.md"
+      ],
+      "notes": [
+        "京东款号473548/黑色与官方商品图对应；尚未取得该款成衣尺码表。含帽衣架外包650×130×1260mm和厚度130mm均为可编辑布局估算，非厂家标注。",
+        "正面使用商品原图UV；背面与侧边为衣物中部素色采样，不虚构背面照片。",
+        "BG0网页Full/WASM抠图，透明PNG为衍生资料；原图保留，作者读取alpha生成实体轮廓，照片纹理仍来自原图。"
+      ],
+      "manifest": "assets/models/garment-long-down/asset.json",
+      "readme": "assets/models/garment-long-down/README.md"
+    },
+    {
+      "format": 1,
+      "id": "garment-short-down",
+      "name": "短款羽绒服 · 优衣库照片厚片",
+      "types": [
+        "garment_down_short_photo"
+      ],
+      "route": "blender",
+      "document": "docs/GARMENT-PHOTO-CARDS.md",
+      "sourceLinks": [
+        "https://www.uniqlo.com/jp/ja/products/E449725-000/00",
+        "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/449725/item/goods_09_449725.jpg?width=512",
+        "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/449725/item/goods_09_449725.jpg?width=512",
+        "https://bg0.dev/"
+      ],
+      "references": [
+        {
+          "path": "references/front-original.jpg",
+          "kind": "product-page",
+          "sha256": "4f29c1a78e3e42a35de3aa2c70bf26870b8c17f8a8ab3ea6e1479cddafc32d83",
+          "bytes": 59186,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/front.jpg",
+          "kind": "product-page",
+          "sha256": "bce0e6e5af085a6f9b6b7693643bda019b506bc362416376157a75dfcfc8dc4f",
+          "bytes": 23225,
+          "legacyPaths": []
+        },
+        {
+          "path": "references/cutout-bg0.png",
+          "kind": "annotations",
+          "sha256": "28e8d0be694585081d40f60a40cd35c7d6dcbe8847d2d6e96e229e2b006f5af0",
+          "bytes": 397640,
+          "legacyPaths": []
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/garment-photo-20261108/README.md"
+      ],
+      "notes": [
+        "日本M尺码表衣身长680mm、肩宽460mm、身宽605mm；照片含帽及衣架后外包720×110×960mm为布局估算，厚度110mm为用户授权模拟值。",
+        "正面使用商品原图UV；背面与侧边为衣物中部素色采样，不虚构背面照片。",
+        "BG0网页Full/WASM抠图，透明PNG为衍生资料；原图保留，作者读取alpha生成实体轮廓，照片纹理仍来自原图。"
+      ],
+      "manifest": "assets/models/garment-short-down/asset.json",
+      "readme": "assets/models/garment-short-down/README.md"
     },
     {
       "format": 1,
@@ -8748,6 +9069,33 @@
       "w": 330,
       "d": 120,
       "h": 200,
+      "module": "storage-supply"
+    },
+    {
+      "category": "衣物",
+      "type": "garment_down_short_photo",
+      "name": "短款羽绒服 · 优衣库照片厚片（尺寸估算）",
+      "w": 720,
+      "d": 110,
+      "h": 960,
+      "module": "storage-supply"
+    },
+    {
+      "category": "衣物",
+      "type": "garment_down_long_photo",
+      "name": "长款羽绒服 · 优衣库照片厚片（尺寸估算）",
+      "w": 650,
+      "d": 130,
+      "h": 1260,
+      "module": "storage-supply"
+    },
+    {
+      "category": "衣物",
+      "type": "garment_jacket_photo",
+      "name": "秋季夹克 · 优衣库照片厚片（尺寸估算）",
+      "w": 730,
+      "d": 45,
+      "h": 800,
       "module": "storage-supply"
     },
     {

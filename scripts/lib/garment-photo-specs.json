@@ -1,0 +1,62 @@
+{
+  "garment-short-down": {
+    "type": "garment_down_short_photo",
+    "name": "短款羽绒服 · 优衣库照片厚片",
+    "global": "FurnishGarmentShortDownAsset",
+    "brand": "优衣库/UNIQLO（外观参考）",
+    "model": "449725 · 正面商品图；悬挂包络估算，可编辑",
+    "size": [
+      720,
+      960,
+      110
+    ],
+    "color": "#202126",
+    "sourceUrl": "https://www.uniqlo.com/jp/ja/products/E449725-000/00",
+    "imageUrl": "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/449725/item/goods_09_449725.jpg?width=512",
+    "imageSize": [
+      900,
+      900
+    ],
+    "basis": "日本M尺码表衣身长680mm、肩宽460mm、身宽605mm；照片含帽及衣架后外包720×110×960mm为布局估算，厚度110mm为用户授权模拟值。"
+  },
+  "garment-long-down": {
+    "type": "garment_down_long_photo",
+    "name": "长款羽绒服 · 优衣库照片厚片",
+    "global": "FurnishGarmentLongDownAsset",
+    "brand": "优衣库/UNIQLO（外观参考）",
+    "model": "473548 · 正面商品图；悬挂包络估算，可编辑",
+    "size": [
+      650,
+      1260,
+      130
+    ],
+    "color": "#23252e",
+    "sourceUrl": "https://item.jd.com/10177558893420.html",
+    "imageUrl": "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/473548/item/goods_09_473548.jpg?width=512",
+    "imageSize": [
+      900,
+      900
+    ],
+    "basis": "京东款号473548/黑色与官方商品图对应；尚未取得该款成衣尺码表。含帽衣架外包650×130×1260mm和厚度130mm均为可编辑布局估算，非厂家标注。"
+  },
+  "garment-autumn-jacket": {
+    "type": "garment_jacket_photo",
+    "name": "秋季夹克 · 优衣库照片厚片",
+    "global": "FurnishGarmentAutumnJacketAsset",
+    "brand": "优衣库/UNIQLO（外观参考）",
+    "model": "459592 · 棕色工装短夹克；悬挂包络估算",
+    "size": [
+      730,
+      800,
+      45
+    ],
+    "color": "#5d4b34",
+    "sourceUrl": "https://www.uniqlo.com/us/en/products/E459592-000/00?colorDisplayCode=37",
+    "imageUrl": "https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/459592/item/goods_37_459592.jpg?width=512",
+    "imageSize": [
+      900,
+      900
+    ],
+    "basis": "官方459592款号及棕色外观对应；成衣尺码未核实。含衣架外包730×45×800mm为可编辑估算，厚度45mm仅模拟挂衣占用。"
+  }
+}

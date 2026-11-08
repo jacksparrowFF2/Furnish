@@ -6,6 +6,7 @@ const supported=f=>!!products().definition(f).storageSupply&&!f.obj;
 const singles=new Map();
 // Can labels are embedded and shared by every unit in an inventory array.
 const canLabelMaps=new WeakMap();
+const garmentMaps=new WeakMap();
 function arrayModel(T,asset,f){
  const l=products().paperArrayLayout(f),a=l.config;
  let single=singles.get(asset);
@@ -32,6 +33,9 @@ function build(T,f){
  globals['toolbox-shimoyama-9l']='FurnishShimoyamaToolbox9lAsset';
  globals['toolbox-jiabangshou-390']='FurnishJiabangshouToolboxAsset';
  globals['freeze-dry-bucket-6l']='FurnishFreezeDryBucket6lAsset';
+ globals['garment-short-down']='FurnishGarmentShortDownAsset';
+ globals['garment-long-down']='FurnishGarmentLongDownAsset';
+ globals['garment-autumn-jacket']='FurnishGarmentAutumnJacketAsset';
  globals['storage-bin-shallow-large']='FurnishStorageBinShallowLargeAsset';
  globals['storage-bin-deep-medium']='FurnishStorageBinDeepMediumAsset';
  globals['storage-bin-deep-large']='FurnishStorageBinDeepLargeAsset';
@@ -43,6 +47,13 @@ function build(T,f){
  if(!asset)throw Error('Storage inventory asset missing: '+profile);
  if(f.paperArray&&products().supports(f,'paperArray'))return arrayModel(T,asset,f);
  const group=(root.FurnishStaticAssetModel||require('./static-asset-model.js')).build(T,asset,{...f,h:products().height(f)},products().value(f,'mountHeight'));
+ // Original photo pixels, scoped to garment profiles. The closed production
+ // meshes (including sleeves and thickness) are also the numeric solids.
+ if(products().definition(f).garmentPhoto&&T.DataTexture&&group.children[0]?.material){
+  let maps=garmentMaps.get(asset);
+  if(!maps){maps=asset.textures.map(t=>{const map=new T.DataTexture(Uint8Array.from(atob(t.rgba),c=>c.charCodeAt(0)),t.width,t.height);map.colorSpace=T.SRGBColorSpace;map.flipY=false;map.needsUpdate=true;return map;});garmentMaps.set(asset,maps);}
+  group.children.forEach((mesh,i)=>{const p=asset.parts[i];if(p.texture===undefined)return;mesh.geometry.setAttribute('uv',new T.Float32BufferAttribute(p.uvs,2));mesh.material.map=maps[p.texture];mesh.material.needsUpdate=true;});
+ }
  if(['beverage-can-330','beverage-can-500'].includes(profile)&&asset.textures&&T.DataTexture&&group.children[0]?.material){
   let maps=canLabelMaps.get(asset);
   if(!maps){maps=asset.textures.map(t=>{const map=new T.DataTexture(Uint8Array.from(atob(t.rgba),c=>c.charCodeAt(0)),t.width,t.height);map.colorSpace=T.SRGBColorSpace;map.flipY=false;map.wrapS=T.RepeatWrapping;map.needsUpdate=true;return map;});canLabelMaps.set(asset,maps);}
