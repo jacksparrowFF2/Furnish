@@ -1,0 +1,74 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "wardrobe real drag shows valid snap feedback",
+      "wardrobe real drag paints production green preview before release",
+      "wardrobe hover leaves source data unchanged",
+      "wardrobe release installs using shared controller",
+      "wardrobe dropped box appears in real component tree",
+      "wardrobe placement is one draft undo",
+      "wardrobe exact placement survives save and refresh",
+      "laundry real drag shows valid snap feedback",
+      "laundry real drag paints production green preview before release",
+      "laundry hover leaves source data unchanged",
+      "laundry release installs using shared controller",
+      "laundry dropped box appears in real component tree",
+      "laundry placement is one draft undo",
+      "laundry saves exact hovered empty box size and placement",
+      "laundry exact placement survives save and refresh",
+      "library click arms placement instead of immediately mutating a default target",
+      "Escape cancels armed placement",
+      "no runtime errors: "
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "wardrobe real drag shows valid snap feedback",
+      "wardrobe real drag paints production green preview before release",
+      "wardrobe hover leaves source data unchanged",
+      "wardrobe release installs using shared controller",
+      "wardrobe dropped box appears in real component tree",
+      "wardrobe placement is one draft undo",
+      "wardrobe exact placement survives save and refresh",
+      "laundry real drag shows valid snap feedback",
+      "laundry real drag paints production green preview before release",
+      "laundry hover leaves source data unchanged",
+      "laundry release installs using shared controller",
+      "laundry dropped box appears in real component tree",
+      "laundry placement is one draft undo",
+      "laundry saves exact hovered empty box size and placement",
+      "laundry exact placement survives save and refresh",
+      "library click arms placement instead of immediately mutating a default target",
+      "Escape cancels armed placement",
+      "no runtime errors: "
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "wardrobe real drag shows valid snap feedback",
+      "wardrobe real drag paints production green preview before release",
+      "wardrobe hover leaves source data unchanged",
+      "wardrobe release installs using shared controller",
+      "wardrobe dropped box appears in real component tree",
+      "wardrobe placement is one draft undo",
+      "wardrobe exact placement survives save and refresh",
+      "laundry real drag shows valid snap feedback",
+      "laundry real drag paints production green preview before release",
+      "laundry hover leaves source data unchanged",
+      "laundry release installs using shared controller",
+      "laundry dropped box appears in real component tree",
+      "laundry placement is one draft undo",
+      "laundry saves exact hovered empty box size and placement",
+      "laundry exact placement survives save and refresh",
+      "library click arms placement instead of immediately mutating a default target",
+      "Escape cancels armed placement",
+      "no runtime errors: "
+    ]
+  }
+]
