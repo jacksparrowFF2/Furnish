@@ -1,0 +1,75 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "original framed sideboard production preview has 24 mm sides and 9 mm backs",
+      "thickness undo/redo rebuilds actual original boards",
+      "saved original sideboard has editable physical components and independent quartz/install height",
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "base:0 original box uses the shared thickness control",
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "upper original box uses the shared thickness control",
+      "original floor and upper boxes save independent thickness values",
+      "refresh restores the actual edited sideboard geometry",
+      "thickness is directly editable",
+      "narrow preview retains its own usable column beside the thickness controls",
+      "base:0 restores its own thickness in the same Lego editor",
+      "upper restores its own thickness in the same Lego editor",
+      "no runtime errors: "
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "original framed sideboard production preview has 24 mm sides and 9 mm backs",
+      "thickness undo/redo rebuilds actual original boards",
+      "saved original sideboard has editable physical components and independent quartz/install height",
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "base:0 original box uses the shared thickness control",
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "upper original box uses the shared thickness control",
+      "original floor and upper boxes save independent thickness values",
+      "refresh restores the actual edited sideboard geometry",
+      "thickness is directly editable",
+      "narrow preview retains its own usable column beside the thickness controls",
+      "base:0 restores its own thickness in the same Lego editor",
+      "upper restores its own thickness in the same Lego editor",
+      "no runtime errors: "
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "original framed sideboard production preview has 24 mm sides and 9 mm backs",
+      "thickness undo/redo rebuilds actual original boards",
+      "saved original sideboard has editable physical components and independent quartz/install height",
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "base:0 original box uses the shared thickness control",
+      "thickness is directly editable",
+      "backThickness is directly editable",
+      "upper original box uses the shared thickness control",
+      "original floor and upper boxes save independent thickness values",
+      "refresh restores the actual edited sideboard geometry",
+      "thickness is directly editable",
+      "narrow preview retains its own usable column beside the thickness controls",
+      "base:0 restores its own thickness in the same Lego editor",
+      "upper restores its own thickness in the same Lego editor",
+      "edited actual floor/wall/sideboard production GLB per-board identity and world bounds: {\"count\":103,\"max\":0}",
+      "no runtime errors: "
+    ]
+  }
+]
