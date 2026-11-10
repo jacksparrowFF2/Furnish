@@ -1610,20 +1610,16 @@ async function enter(){
   init(); active = true;
   opt.mode = 'orbit';
   renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH()); updateProjection();
-  sync(true);
+  // Keep the production scene while in 2D; signatures rebuild only edited inputs.
+  sync();
   opt.mode = 'orbit'; orbit.enabled = false; showLabels(false);
   const A = planPose(), B = isoFrom(A);
-  grow = 0; furnGrow = 0; applyGrow(); setPose(A);
+  setPose(A);
   stage.classList.add('animating');
   startLoop(); renderer.render(scene, camera);
   stage.classList.add('is3d');                       // 交叉淡入：此刻 3D 画面与 2D 平面完全重合
-  await wait(420);
-  await animate(1700, t => {
-    camTween(A, B, ease(clamp01(t/.85)));
-    grow = ease(clamp01((t - .1)/.55));
-    furnGrow = ease(clamp01((t - .45)/.5));
-    applyGrow();
-  });
+  // Camera-only transition retains rigid geometry and cached shadows.
+  await animate(220, t => camTween(A, B, ease(t)));
   orbit.enabled = true; showLabels(opt.labels);
   stage.classList.remove('animating');
 }
@@ -1638,17 +1634,11 @@ async function exit(){
     const dir = new THREE.Vector3(); camera.getWorldDirection(dir); orbit.target.copy(camera.position).addScaledVector(dir, 3).setY(0); opt.mode = 'orbit'; syncModeBtns(); }
   fly = null; orbit.enabled = false; showLabels(false); stage.classList.add('animating');
   const A = curPose(), B = planPose();
-  await animate(1300, t => {
-    camTween(A, B, ease(clamp01((t - .1)/.9)));
-    furnGrow = 1 - ease(clamp01(t/.45));
-    grow = 1 - ease(clamp01((t - .2)/.6));
-    applyGrow();
-  });
-  stage.classList.remove('is3d');                    // 此刻 3D 已压平为正俯视，与 2D 重合后淡出
-  await wait(450);
+  await animate(160, t => camTween(A, B, ease(t)));
+  stage.classList.remove('is3d');                    // 正俯视与 2D 重合后淡出，不缩放实体
+  await wait(160);
   active = false; cancelAnimationFrame(raf); raf = 0;
   stage.classList.remove('animating');
-  grow = furnGrow = 1; applyGrow();
 }
 
 /* ======================= 选择 / 拾取 ======================= */
