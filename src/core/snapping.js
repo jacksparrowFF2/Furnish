@@ -42,10 +42,13 @@
       if(Math.abs(q.t-p.t)>1e-9)for(const t of [lo,hi]){const k=(t-p.t)/(q.t-p.t);if(k>=0&&k<=1)max=Math.max(max,p.n+k*(q.n-p.n));}
     }return max;
   }
-  function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip,moving,disabled=false,axis,anchor,finishFaces=[]}){
+  function move(f,cx,cy,{grid,scale,wallSnap,guides,rects,furniture,skip,moving,disabled=false,axis,anchor,finishFaces=[],plan}){
     if(f.cx===undefined||f.cy===undefined)f={...f,cx:f.cx??cx,cy:f.cy??cy};
     if(axis==='x')cy=anchor.y;else if(axis==='y')cx=anchor.x;
     if(disabled)return {position:[cx,cy],guides:[]};
+    if(guides&&(!moving||moving.length===1)){
+      const hit=cabinetMove({...f,cx,cy},{furniture:furniture.filter(o=>!skip?.has(o.id)),scale,axis,plan});if(hit)return hit;
+    }
     const products=root.FurnishProducts||(typeof require==='function'?require('./product-rules.js'):null),surfaceDevice=!f.obj&&products.definition(f)?.measureSurfaceBoundary&&(!moving||moving.length===1);
     if(surfaceDevice&&guides){const hit=surfaceMove(f,cx,cy,{furniture,skip,scale,axis});if(hit)return hit;}
     // A supported device must not be pulled to exterior contact with its host.
@@ -556,7 +559,48 @@
     }
     return out;
   }
-  const api={elevationTargets,elevation,cabinetInterior,surfaceOpening,hobOpening:surfaceOpening,kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
+  // A target is an ordinary component-cabinet bay, never a type-based void.
+  // Shell dimensions suggest an alignment; production solids decide validity.
+  function cabinetTargets(f,{furniture=[],plan}={}){
+    const B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js'),P=root.FurnishProducts||require('./product-rules.js'),out=[];
+    for(const host of furniture){
+      if(host.id===f.id||host.obj||!B.is(host)&&!host.kitchen||P.modelError(host))continue;
+      const rows=B.is(host)?[{id:'body',furniture:host}]:host.kitchen?(root.FurnishCabinetAssembly||require('./cabinet-assembly-core.js')).modules(host).filter(r=>B.is(r.furniture)):[];
+      for(const row of rows)for(const placed of B.layout(row.furniture))for(const bay of B.bays(placed.box)){
+        const b=placed.box,part=row.furniture,angle=(part.rot||0)*Math.PI/180,flip=part.flip?-1:1;
+        const world=(x,z)=>[part.cx+flip*x*Math.cos(angle)-z*Math.sin(angle),part.cy+flip*x*Math.sin(angle)+z*Math.cos(angle)];
+        const front=placed.z-b.d/2+B.frontDepth(b),rear=placed.z-b.d/2+b.backThickness;
+        if(f.w>bay.width+1e-6||f.d>front-rear+1e-6)continue;
+        const [cx,cy]=world(placed.x+bay.center,front-f.d/2),candidate={...f,cx,cy,rot:part.rot||0,flip:!!part.flip};
+        const D=root.FurnishDesign||require('./design-core.js'),range=D.furnitureVerticalBounds(candidate,plan,furniture),floor=P.floorBase(plan,host,furniture),base=floor.z+P.value(part,'mountHeight')+(row.module?K.baseElevation(host):0),bottom=base+placed.y,top=bottom+B.bodyHeight(b);
+        if(!floor.known||!range||range.bottom<bottom-1e-6||range.top>top+1e-6||geometry.volumeOverlap(candidate,host,plan,furniture))continue;
+        out.push({hostId:host.id,moduleId:row.id,boxId:b.id,bay:bay.id,name:(host.name||'柜体')+' · 柜箱 '+(out.filter(t=>t.hostId===host.id).length+1),width:bay.width,depth:front-rear,cx,cy,rot:candidate.rot,flip:candidate.flip});
+      }
+    }
+    return out;
+  }
+  function alignCabinet(f,target,{furniture=[],plan}={}){
+    if(f.locked)throw Error('请先解锁设备');
+    const current=cabinetTargets(f,{furniture,plan}).find(t=>['hostId','moduleId','boxId','bay'].every(k=>t[k]===target[k]));
+    if(!current)throw Error('柜内净空不足或与实际板件相交，请核对尺寸、离地高度和安装预留');
+    const {cx,cy,rot,flip}=current,next={...f,cx,cy,rot,flip};delete next.laundryHostId;return next;
+  }
+  function cabinetMove(f,{furniture=[],scale=1,axis,plan}={}){
+    const P=root.FurnishProducts||require('./product-rules.js');if(f.obj||f.kitchen||f.cabinet||P.definition(f)?.measureSurfaceBoundary)return null;
+    const capture=12/scale;let best=null;
+    for(const t of cabinetTargets(f,{furniture,plan})){
+      if(Math.abs(((f.rot||0)-t.rot+540)%360-180)>1e-6||!!f.flip!==t.flip)continue;
+      const a=t.rot*Math.PI/180,dx=f.cx-t.cx,dy=f.cy-t.cy,x=dx*Math.cos(a)+dy*Math.sin(a),z=-dx*Math.sin(a)+dy*Math.cos(a);
+      if(Math.abs(x)>(t.width-f.w)/2+capture||z>capture||z<-(t.depth-f.d)-capture)continue;
+      const center=Math.abs(x)<=capture,front=Math.abs(z)<=capture;if(!center&&!front)continue;
+      const sx=center?x:0,sz=front?z:0,cx=f.cx-sx*Math.cos(a)+sz*Math.sin(a),cy=f.cy-sx*Math.sin(a)-sz*Math.cos(a);
+      if(axis==='x'&&Math.abs(cy-f.cy)>1e-6||axis==='y'&&Math.abs(cx-f.cx)>1e-6)continue;
+      const candidate={...f,cx,cy},host=furniture.find(o=>o.id===t.hostId);if(geometry.volumeOverlap(candidate,host,plan,furniture))continue;
+      const distance=Math.hypot(cx-f.cx,cy-f.cy);if(!best||distance<best.distance)best={position:[cx,cy],guides:[{line:[{x:t.cx-Math.cos(a)*t.width/2,y:t.cy-Math.sin(a)*t.width/2},{x:t.cx+Math.cos(a)*t.width/2,y:t.cy+Math.sin(a)*t.width/2}]}],cabinetTarget:t,distance};
+    }
+    return best;
+  }
+  const api={cabinetTargets,alignCabinet,cabinetMove,elevationTargets,elevation,cabinetInterior,surfaceOpening,hobOpening:surfaceOpening,kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
   if(typeof module === 'object' && module.exports)module.exports=api;
   else root.FurnishSnapping=api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

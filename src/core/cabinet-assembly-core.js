@@ -55,11 +55,32 @@
   B.validate(B.fit(out));const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),signature=value=>M.boards(value,{includeStatic:true}).map(v=>JSON.stringify({poly:v.poly.map(p=>p.map(n=>Math.round(n*10000)/10000)).sort(),bottom:Math.round(v.bottom*10000)/10000,top:Math.round(v.top*10000)/10000,phase:Math.round((v.phase??0)*10000)/10000,motion:v.motion?{axis:v.motion.axis,angle:v.motion.angle,travel:v.motion.travel}:null,pivot:v.motion?.pivot?.map(n=>Math.round(n*10000)/10000)})).sort();if(JSON.stringify(signature(f))!==JSON.stringify(signature(out)))throw Error('此柜生产板件或开合尚不能无损转换，原结构已保留');return out;
  }
  function componentizeLaundry(f){return K().isLaundry(f)?componentizeKitchen(f):copy(f);}
+ // Editing explicitly replaces the former empty span with an independent
+ // ordinary carcass. Legacy conversion remains lossless for read-only callers.
+ function editableKitchen(f){
+  const next=componentizeKitchen(f);if(!K().isLaundry(next))return next;
+  const B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js');
+  for(const m of next.kitchen.modules.filter(m=>m.role==='empty')){
+   const b=B.box();Object.assign(b,{w:m.width,d:next.kitchen.depth,h:next.kitchen.baseHeight,bottom:false,backThickness:0,thickness:next.kitchen.laundry.sidePanels?.thickness??b.thickness});
+   const part=B.fit({...B.create(),cabinet:{version:2,boxes:[b]}});B.validate(part);
+   m.role='open';m.structure={w:part.w,d:part.d,h:part.h,cabinet:part.cabinet};
+  }
+  delete next.kitchen.laundry.sidePanels;delete next.kitchen.laundry.appliance;
+  return K().validate(next);
+ }
+ function createLaundryCabinet(source,makeId,side){
+  const items=K().createLaundryCabinet(source,makeId,side),host=editableKitchen(items[0]),S=root.FurnishSnapping||require('./snapping.js');items[0]=host;
+  for(let i=1;i<items.length;i++)if(P().supportsAction(items[i],'alignLaundryBay')){
+   const target=S.cabinetTargets(items[i],{furniture:[host]}).find(t=>t.moduleId==='base:1');
+   if(!target)throw Error('新建洗衣柜的实际净空无法容纳设备');items[i]=S.alignCabinet(items[i],target,{furniture:[host]});delete items[i].laundryHostId;
+  }
+  return items;
+ }
  const Z=()=>root.FurnishZoneGeometry||require('./zone-geometry.js');
  function validateWorktop(f){const value=f.kitchen?.laundry?.worktop;if(value===undefined)return;const r=P().cabinetBuilder.worktop;if(!K().isLaundry(f)||!value||Array.isArray(value)||Object.keys(value).some(k=>k!=='outline')||!Array.isArray(value.outline)||value.outline.length>r.maxVertices)throw Error('异形台面轮廓无效');const poly=value.outline;Z().validatePolygon(poly);if(poly.length<4||poly.some((p,i)=>{const q=poly[(i+1)%poly.length];return p[0]!==q[0]&&p[1]!==q[1];}))throw Error('异形台面须为无自交的直角多边形');const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);if([...xs,...ys].some(n=>Math.abs(n)>r.maxSpan)||Math.max(...xs)-Math.min(...xs)>r.maxSpan||Math.max(...ys)-Math.min(...ys)>r.maxSpan)throw Error('异形台面超出设计范围');if(Math.abs(Z().signed(poly))<10000)throw Error('台面有效面积过小');}
  function setWorktop(f,outline){if(f.locked||!K().isLaundry(f))throw Error('请选择已解锁洗衣区');const next=copy(f);if(outline===null)delete next.kitchen.laundry.worktop;else{const poly=copy(outline);if(Z().signed(poly)<0)poly.reverse();next.kitchen.laundry.worktop={outline:poly};}validateWorktop(next);return K().validate(next);}
  function extendWorktop(f,{side='left',width=300,depth=f.d,offset=0}={}){const r=P().cabinetBuilder.worktop;if(!['left','right'].includes(side)||![width,depth,offset].every(Number.isFinite)||width<20||width>r.maxSpan||depth<50||depth>r.maxSpan)throw Error('请填写有效台面延伸尺寸');const poly=K().outline(f),xs=poly.map(p=>p[0]),left=Math.min(...xs),right=Math.max(...xs),x=side==='left'?left-width:right-1,y=-f.d/2+offset,rect=[[x,y],[x+width+1,y],[x+width+1,y+depth],[x,y+depth]],pieces=Z().decompose([poly,rect],p=>Z().inside(p,poly)||Z().inside(p,rect)),rings=Z().outline(pieces).rings;if(rings.length!==1)throw Error('台面延伸必须与原台面连成一体');return setWorktop(f,rings[0]);}
  function moveWorktopVertex(f,index,target){return setWorktop(f,Z().moveOrthogonalVertex(K().outline(f),index,target));}
  function bounds(f){const points=[...K().outline(f),...K().laundryParts(f).filter(p=>p.key!=='sink').flatMap(({furniture:p})=>{return K().assemblyCorners(f,p);})],left=Math.min(-f.w/2,...points.map(p=>p[0])),right=Math.max(f.w/2,...points.map(p=>p[0])),back=Math.min(-f.d/2,...points.map(p=>p[1])),front=Math.max(f.d/2,...points.map(p=>p[1])),top=Math.max(K().overallHeight(f),...K().laundryParts(f).filter(p=>p.key!=='sink').map(({furniture:p})=>p.mountHeight-K().baseElevation(f)+p.h));return {left,right,back,front,bottom:0,top,w:right-left,d:front-back,h:top};}
- const api={componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
+ const api={createLaundryCabinet,editableKitchen,componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

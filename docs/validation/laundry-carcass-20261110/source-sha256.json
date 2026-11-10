@@ -1,0 +1,9 @@
+{
+  "src/core/cabinet-assembly-core.js": "12e5b949bf0345bf34888cd4d7c927b14ea859e400b90a4a6557535272a9c619",
+  "src/core/kitchen-core.js": "f3bd7668309c4b15de7d6f3834be6724c1eebb057b56785d5932b6f4b21773ac",
+  "src/core/snapping.js": "f1e810480a1908275658b9fa2bfebc725ca5cde7ee5be295a53d6a5bb3532890",
+  "src/render/cabinet-preview.js": "71927237ba32f0c3977d42e2953966d88a70f15a56dc6fe078f67192a55d02ed",
+  "src/ui/cabinet-builder-native-adapter.js": "1c0f4575a710c34f195176f517d0a5970ec3fe97895121c86f2a9652fd59bc18",
+  "src/ui/furniture-actions.js": "e0237987d548a0973a64a413b1acaf519b5f5062f27a07bff3f7083d8a5e55fd",
+  "src/ui/kitchen-editor.js": "b19391bc1d3c66b091b0a394d88c57de34df7d480a692e4c5bc4eabe396121a9"
+}

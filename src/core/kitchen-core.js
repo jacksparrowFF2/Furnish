@@ -574,7 +574,7 @@ function attachmentTargets(f,list){
  }return targets;
 }
 function normalize(list,before=[]){
- for(const f of list){if(!f.laundryHostId)continue;const host=list.find(h=>h.id===f.laundryHostId&&isLaundry(h));if(!host){delete f.laundryHostId;continue;}const settings=host.kitchen.laundry.appliance;if(settings&&!f.locked)Object.assign(f,clone(settings));const bay=layout(host).find(m=>m.role==='empty');if(bay&&!f.locked)Object.assign(f,centerLaundryInBay({...host,locked:false},f,bay.index));}
+ for(const f of list){if(!f.laundryHostId)continue;const host=list.find(h=>h.id===f.laundryHostId&&isLaundry(h));if(!host){delete f.laundryHostId;continue;}const bay=layout(host).find(m=>m.role==='empty');if(!bay){delete f.laundryHostId;continue;}const settings=host.kitchen.laundry.appliance;if(settings&&!f.locked)Object.assign(f,clone(settings));if(!f.locked)Object.assign(f,centerLaundryInBay({...host,locked:false},f,bay.index));}
 
  for(const f of list){if(!f.counterLink)continue;const host=list.find(h=>h.id===f.counterLink.hostId&&h.type==='counter'&&h.kitchen&&!h.obj);if(!host){delete f.counterLink;continue;}
   // A broken host needs explicit repair; keep its appliances and links intact.

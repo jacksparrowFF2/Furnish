@@ -182,7 +182,7 @@ function pushOut(f,axis){
 }
 function createCatalogFurniture(it,x,y){
   const [type,name,w,d,color,price,h]=it,f=F(type,name,x,y,w,d,0,color);
-  if(FurnishKitchen.isLaundryAreaItem(it))return FurnishKitchen.createLaundryCabinet(f,uid,it[10].endsWith('left')?'left':'right');
+  if(FurnishKitchen.isLaundryAreaItem(it))return FurnishCabinetAssembly.createLaundryCabinet(f,uid,it[10].endsWith('left')?'left':'right');
   if(h!==undefined)f.h=h;
   Object.assign(f,FurnishDesign.products().initial(f));
   if(FurnishCabinet.supported(f)&&!f.kitchen)Object.assign(f,FurnishCabinet.upgradeDesign(f));
@@ -191,7 +191,7 @@ function createCatalogFurniture(it,x,y){
   if(FurnishProducts.supports(f,'curtainStyle'))f.curtainStyle=it[8]||'double';
   if(type==='custom'||type==='customround'){f.price=price;f.h=h;}
   if(it[7]){const c=store.custom?.find(c=>c.id===it[7]);if(c?.cabinet?.version===2){Object.assign(f,{type:'cabinet',w:c.w,d:c.d,h:c.h,cabinet:JSON.parse(JSON.stringify(c.cabinet))});}if(c)Object.assign(f,{catalogId:c.id,catalogSnapshot:FurnishDesign.catalogSnapshot(c),brand:c.brand||'',model:c.model||'',sourceUrl:c.sourceUrl||'',priceDate:c.priceDate||'',frontClearance:c.frontClearance??600,purchaseStatus:'planned',purchaseNote:c.purchaseNote||'',...(c.obj?{obj:JSON.parse(JSON.stringify(c.obj))}:{})});}
-  return [f];
+  return [FurnishKitchen.isLaundry(f)?FurnishCabinetAssembly.editableKitchen(f):f];
 }
 function addItem(it, x, y){
   if(it[9]==='builder'){window.FurnishCabinetBuilderUI.open(null,{position:{x,y}});return;}
