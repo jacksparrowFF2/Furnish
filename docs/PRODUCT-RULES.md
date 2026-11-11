@@ -1,3 +1,5 @@
+2026-11-11（86面板）：panel_bull_g12集中37个panelVariant枚举、默认斜五孔及mountHeight新建0；缺失仅读默认，同型替换保留、跨型清理；含类型或字段最低v84，价格／配色不清空间确认。可见厚度10mm为布局估算。见[参数与边界](PANEL-BULL-G12.md)。
+
 2026-11-11：cabinetBuilder.nativePlacement集中声明原组件柜独立尺寸语义、位置范围与v83。显式independent后沿structure尺寸，mountHeight/x/enabled表达安装和移除；旧缺失仍保持原派生，不在恢复时升级。规则、替换／复用及生产／恢复验收见[独立柜箱契约](validation/cabinet-native-independence-20261111/README.md)。
 
 2026-11-09（原柜板厚统一）：原地柜、吊柜及餐边柜的实际柜箱共用板厚／背厚输入；特殊物理轮廓按真实接合面联动，保留外包、安装高度及台面／五金独立尺寸，补齐反复修改、背板 0 恢复和电视柜顶板标高。联动物理基准采用 profile v2／最低格式 v82，旧数据不在打开时改写。252 组专项及 213 种只读项目配置、三入口与正式 GLB 验证见[板厚统一验收](validation/cabinet-profile-thickness-20261109/README.md)。

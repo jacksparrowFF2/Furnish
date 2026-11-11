@@ -1,0 +1,322 @@
+{
+  "switch1-single": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator"
+  ],
+  "switch1-double": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator"
+  ],
+  "switch1-intermediate": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator"
+  ],
+  "switch2-single": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "rocker-2"
+  ],
+  "switch2-double": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "rocker-2"
+  ],
+  "switch2-intermediate": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "rocker-2"
+  ],
+  "switch3-single": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "rocker-2",
+    "rocker-3"
+  ],
+  "switch3-double": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "rocker-2",
+    "rocker-3"
+  ],
+  "switch4-single": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "rocker-2",
+    "rocker-3",
+    "rocker-4"
+  ],
+  "switch4-double": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "rocker-2",
+    "rocker-3",
+    "rocker-4"
+  ],
+  "socket5": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "shutter-03",
+    "shutter-04",
+    "shutter-05",
+    "shutter-06"
+  ],
+  "socket5-wide": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "shutter-03",
+    "shutter-04",
+    "shutter-05",
+    "shutter-06"
+  ],
+  "socket16": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "shutter-03",
+    "shutter-04"
+  ],
+  "socket5-switch": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "shutter-05",
+    "shutter-06",
+    "shutter-07",
+    "shutter-08",
+    "shutter-09"
+  ],
+  "socket16-switch": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "shutter-05",
+    "shutter-06",
+    "shutter-07"
+  ],
+  "socket4": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "shutter-03",
+    "shutter-04",
+    "shutter-05"
+  ],
+  "socket5-separated": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "shutter-03",
+    "shutter-04",
+    "shutter-05",
+    "shutter-06"
+  ],
+  "socket7": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "shutter-03",
+    "shutter-04",
+    "shutter-05",
+    "shutter-06",
+    "shutter-07",
+    "shutter-08"
+  ],
+  "socket5-3usb": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "usb-tongue-03",
+    "shutter-04",
+    "usb-tongue-05",
+    "shutter-06",
+    "usb-tongue-07",
+    "shutter-08",
+    "shutter-09",
+    "shutter-10",
+    "shutter-11",
+    "shutter-12"
+  ],
+  "socket5-ac": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "usb-tongue-03",
+    "shutter-04",
+    "usb-tongue-05",
+    "shutter-06",
+    "shutter-07",
+    "shutter-08",
+    "shutter-09",
+    "shutter-10"
+  ],
+  "socket5-diagonal": [
+    "rear-plate",
+    "face",
+    "shutter-02",
+    "shutter-03",
+    "shutter-04",
+    "shutter-05",
+    "shutter-06"
+  ],
+  "blank": [
+    "rear-plate",
+    "face"
+  ],
+  "phone": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04"
+  ],
+  "net5": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04"
+  ],
+  "net6": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04"
+  ],
+  "tv": [
+    "rear-plate",
+    "face",
+    "coax-02"
+  ],
+  "tv-push": [
+    "rear-plate",
+    "face",
+    "coax-02"
+  ],
+  "phone-net5": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04",
+    "port-recess-05",
+    "port-flap-06",
+    "port-icon-07"
+  ],
+  "phone-net6": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04",
+    "port-recess-05",
+    "port-flap-06",
+    "port-icon-07"
+  ],
+  "net5-double": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04",
+    "port-recess-05",
+    "port-flap-06",
+    "port-icon-07"
+  ],
+  "net6-double": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04",
+    "port-recess-05",
+    "port-flap-06",
+    "port-icon-07"
+  ],
+  "tv-net5": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04",
+    "coax-05",
+    "port-hood"
+  ],
+  "tv-net6": [
+    "rear-plate",
+    "face",
+    "port-recess-02",
+    "port-flap-03",
+    "port-icon-04",
+    "coax-05",
+    "port-hood"
+  ],
+  "cable": [
+    "rear-plate",
+    "face",
+    "cable-rim",
+    "rubber-disc",
+    "rubber-seam-45",
+    "rubber-seam--45"
+  ],
+  "doorbell": [
+    "rear-plate",
+    "face",
+    "rocker-recess",
+    "rocker-1",
+    "indicator",
+    "doorbell-outline",
+    "doorbell-clapper"
+  ],
+  "bell": [
+    "rear-plate",
+    "face",
+    "call-surround",
+    "red-call-button",
+    "key-socket",
+    "shutter-05"
+  ],
+  "nightlight": [
+    "rear-plate",
+    "face",
+    "lamp-frame",
+    "diffuser",
+    "sensor"
+  ]
+}

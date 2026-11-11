@@ -1,0 +1,7 @@
+{
+  "assets/models/panel-bull-g12/v7/panel-bull-g12-v1.blend": "f482878376d721f20adbb1318cdc4020a49a46d7ccdfa3cc5464499641e75ede",
+  "assets/models/panel-bull-g12/v7/panel-bull-g12-v1.glb": "13c0261f06d362bb5a5b2e92caa48fae45d81aa144b3b6cd22e5b45d8417aecf",
+  "src/data/panel-bull-g12-blender-asset.js": "f77a8631387e6af6fd1ab22a71a86ac10bc40eab81cd4e5e0b44595938b16663",
+  "scripts/blender-model-panel-bull-g12.py": "4cea2adc3ae0199cea2feaad353872aecf8e33184f81d8c63ae135221e939732",
+  "scripts/publish-panel-bull-g12.py": "5503d0f9db0a6a6091e93c55ab9ab2327ef55387654b2aced9308e37e1ea1105"
+}

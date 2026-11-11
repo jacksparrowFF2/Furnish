@@ -1,0 +1,190 @@
+{
+  "passed": true,
+  "variants": [
+    {
+      "variant": "switch1-single",
+      "parts": 5,
+      "sourceSha256": "b007032ea5fbce0ca00f41d2c3a405ca21b731346fad3b160368c97c7feec955"
+    },
+    {
+      "variant": "switch1-double",
+      "parts": 5,
+      "sourceSha256": "0f7829b8ac4f785f83eaded25c538e054ec8f5f9e2e11db81704ba88406eab04"
+    },
+    {
+      "variant": "switch1-intermediate",
+      "parts": 5,
+      "sourceSha256": "d6f684cece7987217b31748e3b813f761ac3dd6bb53dbff8318927d13b781145"
+    },
+    {
+      "variant": "switch2-single",
+      "parts": 6,
+      "sourceSha256": "6bd77a11dd20a24c0427fcb65b1feedc7c55403f570ee8d642c25320790e0238"
+    },
+    {
+      "variant": "switch2-double",
+      "parts": 6,
+      "sourceSha256": "ae0e96e1b8a7397af4b6de2d5979ddccf3d511d297c9851210fbed4136adfec7"
+    },
+    {
+      "variant": "switch2-intermediate",
+      "parts": 6,
+      "sourceSha256": "9816448774741831b823f41d745b951a604bf0092f59c58a8f5a5b14a32d9de3"
+    },
+    {
+      "variant": "switch3-single",
+      "parts": 7,
+      "sourceSha256": "9f77b2be6553ad0e9ec2ff33ad7b3fcf11a778cdacc8cd8e6633036aad40b59a"
+    },
+    {
+      "variant": "switch3-double",
+      "parts": 7,
+      "sourceSha256": "d0cbc938985e348eac734c2bfd6256d35f4f73b70d5ee75cb5ffb37b3f11b757"
+    },
+    {
+      "variant": "switch4-single",
+      "parts": 8,
+      "sourceSha256": "1224958ba0d7a863c322387137e8fbdd712346dde819298fb63ae5d85927e061"
+    },
+    {
+      "variant": "switch4-double",
+      "parts": 8,
+      "sourceSha256": "8170f4155f0dc2191623f68950940fb32446563fe35b07ad17c99df490eecb32"
+    },
+    {
+      "variant": "socket5",
+      "parts": 7,
+      "sourceSha256": "e75b6f2ca7a9728026c6bbb2a285a82fcc0737557fcaa355956c9ed1e01c5490"
+    },
+    {
+      "variant": "socket5-wide",
+      "parts": 7,
+      "sourceSha256": "2feb24102ad26c742075081519a1e5ccc851076ec7261f8e64e437fd28cfd5e1"
+    },
+    {
+      "variant": "socket16",
+      "parts": 5,
+      "sourceSha256": "52d5869270851a563588262d46a32420e7a80a20eb83869c998db9ab31f49570"
+    },
+    {
+      "variant": "socket5-switch",
+      "parts": 10,
+      "sourceSha256": "3ce8c1e86a48dd6e72c18c87255e935bbe58a41d3d1c778fac3e02af2f9eaa71"
+    },
+    {
+      "variant": "socket16-switch",
+      "parts": 8,
+      "sourceSha256": "705d3309f1c78530ecd6bbf1f364d0a368fe5a29f17553822434c77a42e271aa"
+    },
+    {
+      "variant": "socket4",
+      "parts": 6,
+      "sourceSha256": "46f122c3d088d04c6d83f8505d43a1f0a4354dae0352b5a63591e5ea5c0f9e30"
+    },
+    {
+      "variant": "socket5-separated",
+      "parts": 7,
+      "sourceSha256": "ecb8e178858f8f5b427a9e083a111b471387372e70121937eb469779a6308505"
+    },
+    {
+      "variant": "socket7",
+      "parts": 9,
+      "sourceSha256": "e9335807ade0ba92e1d8d7877d33ea688e859f328b584f33c891e73893ff8d1c"
+    },
+    {
+      "variant": "socket5-3usb",
+      "parts": 13,
+      "sourceSha256": "e4c66f7e276fcc7017c78654909e57151013dd5d77fbea13aa682383926aefc1"
+    },
+    {
+      "variant": "socket5-ac",
+      "parts": 11,
+      "sourceSha256": "5da18e07c1024e4b757084b1ebf373032b21d9218628cdadc4fb917f9385667a"
+    },
+    {
+      "variant": "socket5-diagonal",
+      "parts": 7,
+      "sourceSha256": "13c0261f06d362bb5a5b2e92caa48fae45d81aa144b3b6cd22e5b45d8417aecf"
+    },
+    {
+      "variant": "blank",
+      "parts": 2,
+      "sourceSha256": "973c7121002a44a0827d38ecf200c484cf6dfd64c24c0d1b8b94fc4a1a5c4804"
+    },
+    {
+      "variant": "phone",
+      "parts": 5,
+      "sourceSha256": "2a5d02570df7b06aa91ed4ea2d68bff6cf093a5262b5900aafc71d029b075a88"
+    },
+    {
+      "variant": "net5",
+      "parts": 5,
+      "sourceSha256": "82d814d6036694ecd8f4a93eb72d3930760b72ce8cace5839a61704e06dc33dc"
+    },
+    {
+      "variant": "net6",
+      "parts": 5,
+      "sourceSha256": "79894817dee270bc65defa6d689c9b3278b99009e0ba3c06f5867735e8e0af63"
+    },
+    {
+      "variant": "tv",
+      "parts": 3,
+      "sourceSha256": "57be600bb102596afa8a039d940941f8ccc378cd6d2cd7e9f152956d2c935deb"
+    },
+    {
+      "variant": "tv-push",
+      "parts": 3,
+      "sourceSha256": "9540ab06790439ccffac96fff68e772e8f72055ba9dbb18f854150e62c6c40a3"
+    },
+    {
+      "variant": "phone-net5",
+      "parts": 8,
+      "sourceSha256": "3e0108be14dee2d885c6192652b5b60fbc7becc67cbacd306170509b6fdd842a"
+    },
+    {
+      "variant": "phone-net6",
+      "parts": 8,
+      "sourceSha256": "fb2f5005a3628bfffb1d5f0bec34302beb8b1dcfaaef11419e883c397dbe8364"
+    },
+    {
+      "variant": "net5-double",
+      "parts": 8,
+      "sourceSha256": "f471c5e02be3589a77dab284b1ff937f05a09ff15ddf74df0c0e2130fbac1137"
+    },
+    {
+      "variant": "net6-double",
+      "parts": 8,
+      "sourceSha256": "1448a1c4b664d094fa71d981efb2b96dd69dc56eba7eddf56eb9ee0da9ce3fb1"
+    },
+    {
+      "variant": "tv-net5",
+      "parts": 7,
+      "sourceSha256": "d5621e052f6fe54ad09defb2ec13ccb87f6af6ce33c3c1999bcbfbe5cf60adca"
+    },
+    {
+      "variant": "tv-net6",
+      "parts": 7,
+      "sourceSha256": "2f777323e04ca1652606de7c868322dfe67cdb0b086681d8374c3389a10eb2f6"
+    },
+    {
+      "variant": "cable",
+      "parts": 6,
+      "sourceSha256": "65fec5c0ed9d8e3242080681e24d70e7d9482f618f7a861c794a0d0cc345cdd3"
+    },
+    {
+      "variant": "doorbell",
+      "parts": 7,
+      "sourceSha256": "10ac718583151528613a4b61f3e695a08ff6965e5d185b81e4d4376f200e9d3a"
+    },
+    {
+      "variant": "bell",
+      "parts": 6,
+      "sourceSha256": "f48c846b53b8e06fc7888ee6ddcdba2e7cc3a37d7ae6d4599b266f1172907aee"
+    },
+    {
+      "variant": "nightlight",
+      "parts": 5,
+      "sourceSha256": "59bf8222b1bfe704124004a5cf68eab71ba26540c2b4ffd6f83d7bbf6c79ea94"
+    }
+  ]
+}

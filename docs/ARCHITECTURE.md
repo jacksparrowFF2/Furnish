@@ -1,3 +1,5 @@
+2026-11-11（86面板）：product-rules集中panelVariants与mountHeight，panel-bull-g12-model选择37款Blender离线网格；静态构造供正式场景和实体，款式进入缓存／空间签名及采购分组。v84沿原mutate／项目／仓库／缓存；只新增两段经典资产／模型脚本，不引入状态或构建机制。见[型号契约](PANEL-BULL-G12.md)。
+
 2026-11-11（原柜箱独立尺寸）：cabinet-assembly-core统一提交原组件柜尺寸与安装位置；kitchen-core、生产模型／实体与二维直接消费显式独立结构，连续台面保留自身基准。独立板件与台面／附属柜相交进入编辑器和全案核对；新语义v83贯穿原项目／仓库／恢复缓存，无新加载脚本或保存通道。旧缺失保持原规则，见[验收](validation/cabinet-native-independence-20261111/README.md)。
 
 2026-11-11（Codex Blender插件）：plugins/furnish-blender通过标准stdio MCP封装锁定的DSH独立runtime，不依赖DSH宿主包；本机数据目录生成Node内置TS转换结果，带认证回环Gateway保留上游会话与队列。furnish_model调用原verify-model-pipeline的隔离流程，生产几何／发布／项目保存保持原入口；无新增应用经典脚本或构建依赖。供应补丁只修队列失败退出和工程载入顺序。见[Codex工作流](CODEX-BLENDER-PLUGIN.md)。

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "profile": "panel-bull-g12",
+  "blender": "5.2.3 LTS",
+  "source": "downloaded-render-blend",
+  "results": [
+    {
+      "case": "front",
+      "parts": 7,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "oblique",
+      "parts": 7,
+      "boundsAndAlpha": true
+    },
+    {
+      "case": "back",
+      "parts": 7,
+      "boundsAndAlpha": true
+    }
+  ]
+}

@@ -1,0 +1,427 @@
+{
+  "passed": true,
+  "profile": "panel-bull-g12",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "panel_bull_g12",
+    "name": "公牛 G12 · 86开关插座面板（种类可选）",
+    "w": 86,
+    "d": 10,
+    "color": "#f5f5f2",
+    "mountHeight": 0,
+    "panelVariant": "socket5-diagonal",
+    "frontClearance": 0,
+    "brand": "公牛/BULL",
+    "model": "G12 · 暮雪白 · 86型面板",
+    "sourceUrl": "https://item.jd.com/100071863715.html",
+    "h": 86
+  },
+  "alternateKind": "back",
+  "blender": "C:/Users/SPH/scoop/apps/blender/current/blender.exe",
+  "started": "2026-11-11T12:40:17.352Z",
+  "run": "output/model-pipeline/selection-tRQhAe/panel-bull-g12-BYiQlx",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-11T12:40:17.352Z",
+      "result": {
+        "command": "author-panel-bull-g12",
+        "input": "output/model-pipeline/selection-tRQhAe/panel-bull-g12-BYiQlx/authored",
+        "output": "output/model-pipeline/selection-tRQhAe/panel-bull-g12-BYiQlx/authored",
+        "passed": true,
+        "blender": "C:/Users/SPH/scoop/apps/blender/current/blender.exe",
+        "preflight": {
+          "passed": true,
+          "profile": "panel-bull-g12",
+          "parts": 246,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-11T12:40:35.418Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-11T12:40:35.418Z",
+      "result": {
+        "passed": true,
+        "profile": "panel-bull-g12",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-11T12:40:36.812Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-11T12:40:36.812Z",
+      "result": {
+        "command": "publish-panel-bull-g12",
+        "input": "output/model-pipeline/selection-tRQhAe/panel-bull-g12-BYiQlx/authored/panel-bull-g12-v1.glb",
+        "output": "output/model-pipeline/selection-tRQhAe/workspace/src/data/panel-bull-g12-blender-asset.js",
+        "passed": true,
+        "blender": "C:/Users/SPH/scoop/apps/blender/current/blender.exe",
+        "glbSha256": "3c9f8f81b6b82b659a2cf4be05f095128e4912bf813a569f4f852aba1834e47b",
+        "runtimeSha256": "74ef7b261875dc8397715d447ebb4f5364d59beaa1868ed04e6681e0ca19ee37"
+      },
+      "finished": "2026-11-11T12:40:39.134Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-11T12:40:39.135Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "panel-bull-g12",
+            "profile": "panel-bull-g12",
+            "log": "output/model-pipeline/selection-tRQhAe/panel-bull-g12-BYiQlx/panel-bull-g12.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "panel-bull-g12",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 98.5077695767607,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 7,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 98.5077695767607,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-11T12:40:42.887Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-11T12:40:42.887Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.004999999888241291
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.004999999888241291
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.04816000163555145,
+                0,
+                -0.005400000140070915
+              ],
+              [
+                0.04816000163555145,
+                0.0928800031542778,
+                0.005400000140070915
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 7,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.004999999888241291
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.004999999888241291
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-11T12:40:51.922Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-11T12:40:51.922Z",
+      "result": {
+        "passed": true,
+        "profile": "panel-bull-g12",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-11T12:40:52.796Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-11T12:40:52.796Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0,
+              0.0430000014603138,
+              0.22707117589060885
+            ],
+            "target": [
+              0,
+              0.0430000014603138,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              0.12571489841859068,
+              0.11214319559053867,
+              0.17600085778602692
+            ],
+            "target": [
+              0,
+              0.0430000014603138,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 7,
+            "position": [
+              -0.1285537387885722,
+              0.09442149697574267,
+              -0.17997523430400109
+            ],
+            "target": [
+              0,
+              0.0430000014603138,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-11T12:40:57.361Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-11T12:40:57.361Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "auto",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-11T12:41:00.523Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-11T12:41:00.523Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "auto",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-11T12:41:03.636Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-11T12:41:03.636Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "auto",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-11T12:41:06.733Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-11T12:41:06.734Z",
+      "result": {
+        "passed": true,
+        "profile": "panel-bull-g12",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 7,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 7,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-11T12:41:07.356Z"
+    }
+  ],
+  "finished": "2026-11-11T12:41:07.356Z"
+}

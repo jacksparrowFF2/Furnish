@@ -19,6 +19,7 @@ const suites={
  block:['block'],panel_light_300x600:['panel-light'],bath_heater_300x600:['bath-heater-se2'],downlight_philips_dl269:['downlight'],heating_manifold:['manifold','manifold-zero-gap'],electrical_box_strong:['electrical-box'],electrical_box_weak:['electrical-box'],aquarium_mijia_2pro:['aquarium'],stove_fotile_th36b:['fotile'],waterheater_flat:['waterheater-flat','waterheater-furniture-clearances'],aircon_midea_ultra_2hp:['aircon-midea'],water_purifier_mijia_1200g:['water-purifier'],tea_bar_mijia_pro:['tea-bar'],robot_p20max_tank:['robot-vacuum'],robot_p20max_plumbed:['robot-vacuum'],robot_p20max:['robot-vacuum'],pipebox:['pipebox'],sofa_yeswood_cherry:['yeswood-sofa'],coffeetable_yeswood_cherry:['cherry-coffee-table'],tea_table_800:['tea-table'],bench_yeswood_oak:['shoe-bench'],shower_arrow_cream:['shower-arrow'],cat_tree:['cat-tree'],pet_feeder_mijia_2:['pet-feeder'],litter_box:['litter-box'],mirror:['mirror'],tv:['tv-view-consistency']
 };
 const copy=o=>JSON.parse(JSON.stringify(o));
+assetTypes['panel-bull-g12']='panel_bull_g12';suites['panel-bull-g12']=['panel-bull-g12'];
 assetTypes['corner-bookcase']='bookshelf_yeswood_y00y06';assetTypes['corner-bookcase-580']='bookshelf_yeswood_y00y06058';suites['corner-bookcase-580']=['corner-bookcase-580'];suites['corner-bookcase']=['corner-bookcase'];
 suites.tripleslidingwindow=['telescopic-floor-tracks'];
 const supplySpecs=require('./storage-supply-specs.json');for(const [id,s] of Object.entries(supplySpecs)){assetTypes[id]=s.type;suites[id]=['storage-supplies'];}
@@ -65,7 +66,7 @@ function sourceFiles(profile){
  const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(entry.name===profile+'-v1.glb')files.push(file);}};walk(base);
  const glb=files.find(file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')===asset.sourceSha256);
  if(!glb||!fs.existsSync(glb.replace(/\.glb$/,'.blend')))throw Error('Cannot locate published author source: '+profile);
- return {runtime,glb:path.relative(root,glb).replaceAll('\\','/'),blend:path.relative(root,glb.replace(/\.glb$/,'.blend')).replaceAll('\\','/'),parts:asset.parts.length,id:asset.id,productionIdentity:profile==='y52y09'?'cabinet-boards':'direct',prefixes:[...new Set(asset.parts.map(p=>p.identity.slice(0,p.identity.indexOf(':')+1)))]};
+ return {runtime,glb:path.relative(root,glb).replaceAll('\\','/'),blend:path.relative(root,glb.replace(/\.glb$/,'.blend')).replaceAll('\\','/'),...(asset.variants?{variantFiles:Object.keys(asset.variants).map(key=>key+'.glb')}:{}),parts:asset.parts.length,id:asset.id,productionIdentity:profile==='y52y09'?'cabinet-boards':'direct',prefixes:[...new Set(asset.parts.map(p=>p.identity.slice(0,p.identity.indexOf(':')+1)))]};
 }
 function profiles(){
  const items=C.library.flatMap(c=>c.items),byType=new Map(items.map(i=>[i[0],i])),out=[];

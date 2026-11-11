@@ -19,6 +19,7 @@ const LIB = [
     ['block','方块占位体',1000,1000,'#a8b6c4',undefined,products.height({type:'block'})]
   ]},
   {cat:'电器', items:[
+    ['panel_bull_g12','公牛 G12 · 86开关插座面板（种类可选）',86,10,'#f5f5f2',undefined,86],
     ['panel_light_300x600','厨房平板灯 · 300×600 · 24W',300,600,'#f5f5f2',undefined,products.height({type:'panel_light_300x600'})],
     ['fan_airmate_fa18_x231','艾美特 小暴风 PRO FA18-X231 空气循环扇',300,300,'#eeeee9',undefined,products.height({type:'fan_airmate_fa18_x231'})],
     ['bath_heater_aopu_se2','奥普 SE2 风暖浴霸',300,600,'#f5f5f3',undefined,products.height({type:'bath_heater_aopu_se2'})],

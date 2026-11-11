@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "executable": "D:/1601装修/Furnish程序/Furnish-win32-x64/Furnish.exe",
+  "source": "D:/1601装修/Furnish项目/workspace.furnish.json",
+  "originalHash": "c3f4664c7ad153d886c9e95930f2ea89f9604d23ec968abb6c854b736ece447f",
+  "originalUnchanged": true,
+  "repositoryPlanUnchanged": true,
+  "checks": [
+    "real catalog add, property variant selection, undo/redo",
+    "all 37 options, independent bottom height, saved v84 file and refresh",
+    "locked control, 390px layout",
+    "live 3D variant cache: USB, four keys, nightlight and double network export actual selected parts"
+  ],
+  "errors": [],
+  "run": "output/desktop-verification/panel-g12-zNrnsu"
+}

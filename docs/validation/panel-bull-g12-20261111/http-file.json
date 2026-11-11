@@ -1,0 +1,813 @@
+{
+  "passed": true,
+  "profile": "panel-bull-g12",
+  "route": "blender",
+  "modes": [
+    {
+      "mode": "http",
+      "passed": true,
+      "undoRedo": true,
+      "coreResize": true,
+      "refresh": true,
+      "narrow": true,
+      "offline": false
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "undoRedo": true,
+      "coreResize": true,
+      "refresh": true,
+      "narrow": true,
+      "offline": true
+    }
+  ],
+  "exports": [
+    {
+      "mode": "http",
+      "state": "nominal",
+      "file": "http-nominal.glb",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "panel_bull_g12",
+        "name": "公牛 G12 · 86开关插座面板（种类可选）",
+        "w": 86,
+        "d": 10,
+        "color": "#f5f5f2",
+        "mountHeight": 0,
+        "panelVariant": "socket5-diagonal",
+        "frontClearance": 0,
+        "brand": "公牛/BULL",
+        "model": "G12 · 暮雪白 · 86型面板",
+        "sourceUrl": "https://item.jd.com/100071863715.html",
+        "h": 86
+      },
+      "scene": [
+        {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "panel_bull_g12",
+          "name": "公牛 G12 · 86开关插座面板（种类可选）",
+          "w": 86,
+          "d": 10,
+          "color": "#f5f5f2",
+          "mountHeight": 0,
+          "panelVariant": "socket5-diagonal",
+          "frontClearance": 0,
+          "brand": "公牛/BULL",
+          "model": "G12 · 暮雪白 · 86型面板",
+          "sourceUrl": "https://item.jd.com/100071863715.html",
+          "h": 86
+        }
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:face",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1626,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.0006000000284984708
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.004999999888241291
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:rear-plate",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.041999999433755875,
+                0.0010000000474974513,
+                -0.004999999888241291
+              ],
+              [
+                0.041999999433755875,
+                0.08500000089406967,
+                -0.00039999998989515007
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-02",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.021250000223517418,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.017750000581145287,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-03",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.008249999955296516,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.004749999847263098,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-04",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.0101500004529953,
+                0.03799999877810478,
+                -0.0016499999910593033
+              ],
+              [
+                0.013849999755620956,
+                0.04600000008940697,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-05",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.0017789399717003107,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.005778939928859472,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-06",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.018221059814095497,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.025778939947485924,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.0430000014603138,
+            0,
+            -0.004999999888241291
+          ],
+          [
+            0.0430000014603138,
+            0.0860000029206276,
+            0.004999999888241291
+          ]
+        ],
+        "settledPoses": []
+      },
+      "spatial": {
+        "bottom": 0,
+        "top": 0.086
+      }
+    },
+    {
+      "mode": "http",
+      "state": "resized",
+      "file": "http-resized.glb",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "panel_bull_g12",
+        "name": "公牛 G12 · 86开关插座面板（种类可选）",
+        "w": 96.32000000000001,
+        "d": 10.8,
+        "color": "#f5f5f2",
+        "mountHeight": 0,
+        "panelVariant": "socket5-diagonal",
+        "frontClearance": 0,
+        "brand": "公牛/BULL",
+        "model": "G12 · 暮雪白 · 86型面板",
+        "sourceUrl": "https://item.jd.com/100071863715.html",
+        "h": 92.88000000000001
+      },
+      "scene": [
+        {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "panel_bull_g12",
+          "name": "公牛 G12 · 86开关插座面板（种类可选）",
+          "w": 96.32000000000001,
+          "d": 10.8,
+          "color": "#f5f5f2",
+          "mountHeight": 0,
+          "panelVariant": "socket5-diagonal",
+          "frontClearance": 0,
+          "brand": "公牛/BULL",
+          "model": "G12 · 暮雪白 · 86型面板",
+          "sourceUrl": "https://item.jd.com/100071863715.html",
+          "h": 92.88000000000001
+        }
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:face",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1626,
+            "bounds": [
+              [
+                -0.04816000163555145,
+                0,
+                -0.0006479999865405262
+              ],
+              [
+                0.04816000163555145,
+                0.0928800031542778,
+                0.005400000140070915
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:rear-plate",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.047040000557899475,
+                0.00107999995816499,
+                -0.005400000140070915
+              ],
+              [
+                0.047040000557899475,
+                0.09179999679327011,
+                -0.00043200000072829425
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-02",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.023800000548362732,
+                0.0626399964094162,
+                -0.0017819999484345317
+              ],
+              [
+                -0.01988000050187111,
+                0.07128000259399414,
+                -0.0012420000275596976
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-03",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.009239999577403069,
+                0.0626399964094162,
+                -0.0017819999484345317
+              ],
+              [
+                -0.005319999996572733,
+                0.07128000259399414,
+                -0.0012420000275596976
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-04",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.011367999948561192,
+                0.041039999574422836,
+                -0.0017819999484345317
+              ],
+              [
+                0.01551199983805418,
+                0.04967999830842018,
+                -0.0012420000275596976
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-05",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.001992412842810154,
+                0.025111177936196327,
+                -0.0017819999484345317
+              ],
+              [
+                0.006472412962466478,
+                0.035368822515010834,
+                -0.0012420000275596976
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-06",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.02040758728981018,
+                0.025111177936196327,
+                -0.0017819999484345317
+              ],
+              [
+                0.0288724135607481,
+                0.035368822515010834,
+                -0.0012420000275596976
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.04816000163555145,
+            0,
+            -0.005400000140070915
+          ],
+          [
+            0.04816000163555145,
+            0.0928800031542778,
+            0.005400000140070915
+          ]
+        ],
+        "settledPoses": []
+      },
+      "spatial": {
+        "bottom": 0,
+        "top": 0.09288
+      }
+    },
+    {
+      "mode": "file",
+      "state": "nominal",
+      "file": "file-nominal.glb",
+      "fixture": {
+        "id": "model-pilot",
+        "cx": 0,
+        "cy": 0,
+        "rot": 0,
+        "flip": false,
+        "type": "panel_bull_g12",
+        "name": "公牛 G12 · 86开关插座面板（种类可选）",
+        "w": 86,
+        "d": 10,
+        "color": "#f5f5f2",
+        "mountHeight": 0,
+        "panelVariant": "socket5-diagonal",
+        "frontClearance": 0,
+        "brand": "公牛/BULL",
+        "model": "G12 · 暮雪白 · 86型面板",
+        "sourceUrl": "https://item.jd.com/100071863715.html",
+        "h": 86
+      },
+      "scene": [
+        {
+          "id": "model-pilot",
+          "cx": 0,
+          "cy": 0,
+          "rot": 0,
+          "flip": false,
+          "type": "panel_bull_g12",
+          "name": "公牛 G12 · 86开关插座面板（种类可选）",
+          "w": 86,
+          "d": 10,
+          "color": "#f5f5f2",
+          "mountHeight": 0,
+          "panelVariant": "socket5-diagonal",
+          "frontClearance": 0,
+          "brand": "公牛/BULL",
+          "model": "G12 · 暮雪白 · 86型面板",
+          "sourceUrl": "https://item.jd.com/100071863715.html",
+          "h": 86
+        }
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:face",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1626,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.0006000000284984708
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.004999999888241291
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:rear-plate",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.041999999433755875,
+                0.0010000000474974513,
+                -0.004999999888241291
+              ],
+              [
+                0.041999999433755875,
+                0.08500000089406967,
+                -0.00039999998989515007
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-02",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.021250000223517418,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.017750000581145287,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-03",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.008249999955296516,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.004749999847263098,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-04",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.0101500004529953,
+                0.03799999877810478,
+                -0.0016499999910593033
+              ],
+              [
+                0.013849999755620956,
+                0.04600000008940697,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-05",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.0017789399717003107,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.005778939928859472,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-06",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.018221059814095497,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.025778939947485924,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.0430000014603138,
+            0,
+            -0.004999999888241291
+          ],
+          [
+            0.0430000014603138,
+            0.0860000029206276,
+            0.004999999888241291
+          ]
+        ],
+        "settledPoses": []
+      },
+      "spatial": {
+        "bottom": 0,
+        "top": 0.086
+      }
+    }
+  ]
+}

@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-70份产品／设计档案，201张参考图，12张历史原图待补；43组Blender模型。参数化验证配置89组，全部家具库175条目／147种类型。
+71份产品／设计档案，243张参考图，12张历史原图待补；44组Blender模型。参数化验证配置89组，全部家具库176条目／148种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -46,6 +46,7 @@
 | [网易严选2.5kg猫砂袋 · 包装示意](litter-bag/README.md) | 2 | [BLEND](litter-bag/v7/litter-bag-v1.blend) · [GLB](litter-bag/v7/litter-bag-v1.glb) | 0 |
 | [猫砂盆（型号未确认）](litter-box/README.md) | 0 | 参数化 | 2 |
 | [家用双层药箱 · 340×250×200参考](medicine-box/README.md) | 1 | [BLEND](storage-supplies/medicine/v2/medicine-box-v1.blend) · [GLB](storage-supplies/medicine/v2/medicine-box-v1.glb) | 0 |
+| [公牛G12 86开关插座面板](panel-bull-g12/README.md) | 42 | [BLEND](panel-bull-g12/v7/panel-bull-g12-v1.blend) · [GLB](panel-bull-g12/v7/panel-bull-g12-v1.glb) | 0 |
 | [厨房平板灯-300×600-24W](panel-light/README.md) | 1 | 参数化 | 0 |
 | [PETSTAR猫水碗 · 图示180×65](pet-bowl/README.md) | 1 | [BLEND](pet-bowl/v1/pet-bowl-v1.blend) · [GLB](pet-bowl/v1/pet-bowl-v1.glb) | 0 |
 | [米家-智能宠物喂食器2](pet-feeder-mijia-2/README.md) | 0 | 参数化 | 5 |

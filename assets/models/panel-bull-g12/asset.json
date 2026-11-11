@@ -1,0 +1,318 @@
+{
+  "format": 1,
+  "id": "panel-bull-g12",
+  "name": "公牛G12 86开关插座面板",
+  "types": [
+    "panel_bull_g12"
+  ],
+  "route": "blender",
+  "document": "docs/PANEL-BULL-G12.md",
+  "sourceLinks": [
+    "https://item.jd.com/100071863715.html"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/bell.jpg",
+      "kind": "product-page",
+      "sha256": "e6bf5594ab13a0b5155db19f380139e0480119a26b98c84c4f9bb2a42bf5edeb",
+      "bytes": 226993,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/blank.jpg",
+      "kind": "product-page",
+      "sha256": "751231c6a183e41eb371c330ffaf920f091788bb8f97fd1eb9da5417840227be",
+      "bytes": 224736,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/cable.jpg",
+      "kind": "product-page",
+      "sha256": "ac5b5a8819002fad2df53cbf450b23df9ee7edc3a781330be51328cb64000987",
+      "bytes": 228629,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/net5.jpg",
+      "kind": "product-page",
+      "sha256": "3eb89caff16018b82fbb134acaca3f7bbad287c4a8ffb5eb626072532fd15684",
+      "bytes": 226185,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/net6-double.jpg",
+      "kind": "product-page",
+      "sha256": "3fe1713cca6620ba1b7862ec1e26b04f6b57c26cf2bdc9e8283e8d054c2e9a3b",
+      "bytes": 225687,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/net6.jpg",
+      "kind": "product-page",
+      "sha256": "d0f5726fb81df21c7a7379e42c5562f4578dcdfd042141f8fa072b1e1f53fc69",
+      "bytes": 226566,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/nightlight.jpg",
+      "kind": "product-page",
+      "sha256": "def70c570a2f68a44b23ab6af907e502dd12e6ab5d2fa9f7369faafd6d032d41",
+      "bytes": 228614,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/phone.jpg",
+      "kind": "product-page",
+      "sha256": "d6e0786bd6bfd1baa1cf03c9f0d15b6972fba4bf1450e0fa2e2d684627c04fb7",
+      "bytes": 225186,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/shelf.jpg",
+      "kind": "product-page",
+      "sha256": "eb8e59eecad9e143d3a3ec594175155ea86ad7b71fecb1a57576ac1d1e0d8887",
+      "bytes": 278432,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket16-2.jpg",
+      "kind": "product-page",
+      "sha256": "0695c4391d5e7cf87e8ac29084273d60d494b092e396efd15b76cd17b005b779",
+      "bytes": 227638,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket16-switch.jpg",
+      "kind": "product-page",
+      "sha256": "5ffaff527de1b698770c7582f37168b646fb2b248847685a9ef59f0317083a51",
+      "bytes": 228234,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket16.jpg",
+      "kind": "product-page",
+      "sha256": "1cc277b883564fd8d944b2900152df974a069a2577e0917214fb0f3b911f0430",
+      "bytes": 226251,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket4.jpg",
+      "kind": "product-page",
+      "sha256": "f975e7bb1cf8ce44c481c51dd0982add160a8f26dd52960ec39ef5db3893d2fb",
+      "bytes": 226815,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket5-3usb.jpg",
+      "kind": "product-page",
+      "sha256": "c7d86e4a28566903d02dfe4cb48b024e4e85f11595bef0f15b39b8ff26c655f9",
+      "bytes": 229477,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket5-ac.jpg",
+      "kind": "product-page",
+      "sha256": "46c411415dcc22350780aa4b1143d2b4f4fa918a1e4e830361ff4bf6d6a5d581",
+      "bytes": 230743,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket5-diagonal.jpg",
+      "kind": "product-page",
+      "sha256": "8568f563e687c29b645d95cb59c6d0de0d7701775d888f07203d4f817353c10e",
+      "bytes": 235299,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket5-pd.jpg",
+      "kind": "product-page",
+      "sha256": "a2cd841a42a54b94a22c454b638bd72318dbf54b7dab7bf90b949bab3bc896dd",
+      "bytes": 228997,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket5-switch.jpg",
+      "kind": "product-page",
+      "sha256": "3ed8dda7072c5c574def9dba64883a3b1ce9f6cb9ebdab67b27b9bb827e25178",
+      "bytes": 228330,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket5.jpg",
+      "kind": "product-page",
+      "sha256": "c1ab0e80d1ddb66034998e2e7da51abce2e1341df11dcff59d53241c722b96ab",
+      "bytes": 234950,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket6.jpg",
+      "kind": "product-page",
+      "sha256": "780c363c3fc6a41687d393f27a58ea9952eb8110b3761ab7ee360c871e088a42",
+      "bytes": 225003,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket7.jpg",
+      "kind": "product-page",
+      "sha256": "99169d6f649e8c43e705588b3b1761d0214451e49cd0308ec433a66e0af745cc",
+      "bytes": 227935,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/socket8-switch.jpg",
+      "kind": "product-page",
+      "sha256": "5c745df349424edce72a42119c0178453f6882025903bda610130a12507dc194",
+      "bytes": 227620,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch1-double.jpg",
+      "kind": "product-page",
+      "sha256": "ca702ccade82d6ef8e6aa6441862d5f32e88fb8119e3ac5a6f936a533cd6417f",
+      "bytes": 232285,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch1-intermediate.jpg",
+      "kind": "product-page",
+      "sha256": "ddeea0ef7efdf586fdfc404b3005fdfe63f9ee2cf982086707fe926f8cf4c7c1",
+      "bytes": 232712,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch1-single.jpg",
+      "kind": "product-page",
+      "sha256": "acf4bb989b0a171b0b00500795582b2f821b201b53ec2e1190fddfca5d6e627b",
+      "bytes": 232978,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch2-double.jpg",
+      "kind": "product-page",
+      "sha256": "9f42cb010b6444f4c8b393a494d29c79c01561a7fe6c8612f548065647bfbba2",
+      "bytes": 233227,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch2-intermediate.jpg",
+      "kind": "product-page",
+      "sha256": "cdc2a6df1fd41dce21dfe4b70cc7903d5ec367ba4b0f0adb41b7b88b6b729fdc",
+      "bytes": 234299,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch2-single.jpg",
+      "kind": "product-page",
+      "sha256": "9af6797cdd002cf36ebc026aae6e1c168228cec6a173986b898311e4922c55fe",
+      "bytes": 233590,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch3-double.jpg",
+      "kind": "product-page",
+      "sha256": "0225afdf170ba3f49c8457f60dad74a30e323811b4286aaabc3c2baeefcc26c4",
+      "bytes": 234741,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch3-single.jpg",
+      "kind": "product-page",
+      "sha256": "97e18fd7f06dcb21ddd480a9f6c75829f2e3b49cd8bb42bb68513d0c6c27cba6",
+      "bytes": 233975,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch4-double.jpg",
+      "kind": "product-page",
+      "sha256": "690a4e2559905cbddc32e110bef003db6055c34b2d5afd03a71a378643d99b6a",
+      "bytes": 235827,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/switch4-single.jpg",
+      "kind": "product-page",
+      "sha256": "51c175c9e9e3b6ed3020c4f10b9fa90e5df2bde6290ee9501af3234cb039039a",
+      "bytes": 235874,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/tv-net5.jpg",
+      "kind": "product-page",
+      "sha256": "455dad0d5df943461f43c6cc65c0ce030d80b01ca42de0aa215d40b765284be4",
+      "bytes": 227186,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/tv-net6.jpg",
+      "kind": "product-page",
+      "sha256": "cb1a4e210c52640ed784ee465b646549ac61aafbb2b8201c82fffa32612bd324",
+      "bytes": 226657,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/tv-push.jpg",
+      "kind": "product-page",
+      "sha256": "2192b164f6b862d3e64028a5e65b565b18cc0dfc14c24a86bedf72f0730068bc",
+      "bytes": 226444,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/tv.jpg",
+      "kind": "product-page",
+      "sha256": "b58a66693fcd87830e52303487152c1a3618f093420a2a5c67f99b2348086472",
+      "bytes": 226654,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/wifi-cover.jpg",
+      "kind": "product-page",
+      "sha256": "a71cd1f277178500bab5e93586053a23c6d95b98fd60ae707a57bfeca19b7674",
+      "bytes": 253821,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/wifi4.jpg",
+      "kind": "product-page",
+      "sha256": "f3977810044e4845e3077c81da2f465e0c113e9e530409ae3230454c7c9d0c18",
+      "bytes": 248300,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/wifi5.jpg",
+      "kind": "product-page",
+      "sha256": "a211aefd6d91c53d31dbfde40020f6abcefeb142083604e39423f3bebb165683",
+      "bytes": 256466,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/wifi6.jpg",
+      "kind": "product-page",
+      "sha256": "d112c5b214b8bcf25c15f9892a0f763182e662139cf90ffd0bab50e85bf81f48",
+      "bytes": 255807,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/user/detail-information-electronic.png",
+      "kind": "user",
+      "sha256": "e0bb8fb064accc1a18da3119affb6d2db77ad59b31e68bfa3a4eef6ec11222d5",
+      "bytes": 281372,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/user/detail-switch-socket.png",
+      "kind": "user",
+      "sha256": "c21508fd7619ea36b640f45cd105b2050abdd12ec7330129dfe534c71468b959",
+      "bytes": 307090,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/panel-bull-g12-20261111/README.md"
+  ],
+  "notes": [
+    "用户补充的两张商品详情截图为主要外观依据；40张规格图片有促销遮挡，仅作名称和斜五孔补充证据。",
+    "37款静态可见面板，86×86及60mm孔距来自商品参数；10mm可见厚度、孔位及局部结构按图片估算，不含墙内底盒或接线机构。",
+    "新建离地0仅为编辑起点；无安装合格、电气性能、发光或传感功能结论。"
+  ]
+}

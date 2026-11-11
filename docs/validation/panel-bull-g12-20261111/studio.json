@@ -1,0 +1,712 @@
+{
+  "passed": true,
+  "profile": "panel-bull-g12",
+  "preset": "model-studio-v2",
+  "productionExporter": true,
+  "framing": "union of actual nominal and operating production vertices",
+  "bounds": [
+    [
+      -0.0430000014603138,
+      0,
+      -0.004999999888241291
+    ],
+    [
+      0.0430000014603138,
+      0.0860000029206276,
+      0.004999999888241291
+    ]
+  ],
+  "camera": {
+    "fov": 36,
+    "aspect": 1
+  },
+  "lighting": {
+    "keyIntensityLux": 2000,
+    "world": "production-worker",
+    "exposure": 0,
+    "viewTransform": "AgX"
+  },
+  "views": [
+    {
+      "id": "front",
+      "state": "nominal",
+      "target": [
+        0,
+        0.0430000014603138,
+        0
+      ],
+      "position": [
+        0,
+        0.0430000014603138,
+        0.22707117589060885
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:face",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1626,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.0006000000284984708
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.004999999888241291
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:rear-plate",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.041999999433755875,
+                0.0010000000474974513,
+                -0.004999999888241291
+              ],
+              [
+                0.041999999433755875,
+                0.08500000089406967,
+                -0.00039999998989515007
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-02",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.021250000223517418,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.017750000581145287,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-03",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.008249999955296516,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.004749999847263098,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-04",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.0101500004529953,
+                0.03799999877810478,
+                -0.0016499999910593033
+              ],
+              [
+                0.013849999755620956,
+                0.04600000008940697,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-05",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.0017789399717003107,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.005778939928859472,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-06",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.018221059814095497,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.025778939947485924,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.0430000014603138,
+            0,
+            -0.004999999888241291
+          ],
+          [
+            0.0430000014603138,
+            0.0860000029206276,
+            0.004999999888241291
+          ]
+        ],
+        "settledPoses": []
+      }
+    },
+    {
+      "id": "oblique",
+      "state": "nominal",
+      "target": [
+        0,
+        0.0430000014603138,
+        0
+      ],
+      "position": [
+        0.12571489841859068,
+        0.11214319559053867,
+        0.17600085778602692
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:face",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1626,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.0006000000284984708
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.004999999888241291
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:rear-plate",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.041999999433755875,
+                0.0010000000474974513,
+                -0.004999999888241291
+              ],
+              [
+                0.041999999433755875,
+                0.08500000089406967,
+                -0.00039999998989515007
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-02",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.021250000223517418,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.017750000581145287,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-03",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.008249999955296516,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.004749999847263098,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-04",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.0101500004529953,
+                0.03799999877810478,
+                -0.0016499999910593033
+              ],
+              [
+                0.013849999755620956,
+                0.04600000008940697,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-05",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.0017789399717003107,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.005778939928859472,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-06",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.018221059814095497,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.025778939947485924,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.0430000014603138,
+            0,
+            -0.004999999888241291
+          ],
+          [
+            0.0430000014603138,
+            0.0860000029206276,
+            0.004999999888241291
+          ]
+        ],
+        "settledPoses": []
+      }
+    },
+    {
+      "id": "back",
+      "state": "nominal",
+      "target": [
+        0,
+        0.0430000014603138,
+        0
+      ],
+      "position": [
+        -0.1285537387885722,
+        0.09442149697574267,
+        -0.17997523430400109
+      ],
+      "geometry": {
+        "parts": [
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:face",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 1626,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.0006000000284984708
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.004999999888241291
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:rear-plate",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.041999999433755875,
+                0.0010000000474974513,
+                -0.004999999888241291
+              ],
+              [
+                0.041999999433755875,
+                0.08500000089406967,
+                -0.00039999998989515007
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-02",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.021250000223517418,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.017750000581145287,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-03",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.008249999955296516,
+                0.057999998331069946,
+                -0.0016499999910593033
+              ],
+              [
+                -0.004749999847263098,
+                0.06599999964237213,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-04",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.0101500004529953,
+                0.03799999877810478,
+                -0.0016499999910593033
+              ],
+              [
+                0.013849999755620956,
+                0.04600000008940697,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-05",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                -0.0017789399717003107,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.005778939928859472,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          },
+          {
+            "key": "explicit:panel-bull-g12:socket5-diagonal:shutter-06",
+            "id": "model-pilot",
+            "version": 3,
+            "kind": "BufferGeometry",
+            "count": 564,
+            "bounds": [
+              [
+                0.018221059814095497,
+                0.023251090198755264,
+                -0.0016499999910593033
+              ],
+              [
+                0.025778939947485924,
+                0.032748911529779434,
+                -0.0011500000255182385
+              ]
+            ],
+            "alphas": [
+              1
+            ],
+            "materials": [
+              {
+                "unlit": false,
+                "physical": {}
+              }
+            ]
+          }
+        ],
+        "bounds": [
+          [
+            -0.0430000014603138,
+            0,
+            -0.004999999888241291
+          ],
+          [
+            0.0430000014603138,
+            0.0860000029206276,
+            0.004999999888241291
+          ]
+        ],
+        "settledPoses": []
+      }
+    }
+  ]
+}
