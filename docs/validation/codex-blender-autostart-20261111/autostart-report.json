@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "data": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender-autostart\\verify-PWMIDl",
+  "plugin": "C:\\Users\\SPH\\.codex\\plugins\\cache\\furnish-local\\furnish-blender\\1.1.1",
+  "checks": [
+    "doctor and catalogs do not launch GUI",
+    "missing caller identity is rejected without crashing or opening a GUI",
+    "real inspect call auto-opens and connects Blender",
+    "repeated GUI calls reuse window, run Python and return PNG",
+    "doctor reports each caller attached instance with multiple GUI windows",
+    "two caller windows route independently and preserve unsaved state",
+    "closed managed window is reopened from its saved workspace",
+    "human pause refusal does not relaunch or replace a window",
+    "actual MCP tools/call launched from the declared command/cwd auto-opens and connects its own GUI"
+  ],
+  "instances": [
+    "codex-gui-5e1c8e221a4fc0d7e2ac8a56",
+    "codex-gui-fefe0aa2f900e89ee6b187b5"
+  ],
+  "finished": "2026-11-11T06:03:57.808Z"
+}

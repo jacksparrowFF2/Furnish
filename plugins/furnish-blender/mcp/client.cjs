@@ -13,9 +13,9 @@ function request(port,key,headers,route,payload,timeout=45000){
  });
 }
 class Client{
- constructor({data=Runtime.dataDirectory(),port=Number(process.env.FURNISH_BLENDER_PORT||39878),session=process.env.CODEX_THREAD_ID||crypto.randomUUID(),agent='main'}={}){
+ constructor({data=Runtime.dataDirectory(),port=Number(process.env.FURNISH_BLENDER_PORT||39878),session=process.env.CODEX_THREAD_ID||crypto.randomUUID(),agent='main',autoGui=process.env.FURNISH_BLENDER_AUTO_GUI!=='0'}={}){
   if(!Number.isInteger(port)||port<1||port>65535)throw Error('FURNISH_BLENDER_PORT must be 1–65535');
-  this.data=data;this.port=port;this.key=Runtime.token(data);this.session=session;this.agent=agent;this.attached=null;
+  this.data=data;this.port=port;this.key=Runtime.token(data);this.session=session;this.agent=agent;this.attached=null;this.autoGui=autoGui;
   this.headers={'x-dsh-host-id':'furnish-codex','x-dsh-session-id':session,'x-dsh-agent-id':agent,'x-dsh-agent-role':'main','x-dsh-display-name':'Codex'};
  }
  async ensure(){
@@ -26,7 +26,7 @@ class Client{
   const built=Runtime.prepare(this.data);
   const probe=async()=>{
    const info=await request(this.port,this.key,{},'/codex/identity',undefined,1500);
-   if(info.name!=='furnish-codex-blender'||info.fingerprint!==built.fingerprint||info.data!==fs.realpathSync(this.data))throw Object.assign(Error('Gateway port belongs to another runtime or workspace; select a different FURNISH_BLENDER_PORT.'),{conflict:true});
+   if(info.name!=='furnish-codex-blender'||info.fingerprint!==Runtime.gatewayFingerprint(built)||info.data!==fs.realpathSync(this.data))throw Object.assign(Error('Gateway port belongs to another runtime or workspace; stop the old idle Gateway or select a different FURNISH_BLENDER_PORT.'),{conflict:true});
    return info;
   };
   try{return await probe();}catch(e){if(e.conflict)throw e;if(e.code!=='ECONNREFUSED')throw Error('Gateway port is occupied or unresponsive; no process was replaced: '+e.message);}
@@ -39,11 +39,18 @@ class Client{
  }
  async call(route,payload,timeout){await this.ensure();return request(this.port,this.key,this.headers,route,payload,timeout);}
  async sessionAction(action,args={}){
-  if(action==='doctor'){
-   const r=await this.call('/doctor'),kind=r.kind||r.addon?.kind||'unavailable';
-   return {...r,kind,ok:r.ok!==false&&kind==='ok',config:{...r.config,http:'127.0.0.1:'+this.port,gateway:'127.0.0.1:'+this.port,addon:'ws://127.0.0.1:'+this.port+'/addon'}};
+  if(action==='ensure')return {ok:true,session:await this.ready(true)};
+  if(action==='doctor'||action==='status'){
+   let r=await this.call('/'+action);const selected=await this.call('/lease',{action:'status',sessionId:this.attached||undefined});
+   const instanceId=selected.ok&&selected.session?.status==='ready'?selected.session.instanceId:null;
+   if(action==='doctor'&&instanceId&&r.addon?.kind==='ambiguous-instance'){
+    const probe=await this.call('/cmd',{name:'get_addon_info',params:{}},5000);
+    if(probe.ok===true&&!probe.result?.error)r={ok:true,kind:'ok',addon:{kind:'ok',instanceId,connected:true},readiness:{gateway:{live:true},addon:{connected:true,instanceId},bpy:{ok:true,error:null},instanceId,ready:true},probe:probe.result,config:r.config,globalDiagnosis:r};
+   }
+   const ownedReady=!!instanceId&&r.readiness?.bpy?.ok===true;
+   const kind=ownedReady?'ok':r.kind||r.addon?.kind||'unavailable';
+   return {...r,...(ownedReady?{readiness:{...r.readiness,instanceId,ready:true,addon:{...r.readiness.addon,instanceId}}}:{}),...(action==='doctor'?{kind,ok:r.ok!==false&&kind==='ok',config:{...r.config,http:'127.0.0.1:'+this.port,gateway:'127.0.0.1:'+this.port,addon:'ws://127.0.0.1:'+this.port+'/addon'}}:{})};
   }
-  if(action==='status')return this.call('/status');
   if(action==='list'){const sessions=await this.call('/lease',{action:'list'});return {...sessions,...await this.call('/codex/instances')};}
   if(!['list','attach','claim','detach','release','grant','revoke','grants','mark_read','presence','heartbeat','pause','resume'].includes(action))throw Error('Unsupported session action. Virtual GUI lifecycle stays outside this Codex adapter.');
   const payload={...args,action};
@@ -54,11 +61,15 @@ class Client{
   if(result.ok&&['detach','release'].includes(action))this.attached=null;
   return result;
  }
- async ready(){
-  const r=await this.call('/lease',{action:'status',sessionId:this.attached||undefined});
-  if(!r.ok)throw Error(JSON.stringify(r));
-  const s=r.session;if(!s||s.status!=='ready')throw Error('Attach a ready Blender instance using blender_session before GUI operations.');
-  this.attached=s.id;return s;
+ async ready(allowLaunch=this.autoGui){
+  let r=await this.call('/lease',{action:'status',sessionId:this.attached||undefined});
+  if(r.ok&&r.session?.status==='ready'){this.attached=r.session.id;return r.session;}
+  if(!r.ok&&r.code!=='session_not_found')throw Error(JSON.stringify(r));
+  if(!allowLaunch)throw Error('Attach a ready Blender instance using blender_session before GUI operations (automatic GUI launch is disabled).');
+  const launched=await this.call('/codex/gui',{},45000);if(!launched.ok)throw Error(JSON.stringify(launched));
+  r=await this.sessionAction('attach',{instance_id:launched.instance.instanceId});
+  if(!r.ok||r.session?.status!=='ready')throw Error(JSON.stringify(r));
+  return r.session;
  }
  async catalogModule(name){const b=Runtime.prepare(this.data);return import(pathToFileURL(path.join(b.engine,'runtime/catalog',name+'.js')).href);}
  async execute(name,a){
@@ -66,27 +77,27 @@ class Client{
   if(name==='blender_op'){
    const action=a.action||'plan',args=a.args||{};
    if(action==='plan'){
-    const {PLAN_READ_ONLY_OPS}=await this.catalogModule('index');
-    if(!PLAN_READ_ONLY_OPS.includes(a.op)&&args.dry_run!==true)await this.ready();
+    if(!['catalog','help'].includes(a.op)&&args.dry_run!==true)await this.ready();
     return this.call('/plan',{op:a.op,args},300000);
    }
    if(!['loop','opt','preset','txn'].includes(action))throw Error('action must be plan, loop, opt, preset or txn');
    await this.ready();return this.call('/'+action,{...args,op:a.op,sessionId:this.attached},300000);
   }
   if(name==='blender_py'){
-   await this.ready();if((!!a.code)===(!!a.file))throw Error('Supply exactly one of code or file');
+   if((!!a.code)===(!!a.file))throw Error('Supply exactly one of code or file');await this.ready();
    return this.call('/act',{code:a.code||'',file:a.file||null,py:true,sessionId:this.attached,timeoutMs:120000,waitMs:0},135000);
   }
   if(name==='blender_see'){
-   await this.ready();
    const spec={...(a.args||{}),mode:a.viewpoint==='camera'?'camera':a.viewpoint==='custom'?'viewport':'current'};
    if(a.viewpoint==='custom'&&(!Array.isArray(spec.from)||!Array.isArray(spec.look_at)))throw Error('custom view requires args.from and args.look_at as three-number arrays');
+   await this.ready();
    delete spec.asJson;return this.call('/view',spec,135000);
   }
   if(name==='blender_inspect'){
    const {COMMAND_CATALOG}=await this.catalogModule('commands');
    if(!a.command)return {ok:true,commands:Object.fromEntries(Object.entries(COMMAND_CATALOG).filter(([,v])=>v.access==='read'))};
    if(COMMAND_CATALOG[a.command]?.access!=='read')throw Error('Not a read-only command; use blender_py or blender_op');
+   await this.ready();
    return this.call('/cmd',{name:a.command,params:a.args||{}},135000);
   }
   if(name==='blender_run'){

@@ -1,0 +1,234 @@
+{
+  "passed": true,
+  "started": "2026-11-11T05:58:14.685Z",
+  "plugin": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\plugins\\furnish-blender",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "data": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ",
+  "checks": [
+    "loopback bearer authentication",
+    "upstream operation catalog",
+    "GUI execution refuses missing session",
+    "read-only inspection rejects writes",
+    "real Blender headless submit / wait / collect and geometry",
+    "saved blend scene survives headless file loading",
+    "saved blend declarative render returns actual PNG",
+    "real Python failure preserved as failed job",
+    "GUI doctor recorded separately (no addon in headless test)",
+    "upstream calibrated measurement: 200px at 2px/mm = 100mm (test fixture, not product dimensions)",
+    "unscaled measurement returns needs_scale and MCP isError instead of invented millimeters",
+    "isolated GUI addon handshake, attach, inspection, Python, custom native image and doctor=ok",
+    "agent cannot override human pause"
+  ],
+  "jobId": "job-6841c296-85be-46f6-afcf-d62f6bf49f32",
+  "job": {
+    "ok": true,
+    "op": "collect",
+    "job": {
+      "id": "job-6841c296-85be-46f6-afcf-d62f6bf49f32",
+      "kind": "headless",
+      "params": {
+        "script": "import bpy, json\nfrom pathlib import Path\nbpy.ops.mesh.primitive_cube_add(size=0.4)\ncube=bpy.context.object\ncube.name=\"CodexProof\"\nPath(\"C:\\\\Users\\\\SPH\\\\Documents\\\\GitHub\\\\Furnish\\\\output\\\\codex-blender\\\\verify-Cs9WlQ\\\\headless-proof.json\").write_text(json.dumps({\"blender\":bpy.app.version_string,\"size\":list(cube.dimensions)}))\nprint(\"CODEX_HEADLESS_OK\")",
+        "outdir": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\artifacts",
+        "timeout_ms": 60000,
+        "surface": "queue",
+        "kind": "headless"
+      },
+      "state": "completed",
+      "priority": 0,
+      "slot": "cpu",
+      "owner": {
+        "hostId": "furnish-codex",
+        "dshSessionId": "verification-1794376694684",
+        "agentId": "main"
+      },
+      "createdAt": 1794376694813,
+      "updatedAt": 1794376695456,
+      "assignedAt": 1794376694816,
+      "startedAt": null,
+      "finishedAt": 1794376695456,
+      "pid": null,
+      "decision": {
+        "outcome": "admitted",
+        "reason": "fifo",
+        "detail": "null slot admitted"
+      },
+      "result": {
+        "exitCode": 0,
+        "signal": null,
+        "ms": 0
+      },
+      "artifacts": [],
+      "logs": {
+        "stdout": "CODEX_HEADLESS_OK\r\nBlender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)\n\nBlender quit\n",
+        "stderr": ""
+      },
+      "error": null,
+      "events": [
+        {
+          "at": 1794376694813,
+          "from": null,
+          "to": "queued",
+          "slot": null,
+          "pid": null,
+          "reason": "submitted"
+        },
+        {
+          "at": 1794376694816,
+          "from": "queued",
+          "to": "assigned",
+          "slot": "cpu",
+          "pid": null,
+          "reason": "fifo"
+        },
+        {
+          "at": 1794376694828,
+          "from": "assigned",
+          "to": "running",
+          "slot": "cpu",
+          "pid": 32232,
+          "reason": "slot acquired"
+        },
+        {
+          "at": 1794376695456,
+          "from": "running",
+          "to": "completed",
+          "slot": "cpu",
+          "pid": null,
+          "reason": "process exited 0"
+        }
+      ]
+    }
+  },
+  "proof": {
+    "blender": "5.2.3 LTS",
+    "size": [
+      0.4000000059604645,
+      0.4000000059604645,
+      0.4000000059604645
+    ]
+  },
+  "render": {
+    "ok": true,
+    "op": "collect",
+    "job": {
+      "id": "job-721fd4de-63ff-4cb7-955c-c98be48ef3be",
+      "kind": "render",
+      "params": {
+        "file": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\saved-source.blend",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\render\\",
+        "outdir": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\render",
+        "resolution": [
+          128,
+          128
+        ],
+        "engine": "BLENDER_WORKBENCH",
+        "frames": 1,
+        "timeout_ms": 60000,
+        "surface": "queue",
+        "kind": "render"
+      },
+      "state": "completed",
+      "priority": 0,
+      "slot": "gpu",
+      "owner": {
+        "hostId": "furnish-codex",
+        "dshSessionId": "verification-1794376694684",
+        "agentId": "main"
+      },
+      "createdAt": 1794376696969,
+      "updatedAt": 1794376698756,
+      "assignedAt": 1794376696973,
+      "startedAt": null,
+      "finishedAt": 1794376698756,
+      "pid": null,
+      "decision": {
+        "outcome": "admitted",
+        "reason": "fifo",
+        "detail": "null slot admitted"
+      },
+      "result": {
+        "exitCode": 0,
+        "signal": null,
+        "ms": 0
+      },
+      "artifacts": [
+        "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\render\\0001.png"
+      ],
+      "logs": {
+        "stdout": "00:00.437  blend            | Read blend: \"C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\saved-source.blend\"\n00:00.453  render           | Rendering single frame\n00:00.453  render           | Rendering frame 1\n00:00.453  render           | Start rendering: Scene, ViewLayer\n00:00.453  render           | Engine: Workbench\n00:01.500  render           | Saved: 'C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\render\\0001.png'\n00:01.500  render           | Time: 00:01.04 (Saving: 00:00.12)\nBlender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)\n\nBlender quit\n",
+        "stderr": ""
+      },
+      "error": null,
+      "events": [
+        {
+          "at": 1794376696969,
+          "from": null,
+          "to": "queued",
+          "slot": null,
+          "pid": null,
+          "reason": "submitted"
+        },
+        {
+          "at": 1794376696973,
+          "from": "queued",
+          "to": "assigned",
+          "slot": "gpu",
+          "pid": null,
+          "reason": "fifo"
+        },
+        {
+          "at": 1794376696983,
+          "from": "assigned",
+          "to": "running",
+          "slot": "gpu",
+          "pid": 7932,
+          "reason": "slot acquired"
+        },
+        {
+          "at": 1794376698756,
+          "from": "running",
+          "to": "completed",
+          "slot": "gpu",
+          "pid": null,
+          "reason": "process exited 0"
+        }
+      ]
+    }
+  },
+  "guiDoctor": "ok",
+  "measurement": {
+    "ok": true,
+    "op": "img_measure",
+    "result": {
+      "ok": true,
+      "verdict": "pass",
+      "rows": [
+        {
+          "key": "known_fixture_length",
+          "value_px": 200,
+          "value_mm": 100,
+          "expect_mm": 100,
+          "delta_mm": 0,
+          "delta_pct": 0,
+          "verdict": "pass",
+          "why": "|delta|=0.0000 mm <= tol 2.0000 mm",
+          "method": "given_px",
+          "p1_px": null,
+          "p2_px": null
+        }
+      ],
+      "count": 1,
+      "provenance": {
+        "image_md5": "3949d52fdfe8a372cb5a298afe5585ea",
+        "px_per_mm": 2,
+        "scale_source": "arg",
+        "units": "mm",
+        "image_path": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\gui.png"
+      },
+      "annotated": null,
+      "note": "expect_mm 给了才判 pass/fail；delta_pct 是相对期望值的百分比"
+    }
+  },
+  "guiFrame": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\codex-blender\\verify-Cs9WlQ\\gui.png",
+  "finished": "2026-11-11T05:58:24.012Z"
+}

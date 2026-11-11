@@ -12,7 +12,9 @@
     "test:codex-blender": "node tests/test-codex-blender-plugin.cjs",
     "verify:codex-blender": "node scripts/verify/verify-codex-blender.cjs",
     "verify:codex-blender:gui": "node scripts/verify/verify-codex-blender.cjs --gui",
-    "verify:codex-blender:registration": "node scripts/verify/verify-codex-blender-registration.cjs"
+    "verify:codex-blender:registration": "node scripts/verify/verify-codex-blender-registration.cjs",
+    "test:codex-blender:autostart": "node tests/test-codex-blender-autostart.cjs",
+    "verify:codex-blender:autostart": "node scripts/verify/verify-codex-blender-autostart.cjs"
   },
   "devDependencies": {
     "electron": "45.0.0",

@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checked": "2026-11-11T06:03:45.562Z",
+  "transport": {
+    "command": "node",
+    "args": [
+      "mcp/server.cjs"
+    ],
+    "cwd": "C:\\Users\\SPH\\.codex\\plugins\\cache\\furnish-local\\furnish-blender\\1.1.1\\."
+  },
+  "tools": [
+    "blender_session",
+    "blender_op",
+    "blender_py",
+    "blender_see",
+    "blender_run",
+    "blender_inspect",
+    "furnish_model"
+  ]
+}

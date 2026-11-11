@@ -18,12 +18,14 @@ codex mcp add furnish_blender -- node C:/path/to/Furnish/plugins/furnish-blender
 
 1.0.1修正了Codex的启动目录：`.mcp.json`使用`cwd: "."`及相对脚本`mcp/server.cjs`，由Codex解析成安装目录。兼容清单的args不会展开`${CLAUDE_PLUGIN_ROOT}`，不能使用该占位符。已安装1.0.0的机器升级后需重新加载客户端连接。
 
+**1.1.0起支持按需自动打开Blender。** 首次`blender_py`、`blender_see`、实际`blender_inspect`命令或需要GUI的算子调用，会打开本会话专用窗口、加载桥接并自动连接；后续复用该窗口。也可主动调用`blender_session(action="ensure")`。doctor/status/list、目录查询及后台任务不打开GUI。已打开的用户工程必须显式attach，插件不自动接管。
+
 ## 首次检查
 
 1. `furnish_model(action="bind",root="C:/path/to/Furnish")`：在插件数据目录记住工作目录；再用 `action="doctor"` 核对共用 Blender 发现规则。绑定应在首次启动 Gateway 前完成。
 2. `blender_op(op="catalog")`：检查离线算子目录，不启动 Blender。第一次使用 Gateway 时，Node 内置 TS 转换器将锁定源码生成到本机数据目录，不修改供应源码。
 3. **后台路线**：`blender_run(action="submit",args={"kind":"headless","script":"import bpy; print(bpy.app.version_string)"})`，随后按 id 调用 wait/collect，核对 completed、退出码与实际日志。
-4. **GUI 路线**：在独立 Blender 实例安装 `vendor/dsh/extension/dsh_blender_bridge.zip`，将扩展偏好的 **Gateway Port** 改为 **39878**，在 N 面板 Connect。`blender_session(action="doctor")` 必须返回 kind=ok，再按返回实例身份 attach。扩展保留上游名称 DSH Blender Bridge。不要在同一实例运行两个 agent bridge；当前旧 BlenderMCP 用户使用独立配置/实例，原实例不受影响。
+4. **GUI 路线**：调用`blender_session(action="ensure")`或直接调用GUI工具，由插件自动创建独立实例并连接。手动连接现有窗口时，再安装 `vendor/dsh/extension/dsh_blender_bridge.zip`、将扩展偏好的 **Gateway Port** 改为 **39878**，在 N 面板 Connect并显式attach。扩展保留上游名称 DSH Blender Bridge。不要在同一实例运行两个 agent bridge；自动启动使用独立配置，原实例不受影响。
 
 源安装会从 Furnish 的 `scripts/blender-server.cjs` 复用 Scoop/显式配置等发现顺序；缓存安装请设置 FURNISH_ROOT，或明确设置 FURNISH_BLENDER。当前聊天不会因写入配置自动热加载新工具。
 
@@ -35,10 +37,13 @@ codex mcp add furnish_blender -- node C:/path/to/Furnish/plugins/furnish-blender
 | FURNISH_BLENDER | Blender 可执行文件；显式设置优先 |
 | FURNISH_BLENDER_PORT | 默认 39878；与扩展偏好端口一致 |
 | FURNISH_BLENDER_DATA | 插件缓存、日志、任务和 Gateway 密钥目录；优先于 PLUGIN_DATA |
+| FURNISH_BLENDER_AUTO_GUI | 默认启用；设为0禁止GUI工具隐式打开窗口，仍可显式ensure |
 
 否则使用 Codex 的 PLUGIN_DATA；源码模式使用仓库 `.local/codex-blender`。Gateway 只绑定 127.0.0.1，HTTP 需要本机随机 bearer key，拒绝浏览器 Origin；扩展使用原上游 WebSocket 握手。客户端身份映射为上游会话/agent头以保留归属、冲突与暂停规则。不发送遥测，不自动安装依赖、修改全局偏好或停用其他扩展。
 
-Gateway由插件按需启动并在同一数据目录/源码指纹间复用；端口被其它服务占用时报错，不夺取端口。后台任务不因 MCP 客户端退出而中断；无活动任务且十分钟没有请求后 Gateway 退出。客户端正常退出释放已附着会话。异常退出的会话沿上游超时处理。
+Gateway由插件按需启动并在同一数据目录/源码指纹间复用；端口被其它服务占用时报错，不夺取端口。后台任务不因 MCP 客户端退出而中断；无活动任务、无已连接窗口且十分钟没有请求后 Gateway 退出。客户端正常退出释放已附着会话。异常退出的会话沿上游超时处理。
+
+自动GUI按调用者分配稳定实例身份，同一会话并发启动合并为一次；不同会话分别启动并定向路由。工作工程、配置与日志位于插件数据目录`gui/<实例身份>/`。释放会话不关闭窗口；用户关闭后再调用会载入上次保存的workspace.blend，不宣称恢复未保存编辑。已有ready窗口时Gateway保留运行。启动超时会返回日志路径并保留窗口，不连续重开。升级时若旧Gateway仍占端口，须在无任务／工程影响时停止旧版本或改用另一端口；插件不会抢占。
 
 Python拥有本机用户权限，不构成沙箱。浏览器来源拒绝和本机认证不意味着可以执行不可信脚本。只操作当前任务授权的工程副本。
 
@@ -54,8 +59,10 @@ Python拥有本机用户权限，不构成沙箱。浏览器来源拒绝和本�
 
 ```powershell
 node tests/test-codex-blender-plugin.cjs
+node tests/test-codex-blender-autostart.cjs
 node scripts/verify/verify-codex-blender-registration.cjs
 node scripts/verify/verify-codex-blender.cjs
+node scripts/verify/verify-codex-blender-autostart.cjs
 ```
 
 真实测试及边界见仓库 `docs/CODEX-BLENDER-PLUGIN.md`。源码、锁定提交和逐文件哈希见 `vendor/dsh/UPSTREAM.json`，本地修复见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。升级供应源码须显式复核并更新锁定清单，不自动追随远端 main。

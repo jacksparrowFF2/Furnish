@@ -9,7 +9,7 @@ async function main(){
  const data=fs.mkdtempSync(path.join(parent,'verify-'));
  process.env.FURNISH_BLENDER=require('../blender-server.cjs').findBlender();if(!process.env.FURNISH_BLENDER)throw Error('Blender not found');
  const {start}=require(path.join(plugin,'mcp/gateway.cjs'));
- const gateway=await start({data,port:0}),port=gateway.identity.port,client=new Client({data,port,session:'verification-'+Date.now()});
+ const gateway=await start({data,port:0}),port=gateway.identity.port,client=new Client({data,port,session:'verification-'+Date.now(),autoGui:false});
  const report={passed:false,started:new Date().toISOString(),plugin,blender:process.env.FURNISH_BLENDER,data,checks:[]};let gui;
  try{
   assert.equal((await client.ensure()).name,'furnish-codex-blender');

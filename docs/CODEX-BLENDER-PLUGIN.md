@@ -19,9 +19,13 @@ codex plugin add furnish-blender@furnish-local
 
 ## 工具与职责
 
+1.1.0新增按需GUI启动：`blender_py`、`blender_see`、实际inspect命令以及需要GUI的算子自动打开本会话专用Blender、加载桥接并连接，之后复用；也可调用`blender_session action=ensure`。状态与目录查询、后台队列不打开GUI。自动窗口使用独立出厂配置／工作工程，不接管已打开的用户窗口；显式attach继续有效。`FURNISH_BLENDER_AUTO_GUI=0`可关闭隐式启动。
+
+启动器位于插件自己的`mcp/gui.cjs`，由Gateway合并同会话并发启动请求，逐会话分配实例ID；addon发送按当前已附着会话定向，不依赖全局第一个窗口。工程和日志在插件数据目录`gui/<实例ID>`，关闭后重开已保存工程，保留窗口期间的未保存状态。暂停／写作用域拒绝不会触发重开。原DSH virtual-gui不涉及本次改造。
+
 | 工具 | 适配范围 |
 |---|---|
-| blender_session | doctor/status、列出实例、attach/claim/release、写权限与人改冲突信息 |
+| blender_session | ensure按需开窗，doctor/status、列出实例、attach/claim/release、写权限与人改冲突信息 |
 | blender_op | 原 catalog 与 plan 算子；loop/opt/preset/txn 按 Gateway 参数传递 |
 | blender_py | 已附着 GUI 的持久 Python 内核，保留会话归属与人类暂停规则 |
 | blender_see | viewport/camera/custom 单帧 PNG，使用原生 MCP 图片块，保留相机／预览元数据 |
@@ -50,6 +54,8 @@ HTTP只接受带本机随机密钥的回环请求并拒绝浏览器Origin；扩�
 ```powershell
 npm run test:codex-blender
 npm run verify:codex-blender:registration
+npm run test:codex-blender:autostart
+npm run verify:codex-blender:autostart
 npm run verify:codex-blender
 npm run verify:codex-blender:gui
 ```

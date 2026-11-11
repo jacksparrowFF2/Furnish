@@ -31,4 +31,5 @@ function prepare(data=dataDirectory()){
  return {engine,fingerprint,manifest,data};
 }
 function token(data){fs.mkdirSync(data,{recursive:true});const f=path.join(data,'gateway.key');try{fs.writeFileSync(f,crypto.randomBytes(32).toString('hex'),{flag:'wx',mode:0o600});}catch(e){if(e.code!=='EEXIST')throw e;}const t=fs.readFileSync(f,'utf8');if(!/^[a-f0-9]{64}$/.test(t))throw Error('Invalid local Gateway key');return t;}
-module.exports={plugin,hash,files,dataDirectory,prepare,token};
+function gatewayFingerprint(built){return hash(Buffer.concat([Buffer.from(built.fingerprint),fs.readFileSync(path.join(__dirname,'gateway.cjs')),fs.readFileSync(path.join(__dirname,'gui.cjs'))]));}
+module.exports={plugin,hash,files,dataDirectory,prepare,token,gatewayFingerprint};
