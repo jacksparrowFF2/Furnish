@@ -1,0 +1,122 @@
+{
+  "physicalWallHits": [
+    {
+      "board": "台面:board:6",
+      "wall": 28,
+      "bounds": [
+        6365,
+        2104,
+        7120,
+        2334
+      ]
+    },
+    {
+      "board": "台面:board:6",
+      "wall": 64,
+      "bounds": [
+        6730,
+        2074,
+        7120,
+        2104
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:0",
+      "wall": 28,
+      "bounds": [
+        6365,
+        2104,
+        7120,
+        2334
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:0",
+      "wall": 64,
+      "bounds": [
+        6730,
+        2074,
+        7120,
+        2104
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:1",
+      "wall": 28,
+      "bounds": [
+        6365,
+        2104,
+        7120,
+        2334
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:1",
+      "wall": 64,
+      "bounds": [
+        6730,
+        2074,
+        7120,
+        2104
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:2",
+      "wall": 28,
+      "bounds": [
+        6365,
+        2104,
+        7120,
+        2334
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:2",
+      "wall": 64,
+      "bounds": [
+        6730,
+        2074,
+        7120,
+        2104
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:3",
+      "wall": 64,
+      "bounds": [
+        6730,
+        2074,
+        7120,
+        2104
+      ]
+    },
+    {
+      "board": "laundry:cabinet1/board:4",
+      "wall": 28,
+      "bounds": [
+        6365,
+        2104,
+        7120,
+        2334
+      ]
+    }
+  ],
+  "addedParts": [
+    {
+      "key": "cabinet1",
+      "centre": [
+        7220,
+        2204
+      ],
+      "bounds": [
+        7080,
+        2074,
+        7360,
+        2334
+      ],
+      "rooms": [
+        "客餐厅"
+      ]
+    }
+  ]
+}

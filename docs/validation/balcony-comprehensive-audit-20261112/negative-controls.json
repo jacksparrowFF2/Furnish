@@ -1,0 +1,22 @@
+{
+  "historical": "2a9da6001ff2d47fa93f8656c0cfdd92964b5ce3",
+  "results": [
+    {
+      "name": "previous-added-collision-omission",
+      "exit": 1,
+      "expectedFailure": [
+        "AssertionError [ERR_ASSERTION]: added/added penetration must be reported\r"
+      ],
+      "workspaceReplacement": false
+    },
+    {
+      "name": "previous-virtual-frame-worktop",
+      "exit": 1,
+      "expectedFailure": [
+        "  throw new AssertionError(obj);\r",
+        "AssertionError [ERR_ASSERTION]: virtual frames cannot create a tabletop footprint\r"
+      ],
+      "workspaceReplacement": false
+    }
+  ]
+}

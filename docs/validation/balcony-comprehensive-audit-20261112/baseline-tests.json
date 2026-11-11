@@ -1,0 +1,149 @@
+[
+  {
+    "name": "test-cabinet-assembly-position.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 2371,
+    "output": "PASS 16 rotated/mirrored position cases: front/back/centre, stable width/height/neighbours, 2D structure/footprint, disabled and restore\nPASS generic kitchen added-cabinet drawing and wall footprints\n"
+  },
+  {
+    "name": "test-cabinet-assembly.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 296,
+    "output": "PASS assembly: 12 box placements/reuse, 8 native sideboard placements/actual boards, laundry depths, reference combination, independent native/component doors and v79 project/repository/cache/repeated recovery\n"
+  },
+  {
+    "name": "test-cabinet-native-independence.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 1250,
+    "output": "PASS 8 native independent configurations: own dimensions/elevation/offset, unchanged slab and siblings, true solids, stacking/contact/penetration, disabled restore, v83 project/named/repository/cache/repeated recovery, and unchanged legacy imports\n"
+  },
+  {
+    "name": "test-cabinet-outer-grips.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 1609,
+    "output": "PASS 32 external added-cabinet grips: exact world drag, fixed opposite side, unchanged native cabinets/worktop, mirror/rotation, zero travel and project restore\n"
+  },
+  {
+    "name": "test-cabinet-placement-parity.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 1891,
+    "output": "PASS common Lego placement: 24 side/top/bottom production placements, exact defaults/back planes, rotated/mirrored source preservation, components, saved connected groups, atomic invalid hover and project roundtrip\n"
+  },
+  {
+    "name": "test-cabinet-preview.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 204,
+    "output": "PASS shelf/divider picking, constrained dragging, growing total width, unchanged neighbors, keyboard edits, cancellation, front view and preview cleanup\n"
+  },
+  {
+    "name": "test-cabinet-snapped-resize.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 1775,
+    "output": "PASS 16 snapped width resize cases, component/module edits, repeated restore, detached and height-separated controls\nPASS quarter-turn inserts and ambiguous two-side contact controls\nPASS non-contact and exactly depth-separated controls\n"
+  },
+  {
+    "name": "test-cabinet-worktop-facing.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 745,
+    "output": "PASS 16 facing-left/right worktops: mirrored/rotated, production slab, whole envelope, independent modules, legacy local API and project restoration\n"
+  },
+  {
+    "name": "test-cabinet-worktop-generate.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 577,
+    "output": "PASS 8 layout-driven worktops: connected carcass union, exact support height, repeated generation, size changes, manual-reset, disconnected rejection and project restoration\n"
+  },
+  {
+    "name": "test-kitchen-preview.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 411,
+    "output": "PASS kitchen production preview, mirrored camera, picking, draft isolation, disposal, cabinet-only hood cavity previews and modern component gesture routing/cancellation\n"
+  },
+  {
+    "name": "test-laundry-area.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 350,
+    "output": ""
+  },
+  {
+    "name": "test-laundry-back-alignment.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 309,
+    "output": "Laundry rear alignment: templates, explicit old-data action, depth resizing, transforms, production boards and roundtrip passed\n"
+  },
+  {
+    "name": "test-laundry-basin-joins.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 403,
+    "output": "PASS laundry basin actual offsets, 420x380, contact/outside, depth geometry/ranges, repeated restore and solid corner joins\n"
+  },
+  {
+    "name": "test-laundry-cabinet.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 486,
+    "output": ""
+  },
+  {
+    "name": "test-laundry-carcass.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 1340,
+    "output": "PASS 8 rotated/mirrored independent laundry carcasses: production sides/top, shared drag, true clearances, contact/penetration, shelves, height, adjacent drop, project/named/repeated restoration and unchanged legacy source\n"
+  },
+  {
+    "name": "test-laundry-catalog.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 107,
+    "output": "PASS two laundry catalog entries, both sinks, default left, four retired specifications, left/right and old project round trips\n"
+  },
+  {
+    "name": "test-laundry-existing-lego.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 768,
+    "output": "PASS original laundry cabinets: six rotated/mirrored conversions preserve every group board; real original floor/wall Lego edits, no old recipe execution, v80 current/named/repeated recovery, common door actions\n"
+  },
+  {
+    "name": "test-laundry-integrated.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 1070,
+    "output": "integrated laundry cabinet: production side panel, floor cavity, upper doors and persistence passed\n"
+  },
+  {
+    "name": "test-laundry-notch-closure.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 236,
+    "output": "Laundry notch closure: production panels, empty pipe void, sides, transforms and project roundtrip passed\n"
+  },
+  {
+    "name": "test-laundry-resize-vessel.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 484,
+    "output": "Laundry end resize and vessel sink: transforms, fixed washer, atomic rejection, persistence, production bowl and drain passed\n"
+  },
+  {
+    "name": "test-laundry-stack.cjs",
+    "passed": true,
+    "exit": 0,
+    "ms": 1315,
+    "output": "PASS laundry stacking, panel editing/lock/undo, persistence/copy/replacement, 3D height/offset/rotation and cache\n"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "src/core/cabinet-assembly-core.js": "e43141dd157eb69d973109feb8ff3e906e8215890d924c8e40c647382cc35039",
+  "src/core/kitchen-core.js": "e08f9c0e8cff0c92b05b46884986bb70802330105114cfabfc24059a78d67ef8",
+  "tests/test-cabinet-ui.cjs": "a728dfd640b5db656954be4f103887b8f90a307ace4501c90a52351ce8b12f5b",
+  "tests/helpers/laundry-audit-ui.js": "6ac04aabb2feb8b8e13352002e311244fee7a1a42ab6b945df6820afc4716bb0",
+  "tests/test-laundry-audit-ui.cjs": "f92559ab2b455ccdf116c819e8d38694d737181125c14d80109b88d122979102",
+  "tests/test-laundry-comprehensive.cjs": "4c3e82b9d14c5d7fdd0885d2edb050a3c30091642fc55c1f7783c5f26f7ae887"
+}

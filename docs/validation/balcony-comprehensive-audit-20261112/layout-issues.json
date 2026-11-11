@@ -1,0 +1,21 @@
+[
+  {
+    "kind": "wall",
+    "id": "fmvgvzisd1",
+    "name": "完整阳台洗衣柜",
+    "message": "家具占用墙体空间"
+  },
+  {
+    "kind": "outside",
+    "id": "fmvgvzisd1",
+    "name": "完整阳台洗衣柜",
+    "message": "家具占地超出房间范围（含折角／凹口）"
+  },
+  {
+    "kind": "overlap",
+    "id": "fmvgvzisd1",
+    "otherId": "fmvwj5vca3",
+    "name": "完整阳台洗衣柜 / 小天鹅洗衣机 TG10K60W · 10kg",
+    "message": "家具占地范围重叠，请核对实际摆放"
+  }
+]

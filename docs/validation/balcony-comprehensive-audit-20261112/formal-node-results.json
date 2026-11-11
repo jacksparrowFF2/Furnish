@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "exit": 0,
+  "output": "PASS read-only formal-project audit and 16 transformed/elevated production configurations: 4 physical component modules, production boards, editable restore and deterministic generation\nPASS 8 comprehensive transformed collision/control matrices and nonphysical-frame tabletop regression\n"
+}

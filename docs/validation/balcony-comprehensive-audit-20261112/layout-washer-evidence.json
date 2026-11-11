@@ -1,0 +1,22 @@
+{
+  "overlap": true,
+  "hostBoards": [
+    "module:1/board:1"
+  ],
+  "sideboardY": [
+    1434,
+    1452
+  ],
+  "washerMinimumY": 1447.5,
+  "modelPenetrationMm": 4.5,
+  "currentWasherCentre": [
+    7080,
+    1745
+  ],
+  "candidateAlignedCentre": [
+    7080,
+    1754
+  ],
+  "candidateAlignedOverlap": false,
+  "candidateOnlyNotApplied": true
+}
