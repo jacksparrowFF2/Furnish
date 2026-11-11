@@ -1,0 +1,9 @@
+{
+  "src/core/cabinet-assembly-core.js": "0b00ee70fc8e4a46290343eb0b57c3919c24685cc8efde2ac9c5277bba3658bb",
+  "src/core/kitchen-core.js": "55348297abd91bb0dc850ec2182ee7b10db2e454b641bff5c676936c5f46f031",
+  "src/render/furniture-svg.js": "0577b673723f8111d7bc5643a4ef2e25a3df608a70503d484984690734e6568e",
+  "src/render/plan-renderer.js": "4f757f7ec430bc86e2c6de0e8c18fc2d820e7557a6610026ade5134b4de5df2b",
+  "src/ui/cabinet-builder-native-adapter.js": "f573b6077a3e4c28d283e72c476d42f70d731634995051534055d28ebfdd005e",
+  "tests/helpers/laundry-carcass-ui.js": "c5802958da8facd653b4125c685afb543ebf1e30b56f0d3a32eaf6ce65bbb8a8",
+  "tests/test-cabinet-assembly-position.cjs": "2e9eb5fb6d8bfe46dd8fb5142afc5fa82e17e4bc60ce315163493f75d317ef53"
+}

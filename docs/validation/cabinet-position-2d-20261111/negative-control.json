@@ -1,0 +1,8 @@
+{
+  "historical": "af9212c473e0c73d87ae6f974866da596b0a3000",
+  "status": 1,
+  "expectedFailure": [
+    "AssertionError [ERR_ASSERTION]: added cabinet must render in 2D\r"
+  ],
+  "noWorkspaceReplacement": true
+}
