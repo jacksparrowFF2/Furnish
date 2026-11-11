@@ -19,6 +19,7 @@ const suites={
  block:['block'],panel_light_300x600:['panel-light'],bath_heater_300x600:['bath-heater-se2'],downlight_philips_dl269:['downlight'],heating_manifold:['manifold','manifold-zero-gap'],electrical_box_strong:['electrical-box'],electrical_box_weak:['electrical-box'],aquarium_mijia_2pro:['aquarium'],stove_fotile_th36b:['fotile'],waterheater_flat:['waterheater-flat','waterheater-furniture-clearances'],aircon_midea_ultra_2hp:['aircon-midea'],water_purifier_mijia_1200g:['water-purifier'],tea_bar_mijia_pro:['tea-bar'],robot_p20max_tank:['robot-vacuum'],robot_p20max_plumbed:['robot-vacuum'],robot_p20max:['robot-vacuum'],pipebox:['pipebox'],sofa_yeswood_cherry:['yeswood-sofa'],coffeetable_yeswood_cherry:['cherry-coffee-table'],tea_table_800:['tea-table'],bench_yeswood_oak:['shoe-bench'],shower_arrow_cream:['shower-arrow'],cat_tree:['cat-tree'],pet_feeder_mijia_2:['pet-feeder'],litter_box:['litter-box'],mirror:['mirror'],tv:['tv-view-consistency']
 };
 const copy=o=>JSON.parse(JSON.stringify(o));
+assetTypes['panel-xiaomi-switch2']='panel_bull_g12';suites['panel-xiaomi-switch2']=['panel-xiaomi-switch2'];
 assetTypes['panel-bull-g12']='panel_bull_g12';suites['panel-bull-g12']=['panel-bull-g12'];
 assetTypes['corner-bookcase']='bookshelf_yeswood_y00y06';assetTypes['corner-bookcase-580']='bookshelf_yeswood_y00y06058';suites['corner-bookcase-580']=['corner-bookcase-580'];suites['corner-bookcase']=['corner-bookcase'];
 suites.tripleslidingwindow=['telescopic-floor-tracks'];
@@ -70,7 +71,7 @@ function sourceFiles(profile){
 }
 function profiles(){
  const items=C.library.flatMap(c=>c.items),byType=new Map(items.map(i=>[i[0],i])),out=[];
- for(const [id,type]of Object.entries(assetTypes)){const f=itemFixture(byType.get(type));if(id==='y52y09')Object.assign(f,B.preset('book-y52y09-low'),{type});out.push({id,type,route:'blender',fixture:f,asset:sourceFiles(id),tests:testsFor(id,type)});}
+ for(const [id,type]of Object.entries(assetTypes)){const f=itemFixture(byType.get(type));if(id==='panel-xiaomi-switch2')Object.assign(f,P.editPanelVariant(f,'xiaomi-2pro-2-white'));if(id==='y52y09')Object.assign(f,B.preset('book-y52y09-low'),{type});out.push({id,type,route:'blender',fixture:f,asset:sourceFiles(id),tests:testsFor(id,type)});}
  for(const [type,item]of byType)if(!originalTypes.has(type)&&!Object.values(assetTypes).includes(type))out.push({id:type,type,route:'parametric',fixture:itemFixture(item),tests:testsFor(type,type)});
  for(const [id,type]of [['mirror','mirror'],['curtain-single','curtain'],['curtain-double','curtain'],['tv-75','tv'],['tv-85','tv'],['tv-100','tv']]){
   const item=items.find(i=>i[0]===type&&(type==='tv'?i[1].startsWith(id.slice(3)):type==='curtain'?i[8]===id.slice(8):true));

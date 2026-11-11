@@ -1,0 +1,195 @@
+C:\Users\SPH\Documents\GitHub\Furnish\scripts\blender-model-panel-xiaomi-switch2.py:13: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;n=m.node_tree.nodes.get('Principled BSDF');rgb=[int(c[i:i+2],16)/255 for i in (0,2,4)]
+INFO Draco is available, use library at C:\Users\SPH\scoop\apps\blender\current\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Users\SPH\scoop\apps\blender\current\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.02747511863708496 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.001
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.001
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.001
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.001
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.010760307312011719 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.002
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.003
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.002
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.002
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.002
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.010722160339355469 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.004
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.005
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.003
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.003
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2.001
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.003
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.011086463928222656 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.006
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.007
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.008
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.004
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.004
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2.002
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-3
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.004
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.018221616744995117 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.009
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.010
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.011
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.005
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.005
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2.003
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-3.001
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.005
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.012747049331665039 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.012
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.006
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.006
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.006
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.011011123657226562 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.013
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.007
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.007
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.007
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.009231805801391602 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.014
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.015
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.008
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.008
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2.004
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.008
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.01604938507080078 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.016
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.017
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.009
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.009
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2.005
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.009
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.011743545532226562 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.018
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.019
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.020
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.010
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.010
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2.006
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-3.002
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.010
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.015926599502563477 s
+
+21:31:29 | INFO: Starting glTF 2.0 export
+21:31:29 | INFO: Extracting primitive: Sphere.021
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.022
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: Sphere.023
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rear-plate.011
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-1.011
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-2.007
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-3.003
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Extracting primitive: rocker-recess.011
+21:31:29 | INFO: Primitives created: 1
+21:31:29 | INFO: Finished glTF 2.0 export in 0.015230894088745117 s
+00:03.375  render           | Saved: 'C:\Users\SPH\Documents\GitHub\Furnish\assets\models\panel-xiaomi-switch2\v2\front.png'
+00:05.671  render           | Saved: 'C:\Users\SPH\Documents\GitHub\Furnish\assets\models\panel-xiaomi-switch2\v2\oblique.png'
+C:\Users\SPH\Documents\GitHub\Furnish\scripts\blender-model-panel-xiaomi-switch2.py:13: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;n=m.node_tree.nodes.get('Principled BSDF');rgb=[int(c[i:i+2],16)/255 for i in (0,2,4)]
+00:08.546  render           | Saved: 'C:\Users\SPH\Documents\GitHub\Furnish\assets\models\panel-xiaomi-switch2\v2\grey-oblique.png'
+00:12.046  render           | Saved: 'C:\Users\SPH\Documents\GitHub\Furnish\assets\models\panel-xiaomi-switch2\v2\variants.png'
+
+Info: Saved as "panel-xiaomi-switch2-v1.blend"
+PANEL_AUTHOR_OK 12
+Blender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)
+
+Blender quit

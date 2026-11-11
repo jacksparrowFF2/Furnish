@@ -3,6 +3,7 @@
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const root=path.resolve(__dirname,'..'),supplies=require('./lib/storage-supply-specs.json');
 async function main(args=process.argv.slice(2)){
+ if(/^(author|publish)-panel-xiaomi-switch2$/.test(args[0]||''))return require('./panel-xiaomi-switch2.cjs').main([args[0].split('-')[0],args[1]]);
  if(/^(author|publish)-panel-bull-g12$/.test(args[0]||''))return require('./panel-bull-g12.cjs').main([args[0].split('-')[0],args[1]]);
  const garment=/^(author|publish)-(garment-short-down|garment-long-down|garment-autumn-jacket)$/.exec(args[0]||'');
  if(garment){

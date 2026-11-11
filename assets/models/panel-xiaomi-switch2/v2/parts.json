@@ -1,0 +1,98 @@
+{
+  "xiaomi-2-1-white": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1"
+  ],
+  "xiaomi-2-1-grey": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1"
+  ],
+  "xiaomi-2-2-white": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2"
+  ],
+  "xiaomi-2-2-grey": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2"
+  ],
+  "xiaomi-2-3-white": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2",
+    "rocker-3",
+    "indicator-3"
+  ],
+  "xiaomi-2-3-grey": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2",
+    "rocker-3",
+    "indicator-3"
+  ],
+  "xiaomi-2pro-1-white": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1"
+  ],
+  "xiaomi-2pro-1-grey": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1"
+  ],
+  "xiaomi-2pro-2-white": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2"
+  ],
+  "xiaomi-2pro-2-grey": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2"
+  ],
+  "xiaomi-2pro-3-white": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2",
+    "rocker-3",
+    "indicator-3"
+  ],
+  "xiaomi-2pro-3-grey": [
+    "rear-plate",
+    "rocker-recess",
+    "rocker-1",
+    "indicator-1",
+    "rocker-2",
+    "indicator-2",
+    "rocker-3",
+    "indicator-3"
+  ]
+}

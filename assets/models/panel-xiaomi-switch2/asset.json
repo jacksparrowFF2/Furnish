@@ -1,0 +1,517 @@
+{
+  "format": 1,
+  "id": "panel-xiaomi-switch2",
+  "name": "小米智能开关2与2 Pro · 86面板",
+  "types": [
+    "panel_bull_g12"
+  ],
+  "route": "blender",
+  "document": "docs/PANEL-XIAOMI-SWITCH2.md",
+  "sourceLinks": [
+    "https://item.jd.com/100434281318.html",
+    "https://item.jd.com/100313419465.html"
+  ],
+  "references": [
+    {
+      "path": "references/product-page/normal-detail-01.avif",
+      "kind": "product-page",
+      "sha256": "0d890e08b463d8aeda865c9707aed8c8df2d41202d40f26d28e8974a6fdb9fe8",
+      "bytes": 45766,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-02.avif",
+      "kind": "product-page",
+      "sha256": "3c4c80ade71d8ede649713fd81b9e633b0b82fab32b6c633d4054f7d33b81232",
+      "bytes": 57140,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-03.avif",
+      "kind": "product-page",
+      "sha256": "05ad21744f67f9572b7dbf0f27b7edae66435797c471dc8f8dc34ef2bea77683",
+      "bytes": 23635,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-04.avif",
+      "kind": "product-page",
+      "sha256": "eeac6387b0b43b847fe0a4306469a334d2126463ef77a34a895e452eb6bf0eca",
+      "bytes": 66709,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-05.avif",
+      "kind": "product-page",
+      "sha256": "d0ae2a8d9ccd1daf826ae76a61156e6141291ed83efb53e635dc73162b409ffa",
+      "bytes": 49883,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-06.avif",
+      "kind": "product-page",
+      "sha256": "69bf5834e5b280d31d69ffafae10efb415c8829b32f9433c627aba2d212ba9f7",
+      "bytes": 95126,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-07.avif",
+      "kind": "product-page",
+      "sha256": "9a03a04afa13e27b74a0594ef5f0adec59ab8eb11da6344e535c90ab9c053460",
+      "bytes": 46243,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-08.avif",
+      "kind": "product-page",
+      "sha256": "1a92890d485417bb96cdb6e94822a779e8a335cd70fb0e085a4527e8e9dec348",
+      "bytes": 40517,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-09.avif",
+      "kind": "product-page",
+      "sha256": "abd5318d8e498cdbad04486c053af13f13f515c4f6f30c680f13e286890d5722",
+      "bytes": 37254,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-10.avif",
+      "kind": "product-page",
+      "sha256": "7e9b8ba6ac02c4c00907357fee809ce09dfe6421c6a3e424b2cc8a4b6c8d82c2",
+      "bytes": 69588,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-11.avif",
+      "kind": "product-page",
+      "sha256": "61e1932b53cec7cea4e2bfc8cb618e8a8a4f7972eeea89c6cbdf5c306ae948a2",
+      "bytes": 51612,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-12.avif",
+      "kind": "product-page",
+      "sha256": "c6326d9bc891084d4bdeee11891f640453774ca8534c2ec9621b65c0ee5a5c42",
+      "bytes": 37165,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-13.avif",
+      "kind": "product-page",
+      "sha256": "54425f4e7ea8a7ff9b38ff8958bca3367656a8fca74e1b8dd9fceb38ec734403",
+      "bytes": 79774,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-14.avif",
+      "kind": "product-page",
+      "sha256": "1b88595fe9358471f241b6deb859939169ddea756fab82860c3f9b41c1b2a724",
+      "bytes": 38740,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-15.avif",
+      "kind": "product-page",
+      "sha256": "1e402462eb028541fb11e6eee1ca4557b7671d5d5ee170345dc8f51d38bad8d2",
+      "bytes": 70422,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-16.avif",
+      "kind": "product-page",
+      "sha256": "10af41f8a3d799d9a332b2567b5019d5da9ec6a43d486776ec8e97ff5fa0d8bd",
+      "bytes": 63514,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-17.avif",
+      "kind": "product-page",
+      "sha256": "6179d8b1a03277768345f8478bb11d6610edb3f12939df1d60d8e8e17cb5566b",
+      "bytes": 54354,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-18.avif",
+      "kind": "product-page",
+      "sha256": "4de2eb1b8d043a3cd9cc603a0336847e95f9b8409713bb6fc0ce075618e098d8",
+      "bytes": 41141,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-19.avif",
+      "kind": "product-page",
+      "sha256": "91d049cfb649c5d88e9edb94839cae38fbbdd60fbab5cb656f65d6e3c7faa16f",
+      "bytes": 61739,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-20.avif",
+      "kind": "product-page",
+      "sha256": "4babcafd9c309fb898c805c65196a5a2a3d17f35a303e69bc13ade8262fc4485",
+      "bytes": 41149,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-21.avif",
+      "kind": "product-page",
+      "sha256": "20bcfef449b4f7db88eb3b8302852b8d923c80d958d45728a0cbfc1ce603e05d",
+      "bytes": 34881,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-22.avif",
+      "kind": "product-page",
+      "sha256": "80b1f9f1e11901397ce348676a57e8e1aebc9fe6913b8ca7b5cd4870b6648bde",
+      "bytes": 60084,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-23.avif",
+      "kind": "product-page",
+      "sha256": "e9af1cc16c70611d9ae6487cbbda54bd5d8eee47f0f3af24a9333f42e0050aa0",
+      "bytes": 77669,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-24.avif",
+      "kind": "product-page",
+      "sha256": "e5900b41e8de14026cb6e5623e62b94049fe73d6cd1169639550191ae005a9b6",
+      "bytes": 62435,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-25.avif",
+      "kind": "product-page",
+      "sha256": "f603349e6ca11242747f717ef955a0cf8bd5377057436e0614ad0164b26935c3",
+      "bytes": 111523,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-26.avif",
+      "kind": "product-page",
+      "sha256": "1751ddc939197b3383802cceeb9fc5dfd258e7186c28e948be4ff192535448cf",
+      "bytes": 71023,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-27.avif",
+      "kind": "product-page",
+      "sha256": "fdd2f820b92976b934d79ead9415a6587f8f137c7b071df088d3ca1ee7a4f2d1",
+      "bytes": 70644,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-28.avif",
+      "kind": "product-page",
+      "sha256": "5a4353a5cc1b89b0f2ef4afec920d02b25399bdce587af8b69a45ce9547d56e9",
+      "bytes": 46391,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-29.avif",
+      "kind": "product-page",
+      "sha256": "11b5ce0bf8a919a34a3dcbe16d8e5a73c9c038a7b09c6fb9c59f0a479c6b2ed9",
+      "bytes": 40014,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-30.avif",
+      "kind": "product-page",
+      "sha256": "56a4a4d9e01ef993ece25c227f563b1fe9756edc2a1f6b460779af7bcaf6dda4",
+      "bytes": 58642,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-31.avif",
+      "kind": "product-page",
+      "sha256": "d7177fa34699760b3780ba376c19f0a61fbe55518931d1e586d3228f17c860f7",
+      "bytes": 58375,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-32.avif",
+      "kind": "product-page",
+      "sha256": "c05387b5bb426039563abc4dc69e0e32033d662f684f85c6bd16c4a42aacca97",
+      "bytes": 47567,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-detail-33.avif",
+      "kind": "product-page",
+      "sha256": "8fc2c33bdb0b867da4c2d3914d11417a963e50b949848caac20aa306a80b022e",
+      "bytes": 54640,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/normal-double.jpg",
+      "kind": "product-page",
+      "sha256": "955578fd9fe641cbeb76ba3bb0ac4748a5fc98f86de8c323a072984cc534bb1b",
+      "bytes": 77095,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-01.avif",
+      "kind": "product-page",
+      "sha256": "506d2655481cde67ee05ed251a87285392932481ef84236a2aad2e51030e3ae3",
+      "bytes": 113320,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-02.avif",
+      "kind": "product-page",
+      "sha256": "863b789d821b55019a6b077a11f19c6cd815779d4a8ef32311b9b2b3e0a9ab74",
+      "bytes": 74327,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-03.avif",
+      "kind": "product-page",
+      "sha256": "9ae29e170005b374aedf0af51e87095937a1a913cff41d08b28b872024177a90",
+      "bytes": 67584,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-04.avif",
+      "kind": "product-page",
+      "sha256": "b2302b5728e746dce025272a1c75f471392e05454379084f597f370f4e9dbd41",
+      "bytes": 29451,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-05.avif",
+      "kind": "product-page",
+      "sha256": "edceed0ce55c2a48a7d4b72fd92feac06732395dd66696eca6daba6ba1b7fefb",
+      "bytes": 44607,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-06.avif",
+      "kind": "product-page",
+      "sha256": "684ce8ede172321ecdfe04595575c3d0f82d53f4bd1d7fdc91432f48c4b172f2",
+      "bytes": 61031,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-07.avif",
+      "kind": "product-page",
+      "sha256": "be235ee13554d3cba9fdb19abba3452176cae2117ac845a1476893b1eb909c85",
+      "bytes": 38086,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-08.avif",
+      "kind": "product-page",
+      "sha256": "a7e2e976cff32ec95461ab91ea3dbf84a8c5ce539f1874603b3a3caf205bd9b4",
+      "bytes": 51974,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-09.avif",
+      "kind": "product-page",
+      "sha256": "2b80634904fdfcd45f3ccd221987c65a91330ec7243d630e931e6d16384a280a",
+      "bytes": 25132,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-10.avif",
+      "kind": "product-page",
+      "sha256": "7183eb059e4f09e7879f4db429062a52d631a9a4b53e45f88a263d193af59b95",
+      "bytes": 62610,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-11.avif",
+      "kind": "product-page",
+      "sha256": "7316c0a5ba0c077ceb90d4ef173eb26474829a8fad7041aee564b9371b1cd54e",
+      "bytes": 36518,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-12.avif",
+      "kind": "product-page",
+      "sha256": "d7353804508546858d55e00039d8ae7ebd5c5d8e6649f9213415854230ed6016",
+      "bytes": 48044,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-13.avif",
+      "kind": "product-page",
+      "sha256": "062000130770a03bf403e8ad41a0b6c59dfdd3e5291910b00a54c07c9af7c7a6",
+      "bytes": 62924,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-14.avif",
+      "kind": "product-page",
+      "sha256": "5ed9e6b922de215e06ee57e0ebd3036967e903c7ac7d3e15bec0f8e13d96b6f2",
+      "bytes": 71822,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-15.avif",
+      "kind": "product-page",
+      "sha256": "c4875f207435eabafe6cfd6483331067a49d8bfd0155c94341422155ef86351a",
+      "bytes": 66091,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-16.avif",
+      "kind": "product-page",
+      "sha256": "333c1d36133c0fd14ffce452d864b503214d9e19d8963bfa37bf705e06ee4d83",
+      "bytes": 29988,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-17.avif",
+      "kind": "product-page",
+      "sha256": "7a7e2611b887b4f9da6f58c38875c452ca514c2a8e99f1c4ca082df8b7dfadc3",
+      "bytes": 63377,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-18.avif",
+      "kind": "product-page",
+      "sha256": "fe3482a3c2e1caef66e198698f7d065f7108118ecbb39ff5fffc698dacac8dda",
+      "bytes": 84052,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-19.avif",
+      "kind": "product-page",
+      "sha256": "f4e4063c2fb470d80cc7f782fd97dffac129af5d2112be942b3e552ff3d67d27",
+      "bytes": 67294,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-20.avif",
+      "kind": "product-page",
+      "sha256": "001b57014e5023a8239277ef49c2b407402fc2d81e762cc323eef4ff5c940d7e",
+      "bytes": 75200,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-21.avif",
+      "kind": "product-page",
+      "sha256": "5062c40df28376c1007f1070ec2c4f7412d2eabb27315f457ce29f089acad7f1",
+      "bytes": 63285,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-22.avif",
+      "kind": "product-page",
+      "sha256": "3d62145d98b687d60838d81ea442e75d686ba7c915f8cad66f8103099a4b34e0",
+      "bytes": 66154,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-23.avif",
+      "kind": "product-page",
+      "sha256": "082aa913c650ad81fd213e5a70ebf2a28eadcab6b2160133fbcd6b04276e094d",
+      "bytes": 61954,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-24.avif",
+      "kind": "product-page",
+      "sha256": "00796095ff829c822d34d7c584997b94d6e360392cc2a765cec81958e09a89a6",
+      "bytes": 78662,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-25.avif",
+      "kind": "product-page",
+      "sha256": "8bc78cef8dac118296ac4d0d85511ec012754d5e67e243dfd5554f20477ff76a",
+      "bytes": 69926,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-26.avif",
+      "kind": "product-page",
+      "sha256": "1974b0e4d5f06c543d420c92cfc6ecc76fdba4ff944fe2cc962b416b351e24e6",
+      "bytes": 33355,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-27.avif",
+      "kind": "product-page",
+      "sha256": "77623d919396a7bbe29ce56fbcb5fc256005f470cf54fcc77de25c329f3ed486",
+      "bytes": 80813,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-28.avif",
+      "kind": "product-page",
+      "sha256": "627c53560d4d52f1409ada8cff984cd13f98dcae831e02d6e9fed8f0c368c31a",
+      "bytes": 99418,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-29.avif",
+      "kind": "product-page",
+      "sha256": "b9e15f446569f9175755d7befe796608ea9b001f4d2ec6f300e7d3fca8623333",
+      "bytes": 52770,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-30.avif",
+      "kind": "product-page",
+      "sha256": "289d5ccc29fece8de59d9b90713354e7ac626dfaa3b0d96b7ee17d3164d43931",
+      "bytes": 103402,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-31.avif",
+      "kind": "product-page",
+      "sha256": "5c7c05a160a8fd0ca763070fedf3fa2d7dd57d040504d576d0b90017611fdb73",
+      "bytes": 69892,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-32.avif",
+      "kind": "product-page",
+      "sha256": "8fd4c14098be520a9b7455dbd1ef59afd69b100bcb8b7880d22736bcacc34ed3",
+      "bytes": 57334,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-33.avif",
+      "kind": "product-page",
+      "sha256": "fc873b92393e0ab759746ee223dfa3b119b34eb6bc457ef3f69fd4e150396b77",
+      "bytes": 24593,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-34.avif",
+      "kind": "product-page",
+      "sha256": "71ef8eb0fbd17ab5e38d64dc3abec91089857e36a3c3a7050742029a34026bfd",
+      "bytes": 120176,
+      "legacyPaths": []
+    },
+    {
+      "path": "references/product-page/pro-detail-35.avif",
+      "kind": "product-page",
+      "sha256": "90be23159966ba2f34d40cd33aa534ab9242955d134e03e718ab44188f4b4078",
+      "bytes": 400869,
+      "legacyPaths": []
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/panel-xiaomi-switch2-20261111/README.md"
+  ],
+  "notes": [
+    "同版本实物近照",
+    "Pro底部实测厚度；约5mm为3.5mm顶部与1°倾角推算",
+    "墙内机构完整尺寸与施工底盒适配未建模"
+  ],
+  "supportingFiles": [
+    {
+      "path": "references/product-page/sources.json",
+      "kind": "product-page",
+      "sha256": "e43d3eb4d46051f0d7c3ab1907c92e59619f0384eecab0cfb1f2a478340daa86",
+      "bytes": 11280,
+      "legacyPaths": []
+    }
+  ]
+}

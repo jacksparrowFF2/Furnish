@@ -1,0 +1,90 @@
+{
+  "assets/models/panel-xiaomi-switch2/v2/panel-xiaomi-switch2-v1.glb": {
+    "sha256": "c02853a9afd47ba8547933c7ca0d0842ac35ffe6ecc30ca1129951e336fb0116",
+    "bytes": 59816
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2-1-grey.glb": {
+    "sha256": "19eeb5113c6d1101f4e9298c890a9c265650d1faf2a0ef472ec56d2cac407a1d",
+    "bytes": 35644
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2-1-white.glb": {
+    "sha256": "2e3e336da48d2f56a3469b736bfa924de41791d02073b7e7c39f5265e8f7a325",
+    "bytes": 35620
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2-2-grey.glb": {
+    "sha256": "ca09a84e8c1287e3482aabd84b25a6accadeab321b47bce120bb8216052323cc",
+    "bytes": 59236
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2-2-white.glb": {
+    "sha256": "678b1fa8ce4e9275fb7b765d9b52957079d516b89a327cf446e1f16a5602ba70",
+    "bytes": 59228
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2-3-grey.glb": {
+    "sha256": "fe143a603b91e27a0c220490cc38bdde912331d52ed5e592ba74e581e1676613",
+    "bytes": 82784
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2-3-white.glb": {
+    "sha256": "602b619f4500129c237609c36806692a114ffed03f856ca6841c2c136130b3d8",
+    "bytes": 82780
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2pro-1-grey.glb": {
+    "sha256": "fde9d30526cefbdc0e1d333f3ca56a1b2f81cd5fc4a7cc7e0b4739e78daefe1f",
+    "bytes": 35652
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2pro-1-white.glb": {
+    "sha256": "61c9528fa37cd2eafc21d718462b1c2f280372f5091902605b2394f03f3babbd",
+    "bytes": 35640
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2pro-2-grey.glb": {
+    "sha256": "c025edf7a30b5988b18a20dc2de72b1ea17acc7eaffb8d88293df0e1b5910111",
+    "bytes": 59820
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2pro-2-white.glb": {
+    "sha256": "c02853a9afd47ba8547933c7ca0d0842ac35ffe6ecc30ca1129951e336fb0116",
+    "bytes": 59816
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2pro-3-grey.glb": {
+    "sha256": "4ddd408ac55de66e0c22e4a17f40ad5dae6cb75454a2081dce7b469cdafb18b9",
+    "bytes": 83900
+  },
+  "assets/models/panel-xiaomi-switch2/v2/xiaomi-2pro-3-white.glb": {
+    "sha256": "935efb2f80aee33c945f2da08c5f636d9c10c8b174d0501c8a49d3cd677150cc",
+    "bytes": 83904
+  },
+  "assets/models/panel-xiaomi-switch2/v2/panel-xiaomi-switch2-v1.blend": {
+    "sha256": "9be2493cf723700bb0e2adf241eb1167125ae45150ed9e2b9b3c6023a17b1c57",
+    "bytes": 165695
+  },
+  "src/data/panel-xiaomi-switch2-blender-asset.js": {
+    "sha256": "f0d04225a8789e37611e6d8c14afd16b85288de0116239210c55d3aeb5b5252a",
+    "bytes": 2773707
+  },
+  "docs/validation/panel-xiaomi-switch2-20261111/production-back.png": {
+    "sha256": "f593d7a10c9506c33c3afb8427f552259fed2f8175899a111fdeceb95eb73d87",
+    "bytes": 255305
+  },
+  "docs/validation/panel-xiaomi-switch2-20261111/production-front.png": {
+    "sha256": "f37bb902b7819147e812e3def916e22c180496428bd4d28714d8e4420970ce26",
+    "bytes": 244790
+  },
+  "docs/validation/panel-xiaomi-switch2-20261111/production-oblique.png": {
+    "sha256": "703659aeca45f25d33de1f64762d85c746a6f79d09dd06ea856282795a38f99a",
+    "bytes": 255456
+  },
+  "docs/validation/panel-xiaomi-switch2-20261111/narrow.png": {
+    "sha256": "b0acf3c4e63eb97c0b181fa9ed5851142b90728abdb09602cbc2a922f4275b46",
+    "bytes": 126774
+  },
+  "docs/validation/panel-xiaomi-switch2-20261111/properties.png": {
+    "sha256": "2a9035a86b7b56f60707d7df7fb2b9e8dd1d43904af4155867ab1b9dace8f4d2",
+    "bytes": 422106
+  },
+  "docs/validation/panel-xiaomi-switch2-20261111/pipeline-report.json": {
+    "sha256": "91cdf21c82403bf30efd7b940f7f7cd295507177ffd42c2bf84314f1af1426d4",
+    "bytes": 11662
+  },
+  "docs/validation/panel-xiaomi-switch2-20261111/desktop-results.json": {
+    "sha256": "c23e5fec7cf012e6d11b5885feeda9a779cc422fa5a670cb3ce402cb9f088ac5",
+    "bytes": 702
+  }
+}

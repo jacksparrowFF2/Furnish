@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "variants": [
+    {
+      "variant": "xiaomi-2-1-white",
+      "parts": 4,
+      "sourceSha256": "2e3e336da48d2f56a3469b736bfa924de41791d02073b7e7c39f5265e8f7a325"
+    },
+    {
+      "variant": "xiaomi-2-1-grey",
+      "parts": 4,
+      "sourceSha256": "19eeb5113c6d1101f4e9298c890a9c265650d1faf2a0ef472ec56d2cac407a1d"
+    },
+    {
+      "variant": "xiaomi-2-2-white",
+      "parts": 6,
+      "sourceSha256": "678b1fa8ce4e9275fb7b765d9b52957079d516b89a327cf446e1f16a5602ba70"
+    },
+    {
+      "variant": "xiaomi-2-2-grey",
+      "parts": 6,
+      "sourceSha256": "ca09a84e8c1287e3482aabd84b25a6accadeab321b47bce120bb8216052323cc"
+    },
+    {
+      "variant": "xiaomi-2-3-white",
+      "parts": 8,
+      "sourceSha256": "602b619f4500129c237609c36806692a114ffed03f856ca6841c2c136130b3d8"
+    },
+    {
+      "variant": "xiaomi-2-3-grey",
+      "parts": 8,
+      "sourceSha256": "fe143a603b91e27a0c220490cc38bdde912331d52ed5e592ba74e581e1676613"
+    },
+    {
+      "variant": "xiaomi-2pro-1-white",
+      "parts": 4,
+      "sourceSha256": "61c9528fa37cd2eafc21d718462b1c2f280372f5091902605b2394f03f3babbd"
+    },
+    {
+      "variant": "xiaomi-2pro-1-grey",
+      "parts": 4,
+      "sourceSha256": "fde9d30526cefbdc0e1d333f3ca56a1b2f81cd5fc4a7cc7e0b4739e78daefe1f"
+    },
+    {
+      "variant": "xiaomi-2pro-2-white",
+      "parts": 6,
+      "sourceSha256": "c02853a9afd47ba8547933c7ca0d0842ac35ffe6ecc30ca1129951e336fb0116"
+    },
+    {
+      "variant": "xiaomi-2pro-2-grey",
+      "parts": 6,
+      "sourceSha256": "c025edf7a30b5988b18a20dc2de72b1ea17acc7eaffb8d88293df0e1b5910111"
+    },
+    {
+      "variant": "xiaomi-2pro-3-white",
+      "parts": 8,
+      "sourceSha256": "935efb2f80aee33c945f2da08c5f636d9c10c8b174d0501c8a49d3cd677150cc"
+    },
+    {
+      "variant": "xiaomi-2pro-3-grey",
+      "parts": 8,
+      "sourceSha256": "4ddd408ac55de66e0c22e4a17f40ad5dae6cb75454a2081dce7b469cdafb18b9"
+    }
+  ]
+}

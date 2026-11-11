@@ -1,0 +1,421 @@
+{
+  "passed": true,
+  "profile": "panel-xiaomi-switch2",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "panel_bull_g12",
+    "name": "86开关插座面板 · 公牛／小米（种类可选）",
+    "w": 86,
+    "d": 5,
+    "color": "#f5f5f3",
+    "mountHeight": 0,
+    "panelVariant": "xiaomi-2pro-2-white",
+    "frontClearance": 0,
+    "brand": "小米/Xiaomi",
+    "model": "小米智能开关2 Pro",
+    "sourceUrl": "https://item.jd.com/100434281318.html",
+    "h": 86
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-11T13:33:35.592Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pHazbB\\panel-xiaomi-switch2-YhyqJr",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-11T13:33:35.593Z",
+      "result": {
+        "command": "author-panel-xiaomi-switch2",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pHazbB\\panel-xiaomi-switch2-YhyqJr\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pHazbB\\panel-xiaomi-switch2-YhyqJr\\authored",
+        "passed": true,
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe"
+      },
+      "finished": "2026-11-11T13:33:48.966Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-11T13:33:48.966Z",
+      "result": {
+        "passed": true,
+        "profile": "panel-xiaomi-switch2",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-11T13:33:50.039Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-11T13:33:50.040Z",
+      "result": {
+        "command": "publish-panel-xiaomi-switch2",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pHazbB\\panel-xiaomi-switch2-YhyqJr\\authored\\panel-xiaomi-switch2-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pHazbB\\workspace\\src\\data\\panel-xiaomi-switch2-blender-asset.js",
+        "passed": true,
+        "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+        "glbSha256": "5342490dccde365791e6e313484d60dd9c2eb51a897e3b9e270c9c03c7f7048b",
+        "runtimeSha256": "712d90808b084e2b69c5f216de99723b4f3c77956d5df3819bead868c391729f"
+      },
+      "finished": "2026-11-11T13:33:51.323Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-11T13:33:51.323Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "panel-xiaomi-switch2",
+            "profile": "panel-xiaomi-switch2",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-pHazbB\\panel-xiaomi-switch2-YhyqJr\\panel-xiaomi-switch2.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "panel-xiaomi-switch2",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 6,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 6,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 6,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 6,
+                  "bottom": 0,
+                  "top": 86,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-11T13:33:55.204Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-11T13:33:55.204Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 6,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.0024999999441206455
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.0024947701022028923
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 6,
+            "bounds": [
+              [
+                -0.04816000163555145,
+                0,
+                -0.0027000000700354576
+              ],
+              [
+                0.04816000163555145,
+                0.0928800031542778,
+                0.0026943515986204147
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 6,
+            "bounds": [
+              [
+                -0.0430000014603138,
+                0,
+                -0.0024999999441206455
+              ],
+              [
+                0.0430000014603138,
+                0.0860000029206276,
+                0.0024947701022028923
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-11T13:34:06.053Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-11T13:34:06.053Z",
+      "result": {
+        "passed": true,
+        "profile": "panel-xiaomi-switch2",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 6,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-11T13:34:07.086Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-11T13:34:07.086Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 6,
+            "position": [
+              0,
+              0.0430000014603138,
+              0.2264956449067222
+            ],
+            "target": [
+              0,
+              0.0430000014603138,
+              -0.00000261492095887661
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 6,
+            "position": [
+              0.12539771115617898,
+              0.11196874259621226,
+              0.17555418069769171
+            ],
+            "target": [
+              0,
+              0.0430000014603138,
+              -0.00000261492095887661
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 6,
+            "position": [
+              -0.12822938893829938,
+              0.09429175703563356,
+              -0.179523759434578
+            ],
+            "target": [
+              0,
+              0.0430000014603138,
+              -0.00000261492095887661
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-11T13:34:11.885Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-11T13:34:11.885Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "auto",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-11T13:34:15.086Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-11T13:34:15.087Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "auto",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-11T13:34:18.203Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-11T13:34:18.204Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "auto",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-11T13:34:21.329Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-11T13:34:21.329Z",
+      "result": {
+        "passed": true,
+        "profile": "panel-xiaomi-switch2",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 6,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 6,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-11T13:34:22.129Z"
+    }
+  ],
+  "finished": "2026-11-11T13:34:22.130Z"
+}

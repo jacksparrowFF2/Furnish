@@ -38,8 +38,23 @@ const panelVariants=Object.freeze(Object.fromEntries([
  ...[['blank','白板'],['phone','一位电话'],['net5','一位电脑'],['net6','一位电脑（六类）'],['tv','一位电视'],['tv-push','插入式一分支电视'],['phone-net5','一位电话＋电脑'],['phone-net6','一位电话＋电脑（六类）'],['net5-double','二位电脑'],['net6-double','二位电脑（六类）'],['tv-net5','一位电脑＋电视'],['tv-net6','一位电脑＋电视（六类）']].map(([id,label])=>[id,{label,group:'信息类'}]),
  ...[['cable','出线孔'],['doorbell','一位带荧光门铃开关'],['bell','呼叫开关'],['nightlight','人体感应地脚灯']].map(([id,label])=>[id,{label,group:'电子类'}])
 ]));
+// Additional 86 variants share the legacy type; old G12 keys/defaults stay unchanged.
+const xiaomiPanelVariants=Object.freeze(Object.fromEntries(['2','2pro'].flatMap(series=>[1,2,3].flatMap(gangs=>['white','grey'].map(color=>{
+ const pro=series==='2pro',name='小米智能开关'+(pro?'2 Pro':'2'),label=name+' · '+['','单开','双开','三开'][gangs]+' · '+(color==='white'?'白色':'深空灰');
+ return ['xiaomi-'+series+'-'+gangs+'-'+color,{label,group:name,series,gangs,color,depth:pro?5:7.9,totalDepth:pro?34.8:(gangs===3?34.7:30.7),brand:'小米/Xiaomi',model:name,sourceUrl:'https://item.jd.com/'+(pro?'100434281318':'100313419465')+'.html'}];
+})))));
+const panelOptions=Object.freeze({...panelVariants,...xiaomiPanelVariants});
+function panelSpec(f){const key=value(f,'panelVariant');return panelOptions[key];}
+function panelSpatialKey(f){const key=value(f,'panelVariant');return panelSpec(f).series?key.replace(/-(white|grey)$/,''):key;}
+function editPanelVariant(f,key){
+ key=validateField(f,'panelVariant',key);const old=panelSpec(f),spec=panelOptions[key],stock=old.depth||10;
+ if(!old.series&&!spec.series)return {...f,panelVariant:key};
+ const metadata=spec.series?{brand:spec.brand,model:spec.model,sourceUrl:spec.sourceUrl}:{...types.panel_bull_g12.identity};
+ // Preserve custom names, width/height, elevation and explicitly customized depths.
+ return {...f,panelVariant:key,...metadata,d:Math.abs(f.d-stock)<.001?(spec.depth||10):f.d,color:spec.series?(spec.color==='white'?'#f5f5f3':'#535558'):'#f5f5f2'};
+}
 const fields={
- panelVariant:{values:Object.keys(panelVariants),message:'请选择有效的86面板种类'},
+ panelVariant:{values:Object.keys(panelOptions),message:'请选择有效的86面板种类'},
  inventoryArray:{message:'物品阵列参数无效'},
  paperArray:{message:'纸品阵列参数无效'},
  pose3D:{message:'三维姿态须为当前物品支持的单位四元数'},
@@ -849,6 +864,6 @@ const ceiling={min:.1,epsilon:1e-6,max:20000,maxVertices:128,maxItems:200,maxReg
  // 39 / 22.5 / 13.6 / 18.6 are user-image labels. Remaining values are editable design assumptions.
  upChannel:{mountDetail:false,mountProjection:4,mountHeight:7,mountBridge:3.5,mountFootHeight:4.5,mirrorU:false,mirrorD:false,rotation:0,width:39,bodyWidth:22.5,opening:13.6,height:18.6,wall:1.5,rail:2,wingThickness:1.5,u:300,d:238,diffuserEnabled:true,diffuserThickness:1,diffuserInset:.5,lightEnabled:true,lightWidth:10,lightThickness:2,lightOffsetU:0,lightOffsetD:0,lightAngle:-90}};
 const cabinetEntry=Object.freeze({shoeShelfDefault:true,lowerDoorDropDefault:0,lowerDoorDropMin:0});
-const api={panelVariants,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
+const api={panelVariants,panelOptions,xiaomiPanelVariants,panelSpec,panelSpatialKey,editPanelVariant,cabinetBuilder,inventoryArrayDefaults,inventoryArrayConfig,inventoryArraySpacing,arrayQuantityEdit,clearPaperArray,paperArrayConfig,paperArrayLayout,editPaperArray,cabinetDetail,cabinetTiers,cabinetDrawerBox,cabinetBackPanel,cabinetEntry,bottomMode,bottomHeight,editBottomHeight,elevationOriginal,elevationSource,elevationDelta,elevatedRange,elevatedParts,elevatedZones,circulatorLayout,catalogMinimum,artGlass,artGlassPatterns,gardenLayout,windowLining,stoolStack,cabinetDoorLimits,kind,kinds,supportsAction,upgradeIdentity,wardrobeHanging,coveringLayout,coverSpecs,pocketLayout,cabinetSideClosure,cabinetTopClosure,cabinetConstruction,slidingGlass,slidingResizeFrame,resizeSliding,slidingLayout,slidingTracks,slidingCorner,downlightSpec,editDownlight,manifoldLayout,editManifold,resizeManifold,footprintMinimum,dimensions,assemblyBounds,pegboardAssembly,planBodyOutline,planOutline,floorStanding,teaBarDoors,teaBarOpeningZones,sinkBodyDepth,vesselSink,ceiling,types,fields,definition,supports,family,value,height,cabinetSpec,cabinetBase,validateField,validate,modelError,initial,migrate,pipeBoxSignature,pipeBoxSides,pipeBoxPanels,hobCutout,editHobCutout,foldingTableGeometry,foldingTableOutline,editFoldingTablePose,dishwasherInstallation,sinkInstallation,showerInstallation,hoodInstallation,editHoodGeometry,resizeHoodGeometry,furnitureDatum,floorHost,floorBase,validateDatum,vertical,replacementResizeSource,replacement,serviceCut};
 if(typeof module==='object'&&module.exports)module.exports=api;else root.FurnishProducts=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
