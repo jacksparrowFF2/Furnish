@@ -11,7 +11,8 @@
     "mcp:connect": "node scripts/register-codex-mcp.cjs --automatic --start-desktop",
     "test:codex-blender": "node tests/test-codex-blender-plugin.cjs",
     "verify:codex-blender": "node scripts/verify/verify-codex-blender.cjs",
-    "verify:codex-blender:gui": "node scripts/verify/verify-codex-blender.cjs --gui"
+    "verify:codex-blender:gui": "node scripts/verify/verify-codex-blender.cjs --gui",
+    "verify:codex-blender:registration": "node scripts/verify/verify-codex-blender-registration.cjs"
   },
   "devDependencies": {
     "electron": "45.0.0",

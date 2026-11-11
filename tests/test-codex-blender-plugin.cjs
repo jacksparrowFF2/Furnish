@@ -29,6 +29,11 @@ async function main(){
  const parent=path.resolve(__dirname,'../output/codex-blender-unit');fs.mkdirSync(parent,{recursive:true});const bindingData=fs.mkdtempSync(path.join(parent,'binding-'));
  const bound=await F.execute({action:'bind',root:path.resolve(__dirname,'..')},{data:bindingData});assert.equal(bound.bound,true);
  assert.equal((await F.execute({action:'doctor'},{data:bindingData})).root,bound.root);
+ // Launch the declaration itself, including its cwd, rather than substituting a known script path.
+ const declaration=mcp.mcpServers.furnish_blender;
+ const normalized={...declaration,cwd:declaration.cwd?path.resolve(plugin,declaration.cwd):undefined,env:{...declaration.env,FURNISH_BLENDER_DATA:bindingData}};
+ const names=await require('../scripts/register-codex-mcp.cjs').probe({transport:normalized});
+ assert.deepEqual(names.sort(),S.tools.map(t=>t.name).sort());
  await assert.rejects(()=>F.execute({action:'verify',profile:'all'}),/one registered/);
  await assert.rejects(()=>F.execute({action:'status',id:'../outside'}),/Invalid/);
  const upstream=JSON.parse(fs.readFileSync(path.join(plugin,'vendor/dsh/UPSTREAM.json')));assert(upstream.commit.length===40);

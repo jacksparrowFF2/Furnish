@@ -34,6 +34,14 @@
 
 ## 未执行与边界
 
+### 重启后启动清单修正（1.0.1）
+
+用户重启后确认当前聊天缺少新工具。Codex安装记录为enabled，但`mcp get`返回的args仍包含字面量`${CLAUDE_PLUGIN_ROOT}`、cwd为空。旧测试绕过清单直接启动绝对路径，不能证明Codex能加载插件。
+
+现改为相对脚本加`cwd: "."`，安装1.0.1后，Codex实际解析的cwd为`C:/Users/SPH/.codex/plugins/cache/furnish-local/furnish-blender/1.0.1/.`。新验证脚本使用这一真实transport完成MCP初始化及7工具发现，[回执](registration-report.json)。回归测试也直接执行清单声明，旧占位符写法会失败。
+
+同轮只读检查Furnish的132项配置清单、实际Blender5.2.3后台版本脚本通过；当前新Gateway没有GUI实例，doctor为addon-unreachable，不能把此前隔离GUI测试说成当前正式窗口已连接。更新清单后当前聊天工具不会自动热加载，需重新建立客户端连接；未修改用户工程。
+
 没有对全部132个Furnish配置、全部228个上游算子、所有Blender版本或virtual-gui进行验证；未运行`node scripts/check.cjs`全量检查。应用生产代码和加载机制未修改，本轮没有额外操作正式桌面方案保存／恢复。side-table参考照片外观阶段为not-executed，技术通过不改变这一结论。
 
 DSH TUI原生选中芯片、宿主卡片和依赖自动安装未移植。部分算子的外部依赖未在本轮安装／验证；Python有本机用户权限，不构成沙箱。既有BlenderMCP和用户工程未迁移或停用。

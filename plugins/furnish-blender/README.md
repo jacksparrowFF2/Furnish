@@ -16,6 +16,8 @@ codex mcp add furnish_blender -- node C:/path/to/Furnish/plugins/furnish-blender
 
 插件工具：`blender_session`、`blender_op`、`blender_py`、`blender_see`、`blender_run`、`blender_inspect`、`furnish_model`。参数采用 MCP 工具清单；不是 DSH 工具参数的逐字兼容接口。插件中含配套建模 skill。
 
+1.0.1修正了Codex的启动目录：`.mcp.json`使用`cwd: "."`及相对脚本`mcp/server.cjs`，由Codex解析成安装目录。兼容清单的args不会展开`${CLAUDE_PLUGIN_ROOT}`，不能使用该占位符。已安装1.0.0的机器升级后需重新加载客户端连接。
+
 ## 首次检查
 
 1. `furnish_model(action="bind",root="C:/path/to/Furnish")`：在插件数据目录记住工作目录；再用 `action="doctor"` 核对共用 Blender 发现规则。绑定应在首次启动 Gateway 前完成。
@@ -52,6 +54,7 @@ Python拥有本机用户权限，不构成沙箱。浏览器来源拒绝和本�
 
 ```powershell
 node tests/test-codex-blender-plugin.cjs
+node scripts/verify/verify-codex-blender-registration.cjs
 node scripts/verify/verify-codex-blender.cjs
 ```
 

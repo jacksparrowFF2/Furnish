@@ -13,6 +13,8 @@ codex plugin add furnish-blender@furnish-local
 
 市场文件为 `.agents/plugins/marketplace.json`，插件使用官方支持的 `.codex-plugin/plugin.json` 与 `.mcp.json` 兼容格式，参见 [OpenAI 插件打包文档](https://developers.openai.com/plugins/build/plugins)。安装不代表当前聊天已热加载新工具；重启客户端或在新聊天验证工具发现。
 
+1.0.1修正启动参数：清单使用`cwd: "."`及`args: ["mcp/server.cjs"]`；Codex将相对cwd解析到安装副本，兼容清单args不展开`${CLAUDE_PLUGIN_ROOT}`。原先按绝对脚本路径进行的测试没有覆盖这一层。新增`verify-codex-blender-registration.cjs`读取`codex mcp get furnish_blender --json`，使用其中实际命令／参数／工作目录完成工具发现，禁止未展开的占位符。实现依据为[Codex官方配置解析源码](https://github.com/openai/codex/blob/main/codex-rs/codex-mcp/src/plugin_config.rs)。
+
 首次用 `furnish_model action=bind root=<Furnish工作目录>` 在插件数据目录绑定仓库，再用 `action=doctor` 查路径及清单。插件缓存中的相对父目录不能作为 Furnish 仓库。显式单次 root 优先于绑定；FURNISH_ROOT／FURNISH_BLENDER 仍可用于固定配置。
 
 ## 工具与职责
@@ -47,6 +49,7 @@ HTTP只接受带本机随机密钥的回环请求并拒绝浏览器Origin；扩�
 
 ```powershell
 npm run test:codex-blender
+npm run verify:codex-blender:registration
 npm run verify:codex-blender
 npm run verify:codex-blender:gui
 ```
