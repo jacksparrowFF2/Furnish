@@ -3,7 +3,7 @@ async (page,V)=>{
  if(V.desktop)return run(page,'desktop');
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:950},offline:mode==='file'}),p=await context.newPage();
-  try{await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');results.push(await run(p,mode));}finally{await context.close();}
+  try{await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);results.push(await run(p,mode));}finally{await context.close();}
  }
  return results;
  async function run(p,mode){

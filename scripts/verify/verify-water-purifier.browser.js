@@ -6,7 +6,7 @@ async (page,verification)=>{
   const base=mode==='file'?verification.fileBase:verification.baseURL,check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
   await p.goto(base+'output/water-purifier/preview.html');await p.waitForFunction(()=>window.previewReady);
   for(const label of ['正面','斜视']){await p.getByRole('button',{name:label,exact:true}).click();await p.screenshot({path:root+'output/water-purifier/'+mode+'-'+(label==='正面'?'front':'angle')+'.png'});}
-  await p.goto(base+'index.html');await p.locator('#lib').waitFor();await p.locator('#lib').getByText('米家净水器 2 · 1200G',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
+  await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();await p.locator('#lib').getByText('米家净水器 2 · 1200G',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
   check(await p.evaluate(id=>{const f=getF(id);return f.w===163&&f.d===445&&f.h===379&&f.mountHeight===0&&f.model==='净水器 2 1200G';},id),'creation');
   for(const [selector,value,key] of [['#fMountHeight','750','mountHeight'],['#fH','400','h']]){
    await p.locator(selector).fill(value);await p.locator(selector).press('Tab');check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');

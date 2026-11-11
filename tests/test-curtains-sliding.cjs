@@ -51,7 +51,9 @@ const configured=P.effectivePlan(base,settings);assert.equal(configured.slides[0
 const converted=D.build(D.fromPlan(configured,'custom_sliding_options_copy').draft);
 assert.equal(converted.slides[0].floorTrack,false);assert.equal(converted.wins[0].panels,3);assert.equal(converted.wins[0].stackSide,'right');
 assert.equal(design.replaceFurniture(telescopic,{...telescopic,type:'tv'}).floorTrack,undefined);
-assert.equal(design.replaceFurniture(telescopic,{...telescopic,type:'tv'}).mountHeight,undefined);
+const replacedTV=design.replaceFurniture(telescopic,{...telescopic,type:'tv'}),tvDefault={...telescopic,type:'tv'};delete tvDefault.mountHeight;
+near(design.products().bottomHeight(replacedTV),design.products().bottomHeight(tvDefault));
+assert.equal(replacedTV.mountHeight,design.products().bottomHeight(replacedTV),'replacement records the target product bottom instead of inheriting the window sill');
 assert.equal(design.replaceFurniture(telescopic,{...telescopic}).mountHeight,900);
 assert.throws(()=>P.validateWork({...settings,furniture:[{...telescopic,floorTrack:'false'}]}));
 assert.throws(()=>P.validateWork({...settings,open:{w:{0:{sill:.9,head:2.4,panels:2}}}}));

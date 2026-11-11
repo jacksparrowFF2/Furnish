@@ -1,3 +1,3 @@
 'use strict';
-process.argv.push('--board-height-only');
-require('./test-cabinet-back-components-ui.cjs');
+process.argv.push('--component-edit-only');
+require('./test-cabinet-ui.cjs');

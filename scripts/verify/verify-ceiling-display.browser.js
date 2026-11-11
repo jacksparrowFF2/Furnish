@@ -3,7 +3,7 @@ async(page,V)=>{
  for(const mode of ['http','file']){
   const ctx=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await ctx.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();await p.locator('#pr-file').setInputFiles(V.root+'/tests/fixtures/ceilings.furnish.json');await p.locator('#pr-restore-confirm').click();await p.locator('#dlg').waitFor({state:'hidden'});
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();await p.locator('#pr-file').setInputFiles(V.root+'/tests/fixtures/ceilings.furnish.json');await p.locator('#pr-restore-confirm').click();await p.locator('#dlg').waitFor({state:'hidden'});
    await p.evaluate(()=>{mutate(()=>{state.ceilings=FurnishCeiling.setRegion(state,{id:'view-test',name:'透视吊顶',polygon:[[0,0],[3800,0],[3800,2800],[0,2800]],style:'aluminum',height:2400,thickness:8,aluminum:FurnishCeiling.aluminumDefaults(),sections:[],center:true}).ceilings;});});
    await p.evaluate(()=>mutate(()=>{state.ceilings=FurnishCeiling.setRegion(state,{id:'lit-view-test',name:'灯带柔光板隐藏回归',polygon:[[0,0],[3800,0],[3800,2800],[0,2800]],style:'ring',height:2400,thickness:12,sections:FurnishCeiling.sectionPreset('up'),center:false}).ceilings;}));
    const baseline=await p.evaluate(()=>JSON.stringify(state)),history=await p.evaluate(()=>[undoStack.length,redoStack.length]);

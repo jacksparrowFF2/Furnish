@@ -9,7 +9,7 @@ module.exports=async(p,V)=>{
   const pair=[structuredClone(host),structuredClone(device)];pair[0].id='carcass-ui';pair[1].id='carcass-washer';if(pair[1].laundryHostId)pair[1].laundryHostId=pair[0].id;
   mutate(()=>state.furniture=structuredClone(pair));window.carcassSeed=structuredClone(pair);window.carcassDeviceBuilds=0;
   window.carcassFrames=new WeakMap();const original=FurnishCabinetPreview.create;FurnishCabinetPreview.create=options=>{const Renderer=options.THREE.WebGLRenderer;window.carcassDraft=structuredClone(options.f);const preview=original({...options,THREE:{...options.THREE,WebGLRenderer:class extends Renderer{constructor(...args){super(...args);const render=this.render.bind(this);this.render=(scene,camera)=>{carcassFrames.set(this.domElement,{scene,camera});render(scene,camera);};}}},buildDevice:()=>{window.carcassDeviceBuilds++;throw Error('Editor must never build an appliance');}}),update=preview.update;preview.update=(value,...args)=>{window.carcassDraft=structuredClone(value);return update(value,...args);};return preview;};
-  FurnishCabinetEditor.open(pair[0].id);return pair;
+  FurnishCabinetBuilderUI.open(pair[0].id);return pair;
  },fixture);
  const root='#cab-assembly',canvas=p.locator(root+' canvas').first();await canvas.waitFor();
  ok(await p.locator('[data-assembly-bay]').count()===0&&await p.locator('[data-assembly-component="deviceBay"]').count()===0,'laundry editor has no special equipment-space card');
@@ -20,7 +20,7 @@ module.exports=async(p,V)=>{
  await p.locator('[data-assembly-view]').click();await V.screenshot('ordinary-bottomless-oblique');await p.locator('[data-assembly-view]').click();
  ok(await p.evaluate(()=>window.carcassDeviceBuilds)===0,'front and oblique production previews never construct the washer');
  await p.getByRole('button',{name:'取消',exact:true}).click();assert.deepEqual(await p.evaluate(()=>structuredClone(state.furniture)),seed);ok(true,'cancel leaves original cabinet and actual washer intact');
- await p.evaluate(()=>FurnishCabinetEditor.open('carcass-ui'));await canvas.waitFor();
+ await p.evaluate(()=>FurnishCabinetBuilderUI.open('carcass-ui'));await canvas.waitFor();
  const host=p.locator('[data-assembly-preview]'),card=p.locator('[data-assembly-component="box"]').first(),r=await canvas.boundingBox(),v=await p.evaluate(()=>{const f=FurnishCabinetAssembly.editableKitchen(getF('carcass-ui')),b=FurnishCabinetAssembly.bounds(f),row=FurnishCabinetAssembly.placementRows(f).find(r=>r.id==='base:1');return {w:b.w,h:b.h,cx:(b.left+b.right)/2,x:row.x+row.furniture.w/2+80,y:300};}),height=Math.max(v.h,v.w/(r.width/r.height))*1.25,point={x:r.x+r.width/2+(v.x-v.cx)/height*r.height,y:r.y+r.height/2-(v.y-v.h/2)/height*r.height},c=await card.boundingBox();
  await p.mouse.move(c.x+c.width/2,c.y+c.height/2);await p.mouse.down();await p.mouse.move(c.x+c.width/2+10,c.y+c.height/2+10,{steps:3});await p.mouse.move(point.x,point.y,{steps:12});await p.mouse.move(point.x+1,point.y,{steps:2});
  await p.waitForFunction(()=>document.querySelector('[data-assembly-preview]')?.dataset.builderDropPreview);ok(await p.locator('[data-builder-drop-status]').getAttribute('data-valid')==='true','real mouse drag beside the former equipment span shows a valid production ghost');await V.screenshot('adjacent-cabinet-hover');const ghost=JSON.parse(await host.getAttribute('data-builder-drop-preview'));await p.mouse.up();

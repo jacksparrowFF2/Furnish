@@ -3,7 +3,7 @@ async (page,verification)=>{
  const check=(v,m)=>{if(!v)throw Error(m);},read=()=>p.evaluate(()=>structuredClone(state.furniture));
  p.on('pageerror',e=>errors.push(e.message));
  try{
-  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{state.furniture=[F('block','旋转验收 A',4000,4000,800,500,20,'#bb9977'),F('block','旋转验收 B',4900,4300,500,700,70,'#ccbb99')];state.furniture[1].flip=true;ui.layers.clear=false;renderAll();selectIds(state.furniture.map(f=>f.id));groupSel();closeDrawers();zoomToBox([2800,2800,6000,5600],140);});
   const original=await read();
   const rotate=async(degrees,free=false,cancel=false)=>{

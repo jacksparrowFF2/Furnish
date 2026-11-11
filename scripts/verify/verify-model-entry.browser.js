@@ -7,14 +7,14 @@ async (page,verification)=>{
   try{
    for(const [name,url] of [['fridge','output/fridges/preview.html'],['heater','output/waterheater-flat-preview.html'],['laundry','output/laundry-stack/preview.html'],['telescopic','output/telescopic/preview.html'],['sideboard','output/sideboard/preview.html']]){
     await p.goto(base+url);await p.waitForFunction(()=>window.previewReady===true).catch(e=>{throw Error(name+' preview failed: '+errors.join('; ')+' '+e.message);});
-    check(name==='sideboard'?await p.locator('canvas').count()>0:await p.locator('canvas').count()===1,name+' canvas');check(await p.evaluate(name=>name==='sideboard'?!!globalThis.FurnishCabinetModel:!!(globalThis.FurnishApplianceModel||globalThis.FurnishSlidingOpeningModel)&&!!globalThis.FurnishModelPrimitives,name),name+' shared modules');
+    check(name==='sideboard'?await p.locator('canvas').count()>0:await p.locator('canvas').count()===1,name+' canvas');check(await p.evaluate(name=>name==='sideboard'?!!globalThis.FurnishCabinetModel:!!(globalThis.FurnishFridgeModel||globalThis.FurnishApplianceModel||globalThis.FurnishSlidingOpeningModel)&&!!globalThis.FurnishModelPrimitives,name),name+' shared modules');
     if(name==='fridge')await p.locator('#front').click();
     await p.screenshot({path:verification.output('playwright/model-entry/'+mode+'-'+name+'-front.png')});
     if(name==='fridge'){await p.locator('#angle').click();await p.screenshot({path:verification.output('playwright/model-entry/'+mode+'-fridge-angle.png')});}
     if(name==='heater'||name==='sideboard')check(await p.locator('#error').innerText()==='','heater render error');
     if(name==='telescopic'){await p.locator('#door').click();await p.locator('#window').click();await p.locator('#track').selectOption('true');await p.locator('#side').click();await p.locator('#front').click();await p.screenshot({path:verification.output('playwright/model-entry/'+mode+'-telescopic-controls.png')});}
    }
-   await p.goto(base+'index.html');await p.locator('#lib .item').first().waitFor();
+   await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();
    await p.evaluate(()=>mutate(()=>{
     state.furniture=[{id:'shared-fridge',name:'共用冰箱',type:'fridge_french_drawer',cx:2200,cy:2500,w:833,d:595,h:1910,rot:90,flip:true,color:'#f1f0ed'},{id:'shared-heater',name:'共用热水器',type:'waterheater_flat',cx:3500,cy:2500,w:700,d:320,h:565,rot:180,flip:true,color:'#fafafa'},{id:'shared-washer',name:'共用洗衣机',type:'washer',cx:4500,cy:4500,w:600,d:600,h:850,rot:0,color:'#e6ebee'},{id:'shared-dryer',name:'共用烘干机',type:'dryer',cx:4500,cy:4500,w:600,d:600,h:900,mountHeight:870,rot:0,color:'#e6ebee'},{id:'shared-window',name:'共用三联动窗',type:'tripleslidingwindow',cx:3000,cy:5000,w:1800,d:90,h:1500,mountHeight:900,rot:90,flip:true,color:'#41474b'}];
    }));

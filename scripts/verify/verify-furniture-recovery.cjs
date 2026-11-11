@@ -17,7 +17,7 @@ const K=require('../../src/core/kitchen-core.js'),W=require('../../src/core/work
  try{for(const [mode,url]of [['http',(verification.baseURL+'index.html')],['file',(verification.fileBase+'index.html')]]){
   const context=await browser.newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   await context.addInitScript(seed=>{if(!localStorage.getItem('huxing-design-v2'))localStorage.setItem('huxing-design-v2',JSON.stringify(seed));localStorage.setItem('huxing-panes','{"lib":true,"panel":true}');},seed);
-  await p.emulateMedia({reducedMotion:'reduce'});await p.goto(url);await p.locator('#lib .item').first().waitFor();
+  await p.emulateMedia({reducedMotion:'reduce'});await p.goto(url);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();
   const snapshot=()=>p.evaluate(()=>structuredClone(state.furniture));
   assert.deepEqual(await snapshot(),initial,mode+' startup retains all records');assert(await p.locator('#gWalls .wall').count()>0);assert(await p.locator('#gLabels text').count()>0);assert.equal(await p.locator('#gFurn [data-model-error]').count(),2);assert(await p.locator('#modelErrors').isVisible());
   await p.screenshot({path:path.join(out,mode+'-complete.png')});
@@ -26,7 +26,7 @@ const K=require('../../src/core/kitchen-core.js'),W=require('../../src/core/work
   await p.locator('#modelErrors').click();assert(await p.locator('#repair-kitchen-envelope').isVisible());
   await p.screenshot({path:path.join(out,mode+'-repair.png'),animations:'disabled'});
   const backupEvent=p.waitForEvent('download');await p.locator('#broken-furniture-backup').click();const raw=await backupEvent;await raw.saveAs(path.join(out,mode+'-raw-backup.json'));assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,mode+'-raw-backup.json'),'utf8')).furniture,initial);
-  await p.locator('#repair-kitchen-envelope').click();assert.equal(await p.locator('#gFurn [data-model-error]').count(),1);const repaired=await snapshot();K.validate(repaired[0]);assert.deepEqual([repaired[0].w,repaired[0].d],[2200,650]);assert.equal(repaired[0].brand,'保留品牌');
+  await p.locator('#repair-kitchen-envelope').click();const repair=await p.evaluate(()=>({errors:state.furniture.map(f=>[f.id,FurnishProducts.modelError(f),furnitureRenderErrors.get(f.id)]),message:document.querySelector('#model-repair-error')?.textContent,f:getF('broken-kitchen')}));assert.equal(await p.locator('#gFurn [data-model-error]').count(),1,JSON.stringify(repair));const repaired=await snapshot();K.validate(repaired[0]);assert.deepEqual([repaired[0].w,repaired[0].d],[2200,650]);assert.equal(repaired[0].brand,'保留品牌');
   await p.locator('#undo').click();assert.deepEqual(await snapshot(),initial);assert.equal(await p.locator('#gFurn [data-model-error]').count(),2);
   await p.locator('#redo').click();assert.deepEqual(await snapshot(),repaired);await p.reload();assert.deepEqual(await snapshot(),repaired);assert(await p.locator('#gWalls .wall').count()>0);
   assert.deepEqual(await p.evaluate(()=>store.designs[0].work.furniture),initial,'named scheme remains untouched');

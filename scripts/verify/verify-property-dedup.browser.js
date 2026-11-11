@@ -4,9 +4,9 @@ async(page,V)=>{
   const ctx=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await ctx.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{mutate(()=>{state.furniture=[F('rangehood_fotile_jcd10ta','烟机去重验收',2500,2500,900,350,0,'#111214')];state.furniture[0].id='dedup-hood';});selectIds(['dedup-hood']);});
-   check(await p.locator('#panel #fW,#panel #fD').count()===0,'hood has no duplicate width/depth');
+   check(await p.locator('#panel #fW,#panel #fD').count()===2,'hood exposes one width/depth pair in the property size group');
    check(await p.locator('#panel #hood-height,#panel #hood-bodyHeight,#panel #fX,#panel #fY,#panel #fR').count()===5,'unique geometry and placement controls retained');
    check((await p.locator('#panel [data-furniture-dimensions]>small').first().innerText())==='包络高','sidebar shows vertical dimensions only');
    await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#fab-width').fill('990');await p.locator('#fab-depth').fill('385');
@@ -21,8 +21,8 @@ async(page,V)=>{
    await p.screenshot({path:V.output('playwright/property-dedup/'+mode+'-room.png')});
    await p.locator('#catalog-filters').evaluate(el=>el.open=true);await p.locator('#catalog-use').selectOption('laundry');await p.locator('#libSearch').fill('基础洗衣机柜');await p.locator('#lib .item').click();
    check(await p.locator('#panel [data-laundry-edit],#panel #laundry-switch-sides,#panel #laundry-doors-open,#panel #laundry-doors-close').count()===0,'single laundry cabinet has no duplicate designer controls');
-   await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#cab-preview canvas').waitFor();
-   check(await p.locator('[data-laundry-side]').count()===1,'floating size opens laundry design including side setting');await p.getByRole('button',{name:'取消',exact:true}).click();
+   await p.locator('#fab [data-fab-edit="size"]').click();await p.locator('#cab-builder canvas,#cab-assembly canvas').waitFor();
+   check(await p.locator('[data-native-bottom],[data-builder-bottom]').count()===1,'floating size opens current cabinet design with one elevation control');await p.getByRole('button',{name:'取消',exact:true}).click();
    await p.evaluate(()=>{mutate(()=>state.measures.push({a:{x:2000,y:2000},b:{x:3000,y:2000}}));select({kind:'measure',id:state.measures.length-1});});
    check(await p.locator('#panel [data-act="del"]').count()===0&&await p.locator('#fab [data-act="del"]').count()===1,'measurement delete appears once');
    const measures=await p.evaluate(()=>state.measures.length);await p.locator('#fab [data-act="del"]').click();check(await p.evaluate(n=>state.measures.length===n-1,measures),'measurement floating delete works');await p.evaluate(()=>undo());

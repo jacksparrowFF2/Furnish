@@ -16,6 +16,14 @@ for(const invalid of [invalidCabinet,invalidKitchen]){
 }
 const plan={walls:[],wins:[],doors:[],slides:[],rooms:[{id:'room',name:'房间',poly:[[0,0],[5000,0],[5000,5000],[0,5000]]}],bounds:{x:0,y:0,w:5000,h:5000},markers:[]};
 const normal={...base,id:'normal',type:'custom',w:800,d:400};
+// Recovery metadata must read damaged records without interpreting them as
+// usable cabinet geometry or relaxing the strict project-import boundary.
+for(const columns of ['damaged',null,{},[null]]){
+ const invalid={...invalidCabinet,cabinet:{version:1,columns}},saved=structuredClone(invalid);
+ assert.doesNotThrow(()=>P.formatVersion([{furniture:[invalid,broken]}]));
+ const signature=require('../src/core/cabinet-core.js').spatialConfig(invalid);assert.deepEqual(signature.invalid,invalid.cabinet);
+ assert(R.modelError(invalid));assert.throws(()=>P.validateWork({furniture:[invalid]}));assert.deepEqual(invalid,saved);
+}
 const issues=P.spaceCheck(plan,[broken,device,normal],{scanPassages:false});
 assert(issues.some(v=>v.kind==='model'&&v.id==='k'&&v.pending));assert.equal(JSON.stringify([broken,device]),snapshot);
 for(const shape of ['straight','L'])for(const rot of [0,90,37])for(const flip of [false,true]){

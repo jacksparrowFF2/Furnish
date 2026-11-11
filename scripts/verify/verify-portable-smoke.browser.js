@@ -4,7 +4,7 @@ async (page,verification)=>{
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],external=[];
   p.on('pageerror',e=>errors.push(e.message));p.on('request',r=>{if(/^https?:/.test(r.url())&&new URL(r.url()).origin!==new URL(verification.baseURL).origin)external.push(r.url());});
   try{
-   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();
    if(await p.locator('#gWalls .wall').count()===0)throw Error(mode+': no production walls');
    const original=await p.evaluate(()=>JSON.stringify(state.furniture));
    await p.evaluate(()=>mutate(()=>state.furniture.push({id:'portable-smoke',type:'bed',name:'可迁移验收',cx:3000,cy:3000,w:1800,d:2000,rot:0,color:'#ddd'})));

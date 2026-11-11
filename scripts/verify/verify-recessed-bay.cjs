@@ -33,7 +33,7 @@ fs.writeFileSync(fixture,JSON.stringify(P.pack({planId:draft.id,current:{furnitu
   await page.locator('#bay-depth').fill('500');await page.locator('#bay-height').fill('600');await page.locator('#bay-apply').click();
   const changed=await snapshot();assert.equal(changed.rooms.find(r=>r.bayId).height,.6);assert.ok(Math.abs(before.net-changed.net-.9)<1e-8);
   await page.locator('#bay-remove').click();assert.deepEqual((await snapshot()).walls,before.walls);assert.equal((await snapshot()).rooms.some(r=>r.bayId),false);
-  await page.locator('#tracePlan').click();await page.locator('[data-trace-mode="opening"]').click();await page.locator('#trace-canvas [data-o="win"]').first().click({force:true});
+  await verification.clickCanvasTool(page,'#tracePlan');await page.locator('[data-trace-mode="opening"]').click();await page.locator('#trace-canvas [data-o="win"]').first().click({force:true});
   await page.locator('#op-height').fill('1753');assert.equal(await page.locator('#op-head').inputValue(),'2353');
   await page.locator('#op-head').fill('2400');assert.equal(await page.locator('#op-height').inputValue(),'1800');
   await page.locator('#op-type').selectOption('recessed');await page.locator('#op-depth').fill('600');await page.locator('#op-apply').click();await page.locator('#trace-finish').click();

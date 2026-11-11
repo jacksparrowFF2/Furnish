@@ -3,11 +3,15 @@ async(page,V)=>{
  for(const mode of ['http','file']){
   const ctx=await page.context().browser().newContext({viewport:{width:1450,height:1000},offline:mode==='file'}),p=await ctx.newPage();
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{const room=PLAN.rooms.find(r=>r.counted!==false),b=bbox(room.poly),x=(b[0]+b[2])/2,y=(b[1]+b[3])/2,rect=(x,y,w,h)=>[[x,y],[x+w,y],[x+w,y+h],[x,y+h]];mutate(()=>{delete state.ceilings;for(const [id,poly,height]of [['merge_a',rect(x-600,y-600,600,600),2400],['merge_b',rect(x-600,y,1000,200),2480],['merge_c',rect(x+200,y+200,200,600),2440]])state.ceilings=FurnishCeiling.setRegion(state,{id,name:{merge_a:'过道平顶',merge_b:'连接平顶',merge_c:'客厅平顶'}[id],polygon:poly,style:'flat',height,thickness:12,center:true,sections:[]}).ceilings;});});
    const before=await p.evaluate(()=>JSON.stringify(state.ceilings)),merge=p.locator('[data-design-action="merge"]'),area=id=>p.locator('[data-design-region="'+id+'"]');
-   const open=async()=>{await p.locator('#ceiling-open').click();await p.locator('[data-design-stage="area"]').click();};
-   const add=async id=>{await area(id).click({modifiers:['Control'],force:true});},subtract=async id=>{await area(id).click({modifiers:['Shift'],force:true});};
+   const open=async()=>{await V.clickCanvasTool(p,'#ceiling-open');await p.locator('[data-design-stage="area"]').click();};
+   const add=async id=>{await area(id).click({modifiers:['Control'],force:true});},subtract=async id=>{
+    // These narrow adjoining fills overlap the selected region's editing grips.
+    // Target the fill explicitly; Shift dragging a grip belongs to free editing.
+    await area(id).evaluate(el=>{const b=el.getBoundingClientRect();el.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,button:0,shiftKey:true,clientX:b.x+b.width/2,clientY:b.y+b.height/2}));});
+   };
    const count=async n=>{if(await p.locator('[data-design-merge-selected="true"]').count()!==n)throw Error('Selected count differs from '+n);};
    await p.evaluate(()=>mutate(()=>{let next=FurnishLayers.create(state,'merge_lock','多选验收锁定层');next=FurnishLayers.assign(next,['ceiling:'+state.ceilings.items.find(c=>c.regionId==='merge_a').id],'merge_lock');Object.assign(state,FurnishLayers.update(next,'merge_lock',{locked:true}));}));
    await open();await subtract('merge_a');await count(0);await add('merge_a');await count(0);if(!(await p.locator('[data-design-error]').innerText()).includes('锁定'))throw Error('Locked region added');await p.locator('[data-design-action="cancel"]').click();

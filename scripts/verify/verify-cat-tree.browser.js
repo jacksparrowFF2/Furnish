@@ -5,7 +5,7 @@ async (page,verification)=>{
   p.on('pageerror',e=>errors.push(e.message));const base=mode==='file'?verification.fileBase:verification.baseURL,check=(v,s)=>{if(!v)throw Error(mode+': '+s);};
   await p.goto(base+'output/cat-tree/preview.html');await p.waitForFunction(()=>window.previewReady);
   for(const [id,name] of [['angle','angle'],['front','front'],['top','top']]){await p.locator('#'+id).click();await p.screenshot({path:verification.output('cat-tree/'+mode+'-'+name+'.png')});}
-  await p.goto(base+'index.html');await p.locator('#repository-loading').waitFor({state:'hidden'});await p.locator('#lib').getByText('猫爬架 · 绿叶成荫围栏款',{exact:true}).first().click();
+  await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#repository-loading').waitFor({state:'hidden'});await p.locator('#lib').getByText('猫爬架 · 绿叶成荫围栏款',{exact:true}).first().click();
   const id=await p.evaluate(()=>selIds()[0]);check(await p.evaluate(id=>{const f=getF(id);return f.type==='cat_tree'&&f.w===500&&f.d===500&&f.h===1430;},id),'catalog creation');
   await p.locator('[data-fab-edit="size"]').click();await p.locator('#fab-width').fill('480');await p.locator('#fab-depth').fill('560');await p.getByRole('button',{name:'应用尺寸',exact:true}).click();check(await p.evaluate(id=>getF(id).w===480&&getF(id).d===560,id),'footprint edit');
   await p.locator('#fab [data-act="prop"]').click();await p.locator('#fH').fill('1530');await p.locator('#fH').press('Tab');

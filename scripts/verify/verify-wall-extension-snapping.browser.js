@@ -3,16 +3,16 @@ async(page,V)=>{
  for(const mode of ['http','file']){
   const ctx=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await ctx.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{
     const rooms=structuredClone(state.rooms);
     PLAN={...PLAN,walls:[[4000,1800.375,5200,2800]],wins:[],doors:[],slides:[],rooms:[{id:'room',name:'墙边延长线验收',mat:'tile800',at:[3000,3000],poly:[[0,0],[7000,0],[7000,6000],[0,6000]]}]};applyPlanData();state=freshWork(PLAN);
-    state.rooms={...rooms,...state.rooms};const f={...FurnishCabinet.preset('tv-floor'),id:'extension-cabinet',type:'tvstand',name:'远处墙角对齐',cx:1200,cy:3200,w:1200,d:400,h:500,rot:270};
+    state.rooms={...rooms,...state.rooms};const f={...FurnishCabinet.preset('tv-floor'),id:'extension-cabinet',type:FurnishCabinet.templateType('tv-floor'),name:'远处墙角对齐',cx:1200,cy:3200,w:1200,d:400,h:500,rot:270};
     mutate(()=>state.furniture=[f]);ui.grid=10;ui.layers.furn=ui.layers.guides=ui.layers.wallSnap=true;closeDrawers();selectIds([f.id]);zoomToBox([400,1800,5800,4400],70);
    });
    // Cabinet's upper end is already close to the remote wall's lower edge.
    // Stretch from y=2600 to y=2800, keeping its lower end at y=3800.
-   const box=await p.locator('#gSel [data-handle="size"][data-axis="w"] rect').last().boundingBox();check(box,'width grip');
+   await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const box=await p.locator('#gSel [data-handle="size"][data-axis="w"] rect').last().boundingBox();const diagnostics=await p.evaluate(()=>({selection:ui.sel,furniture:state.furniture.map(f=>({id:f.id,type:f.type,locked:furnitureLocked(f)})),handles:document.querySelectorAll('#gSel [data-handle]').length,display:getComputedStyle(document.querySelector('#gSel')).display,body:document.body.className}));check(box,'width grip '+JSON.stringify(diagnostics));
    const delta=await p.evaluate(()=>{const screen=xy=>{const a=drawingPoint(xy),q=svg.createSVGPoint();q.x=a[0];q.y=a[1];return q.matrixTransform(svg.getScreenCTM());},a=screen([1200,2600]),b=screen([1200,2780]);return {x:b.x-a.x,y:b.y-a.y};}),start={x:box.x+box.width/2,y:box.y+box.height/2};
    await p.mouse.move(start.x,start.y);await p.mouse.down();await p.mouse.move(start.x+delta.x,start.y+delta.y,{steps:6});await p.waitForFunction(()=>!canvasPointerFrame);
    const hit=await p.evaluate(()=>({f:structuredClone(getF('extension-cabinet')),guides:ui.guides,kind:drag?.kind}));

@@ -3,7 +3,7 @@ async(page,V)=>{
  const check=(v,m)=>{if(!v)throw Error(m);},click=async(x,y,shift=false)=>{const q=await p.evaluate(([x,y])=>{const point=svg.createSVGPoint(),at=drawingPoint([x,y]);point.x=at[0];point.y=at[1];const q=point.matrixTransform(svg.getScreenCTM());return {x:q.x,y:q.y};},[x,y]);if(shift)await p.keyboard.down('Shift');await p.mouse.click(q.x,q.y);if(shift)await p.keyboard.up('Shift');};
  try{
   for(const file of [false,true]){
-   await p.goto(file?V.fileBase+'index.html':V.baseURL);await p.locator('#drawing-compass').waitFor();
+   await p.goto(file?V.fileBase+'index.html':V.baseURL);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();
    await p.evaluate(()=>{const r=ROOMS.find(r=>r.counted!==false),f=F('washer','刷新面积验收',r.at[0],r.at[1],600,600,0,'#dddddd');f.mountHeight=0;f.h=850;mutate(()=>state.furniture.push(f));select({kind:'room',id:r.id});});
    const saved=await p.evaluate(()=>({id:ui.sel.id,result:FurnishGeometry.regionAreas(selectedRooms(),state.furniture)}));
    await V.waitForCache(p);await p.reload();await p.locator('#drawing-compass').waitFor();

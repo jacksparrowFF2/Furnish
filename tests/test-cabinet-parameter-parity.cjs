@@ -24,7 +24,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   if(style==='standard'){next=K.setDrawerCount(next,0,2);assert.equal(next.kitchen.modules[0].drawerExtensions.length,2);}
   const k=structuredClone(f.kitchen);k.modules[0].role='door';next=K.configure(f,k);assert.equal(next.kitchen.modules[0].drawerExtensions,undefined);
  }
- const scope=vm.createContext({window:{},structuredClone,FurnishCabinet:C,FurnishKitchen:K,FurnishProducts:Products,esc:s=>String(s),furnitureLocked:()=>false});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/cabinet-editor.js'),'utf8'),scope);vm.runInContext(fs.readFileSync(require.resolve('../src/ui/kitchen-editor.js'),'utf8'),scope);
+ const scope=vm.createContext({window:{},structuredClone,FurnishCabinet:C,FurnishKitchen:K,FurnishProducts:Products,esc:s=>String(s),furnitureLocked:()=>false});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/cabinet-form-controls.js'),'utf8'),scope);vm.runInContext(fs.readFileSync(require.resolve('../src/ui/kitchen-editor.js'),'utf8'),scope);
  let f=K.configure({id:'appearance',type:'counter',w:1800,d:600,cx:0,cy:0,color:'#aabbcc'},K.defaults({type:'counter',w:1800,d:600}));f.kitchen.modules[1].role='drawer';f=K.configure(f,f.kitchen);
  for(const [index,role]of [[0,'door'],[1,'drawer']])for(const handle of ['none','bar','knob']){
   const k=structuredClone(f.kitchen);Object.assign(k.modules[index],{handle,finish:'wood',doorColor:'#224466'});const next=K.configure(f,k),m=K.cabinetLayout(next).find(m=>m.index===index),part=K.moduleFurniture(next,m);assert.equal(part.cabinet.columns[0].handle,handle);assert.equal(part.cabinet.columns[0].finish,'wood');

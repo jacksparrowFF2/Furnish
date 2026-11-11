@@ -5,7 +5,7 @@ async (page,verification)=>{
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:protocol==='file'}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((protocol==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();
+   await p.goto((protocol==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();
    await p.evaluate(()=>openHelp());await p.locator('#navigation-input').selectOption('touchpad');
    await p.screenshot({animations:'disabled',path:verification.output('playwright/touchpad/'+protocol+'-help.png')});
    await p.evaluate(()=>closeDialog());
@@ -23,8 +23,8 @@ async (page,verification)=>{
    const a=await pose();await wheel('#view3d canvas',30,20);const b=await pose();check(JSON.stringify(a.target)!==JSON.stringify(b.target),protocol+': 3D pan');check(Math.abs(a.distance-b.distance)<.001,protocol+': pan preserves distance');
    await wheel('#view3d canvas',0,-8,true);const c=await pose();check(c.distance<b.distance,protocol+': 3D pinch');
    await p.evaluate(()=>selectIds(state.furniture.map(f=>f.id)));const spaceBefore=await pose();
-   const canvas=p.locator('#view3d canvas'),r=await canvas.boundingBox();await p.keyboard.down('Space');await p.mouse.move(r.x+r.width*.5,r.y+r.height*.5);await p.mouse.down();await p.mouse.move(r.x+r.width*.5+60,r.y+r.height*.5+20,{steps:5});await p.mouse.up();await p.keyboard.up('Space');
-   check(JSON.stringify((await pose()).target)!==JSON.stringify(spaceBefore.target),protocol+': space drag moves camera');
+   const canvas=p.locator('#view3d canvas'),r=await canvas.boundingBox();await canvas.focus();await p.keyboard.down('Space');const inputProbe=await p.evaluate(r=>({spaceDown,focus:document.activeElement?.outerHTML.slice(0,300),hit:document.elementFromPoint(r.x+r.width*.5,r.y+r.height*.5)?.outerHTML.slice(0,400),enabled:__navigationControls[0]().enabled}),r);await p.mouse.move(r.x+r.width*.5,r.y+r.height*.5);await p.mouse.down();await p.mouse.move(r.x+r.width*.5+60,r.y+r.height*.5+20,{steps:5});await p.mouse.up();await p.keyboard.up('Space');
+   check(JSON.stringify((await pose()).target)!==JSON.stringify(spaceBefore.target),protocol+': space drag moves camera '+JSON.stringify(inputProbe));
    check((await pose()).state===a.state,protocol+': space pan does not move furniture');
    await p.screenshot({animations:'disabled',path:verification.output('playwright/touchpad/'+protocol+'-3d.png')});
    await p.setViewportSize({width:390,height:844});await p.evaluate(()=>openHelp());check(await p.locator('#navigation-input').isVisible(),protocol+': narrow preference visible');await p.screenshot({animations:'disabled',path:verification.output('playwright/touchpad/'+protocol+'-narrow.png')});

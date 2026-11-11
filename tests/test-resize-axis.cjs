@@ -47,7 +47,7 @@ for(const axis of ['w','d','both']){
   assert.equal(f.w,axis==='d'?1320:1400);assert.equal(f.d,axis==='w'?610:630);
   listeners.pointermove(event);assert.equal(f.w,1320);assert.equal(f.d,610);
 }
-const f={id:'f',type:'custom',cx:0,cy:0,w:1320,d:610.0000000000001,rot:0},node={};
+const f={id:'f',type:'custom',cx:0,cy:0,w:1320,d:610.0000000000001,rot:0},node={querySelectorAll:()=>[]};
 const renderer=require('./helpers/layer-context.cjs').createContext({window:{},state:{furniture:[f]},FurnishBayWindows:require('../src/core/bay-window-core.js'),PLAN:{rooms:[],walls:[],wins:[],doors:[],slides:[]},FurnishGeometry:require('../src/core/layout-geometry.js'),ui:{layers:{furn:false},guides:null},view:{s:.2},COARSE:false,
   selIds:()=>['f'],getF:()=>f,tr:zh=>zh,PAL:{halo:'#fff'},furnT:()=>'',aabb:()=>({hh:f.d/2}),$:()=>node});
 vm.runInContext(fs.readFileSync(require.resolve('../src/render/plan-renderer.js'),'utf8'),renderer);

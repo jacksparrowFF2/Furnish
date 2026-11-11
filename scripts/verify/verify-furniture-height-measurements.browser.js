@@ -3,7 +3,7 @@ async(page,verification)=>{
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1450,height:1000},offline:mode==='file'}),p=await context.newPage();
   try{
-   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{const r=PLAN.rooms.find(r=>r.counted!==false),b=bbox(r.poly);mutate(()=>{Object.assign(state,FurnishFloorFinish.setLayers(state,PLAN,[r.id],{rawZ:0,tileThickness:10,baseThickness:50,bathroomBaseThickness:45}));state.furnitureDatum='finished-floor';state.furniture=[{id:'height-cab',type:'wardrobe',name:'高度验收柜',cx:(b[0]+b[2])/2,cy:(b[1]+b[3])/2,w:800,d:600,h:2400,rot:0,color:'#ddd'}];});select({kind:'furn',id:'height-cab'});});
    await p.locator('#fab [data-fab-edit="distance"]').click();
    const summary=p.locator('#fab-editor [data-furniture-dimensions]');await summary.waitFor();
@@ -22,8 +22,8 @@ async(page,verification)=>{
    await p.setViewportSize({width:1450,height:1000});
    await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);
    await p.evaluate(()=>select({kind:'furn',id:'height-cab'}));
-   const label=p.locator('.scene-elevation');await label.waitFor();
-   const checkLabel=async(top,gap)=>{await p.waitForFunction(({top,gap})=>{const rows=[...document.querySelectorAll('.scene-elevation .scene-height-row')].map(el=>el.textContent);return rows.length===3&&rows[0]==='顶部距地面'+top+' mm'&&rows[1]==='顶部距房顶'+gap+' mm';},{top,gap});};
+   await p.locator('.scene-transform [data-transform-axis="z"] .transform-hit').first().click();await p.getByRole('button',{name:'显示高度详情',exact:true}).click();const label=p.locator('.scene-transform-details');await label.waitFor();
+   const checkLabel=async(top,gap)=>{await p.waitForFunction(({top,gap})=>{const rows=[...document.querySelectorAll('.scene-transform-details .scene-height-row')].map(el=>el.textContent);return rows.length===3&&rows[0]==='顶部距地面'+top+' mm'&&rows[1]==='顶部距房顶'+gap+' mm';},{top,gap});};
    await checkLabel(2500,240);
    await p.evaluate(()=>mutate(()=>state.furniture[0].h=2350));await checkLabel(2350,390);
    await p.evaluate(()=>undo());await checkLabel(2500,240);await p.evaluate(()=>redo());await checkLabel(2350,390);

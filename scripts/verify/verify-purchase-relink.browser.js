@@ -1,7 +1,7 @@
 async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),dir='output/playwright/workflow-tools/',errors=[],check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
  const importUI=async(tab,file)=>{await tab.getByRole('button',{name:'工作台',exact:true}).click();await tab.getByRole('button',{name:'备份／加载项目',exact:true}).click();await tab.locator('#pr-file').setInputFiles(file);await tab.locator('#pr-restore-confirm').click();await tab.locator('#dlg').waitFor({state:'hidden'});};
- try{await p.goto((verification.baseURL+'index.html'));await importUI(p,dir+'purchase-orders-project.furnish.json');
+ try{await p.goto((verification.baseURL+'index.html'));await p.waitForFunction(()=>!repositoryBooting);await importUI(p,dir+'purchase-orders-project.furnish.json');
   await p.locator('[data-fid="outside_chair"]').click();await p.locator('#fab [data-act="dup"]').click();const copy=await p.evaluate(()=>state.furniture.find(f=>f.id!=='outside_chair').id);
   await p.getByRole('button',{name:'工作台',exact:true}).click();await p.locator('#dlgBody [data-purchase-ledger]').click();await p.locator('[data-order-edit]').click();
   const row=p.locator('[data-order-line="0"]');await row.locator('[data-line-quantity]').fill('3');await row.locator('[data-line-received]').fill('2');await row.locator('[data-line-unitPrice]').fill('260');await row.locator('[data-line-target]').selectOption('1');

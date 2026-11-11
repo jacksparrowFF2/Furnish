@@ -3,7 +3,7 @@ async(page,verification)=>{
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();await p.locator('#pr-file').setInputFiles(verification.root+'/tests/fixtures/wall-tile-bands.furnish.json');await p.locator('#pr-restore-confirm').click();await p.locator('#dlg').waitFor({state:'hidden'});
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.getByRole('button',{name:'工作台',exact:true}).click();await p.getByRole('button',{name:'备份／加载项目',exact:true}).click();await p.locator('#pr-file').setInputFiles(verification.root+'/tests/fixtures/wall-tile-bands.furnish.json');await p.locator('#pr-restore-confirm').click();await p.locator('#dlg').waitFor({state:'hidden'});
    const setup=await p.evaluate(()=>{
     let plan=FurnishProject.effectivePlan(PLAN,state),work=JSON.parse(JSON.stringify(state));for(const r of Object.values(work.rooms))r.mat='tile800';work=FurnishFloorFinish.setLayers(work,plan,plan.rooms.filter(r=>r.counted!==false).map(r=>r.id),{rawZ:0,tileThickness:10,baseThickness:40});plan=FurnishProject.effectivePlan(PLAN,work);
     const face=FurnishWallTiling.faces(plan,work).find(f=>FurnishWallTiling.record(work,f)?.bands)||FurnishWallTiling.faces(plan,work)[0],id=face.roomId;work=FurnishWallFinish.edit(work,face,{tileThickness:10,bondThickness:5});work=FurnishWallTiling.edit(work,plan,face,{enabled:true,followFloor:false,layout:{...FurnishWallTiling.defaults(),startHeight:0},bands:{reference:'floor',rows:[{id:'lower',name:'下带',top:800,layout:{width:800,height:400}},{id:'upper',name:'上带',top:null,layout:{width:400,height:800}}]}});
@@ -12,7 +12,7 @@ async(page,verification)=>{
    });
    await verification.waitForCache(p);const baseline=await p.evaluate(()=>JSON.stringify(state)),history=await p.evaluate(()=>undoStack.length);
    const floorValue=async k=>p.locator(`[data-tile-field="${k}"]`).inputValue(),stateText=()=>p.evaluate(()=>JSON.stringify(state));
-   const open=async()=>{await p.locator('#tiling-open').click();await p.locator('[data-tiling-room]').selectOption(setup.roomId);await p.locator('[data-tiling-select="floor"]').click();};
+   const open=async()=>{await verification.clickCanvasTool(p,'#tiling-open');await p.locator('[data-tiling-room]').selectOption(setup.roomId);await p.locator('[data-tiling-select="floor"]').click();};
    await open();await p.locator('[data-tiling-view="plan"]').click();
    const picks=p.locator('[data-tile-pick]');check(await picks.count()>setup.floors.length,'real plan includes floor polygons and numbered walls');
    const planTarget=p.locator(`[data-tile-pick=${JSON.stringify(setup.wall.key)}]`);await planTarget.locator('text').click();check(await p.locator('[data-tiling-focus]').inputValue()===setup.wall.key,'numbered plan selects actual stable wall');

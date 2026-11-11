@@ -4,7 +4,7 @@ async(page,V)=>{
   const context=await page.context().browser().newContext({viewport:{width:1480,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[],checks=[];
   const check=(ok,message)=>{if(!ok)throw Error(mode+': '+message);checks.push(message);};p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>localStorage.setItem('huxing-catalog-favorites',JSON.stringify([JSON.stringify(['washer_littleswan_tg10k60w','小天鹅 TG10K60W · 10kg'])])));await p.reload();
    await p.locator('#catalog-collections').selectOption('favorites');check(await p.locator('#lib .item').count()===1,'old catalog favorite retained');await p.locator('#catalog-collections').selectOption('all');
    await p.evaluate(()=>{const host=FurnishKitchen.configure({id:'name-host',type:'counter',name:'验收洗衣柜',cx:3000,cy:3000,rot:37,flip:true,w:1340,d:630,color:'#fff'},FurnishKitchen.laundryPreset());

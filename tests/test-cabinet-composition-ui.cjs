@@ -1,3 +1,3 @@
 'use strict';
-process.argv.push('--composition-only');
-require('./test-cabinet-back-components-ui.cjs');
+process.argv.push('--complete-lego-only');
+require('./test-cabinet-ui.cjs');

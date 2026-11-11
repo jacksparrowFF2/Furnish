@@ -2,7 +2,7 @@ async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:1000}}),p=await context.newPage(),errors=[],dir='output/playwright/directional-heights/';
  const check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.stack));
  try{
-  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
    const rooms=structuredClone(state.rooms);
    PLAN={...PLAN,walls:[[0,0,100,6000],[0,0,6000,100],[5900,0,6000,6000],[0,5900,6000,6000]],wins:[],doors:[],slides:[],rooms:[{id:'height-room',name:'燃气灶与吊柜',mat:'tile800',at:[3000,3000],poly:[[100,100],[5900,100],[5900,5900],[100,5900]]}]};applyPlanData();
@@ -19,11 +19,11 @@ async (page,verification)=>{
   check(JSON.stringify(await read())===baseline,'modular wall cabinet preserves distances');
   check(await p.locator('[data-edit-overlay="directional-distance"]').count()===4,'four canvas labels');
   check(((await verification.openDistanceControls(p),await p.locator('#fab-editor [data-distance-row="b"]').innerText())).includes('70 mm'),'property panel uses corrected bottom distance');
-  check((await p.locator('#fab-editor').innerText()).includes('按图纸上下左右'),'floating panel explains drawing axes');
+  check((await p.locator('#fab-editor').innerText()).includes('单件按产品前后左右'),'floating panel explains product axes');
   await p.screenshot({animations:'disabled',path:dir+'desktop.png'});
   await p.locator('#fab-distance-save').click();check(await p.evaluate(()=>state.measures.length===4),'save four fixed measurements');
   const saved=await p.evaluate(()=>JSON.stringify(state.measures));await p.keyboard.press('Control+z');check(await p.evaluate(()=>state.measures.length===0),'undo saved measurements');await p.keyboard.press('Control+y');check(await p.evaluate(()=>JSON.stringify(state.measures))===saved,'redo saved measurements');
-  await p.locator('#drawing-right').click();check(JSON.stringify(await read())===JSON.stringify({l:70,r:90,t:625,b:425}),'rotated drawing distances');
+  await p.locator('#drawing-right').click();check(JSON.stringify(await read())===baseline,'product distances survive drawing rotation');
   await p.screenshot({animations:'disabled',path:dir+'rotated.png'});
   await p.setViewportSize({width:390,height:844});await p.evaluate(()=>{closeDrawers();zoomToBox([2600,1600,5000,2900],80);});await p.screenshot({animations:'disabled',path:dir+'mobile-canvas.png'});
   await verification.openDistanceControls(p);check(await p.locator('[data-distance-row]').count()===4,'mobile panel');check(await p.evaluate(()=>document.documentElement.scrollWidth<=390),'no horizontal overflow');await p.screenshot({animations:'disabled',path:dir+'mobile-panel.png'});

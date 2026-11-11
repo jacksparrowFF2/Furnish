@@ -15,7 +15,7 @@ async function main(){
  let desktop,browser;const errors=[],checks=[];
  const pass=s=>{checks.push(s);console.log('PASS '+s);};
  try{
-  desktop=await _electron.launch({executablePath:path.join(root,'output/desktop/Furnish-win32-x64/Furnish.exe'),env,timeout:60000});
+  desktop=await _electron.launch({executablePath:require('../scripts/launch-desktop.cjs').desktopExecutable(root),env,timeout:60000});
   const page=await desktop.firstWindow();page.setDefaultTimeout(25000);page.on('pageerror',e=>errors.push(e.message));
   page.on('dialog',d=>d.type()==='beforeunload'?d.accept():d.dismiss());
   await page.waitForURL(`http://127.0.0.1:${port}/`);await page.waitForFunction(()=>!repositoryBooting&&!!window.FurnishWorkflowTools);

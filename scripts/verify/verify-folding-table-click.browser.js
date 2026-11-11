@@ -14,7 +14,7 @@ async (page,verification)=>{
    q=await point();await p.mouse.click(q.x,q.y,{button:'right'});await p.mouse.click(1400,930);check(await p.evaluate(()=>foldingTablePreview.f.foldingTablePose==='round'),'right / blank click');
    await p.mouse.move(q.x,q.y);await p.mouse.down();await p.locator('canvas').dispatchEvent('pointercancel',{pointerId:1});await p.mouse.up();check(await p.evaluate(()=>foldingTablePreview.f.foldingTablePose==='round'),'cancelled preview gesture');
    await p.screenshot({path:root+'output/folding-table/'+mode+'-click-preview.png'});
-   await p.goto(base+'index.html');await p.locator('#lib').waitFor();await p.locator('#lib').getByText('源氏木语折叠餐桌 · 1300款',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
+   await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();await p.locator('#lib').getByText('源氏木语折叠餐桌 · 1300款',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
    // Isolated browser state puts the real model clear of walls and other items.
    await p.evaluate(id=>{mutate(()=>{const f=getF(id);state.furniture=[f];f.cx=30000;f.cy=30000;});selectIds([id]);},id);
    await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);

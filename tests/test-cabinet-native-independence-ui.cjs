@@ -1,3 +1,3 @@
 'use strict';
 process.argv.push('--native-independence-only');
-require('./test-cabinet-back-components-ui.cjs');
+require('./test-cabinet-ui.cjs');

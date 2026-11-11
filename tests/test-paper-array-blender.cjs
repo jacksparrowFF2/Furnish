@@ -1,7 +1,13 @@
 'use strict';
 // Read an actual desktop export back through Blender, then reopen its saved blend.
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),assert=require('node:assert/strict'),crypto=require('node:crypto');
-const root=path.resolve(__dirname,'..'),run=path.resolve(process.argv[2]||'');assert(process.argv[2]&&run.startsWith(path.join(root,'output')+path.sep),'Pass the owned paper-array UI evidence directory');
+const root=path.resolve(__dirname,'..');let target=process.argv[2];
+if(!target){
+ const made=cp.spawnSync(process.execPath,[path.join(__dirname,'test-paper-array-ui.cjs')],{cwd:root,encoding:'utf8',windowsHide:true,timeout:600000});
+ assert.equal(made.status,0,made.error?.message||made.stdout+made.stderr);
+ const report=made.stdout.match(/Report (.+report\.json)/);assert(report,'Paper-array UI must report its owned export directory');target=path.dirname(report[1].trim());
+}
+const run=path.resolve(target);assert(run.startsWith(path.join(root,'output')+path.sep),'Pass the owned paper-array UI evidence directory');
 const file=path.join(run,'arrays.glb'),source=fs.readFileSync(file),expected=require('../scripts/lib/glb-model-evidence.cjs').inspect(source,['array-0','array-1']),executable=require('../scripts/blender-server.cjs').findBlender();assert(executable,'Installed Blender required');
 fs.writeFileSync(path.join(run,'blender-expected.json'),JSON.stringify({parts:expected.parts,sha256:crypto.createHash('sha256').update(source).digest('hex'),executable}));
 const script=path.join(run,'readback.py');fs.writeFileSync(script,`

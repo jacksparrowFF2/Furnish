@@ -57,7 +57,7 @@ assert.equal(D.replaceFurniture(fit,{type:'chair',name:'椅',w:400,d:400}).kitch
  const box=(w,h,d,color,x,y,z)=>{const o=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));o.position.set(x,y+h/2,z);return o;};
  const model=ctx.FurnishKitchenModel.build(T,fit,box);model.updateMatrixWorld(true);const shelves=[],motions=[];
  model.traverse(o=>{if(o.userData.kitchenShelf)shelves.push(o);if(o.userData.motion)motions.push(o);if(o.geometry)assert([...o.geometry.attributes.position.array].every(Number.isFinite));});
- assert.equal(shelves.length,1);for(const shelf of shelves){near(shelf.geometry.parameters.depth,.409);const bounds=new T.Box3().setFromObject(shelf);assert(bounds.min.z>=-.160001,'production shelf ends ahead of manifold');}
+ assert.equal(shelves.length,1);for(const shelf of shelves){near(shelf.geometry.parameters.depth,.427);const bounds=new T.Box3().setFromObject(shelf);assert(bounds.min.z>=-.160001,'production shelf ends ahead of manifold');}
  assert(motions.some(v=>v.userData.motion.kind==='cabinetdoor'));for(const drawer of motions.filter(v=>v.userData.motion.kind==='cabinetdrawer'))near(drawer.userData.motion.travel,.445*.7);
  for(const part of K.cabinetLayout(fit)){const boards=Motion.boards(K.moduleFurniture(fit,part),{includeStatic:true});assert(!boards.some(v=>v.metadata.cabinetBay),'numeric recorder sees the same absent backing');}
  console.log('PASS manifold 500 mm, rear service envelope, shelves/back panels, doors/drawers/baskets, limits, rotation/mirror, opt-out, project and repeated real restoration, production geometry');

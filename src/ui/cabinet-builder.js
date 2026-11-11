@@ -81,7 +81,6 @@ host.querySelector('[data-builder-zone-parent]')?.addEventListener('click',()=>c
  }
  function open(id,options={}){
   const source=options.original??(id?getF(id):null);if(source&&source.cabinet?.version!==2&&options.draft?.cabinet?.version!==2){if(!source.kitchen)try{return open(id,{...options,draft:FurnishCabinetBuilder.upgrade(source)});}catch(e){toast(e.message);return;}return root.FurnishCabinetBuilderNativeAdapter.open(id,options);}
-  root.FurnishCabinetEditor?.dispose();
   const B=FurnishCabinetBuilder,original=options.original??(id?getF(id):null);if(original&&furnitureLocked(original))return toast('柜体已锁定，请先解锁');
   const before=original?JSON.stringify(original):null,planId=PLAN.id,center=options.position?[options.position.x,options.position.y]:ROOMS[0]?.at??[PLAN.bounds.x+PLAN.bounds.w/2,PLAN.bounds.y+PLAN.bounds.h/2];
   let draft=options.draft?structuredClone(options.draft):original?structuredClone(original):B.empty({id:uid(),cx:center[0],cy:center[1],rot:0}),selected=draft.cabinet.boxes[0]?{boxId:draft.cabinet.boxes[0].id}:null,preview,armed=null,proposal=null,front=true,dead=false,shell,fullButton,gesture=null;const view={dimensions:true,dimensionScope:'current',snap:true,interaction:'open'},doorMode={value:'auto'};
@@ -128,5 +127,6 @@ host.querySelector('[data-builder-zone-parent]')?.addEventListener('click',()=>c
   }});
  }
  function upgrade(id){try{const original=getF(id),draft=FurnishCabinetBuilder.upgrade(original,{referencePrice:priceOf(original)});open(id,{draft});}catch(e){toast(e.message);}}
- root.FurnishCabinetBuilderUI={open,upgrade,mountShell,libraryItems,placement,componentInspector,componentTree,workspaceTools,previewDoors};
+ function toggleScene(id,part){const f=getF(id);if(!f||furnitureLocked(f))return;try{const next=f.kitchen?FurnishKitchen.toggle(f,part.column,part.drawer,undefined,part.leaf,part.bay,part.lid,part.lane,part.section,part.componentId,part.sourceSection):FurnishCabinet.toggle(f,part.column,part.drawer,part.lid,part.lane,part.section,part.leaf,part.tier,part.componentId);mutate(()=>Object.assign(f,next));}catch(e){toast(e.message);}}
+ root.FurnishCabinetBuilderUI={open,upgrade,toggleScene,mountShell,libraryItems,placement,componentInspector,componentTree,workspaceTools,previewDoors};
 })(typeof globalThis!=='undefined'?globalThis:this);

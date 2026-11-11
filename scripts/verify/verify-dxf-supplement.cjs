@@ -15,7 +15,7 @@ const P=require('../../src/core/project-core.js');
   await page.goto(url);await page.locator('#lib').waitFor();
   await page.locator('#projectWorkspace').click();await page.getByRole('button',{name:'备份／加载项目',exact:true}).click();await page.locator('#pr-file').setInputFiles(fixture);await page.locator('#pr-restore-confirm').click();
   const before=await page.evaluate(()=>({furniture:structuredClone(state.furniture),draft:structuredClone(state.architecture.draft)}));
-  await page.locator('#tracePlan').click();await page.locator('.trace-menu').filter({has:page.locator('#trace-dxf')}).locator('summary').click();
+  await verification.clickCanvasTool(page,'#tracePlan');await page.locator('.trace-menu').filter({has:page.locator('#trace-dxf')}).locator('summary').click();
   await page.locator('#trace-dxf-supplement-file').setInputFiles(sourcePath);
   const layer=page.locator('label').filter({hasText:/^房梁/}).locator('[data-append-layer]');await layer.selectOption('beam');await page.getByRole('button',{name:'确认追加到户型草稿',exact:true}).click();await page.locator('#trace-dxf-supplement').click();await page.locator('label').filter({hasText:/^房梁/}).locator('[data-append-layer]').selectOption('beam');await page.locator('#dxf-append-preview').click();
   assert.match(await page.locator('#dxf-append-result').innerText(),/新增 0 根梁/);
@@ -26,7 +26,7 @@ const P=require('../../src/core/project-core.js');
   await page.getByRole('button',{name:'撤销',exact:true}).first().click();assert.equal(await page.evaluate(()=>state.architecture.draft.beams.length),0);await page.getByRole('button',{name:'重做',exact:true}).first().click();
   await page.getByRole('button',{name:'3D 场景',exact:true}).click();await page.locator('#view3d canvas').waitFor({state:'visible'});await page.waitForFunction(()=>is3D()&&!switching);await page.locator('#view3d').screenshot({path:path.join(out,mode+'-pipes.png')});await page.screenshot({path:path.join(out,mode+'-3d.png')});
   await page.reload();await page.locator('#lib').waitFor();assert.equal(await page.evaluate(()=>state.architecture.draft.markers[0].pipeDiameter),140);assert.deepEqual(await page.evaluate(()=>state.furniture),before.furniture);
-  await page.locator('#tracePlan').click();await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(out,mode+'-narrow.png')});await page.locator('.trace-menu').filter({has:page.locator('#trace-dxf')}).locator('summary').click();await page.locator('#trace-services').click();await page.locator('[data-edit-service]').first().click();await page.screenshot({path:path.join(out,mode+'-narrow-pipe.png')});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+  await verification.clickCanvasTool(page,'#tracePlan');await page.setViewportSize({width:390,height:844});await page.screenshot({path:path.join(out,mode+'-narrow.png')});await page.locator('.trace-menu').filter({has:page.locator('#trace-dxf')}).locator('summary').click();await page.locator('#trace-services').click();await page.locator('[data-edit-service]').first().click();await page.screenshot({path:path.join(out,mode+'-narrow-pipe.png')});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
   assert.deepEqual(errors,[]);console.log('PASS',mode,'1601 fixed frame, furniture, supplement, pipe edit, undo/redo, 3D, refresh, narrow screenshot');await context.close();
  }
  await browser.close();

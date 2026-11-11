@@ -146,7 +146,17 @@
     const sloped=slopedContacts.sort((a,b)=>a.error-b.error)[0];
     if(sloped){const normal=sloped.normal,remaining=sloped.delta-(position[0]-cx)*normal[0]-(position[1]-cy)*normal[1],u=axis?(axis==='x'?[1,0]:[0,1]):normal,factor=u[0]*normal[0]+u[1]*normal[1];
       const next=position.map((value,n)=>value+u[n]*remaining/factor);
-      if(Math.hypot(next[0]-cx,next[1]-cy)<=Math.SQRT2*tol+1e-7){position[0]=next[0];position[1]=next[1];lines.push({line:[sloped.edge.a,sloped.edge.b]});}
+      if(Math.hypot(next[0]-cx,next[1]-cy)<=Math.SQRT2*tol+1e-7){
+        position[0]=next[0];position[1]=next[1];lines.push({line:[sloped.edge.a,sloped.edge.b]});
+        // Preserve a second perpendicular face contact in the same rotated
+        // frame. World X/Y magnets alone can leave a gap along that face.
+        if(!axis)for(const other of slopedContacts.slice(1)){
+          if(Math.abs(normal[0]*other.normal[0]+normal[1]*other.normal[1])>1e-7)continue;
+          const gap=other.delta-(position[0]-cx)*other.normal[0]-(position[1]-cy)*other.normal[1],both=position.map((v,n)=>v+other.normal[n]*gap);
+          if(Math.hypot(both[0]-cx,both[1]-cy)>Math.SQRT2*tol+1e-7)continue;
+          position[0]=both[0];position[1]=both[1];lines.push({line:[other.edge.a,other.edge.b]});break;
+        }
+      }
     }
     return {position,guides:lines};
   }
@@ -198,7 +208,7 @@
       const dot=(q,b)=>(q.x-anchor.x)*b[0]+(q.y-anchor.y)*b[1],raw=dot(p,u);let best=null;
       // A curved silhouette does not fill its nominal side. Clip its unit
       // outline to the finite target span before solving the scaled support.
-      const unit=geometry.localOutline(f)?furnitureRings(build({...next,[dim]:1})).map(r=>r.map(p=>({n:dot({x:p[0],y:p[1]},u),t:dot({x:p[0],y:p[1]},v)}))):null;
+      const unit=geometry.localOutline(f)?furnitureRings(build(next)).map(r=>r.map(p=>({n:dot({x:p[0],y:p[1]},u)/next[dim],t:dot({x:p[0],y:p[1]},v)}))):null;
       for(const target of targets)for(const e of target.edges){
         const dx=e.b.x-e.a.x,dy=e.b.y-e.a.y;
         if(Math.abs(dx*u[0]+dy*u[1])>Math.hypot(dx,dy)*1e-7)continue;

@@ -8,7 +8,7 @@ function fixture(parent,name){
  return root;
 }
 function load(file,mapping,extra,tail=''){
- const mod={exports:{}},sandbox={require:id=>Object.hasOwn(mapping,id)?mapping[id]:require(id),module:mod,__dirname:path.dirname(file),__filename:file,process,console:{log(){},error(){}},...extra};
+ const mod={exports:{}},sandbox={require:id=>Object.hasOwn(mapping,id)?mapping[id]:require('node:module').createRequire(file)(id),module:mod,__dirname:path.dirname(file),__filename:file,process,console:{log(){},error(){}},...extra};
  vm.runInNewContext(fs.readFileSync(file,'utf8')+'\n'+tail,sandbox,{filename:file});return mod.exports;
 }
 (async()=>{

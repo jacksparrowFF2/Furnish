@@ -4,7 +4,7 @@ async(page,V)=>{
   const ctx=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await ctx.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   const screen=async(x,y)=>p.evaluate(([x,y])=>{const q=svg.createSVGPoint(),a=drawingPoint([x,y]);q.x=a[0];q.y=a[1];const b=q.matrixTransform(svg.getScreenCTM());return {x:b.x,y:b.y};},[x,y]);
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{window.snapTestRooms=structuredClone(state.rooms);PLAN={...PLAN,walls:[],wins:[],doors:[],slides:[],rooms:[{id:'snap-room',name:'柜体吸附验收',mat:'tile800',at:[2000,2000],poly:[[0,0],[7500,0],[7500,7500],[0,7500]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...window.snapTestRooms,...state.rooms};ui.layers.furn=ui.layers.guides=ui.layers.wallSnap=true;closeDrawers();});
    for(const rot of [0,37,90,180,270])for(const flip of [false,true])for(const axis of ['w','d']){
     const data=await p.evaluate(({rot,flip,axis})=>{
@@ -16,7 +16,7 @@ async(page,V)=>{
      mutate(()=>state.furniture=wall?[f]:[f,target]);selectIds([f.id]);renderAll();zoomToBox([1500,1500,7000,7000],90);
      return {u,expected:f[axis]+150,original:f[axis],anchor:[f.cx-f.w/2*c+f.d/2*s,f.cy-f.w/2*s-f.d/2*c]};
     },{rot,flip,axis});
-    const handle=p.locator(`#gSel [data-handle="size"][data-axis="${axis}"] rect`).last(),box=await handle.boundingBox();check(box,'resize handle');
+    await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const handle=p.locator(`#gSel [data-handle="size"][data-axis="${axis}"] rect`).last(),box=await handle.boundingBox();check(box,'resize handle '+JSON.stringify(await p.evaluate(()=>({selection:ui.sel,items:state.furniture.map(f=>({id:f.id,type:f.type,locked:furnitureLocked(f)})),svg:document.querySelector('#gSel').innerHTML.slice(0,350)}))));
     const scale=await p.evaluate(()=>view.s),start={x:box.x+box.width/2,y:box.y+box.height/2};
     await p.mouse.move(start.x,start.y);await p.mouse.down();await p.mouse.move(start.x+data.u[0]*130*scale,start.y+data.u[1]*130*scale,{steps:5});await p.waitForFunction(()=>!canvasPointerFrame);
     check(await p.evaluate(()=>ui.guides.some(g=>g.line)),'visible boundary guide');

@@ -1,0 +1,21 @@
+{
+  "blender": "5.2.3 LTS",
+  "results": [
+    {
+      "mode": "http",
+      "passed": true,
+      "objects": 48,
+      "topMm": 2399.0001678466797,
+      "uniquePartKeys": 48,
+      "reopened": true
+    },
+    {
+      "mode": "file",
+      "passed": true,
+      "objects": 48,
+      "topMm": 2399.0001678466797,
+      "uniquePartKeys": 48,
+      "reopened": true
+    }
+  ]
+}

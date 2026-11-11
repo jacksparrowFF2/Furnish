@@ -1,2 +1,4 @@
-/* Real UI regression, using a private workspace and the production EXE. */
-require('../scripts/verify/verify-cabinet-keyboard-desktop.cjs');
+/* Current component keyboard gestures in the configured packaged EXE. */
+'use strict';
+process.argv.push('--builder-interaction-only','--desktop-only');
+require('./test-cabinet-ui.cjs');

@@ -189,7 +189,7 @@ function bindKitchenPanel(f){
  for(const flush of [false,true]){const button=$(flush?'#hood-flush-bay':'#hood-center-bay');if(button)button.onclick=()=>change(g=>FurnishCabinet.centerHoodInBay(getF($('#hood-bay-target').value),g,flush));}
  for(const [selector,open] of [['#laundry-doors-open',true],['#laundry-doors-close',false]]){const button=$(selector);if(button)button.onclick=()=>{try{const next=K.setLaundryDoors(state.furniture,f.id,open);mutate(()=>state.furniture=next);}catch(e){toast(e.message);}};}
  const integrate=$('#laundry-integrate');if(integrate)integrate.onclick=()=>{try{const next=K.integrateLaundryArea(state.furniture,f.id);mutate(()=>state.furniture=next);selectIds([f.id],f.id);}catch(e){toast(e.message);}};
- document.querySelectorAll('[data-laundry-edit]').forEach(button=>button.onclick=()=>FurnishCabinetEditor.open(button.dataset.laundryEdit));
+ document.querySelectorAll('[data-laundry-edit]').forEach(button=>button.onclick=()=>FurnishCabinetBuilderUI.open(button.dataset.laundryEdit));
  const switchSides=$('#laundry-switch-sides');if(switchSides)switchSides.onclick=()=>{try{const next=K.switchLaundrySides(state.furniture,f.id);mutate(()=>state.furniture=next);}catch(e){toast(e.message);}};
  const align=$('#laundry-align');if(align)align.onclick=()=>change(g=>{const value=$('#laundry-target').value;if(value.startsWith('cabinet:')){const target=FurnishSnapping.cabinetTargets(g,{...measurementScene(),furniture:state.furniture})[Number(value.slice(8))];if(!target)throw Error('目标柜内净空已变化，请重新选择');return FurnishSnapping.alignCabinet(g,target,{...measurementScene(),furniture:state.furniture});}const at=value.lastIndexOf(':');return K.centerLaundryInBay(getF(value.slice(0,at)),g,Number(value.slice(at+1)));});
  document.querySelectorAll('#custom-sink-notch input,#custom-sink-notch select').forEach(el=>el.onchange=()=>change(g=>{g.sinkStyle=$('#custom-sinkStyle').value;g.sinkBowlHeight=Number($('#custom-sinkBowlHeight').value);const notch=readLaundryNotch($('#panel'),'sink-notch');if(notch&&!FurnishProducts.vesselSink(g))g.sinkNotch=notch;else delete g.sinkNotch;FurnishProducts.validate(g);return g;}));
@@ -205,9 +205,3 @@ function bindKitchenPanel(f){
  const elevation=$('#hob-elevation');if(elevation)elevation.onchange=e=>change(g=>{g.counterElevation=FurnishProducts.validateField(g,'counterElevation',Number(e.target.value));delete g.mountHeight;return g;});
  const link=$('#kitchen-link');if(link)link.onchange=e=>{try{const current=getF(f.id);if(furnitureLocked(current))throw Error('请先解锁');if(!e.target.value){change(g=>{delete g.counterLink;return g;});return;}const at=e.target.value.lastIndexOf(':'),result=K.attachment(state.furniture,f.id,e.target.value.slice(0,at),Number(e.target.value.slice(at+1)));mutate(()=>{state.furniture[state.furniture.findIndex(v=>v.id===result.host.id)]=result.host;state.furniture[state.furniture.findIndex(v=>v.id===f.id)]=result.device;});}catch(e){toast(e.message);renderPanel();}};
 }
-(function(){
- let preview=null,workspace=null,generation=0;
- function dispose(){generation++;preview?.dispose();preview=null;workspace?.dispose();workspace=null;}
- function open(id,options={}){return window.FurnishCabinetBuilderUI.open(id,options);}
- window.FurnishKitchenEditor={open,dispose};
-})();

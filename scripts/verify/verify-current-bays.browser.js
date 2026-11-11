@@ -1,9 +1,10 @@
 async(page,V)=>{
  const response=await page.request.get(V.baseURL+'tests/fixtures/browser/current-bay-workspace.json');if(!response.ok())throw Error('Missing isolated current-workspace snapshot');
  const saved=await response.json(),seed=saved.workspace,results=[];
+ seed.work={[seed.planId]:seed.work[seed.planId]};seed.designs=seed.designs.filter(d=>d.id===seed.activeDesigns?.[seed.planId]);seed.customPlans=seed.customPlans.filter(p=>p.id===seed.planId);
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];
-  await context.addInitScript(seed=>{if(!localStorage.getItem('__bay_review_seeded')){localStorage.setItem('huxing-design-v16',JSON.stringify(seed));localStorage.setItem('__bay_review_seeded','1');}},seed);
+  await context.addInitScript(seed=>{if(!localStorage.getItem('__bay_review_seeded')){localStorage.setItem('huxing-design-v'+seed.v,JSON.stringify(seed));localStorage.setItem('__bay_review_seeded','1');}},seed);
   p.on('pageerror',e=>errors.push(e.message));const check=(ok,message)=>{if(!ok)throw Error(mode+': '+message);};
   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
   check(await p.evaluate(id=>PLAN.id===id,seed.planId),'actual current plan restored');

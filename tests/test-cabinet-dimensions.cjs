@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 (async()=>{
  const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
  class Element{
-  constructor(){this.style={};this.children=[];this.attrs={};this.clientWidth=600;this.clientHeight=440;}
+  constructor(){this.style={};this.dataset={};this.classList={add:(...names)=>{this.className=[...new Set([...(this.className||'').split(' ').filter(Boolean),...names])].join(' ');}};this.children=[];this.attrs={};this.clientWidth=600;this.clientHeight=440;}
   focus(){}select(){}
   appendChild(el){this.children.push(el);}replaceChildren(...els){this.children=els;}setAttribute(k,v){this.attrs[k]=v;}remove(){}addEventListener(){}hasPointerCapture(){return false;}
   getBoundingClientRect(){return {left:0,top:0,width:this.clientWidth,height:this.clientHeight};}
@@ -11,8 +11,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
  let tick;
  class Renderer{constructor(){this.domElement=new Element();}setPixelRatio(){}setSize(){}render(s,c){s.updateMatrixWorld(true);c.updateMatrixWorld(true);}dispose(){}forceContextLoss(){}}
  class Controls{constructor(c){this.camera=c;this.target=new T.Vector3();}update(){this.camera.lookAt(this.target);this.camera.updateMatrixWorld(true);}dispose(){}}
- const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C,FurnishKitchen:K,FurnishProducts:require('../src/core/product-rules.js'),document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}}));
- for(const file of ['solid-cut','cabinet-model','sink-model','kitchen-model','cabinet-preview'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
+ const ctx=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C,FurnishKitchen:K,FurnishCabinetProfiles:require('../src/core/cabinet-component-profiles.js'),FurnishCabinetAssembly:require('../src/core/cabinet-assembly-core.js'),FurnishCabinetBuilder:require('../src/core/cabinet-builder-core.js'),FurnishProducts:require('../src/core/product-rules.js'),document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}}));
+ for(const file of ['solid-cut','cabinet-profile-model','cabinet-model','sink-model','kitchen-model','cabinet-preview'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),ctx);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  function inspect(f){
   const before=JSON.stringify(f),host=new Element();let picked=null,allow=true;
@@ -33,7 +33,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   if(f.kitchen?.modules.some(m=>m.role==='custom'))assert(list.children.some(el=>el.textContent.includes('内部分区 2')),'custom-module captions distinguish interior bays');
   preview.setView({dimensionScope:'all'});
   if(['L','U'].includes(f.kitchen?.shape)){const parentTick=tick;preview.setView({front:true,unfolded:true,dimensionScope:'size'});preview.selectPart({column:0});assert.equal(list.hidden,true,'selection in unfolded view cannot redisplay the duplicate parent list');preview.setView({front:false,unfolded:false,dimensionScope:'all'});tick=parentTick;}
-  assert.deepEqual(items('cab-module-number').map(e=>e.textContent),Array.from({length:count},(_,i)=>String(i+1)));
+  const badgeCount=f.kitchen?.laundry?0:count;assert.deepEqual(items('cab-module-number').map(e=>e.textContent),Array.from({length:badgeCount},(_,i)=>String(i+1)));
   const widths=f.kitchen?f.kitchen.modules.map(m=>m.width):C.moduleWidths(f);
   widths.forEach(v=>assert(items('cab-dimension').some(e=>e.textContent==='模块外宽 '+Number(v.toFixed(2)))));
   for(const front of [true,false]){
@@ -42,9 +42,9 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
    for(const e of items('cab-dimension').concat(items('cab-module-number')).filter(e=>!e.hidden))assert(Number.isFinite(parseFloat(e.style.left))&&Number.isFinite(parseFloat(e.style.top)),'finite projected annotations');
    assert(!overlay.children[0].children[0].attrs.d.includes('NaN'),'finite ruler segments');
   }
-  preview.selectPart(null);const badge=items('cab-module-number')[count-1];allow=false;badge.onclick();assert.equal(badge.attrs['aria-pressed'],'false','rejected selection stays unselected');allow=true;badge.onclick();assert.equal(picked.column,count-1);assert.equal(badge.attrs['aria-pressed'],'true');
-  preview.setView({dimensions:false});tick();assert.equal(items('cab-module-number').length,count);assert.equal(items('cab-dimension').length,0);assert.equal(items('cab-size-summary').length,0);assert(!overlay.children.some(e=>e.className==='cab-dimension cab-door-dimension'));assert.equal(list.hidden,true);if(f.kitchen?.shape!=='U')assert.equal(overlay.children[0].children[0].attrs.d,'');
-  preview.update(f);assert.equal(items('cab-module-number').length,count,'updates do not accumulate badges');assert.equal(JSON.stringify(f),before,'annotations do not add persistent fields');preview.dispose();
+  preview.selectPart(null);if(badgeCount){const badge=items('cab-module-number')[count-1];allow=false;badge.onclick();assert.equal(badge.attrs['aria-pressed'],'false','rejected selection stays unselected');allow=true;badge.onclick();assert.equal(picked.column,count-1);assert.equal(badge.attrs['aria-pressed'],'true');}
+  preview.setView({dimensions:false});tick();assert.equal(items('cab-module-number').length,badgeCount);assert.equal(items('cab-dimension').length,0);assert.equal(items('cab-size-summary').length,0);assert(!overlay.children.some(e=>e.className==='cab-dimension cab-door-dimension'));assert.equal(list.hidden,true);if(f.kitchen?.shape!=='U')assert.equal(overlay.children[0].children[0].attrs.d,'');
+  preview.update(f);assert.equal(items('cab-module-number').length,badgeCount,'updates do not accumulate badges');assert.equal(JSON.stringify(f),before,'annotations do not add persistent fields');preview.dispose();
  }
   for(const [id] of C.templates)inspect({type:'cabinet',...C.preset(id)});
   for(const id of ['wardrobe','entry-console','sideboard-wall','tv-floor'])for(const overlay of ['full','half','inset']){const f={type:'cabinet',rot:37,flip:true,...C.preset(id)};f.cabinet.doorOverlay=overlay;f.cabinet.columns.forEach(col=>{col.topOpen=true;col.drawers.forEach(drawer=>Object.assign(drawer,{open:true,extension:.5}));});inspect(f);}

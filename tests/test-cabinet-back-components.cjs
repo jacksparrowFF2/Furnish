@@ -47,7 +47,7 @@ const near=(a,b)=>assert(Math.abs(a-b)<.001,`${a} != ${b}`);
  for(const value of [-1,50.01,null,NaN]){const k=K.defaults({w:1800,d:600});k.backThickness=value;assert.throws(()=>K.configure({id:'bad',type:'counter',cx:0,cy:0,rot:0,w:1800,d:600},k),/背板/);}
  const shallow=K.defaults({w:1800,d:600});shallow.endExtensions=[{run:0,length:200,depth:50,cabinetDepth:50,backThickness:50}];assert.throws(()=>K.configure({id:'shallow',type:'counter',cx:0,cy:0,rot:0,w:1800,d:600},shallow),/板件|柜深/);
  const pure={...C.preset('entry-pegboard'),id:'pure',type:'cabinet'};pure.cabinet.pegboardParts=Object.fromEntries(Products.pegboardAssembly.parts.map(key=>[key,false]));assert(C.depthSections(pure).every(v=>v.storage===false));
- const scope=vm.createContext({window:{},FurnishCabinet:C,FurnishKitchen:K,FurnishProducts:Products});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/cabinet-editor.js'),'utf8'),scope);
+ const scope=vm.createContext({window:{},FurnishCabinet:C,FurnishKitchen:K,FurnishProducts:Products});vm.runInContext(fs.readFileSync(require.resolve('../src/ui/cabinet-form-controls.js'),'utf8'),scope);
  for(const template of ['storage','entry-console','sideboard-fridge','entry-pegboard']){const f={...C.preset(template),type:'cabinet'};const html=scope.cabinetBackControls(f);assert(html.includes('id="cab-back-thickness"'));assert(html.includes('min="0"'));assert(html.includes('净深'));}
  const fixed={...C.preset('book-y52y09-low'),type:'bookshelf_yeswood_y52y09'};assert(scope.cabinetBackControls(fixed).includes('disabled'));
  console.log(`PASS shared rear components across ${count} template/thickness cases, production/recorder, sections, zero/pegboard hatches, transforms, thresholds, v60 and straight/L/U inheritance`);

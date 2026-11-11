@@ -7,7 +7,7 @@ async(page,V)=>{
   const shot=async name=>{await p.waitForFunction(()=>!document.querySelector('#toast.show'));await p.screenshot({path:V.output('playwright/property-scopes/'+mode+'-'+name+'.png')});};
   const hiddenFab=async()=>{const bay=await p.evaluate(()=>!!FurnishBayWindows.selected(PLAN,ui.sel));if(bay){ok(await p.locator('#fab [data-bay-fab]').count()===2&&await p.locator('#fab [data-fab-edit]').count()===0,'bay keeps assembly navigation without furniture editors');}else ok(!await p.locator('#fab').evaluate(el=>el.classList.contains('show')),'no floating editor for '+await p.evaluate(()=>ui.sel.kind));};
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{mutate(()=>{state.furniture=[{...F('custom','多选 A',2500,2500,600,500,0,'#cfc6b8'),id:'scope-a',h:800},{...F('custom','多选 B',3500,3200,450,400,0,'#bed6d9'),id:'scope-b',h:700}];});selectIds(['scope-a','scope-b']);});
    const original=await read();
    ok(await p.locator('#panel [data-act="rotL"],#panel [data-act="rotR"],#panel [data-act="flip"],#panel [data-act="lock"],#panel [data-act="dup"],#panel [data-act="del"],#panel [data-act="group"],#panel [data-act="ungroup"],#panel .directional-measurements').count()===0,'multi has no duplicated floating actions');

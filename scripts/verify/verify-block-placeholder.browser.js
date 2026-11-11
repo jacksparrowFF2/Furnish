@@ -3,7 +3,7 @@ async (page,verification)=>{
  for(const mode of ['file','http']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));const check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
-  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib').waitFor();
+  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();
   await p.locator('#catalog-filters summary').click();
   await p.locator('#libCats [data-cat="auxiliary"]').click();
   await p.locator('#lib').getByText('方块占位体',{exact:true}).first().click();
@@ -42,7 +42,7 @@ async (page,verification)=>{
   check(await p.evaluate(()=>store.designs.some(d=>d.id==='block-check'&&d.work.furniture.some(f=>f.type==='block'&&f.h===890&&f.mountHeight===750))),'named design');
   await p.evaluate(id=>{selectIds([id]);zoomSel();},id);await p.screenshot({path:verification.output('playwright/block-placeholder/'+mode+'-2d.png')});
   await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);
-  await p.getByRole('button',{name:'定位选中',exact:true}).click();
+  await verification.clickCanvasTool(p,'#vSelection');
   await p.waitForTimeout(700);check(await p.evaluate(id=>!furnitureError(getF(id)),id),'3D model');
   await p.screenshot({path:verification.output('playwright/block-placeholder/'+mode+'-3d.png')});
   await p.locator('#fH').fill('1200');await p.locator('#fH').press('Tab');

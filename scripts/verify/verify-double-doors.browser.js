@@ -4,7 +4,7 @@ async (page,verification)=>{
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();
    await p.evaluate(()=>{mutate(()=>{state.open={};state.furniture=[];});select({kind:'door',id:0});});
    const initial=await p.evaluate(()=>JSON.stringify({h:DOORS[0].h,c:DOORS[0].c,o:DOORS[0].o}));
    await p.locator('#oType').selectOption('double');check(await p.locator('#oHinge').isDisabled(),'paired hinge control');

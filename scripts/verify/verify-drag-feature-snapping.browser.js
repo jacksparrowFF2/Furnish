@@ -16,7 +16,7 @@ async(page,verification)=>{
   await p.mouse.up();};
  const near=async(id,x,y)=>check(await p.evaluate(({id,x,y})=>{const f=getF(id);return Math.hypot(f.cx-x,f.cy-y)<1e-5;},{id,x,y}),'exact '+id+' position');
  try{
-  await p.goto(verification.baseURL);await p.locator('#drawing-compass').waitFor();
+  await p.goto(verification.baseURL);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{const rooms=structuredClone(state.rooms);PLAN={...PLAN,walls:[[3000,0,3200,2000]],wins:[],doors:[],slides:[],rooms:[{id:'drag-room',name:'拖动吸附验收',mat:'tile800',at:[1000,1000],poly:[[-1000,-1000],[4000,-1000],[4000,3500],[-1000,3500]]}]};applyPlanData();state=freshWork(PLAN);state.rooms={...rooms,...state.rooms};
    const a=F('counter','拖动家具',1000,1000,600,400,0,'#d9cbb7'),b=F('counter','参考家具',2100,1000,600,600,0,'#c4d7db');a.id='drag-a';b.id='drag-b';state.furniture=[a,b];ui.layers.furn=ui.layers.guides=ui.layers.wallSnap=true;renderAll();zoomToBox([300,0,3400,2200],100);});
   const scale=await p.evaluate(()=>view.s);

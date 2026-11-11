@@ -3,7 +3,7 @@ async (page,verification)=>{
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));const check=(v,s)=>{if(!v)throw Error(mode+': '+s);};
-  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');
+  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
   await p.locator('#lib').getByText('美的酷省电 Ultra 立式空调 · 2匹室内机',{exact:true}).first().click();
   const id=await p.evaluate(()=>selIds()[0]);
   const metrics=await p.evaluate(id=>{
@@ -13,10 +13,10 @@ async (page,verification)=>{
   },id);
   check(metrics.difference>40&&metrics.points>=64,'contour selection and tight bounds');
   await p.screenshot({path:verification.output('product-plan-outline/'+mode+'-selected.png')});
-  await p.evaluate(id=>{mutate(()=>{const f=getF(id),box=FurnishGeometry.bbox(FurnishGeometry.footprints(f)[0]);state.furniture.push({...f,id:'outline-reference',name:'净距参考柜',type:'custom',cx:box[2]+90,cy:f.cy,w:100,d:1000,rot:0});});editDirectionalDistance('r');},id);
+  const beforeClearance=await p.evaluate(id=>{mutate(()=>{const f=getF(id),box=FurnishGeometry.bbox(FurnishGeometry.footprints(f)[0]);state.furniture.push({...f,id:'outline-reference',name:'净距参考柜',type:'custom',cx:box[2]+90,cy:f.cy,w:100,d:1000,rot:0});});const before=directionalMeasurements(getF(id)).r.distance;editDirectionalDistance('r');return before;},id);
   await p.locator('#directional-gap-input').fill('75');await p.getByRole('button',{name:'应用距离',exact:true}).click();await verification.waitForDialogAction(p);
   check(await p.evaluate(id=>Math.abs(directionalMeasurements(getF(id)).r.distance-75)<.01,id),'edit actual contour clearance');
-  await p.evaluate(()=>undo());check(await p.evaluate(id=>Math.abs(directionalMeasurements(getF(id)).r.distance-40)<.01,id),'clearance undo');
+  await p.evaluate(()=>undo());check(await p.evaluate(({id,before})=>Math.abs(directionalMeasurements(getF(id)).r.distance-before)<.01,{id,before:beforeClearance}),'clearance undo');
   await p.evaluate(()=>redo());check(await p.evaluate(id=>Math.abs(directionalMeasurements(getF(id)).r.distance-75)<.01,id),'clearance redo');
   await p.evaluate(()=>mutate(()=>{state.furniture=state.furniture.filter(f=>f.id!=='outline-reference');}));
   const expected=await p.evaluate(id=>{mutate(()=>{getF(id).rot=90;});return JSON.stringify(getF(id));},id);

@@ -3,7 +3,7 @@ async (page,verification)=>{
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
   try{
-   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();
    await p.evaluate(()=>{
     const d={version:1,id:'custom_wall_face_check',name:'墙端贴面验收',source:'dxf',image:'',width:2000,height:2000,scale:1,openings:[],walls:[
      {id:'north',a:[100,100],b:[1900,100],kind:'n',thickness:100,caps:[0,0]},
@@ -29,7 +29,7 @@ async (page,verification)=>{
    const read=async phase=>{const v=await p.evaluate(()=>__faceScene.read());check(near(v.net,v.meshNet),phase+' net / production floor');for(const r of v.rooms)check(near(r.area,r.meshArea)&&r.label?.includes(r.formatted),phase+' room mesh and area label');for(const w of v.walls)check(w.meshMatches&&!w.floorUnderEnd&&w.floorBeside>0,phase+' actual wall and floor contact');return {phase,...v};};
    await install();await enter();const before=await read('before');check(near(before.net,2.8666),'independent baseline area');
    const point=(x,y)=>p.locator('#trace-canvas').evaluate((svg,[x,y])=>{const pt=svg.createSVGPoint();pt.x=x;pt.y=y;const at=pt.matrixTransform(svg.getScreenCTM());return {x:at.x,y:at.y};},[x,y]),click=async(x,y)=>{const at=await point(x,y);await p.mouse.click(at.x,at.y);};
-   await p.locator('#tracePlan').click();await p.locator('[data-trace-mode="properties"]').click();await click(800,1735);
+   await verification.clickCanvasTool(p,'#tracePlan');await p.locator('[data-trace-mode="properties"]').click();await click(800,1735);
    const drag=async({shift=false,cancel=false}={})=>{const a=await point(800,1760),b=await point(800,1850);await p.mouse.move(a.x,a.y);await p.mouse.down();if(shift)await p.keyboard.down('Shift');await p.mouse.move(b.x,b.y,{steps:6});await p.waitForTimeout(80);if(shift)check(await p.locator('[data-wall-snap]').count()===0,'Shift disables face feedback');else check(await p.locator('[data-wall-snap="face"]').count()===1,'wall face feedback');if(cancel)await p.keyboard.press('Escape');await p.mouse.up();if(shift)await p.keyboard.up('Shift');};
    await drag({cancel:true});check(Number(await p.locator('#wp-length').inputValue())===50,'Escape cancels face resize');
    await drag({shift:true});check(!near(Number(await p.locator('#wp-length').inputValue()),75,.01),'Shift bypasses face contact');await p.locator('#trace-undo').click();await click(800,1735);

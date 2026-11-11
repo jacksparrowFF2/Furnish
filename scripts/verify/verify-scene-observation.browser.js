@@ -5,7 +5,7 @@ async (page,verification)=>{
   const context=await page.context().browser().newContext({viewport:{width:1480,height:1050},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.setDefaultTimeout(25000);
   const check=(v,m)=>{if(!v)throw Error(mode+': '+m);},shot=name=>p.screenshot({path:verification.output('playwright/scene-observation/'+mode+'-'+name+'.png')});
   try{
-   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();
    // Capture production camera/model references without adding debug APIs to the app.
    await p.evaluate(()=>{
     const original=FurnishSceneObservation.create;FurnishSceneObservation.create=T=>{const observer=original(T),update=observer.update;window.__observation={T,observer};observer.update=(camera,bounds,architecture)=>{Object.assign(__observation,{observer,camera,bounds:bounds.clone(),architecture});return update(camera,bounds,architecture);};return observer;};
@@ -16,7 +16,7 @@ async (page,verification)=>{
    });
    check(await p.evaluate(()=>selIds().length===5),'five production members selected');
    await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);const baseline=await p.evaluate(()=>snap());
-   if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await p.locator('#vSelection').click();await p.waitForTimeout(1300);
+   if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await verification.clickCanvasTool(p,'#vSelection');await p.waitForTimeout(1300);
    const inspect=()=>p.evaluate(()=>{
     const d=__observation,{camera,bounds,T}=d,frame=d.frame;camera.updateMatrixWorld();
     const projected=FurnishSceneObservation.corners(T,bounds).map(p=>p.project(camera).toArray()),sx=1-2*frame.options.marginX/frame.options.width,sy=1-2*frame.options.marginY/frame.options.height;
@@ -33,13 +33,13 @@ async (page,verification)=>{
    check(fits(info)&&!info.toolbarOverlap,'whole group fits without toolbar obstruction');/* Lens-dependent framing may put the eye inside the room; the center ray must stay unobstructed. */check(info.visibleHits===0,'center sightline clear');await shot('group');
    await p.locator('#laundry-doors-open').click();await p.waitForTimeout(1300);info=await inspect();check(fits(info),'open production doors fit after model edit');await shot('open');
    const edited=await p.evaluate(()=>snap());if(await p.locator('#vRestoreWalls').isHidden())await p.locator('.rail-tool-menu>summary').click();await p.locator('#vRestoreWalls').click();check(await p.evaluate(()=>{let n=0;__observation.architecture.traverse(o=>{if(o.isMesh&&(Array.isArray(o.material)?o.material:[o.material]).some(m=>m.clippingPlanes?.length))n++;});return n===0;}),'restore original materials');check(await p.evaluate(()=>snap())===edited,'temporary view does not change design');await shot('restored');
-   if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await p.locator('#vSelection').click();await p.waitForTimeout(1100);
+   if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await verification.clickCanvasTool(p,'#vSelection');await p.waitForTimeout(1100);
    await p.setViewportSize({width:390,height:844});await p.waitForTimeout(1600);info=await inspect();check(fits(info)&&!info.toolbarOverlap,'narrow resize reframes complete group without toolbar obstruction');await shot('narrow');
    await p.setViewportSize({width:1480,height:1050});await p.waitForTimeout(1300);await p.locator('#laundry-switch-sides').click();await p.waitForTimeout(1300);info=await inspect();check(fits(info),'mirror layout change reframes group');
    await p.evaluate(()=>undo());await p.waitForTimeout(1300);check(fits(await inspect()),'undo model update stays framed');await p.evaluate(()=>redo());await p.waitForTimeout(1300);check(fits(await inspect()),'redo model update stays framed');
    await p.locator('#laundry-doors-close').click();await p.waitForTimeout(1300);
    const washerPoint=await p.evaluate(()=>{const d=__observation,f=state.furniture.find(f=>f.type==='washer');let model;d.architecture.parent.traverse(o=>{if(o.userData.fid===f.id)model=o;});const b=new d.T.Box3().setFromObject(model,true),point=b.getCenter(new d.T.Vector3());point.z=b.max.z+.001;const q=point.project(d.camera),r=document.querySelector('#view3d canvas').getBoundingClientRect();return {id:f.id,x:r.left+(q.x+1)*r.width/2,y:r.top+(1-q.y)*r.height/2};});
-   await p.mouse.click(washerPoint.x,washerPoint.y);await p.waitForTimeout(400);check(await p.evaluate(id=>ui.sel?.id===id,washerPoint.id),'cut wall does not block real furniture click '+JSON.stringify({washerPoint,selection:await p.evaluate(()=>ui.sel)}));if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await p.locator('#vSelection').click();await p.waitForTimeout(1100);
+   await p.mouse.click(washerPoint.x,washerPoint.y);await p.waitForTimeout(400);check(await p.evaluate(id=>ui.sel?.id===id,washerPoint.id),'cut wall does not block real furniture click '+JSON.stringify({washerPoint,selection:await p.evaluate(()=>ui.sel)}));if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await verification.clickCanvasTool(p,'#vSelection');await p.waitForTimeout(1100);
    // Stored low-wall preference must never cut the walk-through architecture.
    await p.evaluate(()=>mutate(()=>state.scene3d={...state.scene3d,cut:1.2}));await p.waitForTimeout(1100);await p.locator('[data-mode="walk"]').click();await p.waitForTimeout(400);
    const walk=await p.evaluate(()=>{const d=__observation;let clips=0,top=0;d.architecture.updateWorldMatrix(true,true);d.architecture.traverse(o=>{if(!o.isMesh)return;clips+=(Array.isArray(o.material)?o.material:[o.material]).filter(m=>m.clippingPlanes?.length).length;top=Math.max(top,new d.T.Box3().setFromObject(o).max.y);});return {walking:View3D.walking(),clips,top,eye:d.camera.position.y,cut:state.scene3d.cut,fov:d.camera.fov,aspect:d.camera.aspect};});

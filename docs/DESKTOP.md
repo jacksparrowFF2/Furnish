@@ -38,7 +38,7 @@ Chrome／Edge 的缓存不由桌面版直接读取。如果尚有仅存在浏览
 
 本机包的 `furnish-desktop.json` 指向源码目录，因此修改该目录的网页脚本、样式或资产后，在桌面窗口刷新即可加载。开发者工具位于“视图 → 开发者工具”。修改后端后通过原启动协议重启服务；修改 `desktop/` 壳代码或 Electron 运行时则需更新打包文件并重启，单独刷新页面不会更新 `resources/app` 中的副本。
 
-涉及布置编辑、保存、导入或恢复的验收，先复制顶部保存状态显示的当前正式文件，再用同一打包 EXE 及 `FURNISH_DESKTOP_ROOT`、`FURNISH_DESKTOP_PROFILE`、`FURNISH_PORT` 指向独立源码／设计副本、缓存和空闲端口。复用 `scripts/verify-desktop.cjs` 的隔离方式；该脚本默认复制仓库 `projects/workspace.furnish.json`，不代表外置正式文件的最新内容。复现当前用户方案时应将已备份的正式文件放入隔离目录，且不复制指向正式保存目录的 `.local/storage.json`。不清理用户缓存或覆盖正式文件来制造一致。
+涉及布置编辑、保存、导入或恢复的验收，先复制顶部保存状态显示的当前正式文件，再用同一打包 EXE 及 `FURNISH_DESKTOP_ROOT`、`FURNISH_DESKTOP_PROFILE`、`FURNISH_PORT` 指向独立源码／设计副本、缓存和空闲端口。复用 `scripts/verify-desktop.cjs` 的隔离方式；该脚本默认复制仓库 `projects/workspace.furnish.json`，也可用 `FURNISH_TEST_PROJECT` 指定外置正式文件，原文件散列在验收前后核对，所有修改只写入副本。EXE默认共用本机配置路径发现，也接受命令行显式路径。复现当前用户方案时不复制指向正式保存目录的 `.local/storage.json`，不清理用户缓存或覆盖正式文件来制造一致。
 
 桌面优先不取代按改动范围执行的 HTTP／断网 file:// 兼容验收。尤其修改加载机制时仍须实际验证两个入口。
 

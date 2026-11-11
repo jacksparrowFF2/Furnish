@@ -1,3 +1,3 @@
 'use strict';
-process.argv.push('--net-width-only');
-require('./test-cabinet-back-components-ui.cjs');
+process.argv.push('--builder-editing-only');
+require('./test-cabinet-ui.cjs');

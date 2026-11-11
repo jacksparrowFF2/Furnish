@@ -3,13 +3,13 @@ async(page,V)=>{
  for(const mode of ['http','file']){
   const ctx=await page.context().browser().newContext({viewport:{width:1450,height:1000},offline:mode==='file'}),p=await ctx.newPage();
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    await p.evaluate(()=>{const r=PLAN.rooms.find(r=>r.counted!==false),b=bbox(r.poly),x=(b[0]+b[2])/2,y=(b[1]+b[3])/2;mutate(()=>{Object.assign(state,FurnishFloorFinish.setLayers(state,PLAN,[r.id],{rawZ:0,tileThickness:10,baseThickness:50,bathroomBaseThickness:45}));state.ceilings=FurnishCeiling.setRegion(state,{id:'height-ceiling',name:'吊顶高度验收',polygon:[[x-300,y-300],[x+300,y-300],[x+300,y+300],[x-300,y+300]],style:'flat',height:2400,thickness:12,center:true,sections:[]}).ceilings;});});
    await p.evaluate(()=>{const r=state.ceilings.regions.find(r=>r.id==='height-ceiling');mutate(()=>{state.ceilings=FurnishCeiling.setRegion(state,{...r,id:'height-ring',name:'中央板高度',style:'ring',polygon:r.polygon.map(p=>p.map((v,i)=>v+(v-(r.polygon[0][i]+r.polygon[2][i])/2))),sections:[FurnishCeiling.componentPreset('gypsum','plain')],center:true,centerConnection:{mode:'independent',height:2500,inset:450}}).ceilings;});});
-   await p.locator('#ceiling-open').click();await p.locator('[data-design="region"]').selectOption('height-ring');await p.locator('[data-design-stage="section"]').click();await p.locator('[data-assembly-part="center"]').click();
+   await V.clickCanvasTool(p,'#ceiling-open');await p.locator('[data-design="region"]').selectOption('height-ring');await p.locator('[data-design-stage="section"]').click();await p.locator('[data-assembly-part="center"]').click();
    const center=p.locator('[data-assembly-key="centerHeight"]');if(await center.inputValue()!=='2440')throw Error('Center input datum mismatch');await center.fill('2450');await p.waitForFunction(()=>!document.querySelector('[data-design-action="save"]').disabled);await p.locator('[data-design-action="save"]').click();
    if(await p.evaluate(()=>state.ceilings.regions.find(r=>r.id==='height-ring').centerConnection.height)!==2510)throw Error('Center save datum mismatch');
-   await p.locator('#ceiling-open').click();await p.locator('[data-design="region"]').selectOption('height-ceiling');await p.locator('[data-design-stage="area"]').click();
+   await V.clickCanvasTool(p,'#ceiling-open');await p.locator('[data-design="region"]').selectOption('height-ceiling');await p.locator('[data-design-stage="area"]').click();
    const input=p.locator('[data-design="height"]');if(await input.inputValue()!=='2340')throw Error('Input must use finished floor');
    await input.fill('2350');await p.waitForFunction(()=>!document.querySelector('[data-design-action="save"]').disabled);
    await p.locator('[data-design-action="save"]').click();

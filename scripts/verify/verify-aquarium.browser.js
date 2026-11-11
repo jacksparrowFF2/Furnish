@@ -8,7 +8,7 @@ async (page,verification)=>{
   for(const label of ['正面','斜视']){await p.getByRole('button',{name:label,exact:true}).click();await p.screenshot({path:root+'output/aquarium/'+mode+'-'+(label==='正面'?'front':'angle')+'.png'});}
   await p.getByRole('button',{name:'查看空缸',exact:true}).click();check(await p.evaluate(()=>{let hidden=0;window.aquariumPreview.model.traverse(o=>{if(['aquascape','water'].includes(o.userData.aquariumPart)&&!o.visible)hidden++;});return hidden===2;}),'empty view');
   await p.screenshot({path:root+'output/aquarium/'+mode+'-empty.png'});await p.getByRole('button',{name:'背面',exact:true}).click();
-  await p.goto(base+'index.html');await p.locator('#lib').waitFor();await p.locator('#lib').getByText('米家智能鱼缸 2 Pro',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
+  await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();await p.locator('#lib').getByText('米家智能鱼缸 2 Pro',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
   check(await p.evaluate(id=>{const f=getF(id);return f.w===505&&f.d===292&&f.h===334&&f.mountHeight===0&&f.model==='智能鱼缸 2 Pro';},id),'creation');
   for(const [selector,value,key] of [['#fMountHeight','750','mountHeight'],['#fH','400','h'],['#fW','600','w'],['#fD','320','d']]){
    await verification.editFurnitureField(p,selector,value);check(await p.evaluate(({id,key,value})=>getF(id)[key]===Number(value),{id,key,value}),key+' edit');

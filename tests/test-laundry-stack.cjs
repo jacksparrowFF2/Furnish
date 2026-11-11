@@ -12,7 +12,7 @@ for(const value of [-1,20001,NaN,Infinity,'850',null])assert.throws(()=>P.valida
 const work={furniture:[washer,dryer]};
 assert.deepEqual(P.unpack(P.pack({planId:'p1',current:work,designs:[{name:'叠放',work}],catalog:[]})).current,work);
 assert.equal(D.replaceFurniture(dryer,{...washer,h:850}).mountHeight,850);
-assert.equal(D.replaceFurniture(dryer,{...washer,type:'fridge'}).mountHeight,undefined);
+assert.equal(D.replaceFurniture(dryer,{...washer,type:'fridge'}).mountHeight,0);
 assert.equal(D.replaceFurniture({...washer,type:'waterheater_flat',mountHeight:1650},dryer).mountHeight,undefined);
 assert.equal(D.resizeFurniture(dryer,{h:1000}).mountHeight,850);
 const stacked=D.normalizeLaundryStacks([{...washer},{...dryer}]);

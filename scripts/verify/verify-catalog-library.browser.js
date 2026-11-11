@@ -3,7 +3,7 @@ async (page,V)=>{
  for(const [mode,url,offline] of [['http',V.baseURL+'index.html',false],['file',V.fileBase+'index.html',true]]){
   const context=await page.context().browser().newContext({viewport:{width:1500,height:950},offline}),p=await context.newPage(),errors=[];
   const screenshot=async name=>{await p.waitForTimeout(450);await p.screenshot({path:V.output('playwright/catalog-library/'+mode+'-'+name+'.png')});};
-  p.on('pageerror',e=>errors.push(e.message));await p.goto(url);
+  p.on('pageerror',e=>errors.push(e.message));await p.goto(url);await p.waitForFunction(()=>!repositoryBooting);
   await p.waitForFunction(()=>typeof FurnishCatalog!=='undefined');
   await p.evaluate(()=>{mutate(()=>{state.furniture=[];});renderAll();});
   const snapshot=await p.evaluate(()=>JSON.stringify(state));
@@ -21,10 +21,11 @@ async (page,V)=>{
   assert(await p.evaluate(()=>JSON.stringify(state))===beforeResize,'pane width never edits project');
   await p.reload();await p.waitForFunction(()=>!!window.FurnishCatalog);assert(Number(await handle.getAttribute('aria-valuenow'))===initial+130,'width survives reload');
   await screenshot('resized');await handle.dblclick();assert(Number(await handle.getAttribute('aria-valuenow'))===248,'double click default');
-  assert(await columns()===initialColumns,'narrowing library restores card columns');
+  await p.waitForFunction(n=>getComputedStyle(document.querySelector('#lib .lib-grid')).gridTemplateColumns.split(' ').length===n,initialColumns);assert(await columns()===initialColumns,'narrowing library restores card columns');
 
   await p.locator('#catalog-filters').evaluate(el=>el.open=true);await p.locator('#catalog-use').selectOption('pet');
-  assert(await p.locator('#lib .item').count()===4,'four pet items');
+  const petCount=await p.evaluate(()=>FurnishCatalogData.browseLibrary().flatMap(c=>c.items).filter(it=>FurnishCatalogData.itemUses(it).includes('pet')).length);
+  assert(petCount>0&&await p.locator('#lib .item').count()===petCount,'pet filter shows every declared pet product');
   await p.locator('#libSearch').fill('鱼缸');
   assert(await p.locator('#lib .item').count()===1,'search intersects use');
   await p.locator('#lib [data-favorite]').click();

@@ -2,7 +2,7 @@ async (page,verification)=>{
  const context=await page.context().browser().newContext({viewport:{width:1500,height:950}}),p=await context.newPage(),errors=[],dir='output/playwright/workflow-tools/',check=(v,m)=>{if(!v)throw Error(m);};p.on('pageerror',e=>errors.push(e.message));
  const importUI=async(tab,file)=>{await tab.getByRole('button',{name:'工作台',exact:true}).click();await tab.getByRole('button',{name:'备份／加载项目',exact:true}).click();await tab.locator('#pr-file').setInputFiles(file);await tab.locator('#pr-restore-confirm').click();await tab.locator('#dlg').waitFor({state:'hidden'});};
  try{
-  await p.goto((verification.baseURL+'index.html'));await p.locator('#drawing-compass').waitFor();await importUI(p,dir+'reimport-downloaded.furnish.json');await p.locator('#drawing-right').click();
+  await p.goto((verification.baseURL+'index.html'));await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();await importUI(p,dir+'reimport-downloaded.furnish.json');await p.locator('#drawing-right').click();
   await p.locator('#gRooms [data-room]').first().click();await p.locator('#room-net-pick').click();
   const target=await p.evaluate(()=>{const r=ROOMS.find(r=>r.id===ui.sel.id),at=[r.at[0]-400,r.at[1]-300],screen=drawingPoint(at),matrix=svg.getScreenCTM();return {x:screen[0]*matrix.a+screen[1]*matrix.c+matrix.e,y:screen[0]*matrix.b+screen[1]*matrix.d+matrix.f,at};});await p.mouse.click(target.x,target.y);
   check(await p.locator('#gRoomNet').count()===1,'section preview exists after rotated pointer selection');const before=await p.evaluate(()=>state.measures.length);await p.locator('#room-net-save').click();check(await p.evaluate(()=>state.measures.length)===before+2,'save two endpoints');

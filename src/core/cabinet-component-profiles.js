@@ -44,6 +44,21 @@
   return B().validate(B().fit(copy(out)));
  }
  function state(p,m){if(p.kind==='multiDoor'){const s=p.segments.find(s=>s.id===m.segmentId)??p.segments[0],leaf=s.leaves[m.leaf];return leaf?{phase:leaf.open?(leaf.angle??leaf.maxAngle??s.maxAngle)/(leaf.maxAngle??s.maxAngle):0,angle:(Math.sign(m.angle)||1)*(leaf.maxAngle??s.maxAngle)*Math.PI/180,segment:s.id,leafId:leaf.id}:null;}if(['drawerModule','drawers'].includes(p.kind)){const value=B().drawerStates(p)[m.lane];return value?{phase:value.open?value.extension:0}:null;}if(p.kind==='slidingTop')return {phase:p.open?p.extension??1:0};return {phase:0};}
+ function rigidAnchors(b,p){
+  if(p.kind!=='board'||!p.profile)return [0,0,0];
+  const r=p.profile,s=r.box,base=r.baseline;
+  // A rigid thickness cannot use a proportionally scaled centre at the outer
+  // face: shrinking a top board would otherwise leave its top above the box.
+  // Explicitly moved/resized boards keep their own placement instead.
+  const anchors=[0,0,0];
+  for(const [i,k]of ['w','h','d'].entries()){
+   const span=r.bounds.hi[i]-r.bounds.lo[i],coordinate=['x','y','z'][i];
+   if(span>s.thickness+.001||p[k]!==base[k]||p[coordinate]!==base[coordinate])continue;
+   const low=[-s.w/2,0,-s.d/2][i],high=[s.w/2,s.h,s.d/2][i],side=Math.abs(r.bounds.lo[i]-low)<1e-5?1:Math.abs(r.bounds.hi[i]-high)<1e-5?-1:0;
+   anchors[i]=side*(span*b.thickness/s.thickness-span*b[k]/s[k])/2;
+  }
+  return anchors;
+ }
  function transformed(b,p,{includeHidden=false}={}){
   const r=p.profile,s=r.box,scale=[b.w/s.w,b.h/s.h,b.d/s.d],sourceBay=r.bay,targetBay=p.bay?B().bays(b).find(v=>v.id===p.bay):null,base=r.baseline,parts=copy(r.parts),sx=targetBay?(targetBay.right-targetBay.left)/(sourceBay.right-sourceBay.left):scale[0];
   const x=v=>targetBay?targetBay.left+(v-sourceBay.left)*sx:v*scale[0];let sy=scale[1],sz=scale[2],dy=0,dz=0;
@@ -52,7 +67,8 @@
   if(p.kind==='drawerModule'){sy=(p.height-p.boxTopInset)/(base.height-base.boxTopInset||1);dy=p.bottom*B().bodyHeight(b)-base.bottom*s.h*sy;}
   if(p.kind==='board'){const factor=(k,i)=>p[k]/(r.bounds.hi[i]-r.bounds.lo[i]||p[k])*((r.bounds.hi[i]-r.bounds.lo[i]<=s.thickness+.001&&p[k]===base[k])?b.thickness/s.thickness:scale[i]);scale[0]=factor('w',0);sy=factor('h',1);sz=factor('d',2);dy=p.y*scale[1]-(r.bounds.lo[1]+r.bounds.hi[1])/2*sy;dz=p.z*scale[2]-(r.bounds.lo[2]+r.bounds.hi[2])/2*sz;}
   if(p.kind==='multiDoor'&&p.range&&base.range){const oldBottom=base.range.bottom*s.h-(base.drop??0),oldTop=base.range.top*s.h,newBottom=p.range.bottom*b.h-(p.drop??0),newTop=p.range.top*b.h;sy=(newTop-newBottom)/(oldTop-oldBottom||1);dy=newBottom-oldBottom*sy;}
-  const map=(position,accessory=false)=>{let px=x(position[0]),py=position[1]*sy+dy,pz=position[2]*sz+dz;if(p.kind==='divider')px=position[0]*scale[0]+(-b.w/2+b.thickness+p.at*(b.w-2*b.thickness))-(-s.w/2+s.thickness+base.at*(s.w-2*s.thickness))*scale[0];if(p.kind==='board')px=p.x*b.w/s.w+(position[0]-(r.bounds.lo[0]+r.bounds.hi[0])/2)*scale[0];return [px,py,pz];};
+  const anchors=rigidAnchors(b,p);
+  const map=(position,accessory=false)=>{let px=x(position[0]),py=position[1]*sy+dy,pz=position[2]*sz+dz;if(p.kind==='divider')px=position[0]*scale[0]+(-b.w/2+b.thickness+p.at*(b.w-2*b.thickness))-(-s.w/2+s.thickness+base.at*(s.w-2*s.thickness))*scale[0];if(p.kind==='board')px=p.x*b.w/s.w+(position[0]-(r.bounds.lo[0]+r.bounds.hi[0])/2)*scale[0];return [px+anchors[0],py+anchors[1],pz+anchors[2]];};
   return parts.flatMap((part,index)=>{if(r.frame?.parts[index]?.hidden&&!includeHidden)return [];const m=part.motion,pose=m?state(p,m):null;if(m&&!pose)return [];const accessory=part.geometry.kind==='sphere'||part.material.color==='#71685d',factors=[p.kind==='board'?scale[0]:sx,sy,sz],g=part.geometry;part.position=map(part.position,accessory);if(g.kind==='box')g.size=g.size.map((n,i)=>p.kind==='board'?n*factors[i]:accessory?n:n<=s.thickness+.001?n*b.thickness/s.thickness:n*factors[i]);else if(g.kind==='shape'){const shape=sh=>{sh.commands=sh.commands.map(c=>['M','L'].includes(c[0])?[c[0],c[1]*factors[0],c[2]*(g.angle?factors[2]:factors[1])]:c[0]==='A'?[c[0],c[1]*factors[0],c[2]*(g.angle?factors[2]:factors[1]),c[3],...c.slice(4)]:c);sh.holes.forEach(shape);};shape(g.shape);g.depth*=p.kind==='board'?factors[g.angle?1:2]:b.thickness/s.thickness;}
    if(m)part.motion={...m,pivot:map(m.pivot),angle:pose.angle??m.angle,travel:m.travel*scale[2],phase:pose.phase,segmentId:pose.segment,leafId:pose.leafId};return [part];});
  }
@@ -232,7 +248,7 @@
   if(!f.cabinet.boxes.some(b=>b.components.some(p=>p.profile)))return [];const key=JSON.stringify([f.cabinet,passage]);if(zoneCache.has(key))return zoneCache.get(key);
   const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),V=root.FurnishBoardCollision||require('./board-motion-collision.js'),groups=new Map();
   for(const board of M.boards(f,{includeStatic:true})){const pick=board.metadata.cabinetBuilder;if(!pick?.componentId||!B().selection(f,pick).component?.profile||!board.motion)continue;const m=board.motion,part=board.metadata.cabinetPart,key=JSON.stringify([pick.boxId,pick.componentId,m.section,m.leaf,part?.drawer,part?.lane,part?.lid]),g=groups.get(key)??{boards:[],motion:m,pick,part};g.boards.push(board);groups.set(key,g);}
-  const result=[...groups.values()].flatMap(({boards,motion:m,pick,part})=>{const points=[],closed=boards.flatMap(b=>V.vertices(b,0)),steps=m.axis==='z'?1:Math.max(1,Math.ceil(Math.abs(m.angle)*180/Math.PI));for(let step=0;step<=steps;step++)for(const b of boards)points.push(...V.vertices(b,step/steps));const radius=m.axis==='z'?0:Math.max(...closed.map(v=>Math.hypot(v[m.axis==='x'?1:0]-m.pivot[m.axis==='x'?1:0],v[2]-m.pivot[2]))),margin=radius*(1-Math.cos(Math.abs(m.angle??0)/steps/2))+.001,pad=poly=>hull(poly.flatMap(p=>[[-1,-1],[-1,1],[1,-1],[1,1]].map(([a,b])=>[p[0]+a*margin,p[1]+b*margin]))),poly=pad(points.map(v=>[v[0],v[2]])),left=Math.min(...points.map(v=>v[0]))-margin,right=Math.max(...points.map(v=>v[0]))+margin,front=Math.max(...points.map(v=>v[2]))+margin,bottom=Math.min(...points.map(v=>v[1]))-margin,top=Math.max(...points.map(v=>v[1]))+margin,common={column:m.column,boxId:pick.boxId,componentId:pick.componentId,...part},zone={...common,kind:m.kind,poly,ranges:[[bottom,top]],...(m.axis==='x'?{sweep:{left,right,profile:pad(points.map(v=>[v[2],v[1]])),cx:0,cy:0,rot:0,flip:false}}:{})};return [zone,...(passage>0?[{...common,kind:'cabinetpassage',poly:[[left,front],[right,front],[right,front+passage],[left,front+passage]],ranges:[[0,2000]]}]:[])];});
+  const result=[...groups.values()].flatMap(({boards,motion:m,pick,part})=>{const points=[],closed=boards.flatMap(b=>V.vertices(b,0)),steps=m.axis==='z'?1:Math.max(1,Math.ceil(Math.abs(m.angle)*180/Math.PI));for(let step=0;step<=steps;step++)for(const b of boards)points.push(...V.vertices(b,step/steps));const radius=m.axis==='z'?0:Math.max(...closed.map(v=>Math.hypot(v[m.axis==='x'?1:0]-m.pivot[m.axis==='x'?1:0],v[2]-m.pivot[2]))),margin=radius*(1-Math.cos(Math.abs(m.angle??0)/steps/2))+.001,pad=poly=>hull(poly.flatMap(p=>[[-1,-1],[-1,1],[1,-1],[1,1]].map(([a,b])=>[p[0]+a*margin,p[1]+b*margin]))),poly=pad(points.map(v=>[v[0],v[2]])),left=Math.min(...points.map(v=>v[0]))-margin,right=Math.max(...points.map(v=>v[0]))+margin,front=Math.max(...points.map(v=>v[2]))+margin,bottom=Math.min(...points.map(v=>v[1]))-margin,top=Math.max(...points.map(v=>v[1]))+margin,common={column:m.column,boxId:pick.boxId,componentId:pick.componentId,...part},zone={...common,kind:m.kind,poly,ranges:[[bottom,top]],...(m.axis==='x'?{sweep:{left,right,profile:pad(points.map(v=>[v[2],v[1]])),cx:0,cy:0,rot:0,flip:false}}:{})};return [zone,...(passage>0&&m.kind==='cabinetdrawer'?[{...common,kind:'cabinetpassage',poly:[[left,front],[right,front],[right,front+passage],[left,front+passage]],ranges:[[0,2000]]}]:[])];});
   zoneCache.set(key,result);if(zoneCache.size>32)zoneCache.delete(zoneCache.keys().next().value);return result;
  }
  function validate(profile){

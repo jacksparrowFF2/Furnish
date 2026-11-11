@@ -11,7 +11,7 @@ async (page,verification)=>{
     check(await p.evaluate(()=>{const d=window.dishwasherPreview;return d.model.userData.countertopDishwasher===true&&d.f.dishwasherDoorOpen===document.querySelector('#pose').textContent.includes('600');}),'production preview pose');
     for(const [label,view] of [['正面','front'],['斜视','angle'],['侧面','side']]){await p.getByRole('button',{name:label,exact:true}).click();await p.screenshot({path:root+'output/dishwasher/'+mode+'-'+pose+'-'+view+'.png'});}
    }
-   await p.goto(base+'index.html');await p.locator('#lib').waitFor();await p.locator('#lib').getByText('米家台面洗碗机 · 5套',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
+   await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();await p.locator('#lib').getByText('米家台面洗碗机 · 5套',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
    check(await p.evaluate(id=>{const f=getF(id);return f.w===550&&f.d===350&&f.h===598&&f.mountHeight===860&&f.dishwasherDoorOpen===false;},id),'catalog creation');
    await p.locator('#dishwasher-door').selectOption('open');check(await p.evaluate(id=>getF(id).dishwasherDoorOpen,id),'door edit');check(await p.locator('[data-dishwasher-fold="open"]').count()>0,'2D folded door');
    await p.evaluate(()=>undo());check(await p.evaluate(id=>getF(id).dishwasherDoorOpen===false,id),'undo door');await p.evaluate(()=>redo());check(await p.evaluate(id=>getF(id).dishwasherDoorOpen===true,id),'redo door');

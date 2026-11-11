@@ -3,7 +3,7 @@ async (page,verification)=>{
  for(const mode of ['file','http']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));const check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
-  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib').waitFor();
+  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();
   const item=p.locator('#lib').getByText('管道包覆柜',{exact:true}).first();check(await item.count()===1,'catalog entry');await item.click();
   const id=await p.evaluate(()=>selIds()[0]);check(await p.evaluate(id=>{const f=getF(id);return f.type==='pipebox'&&f.pipeBoxThickness===18&&f.mountHeight===0&&!f.cabinet;},id),'create');
   for(const [selector,value,key] of [['#fW','600','w'],['#fD','400','d'],['#fH','1200','h'],['#fPipeBoxThickness','25.5','pipeBoxThickness'],['#fMountHeight','750','mountHeight']]){

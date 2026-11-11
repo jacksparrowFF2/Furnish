@@ -4,14 +4,18 @@ const path = require('node:path');
 const os = require('node:os');
 const vm = require('node:vm');
 const {spawnSync} = require('node:child_process');
+const {previewFiles,localAssetPath}=require('./lib/preview-files.cjs');
 const root = path.resolve(__dirname, '..');
 const keepGoing=process.argv.includes('--keep-going'),failures=[];
+const timeout=Number(process.env.FURNISH_CHECK_TIMEOUT||900000);
+if(!Number.isSafeInteger(timeout)||timeout<1)throw Error('FURNISH_CHECK_TIMEOUT must be a positive integer in milliseconds');
 function run(args) {
-  const result = spawnSync(process.execPath, args, {cwd:root, encoding:'utf8'});
-  if (result.error) throw result.error;
-  if (result.status !== 0) {
+  const result = spawnSync(process.execPath, args, {cwd:root, encoding:'utf8',timeout,windowsHide:true});
+  if (result.error && !keepGoing) throw result.error;
+  if (result.error || result.status !== 0) {
     process.stdout.write(result.stdout || '');
     process.stderr.write(result.stderr || '');
+    if(result.error)console.error(result.error.message);
     if(!keepGoing)process.exit(result.status || 1);
     failures.push(args.join(' '));return false;
   }
@@ -23,6 +27,7 @@ function filesIn(dir) {
     return entry.isDirectory() ? filesIn(file) : [file];
   });
 }
+console.log('CHECK entry assets and shared script declarations');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const classicSources = [];
 for (const match of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)) {
@@ -54,24 +59,33 @@ for (const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"]+)"
 const sources = filesIn(path.join(root, 'src'));
 // Generated production previews have their own module scope. A generator's
 // syntax can be valid while the inserted model duplicates a declaration.
-const previews=require('./lib/preview-files.cjs').previewFiles(path.join(root,'output'));
+console.log('CHECK generated preview pages');
+const previews=previewFiles(path.join(root,'output'));
 for(const preview of previews){
+ try{
   const classic=[];
   for(const match of fs.readFileSync(preview,'utf8').matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){
     if(/importmap/.test(match[1]))continue;
     const src=match[1].match(/\bsrc="([^"]+)"/);
-    if(src){if(!/^(?:https?:|data:)/.test(src[1])){const asset=path.resolve(path.dirname(preview),src[1]);if(!fs.existsSync(asset))throw Error('Missing preview asset: '+asset);if(!/type="module"/.test(match[1]))classic.push(fs.readFileSync(asset,'utf8'));}continue;}
+    if(src){const asset=localAssetPath(src[1],preview);if(asset){if(!fs.existsSync(asset))throw Error('Missing preview asset: '+asset);if(!/type="module"/.test(match[1]))classic.push(fs.readFileSync(asset,'utf8'));}continue;}
     if(/type="module"/.test(match[1])){
       const dir=fs.mkdtempSync(path.join(os.tmpdir(),'furnish-preview-check-')),file=path.join(dir,'preview.mjs');
       try{fs.writeFileSync(file,match[2]);run(['--check',file]);}finally{fs.unlinkSync(file);fs.rmdirSync(dir);}
     }else classic.push(match[2]);
   }
   new vm.Script(classic.join('\n;\n'),{filename:preview});
+ }catch(error){
+  if(!keepGoing)throw error;
+  console.error('FAIL '+path.relative(root,preview)+': '+error.message);
+  failures.push(path.relative(root,preview)+': '+error.message);
+ }
 }
+console.log('CHECK source, script and test syntax');
 for (const file of [...sources, ...filesIn(__dirname), ...filesIn(path.join(root,'tests'))].filter(f => /\.(?:js|cjs|mjs)$/.test(f))) run(['--check',file]);
 const tests=filesIn(path.join(root,'tests')).filter(f => /^test-.*\.cjs$/.test(path.basename(f))).sort();
 if(!tests.length) throw Error('No regression tests found');
 for (const file of tests) {
+  console.log('RUN '+path.relative(root,file));
   if(run([file]))console.log('PASS ' + path.relative(root,file));else console.log('FAIL '+path.relative(root,file));
 }
 run([path.join(__dirname,'validate-plans.mjs')]);

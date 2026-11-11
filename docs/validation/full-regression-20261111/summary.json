@@ -1,0 +1,1526 @@
+{
+  "status": "PASS",
+  "baseline": "2f9b9211",
+  "method": "Full runs followed by scoped fixes and affected-case reruns in isolated copies; initial nonzero runs retained. No user project is used for mutation tests.",
+  "node": {
+    "currentSuites": 534,
+    "fullRunSuites": 533,
+    "initialPassed": 531,
+    "initialFailed": [
+      "test-desktop-native.cjs",
+      "test-furnish-mcp-desktop.cjs"
+    ],
+    "reruns": [
+      "output/full-regression-20261111/desktop-native-final.log",
+      "output/full-regression-20261111/mcp-desktop-final.log",
+      "output/full-regression-20261111/core-final-related.log"
+    ],
+    "newSuite": "tests/test-cabinet-profile-opening-rules.cjs",
+    "renamedSharedHarness": "tests/test-cabinet-back-components-ui.cjs -> tests/test-cabinet-ui.cjs (same default current profile flow; old file removed)",
+    "effectivePassed": 534,
+    "builtInPlans": 12,
+    "coverage": [
+      "tests/test-aircon-midea.cjs",
+      "tests/test-appliance-material-expansion.cjs",
+      "tests/test-appliance-module-boundaries.cjs",
+      "tests/test-appliance-pbr.cjs",
+      "tests/test-aquarium.cjs",
+      "tests/test-armchair-berlin.cjs",
+      "tests/test-armchair.cjs",
+      "tests/test-array-directions-ui.cjs",
+      "tests/test-array-directions.cjs",
+      "tests/test-art-glass.cjs",
+      "tests/test-artifact-layout.cjs",
+      "tests/test-autosave.cjs",
+      "tests/test-backend-auto-update.cjs",
+      "tests/test-balcony-garden.cjs",
+      "tests/test-bath-heater-se2.cjs",
+      "tests/test-bay-assemblies.cjs",
+      "tests/test-bay-editing.cjs",
+      "tests/test-bay-upper-walls.cjs",
+      "tests/test-bay-windows.cjs",
+      "tests/test-beam-body-collisions.cjs",
+      "tests/test-beam-heights.cjs",
+      "tests/test-beam-roof.cjs",
+      "tests/test-beverage-can-print.cjs",
+      "tests/test-beverage-cans-ui.cjs",
+      "tests/test-beverage-cans.cjs",
+      "tests/test-blender-affine.cjs",
+      "tests/test-blender-appliance-asset.cjs",
+      "tests/test-blender-bookcase-asset.cjs",
+      "tests/test-blender-device.cjs",
+      "tests/test-blender-discovery.cjs",
+      "tests/test-blender-dishwasher-asset.cjs",
+      "tests/test-blender-fridge-motion.cjs",
+      "tests/test-blender-hood-asset.cjs",
+      "tests/test-blender-model-identities.cjs",
+      "tests/test-blender-part-identity.cjs",
+      "tests/test-blender-refined.cjs",
+      "tests/test-blender-render.cjs",
+      "tests/test-blender-sync.cjs",
+      "tests/test-blender-washer-asset.cjs",
+      "tests/test-blender-washer-materials.cjs",
+      "tests/test-blender-washer-tg10k60w.cjs",
+      "tests/test-block-array-ui.cjs",
+      "tests/test-block-placeholder.cjs",
+      "tests/test-bookcase-y52y09.cjs",
+      "tests/test-bottom-elevation.cjs",
+      "tests/test-browser-verification.cjs",
+      "tests/test-cabinet-adjacent-hinges.cjs",
+      "tests/test-cabinet-advanced.cjs",
+      "tests/test-cabinet-assembly.cjs",
+      "tests/test-cabinet-back-components.cjs",
+      "tests/test-cabinet-board-height-ui.cjs",
+      "tests/test-cabinet-boundary-snapping.cjs",
+      "tests/test-cabinet-box-groups.cjs",
+      "tests/test-cabinet-builder-editing.cjs",
+      "tests/test-cabinet-builder-multidoor.cjs",
+      "tests/test-cabinet-builder-open-zones.cjs",
+      "tests/test-cabinet-builder-resize.cjs",
+      "tests/test-cabinet-builder-ui.cjs",
+      "tests/test-cabinet-builder-upgrade.cjs",
+      "tests/test-cabinet-builder.cjs",
+      "tests/test-cabinet-catalog.cjs",
+      "tests/test-cabinet-complete-lego.cjs",
+      "tests/test-cabinet-component-edit.cjs",
+      "tests/test-cabinet-component-parity.cjs",
+      "tests/test-cabinet-components.cjs",
+      "tests/test-cabinet-composition-ui.cjs",
+      "tests/test-cabinet-composition.cjs",
+      "tests/test-cabinet-custom-fronts.cjs",
+      "tests/test-cabinet-depth-label-ui.cjs",
+      "tests/test-cabinet-design-upgrade.cjs",
+      "tests/test-cabinet-details-ui.cjs",
+      "tests/test-cabinet-details.cjs",
+      "tests/test-cabinet-dimensions.cjs",
+      "tests/test-cabinet-door-settings.cjs",
+      "tests/test-cabinet-drawer-assembly.cjs",
+      "tests/test-cabinet-drawer-joints.cjs",
+      "tests/test-cabinet-drawer-position.cjs",
+      "tests/test-cabinet-edit-operations.cjs",
+      "tests/test-cabinet-editing-audit.cjs",
+      "tests/test-cabinet-editor-completion.cjs",
+      "tests/test-cabinet-equalize.cjs",
+      "tests/test-cabinet-full-width-drawers.cjs",
+      "tests/test-cabinet-horizontal-editing.cjs",
+      "tests/test-cabinet-independent.cjs",
+      "tests/test-cabinet-interior-distances.cjs",
+      "tests/test-cabinet-keyboard.cjs",
+      "tests/test-cabinet-layer-visibility.cjs",
+      "tests/test-cabinet-leaf-limits.cjs",
+      "tests/test-cabinet-model.cjs",
+      "tests/test-cabinet-module-widths.cjs",
+      "tests/test-cabinet-native-independence-ui.cjs",
+      "tests/test-cabinet-native-independence.cjs",
+      "tests/test-cabinet-net-depth-desktop.cjs",
+      "tests/test-cabinet-net-depth.cjs",
+      "tests/test-cabinet-net-width-ui.cjs",
+      "tests/test-cabinet-obstacle-messages.cjs",
+      "tests/test-cabinet-opening-3d.cjs",
+      "tests/test-cabinet-opening-volume-model.cjs",
+      "tests/test-cabinet-overlay.cjs",
+      "tests/test-cabinet-palette.cjs",
+      "tests/test-cabinet-parameter-parity-ui.cjs",
+      "tests/test-cabinet-parameter-parity.cjs",
+      "tests/test-cabinet-part-inspector.cjs",
+      "tests/test-cabinet-placement-parity.cjs",
+      "tests/test-cabinet-preview.cjs",
+      "tests/test-cabinet-profile-opening-rules.cjs",
+      "tests/test-cabinet-profile-production.cjs",
+      "tests/test-cabinet-profile-resize-bounds.cjs",
+      "tests/test-cabinet-profile-thickness.cjs",
+      "tests/test-cabinet-removable.cjs",
+      "tests/test-cabinet-resize-direction.cjs",
+      "tests/test-cabinet-section-doors.cjs",
+      "tests/test-cabinet-selected-widths.cjs",
+      "tests/test-cabinet-setting-inheritance.cjs",
+      "tests/test-cabinet-shelf-clearances.cjs",
+      "tests/test-cabinet-side-closure.cjs",
+      "tests/test-cabinet-snapped-resize.cjs",
+      "tests/test-cabinet-stacked-boxes.cjs",
+      "tests/test-cabinet-tiers-ui.cjs",
+      "tests/test-cabinet-tiers.cjs",
+      "tests/test-cabinet-top-closure.cjs",
+      "tests/test-cabinet-ui.cjs",
+      "tests/test-cabinet-workspace.cjs",
+      "tests/test-cabinet.cjs",
+      "tests/test-camera-calibration.cjs",
+      "tests/test-canvas-cancel.cjs",
+      "tests/test-canvas-collision-scope.cjs",
+      "tests/test-canvas-pointer-frames.cjs",
+      "tests/test-canvas-render-cache.cjs",
+      "tests/test-cat-food-2kg.cjs",
+      "tests/test-cat-tower.cjs",
+      "tests/test-cat-tree.cjs",
+      "tests/test-catalog-browsing.cjs",
+      "tests/test-catalog-links.cjs",
+      "tests/test-catalog-navigation.cjs",
+      "tests/test-ceiling-aluminum.cjs",
+      "tests/test-ceiling-assembly.cjs",
+      "tests/test-ceiling-boundary-edit.cjs",
+      "tests/test-ceiling-channel-switch.cjs",
+      "tests/test-ceiling-check-broadphase.cjs",
+      "tests/test-ceiling-components.cjs",
+      "tests/test-ceiling-continuous-light.cjs",
+      "tests/test-ceiling-coplanar.cjs",
+      "tests/test-ceiling-corners.cjs",
+      "tests/test-ceiling-current.cjs",
+      "tests/test-ceiling-design.cjs",
+      "tests/test-ceiling-display.cjs",
+      "tests/test-ceiling-edge-distances.cjs",
+      "tests/test-ceiling-edge-gap.cjs",
+      "tests/test-ceiling-end-caps.cjs",
+      "tests/test-ceiling-height-measurements.cjs",
+      "tests/test-ceiling-height.cjs",
+      "tests/test-ceiling-lighting.cjs",
+      "tests/test-ceiling-merge.cjs",
+      "tests/test-ceiling-mirror-dimensions.cjs",
+      "tests/test-ceiling-mount-contact.cjs",
+      "tests/test-ceiling-panel-devices.cjs",
+      "tests/test-ceiling-panel-layout.cjs",
+      "tests/test-ceiling-plain-soffit.cjs",
+      "tests/test-ceiling-plan-display.cjs",
+      "tests/test-ceiling-regions.cjs",
+      "tests/test-ceiling-reuse.cjs",
+      "tests/test-ceiling-section-transforms.cjs",
+      "tests/test-ceiling-storage.cjs",
+      "tests/test-ceiling-uniform-inset.cjs",
+      "tests/test-ceilings.cjs",
+      "tests/test-centerline-walls.cjs",
+      "tests/test-chair-s05118.cjs",
+      "tests/test-chair-vihals.cjs",
+      "tests/test-check-preview-resources.cjs",
+      "tests/test-cherry-coffee-table.cjs",
+      "tests/test-clearance-labels-desktop.cjs",
+      "tests/test-codex-blender-autostart.cjs",
+      "tests/test-codex-blender-plugin.cjs",
+      "tests/test-codex-mcp-registration.cjs",
+      "tests/test-complete-template.cjs",
+      "tests/test-copy-purchase.cjs",
+      "tests/test-corner-bookcase-580.cjs",
+      "tests/test-corner-bookcase.cjs",
+      "tests/test-curtain-height.cjs",
+      "tests/test-curtains-sliding.cjs",
+      "tests/test-custom-plans.cjs",
+      "tests/test-cut-board-motion.cjs",
+      "tests/test-delivery.cjs",
+      "tests/test-design-consistency.cjs",
+      "tests/test-design-management.cjs",
+      "tests/test-design-switching.cjs",
+      "tests/test-design-workflow.cjs",
+      "tests/test-desktop-3d-soak.cjs",
+      "tests/test-desktop-diagnostics.cjs",
+      "tests/test-desktop-executable.cjs",
+      "tests/test-desktop-lifecycle.cjs",
+      "tests/test-desktop-native.cjs",
+      "tests/test-desktop.cjs",
+      "tests/test-dimension-density.cjs",
+      "tests/test-directional-config-order.cjs",
+      "tests/test-directional-heights.cjs",
+      "tests/test-directional-kitchen-solids.cjs",
+      "tests/test-directional-placement.cjs",
+      "tests/test-dishwasher-clearances.cjs",
+      "tests/test-dishwasher-project-v32.cjs",
+      "tests/test-dishwasher.cjs",
+      "tests/test-door-2d-refresh.cjs",
+      "tests/test-door-geometry.cjs",
+      "tests/test-double-doors.cjs",
+      "tests/test-downlight-section.cjs",
+      "tests/test-downlight.cjs",
+      "tests/test-drag-axis-lock.cjs",
+      "tests/test-drag-derived-cache.cjs",
+      "tests/test-drag-feature-snapping.cjs",
+      "tests/test-drag-model-validation-cache.cjs",
+      "tests/test-drawing-export.cjs",
+      "tests/test-drawing-readability.cjs",
+      "tests/test-drawing-walls.cjs",
+      "tests/test-drawing.cjs",
+      "tests/test-dxf-inspection.cjs",
+      "tests/test-dxf-outlines.cjs",
+      "tests/test-dxf-repair.cjs",
+      "tests/test-dxf-supplement.cjs",
+      "tests/test-dxf-templates.cjs",
+      "tests/test-editable-presets.cjs",
+      "tests/test-electrical-box.cjs",
+      "tests/test-elevation-controls.cjs",
+      "tests/test-elevation-snapping.cjs",
+      "tests/test-enclosed-boundary-distances.cjs",
+      "tests/test-entry-console.cjs",
+      "tests/test-entry-door-drop-desktop.cjs",
+      "tests/test-entry-door-drop.cjs",
+      "tests/test-entry-editor.cjs",
+      "tests/test-entry-open-bay.cjs",
+      "tests/test-entry-pegboard.cjs",
+      "tests/test-entry-shared-board.cjs",
+      "tests/test-entry-shoe-floor.cjs",
+      "tests/test-entry-structural-drag-desktop.cjs",
+      "tests/test-entry-structural-drag-ui.cjs",
+      "tests/test-entry-structural-drag.cjs",
+      "tests/test-fan-height.cjs",
+      "tests/test-fan-x231.cjs",
+      "tests/test-file-menu.cjs",
+      "tests/test-finish-guide.cjs",
+      "tests/test-finish-miter-snap.cjs",
+      "tests/test-floor-bulk-levels.cjs",
+      "tests/test-floor-finishes.cjs",
+      "tests/test-floor-origin-preview.cjs",
+      "tests/test-floor-origin-snap.cjs",
+      "tests/test-floor-unified-origin.cjs",
+      "tests/test-folding-chair-desktop.cjs",
+      "tests/test-folding-chair-state.cjs",
+      "tests/test-folding-table.cjs",
+      "tests/test-fotile.cjs",
+      "tests/test-free-zones-3d.cjs",
+      "tests/test-free-zones.cjs",
+      "tests/test-freeze-dry-bucket-desktop.cjs",
+      "tests/test-fridge-project-v31.cjs",
+      "tests/test-fridges.cjs",
+      "tests/test-functional-zones.cjs",
+      "tests/test-furnish-mcp-desktop.cjs",
+      "tests/test-furnish-mcp.cjs",
+      "tests/test-furniture-directions.cjs",
+      "tests/test-furniture-finished-datum.cjs",
+      "tests/test-furniture-fit.cjs",
+      "tests/test-furniture-groups.cjs",
+      "tests/test-furniture-height-measurements.cjs",
+      "tests/test-furniture-labels.cjs",
+      "tests/test-furniture-management.cjs",
+      "tests/test-furniture-production-solids.cjs",
+      "tests/test-furniture-recovery.cjs",
+      "tests/test-furniture-replacement.cjs",
+      "tests/test-furniture-snapping-audit.cjs",
+      "tests/test-furniture-solids-cache.cjs",
+      "tests/test-furniture-solids-coverage.cjs",
+      "tests/test-furniture-svg.cjs",
+      "tests/test-garment-photos-desktop.cjs",
+      "tests/test-garment-photos.cjs",
+      "tests/test-generator-part-identities.cjs",
+      "tests/test-group-directional-placement.cjs",
+      "tests/test-group-placement.cjs",
+      "tests/test-hob-cutout.cjs",
+      "tests/test-hob-link-options.cjs",
+      "tests/test-hob-openings.cjs",
+      "tests/test-hood-bay-modules.cjs",
+      "tests/test-hood-bay.cjs",
+      "tests/test-hood-cavity-clearance.cjs",
+      "tests/test-hood-cavity-details.cjs",
+      "tests/test-hood-geometry.cjs",
+      "tests/test-hood-project-v33.cjs",
+      "tests/test-i18n.cjs",
+      "tests/test-import-consistency.cjs",
+      "tests/test-inventory-array-rotation-ui.cjs",
+      "tests/test-inventory-array-rotation.cjs",
+      "tests/test-inventory-array-ui.cjs",
+      "tests/test-inventory-array.cjs",
+      "tests/test-kitchen-auto-avoid.cjs",
+      "tests/test-kitchen-corner-fit.cjs",
+      "tests/test-kitchen-corner-leaves.cjs",
+      "tests/test-kitchen-dish-basket.cjs",
+      "tests/test-kitchen-divider-input.cjs",
+      "tests/test-kitchen-dividers.cjs",
+      "tests/test-kitchen-door-pairing.cjs",
+      "tests/test-kitchen-door-widths.cjs",
+      "tests/test-kitchen-drawer-boundaries.cjs",
+      "tests/test-kitchen-drawer-snapping.cjs",
+      "tests/test-kitchen-drawer-tiers.cjs",
+      "tests/test-kitchen-edge-snapping.cjs",
+      "tests/test-kitchen-elevations.cjs",
+      "tests/test-kitchen-extension-resize.cjs",
+      "tests/test-kitchen-form.cjs",
+      "tests/test-kitchen-gap-input.cjs",
+      "tests/test-kitchen-outer-edges.cjs",
+      "tests/test-kitchen-overlay.cjs",
+      "tests/test-kitchen-partitions.cjs",
+      "tests/test-kitchen-plan-occlusion.cjs",
+      "tests/test-kitchen-plinth.cjs",
+      "tests/test-kitchen-preview.cjs",
+      "tests/test-kitchen-resize.cjs",
+      "tests/test-kitchen-right.cjs",
+      "tests/test-kitchen-run-handles.cjs",
+      "tests/test-kitchen-shelves.cjs",
+      "tests/test-kitchen-single-hinge.cjs",
+      "tests/test-kitchen-tall.cjs",
+      "tests/test-kitchen-thin-end.cjs",
+      "tests/test-kitchen-u.cjs",
+      "tests/test-kitchen-wall-adjust.cjs",
+      "tests/test-kitchen-worktop.cjs",
+      "tests/test-kitchen.cjs",
+      "tests/test-laundry-area.cjs",
+      "tests/test-laundry-back-alignment.cjs",
+      "tests/test-laundry-basin-joins.cjs",
+      "tests/test-laundry-cabinet.cjs",
+      "tests/test-laundry-carcass-ui.cjs",
+      "tests/test-laundry-carcass.cjs",
+      "tests/test-laundry-catalog.cjs",
+      "tests/test-laundry-existing-lego.cjs",
+      "tests/test-laundry-integrated.cjs",
+      "tests/test-laundry-notch-closure.cjs",
+      "tests/test-laundry-resize-vessel.cjs",
+      "tests/test-laundry-stack.cjs",
+      "tests/test-layered-cabinet-top-closure.cjs",
+      "tests/test-layout-dxf.cjs",
+      "tests/test-layout-geometry.cjs",
+      "tests/test-legacy-cabinet-upgrade.cjs",
+      "tests/test-litter-box.cjs",
+      "tests/test-local-archive-browser.cjs",
+      "tests/test-manifold-kitchen.cjs",
+      "tests/test-manifold-plan-projection.cjs",
+      "tests/test-manifold-wall-finish.cjs",
+      "tests/test-manifold-zero-gap.cjs",
+      "tests/test-manifold.cjs",
+      "tests/test-manual-save.cjs",
+      "tests/test-material-purchasing.cjs",
+      "tests/test-measure-boundaries.cjs",
+      "tests/test-measure-corners.cjs",
+      "tests/test-measure-midpoints.cjs",
+      "tests/test-merged-format.cjs",
+      "tests/test-mirror.cjs",
+      "tests/test-model-assets.cjs",
+      "tests/test-model-endpoints.cjs",
+      "tests/test-model-evidence.cjs",
+      "tests/test-model-pipeline.cjs",
+      "tests/test-model-profile-spatial.cjs",
+      "tests/test-model-solid-affine.cjs",
+      "tests/test-multi-region-merge.cjs",
+      "tests/test-navigation-input.cjs",
+      "tests/test-observation-layers.cjs",
+      "tests/test-opening-editor.cjs",
+      "tests/test-opening-references.cjs",
+      "tests/test-panel-bull-g12-publisher.cjs",
+      "tests/test-panel-bull-g12.cjs",
+      "tests/test-panel-light.cjs",
+      "tests/test-panel-xiaomi-switch2-publisher.cjs",
+      "tests/test-panel-xiaomi-switch2.cjs",
+      "tests/test-paper-array-blender.cjs",
+      "tests/test-paper-array-ui.cjs",
+      "tests/test-paper-array.cjs",
+      "tests/test-pegboard-accessories.cjs",
+      "tests/test-pegboard-alignment.cjs",
+      "tests/test-pegboard-auto.cjs",
+      "tests/test-pegboard-fit-grid.cjs",
+      "tests/test-pegboard-hatch.cjs",
+      "tests/test-pegboard-local-hatches.cjs",
+      "tests/test-pegboard-margin-edit.cjs",
+      "tests/test-pegboard-padding.cjs",
+      "tests/test-pegboard-parts.cjs",
+      "tests/test-pet-feeder.cjs",
+      "tests/test-pet-feeding-frame-desktop.cjs",
+      "tests/test-pet-feeding-frame.cjs",
+      "tests/test-pet-supplies-desktop.cjs",
+      "tests/test-pet-supplies.cjs",
+      "tests/test-pipe-collisions.cjs",
+      "tests/test-pipebox.cjs",
+      "tests/test-placement-suggestions.cjs",
+      "tests/test-plan-height-order.cjs",
+      "tests/test-plan-label-dom-cache.cjs",
+      "tests/test-plan-sharing.cjs",
+      "tests/test-pocket-door.cjs",
+      "tests/test-pocket-identities.cjs",
+      "tests/test-polygon-intersection-parity.cjs",
+      "tests/test-preset-copy-ui.cjs",
+      "tests/test-preview-files.cjs",
+      "tests/test-preview-generation.cjs",
+      "tests/test-pricing.cjs",
+      "tests/test-procurement.cjs",
+      "tests/test-product-naming.cjs",
+      "tests/test-product-plan-outline.cjs",
+      "tests/test-product-pose-production.cjs",
+      "tests/test-product-pose.cjs",
+      "tests/test-product-rules.cjs",
+      "tests/test-project-recovery.cjs",
+      "tests/test-project-validation.cjs",
+      "tests/test-project.cjs",
+      "tests/test-property-first-batch.cjs",
+      "tests/test-property-second-batch.cjs",
+      "tests/test-purchase-group.cjs",
+      "tests/test-purchase-orders.cjs",
+      "tests/test-purchase-relink.cjs",
+      "tests/test-readiness.cjs",
+      "tests/test-recessed-bay-windows.cjs",
+      "tests/test-recovery-storage.cjs",
+      "tests/test-region-areas.cjs",
+      "tests/test-region-editor.cjs",
+      "tests/test-region-merge-rounded.cjs",
+      "tests/test-region-operations.cjs",
+      "tests/test-replacement.cjs",
+      "tests/test-repository-save-retry.cjs",
+      "tests/test-repository-startup-validation.cjs",
+      "tests/test-repository-storage.cjs",
+      "tests/test-repository-version-compat.cjs",
+      "tests/test-repository-workspace.cjs",
+      "tests/test-resize-axis.cjs",
+      "tests/test-review-consistency.cjs",
+      "tests/test-robot-vacuum.cjs",
+      "tests/test-room-ceiling-height.cjs",
+      "tests/test-room-containment-fast.cjs",
+      "tests/test-room-door-angles.cjs",
+      "tests/test-room-net.cjs",
+      "tests/test-save-backend-check.cjs",
+      "tests/test-scene-annotations.cjs",
+      "tests/test-scene-clearance-settings.cjs",
+      "tests/test-scene-measure.cjs",
+      "tests/test-scene-observation.cjs",
+      "tests/test-scene-shadow-cache.cjs",
+      "tests/test-selection-transform.cjs",
+      "tests/test-server-recovery.cjs",
+      "tests/test-server-startup.cjs",
+      "tests/test-share-codec.cjs",
+      "tests/test-shared-appliance-model.cjs",
+      "tests/test-shimoyama-handle-folded.cjs",
+      "tests/test-shoe-bench.cjs",
+      "tests/test-short-wall-snapping.cjs",
+      "tests/test-shower-arrow.cjs",
+      "tests/test-side-table-project-v36.cjs",
+      "tests/test-side-table.cjs",
+      "tests/test-sideboard-board-edges.cjs",
+      "tests/test-sink-linked-offset-model.cjs",
+      "tests/test-sink-linked-offset.cjs",
+      "tests/test-sink-plan-snapping.cjs",
+      "tests/test-sink-surface.cjs",
+      "tests/test-sink.cjs",
+      "tests/test-sliding-door-glass.cjs",
+      "tests/test-snapping.cjs",
+      "tests/test-sofa-bed-project-v40.cjs",
+      "tests/test-sofa-bed.cjs",
+      "tests/test-spatial-review-cache.cjs",
+      "tests/test-stack-stool.cjs",
+      "tests/test-stepped-plant-rack.cjs",
+      "tests/test-storage-bins-ui.cjs",
+      "tests/test-storage-bins.cjs",
+      "tests/test-storage-supplies.cjs",
+      "tests/test-stove-boundaries.cjs",
+      "tests/test-style-presets.cjs",
+      "tests/test-tea-bar.cjs",
+      "tests/test-tea-table.cjs",
+      "tests/test-telescopic-20-corners.cjs",
+      "tests/test-telescopic-20-placement.cjs",
+      "tests/test-telescopic-20.cjs",
+      "tests/test-telescopic-corners.cjs",
+      "tests/test-telescopic-floor-tracks.cjs",
+      "tests/test-telescopic-ui.cjs",
+      "tests/test-test-artifacts.cjs",
+      "tests/test-tile-coplanar-wall.cjs",
+      "tests/test-tile-editor.cjs",
+      "tests/test-tile-grout-unified.cjs",
+      "tests/test-tile-grout.cjs",
+      "tests/test-tile-preset-sync.cjs",
+      "tests/test-tile-presets.cjs",
+      "tests/test-tile-selection-outline.cjs",
+      "tests/test-tile-workspace-complete.cjs",
+      "tests/test-tiling-render-alignment.cjs",
+      "tests/test-toolbox-array-ui.cjs",
+      "tests/test-toolbox-jiabangshou-desktop.cjs",
+      "tests/test-tv-floor-overlay.cjs",
+      "tests/test-tv-floor.cjs",
+      "tests/test-tv-image.cjs",
+      "tests/test-tv-view-consistency.cjs",
+      "tests/test-verification-cleanup.cjs",
+      "tests/test-view-switch-desktop.cjs",
+      "tests/test-volume-overlap-broadphase.cjs",
+      "tests/test-wall-distance.cjs",
+      "tests/test-wall-extension-snapping.cjs",
+      "tests/test-wall-face-snapping.cjs",
+      "tests/test-wall-finishes.cjs",
+      "tests/test-wall-floor-follow.cjs",
+      "tests/test-wall-layer-finishes.cjs",
+      "tests/test-wall-locks.cjs",
+      "tests/test-wall-origin-preview.cjs",
+      "tests/test-wall-tile-bands.cjs",
+      "tests/test-wall-tile-fixed-size.cjs",
+      "tests/test-wall-tiling-storage.cjs",
+      "tests/test-wall-tiling.cjs",
+      "tests/test-wall-zone-follow.cjs",
+      "tests/test-wardrobe-hanging.cjs",
+      "tests/test-washer-door-side.cjs",
+      "tests/test-washer-front-confirmation.cjs",
+      "tests/test-washer-project-v35.cjs",
+      "tests/test-water-purifier.cjs",
+      "tests/test-waterheater-clearance-3d.cjs",
+      "tests/test-waterheater-clearance-overlay.cjs",
+      "tests/test-waterheater-clearances.cjs",
+      "tests/test-waterheater-flat.cjs",
+      "tests/test-waterheater-furniture-clearances.cjs",
+      "tests/test-waterheater-socket.cjs",
+      "tests/test-wide-pocket-door.cjs",
+      "tests/test-window-covering-mount.cjs",
+      "tests/test-window-coverings.cjs",
+      "tests/test-window-dimensions.cjs",
+      "tests/test-window-lining.cjs",
+      "tests/test-windows-app-icon.cjs",
+      "tests/test-windows-integrity.cjs",
+      "tests/test-work-state.cjs",
+      "tests/test-workspace-cache.cjs",
+      "tests/test-workspace-files.cjs",
+      "tests/test-workspace-ui.cjs",
+      "tests/test-yeswood-sofa.cjs",
+      "tests/test-zone-boundaries.cjs"
+    ]
+  },
+  "browser": {
+    "cases": 160,
+    "initialPassed": 137,
+    "initialFailed": 23,
+    "effectivePassed": 160,
+    "results": [
+      {
+        "name": "aircon-midea",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/aircon-midea.log"
+      },
+      {
+        "name": "appliance-module-boundaries",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/appliance-module-boundaries.log"
+      },
+      {
+        "name": "aquarium",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/aquarium.log"
+      },
+      {
+        "name": "bay-assemblies",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/bay-assemblies.log"
+      },
+      {
+        "name": "beam-body",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/beam-body.log"
+      },
+      {
+        "name": "beam-heights",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/beam-heights.log"
+      },
+      {
+        "name": "blender-render",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/blender-render.log"
+      },
+      {
+        "name": "block-placeholder",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/block-placeholder.log"
+      },
+      {
+        "name": "cabinet-components-current",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/cabinet-components-current.log"
+      },
+      {
+        "name": "cabinet-resize-current",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/cabinet-resize-current.log"
+      },
+      {
+        "name": "cabinet-boundary-snapping",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/boundary-final.log"
+      },
+      {
+        "name": "cabinet-interior",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/cabinet-interior.log"
+      },
+      {
+        "name": "camera-calibration",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/camera-calibration.log"
+      },
+      {
+        "name": "cat-tree",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/cat-tree.log"
+      },
+      {
+        "name": "catalog-library",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/catalog-library.log"
+      },
+      {
+        "name": "ceiling-aluminum",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-aluminum.log"
+      },
+      {
+        "name": "ceiling-assembly",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/ceiling-assembly-final.log"
+      },
+      {
+        "name": "ceiling-beam-reference",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-beam-reference.log"
+      },
+      {
+        "name": "ceiling-boundaries",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-boundaries.log"
+      },
+      {
+        "name": "ceiling-components",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-components.log"
+      },
+      {
+        "name": "ceiling-contact",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-contact.log"
+      },
+      {
+        "name": "ceiling-coplanar-camera",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-coplanar-camera.log"
+      },
+      {
+        "name": "ceiling-current",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-current.log"
+      },
+      {
+        "name": "ceiling-design",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup5.log"
+      },
+      {
+        "name": "ceiling-display",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-display.log"
+      },
+      {
+        "name": "ceiling-edge-distances",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-edge-distances.log"
+      },
+      {
+        "name": "ceiling-edges",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-edges.log"
+      },
+      {
+        "name": "ceiling-furniture-alignment",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-furniture-alignment.log"
+      },
+      {
+        "name": "ceiling-height-measurements",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-height-measurements.log"
+      },
+      {
+        "name": "ceiling-lighting",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-lighting.log"
+      },
+      {
+        "name": "ceiling-merge",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-merge.log"
+      },
+      {
+        "name": "ceiling-optional-cove",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-optional-cove.log"
+      },
+      {
+        "name": "ceiling-overall-switch",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-overall-switch.log"
+      },
+      {
+        "name": "ceiling-panel-devices",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-panel-devices.log"
+      },
+      {
+        "name": "ceiling-panel-layout",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-panel-layout.log"
+      },
+      {
+        "name": "ceiling-reference-snapping",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-reference-snapping.log"
+      },
+      {
+        "name": "ceiling-reuse-pick",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-reuse-pick.log"
+      },
+      {
+        "name": "ceiling-section-interaction",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-section-interaction.log"
+      },
+      {
+        "name": "ceiling-style-flow",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-style-flow.log"
+      },
+      {
+        "name": "ceiling-uniform-inset",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/ceiling-uniform-inset.log"
+      },
+      {
+        "name": "cherry-coffee-table",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/cherry-coffee-table.log"
+      },
+      {
+        "name": "current-bays",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/current-bays.log"
+      },
+      {
+        "name": "current-furniture",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/current-furniture.log"
+      },
+      {
+        "name": "design-layer-layout",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/design-layer-layout.log"
+      },
+      {
+        "name": "design-switching",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/design-switching.log"
+      },
+      {
+        "name": "dimension-density",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/dimension-density.log"
+      },
+      {
+        "name": "directional-config-order",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/directional-config-order.log"
+      },
+      {
+        "name": "directional-distances",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/directional-distances.log"
+      },
+      {
+        "name": "directional-heights",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/directional-heights.log"
+      },
+      {
+        "name": "directional-kitchen-solids",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/directional-kitchen-solids.log"
+      },
+      {
+        "name": "directional-placement",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/directional-placement.log"
+      },
+      {
+        "name": "dishwasher-clearances",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/dishwasher-clearances.log"
+      },
+      {
+        "name": "dishwasher",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/dishwasher.log"
+      },
+      {
+        "name": "double-doors",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/double-doors.log"
+      },
+      {
+        "name": "drag-axis-lock",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/drag-axis-lock.log"
+      },
+      {
+        "name": "drag-feature-snapping",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/drag-feature-snapping.log"
+      },
+      {
+        "name": "drawing-export",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/drawing-export.log"
+      },
+      {
+        "name": "workflow-reimport",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/workflow-reimport.log"
+      },
+      {
+        "name": "drawing-readability",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/drawing-readability.log"
+      },
+      {
+        "name": "drawing",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/drawing.log"
+      },
+      {
+        "name": "electrical-boxes",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/electrical-boxes.log"
+      },
+      {
+        "name": "enclosed-boundaries",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup6.log"
+      },
+      {
+        "name": "cabinet-native-current",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/editor-cleanup-final.log"
+      },
+      {
+        "name": "cabinet-structure-current",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/cabinet-structure-current.log"
+      },
+      {
+        "name": "tile-workspace",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tile-workspace.log"
+      },
+      {
+        "name": "tile-workspace-complete",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tile-workspace-complete.log"
+      },
+      {
+        "name": "tile-library",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tile-library.log"
+      },
+      {
+        "name": "finish-miter-snap",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/finish-miter-snap.log"
+      },
+      {
+        "name": "floating-toolbar-proximity",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/floating-toolbar-proximity.log"
+      },
+      {
+        "name": "floating-toolbar",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup9.log"
+      },
+      {
+        "name": "folding-table-click",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/folding-table-click.log"
+      },
+      {
+        "name": "folding-table",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/folding-table.log"
+      },
+      {
+        "name": "fotile-previews",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/fotile-previews.log"
+      },
+      {
+        "name": "fotile",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/fotile.log"
+      },
+      {
+        "name": "furniture-groups",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/furniture-groups.log"
+      },
+      {
+        "name": "furniture-height-measurements",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup8.log"
+      },
+      {
+        "name": "room-net",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/room-net.log"
+      },
+      {
+        "name": "purchase-orders",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/purchase-orders.log"
+      },
+      {
+        "name": "furniture-labels",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/furniture-labels.log"
+      },
+      {
+        "name": "furniture-replacement-3d",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/furniture-replacement-3d.log"
+      },
+      {
+        "name": "furniture-replacement",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/furniture-replacement.log"
+      },
+      {
+        "name": "furniture-snapping-audit",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup10.log"
+      },
+      {
+        "name": "furniture-solids",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/furniture-solids.log"
+      },
+      {
+        "name": "group-directional-placement",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/group-directional-placement.log"
+      },
+      {
+        "name": "group-rotation",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/group-rotation.log"
+      },
+      {
+        "name": "hob-cutout",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/hob-cutout.log"
+      },
+      {
+        "name": "hob-link-options",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/hob-link-options.log"
+      },
+      {
+        "name": "hob-openings",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/hob-openings.log"
+      },
+      {
+        "name": "hood-geometry",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/hood-geometry.log"
+      },
+      {
+        "name": "kitchen-divider-labels",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/kitchen-divider-labels.log"
+      },
+      {
+        "name": "kitchen-edge-snapping",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/kitchen-edge-snapping.log"
+      },
+      {
+        "name": "kitchen-wall-anchor",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/kitchen-wall-anchor.log"
+      },
+      {
+        "name": "layer-location",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup10.log"
+      },
+      {
+        "name": "layer-range",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/layer-range.log"
+      },
+      {
+        "name": "layer-sidebar",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup13.log"
+      },
+      {
+        "name": "legacy-cabinet-upgrade",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/legacy-cabinet-upgrade.log"
+      },
+      {
+        "name": "litter-box",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/litter-box.log"
+      },
+      {
+        "name": "measure-boundaries",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/measure-boundaries.log"
+      },
+      {
+        "name": "merged-cache",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/merged-cache.log"
+      },
+      {
+        "name": "model-entry",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/model-entry.log"
+      },
+      {
+        "name": "observation-layers",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup12.log"
+      },
+      {
+        "name": "panel-light",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/panel-light.log"
+      },
+      {
+        "name": "pet-feeder",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/pet-feeder.log"
+      },
+      {
+        "name": "pipebox",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/pipebox.log"
+      },
+      {
+        "name": "portable-smoke",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/portable-smoke.log"
+      },
+      {
+        "name": "product-naming",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/product-naming.log"
+      },
+      {
+        "name": "product-plan-outline",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/product-plan-outline.log"
+      },
+      {
+        "name": "product-rules",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/product-rules.log"
+      },
+      {
+        "name": "property-dedup",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/property-dedup.log"
+      },
+      {
+        "name": "property-open",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup13.log"
+      },
+      {
+        "name": "property-scopes",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/property-scopes.log"
+      },
+      {
+        "name": "purchase-relink",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/purchase-relink.log"
+      },
+      {
+        "name": "region-areas",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/region-areas.log"
+      },
+      {
+        "name": "robot-vacuum",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/robot-vacuum.log"
+      },
+      {
+        "name": "scene-clearances",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/scene-clearances.log"
+      },
+      {
+        "name": "scene-observation",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/scene-observation.log"
+      },
+      {
+        "name": "shoe-bench",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/shoe-bench.log"
+      },
+      {
+        "name": "short-wall-area-3d",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/short-wall-area-3d.log"
+      },
+      {
+        "name": "short-wall-zones",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/short-wall-zones.log"
+      },
+      {
+        "name": "short-walls",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/short-walls.log"
+      },
+      {
+        "name": "sink-link-current",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/sink-link-current.log"
+      },
+      {
+        "name": "sink-linked-offset",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/sink-linked-offset.log"
+      },
+      {
+        "name": "sink-plan-snapping",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/sink-plan-snapping.log"
+      },
+      {
+        "name": "sink-surface",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup13.log"
+      },
+      {
+        "name": "sink",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/sink.log"
+      },
+      {
+        "name": "stove-boundaries",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/stove-boundaries.log"
+      },
+      {
+        "name": "tank-preview",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tank-preview.log"
+      },
+      {
+        "name": "tea-bar",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tea-bar.log"
+      },
+      {
+        "name": "tea-table",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tea-table.log"
+      },
+      {
+        "name": "tile-coplanar-wall",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tile-coplanar-wall.log"
+      },
+      {
+        "name": "tile-multiselect",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tile-multiselect.log"
+      },
+      {
+        "name": "tile-selection-outline",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tile-selection-outline.log"
+      },
+      {
+        "name": "tile-shared-origin",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tile-shared-origin.log"
+      },
+      {
+        "name": "tiling-render-alignment",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tiling-render-alignment.log"
+      },
+      {
+        "name": "touchpad",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup15.log"
+      },
+      {
+        "name": "tv-floor-overlay",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tv-floor-overlay.log"
+      },
+      {
+        "name": "tv-image",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tv-image.log"
+      },
+      {
+        "name": "tv-views",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/tv-views.log"
+      },
+      {
+        "name": "wall-extension-snapping",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup16.log"
+      },
+      {
+        "name": "wall-face-snapping",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/wall-face-snapping.log"
+      },
+      {
+        "name": "wall-layer-finishes",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/wall-layer-finishes.log"
+      },
+      {
+        "name": "water-purifier",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/water-purifier.log"
+      },
+      {
+        "name": "beam-roof",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup15.log"
+      },
+      {
+        "name": "cut-board-motion",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup16.log"
+      },
+      {
+        "name": "dining-plan-order",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/dining-plan-order.log"
+      },
+      {
+        "name": "dxf-supplement",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup18.log"
+      },
+      {
+        "name": "furniture-recovery",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup18.log"
+      },
+      {
+        "name": "multi-region-merge",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup17.log"
+      },
+      {
+        "name": "pipe-collisions",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup19.log"
+      },
+      {
+        "name": "recessed-bay",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup17.log"
+      },
+      {
+        "name": "manifold",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/manifold.log"
+      },
+      {
+        "name": "manifold-kitchen",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/manifold-kitchen.log"
+      },
+      {
+        "name": "downlight",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/downlight.log"
+      },
+      {
+        "name": "manifold-wall-finish",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/manifold-wall-finish.log"
+      },
+      {
+        "name": "manifold-zero-gap",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/manifold-zero-gap.log"
+      },
+      {
+        "name": "manifold-floating-distance",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/manifold-floating-distance.log"
+      },
+      {
+        "name": "telescopic-corners",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/telescopic-corners.log"
+      },
+      {
+        "name": "telescopic-floor-tracks",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/telescopic-floor-tracks.log"
+      },
+      {
+        "name": "telescopic20",
+        "status": "PASS",
+        "initialStatus": "FAIL",
+        "evidence": "output/full-regression-20261111/followup19.log"
+      },
+      {
+        "name": "telescopic20-corners",
+        "status": "PASS",
+        "evidence": "output/playwright/verification-alZqAE/telescopic20-corners.log"
+      }
+    ]
+  },
+  "preflight": {
+    "changedScripts": 225,
+    "failed": 0,
+    "sharedClassicDeclarations": "PASS",
+    "fullPreflight": "output/full-regression-20261111/preflight-final2.log"
+  },
+  "desktop": {
+    "evidence": "C:/Users/SPH/Documents/GitHub/Furnish/output/desktop-verification/verification-toDWUS",
+    "checks": [
+      "existing workspace loaded with original plan, work slots and furniture",
+      "sandboxed renderer without Node integration",
+      "production mutate, undo/redo, file save and refresh",
+      "native download exports existing editable project",
+      "file input reimports exported plan with edited furniture intact",
+      "390px desktop viewport without document overflow",
+      "production WebGL 3D and original Blender status interface",
+      "Chromium print-to-PDF renders existing page",
+      "HTTP browser shares desktop workspace",
+      "direct file:// 2D and offline Three.js 3D",
+      "window exit stops owned backend; restart restores saved edit",
+      "actual EXE Space navigation bypasses selection gizmo and moves camera without changing furniture",
+      "original user workspace unchanged; no renderer exceptions"
+    ],
+    "errors": [],
+    "originalWorkspaceUnchanged": true
+  },
+  "mcp": {
+    "evidence": "C:/Users/SPH/Documents/GitHub/Furnish/output/mcp-desktop-KZ5So3",
+    "checks": [
+      "one-click launches real isolated desktop and authenticated MCP; repeated start reuses endpoint; graceful native close",
+      "real desktop menu registers bundled runtime in isolated Codex home, finds 11 tools, enables future checks, repeated read leaves config unchanged",
+      "real packaged desktop and stdio read isolated formal project",
+      "copy enters independent design, preserves original and retry never duplicates",
+      "catalog addition with exact mm and idempotency; rule-derived parameters, atomic failures, native undo/redo; actual 3D camera, native PNG MCP image blocks in 2D/3D, no camera undo or project edits",
+      "complete laundry assembly physical alignment, independent equipment and atomic undo/redo, full cabinet structure edit, optional parameter deletion with original default",
+      "mm position/width/depth/height/rotation uses one existing undo; idempotent retry",
+      "stale revision refused without edits",
+      "native UI undo and redo reverse MCP furniture edits",
+      "locked furniture and invalid batch are atomic failures",
+      "space check equals production rules and saved threshold",
+      "formal save, original design preservation and page reload roundtrip with new session revision",
+      "external write conflict preserves disk, returns applied but unsaved and blocks further edits",
+      "direct offline file:// startup and production 3D camera preserved",
+      "desktop quit removes runtime endpoint"
+    ],
+    "originalProjectUnchanged": true,
+    "originalRepositoryUnchanged": true
+  },
+  "nativeLifecycle": {
+    "evidence": "C:/Users/SPH/Documents/GitHub/Furnish/output/playwright/desktop-lifecycle-beKPmR",
+    "checks": [
+      "real second launch activates existing window",
+      "real second launch during delayed cleanup queues native relaunch",
+      "backend cleanup precedes new primary window",
+      "relaunch closes cleanly without destroyed-object errors"
+    ]
+  },
+  "productionSha256": {
+    "index.html": "d8af419748152760a582e3ee5531615947939ab7c969c8a8052c887782ac4099",
+    "src/core/cabinet-core.js": "b9a14d4fdffc327c9febff23ca83d5e626faa7f783fc1c5f4ce223804e5ce843",
+    "src/core/project-core.js": "1b9ede2b126741b4bf14b483103b6e3b799440ef07a8c7fa6ace7b1bd870b71a",
+    "src/core/cabinet-builder-core.js": "c5891b1dcaac41fe915cd3b141204ecfa65c411156839a37568620c24c1784ad",
+    "src/core/cabinet-component-profiles.js": "857df19e08b8fdf63762017d0aad4f501bdeaf2967fab1351a571a7aef23267d",
+    "src/core/product-rules.js": "1d1f40c589de89d2542bf96439c6f993bc38a5046e2830872ab681a281bdc693",
+    "src/core/snapping.js": "8282d01fb8652cba344568b4ae80a7ba1c6d4d6762685187f53301877a9906ee",
+    "src/render/cabinet-preview.js": "0277e6fbf41b96a8bfdaf8160a3d3f884ecd93e3da744c7cfda573a194f16060",
+    "src/render/plan-renderer.js": "f623545ca998371386c08f1f82b9e3bc392b64ab1ef96292fe1f3685c848356f",
+    "src/ui/cabinet-form-controls.js": "c39b193717f1f9d9a526bcc4a7ec8df90f150cb8c703b4ac56f17217ca5511f9",
+    "src/ui/cabinet-builder.js": "3adb78f5ec517012bb46b70756574e1b8424a5a1e4a2cb9ce67e926407d28fba",
+    "src/ui/cabinet-builder-native-adapter.js": "d69d600dfea28c0d4b19fbf5c7a5b75f51390b461d996d467064f28fae42cced",
+    "src/ui/ceiling-design.js": "03bd5b923e2cb444c76ee26b39bfefc5fda1ec223bf4d2a57e4f78bcc4a4a69a",
+    "src/ui/furniture-actions.js": "595fe24bd2bd644a8745f8850521082a17c1c51eb36b9740d409de6eec012e1d",
+    "src/ui/kitchen-editor.js": "3a774e409dfaf6d06210d7cc36ab4e9a0d486548f2995ada82c17bfd16d35764",
+    "src/ui/property-panel.js": "46f25930a493e52cb8fdeb730ff6a3b2afa937b50a5c1c0a6735d5e9a43ccffc",
+    "styles/app.css": "847810bccfb1e920aad7b2f1c32ec0030adf8c529f2c3c1a53473128d4dab4e7",
+    "styles/workflow-tools.css": "c8419c9fb702d9e4a3bf376334d66fa88bfd473c33c8129d7370d4e8a4c058eb"
+  },
+  "preserved": [
+    "pre-existing projects/workspace.furnish.json modification",
+    "formal D-drive workspace",
+    "five historical detached worktrees with unique ignored assets"
+  ],
+  "notExecuted": [
+    "physical mobile touchscreen",
+    "power-loss/OOM fault injection",
+    "rebuild of all Blender appliance assets"
+  ],
+  "cleanup": {
+    "retiredBrowserScripts": 88,
+    "retiredManualEditorScripts": 3,
+    "redundantKeyboardWrapper": 1,
+    "orphanedOldUiHelpers": 11,
+    "oldEditorApis": [
+      "FurnishCabinetEditor",
+      "FurnishKitchenEditor"
+    ],
+    "currentEditor": "FurnishCabinetBuilderUI",
+    "localBranches": [
+      "main"
+    ],
+    "historicalWorktreesRetained": 5,
+    "worktrees": [
+      {
+        "name": "bath-heater-se2",
+        "reachableFromMain": true,
+        "uncommittedPaths": [],
+        "retained": true
+      },
+      {
+        "name": "blender-appliance-pilot",
+        "reachableFromMain": true,
+        "uncommittedPaths": [],
+        "retained": true
+      },
+      {
+        "name": "blender-part-identities",
+        "reachableFromMain": true,
+        "uncommittedPaths": [],
+        "retained": true
+      },
+      {
+        "name": "kitchen-panel-light",
+        "reachableFromMain": true,
+        "uncommittedPaths": [],
+        "retained": true
+      },
+      {
+        "name": "window-coverings",
+        "reachableFromMain": true,
+        "uncommittedPaths": [
+          "rojects/workspace.furnish.json"
+        ],
+        "retained": true
+      }
+    ]
+  }
+}

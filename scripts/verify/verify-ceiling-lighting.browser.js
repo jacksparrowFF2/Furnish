@@ -3,7 +3,7 @@ async(page,V)=>{
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error'&&/Shader Error|VALIDATE_STATUS/.test(m.text()))errors.push(m.text());});
   try{
-   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');
+   await p.goto((mode==='file'?V.fileBase:V.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);
    const setting=async selector=>{const control=p.locator(selector),menu=p.locator('details:has([data-t="lamps"])>summary');if(!await control.isVisible())await menu.click();await control.click();if(await menu.evaluate(el=>el.parentElement.open))await menu.click();};
    // Import a read-only snapshot of the current workspace through project UI.
    await p.evaluate(()=>{const input=document.createElement('input');input.type='file';input.id='strip-workspace';input.hidden=true;document.body.append(input);});

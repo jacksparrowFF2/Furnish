@@ -579,7 +579,7 @@
 <script src="src/ui/readiness-ui.js"></script>
 <script src="src/ui/cabinet-builder.js"></script>
 <script src="src/ui/cabinet-builder-native-adapter.js"></script>
-<script src="src/ui/cabinet-editor.js"></script>
+<script src="src/ui/cabinet-form-controls.js"></script>
 <script src="src/ui/kitchen-editor.js"></script>
 <script src="src/ui/workflow-tools.js"></script>
 <script src="src/ui/drawing-tools.js"></script>
@@ -805,14 +805,14 @@ function init(){
     const tap = downAt && e.pointerId===downAt[2] && downAt[3]===0 && !tapMoved && Math.hypot(e.clientX-downAt[0], e.clientY-downAt[1]) <= TAP;downAt=null;
     if (look?.id === e.pointerId){
       look = null;
-      if (tap){ const h = pick(e); if(h?.teaBarDoor&&h.dist<3.5&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5 && (!h.fid||!furnitureLocked(getF(h.fid)))) toggleSlidingDoor(h); }   // 漫游时点门／窗帘开关
+      if (tap){ const h = pick(e); if(h?.teaBarDoor&&h.dist<3.5&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;if(h?.fid&&h.dist<3.5&&cycleFoldingTable(h.fid))return;if(h?.cabinetPart&&h.dist<3.5)window.FurnishCabinetBuilderUI.toggleScene(h.fid,h.cabinetPart); else if (h?.door && h.dist < 3.5 && (!h.fid||!furnitureLocked(getF(h.fid)))) toggleSlidingDoor(h); }   // 漫游时点门／窗帘开关
       return;
     }
     if (anim || opt.mode !== 'orbit' || spaceDown || !tap) return;
     const h = pick(e);
     if(h?.teaBarDoor&&!e.shiftKey&&toggleTeaBarDoor(h.fid,h.teaBarDoor))return;
     if(h?.fid&&!e.shiftKey&&cycleFoldingTable(h.fid))return;
-    if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetEditor.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
+    if (h?.cabinetPart){ const plan=PLAN.id;clearTimeout(cabinetTap);cabinetTap=setTimeout(()=>{if(PLAN.id===plan&&$('#dlg').hidden)window.FurnishCabinetBuilderUI.toggleScene(h.fid,h.cabinetPart);},350);window.selectIds([h.fid]); }
     else if (h?.door){ if(!h.fid||!furnitureLocked(getF(h.fid)))toggleSlidingDoor(h); if(h.fid)window.selectIds([h.fid]); }
     else if (h?.fid) e.shiftKey ? window.toggleSel(h.fid) : window.selectIds([h.fid]);
     else if (h?.ceiling) window.FurnishCeilingUI.selectObject(h.ceiling);
@@ -820,7 +820,7 @@ function init(){
     else if (h?.room) window.select({kind:'room', id:h.room});
     else window.select(null);
   });
-  cv.addEventListener('dblclick', e => { clearTimeout(cabinetTap); if(opt.mode!=='orbit'||anim)return;const hit=pick(e);if(hit?.ceiling)return window.FurnishCeilingUI.selectObject(hit.ceiling,true);const id=hit?.fid||(ui.sel?.kind==='furn'?ui.sel.id:null);if(id)window.FurnishCabinetEditor.open(id); });
+  cv.addEventListener('dblclick', e => { clearTimeout(cabinetTap); if(opt.mode!=='orbit'||anim)return;const hit=pick(e);if(hit?.ceiling)return window.FurnishCeilingUI.selectObject(hit.ceiling,true);const id=hit?.fid||(ui.sel?.kind==='furn'?ui.sel.id:null);if(id)window.FurnishCabinetBuilderUI.open(id); });
   new ResizeObserver(() => {
     renderer.setSize(SW(), SH()); labelRenderer.setSize(SW(), SH());
     refreshCameraProjection(!!FurnishNavigation.cameraCalibration()?.orbitEnabled);

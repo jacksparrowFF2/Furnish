@@ -1,8 +1,9 @@
 async(page,V)=>{
  const response=await page.request.get(V.baseURL+'projects/workspace.furnish.json'),seed=(await response.json()).workspace,ctx=await page.context().browser().newContext({viewport:{width:1600,height:1050}}),p=await ctx.newPage(),errors=[],checks=[],check=(ok,message)=>{if(!ok)throw Error(message);checks.push(message);};p.on('pageerror',e=>errors.push(e.message));
- await ctx.addInitScript(seed=>{if(!localStorage.getItem('__sink_link_seeded')){localStorage.setItem('huxing-design-v29',JSON.stringify(seed));localStorage.setItem('__sink_link_seeded','1');}},seed);
+ seed.work={[seed.planId]:seed.work[seed.planId]};seed.designs=seed.designs.filter(d=>d.id===seed.activeDesigns?.[seed.planId]);seed.customPlans=seed.customPlans.filter(p=>p.id===seed.planId);
+ await ctx.addInitScript(seed=>{if(!localStorage.getItem('__sink_link_seeded')){localStorage.setItem('huxing-design-v'+seed.v,JSON.stringify(seed));localStorage.setItem('__sink_link_seeded','1');}},seed);
  try{
-  await p.goto(V.baseURL+'index.html');await p.locator('#lib').waitFor();
+  await p.goto(V.baseURL+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();
   await p.evaluate(()=>{selectIds(['fmvgv70l41']);zoomToBox([5900,8250,8300,10300],50);});
   await p.screenshot({path:V.output('playwright/sink-link-current/before.png'),animations:'disabled'});
   const initial=await p.evaluate(()=>({f:structuredClone(getF('fmvgv70l41')),gaps:directionalMeasurements(),order:drawOrder().map(f=>f.id)}));

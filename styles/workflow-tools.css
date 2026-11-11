@@ -54,6 +54,8 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
 #material-select{display:block;width:100%;min-height:40px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--card);color:var(--ink);margin:6px 0 12px;font:inherit}
 .sidebar-heading{position:sticky;top:0;z-index:9;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);font-size:12px}
 .sidebar-heading .btn{min-width:36px;min-height:32px;padding:5px}
+/* Scroll targets stay clear of the library's sticky heading. */
+.app aside.lib{scroll-padding-top:56px}
 .right .tabs{top:44px}
 .space-status:focus-visible,[data-wall-net]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 [data-wall-net] text{fill:var(--s-ink)}
@@ -99,6 +101,7 @@ body:has(#style-preview-banner:not([hidden])) #hint3d{display:none}
 .scene-height-row:nth-child(4){margin-top:7px;padding-top:6px;border-top:1px solid #dce7ea;color:#5c737b}
 .scene-transform{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
 .scene-transform[hidden],#stage:not(.is3d) .scene-transform,#stage.animating .scene-transform{display:none}
+#stage:has(#plan.space) .scene-transform{visibility:hidden}
 .scene-transform-gizmo{position:absolute;width:220px;height:220px;overflow:visible;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 1px 1px #fff9)}
 .scene-transform-gizmo [data-transform-axis]{cursor:grab;outline:none;touch-action:none}
 .scene-transform-gizmo .transform-hit{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke}

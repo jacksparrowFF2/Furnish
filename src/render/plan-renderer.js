@@ -77,7 +77,7 @@ function hobOpeningsSVG({scale=view.s,palette=PAL,dimensions=ui.layers.dims,sele
     if(!m)continue;const {a,b}=m,L=Math.hypot(b.x-a.x,b.y-a.y),nx=L>1e-7?-(b.y-a.y)/L*font*.2:font*.2,ny=L>1e-7?(b.x-a.x)/L*font*.2:0;
     // Keep orange hole margins apart from the green footprint clearances.
     // Offsets are in drawing display axes, so they remain readable after rotation.
-    const rad=drawingRotation()*Math.PI/180,horizontal=Math.abs((b.x-a.x)*Math.cos(rad)-(b.y-a.y)*Math.sin(rad))>=Math.abs((b.x-a.x)*Math.sin(rad)+(b.y-a.y)*Math.cos(rad)),dx=horizontal?0:font*7.2,dy=horizontal?font*1.1:0;
+    const rad=drawingRotation()*Math.PI/180,horizontal=Math.abs((b.x-a.x)*Math.cos(rad)-(b.y-a.y)*Math.sin(rad))>=Math.abs((b.x-a.x)*Math.sin(rad)+(b.y-a.y)*Math.cos(rad)),dx=horizontal?0:-font*6.5,dy=horizontal?font*3:0;
     marks+=`<g data-hob-gap="${dir}"><title>${esc(tr('产品方向 · 孔边 → ','Product axes · cutout edge → ')+measurementReferenceName(m))}</title><path d="M${a.x} ${a.y}L${b.x} ${b.y}M${a.x-nx} ${a.y-ny}L${a.x+nx} ${a.y+ny}M${b.x-nx} ${b.y-ny}L${b.x+nx} ${b.y+ny}" fill="none" ${stroke}/>${text([(a.x+b.x)/2,(a.y+b.y)/2],`${names[dir]} ${fmt(m.distance)} mm`,dx,dy)}</g>`;
    }
   }
@@ -89,6 +89,24 @@ function refreshHobOpenings(root=svg,options={}){
  layer.insertAdjacentHTML('beforeend',`<g data-hob-openings pointer-events="none">${hobOpeningsSVG(options)}</g>`);
  const marked=new Set([...layer.querySelectorAll('[data-hob-opening]')].filter(g=>g.querySelector('text')).map(g=>g.getAttribute('data-hob-opening')));
  for(const g of layer.querySelectorAll('[data-fid]'))g.querySelector('[data-furniture-label]')?.setAttribute('display',(options.dimensions??ui.layers.dims)&&marked.has(g.getAttribute('data-fid'))?'none':'inline');
+ if(root===svg)positionOpeningLabels(root);
+}
+function positionOpeningLabels(root){
+ const occupied=[...root.querySelectorAll('#gSel [data-edit-overlay="directional-distance"] text')].map(e=>e.getBoundingClientRect()),bounds=root.getBoundingClientRect();
+ const area=(a,b)=>Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left)+3)*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)+3);
+ for(const label of root.querySelectorAll('[data-hob-gap] text')){
+  const rect=label.getBoundingClientRect(),matrix=label.getScreenCTM();if(!matrix||!rect.width||!rect.height)continue;
+  const x=Number(label.getAttribute('x')),y=Number(label.getAttribute('y')),step=Number(label.getAttribute('font-size'))*1.5;
+  let best;
+  // Predict display rectangles; only the chosen candidate writes to the DOM.
+  // This also accounts for translated board names at narrow display widths.
+  for(let i=-4;i<=4;i++)for(let j=-4;j<=4;j++){
+   const dx=step*(i*matrix.a+j*matrix.c),dy=step*(i*matrix.b+j*matrix.d),candidate={left:rect.left+dx,right:rect.right+dx,top:rect.top+dy,bottom:rect.bottom+dy};
+   const overlap=occupied.reduce((n,r)=>n+area(candidate,r),0),outside=Math.max(0,bounds.left-candidate.left)+Math.max(0,candidate.right-bounds.right)+Math.max(0,bounds.top-candidate.top)+Math.max(0,candidate.bottom-bounds.bottom),score=overlap*1e6+outside*1e4+Math.hypot(dx,dy);
+   if(!best||score<best.score)best={i,j,score,rect:candidate};
+  }
+  label.setAttribute('x',x+best.i*step);label.setAttribute('y',y+best.j*step);occupied.push(best.rect);
+ }
 }
 function renderRooms(){
   let s = '';
@@ -466,7 +484,7 @@ function renderSelectedGeometry(){
       const resizeCursor=angle=>['ew-resize','nwse-resize','ns-resize','nesw-resize'][((Math.round(angle/45)%4)+4)%4];
       const outer=!!globalThis.FurnishKitchen?.outerResizable(f),drawing=typeof drawingRotation==='function'?drawingRotation():0;
       const edgeHandle=(axis,x,y,angle,label,side=1)=>`<g data-handle="size" data-axis="${axis}" ${side<0?`data-resize-${axis==='w'?'x':'y'}="-1"`:""} ${outer?`data-edit-overlay="kitchen-outer-edge" data-kitchen-edge="${axis==='w'?'right':'bottom'}"`:''} style="cursor:${resizeCursor(angle+drawing)}"><title>${label}</title>${outer?`<path d="${axis==='w'?`M${sx} ${-sy}L${sx} ${sy}`:`M${-sx} ${sy}L${sx} ${sy}`}" fill="none" stroke="transparent" stroke-width="${COARSE?24:12}" vector-effect="non-scaling-stroke"/>`:''}<circle cx="${x}" cy="${y}" r="${hit}" fill="transparent"/><rect x="${x-5*hs*k}" y="${y-5*hs*k}" width="${10*hs*k}" height="${10*hs*k}" rx="${2*k}" fill="#fff" ${A} stroke-width="1.5"/></g>`;
-      s += `<g transform="${furnT(f)}">
+      s += `<g data-selection-controls transform="${furnT(f)}">
         ${outline?`<polygon data-selection-outline="product" points="${outline.map(([x,y])=>[x*(f.flip?-1:1),y].join(',')).join(' ')}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`:`<rect x="${-f.w/2-p}" y="${-f.d/2-p}" width="${f.w+2*p}" height="${f.d+2*p}" fill="none" ${A} stroke-width="1.5" stroke-dasharray="5 3" pointer-events="none"/>`}`;
       if (!furnitureLocked(f)){const runGrips=kitchenRunHandleSVG(f,k,hit,hs,A,resizeCursor);
         if(outer)for(const [edge,axis,x1,y1,x2,y2] of [['left','w',-sx,-sy,-sx,sy],['top','d',-sx,-sy,sx,-sy]]){
@@ -517,7 +535,10 @@ function renderSelectedGeometry(){
     const [a, b] = ui.marq;
     s += `<rect x="${Math.min(a.x,b.x)}" y="${Math.min(a.y,b.y)}" width="${Math.abs(b.x-a.x)}" height="${Math.abs(b.y-a.y)}" fill="rgba(47,93,98,.08)" stroke="${TEAL}" stroke-width="1" stroke-dasharray="5 3" vector-effect="non-scaling-stroke" pointer-events="none"/>`;
   }
-  $('#gSel').innerHTML = waterheaterClearanceSVG()+dishwasherClearanceSVG()+s+furnitureDirectionsSVG();
+  const selection=$('#gSel');selection.innerHTML = waterheaterClearanceSVG()+dishwasherClearanceSVG()+s+furnitureDirectionsSVG();
+  // Keep resize/rotation handles above interactive clearance labels. A long
+  // label can cross the handle after rotating a narrow or curved product.
+  for(const controls of selection.querySelectorAll('[data-selection-controls]'))selection.appendChild(controls);
   if(typeof queueFabPosition==='function')queueFabPosition();
 }
 // Single products use their own axes; groups use explicitly named drawing axes.

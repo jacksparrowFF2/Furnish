@@ -1,27 +1,21 @@
 /* Portable entry point for the existing browser acceptance cases. */
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
+const fs=require('node:fs'),path=require('node:path'),{spawn,spawnSync}=require('node:child_process');
 const V=require('./lib/browser-verification.cjs'),Artifacts=require('./lib/test-artifacts.cjs');
 const standalone=['beam-roof','cut-board-motion','dining-plan-order','dxf-supplement','furniture-recovery','multi-region-merge','pipe-collisions','recessed-bay','manifold','manifold-kitchen','downlight','manifold-wall-finish','manifold-zero-gap','manifold-floating-distance','telescopic-corners','telescopic-floor-tracks','telescopic20','telescopic20-corners'];
 const dependencies={'drawing':['workflow-reimport'],'drawing-readability':['workflow-reimport'],'room-net':['workflow-reimport'],'purchase-orders':['room-net'],'purchase-relink':['purchase-orders'],'furniture-labels':['purchase-orders']};
-// Retired editor CLI names run the current consolidated flows.
-// Obsolete ceiling editor scripts have been removed.
-const tilingReplacements=Object.fromEntries(['floor-finishes','floor-controls','floor-origin','floor-origin-3d','floor-origin-corner','floor-origin-drag','floor-origin-wall','floor-unified','floor-bulk-levels','furniture-finished-datum','finish-guide','wall-finishes','wall-tiling','wall-floor-follow','wall-origin-3d','tile-grout','tile-grout-unified','tile-preset-sync','tile-presets','wall-tile-bands'].map(name=>[name,['tile-workspace','tile-workspace-complete','tile-library']]));
-const ceilingReplacements={ceilings:['ceiling-section-interaction','ceiling-components','ceiling-current'],'ceiling-corners':['ceiling-boundaries','ceiling-current'],'ceiling-upgrade':['ceiling-current'],'ceiling-end-caps':['ceiling-current'],'ceiling-continuous-light':['ceiling-current'],'ceiling-live':['ceiling-section-interaction','ceiling-current']};
-const replacements={...tilingReplacements,...ceilingReplacements};
-function cases(){const entries=fs.readdirSync(path.join(__dirname,'verify')).filter(n=>/^verify-.*\.browser\.js$/.test(n)).map(file=>[file.slice(7,-11),'verify/'+file]);return new Map([...entries,...standalone.map(n=>[n,'verify/verify-'+n+'.cjs'])]);}
+function cases(){const entries=fs.readdirSync(path.join(__dirname,'verify')).filter(n=>/^verify-.*\.browser\.js$/.test(n)).map(file=>[file.slice(7,-11),'verify/'+file]),current=Object.keys(require('./verify/verify-cabinet-current.browser.cjs').flows).map(name=>[name,'verify/verify-cabinet-current.browser.cjs']);return new Map([...entries,...standalone.map(n=>[n,'verify/verify-'+n+'.cjs']),...current]);}
 function plan(names,registry=cases()){
- const result=[],seen=new Set(),visiting=new Set();function add(name){if(replacements[name]){for(const next of replacements[name])add(next);return;}if(!registry.has(name))throw Error('Unknown browser case: '+name+' (use --list)');if(visiting.has(name))throw Error('Cyclic browser dependency: '+name);if(seen.has(name))return;visiting.add(name);for(const dep of dependencies[name]||[])add(dep);visiting.delete(name);seen.add(name);result.push(name);}for(const name of names)add(name);return result;
+ const result=[],seen=new Set(),visiting=new Set();function add(name){if(!registry.has(name))throw Error('Unknown browser case: '+name+' (use --list)');if(visiting.has(name))throw Error('Cyclic browser dependency: '+name);if(seen.has(name))return;visiting.add(name);for(const dep of dependencies[name]||[])add(dep);visiting.delete(name);seen.add(name);result.push(name);}for(const name of names)add(name);return result;
 }
 function failed(value){return !!value&&typeof value==='object'&&(value.status==='FAIL'||value.passed===false||Object.values(value).some(v=>v&&typeof v==='object'&&failed(v)));}
 async function worker(name){
  if(!process.env.FURNISH_VERIFY_ROOT||path.resolve(process.env.FURNISH_VERIFY_ROOT)===V.projectRoot)throw Error('Run browser cases through scripts/verify-browser.cjs; --worker requires an isolated copy.');
- const config=V.configuration(),file=cases().get(name);if(!file)throw Error('Unknown browser case '+name);
- if(file.endsWith('.cjs')){require(path.join(__dirname,file));return;}
+ const config={...V.configuration(),caseName:name},file=cases().get(name);if(!file)throw Error('Unknown browser case '+name);
+ if(file.endsWith('.cjs')&&!file.endsWith('.browser.cjs')){require(path.join(__dirname,file));return;}
  const browser=await V.launch();try{
-  const page=await browser.newPage();if(name==='tank-preview')await page.goto(config.baseURL+'output/robot-p20max/preview.html');else if(name==='cabinet-panel')await page.goto(config.baseURL+'index.html');
-  const source=fs.readFileSync(path.join(__dirname,file),'utf8');
-  const verify=new Function('return ('+source+'\n);')();
+  const page=await browser.newPage();if(name==='tank-preview')await page.goto(config.baseURL+'output/robot-p20max/preview.html');
+  const verify=file.endsWith('.browser.cjs')?require(path.join(__dirname,file)):new Function('return ('+fs.readFileSync(path.join(__dirname,file),'utf8')+'\n);')();
   const result=await verify(page,config);if(failed(result))throw Error(JSON.stringify(result));console.log(JSON.stringify({case:name,status:'PASS',result}));
  }catch(error){
   let i=0;for(const context of browser.contexts())for(const p of context.pages())if(p.url()!=='about:blank'&&!p.isClosed())try{const target=config.output('playwright/failures/'+name+'-'+(++i));await p.screenshot({path:target+'.png'});fs.writeFileSync(target+'.json',JSON.stringify(await p.evaluate(()=>({url:location.href,text:document.body.innerText,selection:typeof selIds==='function'?selIds():[],furniture:typeof state!=='undefined'?state.furniture:[]})),null,2));}catch{/* Preserve the original error. */}
@@ -29,17 +23,16 @@ async function worker(name){
  }finally{await browser.close();}
 }
 function child(args,options={}){
- return new Promise((resolve,reject)=>{const env=options.env||process.env,p=spawn(process.execPath,args,{cwd:env.FURNISH_VERIFY_ROOT||V.projectRoot,env,stdio:['ignore','pipe','pipe'],windowsHide:true});let output='',timedOut=false;const timer=setTimeout(()=>{timedOut=true;p.kill();},Number(process.env.FURNISH_VERIFY_TIMEOUT||360000));
+ return new Promise((resolve,reject)=>{const env=options.env||process.env,p=spawn(process.execPath,args,{cwd:env.FURNISH_VERIFY_ROOT||V.projectRoot,env,stdio:['ignore','pipe','pipe'],windowsHide:true});let output='',timedOut=false;const timer=setTimeout(()=>{timedOut=true;if(process.platform==='win32'&&p.pid)spawnSync('taskkill',['/PID',String(p.pid),'/T','/F'],{windowsHide:true,stdio:'ignore'});p.kill();},Number(process.env.FURNISH_VERIFY_TIMEOUT||900000));
   for(const stream of [p.stdout,p.stderr])stream.on('data',data=>{output+=data;});p.on('error',e=>{clearTimeout(timer);reject(e);});p.on('close',code=>{clearTimeout(timer);resolve({code:timedOut?124:code,output:output+(timedOut?'\nBrowser case timed out\n':'')});});
  });
 }
 async function main(args=process.argv.slice(2)){
  const registry=cases();if(args[0]==='--worker'){await worker(args[1]);return;}
- if(args.includes('--list')){for(const name of registry.keys())console.log(name+(replacements[name]?' -> '+replacements[name].join(', '):''));return;}
+ if(args.includes('--list')){for(const name of registry.keys())console.log(name);return;}
  if(args.includes('--help')){console.log('node scripts/verify-browser.cjs [case ... | --all | --list] [--keep-going]\nDefault: portable-smoke (HTTP and offline file://). --keep-going collects all failures and still exits nonzero. Optional environment: FURNISH_VERIFY_URL (bind a dedicated loopback origin), FURNISH_BROWSER_CHANNEL, FURNISH_BROWSER_PATH, FURNISH_VERIFY_HEADED=1, FURNISH_VERIFY_TIMEOUT (ms).');return;}
  const keepGoing=args.includes('--keep-going'),names=args.filter(arg=>arg!=='--keep-going');
  const selected=plan(names.includes('--all')?[...registry.keys()]:names.length?names:['portable-smoke']);
- if(names.includes('--all')||names.some(name=>replacements[name]))console.log('Retired tiling and standalone ceiling creation cases resolve to current editors; --list shows replacements. Historical UI scripts are not executed.');
  // Validate dependency installation and URL before copying or starting work.
  const engine=V.loadPlaywright(),config=V.configuration();if(!config.launchOptions.channel){const executable=config.launchOptions.executablePath||engine.chromium.executablePath();if(!fs.existsSync(executable))throw Error('Browser executable missing: '+executable+'. Install the matching Playwright browser or configure PLAYWRIGHT_BROWSERS_PATH / FURNISH_BROWSER_PATH before running acceptance.');}
  const output=path.join(V.projectRoot,'output/playwright');fs.mkdirSync(output,{recursive:true});
@@ -51,8 +44,6 @@ async function main(args=process.argv.slice(2)){
  const fixtureDir=path.join(root,'tests/fixtures/browser');
  if(selected.includes('current-bays'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'current-bay-workspace.json'));
  if(selected.includes('tv-floor-overlay'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'tv-floor-workspace.json'));
- if(selected.includes('cabinet-box-groups'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'cabinet-box-groups-workspace.json'));
- if(selected.includes('layered-cabinet-top'))fs.copyFileSync(path.join(V.projectRoot,'projects/workspace.furnish.json'),path.join(fixtureDir,'layered-cabinet-top-workspace.json'));
  fs.mkdirSync(path.join(root,'output/playwright/workflow-tools'),{recursive:true});fs.copyFileSync(path.join(fixtureDir,'reimport-input.furnish.json'),path.join(root,'output/playwright/workflow-tools/reimport-input.furnish.json'));
  fs.cpSync(fixtureDir,path.join(root,'output/playwright/real-drawing'),{recursive:true});
  const prepared=await child([path.join(root,'scripts/generate-previews.cjs')]);fs.writeFileSync(path.join(run,'previews.log'),prepared.output);if(prepared.code!==0)throw Error('Preview preparation failed: '+prepared.output);

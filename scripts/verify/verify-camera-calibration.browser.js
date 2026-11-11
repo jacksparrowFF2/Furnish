@@ -11,14 +11,14 @@ async (page,verification)=>{
     const room=ROOMS.find(r=>r.name.includes('阳台'))||ROOMS[0],b=bbox(room.poly);
     mutate(()=>state.furniture=[{id:'calibration-washer',type:'washer',name:'Calibration',cx:(b[0]+b[2])/2,cy:(b[1]+b[3])/2,w:600,d:600,h:850,rot:0,color:'#eee'}]);selectIds([state.furniture[0].id]);
    });
-   await p.locator('[data-view="3d"]').click();await p.waitForFunction(()=>is3D()&&!switching);if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await p.locator('#vSelection').click();await p.waitForTimeout(1100);
+   await p.locator('[data-view="3d"]').click();await p.waitForFunction(()=>is3D()&&!switching);if(await p.locator('#vSelection').isHidden())await p.locator('.rail-tool-menu>summary').click();await verification.clickCanvasTool(p,'#vSelection');await p.waitForTimeout(1100);
   };
   const inspect=()=>p.evaluate(()=>{const c=__calibrationCamera,r=document.querySelector('#stage');return {fov:c.fov,aspect:c.aspect,position:c.position.toArray(),rotation:c.rotation.toArray(),width:r.clientWidth,height:r.clientHeight,dpr:devicePixelRatio,design:snap(),calibration:FurnishNavigation.cameraCalibration()};});
   const matches=(value,ratio=.25,distance=600)=>Math.abs(value.fov-2*Math.atan(value.height*value.dpr*ratio/(2*distance))*180/Math.PI)<1e-8;
   const open=async()=>{if(await p.locator('#cameraPanel').isHidden())await p.locator('#vCamera').click();};
   const advanced=async()=>{if(!await p.locator('#cameraAdvanced').evaluate(el=>el.open))await p.locator('#cameraAdvanced>summary').click();};
   try{
-   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib .item').first().waitFor();await enter();const orbit=await inspect();await open();
+   await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib .item').first().waitFor();await enter();const orbit=await inspect();await open();
    check(await p.locator('.canvas-rail #vCamera').count()===1&&await p.locator('#showMenu #cameraCalibration').count()===0,'settings live in bottom toolbar popup');
    check(await p.locator('#cameraPanel').evaluate(el=>el.getBoundingClientRect().height<=300),'default desktop popup is compact');check(await p.locator('#cameraScreenAspect').isHidden()&&await p.locator('#cameraCalibrationStatus').isHidden(),'advanced fields and explanations are collapsed');await shot('compact');
    for(const degrees of [40,90,120]){await p.locator('#cameraFov').fill(String(degrees));await p.locator('#cameraFov').dispatchEvent('input');const value=await inspect(),expected=Math.min(120,2*Math.atan(Math.tan(degrees*Math.PI/360)/value.aspect)*180/Math.PI);check(Math.abs(value.fov-expected)<1e-8&&value.design===orbit.design,'manual orbit FOV without project edits');}
@@ -33,7 +33,7 @@ async (page,verification)=>{
    await advanced();await p.locator('#cameraPixelMode').selectOption('manual');await p.locator('#cameraScreenWidth').fill('600');await p.locator('#cameraScreenPixels').fill('2400');await p.locator('#cameraEyeDistance').fill('600');await p.locator('#cameraCalibrationForm [type="submit"]').click();await p.waitForTimeout(1100);
    check(matches(await inspect()),'physical orbit projection');await shot('orbit-settings');
    await p.locator('#cameraCalibrationToggle').click();check(!await p.locator('#cameraFov').isDisabled(),'orbit manual fallback');await p.locator('#cameraApplyCalibration').click();await p.waitForTimeout(1100);
-   if(await p.locator('#vIso').isHidden())await p.locator('.rail-tool-menu>summary').click();await p.locator('#vIso').click();await p.waitForTimeout(1100);
+   if(await p.locator('#vIso').isHidden())await p.locator('.rail-tool-menu>summary').click();await verification.clickCanvasTool(p,'#vIso');await p.waitForTimeout(1100);
    check(await p.evaluate(()=>{const T=__calibrationThree,c=__calibrationCamera,b=new T.Box3().setFromObject(__calibrationArch);c.updateMatrixWorld();return FurnishSceneObservation.corners(T,b).every(q=>{q.project(c);return Math.abs(q.x)<=1.1&&Math.abs(q.y)<=1.1&&q.z>-1&&q.z<1;});}),'calibrated whole-house iso fits production architecture');await shot('orbit-whole');
    await open();await p.locator('[data-mode="walk"]').click();check(!await p.locator('#cameraFov').isDisabled(),'walk starts manual when only orbit calibrated');
    await p.locator('#cameraCalibrationForm [type="submit"]').click();const before=await inspect();check(matches(before)&&before.calibration.enabled&&before.calibration.orbitEnabled,'both modes enable calibration');

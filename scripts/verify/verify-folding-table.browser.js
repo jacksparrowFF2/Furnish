@@ -15,7 +15,7 @@ async (page,verification)=>{
     }
    }
    await p.getByRole('button',{name:'正面',exact:true}).click();await p.screenshot({path:root+'output/folding-table/'+mode+'-front.png'});await p.getByRole('button',{name:'俯视',exact:true}).click();await p.screenshot({path:root+'output/folding-table/'+mode+'-top.png'});
-   await p.goto(base+'index.html');await p.locator('#lib').waitFor();
+   await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();
    for(const size of ['1100','1200','1300']){
     await p.locator('#lib').getByText('源氏木语折叠餐桌 · '+size+'款',{exact:true}).first().click();const id=await p.evaluate(()=>selIds()[0]);
     check(await p.evaluate(id=>{const f=getF(id);return f.foldingTablePose==='round'&&f.h===760&&!furnitureError(f);},id),'catalog creation');

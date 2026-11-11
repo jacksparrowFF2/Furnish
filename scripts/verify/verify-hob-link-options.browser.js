@@ -3,7 +3,7 @@ async (page,verification)=>{
  for(const mode of ['http','file']){
   const context=await page.context().browser().newContext({viewport:{width:1440,height:1000},offline:mode==='file'}),p=await context.newPage(),errors=[];
   p.on('pageerror',e=>errors.push(e.message));const check=(v,msg)=>{if(!v)throw Error(mode+': '+msg);};
-  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.locator('#lib').waitFor();
+  await p.goto((mode==='file'?verification.fileBase:verification.baseURL)+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').waitFor();
   await p.evaluate(()=>{const base={id:'hob-host',type:'counter',name:'橱柜台面',cx:4000,cy:4000,w:1366,d:600,rot:180,color:'#eee'},host=FurnishKitchen.configure(base,{...FurnishKitchen.defaults(base),modules:[{run:0,width:766,role:'door'},{run:0,width:600,role:'door'}]});mutate(()=>state.furniture=[host,{id:'hob-check',type:'stove_fotile_th36b',name:'方太燃气灶 TH36B-T',cx:4000,cy:4000,w:750,d:440,rot:180,color:'#111',...FurnishProducts.initial({type:'stove_fotile_th36b'})}]);selectIds(['hob-check']);});
   check((await p.locator('#kitchen-link option[value="hob-host:0"]').innerText()).includes('改为灶台柜并关联'),'door cabinet option explains conversion');
   check(await p.locator('#kitchen-link option[value="hob-host:1"]').evaluate(el=>el.disabled),'too narrow cabinet disabled');
@@ -25,7 +25,7 @@ async (page,verification)=>{
   check(await p.evaluate(()=>getF('hob-check').counterLink?.hostId==='hob-host'&&getF('hob-host').kitchen.modules[0].role==='hob'&&store.designs.some(d=>d.id==='hob-link-saved'&&d.work.furniture.some(f=>f.id==='hob-check'&&f.counterLink?.hostId==='hob-host'))),'download upload current and named association');
   await p.evaluate(()=>selectIds(['hob-check']));
   await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);
-  await p.getByRole('button',{name:'定位选中',exact:true}).click();
+  await verification.clickCanvasTool(p,'#vSelection');
   await p.screenshot({path:verification.output('playwright/hob-link-options/'+mode+'-3d.png')});
   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);
   await p.setViewportSize({width:390,height:844});await p.locator('#tgPanel').click();await p.locator('#kitchen-link').scrollIntoViewIfNeeded();check(await p.locator('#kitchen-link').isVisible(),'mobile association visible');

@@ -5,7 +5,7 @@ async (page,verification)=>{
  const move=async(x,y)=>{await p.mouse.move(x,y);await p.evaluate(()=>new Promise(requestAnimationFrame));};
  const click=async(x,y)=>{const q=await screen(x,y);await p.mouse.click(q.x,q.y);};
  try{
-  await p.goto(page.url().startsWith('file:')?page.url():verification.baseURL);await p.locator('#drawing-compass').waitFor();
+  await p.goto(page.url().startsWith('file:')?page.url():verification.baseURL);await p.waitForFunction(()=>!repositoryBooting);await p.locator('#drawing-compass').waitFor();
   await p.evaluate(()=>{
    const originalRooms=structuredClone(state.rooms);
    PLAN={...PLAN,walls:[[3000,-1000,3200,3000]],wins:[],doors:[],slides:[],rooms:[{id:'measure-room',name:'测量验收',mat:'tile800',at:[1000,1000],poly:[[-1000,-1000],[3000,-1000],[3000,3000],[-1000,3000]]}]};applyPlanData();state=freshWork(PLAN);

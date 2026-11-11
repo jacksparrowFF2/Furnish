@@ -5,7 +5,7 @@ async (page,verification)=>{
   p.on('pageerror',e=>errors.push(e.message));const base=mode==='file'?verification.fileBase:verification.baseURL,check=(v,s)=>{if(!v)throw Error(mode+': '+s);};
   await p.goto(base+'output/tea-table/preview.html');await p.waitForFunction(()=>window.previewReady);
   for(const id of ['angle','front','top']){await p.locator('#'+id).click();await p.screenshot({path:verification.output('tea-table/'+mode+'-'+id+'.png')});}
-  await p.goto(base+'index.html');await p.locator('#lib').getByText('藤编移动茶台 · 80cm',{exact:true}).first().click();
+  await p.goto(base+'index.html');await p.waitForFunction(()=>!repositoryBooting);await p.locator('#lib').getByText('藤编移动茶台 · 80cm',{exact:true}).first().click();
   const id=await p.evaluate(()=>selIds()[0]);check(await p.evaluate(id=>{const f=getF(id);return f.type==='tea_table_800'&&f.w===800&&f.d===400&&f.h===720;},id),'catalog dimensions');
   await p.locator('[data-fab-edit="size"]').click();await p.locator('#fab-width').fill('960');await p.locator('#fab-depth').fill('480');await p.getByRole('button',{name:'应用尺寸',exact:true}).click();
   check(await p.evaluate(id=>getF(id).w===960&&getF(id).d===480,id),'size edit');await p.evaluate(()=>undo());check(await p.evaluate(id=>getF(id).w===800,id),'undo');await p.evaluate(()=>redo());check(await p.evaluate(id=>getF(id).w===960,id),'redo');
@@ -14,7 +14,7 @@ async (page,verification)=>{
   const before=await p.evaluate(id=>JSON.stringify(getF(id)),id);await verification.waitForCache(p);await p.reload();check(await p.evaluate(id=>JSON.stringify(getF(id)),id)===before,'refresh');
   check(await p.evaluate(id=>{const w={furniture:[getF(id)]},r=FurnishProject.unpack(FurnishProject.pack({planId:PLAN.id,current:w,designs:[{id:'tea-table',name:'茶台',work:w}],catalog:[]}));return JSON.stringify(r.current.furniture)===JSON.stringify(w.furniture)&&r.designs[0].work.furniture[0].h===800;},id),'project roundtrip');
   await p.evaluate(id=>{mutate(()=>{const f=getF(id);f.w=800;f.d=400;f.h=720;state.furniture=[f];});selectIds([id]);zoomSel();},id);
-  await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await p.locator('#vSelection').click();await p.waitForTimeout(500);
+  await p.getByRole('button',{name:'3D 场景',exact:true}).click();await p.waitForFunction(()=>is3D()&&!switching);await verification.clickCanvasTool(p,'#vSelection');await p.waitForTimeout(500);
   check(await p.evaluate(id=>!furnitureError(getF(id))&&furnitureRenderErrors.size===0,id),'production 3D');await p.screenshot({path:verification.output('tea-table/'+mode+'-app.png')});
   await p.getByRole('button',{name:'2D 平面',exact:true}).click();await p.waitForFunction(()=>!is3D()&&!switching);await p.setViewportSize({width:390,height:844});await p.locator('#tgPanel').click();
   check(await p.locator('#fH').isVisible(),'mobile height');check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'mobile overflow');await p.screenshot({path:verification.output('tea-table/'+mode+'-mobile.png')});

@@ -122,16 +122,21 @@ function paste(at){
   else toast(pasted);
 }
 function duplicateSel(){ if (!selIds().length) return; const keep = clip; copySel(false, true); paste(); clip = keep; }
-function zoomToBox([x0,y0,x1,y1], pad = 700){
+function zoomToBox([x0,y0,x1,y1], pad = 700, height = svg.clientHeight){
   if (is3D()) return;
   if(globalThis.FurnishDrawing){const b=FurnishDrawing.bounds({x:x0,y:y0,w:x1-x0,h:y1-y0},drawingRotation());[x0,y0,x1,y1]=[b.x,b.y,b.x+b.w,b.y+b.h];}
-  const W = svg.clientWidth, H = svg.clientHeight, w = x1-x0+2*pad, h = y1-y0+2*pad;
+  const W = svg.clientWidth, H = Math.max(1,Math.min(svg.clientHeight,height)), w = x1-x0+2*pad, h = y1-y0+2*pad;
   view.s = Math.max(.012, Math.min(.4, Math.min(W/w, H/h)));
   view.x0 = (x0+x1)/2 - W/2/view.s; view.y0 = (y0+y1)/2 - H/2/view.s; applyView();
 }
 function zoomSel(){
   const items = selItems();
-  if (items.length) return zoomToBox(groupBox(items));
+  if (items.length){
+    positionFab();
+    const bounds=svg.getBoundingClientRect(),controls=[...document.querySelectorAll('#fab.show,.canvas-rail,.space-status')].filter(el=>el.getClientRects().length).map(el=>el.getBoundingClientRect()).filter(r=>r.right>bounds.left&&r.left<bounds.right&&r.top>bounds.top);
+    const bottom=Math.min(bounds.bottom,...controls.map(r=>r.top-18));
+    return zoomToBox(groupBox(items),700,bottom-bounds.top);
+  }
   if (ui.sel?.kind === 'room') return zoomToBox(bbox(ROOMS.find(r => r.id === ui.sel.id).poly), 400);
   fitView();
 }
