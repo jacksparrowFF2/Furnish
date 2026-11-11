@@ -565,7 +565,7 @@
  const assemblyBoundsCache=new Map();
  function assemblyBounds(f){
   if(componentCabinet(f)&&f.type!=='vanity'&&f.cabinet.boxes.some(b=>b.carcass===false||b.components.some(p=>p.kind==='board'))){const records=(root.FurnishCabinetMotion||require('./cabinet-motion.js')).boards(f,{includeStatic:true});if(records.length){const xs=records.flatMap(b=>b.poly.map(p=>p[0])),zs=records.flatMap(b=>b.poly.map(p=>p[1])),left=Math.min(...xs),right=Math.max(...xs),back=Math.min(...zs),front=Math.max(...zs),bottom=Math.min(...records.map(b=>b.bottom)),top=Math.max(...records.map(b=>b.top));return {left,right,back,front,bottom,top,w:right-left,d:front-back,h:top-bottom};}}
-  if(f?.kitchen&&(f.kitchen.laundry?.worktop||Object.keys((root.FurnishKitchen||require('./kitchen-core.js')).assemblyConfig(f)).some(k=>/^cabinet[0-9]+$/.test(k))))return (root.FurnishCabinetAssembly||require('./cabinet-assembly-core.js')).bounds(f);
+  if(f?.kitchen&&(f.kitchen.laundry?.worktop||f.kitchen.modules?.some(m=>m.cabinetPlacement?.independent)||Object.keys((root.FurnishKitchen||require('./kitchen-core.js')).assemblyConfig(f)).some(k=>/^cabinet[0-9]+$/.test(k))))return (root.FurnishCabinetAssembly||require('./cabinet-assembly-core.js')).bounds(f);
   if(f?.obj||f?.cabinet?.template!=='entry-pegboard'||!f.cabinet.pegboardParts||!Object.values(f.cabinet.pegboardParts).some(v=>v===false))return null;
   const key=JSON.stringify([f.type,f.w,f.d,f.h,f.cabinet]),cached=assemblyBoundsCache.get(key);if(cached)return {...cached};
   const M=root.FurnishCabinetMotion||(typeof require==='function'?require('./cabinet-motion.js'):null);if(!M)return null;

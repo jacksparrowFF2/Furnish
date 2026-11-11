@@ -1,3 +1,5 @@
+2026-11-11（原柜箱独立尺寸）：cabinet-assembly-core统一提交原组件柜尺寸与安装位置；kitchen-core、生产模型／实体与二维直接消费显式独立结构，连续台面保留自身基准。独立板件与台面／附属柜相交进入编辑器和全案核对；新语义v83贯穿原项目／仓库／恢复缓存，无新加载脚本或保存通道。旧缺失保持原规则，见[验收](validation/cabinet-native-independence-20261111/README.md)。
+
 2026-11-11（Codex Blender插件）：plugins/furnish-blender通过标准stdio MCP封装锁定的DSH独立runtime，不依赖DSH宿主包；本机数据目录生成Node内置TS转换结果，带认证回环Gateway保留上游会话与队列。furnish_model调用原verify-model-pipeline的隔离流程，生产几何／发布／项目保存保持原入口；无新增应用经典脚本或构建依赖。供应补丁只修队列失败退出和工程载入顺序。见[Codex工作流](CODEX-BLENDER-PLUGIN.md)。
 
 2026-11-09（原柜完整组件化补齐）：餐边柜与一字／L／U 厨房原模块真正保存 v2 组件树；特殊旧构造以生产物理轮廓归属实际组件，不保存旧模板。跨模块拖放原子更新两端，分边点选与净深标注读取真实身份和板件。未知输入报错保留，取消旧参数编辑回退；显式新语义最低 v81，原阳台标准组件保持 v80。通过 180 组配置、42 组真实网格／材质、213 种项目配置及桌面逐板 GLB 核验，边界与证据见[完整组件化验收](validation/cabinet-complete-lego-20261109/README.md)。

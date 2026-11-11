@@ -1,0 +1,30 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "original ordinary cabinet height is enabled",
+      "accepted h=1720",
+      "real slab penetration is shown without rejecting independent height",
+      "changing tabletop height leaves the already independent cabinet height intact",
+      "accepted h=720",
+      "accepted d=750",
+      "accepted w=500",
+      "accepted mountHeight=120",
+      "accepted x=700",
+      "accepted offset=75",
+      "removing original ordinary cabinet leaves no special equipment span",
+      "ordinary cabinet removal has one draft undo",
+      "restore retains independent cabinet dimensions",
+      "accepted x=1800",
+      "original upper cabinet can move beyond the old countertop footprint",
+      "independent controls fit 390px viewport",
+      "cabinet edits leave actual washer unchanged",
+      "saved source stores own physical dimensions and installation height",
+      "application undo/redo preserves original and independent states",
+      "save/refresh uses v83 without dimensions drifting back to tabletop",
+      "reopened production preview retains independent height/elevation and cancel preserves data",
+      "no runtime errors: "
+    ]
+  }
+]

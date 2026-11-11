@@ -1,0 +1,14 @@
+{
+  "src/app.js": "34c341d5477416d77d27d1b97fbc7d1e6337b0bfca8b34c1f424b74bfb0256b0",
+  "src/core/cabinet-assembly-core.js": "249970668800c7dc255640e09217e4e7a7e283d92fb983b119a9decd422a1e8f",
+  "src/core/cabinet-core.js": "b3444c537d2476b5a484e78e25517a40d810ea8f7576a10996baf78f8a8f3e33",
+  "src/core/cabinet-motion.js": "89071670df0ea19bb834338d40a844924bc52dec9a9fac150401915c4cdc1507",
+  "src/core/kitchen-core.js": "fd2742ea1949ff4ff7400801c8162c030f0ba626cf982fcc19658529849c1434",
+  "src/core/product-rules.js": "53d49aec08c10d7cca525808f824f9e64175305299a9c16fb43cf4c3f005a6d3",
+  "src/core/project-core.js": "4610b4af4a2c56190d958a53a19551878023e96fdcdb239a2aab1f1aafb40a5b",
+  "src/core/repository-core.js": "6bb618ee4ce66a05910becbd36c8835be87f9e656cb3e632eff1fb5b51be86d0",
+  "src/io/workspace-cache.js": "42727243182f2dabf02a7c308bc5aa14bffd5b5659c291d7d6ca12655d10fd10",
+  "src/render/furniture-svg.js": "51d807f1dc3d18b5511dcd5120418658d34438efd7e6cf40ec162e19ee1fd1f6",
+  "src/render/kitchen-model.js": "265039c1a8aef63666454944ca7d50aaffdaf86a60a9412ed72092fd5350c6ee",
+  "src/ui/cabinet-builder-native-adapter.js": "8e9ba4fc15d5a5399fd7f1b242480c5a00deaff90a264f0aaac2ed15eea56b66"
+}

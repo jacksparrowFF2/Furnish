@@ -1,3 +1,5 @@
+2026-11-11（柜箱独立尺寸补齐）：解除原洗衣地柜的外高禁用、生产按台面重缩放，以及宽深／安装／叠放／原上柜占地等旧绑定；独立柜箱尺寸和底高进入真实生产、二维、净距与缓存，组合内穿板由编辑器和全案共同提示。移除原箱可恢复且重开不复生，规格保存保留其状态。显式新语义v83，旧数据不自动迁移；三入口与整组GLB／Blender回读通过，旧预览桩失败及范围见[验收](validation/cabinet-native-independence-20261111/README.md)。
+
 2026-11-11（Codex插件重启加载修正）：1.0.1将兼容MCP清单的未展开CLAUDE_PLUGIN_ROOT改为相对脚本与插件根cwd；新增直接执行清单及Codex实际解析transport的工具发现回归，弥补此前手工绝对路径探针遗漏。安装副本7工具发现与当前后台版本任务通过，当前GUI无实例；需客户端重连载入修订清单。无应用或方案数据变化，见[重启验收](validation/codex-blender-plugin-20261111/README.md#重启后启动清单修正101)。
 
 2026-11-11（Codex Blender插件）：适配DSH独立建模引擎，新增7个MCP工具、仓库插件市场与配套skill；参考图标定、GUI原生截图、后台作业及原Furnish单配置生产验收共用入口。修复上游Python失败误报和载入源工程后出厂重置；锁定源码／许可证／LF哈希，无应用加载、产品字段或保存机制变化。Blender5.2.3 GUI与异常负例、side-table GPU整链路通过；未全量跑132配置／228算子，视觉还原另判，见[工作流](CODEX-BLENDER-PLUGIN.md)与[验收](validation/codex-blender-plugin-20261111/README.md)。

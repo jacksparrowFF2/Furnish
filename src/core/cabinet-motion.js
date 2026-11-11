@@ -99,9 +99,9 @@ result.push({boardIndex:result.length,poly:poly.map(([x,z])=>[(x+offset[0])*1000
     const local=([x,q])=>[(x-m.x)*Math.cos(angle)+(q-m.y)*Math.sin(angle),-(x-m.x)*Math.sin(angle)+(q-m.y)*Math.cos(angle)],notch=K.laundryCut(f);
     for(const b of boards(part,{includeStatic:true,sideCuts,floorOpen:!!k.laundry?.floorOpen&&m.role==='sink'})){
      const cutters=[];
-     if(!b.motion&&notch.length)cutters.push({poly:notch.map(local),bottom:-100,top:k.baseHeight+100});
-     if(b.metadata.cabinetTop)for(const {device,ring}of K.deviceOpenings(f,furniture).filter(v=>K.arrowSink(v.device)||v.device.sinkNotch||v.device.id?.endsWith(':sink')))cutters.push({poly:ring.map(local),bottom:k.baseHeight+40-(device.h??240)-60,top:k.baseHeight+40});
-     for(const piece of subtract(b,cutters))add(piece,transform,base,'module:'+m.index+'/');
+     if(!b.motion&&notch.length)cutters.push({poly:notch.map(local),bottom:-100-K.moduleMountHeight(f,m),top:K.bodyHeight(f)+100-K.moduleMountHeight(f,m)});
+     if(b.metadata.cabinetTop)for(const {device,ring}of K.deviceOpenings(f,furniture).filter(v=>K.arrowSink(v.device)||v.device.sinkNotch||v.device.id?.endsWith(':sink')))cutters.push({poly:ring.map(local),bottom:k.baseHeight+40-(device.h??240)-60-K.moduleMountHeight(f,m),top:k.baseHeight+40-K.moduleMountHeight(f,m)});
+     for(const piece of subtract(b,cutters))add(piece,transform,base+K.moduleMountHeight(f,m),'module:'+m.index+'/');
     }
    }
    for(const [i,b]of [...K.cornerBoards(f),...K.cornerPlinth(f),...K.edgeParts(f),...K.laundrySideBoards(f),...K.laundryNotchBoards(f)].entries())primitive([[b.x-b.w/2,b.y-b.d/2],[b.x+b.w/2,b.y-b.d/2],[b.x+b.w/2,b.y+b.d/2],[b.x-b.w/2,b.y+b.d/2]],b.bottom+base,b.top+base,'结构板',i);
