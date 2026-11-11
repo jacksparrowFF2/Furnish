@@ -279,7 +279,7 @@ freeze(fields);freeze(types);freeze(artGlassPatterns);
 const definition=f=>Object.hasOwn(types,typeof f==='string'?f:f?.type)?types[typeof f==='string'?f:f.type]:null;
 // Local mm outline; custom models retain the rectangular fallback.
 // Curvature is a visual estimate, never an installation requirement.
-function assemblyBounds(f){if(f?.cabinet?.template!=='entry-pegboard'&&f?.cabinet?.version!==2&&!f?.kitchen?.assembly)return null;const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return C?.assemblyBounds(f)??null;}
+function assemblyBounds(f){if(f?.cabinet?.template!=='entry-pegboard'&&f?.cabinet?.version!==2&&!f?.kitchen)return null;const C=root.FurnishCabinet||(typeof require==='function'?require('./cabinet-core.js'):null);return C?.assemblyBounds(f)??null;}
 // Concept construction dimensions, not a hardware specification. Total width includes both pockets.
 function pocketLayout(f){
  const r=definition(f)?.pocket;if(!r||f.obj)return null;

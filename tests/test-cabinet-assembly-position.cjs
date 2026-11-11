@@ -1,5 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),A=require('../src/core/cabinet-assembly-core.js'),B=require('../src/core/cabinet-builder-core.js'),K=require('../src/core/kitchen-core.js'),SVG=require('../src/render/furniture-svg.js'),G=require('../src/core/layout-geometry.js'),P=require('../src/core/project-core.js');
+const Rules=require('../src/core/product-rules.js');
 const near=(a,b)=>assert(Math.abs(a-b)<.002,a+' != '+b),palette={ink:'#222'};
 let count=0;
 for(const rot of [0,37,90,270])for(const flip of [false,true])for(const ownRot of [0,90]){
@@ -11,6 +12,7 @@ for(const rot of [0,37,90,270])for(const flip of [false,true])for(const ownRot o
  for(const align of ['front','back','center']){
   const next=A.alignPart(f,'cabinet1','cabinet2',align),p=K.assemblyConfig(next).cabinet1,t=K.assemblyConfig(next).cabinet2,edge=align==='front'?1:align==='back'?-1:0;
   near(-p.x*s+p.y*c+edge*p.d/2,-t.x*s+t.y*c+edge*t.d/2);near(p.x*c+p.y*s,q.x*c+q.y*s);near(p.mountHeight,q.mountHeight);near(p.h,q.h);assert.deepEqual(next.kitchen.modules,baseline.kitchen.modules);assert.deepEqual(next.kitchen.laundry.assembly.cabinet2,baseline.kitchen.laundry.assembly.cabinet2);
+  const bounds=A.bounds(next),outline=G.localOutline(next);assert.deepEqual(Rules.assemblyBounds(next),bounds);near(Rules.dimensions(next).w,bounds.w);near(Rules.dimensions(next).d,bounds.d);assert.equal(next.w,baseline.w,'reported envelope never rewrites the native tabletop width');for(const [x,y]of K.assemblyCorners(next,K.laundryParts(next).find(r=>r.key==='cabinet1').furniture)){assert(x>=bounds.left-.002&&x<=bounds.right+.002&&y>=bounds.back-.002&&y<=bounds.front+.002);assert(outline.some(p=>Math.abs(p[0]-bounds.left)<.002));}
   const markup=SVG.render(next.type,next.w,next.d,next.color||'#aaa',palette,next),match=markup.match(/data-kitchen-assembly="cabinet1" transform="translate\(([^ ]+) ([^)]+)\) rotate\(([^)]+)\)"/);assert(match,'added cabinet must render in 2D');near(+match[1],p.x);near(+match[2],p.y);near(((+match[3]-ownRot)%360+360)%360,0);assert(markup.includes('data-component-box="box1"'));
   const derived=K.laundryParts(next).find(r=>r.key==='cabinet1').furniture;assert(G.footprints(next).some(poly=>G.inPoly(derived.cx,derived.cy,poly)),'2D geometry includes the added box outside the original host');
   P.validateWork({furniture:[next]});assert.deepEqual(P.unpack(P.pack({planId:'demo',current:{furniture:[next]},designs:[],catalog:[]})).current.furniture[0],next);const restored=JSON.parse(JSON.stringify(next));K.validate(restored);assert.deepEqual(restored,next);near(K.assemblyConfig(A.alignPart(restored,'cabinet1','cabinet2',align)).cabinet1.y,p.y);

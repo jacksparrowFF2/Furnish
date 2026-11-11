@@ -462,3 +462,8 @@
 .cabinet-design [data-builder-placing=true] .cab-dimensions *{pointer-events:none!important}
 
 :is(#cab-builder,#cab-assembly) [data-builder-preview] canvas[hidden]{display:none}
+
+/* Module > carcass > component > open-zone boundary. */
+#cab-assembly .assembly-component-tree{margin-left:10px;padding-left:8px;border-left:2px solid #ded5c7}
+:is(#cab-builder,#cab-assembly) [data-builder-tree] .builder-tree-component{padding-left:20px;border-left:1px solid #e5dfd5}
+:is(#cab-builder,#cab-assembly) [data-builder-tree] .builder-tree-board{padding-left:36px!important}

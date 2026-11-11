@@ -1,0 +1,10 @@
+{
+  "src/core/product-rules.js": "c5ee4fc8038b370ef45467654f913e3ada6cfe1045a3ef5bc7a2b090586afcee",
+  "src/core/cabinet-assembly-core.js": "ca15c16176e7320f2be040a75c8125327762acab4c20014c485ca571a180525f",
+  "src/ui/cabinet-builder-native-adapter.js": "7617a715c146a28ce4851bbb7edf77a89725f4bfb64817e089974e9f89c0ee1b",
+  "src/ui/cabinet-builder.js": "7ad7aa58af6677560bd76b1c68bd21070ec8b194894d90452745d59e0229b881",
+  "styles/cabinet-editor.css": "720ab140259a98e015fe3c3fd835eee0f8d8a177ba11a1af95f68752c9ed6ac4",
+  "tests/helpers/laundry-carcass-ui.js": "d4dad04cd74e39c276d57c2b8b8c7e216a8d1c3ee04356f55a9efe960841e144",
+  "tests/test-cabinet-assembly-position.cjs": "24a714e88d677c0e03a2c2cc5a148aacb2fbab7c6ec4d5959ca42725baa363cc",
+  "tests/test-cabinet-worktop-facing.cjs": "6cf30d68bd4aaf8c37bff043147aa5d88bb76482d0cd8ee4485923af719691d2"
+}

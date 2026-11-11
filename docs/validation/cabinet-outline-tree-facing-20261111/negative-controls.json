@@ -1,0 +1,22 @@
+{
+  "historical": "971e143d2fb812c56603da060702722f20af67a8",
+  "results": [
+    {
+      "name": "old-product-bounds-gate",
+      "status": 1,
+      "expectedFailure": [
+        "  throw new AssertionError(obj);\r",
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\r"
+      ],
+      "noWorkspaceReplacement": true
+    },
+    {
+      "name": "old-unconverted-facing-command",
+      "status": 1,
+      "expectedFailure": [
+        "AssertionError [ERR_ASSERTION]: -670 != -970\r"
+      ],
+      "noWorkspaceReplacement": true
+    }
+  ]
+}
