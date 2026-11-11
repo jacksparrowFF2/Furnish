@@ -1,0 +1,6 @@
+{
+  "src/core/cabinet-assembly-core.js": "d3f5dc1c0cb9caa0f2ed8011cecdbc81c183fa8f54e9c2085d8998f4b99c04ab",
+  "src/ui/cabinet-builder-native-adapter.js": "061896b5c47a51cadd662e424246da856866836d99e7576f7974a3bce66babf1",
+  "tests/helpers/laundry-carcass-ui.js": "e3cdd814a1e5518109d4b0ba203b33ee5a92467b3166c47dee11f99f8def2b71",
+  "tests/test-cabinet-snapped-resize.cjs": "e23f26323a015b1543b70a27b301fa42b2822eadf2f3f8cf59b669d14e34a6d1"
+}

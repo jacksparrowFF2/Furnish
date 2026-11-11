@@ -18,6 +18,24 @@
   m.structure={w:part.w,d:part.d,h:part.h,cabinet:copy(part.cabinet)};m.cabinetPlacement={...row.placement,depth:part.d,independent:true,mountHeight:row.module.cabinetPlacement?.mountHeight??0};
   return K().validate(next);
  }
+ // Keep a unique touching side fixed when resizing a separate snapped carcass.
+ // Derive contact from the existing placement; detached/ambiguous boxes keep centre.
+ function setPart(f,id,part){
+  if(id.startsWith('base:'))return setModulePart(f,id,part);
+  if(f.locked)throw Error('请先解锁柜体');const next=copy(f),p=K().assemblyConfig(next)[id],row=placementRows(f).find(r=>r.id===id);
+  if(!p||!row||part.cabinet?.version!==2)throw Error('请选择组件柜箱');
+  if(/^cabinet[0-9]+$/.test(id)&&Math.abs(part.w-row.furniture.w)>1e-7){
+   const a=row.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a),half=row.furniture.w/2,contacts=new Set();
+   for(const other of placementRows(f)){if(other.id===id||Math.min(row.y+row.furniture.h,other.y+other.furniture.h)-Math.max(row.y,other.y)<=.001)continue;
+    const points=K().assemblyCorners(f,other.furniture).map(([x,z])=>[(x-row.x)*c+(z-row.z)*s,-(x-row.x)*s+(z-row.z)*c]),xs=points.map(p=>p[0]),zs=points.map(p=>p[1]);
+    if(Math.min(row.furniture.d/2,Math.max(...zs))-Math.max(-row.furniture.d/2,Math.min(...zs))<=.001)continue;
+    if(Math.abs(Math.max(...xs)+half)<.01)contacts.add('left');
+    if(Math.abs(Math.min(...xs)-half)<.01)contacts.add('right');
+   }
+   if(contacts.size===1){const delta=(part.w-row.furniture.w)/2*(contacts.has('left')?1:-1);p.x=(p.x??0)+delta*c;p.y=(p.y??0)+delta*s;}
+  }
+  Object.assign(p,{w:part.w,d:part.d,h:part.h,cabinet:copy(part.cabinet)});return K().validate(next);
+ }
  function modules(f){
   if(f.cabinet?.sideboard){const s=f.cabinet.sideboard;return sideboardLayout(f).rows.map(v=>({...v,id:v.key,label:{lower:'下柜与连续台面',upper:'展示柜与上柜',fridge:'冰箱位与顶柜'}[v.key],placement:s.placements?.[v.key]??{align:'back',offset:0}}));}
   if(f.kitchen)return [...K().cabinetLayout(f).map(m=>({id:'base:'+m.index,label:(independentModule(m)?'柜箱组 ':m.role==='empty'?'设备空位 ':'地柜 ')+(m.index+1),depth:m.depth??f.kitchen.depth,width:m.width,placement:m.cabinetPlacement??{align:'back',offset:0},module:m,...(m.structure?.cabinet?.version===2?{furniture:K().moduleFurniture(f,m)}:{})})),...K().laundryParts(f).map(p=>({id:p.key,label:p.furniture.name,depth:p.furniture.d,width:p.furniture.w,furniture:p.furniture}))];return C().supported(f)?[{id:'body',label:f.name||'柜箱',depth:f.d,width:f.w,furniture:f}]:[];
@@ -29,7 +47,7 @@
     if(id.startsWith('base:')){const m=next.kitchen.modules[row.module.index]??next.kitchen.endExtensions.find(e=>e.run===row.module.index-next.kitchen.modules.length);if(row.furniture?.cabinet?.version===2&&(independentModule(m)||['h','w','d','mountHeight','x'].some(k=>values[k]!==undefined))){const B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),part=B.resize(row.furniture,{w:values.w??row.furniture.w,d:values.depth??values.d??row.depth,h:values.h??row.furniture.h});next=setModulePart(next,id,part);const target=next.kitchen.modules[row.module.index]??next.kitchen.endExtensions.find(e=>e.run===row.module.index-next.kitchen.modules.length);for(const k of ['align','offset','mountHeight','x'])if(values[k]!==undefined)target.cabinetPlacement[k]=values[k];return K().validate(next);}m.cabinetPlacement={depth:row.depth,...row.placement,...values};return K().validate(next);}
   const p=K().assemblyConfig(next,true)[id],oldDepth=p.d,oldY=p.y??0;for(const key of ['w','d','h','mountHeight','x','y'])if(values[key]!==undefined)p[key]=values[key];if(values.depth!==undefined)p.d=values.depth;
   if(values.align!==undefined||values.offset!==undefined||values.depth!==undefined){const oldRear=oldY+(next.d-oldDepth)/2,alignment=values.align??'custom',offset=values.offset??(alignment==='custom'?oldRear:0);p.y=shift(p.d,next.d,{align:alignment,offset})+(p.d-next.d)/2;}
-  if(p.cabinet?.version===2){const B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),old=row.furniture,resized=B.resize(old,{w:p.w,d:p.d,h:p.h});p.cabinet=resized.cabinet;}
+  if(p.cabinet?.version===2){const B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),old=row.furniture,resized=B.resize(old,{w:p.w,d:p.d,h:p.h});next=setPart(f,id,resized);const target=K().assemblyConfig(next,true)[id];for(const key of ['mountHeight','x','y'])if(values[key]!==undefined)target[key]=p[key];if(values.align!==undefined||values.offset!==undefined||values.depth!==undefined)target.y=p.y;}
   return K().validate(next);
  }
  function addCabinet(f,{open=false}={}){if(f.locked||!f.kitchen)throw Error('请选择已解锁洗衣区');const B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),next=copy(f),a=K().assemblyConfig(next,true);if(Object.keys(a).length>=P().cabinetBuilder.maxBoxes)throw Error('洗衣区分区最多24个');let n=1;while(a['cabinet'+n])n++;const key='cabinet'+n;let part=B.create();part=B.update(part,{boxId:'box1'},{w:Math.min(600,f.w),d:Math.min(350,f.d),h:700});if(!open)part=B.add(part,'door',{boxId:'box1'}).furniture;a[key]={w:part.w,d:part.d,h:part.h,mountHeight:f.kitchen.baseHeight+f.kitchen.thickness+600,x:-f.w/2+part.w/2,y:(part.d-f.d)/2,cabinet:part.cabinet};return {furniture:K().validate(next),id:key};}
@@ -97,5 +115,5 @@
   for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++){const a=parts[i],b=parts[j],x=group(a),y=group(b);if(!x||!y||x===y||!own.has(x)&&!own.has(y))continue;const key=[x,y].sort().join('|');if(seen.has(key)||!G.verticalOverlap(f,f,[a.vertical,b.vertical])||!G.polygonOverlap(M.section(a,b.vertical),M.section(b,a.vertical),1e-6))continue;seen.add(key);const label=v=>v==='worktop'?'连续台面':v.startsWith('module:')?'柜箱 '+(Number(v.slice(7))+1):modules(f).find(r=>r.id===v.slice(8))?.label??'附属柜';issues.push({kind:'assembly',id:f.id,name:f.name,component:x,otherComponent:y,message:label(x)+'与'+label(y)+'的实际板件相交，请调整柜箱位置、尺寸或台面；两者不会自动互相拉伸'});}
   return issues;
  }
- const api={spatialIssues,independentModule,setModulePart,createLaundryCabinet,editableKitchen,componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
+ const api={setPart,spatialIssues,independentModule,setModulePart,createLaundryCabinet,editableKitchen,componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
