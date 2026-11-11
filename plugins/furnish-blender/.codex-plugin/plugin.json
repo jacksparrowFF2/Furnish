@@ -1,0 +1,17 @@
+{
+  "name": "furnish-blender",
+  "version": "1.0.0",
+  "description": "Codex Blender modeling, reference measurement, visual review and Furnish production verification, adapted from DSH × Blender.",
+  "author": { "name": "Furnish contributors" },
+  "repository": "https://github.com/jacksparrowFF2/Furnish",
+  "license": "BSD-3-Clause AND GPL-3.0-or-later AND MIT",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Furnish × Blender",
+    "shortDescription": "Blender 建模、参考图测量与 Furnish 整链路验收",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": ["使用 Furnish × Blender 制作模型并完成参考图与正式生产验收。"]
+  }
+}

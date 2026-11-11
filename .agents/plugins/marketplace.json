@@ -1,0 +1,12 @@
+{
+  "name": "furnish-local",
+  "interface": { "displayName": "Furnish Local" },
+  "plugins": [
+    {
+      "name": "furnish-blender",
+      "source": { "source": "local", "path": "./plugins/furnish-blender" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

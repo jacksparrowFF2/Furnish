@@ -1,0 +1,38 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),{PassThrough}=require('node:stream');
+const plugin=path.resolve(__dirname,'../plugins/furnish-blender'),S=require(path.join(plugin,'mcp/server.cjs')),F=require(path.join(plugin,'mcp/furnish.cjs')),R=require(path.join(plugin,'mcp/runtime.cjs'));
+async function main(){
+ const manifest=JSON.parse(fs.readFileSync(path.join(plugin,'.codex-plugin/plugin.json'))),mcp=JSON.parse(fs.readFileSync(path.join(plugin,'.mcp.json')));
+ assert.equal(manifest.name,'furnish-blender');assert.equal(mcp.mcpServers.furnish_blender.command,'node');
+ assert.equal(S.tools.length,7);assert.equal(new Set(S.tools.map(t=>t.name)).size,7);
+ assert.throws(()=>S.validate('blender_py',{code:4}),/Invalid type/);
+ assert.throws(()=>S.validate('blender_run',{url:'https://example.com'}),/Unknown argument/);
+ assert.throws(()=>S.validate('furnish_model',{action:'delete'}),/Invalid value/);
+ assert(S.result({ok:true,result:{ok:false}}).isError);
+ assert(S.result({ok:true,job:{state:'failed'}}).isError);
+ assert(S.result({ok:true,job:{state:'canceled'}}).isError);
+ const image=S.result({png:Buffer.from('test'),metadata:{width:1}});assert.equal(image.content[1].data,'dGVzdA==');assert(!JSON.stringify(image.structuredContent).includes('dGVzdA=='));
+ assert.throws(()=>F.rootOf(path.join(os.tmpdir(),'not-a-furnish-checkout')),/not found/);
+ const input=new PassThrough(),output=new PassThrough();let raw='',released=false;output.on('data',b=>raw+=b);
+ const server=S.serve({input,output,client:{release:async()=>{released=true;},execute:async()=>({ok:false,error:'injected failure'})},furnish:async()=>({ok:true})});
+ const send=m=>input.write(JSON.stringify({jsonrpc:'2.0',...m})+'\n');
+ send({id:0,method:'tools/list'});await server.idle();
+ send({id:1,method:'initialize',params:{protocolVersion:'2025-06-18'}});await server.idle();
+ send({method:'notifications/initialized'});send({id:2,method:'tools/list'});send({id:3,method:'tools/call',params:{name:'blender_py',arguments:{code:'print(1)'}}});input.write('{broken\n');await server.idle();
+ const messages=raw.trim().split('\n').map(JSON.parse);
+ assert.equal(messages.find(m=>m.id===0).error.code,-32002);
+ assert.equal(messages.find(m=>m.id===1).result.protocolVersion,'2025-06-18');
+ assert.equal(messages.find(m=>m.id===2).result.tools.length,7);
+ assert(messages.find(m=>m.id===3).result.isError);assert(messages.some(m=>m.error?.code===-32700));
+ input.end();await new Promise(r=>setImmediate(r));assert(released);
+ const p=await F.execute({action:'profiles',root:path.resolve(__dirname,'..')});assert(p.profiles.length>90);
+ const parent=path.resolve(__dirname,'../output/codex-blender-unit');fs.mkdirSync(parent,{recursive:true});const bindingData=fs.mkdtempSync(path.join(parent,'binding-'));
+ const bound=await F.execute({action:'bind',root:path.resolve(__dirname,'..')},{data:bindingData});assert.equal(bound.bound,true);
+ assert.equal((await F.execute({action:'doctor'},{data:bindingData})).root,bound.root);
+ await assert.rejects(()=>F.execute({action:'verify',profile:'all'}),/one registered/);
+ await assert.rejects(()=>F.execute({action:'status',id:'../outside'}),/Invalid/);
+ const upstream=JSON.parse(fs.readFileSync(path.join(plugin,'vendor/dsh/UPSTREAM.json')));assert(upstream.commit.length===40);
+ for(const [file,digest] of Object.entries(upstream.files))assert.equal(R.hash(fs.readFileSync(path.join(plugin,'vendor/dsh',file))),digest,file);
+ console.log('PASS Codex Blender packaging, MCP protocol, failure mapping, production routing, and '+Object.keys(upstream.files).length+' pinned upstream files');
+}
+main().catch(e=>{console.error(e);process.exitCode=1;});

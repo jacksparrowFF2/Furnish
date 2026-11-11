@@ -5,6 +5,8 @@ description: 将 Furnish 生产场景同步到 Blender，复用精修工程的�
 
 # Furnish 与 Blender 精修渲染
 
+Codex 插件 `plugins/furnish-blender` 提供独立 Gateway／后台任务与 Furnish 配置验收，见项目 `docs/CODEX-BLENDER-PLUGIN.md`。需要参考图测量或新模型整链路时优先使用已发现的插件工具；现有 BlenderMCP 精修连接仍适用本 skill，两个 agent bridge 使用独立实例，不为接入新插件停用当前工程的连接。
+
 先区分用户需要生产基础预览、精修效果图、持续同步、材质库，还是 Blender 场景编辑。精修图应读取已保存的 `.blend`：仅导入 GLB 并新建世界光不能替代精修工程。
 
 ## 找到真实入口

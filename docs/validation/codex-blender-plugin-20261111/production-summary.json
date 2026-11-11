@@ -1,0 +1,93 @@
+{
+  "id": "4634823c-636a-4625-b203-0bbb740e7184",
+  "state": "completed",
+  "passed": true,
+  "profile": "side-table",
+  "started": "2026-11-11T01:47:46.694Z",
+  "finished": "2026-11-11T01:48:55.277Z",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "device": "gpu",
+  "sourceFingerprint": "23dae7c0a46eb54ebc447c81379e33fb8ec2feaa38657e3367029ce6465baca9",
+  "sourceUnchanged": true,
+  "originalReport": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-NJigcH\\side-table-SjDRaO",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "render-open",
+      "passed": true,
+      "status": null,
+      "reason": null
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "status": null,
+      "reason": null
+    }
+  ],
+  "result": {
+    "id": "side-table",
+    "type": "sidetable_tmall_635382906309",
+    "route": "blender",
+    "fixtureHash": "72463f2c42c549e1e3c466eead021674a13b429daf0479888c8a6ea4ae323054",
+    "passed": true,
+    "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-NJigcH\\side-table-SjDRaO"
+  },
+  "visualReview": {
+    "status": "not-executed",
+    "reason": "Technical verification never substitutes for viewing references and renders."
+  }
+}

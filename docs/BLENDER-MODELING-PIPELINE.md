@@ -1,5 +1,7 @@
 # 模型整链路验收
 
+2026-11-11：新增 [Codex Blender 插件](CODEX-BLENDER-PLUGIN.md)。`furnish_model action=profiles/verify/status/collect` 封装本页既有单配置隔离入口，后台返回任务ID；技术通过与参考图视觉结论分离。原命令、模型路线及生产发布契约保持。
+
 参考图新建／重做及外观精修另执行[参考图视觉复核](BLENDER-VISUAL-REVIEW.md)，使用[记录模板](templates/MODEL-VISUAL-REVIEW.md)保存原图解读、匹配相机、轮廓／结构／材质阶段与逐轮局部差异。本页自动三机位不等于照片匹配；自动通过不自动生成视觉通过结论，正式生产外观仍须对照参考复核。
 
 2026-10-31（材质第二阶段）：verify-material-benchmark支持三款受控同光材质A/B；verify-washer-optical-normals用真实旧源负例检查光学轴心，verify-appliance-refinement逐款回读11份下载工程。功能批次与摄影验收分别记录指纹；不同增量阶段不冒充最终提交全量复跑，见[证据](validation/appliance-materials-stage2-20261031/README.md)。

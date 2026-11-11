@@ -4,6 +4,8 @@
 
 ![2D 平面布置与预算面板](docs/screenshots/01-2d-plan.png)
 
+Codex 建模插件：[Furnish × Blender](plugins/furnish-blender/README.md) 将 DSH 的独立建模引擎适配为本机 MCP，提供参考图测量、GUI／后台 Blender 操作和 Furnish 单配置生产整链路验证。安装与验收见 [Codex Blender 工作流](docs/CODEX-BLENDER-PLUGIN.md)。
+
 ## 本 fork 的升级：DXF 优先，图片描图辅助
 
 ### 图纸朝向与自动尺寸（2026-10-14）
