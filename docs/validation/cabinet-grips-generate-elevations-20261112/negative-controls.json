@@ -1,0 +1,19 @@
+[
+  {
+    "name": "legacy-host-resize-on-added-edge",
+    "status": 1,
+    "expectedFailure": [
+      "AssertionError [ERR_ASSERTION]: -1270 != -1350\r"
+    ],
+    "workspaceReplacement": false
+  },
+  {
+    "name": "legacy-incremental-worktop-button",
+    "status": 1,
+    "expectedFailure": [
+      "  throw new AssertionError(obj);\r",
+      "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\r"
+    ],
+    "workspaceReplacement": false
+  }
+]

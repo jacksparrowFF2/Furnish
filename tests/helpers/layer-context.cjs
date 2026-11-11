@@ -6,7 +6,7 @@ function createContext(globals){
  // New production dispatchers are real modules, not no-op stubs. Older focused
  // VM fixtures must see the same registered model entries as the browser.
  for(const rule of Object.values(require('../../src/core/product-rules.js').types)){const model=rule.solidModel;if(model&&!(model.global in globals))globals[model.global]=require('../../src/render/'+model.module+'-model.js');}
- const defaults={FurnishPartIdentity:require("../../src/core/part-identity.js"),syncIdentity:require("../../src/core/part-identity.js"),FurnishProducts:require('../../src/core/product-rules.js'),FurnishGeometry:require('../../src/core/layout-geometry.js'),FurnishBayWindows:require('../../src/core/bay-window-core.js')};for(const [key,value]of Object.entries(defaults))if(!(key in globals))globals[key]=value;
+ const defaults={FurnishCabinetAssembly:require('../../src/core/cabinet-assembly-core.js'),FurnishPartIdentity:require("../../src/core/part-identity.js"),syncIdentity:require("../../src/core/part-identity.js"),FurnishProducts:require('../../src/core/product-rules.js'),FurnishGeometry:require('../../src/core/layout-geometry.js'),FurnishBayWindows:require('../../src/core/bay-window-core.js')};for(const [key,value]of Object.entries(defaults))if(!(key in globals))globals[key]=value;
  const context=vm.createContext(Object.assign(globals,{FurnishLayers:L}));
  if(!context.observationLayer)context.observationLayer=(g,key)=>{if(key.startsWith('roomCeiling:'))g.userData.layerObject=key;return g;};
  vm.runInContext(helper,context);

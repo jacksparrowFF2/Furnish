@@ -51,6 +51,18 @@
    delta=(target.x-row.x)*dx+(target.z-row.z)*dz+edge*(target.furniture.d-row.furniture.d)/2,p=K().assemblyConfig(f)[id];
   return edit(f,id,{x:(p.x??0)+delta*dx,y:(p.y??0)+delta*dz});
  }
+ // Only a unique added carcass may own a new outer grip; never resize the old host.
+ function outerCabinetHandles(f){
+  if(!f.kitchen)return [];const b=bounds(f),edges={left:b.left,right:b.right,top:b.back,bottom:b.front},native={left:-f.w/2,right:f.w/2,top:-f.d/2,bottom:f.d/2},rows=placementRows(f).filter(r=>/^cabinet[0-9]+$/.test(r.id));
+  return Object.entries(edges).flatMap(([edge,value])=>{if(Math.abs(value-native[edge])<.01)return [];const axis=['left','right'].includes(edge)?0:1,low=['left','top'].includes(edge),candidates=rows.filter(r=>{const poly=K().assemblyCorners(f,r.furniture),v=poly.map(p=>p[axis]);return Math.abs((low?Math.min(...v):Math.max(...v))-value)<.01;});if(candidates.length!==1)return [];const r=candidates[0];return [{id:r.id,edge,x:axis===0?value:r.x,z:axis===1?value:r.z}];});
+ }
+ function resizeCabinetEdge(f,id,edge,delta){
+  if(!Number.isFinite(delta)||!['left','right','top','bottom'].includes(edge))throw Error('请选择有效柜箱外边');
+  if(!outerCabinetHandles(f).some(h=>h.id===id&&h.edge===edge))throw Error('柜箱外边已变化，请重新选择');
+  if(f.locked)throw Error('请先解锁柜体');if(Math.abs(delta)<1e-8)return copy(f);
+  const row=placementRows(f).find(r=>r.id===id),p=K().assemblyConfig(f)[id],dx=edge==='left'?-1:edge==='right'?1:0,dz=edge==='top'?-1:edge==='bottom'?1:0,a=row.rot*Math.PI/180,axis=Math.abs(dx*Math.cos(a)+dz*Math.sin(a))>.5?'w':'d';
+  return edit(f,id,{[axis]:row.furniture[axis]+delta,x:(p.x??0)+dx*delta/2,y:(p.y??0)+dz*delta/2});
+ }
  function modules(f){
   if(f.cabinet?.sideboard){const s=f.cabinet.sideboard;return sideboardLayout(f).rows.map(v=>({...v,id:v.key,label:{lower:'下柜与连续台面',upper:'展示柜与上柜',fridge:'冰箱位与顶柜'}[v.key],placement:s.placements?.[v.key]??{align:'back',offset:0}}));}
   if(f.kitchen)return [...K().cabinetLayout(f).map(m=>({id:'base:'+m.index,label:(independentModule(m)?'柜箱组 ':m.role==='empty'?'设备空位 ':'地柜 ')+(m.index+1),depth:m.depth??f.kitchen.depth,width:m.width,placement:m.cabinetPlacement??{align:'back',offset:0},module:m,...(m.structure?.cabinet?.version===2?{furniture:K().moduleFurniture(f,m)}:{})})),...K().laundryParts(f).map(p=>({id:p.key,label:p.furniture.name,depth:p.furniture.d,width:p.furniture.w,furniture:p.furniture}))];return C().supported(f)?[{id:'body',label:f.name||'柜箱',depth:f.d,width:f.w,furniture:f}]:[];
@@ -122,6 +134,14 @@
  function validateWorktop(f){const value=f.kitchen?.laundry?.worktop;if(value===undefined)return;const r=P().cabinetBuilder.worktop;if(!K().isLaundry(f)||!value||Array.isArray(value)||Object.keys(value).some(k=>k!=='outline')||!Array.isArray(value.outline)||value.outline.length>r.maxVertices)throw Error('异形台面轮廓无效');const poly=value.outline;Z().validatePolygon(poly);if(poly.length<4||poly.some((p,i)=>{const q=poly[(i+1)%poly.length];return p[0]!==q[0]&&p[1]!==q[1];}))throw Error('异形台面须为无自交的直角多边形');const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);if([...xs,...ys].some(n=>Math.abs(n)>r.maxSpan)||Math.max(...xs)-Math.min(...xs)>r.maxSpan||Math.max(...ys)-Math.min(...ys)>r.maxSpan)throw Error('异形台面超出设计范围');if(Math.abs(Z().signed(poly))<10000)throw Error('台面有效面积过小');}
  function setWorktop(f,outline){if(f.locked||!K().isLaundry(f))throw Error('请选择已解锁洗衣区');const next=copy(f);if(outline===null)delete next.kitchen.laundry.worktop;else{const poly=copy(outline);if(Z().signed(poly)<0)poly.reverse();next.kitchen.laundry.worktop={outline:poly};}validateWorktop(next);return K().validate(next);}
  // Facing directions are a command boundary; saved outlines and the local API stay canonical.
+ // Rebuild from the native surface and actual carcasses meeting its underside.
+ function generateWorktop(f){
+  if(f.locked||!K().isLaundry(f))throw Error('请选择已解锁洗衣区');const base=setWorktop(f,null),rings=[K().outline(base)],B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),height=f.kitchen.baseHeight;
+  for(const row of placementRows(base)){const a=row.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);for(const p of B.layout(row.furniture)){if(Math.abs(row.y+p.y+p.box.h-height)>.01)continue;const x=row.x+p.x*c-p.z*s,z=row.z+p.x*s+p.z*c;rings.push([[-p.box.w/2,-p.box.d/2],[p.box.w/2,-p.box.d/2],[p.box.w/2,p.box.d/2],[-p.box.w/2,p.box.d/2]].map(([u,v])=>[x+u*c-v*s,z+u*s+v*c]));}}
+  const pieces=Z().decompose(rings,p=>rings.some(r=>Z().inside(p,r))),outline=Z().outline(pieces).rings;
+  if(outline.length!==1)throw Error('同高度柜箱与主台面不连续，请先拼接柜箱或手动编辑台面');
+  return setWorktop(f,outline[0]);
+ }
  function extendWorktopFacing(f,values={}){const side=values.side??'left';return extendWorktop(f,{...values,side:f.flip?(side==='left'?'right':side==='right'?'left':side):side});}
  function extendWorktop(f,{side='left',width=300,depth=f.d,offset=0}={}){const r=P().cabinetBuilder.worktop;if(!['left','right'].includes(side)||![width,depth,offset].every(Number.isFinite)||width<20||width>r.maxSpan||depth<50||depth>r.maxSpan)throw Error('请填写有效台面延伸尺寸');const poly=K().outline(f),xs=poly.map(p=>p[0]),left=Math.min(...xs),right=Math.max(...xs),x=side==='left'?left-width:right-1,y=-f.d/2+offset,rect=[[x,y],[x+width+1,y],[x+width+1,y+depth],[x,y+depth]],pieces=Z().decompose([poly,rect],p=>Z().inside(p,poly)||Z().inside(p,rect)),rings=Z().outline(pieces).rings;if(rings.length!==1)throw Error('台面延伸必须与原台面连成一体');return setWorktop(f,rings[0]);}
  function moveWorktopVertex(f,index,target){return setWorktop(f,Z().moveOrthogonalVertex(K().outline(f),index,target));}
@@ -132,5 +152,5 @@
   for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++){const a=parts[i],b=parts[j],x=group(a),y=group(b);if(!x||!y||x===y||!own.has(x)&&!own.has(y))continue;const key=[x,y].sort().join('|');if(seen.has(key)||!G.verticalOverlap(f,f,[a.vertical,b.vertical])||!G.polygonOverlap(M.section(a,b.vertical),M.section(b,a.vertical),1e-6))continue;seen.add(key);const label=v=>v==='worktop'?'连续台面':v.startsWith('module:')?'柜箱 '+(Number(v.slice(7))+1):modules(f).find(r=>r.id===v.slice(8))?.label??'附属柜';issues.push({kind:'assembly',id:f.id,name:f.name,component:x,otherComponent:y,message:label(x)+'与'+label(y)+'的实际板件相交，请调整柜箱位置、尺寸或台面；两者不会自动互相拉伸'});}
   return issues;
  }
- const api={extendWorktopFacing,alignmentTargets,alignPart,setPart,spatialIssues,independentModule,setModulePart,createLaundryCabinet,editableKitchen,componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
+ const api={generateWorktop,outerCabinetHandles,resizeCabinetEdge,extendWorktopFacing,alignmentTargets,alignPart,setPart,spatialIssues,independentModule,setModulePart,createLaundryCabinet,editableKitchen,componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

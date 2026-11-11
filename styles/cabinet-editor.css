@@ -467,3 +467,8 @@
 #cab-assembly .assembly-component-tree{margin-left:10px;padding-left:8px;border-left:2px solid #ded5c7}
 :is(#cab-builder,#cab-assembly) [data-builder-tree] .builder-tree-component{padding-left:20px;border-left:1px solid #e5dfd5}
 :is(#cab-builder,#cab-assembly) [data-builder-tree] .builder-tree-board{padding-left:36px!important}
+
+#cab-assembly .assembly-component-tree.assembly-single-box{margin-left:0;padding-left:0;border-left:0}
+
+/* Two L elevations or three U elevations share the available workspace height. */
+.cab-elevation{flex:1 0 auto}

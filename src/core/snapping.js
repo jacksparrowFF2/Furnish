@@ -321,6 +321,12 @@
     const a=K.world(f,h.x,h.y),b=K.world(f,h.x+h.dx,h.y+h.dy),u=[b[0]-a[0],b[1]-a[1]],raw=(p.x-start.x)*u[0]+(p.y-start.y)*u[1],v=[-u[1]*h.span/2,u[0]*h.span/2],segments=[{a:{x:a[0]-v[0],y:a[1]-v[1]},b:{x:a[0]+v[0],y:a[1]+v[1]}}];
     return kitchenEdgeSnap(f,{x:a[0],y:a[1]},u,segments,raw,{grid,scale,wallSnap,rects,furniture,guides},delta=>K.resizeDivider(f,key,delta,{furniture}));
   }
+  function resizeAssemblyCabinet(f,id,edge,p,{start,grid=10,scale=1,wallSnap=false,rects=[],furniture=[],guides=true}={}){
+    const A=root.FurnishCabinetAssembly||require('./cabinet-assembly-core.js'),K=root.FurnishKitchen||require('./kitchen-core.js'),h=A.outerCabinetHandles(f).find(h=>h.id===id&&h.edge===edge);
+    if(!start||!h)throw Error('柜箱外边拖动已失效，请重新选择');
+    const dx=edge==='left'?-1:edge==='right'?1:0,dz=edge==='top'?-1:edge==='bottom'?1:0,a=K.world(f,h.x,h.z),b=K.world(f,h.x+dx,h.z+dz),u=[b[0]-a[0],b[1]-a[1]],raw=(p.x-start.x)*u[0]+(p.y-start.y)*u[1],row=A.placementRows(f).find(r=>r.id===id),poly=K.assemblyCorners(f,row.furniture),axis=dx?0:1,bound=axis===0?h.x:h.z,segments=poly.flatMap((p,i)=>{const q=poly[(i+1)%poly.length];if(Math.abs(p[axis]-bound)>.01||Math.abs(q[axis]-bound)>.01)return [];const a=K.world(f,...p),b=K.world(f,...q);return [{a:{x:a[0],y:a[1]},b:{x:b[0],y:b[1]}}];});
+    return kitchenEdgeSnap(f,{x:a[0],y:a[1]},u,segments,raw,{grid,scale,wallSnap,rects,furniture,guides},delta=>A.resizeCabinetEdge(f,id,edge,delta));
+  }
   function resizeKitchenOuter(f,edge,p,{start,grid=10,scale=1,wallSnap=false,rects=[],furniture=[],guides=true}={}){
     const K=root.FurnishKitchen||(typeof require==='function'?require('./kitchen-core.js'):null);
     if(!start||!['left','right','top','bottom','corner'].includes(edge))throw Error('厨房外边拖动已失效，请重新选择');
@@ -610,7 +616,7 @@
     }
     return best;
   }
-  const api={cabinetTargets,alignCabinet,cabinetMove,elevationTargets,elevation,cabinetInterior,surfaceOpening,hobOpening:surfaceOpening,kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
+  const api={cabinetTargets,alignCabinet,cabinetMove,elevationTargets,elevation,cabinetInterior,surfaceOpening,hobOpening:surfaceOpening,kitchenGaps,setKitchenGap,resizeKitchenDivider,resizeKitchenExtension,resizeAssemblyCabinet,resizeKitchenOuter,resizeKitchenRun,move,resize,point,measurePoint,nearest,directional};
   if(typeof module === 'object' && module.exports)module.exports=api;
   else root.FurnishSnapping=api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

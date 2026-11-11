@@ -1,0 +1,14 @@
+{
+  "src/core/cabinet-assembly-core.js": "d7be7b7ed88d74c9eca633eaa5abcd360b93e6fa51f4f978f673563fa77ec2b2",
+  "src/core/snapping.js": "edf1d8e1f5deba42f76102e537fc46f5bd3188c82796841d7af22f1f47f4c5a7",
+  "src/render/cabinet-preview.js": "5dd38598a5a75d45dd669943071322f3576d1fd56aed3025288d4012f06319ba",
+  "src/render/plan-renderer.js": "f9ef74a2f32fa3c894900fc5eb522e529102988e8dd9b99c2d581f6df8f5eabb",
+  "src/ui/cabinet-builder-native-adapter.js": "95488a3930b5cd0da91a7bdf33266b8b74874bf2dc00ecccc892bf94c50c3e0a",
+  "src/ui/canvas-interactions.js": "8053726ff2aae473ccdf9f58d1aa87c4a952e7573fa1b283ad384a450c500e29",
+  "styles/cabinet-editor.css": "fccff60594b9b126ca4ee26404f5246948cd61a86bf5f58273b286023996e9f0",
+  "tests/helpers/layer-context.cjs": "7bf66e325876cb4115c33639eb11a4ec986183c54d4d82a6dac1374e7b68a640",
+  "tests/helpers/cabinet-assembly-ui.js": "a742e1af8db14a01b51725404f8066d09d3d8fbf7e5ce63afcf423cc5d7cda2e",
+  "tests/helpers/laundry-carcass-ui.js": "7a1840f9bc5dd6321827b0efce51f9a7c09b2326846139f4247bac0edcf4e69b",
+  "tests/test-cabinet-outer-grips.cjs": "ca6788d9c3767918e2d7de9d7cd6c1f3c3f5316adf1642f05bedb946c1d55f7c",
+  "tests/test-cabinet-worktop-generate.cjs": "25d3dd3a57a350e2d9817743dc8cea3d347dc45f5410beb2a68c512b46dca750"
+}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "executable": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "parts": 42,
+  "maxMm": 0.0003887116912792976,
+  "glbSha256": "55b3be989294b361090d946fed881614c0deb8aca53ffb7d0b0f20a82a6093ad",
+  "manifestSha256": "5b9f0c51406cc9dae6995b6b5990918541e7a89a234966e51477279caed5f216"
+}
