@@ -2,12 +2,18 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-core.js'),P=require('../src/core/product-rules.js');
 (async()=>{
  const imports=JSON.parse(fs.readFileSync(require.resolve('../index.html'),'utf8').match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,T=await import(imports.three);
- class Element{constructor(){this.style={};this.children=[];this.handlers={};this.isConnected=true;this.clientWidth=600;this.clientHeight=360;}appendChild(v){this.children.push(v);}replaceChildren(...v){this.children=v;}setAttribute(){}remove(){this.isConnected=false;}getBoundingClientRect(){return {left:0,top:0,width:600,height:360};}addEventListener(k,fn){(this.handlers[k]??=[]).push(fn);}focus(){}hasPointerCapture(){return false;}fire(k,e){for(const fn of this.handlers[k]||[])fn({button:0,pointerId:1,clientX:300,clientY:180,...e});}}
+ // Only the DOM APIs exercised by this preview are simulated; geometry and
+ // raycasting remain the real Three implementation used by the application.
+ class Element{
+  constructor(){this.style={};this.dataset={};this.className='';this.children=[];this.handlers={};this.isConnected=true;this.clientWidth=600;this.clientHeight=360;this.capture=null;const names=()=>new Set(this.className.split(/\s+/).filter(Boolean));this.classList={add:(...values)=>{this.className=[...new Set([...names(),...values])].join(' ');},remove:(...values)=>{this.className=[...names()].filter(v=>!values.includes(v)).join(' ');},contains:value=>names().has(value)};}
+  appendChild(v){this.children.push(v);}replaceChildren(...v){this.children=v;}setAttribute(){}remove(){this.isConnected=false;}getBoundingClientRect(){return {left:0,top:0,width:600,height:360};}
+  addEventListener(k,fn,capture=false){(this.handlers[k]??=[]).push({fn,capture});}focus(){}setPointerCapture(id){this.capture=id;}hasPointerCapture(id){return this.capture===id;}releasePointerCapture(){this.capture=null;}
+  fire(k,values={}){const event={button:0,pointerId:1,clientX:300,clientY:180,preventDefault(){},stopPropagation(){},stopImmediatePropagation(){this.stopped=true;},...values};for(const {fn}of [...this.handlers[k]||[]].sort((a,b)=>Number(b.capture)-Number(a.capture))){fn(event);if(event.stopped)break;}return event;}
+ }
  let scene,camera,canvas,tick,disposed=0,orbit=0;
  class Renderer{constructor(){canvas=this.domElement=new Element();}setPixelRatio(){}setSize(){}render(s,c){scene=s;camera=c;s.updateMatrixWorld(true);c.updateMatrixWorld(true);}dispose(){disposed++;}forceContextLoss(){}}
  class Controls{constructor(c,cv){this.camera=c;this.target=new T.Vector3();this.enabled=true;cv.addEventListener('pointerdown',()=>orbit++);}update(){this.camera.lookAt(this.target);}dispose(){}}
- const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C,document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}}));
- context.FurnishProducts=P;
+ const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishKitchen:K,FurnishCabinet:C,FurnishCabinetAssembly:require('../src/core/cabinet-assembly-core.js'),FurnishCabinetBuilder:require('../src/core/cabinet-builder-core.js'),FurnishProducts:P,document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){}}}));
  for(const file of ['cabinet-model','kitchen-model','fotile-model','cabinet-preview'])vm.runInContext(fs.readFileSync(require.resolve('../src/render/'+file+'.js'),'utf8'),context);
  const box=(w,h,d,color,x,y,z)=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color}));m.position.set(x,y+h/2,z);return m;};
  let f=K.configure({id:'k',type:'counter',cx:0,cy:0,w:2400,d:1800,rot:0,color:'#eee'},{version:1,shape:'L',corner:'right',depth:600,baseHeight:820,thickness:40,modules:[{run:0,width:900,role:'door'},{run:0,width:900,role:'drawer'},{run:1,width:1200,role:'door'}]});
@@ -44,5 +50,22 @@ const K=require('../src/core/kitchen-core.js'),C=require('../src/core/cabinet-co
   }
   assert.equal(JSON.stringify(furniture),before,'preview preserves the cabinet and independent appliance');
  }
- console.log('PASS kitchen production preview, mirrored camera, picking, draft isolation, disposal and cabinet-only hood cavity previews with fitting room appliances');
+ // Modern component shelves retain legacy kitchenShelf aliases for production
+ // metadata, but must route through component gestures before legacy handlers.
+ const A=context.FurnishCabinetAssembly,B=context.FurnishCabinetBuilder;
+ for(const flip of [false,true]){
+  let current=A.editableKitchen(K.configure({id:'modern',type:'counter',w:1280,d:630,cx:4000,cy:4000,rot:37,color:'#eee'},{version:1,shape:'straight',depth:630,baseHeight:900,thickness:20,laundry:{countertop:true,floorOpen:true},modules:[{run:0,width:640,role:'open',shelves:[]},{run:0,width:640,role:'open',shelves:[]}]}));current.flip=flip;current=A.edit(current,'base:1',{h:1720,mountHeight:120});
+  const part=value=>A.modules(value).find(r=>r.id==='base:1').furniture,added=B.add(part(current),'shelf',{boxId:'box1',at:.65});current=A.setModulePart(current,'base:1',added.furniture);
+  let gesture=null,preview,commits=0;const phases=[],position=()=>B.shelfInfo(part(current),added.selected).position,initial=position();
+  preview=context.FurnishCabinetPreview.create({THREE:{...T,WebGLRenderer:Renderer},OrbitControls:Controls,box,host:new Element(),f:current,background:'#eee',actions:{
+   select(pick){assert(pick.boxId&&pick.componentId,'real component ray must retain stable component identity');preview?.selectPart(pick);return true;},
+   move(){throw Error('component shelf reached legacy move callback');},componentInfo:pick=>B.componentEditInfo(part(current),pick),
+   componentAdjust(pick,value,phase,options){phases.push(phase);if(phase==='start')gesture=structuredClone(current);else if(phase==='cancel'){current=gesture;gesture=null;preview.update(current);}else if(phase==='end'){commits++;gesture=null;}else{const baseline=gesture??current;current=A.setModulePart(baseline,'base:1',B.adjustComponent(part(baseline),pick,value,options));preview.update(current);}return current;},
+  }});preview.setView({front:true});tick();
+  const point=()=>{tick();let shelf;scene.traverse(o=>{if(o.isMesh&&o.userData.kitchenShelf?.module===1&&o.userData.cabinetBuilder?.kind==='shelf')shelf=o;});assert(shelf,'the production shelf carries both metadata generations');const bounds=new T.Box3().setFromObject(shelf),v=bounds.getCenter(new T.Vector3());v.z=bounds.max.z+.0001;v.project(camera);return {clientX:(v.x+1)*300,clientY:(1-v.y)*180};};
+  let start=point();const orbitBefore=orbit;canvas.fire('pointerdown',start);canvas.fire('pointermove',{...start,clientY:start.clientY-20});assert(position()>initial);canvas.fire('pointerup',{...start,clientY:start.clientY-20});assert.equal(commits,1);assert.deepEqual(phases.slice(0,3),['start','move','end']);assert.equal(orbit,orbitBefore,'component presses do not reach orbit controls');
+  for(const cancel of ['pointercancel','Escape','lostpointercapture']){const saved=JSON.stringify(current),before=position();start=point();canvas.fire('pointerdown',start);canvas.fire('pointermove',{...start,clientY:start.clientY-10});assert(position()>before);if(cancel==='Escape')canvas.fire('keydown',{key:'Escape'});else canvas.fire(cancel,start);assert.equal(JSON.stringify(current),saved,cancel+' restores the exact component draft');assert.equal(phases.at(-1),'cancel');assert.equal(commits,1);}
+  const before=position();canvas.fire('keydown',{key:'ArrowUp',shiftKey:true});assert(Math.abs(position()-before-1)<1e-6);assert.equal(phases.at(-1),'single');assert.equal(current.kitchen.baseHeight,900);assert(Math.abs(part(current).h-1720)<.001);assert.equal(part(current).mountHeight,120);assert.equal(A.modules(current).find(r=>r.id==='base:0').furniture.h,900);preview.dispose();
+ }
+ console.log('PASS kitchen production preview, mirrored camera, picking, draft isolation, disposal, cabinet-only hood cavity previews and modern component gesture routing/cancellation');
 })().catch(e=>{console.error(e);process.exitCode=1;});

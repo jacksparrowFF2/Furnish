@@ -1,0 +1,6 @@
+{
+  "src/render/cabinet-preview.js": "720ba6cf95344cc1dd2159708076d5b1ef6b75a913260c68a5d5e2eaa079d617",
+  "tests/test-cabinet-preview.cjs": "3d05faf4e17fdbc207dce8b88447f77ae34e62d14cf768ad1cfa0b45bfecf9a6",
+  "tests/test-kitchen-preview.cjs": "dce79d52eb95dd4677a7f8fb9a202cc42b430f3bf12b9e6c6991234ecb039580",
+  "tests/helpers/cabinet-native-independence-ui.js": "e517893fbc6c3d9c86d2b18812fed0cb7dde0af5b58a733ecb89e8f944c1d7d2"
+}

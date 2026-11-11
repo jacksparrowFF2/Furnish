@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "previousPreviewSha256": "0fa6f42b71c41cdc96f3d0e3cbf9a24b8016f31d39e077edfe179f3209a9bdcc",
+  "cases": [
+    {
+      "test": "test-cabinet-preview.cjs",
+      "source": "e98325bf",
+      "production": "current",
+      "passed": true,
+      "expectedExit": 1,
+      "expectedFailure": "Cannot set properties of undefined (setting 'builderSelection')"
+    },
+    {
+      "test": "test-kitchen-preview.cjs",
+      "source": "e98325bf",
+      "production": "current",
+      "passed": true,
+      "expectedExit": 1,
+      "expectedFailure": "Cannot set properties of undefined (setting 'builderSelection')"
+    },
+    {
+      "test": "test-kitchen-preview.cjs",
+      "fixture": "current",
+      "production": "e98325bf",
+      "passed": true,
+      "expectedExit": 1,
+      "expectedFailure": "real component ray must retain stable component identity"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "phase": "start",
+    "value": 1100
+  },
+  {
+    "phase": "move",
+    "value": 1119.4321065989845
+  },
+  {
+    "phase": "move",
+    "value": 1138.8642131979695
+  },
+  {
+    "phase": "move",
+    "value": 1158.296319796954
+  },
+  {
+    "phase": "move",
+    "value": 1177.728426395939
+  },
+  {
+    "phase": "move",
+    "value": 1197.1605329949234
+  },
+  {
+    "phase": "move",
+    "value": 1216.5926395939086
+  },
+  {
+    "phase": "move",
+    "value": 1236.0247461928932
+  },
+  {
+    "phase": "move",
+    "value": 1255.456852791878
+  },
+  {
+    "phase": "cancel",
+    "value": 1100
+  },
+  {
+    "phase": "start",
+    "value": 1100
+  },
+  {
+    "phase": "move",
+    "value": 1119.4321065989845
+  },
+  {
+    "phase": "move",
+    "value": 1138.8642131979695
+  },
+  {
+    "phase": "move",
+    "value": 1158.296319796954
+  },
+  {
+    "phase": "move",
+    "value": 1177.728426395939
+  },
+  {
+    "phase": "move",
+    "value": 1197.1605329949234
+  },
+  {
+    "phase": "move",
+    "value": 1216.5926395939086
+  },
+  {
+    "phase": "move",
+    "value": 1236.0247461928932
+  },
+  {
+    "phase": "move",
+    "value": 1255.456852791878
+  },
+  {
+    "phase": "end",
+    "value": 1100
+  }
+]

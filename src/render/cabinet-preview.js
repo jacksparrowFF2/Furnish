@@ -118,7 +118,9 @@
   const unbindNavigation=root.FurnishNavigation?.bindOrbit(cv,()=>controls)||(()=>{});
   function clearModel(){if(!model)return;model.traverse(o=>{o.geometry?.dispose();if(o.userData.cabinetOwnMaterial)o.material.dispose();});sc.remove(model);}
   function clearHighlight(){if(tinted){tinted.mesh.material=tinted.original;tinted.material.dispose();tinted=null;}for(const o of [helper,guide])if(o){sc.remove(o);o.geometry.dispose();o.material.dispose();}helper=guide=null;selectionPaths.forEach(path=>path.setAttribute('d',''));}
-  function tag(o){const part=o.userData.kitchenShelf,K=root.FurnishKitchen;if(part&&current.kitchen&&['door','open'].includes(current.kitchen.modules[part.module]?.role))return {column:elevation?elevation.indices[part.module]:part.module,shelf:part.shelf,kitchenModule:part.module};return (o.userData.cabinetInspect?.kind==='structure'?o.userData.cabinetInspect:null)||o.userData.cabinetShelf||o.userData.cabinetDivider||o.userData.cabinetBay;}
+  // Shared production may retain legacy shelf aliases on component meshes.
+  // Their gesture handler owns selection, cancellation and atomic draft history.
+  function tag(o){if(current.kitchen&&o.userData.cabinetBuilder)return null;const part=o.userData.kitchenShelf,K=root.FurnishKitchen;if(part&&current.kitchen&&['door','open'].includes(current.kitchen.modules[part.module]?.role))return {column:elevation?elevation.indices[part.module]:part.module,shelf:part.shelf,kitchenModule:part.module};return (o.userData.cabinetInspect?.kind==='structure'?o.userData.cabinetInspect:null)||o.userData.cabinetShelf||o.userData.cabinetDivider||o.userData.cabinetBay;}
   function inspectPart(o){
    if(!o)return {kind:'body'};
    const builder=builderPick(o),raw=o.userData.cabinetInspect||o.userData.cabinetPart;if(builder)return {...raw,...builder,kind:raw?.kind??builder.kind};

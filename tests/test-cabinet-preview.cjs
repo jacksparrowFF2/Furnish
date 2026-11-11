@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 (async()=>{
  const html=fs.readFileSync(require.resolve('../index.html'),'utf8'),imports=JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports,three=await import(imports.three);
  class Element {
-  constructor(){this.style={};this.handlers={};this.capture=null;this.isConnected=true;this.children=[];this.attributes={};}
+  constructor(){this.style={};this.dataset={};this.handlers={};this.capture=null;this.isConnected=true;this.children=[];this.attributes={};}
   setAttribute(k,v){this.attributes[k]=v;} appendChild(el){this.children.push(el);} replaceChildren(...children){this.children=children;} focus(){} remove(){this.isConnected=false;}
   getBoundingClientRect(){return {left:0,top:0,width:500,height:440};}
   addEventListener(type,fn,capture=false){(this.handlers[type]??=[]).push({fn,capture});}
@@ -21,7 +21,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   update(){this.cam.lookAt(this.target);this.cam.updateMatrixWorld(true);} dispose(){}
  }
  const host=new Element();host.clientWidth=500;host.clientHeight=440;
- let tick;const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C,document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){disconnected=true;}}}));
+ let tick;const context=vm.createContext(Object.assign({FurnishPartIdentity:require("../src/core/part-identity.js"),syncIdentity:require("../src/core/part-identity.js")},{FurnishCabinet:C,FurnishKitchen:require('../src/core/kitchen-core.js'),FurnishCabinetAssembly:require('../src/core/cabinet-assembly-core.js'),FurnishCabinetBuilder:require('../src/core/cabinet-builder-core.js'),FurnishProducts:require('../src/core/product-rules.js'),document:{createElement:()=>new Element(),createElementNS:()=>new Element()},devicePixelRatio:1,requestAnimationFrame:fn=>{tick=fn;return 1;},cancelAnimationFrame(){},ResizeObserver:class{observe(){}disconnect(){disconnected=true;}}}));
  for(const file of ['cabinet-model','cabinet-preview'])vm.runInContext(fs.readFileSync(require.resolve(`../src/render/${file}.js`),'utf8'),context);
  const box=(w,h,d,color,x,y,z)=>{const mesh=new three.Mesh(new three.BoxGeometry(w,h,d),new three.MeshStandardMaterial({color}));mesh.position.set(x,y+h/2,z);return mesh;};
  let draft=C.setColumnWidth({type:'cabinet',color:'#efe6d8',...C.preset('sideboard-open')},0,350),picked=null,toggles=0;
