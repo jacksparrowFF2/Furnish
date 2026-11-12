@@ -19,6 +19,7 @@ docs['storage-bin-deeper-large']='STORAGE-BINS-LANJIAOLUO.md';
 docs['storage-bin-ultradeep-medium']='STORAGE-BINS-LANJIAOLUO.md';
 docs['storage-bin-ultradeep-large']='STORAGE-BINS-LANJIAOLUO.md';
 docs['toolbox-jiabangshou-390']='TOOLBOX-JIABANGSHOU-390.md';
+docs['trolley-ikea-raskog-large']='TROLLEY-IKEA-RASKOG-LARGE.md';
 docs['cat-food-2kg']='CAT-FOOD-2KG.md';
 docs['beverage-can-330']=docs['beverage-can-500']='BEVERAGE-CANS.md';
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,f))).digest('hex');

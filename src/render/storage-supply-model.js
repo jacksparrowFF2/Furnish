@@ -30,6 +30,7 @@ function build(T,f){
  const profile=products().definition(f).storageSupply;
  const globals={'cat-food-2kg':'FurnishCatFood2kgAsset','storage-toolbox':'FurnishStorageToolboxAsset','medicine-box':'FurnishMedicineBoxAsset','toilet-paper-pack':'FurnishToiletPaperPackAsset','tissue-pack':'FurnishTissuePackAsset',"heartlink-roll-layer":"FurnishHeartlinkRollLayerAsset","heartlink-tissue-layer":"FurnishHeartlinkTissueLayerAsset","wet-wipes-pack":"FurnishWetWipesPackAsset"};
  globals['beverage-can-330']='FurnishBeverageCan330Asset';globals['beverage-can-500']='FurnishBeverageCan500Asset';
+ globals['trolley-ikea-raskog-large']='FurnishRaskogLargeAsset';
  globals['toolbox-shimoyama-9l']='FurnishShimoyamaToolbox9lAsset';
  globals['toolbox-jiabangshou-390']='FurnishJiabangshouToolboxAsset';
  globals['freeze-dry-bucket-6l']='FurnishFreezeDryBucket6lAsset';

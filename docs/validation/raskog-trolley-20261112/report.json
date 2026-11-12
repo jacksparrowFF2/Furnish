@@ -1,0 +1,435 @@
+{
+  "passed": true,
+  "profile": "trolley-ikea-raskog-large",
+  "route": "blender",
+  "fixture": {
+    "id": "model-pilot",
+    "cx": 0,
+    "cy": 0,
+    "rot": 0,
+    "flip": false,
+    "type": "trolley_ikea_raskog_large",
+    "name": "手推车 · 宜家大号拉斯克",
+    "w": 350,
+    "d": 450,
+    "color": "#747b6b",
+    "mountHeight": 0,
+    "frontClearance": 0,
+    "brand": "IKEA/宜家",
+    "model": "RÅSKOG · 305.916.66 · 350×450×770",
+    "sourceUrl": "https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/",
+    "h": 770
+  },
+  "alternateKind": "back",
+  "blender": "C:\\Users\\SPH\\scoop\\apps\\blender\\current\\blender.exe",
+  "started": "2026-11-12T07:53:00.170Z",
+  "run": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-nWQspP\\trolley-ikea-raskog-large-3h82Li",
+  "stages": [
+    {
+      "name": "author-preflight",
+      "passed": true,
+      "started": "2026-11-12T07:53:00.171Z",
+      "result": {
+        "command": "author-trolley-ikea-raskog-large",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-nWQspP\\trolley-ikea-raskog-large-3h82Li\\authored",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-nWQspP\\trolley-ikea-raskog-large-3h82Li\\authored",
+        "passed": true,
+        "profile": "trolley-ikea-raskog-large",
+        "parts": 67,
+        "motions": 0,
+        "blender": "5.2.3 LTS",
+        "preflight": {
+          "passed": true,
+          "profile": "trolley-ikea-raskog-large",
+          "parts": 67,
+          "motions": 0
+        }
+      },
+      "finished": "2026-11-12T07:53:04.759Z"
+    },
+    {
+      "name": "preflight-negative",
+      "passed": true,
+      "started": "2026-11-12T07:53:04.759Z",
+      "result": {
+        "passed": true,
+        "profile": "trolley-ikea-raskog-large",
+        "blender": "5.2.3 LTS",
+        "rejected": [
+          "empty-material-slot",
+          "wrong-face-index",
+          "wrong-stable-identity",
+          "wrong-units",
+          "nonfinite-vertex",
+          "unexpected-part"
+        ],
+        "motionApplicable": false
+      },
+      "finished": "2026-11-12T07:53:05.640Z"
+    },
+    {
+      "name": "publish",
+      "passed": true,
+      "started": "2026-11-12T07:53:05.640Z",
+      "result": {
+        "command": "publish-trolley-ikea-raskog-large",
+        "input": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-nWQspP\\trolley-ikea-raskog-large-3h82Li\\authored\\trolley-ikea-raskog-large-v1.glb",
+        "output": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-nWQspP\\workspace\\src\\data\\trolley-ikea-raskog-large-blender-asset.js",
+        "passed": true,
+        "blender": "5.2.3 LTS",
+        "glbSha256": "5e3d07151595e14988c180244e8c943f6f946e51fd3ddbb697c619071328dce8",
+        "runtimeSha256": "b451fa30a92838ed4879bce9f93fa8ff3f651ec2bf76e8d9e11695869d9ee4e1"
+      },
+      "finished": "2026-11-12T07:53:07.048Z"
+    },
+    {
+      "name": "geometry-state",
+      "passed": true,
+      "started": "2026-11-12T07:53:07.048Z",
+      "result": {
+        "passed": true,
+        "tests": [
+          {
+            "name": "storage-supplies",
+            "profile": "trolley-ikea-raskog-large",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-nWQspP\\trolley-ikea-raskog-large-3h82Li\\storage-supplies.log",
+            "reused": false
+          },
+          {
+            "name": "raskog-trolley",
+            "profile": "trolley-ikea-raskog-large",
+            "log": "C:\\Users\\SPH\\Documents\\GitHub\\Furnish\\output\\model-pipeline\\selection-nWQspP\\trolley-ikea-raskog-large-3h82Li\\raskog-trolley.log",
+            "reused": false
+          }
+        ],
+        "spatial": {
+          "passed": true,
+          "results": [
+            {
+              "id": "trolley-ikea-raskog-large",
+              "passed": true,
+              "cases": [
+                {
+                  "state": "nominal",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 67,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "nominal",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 67,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 82.86358403907866,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 0,
+                  "flip": false,
+                  "parts": 67,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 100,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                },
+                {
+                  "state": "alternate",
+                  "rot": 37,
+                  "flip": true,
+                  "parts": 67,
+                  "bottom": 0,
+                  "top": 770,
+                  "externalDistance": 82.86358403907866,
+                  "penetration": true,
+                  "heightSeparation": true,
+                  "projectRoundtrip": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "finished": "2026-11-12T07:53:15.833Z"
+    },
+    {
+      "name": "http-file-production",
+      "passed": true,
+      "started": "2026-11-12T07:53:15.833Z",
+      "result": {
+        "passed": true,
+        "modes": [
+          {
+            "mode": "http",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": false
+          },
+          {
+            "mode": "file",
+            "passed": true,
+            "undoRedo": true,
+            "coreResize": true,
+            "refresh": true,
+            "narrow": true,
+            "offline": true
+          }
+        ],
+        "exports": [
+          {
+            "mode": "http",
+            "state": "nominal",
+            "parts": 67,
+            "bounds": [
+              [
+                -0.17499999701976776,
+                0,
+                -0.22499999403953552
+              ],
+              [
+                0.17499999701976776,
+                0.7699999809265137,
+                0.22499999403953552
+              ]
+            ]
+          },
+          {
+            "mode": "http",
+            "state": "resized",
+            "parts": 67,
+            "bounds": [
+              [
+                -0.19599999487400055,
+                0,
+                -0.24300000071525574
+              ],
+              [
+                0.19599999487400055,
+                0.83160001039505,
+                0.24300000071525574
+              ]
+            ]
+          },
+          {
+            "mode": "file",
+            "state": "nominal",
+            "parts": 67,
+            "bounds": [
+              [
+                -0.17499999701976776,
+                0,
+                -0.22499999403953552
+              ],
+              [
+                0.17499999701976776,
+                0.7699999809265137,
+                0.22499999403953552
+              ]
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-12T07:53:40.433Z"
+    },
+    {
+      "name": "blender-production-readback",
+      "passed": true,
+      "started": "2026-11-12T07:53:40.434Z",
+      "result": {
+        "passed": true,
+        "profile": "trolley-ikea-raskog-large",
+        "blender": "5.2.3 LTS",
+        "source": "production-glb",
+        "results": [
+          {
+            "case": "http-nominal",
+            "parts": 67,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "http-resized",
+            "parts": 67,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "file-nominal",
+            "parts": 67,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-12T07:53:42.226Z"
+    },
+    {
+      "name": "studio-production-export",
+      "passed": true,
+      "started": "2026-11-12T07:53:42.227Z",
+      "result": {
+        "passed": true,
+        "preset": "model-studio-v2",
+        "views": [
+          {
+            "id": "front",
+            "state": "nominal",
+            "parts": 67,
+            "position": [
+              0,
+              0.38499999046325684,
+              1.782720075032398
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0
+            ]
+          },
+          {
+            "id": "oblique",
+            "state": "nominal",
+            "parts": 67,
+            "position": [
+              0.9869789605064054,
+              0.9278384187417799,
+              1.3817705447089677
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0
+            ]
+          },
+          {
+            "id": "back",
+            "state": "nominal",
+            "parts": 67,
+            "position": [
+              -1.0092664996338574,
+              0.7887065903167998,
+              -1.4129730994874004
+            ],
+            "target": [
+              0,
+              0.38499999046325684,
+              0
+            ]
+          }
+        ]
+      },
+      "finished": "2026-11-12T07:54:01.080Z"
+    },
+    {
+      "name": "render-front",
+      "passed": true,
+      "started": "2026-11-12T07:54:01.081Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-12T07:54:04.235Z"
+    },
+    {
+      "name": "render-oblique",
+      "passed": true,
+      "started": "2026-11-12T07:54:04.236Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-12T07:54:07.357Z"
+    },
+    {
+      "name": "render-back",
+      "passed": true,
+      "started": "2026-11-12T07:54:07.357Z",
+      "result": {
+        "passed": true,
+        "renderDevice": {
+          "requested": "gpu",
+          "type": "GPU",
+          "backend": "OPTIX",
+          "devices": [
+            "NVIDIA GeForce RTX 4070 Ti SUPER"
+          ],
+          "fallback": null
+        },
+        "renderInfo": null,
+        "size": [
+          512,
+          512
+        ]
+      },
+      "finished": "2026-11-12T07:54:10.473Z"
+    },
+    {
+      "name": "downloaded-blend-reopen",
+      "passed": true,
+      "started": "2026-11-12T07:54:10.474Z",
+      "result": {
+        "passed": true,
+        "profile": "trolley-ikea-raskog-large",
+        "blender": "5.2.3 LTS",
+        "source": "downloaded-render-blend",
+        "results": [
+          {
+            "case": "front",
+            "parts": 67,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "oblique",
+            "parts": 67,
+            "boundsAndAlpha": true
+          },
+          {
+            "case": "back",
+            "parts": 67,
+            "boundsAndAlpha": true
+          }
+        ]
+      },
+      "finished": "2026-11-12T07:54:11.382Z"
+    }
+  ],
+  "finished": "2026-11-12T07:54:11.382Z"
+}

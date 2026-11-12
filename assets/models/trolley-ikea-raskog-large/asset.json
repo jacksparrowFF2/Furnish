@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "id": "trolley-ikea-raskog-large",
+  "name": "宜家大号拉斯克手推车",
+  "types": [
+    "trolley_ikea_raskog_large"
+  ],
+  "route": "blender",
+  "document": "docs/TROLLEY-IKEA-RASKOG-LARGE.md",
+  "sourceLinks": [
+    "https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/",
+    "https://www.ikea.com/us/en/p/raskog-utility-cart-white-30586783/",
+    "https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart-white__AA-2475409-3-100.pdf"
+  ],
+  "references": [
+    {
+      "path": "references/assembly-parts.png",
+      "kind": "derived-assembly-page-3",
+      "sha256": "a8012a721637304c7f771c84fc4a94978e2f8319f1e7afec7b59f2554a74e56c",
+      "bytes": 73509,
+      "legacyPaths": [],
+      "derivedFrom": "references/assembly.pdf"
+    },
+    {
+      "path": "references/assembly.pdf",
+      "kind": "manufacturer-assembly",
+      "sha256": "1be6b1035488178991f6c8b93e08a283c19c8a0b1b7b95b542ac179eb5166f7c",
+      "bytes": 994809,
+      "legacyPaths": [],
+      "sourceUrl": "https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart-white__AA-2475409-3-100.pdf"
+    },
+    {
+      "path": "references/official-grey-green.jpg",
+      "kind": "product-page",
+      "sha256": "bbee3923bec62ca1a7ca593f1d78e05191fa7fe98479e359a5a8ba227c34cd6f",
+      "bytes": 7833,
+      "legacyPaths": [],
+      "sourceUrl": "https://file.app.ikea.cn/cn/zh/images/products/raskog-la-si-ke-shou-tui-che-hui-lu-se__1365461_pe956340_s3.jpg"
+    },
+    {
+      "path": "references/official-white-basket.jpg",
+      "kind": "product-page",
+      "sha256": "c091dd32dba7e34cf4f730f0b817b461d3c558053f371a1a9b14708cc487113c",
+      "bytes": 108256,
+      "legacyPaths": [],
+      "sourceUrl": "https://www.ikea.com/us/en/images/products/raskog-utility-cart-white__1366884_pe957177_s5.jpg?f=xl"
+    },
+    {
+      "path": "references/official-white-detail.jpg",
+      "kind": "product-page",
+      "sha256": "94146046be76c5f76be328cdb5243d82c31e3a54778de2b28a0abed33880e0f4",
+      "bytes": 88296,
+      "legacyPaths": [],
+      "sourceUrl": "https://www.ikea.com/us/en/images/products/raskog-utility-cart-white__1366883_pe957174_s5.jpg?f=xl"
+    },
+    {
+      "path": "references/official-white-overall.jpg",
+      "kind": "product-page",
+      "sha256": "527f12843addef5e78cf38b82354d191181c859945e0db4ec0d0363650e73b80",
+      "bytes": 27103,
+      "legacyPaths": [],
+      "sourceUrl": "https://www.ikea.com/us/en/images/products/raskog-utility-cart-white__1366882_pe957173_s5.jpg?f=xl"
+    }
+  ],
+  "missingReferences": [],
+  "validation": [
+    "docs/validation/raskog-trolley-20261112/README.md"
+  ],
+  "notes": [
+    "尺寸为当前77cm款；内部净空、轮径、层距及网孔采样为照片估算；模型自行制作，未复用第三方模型。"
+  ]
+}

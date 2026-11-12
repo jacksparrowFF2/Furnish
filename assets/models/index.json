@@ -2,13 +2,13 @@
   "format": 2,
   "description": "Generated repository index; paths relative to repository root. This is metadata, not the application loading manifest.",
   "counts": {
-    "blenderModels": 45,
+    "blenderModels": 46,
     "parametricVerificationConfigurations": 89,
-    "verificationConfigurations": 134,
-    "catalogEntries": 176,
-    "catalogTypes": 148,
-    "productDossiers": 72,
-    "referenceImages": 312,
+    "verificationConfigurations": 135,
+    "catalogEntries": 177,
+    "catalogTypes": 149,
+    "productDossiers": 73,
+    "referenceImages": 318,
     "missingReferences": 12
   },
   "models": [
@@ -2425,6 +2425,24 @@
           "bytes": 111170
         },
         {
+          "path": "assets/models/storage-supplies/raskog-20261112-v2/review.blend",
+          "role": "retained-other",
+          "sha256": "db1d1f9cdb6a4b6348c70de27452f368f80478894846b97fdcd3cb77e06c533f",
+          "bytes": 220817
+        },
+        {
+          "path": "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "152725300ff2a66e81a070984fd714d053cd8574c607c4062c77a0beb46fdb7b",
+          "bytes": 219155
+        },
+        {
+          "path": "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "7de6ecc0f4e6a6a9d581e189b57fbd73c81a1caf1b3c1b2203299f18002d45f5",
+          "bytes": 1115756
+        },
+        {
           "path": "assets/models/storage-supplies/rolls/v1/review.blend",
           "role": "retained-other",
           "sha256": "0631b3b7d8683d85433d1389fb0a369689f33063916806206d47be03872dbef8",
@@ -3741,6 +3759,834 @@
       "references": [
         "assets/models/toolbox-shimoyama-9l/references/appearance.png",
         "assets/models/toolbox-shimoyama-9l/references/dimensions.png"
+      ]
+    },
+    {
+      "profile": "trolley-ikea-raskog-large",
+      "type": "trolley_ikea_raskog_large",
+      "name": "手推车 · 宜家大号拉斯克",
+      "sizeMm": [
+        350,
+        450,
+        770
+      ],
+      "parts": 67,
+      "runtimeVersion": 1,
+      "runtime": {
+        "path": "src/data/trolley-ikea-raskog-large-blender-asset.js",
+        "sha256": "995c8429df3f13ed1056eda96fd6f54b59af38513a95b257d296331cea2712ee",
+        "normalization": "utf8-lf"
+      },
+      "sourceSha256": "7de6ecc0f4e6a6a9d581e189b57fbd73c81a1caf1b3c1b2203299f18002d45f5",
+      "current": {
+        "blend": "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.blend",
+        "glb": "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.glb"
+      },
+      "document": "docs/TROLLEY-IKEA-RASKOG-LARGE.md",
+      "constructor": "src/render/storage-supply-model.js",
+      "author": "scripts/blender-model-storage-supply.py",
+      "files": [
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.blend",
+          "role": "retained-other",
+          "sha256": "9b6e5b1eb67a1ed30e231278323fa84532968a159eccbfa618e49a36469ccd2f",
+          "bytes": 142610
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/beverage-can-330-v1.glb",
+          "role": "retained-other",
+          "sha256": "68f60b4db85e5428932acd1479912de7ee75e0a12fa748f38aa0baf1621c257a",
+          "bytes": 127856
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "1245d175b0cd6ef88c198353deab326be9025ab595cd2a47bbc3277b058fab51",
+          "bytes": 143639
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v6/beverage-can-330-v1.blend",
+          "role": "retained-other",
+          "sha256": "3423f36e89846e2c742b067f966d64d85db81b49adf5c92a6f8588edaf9ca595",
+          "bytes": 569581
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v6/beverage-can-330-v1.glb",
+          "role": "retained-other",
+          "sha256": "22970b9178054c6bce05abe79c6eb08a9a9dd9af2f8a58334a5ad667df7c8e01",
+          "bytes": 565212
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v6/review-detail.blend",
+          "role": "retained-other",
+          "sha256": "720cfc4f73c769c62973449b2bac68c1fdad02a902a2d8234803809f9dad1962",
+          "bytes": 570170
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v6/review.blend",
+          "role": "retained-other",
+          "sha256": "330c17976a3bbaeec057e73acad323ea37b9b5c8ca3ee96c80d2bc7506e2544c",
+          "bytes": 570169
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.blend",
+          "role": "retained-other",
+          "sha256": "6f9cf219c9821b3389f9854da04cbf5d9f190f224f9ac8ac256a93ce18c4e780",
+          "bytes": 571855
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/beverage-can-330-v1.glb",
+          "role": "retained-other",
+          "sha256": "8310d2fb2cae72d9c5b8cd892cb74c230a5c01691a1488cea16f011bc2adddfa",
+          "bytes": 567280
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-330/v7/review.blend",
+          "role": "retained-other",
+          "sha256": "2688eb2e6d51157c19fcd1737b12d5cfd589082ab0b6f04784e4b56a1f60a251",
+          "bytes": 572629
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.blend",
+          "role": "retained-other",
+          "sha256": "3fc843995a9664d5eb29b8251bc2fddf097a4f688f95badf16e47a2795d842c2",
+          "bytes": 142966
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/beverage-can-500-v1.glb",
+          "role": "retained-other",
+          "sha256": "656267550ed0dd7ce9f911da06335188572dad04a3bba0b21d65b879d12baa20",
+          "bytes": 127856
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "92f06777c2e5ae891848a7cb8d6417f553d58d520b7dd9bb35cab0b4fb35457d",
+          "bytes": 143702
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v6/beverage-can-500-v1.blend",
+          "role": "retained-other",
+          "sha256": "82085f88dbd9a77d9ceda936f64c0577e2ab9424a91a74e82c529b138ca41035",
+          "bytes": 596211
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v6/beverage-can-500-v1.glb",
+          "role": "retained-other",
+          "sha256": "2d32005b33e4f2787ae608d6b54a91911273f40fc371f7ddfa943a3a42b22488",
+          "bytes": 592200
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v6/review.blend",
+          "role": "retained-other",
+          "sha256": "efe86cfed485f368d2e134ee453dd4f6093efc5895b2cfc30bf588823fc40d6d",
+          "bytes": 597124
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.blend",
+          "role": "retained-other",
+          "sha256": "be0dbfadf9c22d736dbbc500fca2e6bb0a3a29b7d945e4a0d9bc57f99c8b174e",
+          "bytes": 598971
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/beverage-can-500-v1.glb",
+          "role": "retained-other",
+          "sha256": "7556296a5397c81c5f847e64d51cb253eb30b84e9721bef5dd3b46a282c7651d",
+          "bytes": 594988
+        },
+        {
+          "path": "assets/models/storage-supplies/beverage-can-500/v7/review.blend",
+          "role": "retained-other",
+          "sha256": "7270b6b0e22403078d8bb01e648a45dae990a64acdfb51af2e0b29e10957efe7",
+          "bytes": 599897
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.blend",
+          "role": "retained-other",
+          "sha256": "6157469c778a5b27055de200531f40221746743c23842734fa7da672cee18a95",
+          "bytes": 759701
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-final/cat-food-2kg-v1.glb",
+          "role": "retained-other",
+          "sha256": "0f06b5149bbf2479deebaf63343ac1953abde77aa2e6cb62e2c5335cd8434b34",
+          "bytes": 798084
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-final/review.blend",
+          "role": "retained-other",
+          "sha256": "a50376db584cf22657f12c69a55ac9e3e570501acb6af37af2ab0a507fb532a9",
+          "bytes": 762968
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-r2/cat-food-2kg-v1.blend",
+          "role": "retained-other",
+          "sha256": "72c787452a4d4261e733c997435d621046ef07d968e24b73d1b98b608a399a4e",
+          "bytes": 758227
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-r2/cat-food-2kg-v1.glb",
+          "role": "retained-other",
+          "sha256": "4830e191827a5111ef5269e3cabd515a93bb895f4f7086c02bf90b030dfdc2d8",
+          "bytes": 790116
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-r2/review.blend",
+          "role": "retained-other",
+          "sha256": "755e582271b9d7e9d1a8c245bdbab05a622cc145dd5badf5f6046f1d948ebfa7",
+          "bytes": 761930
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.blend",
+          "role": "retained-other",
+          "sha256": "9f25376fe1866b848b29a06fa3a54f84bc85ce630218ce06e0ce5dc8bf49e6c7",
+          "bytes": 828719
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-side-final/cat-food-2kg-v1.glb",
+          "role": "retained-other",
+          "sha256": "2cc125892a535e00e2af6fede387177291cd1c185070f0c511416a9b8ba3345b",
+          "bytes": 871572
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg-side-final/review.blend",
+          "role": "retained-other",
+          "sha256": "35450e83149385c0523c9020e80ee0ca39aea1cce6fd17724afa18a6b7789ac8",
+          "bytes": 831358
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg/cat-food-2kg-v1.blend",
+          "role": "retained-other",
+          "sha256": "41b756d587cd77a459337ea493ece98a0ee51aaef3fb48ec0c882938c4b85075",
+          "bytes": 761421
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg/cat-food-2kg-v1.glb",
+          "role": "retained-other",
+          "sha256": "a1c3787242dcd9f0e1e2c140cbf4fa39de169ab193e046f2700b2cf300695c96",
+          "bytes": 775364
+        },
+        {
+          "path": "assets/models/storage-supplies/cat-food-2kg/review.blend",
+          "role": "retained-other",
+          "sha256": "8a5f91b8992add98c7f43c37b7c52ce81e7932ff8c44b6819e8daa159b46cdee",
+          "bytes": 764437
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v1/freeze-dry-bucket-6l-v1.blend",
+          "role": "retained-other",
+          "sha256": "848be77ec913ad1bb2e4b4ed604466697a5120cea9ccd3ef7fb386d869b0ee4c",
+          "bytes": 158513
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v1/freeze-dry-bucket-6l-v1.glb",
+          "role": "retained-other",
+          "sha256": "a62a965976049abefd3807dead946ec0730650b87ad14414ec4a3e597f786d40",
+          "bytes": 176632
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "ac310f72301baee2b76462663e55234009d879b9e792e43a7600d5950ee68858",
+          "bytes": 159508
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v2/freeze-dry-bucket-6l-v1.blend",
+          "role": "retained-other",
+          "sha256": "9a1f01c2e16e1323566eff123e18aaa791e50e3388ab5e7b4a4c9429996d2655",
+          "bytes": 159017
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v2/freeze-dry-bucket-6l-v1.glb",
+          "role": "retained-other",
+          "sha256": "bc8e9da6ada3f5b9fe604a46ee74c6c49e43a87984bde0b9b4db43c8e427d951",
+          "bytes": 176800
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "508e3c8d249ef99267d5c8486bbf5008671abd0f6b8cdfc7f3872b59a3f7bb0b",
+          "bytes": 160146
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v3/freeze-dry-bucket-6l-v1.blend",
+          "role": "retained-other",
+          "sha256": "1b07336719213ebbe76ec2a10aa40d8e64ed2ee8398cc7d437e9db1335c73f61",
+          "bytes": 162498
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v3/freeze-dry-bucket-6l-v1.glb",
+          "role": "retained-other",
+          "sha256": "694037f45885d7a146aa42cefe372ef77cc0d34dc444638e90b4dc995dfdaa2a",
+          "bytes": 176800
+        },
+        {
+          "path": "assets/models/storage-supplies/freeze-dry-bucket-6l/v3/review.blend",
+          "role": "retained-other",
+          "sha256": "2daa30cd5ab1afb17595e2d8435780095d5593ba0a4dfef0adb249aec303efc9",
+          "bytes": 163642
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v1/heartlink-roll-layer-v1.blend",
+          "role": "retained-other",
+          "sha256": "2e07bae5f4a64bf7bf6625fd6e88e3fc51178762f02863286c71c17a110eae52",
+          "bytes": 106369
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v1/heartlink-roll-layer-v1.glb",
+          "role": "retained-other",
+          "sha256": "39e19bc73ff5f8d994150bc99bc1277b726c8513fee14b558191d13c87d32b85",
+          "bytes": 132688
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "bb040f9d347436c6ee0215e222f59410e7bbe2e7405edc85775bd1c265839669",
+          "bytes": 107911
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.blend",
+          "role": "retained-other",
+          "sha256": "beee3db8fb91418ba19bd09341bc1b330a8fc921346453fe51a2985bb4ce7ec0",
+          "bytes": 110968
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v2/heartlink-roll-layer-v1.glb",
+          "role": "retained-other",
+          "sha256": "2c6f1a0f24949207c94bca08f12f585b138357ae9d620b7e4ed74b16df859e1a",
+          "bytes": 223992
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-roll-layer/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "73b22473cdc6c0098b0251b7e0f2e862ea41bbfbdbe05341f1ea8db61781af19",
+          "bytes": 112331
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.blend",
+          "role": "retained-other",
+          "sha256": "84e562aca8d36d5de8a3611bd88256a216502825d4af5c461efe741fa362f195",
+          "bytes": 108911
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-tissue-layer/v1/heartlink-tissue-layer-v1.glb",
+          "role": "retained-other",
+          "sha256": "0151b65d39d94f4cd91777a7e3d5cbf6c59b94b7d9548efacc6cda84c669b34e",
+          "bytes": 142180
+        },
+        {
+          "path": "assets/models/storage-supplies/heartlink-tissue-layer/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "7806311dc7d1ed35374519fb4f6dc2e2cdb8d8fd4787000ad08efedaed9fd680",
+          "bytes": 109989
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v1/medicine-box-v1.blend",
+          "role": "retained-other",
+          "sha256": "c4e59b4a39e154cfb35955c4ecbcd80ea615df9190d7d489c8a218e9b4b1ab57",
+          "bytes": 109674
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v1/medicine-box-v1.glb",
+          "role": "retained-other",
+          "sha256": "749805307d1550a857d4b47439052b6af14a3c40aeea11178904e113ff0ead74",
+          "bytes": 78892
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "51cf4bd6131b46e0bb3b07f34116ceaa7fcec9618b0d6949d1597a9fbf6ea141",
+          "bytes": 111181
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v2/medicine-box-v1.blend",
+          "role": "retained-other",
+          "sha256": "9e0add5906f8fbbf136c1beaabec9b24f22900f306b6e8863b631d6eb11c8b3e",
+          "bytes": 109661
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v2/medicine-box-v1.glb",
+          "role": "retained-other",
+          "sha256": "e8b8a1fda5114689bb5ed7dbd6791400a3abf9e48b1e2f755ea915831cce94ab",
+          "bytes": 78892
+        },
+        {
+          "path": "assets/models/storage-supplies/medicine/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "578d6e58059bd54a0f27dd225cd019ea6d7289ba26778a46cebf69e4966d57c9",
+          "bytes": 111170
+        },
+        {
+          "path": "assets/models/storage-supplies/raskog-20261112-v2/review.blend",
+          "role": "retained-other",
+          "sha256": "db1d1f9cdb6a4b6348c70de27452f368f80478894846b97fdcd3cb77e06c533f",
+          "bytes": 220817
+        },
+        {
+          "path": "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.blend",
+          "role": "published-source",
+          "sha256": "152725300ff2a66e81a070984fd714d053cd8574c607c4062c77a0beb46fdb7b",
+          "bytes": 219155
+        },
+        {
+          "path": "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.glb",
+          "role": "published-source",
+          "sha256": "7de6ecc0f4e6a6a9d581e189b57fbd73c81a1caf1b3c1b2203299f18002d45f5",
+          "bytes": 1115756
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "0631b3b7d8683d85433d1389fb0a369689f33063916806206d47be03872dbef8",
+          "bytes": 118189
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v1/toilet-paper-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "f419fa0580fce0617fc487897ba35c1d9f2079eec92c8cd075013dfc9615cff1",
+          "bytes": 116741
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v1/toilet-paper-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "7b8d363c21cd70139da07c3062ecd186e248d84dfbda46a34d13c88d9a1f84e3",
+          "bytes": 132232
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "8c28fcbac9f24cfc190d98f0b0e07f1ade376d4afccc8520e922f0a9e4b2034f",
+          "bytes": 119820
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v2/toilet-paper-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "39de180229992ff60ecd4847bb08335783060c4d778fa1be01adb474eb8ff005",
+          "bytes": 118267
+        },
+        {
+          "path": "assets/models/storage-supplies/rolls/v2/toilet-paper-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "ecd28481220720c989472691b2965a6cfe4a9aa14dc459d194280843e2195a71",
+          "bytes": 130112
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "bda2b69c7b00b734f772e8fcb4bc6899639a91dd65c8ff8664430b3c7cf47907",
+          "bytes": 109272
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "cf46f5b2b8b1da528c541304f3a37617f30cf2b2336eb3b83e1009eb43874605",
+          "bytes": 107849
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-large/v1/storage-bin-deep-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "2f11235057e58e8eeaf7dbb7dcfb0d9420054d02bc6beb8680990e15da1ba4fb",
+          "bytes": 63964
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "6e9648a720297997b6a615ee337d68d75532a3d802ffef432ce07469739b6ba8",
+          "bytes": 109228
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.blend",
+          "role": "retained-other",
+          "sha256": "1625eb968ec6b8a909199224071cc280772a7a52a8016c9e7670b79e754df093",
+          "bytes": 107811
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deep-medium/v1/storage-bin-deep-medium-v1.glb",
+          "role": "retained-other",
+          "sha256": "b31eb6ba0e4529d934d41ab0a3d7bde56f315aa1a01e353bd10be11271f8a4da",
+          "bytes": 63968
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "fcf1f5be4f150f6ce5b2d3f582f40c6e7129b16f9aa9337b3c943cc0531928a1",
+          "bytes": 109249
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "3de5341a04e694bca8b3040a7a51a0fa85bedb448be66908a1ba63a7e0cafa03",
+          "bytes": 107865
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-large/v1/storage-bin-deeper-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "223c6b4cb54890de3b24f2255ce31a5a3a4afb5c505b5b37cc2a2b3fc65ba4f9",
+          "bytes": 63972
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "5143fd9e5eb6ee80ab5e13da8b6c68a6be7693a4d400841db21d76dc1eda1b5e",
+          "bytes": 109197
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.blend",
+          "role": "retained-other",
+          "sha256": "6385599c2896c52caa4e66db41d9dcc0d5e4cf379825c302f5caa9d6bef2424e",
+          "bytes": 107802
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-deeper-medium/v1/storage-bin-deeper-medium-v1.glb",
+          "role": "retained-other",
+          "sha256": "20ea079b671a38c9822c30e33f00b90ec6b79837b2737d961a11fa4a1306f5f5",
+          "bytes": 63980
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "4feb2bed3be5c3be91475f6f90494e0d5c516801b5a47cdae8d71e0e4b6267e4",
+          "bytes": 109337
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "a1be961ef06f973b12cc4cbdfc7842901b7123f4435728b8f6437361338d8c54",
+          "bytes": 107924
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-shallow-large/v1/storage-bin-shallow-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "2e73d4facf3dfa79ab8983ff21fc14858183e8ca0cb52e092452e1d1dfbc119b",
+          "bytes": 63196
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "521e11f9cd531c3a0663ea3a0f4692dc2c6b74a9703c1b6fad556e0ef650aa12",
+          "bytes": 109254
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.blend",
+          "role": "retained-other",
+          "sha256": "b7b848fac14c1ae7839a97bc6c9990a03f02e28a8e517311791ad55d300c3810",
+          "bytes": 107867
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-large/v1/storage-bin-ultradeep-large-v1.glb",
+          "role": "retained-other",
+          "sha256": "a911097274d250079760d7180d229b0e03f44699a2c55bb975ef3f042d6b4647",
+          "bytes": 63988
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "c3c2cc84cf9dd9ca360cdde505524c10edaa000846795db12e27bcd60519fa65",
+          "bytes": 109221
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.blend",
+          "role": "retained-other",
+          "sha256": "cddc21ae8f4dc12a27365d3a96c20401242284223456c7ac77b3c18d36d33e8e",
+          "bytes": 107807
+        },
+        {
+          "path": "assets/models/storage-supplies/storage-bin-ultradeep-medium/v1/storage-bin-ultradeep-medium-v1.glb",
+          "role": "retained-other",
+          "sha256": "e066de1ccf7e896a8c6b9fa95f09463fdc21218ed17f4bb6dc6714cfc9df33a5",
+          "bytes": 63992
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "8b3b3adc77588c0e93d7e0366d744f1e6ec020a36c8dcf22e1f43e7ff20edc09",
+          "bytes": 113772
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v1/tissue-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "dd485d760df9c2aa07e8b0f6cdd1ecf4ca1654495320a3fc2b88ecbc85eb5624",
+          "bytes": 112414
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v1/tissue-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "7a618465856a24f2e9ba4e5c9e0c05c2a2d082ad1ffe17473ceb70c23130cf47",
+          "bytes": 94316
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "d5e2badc6b4aa8ca9d14c1375040fb648461d7bbfa20a3632c5fb385ad4d1d48",
+          "bytes": 115685
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v2/tissue-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "c2dcffbf941862ddcf4e436c186fc40dc341ecb819d041c028e72dc07e2f65a0",
+          "bytes": 114311
+        },
+        {
+          "path": "assets/models/storage-supplies/tissues/v2/tissue-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "00c8d0ae826648bc2602a3ee1b0812087ff10d1769a206bbe5b96f30bb03e602",
+          "bytes": 92436
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-jiabangshou-390/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "7dbb3f6c34c5bddfe3f7997c053a4629a8f60c81193d8d9028836f3c0289700e",
+          "bytes": 128256
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-jiabangshou-390/v1/toolbox-jiabangshou-390-v1.blend",
+          "role": "retained-other",
+          "sha256": "002db0e3315746bbb27f79ec70dd5677c7c8b49f4c8d4e8eb77372dc41d10f85",
+          "bytes": 126956
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-jiabangshou-390/v1/toolbox-jiabangshou-390-v1.glb",
+          "role": "retained-other",
+          "sha256": "508d759c16e0a5751851ad024a7605e0549e9a094c76c794ea35f7e280732da0",
+          "bytes": 234952
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-jiabangshou-390/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "1dd5849897204fb37238f140d3a552d7917cf5890a4d0938424c709fa8b17791",
+          "bytes": 130001
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.blend",
+          "role": "retained-other",
+          "sha256": "609f806c8c64210cbdde75594872dc7da75de5ce77a8c34e2096620d3d3d364a",
+          "bytes": 128779
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.glb",
+          "role": "retained-other",
+          "sha256": "28a5dbc6a07fd96e19125fdc0f1913c44119e865762dcb43ee7ffeede9aae1b6",
+          "bytes": 251052
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "462b4bb643de6bb485046ca0c73065e8af29355b679ee788eae075eb0e6ede5c",
+          "bytes": 136206
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v1/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "9fcc6daca7944bd8194703d4c2c156352a82fbabb83070aae43c9f56b56a89b0",
+          "bytes": 134667
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v1/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "b95c03945098f51bc9b3d6970ea989782d1708fcea1159b31c3c0e2777650b68",
+          "bytes": 205252
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "eec8b7c3242d95156549f549ed013c415aff16d47c8afd4ff282f27ec52537db",
+          "bytes": 136052
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v2/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "666d076a2ad90369fd98b7e9b192c0cf117f70ee1746adb8d414ecd0afcd1c91",
+          "bytes": 134541
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v2/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "d06a1918a9d6f8c5a16ee0bc750c4532dc34488531c34a1ace3fc2abd37f17f2",
+          "bytes": 203176
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v3/review.blend",
+          "role": "retained-other",
+          "sha256": "7bb171327d524a596fe86481e97a81f27c16bb884ec7e3b7590b3fe38f474939",
+          "bytes": 136156
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v3/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "5b040f96f72dbf2193bcf05ff9aa4a9067db3d7c25105d94b58f5d2fbf4fc05a",
+          "bytes": 134634
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v3/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "843baba9a6c24c77241e696c43d9600592a150486abcc44b50d1fb38a95772f5",
+          "bytes": 203176
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v4/review.blend",
+          "role": "retained-other",
+          "sha256": "817993cf18ef0c79eaab50c5230c7fd47345a4a41460d4b55edb5dc97c939562",
+          "bytes": 154283
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v4/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "0cc54d51f8e2ba1b32a88f7a924f5f0d61b9d68099b3d1fdb647f4e01cc4c014",
+          "bytes": 152391
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v4/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "b620806fbd2e851870ec4077bd16258cfbefbddf140abcdbcb77272dd0276669",
+          "bytes": 254500
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v5/review.blend",
+          "role": "retained-other",
+          "sha256": "8a1d13bfbe390e97099fbacbfeff81e7abb4454e2b6ecb0a655d6c5a2d4842de",
+          "bytes": 153311
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v5/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "d1d1ce790bf283d6dd35ae603f41e1feffb87d1bf1830e023f992280056a3f13",
+          "bytes": 151522
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v5/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "0acad1f657e7207a8f9909a715e88dfb0a54a0f31b98fdf07ca0ae28f6fe769e",
+          "bytes": 250928
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v6/review.blend",
+          "role": "retained-other",
+          "sha256": "c0834f2a2df1be37b726bc7357710eb2538cafc57fe4c0a6d162b333b05b230d",
+          "bytes": 151691
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v6/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "9f3d6826c22bf488f09cbede138ec7ba32a0bebcd039c6d23b9d6a6b1a367631",
+          "bytes": 149692
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v6/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "dae8394f464e0927e91cd916a446ad881dc4e5931c43324507c4afbd10d3f278",
+          "bytes": 255872
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v7/review.blend",
+          "role": "retained-other",
+          "sha256": "f156631be6f65844eb765b45e27732ea1251cc2fdc41e0d310df41a8fcf027a0",
+          "bytes": 150649
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "2d780840a0b022118323da133114911a23b587511b0b17dab7ba888507744edf",
+          "bytes": 148472
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v7/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "10a874e6acaaaec9908472703954a8036a142b13835a1f0a2a0ca2d8d9845708",
+          "bytes": 252172
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/review.blend",
+          "role": "retained-other",
+          "sha256": "7451b71f151f32eec6a925fc3d11c526305a95ef05d40005fdc608df01e15293",
+          "bytes": 150764
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.blend",
+          "role": "retained-other",
+          "sha256": "3b80b9ff9b29f3630d135365a8da861bff6c4af3f2cc39fb449c1cd1cf4c6cd9",
+          "bytes": 148447
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.glb",
+          "role": "retained-other",
+          "sha256": "8ead47048a218e2d922240463e1af11a1d69f123334a9616391fef15d2976a2b",
+          "bytes": 249780
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v1/storage-toolbox-v1.blend",
+          "role": "retained-other",
+          "sha256": "50df10c66b1970e2c16fd711709360dff747daf2af76e12d9723bad2d67238d7",
+          "bytes": 107181
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v1/storage-toolbox-v1.glb",
+          "role": "retained-other",
+          "sha256": "fc738002da85f665ed8dc285fdfac47615ff3f2492e6f4f269bbe1f1b5787ef9",
+          "bytes": 63540
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v2/review.blend",
+          "role": "retained-other",
+          "sha256": "b646e6c4f7c9cc9ef843357a0d329d2417c6102a29467ec34e32cb73bb310690",
+          "bytes": 108589
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v2/storage-toolbox-v1.blend",
+          "role": "retained-other",
+          "sha256": "e53b6eed2698c13e79f1b6f8b7e64a37aea081caf3c7fc1b5b6572f55e480acd",
+          "bytes": 107182
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v2/storage-toolbox-v1.glb",
+          "role": "retained-other",
+          "sha256": "a08a6b7cf79ca0b2b44042c191b69f5583ceb1e2d6cc73344d8ee0599fb41960",
+          "bytes": 63540
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v3/review.blend",
+          "role": "retained-other",
+          "sha256": "a6e5b6dc9bf0d9a160f71e7a7648a1ec21f247663dda55e8821bceeffc1d267d",
+          "bytes": 108577
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v3/storage-toolbox-v1.blend",
+          "role": "retained-other",
+          "sha256": "e4843f1e7d9d5d7d263346faf4f508a4293b4ae4ca0ad78297ed424ed847025c",
+          "bytes": 107166
+        },
+        {
+          "path": "assets/models/storage-supplies/toolbox/v3/storage-toolbox-v1.glb",
+          "role": "retained-other",
+          "sha256": "7bb41901df16d9807f6d4bafa81bf50d45fc7b2d8652ef6114a6edb674e74e42",
+          "bytes": 63540
+        },
+        {
+          "path": "assets/models/storage-supplies/wet-wipes-pack/v1/review.blend",
+          "role": "retained-other",
+          "sha256": "844ff5e70950a402cd90f81560fa2a73ad2060df1b6c109aefc9832773299071",
+          "bytes": 105378
+        },
+        {
+          "path": "assets/models/storage-supplies/wet-wipes-pack/v1/wet-wipes-pack-v1.blend",
+          "role": "retained-other",
+          "sha256": "380e698cbf118ad83fd9079e6ba0553d18f443967fb5139bc87359ade7ee14d3",
+          "bytes": 104048
+        },
+        {
+          "path": "assets/models/storage-supplies/wet-wipes-pack/v1/wet-wipes-pack-v1.glb",
+          "role": "retained-other",
+          "sha256": "bfcc6fccca0cd2db65a9275ee864f08e665d33246b2c8b5a375c0ff507190f80",
+          "bytes": 33248
+        }
+      ],
+      "dossier": "assets/models/trolley-ikea-raskog-large/asset.json",
+      "references": [
+        "assets/models/trolley-ikea-raskog-large/references/assembly-parts.png",
+        "assets/models/trolley-ikea-raskog-large/references/assembly.pdf",
+        "assets/models/trolley-ikea-raskog-large/references/official-grey-green.jpg",
+        "assets/models/trolley-ikea-raskog-large/references/official-white-basket.jpg",
+        "assets/models/trolley-ikea-raskog-large/references/official-white-detail.jpg",
+        "assets/models/trolley-ikea-raskog-large/references/official-white-overall.jpg"
       ]
     },
     {
@@ -8074,6 +8920,80 @@
     },
     {
       "format": 1,
+      "id": "trolley-ikea-raskog-large",
+      "name": "宜家大号拉斯克手推车",
+      "types": [
+        "trolley_ikea_raskog_large"
+      ],
+      "route": "blender",
+      "document": "docs/TROLLEY-IKEA-RASKOG-LARGE.md",
+      "sourceLinks": [
+        "https://www.ikea.cn/cn/zh/p/raskog-la-si-ke-shou-tui-che-hui-lu-se-30591666/",
+        "https://www.ikea.com/us/en/p/raskog-utility-cart-white-30586783/",
+        "https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart-white__AA-2475409-3-100.pdf"
+      ],
+      "references": [
+        {
+          "path": "references/assembly-parts.png",
+          "kind": "derived-assembly-page-3",
+          "sha256": "a8012a721637304c7f771c84fc4a94978e2f8319f1e7afec7b59f2554a74e56c",
+          "bytes": 73509,
+          "legacyPaths": [],
+          "derivedFrom": "references/assembly.pdf"
+        },
+        {
+          "path": "references/assembly.pdf",
+          "kind": "manufacturer-assembly",
+          "sha256": "1be6b1035488178991f6c8b93e08a283c19c8a0b1b7b95b542ac179eb5166f7c",
+          "bytes": 994809,
+          "legacyPaths": [],
+          "sourceUrl": "https://www.ikea.com/us/en/assembly_instructions/raskog-utility-cart-white__AA-2475409-3-100.pdf"
+        },
+        {
+          "path": "references/official-grey-green.jpg",
+          "kind": "product-page",
+          "sha256": "bbee3923bec62ca1a7ca593f1d78e05191fa7fe98479e359a5a8ba227c34cd6f",
+          "bytes": 7833,
+          "legacyPaths": [],
+          "sourceUrl": "https://file.app.ikea.cn/cn/zh/images/products/raskog-la-si-ke-shou-tui-che-hui-lu-se__1365461_pe956340_s3.jpg"
+        },
+        {
+          "path": "references/official-white-basket.jpg",
+          "kind": "product-page",
+          "sha256": "c091dd32dba7e34cf4f730f0b817b461d3c558053f371a1a9b14708cc487113c",
+          "bytes": 108256,
+          "legacyPaths": [],
+          "sourceUrl": "https://www.ikea.com/us/en/images/products/raskog-utility-cart-white__1366884_pe957177_s5.jpg?f=xl"
+        },
+        {
+          "path": "references/official-white-detail.jpg",
+          "kind": "product-page",
+          "sha256": "94146046be76c5f76be328cdb5243d82c31e3a54778de2b28a0abed33880e0f4",
+          "bytes": 88296,
+          "legacyPaths": [],
+          "sourceUrl": "https://www.ikea.com/us/en/images/products/raskog-utility-cart-white__1366883_pe957174_s5.jpg?f=xl"
+        },
+        {
+          "path": "references/official-white-overall.jpg",
+          "kind": "product-page",
+          "sha256": "527f12843addef5e78cf38b82354d191181c859945e0db4ec0d0363650e73b80",
+          "bytes": 27103,
+          "legacyPaths": [],
+          "sourceUrl": "https://www.ikea.com/us/en/images/products/raskog-utility-cart-white__1366882_pe957173_s5.jpg?f=xl"
+        }
+      ],
+      "missingReferences": [],
+      "validation": [
+        "docs/validation/raskog-trolley-20261112/README.md"
+      ],
+      "notes": [
+        "尺寸为当前77cm款；内部净空、轮径、层距及网孔采样为照片估算；模型自行制作，未复用第三方模型。"
+      ],
+      "manifest": "assets/models/trolley-ikea-raskog-large/asset.json",
+      "readme": "assets/models/trolley-ikea-raskog-large/README.md"
+    },
+    {
+      "format": 1,
       "id": "tv-cabinet-references",
       "name": "定制电视柜",
       "types": [],
@@ -10266,6 +11186,15 @@
       "d": 90,
       "h": 1500,
       "module": "index-inline"
+    },
+    {
+      "category": "囤货用品",
+      "type": "trolley_ikea_raskog_large",
+      "name": "手推车 · 宜家大号拉斯克",
+      "w": 350,
+      "d": 450,
+      "h": 770,
+      "module": "storage-supply"
     },
     {
       "category": "囤货用品",

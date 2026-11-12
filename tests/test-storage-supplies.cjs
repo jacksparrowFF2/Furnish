@@ -22,8 +22,8 @@ const near=(a,b)=>assert(Math.abs(a-b)<.02,`${a} != ${b}`);
    const a={...f,rot,flip,mountHeight:68},b=G.bbox(G.footprints(a).flat()),wall={id:'wall',type:'block',w:100,d:2000,h:1000,cx:b[2]+150,cy:0,rot:0};near(S.directional(a,{furniture:[wall]}).r.distance,100);assert(!G.volumeOverlap(a,wall));assert(G.volumeOverlap(a,{...wall,cx:0,w:1000,d:1000}));assert(!G.volumeOverlap(a,{...wall,cx:0,w:1000,d:1000,mountHeight:2000}));
    const packed=J.pack({planId:'p',current:{furniture:[a]},designs:[{name:'copy',work:{furniture:[a]}}],catalog:[]});assert.equal(packed.version,q.shape?57:56);assert.deepEqual(J.unpack(packed).current.furniture[0],a);let restored=[a];for(let n=0;n<3;n++)restored=D.restoreFurniture(restored,{makeId:()=> 'fresh',colorFor:()=> '#fff'});assert.deepEqual(restored,[a]);
   }
-  const cab={...C.preset('storage'),id:'cab',type:'cabinet',cx:0,cy:0,rot:0,w:798.3333333333334,d:Math.max(350,f.d+50),h:2350};cab.cabinet.plinth=50;cab.cabinet.columns=[{door:'double',doorOpen:false,drawers:[],shelves:[450,850,1250,1700]}];C.validate(cab);
-  assert(!G.volumeOverlap({...f,mountHeight:68},cab),'inventory clears real boards');assert(G.volumeOverlap({...f,mountHeight:500},cab),'inventory crossing first shelf is detected');
+  const cab={...C.preset('storage'),id:'cab',type:'cabinet',cx:0,cy:0,rot:0,w:798.3333333333334,d:Math.max(350,f.d+50),h:2350};const firstShelf=Math.max(450,f.h+100);cab.cabinet.plinth=50;cab.cabinet.columns=[{door:'double',doorOpen:false,drawers:[],shelves:[firstShelf,firstShelf+400,firstShelf+800,firstShelf+1250]}];C.validate(cab);
+  assert(!G.volumeOverlap({...f,mountHeight:68},cab),'inventory clears real boards');assert(G.volumeOverlap({...f,mountHeight:firstShelf+50},cab),'inventory crossing first shelf is detected');
   const old={id:'old',type:'block',name:'old',cx:0,cy:0,w:100,d:100,h:100,rot:0};const replaced=D.replaceFurniture(old,f,{anchor:'center'});assert.equal(replaced.id,'old');assert.equal(replaced.type,q.type);
  }
  const previous=J.pack({planId:'p',current:{furniture:[]},designs:[],catalog:[]});assert(previous.version<56,'unaffected projects keep their prior format');

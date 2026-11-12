@@ -6,7 +6,7 @@
 
 更新：`node scripts/index-model-assets.cjs --write`；核对：`node scripts/index-model-assets.cjs --check`。
 
-72份产品／设计档案，312张参考图，12张历史原图待补；45组Blender模型。参数化验证配置89组，全部家具库176条目／148种类型。
+73份产品／设计档案，318张参考图，12张历史原图待补；46组Blender模型。参数化验证配置89组，全部家具库177条目／149种类型。
 
 | 产品／设计资料 | 参考图 | 输出／构造 | 待补原图 |
 |---|---|---|---|
@@ -73,6 +73,7 @@
 | [整提卷纸 · 220×220×340估算](toilet-paper-pack/README.md) | 1 | [BLEND](storage-supplies/rolls/v2/toilet-paper-pack-v1.blend) · [GLB](storage-supplies/rolls/v2/toilet-paper-pack-v1.glb) | 0 |
 | [透明工具箱 · 佳帮手大号](toolbox-jiabangshou-390/README.md) | 1 | [BLEND](storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.blend) · [GLB](storage-supplies/toolbox-jiabangshou-390/v2/toolbox-jiabangshou-390-v1.glb) | 0 |
 | [工具收纳箱 · 霜山9L](toolbox-shimoyama-9l/README.md) | 2 | [BLEND](storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.blend) · [GLB](storage-supplies/toolbox-shimoyama-9l/v8/toolbox-shimoyama-9l-v1.glb) | 0 |
+| [宜家大号拉斯克手推车](trolley-ikea-raskog-large/README.md) | 6 | [BLEND](storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.blend) · [GLB](storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.glb) | 0 |
 | [定制电视柜](tv-cabinet-references/README.md) | 1 | 参考资料 | 0 |
 | [次卧衣柜与窗下书桌组合](wardrobe-desk-references/README.md) | 2 | 参考资料 | 0 |
 | [洗衣机](washer/README.md) | 0 | [BLEND](washer/washer-v1.blend) · [GLB](washer/washer-v1.glb) | 0 |

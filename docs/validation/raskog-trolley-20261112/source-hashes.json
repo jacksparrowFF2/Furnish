@@ -1,0 +1,8 @@
+{
+  "scripts/blender-model-raskog.py": "e5701edf1b3add303e0517f5f9307a44cf93f7658e4076f734012aa5c1cc0e02",
+  "scripts/blender-model-storage-supply.py": "d62147d2bd2280b3a51d3266c1f90aa3b09b6678c563e0a9728af06478236908",
+  "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.blend": "152725300ff2a66e81a070984fd714d053cd8574c607c4062c77a0beb46fdb7b",
+  "assets/models/storage-supplies/raskog-20261112-v2/trolley-ikea-raskog-large-v1.glb": "7de6ecc0f4e6a6a9d581e189b57fbd73c81a1caf1b3c1b2203299f18002d45f5",
+  "assets/models/storage-supplies/raskog-20261112-v2/review.blend": "db1d1f9cdb6a4b6348c70de27452f368f80478894846b97fdcd3cb77e06c533f",
+  "src/data/trolley-ikea-raskog-large-blender-asset.js": "5cac7be061fb52e6753f073a16069ba836c94dbdcae9e77445cf3eeb61bed066"
+}

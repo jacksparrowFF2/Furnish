@@ -27,6 +27,7 @@ const supplySpecs=require('./storage-supply-specs.json');for(const [id,s] of Obj
 const garmentSpecs=require('./garment-photo-specs.json');for(const [id,s] of Object.entries(garmentSpecs)){assetTypes[id]=s.type;suites[id]=['garment-photos'];}
 for(const [id,s] of Object.entries(supplySpecs))if(s.shape==='beverage-can')suites[id].push('beverage-cans','beverage-can-print');
 for(const [id,s] of Object.entries(supplySpecs))if(s.shape==='open-storage-bin')suites[id].push('storage-bins');
+suites['trolley-ikea-raskog-large'].push('raskog-trolley');
 suites['cat-food-2kg']=['storage-supplies','cat-food-2kg'];
 function testsFor(id,type){
  const garden=P.definition(type)?.garden;

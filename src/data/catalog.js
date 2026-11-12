@@ -190,6 +190,7 @@ const LIB = [
     ["tripleslidingwindow","三联动推拉窗",1800,90,"#41474b",0,1500]
   ]},
   {cat:'囤货用品', items:[
+    ["trolley_ikea_raskog_large", "手推车 · 宜家大号拉斯克",350,450,"#747b6b",undefined,770],
     ["toilet_roll_heartlink_layer9", "心相印卷纸 · 9卷层（3层27卷）", 300, 300, "#f2f0e8",undefined,140],
     ["tissue_heartlink_layer6", "心相印抽纸 · 6包层（4层24包）", 420, 200, "#70a88f",undefined,50],
     ["beverage_can_330ml", "易拉罐 · 330ml标准罐", 66.2, 66.2, "#f1f2ed", undefined, 115.2],

@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "id": "trolley-ikea-raskog-large",
+      "passed": true,
+      "cases": [
+        {
+          "state": "nominal",
+          "rot": 0,
+          "flip": false,
+          "parts": 67,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "nominal",
+          "rot": 37,
+          "flip": true,
+          "parts": 67,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 82.86358403907866,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 0,
+          "flip": false,
+          "parts": 67,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 100,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        },
+        {
+          "state": "alternate",
+          "rot": 37,
+          "flip": true,
+          "parts": 67,
+          "bottom": 0,
+          "top": 770,
+          "externalDistance": 82.86358403907866,
+          "penetration": true,
+          "heightSeparation": true,
+          "projectRoundtrip": true
+        }
+      ]
+    }
+  ]
+}
