@@ -131,18 +131,28 @@
   return items;
  }
  const Z=()=>root.FurnishZoneGeometry||require('./zone-geometry.js');
- function validateWorktop(f){const value=f.kitchen?.laundry?.worktop;if(value===undefined)return;const r=P().cabinetBuilder.worktop;if(!K().isLaundry(f)||!value||Array.isArray(value)||Object.keys(value).some(k=>k!=='outline')||!Array.isArray(value.outline)||value.outline.length>r.maxVertices)throw Error('异形台面轮廓无效');const poly=value.outline;Z().validatePolygon(poly);if(poly.length<4||poly.some((p,i)=>{const q=poly[(i+1)%poly.length];return p[0]!==q[0]&&p[1]!==q[1];}))throw Error('异形台面须为无自交的直角多边形');const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);if([...xs,...ys].some(n=>Math.abs(n)>r.maxSpan)||Math.max(...xs)-Math.min(...xs)>r.maxSpan||Math.max(...ys)-Math.min(...ys)>r.maxSpan)throw Error('异形台面超出设计范围');if(Math.abs(Z().signed(poly))<10000)throw Error('台面有效面积过小');}
- function setWorktop(f,outline){if(f.locked||!K().isLaundry(f))throw Error('请选择已解锁洗衣区');const next=copy(f);if(outline===null)delete next.kitchen.laundry.worktop;else{const poly=copy(outline);if(Z().signed(poly)<0)poly.reverse();next.kitchen.laundry.worktop={outline:poly};}validateWorktop(next);return K().validate(next);}
+ function validateWorktop(f){const value=K().worktopConfig(f);if(value===undefined)return;const r=P().cabinetBuilder.worktop;if(!f.kitchen||K().isWall(f)||!value||Array.isArray(value)||Object.keys(value).some(k=>k!=='outline')||!Array.isArray(value.outline)||value.outline.length>r.maxVertices)throw Error('异形台面轮廓无效');const poly=value.outline;Z().validatePolygon(poly);if(poly.length<4||poly.some((p,i)=>{const q=poly[(i+1)%poly.length];return p[0]!==q[0]&&p[1]!==q[1];}))throw Error('异形台面须为无自交的直角多边形');const xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]);if([...xs,...ys].some(n=>Math.abs(n)>r.maxSpan)||Math.max(...xs)-Math.min(...xs)>r.maxSpan||Math.max(...ys)-Math.min(...ys)>r.maxSpan)throw Error('异形台面超出设计范围');if(Math.abs(Z().signed(poly))<10000)throw Error('台面有效面积过小');}
+ function setWorktop(f,outline){if(f.locked||!f.kitchen||K().isWall(f)||!K().hasCountertop(f))throw Error('请选择已解锁且有台面的地柜');const next=copy(f),host=K().isLaundry(next)?next.kitchen.laundry:next.kitchen;if(outline===null)delete host.worktop;else{const poly=copy(outline);if(Z().signed(poly)<0)poly.reverse();host.worktop={outline:poly};}validateWorktop(next);return K().validate(next);}
  // Facing directions are a command boundary; saved outlines and the local API stay canonical.
  // Rebuild from the native surface and actual carcasses meeting its underside.
+ function worktopSupports(f){
+  const B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),height=f.kitchen.baseHeight,overhang=Math.max(0,K().counterDepth(f)-f.kitchen.depth),result=[];
+  for(const row of placementRows(f)){
+   const a=row.rot*Math.PI/180,c=Math.round(Math.cos(a)),s=Math.round(Math.sin(a)),transform=([x,z])=>[row.x+x*c-z*s,row.z+x*s+z*c];
+   for(const p of B.layout(row.furniture)){
+    if(Math.abs(row.y+p.y+p.box.h-height)>.01)continue;let left=p.x-p.box.w/2,right=p.x+p.box.w/2,rear=p.z-p.box.d/2,front=p.z+p.box.d/2;
+    if(p.box.carcass===false){
+     const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),boards=M.boards(row.furniture,{includeStatic:true}).filter(b=>b.metadata?.cabinetBuilder?.boxId===p.box.id&&['box','board','panel'].includes(b.metadata.cabinetBuilder.kind)&&Math.abs(b.top-p.top)<.01);
+     if(!boards.length)continue;const xs=boards.flatMap(b=>b.poly.map(p=>p[0])),zs=boards.flatMap(b=>b.poly.map(p=>p[1]));left=Math.min(...xs);right=Math.max(...xs);rear=Math.min(...zs);front=Math.max(...zs);
+    }
+    result.push({id:row.id,poly:[[left,rear],[right,rear],[right,front+overhang],[left,front+overhang]].map(transform),front:[[left,front+overhang],[right,front+overhang]].map(transform),normal:[-s,c]});
+   }
+  }
+  return result;
+ }
  function generateWorktop(f){
-  if(f.locked||!K().isLaundry(f))throw Error('请选择已解锁洗衣区');const base=setWorktop(f,null),rings=[K().outline(base)],B=root.FurnishCabinetBuilder||require('./cabinet-builder-core.js'),height=f.kitchen.baseHeight,overhang=Math.max(0,K().runCounterDepth(base,0)-K().runDepth(base,0));
-  for(const row of placementRows(base)){const a=row.rot*Math.PI/180,c=Math.cos(a),s=Math.sin(a);for(const p of B.layout(row.furniture)){if(Math.abs(row.y+p.y+p.box.h-height)>.01)continue;let poly;if(p.box.carcass===false){const M=root.FurnishCabinetMotion||require('./cabinet-motion.js'),boards=M.boards(row.furniture,{includeStatic:true}).filter(b=>b.metadata?.cabinetBuilder?.boxId===p.box.id&&['box','board','panel'].includes(b.metadata.cabinetBuilder.kind)&&Math.abs(b.top-p.top)<.01);if(!boards.length)continue;const xs=boards.flatMap(b=>b.poly.map(p=>p[0])),zs=boards.flatMap(b=>b.poly.map(p=>p[1])),left=Math.min(...xs),right=Math.max(...xs),rear=Math.min(...zs),front=Math.max(...zs);poly=[[left,rear],[right,rear],[right,front],[left,front]];}else poly=[[-p.box.w/2,-p.box.d/2],[p.box.w/2,-p.box.d/2],[p.box.w/2,p.box.d/2],[-p.box.w/2,p.box.d/2]].map(([u,v])=>[p.x+u,p.z+v]);
-   // Match the native front projection in each box's own frame; rear and sides stay on the support outline.
-   const front=Math.max(...poly.map(p=>p[1]));poly=poly.map(([x,z])=>[x,z===front?z+overhang:z]);
-   rings.push(poly.map(([x,z])=>[row.x+x*c-z*s,row.z+x*s+z*c]));}}
-  const pieces=Z().decompose(rings,p=>rings.some(r=>Z().inside(p,r))),outline=Z().outline(pieces).rings;
-  if(outline.length!==1)throw Error('同高度柜箱与主台面不连续，请先拼接柜箱或手动编辑台面');
+  const base=setWorktop(f,null),rings=[K().outline(base),...worktopSupports(base).map(p=>p.poly)],pieces=Z().decompose(rings,p=>rings.some(r=>Z().inside(p,r))),outline=Z().outline(pieces).rings;
+  if(outline.length!==1)throw Error('同高度柜箱与主台面不连续或围成内孔，请先调整柜箱或手动编辑台面');
   return setWorktop(f,outline[0]);
  }
  function extendWorktopFacing(f,values={}){const side=values.side??'left';return extendWorktop(f,{...values,side:f.flip?(side==='left'?'right':side==='right'?'left':side):side});}
@@ -155,5 +165,5 @@
   for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++){const a=parts[i],b=parts[j],x=group(a),y=group(b);if(!x||!y||x===y||!own.has(x)&&!own.has(y))continue;const key=[x,y].sort().join('|');if(seen.has(key)||!G.verticalOverlap(f,f,[a.vertical,b.vertical])||!G.polygonOverlap(M.section(a,b.vertical),M.section(b,a.vertical),1e-6))continue;seen.add(key);const label=v=>v==='worktop'?'连续台面':v.startsWith('module:')?'柜箱 '+(Number(v.slice(7))+1):modules(f).find(r=>r.id===v.slice(8))?.label??'附属柜';issues.push({kind:'assembly',id:f.id,name:f.name,component:x,otherComponent:y,message:label(x)+'与'+label(y)+'的实际板件相交，请调整柜箱位置、尺寸或台面；两者不会自动互相拉伸'});}
   return issues;
  }
- const api={generateWorktop,outerCabinetHandles,resizeCabinetEdge,extendWorktopFacing,alignmentTargets,alignPart,setPart,spatialIssues,independentModule,setModulePart,createLaundryCabinet,editableKitchen,componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
+ const api={worktopSupports,generateWorktop,outerCabinetHandles,resizeCabinetEdge,extendWorktopFacing,alignmentTargets,alignPart,setPart,spatialIssues,independentModule,setModulePart,createLaundryCabinet,editableKitchen,componentizeKitchen,setOpening,opening,placementRows,drop,componentizePart,componentizeLaundry,bounds,supported,shift,validatePlacement,sideboardLayout,sideboardPart,validateSideboard,laundryPlacement,validateLaundry,modules,edit,addCabinet,removeCabinet,validateWorktop,setWorktop,extendWorktop,moveWorktopVertex};root.FurnishCabinetAssembly=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

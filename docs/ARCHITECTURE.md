@@ -1,3 +1,5 @@
+2026-11-12（厨房柜箱台面）：cabinet-assembly-core将显式轮廓生成复用于一字/L/U厨房，worktopSupports共用同顶高实际承托轮廓与局部正面出挑。kitchen-core从kitchen.worktop供2D、生产台面、扣孔、下挂、实体与分边正视；无新脚本或保存通道。显式新轮廓最低v87，旧洗衣柜laundry.worktop不迁移。见[KITCHEN-DESIGN.md](KITCHEN-DESIGN.md#按柜箱轮廓生成厨房台面2026-11-12)。
+
 2026-11-12（柜体检修结构）：product-rules.cabinetService定义可选地脚／可拆前板、标准板通风孔、独立内抽及v86；cabinet-builder-core派生孔间实体和硬件，cabinet-model共用生产构造与记录器。新地脚模式修正无底侧／背起点，旧构造不变。共享搭建器沿原草稿／mutate，项目、仓库和离线缓存接收v86，无新脚本或保存通道。见[检修契约](CABINET-KITCHEN-SERVICE.md)。
 
 2026-11-11（86面板）：product-rules集中panelVariants与mountHeight，panel-bull-g12-model选择37款Blender离线网格；静态构造供正式场景和实体，款式进入缓存／空间签名及采购分组。v84沿原mutate／项目／仓库／缓存；只新增两段经典资产／模型脚本，不引入状态或构建机制。见[型号契约](PANEL-BULL-G12.md)。

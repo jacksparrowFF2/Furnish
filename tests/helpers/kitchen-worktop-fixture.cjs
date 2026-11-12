@@ -1,0 +1,6 @@
+'use strict';
+module.exports=function fixture(K,A,B,shape,corner,run,rot=0,flip=false){
+ const modules=[{run:0,width:900,role:'door'},{run:0,width:900,role:'door'},...(shape!=='straight'?[{run:1,width:1500,role:'door'}]:[]),...(shape==='U'?[{run:2,width:1500,role:'door'}]:[])];
+ const f=A.editableKitchen(K.configure({id:'top',name:'Kitchen',type:'counter',cx:4000,cy:4000,rot,flip,mountHeight:120,color:'#eee'},{version:1,shape,corner,depth:600,counterDepth:630,baseHeight:820,thickness:20,...(shape==='U'?{runDepths:[600,650,550]}:{}),modules})),m=K.cabinetLayout(f).find(m=>m.run===run),angle=m.rot*Math.PI/180,axis=[Math.round(Math.cos(angle)),Math.round(Math.sin(angle))],normal=[-axis[1],axis[0]],native=K.outline(f),rear=m.x*normal[0]+m.y*normal[1]-K.runDepth(f,run)/2,crossings=native.flatMap((p,i)=>{const q=native[(i+1)%native.length],a=p[0]*normal[0]+p[1]*normal[1],b=q[0]*normal[0]+q[1]*normal[1];if(Math.abs(a-b)<.01||(rear+140-a)*(rear+140-b)>0)return [];const t=(rear+140-a)/(b-a);return [(p[0]+t*(q[0]-p[0]))*axis[0]+(p[1]+t*(q[1]-p[1]))*axis[1]];}),along=Math.max(...crossings)+130,part=B.update(B.create(),{boxId:'box1'},{w:260,d:280,h:820});
+ K.assemblyConfig(f,true).cabinet1={w:260,d:280,h:820,x:along*axis[0]+(rear+140)*normal[0],y:along*axis[1]+(rear+140)*normal[1],mountHeight:0,rot:m.rot,cabinet:part.cabinet};K.validate(f);return {f,normal,axis};
+};
