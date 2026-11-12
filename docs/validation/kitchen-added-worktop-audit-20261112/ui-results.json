@@ -1,0 +1,119 @@
+[
+  {
+    "mode": "http",
+    "completed": true,
+    "acceptance": false,
+    "checks": [
+      "straight: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced",
+      "L: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced",
+      "U: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced"
+    ],
+    "findings": [
+      {
+        "shape": "straight",
+        "generationVisible": false
+      },
+      {
+        "shape": "straight",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      },
+      {
+        "shape": "L",
+        "generationVisible": false
+      },
+      {
+        "shape": "L",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      },
+      {
+        "shape": "U",
+        "generationVisible": false
+      },
+      {
+        "shape": "U",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      }
+    ]
+  },
+  {
+    "mode": "file",
+    "completed": true,
+    "acceptance": false,
+    "checks": [
+      "straight: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced",
+      "L: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced",
+      "U: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced"
+    ],
+    "findings": [
+      {
+        "shape": "straight",
+        "generationVisible": false
+      },
+      {
+        "shape": "straight",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      },
+      {
+        "shape": "L",
+        "generationVisible": false
+      },
+      {
+        "shape": "L",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      },
+      {
+        "shape": "U",
+        "generationVisible": false
+      },
+      {
+        "shape": "U",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      }
+    ]
+  },
+  {
+    "mode": "desktop",
+    "completed": true,
+    "acceptance": false,
+    "checks": [
+      "straight: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced",
+      "L: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced",
+      "U: added-box edit, save, undo/redo and refresh survive; missing worktop reproduced"
+    ],
+    "findings": [
+      {
+        "shape": "straight",
+        "generationVisible": false
+      },
+      {
+        "shape": "straight",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      },
+      {
+        "shape": "L",
+        "generationVisible": false
+      },
+      {
+        "shape": "L",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      },
+      {
+        "shape": "U",
+        "generationVisible": false
+      },
+      {
+        "shape": "U",
+        "outlineIncludesAdded": false,
+        "generationError": "请选择已解锁洗衣区"
+      }
+    ]
+  }
+]
