@@ -470,5 +470,17 @@
 
 #cab-assembly .assembly-component-tree.assembly-single-box{margin-left:0;padding-left:0;border-left:0}
 
+/* Shared pane dividers and selection-first properties. */
+:is(#cab-builder,#cab-assembly){grid-template-columns:var(--builder-library-width,220px) 12px minmax(240px,1fr) 12px var(--builder-details-width,500px);gap:0}
+:is(#cab-builder,#cab-assembly) .builder-pane-resizer{position:relative;min-height:0;cursor:col-resize;touch-action:none;border-radius:4px;outline-offset:-2px}
+:is(#cab-builder,#cab-assembly) .builder-pane-resizer:after{content:"";position:absolute;top:calc(50% - 24px);left:4px;width:4px;height:48px;border-radius:4px;background:#c7bcac}
+:is(#cab-builder,#cab-assembly) .builder-pane-resizer:is(:hover,:focus-visible,[data-dragging=true]){background:#f8e6ce;outline:2px solid #ae4f16}
+:is(#cab-builder,#cab-assembly) .builder-overall{border-top:1px solid #ded5c7;margin-top:16px;padding-top:12px}
+:is(#cab-builder,#cab-assembly) :is(.builder-overall,.builder-clearances,.builder-installation)>summary{font-weight:600;cursor:pointer;padding:6px 0}
+:is(#cab-builder,#cab-assembly) .builder-installation{border-top:1px solid #ded5c7;margin-top:14px;padding-top:8px}
+:is(#cab-builder,#cab-assembly) input[type=color]{height:40px;padding:4px;cursor:pointer}
+:is(#cab-builder,#cab-assembly) [data-assembly-inspector]>h3:first-child,:is(#cab-builder,#cab-assembly) [data-builder-inspector]>h3:first-child{position:sticky;top:0;background:var(--paper,#fffdf8);padding:10px 0;margin:0 0 8px;z-index:1}
+@media(max-width:760px){:is(#cab-builder,#cab-assembly) .builder-pane-resizer{display:none}}
+
 /* Two L elevations or three U elevations share the available workspace height. */
 .cab-elevation{flex:1 0 auto}

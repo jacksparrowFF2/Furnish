@@ -1,3 +1,5 @@
+2026-11-12（踢脚配色）：cabinetBuilder.plinthAppearance.formatVersion=88；v2踢脚和由生产元数据cabinetSection=plinth识别的原形状板件可保存可选color（#RRGGBB），其它board不开放此字段。新旧缺失保持原生产材质，恢复默认删除覆盖，不改几何／空间语义；支脚与卡扣排除。显式配色沿原组件复用、当前／命名／库／项目／仓库与缓存恢复；完整配置进入三维缓存，空间签名仍剔除颜色。见[验收](validation/cabinet-editor-experience-20261112/README.md)。
+
 2026-11-11（86面板）：panel_bull_g12集中37个panelVariant枚举、默认斜五孔及mountHeight新建0；缺失仅读默认，同型替换保留、跨型清理；含类型或字段最低v84，价格／配色不清空间确认。可见厚度10mm为布局估算。见[参数与边界](PANEL-BULL-G12.md)。
 
 2026-11-11：cabinetBuilder.nativePlacement集中声明原组件柜独立尺寸语义、位置范围与v83。显式independent后沿structure尺寸，mountHeight/x/enabled表达安装和移除；旧缺失仍保持原派生，不在恢复时升级。规则、替换／复用及生产／恢复验收见[独立柜箱契约](validation/cabinet-native-independence-20261111/README.md)。

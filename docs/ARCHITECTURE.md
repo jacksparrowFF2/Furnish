@@ -1,3 +1,5 @@
+2026-11-12（组件编辑体验）：cabinet-builder.mountShell共用本机调宽与属性优先布局，native-adapter以同一@worktop选择连续台面；未新增脚本或保存通道。product-rules.plinthAppearance声明可选踢脚色最低v88，builder-core受限识别实际踢脚，生产模型按组件覆盖材质并排除硬件。完整配置驱动显示缓存，原空间签名继续排除配色；项目／仓库／缓存保留旧版读取。见[验收](validation/cabinet-editor-experience-20261112/README.md)。
+
 2026-11-12（厨房柜箱台面）：cabinet-assembly-core将显式轮廓生成复用于一字/L/U厨房，worktopSupports共用同顶高实际承托轮廓与局部正面出挑。kitchen-core从kitchen.worktop供2D、生产台面、扣孔、下挂、实体与分边正视；无新脚本或保存通道。显式新轮廓最低v87，旧洗衣柜laundry.worktop不迁移。见[KITCHEN-DESIGN.md](KITCHEN-DESIGN.md#按柜箱轮廓生成厨房台面2026-11-12)。
 
 2026-11-12（柜体检修结构）：product-rules.cabinetService定义可选地脚／可拆前板、标准板通风孔、独立内抽及v86；cabinet-builder-core派生孔间实体和硬件，cabinet-model共用生产构造与记录器。新地脚模式修正无底侧／背起点，旧构造不变。共享搭建器沿原草稿／mutate，项目、仓库和离线缓存接收v86，无新脚本或保存通道。见[检修契约](CABINET-KITCHEN-SERVICE.md)。
