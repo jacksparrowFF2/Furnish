@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "straight-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "L-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "L-run1: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run1: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run2: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel"
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "straight-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "L-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "L-run1: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run1: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run2: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel"
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "straight-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "L-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "L-run1: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run0: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run1: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel",
+      "U-run2: production front/rear rays, independent boxes, repeated generation single undo, save/app undo-redo/refresh, 2D, reopened generation and cancel"
+    ]
+  }
+]

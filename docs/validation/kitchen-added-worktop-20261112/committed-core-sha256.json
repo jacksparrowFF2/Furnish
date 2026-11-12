@@ -1,0 +1,13 @@
+{
+  "commit": "deb20e2c",
+  "scope": "Committed kitchen feature files; UI run also contained separate in-progress UI changes. Disposable runtime source was automatically removed by the test runner.",
+  "sha256": {
+    "src/core/cabinet-assembly-core.js": "2413dabda527e6bf33dbdee16596695865d024ae5a42257573c0210bcc61a916",
+    "src/core/kitchen-core.js": "1627fa9ca4bcde71e01b284c9a1cfbc8911f1bb38121208dd37dda6cab1269d2",
+    "src/core/product-rules.js": "91648af132c37a6d9e28a6838d4fd030ed8347e36c137038b750ae2050ccae19",
+    "src/core/project-core.js": "bcff8a05b850aeb75b216f67f5305c7c1c1761e0ae61108b645bc6326b9e5845",
+    "src/core/repository-core.js": "c03340c733105c582d1b4d6248b18c63354059370ff46a234505dbd45b6d643e",
+    "src/io/workspace-cache.js": "f63d31a4e54be662eb90ed21bec6edbe01019f13a6c8ddd38188e9a729ae373c",
+    "src/ui/cabinet-builder-native-adapter.js": "4c0ffcf557424847a77e2cfd1b3a58f2028695572ea39defde2c66595205aaaf"
+  }
+}
