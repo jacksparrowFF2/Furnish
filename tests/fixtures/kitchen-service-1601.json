@@ -1,0 +1,415 @@
+{
+  "color": "#e9e5de",
+  "cx": 7333,
+  "cy": 9297.999999999998,
+  "d": 1704,
+  "id": "fmv9dos7j1",
+  "kitchen": {
+    "autoAvoid": true,
+    "baseHeight": 830,
+    "corner": "right",
+    "counterDepth": 620,
+    "depth": 600,
+    "modules": [
+      {
+        "cabinetPlacement": {
+          "align": "front",
+          "depth": 225,
+          "independent": true,
+          "mountHeight": 0,
+          "offset": 0
+        },
+        "role": "door",
+        "run": 0,
+        "structure": {
+          "w": 580,
+          "d": 225,
+          "h": 830,
+          "cabinet": {
+            "boxes": [
+              {
+                "backThickness": 18,
+                "bottom": true,
+                "components": [
+                  {
+                    "height": 100,
+                    "id": "feet-A",
+                    "inset": 40,
+                    "kind": "plinth",
+                    "support": "legs",
+                    "removed": false
+                  },
+                  {
+                    "id": "shelf-lower-A",
+                    "kind": "shelf",
+                    "bay": "left",
+                    "at": 0.4755043227665706,
+                    "front": 20,
+                    "back": 0,
+                    "edgeGap": 1,
+                    "removable": true
+                  },
+                  {
+                    "id": "shelf-upper-A",
+                    "kind": "shelf",
+                    "bay": "left",
+                    "at": 0.760806916426513,
+                    "front": 20,
+                    "back": 0,
+                    "edgeGap": 1,
+                    "removable": true
+                  },
+                  {
+                    "id": "shelf-doors-A",
+                    "kind": "door",
+                    "bay": "left",
+                    "mode": "double",
+                    "maxAngle": 90,
+                    "angle": 0,
+                    "open": false,
+                    "handle": "none",
+                    "finish": "solid"
+                  }
+                ],
+                "d": 225,
+                "frontBand": true,
+                "h": 830,
+                "id": "shallow-A",
+                "thickness": 18,
+                "top": true,
+                "w": 580
+              }
+            ],
+            "version": 2
+          }
+        },
+        "width": 580
+      },
+      {
+        "cornerPartitions": {
+          "left": true,
+          "right": false
+        },
+        "door": "double",
+        "doorAngle": 90,
+        "doorLeaves": [
+          {
+            "angle": 90,
+            "open": false
+          },
+          {
+            "angle": 90,
+            "open": false
+          }
+        ],
+        "doorOpen": false,
+        "handle": "none",
+        "role": "sink",
+        "run": 1,
+        "width": 1104,
+        "structure": {
+          "w": 1104,
+          "d": 600,
+          "h": 830,
+          "cabinet": {
+            "version": 2,
+            "boxes": [
+              {
+                "id": "sink-D",
+                "w": 1104,
+                "d": 600,
+                "h": 830,
+                "thickness": 18,
+                "backThickness": 18,
+                "bottom": true,
+                "top": true,
+                "frontBand": true,
+                "components": [
+                  {
+                    "id": "sink-feet",
+                    "kind": "plinth",
+                    "height": 100,
+                    "inset": 40,
+                    "support": "legs",
+                    "removed": false
+                  },
+                  {
+                    "id": "sink-doors",
+                    "kind": "door",
+                    "bay": "left",
+                    "mode": "double",
+                    "maxAngle": 90,
+                    "angle": 0,
+                    "open": false,
+                    "handle": "none",
+                    "finish": "solid"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "cabinetPlacement": {
+          "independent": true,
+          "align": "front",
+          "depth": 600,
+          "mountHeight": 0,
+          "offset": 0
+        }
+      },
+      {
+        "cabinetPlacement": {
+          "align": "front",
+          "depth": 400,
+          "independent": true,
+          "mountHeight": 0,
+          "offset": 0
+        },
+        "role": "hob",
+        "run": 0,
+        "structure": {
+          "w": 980,
+          "d": 400,
+          "h": 830,
+          "cabinet": {
+            "boxes": [
+              {
+                "backThickness": 0,
+                "bottom": false,
+                "components": [
+                  {
+                    "bay": "left",
+                    "bottom": 0.14216867469879518,
+                    "boxTopInset": 18,
+                    "extension": 1,
+                    "frontBottomOffset": -18,
+                    "frontTopOffset": 0,
+                    "handle": "none",
+                    "height": 292,
+                    "id": "pots-B",
+                    "kind": "drawerModule",
+                    "lanes": 1,
+                    "open": false,
+                    "removed": false
+                  },
+                  {
+                    "bay": "left",
+                    "bottom": 0.4939759036144578,
+                    "boxTopInset": 112,
+                    "extension": 1,
+                    "frontBottomOffset": 0,
+                    "frontTopOffset": 90,
+                    "handle": "none",
+                    "height": 320,
+                    "id": "bowls-B",
+                    "kind": "drawerModule",
+                    "lanes": 1,
+                    "open": false,
+                    "innerTray": {
+                      "height": 60,
+                      "topInset": 10,
+                      "open": false,
+                      "extension": 1
+                    },
+                    "removed": false
+                  },
+                  {
+                    "id": "service-bottom-B",
+                    "kind": "board",
+                    "name": "可拆检修底板",
+                    "w": 942,
+                    "h": 18,
+                    "d": 382,
+                    "x": 0,
+                    "y": 109,
+                    "z": -9,
+                    "removable": true,
+                    "removed": false
+                  },
+                  {
+                    "d": 340,
+                    "h": 18,
+                    "id": "counter-support-left-B",
+                    "kind": "board",
+                    "name": "左侧台面承托条（安装设计待核）",
+                    "w": 80,
+                    "x": -432,
+                    "y": 821,
+                    "z": -30
+                  },
+                  {
+                    "d": 340,
+                    "h": 18,
+                    "id": "counter-support-right-B",
+                    "kind": "board",
+                    "name": "右侧台面承托条（安装设计待核）",
+                    "w": 80,
+                    "x": 432,
+                    "y": 821,
+                    "z": -30
+                  },
+                  {
+                    "id": "base-feet-B",
+                    "kind": "plinth",
+                    "height": 100,
+                    "inset": 40,
+                    "support": "legs",
+                    "removed": false
+                  },
+                  {
+                    "id": "hob-hidden-fascia-B",
+                    "kind": "board",
+                    "name": "灶前隐藏通风挡板（抽面上延遮盖）",
+                    "w": 944,
+                    "h": 82,
+                    "d": 18,
+                    "x": 0,
+                    "y": 789,
+                    "z": 155,
+                    "removable": true,
+                    "removed": false,
+                    "vent": {
+                      "columns": 14,
+                      "rows": 3,
+                      "slotWidth": 45,
+                      "slotHeight": 6,
+                      "gapX": 12,
+                      "gapY": 8
+                    }
+                  },
+                  {
+                    "id": "hob-separator-B",
+                    "kind": "board",
+                    "name": "灶下可拆隔板（接口位置待实测）",
+                    "w": 944,
+                    "h": 18,
+                    "d": 361,
+                    "x": 0,
+                    "y": 739,
+                    "z": -19.5,
+                    "removable": true,
+                    "removed": false
+                  }
+                ],
+                "d": 400,
+                "frontBand": true,
+                "h": 830,
+                "id": "service-B",
+                "thickness": 18,
+                "top": false,
+                "w": 980
+              }
+            ],
+            "version": 2
+          }
+        },
+        "width": 980
+      },
+      {
+        "cabinetPlacement": {
+          "align": "front",
+          "depth": 600,
+          "independent": true,
+          "mountHeight": 0,
+          "offset": 0
+        },
+        "cornerPartitions": {
+          "right": false
+        },
+        "role": "door",
+        "run": 0,
+        "structure": {
+          "w": 406,
+          "d": 600,
+          "h": 830,
+          "cabinet": {
+            "boxes": [
+              {
+                "backThickness": 18,
+                "bottom": false,
+                "components": [
+                  {
+                    "back": true,
+                    "backAtPanels": true,
+                    "bay": "left",
+                    "extendSides": false,
+                    "from": 0,
+                    "id": "blind-access-C",
+                    "kind": "openZone",
+                    "light": false,
+                    "lower": false,
+                    "lowerFront": 18,
+                    "rearLip": 18,
+                    "side": "right",
+                    "to": 0.9783132530120482,
+                    "upper": false,
+                    "upperFront": 18
+                  },
+                  {
+                    "angle": 0,
+                    "bay": "left",
+                    "finish": "solid",
+                    "handle": "none",
+                    "id": "trolley-door-C",
+                    "kind": "door",
+                    "maxAngle": 90,
+                    "mode": "left",
+                    "open": false
+                  },
+                  {
+                    "id": "trolley-plinth-C",
+                    "kind": "plinth",
+                    "height": 100,
+                    "inset": 40,
+                    "support": "legs",
+                    "feet": false,
+                    "removed": false
+                  }
+                ],
+                "d": 600,
+                "frontBand": true,
+                "h": 830,
+                "id": "trolley-C",
+                "thickness": 18,
+                "top": true,
+                "w": 406
+              }
+            ],
+            "version": 2
+          }
+        },
+        "width": 406
+      }
+    ],
+    "shape": "L",
+    "thickness": 20,
+    "version": 1,
+    "obstacleFit": {
+      "depths": [],
+      "cuts": [
+        [
+          [
+            -733,
+            -852
+          ],
+          [
+            -733,
+            -477
+          ],
+          [
+            -1283,
+            -477
+          ],
+          [
+            -1283,
+            -852
+          ]
+        ]
+      ]
+    }
+  },
+  "name": "厨房地柜 · 活动层板 / 碗碟内抽 / 可拆踢脚与检修 / 大号拉斯克",
+  "rot": 180,
+  "type": "counter",
+  "w": 2566
+}

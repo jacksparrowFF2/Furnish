@@ -1,3 +1,5 @@
+2026-11-12（柜体检修结构）：product-rules.cabinetService定义可选地脚／可拆前板、标准板通风孔、独立内抽及v86；cabinet-builder-core派生孔间实体和硬件，cabinet-model共用生产构造与记录器。新地脚模式修正无底侧／背起点，旧构造不变。共享搭建器沿原草稿／mutate，项目、仓库和离线缓存接收v86，无新脚本或保存通道。见[检修契约](CABINET-KITCHEN-SERVICE.md)。
+
 2026-11-11（86面板）：product-rules集中panelVariants与mountHeight，panel-bull-g12-model选择37款Blender离线网格；静态构造供正式场景和实体，款式进入缓存／空间签名及采购分组。v84沿原mutate／项目／仓库／缓存；只新增两段经典资产／模型脚本，不引入状态或构建机制。见[型号契约](PANEL-BULL-G12.md)。
 
 2026-11-11（旧编辑器入口清理）：删除已停用的模板柜工作区及柜体／厨房编辑器转发API，生产调用直接进入`FurnishCabinetBuilderUI`；仍用于原生厨房／洗衣区的背板和外观表单移至`src/ui/cabinet-form-controls.js`。删除旧浏览器命令别名及88份旧浏览器脚本、3份旧手工编辑器脚本和1份冗余命令包装，现行160专项保留。恢复与生产构造兼容保留；损坏柜体的元数据识别和空间签名不再阻断其它家具修复，不自动补造或删除损坏记录。见[全量检查](validation/full-regression-20261111/README.md)。

@@ -78,7 +78,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   if(f.cabinet?.version===2){
    const B=root.FurnishCabinetBuilder||require('../core/cabinet-builder-core.js'),g=new THREE.Group();
    for(const p of B.derived(f)){
-    const child=buildRaw(THREE,p.furniture,box,{...options,outlines:false,furniture:[],...B.shellOptions(p),sideCuts:[...(options.sideCuts??[]),...B.shellOptions(p).sideCuts],shelfShape:(i,j)=>B.shelfShape(p.box,p.maps[i].shelves[j])});child.position.set(p.x/1000,p.y/1000,p.z/1000);
+    const child=buildRaw(THREE,p.furniture,box,{...options,outlines:false,furniture:[],...B.shellOptions(p),skipPlinth:p.box.components.some(c=>c.kind==='plinth'&&c.support==='legs'),openBottomBase:p.box.components.some(c=>c.kind==='plinth'&&c.support==='legs')?B.baseHeight(p.box):undefined,sideCuts:[...(options.sideCuts??[]),...B.shellOptions(p).sideCuts],shelfShape:(i,j)=>B.shelfShape(p.box,p.maps[i].shelves[j])});child.position.set(p.x/1000,p.y/1000,p.z/1000);
     const ds=p.box.components.filter(v=>v.kind==='divider').sort((a,b)=>a.at-b.at);
     child.traverse(o=>{const data=o.userData;if(!data)return;const part=data.cabinetPart,shelf=data.cabinetShelf,divider=data.cabinetDivider,local=part?.column??shelf?.column??divider?.column??data.cabinetBay?.column??0,map=p.maps[local];
      const component=shelf?map?.shelves[shelf.shelf]:part?part.drawer!==undefined?map?.drawers:map?.door:divider?ds[divider.divider]:data.cabinetTopClosure?p.box.components.find(v=>v.kind==='topClosure'):data.cabinetSection==='plinth'?p.box.components.find(v=>v.kind==='plinth'):null;
@@ -90,7 +90,11 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
     g.add(child);
     for(const part of B.trimParts(f).filter(v=>v.boxId===p.box.id)){const node=syncIdentity.produce('cabinet-builder:trim:'+part.boxId+':'+part.componentId,()=>box(part.w/1000,part.h/1000,part.d/1000,f.color,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:'trim'};node.userData.cabinetSideClosure=part.side;g.add(node);}
    }
-   for(const row of B.layout(f))for(const p of row.box.components.filter(p=>p.kind==='board'&&!p.profile)){const n=syncIdentity.produce('board:'+row.box.id+':'+p.id,()=>box(p.w/1000,p.h/1000,p.d/1000,f.color,(row.x+p.x)/1000,(row.y+p.y-p.h/2)/1000,(row.z+p.z)/1000));n.userData.cabinetBuilder={boxId:row.box.id,componentId:p.id,kind:p.kind};g.add(n);}
+   for(const part of B.detailParts(f)){
+    const node=syncIdentity.produce(part.legacyIdentity?'board:'+part.boxId+':'+part.componentId:'builder-detail:'+part.boxId+':'+part.componentId+':'+part.role,()=>box(part.w/1000,part.h/1000,part.d/1000,part.color??f.color,part.x/1000,part.bottom/1000,part.z/1000));
+    if(part.poly){const shape=new THREE.Shape();part.poly.forEach(([x,z],i)=>shape[i?'lineTo':'moveTo'](x/1000,z/1000));shape.closePath();node.geometry.dispose();node.geometry=new THREE.ExtrudeGeometry(shape,{depth:part.h/1000,bevelEnabled:false});node.geometry.rotateX(Math.PI/2);node.position.y=(part.bottom+part.h)/1000;}
+    node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind};node.userData.cabinetServicePart=part.role;if(part.hardware)node.userData.cabinetOwnMaterial=true;g.add(node);
+   }
    for(const part of B.railParts(f)){const node=syncIdentity.produce('cabinet-builder:rail:'+part.boxId+':'+part.componentId,()=>box(part.w/1000,part.h/1000,part.d/1000,'#b9bec1',part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:'rail'};node.userData.cabinetHangingRod={componentId:part.componentId};g.add(node);}
    for(const part of B.zoneParts(f)){const node=syncIdentity.produce('cabinet-builder:zone:'+part.boxId+':'+part.componentId+':'+part.role,()=>box(part.w/1000,part.h/1000,part.d/1000,part.role==='light'?'#ffe4ab':(root.FurnishCabinet||require('../core/cabinet-core.js')).palette.body,part.x/1000,part.bottom/1000,part.z/1000));node.userData.cabinetBuilder={boxId:part.boxId,componentId:part.componentId,kind:part.kind,...(['lower','upper'].includes(part.role)?{board:part.role}:{})};node.userData.cabinetSection=part.role;if(part.role==='light'){node.material=node.material.clone();node.material.emissive=new THREE.Color('#ffe4ab');node.material.emissiveIntensity=.6;node.userData.cabinetOwnMaterial=true;}g.add(node);}
    for(const v of B.linearParts(f))syncIdentity.produce('cabinet-builder:linear:'+v.b.id+':'+v.p.id,()=>{
@@ -104,8 +108,18 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
       syncIdentity.produce('cabinet-builder:drawer-front',()=>components.board(node,(faceWidth-2)/1000,(p.height+p.frontTopOffset-p.frontBottomOffset-2)/1000,t,frontX,(bottom+p.frontBottomOffset+1)/1000,b.d/2000-t/2,f.color)).userData.cabinetDrawerBoard='front';
       components.drawerBox(node,{width:width/1000,x,bottom:bottom/1000,height:bodyHeight/1000,depth:b.d/1000,sites:{bottom:'cabinet-builder:drawer-bottom',side:'cabinet-builder:drawer-side',back:'cabinet-builder:drawer-back'},sideScope:'cabinet-builder:drawer-sides'});
       components.handle(node,{kind:p.handle,site:'cabinet-builder:drawer-handle',x:frontX,y:(bottom+(p.height+p.frontTopOffset+p.frontBottomOffset)/2)/1000,z:b.d/2000+.012,width:Math.min(.14,width*.0004)});components.mountDrawer(group,node,{column,drawer:0,lane,componentId:p.id});});
+     if(p.innerTray){const q=p.innerTray,phase=p.open?(p.extension??1):0,innerPhase=q.open?Math.min(phase,q.extension):0,node=components.drawer({column,depth:b.d/1000,state:{open:innerPhase>0,extension:innerPhase},travel:b.d/1000*C.drawerMotionRules().travel}),level=bottom+p.height-q.topInset-q.height;
+      syncIdentity.produce('inner-tray',()=>{
+       const R=(root.FurnishProducts||require('../core/product-rules.js')),r=R.cabinetService.innerTray,depth=C.drawerDepthLayout(row.furniture,b.d,row.furniture.cabinet),floor={x:bay.center,z:depth.center},W=bay.width-2*R.cabinetDrawerBox.sideClearance,D=depth.depth,t=r.wall;
+       syncIdentity.produce('floor',()=>components.board(node,W/1000,t/1000,D/1000,floor.x/1000,level/1000,floor.z/1000,'#d4d2ca'));
+       for(const side of [-1,1])syncIdentity.produce('side:'+side,()=>components.board(node,t/1000,(q.height-t)/1000,D/1000,(floor.x+side*(W-t)/2)/1000,(level+t)/1000,floor.z/1000,'#d4d2ca'));
+       for(const end of [-1,1])syncIdentity.produce('end:'+end,()=>components.board(node,(W-2*t)/1000,(q.height-t)/1000,t/1000,floor.x/1000,(level+t)/1000,(floor.z+end*(D-t)/2)/1000,'#d4d2ca'));
+       for(let i=1;i<r.cells;i++)syncIdentity.produce('cutlery-divider:'+i,()=>components.board(node,r.divider/1000,Math.min(30,q.height-t)/1000,(D-2*t)/1000,(floor.x-W/2+W*i/r.cells)/1000,(level+t)/1000,floor.z/1000,'#d4d2ca'));
+       node.userData.motion.section='innerTray';components.mountDrawer(group,node,{column,drawer:0,lane:0,componentId:p.id,innerTray:true,section:'innerTray'});
+      });
+     }
     }
-    group.traverse(o=>{o.userData.cabinetBuilder={boxId:b.id,componentId:p.id,kind:p.kind};if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,componentId:p.id};if(o.userData.motion)o.userData.motion={...o.userData.motion,componentId:p.id};});g.add(group);return group;
+    group.traverse(o=>{o.userData.cabinetBuilder={boxId:b.id,componentId:p.id,kind:p.kind,...(o.userData.cabinetPart?.innerTray?{innerTray:true}:{})};if(o.userData.cabinetPart)o.userData.cabinetPart={...o.userData.cabinetPart,componentId:p.id};if(o.userData.motion)o.userData.motion={...o.userData.motion,componentId:p.id};});g.add(group);return group;
    });
    for(const part of B.fronts(f).filter(part=>!B.selection(f,{boxId:part.boxId,componentId:part.componentId}).component?.profile)){
     const front=new THREE.Group();front.position.set(part.x/1000,part.y/1000,part.z/1000);
@@ -299,7 +313,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
    },(item,slot)=>item?.partId||"column:"+slot);
    if(options.outlines)g.traverse(o=>{if(o.isMesh){const edge=new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry),new THREE.LineBasicMaterial({color:0x493b2d,transparent:true,opacity:.9}));edge.userData.cabinetOwnMaterial=true;o.add(edge);}});return g;
   }
-  if(hasLower&&!options.floorOpen){const part=C.plinthPart(f,c,options.plinthProfile);if(part)syncIdentity.produce('cabinet-model:site-44',()=>add(g,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000,wood)).userData.cabinetSection='plinth';}
+  if(hasLower&&!options.floorOpen&&!options.skipPlinth){const part=C.plinthPart(f,c,options.plinthProfile);if(part)syncIdentity.produce('cabinet-model:site-44',()=>add(g,part.w/1000,part.h/1000,part.d/1000,part.x/1000,part.bottom/1000,part.z/1000,wood)).userData.cabinetSection='plinth';}
   const movable=col=>col.top==='drawer';
   if(c.hoodBayHeight!==undefined){const bays=C.layout(f),bay=bays[1];for(const i of syncIdentity.items("cabinet-model.js:generator-29",[["item-a",0],["item-b",2]])){const left=i===0?-w/2:(bay.left+bay.width)/1000,right=i===2?w/2:bay.left/1000;syncIdentity.produce("cabinet-model:site-45",()=>add(g,right-left,t,bodyDepth,(left+right)/2,p,bodyZ)).userData.cabinetSection='hoodSideBottom';}if(C.hoodBayCeiling(f,c))syncIdentity.produce("cabinet-model:site-46",()=>add(g,bay.width/1000,t,bodyDepth,bay.center/1000,c.hoodBayHeight/1000,bodyZ)).userData.cabinetSection='hoodCeiling';}
   else if(hasLower&&!options.floorOpen){
@@ -309,7 +323,7 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
   syncIdentity.each("cabinet-model.js:generator-30",bays,(bay,i)=>{
    if(!movable(c.columns[i])){
     const col=c.columns[i],cw=bay.width/1000,x=bay.center/1000,base=p+t;
-    if(!col.pegboard){const start=c.hoodBayHeight!==undefined&&i===1?c.hoodBayHeight/1000+t:col.bottomPanel===false?0:base;rearPanel(g,cw,h-t-start,x,start,'cabinet-model:site-49',{cabinetBay:{column:i}});}
+    if(!col.pegboard){const start=c.hoodBayHeight!==undefined&&i===1?c.hoodBayHeight/1000+t:col.bottomPanel===false?(options.openBottomBase??0)/1000:base;rearPanel(g,cw,h-t-start,x,start,'cabinet-model:site-49',{cabinetBay:{column:i}});}
     else{
      const bottom=col.drawers.reduce((n,v)=>n+v.height,0)/1000,top=col.doorBottom/1000-t,H=top-bottom,wood='#bc936b';
      if(hasLower&&bottom>0)rearPanel(g,cw,bottom,x,base,'cabinet-model:site-50',{},wood,'surround');
@@ -344,10 +358,10 @@ const syncIdentity=root.FurnishPartIdentity||(typeof require==='function'?requir
      }
     }
    }
-   const sideBase=c.columns[i].bottomPanel===false||i>0&&c.columns[i-1].bottomPanel===false?0:p+(options.floorOpen?0:t);
+   const sideBase=c.columns[i].bottomPanel===false||i>0&&c.columns[i-1].bottomPanel===false?(options.openBottomBase??0)/1000:p+(options.floorOpen?0:t);
    if(!i)syncIdentity.produce("cabinet-model.js:generator-call-12",()=>sideBoard('left',t,h-t-sideBase,bodyDepth,bay.left/1000-t/2,sideBase,bodyZ));else syncIdentity.produce("cabinet-model:site-60",()=>add(g,t,h-t-sideBase,bodyDepth,bay.left/1000-t/2,sideBase,bodyZ)).userData.cabinetDivider={divider:i-1,column:i-1};
   },(_,column)=>"column:"+column);
-  {const sideBase=c.columns.at(-1).bottomPanel===false?0:p+(options.floorOpen?0:t);syncIdentity.produce("cabinet-model.js:generator-call-13",()=>sideBoard('right',t,h-t-sideBase,bodyDepth,w/2-t/2,sideBase,bodyZ));}
+  {const sideBase=c.columns.at(-1).bottomPanel===false?(options.openBottomBase??0)/1000:p+(options.floorOpen?0:t);syncIdentity.produce("cabinet-model.js:generator-call-13",()=>sideBoard('right',t,h-t-sideBase,bodyDepth,w/2-t/2,sideBase,bodyZ));}
   syncIdentity.each("cabinet-model.js:generator-34",c.columns,(col,i)=>{
    const cw=bays[i].width/1000,x=bays[i].center/1000,base=p+t;
    const handle=col.handle||'bar',faceColor=C.frontColor(f,i,c);

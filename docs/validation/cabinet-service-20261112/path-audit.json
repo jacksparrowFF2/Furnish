@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "cartPark": {
+    "cx": 6853,
+    "cy": 9841,
+    "w": 350,
+    "d": 450,
+    "h": 770
+  },
+  "entrance": {
+    "width": 370,
+    "top": 812,
+    "topGap": 42,
+    "doorAngle": 90,
+    "removablePlinth": 100,
+    "noGroundLegs": true
+  },
+  "path": {
+    "straightMm": 1200,
+    "lateralMm": 1497,
+    "stepMm": 10,
+    "samples": 271,
+    "installedPlinthNegative": true
+  },
+  "manifold": {
+    "bodyCollisionClosed": false,
+    "bodyCollisionService": false,
+    "serviceOpenWidth": 944,
+    "separatorBottom": 730
+  },
+  "assemblyIssues": {
+    "closed": [],
+    "open": [],
+    "service": []
+  }
+}

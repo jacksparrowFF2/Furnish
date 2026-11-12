@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-12",
+  "planId": "custom_mv37igji",
+  "activeDesign": {
+    "id": "dmwd80ij0",
+    "name": "1601厨房 · 大号拉斯克与可拆检修收纳"
+  },
+  "revision": "6cbf0ec7be19fa22a6d79b6c81d248e1f4502bac7c06c229e8852dd41df8138b",
+  "save": {
+    "mode": "saved",
+    "message": "设计已保存到本地正式文件\n保存位置：D:\\1601装修\\Furnish项目\\workspace.furnish.json\n最后成功保存：2026/11/12 22:09:19",
+    "pending": false
+  },
+  "changedIds": [
+    "fmv9dos7j1",
+    "fmwd89b7u1"
+  ],
+  "unchangedFurniture": 159,
+  "finalState": "closed; drawers, bottom and toe kicks restored; cart at 6853,9841",
+  "issues": [
+    {
+      "kind": "pipe",
+      "id": "fmv9dos7j1",
+      "markerId": "cad_61E4A",
+      "name": "厨房地柜 · 活动层板 / 碗碟内抽 / 可拆踢脚与检修 / 大号拉斯克",
+      "pending": false,
+      "cut": true,
+      "at": [
+        6135.835793234891,
+        8538.978344727278
+      ],
+      "message": "柜体与 下水 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查",
+      "confirmed": false
+    },
+    {
+      "kind": "pipe",
+      "id": "fmv9dos7j1",
+      "markerId": "cad_61E4B",
+      "name": "厨房地柜 · 活动层板 / 碗碟内抽 / 可拆踢脚与检修 / 大号拉斯克",
+      "pending": false,
+      "cut": true,
+      "at": [
+        6135.835793234891,
+        10091.96537013368
+      ],
+      "message": "柜体与 燃气 竖管相交：板件已自动生成管道孔／缺口，开启范围另行检查",
+      "confirmed": false
+    },
+    {
+      "kind": "wall",
+      "id": "fmv9dos7j1",
+      "name": "厨房地柜 · 活动层板 / 碗碟内抽 / 可拆踢脚与检修 / 大号拉斯克",
+      "message": "家具占用墙体空间",
+      "confirmed": false
+    },
+    {
+      "kind": "outside",
+      "id": "fmv9dos7j1",
+      "name": "厨房地柜 · 活动层板 / 碗碟内抽 / 可拆踢脚与检修 / 大号拉斯克",
+      "message": "家具占地超出房间范围（含折角／凹口）",
+      "confirmed": false
+    }
+  ],
+  "uiEvidence": "output/desktop-verification/cabinet-service-M4Vbe8/result.json",
+  "finalParametersUiEvidence": "output/desktop-verification/cabinet-service-RmlsWO/result.json"
+}

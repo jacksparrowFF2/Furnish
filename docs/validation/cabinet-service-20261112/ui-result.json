@@ -1,0 +1,62 @@
+[
+  {
+    "mode": "http",
+    "passed": true,
+    "checks": [
+      "actual kitchen editor exposes through-slot control",
+      "slot width edits production draft",
+      "draft undo restores vent dimensions",
+      "hidden vent fascia can be removed/restored",
+      "leg-and-clip support selectable",
+      "toe kick detaches while support feet remain",
+      "one external drawer has independent inner tray",
+      "whole drawer can detach and remains editable",
+      "detachment preserves inner tray configuration",
+      "service editor fits 390px",
+      "application save uses single undo/redo transaction",
+      "v86 saves and refreshes in real workspace",
+      "formal production GLB contains unique leg/clip/slot/inner-tray parts",
+      "no runtime page errors: "
+    ]
+  },
+  {
+    "mode": "file",
+    "passed": true,
+    "checks": [
+      "actual kitchen editor exposes through-slot control",
+      "slot width edits production draft",
+      "draft undo restores vent dimensions",
+      "hidden vent fascia can be removed/restored",
+      "leg-and-clip support selectable",
+      "toe kick detaches while support feet remain",
+      "one external drawer has independent inner tray",
+      "whole drawer can detach and remains editable",
+      "detachment preserves inner tray configuration",
+      "service editor fits 390px",
+      "application save uses single undo/redo transaction",
+      "v86 saves and refreshes in real workspace",
+      "formal production GLB contains unique leg/clip/slot/inner-tray parts",
+      "no runtime page errors: "
+    ]
+  },
+  {
+    "mode": "desktop",
+    "passed": true,
+    "checks": [
+      "actual kitchen editor exposes through-slot control",
+      "slot width edits production draft",
+      "draft undo restores vent dimensions",
+      "hidden vent fascia can be removed/restored",
+      "leg-and-clip support selectable",
+      "toe kick detaches while support feet remain",
+      "one external drawer has independent inner tray",
+      "whole drawer can detach and remains editable",
+      "detachment preserves inner tray configuration",
+      "service editor fits 390px",
+      "application save uses single undo/redo transaction",
+      "v86 saves and refreshes in real workspace",
+      "formal production GLB contains unique leg/clip/slot/inner-tray parts",
+      "no runtime page errors: "
+    ]
+  }
+]

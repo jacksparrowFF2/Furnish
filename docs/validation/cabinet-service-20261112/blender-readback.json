@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "blender": "5.2.3 LTS",
+  "source": "output\\desktop-verification\\cabinet-service-RmlsWO\\service-http.glb",
+  "sha256": "70fd28f5069dfe2d1538f45cfc47da3a3fc744c208815637838abe1e92157d76",
+  "parts": 178,
+  "uniqueFurniturePartIdentity": true,
+  "maxBoundsErrorMm": 0.0002384185791015625,
+  "nondegenerateImportedFaces": true
+}
