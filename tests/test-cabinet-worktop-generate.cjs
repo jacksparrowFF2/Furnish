@@ -9,3 +9,20 @@ for(const rot of [0,37,90,270])for(const flip of [false,true]){
  assert.throws(()=>A.generateWorktop(A.edit(f,'cabinet1',{x:f.w/2+500})),/不连续/);assert.deepEqual(P.unpack(P.pack({planId:'test',current:{furniture:[generated]},designs:[],catalog:[]})).current.furniture[0],generated);
 }
 console.log('PASS 8 layout-driven worktops: connected carcass union, exact support height, repeated generation, size changes, manual-reset, disconnected rejection and project restoration');
+
+// Test the actual exposed front, including rotated boxes and configurable native projection.
+for(const rot of [0,37,90,270])for(const flip of [false,true])for(const ownRot of [0,90,180,270])for(const projection of [0,20,45]){
+ let n=0,f=A.editableKitchen(K.createLaundryCabinet({id:'projection',cx:4000,cy:3000,rot},()=> 'o'+(++n),'left')[0]);f.flip=flip;f.kitchen.counterDepth=f.kitchen.depth+projection;f.d=f.kitchen.counterDepth;K.validate(f);
+ const native=K.outline(f),right=Math.max(...native.map(p=>p[0])),front=Math.max(...native.map(p=>p[1])),turn=ownRot%180!==0,part=B.update(B.create(),{boxId:'box1'},{w:260,d:280,h:f.kitchen.baseHeight});
+ K.assemblyConfig(f,true).cabinet1={w:part.w,d:part.d,h:part.h,x:turn?0:right+130,y:turn?front+130:0,rot:ownRot,mountHeight:0,cabinet:part.cabinet};K.validate(f);
+ const before=structuredClone(f),g=A.generateWorktop(f),row=A.placementRows(f).find(r=>r.id==='cabinet1'),a=ownRot*Math.PI/180;
+ const point=depth=>[row.x-depth*Math.sin(a),row.z+depth*Math.cos(a)];
+ assert(Z.inside(point(140+projection-.1),K.outline(g)),'surface must project beyond the exposed own front');
+ assert(!Z.inside(point(140+projection+.1),K.outline(g)),'projection must stop at configured amount');
+ assert(Z.inside(point(-140+.1),K.outline(g)),'rear remains covered');
+ assert(!Z.inside(point(-140-.1),K.outline(g)),'rear must not gain an unsolicited overhang');
+ assert(K.slabGeometry(g,[]).polys.some(poly=>Z.inside(point(140+projection-.1),poly)),'production surface must include the same front strip');
+ assert.deepEqual(A.generateWorktop(g),g);assert.deepEqual(f,before);assert.deepEqual(g.kitchen.laundry.assembly,f.kitchen.laundry.assembly);assert.deepEqual(g.kitchen.modules,f.kitchen.modules);
+ assert.deepEqual(P.unpack(P.pack({planId:'test',current:{furniture:[g]},designs:[],catalog:[]})).current.furniture[0],g);
+}
+console.log('PASS 96 front projections: configured 0/20/45 mm, own rotation, host rotation/mirror, unchanged rear and cabinets, production surface and restoration');
